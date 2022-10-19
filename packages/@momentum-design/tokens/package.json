@@ -1,0 +1,8 @@
+{
+  "name": "@momentum-design/tokens",
+  "packageManager": "yarn@3.2.4",
+  "version": "0.0.0",
+  "scripts": {
+    "start": "echo \"Hello World\""
+  }
+}
