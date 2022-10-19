@@ -1,0 +1,11 @@
+{
+  "name": "momentum-design",
+  "packageManager": "yarn@3.2.4",
+  "private": true,
+  "workspaces": [
+    "./packages/**/*"
+  ],
+  "scripts": {
+    "tokens": "yarn workspace @momentum-design/tokens"
+  }
+}
