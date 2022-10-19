@@ -2,7 +2,25 @@
   "name": "@momentum-design/tokens",
   "packageManager": "yarn@3.2.4",
   "version": "0.0.0",
+  "type": "commonjs",
   "scripts": {
-    "start": "echo \"Hello World\""
+    "analyze:lint:fix": "yarn analyze:lint --fix",
+    "analyze:lint": "eslint \"./src/**\"",
+    "analyze:syntax": "tsc --noEmit",
+    "analyze": "yarn analyze:lint && yarn analyze:syntax",
+    "build:src": "tsc",
+    "build:tokens:json": "yarn copyfiles -f ./raw/**/*.json ./dist/json/",
+    "build:tokens": "yarn build:tokens:json && yarn build:src && node ./dist/scripts/index.js"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.2",
+    "@typescript-eslint/eslint-plugin": "^5.40.1",
+    "@typescript-eslint/parser": "^5.40.1",
+    "copyfiles": "^2.4.1",
+    "eslint": "^8.25.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-json": "^3.1.0",
+    "rimraf": "^3.0.2",
+    "style-dictionary": "^3.7.1"
   }
 }
