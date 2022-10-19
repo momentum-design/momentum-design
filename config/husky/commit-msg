@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+. "config/husky/_/husky.sh"
+
+yarn commitlint --config "./config/commitlint/commitlint.config.cjs" --edit "${1}"
