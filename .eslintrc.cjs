@@ -9,6 +9,15 @@ module.exports = {
     'plugin:json/recommended',
   ],
   ignorePatterns: ['**/dist/**', '*.hbs'],
+  overrides: [
+    {
+      files: ['**/*.test.ts'],
+      env: {
+        jest: true,
+        node: true,
+      },
+    },
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
