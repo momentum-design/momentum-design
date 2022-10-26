@@ -1,15 +1,13 @@
 {
+  "exclude": [
+    "./src/**/*.fixture.ts",
+    "./src/**/*.test.ts"
+  ],
   "extends": "../../../config/typescript/tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist/scripts",
     "module": "CommonJS",
   },
-  "plugins": [
-    {
-      "name": "ts-lit-plugin",
-      "strict": true
-    }
-  ],
   "include": [
     "./src/**/*"
   ]

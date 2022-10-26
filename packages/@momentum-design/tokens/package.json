@@ -2,25 +2,38 @@
   "name": "@momentum-design/tokens",
   "packageManager": "yarn@3.2.4",
   "version": "0.0.0",
-  "type": "commonjs",
+  "files": [
+    "./dist/"
+  ],
   "scripts": {
+    "analyze": "yarn analyze:lint && yarn analyze:syntax",
     "analyze:lint:fix": "yarn analyze:lint --fix",
     "analyze:lint": "eslint \"./src/**\"",
     "analyze:syntax": "tsc --noEmit",
-    "analyze": "yarn analyze:lint && yarn analyze:syntax",
-    "build:src": "tsc",
-    "build:tokens:json": "yarn copyfiles -f ./raw/**/*.json ./dist/json/",
-    "build:tokens": "yarn build:tokens:json && yarn build:src && node ./dist/scripts/index.js"
+    "build": "yarn clean && yarn build:scripts && yarn build:tokens",
+    "build:scripts": "tsc",
+    "build:tokens": "yarn build:tokens:webex",
+    "build:tokens:webex": "node ./dist/scripts/index.js --build \"./config/tokens/brand/webex.json\"",
+    "clean": "yarn clean:dist",
+    "clean:dist": "rimraf ./dist",
+    "test": "yarn test:unit",
+    "test:unit": "jest ./src/**/*.test.ts"
   },
   "devDependencies": {
+    "@types/jest": "^29.2.0",
     "@types/node": "^18.11.2",
+    "@types/yargs": "^17.0.13",
     "@typescript-eslint/eslint-plugin": "^5.40.1",
     "@typescript-eslint/parser": "^5.40.1",
-    "copyfiles": "^2.4.1",
     "eslint": "^8.25.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-json": "^3.1.0",
+    "jest": "^29.2.1",
     "rimraf": "^3.0.2",
-    "style-dictionary": "^3.7.1"
+    "ts-jest": "^29.0.3"
+  },
+  "dependencies": {
+    "style-dictionary": "^3.7.1",
+    "yargs": "^17.6.0"
   }
 }

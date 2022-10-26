@@ -1,0 +1,13 @@
+{
+  "color": {
+    "theme": {
+      "button": {
+        "primary": {
+          "normal": {
+            "value": "{color.core.green.10}"
+          }
+        }
+      }
+    }
+  }
+}
