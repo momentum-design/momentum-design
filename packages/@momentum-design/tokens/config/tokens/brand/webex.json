@@ -1,0 +1,82 @@
+{
+  "files": [
+    {
+      "categories": [
+        "color"
+      ],
+      "filters": [
+        "**/core.json"
+      ],
+      "items": [],
+      "name": "core",
+      "types": [
+        "core",
+        "decorative",
+        "gradient",
+        "mobile"
+      ]
+    },
+    {
+      "categories": [
+        "color"
+      ],
+      "filters": [
+        "**/core.json",
+        "**/theme-dark.json"
+      ],
+      "items": [],
+      "name": "theme-dark",
+      "types": [
+        "theme"
+      ]
+    },
+    {
+      "categories": [
+        "color"
+      ],
+      "filters": [
+        "**/core.json",
+        "**/theme-light.json"
+      ],
+      "items": [],
+      "name": "theme-light",
+      "types": [
+        "theme"
+      ]
+    }
+  ],
+  "name": "webex",
+  "platforms": [
+    {
+      "group": "android",
+      "name": "android",
+      "extension": "xml",
+      "format": "android/colors"
+    },
+    {
+      "group": "css",
+      "name": "css",
+      "extension": "css",
+      "format": "css/variables"
+    },
+    {
+      "group": "ios-swift",
+      "name": "ios-swift",
+      "extension": "swift",
+      "format": "ios-swift/class.swift"
+    },
+    {
+      "group": "scss",
+      "name": "scss",
+      "extension": "scss",
+      "format": "scss/variables"
+    },
+    {
+      "group": "web",
+      "name": "json",
+      "extension": "json",
+      "format": "json"
+    }
+  ],
+  "type": "brand"
+}
