@@ -8,7 +8,7 @@ module.exports = {
     'airbnb-base',
     'plugin:json/recommended',
   ],
-  ignorePatterns: ['**/dist/**', '*.hbs'],
+  ignorePatterns: ['**/dist/**', '*.hbs', 'scripts/**'],
   overrides: [
     {
       files: ['**/*.test.ts'],
@@ -27,6 +27,13 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
+    '@typescript-eslint/quotes': [
+      'error',
+      'single',
+      {
+        allowTemplateLiterals: true,
+      },
+    ],
     '@typescript-eslint/no-unused-vars': 'error',
     'import/extensions': 'off',
     'import/no-extraneous-dependencies': ['error', { devDependencies: ['**/config/**/*.*'] }],
