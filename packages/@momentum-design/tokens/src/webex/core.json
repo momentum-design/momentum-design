@@ -325,10 +325,6 @@
           "type": "color",
           "description": "Hex Code: #07120d"
         },
-        "105": {
-          "value": "#4e6961",
-          "type": "color"
-        },
         "05": {
           "value": "#edf7f5",
           "type": "color",
@@ -1036,15 +1032,15 @@
     "gradient": {
       "default": {
         "light": {
-          "secondary": {
-            "value": "linear-gradient(180deg, #fafafa 0%, #ffffff 100%)",
-            "type": "color",
-            "description": "Values Top, Bottom (FAFAFA, FFFFF)"
-          },
           "primary": {
             "value": "linear-gradient(180deg, #f0f0f0 0%, #ffffff 100%)",
             "type": "color",
             "description": "Values Top, Bottom (F0F0F0, FFFFF)"
+          },
+          "secondary": {
+            "value": "linear-gradient(180deg, #fafafa 0%, #ffffff 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (FAFAFA, FFFFF)"
           }
         },
         "dark": {
@@ -1213,7 +1209,8 @@
           },
           "secondary": {
             "value": "#1a1a1a",
-            "type": "color"
+            "type": "color",
+            "description": "HEX: 1A1A1A"
           }
         }
       },
