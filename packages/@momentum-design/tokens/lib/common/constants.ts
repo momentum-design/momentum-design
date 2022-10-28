@@ -1,6 +1,6 @@
 const CONSTANTS = {
   PATHS: {
-    REFERENCE: './reference',
+    REFERENCE: './src',
     OUTPUT: './dist',
   },
 };
