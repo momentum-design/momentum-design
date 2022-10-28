@@ -8,16 +8,16 @@
   "scripts": {
     "analyze": "yarn analyze:lint && yarn analyze:syntax",
     "analyze:lint:fix": "yarn analyze:lint --fix",
-    "analyze:lint": "eslint \"./src/**\"",
+    "analyze:lint": "eslint \"./lib/**\"",
     "analyze:syntax": "tsc --noEmit",
     "build": "yarn clean && yarn build:scripts && yarn build:tokens",
     "build:scripts": "tsc",
     "build:tokens": "yarn build:tokens:webex",
-    "build:tokens:webex": "node ./dist/scripts/index.js --build \"./config/tokens/brand/webex.json\"",
+    "build:tokens:webex": "node ./dist/scripts/index.js --build \"./config/tokens/webex.json\"",
     "clean": "yarn clean:dist",
     "clean:dist": "rimraf ./dist",
     "test": "yarn test:unit",
-    "test:unit": "jest ./src/**/*.test.ts"
+    "test:unit": "jest ./lib/**/*.test.ts"
   },
   "devDependencies": {
     "@types/jest": "^29.2.0",
