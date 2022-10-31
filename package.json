@@ -2,29 +2,49 @@
   "name": "momentum-design",
   "packageManager": "yarn@3.2.4",
   "private": true,
+  "type": "module",
   "workspaces": [
     "./packages/**/*"
   ],
   "scripts": {
-    "token-builder": "yarn workspace @momentum-design/token-builder",
     "tokens": "yarn workspace @momentum-design/tokens",
+    "analyze": "yarn workspaces foreach run analyze",
+    "build": "yarn workspaces foreach run build",
+    "test": "yarn workspaces foreach run test",
+    "clean": "yarn workspaces foreach run clean",
     "postinstall": "husky install ./config/husky",
     "upgrade:vscode": "yarn dlx @yarnpkg/sdks vscode",
-    "analyze": "yarn analyze:tokens",
     "analyze:config": "eslint \"./config/**\"",
-    "analyze:tokens": "yarn workspaces foreach --verbose --parallel --include \"@momentum-design/tokens-*\" run analyze"
+    "clean:plop": "rimraf ./config/plop/dist",
+    "build:plop": "yarn clean:plop && node ./config/plop/esbuild.config.plop.js",
+    "generate:plop": "yarn build:plop && plop --plopfile config/plop/dist/plopfile.js",
+    "generate": "yarn generate:plop && yarn install",
+    "pipeline:cicd": "yarn affected:all",
+    "affected:list": "yarn workspaces list --since=upstream/main --json",
+    "affected:test": "node ./scripts/affected.js --command=test",
+    "affected:build": "node ./scripts/affected.js --command=build",
+    "affected:clean": "node './scripts/affected.js --command=clean",
+    "affected:analyze": "node ./scripts/affected.js --command=analyze",
+    "affected:all": "yarn affected:clean && yarn affected:build && yarn affected:analyze && yarn affected:test",
+    "tokens": "yarn workspace @momentum-design/tokens",
+    "token-builder": "yarn workspace @momentum-design/token-builder",
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
     "@typescript-eslint/eslint-plugin": "^5.40.1",
     "@typescript-eslint/parser": "^5.40.1",
+    "esbuild": "^0.15.12",
     "eslint": "^8.25.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-json": "^3.1.0",
     "husky": "^8.0.1",
+    "node-plop": "^0.31.0",
+    "plop": "^3.1.1",
     "prettier": "^2.7.1",
-    "typescript": "^4.8.4"
+    "rimraf": "^3.0.2",
+    "typescript": "^4.8.4",
+    "yargs": "^17.6.0"
   }
 }

@@ -75,7 +75,7 @@ class Scope {
   }
 
   public get type(): string {
-    return this.data.type;
+    return this.data.type ?? '';
   }
 
   public mountPlatforms(...platforms: Array<Platform>): this {

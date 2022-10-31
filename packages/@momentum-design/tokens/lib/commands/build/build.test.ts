@@ -19,7 +19,7 @@ describe('commands.Build', () => {
     };
 
     styleDictionaryConfig = {
-      source: ['reference/type/name/filter'],
+      source: ['src/type/name/filter'],
       platforms: {
         name: {
           buildPath: 'dist/type/name/name/',

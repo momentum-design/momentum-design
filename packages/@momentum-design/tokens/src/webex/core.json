@@ -325,6 +325,10 @@
           "type": "color",
           "description": "Hex Code: #07120d"
         },
+        "105": {
+          "value": "#4e6961",
+          "type": "color"
+        },
         "05": {
           "value": "#edf7f5",
           "type": "color",
