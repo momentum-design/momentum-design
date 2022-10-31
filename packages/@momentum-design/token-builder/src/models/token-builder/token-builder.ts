@@ -46,14 +46,16 @@ class TokenBuilder {
         this.config.config = json;
 
         return this;
+      })
+      .catch(() => {
+        throw new Error(`TokenBuilder.initialize() - unable to read and parse data from "${this.config.config}"`);
       });
   }
 
-  public static build(config: Config): Promise<void> {
+  public static build(config: Config): Promise<TokenBuilder> {
     const tokenBuilder = new TokenBuilder(config);
 
-    return tokenBuilder.build()
-      .then(() => undefined);
+    return tokenBuilder.build();
   }
 }
 
