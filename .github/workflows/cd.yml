@@ -1,0 +1,19 @@
+name: Continuous Deployment
+run-name: ${{ github.actor }} is running continuous deployment
+
+on:
+  pull_request_target:
+    branches:
+       - main
+    types: [closed]
+
+jobs:
+  cd:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Print Details
+        run: echo "Details -> event - (${{ github.event_name }}) os - (${{ runner.os }}) branch - (${{ github.ref }})"
+      - name: Run Pipeline CD script
+        run:  echo "Not Complete"

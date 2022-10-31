@@ -4,7 +4,8 @@
       "button": {
         "primary": {
           "normal": {
-            "value": "{color.core.green.90}"
+            "value": "{color.core.green.90}",
+            "type": "color"
           }
         }
       }
