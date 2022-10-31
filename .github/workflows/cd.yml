@@ -2,9 +2,10 @@ name: Continuous Deployment
 run-name: ${{ github.actor }} is running continuous deployment
 
 on:
-  pull_request:
-    types:
-      - closed
+  pull_request_target:
+    branches:
+       - main
+    types: [closed]
 
 jobs:
   cd:
