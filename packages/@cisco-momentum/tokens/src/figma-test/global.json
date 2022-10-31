@@ -16,5 +16,11 @@
       "value": "#00ff47",
       "type": "color"
     }
+  },
+  "blue": {
+    "05": {
+      "value": "#0500ff",
+      "type": "color"
+    }
   }
 }
