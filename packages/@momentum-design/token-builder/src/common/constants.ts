@@ -1,3 +1,5 @@
+const FILE_ENCODING: BufferEncoding = 'utf-8';
+
 const FORMATS = {
   CSS_VARIABLES: {
     EXTENSION: 'css',
@@ -23,6 +25,7 @@ const FORMATS = {
 };
 
 const CONSTANTS = {
+  FILE_ENCODING,
   FORMATS,
 };
 

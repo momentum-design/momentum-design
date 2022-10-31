@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import StyleDictionary from 'style-dictionary';
 
-import { Config as ExternalConfig } from '../../common';
+import { CONSTANTS, Config as ExternalConfig } from '../../common';
 import Dictionary from '../dictionary';
 
 import type { Config } from './types';
@@ -40,7 +40,7 @@ class TokenBuilder {
     }
 
     return fs.readFile(this.config.config as string)
-      .then((buffer: Buffer) => buffer.toString('utf-8'))
+      .then((buffer: Buffer) => buffer.toString(CONSTANTS.FILE_ENCODING))
       .then((data: string) => JSON.parse(data))
       .then((json: ExternalConfig) => {
         this.config.config = json;
