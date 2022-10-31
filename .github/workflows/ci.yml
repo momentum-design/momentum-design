@@ -1,0 +1,34 @@
+name: Continuous Integration
+run-name: ${{ github.actor }} is running continuous integration
+
+on:
+  pull_request:
+  push:
+  # The "workflow_dispatch" event gives us a button in GitHub's "Action" UI
+  workflow_dispatch:
+
+jobs:
+  ci:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ 'ubuntu-latest' ]
+        node-version: [ '18.x' ]
+    steps:
+      - name: Print Details
+        run: echo "Details -> event - (${{ github.event_name }}) os - (${{ runner.os }}) branch - (${{ github.ref }})"
+
+      - name: 'Checkout repository'
+        uses: actions/checkout@v3
+
+      - name: 'Use Node.js v${{ matrix.node-version }}'
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+
+      - name: 'Run yarn install'
+        run: yarn install --frozen-lockfile 
+
+      - name: 'Run pipeline CI script'
+        run: yarn pipeline:ci
