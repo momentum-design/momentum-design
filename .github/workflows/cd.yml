@@ -8,7 +8,6 @@ on:
     types: [closed]
 
 env:
-  DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
   DESIGN_BRANCH: design-token-updates
 
 
@@ -22,16 +21,19 @@ jobs:
         run: echo "Details -> event - (${{ github.event_name }}) os - (${{ runner.os }}) branch - (${{ github.ref }})"
       - name: Run Pipeline CD script
         run:  echo "Not Complete"
-      - name: Update design branch to main post merge
+      - uses: actions/checkout@v3
+      - name: Set Git config to github actions user
         run: |
-          git config --global user.email "${GITHUB_ACTOR}"
-          git config --global user.name "${GITHUB_ACTOR}@users.noreply.github.com"
-          git checkout "$DESIGN_BRANCH"
-          git status
-          git fetch "$DEFAULT_BRANCH"
-          git merge "$DEFAULT_BRANCH"
-          git status
-          git push "$DESIGN_BRANCH"
-          git status
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
+      - name: Merge default branch into design branch
+        run: |
+          git fetch --unshallow
+          git checkout $DESIGN_BRANCH
+          git pull
+          git merge --no-ff ${{ github.event.repository.default_branch }}
           git push
+
+
+
 
