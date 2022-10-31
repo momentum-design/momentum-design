@@ -24,8 +24,9 @@
     "affected:test": "node ./scripts/affected.js --command=test",
     "affected:build": "node ./scripts/affected.js --command=build",
     "affected:analyze": "node ./scripts/affected.js --command=analyze",
-    "affected:all": "yarn affected:build && yarn affected:analyze && yarn affected:test",
-    "tokens": "yarn workspace @momentum-design/tokens"
+    "affected:all": "yarn affected:clean && yarn affected:build && yarn affected:analyze && yarn affected:test",
+    "tokens": "yarn workspace @momentum-design/tokens",
+    "token-builder": "yarn workspace @momentum-design/token-builder"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
