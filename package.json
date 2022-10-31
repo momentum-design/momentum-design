@@ -6,6 +6,7 @@
     "./packages/**/*"
   ],
   "scripts": {
+    "token-builder": "yarn workspace @momentum-design/token-builder",
     "tokens": "yarn workspace @momentum-design/tokens",
     "postinstall": "husky install ./config/husky",
     "upgrade:vscode": "yarn dlx @yarnpkg/sdks vscode",
