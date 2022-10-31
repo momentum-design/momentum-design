@@ -4,8 +4,13 @@ run-name: ${{ github.actor }} is running continuous deployment
 on:
   pull_request_target:
     branches:
-       - main
+       - ${{ github.event.repository.default_branch }}
     types: [closed]
+
+env:
+  DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+  DESIGN_BRANCH: design-token-updates
+
 
 jobs:
   cd:
@@ -17,3 +22,16 @@ jobs:
         run: echo "Details -> event - (${{ github.event_name }}) os - (${{ runner.os }}) branch - (${{ github.ref }})"
       - name: Run Pipeline CD script
         run:  echo "Not Complete"
+      - name: Update design branch to main post merge
+        run: |
+          git config --global user.email "${GITHUB_ACTOR}"
+          git config --global user.name "${GITHUB_ACTOR}@users.noreply.github.com"
+          git checkout "$DESIGN_BRANCH"
+          git status
+          git fetch "$DEFAULT_BRANCH"
+          git merge "$DEFAULT_BRANCH"
+          git status
+          git push "$DESIGN_BRANCH"
+          git status
+          git push
+
