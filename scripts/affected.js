@@ -13,7 +13,7 @@ const args = yargs(process.argv.slice(2)).options({
   ref: { type: 'string' }
 }).parseSync();
 
-exec(`yarn workspaces list --since=${ref || 'upstream/main'} --json`, (error, output) => {
+exec(`yarn workspaces list ${args.ref ? `--since=${args.ref}` : ''} --json`, (error, output) => {
   if (error) {
     console.error(error);
   }
