@@ -8,6 +8,9 @@ module.exports = {
     'airbnb-base',
     'plugin:json/recommended',
   ],
+  globals: {
+    BufferEncoding: 'readonly',
+  },
   ignorePatterns: ['**/dist/**', '*.hbs', 'scripts/**'],
   overrides: [
     {
