@@ -19,7 +19,8 @@
     "start": "node ./dist/main.js",
     "test": "yarn test:unit && yarn test:integration",
     "test:unit": "jest ./src/**/*.test.ts",
-    "test:integration": "echo \"script 'test:integration' is not implemented\""
+    "test:integration": "echo \"script 'test:integration' is not implemented\"",
+    "publish": "yarn npm publish"
   },
   "dependencies": {
     "style-dictionary": "^3.7.1",
