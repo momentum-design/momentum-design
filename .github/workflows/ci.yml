@@ -4,7 +4,7 @@ run-name: ${{ github.actor }} is running continuous integration
 on:
   pull_request_target:
     branches:
-      - ${{ github.event.repository.default_branch }}
+      - main
     types: [opened, reopened, synchronize]
   # The "workflow_dispatch" event gives us a button in GitHub's "Action" UI
   workflow_dispatch:

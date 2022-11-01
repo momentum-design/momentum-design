@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-       - ${{ github.event.repository.default_branch }}
+       - main
 
 env:
   DESIGN_BRANCH: design-token-updates
