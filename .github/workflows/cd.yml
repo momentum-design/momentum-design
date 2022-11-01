@@ -2,10 +2,10 @@ name: Continuous Deployment
 run-name: ${{ github.actor }} is running continuous deployment
 
 on:
-  pull_request_target:
+  workflow_dispatch:
+  push:
     branches:
        - ${{ github.event.repository.default_branch }}
-    types: [closed]
 
 env:
   DESIGN_BRANCH: design-token-updates
@@ -13,7 +13,6 @@ env:
 
 jobs:
   cd:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
