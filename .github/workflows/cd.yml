@@ -21,16 +21,15 @@ jobs:
       - name: Run Pipeline CD script
         run:  echo "Not Complete"
       - uses: actions/checkout@v3
-      - name: Set Git config to github actions user
+      - name: Set Git config
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "Github Actions"
+          git config pull.rebase true
       - name: Merge default branch into design branch
         run: |
-          git fetch --unshallow
           git switch $DESIGN_BRANCH
           git pull origin ${{ github.event.repository.default_branch }}
-          git merge --no-ff ${{ github.event.repository.default_branch }}
           git push origin $DESIGN_BRANCH
 
 
