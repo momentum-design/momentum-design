@@ -31,7 +31,7 @@ jobs:
           git fetch --unshallow
           git switch $DESIGN_BRANCH
           git pull origin ${{ github.event.repository.default_branch }}
-          git push origin $DESIGN_BRANCH
+          git push origin $DESIGN_BRANCH -f
 
 
 
