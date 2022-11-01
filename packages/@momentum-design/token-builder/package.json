@@ -1,6 +1,7 @@
 {
   "name": "@momentum-design/token-builder",
   "packageManager": "yarn@3.2.4",
+  "version": "0.0.0",
   "bin": {
     "md-token-builder": "./dist/main.js"
   },
@@ -14,6 +15,7 @@
     "build": "tsc",
     "clean": "yarn clean:dist",
     "clean:dist": "rimraf ./dist",
+    "prepublishOnly": "yarn clean && yarn build",
     "start": "node ./dist/main.js",
     "test": "yarn test:unit && yarn test:integration",
     "test:unit": "jest ./src/**/*.test.ts",
