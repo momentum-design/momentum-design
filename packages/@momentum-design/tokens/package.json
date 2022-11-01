@@ -17,7 +17,8 @@
     "clean": "yarn clean:dist",
     "clean:dist": "rimraf ./dist",
     "test": "yarn test:unit",
-    "test:unit": "jest ./lib/**/*.test.ts"
+    "test:unit": "jest ./lib/**/*.test.ts",
+    "publish": "yarn npm publish"
   },
   "devDependencies": {
     "@types/jest": "^29.2.0",

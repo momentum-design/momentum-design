@@ -11,6 +11,7 @@
     "build": "yarn workspaces foreach run build",
     "test": "yarn workspaces foreach run test",
     "clean": "yarn workspaces foreach run clean",
+    "publish:all": "yarn workspaces foreach run publish",
     "postinstall": "husky install ./config/husky",
     "upgrade:vscode": "yarn dlx @yarnpkg/sdks vscode",
     "analyze:config": "eslint \"./config/**\"",

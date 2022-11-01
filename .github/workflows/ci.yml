@@ -8,6 +8,7 @@ on:
     types: [opened, reopened, synchronize]
   # The "workflow_dispatch" event gives us a button in GitHub's "Action" UI
   workflow_dispatch:
+  workflow_call:
 
 jobs:
   ci:
@@ -27,10 +28,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
 
       - name: 'Run yarn install'
-        run: yarn install --frozen-lockfile 
+        run: yarn install --immutable
 
       - name: 'Run pipeline CI script'
         run: yarn pipeline:ci
