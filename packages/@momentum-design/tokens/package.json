@@ -11,8 +11,10 @@
     "build:webex": "md-token-builder --config ./config/tokens/webex.json --input ./src/webex --output ./dist/webex",
     "clean": "yarn clean:dist",
     "clean:dist": "rimraf ./dist",
-    "prepublishOnly": "yarn clean && yarn build",
-    "test": "echo \"script 'test' is not implemented\""
+    "test": "yarn test:unit",
+    "test:unit": "jest ./lib/**/*.test.ts",
+    "publish": "yarn npm publish",
+    "prepublishOnly": "yarn clean && yarn build"
   },
   "devDependencies": {
     "@momentum-design/token-builder": "workspace:^",

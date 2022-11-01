@@ -1,0 +1,19 @@
+name: Continuous Integration
+run-name: ${{ github.actor }} is running continuous integration
+
+on:
+  # right now, publishing is only run manually from github actions
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  publish:
+    # required that main has all the correct package versions for every package that is being published
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+     - name: Run Pipeline CI script
+        uses: momentum-design/momentum-design/.github/workflows/ci.yml
+      - name: Publishes to npm
+        run: yarn publish:all
+          env:
+            NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
