@@ -1,6 +1,11 @@
 {
   "name": "momentum-design",
   "packageManager": "yarn@3.2.4",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0",
+    "yarn": ">=3.0.0"
+  },
   "private": true,
   "type": "module",
   "workspaces": [
@@ -11,6 +16,7 @@
     "build": "yarn workspaces foreach run build",
     "test": "yarn workspaces foreach run test",
     "clean": "yarn workspaces foreach run clean",
+    "publish:all": "yarn workspaces foreach run publish",
     "postinstall": "husky install ./config/husky",
     "upgrade:vscode": "yarn dlx @yarnpkg/sdks vscode",
     "analyze:config": "eslint \"./config/**\"",

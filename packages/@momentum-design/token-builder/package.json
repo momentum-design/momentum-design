@@ -2,6 +2,11 @@
   "name": "@momentum-design/token-builder",
   "packageManager": "yarn@3.2.4",
   "version": "0.0.0",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0",
+    "yarn": ">=3.0.0"
+  },
   "bin": {
     "md-token-builder": "./dist/main.js"
   },
@@ -13,16 +18,18 @@
     "analyze": "yarn analyze:lint && yarn analyze:syntax",
     "analyze:lint": "eslint \"./src/**\"",
     "analyze:syntax": "tsc --noEmit",
-    "build": "tsc",
-    "generate:api-metadata": "yarn build && api-extractor run --local --verbose",
-    "generate:api-docs": "yarn generate:api-metadata && api-documenter markdown --input-folder=docs/metadata --output-folder=docs/markdown",
+    "build": "yarn build:src",
+    "build:src": "tsc",
     "clean": "yarn clean:dist",
     "clean:dist": "rimraf ./dist",
     "prepublishOnly": "yarn clean && yarn build",
     "start": "node ./dist/main.js",
     "test": "yarn test:unit && yarn test:integration",
     "test:unit": "jest ./src/**/*.test.ts",
-    "test:integration": "echo \"script 'test:integration' is not implemented\""
+    "test:integration": "echo \"script 'test:integration' is not implemented\"",
+    "generate:api-metadata": "yarn build && api-extractor run --local --verbose",
+    "generate:api-docs": "yarn generate:api-metadata && api-documenter markdown --input-folder=docs/metadata --output-folder=docs/markdown",
+    "publish": "yarn npm publish"
   },
   "dependencies": {
     "style-dictionary": "^3.7.1",
