@@ -11,6 +11,7 @@ jobs:
     # required that main has all the correct package versions for every package that is being published
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    steps:
      - name: Run Pipeline CI script
         uses: momentum-design/momentum-design/.github/workflows/ci.yml
       - name: Publishes to npm
