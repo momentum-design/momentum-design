@@ -5,6 +5,7 @@
   "bin": {
     "md-token-builder": "./dist/main.js"
   },
+  "typings": "./dist/index.d.ts",
   "files": [
     "./dist"
   ],
@@ -13,6 +14,8 @@
     "analyze:lint": "eslint \"./src/**\"",
     "analyze:syntax": "tsc --noEmit",
     "build": "tsc",
+    "generate:api-metadata": "yarn build && api-extractor run --local --verbose",
+    "generate:api-docs": "yarn generate:api-metadata && api-documenter markdown --input-folder=docs/metadata --output-folder=docs/markdown",
     "clean": "yarn clean:dist",
     "clean:dist": "rimraf ./dist",
     "prepublishOnly": "yarn clean && yarn build",
@@ -26,6 +29,8 @@
     "yargs": "^17.6.0"
   },
   "devDependencies": {
+    "@microsoft/api-documenter": "^7.19.23",
+    "@microsoft/api-extractor": "^7.33.5",
     "@types/jest": "^29.2.0",
     "@types/node": "^18.11.7",
     "@types/yargs": "^17.0.13",
