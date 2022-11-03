@@ -1111,6 +1111,7 @@ __metadata:
     rimraf: ^3.0.2
     style-dictionary: ^3.7.1
     ts-jest: ^29.0.3
+    typescript: ^4.8.4
     yargs: ^17.6.0
   bin:
     md-token-builder: ./dist/main.js
