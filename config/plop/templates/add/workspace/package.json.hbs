@@ -17,11 +17,16 @@
     "build": "yarn build:module",
     "build:module": "tsc",
     "clean": "yarn clean:dist",
-    "clean:dist": "rimraf ./dist/"
+    "clean:dist": "rimraf ./dist/",
+    "generate:api-metadata": "yarn build && api-extractor run --local --verbose",
+    "generate:api-docs": "yarn generate:api-metadata && api-documenter markdown --input-folder=docs/metadata --output-folder=docs/markdown"
+
   },
   "dependencies": {
   },
   "devDependencies": {
+    "@microsoft/api-documenter": "^7.19.23",
+    "@microsoft/api-extractor": "^7.33.5",
     "rimraf": "^3.0.2",
     "typescript": "^4.7.4"
   }
