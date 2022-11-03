@@ -19,6 +19,9 @@ export enum TYPE {
 
 export enum FILE_TYPE {
   DEFAULT = 'hbs',
+  MARKDOWN = 'md',
+  JSON = 'json',
+  TYPESCRIPT = 'ts',
 }
 
 export const packageName: string = 'packageName';
