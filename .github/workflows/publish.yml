@@ -16,5 +16,5 @@ jobs:
     #     - uses: momentum-design/momentum-design/.github/workflows/ci.yml
       - name: Publishes to npm
         run: yarn publish:all
-          env:
+          - env:
             NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
