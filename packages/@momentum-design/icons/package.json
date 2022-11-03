@@ -1,5 +1,6 @@
 {
   "name": "@momentum-design/icons",
+  "private": true,
   "packageManager": "yarn@3.2.4",
   "files": [
     "./dist/*"
@@ -11,7 +12,7 @@
     "clean": "yarn clean:dist",
     "clean:dist": "rimraf ./dist",
     "test": "echo \"this script is not implemented\"",
-    "publish": "yarn npm publish",
+    "publish": "echo \" not implemented\"",
     "prepublishOnly": "yarn clean && yarn build"
   },
   "devDependencies": {

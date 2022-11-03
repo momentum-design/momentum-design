@@ -1,6 +1,7 @@
 {
   "name": "@momentum-design/token-builder",
   "packageManager": "yarn@3.2.4",
+  "private": true,
   "version": "0.0.0",
   "engines": {
     "node": ">=18.0.0",
@@ -29,7 +30,7 @@
     "test:integration": "echo \"script 'test:integration' is not implemented\"",
     "generate:api-metadata": "yarn build && api-extractor run --local --verbose",
     "generate:api-docs": "yarn generate:api-metadata && api-documenter markdown --input-folder=docs/metadata --output-folder=docs/markdown",
-    "publish": "yarn npm publish"
+    "publish": "echo \" not implemented\""
   },
   "dependencies": {
     "style-dictionary": "^3.7.1",
