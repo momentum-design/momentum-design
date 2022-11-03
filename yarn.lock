@@ -1072,6 +1072,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@momentum-design/icons@workspace:packages/@momentum-design/icons":
+  version: 0.0.0-use.local
+  resolution: "@momentum-design/icons@workspace:packages/@momentum-design/icons"
+  dependencies:
+    rimraf: ^3.0.2
+  languageName: unknown
+  linkType: soft
+
+"@momentum-design/illustrations@workspace:packages/@momentum-design/illustrations":
+  version: 0.0.0-use.local
+  resolution: "@momentum-design/illustrations@workspace:packages/@momentum-design/illustrations"
+  dependencies:
+    rimraf: ^3.0.2
+  languageName: unknown
+  linkType: soft
+
 "@momentum-design/token-builder@workspace:^, @momentum-design/token-builder@workspace:packages/@momentum-design/token-builder":
   version: 0.0.0-use.local
   resolution: "@momentum-design/token-builder@workspace:packages/@momentum-design/token-builder"
