@@ -1170,6 +1170,14 @@ __metadata:
   resolution: "@momentum-design/illustrations@workspace:packages/@momentum-design/illustrations"
   dependencies:
     rimraf: ^3.0.2
+"@momentum-design/momentum-abstract-builder@workspace:packages/@momentum-design/momentum-abstract-builder":
+  version: 0.0.0-use.local
+  resolution: "@momentum-design/momentum-abstract-builder@workspace:packages/@momentum-design/momentum-abstract-builder"
+  dependencies:
+    momentum-abstract: ^1.0.34
+    momentum-constructor-common: ^1.1.5
+    rimraf: ^3.0.2
+    typescript: ^4.7.4
   languageName: unknown
   linkType: soft
 
@@ -1755,6 +1763,15 @@ __metadata:
   bin:
     acorn: bin/acorn
   checksum: 4079b67283b94935157698831967642f24a075c52ce3feaaaafe095776dfbe15d86a1b33b1e53860fc0d062ed6c83f4284a5c87c85b9ad51853a01173da6097f
+  languageName: node
+  linkType: hard
+
+"add-filename-increment@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "add-filename-increment@npm:1.0.0"
+  dependencies:
+    strip-filename-increment: ^2.0.1
+  checksum: af013e5f6454225e355db6093e2017d90308b5a2d3dd132a0fc1f01191add2059db629573daa1114efa583d0c686355d4bb6777b07ea91cb25528840e3d14d12
   languageName: node
   linkType: hard
 
@@ -5687,6 +5704,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"momentum-abstract@npm:^1.0.22, momentum-abstract@npm:^1.0.34":
+  version: 1.0.34
+  resolution: "momentum-abstract@npm:1.0.34"
+  checksum: c1c189baf0a906e743df8b2fbf89b1bdc5a5cc8062582a72474f3df42f0f71820b4428129e8e4327a96c25428edf3d917fe34f8c398bb62f86fbc0f01edc5865
+  languageName: node
+  linkType: hard
+
+"momentum-constructor-common@npm:^1.1.5":
+  version: 1.1.5
+  resolution: "momentum-constructor-common@npm:1.1.5"
+  dependencies:
+    momentum-abstract: ^1.0.22
+    tslib: ^2.4.0
+    write: ^2.0.0
+  checksum: 6a7637a3d8b0547b5c27c19887bf3e7890d156cf1ca90150c020a844b5a9edd0cd03da1f5ef7caa22239fdf3424367a0df46fbde632c46d830a046d8d44ce92a
+  languageName: node
+  linkType: hard
+
 "momentum-design@workspace:.":
   version: 0.0.0-use.local
   resolution: "momentum-design@workspace:."
@@ -7010,6 +7045,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"strip-filename-increment@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "strip-filename-increment@npm:2.0.1"
+  checksum: 06e1c8947ada4270a1c5967a863d32c95b2bff36b05e779d85ba32b2b253725e7264dab4e30ca9770ecec102e546052beeee80fa26be70c31106c8c885cb6228
+  languageName: node
+  linkType: hard
+
 "strip-final-newline@npm:^2.0.0":
   version: 2.0.0
   resolution: "strip-final-newline@npm:2.0.0"
@@ -7307,6 +7349,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tslib@npm:^2.4.0":
+  version: 2.4.1
+  resolution: "tslib@npm:2.4.1"
+  checksum: 19480d6e0313292bd6505d4efe096a6b31c70e21cf08b5febf4da62e95c265c8f571f7b36fcc3d1a17e068032f59c269fab3459d6cd3ed6949eafecf64315fca
+  languageName: node
+  linkType: hard
+
 "tsutils@npm:^3.21.0":
   version: 3.21.0
   resolution: "tsutils@npm:3.21.0"
@@ -7379,7 +7428,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:~4.8.4":
+"typescript@npm:^4.8.4":
   version: 4.8.4
   resolution: "typescript@npm:4.8.4"
   bin:
@@ -7731,6 +7780,15 @@ __metadata:
     imurmurhash: ^0.1.4
     signal-exit: ^3.0.7
   checksum: 5da60bd4eeeb935eec97ead3df6e28e5917a6bd317478e4a85a5285e8480b8ed96032bbcc6ecd07b236142a24f3ca871c924ec4a6575e623ec1b11bf8c1c253c
+  languageName: node
+  linkType: hard
+
+"write@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "write@npm:2.0.0"
+  dependencies:
+    add-filename-increment: ^1.0.0
+  checksum: a382c49ae014b0d395547c37cfbc953175332cf6aa1601893b7c6eca7fd724610e5c6379a4c6c6ed3e5f2a3fb1bc84e0cc5a6da98dc3ad6f1311250d995f2728
   languageName: node
   linkType: hard
 

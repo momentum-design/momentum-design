@@ -1,0 +1,33 @@
+{
+  "name": "@momentum-design/momentum-abstract-builder",
+  "packageManager": "yarn@3.2.4",
+  "files": [
+    "./dist/*"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"no script initialized\"",
+    "publish": "yarn npm publish",
+    "analyze": "yarn analyze:lint && yarn analyze:syntax",
+    "analyze:lint": "eslint \"./src/**\"",
+    "analyze:syntax": "tsc --noEmit",
+    "init-build": "yarn && yarn clean && yarn build",
+    "build": "yarn build:module",
+    "sync": "node dist/sync",
+    "commit": "node dist/commit",
+    "build:module": "tsc",
+    "clean": "yarn clean:dist",
+    "clean:dist": "rimraf ./dist/"
+  },
+  "dependencies": {
+    "momentum-abstract": "^1.0.34",
+    "momentum-constructor-common": "^1.1.5"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2",
+    "typescript": "^4.7.4"
+  }
+}

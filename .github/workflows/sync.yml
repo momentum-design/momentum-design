@@ -1,0 +1,24 @@
+on:
+  schedule:
+    # runs on 1:01  17:01 UTC
+    - cron:  '01 2,8,14,20 * * *'
+name: Publish To NPM
+jobs:
+  jobAutomation:
+    name: Sync momentum-abstract data
+    runs-on: ubuntu-latest
+    if: ${{ github.repository_owner == 'momentum-design' }}
+    steps:
+    - name: Check out
+      uses: actions/checkout@master
+    - name: Install Package and Build
+      run: yarn workspace @momentum-design/momentum-abstract-builder init-build
+    - name: Publish
+      run: yarn workspace @momentum-design/momentum-abstract-builder sync
+    - name: config 
+      run: |
+        git config --global user.email "automation@cisco.com"
+        git config --global user.name "Automation"
+    - name: commit new release
+      run: yarn workspace @momentum-design/momentum-abstract-builder commit token=${{ secrets.ACTION_TOKEN }} repository=${{github.repository}}
+      
