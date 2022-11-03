@@ -1,5 +1,5 @@
-name: Continuous Integration
-run-name: ${{ github.actor }} is running continuous integration
+name: Publish
+run-name: ${{ github.actor }} is running publish
 
 on:
   # right now, publishing is only run manually from github actions
