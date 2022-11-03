@@ -1,0 +1,21 @@
+{
+  "name": "@cisco-md/illustrations",
+  "packageManager": "yarn@3.2.4",
+  "private": true,
+  "files": [
+    "./dist/*"
+  ],
+  "scripts": {
+    "analyze": "echo \"script 'analyze' is not implemented\"",
+    "build": "yarn build:webex",
+    "build:webex": "md-token-builder --config ./config/tokens/webex.json --input ./src/webex --output ./dist/webex",
+    "clean": "yarn clean:dist",
+    "clean:dist": "rimraf ./dist",
+    "test": "echo \"this script is not implemented\"",
+    "publish": "echo \" not implemented\"",
+    "prepublishOnly": "yarn clean && yarn build"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2"
+  }
+}
