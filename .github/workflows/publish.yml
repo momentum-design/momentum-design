@@ -12,9 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-    #  - name: Run Pipeline CI script
-    #     - uses: momentum-design/momentum-design/.github/workflows/ci.yml
-      - name: Publishes to npm
+      - name: Deploy Packages
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: yarn publish:all
-          - env:
-            NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
