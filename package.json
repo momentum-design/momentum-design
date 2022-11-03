@@ -32,7 +32,7 @@
     "affected:build": "node ./scripts/affected.js --command=build",
     "affected:analyze": "node ./scripts/affected.js --command=analyze",
     "affected:generate:api-docs": "node ./scripts/affected.js --command=generate:api-docs",
-    "affected:all": "yarn affected:build && yarn affected:analyze && yarn affected:test",
+    "affected:all": "yarn affected:build && yarn affected:analyze && yarn affected:test && yarn affected:generate:api-docs",
     "icons": "yarn workspace @momentum-design/icons",
     "illustrations": "yarn workspace @momentum-design/illustrations",
     "tokens": "yarn workspace @momentum-design/tokens",
