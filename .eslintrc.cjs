@@ -28,6 +28,7 @@ module.exports = {
   },
   plugins: [
     '@typescript-eslint',
+    'eslint-plugin-tsdoc',
   ],
   rules: {
     '@typescript-eslint/quotes': [
@@ -47,6 +48,7 @@ module.exports = {
     'max-len': ['error', { code: 120 }],
     indent: ['error', 2, { ignoredNodes: ['PropertyDefinition'], SwitchCase: 1 }],
     'object-curly-newline': 'off',
+    'tsdoc/syntax': 'warn',
   },
   settings: {
     'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
