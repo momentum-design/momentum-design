@@ -1072,6 +1072,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@momentum-design/fonts@workspace:packages/@momentum-design/fonts":
+  version: 0.0.0-use.local
+  resolution: "@momentum-design/fonts@workspace:packages/@momentum-design/fonts"
+  languageName: unknown
+  linkType: soft
+
 "@momentum-design/icons@workspace:packages/@momentum-design/icons":
   version: 0.0.0-use.local
   resolution: "@momentum-design/icons@workspace:packages/@momentum-design/icons"
@@ -7312,7 +7318,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.6.4, typescript@npm:^4.7.4, typescript@npm:^4.8.4, typescript@npm:~4.8.4":
+"typescript@npm:^4.6.4, typescript@npm:^4.8.4, typescript@npm:~4.8.4":
   version: 4.8.4
   resolution: "typescript@npm:4.8.4"
   bin:
@@ -7322,7 +7328,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.6.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.7.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.8.4#~builtin<compat/typescript>, typescript@patch:typescript@~4.8.4#~builtin<compat/typescript>":
+"typescript@patch:typescript@^4.6.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.8.4#~builtin<compat/typescript>, typescript@patch:typescript@~4.8.4#~builtin<compat/typescript>":
   version: 4.8.4
   resolution: "typescript@patch:typescript@npm%3A4.8.4#~builtin<compat/typescript>::version=4.8.4&hash=701156"
   bin:
