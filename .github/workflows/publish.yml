@@ -23,7 +23,7 @@ jobs:
         run: yarn
 
       - name: Set NPM Authorization
-        run: yarn config set npmAuthToken "\${NPM_TOKEN}"
+        run: yarn config set npmAuthToken ${{ secrets.NPM_TOKEN }}
 
       - name: Deploy NPM Packages
         env:
