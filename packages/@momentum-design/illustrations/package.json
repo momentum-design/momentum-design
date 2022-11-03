@@ -1,9 +1,8 @@
 {
-  "name": "@momentum-design/tokens",
+  "name": "@momentum-design/illustrations",
   "packageManager": "yarn@3.2.4",
-  "version": "0.0.0",
   "files": [
-    "./dist/"
+    "./dist/*"
   ],
   "scripts": {
     "analyze": "echo \"script 'analyze' is not implemented\"",
@@ -16,7 +15,6 @@
     "prepublishOnly": "yarn clean && yarn build"
   },
   "devDependencies": {
-    "@momentum-design/token-builder": "workspace:^",
     "rimraf": "^3.0.2"
   }
 }

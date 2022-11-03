@@ -31,6 +31,8 @@
     "affected:build": "node ./scripts/affected.js --command=build",
     "affected:analyze": "node ./scripts/affected.js --command=analyze",
     "affected:all": "yarn affected:build && yarn affected:analyze && yarn affected:test",
+    "icons": "yarn workspace @momentum-design/icons",
+    "illustrations": "yarn workspace @momentum-design/illustrations",
     "tokens": "yarn workspace @momentum-design/tokens",
     "token-builder": "yarn workspace @momentum-design/token-builder"
   },
