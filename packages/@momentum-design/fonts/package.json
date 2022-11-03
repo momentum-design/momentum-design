@@ -1,11 +1,12 @@
 {
   "name": "@momentum-design/fonts",
+  "private": true,
   "packageManager": "yarn@3.2.4",
   "files": [
     "./src/*"
   ],
   "type": "module",
   "scripts": {
-    "publish": "yarn npm publish"
+    "publish": "echo \" not implemented\""
   }
 }
