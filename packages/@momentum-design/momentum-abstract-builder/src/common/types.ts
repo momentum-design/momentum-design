@@ -6,4 +6,3 @@ export interface BuilderConfig {
     filter?: IFileFilter;
     replacement?: IReplacementItem;
 }
-

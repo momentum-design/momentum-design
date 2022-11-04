@@ -1,7 +1,6 @@
 on:
-  schedule:
-    # runs on 1:01  17:01 UTC
-    - cron:  '01 2,8,14,20 * * *'
+  workflow_dispatch:
+  
 name: Publish To NPM
 jobs:
   jobAutomation:
@@ -10,7 +9,7 @@ jobs:
     if: ${{ github.repository_owner == 'momentum-design' }}
     steps:
     - name: Check out
-      uses: actions/checkout@master
+      uses: actions/checkout@v3
     - name: Install Package and Build
       run: yarn workspace @momentum-design/momentum-abstract-builder init-build
     - name: Publish
@@ -21,4 +20,4 @@ jobs:
         git config --global user.name "Automation"
     - name: commit new release
       run: yarn workspace @momentum-design/momentum-abstract-builder commit token=${{ secrets.ACTION_TOKEN }} repository=${{github.repository}}
-      
+

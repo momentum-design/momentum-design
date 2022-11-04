@@ -1,10 +1,21 @@
 {
-  "extends": "../../../config/typescript/tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "./dist/"
+  "baseUrl": "./",
+  "outDir": "./dist",
+  "declaration": true,
+  "noImplicitReturns": true,
+  "moduleResolution": "node",
+  "importHelpers": true,
+  "target": "es6",
+  "module": "commonjs",
+  "esModuleInterop": true,
+  "removeComments": true
   },
   "plugins": [],
   "include": [
     "./src/**/*"
+  ],
+  "exclude": [
+    "./src/**/*.test.ts"
   ]
 } 
