@@ -1,0 +1,14 @@
+{
+    "files": [
+      {
+        "destination": "color-core",
+        "filters": {
+          "categories": ["color"],
+          "types": ["core"]
+        },
+        "targets": ["color-core.json"]
+      }
+    ],
+    "formats": ["WEB_JSON"],
+    "prefix": "config1"
+}

@@ -1,0 +1,135 @@
+{
+    "color": {
+      "core": {
+        "white-alpha": {
+          "11": {
+            "value": "#ffffff1c",
+            "type": "color",
+            "description": "Hex Code: #ffffff\nAlpha: 11%"
+          },
+          "20": {
+            "value": "#ffffff33",
+            "type": "color",
+            "description": "Hex Code: #ffffff\nAlpha: 20%"
+          }
+        },
+        "black-alpha": {
+          "50": {
+            "value": "#00000080",
+            "type": "color",
+            "description": "Hex Code: #000000\nAlpha: 50%"
+          }
+        },
+        "gray": {
+          "10": {
+            "value": "#ededed",
+            "type": "color",
+            "description": "Hex Code: #ededed"
+          },
+          "20": {
+            "value": "#dedede",
+            "type": "color",
+            "description": "Hex Code: #dedede"
+          }
+        },
+        "blue": {
+          "10": {
+            "value": "#dbf0ff",
+            "type": "color",
+            "description": "Hex Code: #dbf0ff"
+          },
+          "20": {
+            "value": "#bfe3ff",
+            "type": "color",
+            "description": "Hex Code: #dfe3ff"
+          }
+        }
+      },
+      "decorative": {
+        "orange": {
+          "10": {
+            "value": "#faf4eb",
+            "type": "color",
+            "description": "HEX Code: #FAF4EB"
+          },
+          "100": {
+            "value": "#211916",
+            "type": "color",
+            "description": "HEX Code: #3211916"
+          }
+        },
+        "gold": {
+          "50": {
+            "value": "#ba8c00",
+            "type": "color",
+            "description": "HEX Code: #BA8C00"
+          },
+          "60": {
+            "value": "#996e00",
+            "type": "color",
+            "description": "HEX Code: #996E00"
+          },
+          "100": {
+            "value": "#21190b",
+            "type": "color",
+            "description": "HEX Code:#21190B"
+          }
+        }
+      },
+      "gradient": {
+        "default": {
+          "light": {
+            "secondary": {
+              "value": "linear-gradient(180deg, #fafafa 0%, #ffffff 100%)",
+              "type": "color",
+              "description": "Values Top, Bottom (FAFAFA, FFFFF)"
+            },
+            "primary": {
+              "value": "linear-gradient(180deg, #f0f0f0 0%, #ffffff 100%)",
+              "type": "color",
+              "description": "Values Top, Bottom (F0F0F0, FFFFF)"
+            }
+          },
+          "dark": {
+            "primary": {
+              "value": "linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%)",
+              "type": "color",
+              "description": "Values Top, Bottom (1A1A1A, 0F0F0F)"
+            },
+            "secondary": {
+              "value": "linear-gradient(180deg, #262626 0%, #0f0f0f 100%)",
+              "type": "color",
+              "description": "Values Top, Bottom (262626, 0F0F0F)"
+            }
+          }
+        }
+      },
+      "mobile": {
+        "default": {
+          "light": {
+            "primary": {
+              "value": "#f7f7f7",
+              "type": "color",
+              "description": "HEX Code: #F7F7F7"
+            },
+            "secondary": {
+              "value": "#ffffff",
+              "type": "color",
+              "description": "HEX Code: #FFFFFF"
+            }
+          },
+          "dark": {
+            "primary": {
+              "value": "#000000",
+              "type": "color",
+              "description": "HEX Code: #000000"
+            },
+            "secondary": {
+              "value": "#1a1a1a",
+              "type": "color"
+            }
+          }
+        }
+      }
+    }
+  }
