@@ -1,6 +1,7 @@
 {
   "name": "@momentum-design/token-builder",
   "packageManager": "yarn@3.2.4",
+  "private": true,
   "version": "0.0.0",
   "engines": {
     "node": ">=18.0.0",
@@ -10,6 +11,7 @@
   "bin": {
     "md-token-builder": "./dist/main.js"
   },
+  "typings": "./dist/index.d.ts",
   "files": [
     "./dist"
   ],
@@ -26,13 +28,17 @@
     "test": "yarn test:unit && yarn test:integration",
     "test:unit": "jest ./src/**/*.test.ts",
     "test:integration": "jest ./test/*/*.test.ts",
-    "publish": "yarn npm publish"
+    "generate:api-metadata": "yarn build && api-extractor run --local --verbose",
+    "generate:api-docs": "yarn generate:api-metadata && api-documenter markdown --input-folder=docs/metadata --output-folder=docs/markdown",
+    "publish": "echo \" not implemented\""
   },
   "dependencies": {
     "style-dictionary": "^3.7.1",
     "yargs": "^17.6.0"
   },
   "devDependencies": {
+    "@microsoft/api-documenter": "^7.19.23",
+    "@microsoft/api-extractor": "^7.33.5",
     "@types/jest": "^29.2.0",
     "@types/node": "^18.11.7",
     "@types/yargs": "^17.0.13",
@@ -42,6 +48,7 @@
     "eslint-plugin-import": "^2.26.0",
     "jest": "^29.2.2",
     "rimraf": "^3.0.2",
-    "ts-jest": "^29.0.3"
+    "ts-jest": "^29.0.3",
+    "typescript": "^4.8.4"
   }
 }
