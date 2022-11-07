@@ -23,9 +23,7 @@ jobs:
         run: yarn
 
       - name: Set NPM Authorization
-        run: yarn config set npmAuthToken ${{ secrets.NPM_TOKEN }}
+        run: yarn config set npmAuthToken ${{ secrets.NPM_TOKEN_CISCO_MD }}
 
       - name: Deploy NPM Packages
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: yarn publish:all
