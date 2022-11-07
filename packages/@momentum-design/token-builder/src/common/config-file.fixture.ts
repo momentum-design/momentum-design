@@ -7,6 +7,7 @@ const CONFIG_FILE_FIXTURE: ConfigFile = {
     items: ['config-file-item-a', 'config-file-item-b'],
     types: ['config-file-type-a', 'config-file-type-b'],
   },
+  references: true,
   targets: ['config-file-target-a', 'config-file-target-b'],
 };
 

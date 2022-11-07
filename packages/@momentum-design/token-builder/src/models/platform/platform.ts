@@ -18,6 +18,7 @@ class Platform {
       destination: this.config.file.destination,
       filters: this.config.file.filters,
       format: this.format,
+      references: this.config.file.references,
     });
   }
 
@@ -30,7 +31,11 @@ class Platform {
   }
 
   public get output(): string {
-    return path.join(this.config.output, this.group, '/');
+    return path.join(this.config.output, this.path, '/');
+  }
+
+  public get path(): string {
+    return CONSTANTS.FORMATS[this.config.format].PATH;
   }
 
   public get prefix(): string | undefined {
