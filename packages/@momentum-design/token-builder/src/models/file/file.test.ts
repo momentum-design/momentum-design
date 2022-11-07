@@ -140,6 +140,12 @@ describe('@momentum-design/token-builder - models.File', () => {
       });
     });
 
+    describe('#references', () => {
+      it('should be the reference provided to the File', () => {
+        expect(file.references).toBe(FileFixture.FIXTURE_CONFIG.references);
+      });
+    });
+
     describe('#sdConfig', () => {
       it('should be an Object with a destination that reflects the File\'s file property', () => {
         expect(file.sdConfig.destination).toBe(file.file);
@@ -151,6 +157,10 @@ describe('@momentum-design/token-builder - models.File', () => {
 
       it('should be an Object with a filter that reflects the File\'s filter property', () => {
         expect(JSON.stringify(file.sdConfig.filter)).toBe(JSON.stringify(file.filter));
+      });
+
+      it('should be an Object with options containing an outputReferences that reflects the File\'s reference', () => {
+        expect(file.sdConfig.options?.outputReferences).toBe(file.references);
       });
     });
 

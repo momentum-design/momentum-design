@@ -74,7 +74,7 @@ describe('@momentum-design/token-builder - models.Dictionary', () => {
 
       it('should be an Object of Platforms with a matching output', () => {
         Object.values(platforms).forEach((platform) => {
-          expect(platform.output).toBe(path.join(dictionary.output, platform.group, '/'));
+          expect(platform.output).toBe(path.join(dictionary.output, platform.path, '/'));
         });
       });
 

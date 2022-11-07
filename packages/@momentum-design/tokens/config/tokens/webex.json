@@ -10,5 +10,6 @@
     }
   ],
   "formats": ["CSS_VARIABLES", "SCSS_VARIABLES", "WEB_JSON"],
-  "prefix": "mdw"
+  "prefix": "md",
+  "references": true
 }
