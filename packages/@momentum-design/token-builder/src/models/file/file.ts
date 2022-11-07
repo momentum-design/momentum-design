@@ -69,7 +69,14 @@ class File {
       destination: this.file,
       format: this.format,
       filter: this.filter,
+      options: {
+        outputReferences: this.references,
+      },
     };
+  }
+
+  public get references(): boolean {
+    return this.config.references || false;
   }
 
   public get types(): Array<string> {

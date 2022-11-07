@@ -40,6 +40,10 @@ describe('@momentum-design/token-builder - models.Platform', () => {
       it('should be a File with a format property that matches the Platform\'s format property', () => {
         expect(platform.file.format).toBe(CONSTANTS.FORMATS[platform.format].FORMAT);
       });
+
+      it('should be a File with a references property that matches the Platform\'s provided file references', () => {
+        expect(platform.file.references).toBe(PlatformFixture.FIXTURE_CONFIG.file.references);
+      });
     });
 
     describe('#format', () => {
@@ -56,7 +60,13 @@ describe('@momentum-design/token-builder - models.Platform', () => {
 
     describe('#output', () => {
       it('should be a path built from the provided output, the group, and an ammended "/" character', () => {
-        expect(platform.output).toBe(path.join(PlatformFixture.FIXTURE_CONFIG.output, platform.group, '/'));
+        expect(platform.output).toBe(path.join(PlatformFixture.FIXTURE_CONFIG.output, platform.path, '/'));
+      });
+    });
+
+    describe('#path', () => {
+      it('should be the path associated with the format provided to the Platform', () => {
+        expect(platform.path).toBe(CONSTANTS.FORMATS[platform.format].PATH);
       });
     });
 

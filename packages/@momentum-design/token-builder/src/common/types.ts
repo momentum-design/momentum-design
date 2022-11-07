@@ -13,6 +13,7 @@ export interface Filters {
 export interface ConfigFile {
   destination: string;
   filters: Filters;
+  references?: boolean;
   targets: Array<string>;
 }
 
