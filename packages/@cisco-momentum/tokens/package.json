@@ -1,0 +1,22 @@
+{
+  "name": "@cisco-momentum/tokens",
+  "packageManager": "yarn@3.2.4",
+  "version": "0.0.0",
+  "files": [
+    "./dist/"
+  ],
+  "scripts": {
+    "analyze": "echo \"script 'analyze' is not implemented\"",
+    "build": "yarn build:webex",
+    "build:webex": "md-token-builder --config ./config/tokens/webex.json --input ./src/webex --output ./dist/webex",
+    "clean": "yarn clean:dist",
+    "clean:dist": "rimraf ./dist",
+    "test": "echo \"this script is not implemented\"",
+    "publish": "yarn npm publish --access=public",
+    "prepublishOnly": "yarn clean && yarn build"
+  },
+  "devDependencies": {
+    "@cisco-momentum/token-builder": "workspace:^",
+    "rimraf": "^3.0.2"
+  }
+}

@@ -1,33 +1,17 @@
 {
-  "name": "@momentum-design/{{kebabCase packageName}}",
+  "name": "@cisco-momentum/{{kebabCase packageName}}",
   "packageManager": "yarn@3.2.4",
-  "files": [
-    "./dist/*"
-  ],
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "type": "module",
-  "types": "./dist/index.d.ts",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0",
+    "yarn": ">=3.0.0"
+  },
   "scripts": {
-    "test": "echo \"no script initialized\"",
-    "publish": "yarn npm publish",
-    "analyze": "yarn analyze:lint && yarn analyze:syntax",
-    "analyze:lint": "eslint \"./src/**\"",
-    "analyze:syntax": "tsc --noEmit",
-    "build": "yarn build:module",
-    "build:module": "tsc",
-    "clean": "yarn clean:dist",
-    "clean:dist": "rimraf ./dist/",
-    "generate:api-metadata": "yarn build && api-extractor run --local --verbose",
-    "generate:api-docs": "yarn generate:api-metadata && api-documenter markdown --input-folder=docs/metadata --output-folder=docs/markdown"
-
-  },
-  "dependencies": {
-  },
-  "devDependencies": {
-    "@microsoft/api-documenter": "^7.19.23",
-    "@microsoft/api-extractor": "^7.33.5",
-    "rimraf": "^3.0.2",
-    "typescript": "^4.7.4"
+    "test": "echo \"script 'test' has not been implemented\"",
+    "publish": "echo \"script 'publish' has not been implemented\"",
+    "analyze": "echo \"script 'analyze' has not been implemented\"",
+    "build": "echo \"script 'build' has not been implemented\"",
+    "clean": "echo \"script 'clean' has not been implemented\"",
+    "docs": "echo \"script 'docs' has not been implemented\"",
   }
 }
