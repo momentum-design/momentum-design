@@ -7,8 +7,7 @@
   ],
   "scripts": {
     "analyze": "echo \"script 'analyze' is not implemented\"",
-    "build": "yarn build:webex",
-    "build:webex": "md-token-builder --config ./config/tokens/webex.json --input ./src/webex --output ./dist/webex",
+    "build": "echo \"script 'build' is not implemented\"",
     "clean": "yarn clean:dist",
     "clean:dist": "rimraf ./dist",
     "test": "echo \"this script is not implemented\"",
