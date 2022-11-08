@@ -22,6 +22,9 @@ jobs:
       - name: Install Dependencies
         run: yarn
 
+      - name: Build Packages
+        run: yarn build
+
       - name: Set NPM Authorization
         run: yarn config set npmAuthToken ${{ secrets.NPM_TOKEN_CISCO_MD }}
 
