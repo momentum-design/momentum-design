@@ -21,7 +21,7 @@ exec(`yarn workspaces list ${args.ref ? `--since=${args.ref}` : ''} --json`, (er
   const result = output
     .split('\n')
     .filter((out) => !!out).map((out) => JSON.parse(out).name)
-    .filter((parsed) => parsed.startsWith('@momentum-design')) // should we do the tasks on root as well ?
+    .filter((parsed) => parsed.startsWith('@cisco-momentum')) // should we do the tasks on root as well ?
     .toString();
 
   exec(`yarn workspaces foreach --from '{${result}}' run ${args.command}`, (error, output) => {

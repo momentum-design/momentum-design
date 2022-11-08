@@ -1,0 +1,15 @@
+{
+  "files": [
+    {
+      "destination": "core",
+      "filters": {
+        "categories": ["color"],
+        "types": ["core", "decorative", "gradient", "mobile"]
+      },
+      "targets": ["core.json"]
+    }
+  ],
+  "formats": ["CSS_VARIABLES", "SCSS_VARIABLES", "WEB_JSON"],
+  "prefix": "md",
+  "references": true
+}

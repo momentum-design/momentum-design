@@ -1,0 +1,12 @@
+{
+  "name": "@cisco-momentum/fonts",
+  "private": true,
+  "packageManager": "yarn@3.2.4",
+  "files": [
+    "./src/*"
+  ],
+  "type": "module",
+  "scripts": {
+    "publish": "echo \" not implemented\""
+  }
+}

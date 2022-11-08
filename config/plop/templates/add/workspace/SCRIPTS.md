@@ -1,8 +1,8 @@
 ---
-package: @momentum-design/{{kebabCase packageName}}
+package: @cisco-momentum/{{kebabCase packageName}}
 ---
 
-# {{pascalCase packageName}}
+# @cisco-momentum/{{kebabCase packageName}} - Scripts Guide
 
 ## Scripts
 
