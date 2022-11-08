@@ -32,7 +32,7 @@
     "start": "node ./dist/main.js",
     "test": "yarn test:unit && yarn test:integration",
     "test:unit": "jest ./src/**/*.test.ts",
-    "test:integration": "echo \"script 'test:integration' is not implemented\"",
+    "test:integration": "jest ./test/*/*.test.ts",
     "generate:api-metadata": "yarn build && api-extractor run --local --verbose",
     "generate:api-docs": "yarn generate:api-metadata && api-documenter markdown --input-folder=docs/metadata --output-folder=docs/markdown",
     "publish": "echo \" not implemented\""
