@@ -77,10 +77,10 @@ const getChangedPackages = (ref) => new Promise((resolve, reject) => {
 /**
  * Get a list of all packages that depend on the provided target packages.
  *
- * @param {Array<string>} targetPackages Packages to find dependant packages of.
+ * @param {Array<string>} targetPackages Packages to find dependent packages of.
  * @returns {Array<string>} Packages that depend on the provided target packages.
  */
-const getDependantPackages = (targetPackages) => {
+const getDependentPackages = (targetPackages) => {
   const whys = targetPackages.map((targetPackage) => new Promise((resolve, reject) => {
     exec(`yarn why ${targetPackage} --json`, (error, results) => {
       if (error) {
@@ -106,10 +106,10 @@ const getDependantPackages = (targetPackages) => {
  * @returns {void}
  */
 const main = () => {
-  const { all, changed, dependant, ref } = yargs(process.argv.slice(2)).options({
+  const { all, changed, dependent, ref } = yargs(process.argv.slice(2)).options({
     all: { type: 'boolean' },
     changed: { type: 'boolean' },
-    dependant: { type: 'boolean' },
+    dependent: { type: 'boolean' },
     ref: { type: 'string' },
   }).parseSync();
 
@@ -120,10 +120,10 @@ const main = () => {
   }
 
   if (changed) {
-    if (dependant) {
+    if (dependent) {
       promises.push(
         getChangedPackages(ref),
-        getChangedPackages(ref).then((changed) => getDependantPackages(changed)),
+        getChangedPackages(ref).then((changed) => getDependentPackages(changed)),
       );
     } else {
       promises.push(getChangedPackages(ref));

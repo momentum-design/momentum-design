@@ -107,7 +107,7 @@ jobs:
 
       - id: generate-package-matrix
         name: Generate Package Matrix
-        run: echo '::set-output name=package-matrix::$(yarn scripts:packages --changed --dependant --ref="${{ github.base_ref }}")'
+        run: echo '::set-output name=package-matrix::$(yarn scripts:packages --changed --dependent --ref="${{ github.base_ref }}")'
 
   analyze-prebuild:
     name: Analyze - Prebuild
