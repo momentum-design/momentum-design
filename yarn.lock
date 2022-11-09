@@ -426,7 +426,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cisco-momentum/illustrations@workspace:packages/@cisco-momentum/illustrations"
   dependencies:
-    "@cisco-momentum/token-builder": "workspace:^"
     rimraf: ^3.0.2
   languageName: unknown
   linkType: soft
