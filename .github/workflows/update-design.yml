@@ -1,5 +1,5 @@
 name: Update Design CD
-run-name: ${{ github.actor }} is running ${{ github.action }}
+run-name: ${{ github.actor }} is running Update Design CD
 
 on:
   push:
