@@ -7,5 +7,7 @@
   "typescript.tsdk": ".yarn/sdks/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "eslint.nodePath": ".yarn/sdks",
-  "files.associations": { "*.json": "jsonc" }
+  "files.associations": {
+    "*.json": "jsonc"
+  }
 }

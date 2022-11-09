@@ -9,7 +9,7 @@ describe('Token Builder module', () => {
       input: './test/fixtures/inputs',
       output: './test/dist',
     });
-    const relativePath = `./test/dist/web/${configCoreColor.files[0].destination}.json`;
+    const relativePath = `./test/dist/json/${configCoreColor.files[0].destination}.json`;
     const output = await fileToJson(relativePath);
     expect(output).toMatchObject({});
   });
