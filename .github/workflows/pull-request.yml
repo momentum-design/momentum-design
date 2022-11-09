@@ -49,7 +49,7 @@ jobs:
     steps:
       - id: generate-platform-matrix
         name: Generate Platform Matrix
-        run: echo '::set-output name=platform-matrix::["ubuntu-latest", "windows-latest" "macos-latest"]'
+        run: echo 'platform-matrix=["ubuntu-latest", "windows-latest" "macos-latest"]' >> $GITHUB_OUTPUT
 
   initialize:
     name: Initialize
@@ -108,7 +108,7 @@ jobs:
 
       - id: generate-package-matrix
         name: Generate Package Matrix
-        run: echo '::set-output name=package-matrix::$(yarn scripts:packages --changed --dependent --ref="${{ github.base_ref }}")'
+        run: echo 'platform-matrix=$(yarn scripts:packages --changed --dependent --ref="${{ github.base_ref }}")'' >> $GITHUB_OUTPUT
 
   analyze-prebuild:
     name: Analyze - Prebuild
