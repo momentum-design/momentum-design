@@ -99,7 +99,7 @@ jobs:
 
       - id: generate-package-matrix
         name: Generate Package Matrix
-        run: echo 'packages=$(yarn scripts:packages --changed --dependent --ref="${{ github.base_ref }}")' >> $GITHUB_OUTPUT
+        run: echo "packages=$(yarn scripts:packages --changed --dependent --ref='${{ github.base_ref }}')" >> $GITHUB_OUTPUT
 
   analyze-prebuild:
     name: Analyze - Prebuild
