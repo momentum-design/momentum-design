@@ -97,6 +97,12 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
 
+      - name: Uncache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
       - id: generate-package-matrix
         name: Generate Package Matrix
         run: echo "packages=$(yarn scripts:packages --changed --dependent --ref='${{ github.base_ref }}')" >> $GITHUB_OUTPUT
