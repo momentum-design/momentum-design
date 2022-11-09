@@ -12,11 +12,13 @@
     "clean": "yarn clean:dist",
     "clean:dist": "rimraf ./dist",
     "test": "echo \"this script is not implemented\"",
-    "publish": "yarn npm publish --access=public",
+    "publish": "semantic-release -e semantic-release-monorepo --branches main",
     "prepublishOnly": "yarn clean && yarn build"
   },
   "devDependencies": {
     "@cisco-momentum/token-builder": "workspace:^",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "semantic-release": "^19.0.5",
+    "semantic-release-monorepo": "^7.0.5"
   }
 }
