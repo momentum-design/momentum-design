@@ -13,7 +13,7 @@
     "target": "es6",
     "module": "es2022",
     "resolveJsonModule": true,
-    "lib": ["es2021", "DOM"],
+    "lib": ["es2022", "DOM"],
     "strict": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,

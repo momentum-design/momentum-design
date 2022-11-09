@@ -1,0 +1,100 @@
+name: Deploy Package CD
+run-name: ${{ github.actor }} is running ${{ github.action }}
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  rid: ${{ github.run_id }}-${{ github.run_number }}
+
+jobs:
+  initialize:
+    name: Initialize
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Validate Dependencies
+        id: validate-dependencies
+        uses: actions/cache@v3
+        with:
+          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install Dependencies
+        if: steps.validate-dependencies.outputs.cache-hit != 'true'
+        run: yarn
+
+      - name: Cache Dependencies
+        uses: actions/cache@v3
+        if: steps.validate-dependencies.outputs.cache-hit != 'true'
+        with:
+          path: '**/node_modules'
+          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+  build:
+    name: Build
+    needs: [initialize]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Uncache Dependencies
+        uses: actions/cache@v3
+        with:
+          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Build
+        run: yarn build
+
+      - name: Cache Dist
+        uses: actions/cache@v3
+        with:
+          path: '**/dist'
+          key: dist-${{ runner.os }}-${{ env.rid }}
+
+  deploy-npmjs:
+    name: Deploy - NPMJS
+    needs: [build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Uncache Dependencies
+        uses: actions/cache@v3
+        with:
+          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Uncache Dist
+        uses: actions/cache@v3
+        with:
+          key: dist-${{ runner.os }}-${{ env.rid }}
+
+      - name: Deploy - NPM
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN_CISCO_MD }}
+        run: yarn publish:npmjs

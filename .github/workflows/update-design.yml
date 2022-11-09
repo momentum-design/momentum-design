@@ -1,0 +1,30 @@
+name: Update Design CD
+run-name: ${{ github.actor }} is running ${{ github.action }}
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  design-branch: design-token-updates
+
+jobs:
+  update-design:
+    name: Update Design
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure Github
+        run: |
+          git config --local user.email "automation@momentum.design"
+          git config --local user.name "Momentum Design Automation"
+          git config pull.rebase true
+      
+      - name: Update Design Branch
+        run: |
+          git fetch --unshallow
+          git switch ${{ env.design-branch }}
+          git pull origin ${{ github.event.repository.default_branch }}
+          git push origin ${{ env.design-branch }} -f

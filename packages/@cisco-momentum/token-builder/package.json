@@ -16,8 +16,10 @@
     "./dist"
   ],
   "scripts": {
-    "analyze": "yarn analyze:lint && yarn analyze:syntax",
+    "analyze": "yarn analyze:prebuild",
     "analyze:lint": "eslint \"./src/**\"",
+    "analyze:postbuild": "echo \"script 'analyze:postbuild' has not been implemented\"",
+    "analyze:prebuild": "yarn analyze:lint && yarn analyze:syntax",
     "analyze:syntax": "tsc --noEmit",
     "build": "yarn build:src",
     "build:src": "tsc",
@@ -29,13 +31,14 @@
     "docs:api:extract": "yarn build && api-extractor run --local --verbose",
     "docs:api:generate": "yarn generate:api-metadata && api-documenter markdown --input-folder=docs/metadata --output-folder=docs/markdown",
     "prepublishOnly": "yarn clean && yarn build",
+    "publish": "yarn publish:npmjs",
+    "publish:npmjs": "echo \"script 'publish:npmjs' has not been implemented\"",
     "start": "node ./dist/main.js",
-    "test": "yarn test:unit && yarn test:integration",
-    "test:unit": "jest ./src/**/*.test.ts",
+    "test": "yarn test:prebuild && yarn test:postbuild",
     "test:integration": "jest ./test/*/*.test.ts",
-    "generate:api-metadata": "yarn build && api-extractor run --local --verbose",
-    "generate:api-docs": "yarn generate:api-metadata && api-documenter markdown --input-folder=docs/metadata --output-folder=docs/markdown",
-    "publish": "echo \" not implemented\""
+    "test:postbuild": "yarn test:integration",
+    "test:prebuild": "yarn test:unit",
+    "test:unit": "jest ./src/**/*.test.ts"
   },
   "dependencies": {
     "style-dictionary": "^3.7.1",
