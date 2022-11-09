@@ -1,0 +1,270 @@
+name: Pull Request CI
+run-name: ${{ github.actor }} is running ${{ github.action }}
+
+on:
+  pull_request_target:
+    branches:
+      - main
+    types: [opened, labeled, reopened, synchronize]
+  workflow_dispatch:
+
+env:
+  rid: ${{ github.run_id }}-${{ github.run_number }}
+
+jobs:
+  validate-action:
+    name: Validate Action
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate Labels
+        run: |
+          HEAD_REPO=${{ github.event.pull_request.head.repo.full_name }}
+          BASE_REPO=${{ github.event.pull_request.base.repo.full_name }}
+          FROM_BASE=0; [ "$HEAD_REPO" == "$BASE_REPO" ] && FROM_BASE=1
+
+          HAS_VALIDATED_LABEL=${{ contains(github.event.pull_request.labels.*.name, 'validated') }}
+          VALIDATED=0; [ "$HAS_VALIDATED_LABEL" == "true" ] && VALIDATED=1
+
+          echo from base $FROM_BASE
+          echo validated $VALIDATED
+
+          if [[ $FROM_BASE == 1 || $VALIDATED == 1 ]]
+          then
+            echo 'pull request is validated, running tests'
+            exit 0
+          else
+            echo 'pull request is not validated, exiting'
+            exit 1
+          fi
+
+  generate-platform-matrix:
+    name: Generate Platform Matrix
+    needs: validate-action
+    runs-on: ubuntu-latest
+
+    outputs:
+      platform-matrix: ${{ steps.generate-platform-matrix.outputs.platform-matrix }}
+    
+    steps:
+      - id: generate-platform-matrix
+        name: Generate Platform Matrix
+        run: echo '::set-output name=platform-matrix::["ubuntu-latest", "windows-latest" "macos-latest"]'
+
+  initialize:
+    name: Initialize
+    needs: generate-platform-matrix
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platform-matrix) }}
+
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Validate Dependencies
+        id: validate-dependencies
+        uses: actions/cache@v3
+        with:
+          key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install Dependencies
+        if: steps.validate-dependencies.outputs.cache-hit != 'true'
+        run: yarn
+
+      - name: Cache Dependencies
+        uses: actions/cache@v3
+        if: steps.validate-dependencies.outputs.cache-hit != 'true'
+        with:
+          path: '**/node_modules'
+          key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
+
+  generate-package-matrix:
+    name: Generate Package Matrix
+    needs: initialize
+    runs-on: ubuntu-latest
+
+    outputs:
+      package-matrix: ${{ steps.generate-package-matrix-outputs-package-matrix }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
+      - id: generate-package-matrix
+        name: Generate Package Matrix
+        run: echo '::set-output name=package-matrix::$(yarn scripts:packages --changed --dependent --ref="${{ github.base_ref }}")'
+
+  analyze-prebuild:
+    name: Analyze - Prebuild
+    needs: [generate-package-matrix, generate-platform-matrix, initialize]
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platform-matrix) }}
+        package: ${{ fromJson(needs.generate-package-matrix.outputs.package-matrix) }}
+    
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Uncache Dependencies
+        uses: actions/cache@v3
+        with:
+          key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Analyze - Prebuild
+        run: yarn workspace ${{ matrix.package }} analyze:prebuild
+
+  test-prebuild:
+    name: Test - Prebuild
+    needs: [generate-package-matrix, generate-platform-matrix, initialize]
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platform-matrix) }}
+        package: ${{ fromJson(needs.generate-package-matrix.outputs.package-matrix) }}
+    
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Uncache Dependencies
+        uses: actions/cache@v3
+        with:
+          key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Test - Prebuild
+        run: yarn workspace ${{ matrix.package }} test:prebuild
+
+  build:
+    name: Build
+    needs: [generate-platform-matrix, initialize]
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      os: ${{ fromJson(needs.generate-platform-matrix.outputs.platform-matrix) }}
+
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Uncache Dependencies
+        uses: actions/cache@v3
+        with:
+          key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Build
+        run: yarn build
+
+      - name: Cache Dist
+        uses: actions/cache@v3
+        with:
+          path: '**/dist'
+          key: dist-${{ matrix.os }}-${{ env.rid }}
+
+  analyze-postbuild:
+    name: Analyze - Postbuild
+    needs: [generate-package-matrix, generate-platform-matrix, build]
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platform-matrix) }}
+        package: ${{ fromJson(needs.generate-package-matrix.outputs.package-matrix) }}
+    
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Uncache Dependencies
+        uses: actions/cache@v3
+        with:
+          key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Uncache Dist
+        uses: actions/cache@v3
+        with:
+          key: dist-${{ matrix.os }}-${{ env.rid }}
+
+      - name: Analyze - Postbuild
+        run: yarn workspace ${{ matrix.package }} analyze:postbuild
+
+  test-postbuild:
+    name: Test - Postbuild
+    needs: [generate-package-matrix, generate-platform-matrix, build]
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platform-matrix) }}
+        package: ${{ fromJson(needs.generate-package-matrix.outputs.package-matrix) }}
+    
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Uncache Dependencies
+        uses: actions/cache@v3
+        with:
+          key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Uncache Dist
+        uses: actions/cache@v3
+        with:
+          key: dist-${{ matrix.os }}-${{ env.rid }}
+
+      - name: Test - Postbuild
+        run: yarn workspace ${{ matrix.package }} test:postbuild
+  
