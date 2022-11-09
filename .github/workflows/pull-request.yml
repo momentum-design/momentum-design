@@ -44,12 +44,12 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      platform-matrix: ${{ steps.generate-platform-matrix.outputs.platform-matrix }}
+      platforms: ${{ steps.generate-platform-matrix.outputs.platforms }}
     
     steps:
       - id: generate-platform-matrix
         name: Generate Platform Matrix
-        run: echo 'platform-matrix=["ubuntu-latest", "windows-latest" "macos-latest"]' >> $GITHUB_OUTPUT
+        run: echo 'platforms=["ubuntu-latest", "windows-latest" "macos-latest"]' >> $GITHUB_OUTPUT
 
   initialize:
     name: Initialize
@@ -58,7 +58,7 @@ jobs:
 
     strategy:
       matrix:
-        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platform-matrix) }}
+        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platforms) }}
 
     steps:
       - name: Checkout Project
@@ -70,6 +70,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
 
       - name: Validate Dependencies
         id: validate-dependencies
@@ -95,7 +97,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      package-matrix: ${{ steps.generate-package-matrix-outputs-package-matrix }}
+      packages: ${{ steps.generate-package-matrix.outputs.packages }}
 
     steps:
       - name: Checkout Repository
@@ -105,10 +107,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
 
       - id: generate-package-matrix
         name: Generate Package Matrix
-        run: echo 'platform-matrix=$(yarn scripts:packages --changed --dependent --ref="${{ github.base_ref }}")'' >> $GITHUB_OUTPUT
+        run: echo 'packages=$(yarn scripts:packages --changed --dependent --ref="${{ github.base_ref }}")'' >> $GITHUB_OUTPUT
 
   analyze-prebuild:
     name: Analyze - Prebuild
@@ -117,8 +121,8 @@ jobs:
 
     strategy:
       matrix:
-        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platform-matrix) }}
-        package: ${{ fromJson(needs.generate-package-matrix.outputs.package-matrix) }}
+        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platforms) }}
+        package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
       - name: Checkout Project
@@ -130,6 +134,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
 
       - name: Uncache Dependencies
         uses: actions/cache@v3
@@ -147,8 +153,8 @@ jobs:
 
     strategy:
       matrix:
-        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platform-matrix) }}
-        package: ${{ fromJson(needs.generate-package-matrix.outputs.package-matrix) }}
+        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platforms) }}
+        package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
       - name: Checkout Project
@@ -160,6 +166,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
 
       - name: Uncache Dependencies
         uses: actions/cache@v3
@@ -177,7 +185,7 @@ jobs:
 
     strategy:
       matrix:
-        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platform-matrix) }}
+        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platforms) }}
 
     steps:
       - name: Checkout Project
@@ -189,6 +197,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
 
       - name: Uncache Dependencies
         uses: actions/cache@v3
@@ -212,8 +222,8 @@ jobs:
 
     strategy:
       matrix:
-        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platform-matrix) }}
-        package: ${{ fromJson(needs.generate-package-matrix.outputs.package-matrix) }}
+        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platforms) }}
+        package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
       - name: Checkout Project
@@ -225,6 +235,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
 
       - name: Uncache Dependencies
         uses: actions/cache@v3
@@ -248,8 +260,8 @@ jobs:
 
     strategy:
       matrix:
-        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platform-matrix) }}
-        package: ${{ fromJson(needs.generate-package-matrix.outputs.package-matrix) }}
+        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platforms) }}
+        package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
       - name: Checkout Project
@@ -261,6 +273,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
 
       - name: Uncache Dependencies
         uses: actions/cache@v3
