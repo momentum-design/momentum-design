@@ -25,8 +25,8 @@ jobs:
       - name: Build Packages
         run: yarn build
 
-      - name: Set NPM Authorization
-        run: yarn config set npmAuthToken ${{ secrets.NPM_TOKEN_CISCO_MD }}
-
-      - name: Deploy NPM Packages
+      - name: Deploy Package
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN_CISCO_MD }}
         run: yarn publish:all
