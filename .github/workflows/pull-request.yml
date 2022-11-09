@@ -38,27 +38,14 @@ jobs:
             exit 1
           fi
 
-  generate-platform-matrix:
-    name: Generate Platform Matrix
-    needs: validate-action
-    runs-on: ubuntu-latest
-
-    outputs:
-      platforms: ${{ steps.generate-platform-matrix.outputs.platforms }}
-    
-    steps:
-      - id: generate-platform-matrix
-        name: Generate Platform Matrix
-        run: echo 'platforms=["ubuntu-latest", "windows-latest" "macos-latest"]' >> $GITHUB_OUTPUT
-
   initialize:
     name: Initialize
-    needs: generate-platform-matrix
+    needs: validate-action
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platforms) }}
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
       - name: Checkout Project
@@ -116,12 +103,12 @@ jobs:
 
   analyze-prebuild:
     name: Analyze - Prebuild
-    needs: [generate-package-matrix, generate-platform-matrix, initialize]
+    needs: [generate-package-matrix, initialize]
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platforms) }}
+        os: [ubuntu-latest, windows-latest, macos-latest]
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
@@ -148,12 +135,12 @@ jobs:
 
   test-prebuild:
     name: Test - Prebuild
-    needs: [generate-package-matrix, generate-platform-matrix, initialize]
+    needs: [generate-package-matrix, initialize]
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platforms) }}
+        os: [ubuntu-latest, windows-latest, macos-latest]
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
@@ -180,12 +167,12 @@ jobs:
 
   build:
     name: Build
-    needs: [generate-platform-matrix, initialize]
+    needs: initialize
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platforms) }}
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
       - name: Checkout Project
@@ -217,12 +204,12 @@ jobs:
 
   analyze-postbuild:
     name: Analyze - Postbuild
-    needs: [generate-package-matrix, generate-platform-matrix, build]
+    needs: [generate-package-matrix, build]
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platforms) }}
+        os: [ubuntu-latest, windows-latest, macos-latest]
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
@@ -255,12 +242,12 @@ jobs:
 
   test-postbuild:
     name: Test - Postbuild
-    needs: [generate-package-matrix, generate-platform-matrix, build]
+    needs: [generate-package-matrix, build]
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        os: ${{ fromJson(needs.generate-platform-matrix.outputs.platforms) }}
+        os: [ubuntu-latest, windows-latest, macos-latest]
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
@@ -290,4 +277,3 @@ jobs:
 
       - name: Test - Postbuild
         run: yarn workspace ${{ matrix.package }} test:postbuild
-  
