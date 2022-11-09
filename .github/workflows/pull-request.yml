@@ -45,7 +45,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest]
 
     steps:
       - name: Checkout Project
@@ -99,7 +99,7 @@ jobs:
 
       - id: generate-package-matrix
         name: Generate Package Matrix
-        run: echo 'packages=$(yarn scripts:packages --changed --dependent --ref="${{ github.base_ref }}")'' >> $GITHUB_OUTPUT
+        run: echo 'packages=$(yarn scripts:packages --changed --dependent --ref="${{ github.base_ref }}")' >> $GITHUB_OUTPUT
 
   analyze-prebuild:
     name: Analyze - Prebuild
@@ -108,7 +108,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest]
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
@@ -140,7 +140,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest]
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
@@ -172,7 +172,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest]
 
     steps:
       - name: Checkout Project
@@ -209,7 +209,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest]
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
@@ -247,7 +247,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest]
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
