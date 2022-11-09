@@ -16,6 +16,7 @@
     "./dist"
   ],
   "scripts": {
+    "forTheTest": "echo \"THE TEST\"",
     "analyze": "yarn analyze:prebuild",
     "analyze:lint": "eslint \"./src/**\"",
     "analyze:postbuild": "echo \"script 'analyze:postbuild' has not been implemented\"",
