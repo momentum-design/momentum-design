@@ -1,13 +1,7 @@
 import yargs from 'yargs';
 import { exec } from 'node:child_process';
 
-/**
- * Emit an output directly to the CLI.
- *
- * @param {string} output details to be emitted when this method is called.
- * @returns {void}
- */
-const emit = (output) => process.stdout.write(output);
+import { emit } from './utils.js';
 
 /**
  * Remove duplicates from a provided array of packages.
@@ -16,6 +10,14 @@ const emit = (output) => process.stdout.write(output);
  * @returns {Array<string>} Packages with all duplications removed.
  */
 const removeDuplicatePackages = (packages) => packages.filter((item, index, self) => self.indexOf(item) === index);
+
+/**
+ * Remove the scope from a provided array of packages.
+ *
+ * @param {Array<string>} packages List of packages to remove the package scope from.
+ * @returns {Array<string>} An array of packages with their scopes removed.
+ */
+const removePackagesScope = (packages) => packages.map((item) => item.split('@cisco-momentum/').pop());
 
 /**
  * Convert a `yarn list` command output into a collection of packages.
@@ -103,14 +105,15 @@ const getDependentPackages = (targetPackages) => {
 /**
  * Main executor for this script.
  *
- * @returns {void}
+ * @returns {Promise<void>}
  */
 const main = () => {
-  const { all, changed, dependent, ref } = yargs(process.argv.slice(2)).options({
+  const { all, changed, dependent, ref, scopeless } = yargs(process.argv.slice(2)).options({
     all: { type: 'boolean' },
     changed: { type: 'boolean' },
     dependent: { type: 'boolean' },
     ref: { type: 'string' },
+    scopeless: { type: 'boolean' },
   }).parseSync();
 
   const promises = [];
@@ -136,8 +139,19 @@ const main = () => {
       ...packageGroup
     ], []))
     .then((packages) => removeDuplicatePackages(packages))
+    .then((packages) => {
+      let final;
+
+      if (scopeless) {
+        final = removePackagesScope(packages);
+      } else {
+        final = packages;
+      }
+
+      return final;
+    })
     .then((packages) => JSON.stringify(packages))
     .then((output) => emit(output));
 };
 
-main().catch(() => process.exit(1));
+main();
