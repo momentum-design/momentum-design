@@ -90,6 +90,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
+          token: ${{ secrets.NPM_TOKEN_CISCO_MD }}
 
       - name: Uncache Dependencies
         uses: actions/cache@v3
@@ -103,8 +104,5 @@ jobs:
           path: '**/dist'
           key: dist-${{ runner.os }}-${{ env.rid }}
 
-      - name: Setup Authorization
-        run: yarn config set npmAuthToken ${{ secrets.NPM_TOKEN_CISCO_MD }}
-
-      - name: Deploy - NPM
+      - name: Deploy - NPMJS
         run: yarn publish:npmjs
