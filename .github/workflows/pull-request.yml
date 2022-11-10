@@ -105,17 +105,13 @@ jobs:
           path: '**/node_modules'
           key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Update Design Branch
-        run: |
-          git fetch origin main
-
-      - name: GIT TEST
-        run: |
-          git branch -vv
+      # - name: Update Design Branch
+      #   run: |
+      #     git fetch origin main --unshallow
 
       - id: generate-package-matrix
         name: Generate Package Matrix
-        run: echo "packages=$(yarn scripts:packages --changed --dependent --ref='origin/${{ github.base_ref }}')" >> $GITHUB_OUTPUT
+        run: echo "packages=$(yarn scripts:packages --changed --dependent --ref='${{ github.event.pull_request.base.sha }}')" >> $GITHUB_OUTPUT
 
       - name: Display Package Matrix
         run: echo "generated package matrix - ${{ steps.generate-package-matrix.outputs.packages }}"
