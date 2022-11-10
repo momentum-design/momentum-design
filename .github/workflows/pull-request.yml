@@ -39,7 +39,7 @@ jobs:
           fi
 
   initialize:
-    name: Initialize
+    name: ${{ matrix.os }} Initialize
     needs: validate-action
     runs-on: ${{ matrix.os }}
 
@@ -105,7 +105,7 @@ jobs:
           path: '**/node_modules'
           key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Update Design Branch
+      - name: Update Main Branch
         run: |
           git fetch origin main --unshallow
 
@@ -117,7 +117,7 @@ jobs:
         run: echo "generated package matrix - ${{ steps.generate-package-matrix.outputs.packages }}"
 
   analyze-prebuild:
-    name: Analyze - Prebuild
+    name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Analyze - Prebuild
     needs: [generate-package-matrix, initialize]
     runs-on: ${{ matrix.os }}
 
@@ -149,7 +149,7 @@ jobs:
         run: yarn workspace ${{ matrix.package }} analyze:prebuild
 
   test-prebuild:
-    name: Test - Prebuild
+    name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Test - Prebuild
     needs: [generate-package-matrix, initialize]
     runs-on: ${{ matrix.os }}
 
@@ -181,7 +181,7 @@ jobs:
         run: yarn workspace ${{ matrix.package }} test:prebuild
 
   build:
-    name: Build
+    name: ${{ matrix.os }} Build
     needs: initialize
     runs-on: ${{ matrix.os }}
 
@@ -218,7 +218,7 @@ jobs:
           key: dist-${{ matrix.os }}-${{ env.rid }}
 
   analyze-postbuild:
-    name: Analyze - Postbuild
+    name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Analyze - Postbuild
     needs: [generate-package-matrix, build]
     runs-on: ${{ matrix.os }}
 
@@ -256,7 +256,7 @@ jobs:
         run: yarn workspace ${{ matrix.package }} analyze:postbuild
 
   test-postbuild:
-    name: Test - Postbuild
+    name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Test - Postbuild
     needs: [generate-package-matrix, build]
     runs-on: ${{ matrix.os }}
 
