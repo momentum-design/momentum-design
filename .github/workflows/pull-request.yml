@@ -115,7 +115,7 @@ jobs:
 
       - id: generate-package-matrix
         name: Generate Package Matrix
-        run: echo "packages=$(yarn scripts:packages --changed --dependent --ref='${{ github.base_ref }}')" >> $GITHUB_OUTPUT
+        run: echo "packages=$(yarn scripts:packages --changed --dependent --ref='origin/${{ github.base_ref }}')" >> $GITHUB_OUTPUT
 
       - name: Display Package Matrix
         run: echo "generated package matrix - ${{ steps.generate-package-matrix.outputs.packages }}"
