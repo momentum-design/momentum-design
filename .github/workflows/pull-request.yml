@@ -105,9 +105,9 @@ jobs:
           path: '**/node_modules'
           key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
-      # - name: Update Design Branch
-      #   run: |
-      #     git fetch origin main --unshallow
+      - name: Update Design Branch
+        run: |
+          git fetch origin main --unshallow
 
       - id: generate-package-matrix
         name: Generate Package Matrix
