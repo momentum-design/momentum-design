@@ -140,4 +140,4 @@ const main = () => {
     .then((output) => emit(output));
 };
 
-main();
+main().catch(() => process.exit(1));
