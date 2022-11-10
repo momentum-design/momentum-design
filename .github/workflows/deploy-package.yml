@@ -105,4 +105,10 @@ jobs:
           key: dist-${{ runner.os }}-${{ env.rid }}
 
       - name: Deploy - NPMJS
-        run: yarn publish:npmjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN_CISCO_MD }}
+        run: |
+          exports GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          exports NPM_TOKEN="${{ secrets.NPM_TOKEN_CISCO_MD }}"
+          yarn publish:npmjs
