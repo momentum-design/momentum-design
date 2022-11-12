@@ -108,7 +108,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN_CISCO_MD }}
-        run: |
-          export GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
-          export NPM_TOKEN="${{ secrets.NPM_TOKEN_CISCO_MD }}"
-          yarn publish:npmjs
+        run: export NPM_TOKEN="${{ env.NPM_TOKEN_CISCO_MD }}" && export GITHUB_TOKEN="${{ env.GITHUB_TOKEN }}" && yarn publish:npmjs
