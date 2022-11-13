@@ -20,6 +20,7 @@
     "postinstall": "husky install ./config/husky",
     "upgrade:vscode": "yarn dlx @yarnpkg/sdks vscode",
     "analyze:config": "eslint \"./config/**\"",
+    "run-this-test": "md-automation",
     "clean:plop": "rimraf ./config/plop/dist",
     "build:plop": "yarn clean:plop && node ./config/plop/esbuild.config.plop.js",
     "generate": "yarn generate:plop && yarn install",
@@ -33,14 +34,16 @@
     "affected:analyze": "node ./scripts/affected.js --command=analyze",
     "affected:generate:api-docs": "node ./scripts/affected.js --command=generate:api-docs",
     "affected:all": "yarn affected:build && yarn affected:analyze && yarn affected:test && yarn affected:generate:api-docs",
-    "scripts:git": "node ./scripts/git.js",
+    "scripts:git": "node ./scripts/git/main.js",
     "scripts:packages": "node ./scripts/packages.js",
     "icons": "yarn workspace @cisco-momentum/icons",
     "illustrations": "yarn workspace @cisco-momentum/illustrations",
     "tokens": "yarn workspace @cisco-momentum/tokens",
-    "token-builder": "yarn workspace @cisco-momentum/token-builder"
+    "token-builder": "yarn workspace @cisco-momentum/token-builder",
+    "automation": "yarn workspace @cisco-momentum/automation"
   },
   "devDependencies": {
+    "@cisco-momentum/automation": "workspace:^",
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
     "@typescript-eslint/eslint-plugin": "^5.40.1",

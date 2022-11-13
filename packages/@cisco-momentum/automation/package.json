@@ -1,0 +1,46 @@
+{
+  "name": "@cisco-momentum/automation",
+  "packageManager": "yarn@3.2.4",
+  "type": "module",
+  "files": [
+    "./files"
+  ],
+  "main": "./dist/module/index.js",
+  "types": "./dist/module/index.d.ts",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0",
+    "yarn": ">=3.0.0"
+  },
+  "bin": {
+    "md-automation": "./dist/cli/index.js"
+  },
+  "scripts": {
+    "analyze": "yarn analyze:prebuild && yarn analyze:postbuild",
+    "analyze:postbuild": "echo \"script 'analyze:postbuild' has not been implemented\"",
+    "analyze:prebuild": "echo \"script 'analyze:prebuild' has not been implemented\"",
+    "build": "yarn build:cli && yarn build:module",
+    "build:cli": "node ./esbuild.config.js",
+    "build:module": "tsc",
+    "clean": "yarn clean:dist",
+    "clean:dist": "rimraf ./dist",
+    "docs": "echo \"script 'docs' has not been implemented\"",
+    "publish": "yarn publish:npmjs",
+    "publish:npmjs": "echo \"script 'publish:npmjs' has not been implemented\"",
+    "test": "yarn test:prebuild && yarn test:postbuild",
+    "test:postbuild": "echo \"script 'test:prebuild' has not been implemented\"",
+    "test:prebuild": "yarn test:unit",
+    "test:unit": "jest ./src/**/*.test.ts"
+  },
+  "dependencies": {
+    "execa": "^6.1.0",
+    "yargs": "^17.6.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.2.2",
+    "@types/yargs": "^17.0.13",
+    "jest": "^29.3.1",
+    "ts-jest": "^29.0.3"
+  },
+  "version": "0.0.0"
+}
