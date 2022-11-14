@@ -16,7 +16,7 @@
       "description": "Large border radius."
     },
     "half-height": {
-      "value": "50% of height",
+      "value": "50%",
       "type": "borderRadius",
       "description": "Rounded pill shape."
     }
