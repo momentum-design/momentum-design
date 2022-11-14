@@ -1,0 +1,34 @@
+{
+  "name": "@cisco-momentum/telemetry",
+  "packageManager": "yarn@3.2.4",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "./dist"
+  ],
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0",
+    "yarn": ">=3.0.0"
+  },
+  "scripts": {
+    "analyze": "yarn analyze:prebuild && yarn analyze:postbuild",
+    "analyze:postbuild": "echo \"script 'analyze:postbuild' has not been implemented\"",
+    "analyze:prebuild": "echo \"script 'analyze:prebuild' has not been implemented\"",
+    "build": "yarn clean && yarn build:src",
+    "build:src": "tsc",
+    "clean:dist": "rimraf ./dist",
+    "clean": "yarn clean:dist",
+    "docs": "echo \"script 'docs' has not been implemented\"",
+    "publish": "yarn publish:npmjs",
+    "publish:npmjs": "echo \"script 'publish:npmjs' has not been implemented\"",
+    "test": "yarn test:prebuild && yarn test:postbuild",
+    "test:postbuild": "echo \"script 'test:prebuild' has not been implemented\"",
+    "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\""
+  },
+  "dependencies": {
+    "@amplitude/analytics-browser": "^1.6.1",
+    "winston": "^3.8.2",
+    "winston-transport": "^4.5.0"
+  }
+}

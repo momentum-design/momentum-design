@@ -37,7 +37,8 @@
     "icons": "yarn workspace @cisco-momentum/icons",
     "illustrations": "yarn workspace @cisco-momentum/illustrations",
     "tokens": "yarn workspace @cisco-momentum/tokens",
-    "token-builder": "yarn workspace @cisco-momentum/token-builder"
+    "token-builder": "yarn workspace @cisco-momentum/token-builder",
+    "telemetry": "yarn workspace @cisco-momentum/telemetry"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",

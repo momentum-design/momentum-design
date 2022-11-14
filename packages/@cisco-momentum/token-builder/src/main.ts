@@ -1,8 +1,14 @@
 import yargs from 'yargs';
 
+import { Logger, generateMetadata } from '@cisco-momentum/telemetry';
+
 import { TokenBuilder } from './models';
 
+const logger = Logger.child(generateMetadata('token-builder', 'main.ts'));
+
 const main = (): void => {
+  logger.info('hello');
+  logger.record('record');
   const args = yargs(process.argv.slice(2)).options({
     config: { type: 'string' },
     input: { type: 'string' },
