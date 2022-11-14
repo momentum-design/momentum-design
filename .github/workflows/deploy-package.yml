@@ -66,6 +66,9 @@ jobs:
           path: '**/node_modules'
           key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
+      - name: Synchronize Packages
+        run: yarn
+
       - name: Build Automation
         run: yarn automation build:cli
 
@@ -106,6 +109,9 @@ jobs:
           path: '**/automation/dist'
           key: automation-dist-${{ runner.os }}-${{ env.rid }}
 
+      - name: Synchronize Packages
+        run: yarn
+
       - name: Update Main Branch
         run: |
           git fetch origin main --unshallow
@@ -138,6 +144,9 @@ jobs:
         with:
           path: '**/node_modules'
           key: node-modules-next-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Synchronize Packages
+        run: yarn
 
       - name: Build
         run: yarn build
@@ -179,6 +188,9 @@ jobs:
         with:
           path: '**/dist'
           key: dist-${{ runner.os }}-${{ env.rid }}
+
+      - name: Synchronize Packages
+        run: yarn
 
       - name: Update Main Branch
         run: |
