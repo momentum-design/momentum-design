@@ -38,7 +38,7 @@ describe('@cisco-momentum/automation - utils.Git', () => {
       it('should attempt to run a command with the provided count', async () => {
         await Git.list(count);
 
-        expect(runSpy).toHaveBeenCalledWith(`git log -${offset} --pretty=format:'${format}'`);
+        expect(runSpy).toHaveBeenCalledWith(`git --no-pager log -n ${offset} --pretty=format:'${format}'`);
         expect(runSpy).toHaveBeenCalledTimes(1);
       });
 
