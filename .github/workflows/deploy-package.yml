@@ -44,9 +44,157 @@ jobs:
           path: '**/node_modules'
           key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
+  build-automation:
+    name: Build Automation
+    needs: initialize
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v3
+      
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
+
+      - name: Uncache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Build Automation
+        run: yarn automation build:cli
+
+      - name: Cache Automation
+        uses: actions/cache@v3
+        with:
+          path: '**/automation/dist'
+          key: automation-dist-${{ runner.os }}-${{ env.rid }}
+
+  increment-packages:
+    name: Increment Packages
+    needs: build-automation
+    runs-on: ubuntu-latest
+
+    outputs:
+      packages: ${{ steps.generate-package-matrix.outputs.packages }}
+
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v3
+      
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
+
+      - name: Uncache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Uncache Automation
+        uses: actions/cache@v3
+        with:
+          path: '**/automation/dist'
+          key: automation-dist-${{ runner.os }}-${{ env.rid }}
+
+      - name: Update Main Branch
+        run: |
+          git fetch origin main --unshallow
+
+      - name: Increment Packages
+        run: yarn md-automation -- --command increment-packages --changed --commit-index 2 --dependent
+
+      - id: generate-package-matrix
+        name: Generate Package Matrix
+        run: echo "packages=$(yarn md-automation -- --command get-packages --changed --commit-index 2 --dependent)" >> $GITHUB_OUTPUT
+
+      - name: Display Package Matrix
+        run: echo "generated package matrix - ${{ steps.generate-package-matrix.outputs.packages }}"
+
+      - name: Cache Package Definitions
+        uses: actions/cache@v3
+        with:
+          path: '**/packages/**/package.json'
+          key: package-definitions-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
+
+
+  deploy-github:
+    name: Deploy - Github
+    needs: increment-packages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v3
+
+      - name: Uncache Package Definitions
+        uses: actions/cache@v3
+        with:
+          path: '**/packages/**/package.json'
+          key: package-definitions-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Deploy - Github
+        run: |
+          git config --local user.email "automation@momentum.design"
+          git config --local user.name "Momentum Design Automation"
+          git add **/package.json
+          FILE_COUNT=$(git status -s | wc -l | xargs)FILE_COUNT=$(git status -s | wc -l | xargs)
+          if [[ $FILE_COUNT != '0' ]]
+          then
+            echo "found $FILE_COUNT changed package definitions"
+            git commit -m "ci: update package versions [skip ci]"
+            git push origin documentation
+          else
+            echo "package definitions have not changed"
+            echo "package definitions will not be published"
+          fi
+
+  initialize-next:
+    name: Initialize Next
+    runs-on: ubuntu-latest
+    needs: deploy-github
+
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
+
+      - name: Validate Dependencies
+        id: validate-dependencies
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: node-modules-next-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install Dependencies
+        if: steps.validate-dependencies.outputs.cache-hit != 'true'
+        run: yarn
+
+      - name: Cache Dependencies
+        uses: actions/cache@v3
+        if: steps.validate-dependencies.outputs.cache-hit != 'true'
+        with:
+          path: '**/node_modules'
+          key: node-modules-next-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
   build:
     name: Build
-    needs: initialize
+    needs: initialize-next
     runs-on: ubuntu-latest
 
     steps:
@@ -64,7 +212,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: '**/node_modules'
-          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: node-modules-next-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Build
         run: yarn build
@@ -76,9 +224,13 @@ jobs:
           key: dist-${{ runner.os }}-${{ env.rid }}
 
   deploy-npmjs:
-    name: Deploy - NPMJS
-    needs: build
+    name: ( ${{ matrix.package }} ) Deploy - NPMJS
+    needs: [build, increment-packages]
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        package: ${{ fromJson(needs.increment-packages.outputs.packages) }}
 
     steps:
       - name: Checkout Project
@@ -90,13 +242,12 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-          token: ${{ secrets.NPM_TOKEN_CISCO_MD }}
 
       - name: Uncache Dependencies
         uses: actions/cache@v3
         with:
           path: '**/node_modules'
-          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: node-modules-next-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Uncache Dist
         uses: actions/cache@v3
@@ -104,8 +255,8 @@ jobs:
           path: '**/dist'
           key: dist-${{ runner.os }}-${{ env.rid }}
 
-      - name: Deploy - NPMJS
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN_CISCO_MD }}
-        run: export NPM_TOKEN="${{ env.NPM_TOKEN_CISCO_MD }}" && export GITHUB_TOKEN="${{ env.GITHUB_TOKEN }}" && yarn publish:npmjs
+      - name: Configure Yarn
+        run: yarn config set npmAuthToken ${{ secrets.NPM_TOKEN_CISCO_MD }}
+
+      - name: ( ${{ matrix.package }} ) Deploy - NPMJS
+        run: yarn workspace ${{ matrix.package }} deploy:npmjs

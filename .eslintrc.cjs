@@ -43,6 +43,7 @@ module.exports = {
     'import/no-extraneous-dependencies': ['error', { devDependencies: ['**/config/**/*.*'] }],
     'import/no-relative-packages': 'off',
     'import/prefer-default-export': 'off',
+    'no-confusing-arrow': 'off',
     'no-shadow': 'off',
     'no-unused-vars': 'off',
     'max-len': ['error', { code: 120 }],
