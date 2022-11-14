@@ -3,12 +3,13 @@ import { join } from 'path';
 
 import { PROJECT_PREFIX } from './esbuild.constants.js';
 
-const cli = async ({ stage, extension = 'js', format = 'esm' }) => {
+const cli = async ({ stage, extension = 'js', external, format = 'esm' }) => {
   const projectPath = process.cwd();
 
   await esbuild.build({
     bundle: true,
     entryPoints: [`${join(projectPath, 'src', 'main.js')}`],
+    external,
     format,
     minify: true,
     platform: 'node',
