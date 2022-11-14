@@ -7,14 +7,14 @@
     "npm": ">=8.0.0",
     "yarn": ">=3.0.0"
   },
-  "type": "commonjs",
+  "type": "module",
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/types/index.d.ts",
   "files": [
     "./dist"
   ],
   "bin": {
-    "md-token-builder": "./dist/main.js"
+    "md-token-builder": "./dist/cli/index.cjs"
   },
   "scripts": {
     "analyze": "yarn analyze:prebuild",
@@ -22,7 +22,8 @@
     "analyze:postbuild": "echo \"script 'analyze:postbuild' has not been implemented\"",
     "analyze:prebuild": "yarn analyze:lint && yarn analyze:syntax",
     "analyze:syntax": "tsc --noEmit",
-    "build": "yarn build:module",
+    "build": "yarn build:cli && yarn build:module",
+    "build:cli": "node ./esbuild.config.js",
     "build:module": "tsc",
     "clean": "yarn clean:dist",
     "clean:dist": "rimraf ./dist",

@@ -5,8 +5,9 @@
   ],
   "extends": "../../../config/typescript/tsconfig.base.json",
   "compilerOptions": {
-    "module": "CommonJS",
-    "outDir": "./dist"
+    "declarationDir": "./dist/types",
+    "module": "ES6",
+    "outDir": "./dist/module"
   },
   "include": [
     "./src/**/*"

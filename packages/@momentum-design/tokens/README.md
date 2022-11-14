@@ -7,7 +7,7 @@ Cisco's **momentum-design** tokens package.
 
 ## Usage
 
-**TODO** 1
+**TODO**
 
 ## Contribution
 
