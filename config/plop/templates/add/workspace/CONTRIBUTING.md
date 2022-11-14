@@ -1,8 +1,4 @@
----
-package: @cisco-momentum/{{kebabCase packageName}}
----
-
-# @cisco-momentum/{{kebabCase packageName}} - Contributing Guide
+# @momentum-design/{{kebabCase packageName}} - Contributing Guide
 
 ## Contributing
 

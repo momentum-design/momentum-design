@@ -1,5 +1,5 @@
 {
-  "name": "cisco-momentum",
+  "name": "momentum-design",
   "packageManager": "yarn@3.2.4",
   "engines": {
     "node": ">=18.0.0",
@@ -28,16 +28,16 @@
     "generate:api-docs": "yarn workspaces foreach run generate:api-docs",
     "scripts:git": "node ./scripts/git/main.js",
     "scripts:packages": "node ./scripts/packages.js",
-    "icons": "yarn workspace @cisco-momentum/icons",
-    "illustrations": "yarn workspace @cisco-momentum/illustrations",
-    "tokens": "yarn workspace @cisco-momentum/tokens",
-    "token-builder": "yarn workspace @cisco-momentum/token-builder",
-    "automation": "yarn workspace @cisco-momentum/automation"
+    "icons": "yarn workspace @momentum-design/icons",
+    "illustrations": "yarn workspace @momentum-design/illustrations",
+    "tokens": "yarn workspace @momentum-design/tokens",
+    "token-builder": "yarn workspace @momentum-design/token-builder",
+    "automation": "yarn workspace @momentum-design/automation"
   },
   "devDependencies": {
-    "@cisco-momentum/automation": "workspace:^",
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
+    "@momentum-design/automation": "workspace:^",
     "@typescript-eslint/eslint-plugin": "^5.40.1",
     "@typescript-eslint/parser": "^5.40.1",
     "esbuild": "^0.15.12",
