@@ -1,26 +1,24 @@
 {
   "border-radius": {
-    "core": {
-      "small": {
-        "value": "4px",
-        "type": "borderRadius",
-        "description": "Small border radius."
-      },
-      "medium": {
-        "value": "8px",
-        "type": "borderRadius",
-        "description": "Medium border radius."
-      },
-      "large": {
-        "value": "12px",
-        "type": "borderRadius",
-        "description": "Large border radius."
-      },
-      "half-height": {
-        "value": "50% of height",
-        "type": "borderRadius",
-        "description": "Rounded pill shape."
-      }
+    "small": {
+      "value": "4px",
+      "type": "borderRadius",
+      "description": "Small border radius."
+    },
+    "medium": {
+      "value": "8px",
+      "type": "borderRadius",
+      "description": "Medium border radius."
+    },
+    "large": {
+      "value": "12px",
+      "type": "borderRadius",
+      "description": "Large border radius."
+    },
+    "half-height": {
+      "value": "50% of height",
+      "type": "borderRadius",
+      "description": "Rounded pill shape."
     }
   }
 }
