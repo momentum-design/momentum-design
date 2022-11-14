@@ -114,7 +114,7 @@ jobs:
 
       - id: generate-package-matrix
         name: Generate Package Matrix
-        run: echo "packages=$(yarn md-automation -- --command get-packages --changed main --dependent)" >> $GITHUB_OUTPUT
+        run: echo "packages=$(yarn md-automation -- --command get-packages --changed ${{ github.event.pull_request.base.sha }} --dependent)" >> $GITHUB_OUTPUT
 
       - name: Display Package Matrix
         run: echo "generated package matrix - ${{ steps.generate-package-matrix.outputs.packages }}"
