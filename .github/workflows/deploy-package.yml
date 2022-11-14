@@ -120,28 +120,6 @@ jobs:
       - name: Display Package Matrix
         run: echo "generated package matrix - ${{ steps.generate-package-matrix.outputs.packages }}"
 
-      - name: Cache Package Definitions
-        uses: actions/cache@v3
-        with:
-          path: '**/packages/**/package.json'
-          key: package-definitions-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-
-
-  deploy-github:
-    name: Deploy - Github
-    needs: increment-packages
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Project
-        uses: actions/checkout@v3
-
-      - name: Uncache Package Definitions
-        uses: actions/cache@v3
-        with:
-          path: '**/packages/**/package.json'
-          key: package-definitions-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-
       - name: Deploy - Github
         run: |
           git config --local user.email "automation@momentum.design"
@@ -161,7 +139,7 @@ jobs:
   initialize-next:
     name: Initialize Next
     runs-on: ubuntu-latest
-    needs: deploy-github
+    needs: increment-packages
 
     steps:
       - name: Checkout Project
@@ -259,4 +237,4 @@ jobs:
         run: yarn config set npmAuthToken ${{ secrets.NPM_TOKEN_CISCO_MD }}
 
       - name: ( ${{ matrix.package }} ) Deploy - NPMJS
-        run: yarn workspace ${{ matrix.package }} deploy:npmjs
+        run: yarn workspace ${{ matrix.package }} publish:npmjs
