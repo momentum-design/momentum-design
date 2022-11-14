@@ -8,7 +8,7 @@
     "yarn": ">=3.0.0"
   },
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/module/index.js",
   "types": "./dist/types/index.d.ts",
   "files": [
     "./dist"
@@ -37,7 +37,7 @@
     "publish:npmjs": "echo \"script 'publish:npmjs' has not been implemented\"",
     "start": "node ./dist/main.js",
     "test": "yarn test:prebuild && yarn test:postbuild",
-    "test:integration": "jest ./test/*/*.test.ts",
+    "test:integration": "yarn node --experimental-vm-modules $(yarn bin jest) ./test/*/*.test.ts",
     "test:postbuild": "yarn test:integration",
     "test:prebuild": "yarn test:unit",
     "test:unit": "jest ./src/**/*.test.ts"

@@ -5,6 +5,7 @@
   ],
   "extends": "../../../config/typescript/tsconfig.base.json",
   "compilerOptions": {
+    "allowJs": true,
     "declarationDir": "./dist/types",
     "module": "ES6",
     "outDir": "./dist/module"
