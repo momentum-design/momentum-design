@@ -10,7 +10,6 @@ on:
 
 env:
   rid: ${{ github.run_id }}-${{ github.run_number }}
-  package-scope: '@cisco-momentum'
 
 jobs:
   validate-action:
@@ -110,9 +109,12 @@ jobs:
         run: |
           git fetch origin main --unshallow
 
+      - name: Build Automation Tooling
+        run: yarn automation build:cli
+
       - id: generate-package-matrix
         name: Generate Package Matrix
-        run: echo "packages=$(yarn scripts:packages --changed --dependent --scopeless --ref='${{ github.event.pull_request.base.sha }}')" >> $GITHUB_OUTPUT
+        run: echo "packages=$(yarn md-automation -- --command get-packages --changed main --dependent)" >> $GITHUB_OUTPUT
 
       - name: Display Package Matrix
         run: echo "generated package matrix - ${{ steps.generate-package-matrix.outputs.packages }}"
@@ -147,7 +149,7 @@ jobs:
           key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Analyze - Prebuild
-        run: yarn workspace ${{ env.package-scope }}/${{ matrix.package }} analyze:prebuild
+        run: yarn workspace ${{ matrix.package }} analyze:prebuild
 
   test-prebuild:
     name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Test - Prebuild
@@ -179,7 +181,7 @@ jobs:
           key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Test - Prebuild
-        run: yarn workspace ${{ env.package-scope }}/${{ matrix.package }} test:prebuild
+        run: yarn workspace ${{ matrix.package }} test:prebuild
 
   build:
     name: ${{ matrix.os }} Build
@@ -254,7 +256,7 @@ jobs:
           key: dist-${{ matrix.os }}-${{ env.rid }}
 
       - name: Analyze - Postbuild
-        run: yarn workspace ${{ env.package-scope }}/${{ matrix.package }} analyze:postbuild
+        run: yarn workspace ${{ matrix.package }} analyze:postbuild
 
   test-postbuild:
     name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Test - Postbuild
@@ -292,4 +294,4 @@ jobs:
           key: dist-${{ matrix.os }}-${{ env.rid }}
 
       - name: Test - Postbuild
-        run: yarn workspace ${{ env.package-scope }}/${{ matrix.package }} test:postbuild
+        run: yarn workspace ${{ matrix.package }} test:postbuild
