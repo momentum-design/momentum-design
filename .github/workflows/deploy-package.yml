@@ -130,7 +130,7 @@ jobs:
           then
             echo "found $FILE_COUNT changed package definitions"
             git commit -m "ci: update package versions [skip ci]"
-            git push origin documentation
+            git push origin main
           else
             echo "package definitions have not changed"
             echo "package definitions will not be published"
