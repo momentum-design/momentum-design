@@ -32,9 +32,9 @@ describe('@momentum-design/token-builder - models.Platform', () => {
       it('should be a File with a filters property that matches the Platform\'s provided file filters', () => {
         const { filters } = PlatformFixture.FIXTURE_CONFIG.file;
 
-        expect(platform.file.categories).toMatchObject(filters.categories as Array<string>);
-        expect(platform.file.items).toMatchObject(filters.items as Array<string>);
-        expect(platform.file.types).toMatchObject(filters.types as Array<string>);
+        expect(platform.file.categories).toMatchObject(filters?.categories as Array<string>);
+        expect(platform.file.items).toMatchObject(filters?.items as Array<string>);
+        expect(platform.file.types).toMatchObject(filters?.types as Array<string>);
       });
 
       it('should be a File with a format property that matches the Platform\'s format property', () => {

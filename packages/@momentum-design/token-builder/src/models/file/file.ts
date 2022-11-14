@@ -25,7 +25,7 @@ class File {
    * @returns array with categories.
    */
   public get categories(): Array<string> {
-    const { categories } = this.config.filters;
+    const { categories } = this.config.filters || {};
 
     return categories ? [...categories] : [];
   }
@@ -59,7 +59,7 @@ class File {
   }
 
   public get items(): Array<string> {
-    const { items } = this.config.filters;
+    const { items } = this.config.filters || {};
 
     return items ? [...items] : [];
   }
@@ -80,7 +80,7 @@ class File {
   }
 
   public get types(): Array<string> {
-    const { types } = this.config.filters;
+    const { types } = this.config.filters || {};
 
     return types ? [...types] : [];
   }
