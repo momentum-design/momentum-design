@@ -19,6 +19,17 @@ class Yarn {
       .then((results) => Execute.resultsToArray(results))
       .then((list) => Yarn.listToJson(list) as Array<ListItem>);
   }
+
+  // Promise<{ major: number, minor: number, patch: number }>
+  public static show(packageName: string): Promise<{ major: number, minor: number, patch: number}> {
+    return Execute.run(`npm show ${packageName} version`)
+      .then((version) => {
+        const [major, minor, patch] = version.split('.').map((value) => parseInt(value, 10));
+
+        return { major, minor, patch };
+      })
+      .catch(() => ({ major: 0, minor: 0, patch: 0 }));
+  }
 }
 
 export default Yarn;

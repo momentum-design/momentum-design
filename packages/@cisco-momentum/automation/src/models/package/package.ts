@@ -4,7 +4,7 @@ import path from 'path';
 import { Yarn } from '../../utils';
 
 import CONSTANTS from './constants';
-import type { Config } from './types';
+import type { Config, Version } from './types';
 
 class Package {
   protected config: Config;
@@ -71,7 +71,7 @@ class Package {
       });
   }
 
-  public incrementVersion({ major, minor, patch }: { major?: number, minor?: number, patch?: number} = {}): this {
+  public incrementVersion({ major, minor, patch }: Version): this {
     const [prevMajor, prevMinor, prevPatch] = this.definition.version
       ? this.definition.version.split('.').map((value: string) => parseInt(value, 10))
       : [0, 0, 0];
@@ -93,6 +93,11 @@ class Package {
       .then((data) => JSON.parse(data))
       .then((definition) => {
         this.data.definition = definition;
+
+        return Yarn.show(this.package);
+      })
+      .then((version) => {
+        this.data.definition.version = [version.major, version.minor, version.patch].join('.');
 
         return this;
       });
