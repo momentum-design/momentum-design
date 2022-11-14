@@ -44,6 +44,85 @@ jobs:
           path: '**/node_modules'
           key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
+  build-automation:
+    name: Build Automation
+    needs: initialize
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v3
+      
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
+
+      - name: Uncache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Synchronize Packages
+        run: yarn
+
+      - name: Build Automation
+        run: yarn automation build:cli
+
+      - name: Cache Automation
+        uses: actions/cache@v3
+        with:
+          path: '**/automation/dist'
+          key: automation-dist-${{ runner.os }}-${{ env.rid }}
+
+  generate-package-matrix:
+    name: Generate Package Matrix
+    needs: build-automation
+    runs-on: ubuntu-latest
+
+    outputs:
+      packages: ${{ steps.generate-package-matrix.outputs.packages }}
+
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v3
+      
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
+
+      - name: Uncache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Uncache Automation
+        uses: actions/cache@v3
+        with:
+          path: '**/automation/dist'
+          key: automation-dist-${{ runner.os }}-${{ env.rid }}
+
+      - name: Synchronize Packages
+        run: yarn
+
+      - name: Update Main Branch
+        run: |
+          git fetch origin main --unshallow
+
+      - id: generate-package-matrix
+        name: Generate Package Matrix
+        run: echo "packages=$(yarn md-automation -- --command get-packages --changed --commit-index 2 --dependent)" >> $GITHUB_OUTPUT
+
+      - name: Display Package Matrix
+        run: echo "generated package matrix - ${{ steps.generate-package-matrix.outputs.packages }}"
+
   build:
     name: Build
     needs: initialize
@@ -64,7 +143,10 @@ jobs:
         uses: actions/cache@v3
         with:
           path: '**/node_modules'
-          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: node-modules-next-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Synchronize Packages
+        run: yarn
 
       - name: Build
         run: yarn build
@@ -76,9 +158,13 @@ jobs:
           key: dist-${{ runner.os }}-${{ env.rid }}
 
   deploy-npmjs:
-    name: Deploy - NPMJS
-    needs: build
+    name: ( ${{ matrix.package }} ) Deploy - NPMJS
+    needs: [build, generate-package-matrix]
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
 
     steps:
       - name: Checkout Project
@@ -95,7 +181,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: '**/node_modules'
-          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: node-modules-next-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Uncache Dist
         uses: actions/cache@v3
@@ -103,8 +189,18 @@ jobs:
           path: '**/dist'
           key: dist-${{ runner.os }}-${{ env.rid }}
 
-      - name: Setup Authorization
+      - name: Synchronize Packages
+        run: yarn
+
+      - name: Update Main Branch
+        run: |
+          git fetch origin main --unshallow
+
+      - name: Increment Packages
+        run: yarn md-automation -- --command increment-packages --packages ${{ matrix.package }}
+
+      - name: Configure Yarn
         run: yarn config set npmAuthToken ${{ secrets.NPM_TOKEN_CISCO_MD }}
 
-      - name: Deploy - NPM
-        run: yarn publish:npmjs
+      - name: ( ${{ matrix.package }} ) Deploy - NPMJS
+        run: yarn workspace ${{ matrix.package }} publish:npmjs

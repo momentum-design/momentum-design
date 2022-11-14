@@ -15,6 +15,6 @@ export const AddWorkspacePackage: ActionType = {
   )}`,
   destination: `${join(
     `${folders.workspace}`,
-    `@cisco-momentum/{{${packageName}}}`,
+    `@momentum-design/{{${packageName}}}`,
   )}`,
 };

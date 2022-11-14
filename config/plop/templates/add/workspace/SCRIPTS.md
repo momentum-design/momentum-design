@@ -1,8 +1,4 @@
----
-package: @cisco-momentum/{{kebabCase packageName}}
----
-
-# @cisco-momentum/{{kebabCase packageName}} - Scripts Guide
+# @momentum-design/{{kebabCase packageName}} - Scripts Guide
 
 ## Scripts
 

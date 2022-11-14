@@ -3,6 +3,21 @@ import { join } from 'path';
 
 import { PROJECT_PREFIX } from './esbuild.constants.js';
 
+const cli = async ({ stage, extension = 'js', format = 'esm' }) => {
+  const projectPath = process.cwd();
+
+  await esbuild.build({
+    bundle: true,
+    entryPoints: [`${join(projectPath, 'src', 'main.js')}`],
+    format,
+    minify: true,
+    platform: 'node',
+    target: ['node18.12.1'],
+    sourcemap: stage !== 'production',
+    outfile: `${join(projectPath, 'dist', 'cli', `index.${extension}`)}`,
+  });
+};
+
 const iife = async ({ name }) => {
   const projectPath = process.cwd();
 
@@ -52,7 +67,7 @@ const cjs = async (
     tsconfig: `${join(projectPath, tsconfig)}`,
     platform,
   });
-};
+}
 
 const plop = async () => {
   const plop = await esm(
@@ -65,4 +80,4 @@ const plop = async () => {
   return plop;
 };
 
-export { iife, plop, esm, cjs };
+export { iife, plop, esm, cjs, cli };

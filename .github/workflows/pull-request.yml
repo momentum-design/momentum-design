@@ -39,7 +39,7 @@ jobs:
           fi
 
   initialize:
-    name: Initialize
+    name: ${{ matrix.os }} Initialize
     needs: validate-action
     runs-on: ${{ matrix.os }}
 
@@ -87,8 +87,10 @@ jobs:
       packages: ${{ steps.generate-package-matrix.outputs.packages }}
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout Project
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
       
       - name: Setup Node
         uses: actions/setup-node@v3
@@ -103,15 +105,25 @@ jobs:
           path: '**/node_modules'
           key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
+      - name: Synchronize Packages
+        run: yarn
+
+      - name: Update Main Branch
+        run: |
+          git fetch origin main --unshallow
+
+      - name: Build Automation Tooling
+        run: yarn automation build:cli
+
       - id: generate-package-matrix
         name: Generate Package Matrix
-        run: echo "packages=$(yarn scripts:packages --changed --dependent --ref='${{ github.base_ref }}')" >> $GITHUB_OUTPUT
+        run: echo "packages=$(yarn md-automation -- --command get-packages --changed ${{ github.event.pull_request.base.sha }} --dependent)" >> $GITHUB_OUTPUT
 
       - name: Display Package Matrix
         run: echo "generated package matrix - ${{ steps.generate-package-matrix.outputs.packages }}"
 
   analyze-prebuild:
-    name: Analyze - Prebuild
+    name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Analyze - Prebuild
     needs: [generate-package-matrix, initialize]
     runs-on: ${{ matrix.os }}
 
@@ -138,12 +150,15 @@ jobs:
         with:
           path: '**/node_modules'
           key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Synchronize Packages
+        run: yarn
 
       - name: Analyze - Prebuild
         run: yarn workspace ${{ matrix.package }} analyze:prebuild
 
   test-prebuild:
-    name: Test - Prebuild
+    name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Test - Prebuild
     needs: [generate-package-matrix, initialize]
     runs-on: ${{ matrix.os }}
 
@@ -171,11 +186,14 @@ jobs:
           path: '**/node_modules'
           key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
 
+      - name: Synchronize Packages
+        run: yarn
+
       - name: Test - Prebuild
         run: yarn workspace ${{ matrix.package }} test:prebuild
 
   build:
-    name: Build
+    name: ${{ matrix.os }} Build
     needs: initialize
     runs-on: ${{ matrix.os }}
 
@@ -202,6 +220,9 @@ jobs:
           path: '**/node_modules'
           key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
 
+      - name: Synchronize Packages
+        run: yarn
+
       - name: Build
         run: yarn build
 
@@ -212,7 +233,7 @@ jobs:
           key: dist-${{ matrix.os }}-${{ env.rid }}
 
   analyze-postbuild:
-    name: Analyze - Postbuild
+    name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Analyze - Postbuild
     needs: [generate-package-matrix, build]
     runs-on: ${{ matrix.os }}
 
@@ -245,12 +266,15 @@ jobs:
         with:
           path: '**/dist'
           key: dist-${{ matrix.os }}-${{ env.rid }}
+
+      - name: Synchronize Packages
+        run: yarn
 
       - name: Analyze - Postbuild
         run: yarn workspace ${{ matrix.package }} analyze:postbuild
 
   test-postbuild:
-    name: Test - Postbuild
+    name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Test - Postbuild
     needs: [generate-package-matrix, build]
     runs-on: ${{ matrix.os }}
 
@@ -283,6 +307,9 @@ jobs:
         with:
           path: '**/dist'
           key: dist-${{ matrix.os }}-${{ env.rid }}
+
+      - name: Synchronize Packages
+        run: yarn
 
       - name: Test - Postbuild
         run: yarn workspace ${{ matrix.package }} test:postbuild

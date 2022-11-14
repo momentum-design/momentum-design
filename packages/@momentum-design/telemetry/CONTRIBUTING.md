@@ -1,0 +1,9 @@
+---
+package: @momentum-design/telemetry
+---
+
+# @momentum-design/telemetry - Contributing Guide
+
+## Contributing
+
+This component package was generated with a script, please report any issues.
