@@ -1,5 +1,6 @@
-import * as configCoreColor from '../fixtures/config/config-core-color.json';
-import { TokenBuilder, Config } from '../../dist/index';
+import { TokenBuilder, Config } from '@momentum-design/token-builder';
+
+import configCoreColor from '../fixtures/config/config-core-color.json';
 import { fileToJson } from '../../utils/test/utils';
 
 describe('Token Builder module', () => {
@@ -9,6 +10,7 @@ describe('Token Builder module', () => {
       input: './test/fixtures/inputs',
       output: './test/dist',
     });
+
     const relativePath = `./test/dist/json/${configCoreColor.files[0].destination}.json`;
     const output = await fileToJson(relativePath);
     expect(output).toMatchObject({});

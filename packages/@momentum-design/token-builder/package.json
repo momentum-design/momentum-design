@@ -7,14 +7,14 @@
     "npm": ">=8.0.0",
     "yarn": ">=3.0.0"
   },
-  "type": "commonjs",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "type": "module",
+  "main": "./dist/module/index.js",
+  "types": "./dist/types/index.d.ts",
   "files": [
     "./dist"
   ],
   "bin": {
-    "md-token-builder": "./dist/main.js"
+    "md-token-builder": "./dist/cli/index.cjs"
   },
   "scripts": {
     "analyze": "yarn analyze:prebuild",
@@ -22,7 +22,8 @@
     "analyze:postbuild": "echo \"script 'analyze:postbuild' has not been implemented\"",
     "analyze:prebuild": "yarn analyze:lint && yarn analyze:syntax",
     "analyze:syntax": "tsc --noEmit",
-    "build": "yarn build:module",
+    "build": "yarn build:cli && yarn build:module",
+    "build:cli": "node ./esbuild.config.js",
     "build:module": "tsc",
     "clean": "yarn clean:dist",
     "clean:dist": "rimraf ./dist",
@@ -36,7 +37,7 @@
     "publish:npmjs": "echo \"script 'publish:npmjs' has not been implemented\"",
     "start": "node ./dist/main.js",
     "test": "yarn test:prebuild && yarn test:postbuild",
-    "test:integration": "jest ./test/*/*.test.ts",
+    "test:integration": "yarn node --experimental-vm-modules $(yarn bin jest) ./test/*/*.test.ts",
     "test:postbuild": "yarn test:integration",
     "test:prebuild": "yarn test:unit",
     "test:unit": "jest ./src/**/*.test.ts"
