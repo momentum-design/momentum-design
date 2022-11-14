@@ -16,15 +16,13 @@
     "prepublishOnly": "yarn clean && yarn build",
     "docs": "echo \"script 'docs' has not been implemented\"",
     "publish": "yarn publish:npmjs",
-    "publish:npmjs": "semantic-release -e semantic-release-monorepo --branches main",
+    "publish:npmjs": "yarn npm publish --access=public",
     "test": "yarn test:prebuild && yarn test:postbuild",
     "test:postbuild": "echo \"script 'test:prebuild' has not been implemented\"",
     "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\""
   },
   "devDependencies": {
     "@cisco-momentum/token-builder": "workspace:^",
-    "rimraf": "^3.0.2",
-    "semantic-release": "^19.0.5",
-    "semantic-release-monorepo": "^7.0.5"
+    "rimraf": "^3.0.2"
   }
 }
