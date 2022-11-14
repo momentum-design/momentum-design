@@ -1,0 +1,14 @@
+{
+  "exclude": [
+    "./src/**/*.fixture.ts",
+    "./src/**/*.test.ts"
+  ],
+  "extends": "../../../config/typescript/tsconfig.base.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "outDir": "./dist"
+  },
+  "include": [
+    "./src/**/*"
+  ]
+}

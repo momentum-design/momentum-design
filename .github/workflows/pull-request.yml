@@ -105,6 +105,9 @@ jobs:
           path: '**/node_modules'
           key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
+      - name: Synchronize Packages
+        run: yarn
+
       - name: Update Main Branch
         run: |
           git fetch origin main --unshallow
@@ -148,6 +151,9 @@ jobs:
           path: '**/node_modules'
           key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
 
+      - name: Synchronize Packages
+        run: yarn
+
       - name: Analyze - Prebuild
         run: yarn workspace ${{ matrix.package }} analyze:prebuild
 
@@ -180,6 +186,9 @@ jobs:
           path: '**/node_modules'
           key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
 
+      - name: Synchronize Packages
+        run: yarn
+
       - name: Test - Prebuild
         run: yarn workspace ${{ matrix.package }} test:prebuild
 
@@ -210,6 +219,9 @@ jobs:
         with:
           path: '**/node_modules'
           key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Synchronize Packages
+        run: yarn
 
       - name: Build
         run: yarn build
@@ -255,6 +267,9 @@ jobs:
           path: '**/dist'
           key: dist-${{ matrix.os }}-${{ env.rid }}
 
+      - name: Synchronize Packages
+        run: yarn
+
       - name: Analyze - Postbuild
         run: yarn workspace ${{ matrix.package }} analyze:postbuild
 
@@ -292,6 +307,9 @@ jobs:
         with:
           path: '**/dist'
           key: dist-${{ matrix.os }}-${{ env.rid }}
+
+      - name: Synchronize Packages
+        run: yarn
 
       - name: Test - Postbuild
         run: yarn workspace ${{ matrix.package }} test:postbuild
