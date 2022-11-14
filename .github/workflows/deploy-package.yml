@@ -124,7 +124,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: '**/packages/**/package.json'
-          key: package-definitions-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: package-definitions-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
 
   deploy-github:
@@ -140,14 +140,14 @@ jobs:
         uses: actions/cache@v3
         with:
           path: '**/packages/**/package.json'
-          key: package-definitions-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: package-definitions-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Deploy - Github
         run: |
           git config --local user.email "automation@momentum.design"
           git config --local user.name "Momentum Design Automation"
           git add **/package.json
-          FILE_COUNT=$(git status -s | wc -l | xargs)FILE_COUNT=$(git status -s | wc -l | xargs)
+          FILE_COUNT=$(git status -s | wc -l | xargs)
           if [[ $FILE_COUNT != '0' ]]
           then
             echo "found $FILE_COUNT changed package definitions"
