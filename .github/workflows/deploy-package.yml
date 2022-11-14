@@ -151,7 +151,7 @@ jobs:
           if [[ $FILE_COUNT != '0' ]]
           then
             echo "found $FILE_COUNT changed package definitions"
-            git commit -m "ci: update package versions [skip actions]"
+            git commit -m "ci: update package versions [skip ci]"
             git push origin documentation
           else
             echo "package definitions have not changed"
@@ -256,7 +256,7 @@ jobs:
           key: dist-${{ runner.os }}-${{ env.rid }}
 
       - name: Configure Yarn
-        run: yarn config set npmAuthToken ${{ secrets.NPM_TOKEN }}
+        run: yarn config set npmAuthToken ${{ secrets.NPM_TOKEN_CISCO_MD }}
 
       - name: ( ${{ matrix.package }} ) Deploy - NPMJS
         run: yarn workspace ${{ matrix.package }} deploy:npmjs
