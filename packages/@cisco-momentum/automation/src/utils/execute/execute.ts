@@ -1,7 +1,5 @@
 import ChildProcess from 'node:child_process';
 
-import CONSTANTS from './constants';
-
 class Execute {
   public static emit(value: string): void {
     process.stdout.write(value);
@@ -13,22 +11,14 @@ class Execute {
 
   public static run(command: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      ChildProcess.exec(
-        command,
-        { maxBuffer: Execute.CONSTANTS.MAX_BUFFER_SIZE },
-        (error, response) => {
-          if (error) {
-            reject(error);
-          }
+      ChildProcess.exec(command, (error, response) => {
+        if (error) {
+          reject(error);
+        }
 
-          resolve(response);
-        },
-      );
+        resolve(response);
+      });
     });
-  }
-
-  public static get CONSTANTS(): typeof CONSTANTS {
-    return structuredClone(CONSTANTS);
   }
 }
 
