@@ -1,0 +1,9 @@
+{
+  "tokenSetOrder": [
+    "core/color",
+    "core/spacing",
+    "core/elevation",
+    "core/border-radius",
+    "core/border-width"
+  ]
+}
