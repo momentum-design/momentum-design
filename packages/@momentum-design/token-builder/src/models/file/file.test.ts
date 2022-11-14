@@ -21,13 +21,13 @@ describe('@momentum-design/token-builder - models.File', () => {
 
     describe('#categories', () => {
       it('should be the categories provided to the File', () => {
-        expect(file.categories).toMatchObject(FileFixture.FIXTURE_CONFIG.filters.categories as Array<string>);
+        expect(file.categories).toMatchObject(FileFixture.FIXTURE_CONFIG.filters?.categories as Array<string>);
       });
 
       it('should be an empty array if categories were not provided to the File', () => {
         const config = structuredClone(FileFixture.FIXTURE_CONFIG);
 
-        delete config.filters.categories;
+        delete config.filters?.categories;
 
         file = new File(config);
 
@@ -92,8 +92,8 @@ describe('@momentum-design/token-builder - models.File', () => {
       it('should be a function that can filter by category', () => {
         const config = structuredClone(FileFixture.FIXTURE_CONFIG);
 
-        delete config.filters.items;
-        delete config.filters.types;
+        delete config.filters?.items;
+        delete config.filters?.types;
 
         file = new File(config);
 
@@ -103,8 +103,8 @@ describe('@momentum-design/token-builder - models.File', () => {
       it('should be a function that can filter by item', () => {
         const config = structuredClone(FileFixture.FIXTURE_CONFIG);
 
-        delete config.filters.categories;
-        delete config.filters.types;
+        delete config.filters?.categories;
+        delete config.filters?.types;
 
         file = new File(config);
 
@@ -114,8 +114,8 @@ describe('@momentum-design/token-builder - models.File', () => {
       it('should be a function that can filter by type', () => {
         const config = structuredClone(FileFixture.FIXTURE_CONFIG);
 
-        delete config.filters.categories;
-        delete config.filters.items;
+        delete config.filters?.categories;
+        delete config.filters?.items;
 
         file = new File(config);
 
@@ -125,13 +125,13 @@ describe('@momentum-design/token-builder - models.File', () => {
 
     describe('#items', () => {
       it('should be the items provided to the File', () => {
-        expect(file.items).toMatchObject(FileFixture.FIXTURE_CONFIG.filters.items as Array<string>);
+        expect(file.items).toMatchObject(FileFixture.FIXTURE_CONFIG.filters?.items as Array<string>);
       });
 
       it('should be an empty array if items were not provided to the File', () => {
         const config = structuredClone(FileFixture.FIXTURE_CONFIG);
 
-        delete config.filters.items;
+        delete config.filters?.items;
 
         file = new File(config);
 
@@ -166,13 +166,13 @@ describe('@momentum-design/token-builder - models.File', () => {
 
     describe('#types', () => {
       it('should be the types provided to the File', () => {
-        expect(file.types).toMatchObject(FileFixture.FIXTURE_CONFIG.filters.types as Array<string>);
+        expect(file.types).toMatchObject(FileFixture.FIXTURE_CONFIG.filters?.types as Array<string>);
       });
 
       it('should be an empty array if types were not provided to the File', () => {
         const config = structuredClone(FileFixture.FIXTURE_CONFIG);
 
-        delete config.filters.types;
+        delete config.filters?.types;
 
         file = new File(config);
 
