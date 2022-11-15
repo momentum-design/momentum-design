@@ -1,8 +1,7 @@
 import winston, { createLogger, Logform } from 'winston';
 import transports, { ConsoleTransportOptions } from 'winston/lib/winston/transports';
-import { MetricsTransport, MetricsTransportOptions } from '../transports';
-import { Transports } from './enums';
-import { ExtendedLogger, TransportOptions } from './types';
+import { ExtendedLogger, TransportOptions, Transports, MetricsTransportOptions } from '../common/types';
+import { MetricsTransport } from '../transports';
 import { ExtendedLevels } from './config';
 
 const createMetricsTransport = (options: MetricsTransportOptions) => {

@@ -2,32 +2,47 @@ import Transport from 'winston-transport';
 // TODO: probably not the best idea to log these metrics to amplitude, not the best use case
 // so swap this out for a metrics endpoint at some point in time ...
 import { createInstance, Types } from '@amplitude/analytics-browser';
-import { MetricsTransportOptions } from './types';
+import { randomUUID } from 'crypto';
+import { LogMetric, MetricsTransportOptions } from '../../common/types';
 
 export default class MetricsTransport extends Transport {
   private metricsInstance;
 
   constructor(opts?: MetricsTransportOptions) {
     super(opts);
-    this.silent = !!process.env.MOMENTUM_TELEMETRY_LEVEL;
+    this.silent = process.env.MOMENTUM_TELEMETRY_LEVEL === 'silent';
     if (!this.silent) {
       this.metricsInstance = createInstance();
-      this.metricsInstance.init('3b6442fae30189fd9cce1eb1534d35d1' || process.env.MOMENTUM_METRICS_API_KEY, undefined, {
-        serverZone: Types.ServerZone.EU,
-      });
+      // TODO: inject this as environment variable
+      if (process.env.MOMENTUM_METRICS_API_KEY) {
+        this.metricsInstance.init(process.env.MOMENTUM_METRICS_API_KEY, undefined, {
+          serverZone: Types.ServerZone.EU,
+        });
+      } else {
+        console.error('No metrics Api Key configured, no events will be recorded.');
+      }
     }
   }
 
-  override log(info: any, next: () => void) {
+  override log(info: LogMetric, next: () => void) {
     if (info.level === this.level) {
-      setImmediate(() => {
+      const anonymousUniqueId = randomUUID();
+      setImmediate(async () => {
         try {
-          this.metricsInstance?.track('Test', { testProperty: true });
-          console.log('I logged stuff !');
+          await this.metricsInstance?.track(
+            info.message.eventInput,
+            {
+              anonymousUniqueId,
+              pkg: info.pkg || 'NA',
+              file: info.file || 'NA',
+              ...info.message.eventProperties,
+            },
+          );
         } catch (e) {
-          console.error('Transport failed', e);
+          // eslint-disable-next-line no-console
+          console.error(`Telemetry transport failed for ${anonymousUniqueId}, error: ${e}`);
         }
-        this.emit('logged', info);
+        this.emit('recorded', anonymousUniqueId);
       });
       next();
     } else {

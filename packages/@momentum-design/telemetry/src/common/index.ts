@@ -1,6 +1,6 @@
 import CONSTANTS from './constants';
 
-export type {} from './types';
+export * from './types';
 
 export {
   CONSTANTS,

@@ -1,10 +1,14 @@
 import fs from 'fs/promises';
+import path from 'path';
 import StyleDictionary from 'style-dictionary';
 
+import { Logger, generateMetadata, RecordEvents, RecordEventProperties } from '@momentum-design/telemetry';
 import { CONSTANTS, Config as ExternalConfig } from '../../common';
 import Dictionary from '../dictionary';
 
 import type { Config } from './types';
+
+const logger = Logger.child(generateMetadata('token-builder', path.basename(__filename)));
 
 class TokenBuilder {
   protected config: Config;
@@ -14,6 +18,7 @@ class TokenBuilder {
   }
 
   public build(): Promise<this> {
+    logger.info('Executing build...');
     return this.initialize()
       .then(() => {
         const configObj = this.config.config as ExternalConfig;
@@ -30,6 +35,14 @@ class TokenBuilder {
 
         sdDictionaries.forEach((sdDictionary) => sdDictionary.buildAllPlatforms());
 
+        logger.record({
+          eventInput: RecordEvents.TokenBuilderUsage,
+          eventProperties: {
+            [RecordEventProperties.ChangeSize]: sdDictionaries.length,
+            [RecordEventProperties.TimeSaved]: 0,
+          },
+        });
+
         return this;
       });
   }
@@ -38,6 +51,8 @@ class TokenBuilder {
     if (typeof this.config.config === 'object') {
       return Promise.resolve(this);
     }
+
+    logger.info('Reading files...');
 
     return fs.readFile(this.config.config as string)
       .then((buffer: Buffer) => buffer.toString(CONSTANTS.FILE_ENCODING))

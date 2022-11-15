@@ -2,10 +2,9 @@
 /* eslint-disable arrow-body-style */
 import winston from 'winston';
 import { AbstractConfigSetLevels } from 'winston/lib/winston/config';
-import { Transports } from './enums';
-import { TransportOptions } from './types';
+import { LoggerMetadata, TransportOptions, Transports } from '../common/types';
 
-export const generateMetadata = (pkg: string, file: string) => ({ pkg, file });
+export const generateMetadata = (pkg: string, file: string): LoggerMetadata => ({ pkg, file });
 
 export const LOGGER_FORMAT = winston.format.combine(
   winston.format.colorize(),
@@ -21,7 +20,7 @@ export const LOGGER_FORMAT = winston.format.combine(
   winston.format.errors({ stack: true }),
   winston.format.ms(),
   winston.format.printf((logInfo: winston.Logform.TransformableInfo) => {
-    return `${logInfo.level}|${logInfo.label}/${logInfo.metadata?.pkg || 'NA'}+${logInfo.metadata?.file || 'NA'}@${logInfo.timestamp}:${logInfo.ms}->${logInfo.message};`;
+    return `${logInfo.level}|${logInfo.label}/${logInfo.metadata?.pkg || 'NA'}+${logInfo.metadata?.file || 'NA'}@${logInfo.timestamp}:${logInfo.ms}->${JSON.stringify(logInfo.message)};`;
   }),
 );
 

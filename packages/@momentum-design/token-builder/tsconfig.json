@@ -12,5 +12,8 @@
   },
   "include": [
     "./src/**/*"
-  ]
+  ],
+  "paths": {
+    "@momentum-design/telemetry": ["../telemetry/src/index.ts"],
+  },
 }
