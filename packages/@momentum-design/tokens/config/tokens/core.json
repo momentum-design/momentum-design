@@ -1,7 +1,7 @@
 {
   "files": [
     {
-      "destination": "core/complete.json",
+      "destination": "core/complete",
       "targets": ["core/*.json"]
     }
   ],
