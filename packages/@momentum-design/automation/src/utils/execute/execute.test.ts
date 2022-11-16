@@ -9,7 +9,7 @@ describe('@momentum-design/automation - utils.Execute', () => {
       let spy: jest.SpyInstance;
 
       beforeEach(() => {
-        spy = jest.spyOn(process.stdout, 'write');
+        spy = jest.spyOn(Execute.logger, 'info');
       });
 
       afterEach(() => {

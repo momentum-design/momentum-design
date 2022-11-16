@@ -14,7 +14,7 @@
   "scripts": {
     "analyze": "yarn workspaces foreach run analyze",
     "build": "yarn workspaces foreach run build",
-    "test": "yarn workspaces foreach run test",
+    "test": "NODE_ENV=test yarn workspaces foreach run test",
     "clean": "yarn workspaces foreach run clean",
     "publish:npmjs": "yarn workspaces foreach run publish:npmjs",
     "postinstall": "husky install ./config/husky",

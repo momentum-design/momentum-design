@@ -1,5 +1,4 @@
 import fs from 'fs/promises';
-import path from 'path';
 import StyleDictionary from 'style-dictionary';
 
 import {
@@ -18,7 +17,7 @@ import type { Config } from './types';
 
 const PACKAGE = 'token-builder';
 
-const logger = Logger.child(generateMetadata(PACKAGE, path.basename(__filename)));
+const logger = Logger.child(generateMetadata(PACKAGE, 'token-builder'));
 
 class TokenBuilder {
   protected config: Config;

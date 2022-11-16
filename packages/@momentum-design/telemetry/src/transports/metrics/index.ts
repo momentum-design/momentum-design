@@ -11,7 +11,7 @@ export default class MetricsTransport extends Transport {
   constructor(opts?: MetricsTransportOptions) {
     super(opts);
     this.silent = process.env.MOMENTUM_TELEMETRY_LEVEL === 'silent';
-    if (!this.silent) {
+    if (!this.silent && process.env.NODE_ENV !== 'test') {
       this.metricsInstance = createInstance();
       // TODO: inject this as environment variable
       if (process.env.MOMENTUM_METRICS_API_KEY) {

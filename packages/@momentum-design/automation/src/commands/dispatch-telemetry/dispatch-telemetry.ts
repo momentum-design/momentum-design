@@ -1,4 +1,3 @@
-import path from 'path';
 import {
   Logger,
   generateMetadata,
@@ -19,7 +18,7 @@ import { GitChangeDetails, calculateChanges, GitCalculatedChanges } from '../../
 
 const PACKAGE = 'automation';
 
-const logger = Logger.child(generateMetadata(PACKAGE, path.basename(__filename)));
+const logger = Logger.child(generateMetadata(PACKAGE, 'dispatch-telemetry'));
 
 class DispatchTelemetry extends Command {
   public static override execute(): Promise<string> {
