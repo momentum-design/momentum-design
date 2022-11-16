@@ -4,6 +4,9 @@
     "core/border-width",
     "core/color",
     "core/elevation",
-    "core/spacing"
+    "core/spacing",
+    "theme/webex/common",
+    "theme/webex/dark",
+    "theme/webex/light"
   ]
 }

@@ -3,6 +3,16 @@
     {
       "destination": "core/complete",
       "targets": ["core/*.json"]
+    },
+    {
+      "destination": "theme/webex/dark-complete",
+      "filters": {
+        "types": ["theme"]
+      },
+      "targets": [
+        "core/*.json",
+        "theme/webex/dark.json"
+      ]
     }
   ],
   "formats": ["CSS_VARIABLES", "SCSS_VARIABLES", "WEB_JSON"],
