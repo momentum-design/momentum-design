@@ -7,6 +7,7 @@ import {
   RecordBusinessPrefix,
   RecordSourcePrefix,
   RecordEventName,
+  UNIT,
 } from '@momentum-design/telemetry';
 import { Command } from '../../models';
 import GetPackages from '../get-packages';
@@ -38,7 +39,7 @@ class DispatchTelemetry extends Command {
         // eslint-disable-next-line max-len
         eventInput: `${RecordSourcePrefix.Calculated}_${RecordBusinessPrefix.Engineering}_${PACKAGE}_${RecordContextPrefix.Automation}_${RecordEventName.Git}`,
         eventProperties: {
-          [RecordEventProperties.SecondsSaved]: value?.engineering.seconds,
+          [RecordEventProperties.SecondsSaved]: value?.engineering[UNIT],
         },
       });
 
@@ -49,7 +50,7 @@ class DispatchTelemetry extends Command {
         // eslint-disable-next-line max-len
         eventInput: `${RecordSourcePrefix.Calculated}_${RecordBusinessPrefix.Design}_${PACKAGE}_${RecordContextPrefix.Automation}_${RecordEventName.Git}`,
         eventProperties: {
-          [RecordEventProperties.SecondsSaved]: value?.engineering.seconds,
+          [RecordEventProperties.SecondsSaved]: value?.design[UNIT],
         },
       });
 

@@ -27,4 +27,7 @@ export type {
 
 export { MetricsTransport } from './transports';
 
-export * from './calculator';
+export {
+  UNIT,
+  calculateApproximateValue,
+} from './calculator';

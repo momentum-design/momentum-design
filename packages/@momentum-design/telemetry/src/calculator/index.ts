@@ -37,16 +37,20 @@ export const DESIGN_TIME_FACTOR = /* seconds */ 60 * /* minutes */ 1;
 // so only provide metrics for this specific package, else return nothing
 export const PACKAGE_FOCUS = ['@momentum-design/tokens'];
 
-export const calculateApproximateValue = (packageName: string, lineChanges: number) => {
+export const calculateApproximateValue = (packageName: string, lineChanges: number): {
+  engineering: {[UNIT]: number},
+  design: {[UNIT]: number}
+} |
+null => {
   if (PACKAGE_FOCUS.includes(packageName)) {
-    const engineeringTimeValueInSeconds = ENGINEERING_BASE_TIME_MEASUREMENT + (lineChanges * ENGINEERING_TIME_FACTOR);
-    const designTimeValueInSeconds = DESIGN_BASE_TIME_MEASUREMENT + (lineChanges * DESIGN_TIME_FACTOR);
+    const engineeringTimeValue = ENGINEERING_BASE_TIME_MEASUREMENT + (lineChanges * ENGINEERING_TIME_FACTOR);
+    const designTimeValue = DESIGN_BASE_TIME_MEASUREMENT + (lineChanges * DESIGN_TIME_FACTOR);
     return {
       engineering: {
-        seconds: engineeringTimeValueInSeconds,
+        [UNIT]: engineeringTimeValue,
       },
       design: {
-        seconds: designTimeValueInSeconds,
+        [UNIT]: designTimeValue,
       },
     };
   }
