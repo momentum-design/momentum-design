@@ -2,13 +2,23 @@ import fs from 'fs/promises';
 import path from 'path';
 import StyleDictionary from 'style-dictionary';
 
-import { Logger, generateMetadata, RecordEvents, RecordEventProperties } from '@momentum-design/telemetry';
+import {
+  Logger,
+  generateMetadata,
+  RecordEventProperties,
+  RecordContextPrefix,
+  RecordSourcePrefix,
+  RecordEventName,
+  RecordBusinessPrefix,
+} from '@momentum-design/telemetry';
 import { CONSTANTS, Config as ExternalConfig } from '../../common';
 import Dictionary from '../dictionary';
 
 import type { Config } from './types';
 
-const logger = Logger.child(generateMetadata('token-builder', path.basename(__filename)));
+const PACKAGE = 'token-builder';
+
+const logger = Logger.child(generateMetadata(PACKAGE, path.basename(__filename)));
 
 class TokenBuilder {
   protected config: Config;
@@ -35,12 +45,15 @@ class TokenBuilder {
 
         sdDictionaries.forEach((sdDictionary) => sdDictionary.buildAllPlatforms());
 
-        logger.record({
-          eventInput: RecordEvents.TokenBuilderUsage,
-          eventProperties: {
-            [RecordEventProperties.ChangeSize]: sdDictionaries.length,
-            [RecordEventProperties.TimeSaved]: 0,
-          },
+        configObj.formats.forEach((format) => {
+          logger.record({
+            // eslint-disable-next-line max-len
+            eventInput: `${RecordSourcePrefix.Raw}_${RecordBusinessPrefix.Engineering}_${PACKAGE}_${RecordContextPrefix.Usage}_${RecordEventName.Build}`,
+            eventProperties: {
+              [RecordEventProperties.OutputFormat]: format,
+              [RecordEventProperties.FileCount]: configObj.files.length,
+            },
+          });
         });
 
         return this;

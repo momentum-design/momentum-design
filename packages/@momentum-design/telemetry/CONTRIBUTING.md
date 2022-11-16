@@ -32,7 +32,7 @@ The following tools are used within this project:
 
 ### How to add a new typed metric
 1. See ./common/types.ts
-2. Add an event key to the `RecordEvents` enum
+2. Add an event key or reuse an existing one for the `RecordEventName`, `RecordBusinessPrefix`, `RecordSourcePrefix`, `RecordContextPrefix`
 3. Add event properties to the `RecordEventProperties` enum
 4. Add event property mappings to the `MappedRecordEventProperties` type
 

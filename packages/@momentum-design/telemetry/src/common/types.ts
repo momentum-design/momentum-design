@@ -15,18 +15,47 @@ export type LoggerInfo = {
   [key: string]: any;
 }
 
-export enum RecordEvents {
-  TokenBuilderUsage = 'TokenBuilderUsage',
+export enum RecordBusinessPrefix {
+  Design = 'Design',
+  Engineering = 'Engineering'
 }
 
+export enum RecordSourcePrefix {
+  Calculated = 'Calculated',
+  Raw = 'Raw'
+}
+
+export enum RecordContextPrefix {
+  Automation = 'Automation',
+  Usage = 'Usage',
+}
+
+export enum RecordEventName {
+  Build = 'Build',
+  Git = 'Git',
+}
+
+/**
+ * Source_Business_<packageName>_Context_Event
+* */
+export type RecordEvents = `${RecordSourcePrefix}_${RecordBusinessPrefix}_${string}_${RecordContextPrefix}_${RecordEventName}`; // eslint-disable-line max-len
+
 export enum RecordEventProperties {
-  TimeSaved = 'timeSaved',
-  ChangeSize = 'changeSize',
+  OutputFormat = 'OutputFormat',
+  FileCount = 'FileCount',
+  SecondsSaved = 'SecondsSaved',
+  LineCount_Changed = 'LineCount_Changed',
+  LineCount_Added = 'LineCount_Added',
+  LineCount_Removed = 'LineCount_Removed',
 }
 
 export type MappedRecordEventProperties = {
-  [RecordEventProperties.TimeSaved]?: number; // measured in minutes
-  [RecordEventProperties.ChangeSize]?: number; // measured in number of dictionaries run
+  [RecordEventProperties.SecondsSaved]?: number; // seconds
+  [RecordEventProperties.LineCount_Changed]?: number;
+  [RecordEventProperties.LineCount_Added]?: number;
+  [RecordEventProperties.LineCount_Removed]?: number;
+  [RecordEventProperties.OutputFormat]?: string; // format === platform === output i.e., JSON, or SWIFT, etc
+  [RecordEventProperties.FileCount]?: number; // number of files
 }
 
 export type Metric = {
@@ -36,7 +65,7 @@ export type Metric = {
 }
 
 interface RecordLeveledLogMethod {
-  (meta: Metric): Logger; // TODO: type meta
+  (meta: Metric): Logger;
 }
 
 export interface ExtendedLogger extends Logger {

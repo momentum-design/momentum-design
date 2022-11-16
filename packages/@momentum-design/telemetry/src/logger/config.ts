@@ -29,7 +29,8 @@ export const METRICS_FORMAT = winston.format.combine(
 );
 
 export const ExtendedLevels: AbstractConfigSetLevels = {
-  record: 8,
+  // set record to the lowest possible priority, which will be at the end of the npm array
+  record: Object.keys(winston.config.npm.levels).length + 1,
 };
 
 export const LOGGER_TRANSPORTS: TransportOptions = [

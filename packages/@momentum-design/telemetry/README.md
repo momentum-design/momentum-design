@@ -24,12 +24,12 @@ Prerequisites:
 
 How to use telemetry in your packages
 ```code
-import { Logger, generateMetadata, RecordEvents, RecordEventProperties } from '@momentum-design/telemetry';
+import { Logger, generateMetadata, RecordEventProperties, RecordContextPrefix, RecordBusinessPrefix, RecordSourcePrefix, RecordEventName } from '@momentum-design/telemetry';
 
 const logger = Logger.child(generateMetadata('<packageName>', path.basename(__filename)));
 ...
 logger.record({
-  eventInput: RecordEvents.<Key>,
+  eventInput: `${RecordSourcePrefix}_${RecordBusinessPrefix}_${PACKAGE}_${RecordContextPrefix}_${RecordEventName}`,
   eventProperties: {
     [RecordEventProperties.<Key>]: <value>
     [RecordEventProperties.<Key>]: <value>
@@ -67,3 +67,9 @@ Logs are purely used for relaying information to the user and for debugging. No 
 The metrics we pay attention to are
 1. Weekly Downloads
 2. Dependents (tab)
+
+### github
+
+The metrics we pay attention to are
+1. [Pushes to the main branch](https://github.com/momentum-design/momentum-design/commits/main)
+2. [Pushes to the design token branch from designers](https://github.com/momentum-design/momentum-design/tree/design-token-updates)

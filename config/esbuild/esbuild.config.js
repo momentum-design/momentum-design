@@ -3,7 +3,7 @@ import { join } from 'path';
 
 import { PROJECT_PREFIX } from './esbuild.constants.js';
 
-const cli = async ({ stage, extension = 'js', external, format = 'esm' }) => {
+const cli = async ({ stage, extension = 'js', external, format = 'esm', banner = {} }) => {
   const projectPath = process.cwd();
 
   await esbuild.build({
@@ -13,6 +13,7 @@ const cli = async ({ stage, extension = 'js', external, format = 'esm' }) => {
     format,
     minify: true,
     platform: 'node',
+    banner,
     target: ['node18.12.1'],
     sourcemap: stage !== 'production',
     outfile: `${join(projectPath, 'dist', 'cli', `index.${extension}`)}`,
@@ -68,7 +69,7 @@ const cjs = async (
     tsconfig: `${join(projectPath, tsconfig)}`,
     platform,
   });
-}
+};
 
 const plop = async () => {
   const plop = await esm(

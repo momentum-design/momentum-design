@@ -1,8 +1,13 @@
 import ChildProcess from 'node:child_process';
+import path from 'path';
+
+import { Logger, generateMetadata } from '@momentum-design/telemetry';
+
+const logger = Logger.child(generateMetadata('automation', path.basename(__filename)));
 
 class Execute {
   public static emit(value: string): void {
-    process.stdout.write(value);
+    logger.info(value);
   }
 
   public static resultsToArray(results: string): Array<string> {
