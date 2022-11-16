@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "./dist/",
     "module": "ES6",
+    "preserveConstEnums": true
   },
   "plugins": [],
   "include": [

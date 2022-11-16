@@ -8,8 +8,8 @@ export {
   RecordContextPrefix,
   RecordSourcePrefix,
   RecordEventName,
-  RecordEventProperties,
   RecordBusinessPrefix,
+  RecordEventProperties,
   Transports,
 } from './common/types';
 
