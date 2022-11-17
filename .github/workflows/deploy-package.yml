@@ -70,7 +70,7 @@ jobs:
         run: yarn
 
       - name: Build Automation
-        run: yarn automation build:cli
+        run: yarn telemetry build && yarn automation build:cli
 
       - name: Cache Automation
         uses: actions/cache@v3
