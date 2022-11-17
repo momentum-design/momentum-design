@@ -27,5 +27,6 @@
   ],
   "formats": ["CSS_VARIABLES", "SCSS_VARIABLES", "WEB_JSON"],
   "prefix": "md",
-  "references": true
+  "references": true,
+  "transforms": ["ATTRIBUTE_CTI", "NAME_CTI_KABAB", "MD_ELEVATION"]
 }

@@ -99,6 +99,15 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
 
+      - name: Build Telemetry
+        run: yarn && yarn telemetry build
+
+      - name: Cache Telemetry Dist
+        uses: actions/cache@v3
+        with:
+          path: 'packages/@momentum-design/telemetry/dist'
+          key: momentum-design-telemetry-dist-ubuntu-latest-${{ env.rid }} # this will need to be updated to match the os matrix
+
       - name: Uncache Dependencies
         uses: actions/cache@v3
         with:
@@ -151,6 +160,12 @@ jobs:
           path: '**/node_modules'
           key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
 
+      - name: Uncache Telemetry Dist
+        uses: actions/cache@v3
+        with:
+          path: 'packages/@momentum-design/telemetry/dist'
+          key: momentum-design-telemetry-dist-${{ matrix.os }}-${{ env.rid }}
+
       - name: Synchronize Packages
         run: yarn
 
@@ -185,6 +200,12 @@ jobs:
         with:
           path: '**/node_modules'
           key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
+      
+      - name: Uncache Telemetry Dist
+        uses: actions/cache@v3
+        with:
+          path: 'packages/@momentum-design/telemetry/dist'
+          key: momentum-design-telemetry-dist-${{ matrix.os }}-${{ env.rid }}
 
       - name: Synchronize Packages
         run: yarn
@@ -312,4 +333,6 @@ jobs:
         run: yarn
 
       - name: Test - Postbuild
-        run: yarn workspace ${{ matrix.package }} test:postbuild
+        run: |
+          ls -l packages/${{ matrix.package }}/dist
+          yarn workspace ${{ matrix.package }} test:postbuild
