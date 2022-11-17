@@ -332,9 +332,5 @@ jobs:
       - name: Synchronize Packages
         run: yarn
         
-      - name: List packages
-        if: ${{ matrix.package }} == '@momentum-design/token-builder'
-        run: ls -Rl .
-        
       - name: Test - Postbuild
         run: yarn workspace ${{ matrix.package }} test:postbuild
