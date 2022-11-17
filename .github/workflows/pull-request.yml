@@ -246,6 +246,8 @@ jobs:
 
       - name: Build
         run: yarn build
+        env:
+          MOMENTUM_METRICS_API_KEY: ${{ secrets.MOMENTUM_METRICS_API_KEY }}
 
       - name: Cache Dist
         uses: actions/cache@v3
