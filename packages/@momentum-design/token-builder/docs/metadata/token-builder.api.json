@@ -161,20 +161,20 @@
     }
   },
   "kind": "Package",
-  "canonicalReference": "@cisco-momentum/token-builder!",
+  "canonicalReference": "@momentum-design/token-builder!",
   "docComment": "",
-  "name": "@cisco-momentum/token-builder",
+  "name": "@momentum-design/token-builder",
   "preserveMemberOrder": false,
   "members": [
     {
       "kind": "EntryPoint",
-      "canonicalReference": "@cisco-momentum/token-builder!",
+      "canonicalReference": "@momentum-design/token-builder!",
       "name": "",
       "preserveMemberOrder": false,
       "members": [
         {
           "kind": "Interface",
-          "canonicalReference": "@cisco-momentum/token-builder!Config:interface",
+          "canonicalReference": "@momentum-design/token-builder!Config:interface",
           "docComment": "",
           "excerptTokens": [
             {
@@ -189,7 +189,7 @@
           "members": [
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!Config#files:member",
+              "canonicalReference": "@momentum-design/token-builder!Config#files:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -208,7 +208,7 @@
                 {
                   "kind": "Reference",
                   "text": "ConfigFile",
-                  "canonicalReference": "@cisco-momentum/token-builder!ConfigFile:interface"
+                  "canonicalReference": "@momentum-design/token-builder!ConfigFile:interface"
                 },
                 {
                   "kind": "Content",
@@ -230,7 +230,7 @@
             },
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!Config#formats:member",
+              "canonicalReference": "@momentum-design/token-builder!Config#formats:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -249,7 +249,7 @@
                 {
                   "kind": "Reference",
                   "text": "Format",
-                  "canonicalReference": "@cisco-momentum/token-builder!Format:type"
+                  "canonicalReference": "@momentum-design/token-builder!Format:type"
                 },
                 {
                   "kind": "Content",
@@ -271,7 +271,7 @@
             },
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!Config#prefix:member",
+              "canonicalReference": "@momentum-design/token-builder!Config#prefix:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -301,7 +301,7 @@
         },
         {
           "kind": "Interface",
-          "canonicalReference": "@cisco-momentum/token-builder!ConfigFile:interface",
+          "canonicalReference": "@momentum-design/token-builder!ConfigFile:interface",
           "docComment": "",
           "excerptTokens": [
             {
@@ -316,7 +316,7 @@
           "members": [
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!ConfigFile#destination:member",
+              "canonicalReference": "@momentum-design/token-builder!ConfigFile#destination:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -343,7 +343,7 @@
             },
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!ConfigFile#filters:member",
+              "canonicalReference": "@momentum-design/token-builder!ConfigFile#filters:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -353,7 +353,7 @@
                 {
                   "kind": "Reference",
                   "text": "Filters",
-                  "canonicalReference": "@cisco-momentum/token-builder!Filters:interface"
+                  "canonicalReference": "@momentum-design/token-builder!Filters:interface"
                 },
                 {
                   "kind": "Content",
@@ -371,7 +371,7 @@
             },
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!ConfigFile#targets:member",
+              "canonicalReference": "@momentum-design/token-builder!ConfigFile#targets:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -406,7 +406,7 @@
         },
         {
           "kind": "Variable",
-          "canonicalReference": "@cisco-momentum/token-builder!CONSTANTS:var",
+          "canonicalReference": "@momentum-design/token-builder!CONSTANTS:var",
           "docComment": "",
           "excerptTokens": [
             {
@@ -429,7 +429,7 @@
         },
         {
           "kind": "Class",
-          "canonicalReference": "@cisco-momentum/token-builder!Dictionary:class",
+          "canonicalReference": "@momentum-design/token-builder!Dictionary:class",
           "docComment": "",
           "excerptTokens": [
             {
@@ -444,7 +444,7 @@
           "members": [
             {
               "kind": "Constructor",
-              "canonicalReference": "@cisco-momentum/token-builder!Dictionary:constructor(1)",
+              "canonicalReference": "@momentum-design/token-builder!Dictionary:constructor(1)",
               "docComment": "/**\n * Constructs a new instance of the `Dictionary` class\n */\n",
               "excerptTokens": [
                 {
@@ -454,7 +454,7 @@
                 {
                   "kind": "Reference",
                   "text": "Config",
-                  "canonicalReference": "@cisco-momentum/token-builder!DictionaryConfig:interface"
+                  "canonicalReference": "@momentum-design/token-builder!DictionaryConfig:interface"
                 },
                 {
                   "kind": "Content",
@@ -477,7 +477,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!Dictionary#config:member",
+              "canonicalReference": "@momentum-design/token-builder!Dictionary#config:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -487,7 +487,7 @@
                 {
                   "kind": "Reference",
                   "text": "Config",
-                  "canonicalReference": "@cisco-momentum/token-builder!DictionaryConfig:interface"
+                  "canonicalReference": "@momentum-design/token-builder!DictionaryConfig:interface"
                 },
                 {
                   "kind": "Content",
@@ -507,7 +507,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!Dictionary#formats:member",
+              "canonicalReference": "@momentum-design/token-builder!Dictionary#formats:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -526,7 +526,7 @@
                 {
                   "kind": "Reference",
                   "text": "Format",
-                  "canonicalReference": "@cisco-momentum/token-builder!Format:type"
+                  "canonicalReference": "@momentum-design/token-builder!Format:type"
                 },
                 {
                   "kind": "Content",
@@ -550,7 +550,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!Dictionary#input:member",
+              "canonicalReference": "@momentum-design/token-builder!Dictionary#input:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -579,7 +579,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!Dictionary#output:member",
+              "canonicalReference": "@momentum-design/token-builder!Dictionary#output:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -608,7 +608,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!Dictionary#platforms:member",
+              "canonicalReference": "@momentum-design/token-builder!Dictionary#platforms:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -627,7 +627,7 @@
                 {
                   "kind": "Reference",
                   "text": "Platform",
-                  "canonicalReference": "@cisco-momentum/token-builder!Platform:class"
+                  "canonicalReference": "@momentum-design/token-builder!Platform:class"
                 },
                 {
                   "kind": "Content",
@@ -651,7 +651,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!Dictionary#prefix:member",
+              "canonicalReference": "@momentum-design/token-builder!Dictionary#prefix:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -680,7 +680,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!Dictionary#sdConfig:member",
+              "canonicalReference": "@momentum-design/token-builder!Dictionary#sdConfig:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -710,7 +710,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!Dictionary#targets:member",
+              "canonicalReference": "@momentum-design/token-builder!Dictionary#targets:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -747,7 +747,7 @@
         },
         {
           "kind": "Interface",
-          "canonicalReference": "@cisco-momentum/token-builder!DictionaryConfig:interface",
+          "canonicalReference": "@momentum-design/token-builder!DictionaryConfig:interface",
           "docComment": "",
           "excerptTokens": [
             {
@@ -762,7 +762,7 @@
           "members": [
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!DictionaryConfig#file:member",
+              "canonicalReference": "@momentum-design/token-builder!DictionaryConfig#file:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -772,7 +772,7 @@
                 {
                   "kind": "Reference",
                   "text": "ConfigFile",
-                  "canonicalReference": "@cisco-momentum/token-builder!ConfigFile:interface"
+                  "canonicalReference": "@momentum-design/token-builder!ConfigFile:interface"
                 },
                 {
                   "kind": "Content",
@@ -790,7 +790,7 @@
             },
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!DictionaryConfig#formats:member",
+              "canonicalReference": "@momentum-design/token-builder!DictionaryConfig#formats:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -809,7 +809,7 @@
                 {
                   "kind": "Reference",
                   "text": "Format",
-                  "canonicalReference": "@cisco-momentum/token-builder!Format:type"
+                  "canonicalReference": "@momentum-design/token-builder!Format:type"
                 },
                 {
                   "kind": "Content",
@@ -831,7 +831,7 @@
             },
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!DictionaryConfig#input:member",
+              "canonicalReference": "@momentum-design/token-builder!DictionaryConfig#input:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -858,7 +858,7 @@
             },
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!DictionaryConfig#output:member",
+              "canonicalReference": "@momentum-design/token-builder!DictionaryConfig#output:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -885,7 +885,7 @@
             },
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!DictionaryConfig#prefix:member",
+              "canonicalReference": "@momentum-design/token-builder!DictionaryConfig#prefix:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -915,7 +915,7 @@
         },
         {
           "kind": "Class",
-          "canonicalReference": "@cisco-momentum/token-builder!File_2:class",
+          "canonicalReference": "@momentum-design/token-builder!File_2:class",
           "docComment": "/**\n * This class represents the output item generated by the token builder.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
@@ -930,7 +930,7 @@
           "members": [
             {
               "kind": "Constructor",
-              "canonicalReference": "@cisco-momentum/token-builder!File_2:constructor(1)",
+              "canonicalReference": "@momentum-design/token-builder!File_2:constructor(1)",
               "docComment": "/**\n * Constructor\n *\n * @param config - configuration for the file\n */\n",
               "excerptTokens": [
                 {
@@ -940,7 +940,7 @@
                 {
                   "kind": "Reference",
                   "text": "Config",
-                  "canonicalReference": "@cisco-momentum/token-builder!FileConfig:interface"
+                  "canonicalReference": "@momentum-design/token-builder!FileConfig:interface"
                 },
                 {
                   "kind": "Content",
@@ -963,7 +963,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!File_2#categories:member",
+              "canonicalReference": "@momentum-design/token-builder!File_2#categories:member",
               "docComment": "/**\n * getter method to list all the categories in this file.\n *\n * @returns array with categories.\n */\n",
               "excerptTokens": [
                 {
@@ -997,7 +997,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!File_2#config:member",
+              "canonicalReference": "@momentum-design/token-builder!File_2#config:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1007,7 +1007,7 @@
                 {
                   "kind": "Reference",
                   "text": "Config",
-                  "canonicalReference": "@cisco-momentum/token-builder!FileConfig:interface"
+                  "canonicalReference": "@momentum-design/token-builder!FileConfig:interface"
                 },
                 {
                   "kind": "Content",
@@ -1027,7 +1027,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!File_2#destination:member",
+              "canonicalReference": "@momentum-design/token-builder!File_2#destination:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1056,7 +1056,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!File_2#extension:member",
+              "canonicalReference": "@momentum-design/token-builder!File_2#extension:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1085,7 +1085,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!File_2#file:member",
+              "canonicalReference": "@momentum-design/token-builder!File_2#file:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1114,7 +1114,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!File_2#filter:member",
+              "canonicalReference": "@momentum-design/token-builder!File_2#filter:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1152,7 +1152,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!File_2#format:member",
+              "canonicalReference": "@momentum-design/token-builder!File_2#format:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1181,7 +1181,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!File_2#items:member",
+              "canonicalReference": "@momentum-design/token-builder!File_2#items:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1215,7 +1215,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!File_2#sdConfig:member",
+              "canonicalReference": "@momentum-design/token-builder!File_2#sdConfig:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1245,7 +1245,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!File_2#types:member",
+              "canonicalReference": "@momentum-design/token-builder!File_2#types:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1282,7 +1282,7 @@
         },
         {
           "kind": "Interface",
-          "canonicalReference": "@cisco-momentum/token-builder!FileConfig:interface",
+          "canonicalReference": "@momentum-design/token-builder!FileConfig:interface",
           "docComment": "",
           "excerptTokens": [
             {
@@ -1297,7 +1297,7 @@
           "members": [
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!FileConfig#destination:member",
+              "canonicalReference": "@momentum-design/token-builder!FileConfig#destination:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1324,7 +1324,7 @@
             },
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!FileConfig#filters:member",
+              "canonicalReference": "@momentum-design/token-builder!FileConfig#filters:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1334,7 +1334,7 @@
                 {
                   "kind": "Reference",
                   "text": "Filters",
-                  "canonicalReference": "@cisco-momentum/token-builder!Filters:interface"
+                  "canonicalReference": "@momentum-design/token-builder!Filters:interface"
                 },
                 {
                   "kind": "Content",
@@ -1352,7 +1352,7 @@
             },
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!FileConfig#format:member",
+              "canonicalReference": "@momentum-design/token-builder!FileConfig#format:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1362,7 +1362,7 @@
                 {
                   "kind": "Reference",
                   "text": "Format",
-                  "canonicalReference": "@cisco-momentum/token-builder!Format:type"
+                  "canonicalReference": "@momentum-design/token-builder!Format:type"
                 },
                 {
                   "kind": "Content",
@@ -1383,7 +1383,7 @@
         },
         {
           "kind": "TypeAlias",
-          "canonicalReference": "@cisco-momentum/token-builder!Filter:type",
+          "canonicalReference": "@momentum-design/token-builder!Filter:type",
           "docComment": "",
           "excerptTokens": [
             {
@@ -1414,7 +1414,7 @@
         },
         {
           "kind": "Interface",
-          "canonicalReference": "@cisco-momentum/token-builder!Filters:interface",
+          "canonicalReference": "@momentum-design/token-builder!Filters:interface",
           "docComment": "",
           "excerptTokens": [
             {
@@ -1429,7 +1429,7 @@
           "members": [
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!Filters#categories:member",
+              "canonicalReference": "@momentum-design/token-builder!Filters#categories:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1439,7 +1439,7 @@
                 {
                   "kind": "Reference",
                   "text": "Filter",
-                  "canonicalReference": "@cisco-momentum/token-builder!Filter:type"
+                  "canonicalReference": "@momentum-design/token-builder!Filter:type"
                 },
                 {
                   "kind": "Content",
@@ -1457,7 +1457,7 @@
             },
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!Filters#items:member",
+              "canonicalReference": "@momentum-design/token-builder!Filters#items:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1467,7 +1467,7 @@
                 {
                   "kind": "Reference",
                   "text": "Filter",
-                  "canonicalReference": "@cisco-momentum/token-builder!Filter:type"
+                  "canonicalReference": "@momentum-design/token-builder!Filter:type"
                 },
                 {
                   "kind": "Content",
@@ -1485,7 +1485,7 @@
             },
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!Filters#types:member",
+              "canonicalReference": "@momentum-design/token-builder!Filters#types:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1495,7 +1495,7 @@
                 {
                   "kind": "Reference",
                   "text": "Filter",
-                  "canonicalReference": "@cisco-momentum/token-builder!Filter:type"
+                  "canonicalReference": "@momentum-design/token-builder!Filter:type"
                 },
                 {
                   "kind": "Content",
@@ -1516,7 +1516,7 @@
         },
         {
           "kind": "TypeAlias",
-          "canonicalReference": "@cisco-momentum/token-builder!Format:type",
+          "canonicalReference": "@momentum-design/token-builder!Format:type",
           "docComment": "",
           "excerptTokens": [
             {
@@ -1530,7 +1530,7 @@
             {
               "kind": "Reference",
               "text": "CONSTANTS.FORMATS",
-              "canonicalReference": "@cisco-momentum/token-builder!~__type#FORMATS:member"
+              "canonicalReference": "@momentum-design/token-builder!~__type#FORMATS:member"
             },
             {
               "kind": "Content",
@@ -1547,7 +1547,7 @@
         },
         {
           "kind": "Class",
-          "canonicalReference": "@cisco-momentum/token-builder!Platform:class",
+          "canonicalReference": "@momentum-design/token-builder!Platform:class",
           "docComment": "",
           "excerptTokens": [
             {
@@ -1562,7 +1562,7 @@
           "members": [
             {
               "kind": "Constructor",
-              "canonicalReference": "@cisco-momentum/token-builder!Platform:constructor(1)",
+              "canonicalReference": "@momentum-design/token-builder!Platform:constructor(1)",
               "docComment": "/**\n * Constructs a new instance of the `Platform` class\n */\n",
               "excerptTokens": [
                 {
@@ -1572,7 +1572,7 @@
                 {
                   "kind": "Reference",
                   "text": "Config",
-                  "canonicalReference": "@cisco-momentum/token-builder!PlatformConfig:interface"
+                  "canonicalReference": "@momentum-design/token-builder!PlatformConfig:interface"
                 },
                 {
                   "kind": "Content",
@@ -1595,7 +1595,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!Platform#config:member",
+              "canonicalReference": "@momentum-design/token-builder!Platform#config:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1605,7 +1605,7 @@
                 {
                   "kind": "Reference",
                   "text": "Config",
-                  "canonicalReference": "@cisco-momentum/token-builder!PlatformConfig:interface"
+                  "canonicalReference": "@momentum-design/token-builder!PlatformConfig:interface"
                 },
                 {
                   "kind": "Content",
@@ -1625,7 +1625,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!Platform#file:member",
+              "canonicalReference": "@momentum-design/token-builder!Platform#file:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1635,7 +1635,7 @@
                 {
                   "kind": "Reference",
                   "text": "File",
-                  "canonicalReference": "@cisco-momentum/token-builder!File_2:class"
+                  "canonicalReference": "@momentum-design/token-builder!File_2:class"
                 },
                 {
                   "kind": "Content",
@@ -1655,7 +1655,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!Platform#format:member",
+              "canonicalReference": "@momentum-design/token-builder!Platform#format:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1665,7 +1665,7 @@
                 {
                   "kind": "Reference",
                   "text": "Format",
-                  "canonicalReference": "@cisco-momentum/token-builder!Format:type"
+                  "canonicalReference": "@momentum-design/token-builder!Format:type"
                 },
                 {
                   "kind": "Content",
@@ -1685,7 +1685,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!Platform#group:member",
+              "canonicalReference": "@momentum-design/token-builder!Platform#group:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1714,7 +1714,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!Platform#output:member",
+              "canonicalReference": "@momentum-design/token-builder!Platform#output:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1743,7 +1743,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!Platform#prefix:member",
+              "canonicalReference": "@momentum-design/token-builder!Platform#prefix:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1772,7 +1772,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!Platform#sdConfig:member",
+              "canonicalReference": "@momentum-design/token-builder!Platform#sdConfig:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1805,7 +1805,7 @@
         },
         {
           "kind": "Interface",
-          "canonicalReference": "@cisco-momentum/token-builder!PlatformConfig:interface",
+          "canonicalReference": "@momentum-design/token-builder!PlatformConfig:interface",
           "docComment": "",
           "excerptTokens": [
             {
@@ -1820,7 +1820,7 @@
           "members": [
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!PlatformConfig#file:member",
+              "canonicalReference": "@momentum-design/token-builder!PlatformConfig#file:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1830,7 +1830,7 @@
                 {
                   "kind": "Reference",
                   "text": "ConfigFile",
-                  "canonicalReference": "@cisco-momentum/token-builder!ConfigFile:interface"
+                  "canonicalReference": "@momentum-design/token-builder!ConfigFile:interface"
                 },
                 {
                   "kind": "Content",
@@ -1848,7 +1848,7 @@
             },
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!PlatformConfig#format:member",
+              "canonicalReference": "@momentum-design/token-builder!PlatformConfig#format:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1858,7 +1858,7 @@
                 {
                   "kind": "Reference",
                   "text": "Format",
-                  "canonicalReference": "@cisco-momentum/token-builder!Format:type"
+                  "canonicalReference": "@momentum-design/token-builder!Format:type"
                 },
                 {
                   "kind": "Content",
@@ -1876,7 +1876,7 @@
             },
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!PlatformConfig#output:member",
+              "canonicalReference": "@momentum-design/token-builder!PlatformConfig#output:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1903,7 +1903,7 @@
             },
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!PlatformConfig#prefix:member",
+              "canonicalReference": "@momentum-design/token-builder!PlatformConfig#prefix:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -1933,7 +1933,7 @@
         },
         {
           "kind": "Class",
-          "canonicalReference": "@cisco-momentum/token-builder!TokenBuilder:class",
+          "canonicalReference": "@momentum-design/token-builder!TokenBuilder:class",
           "docComment": "",
           "excerptTokens": [
             {
@@ -1948,7 +1948,7 @@
           "members": [
             {
               "kind": "Constructor",
-              "canonicalReference": "@cisco-momentum/token-builder!TokenBuilder:constructor(1)",
+              "canonicalReference": "@momentum-design/token-builder!TokenBuilder:constructor(1)",
               "docComment": "/**\n * Constructs a new instance of the `TokenBuilder` class\n */\n",
               "excerptTokens": [
                 {
@@ -1958,7 +1958,7 @@
                 {
                   "kind": "Reference",
                   "text": "Config",
-                  "canonicalReference": "@cisco-momentum/token-builder!TokenBuilderConfig:interface"
+                  "canonicalReference": "@momentum-design/token-builder!TokenBuilderConfig:interface"
                 },
                 {
                   "kind": "Content",
@@ -1981,7 +1981,7 @@
             },
             {
               "kind": "Method",
-              "canonicalReference": "@cisco-momentum/token-builder!TokenBuilder#build:member(1)",
+              "canonicalReference": "@momentum-design/token-builder!TokenBuilder#build:member(1)",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -2016,7 +2016,7 @@
             },
             {
               "kind": "Method",
-              "canonicalReference": "@cisco-momentum/token-builder!TokenBuilder.build:member(1)",
+              "canonicalReference": "@momentum-design/token-builder!TokenBuilder.build:member(1)",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -2026,7 +2026,7 @@
                 {
                   "kind": "Reference",
                   "text": "Config",
-                  "canonicalReference": "@cisco-momentum/token-builder!TokenBuilderConfig:interface"
+                  "canonicalReference": "@momentum-design/token-builder!TokenBuilderConfig:interface"
                 },
                 {
                   "kind": "Content",
@@ -2044,7 +2044,7 @@
                 {
                   "kind": "Reference",
                   "text": "TokenBuilder",
-                  "canonicalReference": "@cisco-momentum/token-builder!TokenBuilder:class"
+                  "canonicalReference": "@momentum-design/token-builder!TokenBuilder:class"
                 },
                 {
                   "kind": "Content",
@@ -2078,7 +2078,7 @@
             },
             {
               "kind": "Property",
-              "canonicalReference": "@cisco-momentum/token-builder!TokenBuilder#config:member",
+              "canonicalReference": "@momentum-design/token-builder!TokenBuilder#config:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -2088,7 +2088,7 @@
                 {
                   "kind": "Reference",
                   "text": "Config",
-                  "canonicalReference": "@cisco-momentum/token-builder!TokenBuilderConfig:interface"
+                  "canonicalReference": "@momentum-design/token-builder!TokenBuilderConfig:interface"
                 },
                 {
                   "kind": "Content",
@@ -2108,7 +2108,7 @@
             },
             {
               "kind": "Method",
-              "canonicalReference": "@cisco-momentum/token-builder!TokenBuilder#initialize:member(1)",
+              "canonicalReference": "@momentum-design/token-builder!TokenBuilder#initialize:member(1)",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -2146,7 +2146,7 @@
         },
         {
           "kind": "Interface",
-          "canonicalReference": "@cisco-momentum/token-builder!TokenBuilderConfig:interface",
+          "canonicalReference": "@momentum-design/token-builder!TokenBuilderConfig:interface",
           "docComment": "",
           "excerptTokens": [
             {
@@ -2161,7 +2161,7 @@
           "members": [
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!TokenBuilderConfig#config:member",
+              "canonicalReference": "@momentum-design/token-builder!TokenBuilderConfig#config:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -2171,7 +2171,7 @@
                 {
                   "kind": "Reference",
                   "text": "ExternalConfig",
-                  "canonicalReference": "@cisco-momentum/token-builder!Config:interface"
+                  "canonicalReference": "@momentum-design/token-builder!Config:interface"
                 },
                 {
                   "kind": "Content",
@@ -2193,7 +2193,7 @@
             },
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!TokenBuilderConfig#input:member",
+              "canonicalReference": "@momentum-design/token-builder!TokenBuilderConfig#input:member",
               "docComment": "",
               "excerptTokens": [
                 {
@@ -2220,7 +2220,7 @@
             },
             {
               "kind": "PropertySignature",
-              "canonicalReference": "@cisco-momentum/token-builder!TokenBuilderConfig#output:member",
+              "canonicalReference": "@momentum-design/token-builder!TokenBuilderConfig#output:member",
               "docComment": "",
               "excerptTokens": [
                 {
