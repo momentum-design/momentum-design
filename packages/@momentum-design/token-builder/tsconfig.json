@@ -7,7 +7,7 @@
   "compilerOptions": {
     "allowJs": true,
     "declarationDir": "./dist/types",
-    "module": "ESNext",
+    "module": "ES6",
     "outDir": "./dist/module"
   },
   "include": [
