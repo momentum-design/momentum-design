@@ -45,10 +45,17 @@ class Platform {
   public get sdConfig(): SDPlatform {
     return {
       prefix: this.prefix,
-      transformGroup: this.group,
+      transformGroup: this.transforms ? undefined : this.group,
+      transforms: this.transforms,
       buildPath: this.output,
       files: [this.file.sdConfig],
     };
+  }
+
+  public get transforms(): Array<string> | undefined {
+    return this.config.transforms
+      ? this.config.transforms.map((transform) => CONSTANTS.TRANSFORMS[transform])
+      : undefined;
   }
 }
 

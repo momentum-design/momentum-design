@@ -1,4 +1,4 @@
-import type { ConfigFile, Format } from '../../common';
+import type { ConfigFile, Format, Transform } from '../../common';
 
 export interface Config {
   file: ConfigFile
@@ -6,4 +6,5 @@ export interface Config {
   input: string;
   output: string;
   prefix: string;
+  transforms?: Array<Transform>;
 }
