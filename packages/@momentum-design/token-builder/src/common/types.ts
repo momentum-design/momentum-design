@@ -15,6 +15,7 @@ export interface Filters {
 export interface ConfigFile {
   destination: string;
   filters?: Filters;
+  name?: string;
   references?: boolean;
   targets: Array<string>;
 }

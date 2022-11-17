@@ -4,5 +4,6 @@ export interface Config {
   destination: string;
   filters?: Filters;
   format: Format;
+  name?: string;
   references?: boolean;
 }

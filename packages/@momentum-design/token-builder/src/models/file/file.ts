@@ -71,6 +71,7 @@ class File {
       filter: this.filter,
       options: {
         outputReferences: this.references,
+        selector: this.config.name,
       },
     };
   }
