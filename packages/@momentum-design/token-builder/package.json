@@ -43,6 +43,7 @@
     "test:unit": "jest ./src/**/*.test.ts"
   },
   "dependencies": {
+    "@momentum-design/telemetry": "workspace:^",
     "style-dictionary": "^3.7.1",
     "yargs": "^17.6.0"
   },

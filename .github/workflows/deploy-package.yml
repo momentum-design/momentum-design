@@ -70,7 +70,7 @@ jobs:
         run: yarn
 
       - name: Build Automation
-        run: yarn automation build:cli
+        run: yarn telemetry build && yarn automation build:cli
 
       - name: Cache Automation
         uses: actions/cache@v3
@@ -202,5 +202,5 @@ jobs:
       - name: Configure Yarn
         run: yarn config set npmAuthToken ${{ secrets.NPM_TOKEN_CISCO_MD }}
 
-      - name: ( ${{ matrix.package }} ) Deploy - NPMJS
-        run: yarn workspace ${{ matrix.package }} publish:npmjs
+      # - name: ( ${{ matrix.package }} ) Deploy - NPMJS
+      #   run: yarn workspace ${{ matrix.package }} publish:npmjs

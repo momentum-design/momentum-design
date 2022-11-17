@@ -1,0 +1,56 @@
+{
+  "name": "@momentum-design/telemetry",
+  "packageManager": "yarn@3.2.4",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "./dist"
+  ],
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0",
+    "yarn": ">=3.0.0"
+  },
+  "scripts": {
+    "analyze": "yarn analyze:prebuild && yarn analyze:postbuild",
+    "analyze:postbuild": "echo \"script 'analyze:postbuild' has not been implemented\"",
+    "analyze:prebuild": "echo \"script 'analyze:prebuild' has not been implemented\"",
+    "build": "yarn clean && yarn build:src",
+    "build:src": "tsc",
+    "clean:dist": "rimraf ./dist",
+    "clean": "yarn clean:dist",
+    "docs": "yarn docs:api",
+    "docs:api": "yarn docs:api:extract && yarn docs:api:generate",
+    "docs:api:extract": "yarn build && api-extractor run --local --verbose",
+    "docs:api:generate": "yarn generate:api-metadata && api-documenter markdown --input-folder=docs/metadata --output-folder=docs/markdown",
+    "prepublishOnly": "yarn clean && yarn build",
+    "publish": "yarn publish:npmjs",
+    "publish:npmjs": "echo \"script 'publish:npmjs' has not been implemented\"",
+    "start": "node ./dist/main.js",
+    "test": "yarn test:prebuild && yarn test:postbuild",
+    "test:integration": "yarn node --experimental-vm-modules $(yarn bin jest) ./test/*/*.test.ts",
+    "test:postbuild": "yarn test:integration",
+    "test:prebuild": "yarn test:unit",
+    "test:unit": "jest ./src/**/*.test.ts"
+  },
+  "dependencies": {
+    "@amplitude/analytics-browser": "^1.6.1",
+    "winston": "^3.8.2",
+    "winston-transport": "^4.5.0"
+  },
+  "devDependencies": {
+    "@microsoft/api-documenter": "^7.19.23",
+    "@microsoft/api-extractor": "^7.33.5",
+    "@types/jest": "^29.2.0",
+    "@types/node": "^18.11.7",
+    "@typescript-eslint/eslint-plugin": "^5.41.0",
+    "@typescript-eslint/parser": "^5.41.0",
+    "eslint": "^8.26.0",
+    "eslint-plugin-import": "^2.26.0",
+    "jest": "^29.2.2",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^29.0.3",
+    "typescript": "^4.8.4"
+  }
+}
