@@ -334,7 +334,7 @@ jobs:
         
       - name: List packages
         if: ${{ matrix.package }} == '@momentum-design/token-builder'
-        run: ls -l packages/${{ matrix.package }}/dist
+        run: ls -Rl .
         
       - name: Test - Postbuild
         if: ${{ matrix.package }} == '@momentum-design/token-builder'
