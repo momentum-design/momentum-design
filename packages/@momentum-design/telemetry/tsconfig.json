@@ -1,10 +1,18 @@
 {
   "extends": "../../../config/typescript/tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "./dist/"
+    "outDir": "./dist/",
+    "module": "ES6",
+    "preserveConstEnums": true
   },
   "plugins": [],
   "include": [
     "./src/**/*"
-  ]
+  ],
+  "exclude": [
+    "./src/**/*.fixture.ts",
+    "./src/**/*.test.ts",
+    "./src/**/*.spec.ts",
+    "**/*.js",
+  ],
 } 

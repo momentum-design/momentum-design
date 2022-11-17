@@ -4,6 +4,7 @@ import { Execute } from '../../utils';
 import GetPackages from '../get-packages';
 import IncrementPackages from '../increment-packages';
 import RunPackages from '../run-packages';
+import DispatchTelemetry from '../dispatch-telemetry';
 
 import CONSTANTS from './constants';
 import type { Config, Options } from './types';
@@ -28,6 +29,10 @@ class Main extends Command {
 
       case COMMANDS.RUN_PACKAGES:
         promise = RunPackages.execute();
+        break;
+
+      case COMMANDS.DISPATCH_TELEMETRY:
+        promise = DispatchTelemetry.execute();
         break;
 
       default:

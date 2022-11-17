@@ -3,11 +3,13 @@ import yargs from 'yargs';
 import { TokenBuilder } from './models';
 
 const main = (): void => {
-  const args = yargs(process.argv.slice(2)).options({
-    config: { type: 'string' },
-    input: { type: 'string' },
-    output: { type: 'string' },
-  }).parseSync();
+  const args = yargs(process.argv.slice(2))
+    .options({
+      config: { type: 'string' },
+      input: { type: 'string' },
+      output: { type: 'string' },
+    })
+    .parseSync();
 
   const { config, input, output } = args;
 

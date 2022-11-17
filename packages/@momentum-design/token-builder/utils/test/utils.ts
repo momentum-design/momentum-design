@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs/promises';
 
-export const fileToJson = async (relativePath: string) => {
+const fileToJson = async (relativePath: string) => {
   const output = await fs.readFile(path.join(process.cwd(), relativePath)).then(
     (buffer: any) => buffer.toString(),
   ).then(
@@ -9,4 +9,8 @@ export const fileToJson = async (relativePath: string) => {
   );
 
   return output;
+};
+
+export {
+  fileToJson,
 };

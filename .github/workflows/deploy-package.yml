@@ -70,7 +70,7 @@ jobs:
         run: yarn
 
       - name: Build Automation
-        run: yarn automation build:cli
+        run: yarn telemetry build && yarn automation build:cli
 
       - name: Cache Automation
         uses: actions/cache@v3
@@ -204,3 +204,46 @@ jobs:
 
       # - name: ( ${{ matrix.package }} ) Deploy - NPMJS
       #   run: yarn workspace ${{ matrix.package }} publish:npmjs
+
+  dispatch-telemetry:
+    name: ( ${{ matrix.package }} ) Dispatch Telemetry
+    needs: [deploy-npmjs, generate-package-matrix]
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
+
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
+
+      - name: Uncache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: node-modules-next-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Uncache Dist
+        uses: actions/cache@v3
+        with:
+          path: '**/dist'
+          key: dist-${{ runner.os }}-${{ env.rid }}
+
+      - name: Synchronize Packages
+        run: yarn
+
+      - name: Update Main Branch
+        run: |
+          git fetch origin main --unshallow
+      - name: Dispatch Telemetry ( ${{ matrix.package }} )
+        run: yarn md-automation -- --command dispatch-telemetry --packages ${{ matrix.package }}
+        env:
+          MOMENTUM_METRICS_API_KEY: ${{ secrets.MOMENTUM_METRICS_API_KEY }}
