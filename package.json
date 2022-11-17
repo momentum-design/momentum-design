@@ -12,11 +12,11 @@
     "./packages/**/*"
   ],
   "scripts": {
-    "analyze": "yarn workspaces foreach run analyze",
-    "build": "yarn workspaces foreach run build",
-    "test": "NODE_ENV=test yarn workspaces foreach run test",
-    "clean": "yarn workspaces foreach run clean",
-    "publish:npmjs": "yarn workspaces foreach run publish:npmjs",
+    "analyze": "yarn workspaces foreach -pRt run analyze",
+    "build": "yarn workspaces foreach -pRt run build",
+    "test": "NODE_ENV=test yarn workspaces -pRt foreach run test",
+    "clean": "yarn workspaces foreach -pRt run clean",
+    "publish:npmjs": "yarn workspaces foreach -pRt run publish:npmjs",
     "postinstall": "husky install ./config/husky",
     "upgrade:vscode": "yarn dlx @yarnpkg/sdks vscode",
     "analyze:config": "eslint \"./config/**\"",
