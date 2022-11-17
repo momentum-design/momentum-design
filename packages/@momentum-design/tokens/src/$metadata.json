@@ -5,6 +5,8 @@
     "core/color",
     "core/elevation",
     "core/spacing",
+    "core/type/apps",
+    "core/type/display",
     "theme/webex/common",
     "theme/webex/dark",
     "theme/webex/light"
