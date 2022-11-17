@@ -174,7 +174,7 @@ jobs:
 
   test-prebuild:
     name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Test - Prebuild
-    needs: [generate-package-matrix, initialize, ]
+    needs: [generate-package-matrix, initialize]
     runs-on: ${{ matrix.os }}
 
     strategy:
