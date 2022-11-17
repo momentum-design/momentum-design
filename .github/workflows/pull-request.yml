@@ -99,12 +99,6 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
 
-      - name: Uncache Dependencies
-        uses: actions/cache@v3
-        with:
-          path: '**/node_modules'
-          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-
       - name: Build Telemetry
         run: yarn telemetry build
 
@@ -113,6 +107,12 @@ jobs:
         with:
           path: 'packages/@momentum-design/telemetry/dist'
           key: momentum-design-telemetry-dist-${{ matrix.os }}-${{ env.rid }}
+
+      - name: Uncache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Synchronize Packages
         run: yarn
