@@ -124,7 +124,7 @@
         "fontSize": "{fontSize.0}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -139,7 +139,7 @@
         "fontSize": "{fontSize.0}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -154,7 +154,7 @@
         "fontSize": "{fontSize.0}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -169,7 +169,7 @@
         "fontSize": "{fontSize.1}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -184,7 +184,7 @@
         "fontSize": "{fontSize.1}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -199,7 +199,7 @@
         "fontSize": "{fontSize.1}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -214,7 +214,7 @@
         "fontSize": "{fontSize.2}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -229,7 +229,7 @@
         "fontSize": "{fontSize.2}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -244,7 +244,7 @@
         "fontSize": "{fontSize.2}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -259,7 +259,7 @@
         "fontSize": "{fontSize.3}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -274,7 +274,7 @@
         "fontSize": "{fontSize.3}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -289,7 +289,7 @@
         "fontSize": "{fontSize.3}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -304,7 +304,7 @@
         "fontSize": "{fontSize.4}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -319,7 +319,7 @@
         "fontSize": "{fontSize.4}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -334,7 +334,7 @@
         "fontSize": "{fontSize.4}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -349,7 +349,7 @@
         "fontSize": "{fontSize.5}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -364,7 +364,7 @@
         "fontSize": "{fontSize.5}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -379,7 +379,7 @@
         "fontSize": "{fontSize.5}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -394,7 +394,7 @@
         "fontSize": "{fontSize.5}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -409,7 +409,7 @@
         "fontSize": "{fontSize.6}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -424,7 +424,7 @@
         "fontSize": "{fontSize.6}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -439,7 +439,7 @@
         "fontSize": "{fontSize.6}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -454,7 +454,7 @@
         "fontSize": "{fontSize.6}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -469,7 +469,7 @@
         "fontSize": "{fontSize.7}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -484,7 +484,7 @@
         "fontSize": "{fontSize.7}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -499,7 +499,7 @@
         "fontSize": "{fontSize.7}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -514,7 +514,7 @@
         "fontSize": "{fontSize.7}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -529,7 +529,7 @@
         "fontSize": "{fontSize.8}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -544,7 +544,7 @@
         "fontSize": "{fontSize.8}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -559,7 +559,7 @@
         "fontSize": "{fontSize.8}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
@@ -574,7 +574,7 @@
         "fontSize": "{fontSize.8}",
         "letterSpacing": "{letterSpacing.0}",
         "paragraphSpacing": "{paragraphSpacing.0}",
-        "paragraphIndent": "{paragraphIndent.0}",
+        "paragraphIndent": "",
         "textCase": "{textCase.none}",
         "textDecoration": "{textDecoration.none}"
       },
