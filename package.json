@@ -12,10 +12,11 @@
     "./packages/**/*"
   ],
   "scripts": {
-    "analyze": "yarn workspaces foreach -t run analyze",
-    "build": "yarn workspaces foreach run -t build",
-    "test": "NODE_ENV=test yarn workspaces -t foreach run test",
-    "clean": "yarn workspaces foreach -t run clean",
+    "analyze": "yarn workspaces foreach --topological-dev -p run analyze",
+    "build": "yarn workspaces foreach --topological-dev -p run build",
+    "test": "NODE_ENV=test yarn workspaces foreach --topological-dev -p run test",
+    "clean": "yarn workspaces foreach --topological-dev -p run clean",
+    "publish:npmjs": "yarn workspaces foreach --topological-dev -p run publish:npmjs",
     "publish:npmjs": "yarn workspaces foreach -t run publish:npmjs",
     "postinstall": "husky install ./config/husky",
     "upgrade:vscode": "yarn dlx @yarnpkg/sdks vscode",
