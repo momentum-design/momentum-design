@@ -40,7 +40,7 @@
     "test:integration": "yarn node --experimental-vm-modules $(yarn bin jest) ./test/*/*.test.ts",
     "test:postbuild": "yarn test:integration",
     "test:prebuild": "yarn test:unit",
-    "test:unit": "jest ./src/**/*.test.ts --config=./unit.config.js"
+    "test:unit": "jest ./src/**/*.test.ts"
   },
   "dependencies": {
     "@momentum-design/telemetry": "workspace:^",
