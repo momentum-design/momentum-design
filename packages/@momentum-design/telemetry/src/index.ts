@@ -1,0 +1,1 @@
+export { CONSTANTS } from './common';

@@ -105,6 +105,15 @@ jobs:
           path: '**/node_modules'
           key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
+      - name: Build Telemetry
+        run: yarn telemetry build
+
+      - name: Cache Telemetry Dist
+        uses: actions/cache@v3
+        with:
+          path: 'packages/@momentum-design/telemetry/dist'
+          key: momentum-design-telemetry-dist-${{ matrix.os }}-${{ env.rid }}
+
       - name: Synchronize Packages
         run: yarn
 
@@ -150,6 +159,12 @@ jobs:
         with:
           path: '**/node_modules'
           key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Uncache Telemetry Dist
+        uses: actions/cache@v3
+        with:
+          path: 'packages/@momentum-design/telemetry/dist'
+          key: momentum-design-telemetry-dist-${{ matrix.os }}-${{ env.rid }}
 
       - name: Synchronize Packages
         run: yarn
