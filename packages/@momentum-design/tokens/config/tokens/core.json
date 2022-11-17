@@ -13,6 +13,16 @@
         "core/*.json",
         "theme/webex/dark.json"
       ]
+    },
+    {
+      "destination": "theme/webex/light-complete",
+      "filters": {
+        "types": ["theme"]
+      },
+      "targets": [
+        "core/*.json",
+        "theme/webex/light.json"
+      ]
     }
   ],
   "formats": ["CSS_VARIABLES", "SCSS_VARIABLES", "WEB_JSON"],
