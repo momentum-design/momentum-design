@@ -121,10 +121,19 @@ jobs:
 
       - name: Display Package Matrix
         run: echo "generated package matrix - ${{ steps.generate-package-matrix.outputs.packages }}"
+        
+  build-telemetry:
+    name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Internal Package Telemetry - Build
+    needs: [generate-package-matrix, initialize]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+        - name: Build Telemetry Internal Package
+          run: yarn telemetry build
 
   analyze-prebuild:
     name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Analyze - Prebuild
-    needs: [generate-package-matrix, initialize]
+    needs: [generate-package-matrix, initialize, build-telemetry]
     runs-on: ${{ matrix.os }}
 
     strategy:
