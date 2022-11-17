@@ -20,8 +20,10 @@
     "test:postbuild": "echo \"script 'test:prebuild' has not been implemented\"",
     "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\""
   },
+  "dependencies": {
+    "@momentum-design/token-builder": "workspace:^"
+  },
   "devDependencies": {
-    "@momentum-design/token-builder": "workspace:^",
     "rimraf": "^3.0.2"
   }
 }

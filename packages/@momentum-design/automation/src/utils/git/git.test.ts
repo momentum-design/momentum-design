@@ -67,5 +67,60 @@ describe('@momentum-design/automation - utils.Git', () => {
         expect(received).toMatchObject(rto);
       });
     });
+
+    describe('changes()', () => {
+      // const format = JSON.stringify(Git.CONSTANTS.FORMAT);
+      const offset = Git.CONSTANTS.COMMIT_INDEX_OFFSET;
+      const head = 'head';
+      const previous = 'previous';
+      const runResults = '1\t1\tpackages/@momentum-design/tokens/test.file';
+      const results = [
+        {
+          added: 1,
+          removed: 1,
+          file: 'packages/@momentum-design/tokens/test.file',
+        },
+      ];
+      let listSpy: jest.SpyInstance;
+      let runSpy: jest.SpyInstance;
+
+      beforeEach(() => {
+        listSpy = jest.spyOn(Git, 'list').mockImplementation(() => Promise.resolve(
+          [{ commit: 'head' }, { commit: 'previous' }],
+        ));
+        runSpy = jest.spyOn(Execute, 'run').mockImplementation(() => Promise.resolve(runResults));
+      });
+
+      afterEach(() => {
+        jest.restoreAllMocks();
+      });
+
+      it('should attempt to run a command with the provided filter (none) and count', async () => {
+        const changes = await Git.changes('', offset);
+
+        expect(runSpy).toHaveBeenCalledTimes(1);
+        expect(runSpy).toHaveBeenLastCalledWith(`git diff --numstat ${previous} ${head}`);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(changes).toEqual(results);
+      });
+
+      it('should attempt to run a command with the provided filter (tokens) and count', async () => {
+        const changes = await Git.changes('tokens', offset);
+
+        expect(runSpy).toHaveBeenCalledTimes(1);
+        expect(runSpy).toHaveBeenLastCalledWith(`git diff --numstat ${previous} ${head}`);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(changes).toEqual(results);
+      });
+
+      it('should attempt to run a command with the provided filter (not valid) and count', async () => {
+        const changes = await Git.changes('invalid', offset);
+
+        expect(runSpy).toHaveBeenCalledTimes(1);
+        expect(runSpy).toHaveBeenLastCalledWith(`git diff --numstat ${previous} ${head}`);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(changes).toEqual([]);
+      });
+    });
   });
 });

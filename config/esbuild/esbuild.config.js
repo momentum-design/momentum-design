@@ -3,7 +3,7 @@ import { join } from 'path';
 
 import { PROJECT_PREFIX } from './esbuild.constants.js';
 
-const cli = async ({ stage, extension = 'js', external, format = 'esm' }) => {
+const cli = async ({ stage, extension = 'js', external, format = 'esm', banner = {} }) => {
   const projectPath = process.cwd();
 
   await esbuild.build({
@@ -13,6 +13,7 @@ const cli = async ({ stage, extension = 'js', external, format = 'esm' }) => {
     format,
     minify: true,
     platform: 'node',
+    banner,
     target: ['node18.12.1'],
     sourcemap: stage !== 'production',
     outfile: `${join(projectPath, 'dist', 'cli', `index.${extension}`)}`,
@@ -33,22 +34,52 @@ const iife = async ({ name }) => {
   });
 };
 
-const plop = async () => {
-  const projectPath = `${join(process.cwd(), 'config', 'plop')}`;
-
+const esm = async (
+  projectPath = `${join(process.cwd())}`,
+  entryPointPath = 'src/index.ts',
+  outfile = 'index.js',
+  tsconfig = 'tsconfig.json',
+  platform = 'node',
+) => {
   await esbuild.build({
     bundle: true,
-    entryPoints: [`${join(projectPath, 'plopfile.ts')}`],
+    entryPoints: [`${join(projectPath, entryPointPath)}`],
     format: 'esm',
     minify: true,
-    outfile: `${join(projectPath, 'dist', 'plopfile.js')}`,
-    tsconfig: `${join(projectPath, 'tsconfig.plop.json')}`,
-    platform: 'node',
+    sourcemap: true,
+    outfile: `${join(projectPath, 'dist', outfile)}`,
+    tsconfig: `${join(projectPath, tsconfig)}`,
+    platform,
   });
 };
 
-export {
-  cli,
-  iife,
-  plop,
+const cjs = async (
+  projectPath = `${join(process.cwd())}`,
+  entryPointPath = 'src/index.ts',
+  outfile = 'index.js',
+  tsconfig = 'tsconfig.json',
+  platform = 'node',
+) => {
+  await esbuild.build({
+    bundle: true,
+    entryPoints: [`${join(projectPath, entryPointPath)}`],
+    format: 'cjs',
+    minify: true,
+    outfile: `${join(projectPath, 'dist', outfile)}`,
+    tsconfig: `${join(projectPath, tsconfig)}`,
+    platform,
+  });
 };
+
+const plop = async () => {
+  const plop = await esm(
+    `${join(process.cwd(), 'config', 'plop')}`,
+    'plopfile.ts',
+    'plopfile.js',
+    'tsconfig.plop.json',
+    'node',
+  );
+  return plop;
+};
+
+export { iife, plop, esm, cjs, cli };

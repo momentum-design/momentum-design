@@ -8,5 +8,5 @@
 
 |  Package | Description |
 |  --- | --- |
-|  [@cisco-momentum/token-builder](./token-builder.md) |  |
+|  [@momentum-design/token-builder](./token-builder.md) |  |
 
