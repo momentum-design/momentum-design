@@ -4,4 +4,4 @@ import { ExtendedLogger } from '../common/types';
 
 const Logger: ExtendedLogger = create({ transports: LOGGER_TRANSPORTS, format: LOGGER_FORMAT });
 
-export { Logger, generateMetadata, ExtendedLogger };
+export { Logger, generateMetadata };

@@ -1,8 +1,8 @@
 import winston, { createLogger, Logform } from 'winston';
 import transports, { ConsoleTransportOptions } from 'winston/lib/winston/transports';
+import { CONSTANTS } from '../common';
 import { ExtendedLogger, TransportOptions, Transports, MetricsTransportOptions } from '../common/types';
-import { MetricsTransport } from '../transports';
-import { ExtendedLevels } from './config';
+import MetricsTransport from '../transports/metrics';
 
 const createMetricsTransport = (options: MetricsTransportOptions) => {
   const opts = options || {};
@@ -26,12 +26,16 @@ const getLoggerTransports = (transportOptions: TransportOptions) => transportOpt
   }
 });
 
-export const create = (options: {transports: TransportOptions; format?: Logform.Format}): ExtendedLogger => {
+const create = (options: {transports: TransportOptions; format?: Logform.Format}): ExtendedLogger => {
   const logger: ExtendedLogger = <ExtendedLogger>createLogger({
     level: process.env.MOMENTUM_TELEMETRY_LEVEL || 'record',
-    levels: { ...winston.config.npm.levels, ...ExtendedLevels },
+    levels: { ...winston.config.npm.levels, ...CONSTANTS.ExtendedLevels },
     transports: getLoggerTransports(options.transports),
   });
   winston.addColors({ ...winston.config.npm.colors, record: 'blue' });
   return logger;
+};
+
+export {
+  create,
 };

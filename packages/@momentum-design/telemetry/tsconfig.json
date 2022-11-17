@@ -8,5 +8,11 @@
   "plugins": [],
   "include": [
     "./src/**/*"
-  ]
+  ],
+  "exclude": [
+    "./src/**/*.fixture.ts",
+    "./src/**/*.test.ts",
+    "./src/**/*.spec.ts",
+    "**/*.js",
+  ],
 } 

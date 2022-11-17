@@ -25,7 +25,7 @@ export const enum RecordSourcePrefix {
   Raw = 'Raw'
 }
 
-export const enum RecordContextPrefix {
+const enum RecordContextPrefix {
   Automation = 'Automation',
   Usage = 'Usage',
 }
@@ -87,3 +87,5 @@ export type TransportOptions = Array<
 >
 
 export type LogMetric = LoggerInfo & Metric;
+
+export { RecordContextPrefix };

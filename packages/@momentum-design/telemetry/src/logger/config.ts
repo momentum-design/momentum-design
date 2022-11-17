@@ -1,12 +1,11 @@
 /* eslint-disable max-len */
 /* eslint-disable arrow-body-style */
 import winston from 'winston';
-import { AbstractConfigSetLevels } from 'winston/lib/winston/config';
 import { LoggerMetadata, TransportOptions, Transports } from '../common/types';
 
-export const generateMetadata = (pkg: string, file: string): LoggerMetadata => ({ pkg, file });
+const generateMetadata = (pkg: string, file: string): LoggerMetadata => ({ pkg, file });
 
-export const LOGGER_FORMAT = winston.format.combine(
+const LOGGER_FORMAT = winston.format.combine(
   winston.format.colorize(),
   winston.format.label({
     label: '@momentum-design',
@@ -24,16 +23,11 @@ export const LOGGER_FORMAT = winston.format.combine(
   }),
 );
 
-export const METRICS_FORMAT = winston.format.combine(
+const METRICS_FORMAT = winston.format.combine(
   winston.format.json(),
 );
 
-export const ExtendedLevels: AbstractConfigSetLevels = {
-  // set record to the lowest possible priority, which will be at the end of the npm array
-  record: Object.keys(winston.config.npm.levels).length + 1,
-};
-
-export const LOGGER_TRANSPORTS: TransportOptions = [
+const LOGGER_TRANSPORTS: TransportOptions = [
   {
     key: Transports.Console,
     options: {
@@ -47,3 +41,10 @@ export const LOGGER_TRANSPORTS: TransportOptions = [
     },
   },
 ];
+
+export {
+  LOGGER_FORMAT,
+  LOGGER_TRANSPORTS,
+  METRICS_FORMAT,
+  generateMetadata,
+};

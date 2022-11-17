@@ -5,7 +5,7 @@ import { createInstance, Types } from '@amplitude/analytics-browser';
 import { randomUUID } from 'crypto';
 import { LogMetric, MetricsTransportOptions } from '../../common/types';
 
-export default class MetricsTransport extends Transport {
+class MetricsTransport extends Transport {
   private metricsInstance;
 
   constructor(opts?: MetricsTransportOptions) {
@@ -50,3 +50,5 @@ export default class MetricsTransport extends Transport {
     }
   }
 }
+
+export default MetricsTransport;

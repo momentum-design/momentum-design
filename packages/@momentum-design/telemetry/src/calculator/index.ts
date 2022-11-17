@@ -1,5 +1,5 @@
 // measured in seconds
-export const UNIT = 'SECONDS';
+const UNIT = 'SECONDS';
 // 4 hours = 14,400 seconds
 // where did 4 hours come from?
 // it's a highly approximate value that is based off of anecdotal evidence
@@ -17,7 +17,7 @@ export const UNIT = 'SECONDS';
 // 8. merging the PR
 // 9. deploying the PR and getting a new token version
 // 10. Assumes a small change, not a large change
-export const ENGINEERING_BASE_TIME_MEASUREMENT = /* seconds */ 60 * /* minutes */ 60 * /* hours */ 4;
+const ENGINEERING_BASE_TIME_MEASUREMENT = /* seconds */ 60 * /* minutes */ 60 * /* hours */ 4;
 // 2 minutes = 120 seconds
 // where did 2 minutes come from?
 // it's a highly approximate value that is based off of anecdotal evidence provided by a number of teams
@@ -28,16 +28,16 @@ export const ENGINEERING_BASE_TIME_MEASUREMENT = /* seconds */ 60 * /* minutes *
 // other tokens such as border-radius, spacing, etc
 // this is factored based off of the concept that an engineer has to
 // look at a figma and convert values from figma to the implementation
-export const ENGINEERING_TIME_FACTOR = /* seconds */ 60 * /* minutes */ 2;
+const ENGINEERING_TIME_FACTOR = /* seconds */ 60 * /* minutes */ 2;
 // Please refer to Trip Carrol to understand the design time savings here
-export const DESIGN_BASE_TIME_MEASUREMENT = 0;
+const DESIGN_BASE_TIME_MEASUREMENT = 0;
 // Please refer to Trip Carrol to understand the design time savings here
-export const DESIGN_TIME_FACTOR = /* seconds */ 60 * /* minutes */ 1;
+const DESIGN_TIME_FACTOR = /* seconds */ 60 * /* minutes */ 1;
 // currently we are only focusing on the value provided by the tokens package
 // so only provide metrics for this specific package, else return nothing
-export const PACKAGE_FOCUS = ['@momentum-design/tokens'];
+const PACKAGE_FOCUS = ['@momentum-design/tokens'];
 
-export const calculateApproximateValue = (packageName: string, lineChanges: number): {
+const calculateApproximateValue = (packageName: string, lineChanges: number): {
   engineering: {[UNIT]: number},
   design: {[UNIT]: number}
 } |
@@ -55,4 +55,14 @@ null => {
     };
   }
   return null;
+};
+
+export {
+  UNIT,
+  ENGINEERING_BASE_TIME_MEASUREMENT,
+  ENGINEERING_TIME_FACTOR,
+  DESIGN_BASE_TIME_MEASUREMENT,
+  DESIGN_TIME_FACTOR,
+  PACKAGE_FOCUS,
+  calculateApproximateValue,
 };

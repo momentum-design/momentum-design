@@ -1,3 +1,5 @@
+import MetricsTransport from './transports/metrics';
+
 export { Logger, generateMetadata } from './logger';
 
 export {
@@ -25,7 +27,7 @@ export type {
   LogMetric,
 } from './common/types';
 
-export { MetricsTransport } from './transports';
+export { MetricsTransport };
 
 export {
   UNIT,
