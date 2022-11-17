@@ -17,7 +17,6 @@
     "test": "NODE_ENV=test yarn workspaces foreach --topological-dev -p run test",
     "clean": "yarn workspaces foreach --topological-dev -p run clean",
     "publish:npmjs": "yarn workspaces foreach --topological-dev -p run publish:npmjs",
-    "publish:npmjs": "yarn workspaces foreach -t run publish:npmjs",
     "postinstall": "husky install ./config/husky",
     "upgrade:vscode": "yarn dlx @yarnpkg/sdks vscode",
     "analyze:config": "eslint \"./config/**\"",
