@@ -325,10 +325,6 @@
           "type": "color",
           "description": "Hex Code: #07120d"
         },
-        "105": {
-          "value": "#4e6961",
-          "type": "color"
-        },
         "05": {
           "value": "#edf7f5",
           "type": "color",
@@ -458,34 +454,32 @@
           "type": "color",
           "description": "Hex Code: #fff6e3"
         }
-      }
-    },
-    "decorative": {
+      },
       "orange": {
         "10": {
-          "value": "#faf4eb",
+          "value": "#feebd7",
           "type": "color",
-          "description": "HEX Code: #FAF4EB"
+          "description": "HEX Code: #FEEBD7"
         },
         "20": {
-          "value": "#fce4c7",
+          "value": "#fed5ac",
           "type": "color",
-          "description": "HEX Code: #FCE4C7"
+          "description": "HEX Code: #FED5AC"
         },
         "30": {
-          "value": "#ffca99",
+          "value": "#feba7f",
           "type": "color",
-          "description": "HEX Code: #FFCA99"
+          "description": "HEX Code: #FEBA7F"
         },
         "40": {
-          "value": "#ff9d52",
+          "value": "#fd884e",
           "type": "color",
-          "description": "HEX Code: #FF9D52"
+          "description": "HEX Code: #FD884E"
         },
         "50": {
-          "value": "#f26b1d",
+          "value": "#ec6400",
           "type": "color",
-          "description": "HEX Code: #F26B1D"
+          "description": "HEX Code: #EC6400"
         },
         "60": {
           "value": "#c74f0e",
@@ -493,26 +487,38 @@
           "description": "HEX Code: #C74F0E"
         },
         "70": {
-          "value": "#914017",
+          "value": "#9c3202",
           "type": "color",
-          "description": "HEX Code: #914017"
+          "description": "HEX Code: #9C3202"
         },
         "80": {
-          "value": "#59311e",
+          "value": "#682601",
           "type": "color",
-          "description": "HEX Code: #59311E"
+          "description": "HEX Code: #682601"
         },
         "90": {
-          "value": "#33221b",
+          "value": "#411b04",
           "type": "color",
-          "description": "HEX Code: #33221B"
+          "description": "HEX Code: #411B04"
+        },
+        "95": {
+          "value": "#291303",
+          "type": "color",
+          "description": "HEX Code: #291303"
         },
         "100": {
-          "value": "#211916",
+          "value": "#170b02",
           "type": "color",
-          "description": "HEX Code: #3211916"
+          "description": "HEX Code: #170B02"
+        },
+        "05": {
+          "value": "#fef3e8",
+          "type": "color",
+          "description": "HEX Code: #FEF3E8"
         }
-      },
+      }
+    },
+    "decorative": {
       "gold": {
         "10": {
           "value": "#f7f6dc",
@@ -1213,7 +1219,8 @@
           },
           "secondary": {
             "value": "#1a1a1a",
-            "type": "color"
+            "type": "color",
+            "description": "HEX: 1A1A1A"
           }
         }
       },
@@ -1346,6 +1353,44 @@
             "description": "HEX Code: #27163B"
           }
         }
+      }
+    },
+    "partner": {
+      "pdf": {
+        "value": "#0078d6",
+        "type": "color"
+      },
+      "word": {
+        "value": "#0078d6",
+        "type": "color"
+      },
+      "powerpoint": {
+        "value": "#d93e17",
+        "type": "color"
+      },
+      "exel": {
+        "value": "#00893e",
+        "type": "color"
+      },
+      "one-note": {
+        "value": "#b839db",
+        "type": "color"
+      },
+      "doc": {
+        "value": "#4285f4",
+        "type": "color"
+      },
+      "sheets": {
+        "value": "#f4b400",
+        "type": "color"
+      },
+      "slides": {
+        "value": "#0f9d58",
+        "type": "color"
+      },
+      "keynotes": {
+        "value": "#029cfb",
+        "type": "color"
       }
     }
   }
