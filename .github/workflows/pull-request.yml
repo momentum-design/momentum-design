@@ -100,7 +100,7 @@ jobs:
           cache: 'yarn'
 
       - name: Build Telemetry
-        run: yarn telemetry build
+        run: yarn && yarn telemetry build
 
       - name: Cache Telemetry Dist
         uses: actions/cache@v3
