@@ -8,6 +8,7 @@ import {
   RecordSourcePrefix,
   RecordEventName,
   UNIT,
+  BLOCKING_UNIT,
 } from '@momentum-design/telemetry';
 import { Command } from '../../models';
 import GetPackages from '../get-packages';
@@ -40,6 +41,7 @@ class DispatchTelemetry extends Command {
         eventInput: `${RecordSourcePrefix.Calculated}_${RecordBusinessPrefix.Engineering}_${PACKAGE}_${RecordContextPrefix.Automation}_${RecordEventName.Git}`,
         eventProperties: {
           [RecordEventProperties.SecondsSaved]: value?.engineering[UNIT],
+          [RecordEventProperties.BlockingTimeSaved]: value?.engineering[BLOCKING_UNIT],
         },
       });
 
@@ -51,6 +53,7 @@ class DispatchTelemetry extends Command {
         eventInput: `${RecordSourcePrefix.Calculated}_${RecordBusinessPrefix.Design}_${PACKAGE}_${RecordContextPrefix.Automation}_${RecordEventName.Git}`,
         eventProperties: {
           [RecordEventProperties.SecondsSaved]: value?.design[UNIT],
+          [RecordEventProperties.BlockingTimeSaved]: value?.design[BLOCKING_UNIT],
         },
       });
 

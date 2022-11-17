@@ -1,5 +1,11 @@
+// https://github.com/momentum-design/momentum-design/wiki/Metrics-&-Usage:-how-much-time-are-we-saving%3F
+
 // measured in seconds
 const UNIT = 'SECONDS';
+// based off of wiki analysis of 2 years of PRs
+const BLOCKING_UNIT = 'DAYS';
+const ENGINEERING_BLOCKING_TIME = 1;
+const DESIGN_BLOCKING_TIME = 2;
 // 4 hours = 14,400 seconds
 // where did 4 hours come from?
 // it's a highly approximate value that is based off of anecdotal evidence
@@ -38,19 +44,23 @@ const DESIGN_TIME_FACTOR = /* seconds */ 60 * /* minutes */ 1;
 const PACKAGE_FOCUS = ['@momentum-design/tokens'];
 
 const calculateApproximateValue = (packageName: string, lineChanges: number): {
-  engineering: {[UNIT]: number},
-  design: {[UNIT]: number}
+  engineering: { [UNIT]: number; [BLOCKING_UNIT]: number },
+  design: { [UNIT]: number; [BLOCKING_UNIT]: number }
 } |
 null => {
   if (PACKAGE_FOCUS.includes(packageName)) {
+    const engineeringBlockingTime = ENGINEERING_BLOCKING_TIME;
+    const designBlockingTime = DESIGN_BLOCKING_TIME;
     const engineeringTimeValue = ENGINEERING_BASE_TIME_MEASUREMENT + (lineChanges * ENGINEERING_TIME_FACTOR);
     const designTimeValue = DESIGN_BASE_TIME_MEASUREMENT + (lineChanges * DESIGN_TIME_FACTOR);
     return {
       engineering: {
         [UNIT]: engineeringTimeValue,
+        [BLOCKING_UNIT]: engineeringBlockingTime,
       },
       design: {
         [UNIT]: designTimeValue,
+        [BLOCKING_UNIT]: designBlockingTime,
       },
     };
   }
@@ -64,5 +74,8 @@ export {
   DESIGN_BASE_TIME_MEASUREMENT,
   DESIGN_TIME_FACTOR,
   PACKAGE_FOCUS,
+  ENGINEERING_BLOCKING_TIME,
+  DESIGN_BLOCKING_TIME,
+  BLOCKING_UNIT,
   calculateApproximateValue,
 };

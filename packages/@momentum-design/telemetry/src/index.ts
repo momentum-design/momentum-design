@@ -31,5 +31,6 @@ export { MetricsTransport };
 
 export {
   UNIT,
+  BLOCKING_UNIT,
   calculateApproximateValue,
 } from './calculator';

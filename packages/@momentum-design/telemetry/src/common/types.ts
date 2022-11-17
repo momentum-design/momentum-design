@@ -15,12 +15,12 @@ export type LoggerInfo = {
   [key: string]: any;
 }
 
-export const enum RecordBusinessPrefix {
+const enum RecordBusinessPrefix {
   Design = 'Design',
   Engineering = 'Engineering'
 }
 
-export const enum RecordSourcePrefix {
+const enum RecordSourcePrefix {
   Calculated = 'Calculated',
   Raw = 'Raw'
 }
@@ -30,7 +30,7 @@ const enum RecordContextPrefix {
   Usage = 'Usage',
 }
 
-export const enum RecordEventName {
+const enum RecordEventName {
   Build = 'Build',
   Git = 'Git',
 }
@@ -40,10 +40,11 @@ export const enum RecordEventName {
 * */
 export type RecordEvents = `${RecordSourcePrefix}_${RecordBusinessPrefix}_${string}_${RecordContextPrefix}_${RecordEventName}`; // eslint-disable-line max-len
 
-export const enum RecordEventProperties {
+const enum RecordEventProperties {
   OutputFormat = 'OutputFormat',
   FileCount = 'FileCount',
   SecondsSaved = 'SecondsSaved',
+  BlockingTimeSaved = 'BlockingDaysSaved',
   LineCount_Changed = 'LineCount_Changed',
   LineCount_Added = 'LineCount_Added',
   LineCount_Removed = 'LineCount_Removed',
@@ -51,6 +52,7 @@ export const enum RecordEventProperties {
 
 export type MappedRecordEventProperties = {
   [RecordEventProperties.SecondsSaved]?: number; // seconds
+  [RecordEventProperties.BlockingTimeSaved]?: number; // days
   [RecordEventProperties.LineCount_Changed]?: number;
   [RecordEventProperties.LineCount_Added]?: number;
   [RecordEventProperties.LineCount_Removed]?: number;
@@ -73,7 +75,7 @@ export interface ExtendedLogger extends Logger {
   child: (options: Object) => ExtendedLogger;
 }
 
-export const enum Transports {
+const enum Transports {
   Console = 'console',
   Metrics = 'metrics'
 }
@@ -88,4 +90,11 @@ export type TransportOptions = Array<
 
 export type LogMetric = LoggerInfo & Metric;
 
-export { RecordContextPrefix };
+export {
+  RecordContextPrefix,
+  Transports,
+  RecordBusinessPrefix,
+  RecordEventName,
+  RecordEventProperties,
+  RecordSourcePrefix,
+};
