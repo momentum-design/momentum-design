@@ -21,7 +21,7 @@
     "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\""
   },
   "devDependencies": {
-    "rimraf": "^3.0.2",
-    "@momentum-design/token-builder": "workspace:^"
+    "@momentum-design/token-builder": "workspace:^",
+    "rimraf": "^3.0.2"
   }
 }
