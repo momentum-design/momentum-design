@@ -1,6 +1,6 @@
 const FILE_ENCODING: BufferEncoding = 'utf-8';
 
-const FORMATS = {
+const SD_FORMATS = {
   CSS_VARIABLES: {
     EXTENSION: 'css',
     FORMAT: 'css/variables',
@@ -24,9 +24,31 @@ const FORMATS = {
   },
 };
 
+const FORMATS = {
+  ...SD_FORMATS,
+};
+
+const SD_TRANSFORMS = {
+  ATTRIBUTE_CTI: 'attribute/cti',
+  NAME_CTI_KABAB: 'name/cti/kebab',
+};
+
+const LOCAL_TRANSFORMS = {
+  MD_ELEVATION: 'md/elevation',
+};
+
+const TRANSFORMS = {
+  ...SD_TRANSFORMS,
+  ...LOCAL_TRANSFORMS,
+};
+
 const CONSTANTS = {
   FILE_ENCODING,
   FORMATS,
+  LOCAL_TRANSFORMS,
+  SD_FORMATS,
+  SD_TRANSFORMS,
+  TRANSFORMS,
 };
 
 export default CONSTANTS;

@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import StyleDictionary from 'style-dictionary';
 
 import { CONSTANTS, Config as ExternalConfig } from '../../common';
+import { Elevation as ElevationTransform } from '../../transforms';
 import Dictionary from '../dictionary';
 
 import type { Config } from './types';
@@ -17,6 +18,25 @@ class TokenBuilder {
     return this.initialize()
       .then(() => {
         const configObj = this.config.config as ExternalConfig;
+
+        if (configObj.transforms) {
+          configObj.transforms.filter((transform) => Object.keys(CONSTANTS.LOCAL_TRANSFORMS).includes(transform))
+            .forEach((transformKey) => {
+              const transformName = CONSTANTS.TRANSFORMS[transformKey];
+              let transform: ElevationTransform;
+
+              switch (transformName) {
+                case CONSTANTS.LOCAL_TRANSFORMS.MD_ELEVATION:
+                  transform = new ElevationTransform();
+
+                  StyleDictionary.registerTransform(transform.sdConfig);
+                  break;
+
+                default:
+              }
+            });
+        }
+
         const { input, output } = this.config;
         const dictionaries = configObj.files.map((file) => new Dictionary({
           file,
@@ -24,6 +44,7 @@ class TokenBuilder {
           input,
           output,
           prefix: configObj.prefix,
+          transforms: configObj.transforms,
         }));
 
         const sdDictionaries = dictionaries.map((dictionary) => StyleDictionary.extend(dictionary.sdConfig));
