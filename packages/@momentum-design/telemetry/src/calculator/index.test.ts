@@ -28,9 +28,11 @@ describe('calculator', () => {
       expect(calculateApproximateValue('@momentum-design/tokens', 5)).toEqual({
         engineering: {
           SECONDS: 15000,
+          DAYS: 1,
         },
         design: {
           SECONDS: 300,
+          DAYS: 2,
         },
       });
     });

@@ -41,7 +41,6 @@ logger.record({
 
 See [our contributing guide](./CONTRIBUTING.md)
 
-
 ### Logging
 
 Logs are sent to console via winston, and print in the following format:
