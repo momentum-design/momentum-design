@@ -106,7 +106,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: 'packages/@momentum-design/telemetry/dist'
-          key: momentum-design-telemetry-dist-${{ runner.os }}-${{ env.rid }}
+          key: momentum-design-telemetry-dist-ubuntu-latest-${{ env.rid }} # this will need to be updated to match the os matrix
 
       - name: Uncache Dependencies
         uses: actions/cache@v3
