@@ -337,5 +337,4 @@ jobs:
         run: ls -Rl .
         
       - name: Test - Postbuild
-        if: ${{ matrix.package }} == '@momentum-design/token-builder'
         run: yarn workspace ${{ matrix.package }} test:postbuild
