@@ -18,6 +18,7 @@ class Platform {
       destination: this.config.file.destination,
       filters: this.config.file.filters,
       format: this.format,
+      name: this.config.file.name,
       references: this.config.file.references,
     });
   }
