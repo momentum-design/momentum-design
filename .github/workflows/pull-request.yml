@@ -113,7 +113,7 @@ jobs:
           git fetch origin main --unshallow
 
       - name: Build Automation Tooling
-        run: yarn automation build:cli
+        run: yarn telemetry build && yarn automation build:cli
 
       - id: generate-package-matrix
         name: Generate Package Matrix
@@ -121,10 +121,19 @@ jobs:
 
       - name: Display Package Matrix
         run: echo "generated package matrix - ${{ steps.generate-package-matrix.outputs.packages }}"
+        
+  build-telemetry:
+    name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Internal Package Telemetry - Build
+    needs: [generate-package-matrix, initialize]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+        - name: Build Telemetry Internal Package
+          run: yarn telemetry build
 
   analyze-prebuild:
     name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Analyze - Prebuild
-    needs: [generate-package-matrix, initialize]
+    needs: [generate-package-matrix, initialize, build-telemetry]
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -159,7 +168,7 @@ jobs:
 
   test-prebuild:
     name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Test - Prebuild
-    needs: [generate-package-matrix, initialize]
+    needs: [generate-package-matrix, initialize, build-telemetry]
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -194,7 +203,7 @@ jobs:
 
   build:
     name: ${{ matrix.os }} Build
-    needs: initialize
+    needs: [initialize, build-telemetry]
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -234,7 +243,7 @@ jobs:
 
   analyze-postbuild:
     name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Analyze - Postbuild
-    needs: [generate-package-matrix, build]
+    needs: [generate-package-matrix, build, build-telemetry]
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -275,7 +284,7 @@ jobs:
 
   test-postbuild:
     name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Test - Postbuild
-    needs: [generate-package-matrix, build]
+    needs: [generate-package-matrix, build, build-telemetry]
     runs-on: ${{ matrix.os }}
 
     strategy:
