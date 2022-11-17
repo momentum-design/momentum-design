@@ -333,4 +333,6 @@ jobs:
         run: yarn
 
       - name: Test - Postbuild
-        run: yarn workspace ${{ matrix.package }} test:postbuild
+        run: |
+          ls -l packages/${{ matrix.package }}/dist
+          yarn workspace ${{ matrix.package }} test:postbuild
