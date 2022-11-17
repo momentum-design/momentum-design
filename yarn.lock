@@ -1340,6 +1340,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@momentum-design/telemetry@workspace:packages/@momentum-design/telemetry":
+  version: 0.0.0-use.local
+  resolution: "@momentum-design/telemetry@workspace:packages/@momentum-design/telemetry"
+  languageName: unknown
+  linkType: soft
+
 "@momentum-design/token-builder@workspace:^, @momentum-design/token-builder@workspace:packages/@momentum-design/token-builder":
   version: 0.0.0-use.local
   resolution: "@momentum-design/token-builder@workspace:packages/@momentum-design/token-builder"
