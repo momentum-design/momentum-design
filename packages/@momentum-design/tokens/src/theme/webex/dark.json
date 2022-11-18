@@ -328,12 +328,12 @@
               "default": {
                 "value": "{color.decorative.violet.70}",
                 "type": "color",
-                "description": "Core Token: core.violet.70\nHEX: 535573\n-------------------------\nUsed for rest/hover state of teams"
+                "description": "Core Token: core.violet.70\nHEX: 643ABD\n-------------------------\nUsed for rest/hover state of teams"
               },
               "active": {
                 "value": "{color.decorative.violet.90}",
                 "type": "color",
-                "description": "Core Token: core.violet.90\nHEX: 26262B\n-------------------------\nUsed for active state of teams"
+                "description": "Core Token: core.violet.90\nHEX: 29223D\n-------------------------\nUsed for active state of teams"
               }
             },
             "purple": {
@@ -416,7 +416,7 @@
                 "hover": {
                   "value": "{color.core.white-alpha.30}",
                   "type": "color",
-                  "description": "Core Token: core.white-alpha.30\nHEX FFFFFF 20%\n-----------------------------------\nHover state of Secondary active buttons. Mostly for call-control component in a meeting panel."
+                  "description": "Core Token: core.white-alpha.30\nHEX FFFFFF 30%\n-----------------------------------\nHover state of Secondary active buttons. Mostly for call-control component in a meeting panel."
                 },
                 "pressed": {
                   "value": "{color.core.white-alpha.40}",
@@ -430,7 +430,7 @@
             "default": {
               "value": "{color.core.green.60}",
               "type": "color",
-              "description": "Core Token: core.green.60\nHEX: 1D80F\n--------------\nRest state of Join buttons. "
+              "description": "Core Token: core.green.60\nHEX: 1D805F\n--------------\nRest state of Join buttons. "
             },
             "hover": {
               "value": "{color.core.green.70}",
@@ -889,7 +889,7 @@
               "hover": {
                 "value": "linear-gradient(90deg, {color.core.white-alpha.00} 0%, {color.core.white-alpha.60} 22.4%, {color.core.white-alpha.60} 72.4%, {color.core.white-alpha.00} 100%)",
                 "type": "color",
-                "description": "Core Token: core.white-alpha.0, core.white-alpha.20, core.white-alpha.20, core.white-alpha.0\n\nHEX: FFFFFF 0%, FFFFFF 20%,FFFFFF 20%, FFFFFF 0%,   \n--------------------------------\nUsed for hover state of divider default on compose area in space. "
+                "description": "Core Token: core.white-alpha.0, core.white-alpha.60, core.white-alpha.60, core.white-alpha.0\n\nHEX: FFFFFF 0%, FFFFFF 60%,FFFFFF 60%, FFFFFF 0%,   \n--------------------------------\nUsed for hover state of divider default on compose area in space. "
               }
             },
             "negative": {
@@ -949,7 +949,7 @@
         },
         "empty": {
           "00": {
-            "value": "linear-gradient(180deg, #93c437 0%, {color.decorative.cobalt.50} 100%)",
+            "value": "linear-gradient(180deg, {color.decorative.lime.50} 0%, {color.decorative.cobalt.50} 100%)",
             "type": "color",
             "description": "Core Token: decorative.lime.50\ndecorative.cobalt.50\nHEX: 93C437, 279BE8\n---------------------------\nUsed for empty state.\nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           },
@@ -961,12 +961,12 @@
         },
         "onboarding": {
           "00": {
-            "value": "linear-gradient(180deg, #ffbe4f 0%, #93c437 100%)",
+            "value": "linear-gradient(180deg, {color.core.yellow.30} 0%, {color.decorative.lime.40} 100%)",
             "type": "color",
             "description": "Core Token: core.yellow.30\ndecorative.lime.40\nHEX: FFBE4F, 93C437\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           },
           "01": {
-            "value": "linear-gradient(180deg, #f55868 0%, #875ae0 100%)",
+            "value": "linear-gradient(180deg, {color.core.red.50} 0%, {color.decorative.violet.60} 100%)",
             "type": "color",
             "description": "Core Token: core.red.50, \ndecorative.violet.60\nHEX: F55868, 875AE0\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           },

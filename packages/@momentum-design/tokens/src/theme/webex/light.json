@@ -58,7 +58,7 @@
             "hover": {
               "value": "{color.core.black-alpha.20}",
               "type": "color",
-              "description": "Core Token: core.black-alpha.20\nHEX: FFFFFF 20%\n\n----\nHover state of surface-01.\n(prev.BackgroundSecondary). Used it for meeting-content-cards, attachments, [ios] meeting-list"
+              "description": "Core Token: core.black-alpha.20\nHEX: 000000 20%\n\n----\nHover state of surface-01.\n(prev.BackgroundSecondary). Used it for meeting-content-cards, attachments, [ios] meeting-list"
             },
             "active": {
               "value": "{color.core.black-alpha.30}",
@@ -141,7 +141,7 @@
             "primary": {
               "value": "{color.core.black-alpha.95}",
               "type": "color",
-              "description": "Core Token: core.black-alpha.95\nHEX: FFFFFF 95%\n--------------------------\nUsed for default primary text. "
+              "description": "Core Token: core.black-alpha.95\nHEX: 000000 95%\n--------------------------\nUsed for default primary text. "
             },
             "secondary": {
               "value": "{color.core.black-alpha.70}",
@@ -705,12 +705,12 @@
               "01": {
                 "value": "{color.decorative.pink.10}",
                 "type": "color",
-                "description": "Core Token: core.decorative.pink.10\nHEX: A12A3A\n--------------------------\nUsed for pressed state of tags, avatar"
+                "description": "Core Token: core.decorative.pink.10\nHEX: FFF2F5\n--------------------------\nUsed for pressed state of tags, avatar"
               },
               "02": {
                 "value": "{color.decorative.pink.20}",
                 "type": "color",
-                "description": "Core Token: core.decorative.pink.20\nHEX: fff2f5\n--------------------------\nUsed for hover state of tags"
+                "description": "Core Token: core.decorative.pink.20\nHEX: FFE0E7\n--------------------------\nUsed for hover state of tags"
               },
               "03": {
                 "value": "{color.decorative.pink.30}",
@@ -748,19 +748,19 @@
           "accent": {
             "active": {
               "defualt": {
-                "value": "{color.core.blue.60}",
+                "value": "{color.core.cobalt.60}",
                 "type": "color",
-                "description": "Core Token: core.blue.60\nHEXL: 0A78CC\n------------------------------\nUsed for rest state of control components (radio, toggle, checkbox)"
+                "description": "Core Token: core.cobalt.60\nHEXL: 0A78CC\n------------------------------\nUsed for rest state of control components (radio, toggle, checkbox)"
               },
               "hover": {
-                "value": "{color.core.blue.70}",
+                "value": "{color.core.cobalt.70}",
                 "type": "color",
-                "description": "Core Token: core.blue.70\nHEXL: 08599C\n------------------------------\nUsed for hover state of control components (radio, toggle, checkbox)"
+                "description": "Core Token: core.cobalt.70\nHEXL: 08599C\n------------------------------\nUsed for hover state of control components (radio, toggle, checkbox)"
               },
               "pressed": {
-                "value": "{color.core.blue.80}",
+                "value": "{color.core.cobalt.80}",
                 "type": "color",
-                "description": "Core Token: core.blue.80\nHEXL: 103C63\n------------------------------\nUsed for pressed state of control components (radio, toggle, checkbox)"
+                "description": "Core Token: core.cobalt.80\nHEXL: 103C63\n------------------------------\nUsed for pressed state of control components (radio, toggle, checkbox)"
               },
               "disabled": {
                 "value": "{color.core.blue.20}",
@@ -877,43 +877,43 @@
                 "description": "Core Token: core.black-alpha.0, core.black-alpha.20, core.black-alpha.20, core.black-alpha.0\n\nHEX: FFFFFF 0%, FFFFFF 20%, FFFFFF 20%, FFFFFF 0%,   \n--------------------------------\nUsed for divider default on compose area in space. "
               },
               "hover": {
-                "value": "linear-gradient(90deg, {color.core.white-alpha.00} 0%, {color.core.white-alpha.20} 22.4%, {color.core.white-alpha.20} 72.4%, {color.core.white-alpha.00} 100%)",
+                "value": "linear-gradient(90deg, {color.core.white-alpha.00} 0%, {color.core.white-alpha.60} 22.4%, {color.core.white-alpha.60} 72.4%, {color.core.white-alpha.00} 100%)",
                 "type": "color",
-                "description": "Core Token: core.white-alpha.0, core.white-alpha.20, core.white-alpha.20, core.white-alpha.0\n\nHEX: 000000 0%, 000000 60%, 000000 60%, 000000 0%,   \n--------------------------------\nUsed for hover state of divider default on compose area in space. "
+                "description": "Core Token: core.white-alpha.0, core.white-alpha.60, core.white-alpha.60, core.white-alpha.0\n\nHEX: 000000 0%, 000000 60%, 000000 60%, 000000 0%,   \n--------------------------------\nUsed for hover state of divider default on compose area in space. "
               }
             },
             "negative": {
               "defualt": {
-                "value": "linear-gradient(90deg, {color.core.red.70} 0%, {color.core.red.70} 22.4%, {color.core.red.70} 76.04%, {color.core.red.70} 100%)",
+                "value": "linear-gradient(90deg, #ab0a1500 0%, #ab0a1599 22.4%, #ab0a1599 76.04%, #ab0a1500 100%)",
                 "type": "color",
                 "description": "Core Token: core.red.70 0%, core.red.70 60%, core.red.70 60%, core.red.70 0%\n\nHEX: AB0A15 0%, AB0A15 60%,AB0A15 60%, AB0A15 0%,   \n--------------------------------\nUsed for divider default on the compose area for classified spaces. "
               },
               "hover": {
-                "value": "linear-gradient(90deg, {color.core.red.40} 0%, {color.core.red.40} 22.4%, {color.core.red.40} 76.04%, {color.core.red.40} 100%)",
+                "value": "linear-gradient(90deg, #ab0a1500 0%, #ab0a15e6 22.4%, #ab0a15e6 76.04%, #ab0a1500 100%)",
                 "type": "color",
                 "description": "Core Token: core.red.40 0%, core.red.40 90%, core.red.40 90%, core.red.40 0%\n\nHEX: FC8B98 0%, FC8B98 90%,FC8B98 90%, FC8B98 0%,   \n--------------------------------\nUsed for hover state of divider on the compose area for classified spaces. "
               }
             },
             "warning": {
               "defualt": {
-                "value": "linear-gradient(90deg, {color.core.yellow.40} 0%, {color.core.yellow.40} 22.4%, {color.core.yellow.40} 76.04%, {color.core.yellow.40} 100%)",
+                "value": "linear-gradient(90deg, #7d470500 0%, #7d470599 22.4%, #7d470599 76.04%, #7d470500 100%)",
                 "type": "color",
                 "description": "Core Token: core.yellow.40 0%, core.yellow.40 60%, core.yellow.40 60%, core.yellow.40 0%\n\nHEX: F2990A 0%, F2990A 60%, F2990A 60%, F2990A 0%,   \n--------------------------------\nUsed for divider on the compose area for external participants."
               },
               "hover": {
-                "value": "linear-gradient(90deg, {color.core.yellow.40} 0%, {color.core.yellow.40} 22.4%, {color.core.yellow.40} 76.04%, {color.core.yellow.40} 100%)",
+                "value": "linear-gradient(90deg, #7d470500 0%, #7d4705e6 22.4%, #7d4705e6 76.04%, #7d470500 100%)",
                 "type": "color",
                 "description": "Core Token: core.yellow.40 0%, core.yellow.40 90%, core.yellow.40 90%, core.yellow.40 0%\n\nHEX: F2990A 0%, F2990A 90%, F2990A 90%, F2990A 0%,   \n--------------------------------\nUsed for divider on the compose area for external participants."
               }
             },
             "accent": {
               "defualt": {
-                "value": "linear-gradient(90deg, {color.core.blue.40} 0%, {color.core.blue.40} 22.4%, {color.core.blue.40} 76.04%, {color.core.blue.40} 100%)",
+                "value": "linear-gradient(90deg, #0352a600 0%, #0352a699 22.4%, #0352a699 76.04%, #0352a600 100%)",
                 "type": "color",
                 "description": "Core Token: core.blue.40 0%, core.blue.40 60%, core.blue.40 60%, core.blue.40 0%\n\nHEX: 64B4FA 0%, 64B4FA 60%,64B4FA 60%, 64B4FA 0%,   \n--------------------------------\nUsed for divider on the compose area for the announcement space."
               },
               "hover": {
-                "value": "linear-gradient(90deg, {color.core.blue.40} 0%, {color.core.blue.40} 22.4%, {color.core.blue.40} 76.04%, {color.core.blue.40} 100%)",
+                "value": "linear-gradient(90deg, #0352a600 0%, #0352a6e6 22.4%, #0352a6e6 76.04%, #0352a600 100%)",
                 "type": "color",
                 "description": "Core Token: core.blue.40 0%, core.blue.40 90%, core.blue.40 90%, core.blue.40 0%\n\nHEX: 64B4FA 0%, 64B4FA 90%,64B4FA 90%, 64B4FA 0%,   \n--------------------------------\nUsed for hover state divider on the compose area for the announcement space."
               }
@@ -928,50 +928,50 @@
           "description": "Core Token: \ncore.gray.100\nHEX: 0F0F0F\n---------------------------\nUsed for any default illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
         },
         "positive": {
-          "value": "{color.core.green.40}",
+          "value": "linear-gradient(180deg, {color.core.green.40} 0%, {color.decorative.lime.40} 100%)",
           "type": "color",
           "description": "Core Token: core.green.40, \ndecorative.lime.40\nHEX: 3CC29A, 93C437\n---------------------------\nUsed for success-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
         },
         "negative": {
-          "value": "{color.decorative.pink.50}",
+          "value": "linear-gradient(180deg, {color.decorative.pink.50} 0%, {color.core.red.60} 100%)",
           "type": "color",
           "description": "Core Token: \ndecorative.pink.50, \ncore.red.60\nHEX: F0677E, DB1F2E\n---------------------------\nUsed for error-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
         },
         "empty": {
           "00": {
-            "value": "{color.decorative.lime.40}",
+            "value": "linear-gradient(180deg, {color.decorative.lime.40} 0%, {color.decorative.cobalt.50} 100%)",
             "type": "color",
             "description": "Core Token: decorative.lime.40\ndecorative.cobalt.50\nHEX: 93C437, 279BE8\n---------------------------\nUsed for empty state.\nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           },
           "01": {
-            "value": "{color.decorative.cobalt.50}",
+            "value": "linear-gradient(180deg, {color.decorative.cobalt.50} 0%, {color.decorative.violet.60} 100%)",
             "type": "color",
             "description": "Core Token: decorative.cobalt.50\ndecorative.violet.60\nHEX: 279BE8, 875AE0\n---------------------------\nUsed for empty state.\nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           }
         },
         "onboarding": {
           "00": {
-            "value": "{color.core.yellow.30}",
+            "value": "linear-gradient(180deg, {color.core.yellow.30} 0%, {color.decorative.lime.40} 100%)",
             "type": "color",
             "description": "Core Token: core.yellow.30\ndecorative.lime.40\nHEX: FFBE4F, 93C437\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           },
           "01": {
-            "value": "{color.core.red.50}",
+            "value": "linear-gradient(180deg, {color.core.red.50} 0%, {color.decorative.violet.60} 100%)",
             "type": "color",
             "description": "Core Token: core.red.50, \ndecorative.violet.60\nHEX: F55868, 875AE0\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           },
           "02": {
-            "value": "{color.core.yellow.30}",
+            "value": "linear-gradient(180deg, {color.core.yellow.30} 0%, {color.core.orange.50} 100%)",
             "type": "color",
             "description": "Core Token: core.yellow.30, \ncore.orange.50\nHEX: FFBE4F, F26B1D\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           },
           "03": {
-            "value": "{color.decorative.lime.40}",
+            "value": "linear-gradient(180deg, {color.decorative.lime.40} 0%, {color.decorative.cobalt.50} 100%)",
             "type": "color",
             "description": "Core Token: decorative.lime.40, \ndecorative.cobalt.50\nHEX: 93C437, 279BE8\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           },
           "04": {
-            "value": "{color.decorative.cobalt.50}",
+            "value": "linear-gradient(180deg, {color.decorative.cobalt.50} 0%, {color.decorative.violet.60} 100%)",
             "type": "color",
             "description": "Core Token: decorative.cobalt.50, \ndecorative.violet.60\nHEX: 279BE8, 875AE0\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           }
