@@ -748,19 +748,19 @@
           "accent": {
             "active": {
               "defualt": {
-                "value": "{color.core.cobalt.60}",
+                "value": "{color.decorative.cobalt.60}",
                 "type": "color",
-                "description": "Core Token: core.cobalt.60\nHEXL: 0A78CC\n------------------------------\nUsed for rest state of control components (radio, toggle, checkbox)"
+                "description": "Core Token: decorative.cobalt.60\nHEXL: 0A78CC\n------------------------------\nUsed for rest state of control components (radio, toggle, checkbox)"
               },
               "hover": {
-                "value": "{color.core.cobalt.70}",
+                "value": "{color.decorative.cobalt.70}",
                 "type": "color",
-                "description": "Core Token: core.cobalt.70\nHEXL: 08599C\n------------------------------\nUsed for hover state of control components (radio, toggle, checkbox)"
+                "description": "Core Token: decorative.cobalt.70\nHEXL: 08599C\n------------------------------\nUsed for hover state of control components (radio, toggle, checkbox)"
               },
               "pressed": {
-                "value": "{color.core.cobalt.80}",
+                "value": "{color.decorative.cobalt.80}",
                 "type": "color",
-                "description": "Core Token: core.cobalt.80\nHEXL: 103C63\n------------------------------\nUsed for pressed state of control components (radio, toggle, checkbox)"
+                "description": "Core Token: decorative.cobalt.80\nHEXL: 103C63\n------------------------------\nUsed for pressed state of control components (radio, toggle, checkbox)"
               },
               "disabled": {
                 "value": "{color.core.blue.20}",
@@ -860,7 +860,7 @@
           "00": {
             "value": "{color.decorative.orange.50}",
             "type": "color",
-            "description": "Core Token: core.orange.50\nHEX: F26B1D\n-------------------------------\noutline for the orange tags"
+            "description": "Core Token: decorative.orange.50\nHEX: F26B1D\n-------------------------------\noutline for the orange tags"
           }
         },
         "decorative": {
@@ -961,9 +961,9 @@
             "description": "Core Token: core.red.50, \ndecorative.violet.60\nHEX: F55868, 875AE0\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           },
           "02": {
-            "value": "linear-gradient(180deg, {color.core.yellow.30} 0%, {color.core.orange.50} 100%)",
+            "value": "linear-gradient(180deg, {color.core.yellow.30} 0%, {color.decorative.orange.50} 100%)",
             "type": "color",
-            "description": "Core Token: core.yellow.30, \ncore.orange.50\nHEX: FFBE4F, F26B1D\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
+            "description": "Core Token: core.yellow.30, \ndecorative.orange.50\nHEX: FFBE4F, F26B1D\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           },
           "03": {
             "value": "linear-gradient(180deg, {color.decorative.lime.40} 0%, {color.decorative.cobalt.50} 100%)",
