@@ -236,12 +236,12 @@
           },
           "notice": {
             "active": {
-              "value": "{color.decorative.orange.90}",
+              "value": "{color.core.orange.90}",
               "type": "color",
               "description": "Core Token: core.orange.90\nHEX: 33221B\n----------------\nUsed for hover/pressed state of teams "
             },
             "default": {
-              "value": "{color.decorative.orange.70}",
+              "value": "{color.core.orange.70}",
               "type": "color",
               "description": "Core Token: core.orange.70\nHEX: 914017\n----------------\nUsed for rest state of teams "
             }
@@ -566,17 +566,17 @@
           },
           "notice": {
             "00": {
-              "value": "{color.decorative.orange.60}",
+              "value": "{color.core.orange.60}",
               "type": "color",
               "description": "Core Token: core.orange.60\nHEX: C74F0E\n---------------------\nUsed for avatar presence (busy, meeting, call, device)"
             },
             "01": {
-              "value": "{color.decorative.orange.20}",
+              "value": "{color.core.orange.20}",
               "type": "color",
               "description": "Core Token: core.orange.20\nHEX: FCE4C7\n------------------------------\nUsed for pressed state of alert-badge"
             },
             "02": {
-              "value": "{color.decorative.orange.10}",
+              "value": "{color.core.orange.10}",
               "type": "color",
               "description": "Core Token: core.orange.10\nHEX: FAF4EB\n---------------------------------\nUsed for rest/hover state of alert-badge"
             }
@@ -858,7 +858,7 @@
         },
         "notice": {
           "00": {
-            "value": "{color.decorative.orange.50}",
+            "value": "{color.core.orange.50}",
             "type": "color",
             "description": "Core Token: core.orange.50\nHEX: F26B1D\n-------------------------------\noutline for the orange tags"
           }

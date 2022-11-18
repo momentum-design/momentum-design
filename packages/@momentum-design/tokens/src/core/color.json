@@ -325,10 +325,6 @@
           "type": "color",
           "description": "Hex Code: #07120d"
         },
-        "105": {
-          "value": "#4e6961",
-          "type": "color"
-        },
         "05": {
           "value": "#edf7f5",
           "type": "color",
@@ -458,61 +454,71 @@
           "type": "color",
           "description": "Hex Code: #fff6e3"
         }
+      },
+      "orange": {
+        "10": {
+          "value": "#FEEBD7",
+          "type": "color",
+          "description": "HEX Code: #FEEBD7"
+        },
+        "20": {
+          "value": "#FED5AC",
+          "type": "color",
+          "description": "HEX Code: #FED5AC"
+        },
+        "30": {
+          "value": "#FEBA7F",
+          "type": "color",
+          "description": "HEX Code: #FEBA7F"
+        },
+        "40": {
+          "value": "#FD884E",
+          "type": "color",
+          "description": "HEX Code: #FD884E"
+        },
+        "50": {
+          "value": "#EC6400",
+          "type": "color",
+          "description": "HEX Code: #EC6400"
+        },
+        "60": {
+          "value": "#C54303",
+          "type": "color",
+          "description": "HEX Code: #C54303"
+        },
+        "70": {
+          "value": "#9C3202",
+          "type": "color",
+          "description": "HEX Code: #9C3202"
+        },
+        "80": {
+          "value": "#682601",
+          "type": "color",
+          "description": "HEX Code: #682601"
+        },
+        "90": {
+          "value": "#411B04",
+          "type": "color",
+          "description": "HEX Code: #411B04"
+        },
+        "95": {
+          "value": "#291303",
+          "type": "color",
+          "description": "HEX Code: #291303"
+        },
+        "100": {
+          "value": "#170B02",
+          "type": "color",
+          "description": "HEX Code: #170B02"
+        },
+        "05": {
+          "value": "#FEF3E8",
+          "type": "color",
+          "description": "HEX Code: #FEF3E8"
+        }
       }
     },
     "decorative": {
-      "orange": {
-        "10": {
-          "value": "#faf4eb",
-          "type": "color",
-          "description": "HEX Code: #FAF4EB"
-        },
-        "20": {
-          "value": "#fce4c7",
-          "type": "color",
-          "description": "HEX Code: #FCE4C7"
-        },
-        "30": {
-          "value": "#ffca99",
-          "type": "color",
-          "description": "HEX Code: #FFCA99"
-        },
-        "40": {
-          "value": "#ff9d52",
-          "type": "color",
-          "description": "HEX Code: #FF9D52"
-        },
-        "50": {
-          "value": "#f26b1d",
-          "type": "color",
-          "description": "HEX Code: #F26B1D"
-        },
-        "60": {
-          "value": "#c74f0e",
-          "type": "color",
-          "description": "HEX Code: #C74F0E"
-        },
-        "70": {
-          "value": "#914017",
-          "type": "color",
-          "description": "HEX Code: #914017"
-        },
-        "80": {
-          "value": "#59311e",
-          "type": "color",
-          "description": "HEX Code: #59311E"
-        },
-        "90": {
-          "value": "#33221b",
-          "type": "color",
-          "description": "HEX Code: #33221B"
-        },
-        "100": {
-          "value": "#211916",
-          "type": "color",
-          "description": "HEX Code: #3211916"
-        }
-      },
       "gold": {
         "10": {
           "value": "#f7f6dc",
@@ -1346,6 +1352,48 @@
             "description": "HEX Code: #27163B"
           }
         }
+      }
+    },
+    "partner": {
+      "pdf": {
+        "value": "#EE0507",
+        "type": "color",
+        "description": "HEX: EE0507\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "word": {
+        "value": "#0078D6",
+        "type": "color",
+        "description": "HEX: 0078D6\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "powerpoint": {
+        "value": "#D93E17",
+        "type": "color",
+        "description": "HEX:D93E17\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "excel": {
+        "value": "#00893E",
+        "type": "color",
+        "description": "HEX:00893E\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "onenote": {
+        "value": "#B839DB",
+        "type": "color",
+        "description": "HEX:B839DB\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "sheets": {
+        "value": "#F4B400",
+        "type": "color",
+        "description": "HEX:F4B400\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "slides": {
+        "value": "#0F9D58",
+        "type": "color",
+        "description": "HEX:0F9D58\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "keynote": {
+        "value": "#029CFB",
+        "type": "color",
+        "description": "HEX:029CFB\n---------------\nUsed for bacakground of attachment for content-list components."
       }
     }
   }

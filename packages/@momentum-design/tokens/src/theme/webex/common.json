@@ -210,7 +210,7 @@
           },
           "notice": {
             "00": {
-              "value": "{color.decorative.orange.70}",
+              "value": "{color.core.orange.70}",
               "type": "color",
               "description": "Theme Token: core.orange.70\nHEX: 914017\n-------------------------------\nUsed for avatar"
             }
@@ -354,11 +354,11 @@
           },
           "orange": {
             "defualt": {
-              "value": "{color.decorative.orange.60}",
+              "value": "{color.core.orange.60}",
               "type": "color"
             },
             "pressed": {
-              "value": "{color.decorative.orange.80}",
+              "value": "{color.core.orange.80}",
               "type": "color"
             }
           },
@@ -425,7 +425,7 @@
         },
         "notice": {
           "00": {
-            "value": "{color.decorative.orange.60}",
+            "value": "{color.core.orange.60}",
             "type": "color",
             "description": "Core Token: core.orange.60\nHEX: C74F0E\n-------------------------------\nUsed for outline of meetings/share/window-border (share-active)"
           }
