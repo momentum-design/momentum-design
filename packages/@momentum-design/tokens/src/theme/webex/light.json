@@ -748,19 +748,19 @@
           "accent": {
             "active": {
               "defualt": {
-                "value": "{color.decorative.cobalt.60}",
+                "value": "{color.core.blue.60}",
                 "type": "color",
-                "description": "Core Token: decorative.cobalt.60\nHEXL: 0A78CC\n------------------------------\nUsed for rest state of control components (radio, toggle, checkbox)"
+                "description": "Core Token: core.blue.60\nHEXL: 1170CF\n------------------------------\nUsed for rest state of control components (radio, toggle, checkbox)"
               },
               "hover": {
-                "value": "{color.decorative.cobalt.70}",
+                "value": "{color.core.blue.70}",
                 "type": "color",
-                "description": "Core Token: decorative.cobalt.70\nHEXL: 08599C\n------------------------------\nUsed for hover state of control components (radio, toggle, checkbox)"
+                "description": "Core Token: core.blue.70\nHEXL: 0353A8\n------------------------------\nUsed for hover state of control components (radio, toggle, checkbox)"
               },
               "pressed": {
-                "value": "{color.decorative.cobalt.80}",
+                "value": "{color.core.blue.80}",
                 "type": "color",
-                "description": "Core Token: decorative.cobalt.80\nHEXL: 103C63\n------------------------------\nUsed for pressed state of control components (radio, toggle, checkbox)"
+                "description": "Core Token: core.blue.80\nHEXL: 063A75\n------------------------------\nUsed for pressed state of control components (radio, toggle, checkbox)"
               },
               "disabled": {
                 "value": "{color.core.blue.20}",
