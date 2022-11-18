@@ -1,5 +1,6 @@
 const FILE_ENCODING: BufferEncoding = 'utf-8';
 
+// https://github.com/amzn/style-dictionary/blob/main/lib/common/formats.js
 const SD_FORMATS = {
   CSS_VARIABLES: {
     EXTENSION: 'css',
@@ -21,6 +22,20 @@ const SD_FORMATS = {
     GROUP: 'web',
     NAME: 'web/json',
     PATH: './json/',
+  },
+  ANDROID_RESOURCES: {
+    EXTENSION: 'xml',
+    FORMAT: 'android/resources',
+    GROUP: 'android',
+    NAME: 'android/resources',
+    PATH: './resources/',
+  },
+  SWIFT_CLASS: {
+    EXTENSION: 'swift',
+    FORMAT: 'ios-swift/class.swift',
+    GROUP: 'ios',
+    NAME: 'ios/swift',
+    PATH: './ios/',
   },
 };
 
