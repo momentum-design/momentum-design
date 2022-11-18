@@ -83,7 +83,7 @@
               "description": "Core Token: core.gray.95\nHEX: 1A1A1A\n----------------\nMedium solid surface. Used this for the surface of modal when layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
             },
             "tertiary": {
-              "value": "{color.core.black-alpha.100",
+              "value": "{color.core.black-alpha.100}",
               "type": "color",
               "description": "Core Token: core.black-alpha.100\nHEX: 000000\n----------------\nFull solid surface. Used this for calendar picker, input-filed, toasts, panel-rectangles. Can also be used when layering surfaces one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
             }
@@ -319,45 +319,45 @@
                 "description": "Core Token: core.slate.40\nHEX: B0B4D9\n-------------------------\nUsed for rest/hover state of teams"
               },
               "active": {
-                "value": "{color.decorative.slate.90}",
+                "value": "{color.decorative.slate.20}",
                 "type": "color",
-                "description": "Core Token: core.slate.90\nHEX: 26262B\n-------------------------\nUsed for active state of teams"
+                "description": "Core Token: core.slate.20\nHEX: E3E7FA\n-------------------------\nUsed for active state of teams"
               }
             },
             "violet": {
               "default": {
-                "value": "{color.decorative.violet.70}",
+                "value": "{color.decorative.violet.40}",
                 "type": "color",
-                "description": "Core Token: core.violet.70\nHEX: 535573\n-------------------------\nUsed for rest/hover state of teams"
+                "description": "Core Token: core.violet.40\nHEX: C7A5FA\n-------------------------\nUsed for rest/hover state of teams"
               },
               "active": {
-                "value": "{color.decorative.violet.90}",
+                "value": "{color.decorative.violet.20}",
                 "type": "color",
-                "description": "Core Token: core.violet.90\nHEX: 26262B\n-------------------------\nUsed for active state of teams"
+                "description": "Core Token: core.violet.20\nHEX: F0E3FC\n-------------------------\nUsed for active state of teams"
               }
             },
             "purple": {
               "default": {
-                "value": "{color.decorative.purple.70}",
+                "value": "{color.decorative.purple.40}",
                 "type": "color",
-                "description": "Core Token: core.purple.70\nHEX: 932099\n-------------------------\nUsed for rest/hover state of teams"
+                "description": "Core Token: core.purple.70\nHEX: F294F1\n-------------------------\nUsed for rest/hover state of teams"
               },
               "active": {
-                "value": "{color.decorative.purple.90}",
+                "value": "{color.decorative.purple.20}",
                 "type": "color",
-                "description": "Core Token: core.purple.90\nHEX: 3B1840\n-------------------------\nUsed for active state of teams"
+                "description": "Core Token: core.purple.20\nHEX: FCE1FC\n-------------------------\nUsed for active state of teams"
               }
             },
             "pink": {
               "default": {
-                "value": "{color.decorative.pink.70}",
+                "value": "{color.decorative.pink.40}",
                 "type": "color",
-                "description": "Core Token: core.pink.70\nHEX: A12A3A\n-------------------------\nUsed for rest/hover state of teams"
+                "description": "Core Token: core.pink.40\nHEX: FC97AA\n-------------------------\nUsed for rest/hover state of teams"
               },
               "active": {
-                "value": "{color.decorative.pink.90}",
+                "value": "{color.decorative.pink.20}",
                 "type": "color",
-                "description": "Core Token: core.pink.90\nHEX: 3B1E21\n-------------------------\nUsed for active state of teams"
+                "description": "Core Token: core.pink.20\nHEX: FFE0E7\n-------------------------\nUsed for active state of teams"
               }
             }
           }

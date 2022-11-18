@@ -20,7 +20,7 @@
           }
         },
         "decorative": {
-          "attachment": {
+          "partner": {
             "pdf": {
               "value": "#0078d6",
               "type": "color"
@@ -452,7 +452,7 @@
             "description": "Core Token: decorative.mint.40\nHEX: 30C9B0\n----------------------\nUsed for outline of tags"
           },
           "pink": {
-            "value": "{color.decorative.ping.40}",
+            "value": "{color.decorative.pink.40}",
             "type": "color",
             "description": "Core Token: decorative.pink.40\nHEX: FC97AA\n----------------------\nUsed for outline of tags"
           },
