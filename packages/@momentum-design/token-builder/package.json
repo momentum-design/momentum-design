@@ -44,12 +44,14 @@
   },
   "dependencies": {
     "@momentum-design/telemetry": "workspace:^",
+    "ajv": "^8.11.2",
     "style-dictionary": "^3.7.1",
     "yargs": "^17.6.0"
   },
   "devDependencies": {
     "@microsoft/api-documenter": "^7.19.23",
     "@microsoft/api-extractor": "^7.33.5",
+    "@types/glob": "^8.0.0",
     "@types/jest": "^29.2.0",
     "@types/node": "^18.11.7",
     "@types/yargs": "^17.0.13",
