@@ -15,6 +15,7 @@ import { Elevation as ElevationTransform } from '../../transforms';
 import Dictionary from '../dictionary';
 
 import type { Config } from './types';
+import Validator from '../../validator';
 
 const PACKAGE = 'token-builder';
 
@@ -30,6 +31,7 @@ class TokenBuilder {
   public build(): Promise<this> {
     logger.info('Executing build...');
     return this.initialize()
+      .then(async () => new Validator(this.config.input, this.config.config as ExternalConfig).validate())
       .then(() => {
         const configObj = this.config.config as ExternalConfig;
 
