@@ -10,12 +10,14 @@ import {
   RecordEventName,
   RecordBusinessPrefix,
 } from '@momentum-design/telemetry';
+import { SomeJSONSchema } from 'ajv/dist/types/json-schema';
 import { CONSTANTS, Config as ExternalConfig } from '../../common';
 import { Elevation as ElevationTransform } from '../../transforms';
 import Dictionary from '../dictionary';
 
 import type { Config } from './types';
 import Validator from '../../validator';
+import { SCHEMA_MAP } from '../../schemas';
 
 const PACKAGE = 'token-builder';
 
@@ -31,7 +33,27 @@ class TokenBuilder {
   public build(): Promise<this> {
     logger.info('Executing build...');
     return this.initialize()
-      .then(async () => new Validator(this.config.input, this.config.config as ExternalConfig).validate())
+      .then(async () => {
+        logger.info('Initializing validation...');
+        const configObj = this.config.config as ExternalConfig;
+        if (configObj.strict === false) {
+          logger.warn('strict mode disabled...skipping validation...');
+          return Promise.resolve();
+        }
+        let schemaMap;
+        if (configObj.schemaFiles) {
+          // TODO: this could be hardened up, but as of now, it's unused
+          // so delaying the value add here
+          logger.info('Building files for schema validator...');
+          schemaMap = await Promise.all(configObj.schemaFiles.map(async (value) => ({
+            fileName: value.split('/').pop() || '',
+            jsonSchema: await fs.readFile(value, 'utf8') as unknown as SomeJSONSchema,
+          })));
+        } else {
+          schemaMap = SCHEMA_MAP;
+        }
+        return new Validator(this.config.input, this.config.config as ExternalConfig, schemaMap).validate();
+      })
       .then(() => {
         const configObj = this.config.config as ExternalConfig;
 
@@ -79,6 +101,9 @@ class TokenBuilder {
         });
 
         return this;
+      }).catch((err: Error) => {
+        logger.error(`${err.name} ::::: message: ${err.message} ::::: stack: ${err.stack}`);
+        throw err;
       });
   }
 

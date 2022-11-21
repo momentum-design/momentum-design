@@ -1,0 +1,259 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/Welcome",
+  "definitions": {
+      "Welcome": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "fontFamilies": {
+                  "$ref": "#/definitions/FontFamilies"
+              },
+              "lineHeights": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/Ciscosanstt"
+                  }
+              },
+              "fontWeights": {
+                  "$ref": "#/definitions/FontWeights"
+              },
+              "fontSize": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/Ciscosanstt"
+                  }
+              },
+              "letterSpacing": {
+                  "$ref": "#/definitions/Spacing"
+              },
+              "paragraphSpacing": {
+                  "$ref": "#/definitions/Spacing"
+              },
+              "display": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/Display"
+                  }
+              },
+              "textCase": {
+                  "$ref": "#/definitions/Text"
+              },
+              "textDecoration": {
+                  "$ref": "#/definitions/Text"
+              }
+          },
+          "required": [
+              "display",
+              "fontFamilies",
+              "fontSize",
+              "fontWeights",
+              "letterSpacing",
+              "lineHeights",
+              "paragraphSpacing",
+              "textCase",
+              "textDecoration"
+          ],
+          "title": "Welcome"
+      },
+      "Display": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "value": {
+                  "$ref": "#/definitions/Value"
+              },
+              "type": {
+                  "$ref": "#/definitions/Type"
+              },
+              "description": {
+                  "type": "string"
+              }
+          },
+          "required": [
+              "description",
+              "type",
+              "value"
+          ],
+          "title": "Display"
+      },
+      "Value": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "fontFamily": {
+                  "$ref": "#/definitions/FontFamily"
+              },
+              "fontWeight": {
+                  "$ref": "#/definitions/FontWeight"
+              },
+              "lineHeight": {
+                  "type": "string"
+              },
+              "fontSize": {
+                  "type": "string"
+              },
+              "letterSpacing": {
+                  "$ref": "#/definitions/LetterSpacing"
+              },
+              "paragraphSpacing": {
+                  "$ref": "#/definitions/ParagraphSpacing"
+              },
+              "paragraphIndent": {
+                  "type": "string"
+              },
+              "textCase": {
+                  "$ref": "#/definitions/TextCase"
+              },
+              "textDecoration": {
+                  "$ref": "#/definitions/TextDecoration"
+              }
+          },
+          "required": [
+              "fontFamily",
+              "fontSize",
+              "fontWeight",
+              "letterSpacing",
+              "lineHeight",
+              "paragraphIndent",
+              "paragraphSpacing",
+              "textCase",
+              "textDecoration"
+          ],
+          "title": "Value"
+      },
+      "FontFamilies": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "ciscosanstt": {
+                  "$ref": "#/definitions/Ciscosanstt"
+              }
+          },
+          "required": [
+              "ciscosanstt"
+          ],
+          "title": "FontFamilies"
+      },
+      "Ciscosanstt": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "value": {
+                  "type": "string"
+              },
+              "type": {
+                  "type": "string"
+              }
+          },
+          "required": [
+              "type",
+              "value"
+          ],
+          "title": "Ciscosanstt"
+      },
+      "FontWeights": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "ciscosanstt-0": {
+                  "$ref": "#/definitions/Ciscosanstt"
+              },
+              "ciscosanstt-1": {
+                  "$ref": "#/definitions/Ciscosanstt"
+              },
+              "ciscosanstt-2": {
+                  "$ref": "#/definitions/Ciscosanstt"
+              },
+              "ciscosanstt-3": {
+                  "$ref": "#/definitions/Ciscosanstt"
+              }
+          },
+          "required": [
+              "ciscosanstt-0",
+              "ciscosanstt-1",
+              "ciscosanstt-2",
+              "ciscosanstt-3"
+          ],
+          "title": "FontWeights"
+      },
+      "Spacing": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "0": {
+                  "$ref": "#/definitions/Ciscosanstt"
+              }
+          },
+          "required": [
+              "0"
+          ],
+          "title": "Spacing"
+      },
+      "Text": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "none": {
+                  "$ref": "#/definitions/Ciscosanstt"
+              }
+          },
+          "required": [
+              "none"
+          ],
+          "title": "Text"
+      },
+      "Type": {
+          "type": "string",
+          "enum": [
+              "typography"
+          ],
+          "title": "Type"
+      },
+      "FontFamily": {
+          "type": "string",
+          "enum": [
+              "{fontFamilies.ciscosanstt}"
+          ],
+          "title": "FontFamily"
+      },
+      "FontWeight": {
+          "type": "string",
+          "enum": [
+              "{fontWeights.ciscosanstt-2}",
+              "{fontWeights.ciscosanstt-1}",
+              "{fontWeights.ciscosanstt-0}",
+              "{fontWeights.ciscosanstt-3}"
+          ],
+          "title": "FontWeight"
+      },
+      "LetterSpacing": {
+          "type": "string",
+          "enum": [
+              "{letterSpacing.0}"
+          ],
+          "title": "LetterSpacing"
+      },
+      "ParagraphSpacing": {
+          "type": "string",
+          "enum": [
+              "{paragraphSpacing.0}"
+          ],
+          "title": "ParagraphSpacing"
+      },
+      "TextCase": {
+          "type": "string",
+          "enum": [
+              "{textCase.none}"
+          ],
+          "title": "TextCase"
+      },
+      "TextDecoration": {
+          "type": "string",
+          "enum": [
+              "{textDecoration.none}"
+          ],
+          "title": "TextDecoration"
+      }
+  }
+}
