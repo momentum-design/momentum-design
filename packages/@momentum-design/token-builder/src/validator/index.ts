@@ -1,15 +1,20 @@
+import { SomeJSONSchema } from 'ajv/dist/types/json-schema';
 import fs from 'fs/promises';
-import Ajv, { JSONSchemaType, ValidateFunction } from 'ajv';
+import { ValidateFunction } from 'ajv';
 import {
   Logger,
   generateMetadata,
 } from '@momentum-design/telemetry';
 import glob from 'glob';
 import { join } from 'path';
+
+import Ajv from 'ajv/dist/2019';
+import * as draft6MetaSchema from 'ajv/dist/refs/json-schema-draft-06.json';
 import { Config, IValidator, SchemaMap, ValidatorMap } from '../common/types';
-import { SCHEMA_MAP } from './schemas';
 
 const ajv = new Ajv();
+ajv.addMetaSchema(draft6MetaSchema);
+ajv.addFormat('integer', (v) => !!Number.isSafeInteger(parseInt(v, 10)));
 
 const PACKAGE = 'token-builder';
 
@@ -24,25 +29,27 @@ class Validator implements IValidator {
 
   private validatorMap: ValidatorMap = {};
 
-  public constructor(dir: string, config: Config, schemaMap?: SchemaMap) {
+  public constructor(dir: string, config: Config, schemaMap: SchemaMap) {
     this.dir = dir;
     this.config = typeof config === 'string' ? config : structuredClone(config);
     if (schemaMap) {
       this.schemaMap = schemaMap;
-      this.schemaMap.forEach((value) => {
-        this.validatorMap[value.fileName] = {
-          schema: value.jsonSchema,
-          validator: ajv.compile(value.jsonSchema),
-        };
-      });
-    } else {
-      this.validatorMap = SCHEMA_MAP as ValidatorMap;
+      this.validatorMap = this.schemaMap.map((value) => ({
+        key: value.fileName,
+        schema: value.jsonSchema,
+        validator: ajv.compile(value.jsonSchema),
+      })).reduce((accum, cur) => ({ ...accum, [cur.key]: { validator: cur.validator, schema: cur.schema } }), {});
     }
   }
 
   public async validate(): Promise<this> {
     logger.info('Validating source files against defined schemas...');
-    this.log(await this.iterate(await this.collect()));
+    const results = await this.iterate(await this.collect());
+    this.log(results);
+    const hasErrors = results.some((validation) => validation.error);
+    if (hasErrors) {
+      return Promise.reject(new Error('Validation failed...'));
+    }
     logger.info('Validation complete...');
     return Promise.resolve(this);
   }
@@ -86,8 +93,10 @@ class Validator implements IValidator {
   private log(results: ReturnType<typeof Validator.process>[]): void {
     results.forEach((result) => {
       if (result.error) {
+        logger.error(result.message);
         logger.error(result.error);
       } else if (result.warn) {
+        logger.warn(result.message);
         logger.warn(result.warn);
       } else {
         logger.info(result.message);
@@ -95,11 +104,11 @@ class Validator implements IValidator {
     });
   }
 
-  public static process<T>(
+  public static process(
     jsonData: unknown,
     schemaName: string,
     schemaForFile?: {
-        schema: JSONSchemaType<T>,
+        schema: SomeJSONSchema,
         validator: ValidateFunction,
       },
   ): {
@@ -124,9 +133,9 @@ class Validator implements IValidator {
         schema: schemaName,
         validation: validationResult,
         warn: undefined,
-        error: schemaForFile.validator.errors?.length
+        error: `Schema validation error for file: ${schemaName} ${schemaForFile.validator.errors?.length
           ? schemaForFile.validator.errors.map((value) => value.message)?.reduce((str, cur) => str?.concat(cur || ''))
-          : '',
+          : ''}`,
         message: `Schema validation failed for file: ${schemaName}`,
       };
     }

@@ -1,0 +1,831 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/Welcome",
+  "definitions": {
+      "Welcome": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "color": {
+                  "$ref": "#/definitions/Color"
+              }
+          },
+          "required": [
+              "color"
+          ],
+          "title": "Welcome"
+      },
+      "Color": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "theme": {
+                  "$ref": "#/definitions/Theme"
+              }
+          },
+          "required": [
+              "theme"
+          ],
+          "title": "Color"
+      },
+      "Theme": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "bg": {
+                  "$ref": "#/definitions/Bg"
+              },
+              "surface": {
+                  "$ref": "#/definitions/Surface"
+              },
+              "content": {
+                  "$ref": "#/definitions/Content"
+              },
+              "border": {
+                  "$ref": "#/definitions/Border"
+              },
+              "illustration": {
+                  "$ref": "#/definitions/Illustration"
+              }
+          },
+          "required": [
+              "bg",
+              "border",
+              "content",
+              "illustration",
+              "surface"
+          ],
+          "title": "Theme"
+      },
+      "Bg": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "primary": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "secondary": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "mob": {
+                  "$ref": "#/definitions/Mob"
+              }
+          },
+          "required": [
+              "mob",
+              "primary",
+              "secondary"
+          ],
+          "title": "Bg"
+      },
+      "Mob": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "primary": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "secondary": {
+                  "$ref": "#/definitions/SecondaryClass"
+              }
+          },
+          "required": [
+              "primary",
+              "secondary"
+          ],
+          "title": "Mob"
+      },
+      "Border": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "neutral": {
+                  "$ref": "#/definitions/OnboardingClass"
+              },
+              "positive": {
+                  "$ref": "#/definitions/NoticeClass"
+              },
+              "negative": {
+                  "$ref": "#/definitions/NoticeClass"
+              },
+              "accent": {
+                  "$ref": "#/definitions/NoticeClass"
+              },
+              "notice": {
+                  "$ref": "#/definitions/NoticeClass"
+              },
+              "decorative": {
+                  "$ref": "#/definitions/BorderDecorative"
+              }
+          },
+          "required": [
+              "accent",
+              "decorative",
+              "negative",
+              "neutral",
+              "notice",
+              "positive"
+          ],
+          "title": "Border"
+      },
+      "NoticeClass": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "00": {
+                  "$ref": "#/definitions/SecondaryClass"
+              }
+          },
+          "required": [
+              "00"
+          ],
+          "title": "NoticeClass"
+      },
+      "BorderDecorative": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "gradient": {
+                  "$ref": "#/definitions/Gradient"
+              }
+          },
+          "required": [
+              "gradient"
+          ],
+          "title": "BorderDecorative"
+      },
+      "Gradient": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "device": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "primary": {
+                  "$ref": "#/definitions/GradientPrimary"
+              },
+              "negative": {
+                  "$ref": "#/definitions/GradientAccent"
+              },
+              "warning": {
+                  "$ref": "#/definitions/GradientAccent"
+              },
+              "accent": {
+                  "$ref": "#/definitions/GradientAccent"
+              }
+          },
+          "required": [
+              "accent",
+              "device",
+              "negative",
+              "primary",
+              "warning"
+          ],
+          "title": "Gradient"
+      },
+      "GradientAccent": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "defualt": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "hover": {
+                  "$ref": "#/definitions/SecondaryClass"
+              }
+          },
+          "required": [
+              "defualt",
+              "hover"
+          ],
+          "title": "GradientAccent"
+      },
+      "GradientPrimary": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "default": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "hover": {
+                  "$ref": "#/definitions/SecondaryClass"
+              }
+          },
+          "required": [
+              "default",
+              "hover"
+          ],
+          "title": "GradientPrimary"
+      },
+      "OnboardingClass": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "00": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "01": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "02": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "03": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "04": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "\b02": {
+                  "$ref": "#/definitions/SecondaryClass"
+              }
+          },
+          "required": [
+              "01"
+          ],
+          "title": "OnboardingClass"
+      },
+      "Content": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "text": {
+                  "$ref": "#/definitions/Text"
+              },
+              "btn": {
+                  "$ref": "#/definitions/Btn"
+              },
+              "indicator": {
+                  "$ref": "#/definitions/Indicator"
+              },
+              "control": {
+                  "$ref": "#/definitions/Control"
+              },
+              "scrollbar": {
+                  "$ref": "#/definitions/Scrollbar"
+              }
+          },
+          "required": [
+              "btn",
+              "control",
+              "indicator",
+              "scrollbar",
+              "text"
+          ],
+          "title": "Content"
+      },
+      "Btn": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "neutral": {
+                  "$ref": "#/definitions/BtnNeutral"
+              },
+              "positive": {
+                  "$ref": "#/definitions/BgClass"
+              },
+              "negative": {
+                  "$ref": "#/definitions/BgClass"
+              },
+              "accent": {
+                  "$ref": "#/definitions/BgClass"
+              }
+          },
+          "required": [
+              "accent",
+              "negative",
+              "neutral",
+              "positive"
+          ],
+          "title": "Btn"
+      },
+      "BgClass": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "default": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "hover": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "pressed": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "disabled": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "active": {
+                  "$ref": "#/definitions/Active"
+              },
+              "defualt": {
+                  "$ref": "#/definitions/SecondaryClass"
+              }
+          },
+          "required": [
+              "hover"
+          ],
+          "title": "BgClass"
+      },
+      "Active": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "default": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "hover": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "pressed": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "value": {
+                  "type": "string"
+              },
+              "type": {
+                  "$ref": "#/definitions/Type"
+              },
+              "description": {
+                  "type": "string"
+              }
+          },
+          "required": [],
+          "title": "Active"
+      },
+      "BtnNeutral": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "primary": {
+                  "$ref": "#/definitions/BgClass"
+              },
+              "secondary": {
+                  "$ref": "#/definitions/BgClass"
+              }
+          },
+          "required": [
+              "primary",
+              "secondary"
+          ],
+          "title": "BtnNeutral"
+      },
+      "Control": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "neutral": {
+                  "$ref": "#/definitions/ControlNeutral"
+              },
+              "accent": {
+                  "$ref": "#/definitions/ControlAccent"
+              }
+          },
+          "required": [
+              "accent",
+              "neutral"
+          ],
+          "title": "Control"
+      },
+      "ControlAccent": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "active": {
+                  "$ref": "#/definitions/BgClass"
+              }
+          },
+          "required": [
+              "active"
+          ],
+          "title": "ControlAccent"
+      },
+      "ControlNeutral": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "inactive": {
+                  "$ref": "#/definitions/BgClass"
+              }
+          },
+          "required": [
+              "inactive"
+          ],
+          "title": "ControlNeutral"
+      },
+      "Indicator": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "neutral": {
+                  "$ref": "#/definitions/OnboardingClass"
+              },
+              "positive": {
+                  "$ref": "#/definitions/NoticeClass"
+              },
+              "negative": {
+                  "$ref": "#/definitions/OnboardingClass"
+              },
+              "warning": {
+                  "$ref": "#/definitions/OnboardingClass"
+              },
+              "accent": {
+                  "$ref": "#/definitions/OnboardingClass"
+              },
+              "notice": {
+                  "$ref": "#/definitions/OnboardingClass"
+              },
+              "decorative": {
+                  "$ref": "#/definitions/IndicatorDecorative"
+              }
+          },
+          "required": [
+              "accent",
+              "decorative",
+              "negative",
+              "neutral",
+              "notice",
+              "positive",
+              "warning"
+          ],
+          "title": "Indicator"
+      },
+      "IndicatorDecorative": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "gold": {
+                  "$ref": "#/definitions/OnboardingClass"
+              },
+              "lime": {
+                  "$ref": "#/definitions/OnboardingClass"
+              },
+              "mint": {
+                  "$ref": "#/definitions/OnboardingClass"
+              },
+              "cobalt": {
+                  "$ref": "#/definitions/OnboardingClass"
+              },
+              "slate": {
+                  "$ref": "#/definitions/OnboardingClass"
+              },
+              "violet": {
+                  "$ref": "#/definitions/OnboardingClass"
+              },
+              "purple": {
+                  "$ref": "#/definitions/OnboardingClass"
+              },
+              "pink": {
+                  "$ref": "#/definitions/OnboardingClass"
+              }
+          },
+          "required": [
+              "cobalt",
+              "gold",
+              "lime",
+              "mint",
+              "pink",
+              "purple",
+              "slate",
+              "violet"
+          ],
+          "title": "IndicatorDecorative"
+      },
+      "Scrollbar": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "thumb": {
+                  "$ref": "#/definitions/BgClass"
+              },
+              "bg": {
+                  "$ref": "#/definitions/BgClass"
+              }
+          },
+          "required": [
+              "bg",
+              "thumb"
+          ],
+          "title": "Scrollbar"
+      },
+      "Text": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "neutral": {
+                  "$ref": "#/definitions/TextNeutral"
+              },
+              "positve": {
+                  "$ref": "#/definitions/PositveClass"
+              },
+              "negative": {
+                  "$ref": "#/definitions/PositveClass"
+              },
+              "warning": {
+                  "$ref": "#/definitions/PositveClass"
+              },
+              "accent": {
+                  "$ref": "#/definitions/PositveClass"
+              },
+              "notice": {
+                  "$ref": "#/definitions/Negative"
+              },
+              "decorative": {
+                  "$ref": "#/definitions/TextDecorative"
+              }
+          },
+          "required": [
+              "accent",
+              "decorative",
+              "negative",
+              "neutral",
+              "notice",
+              "positve",
+              "warning"
+          ],
+          "title": "Text"
+      },
+      "PositveClass": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "active": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "hover": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "default": {
+                  "$ref": "#/definitions/SecondaryClass"
+              }
+          },
+          "required": [
+              "active",
+              "default",
+              "hover"
+          ],
+          "title": "PositveClass"
+      },
+      "TextDecorative": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "gold": {
+                  "$ref": "#/definitions/Negative"
+              },
+              "lime": {
+                  "$ref": "#/definitions/Negative"
+              },
+              "mint": {
+                  "$ref": "#/definitions/Negative"
+              },
+              "cyan": {
+                  "$ref": "#/definitions/Negative"
+              },
+              "cobalt": {
+                  "$ref": "#/definitions/Negative"
+              },
+              "slate": {
+                  "$ref": "#/definitions/Negative"
+              },
+              "violet": {
+                  "$ref": "#/definitions/Negative"
+              },
+              "purple": {
+                  "$ref": "#/definitions/Negative"
+              },
+              "pink": {
+                  "$ref": "#/definitions/Negative"
+              }
+          },
+          "required": [
+              "cobalt",
+              "cyan",
+              "gold",
+              "lime",
+              "mint",
+              "pink",
+              "purple",
+              "slate",
+              "violet"
+          ],
+          "title": "TextDecorative"
+      },
+      "Negative": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "default": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "active": {
+                  "$ref": "#/definitions/SecondaryClass"
+              }
+          },
+          "required": [
+              "active",
+              "default"
+          ],
+          "title": "Negative"
+      },
+      "TextNeutral": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "primary": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "secondary": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "disabled": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "teams": {
+                  "$ref": "#/definitions/Negative"
+              }
+          },
+          "required": [
+              "disabled",
+              "primary",
+              "secondary",
+              "teams"
+          ],
+          "title": "TextNeutral"
+      },
+      "Illustration": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "default": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "positive": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "negative": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "empty": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/SecondaryClass"
+                  }
+              },
+              "onboarding": {
+                  "$ref": "#/definitions/OnboardingClass"
+              }
+          },
+          "required": [
+              "default",
+              "empty",
+              "negative",
+              "onboarding",
+              "positive"
+          ],
+          "title": "Illustration"
+      },
+      "SecondaryClass": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "value": {
+                  "type": "string"
+              },
+              "type": {
+                  "$ref": "#/definitions/Type"
+              },
+              "description": {
+                  "type": "string"
+              }
+          },
+          "required": [
+              "description",
+              "type",
+              "value"
+          ],
+          "title": "SecondaryClass"
+      },
+      "Surface": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "neutral": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/NeutralValue"
+                  }
+              },
+              "positive": {
+                  "$ref": "#/definitions/Negative"
+              },
+              "negative": {
+                  "$ref": "#/definitions/Negative"
+              },
+              "warning": {
+                  "$ref": "#/definitions/Warning"
+              },
+              "accent": {
+                  "$ref": "#/definitions/SurfaceAccent"
+              }
+          },
+          "required": [
+              "accent",
+              "negative",
+              "neutral",
+              "positive",
+              "warning"
+          ],
+          "title": "Surface"
+      },
+      "SurfaceAccent": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "default": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "mobile": {
+                  "$ref": "#/definitions/Mobile"
+              }
+          },
+          "required": [
+              "default",
+              "mobile"
+          ],
+          "title": "SurfaceAccent"
+      },
+      "Mobile": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "default": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "pressed": {
+                  "$ref": "#/definitions/SecondaryClass"
+              }
+          },
+          "required": [
+              "default",
+              "pressed"
+          ],
+          "title": "Mobile"
+      },
+      "NeutralValue": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "default": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "hover": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "pressed": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "disabled": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "active": {
+                  "$ref": "#/definitions/Active"
+              },
+              "defualt": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "primary": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "secondary": {
+                  "$ref": "#/definitions/SecondaryClass"
+              },
+              "tertiary": {
+                  "$ref": "#/definitions/SecondaryClass"
+              }
+          },
+          "required": [],
+          "title": "NeutralValue"
+      },
+      "Warning": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "default": {
+                  "$ref": "#/definitions/SecondaryClass"
+              }
+          },
+          "required": [
+              "default"
+          ],
+          "title": "Warning"
+      },
+      "Type": {
+          "type": "string",
+          "enum": [
+              "color"
+          ],
+          "title": "Type"
+      }
+  }
+}

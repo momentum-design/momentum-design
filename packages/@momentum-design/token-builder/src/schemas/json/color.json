@@ -1,0 +1,387 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/Welcome",
+  "definitions": {
+      "Welcome": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "color": {
+                  "$ref": "#/definitions/Color"
+              }
+          },
+          "required": [
+              "color"
+          ],
+          "title": "Welcome"
+      },
+      "Color": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "core": {
+                  "$ref": "#/definitions/Core"
+              },
+              "decorative": {
+                  "$ref": "#/definitions/Decorative"
+              },
+              "gradient": {
+                  "$ref": "#/definitions/Gradient"
+              },
+              "mobile": {
+                  "$ref": "#/definitions/Mobile"
+              }
+          },
+          "required": [
+              "core",
+              "decorative",
+              "gradient",
+              "mobile"
+          ],
+          "title": "Color"
+      },
+      "Core": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "white-alpha": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/BlackAlpha"
+                  }
+              },
+              "black-alpha": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/BlackAlpha"
+                  }
+              },
+              "gray": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/Blue"
+                  }
+              },
+              "blue": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/Blue"
+                  }
+              },
+              "green": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/Blue"
+                  }
+              },
+              "red": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/Blue"
+                  }
+              },
+              "yellow": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/BlackAlpha"
+                  }
+              }
+          },
+          "required": [
+              "black-alpha",
+              "blue",
+              "gray",
+              "green",
+              "red",
+              "white-alpha",
+              "yellow"
+          ],
+          "title": "Core"
+      },
+      "BlackAlpha": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "value": {
+                  "type": "string"
+              },
+              "type": {
+                  "$ref": "#/definitions/Type"
+              },
+              "description": {
+                  "type": "string"
+              }
+          },
+          "required": [
+              "description",
+              "type",
+              "value"
+          ],
+          "title": "BlackAlpha"
+      },
+      "Blue": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "value": {
+                  "type": "string"
+              },
+              "type": {
+                  "$ref": "#/definitions/Type"
+              },
+              "description": {
+                  "type": "string"
+              }
+          },
+          "required": [
+              "type",
+              "value"
+          ],
+          "title": "Blue"
+      },
+      "Decorative": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "orange": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/Blue"
+                  }
+              },
+              "gold": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/Blue"
+                  }
+              },
+              "olive": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/Blue"
+                  }
+              },
+              "lime": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/Blue"
+                  }
+              },
+              "mint": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/Blue"
+                  }
+              },
+              "cyan": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/Blue"
+                  }
+              },
+              "cobalt": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/BlackAlpha"
+                  }
+              },
+              "slate": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/Blue"
+                  }
+              },
+              "violet": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/Blue"
+                  }
+              },
+              "purple": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/Blue"
+                  }
+              },
+              "pink": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/Blue"
+                  }
+              }
+          },
+          "required": [
+              "cobalt",
+              "cyan",
+              "gold",
+              "lime",
+              "mint",
+              "olive",
+              "orange",
+              "pink",
+              "purple",
+              "slate",
+              "violet"
+          ],
+          "title": "Decorative"
+      },
+      "Gradient": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "default": {
+                  "$ref": "#/definitions/Bronze"
+              },
+              "indigo": {
+                  "$ref": "#/definitions/Bronze"
+              },
+              "jade": {
+                  "$ref": "#/definitions/Bronze"
+              },
+              "bronze": {
+                  "$ref": "#/definitions/Bronze"
+              },
+              "rose": {
+                  "$ref": "#/definitions/Bronze"
+              },
+              "lavender": {
+                  "$ref": "#/definitions/Bronze"
+              }
+          },
+          "required": [
+              "bronze",
+              "default",
+              "indigo",
+              "jade",
+              "lavender",
+              "rose"
+          ],
+          "title": "Gradient"
+      },
+      "Bronze": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "light": {
+                  "$ref": "#/definitions/LightClass"
+              },
+              "dark": {
+                  "$ref": "#/definitions/LightClass"
+              }
+          },
+          "required": [
+              "dark",
+              "light"
+          ],
+          "title": "Bronze"
+      },
+      "LightClass": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "primary": {
+                  "$ref": "#/definitions/BlackAlpha"
+              },
+              "secondary": {
+                  "$ref": "#/definitions/BlackAlpha"
+              }
+          },
+          "required": [
+              "primary",
+              "secondary"
+          ],
+          "title": "LightClass"
+      },
+      "Mobile": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "default": {
+                  "$ref": "#/definitions/Default"
+              },
+              "indigo": {
+                  "$ref": "#/definitions/Bronze"
+              },
+              "jade": {
+                  "$ref": "#/definitions/Bronze"
+              },
+              "bronze": {
+                  "$ref": "#/definitions/Bronze"
+              },
+              "rose": {
+                  "$ref": "#/definitions/Bronze"
+              },
+              "lavender": {
+                  "$ref": "#/definitions/Bronze"
+              }
+          },
+          "required": [
+              "bronze",
+              "default",
+              "indigo",
+              "jade",
+              "lavender",
+              "rose"
+          ],
+          "title": "Mobile"
+      },
+      "Default": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "light": {
+                  "$ref": "#/definitions/LightClass"
+              },
+              "dark": {
+                  "$ref": "#/definitions/PurpleDark"
+              }
+          },
+          "required": [
+              "dark",
+              "light"
+          ],
+          "title": "Default"
+      },
+      "PurpleDark": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "primary": {
+                  "$ref": "#/definitions/BlackAlpha"
+              },
+              "secondary": {
+                  "$ref": "#/definitions/Secondary"
+              }
+          },
+          "required": [
+              "primary",
+              "secondary"
+          ],
+          "title": "PurpleDark"
+      },
+      "Secondary": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "value": {
+                  "type": "string"
+              },
+              "type": {
+                  "$ref": "#/definitions/Type"
+              }
+          },
+          "required": [
+              "type",
+              "value"
+          ],
+          "title": "Secondary"
+      },
+      "Type": {
+          "type": "string",
+          "enum": [
+              "color"
+          ],
+          "title": "Type"
+      }
+  }
+}
