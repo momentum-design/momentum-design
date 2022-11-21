@@ -462,44 +462,44 @@
           "description": "HEX Code: #FEEBD7"
         },
         "20": {
-          "value": "#FED5AC",
+          "value": "#FAF4EB",
           "type": "color",
-          "description": "HEX Code: #FED5AC"
+          "description": "HEX Code: #FAF4EB"
         },
         "30": {
-          "value": "#FEBA7F",
+          "value": "#FFCA99",
           "type": "color",
-          "description": "HEX Code: #FEBA7F"
+          "description": "HEX Code: #FFCA99"
         },
         "40": {
-          "value": "#FD884E",
+          "value": "#FF9D52",
           "type": "color",
-          "description": "HEX Code: #FD884E"
+          "description": "HEX Code: #FF9D52"
         },
         "50": {
-          "value": "#EC6400",
+          "value": "#F26B1D",
           "type": "color",
-          "description": "HEX Code: #EC6400"
+          "description": "HEX Code: #F26B1D"
         },
         "60": {
-          "value": "#C54303",
+          "value": "#C74F0E",
           "type": "color",
-          "description": "HEX Code: #C54303"
+          "description": "HEX Code: #C74F0E"
         },
         "70": {
-          "value": "#9C3202",
+          "value": "#914017",
           "type": "color",
-          "description": "HEX Code: #9C3202"
+          "description": "HEX Code: #914017"
         },
         "80": {
-          "value": "#682601",
+          "value": "#59311E",
           "type": "color",
-          "description": "HEX Code: #682601"
+          "description": "HEX Code: #59311E"
         },
         "90": {
-          "value": "#411B04",
+          "value": "#33221B",
           "type": "color",
-          "description": "HEX Code: #411B04"
+          "description": "HEX Code: #33221B"
         },
         "95": {
           "value": "#291303",
@@ -507,9 +507,9 @@
           "description": "HEX Code: #291303"
         },
         "100": {
-          "value": "#170B02",
+          "value": "#211916",
           "type": "color",
-          "description": "HEX Code: #170B02"
+          "description": "HEX Code: #211916"
         },
         "05": {
           "value": "#FEF3E8",
@@ -1394,6 +1394,11 @@
         "value": "#029CFB",
         "type": "color",
         "description": "HEX:029CFB\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "doc": {
+        "value": "#4285f4",
+        "type": "color",
+        "description": "HEX Value: 4285F4"
       }
     }
   }
