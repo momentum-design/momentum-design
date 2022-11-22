@@ -32,6 +32,10 @@ class Git {
       }));
   }
 
+  public static async release(tag: string, title: string, notes: string): Promise<string> {
+    return Execute.run(`gh release create ${tag} --title "${tag} - ${title}" --notes "${notes}"`);
+  }
+
   public static get CONSTANTS(): typeof CONSTANTS {
     return structuredClone(CONSTANTS);
   }
