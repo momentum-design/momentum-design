@@ -9,7 +9,7 @@
   },
   "type": "module",
   "main": "./dist/module/index.js",
-  "types": "./dist/module/index.d.ts",
+  "types": "./dist/types/index.d.ts",
   "files": [
     "./dist"
   ],

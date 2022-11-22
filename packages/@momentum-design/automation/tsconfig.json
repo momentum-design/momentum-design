@@ -1,8 +1,9 @@
 {
   "extends": "../../../config/typescript/tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "./dist/module/",
-    "module": "ESNext"
+    "outDir": "./dist/module",
+    "declarationDir": "./dist/types",
+    "module": "ES6"
   },
   "plugins": [],
   "include": [
