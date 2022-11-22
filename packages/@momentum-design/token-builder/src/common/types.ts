@@ -1,3 +1,5 @@
+import { SomeJSONSchema } from 'ajv/dist/types/json-schema';
+import { ValidateFunction } from 'ajv';
 import CONSTANTS from './constants';
 
 export type Format = keyof typeof CONSTANTS.FORMATS;
@@ -25,4 +27,20 @@ export interface Config {
   formats: Array<Format>;
   prefix: string;
   transforms?: Array<Transform>;
+  schemaFiles?: Array<string>;
+  strict?: boolean;
+}
+
+export type SchemaMap = {fileName: string, jsonSchema: SomeJSONSchema}[]
+
+export type ValidatorMap = {
+  [key: string]: {
+    schema: SomeJSONSchema,
+    validator: ValidateFunction
+  }
+}
+
+export interface IValidator {
+  schemaMap: SchemaMap;
+  validate: () => Promise<IValidator>
 }

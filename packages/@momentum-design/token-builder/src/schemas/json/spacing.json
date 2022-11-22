@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/Welcome",
+  "definitions": {
+      "Welcome": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "spacing": {
+                  "$ref": "#/definitions/Spacing"
+              }
+          },
+          "required": [
+              "spacing"
+          ],
+          "title": "Welcome"
+      },
+      "Spacing": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "micro": {
+                  "$ref": "#/definitions/Big"
+              },
+              "xxx-small": {
+                  "$ref": "#/definitions/Large"
+              },
+              "xx-small": {
+                  "$ref": "#/definitions/Large"
+              },
+              "x-small": {
+                  "$ref": "#/definitions/Large"
+              },
+              "small": {
+                  "$ref": "#/definitions/Large"
+              },
+              "medium": {
+                  "$ref": "#/definitions/Large"
+              },
+              "large": {
+                  "$ref": "#/definitions/Large"
+              },
+              "x-large": {
+                  "$ref": "#/definitions/Large"
+              },
+              "xx-large": {
+                  "$ref": "#/definitions/Large"
+              },
+              "xxx-large": {
+                  "$ref": "#/definitions/Large"
+              },
+              "big": {
+                  "$ref": "#/definitions/Big"
+              },
+              "x-big": {
+                  "$ref": "#/definitions/Big"
+              },
+              "xx-big": {
+                  "$ref": "#/definitions/Big"
+              }
+          },
+          "required": [
+              "big",
+              "large",
+              "medium",
+              "micro",
+              "small",
+              "x-big",
+              "x-large",
+              "x-small",
+              "xx-big",
+              "xx-large",
+              "xx-small",
+              "xxx-large",
+              "xxx-small"
+          ],
+          "title": "Spacing"
+      },
+      "Big": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "value": {
+                  "type": "string"
+              },
+              "type": {
+                  "type": "string"
+              }
+          },
+          "required": [
+              "type",
+              "value"
+          ],
+          "title": "Big"
+      },
+      "Large": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "value": {
+                  "type": "string"
+              },
+              "type": {
+                  "type": "string"
+              },
+              "description": {
+                  "type": "string"
+              }
+          },
+          "required": [
+              "description",
+              "type",
+              "value"
+          ],
+          "title": "Large"
+      }
+  }
+}

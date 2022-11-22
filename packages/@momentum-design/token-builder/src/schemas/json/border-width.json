@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/Welcome",
+  "definitions": {
+      "Welcome": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "border-width": {
+                  "$ref": "#/definitions/BorderWidth"
+              }
+          },
+          "required": [
+              "border-width"
+          ],
+          "title": "Welcome"
+      },
+      "BorderWidth": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "small": {
+                  "$ref": "#/definitions/Large"
+              },
+              "medium": {
+                  "$ref": "#/definitions/Large"
+              },
+              "large": {
+                  "$ref": "#/definitions/Large"
+              }
+          },
+          "required": [
+              "large",
+              "medium",
+              "small"
+          ],
+          "title": "BorderWidth"
+      },
+      "Large": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "value": {
+                  "type": "string"
+              },
+              "type": {
+                  "type": "string"
+              },
+              "description": {
+                  "type": "string"
+              }
+          },
+          "required": [
+              "description",
+              "type",
+              "value"
+          ],
+          "title": "Large"
+      }
+  }
+}
