@@ -3,7 +3,7 @@ import {
   generateMetadata,
 } from '@momentum-design/telemetry';
 import { Command } from '../../models';
-import { Git } from '../../utils';
+import { Git, Yarn } from '../../utils';
 import GetPackages from '../get-packages';
 
 import CONSTANTS from './constants';
@@ -25,8 +25,14 @@ class CreateRelease extends Command {
     const { ...getPackagesConfig } = config;
 
     const packages = await GetPackages.process({ ...getPackagesConfig });
-    const intersection = packages.collection.filter((pack) => config.targets.includes(pack.package));
+    const affected = (await Yarn.list(config.since)).map((value) => value.name);
+    logger.info(`Affected packages: ${affected}`);
+    const affectedPackages = packages.collection.filter((pack) => affected.includes(pack.package));
+    logger.info(`Affected package within get packages config: ${affectedPackages.map((pack) => pack.package)}`);
+    const intersection = affectedPackages.filter((pack) => config.targets.includes(pack.package));
+    logger.info(`Affected package within targets: ${intersection}`);
     if (!intersection) {
+      logger.warn(`Affected package within targets: ${intersection}`);
       return Promise.resolve(['No packages matched, skipping release']);
     }
     const releases = await Promise.all(intersection.map(async (pack) => {
@@ -49,24 +55,10 @@ class CreateRelease extends Command {
         ) => `Released: ${await Git.release(release.tag, release.title, release.notes)} tag: ${release.tag}`,
       ),
     );
+    result.forEach((res) => {
+      logger.info(res);
+    });
     return result;
-
-    // const packageList = await Yarn.list('upstream/main');
-    // let tag;
-
-    // if (packageList.some((value) => value.name === '@momentum-design/tokens')) {
-    // const pack = await new Package(
-    //   { name: 'tokens', scope: '@momentum-design', packagesPath: './packages' },
-    // ).readDefinition();
-    // const tag = `${pack.definition.version}`;
-    // logger.info(`Releasing tag...${tag}`);
-    // const commitLog = await Git.list(1);
-    // const notes = commitLog.map((commit) => commit.commit).reduce((accum, cur) => accum + cur, '');
-    // const title = `Release ${tag}`;
-    // const release = await Git.release(tag, title, notes);
-    // // }
-
-    // return [`\n${release ?  : 'skipped release'}\n`];
   }
 
   public static override get CONSTANTS(): typeof CONSTANTS {

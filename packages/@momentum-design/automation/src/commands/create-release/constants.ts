@@ -9,6 +9,11 @@ const OPTIONS: CommandOptions = {
     describe: 'Array of package name strings (fully qualified) to send telemetry for',
     type: 'array',
   },
+  since: {
+    default: 'upstream/main',
+    describe: 'The command passed to workspaces list, to compare list',
+    type: 'string',
+  },
 };
 
 const CONSTANTS = {
