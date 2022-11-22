@@ -83,7 +83,7 @@
               "description": "Core Token: core.gray.95\nHEX: 1A1A1A\n----------------\nMedium solid surface. Used this for the surface of modal when layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
             },
             "tertiary": {
-              "value": "{color.core.black-alpha.100",
+              "value": "{color.core.black-alpha.100}",
               "type": "color",
               "description": "Core Token: core.black-alpha.100\nHEX: 000000\n----------------\nFull solid surface. Used this for calendar picker, input-filed, toasts, panel-rectangles. Can also be used when layering surfaces one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
             }
@@ -241,12 +241,12 @@
           },
           "notice": {
             "active": {
-              "value": "{color.decorative.orange.20}",
+              "value": "{color.core.orange.20}",
               "type": "color",
               "description": "Core Token: core.orange.20\nHEX: FCE4C7\n----------------\nUsed for hover/pressed state of teams "
             },
             "default": {
-              "value": "{color.decorative.orange.40}",
+              "value": "{color.core.orange.40}",
               "type": "color",
               "description": "Core Token: core.orange.40\nHEX:FF9D52\n----------------\nUsed for rest state of teams "
             }
@@ -319,45 +319,45 @@
                 "description": "Core Token: core.slate.40\nHEX: B0B4D9\n-------------------------\nUsed for rest/hover state of teams"
               },
               "active": {
-                "value": "{color.decorative.slate.90}",
+                "value": "{color.decorative.slate.20}",
                 "type": "color",
-                "description": "Core Token: core.slate.90\nHEX: 26262B\n-------------------------\nUsed for active state of teams"
+                "description": "Core Token: core.slate.20\nHEX: E3E7FA\n-------------------------\nUsed for active state of teams"
               }
             },
             "violet": {
               "default": {
-                "value": "{color.decorative.violet.70}",
+                "value": "{color.decorative.violet.40}",
                 "type": "color",
-                "description": "Core Token: core.violet.70\nHEX: 535573\n-------------------------\nUsed for rest/hover state of teams"
+                "description": "Core Token: core.violet.40\nHEX: C7A5FA\n-------------------------\nUsed for rest/hover state of teams"
               },
               "active": {
-                "value": "{color.decorative.violet.90}",
+                "value": "{color.decorative.violet.20}",
                 "type": "color",
-                "description": "Core Token: core.violet.90\nHEX: 26262B\n-------------------------\nUsed for active state of teams"
+                "description": "Core Token: core.violet.20\nHEX: F0E3FC\n-------------------------\nUsed for active state of teams"
               }
             },
             "purple": {
               "default": {
-                "value": "{color.decorative.purple.70}",
+                "value": "{color.decorative.purple.40}",
                 "type": "color",
-                "description": "Core Token: core.purple.70\nHEX: 932099\n-------------------------\nUsed for rest/hover state of teams"
+                "description": "Core Token: core.purple.70\nHEX: F294F1\n-------------------------\nUsed for rest/hover state of teams"
               },
               "active": {
-                "value": "{color.decorative.purple.90}",
+                "value": "{color.decorative.purple.20}",
                 "type": "color",
-                "description": "Core Token: core.purple.90\nHEX: 3B1840\n-------------------------\nUsed for active state of teams"
+                "description": "Core Token: core.purple.20\nHEX: FCE1FC\n-------------------------\nUsed for active state of teams"
               }
             },
             "pink": {
               "default": {
-                "value": "{color.decorative.pink.70}",
+                "value": "{color.decorative.pink.40}",
                 "type": "color",
-                "description": "Core Token: core.pink.70\nHEX: A12A3A\n-------------------------\nUsed for rest/hover state of teams"
+                "description": "Core Token: core.pink.40\nHEX: FC97AA\n-------------------------\nUsed for rest/hover state of teams"
               },
               "active": {
-                "value": "{color.decorative.pink.90}",
+                "value": "{color.decorative.pink.20}",
                 "type": "color",
-                "description": "Core Token: core.pink.90\nHEX: 3B1E21\n-------------------------\nUsed for active state of teams"
+                "description": "Core Token: core.pink.20\nHEX: FFE0E7\n-------------------------\nUsed for active state of teams"
               }
             }
           }
@@ -571,17 +571,17 @@
           },
           "notice": {
             "00": {
-              "value": "{color.decorative.orange.50}",
+              "value": "{color.core.orange.50}",
               "type": "color",
               "description": "Core Token: core.orange.50\nHEX: F26B1D\n---------------------\nUsed for avatar presence (busy, meeting, call, device)"
             },
             "01": {
-              "value": "{color.decorative.orange.80}",
+              "value": "{color.core.orange.80}",
               "type": "color",
               "description": "Core Token: core.orange.80\nHEX: 59311E\n---------------------------------\nUsed for pressed state of alert-badge"
             },
             "02": {
-              "value": "{color.decorative.orange.90}",
+              "value": "{color.core.orange.90}",
               "type": "color",
               "description": "Core Token: core.orange.90\nHEX: 33221B\n---------------------------------\nUsed for rest/hover state of alert-badge"
             }
@@ -868,7 +868,7 @@
         },
         "notice": {
           "00": {
-            "value": "{color.decorative.orange.40}",
+            "value": "{color.core.orange.40}",
             "type": "color",
             "description": "Core Token: core.orange.40\nHEX: FF9D52\n-------------------------------\noutline for the orange tags"
           }
@@ -971,7 +971,7 @@
             "description": "Core Token: core.red.50, \ndecorative.violet.60\nHEX: F55868, 875AE0\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           },
           "02": {
-            "value": "linear-gradient(180deg, {color.core.yellow.30} 0%, {color.decorative.orange.50} 100%)",
+            "value": "linear-gradient(180deg, {color.core.yellow.30} 0%, {color.core.orange.50} 100%)",
             "type": "color",
             "description": "Core Token: core.yellow.30, \ncore.orange.50\nHEX: FFBE4F, F26B1D\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           },

@@ -325,10 +325,6 @@
           "type": "color",
           "description": "Hex Code: #07120d"
         },
-        "105": {
-          "value": "#4e6961",
-          "type": "color"
-        },
         "05": {
           "value": "#edf7f5",
           "type": "color",
@@ -458,37 +454,35 @@
           "type": "color",
           "description": "Hex Code: #fff6e3"
         }
-      }
-    },
-    "decorative": {
+      },
       "orange": {
         "10": {
-          "value": "#faf4eb",
+          "value": "#FEEBD7",
+          "type": "color",
+          "description": "HEX Code: #FEEBD7"
+        },
+        "20": {
+          "value": "#FAF4EB",
           "type": "color",
           "description": "HEX Code: #FAF4EB"
         },
-        "20": {
-          "value": "#fce4c7",
-          "type": "color",
-          "description": "HEX Code: #FCE4C7"
-        },
         "30": {
-          "value": "#ffca99",
+          "value": "#FFCA99",
           "type": "color",
           "description": "HEX Code: #FFCA99"
         },
         "40": {
-          "value": "#ff9d52",
+          "value": "#FF9D52",
           "type": "color",
           "description": "HEX Code: #FF9D52"
         },
         "50": {
-          "value": "#f26b1d",
+          "value": "#F26B1D",
           "type": "color",
           "description": "HEX Code: #F26B1D"
         },
         "60": {
-          "value": "#c74f0e",
+          "value": "#C74F0E",
           "type": "color",
           "description": "HEX Code: #C74F0E"
         },
@@ -498,21 +492,33 @@
           "description": "HEX Code: #914017"
         },
         "80": {
-          "value": "#59311e",
+          "value": "#59311E",
           "type": "color",
           "description": "HEX Code: #59311E"
         },
         "90": {
-          "value": "#33221b",
+          "value": "#33221B",
           "type": "color",
           "description": "HEX Code: #33221B"
+        },
+        "95": {
+          "value": "#291303",
+          "type": "color",
+          "description": "HEX Code: #291303"
         },
         "100": {
           "value": "#211916",
           "type": "color",
-          "description": "HEX Code: #3211916"
+          "description": "HEX Code: #211916"
+        },
+        "05": {
+          "value": "#FEF3E8",
+          "type": "color",
+          "description": "HEX Code: #FEF3E8"
         }
-      },
+      }
+    },
+    "decorative": {
       "gold": {
         "10": {
           "value": "#f7f6dc",
@@ -1346,6 +1352,53 @@
             "description": "HEX Code: #27163B"
           }
         }
+      }
+    },
+    "partner": {
+      "pdf": {
+        "value": "#EE0507",
+        "type": "color",
+        "description": "HEX: EE0507\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "word": {
+        "value": "#0078D6",
+        "type": "color",
+        "description": "HEX: 0078D6\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "powerpoint": {
+        "value": "#D93E17",
+        "type": "color",
+        "description": "HEX:D93E17\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "excel": {
+        "value": "#00893E",
+        "type": "color",
+        "description": "HEX:00893E\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "onenote": {
+        "value": "#B839DB",
+        "type": "color",
+        "description": "HEX:B839DB\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "sheets": {
+        "value": "#F4B400",
+        "type": "color",
+        "description": "HEX:F4B400\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "slides": {
+        "value": "#0F9D58",
+        "type": "color",
+        "description": "HEX:0F9D58\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "keynote": {
+        "value": "#029CFB",
+        "type": "color",
+        "description": "HEX:029CFB\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "doc": {
+        "value": "#4285f4",
+        "type": "color",
+        "description": "HEX Value: 4285F4"
       }
     }
   }
