@@ -33,7 +33,8 @@
     "illustrations": "yarn workspace @momentum-design/illustrations",
     "tokens": "yarn workspace @momentum-design/tokens",
     "token-builder": "yarn workspace @momentum-design/token-builder",
-    "automation": "yarn workspace @momentum-design/automation"
+    "automation": "yarn workspace @momentum-design/automation",
+    "automation-center": "yarn workspace @momentum-design/momentum-automation-center"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",

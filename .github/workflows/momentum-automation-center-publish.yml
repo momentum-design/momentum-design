@@ -1,0 +1,20 @@
+on:
+  schedule:
+    # runs on 1:01  17:01 UTC
+    - cron:  '01 1,13 * * *'
+name: Momentum Automation Center Publish To NPM
+jobs:
+  jobAutomation:
+    name: Publish to npmjs
+    runs-on: ubuntu-latest
+    if: ${{ github.repository_owner == 'momentum-design' }}
+    steps:
+    - name: Check out
+      uses: actions/checkout@master
+    - name: Install Package and Build
+      run: yarn workspace @momentum-design/momentum-automation-center init-build
+    - name: Test release data
+      run: yarn workspace @momentum-design/momentum-automation-center test
+    - name: Publish
+      run: yarn workspace @momentum-design/momentum-automation-center publish-abstract tokenWebex=${{ secrets.WEBEX_TOKEN }} tokenNpm=${{ secrets.NPM_TOKEN }}
+      
