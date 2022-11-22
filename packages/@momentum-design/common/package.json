@@ -1,0 +1,58 @@
+{
+  "name": "@momentum-design/common",
+  "packageManager": "yarn@3.2.4",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0",
+    "yarn": ">=3.0.0"
+  },
+  "type": "commonjs",
+  "main": "./dist/module/index.js",
+  "types": "./dist/types/index.d.ts",
+  "files": [
+    "./dist"
+  ],
+  "scripts": {
+    "analyze": "yarn analyze:prebuild && yarn analyze:postbuild",
+    "analyze:lint": "eslint \"./src/**\"",
+    "analyze:postbuild": "echo \"script 'analyze:postbuild' has not been implemented\"",
+    "analyze:prebuild": "yarn analyze:lint && yarn analyze:syntax",
+    "analyze:syntax": "tsc --noEmit",
+    "build": "yarn build:module",
+    "build:module": "tsc",
+    "clean": "yarn clean:dist && yarn clean:docs",
+    "clean:dist": "rimraf ./dist",
+    "clean:docs": "rimraf ./docs",
+    "docs": "yarn docs:api",
+    "docs:api": "yarn docs:api:extract && yarn docs:api:generate",
+    "docs:api:extract": "yarn build && api-extractor run --local --verbose",
+    "docs:api:generate": "api-documenter markdown --input-folder=docs/metadata --output-folder=docs/markdown",
+    "prepublishOnly": "yarn clean && yarn build",
+    "publish": "yarn publish:npmjs",
+    "publish:npmjs": "echo \"script 'publish:npmjs' has not been implemented\"",
+    "test": "yarn test:prebuild && yarn test:postbuild",
+    "test:postbuild": "echo \"script 'test:postbuild' has not been implemented\"",
+    "test:prebuild": "yarn test:unit",
+    "test:unit": "jest ./src/**/*.test.ts"
+  },
+  "dependencies": {
+    "yargs": "^17.6.2"
+  },
+  "devDependencies": {
+    "@microsoft/api-documenter": "^7.19.24",
+    "@microsoft/api-extractor": "^7.33.6",
+    "@types/jest": "^29.2.3",
+    "@types/node": "^18.11.9",
+    "@types/yargs": "^17.0.13",
+    "@typescript-eslint/eslint-plugin": "^5.43.0",
+    "@typescript-eslint/parser": "^5.43.0",
+    "eslint": "^8.27.0",
+    "eslint-plugin": "^1.0.1",
+    "eslint-plugin-import": "^2.26.0",
+    "jest": "^29.3.1",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^29.0.3",
+    "typescript": "^4.9.3"
+  }
+}

@@ -1,0 +1,1101 @@
+{
+  "metadata": {
+    "toolPackage": "@microsoft/api-extractor",
+    "toolVersion": "7.33.6",
+    "schemaVersion": 1010,
+    "oldestForwardsCompatibleVersion": 1001,
+    "tsdocConfig": {
+      "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+      "noStandardTags": true,
+      "tagDefinitions": [
+        {
+          "tagName": "@alpha",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@beta",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@defaultValue",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@decorator",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@deprecated",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@eventProperty",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@example",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@experimental",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@inheritDoc",
+          "syntaxKind": "inline"
+        },
+        {
+          "tagName": "@internal",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@label",
+          "syntaxKind": "inline"
+        },
+        {
+          "tagName": "@link",
+          "syntaxKind": "inline",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@override",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@packageDocumentation",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@param",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@privateRemarks",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@public",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@readonly",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@remarks",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@returns",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@sealed",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@see",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@throws",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@typeParam",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@virtual",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@betaDocumentation",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@internalRemarks",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@preapproved",
+          "syntaxKind": "modifier"
+        }
+      ],
+      "supportForTags": {
+        "@alpha": true,
+        "@beta": true,
+        "@defaultValue": true,
+        "@decorator": true,
+        "@deprecated": true,
+        "@eventProperty": true,
+        "@example": true,
+        "@experimental": true,
+        "@inheritDoc": true,
+        "@internal": true,
+        "@label": true,
+        "@link": true,
+        "@override": true,
+        "@packageDocumentation": true,
+        "@param": true,
+        "@privateRemarks": true,
+        "@public": true,
+        "@readonly": true,
+        "@remarks": true,
+        "@returns": true,
+        "@sealed": true,
+        "@see": true,
+        "@throws": true,
+        "@typeParam": true,
+        "@virtual": true,
+        "@betaDocumentation": true,
+        "@internalRemarks": true,
+        "@preapproved": true
+      },
+      "reportUnsupportedHtmlElements": false
+    }
+  },
+  "kind": "Package",
+  "canonicalReference": "@momentum-design/builder!",
+  "docComment": "/**\n * A package used to build various assets from momentum design designers to engineer-consumable resources.\n *\n * @packageDocumentation\n */\n",
+  "name": "@momentum-design/builder",
+  "preserveMemberOrder": false,
+  "members": [
+    {
+      "kind": "EntryPoint",
+      "canonicalReference": "@momentum-design/builder!",
+      "name": "",
+      "preserveMemberOrder": false,
+      "members": [
+        {
+          "kind": "Class",
+          "canonicalReference": "@momentum-design/builder!Builder:class",
+          "docComment": "/**\n * The Builder class to be extended by scoped Builder classes.\n *\n * @beta\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "declare class Builder "
+            }
+          ],
+          "fileUrlPath": "src/models/builder/builder.ts",
+          "releaseTag": "Beta",
+          "name": "Builder",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "Constructor",
+              "canonicalReference": "@momentum-design/builder!Builder:constructor(1)",
+              "docComment": "/**\n * Construct a new Builder.\n *\n * @param config - Configuration Object to be mounted to this Builder.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "constructor(config: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Config",
+                  "canonicalReference": "@momentum-design/builder!BuilderConfig:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ");"
+                }
+              ],
+              "releaseTag": "Beta",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "config",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ]
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@momentum-design/builder!Builder#build:member(1)",
+              "docComment": "/**\n * Build the output data based on the configuration provided to this Builder.\n *\n * @remarks\n *\n * This method triggers the configuration read flow, then the initialize flow then finally the process flow.\n *\n * @returns - This Builder after executing this method.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "build(): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<this>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "releaseTag": "Beta",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "name": "build"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@momentum-design/builder!Builder#config:member",
+              "docComment": "/**\n * The Configuration definition.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "config: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Config",
+                  "canonicalReference": "@momentum-design/builder!BuilderConfig:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Beta",
+              "name": "config",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@momentum-design/builder!Builder.CONSTANTS:member",
+              "docComment": "/**\n * Constants associated with this Builder class.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "static get CONSTANTS(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "typeof "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "CONSTANTS",
+                  "canonicalReference": "@momentum-design/builder!~CONSTANTS:var"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Beta",
+              "name": "CONSTANTS",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "isStatic": true,
+              "isProtected": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@momentum-design/builder!Builder#initialize:member(1)",
+              "docComment": "/**\n * Initialize this Builder.\n *\n * @remarks\n *\n * This method should be implemented in class definitions that extend this class. The scope of this method is to perform setup flows needed to adjust data prior to writing it to the disk.\n *\n * @returns - This Builder after executing this method.\n *\n * @virtual\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "initialize(): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<this>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "releaseTag": "Beta",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "name": "initialize"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@momentum-design/builder!Builder#process:member(1)",
+              "docComment": "/**\n * Process this Builder.\n *\n * @remarks\n *\n * This method should be implemented in class definitions that extend this class. The scope of this method is to perform flows needed to output files from this Builder to the disk.\n *\n * @returns - This Builder after executing this method.\n *\n * @virtual\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "process(): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<this>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "releaseTag": "Beta",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "name": "process"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@momentum-design/builder!Builder#read:member(1)",
+              "docComment": "/**\n * Read the file located via the provided `target` and mount the data found within this Builder.\n *\n * @remarks\n *\n * This method attempts to read files on the file system. Note that the target string will be ammended to the process execution path in order to locate the target configuration file. If the target, which aliases to the `config.definitionPath` is undefined, this method exits with the expectation that the configuration object is being mounted at the time this Builder is constructed.\n *\n * @param target - Target path to attempt to read and mount to this Builder.\n *\n * @returns - This Builder after executing this method.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "read(target?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<this>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 5
+              },
+              "releaseTag": "Beta",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "target",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": true
+                }
+              ],
+              "isOptional": false,
+              "name": "read"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@momentum-design/builder!Builder#type:member",
+              "docComment": "/**\n * The type of this Builder.\n *\n * @virtual\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get type(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Beta",
+              "name": "type",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@momentum-design/builder!Builder.type:member",
+              "docComment": "/**\n * Type of this Builder class.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "static get type(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Beta",
+              "name": "type",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": true,
+              "isProtected": false
+            }
+          ],
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Interface",
+          "canonicalReference": "@momentum-design/builder!BuilderConfig:interface",
+          "docComment": "/**\n * Core configuration Object for Builder.\n *\n * @beta\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export interface Config "
+            }
+          ],
+          "fileUrlPath": "src/models/builder/types.ts",
+          "releaseTag": "Beta",
+          "name": "BuilderConfig",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "IndexSignature",
+              "canonicalReference": "@momentum-design/builder!BuilderConfig:index(1)",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "[key: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": "]: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "any"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Beta",
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "key",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ]
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@momentum-design/builder!BuilderConfig#definitionPath:member",
+              "docComment": "/**\n * Path to the configuration definition for this Builder.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "definitionPath: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Beta",
+              "name": "definitionPath",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            }
+          ],
+          "extendsTokenRanges": []
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@momentum-design/builder!Builders:class",
+          "docComment": "/**\n * The Builders class to manage a collection of provided builders.\n *\n * @beta\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "declare class Builders extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "Builder",
+              "canonicalReference": "@momentum-design/builder!Builder:class"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "fileUrlPath": "src/models/builders/builders.ts",
+          "releaseTag": "Beta",
+          "name": "Builders",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "Constructor",
+              "canonicalReference": "@momentum-design/builder!Builders:constructor(1)",
+              "docComment": "/**\n * Construct a new Builders.\n *\n * @param config - Configuration Object to be mounted to this Builder.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "constructor(config: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Config",
+                  "canonicalReference": "@momentum-design/builder!BuildersConfig:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ");"
+                }
+              ],
+              "releaseTag": "Beta",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "config",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ]
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@momentum-design/builder!Builders#builders:member",
+              "docComment": "/**\n * Builders associated with this Builders\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get builders(): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Array",
+                  "canonicalReference": "!Array:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<"
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Builder",
+                  "canonicalReference": "@momentum-design/builder!Builder:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ">"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Beta",
+              "name": "builders",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 5
+              },
+              "isStatic": false,
+              "isProtected": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@momentum-design/builder!Builders.CONSTANTS:member",
+              "docComment": "/**\n * Constants associated with this Builders class.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "static get CONSTANTS(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "typeof "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "CONSTANTS",
+                  "canonicalReference": "@momentum-design/builder!~CONSTANTS_2:var"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Beta",
+              "name": "CONSTANTS",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "isStatic": true,
+              "isProtected": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@momentum-design/builder!Builders#data:member",
+              "docComment": "/**\n * Dynamic data stored on this Builder.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "data: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Data",
+                  "canonicalReference": "@momentum-design/builder!BuildersData:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Beta",
+              "name": "data",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@momentum-design/builder!Builders#generateBuilders:member(1)",
+              "docComment": "/**\n * Generate Builder class Objects based on the current list of Builder constructors within `this.config.defintions`.\n *\n * @remarks\n *\n * This method requires an Array of fully qualified Builder class constructors to be availabile within the `this.config.definitions` value. Note that this method does not initialize the Builder Objects, and leaves this for a later functional call from `this.initialize()`.\n *\n * @returns - This Builders after executing thsi method.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "generateBuilders(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "this"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Beta",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "name": "generateBuilders"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@momentum-design/builder!Builders#initialize:member(1)",
+              "docComment": "/**\n * Initialize this Builder.\n *\n * @remarks\n *\n * This method calls `this.generateBuilders()` in order to construct Builder class Objects within its scope. After all Builder class Objects are generated, it attempts to initialize all Builder class Objects before resolving to this Builders class Object.\n *\n * @returns - This Builder after executing this method.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "initialize(): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<this>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "releaseTag": "Beta",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "name": "initialize"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@momentum-design/builder!Builders#process:member(1)",
+              "docComment": "/**\n * Process this Builder.\n *\n * @remarks\n *\n * This method attemps to run the initialize method of all child Builder class Objects associated with this Builders class Object.\n *\n * @returns - This Buidler after executing this method.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "process(): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<this>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "releaseTag": "Beta",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "name": "process"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@momentum-design/builder!Builders.type:member",
+              "docComment": "/**\n * Type of this Builders class.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "static get type(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Beta",
+              "name": "type",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": true,
+              "isProtected": false
+            }
+          ],
+          "extendsTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          },
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Interface",
+          "canonicalReference": "@momentum-design/builder!BuildersConfig:interface",
+          "docComment": "/**\n * Configuration Object for the Builders class.\n *\n * @beta\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export interface Config extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "BuilderConfig",
+              "canonicalReference": "@momentum-design/builder!BuilderConfig:interface"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "fileUrlPath": "src/models/builders/types.ts",
+          "releaseTag": "Beta",
+          "name": "BuildersConfig",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@momentum-design/builder!BuildersConfig#builders:member",
+              "docComment": "/**\n * Array of Builder class constructors to be used by this Builders class Object.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "builders: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Array",
+                  "canonicalReference": "!Array:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<typeof "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Builder",
+                  "canonicalReference": "@momentum-design/builder!Builder:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ">"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Beta",
+              "name": "builders",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 5
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@momentum-design/builder!BuildersConfig#definitions:member",
+              "docComment": "/**\n * Array of Builder class constructor configuration objects.\n *\n * @remarks\n *\n * This type will be moved to a global type used to specify the configuration for the CLI tooling associated with this package.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "definitions?: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Array",
+                  "canonicalReference": "!Array:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<"
+                },
+                {
+                  "kind": "Reference",
+                  "text": "BuilderConfig",
+                  "canonicalReference": "@momentum-design/builder!BuilderConfig:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ">"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": true,
+              "releaseTag": "Beta",
+              "name": "definitions",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 5
+              }
+            }
+          ],
+          "extendsTokenRanges": [
+            {
+              "startIndex": 1,
+              "endIndex": 2
+            }
+          ]
+        },
+        {
+          "kind": "Interface",
+          "canonicalReference": "@momentum-design/builder!BuildersData:interface",
+          "docComment": "/**\n * Dynamic data Object for the Builders class.\n *\n * @beta\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export interface Data "
+            }
+          ],
+          "fileUrlPath": "src/models/builders/types.ts",
+          "releaseTag": "Beta",
+          "name": "BuildersData",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@momentum-design/builder!BuildersData#builders:member",
+              "docComment": "/**\n * Array of Builder class Objects associated with the constructed Builders class Object.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "builders: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Array",
+                  "canonicalReference": "!Array:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<"
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Builder",
+                  "canonicalReference": "@momentum-design/builder!Builder:class"
+                },
+                {
+                  "kind": "Content",
+                  "text": ">"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Beta",
+              "name": "builders",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 5
+              }
+            }
+          ],
+          "extendsTokenRanges": []
+        },
+        {
+          "kind": "Interface",
+          "canonicalReference": "@momentum-design/builder!TokensBuilderConfig:interface",
+          "docComment": "/**\n * Configuration Object for tokens Builder.\n *\n * @beta\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export interface Config extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "BuilderConfig",
+              "canonicalReference": "@momentum-design/builder!BuilderConfig:interface"
+            },
+            {
+              "kind": "Content",
+              "text": " "
+            }
+          ],
+          "fileUrlPath": "src/tokens/builder/types.ts",
+          "releaseTag": "Beta",
+          "name": "TokensBuilderConfig",
+          "preserveMemberOrder": false,
+          "members": [],
+          "extendsTokenRanges": [
+            {
+              "startIndex": 1,
+              "endIndex": 2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
