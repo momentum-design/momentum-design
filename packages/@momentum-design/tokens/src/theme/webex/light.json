@@ -236,12 +236,12 @@
           },
           "notice": {
             "active": {
-              "value": "{color.decorative.orange.90}",
+              "value": "{color.core.orange.90}",
               "type": "color",
               "description": "Core Token: core.orange.90\nHEX: 33221B\n----------------\nUsed for hover/pressed state of teams "
             },
             "default": {
-              "value": "{color.decorative.orange.70}",
+              "value": "{color.core.orange.70}",
               "type": "color",
               "description": "Core Token: core.orange.70\nHEX: 914017\n----------------\nUsed for rest state of teams "
             }
@@ -314,45 +314,45 @@
                 "description": "Core Token: core.slate.70\nHEX: 535573\n-------------------------\nUsed for rest/hover state of teams"
               },
               "active": {
-                "value": "{color.decorative.slate.20}",
+                "value": "{color.decorative.slate.90}",
                 "type": "color",
-                "description": "Core Token: core.slate.20\nHEX: E3E7FA\n-------------------------\nUsed for active state of teams"
+                "description": "Core Token: core.slate.20\nHEX: 26262b\n-------------------------\nUsed for active state of teams"
               }
             },
             "violet": {
               "default": {
-                "value": "{color.decorative.violet.40}",
+                "value": "{color.decorative.violet.70}",
                 "type": "color",
-                "description": "Core Token: core.violet.40\nHEX: C7A5FA\n-------------------------\nUsed for rest/hover state of teams"
+                "description": "Core Token: core.violet.70\nHEX: 643abd\n-------------------------\nUsed for rest/hover state of teams"
               },
               "active": {
-                "value": "{color.decorative.violet.20}",
+                "value": "{color.decorative.violet.90}",
                 "type": "color",
-                "description": "Core Token: core.violet.20\nHEX: F0E3FC\n-------------------------\nUsed for active state of teams"
+                "description": "Core Token: core.violet.90\nHEX: 29223D\n-------------------------\nUsed for active state of teams"
               }
             },
             "purple": {
               "default": {
-                "value": "{color.decorative.purple.40}",
+                "value": "{color.decorative.purple.70}",
                 "type": "color",
-                "description": "Core Token: core.purple.40\nHEX: F294F1\n-------------------------\nUsed for rest/hover state of teams"
+                "description": "Core Token: core.purple.70\nHEX: 932099\n-------------------------\nUsed for rest/hover state of teams"
               },
               "active": {
-                "value": "{color.decorative.purple.20}",
+                "value": "{color.decorative.purple.90}",
                 "type": "color",
-                "description": "Core Token: core.purple.20\nHEX: FCE1FC\n-------------------------\nUsed for active state of teams"
+                "description": "Core Token: core.purple.90\nHEX: 3B1840\n-------------------------\nUsed for active state of teams"
               }
             },
             "pink": {
               "default": {
-                "value": "{color.decorative.pink.40}",
+                "value": "{color.decorative.pink.70}",
                 "type": "color",
-                "description": "Core Token: core.pink.40\nHEX: FC97AA\n-------------------------\nUsed for rest/hover state of teams"
+                "description": "Core Token: core.pink.70\nHEX: A12A3A\n-------------------------\nUsed for rest/hover state of teams"
               },
               "active": {
-                "value": "{color.decorative.pink.20}",
+                "value": "{color.decorative.pink.90}",
                 "type": "color",
-                "description": "Core Token: core.pink.20\nHEX: FFE0E7\n-------------------------\nUsed for active state of teams"
+                "description": "Core Token: core.pink.90\nHEX: 3B1E21\n-------------------------\nUsed for active state of teams"
               }
             }
           }
@@ -566,17 +566,17 @@
           },
           "notice": {
             "00": {
-              "value": "{color.decorative.orange.60}",
+              "value": "{color.core.orange.60}",
               "type": "color",
               "description": "Core Token: core.orange.60\nHEX: C74F0E\n---------------------\nUsed for avatar presence (busy, meeting, call, device)"
             },
             "01": {
-              "value": "{color.decorative.orange.20}",
+              "value": "{color.core.orange.20}",
               "type": "color",
               "description": "Core Token: core.orange.20\nHEX: FCE4C7\n------------------------------\nUsed for pressed state of alert-badge"
             },
             "02": {
-              "value": "{color.decorative.orange.10}",
+              "value": "{color.core.orange.10}",
               "type": "color",
               "description": "Core Token: core.orange.10\nHEX: FAF4EB\n---------------------------------\nUsed for rest/hover state of alert-badge"
             }
@@ -858,7 +858,7 @@
         },
         "notice": {
           "00": {
-            "value": "{color.decorative.orange.50}",
+            "value": "{color.core.orange.50}",
             "type": "color",
             "description": "Core Token: core.orange.50\nHEX: F26B1D\n-------------------------------\noutline for the orange tags"
           }
@@ -886,12 +886,12 @@
               "defualt": {
                 "value": "linear-gradient(90deg, {color.core.red.70} 0%, {color.core.red.70} 22.4%, {color.core.red.70} 76.04%, {color.core.red.70} 100%)",
                 "type": "color",
-                "description": "Core Token: core.red.70 0%, core.red.70 60%, core.red.70 60%, core.red.70 0%\n\nHEX: AB0A15 0%, AB0A15 60%,AB0A15 60%, AB0A15 0%,   \n--------------------------------\nUsed for divider default on the compose area for classified spaces. "
+                "description": "\nCore Token: core.red.70 0%, core.red.70 60%, core.red.70 60%, core.red.70 0%\nHEX: AB0A15 0%, AB0A15 60%,AB0A15 60%, AB0A15 0%,   \n--------------------------------\nUsed for divider default on the compose area for classified spaces. "
               },
               "hover": {
-                "value": "linear-gradient(90deg, {color.core.red.40} 0%, {color.core.red.40} 22.4%, {color.core.red.40} 76.04%, {color.core.red.40} 100%)",
+                "value": "linear-gradient(90deg, {color.core.red.40} 0%, {color.core.red.40} 90%, {color.core.red.40} 90%, {color.core.red.40} 0%)",
                 "type": "color",
-                "description": "Core Token: core.red.40 0%, core.red.40 90%, core.red.40 90%, core.red.40 0%\n\nHEX: FC8B98 0%, FC8B98 90%,FC8B98 90%, FC8B98 0%,   \n--------------------------------\nUsed for hover state of divider on the compose area for classified spaces. "
+                "description": "Core Token: core.red.40 0%, core.red.40 90%, core.red.40 90%, core.red.40 0%\nHEX: FC8B98 0%, FC8B98 90%,FC8B98 90%, FC8B98 0%,   \n--------------------------------\nUsed for hover state of divider on the compose area for classified spaces. "
               }
             },
             "warning": {
@@ -928,50 +928,50 @@
           "description": "Core Token: \ncore.gray.100\nHEX: 0F0F0F\n---------------------------\nUsed for any default illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
         },
         "positive": {
-          "value": "{color.core.green.40}",
+          "value": "linear-gradient(180deg, {color.core.green.40} 0%, {color.decorative.lime.40} 100%)",
           "type": "color",
           "description": "Core Token: core.green.40, \ndecorative.lime.40\nHEX: 3CC29A, 93C437\n---------------------------\nUsed for success-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
         },
         "negative": {
-          "value": "{color.decorative.pink.50}",
+          "value": "linear-gradient(180deg, {color.decorative.pink.50} 0%, {color.core.red.60} 100%)",
           "type": "color",
           "description": "Core Token: \ndecorative.pink.50, \ncore.red.60\nHEX: F0677E, DB1F2E\n---------------------------\nUsed for error-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
         },
         "empty": {
           "00": {
-            "value": "{color.decorative.lime.40}",
+            "value": "linear-gradient(180deg, {color.decorative.lime.40} 0%, {color.decorative.cobalt.50} 100%)",
             "type": "color",
             "description": "Core Token: decorative.lime.40\ndecorative.cobalt.50\nHEX: 93C437, 279BE8\n---------------------------\nUsed for empty state.\nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           },
           "01": {
-            "value": "{color.decorative.cobalt.50}",
+            "value": "linear-gradient(180deg, {color.decorative.cobalt.50} 0%, {color.decorative.violet.60} 100%)",
             "type": "color",
             "description": "Core Token: decorative.cobalt.50\ndecorative.violet.60\nHEX: 279BE8, 875AE0\n---------------------------\nUsed for empty state.\nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           }
         },
         "onboarding": {
           "00": {
-            "value": "{color.core.yellow.30}",
+            "value": "linear-gradient(180deg, {color.core.yellow.30} 0%, {color.decorative.lime.40} 100%)",
             "type": "color",
             "description": "Core Token: core.yellow.30\ndecorative.lime.40\nHEX: FFBE4F, 93C437\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           },
           "01": {
-            "value": "{color.core.red.50}",
+            "value": "linear-gradient(180deg, {color.core.red.50} 0%, {color.decorative.violet.60} 100%)",
             "type": "color",
             "description": "Core Token: core.red.50, \ndecorative.violet.60\nHEX: F55868, 875AE0\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           },
           "02": {
-            "value": "{color.core.yellow.30}",
+            "value": "linear-gradient(180deg, {color.core.yellow.30} 0%, {color.core.orange.50} 100%)",
             "type": "color",
-            "description": "Core Token: core.yellow.30, \ncore.orange.50\nHEX: FFBE4F, F26B1D\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
+            "description": "Core Token:core.yellow.30, core.orange.50\nHEX: FFBE4F, F26B1D\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           },
           "03": {
-            "value": "{color.decorative.lime.40}",
+            "value": "linear-gradient(180deg, {color.decorative.lime.40} 0%, {color.decorative.cobalt.50} 100%)",
             "type": "color",
             "description": "Core Token: decorative.lime.40, \ndecorative.cobalt.50\nHEX: 93C437, 279BE8\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           },
           "04": {
-            "value": "{color.decorative.cobalt.50}",
+            "value": "linear-gradient(180deg, {color.decorative.cobalt.50} 0%, {color.decorative.violet.60} 100%)",
             "type": "color",
             "description": "Core Token: decorative.cobalt.50, \ndecorative.violet.60\nHEX: 279BE8, 875AE0\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           }
