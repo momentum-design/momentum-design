@@ -86,7 +86,7 @@ describe('@momentum-design/automation - utils.Git', () => {
 
       beforeEach(() => {
         listSpy = jest.spyOn(Git, 'list').mockImplementation(() => Promise.resolve(
-          [{ commit: 'head' }, { commit: 'previous' }],
+          [{ commit: 'head', subject: 'subject-a' }, { commit: 'previous', subject: 'subject-a' }],
         ));
         runSpy = jest.spyOn(Execute, 'run').mockImplementation(() => Promise.resolve(runResults));
       });

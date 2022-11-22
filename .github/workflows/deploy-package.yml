@@ -284,8 +284,8 @@ jobs:
         run: yarn
 
       - name: Update Main Branch
-        run: |
-          git fetch origin main --unshallow
+        run: git fetch origin main --unshallow
+
       - name: Create Release ( ${{ matrix.package }} )
-        run: yarn md-automation -- --command create-release --packages ${{ matrix.package }}
+        run: yarn md-automation -- --command create-release --packages ${{ matrix.package }} --since origin/main
 

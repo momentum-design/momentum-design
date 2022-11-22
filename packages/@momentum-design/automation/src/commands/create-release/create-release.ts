@@ -41,7 +41,8 @@ class CreateRelease extends Command {
       const title = packdef.name;
       const tag = packdef.definition.version;
       const commitLog = await Git.list(1);
-      const notes = commitLog.map((commit) => commit.commit).reduce((accum, cur) => accum + cur, '');
+      const notes = commitLog.map(({ subject }) => subject).join('\n');
+
       return {
         tag,
         title,

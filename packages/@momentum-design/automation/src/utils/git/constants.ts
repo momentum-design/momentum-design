@@ -3,6 +3,7 @@ const COMMIT_INDEX_OFFSET = 1;
 
 const FORMAT = {
   commit: '%H',
+  subject: '%s',
 };
 
 const CONSTANTS = {
