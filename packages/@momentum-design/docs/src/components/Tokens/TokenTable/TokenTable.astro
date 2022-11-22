@@ -1,0 +1,104 @@
+---
+import "./TokenTable.css";
+export type ColorTokenValue = { value?: string; type?: string; description?: string };
+
+export type UnthemedColorToken = { [key: string]: { [key: string]: ColorTokenValue } };
+
+export type ThemedColorToken = {
+  [key: string]: { light?: { [key: string]: ColorTokenValue }; dark?: { [key: string]: ColorTokenValue } };
+};
+
+type Props = {
+  name: string;
+  headings: string[];
+  tokens: ThemedColorToken | UnthemedColorToken;
+  themed?: boolean;
+  shouldIncludePrefix?: boolean;
+};
+
+const { name, headings, tokens, themed = false, shouldIncludePrefix = false } = Astro.props as Props;
+const lowerCaseName = name.toLowerCase().replace(" ", "-");
+const prefix = shouldIncludePrefix ? lowerCaseName : "";
+const id = `#${lowerCaseName}`;
+
+const getTokenName = (names: string[]): string => {
+  return names.filter((name) => !!name).join("-");
+}
+---
+
+<>
+  <a href={`#${id}`} class="section-heading">
+    <h2 id={id}>{name}</h2>
+  </a>
+  {
+    themed ? (
+      <div class="themedTokenTableWrapper">
+        {Object.entries(tokens as ThemedColorToken).map(([groupName, themeVariations]) => {
+          return (
+            <div>
+              <h3>{groupName}</h3>
+              {Object.entries(themeVariations).map(([theme, variations]) => {
+                return (
+                  <>
+                    <p>{theme}</p>
+                    <div class="gradientThemeWrapper">
+                      {Object.entries(variations).map(([variationName, variation]) => (
+                        <div>
+                          <table>
+                            <tr>
+                              {headings.map((heading) => (
+                                <th>{heading}</th>
+                              ))}
+                            </tr>
+                            <tr>
+                              <td>
+                                <span class="colorSample" style={`background: ${variation.value};`} />
+                              </td>
+                              <td>{getTokenName([prefix, groupName, theme, variationName])}</td>
+                              <td>
+                                <code>{variation.value}</code>
+                              </td>
+                            </tr>
+                          </table>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
+    ) : (
+      <div class="tokenTable">
+        {Object.entries(tokens as UnthemedColorToken).map(([groupName, groupTokens]) => {
+          return (
+            <table>
+              <tr>
+                {headings.map((heading) => (
+                  <th>{heading}</th>
+                ))}
+              </tr>
+              {Object.entries(groupTokens).map(([subGroupName, token]) => {
+                return (
+                  <tr>
+                    {headings.includes("Sample") && (
+                      <td>
+                        <span class="colorSample" style={`background-color: ${token?.value};`} />
+                      </td>
+                    )}
+                    <td>{getTokenName([prefix, groupName, subGroupName])}</td>
+                    <td>
+                      <code>{token?.value}</code>
+                    </td>
+                  </tr>
+                );
+              })}
+            </table>
+          );
+        })}
+      </div>
+    )
+  }
+</>

@@ -1,0 +1,11 @@
+---
+import TokenCard from "./TokenCard.astro";
+import "./TokenCard.css";
+
+import tokens from '@momentum-design/tokens/dist/json/core/complete.json';
+
+---
+
+<div class="tokenCardWrapper">
+  {Object.keys(tokens).map(token => ( <TokenCard name={token} link={`/en/tokens/${token}`} />))}
+</div>

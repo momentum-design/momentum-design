@@ -1,0 +1,14 @@
+---
+import tokens from '@momentum-design/tokens/dist/json/core/complete.json';
+
+import TokenTable, { UnthemedColorToken } from "../../../components/Tokens/TokenTable/TokenTable.astro";
+import MainLayout from "../../../layouts/MainLayout.astro";
+
+const borderWidthTokens = tokens['border-width'] as UnthemedColorToken;
+
+---
+
+<MainLayout frontmatter={{ description: "", title: "Border Width Tokens", layout: "" }} headings={[]}>
+  <a href="../tokens"><h3>Back</h3></a>
+  <TokenTable name="Border Width" headings={["Token", "Value"]} tokens={{'border-width': borderWidthTokens}}/>
+</MainLayout>

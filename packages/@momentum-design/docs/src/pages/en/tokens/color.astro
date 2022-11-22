@@ -1,0 +1,20 @@
+---
+import tokens from '@momentum-design/tokens/dist/json/core/complete.json';
+
+import TokenTable, { ThemedColorToken, UnthemedColorToken } from "../../../components/Tokens/TokenTable/TokenTable.astro";
+import MainLayout from "../../../layouts/MainLayout.astro";
+
+const coreColors = tokens.color.core as UnthemedColorToken;
+const decorativeColors = tokens.color.decorative as UnthemedColorToken;
+const gradientColors = tokens.color.gradient as ThemedColorToken;
+const mobileColors = tokens.color.mobile  as ThemedColorToken;
+
+---
+
+<MainLayout frontmatter={{ description: "", title: "Color Tokens", layout: "" }} headings={[]}>
+  <a href="../tokens"><h3>Back</h3></a>
+  <TokenTable name="Core" headings={["Sample", "Token", "Value"]} tokens={coreColors} shouldIncludePrefix/>
+  <TokenTable name="Decorative" headings={["Sample", "Token", "Value"]} tokens={decorativeColors} shouldIncludePrefix/>
+  <TokenTable name="Gradient" headings={["Sample", "Token", "Value"]} tokens={gradientColors} themed shouldIncludePrefix/>
+  <TokenTable name="Mobile" headings={["Sample", "Token", "Value"]} tokens={mobileColors} themed shouldIncludePrefix/>
+</MainLayout>

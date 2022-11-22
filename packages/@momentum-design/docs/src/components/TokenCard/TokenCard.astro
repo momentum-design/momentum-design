@@ -1,0 +1,14 @@
+---
+import "./TokenCard.css";
+
+type Props = {
+  name: string;
+  link: string;
+};
+
+const { name, link } = Astro.props as Props;
+---
+
+<a class="card" href={link}>
+  {name.replace('-', ' ')}
+</a>
