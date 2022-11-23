@@ -41,7 +41,7 @@ class CreateRelease extends Command {
       const packdef = await pack.readDefinition();
       logger.info(`Building release for package: ${pack.name}`);
       const pkg = packdef.package;
-      const targz = join(process.cwd(), packdef.path, 'dist');
+      const targz = join(process.cwd(), packdef.path);
       logger.info(`Compressing archive for release: ${targz}`);
       const dist = await compress(targz);
       logger.info(`Compressed archive: ${dist}`);
