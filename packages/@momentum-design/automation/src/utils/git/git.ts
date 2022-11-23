@@ -3,6 +3,7 @@ import Execute from '../execute';
 import CONSTANTS from './constants';
 import type { Changes, ListItem } from './types';
 
+// Git utility class
 class Git {
   public static commitsToJson(commits: Array<string>): Array<ListItem> {
     return commits.filter(((line) => !!line))
