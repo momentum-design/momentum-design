@@ -1,0 +1,19 @@
+{
+	"name": "momentum-abstract",
+	"version": "1.0.38",
+	"description": "store momentum data",
+	"main": "index.js",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/momentum-design/momentum-automation-center.git"
+	},
+	"author": "Cisco Systems, Inc.",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/momentum-design/momentum-automation-center/issues"
+	},
+	"homepage": "https://github.com/momentum-design/momentum-automation-center#readme",
+	"publishConfig": {
+		"access": "public"
+	}
+}

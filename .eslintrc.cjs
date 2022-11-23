@@ -11,7 +11,7 @@ module.exports = {
   globals: {
     BufferEncoding: 'readonly',
   },
-  ignorePatterns: ['**/dist/**', '*.hbs', 'scripts/**'],
+  ignorePatterns: ['**/dist/**', '*.hbs', 'scripts/**', 'packages/@momentum-design/momentum-automation-center/**'],
   overrides: [
     {
       files: ['**/*.test.ts'],

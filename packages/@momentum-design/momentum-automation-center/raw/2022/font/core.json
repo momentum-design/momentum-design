@@ -1,0 +1,48 @@
+{
+	"size": {
+		"font-10": {
+			"fontSize": 12,
+			"lineHeight": 16
+		},
+		"font-20": {
+			"fontSize": 14,
+			"lineHeight": 20
+		},
+		"font-30": {
+			"fontSize": 16,
+			"lineHeight": 24
+		},
+		"font-40": {
+			"fontSize": 20,
+			"lineHeight": 28
+		},
+		"font-50": {
+			"fontSize": 24,
+			"lineHeight": 32
+		},
+		"font-60": {
+			"fontSize": 32,
+			"lineHeight": 40
+		},
+		"font-70": {
+			"fontSize": 40,
+			"lineHeight": 52
+		},
+		"font-80": {
+			"fontSize": 52,
+			"lineHeight": 64
+		},
+		"font-90": {
+			"fontSize": 64,
+			"lineHeight": 80
+		},
+		"font-100": {
+			"fontSize": 80,
+			"lineHeight": 100
+		},
+		"font-110": {
+			"fontSize": 100,
+			"lineHeight": 124
+		}
+	}
+}
