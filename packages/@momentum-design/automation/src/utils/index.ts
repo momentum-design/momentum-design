@@ -10,3 +10,5 @@ export {
   Git,
   Yarn,
 };
+
+export { compress } from './compression';
