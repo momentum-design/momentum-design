@@ -25,8 +25,9 @@ class CreateRelease extends Command {
   public static async process(config: Config): Promise<Array<string>> {
     const { ...getPackagesConfig } = config;
 
+    const [, previous] = await Git.list(config['commit-index']);
     const packages = await GetPackages.process({ ...getPackagesConfig });
-    const affected = (await Yarn.list(config.since)).map((value) => value.name);
+    const affected = (await Yarn.list(previous.commit)).map((value) => value.name);
     logger.info(`Affected packages: ${affected}`);
     const affectedPackages = packages.collection.filter((pack) => affected.includes(pack.package));
     logger.info(`Affected package within get packages config: ${affectedPackages.map((pack) => pack.package)}`);
@@ -34,7 +35,7 @@ class CreateRelease extends Command {
     logger.info(`Affected package within targets: ${intersection}`);
     if (!(intersection.length > 0)) {
       logger.warn('No packages matched, skipping release');
-      return Promise.resolve(['No packages matched, skipping release']);
+      return Promise.resolve(['No packages matched, skipping release\n']);
     }
     const releases = await Promise.all(intersection.map(async (pack) => {
       const packdef = await pack.readDefinition();
