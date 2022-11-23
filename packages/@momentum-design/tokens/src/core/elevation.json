@@ -34,7 +34,7 @@
         "type": "dropShadow"
       },
       "type": "boxShadow",
-      "description": "elevation.2\nHeader search panel, tooltips, callouts, transient dropdowns (moves based on content or mouse position) Right panels. Dialog boxes"
+      "description": "elevation.2\nHeader search panel, tooltips, callouts, transient dropdowns (which moves based on content or mouse position) Right panels. Dialog boxes"
     }
   }
 }
