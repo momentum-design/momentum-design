@@ -42,12 +42,15 @@
   },
   "dependencies": {
     "@momentum-design/common": "workspace:^",
+    "glob": "^8.0.3",
     "style-dictionary": "^3.7.1",
     "yargs": "^17.6.2"
   },
   "devDependencies": {
     "@microsoft/api-documenter": "^7.19.24",
     "@microsoft/api-extractor": "^7.33.6",
+    "@types/fs-extra": "^9.0.13",
+    "@types/glob": "^8.0.0",
     "@types/jest": "^29.2.3",
     "@types/node": "^18.11.9",
     "@types/yargs": "^17.0.13",
