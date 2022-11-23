@@ -2,11 +2,20 @@
 
 ## Scripts
 
-### start
-- Run this project locally
+### dev
+- Starts local dev server at `localhost:3000`
 
 ### build
-- Builds to ./dist for export, will run all the available build types against this package
+- Build your production site to `./dist/`
+
+### preview
+- Preview your build locally, before deploying
+
+### astro
+- Run CLI commands like `astro add`, `astro preview`
+
+### astro --help
+- Get help using the Astro CLI
 
 ### test
 - Executes tests against this package
