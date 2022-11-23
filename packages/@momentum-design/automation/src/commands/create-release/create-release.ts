@@ -41,10 +41,14 @@ class CreateRelease extends Command {
       const packdef = await pack.readDefinition();
       logger.info(`Building release for package: ${pack.name}`);
       const pkg = packdef.package;
-      const dist = await compress(join(process.cwd(), packdef.path, 'dist'));
+      const targz = join(process.cwd(), packdef.path);
+      logger.info(`Compressing archive for release: ${targz}`);
+      const dist = await compress(targz);
+      logger.info(`Compressed archive: ${dist}`);
       const title = packdef.name;
       const { version } = packdef.definition;
-      const tag = `${pkg}-v${version}`;
+      const tag = `${pkg} - v${version}`;
+      logger.info(`Getting commit history with commit index: ${config['commit-index']}`);
       const commitLog = await Git.list(config['commit-index']);
       const notes = commitLog.map(({ subject }) => subject).join('\n')
         .concat(`\nPackage:\nhttps://www.npmjs.com/package/${pkg}/v/${version}`);
