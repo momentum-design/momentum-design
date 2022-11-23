@@ -1,8 +1,7 @@
 ---
-import { UnThemedColorToken, ThemedColorToken } from "../../../types/tokens";
-import "./TokenTable.css";
-import TokenTableRow from "./TokenTableRow.astro";
-
+import { UnThemedColorToken, ThemedColorToken } from '../../../types/tokens';
+import './TokenTable.css';
+import TokenTableRow from './TokenTableRow.astro';
 
 type Props = {
   name: string;
@@ -13,13 +12,11 @@ type Props = {
 };
 
 const { name, headings, tokens, themed = false, shouldIncludePrefix = false } = Astro.props as Props;
-const lowerCaseName = name.toLowerCase().replace(" ", "-");
-const prefix = shouldIncludePrefix ? lowerCaseName : "";
+const lowerCaseName = name.toLowerCase().replace(' ', '-');
+const prefix = shouldIncludePrefix ? lowerCaseName : '';
 const id = `#${lowerCaseName}`;
 
-const getTokenName = (names: string[]): string => {
-  return names.filter((name) => !!name).join("-");
-};
+const getTokenName = (names: string[]): string => names.filter((name) => !!name).join('-');
 ---
 
 <>
@@ -29,61 +26,53 @@ const getTokenName = (names: string[]): string => {
   {
     themed ? (
       <div class="themedTokenTableWrapper">
-        {Object.entries(tokens as ThemedColorToken).map(([groupName, themeVariations]) => {
-          return (
-            <div>
-              <h3>{groupName}</h3>
-              {Object.entries(themeVariations).map(([theme, variations]) => {
-                return (
-                  <>
-                    <p>{theme}</p>
-                    <div class="gradientThemeWrapper">
-                      <table>
-                        <tr>
-                          {headings.map((heading) => (
-                            <th>{heading}</th>
-                          ))}
-                        </tr>
-                        {Object.entries(variations).map(([variationName, variation]) => (
-                          <TokenTableRow
-                            headings={headings}
-                            tokenType="color"
-                            tokenValue={variation?.value}
-                            tokenName={getTokenName([prefix, groupName, theme, variationName])}
-                          />
-                        ))}
-                      </table>
-                    </div>
-                  </>
-                );
-              })}
-            </div>
-          );
-        })}
+        {Object.entries(tokens as ThemedColorToken).map(([groupName, themeVariations]) => (
+          <div>
+            <h3>{groupName}</h3>
+            {Object.entries(themeVariations).map(([theme, variations]) => (
+              <>
+                <p>{theme}</p>
+                <div class="gradientThemeWrapper">
+                  <table>
+                    <tr>
+                      {headings.map((heading) => (
+                        <th>{heading}</th>
+                      ))}
+                    </tr>
+                    {Object.entries(variations).map(([variationName, variation]) => (
+                      <TokenTableRow
+                        headings={headings}
+                        tokenType="color"
+                        tokenValue={variation?.value}
+                        tokenName={getTokenName([prefix, groupName, theme, variationName])}
+                      />
+                    ))}
+                  </table>
+                </div>
+              </>
+            ))}
+          </div>
+        ))}
       </div>
     ) : (
       <div class="tokenTable">
-        {Object.entries(tokens as UnThemedColorToken).map(([groupName, groupTokens]) => {
-          return (
-            <table>
-              <tr>
-                {headings.map((heading) => (
-                  <th>{heading}</th>
-                ))}
-              </tr>
-              {Object.entries(groupTokens).map(([subGroupName, token]) => {
-                return (
-                  <TokenTableRow
-                    headings={headings}
-                    tokenType="color"
-                    tokenValue={token?.value}
-                    tokenName={getTokenName([prefix, groupName, subGroupName])}
-                  />
-                );
-              })}
-            </table>
-          );
-        })}
+        {Object.entries(tokens as UnThemedColorToken).map(([groupName, groupTokens]) => (
+          <table>
+            <tr>
+              {headings.map((heading) => (
+                <th>{heading}</th>
+              ))}
+            </tr>
+            {Object.entries(groupTokens).map(([subGroupName, token]) => (
+              <TokenTableRow
+                headings={headings}
+                tokenType="color"
+                tokenValue={token?.value}
+                tokenName={getTokenName([prefix, groupName, subGroupName])}
+              />
+            ))}
+          </table>
+        ))}
       </div>
     )
   }

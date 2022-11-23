@@ -1,9 +1,24 @@
-export type ColorTokenValue = { value?: string; type?: string; description?: string };
+export type ColorTokenValue = {
+  value?: string;
+  type?: string;
+  description?: string
+};
 
-export type UnThemedColorToken = { [key: string]: { [key: string]: ColorTokenValue } };
+export type UnThemedColorToken = {
+  [key: string]: {
+    [key: string]: ColorTokenValue
+  }
+};
 
 export type ThemedColorToken = {
-  [key: string]: { light?: { [key: string]: ColorTokenValue }; dark?: { [key: string]: ColorTokenValue } };
+  [key: string]: {
+    light?: {
+      [key: string]: ColorTokenValue
+    },
+    dark?: {
+      [key: string]: ColorTokenValue
+    }
+  };
 };
 
 export enum TokenType {

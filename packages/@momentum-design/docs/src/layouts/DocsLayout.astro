@@ -1,4 +1,5 @@
 ---
+import type { MarkdownHeading } from 'astro';
 import HeadCommon from '../components/HeadCommon.astro';
 import HeadSEO from '../components/HeadSEO.astro';
 import Header from '../components/Header/Header.astro';
@@ -6,7 +7,6 @@ import PageContent from '../components/PageContent/PageContent.astro';
 import LeftSidebar from '../components/LeftSidebar/LeftSidebar.astro';
 import RightSidebar from '../components/RightSidebar/RightSidebar.astro';
 import * as CONFIG from '../config';
-import type { MarkdownHeading } from 'astro';
 import Footer from '../components/Footer/Footer.astro';
 
 type Props = {
@@ -22,13 +22,13 @@ const githubEditUrl = `${CONFIG.GITHUB_EDIT_URL}/${currentFile}`;
 ---
 
 <html dir={frontmatter.dir ?? 'ltr'} lang={frontmatter.lang ?? 'en-us'} class="initial">
-	<head>
-		<HeadCommon />
-		<HeadSEO frontmatter={frontmatter} canonicalUrl={canonicalURL} />
-		<title>
-			{frontmatter.title ? `${frontmatter.title} 🚀 ${CONFIG.SITE.title}` : CONFIG.SITE.title}
-		</title>
-		<style>
+  <head>
+    <HeadCommon />
+    <HeadSEO frontmatter={frontmatter} canonicalUrl={canonicalURL} />
+    <title>
+      {frontmatter.title ? `${frontmatter.title} 🚀 ${CONFIG.SITE.title}` : CONFIG.SITE.title}
+    </title>
+    <style>
 			body {
 				width: 100%;
 				display: grid;
@@ -101,8 +101,8 @@ const githubEditUrl = `${CONFIG.GITHUB_EDIT_URL}/${currentFile}`;
 					display: flex;
 				}
 			}
-		</style>
-		<style is:global>
+    </style>
+    <style is:global>
 			.layout > * {
 				width: 100%;
 				height: 100%;
@@ -116,23 +116,23 @@ const githubEditUrl = `${CONFIG.GITHUB_EDIT_URL}/${currentFile}`;
 				display: block;
 				top: 2rem;
 			}
-		</style>
-	</head>
-	<body>
-		<Header  />
-		<main class="layout">
-			<aside id="grid-left" class="grid-sidebar" title="Site Navigation">
-				<LeftSidebar currentPage={currentPage} />
-			</aside>
-			<div id="grid-main">
-				<PageContent frontmatter={frontmatter} headings={headings} githubEditUrl={githubEditUrl}>
-					<slot />
-				</PageContent>
-			</div>
-			<aside id="grid-right" class="grid-sidebar" title="Table of Contents">
-				<RightSidebar headings={headings} githubEditUrl={githubEditUrl} />
-			</aside>
-		</main>
-		<Footer path={currentFile} />
-	</body>
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main class="layout">
+      <aside id="grid-left" class="grid-sidebar" title="Site Navigation">
+        <LeftSidebar currentPage={currentPage} />
+      </aside>
+      <div id="grid-main">
+        <PageContent frontmatter={frontmatter} headings={headings} githubEditUrl={githubEditUrl}>
+          <slot />
+        </PageContent>
+      </div>
+      <aside id="grid-right" class="grid-sidebar" title="Table of Contents">
+        <RightSidebar headings={headings} githubEditUrl={githubEditUrl} />
+      </aside>
+    </main>
+    <Footer path={currentFile} />
+  </body>
 </html>

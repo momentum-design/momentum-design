@@ -1,9 +1,8 @@
 ---
-import tokens from "@momentum-design/tokens/dist/json/core/complete.json";
-import * as _ from "lodash";
-import TokenTable from "../../../components/Tokens/TokenTable/TokenTable.astro";
-import MainLayout from "../../../layouts/MainLayout.astro";
-import { TokenType, UnThemedColorToken } from "../../../types/tokens";
+import tokens from '@momentum-design/tokens/dist/json/core/complete.json';
+import TokenTable from '../../../components/Tokens/TokenTable/TokenTable.astro';
+import MainLayout from '../../../layouts/MainLayout.astro';
+import { TokenType, UnThemedColorToken } from '../../../types/tokens';
 
 export function getStaticPaths() {
   return Object.keys(tokens).map((token) => ({ params: { tokenType: token } }));
@@ -12,7 +11,7 @@ export function getStaticPaths() {
 const { tokenType } = Astro.params as { tokenType: string };
 ---
 
-<MainLayout frontmatter={{ description: "", title: `${tokenType} Tokens`, layout: "" }}>
+<MainLayout frontmatter={{ description: '', title: `${tokenType} Tokens`, layout: '' }}>
   <a href="../tokens">
     <h3>Back</h3>
   </a>
@@ -22,9 +21,9 @@ const { tokenType } = Astro.params as { tokenType: string };
         {Object.entries(tokens.color).map(([colorType, colorTokens]) => (
           <TokenTable
             name={colorType}
-            headings={["Sample", "Token", "Value"]}
+            headings={['Sample', 'Token', 'Value']}
             tokens={colorTokens}
-            themed={colorType === "gradient" || colorType === "mobile"}
+            themed={colorType === 'gradient' || colorType === 'mobile'}
             shouldIncludePrefix
           />
         ))}
@@ -32,7 +31,7 @@ const { tokenType } = Astro.params as { tokenType: string };
     ) : (
       <TokenTable
         name={tokenType}
-        headings={["Token", "Value"]}
+        headings={['Token', 'Value']}
         tokens={{ [tokenType]: tokens[tokenType as TokenType] } as UnThemedColorToken}
       />
     )

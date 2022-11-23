@@ -1,15 +1,15 @@
 ---
-import * as CONFIG from "../../config";
-import { getLanguageFromURL } from "../../languages";
+import * as CONFIG from '../../config';
+import { getLanguageFromURL } from '../../languages';
 
-import MomentumLogo from "./MomentumLogo.astro";
-import SkipToContent from "./SkipToContent.astro";
-import SidebarToggle from "./SidebarToggle";
-import Search from "./Search";
+import MomentumLogo from './MomentumLogo.astro';
+import SkipToContent from './SkipToContent.astro';
+import SidebarToggle from './SidebarToggle';
+import Search from './Search';
 
 const currentPage = Astro.url.pathname;
 
-const currentPageMatch = currentPage.endsWith("/") ? currentPage.slice(1, -1) : currentPage.slice(1);
+const currentPageMatch = currentPage.endsWith('/') ? currentPage.slice(1, -1) : currentPage.slice(1);
 const langCode = getLanguageFromURL(currentPage);
 
 const menu = CONFIG.MAIN_MENU[langCode];
@@ -24,7 +24,7 @@ const menu = CONFIG.MAIN_MENU[langCode];
     <div class="logo flex">
       <a href="/">
         <MomentumLogo size={40} />
-        <h1>{CONFIG.SITE.title ?? "Momentum Design Docs"}</h1>
+        <h1>{CONFIG.SITE.title ?? 'Momentum Design Docs'}</h1>
       </a>
     </div>
     <div style="flex-grow: 1;"></div>
@@ -34,7 +34,7 @@ const menu = CONFIG.MAIN_MENU[langCode];
           const url = Astro.site?.pathname + item.index;
           return (
             <li class="nav-link">
-              <a href={url} aria-current={currentPageMatch === url ? "page" : false}>
+              <a href={url} aria-current={currentPageMatch === url ? 'page' : false}>
                 {name}
               </a>
             </li>

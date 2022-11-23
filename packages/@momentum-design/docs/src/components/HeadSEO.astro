@@ -2,8 +2,8 @@
 import { SITE, OPEN_GRAPH, Frontmatter } from '../config';
 
 export interface Props {
-	frontmatter: Frontmatter;
-	canonicalUrl: URL;
+  frontmatter: Frontmatter;
+  canonicalUrl: URL;
 }
 
 const { frontmatter, canonicalUrl } = Astro.props as Props;
@@ -24,9 +24,9 @@ const imageAlt = frontmatter.image?.alt ?? OPEN_GRAPH.image.alt;
 <meta property="og:image" content={canonicalImageSrc} />
 <meta property="og:image:alt" content={imageAlt} />
 <meta
-	name="description"
-	property="og:description"
-	content={frontmatter.description ?? SITE.description}
+  name="description"
+  property="og:description"
+  content={frontmatter.description ?? SITE.description}
 />
 <meta property="og:site_name" content={SITE.title} />
 
