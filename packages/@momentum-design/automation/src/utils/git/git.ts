@@ -32,13 +32,8 @@ class Git {
       }));
   }
 
-<<<<<<< HEAD
   public static async release(dist: string, tag: string, title: string, notes: string): Promise<string> {
     return Execute.run(`gh release create ${tag} ${dist} --title "${tag} - ${title}" --notes "${notes}"`);
-=======
-  public static async release(tag: string, title: string, notes: string): Promise<string> {
-    return Execute.run(`gh release create ${tag} --title "${tag} - ${title}" --notes "${notes}"`);
->>>>>>> 522dc7e0f44852d7662e064732cfe0c0f62a0e15
   }
 
   public static get CONSTANTS(): typeof CONSTANTS {
