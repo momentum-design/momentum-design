@@ -1,18 +1,13 @@
 ---
+import { UnThemedColorToken, ThemedColorToken } from "../../../types/tokens";
 import "./TokenTable.css";
 import TokenTableRow from "./TokenTableRow.astro";
-export type ColorTokenValue = { value?: string; type?: string; description?: string };
 
-export type UnthemedColorToken = { [key: string]: { [key: string]: ColorTokenValue } };
-
-export type ThemedColorToken = {
-  [key: string]: { light?: { [key: string]: ColorTokenValue }; dark?: { [key: string]: ColorTokenValue } };
-};
 
 type Props = {
   name: string;
   headings: string[];
-  tokens: ThemedColorToken | UnthemedColorToken;
+  tokens: ThemedColorToken | UnThemedColorToken;
   themed?: boolean;
   shouldIncludePrefix?: boolean;
 };
@@ -68,7 +63,7 @@ const getTokenName = (names: string[]): string => {
       </div>
     ) : (
       <div class="tokenTable">
-        {Object.entries(tokens as UnthemedColorToken).map(([groupName, groupTokens]) => {
+        {Object.entries(tokens as UnThemedColorToken).map(([groupName, groupTokens]) => {
           return (
             <table>
               <tr>
