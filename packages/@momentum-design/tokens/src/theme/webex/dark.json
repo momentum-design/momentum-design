@@ -896,19 +896,19 @@
               "default": {
                 "value": "linear-gradient(90deg, #fc8b9800 0%, #fc8b9899 22.4%, #fc8b9899 76.04%, #fc8b9800 100%)",
                 "type": "color",
-                "description": "Core Token: core.red.40 0%, core.red.40 60%, core.red.40 60%, core.red.40 0%\n\nHEX: FC8B98 0%, FC8B98 60%,FC8B98 60%, FC8B98 0%,   \n--------------------------------\nUsed for divider default on the compose area for classified spaces. "
+                "description": "Core Token: core.red.40 0% 0%, core.red.40 60% 22.4%, core.red.40 60% 76.04%, core.red.40 0% 100%\nHEX: linear-gradient(90deg, #fc8b9800 0%, #fc8b9899 22.4%, #fc8b9899 76.04%, #fc8b9800 100%)\n--------------------------------\nUsed for divider default on the compose area for classified spaces. "
               },
               "hover": {
                 "value": "linear-gradient(90deg, #fc8b9800 0%, #fc8b98e6 22.4%, #fc8b98e6 76.04%, #fc8b9800 100%)",
                 "type": "color",
-                "description": "Core Token: core.red.40 0%, core.red.40 90%, core.red.40 90%, core.red.40 0%\n\nHEX: FC8B98 0%, FC8B98 90%,FC8B98 90%, FC8B98 0%,   \n--------------------------------\nUsed for hover state of divider on the compose area for classified spaces. "
+                "description": "Core Token: core.red.40 0% 0%, core.red.40 90% 22.4%, core.red.40 90% 76.04%, core.red.40 0% 100%\nHEX: linear-gradient(90deg, #fc8b9800 0%, #fc8b98e6 22.4%, #fc8b98e6 76.04%, #fc8b9800 100%)\n--------------------------------\nUsed for hover state of divider on the compose area for classified spaces. "
               }
             },
             "warning": {
               "default": {
                 "value": "linear-gradient(90deg, #f2990a00 0%, #f2990a99 22.4%, #f2990a99 76.04%, #f2990a00 100%)",
                 "type": "color",
-                "description": "Core Token: core.yellow.40 0%, core.yellow.40 60%, core.yellow.40 60%, core.yellow.40 0%\n\nHEX: F2990A 0%, F2990A 60%,F2990A 60%, F2990A 0%,   \n--------------------------------\nUsed for divider on the compose area for external participants."
+                "description": "Core Token: core.yellow.40 0% 0%, core.yellow.40 60% 22.4%, core.yellow.40 60% 76.04%, core.yellow.40 0% 100%\nHEX: linear-gradient(90deg, #f2990a00 0%, #f2990a99 22.4%, #f2990a99 76.04%, #f2990a00 100%)\n--------------------------------\nUsed for divider on the compose area for external participants."
               },
               "hover": {
                 "value": "linear-gradient(90deg, #f2990a00 0%, #f2990ae6 22.4%, #f2990ae6 76.04%, #f2990a00 100%)",
@@ -920,12 +920,12 @@
               "default": {
                 "value": "linear-gradient(90deg, #64b4fa00 0%, #64b4fa99 22.4%, #64b4fa99 76.04%, #64b4fa00 100%)",
                 "type": "color",
-                "description": "Core Token: core.blue.40 0%, core.blue.40 60%, core.blue.40 60%, core.blue.40 0%\n\nHEX: 64B4FA 0%, 64B4FA 60%,64B4FA 60%, 64B4FA 0%,   \n--------------------------------\nUsed for divider on the compose area for the announcement space."
+                "description": "Core Token: core.blue.40 0% 0%, core.blue.40 60% 22.4%, core.blue.40 60% 76.04%, core.blue.40 0% 100%\nHEX: linear-gradient(90deg, #64b4fa00 0%, #64b4fa99 22.4%, #64b4fa99 76.04%, #64b4fa00 100%) \n--------------------------------\nUsed for divider on the compose area for the announcement space."
               },
               "hover": {
                 "value": "linear-gradient(90deg, #64b4fa00 0%, #64b4fae6 22.4%, #64b4fae6 76.04%, #64b4fa00 100%)",
                 "type": "color",
-                "description": "Core Token: core.blue.40 0%, core.blue.40 90%, core.blue.40 90%, core.blue.40 0%\n\nHEX: 64B4FA 0%, 64B4FA 90%,64B4FA 90%, 64B4FA 0%,   \n--------------------------------\nUsed for hover state divider on the compose area for the announcement space."
+                "description": "Core Token: core.blue.40 0% 0%, core.blue.40 90% 22.4%, core.blue.40 90% 76.04%, core.blue.40 0% 100%\nHEX: linear-gradient(90deg, #64b4fa00 0%, #64b4fae6 22.4%, #64b4fae6 76.04%, #64b4fa00 100%)\n--------------------------------\nUsed for hover state divider on the compose area for the announcement space."
               }
             }
           }
@@ -961,12 +961,12 @@
         },
         "onboarding": {
           "00": {
-            "value": "linear-gradient(180deg, #ffbe4f 0%, #93c437 100%)",
+            "value": "linear-gradient(180deg, {color.core.yellow.30} 0%, {color.decorative.lime.40} 100%)",
             "type": "color",
-            "description": "Core Token: core.yellow.30\ndecorative.lime.40\nHEX: FFBE4F, 93C437\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
+            "description": "Core Token: core.yellow.30, decorative.lime.40\nHEX: FFBE4F, 93C437\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           },
           "01": {
-            "value": "linear-gradient(180deg, #f55868 0%, #875ae0 100%)",
+            "value": "linear-gradient(180deg, {color.core.red.50} 0%, {color.decorative.violet.60}  100%)",
             "type": "color",
             "description": "Core Token: core.red.50, \ndecorative.violet.60\nHEX: F55868, 875AE0\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           },
