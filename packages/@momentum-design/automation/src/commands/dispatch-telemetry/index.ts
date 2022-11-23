@@ -1,8 +1,8 @@
-import IncrementPackages from './dispatch-telemetry';
+import DispatchTelemetry from './dispatch-telemetry';
 
 export type {
-  Config as IncrementPackagesConfig,
-  Options as IncrementPackagesOptions,
+  Config as DispatchTelemetryConfig,
+  Options as DispatchTelemetryOptions,
 } from './types';
 
-export default IncrementPackages;
+export default DispatchTelemetry;

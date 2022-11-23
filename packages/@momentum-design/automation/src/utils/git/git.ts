@@ -3,6 +3,7 @@ import Execute from '../execute';
 import CONSTANTS from './constants';
 import type { Changes, ListItem } from './types';
 
+// Git utility class
 class Git {
   public static commitsToJson(commits: Array<string>): Array<ListItem> {
     return commits.filter(((line) => !!line))
@@ -30,6 +31,10 @@ class Git {
           file,
         };
       }));
+  }
+
+  public static async release(dist: string, tag: string, title: string, notes: string): Promise<string> {
+    return Execute.run(`gh release create ${tag} ${dist} --title "${tag} - ${title}" --notes "${notes}"`);
   }
 
   public static get CONSTANTS(): typeof CONSTANTS {

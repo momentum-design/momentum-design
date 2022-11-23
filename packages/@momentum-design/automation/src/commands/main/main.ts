@@ -5,6 +5,7 @@ import GetPackages from '../get-packages';
 import IncrementPackages from '../increment-packages';
 import RunPackages from '../run-packages';
 import DispatchTelemetry from '../dispatch-telemetry';
+import CreateRelease from '../create-release';
 
 import CONSTANTS from './constants';
 import type { Config, Options } from './types';
@@ -33,6 +34,10 @@ class Main extends Command {
 
       case COMMANDS.DISPATCH_TELEMETRY:
         promise = DispatchTelemetry.execute();
+        break;
+
+      case COMMANDS.CREATE_RELEASE:
+        promise = CreateRelease.execute();
         break;
 
       default:

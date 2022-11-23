@@ -7,6 +7,7 @@ const COMMANDS: Record<string, string> = {
   INCREMENT_PACKAGES: 'increment-packages',
   RUN_PACKAGES: 'run-packages',
   DISPATCH_TELEMETRY: 'dispatch-telemetry',
+  CREATE_RELEASE: 'create-release',
 };
 
 const OPTIONS: CommandOptions = {
