@@ -1,9 +1,10 @@
+import { join } from 'path';
 import {
   Logger,
   generateMetadata,
 } from '@momentum-design/telemetry';
 import { Command } from '../../models';
-import { Git, Yarn } from '../../utils';
+import { compress, Git, Yarn } from '../../utils';
 import GetPackages from '../get-packages';
 
 import CONSTANTS from './constants';
@@ -31,19 +32,24 @@ class CreateRelease extends Command {
     logger.info(`Affected package within get packages config: ${affectedPackages.map((pack) => pack.package)}`);
     const intersection = affectedPackages.filter((pack) => config.targets.includes(pack.package));
     logger.info(`Affected package within targets: ${intersection}`);
-    if (!intersection) {
-      logger.warn(`Affected package within targets: ${intersection}`);
+    if (!(intersection.length > 0)) {
+      logger.warn('No packages matched, skipping release');
       return Promise.resolve(['No packages matched, skipping release']);
     }
     const releases = await Promise.all(intersection.map(async (pack) => {
       const packdef = await pack.readDefinition();
       logger.info(`Building release for package: ${pack.name}`);
+      const pkg = packdef.package;
+      const dist = await compress(join(process.cwd(), packdef.path, 'dist'));
       const title = packdef.name;
-      const tag = packdef.definition.version;
-      const commitLog = await Git.list(1);
-      const notes = commitLog.map(({ subject }) => subject).join('\n');
+      const { version } = packdef.definition;
+      const tag = `${pkg}-v${version}`;
+      const commitLog = await Git.list(config['commit-index']);
+      const notes = commitLog.map(({ subject }) => subject).join('\n')
+        .concat(`\nPackage:\nhttps://www.npmjs.com/package/${pkg}/v/${version}`);
 
       return {
+        dist,
         tag,
         title,
         notes,
@@ -53,7 +59,7 @@ class CreateRelease extends Command {
       releases.map(
         async (
           release,
-        ) => `Released: ${await Git.release(release.tag, release.title, release.notes)} tag: ${release.tag}`,
+        ) => `Released: ${await Git.release(release.dist, release.tag, release.title, release.notes)}`,
       ),
     );
     result.forEach((res) => {
