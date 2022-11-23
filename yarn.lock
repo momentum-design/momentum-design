@@ -1678,11 +1678,13 @@ __metadata:
     "@docsearch/react": ^3.1.0
     "@momentum-design/token-builder": "workspace:^"
     "@momentum-design/tokens": "workspace:^"
+    "@types/lodash": ^4.14.189
     "@types/node": ^18.0.0
     "@types/react": ^17.0.45
     "@types/react-dom": ^18.0.0
     astro: ^1.6.10
     html-escaper: ^3.0.3
+    lodash: ^4.17.21
     preact: ^10.7.3
     react: ^18.1.0
     react-dom: ^18.1.0
@@ -2189,6 +2191,13 @@ __metadata:
     "@types/fined": "*"
     "@types/node": "*"
   checksum: 78c14057abe29872b42e244b07b9c1302028b29bef00a429da1781836186d9a4aab948347e22b34829429e0755abfedfbfd11be1d9639c3def5b9c2121b26f26
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:^4.14.189":
+  version: 4.14.189
+  resolution: "@types/lodash@npm:4.14.189"
+  checksum: 096d1e0954794fb76bd6a0ea443067f02004b53e3c59ac6e3fed88817a1468fc2e6614abdf44341f5e0fdff5f9a3c94a934cc9ff7126e07efbcd94355a21fe45
   languageName: node
   linkType: hard
 

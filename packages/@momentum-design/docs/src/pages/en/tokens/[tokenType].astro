@@ -1,0 +1,41 @@
+---
+import tokens from "@momentum-design/tokens/dist/json/core/complete.json";
+import * as _ from "lodash";
+import TokenTable, { UnthemedColorToken } from "../../../components/Tokens/TokenTable/TokenTable.astro";
+import MainLayout from "../../../layouts/MainLayout.astro";
+
+export function getStaticPaths() {
+  return Object.keys(tokens).map((token) => ({ params: { tokenType: token } }));
+}
+
+export type TokenType = "color" | "elevation" | "border-width" | "border-radius" | "spacing";
+
+const { tokenType } = Astro.params as { tokenType: string };
+---
+
+<MainLayout frontmatter={{ description: "", title: `${tokenType} Tokens`, layout: "" }}>
+  <a href="../tokens">
+    <h3>Back</h3>
+  </a>
+  {
+    tokenType === "color" ? (
+      <>
+        {Object.entries(tokens.color).map(([colorType, colorTokens]) => (
+          <TokenTable
+            name={colorType}
+            headings={["Sample", "Token", "Value"]}
+            tokens={colorTokens}
+            themed={colorType === "gradient" || colorType === "mobile"}
+            shouldIncludePrefix
+          />
+        ))}
+      </>
+    ) : (
+      <TokenTable
+        name={tokenType}
+        headings={["Token", "Value"]}
+        tokens={{ [tokenType]: tokens[tokenType as TokenType] } as UnthemedColorToken}
+      />
+    )
+  }
+</MainLayout>

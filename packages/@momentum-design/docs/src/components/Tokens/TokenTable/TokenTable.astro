@@ -1,5 +1,6 @@
 ---
 import "./TokenTable.css";
+import TokenTableRow from "./TokenTableRow.astro";
 export type ColorTokenValue = { value?: string; type?: string; description?: string };
 
 export type UnthemedColorToken = { [key: string]: { [key: string]: ColorTokenValue } };
@@ -23,7 +24,7 @@ const id = `#${lowerCaseName}`;
 
 const getTokenName = (names: string[]): string => {
   return names.filter((name) => !!name).join("-");
-}
+};
 ---
 
 <>
@@ -42,26 +43,21 @@ const getTokenName = (names: string[]): string => {
                   <>
                     <p>{theme}</p>
                     <div class="gradientThemeWrapper">
-                      {Object.entries(variations).map(([variationName, variation]) => (
-                        <div>
-                          <table>
-                            <tr>
-                              {headings.map((heading) => (
-                                <th>{heading}</th>
-                              ))}
-                            </tr>
-                            <tr>
-                              <td>
-                                <span class="colorSample" style={`background: ${variation.value};`} />
-                              </td>
-                              <td>{getTokenName([prefix, groupName, theme, variationName])}</td>
-                              <td>
-                                <code>{variation.value}</code>
-                              </td>
-                            </tr>
-                          </table>
-                        </div>
-                      ))}
+                      <table>
+                        <tr>
+                          {headings.map((heading) => (
+                            <th>{heading}</th>
+                          ))}
+                        </tr>
+                        {Object.entries(variations).map(([variationName, variation]) => (
+                          <TokenTableRow
+                            headings={headings}
+                            tokenType="color"
+                            tokenValue={variation?.value}
+                            tokenName={getTokenName([prefix, groupName, theme, variationName])}
+                          />
+                        ))}
+                      </table>
                     </div>
                   </>
                 );
@@ -82,17 +78,12 @@ const getTokenName = (names: string[]): string => {
               </tr>
               {Object.entries(groupTokens).map(([subGroupName, token]) => {
                 return (
-                  <tr>
-                    {headings.includes("Sample") && (
-                      <td>
-                        <span class="colorSample" style={`background-color: ${token?.value};`} />
-                      </td>
-                    )}
-                    <td>{getTokenName([prefix, groupName, subGroupName])}</td>
-                    <td>
-                      <code>{token?.value}</code>
-                    </td>
-                  </tr>
+                  <TokenTableRow
+                    headings={headings}
+                    tokenType="color"
+                    tokenValue={token?.value}
+                    tokenName={getTokenName([prefix, groupName, subGroupName])}
+                  />
                 );
               })}
             </table>

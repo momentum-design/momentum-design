@@ -1,0 +1,31 @@
+---
+import { TokenType } from '../../../pages/en/tokens/[tokenType].astro';
+
+type Props = {
+  headings: string[];
+  tokenName: string;
+  tokenValue?: string;
+  tokenType: TokenType;
+};
+
+const getSampleStyle = (type: TokenType, value?: string): string | undefined => {
+  if(type === 'color') {
+    return `background: ${value};`
+  }
+  else return undefined;
+}
+
+const {headings, tokenName, tokenType, tokenValue} = Astro.props;
+---
+
+<tr>
+  {headings.includes("Sample") && (
+    <td>
+      <span class="colorSample" style={getSampleStyle(tokenType, tokenValue)} />
+    </td>
+  )}
+  <td>{tokenName}</td>
+  <td>
+    <code>{tokenValue}</code>
+  </td>
+</tr>
