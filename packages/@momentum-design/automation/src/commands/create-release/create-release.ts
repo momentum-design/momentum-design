@@ -25,7 +25,7 @@ class CreateRelease extends Command {
   public static async process(config: Config): Promise<Array<string>> {
     const { ...getPackagesConfig } = config;
 
-    const [head, previous] = await Git.list(config['commit-index']);
+    const [, previous] = await Git.list(config['commit-index']);
     const packages = await GetPackages.process({ ...getPackagesConfig });
     const affected = (await Yarn.list(previous.commit)).map((value) => value.name);
     logger.info(`Affected packages: ${affected}`);
