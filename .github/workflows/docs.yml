@@ -14,6 +14,8 @@ permissions:
 
 env:
   BUILD_PATH: '.' # default value when not using subfolders
+  rid: ${{ github.run_id }}-${{ github.run_number }}
+
 
 jobs:
   initialize:
