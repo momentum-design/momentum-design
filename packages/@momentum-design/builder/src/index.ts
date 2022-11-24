@@ -17,6 +17,14 @@ export type {
 } from './models';
 
 export {
+  IconsBuilder,
+} from './icons';
+
+export type{
+  IconsBuilderConfig,
+} from './icons';
+
+export {
   TokensBuilder,
 } from './tokens';
 

@@ -1159,13 +1159,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/builder@workspace:packages/@momentum-design/builder":
+"@momentum-design/builder@workspace:^, @momentum-design/builder@workspace:packages/@momentum-design/builder":
   version: 0.0.0-use.local
   resolution: "@momentum-design/builder@workspace:packages/@momentum-design/builder"
   dependencies:
     "@microsoft/api-documenter": ^7.19.24
     "@microsoft/api-extractor": ^7.33.6
     "@momentum-design/common": "workspace:^"
+    "@types/fs-extra": ^9.0.13
+    "@types/glob": ^8.0.0
     "@types/jest": ^29.2.3
     "@types/node": ^18.11.9
     "@types/yargs": ^17.0.13
@@ -1174,6 +1176,7 @@ __metadata:
     esbuild: ^0.15.14
     eslint: ^8.27.0
     eslint-plugin-import: ^2.26.0
+    glob: ^8.0.3
     jest: ^29.3.1
     rimraf: ^3.0.2
     style-dictionary: ^3.7.1
@@ -1217,6 +1220,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@momentum-design/icons@workspace:packages/@momentum-design/icons"
   dependencies:
+    "@momentum-design/builder": "workspace:^"
     rimraf: ^3.0.2
   languageName: unknown
   linkType: soft
@@ -1484,6 +1488,15 @@ __metadata:
   version: 1.1.3
   resolution: "@types/fined@npm:1.1.3"
   checksum: f4a1b6e6976991cf144fb078d2a30f1a0fd27b2301382c3a14359f003c67b69a779a2518dd6f0d859f2457eb29ba81f05a5980ffdfe1190fe553fbf92c2c4a4f
+  languageName: node
+  linkType: hard
+
+"@types/fs-extra@npm:^9.0.13":
+  version: 9.0.13
+  resolution: "@types/fs-extra@npm:9.0.13"
+  dependencies:
+    "@types/node": "*"
+  checksum: add79e212acd5ac76b97b9045834e03a7996aef60a814185e0459088fd290519a3c1620865d588fa36c4498bf614210d2a703af5cf80aa1dbc125db78f6edac3
   languageName: node
   linkType: hard
 
@@ -3974,7 +3987,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^8.0.1":
+"glob@npm:^8.0.1, glob@npm:^8.0.3":
   version: 8.0.3
   resolution: "glob@npm:8.0.3"
   dependencies:
