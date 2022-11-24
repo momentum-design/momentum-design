@@ -7,7 +7,7 @@ export interface Config {
   /**
    * Path to the configuration definition for this Builder.
    */
-  definitionPath: string;
+  definitionPath?: string;
 
   [key: string]: any;
 }

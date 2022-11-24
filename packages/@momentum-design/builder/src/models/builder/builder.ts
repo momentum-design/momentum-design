@@ -98,7 +98,7 @@ class Builder {
    * @param target - Target path to attempt to read and mount to this Builder.
    * @returns - This Builder after executing this method.
    */
-  public read(target: string = this.config.definitionPath): Promise<this> {
+  public read(target: string | undefined = this.config.definitionPath): Promise<this> {
     if (!target) {
       return Promise.resolve(this);
     }

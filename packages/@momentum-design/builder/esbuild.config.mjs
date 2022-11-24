@@ -3,7 +3,7 @@ import packageDefinition from './package.json' assert { type: 'json' };
 
 cli({
   stage: 'production',
-  extension: 'cjs',
+  extension: 'js',
   external: Object.keys(packageDefinition.dependencies).filter((value) => !value.includes('@momentum-design')),
   format: 'cjs',
 });
