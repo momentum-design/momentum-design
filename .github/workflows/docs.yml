@@ -82,7 +82,7 @@ jobs:
       - name: Cache Documentation
         uses: actions/cache@v2
         with:
-          path: ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist
+          path: ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist/
           key: docs-${{ runner.os }}-${{ env.rid }}
 
   deploy:
