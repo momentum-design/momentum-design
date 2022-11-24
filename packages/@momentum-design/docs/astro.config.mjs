@@ -15,5 +15,6 @@ export default defineConfig({
     react(),
     mdx(),
   ],
-  site: 'http://momentum.design',
+  site: 'https://momentum-design.github.io',
+  base: '/momentum-design',
 });
