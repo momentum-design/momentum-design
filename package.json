@@ -25,7 +25,6 @@
     "build:plop": "yarn clean:plop && node ./config/plop/esbuild.config.plop.js",
     "generate": "yarn generate:plop && yarn install",
     "generate:plop": "yarn build:plop && plop --plopfile config/plop/dist/plopfile.js",
-    "docs:build": "yarn tokens build && yarn docs build",
     "docs:api:generate": "yarn workspaces foreach run docs:api:generate",
     "docs:api:extract": "yarn workspaces foreach run docs:api:extract",
     "scripts:git": "node ./scripts/git/main.js",
