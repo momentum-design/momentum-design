@@ -7,6 +7,7 @@ module.exports = {
   extends: [
     'airbnb-base',
     'plugin:json/recommended',
+    'plugin:astro/recommended',
   ],
   globals: {
     BufferEncoding: 'readonly',
@@ -18,6 +19,22 @@ module.exports = {
       env: {
         jest: true,
         node: true,
+      },
+    },
+    {
+      // Define the configuration for `.astro` file.
+      files: ['*.astro'],
+      // Allows Astro components to be parsed.
+      parser: 'astro-eslint-parser',
+      // Parse the script in `.astro` as TypeScript by adding the following configuration.
+      // It's the setting you need when using TypeScript.
+      parserOptions: {
+        parser: '@typescript-eslint/parser',
+        extraFileExtensions: ['.astro'],
+      },
+      rules: {
+        'prettier/prettier': 'off',
+        'no-tabs': 'off',
       },
     },
   ],
@@ -57,6 +74,8 @@ module.exports = {
     indent: ['error', 2, { ignoredNodes: ['PropertyDefinition'], SwitchCase: 1 }],
     'object-curly-newline': 'off',
     'tsdoc/syntax': 'warn',
+    'no-unsafe-optional-chaining': 'off',
+    'no-nonoctal-decimal-escape': 'off',
   },
   settings: {
     'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
