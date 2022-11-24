@@ -97,7 +97,7 @@ jobs:
 
       - name: Clean Documentation
         run: |
-          rm -rf ${{ env.BUILD_PATH }}/
+          rm -rf ${{ env.BUILD_PATH }}/docs
 
       - name: Uncache Documentation
         uses: actions/cache@v2
