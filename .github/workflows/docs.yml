@@ -98,12 +98,17 @@ jobs:
         with:
           path: ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist/
           key: docs-${{ runner.os }}-${{ env.rid }}
-
+      
+      - name: Process Cached Docs
+        run: |
+          cp ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist docs/ -r
+          rm -rf ${{ env.BUILD_PATH }}/packages
+      
       - name: Deploy Documentation
         run: |
           git config --global user.name "Automation"
           git config --global user.email "automation@no-reply.webex.com"
-          git add ${{ env.BUILD_PATH }}
+          git add ${{ env.BUILD_PATH }}/docs
           FILE_COUNT=$(git status -s | wc -l | xargs)
           if [[ $FILE_COUNT != '0' ]]
           then
