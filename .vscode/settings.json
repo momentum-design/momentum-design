@@ -9,5 +9,12 @@
   "eslint.nodePath": ".yarn/sdks",
   "files.associations": {
     "*.json": "jsonc"
-  }
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "astro",
+    "typescript",
+    "typescriptreact"
+  ]
 }

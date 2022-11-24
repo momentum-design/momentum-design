@@ -1,0 +1,53 @@
+---
+import HeadCommon from '../components/HeadCommon.astro';
+import HeadSEO from '../components/HeadSEO.astro';
+import Header from '../components/Header/Header.astro';
+import * as CONFIG from '../config';
+import Footer from '../components/Footer/Footer.astro';
+
+type Props = {
+	frontmatter: CONFIG.Frontmatter;
+};
+
+const { frontmatter } = Astro.props as Props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const currentPage = Astro.url.pathname;
+const currentFile = `src/pages${currentPage.replace(/\/$/, '')}.md`;
+---
+
+<html dir={frontmatter.dir ?? 'ltr'} lang={frontmatter.lang ?? 'en-us'} class="initial">
+  <head>
+    <HeadCommon />
+    <HeadSEO frontmatter={frontmatter} canonicalUrl={canonicalURL} />
+    <title>
+      {frontmatter.title ? `${frontmatter.title} 🚀 ${CONFIG.SITE.title}` : CONFIG.SITE.title}
+    </title>
+    <style>
+			body {
+				width: 100%;
+				display: grid;
+				grid-template-rows: var(--theme-navbar-height) 1fr;
+				--gutter: 0.5rem;
+				--doc-padding: 2rem;
+			}
+
+			.layout {
+				padding: 0 1rem;
+				display: grid;
+				max-width: 82em;
+				margin: 0 auto;
+				width: 100%;
+			}
+
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main class="layout">
+      <div id="grid-main">
+        <slot />
+      </div>
+    </main>
+    <Footer path={currentFile} />
+  </body>
+</html>
