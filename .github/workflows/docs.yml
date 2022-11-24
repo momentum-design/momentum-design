@@ -80,7 +80,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: ${{ env.BUILD_PATH }}/dist
+          path: ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist
 
   deploy:
     environment:
