@@ -82,7 +82,7 @@ jobs:
       - name: Cache Documentation
         uses: actions/cache@v2
         with:
-          path: ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist/**
+          path: ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist/
           key: docs-${{ runner.os }}-${{ env.rid }}
 
   deploy:
@@ -102,7 +102,7 @@ jobs:
       - name: Uncache Documentation
         uses: actions/cache@v2
         with:
-          path: ${{ env.BUILD_PATH }}/docs/**
+          path: ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist/
           key: docs-${{ runner.os }}-${{ env.rid }}
 
       - name: Deploy Documentation
