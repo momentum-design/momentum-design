@@ -97,19 +97,19 @@ jobs:
 
       - name: Clean Documentation
         run: |
-          rm -rf ./docs
+          rm -rf ${{ env.BUILD_PATH }}/docs
 
       - name: Uncache Documentation
         uses: actions/cache@v2
         with:
-          path: docs/
+          path: ${{ env.BUILD_PATH }}/docs/
           key: docs-${{ runner.os }}-${{ env.rid }}
 
       - name: Deploy Documentation
         run: |
           git config --global user.name "Automation"
           git config --global user.email "automation@no-reply.webex.com"
-          git add ./docs
+          git add ${{ env.BUILD_PATH }}/docs
           FILE_COUNT=$(git status -s | wc -l | xargs)
           if [[ $FILE_COUNT != '0' ]]
           then
