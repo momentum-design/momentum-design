@@ -1,13 +1,25 @@
 /* eslint-disable no-redeclare */
-import glob from 'glob';
+
 import path from 'path';
+import {
+  Logger,
+  generateMetadata,
+} from '@momentum-design/telemetry';
+
 import { Builder as CoreBuilder } from '../../models';
 import CONSTANTS from './constants';
+import FileHandler, { File } from './file-handler';
 import type { Config } from './types';
+import Transformer from './transformer';
+
+const PACKAGE = 'builder';
+const logger = Logger.child(generateMetadata(PACKAGE, 'icons'));
 
 interface Builder {
-    config: Config
-    filePaths: Array<any>;
+  config: Config
+  files: Array<File>;
+  fileHandler: FileHandler;
+  transformer: Transformer;
 }
 
 class Builder extends CoreBuilder {
@@ -20,36 +32,81 @@ class Builder extends CoreBuilder {
    * @param config - Configuration Object to be mounted to this Builder.
    */
   public constructor(config: Config) {
-    const { srcDir, distDir, ...other } = config;
+    const { buildName, srcDir, distDir, srcType, distType, ...other } = config;
     super({ ...other, type: 'icons' });
 
-    this.config.srcDir = srcDir;
-    this.config.distDir = distDir;
-    this.filePaths = [];
+    this.config.buildName = buildName;
+    this.config.srcDir = path.join(process.cwd(), srcDir);
+    this.config.distDir = path.join(process.cwd(), distDir);
+    this.config.srcType = srcType;
+    this.config.distType = distType;
+
+    this.files = [];
+
+    this.fileHandler = new FileHandler();
+    this.transformer = new Transformer();
+  }
+
+  fillFilesWithPaths(filePaths: Array<string>, distDir: string) {
+    return filePaths.map((path) => (
+      { srcPath: path, distPath: this.fileHandler.replaceDirInPath(path, distDir) }
+    ));
+  }
+
+  async writeFiles() {
+    // create dist folder if it doesn't exist before writing files:
+    this.fileHandler.createFolderIfNotExist(this.config.distDir);
+
+    return this.fileHandler.writeFiles(this.files); // write all files
+  }
+
+  async getFiles() {
+    return this.fileHandler.readFiles(this.files) // Read all files
+      .then((filesWithData) => {
+        // override files array with filesWithData array:
+        this.files = filesWithData;
+      });
+  }
+
+  transform() {
+    if (this.config.srcType === 'svg' && this.config.distType === 'svg' && this.config.svgoConfig) {
+      this.files = this.transformer.optimizeSVGFiles(this.files, this.config.svgoConfig);
+    }
   }
 
   public override initialize(): Promise<this> {
-    const fullInputDir = path.join(process.cwd(), this.config.srcDir);
-
+    logger.info(`Started '${this.config.buildName}'`);
     return new Promise((resolve, reject) => {
-      glob(`${fullInputDir}/**/*.*`, {}, (er, files) => {
-        this.filePaths = files;
-        if (er) {
-          reject(er);
+      this.fileHandler.getFilePathsInFolder(`${this.config.srcDir}/**/*.*`, (error, filePaths) => {
+        if (error) {
+          logger.error(`Error while parsing files in '${this.config.srcDir}': ${error}`);
+          reject(error);
         }
-        resolve(this);
+
+        // fill file array with srcPath & distPaths:
+        this.files = this.fillFilesWithPaths(filePaths, this.config.distDir);
+
+        this.getFiles().then(() => {
+          resolve(this);
+        }).catch((error) => {
+          logger.error(`Error while reading files: ${error}`);
+        });
       });
     });
   }
 
   public override process(): Promise<this> {
-    // icons transform
-    console.log(this.filePaths);
+    this.transform();
 
-    // const fullDistDir = path.join(process.cwd(), this.config.distDir);
-
-    // TODO: add optimize (SVGO) & transforms (CSS, SCSS, Fonts, etc.) here
-    return Promise.resolve(this);
+    return new Promise((resolve, reject) => {
+      this.writeFiles().then(() => {
+        logger.info(`Finished '${this.config.buildName}' successfully`);
+        resolve(this);
+      }).catch((error) => {
+        logger.error(`Error while writing files: ${error}`);
+        reject(error);
+      });
+    });
   }
 
   /**

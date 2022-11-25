@@ -7,9 +7,11 @@ package: @momentum-design/illustrations
 [![license](https://img.shields.io/badge/License-MIT-blueviolet?style=flat-square)](https://github.com/momentum-design/momentum-design/blob/design-token-updates/LICENSE)
 ![State](https://img.shields.io/badge/State-Alpha-blue?style=flat-square)
 
-**TODO** - General Description
+Contains Momentum illustrations & tooling for building and optimizing.
 
 ## Usage
+
+Run the `build` script to create the `dist` folder, which includes optimised illustration svg assets. The config for the build process can be adjusted in the `config` folder.
 
 ### Requirements
 
@@ -31,4 +33,3 @@ See [our contributing guide](./CONTRIBUTING.md)
 ## Scripts
 
 See [our script documentation](./SCRIPTS.md)
-
