@@ -42,7 +42,15 @@ describe('@momentum-design/token-builder - models.Platform', () => {
       });
 
       it('should be a File with a references property that matches the Platform\'s provided file references', () => {
-        expect(platform.file.references).toBe(PlatformFixture.FIXTURE_CONFIG.file.references);
+        expect(platform.file.references).toBe(PlatformFixture.FIXTURE_CONFIG.file.outputReferences);
+      });
+
+      it('should be a File with a selector property that matches the Platform\'s provided file selector', () => {
+        expect(platform.file.selector).toBe(PlatformFixture.FIXTURE_CONFIG.file.cssSelector);
+      });
+
+      it('should be a File with a showFileHeader property that matches the Platform\'s provided file showFileHeader', () => {
+        expect(platform.file.showFileHeader).toBe(PlatformFixture.FIXTURE_CONFIG.file.showFileHeader);
       });
     });
 

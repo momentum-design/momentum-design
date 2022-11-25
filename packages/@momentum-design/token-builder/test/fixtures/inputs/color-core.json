@@ -46,18 +46,6 @@
         }
       },
       "decorative": {
-        "orange": {
-          "10": {
-            "value": "#faf4eb",
-            "type": "color",
-            "description": "HEX Code: #FAF4EB"
-          },
-          "100": {
-            "value": "#211916",
-            "type": "color",
-            "description": "HEX Code: #3211916"
-          }
-        },
         "gold": {
           "50": {
             "value": "#ba8c00",

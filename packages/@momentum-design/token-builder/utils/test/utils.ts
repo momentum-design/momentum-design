@@ -11,6 +11,9 @@ const fileToJson = async (relativePath: string) => {
   return output;
 };
 
+const cssToString = async (relativePath: string) => await fs.readFile(path.join(process.cwd(), relativePath))
+
 export {
   fileToJson,
+  cssToString,
 };

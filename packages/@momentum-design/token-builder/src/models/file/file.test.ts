@@ -140,9 +140,33 @@ describe('@momentum-design/token-builder - models.File', () => {
       });
     });
 
-    describe('#references', () => {
+    describe('#format options', () => {
       it('should be the reference provided to the File', () => {
-        expect(file.references).toBe(FileFixture.FIXTURE_CONFIG.references);
+        expect(file.references).toBe(FileFixture.FIXTURE_CONFIG.outputReferences);
+      });
+
+      it('should be the selector provided to the File', () => {
+        expect(file.selector).toBe(FileFixture.FIXTURE_CONFIG.cssSelector);
+      });
+
+      it('should be the showFileHeader provided to the File', () => {
+        expect(file.showFileHeader).toBe(FileFixture.FIXTURE_CONFIG.showFileHeader);
+      });
+
+      it('should be the default scss themeable value if not provided to the File', () => {
+        expect(file.scssThemeable).toBe(false);
+      });
+
+      it('should be the default ios access control value if not provided to the File', () => {
+        expect(file.iosAccessControl).toBeUndefined();
+      });
+
+      it('should be the default ios import value if not provided to the File', () => {
+        expect(file.iosImport).toBeUndefined();
+      });
+
+      it('should be the default ios object type if not provided to the File', () => {
+        expect(file.iosObjectType).toBeUndefined();
       });
     });
 
@@ -159,8 +183,14 @@ describe('@momentum-design/token-builder - models.File', () => {
         expect(JSON.stringify(file.sdConfig.filter)).toBe(JSON.stringify(file.filter));
       });
 
-      it('should be an Object with options containing an outputReferences that reflects the File\'s reference', () => {
+      it('should be an Object with options that reflects the File\'s options', () => {
         expect(file.sdConfig.options?.outputReferences).toBe(file.references);
+        expect(file.sdConfig.options?.selector).toBe(file.selector);
+        expect(file.sdConfig.options?.showFileHeader).toBe(file.showFileHeader);
+        expect(file.sdConfig.options?.themeable).toBe(file.scssThemeable);
+        expect(file.sdConfig.options?.accessControl).toBe(file.iosAccessControl);
+        expect(file.sdConfig.options?.import).toBe(file.iosImport);
+        expect(file.sdConfig.options?.objectType).toBe(file.iosObjectType);
       });
     });
 

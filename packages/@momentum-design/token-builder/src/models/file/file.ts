@@ -71,13 +71,42 @@ class File {
       filter: this.filter,
       options: {
         outputReferences: this.references,
-        selector: this.config.name,
+        selector: this.selector,
+        showFileHeader: this.showFileHeader,
+        themeable: this.scssThemeable,
+        accessControl: this.iosAccessControl,
+        import: this.iosImport,
+        objectType: this.iosObjectType,
       },
     };
   }
 
   public get references(): boolean {
-    return this.config.references || false;
+    return this.config.outputReferences || false;
+  }
+
+  public get selector(): string | undefined {
+    return this.config.cssSelector || undefined;
+  }
+
+  public get showFileHeader(): boolean {
+    return this.config.showFileHeader || true;
+  }
+
+  public get scssThemeable(): boolean {
+    return this.config.scssThemeable || false;
+  }
+
+  public get iosAccessControl(): string | undefined {
+    return this.config.iosAccessControl || undefined;
+  }
+
+  public get iosImport(): string | Array<String> | undefined  {
+    return this.config.iosImport || undefined;
+  }
+
+  public get iosObjectType(): string | undefined  {
+    return this.config.iosObjectType || undefined;
   }
 
   public get types(): Array<string> {
