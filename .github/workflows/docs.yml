@@ -6,14 +6,10 @@ on:
       - main
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 env:
   BUILD_PATH: '.' # default value when not using subfolders
+  rid: ${{ github.run_id }}-${{ github.run_number }}
+
 
 jobs:
   initialize:
@@ -76,20 +72,50 @@ jobs:
       - name: Build docs with astro (includes all dependencies + astro)
         run: yarn build
         working-directory: ${{ env.BUILD_PATH }}
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        
+      - name: Cache Documentation
+        uses: actions/cache@v2
         with:
-          path: ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist
+          path: ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist/
+          key: docs-${{ runner.os }}-${{ env.rid }}
 
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    name: Deploy
     needs: build
     runs-on: ubuntu-latest
-    name: Deploy
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1
+      - name: Checkout Project
+        uses: actions/checkout@v2
+        with:
+          ref: docs
+
+      - name: Clean Documentation
+        run: |
+          rm -rf ${{ env.BUILD_PATH }}/docs
+
+      - name: Uncache Documentation
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist/
+          key: docs-${{ runner.os }}-${{ env.rid }}
+      
+      - name: Process Cached Docs
+        run: |
+          cp ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist docs/ -r
+          rm -rf ${{ env.BUILD_PATH }}/packages
+      
+      - name: Deploy Documentation
+        run: |
+          git config --global user.name "Automation"
+          git config --global user.email "automation@no-reply.webex.com"
+          git add ${{ env.BUILD_PATH }}/docs
+          FILE_COUNT=$(git status -s | wc -l | xargs)
+          if [[ $FILE_COUNT != '0' ]]
+          then
+            echo "Found $FILE_COUNT changed documentation files."
+            git commit -m "ci(docs): deploy documentation [skip ci] [skip release]"
+            git push origin docs
+          else
+            echo "Documentation files have not changed."
+            echo "Documentation will not be published."
+          fi

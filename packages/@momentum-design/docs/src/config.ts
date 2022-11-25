@@ -30,7 +30,7 @@ export const KNOWN_LANGUAGES = {
 export const KNOWN_LANGUAGE_CODES = Object.values(KNOWN_LANGUAGES);
 
 // eslint-disable-next-line max-len
-export const GITHUB_EDIT_URL = 'https://github.com/momentum-design/momentum-design/tree/main/packages/%40momentum-design/docs';
+export const GITHUB_EDIT_URL = 'https://github.com/momentum-design/momentum-design/tree/main/packages/%40momentum-design/docs/src/pages';
 
 export const COMMUNITY_INVITE_URL = 'https://momentum.design/chat';
 
@@ -45,12 +45,12 @@ export const ALGOLIA = {
 export type Sidebar = Record<typeof KNOWN_LANGUAGE_CODES[number], Record<string, { text: string; link: string }[]>>;
 export const SIDEBAR: Sidebar = {
   en: {
-    Momentum: [{ text: 'Introduction', link: 'en/docs/momentum/introduction' }],
+    Momentum: [{ text: 'Introduction', link: 'momentum-design/en/docs/momentum/introduction' }],
     Tokens: [
-      { text: 'Introduction', link: 'en/docs/tokens/introduction' },
-      { text: 'Getting Started', link: 'en/docs/tokens/getting-started' },
+      { text: 'Introduction', link: 'momentum-design/en/docs/tokens/introduction' },
+      { text: 'Getting Started', link: 'momentum-design/en/docs/tokens/getting-started' },
     ],
-    'Developer Tooling': [{ text: 'Token Builder', link: 'en/docs/developer-tooling/token-builder' }],
+    'Developer Tooling': [{ text: 'Token Builder', link: 'momentum-design/en/docs/developer-tooling/token-builder' }],
   },
   es: {},
 };
@@ -63,15 +63,15 @@ export type Menu = Record<
 export const MAIN_MENU: Menu = {
   en: {
     System: {
-      index: 'en',
+      index: 'momentum-design/en',
       submenu: [],
     },
     Tokens: {
-      index: 'en/tokens',
-      submenu: [{ text: 'Colors', link: 'en/tokens/colors' }],
+      index: 'momentum-design/en/tokens',
+      submenu: [{ text: 'Colors', link: 'momentum-design/en/tokens/colors' }],
     },
     Docs: {
-      index: 'en/docs',
+      index: 'momentum-design/en/docs',
       submenu: [],
     },
   },
