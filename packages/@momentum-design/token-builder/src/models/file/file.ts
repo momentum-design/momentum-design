@@ -101,11 +101,11 @@ class File {
     return this.config.iosAccessControl || undefined;
   }
 
-  public get iosImport(): string | Array<String> | undefined  {
+  public get iosImport(): string | Array<String> | undefined {
     return this.config.iosImport || undefined;
   }
 
-  public get iosObjectType(): string | undefined  {
+  public get iosObjectType(): string | undefined {
     return this.config.iosObjectType || undefined;
   }
 
