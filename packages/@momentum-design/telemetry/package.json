@@ -7,7 +7,7 @@
     "npm": ">=8.0.0",
     "yarn": ">=3.0.0"
   },
-  "type": "module",
+  "type": "commonjs",
   "main": "./dist/module/index.js",
   "types": "./dist/types/index.d.ts",
   "files": [

@@ -1762,7 +1762,7 @@ __metadata:
     typescript: ^4.8.4
     yargs: ^17.6.0
   bin:
-    md-token-builder: ./dist/cli/index.cjs
+    md-token-builder: ./dist/cli/index.js
   languageName: unknown
   linkType: soft
 

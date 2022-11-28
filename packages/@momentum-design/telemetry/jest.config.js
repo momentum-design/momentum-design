@@ -1,6 +1,6 @@
 const config = {
-  preset: 'ts-jest/presets/js-with-ts-esm',
+  preset: 'ts-jest',
   testEnvironment: 'node',
 };
 
-export default config;
+module.exports = config;

@@ -21,4 +21,4 @@ await (async () => {
 })();
 `;
 
-export { ESM_REQUIRE_SHIM };
+module.exports = { ESM_REQUIRE_SHIM };
