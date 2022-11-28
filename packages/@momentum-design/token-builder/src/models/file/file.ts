@@ -91,7 +91,7 @@ class File {
 
   public get showFileHeader(): boolean {
     if (this.config.showFileHeader === undefined) {
-      return true
+      return true;
     }
     return this.config.showFileHeader;
   }
