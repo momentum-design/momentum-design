@@ -1,9 +1,8 @@
-import { cli } from '../../../config/esbuild/esbuild.config.js';
-import packageDefinition from './package.json' assert { type: 'json' };
+const { cli } = require('../../../config/esbuild/esbuild.config.js');
+const packageDefinition = require('./package.json');
 
 cli({
   stage: 'production',
-  extension: 'js',
   external: Object.keys(packageDefinition.dependencies).filter((value) => !value.includes('@momentum-design')),
   format: 'cjs',
 });

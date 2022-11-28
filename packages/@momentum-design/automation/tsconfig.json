@@ -3,7 +3,7 @@
   "compilerOptions": {
     "outDir": "./dist/module",
     "declarationDir": "./dist/types",
-    "module": "ES6"
+    "module": "CommonJS"
   },
   "plugins": [],
   "include": [

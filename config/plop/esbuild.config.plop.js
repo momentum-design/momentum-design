@@ -1,3 +1,5 @@
-import { plop } from '../esbuild/esbuild.config.js';
+const { plop } = require('../esbuild/esbuild.config.js');
+
+console.log(plop);
 
 plop();
