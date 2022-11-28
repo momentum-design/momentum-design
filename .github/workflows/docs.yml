@@ -100,14 +100,15 @@ jobs:
           key: docs-${{ runner.os }}-${{ env.rid }}
       
       - name: Process Cached Docs
-        run: |
-          cp ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist docs/ -r
-          rm -rf ${{ env.BUILD_PATH }}/packages
+        run: cp -avr ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist docs/
+
+      - name: Generate GitHub Pages Config
+        run: touch docs/.nojekyll
       
       - name: Deploy Documentation
         run: |
-          git config --global user.name "Automation"
-          git config --global user.email "automation@no-reply.webex.com"
+          git config --local user.email "automation@momentum.design"
+          git config --local user.name "Momentum Design Automation"
           git add ${{ env.BUILD_PATH }}/docs
           FILE_COUNT=$(git status -s | wc -l | xargs)
           if [[ $FILE_COUNT != '0' ]]
