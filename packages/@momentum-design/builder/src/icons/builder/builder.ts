@@ -13,7 +13,7 @@ import type { Config } from './types';
 import Transformer from './transformer';
 
 const PACKAGE = 'builder';
-const logger = Logger.child(generateMetadata(PACKAGE, 'icons'));
+const logger = Logger.child(generateMetadata(PACKAGE, CONSTANTS.TYPE));
 
 interface Builder {
   config: Config
@@ -33,7 +33,7 @@ class Builder extends CoreBuilder {
    */
   public constructor(config: Config) {
     const { buildName, srcDir, distDir, srcType, distType, ...other } = config;
-    super({ ...other, type: 'icons' });
+    super({ ...other, type: CONSTANTS.TYPE });
 
     this.config.buildName = buildName;
     this.config.srcDir = path.join(process.cwd(), srcDir);
@@ -47,28 +47,20 @@ class Builder extends CoreBuilder {
     this.transformer = new Transformer();
   }
 
-  fillFilesWithPaths(filePaths: Array<string>, distDir: string) {
+  public fillFilesWithPaths(filePaths: Array<string>, distDir: string): Array<Pick<File, 'srcPath' | 'distPath'>> {
     return filePaths.map((path) => (
       { srcPath: path, distPath: this.fileHandler.replaceDirInPath(path, distDir) }
     ));
   }
 
-  async writeFiles() {
+  public writeFiles(): Promise<File[]> {
     // create dist folder if it doesn't exist before writing files:
     this.fileHandler.createFolderIfNotExist(this.config.distDir);
 
     return this.fileHandler.writeFiles(this.files); // write all files
   }
 
-  async getFiles() {
-    return this.fileHandler.readFiles(this.files) // Read all files
-      .then((filesWithData) => {
-        // override files array with filesWithData array:
-        this.files = filesWithData;
-      });
-  }
-
-  transform() {
+  public transform(): void {
     if (this.config.srcType === 'svg' && this.config.distType === 'svg' && this.config.svgoConfig) {
       this.files = this.transformer.optimizeSVGFiles(this.files, this.config.svgoConfig);
     }
@@ -86,7 +78,9 @@ class Builder extends CoreBuilder {
         // fill file array with srcPath & distPaths:
         this.files = this.fillFilesWithPaths(filePaths, this.config.distDir);
 
-        this.getFiles().then(() => {
+        this.fileHandler.readFiles(this.files).then((filesWithData) => {
+          // override files array with filesWithData array:
+          this.files = filesWithData;
           resolve(this);
         }).catch((error) => {
           logger.error(`Error while reading files: ${error}`);

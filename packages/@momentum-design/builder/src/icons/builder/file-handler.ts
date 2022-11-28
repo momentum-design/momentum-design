@@ -28,21 +28,21 @@ class FileHandler {
    * @param dirPath - dirPath which will replace the existing directory part of the `filePath`
    * @returns
    */
-  public replaceDirInPath(filePath: string, dirPath: string) {
+  public replaceDirInPath(filePath: string, dirPath: string): string {
     return path.join(dirPath, path.basename(filePath));
   }
 
-  public createFolderIfNotExist(dir: string) {
+  public createFolderIfNotExist(dir: string): void {
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
   }
 
-  public getFilePathsInFolder(folderPattern: string, cb: (error: Error | null, filePaths: string[]) => void) {
+  public getFilePathsInFolder(folderPattern: string, cb: (error: Error | null, filePaths: string[]) => void): void {
     glob(folderPattern, {}, cb);
   }
 
-  public readFile(file: File) {
+  public readFile(file: File): Promise<File> {
     return new Promise<File>((resolve, reject) => {
       fs.readFile(file.srcPath, 'utf-8', (error, data) => {
         if (error) {
@@ -56,7 +56,7 @@ class FileHandler {
     });
   }
 
-  public writeFile(file: File) {
+  public writeFile(file: File): Promise<File> {
     return new Promise<File>((resolve, reject) => {
       if (!file.distPath) {
         const errorMessage = `No distPath provided for file: ${file}`;
@@ -77,11 +77,11 @@ class FileHandler {
     });
   }
 
-  public readFiles(files: Array<File>) {
+  public readFiles(files: Array<File>): Promise<File[]> {
     return Promise.all(files.map(this.readFile));
   }
 
-  public writeFiles(files: Array<File>) {
+  public writeFiles(files: Array<File>): Promise<File[]> {
     return Promise.all(files.map(this.writeFile));
   }
 }

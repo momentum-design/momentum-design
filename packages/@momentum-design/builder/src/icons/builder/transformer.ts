@@ -19,7 +19,7 @@ interface Transformer {
  * @alpha
  */
 class Transformer {
-  public optimizeSVG(file: File, svgoConfig: SVGOConfig) {
+  public optimizeSVG(file: File, svgoConfig: SVGOConfig): File {
     try {
       // use svgo `optimize` function:
       const optimizedData = optimize(file.data, svgoConfig).data;
@@ -30,7 +30,7 @@ class Transformer {
     }
   }
 
-  public optimizeSVGFiles(files: Array<File>, svgoConfig: SVGOConfig) {
+  public optimizeSVGFiles(files: Array<File>, svgoConfig: SVGOConfig): File[] {
     return files.map((file) => this.optimizeSVG(file, svgoConfig));
   }
 }

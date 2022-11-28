@@ -1,7 +1,7 @@
 import type { BuilderConfig } from '../../models';
 import type { SVGOConfig } from './transformer';
 
-export type FileType = 'svg' | 'css' | 'scss' | 'woff' | 'woff2' | 'data';
+export type FileType = 'svg';
 
 export interface Config extends BuilderConfig {
     buildName: string;
