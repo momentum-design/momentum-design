@@ -4,7 +4,7 @@ const CATEGORIES = {
   iife: 'iife',
 };
 
-export {
+module.exports = {
   PROJECT_PREFIX,
   CATEGORIES,
 };

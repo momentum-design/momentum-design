@@ -1,7 +1,7 @@
-import esbuild from 'esbuild';
-import { join } from 'path';
+const esbuild = require('esbuild');
+const { join } = require('path');
 
-import { PROJECT_PREFIX } from './esbuild.constants.js';
+const { PROJECT_PREFIX } = require('./esbuild.constants.js');
 
 const cli = async ({ stage, extension = 'js', external, format = 'esm', banner = {} }) => {
   const projectPath = process.cwd();
@@ -82,4 +82,4 @@ const plop = async () => {
   return plop;
 };
 
-export { iife, plop, esm, cjs, cli };
+module.exports = { iife, plop, esm, cjs, cli };
