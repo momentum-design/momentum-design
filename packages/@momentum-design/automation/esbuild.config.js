@@ -1,13 +1,8 @@
-import { cli } from '../../../config/esbuild/esbuild.config.js';
-import { ESM_REQUIRE_SHIM } from '../../../config/esbuild/esbuild-shim.js';
-import packageDefinition from './package.json' assert { type: 'json' };
-
-const shimBanner = {
-  js: ESM_REQUIRE_SHIM,
-};
+const { cli } = require('../../../config/esbuild/esbuild.config.js');
+const packageDefinition = require('./package.json');
 
 cli({
   stage: 'production',
-  banner: shimBanner,
   external: Object.keys(packageDefinition.dependencies).filter((value) => !value.includes('@momentum-design')),
+  format: 'cjs',
 });

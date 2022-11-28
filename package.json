@@ -7,7 +7,7 @@
     "yarn": ">=3.0.0"
   },
   "private": true,
-  "type": "module",
+  "type": "commonjs",
   "workspaces": [
     "./packages/**/*"
   ],
@@ -24,7 +24,7 @@
     "clean:plop": "rimraf ./config/plop/dist",
     "build:plop": "yarn clean:plop && node ./config/plop/esbuild.config.plop.js",
     "generate": "yarn generate:plop && yarn install",
-    "generate:plop": "yarn build:plop && plop --plopfile config/plop/dist/plopfile.js",
+    "generate:plop": "yarn build:plop && plop --plopfile config/plop/dist/plopfile.mjs",
     "docs:build": "yarn tokens build && yarn docs build",
     "docs:api:generate": "yarn workspaces foreach run docs:api:generate",
     "docs:api:extract": "yarn workspaces foreach run docs:api:extract",
@@ -38,7 +38,8 @@
     "automation": "yarn workspace @momentum-design/automation",
     "docs": "yarn workspace @momentum-design/docs",
     "builder": "yarn workspace @momentum-design/builder",
-    "common": "yarn workspace @momentum-design/common"
+    "common": "yarn workspace @momentum-design/common",
+		"example": "yarn workspace @momentum-design/example"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",

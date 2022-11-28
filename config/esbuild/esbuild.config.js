@@ -64,7 +64,7 @@ const cjs = async (
     bundle: true,
     entryPoints: [`${join(projectPath, entryPointPath)}`],
     format: 'cjs',
-    minify: true,
+    minify: false,
     outfile: `${join(projectPath, 'dist', outfile)}`,
     tsconfig: `${join(projectPath, tsconfig)}`,
     platform,
@@ -72,14 +72,15 @@ const cjs = async (
 };
 
 const plop = async () => {
-  const plop = await esm(
-    `${join(process.cwd(), 'config', 'plop')}`,
-    'plopfile.ts',
-    'plopfile.js',
-    'tsconfig.plop.json',
-    'node',
-  );
-  return plop;
+  await esbuild.build({
+    bundle: true,
+    entryPoints: [join(join(process.cwd(), 'config', 'plop'), 'plopfile.ts')],
+    format: 'esm',
+    minify: true,
+    outfile: `${join(join(process.cwd(), 'config', 'plop'), 'dist', 'plopfile.mjs')}`,
+    tsconfig: `${join(join(process.cwd(), 'config', 'plop'), 'tsconfig.plop.json')}`,
+    platform: 'node',
+  });
 };
 
 module.exports = { iife, plop, esm, cjs, cli };
