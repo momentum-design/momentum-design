@@ -1,50 +1,44 @@
-/**
- * Do not edit directly
- * Generated on Thu, 24 Nov 2022 16:13:18 GMT
- */
-
- fake-selector {
-    --config2-color-theme-border-decorative-gradient-negative-hover: #000000;
-    --config2-color-theme-border-decorative-gradient-negative-default: #000000;
-    --config2-color-theme-illustration-onboarding-01: linear-gradient(180deg, var(--config2-color-core-gray-10) 0%, var(--config2-color-decorative-gold-60)  100%);
-    --config2-color-theme-border-decorative-gradient-primary-hover: linear-gradient(90deg, var(--config2-color-core-white-alpha-20) 0%, var(--config2-color-core-white-alpha-11) 22.4%, var(--config2-color-core-white-alpha-11) 72.4%, var(--config2-color-core-white-alpha-20) 100%);
-    --config2-color-theme-border-decorative-gradient-primary-default: linear-gradient(90deg, var(--config2-color-core-white-alpha-11) 0%, var(--config2-color-core-white-alpha-20) 22.4%, var(--config2-color-core-white-alpha-20) 72.4%, var(--config2-color-core-white-alpha-11) 100%);
-    --config2-color-theme-border-accent-00: var(--config2-color-core-blue-20);
-    --config2-color-theme-content-scrollbar-bg-pressed: var(--config2-color-core-white-alpha-20);
-    --config2-color-theme-content-scrollbar-bg-hover: var(--config2-color-core-white-alpha-11);
-    --config2-color-theme-content-scrollbar-thumb-default: var(--config2-color-core-white-alpha-20);
-    --config2-color-theme-content-control-accent-active-hover: var(--config2-color-core-blue-20);
-    --config2-color-theme-content-control-accent-active-defualt: var(--config2-color-core-blue-10);
-    --config2-color-theme-content-control-neutral-inactive-disabled: var(--config2-color-core-white-alpha-11);
-    --config2-color-theme-content-control-neutral-inactive-default: var(--config2-color-core-white-alpha-20);
-    --config2-color-theme-content-indicator-neutral-01: var(--config2-color-core-gray-20);
-    --config2-color-theme-content-indicator-neutral-00: var(--config2-color-core-gray-10);
-    --config2-color-theme-content-btn-accent-hover: var(--config2-color-core-blue-20);
-    --config2-color-theme-content-btn-accent-default: var(--config2-color-core-blue-10);
-    --config2-color-theme-content-btn-neutral-secondary-active-pressed: var(--config2-color-core-white-alpha-11);
-    --config2-color-theme-content-btn-neutral-secondary-active-default: var(--config2-color-core-white-alpha-20);
-    --config2-color-theme-content-btn-neutral-secondary-disabled: var(--config2-color-core-white-alpha-11);
-    --config2-color-theme-content-btn-neutral-primary-hover: var(--config2-color-core-black-alpha-50);
-    --config2-color-theme-content-btn-neutral-primary-default: var(--config2-color-core-black-alpha-50);
-    --config2-color-theme-content-text-decorative-gold-active: var(--config2-color-decorative-gold-60);
-    --config2-color-theme-content-text-decorative-gold-default: var(--config2-color-decorative-gold-50);
-    --config2-color-theme-content-text-accent-default: var(--config2-color-core-blue-10);
-    --config2-color-theme-content-text-accent-hover: var(--config2-color-core-blue-20);
-    --config2-color-theme-content-text-accent-active: var(--config2-color-core-blue-20);
-    --config2-color-theme-content-text-neutral-disabled: var(--config2-color-core-white-alpha-20);
-    --config2-color-theme-content-text-neutral-secondary: var(--config2-color-core-white-alpha-11);
-    --config2-color-theme-content-text-neutral-primary: var(--config2-color-core-white-alpha-11);
-    --config2-color-theme-surface-accent-mobile-pressed: var(--config2-color-core-blue-20);
-    --config2-color-theme-surface-accent-mobile-default: var(--config2-color-core-blue-20);
-    --config2-color-theme-surface-accent-default: var(--config2-color-core-blue-10);
-    --config2-color-theme-surface-neutral-02-tertiary: var(--config2-color-core-black-alpha-50);
-    --config2-color-theme-surface-neutral-02-secondary: var(--config2-color-core-gray-20);
-    --config2-color-theme-surface-neutral-02-primary: var(--config2-color-core-gray-10);
-    --config2-color-theme-surface-neutral-01-disabled: var(--config2-color-core-white-alpha-11);
-    --config2-color-theme-surface-neutral-01-active: var(--config2-color-core-white-alpha-11);
-    --config2-color-theme-surface-neutral-01-hover: var(--config2-color-core-white-alpha-20);
-    --config2-color-theme-surface-neutral-01-default: var(--config2-color-core-white-alpha-11);
-    --config2-color-theme-surface-neutral-00-disabled: var(--config2-color-core-white-alpha-20);
-    --config2-color-theme-surface-neutral-00-active: var(--config2-color-core-white-alpha-11);
-  }
-  
+fake-selector {
+  --config2-color-theme-border-decorative-gradient-negative-hover: #000000;
+  --config2-color-theme-border-decorative-gradient-negative-default: #000000;
+  --config2-color-theme-illustration-onboarding-01: linear-gradient(180deg, var(--config2-color-core-gray-10) 0%, var(--config2-color-decorative-gold-60)  100%);
+  --config2-color-theme-border-decorative-gradient-primary-hover: linear-gradient(90deg, var(--config2-color-core-white-alpha-20) 0%, var(--config2-color-core-white-alpha-11) 22.4%, var(--config2-color-core-white-alpha-11) 72.4%, var(--config2-color-core-white-alpha-20) 100%);
+  --config2-color-theme-border-decorative-gradient-primary-default: linear-gradient(90deg, var(--config2-color-core-white-alpha-11) 0%, var(--config2-color-core-white-alpha-20) 22.4%, var(--config2-color-core-white-alpha-20) 72.4%, var(--config2-color-core-white-alpha-11) 100%);
+  --config2-color-theme-border-accent-00: var(--config2-color-core-blue-20);
+  --config2-color-theme-content-scrollbar-bg-pressed: var(--config2-color-core-white-alpha-20);
+  --config2-color-theme-content-scrollbar-bg-hover: var(--config2-color-core-white-alpha-11);
+  --config2-color-theme-content-scrollbar-thumb-default: var(--config2-color-core-white-alpha-20);
+  --config2-color-theme-content-control-accent-active-hover: var(--config2-color-core-blue-20);
+  --config2-color-theme-content-control-accent-active-defualt: var(--config2-color-core-blue-10);
+  --config2-color-theme-content-control-neutral-inactive-disabled: var(--config2-color-core-white-alpha-11);
+  --config2-color-theme-content-control-neutral-inactive-default: var(--config2-color-core-white-alpha-20);
+  --config2-color-theme-content-indicator-neutral-01: var(--config2-color-core-gray-20);
+  --config2-color-theme-content-indicator-neutral-00: var(--config2-color-core-gray-10);
+  --config2-color-theme-content-btn-accent-hover: var(--config2-color-core-blue-20);
+  --config2-color-theme-content-btn-accent-default: var(--config2-color-core-blue-10);
+  --config2-color-theme-content-btn-neutral-secondary-active-pressed: var(--config2-color-core-white-alpha-11);
+  --config2-color-theme-content-btn-neutral-secondary-active-default: var(--config2-color-core-white-alpha-20);
+  --config2-color-theme-content-btn-neutral-secondary-disabled: var(--config2-color-core-white-alpha-11);
+  --config2-color-theme-content-btn-neutral-primary-hover: var(--config2-color-core-black-alpha-50);
+  --config2-color-theme-content-btn-neutral-primary-default: var(--config2-color-core-black-alpha-50);
+  --config2-color-theme-content-text-decorative-gold-active: var(--config2-color-decorative-gold-60);
+  --config2-color-theme-content-text-decorative-gold-default: var(--config2-color-decorative-gold-50);
+  --config2-color-theme-content-text-accent-default: var(--config2-color-core-blue-10);
+  --config2-color-theme-content-text-accent-hover: var(--config2-color-core-blue-20);
+  --config2-color-theme-content-text-accent-active: var(--config2-color-core-blue-20);
+  --config2-color-theme-content-text-neutral-disabled: var(--config2-color-core-white-alpha-20);
+  --config2-color-theme-content-text-neutral-secondary: var(--config2-color-core-white-alpha-11);
+  --config2-color-theme-content-text-neutral-primary: var(--config2-color-core-white-alpha-11);
+  --config2-color-theme-surface-accent-mobile-pressed: var(--config2-color-core-blue-20);
+  --config2-color-theme-surface-accent-mobile-default: var(--config2-color-core-blue-20);
+  --config2-color-theme-surface-accent-default: var(--config2-color-core-blue-10);
+  --config2-color-theme-surface-neutral-02-tertiary: var(--config2-color-core-black-alpha-50);
+  --config2-color-theme-surface-neutral-02-secondary: var(--config2-color-core-gray-20);
+  --config2-color-theme-surface-neutral-02-primary: var(--config2-color-core-gray-10);
+  --config2-color-theme-surface-neutral-01-disabled: var(--config2-color-core-white-alpha-11);
+  --config2-color-theme-surface-neutral-01-active: var(--config2-color-core-white-alpha-11);
+  --config2-color-theme-surface-neutral-01-hover: var(--config2-color-core-white-alpha-20);
+  --config2-color-theme-surface-neutral-01-default: var(--config2-color-core-white-alpha-11);
+  --config2-color-theme-surface-neutral-00-disabled: var(--config2-color-core-white-alpha-20);
+  --config2-color-theme-surface-neutral-00-active: var(--config2-color-core-white-alpha-11);
+}

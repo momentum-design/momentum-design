@@ -8,7 +8,8 @@
         },
         "targets": ["color-core.json", "color-theme.json"],
         "cssSelector": "fake-selector",
-        "outputReferences": true
+        "outputReferences": true,
+        "showFileHeader": false
       }
     ],
     "formats": ["CSS_VARIABLES"],

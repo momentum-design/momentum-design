@@ -90,7 +90,10 @@ class File {
   }
 
   public get showFileHeader(): boolean {
-    return this.config.showFileHeader || true;
+    if (this.config.showFileHeader == undefined) {
+      return true
+    }
+    return this.config.showFileHeader;
   }
 
   public get scssThemeable(): boolean {
