@@ -2,7 +2,7 @@ import { Command } from '@momentum-design/common';
 
 import { Builders } from '../../models';
 import { TokensBuilder } from '../../tokens';
-import { IconsBuilder } from '../../icons';
+import { AssetsBuilder } from '../../assets';
 
 import CONSTANTS from './constants';
 import type { Options, Params } from './types';
@@ -59,7 +59,7 @@ class Definition extends Command<Options, Params> {
       definitionPath: config,
       builders: [
         TokensBuilder,
-        IconsBuilder,
+        AssetsBuilder,
       ],
     });
 

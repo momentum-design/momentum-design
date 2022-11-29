@@ -1,7 +1,0 @@
-{
-    "definitions": [{
-        "srcDir": "./src",
-        "distDir": "./dist",
-        "type": "icons"
-    }]
-}

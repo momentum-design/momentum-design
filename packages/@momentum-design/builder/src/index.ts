@@ -17,12 +17,12 @@ export type {
 } from './models';
 
 export {
-  IconsBuilder,
-} from './icons';
+  AssetsBuilder,
+} from './assets';
 
 export type{
-  IconsBuilderConfig,
-} from './icons';
+  AssetsBuilderConfig,
+} from './assets';
 
 export {
   TokensBuilder,
