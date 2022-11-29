@@ -51,8 +51,8 @@ class Builder extends CoreBuilder {
 
   /**
    * Transform method which will determine the transform
-   * 
-   * This is still WIP, more transforms will be added 
+   *
+   * This is still WIP, more transforms will be added
    */
   public transform(): void {
     if (this.config.srcType === 'svg' && this.config.distType === 'svg' && this.config.svgoConfig) {

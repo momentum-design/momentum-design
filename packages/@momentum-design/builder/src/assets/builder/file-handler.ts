@@ -47,7 +47,7 @@ class FileHandler {
 
   /**
    * Creates a new folder at the specified `dir` if it doesn't exist
-   * 
+   *
    * @param dir directory to check and create folder if it doesn't exist
    */
   public createFolderIfNotExist(dir: string): void {
@@ -58,7 +58,7 @@ class FileHandler {
 
   /**
    * Return all files found with the specified glob pattern
-   * 
+   *
    * Use this tool for creating glob patterns:
    * https://www.digitalocean.com/community/tools/glob
    * @param globPattern pattern to search for files
@@ -89,7 +89,7 @@ class FileHandler {
 
   /**
    * Writes the File data to File `distPath`
-   * 
+   *
    * Throws error if file object doesn't have `distPath` defined
    * @param file File object, including `data` and `distPath`
    * @returns Promise, which resolves to the file object if successful
