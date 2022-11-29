@@ -35,8 +35,8 @@ class FileHandler {
 
   /**
    * Create File objects from a provided `filePaths` array
-   * @param filePaths array of file path strings
-   * @param distDir dist directory, where files should be written to
+   * @param filePaths - array of file path strings
+   * @param distDir - dist directory, where files should be written to
    * @returns Array of file objects, including `srcPath` and `distPath`
    */
   public createFileObjectsFromPaths(filePaths: Array<string>, distDir: string): Array<File> {
@@ -48,7 +48,7 @@ class FileHandler {
   /**
    * Creates a new folder at the specified `dir` if it doesn't exist
    *
-   * @param dir directory to check and create folder if it doesn't exist
+   * @param dir - directory to check and create folder if it doesn't exist
    */
   public createFolderIfNotExist(dir: string): void {
     if (!fs.existsSync(dir)) {
@@ -61,8 +61,8 @@ class FileHandler {
    *
    * Use this tool for creating glob patterns:
    * https://www.digitalocean.com/community/tools/glob
-   * @param globPattern pattern to search for files
-   * @param cb callback which will provide `error` & `filePaths` as args
+   * @param globPattern - pattern to search for files
+   * @param cb - callback which will provide `error` & `filePaths` as args
    */
   public getFilePathsInFolder(globPattern: string, cb: (error: Error | null, filePaths: string[]) => void): void {
     glob(globPattern, {}, cb);
@@ -70,7 +70,7 @@ class FileHandler {
 
   /**
    * Read the specified File (`srcPath`) and return the file including the data
-   * @param file File to read data from
+   * @param file - File to read data from
    * @returns Promise, which resolves to the file object with data if successful
    */
   public readFile(file: File): Promise<File> {
@@ -91,7 +91,7 @@ class FileHandler {
    * Writes the File data to File `distPath`
    *
    * Throws error if file object doesn't have `distPath` defined
-   * @param file File object, including `data` and `distPath`
+   * @param file - File object, including `data` and `distPath`
    * @returns Promise, which resolves to the file object if successful
    */
   public writeFile(file: File): Promise<File> {
@@ -117,7 +117,7 @@ class FileHandler {
 
   /**
    * Read multiple files
-   * @param files files to read
+   * @param files - files to read
    * @returns Promise, which resolves to file array if successful
    */
   public readFiles(files: Array<File>): Promise<File[]> {
@@ -126,7 +126,7 @@ class FileHandler {
 
   /**
    * Write multiple files
-   * @param files files to write
+   * @param files - files to write
    * @returns Promise, which resolves to file array if successful
    */
   public writeFiles(files: Array<File>): Promise<File[]> {

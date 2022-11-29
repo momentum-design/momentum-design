@@ -18,8 +18,8 @@ export type SVGOConfig = SVGOConfigType;
 class Transformer {
   /**
    * Optimise the passed in SVG file data with the help of `svgo`
-   * @param file File, including the file data, which needs to be optimised
-   * @param svgoConfig config for SVGO, which determines how the SVG will be optimised
+   * @param file - File, including the file data, which needs to be optimised
+   * @param svgoConfig - config for SVGO, which determines how the SVG will be optimised
    * @returns the file with opimised data
    */
   public optimizeSVG(file: File, svgoConfig: SVGOConfig): File {
@@ -34,8 +34,8 @@ class Transformer {
 
   /**
    * Optimise passed in SVG files
-   * @param files Files to be optimised
-   * @param svgoConfig config for SVGO, which determines how the SVGs will be optimised
+   * @param files - Files to be optimised
+   * @param svgoConfig - config for SVGO, which determines how the SVGs will be optimised
    * @returns the files with opimised data
    */
   public optimizeSVGFiles(files: Array<File>, svgoConfig: SVGOConfig): File[] {
