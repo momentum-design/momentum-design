@@ -23,7 +23,7 @@
     "analyze:prebuild": "echo \"script 'analyze:prebuild' has not been implemented\"",
     "analyze:syntax": "tsc --noEmit",
     "build": "yarn build:module && yarn build:cli",
-    "build:cli": "node ./esbuild.config.mjs",
+    "build:cli": "node ./esbuild.config.js",
     "build:module": "tsc",
     "clean": "yarn clean:dist && yarn clean:docs",
     "clean:dist": "rimraf ./dist",

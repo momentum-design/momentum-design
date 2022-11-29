@@ -7,7 +7,7 @@
   "compilerOptions": {
     "allowJs": true,
     "declarationDir": "./dist/types",
-    "module": "ES6",
+    "module": "CommonJS",
     "outDir": "./dist/module"
   },
   "include": [
