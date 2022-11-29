@@ -39,8 +39,19 @@ const SD_FORMATS = {
   },
 };
 
+const LOCAL_FORMATS = {
+  MD_JSON_MINIMAL: {
+    EXTENSION: 'json',
+    FORMAT: 'md-json-minimal',
+    GROUP: 'md',
+    NAME: 'md/json-minimal',
+    PATH: './json-minimal/',
+  },
+};
+
 const FORMATS = {
   ...SD_FORMATS,
+  ...LOCAL_FORMATS,
 };
 
 const SD_TRANSFORMS = {
@@ -60,6 +71,7 @@ const TRANSFORMS = {
 const CONSTANTS = {
   FILE_ENCODING,
   FORMATS,
+  LOCAL_FORMATS,
   LOCAL_TRANSFORMS,
   SD_FORMATS,
   SD_TRANSFORMS,
