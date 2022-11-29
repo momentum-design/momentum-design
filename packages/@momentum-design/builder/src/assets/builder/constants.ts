@@ -3,7 +3,7 @@ import { Builder } from '../../models';
 /**
  * Type of this Builder.
  */
-const TYPE: string = 'icons';
+const TYPE: string = 'assets';
 
 const CONSTANTS = {
   ...Builder.CONSTANTS,
