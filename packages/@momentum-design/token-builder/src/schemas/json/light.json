@@ -187,7 +187,7 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-              "defualt": {
+              "default": {
                   "$ref": "#/definitions/SecondaryClass"
               },
               "hover": {
@@ -195,7 +195,7 @@
               }
           },
           "required": [
-              "defualt",
+              "default",
               "hover"
           ],
           "title": "GradientAccent"
@@ -317,9 +317,6 @@
               },
               "active": {
                   "$ref": "#/definitions/Active"
-              },
-              "defualt": {
-                  "$ref": "#/definitions/SecondaryClass"
               }
           },
           "required": [
@@ -790,9 +787,6 @@
               },
               "active": {
                   "$ref": "#/definitions/Active"
-              },
-              "defualt": {
-                  "$ref": "#/definitions/SecondaryClass"
               },
               "primary": {
                   "$ref": "#/definitions/SecondaryClass"

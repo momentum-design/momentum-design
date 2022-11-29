@@ -428,7 +428,7 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-              "defualt": {
+              "default": {
                   "$ref": "#/definitions/Icon"
               },
               "pressed": {
@@ -436,7 +436,7 @@
               }
           },
           "required": [
-              "defualt",
+              "default",
               "pressed"
           ],
           "title": "Mint"
