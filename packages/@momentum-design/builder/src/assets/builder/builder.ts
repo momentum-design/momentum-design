@@ -22,13 +22,15 @@ interface Builder {
   transformer: Transformer;
 }
 
+/**
+ * The Assets Builder class.
+ *
+ * Contains initialising and processing functions and makes use of
+ * several utilities, like `FileHandler` & `Transformer` utils.
+ */
 class Builder extends CoreBuilder {
   /**
-   * Construct a new icons Builder.
-   *
-   * @remarks
-   * This method has not been fully implemented.
-   *
+   * Constructor of Builder Class
    * @param config - Configuration Object to be mounted to this Builder.
    */
   public constructor(config: Config) {
@@ -47,25 +49,21 @@ class Builder extends CoreBuilder {
     this.transformer = new Transformer();
   }
 
-  public fillFilesWithPaths(filePaths: Array<string>, distDir: string): Array<Pick<File, 'srcPath' | 'distPath'>> {
-    return filePaths.map((path) => (
-      { srcPath: path, distPath: this.fileHandler.replaceDirInPath(path, distDir) }
-    ));
-  }
-
-  public writeFiles(): Promise<File[]> {
-    // create dist folder if it doesn't exist before writing files:
-    this.fileHandler.createFolderIfNotExist(this.config.distDir);
-
-    return this.fileHandler.writeFiles(this.files); // write all files
-  }
-
+  /**
+   * Transform method which will determine the transform
+   * 
+   * This is still WIP, more transforms will be added 
+   */
   public transform(): void {
     if (this.config.srcType === 'svg' && this.config.distType === 'svg' && this.config.svgoConfig) {
       this.files = this.transformer.optimizeSVGFiles(this.files, this.config.svgoConfig);
     }
   }
 
+  /**
+   * Initialize method, which will run first and read files
+   * @returns Promise
+   */
   public override initialize(): Promise<this> {
     logger.info(`Started '${this.config.buildName}'`);
     return new Promise((resolve, reject) => {
@@ -75,8 +73,8 @@ class Builder extends CoreBuilder {
           reject(error);
         }
 
-        // fill file array with srcPath & distPaths:
-        this.files = this.fillFilesWithPaths(filePaths, this.config.distDir);
+        // create file objects array with srcPath & distPaths:
+        this.files = this.fileHandler.createFileObjectsFromPaths(filePaths, this.config.distDir);
 
         this.fileHandler.readFiles(this.files).then((filesWithData) => {
           // override files array with filesWithData array:
@@ -89,11 +87,20 @@ class Builder extends CoreBuilder {
     });
   }
 
+  /**
+   * Process method, which will run after initialize.
+   * This contains transformations and will write the transformed data to dist
+   * @returns Promise
+   */
   public override process(): Promise<this> {
     this.transform();
 
     return new Promise((resolve, reject) => {
-      this.writeFiles().then(() => {
+      // create dist folder before writing files:
+      this.fileHandler.createFolderIfNotExist(this.config.distDir);
+
+      // write files to dist folder:
+      this.fileHandler.writeFiles(this.files).then(() => {
         logger.info(`Finished '${this.config.buildName}' successfully`);
         resolve(this);
       }).catch((error) => {

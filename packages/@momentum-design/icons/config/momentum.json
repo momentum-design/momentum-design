@@ -24,7 +24,7 @@
                 }
             ]
         },
-        "type": "icons"
+        "type": "assets"
     }, {
         "buildName": "Optimize Brand & Colored SVGs",
         "srcDir": "./src/{colored,brand}",
@@ -44,6 +44,6 @@
                 }
             ]
         },
-        "type": "icons"
+        "type": "assets"
     }]
 }

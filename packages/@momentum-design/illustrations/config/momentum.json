@@ -15,15 +15,9 @@
                             "removeViewBox": false
                         }
                     }
-                },
-                {
-                    "name": "removeAttrs",
-                    "params": {
-                      "attrs": "*:fill:none"
-                    }
                 }
             ]
         },
-        "type": "icons"
+        "type": "assets"
     }]
 }
