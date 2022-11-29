@@ -17,4 +17,8 @@ export const AddWorkspacePackage: ActionType = {
     `${folders.workspace}`,
     `@momentum-design/{{${packageName}}}`,
   )}`,
+  globOptions: {
+    // allow hidden files to be copied as well:
+    dot: true,
+  },
 };
