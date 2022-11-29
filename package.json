@@ -39,7 +39,7 @@
     "docs": "yarn workspace @momentum-design/docs",
     "builder": "yarn workspace @momentum-design/builder",
     "common": "yarn workspace @momentum-design/common",
-    "example": "yarn workspace @momentum-design/example"
+		"example": "yarn workspace @momentum-design/example"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
