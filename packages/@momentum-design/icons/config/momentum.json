@@ -1,7 +1,7 @@
 {
     "definitions": [{
-        "buildName": "Optimize SVGs",
-        "srcDir": "./src",
+        "buildName": "Optimize Core SVGs",
+        "srcDir": "./src/core",
         "distDir": "./dist/svg",
         "srcType": "svg",
         "distType": "svg",
@@ -19,7 +19,27 @@
                 {
                     "name": "removeAttrs",
                     "params": {
-                      "attrs": "*:fill:none"
+                      "attrs": "(fill|stroke)"
+                    }
+                }
+            ]
+        },
+        "type": "icons"
+    }, {
+        "buildName": "Optimize Brand & Colored SVGs",
+        "srcDir": "./src/{colored,brand}",
+        "distDir": "./dist/svg",
+        "srcType": "svg",
+        "distType": "svg",
+        "svgoConfig": {
+            "mergePaths": true,
+            "plugins": [
+                {
+                    "name": "preset-default",
+                    "params": {
+                        "overrides": {
+                            "removeViewBox": false
+                        }
                     }
                 }
             ]
