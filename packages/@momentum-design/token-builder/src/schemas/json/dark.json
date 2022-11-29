@@ -296,9 +296,6 @@
               },
               "active": {
                   "$ref": "#/definitions/Active"
-              },
-              "defualt": {
-                  "$ref": "#/definitions/Primary"
               }
           },
           "required": [
@@ -793,9 +790,6 @@
               },
               "active": {
                   "$ref": "#/definitions/Active"
-              },
-              "defualt": {
-                  "$ref": "#/definitions/Primary"
               },
               "primary": {
                   "$ref": "#/definitions/Primary"

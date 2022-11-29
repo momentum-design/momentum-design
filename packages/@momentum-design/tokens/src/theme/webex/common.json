@@ -323,7 +323,7 @@
             }
           },
           "mint": {
-            "defualt": {
+            "default": {
               "value": "{color.decorative.pink.60}",
               "type": "color"
             },
@@ -333,7 +333,7 @@
             }
           },
           "purple": {
-            "defualt": {
+            "default": {
               "value": "{color.decorative.purple.60}",
               "type": "color"
             },
@@ -343,7 +343,7 @@
             }
           },
           "violet": {
-            "defualt": {
+            "default": {
               "value": "{color.decorative.violet.60}",
               "type": "color"
             },
@@ -353,7 +353,7 @@
             }
           },
           "orange": {
-            "defualt": {
+            "default": {
               "value": "{color.core.orange.60}",
               "type": "color"
             },

@@ -752,7 +752,7 @@
           },
           "accent": {
             "active": {
-              "defualt": {
+              "default": {
                 "value": "{color.core.blue.40}",
                 "type": "color",
                 "description": "Core Token: core.blue.40\nHEX: 64B4FA\n--------------\nRest state of control components(radio, toggle, checkbox)"
