@@ -1,4 +1,5 @@
-name: Deploy Docs site to Pages
+name: Deploy Documentation CD
+run-name: ${{ github.actor }} is running Deploy Documentation CD
 
 on:
   push:

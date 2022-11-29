@@ -12,7 +12,8 @@ import {
 } from '@momentum-design/telemetry';
 import { SomeJSONSchema } from 'ajv/dist/types/json-schema';
 import { CONSTANTS, Config as ExternalConfig } from '../../common';
-import { Elevation as ElevationTransform } from '../../transforms';
+import { ElevationTransform } from '../../transforms';
+import { JsonMinimalFormat } from '../../formats';
 import Dictionary from '../dictionary';
 
 import type { Config } from './types';
@@ -68,6 +69,25 @@ class TokenBuilder {
                   transform = new ElevationTransform();
 
                   StyleDictionary.registerTransform(transform.sdConfig);
+                  break;
+
+                default:
+              }
+            });
+        }
+
+        if (configObj.formats) {
+          configObj.formats.filter((format) => Object.keys(CONSTANTS.LOCAL_FORMATS).includes(format))
+            .forEach((formatKey) => {
+              const formatName = CONSTANTS.FORMATS[formatKey].NAME;
+
+              let format: JsonMinimalFormat;
+
+              switch (formatName) {
+                case CONSTANTS.LOCAL_FORMATS.MD_JSON_MINIMAL.NAME:
+                  format = new JsonMinimalFormat();
+
+                  StyleDictionary.registerFormat(format.sdConfig);
                   break;
 
                 default:
