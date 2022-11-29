@@ -747,7 +747,7 @@
           },
           "accent": {
             "active": {
-              "defualt": {
+              "default": {
                 "value": "{color.core.blue.60}",
                 "type": "color",
                 "description": "Core Token: core.blue.60\nHEXL: 0A78CC\n------------------------------\nUsed for rest state of control components (radio, toggle, checkbox)"
@@ -883,7 +883,7 @@
               }
             },
             "negative": {
-              "defualt": {
+              "default": {
                 "value": "linear-gradient(90deg, #AB0A1500 0%, #AB0A1599 22.4%, #AB0A1599 76.04%, #AB0A1500 100%)",
                 "type": "color",
                 "description": "Core Token: core.red.70 0% 0%, core.red.70 60% 22.4%, core.red.70 60% 76.04%,  core.red.70 0% 100%\nHEX: linear-gradient(90deg, #AB0A1500 0%, #AB0A1599 22.4%, #AB0A1599 76.04%, #AB0A1500 100%)\n--------------------------------\nUsed for divider default on the compose area for classified spaces. "
@@ -895,7 +895,7 @@
               }
             },
             "warning": {
-              "defualt": {
+              "default": {
                 "value": "linear-gradient(90deg, #7D470500 0%, #7D470599 22.4%, #7D470599 76.04%, #7D470500 100%)",
                 "type": "color",
                 "description": "Core Token: core.yellow.40 0% 0%, core.yellow.40 60% 22.4%, core.yellow.40 60% 76.04%, core.yellow.40 0% 100%\nHEX: linear-gradient(90deg, #7D470500 0%, #7D470599 22.4%, #7D470599 76.04%, #7D470500 100%)\n--------------------------------\nUsed for divider on the compose area for external participants."
@@ -907,7 +907,7 @@
               }
             },
             "accent": {
-              "defualt": {
+              "default": {
                 "value": "linear-gradient(90deg, #0352A600 0%, #0352A699 22.4%, #0352A699 76.04%, #0352A600 100%)",
                 "type": "color",
                 "description": "Core Token: core.blue.40 0% 0%, core.blue.40 60% 22.4%, core.blue.40 60% 76.04%, core.blue.40 0% 100%\nHEX: linear-gradient(90deg, #0352A600 0%, #0352A699 22.4%, #0352A699 76.04%, #0352A600 100%)\n--------------------------------\nUsed for divider on the compose area for the announcement space."
