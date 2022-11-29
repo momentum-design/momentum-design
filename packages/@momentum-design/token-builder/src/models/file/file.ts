@@ -86,7 +86,7 @@ class File {
   }
 
   public get selector(): string | undefined {
-    return this.config.cssSelector || undefined;
+    return this.config.cssSelector;
   }
 
   public get showFileHeader(): boolean {
@@ -101,15 +101,15 @@ class File {
   }
 
   public get iosAccessControl(): string | undefined {
-    return this.config.iosAccessControl || undefined;
+    return this.config.iosAccessControl;
   }
 
   public get iosImport(): string | Array<String> | undefined {
-    return this.config.iosImport || undefined;
+    return this.config.iosImport;
   }
 
   public get iosObjectType(): string | undefined {
-    return this.config.iosObjectType || undefined;
+    return this.config.iosObjectType;
   }
 
   public get types(): Array<string> {
