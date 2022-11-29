@@ -12,7 +12,7 @@ import { Config, Options } from './types';
 
 const PACKAGE = 'automation';
 
-const logger = Logger.child(generateMetadata(PACKAGE, 'dispatch-telemetry'));
+const logger = Logger.child(generateMetadata(PACKAGE, 'create-release'));
 
 class CreateRelease extends Command {
   public static override execute(): Promise<string> {
