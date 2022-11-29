@@ -1,0 +1,17 @@
+{
+    "files": [
+      {
+        "destination": "color-theme",
+        "filters": {
+          "categories": ["color"],
+          "types": ["theme"]
+        },
+        "targets": ["color-core.json", "color-theme.json"],
+        "cssSelector": "fake-selector",
+        "outputReferences": true,
+        "showFileHeader": false
+      }
+    ],
+    "formats": ["CSS_VARIABLES"],
+    "prefix": "config2"
+}

@@ -26,6 +26,7 @@
     "build:cli": "node ./esbuild.config.js",
     "build:module": "tsc",
     "clean": "yarn clean:dist",
+    "clean:test": "rimraf ./test/dist",
     "clean:dist": "rimraf ./dist",
     "clean:docs": "rimraf ./docs",
     "docs": "yarn docs:api",
