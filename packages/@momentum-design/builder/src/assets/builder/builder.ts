@@ -1,5 +1,3 @@
-/* eslint-disable no-redeclare */
-
 import path from 'path';
 import {
   Logger,
@@ -15,20 +13,21 @@ import Transformer from './transformer';
 const PACKAGE = 'builder';
 const logger = Logger.child(generateMetadata(PACKAGE, CONSTANTS.TYPE));
 
-interface Builder {
-  config: Config
-  files: Array<File>;
-  fileHandler: FileHandler;
-  transformer: Transformer;
-}
-
 /**
  * The Assets Builder class.
  *
  * Contains initialising and processing functions and makes use of
  * several utilities, like `FileHandler` & `Transformer` utils.
+ *
+ * @beta
  */
 class Builder extends CoreBuilder {
+  files: Array<File>;
+
+  fileHandler: FileHandler;
+
+  transformer: Transformer;
+
   /**
    * Constructor of Builder Class
    * @param config - Configuration Object to be mounted to this Builder.

@@ -1,19 +1,19 @@
-/* eslint-disable no-redeclare */
 import {
   Logger,
   generateMetadata,
 } from '@momentum-design/telemetry';
-import { optimize, Config as SVGOConfigType } from 'svgo';
+import { optimize } from 'svgo';
 import CONSTANTS from './constants';
 import type { File } from './file-handler';
+import type { SVGOConfig } from './types';
 
 const PACKAGE = 'builder';
 const logger = Logger.child(generateMetadata(PACKAGE, `${CONSTANTS.TYPE}-transforms`));
 
-export type SVGOConfig = SVGOConfigType;
-
 /**
  * The Transformer class.
+ *
+ * @beta
  */
 class Transformer {
   /**

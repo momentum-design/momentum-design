@@ -20,6 +20,8 @@ const logger = Logger.child(generateMetadata(PACKAGE, `${CONSTANTS.TYPE}-file-ha
  * The FileHandler class.
  *
  * Contains file handling utilities necessary for IO operations.
+ *
+ * @beta
  */
 class FileHandler {
   /**
