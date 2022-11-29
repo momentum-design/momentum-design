@@ -83,7 +83,7 @@
             "hover": {
               "value": "{color.core.green.20}",
               "type": "color",
-              "description": "Core Token: green-20\nHEX: 9FEDD8\n----\nUsed for hover state of Success, Join text"
+              "description": "Core Token: core.green.20\nHEX: 9FEDD8\n----\nUsed for hover state of Success, Join text"
             },
             "default": {
               "value": "{color.core.green.40}",
@@ -295,85 +295,102 @@
             },
             "icon": {
               "value": "{color.core.blue.40}",
-              "type": "color"
+              "type": "color",
+              "description": "Core Token: core.blue.40\nHEX: 64b4fa\n------------------\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
             }
           },
           "pink": {
             "default": {
               "value": "{color.decorative.pink.60}",
-              "type": "color"
+              "type": "color",
+              "description": "Core Token: core.pink.60\nHEX: d43b52\n------------------\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
             },
             "pressed": {
               "value": "{color.decorative.pink.80}",
-              "type": "color"
+              "type": "color",
+              "description": "Core Token: core.pink.80\nHEX: 66262d\n------------------\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
             }
           },
           "red": {
             "default": {
               "value": "{color.core.red.60}",
-              "type": "color"
+              "type": "color",
+              "description": "Core Token: core.red.60\nHEX: db1f2e\n------------------\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
             },
             "pressed": {
               "value": "{color.core.red.80}",
-              "type": "color"
+              "type": "color",
+              "description": "Core Token: core.red.80\nHEX: 780d13\n------------------\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
             },
             "icon": {
               "value": "{color.core.red.40}",
-              "type": "color"
+              "type": "color",
+              "description": "Core Token: core.red.40\nHEX: fc8b98\n------------------\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
             }
           },
           "mint": {
             "default": {
-              "value": "{color.decorative.pink.60}",
-              "type": "color"
+              "value": "{color.decorative.mint.60}",
+              "type": "color",
+              "description": "Core Token: core.mint.60\nHEX: 148579\n------------------\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
             },
             "pressed": {
-              "value": "{color.decorative.pink.80}",
-              "type": "color"
+              "value": "{color.decorative.mint.80}",
+              "type": "color",
+              "description": "Core Token: core.mint.80\nHEX: 12423F\n------------------\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
             }
           },
           "purple": {
             "default": {
               "value": "{color.decorative.purple.60}",
-              "type": "color"
+              "type": "color",
+              "description": "Core Token: core.purple.60\nHEX: c233c4\n------------------\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
             },
             "pressed": {
               "value": "{color.decorative.purple.80}",
-              "type": "color"
+              "type": "color",
+              "description": "Core Token: core.purple.80\nHEX: 601e66\n------------------\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
             }
           },
           "violet": {
             "default": {
               "value": "{color.decorative.violet.60}",
-              "type": "color"
+              "type": "color",
+              "description": "Core Token: core.violet.60\nHEX: 875ae0\n------------------\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
             },
             "pressed": {
               "value": "{color.decorative.violet.80}",
-              "type": "color"
+              "type": "color",
+              "description": "Core Token: core.violet.80\nHEX: 432c78\n------------------\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
             }
           },
           "orange": {
             "default": {
               "value": "{color.core.orange.60}",
-              "type": "color"
+              "type": "color",
+              "description": "Core Token: core.orange.60\nHEX: c74f0e\n------------------\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
             },
             "pressed": {
               "value": "{color.core.orange.80}",
-              "type": "color"
+              "type": "color",
+              "description": "Core Token: core.orange.80\nHEX: 59311E\n------------------\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
             }
           },
           "green": {
             "default": {
               "value": "{color.core.green.60}",
-              "type": "color"
+              "type": "color",
+              "description": "Core Token: core.green.60\nHEX: 1d805f\n------------------\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
             },
             "pressed": {
               "value": "{color.core.green.80}",
-              "type": "color"
+              "type": "color",
+              "description": "Core Token: core.green.80\nHEX: 134231\n------------------\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
             },
             "icon": {
               "value": "{color.core.green.50}",
-              "type": "color"
+              "type": "color",
+              "description": "Core Token: core.green.50\nHEX: 27a17a\n------------------\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
             }
           }
         }
@@ -393,7 +410,7 @@
           "02": {
             "value": "{color.core.white-alpha.40}",
             "type": "color",
-            "description": "Core Token: white-alpha-40\nHEX: FFFFFF 40%\n-----------------------\n"
+            "description": "Core Token: core.white-alpha.40\nHEX: FFFFFF 40%\n-----------------------\n"
           },
           "03": {
             "value": "{color.core.white-alpha.50}",
