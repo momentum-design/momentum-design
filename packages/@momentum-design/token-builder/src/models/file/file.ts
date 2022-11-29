@@ -71,13 +71,45 @@ class File {
       filter: this.filter,
       options: {
         outputReferences: this.references,
-        selector: this.config.name,
+        selector: this.selector,
+        showFileHeader: this.showFileHeader,
+        themeable: this.scssThemeable,
+        accessControl: this.iosAccessControl,
+        import: this.iosImport,
+        objectType: this.iosObjectType,
       },
     };
   }
 
   public get references(): boolean {
-    return this.config.references || false;
+    return this.config.outputReferences || false;
+  }
+
+  public get selector(): string | undefined {
+    return this.config.cssSelector;
+  }
+
+  public get showFileHeader(): boolean {
+    if (this.config.showFileHeader === undefined) {
+      return true;
+    }
+    return this.config.showFileHeader;
+  }
+
+  public get scssThemeable(): boolean {
+    return this.config.scssThemeable || false;
+  }
+
+  public get iosAccessControl(): string | undefined {
+    return this.config.iosAccessControl;
+  }
+
+  public get iosImport(): string | Array<String> | undefined {
+    return this.config.iosImport;
+  }
+
+  public get iosObjectType(): string | undefined {
+    return this.config.iosObjectType;
   }
 
   public get types(): Array<string> {

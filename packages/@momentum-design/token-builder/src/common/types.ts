@@ -17,8 +17,13 @@ export interface Filters {
 export interface ConfigFile {
   destination: string;
   filters?: Filters;
-  name?: string;
-  references?: boolean;
+  cssSelector?: string;
+  outputReferences?: boolean;
+  showFileHeader?: boolean;
+  scssThemeable?: boolean;
+  iosAccessControl?: string;
+  iosImport?: string | Array<string>;
+  iosObjectType?: string;
   targets: Array<string>;
 }
 
