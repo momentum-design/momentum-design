@@ -79,14 +79,12 @@ class TokenBuilder {
         if (configObj.formats) {
           configObj.formats.filter((format) => Object.keys(CONSTANTS.LOCAL_FORMATS).includes(format))
             .forEach((formatKey) => {
-              console.log('found format', formatKey);
               const formatName = CONSTANTS.FORMATS[formatKey].NAME;
 
               let format: JsonMinimalFormat;
 
               switch (formatName) {
                 case CONSTANTS.LOCAL_FORMATS.MD_JSON_MINIMAL.NAME:
-                  console.log('mounting format');
                   format = new JsonMinimalFormat();
 
                   StyleDictionary.registerFormat(format.sdConfig);
