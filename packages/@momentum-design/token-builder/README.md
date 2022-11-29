@@ -51,8 +51,8 @@ When utilizing the functionality of this project as either a JavaScript module o
     }
   ],
   "formats": ["{format-a}", "{format-b}"],
-  "prefix": "{prefix}"
-  "references": true,
+  "prefix": "{prefix}",
+  "outputReferences": true,
 }
 ```
 
@@ -67,7 +67,13 @@ In order to provide a better understanding of each key and its relative value wi
   * **targets** `Array<string>` - Absolute or glob pattern file selectors to use when retreiving source tokens from the target input directory.
 * **formats** `Array<Format>` - Array of supported formats to build source tokens into. (See [the **Format** interface](https://github.com/momentum-design/momentum-design/blob/design-token-updates/packages/%40momentum-design/token-builder/src/common/types.ts))
 * **prefix** `string` - Prefix to prepend to variable names within supporting formats.
-* **references** `boolean` - If to output references when possible.
+* **outputReferences** `boolean` - If to output references when possible.
+* **cssSelector** `string` - Text that overrides the root css selector.
+* **showFileHeader** `boolean` - Whether or not to include a comment that has the build date (by default). Default: true.
+* **scssThemeable** `boolean` - Whether or not to add the !default keywords to variables.
+* **iosAccessControl** `string` - Level of [access](https://docs.swift.org/swift-book/LanguageGuide/AccessControl.html) of the generated swift object. Default: 'public'.
+* **iosImport** `string` - Modules to import. Can be a string or array of string. Default: 'UIKit'.
+* **iosObjectType** `string` - The type of the object in the final file. Could be a class, enum, struct, etc. Default: 'class'.
 
 Note that the **formats** key Array can only contain one or more of this tool's supported formats. These can be found as keys of `CONSTANTS.FORMATS` within [this file](https://github.com/momentum-design/momentum-design/blob/design-token-updates/packages/%40momentum-design/token-builder/src/common/constants.ts).
 

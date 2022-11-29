@@ -4,6 +4,11 @@ export interface Config {
   destination: string;
   filters?: Filters;
   format: Format;
-  name?: string;
-  references?: boolean;
+  cssSelector?: string;
+  outputReferences?: boolean;
+  showFileHeader?: boolean;
+  scssThemeable?: boolean;
+  iosAccessControl?: string;
+  iosImport?: string | Array<string>;
+  iosObjectType?: string;
 }

@@ -1,0 +1,290 @@
+{
+    "color": {
+      "theme": {
+        "surface": {
+          "neutral": {
+            "00": {
+              "active": {
+                "value": "{color.core.white-alpha.11}",
+                "type": "color",
+                "description": "Core Token: core.white-alpha.11\nHEX: FFFFFF 11%\n\n---\nUsed for press/active state of surface-00. Used it for app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
+              },
+              "disabled": {
+                "value": "{color.core.white-alpha.20}",
+                "type": "color",
+                "description": "Core Token: core.white-alpha-11\nHEX: FFFFFF 11%\n\n---\nDisabled state of surface-00. Used it for app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
+              }
+            },
+            "01": {
+              "default": {
+                "value": "{color.core.white-alpha.11}",
+                "type": "color",
+                "description": "Core Token: core.white-alpha.11\nHEX: FFFFFF 11%\n-----\n\nRest state for meeting-content-cards, attachments, [ios] meeting-list"
+              },
+              "hover": {
+                "value": "{color.core.white-alpha.20}",
+                "type": "color",
+                "description": "Core Token: core.white-alpha.20\nHEX: FFFFFF 20%\n\n----\nUsed for hover state of \nsurface-01 (prev.BackgroundSecondary). Used it for meeting-content-cards, attachments, [ios] meeting-list"
+              },
+              "active": {
+                "value": "{color.core.white-alpha.11}",
+                "type": "color",
+                "description": "Core Token: core.white-alpha.11\nHEX: FFFFFF 11%\n\n---\nUsed for press/active state of surface-01. (prev.BackgroundSecondary). Used it for meeting-content-cards, attachments, [ios] meeting-list"
+              },
+              "disabled": {
+                "value": "{color.core.white-alpha.11}",
+                "type": "color",
+                "description": "Core Token: white-alpha-11\nHEX: FFFFFF 11%\n\n---\nDisabled state of surface-01. (prev.BackgroundSecondary). Used it for meeting-content-cards, attachments, [ios] meeting-list"
+              }
+            },
+            "02": {
+              "primary": {
+                "value": "{color.core.gray.10}",
+                "type": "color",
+                "description": "Core Token: core.gray.90\nHEX: 262626\n----------------\nUsed this for the most top modal surface when layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
+              },
+              "secondary": {
+                "value": "{color.core.gray.20}",
+                "type": "color",
+                "description": "Core Token: core.gray.95\nHEX: 1A1A1A\n----------------\nMedium solid surface. Used this for the surface of modal when layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
+              },
+              "tertiary": {
+                "value": "{color.core.black-alpha.50}",
+                "type": "color",
+                "description": "Core Token: core.black-alpha.100\nHEX: 000000\n----------------\nFull solid surface. Used this for calendar picker, input-filed, toasts, panel-rectangles. Can also be used when layering surfaces one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
+              }
+            }
+          },
+          "accent": {
+            "default": {
+              "value": "{color.core.blue.10}",
+              "type": "color",
+              "description": "Core token: core.blue.90\nHEX: 0A274A\n-----------\nUsed for alert-banners"
+            },
+            "mobile": {
+              "default": {
+                "value": "{color.core.blue.20}",
+                "type": "color",
+                "description": "Core Token: core.blue.50\nHEX: 3492EB\n-------------------------\nUsed for default/rest state of [iOS] Global Tint"
+              },
+              "pressed": {
+                "value": "{color.core.blue.20}",
+                "type": "color",
+                "description": "Core Token: core.blue.60\nHEX: 1170CF\n-------------------\nUsed [ioS] Selected state of navigation/side-bar, search-bar"
+              }
+            }
+          }
+        },
+        "content": {
+          "text": {
+            "neutral": {
+              "primary": {
+                "value": "{color.core.white-alpha.11}",
+                "type": "color",
+                "description": "Core Token: core.white-alpha.95\nHEX: FFFFFF 95%\n--------------------------\nUsed for default primary text. "
+              },
+              "secondary": {
+                "value": "{color.core.white-alpha.11}",
+                "type": "color",
+                "description": "Core Token: core.white-alpha.70\nHEX: FFFFFF 70%\n--------------------\nUsed for secondary text"
+              },
+              "disabled": {
+                "value": "{color.core.white-alpha.20}",
+                "type": "color",
+                "description": "Core Token: core.white-alpha.40\nHEX: FFFFFF 40%\n---\nUsed for disabled state for all text"
+              }
+            },
+            "accent": {
+              "active": {
+                "value": "{color.core.blue.20}",
+                "type": "color",
+                "description": "Core Token: core.blue.20\nHEX: BFE3FF\n-----------------------------\nUsed for active state of accent text. mostly used for button-hyperlink, interactive-icons, alert-badge"
+              },
+              "hover": {
+                "value": "{color.core.blue.20}",
+                "type": "color",
+                "description": "Core Token: core.blue.20\nHEX: BFE3FF\n---\nUsed for hover state of accent text; \nmostly used for button-hyperlink, interactive-icons, alert-badge"
+              },
+              "default": {
+                "value": "{color.core.blue.10}",
+                "type": "color",
+                "description": "Core Token: core.blue.40\nHEX: 64B4FA\n---------------------------\nUsed for rest state of accent text. mostly used for button-hyperlink, interactive-icons, alert-badge"
+              }
+            },
+            "decorative": {
+              "gold": {
+                "default": {
+                  "value": "{color.decorative.gold.50}",
+                  "type": "color",
+                  "description": "Core Token: core.gold.40\nHEX: D6B220\n-------------------------\nUsed for rest/hover state of teams"
+                },
+                "active": {
+                  "value": "{color.decorative.gold.60}",
+                  "type": "color",
+                  "description": "Core Token: core.gold.20\nHEX: F5EAA2\n-------------------------\nUsed for active state of teams"
+                }
+              }
+            }
+          },
+          "btn": {
+            "neutral": {
+              "primary": {
+                "default": {
+                  "value": "{color.core.black-alpha.50}",
+                  "type": "color",
+                  "description": "Core Token: core.black-alpha.95\nHEX 000000 95%\n-----------------------------------\nRest state of Primary buttons. "
+                },
+                "hover": {
+                  "value": "{color.core.black-alpha.50}",
+                  "type": "color",
+                  "description": "Core Token: core.black-alpha.80\nHEX 000000 80%\n-----------------------------------\nHover state of Primary buttons. "
+                }
+              },
+              "secondary": {
+                "disabled": {
+                  "value": "{color.core.white-alpha.11}",
+                  "type": "color",
+                  "description": "Core Token: core.white-alpha.00\nHEX FFFFFF 00%\n-----------------------------------\nDisabled state of secondary buttons. "
+                },
+                "active": {
+                  "default": {
+                    "value": "{color.core.white-alpha.20}",
+                    "type": "color",
+                    "description": "Core Token: core.white-alpha.20\nHEX FFFFFF 20%\n-----------------------------------\nRest state of Secondary active buttons. Mostly for call-control component in a meeting panel."
+                  },
+                  "pressed": {
+                    "value": "{color.core.white-alpha.11}",
+                    "type": "color",
+                    "description": "Core Token: core.white-alpha.40\nHEX FFFFFF 40%\n-----------------------------------\nPressed state of Secondary active buttons. Mostly for call-control component in a meeting panel."
+                  }
+                }
+              }
+            },
+            "accent": {
+              "default": {
+                "value": "{color.core.blue.10}",
+                "type": "color",
+                "description": "Core Token: core.blue.60\nHEX: 1170CF\n--------------\nRest state of accent buttons"
+              },
+              "hover": {
+                "value": "{color.core.blue.20}",
+                "type": "color",
+                "description": "Core Token: core.blue.70\nHEX: 0353A8\n--------------\nhover state of accent buttons"
+              }
+            }
+          },
+          "indicator": {
+            "neutral": {
+              "00": {
+                "value": "{color.core.gray.10}",
+                "type": "color",
+                "description": "Core Token: core.gray.50\nHEX: 8F8F8F\n------------\nUsed for presence (away, on-hold, on-device), meeting indicators(meeting-locked)"
+              },
+              "01": {
+                "value": "{color.core.gray.20}",
+                "type": "color",
+                "description": "Core Token: core.gray.80\nHEX: 3B3B3B\n--------------------------\nUsed for active state of alert-badge"
+              }
+            }
+          },
+          "control": {
+            "neutral": {
+              "inactive": {
+                "default": {
+                  "value": "{color.core.white-alpha.20}",
+                  "type": "color",
+                  "description": "Core Token: core.white-alpha.20\nHEX: FFFFFF 20%\n-----------------------\nUsed for rest state of inactive control components (radio, toggle, checkbox)"
+                },
+                "disabled": {
+                  "value": "{color.core.white-alpha.11}",
+                  "type": "color",
+                  "description": "Core Token: core.white-alpha.11\nHEX: FFFFFF 11%\n-----------------------\nUsed for disabled state of inactive control components (radio, toggle, checkbox)"
+                }
+              }
+            },
+            "accent": {
+              "active": {
+                "defualt": {
+                  "value": "{color.core.blue.10}",
+                  "type": "color",
+                  "description": "Core Token: core.blue.40\nHEX: 64B4FA\n--------------\nRest state of control components(radio, toggle, checkbox)"
+                },
+                "hover": {
+                  "value": "{color.core.blue.20}",
+                  "type": "color",
+                  "description": "Core Token: core.blue.50\nHEX: 3492EB\n--------------\nHover state of control components(radio, toggle, checkbox)"
+                }
+              }
+            }
+          },
+          "scrollbar": {
+            "thumb": {
+              "default": {
+                "value": "{color.core.white-alpha.20}",
+                "type": "color",
+                "description": "Core Token: core.white-alpha.20\nHEX: FFFFFF 20%\n------------------\nUsed for default scrollbar button(thumb)"
+              }
+            },
+            "bg": {
+              "hover": {
+                "value": "{color.core.white-alpha.11}",
+                "type": "color",
+                "description": "Core Token: core.white-alpha.11\nHEX: FFFFFF 11%\n-----------------------------\nUsed for hover state of arrow background and rest state of scrollbar track background."
+              },
+              "pressed": {
+                "value": "{color.core.white-alpha.20}",
+                "type": "color",
+                "description": "Core Token: core.white-alpha.20\nHEX: FFFFFF 20%\n-----------------------------\nUsed for pressed state of arrow background."
+              }
+            }
+          }
+        },
+        "border": {
+          "accent": {
+            "00": {
+              "value": "{color.core.blue.20}",
+              "type": "color",
+              "description": "Core Token: core.blue.40\nHEX: 64B4FA\n-------------------------\nUsed for outline of secondary accent buttons, attachment/fileViewer-preview, messaging/new, chip, input fields"
+            }
+          },
+          "decorative": {
+            "gradient": {
+              "primary": {
+                "default": {
+                  "value": "linear-gradient(90deg, {color.core.white-alpha.11} 0%, {color.core.white-alpha.20} 22.4%, {color.core.white-alpha.20} 72.4%, {color.core.white-alpha.11} 100%)",
+                  "type": "color",
+                  "description": "Core Token: core.white-alpha.0, core.white-alpha.20, core.white-alpha.20, core.white-alpha.0\n\nHEX: FFFFFF 0%, FFFFFF 20%,FFFFFF 20%, FFFFFF 0%,   \n--------------------------------\nUsed for divider default on compose area in space. "
+                },
+                "hover": {
+                  "value": "linear-gradient(90deg, {color.core.white-alpha.20} 0%, {color.core.white-alpha.11} 22.4%, {color.core.white-alpha.11} 72.4%, {color.core.white-alpha.20} 100%)",
+                  "type": "color",
+                  "description": "Core Token: core.white-alpha.0, core.white-alpha.20, core.white-alpha.20, core.white-alpha.0\n\nHEX: FFFFFF 0%, FFFFFF 20%,FFFFFF 20%, FFFFFF 0%,   \n--------------------------------\nUsed for hover state of divider default on compose area in space. "
+                }
+              },
+              "negative": {
+                "default": {
+                  "value": "linear-gradient(90deg, #fc8b9800 0%, #fc8b9899 22.4%, #fc8b9899 76.04%, #fc8b9800 100%)",
+                  "type": "color",
+                  "description": "Core Token: core.red.40 0% 0%, core.red.40 60% 22.4%, core.red.40 60% 76.04%, core.red.40 0% 100%\nHEX: linear-gradient(90deg, #fc8b9800 0%, #fc8b9899 22.4%, #fc8b9899 76.04%, #fc8b9800 100%)\n--------------------------------\nUsed for divider default on the compose area for classified spaces. "
+                },
+                "hover": {
+                  "value": "linear-gradient(90deg, #fc8b9800 0%, #fc8b98e6 22.4%, #fc8b98e6 76.04%, #fc8b9800 100%)",
+                  "type": "color",
+                  "description": "Core Token: core.red.40 0% 0%, core.red.40 90% 22.4%, core.red.40 90% 76.04%, core.red.40 0% 100%\nHEX: linear-gradient(90deg, #fc8b9800 0%, #fc8b98e6 22.4%, #fc8b98e6 76.04%, #fc8b9800 100%)\n--------------------------------\nUsed for hover state of divider on the compose area for classified spaces. "
+                }
+              }
+            }
+          }
+        },
+        "illustration": {
+          "onboarding": {
+            "01": {
+              "value": "linear-gradient(180deg, {color.core.gray.10} 0%, {color.decorative.gold.60}  100%)",
+              "type": "color",
+              "description": "Core Token: core.red.50, \ndecorative.violet.60\nHEX: F55868, 875AE0\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
+            }
+          }
+        }
+      }
+    }
+  }

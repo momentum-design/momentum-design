@@ -29,6 +29,6 @@
   ],
   "formats": ["CSS_VARIABLES", "SCSS_VARIABLES", "WEB_JSON", "ANDROID_RESOURCES", "SWIFT_CLASS"],
   "prefix": "md",
-  "references": true,
+  "outputReferences": true,
   "transforms": ["ATTRIBUTE_CTI", "NAME_CTI_KABAB", "MD_ELEVATION"]
 }

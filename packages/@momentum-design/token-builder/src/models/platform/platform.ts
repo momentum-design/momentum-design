@@ -18,8 +18,13 @@ class Platform {
       destination: this.config.file.destination,
       filters: this.config.file.filters,
       format: this.format,
-      name: this.config.file.name,
-      references: this.config.file.references,
+      cssSelector: this.config.file.cssSelector,
+      outputReferences: this.config.file.outputReferences,
+      showFileHeader: this.config.file.showFileHeader,
+      scssThemeable: this.config.file.scssThemeable,
+      iosAccessControl: this.config.file.iosAccessControl,
+      iosImport: this.config.file.iosAccessControl,
+      iosObjectType: this.config.file.iosObjectType,
     });
   }
 

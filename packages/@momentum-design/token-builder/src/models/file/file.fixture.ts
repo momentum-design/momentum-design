@@ -8,7 +8,9 @@ const FIXTURE_CONFIG: Config = {
   destination: CONFIG_FILE_FIXTURE.destination,
   filters: structuredClone(CONFIG_FILE_FIXTURE.filters),
   format: Object.keys(CONSTANTS.FORMATS).pop() as Format,
-  references: true,
+  outputReferences: true,
+  cssSelector: CONFIG_FILE_FIXTURE.cssSelector,
+  showFileHeader: CONFIG_FILE_FIXTURE.showFileHeader,
 };
 
 class FileFixture extends File {
