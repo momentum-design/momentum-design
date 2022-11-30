@@ -366,31 +366,31 @@
           "neutral": {
             "primary": {
               "default": {
-                "value": "{color.core.white-alpha.95}",
+                "value": "{color.core.black-alpha.95}",
                 "type": "color",
-                "description": "Core Token: core.white-alpha.95\nHEX FFFFFF 95%\n-----------------------------------\nRest state of Primary buttons. "
+                "description": "Core Token: core.black-alpha.95\nHEX 000000 95%\n-----------------------------------\nRest state of Primary buttons. "
               },
               "hover": {
-                "value": "{color.core.white-alpha.80}",
+                "value": "{color.core.black-alpha.80}",
                 "type": "color",
-                "description": "Core Token: core.white-alpha.80\nHEX FFFFFF 80%\n-----------------------------------\nHover state of Primary buttons. "
+                "description": "Core Token: core.black-alpha.80\nHEX 000000 80%\n-----------------------------------\nHover state of Primary buttons. "
               },
               "pressed": {
-                "value": "{color.core.white-alpha.70}",
+                "value": "{color.core.black-alpha.70}",
                 "type": "color",
-                "description": "Core Token: core.white-alpha.70\nHEX FFFFFF 70%\n-----------------------------------\nPressed state of primary buttons."
+                "description": "Core Token: core.black-alpha.70\nHEX 000000 70%\n-----------------------------------\nPressed state of primary buttons."
               },
               "disabled": {
-                "value": "{color.core.white-alpha.20}",
+                "value": "{color.core.black-alpha.20}",
                 "type": "color",
-                "description": "Core Token: core.white-alpha.20\nHEX FFFFFF 20%\n-----------------------------------\nUsed for Disabled buttons. "
+                "description": "Core Token: core.black-alpha.20\nHEX 000000 20%\n-----------------------------------\nUsed for Disabled buttons. "
               }
             },
             "secondary": {
               "default": {
-                "value": "{color.core.white-alpha.00}",
+                "value": "{color.core.black-alpha.00}",
                 "type": "color",
-                "description": "Core Token: core.white-alpha.00\nHEX FFFFFF 0%\n-----------------------------------\nRest/ghost state of Secondary buttons.\nUse with border.neutral.01"
+                "description": "Core Token: core.black-alpha.00\nHEX 000000 0%\n-----------------------------------\nRest/ghost state of Secondary buttons.\nUse with border.neutral.01"
               },
               "hover": {
                 "value": "{color.core.black-alpha.07}",
@@ -576,11 +576,16 @@
               "description": "Core Token: core.orange.60\nHEX: C74F0E\n---------------------\nUsed for avatar presence (busy, meeting, call, device)"
             },
             "01": {
+              "value": "{color.core.orange.70}",
+              "type": "color",
+              "description": "Core Token: core.orange.70\nHEX: 914017\n---------------------\nUsed for avatar presence (busy, meeting, call, device)"
+            },
+            "02": {
               "value": "{color.core.orange.20}",
               "type": "color",
               "description": "Core Token: core.orange.20\nHEX: FCE4C7\n------------------------------\nUsed for pressed state of alert-badge"
             },
-            "02": {
+            "03": {
               "value": "{color.core.orange.10}",
               "type": "color",
               "description": "Core Token: core.orange.10\nHEX: FAF4EB\n---------------------------------\nUsed for rest/hover state of alert-badge"
