@@ -1,14 +1,12 @@
-import path from 'path';
 import {
   Logger,
   generateMetadata,
 } from '@momentum-design/telemetry';
-
 import { Builder as CoreBuilder } from '../../models';
 import CONSTANTS from './constants';
-import FileHandler, { File } from './file-handler';
 import type { Config } from './types';
-import Transformer from './transformer';
+import AsyncUtils from './async-utils';
+import Flow from './flow';
 
 const PACKAGE = 'builder';
 const logger = Logger.child(generateMetadata(PACKAGE, CONSTANTS.TYPE));
@@ -22,68 +20,42 @@ const logger = Logger.child(generateMetadata(PACKAGE, CONSTANTS.TYPE));
  * @beta
  */
 class Builder extends CoreBuilder {
-  files: Array<File>;
+  flows: Array<Flow>;
 
-  fileHandler: FileHandler;
-
-  transformer: Transformer;
+  asyncUtils: AsyncUtils;
 
   /**
    * Constructor of Builder Class
    * @param config - Configuration Object to be mounted to this Builder.
    */
   public constructor(config: Config) {
-    const { buildName, srcDir, distDir, srcType, distType, ...other } = config;
+    const { flows, ...other } = config;
     super({ ...other, type: CONSTANTS.TYPE });
 
-    this.config.buildName = buildName;
-    this.config.srcDir = path.join(process.cwd(), srcDir);
-    this.config.distDir = path.join(process.cwd(), distDir);
-    this.config.srcType = srcType;
-    this.config.distType = distType;
+    this.flows = flows.map((flowData) => new Flow(flowData));
 
-    this.files = [];
-
-    this.fileHandler = new FileHandler();
-    this.transformer = new Transformer();
+    this.asyncUtils = new AsyncUtils();
   }
 
   /**
-   * Transform method which will determine the transform
-   *
-   * This is still WIP, more transforms will be added
-   */
-  public transform(): void {
-    if (this.config.srcType === 'svg' && this.config.distType === 'svg' && this.config.svgoConfig) {
-      this.files = this.transformer.optimizeSVGFiles(this.files, this.config.svgoConfig);
-    }
-  }
-
-  /**
-   * Initialize method, which will run first and read files
+   * Initialize method, which will run first
    * @returns Promise
    */
   public override initialize(): Promise<this> {
-    logger.info(`Started '${this.config.buildName}'`);
-    return new Promise((resolve, reject) => {
-      this.fileHandler.getFilePathsInFolder(`${this.config.srcDir}/**/*.*`, (error, filePaths) => {
-        if (error) {
-          logger.error(`Error while parsing files in '${this.config.srcDir}': ${error}`);
-          reject(error);
-        }
+    logger.info('Build started.');
+    return Promise.resolve(this);
+  }
 
-        // create file objects array with srcPath & distPaths:
-        this.files = this.fileHandler.createFileObjectsFromPaths(filePaths, this.config.distDir);
-
-        this.fileHandler.readFiles(this.files).then((filesWithData) => {
-          // override files array with filesWithData array:
-          this.files = filesWithData;
-          resolve(this);
-        }).catch((error) => {
-          logger.error(`Error while reading files: ${error}`);
-        });
-      });
-    });
+  /**
+   * Run the flow steps after each other
+   * @param flow - flow to run through
+   * @returns Promise of this
+   */
+  public runFlowSteps(flow: Flow): Promise<this> {
+    return flow.read()
+      .then(() => flow.transform())
+      .then(() => flow.write())
+      .then(() => this);
   }
 
   /**
@@ -92,20 +64,18 @@ class Builder extends CoreBuilder {
    * @returns Promise
    */
   public override process(): Promise<this> {
-    this.transform();
+    return this.asyncUtils.series(this.flows.map((flow) => () => this.runFlowSteps(flow)));
+  }
 
-    return new Promise((resolve, reject) => {
-      // create dist folder before writing files:
-      this.fileHandler.createFolderIfNotExist(this.config.distDir);
-
-      // write files to dist folder:
-      this.fileHandler.writeFiles(this.files).then(() => {
-        logger.info(`Finished '${this.config.buildName}' successfully`);
-        resolve(this);
-      }).catch((error) => {
-        logger.error(`Error while writing files: ${error}`);
-        reject(error);
-      });
+  /**
+   * Run after the build process step
+   *
+   * @returns Promise of this
+   */
+  public override final(): Promise<this> {
+    return new Promise((resolve) => {
+      logger.info('Build finished.');
+      resolve(this);
     });
   }
 

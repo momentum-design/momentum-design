@@ -103,6 +103,20 @@ class Builders extends Builder {
   }
 
   /**
+   * Final methods of this Builder.
+   *
+   * @remarks
+   * This method attemps to run the final method of all child Builder class
+   * Objects associated with this Builders class Object.
+   *
+   * @returns - This Buidler after executing this method.
+   */
+  public override final(): Promise<this> {
+    return Promise.all(this.data.builders.map((builder) => builder.final()))
+      .then(() => this);
+  }
+
+  /**
    * Constants associated with this Builders class.
    */
   public static override get CONSTANTS(): typeof CONSTANTS {

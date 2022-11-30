@@ -1,6 +1,3 @@
-import { Builder, Builders } from '../../models';
-import type { BuilderConfig, BuildersConfig } from '../../models';
-
 import Definition from './definition';
 import CONSTANTS from './constants';
 
@@ -19,31 +16,10 @@ describe('@momentum-design/builder - Definition', () => {
 
   describe('scoped', () => {
     describe('prepare()', () => {
-      let builder: Builder;
-      let builderConfig: BuilderConfig;
-      let builders: Builders;
-      let buildersConfig: BuildersConfig;
-
-      beforeEach(() => {
-        builderConfig = { definitionPath: 'example-definition-path' };
-        buildersConfig = { builders: [Builder], definitionPath: 'example-definition-path' };
-        builder = new Builder(builderConfig);
-        builders = new Builders(buildersConfig);
-
-        builders.data.builders.push(builder);
-      });
-
-      it('should output the global header', () => (
-        definition.prepare(builders)
+      it('returns empty string', () => (
+        definition.prepare()
           .then((results) => {
-            expect(results.includes(Definition.CONSTANTS.HEADER)).toBe(true);
-          })
-      ));
-
-      it('should output details based on the type of each builder built', () => (
-        definition.prepare(builders)
-          .then((results) => {
-            expect(results.includes(builder.type)).toBe(true);
+            expect(results).toBe('');
           })
       ));
     });
