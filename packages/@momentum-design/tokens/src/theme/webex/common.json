@@ -19,7 +19,42 @@
             "description": "Core Token: core.black-alpha.90\nHEX: 000000 90%\n--------\nUsed for overlayFade-backgrounds, [Android] closed-caption"
           }
         },
+        "warning": {
+          "00": {
+            "value": "{color.core.yellow.40}",
+            "type": "color",
+            "description": "Core Token: core.yellow.40\nHEX: f2990a 40%\n--------\nUsed for whiteboard sticky note"
+          }
+        },
+        "negative": {
+          "00": {
+            "value": "{color.core.red.40}",
+            "type": "color",
+            "description": "Core Token: core.red.40\nHEX: fc8b9b 40%\n--------\nUsed for whiteboard sticky note"
+          }
+        },
         "decorative": {
+          "purple": {
+            "00": {
+              "value": "{color.decorative.purple.40}",
+              "type": "color",
+              "description": "Core Token: color.decorative.purple.40\nHEX: f294f1 40%\n--------\nUsed for whiteboard sticky note"
+            }
+          },
+          "cyan": {
+            "00": {
+              "value": "{color.decorative.cyan.40}",
+              "type": "color",
+              "description": "Core Token: color.decorative.cyan.40\nHEX: 22c7d6 40%\n--------\nUsed for whiteboard sticky note"
+            }
+          },
+          "mint": {
+            "00": {
+              "value": "{color.decorative.mint.40}",
+              "type": "color",
+              "description": "Core Token: color.decorative.mint.40\nHEX: 30c9b0 40%\n--------\nUsed for whiteboard sticky note"
+            }
+          },
           "partner": {
             "pdf": {
               "value": "#0078d6",
@@ -79,12 +114,14 @@
               "description": "Core Token: core.white-alpha.40\nHEX: FFFFFF 40%\n---\nUsed for disabled state for all text"
             }
           },
-          "positve": {
+          "positive": {
             "hover": {
               "value": "{color.core.green.20}",
               "type": "color",
               "description": "Core Token: core.green.20\nHEX: 9FEDD8\n----\nUsed for hover state of Success, Join text"
-            },
+            }
+          },
+          "positve": {
             "default": {
               "value": "{color.core.green.40}",
               "type": "color",
@@ -199,6 +236,11 @@
               "value": "{color.core.white-alpha.100}",
               "type": "color",
               "description": "Core Token: core.white-alpha.100\nHEX: FFFFFF 100%\n----------\nUsed for circle background of avatar (typing), tags (overlay)\n"
+            },
+            "03": {
+              "value": "{color.core.black-alpha.50}",
+              "type": "color",
+              "description": "Core Token: core.black-alpha.50\nHEX: 000000 50%\n----------\nUsed for video labels\n"
             }
           },
           "warning": {
