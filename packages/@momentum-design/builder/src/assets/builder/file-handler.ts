@@ -7,7 +7,7 @@ import {
 import path from 'path';
 import CONSTANTS from './constants';
 
-export type File = {
+export type FileType = {
   srcPath: string;
   distPath?: string;
   data?: any;
@@ -41,7 +41,7 @@ class FileHandler {
    * @param distDir - dist directory, where files should be written to
    * @returns Array of file objects, including `srcPath` and `distPath`
    */
-  public createFileObjectsFromPaths(filePaths: Array<string>, distDir: string): Array<File> {
+  public createFileObjectsFromPaths(filePaths: Array<string>, distDir: string): Array<FileType> {
     return filePaths.map((path) => (
       { srcPath: path, distPath: this.replaceDirInPath(path, distDir) }
     ));
@@ -75,8 +75,8 @@ class FileHandler {
    * @param file - File to read data from
    * @returns Promise, which resolves to the file object with data if successful
    */
-  public readFile(file: File): Promise<File> {
-    return new Promise<File>((resolve, reject) => {
+  public readFile(file: FileType): Promise<FileType> {
+    return new Promise<FileType>((resolve, reject) => {
       fs.readFile(file.srcPath, 'utf-8', (error, data) => {
         if (error) {
           logger.error(`Error while reading file (${file.srcPath}): ${error}`);
@@ -96,8 +96,8 @@ class FileHandler {
    * @param file - File object, including `data` and `distPath`
    * @returns Promise, which resolves to the file object if successful
    */
-  public writeFile(file: File): Promise<File> {
-    return new Promise<File>((resolve, reject) => {
+  public writeFile(file: FileType): Promise<FileType> {
+    return new Promise<FileType>((resolve, reject) => {
       if (!file.distPath) {
         const errorMessage = `No distPath provided for file: ${file}`;
         logger.error(errorMessage);
@@ -122,7 +122,7 @@ class FileHandler {
    * @param files - files to read
    * @returns Promise, which resolves to file array if successful
    */
-  public readFiles(files: Array<File>): Promise<File[]> {
+  public readFiles(files: Array<FileType>): Promise<FileType[]> {
     return Promise.all(files.map(this.readFile));
   }
 
@@ -131,7 +131,7 @@ class FileHandler {
    * @param files - files to write
    * @returns Promise, which resolves to file array if successful
    */
-  public writeFiles(files: Array<File>): Promise<File[]> {
+  public writeFiles(files: Array<FileType>): Promise<FileType[]> {
     return Promise.all(files.map(this.writeFile));
   }
 }

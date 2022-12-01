@@ -60,6 +60,22 @@ class Builder {
   }
 
   /**
+   * Final methods of this Builder.
+   *
+   * @remarks
+   * This method can be implemented in class definitions that extend this
+   * class. The scope of this method is to perform flows at the end of the build
+   * process.
+   *
+   * @virtual
+   *
+   * @returns - This Builder after executing this method.
+   */
+  public final(): Promise<this> {
+    return Promise.resolve(this);
+  }
+
+  /**
    * The type of this Builder.
    *
    * @virtual
@@ -80,7 +96,8 @@ class Builder {
   public build(): Promise<this> {
     return this.read()
       .then((self) => self.initialize())
-      .then((self) => self.process());
+      .then((self) => self.process())
+      .then(() => this.final());
   }
 
   /**

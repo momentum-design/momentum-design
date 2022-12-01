@@ -1,49 +1,52 @@
 {
     "definitions": [{
-        "buildName": "Optimize Core SVGs",
-        "srcDir": "./src/core",
-        "distDir": "./dist/svg",
-        "srcType": "svg",
-        "distType": "svg",
-        "svgoConfig": {
-            "mergePaths": true,
-            "plugins": [
-                {
-                    "name": "preset-default",
-                    "params": {
-                        "overrides": {
-                            "removeViewBox": false
+        "flows": [{
+            "id": "optimise-core-svgs",
+            "target": "./src/core/**/*.*",
+            "destination": "./dist/svg",
+            "format": {
+                "type": "OPTIMIZED_SVG",
+                "config": {
+                    "mergePaths": true,
+                    "plugins": [
+                        {
+                            "name": "preset-default",
+                            "params": {
+                                "overrides": {
+                                    "removeViewBox": false
+                                }
+                            }
+                        },
+                        {
+                            "name": "removeAttrs",
+                            "params": {
+                              "attrs": "(fill|stroke)"
+                            }
                         }
-                    }
-                },
-                {
-                    "name": "removeAttrs",
-                    "params": {
-                      "attrs": "(fill|stroke)"
-                    }
+                    ]
                 }
-            ]
-        },
-        "type": "assets"
-    }, {
-        "buildName": "Optimize Brand & Colored SVGs",
-        "srcDir": "./src/{colored,brand}",
-        "distDir": "./dist/svg",
-        "srcType": "svg",
-        "distType": "svg",
-        "svgoConfig": {
-            "mergePaths": true,
-            "plugins": [
-                {
-                    "name": "preset-default",
-                    "params": {
-                        "overrides": {
-                            "removeViewBox": false
+            }
+        }, {
+            "id": "optimise-brand-colored-svgs",
+            "target": "./src/{colored,brand}/**/*.*",
+            "destination": "./dist/svg",
+            "format": {
+                "type": "OPTIMIZED_SVG",
+                "config": {
+                    "mergePaths": true,
+                    "plugins": [
+                        {
+                            "name": "preset-default",
+                            "params": {
+                                "overrides": {
+                                    "removeViewBox": false
+                                }
+                            }
                         }
-                    }
+                    ]
                 }
-            ]
-        },
+            }
+        }],
         "type": "assets"
     }]
 }

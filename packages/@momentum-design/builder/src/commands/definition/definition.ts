@@ -32,14 +32,8 @@ class Definition extends Command<Options, Params> {
    * @param results - Processed Builders class Object collect data from.
    * @returns - Promise resolving to a string to be emitted.
    */
-  public prepare(results: Builders): Promise<string> {
-    const { builders } = results;
-
-    const output = builders.map((builder) => `executed "${builder.type}" builder`);
-    return Promise.resolve([
-      Definition.CONSTANTS.HEADER,
-      ...output,
-    ].join('\n'));
+  public prepare(): Promise<string> {
+    return Promise.resolve('');
   }
 
   /**
