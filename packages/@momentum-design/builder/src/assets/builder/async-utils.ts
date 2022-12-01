@@ -4,8 +4,7 @@ import {
 } from '@momentum-design/telemetry';
 import CONSTANTS from './constants';
 
-const PACKAGE = 'builder';
-const logger = Logger.child(generateMetadata(PACKAGE, `${CONSTANTS.TYPE}-async-utils`));
+const logger = Logger.child(generateMetadata(CONSTANTS.PACKAGE, `${CONSTANTS.TYPE}-async-utils`));
 
 /**
  * The AsyncUtils class.
