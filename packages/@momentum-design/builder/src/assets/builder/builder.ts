@@ -20,6 +20,8 @@ const logger = Logger.child(generateMetadata(PACKAGE, CONSTANTS.TYPE));
  * @beta
  */
 class Builder extends CoreBuilder {
+  buildName: string;
+
   flows: Array<Flow>;
 
   asyncUtils: AsyncUtils;
@@ -29,9 +31,10 @@ class Builder extends CoreBuilder {
    * @param config - Configuration Object to be mounted to this Builder.
    */
   public constructor(config: Config) {
-    const { flows, ...other } = config;
+    const { flows, buildName, ...other } = config;
     super({ ...other, type: CONSTANTS.TYPE });
 
+    this.buildName = buildName;
     this.flows = flows?.map((flowData) => new Flow(flowData));
 
     this.asyncUtils = new AsyncUtils();
@@ -57,7 +60,7 @@ class Builder extends CoreBuilder {
    * @returns Promise
    */
   public override initialize(): Promise<this> {
-    logger.info('Build started.');
+    logger.info(`Build '${this.buildName}' started.`);
 
     return this.verifyConfig();
   }
@@ -90,7 +93,7 @@ class Builder extends CoreBuilder {
    */
   public override final(): Promise<this> {
     return new Promise((resolve) => {
-      logger.info('Build finished.');
+      logger.info(`Build '${this.buildName}' finished.`);
       resolve(this);
     });
   }

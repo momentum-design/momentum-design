@@ -13,6 +13,11 @@ export type FileType = {
   data?: any;
 }
 
+export type ReplacePattern = {
+  searchValue: string | RegExp,
+  replaceValue: string
+};
+
 const PACKAGE = 'builder';
 const logger = Logger.child(generateMetadata(PACKAGE, `${CONSTANTS.TYPE}-file-handler`));
 
@@ -24,6 +29,12 @@ const logger = Logger.child(generateMetadata(PACKAGE, `${CONSTANTS.TYPE}-file-ha
  * @beta
  */
 class FileHandler {
+  replacePatterns?: Array<ReplacePattern>;
+
+  constructor(replacePatterns?: Array<ReplacePattern>) {
+    this.replacePatterns = replacePatterns;
+  }
+
   /**
    * Creates new file path by replacing te existing directory part of the provided
    * `filePath` with the provided `dirPath`
@@ -35,6 +46,21 @@ class FileHandler {
     return path.join(dirPath, path.basename(filePath));
   }
 
+  public sanitiseFileName(filePath: string): string {
+    if (!this.replacePatterns?.length) {
+      return filePath;
+    }
+    const fileName = this.replacePatterns.reduce(
+      (prev, curr) => prev.replace(curr.searchValue, curr.replaceValue),
+      path.basename(filePath),
+    );
+
+    return path.join(
+      path.dirname(filePath),
+      fileName,
+    );
+  }
+
   /**
    * Create File objects from a provided `filePaths` array
    * @param filePaths - array of file path strings
@@ -42,9 +68,17 @@ class FileHandler {
    * @returns Array of file objects, including `srcPath` and `distPath`
    */
   public createFileObjectsFromPaths(filePaths: Array<string>, distDir: string): Array<FileType> {
-    return filePaths.map((path) => (
-      { srcPath: path, distPath: this.replaceDirInPath(path, distDir) }
-    ));
+    return filePaths.map((path) => {
+      // create distPath
+      let distPath = this.replaceDirInPath(path, distDir);
+
+      // sanitise the distPath (by running replace on the file name):
+      distPath = this.sanitiseFileName(distPath);
+
+      return (
+        { srcPath: path, distPath }
+      );
+    });
   }
 
   /**
@@ -101,7 +135,7 @@ class FileHandler {
       if (!file.distPath) {
         const errorMessage = `No distPath provided for file: ${file}`;
         logger.error(errorMessage);
-        reject(new Error(errorMessage));
+        reject(errorMessage);
         return;
       }
 
