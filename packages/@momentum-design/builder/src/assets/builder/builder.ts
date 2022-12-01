@@ -8,22 +8,30 @@ import type { Config } from './types';
 import AsyncUtils from './async-utils';
 import Flow from './flow';
 
-const PACKAGE = 'builder';
-const logger = Logger.child(generateMetadata(PACKAGE, CONSTANTS.TYPE));
+const logger = Logger.child(generateMetadata(CONSTANTS.PACKAGE, CONSTANTS.TYPE));
 
 /**
  * The Assets Builder class.
  *
  * Contains initialising and processing functions and makes use of
- * several utilities, like `FileHandler` & `Transformer` utils.
+ * several utilities, like `AsyncUtils`.
  *
  * @beta
  */
 class Builder extends CoreBuilder {
+  /**
+   * Name of the current build process
+   */
   buildName: string;
 
+  /**
+   * Flows to run as part of the current build process
+   */
   flows: Array<Flow>;
 
+  /**
+   * Async utils, which will help running promises in series
+   */
   asyncUtils: AsyncUtils;
 
   /**

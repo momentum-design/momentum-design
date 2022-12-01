@@ -1,18 +1,19 @@
-import { Logger, generateMetadata } from '@momentum-design/telemetry';
 import { optimize as svgoOptimize } from 'svgo';
-import CONSTANTS from '../constants';
-import type { FileType } from '../file-handler';
+import type { FileType, Formats } from '../types';
 import Transformer from './transformer';
-
-const PACKAGE = 'builder';
-const logger = Logger.child(generateMetadata(PACKAGE, `${CONSTANTS.TYPE}-svg-transformer`));
 
 /**
  * The SVGTransformer class.
  *
+ * Handles transforming SVGs to Optimised SVGs with the help of `svgo`
+ *
  * @beta
  */
 class SVGTransformer extends Transformer {
+  constructor(format: Formats) {
+    super(format, 'svg');
+  }
+
   /**
    * Optimise the passed in SVG file data with the help of `svgo`
    * @param file - File, including the file data, which needs to be optimised
@@ -23,7 +24,7 @@ class SVGTransformer extends Transformer {
       const optimizedData = svgoOptimize(file.data, this.format.config).data;
       return { ...file, data: optimizedData };
     } catch (error) {
-      logger.error(`Failed optimizing file (${file.srcPath}) with format '${this.format.type}': ${error}`);
+      this.logger.error(`Failed optimizing file (${file.srcPath}) with format '${this.format.type}': ${error}`);
       return file;
     }
   }
