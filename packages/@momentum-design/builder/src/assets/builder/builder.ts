@@ -32,9 +32,24 @@ class Builder extends CoreBuilder {
     const { flows, ...other } = config;
     super({ ...other, type: CONSTANTS.TYPE });
 
-    this.flows = flows.map((flowData) => new Flow(flowData));
+    this.flows = flows?.map((flowData) => new Flow(flowData));
 
     this.asyncUtils = new AsyncUtils();
+  }
+
+  /**
+   * Verifies the config
+   *
+   * @returns a Promise, which resolves if
+   * everythings fine / rejects if there is a problem in the config
+   */
+  public verifyConfig(): Promise<this> {
+    if (!this.flows.length) {
+      const reason = 'No \'flows\' found in config.';
+      logger.error(reason);
+      return Promise.reject(reason);
+    }
+    return Promise.resolve(this);
   }
 
   /**
@@ -43,7 +58,8 @@ class Builder extends CoreBuilder {
    */
   public override initialize(): Promise<this> {
     logger.info('Build started.');
-    return Promise.resolve(this);
+
+    return this.verifyConfig();
   }
 
   /**
