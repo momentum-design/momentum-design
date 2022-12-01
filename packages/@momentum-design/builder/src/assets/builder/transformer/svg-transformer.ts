@@ -33,9 +33,7 @@ class SVGTransformer extends Transformer {
    * Transform the passed in files by optimising each of them
    */
   public override transformFiles() {
-    this.logStartTransform();
     this.outputFiles = this.inputFiles?.map((file) => this.optimize(file));
-    this.logEndTransform();
   }
 }
 

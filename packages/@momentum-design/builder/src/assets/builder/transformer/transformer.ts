@@ -45,23 +45,10 @@ class Transformer {
   }
 
   /**
-   * Log method to log the start of the transform
-   */
-  protected logStartTransform() {
-    this.logger.debug(`Started transform of format ${this.format.type}.`);
-  }
-
-  /**
-   * Log method to log the end of the transform
-   */
-  protected logEndTransform() {
-    this.logger.debug(`Finished transform of format ${this.format.type}.`);
-  }
-
-  /**
    * No-op method, which has to be overridden by instances
    */
   public transformFiles(): void {
+    this.logger.warn(`No transform rule found for the provided format ${this.format.type}. Skipping...`);
   }
 
   /**
@@ -76,11 +63,10 @@ class Transformer {
     this.inputFiles = files;
     this.outputFiles = files;
 
+    this.logger.debug(`Started transform of format ${this.format.type}.`);
     this.transformFiles();
+    this.logger.debug(`Finished transform of format ${this.format.type}.`);
 
-    if (this.inputFiles === this.outputFiles) {
-      this.logger.warn(`No transformation applied for the provided format ${this.format.type}`);
-    }
     return this.outputFiles;
   }
 }
