@@ -4,7 +4,8 @@
   "compilerOptions": {
     "outDir": "./dist/module",
     "declarationDir": "./dist/types",
-    "module": "CommonJS"
+    "module": "CommonJS",
+    "experimentalDecorators": true
   },
   "include": [
     "./src/**/*"

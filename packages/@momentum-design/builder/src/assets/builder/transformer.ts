@@ -4,7 +4,7 @@ import {
 } from '@momentum-design/telemetry';
 import { optimize } from 'svgo';
 import CONSTANTS from './constants';
-import type { File } from './file-handler';
+import type { FileType } from './file-handler';
 import type { SVGOConfig } from './types';
 
 const PACKAGE = 'builder';
@@ -22,7 +22,7 @@ class Transformer {
    * @param svgoConfig - config for SVGO, which determines how the SVG will be optimised
    * @returns the file with opimised data
    */
-  public optimizeSVG(file: File, svgoConfig: SVGOConfig): File {
+  public optimizeSVG(file: FileType, svgoConfig: SVGOConfig): FileType {
     try {
       const optimizedData = optimize(file.data, svgoConfig).data;
       return ({ ...file, data: optimizedData });
@@ -38,7 +38,7 @@ class Transformer {
    * @param svgoConfig - config for SVGO, which determines how the SVGs will be optimised
    * @returns the files with opimised data
    */
-  public optimizeSVGFiles(files: Array<File>, svgoConfig: SVGOConfig): File[] {
+  public optimizeSVGFiles(files: Array<FileType>, svgoConfig: SVGOConfig): FileType[] {
     return files.map((file) => this.optimizeSVG(file, svgoConfig));
   }
 }
