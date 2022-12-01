@@ -6,15 +6,9 @@ import {
 } from '@momentum-design/telemetry';
 import path from 'path';
 import CONSTANTS from './constants';
+import type { FileType, ReplacePattern } from './types';
 
-export type FileType = {
-  srcPath: string;
-  distPath?: string;
-  data?: any;
-}
-
-const PACKAGE = 'builder';
-const logger = Logger.child(generateMetadata(PACKAGE, `${CONSTANTS.TYPE}-file-handler`));
+const logger = Logger.child(generateMetadata(CONSTANTS.PACKAGE, `${CONSTANTS.TYPE}-file-handler`));
 
 /**
  * The FileHandler class.
@@ -24,6 +18,15 @@ const logger = Logger.child(generateMetadata(PACKAGE, `${CONSTANTS.TYPE}-file-ha
  * @beta
  */
 class FileHandler {
+  /**
+   * Array of ReplacePatterns, needed for the file name sanitize
+   */
+  replacePatterns?: Array<ReplacePattern>;
+
+  constructor(replacePatterns?: Array<ReplacePattern>) {
+    this.replacePatterns = replacePatterns;
+  }
+
   /**
    * Creates new file path by replacing te existing directory part of the provided
    * `filePath` with the provided `dirPath`
@@ -36,15 +39,49 @@ class FileHandler {
   }
 
   /**
+   * Sanitizes the filename part of the provided file path, if replacePatterns are defined
+   *
+   * Note: The replace functions with the provided replacePatterns will be executed in series
+   *
+   * @param filePath - file path to sanitize
+   * @returns sanitize file path
+   */
+  public sanitizeFileName(filePath: string): string {
+    if (!this.replacePatterns?.length) {
+      return filePath;
+    }
+    const fileName = this.replacePatterns.reduce(
+      (prev, curr) => prev.replace(curr.searchValue, curr.replaceValue),
+      path.basename(filePath),
+    );
+
+    return path.join(
+      path.dirname(filePath),
+      fileName,
+    );
+  }
+
+  /**
    * Create File objects from a provided `filePaths` array
+   *
+   * Sanitizes the file names with the defined replace patterns
+   *
    * @param filePaths - array of file path strings
    * @param distDir - dist directory, where files should be written to
    * @returns Array of file objects, including `srcPath` and `distPath`
    */
   public createFileObjectsFromPaths(filePaths: Array<string>, distDir: string): Array<FileType> {
-    return filePaths.map((path) => (
-      { srcPath: path, distPath: this.replaceDirInPath(path, distDir) }
-    ));
+    return filePaths.map((filePath) => {
+      // create distPath
+      let distPath = this.replaceDirInPath(filePath, distDir);
+
+      // sanitise the distPath (by running replace on the file name):
+      distPath = this.sanitizeFileName(distPath);
+
+      return (
+        { srcPath: filePath, distPath }
+      );
+    });
   }
 
   /**
@@ -101,7 +138,7 @@ class FileHandler {
       if (!file.distPath) {
         const errorMessage = `No distPath provided for file: ${file}`;
         logger.error(errorMessage);
-        reject(new Error(errorMessage));
+        reject(errorMessage);
         return;
       }
 

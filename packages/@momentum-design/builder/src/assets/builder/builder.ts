@@ -8,20 +8,30 @@ import type { Config } from './types';
 import AsyncUtils from './async-utils';
 import Flow from './flow';
 
-const PACKAGE = 'builder';
-const logger = Logger.child(generateMetadata(PACKAGE, CONSTANTS.TYPE));
+const logger = Logger.child(generateMetadata(CONSTANTS.PACKAGE, CONSTANTS.TYPE));
 
 /**
  * The Assets Builder class.
  *
  * Contains initialising and processing functions and makes use of
- * several utilities, like `FileHandler` & `Transformer` utils.
+ * several utilities, like `AsyncUtils`.
  *
  * @beta
  */
 class Builder extends CoreBuilder {
+  /**
+   * Name of the current build process
+   */
+  buildName: string;
+
+  /**
+   * Flows to run as part of the current build process
+   */
   flows: Array<Flow>;
 
+  /**
+   * Async utils, which will help running promises in series
+   */
   asyncUtils: AsyncUtils;
 
   /**
@@ -29,9 +39,10 @@ class Builder extends CoreBuilder {
    * @param config - Configuration Object to be mounted to this Builder.
    */
   public constructor(config: Config) {
-    const { flows, ...other } = config;
+    const { flows, buildName, ...other } = config;
     super({ ...other, type: CONSTANTS.TYPE });
 
+    this.buildName = buildName;
     this.flows = flows?.map((flowData) => new Flow(flowData));
 
     this.asyncUtils = new AsyncUtils();
@@ -57,7 +68,7 @@ class Builder extends CoreBuilder {
    * @returns Promise
    */
   public override initialize(): Promise<this> {
-    logger.info('Build started.');
+    logger.info(`Build '${this.buildName}' started.`);
 
     return this.verifyConfig();
   }
@@ -90,7 +101,7 @@ class Builder extends CoreBuilder {
    */
   public override final(): Promise<this> {
     return new Promise((resolve) => {
-      logger.info('Build finished.');
+      logger.info(`Build '${this.buildName}' finished.`);
       resolve(this);
     });
   }
