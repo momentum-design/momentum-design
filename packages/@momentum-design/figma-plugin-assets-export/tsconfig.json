@@ -1,0 +1,17 @@
+{
+  "extends": "../../../config/typescript/tsconfig.base.json",
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["es6"],
+    "strict": true,
+    "outDir": "./dist",
+    "plugins": [],
+    "typeRoots": [
+      "../../../node_modules/@types",
+      "../../../node_modules/@figma"
+    ]
+  },
+  "include": [
+    "./src/**/*"
+  ],
+}
