@@ -435,6 +435,55 @@
               "description": "Core Token: core.green.50\nHEX: 27a17a\n------------------\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
             }
           }
+        },
+        "illustration": {
+          "positive": {
+            "value": "linear-gradient(180deg, {color.core.green.40} 0%, {color.decorative.lime.40} 100%)",
+            "type": "color",
+            "description": "Core Token: core.green.40, \ndecorative.lime.40\nHEX: 3CC29A, 93C437\n---------------------------\nUsed for success-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
+          },
+          "negative": {
+            "value": "linear-gradient(180deg, {color.decorative.pink.50} 0%, {color.core.red.60} 100%)",
+            "type": "color",
+            "description": "Core Token: \ndecorative.pink.50, \ncore.red.60\nHEX: F0677E, DB1F2E\n---------------------------\nUsed for error-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
+          },
+          "onboarding": {
+            "00": {
+              "value": "linear-gradient(180deg, {color.core.yellow.30} 0%, {color.decorative.lime.40} 100%)",
+              "type": "color"
+            },
+            "01": {
+              "value": "linear-gradient(180deg, {color.core.red.50} 0%, {color.decorative.violet.60} 100%)",
+              "type": "color"
+            },
+            "01-copy": {
+              "value": "linear-gradient(180deg, {color.core.yellow.30} 0%, {color.core.orange.50} 100%)",
+              "type": "color",
+              "description": "Core Token: core.yellow.30, \ncore.orange.50\nHEX: FFBE4F, F26B1D\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
+            },
+            "01-copy-copy": {
+              "value": "linear-gradient(180deg, {color.decorative.lime.40} 0%, {color.decorative.cobalt.50} 100%)",
+              "type": "color",
+              "description": "Core Token: decorative.lime.40, \ndecorative.cobalt.50\nHEX: 93C437, 279BE8\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
+            },
+            "01-copy-copy-copy": {
+              "value": "linear-gradient(180deg, {color.decorative.cobalt.50} 0%, {color.decorative.violet.60} 100%)",
+              "type": "color",
+              "description": "Core Token: decorative.cobalt.50, \ndecorative.violet.60\nHEX: 279BE8, 875AE0\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
+            }
+          },
+          "empty": {
+            "01": {
+              "value": "linear-gradient(180deg, {color.decorative.cobalt.50} 0%, {color.decorative.violet.60} 100%)",
+              "type": "color",
+              "description": "Core Token: decorative.cobalt.50\ndecorative.violet.60\nHEX: 279BE8, 875AE0\n---------------------------\nUsed for empty state.\nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
+            },
+            "00": {
+              "value": "linear-gradient(180deg, {color.decorative.lime.40} 0%, {color.decorative.cobalt.50} 100%)",
+              "type": "color",
+              "description": "Core Token: decorative.lime.40 0%, decorative.cobalt.50 100%\nHEX: linear-gradient(180deg, #93c437 0%, #279be8 100%)\n---------------------------\nUsed for empty state.\nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
+            }
+          }
         }
       },
       "border": {
