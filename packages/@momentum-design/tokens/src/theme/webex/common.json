@@ -58,39 +58,48 @@
           "partner": {
             "pdf": {
               "value": "#0078d6",
-              "type": "color"
+              "type": "color",
+              "description": "Used for content card component. (pdf)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
             },
             "word": {
               "value": "#0078d6",
-              "type": "color"
+              "type": "color",
+              "description": "Used for content card component. (word)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
             },
             "powerpoint": {
               "value": "#d93e17",
-              "type": "color"
+              "type": "color",
+              "description": "Used for content card component. (powerpoint)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
             },
             "excel": {
               "value": "#00893e",
-              "type": "color"
+              "type": "color",
+              "description": "Used for content card component. (excel)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
             },
             "onenote": {
               "value": "#b839db",
-              "type": "color"
+              "type": "color",
+              "description": "Used for content card component. (onenote)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
             },
             "doc": {
               "value": "#4285f4",
-              "type": "color"
+              "type": "color",
+              "description": "Used for content card component. (doc)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
             },
             "sheets": {
               "value": "#f4b400",
-              "type": "color"
+              "type": "color",
+              "description": "Used for content card component. (sheets)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
             },
             "slides": {
               "value": "#0f9d58",
-              "type": "color"
+              "type": "color",
+              "description": "Used for content card component. (slides)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
             },
             "keynotes": {
               "value": "#029cfb",
-              "type": "color"
+              "type": "color",
+              "description": "Used for content card component. (keynote)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
             }
           }
         }
