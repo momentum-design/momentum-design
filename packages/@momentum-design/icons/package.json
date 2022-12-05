@@ -1,9 +1,8 @@
 {
   "name": "@momentum-design/icons",
-  "private": true,
   "packageManager": "yarn@3.2.4",
   "files": [
-    "./dist/*"
+    "./dist/"
   ],
   "scripts": {
     "analyze": "yarn analyze:prebuild && yarn analyze:postbuild",
@@ -13,9 +12,10 @@
     "build:core": "md-builder -- --definition --icons --config ./config/momentum.json",
     "clean": "yarn clean:dist",
     "clean:dist": "rimraf ./dist",
+    "prepublishOnly": "yarn clean && yarn build",
     "docs": "echo \"script 'docs' has not been implemented\"",
     "publish": "yarn publish:npmjs",
-    "publish:npmjs": "echo \"script 'publish:npmjs' has not been implemented\"",
+    "publish:npmjs": "yarn npm publish --access=public",
     "test": "yarn test:prebuild && yarn test:postbuild",
     "test:postbuild": "echo \"script 'test:prebuild' has not been implemented\"",
     "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\""
