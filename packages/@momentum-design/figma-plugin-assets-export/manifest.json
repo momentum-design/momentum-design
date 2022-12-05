@@ -2,9 +2,9 @@
   "name": "Momentum Assets Export",
   "id": "1180495970094217456",
   "api": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "editorType": [
     "figma"
   ],
-  "ui": "ui.html"
+  "ui": "dist/index.html"
 }
