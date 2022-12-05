@@ -32,7 +32,7 @@ class SVGTransformer extends Transformer {
   /**
    * Transform the passed in files by optimising each of them
    */
-  public override transformFiles() {
+  public override async transformFiles() {
     this.outputFiles = this.inputFiles?.map((file) => this.optimize(file));
   }
 }

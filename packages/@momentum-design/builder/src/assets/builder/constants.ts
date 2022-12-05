@@ -16,6 +16,7 @@ const TYPE: string = 'assets';
 const FORMATS = {
   OPTIMISED_SVG: 'OPTIMIZED_SVG' as const,
   CSS: 'CSS' as const,
+  SVG_FONT: 'SVG_FONT' as const,
 };
 
 const CONSTANTS = {

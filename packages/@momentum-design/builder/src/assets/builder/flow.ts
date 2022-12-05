@@ -90,11 +90,11 @@ class Flow {
   /**
    * Transforming the files data with the help of `createTransformer` factory
    */
-  public transform(): void {
+  public async transform(): Promise<void> {
     logger.debug(`Started transform step of flow '${this.id}'.`);
 
     const transformer = createTransformer(this.format);
-    this.files = transformer.run(this.files);
+    this.files = await transformer.run(this.files);
 
     logger.debug(`Finished transform step of flow '${this.id}'.`);
   }

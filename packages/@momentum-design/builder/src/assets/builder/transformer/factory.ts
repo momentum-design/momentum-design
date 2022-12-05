@@ -1,5 +1,6 @@
 import CONSTANTS from '../constants';
 import type { Formats } from '../types';
+import SVGFontTransformer from './svg-font-transformer';
 import SVGTransformer from './svg-transformer';
 import Transformer from './transformer';
 
@@ -14,6 +15,8 @@ function createTransformer(format: Formats): Transformers {
   switch (format.type) {
     case CONSTANTS.FORMATS.OPTIMISED_SVG:
       return new SVGTransformer(format);
+    case CONSTANTS.FORMATS.SVG_FONT:
+      return new SVGFontTransformer(format);
     default:
       return new Transformer(format);
   }

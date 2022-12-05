@@ -1,61 +1,71 @@
 {
-    "definitions": [{
-        "buildName": "Icons",
-        "flows": [{
-            "id": "optimise-core-svgs",
-            "target": "./src/core/**/*.*",
-            "destination": "./dist/svg",
-            "fileNameReplacePatterns": [{
-                "searchValue": "_",
-                "replaceValue": "-"
-            }],
-            "format": {
-                "type": "OPTIMIZED_SVG",
-                "config": {
-                    "mergePaths": true,
-                    "plugins": [
-                        {
-                            "name": "preset-default",
-                            "params": {
-                                "overrides": {
-                                    "removeViewBox": false
-                                }
-                            }
-                        },
-                        {
-                            "name": "removeAttrs",
-                            "params": {
-                              "attrs": "(fill|stroke)"
-                            }
-                        }
-                    ]
-                }
-            }
-        }, {
-            "id": "optimise-brand-colored-svgs",
-            "target": "./src/{colored,brand}/**/*.*",
-            "destination": "./dist/svg",
-            "fileNameReplacePatterns": [{
-                "searchValue": "_",
-                "replaceValue": "-"
-            }],
-            "format": {
-                "type": "OPTIMIZED_SVG",
-                "config": {
-                    "mergePaths": true,
-                    "plugins": [
-                        {
-                            "name": "preset-default",
-                            "params": {
-                                "overrides": {
-                                    "removeViewBox": false
-                                }
-                            }
-                        }
-                    ]
-                }
-            }
+  "definitions": [{
+    "buildName": "Icons",
+    "flows": [{
+        "id": "optimise-core-svgs",
+        "target": "./src/core/**/*.*",
+        "destination": "./dist/svg",
+        "fileNameReplacePatterns": [{
+          "searchValue": "_",
+          "replaceValue": "-"
         }],
-        "type": "assets"
-    }]
+        "format": {
+          "type": "OPTIMIZED_SVG",
+          "config": {
+            "mergePaths": true,
+            "plugins": [{
+                "name": "preset-default",
+                "params": {
+                  "overrides": {
+                    "removeViewBox": false
+                  }
+                }
+              },
+              {
+                "name": "removeAttrs",
+                "params": {
+                  "attrs": "(fill|stroke)"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "SVG-font-icons",
+        "target": "./src/core/**/*.*",
+        "destination": "./dist/svg-font",
+        "format": {
+          "type": "SVG_FONT",
+          "config": {
+           "fontName": "MomentumFontIcon"
+          }
+        }
+      },
+      {
+        "id": "optimise-brand-colored-svgs",
+        "target": "./src/{colored,brand}/**/*.*",
+        "destination": "./dist/svg",
+        "fileNameReplacePatterns": [{
+          "searchValue": "_",
+          "replaceValue": "-"
+        }],
+        "format": {
+          "type": "OPTIMIZED_SVG",
+          "config": {
+            "mergePaths": true,
+            "plugins": [{
+              "name": "preset-default",
+              "params": {
+                "overrides": {
+                  "removeViewBox": false
+                }
+              }
+            }]
+          }
+        }
+      }
+    ],
+    "type": "assets"
+  }]
 }

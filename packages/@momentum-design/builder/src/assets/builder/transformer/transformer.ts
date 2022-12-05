@@ -47,7 +47,7 @@ class Transformer {
   /**
    * No-op method, which has to be overridden by instances
    */
-  public transformFiles(): void {
+  public async transformFiles() {
     this.logger.warn(`No transform rule found for the provided format ${this.format.type}. Skipping...`);
   }
 
@@ -59,12 +59,12 @@ class Transformer {
    * @param files - Array of files to transform
    * @returns transformed files
    */
-  public run(files: Array<FileType>): Array<FileType> {
+  public async run(files: Array<FileType>): Promise<Array<FileType>> {
     this.inputFiles = files;
     this.outputFiles = files;
 
     this.logger.debug(`Started transform of format ${this.format.type}.`);
-    this.transformFiles();
+    await this.transformFiles();
     this.logger.debug(`Finished transform of format ${this.format.type}.`);
 
     return this.outputFiles;
