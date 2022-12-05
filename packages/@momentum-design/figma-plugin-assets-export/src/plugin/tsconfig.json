@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "skipLibCheck": true,
+        "target": "es6",
+        "lib": [
+            "es6"
+        ],
+        "strict": true,
+        "typeRoots": [
+            "../../../../../node_modules/@types",
+            "../../../../../node_modules/@figma"
+        ]
+    },
+    "include": ["index.ts", "constants.ts", "models/*.ts"],
+    "exclude": ["node_modules"]
+}
