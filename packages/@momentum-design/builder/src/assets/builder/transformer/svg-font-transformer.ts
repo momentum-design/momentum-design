@@ -36,7 +36,7 @@ class SVGFontTransformer extends Transformer {
         };
       });
     }
-    this.logger.warn('No input files detected.');
+    this.logger.debug('No input files detected.');
     return undefined;
   }
 
