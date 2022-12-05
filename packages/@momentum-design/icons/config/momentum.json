@@ -34,7 +34,7 @@
       {
         "id": "SVG-font-icons",
         "target": "./src/core/**/*.*",
-        "destination": "./dist/svg-font",
+        "destination": "./dist/fonts",
         "format": {
           "type": "SVG_FONT",
           "config": {

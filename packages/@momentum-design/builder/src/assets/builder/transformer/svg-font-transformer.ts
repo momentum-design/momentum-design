@@ -8,11 +8,14 @@ import { getNextCodepoint } from '../utils';
 /**
  * The SVGFontTransformer class.
  *
+ * This transformer will process svg icons and will generate a single
+ * svg file containing a font svg. Generation of glyphs and unicode is
+ * also done here.
  * @beta
  */
 class SVGFontTransformer extends Transformer {
-  constructor(format: Formats) {
-    super(format, 'svg');
+  constructor(format: Formats, destination: string) {
+    super(format, destination, 'svg-font');
   }
 
   /**
@@ -41,14 +44,6 @@ class SVGFontTransformer extends Transformer {
   }
 
   /**
-   * Leverage the flow config and grab the dist path from any icon.
-   * @returns - path where the font will be written.
-   */
-  private getDistPath(): string {
-    return this.inputFiles?.at(0)?.distPath!;
-  }
-
-  /**
    * Creates a SVGFontStream and will add them into a buffer which will eventually
    * be written in the provided distPath (writing is not done here).
    * @returns - buffer data containing the svg font information ready to be written
@@ -66,7 +61,7 @@ class SVGFontTransformer extends Transformer {
           this.logger.debug(`SVG Font buffer data created. It will be written to ${filename}.`);
           resolve({
             data: buffers.toString('utf-8'),
-            fileCreated: path.join(this.getDistPath(), filename),
+            fileCreated: path.join(this.destination, filename),
           });
         })
         .on('error', reject);
@@ -88,12 +83,18 @@ class SVGFontTransformer extends Transformer {
   /**
    * Transform the svg icons into a single svg font file
    */
-  public override async transformFiles() {
-    if (this.inputFiles) {
-      const font = await this.generateSVGFont();
-      // we're technically not transforming every icon file, but rather reducing all icon files to one
-      this.outputFiles = [{ distPath: font.fileCreated, srcPath: font.fileCreated, data: font.data }];
-    }
+
+  public override transformFilesAsync(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.generateSVGFont()
+        .then((font) => {
+          this.outputFiles = [{ distPath: font.fileCreated, srcPath: font.fileCreated, data: font.data }];
+          resolve();
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   }
 }
 

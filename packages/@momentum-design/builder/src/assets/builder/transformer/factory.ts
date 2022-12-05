@@ -11,14 +11,14 @@ type Transformers = Transformer | SVGTransformer;
  *
  * This allows creating a Transformer dynamically, based on the passed in type
  */
-function createTransformer(format: Formats): Transformers {
+function createTransformer(format: Formats, destination: string): Transformers {
   switch (format.type) {
     case CONSTANTS.FORMATS.OPTIMISED_SVG:
-      return new SVGTransformer(format);
+      return new SVGTransformer(format, destination);
     case CONSTANTS.FORMATS.SVG_FONT:
-      return new SVGFontTransformer(format);
+      return new SVGFontTransformer(format, destination);
     default:
-      return new Transformer(format);
+      return new Transformer(format, destination);
   }
 }
 

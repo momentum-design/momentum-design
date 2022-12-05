@@ -19,11 +19,15 @@ const FORMATS = {
   SVG_FONT: 'SVG_FONT' as const,
 };
 
+// http://en.wikipedia.org/wiki/Private_Use_(Unicode)
+const START_CODEPOINT = 0xf101;
+
 const CONSTANTS = {
   ...Builder.CONSTANTS,
   FORMATS,
   PACKAGE,
   TYPE,
+  START_CODEPOINT,
 };
 
 export default CONSTANTS;

@@ -10,8 +10,8 @@ import Transformer from './transformer';
  * @beta
  */
 class SVGTransformer extends Transformer {
-  constructor(format: Formats) {
-    super(format, 'svg');
+  constructor(format: Formats, destination: string) {
+    super(format, destination, 'svg');
   }
 
   /**
@@ -32,7 +32,7 @@ class SVGTransformer extends Transformer {
   /**
    * Transform the passed in files by optimising each of them
    */
-  public override async transformFiles() {
+  public override transformFilesSync() {
     this.outputFiles = this.inputFiles?.map((file) => this.optimize(file));
   }
 }
