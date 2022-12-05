@@ -9,7 +9,7 @@
       "filters": {
         "types": ["theme"]
       },
-      "cssSelector": ".webex-dark",
+      "cssSelector": ".md-theme-webex-dark",
       "targets": [
         "core/*.json",
         "theme/webex/dark.json"
@@ -20,7 +20,7 @@
       "filters": {
         "types": ["theme"]
       },
-      "cssSelector": ".webex-light",
+      "cssSelector": ".md-theme-webex-light",
       "targets": [
         "core/*.json",
         "theme/webex/light.json"
