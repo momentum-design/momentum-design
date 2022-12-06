@@ -1,0 +1,22 @@
+button {
+    appearance: none;
+    outline: none;
+    border: none;
+    background-color: var(--figma-color-bg-brand);
+    color: var(--figma-color-text);
+    padding: 10px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: var(--figma-color-bg-brand-hover);
+  }
+
+  button:active {
+    background-color: var(--figma-color-bg-brand-pressed);
+  }
+
+  button:disabled {
+    background-color: var(--figma-color-bg-disabled);
+    cursor: not-allowed;
+  }
