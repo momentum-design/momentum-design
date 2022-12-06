@@ -3,7 +3,7 @@
     "small": {
       "value": "4px",
       "type": "borderRadius",
-      "description": "Small border radius.\nbuttz"
+      "description": "Small border radius."
     },
     "medium": {
       "value": "8px",
