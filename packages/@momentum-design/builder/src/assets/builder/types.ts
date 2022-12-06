@@ -35,7 +35,7 @@ interface CSSFormat {
  */
 export interface SVGFontFormat {
   type: typeof CONSTANTS.FORMATS.SVG_FONT;
-  config: svgicons2svgfont.SvgIcons2FontOptions;
+  config: svgicons2svgfont.SvgIcons2FontOptions & {fontName: string};
 }
 
 /**
@@ -45,7 +45,7 @@ export interface SVGFontFormat {
  */
 export interface TTFFormat {
   type: typeof CONSTANTS.FORMATS.TTF;
-  config: svg2ttf.FontOptions;
+  config: svg2ttf.FontOptions & {fontName: string};
 }
 
 /**
@@ -55,7 +55,7 @@ export interface TTFFormat {
  */
 export interface WOFFFormat {
   type: typeof CONSTANTS.FORMATS.WOFF;
-  config: ttf2woff.Options;
+  config: ttf2woff.Options & {fontName: string};
 }
 
 /**

@@ -14,17 +14,17 @@ class WOFFTransformer extends Transformer {
   }
 
   /**
-   * Converts ttf font buffer to woff buffer.
+   * Converts TTF font buffer to WOFF buffer.
    *
    * @param SVGFontBuffer - ttf buffer to be transformed
    * @returns - object with final path and buffer
    */
   public generateWOFFFont(TTFFontBuffer: Buffer): {data: Buffer, fileCreated: string } {
-    const filename = `${this.format?.config?.fontName}.woff`;
+    const { fontName, ...ttf2woffConfig } = this.format.config;
+    const filename = `${fontName}.woff`;
     const data = Buffer.from(
-      ttf2woff(TTFFontBuffer).buffer,
+      ttf2woff(TTFFontBuffer, ttf2woffConfig).buffer,
     );
-
     return {
       data,
       fileCreated: path.join(this.destination, filename),
