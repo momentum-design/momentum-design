@@ -1,5 +1,9 @@
 {
   "spacing": {
+    "none": {
+      "value": "0px",
+      "type": "spacing"
+    },
     "micro": {
       "value": "2px",
       "type": "spacing"
