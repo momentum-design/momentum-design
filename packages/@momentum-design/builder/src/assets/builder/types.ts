@@ -1,3 +1,4 @@
+import { FontOptions } from 'svg2ttf';
 import { SvgIcons2FontOptions } from 'svgicons2svgfont';
 import type { Config as SVGOConfigType } from 'svgo';
 import type { BuilderConfig } from '../../models';
@@ -34,6 +35,16 @@ interface CSSFormat {
 export interface SVGFontFormat {
   type: typeof CONSTANTS.FORMATS.SVG_FONT;
   config: SvgIcons2FontOptions;
+}
+
+/**
+ * TTF Font Format
+ *
+ * @beta
+ */
+export interface TTFFormat {
+  type: typeof CONSTANTS.FORMATS.TTF;
+  config: FontOptions;
 }
 
 /**
@@ -75,7 +86,7 @@ export type ReplacePattern = {
  *
  * @beta
  */
-export type Formats = OptimizedSVGFormat | CSSFormat | SVGFontFormat;
+export type Formats = OptimizedSVGFormat | CSSFormat | SVGFontFormat | TTFFormat;
 
 /**
  * Flow type
