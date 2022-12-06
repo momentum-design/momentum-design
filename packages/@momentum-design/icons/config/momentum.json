@@ -70,7 +70,20 @@
           "format": {
             "type": "SVG_FONT",
             "config": {
-              "fontName": "MomentumFontIcon"
+              "fontName": "MomentumFontIcon",
+              "fontHeight": 1000
+            }
+          }
+        },
+        {
+          "id": "ttf-icons",
+          "target": "./dist/fonts/*.svg",
+          "destination": "./dist/fonts",
+          "format": {
+            "type": "TTF",
+            "config": {
+              "fontName": "MomentumFontIcon",
+              "fontHeight": 1000
             }
           }
         }

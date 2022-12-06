@@ -1756,6 +1756,7 @@ __metadata:
     "@types/glob": ^8.0.0
     "@types/jest": ^29.2.3
     "@types/node": ^18.11.9
+    "@types/svg2ttf": ^5.0.1
     "@types/svgicons2svgfont": ^10.0.1
     "@types/yargs": ^17.0.13
     "@typescript-eslint/eslint-plugin": ^5.43.0
@@ -1768,6 +1769,7 @@ __metadata:
     jest: ^29.3.1
     rimraf: ^3.0.2
     style-dictionary: ^3.7.1
+    svg2ttf: ^6.0.3
     svgicons2svgfont: ^12.0.0
     svgo: ^3.0.2
     ts-jest: ^29.0.3
@@ -2544,6 +2546,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/svg2ttf@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "@types/svg2ttf@npm:5.0.1"
+  checksum: 654055f4d5290fa1804749f4372a681e056a0657e377b9095feea52fc1470b5f2e7f9e1244cc8bec4f83bc362329bff6ead9643079ceb80725560536e3da7374
+  languageName: node
+  linkType: hard
+
 "@types/svgicons2svgfont@npm:^10.0.1":
   version: 10.0.1
   resolution: "@types/svgicons2svgfont@npm:10.0.1"
@@ -2746,6 +2755,13 @@ __metadata:
   version: 0.0.10
   resolution: "@vscode/l10n@npm:0.0.10"
   checksum: 40c6d9a2b8a0e6c6588848f6f66b73593da2ada6f09486a8500c6b0a2d28cdb1ccbfb72c81c7f5a163a7f7b98122256ee9e83470090634841e49b4f81d5f9c5c
+  languageName: node
+  linkType: hard
+
+"@xmldom/xmldom@npm:^0.7.2":
+  version: 0.7.9
+  resolution: "@xmldom/xmldom@npm:0.7.9"
+  checksum: 66e37b7800132f891b885b2eceeeebc53f60b69789da10276f1584256b963d79a28c7ae2071bc53a9cd842d9b03554c761b2701fe8036d6052f26bcd0ae8f2bb
   languageName: node
   linkType: hard
 
@@ -4048,6 +4064,13 @@ __metadata:
   version: 3.1.1
   resolution: "csstype@npm:3.1.1"
   checksum: 1f7b4f5fdd955b7444b18ebdddf3f5c699159f13e9cf8ac9027ae4a60ae226aef9bbb14a6e12ca7dba3358b007cee6354b116e720262867c398de6c955ea451d
+  languageName: node
+  linkType: hard
+
+"cubic2quad@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "cubic2quad@npm:1.2.1"
+  checksum: e87375fe176546821c8f2fb1ead5b99154ed55d9d08b8ca71d546c1d6a2ab16e8e61785d3b6140e770195846b1c5c6448db08bd6cf59248f5b48090061b5adb1
   languageName: node
   linkType: hard
 
@@ -8013,7 +8036,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.15, lodash@npm:^4.17.21, lodash@npm:~4.17.15":
+"lodash@npm:^4.17.10, lodash@npm:^4.17.15, lodash@npm:^4.17.21, lodash@npm:~4.17.15":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -8475,6 +8498,13 @@ __metadata:
   version: 1.4.1
   resolution: "merge2@npm:1.4.1"
   checksum: 7268db63ed5169466540b6fb947aec313200bcf6d40c5ab722c22e242f651994619bcd85601602972d3c85bd2cc45a358a4c61937e9f11a061919a1da569b0c2
+  languageName: node
+  linkType: hard
+
+"microbuffer@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "microbuffer@npm:1.0.0"
+  checksum: 1e4e16f48f057581c1e50b1c52c7bdc25cc85532b7de493b749ecdc1464975103d0c0b42d3a4b61ecd6d332773857fbf46c8aa70c6f6d254a05376245f095f9a
   languageName: node
   linkType: hard
 
@@ -11235,6 +11265,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"svg2ttf@npm:^6.0.3":
+  version: 6.0.3
+  resolution: "svg2ttf@npm:6.0.3"
+  dependencies:
+    "@xmldom/xmldom": ^0.7.2
+    argparse: ^2.0.1
+    cubic2quad: ^1.2.1
+    lodash: ^4.17.10
+    microbuffer: ^1.0.0
+    svgpath: ^2.1.5
+  bin:
+    svg2ttf: svg2ttf.js
+  checksum: d6672cbd19d780817c752299115d2f31337b8bee8262a354e46c07d42572b3cdeba854ca4a50351081f5ff2788000a619ea35eba8420c01a16e579d505d35b59
+  languageName: node
+  linkType: hard
+
 "svgicons2svgfont@npm:^12.0.0":
   version: 12.0.0
   resolution: "svgicons2svgfont@npm:12.0.0"
@@ -11262,6 +11308,13 @@ __metadata:
   bin:
     svgo: bin/svgo
   checksum: 381ba14aa782e71ab7033227634a3041c11fa3e2769aeaf0df43a08a615de61925108e34f55af6e7c5146f4a3109e78deabb4fa9d687e36d45d1f848b4e23d17
+  languageName: node
+  linkType: hard
+
+"svgpath@npm:^2.1.5":
+  version: 2.6.0
+  resolution: "svgpath@npm:2.6.0"
+  checksum: 57bd2512b41a03a729c2880a6c771bb8ad449a9cea47c1fc43ac5cec70bf81a607591bb916ba16c21c9d87122537bcdf2ac4082dae13559c84c964b8fe868204
   languageName: node
   linkType: hard
 
