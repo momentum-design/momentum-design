@@ -112,6 +112,11 @@
               "type": "color",
               "description": "Core Token: core.white-alpha.95\nHEX: FFFFFF 95%\n--------------------------\nUsed for default primary text. \nUsed for badges, chips, text on buttons (accent, error, join) "
             },
+            "secondary": {
+              "value": "{color.core.white-alpha.70}",
+              "type": "color",
+              "description": "Core Token: core.white-alpha.70\nHEX: FFFFFF 70%\n--------------------------\nUsed for secondary text. "
+            },
             "primary-black": {
               "value": "{color.core.black-alpha.95}",
               "type": "color",
@@ -128,9 +133,7 @@
               "value": "{color.core.green.20}",
               "type": "color",
               "description": "Core Token: core.green.20\nHEX: 9FEDD8\n----\nUsed for hover state of Success, Join text"
-            }
-          },
-          "positve": {
+            },
             "default": {
               "value": "{color.core.green.40}",
               "type": "color",
@@ -465,17 +468,17 @@
               "value": "linear-gradient(180deg, {color.core.red.50} 0%, {color.decorative.violet.60} 100%)",
               "type": "color"
             },
-            "01-copy": {
+            "02": {
               "value": "linear-gradient(180deg, {color.core.yellow.30} 0%, {color.core.orange.50} 100%)",
               "type": "color",
               "description": "Core Token: core.yellow.30, \ncore.orange.50\nHEX: FFBE4F, F26B1D\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
             },
-            "01-copy-copy": {
+            "03": {
               "value": "linear-gradient(180deg, {color.decorative.lime.40} 0%, {color.decorative.cobalt.50} 100%)",
               "type": "color",
               "description": "Core Token: decorative.lime.40, \ndecorative.cobalt.50\nHEX: 93C437, 279BE8\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
             },
-            "01-copy-copy-copy": {
+            "04": {
               "value": "linear-gradient(180deg, {color.decorative.cobalt.50} 0%, {color.decorative.violet.60} 100%)",
               "type": "color",
               "description": "Core Token: decorative.cobalt.50, \ndecorative.violet.60\nHEX: 279BE8, 875AE0\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
