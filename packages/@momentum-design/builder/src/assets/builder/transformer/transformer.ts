@@ -32,12 +32,18 @@ class Transformer {
   outputFiles?: Array<FileType>;
 
   /**
+   * Destination string (= where to write files to)
+   */
+   destination: string;
+
+  /**
    * Logger
    */
   logger: ExtendedLogger;
 
-  constructor(format: Formats, loggerNameExtension?: string) {
+  constructor(format: Formats, destination: string, loggerNameExtension?: string) {
     this.format = format;
+    this.destination = destination;
     this.logger = Logger.child(generateMetadata(
       CONSTANTS.PACKAGE,
       [CONSTANTS.TYPE, 'transforms', loggerNameExtension].filter(Boolean).join('-'),
@@ -47,8 +53,13 @@ class Transformer {
   /**
    * No-op method, which has to be overridden by instances
    */
-  public transformFiles(): void {
-    this.logger.warn(`No transform rule found for the provided format ${this.format.type}. Skipping...`);
+  public transformFilesSync(): void {
+    this.logger.warn(`No sync transform rule found for the provided format ${this.format.type}. Skipping...`);
+  }
+
+  public transformFilesAsync(): Promise<void> {
+    this.logger.warn(`No async transform rule found for the provided format ${this.format.type}. Skipping...`);
+    return Promise.resolve();
   }
 
   /**
@@ -57,17 +68,30 @@ class Transformer {
    * If there was no transformation applied after running transform, it will
    * log a warning to the console
    * @param files - Array of files to transform
-   * @returns transformed files
+   * @returns promise with transformed files
    */
-  public run(files: Array<FileType>): Array<FileType> {
+  public run(files: Array<FileType>): Promise<Array<FileType>> {
     this.inputFiles = files;
     this.outputFiles = files;
 
     this.logger.debug(`Started transform of format ${this.format.type}.`);
-    this.transformFiles();
-    this.logger.debug(`Finished transform of format ${this.format.type}.`);
 
-    return this.outputFiles;
+    // Apply any synchronous transforms
+    this.transformFilesSync();
+
+    // Apply any asynchronous transforms
+    return new Promise((resolve, reject) => {
+      this.transformFilesAsync().then(() => {
+        if (!this.outputFiles) {
+          Promise.reject(new Error('Can\'t run transform if no files are provided.'));
+        } else {
+          resolve(this.outputFiles);
+        }
+      }).catch((err) => {
+        this.logger.debug(`Finished transform of format ${this.format.type}.`);
+        reject(err);
+      });
+    });
   }
 }
 

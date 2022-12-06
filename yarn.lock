@@ -1756,6 +1756,7 @@ __metadata:
     "@types/glob": ^8.0.0
     "@types/jest": ^29.2.3
     "@types/node": ^18.11.9
+    "@types/svgicons2svgfont": ^10.0.1
     "@types/yargs": ^17.0.13
     "@typescript-eslint/eslint-plugin": ^5.43.0
     "@typescript-eslint/parser": ^5.43.0
@@ -1767,6 +1768,7 @@ __metadata:
     jest: ^29.3.1
     rimraf: ^3.0.2
     style-dictionary: ^3.7.1
+    svgicons2svgfont: ^12.0.0
     svgo: ^3.0.2
     ts-jest: ^29.0.3
     typescript: ^4.9.3
@@ -2539,6 +2541,15 @@ __metadata:
   version: 2.0.1
   resolution: "@types/stack-utils@npm:2.0.1"
   checksum: 205fdbe3326b7046d7eaf5e494d8084f2659086a266f3f9cf00bccc549c8e36e407f88168ad4383c8b07099957ad669f75f2532ed4bc70be2b037330f7bae019
+  languageName: node
+  linkType: hard
+
+"@types/svgicons2svgfont@npm:^10.0.1":
+  version: 10.0.1
+  resolution: "@types/svgicons2svgfont@npm:10.0.1"
+  dependencies:
+    "@types/node": "*"
+  checksum: 03028cc34b81802e150925202dea7ce5740913fca60c9b9f4b757332bd6ec5164462ca30dbc16b24d8bc0e379b516b7ee3bde3f60b09d01bf11045a98055c8bd
   languageName: node
   linkType: hard
 
@@ -3805,6 +3816,13 @@ __metadata:
   version: 8.3.0
   resolution: "commander@npm:8.3.0"
   checksum: 0f82321821fc27b83bd409510bb9deeebcfa799ff0bf5d102128b500b7af22872c0c92cb6a0ebc5a4cf19c6b550fba9cedfa7329d18c6442a625f851377bacf0
+  languageName: node
+  linkType: hard
+
+"commander@npm:^9.3.0":
+  version: 9.4.1
+  resolution: "commander@npm:9.4.1"
+  checksum: bfb18e325a5bdf772763c2213d5c7d9e77144d944124e988bcd8e5e65fb6d45d5d4e86b09155d0f2556c9a59c31e428720e57968bcd050b2306e910a0bf3cf13
   languageName: node
   linkType: hard
 
@@ -10616,6 +10634,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sax@npm:^1.2.4":
+  version: 1.2.4
+  resolution: "sax@npm:1.2.4"
+  checksum: d3df7d32b897a2c2f28e941f732c71ba90e27c24f62ee918bd4d9a8cfb3553f2f81e5493c7f0be94a11c1911b643a9108f231dd6f60df3fa9586b5d2e3e9e1fe
+  languageName: node
+  linkType: hard
+
 "scheduler@npm:^0.23.0":
   version: 0.23.0
   resolution: "scheduler@npm:0.23.0"
@@ -11200,6 +11225,27 @@ __metadata:
   version: 1.0.0
   resolution: "supports-preserve-symlinks-flag@npm:1.0.0"
   checksum: 53b1e247e68e05db7b3808b99b892bd36fb096e6fba213a06da7fab22045e97597db425c724f2bbd6c99a3c295e1e73f3e4de78592289f38431049e1277ca0ae
+  languageName: node
+  linkType: hard
+
+"svg-pathdata@npm:^6.0.3":
+  version: 6.0.3
+  resolution: "svg-pathdata@npm:6.0.3"
+  checksum: f0e55be50c654be5d259d70945ed7e5354bf78e51c6039b4045d9f7c49d703a0c33dda36751815aec2824d046c417c35226e7491246ffff3e9164735ea428446
+  languageName: node
+  linkType: hard
+
+"svgicons2svgfont@npm:^12.0.0":
+  version: 12.0.0
+  resolution: "svgicons2svgfont@npm:12.0.0"
+  dependencies:
+    commander: ^9.3.0
+    glob: ^8.0.3
+    sax: ^1.2.4
+    svg-pathdata: ^6.0.3
+  bin:
+    svgicons2svgfont: bin/svgicons2svgfont.js
+  checksum: 55a37f08e71785b2734e58f9a73de36c935a06109b3b99d9f3760840bd1c47a7bb9c3d8c4e46971971d6b41d421e0c7333bef442d496ae75e9032e6003aed9f4
   languageName: node
   linkType: hard
 

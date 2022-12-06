@@ -1,3 +1,4 @@
+import { SvgIcons2FontOptions } from 'svgicons2svgfont';
 import type { Config as SVGOConfigType } from 'svgo';
 import type { BuilderConfig } from '../../models';
 import CONSTANTS from './constants';
@@ -26,6 +27,16 @@ interface CSSFormat {
 }
 
 /**
+ * SVG Font Format
+ *
+ * @beta
+ */
+export interface SVGFontFormat {
+  type: typeof CONSTANTS.FORMATS.SVG_FONT;
+  config: SvgIcons2FontOptions;
+}
+
+/**
  * File Type
  *
  * @beta
@@ -35,6 +46,19 @@ export type FileType = {
   distPath?: string;
   data?: any;
 };
+
+/**
+ * Glyph Icon Type used in SVG Font
+ *
+ * @beta
+ */
+export type GlyphIconData = {
+  name: string;
+  srcPath: string;
+  codepoint: number;
+  codepointHexa: string;
+  unicode: string;
+}
 
 /**
  * Replace pattern, used for modifying the file name
@@ -51,7 +75,7 @@ export type ReplacePattern = {
  *
  * @beta
  */
-export type Formats = OptimizedSVGFormat | CSSFormat;
+export type Formats = OptimizedSVGFormat | CSSFormat | SVGFontFormat;
 
 /**
  * Flow type

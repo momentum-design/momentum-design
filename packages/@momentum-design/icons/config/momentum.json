@@ -1,61 +1,81 @@
 {
-    "definitions": [{
-        "buildName": "Icons",
-        "flows": [{
-            "id": "optimise-core-svgs",
-            "target": "./src/core/**/*.*",
-            "destination": "./dist/svg",
-            "fileNameReplacePatterns": [{
-                "searchValue": "_",
-                "replaceValue": "-"
-            }],
-            "format": {
-                "type": "OPTIMIZED_SVG",
-                "config": {
-                    "mergePaths": true,
-                    "plugins": [
-                        {
-                            "name": "preset-default",
-                            "params": {
-                                "overrides": {
-                                    "removeViewBox": false
-                                }
-                            }
-                        },
-                        {
-                            "name": "removeAttrs",
-                            "params": {
-                              "attrs": "(fill|stroke)"
-                            }
-                        }
-                    ]
-                }
+  "definitions": [
+    {
+      "buildName": "Icons",
+      "flows": [
+        {
+          "id": "optimise-core-svgs",
+          "target": "./src/core/**/*.*",
+          "destination": "./dist/svg",
+          "fileNameReplacePatterns": [
+            {
+              "searchValue": "_",
+              "replaceValue": "-"
             }
-        }, {
-            "id": "optimise-brand-colored-svgs",
-            "target": "./src/{colored,brand}/**/*.*",
-            "destination": "./dist/svg",
-            "fileNameReplacePatterns": [{
-                "searchValue": "_",
-                "replaceValue": "-"
-            }],
-            "format": {
-                "type": "OPTIMIZED_SVG",
-                "config": {
-                    "mergePaths": true,
-                    "plugins": [
-                        {
-                            "name": "preset-default",
-                            "params": {
-                                "overrides": {
-                                    "removeViewBox": false
-                                }
-                            }
-                        }
-                    ]
+          ],
+          "format": {
+            "type": "OPTIMIZED_SVG",
+            "config": {
+              "mergePaths": true,
+              "plugins": [
+                {
+                  "name": "preset-default",
+                  "params": {
+                    "overrides": {
+                      "removeViewBox": false
+                    }
+                  }
+                },
+                {
+                  "name": "removeAttrs",
+                  "params": {
+                    "attrs": "(fill|stroke)"
+                  }
                 }
+              ]
             }
-        }],
-        "type": "assets"
-    }]
+          }
+        },
+        {
+          "id": "optimise-brand-colored-svgs",
+          "target": "./src/{colored,brand}/**/*.*",
+          "destination": "./dist/svg",
+          "fileNameReplacePatterns": [
+            {
+              "searchValue": "_",
+              "replaceValue": "-"
+            }
+          ],
+          "format": {
+            "type": "OPTIMIZED_SVG",
+            "config": {
+              "mergePaths": true,
+              "plugins": [
+                {
+                  "name": "preset-default",
+                  "params": {
+                    "overrides": {
+                      "removeViewBox": false
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "SVG-font-icons",
+          "target": "./dist/svg/**/*.*",
+          "destination": "./dist/fonts",
+          "format": {
+            "type": "SVG_FONT",
+            "config": {
+              "fontName": "MomentumFontIcon"
+            }
+          }
+        }
+      ],
+      "type": "assets"
+    }
+  ]
 }
