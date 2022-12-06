@@ -58,39 +58,48 @@
           "partner": {
             "pdf": {
               "value": "#0078d6",
-              "type": "color"
+              "type": "color",
+              "description": "Used for content card component. (pdf)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
             },
             "word": {
               "value": "#0078d6",
-              "type": "color"
+              "type": "color",
+              "description": "Used for content card component. (word)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
             },
             "powerpoint": {
               "value": "#d93e17",
-              "type": "color"
+              "type": "color",
+              "description": "Used for content card component. (powerpoint)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
             },
             "excel": {
               "value": "#00893e",
-              "type": "color"
+              "type": "color",
+              "description": "Used for content card component. (excel)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
             },
             "onenote": {
               "value": "#b839db",
-              "type": "color"
+              "type": "color",
+              "description": "Used for content card component. (onenote)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
             },
             "doc": {
               "value": "#4285f4",
-              "type": "color"
+              "type": "color",
+              "description": "Used for content card component. (doc)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
             },
             "sheets": {
               "value": "#f4b400",
-              "type": "color"
+              "type": "color",
+              "description": "Used for content card component. (sheets)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
             },
             "slides": {
               "value": "#0f9d58",
-              "type": "color"
+              "type": "color",
+              "description": "Used for content card component. (slides)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
             },
             "keynotes": {
               "value": "#029cfb",
-              "type": "color"
+              "type": "color",
+              "description": "Used for content card component. (keynote)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
             }
           }
         }
@@ -102,6 +111,11 @@
               "value": "{color.core.white-alpha.95}",
               "type": "color",
               "description": "Core Token: core.white-alpha.95\nHEX: FFFFFF 95%\n--------------------------\nUsed for default primary text. \nUsed for badges, chips, text on buttons (accent, error, join) "
+            },
+            "secondary": {
+              "value": "{color.core.white-alpha.70}",
+              "type": "color",
+              "description": "Core Token: core.white-alpha.70\nHEX: FFFFFF 70%\n--------------------------\nUsed for secondary text. "
             },
             "primary-black": {
               "value": "{color.core.black-alpha.95}",
@@ -119,9 +133,7 @@
               "value": "{color.core.green.20}",
               "type": "color",
               "description": "Core Token: core.green.20\nHEX: 9FEDD8\n----\nUsed for hover state of Success, Join text"
-            }
-          },
-          "positve": {
+            },
             "default": {
               "value": "{color.core.green.40}",
               "type": "color",
@@ -433,6 +445,55 @@
               "value": "{color.core.green.50}",
               "type": "color",
               "description": "Core Token: core.green.50\nHEX: 27a17a\n------------------\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
+            }
+          }
+        },
+        "illustration": {
+          "positive": {
+            "value": "linear-gradient(180deg, {color.core.green.40} 0%, {color.decorative.lime.40} 100%)",
+            "type": "color",
+            "description": "Core Token: core.green.40, \ndecorative.lime.40\nHEX: 3CC29A, 93C437\n---------------------------\nUsed for success-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
+          },
+          "negative": {
+            "value": "linear-gradient(180deg, {color.decorative.pink.50} 0%, {color.core.red.60} 100%)",
+            "type": "color",
+            "description": "Core Token: \ndecorative.pink.50, \ncore.red.60\nHEX: F0677E, DB1F2E\n---------------------------\nUsed for error-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
+          },
+          "onboarding": {
+            "00": {
+              "value": "linear-gradient(180deg, {color.core.yellow.30} 0%, {color.decorative.lime.40} 100%)",
+              "type": "color"
+            },
+            "01": {
+              "value": "linear-gradient(180deg, {color.core.red.50} 0%, {color.decorative.violet.60} 100%)",
+              "type": "color"
+            },
+            "02": {
+              "value": "linear-gradient(180deg, {color.core.yellow.30} 0%, {color.core.orange.50} 100%)",
+              "type": "color",
+              "description": "Core Token: core.yellow.30, \ncore.orange.50\nHEX: FFBE4F, F26B1D\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
+            },
+            "03": {
+              "value": "linear-gradient(180deg, {color.decorative.lime.40} 0%, {color.decorative.cobalt.50} 100%)",
+              "type": "color",
+              "description": "Core Token: decorative.lime.40, \ndecorative.cobalt.50\nHEX: 93C437, 279BE8\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
+            },
+            "04": {
+              "value": "linear-gradient(180deg, {color.decorative.cobalt.50} 0%, {color.decorative.violet.60} 100%)",
+              "type": "color",
+              "description": "Core Token: decorative.cobalt.50, \ndecorative.violet.60\nHEX: 279BE8, 875AE0\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
+            }
+          },
+          "empty": {
+            "01": {
+              "value": "linear-gradient(180deg, {color.decorative.cobalt.50} 0%, {color.decorative.violet.60} 100%)",
+              "type": "color",
+              "description": "Core Token: decorative.cobalt.50\ndecorative.violet.60\nHEX: 279BE8, 875AE0\n---------------------------\nUsed for empty state.\nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
+            },
+            "00": {
+              "value": "linear-gradient(180deg, {color.decorative.lime.40} 0%, {color.decorative.cobalt.50} 100%)",
+              "type": "color",
+              "description": "Core Token: decorative.lime.40 0%, decorative.cobalt.50 100%\nHEX: linear-gradient(180deg, #93c437 0%, #279be8 100%)\n---------------------------\nUsed for empty state.\nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
             }
           }
         }
