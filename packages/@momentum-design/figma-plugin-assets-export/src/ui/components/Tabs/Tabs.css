@@ -1,0 +1,25 @@
+.tabs {
+    height: 40px;
+    width: 100%;
+    border-bottom: 1px solid var(--figma-color-text-tertiary);
+}
+
+.tab {
+    color: var(--figma-color-text-tertiary);
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+.tab:hover {
+    color: var(--figma-color-text-secondary);
+}
+
+.tab.active{
+    color: var(--figma-color-text-primary);
+}

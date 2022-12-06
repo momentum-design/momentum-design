@@ -1,0 +1,10 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.assets-type-header {
+    font-size: 12px;
+    color: var(--figma-color-text-tertiary);
+}

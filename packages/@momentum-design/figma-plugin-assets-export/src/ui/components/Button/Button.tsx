@@ -4,7 +4,7 @@ import './Button.css';
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
 function Button(props: Props) {
-  return <button {...props}></button>;
+  return <button className='button' {...props}></button>;
 }
 
 export default Button;
