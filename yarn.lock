@@ -1759,6 +1759,7 @@ __metadata:
     "@types/svg2ttf": ^5.0.1
     "@types/svgicons2svgfont": ^10.0.1
     "@types/ttf2woff": ^2.0.2
+    "@types/wawoff2": ^1.0.0
     "@types/yargs": ^17.0.13
     "@typescript-eslint/eslint-plugin": ^5.43.0
     "@typescript-eslint/parser": ^5.43.0
@@ -1776,6 +1777,7 @@ __metadata:
     ts-jest: ^29.0.3
     ttf2woff: ^3.0.0
     typescript: ^4.9.3
+    wawoff2: ^2.0.1
     yargs: ^17.6.2
   bin:
     md-builder: ./dist/cli/index.js
@@ -2596,6 +2598,15 @@ __metadata:
   version: 2.0.6
   resolution: "@types/unist@npm:2.0.6"
   checksum: 25cb860ff10dde48b54622d58b23e66214211a61c84c0f15f88d38b61aa1b53d4d46e42b557924a93178c501c166aa37e28d7f6d994aba13d24685326272d5db
+  languageName: node
+  linkType: hard
+
+"@types/wawoff2@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@types/wawoff2@npm:1.0.0"
+  dependencies:
+    "@types/node": "*"
+  checksum: bae9e32bcfea823e9d83fc3285cb24b799924a7cb0d1b4735b020b993c58c62118e7578d3a05c1831361b61f7e330cb9386bb6a004ac98d57169b6d5c61f9054
   languageName: node
   linkType: hard
 
@@ -12307,6 +12318,18 @@ __metadata:
   dependencies:
     makeerror: 1.0.12
   checksum: ad7a257ea1e662e57ef2e018f97b3c02a7240ad5093c392186ce0bcf1f1a60bbadd520d073b9beb921ed99f64f065efb63dfc8eec689a80e569f93c1c5d5e16c
+  languageName: node
+  linkType: hard
+
+"wawoff2@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "wawoff2@npm:2.0.1"
+  dependencies:
+    argparse: ^2.0.1
+  bin:
+    woff2_compress.js: bin/woff2_compress.js
+    woff2_decompress.js: bin/woff2_decompress.js
+  checksum: 7fbe0c5968713afc2f2fe854e94eec2424d90f2f76d9515ab50455dd9e446dbfb5a46a9fefc7b861dcbd68cb319cfdc084c6336ec3fbefab553d26ced839edf1
   languageName: node
   linkType: hard
 

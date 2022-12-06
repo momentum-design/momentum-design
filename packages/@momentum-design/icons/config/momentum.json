@@ -105,6 +105,21 @@
               "fontName": "MomentumFontIcon"
             }
           }
+        },
+        {
+          "id": "woff2-icons",
+          "target": "./dist/fonts/*.ttf",
+          "destination": "./dist/fonts",
+          "format": {
+            "type": "WOFF2",
+            "encoding": {
+              "read": null,
+              "write": null
+            },
+            "config": {
+              "fontName": "MomentumFontIcon"
+            }
+          }
         }
       ],
       "type": "assets"
