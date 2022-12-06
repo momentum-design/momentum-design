@@ -1,5 +1,10 @@
 {
   "border-width": {
+    "none": {
+      "value": "0px",
+      "type": "borderWidth",
+      "description": "Border Width None"
+    },
     "small": {
       "value": "1px",
       "type": "borderWidth",
