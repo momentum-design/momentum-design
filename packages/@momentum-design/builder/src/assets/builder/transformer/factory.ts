@@ -5,8 +5,15 @@ import SVGTransformer from './svg-transformer';
 import Transformer from './transformer';
 import TTFTransformer from './ttf-transformer';
 import WOFFTransformer from './woff-transformer';
+import WOFF2Transformer from './woff2-transformer';
 
-type Transformers = Transformer | SVGTransformer;
+type Transformers =
+  | Transformer
+  | SVGTransformer
+  | SVGFontTransformer
+  | TTFTransformer
+  | WOFFTransformer
+  | WOFF2Transformer;
 
 /**
  * Factory Pattern
@@ -23,6 +30,8 @@ function createTransformer(format: Formats, destination: string): Transformers {
       return new TTFTransformer(format, destination);
     case CONSTANTS.FORMATS.WOFF:
       return new WOFFTransformer(format, destination);
+    case CONSTANTS.FORMATS.WOFF2:
+      return new WOFF2Transformer(format, destination);
     default:
       return new Transformer(format, destination);
   }
