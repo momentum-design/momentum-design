@@ -6,7 +6,7 @@ import {
 } from '@momentum-design/telemetry';
 import path from 'path';
 import CONSTANTS from './constants';
-import type { FileType, ReplacePattern } from './types';
+import type { Encoding, FileType, ReplacePattern } from './types';
 
 const logger = Logger.child(generateMetadata(CONSTANTS.PACKAGE, `${CONSTANTS.TYPE}-file-handler`));
 
@@ -23,8 +23,14 @@ class FileHandler {
    */
   replacePatterns?: Array<ReplacePattern>;
 
-  constructor(replacePatterns?: Array<ReplacePattern>) {
+  /**
+   * Encoding the file is read with.
+   */
+  encoding: Encoding = { write: 'utf-8', read: 'utf-8' };
+
+  constructor(replacePatterns?: Array<ReplacePattern>, encoding?: Encoding) {
     this.replacePatterns = replacePatterns;
+    this.encoding = encoding || { write: 'utf-8', read: 'utf-8' };
   }
 
   /**
@@ -112,9 +118,9 @@ class FileHandler {
    * @param file - File to read data from
    * @returns Promise, which resolves to the file object with data if successful
    */
-  public readFile(file: FileType): Promise<FileType> {
+  public readFile(file: FileType, encoding: string): Promise<FileType> {
     return new Promise<FileType>((resolve, reject) => {
-      fs.readFile(file.srcPath, 'utf-8', (error, data) => {
+      fs.readFile(file.srcPath, encoding, (error, data) => {
         if (error) {
           logger.error(`Error while reading file (${file.srcPath}): ${error}`);
           reject(error);
@@ -133,7 +139,7 @@ class FileHandler {
    * @param file - File object, including `data` and `distPath`
    * @returns Promise, which resolves to the file object if successful
    */
-  public writeFile(file: FileType): Promise<FileType> {
+  public writeFile(file: FileType, encoding: string): Promise<FileType> {
     return new Promise<FileType>((resolve, reject) => {
       if (!file.distPath) {
         const errorMessage = `No distPath provided for file: ${file}`;
@@ -142,7 +148,7 @@ class FileHandler {
         return;
       }
 
-      fs.writeFile(file.distPath, file.data, { flag: 'w', encoding: 'utf-8' }, (error) => {
+      fs.writeFile(file.distPath, file.data, { flag: 'w', encoding }, (error) => {
         if (error) {
           logger.error(`Error while writing file (${file.distPath}): ${error}`);
           reject(error);
@@ -160,7 +166,7 @@ class FileHandler {
    * @returns Promise, which resolves to file array if successful
    */
   public readFiles(files: Array<FileType>): Promise<FileType[]> {
-    return Promise.all(files.map(this.readFile));
+    return Promise.all(files.map((file) => this.readFile(file, this.encoding.read)));
   }
 
   /**
@@ -169,7 +175,7 @@ class FileHandler {
    * @returns Promise, which resolves to file array if successful
    */
   public writeFiles(files: Array<FileType>): Promise<FileType[]> {
-    return Promise.all(files.map(this.writeFile));
+    return Promise.all(files.map((file) => this.writeFile(file, this.encoding.write)));
   }
 }
 
