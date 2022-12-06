@@ -59,6 +59,16 @@ export interface WOFFFormat {
 }
 
 /**
+ * WOFF2 Font Format
+ *
+ * @beta
+ */
+export interface WOFF2Format {
+  type: typeof CONSTANTS.FORMATS.WOFF2;
+  config: {fontName: string};
+}
+
+/**
  * File Type
  *
  * @beta
@@ -102,7 +112,7 @@ export type Encoding = {
  *
  * @beta
  */
-export type Formats = (OptimizedSVGFormat | CSSFormat | SVGFontFormat | TTFFormat | WOFFFormat) & {
+export type Formats = (OptimizedSVGFormat | CSSFormat | SVGFontFormat | TTFFormat | WOFFFormat | WOFF2Format) & {
   encoding?: Encoding;
 };
 

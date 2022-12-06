@@ -51,6 +51,7 @@
     "svgicons2svgfont": "^12.0.0",
     "svgo": "^3.0.2",
     "ttf2woff": "^3.0.0",
+    "wawoff2": "^2.0.1",
     "yargs": "^17.6.2"
   },
   "devDependencies": {
@@ -62,6 +63,7 @@
     "@types/node": "^18.11.9",
     "@types/svg2ttf": "^5.0.1",
     "@types/svgicons2svgfont": "^10.0.1",
+    "@types/wawoff2": "^1.0.0",
     "@types/yargs": "^17.0.13",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.43.0",
