@@ -1,6 +1,7 @@
-import { FontOptions } from 'svg2ttf';
-import { SvgIcons2FontOptions } from 'svgicons2svgfont';
+import * as svg2ttf from 'svg2ttf';
+import * as svgicons2svgfont from 'svgicons2svgfont';
 import type { Config as SVGOConfigType } from 'svgo';
+import * as ttf2woff from 'ttf2woff';
 import type { BuilderConfig } from '../../models';
 import CONSTANTS from './constants';
 
@@ -34,7 +35,7 @@ interface CSSFormat {
  */
 export interface SVGFontFormat {
   type: typeof CONSTANTS.FORMATS.SVG_FONT;
-  config: SvgIcons2FontOptions;
+  config: svgicons2svgfont.SvgIcons2FontOptions;
 }
 
 /**
@@ -44,7 +45,17 @@ export interface SVGFontFormat {
  */
 export interface TTFFormat {
   type: typeof CONSTANTS.FORMATS.TTF;
-  config: FontOptions;
+  config: svg2ttf.FontOptions;
+}
+
+/**
+ * WOFF Font Format
+ *
+ * @beta
+ */
+export interface WOFFFormat {
+  type: typeof CONSTANTS.FORMATS.WOFF;
+  config: ttf2woff.Options;
 }
 
 /**
@@ -69,7 +80,7 @@ export type GlyphIconData = {
   codepoint: number;
   codepointHexa: string;
   unicode: string;
-}
+};
 
 /**
  * Replace pattern, used for modifying the file name
@@ -81,12 +92,19 @@ export type ReplacePattern = {
   replaceValue: string;
 };
 
+export type Encoding = {
+  write: string;
+  read: string;
+};
+
 /**
  * Allowed Formats, which can be transformed to
  *
  * @beta
  */
-export type Formats = OptimizedSVGFormat | CSSFormat | SVGFontFormat | TTFFormat;
+export type Formats = (OptimizedSVGFormat | CSSFormat | SVGFontFormat | TTFFormat | WOFFFormat) & {
+  encoding?: Encoding;
+};
 
 /**
  * Flow type

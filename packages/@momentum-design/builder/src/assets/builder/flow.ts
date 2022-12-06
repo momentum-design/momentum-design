@@ -51,8 +51,7 @@ class Flow {
     this.destination = path.join(process.cwd(), flowData.destination);
     this.format = flowData.format;
     this.files = [];
-
-    this.fileHandler = new FileHandler(flowData.fileNameReplacePatterns);
+    this.fileHandler = new FileHandler(flowData.fileNameReplacePatterns, flowData?.format?.encoding);
   }
 
   /**

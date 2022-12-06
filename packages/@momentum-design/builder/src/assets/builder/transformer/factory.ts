@@ -4,6 +4,7 @@ import SVGFontTransformer from './svg-font-transformer';
 import SVGTransformer from './svg-transformer';
 import Transformer from './transformer';
 import TTFTransformer from './ttf-transformer';
+import WOFFTransformer from './woff-transformer';
 
 type Transformers = Transformer | SVGTransformer;
 
@@ -20,6 +21,8 @@ function createTransformer(format: Formats, destination: string): Transformers {
       return new SVGFontTransformer(format, destination);
     case CONSTANTS.FORMATS.TTF:
       return new TTFTransformer(format, destination);
+    case CONSTANTS.FORMATS.WOFF:
+      return new WOFFTransformer(format, destination);
     default:
       return new Transformer(format, destination);
   }
