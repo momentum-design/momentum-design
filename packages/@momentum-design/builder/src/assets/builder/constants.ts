@@ -18,6 +18,7 @@ const FORMATS = {
   CSS: 'CSS' as const,
   SVG_FONT: 'SVG_FONT' as const,
   TTF: 'TTF' as const,
+  WOFF: 'WOFF' as const,
 };
 
 // http://en.wikipedia.org/wiki/Private_Use_(Unicode)

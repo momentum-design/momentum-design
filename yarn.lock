@@ -1758,6 +1758,7 @@ __metadata:
     "@types/node": ^18.11.9
     "@types/svg2ttf": ^5.0.1
     "@types/svgicons2svgfont": ^10.0.1
+    "@types/ttf2woff": ^2.0.2
     "@types/yargs": ^17.0.13
     "@typescript-eslint/eslint-plugin": ^5.43.0
     "@typescript-eslint/parser": ^5.43.0
@@ -1773,6 +1774,7 @@ __metadata:
     svgicons2svgfont: ^12.0.0
     svgo: ^3.0.2
     ts-jest: ^29.0.3
+    ttf2woff: ^3.0.0
     typescript: ^4.9.3
     yargs: ^17.6.2
   bin:
@@ -2578,6 +2580,15 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: 9578470db0b527c26e246a1220ae9bffc6bf47f20f89c54aac467c083ab1f7e16c00d9a7b4bb6cb4e2dfae465027270827e5908a6236063f6214625e50585d78
+  languageName: node
+  linkType: hard
+
+"@types/ttf2woff@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "@types/ttf2woff@npm:2.0.2"
+  dependencies:
+    "@types/node": "*"
+  checksum: 180389d845fb0f180f40527d6da0d8a34af9b2f3ab57ef2ac8691b3d7603fc728dd966fe1554d221b402807a730bd6da36a66f306b652bfd0666450dffa95535
   languageName: node
   linkType: hard
 
@@ -9640,6 +9651,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pako@npm:^1.0.0":
+  version: 1.0.11
+  resolution: "pako@npm:1.0.11"
+  checksum: 1be2bfa1f807608c7538afa15d6f25baa523c30ec870a3228a89579e474a4d992f4293859524e46d5d87fd30fa17c5edf34dbef0671251d9749820b488660b16
+  languageName: node
+  linkType: hard
+
 "param-case@npm:^3.0.4":
   version: 3.0.4
   resolution: "param-case@npm:3.0.4"
@@ -11622,6 +11640,18 @@ __metadata:
   peerDependencies:
     typescript: ">=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta"
   checksum: 1843f4c1b2e0f975e08c4c21caa4af4f7f65a12ac1b81b3b8489366826259323feb3fc7a243123453d2d1a02314205a7634e048d4a8009921da19f99755cdc48
+  languageName: node
+  linkType: hard
+
+"ttf2woff@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "ttf2woff@npm:3.0.0"
+  dependencies:
+    argparse: ^2.0.1
+    pako: ^1.0.0
+  bin:
+    ttf2woff: ttf2woff.js
+  checksum: 8613005969d20ae313ad2815229c660d87f73992339eafe24813c28228dc324284452a6c0f81301f19efa03777a5686c3300e8d1dee14181518261c86cbfa289
   languageName: node
   linkType: hard
 

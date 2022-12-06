@@ -81,9 +81,28 @@
           "destination": "./dist/fonts",
           "format": {
             "type": "TTF",
+            "encoding": {
+              "read": "utf-8",
+              "write": null
+            },
             "config": {
               "fontName": "MomentumFontIcon",
               "fontHeight": 1000
+            }
+          }
+        },
+        {
+          "id": "woff-icons",
+          "target": "./dist/fonts/*.ttf",
+          "destination": "./dist/fonts",
+          "format": {
+            "type": "WOFF",
+            "encoding": {
+              "read": null,
+              "write": null
+            },
+            "config": {
+              "fontName": "MomentumFontIcon"
             }
           }
         }
