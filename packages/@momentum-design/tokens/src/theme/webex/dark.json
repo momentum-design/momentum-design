@@ -171,6 +171,25 @@
               }
             }
           },
+          "contrast": {
+            "neutral": {
+              "primary": {
+                "value": "{color.core.black-alpha.95}",
+                "type": "color",
+                "description": "Core Token: core.black-alpha.95\nHEX: 000000 95%\n---\nUsed for inverted text primary."
+              },
+              "secondary": {
+                "value": "{color.core.black-alpha.60}",
+                "type": "color",
+                "description": "Core Token: core.black-alpha.60\nHEX: 000000 60%\n---\nUsed for inverted text secondary."
+              },
+              "disabled": {
+                "value": "{color.core.black-alpha.40}",
+                "type": "color",
+                "description": "Core Token: core.black-alpha.40\nHEX: 000000 40%\n---\nUsed for disabled inverted text."
+              }
+            }
+          },
           "positve": {
             "active": {
               "value": "{color.core.green.20}",
@@ -423,6 +442,25 @@
                   "type": "color",
                   "description": "Core Token: core.white-alpha.40\nHEX FFFFFF 40%\n-----------------------------------\nPressed state of Secondary active buttons. Mostly for call-control component in a meeting panel."
                 }
+              }
+            }
+          },
+          "contrast": {
+            "neutral": {
+              "default": {
+                "value": "{color.core.gray.100}",
+                "type": "color",
+                "description": "Core Token: core.gray.100\nHEX 0f0f0f\n-----------------------------------\nRest state of inverted buttons. "
+              },
+              "hover": {
+                "value": "{color.core.gray.90}",
+                "type": "color",
+                "description": "Core Token: core.gray.90\nHEX 262626\n-----------------------------------\nHover state of inverted buttons. "
+              },
+              "pressed": {
+                "value": "{color.core.gray.80}",
+                "type": "color",
+                "description": "Core Token: core.gray.80\nHEX 3b3b3b\n-----------------------------------\nPressed state of inverted buttons. "
               }
             }
           },
