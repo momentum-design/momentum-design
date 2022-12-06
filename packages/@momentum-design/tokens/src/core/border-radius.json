@@ -1,24 +1,29 @@
 {
   "border-radius": {
+    "none": {
+      "value": "0px",
+      "type": "borderRadius",
+      "description": "Border Radius: None"
+    },
     "small": {
       "value": "4px",
       "type": "borderRadius",
-      "description": "Small border radius."
+      "description": "Border Radius Small"
     },
     "medium": {
       "value": "8px",
       "type": "borderRadius",
-      "description": "Medium border radius."
+      "description": "Border Radius Medium"
     },
     "large": {
       "value": "12px",
       "type": "borderRadius",
-      "description": "Large border radius."
+      "description": "Border Radius Large"
     },
     "half-height": {
       "value": "50%",
       "type": "borderRadius",
-      "description": "Rounded pill shape."
+      "description": "Border Radius Half Height"
     }
   }
 }
