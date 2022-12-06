@@ -2,6 +2,7 @@
   "files": [
     {
       "destination": "core/complete",
+      "cssSelector": ".md-core",
       "targets": ["core/*.json"]
     },
     {
