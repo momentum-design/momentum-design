@@ -1,0 +1,8 @@
+.hint {
+    font-size: 14px;
+    color: var(--figma-color-text-secondary);
+}
+
+.hint a {
+    color: var(--figma-color-text-brand);
+}

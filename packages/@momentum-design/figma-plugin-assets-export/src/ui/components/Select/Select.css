@@ -1,0 +1,12 @@
+select {
+    background-color: transparent;
+    color: var(--figma-color-text);
+    height: 30px;
+    border: 1px solid transparent;
+    font-size: 18px;
+    width: 250px;
+}
+
+select:hover {
+    border: 1px solid grey;
+}

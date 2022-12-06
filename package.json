@@ -38,7 +38,8 @@
     "automation": "yarn workspace @momentum-design/automation",
     "docs": "yarn workspace @momentum-design/docs",
     "builder": "yarn workspace @momentum-design/builder",
-    "common": "yarn workspace @momentum-design/common"
+    "common": "yarn workspace @momentum-design/common",
+    "figma-plugin-assets-export": "yarn workspace @momentum-design/figma-plugin-assets-export"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
