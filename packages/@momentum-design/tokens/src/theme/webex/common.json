@@ -266,7 +266,7 @@
             "00": {
               "value": "{color.core.orange.70}",
               "type": "color",
-              "description": "Theme Token: core.orange.70\nHEX: 914017\n-------------------------------\nUsed for avatar"
+              "description": "Theme Token: core.orange.70\nHEX: 914017\n-------------------------------\nUsed for initial avatar (avatar w/o presence) "
             }
           },
           "decorative": {
@@ -274,63 +274,63 @@
               "00": {
                 "value": "{color.decorative.gold.70}",
                 "type": "color",
-                "description": "Core Token: decorative.gold.70\nHEX: 735107\n--------------------------\nUsed for initial avatar"
+                "description": "Core Token: decorative.gold.70\nHEX: 735107\n--------------------------\nUsed for initial avatar (avatar w/o presence) "
               }
             },
             "lime": {
               "00": {
                 "value": "{color.decorative.lime.70}",
                 "type": "color",
-                "description": "Core Token: decorative.lime.70\nHEX: 416116\n--------------------------\nUsed for initial avatar"
+                "description": "Core Token: decorative.lime.70\nHEX: 416116\n--------------------------\nUsed for initial avatar (avatar w/o presence) "
               }
             },
             "mint": {
               "00": {
                 "value": "{color.decorative.mint.70}",
                 "type": "color",
-                "description": "Core Token: decorative.mint.70\nHEX: 12615A\n--------------------------\nUsed for initial avatar"
+                "description": "Core Token: decorative.mint.70\nHEX: 12615A\n--------------------------\nUsed for initial avatar (avatar w/o presence) "
               }
             },
             "cyan": {
               "00": {
                 "value": "{color.decorative.cyan.70}",
                 "type": "color",
-                "description": "Core Token: decorative.cyan.70\nHEX: 066070\n--------------------------\nUsed for initial avatar"
+                "description": "Core Token: decorative.cyan.70\nHEX: 066070\n--------------------------\nUsed for initial avatar (avatar w/o presence) "
               }
             },
             "cobalt": {
               "00": {
                 "value": "{color.decorative.cobalt.70}",
                 "type": "color",
-                "description": "Core Token: decorative.cobalt.70\nHEX: 08599C\n--------------------------\nUsed for initial avatar"
+                "description": "Core Token: decorative.cobalt.70\nHEX: 08599C\n--------------------------\nUsed for initial avatar (avatar w/o presence) "
               }
             },
             "slate": {
               "00": {
                 "value": "{color.decorative.slate.70}",
                 "type": "color",
-                "description": "Core Token: decorative.slate.70\nHEX: 535573\n--------------------------\nUsed for initial avatar"
+                "description": "Core Token: decorative.slate.70\nHEX: 535573\n--------------------------\nUsed for initial avatar (avatar w/o presence) "
               }
             },
             "violet": {
               "00": {
                 "value": "{color.decorative.violet.70}",
                 "type": "color",
-                "description": "Core Token: decorative.violet.70\nHEX: 643ABD\n--------------------------\nUsed for initial avatar"
+                "description": "Core Token: decorative.violet.70\nHEX: 643ABD\n--------------------------\nUsed for initial avatar (avatar w/o presence) "
               }
             },
             "purple": {
               "00": {
                 "value": "{color.decorative.purple.70}",
                 "type": "color",
-                "description": "Core Token: decorative.purple.70\nHEX: 932099\n--------------------------\nUsed for initial avatar"
+                "description": "Core Token: decorative.purple.70\nHEX: 932099\n--------------------------\nUsed for initial avatar (avatar w/o presence) "
               }
             },
             "pink": {
               "00": {
                 "value": "{color.decorative.pink.70}",
                 "type": "color",
-                "description": "Core Token: decorative.pink.70\nHEX: A12A3A\n--------------------------\nUsed for initial avatar"
+                "description": "Core Token: decorative.pink.70\nHEX: A12A3A\n--------------------------\nUsed for initial avatar (avatar w/o presence) "
               }
             }
           }
