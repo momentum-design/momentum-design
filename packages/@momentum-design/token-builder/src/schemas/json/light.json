@@ -285,6 +285,9 @@
                 "neutral": {
                     "$ref": "#/definitions/BtnNeutral"
                 },
+                "contrast": {
+                    "$ref": "#/definitions/BtnContrast"
+                },
                 "positive": {
                     "$ref": "#/definitions/BgClass"
                 },
@@ -297,6 +300,7 @@
             },
             "required": [
                 "accent",
+                "contrast",
                 "negative",
                 "neutral",
                 "positive"
@@ -354,6 +358,19 @@
             },
             "required": [],
             "title": "Active"
+        },
+        "BtnContrast": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "neutral": {
+                    "$ref": "#/definitions/BgClass"
+                }
+            },
+            "required": [
+                "neutral"
+            ],
+            "title": "BtnContrast"
         },
         "BtnNeutral": {
             "type": "object",
@@ -528,7 +545,10 @@
             "additionalProperties": false,
             "properties": {
                 "neutral": {
-                    "$ref": "#/definitions/TextNeutral"
+                    "$ref": "#/definitions/ContrastNeutral"
+                },
+                "contrast": {
+                    "$ref": "#/definitions/TextContrast"
                 },
                 "positve": {
                     "$ref": "#/definitions/PositveClass"
@@ -551,6 +571,7 @@
             },
             "required": [
                 "accent",
+                "contrast",
                 "decorative",
                 "negative",
                 "neutral",
@@ -583,6 +604,60 @@
                 "hover"
             ],
             "title": "PositveClass"
+        },
+        "TextContrast": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "neutral": {
+                    "$ref": "#/definitions/ContrastNeutral"
+                }
+            },
+            "required": [
+                "neutral"
+            ],
+            "title": "TextContrast"
+        },
+        "ContrastNeutral": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "primary": {
+                    "$ref": "#/definitions/Primary"
+                },
+                "secondary": {
+                    "$ref": "#/definitions/Primary"
+                },
+                "disabled": {
+                    "$ref": "#/definitions/Primary"
+                },
+                "teams": {
+                    "$ref": "#/definitions/Negative"
+                }
+            },
+            "required": [
+                "disabled",
+                "primary",
+                "secondary"
+            ],
+            "title": "ContrastNeutral"
+        },
+        "Negative": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "default": {
+                    "$ref": "#/definitions/Primary"
+                },
+                "active": {
+                    "$ref": "#/definitions/Primary"
+                }
+            },
+            "required": [
+                "active",
+                "default"
+            ],
+            "title": "Negative"
         },
         "TextDecorative": {
             "type": "object",
@@ -628,48 +703,6 @@
                 "violet"
             ],
             "title": "TextDecorative"
-        },
-        "Negative": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "default": {
-                    "$ref": "#/definitions/Primary"
-                },
-                "active": {
-                    "$ref": "#/definitions/Primary"
-                }
-            },
-            "required": [
-                "active",
-                "default"
-            ],
-            "title": "Negative"
-        },
-        "TextNeutral": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "primary": {
-                    "$ref": "#/definitions/Primary"
-                },
-                "secondary": {
-                    "$ref": "#/definitions/Primary"
-                },
-                "disabled": {
-                    "$ref": "#/definitions/Primary"
-                },
-                "teams": {
-                    "$ref": "#/definitions/Negative"
-                }
-            },
-            "required": [
-                "disabled",
-                "primary",
-                "secondary",
-                "teams"
-            ],
-            "title": "TextNeutral"
         },
         "Surface": {
             "type": "object",
