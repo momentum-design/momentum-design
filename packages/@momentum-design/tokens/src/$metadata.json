@@ -9,6 +9,9 @@
     "core/type/display",
     "theme/webex/common",
     "theme/webex/dark",
-    "theme/webex/light"
+    "theme/webex/light",
+    "stable/theme/stable-common",
+    "stable/theme/stable-dark",
+    "stable/theme/stable-light"
   ]
 }

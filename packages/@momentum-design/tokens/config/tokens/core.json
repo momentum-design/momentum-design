@@ -26,6 +26,41 @@
         "core/*.json",
         "theme/webex/light.json"
       ]
+    },
+    {
+      "destination": "theme/webex/common-stable",
+      "filters": {
+        "types": ["theme"]
+      },
+      "cssSelector": ".md-theme-stable-commonWebex",
+      "targets": [
+        "core/*.json",
+        "stable/theme/stable-common.json"
+      ]
+    },
+    {
+      "destination": "theme/webex/dark-stable",
+      "filters": {
+        "types": ["theme"]
+      },
+      "cssSelector": ".md-theme-stable-darkWebex",
+      "targets": [
+        "core/*.json",
+        "stable/theme/stable-common.json",
+        "stable/theme/stable-dark.json"
+      ]
+    },
+    {
+      "destination": "theme/webex/light-stable",
+      "filters": {
+        "types": ["theme"]
+      },
+      "cssSelector": ".md-theme-stable-lightWebex",
+      "targets": [
+        "core/*.json",
+        "stable/theme/stable-common.json",
+        "stable/theme/stable-light.json"
+      ]
     }
   ],
   "formats": ["CSS_VARIABLES", "SCSS_VARIABLES", "WEB_JSON", "ANDROID_RESOURCES", "SWIFT_CLASS", "MD_JSON_MINIMAL"],
