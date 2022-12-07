@@ -2,36 +2,40 @@
 import React, { useState } from 'react';
 
 import './Export.css';
-import { Hint, FormRow, Select, Button, Option } from '../../components';
+import { Hint, Row, Select, Button, Option, SectionHeader } from '../../components';
 import type { AssetsType } from '../../types';
+import List from '../../components/List/List';
+import { exportData } from '../../utils/plugin';
 
-function Export() {
+interface Props {
+  settings: any;
+}
+function Export({ settings }: Props) {
   const [selectedAssetType, setSelectedAssetType] = useState<AssetsType | undefined>(undefined);
 
   const handleClick = () => {
-    parent.postMessage({ pluginMessage: { type: 'export' } }, '*');
+    exportData(parent, settings);
   };
 
   return (
-    <div className="form">
-      <FormRow>
-        <p className="assets-type-header">Assets type</p>
-      </FormRow>
-      <FormRow>
-        <Select name="assets-type" setSelectValue={setSelectedAssetType}>
+    <List>
+      <Row>
+        <SectionHeader>Assets type</SectionHeader>
+      </Row>
+      <Row>
+        <Select name="assets-type" className="asset-select" setSelectValue={setSelectedAssetType}>
           <Option value="" disabled selected>Select assets type</Option>
           <Option value="icons">Icons</Option>
           <Option value="illustrations">Illustrations</Option>
         </Select>
-      </FormRow>
-      <FormRow></FormRow>
-      <FormRow>
-        <Button disabled={selectedAssetType === undefined} onClick={handleClick}>Export assets</Button>
-      </FormRow>
-      <FormRow>
+      </Row>
+      <Row>
+        <Button disabled={selectedAssetType === undefined} onClick={handleClick}>Export</Button>
+      </Row>
+      <Row className="align-bottom-center">
         {selectedAssetType && <Hint assetType={selectedAssetType}/>}
-      </FormRow>
-    </div>
+      </Row>
+    </List>
   );
 }
 export default Export;

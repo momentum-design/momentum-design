@@ -1,3 +1,7 @@
+html {
+  font-size: 11px;
+}
+
 body {
   font-family: Inter, Helvetica Neue, Helvetica, Arial, sans-serif;
   color: var(--figma-color-text);
@@ -5,7 +9,6 @@ body {
   overflow: none;
   height: 100%;
   width: 100%;
-  font-size: 18px;
   margin: 0;
   padding: 0;
 }
@@ -13,12 +16,13 @@ body {
 .wrapper {
   display: flex;
   flex-direction: column;
-  padding: 0px 15px;
+  padding: 0px 0px;
   height: 100%;
 }
 
 .content {
   flex: 1;
   display: flex;
+  padding: 0px 15px;
   padding-bottom: 15px;
 }

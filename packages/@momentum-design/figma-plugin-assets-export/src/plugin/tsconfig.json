@@ -11,6 +11,6 @@
             "../../../../../node_modules/@figma"
         ]
     },
-    "include": ["index.ts", "constants.ts", "types.ts", "models/*.ts", "utils/*.ts"],
+    "include": ["./**/*.*", "../shared/*.ts"],
     "exclude": ["node_modules"]
 }

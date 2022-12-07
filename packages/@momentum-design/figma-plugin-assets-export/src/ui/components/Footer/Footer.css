@@ -1,11 +1,11 @@
 .footer {
-    border-top: 1px solid var(--figma-color-text-tertiary);
+    border-top: 1px solid var(--figma-color-border);
     height: 40px;
 }
 
 .copyright {
     line-height: 40px;
-    font-size: 12px;
+    font-size: 1rem;
     margin-block: auto;
     text-align: center;
 }

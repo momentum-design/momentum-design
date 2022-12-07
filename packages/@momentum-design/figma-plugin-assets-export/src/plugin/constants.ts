@@ -20,11 +20,29 @@ const FIGMA_VARIANTS = {
   SF_ALTERNATIVE: 'sf alternative',
 };
 
+const INITIAL_SETTINGS = {
+  mapPagesToFolder: [
+    { page: '✅', folder: 'core' },
+    { page: 'Colored Icons', folder: 'colored' },
+    { page: 'Brand Icons', folder: 'brand' },
+  ],
+  fileName: {
+    parts: ['SET_OR_COMPONENT_NAME', 'SF_ALTERNATIVE', 'RTL', 'WEIGHT'],
+    separator: '-',
+  },
+  exportSettings: {
+    format: 'SVG',
+    contentsOnly: true,
+    useAbsoluteBounds: false,
+  },
+};
+
 const CONSTANTS = {
   DOCUMENT,
   SEARCH_CRITERIA,
   REPLACE_TERMS,
   FIGMA_VARIANTS,
+  INITIAL_SETTINGS,
 };
 
 export {

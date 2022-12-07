@@ -1,0 +1,7 @@
+.run-icon path {
+    fill: var(--figma-color-text);
+}
+
+.disabled path {
+    fill: var(--figma-color-text-disabled);
+}

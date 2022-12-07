@@ -1,4 +1,21 @@
 .settings {
     flex: 1;
     height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.settings-area {
+    width: 100%;
+    flex: 1;
+}
+
+.action-button {
+    margin-right: 5px;
+}
+
+.right-align-button {
+    margin-right: 0px;
+    margin-left: auto;
 }
