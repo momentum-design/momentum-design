@@ -1,11 +1,11 @@
 {
     "compilerOptions": {
-        "target": "ESNext",
+        "target": "ES6",
         "useDefineForClassFields": true,
         "lib": [
             "DOM",
             "DOM.Iterable",
-            "ESNext"
+            "ES6"
         ],
         "allowJs": false,
         "skipLibCheck": true,
@@ -13,8 +13,8 @@
         "allowSyntheticDefaultImports": true,
         "strict": true,
         "forceConsistentCasingInFileNames": true,
-        "module": "ESNext",
-        "moduleResolution": "Node",
+        "module": "ES6",
+        "moduleResolution": "node",
         "resolveJsonModule": true,
         "isolatedModules": true,
         "noEmit": true,

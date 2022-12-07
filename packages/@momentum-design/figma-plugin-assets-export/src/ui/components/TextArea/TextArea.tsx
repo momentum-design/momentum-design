@@ -6,11 +6,9 @@ interface Props {
   text: string;
   disabled?: boolean;
 }
-const TextArea = React.forwardRef(({ text, disabled }: Props, ref: React.ForwardedRef<HTMLTextAreaElement>) => {
-  console.log(text);
-  return (<textarea className="textarea" disabled={disabled} ref={ref}>
+const TextArea = React.forwardRef(({ text, disabled }: Props, ref: React.ForwardedRef<HTMLTextAreaElement>) => (
+  <textarea className="textarea" disabled={disabled} ref={ref}>
     {JSON.stringify(text, null, 2)}
-  </textarea>);
-});
+  </textarea>));
 
 export default TextArea;

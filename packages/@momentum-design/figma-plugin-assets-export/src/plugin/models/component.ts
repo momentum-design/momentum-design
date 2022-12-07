@@ -2,7 +2,8 @@
 /* eslint-disable no-undef */
 
 import { CONSTANTS } from '../constants';
-import type { Asset, Config } from '../types';
+import type { Config } from '../types';
+import type { Asset } from '../../shared/types';
 import { normaliseObject } from '../utils/object';
 
 type ReplacementMap = { [key: string]: string | undefined }
@@ -40,7 +41,8 @@ class Component {
 
   get assetName() {
     let name = '';
-    const nameParts = this.config.fileName.parts.reduce((filtered: Array<string>, part) => {
+    const { fileName } = this.config;
+    const nameParts = fileName.parts.reduce((filtered: Array<string>, part) => {
       const namePart = this.replacementMap[part];
       if (namePart) {
         filtered.push(namePart);
@@ -49,7 +51,12 @@ class Component {
       return filtered;
     }, []);
 
-    name += nameParts.join(this.config.fileName.separator);
+    name += nameParts.join(fileName.separator);
+    const suffix = this.replacementMap[fileName.suffix.part];
+    if (suffix) {
+      name += fileName.suffix.separator;
+      name += suffix;
+    }
     name += '.';
     name += this.config.exportSettings.format.toLowerCase();
     return name;

@@ -3,7 +3,7 @@
         "skipLibCheck": true,
         "target": "es6",
         "lib": [
-            "es6"
+            "ES6"
         ],
         "strict": true,
         "typeRoots": [

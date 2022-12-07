@@ -6,8 +6,15 @@ import { viteSingleFile } from 'vite-plugin-singlefile';
 export default defineConfig({
   root: './src/ui',
   plugins: [reactRefresh(), viteSingleFile()],
+  define: {
+    global: 'window',
+  },
+  resolve: {
+    alias: {
+      'node-fetch': 'isomorphic-fetch',
+    },
+  },
   build: {
-    target: 'esnext',
     assetsInlineLimit: 100000000,
     chunkSizeWarningLimit: 100000000,
     cssCodeSplit: false,

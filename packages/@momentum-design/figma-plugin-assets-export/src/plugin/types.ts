@@ -1,6 +1,7 @@
-import { CONSTANTS } from './constants';
 import Component from './models/component';
+import { CONSTANTS } from './constants';
 
+type TERM = keyof typeof CONSTANTS.REPLACE_TERMS;
 /* eslint-disable no-undef */
 export type Components = Array<Component>;
 export type MapPagesToFolder = Array<{
@@ -11,9 +12,16 @@ export type MapPagesToFolder = Array<{
 export type Config = {
   mapPagesToFolder: MapPagesToFolder;
   fileName: {
-    parts: Array<keyof typeof CONSTANTS.REPLACE_TERMS>,
-    separator: string,
-  };
+    parts: Array<TERM>,
+    separator: string
+    suffix: {
+      part: TERM,
+      separator: string,
+    }
+  },
+  exclude: {
+    byVariant: string,
+  },
   exportSettings: ExportSettings;
 };
 

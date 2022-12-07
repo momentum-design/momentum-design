@@ -25,9 +25,9 @@ figma.ui.onmessage = async (msg) => {
   if (msg.type === ACTIONS.EXPORT) {
     const document = new Document(figma.root, msg.settings);
 
-    const assets = await document.getAssetsFromPages();
-    console.log(assets);
-    figma.notify('Exported successfully!');
+    const assetChunks = await document.getAssetChunksFromPages();
+
+    figma.ui.postMessage({ type: 'assets', data: assetChunks }, { origin: '*' });
   }
 
   if (msg.type === ACTIONS.SET_SETTINGS) {
@@ -38,7 +38,7 @@ figma.ui.onmessage = async (msg) => {
     // get settings from local storage
     const settings = await storage.getSettings();
     // sending settings from storage back to UI:
-    figma.ui.postMessage(settings, { origin: '*' });
+    figma.ui.postMessage({ type: 'settings', data: settings }, { origin: '*' });
   }
 
   if (msg.type === ACTIONS.RESTORE_SETTINGS) {
@@ -46,5 +46,9 @@ figma.ui.onmessage = async (msg) => {
 
     // sending settings from storage back to UI:
     figma.ui.postMessage(storage.initialSettings, { origin: '*' });
+  }
+
+  if (msg.type === ACTIONS.PR_CREATED) {
+    figma.notify(`Pull Request: ${msg.pullRequest?.data?.url}`);
   }
 };

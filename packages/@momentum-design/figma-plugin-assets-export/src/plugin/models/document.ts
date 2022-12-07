@@ -2,7 +2,8 @@
 /* eslint-disable no-undef */
 import Page from './page';
 import { CONSTANTS } from '../constants';
-import type { Asset, Config, MapPagesToFolder } from '../types';
+import type { Config, MapPagesToFolder } from '../types';
+import type { Asset } from '../../shared/types';
 
 class Document {
   node: DocumentNode;
@@ -51,9 +52,18 @@ class Document {
     return pagesTemp;
   }
 
-  async getAssetsFromPages() {
+  createChunks(array: Array<any>): Array<Array<any>> {
+    const chunkSize = 500;
+    const chunks = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+      chunks.push(array.slice(i, i + chunkSize));
+    }
+    return chunks;
+  }
+
+  async getAssetChunksFromPages(): Promise<Asset[][]> {
     if (!this.pages.length) {
-      return [];
+      return [[]];
     }
 
     const assets: Array<Asset> = [];
@@ -67,7 +77,7 @@ class Document {
       ),
     );
 
-    return assets;
+    return this.createChunks(assets);
   }
 }
 

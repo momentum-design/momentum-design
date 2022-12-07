@@ -5,8 +5,8 @@ html {
 body {
   font-family: Inter, Helvetica Neue, Helvetica, Arial, sans-serif;
   color: var(--figma-color-text);
-  position: fixed;
-  overflow: none;
+  overflow-y: auto;
+  overflow-x: none;
   height: 100%;
   width: 100%;
   margin: 0;

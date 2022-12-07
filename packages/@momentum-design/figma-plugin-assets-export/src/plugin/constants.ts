@@ -27,13 +27,33 @@ const INITIAL_SETTINGS = {
     { page: 'Brand Icons', folder: 'brand' },
   ],
   fileName: {
-    parts: ['SET_OR_COMPONENT_NAME', 'SF_ALTERNATIVE', 'RTL', 'WEIGHT'],
+    parts: ['SET_OR_COMPONENT_NAME', 'SF_ALTERNATIVE', 'RTL'],
     separator: '-',
+    suffix: {
+      part: 'WEIGHT',
+      separator: '_',
+    },
+  },
+  exclude: {
+    byVariant: 'sf alternative',
   },
   exportSettings: {
     format: 'SVG',
     contentsOnly: true,
     useAbsoluteBounds: false,
+  },
+  sync: {
+    git: {
+      githubPersonalToken:
+        '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',
+      githubOwner: 'momentum-design',
+      gitRepo: 'momentum-design',
+      gitBranch: `automation-${new Date().toISOString().replace(/\.|:/g, '-')}`,
+      prTitle: `Asset Automation ${new Date().toISOString()}`,
+      prCommitMsg: `feat(assets): Asset Automation ${new Date().toISOString()}`,
+      prMessage: `feat(assets): Asset Automation ${new Date().toISOString()}`,
+      gitRepoFilePath: 'packages/@momentum-design',
+    },
   },
 };
 
