@@ -55,7 +55,7 @@ function Export({ settings, assets, exporting, setExporting }: Props) {
     if (exporting === 'inprogress') {
       if (github) {
         github.data = assets;
-        github.data = assets;
+        setExporting('complete');
         github.pullRequest().then((data) => {
           setExporting('complete');
           prCreated(parent, data);

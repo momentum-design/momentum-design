@@ -15,7 +15,7 @@ export type Config = {
     parts: Array<TERM>,
     separator: string
     suffix: {
-      part: TERM,
+      parts: [TERM],
       separator: string,
     }
   },

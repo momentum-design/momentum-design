@@ -42,7 +42,7 @@ class Document {
       for (const child of this.node.children) {
         if (CONSTANTS.DOCUMENT.VALID_CHILD_TYPES.includes(child.type)) {
           const destination = this.getDestination(child.name, this.config.mapPagesToFolder);
-          if (destination) {
+          if (destination || destination === '') {
             pagesTemp.push(new Page(child, destination, this.config));
           }
         }

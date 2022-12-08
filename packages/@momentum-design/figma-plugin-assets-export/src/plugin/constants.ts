@@ -11,11 +11,13 @@ const REPLACE_TERMS = {
   SF_ALTERNATIVE: 'SF_ALTERNATIVE' as const,
   RTL: 'RTL' as const,
   WEIGHT: 'WEIGHT' as const,
+  COLOR: 'COLOR' as const,
 };
 
 // note: variants have to be provided lowercase here:
 const FIGMA_VARIANTS = {
   WEIGHT: 'weight',
+  COLOR: 'color',
   RTL: 'right to left',
   SF_ALTERNATIVE: 'sf alternative',
 };

@@ -40,7 +40,10 @@ class Github {
       head: this.config.gitBranch,
       changes: this.data?.map((assets, index) => ({
         files: assets.reduce((accum: {[key: string]: any}, cur: Asset) => {
-          accum[`${this.config.gitRepoFilePath}/${this.config.assetTypePath}/${cur.path}`] = cur.data;
+          accum[
+            // eslint-disable-next-line max-len
+            `${this.config.gitRepoFilePath}${this.config.assetTypePath ? `/${this.config.assetTypePath}/` : ''}${cur.path}`
+          ] = cur.data;
           return accum;
         }, {}),
         commit: `${this.config.prCommitMsg}-chunk${index}`,

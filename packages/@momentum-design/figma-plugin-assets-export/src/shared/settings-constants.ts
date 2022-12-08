@@ -8,7 +8,7 @@ const INITIAL_SETTINGS = {
     parts: ['SET_OR_COMPONENT_NAME', 'SF_ALTERNATIVE', 'RTL'],
     separator: '-',
     suffix: {
-      part: 'WEIGHT',
+      parts: ['WEIGHT', 'COLOR'],
       separator: '_',
     },
   },

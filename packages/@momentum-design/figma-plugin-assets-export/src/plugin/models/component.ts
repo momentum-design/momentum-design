@@ -29,14 +29,17 @@ class Component {
     const rtl = this.variants?.[CONSTANTS.FIGMA_VARIANTS.RTL] === 'true' ? 'rtl' : undefined;
     const sf = this.variants?.[CONSTANTS.FIGMA_VARIANTS.SF_ALTERNATIVE] === 'true' ? 'sf' : undefined;
 
-    return {
+    const result = {
       [CONSTANTS.REPLACE_TERMS.COMPONENT_NAME]: this.node.name,
       [CONSTANTS.REPLACE_TERMS.PARENT_NAME]: this.node.parent?.name,
       [CONSTANTS.REPLACE_TERMS.SET_OR_COMPONENT_NAME]: setOrComponentName,
       [CONSTANTS.REPLACE_TERMS.WEIGHT]: this.variants?.[CONSTANTS.FIGMA_VARIANTS.WEIGHT],
+      [CONSTANTS.REPLACE_TERMS.COLOR]: this.variants?.[CONSTANTS.FIGMA_VARIANTS.COLOR],
       [CONSTANTS.REPLACE_TERMS.RTL]: rtl,
       [CONSTANTS.REPLACE_TERMS.SF_ALTERNATIVE]: sf,
     };
+
+    return result;
   }
 
   get assetName() {
@@ -52,11 +55,14 @@ class Component {
     }, []);
 
     name += nameParts.join(fileName.separator);
-    const suffix = this.replacementMap[fileName.suffix.part];
-    if (suffix) {
-      name += fileName.suffix.separator;
-      name += suffix;
-    }
+    const suffixParts = fileName.suffix.parts;
+    suffixParts.forEach((suffixPart) => {
+      const suffix = this.replacementMap?.[suffixPart];
+      if (suffix) {
+        name += fileName.suffix.separator;
+        name += suffix;
+      }
+    });
     name += '.';
     name += this.config.exportSettings.format.toLowerCase();
     return name;
@@ -68,7 +74,7 @@ class Component {
         .exportAsync(this.config.exportSettings)
         .then((uint8Array: Uint8Array) => {
           resolve({
-            path: `${this.destination}/${this.assetName}`,
+            path: `${this.destination ? `${this.destination}/` : ''}${this.assetName}`,
             data: String.fromCharCode.apply(null, uint8Array as any),
           });
         })

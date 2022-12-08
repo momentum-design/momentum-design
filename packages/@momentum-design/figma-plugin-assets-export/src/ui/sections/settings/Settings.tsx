@@ -17,24 +17,32 @@ function Settings({ settings, setSettings, storage }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const settingsTextareaRef = useRef<HTMLTextAreaElement | null>(null);
   const gitTextareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const [saving, setIsSaving] = useState<boolean | Error | any>(false);
 
   const handleEdit = () => {
     setIsEditing(true);
   };
 
   const handleSave = () => {
+    setIsSaving(true);
     let settings = {};
     let git = {};
-    if (settingsTextareaRef.current?.value) {
-      settings = JSON.parse(settingsTextareaRef.current.value);
-    }
-    if (gitTextareaRef.current?.value) {
-      git = JSON.parse(gitTextareaRef.current.value);
+    try {
+      if (settingsTextareaRef.current?.value) {
+        settings = JSON.parse(settingsTextareaRef.current.value);
+      }
+      if (gitTextareaRef.current?.value) {
+        git = JSON.parse(gitTextareaRef.current.value);
+      }
+    } catch (e) {
+      setIsSaving(e);
+      throw e;
     }
     const newSettings = { ...settings, ...git };
     setSettings(newSettings);
     saveSettingsToStorage(parent, newSettings);
     setIsEditing(false);
+    setIsSaving(false);
   };
 
   const handleRestore = () => {
@@ -64,7 +72,7 @@ function Settings({ settings, setSettings, storage }: Props) {
         <Button className="action-button" disabled={isEditing} onClick={handleEdit}>
           Edit
         </Button>
-        <Button className="action-button" disabled={!isEditing} onClick={handleSave}>
+        <Button className="action-button" disabled={!isEditing || !!saving} onClick={handleSave}>
           Save
         </Button>
         <Button
@@ -75,6 +83,7 @@ function Settings({ settings, setSettings, storage }: Props) {
           Restore default settings
         </Button>
       </Row>
+      {saving?.message ? (<Row><p>{saving.message}</p></Row>) : null}
     </div>
   );
 }
