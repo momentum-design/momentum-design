@@ -40,8 +40,8 @@ function Export({ settings, assets, exporting, setExporting }: Props) {
   };
 
   useEffect(() => {
-    if (settings?.sync?.git) {
-      setGithub(new Github(settings.sync.git));
+    if (settings?.git) {
+      setGithub(new Github(settings.git));
     }
     if (github) {
       github.config.assetTypePath = selectedAssetType;
@@ -54,6 +54,7 @@ function Export({ settings, assets, exporting, setExporting }: Props) {
   useEffect(() => {
     if (exporting === 'inprogress') {
       if (github) {
+        github.data = assets;
         github.data = assets;
         github.pullRequest().then((data) => {
           setExporting('complete');
@@ -70,7 +71,7 @@ function Export({ settings, assets, exporting, setExporting }: Props) {
   const startProgress = () => {
     setExportMeta(null);
     setExportError(undefined);
-    setExporting('inprogress');
+    setExporting('clicked');
   };
 
   const handleClick = () => {
@@ -91,30 +92,41 @@ function Export({ settings, assets, exporting, setExporting }: Props) {
         </Select>
       </Row>
       <Row>
-        <TextInput
-          onChange={(e) => handleTitleChange(e)}
-          value={title}
-          ref={titleInputRef}></TextInput>
+        <label>
+            Title
+          <TextInput
+            name="title"
+            onChange={(e) => handleTitleChange(e)}
+            value={title}
+            ref={titleInputRef}></TextInput>
+        </label>
+
       </Row>
       <Row />
       <Row>
-        <TextInput
-          onChange={(e) => handleBranchChange(e)}
-          value={branch}
-          ref={branchInputRef}
-        ></TextInput>
+        <label>
+          Branch
+          <TextInput
+            onChange={(e) => handleBranchChange(e)}
+            value={branch}
+            ref={branchInputRef}
+          ></TextInput>
+        </label>
       </Row>
       <Row />
       <Row>
-        <TextInput
-          onChange={(e) => handleMessageChange(e)}
-          value={message}
-          ref={messageInputRef}></TextInput>
+        <label>
+          Message
+          <TextInput
+            onChange={(e) => handleMessageChange(e)}
+            value={message}
+            ref={messageInputRef}></TextInput>
+        </label>
       </Row>
       <Row />
       <Row>
         <Button
-          disabled={exporting === 'inprogress' || selectedAssetType === undefined}
+          disabled={exporting === 'inprogress' || exporting === 'clicked' || selectedAssetType === undefined}
           onClick={handleClick}>
             Export
         </Button>

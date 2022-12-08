@@ -10,9 +10,9 @@ import { useWindowMessage } from './hooks/useWindowMessage';
 
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>('export');
-  const { settings, setSettings, assets, setAssets, exporting, setExporting } = useStateHandlers();
+  const { settings, setSettings, assets, setAssets, exporting, setExporting, storage, setStorage } = useStateHandlers();
 
-  useWindowMessage(setSettings, setAssets, setExporting);
+  useWindowMessage(setSettings, setAssets, setExporting, setStorage);
   return (
     <div className="wrapper">
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -20,7 +20,8 @@ function App() {
         {activeTab === 'export'
           && <Export settings={settings} assets={assets} exporting={exporting} setExporting={setExporting}/>}
         {activeTab === 'tools' && <Tools />}
-        {activeTab === 'settings' && <Settings settings={settings} setSettings={setSettings} />}
+        {activeTab === 'settings'
+          && <Settings settings={settings} setSettings={setSettings} storage={storage} setStorage={setStorage} />}
       </div>
       <Footer />
     </div>

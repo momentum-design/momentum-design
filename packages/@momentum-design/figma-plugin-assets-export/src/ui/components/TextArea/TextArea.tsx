@@ -3,7 +3,7 @@ import React from 'react';
 import './TextArea.css';
 
 interface Props {
-  text: string;
+  text: any;
   disabled?: boolean;
 }
 const TextArea = React.forwardRef(({ text, disabled }: Props, ref: React.ForwardedRef<HTMLTextAreaElement>) => (

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Asset } from '../../shared/types';
 import { requestSettingsFromStorage } from '../utils/plugin';
 
-const useWindowMessage = (setSettings: any, setAssets: any, setExporting: any) => {
+const useWindowMessage = (setSettings: any, setAssets: any, setExporting: any, setStorage: any) => {
   useEffect(() => {
     window.onmessage = (e: {
       data: {
@@ -16,6 +16,9 @@ const useWindowMessage = (setSettings: any, setAssets: any, setExporting: any) =
         setSettings(e.data.pluginMessage.data);
       } else if (e.data.pluginMessage?.type === 'assets') {
         setAssets(e.data.pluginMessage.data);
+      } else if (e.data.pluginMessage?.type === 'storage') {
+        setStorage(e.data.pluginMessage.data);
+      } else if (e.data.pluginMessage?.type === 'export') {
         setExporting('inprogress');
       }
     };

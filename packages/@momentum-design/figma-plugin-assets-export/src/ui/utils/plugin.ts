@@ -12,12 +12,8 @@ const exportData = (parent: Window, settings: any) => {
   parent.postMessage({ pluginMessage: { type: ACTIONS.EXPORT, settings } }, '*');
 };
 
-const restoreSettings = (parent: Window) => {
-  parent.postMessage({ pluginMessage: { type: ACTIONS.RESTORE_SETTINGS } }, '*');
-};
-
 const prCreated = (parent: Window, pullRequest: any) => {
   parent.postMessage({ pluginMessage: { type: ACTIONS.PR_CREATED, pullRequest } }, '*');
 };
 
-export { requestSettingsFromStorage, saveSettingsToStorage, exportData, restoreSettings, prCreated };
+export { requestSettingsFromStorage, saveSettingsToStorage, exportData, prCreated };

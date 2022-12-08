@@ -1,12 +1,12 @@
 /* eslint-disable no-undef */
-import { CONSTANTS } from '../constants';
+import { CONSTANTS as SETTINGS_CONSTANTS } from '../../shared/settings-constants';
 
 const settingsKey = 'settings';
 
 class Storage {
   api: ClientStorageAPI;
 
-  initialSettings: any = CONSTANTS.INITIAL_SETTINGS;
+  initialSettings: any = SETTINGS_CONSTANTS.INITIAL_SETTINGS;
 
   constructor() {
     this.api = figma.clientStorage;
