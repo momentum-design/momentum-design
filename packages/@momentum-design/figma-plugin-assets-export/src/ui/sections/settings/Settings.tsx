@@ -59,13 +59,13 @@ function Settings({ settings, setSettings, storage }: Props) {
       <div className="settings-area">
         <label>
           Settings
-          <TextArea disabled={!isEditing} ref={settingsTextareaRef} text={settings} />
+          <TextArea disabled={!isEditing} ref={settingsTextareaRef} value={settings} />
         </label>
       </div>
       <div className="settings-area">
         <label>
           Github
-          <TextArea disabled={!isEditing} ref={gitTextareaRef} text={{ git: settings.git }} />
+          <TextArea disabled={!isEditing} ref={gitTextareaRef} value={{ git: settings.git }} />
         </label>
       </div>
       <Row>
