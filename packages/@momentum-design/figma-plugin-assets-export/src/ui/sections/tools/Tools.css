@@ -1,0 +1,33 @@
+.tools {
+    flex: 1;
+    height: 100%;
+}
+
+.right-aligned-button {
+    margin-left: auto;
+    background-color: transparent !important;
+}
+
+.right-aligned-button:hover {
+    background-color: var(--figma-color-text-oninverse) !important;
+}
+
+.right-aligned-button:active {
+    background-color: var(--figma-color-bg-brand-pressed) !important;
+}
+
+.larger-row {
+    height: 60px;
+}
+
+.larger-row + .larger-row {
+    border-top: 1px solid var(--figma-color-border);
+}
+
+.disabled-text {
+    color: var(--figma-color-text-disabled);
+}
+
+.bold-text {
+    font-weight: 600;
+}
