@@ -89,6 +89,8 @@ typings/
 
 # Nuxt.js build / generate output
 .nuxt
+
+# exclude dist folders
 dist
 
 # Gatsby files
@@ -111,3 +113,10 @@ dist
 
 # TernJS port file
 .tern-port
+
+### SPECIAL CASES ###
+
+# figma plugin so that Design doesn't have to run a build
+# this means that we will have to build and push
+# not part of pipeline as of now
+!packages/@momentum-design/figma-plugin-assets-export/dist

@@ -3,7 +3,7 @@
         "skipLibCheck": true,
         "target": "es6",
         "lib": [
-            "es6"
+            "ES6"
         ],
         "strict": true,
         "typeRoots": [
@@ -11,6 +11,6 @@
             "../../../../../node_modules/@figma"
         ]
     },
-    "include": ["index.ts", "constants.ts", "models/*.ts"],
+    "include": ["./**/*.*", "../shared/*.ts"],
     "exclude": ["node_modules"]
 }
