@@ -1,1 +1,303 @@
-"use strict";(()=>{var m=(n,t,e)=>new Promise((s,i)=>{var g=a=>{try{r(e.next(a))}catch(c){i(c)}},p=a=>{try{r(e.throw(a))}catch(c){i(c)}},r=a=>a.done?s(a.value):Promise.resolve(a.value).then(g,p);r((e=e.apply(n,t)).next())});var f={GET_SETTINGS:"storage_get_settings",SET_SETTINGS:"storage_set_settings",EXPORT:"export",PR_CREATED:"pr_created"};var y={VALID_CHILD_TYPES:["PAGE"]},I=["COMPONENT"],P={COMPONENT_NAME:"COMPONENT_NAME",PARENT_NAME:"PARENT_NAME",SET_OR_COMPONENT_NAME:"SET_OR_COMPONENT_NAME",SF_ALTERNATIVE:"SF_ALTERNATIVE",RTL:"RTL",WEIGHT:"WEIGHT",COLOR:"COLOR"},M={WEIGHT:"weight",COLOR:"color",RTL:"right to left",SF_ALTERNATIVE:"sf alternative"},o={DOCUMENT:y,SEARCH_CRITERIA:I,REPLACE_TERMS:P,FIGMA_VARIANTS:M};var A=n=>n?Object.keys(n).reduce((t,e)=>{let s=e.toLowerCase(),i=n[e].toLowerCase();return t[s]=i,t},{}):{};var E=class{constructor(t,e,s){this.node=t,this.destination=e,this.config=s,this.variants=A(this.node.variantProperties)}get replacementMap(){var g,p,r,a,c,S;let t=((g=this.node.parent)==null?void 0:g.type)==="COMPONENT_SET"?this.node.parent.name:this.node.name,e=((p=this.variants)==null?void 0:p[o.FIGMA_VARIANTS.RTL])==="true"?"rtl":void 0,s=((r=this.variants)==null?void 0:r[o.FIGMA_VARIANTS.SF_ALTERNATIVE])==="true"?"sf":void 0;return{[o.REPLACE_TERMS.COMPONENT_NAME]:this.node.name,[o.REPLACE_TERMS.PARENT_NAME]:(a=this.node.parent)==null?void 0:a.name,[o.REPLACE_TERMS.SET_OR_COMPONENT_NAME]:t,[o.REPLACE_TERMS.WEIGHT]:(c=this.variants)==null?void 0:c[o.FIGMA_VARIANTS.WEIGHT],[o.REPLACE_TERMS.COLOR]:(S=this.variants)==null?void 0:S[o.FIGMA_VARIANTS.COLOR],[o.REPLACE_TERMS.RTL]:e,[o.REPLACE_TERMS.SF_ALTERNATIVE]:s}}get assetName(){let t="",{fileName:e}=this.config,s=e.parts.reduce((g,p)=>{let r=this.replacementMap[p];return r&&g.push(r),g},[]);return t+=s.join(e.separator),e.suffix.parts.forEach(g=>{var r;let p=(r=this.replacementMap)==null?void 0:r[g];p&&(t+=e.suffix.separator,t+=p)}),t+=".",t+=this.config.exportSettings.format.toLowerCase(),t}get asset(){return new Promise((t,e)=>{this.node.exportAsync(this.config.exportSettings).then(s=>{t({path:`${this.destination?`${this.destination}/`:""}${this.assetName}`,data:String.fromCharCode.apply(null,s)})}).catch(s=>{figma.notify(s,{error:!0}),e(s)})})}},h=E;var u=class{constructor(t,e,s){this.node=t,this.destination=e,this.config=s}get assets(){return Promise.all(this.components.map(t=>t.asset))}excludeComponents(t){return t.filter(e=>{var s;return((s=A(e.variantProperties))==null?void 0:s[this.config.exclude.byVariant])!=="true"})}get components(){let t=this.node.findAllWithCriteria({types:o.SEARCH_CRITERIA});return this.excludeComponents(t).map(s=>new h(s,this.destination,this.config))}},N=u;var d=class{constructor(t,e){this.node=t,this.config=e}getDestination(t,e){let s=e.find(i=>t.toLowerCase().includes(i.page.toLowerCase()));return s==null?void 0:s.folder}get pages(){let t=[];if("children"in this.node){for(let e of this.node.children)if(o.DOCUMENT.VALID_CHILD_TYPES.includes(e.type)){let s=this.getDestination(e.name,this.config.mapPagesToFolder);(s||s==="")&&t.push(new N(e,s,this.config))}}return t}createChunks(t){let s=[];for(let i=0;i<t.length;i+=500)s.push(t.slice(i,i+500));return s}getAssetChunksFromPages(){return m(this,null,function*(){if(!this.pages.length)return[[]];let t=[];return yield Promise.all(this.pages.map(e=>e.assets.then(s=>{t.push(...s)}))),this.createChunks(t)})}},C=d;var L={mapPagesToFolder:[{page:"\u2705",folder:"core"},{page:"Colored Icons",folder:"colored"},{page:"Brand Icons",folder:"brand"}],fileName:{parts:["SET_OR_COMPONENT_NAME","SF_ALTERNATIVE","RTL"],separator:"-",suffix:{parts:["WEIGHT","COLOR"],separator:"_"}},exclude:{byVariant:"sf alternative"},exportSettings:{format:"SVG",contentsOnly:!0,useAbsoluteBounds:!1}},w={git:{githubPersonalToken:"<YourClassicPersonalAccessTokenHere>",githubOwner:"momentum-design",gitRepo:"momentum-design",gitBranch:`automation-${new Date().toISOString().replace(/\.|:/g,"-")}`,prTitle:`Asset Automation ${new Date().toISOString()}`,prCommitMsg:`feat(assets): Asset Automation ${new Date().toISOString()}`,prMessage:`feat(assets): Asset Automation ${new Date().toISOString()}`,gitRepoFilePath:"packages/@momentum-design"}},R={INITIAL_SETTINGS:L,SYNC_SETTINGS:w};var _="settings",l=class{constructor(){this.initialSettings=R.INITIAL_SETTINGS;this.api=figma.clientStorage}setSettings(t){return this.api.setAsync(_,t)}getSettings(){return this.api.getAsync(_)}},O=l;var T=new O;figma.on("run",()=>m(void 0,null,function*(){(yield T.getSettings())||(yield T.setSettings(T.initialSettings))}));figma.skipInvisibleInstanceChildren=!0;figma.showUI(__html__,{themeColors:!0,height:430,width:430});figma.ui.onmessage=n=>m(void 0,null,function*(){var t,e;if(n.type===f.EXPORT){let i=yield new C(figma.root,n.settings).getAssetChunksFromPages();figma.ui.postMessage({type:"assets",data:i},{origin:"*"}),figma.ui.postMessage({type:"export"},{origin:"*"})}if(n.type===f.SET_SETTINGS&&(figma.ui.postMessage({type:"storage",data:"inprogress"},{origin:"*"}),yield T.setSettings(n.settings),figma.ui.postMessage({type:"storage",data:"complete"},{origin:"*"})),n.type===f.GET_SETTINGS){let s=yield T.getSettings();figma.ui.postMessage({type:"settings",data:s},{origin:"*"})}n.type===f.PR_CREATED&&figma.notify(`Pull Request: ${(e=(t=n.pullRequest)==null?void 0:t.data)==null?void 0:e.url}`)});})();
+"use strict";
+(() => {
+  var __async = (__this, __arguments, generator) => {
+    return new Promise((resolve, reject) => {
+      var fulfilled = (value) => {
+        try {
+          step(generator.next(value));
+        } catch (e) {
+          reject(e);
+        }
+      };
+      var rejected = (value) => {
+        try {
+          step(generator.throw(value));
+        } catch (e) {
+          reject(e);
+        }
+      };
+      var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+      step((generator = generator.apply(__this, __arguments)).next());
+    });
+  };
+
+  // src/shared/action-constants.ts
+  var ACTIONS = {
+    GET_SETTINGS: "storage_get_settings",
+    SET_SETTINGS: "storage_set_settings",
+    EXPORT: "export",
+    PR_CREATED: "pr_created"
+  };
+
+  // src/plugin/constants.ts
+  var DOCUMENT = {
+    VALID_CHILD_TYPES: ["PAGE"]
+  };
+  var SEARCH_CRITERIA = ["COMPONENT"];
+  var REPLACE_TERMS = {
+    COMPONENT_NAME: "COMPONENT_NAME",
+    PARENT_NAME: "PARENT_NAME",
+    SET_OR_COMPONENT_NAME: "SET_OR_COMPONENT_NAME",
+    SF_ALTERNATIVE: "SF_ALTERNATIVE",
+    RTL: "RTL",
+    WEIGHT: "WEIGHT",
+    COLOR: "COLOR"
+  };
+  var FIGMA_VARIANTS = {
+    WEIGHT: "weight",
+    COLOR: "color",
+    RTL: "right to left",
+    SF_ALTERNATIVE: "sf alternative"
+  };
+  var CONSTANTS = {
+    DOCUMENT,
+    SEARCH_CRITERIA,
+    REPLACE_TERMS,
+    FIGMA_VARIANTS
+  };
+
+  // src/plugin/utils/object.ts
+  var normaliseObject = (object) => {
+    if (!object) {
+      return {};
+    }
+    return Object.keys(object).reduce((acc, key) => {
+      const lowerCaseKey = key.toLowerCase();
+      const lowerCaseValue = object[key].toLowerCase();
+      acc[lowerCaseKey] = lowerCaseValue;
+      return acc;
+    }, {});
+  };
+
+  // src/plugin/models/component.ts
+  var Component = class {
+    constructor(node, destination, config) {
+      this.node = node;
+      this.destination = destination;
+      this.config = config;
+      this.variants = normaliseObject(this.node.variantProperties);
+    }
+    get replacementMap() {
+      var _a, _b, _c, _d, _e, _f;
+      const setOrComponentName = ((_a = this.node.parent) == null ? void 0 : _a.type) === "COMPONENT_SET" ? this.node.parent.name : this.node.name;
+      const rtl = ((_b = this.variants) == null ? void 0 : _b[CONSTANTS.FIGMA_VARIANTS.RTL]) === "true" ? "rtl" : void 0;
+      const sf = ((_c = this.variants) == null ? void 0 : _c[CONSTANTS.FIGMA_VARIANTS.SF_ALTERNATIVE]) === "true" ? "sf" : void 0;
+      const result = {
+        [CONSTANTS.REPLACE_TERMS.COMPONENT_NAME]: this.node.name,
+        [CONSTANTS.REPLACE_TERMS.PARENT_NAME]: (_d = this.node.parent) == null ? void 0 : _d.name,
+        [CONSTANTS.REPLACE_TERMS.SET_OR_COMPONENT_NAME]: setOrComponentName,
+        [CONSTANTS.REPLACE_TERMS.WEIGHT]: (_e = this.variants) == null ? void 0 : _e[CONSTANTS.FIGMA_VARIANTS.WEIGHT],
+        [CONSTANTS.REPLACE_TERMS.COLOR]: (_f = this.variants) == null ? void 0 : _f[CONSTANTS.FIGMA_VARIANTS.COLOR],
+        [CONSTANTS.REPLACE_TERMS.RTL]: rtl,
+        [CONSTANTS.REPLACE_TERMS.SF_ALTERNATIVE]: sf
+      };
+      return result;
+    }
+    get assetName() {
+      let name = "";
+      const { fileName } = this.config;
+      const nameParts = fileName.parts.reduce((filtered, part) => {
+        const namePart = this.replacementMap[part];
+        if (namePart) {
+          filtered.push(namePart);
+        }
+        return filtered;
+      }, []);
+      name += nameParts.join(fileName.separator);
+      const suffixParts = fileName.suffix.parts;
+      suffixParts.forEach((suffixPart) => {
+        var _a;
+        const suffix = (_a = this.replacementMap) == null ? void 0 : _a[suffixPart];
+        if (suffix) {
+          name += fileName.suffix.separator;
+          name += suffix;
+        }
+      });
+      name += ".";
+      name += this.config.exportSettings.format.toLowerCase();
+      return name;
+    }
+    get asset() {
+      return new Promise((resolve, reject) => {
+        this.node.exportAsync(this.config.exportSettings).then((uint8Array) => {
+          resolve({
+            path: `${this.destination ? `${this.destination}/` : ""}${this.assetName}`,
+            data: String.fromCharCode.apply(null, uint8Array)
+          });
+        }).catch((err) => {
+          figma.notify(err, { error: true });
+          reject(err);
+        });
+      });
+    }
+  };
+  var component_default = Component;
+
+  // src/plugin/models/page.ts
+  var Page = class {
+    constructor(node, destination, config) {
+      this.node = node;
+      this.destination = destination;
+      this.config = config;
+    }
+    get assets() {
+      return Promise.all(this.components.map((component) => component.asset));
+    }
+    excludeComponents(componentNodes) {
+      return componentNodes.filter(
+        (n) => {
+          var _a;
+          return !(((_a = normaliseObject(n.variantProperties)) == null ? void 0 : _a[this.config.exclude.byVariant]) === "true");
+        }
+      );
+    }
+    get components() {
+      const componentNodes = this.node.findAllWithCriteria({
+        types: CONSTANTS.SEARCH_CRITERIA
+      });
+      const filteredComponents = this.excludeComponents(componentNodes);
+      return filteredComponents.map((node) => new component_default(node, this.destination, this.config));
+    }
+  };
+  var page_default = Page;
+
+  // src/plugin/models/document.ts
+  var Document = class {
+    constructor(rootNode, config) {
+      this.node = rootNode;
+      this.config = config;
+    }
+    getDestination(name, mapPagesToFolder) {
+      const object = mapPagesToFolder.find((map) => name.toLowerCase().includes(map.page.toLowerCase()));
+      return object == null ? void 0 : object.folder;
+    }
+    get pages() {
+      const pagesTemp = [];
+      if ("children" in this.node) {
+        for (const child of this.node.children) {
+          if (CONSTANTS.DOCUMENT.VALID_CHILD_TYPES.includes(child.type)) {
+            const destination = this.getDestination(child.name, this.config.mapPagesToFolder);
+            if (destination || destination === "") {
+              pagesTemp.push(new page_default(child, destination, this.config));
+            }
+          }
+        }
+      }
+      return pagesTemp;
+    }
+    createChunks(array) {
+      const chunkSize = 500;
+      const chunks = [];
+      for (let i = 0; i < array.length; i += chunkSize) {
+        chunks.push(array.slice(i, i + chunkSize));
+      }
+      return chunks;
+    }
+    getAssetChunksFromPages() {
+      return __async(this, null, function* () {
+        if (!this.pages.length) {
+          return [[]];
+        }
+        const assets = [];
+        yield Promise.all(
+          this.pages.map(
+            (page) => page.assets.then((data) => {
+              assets.push(...data);
+            })
+          )
+        );
+        return this.createChunks(assets);
+      });
+    }
+  };
+  var document_default = Document;
+
+  // src/shared/settings-constants.ts
+  var INITIAL_SETTINGS = {
+    mapPagesToFolder: [
+      { page: "\u2705", folder: "core" },
+      { page: "Colored Icons", folder: "colored" },
+      { page: "Brand Icons", folder: "brand" }
+    ],
+    fileName: {
+      parts: ["SET_OR_COMPONENT_NAME", "SF_ALTERNATIVE", "RTL"],
+      separator: "-",
+      suffix: {
+        parts: ["WEIGHT", "COLOR"],
+        separator: "_"
+      }
+    },
+    exclude: {
+      byVariant: "sf alternative"
+    },
+    exportSettings: {
+      format: "SVG",
+      contentsOnly: true,
+      useAbsoluteBounds: false
+    }
+  };
+  var SYNC_SETTINGS = {
+    git: {
+      githubPersonalToken: "<YourClassicPersonalAccessTokenHere>",
+      githubOwner: "momentum-design",
+      gitRepo: "momentum-design",
+      gitBranch: `automation-${new Date().toISOString().replace(/\.|:/g, "-")}`,
+      prTitle: `Asset Automation ${new Date().toISOString()}`,
+      prCommitMsg: `feat(assets): Asset Automation ${new Date().toISOString()}`,
+      prMessage: `feat(assets): Asset Automation ${new Date().toISOString()}`,
+      gitRepoFilePath: "packages/@momentum-design"
+    }
+  };
+  var CONSTANTS2 = {
+    INITIAL_SETTINGS,
+    SYNC_SETTINGS
+  };
+
+  // src/plugin/models/storage.ts
+  var settingsKey = "settings";
+  var Storage = class {
+    constructor() {
+      this.initialSettings = CONSTANTS2.INITIAL_SETTINGS;
+      this.api = figma.clientStorage;
+    }
+    setSettings(data) {
+      return this.api.setAsync(settingsKey, data);
+    }
+    getSettings() {
+      return this.api.getAsync(settingsKey);
+    }
+  };
+  var storage_default = Storage;
+
+  // src/plugin/index.ts
+  var storage = new storage_default();
+  figma.on("run", () => __async(void 0, null, function* () {
+    const settings = yield storage.getSettings();
+    if (!settings) {
+      yield storage.setSettings(storage.initialSettings);
+    }
+  }));
+  figma.skipInvisibleInstanceChildren = true;
+  figma.showUI(__html__, { themeColors: true, height: 430, width: 430 });
+  figma.ui.onmessage = (msg) => __async(void 0, null, function* () {
+    var _a, _b;
+    if (msg.type === ACTIONS.EXPORT) {
+      const document = new document_default(figma.root, msg.settings);
+      const assetChunks = yield document.getAssetChunksFromPages();
+      figma.ui.postMessage({ type: "assets", data: assetChunks }, { origin: "*" });
+      figma.ui.postMessage({ type: "export" }, { origin: "*" });
+    }
+    if (msg.type === ACTIONS.SET_SETTINGS) {
+      figma.ui.postMessage({ type: "storage", data: "inprogress" }, { origin: "*" });
+      yield storage.setSettings(msg.settings);
+      figma.ui.postMessage({ type: "storage", data: "complete" }, { origin: "*" });
+    }
+    if (msg.type === ACTIONS.GET_SETTINGS) {
+      const settings = yield storage.getSettings();
+      figma.ui.postMessage({ type: "settings", data: settings }, { origin: "*" });
+    }
+    if (msg.type === ACTIONS.PR_CREATED) {
+      figma.notify(`Pull Request: ${(_b = (_a = msg.pullRequest) == null ? void 0 : _a.data) == null ? void 0 : _b.url}`);
+    }
+  });
+})();
