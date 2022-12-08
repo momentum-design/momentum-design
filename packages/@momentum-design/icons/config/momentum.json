@@ -1,61 +1,128 @@
 {
-    "definitions": [{
-        "buildName": "Icons",
-        "flows": [{
-            "id": "optimise-core-svgs",
-            "target": "./src/core/**/*.*",
-            "destination": "./dist/svg",
-            "fileNameReplacePatterns": [{
-                "searchValue": "_",
-                "replaceValue": "-"
-            }],
-            "format": {
-                "type": "OPTIMIZED_SVG",
-                "config": {
-                    "mergePaths": true,
-                    "plugins": [
-                        {
-                            "name": "preset-default",
-                            "params": {
-                                "overrides": {
-                                    "removeViewBox": false
-                                }
-                            }
-                        },
-                        {
-                            "name": "removeAttrs",
-                            "params": {
-                              "attrs": "(fill|stroke)"
-                            }
-                        }
-                    ]
-                }
+  "definitions": [
+    {
+      "buildName": "Icons",
+      "flows": [
+        {
+          "id": "optimise-core-svgs",
+          "target": "./src/core/**/*.*",
+          "destination": "./dist/svg",
+          "fileNameReplacePatterns": [
+            {
+              "searchValue": "_",
+              "replaceValue": "-"
             }
-        }, {
-            "id": "optimise-brand-colored-svgs",
-            "target": "./src/{colored,brand}/**/*.*",
-            "destination": "./dist/svg",
-            "fileNameReplacePatterns": [{
-                "searchValue": "_",
-                "replaceValue": "-"
-            }],
-            "format": {
-                "type": "OPTIMIZED_SVG",
-                "config": {
-                    "mergePaths": true,
-                    "plugins": [
-                        {
-                            "name": "preset-default",
-                            "params": {
-                                "overrides": {
-                                    "removeViewBox": false
-                                }
-                            }
-                        }
-                    ]
+          ],
+          "format": {
+            "type": "OPTIMIZED_SVG",
+            "config": {
+              "mergePaths": true,
+              "plugins": [
+                {
+                  "name": "preset-default",
+                  "params": {
+                    "overrides": {
+                      "removeViewBox": false
+                    }
+                  }
+                },
+                {
+                  "name": "removeAttrs",
+                  "params": {
+                    "attrs": "(fill|stroke)"
+                  }
                 }
+              ]
             }
-        }],
-        "type": "assets"
-    }]
+          }
+        },
+        {
+          "id": "optimise-brand-colored-svgs",
+          "target": "./src/{colored,brand}/**/*.*",
+          "destination": "./dist/svg",
+          "fileNameReplacePatterns": [
+            {
+              "searchValue": "_",
+              "replaceValue": "-"
+            }
+          ],
+          "format": {
+            "type": "OPTIMIZED_SVG",
+            "config": {
+              "mergePaths": true,
+              "plugins": [
+                {
+                  "name": "preset-default",
+                  "params": {
+                    "overrides": {
+                      "removeViewBox": false
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "SVG-font-icons",
+          "target": "./dist/svg/**/*.*",
+          "destination": "./dist/fonts",
+          "format": {
+            "type": "SVG_FONT",
+            "config": {
+              "fontName": "MomentumFontIcon",
+              "fontHeight": 1000
+            }
+          }
+        },
+        {
+          "id": "ttf-icons",
+          "target": "./dist/fonts/*.svg",
+          "destination": "./dist/fonts",
+          "format": {
+            "type": "TTF",
+            "encoding": {
+              "read": "utf-8",
+              "write": null
+            },
+            "config": {
+              "fontName": "MomentumFontIcon",
+              "fontHeight": 1000
+            }
+          }
+        },
+        {
+          "id": "woff-icons",
+          "target": "./dist/fonts/*.ttf",
+          "destination": "./dist/fonts",
+          "format": {
+            "type": "WOFF",
+            "encoding": {
+              "read": null,
+              "write": null
+            },
+            "config": {
+              "fontName": "MomentumFontIcon"
+            }
+          }
+        },
+        {
+          "id": "woff2-icons",
+          "target": "./dist/fonts/*.ttf",
+          "destination": "./dist/fonts",
+          "format": {
+            "type": "WOFF2",
+            "encoding": {
+              "read": null,
+              "write": null
+            },
+            "config": {
+              "fontName": "MomentumFontIcon"
+            }
+          }
+        }
+      ],
+      "type": "assets"
+    }
+  ]
 }

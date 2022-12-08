@@ -1756,6 +1756,10 @@ __metadata:
     "@types/glob": ^8.0.0
     "@types/jest": ^29.2.3
     "@types/node": ^18.11.9
+    "@types/svg2ttf": ^5.0.1
+    "@types/svgicons2svgfont": ^10.0.1
+    "@types/ttf2woff": ^2.0.2
+    "@types/wawoff2": ^1.0.0
     "@types/yargs": ^17.0.13
     "@typescript-eslint/eslint-plugin": ^5.43.0
     "@typescript-eslint/parser": ^5.43.0
@@ -1767,9 +1771,13 @@ __metadata:
     jest: ^29.3.1
     rimraf: ^3.0.2
     style-dictionary: ^3.7.1
+    svg2ttf: ^6.0.3
+    svgicons2svgfont: ^12.0.0
     svgo: ^3.0.2
     ts-jest: ^29.0.3
+    ttf2woff: ^3.0.0
     typescript: ^4.9.3
+    wawoff2: ^2.0.1
     yargs: ^17.6.2
   bin:
     md-builder: ./dist/cli/index.js
@@ -2634,6 +2642,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/svg2ttf@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "@types/svg2ttf@npm:5.0.1"
+  checksum: 654055f4d5290fa1804749f4372a681e056a0657e377b9095feea52fc1470b5f2e7f9e1244cc8bec4f83bc362329bff6ead9643079ceb80725560536e3da7374
+  languageName: node
+  linkType: hard
+
+"@types/svgicons2svgfont@npm:^10.0.1":
+  version: 10.0.1
+  resolution: "@types/svgicons2svgfont@npm:10.0.1"
+  dependencies:
+    "@types/node": "*"
+  checksum: 03028cc34b81802e150925202dea7ce5740913fca60c9b9f4b757332bd6ec5164462ca30dbc16b24d8bc0e379b516b7ee3bde3f60b09d01bf11045a98055c8bd
+  languageName: node
+  linkType: hard
+
 "@types/tar@npm:^6.1.3":
   version: 6.1.3
   resolution: "@types/tar@npm:6.1.3"
@@ -2653,10 +2677,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/ttf2woff@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "@types/ttf2woff@npm:2.0.2"
+  dependencies:
+    "@types/node": "*"
+  checksum: 180389d845fb0f180f40527d6da0d8a34af9b2f3ab57ef2ac8691b3d7603fc728dd966fe1554d221b402807a730bd6da36a66f306b652bfd0666450dffa95535
+  languageName: node
+  linkType: hard
+
 "@types/unist@npm:*, @types/unist@npm:^2.0.0":
   version: 2.0.6
   resolution: "@types/unist@npm:2.0.6"
   checksum: 25cb860ff10dde48b54622d58b23e66214211a61c84c0f15f88d38b61aa1b53d4d46e42b557924a93178c501c166aa37e28d7f6d994aba13d24685326272d5db
+  languageName: node
+  linkType: hard
+
+"@types/wawoff2@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@types/wawoff2@npm:1.0.0"
+  dependencies:
+    "@types/node": "*"
+  checksum: bae9e32bcfea823e9d83fc3285cb24b799924a7cb0d1b4735b020b993c58c62118e7578d3a05c1831361b61f7e330cb9386bb6a004ac98d57169b6d5c61f9054
   languageName: node
   linkType: hard
 
@@ -2827,6 +2869,13 @@ __metadata:
   version: 0.0.10
   resolution: "@vscode/l10n@npm:0.0.10"
   checksum: 40c6d9a2b8a0e6c6588848f6f66b73593da2ada6f09486a8500c6b0a2d28cdb1ccbfb72c81c7f5a163a7f7b98122256ee9e83470090634841e49b4f81d5f9c5c
+  languageName: node
+  linkType: hard
+
+"@xmldom/xmldom@npm:^0.7.2":
+  version: 0.7.9
+  resolution: "@xmldom/xmldom@npm:0.7.9"
+  checksum: 66e37b7800132f891b885b2eceeeebc53f60b69789da10276f1584256b963d79a28c7ae2071bc53a9cd842d9b03554c761b2701fe8036d6052f26bcd0ae8f2bb
   languageName: node
   linkType: hard
 
@@ -3914,6 +3963,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"commander@npm:^9.3.0":
+  version: 9.4.1
+  resolution: "commander@npm:9.4.1"
+  checksum: bfb18e325a5bdf772763c2213d5c7d9e77144d944124e988bcd8e5e65fb6d45d5d4e86b09155d0f2556c9a59c31e428720e57968bcd050b2306e910a0bf3cf13
+  languageName: node
+  linkType: hard
+
 "common-ancestor-path@npm:^1.0.1":
   version: 1.0.1
   resolution: "common-ancestor-path@npm:1.0.1"
@@ -4136,6 +4192,13 @@ __metadata:
   version: 3.1.1
   resolution: "csstype@npm:3.1.1"
   checksum: 1f7b4f5fdd955b7444b18ebdddf3f5c699159f13e9cf8ac9027ae4a60ae226aef9bbb14a6e12ca7dba3358b007cee6354b116e720262867c398de6c955ea451d
+  languageName: node
+  linkType: hard
+
+"cubic2quad@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "cubic2quad@npm:1.2.1"
+  checksum: e87375fe176546821c8f2fb1ead5b99154ed55d9d08b8ca71d546c1d6a2ab16e8e61785d3b6140e770195846b1c5c6448db08bd6cf59248f5b48090061b5adb1
   languageName: node
   linkType: hard
 
@@ -8118,7 +8181,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.15, lodash@npm:^4.17.21, lodash@npm:~4.17.15":
+"lodash@npm:^4.17.10, lodash@npm:^4.17.15, lodash@npm:^4.17.21, lodash@npm:~4.17.15":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -8580,6 +8643,13 @@ __metadata:
   version: 1.4.1
   resolution: "merge2@npm:1.4.1"
   checksum: 7268db63ed5169466540b6fb947aec313200bcf6d40c5ab722c22e242f651994619bcd85601602972d3c85bd2cc45a358a4c61937e9f11a061919a1da569b0c2
+  languageName: node
+  linkType: hard
+
+"microbuffer@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "microbuffer@npm:1.0.0"
+  checksum: 1e4e16f48f057581c1e50b1c52c7bdc25cc85532b7de493b749ecdc1464975103d0c0b42d3a4b61ecd6d332773857fbf46c8aa70c6f6d254a05376245f095f9a
   languageName: node
   linkType: hard
 
@@ -9738,6 +9808,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pako@npm:^1.0.0":
+  version: 1.0.11
+  resolution: "pako@npm:1.0.11"
+  checksum: 1be2bfa1f807608c7538afa15d6f25baa523c30ec870a3228a89579e474a4d992f4293859524e46d5d87fd30fa17c5edf34dbef0671251d9749820b488660b16
+  languageName: node
+  linkType: hard
+
 "param-case@npm:^3.0.4":
   version: 3.0.4
   resolution: "param-case@npm:3.0.4"
@@ -10762,6 +10839,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sax@npm:^1.2.4":
+  version: 1.2.4
+  resolution: "sax@npm:1.2.4"
+  checksum: d3df7d32b897a2c2f28e941f732c71ba90e27c24f62ee918bd4d9a8cfb3553f2f81e5493c7f0be94a11c1911b643a9108f231dd6f60df3fa9586b5d2e3e9e1fe
+  languageName: node
+  linkType: hard
+
 "scheduler@npm:^0.23.0":
   version: 0.23.0
   resolution: "scheduler@npm:0.23.0"
@@ -11349,6 +11433,43 @@ __metadata:
   languageName: node
   linkType: hard
 
+"svg-pathdata@npm:^6.0.3":
+  version: 6.0.3
+  resolution: "svg-pathdata@npm:6.0.3"
+  checksum: f0e55be50c654be5d259d70945ed7e5354bf78e51c6039b4045d9f7c49d703a0c33dda36751815aec2824d046c417c35226e7491246ffff3e9164735ea428446
+  languageName: node
+  linkType: hard
+
+"svg2ttf@npm:^6.0.3":
+  version: 6.0.3
+  resolution: "svg2ttf@npm:6.0.3"
+  dependencies:
+    "@xmldom/xmldom": ^0.7.2
+    argparse: ^2.0.1
+    cubic2quad: ^1.2.1
+    lodash: ^4.17.10
+    microbuffer: ^1.0.0
+    svgpath: ^2.1.5
+  bin:
+    svg2ttf: svg2ttf.js
+  checksum: d6672cbd19d780817c752299115d2f31337b8bee8262a354e46c07d42572b3cdeba854ca4a50351081f5ff2788000a619ea35eba8420c01a16e579d505d35b59
+  languageName: node
+  linkType: hard
+
+"svgicons2svgfont@npm:^12.0.0":
+  version: 12.0.0
+  resolution: "svgicons2svgfont@npm:12.0.0"
+  dependencies:
+    commander: ^9.3.0
+    glob: ^8.0.3
+    sax: ^1.2.4
+    svg-pathdata: ^6.0.3
+  bin:
+    svgicons2svgfont: bin/svgicons2svgfont.js
+  checksum: 55a37f08e71785b2734e58f9a73de36c935a06109b3b99d9f3760840bd1c47a7bb9c3d8c4e46971971d6b41d421e0c7333bef442d496ae75e9032e6003aed9f4
+  languageName: node
+  linkType: hard
+
 "svgo@npm:^3.0.2":
   version: 3.0.2
   resolution: "svgo@npm:3.0.2"
@@ -11362,6 +11483,13 @@ __metadata:
   bin:
     svgo: bin/svgo
   checksum: 381ba14aa782e71ab7033227634a3041c11fa3e2769aeaf0df43a08a615de61925108e34f55af6e7c5146f4a3109e78deabb4fa9d687e36d45d1f848b4e23d17
+  languageName: node
+  linkType: hard
+
+"svgpath@npm:^2.1.5":
+  version: 2.6.0
+  resolution: "svgpath@npm:2.6.0"
+  checksum: 57bd2512b41a03a729c2880a6c771bb8ad449a9cea47c1fc43ac5cec70bf81a607591bb916ba16c21c9d87122537bcdf2ac4082dae13559c84c964b8fe868204
   languageName: node
   linkType: hard
 
@@ -11676,6 +11804,18 @@ __metadata:
   peerDependencies:
     typescript: ">=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta"
   checksum: 1843f4c1b2e0f975e08c4c21caa4af4f7f65a12ac1b81b3b8489366826259323feb3fc7a243123453d2d1a02314205a7634e048d4a8009921da19f99755cdc48
+  languageName: node
+  linkType: hard
+
+"ttf2woff@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "ttf2woff@npm:3.0.0"
+  dependencies:
+    argparse: ^2.0.1
+    pako: ^1.0.0
+  bin:
+    ttf2woff: ttf2woff.js
+  checksum: 8613005969d20ae313ad2815229c660d87f73992339eafe24813c28228dc324284452a6c0f81301f19efa03777a5686c3300e8d1dee14181518261c86cbfa289
   languageName: node
   linkType: hard
 
@@ -12338,6 +12478,18 @@ __metadata:
   dependencies:
     makeerror: 1.0.12
   checksum: ad7a257ea1e662e57ef2e018f97b3c02a7240ad5093c392186ce0bcf1f1a60bbadd520d073b9beb921ed99f64f065efb63dfc8eec689a80e569f93c1c5d5e16c
+  languageName: node
+  linkType: hard
+
+"wawoff2@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "wawoff2@npm:2.0.1"
+  dependencies:
+    argparse: ^2.0.1
+  bin:
+    woff2_compress.js: bin/woff2_compress.js
+    woff2_decompress.js: bin/woff2_decompress.js
+  checksum: 7fbe0c5968713afc2f2fe854e94eec2424d90f2f76d9515ab50455dd9e446dbfb5a46a9fefc7b861dcbd68cb319cfdc084c6336ec3fbefab553d26ced839edf1
   languageName: node
   linkType: hard
 

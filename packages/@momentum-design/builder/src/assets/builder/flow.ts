@@ -51,8 +51,7 @@ class Flow {
     this.destination = path.join(process.cwd(), flowData.destination);
     this.format = flowData.format;
     this.files = [];
-
-    this.fileHandler = new FileHandler(flowData.fileNameReplacePatterns);
+    this.fileHandler = new FileHandler(flowData.fileNameReplacePatterns, flowData?.format?.encoding);
   }
 
   /**
@@ -90,13 +89,17 @@ class Flow {
   /**
    * Transforming the files data with the help of `createTransformer` factory
    */
-  public transform(): void {
+  public transform(): Promise<void> {
+    const transformer = createTransformer(this.format, this.destination);
+
     logger.debug(`Started transform step of flow '${this.id}'.`);
-
-    const transformer = createTransformer(this.format);
-    this.files = transformer.run(this.files);
-
-    logger.debug(`Finished transform step of flow '${this.id}'.`);
+    return new Promise((resolve, reject) => {
+      transformer.run(this.files).then((files) => {
+        this.files = files;
+        resolve();
+        logger.debug(`Finished transform step of flow '${this.id}'.`);
+      }).catch((err) => reject(err));
+    });
   }
 
   /**
