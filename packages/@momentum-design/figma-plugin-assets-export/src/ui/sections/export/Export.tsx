@@ -28,7 +28,7 @@ function Export({ settings, assetChunks, exportStatus, setExportStatus }: Props)
     handleTitleChange,
     handleBranchChange,
     handleMessageChange,
-  } = useExportForm(selectedAssetSetting);
+  } = useExportForm(settings.auth, selectedAssetSetting);
 
   const {
     exportError,

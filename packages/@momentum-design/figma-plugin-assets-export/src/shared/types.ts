@@ -55,11 +55,16 @@ export type AssetSetting = {
     };
   };
   output: {
-    git: GitSetting;
+    git: Omit<GitSetting, 'githubPersonalToken'>;
   };
 };
 
+export type ExportAuth = {
+  githubPersonalToken: string;
+}
+
 export type Settings = {
+  auth: ExportAuth;
   assets: {
     [key: string]: AssetSetting;
   };

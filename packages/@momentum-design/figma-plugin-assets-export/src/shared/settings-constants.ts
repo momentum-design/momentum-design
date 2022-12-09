@@ -1,6 +1,10 @@
 import type { Settings } from './types';
 
 const INITIAL_SETTINGS: Settings = {
+  auth: {
+    // TODO: adjust properly:
+    githubPersonalToken: '<YourClassicPersonalAccessTokenHere>',
+  },
   assets: {
     icons: {
       name: 'Icons',
@@ -23,7 +27,7 @@ const INITIAL_SETTINGS: Settings = {
             parts: ['SET_OR_COMPONENT_NAME', 'SF_ALTERNATIVE', 'RTL'],
             separator: '-',
             suffix: {
-              parts: ['WEIGHT', 'COLOR'],
+              parts: ['WEIGHT'],
               separator: '_',
             },
           },
@@ -36,7 +40,6 @@ const INITIAL_SETTINGS: Settings = {
       },
       output: {
         git: {
-          githubPersonalToken: '<YourClassicPersonalAccessTokenHere>',
           githubOwner: 'momentum-design',
           gitRepo: 'momentum-design',
           gitBranch: `automation-icons-${new Date().toISOString().replace(/\.|:/g, '-')}`,
@@ -57,13 +60,9 @@ const INITIAL_SETTINGS: Settings = {
       },
       input: {
         mapPagesToFolder: [
-          // TODO: adjust properly:
-          // { page: '✅', folder: 'core' },
-          // { page: 'Colored Icons', folder: 'colored' },
-          // { page: 'Brand Icons', folder: 'brand' },
+          { page: '✅', folder: '' },
         ],
         exclude: {
-          // TODO: adjust properly:
           byVariant: 'sf alternative',
         },
         asset: {
@@ -72,8 +71,8 @@ const INITIAL_SETTINGS: Settings = {
             parts: ['SET_OR_COMPONENT_NAME', 'SF_ALTERNATIVE', 'RTL'],
             separator: '-',
             suffix: {
-              parts: ['WEIGHT', 'COLOR'],
-              separator: '_',
+              parts: ['COLOR'],
+              separator: '-',
             },
           },
           exportSettings: {
@@ -85,8 +84,6 @@ const INITIAL_SETTINGS: Settings = {
       },
       output: {
         git: {
-          // TODO: adjust properly:
-          githubPersonalToken: '<YourClassicPersonalAccessTokenHere>',
           githubOwner: 'momentum-design',
           gitRepo: 'momentum-design',
           gitBranch: `automation-illustrations-${new Date().toISOString().replace(/\.|:/g, '-')}`,

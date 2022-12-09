@@ -61,6 +61,11 @@ class Component {
         name += suffix;
       }
     });
+    // hacky but required for legacy support
+    // going forward we need to just use the color type
+    if (name.endsWith('-black')) {
+      name = name.replace('-black', '');
+    }
     name += '.';
     name += exportSettings.format.toLowerCase();
     return name;

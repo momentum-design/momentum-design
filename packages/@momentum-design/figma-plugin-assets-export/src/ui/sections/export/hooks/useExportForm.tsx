@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals */
 import React, { useState, useMemo } from 'react';
-import type { AssetSetting, GitSetting } from '../../../../shared/types';
+import type { AssetSetting, ExportAuth, GitSetting } from '../../../../shared/types';
 
 /**
  * Hook, managing the export form, including
@@ -8,7 +8,7 @@ import type { AssetSetting, GitSetting } from '../../../../shared/types';
  * @param selectedAssetSetting - current asset setting
  * @returns object, including the current title, branch, message, gitconfig and callbacks
  */
-const useExportForm = (selectedAssetSetting?: AssetSetting) => {
+const useExportForm = (auth: ExportAuth, selectedAssetSetting?: AssetSetting) => {
   const [title, setTitle] = useState(`Asset Automation ${new Date().toISOString()}`);
   const [branch, setBranch] = useState(`automation-${new Date().toISOString().replace(/\.|:/g, '-')}`);
   const [message, setMessage] = useState(`feat(assets): Asset Automation ${new Date().toISOString()}`);
@@ -33,6 +33,7 @@ const useExportForm = (selectedAssetSetting?: AssetSetting) => {
 
     return {
       ...gitPartOfSettings,
+      githubPersonalToken: auth.githubPersonalToken,
       prTitle: title,
       prMessage: message,
       gitBranch: branch,
