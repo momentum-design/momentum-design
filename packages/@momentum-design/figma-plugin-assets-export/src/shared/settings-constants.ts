@@ -27,7 +27,7 @@ const INITIAL_SETTINGS: Settings = {
             parts: ['SET_OR_COMPONENT_NAME', 'SF_ALTERNATIVE', 'RTL'],
             separator: '-',
             suffix: {
-              parts: ['WEIGHT'],
+              parts: ['WEIGHT', 'STATE'],
               separator: '_',
             },
           },
