@@ -1,5 +1,7 @@
 /** @jsxImportSource preact */
+import { groupBy } from 'lodash';
 import type { FunctionalComponent } from 'preact';
+import { useMemo } from 'preact/hooks';
 import { TokenType } from '../../../types/tokens';
 import './TokenTable.css';
 
@@ -10,16 +12,25 @@ const getSampleStyle = (type: TokenType, value?: string): string | undefined => 
   return undefined;
 };
 
+/**
+ * Generates tables and groups them by first path keys or token type
+ *
+ * @param jsonData - json data with core tokens
+ * @param tokenType - color or spacing etc,
+ * @returns
+ */
 function generateJSXTable(jsonData: any, tokenType: TokenType) {
   // Create an array to hold the JSX tables
   const tables: any = [];
 
-  // Helper function to recursively generate tables for the subgroups and tokens
+  /**
+   * Helper function to recursively generate tables for the subgroups and tokens
+   * @param data - json data
+   * @param path - initial path
+   */
   function generateTables(data: any, path: any) {
-    // Create an array of table rows
     const rows: any = [];
 
-    // Get an array of the keys in the data object
     const keys = Object.keys(data);
 
     // Loop through the keys and create a table row for each subgroup or token
@@ -51,33 +62,43 @@ function generateJSXTable(jsonData: any, tokenType: TokenType) {
 
     // If there are any rows, create a table for them
     if (rows.length > 0) {
-      const table = (
-        <div>
-          <h3>{path.join('-')}</h3>
-          <table>
-            <thead>
-              <tr>
-                {tokenType === TokenType.Color && <th>Sample</th>}
-                <th>Name</th>
-                <th>Value</th>
-              </tr>
-            </thead>
-            <tbody>{rows}</tbody>
-          </table>
-        </div>
-      );
+      const table = { section: path[0] || tokenType || 'unknown',
+        jsx: (
+          <div>
+            <h4>{path.join('-')}</h4>
+            <table>
+              <thead>
+                <tr>
+                  {tokenType === TokenType.Color && <th>Sample</th>}
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>{rows}</tbody>
+            </table>
+          </div>
+        ) };
       tables.push(table);
     }
   }
 
-  // Start the recursive table generation process
   generateTables(jsonData, []);
-
-  // Return the array of JSX tables
-  return tables;
+  return groupBy(tables, 'section');
 }
 
 // eslint-disable-next-line max-len
-export const TokenTable: FunctionalComponent<{ tokens: any, tokenType: TokenType }> = ({ tokens, tokenType }: { tokens: any, tokenType:TokenType }) => (
-  <div className="tableWrapper">{generateJSXTable(tokens, tokenType)}</div>
-);
+export const TokenTable: FunctionalComponent<{ tokens: any, tokenType: TokenType }> = ({ tokens, tokenType }: { tokens: any, tokenType:TokenType }) => {
+  const data = useMemo(() => generateJSXTable(tokens, tokenType), [tokens, tokenType]);
+  return (
+    <div>
+      {Object.entries(data).map(([section, value]) => (
+        <>
+          <h2>{section}</h2>
+          <div className="tableWrapper">
+            { value.map((table) => table.jsx) }
+          </div>
+        </>
+      ))}
+    </div>
+  );
+};
