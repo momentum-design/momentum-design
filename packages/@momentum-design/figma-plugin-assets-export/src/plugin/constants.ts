@@ -12,6 +12,7 @@ const REPLACE_TERMS = {
   RTL: 'RTL' as const,
   WEIGHT: 'WEIGHT' as const,
   COLOR: 'COLOR' as const,
+  STATE: 'STATE' as const,
 };
 
 // note: variants have to be provided lowercase here:
@@ -20,6 +21,7 @@ const FIGMA_VARIANTS = {
   COLOR: 'color',
   RTL: 'right to left',
   SF_ALTERNATIVE: 'sf alternative',
+  STATE: 'state',
 };
 
 const CONSTANTS = {
