@@ -12,11 +12,11 @@ class Storage {
     this.api = figma.clientStorage;
   }
 
-  setSettings(data: any): Promise<void> {
+  async setSettings(data: any): Promise<void> {
     return this.api.setAsync(settingsKey, data);
   }
 
-  getSettings(): Promise<any> {
+  async getSettings(): Promise<any> {
     return this.api.getAsync(settingsKey);
   }
 }

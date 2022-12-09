@@ -1,10 +1,8 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-undef */
-
 import { CONSTANTS } from '../constants';
-import type { Config } from '../types';
-import type { Asset } from '../../shared/types';
 import { normaliseObject } from '../utils/object';
+import type { Asset, AssetSetting } from '../../shared/types';
 
 type ReplacementMap = { [key: string]: string | undefined }
 
@@ -13,14 +11,14 @@ class Component {
 
   destination: string;
 
-  config: Config;
+  assetSetting: AssetSetting;
 
   variants: Record<string, string>;
 
-  constructor(node: ComponentNode, destination: string, config: Config) {
+  constructor(node: ComponentNode, destination: string, assetSetting: AssetSetting) {
     this.node = node;
     this.destination = destination;
-    this.config = config;
+    this.assetSetting = assetSetting;
     this.variants = normaliseObject(this.node.variantProperties);
   }
 
@@ -44,7 +42,7 @@ class Component {
 
   get assetName() {
     let name = '';
-    const { fileName } = this.config;
+    const { fileName, exportSettings } = this.assetSetting.input.asset;
     const nameParts = fileName.parts.reduce((filtered: Array<string>, part) => {
       const namePart = this.replacementMap[part];
       if (namePart) {
@@ -63,15 +61,20 @@ class Component {
         name += suffix;
       }
     });
+    // hacky but required for legacy support
+    // going forward we need to just use the color type
+    if (name.endsWith('-black')) {
+      name = name.replace('-black', '');
+    }
     name += '.';
-    name += this.config.exportSettings.format.toLowerCase();
+    name += exportSettings.format.toLowerCase();
     return name;
   }
 
   get asset(): Promise<Asset> {
     return new Promise((resolve, reject) => {
       this.node
-        .exportAsync(this.config.exportSettings)
+        .exportAsync(this.assetSetting.input.asset.exportSettings)
         .then((uint8Array: Uint8Array) => {
           resolve({
             path: `${this.destination ? `${this.destination}/` : ''}${this.assetName}`,

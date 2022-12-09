@@ -1,20 +1,17 @@
 import React from 'react';
-import { CONSTANTS } from '../../constants';
-import type { AssetsType } from '../../types';
+import type { Description } from '../../../shared/types';
 
 import './Hint.css';
 
 interface Props {
-  assetType: AssetsType;
+  description: Description;
 }
-function Hint({ assetType }: Props) {
-  const momentumRepoLink = `${CONSTANTS.URLS.MOMENTUM_BASE}/${assetType}`;
-
+function Hint({ description }: Props) {
   return (
     <p className="hint">
-      <span>All {assetType} will be exported to </span>
-      <a href={momentumRepoLink} target="_blank">
-        Momentum {assetType} package
+      <span>{description.name} will be exported to </span>
+      <a href={description.url} target="_blank">
+        {description.urlText}
       </a>
       <span>.</span>
     </p>

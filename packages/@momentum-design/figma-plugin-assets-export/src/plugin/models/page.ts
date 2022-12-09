@@ -1,22 +1,22 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-undef */
 import { CONSTANTS } from '../constants';
-import type { Components, Config } from '../types';
-import type { Asset } from '../../shared/types';
+import type { Components } from '../types';
+import type { Asset, AssetSetting } from '../../shared/types';
 import Component from './component';
 import { normaliseObject } from '../utils/object';
 
 class Page {
   node: PageNode;
 
-  config: Config;
+  assetSetting: AssetSetting;
 
   destination: string;
 
-  constructor(node: PageNode, destination: string, config: Config) {
+  constructor(node: PageNode, destination: string, assetSetting: AssetSetting) {
     this.node = node;
     this.destination = destination;
-    this.config = config;
+    this.assetSetting = assetSetting;
   }
 
   get assets(): Promise<Array<Asset>> {
@@ -24,8 +24,13 @@ class Page {
   }
 
   excludeComponents(componentNodes: Array<ComponentNode>): Array<ComponentNode> {
+    const { exclude } = this.assetSetting.input;
+
+    if (!exclude) {
+      return componentNodes;
+    }
     return componentNodes.filter(
-      (n) => !(normaliseObject(n.variantProperties)?.[this.config.exclude.byVariant] === 'true'),
+      (n) => !(normaliseObject(n.variantProperties)?.[exclude.byVariant] === 'true'),
     );
   }
 
@@ -37,7 +42,7 @@ class Page {
 
     const filteredComponents = this.excludeComponents(componentNodes);
     // return component instances:
-    return filteredComponents.map((node: ComponentNode) => new Component(node, this.destination, this.config));
+    return filteredComponents.map((node: ComponentNode) => new Component(node, this.destination, this.assetSetting));
   }
 }
 
