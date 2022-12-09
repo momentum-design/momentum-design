@@ -65,8 +65,8 @@
         },
         // LEGACY FLOWS
         {
-          "id": "optimise-core-svgs",
-          "target": "./src/legacycore/**/*.*",
+          "id": "optimise-legacy-core-svgs",
+          "target": "./src/legacy/core/**/*.*",
           "destination": "./dist/svg",
           "fileNameReplacePatterns": [
             {
@@ -98,7 +98,7 @@
           }
         },
         {
-          "id": "optimise-brand-colored-svgs",
+          "id": "optimise-legacy-brand-colored-svgs",
           "target": "./src/legacy/{colored,brand}/**/*.*",
           "destination": "./dist/svg",
           "fileNameReplacePatterns": [
