@@ -2,12 +2,12 @@
 import { Octokit } from '@octokit/core';
 import { createPullRequest } from 'octokit-plugin-create-pull-request';
 
-import type { Asset, AssetChunks, GithubSync } from '../../shared/types';
+import type { Asset, AssetChunks, GitSetting } from '../../shared/types';
 
 const MyOctokit = Octokit.plugin(createPullRequest);
 
 class Github {
-  config: GithubSync = {
+  config: GitSetting = {
     githubPersonalToken: '<YourGithubTokenHere>',
     githubOwner: 'momentum-design',
     gitRepo: 'momentum-design',
@@ -16,16 +16,14 @@ class Github {
     prCommitMsg: `feat(assets): Asset Automation ${new Date().toISOString()}`,
     prMessage: `feat(assets): Asset Automation ${new Date().toISOString()}`,
     gitRepoFilePath: 'packages/@momentum-design',
-    assetTypePath: '',
+    gitDistPath: '',
   };
 
-  data: AssetChunks | undefined;
-
-  constructor(config: GithubSync) {
+  constructor(config: GitSetting) {
     this.config = config;
   }
 
-  async pullRequest() {
+  async pullRequest(data: AssetChunks | undefined) {
     const octokit = new MyOctokit({
       auth: this.config.githubPersonalToken,
     });
@@ -38,11 +36,11 @@ class Github {
       forceFork: true,
       createWhenEmpty: false,
       head: this.config.gitBranch,
-      changes: this.data?.map((assets, index) => ({
+      changes: data?.map((assets, index) => ({
         files: assets.reduce((accum: {[key: string]: any}, cur: Asset) => {
           accum[
             // eslint-disable-next-line max-len
-            `${this.config.gitRepoFilePath}${this.config.assetTypePath ? `/${this.config.assetTypePath}/` : ''}${cur.path}`
+            `${this.config.gitRepoFilePath}${this.config.gitDistPath ? `/${this.config.gitDistPath}/` : ''}${cur.path}`
           ] = cur.data;
           return accum;
         }, {}),

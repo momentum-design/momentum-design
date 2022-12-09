@@ -23,7 +23,7 @@ figma.showUI(__html__, { themeColors: true, height: 430, width: 430 });
 figma.ui.onmessage = async (msg) => {
   // used to distinguish between different post message types, sent from UI:
   if (msg.type === ACTIONS.EXPORT) {
-    const document = new Document(figma.root, msg.settings);
+    const document = new Document(figma.root, msg.assetSetting);
 
     const assetChunks = await document.getAssetChunksFromPages();
 

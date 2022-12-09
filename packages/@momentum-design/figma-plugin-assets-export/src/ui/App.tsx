@@ -10,18 +10,39 @@ import { useWindowMessage } from './hooks/useWindowMessage';
 
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>('export');
-  const { settings, setSettings, assets, setAssets, exporting, setExporting, storage, setStorage } = useStateHandlers();
+  const {
+    settings,
+    setSettings,
+    assetChunks,
+    setAssetChunks,
+    exportStatus,
+    setExportStatus,
+    storageStatus,
+    setStorageStatus,
+  } = useStateHandlers();
 
-  useWindowMessage(setSettings, setAssets, setExporting, setStorage);
+  useWindowMessage(setSettings, setAssetChunks, setExportStatus, setStorageStatus);
   return (
     <div className="wrapper">
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
       <div className="content">
-        {activeTab === 'export'
-          && <Export settings={settings} assets={assets} exporting={exporting} setExporting={setExporting}/>}
+        {activeTab === 'export' && settings && (
+          <Export
+            settings={settings}
+            assetChunks={assetChunks}
+            exportStatus={exportStatus}
+            setExportStatus={setExportStatus}
+          />
+        )}
         {activeTab === 'tools' && <Tools />}
-        {activeTab === 'settings'
-          && <Settings settings={settings} setSettings={setSettings} storage={storage} setStorage={setStorage} />}
+        {activeTab === 'settings' && (
+          <Settings
+            settings={settings}
+            setSettings={setSettings}
+            storage={storageStatus}
+            setStorage={setStorageStatus}
+          />
+        )}
       </div>
       <Footer />
     </div>

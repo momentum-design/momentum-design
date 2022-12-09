@@ -2,17 +2,16 @@
 /* eslint-disable no-undef */
 import Page from './page';
 import { CONSTANTS } from '../constants';
-import type { Config, MapPagesToFolder } from '../types';
-import type { Asset } from '../../shared/types';
+import type { Asset, AssetSetting, MapPagesToFolder } from '../../shared/types';
 
 class Document {
   node: DocumentNode;
 
-  config: Config;
+  assetSetting: AssetSetting;
 
-  constructor(rootNode: DocumentNode, config: Config) {
+  constructor(rootNode: DocumentNode, assetSetting: AssetSetting) {
     this.node = rootNode;
-    this.config = config;
+    this.assetSetting = assetSetting;
   }
 
   /**
@@ -41,9 +40,9 @@ class Document {
     if ('children' in this.node) {
       for (const child of this.node.children) {
         if (CONSTANTS.DOCUMENT.VALID_CHILD_TYPES.includes(child.type)) {
-          const destination = this.getDestination(child.name, this.config.mapPagesToFolder);
+          const destination = this.getDestination(child.name, this.assetSetting.input.mapPagesToFolder);
           if (destination || destination === '') {
-            pagesTemp.push(new Page(child, destination, this.config));
+            pagesTemp.push(new Page(child, destination, this.assetSetting));
           }
         }
       }
