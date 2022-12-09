@@ -3,10 +3,14 @@ select {
     color: var(--figma-color-text);
     height: 30px;
     border: 1px solid transparent;
-    font-size: 18px;
+    font-size: 1rem;
     width: 250px;
 }
 
 select:hover {
     border: 1px solid grey;
+}
+
+select:focus-visible {
+    outline: none;
 }

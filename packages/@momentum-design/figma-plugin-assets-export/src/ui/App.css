@@ -1,43 +1,28 @@
+html {
+  font-size: 11px;
+}
+
 body {
-    font-family: Inter, Helvetica Neue, Helvetica, Arial, sans-serif;
-    color: var(--figma-color-text);
-    position: fixed;
-    overflow: none;
-    height: 100%;
-    width: 100%;
-    font-size: 18px;
-    margin: 0;
-    padding: 0;
-  }
+  font-family: Inter, Helvetica Neue, Helvetica, Arial, sans-serif;
+  color: var(--figma-color-text);
+  overflow-y: auto;
+  overflow-x: none;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
 
-  
-  .assets-type-header {
-    font-size: 12px;
-    color: var(--figma-color-text-tertiary);
-  }
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 0px;
+  height: 100%;
+}
 
-  .wrapper {
-    display: flex;
-    flex-direction: column;
-    padding: 0px 15px;
-    height: 100%;
-  }
-
-
-  .content {
-    flex: 1;
-    padding-bottom: 15px;
-  }
-
-  .form {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  .copyright {
-    line-height: 40px;
-    font-size: 12px;
-    margin-block: auto;
-    text-align: center;
-  }
+.content {
+  flex: 1;
+  display: flex;
+  padding: 0px 15px;
+  padding-bottom: 15px;
+}

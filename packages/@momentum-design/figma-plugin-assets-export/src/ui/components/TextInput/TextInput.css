@@ -1,0 +1,16 @@
+.text-input{
+    width: 100%;
+    height: 100%;
+    color: var(--figma-color-text);
+    background-color: var(--figma-color-bg);
+    appearance: none;
+}
+.text-input:hover{
+    background-color: var(--figma-color-bg-hover);
+}
+.text-input:focus-visible {
+    outline: 2px solid var(--figma-color-border-brand);
+}
+.text-input:disabled{
+    background-color: var(--figma-color-bg-disabled);
+}

@@ -2,7 +2,7 @@
   "files": [
     {
       "destination": "core/complete",
-      "cssSelector": ".md-core",
+      "cssSelector": ".mds-core",
       "targets": ["core/*.json"]
     },
     {
@@ -10,7 +10,7 @@
       "filters": {
         "types": ["theme"]
       },
-      "cssSelector": ".md-theme-webex-dark",
+      "cssSelector": ".mds-theme-webex-dark",
       "targets": [
         "core/*.json",
         "theme/webex/dark.json"
@@ -21,15 +21,50 @@
       "filters": {
         "types": ["theme"]
       },
-      "cssSelector": ".md-theme-webex-light",
+      "cssSelector": ".mds-theme-webex-light",
       "targets": [
         "core/*.json",
         "theme/webex/light.json"
       ]
+    },
+    {
+      "destination": "theme/webex/common-stable",
+      "filters": {
+        "types": ["theme"]
+      },
+      "cssSelector": ".mds-theme-stable-commonWebex",
+      "targets": [
+        "core/*.json",
+        "stable/theme/stable-common.json"
+      ]
+    },
+    {
+      "destination": "theme/webex/dark-stable",
+      "filters": {
+        "types": ["theme"]
+      },
+      "cssSelector": ".mds-theme-stable-darkWebex",
+      "targets": [
+        "core/*.json",
+        "stable/theme/stable-common.json",
+        "stable/theme/stable-dark.json"
+      ]
+    },
+    {
+      "destination": "theme/webex/light-stable",
+      "filters": {
+        "types": ["theme"]
+      },
+      "cssSelector": ".mds-theme-stable-lightWebex",
+      "targets": [
+        "core/*.json",
+        "stable/theme/stable-common.json",
+        "stable/theme/stable-light.json"
+      ]
     }
   ],
   "formats": ["CSS_VARIABLES", "SCSS_VARIABLES", "WEB_JSON", "ANDROID_RESOURCES", "SWIFT_CLASS", "MD_JSON_MINIMAL"],
-  "prefix": "md",
+  "prefix": "mds",
   "outputReferences": true,
   "transforms": ["ATTRIBUTE_CTI", "NAME_CTI_KABAB", "MD_ELEVATION"]
 }

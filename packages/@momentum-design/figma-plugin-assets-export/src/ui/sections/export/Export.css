@@ -1,0 +1,12 @@
+.assets-type-header {
+    font-weight: 600;
+}
+
+.align-bottom-center {
+    margin-top: auto;
+    justify-content: center
+}
+
+.asset-select {
+    margin-left: -5px;
+}

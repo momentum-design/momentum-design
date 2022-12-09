@@ -57,7 +57,6 @@ class Package {
         packagesPath,
       })))
       .then((packages) => {
-        // console.log(`dependents for ${this.package}`, packages);
         if (!recursive) {
           return Promise.resolve(packages);
         }
