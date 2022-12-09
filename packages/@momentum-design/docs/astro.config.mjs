@@ -2,9 +2,10 @@
 import { defineConfig } from 'astro/config';
 import preact from '@astrojs/preact';
 import react from '@astrojs/react';
-
+import copy from 'rollup-plugin-copy';
 // https://astro.build/config
 import mdx from '@astrojs/mdx';
+import path from 'path';
 
 // https://astro.build/config
 export default defineConfig({
@@ -17,4 +18,20 @@ export default defineConfig({
   ],
   site: 'https://momentum-design.github.io',
   base: '/momentum-design',
+  vite: {
+    build: {
+      rollupOptions: {
+        plugins: [
+          copy({
+            targets: [
+              {
+                src: path.join(process.cwd(), '../', 'icons/dist/svg/*.svg'),
+                dest: 'public/icons',
+              },
+            ],
+          }),
+        ],
+      },
+    },
+  },
 });

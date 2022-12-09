@@ -1,5 +1,5 @@
 /** @jsxImportSource preact */
-import { groupBy } from 'lodash';
+import lodash from 'lodash';
 import type { FunctionalComponent } from 'preact';
 import { useMemo } from 'preact/hooks';
 import { TokenType } from '../../../types/tokens';
@@ -83,7 +83,7 @@ function generateJSXTable(jsonData: any, tokenType: TokenType) {
   }
 
   generateTables(jsonData, []);
-  return groupBy(tables, 'section');
+  return lodash.groupBy(tables, 'section');
 }
 
 // eslint-disable-next-line max-len

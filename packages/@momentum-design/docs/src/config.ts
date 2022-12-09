@@ -66,7 +66,7 @@ export const MAIN_MENU: Menu = {
       index: 'momentum-design/en',
       submenu: [],
     },
-    Tokens: {
+    'Design Tokens': {
       index: 'momentum-design/en/tokens',
       submenu: [{ text: 'Colors', link: 'momentum-design/en/tokens/colors' }],
     },

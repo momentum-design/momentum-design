@@ -20,6 +20,7 @@ const FORMATS = {
   TTF: 'TTF' as const,
   WOFF: 'WOFF' as const,
   WOFF2: 'WOFF2' as const,
+  MANIFEST: 'MANIFEST' as const,
 };
 
 // http://en.wikipedia.org/wiki/Private_Use_(Unicode)

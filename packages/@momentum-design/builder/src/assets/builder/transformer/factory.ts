@@ -1,5 +1,6 @@
 import CONSTANTS from '../constants';
 import type { Formats } from '../types';
+import ManifestTransformer from './manifest-transformer';
 import SVGFontTransformer from './svg-font-transformer';
 import SVGTransformer from './svg-transformer';
 import Transformer from './transformer';
@@ -13,7 +14,8 @@ type Transformers =
   | SVGFontTransformer
   | TTFTransformer
   | WOFFTransformer
-  | WOFF2Transformer;
+  | WOFF2Transformer
+  | ManifestTransformer;
 
 /**
  * Factory Pattern
@@ -32,6 +34,8 @@ function createTransformer(format: Formats, destination: string): Transformers {
       return new WOFFTransformer(format, destination);
     case CONSTANTS.FORMATS.WOFF2:
       return new WOFF2Transformer(format, destination);
+    case CONSTANTS.FORMATS.MANIFEST:
+      return new ManifestTransformer(format, destination);
     default:
       return new Transformer(format, destination);
   }
