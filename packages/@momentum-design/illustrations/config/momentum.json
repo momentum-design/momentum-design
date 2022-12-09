@@ -5,6 +5,12 @@
             "id": "optimise-svgs",
             "target": "./src/**/*.*",
             "destination": "./dist/svg",
+            "fileNameReplacePatterns": [
+                {
+                  "searchValue": "_",
+                  "replaceValue": "-"
+                }
+              ],
             "format": {
                 "type": "OPTIMIZED_SVG",
                 "config": {
