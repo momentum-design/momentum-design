@@ -120,3 +120,6 @@ dist
 # this means that we will have to build and push
 # not part of pipeline as of now
 !packages/@momentum-design/figma-plugin-assets-export/dist
+
+# MAC system File
+**/.DS_Store
