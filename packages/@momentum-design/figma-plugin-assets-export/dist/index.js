@@ -71,10 +71,10 @@
 
   // src/plugin/models/component.ts
   var Component = class {
-    constructor(node, destination, config) {
+    constructor(node, destination, assetSetting) {
       this.node = node;
       this.destination = destination;
-      this.config = config;
+      this.assetSetting = assetSetting;
       this.variants = normaliseObject(this.node.variantProperties);
     }
     get replacementMap() {
@@ -95,7 +95,7 @@
     }
     get assetName() {
       let name = "";
-      const { fileName } = this.config;
+      const { fileName, exportSettings } = this.assetSetting.input.asset;
       const nameParts = fileName.parts.reduce((filtered, part) => {
         const namePart = this.replacementMap[part];
         if (namePart) {
@@ -114,12 +114,12 @@
         }
       });
       name += ".";
-      name += this.config.exportSettings.format.toLowerCase();
+      name += exportSettings.format.toLowerCase();
       return name;
     }
     get asset() {
       return new Promise((resolve, reject) => {
-        this.node.exportAsync(this.config.exportSettings).then((uint8Array) => {
+        this.node.exportAsync(this.assetSetting.input.asset.exportSettings).then((uint8Array) => {
           resolve({
             path: `${this.destination ? `${this.destination}/` : ""}${this.assetName}`,
             data: String.fromCharCode.apply(null, uint8Array)
@@ -135,19 +135,23 @@
 
   // src/plugin/models/page.ts
   var Page = class {
-    constructor(node, destination, config) {
+    constructor(node, destination, assetSetting) {
       this.node = node;
       this.destination = destination;
-      this.config = config;
+      this.assetSetting = assetSetting;
     }
     get assets() {
       return Promise.all(this.components.map((component) => component.asset));
     }
     excludeComponents(componentNodes) {
+      const { exclude } = this.assetSetting.input;
+      if (!exclude) {
+        return componentNodes;
+      }
       return componentNodes.filter(
         (n) => {
           var _a;
-          return !(((_a = normaliseObject(n.variantProperties)) == null ? void 0 : _a[this.config.exclude.byVariant]) === "true");
+          return !(((_a = normaliseObject(n.variantProperties)) == null ? void 0 : _a[exclude.byVariant]) === "true");
         }
       );
     }
@@ -156,16 +160,16 @@
         types: CONSTANTS.SEARCH_CRITERIA
       });
       const filteredComponents = this.excludeComponents(componentNodes);
-      return filteredComponents.map((node) => new component_default(node, this.destination, this.config));
+      return filteredComponents.map((node) => new component_default(node, this.destination, this.assetSetting));
     }
   };
   var page_default = Page;
 
   // src/plugin/models/document.ts
   var Document = class {
-    constructor(rootNode, config) {
+    constructor(rootNode, assetSetting) {
       this.node = rootNode;
-      this.config = config;
+      this.assetSetting = assetSetting;
     }
     getDestination(name, mapPagesToFolder) {
       const object = mapPagesToFolder.find((map) => name.toLowerCase().includes(map.page.toLowerCase()));
@@ -176,9 +180,9 @@
       if ("children" in this.node) {
         for (const child of this.node.children) {
           if (CONSTANTS.DOCUMENT.VALID_CHILD_TYPES.includes(child.type)) {
-            const destination = this.getDestination(child.name, this.config.mapPagesToFolder);
+            const destination = this.getDestination(child.name, this.assetSetting.input.mapPagesToFolder);
             if (destination || destination === "") {
-              pagesTemp.push(new page_default(child, destination, this.config));
+              pagesTemp.push(new page_default(child, destination, this.assetSetting));
             }
           }
         }
@@ -214,43 +218,99 @@
 
   // src/shared/settings-constants.ts
   var INITIAL_SETTINGS = {
-    mapPagesToFolder: [
-      { page: "\u2705", folder: "core" },
-      { page: "Colored Icons", folder: "colored" },
-      { page: "Brand Icons", folder: "brand" }
-    ],
-    fileName: {
-      parts: ["SET_OR_COMPONENT_NAME", "SF_ALTERNATIVE", "RTL"],
-      separator: "-",
-      suffix: {
-        parts: ["WEIGHT", "COLOR"],
-        separator: "_"
+    assets: {
+      icons: {
+        name: "Icons",
+        description: {
+          name: "Icons",
+          url: "https://github.com/momentum-design/momentum-design/tree/main/packages/%40momentum-design/icons",
+          urlText: "Momentum icons package"
+        },
+        input: {
+          mapPagesToFolder: [
+            { page: "\u2705", folder: "core" },
+            { page: "Colored Icons", folder: "colored" },
+            { page: "Brand Icons", folder: "brand" }
+          ],
+          exclude: {
+            byVariant: "sf alternative"
+          },
+          asset: {
+            fileName: {
+              parts: ["SET_OR_COMPONENT_NAME", "SF_ALTERNATIVE", "RTL"],
+              separator: "-",
+              suffix: {
+                parts: ["WEIGHT", "COLOR"],
+                separator: "_"
+              }
+            },
+            exportSettings: {
+              format: "SVG",
+              contentsOnly: true,
+              useAbsoluteBounds: false
+            }
+          }
+        },
+        output: {
+          git: {
+            githubPersonalToken: "<YourClassicPersonalAccessTokenHere>",
+            githubOwner: "momentum-design",
+            gitRepo: "momentum-design",
+            gitBranch: `automation-icons-${new Date().toISOString().replace(/\.|:/g, "-")}`,
+            prTitle: `Automated Icons Export ${new Date().toISOString()}`,
+            prCommitMsg: `feat(assets/icons): Export ${new Date().toISOString()}`,
+            prMessage: `feat(assets/icons): Export ${new Date().toISOString()}`,
+            gitRepoFilePath: "packages/@momentum-design/icons",
+            gitDistPath: "src"
+          }
+        }
+      },
+      illustrations: {
+        name: "Illustrations",
+        description: {
+          name: "Illustrations",
+          url: "https://github.com/momentum-design/momentum-design/tree/main/packages/%40momentum-design/illustrations",
+          urlText: "Momentum illustrations package"
+        },
+        input: {
+          mapPagesToFolder: [],
+          exclude: {
+            byVariant: "sf alternative"
+          },
+          asset: {
+            fileName: {
+              parts: ["SET_OR_COMPONENT_NAME", "SF_ALTERNATIVE", "RTL"],
+              separator: "-",
+              suffix: {
+                parts: ["WEIGHT", "COLOR"],
+                separator: "_"
+              }
+            },
+            exportSettings: {
+              format: "SVG",
+              contentsOnly: true,
+              useAbsoluteBounds: false
+            }
+          }
+        },
+        output: {
+          git: {
+            githubPersonalToken: "<YourClassicPersonalAccessTokenHere>",
+            githubOwner: "momentum-design",
+            gitRepo: "momentum-design",
+            gitBranch: `automation-illustrations-${new Date().toISOString().replace(/\.|:/g, "-")}`,
+            prTitle: `Automated Illustrations Export ${new Date().toISOString()}`,
+            prCommitMsg: `feat(assets/illustrations): Export ${new Date().toISOString()}`,
+            prMessage: `feat(assets/illustrations): Export ${new Date().toISOString()}`,
+            gitRepoFilePath: "packages/@momentum-design/illustrations",
+            gitDistPath: "src"
+          }
+        }
       }
-    },
-    exclude: {
-      byVariant: "sf alternative"
-    },
-    exportSettings: {
-      format: "SVG",
-      contentsOnly: true,
-      useAbsoluteBounds: false
-    }
-  };
-  var SYNC_SETTINGS = {
-    git: {
-      githubPersonalToken: "<YourClassicPersonalAccessTokenHere>",
-      githubOwner: "momentum-design",
-      gitRepo: "momentum-design",
-      gitBranch: `automation-${new Date().toISOString().replace(/\.|:/g, "-")}`,
-      prTitle: `Asset Automation ${new Date().toISOString()}`,
-      prCommitMsg: `feat(assets): Asset Automation ${new Date().toISOString()}`,
-      prMessage: `feat(assets): Asset Automation ${new Date().toISOString()}`,
-      gitRepoFilePath: "packages/@momentum-design"
     }
   };
   var CONSTANTS2 = {
-    INITIAL_SETTINGS,
-    SYNC_SETTINGS
+    INITIAL_SETTINGS
   };
 
   // src/plugin/models/storage.ts
@@ -282,7 +342,7 @@
   figma.ui.onmessage = (msg) => __async(void 0, null, function* () {
     var _a, _b;
     if (msg.type === ACTIONS.EXPORT) {
-      const document = new document_default(figma.root, msg.settings);
+      const document = new document_default(figma.root, msg.assetSetting);
       const assetChunks = yield document.getAssetChunksFromPages();
       figma.ui.postMessage({ type: "assets", data: assetChunks }, { origin: "*" });
       figma.ui.postMessage({ type: "export" }, { origin: "*" });

@@ -1,13 +1,23 @@
 import { useState } from 'react';
-import { AssetChunks } from '../../shared/types';
+import type { AssetChunks, Settings } from '../../shared/types';
+import type { ExportStatus, StorageStatus } from '../types';
 
 const useStateHandlers = () => {
-  const [settings, setSettings] = useState<any>();
-  const [assets, setAssets] = useState<AssetChunks>([[]]);
-  const [exporting, setExporting] = useState<'clicked' | 'inprogress' | 'failure' | 'complete' | ''>('');
-  const [storage, setStorage] = useState<'inprogress' | 'failure' | 'complete' | ''>('');
+  const [settings, setSettings] = useState<Settings>();
+  const [assetChunks, setAssetChunks] = useState<AssetChunks>([[]]);
+  const [exportStatus, setExportStatus] = useState<ExportStatus>('');
+  const [storageStatus, setStorageStatus] = useState<StorageStatus>('');
 
-  return { settings, setSettings, assets, setAssets, exporting, setExporting, storage, setStorage };
+  return {
+    settings,
+    setSettings,
+    assetChunks,
+    setAssetChunks,
+    exportStatus,
+    setExportStatus,
+    storageStatus,
+    setStorageStatus,
+  };
 };
 
 export { useStateHandlers };

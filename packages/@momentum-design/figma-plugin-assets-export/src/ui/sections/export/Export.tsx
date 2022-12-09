@@ -1,82 +1,47 @@
 /* eslint-disable no-restricted-globals */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import './Export.css';
-import { Hint, Row, Select, Button, Option, SectionHeader, TextInput } from '../../components';
-import type { AssetsType } from '../../types';
+import { Hint, Row, Select, Option, SectionHeader, TextInput } from '../../components';
+import type { ExportStatus } from '../../types';
 import List from '../../components/List/List';
-import { prCreated, exportData } from '../../utils/plugin';
-import Github from '../../models/github';
+import type { AssetChunks, AssetSetting, Settings } from '../../../shared/types';
+import ExportButton from './ExportButton';
+import { useExportForm } from './hooks/useExportForm';
+import { useExportFlow } from './hooks/useExportFlow';
 
 interface Props {
-  settings: any;
-  assets: any;
-  exporting: any;
-  setExporting: any;
+  settings: Settings;
+  assetChunks: AssetChunks;
+  exportStatus: ExportStatus;
+  setExportStatus: React.Dispatch<React.SetStateAction<ExportStatus>>;
 }
 
-function Export({ settings, assets, exporting, setExporting }: Props) {
-  const [selectedAssetType, setSelectedAssetType] = useState<AssetsType | undefined>(undefined);
-  const [github, setGithub] = useState<Github | null>(null);
-  const [exportError, setExportError] = useState<Error>();
-  const [exportMeta, setExportMeta] = useState<any>();
-  const titleInputRef = useRef<HTMLInputElement | null>(null);
-  const branchInputRef = useRef<HTMLInputElement | null>(null);
-  const messageInputRef = useRef<HTMLInputElement | null>(null);
-  const [title, setTitle] = useState(`Asset Automation ${new Date().toISOString()}`);
-  const [branch, setBranch] = useState(`automation-${new Date().toISOString().replace(/\.|:/g, '-')}`);
-  const [message, setMessage] = useState(`feat(assets): Asset Automation ${new Date().toISOString()}`);
+function Export({ settings, assetChunks, exportStatus, setExportStatus }: Props) {
+  const [selectedAssetSetting, setSelectedAssetSetting] = useState<AssetSetting | undefined>(undefined);
 
-  const handleTitleChange = (event: React.FormEvent<HTMLInputElement>): void => {
-    setTitle(event.currentTarget.value);
-  };
+  const {
+    title,
+    branch,
+    message,
+    gitConfig,
+    handleTitleChange,
+    handleBranchChange,
+    handleMessageChange,
+  } = useExportForm(selectedAssetSetting);
 
-  const handleBranchChange = (event: React.FormEvent<HTMLInputElement>): void => {
-    setBranch(event.currentTarget.value);
-  };
-
-  const handleMessageChange = (event: React.FormEvent<HTMLInputElement>): void => {
-    setMessage(event.currentTarget.value);
-  };
-
-  useEffect(() => {
-    if (settings?.git) {
-      setGithub(new Github(settings.git));
-    }
-    if (github) {
-      github.config.assetTypePath = selectedAssetType;
-      github.config.prTitle = title;
-      github.config.prMessage = message;
-      github.config.gitBranch = branch;
-    }
-  }, [settings, selectedAssetType, title]);
-
-  useEffect(() => {
-    if (exporting === 'inprogress') {
-      if (github) {
-        github.data = assets;
-        setExporting('complete');
-        github.pullRequest().then((data) => {
-          setExporting('complete');
-          prCreated(parent, data);
-          setExportMeta(data);
-        }).catch((e) => {
-          setExporting('failure');
-          setExportError(e);
-        });
-      }
-    }
-  }, [exporting]);
-
-  const startProgress = () => {
-    setExportMeta(null);
-    setExportError(undefined);
-    setExporting('clicked');
-  };
-
-  const handleClick = () => {
-    startProgress();
-    exportData(parent, settings);
+  const {
+    exportError,
+    exportMeta,
+    onExportComplete,
+    onExportFailure,
+    onExportStart,
+  } = useExportFlow(
+    setExportStatus,
+    selectedAssetSetting,
+  );
+  const handleSelectChange = (id: string) => {
+    setSelectedAssetSetting(settings?.assets[id]);
   };
 
   return (
@@ -85,59 +50,62 @@ function Export({ settings, assets, exporting, setExporting }: Props) {
         <SectionHeader>Assets type</SectionHeader>
       </Row>
       <Row>
-        <Select name="assets-type" className="asset-select" setSelectValue={setSelectedAssetType}>
-          <Option value="" disabled selected>Select assets type</Option>
-          <Option value="icons/src">Icons</Option>
-          <Option value="illustrations/src">Illustrations</Option>
+        <Select name="assets-type" className="asset-select" setSelectValue={handleSelectChange}>
+          <Option value="" disabled selected>
+            Select assets type
+          </Option>
+          {settings && Object.entries(settings.assets).map(([id, assetSetting]) => (
+            <Option value={id}>{assetSetting.name}</Option>
+          ))}
         </Select>
       </Row>
       <Row>
         <label>
-            Title
-          <TextInput
-            name="title"
-            onChange={(e) => handleTitleChange(e)}
-            value={title}
-            ref={titleInputRef}></TextInput>
+          Title
+          <TextInput name="title" onChange={handleTitleChange} value={title}></TextInput>
         </label>
-
       </Row>
       <Row />
       <Row>
         <label>
           Branch
-          <TextInput
-            onChange={(e) => handleBranchChange(e)}
-            value={branch}
-            ref={branchInputRef}
-          ></TextInput>
+          <TextInput onChange={handleBranchChange} value={branch}></TextInput>
         </label>
       </Row>
       <Row />
       <Row>
         <label>
           Message
-          <TextInput
-            onChange={(e) => handleMessageChange(e)}
-            value={message}
-            ref={messageInputRef}></TextInput>
+          <TextInput onChange={handleMessageChange} value={message}></TextInput>
         </label>
       </Row>
       <Row />
       <Row>
-        <Button
-          disabled={exporting === 'inprogress' || exporting === 'clicked' || selectedAssetType === undefined}
-          onClick={handleClick}>
-            Export
-        </Button>
+        <ExportButton
+          exportStatus={exportStatus}
+          selectedAssetSetting={selectedAssetSetting}
+          assetChunks={assetChunks}
+          gitConfig={gitConfig}
+          handleClick={onExportStart}
+          onExportComplete={onExportComplete}
+          onExportFailure={onExportFailure}
+        ></ExportButton>
       </Row>
       <Row>
-        <p>{exporting && `${exporting}:`}
-          {exporting === 'complete' ? <a href={exportMeta?.data?.url} target="_blank">Pull Request</a> : ''}</p>
+        <p>
+          {exportStatus && `${exportStatus}:`}
+          {exportStatus === 'complete' ? (
+            <a href={exportMeta?.data?.url} target="_blank">
+              Pull Request
+            </a>
+          ) : (
+            ''
+          )}
+        </p>
         {exportError ? <p>Error: {exportError.message}</p> : null}
       </Row>
       <Row className="align-bottom-center">
-        {selectedAssetType && <Hint assetType={selectedAssetType}/>}
+        {selectedAssetSetting?.description && <Hint description={selectedAssetSetting.description} />}
       </Row>
     </List>
   );

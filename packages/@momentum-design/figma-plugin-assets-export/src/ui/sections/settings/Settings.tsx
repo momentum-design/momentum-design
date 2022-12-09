@@ -6,6 +6,7 @@ import TextArea from '../../components/TextArea/TextArea';
 import { saveSettingsToStorage } from '../../utils/plugin';
 import './Settings.css';
 import { CONSTANTS as SETTINGS_CONSTANTS } from '../../../shared/settings-constants';
+import type { Settings as SettingsType } from '../../../shared/types';
 
 interface Props {
   settings: any;
@@ -16,7 +17,6 @@ interface Props {
 function Settings({ settings, setSettings, storage }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const settingsTextareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const gitTextareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [saving, setIsSaving] = useState<boolean | Error | any>(false);
 
   const handleEdit = () => {
@@ -25,30 +25,24 @@ function Settings({ settings, setSettings, storage }: Props) {
 
   const handleSave = () => {
     setIsSaving(true);
-    let settings = {};
-    let git = {};
     try {
       if (settingsTextareaRef.current?.value) {
-        settings = JSON.parse(settingsTextareaRef.current.value);
-      }
-      if (gitTextareaRef.current?.value) {
-        git = JSON.parse(gitTextareaRef.current.value);
+        const settings: SettingsType = JSON.parse(settingsTextareaRef.current.value);
+        setSettings(settings);
+        saveSettingsToStorage(parent, settings);
+        setIsEditing(false);
+        setIsSaving(false);
       }
     } catch (e) {
       setIsSaving(e);
       throw e;
     }
-    const newSettings = { ...settings, ...git };
-    setSettings(newSettings);
-    saveSettingsToStorage(parent, newSettings);
-    setIsEditing(false);
-    setIsSaving(false);
   };
 
   const handleRestore = () => {
-    const newSettings = { ...SETTINGS_CONSTANTS.INITIAL_SETTINGS, ...SETTINGS_CONSTANTS.SYNC_SETTINGS };
-    setSettings(newSettings);
-    saveSettingsToStorage(parent, newSettings);
+    const initialSettings = SETTINGS_CONSTANTS.INITIAL_SETTINGS;
+    setSettings(initialSettings);
+    saveSettingsToStorage(parent, initialSettings);
   };
 
   return (
@@ -60,12 +54,6 @@ function Settings({ settings, setSettings, storage }: Props) {
         <label>
           Settings
           <TextArea disabled={!isEditing} ref={settingsTextareaRef} value={settings} />
-        </label>
-      </div>
-      <div className="settings-area">
-        <label>
-          Github
-          <TextArea disabled={!isEditing} ref={gitTextareaRef} value={{ git: settings.git }} />
         </label>
       </div>
       <Row>
