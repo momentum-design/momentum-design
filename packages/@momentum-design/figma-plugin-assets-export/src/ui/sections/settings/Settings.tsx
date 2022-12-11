@@ -48,13 +48,10 @@ function Settings({ settings, setSettings, storage }: Props) {
   return (
     <div className="settings">
       <Row>
-        <SectionHeader>Current settings</SectionHeader>
+        <SectionHeader>Current settings:</SectionHeader>
       </Row>
       <div className="settings-area">
-        <label>
-          Settings
-          <TextArea disabled={!isEditing} ref={settingsTextareaRef} value={settings} />
-        </label>
+        <TextArea disabled={!isEditing} ref={settingsTextareaRef} value={settings} />
       </div>
       <Row>
         <Button className="action-button" disabled={isEditing} onClick={handleEdit}>
