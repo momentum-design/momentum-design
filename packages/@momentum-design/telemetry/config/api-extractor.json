@@ -29,5 +29,5 @@
    *
    * SUPPORTED TOKENS: <projectFolder>, <packageName>, <unscopedPackageName>
    */
-  "mainEntryPointFilePath": "<projectFolder>/dist/index.d.ts"
+  "mainEntryPointFilePath": "<projectFolder>/dist/types/index.d.ts"
 }

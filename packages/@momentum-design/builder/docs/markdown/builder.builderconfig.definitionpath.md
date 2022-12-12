@@ -12,5 +12,5 @@ Path to the configuration definition for this Builder.
 <b>Signature:</b>
 
 ```typescript
-definitionPath: string;
+definitionPath?: string;
 ```

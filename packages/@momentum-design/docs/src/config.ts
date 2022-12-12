@@ -46,11 +46,23 @@ export type Sidebar = Record<typeof KNOWN_LANGUAGE_CODES[number], Record<string,
 export const SIDEBAR: Sidebar = {
   en: {
     Momentum: [{ text: 'Introduction', link: 'momentum-design/en/docs/momentum/introduction' }],
-    Tokens: [
-      { text: 'Introduction', link: 'momentum-design/en/docs/tokens/introduction' },
-      { text: 'Getting Started', link: 'momentum-design/en/docs/tokens/getting-started' },
+    'Developer Tooling': [
+      { text: 'Token Builder', link: 'momentum-design/en/docs/developer-tooling/token-builder/README.md' },
+      { text: 'Automation', link: 'momentum-design/en/docs/developer-tooling/automation/README.md' },
+      { text: 'Builder', link: 'momentum-design/en/docs/developer-tooling/builder/README.md' },
+      { text: 'Common', link: 'momentum-design/en/docs/developer-tooling/common/README.md' },
+      { text: 'Fonts', link: 'momentum-design/en/docs/developer-tooling/fonts/README.md' },
+      { text: 'Icons', link: 'momentum-design/en/docs/developer-tooling/icons/README.md' },
+      { text: 'Illustrations', link: 'momentum-design/en/docs/developer-tooling/illustrations/README.md' },
+      { text: 'Telemetry', link: 'momentum-design/en/docs/developer-tooling/telemetry/README.md' },
+      { text: 'Tokens', link: 'momentum-design/en/docs/developer-tooling/tokens/README.md' },
     ],
-    'Developer Tooling': [{ text: 'Token Builder', link: 'momentum-design/en/docs/developer-tooling/token-builder' }],
+    'API Reference': [
+      { text: 'Token Builder', link: 'momentum-design/en/docs/api-reference/token-builder/index.md' },
+      { text: 'Telemetry', link: 'momentum-design/en/docs/api-reference/telemetry/index.md' },
+      { text: 'Common', link: 'momentum-design/en/docs/api-reference/common/index.md' },
+      { text: 'Builder', link: 'momentum-design/en/docs/api-reference/builder/index.md' },
+    ],
   },
   es: {},
 };

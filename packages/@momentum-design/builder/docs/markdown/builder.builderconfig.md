@@ -19,5 +19,5 @@ export interface Config
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [definitionPath](./builder.builderconfig.definitionpath.md) |  | string | <b><i>(BETA)</i></b> Path to the configuration definition for this Builder. |
+|  [definitionPath?](./builder.builderconfig.definitionpath.md) |  | string | <b><i>(BETA)</i></b> <i>(Optional)</i> Path to the configuration definition for this Builder. |
 

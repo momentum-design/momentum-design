@@ -1,7 +1,3 @@
----
-package: @momentum-design/telemetry
----
-
 # @momentum-design/telemetry - Scripts Guide
 
 ## Scripts

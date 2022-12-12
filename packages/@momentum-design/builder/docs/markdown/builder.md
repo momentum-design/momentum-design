@@ -10,6 +10,7 @@ A package used to build various assets from momentum design designers to enginee
 
 |  Class | Description |
 |  --- | --- |
+|  [AssetsBuilder](./builder.assetsbuilder.md) | <p><b><i>(BETA)</i></b> The Assets Builder class.</p><p>Contains initialising and processing functions and makes use of several utilities, like <code>AsyncUtils</code>.</p> |
 |  [Builder](./builder.builder.md) | <b><i>(BETA)</i></b> The Builder class to be extended by scoped Builder classes. |
 |  [Builders](./builder.builders.md) | <b><i>(BETA)</i></b> The Builders class to manage a collection of provided builders. |
 
@@ -17,6 +18,7 @@ A package used to build various assets from momentum design designers to enginee
 
 |  Interface | Description |
 |  --- | --- |
+|  [AssetsBuilderConfig](./builder.assetsbuilderconfig.md) | <b><i>(BETA)</i></b> Config type |
 |  [BuilderConfig](./builder.builderconfig.md) | <b><i>(BETA)</i></b> Core configuration Object for Builder. |
 |  [BuildersConfig](./builder.buildersconfig.md) | <b><i>(BETA)</i></b> Configuration Object for the Builders class. |
 |  [BuildersData](./builder.buildersdata.md) | <b><i>(BETA)</i></b> Dynamic data Object for the Builders class. |
