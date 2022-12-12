@@ -1,47 +1,100 @@
 /** @jsxImportSource preact */
 import iconsManifest from '@momentum-design/icons/dist/manifest.json';
-import { useMemo, useState } from 'preact/hooks';
+import { useCallback, useMemo, useState } from 'preact/hooks';
 import './IconTable.css';
 
 type Props = {
   icons: object;
 };
 
-// const svgList = fs
-//   .readdirSync('../../../../../../node_modules/@momentum-design/icons/dist/svg/')
-//   .filter((file) => file.endsWith('.svg'));
+export const IconTable = ({ icons }: Props) => {
+  if (Object.entries(icons).length === 0) {
+    return <p>No icons found...</p>;
+  }
 
-export const IconTable = ({ icons }: Props) => (
-  <div>
-    {Object.entries(icons).map(([key, path]) => (
-      <div>
-        {key}
-        <svg className="icon">
-          <use href={`${path.replace('./svg', '/icons')}`} style="--color_fill: #000;"></use>
-        </svg>
-
+  const render = useMemo(
+    () => (
+      <div className="iconGrid">
+        {Object.entries(icons).map(([key, path]) => (
+          <div className="iconWrapper">
+            <img className={(!key.includes('colored') && 'icon') || ''} src={`${path.replace('./svg', '/icons')}`} />
+            <div className="nameAnchor">
+              <code className="nameWrapper">{key}</code>
+            </div>
+          </div>
+        ))}
       </div>
-    ))}
-  </div>
-);
+    ),
+    [icons],
+  );
 
-export const Pagination = ({ items }: { items: string[] }) => {
-  const PAGE_SIZE = 50;
-  const [currentPage, setCurrentPage] = useState(0);
-  const [weight, setWeight] = useState('regular');
-
-  const paginatedItems = useMemo(() => Object.entries(iconsManifest)
-    .filter(([key]) => key.includes(weight))
-    .slice(currentPage * PAGE_SIZE, PAGE_SIZE)
-    .reduce(
-      (output, [key, value]) => ({
-        ...output,
-        [key]: value,
-      }),
-      {},
-    ), [currentPage, weight]);
-
-  return <IconTable icons={paginatedItems} />;
+  return render;
 };
 
-// .*(?<!(?:regular|bold|filled|light))[.]svg
+export const Pagination = () => {
+  const PAGE_SIZE = 50;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [weight, setWeight] = useState('');
+  const [query, setQuery] = useState('');
+
+  const onQueryChange = useCallback(
+    (e: any) => {
+      setQuery(e?.target?.value);
+    },
+    [setQuery],
+  );
+
+  const onClickNext = useCallback(() => {
+    setCurrentPage((page) => page + 1);
+  }, [setCurrentPage]);
+
+  const onClickPrev = useCallback(() => {
+    setCurrentPage((page) => (currentPage === 1 ? 1 : page - 1));
+  }, [setCurrentPage]);
+
+  const onWeightChange = useCallback(
+    (event: any) => {
+      setWeight(event?.target?.value);
+    },
+    [setWeight],
+  );
+
+  const paginatedItems = useMemo(
+    () => Object.entries(iconsManifest)
+      .filter(([key]) => (query ? key.includes(query) && key.includes(weight) : key.includes(weight)))
+      .slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
+      .reduce(
+        (output, [key, value]) => ({
+          ...output,
+          [key]: value,
+        }),
+        {},
+      ),
+    [currentPage, weight, iconsManifest, query],
+  );
+
+  return (
+    <div>
+      <p>Total Icons in the library - {Object.keys(iconsManifest).length}</p>
+      <p>Current Page: {currentPage}</p>
+      <div className="iconFilters">
+        <input placeholder="Search by icon name" className="queryInput" type="text" onInput={onQueryChange} />
+        <select className="weightSelect" value={weight} onChange={onWeightChange}>
+          <option value="">Any</option>
+          <option value="regular">Regular</option>
+          <option value="light">Light</option>
+          <option value="bold">Bold</option>
+          <option value="filled">Filled</option>
+        </select>
+      </div>
+      {!!query && <div className="query">Searching for: {query}</div>}
+      <IconTable icons={paginatedItems} />
+      <div className="paginationButtons">
+        <button disabled={currentPage === 1} onClick={onClickPrev}>
+          Prev
+        </button>
+        <button onClick={onClickNext}>Next</button>
+      </div>
+    </div>
+  );
+};
