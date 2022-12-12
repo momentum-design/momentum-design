@@ -33,7 +33,7 @@ class Git {
       }));
   }
 
-  public static async release(tag: string, title: string, notes: string): Promise<string> {
+  public static async release(dist: string, tag: string, title: string, notes: string): Promise<string> {
     return Execute.run(`gh release create ${tag} --title "${tag} - ${title}" --notes "${notes}"`);
   }
 
