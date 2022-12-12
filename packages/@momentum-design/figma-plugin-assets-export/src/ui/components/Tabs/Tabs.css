@@ -1,7 +1,7 @@
 .tabs {
     padding-left: 5px;
     height: 40px;
-    width: 100%;
+    width: calc(100% - 5px);
     border-bottom: 1px solid var(--figma-color-border);
 }
 
