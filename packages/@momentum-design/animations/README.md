@@ -1,7 +1,6 @@
 # @momentum-design/animations
 
-[![license: mit](https://img.shields.io/badge/License-MIT-blueviolet?style=flat-square)](https://github.com/momentum-design/momentum-design/blob/main/LICENSE)
-![State](https://img.shields.io/badge/State-Alpha-blue?style=flat-square)
+[![license: mit](https://img.shields.io/badge/License-MIT-blueviolet?style=flat-square)](https://github.com/momentum-design/momentum-design/blob/main/LICENSE) ![State](https://img.shields.io/badge/State-Alpha-blue?style=flat-square)
 
 ## Overview
 

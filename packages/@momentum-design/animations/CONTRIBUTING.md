@@ -1,33 +1,5 @@
----
-package: @momentum-design/animations
----
+# Contribution Guide
 
-# @momentum-design/animations
+In order to add animations to this package, the new animations Lottie files must be added to the `src` folder. Once it is approved by one of our team members, it will be published.
 
-[![license](https://img.shields.io/badge/License-MIT-blueviolet?style=flat-square)](https://github.com/momentum-design/momentum-design/blob/design-token-updates/LICENSE)
-![State](https://img.shields.io/badge/State-Alpha-blue?style=flat-square)
-
-Contains Momentum animations (currently only Lottie JSON files).
-
-## Usage
-
-Run the `build` script to create the `dist` folder, which includes the animation assets.
-
-### Requirements
-
-This project has the following requirements for operation:
-
-* **Node** `v18`
-* **NPM** `v8`
-
-### Consumption
-
-Consume animations directly by importing the JSON files from the repository.
-
-## Contributing
-
-See [our contributing guide](./CONTRIBUTING.md)
-
-## Scripts
-
-See [our script documentation](./SCRIPTS.md)
+See our [main contributing guide](../../../CONTRIBUTING.md) for more information.
