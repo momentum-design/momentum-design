@@ -1,14 +1,28 @@
 ---
-title: Tokens
+title: Design Tokens
 description: This is the main page.
 layout: ../../../layouts/MainLayout.astro
 ---
 
 import TokenCardWrapper from '../../../components/TokenCard/TokenCardWrapper.astro';
+import TokenCard from '../../../components/TokenCard/TokenCard.astro';
 
-# Tokens
-Momentum Design System Tokens
+# 1. Core Tokens
 <TokenCardWrapper/>
 
-## About
-Lorem ipsum etc..
+# 2. Theme Tokens
+Theme tokens will go here.
+## Stable
+<TokenCard name="theme-stable" link="/momentum-design/en/tokens/theme-stable"/>
+
+## Next (beta)
+<TokenCard name="theme-next" link="/momentum-design/en/tokens/theme-next"/>
+
+# 3. Assets
+Official assets for Momentum Design System. Includes icons and illustrations so far. More to come!
+
+## Icons
+<TokenCard name="icons" link="/momentum-design/en/tokens/icons"/>
+
+## Illustrations
+<TokenCard name="illustrations" link="/momentum-design/en/tokens/illustrations"/>

@@ -180,6 +180,17 @@
               "fontName": "MomentumFontIcon"
             }
           }
+        },
+        {
+          "id": "Manifest",
+          "target": "./dist/svg/**/*.*",
+          "destination": "./dist/",
+          "format": {
+            "type": "MANIFEST",
+            "config": {
+              "fileName": "manifest.json"
+            }
+          }
         }
       ],
       "type": "assets"
