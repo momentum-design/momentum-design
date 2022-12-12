@@ -64,6 +64,66 @@
           }
         },
         {
+          "id": "optimise-legacy-core-svgs",
+          "target": "./src/legacy/core/**/*.*",
+          "destination": "./dist/svg",
+          "fileNameReplacePatterns": [
+            {
+              "searchValue": "_",
+              "replaceValue": "-"
+            }
+          ],
+          "format": {
+            "type": "OPTIMIZED_SVG",
+            "config": {
+              "mergePaths": true,
+              "plugins": [
+                {
+                  "name": "preset-default",
+                  "params": {
+                    "overrides": {
+                      "removeViewBox": false
+                    }
+                  }
+                },
+                {
+                  "name": "removeAttrs",
+                  "params": {
+                    "attrs": "(fill|stroke)"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "optimise-legacy-brand-colored-svgs",
+          "target": "./src/legacy/{colored,brand}/**/*.*",
+          "destination": "./dist/svg",
+          "fileNameReplacePatterns": [
+            {
+              "searchValue": "_",
+              "replaceValue": "-"
+            }
+          ],
+          "format": {
+            "type": "OPTIMIZED_SVG",
+            "config": {
+              "mergePaths": true,
+              "plugins": [
+                {
+                  "name": "preset-default",
+                  "params": {
+                    "overrides": {
+                      "removeViewBox": false
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
           "id": "SVG-font-icons",
           "target": "./dist/svg/**/*.*",
           "destination": "./dist/fonts",
