@@ -1,10 +1,10 @@
 select {
     background-color: transparent;
     color: var(--figma-color-text);
-    height: 30px;
+    height: 40px;
     border: 1px solid transparent;
     font-size: 1rem;
-    width: 250px;
+    width: 100%;
 }
 
 select:hover {
