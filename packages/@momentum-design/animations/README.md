@@ -10,6 +10,7 @@ Contains Momentum animations files (Lottie JSON format only at the moment).
 
 ```bash
 yarn add @momentum-design/animations
+npm i @momentum-design/animations
 ```
 
 ## Usage
