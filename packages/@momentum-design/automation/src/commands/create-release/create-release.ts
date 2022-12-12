@@ -55,7 +55,7 @@ class CreateRelease extends Command {
         .concat(`\nPackage:\nhttps://www.npmjs.com/package/${pkg}/v/${version}`);
 
       return {
-        dist,
+        // dist,
         tag,
         title,
         notes,
@@ -65,7 +65,7 @@ class CreateRelease extends Command {
       releases.map(
         async (
           release,
-        ) => `Released: ${await Git.release(release.dist, release.tag, release.title, release.notes)}`,
+        ) => `Released: ${await Git.release(release.tag, release.title, release.notes)}`,
       ),
     );
     result.forEach((res) => {
