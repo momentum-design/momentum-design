@@ -3,20 +3,19 @@ import React from 'react';
 
 import './Select.css';
 
-interface Props {
+interface Props extends React.HTMLProps<HTMLSelectElement> {
   children: React.ReactNode;
-  name: string;
   setSelectValue: React.Dispatch<React.SetStateAction<any | undefined>>;
   className?: string
 }
 
-function Select({ setSelectValue, name, children, className }: Props) {
+function Select({ setSelectValue, children, className, ...restProps }: Props) {
   const handleChange = (e: any) => {
     setSelectValue(e.target.value);
   };
 
   return (
-    <select name={name} onChange={handleChange} className={classNames(className)}>
+    <select onChange={handleChange} className={classNames(className)} {...restProps}>
       {children}
     </select>
   );

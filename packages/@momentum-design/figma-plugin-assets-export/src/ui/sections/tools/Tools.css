@@ -16,11 +16,7 @@
     background-color: var(--figma-color-bg-brand-pressed) !important;
 }
 
-.larger-row {
-    height: 60px;
-}
-
-.larger-row + .larger-row {
+.tools-row + .tools-row {
     border-top: 1px solid var(--figma-color-border);
 }
 

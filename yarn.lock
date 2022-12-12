@@ -1719,6 +1719,14 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@momentum-design/animations@workspace:packages/@momentum-design/animations":
+  version: 0.0.0-use.local
+  resolution: "@momentum-design/animations@workspace:packages/@momentum-design/animations"
+  dependencies:
+    ncp: ^2.0.0
+  languageName: unknown
+  linkType: soft
+
 "@momentum-design/automation@workspace:^, @momentum-design/automation@workspace:packages/@momentum-design/automation":
   version: 0.0.0-use.local
   resolution: "@momentum-design/automation@workspace:packages/@momentum-design/automation"

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 
 import './Export.css';
-import { Hint, Row, Select, Option, SectionHeader, TextInput } from '../../components';
+import { Hint, Row, Select, Option, TextInput, Label } from '../../components';
 import type { ExportStatus } from '../../types';
 import List from '../../components/List/List';
 import type { AssetChunks, AssetSetting, Settings } from '../../../shared/types';
@@ -47,10 +47,10 @@ function Export({ settings, assetChunks, exportStatus, setExportStatus }: Props)
   return (
     <List>
       <Row>
-        <SectionHeader>Assets type</SectionHeader>
-      </Row>
-      <Row>
-        <Select name="assets-type" className="asset-select" setSelectValue={handleSelectChange}>
+        <Label htmlFor='assets-type'>
+        Type:
+        </Label>
+        <Select name="assets-type" id='assets-type' className="asset-select" setSelectValue={handleSelectChange}>
           <Option value="" disabled selected>
             Select assets type
           </Option>
@@ -59,27 +59,28 @@ function Export({ settings, assetChunks, exportStatus, setExportStatus }: Props)
           ))}
         </Select>
       </Row>
+      <Row type='small'/>
       <Row>
-        <label>
-          Title
-          <TextInput name="title" onChange={handleTitleChange} value={title}></TextInput>
-        </label>
+        <Label htmlFor='title'>
+        Title:
+        </Label>
+        <TextInput name="title" id="title" onChange={handleTitleChange} value={title}></TextInput>
       </Row>
-      <Row />
+      <Row type='small'/>
       <Row>
-        <label>
-          Branch
-          <TextInput onChange={handleBranchChange} value={branch}></TextInput>
-        </label>
+        <Label htmlFor='branch'>
+        Branch:
+        </Label>
+        <TextInput id='branch' onChange={handleBranchChange} value={branch}></TextInput>
       </Row>
-      <Row />
+      <Row type='small'/>
       <Row>
-        <label>
-          Message
-          <TextInput onChange={handleMessageChange} value={message}></TextInput>
-        </label>
+        <Label htmlFor='message'>
+        Message:
+        </Label>
+        <TextInput id='message' onChange={handleMessageChange} value={message}></TextInput>
       </Row>
-      <Row />
+      <Row type='small'/>
       <Row>
         <ExportButton
           exportStatus={exportStatus}
