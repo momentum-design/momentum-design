@@ -32,7 +32,7 @@ class CreateRelease extends Command {
     const affectedPackages = packages.collection.filter((pack) => affected.includes(pack.package));
     logger.info(`Affected package within get packages config: ${affectedPackages.map((pack) => pack.package)}`);
     const intersection = affectedPackages.filter((pack) => config.targets.includes(pack.package));
-    logger.info(`Affected package within targets: ${intersection}`);
+    logger.info(`Affected package within targets: ${JSON.stringify(intersection)}`);
     if (!(intersection.length > 0)) {
       logger.warn('No packages matched, skipping release');
       return Promise.resolve(['No packages matched, skipping release\n']);
@@ -41,6 +41,7 @@ class CreateRelease extends Command {
       const packdef = await pack.readDefinition();
       logger.info(`Building release for package: ${pack.name}`);
       const pkg = packdef.package;
+      logger.info(`Archive path: ${join(process.cwd(), packdef.path)}`);
       const targz = join(process.cwd(), packdef.path);
       logger.info(`Compressing archive for release: ${targz}`);
       const dist = await compress(targz);
