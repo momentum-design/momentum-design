@@ -65,7 +65,7 @@ function generateJSXTable(jsonData: any, tokenType: TokenType) {
       const table = { section: path[0] || tokenType || 'unknown',
         jsx: (
           <div>
-            <h4>{path.join('-')}</h4>
+            <a href={`#${path.join('-')}`}><h4 id={path.join('-')}>{path.join('-')}</h4></a>
             <table>
               <thead>
                 <tr>

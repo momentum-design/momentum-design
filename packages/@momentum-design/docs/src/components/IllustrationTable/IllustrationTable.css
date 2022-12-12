@@ -1,12 +1,27 @@
-.iconGrid {
+.illustrationGrid {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
   align-items: center;
   gap: 3rem;
   margin: 2rem 0;
 }
 
-.iconWrapper {
+.grid320 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid192 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.grid120 {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.grid60 {
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.illustrationWrapper {
   justify-self: center;
 }
 
@@ -31,16 +46,20 @@
   text-align: center;
 }
 
+.nameWrapper a {
+  position: relative;
+}
+
 .nameWrapper code {
   position: relative;
 }
 
-.iconWrapper:hover .nameWrapper {
+.illustrationWrapper:hover .nameWrapper {
   display: block;
 }
 
-.icon {
-  filter: invert(-1)
+.illustration {
+  filter: invert(1);
 }
 
 .paginationButtons {
@@ -54,7 +73,7 @@
   background: var(--theme-accent);
 }
 
-.iconFilters {
+.illustrationFilters {
   display: grid;
   grid-template-columns: 1fr max-content;
   gap: 1rem;
@@ -69,7 +88,7 @@
   width: 100%;
 }
 
-.weightSelect {
+.sizeSelect {
   padding: 0.5rem;
   font-size: 1rem;
 }

@@ -28,6 +28,10 @@ export default defineConfig({
                 src: path.join(process.cwd(), '../', 'icons/dist/svg/*.svg'),
                 dest: 'dist/icons',
               },
+              {
+                src: path.join(process.cwd(), '../', 'illustrations/dist/svg/*.svg'),
+                dest: 'dist/illustrations',
+              },
             ],
           }),
         ],
