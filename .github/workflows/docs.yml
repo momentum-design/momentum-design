@@ -104,7 +104,9 @@ jobs:
         run: cp -avr ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist docs/
 
       - name: Generate GitHub Pages Config
-        run: touch docs/.nojekyll
+        run: |
+          touch docs/.nojekyll
+          echo "${{ env.rid }}" >> docs/run-id.hash
       
       - name: Deploy Documentation
         run: |
@@ -116,7 +118,7 @@ jobs:
           then
             echo "Found $FILE_COUNT changed documentation files."
             git commit -m "ci(docs): deploy documentation [skip ci] [skip release]"
-            git push origin docs
+            git push origin docs --force
           else
             echo "Documentation files have not changed."
             echo "Documentation will not be published."
