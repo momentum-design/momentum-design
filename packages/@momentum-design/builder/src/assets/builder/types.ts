@@ -35,7 +35,7 @@ interface CSSFormat {
  */
 export interface SVGFontFormat {
   type: typeof CONSTANTS.FORMATS.SVG_FONT;
-  config: svgicons2svgfont.SvgIcons2FontOptions & {fontName: string};
+  config: svgicons2svgfont.SvgIcons2FontOptions & { fontName: string };
 }
 
 /**
@@ -45,7 +45,7 @@ export interface SVGFontFormat {
  */
 export interface TTFFormat {
   type: typeof CONSTANTS.FORMATS.TTF;
-  config: svg2ttf.FontOptions & {fontName: string};
+  config: svg2ttf.FontOptions & { fontName: string };
 }
 
 /**
@@ -55,7 +55,7 @@ export interface TTFFormat {
  */
 export interface WOFFFormat {
   type: typeof CONSTANTS.FORMATS.WOFF;
-  config: ttf2woff.Options & {fontName: string};
+  config: ttf2woff.Options & { fontName: string };
 }
 
 /**
@@ -65,7 +65,17 @@ export interface WOFFFormat {
  */
 export interface WOFF2Format {
   type: typeof CONSTANTS.FORMATS.WOFF2;
-  config: {fontName: string};
+  config: { fontName: string };
+}
+
+/**
+ * Manifest Format
+ *
+ * @beta
+ */
+export interface ManifestFormat {
+  type: typeof CONSTANTS.FORMATS.MANIFEST;
+  config: { fileName: string };
 }
 
 /**
@@ -112,7 +122,15 @@ export type Encoding = {
  *
  * @beta
  */
-export type Formats = (OptimizedSVGFormat | CSSFormat | SVGFontFormat | TTFFormat | WOFFFormat | WOFF2Format) & {
+export type Formats = (
+  | OptimizedSVGFormat
+  | CSSFormat
+  | SVGFontFormat
+  | TTFFormat
+  | WOFFFormat
+  | WOFF2Format
+  | ManifestFormat
+) & {
   encoding?: Encoding;
 };
 
