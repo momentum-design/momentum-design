@@ -56,6 +56,7 @@ export const SIDEBAR: Sidebar = {
       { text: 'Illustrations', link: 'momentum-design/en/docs/developer-tooling/illustrations/README.md' },
       { text: 'Telemetry', link: 'momentum-design/en/docs/developer-tooling/telemetry/README.md' },
       { text: 'Tokens', link: 'momentum-design/en/docs/developer-tooling/tokens/README.md' },
+      { text: 'Animations', link: 'momentum-design/en/docs/developer-tooling/animations/README.md' },
     ],
     'API Reference': [
       { text: 'Token Builder', link: 'momentum-design/en/docs/api-reference/token-builder/index.md' },
