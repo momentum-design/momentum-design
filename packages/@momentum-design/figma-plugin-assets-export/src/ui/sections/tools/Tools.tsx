@@ -9,13 +9,13 @@ function Tools() {
   return (
     <div className="tools">
       <List>
-        <Row className="larger-row">
-          <p className="bold-text">Name verification</p>
-          <Button className="right-aligned-button">
-            <RunIcon />
+        <Row type="large" className='tools-row'>
+          <p className={classnames('bold-text', 'disabled-text')}>Name verification (WIP)</p>
+          <Button className="right-aligned-button" disabled>
+            <RunIcon disabled/>
           </Button>
         </Row>
-        <Row className="larger-row">
+        <Row type="large" className='tools-row'>
           <p className={classnames('bold-text', 'disabled-text')}>Duplication check (WIP)</p>
           <Button className="right-aligned-button" disabled>
             <RunIcon disabled />
