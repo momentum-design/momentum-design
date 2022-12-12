@@ -26,7 +26,7 @@ export default defineConfig({
             targets: [
               {
                 src: path.join(process.cwd(), '../', 'icons/dist/svg/*.svg'),
-                dest: 'public/icons',
+                dest: 'dist/icons',
               },
             ],
           }),
