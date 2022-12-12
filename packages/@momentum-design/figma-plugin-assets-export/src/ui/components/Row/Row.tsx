@@ -3,13 +3,22 @@ import classnames from 'classnames';
 import './Row.css';
 
 interface Props {
-    children?: React.ReactNode;
-    className?: string;
+  type?: 'large' | 'normal' | 'small'
+  children?: React.ReactNode;
+  className?: string;
 }
 
-function Row({ children, className }: Props) {
+function Row({ type, children, className }: Props) {
   return (
-    <div className={classnames('row', className)}>{children}</div>
+    <div className={
+      classnames(
+        'row',
+        type === 'small' && 'row-small',
+        type === 'large' && 'row-large',
+        className,
+      )}>
+      {children}
+    </div>
   );
 }
 

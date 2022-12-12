@@ -3,3 +3,11 @@
     display: flex;
     align-items: center;
 }
+
+.row-small {
+    height: 20px;
+}
+
+.row-large {
+    height: 60px;
+}

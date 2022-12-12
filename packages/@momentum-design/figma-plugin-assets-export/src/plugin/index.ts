@@ -15,7 +15,7 @@ figma.on('run', async () => {
 });
 
 figma.skipInvisibleInstanceChildren = true;
-figma.showUI(__html__, { themeColors: true, height: 430, width: 430 });
+figma.showUI(__html__, { themeColors: true, height: 550, width: 450 });
 
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
