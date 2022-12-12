@@ -15,14 +15,20 @@ export const IconTable = ({ icons }: Props) => {
   const render = useMemo(
     () => (
       <div className="iconGrid">
-        {Object.entries(icons).map(([key, path]) => (
-          <div className="iconWrapper">
-            <img className={(!key.includes('colored') && 'icon') || ''} src={`${path.replace('./svg', '/icons')}`} />
-            <div className="nameAnchor">
-              <code className="nameWrapper">{key}</code>
+        {Object.entries(icons).map(([key, path]) => {
+          const finalPath = `${path.replace('./svg', '/momentum-design/icons')}`;
+          return (
+            <div className="iconWrapper">
+              <img className={(!key.includes('colored') && 'icon') || ''} src={finalPath} />
+              <div className="nameAnchor">
+                <div className="nameWrapper">
+                  <code>{key}</code>
+                  <a href={finalPath} download={key} className="nameWrapper">Download</a>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     ),
     [icons],
