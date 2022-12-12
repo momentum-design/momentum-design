@@ -5,7 +5,21 @@
 
 ## Overview
 
-This component package was generated with a script, please report any issues.
+Contains Momentum animations files (Lottie JSON format only at the moment).
+
+## Installation
+
+```bash
+yarn add @momentum-design/animations
+```
+
+## Usage
+
+Run the `build` script to create the `dist` folder, which includes animation json assets.
+
+## Consumption
+
+Consumption can be done simply with a asset loader, by importing the JSON files directly from NPM.
 
 ## Contributing
 
