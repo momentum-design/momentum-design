@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Description } from '../../../shared/types';
+import Link from '../Link/Link';
 
 import './Hint.css';
 
@@ -10,9 +11,9 @@ function Hint({ description }: Props) {
   return (
     <p className="hint">
       <span>{description.name} will be exported to </span>
-      <a href={description.url} target="_blank">
+      <Link url={description.url} target="_blank">
         {description.urlText}
-      </a>
+      </Link>
       <span>.</span>
     </p>
   );

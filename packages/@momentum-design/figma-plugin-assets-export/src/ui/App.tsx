@@ -9,6 +9,8 @@ import { useStateHandlers } from './hooks/useStateHandlers';
 import { useWindowMessage } from './hooks/useWindowMessage';
 
 function App() {
+  const [selectedAssetSettingId, setSelectedAssetSettingId] = useState<string | undefined>(undefined);
+
   const [activeTab, setActiveTab] = useState<TabType>('export');
   const {
     settings,
@@ -28,6 +30,8 @@ function App() {
       <div className="content">
         {activeTab === 'export' && settings && (
           <Export
+            selectedAssetSettingId={selectedAssetSettingId}
+            setSelectedAssetSettingId={setSelectedAssetSettingId}
             settings={settings}
             assetChunks={assetChunks}
             exportStatus={exportStatus}

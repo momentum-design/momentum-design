@@ -1,0 +1,15 @@
+---
+import themeNextDark from '@momentum-design/tokens/dist/json/theme/webex/dark-complete.json';
+import themeNextLight from '@momentum-design/tokens/dist/json/theme/webex/light-complete.json';
+import { ThemeTokensTwapper } from '../../../components/ThemeTokensWrapper/ThemeTokensWrapper';
+import MainLayout from '../../../layouts/MainLayout.astro';
+
+---
+
+<MainLayout frontmatter={{ description: '', title: 'Theme Tokens Next', layout: '' }}>
+  <a href="/momentum-design/en/tokens#theme-next">
+    <h3>Back</h3>
+  </a>
+  <h1>Theme Tokens Next (beta)</h1>
+  <ThemeTokensTwapper client:visible themeTokens={{ dark: themeNextDark, light: themeNextLight }}/>
+</MainLayout>
