@@ -19,4 +19,5 @@ export interface Config
 |  [input](./token-builder.dictionaryconfig.input.md) |  | string |  |
 |  [output](./token-builder.dictionaryconfig.output.md) |  | string |  |
 |  [prefix](./token-builder.dictionaryconfig.prefix.md) |  | string |  |
+|  [transforms?](./token-builder.dictionaryconfig.transforms.md) |  | Array&lt;Transform&gt; | <i>(Optional)</i> |
 

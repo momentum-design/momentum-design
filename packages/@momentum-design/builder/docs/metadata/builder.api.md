@@ -4,6 +4,39 @@
 
 ```ts
 
+import type { Config } from 'svgo';
+import * as svg2ttf from 'svg2ttf';
+import * as svgicons2svgfont from 'svgicons2svgfont';
+import * as ttf2woff from 'ttf2woff';
+
+// @beta
+export class AssetsBuilder extends Builder {
+    constructor(config: AssetsBuilderConfig);
+    // Warning: (ae-forgotten-export) The symbol "AsyncUtils" needs to be exported by the entry point index.d.ts
+    asyncUtils: AsyncUtils;
+    buildName: string;
+    // Warning: (ae-forgotten-export) The symbol "CONSTANTS_3" needs to be exported by the entry point index.d.ts
+    static get CONSTANTS(): typeof CONSTANTS_3;
+    final(): Promise<this>;
+    // Warning: (ae-forgotten-export) The symbol "Flow" needs to be exported by the entry point index.d.ts
+    flows: Array<Flow>;
+    initialize(): Promise<this>;
+    process(): Promise<this>;
+    runFlowSteps(flow: Flow): Promise<this>;
+    static get type(): string;
+    verifyConfig(): Promise<this>;
+}
+
+// @beta
+export interface AssetsBuilderConfig extends BuilderConfig {
+    // (undocumented)
+    buildName: string;
+    // Warning: (ae-forgotten-export) The symbol "FlowType" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    flows: Array<FlowType>;
+}
+
 // @beta
 export class Builder {
     constructor(config: BuilderConfig);
@@ -12,10 +45,12 @@ export class Builder {
     // Warning: (ae-forgotten-export) The symbol "CONSTANTS" needs to be exported by the entry point index.d.ts
     static get CONSTANTS(): typeof CONSTANTS;
     // @virtual
+    final(): Promise<this>;
+    // @virtual
     initialize(): Promise<this>;
     // @virtual
     process(): Promise<this>;
-    read(target?: string): Promise<this>;
+    read(target?: string | undefined): Promise<this>;
     // @virtual
     get type(): string;
     static get type(): string;
@@ -25,7 +60,7 @@ export class Builder {
 export interface BuilderConfig {
     // (undocumented)
     [key: string]: any;
-    definitionPath: string;
+    definitionPath?: string;
 }
 
 // @beta
@@ -35,6 +70,7 @@ export class Builders extends Builder {
     // Warning: (ae-forgotten-export) The symbol "CONSTANTS_2" needs to be exported by the entry point index.d.ts
     static get CONSTANTS(): typeof CONSTANTS_2;
     data: BuildersData;
+    final(): Promise<this>;
     generateBuilders(): this;
     initialize(): Promise<this>;
     process(): Promise<this>;
@@ -55,8 +91,8 @@ export interface BuildersData {
 // @alpha
 export class TokensBuilder extends Builder {
     constructor(config: TokensBuilderConfig);
-    // Warning: (ae-forgotten-export) The symbol "CONSTANTS_3" needs to be exported by the entry point index.d.ts
-    static get CONSTANTS(): typeof CONSTANTS_3;
+    // Warning: (ae-forgotten-export) The symbol "CONSTANTS_4" needs to be exported by the entry point index.d.ts
+    static get CONSTANTS(): typeof CONSTANTS_4;
     initialize(): Promise<this>;
     process(): Promise<this>;
     static get type(): string;

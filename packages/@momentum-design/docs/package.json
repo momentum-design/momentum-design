@@ -24,7 +24,8 @@
     "publish:npmjs": "echo \"script 'publish:npmjs' has not been implemented\"",
     "test": "yarn test:prebuild && yarn test:postbuild",
     "test:postbuild": "echo \"script 'test:prebuild' has not been implemented\"",
-    "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\""
+    "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\"",
+    "convert:md:to:astro": "node ./src/utils/convert-md-astro.js"
   },
   "dependencies": {
     "@algolia/client-search": "^4.13.1",

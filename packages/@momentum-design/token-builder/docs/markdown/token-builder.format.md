@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type Format = keyof typeof CONSTANTS.FORMATS;
+export type Format = keyof typeof CONSTANTS.FORMATS;
 ```
