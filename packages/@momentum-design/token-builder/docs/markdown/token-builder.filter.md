@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type Filter = Array<string>;
+export type Filter = Array<string>;
 ```

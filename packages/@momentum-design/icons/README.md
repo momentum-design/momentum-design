@@ -1,7 +1,3 @@
----
-package: @momentum-design/icons
----
-
 # @momentum-design/icons
 
 [![license](https://img.shields.io/badge/License-MIT-blueviolet?style=flat-square)](https://github.com/momentum-design/momentum-design/blob/design-token-updates/LICENSE)

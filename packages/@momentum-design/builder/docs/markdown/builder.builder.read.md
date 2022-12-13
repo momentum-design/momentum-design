@@ -12,14 +12,14 @@ Read the file located via the provided `target` and mount the data found within 
 <b>Signature:</b>
 
 ```typescript
-read(target?: string): Promise<this>;
+read(target?: string | undefined): Promise<this>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  target | string | <i>(Optional)</i> Target path to attempt to read and mount to this Builder. |
+|  target | string \| undefined | <i>(Optional)</i> Target path to attempt to read and mount to this Builder. |
 
 <b>Returns:</b>
 
