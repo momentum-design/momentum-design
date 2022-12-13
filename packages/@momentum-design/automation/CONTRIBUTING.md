@@ -1,7 +1,3 @@
----
-package: @momentum-design/automation
----
-
 # @momentum-design/automation - Contributing Guide
 
 ## Contributing

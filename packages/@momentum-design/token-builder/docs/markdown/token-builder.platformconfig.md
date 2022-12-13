@@ -18,4 +18,5 @@ export interface Config
 |  [format](./token-builder.platformconfig.format.md) |  | [Format](./token-builder.format.md) |  |
 |  [output](./token-builder.platformconfig.output.md) |  | string |  |
 |  [prefix?](./token-builder.platformconfig.prefix.md) |  | string | <i>(Optional)</i> |
+|  [transforms?](./token-builder.platformconfig.transforms.md) |  | Array&lt;Transform&gt; | <i>(Optional)</i> |
 

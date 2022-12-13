@@ -1,0 +1,24 @@
+---
+import DocsLayout from '../../../../layouts/DocsLayout.astro';
+
+export async function getStaticPaths() {
+  const pages = await Astro.glob('../../../../../../*/*.md');
+  return pages.map((page) => {
+    const paths = page.file?.split('/');
+    // go back 1 directories to get the package name
+    const fileName = paths.pop();
+    const subPackage = paths.pop();
+
+    return {
+      params: { readme: `${subPackage}/${fileName}` },
+      props: { page, subPackage },
+    };
+  });
+}
+const { page } = Astro.props;
+
+---
+
+<DocsLayout frontmatter={{ description: '', title: '', layout: '' }} headings={page.getHeadings()}>
+  <page.Content />
+</DocsLayout>

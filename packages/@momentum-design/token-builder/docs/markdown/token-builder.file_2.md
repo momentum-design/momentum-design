@@ -29,7 +29,14 @@ declare class File
 |  [file](./token-builder.file_2.file.md) | <code>readonly</code> | string |  |
 |  [filter](./token-builder.file_2.filter.md) | <code>readonly</code> | (token: TransformedToken) =&gt; boolean |  |
 |  [format](./token-builder.file_2.format.md) | <code>readonly</code> | string |  |
+|  [iosAccessControl](./token-builder.file_2.iosaccesscontrol.md) | <code>readonly</code> | string \| undefined |  |
+|  [iosImport](./token-builder.file_2.iosimport.md) | <code>readonly</code> | string \| Array&lt;String&gt; \| undefined |  |
+|  [iosObjectType](./token-builder.file_2.iosobjecttype.md) | <code>readonly</code> | string \| undefined |  |
 |  [items](./token-builder.file_2.items.md) | <code>readonly</code> | Array&lt;string&gt; |  |
+|  [references](./token-builder.file_2.references.md) | <code>readonly</code> | boolean |  |
+|  [scssThemeable](./token-builder.file_2.scssthemeable.md) | <code>readonly</code> | boolean |  |
 |  [sdConfig](./token-builder.file_2.sdconfig.md) | <code>readonly</code> | SDFile |  |
+|  [selector](./token-builder.file_2.selector.md) | <code>readonly</code> | string \| undefined |  |
+|  [showFileHeader](./token-builder.file_2.showfileheader.md) | <code>readonly</code> | boolean |  |
 |  [types](./token-builder.file_2.types.md) | <code>readonly</code> | Array&lt;string&gt; |  |
 

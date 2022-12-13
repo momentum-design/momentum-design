@@ -35,6 +35,7 @@ declare class Builder
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
 |  [build()](./builder.builder.build.md) |  | <b><i>(BETA)</i></b> Build the output data based on the configuration provided to this Builder. |
+|  [final()](./builder.builder.final.md) |  | <b><i>(BETA)</i></b> Final methods of this Builder. |
 |  [initialize()](./builder.builder.initialize.md) |  | <b><i>(BETA)</i></b> Initialize this Builder. |
 |  [process()](./builder.builder.process.md) |  | <b><i>(BETA)</i></b> Process this Builder. |
 |  [read(target)](./builder.builder.read.md) |  | <b><i>(BETA)</i></b> Read the file located via the provided <code>target</code> and mount the data found within this Builder. |

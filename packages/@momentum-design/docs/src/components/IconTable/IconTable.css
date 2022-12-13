@@ -31,10 +31,6 @@
   text-align: center;
 }
 
-.nameWrapper a {
-  position: relative;
-}
-
 .nameWrapper code {
   position: relative;
 }
@@ -44,7 +40,7 @@
 }
 
 .icon {
-  filter: invert(1);
+  filter: invert(1)
 }
 
 .paginationButtons {

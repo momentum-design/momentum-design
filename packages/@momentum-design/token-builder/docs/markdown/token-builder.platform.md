@@ -25,6 +25,8 @@ declare class Platform
 |  [format](./token-builder.platform.format.md) | <code>readonly</code> | [Format](./token-builder.format.md) |  |
 |  [group](./token-builder.platform.group.md) | <code>readonly</code> | string |  |
 |  [output](./token-builder.platform.output.md) | <code>readonly</code> | string |  |
+|  [path](./token-builder.platform.path.md) | <code>readonly</code> | string |  |
 |  [prefix](./token-builder.platform.prefix.md) | <code>readonly</code> | string \| undefined |  |
 |  [sdConfig](./token-builder.platform.sdconfig.md) | <code>readonly</code> | SDPlatform |  |
+|  [transforms](./token-builder.platform.transforms.md) | <code>readonly</code> | Array&lt;string&gt; \| undefined |  |
 
