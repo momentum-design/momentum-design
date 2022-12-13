@@ -57,6 +57,7 @@ function Export({
 
   const handleSelectChange = (id: string) => {
     setSelectedAssetSettingId(id);
+    setExportStatus('');
   };
 
   return (
@@ -71,6 +72,7 @@ function Export({
           className="asset-select"
           setSelectValue={handleSelectChange}
           value={selectedAssetSettingId}
+          disabled={exportStatus === 'inprogress'}
         >
           <Option value="" disabled selected>
             Select assets type
