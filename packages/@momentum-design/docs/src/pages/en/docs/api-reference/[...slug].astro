@@ -11,8 +11,8 @@ export async function getStaticPaths() {
     paths.pop();
     const subPackage = paths.pop();
     return {
-      params: { slug: `${subPackage}/${fileName}` },
-      props: { page },
+      params: { slug: `${subPackage}/${fileName?.replaceAll('.md', '-md')}` },
+      props: { page: { ...page, compiledContent: page.compiledContent().replaceAll('.md', '-md') } },
     };
   });
 }
@@ -20,5 +20,10 @@ const { page } = Astro.props;
 ---
 
 <DocsLayout frontmatter={{ description: '', title: '', layout: '' }} headings={page.getHeadings()}>
-  <page.Content/>
+  <!-- Because we need to replace the contents of the markdown files we import and
+   Astro doesn't provide a way to recompile the Component that it returns from the getStaticPaths,
+   we're using the compiledContent instead (which returns HTML as string), replace the things we
+   need to replace, and use the fragment to inject the HTML.
+  -->
+  <Fragment set:html={page.compiledContent} />
 </DocsLayout>
