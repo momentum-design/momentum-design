@@ -10,3 +10,4 @@ export { default as RunIcon } from './RunIcon/RunIcon';
 export { default as SectionHeader } from './SectionHeader/SectionHeader';
 export { default as TextInput } from './TextInput/TextInput';
 export { default as Label } from './Label/Label';
+export { default as Link } from './Link/Link';
