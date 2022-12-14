@@ -1,5 +1,4 @@
 ---
-import ThemeToggleButton from './ThemeToggleButton';
 import * as CONFIG from '../../config';
 import LanguageSelect from '../LanguageSelect/LanguageSelect';
 import { getLanguageFromURL, KNOWN_LANGUAGE_CODES } from '../../languages';
@@ -17,7 +16,7 @@ const lang = getLanguageFromURL(currentPage);
 
 {showMoreSection && <h2 class="heading">More</h2>}
 <ul>
-  {
+  <!-- {
     editHref && (
       <li class={'header-link depth-2'}>
         <a class="edit-on-github" href={editHref} target="_blank">
@@ -44,7 +43,7 @@ const lang = getLanguageFromURL(currentPage);
         </a>
       </li>
     )
-  }
+  } -->
   {
     CONFIG.COMMUNITY_INVITE_URL && (
       <li class={'header-link depth-2'}>
@@ -77,7 +76,6 @@ const lang = getLanguageFromURL(currentPage);
   style="margin: 2rem 0; text-align: center; display: flex; flex-direction: column; gap: 1rem; justify-content:center;"
 >
   {KNOWN_LANGUAGE_CODES.length > 1 && <LanguageSelect lang={lang} client:idle />}
-  <ThemeToggleButton client:visible />
 </div>
 
 <style>
