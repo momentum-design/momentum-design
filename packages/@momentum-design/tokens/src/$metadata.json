@@ -10,6 +10,8 @@
     "theme/webex/common",
     "theme/webex/dark",
     "theme/webex/light",
+    "theme/webex/border-radius",
+    "theme/webex/elevation",
     "stable/theme/stable-common",
     "stable/theme/stable-dark",
     "stable/theme/stable-light"
