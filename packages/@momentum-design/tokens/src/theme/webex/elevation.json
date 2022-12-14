@@ -1,0 +1,20 @@
+{
+  "elevation": {
+    "theme": {
+      "0": {
+        "value": "{elevation.0}",
+        "type": "boxShadow",
+        "description": "Core Token: elevation.0"
+      },
+      "1": {
+        "value": "{elevation.1}",
+        "type": "boxShadow",
+        "description": "Core Token: elevation.1"
+      },
+      "2": {
+        "value": "{elevation.2}",
+        "type": "boxShadow"
+      }
+    }
+  }
+}
