@@ -6,6 +6,7 @@ import MomentumLogo from './MomentumLogo.astro';
 import SkipToContent from './SkipToContent.astro';
 import SidebarToggle from './SidebarToggle';
 import Search from './Search';
+import ThemeToggle from '../RightSidebar/ThemeToggleButton';
 
 const currentPage = Astro.url.pathname;
 
@@ -28,7 +29,7 @@ const menu = CONFIG.MAIN_MENU[langCode];
       </a>
     </div>
     <div style="flex-grow: 1;"></div>
-    <div class="main-menu">
+    <div class="main-menu" style={{ alignItems: 'center' }}>
       {
         Object.entries(menu).map(([name, item]) => {
           const url = Astro.site?.pathname + item.index;
@@ -42,9 +43,11 @@ const menu = CONFIG.MAIN_MENU[langCode];
         })
       }
     </div>
+    <ThemeToggle client:visible />
     <div class="search-item">
       <Search client:idle />
     </div>
+
   </nav>
 </header>
 
