@@ -13,6 +13,7 @@
     "theme/webex/border-radius",
     "theme/webex/border-width",
     "theme/webex/elevation",
+    "theme/webex/spacing",
     "stable/theme/stable-common",
     "stable/theme/stable-dark",
     "stable/theme/stable-light"
