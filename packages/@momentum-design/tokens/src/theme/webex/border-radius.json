@@ -1,0 +1,26 @@
+{
+  "border-radius": {
+    "theme": {
+      "none": {
+        "value": "{border-radius.none}",
+        "type": "borderRadius"
+      },
+      "small": {
+        "value": "{border-radius.small}",
+        "type": "borderRadius"
+      },
+      "medium": {
+        "value": "{border-radius.medium}",
+        "type": "borderRadius"
+      },
+      "large": {
+        "value": "{border-radius.large}",
+        "type": "borderRadius"
+      },
+      "half-height": {
+        "value": "{border-radius.half-height}",
+        "type": "borderRadius"
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "spacing": {
+    "theme": {
+      "none": {
+        "value": "{spacing.none}",
+        "type": "spacing"
+      },
+      "micro": {
+        "value": "{spacing.micro}",
+        "type": "spacing"
+      },
+      "xxx-small": {
+        "value": "{spacing.xxx-small}",
+        "type": "spacing"
+      },
+      "xx-small": {
+        "value": "{spacing.xx-small}",
+        "type": "spacing"
+      },
+      "x-small": {
+        "value": "{spacing.x-small}",
+        "type": "spacing"
+      },
+      "small": {
+        "value": "{spacing.small}",
+        "type": "spacing"
+      },
+      "medium": {
+        "value": "{spacing.medium}",
+        "type": "spacing"
+      },
+      "large": {
+        "value": "{spacing.large}",
+        "type": "spacing"
+      },
+      "x-large": {
+        "value": "{spacing.x-large}",
+        "type": "spacing"
+      },
+      "xx-large": {
+        "value": "{spacing.xx-large}",
+        "type": "spacing"
+      },
+      "xxx-large": {
+        "value": "{spacing.xxx-large}",
+        "type": "spacing"
+      },
+      "big": {
+        "value": "{spacing.big}",
+        "type": "spacing"
+      },
+      "x-big": {
+        "value": "{spacing.x-big}",
+        "type": "spacing"
+      },
+      "xx-big": {
+        "value": "{spacing.xx-big}",
+        "type": "spacing"
+      }
+    }
+  }
+}

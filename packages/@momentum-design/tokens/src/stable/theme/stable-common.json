@@ -161,18 +161,18 @@
             }
           },
           "join-animated-gradient": {
-            "normal": [
-              {
+            "normal": {
+              "0": {
                 "value": "{color.decorative.mint.40}",
                 "type": "color",
                 "description": ""
               },
-              {
+              "1": {
                 "value": "{color.core.blue.40}",
                 "type": "color",
                 "description": ""
               }
-            ]
+            }
           }
         },
         "outline": {
