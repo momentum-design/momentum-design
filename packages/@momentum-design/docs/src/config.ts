@@ -32,7 +32,7 @@ export const KNOWN_LANGUAGE_CODES = Object.values(KNOWN_LANGUAGES);
 // eslint-disable-next-line max-len
 export const GITHUB_EDIT_URL = 'https://github.com/momentum-design/momentum-design/tree/main/packages/%40momentum-design/docs/src/pages';
 
-export const COMMUNITY_INVITE_URL = 'https://momentum.design/chat';
+export const COMMUNITY_INVITE_URL = '/momentum-design/en';
 
 // See "Algolia" section of the README for more information.
 export const ALGOLIA = {
@@ -59,10 +59,10 @@ export const SIDEBAR: Sidebar = {
       { text: 'Animations', link: 'momentum-design/en/docs/developer-tooling/animations/README.md' },
     ],
     'API Reference': [
-      { text: 'Token Builder', link: 'momentum-design/en/docs/api-reference/token-builder/index.md' },
-      { text: 'Telemetry', link: 'momentum-design/en/docs/api-reference/telemetry/index.md' },
-      { text: 'Common', link: 'momentum-design/en/docs/api-reference/common/index.md' },
-      { text: 'Builder', link: 'momentum-design/en/docs/api-reference/builder/index.md' },
+      { text: 'Token Builder', link: 'momentum-design/en/docs/api-reference/token-builder' },
+      { text: 'Telemetry', link: 'momentum-design/en/docs/api-reference/telemetry' },
+      { text: 'Common', link: 'momentum-design/en/docs/api-reference/common' },
+      { text: 'Builder', link: 'momentum-design/en/docs/api-reference/builder' },
     ],
   },
   es: {},
@@ -75,13 +75,17 @@ export type Menu = Record<
 
 export const MAIN_MENU: Menu = {
   en: {
-    System: {
+    Home: {
       index: 'momentum-design/en',
       submenu: [],
     },
     'Design Tokens': {
       index: 'momentum-design/en/tokens',
-      submenu: [{ text: 'Colors', link: 'momentum-design/en/tokens/colors' }],
+      submenu: [],
+    },
+    Assets: {
+      index: 'momentum-design/en/assets',
+      submenu: [],
     },
     Docs: {
       index: 'momentum-design/en/docs',
