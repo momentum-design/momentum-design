@@ -24,7 +24,8 @@
     "publish:npmjs": "echo \"script 'publish:npmjs' has not been implemented\"",
     "test": "yarn test:prebuild && yarn test:postbuild",
     "test:postbuild": "echo \"script 'test:prebuild' has not been implemented\"",
-    "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\""
+    "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\"",
+    "convert:md:to:astro": "node ./src/utils/convert-md-astro.js"
   },
   "dependencies": {
     "@algolia/client-search": "^4.13.1",
@@ -33,6 +34,8 @@
     "@astrojs/react": "^1.2.2",
     "@docsearch/css": "^3.1.0",
     "@docsearch/react": "^3.1.0",
+    "@momentum-design/icons": "workspace:^",
+    "@momentum-design/illustrations": "workspace:^",
     "@momentum-design/token-builder": "workspace:^",
     "@momentum-design/tokens": "workspace:^",
     "@types/node": "^18.0.0",
@@ -42,7 +45,8 @@
     "lodash": "^4.17.21",
     "preact": "^10.7.3",
     "react": "^18.1.0",
-    "react-dom": "^18.1.0"
+    "react-dom": "^18.1.0",
+    "rollup-plugin-copy": "^3.4.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.189",

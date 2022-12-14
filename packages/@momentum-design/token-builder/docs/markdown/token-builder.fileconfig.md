@@ -14,7 +14,14 @@ export interface Config
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
+|  [cssSelector?](./token-builder.fileconfig.cssselector.md) |  | string | <i>(Optional)</i> |
 |  [destination](./token-builder.fileconfig.destination.md) |  | string |  |
-|  [filters](./token-builder.fileconfig.filters.md) |  | [Filters](./token-builder.filters.md) |  |
+|  [filters?](./token-builder.fileconfig.filters.md) |  | [Filters](./token-builder.filters.md) | <i>(Optional)</i> |
 |  [format](./token-builder.fileconfig.format.md) |  | [Format](./token-builder.format.md) |  |
+|  [iosAccessControl?](./token-builder.fileconfig.iosaccesscontrol.md) |  | string | <i>(Optional)</i> |
+|  [iosImport?](./token-builder.fileconfig.iosimport.md) |  | string \| Array&lt;string&gt; | <i>(Optional)</i> |
+|  [iosObjectType?](./token-builder.fileconfig.iosobjecttype.md) |  | string | <i>(Optional)</i> |
+|  [outputReferences?](./token-builder.fileconfig.outputreferences.md) |  | boolean | <i>(Optional)</i> |
+|  [scssThemeable?](./token-builder.fileconfig.scssthemeable.md) |  | boolean | <i>(Optional)</i> |
+|  [showFileHeader?](./token-builder.fileconfig.showfileheader.md) |  | boolean | <i>(Optional)</i> |
 

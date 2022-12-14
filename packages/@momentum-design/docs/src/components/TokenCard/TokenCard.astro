@@ -9,6 +9,6 @@ type Props = {
 const { name, link } = Astro.props as Props;
 ---
 
-<a class="card" href={link}>
+<a id={name} class="card" href={link}>
   {name.replace('-', ' ')}
 </a>

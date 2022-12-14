@@ -1,7 +1,3 @@
----
-package: @momentum-design/fonts
----
-
 # @momentum-design/fonts
 
 ## Overview

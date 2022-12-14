@@ -1,7 +1,3 @@
----
-package: @momentum-design/illustrations
----
-
 # @momentum-design/illustrations
 
 [![license](https://img.shields.io/badge/License-MIT-blueviolet?style=flat-square)](https://github.com/momentum-design/momentum-design/blob/design-token-updates/LICENSE)
@@ -24,7 +20,9 @@ This project has the following requirements for operation:
 
 **TODO** - Installation Process
 
+
 **TODO** - Consumption Flows
+
 
 ## Contributing
 

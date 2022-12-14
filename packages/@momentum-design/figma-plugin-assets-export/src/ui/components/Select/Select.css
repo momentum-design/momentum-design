@@ -1,12 +1,16 @@
 select {
     background-color: transparent;
     color: var(--figma-color-text);
-    height: 30px;
+    height: 40px;
     border: 1px solid transparent;
-    font-size: 18px;
-    width: 250px;
+    font-size: 1rem;
+    width: 100%;
 }
 
 select:hover {
     border: 1px solid grey;
+}
+
+select:focus-visible {
+    outline: none;
 }

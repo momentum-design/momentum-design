@@ -35,6 +35,7 @@ declare class Builders extends Builder
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
+|  [final()](./builder.builders.final.md) |  | <b><i>(BETA)</i></b> Final methods of this Builder. |
 |  [generateBuilders()](./builder.builders.generatebuilders.md) |  | <b><i>(BETA)</i></b> Generate Builder class Objects based on the current list of Builder constructors within <code>this.config.defintions</code>. |
 |  [initialize()](./builder.builders.initialize.md) |  | <b><i>(BETA)</i></b> Initialize this Builder. |
 |  [process()](./builder.builders.process.md) |  | <b><i>(BETA)</i></b> Process this Builder. |
