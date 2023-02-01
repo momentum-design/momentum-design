@@ -1,5 +1,5 @@
 {
-  "border-radius": {
+  "border-width": {
     "theme": {
       "none": {
         "value": "{border-width.none}",
