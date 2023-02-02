@@ -2,19 +2,19 @@
   "border-width": {
     "theme": {
       "none": {
-        "value": "{border-width.none}",
+        "value": "{border-width.core.none}",
         "type": "borderWidth"
       },
       "small": {
-        "value": "{border-width.small}",
+        "value": "{border-width.core.small}",
         "type": "borderWidth"
       },
       "medium": {
-        "value": "{border-width.medium}",
+        "value": "{border-width.core.medium}",
         "type": "borderWidth"
       },
       "large": {
-        "value": "{border-width.large}",
+        "value": "{border-width.core.large}",
         "type": "borderWidth"
       }
     }
