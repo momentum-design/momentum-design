@@ -2,23 +2,23 @@
   "border-radius": {
     "theme": {
       "none": {
-        "value": "{border-radius.none}",
+        "value": "{border-radius.core.none}",
         "type": "borderRadius"
       },
       "small": {
-        "value": "{border-radius.small}",
+        "value": "{border-radius.core.small}",
         "type": "borderRadius"
       },
       "medium": {
-        "value": "{border-radius.medium}",
+        "value": "{border-radius.core.medium}",
         "type": "borderRadius"
       },
       "large": {
-        "value": "{border-radius.large}",
+        "value": "{border-radius.core.large}",
         "type": "borderRadius"
       },
       "half-height": {
-        "value": "{border-radius.half-height}",
+        "value": "{border-radius.core.half-height}",
         "type": "borderRadius"
       }
     }
