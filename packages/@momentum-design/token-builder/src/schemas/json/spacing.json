@@ -19,6 +19,19 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
+                "core": {
+                    "$ref": "#/definitions/Core"
+                }
+            },
+            "required": [
+                "core"
+            ],
+            "title": "Spacing"
+        },
+        "Core": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
                 "none": {
                     "$ref": "#/definitions/Big"
                 },
@@ -78,7 +91,7 @@
                 "xxx-large",
                 "xxx-small"
             ],
-            "title": "Spacing"
+            "title": "Core"
         },
         "Big": {
             "type": "object",
