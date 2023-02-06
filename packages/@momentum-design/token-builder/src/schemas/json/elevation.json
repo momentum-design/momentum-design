@@ -7,32 +7,28 @@
             "additionalProperties": false,
             "properties": {
                 "elevation": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "$ref": "#/definitions/Elevation"
-                    }
+                    "$ref": "#/definitions/Elevation"
                 }
             },
             "required": [
                 "elevation"
-            ],
-            "title": "Welcome"
+            ]
         },
         "Elevation": {
             "type": "object",
-            "additionalProperties": false,
+            "additionalProperties": true,
             "properties": {
                 "core": {
                     "type": "object",
                     "additionalProperties": {
                         "$ref": "#/definitions/Core"
                     }
-                },
-                "required": [
-                    "core"
-                ],
-                "title": "Elevation"
-            }
+                }
+            },
+            "required": [
+                "core"
+            ],
+            "title": "Elevation"
         },
         "Core": {
             "type": "object",
