@@ -72,7 +72,7 @@
             }
           },
           "02": {
-            "primary": {
+            "tertiary": {
               "value": "{color.core.gray.90}",
               "type": "color",
               "description": "Core Token: core.gray.90\nHEX: 262626\n----------------\nUsed this for the most top modal surface when layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
@@ -82,7 +82,7 @@
               "type": "color",
               "description": "Core Token: core.gray.95\nHEX: 1a1a1a\n----------------\nMedium solid surface. Used this for the surface of modal when layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
             },
-            "tertiary": {
+            "primary": {
               "value": "{color.core.black-alpha.100}",
               "type": "color",
               "description": "Core Token: core.black-alpha.100\nHEX: 000000\n----------------\nFull solid surface. Used this for calendar picker, input-filed, toasts, panel-rectangles. Can also be used when layering surfaces one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
@@ -154,9 +154,9 @@
               "description": "Core Token: core.white-alpha.70\nHEX: FFFFFF 70%\n--------------------\nUsed for secondary text"
             },
             "disabled": {
-              "value": "{color.core.white-alpha.40}",
+              "value": "{color.core.white-alpha.20}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.40\nHEX: FFFFFF 40%\n---\nUsed for disabled state for all text"
+              "description": "Core Token: core.white-alpha.20\nHEX: FFFFFF 20%\n---\nUsed for disabled state for all text"
             },
             "teams": {
               "default": {
@@ -184,13 +184,13 @@
                 "description": "Core Token: core.black-alpha.60\nHEX: 000000 60%\n---\nUsed for inverted text secondary."
               },
               "disabled": {
-                "value": "{color.core.black-alpha.40}",
+                "value": "{color.core.black-alpha.20}",
                 "type": "color",
-                "description": "Core Token: core.black-alpha.40\nHEX: 000000 40%\n---\nUsed for disabled inverted text."
+                "description": "Core Token: core.black-alpha.20\nHEX: 000000 20%\n---\nUsed for disabled inverted text."
               }
             }
           },
-          "positve": {
+          "positive": {
             "active": {
               "value": "{color.core.green.20}",
               "type": "color",
@@ -774,22 +774,22 @@
               "default": {
                 "value": "{color.core.white-alpha.20}",
                 "type": "color",
-                "description": "Core Token: core.white-alpha.20\nHEX: FFFFFF 20%\n-----------------------\nUsed for rest state of inactive control components (radio, toggle, checkbox)"
+                "description": "Core Token: core.white-alpha.20\nHEX: FFFFFF 20%\n-----------------------\nCore Token: core.white-alpha.20\nHEX: ffffff\n--------------\nUsed for rest state of control components background (radio, toggle, checkbox). \nFor toggle buttons, refer Common UI."
               },
               "hover": {
                 "value": "{color.core.white-alpha.30}",
                 "type": "color",
-                "description": "Core Token: core.white-alpha.30\nHEX: FFFFFF 30%\n-----------------------\nUsed for hover state of inactive control components (radio, toggle, checkbox)"
+                "description": "Core Token: core.white-alpha.30\nHEX: FFFFFF 30%\n-----------------------\nUsed for hover state of inactive control components background (radio, toggle, checkbox)\nFor toggle buttons, refer Common UI."
               },
               "pressed": {
                 "value": "{color.core.white-alpha.40}",
                 "type": "color",
-                "description": "Core Token: core.white-alpha.40\nHEX: FFFFFF 40%\n-----------------------\nUsed for pressed state of inactive control components (radio, toggle, checkbox)"
+                "description": "Core Token: core.white-alpha.40\nHEX: FFFFFF 40%\n-----------------------\nUsed for pressed state of inactive control components backgroound. (radio, toggle, checkbox)\nFor toggle buttons, refer Common UI."
               },
               "disabled": {
-                "value": "{color.core.white-alpha.11}",
+                "value": "{color.core.white-alpha.00}",
                 "type": "color",
-                "description": "Core Token: core.white-alpha.11\nHEX: FFFFFF 11%\n-----------------------\nUsed for disabled state of inactive control components (radio, toggle, checkbox)"
+                "description": "Core Token: core.white-alpha.00\nHEX: FFFFFF 00%\n-----------------------\nUsed for disabled state of inactive control components backgroound. (radio, toggle, checkbox)\nFor toggle buttons, refer Common UI."
               }
             }
           },
@@ -798,22 +798,22 @@
               "default": {
                 "value": "{color.core.blue.40}",
                 "type": "color",
-                "description": "Core Token: core.blue.40\nHEX: 64B4FA\n--------------\nRest state of control components(radio, toggle, checkbox)"
+                "description": "Core Token: core.blue.40\nHEX: 64B4FA\n--------------\nUsed for rest state of active control components backgroound. (radio, toggle, checkbox)\nFor toggle buttons, refer Common UI."
               },
               "hover": {
                 "value": "{color.core.blue.50}",
                 "type": "color",
-                "description": "Core Token: core.blue.50\nHEX: 3492EB\n--------------\nHover state of control components(radio, toggle, checkbox)"
+                "description": "Core Token: core.blue.50\nHEX: 3492EB\n--------------\nUsed for hover state of active control components backgroound. (radio, toggle, checkbox)\nFor toggle buttons, refer Common UI."
               },
               "pressed": {
                 "value": "{color.core.blue.60}",
                 "type": "color",
-                "description": "Core Token: core.blue.60\nHEX: 1170CF\n--------------\nPressed/active state of control components(radio, toggle, checkbox)"
+                "description": "Core Token: core.blue.60\nHEX: 1170CF\n--------------\nUsed for press state of active control components backgroound. (radio, toggle, checkbox)\nFor toggle buttons, refer Common UI."
               },
               "disabled": {
-                "value": "{color.core.blue.80}",
+                "value": "{color.core.white-alpha.20}",
                 "type": "color",
-                "description": "Core Token: core.blue.80\nHEX: 063A75\n--------------\nUsed for disabled state of control components (radio, toggle, checkbox)"
+                "description": "Core Token: core.white-alpha.20\nHEX: ffffff\n--------------\nUsed for disabled state of active control components backgroound. (radio, toggle, checkbox)\nFor toggle buttons, refer Common UI."
               }
             }
           }
@@ -867,7 +867,7 @@
           "00": {
             "value": "{color.core.white-alpha.20}",
             "type": "color",
-            "description": "Core Token: core.white-alpha.20\nHEX: FFFFFF 20%\n----------------------\n• Used for calendar- picker, modal-bgs, dialog, toasts, menu-list, grids  \n[iOS] content-list, separator, bottom-tabs, content\n[AND] content-list, list-item, separator, toast, reaction-bar"
+            "description": "Core Token: core.white-alpha.20\nHEX: FFFFFF 20%\n----------------------\n• Used for calendar- picker, modal-bgs, dialog, toasts, menu-list, grids, disabled state of buttons and controls.\n[iOS] content-list, separator, bottom-tabs, content\n[AND] content-list, list-item, separator, toast, reaction-bar"
           },
           "01": {
             "value": "{color.core.white-alpha.30}",
@@ -882,7 +882,7 @@
           "03": {
             "value": "{color.core.white-alpha.50}",
             "type": "color",
-            "description": "Core Token: core.white.alpha-50\nHEX: FFFFFF 50%\n-------------------------\nUsed for rest/default state of input-fields, control components"
+            "description": "Core Token: core.white.alpha-50\nHEX: FFFFFF 50%\n-------------------------\nUsed for rest/default state of input-fields, sliders."
           },
           "04": {
             "value": "{color.core.white-alpha.90}",

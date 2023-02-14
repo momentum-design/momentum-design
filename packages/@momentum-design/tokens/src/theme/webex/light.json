@@ -72,7 +72,7 @@
             }
           },
           "02": {
-            "primary": {
+            "tertiary": {
               "value": "{color.core.gray.05}",
               "type": "color",
               "description": "Core Token: core.gray.05\nHEX: F7f7f7\n----------------\nUsed this for the most top modal surface when layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
@@ -82,10 +82,10 @@
               "type": "color",
               "description": "Core Token: core.gray.10\nHEX: EDEDED\n----------------\nMedium solid surface. Used this for the surface of modal when layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
             },
-            "tertiary": {
+            "primary": {
               "value": "{color.core.white-alpha.100}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.100\nHEX: FFFFFF\n----------------\nFull solid surface. Used this for calendar picker, input-filed, toasts, panel-rectangles. Can also be used when layering surfaces one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
+              "description": "Core Token: core.white-alpha.100\nHEX: FFFFFF\n----------------\nFull solid surface. Used this for background of calendar picker, input-filed, toasts, panel-rectangles. Can also be used when layering surfaces one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
             }
           }
         },
@@ -154,9 +154,9 @@
               "description": "Core Token: core.black-alpha.70\nHEX: 000000 70%\n--------------------\nUsed for secondary text"
             },
             "disabled": {
-              "value": "{color.core.black-alpha.40}",
+              "value": "{color.core.black-alpha.20}",
               "type": "color",
-              "description": "Core Token: core.black-alpha.40\nHEX: 000000 40%\n---\nUsed for disabled state for all text"
+              "description": "Core Token: core.black-alpha.20\nHEX: 000000 20%\n---\nUsed for disabled state for all text"
             },
             "teams": {
               "default": {
@@ -811,9 +811,9 @@
                 "description": "Core Token: core.blue.80\nHEXL: 063a75\n------------------------------\nUsed for pressed state of control components (radio, toggle, checkbox)"
               },
               "disabled": {
-                "value": "{color.core.blue.20}",
+                "value": "{color.core.black-alpha.20}",
                 "type": "color",
-                "description": "Core Token: core.blue.20\nHEX: BFE3FF\n--------------\nUsed for disabled state of control components (radio, toggle, checkbox)"
+                "description": "Core Token: core.black-alpha.20\nHEX: 000000 20%\n--------------\nUsed for disabled state of control components background.(radio, toggle, checkbox)\nFor toggle buttons, refer common UI."
               }
             }
           }
@@ -882,7 +882,7 @@
           "03": {
             "value": "{color.core.black-alpha.50}",
             "type": "color",
-            "description": "Core Token: core.black.alpha-50\nHEX: 000000 50%\n-------------------------\nUsed for input-fields, control components"
+            "description": "Core Token: core.black.alpha-50\nHEX: 000000 50%\n-------------------------\nUsed for input-fields, sliders."
           },
           "04": {
             "value": "{color.core.black-alpha.90}",
