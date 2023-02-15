@@ -36,8 +36,8 @@ export const COMMUNITY_INVITE_URL = '/momentum-design/en';
 
 // See "Algolia" section of the README for more information.
 export const ALGOLIA = {
-  indexName: 'momentum-design-en',
-  appId: 'CDACQGZ0NC',
+  indexName: import.meta.env.ALGOLIA_INDEX_NAME,
+  appId: import.meta.env.ALGOLIA_APP_ID,
   apiKey: import.meta.env.ALGOLIA_DOC_SEARCH,
 };
 
