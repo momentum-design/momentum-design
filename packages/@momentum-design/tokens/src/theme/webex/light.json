@@ -73,11 +73,7 @@
           },
           "02": {
             "tertiary": {
-<<<<<<< HEAD
               "value": "{color.core.gray.10}",
-=======
-              "value": "{color.core.gray.05}",
->>>>>>> 10df7fe (Theme Token Change)
               "type": "color",
               "description": "Core Token: core.gray.10\nHEX: ededed\n----------------\nCore Token: core.gray.05\nHEX: f7f7f7\n----------------\nUsed for input fields, mostly modals that are layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
             },
@@ -808,7 +804,6 @@
             }
           },
           "accent": {
-<<<<<<< HEAD
             "default": {
               "value": "{color.core.blue.60}",
               "type": "color",
@@ -823,29 +818,6 @@
               "value": "{color.core.blue.80}",
               "type": "color",
               "description": "Core Token: core.blue.80\nHEXL: 063a75\n------------------------------\nUsed for pressed state of control components (radio, toggle, checkbox)"
-=======
-            "active": {
-              "default": {
-                "value": "{color.core.blue.60}",
-                "type": "color",
-                "description": "Core Token: core.blue.60\nHEX: 1170cf\n------------------------------\nUsed for rest state of control components (radio, toggle, checkbox)"
-              },
-              "hover": {
-                "value": "{color.core.blue.70}",
-                "type": "color",
-                "description": "Core Token: core.blue.70\nHEXL: 0353a8\n------------------------------\nUsed for hover state of control components (radio, toggle, checkbox)"
-              },
-              "pressed": {
-                "value": "{color.core.blue.80}",
-                "type": "color",
-                "description": "Core Token: core.blue.80\nHEXL: 063a75\n------------------------------\nUsed for pressed state of control components (radio, toggle, checkbox)"
-              },
-              "disabled": {
-                "value": "{color.core.black-alpha.20}",
-                "type": "color",
-                "description": "Core Token: core.black-alpha.20\nHEX: 000000 20%\n--------------\nUsed for disabled state of control components background.(radio, toggle, checkbox)\nFor toggle buttons, refer common UI."
-              }
->>>>>>> 10df7fe (Theme Token Change)
             }
           }
         },

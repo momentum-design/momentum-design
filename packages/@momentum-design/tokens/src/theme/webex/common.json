@@ -385,7 +385,7 @@
             "00": {
               "value": "{color.core.white-alpha.100}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.100\nHEX: FFFFFF 100%\n----------\nUsed for background of toggle buttons, sliders.\n"
+              "description": "Core Token: core.white-alpha.100\nHEX: FFFFFF 100%\n----------\nUsed for rest state of toggle button.\n"
             }
           }
         },
