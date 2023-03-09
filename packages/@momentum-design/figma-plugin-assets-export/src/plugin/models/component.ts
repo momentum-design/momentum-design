@@ -71,8 +71,8 @@ class Component {
       name = name.replace('-black', '');
     }
     name += '.';
-    name += exportSettings.format.toLowerCase();
-    return name;
+    name += exportSettings.format;
+    return name.toLowerCase();
   }
 
   get asset(): Promise<Asset> {
