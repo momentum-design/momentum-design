@@ -58,6 +58,12 @@
                       "removeViewBox": false
                     }
                   }
+                },
+                {
+                  "name": "removeAttrs",
+                  "params": {
+                    "attrs": "path:fill:#0F0F0F"
+                  }
                 }
               ]
             }
