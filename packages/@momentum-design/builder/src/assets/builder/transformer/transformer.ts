@@ -62,7 +62,13 @@ class Transformer {
     return Promise.resolve();
   }
 
-  private checkForDuplicates(output: Array<FileType>): Array<string | undefined> {
+  /**
+   * Returns an array with the duplicated distPaths that resulted after
+   * the transform operations.
+   * @param output - the output files from the transform
+   * @returns - array with duplicate distPaths.
+   */
+  private getDuplicates(output: Array<FileType>): Array<string | undefined> {
     // eslint-disable-next-line max-len
     return _.filter(output.map((file) => file.distPath?.toLocaleLowerCase()), (distPath, i, iteratee) => _.includes(iteratee, distPath, i + 1));
   }
@@ -90,7 +96,7 @@ class Transformer {
         if (!this.outputFiles) {
           Promise.reject(new Error('Can\'t run transform if no files are provided.'));
         } else {
-          const duplicates = this.checkForDuplicates(this.outputFiles);
+          const duplicates = this.getDuplicates(this.outputFiles);
           if (duplicates.length !== 0) {
             const error = `We found duplicates: \n ${duplicates.join('\r\n')}`;
             this.logger.error(error);
