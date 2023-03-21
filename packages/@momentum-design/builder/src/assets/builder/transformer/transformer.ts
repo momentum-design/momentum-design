@@ -3,9 +3,9 @@ import {
   generateMetadata,
   ExtendedLogger,
 } from '@momentum-design/telemetry';
+import * as _ from 'lodash';
 import CONSTANTS from '../constants';
 import type { Formats, FileType } from '../types';
-
 /**
  * The Transformer base class.
  *
@@ -63,6 +63,17 @@ class Transformer {
   }
 
   /**
+   * Returns an array with the duplicated distPaths that resulted after
+   * the transform operations.
+   * @param output - the output files from the transform
+   * @returns - array with duplicate distPaths.
+   */
+  private getDuplicates(output: Array<FileType>): Array<string | undefined> {
+    // eslint-disable-next-line max-len
+    return _.filter(output.map((file) => file.distPath?.toLocaleLowerCase()), (distPath, i, iteratee) => _.includes(iteratee, distPath, i + 1));
+  }
+
+  /**
    * Run method, which will be the entry point when using the transformer
    *
    * If there was no transformation applied after running transform, it will
@@ -85,7 +96,14 @@ class Transformer {
         if (!this.outputFiles) {
           Promise.reject(new Error('Can\'t run transform if no files are provided.'));
         } else {
-          resolve(this.outputFiles);
+          const duplicates = this.getDuplicates(this.outputFiles);
+          if (duplicates.length !== 0) {
+            const error = `We found duplicates: \n ${duplicates.join('\r\n')}`;
+            this.logger.error(error);
+            reject(new Error(error));
+          } else {
+            resolve(this.outputFiles);
+          }
         }
       }).catch((err) => {
         this.logger.debug(`Finished transform of format ${this.format.type}.`);
