@@ -19,7 +19,7 @@ const LOGGER_FORMAT = winston.format.combine(
   winston.format.errors({ stack: true }),
   winston.format.ms(),
   winston.format.printf((logInfo: winston.Logform.TransformableInfo) => {
-    return `${logInfo.level}|${logInfo.label}/${logInfo.metadata?.pkg || 'NA'}+${logInfo.metadata?.file || 'NA'}@${logInfo.timestamp}:${logInfo.ms}->${JSON.stringify(logInfo.message)};`;
+    return `${logInfo.level}|${logInfo.label}/${logInfo.metadata?.pkg || 'NA'}+${logInfo.metadata?.file || 'NA'}@${logInfo.timestamp}:${logInfo.ms}->${logInfo.message}};`;
   }),
 );
 
