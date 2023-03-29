@@ -524,24 +524,29 @@
               "description": "Core Token: core.gray.50\nHEX: 8F8F8F\n------------\nUsed for presence (away, on-hold, on-device), meeting indicators(meeting-locked)"
             },
             "01": {
-              "value": "{color.core.gray.80}",
+              "value": "{color.core.gray.70}",
               "type": "color",
-              "description": "Core Token: core.gray.80\nHEX: 3B3B3B\n--------------------------\nUsed for active state of alert-badge"
+              "description": "Core Token: core.gray.70\nHEX: 545454\n--------------------------\nUsed for active state of alert-badge"
             },
             "02": {
-              "value": "{color.core.gray.90}",
+              "value": "{color.core.gray.80}",
               "type": "color",
-              "description": "Core Token: core.gray.90\nHEX: 262626\n------------------------\nUsed for rest/hover state of alert-badge, rest state of tags"
+              "description": "Core Token: core.gray.80\nHEX: 3B3B3B\n--------------------------\nUsed for rest/hover state of alert-badge"
             },
             "03": {
+              "value": "{color.core.gray.90}",
+              "type": "color",
+              "description": "Core Token: core.gray.90\nHEX: 262626\n------------------------\nUsed for rest state of tags"
+            },
+            "04": {
               "value": "{color.core.gray.95}",
               "type": "color",
               "description": "Core Token: core.gray.95\nHEX: 1A1A1A\n-----------------\nUsed for hover state of tags"
             },
-            "04": {
-              "value": "{color.core.white-alpha.100}",
+            "05": {
+              "value": "{color.core.black-alpha.100}",
               "type": "color",
-              "description": "Core Token: core.black-alpha.100\nHEX: 000000\n-------------------------\nUsed for pressed state of tags, name-tag."
+              "description": "Core Token: core.alpha-black.100\nHEX: 000000\n-----------------\nUsed for press state of tags"
             }
           },
           "positive": {
