@@ -521,7 +521,7 @@
             "00": {
               "value": "{color.core.gray.60}",
               "type": "color",
-              "description": "Core Token: core.gray.60\nHEX: 707070\n------------\nUsed for presence (away, on-hold, on-device), meeting indicators(meeting-locked)"
+              "description": "Core Token: core.gray.60\nHEX: 707070\n\nUsed for presence (away, on-hold, on-device), meeting indicators(meeting-locked)"
             },
             "01": {
               "value": "{color.core.gray.30}",
@@ -533,10 +533,10 @@
               "type": "color",
               "description": "Core Token: core.gray.20\nHEX: DEDEDE\n--------------------------\nUsed for rest/hover state of alert-badge"
             },
-            "\b03": {
+            "03": {
               "value": "{color.core.gray.10}",
               "type": "color",
-              "description": "Core Token: core.gray.10\nHEX: EDEDED\n------------------------\nUsed for pressed state of tags"
+              "description": "Core Token: core.gray.10\nHEX: ededed\n\nUsed for pressed state of tags"
             },
             "04": {
               "value": "{color.core.gray.05}",
