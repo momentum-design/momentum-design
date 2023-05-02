@@ -138,18 +138,6 @@
               "description": "Core Token: core.blue.60\nHEX: 1170CF\n-------------------\nUsed [ioS] Selected state of navigation/side-bar, search-bar"
             }
           }
-        },
-        "gradient": {
-          "00": {
-            "value": "linear-gradient(90deg, rgba(255, 255, 255, 0.72) 60.56%, rgba(255, 255, 255, 0) 92.59%);",
-            "type": "color",
-            "description": "Used for meeting reactions(meetings/reactions/feed)"
-          },
-          "01": {
-            "value": "linear-gradient(180deg, rgba(247, 247, 247, 0.9) 0%, rgba(247, 247, 247, 0) 100%)",
-            "type": "color",
-            "description": "Used for meeting reactions (overlay background)"
-          }
         }
       },
       "content": {
@@ -790,7 +778,7 @@
             "default": {
               "value": "{color.core.black-alpha.20}",
               "type": "color",
-              "description": "Core Token: core.black-alpha.20\nHEX: 000000 20%\n-----------------------\nUsed for rest state of inactive toggle backgrounds.\nFor toggle buttons, refer Common UI."
+              "description": "Core Token: core.black-alpha.20\nHEX: 000000 20%\n-----------------------\nUsed for rest state of inactive control components(checkbox, toggle, radio)"
             },
             "hover": {
               "value": "{color.core.black-alpha.30}",
@@ -988,13 +976,6 @@
                 "description": "Core Token: core.blue.70 0% 0%, core.blue.70 90% 22.4%, core.blue.70 90% 76.04, core.blue.70 0% 100% \nHEX: linear-gradient(90deg, #0353a800 0%,  #0353a8E6 22.4%, #0353a8E6  76.04%,  #0353a800 100%)\n--------------------------------\nUsed for hover state divider on the compose area for the announcement space."
               }
             }
-          }
-        },
-        "warning": {
-          "00": {
-            "value": "{color.core.yellow.60}",
-            "type": "color",
-            "description": "Core Token: color.core.yellow.60\nHEX: #a65e00\n4.97 on surface.neutral.02.primary (#ffffff)\nUsed for warning state of input fields border"
           }
         }
       }
