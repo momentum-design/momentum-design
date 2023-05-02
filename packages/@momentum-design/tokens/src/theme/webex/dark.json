@@ -138,6 +138,18 @@
               "description": "Core Token: core.blue.60\nHEX: 1170CF\n-------------------\nUsed [ioS] Selected state of navigation/side-bar, search-bar"
             }
           }
+        },
+        "gradient": {
+          "00": {
+            "value": "linear-gradient(90deg, rgba(26, 26, 26, 0.72) 60.56%, rgba(26, 26, 26, 0) 92.59%)",
+            "type": "color",
+            "description": "linear-gradient(90deg, rgba(26, 26, 26, 0.72) 60.56%, rgba(26, 26, 26, 0) 92.59%)\nUsed for reaction components(meetings/reactions/feed)"
+          },
+          "01": {
+            "value": "linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%)",
+            "type": "color",
+            "description": "linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%)\nUsed for meeting reactions (overlay background)"
+          }
         }
       },
       "content": {
@@ -778,22 +790,22 @@
             "default": {
               "value": "{color.core.white-alpha.20}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.20\nHEX: FFFFFF 20%\n-----------------------\nCore Token: core.white-alpha.20\nHEX: ffffff\n--------------\nUsed for rest state of toggle background.\nFor toggle buttons, refer Common UI."
+              "description": "Core Token: core.white-alpha.20\nHEX: ffffff 20%\n--------------\nUsed for rest state of unslected/inactive toggle component background\nDo not use for toggle buttons. Use \"control.neutraul.defualt\" in Common theme. "
             },
             "hover": {
               "value": "{color.core.white-alpha.30}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.30\nHEX: FFFFFF 30%\n-----------------------\nUsed for hover state of inactive control components background (radio, toggle, checkbox)\nFor toggle buttons, refer Common UI."
+              "description": "Core Token: core.white-alpha.30\nHEX: FFFFFF 30%\n-----------------------\nUsed for hover state of unslected/inactive control components background (radio, toggle, checkbox)\nDo not use for toggle buttons. Use \"control.neutraul.defualt\" in Common theme."
             },
             "pressed": {
               "value": "{color.core.white-alpha.40}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.40\nHEX: FFFFFF 40%\n-----------------------\nUsed for pressed state of inactive control components background. (radio, toggle, checkbox)\nFor toggle buttons, refer Common UI."
+              "description": "Core Token: core.white-alpha.40\nHEX: FFFFFF 40%\n-----------------------\nUsed for pressed state of unslected/inactive control components background (radio, toggle, checkbox)\nDo not use for toggle buttons. Use \"control.neutraul.defualt\" in Common theme."
             },
             "disabled": {
               "value": "{color.core.white-alpha.20}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.20\nHEX: FFFFFF 20%\n-----------------------\nUsed for disabled state of inactive control components background. (radio, toggle, checkbox)\nFor toggle buttons, refer Common UI."
+              "description": "Core Token: core.white-alpha.20\nHEX: FFFFFF 20%\n-----------------------\nUsed for disabled state of all control components background but sliders.(radio, toggle, checkbox)\nDo not used for slider buttons. Use \"control.neutral.slider.disabled\" instead."
             },
             "slider": {
               "disabled": {
@@ -976,6 +988,13 @@
                 "description": "Core Token: core.blue.40 0% 0%, core.blue.40 90% 22.4%, core.blue.40 90% 76.04%, core.blue.40 0% 100%\nHEX: linear-gradient(90deg, #64b4fa00 0%, #64b4fae6 22.4%, #64b4fae6 76.04%, #64b4fa00 100%)\n--------------------------------\nUsed for hover state divider on the compose area for the announcement space."
               }
             }
+          }
+        },
+        "warning": {
+          "00": {
+            "value": "{color.core.yellow.40}",
+            "type": "color",
+            "description": "Core Token: color.core.yellow.40\nHEX: #f2990a\n9.33 on surface.neutral.02.primary (#000000)\nUsed for warning state of input fields border\n"
           }
         }
       }
