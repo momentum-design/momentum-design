@@ -23,66 +23,6 @@
             "type": "color",
             "description": "Core Token: mobile.default.dark.secondary\nHEX: 1a1a1a\n-------------------------------\nApp background for mobile\n[AND] botton tabs"
           }
-        },
-        "indigo": {
-          "primary": {
-            "value": "{color.gradient.indigo.dark.primary}",
-            "type": "color",
-            "description": "Core Token: color.gradient.indigo.dark.primary\nHEX: linear-gradient(180deg, #13182b 0%, #0e111a 100%)\n\nUsed for Indigo theme main app background."
-          },
-          "secondary": {
-            "value": "{color.gradient.indigo.dark.secondary}",
-            "type": "color",
-            "description": "Core Token: color.gradient.indigo.dark.secondary\nHEX: color.gradient.indigo.dark.secondary\nUsed for indigo theme background (3rd column)"
-          }
-        },
-        "jade": {
-          "primary": {
-            "value": "{color.gradient.jade.dark.primary}",
-            "type": "color",
-            "description": "Core: color.gradient.jade.dark.primary\nHEX: linear-gradient(180deg, #001c18 0%, #021412 100%)\n\nUsed for Jade theme main app background\n"
-          },
-          "secondary": {
-            "value": "{color.gradient.jade.dark.secondary}",
-            "type": "color",
-            "description": "Core: color.gradient.jade.dark.secondary\nHEX: linear-gradient(180deg, #122925 0%, #021412 100%)\n\nUsed for Jade theme background (3rd column)"
-          }
-        },
-        "bronze": {
-          "primary": {
-            "value": "{color.gradient.bronze.dark.primary}",
-            "type": "color",
-            "description": "Core: color.gradient.bronze.dark.primary\nHEX:linear-gradient(180deg, #1f1402 0%, #171002 100%)\nUsed for Bronze theme main app background\n"
-          },
-          "secondary": {
-            "value": "{color.gradient.bronze.dark.secondary}",
-            "type": "color",
-            "description": "Core: color.gradient.bronze.dark.secondary\nHEX: linear-gradient(180deg, #2e2515 0%, #171002 100%)\n\nUsed for Bronze theme background (3rd column). "
-          }
-        },
-        "rose": {
-          "primary": {
-            "value": "{color.gradient.rose.dark.primary}",
-            "type": "color",
-            "description": "Core Token: color.gradient.rose.dark.primary\nHEX: color.gradient.rose.dark.primary\nUsed for Rose theme main app background"
-          },
-          "secondary": {
-            "value": "{color.gradient.rose.dark.secondary}",
-            "type": "color",
-            "description": "Core Token:color.gradient.rose.dark.secondary\nHEX: linear-gradient(180deg, #40162e 0%, #1f0615 100%)\nUsed for Rose theme (3rd column)"
-          }
-        },
-        "lavender": {
-          "primary": {
-            "value": "{color.gradient.lavender.dark.primary}",
-            "type": "color",
-            "description": "Core Toeken: color.gradient.lavender.dark.primary\nHEX: linear-gradient(180deg, #231237 0%, #18082b 100%)\nUsed for Lavender theme main app background"
-          },
-          "secondary": {
-            "value": "{color.gradient.lavender.dark.secondary}",
-            "type": "color",
-            "description": "Core Token:color.gradient.lavender.dark.secondary\nHEX: linear-gradient(180deg, #301a4a 0%, #18082b 100%)\nUsed for Lavender theme background (3rd column)"
-          }
         }
       },
       "surface": {
@@ -197,18 +137,6 @@
               "type": "color",
               "description": "Core Token: core.blue.60\nHEX: 1170CF\n-------------------\nUsed [ioS] Selected state of navigation/side-bar, search-bar"
             }
-          }
-        },
-        "gradient": {
-          "00": {
-            "value": "linear-gradient(90deg, rgba(26, 26, 26, 0.72) 60.56%, rgba(26, 26, 26, 0) 92.59%)",
-            "type": "color",
-            "description": "linear-gradient(90deg, rgba(26, 26, 26, 0.72) 60.56%, rgba(26, 26, 26, 0) 92.59%)\nUsed for reaction components(meetings/reactions/feed)"
-          },
-          "01": {
-            "value": "linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%)",
-            "type": "color",
-            "description": "linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%)\nUsed for meeting reactions (overlay background)"
           }
         }
       },
@@ -855,17 +783,17 @@
             "hover": {
               "value": "{color.core.white-alpha.30}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.30\nHEX: FFFFFF 30%\n-----------------------\nUsed for hover state of unslected/inactive control components background (radio, toggle, checkbox)\nDo not use for toggle buttons. Use \"control.neutraul.defualt\" in Common theme."
+              "description": "Core Token: core.white-alpha.30\nHEX: FFFFFF 30%\n-----------------------\nUsed for hover state of inactive control components background (radio, toggle, checkbox)\nFor toggle buttons, refer Common UI."
             },
             "pressed": {
               "value": "{color.core.white-alpha.40}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.40\nHEX: FFFFFF 40%\n-----------------------\nUsed for pressed state of unslected/inactive control components background (radio, toggle, checkbox)\nDo not use for toggle buttons. Use \"control.neutraul.defualt\" in Common theme."
+              "description": "Core Token: core.white-alpha.40\nHEX: FFFFFF 40%\n-----------------------\nUsed for pressed state of inactive control components background. (radio, toggle, checkbox)\nFor toggle buttons, refer Common UI."
             },
             "disabled": {
               "value": "{color.core.white-alpha.20}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.20\nHEX: FFFFFF 20%\n-----------------------\nUsed for disabled state of all control components background but sliders.(radio, toggle, checkbox)\nDo not used for slider buttons. Use \"control.neutral.slider.disabled\" instead."
+              "description": "Core Token: core.white-alpha.20\nHEX: FFFFFF 20%\n-----------------------\nUsed for disabled state of inactive control components background. (radio, toggle, checkbox)\nFor toggle buttons, refer Common UI."
             },
             "slider": {
               "disabled": {
@@ -1048,13 +976,6 @@
                 "description": "Core Token: core.blue.40 0% 0%, core.blue.40 90% 22.4%, core.blue.40 90% 76.04%, core.blue.40 0% 100%\nHEX: linear-gradient(90deg, #64b4fa00 0%, #64b4fae6 22.4%, #64b4fae6 76.04%, #64b4fa00 100%)\n--------------------------------\nUsed for hover state divider on the compose area for the announcement space."
               }
             }
-          }
-        },
-        "warning": {
-          "00": {
-            "value": "{color.core.yellow.40}",
-            "type": "color",
-            "description": "Core Token: color.core.yellow.40\nHEX: #f2990a\n9.33 on surface.neutral.02.primary (#000000)\nUsed for warning state of input fields border\n"
           }
         }
       }
