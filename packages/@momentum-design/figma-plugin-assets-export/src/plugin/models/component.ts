@@ -26,6 +26,8 @@ class Component {
     const setOrComponentName = this.node.parent?.type === 'COMPONENT_SET' ? this.node.parent.name : this.node.name;
     const rtl = this.variants?.[CONSTANTS.FIGMA_VARIANTS.RTL] === 'true' ? 'rtl' : undefined;
     const sf = this.variants?.[CONSTANTS.FIGMA_VARIANTS.SF_ALTERNATIVE] === 'true' ? 'sf' : undefined;
+    const size = this.variants?.[CONSTANTS.FIGMA_VARIANTS.SIZE] === 'default'
+      ? undefined : this.variants?.[CONSTANTS.FIGMA_VARIANTS.SIZE];
 
     const result = {
       [CONSTANTS.REPLACE_TERMS.COMPONENT_NAME]: this.node.name,
@@ -34,6 +36,7 @@ class Component {
       [CONSTANTS.REPLACE_TERMS.WEIGHT]: this.variants?.[CONSTANTS.FIGMA_VARIANTS.WEIGHT],
       [CONSTANTS.REPLACE_TERMS.STATE]: this?.variants?.[CONSTANTS.FIGMA_VARIANTS.STATE],
       [CONSTANTS.REPLACE_TERMS.COLOR]: this.variants?.[CONSTANTS.FIGMA_VARIANTS.COLOR],
+      [CONSTANTS.REPLACE_TERMS.SIZE]: size,
       [CONSTANTS.REPLACE_TERMS.RTL]: rtl,
       [CONSTANTS.REPLACE_TERMS.SF_ALTERNATIVE]: sf,
     };
@@ -68,8 +71,8 @@ class Component {
       name = name.replace('-black', '');
     }
     name += '.';
-    name += exportSettings.format.toLowerCase();
-    return name;
+    name += exportSettings.format;
+    return name.toLowerCase();
   }
 
   get asset(): Promise<Asset> {

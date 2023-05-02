@@ -72,20 +72,20 @@
             }
           },
           "02": {
-            "primary": {
-              "value": "{color.core.gray.05}",
-              "type": "color",
-              "description": "Core Token: core.gray.05\nHEX: F7f7f7\n----------------\nUsed this for the most top modal surface when layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
-            },
-            "secondary": {
+            "tertiary": {
               "value": "{color.core.gray.10}",
               "type": "color",
-              "description": "Core Token: core.gray.10\nHEX: EDEDED\n----------------\nMedium solid surface. Used this for the surface of modal when layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
+              "description": "Core Token: core.gray.10\nHEX: ededed\n----------------\nCore Token: core.gray.05\nHEX: f7f7f7\n----------------\nUsed for input fields, mostly modals that are layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
             },
-            "tertiary": {
+            "secondary": {
+              "value": "{color.core.gray.05}",
+              "type": "color",
+              "description": "Core Token: core.gray.05\nHEX: f7f7f7\n----------------\nMedium solid surface. Used this for input fields, mostly modals that are layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
+            },
+            "primary": {
               "value": "{color.core.white-alpha.100}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.100\nHEX: FFFFFF\n----------------\nFull solid surface. Used this for calendar picker, input-filed, toasts, panel-rectangles. Can also be used when layering surfaces one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
+              "description": "Core Token: core.white-alpha.100\nHEX: FFFFFF\n----------------\nFull solid surface. Used this for background of calendar picker, input-filed, toasts, panel-rectangles. Can also be used when layering surfaces one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
             }
           }
         },
@@ -154,9 +154,9 @@
               "description": "Core Token: core.black-alpha.70\nHEX: 000000 70%\n--------------------\nUsed for secondary text"
             },
             "disabled": {
-              "value": "{color.core.black-alpha.40}",
+              "value": "{color.core.black-alpha.20}",
               "type": "color",
-              "description": "Core Token: core.black-alpha.40\nHEX: 000000 40%\n---\nUsed for disabled state for all text"
+              "description": "Core Token: core.black-alpha.20\nHEX: 000000 20%\n---\nUsed for disabled state for all text"
             },
             "teams": {
               "default": {
@@ -521,27 +521,32 @@
             "00": {
               "value": "{color.core.gray.60}",
               "type": "color",
-              "description": "Core Token: core.gray.60\nHEX: 707070\n------------\nUsed for presence (away, on-hold, on-device), meeting indicators(meeting-locked)"
+              "description": "Core Token: core.gray.60\nHEX: 707070\n\nUsed for presence (away, on-hold, on-device), meeting indicators(meeting-locked)"
             },
             "01": {
+              "value": "{color.core.gray.30}",
+              "type": "color",
+              "description": "Core Token: core.gray.30\nHEX: C9C9C9\n--------------------------\nUsed for active state of alert-badge"
+            },
+            "02": {
               "value": "{color.core.gray.20}",
               "type": "color",
-              "description": "Core Token: core.gray.20\nHEX: DEDEDE\n--------------------------\nUsed for active state of alert-badge"
-            },
-            "\b02": {
-              "value": "{color.core.gray.10}",
-              "type": "color",
-              "description": "Core Token: core.gray.10\nHEX: EDEDED\n------------------------\nUsed for rest/hover state of alert-badge, rest state of tags"
+              "description": "Core Token: core.gray.20\nHEX: DEDEDE\n--------------------------\nUsed for rest/hover state of alert-badge"
             },
             "03": {
               "value": "{color.core.gray.10}",
               "type": "color",
-              "description": "Core Token: core.gray.10\nHEX: EDEDED\n-----------------\nUsed for hover state of tags"
+              "description": "Core Token: core.gray.10\nHEX: ededed\n\nUsed for pressed state of tags"
             },
             "04": {
               "value": "{color.core.gray.05}",
               "type": "color",
-              "description": "Core Token: core.gray.05\nHEX: F7F7F7\n--------------------\nUsed for pressed state of tags, name-tag."
+              "description": "Core Token: core.gray.05\nHEX: F7F7F7\n--------------------\nUsed for hover state of tags, name-tag."
+            },
+            "05": {
+              "value": "{color.core.white-alpha.100}",
+              "type": "color",
+              "description": "Core Token: core.white-alpha.100\nHEX: FFFFFF\n--------------------\nUsed for rest state of tags"
             }
           },
           "positive": {
@@ -570,9 +575,9 @@
           },
           "warning": {
             "00": {
-              "value": "{color.core.yellow.50}",
+              "value": "{color.core.yellow.60}",
               "type": "color",
-              "description": "Core Token: core.yellow.50\nHEX: CF7900\n-----------------\nUsed for Meeting Indicators (Audio-error, Video-error)"
+              "description": "Core Token: core.yellow.60\nHEX: a65e00\n-----------------\nUsed for Meeting Indicators (Audio-error, Video-error)"
             },
             "01": {
               "value": "{color.core.yellow.20}",
@@ -770,51 +775,49 @@
         },
         "control": {
           "neutral": {
-            "inactive": {
-              "default": {
-                "value": "{color.core.black-alpha.20}",
-                "type": "color",
-                "description": "Core Token: core.black-alpha.20\nHEX: 000000 20%\n-----------------------\nUsed for rest state of inactive control components(checkbox, toggle, radio)"
-              },
-              "hover": {
-                "value": "{color.core.black-alpha.30}",
-                "type": "color",
-                "description": "Core Token: core.black-alpha.30\nHEX: 000000 30%\n-----------------------\nUsed for hover state of inactive control components(checkbox, toggle, radio)"
-              },
-              "pressed": {
-                "value": "{color.core.black-alpha.40}",
-                "type": "color",
-                "description": "Core Token: core.black-alpha.40\nHEX: 000000 40%\n-----------------------\nUsed for pressed state of inactive control components(checkbox, toggle, radio)"
-              },
+            "default": {
+              "value": "{color.core.black-alpha.20}",
+              "type": "color",
+              "description": "Core Token: core.black-alpha.20\nHEX: 000000 20%\n-----------------------\nUsed for rest state of inactive control components(checkbox, toggle, radio)"
+            },
+            "hover": {
+              "value": "{color.core.black-alpha.30}",
+              "type": "color",
+              "description": "Core Token: core.black-alpha.30\nHEX: 000000 30%\n-----------------------\nUsed for hover state of inactive control components(checkbox, toggle, radio)"
+            },
+            "pressed": {
+              "value": "{color.core.black-alpha.40}",
+              "type": "color",
+              "description": "Core Token: core.black-alpha.40\nHEX: 000000 40%\n-----------------------\nUsed for pressed state of inactive control components(checkbox, toggle, radio)"
+            },
+            "disabled": {
+              "value": "{color.core.black-alpha.20}",
+              "type": "color",
+              "description": "Core Token: core.black-alpha.20\nHEX: 000000 20%\n-----------------------\nUsed for disabled state of inactive control components(checkbox, toggle, radio)"
+            },
+            "slider": {
               "disabled": {
-                "value": "{color.core.white-alpha.11}",
+                "value": "{color.core.gray.40}",
                 "type": "color",
-                "description": "Core Token: core.white-alpha.11\nHEX: 000000 11%\n-----------------------\nUsed for disabled state of inactive control components(checkbox, toggle, radio)"
+                "description": "Core Token: core.gray.40\nHEX: adadad\n-----------------------\nUsed for disabled state of slider handdle button."
               }
             }
           },
           "accent": {
-            "active": {
-              "default": {
-                "value": "{color.core.blue.60}",
-                "type": "color",
-                "description": "Core Token: core.blue.60\nHEX: 1170cf\n------------------------------\nUsed for rest state of control components (radio, toggle, checkbox)"
-              },
-              "hover": {
-                "value": "{color.core.blue.70}",
-                "type": "color",
-                "description": "Core Token: core.blue.70\nHEXL: 0353a8\n------------------------------\nUsed for hover state of control components (radio, toggle, checkbox)"
-              },
-              "pressed": {
-                "value": "{color.core.blue.80}",
-                "type": "color",
-                "description": "Core Token: core.blue.80\nHEXL: 063a75\n------------------------------\nUsed for pressed state of control components (radio, toggle, checkbox)"
-              },
-              "disabled": {
-                "value": "{color.core.blue.20}",
-                "type": "color",
-                "description": "Core Token: core.blue.20\nHEX: BFE3FF\n--------------\nUsed for disabled state of control components (radio, toggle, checkbox)"
-              }
+            "default": {
+              "value": "{color.core.blue.60}",
+              "type": "color",
+              "description": "Core Token: core.blue.60\nHEX: 1170cf\n------------------------------\nUsed for rest state of control components (radio, toggle, checkbox)"
+            },
+            "hover": {
+              "value": "{color.core.blue.70}",
+              "type": "color",
+              "description": "Core Token: core.blue.70\nHEXL: 0353a8\n------------------------------\nUsed for hover state of control components (radio, toggle, checkbox)"
+            },
+            "pressed": {
+              "value": "{color.core.blue.80}",
+              "type": "color",
+              "description": "Core Token: core.blue.80\nHEXL: 063a75\n------------------------------\nUsed for pressed state of control components (radio, toggle, checkbox)"
             }
           }
         },
@@ -882,7 +885,7 @@
           "03": {
             "value": "{color.core.black-alpha.50}",
             "type": "color",
-            "description": "Core Token: core.black.alpha-50\nHEX: 000000 50%\n-------------------------\nUsed for input-fields, control components"
+            "description": "Core Token: core.black.alpha-50\nHEX: 000000 50%\n-------------------------\nUsed for input-fields, sliders."
           },
           "04": {
             "value": "{color.core.black-alpha.90}",
