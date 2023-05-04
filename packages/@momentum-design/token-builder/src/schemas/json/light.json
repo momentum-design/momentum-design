@@ -91,33 +91,15 @@
             ],
             "title": "Mob"
         },
-        "Primary": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "value": {
-                    "type": "string"
-                },
-                "type": {
-                    "$ref": "#/definitions/Type"
-                },
-                "description": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "description",
-                "type",
-                "value"
-            ],
-            "title": "Primary"
-        },
         "Border": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "neutral": {
-                    "$ref": "#/definitions/AccentClass"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/Primary"
+                    }
                 },
                 "positive": {
                     "$ref": "#/definitions/NoticeClass"
@@ -133,6 +115,9 @@
                 },
                 "decorative": {
                     "$ref": "#/definitions/BorderDecorative"
+                },
+                "warning": {
+                    "$ref": "#/definitions/NoticeClass"
                 }
             },
             "required": [
@@ -217,33 +202,26 @@
             ],
             "title": "GradientAccent"
         },
-        "AccentClass": {
+        "Primary": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "00": {
-                    "$ref": "#/definitions/Primary"
+                "value": {
+                    "type": "string"
                 },
-                "01": {
-                    "$ref": "#/definitions/Primary"
+                "type": {
+                    "$ref": "#/definitions/Type"
                 },
-                "02": {
-                    "$ref": "#/definitions/Primary"
-                },
-                "03": {
-                    "$ref": "#/definitions/Primary"
-                },
-                "04": {
-                    "$ref": "#/definitions/Primary"
-                },
-                "\b02": {
-                    "$ref": "#/definitions/Primary"
+                "description": {
+                    "type": "string"
                 }
             },
             "required": [
-                "01"
+                "description",
+                "type",
+                "value"
             ],
-            "title": "AccentClass"
+            "title": "Primary"
         },
         "Content": {
             "type": "object",
@@ -410,12 +388,20 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "active": {
-                    "$ref": "#/definitions/BgClass"
+                "default": {
+                    "$ref": "#/definitions/Primary"
+                },
+                "hover": {
+                    "$ref": "#/definitions/Primary"
+                },
+                "pressed": {
+                    "$ref": "#/definitions/Primary"
                 }
             },
             "required": [
-                "active"
+                "default",
+                "hover",
+                "pressed"
             ],
             "title": "ControlAccent"
         },
@@ -423,12 +409,33 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "inactive": {
-                    "$ref": "#/definitions/BgClass"
+                "default": {
+                    "$ref": "#/definitions/Primary"
+                },
+                "hover": {
+                    "$ref": "#/definitions/Primary"
+                },
+                "pressed": {
+                    "$ref": "#/definitions/Primary"
+                },
+                "disabled": {
+                    "$ref": "#/definitions/Primary"
+                },
+                "slider": {
+                    "type": "object",
+                    "properties": {
+                        "disabled": {
+                            "$ref": "#/definitions/Primary"
+                        }
+                    }
                 }
             },
             "required": [
-                "inactive"
+                "default",
+                "hover",
+                "pressed",
+                "disabled",
+                "slider"
             ],
             "title": "ControlNeutral"
         },
@@ -450,22 +457,37 @@
             "additionalProperties": false,
             "properties": {
                 "neutral": {
-                    "$ref": "#/definitions/AccentClass"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/Primary"
+                    }
                 },
                 "positive": {
                     "$ref": "#/definitions/NoticeClass"
                 },
                 "negative": {
-                    "$ref": "#/definitions/AccentClass"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/Primary"
+                    }
                 },
                 "warning": {
-                    "$ref": "#/definitions/AccentClass"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/Primary"
+                    }
                 },
                 "accent": {
-                    "$ref": "#/definitions/AccentClass"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/Primary"
+                    }
                 },
                 "notice": {
-                    "$ref": "#/definitions/AccentClass"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/Primary"
+                    }
                 },
                 "decorative": {
                     "$ref": "#/definitions/IndicatorDecorative"
@@ -487,28 +509,52 @@
             "additionalProperties": false,
             "properties": {
                 "gold": {
-                    "$ref": "#/definitions/AccentClass"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/Primary"
+                    }
                 },
                 "lime": {
-                    "$ref": "#/definitions/AccentClass"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/Primary"
+                    }
                 },
                 "mint": {
-                    "$ref": "#/definitions/AccentClass"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/Primary"
+                    }
                 },
                 "cobalt": {
-                    "$ref": "#/definitions/AccentClass"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/Primary"
+                    }
                 },
                 "slate": {
-                    "$ref": "#/definitions/AccentClass"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/Primary"
+                    }
                 },
                 "violet": {
-                    "$ref": "#/definitions/AccentClass"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/Primary"
+                    }
                 },
                 "purple": {
-                    "$ref": "#/definitions/AccentClass"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/Primary"
+                    }
                 },
                 "pink": {
-                    "$ref": "#/definitions/AccentClass"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/Primary"
+                    }
                 }
             },
             "required": [
@@ -550,17 +596,17 @@
                 "contrast": {
                     "$ref": "#/definitions/TextContrast"
                 },
-                "positve": {
-                    "$ref": "#/definitions/PositveClass"
+                "positive": {
+                    "$ref": "#/definitions/PositiveClass"
                 },
                 "negative": {
-                    "$ref": "#/definitions/PositveClass"
+                    "$ref": "#/definitions/PositiveClass"
                 },
                 "warning": {
-                    "$ref": "#/definitions/PositveClass"
+                    "$ref": "#/definitions/PositiveClass"
                 },
                 "accent": {
-                    "$ref": "#/definitions/PositveClass"
+                    "$ref": "#/definitions/PositiveClass"
                 },
                 "notice": {
                     "$ref": "#/definitions/Negative"
@@ -576,12 +622,12 @@
                 "negative",
                 "neutral",
                 "notice",
-                "positve",
+                "positive",
                 "warning"
             ],
             "title": "Text"
         },
-        "PositveClass": {
+        "PositiveClass": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -725,6 +771,9 @@
                 },
                 "accent": {
                     "$ref": "#/definitions/SurfaceAccent"
+                },
+                "gradient": {
+                    "$ref": "#/definitions/SurfaceGradient"
                 }
             },
             "required": [
@@ -752,6 +801,23 @@
                 "mobile"
             ],
             "title": "SurfaceAccent"
+        },
+        "SurfaceGradient": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "00": {
+                    "$ref": "#/definitions/Primary"
+                },
+                "01": {
+                    "$ref": "#/definitions/Primary"
+                }
+            },
+            "required": [
+                "00",
+                "01"
+            ],
+            "title": "SurfaceGradient"
         },
         "Mobile": {
             "type": "object",

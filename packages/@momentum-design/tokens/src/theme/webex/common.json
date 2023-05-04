@@ -247,7 +247,7 @@
             "02": {
               "value": "{color.core.white-alpha.100}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.100\nHEX: FFFFFF 100%\n----------\nUsed for circle background of avatar (typing), tags (overlay)\n"
+              "description": "Core Token: core.white-alpha.100\nHEX: FFFFFF 100%\n----------\nUsed for circle background of avatar (typing), tags (overlay), whiteboardpen\n"
             },
             "03": {
               "value": "{color.core.black-alpha.50}",
@@ -256,10 +256,15 @@
             }
           },
           "warning": {
-            "default": {
+            "00": {
               "value": "{color.core.yellow.70}",
               "type": "color",
               "description": "Core Token: core.yellow.70\nHEX: 7D4705\n-----------------------\nUsed for unknown avatar\n"
+            },
+            "01": {
+              "value": "{color.core.yellow.40}",
+              "type": "color",
+              "description": "Core Token: core.yellow.40\nHEX: f2990a\n-----------------------\nUsed for whiteboardpen\n"
             }
           },
           "notice": {
@@ -267,6 +272,11 @@
               "value": "{color.core.orange.70}",
               "type": "color",
               "description": "Theme Token: core.orange.70\nHEX: 914017\n-------------------------------\nUsed for initial avatar (avatar w/o presence) "
+            },
+            "01": {
+              "value": "{color.core.orange.60}",
+              "type": "color",
+              "description": "Theme Token: core.orange.60\nHEX: c94403\n-------------------------------\nUsed for static tags (sharing)"
             }
           },
           "decorative": {
@@ -324,6 +334,11 @@
                 "value": "{color.decorative.purple.70}",
                 "type": "color",
                 "description": "Core Token: decorative.purple.70\nHEX: 932099\n--------------------------\nUsed for initial avatar (avatar w/o presence) "
+              },
+              "01": {
+                "value": "{color.decorative.purple.60}",
+                "type": "color",
+                "description": "Core Token: color.decorative.purple.60\nHEX: c23c4\n------------------\nUsed for whiteboard pens"
               }
             },
             "pink": {
@@ -332,6 +347,36 @@
                 "type": "color",
                 "description": "Core Token: decorative.pink.70\nHEX: A12A3A\n--------------------------\nUsed for initial avatar (avatar w/o presence) "
               }
+            }
+          },
+          "negative": {
+            "00": {
+              "value": "{color.core.red.50}",
+              "type": "color",
+              "description": "Core Token: color.core.red.50\nHEX: f55868\n------------------\nUsed for whiteboard pens"
+            }
+          },
+          "positive": {
+            "00": {
+              "value": "{color.core.green.40}",
+              "type": "color",
+              "description": "Core Token: color.core.green.40\nHEX: 3cc29a\n------------------\nUsed for whiteboard pens"
+            }
+          },
+          "accent": {
+            "00": {
+              "value": "{color.core.blue.40}",
+              "type": "color",
+              "description": "Theme Token: core.blue.40\nHEX: 64b4fa\n-------------------------------\nUsed for whiteboard pens"
+            }
+          }
+        },
+        "control": {
+          "neutral": {
+            "00": {
+              "value": "{color.core.white-alpha.100}",
+              "type": "color",
+              "description": "Core Token: core.white-alpha.100\nHEX: FFFFFF 100%\n----------\nUsed for rest state of toggle button.\n"
             }
           }
         },
