@@ -12,6 +12,11 @@
           "type": "color",
           "description": "Hex Code: #ffffff\nAlpha: 20%"
         },
+        "24": {
+          "value": "rgba(255, 255, 255, 0.24)",
+          "type": "color",
+          "description": "HEX Code: #ffffff 24%\nUsed for AAOS (Android Auto Operating System) only."
+        },
         "30": {
           "value": "#ffffff4d",
           "type": "color",
@@ -22,10 +27,20 @@
           "type": "color",
           "description": "Hex Code: #ffffff\nAlpha: 40%"
         },
+        "46": {
+          "value": "rgba(255, 255, 255, 0.46)",
+          "type": "color",
+          "description": "HEX Code: #ffffff 46%\nUsed for AAOS (Android Auto Operating System) only."
+        },
         "50": {
           "value": "#ffffff80",
           "type": "color",
           "description": "Hex Code: #ffffff\nAlpha: 50%"
+        },
+        "56": {
+          "value": "rgba(255, 255, 255, 0.56)",
+          "type": "color",
+          "description": "HEX Code: #ffffff 56%\nUsed for AAOS (Android Auto Operating System) only."
         },
         "60": {
           "value": "#ffffff99",
@@ -37,10 +52,20 @@
           "type": "color",
           "description": "Hex Code: #ffffff\nAlpha: 70%"
         },
+        "72": {
+          "value": "rgba(255, 255, 255, 0.72)",
+          "type": "color",
+          "description": "HEX Code: #ffffff 72%\nUsed for AAOS (Android Auto Operating System) only."
+        },
         "80": {
           "value": "#ffffffcc",
           "type": "color",
           "description": "Hex Code: #ffffff\nAlpha: 80%"
+        },
+        "88": {
+          "value": "rgba(255, 255, 255, 0.88)",
+          "type": "color",
+          "description": "HEX Code: #ffffff 88%\nUsed for AAOS (Android Auto Operating System) only."
         },
         "90": {
           "value": "#ffffffe6",
@@ -109,10 +134,25 @@
           "type": "color",
           "description": "Hex Code: #000000\nAlpha: 70%"
         },
+        "78": {
+          "value": "rgba(0, 0, 0, 0.78)",
+          "type": "color",
+          "description": "HEX Code: #000000 78%\nUsed for AAOS (Android Auto Operating System) only."
+        },
         "80": {
           "value": "#000000cc",
           "type": "color",
           "description": "Hex Code: #000000\nAlpha: 80%"
+        },
+        "84": {
+          "value": "rgba(0, 0, 0, 0.84)",
+          "type": "color",
+          "description": "HEX Code: #000000 84%\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "88": {
+          "value": "rgba(0, 0, 0, 0.88)",
+          "type": "color",
+          "description": "HEX Code: #000000 88%\nUsed for AAOS (Android Auto Operating System) only."
         },
         "90": {
           "value": "#000000e6",
@@ -176,30 +216,75 @@
           "type": "color",
           "description": "Hex Code: #707070"
         },
+        "61": {
+          "value": "#2E3134",
+          "type": "color",
+          "description": "HEX Code: #2E3134\nUsed for AAOS (Android Auto Operating System) only."
+        },
         "70": {
           "value": "#545454",
           "type": "color",
           "description": "Hex Code: #545454"
+        },
+        "71": {
+          "value": "#5F6368",
+          "type": "color",
+          "description": "HEX Code: #5F6368\nUsed for AAOS (Android Auto Operating System) only."
         },
         "80": {
           "value": "#3b3b3b",
           "type": "color",
           "description": "Hex Code: #3b3b3b"
         },
+        "81": {
+          "value": "#3C4043",
+          "type": "color",
+          "description": "HEX Code: #3C4043\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "85": {
+          "value": "#2E3134",
+          "type": "color",
+          "description": "HEX Code: #2E3134\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "86": {
+          "value": "#282A2D",
+          "type": "color",
+          "description": "HEX Code: #282A2D\nUsed for AAOS (Android Auto Operating System) only."
+        },
         "90": {
           "value": "#262626",
           "type": "color",
           "description": "Hex Code: #262626"
+        },
+        "91": {
+          "value": "#202124",
+          "type": "color",
+          "description": "HEX Code: #202124\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "93": {
+          "value": "#17181B",
+          "type": "color",
+          "description": "HEX Code: #17181B\nUsed for AAOS (Android Auto Operating System) only."
         },
         "95": {
           "value": "#1a1a1a",
           "type": "color",
           "description": "Hex Code: #1a1a1a"
         },
+        "96": {
+          "value": "#0E1013",
+          "type": "color",
+          "description": "HEX Code: #0E1013\nUsed for AAOS (Android Auto Operating System) only."
+        },
         "100": {
           "value": "#0f0f0f",
           "type": "color",
           "description": "Hex Code: #0f0f0f"
+        },
+        "110": {
+          "value": "#000000",
+          "type": "color",
+          "description": "HEX Code: #000000\nUsed for AAOS (Android Auto Operating System) only."
         },
         "05": {
           "value": "#f7f7f7",
