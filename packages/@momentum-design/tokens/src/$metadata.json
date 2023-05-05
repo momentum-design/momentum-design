@@ -18,6 +18,7 @@
     "stable/theme/stable-dark",
     "stable/theme/stable-light",
     "aaos/theme/day",
-    "aaos/theme/night"
+    "aaos/theme/night",
+    "aaos/theme/common"
   ]
 }
