@@ -14,11 +14,11 @@
     "theme/webex/border-width",
     "theme/webex/elevation",
     "theme/webex/spacing",
-    "stable/theme/stable-common",
-    "stable/theme/stable-dark",
-    "stable/theme/stable-light",
-    "aaos/theme/day",
-    "aaos/theme/night",
-    "aaos/theme/common"
+    "theme/aaos/day",
+    "theme/aaos/night",
+    "theme/aaos/common",
+    "theme/stable/common",
+    "theme/stable/dark",
+    "theme/stable/light"
   ]
 }
