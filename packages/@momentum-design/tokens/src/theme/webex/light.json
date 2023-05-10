@@ -190,7 +190,7 @@
               }
             }
           },
-          "positive": {
+          "positve": {
             "active": {
               "value": "{color.core.green.90}",
               "type": "color",
