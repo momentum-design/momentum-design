@@ -127,6 +127,9 @@
                 },
                 "decorative": {
                     "$ref": "#/definitions/BorderDecorative"
+                },
+                "warning": {
+                    "$ref": "#/definitions/NoticeClass"
                 }
             },
             "required": [
