@@ -58,10 +58,10 @@
             "additionalProperties": false,
             "properties": {
                 "primary": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "secondary": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "mob": {
                     "$ref": "#/definitions/Mob"
@@ -79,10 +79,10 @@
             "additionalProperties": false,
             "properties": {
                 "primary": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "secondary": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 }
             },
             "required": [
@@ -98,20 +98,32 @@
                 "neutral": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Primary"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "positive": {
-                    "$ref": "#/definitions/NoticeClass"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 },
                 "negative": {
-                    "$ref": "#/definitions/NoticeClass"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 },
                 "accent": {
-                    "$ref": "#/definitions/NoticeClass"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 },
                 "notice": {
-                    "$ref": "#/definitions/NoticeClass"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 },
                 "decorative": {
                     "$ref": "#/definitions/BorderDecorative"
@@ -129,19 +141,6 @@
                 "positive"
             ],
             "title": "Border"
-        },
-        "NoticeClass": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "00": {
-                    "$ref": "#/definitions/Primary"
-                }
-            },
-            "required": [
-                "00"
-            ],
-            "title": "NoticeClass"
         },
         "BorderDecorative": {
             "type": "object",
@@ -161,19 +160,19 @@
             "additionalProperties": false,
             "properties": {
                 "device": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "primary": {
-                    "$ref": "#/definitions/GradientAccent"
+                    "$ref": "#/definitions/States"
                 },
                 "negative": {
-                    "$ref": "#/definitions/GradientAccent"
+                    "$ref": "#/definitions/States"
                 },
                 "warning": {
-                    "$ref": "#/definitions/GradientAccent"
+                    "$ref": "#/definitions/States"
                 },
                 "accent": {
-                    "$ref": "#/definitions/GradientAccent"
+                    "$ref": "#/definitions/States"
                 }
             },
             "required": [
@@ -185,24 +184,7 @@
             ],
             "title": "Gradient"
         },
-        "GradientAccent": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "default": {
-                    "$ref": "#/definitions/Primary"
-                },
-                "hover": {
-                    "$ref": "#/definitions/Primary"
-                }
-            },
-            "required": [
-                "default",
-                "hover"
-            ],
-            "title": "GradientAccent"
-        },
-        "Primary": {
+        "ValueTypeDes": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -221,7 +203,7 @@
                 "type",
                 "value"
             ],
-            "title": "Primary"
+            "title": "ValueTypeDes"
         },
         "Content": {
             "type": "object",
@@ -290,24 +272,23 @@
             "additionalProperties": false,
             "properties": {
                 "default": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "hover": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "pressed": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "disabled": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "active": {
                     "$ref": "#/definitions/Active"
                 }
             },
             "required": [
-                "default",
-                "hover"
+
             ],
             "title": "BgClass"
         },
@@ -316,13 +297,13 @@
             "additionalProperties": false,
             "properties": {
                 "default": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "hover": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "pressed": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "value": {
                     "type": "string"
@@ -389,13 +370,13 @@
             "additionalProperties": false,
             "properties": {
                 "default": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "hover": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "pressed": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 }
             },
             "required": [
@@ -410,22 +391,22 @@
             "additionalProperties": false,
             "properties": {
                 "default": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "hover": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "pressed": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "disabled": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "slider": {
                     "type": "object",
                     "properties": {
                         "disabled": {
-                            "$ref": "#/definitions/Primary"
+                            "$ref": "#/definitions/ValueTypeDes"
                         }
                     }
                 }
@@ -444,7 +425,7 @@
             "additionalProperties": false,
             "properties": {
                 "default": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 }
             },
             "required": [
@@ -459,34 +440,36 @@
                 "neutral": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Primary"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "positive": {
-                    "$ref": "#/definitions/NoticeClass"
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 },
                 "negative": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Primary"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "warning": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Primary"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "accent": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Primary"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "notice": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Primary"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "decorative": {
@@ -511,49 +494,49 @@
                 "gold": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Primary"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "lime": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Primary"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "mint": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Primary"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "cobalt": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Primary"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "slate": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Primary"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "violet": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Primary"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "purple": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Primary"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "pink": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Primary"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 }
             },
@@ -591,25 +574,27 @@
             "additionalProperties": false,
             "properties": {
                 "neutral": {
-                    "$ref": "#/definitions/ContrastNeutral"
+                    "$ref": "#/definitions/ContentNeutral"
                 },
                 "contrast": {
-                    "$ref": "#/definitions/TextContrast"
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ContentNeutral"
+                    }
                 },
                 "positive": {
-                    "$ref": "#/definitions/PositiveClass"
+                    "$ref": "#/definitions/States"
                 },
                 "negative": {
-                    "$ref": "#/definitions/PositiveClass"
+                    "$ref": "#/definitions/States"
                 },
                 "warning": {
-                    "$ref": "#/definitions/PositiveClass"
+                    "$ref": "#/definitions/States"
                 },
                 "accent": {
-                    "$ref": "#/definitions/PositiveClass"
+                    "$ref": "#/definitions/States"
                 },
                 "notice": {
-                    "$ref": "#/definitions/Negative"
+                    "$ref": "#/definitions/States"
                 },
                 "decorative": {
                     "$ref": "#/definitions/TextDecorative"
@@ -632,16 +617,16 @@
             "additionalProperties": false,
             "properties": {
                 "active": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "hover": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "default": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "disabled": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 }
             },
             "required": [
@@ -649,36 +634,23 @@
                 "default",
                 "hover"
             ],
-            "title": "PositveClass"
+            "title": "PositiveClass"
         },
-        "TextContrast": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "neutral": {
-                    "$ref": "#/definitions/ContrastNeutral"
-                }
-            },
-            "required": [
-                "neutral"
-            ],
-            "title": "TextContrast"
-        },
-        "ContrastNeutral": {
+        "ContentNeutral": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "primary": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "secondary": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "disabled": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "teams": {
-                    "$ref": "#/definitions/Negative"
+                    "$ref": "#/definitions/States"
                 }
             },
             "required": [
@@ -686,55 +658,38 @@
                 "primary",
                 "secondary"
             ],
-            "title": "ContrastNeutral"
-        },
-        "Negative": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "default": {
-                    "$ref": "#/definitions/Primary"
-                },
-                "active": {
-                    "$ref": "#/definitions/Primary"
-                }
-            },
-            "required": [
-                "active",
-                "default"
-            ],
-            "title": "Negative"
+            "title": "ContentNeutral"
         },
         "TextDecorative": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "gold": {
-                    "$ref": "#/definitions/Negative"
+                    "$ref": "#/definitions/States"
                 },
                 "lime": {
-                    "$ref": "#/definitions/Negative"
+                    "$ref": "#/definitions/States"
                 },
                 "mint": {
-                    "$ref": "#/definitions/Negative"
+                    "$ref": "#/definitions/States"
                 },
                 "cyan": {
-                    "$ref": "#/definitions/Negative"
+                    "$ref": "#/definitions/States"
                 },
                 "cobalt": {
-                    "$ref": "#/definitions/Negative"
+                    "$ref": "#/definitions/States"
                 },
                 "slate": {
-                    "$ref": "#/definitions/Negative"
+                    "$ref": "#/definitions/States"
                 },
                 "violet": {
-                    "$ref": "#/definitions/Negative"
+                    "$ref": "#/definitions/States"
                 },
                 "purple": {
-                    "$ref": "#/definitions/Negative"
+                    "$ref": "#/definitions/States"
                 },
                 "pink": {
-                    "$ref": "#/definitions/Negative"
+                    "$ref": "#/definitions/States"
                 }
             },
             "required": [
@@ -757,23 +712,20 @@
                 "neutral": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/NeutralValue"
+                        "$ref": "#/definitions/States"
                     }
                 },
                 "positive": {
-                    "$ref": "#/definitions/Negative"
+                    "$ref": "#/definitions/States"
                 },
                 "negative": {
-                    "$ref": "#/definitions/Negative"
+                    "$ref": "#/definitions/States"
                 },
                 "warning": {
-                    "$ref": "#/definitions/Illustration"
+                    "$ref": "#/definitions/States"
                 },
                 "accent": {
-                    "$ref": "#/definitions/SurfaceAccent"
-                },
-                "gradient": {
-                    "$ref": "#/definitions/SurfaceGradient"
+                    "$ref": "#/definitions/States"
                 }
             },
             "required": [
@@ -785,88 +737,37 @@
             ],
             "title": "Surface"
         },
-        "SurfaceAccent": {
+        "States": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "default": {
-                    "$ref": "#/definitions/Primary"
-                },
-                "mobile": {
-                    "$ref": "#/definitions/Mobile"
-                }
-            },
-            "required": [
-                "default",
-                "mobile"
-            ],
-            "title": "SurfaceAccent"
-        },
-        "SurfaceGradient": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "00": {
-                    "$ref": "#/definitions/Primary"
-                },
-                "01": {
-                    "$ref": "#/definitions/Primary"
-                }
-            },
-            "required": [
-                "00",
-                "01"
-            ],
-            "title": "SurfaceGradient"
-        },
-        "Mobile": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "default": {
-                    "$ref": "#/definitions/Primary"
-                },
-                "pressed": {
-                    "$ref": "#/definitions/Primary"
-                }
-            },
-            "required": [
-                "default",
-                "pressed"
-            ],
-            "title": "Mobile"
-        },
-        "NeutralValue": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "default": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "hover": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "pressed": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "disabled": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "active": {
-                    "$ref": "#/definitions/Active"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "primary": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "secondary": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "tertiary": {
-                    "$ref": "#/definitions/Primary"
+                    "$ref": "#/definitions/ValueTypeDes"
                 }
             },
             "required": [],
-            "title": "NeutralValue"
+            "title": "ValueTypeDes"
         },
         "Type": {
             "type": "string",

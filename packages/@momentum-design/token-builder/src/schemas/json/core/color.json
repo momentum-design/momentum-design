@@ -51,49 +51,49 @@
                 "white-alpha": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Doc"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "black-alpha": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Doc"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "gray": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Doc"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "blue": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Doc"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "green": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Doc"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "red": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Doc"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "yellow": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Doc"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "orange": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Doc"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 }
             },
@@ -109,7 +109,7 @@
             ],
             "title": "Core"
         },
-        "Doc": {
+        "ValueTypeDes": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -117,14 +117,13 @@
                     "type": "string"
                 },
                 "type": {
-                    "$ref": "#/definitions/Type"
+                    "type": "string"
                 },
                 "description": {
                     "type": "string"
                 }
             },
             "required": [
-                "description",
                 "type",
                 "value"
             ],
@@ -137,61 +136,61 @@
                 "gold": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Doc"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "olive": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Doc"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "lime": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Doc"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "mint": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Doc"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "cyan": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Doc"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "cobalt": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Doc"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "slate": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Doc"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "violet": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Doc"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "purple": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Purple"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "pink": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Doc"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 }
             },
@@ -209,47 +208,27 @@
             ],
             "title": "Decorative"
         },
-        "Purple": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "value": {
-                    "type": "string"
-                },
-                "type": {
-                    "$ref": "#/definitions/Type"
-                },
-                "description": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "type",
-                "value"
-            ],
-            "title": "Purple"
-        },
         "Gradient": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "default": {
-                    "$ref": "#/definitions/Bronze"
+                    "$ref": "#/definitions/LightDark"
                 },
                 "indigo": {
-                    "$ref": "#/definitions/Bronze"
+                    "$ref": "#/definitions/LightDark"
                 },
                 "jade": {
-                    "$ref": "#/definitions/Bronze"
+                    "$ref": "#/definitions/LightDark"
                 },
                 "bronze": {
-                    "$ref": "#/definitions/Bronze"
+                    "$ref": "#/definitions/LightDark"
                 },
                 "rose": {
-                    "$ref": "#/definitions/Bronze"
+                    "$ref": "#/definitions/LightDark"
                 },
                 "lavender": {
-                    "$ref": "#/definitions/Bronze"
+                    "$ref": "#/definitions/LightDark"
                 }
             },
             "required": [
@@ -262,15 +241,15 @@
             ],
             "title": "Gradient"
         },
-        "Bronze": {
+        "LightDark": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "light": {
-                    "$ref": "#/definitions/LightClass"
+                    "$ref": "#/definitions/PrimarySecondary"
                 },
                 "dark": {
-                    "$ref": "#/definitions/LightClass"
+                    "$ref": "#/definitions/PrimarySecondary"
                 }
             },
             "required": [
@@ -279,15 +258,15 @@
             ],
             "title": "Bronze"
         },
-        "LightClass": {
+        "PrimarySecondary": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "primary": {
-                    "$ref": "#/definitions/Doc"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "secondary": {
-                    "$ref": "#/definitions/Doc"
+                    "$ref": "#/definitions/ValueTypeDes"
                 }
             },
             "required": [
@@ -301,22 +280,22 @@
             "additionalProperties": false,
             "properties": {
                 "default": {
-                    "$ref": "#/definitions/Default"
+                    "$ref": "#/definitions/PrimarySecondary"
                 },
                 "indigo": {
-                    "$ref": "#/definitions/Bronze"
+                    "$ref": "#/definitions/PrimarySecondary"
                 },
                 "jade": {
-                    "$ref": "#/definitions/Bronze"
+                    "$ref": "#/definitions/PrimarySecondary"
                 },
                 "bronze": {
-                    "$ref": "#/definitions/Bronze"
+                    "$ref": "#/definitions/PrimarySecondary"
                 },
                 "rose": {
-                    "$ref": "#/definitions/Bronze"
+                    "$ref": "#/definitions/PrimarySecondary"
                 },
                 "lavender": {
-                    "$ref": "#/definitions/Bronze"
+                    "$ref": "#/definitions/PrimarySecondary"
                 }
             },
             "required": [
@@ -329,87 +308,36 @@
             ],
             "title": "Mobile"
         },
-        "Default": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "light": {
-                    "$ref": "#/definitions/LightClass"
-                },
-                "dark": {
-                    "$ref": "#/definitions/PurpleDark"
-                }
-            },
-            "required": [
-                "dark",
-                "light"
-            ],
-            "title": "Default"
-        },
-        "PurpleDark": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "primary": {
-                    "$ref": "#/definitions/Doc"
-                },
-                "secondary": {
-                    "$ref": "#/definitions/Secondary"
-                }
-            },
-            "required": [
-                "primary",
-                "secondary"
-            ],
-            "title": "PurpleDark"
-        },
-        "Secondary": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "value": {
-                    "type": "string"
-                },
-                "type": {
-                    "$ref": "#/definitions/Type"
-                }
-            },
-            "required": [
-                "type",
-                "value"
-            ],
-            "title": "Secondary"
-        },
         "Partner": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "pdf": {
-                    "$ref": "#/definitions/Doc"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "word": {
-                    "$ref": "#/definitions/Doc"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "powerpoint": {
-                    "$ref": "#/definitions/Doc"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "excel": {
-                    "$ref": "#/definitions/Doc"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "onenote": {
-                    "$ref": "#/definitions/Doc"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "sheets": {
-                    "$ref": "#/definitions/Doc"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "slides": {
-                    "$ref": "#/definitions/Doc"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "keynote": {
-                    "$ref": "#/definitions/Doc"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "doc": {
-                    "$ref": "#/definitions/Doc"
+                    "$ref": "#/definitions/ValueTypeDes"
                 }
             },
             "required": [
@@ -424,13 +352,6 @@
                 "word"
             ],
             "title": "Partner"
-        },
-        "Type": {
-            "type": "string",
-            "enum": [
-                "color"
-            ],
-            "title": "Type"
         }
     }
 }
