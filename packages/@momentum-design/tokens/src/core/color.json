@@ -13,7 +13,7 @@
           "description": "Hex Code: #ffffff\nAlpha: 20%"
         },
         "24": {
-          "value": "rgba(255, 255, 255, 0.24)",
+          "value": "#ffffff3d",
           "type": "color",
           "description": "HEX Code: #ffffff 24%\nUsed for AAOS (Android Auto Operating System) only."
         },
@@ -28,7 +28,7 @@
           "description": "Hex Code: #ffffff\nAlpha: 40%"
         },
         "46": {
-          "value": "rgba(255, 255, 255, 0.46)",
+          "value": "#ffffff75",
           "type": "color",
           "description": "HEX Code: #ffffff 46%\nUsed for AAOS (Android Auto Operating System) only."
         },
@@ -38,7 +38,7 @@
           "description": "Hex Code: #ffffff\nAlpha: 50%"
         },
         "56": {
-          "value": "rgba(255, 255, 255, 0.56)",
+          "value": "#ffffff8F",
           "type": "color",
           "description": "HEX Code: #ffffff 56%\nUsed for AAOS (Android Auto Operating System) only."
         },
@@ -53,7 +53,7 @@
           "description": "Hex Code: #ffffff\nAlpha: 70%"
         },
         "72": {
-          "value": "rgba(255, 255, 255, 0.72)",
+          "value": "#ffffffB8",
           "type": "color",
           "description": "HEX Code: #ffffff 72%\nUsed for AAOS (Android Auto Operating System) only."
         },
@@ -63,7 +63,7 @@
           "description": "Hex Code: #ffffff\nAlpha: 80%"
         },
         "88": {
-          "value": "rgba(255, 255, 255, 0.88)",
+          "value": "#ffffffE0",
           "type": "color",
           "description": "HEX Code: #ffffff 88%\nUsed for AAOS (Android Auto Operating System) only."
         },
@@ -135,7 +135,7 @@
           "description": "Hex Code: #000000\nAlpha: 70%"
         },
         "78": {
-          "value": "rgba(0, 0, 0, 0.78)",
+          "value": "#000000C7",
           "type": "color",
           "description": "HEX Code: #000000 78%\nUsed for AAOS (Android Auto Operating System) only."
         },
@@ -145,12 +145,12 @@
           "description": "Hex Code: #000000\nAlpha: 80%"
         },
         "84": {
-          "value": "rgba(0, 0, 0, 0.84)",
+          "value": "#000000D6",
           "type": "color",
           "description": "HEX Code: #000000 84%\nUsed for AAOS (Android Auto Operating System) only."
         },
         "88": {
-          "value": "rgba(0, 0, 0, 0.88)",
+          "value": "#0000000e0",
           "type": "color",
           "description": "HEX Code: #000000 88%\nUsed for AAOS (Android Auto Operating System) only."
         },

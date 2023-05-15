@@ -19,6 +19,7 @@
     "theme/aaos/common",
     "theme/stable/common",
     "theme/stable/dark",
-    "theme/stable/light"
+    "theme/stable/light",
+    "aaos"
   ]
 }
