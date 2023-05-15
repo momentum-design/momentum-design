@@ -129,7 +129,10 @@
                     "$ref": "#/definitions/BorderDecorative"
                 },
                 "warning": {
-                    "$ref": "#/definitions/NoticeClass"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 }
             },
             "required": [
