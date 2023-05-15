@@ -12,7 +12,7 @@
               "lineHeights": {
                   "type": "object",
                   "additionalProperties": {
-                      "$ref": "#/definitions/Ciscosanstt"
+                      "$ref": "#/definitions/ValueType"
                   }
               },
               "fontWeights": {
@@ -21,7 +21,7 @@
               "fontSize": {
                   "type": "object",
                   "additionalProperties": {
-                      "$ref": "#/definitions/Ciscosanstt"
+                      "$ref": "#/definitions/ValueType"
                   }
               },
               "letterSpacing": {
@@ -127,7 +127,7 @@
           "additionalProperties": false,
           "properties": {
               "ciscosanstt": {
-                  "$ref": "#/definitions/Ciscosanstt"
+                  "$ref": "#/definitions/ValueType"
               }
           },
           "required": [
@@ -135,7 +135,7 @@
           ],
           "title": "FontFamilies"
       },
-      "Ciscosanstt": {
+      "ValueType": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
@@ -157,16 +157,16 @@
           "additionalProperties": false,
           "properties": {
               "ciscosanstt-0": {
-                  "$ref": "#/definitions/Ciscosanstt"
+                  "$ref": "#/definitions/ValueType"
               },
               "ciscosanstt-1": {
-                  "$ref": "#/definitions/Ciscosanstt"
+                  "$ref": "#/definitions/ValueType"
               },
               "ciscosanstt-2": {
-                  "$ref": "#/definitions/Ciscosanstt"
+                  "$ref": "#/definitions/ValueType"
               },
               "ciscosanstt-3": {
-                  "$ref": "#/definitions/Ciscosanstt"
+                  "$ref": "#/definitions/ValueType"
               }
           },
           "required": [
@@ -182,7 +182,7 @@
           "additionalProperties": false,
           "properties": {
               "0": {
-                  "$ref": "#/definitions/Ciscosanstt"
+                  "$ref": "#/definitions/ValueType"
               }
           },
           "required": [
@@ -195,7 +195,7 @@
           "additionalProperties": false,
           "properties": {
               "none": {
-                  "$ref": "#/definitions/Ciscosanstt"
+                  "$ref": "#/definitions/ValueType"
               }
           },
           "required": [
