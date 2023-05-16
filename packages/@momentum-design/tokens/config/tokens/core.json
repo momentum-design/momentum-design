@@ -61,6 +61,30 @@
         "theme/stable/stable-common.json",
         "theme/stable/stable-light.json"
       ]
+    },
+    {
+      "destination": "theme/aaos/day-complete",
+      "filters": {
+        "types": ["theme"]
+      },
+      "cssSelector": ".mds-theme-aaos-day",
+      "targets": [
+        "core/*.json",
+        "theme/aaos/common.json",
+        "theme/aaos/day.json"
+      ]
+    },
+    {
+      "destination": "theme/aaos/night-complete",
+      "filters": {
+        "types": ["theme"]
+      },
+      "cssSelector": ".mds-theme-aaos-night",
+      "targets": [
+        "core/*.json",
+        "theme/aaos/common.json",
+        "theme/aaos/night.json"
+      ]
     }
   ],
   "formats": ["CSS_VARIABLES", "SCSS_VARIABLES", "WEB_JSON", "ANDROID_RESOURCES", "SWIFT_CLASS", "MD_JSON_MINIMAL"],
