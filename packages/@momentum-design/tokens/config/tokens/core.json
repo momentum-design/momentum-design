@@ -35,7 +35,7 @@
       "cssSelector": ".mds-theme-stable-commonWebex",
       "targets": [
         "core/*.json",
-        "theme/stable/stable-common.json"
+        "theme/stable/common.json"
       ]
     },
     {
@@ -46,8 +46,8 @@
       "cssSelector": ".mds-theme-stable-darkWebex",
       "targets": [
         "core/*.json",
-        "theme/stable/stable-common.json",
-        "theme/stable/stable-dark.json"
+        "theme/stable/common.json",
+        "theme/stable/dark.json"
       ]
     },
     {
@@ -58,8 +58,8 @@
       "cssSelector": ".mds-theme-stable-lightWebex",
       "targets": [
         "core/*.json",
-        "theme/stable/stable-common.json",
-        "theme/stable/stable-light.json"
+        "theme/stable/common.json",
+        "theme/stable/light.json"
       ]
     },
     {
