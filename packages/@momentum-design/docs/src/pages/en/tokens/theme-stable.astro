@@ -12,5 +12,5 @@ import MainLayout from '../../../layouts/MainLayout.astro';
     <h3>Back</h3>
   </a>
   <h1>Theme Tokens Stable</h1>
-  <ThemeTokensTwapper client:visible themeTokens={{ dark: themeStableDark, light: themeStableLight }}/>
+  <ThemeTokensTwapper client:load themeTokens={{ dark: themeStableDark, light: themeStableLight }}/>
 </MainLayout>

@@ -1,0 +1,16 @@
+---
+import themeAAOSNight from '@momentum-design/tokens/dist/json/theme/aaos/night-complete.json';
+import themeAAOSDay from '@momentum-design/tokens/dist/json/theme/aaos/day-complete.json';
+
+import { ThemeTokensTwapper } from '../../../components/ThemeTokensWrapper/ThemeTokensWrapper';
+import MainLayout from '../../../layouts/MainLayout.astro';
+
+---
+
+<MainLayout frontmatter={{ description: '', title: 'Theme Tokens', layout: '' }}>
+  <a href="/momentum-design/en/tokens#theme-aaos">
+    <h3>Back</h3>
+  </a>
+  <h1>Theme AAOS</h1>
+  <ThemeTokensTwapper client:load themeTokens={{ dark: themeAAOSNight, light: themeAAOSDay }}/>
+</MainLayout>
