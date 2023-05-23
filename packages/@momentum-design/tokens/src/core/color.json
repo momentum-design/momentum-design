@@ -217,9 +217,9 @@
           "description": "Hex Code: #707070"
         },
         "61": {
-          "value": "#2E3134",
+          "value": "#80868B",
           "type": "color",
-          "description": "HEX Code: #2E3134\nUsed for AAOS (Android Auto Operating System) only."
+          "description": "HEX Code: #80868B\nUsed for AAOS (Android Auto Operating System) only."
         },
         "70": {
           "value": "#545454",
