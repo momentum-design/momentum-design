@@ -29,12 +29,12 @@
         "neutral": {
           "00": {
             "default": {
-              "value": "{color.core.black-alpha.00}",
+              "value": "{color.core.black-alpha.0}",
               "type": "color",
               "description": "Core Token: core.black-alpha.00\nHEX: 000000 0%\n--------\nRest/ghost states of app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas. "
             },
             "hover": {
-              "value": "{color.core.black-alpha.07}",
+              "value": "{color.core.black-alpha.7}",
               "type": "color",
               "description": "Core Token: core.black-alpha.07\nHEX: 000000 7%\n\n----\n\nUsed for hover state of \nall app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
             },
@@ -66,7 +66,7 @@
               "description": "Core Token: core.black-alpha.30\nHEX: 000000 30%\n\n---\nUsed for press/active state of surface-01. \n(prev.BackgroundSecondary). Used it for meeting-content-cards, attachments, [ios] meeting-list."
             },
             "disabled": {
-              "value": "{color.core.black-alpha.00}",
+              "value": "{color.core.black-alpha.0}",
               "type": "color",
               "description": "Core Token: core.black-alpha.00\nHEX: 000000 00%\n\n---\nDisabled state of surface-01. (prev.BackgroundSecondary). Used it for meeting-content-cards, attachments, [ios] meeting-list"
             }
@@ -78,7 +78,7 @@
               "description": "Core Token: core.gray.10\nHEX: ededed\n----------------\nCore Token: core.gray.05\nHEX: f7f7f7\n----------------\nUsed for input fields, mostly modals that are layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
             },
             "secondary": {
-              "value": "{color.core.gray.05}",
+              "value": "{color.core.gray.5}",
               "type": "color",
               "description": "Core Token: core.gray.05\nHEX: f7f7f7\n----------------\nMedium solid surface. Used this for input fields, mostly modals that are layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
             },
@@ -407,12 +407,12 @@
             },
             "secondary": {
               "default": {
-                "value": "{color.core.black-alpha.00}",
+                "value": "{color.core.black-alpha.0}",
                 "type": "color",
                 "description": "Core Token: core.black-alpha.00\nHEX 000000 0%\n-----------------------------------\nRest/ghost state of Secondary buttons.\nUse with border.neutral.01"
               },
               "hover": {
-                "value": "{color.core.black-alpha.07}",
+                "value": "{color.core.black-alpha.7}",
                 "type": "color",
                 "description": "Core Token: core.black-alpha.07\nHEX 000000 7%\n-----------------------------------\nHover state of Secondary buttons. Used with border.neutral.01"
               },
@@ -422,7 +422,7 @@
                 "description": "Core Token: core.black-alpha.20\nHEX 000000 20%\n-----------------------------------\nPressed state of Secondary buttons.  Used with border.neutral.01"
               },
               "disabled": {
-                "value": "{color.core.black-alpha.00}",
+                "value": "{color.core.black-alpha.0}",
                 "type": "color",
                 "description": "Core Token: core.black-alpha.00\nHEX FFFFFF 00%\n-----------------------------------\nDisabled state of secondary buttons.  Used with border.neutral.01"
               },
@@ -539,7 +539,7 @@
               "description": "Core Token: core.gray.10\nHEX: ededed\n\nUsed for pressed state of tags"
             },
             "04": {
-              "value": "{color.core.gray.05}",
+              "value": "{color.core.gray.5}",
               "type": "color",
               "description": "Core Token: core.gray.05\nHEX: F7F7F7\n--------------------\nUsed for hover state of tags, name-tag."
             },
@@ -841,7 +841,7 @@
           },
           "bg": {
             "default": {
-              "value": "{color.core.black-alpha.00}",
+              "value": "{color.core.black-alpha.0}",
               "type": "color",
               "description": "Core Token: core.black-alpha-00\nHEX: 000000 0%\n-----------------------------\nghost state of scrollbar track and arrow background"
             },
@@ -930,12 +930,12 @@
             },
             "primary": {
               "default": {
-                "value": "linear-gradient(90deg, {color.core.black-alpha.00} 0%, {color.core.black-alpha.20} 22.4%, {color.core.black-alpha.20} 72.4%, {color.core.black-alpha.00}  100%)",
+                "value": "linear-gradient(90deg, {color.core.black-alpha.0} 0%, {color.core.black-alpha.20} 22.4%, {color.core.black-alpha.20} 72.4%, {color.core.black-alpha.0}  100%)",
                 "type": "color",
                 "description": "Core Token: core.black-alpha.0, core.black-alpha.20, core.black-alpha.20, core.black-alpha.0\nHEX: 000000 0% 0%, 000000 20% 22.4%, 000000 20% 72.4%, 000000 0% 100%\n--------------------------------\nUsed for divider default on compose area in space. "
               },
               "hover": {
-                "value": "linear-gradient(90deg, {color.core.black-alpha.00} 0%, {color.core.black-alpha.20} 22.4%, {color.core.black-alpha.20} 72.4%, {color.core.black-alpha.00} 100%)",
+                "value": "linear-gradient(90deg, {color.core.black-alpha.0} 0%, {color.core.black-alpha.20} 22.4%, {color.core.black-alpha.20} 72.4%, {color.core.black-alpha.0} 100%)",
                 "type": "color",
                 "description": "Core Token: core.black-alpha.0, core.black-alpha.20, core.black-alpha.20, core.black-alpha.0\nHEX: 000000 0% 0%, 000000 20% 22.4%, 000000 20% 22.4%, 000000 0% 100%,   \n--------------------------------\nUsed for hover state of divider default on compose area in space. "
               }

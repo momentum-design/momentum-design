@@ -29,12 +29,12 @@
         "neutral": {
           "00": {
             "default": {
-              "value": "{color.core.white-alpha.00}",
+              "value": "{color.core.white-alpha.0}",
               "type": "color",
               "description": "Core Token: core.white-alpha.00\nHEX: ffffff 0%\n--------\nRest/ghost states of app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas. "
             },
             "hover": {
-              "value": "{color.core.white-alpha.07}",
+              "value": "{color.core.white-alpha.7}",
               "type": "color",
               "description": "Core Token: core.white-alpha.07\nHEX: ffffff 7%\n\n----\n\nUsed for hover state of \nall app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
             },
@@ -419,12 +419,12 @@
             },
             "secondary": {
               "default": {
-                "value": "{color.core.white-alpha.00}",
+                "value": "{color.core.white-alpha.0}",
                 "type": "color",
                 "description": "Core Token: core.white-alpha.00\nHEX FFFFFF 0%\n-----------------------------------\nRest/ghost state of Secondary buttons.\nUse with border.neutral.btn "
               },
               "hover": {
-                "value": "{color.core.white-alpha.07}",
+                "value": "{color.core.white-alpha.7}",
                 "type": "color",
                 "description": "Core Token: core.white-alpha.07\nHEX FFFFFF 7%\n-----------------------------------\nHover state of Secondary buttons. Used with border.neutral.button"
               },
@@ -434,7 +434,7 @@
                 "description": "Core Token: core.white-alpha.20\nHEX FFFFFF 20%\n-----------------------------------\nPressed state of Secondary buttons. Used with border.neutral.button"
               },
               "disabled": {
-                "value": "{color.core.white-alpha.00}",
+                "value": "{color.core.white-alpha.0}",
                 "type": "color",
                 "description": "Core Token: core.white-alpha.00\nHEX FFFFFF 00%\n-----------------------------------\nDisabled state of secondary buttons. "
               },
@@ -853,7 +853,7 @@
           },
           "bg": {
             "default": {
-              "value": "{color.core.white-alpha.00}",
+              "value": "{color.core.white-alpha.0}",
               "type": "color",
               "description": "Core Token: core.white-alpha.00\nHEX: FFFFFF 0%\n-----------------------------\nghost state of scrollbar track and arrow background"
             },
@@ -942,12 +942,12 @@
             },
             "primary": {
               "default": {
-                "value": "linear-gradient(90deg, {color.core.white-alpha.00} 0%, {color.core.white-alpha.20} 22.4%, {color.core.white-alpha.20} 72.4%, {color.core.white-alpha.00} 100%)",
+                "value": "linear-gradient(90deg, {color.core.white-alpha.0} 0%, {color.core.white-alpha.20} 22.4%, {color.core.white-alpha.20} 72.4%, {color.core.white-alpha.0} 100%)",
                 "type": "color",
                 "description": "Core Token: core.white-alpha.0, core.white-alpha.20, core.white-alpha.20, core.white-alpha.0\n\nHEX: FFFFFF 0%, FFFFFF 20%,FFFFFF 20%, FFFFFF 0%,   \n--------------------------------\nUsed for divider default on compose area in space. "
               },
               "hover": {
-                "value": "linear-gradient(90deg, {color.core.white-alpha.00} 0%, {color.core.white-alpha.60} 22.4%, {color.core.white-alpha.60} 72.4%, {color.core.white-alpha.00} 100%)",
+                "value": "linear-gradient(90deg, {color.core.white-alpha.0} 0%, {color.core.white-alpha.60} 22.4%, {color.core.white-alpha.60} 72.4%, {color.core.white-alpha.0} 100%)",
                 "type": "color",
                 "description": "Core Token: core.white-alpha.0, core.white-alpha.20, core.white-alpha.20, core.white-alpha.0\n\nHEX: FFFFFF 0%, FFFFFF 20%,FFFFFF 20%, FFFFFF 0%,   \n--------------------------------\nUsed for hover state of divider default on compose area in space. "
               }

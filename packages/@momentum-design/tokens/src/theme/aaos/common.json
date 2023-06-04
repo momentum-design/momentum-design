@@ -59,12 +59,12 @@
           "neutral": {
             "secondary": {
               "default": {
-                "value": "{color.core.white-alpha.00}",
+                "value": "{color.core.white-alpha.0}",
                 "type": "color",
                 "description": "Core: color.core.white-alpha.00\nHEX: #ffffff 00%\nRest state of Secondary buttons."
               },
               "disabled": {
-                "value": "{color.core.white-alpha.00}",
+                "value": "{color.core.white-alpha.0}",
                 "type": "color",
                 "description": "Core: color.core.white-alpha.00\nHEX: #ffffff 00%\nDisabled state of secondary buttons. "
               }
