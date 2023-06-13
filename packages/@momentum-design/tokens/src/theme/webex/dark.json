@@ -31,22 +31,22 @@
             "default": {
               "value": "{color.core.white-alpha.0}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.00\nHEX: ffffff 0%\n--------\nRest/ghost states of app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas. "
+              "description": "Core Token: core.white-alpha.0\nHEX: ffffff 0%\n--------\nRest/ghost states of app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas. "
             },
             "hover": {
               "value": "{color.core.white-alpha.7}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.07\nHEX: ffffff 7%\n\n----\n\nUsed for hover state of \nall app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
+              "description": "Core Token: core.white-alpha.7\nHEX: ffffff 7%\n\n----\n\nUsed for hover state of \nall app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
             },
             "active": {
               "value": "{color.core.white-alpha.11}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.11\nHEX: ffffff 11%\n\n---\nUsed for press/active state of surface-00. Used it for app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
+              "description": "Core Token: core.white-alpha.11\nHEX: ffffff 11%\n\n---\nUsed for press/active state of surface-0. Used it for app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
             },
             "disabled": {
               "value": "{color.core.white-alpha.11}",
               "type": "color",
-              "description": "Core Token: core.white-alpha-11\nHEX: ffffff 11%\n\n---\nDisabled state of surface-00. Used it for app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
+              "description": "Core Token: core.white-alpha-11\nHEX: ffffff 11%\n\n---\nDisabled state of surface-0. Used it for app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
             }
           },
           "1": {
@@ -1017,7 +1017,7 @@
           }
         },
         "warning": {
-          "00": {
+          "0": {
             "value": "{color.core.yellow.40}",
             "type": "color",
             "description": "Core Token: color.core.yellow.40\nHEX: #f2990a\n9.33 on surface.neutral.02.primary (#000000)\nUsed for warning state of input fields border\n"
