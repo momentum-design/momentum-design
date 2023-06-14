@@ -31,12 +31,12 @@
             "default": {
               "value": "{color.core.black-alpha.0}",
               "type": "color",
-              "description": "Core Token: core.black-alpha.00\nHEX: 000000 0%\n--------\nRest/ghost states of app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas. "
+              "description": "Core Token: core.black-alpha.0\nHEX: 000000 0%\n--------\nRest/ghost states of app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas. "
             },
             "hover": {
               "value": "{color.core.black-alpha.7}",
               "type": "color",
-              "description": "Core Token: core.black-alpha.07\nHEX: 000000 7%\n\n----\n\nUsed for hover state of \nall app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
+              "description": "Core Token: core.black-alpha.7\nHEX: 000000 7%\n\n----\n\nUsed for hover state of \nall app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
             },
             "active": {
               "value": "{color.core.black-alpha.11}",
@@ -63,24 +63,24 @@
             "active": {
               "value": "{color.core.black-alpha.30}",
               "type": "color",
-              "description": "Core Token: core.black-alpha.30\nHEX: 000000 30%\n\n---\nUsed for press/active state of surface-01. \n(prev.BackgroundSecondary). Used it for meeting-content-cards, attachments, [ios] meeting-list."
+              "description": "Core Token: core.black-alpha.30\nHEX: 000000 30%\nUsed for press/active state of surface1. (prev.BackgroundSecondary). Used it for meeting-content-cards, attachments, [ios] meeting-list"
             },
             "disabled": {
               "value": "{color.core.black-alpha.0}",
               "type": "color",
-              "description": "Core Token: core.black-alpha.00\nHEX: 000000 00%\n\n---\nDisabled state of surface-01. (prev.BackgroundSecondary). Used it for meeting-content-cards, attachments, [ios] meeting-list"
+              "description": "Core Token: core.black-alpha.0\nHEX: 000000 00%\nDisabled state of surface-01. (prev.BackgroundSecondary). Used it for meeting-content-cards, attachments, [ios] meeting-list\n\n---\nDisabled state of surface-01. (prev.BackgroundSecondary). Used it for meeting-content-cards, attachments, [ios] meeting-list"
             }
           },
           "2": {
-            "tertiary": {
-              "value": "{color.core.gray.10}",
-              "type": "color",
-              "description": "Core Token: core.gray.10\nHEX: ededed\n----------------\nCore Token: core.gray.05\nHEX: f7f7f7\n----------------\nUsed for input fields, mostly modals that are layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
-            },
             "secondary": {
               "value": "{color.core.gray.5}",
               "type": "color",
               "description": "Core Token: core.gray.05\nHEX: f7f7f7\n----------------\nMedium solid surface. Used this for input fields, mostly modals that are layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
+            },
+            "tertiary": {
+              "value": "{color.core.gray.10}",
+              "type": "color",
+              "description": "Core Token: core.gray.10\nHEX: ededed\n----------------\nCore Token: core.gray.05\nHEX: f7f7f7\n----------------\nUsed for input fields, mostly modals that are layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
             },
             "primary": {
               "value": "{color.core.white-alpha.100}",
@@ -146,6 +146,18 @@
               "type": "color",
               "description": "Core Token: core.blue.100\nHEX: #000000\nUsed for inverted component surface; tooltip"
             }
+          }
+        },
+        "gradient": {
+          "0": {
+            "value": "linear-gradient(90deg, rgba(255, 255, 255, 0.72) 60.56%, rgba(255, 255, 255, 0) 92.59%);",
+            "type": "color",
+            "description": "Core: linear-gradient(90deg, rgba(255, 255, 255, 0.72) 60.56%, rgba(255, 255, 255, 0) 92.59%);\nHEX:  #ffffffb8 60.56%, #ffffff00 92.59%\nUsed for meeting reactions(meetings/reactions/feed)"
+          },
+          "1": {
+            "value": "linear-gradient(180deg, #f7f7f7e6 0%, #f7f7f700 100%)",
+            "type": "color",
+            "description": "Core: linear-gradient(180deg, #f7f7f7e6 0%, #f7f7f700 100%)\nHEX:  #f7f7f7e6 0%, #f7f7f700 100%)\nUsed for meeting reactions (overlay background)"
           }
         }
       },
@@ -647,17 +659,17 @@
             "1": {
               "value": "{color.core.orange.70}",
               "type": "color",
-              "description": "Core Token: core.orange.70\nHEX: 914017\n---------------------\nUsed for avatar presence (busy, meeting, call, device)"
+              "description": "Core Token: core.orange.70\nHEX: #9C3202\n---------------------\nUsed for avatar presence (busy, meeting, call, device)"
             },
             "2": {
               "value": "{color.core.orange.20}",
               "type": "color",
-              "description": "Core Token: core.orange.20\nHEX: FCE4C7\n------------------------------\nUsed for pressed state of alert-badge"
+              "description": "Core Token: core.orange.20\nHEX: #FED5AC\n------------------------------\nUsed for pressed state of alert-badge"
             },
             "3": {
               "value": "{color.core.orange.10}",
               "type": "color",
-              "description": "Core Token: core.orange.10\nHEX: FAF4EB\n---------------------------------\nUsed for rest/hover state of alert-badge"
+              "description": "Core Token: core.orange.10\nHEX: #FEEBD7\n---------------------------------\nUsed for rest/hover state of alert-badge"
             }
           },
           "decorative": {
@@ -920,28 +932,28 @@
           }
         },
         "positive": {
-          "00": {
+          "0": {
             "value": "{color.core.green.70}",
             "type": "color",
             "description": "Core Token: core.green.70\nHEX: 185E46\n---------------\nUsed for join/success buttons"
           }
         },
         "negative": {
-          "00": {
+          "0": {
             "value": "{color.core.red.70}",
             "type": "color",
             "description": "Core Token: core.red.70\nHEX: AB0A15\n---------------\nUsed for outline of error/cancel state of input, buttons."
           }
         },
         "accent": {
-          "00": {
+          "0": {
             "value": "{color.core.blue.60}",
             "type": "color",
             "description": "Core Token: core.blue.60\nHEX: 1170CF\n-------------------------\nUsed for outline of secondary accent buttons, attachment/fileViewer-preview, messaging/new, chip, input fields"
           }
         },
         "notice": {
-          "00": {
+          "0": {
             "value": "{color.core.orange.50}",
             "type": "color",
             "description": "Core Token: core.orange.50\nHEX: F26B1D\n-------------------------------\noutline for the orange tags"
@@ -1002,6 +1014,13 @@
                 "description": "Core Token: core.blue.70 0% 0%, core.blue.70 90% 22.4%, core.blue.70 90% 76.04, core.blue.70 0% 100% \nHEX: linear-gradient(90deg, #0353a800 0%,  #0353a8E6 22.4%, #0353a8E6  76.04%,  #0353a800 100%)\n--------------------------------\nUsed for hover state divider on the compose area for the announcement space."
               }
             }
+          }
+        },
+        "warning": {
+          "0": {
+            "value": "{color.core.yellow.60}",
+            "type": "color",
+            "description": "Core: color.core.yellow.60\nHEX:#a65e00\n4.97 on surface.neutral.02.primary (#ffffff)\nUsed for warning state of input fields border"
           }
         }
       }
