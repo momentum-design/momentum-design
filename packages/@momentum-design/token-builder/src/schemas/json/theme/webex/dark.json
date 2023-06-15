@@ -447,6 +447,7 @@
                     }
                 },
                 "positive": {
+                    "type": "object",
                     "additionalProperties": {
                         "$ref": "#/definitions/ValueTypeDes"
                     }
