@@ -72,15 +72,15 @@
             }
           },
           "2": {
-            "secondary": {
-              "value": "{color.core.gray.5}",
-              "type": "color",
-              "description": "Core Token: core.gray.05\nHEX: f7f7f7\n----------------\nMedium solid surface. Used this for input fields, mostly modals that are layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
-            },
             "tertiary": {
               "value": "{color.core.gray.10}",
               "type": "color",
               "description": "Core Token: core.gray.10\nHEX: ededed\n----------------\nCore Token: core.gray.05\nHEX: f7f7f7\n----------------\nUsed for input fields, mostly modals that are layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
+            },
+            "secondary": {
+              "value": "{color.core.gray.05}",
+              "type": "color",
+              "description": "Core Token: core.gray.05\nHEX: f7f7f7\n----------------\nMedium solid surface. Used this for input fields, mostly modals that are layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
             },
             "primary": {
               "value": "{color.core.white-alpha.100}",
@@ -447,12 +447,12 @@
               "default": {
                 "value": "{color.core.black-alpha.0}",
                 "type": "color",
-                "description": "Core Token: core.black-alpha.00\nHEX 000000 0%\n-----------------------------------\nRest/ghost state of Secondary buttons.\nUse with border.neutral.01"
+                "description": "Core Token: core.black-alpha.0\nHEX 000000 0%\n-----------------------------------\nRest/ghost state of Secondary buttons.\nUse with border.neutral.01"
               },
               "hover": {
                 "value": "{color.core.black-alpha.7}",
                 "type": "color",
-                "description": "Core Token: core.black-alpha.07\nHEX 000000 7%\n-----------------------------------\nHover state of Secondary buttons. Used with border.neutral.01"
+                "description": "Core Token: core.black-alpha.7\nHEX 000000 7%\n-----------------------------------\nHover state of Secondary buttons. Used with border.neutral.01"
               },
               "pressed": {
                 "value": "{color.core.black-alpha.20}",
@@ -462,7 +462,7 @@
               "disabled": {
                 "value": "{color.core.black-alpha.0}",
                 "type": "color",
-                "description": "Core Token: core.black-alpha.00\nHEX FFFFFF 00%\n-----------------------------------\nDisabled state of secondary buttons.  Used with border.neutral.01"
+                "description": "Core Token: core.black-alpha.0\nHEX FFFFFF 00%\n-----------------------------------\nDisabled state of secondary buttons.  Used with border.neutral.01"
               },
               "active": {
                 "default": {

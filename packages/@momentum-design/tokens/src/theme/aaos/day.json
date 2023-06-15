@@ -3,21 +3,21 @@
     "theme": {
       "surface": {
         "neutral": {
-          "00": {
+          "0": {
             "default": {
               "value": "{color.core.gray.93}",
               "type": "color",
               "description": "Core: color.core.gray.93\nHEX: #17181B\n"
             }
           },
-          "01": {
+          "1": {
             "default": {
               "value": "{color.core.gray.91}",
               "type": "color",
               "description": "Core: color.core.gray.91\nHEX: #202124"
             }
           },
-          "02": {
+          "2": {
             "default": {
               "value": "{color.core.gray.86}",
               "type": "color",
@@ -71,35 +71,35 @@
         }
       },
       "overlay": {
-        "00": {
+        "0": {
           "value": "{color.core.black-alpha.84}",
           "type": "color",
-          "description": "Core: color.core.black-alpha.84\nHEX: #000000 84%\nDayOpacity1  \nUsed for any elements that sit on top of the main interface. Ex: Top Navigation Bar or Mini-Control Bar Material. "
+          "description": "Core: color.core.black-alpha.84\nHEX: #000000 84%\nDayOpacity1 \nUsed for any elements that sit on top of the main interface. Ex: Top Navigation Bar or Mini-Control BarMaterial. "
         },
-        "01": {
+        "1": {
           "value": "{color.core.black-alpha.78}",
           "type": "color",
-          "description": "Core: color.core.black-alpha.78\nHEX: #000000 78%\nDayOpacity2.  Used for scrims behind alerts. "
+          "description": "Core: color.core.black-alpha.78\nHEX: #000000 78%\nDayOpacity2. Used for scrims behind alerts. "
         },
-        "02": {
+        "2": {
           "value": "{color.core.black-alpha.60}",
           "type": "color",
-          "description": "Core: color.core.black-alpha.60\nHEX: #000000 60%\nDayOpacity3 Used for scrims behind elements that take over the entire interface. ex. incoming call notifications"
+          "description": "Core: color.core.black-alpha.60\nHEX: #000000 60%\nDayOpacity3Used for scrims behind elements that take over the entire interface. ex. incoming call notifications"
         }
       },
       "border": {
         "neutral": {
-          "00": {
+          "0": {
             "value": "{color.core.white-alpha.46}",
             "type": "color",
             "description": "Core: color.core.white-alpha.46\nHEX: #ffffff 46%\nUsed for hairlines around buttons and other interface elements. Do not use for dividers."
           },
-          "01": {
+          "1": {
             "value": "{color.core.white-alpha.24}",
             "type": "color",
             "description": "Core:color.core.white-alpha.24\nHEX: #ffffff 24%\nUse for dividers and disabled outline color for interface items."
           },
-          "02": {
+          "2": {
             "value": "{color.core.white-alpha.50}",
             "type": "color",
             "description": "Core: color.core.white-alpha.50\nHEX: #ffffff 50%\nUsed for disabled icon color and input field outline"
