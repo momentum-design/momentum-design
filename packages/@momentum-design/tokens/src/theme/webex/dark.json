@@ -71,7 +71,7 @@
               "description": "Core Token: white-alpha-11\nHEX: ffffff 11%\n\n---\nDisabled state of surface-01. (prev.BackgroundSecondary). Used it for meeting-content-cards, attachments, [ios] meeting-list"
             }
           },
-          "02": {
+          "2": {
             "tertiary": {
               "value": "{color.core.gray.90}",
               "type": "color",
@@ -140,15 +140,24 @@
           }
         },
         "gradient": {
-          "00": {
+          "0": {
             "value": "linear-gradient(90deg, rgba(26, 26, 26, 0.72) 60.56%, rgba(26, 26, 26, 0) 92.59%)",
             "type": "color",
             "description": "linear-gradient(90deg, rgba(26, 26, 26, 0.72) 60.56%, rgba(26, 26, 26, 0) 92.59%)\nUsed for reaction components(meetings/reactions/feed)"
           },
-          "01": {
+          "1": {
             "value": "linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%)",
             "type": "color",
             "description": "linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%)\nUsed for meeting reactions (overlay background)"
+          }
+        },
+        "contrast": {
+          "neutral": {
+            "0": {
+              "value": "{color.core.white-alpha.100}",
+              "type": "color",
+              "description": "Core: core.white-alpha.100\nHEX: #ffffff\nUsed for inveted component surface; tooltip. "
+            }
           }
         }
       },
@@ -199,6 +208,23 @@
                 "value": "{color.core.black-alpha.20}",
                 "type": "color",
                 "description": "Core Token: core.black-alpha.20\nHEX: 000000 20%\n---\nUsed for disabled inverted text."
+              }
+            },
+            "accent": {
+              "default": {
+                "value": "{color.core.blue.70}",
+                "type": "color",
+                "description": "Core: core.blue.70\nHEX: #0353A8\nUsed for inverted accent text; mostly used for tooltip"
+              },
+              "hover": {
+                "value": "{color.core.blue.90}",
+                "type": "color",
+                "description": "Core color: core.blue.90\nHEX: #0A274A\nUsed for hover state of inverted accent text; mostly used for tooltip"
+              },
+              "active": {
+                "value": "{color.core.blue.90}",
+                "type": "color",
+                "description": "Core color: core.blue.90\nHEX: #0A274A\nUsed for pressed/active state of inverted accent text; mostly used for tooltip"
               }
             }
           },
@@ -535,27 +561,27 @@
               "type": "color",
               "description": "Core Token: core.gray.50\nHEX: 8F8F8F\n------------\nUsed for presence (away, on-hold, on-device), meeting indicators(meeting-locked)"
             },
-            "01": {
+            "1": {
               "value": "{color.core.gray.70}",
               "type": "color",
               "description": "Core Token: core.gray.70\nHEX: 545454\n--------------------------\nUsed for active state of alert-badge"
             },
-            "02": {
+            "2": {
               "value": "{color.core.gray.80}",
               "type": "color",
               "description": "Core Token: core.gray.80\nHEX: 3B3B3B\n--------------------------\nUsed for rest/hover state of alert-badge"
             },
-            "03": {
+            "3": {
               "value": "{color.core.gray.90}",
               "type": "color",
               "description": "Core Token: core.gray.90\nHEX: 262626\n------------------------\nUsed for rest state of tags"
             },
-            "04": {
+            "4": {
               "value": "{color.core.gray.95}",
               "type": "color",
               "description": "Core Token: core.gray.95\nHEX: 1A1A1A\n-----------------\nUsed for hover state of tags"
             },
-            "05": {
+            "5": {
               "value": "{color.core.black-alpha.100}",
               "type": "color",
               "description": "Core Token: core.alpha-black.100\nHEX: 000000\n-----------------\nUsed for press state of tags"
@@ -790,7 +816,7 @@
             "default": {
               "value": "{color.core.white-alpha.20}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.20\nHEX: ffffff 20%\n--------------\nUsed for rest state of unslected/inactive toggle component background\nDo not use for toggle buttons. Use \"control.neutraul.defualt\" in Common theme. "
+              "description": "Core Token: core.white-alpha.20\nHEX: ffffff 20%\n--------------\nUsed for rest state of unslected/inactive toggle component background\nDo not use for toggle buttons. Use \"control.neutraul.defualt\" in Common theme."
             },
             "hover": {
               "value": "{color.core.white-alpha.30}",
@@ -991,7 +1017,7 @@
           }
         },
         "warning": {
-          "00": {
+          "0": {
             "value": "{color.core.yellow.40}",
             "type": "color",
             "description": "Core Token: color.core.yellow.40\nHEX: #f2990a\n9.33 on surface.neutral.02.primary (#000000)\nUsed for warning state of input fields border\n"

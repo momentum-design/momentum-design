@@ -71,7 +71,7 @@
               "description": "Core Token: core.black-alpha.0\nHEX: 000000 00%\nDisabled state of surface-01. (prev.BackgroundSecondary). Used it for meeting-content-cards, attachments, [ios] meeting-list\n\n---\nDisabled state of surface-01. (prev.BackgroundSecondary). Used it for meeting-content-cards, attachments, [ios] meeting-list"
             }
           },
-          "02": {
+          "2": {
             "tertiary": {
               "value": "{color.core.gray.10}",
               "type": "color",
@@ -447,12 +447,12 @@
               "default": {
                 "value": "{color.core.black-alpha.0}",
                 "type": "color",
-                "description": "Core Token: core.black-alpha.00\nHEX 000000 0%\n-----------------------------------\nRest/ghost state of Secondary buttons.\nUse with border.neutral.01"
+                "description": "Core Token: core.black-alpha.0\nHEX 000000 0%\n-----------------------------------\nRest/ghost state of Secondary buttons.\nUse with border.neutral.01"
               },
               "hover": {
                 "value": "{color.core.black-alpha.7}",
                 "type": "color",
-                "description": "Core Token: core.black-alpha.07\nHEX 000000 7%\n-----------------------------------\nHover state of Secondary buttons. Used with border.neutral.01"
+                "description": "Core Token: core.black-alpha.7\nHEX 000000 7%\n-----------------------------------\nHover state of Secondary buttons. Used with border.neutral.01"
               },
               "pressed": {
                 "value": "{color.core.black-alpha.20}",
@@ -462,7 +462,7 @@
               "disabled": {
                 "value": "{color.core.black-alpha.0}",
                 "type": "color",
-                "description": "Core Token: core.black-alpha.00\nHEX FFFFFF 00%\n-----------------------------------\nDisabled state of secondary buttons.  Used with border.neutral.01"
+                "description": "Core Token: core.black-alpha.0\nHEX FFFFFF 00%\n-----------------------------------\nDisabled state of secondary buttons.  Used with border.neutral.01"
               },
               "active": {
                 "default": {
@@ -561,12 +561,12 @@
               "type": "color",
               "description": "Core Token: core.gray.60\nHEX: 707070\n\nUsed for presence (away, on-hold, on-device), meeting indicators(meeting-locked)"
             },
-            "01": {
+            "1": {
               "value": "{color.core.gray.30}",
               "type": "color",
               "description": "Core Token: core.gray.30\nHEX: C9C9C9\n--------------------------\nUsed for active state of alert-badge"
             },
-            "02": {
+            "2": {
               "value": "{color.core.gray.20}",
               "type": "color",
               "description": "Core Token: core.gray.20\nHEX: DEDEDE\n--------------------------\nUsed for rest/hover state of alert-badge"
@@ -574,14 +574,9 @@
             "4": {
               "value": "{color.core.gray.5}",
               "type": "color",
-              "description": "Core Token: core.gray.10\nHEX: ededed\n\nUsed for pressed state of tags"
+              "description": "Core Token: core.gray.5\nHEX: F7F7F7\n--------------------\nUsed for hover state of tags, name-tag."
             },
             "5": {
-              "value": "{color.core.white-alpha.100}",
-              "type": "color",
-              "description": "Core Token: core.gray.05\nHEX: F7F7F7\n--------------------\nUsed for hover state of tags, name-tag."
-            },
-            "05": {
               "value": "{color.core.white-alpha.100}",
               "type": "color",
               "description": "Core Token: core.white-alpha.100\nHEX: FFFFFF\n--------------------\nUsed for rest state of tags"
@@ -612,7 +607,7 @@
             }
           },
           "warning": {
-            "00": {
+            "0": {
               "value": "{color.core.yellow.60}",
               "type": "color",
               "description": "Core Token: core.yellow.60\nHEX: a65e00\n-----------------\nUsed for Meeting Indicators (Audio-error, Video-error)"
