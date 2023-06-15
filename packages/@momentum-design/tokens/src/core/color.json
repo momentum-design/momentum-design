@@ -2,6 +2,21 @@
   "color": {
     "core": {
       "white-alpha": {
+        "0": {
+          "value": "#ffffff00",
+          "type": "color",
+          "description": "Hex Code: #ffffff\nAlpha: 0%"
+        },
+        "5": {
+          "value": "#ffffff0d",
+          "type": "color",
+          "description": "Hex Code: #ffffff\nAlpha: 5%"
+        },
+        "7": {
+          "value": "#ffffff12",
+          "type": "color",
+          "description": "Hex Code: #ffffff\nAlpha: 7%"
+        },
         "11": {
           "value": "#ffffff1c",
           "type": "color",
@@ -81,24 +96,24 @@
           "value": "#ffffff",
           "type": "color",
           "description": "Hex Code: #ffffff\nAlpha: 100%"
-        },
-        "00": {
-          "value": "#ffffff00",
-          "type": "color",
-          "description": "Hex Code: #ffffff\nAlpha: 0%"
-        },
-        "05": {
-          "value": "#ffffff0d",
-          "type": "color",
-          "description": "Hex Code: #ffffff\nAlpha: 5%"
-        },
-        "07": {
-          "value": "#ffffff12",
-          "type": "color",
-          "description": "Hex Code: #ffffff\nAlpha: 7%"
         }
       },
       "black-alpha": {
+        "0": {
+          "value": "#00000000",
+          "type": "color",
+          "description": "Hex Code: #000000\nAlpha: 0%"
+        },
+        "4": {
+          "value": "#000000A",
+          "type": "color",
+          "description": "Hex Code: #000000\nAlpha: 4%"
+        },
+        "7": {
+          "value": "#0000012",
+          "type": "color",
+          "description": "Hex Code: #000000\nAlpha: 7%"
+        },
         "11": {
           "value": "#0000001c",
           "type": "color",
@@ -150,7 +165,7 @@
           "description": "HEX Code: #000000 84%\nUsed for AAOS (Android Auto Operating System) only."
         },
         "88": {
-          "value": "#0000000e0",
+          "value": "#000000e0",
           "type": "color",
           "description": "HEX Code: #000000 88%\nUsed for AAOS (Android Auto Operating System) only."
         },
@@ -168,24 +183,14 @@
           "value": "#000000",
           "type": "color",
           "description": "Hex Code: #000000\nAlpha: 100%"
-        },
-        "00": {
-          "value": "#00000000",
-          "type": "color",
-          "description": "Hex Code: #000000\nAlpha: 0%"
-        },
-        "04": {
-          "value": "#0000000a",
-          "type": "color",
-          "description": "Hex Code: #000000\nAlpha: 4%"
-        },
-        "07": {
-          "value": "#00000012",
-          "type": "color",
-          "description": "Hex Code: #000000\nAlpha: 7%"
         }
       },
       "gray": {
+        "5": {
+          "value": "#f7f7f7",
+          "type": "color",
+          "description": "Hex Code: #f7f7f7"
+        },
         "10": {
           "value": "#ededed",
           "type": "color",
@@ -211,15 +216,15 @@
           "type": "color",
           "description": "Hex Code: #8f8f8f"
         },
+        "55": {
+          "value": "#80868B",
+          "type": "color",
+          "description": "HEX Code: #80868B\nAndroid:600\nUsed for AAOS (Android Auto Operating System) only."
+        },
         "60": {
           "value": "#707070",
           "type": "color",
           "description": "Hex Code: #707070"
-        },
-        "61": {
-          "value": "#2E3134",
-          "type": "color",
-          "description": "HEX Code: #2E3134\nUsed for AAOS (Android Auto Operating System) only."
         },
         "70": {
           "value": "#545454",
@@ -229,27 +234,27 @@
         "71": {
           "value": "#5F6368",
           "type": "color",
-          "description": "HEX Code: #5F6368\nUsed for AAOS (Android Auto Operating System) only."
+          "description": "HEX Code: #5F6368\nAndrod: 700\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "75": {
+          "value": "#3C4043",
+          "type": "color",
+          "description": "HEX Code: #3C4043\nAndroid: 800\nUsed for AAOS (Android Auto Operating System) only."
         },
         "80": {
           "value": "#3b3b3b",
           "type": "color",
           "description": "Hex Code: #3b3b3b"
         },
-        "81": {
-          "value": "#3C4043",
-          "type": "color",
-          "description": "HEX Code: #3C4043\nUsed for AAOS (Android Auto Operating System) only."
-        },
         "85": {
           "value": "#2E3134",
           "type": "color",
-          "description": "HEX Code: #2E3134\nUsed for AAOS (Android Auto Operating System) only."
+          "description": "HEX Code: #2E3134\nAndroid: 846\nUsed for AAOS (Android Auto Operating System) only."
         },
         "86": {
           "value": "#282A2D",
           "type": "color",
-          "description": "HEX Code: #282A2D\nUsed for AAOS (Android Auto Operating System) only."
+          "description": "HEX Code: #282A2D\nAndroid: 868\nUsed for AAOS (Android Auto Operating System) only."
         },
         "90": {
           "value": "#262626",
@@ -259,12 +264,12 @@
         "91": {
           "value": "#202124",
           "type": "color",
-          "description": "HEX Code: #202124\nUsed for AAOS (Android Auto Operating System) only."
+          "description": "HEX Code: #202124\nAndroid: 900\nUsed for AAOS (Android Auto Operating System) only."
         },
         "93": {
           "value": "#17181B",
           "type": "color",
-          "description": "HEX Code: #17181B\nUsed for AAOS (Android Auto Operating System) only."
+          "description": "HEX Code: #17181B\nAndroid: 928\nUsed for AAOS (Android Auto Operating System) only."
         },
         "95": {
           "value": "#1a1a1a",
@@ -274,7 +279,7 @@
         "96": {
           "value": "#0E1013",
           "type": "color",
-          "description": "HEX Code: #0E1013\nUsed for AAOS (Android Auto Operating System) only."
+          "description": "HEX Code: #0E1013\nAndroid: 958\nUsed for AAOS (Android Auto Operating System) only."
         },
         "100": {
           "value": "#0f0f0f",
@@ -285,14 +290,14 @@
           "value": "#000000",
           "type": "color",
           "description": "HEX Code: #000000\nUsed for AAOS (Android Auto Operating System) only."
-        },
-        "05": {
-          "value": "#f7f7f7",
-          "type": "color",
-          "description": "Hex Code: #f7f7f7"
         }
       },
       "blue": {
+        "5": {
+          "value": "#edf8ff",
+          "type": "color",
+          "description": "Hex Code: #edf8ff"
+        },
         "10": {
           "value": "#dbf0ff",
           "type": "color",
@@ -347,14 +352,14 @@
           "value": "#07101c",
           "type": "color",
           "description": "Hex Code: #07101c"
-        },
-        "05": {
-          "value": "#edf8ff",
-          "type": "color",
-          "description": "Hex Code: #edf8ff"
         }
       },
       "green": {
+        "5": {
+          "value": "#edf7f5",
+          "type": "color",
+          "description": "Hex Code: #edf7f5"
+        },
         "10": {
           "value": "#cef5eb",
           "type": "color",
@@ -409,14 +414,14 @@
           "value": "#07120d",
           "type": "color",
           "description": "Hex Code: #07120d"
-        },
-        "05": {
-          "value": "#edf7f5",
-          "type": "color",
-          "description": "Hex Code: #edf7f5"
         }
       },
       "red": {
+        "5": {
+          "value": "#fff5f6",
+          "type": "color",
+          "description": "Hex Code: #fff5f6"
+        },
         "10": {
           "value": "#ffe8ea",
           "type": "color",
@@ -471,14 +476,14 @@
           "value": "#1f0a0a",
           "type": "color",
           "description": "Hex Code: #1f0a0a"
-        },
-        "05": {
-          "value": "#fff5f6",
-          "type": "color",
-          "description": "Hex Code: #fff5f6"
         }
       },
       "yellow": {
+        "5": {
+          "value": "#fff6e3",
+          "type": "color",
+          "description": "Hex Code: #fff6e3"
+        },
         "10": {
           "value": "#ffebc2",
           "type": "color",
@@ -533,14 +538,14 @@
           "value": "#140e08",
           "type": "color",
           "description": "Hex Code: #140e08"
-        },
-        "05": {
-          "value": "#fff6e3",
-          "type": "color",
-          "description": "Hex Code: #fff6e3"
         }
       },
       "orange": {
+        "5": {
+          "value": "#FEF3E8",
+          "type": "color",
+          "description": "HEX Code: #FEF3E8"
+        },
         "10": {
           "value": "#FEEBD7",
           "type": "color",
@@ -595,11 +600,6 @@
           "value": "#170B02",
           "type": "color",
           "description": "HEX Code: #170B02"
-        },
-        "05": {
-          "value": "#FEF3E8",
-          "type": "color",
-          "description": "HEX Code: #FEF3E8"
         }
       }
     },
