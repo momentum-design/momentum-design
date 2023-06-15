@@ -78,7 +78,7 @@
               "description": "Core Token: core.gray.10\nHEX: ededed\n----------------\nCore Token: core.gray.05\nHEX: f7f7f7\n----------------\nUsed for input fields, mostly modals that are layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
             },
             "secondary": {
-              "value": "{color.core.gray.05}",
+              "value": "{color.core.gray.5}",
               "type": "color",
               "description": "Core Token: core.gray.05\nHEX: f7f7f7\n----------------\nMedium solid surface. Used this for input fields, mostly modals that are layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
             },
