@@ -1,0 +1,206 @@
+{
+  "color": {
+    "theme": {
+      "bg": {
+        "primary": {
+          "value": "{color.core.gray.110}",
+          "type": "color",
+          "description": "Core: color.core.gray.110\nHEX: #000000\nUsed for main app backgrund for AAOS in all modes"
+        }
+      },
+      "content": {
+        "text": {
+          "contrast": {
+            "neutral": {
+              "primary": {
+                "value": "{color.core.gray.110}",
+                "type": "color",
+                "description": "Core: color.core.gray.110\nHEX: #000000\nUsed for inverted text primary."
+              }
+            }
+          },
+          "positive": {
+            "default": {
+              "value": "{color.core.green.50}",
+              "type": "color",
+              "description": "Core: color.core.green.50\nHEX: #27a17a\nUsed for rest state of success, join text\n"
+            }
+          },
+          "negative": {
+            "default": {
+              "value": "{color.core.red.50}",
+              "type": "color",
+              "description": "Core: color.core.red.50\nHEX: #f55868\nUsed for rest state of Error/cancel text"
+            }
+          },
+          "warning": {
+            "default": {
+              "value": "{color.core.yellow.40}",
+              "type": "color",
+              "description": "Core: color.core.yellow.40\nHEX: #f2990a\nUsed for rest state of warning text; alert-badge, interactive icons."
+            }
+          },
+          "accent": {
+            "default": {
+              "value": "{color.core.blue.50}",
+              "type": "color",
+              "description": "Core: color.core.blue.50\nHEX:#3492eb\nUsed for rest state of accent text. mostly used for button-hyperlink, interactive-icons, alert-badge\n"
+            }
+          },
+          "notice": {
+            "default": {
+              "value": "{color.core.orange.50}",
+              "type": "color",
+              "description": "Core:color.core.orange.50\nHEX:#EC6400\nUsed to indicate instability"
+            }
+          }
+        },
+        "btn": {
+          "neutral": {
+            "secondary": {
+              "default": {
+                "value": "{color.core.white-alpha.0}",
+                "type": "color",
+                "description": "Core: color.core.white-alpha.00\nHEX: #ffffff 00%\nRest state of Secondary buttons."
+              },
+              "disabled": {
+                "value": "{color.core.white-alpha.0}",
+                "type": "color",
+                "description": "Core: color.core.white-alpha.00\nHEX: #ffffff 00%\nDisabled state of secondary buttons. "
+              }
+            }
+          },
+          "positive": {
+            "default": {
+              "value": "{color.core.green.50}",
+              "type": "color",
+              "description": "Core:color.core.green.50\nHEX:#27a17a\nRest state of Join buttons. \n"
+            }
+          },
+          "negative": {
+            "default": {
+              "value": "{color.core.red.50}",
+              "type": "color",
+              "description": "Core:color.core.red.50\nHEX:#f55868\nRest state of error/cancel buttons. "
+            }
+          },
+          "accent": {
+            "default": {
+              "value": "{color.core.blue.40}",
+              "type": "color",
+              "description": "Core: color.core.blue.40\nHEX: #64b4fa\nRest state of accent buttons"
+            }
+          }
+        },
+        "indicator": {
+          "neutral": {
+            "00": {
+              "value": "{color.core.gray.50}",
+              "type": "color",
+              "description": "Core:color.core.gray.50\nHEX:#8f8f8f\nUsed for presence (away, on-hold, on-device), meeting indicators(meeting-locked)\n"
+            }
+          },
+          "positive": {
+            "00": {
+              "value": "{color.core.green.50}",
+              "type": "color",
+              "description": "Core: color.core.green.50\nHEX: #27a17a\nUsed for Presence(active) and Meeting Indicators (Audio-video-on, Media-quality-good)"
+            }
+          },
+          "negative": {
+            "00": {
+              "value": "{color.core.red.50}",
+              "type": "color",
+              "description": "Core:color.core.red.50\nHEX:#f55868\nUsed for badge : Presence(DoNotDisturb) and Meeting Indicators (Audio-video-off, Record-on, Poor-media-quality,Live)\n"
+            }
+          },
+          "warning": {
+            "00": {
+              "value": "{color.core.yellow.40}",
+              "type": "color",
+              "description": "Core:color.core.yellow.40\nHEX:#f2990a\nUsed for Meeting Indicators (Audio-error, Video-error)\n"
+            }
+          },
+          "accent": {
+            "00": {
+              "value": "{color.core.blue.50}",
+              "type": "color",
+              "description": "Core:color.core.blue.50\nHEX:#3492eb\nUsed for meeting indicator (Encryption)"
+            }
+          },
+          "notice": {
+            "00": {
+              "value": "{color.core.orange.50}",
+              "type": "color",
+              "description": "Core: color.core.orange.50\nHEX:#EC6400\nUsed for avatar presence (busy, meeting, call, device)"
+            }
+          }
+        },
+        "control": {
+          "neutral": {
+            "default": {
+              "value": "{color.core.white-alpha.40}",
+              "type": "color",
+              "description": "Core: color.core.white-alpha.40\nHEX: #ffffff 40%\nUsed for rest state of toggle-off components background. Do not use it for toggle button. "
+            },
+            "slider": {
+              "disabled": {
+                "value": "{color.core.white-alpha.11}",
+                "type": "color",
+                "description": "Core:color.core.white-alpha.11\nHEX: #ffffff 11%\nUsed for disabled slider"
+              }
+            }
+          },
+          "accent": {
+            "active": {
+              "default": {
+                "value": "{color.core.blue.50}",
+                "type": "color",
+                "description": "Core:color.core.blue.50\nHEX:#3492eb\nUsed for rest state of active control components background. (radio, toggle, checkbox)"
+              }
+            }
+          }
+        }
+      },
+      "border": {
+        "positive": {
+          "00": {
+            "value": "{color.core.green.50}",
+            "type": "color",
+            "description": "Core: color.core.green.50\nHEX:#27a17a\nUsed for join/success buttons outline."
+          }
+        },
+        "negative": {
+          "00": {
+            "value": "{color.core.red.50}",
+            "type": "color",
+            "description": "Core:color.core.red.50\nHEX:#f55868\nUsed for outline of error/cancel state of input, buttons.\n"
+          }
+        },
+        "accent": {
+          "00": {
+            "value": "{color.core.blue.50}",
+            "type": "color",
+            "description": "Core:color.core.blue.50\nHEX: #3492eb\nUsed for outline of secondary accent buttons, "
+          }
+        },
+        "warning": {
+          "00": {
+            "value": "{color.core.yellow.40}",
+            "type": "color",
+            "description": "Core:color.core.yellow.40\nHEX:#f2990a\nUsed for warning state of input fields border"
+          }
+        },
+        "decorative": {
+          "gradient": {
+            "device": {
+              "value": "linear-gradient(44deg, {color.decorative.cobalt.70} 0%, {color.decorative.cyan.40} 51.56%, {color.core.green.50} 100%)",
+              "type": "color",
+              "description": "Core: core.decorative.cobalt.70, core.decorative.cyan.40,  core.green.50\nHEX: 08599C, 22C7D6, 27A17A\nUsed for gradient ring of video-halo for mobile\n"
+            }
+          }
+        }
+      }
+    }
+  }
+}

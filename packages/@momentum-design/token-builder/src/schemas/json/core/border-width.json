@@ -6,16 +6,16 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "border-radius": {
-                    "$ref": "#/definitions/BorderRadius"
+                "border-width": {
+                    "$ref": "#/definitions/BorderWidth"
                 }
             },
             "required": [
-                "border-radius"
+                "border-width"
             ],
             "title": "Welcome"
         },
-        "BorderRadius": {
+        "BorderWidth": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -26,30 +26,26 @@
             "required": [
                 "core"
             ],
-            "title": "BorderRadius"
+            "title": "BorderWidth"
         },
         "Core": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "none": {
-                    "$ref": "#/definitions/HalfHeight"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "small": {
-                    "$ref": "#/definitions/HalfHeight"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "medium": {
-                    "$ref": "#/definitions/HalfHeight"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "large": {
-                    "$ref": "#/definitions/HalfHeight"
-                },
-                "half-height": {
-                    "$ref": "#/definitions/HalfHeight"
+                    "$ref": "#/definitions/ValueTypeDes"
                 }
             },
             "required": [
-                "half-height",
                 "large",
                 "medium",
                 "none",
@@ -57,7 +53,7 @@
             ],
             "title": "Core"
         },
-        "HalfHeight": {
+        "ValueTypeDes": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -76,7 +72,7 @@
                 "type",
                 "value"
             ],
-            "title": "HalfHeight"
+            "title": "Large"
         }
     }
 }

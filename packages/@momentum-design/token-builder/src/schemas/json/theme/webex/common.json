@@ -56,14 +56,20 @@
                 "neutral": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Cobalt"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "positive": {
-                    "$ref": "#/definitions/Notice"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 },
                 "notice": {
-                    "$ref": "#/definitions/Notice"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 },
                 "decorative": {
                     "$ref": "#/definitions/BorderDecorative"
@@ -82,28 +88,28 @@
             "additionalProperties": false,
             "properties": {
                 "cobalt": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "gold": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "lime": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "mint": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "pink": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "purple": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "slate": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "violet": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 }
             },
             "required": [
@@ -118,7 +124,7 @@
             ],
             "title": "BorderDecorative"
         },
-        "Cobalt": {
+        "ValueTypeDes": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -144,7 +150,7 @@
             "additionalProperties": false,
             "properties": {
                 "00": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 }
             },
             "required": [
@@ -220,16 +226,16 @@
             "additionalProperties": false,
             "properties": {
                 "default": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "hover": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "pressed": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "disabled": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "active": {
                     "$ref": "#/definitions/Primary"
@@ -247,7 +253,7 @@
             "additionalProperties": false,
             "properties": {
                 "default": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 }
             },
             "required": [
@@ -260,10 +266,10 @@
             "additionalProperties": false,
             "properties": {
                 "positive": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "negative": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "onboarding": {
                     "type": "object",
@@ -274,7 +280,7 @@
                 "empty": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Cobalt"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 }
             },
@@ -313,14 +319,17 @@
                 "neutral": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Cobalt"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "warning": {
                     "$ref": "#/definitions/Warning"
                 },
                 "notice": {
-                    "$ref": "#/definitions/Notice"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 },
                 "decorative": {
                     "$ref": "#/definitions/IndicatorDecorative"
@@ -339,31 +348,58 @@
             "additionalProperties": false,
             "properties": {
                 "gold": {
-                    "$ref": "#/definitions/Notice"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 },
                 "lime": {
-                    "$ref": "#/definitions/Notice"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 },
                 "mint": {
-                    "$ref": "#/definitions/Notice"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 },
                 "cyan": {
-                    "$ref": "#/definitions/Notice"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 },
                 "cobalt": {
-                    "$ref": "#/definitions/Notice"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 },
                 "slate": {
-                    "$ref": "#/definitions/Notice"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 },
                 "violet": {
-                    "$ref": "#/definitions/Notice"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 },
                 "purple": {
-                    "$ref": "#/definitions/Notice"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 },
                 "pink": {
-                    "$ref": "#/definitions/Notice"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 }
             },
             "required": [
@@ -425,13 +461,13 @@
             "additionalProperties": false,
             "properties": {
                 "default": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "pressed": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "icon": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 }
             },
             "required": [
@@ -446,10 +482,10 @@
             "additionalProperties": false,
             "properties": {
                 "default": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "pressed": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 }
             },
             "required": [
@@ -488,10 +524,10 @@
             "additionalProperties": false,
             "properties": {
                 "hover": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "default": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 }
             },
             "required": [
@@ -505,16 +541,16 @@
             "additionalProperties": false,
             "properties": {
                 "primary-white": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "secondary": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "primary-black": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "disabled": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 }
             },
             "required": [
@@ -532,14 +568,20 @@
                 "neutral": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/Cobalt"
+                        "$ref": "#/definitions/ValueTypeDes"
                     }
                 },
                 "warning": {
-                    "$ref": "#/definitions/Notice"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 },
                 "negative": {
-                    "$ref": "#/definitions/Notice"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 },
                 "decorative": {
                     "$ref": "#/definitions/SurfaceDecorative"
@@ -558,13 +600,22 @@
             "additionalProperties": false,
             "properties": {
                 "purple": {
-                    "$ref": "#/definitions/Notice"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 },
                 "cyan": {
-                    "$ref": "#/definitions/Notice"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 },
                 "mint": {
-                    "$ref": "#/definitions/Notice"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
                 },
                 "partner": {
                     "$ref": "#/definitions/Partner"
@@ -583,31 +634,31 @@
             "additionalProperties": false,
             "properties": {
                 "pdf": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "word": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "powerpoint": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "excel": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "onenote": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "doc": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "sheets": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "slides": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 },
                 "keynotes": {
-                    "$ref": "#/definitions/Cobalt"
+                    "$ref": "#/definitions/ValueTypeDes"
                 }
             },
             "required": [
