@@ -447,12 +447,12 @@
               "default": {
                 "value": "{color.core.black-alpha.0}",
                 "type": "color",
-                "description": "Core Token: core.black-alpha.00\nHEX 000000 0%\n-----------------------------------\nRest/ghost state of Secondary buttons.\nUse with border.neutral.01"
+                "description": "Core Token: core.black-alpha.0\nHEX 000000 0%\n-----------------------------------\nRest/ghost state of Secondary buttons.\nUse with border.neutral.01"
               },
               "hover": {
                 "value": "{color.core.black-alpha.7}",
                 "type": "color",
-                "description": "Core Token: core.black-alpha.07\nHEX 000000 7%\n-----------------------------------\nHover state of Secondary buttons. Used with border.neutral.01"
+                "description": "Core Token: core.black-alpha.7\nHEX 000000 7%\n-----------------------------------\nHover state of Secondary buttons. Used with border.neutral.01"
               },
               "pressed": {
                 "value": "{color.core.black-alpha.20}",
@@ -462,7 +462,7 @@
               "disabled": {
                 "value": "{color.core.black-alpha.0}",
                 "type": "color",
-                "description": "Core Token: core.black-alpha.00\nHEX FFFFFF 00%\n-----------------------------------\nDisabled state of secondary buttons.  Used with border.neutral.01"
+                "description": "Core Token: core.black-alpha.0\nHEX FFFFFF 00%\n-----------------------------------\nDisabled state of secondary buttons.  Used with border.neutral.01"
               },
               "active": {
                 "default": {
@@ -574,7 +574,7 @@
             "3": {
               "value": "{color.core.gray.10}",
               "type": "color",
-              "description": "Core Token: core.gray.10\nHEX: ededed\n\nUsed for pressed state of tags"
+              "description": "Core Token: core.gray.5\nHEX: F7F7F7\n--------------------\nUsed for hover state of tags, name-tag."
             },
             "4": {
               "value": "{color.core.gray.5}",
