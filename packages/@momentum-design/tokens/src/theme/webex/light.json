@@ -574,7 +574,7 @@
             "3": {
               "value": "{color.core.gray.10}",
               "type": "color",
-              "description": "Core Token: core.gray.5\nHEX: F7F7F7\n--------------------\nUsed for hover state of tags, name-tag."
+              "description": "Core Token: core.gray.10\nHEX: ededed\n\nUsed for pressed state of tags"
             },
             "4": {
               "value": "{color.core.gray.5}",
