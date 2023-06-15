@@ -571,6 +571,11 @@
               "type": "color",
               "description": "Core Token: core.gray.20\nHEX: DEDEDE\n--------------------------\nUsed for rest/hover state of alert-badge"
             },
+            "3": {
+              "value": "{color.core.gray.10}",
+              "type": "color",
+              "description": "Core Token: core.gray.10\nHEX: ededed\n\nUsed for pressed state of tags"
+            },
             "4": {
               "value": "{color.core.gray.5}",
               "type": "color",

@@ -816,22 +816,22 @@
             "default": {
               "value": "{color.core.white-alpha.20}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.20\nHEX: ffffff 20%\n--------------\nUsed for rest state of unslected/inactive toggle component background\nDo not use for toggle buttons. Use \"control.neutraul.defualt\" in Common theme."
+              "description": "Core Token: core.white-alpha.20\nHEX: FFFFFF 20%\n-----------------------\nCore Token: core.white-alpha.20\nHEX: ffffff\n--------------\nUsed for rest state of control components background (radio, toggle, checkbox). \nFor toggle buttons, refer Common UI."
             },
             "hover": {
               "value": "{color.core.white-alpha.30}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.30\nHEX: FFFFFF 30%\n-----------------------\nUsed for hover state of unslected/inactive control components background (radio, toggle, checkbox)\nDo not use for toggle buttons. Use \"control.neutraul.defualt\" in Common theme."
+              "description": "Core Token: core.white-alpha.30\nHEX: FFFFFF 30%\n-----------------------\nUsed for hover state of inactive control components background (radio, toggle, checkbox)\nFor toggle buttons, refer Common UI."
             },
             "pressed": {
               "value": "{color.core.white-alpha.40}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.40\nHEX: FFFFFF 40%\n-----------------------\nUsed for pressed state of unslected/inactive control components background (radio, toggle, checkbox)\nDo not use for toggle buttons. Use \"control.neutraul.defualt\" in Common theme."
+              "description": "Core Token: core.white-alpha.40\nHEX: FFFFFF 40%\n-----------------------\nUsed for pressed state of inactive control components background. (radio, toggle, checkbox)\nFor toggle buttons, refer Common UI."
             },
             "disabled": {
               "value": "{color.core.white-alpha.20}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.20\nHEX: FFFFFF 20%\n-----------------------\nUsed for disabled state of all control components background but sliders.(radio, toggle, checkbox)\nDo not used for slider buttons. Use \"control.neutral.slider.disabled\" instead."
+              "description": "Core Token: core.white-alpha.20\nHEX: FFFFFF 20%\n-----------------------\nUsed for disabled state of inactive control components background. (radio, toggle, checkbox)\nFor toggle buttons, refer Common UI."
             },
             "slider": {
               "disabled": {
