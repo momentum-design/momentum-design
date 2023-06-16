@@ -3,21 +3,21 @@
     "theme": {
       "surface": {
         "neutral": {
-          "00": {
+          "0": {
             "default": {
               "value": "{color.core.gray.96}",
               "type": "color",
               "description": "Core: color.core.gray.96\nHEX: #0E1013\nUse in place of NightElevation1"
             }
           },
-          "01": {
+          "1": {
             "default": {
               "value": "{color.core.gray.93}",
               "type": "color",
               "description": "Core: color.core.gray.93\nHEX:#17181B\nUse in place of NightElevation2"
             }
           },
-          "02": {
+          "2": {
             "default": {
               "value": "{color.core.gray.91}",
               "type": "color",
@@ -71,17 +71,17 @@
         }
       },
       "overlay": {
-        "00": {
+        "0": {
           "value": "{color.core.black-alpha.88}",
           "type": "color",
           "description": "Core:color.core.black-alpha.88\nHEX: #000000 88%\n\nNightOpacity1 Used for any elements that sit on top of the main interface. Ex: Top Navigation Bar or Mini-Control Bar "
         },
-        "01": {
+        "1": {
           "value": "{color.core.black-alpha.84}",
           "type": "color",
           "description": "Core: color.core.black-alpha.84\nHEX: #000000 84%\nNightOpacity2.  Used for scrims behind alerts."
         },
-        "02": {
+        "2": {
           "value": "{color.core.black-alpha.70}",
           "type": "color",
           "description": "Core: color.core.black-alpha.70\nHEX: #000000 70%\nNightOpacity3.  Used for scrims behind elements that take over the entire interface. ex. incoming call notifications"
@@ -89,17 +89,17 @@
       },
       "border": {
         "neutral": {
-          "00": {
+          "0": {
             "value": "{color.core.white-alpha.40}",
             "type": "color",
             "description": "Core:color.core.white-alpha.40\nHEX: #ffffff 40%\nUsed for hairlines around buttons and other interface elements. Do not use for dividers."
           },
-          "01": {
+          "1": {
             "value": "{color.core.white-alpha.20}",
             "type": "color",
             "description": "Core:color.core.white-alpha.20\nHEX: #ffffff 20%\nUse for dividers and disabled outline color for interface items."
           },
-          "02": {
+          "2": {
             "value": "{color.core.white-alpha.56}",
             "type": "color",
             "description": "Core: color.core.white-alpha.56\nHEX: #ffffff 56%\nUsed for disabled icon color and input field outline Material."
