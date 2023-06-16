@@ -1,14 +1,14 @@
 import { SomeJSONSchema } from 'ajv/dist/types/json-schema';
-import * as ColorSchema from './json/color.json';
-import * as BorderRadiusSchema from './json/border-radius.json';
-import * as BorderWidthSchema from './json/border-width.json';
-import * as ThemeCommonSchema from './json/common.json';
-import * as ThemeDarkSchema from './json/dark.json';
-import * as ThemeLightSchema from './json/light.json';
-import * as SpacingSchema from './json/spacing.json';
-import * as ElevationSchema from './json/elevation.json';
-import * as TypeAppsSchema from './json/apps.json';
-import * as TypeDisplaySchema from './json/display.json';
+import * as CoreColorSchema from './json/core/color.json';
+import * as CoreBorderRadiusSchema from './json/core/border-radius.json';
+import * as CoreBorderWidthSchema from './json/core/border-width.json';
+import * as ThemeWebexCommonSchema from './json/theme/webex/common.json';
+import * as ThemeWebexDarkSchema from './json/theme/webex/dark.json';
+import * as ThemeWebexLightSchema from './json/theme/webex/light.json';
+import * as CoreSpacingSchema from './json/core/spacing.json';
+import * as CoreElevationSchema from './json/core/elevation.json';
+import * as CoreTypeAppsSchema from './json/core/type/apps.json';
+import * as CoreTypeDisplaySchema from './json/core/type/display.json';
 
 // typescript and AJV do not play super well together
 // https://github.com/ajv-validator/ajv/issues/1988
@@ -16,44 +16,44 @@ type TypeConversionWorkaround = SomeJSONSchema & {$ref: string};
 
 const SCHEMA_MAP = [
   {
-    fileName: 'border-radius.json',
-    jsonSchema: BorderRadiusSchema as unknown as TypeConversionWorkaround,
+    fileName: 'core/border-radius.json',
+    jsonSchema: CoreBorderRadiusSchema as unknown as TypeConversionWorkaround,
   },
   {
-    fileName: 'color.json',
-    jsonSchema: ColorSchema as unknown as TypeConversionWorkaround,
+    fileName: 'core/spacing.json',
+    jsonSchema: CoreSpacingSchema as unknown as TypeConversionWorkaround,
   },
   {
-    fileName: 'apps.json',
-    jsonSchema: TypeAppsSchema as unknown as TypeConversionWorkaround,
+    fileName: 'core/border-width.json',
+    jsonSchema: CoreBorderWidthSchema as unknown as TypeConversionWorkaround,
   },
   {
-    fileName: 'display.json',
-    jsonSchema: TypeDisplaySchema as unknown as TypeConversionWorkaround,
+    fileName: 'core/elevation.json',
+    jsonSchema: CoreElevationSchema as unknown as TypeConversionWorkaround,
   },
   {
-    fileName: 'light.json',
-    jsonSchema: ThemeLightSchema as unknown as TypeConversionWorkaround,
+    fileName: 'core/type/apps.json',
+    jsonSchema: CoreTypeAppsSchema as unknown as TypeConversionWorkaround,
   },
   {
-    fileName: 'common.json',
-    jsonSchema: ThemeCommonSchema as unknown as TypeConversionWorkaround,
+    fileName: 'core/type/display.json',
+    jsonSchema: CoreTypeDisplaySchema as unknown as TypeConversionWorkaround,
   },
   {
-    fileName: 'dark.json',
-    jsonSchema: ThemeDarkSchema as unknown as TypeConversionWorkaround,
+    fileName: 'core/color.json',
+    jsonSchema: CoreColorSchema as unknown as TypeConversionWorkaround,
   },
   {
-    fileName: 'spacing.json',
-    jsonSchema: SpacingSchema as unknown as TypeConversionWorkaround,
+    fileName: 'theme/webex/light.json',
+    jsonSchema: ThemeWebexLightSchema as unknown as TypeConversionWorkaround,
   },
   {
-    fileName: 'border-width.json',
-    jsonSchema: BorderWidthSchema as unknown as TypeConversionWorkaround,
+    fileName: 'theme/webex/common.json',
+    jsonSchema: ThemeWebexCommonSchema as unknown as TypeConversionWorkaround,
   },
   {
-    fileName: 'elevation.json',
-    jsonSchema: ElevationSchema as unknown as TypeConversionWorkaround,
+    fileName: 'theme/webex/dark.json',
+    jsonSchema: ThemeWebexDarkSchema as unknown as TypeConversionWorkaround,
   },
 ];
 

@@ -186,12 +186,12 @@
             },
             "secondary": {
               "default": {
-                "value": "{color.core.white-alpha.00}",
+                "value": "{color.core.white-alpha.0}",
                 "type": "color",
                 "description": "Core Token: core.white-alpha.00\nHEX FFFFFF 0%\n-----------------------------------\nRest/ghost state of Secondary buttons.\nMostly found in meetings/share/window-controls"
               },
               "hover": {
-                "value": "{color.core.white-alpha.07}",
+                "value": "{color.core.white-alpha.7}",
                 "type": "color",
                 "description": "Core Token: core.white-alpha.07\nHEX FFFFFF 7%\n-----------------------------------\nHover state of Secondary buttons. Used with border.neutral.button. Mostly found in meetings/share/window-controls"
               },
@@ -201,7 +201,7 @@
                 "description": "Core Token: core.white-alpha.20\nHEX FFFFFF 20%\n-----------------------------------\nPressed state of Secondary buttons. Used with border.neutral.button. Mostly found in meetings/share/window-controls"
               },
               "disabled": {
-                "value": "{color.core.white-alpha.00}",
+                "value": "{color.core.white-alpha.0}",
                 "type": "color",
                 "description": "Core Token: core.white-alpha.00\nHEX FFFFFF 00%\n-----------------------------------\nDisabled state of secondary buttons. "
               },

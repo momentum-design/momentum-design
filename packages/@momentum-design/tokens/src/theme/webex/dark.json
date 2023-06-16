@@ -27,29 +27,29 @@
       },
       "surface": {
         "neutral": {
-          "00": {
+          "0": {
             "default": {
-              "value": "{color.core.white-alpha.00}",
+              "value": "{color.core.white-alpha.0}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.00\nHEX: ffffff 0%\n--------\nRest/ghost states of app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas. "
+              "description": "Core Token: core.white-alpha.0\nHEX: ffffff 0%\n--------\nRest/ghost states of app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas. "
             },
             "hover": {
-              "value": "{color.core.white-alpha.07}",
+              "value": "{color.core.white-alpha.7}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.07\nHEX: ffffff 7%\n\n----\n\nUsed for hover state of \nall app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
+              "description": "Core Token: core.white-alpha.7\nHEX: ffffff 7%\n\n----\n\nUsed for hover state of \nall app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
             },
             "active": {
               "value": "{color.core.white-alpha.11}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.11\nHEX: ffffff 11%\n\n---\nUsed for press/active state of surface-00. Used it for app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
+              "description": "Core Token: core.white-alpha.11\nHEX: ffffff 11%\n\n---\nUsed for press/active state of surface-0. Used it for app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
             },
             "disabled": {
               "value": "{color.core.white-alpha.11}",
               "type": "color",
-              "description": "Core Token: core.white-alpha-11\nHEX: ffffff 11%\n\n---\nDisabled state of surface-00. Used it for app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
+              "description": "Core Token: core.white-alpha-11\nHEX: ffffff 11%\n\n---\nDisabled state of surface-0. Used it for app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
             }
           },
-          "01": {
+          "1": {
             "default": {
               "value": "{color.core.white-alpha.11}",
               "type": "color",
@@ -71,7 +71,7 @@
               "description": "Core Token: white-alpha-11\nHEX: ffffff 11%\n\n---\nDisabled state of surface-01. (prev.BackgroundSecondary). Used it for meeting-content-cards, attachments, [ios] meeting-list"
             }
           },
-          "02": {
+          "2": {
             "tertiary": {
               "value": "{color.core.gray.90}",
               "type": "color",
@@ -140,15 +140,24 @@
           }
         },
         "gradient": {
-          "00": {
+          "0": {
             "value": "linear-gradient(90deg, rgba(26, 26, 26, 0.72) 60.56%, rgba(26, 26, 26, 0) 92.59%)",
             "type": "color",
             "description": "linear-gradient(90deg, rgba(26, 26, 26, 0.72) 60.56%, rgba(26, 26, 26, 0) 92.59%)\nUsed for reaction components(meetings/reactions/feed)"
           },
-          "01": {
+          "1": {
             "value": "linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%)",
             "type": "color",
             "description": "linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%)\nUsed for meeting reactions (overlay background)"
+          }
+        },
+        "contrast": {
+          "neutral": {
+            "0": {
+              "value": "{color.core.white-alpha.100}",
+              "type": "color",
+              "description": "Core: core.white-alpha.100\nHEX: #ffffff\nUsed for inveted component surface; tooltip. "
+            }
           }
         }
       },
@@ -199,6 +208,23 @@
                 "value": "{color.core.black-alpha.20}",
                 "type": "color",
                 "description": "Core Token: core.black-alpha.20\nHEX: 000000 20%\n---\nUsed for disabled inverted text."
+              }
+            },
+            "accent": {
+              "default": {
+                "value": "{color.core.blue.70}",
+                "type": "color",
+                "description": "Core: core.blue.70\nHEX: #0353A8\nUsed for inverted accent text; mostly used for tooltip"
+              },
+              "hover": {
+                "value": "{color.core.blue.90}",
+                "type": "color",
+                "description": "Core color: core.blue.90\nHEX: #0A274A\nUsed for hover state of inverted accent text; mostly used for tooltip"
+              },
+              "active": {
+                "value": "{color.core.blue.90}",
+                "type": "color",
+                "description": "Core color: core.blue.90\nHEX: #0A274A\nUsed for pressed/active state of inverted accent text; mostly used for tooltip"
               }
             }
           },
@@ -419,12 +445,12 @@
             },
             "secondary": {
               "default": {
-                "value": "{color.core.white-alpha.00}",
+                "value": "{color.core.white-alpha.0}",
                 "type": "color",
                 "description": "Core Token: core.white-alpha.00\nHEX FFFFFF 0%\n-----------------------------------\nRest/ghost state of Secondary buttons.\nUse with border.neutral.btn "
               },
               "hover": {
-                "value": "{color.core.white-alpha.07}",
+                "value": "{color.core.white-alpha.7}",
                 "type": "color",
                 "description": "Core Token: core.white-alpha.07\nHEX FFFFFF 7%\n-----------------------------------\nHover state of Secondary buttons. Used with border.neutral.button"
               },
@@ -434,7 +460,7 @@
                 "description": "Core Token: core.white-alpha.20\nHEX FFFFFF 20%\n-----------------------------------\nPressed state of Secondary buttons. Used with border.neutral.button"
               },
               "disabled": {
-                "value": "{color.core.white-alpha.00}",
+                "value": "{color.core.white-alpha.0}",
                 "type": "color",
                 "description": "Core Token: core.white-alpha.00\nHEX FFFFFF 00%\n-----------------------------------\nDisabled state of secondary buttons. "
               },
@@ -530,117 +556,117 @@
         },
         "indicator": {
           "neutral": {
-            "00": {
+            "0": {
               "value": "{color.core.gray.50}",
               "type": "color",
               "description": "Core Token: core.gray.50\nHEX: 8F8F8F\n------------\nUsed for presence (away, on-hold, on-device), meeting indicators(meeting-locked)"
             },
-            "01": {
+            "1": {
               "value": "{color.core.gray.70}",
               "type": "color",
               "description": "Core Token: core.gray.70\nHEX: 545454\n--------------------------\nUsed for active state of alert-badge"
             },
-            "02": {
+            "2": {
               "value": "{color.core.gray.80}",
               "type": "color",
               "description": "Core Token: core.gray.80\nHEX: 3B3B3B\n--------------------------\nUsed for rest/hover state of alert-badge"
             },
-            "03": {
+            "3": {
               "value": "{color.core.gray.90}",
               "type": "color",
               "description": "Core Token: core.gray.90\nHEX: 262626\n------------------------\nUsed for rest state of tags"
             },
-            "04": {
+            "4": {
               "value": "{color.core.gray.95}",
               "type": "color",
               "description": "Core Token: core.gray.95\nHEX: 1A1A1A\n-----------------\nUsed for hover state of tags"
             },
-            "05": {
+            "5": {
               "value": "{color.core.black-alpha.100}",
               "type": "color",
               "description": "Core Token: core.alpha-black.100\nHEX: 000000\n-----------------\nUsed for press state of tags"
             }
           },
           "positive": {
-            "00": {
+            "0": {
               "value": "{color.core.green.50}",
               "type": "color",
               "description": "Core Token: core.green.50\nHEX: 27A17A\n-----------\nUsed for Presence(active) and Meeting Indicators (Audio-video-on, Media-quality-good)"
             }
           },
           "negative": {
-            "00": {
+            "0": {
               "value": "{color.core.red.50}",
               "type": "color",
               "description": "Core Token: core.red.50\nHEX: F55868\n\nUsed for badge : Presence(DoNotDisturb) and Meeting Indicators (Audio-video-off, Record-on, Poor-media-quality,Live)"
             },
-            "01": {
+            "1": {
               "value": "{color.core.red.80}",
               "type": "color",
               "description": "Core Token: core.red.80\nHEX: 780D13\n--------------\nUsed for pressed state of alert-badge (important)"
             },
-            "02": {
+            "2": {
               "value": "{color.core.red.90}",
               "type": "color",
               "description": "Core Token: core.red.90\nHEX: 4F0E10\n--------------\nUsed for rest/hover state of alert-badge "
             }
           },
           "warning": {
-            "00": {
+            "0": {
               "value": "{color.core.yellow.50}",
               "type": "color",
               "description": "Core Token: core.yellow.50\nHEX: CF7900\n-----------------\nUsed for Meeting Indicators (Audio-error, Video-error)"
             },
-            "01": {
+            "1": {
               "value": "{color.core.yellow.80}",
               "type": "color",
               "description": "Core Token: core.yellow.80\nHEX: 57330A\n-----------------------\nUsed for pressed state of alert-badge"
             },
-            "02": {
+            "2": {
               "value": "{color.core.yellow.90}",
               "type": "color",
               "description": "Core Token: core.yellow.90\nHEX: 36220C\n-----------------------\nUsed for rest/hover state of alert-badge"
             }
           },
           "accent": {
-            "00": {
+            "0": {
               "value": "{color.core.blue.50}",
               "type": "color",
               "description": "Core Token: core.blue.50\nHEX: 3492EB\n---------------------\nUsed for meeting indicator (Encryption)"
             },
-            "01": {
+            "1": {
               "value": "{color.core.blue.60}",
               "type": "color",
               "description": "Core Token: core.blue.60\nHEX: 1170CF\n---------------------------------\nUsed for basic badge [ioS] badge"
             },
-            "02": {
+            "2": {
               "value": "{color.core.blue.80}",
               "type": "color",
               "description": "Core Token: core.blue.80\nHEX: 063A75 \n-------------------------\nUsed for pressed state of alert-badge (chat-saved)"
             },
-            "03": {
+            "3": {
               "value": "{color.core.blue.90}",
               "type": "color",
               "description": "Core Token: core.blue.90\nHEX: 0A274A\n-------------------------\nUsed for rest/hover state of alert-badge(chat-saved)"
             }
           },
           "notice": {
-            "00": {
+            "0": {
               "value": "{color.core.orange.50}",
               "type": "color",
               "description": "Core Token: core.orange.50\nHEX: F26B1D\n---------------------\nUsed for avatar presence (busy, meeting, call, device)"
             },
-            "01": {
+            "1": {
               "value": "{color.core.orange.70}",
               "type": "color",
               "description": "Core Token: core.orange.70\nHEX: 914017\n---------------------\nUsed for pressed/active state of tags"
             },
-            "02": {
+            "2": {
               "value": "{color.core.orange.80}",
               "type": "color",
               "description": "Core Token: core.orange.80\nHEX: 59311E\n---------------------------------\nUsed for pressed state of alert-badge"
             },
-            "03": {
+            "3": {
               "value": "{color.core.orange.90}",
               "type": "color",
               "description": "Core Token: core.orange.90\nHEX: 33221B\n---------------------------------\nUsed for rest/hover state of alert-badge"
@@ -648,136 +674,136 @@
           },
           "decorative": {
             "gold": {
-              "01": {
+              "1": {
                 "value": "{color.decorative.gold.70}",
                 "type": "color",
                 "description": "Core Token: decorative.gold.70\nHEX: 735107\n--------------------------\nUsed for press state of tags"
               },
-              "02": {
+              "2": {
                 "value": "{color.decorative.gold.80}",
                 "type": "color",
                 "description": "Core Token: decorative.gold.80\nHEX: 4D370C\n--------------------------\nUsed for hover state of tags"
               },
-              "03": {
+              "3": {
                 "value": "{color.decorative.gold.90}",
                 "type": "color",
                 "description": "Core Token: decorative.gold.90\nHEX: 30240D\n--------------------------\nUsed for rest state of tags"
               }
             },
             "lime": {
-              "01": {
+              "1": {
                 "value": "{color.decorative.lime.70}",
                 "type": "color",
                 "description": "Core Token: decorative.lime.70\nHEX: 416116\n--------------------------\nUsed for pressed state of tags, avatar"
               },
-              "02": {
+              "2": {
                 "value": "{color.decorative.lime.80}",
                 "type": "color",
                 "description": "Core Token: decorative.lime.80\nHEX: 2D4214\n--------------------------\nUsed for hover state of tags"
               },
-              "03": {
+              "3": {
                 "value": "{color.decorative.lime.90}",
                 "type": "color",
                 "description": "Core Token: decorative.lime.90\nHEX: 1E2B10\n--------------------------\nUsed for rest state of tags"
               }
             },
             "mint": {
-              "01": {
+              "1": {
                 "value": "{color.decorative.mint.70}",
                 "type": "color",
                 "description": "Core Token: decorative.mint.70\nHEX: 12615A\n--------------------------\nUsed for pressed state of tags, avatar"
               },
-              "02": {
+              "2": {
                 "value": "{color.decorative.mint.80}",
                 "type": "color",
                 "description": "Core Token: decorative.mint.80\nHEX: 12423F\n--------------------------\nUsed for hover state of tags"
               },
-              "03": {
+              "3": {
                 "value": "{color.decorative.mint.90}",
                 "type": "color",
                 "description": "Core Token: decorative.mint.90\nHEX: 102B2A\n--------------------------\nUsed for pressed state of tags"
               }
             },
             "cobalt": {
-              "01": {
+              "1": {
                 "value": "{color.decorative.cobalt.70}",
                 "type": "color",
                 "description": "Core Token: decorative.cobalt.70\nHEX: 08599C\n--------------------------\nUsed for pressed state of tags, rest state of avtar"
               },
-              "02": {
+              "2": {
                 "value": "{color.decorative.cobalt.80}",
                 "type": "color",
                 "description": "Core Token: decorative.cobalt.80\nHEX: 103C63\n--------------------------\nUsed for hover state of tags"
               },
-              "03": {
+              "3": {
                 "value": "{color.decorative.cobalt.90}",
                 "type": "color",
                 "description": "Core Token: decorative.cobalt.90\nHEX: 12283D\n--------------------------\nUsed for rest state of tags"
               }
             },
             "slate": {
-              "01": {
+              "1": {
                 "value": "{color.decorative.slate.70}",
                 "type": "color",
                 "description": "Core Token: decorative.slate.70\nHEX: 535573\n--------------------------\nUsed for pressed state of tags,avatar"
               },
-              "02": {
+              "2": {
                 "value": "{color.decorative.slate.80}",
                 "type": "color",
                 "description": "Core Token: decorative.slate.80\nHEX: 393A47\n--------------------------\nUsed for hover state of tags"
               },
-              "03": {
+              "3": {
                 "value": "{color.decorative.slate.90}",
                 "type": "color",
                 "description": "Core Token: decorative.slate.90\nHEX: 26262B\n--------------------------\nUsed for rest state of tags"
               }
             },
             "violet": {
-              "01": {
+              "1": {
                 "value": "{color.decorative.violet.70}",
                 "type": "color",
                 "description": "Core Token: decorative.violet.70\nHEX: 643ABD\n--------------------------\nUsed for pressed state of tags, avatar"
               },
-              "02": {
+              "2": {
                 "value": "{color.decorative.violet.80}",
                 "type": "color",
                 "description": "Core Token: decorative.violet.80\nHEX: 432C78\n--------------------------\nUsed for hover state of tags"
               },
-              "03": {
+              "3": {
                 "value": "{color.decorative.violet.90}",
                 "type": "color",
                 "description": "Core Token: decorative.violet.90\nHEX: 29223D\n--------------------------\nUsed for rest state of tags"
               }
             },
             "purple": {
-              "01": {
+              "1": {
                 "value": "{color.decorative.purple.70}",
                 "type": "color",
                 "description": "Core Token: decorative.purple.70\nHEX: 932099\n--------------------------\nUsed for active/pressed state of alert-badge (admin), tags"
               },
-              "02": {
+              "2": {
                 "value": "{color.decorative.purple.80}",
                 "type": "color",
                 "description": "Core Token: decorative.purple.80\nHEX: 601E66\n--------------------------\nUsed for hover state of alert-badge (admin), tags"
               },
-              "03": {
+              "3": {
                 "value": "{color.decorative.purple.90}",
                 "type": "color",
                 "description": "Core Token: decorative.purple.90\nHEX: 3B1840\n--------------------------\nUsed for rest state of alert-badge (admin), tags"
               }
             },
             "pink": {
-              "01": {
+              "1": {
                 "value": "{color.decorative.pink.70}",
                 "type": "color",
                 "description": "Core Token: decorative.pink.70\nHEX: A12A3A\n--------------------------\nUsed for pressed state of tags"
               },
-              "02": {
+              "2": {
                 "value": "{color.decorative.pink.80}",
                 "type": "color",
                 "description": "Core Token: decorative.pink.80\nHEX: 66262D\n--------------------------\nUsed for hover state of tags"
               },
-              "03": {
+              "3": {
                 "value": "{color.decorative.pink.90}",
                 "type": "color",
                 "description": "Core Token: decorative.pink.90\nHEX: 3B1E21\n--------------------------\nUsed for rest state of tags"
@@ -790,22 +816,22 @@
             "default": {
               "value": "{color.core.white-alpha.20}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.20\nHEX: ffffff 20%\n--------------\nUsed for rest state of unslected/inactive toggle component background\nDo not use for toggle buttons. Use \"control.neutraul.defualt\" in Common theme. "
+              "description": "Core Token: core.white-alpha.20\nHEX: FFFFFF 20%\n-----------------------\nCore Token: core.white-alpha.20\nHEX: ffffff\n--------------\nUsed for rest state of control components background (radio, toggle, checkbox). \nFor toggle buttons, refer Common UI."
             },
             "hover": {
               "value": "{color.core.white-alpha.30}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.30\nHEX: FFFFFF 30%\n-----------------------\nUsed for hover state of unslected/inactive control components background (radio, toggle, checkbox)\nDo not use for toggle buttons. Use \"control.neutraul.defualt\" in Common theme."
+              "description": "Core Token: core.white-alpha.30\nHEX: FFFFFF 30%\n-----------------------\nUsed for hover state of inactive control components background (radio, toggle, checkbox)\nFor toggle buttons, refer Common UI."
             },
             "pressed": {
               "value": "{color.core.white-alpha.40}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.40\nHEX: FFFFFF 40%\n-----------------------\nUsed for pressed state of unslected/inactive control components background (radio, toggle, checkbox)\nDo not use for toggle buttons. Use \"control.neutraul.defualt\" in Common theme."
+              "description": "Core Token: core.white-alpha.40\nHEX: FFFFFF 40%\n-----------------------\nUsed for pressed state of inactive control components background. (radio, toggle, checkbox)\nFor toggle buttons, refer Common UI."
             },
             "disabled": {
               "value": "{color.core.white-alpha.20}",
               "type": "color",
-              "description": "Core Token: core.white-alpha.20\nHEX: FFFFFF 20%\n-----------------------\nUsed for disabled state of all control components background but sliders.(radio, toggle, checkbox)\nDo not used for slider buttons. Use \"control.neutral.slider.disabled\" instead."
+              "description": "Core Token: core.white-alpha.20\nHEX: FFFFFF 20%\n-----------------------\nUsed for disabled state of inactive control components background. (radio, toggle, checkbox)\nFor toggle buttons, refer Common UI."
             },
             "slider": {
               "disabled": {
@@ -853,7 +879,7 @@
           },
           "bg": {
             "default": {
-              "value": "{color.core.white-alpha.00}",
+              "value": "{color.core.white-alpha.0}",
               "type": "color",
               "description": "Core Token: core.white-alpha.00\nHEX: FFFFFF 0%\n-----------------------------\nghost state of scrollbar track and arrow background"
             },
@@ -879,55 +905,55 @@
       },
       "border": {
         "neutral": {
-          "00": {
+          "0": {
             "value": "{color.core.white-alpha.20}",
             "type": "color",
             "description": "Core Token: core.white-alpha.20\nHEX: FFFFFF 20%\n----------------------\n• Used for calendar- picker, modal-bgs, dialog, toasts, menu-list, grids, disabled state of buttons and controls.\n[iOS] content-list, separator, bottom-tabs, content\n[AND] content-list, list-item, separator, toast, reaction-bar"
           },
-          "01": {
+          "1": {
             "value": "{color.core.white-alpha.30}",
             "type": "color",
             "description": "Core Token: core.white-alpha.30\nHEX: FFFFFF 30%\n----------------------------------\n• Outline for rest, hover, pressed, active state of secondary-buttons\n• Use with btn.neutral.secondary\n• Do not use it for disabled buttons."
           },
-          "02": {
+          "2": {
             "value": "{color.core.white-alpha.40}",
             "type": "color",
             "description": "Core Token: white-alpha-40\nHEX: FFFFFF 40%\n-----------------------\nUsed for\nchips, grids, panels, meeting-markers, input-fields, tags"
           },
-          "03": {
+          "3": {
             "value": "{color.core.white-alpha.50}",
             "type": "color",
             "description": "Core Token: core.white.alpha-50\nHEX: FFFFFF 50%\n-------------------------\nUsed for rest/default state of input-fields, sliders."
           },
-          "04": {
+          "4": {
             "value": "{color.core.white-alpha.90}",
             "type": "color",
             "description": "Core Token: core.white-alpha.90\nHEX:  FFFFFF 90%\n------------\nOutline border for focus state input field. used for search-field, text-field, combo-box"
           }
         },
         "positive": {
-          "00": {
+          "0": {
             "value": "{color.core.green.40}",
             "type": "color",
             "description": "Core Token: core.green.40\nHEX: 3CC29A\n---------------\nUsed for join/success buttons"
           }
         },
         "negative": {
-          "00": {
+          "0": {
             "value": "{color.core.red.40}",
             "type": "color",
             "description": "Core Token: core.red.40\nHEX: FC8B98\n---------------\nUsed for outline of error/cancel state of input, buttons."
           }
         },
         "accent": {
-          "00": {
+          "0": {
             "value": "{color.core.blue.40}",
             "type": "color",
             "description": "Core Token: core.blue.40\nHEX: 64B4FA\n-------------------------\nUsed for outline of secondary accent buttons, attachment/fileViewer-preview, messaging/new, chip, input fields"
           }
         },
         "notice": {
-          "00": {
+          "0": {
             "value": "{color.core.orange.40}",
             "type": "color",
             "description": "Core Token: core.orange.40\nHEX: FF9D52\n-------------------------------\noutline for the orange tags"
@@ -942,12 +968,12 @@
             },
             "primary": {
               "default": {
-                "value": "linear-gradient(90deg, {color.core.white-alpha.00} 0%, {color.core.white-alpha.20} 22.4%, {color.core.white-alpha.20} 72.4%, {color.core.white-alpha.00} 100%)",
+                "value": "linear-gradient(90deg, {color.core.white-alpha.0} 0%, {color.core.white-alpha.20} 22.4%, {color.core.white-alpha.20} 72.4%, {color.core.white-alpha.0} 100%)",
                 "type": "color",
                 "description": "Core Token: core.white-alpha.0, core.white-alpha.20, core.white-alpha.20, core.white-alpha.0\n\nHEX: FFFFFF 0%, FFFFFF 20%,FFFFFF 20%, FFFFFF 0%,   \n--------------------------------\nUsed for divider default on compose area in space. "
               },
               "hover": {
-                "value": "linear-gradient(90deg, {color.core.white-alpha.00} 0%, {color.core.white-alpha.60} 22.4%, {color.core.white-alpha.60} 72.4%, {color.core.white-alpha.00} 100%)",
+                "value": "linear-gradient(90deg, {color.core.white-alpha.0} 0%, {color.core.white-alpha.60} 22.4%, {color.core.white-alpha.60} 72.4%, {color.core.white-alpha.0} 100%)",
                 "type": "color",
                 "description": "Core Token: core.white-alpha.0, core.white-alpha.20, core.white-alpha.20, core.white-alpha.0\n\nHEX: FFFFFF 0%, FFFFFF 20%,FFFFFF 20%, FFFFFF 0%,   \n--------------------------------\nUsed for hover state of divider default on compose area in space. "
               }
@@ -991,7 +1017,7 @@
           }
         },
         "warning": {
-          "00": {
+          "0": {
             "value": "{color.core.yellow.40}",
             "type": "color",
             "description": "Core Token: color.core.yellow.40\nHEX: #f2990a\n9.33 on surface.neutral.02.primary (#000000)\nUsed for warning state of input fields border\n"
