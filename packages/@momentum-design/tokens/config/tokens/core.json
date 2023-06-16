@@ -35,7 +35,7 @@
       "cssSelector": ".mds-theme-stable-commonWebex",
       "targets": [
         "core/*.json",
-        "stable/theme/stable-common.json"
+        "theme/stable/common.json"
       ]
     },
     {
@@ -46,8 +46,8 @@
       "cssSelector": ".mds-theme-stable-darkWebex",
       "targets": [
         "core/*.json",
-        "stable/theme/stable-common.json",
-        "stable/theme/stable-dark.json"
+        "theme/stable/common.json",
+        "theme/stable/dark.json"
       ]
     },
     {
@@ -58,8 +58,32 @@
       "cssSelector": ".mds-theme-stable-lightWebex",
       "targets": [
         "core/*.json",
-        "stable/theme/stable-common.json",
-        "stable/theme/stable-light.json"
+        "theme/stable/common.json",
+        "theme/stable/light.json"
+      ]
+    },
+    {
+      "destination": "theme/aaos/day-complete",
+      "filters": {
+        "types": ["theme"]
+      },
+      "cssSelector": ".mds-theme-aaos-day",
+      "targets": [
+        "core/*.json",
+        "theme/aaos/common.json",
+        "theme/aaos/day.json"
+      ]
+    },
+    {
+      "destination": "theme/aaos/night-complete",
+      "filters": {
+        "types": ["theme"]
+      },
+      "cssSelector": ".mds-theme-aaos-night",
+      "targets": [
+        "core/*.json",
+        "theme/aaos/common.json",
+        "theme/aaos/night.json"
       ]
     }
   ],

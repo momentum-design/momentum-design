@@ -12,7 +12,7 @@
               "lineHeights": {
                   "type": "object",
                   "additionalProperties": {
-                      "$ref": "#/definitions/Ciscosans"
+                      "$ref": "#/definitions/ValueType"
                   }
               },
               "fontWeights": {
@@ -21,14 +21,20 @@
               "fontSize": {
                   "type": "object",
                   "additionalProperties": {
-                      "$ref": "#/definitions/Ciscosans"
+                      "$ref": "#/definitions/ValueType"
                   }
               },
               "letterSpacing": {
-                  "$ref": "#/definitions/Spacing"
+                "type": "object",
+                "additionalProperties": {
+                    "$ref": "#/definitions/ValueType"
+                }
               },
               "paragraphSpacing": {
-                  "$ref": "#/definitions/Spacing"
+                "type": "object",
+                "additionalProperties": {
+                    "$ref": "#/definitions/ValueType"
+                }
               },
               "apps": {
                   "type": "object",
@@ -37,10 +43,10 @@
                   }
               },
               "textCase": {
-                  "$ref": "#/definitions/TextCaseClass"
+                  "$ref": "#/definitions/TextCase"
               },
               "textDecoration": {
-                  "$ref": "#/definitions/TextDecorationClass"
+                  "$ref": "#/definitions/TextDecoration"
               }
           },
           "required": [
@@ -127,10 +133,10 @@
           "additionalProperties": false,
           "properties": {
               "ciscosanstt": {
-                  "$ref": "#/definitions/Ciscosans"
+                  "$ref": "#/definitions/ValueType"
               },
               "ciscosans": {
-                  "$ref": "#/definitions/Ciscosans"
+                  "$ref": "#/definitions/ValueType"
               }
           },
           "required": [
@@ -139,7 +145,7 @@
           ],
           "title": "FontFamilies"
       },
-      "Ciscosans": {
+      "ValueType": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
@@ -161,19 +167,19 @@
           "additionalProperties": false,
           "properties": {
               "ciscosanstt-0": {
-                  "$ref": "#/definitions/Ciscosans"
+                  "$ref": "#/definitions/ValueType"
               },
               "ciscosanstt-1": {
-                  "$ref": "#/definitions/Ciscosans"
+                  "$ref": "#/definitions/ValueType"
               },
               "ciscosans-2": {
-                  "$ref": "#/definitions/Ciscosans"
+                  "$ref": "#/definitions/ValueType"
               },
               "ciscosanstt-3": {
-                  "$ref": "#/definitions/Ciscosans"
+                  "$ref": "#/definitions/ValueType"
               },
               "ciscosanstt-4": {
-                  "$ref": "#/definitions/Ciscosans"
+                  "$ref": "#/definitions/ValueType"
               }
           },
           "required": [
@@ -190,7 +196,7 @@
           "additionalProperties": false,
           "properties": {
               "0": {
-                  "$ref": "#/definitions/Ciscosans"
+                  "$ref": "#/definitions/ValueType"
               }
           },
           "required": [
@@ -198,12 +204,12 @@
           ],
           "title": "Spacing"
       },
-      "TextCaseClass": {
+      "TextCase": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
               "none": {
-                  "$ref": "#/definitions/Ciscosans"
+                  "$ref": "#/definitions/ValueType"
               }
           },
           "required": [
@@ -211,15 +217,15 @@
           ],
           "title": "TextCaseClass"
       },
-      "TextDecorationClass": {
+      "TextDecoration": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
               "underline": {
-                  "$ref": "#/definitions/Ciscosans"
+                  "$ref": "#/definitions/ValueType"
               },
               "none": {
-                  "$ref": "#/definitions/Ciscosans"
+                  "$ref": "#/definitions/ValueType"
               }
           },
           "required": [

@@ -10,6 +10,10 @@ on:
 env:
   BUILD_PATH: '.' # default value when not using subfolders
   rid: ${{ github.run_id }}-${{ github.run_number }}
+  # Setting an environment variable with the value of a configuration variable
+  ALGOLIA_APP_ID: ${{ vars.ALGOLIA_APP_ID }}
+  ALGOLIA_INDEX_NAME: ${{ vars.ALGOLIA_INDEX_NAME }}
+  ALGOLIA_DOC_SEARCH: ${{ vars.ALGOLIA_DOC_SEARCH }}
 
 
 jobs:
