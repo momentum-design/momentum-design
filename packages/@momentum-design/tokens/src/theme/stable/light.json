@@ -1067,9 +1067,9 @@
             "description": ""
           },
           "disabled": {
-            "value": "{color.core.black-alpha.11}",
+            "value": "{color.core.black-alpha.20}",
             "type": "color",
-            "description": ""
+            "description": "Core: {color.core.black-alpha.20}\nHEX: #000000 20%"
           }
         }
       },
