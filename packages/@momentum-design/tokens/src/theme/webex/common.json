@@ -3,31 +3,31 @@
     "theme": {
       "surface": {
         "neutral": {
-          "00": {
+          "0": {
             "value": "{color.core.black-alpha.40}",
             "type": "color",
             "description": "Core Token: core.black-alpha.40\nHEX: 000000 40%\n--------\nUsed for overlay background effect of avatar presence (typing), overlayFade-backgrounds"
           },
-          "01": {
+          "1": {
             "value": "{color.core.black-alpha.80}",
             "type": "color",
             "description": "Core Token: core.black-alpha.80\nHEX: 000000 80%\n--------------------\nUsed for video preview background for meetings"
           },
-          "02": {
+          "2": {
             "value": "{color.core.black-alpha.90}",
             "type": "color",
             "description": "Core Token: core.black-alpha.90\nHEX: 000000 90%\n--------\nUsed for overlayFade-backgrounds, [Android] closed-caption"
           }
         },
         "warning": {
-          "00": {
+          "0": {
             "value": "{color.core.yellow.40}",
             "type": "color",
             "description": "Core Token: core.yellow.40\nHEX: f2990a 40%\n--------\nUsed for whiteboard sticky note"
           }
         },
         "negative": {
-          "00": {
+          "0": {
             "value": "{color.core.red.40}",
             "type": "color",
             "description": "Core Token: core.red.40\nHEX: fc8b9b 40%\n--------\nUsed for whiteboard sticky note"
@@ -35,21 +35,21 @@
         },
         "decorative": {
           "purple": {
-            "00": {
+            "0": {
               "value": "{color.decorative.purple.40}",
               "type": "color",
               "description": "Core Token: color.decorative.purple.40\nHEX: f294f1 40%\n--------\nUsed for whiteboard sticky note"
             }
           },
           "cyan": {
-            "00": {
+            "0": {
               "value": "{color.decorative.cyan.40}",
               "type": "color",
               "description": "Core Token: color.decorative.cyan.40\nHEX: 22c7d6 40%\n--------\nUsed for whiteboard sticky note"
             }
           },
           "mint": {
-            "00": {
+            "0": {
               "value": "{color.decorative.mint.40}",
               "type": "color",
               "description": "Core Token: color.decorative.mint.40\nHEX: 30c9b0 40%\n--------\nUsed for whiteboard sticky note"
@@ -186,12 +186,12 @@
             },
             "secondary": {
               "default": {
-                "value": "{color.core.white-alpha.00}",
+                "value": "{color.core.white-alpha.0}",
                 "type": "color",
                 "description": "Core Token: core.white-alpha.00\nHEX FFFFFF 0%\n-----------------------------------\nRest/ghost state of Secondary buttons.\nMostly found in meetings/share/window-controls"
               },
               "hover": {
-                "value": "{color.core.white-alpha.07}",
+                "value": "{color.core.white-alpha.7}",
                 "type": "color",
                 "description": "Core Token: core.white-alpha.07\nHEX FFFFFF 7%\n-----------------------------------\nHover state of Secondary buttons. Used with border.neutral.button. Mostly found in meetings/share/window-controls"
               },
@@ -201,7 +201,7 @@
                 "description": "Core Token: core.white-alpha.20\nHEX FFFFFF 20%\n-----------------------------------\nPressed state of Secondary buttons. Used with border.neutral.button. Mostly found in meetings/share/window-controls"
               },
               "disabled": {
-                "value": "{color.core.white-alpha.00}",
+                "value": "{color.core.white-alpha.0}",
                 "type": "color",
                 "description": "Core Token: core.white-alpha.00\nHEX FFFFFF 00%\n-----------------------------------\nDisabled state of secondary buttons. "
               },
@@ -234,46 +234,46 @@
         },
         "indicator": {
           "neutral": {
-            "00": {
+            "0": {
               "value": "{color.core.gray.70}",
               "type": "color",
               "description": "Core Token: core.gray.70\nHEX: 545454\n---------------\nUsed for avatar-default"
             },
-            "01": {
+            "1": {
               "value": "{color.core.gray.50}",
               "type": "color",
               "description": "Core Token: core.gray.50\nHEX: 8F8F8F\n------------\nUsed for circle dots on avatars  (typing)"
             },
-            "02": {
+            "2": {
               "value": "{color.core.white-alpha.100}",
               "type": "color",
               "description": "Core Token: core.white-alpha.100\nHEX: FFFFFF 100%\n----------\nUsed for circle background of avatar (typing), tags (overlay), whiteboardpen\n"
             },
-            "03": {
+            "3": {
               "value": "{color.core.black-alpha.50}",
               "type": "color",
               "description": "Core Token: core.black-alpha.50\nHEX: 000000 50%\n----------\nUsed for video labels\n"
             }
           },
           "warning": {
-            "00": {
+            "0": {
               "value": "{color.core.yellow.70}",
               "type": "color",
               "description": "Core Token: core.yellow.70\nHEX: 7D4705\n-----------------------\nUsed for unknown avatar\n"
             },
-            "01": {
+            "1": {
               "value": "{color.core.yellow.40}",
               "type": "color",
               "description": "Core Token: core.yellow.40\nHEX: f2990a\n-----------------------\nUsed for whiteboardpen\n"
             }
           },
           "notice": {
-            "00": {
+            "0": {
               "value": "{color.core.orange.70}",
               "type": "color",
               "description": "Theme Token: core.orange.70\nHEX: 914017\n-------------------------------\nUsed for initial avatar (avatar w/o presence) "
             },
-            "01": {
+            "1": {
               "value": "{color.core.orange.60}",
               "type": "color",
               "description": "Theme Token: core.orange.60\nHEX: c94403\n-------------------------------\nUsed for static tags (sharing)"
@@ -281,68 +281,68 @@
           },
           "decorative": {
             "gold": {
-              "00": {
+              "0": {
                 "value": "{color.decorative.gold.70}",
                 "type": "color",
                 "description": "Core Token: decorative.gold.70\nHEX: 735107\n--------------------------\nUsed for initial avatar (avatar w/o presence) "
               }
             },
             "lime": {
-              "00": {
+              "0": {
                 "value": "{color.decorative.lime.70}",
                 "type": "color",
                 "description": "Core Token: decorative.lime.70\nHEX: 416116\n--------------------------\nUsed for initial avatar (avatar w/o presence) "
               }
             },
             "mint": {
-              "00": {
+              "0": {
                 "value": "{color.decorative.mint.70}",
                 "type": "color",
                 "description": "Core Token: decorative.mint.70\nHEX: 12615A\n--------------------------\nUsed for initial avatar (avatar w/o presence) "
               }
             },
             "cyan": {
-              "00": {
+              "0": {
                 "value": "{color.decorative.cyan.70}",
                 "type": "color",
                 "description": "Core Token: decorative.cyan.70\nHEX: 066070\n--------------------------\nUsed for initial avatar (avatar w/o presence) "
               }
             },
             "cobalt": {
-              "00": {
+              "0": {
                 "value": "{color.decorative.cobalt.70}",
                 "type": "color",
                 "description": "Core Token: decorative.cobalt.70\nHEX: 08599C\n--------------------------\nUsed for initial avatar (avatar w/o presence) "
               }
             },
             "slate": {
-              "00": {
+              "0": {
                 "value": "{color.decorative.slate.70}",
                 "type": "color",
                 "description": "Core Token: decorative.slate.70\nHEX: 535573\n--------------------------\nUsed for initial avatar (avatar w/o presence) "
               }
             },
             "violet": {
-              "00": {
+              "0": {
                 "value": "{color.decorative.violet.70}",
                 "type": "color",
                 "description": "Core Token: decorative.violet.70\nHEX: 643ABD\n--------------------------\nUsed for initial avatar (avatar w/o presence) "
               }
             },
             "purple": {
-              "00": {
+              "0": {
                 "value": "{color.decorative.purple.70}",
                 "type": "color",
                 "description": "Core Token: decorative.purple.70\nHEX: 932099\n--------------------------\nUsed for initial avatar (avatar w/o presence) "
               },
-              "01": {
+              "1": {
                 "value": "{color.decorative.purple.60}",
                 "type": "color",
                 "description": "Core Token: color.decorative.purple.60\nHEX: c23c4\n------------------\nUsed for whiteboard pens"
               }
             },
             "pink": {
-              "00": {
+              "0": {
                 "value": "{color.decorative.pink.70}",
                 "type": "color",
                 "description": "Core Token: decorative.pink.70\nHEX: A12A3A\n--------------------------\nUsed for initial avatar (avatar w/o presence) "
@@ -350,21 +350,21 @@
             }
           },
           "negative": {
-            "00": {
+            "0": {
               "value": "{color.core.red.50}",
               "type": "color",
               "description": "Core Token: color.core.red.50\nHEX: f55868\n------------------\nUsed for whiteboard pens"
             }
           },
           "positive": {
-            "00": {
+            "0": {
               "value": "{color.core.green.40}",
               "type": "color",
               "description": "Core Token: color.core.green.40\nHEX: 3cc29a\n------------------\nUsed for whiteboard pens"
             }
           },
           "accent": {
-            "00": {
+            "0": {
               "value": "{color.core.blue.40}",
               "type": "color",
               "description": "Theme Token: core.blue.40\nHEX: 64b4fa\n-------------------------------\nUsed for whiteboard pens"
@@ -373,7 +373,7 @@
         },
         "control": {
           "neutral": {
-            "00": {
+            "0": {
               "value": "{color.core.white-alpha.100}",
               "type": "color",
               "description": "Core Token: core.white-alpha.100\nHEX: FFFFFF 100%\n----------\nUsed for rest state of toggle button.\n"
@@ -505,37 +505,37 @@
             "description": "Core Token: \ndecorative.pink.50, \ncore.red.60\nHEX: F0677E, DB1F2E\n---------------------------\nUsed for error-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
           },
           "onboarding": {
-            "00": {
+            "0": {
               "value": "linear-gradient(180deg, {color.core.yellow.30} 0%, {color.decorative.lime.40} 100%)",
               "type": "color"
             },
-            "01": {
+            "1": {
               "value": "linear-gradient(180deg, {color.core.red.50} 0%, {color.decorative.violet.60} 100%)",
               "type": "color"
             },
-            "02": {
+            "2": {
               "value": "linear-gradient(180deg, {color.core.yellow.30} 0%, {color.core.orange.50} 100%)",
               "type": "color",
               "description": "Core Token: core.yellow.30, \ncore.orange.50\nHEX: FFBE4F, F26B1D\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
             },
-            "03": {
+            "3": {
               "value": "linear-gradient(180deg, {color.decorative.lime.40} 0%, {color.decorative.cobalt.50} 100%)",
               "type": "color",
               "description": "Core Token: decorative.lime.40, \ndecorative.cobalt.50\nHEX: 93C437, 279BE8\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
             },
-            "04": {
+            "4": {
               "value": "linear-gradient(180deg, {color.decorative.cobalt.50} 0%, {color.decorative.violet.60} 100%)",
               "type": "color",
               "description": "Core Token: decorative.cobalt.50, \ndecorative.violet.60\nHEX: 279BE8, 875AE0\n---------------------------\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
             }
           },
           "empty": {
-            "01": {
+            "1": {
               "value": "linear-gradient(180deg, {color.decorative.cobalt.50} 0%, {color.decorative.violet.60} 100%)",
               "type": "color",
               "description": "Core Token: decorative.cobalt.50\ndecorative.violet.60\nHEX: 279BE8, 875AE0\n---------------------------\nUsed for empty state.\nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
             },
-            "00": {
+            "0": {
               "value": "linear-gradient(180deg, {color.decorative.lime.40} 0%, {color.decorative.cobalt.50} 100%)",
               "type": "color",
               "description": "Core Token: decorative.lime.40 0%, decorative.cobalt.50 100%\nHEX: linear-gradient(180deg, #93c437 0%, #279be8 100%)\n---------------------------\nUsed for empty state.\nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
@@ -545,51 +545,51 @@
       },
       "border": {
         "neutral": {
-          "00": {
+          "0": {
             "value": "{color.core.white-alpha.20}",
             "type": "color",
             "description": "Core Token: core.white-alpha.20\nHEX: FFFFFF 20%\n----------------------\n"
           },
-          "01": {
+          "1": {
             "value": "{color.core.white-alpha.30}",
             "type": "color",
             "description": "Core Token: core.white-alpha.30\nHEX: FFFFFF 30%\n-------------------------------."
           },
-          "02": {
+          "2": {
             "value": "{color.core.white-alpha.40}",
             "type": "color",
             "description": "Core Token: core.white-alpha.40\nHEX: FFFFFF 40%\n-----------------------\n"
           },
-          "03": {
+          "3": {
             "value": "{color.core.white-alpha.50}",
             "type": "color",
             "description": "Core Token: core.white.alpha-50\nHEX: FFFFFF 50%\n-------------------------\nUsed for input-fields, control components"
           },
-          "04": {
+          "4": {
             "value": "{color.core.gray.50}",
             "type": "color",
             "description": "Core Token: core.gray.50\nHEX:  8F8F8F\n------------\nOutline border for inactive state of share for in-meeting"
           },
-          "05": {
+          "5": {
             "value": "{color.core.gray.50}",
             "type": "color",
             "description": "Core Token: core.gray.50\nHEX:  8F8F8F\n------------\nOutline border for inactive state of share for in-meeting"
           },
-          "06": {
+          "6": {
             "value": "{color.core.gray.60}",
             "type": "color",
             "description": "Core Token: core.gray.60\nHEX: 707070\n---------------------\nUsed for outline of meetings/share/window-border (share-inactive)"
           }
         },
         "positive": {
-          "00": {
+          "0": {
             "value": "{color.core.green.40}",
             "type": "color",
             "description": "Core Token: core.green.40\nHEX: 3CC29A\n---------------\nUsed for meetings/share/window-border (share-selected)"
           }
         },
         "notice": {
-          "00": {
+          "0": {
             "value": "{color.core.orange.60}",
             "type": "color",
             "description": "Core Token: core.orange.60\nHEX: C74F0E\n-------------------------------\nUsed for outline of meetings/share/window-border (share-active)"

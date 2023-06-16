@@ -1,0 +1,117 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/Welcome",
+    "definitions": {
+        "Welcome": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "spacing": {
+                    "$ref": "#/definitions/Spacing"
+                }
+            },
+            "required": [
+                "spacing"
+            ],
+            "title": "Welcome"
+        },
+        "Spacing": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "core": {
+                    "$ref": "#/definitions/Core"
+                }
+            },
+            "required": [
+                "core"
+            ],
+            "title": "Spacing"
+        },
+        "Core": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "none": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "micro": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "xxx-small": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "xx-small": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "x-small": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "small": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "medium": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "large": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "x-large": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "xx-large": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "xxx-large": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "big": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "x-big": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "xx-big": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                }
+            },
+            "required": [
+                "big",
+                "large",
+                "medium",
+                "micro",
+                "none",
+                "small",
+                "x-big",
+                "x-large",
+                "x-small",
+                "xx-big",
+                "xx-large",
+                "xx-small",
+                "xxx-large",
+                "xxx-small"
+            ],
+            "title": "Core"
+        },
+        "ValueTypeDes": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "value": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "type",
+                "value"
+            ],
+            "title": "Big"
+        }
+    }
+}

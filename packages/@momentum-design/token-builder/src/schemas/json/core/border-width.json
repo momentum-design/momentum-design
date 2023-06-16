@@ -1,0 +1,78 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/Welcome",
+    "definitions": {
+        "Welcome": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "border-width": {
+                    "$ref": "#/definitions/BorderWidth"
+                }
+            },
+            "required": [
+                "border-width"
+            ],
+            "title": "Welcome"
+        },
+        "BorderWidth": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "core": {
+                    "$ref": "#/definitions/Core"
+                }
+            },
+            "required": [
+                "core"
+            ],
+            "title": "BorderWidth"
+        },
+        "Core": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "none": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "small": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "medium": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "large": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                }
+            },
+            "required": [
+                "large",
+                "medium",
+                "none",
+                "small"
+            ],
+            "title": "Core"
+        },
+        "ValueTypeDes": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "value": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "description",
+                "type",
+                "value"
+            ],
+            "title": "Large"
+        }
+    }
+}

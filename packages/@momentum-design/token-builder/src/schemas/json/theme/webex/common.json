@@ -1,0 +1,685 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/Welcome",
+    "definitions": {
+        "Welcome": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "color": {
+                    "$ref": "#/definitions/Color"
+                }
+            },
+            "required": [
+                "color"
+            ],
+            "title": "Welcome"
+        },
+        "Color": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "theme": {
+                    "$ref": "#/definitions/Theme"
+                }
+            },
+            "required": [
+                "theme"
+            ],
+            "title": "Color"
+        },
+        "Theme": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "surface": {
+                    "$ref": "#/definitions/Surface"
+                },
+                "content": {
+                    "$ref": "#/definitions/Content"
+                },
+                "border": {
+                    "$ref": "#/definitions/Border"
+                }
+            },
+            "required": [
+                "border",
+                "content",
+                "surface"
+            ],
+            "title": "Theme"
+        },
+        "Border": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "neutral": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
+                },
+                "positive": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
+                },
+                "notice": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
+                },
+                "decorative": {
+                    "$ref": "#/definitions/BorderDecorative"
+                }
+            },
+            "required": [
+                "decorative",
+                "neutral",
+                "notice",
+                "positive"
+            ],
+            "title": "Border"
+        },
+        "BorderDecorative": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "cobalt": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "gold": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "lime": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "mint": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "pink": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "purple": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "slate": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "violet": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                }
+            },
+            "required": [
+                "cobalt",
+                "gold",
+                "lime",
+                "mint",
+                "pink",
+                "purple",
+                "slate",
+                "violet"
+            ],
+            "title": "BorderDecorative"
+        },
+        "ValueTypeDes": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "value": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/Type"
+                },
+                "description": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "description",
+                "type",
+                "value"
+            ],
+            "title": "Cobalt"
+        },
+        "Notice": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "00": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                }
+            },
+            "required": [
+                "00"
+            ],
+            "title": "Notice"
+        },
+        "Content": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "text": {
+                    "$ref": "#/definitions/Text"
+                },
+                "btn": {
+                    "$ref": "#/definitions/Btn"
+                },
+                "indicator": {
+                    "$ref": "#/definitions/Indicator"
+                },
+                "macOS": {
+                    "$ref": "#/definitions/MACOS"
+                },
+                "illustration": {
+                    "$ref": "#/definitions/Illustration"
+                }
+            },
+            "required": [
+                "btn",
+                "illustration",
+                "indicator",
+                "macOS",
+                "text"
+            ],
+            "title": "Content"
+        },
+        "Btn": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "neutral": {
+                    "$ref": "#/definitions/BtnNeutral"
+                }
+            },
+            "required": [
+                "neutral"
+            ],
+            "title": "Btn"
+        },
+        "BtnNeutral": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "primary": {
+                    "$ref": "#/definitions/Primary"
+                },
+                "secondary": {
+                    "$ref": "#/definitions/Primary"
+                },
+                "tertiary": {
+                    "$ref": "#/definitions/Warning"
+                }
+            },
+            "required": [
+                "primary",
+                "secondary",
+                "tertiary"
+            ],
+            "title": "BtnNeutral"
+        },
+        "Primary": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "default": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "hover": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "pressed": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "disabled": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "active": {
+                    "$ref": "#/definitions/Primary"
+                }
+            },
+            "required": [
+                "default",
+                "hover",
+                "pressed"
+            ],
+            "title": "Primary"
+        },
+        "Warning": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "default": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                }
+            },
+            "required": [
+                "default"
+            ],
+            "title": "Warning"
+        },
+        "Illustration": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "positive": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "negative": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "onboarding": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/Onboarding"
+                    }
+                },
+                "empty": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
+                }
+            },
+            "required": [
+                "empty",
+                "negative",
+                "onboarding",
+                "positive"
+            ],
+            "title": "Illustration"
+        },
+        "Onboarding": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "value": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/Type"
+                },
+                "description": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "type",
+                "value"
+            ],
+            "title": "Onboarding"
+        },
+        "Indicator": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "neutral": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
+                },
+                "warning": {
+                    "$ref": "#/definitions/Warning"
+                },
+                "notice": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
+                },
+                "decorative": {
+                    "$ref": "#/definitions/IndicatorDecorative"
+                }
+            },
+            "required": [
+                "decorative",
+                "neutral",
+                "notice",
+                "warning"
+            ],
+            "title": "Indicator"
+        },
+        "IndicatorDecorative": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "gold": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
+                },
+                "lime": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
+                },
+                "mint": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
+                },
+                "cyan": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
+                },
+                "cobalt": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
+                },
+                "slate": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
+                },
+                "violet": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
+                },
+                "purple": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
+                },
+                "pink": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
+                }
+            },
+            "required": [
+                "cobalt",
+                "cyan",
+                "gold",
+                "lime",
+                "mint",
+                "pink",
+                "purple",
+                "slate",
+                "violet"
+            ],
+            "title": "IndicatorDecorative"
+        },
+        "MACOS": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "blue": {
+                    "$ref": "#/definitions/Blue"
+                },
+                "pink": {
+                    "$ref": "#/definitions/Mint"
+                },
+                "red": {
+                    "$ref": "#/definitions/Blue"
+                },
+                "mint": {
+                    "$ref": "#/definitions/Mint"
+                },
+                "purple": {
+                    "$ref": "#/definitions/Mint"
+                },
+                "violet": {
+                    "$ref": "#/definitions/Mint"
+                },
+                "orange": {
+                    "$ref": "#/definitions/Mint"
+                },
+                "green": {
+                    "$ref": "#/definitions/Blue"
+                }
+            },
+            "required": [
+                "blue",
+                "green",
+                "mint",
+                "orange",
+                "pink",
+                "purple",
+                "red",
+                "violet"
+            ],
+            "title": "MACOS"
+        },
+        "Blue": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "default": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "pressed": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "icon": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                }
+            },
+            "required": [
+                "default",
+                "icon",
+                "pressed"
+            ],
+            "title": "Blue"
+        },
+        "Mint": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "default": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "pressed": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                }
+            },
+            "required": [
+                "default",
+                "pressed"
+            ],
+            "title": "Mint"
+        },
+        "Text": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "neutral": {
+                    "$ref": "#/definitions/TextNeutral"
+                },
+                "positive": {
+                    "$ref": "#/definitions/Tive"
+                },
+                "negative": {
+                    "$ref": "#/definitions/Tive"
+                },
+                "warning": {
+                    "$ref": "#/definitions/Warning"
+                }
+            },
+            "required": [
+                "negative",
+                "neutral",
+                "positive",
+                "warning"
+            ],
+            "title": "Text"
+        },
+        "Tive": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "hover": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "default": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                }
+            },
+            "required": [
+                "default",
+                "hover"
+            ],
+            "title": "Tive"
+        },
+        "TextNeutral": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "primary-white": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "secondary": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "primary-black": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "disabled": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                }
+            },
+            "required": [
+                "disabled",
+                "primary-black",
+                "primary-white",
+                "secondary"
+            ],
+            "title": "TextNeutral"
+        },
+        "Surface": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "neutral": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
+                },
+                "warning": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
+                },
+                "negative": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
+                },
+                "decorative": {
+                    "$ref": "#/definitions/SurfaceDecorative"
+                }
+            },
+            "required": [
+                "decorative",
+                "negative",
+                "neutral",
+                "warning"
+            ],
+            "title": "Surface"
+        },
+        "SurfaceDecorative": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "purple": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
+                },
+                "cyan": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
+                },
+                "mint": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ValueTypeDes"
+                    }
+                },
+                "partner": {
+                    "$ref": "#/definitions/Partner"
+                }
+            },
+            "required": [
+                "cyan",
+                "mint",
+                "partner",
+                "purple"
+            ],
+            "title": "SurfaceDecorative"
+        },
+        "Partner": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "pdf": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "word": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "powerpoint": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "excel": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "onenote": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "doc": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "sheets": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "slides": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "keynotes": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                }
+            },
+            "required": [
+                "doc",
+                "excel",
+                "keynotes",
+                "onenote",
+                "pdf",
+                "powerpoint",
+                "sheets",
+                "slides",
+                "word"
+            ],
+            "title": "Partner"
+        },
+        "Type": {
+            "type": "string",
+            "enum": [
+                "color"
+            ],
+            "title": "Type"
+        }
+    }
+}

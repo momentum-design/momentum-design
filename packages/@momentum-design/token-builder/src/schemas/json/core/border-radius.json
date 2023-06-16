@@ -1,0 +1,82 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/Welcome",
+    "definitions": {
+        "Welcome": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "border-radius": {
+                    "$ref": "#/definitions/BorderRadius"
+                }
+            },
+            "required": [
+                "border-radius"
+            ],
+            "title": "Welcome"
+        },
+        "BorderRadius": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "core": {
+                    "$ref": "#/definitions/Core"
+                }
+            },
+            "required": [
+                "core"
+            ],
+            "title": "BorderRadius"
+        },
+        "Core": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "none": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "small": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "medium": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "large": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                },
+                "half-height": {
+                    "$ref": "#/definitions/ValueTypeDes"
+                }
+            },
+            "required": [
+                "half-height",
+                "large",
+                "medium",
+                "none",
+                "small"
+            ],
+            "title": "Core"
+        },
+        "ValueTypeDes": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "value": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "description",
+                "type",
+                "value"
+            ],
+            "title": "HalfHeight"
+        }
+    }
+}
