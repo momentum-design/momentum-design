@@ -90,19 +90,19 @@
       "border": {
         "neutral": {
           "0": {
+            "value": "{color.core.white-alpha.24}",
+            "type": "color",
+            "description": "Core:color.core.white-alpha.24\nHEX: #ffffff 24%\nUsed for disabled icon color and input field outline .\nSee Material Guidelines"
+          },
+          "1": {
             "value": "{color.core.white-alpha.46}",
             "type": "color",
             "description": "Core: color.core.white-alpha.46\nHEX: #ffffff 46%\nUsed for hairlines around buttons and other interface elements. Do not use for dividers."
           },
-          "1": {
-            "value": "{color.core.white-alpha.24}",
-            "type": "color",
-            "description": "Core:color.core.white-alpha.24\nHEX: #ffffff 24%\nUse for dividers and disabled outline color for interface items."
-          },
           "2": {
-            "value": "{color.core.white-alpha.50}",
+            "value": "{color.core.white-alpha.56}",
             "type": "color",
-            "description": "Core: color.core.white-alpha.50\nHEX: #ffffff 50%\nUsed for disabled icon color and input field outline"
+            "description": "Core: color.core.white-alpha.56\nHEX: #ffffff 56%\nUsed for disabled icon color and input field outline"
           }
         }
       }
