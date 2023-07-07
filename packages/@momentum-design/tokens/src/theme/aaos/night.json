@@ -100,9 +100,9 @@
             "description": "Core:color.core.white-alpha.20\nHEX: #ffffff 20%\nUse for dividers and disabled outline color for interface items."
           },
           "2": {
-            "value": "{color.core.white-alpha.56}",
+            "value": "{color.core.white-alpha.50}",
             "type": "color",
-            "description": "Core: color.core.white-alpha.56\nHEX: #ffffff 56%\nUsed for disabled icon color and input field outline Material."
+            "description": "Core: color.core.white-alpha.50\nHEX: #ffffff 50%\nUsed for disabled icon color and input field outline Material."
           }
         }
       }
