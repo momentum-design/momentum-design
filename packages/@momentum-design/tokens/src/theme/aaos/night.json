@@ -90,14 +90,14 @@
       "border": {
         "neutral": {
           "0": {
-            "value": "{color.core.white-alpha.40}",
-            "type": "color",
-            "description": "Core:color.core.white-alpha.40\nHEX: #ffffff 40%\nUsed for hairlines around buttons and other interface elements. Do not use for dividers."
-          },
-          "1": {
             "value": "{color.core.white-alpha.20}",
             "type": "color",
             "description": "Core:color.core.white-alpha.20\nHEX: #ffffff 20%\nUse for dividers and disabled outline color for interface items."
+          },
+          "1": {
+            "value": "{color.core.white-alpha.40}",
+            "type": "color",
+            "description": "Core:color.core.white-alpha.40\nHEX: #ffffff 40%\nUsed for hairlines around buttons and other interface elements. Do not use for dividers."
           },
           "2": {
             "value": "{color.core.white-alpha.50}",
