@@ -54,13 +54,12 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v3.7.0
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-          cache-dependency-path: './yarn.lock'
-
+          
       - name: Validate Dependencies
         id: validate-dependencies
         uses: actions/cache@v3
@@ -94,13 +93,12 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
       
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v3.7.0
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-          cache-dependency-path: './yarn.lock'
-
+          
       - name: Build Telemetry
         run: yarn && yarn telemetry build
 
@@ -150,13 +148,12 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v3.7.0
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-          cache-dependency-path: './yarn.lock'
-
+          
       - name: Uncache Dependencies
         uses: actions/cache@v3
         with:
@@ -192,13 +189,12 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v3.7.0
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-          cache-dependency-path: './yarn.lock'
-
+          
       - name: Uncache Dependencies
         uses: actions/cache@v3
         with:
@@ -233,13 +229,12 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v3.7.0
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-          cache-dependency-path: './yarn.lock'
-
+          
       - name: Uncache Dependencies
         uses: actions/cache@v3
         with:
@@ -277,13 +272,12 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v3.7.0
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-          cache-dependency-path: './yarn.lock'
-
+          
       - name: Uncache Dependencies
         uses: actions/cache@v3
         with:
@@ -319,13 +313,12 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v3.7.0
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-          cache-dependency-path: './yarn.lock'
-
+          
       - name: Uncache Dependencies
         uses: actions/cache@v3
         with:
