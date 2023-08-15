@@ -59,12 +59,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-<<<<<<< HEAD
           
-=======
-          cache-dependency-path: './yarn.lock'
-
->>>>>>> 7372b24483a13355c624bc7a5da8b5f919a10057
       - name: Validate Dependencies
         id: validate-dependencies
         uses: actions/cache@v3
@@ -103,12 +98,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-<<<<<<< HEAD
           
-=======
-          cache-dependency-path: './yarn.lock'
-
->>>>>>> 7372b24483a13355c624bc7a5da8b5f919a10057
       - name: Build Telemetry
         run: yarn && yarn telemetry build
 
@@ -163,12 +153,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-<<<<<<< HEAD
           
-=======
-          cache-dependency-path: './yarn.lock'
-
->>>>>>> 7372b24483a13355c624bc7a5da8b5f919a10057
       - name: Uncache Dependencies
         uses: actions/cache@v3
         with:
@@ -209,12 +194,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-<<<<<<< HEAD
           
-=======
-          cache-dependency-path: './yarn.lock'
-
->>>>>>> 7372b24483a13355c624bc7a5da8b5f919a10057
       - name: Uncache Dependencies
         uses: actions/cache@v3
         with:
@@ -254,12 +234,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-<<<<<<< HEAD
           
-=======
-          cache-dependency-path: './yarn.lock'
-
->>>>>>> 7372b24483a13355c624bc7a5da8b5f919a10057
       - name: Uncache Dependencies
         uses: actions/cache@v3
         with:
@@ -302,12 +277,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-<<<<<<< HEAD
           
-=======
-          cache-dependency-path: './yarn.lock'
-
->>>>>>> 7372b24483a13355c624bc7a5da8b5f919a10057
       - name: Uncache Dependencies
         uses: actions/cache@v3
         with:
@@ -348,12 +318,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-<<<<<<< HEAD
           
-=======
-          cache-dependency-path: './yarn.lock'
-
->>>>>>> 7372b24483a13355c624bc7a5da8b5f919a10057
       - name: Uncache Dependencies
         uses: actions/cache@v3
         with:
