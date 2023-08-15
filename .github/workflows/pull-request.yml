@@ -59,6 +59,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
+          cache-dependency-path: './yarn.lock'
 
       - name: Validate Dependencies
         id: validate-dependencies
@@ -98,6 +99,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
+          cache-dependency-path: './yarn.lock'
 
       - name: Build Telemetry
         run: yarn && yarn telemetry build
@@ -153,6 +155,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
+          cache-dependency-path: './yarn.lock'
 
       - name: Uncache Dependencies
         uses: actions/cache@v3
@@ -194,6 +197,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
+          cache-dependency-path: './yarn.lock'
 
       - name: Uncache Dependencies
         uses: actions/cache@v3
@@ -234,6 +238,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
+          cache-dependency-path: './yarn.lock'
 
       - name: Uncache Dependencies
         uses: actions/cache@v3
@@ -277,6 +282,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
+          cache-dependency-path: './yarn.lock'
 
       - name: Uncache Dependencies
         uses: actions/cache@v3
@@ -318,6 +324,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
+          cache-dependency-path: './yarn.lock'
 
       - name: Uncache Dependencies
         uses: actions/cache@v3
