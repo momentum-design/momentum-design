@@ -82,9 +82,9 @@
           },
           "meeting": {
             "normal": {
-              "value": "linear-gradient(180deg, {color.core.black-alpha.0} 0%, {color.core.black-alpha.30} 50.23%, {color.core.black-alpha.80} 100%)",
+              "value": "linear-gradient(180deg, {color.core.black-alpha.80} 0%, {color.core.black-alpha.30} 50.23%, {color.core.black-alpha.0} 100%)",
               "type": "color",
-              "description": "Core: linear-gradient(180deg, {color.core.black-alpha.0} 0%, {color.core.black-alpha.30} 50.23%, {color.core.black-alpha.80} 100%)\n\nUsed for interstitial preview header."
+              "description": "Core: linear-gradient(180deg, {color.core.black-alpha.80} 0%, {color.core.black-alpha.30} 50.23%, {color.core.black-alpha.0} 100%)\n\nUsed for interstitial preview header."
             }
           }
         },
