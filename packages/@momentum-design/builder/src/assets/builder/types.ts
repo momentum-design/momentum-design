@@ -79,6 +79,16 @@ export interface ManifestFormat {
 }
 
 /**
+ * Swift Format
+ *
+ * @beta
+ */
+export interface SwiftFormat {
+  type: typeof CONSTANTS.FORMATS.SWIFT;
+  config: { fileName: string, hbsPath: string };
+}
+
+/**
  * File Type
  *
  * @beta
@@ -130,6 +140,7 @@ export type Formats = (
   | WOFFFormat
   | WOFF2Format
   | ManifestFormat
+  | SwiftFormat
 ) & {
   encoding?: Encoding;
 };

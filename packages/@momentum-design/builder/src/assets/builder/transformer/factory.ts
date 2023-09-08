@@ -7,6 +7,7 @@ import Transformer from './transformer';
 import TTFTransformer from './ttf-transformer';
 import WOFFTransformer from './woff-transformer';
 import WOFF2Transformer from './woff2-transformer';
+import SwiftTransformer from './swift-transformer';
 
 type Transformers =
   | Transformer
@@ -15,7 +16,8 @@ type Transformers =
   | TTFTransformer
   | WOFFTransformer
   | WOFF2Transformer
-  | ManifestTransformer;
+  | ManifestTransformer
+  | SwiftTransformer;
 
 /**
  * Factory Pattern
@@ -36,6 +38,8 @@ function createTransformer(format: Formats, destination: string): Transformers {
       return new WOFF2Transformer(format, destination);
     case CONSTANTS.FORMATS.MANIFEST:
       return new ManifestTransformer(format, destination);
+    case CONSTANTS.FORMATS.SWIFT:
+      return new SwiftTransformer(format, destination);
     default:
       return new Transformer(format, destination);
   }

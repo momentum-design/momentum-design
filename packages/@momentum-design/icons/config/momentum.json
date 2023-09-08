@@ -197,6 +197,18 @@
               "fileName": "manifest.json"
             }
           }
+        },
+        {
+          "id": "swift-icons",
+          "target": "./dist/svg/**/*.*",
+          "destination": "./dist/data",
+          "format": {
+            "type": "SWIFT",
+            "config": {
+              "fileName": "Momentum.swift",
+              "hbsPath": "./config/templates/momentum.swift.hbs"
+            }
+          }
         }
       ],
       "type": "assets"
