@@ -6,10 +6,12 @@ import { Hint, Row, Select, Option, TextInput, Label, Link } from '../../compone
 import type { ExportStatus } from '../../types';
 import List from '../../components/List/List';
 import type { AssetChunks, Settings } from '../../../shared/types';
+import { CONSTANTS } from '../../../shared/settings-constants';
 import ExportButton from './ExportButton';
 import { useExportForm } from './hooks/useExportForm';
 import { useExportFlow } from './hooks/useExportFlow';
 
+const defaultAssetTypeSetting = Object.values(CONSTANTS.INITIAL_SETTINGS.assets)[0].name;
 interface Props {
   selectedAssetSettingId?: string;
   setSelectedAssetSettingId: React.Dispatch<React.SetStateAction<string | undefined>>;
@@ -78,7 +80,12 @@ function Export({
             Select assets type
           </Option>
           {settings && Object.entries(settings.assets).map(([id, assetSetting]) => (
-            <Option value={id}>{assetSetting.name}</Option>
+            <Option
+              value={id}
+              disabled={assetSetting.name.includes(defaultAssetTypeSetting)}
+            >
+              {assetSetting.name}
+            </Option>
           ))}
         </Select>
       </Row>

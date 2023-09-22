@@ -8,25 +8,46 @@ const MyOctokit = Octokit.plugin(createPullRequest);
 
 class Github {
   config: GitSetting = {
-    githubPersonalToken: '<YourGithubTokenHere>',
-    githubOwner: 'momentum-design',
-    gitRepo: 'momentum-design',
+    githubPersonalToken: '',
+    githubOwner: '',
+    gitRepo: '',
     gitBranch: `automation-${new Date().toISOString().replace(/\.|:/g, '-')}`,
     prTitle: `Asset Automation ${new Date().toISOString()}`,
     prCommitMsg: `feat(assets): Asset Automation ${new Date().toISOString()}`,
     prMessage: `feat(assets): Asset Automation ${new Date().toISOString()}`,
-    gitRepoFilePath: 'packages/@momentum-design',
-    gitDistPath: '',
+    gitRepoFilePath: '',
   };
 
   constructor(config: GitSetting) {
     this.config = config;
   }
 
+  configErrors(): string | undefined {
+    if (!this.config.githubOwner || !this.config.gitRepo || !this.config.githubPersonalToken) {
+      return 'Github configuration is not valid!';
+    }
+
+    if (
+      !this.config.githubPersonalToken
+      || this.config.githubPersonalToken.includes('<')
+      || this.config.githubPersonalToken.includes('<')
+    ) {
+      return 'Personal access token is not valid';
+    }
+
+    return undefined;
+  }
+
   async pullRequest(data: AssetChunks | undefined) {
     const octokit = new MyOctokit({
       auth: this.config.githubPersonalToken,
     });
+
+    const configErrors = this.configErrors();
+
+    if (configErrors) {
+      return Promise.reject(configErrors);
+    }
 
     return octokit?.createPullRequest({
       owner: this.config.githubOwner,
@@ -36,16 +57,14 @@ class Github {
       forceFork: true,
       createWhenEmpty: false,
       head: this.config.gitBranch,
-      changes: data?.map((assets, index) => ({
-        files: assets.reduce((accum: {[key: string]: any}, cur: Asset) => {
-          accum[
-            // eslint-disable-next-line max-len
-            `${this.config.gitRepoFilePath}${this.config.gitDistPath ? `/${this.config.gitDistPath}/` : ''}${cur.path}`
-          ] = cur.data;
-          return accum;
-        }, {}),
-        commit: `${this.config.prCommitMsg}-chunk${index}`,
-      })) || [],
+      changes:
+        data?.map((assets, index) => ({
+          files: assets.reduce((accum: { [key: string]: any }, cur: Asset) => {
+            accum[[this.config.gitRepoFilePath, cur.path].join('/')] = cur.data;
+            return accum;
+          }, {}),
+          commit: `${this.config.prCommitMsg}-chunk${index}`,
+        })) || [],
     });
   }
 }

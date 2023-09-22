@@ -1,0 +1,15 @@
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    color: var(--figma-color-text);
+}
+
+.tooltip .tooltipcontent {
+    color: var(--figma-color-text);
+    width: 80%;
+    background-color: var(--figma-color-bg-secondary);
+    text-align: center;
+    padding: 5px 0;
+    border: var(--figma-color-border);
+}
