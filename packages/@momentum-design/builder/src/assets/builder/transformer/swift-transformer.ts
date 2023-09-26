@@ -1,6 +1,6 @@
 import path from 'path';
 import type { Formats, GlyphIconData } from '../types';
-import { transformHbs, getNextCodepoint } from '../utils';
+import { transformHbs } from '../utils';
 import Transformer from './transformer';
 
 /**
@@ -17,41 +17,37 @@ class SwiftTransformer extends Transformer {
   }
 
   /**
-   * Generates unicode for all icons based on Unicode Private Use.
-   * @returns - array of icons including metadata like unicode and codepoints
+   * Retreive the GlyphData from the inputFile
+   * and parse it
+   * @returns glyph data object
    */
-  private generateGlyphsData(): GlyphIconData[] | undefined {
-    if (this.inputFiles) {
-      // exclude icons with numbers in the path (to avoid problems in swift)
-      const filteredInputFiles = this.inputFiles.filter(({ srcPath }) => !(/\d/.test(srcPath)));
-      return filteredInputFiles.map(({ srcPath }) => {
-        const name = path.basename(srcPath, path.extname(srcPath));
-        const codepoint = getNextCodepoint();
-        const codepointHexa = codepoint.toString(16);
-        const unicode = String.fromCodePoint(codepoint);
+  private getGlyphData() {
+    const GlyphDataBuffer = this.inputFiles?.at(0)?.data;
 
-        return {
-          name,
-          srcPath,
-          codepoint,
-          codepointHexa,
-          unicode,
-        };
-      });
-    }
-    this.logger.debug('No input files detected.');
-    return undefined;
+    return JSON.parse(GlyphDataBuffer.toString());
   }
 
-  private async generateSwiftData(glyphs?: GlyphIconData[]): Promise<string> {
+  /**
+   * Generates the swift data by using the glyph data and transform
+   * it with the help of handlebars templating
+   * @param glyphData - glyph data to be used
+   * @returns swift data
+   */
+
+  private async generateSwiftData(glyphData: Record<string, GlyphIconData>): Promise<string> {
     const template = await transformHbs(path.resolve(this.format.config.hbsPath));
-    return template({ glyphsData: glyphs });
+    return template({ glyphsData: Object.values(glyphData) });
   }
 
+  /**
+   * Generates the swift file
+   * @returns
+   */
   public generateSwiftFile(): Promise<{ data: any }> {
     return new Promise((resolve) => {
-      const glyphs = this.generateGlyphsData();
-      this.generateSwiftData(glyphs).then((data) => {
+      const glyphData = this.getGlyphData();
+
+      this.generateSwiftData(glyphData).then((data) => {
         resolve({
           data,
         });
@@ -60,9 +56,8 @@ class SwiftTransformer extends Transformer {
   }
 
   /**
-   * Transform the svg icons into a single svg font file
+   * Transform the glyph icons file into a single swift file
    */
-
   public override transformFilesAsync(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.generateSwiftFile()
