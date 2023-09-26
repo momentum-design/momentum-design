@@ -19,7 +19,6 @@ export type GitSetting = {
   prCommitMsg: string;
   prMessage: string;
   gitRepoFilePath: string;
-  gitDistPath?: string;
 };
 
 export type MapPagesToFolder = Array<{

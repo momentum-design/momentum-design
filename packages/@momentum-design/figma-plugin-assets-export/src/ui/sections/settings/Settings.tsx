@@ -7,6 +7,8 @@ import { saveSettingsToStorage } from '../../utils/plugin';
 import './Settings.css';
 import { CONSTANTS as SETTINGS_CONSTANTS } from '../../../shared/settings-constants';
 import type { Settings as SettingsType } from '../../../shared/types';
+import Help from '../../components/Help/Help';
+import HelpContent from './HelpContent';
 
 interface Props {
   settings: any;
@@ -47,8 +49,9 @@ function Settings({ settings, setSettings, storage }: Props) {
 
   return (
     <div className="settings">
-      <Row>
+      <Row className="settings-row">
         <SectionHeader>Current settings:</SectionHeader>
+        <Help tooltipContent={<HelpContent />}></Help>
       </Row>
       <div className="settings-area">
         <TextArea disabled={!isEditing} ref={settingsTextareaRef} value={settings} />
