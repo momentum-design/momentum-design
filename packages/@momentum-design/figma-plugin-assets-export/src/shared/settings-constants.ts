@@ -6,31 +6,32 @@ const INITIAL_SETTINGS: Settings = {
     githubPersonalToken: '<YourClassicPersonalAccessTokenHere>',
   },
   assets: {
-    icons: {
-      name: 'Icons',
+    typeOfAsset: {
+      name: '<type of asset>',
       description: {
-        name: 'Icons',
-        url: 'https://github.com/momentum-design/momentum-design/tree/main/packages/%40momentum-design/icons',
-        urlText: 'Momentum icons package',
+        name: '<Name of git repo>',
+        url: '<URL of the git repo only for informational purpose>',
+        urlText: '<url text>',
       },
       input: {
         mapPagesToFolder: [
-          { page: '✅', folder: 'core' },
-          { page: 'Colored Icons', folder: 'colored' },
-          { page: 'Brand Icons', folder: 'brand' },
+          { page: '<substring of page>', folder: '<folder-name>' },
         ],
         exclude: {
-          byVariant: 'sf alternative',
+          byVariant: '<variant which should be excluded>',
         },
         asset: {
           fileName: {
+            // array of REPLACE_TERM:
             parts: ['SET_OR_COMPONENT_NAME', 'SF_ALTERNATIVE', 'RTL'],
             separator: '-',
             suffix: {
+              // array of REPLACE_TERM:
               parts: ['WEIGHT', 'STATE', 'SIZE'],
               separator: '_',
             },
           },
+          // figma export settings (https://www.figma.com/plugin-docs/api/properties/nodes-exportasync/):
           exportSettings: {
             format: 'SVG',
             contentsOnly: true,
@@ -40,58 +41,13 @@ const INITIAL_SETTINGS: Settings = {
       },
       output: {
         git: {
-          githubOwner: 'momentum-design',
-          gitRepo: 'momentum-design',
-          gitBranch: `automation-icons-${new Date().toISOString().replace(/\.|:/g, '-')}`,
-          prTitle: `Automated Icons Export ${new Date().toISOString()}`,
-          prCommitMsg: `feat(assets/icons): Export ${new Date().toISOString()}`,
-          prMessage: `feat(assets/icons): Export ${new Date().toISOString()}`,
-          gitRepoFilePath: 'packages/@momentum-design/icons',
-          gitDistPath: 'src',
-        },
-      },
-    },
-    illustrations: {
-      name: 'Illustrations',
-      description: {
-        name: 'Illustrations',
-        url: 'https://github.com/momentum-design/momentum-design/tree/main/packages/%40momentum-design/illustrations',
-        urlText: 'Momentum illustrations package',
-      },
-      input: {
-        mapPagesToFolder: [
-          { page: '✅', folder: '' },
-        ],
-        exclude: {
-          byVariant: 'sf alternative',
-        },
-        asset: {
-          fileName: {
-            // TODO: adjust properly:
-            parts: ['SET_OR_COMPONENT_NAME', 'SF_ALTERNATIVE', 'RTL'],
-            separator: '-',
-            suffix: {
-              parts: ['COLOR'],
-              separator: '-',
-            },
-          },
-          exportSettings: {
-            format: 'SVG',
-            contentsOnly: true,
-            useAbsoluteBounds: false,
-          },
-        },
-      },
-      output: {
-        git: {
-          githubOwner: 'momentum-design',
-          gitRepo: 'momentum-design',
-          gitBranch: `automation-illustrations-${new Date().toISOString().replace(/\.|:/g, '-')}`,
-          prTitle: `Automated Illustrations Export ${new Date().toISOString()}`,
-          prCommitMsg: `feat(assets/illustrations): Export ${new Date().toISOString()}`,
-          prMessage: `feat(assets/illustrations): Export ${new Date().toISOString()}`,
-          gitRepoFilePath: 'packages/@momentum-design/illustrations',
-          gitDistPath: 'src',
+          githubOwner: '<owner-name>',
+          gitRepo: '<repo-name>',
+          gitBranch: `automation-assets-${new Date().toISOString().replace(/\.|:/g, '-')}`,
+          prTitle: `Automated Assets Export ${new Date().toISOString()}`,
+          prCommitMsg: `feat(assets): Export ${new Date().toISOString()}`,
+          prMessage: `feat(assets): Export ${new Date().toISOString()}`,
+          gitRepoFilePath: '<path where assets should be exported to>',
         },
       },
     },

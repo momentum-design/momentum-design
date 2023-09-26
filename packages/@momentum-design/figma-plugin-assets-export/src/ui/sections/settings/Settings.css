@@ -6,6 +6,10 @@
     flex-direction: column;
 }
 
+.settings-row {
+    justify-content: space-between;
+}
+
 .settings-area {
     width: 100%;
     flex: 1;
@@ -19,4 +23,8 @@
 .right-align-button {
     margin-right: 0px;
     margin-left: auto;
+}
+
+.helpContent {
+    padding: 5px;
 }
