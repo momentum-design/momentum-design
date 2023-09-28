@@ -159,7 +159,8 @@
             "type": "SVG_FONT",
             "config": {
               "fontName": "MomentumFontIcon",
-              "fontHeight": 1000
+              "fontHeight": 1000,
+              "normalize": true
             }
           }
         },
