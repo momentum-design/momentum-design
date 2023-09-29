@@ -21,7 +21,7 @@ class SwiftTransformer extends Transformer {
    * and parse it
    * @returns glyph data object
    */
-  private getGlyphData() {
+  private getGlyphData(): Record<string, GlyphIconData> {
     const GlyphDataBuffer = this.inputFiles?.at(0)?.data;
 
     return JSON.parse(GlyphDataBuffer.toString());
@@ -31,28 +31,13 @@ class SwiftTransformer extends Transformer {
    * Generates the swift data by using the glyph data and transform
    * it with the help of handlebars templating
    * @param glyphData - glyph data to be used
-   * @returns swift data
+   * @returns object with swift data
    */
 
-  private async generateSwiftData(glyphData: Record<string, GlyphIconData>): Promise<string> {
+  private async generateSwiftData(): Promise<{data: string}> {
+    const glyphData = this.getGlyphData();
     const template = await transformHbs(path.resolve(this.format.config.hbsPath));
-    return template({ glyphsData: Object.values(glyphData) });
-  }
-
-  /**
-   * Generates the swift file
-   * @returns
-   */
-  public generateSwiftFile(): Promise<{ data: any }> {
-    return new Promise((resolve) => {
-      const glyphData = this.getGlyphData();
-
-      this.generateSwiftData(glyphData).then((data) => {
-        resolve({
-          data,
-        });
-      });
-    });
+    return { data: template({ glyphsData: Object.values(glyphData) }) };
   }
 
   /**
@@ -60,13 +45,13 @@ class SwiftTransformer extends Transformer {
    */
   public override transformFilesAsync(): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.generateSwiftFile()
-        .then((file) => {
+      this.generateSwiftData()
+        .then((swiftData) => {
           this.outputFiles = [
             {
               distPath: path.join(this.destination, this.format.config.fileName),
               srcPath: '',
-              data: file.data,
+              data: swiftData.data,
             },
           ];
           resolve();
