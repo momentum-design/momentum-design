@@ -1,6 +1,6 @@
 import Foundation
 
-@objc public enum MomentumIconsType: Int {
+@objc public enum MomentumIconsType: Int, CaseIterable {
     // swiftlint:disable:next identifier_name
     case _invalid
 
@@ -39,5 +39,14 @@ import Foundation
             assertionFailure("Unknown icon type: \(self)")
             return ""
         }
+    }
+
+    private static var suppressAssert: Bool = false
+
+    public static func fromFileName(fileName: String) -> MomentumIconsType? {
+        MomentumIconsType.suppressAssert = true
+        let iconType = MomentumIconsType.allCases.first{ "\($0.filename)" == fileName }
+        MomentumIconsType.suppressAssert = false
+        return iconType
     }
 }
