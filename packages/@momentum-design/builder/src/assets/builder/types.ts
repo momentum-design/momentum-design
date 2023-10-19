@@ -79,6 +79,26 @@ export interface ManifestFormat {
 }
 
 /**
+ * Swift Format
+ *
+ * @beta
+ */
+export interface SwiftFormat {
+  type: typeof CONSTANTS.FORMATS.SWIFT;
+  config: { fileName: string; hbsPath: string };
+}
+
+/**
+ * SvgGlyphs Format
+ *
+ * @beta
+ */
+export interface SvgGlyphsFormat {
+  type: typeof CONSTANTS.FORMATS.SVG_GLYPHS;
+  config: { fileName: string };
+}
+
+/**
  * File Type
  *
  * @beta
@@ -130,6 +150,8 @@ export type Formats = (
   | WOFFFormat
   | WOFF2Format
   | ManifestFormat
+  | SwiftFormat
+  | SvgGlyphsFormat
 ) & {
   encoding?: Encoding;
 };

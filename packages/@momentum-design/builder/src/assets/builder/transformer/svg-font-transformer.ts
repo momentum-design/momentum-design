@@ -3,7 +3,6 @@ import SVGIcons2SVGFontStream from 'svgicons2svgfont';
 import fs from 'fs';
 import type { Formats, GlyphIconData } from '../types';
 import Transformer from './transformer';
-import { getNextCodepoint } from '../utils';
 
 /**
  * The SVGFontTransformer class.
@@ -19,36 +18,12 @@ class SVGFontTransformer extends Transformer {
   }
 
   /**
-   * Generates unicode for all icons based on Unicode Private Use.
-   * @returns - array of icons including metadata like unicode and codepoints
-   */
-  private generateGlyphsData(): GlyphIconData[] | undefined {
-    if (this.inputFiles) {
-      return this.inputFiles.map(({ srcPath }) => {
-        const name = path.basename(srcPath, path.extname(srcPath));
-        const codepoint = getNextCodepoint();
-        const codepointHexa = codepoint.toString(16);
-        const unicode = String.fromCodePoint(codepoint);
-
-        return {
-          name,
-          srcPath,
-          codepoint,
-          codepointHexa,
-          unicode,
-        };
-      });
-    }
-    this.logger.debug('No input files detected.');
-    return undefined;
-  }
-
-  /**
    * Creates a SVGFontStream and will add them into a buffer which will eventually
    * be written in the provided distPath (writing is not done here).
+   * @param glyphData - glyphData to be used for generating font
    * @returns - buffer data containing the svg font information ready to be written
    */
-  public generateSVGFont(): Promise<{data: Buffer, fileCreated: string }> {
+  public generateSVGFont(glyphData: Array<GlyphIconData>): Promise<{ data: Buffer; fileCreated: string }> {
     const filename = `${this.format.config.fontName}.svg`;
     const fontStream = new SVGIcons2SVGFontStream(this.format.config);
     return new Promise((resolve, reject) => {
@@ -66,8 +41,7 @@ class SVGFontTransformer extends Transformer {
         })
         .on('error', reject);
 
-      const icons = this.generateGlyphsData();
-      icons?.forEach((icon) => {
+      Object.values(glyphData)?.forEach((icon) => {
         const glyph = fs.createReadStream(icon.srcPath);
         // @ts-ignore
         glyph.metadata = {
@@ -81,12 +55,24 @@ class SVGFontTransformer extends Transformer {
   }
 
   /**
+   * Retreive the GlyphData from the inputFile
+   * and parse it
+   * @returns glyph data object
+   */
+  private getGlyphData() {
+    const GlyphDataBuffer = this.inputFiles?.at(0)?.data;
+
+    return JSON.parse(GlyphDataBuffer.toString());
+  }
+
+  /**
    * Transform the svg icons into a single svg font file
    */
-
   public override transformFilesAsync(): Promise<void> {
+    const glyphData = this.getGlyphData();
+
     return new Promise((resolve, reject) => {
-      this.generateSVGFont()
+      this.generateSVGFont(glyphData)
         .then((font) => {
           this.outputFiles = [{ distPath: font.fileCreated, srcPath: font.fileCreated, data: font.data }];
           resolve();

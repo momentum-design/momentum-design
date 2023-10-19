@@ -21,6 +21,8 @@ const FORMATS = {
   WOFF: 'WOFF' as const,
   WOFF2: 'WOFF2' as const,
   MANIFEST: 'MANIFEST' as const,
+  SWIFT: 'SWIFT' as const,
+  SVG_GLYPHS: 'SVG_GLYPHS' as const,
 };
 
 // http://en.wikipedia.org/wiki/Private_Use_(Unicode)

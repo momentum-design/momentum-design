@@ -130,20 +130,43 @@
           }
         },
         {
-          "id": "SVG-font-icons",
+          "id": "Manifest",
           "target": "./dist/svg/**/*.*",
+          "destination": "./dist/",
+          "format": {
+            "type": "MANIFEST",
+            "config": {
+              "fileName": "manifest.json"
+            }
+          }
+        },
+        {
+          "id": "SVG-glyphs-data",
+          "target": "./dist/svg/**/*.*",
+          "destination": "./dist/fonts",
+          "format": {
+            "type": "SVG_GLYPHS",
+            "config": {
+              "fileName": "glyphs.json"
+            }
+          }
+        },
+        {
+          "id": "SVG-font-icons",
+          "target": "./dist/fonts/glyphs.json",
           "destination": "./dist/fonts",
           "format": {
             "type": "SVG_FONT",
             "config": {
               "fontName": "MomentumFontIcon",
-              "fontHeight": 1000
+              "fontHeight": 1000,
+              "normalize": true
             }
           }
         },
         {
           "id": "ttf-icons",
-          "target": "./dist/fonts/*.svg",
+          "target": "./dist/fonts/MomentumFontIcon.svg",
           "destination": "./dist/fonts",
           "format": {
             "type": "TTF",
@@ -159,7 +182,7 @@
         },
         {
           "id": "woff-icons",
-          "target": "./dist/fonts/*.ttf",
+          "target": "./dist/fonts/MomentumFontIcon.ttf",
           "destination": "./dist/fonts",
           "format": {
             "type": "WOFF",
@@ -174,7 +197,7 @@
         },
         {
           "id": "woff2-icons",
-          "target": "./dist/fonts/*.ttf",
+          "target": "./dist/fonts/MomentumFontIcon.ttf",
           "destination": "./dist/fonts",
           "format": {
             "type": "WOFF2",
@@ -188,13 +211,14 @@
           }
         },
         {
-          "id": "Manifest",
-          "target": "./dist/svg/**/*.*",
-          "destination": "./dist/",
+          "id": "swift-icons",
+          "target": "./dist/fonts/glyphs.json",
+          "destination": "./dist/data",
           "format": {
-            "type": "MANIFEST",
+            "type": "SWIFT",
             "config": {
-              "fileName": "manifest.json"
+              "fileName": "Momentum.swift",
+              "hbsPath": "./config/templates/momentum.swift.hbs"
             }
           }
         }
