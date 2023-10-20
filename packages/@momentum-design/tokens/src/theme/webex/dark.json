@@ -44,9 +44,9 @@
               "description": "[Dark Theme]\nTheme Token: color.theme.neutral.surface.primary.active\nCore Token: core.white-alpha.11\nHEX: ffffff 11%\nUsed for pressed/active state of surface-0. Used it for app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
             },
             "disabled": {
-              "value": "{color.core.white-alpha.11}",
+              "value": "{color.core.white-alpha.0}",
               "type": "color",
-              "description": "[Dark Theme]\nTheme Token:color.theme.neutral.surface.primary.disabled\nCore Token: core.white-alpha.11\nHEX: ffffff 11%\nDisabled state of surface-primary. Used it for app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
+              "description": "[Dark Theme]\nTheme Token:color.theme.neutral.surface.primary.disabled\nCore Token: core.white-alpha.0\nHEX: ffffff 0%\nDisabled state of surface-primary. Used it for app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
             }
           },
           "secondary": {
@@ -130,15 +130,15 @@
             "description": "[Dark Theme]\nTheme Token: color.theme.neutral.text.disabled\nCore Token: core.white-alpha.20\nHEX: FFFFFF 20%\nUsed for disabled state for all text"
           },
           "secondary": {
-            "active": {
-              "value": "{color.core.white-alpha.95}",
-              "type": "color",
-              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.text.secondary.active\nCore Token: core.white-alpha.95\nHEX: FFFFFF 95%\nUsed for active state of secondary text."
-            },
             "default": {
               "value": "{color.core.white-alpha.70}",
               "type": "color",
               "description": "[Dark Theme]\nTheme Token:color.theme.neutral.text.secondary.default\nCore Token: core.white-alpha.70\nHEX: FFFFFF 70%\nUsed for secondary text"
+            },
+            "active": {
+              "value": "{color.core.white-alpha.95}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.text.secondary.active\nCore Token: core.white-alpha.95\nHEX: FFFFFF 95%\nUsed for active state of secondary text."
             }
           },
           "fixed": {

@@ -722,6 +722,13 @@
             "type": "color",
             "description": ""
           }
+        },
+        "skeleton": {
+          "normal": {
+            "value": "linear-gradient(123deg, {color.core.black-alpha.20} 14.98%, {color.core.black-alpha.30}  38.98%, {color.core.black-alpha.40} 64.82%, {color.core.black-alpha.50});",
+            "type": "color",
+            "description": "Core Token: black-alpha.20, black-alpha.30, black-alpha.40,black-alpha.50 \nTheme Token: BackgroundSkeleton-noamrl\nlinear-gradient(123deg, {color.core.black-alpha.20} 14.98%, {color.core.black-alpha.30}  38.98%, {color.core.black-alpha.40} 64.82%, {color.core.black-alpha.50});"
+          }
         }
       },
       "button": {
