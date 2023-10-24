@@ -9,6 +9,10 @@ The Momentum Design mono-repository is designed as a single source-of-truth for 
 * [**@momentum-design/illustrations**](https://github.com/momentum-design/momentum-design/tree/main/packages/%40momentum-design/illustrations) - Illustration assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/illustrations)
 * [**@momentum-design/tokens**](https://github.com/momentum-design/momentum-design/tree/main/packages/%40momentum-design/tokens) - Token assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/tokens)
 
+## Consumption
+
+Please see [consumption guide](https://github.com/momentum-design/momentum-design/blob/main/CONSUMPTION.md) for resources on how to consume this project.
+
 ## Contributing
 
 Please see [contributing guide](https://github.com/momentum-design/momentum-design/blob/main/CONTRIBUTING.md) for resources on how to contribute to this project.
