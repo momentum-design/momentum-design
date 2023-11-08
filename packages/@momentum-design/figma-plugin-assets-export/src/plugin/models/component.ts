@@ -4,7 +4,7 @@ import { CONSTANTS } from '../constants';
 import { normaliseObject } from '../utils/object';
 import type { Asset, AssetSetting } from '../../shared/types';
 
-type ReplacementMap = { [key: string]: string | undefined }
+type ReplacementMap = { [key: string]: string | undefined };
 
 class Component {
   node: ComponentNode;
@@ -27,7 +27,8 @@ class Component {
     const rtl = this.variants?.[CONSTANTS.FIGMA_VARIANTS.RTL] === 'true' ? 'rtl' : undefined;
     const sf = this.variants?.[CONSTANTS.FIGMA_VARIANTS.SF_ALTERNATIVE] === 'true' ? 'sf' : undefined;
     const size = this.variants?.[CONSTANTS.FIGMA_VARIANTS.SIZE] === 'default'
-      ? undefined : this.variants?.[CONSTANTS.FIGMA_VARIANTS.SIZE];
+      ? undefined
+      : this.variants?.[CONSTANTS.FIGMA_VARIANTS.SIZE];
 
     const result = {
       [CONSTANTS.REPLACE_TERMS.COMPONENT_NAME]: this.node.name,
@@ -70,6 +71,11 @@ class Component {
     if (name.endsWith('-black')) {
       name = name.replace('-black', '');
     }
+
+    if (fileName.replaceNumbers) {
+      name = name.replace(/[0-9]/g, (digit) => this.convertDigitToWord(digit));
+    }
+
     name += '.';
     name += exportSettings.format;
     return name.toLowerCase();
@@ -90,6 +96,28 @@ class Component {
           reject(err);
         });
     });
+  }
+
+  /**
+   * Converts the given `digit` to the equivalent word
+   * @param digit - the digit to convert as a string
+   * @returns the equivalent word
+   */
+  convertDigitToWord(digit: string): string {
+    const digitMap = {
+      0: 'zero',
+      1: 'one',
+      2: 'two',
+      3: 'three',
+      4: 'four',
+      5: 'five',
+      6: 'six',
+      7: 'seven',
+      8: 'eight',
+      9: 'nine',
+    } as { [key: string]: string };
+
+    return digitMap[digit];
   }
 }
 

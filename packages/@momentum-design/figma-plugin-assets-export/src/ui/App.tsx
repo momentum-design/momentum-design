@@ -24,6 +24,7 @@ function App() {
   } = useStateHandlers();
 
   useWindowMessage(setSettings, setAssetChunks, setExportStatus, setStorageStatus);
+
   return (
     <div className="wrapper">
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />

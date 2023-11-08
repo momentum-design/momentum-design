@@ -19,24 +19,25 @@ interface Props {
 function Settings({ settings, setSettings, storage }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const settingsTextareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const [saving, setIsSaving] = useState<boolean | Error | any>(false);
+  const [error, setError] = useState<Error | null>(null);
 
   const handleEdit = () => {
     setIsEditing(true);
   };
 
   const handleSave = () => {
-    setIsSaving(true);
     try {
       if (settingsTextareaRef.current?.value) {
         const settings: SettingsType = JSON.parse(settingsTextareaRef.current.value);
         setSettings(settings);
         saveSettingsToStorage(parent, settings);
+
         setIsEditing(false);
-        setIsSaving(false);
+        setError(null);
       }
     } catch (e) {
-      setIsSaving(e);
+      setError(e as Error);
+      setIsEditing(false);
       throw e;
     }
   };
@@ -60,7 +61,7 @@ function Settings({ settings, setSettings, storage }: Props) {
         <Button className="action-button" disabled={isEditing} onClick={handleEdit}>
           Edit
         </Button>
-        <Button className="action-button" disabled={!isEditing || !!saving} onClick={handleSave}>
+        <Button className="action-button" disabled={!isEditing} onClick={handleSave}>
           Save
         </Button>
         <Button
@@ -71,7 +72,7 @@ function Settings({ settings, setSettings, storage }: Props) {
           Restore default settings
         </Button>
       </Row>
-      {saving?.message ? (<Row><p>{saving.message}</p></Row>) : null}
+      {error?.message ? (<Row><p>{error.message}</p></Row>) : null}
     </div>
   );
 }

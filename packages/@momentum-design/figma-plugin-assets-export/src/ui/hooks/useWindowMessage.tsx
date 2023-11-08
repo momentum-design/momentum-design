@@ -19,7 +19,7 @@ const useWindowMessage = (setSettings: any, setAssets: any, setExporting: any, s
       } else if (e.data.pluginMessage?.type === 'storage') {
         setStorage(e.data.pluginMessage.data);
       } else if (e.data.pluginMessage?.type === 'export') {
-        setExporting('inprogress');
+        setExporting('Calculating Changes In Progress');
       }
     };
     // eslint-disable-next-line no-restricted-globals
