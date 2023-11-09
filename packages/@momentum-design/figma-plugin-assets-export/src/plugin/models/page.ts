@@ -32,6 +32,7 @@ class Page {
 
     let returnValue;
     let lastComponentNodeItIsGoingThrough;
+
     try {
       returnValue = componentNodes.filter((n) => {
         lastComponentNodeItIsGoingThrough = n.parent?.name;
@@ -45,7 +46,6 @@ class Page {
       );
     }
 
-    /* @ts-ignore */
     return returnValue;
   }
 

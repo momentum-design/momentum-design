@@ -103,7 +103,7 @@ class Component {
    * @param digit - the digit to convert as a string
    * @returns the equivalent word
    */
-  convertDigitToWord(digit: string): string {
+  private convertDigitToWord(digit: string): string {
     const digitMap = {
       0: 'zero',
       1: 'one',

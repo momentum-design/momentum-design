@@ -70,7 +70,7 @@ const useExportFlow = ({
               onExportFailure(
                 new Error(
                   `No response after creating PR. 
-                Likely that there are no changes to commit, which is not creating a PR.`,
+                Likely no changes to commit, which is not creating a PR.`,
                 ),
               );
               return;
