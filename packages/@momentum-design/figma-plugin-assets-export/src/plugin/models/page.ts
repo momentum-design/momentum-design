@@ -29,9 +29,24 @@ class Page {
     if (!exclude) {
       return componentNodes;
     }
-    return componentNodes.filter(
-      (n) => !(normaliseObject(n.variantProperties)?.[exclude.byVariant] === 'true'),
-    );
+
+    let returnValue;
+    let lastComponentNodeItIsGoingThrough;
+
+    try {
+      returnValue = componentNodes.filter((n) => {
+        lastComponentNodeItIsGoingThrough = n.parent?.name;
+        return !(normaliseObject(n.variantProperties)?.[exclude.byVariant] === 'true');
+      });
+    } catch (e) {
+      throw new Error(
+        `Error while filtering components by variant property "${exclude.byVariant}". 
+        Component: ${lastComponentNodeItIsGoingThrough}. 
+        Error: ${e}`,
+      );
+    }
+
+    return returnValue;
   }
 
   get components(): Components {
