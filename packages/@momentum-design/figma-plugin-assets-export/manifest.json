@@ -9,7 +9,8 @@
   "ui": "dist/index.html",
   "networkAccess": {
     "allowedDomains": [
-      "https://github.com"
+      "https://github.com",
+      "https://api.github.com/"
     ],
     "reasoning": "Needed to connect to git repository"
   }

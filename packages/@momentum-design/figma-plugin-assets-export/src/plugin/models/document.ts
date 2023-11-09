@@ -3,6 +3,7 @@
 import Page from './page';
 import { CONSTANTS } from '../constants';
 import type { Asset, AssetSetting, MapPagesToFolder } from '../../shared/types';
+import { DEFAULTS } from '../../shared/export-constants';
 
 class Document {
   node: DocumentNode;
@@ -52,7 +53,7 @@ class Document {
   }
 
   createChunks(array: Array<any>): Array<Array<any>> {
-    const chunkSize = 500;
+    const chunkSize = DEFAULTS.CHUNK_SIZE;
     const chunks = [];
     for (let i = 0; i < array.length; i += chunkSize) {
       chunks.push(array.slice(i, i + chunkSize));
