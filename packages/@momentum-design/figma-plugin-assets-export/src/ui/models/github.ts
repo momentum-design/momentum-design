@@ -129,8 +129,7 @@ class Github {
     const promises = pathInformationOfFolders.map(async ({ sha, path: folderPath }) => {
       if (sha && folderPath) {
         return this.getDataTree(sha).then(({ data }) => {
-          console.log(data);
-          filePaths.push(data.tree.map((file: any) => [folderPath, file.path].join('/')));
+          filePaths.push(...data.tree.map((file: any) => [folderPath, file.path].join('/')));
           return data;
         });
       }
