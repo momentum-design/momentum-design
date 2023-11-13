@@ -217,7 +217,7 @@
           "format": {
             "type": "SWIFT",
             "config": {
-              "fileName": "Momentum.swift",
+              "fileName": "MomentumIconsType.swift",
               "hbsPath": "./config/templates/momentum.swift.hbs"
             }
           }
