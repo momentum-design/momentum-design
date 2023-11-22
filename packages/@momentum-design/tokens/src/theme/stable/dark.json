@@ -34,9 +34,8 @@
           },
           "inverted": {
             "normal": {
-              "value": "{color.core.black-alpha.60}",
-              "type": "color",
-              "description": ""
+              "value": "{color.core.black-alpha.70}",
+              "type": "color"
             }
           }
         },
@@ -150,19 +149,16 @@
           },
           "orange": {
             "normal": {
-              "value": "{color.core.orange.30}",
-              "type": "color",
-              "description": ""
+              "value": "{color.core.orange.40}",
+              "type": "color"
             },
             "hover": {
-              "value": "{color.core.orange.10}",
-              "type": "color",
-              "description": ""
+              "value": "{color.core.orange.20}",
+              "type": "color"
             },
             "active": {
-              "value": "{color.core.orange.10}",
-              "type": "color",
-              "description": ""
+              "value": "{color.core.orange.20}",
+              "type": "color"
             }
           }
         },

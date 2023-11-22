@@ -933,11 +933,9 @@
         },
         "gradient": {
           "active": {
-            "": {
-              "value": "linear-gradient(44deg, {color.core.blue.50} 14.64%, {color.decorative.cyan.50} 51.1%, {color.core.green.40} 85.36%);",
-              "type": "color",
-              "description": "Theme Token: OutlineGradient-active\nCore Token: blue-50, cyan-50, green-40\nUsed for Webex Assitant AI , Halo Effect"
-            }
+            "value": "linear-gradient(44deg, {color.core.blue.50} 14.64%, {color.decorative.cyan.50} 51.1%, {color.core.green.40} 85.36%);",
+            "type": "color",
+            "description": "Theme Token: OutlineGradient-active\nCore Token: blue-50, cyan-50, green-40\nUsed for Webex Assitant AI , Halo Effect"
           }
         },
         "share": {
