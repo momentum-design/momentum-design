@@ -16,6 +16,7 @@ import Foundation
     public var ligature: String {
         switch self {
         case ._invalid: return ""
+        case .unhandledCase: return ""
         {{#each glyphsData}}
         case .{{camelCase name}}: return "{{iosCharCode codepointHexa}}"
         {{/each}}
@@ -30,6 +31,7 @@ import Foundation
     public var filename: String {
         switch self {
         case ._invalid: return ""
+        case .unhandledCase: return ""
         {{#each glyphsData}}
         case .{{camelCase name}}: return "{{name}}"
         {{/each}}
