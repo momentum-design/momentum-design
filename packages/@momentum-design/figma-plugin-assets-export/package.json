@@ -26,8 +26,8 @@
     "publish:npmjs": "echo \"script 'publish:npmjs' has not been implemented\"",
     "test": "yarn test:prebuild && yarn test:postbuild",
     "test:unit": "jest",
-    "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\"",
-    "test:postbuild": "npm run test:unit",
+    "test:prebuild": "npm run test:unit",
+    "test:postbuild": "echo \"script 'test:postbuild' has not been implemented\"",
     "dev": "concurrently -n tsc,build,vite 'npm:tsc:watch' 'npm:build:watch' 'vite'"
   },
   "devDependencies": {
