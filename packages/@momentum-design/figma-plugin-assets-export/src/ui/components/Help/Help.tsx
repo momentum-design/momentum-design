@@ -1,8 +1,8 @@
 /* eslint-disable max-len */
-import React, { useRef } from 'react';
-import Button from '../Button/Button';
+import React, { useRef } from "react";
+import Button from "../Button/Button";
 
-import './Help.css';
+import "./Help.css";
 
 interface Props {
   tooltipContent?: React.ReactNode;
@@ -20,8 +20,12 @@ function Help({ tooltipContent }: Props) {
 
   return (
     <div className="tooltip">
-      <Button onClick={handleButtonClick} title="Help">?</Button>
-      <dialog ref={dialogRef} onClick={handleDialogClick} className="tooltipcontent"><div id="inner-content">{tooltipContent}</div></dialog>
+      <Button onClick={handleButtonClick} title="Help">
+        ?
+      </Button>
+      <dialog ref={dialogRef} onClick={handleDialogClick} className="tooltipcontent" data-testid="dialog">
+        <div id="inner-content">{tooltipContent}</div>
+      </dialog>
     </div>
   );
 }
