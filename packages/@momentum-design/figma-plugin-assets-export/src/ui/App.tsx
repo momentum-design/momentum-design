@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import './App.css';
-import { Tabs, Footer } from './components';
-import Export from './sections/export/Export';
-import Settings from './sections/settings/Settings';
-import Tools from './sections/tools/Tools';
-import type { TabType } from './types';
-import { useStateHandlers } from './hooks/useStateHandlers';
-import { useWindowMessage } from './hooks/useWindowMessage';
+import React, { useState } from "react";
+import "./App.css";
+import { Tabs, Footer } from "./components";
+import Export from "./sections/export/Export";
+import Settings from "./sections/settings/Settings";
+import Tools from "./sections/tools/Tools";
+import type { TabType } from "./types";
+import { useStateHandlers } from "./hooks/useStateHandlers";
+import { useWindowMessage } from "./hooks/useWindowMessage";
 
 function App() {
   const [selectedAssetSettingId, setSelectedAssetSettingId] = useState<string | undefined>(undefined);
 
-  const [activeTab, setActiveTab] = useState<TabType>('export');
+  const [activeTab, setActiveTab] = useState<TabType>("export");
   const {
     settings,
     setSettings,
@@ -29,7 +29,7 @@ function App() {
     <div className="wrapper">
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
       <div className="content">
-        {activeTab === 'export' && settings && (
+        {activeTab === "export" && settings && (
           <Export
             selectedAssetSettingId={selectedAssetSettingId}
             setSelectedAssetSettingId={setSelectedAssetSettingId}
@@ -39,8 +39,8 @@ function App() {
             setExportStatus={setExportStatus}
           />
         )}
-        {activeTab === 'tools' && <Tools />}
-        {activeTab === 'settings' && (
+        {activeTab === "tools" && <Tools settings={settings} />}
+        {activeTab === "settings" && (
           <Settings
             settings={settings}
             setSettings={setSettings}

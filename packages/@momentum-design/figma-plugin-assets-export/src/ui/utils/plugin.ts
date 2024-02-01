@@ -1,20 +1,27 @@
-import { ACTIONS } from '../../shared/action-constants';
-import type { AssetSetting, Settings } from '../../shared/types';
+import { ACTIONS } from "../../shared/action-constants";
+import type { AssetSetting, Settings } from "../../shared/types";
 
 const requestSettingsFromStorage = (parent: Window) => {
-  parent.postMessage({ pluginMessage: { type: ACTIONS.GET_SETTINGS } }, '*');
+  parent.postMessage({ pluginMessage: { type: ACTIONS.GET_SETTINGS } }, "*");
 };
 
 const saveSettingsToStorage = (parent: Window, settings: Settings) => {
-  parent.postMessage({ pluginMessage: { type: ACTIONS.SET_SETTINGS, settings } }, '*');
+  parent.postMessage({ pluginMessage: { type: ACTIONS.SET_SETTINGS, settings } }, "*");
 };
 
 const exportData = (parent: Window, assetSetting: AssetSetting) => {
-  parent.postMessage({ pluginMessage: { type: ACTIONS.EXPORT, assetSetting } }, '*');
+  parent.postMessage({ pluginMessage: { type: ACTIONS.EXPORT, assetSetting } }, "*");
 };
 
 const prCreated = (parent: Window, pullRequest: any) => {
-  parent.postMessage({ pluginMessage: { type: ACTIONS.PR_CREATED, pullRequest } }, '*');
+  parent.postMessage({ pluginMessage: { type: ACTIONS.PR_CREATED, pullRequest } }, "*");
 };
 
-export { requestSettingsFromStorage, saveSettingsToStorage, exportData, prCreated };
+const gTagDetector = (parent: Window, assetSetting: any) => {
+  parent.postMessage({ pluginMessage: { type: ACTIONS.G_TAG, assetSetting } }, "*");
+};
+
+const linkRedirect = (parent: Window) => {
+  parent.postMessage({ pluginMessage: { type: ACTIONS.G_TAG_LINK } }, "*");
+};
+export { requestSettingsFromStorage, saveSettingsToStorage, exportData, prCreated, gTagDetector, linkRedirect };

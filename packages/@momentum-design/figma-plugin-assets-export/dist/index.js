@@ -26,7 +26,9 @@
     GET_SETTINGS: "storage_get_settings",
     SET_SETTINGS: "storage_set_settings",
     EXPORT: "export",
-    PR_CREATED: "pr_created"
+    PR_CREATED: "pr_created",
+    G_TAG: "tag_detector",
+    G_TAG_LINK: "tag_link"
   };
 
   // src/plugin/constants.ts
@@ -352,6 +354,15 @@
       const assetChunks = yield document.getAssetChunksFromPages();
       figma.ui.postMessage({ type: "assets", data: assetChunks }, { origin: "*" });
       figma.ui.postMessage({ type: "export" }, { origin: "*" });
+    }
+    if (msg.type === ACTIONS.G_TAG) {
+      const document = new document_default(figma.root, msg.assetSetting);
+      const assetChunks = yield document.getAssetChunksFromPages();
+      figma.ui.postMessage({ type: "tagAssets", data: assetChunks }, { origin: "*" });
+    }
+    if (msg.type === ACTIONS.G_TAG_LINK) {
+      figma.ui.close();
+      figma.viewport.scrollAndZoomIntoView([figma.root]);
     }
     if (msg.type === ACTIONS.SET_SETTINGS) {
       figma.ui.postMessage({ type: "storage", data: "inprogress" }, { origin: "*" });
