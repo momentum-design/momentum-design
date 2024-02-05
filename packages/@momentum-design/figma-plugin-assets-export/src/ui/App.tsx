@@ -39,7 +39,7 @@ function App() {
             setExportStatus={setExportStatus}
           />
         )}
-        {activeTab === "tools" && <Tools settings={settings} />}
+        {activeTab === "tools" && <Tools settings={settings} selectedAssetSettingId={selectedAssetSettingId} />}
         {activeTab === "settings" && (
           <Settings
             settings={settings}

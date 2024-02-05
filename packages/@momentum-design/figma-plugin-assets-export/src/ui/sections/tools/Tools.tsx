@@ -1,19 +1,21 @@
-import React, { useEffect, useRef, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import classnames from "classnames";
 import { Button, Row, RunIcon } from "../../components";
 import List from "../../components/List/List";
 import { gTagDetector, linkRedirect } from "../../utils/plugin";
+import { AssetType } from "../../../shared/action-constants";
 import "./Tools.css";
 
 interface Props {
   settings: any;
+  selectedAssetSettingId: any;
 }
 
-function Tools({ settings }: Props) {
+function Tools({ settings, selectedAssetSettingId }: Props) {
   const gTag = "<g> Detector";
-  const [show, setShow] = useState(false);
-  const [data, setData] = useState([]);
-  const selectedAssetSetting = useMemo(() => settings?.assets["icons"] || undefined, [settings]);
+  const [show, setShow] = useState<boolean>(false);
+  const [data, setData] = useState<any[]>([]);
+  const selectedAssetSetting = useMemo(() => settings?.assets[selectedAssetSettingId] || undefined, [settings]);
   useEffect(() => {
     window.onmessage = (e: {
       data: {
@@ -24,11 +26,10 @@ function Tools({ settings }: Props) {
       };
     }) => {
       if (e.data.pluginMessage?.type === "tagAssets") {
-        console.log(e?.data?.pluginMessage?.data);
         e?.data?.pluginMessage?.data?.map((data: any) => {
-          data.map((d: any) => {
-            if (d.path.includes("<g>")) {
-              setData(d.path);
+          data?.map((d: any) => {
+            if (d?.data?.includes("<g>")) {
+              setData((prev) => [...prev, d.path]);
             }
           });
         });
@@ -61,9 +62,15 @@ function Tools({ settings }: Props) {
           </Button>
         </Row>
         <Row type="large" className="tools-row">
-          <p className={classnames("bold-text", "")}>{gTag}</p>
-          <Button className="right-aligned-button" onClick={tagClick}>
-            <RunIcon />
+          <p className={classnames("bold-text", selectedAssetSettingId !== AssetType.Icons ? "disabled-text" : "")}>
+            {gTag}
+          </p>
+          <Button
+            className="right-aligned-button"
+            onClick={tagClick}
+            disabled={selectedAssetSettingId !== AssetType.Icons}
+          >
+            <RunIcon disabled={selectedAssetSettingId !== AssetType.Icons} />
           </Button>
         </Row>
       </List>
@@ -73,10 +80,16 @@ function Tools({ settings }: Props) {
             <span className="close" onClick={modalClose}>
               &times;
             </span>
-            <p>Icons List</p>
-            <a className="link" onClick={linkClick}>
-              {data}
-            </a>
+            <p className="bold">Icons List</p>
+            {data?.length > 0 ? (
+              data.map((d, index) => (
+                <a key={index} className="link" onClick={linkClick}>
+                  {d}
+                </a>
+              ))
+            ) : (
+              <p>No tags detected.</p>
+            )}
           </div>
         </div>
       )}

@@ -7,4 +7,8 @@ const ACTIONS = {
   G_TAG_LINK: "tag_link",
 };
 
-export { ACTIONS };
+const AssetType = {
+  Icons: "icons",
+};
+
+export { ACTIONS, AssetType };

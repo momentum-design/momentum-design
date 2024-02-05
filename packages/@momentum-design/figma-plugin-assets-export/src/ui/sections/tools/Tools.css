@@ -56,6 +56,9 @@
   font-size: 28px;
   font-weight: bold;
 }
+.bold {
+  font-weight: bold;
+}
 
 .close:hover,
 .close:focus {
@@ -66,4 +69,5 @@
 .link {
   text-decoration: underline;
   cursor: pointer;
+  display: block;
 }
