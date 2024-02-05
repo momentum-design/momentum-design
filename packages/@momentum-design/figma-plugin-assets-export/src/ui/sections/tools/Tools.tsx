@@ -28,7 +28,7 @@ function Tools({ settings, selectedAssetSettingId }: Props) {
       if (e.data.pluginMessage?.type === "tagAssets") {
         e?.data?.pluginMessage?.data?.map((data: any) => {
           data?.map((d: any) => {
-            if (d?.data?.includes("<g>")) {
+            if (d?.data?.includes("<g")) {
               setData((prev) => [...prev, d.path]);
             }
           });
