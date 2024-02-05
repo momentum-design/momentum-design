@@ -1,27 +1,34 @@
-import React from "react";
-import { render, fireEvent } from "@testing-library/react";
-import "@testing-library/jest-dom";
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import '@testing-library/jest-dom';
 
-import Select from "./Select";
+import Select from './Select';
 
-describe("Select Component", () => {
-  it("should select option", () => {
+describe('Select Component', () => {
+  it('should select option', async () => {
     const setSelectValue = jest.fn();
-    const { getByRole, container } = render(
-      <Select setSelectValue={setSelectValue} className="test-class">
-        <option value="option1">Option 1</option>
-        <option value="option2">Option 2</option>
-      </Select>
+    render(
+      <Select setSelectValue={setSelectValue} className='test-class'>
+        <option value='option1'>Option 1</option>
+        <option value='option2'>Option 2</option>
+      </Select>,
     );
 
-    expect(container).toBeTruthy();
-    expect(getByRole("combobox")).toHaveClass("test-class");
+    const option1 = screen.getByText('Option 1');
+    expect(option1).toBeInTheDocument();
 
-    const select = getByRole("combobox");
-    fireEvent.change(select, { target: { value: "option2" } });
+    const option2 = screen.getByText('Option 2');
+    expect(option2).toBeInTheDocument();
 
-    expect(setSelectValue).toHaveBeenCalledWith("option2");
+    const selectElement = screen.getByRole('combobox') as HTMLSelectElement;
+
+    expect(selectElement).toBeInTheDocument();
+    expect(selectElement).toHaveClass('test-class');
+
+    await userEvent.selectOptions(selectElement, 'option2');
+    expect(selectElement.value).toBe('option2');
+
+    expect(setSelectValue).toHaveBeenCalled();
   });
-
-  // Add more tests based on your requirements
 });

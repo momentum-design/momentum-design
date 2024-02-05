@@ -1,54 +1,56 @@
-import React from "react";
+import React from 'react';
 
-import { render, fireEvent, screen } from "@testing-library/react";
-import "@testing-library/jest-dom";
-import Tab from "./Tab";
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import '@testing-library/jest-dom';
+import Tab from './Tab';
 
-describe("Tab Component", () => {
-  it("should render without crashing", () => {
+describe('Tab Component', () => {
+  it('should render without crashing', () => {
     render(
       <Tab active={false} handleClick={() => {}}>
         Test Tab
-      </Tab>
+      </Tab>,
     );
-    expect(screen.getByRole("button")).toBeTruthy();
+    expect(screen.getByRole('button')).toBeInTheDocument();
   });
 
-  it("should render children correctly", () => {
+  it('should render children correctly', () => {
     render(
       <Tab active={false} handleClick={() => {}}>
         Test Tab
-      </Tab>
+      </Tab>,
     );
-    expect(screen.getByText("Test Tab")).toBeTruthy();
+    expect(screen.getByText('Test Tab')).toBeInTheDocument();
   });
 
   it('should have "active" class when active prop is passed', () => {
     render(
       <Tab active={true} handleClick={() => {}}>
         Test Tab
-      </Tab>
+      </Tab>,
     );
-    expect(screen.getByText("Test Tab")).toHaveClass("active");
+    expect(screen.getByText('Test Tab')).toHaveClass('active');
   });
 
   it('should not have "active" class when active prop is not passed', () => {
     render(
       <Tab active={false} handleClick={() => {}}>
         Test Tab
-      </Tab>
+      </Tab>,
     );
-    expect(screen.getByText("Test Tab")).not.toHaveClass("active");
+    expect(screen.getByText('Test Tab')).not.toHaveClass('active');
   });
 
-  it("should call handleClick when clicked", () => {
+  it('should call handleClick when clicked', async () => {
     const handleClick = jest.fn();
+    const user = userEvent.setup();
     render(
       <Tab active={false} handleClick={handleClick}>
         Test Tab
-      </Tab>
+      </Tab>,
     );
-    fireEvent.click(screen.getByText("Test Tab"));
+    await user.click(screen.getByText('Test Tab'));
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 });
