@@ -4,8 +4,8 @@ import './Footer.css';
 
 function Footer() {
   return (
-    <div className="footer">
-      <p className="copyright">Made with ❤️ by <b>Momentum-Engineering</b></p>
+    <div className='footer' data-testid='footer'>
+      <p className='copyright'>Made with ❤️ by <b>Momentum-Engineering</b></p>
     </div>
   );
 }
