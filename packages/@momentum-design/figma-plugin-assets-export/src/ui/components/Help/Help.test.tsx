@@ -10,16 +10,19 @@ describe('Help Component', () => {
     const user = userEvent.setup();
     render(<Help tooltipContent='test tooltip' />);
     const mockShowModal = jest.fn();
+    const mockCloseModal = jest.fn();
     window.HTMLDialogElement.prototype.showModal = mockShowModal;
+    window.HTMLDialogElement.prototype.close = mockCloseModal;
 
     const button = screen.getByTitle('Help');
+    const dialog = screen.getByTestId('dialog');
     expect(button).toBeInTheDocument();
-
-    const dialog = screen.queryByRole('dialog') as HTMLDialogElement;
-    expect(dialog).not.toBeInTheDocument();
+    expect(dialog).toBeInTheDocument();
 
     await user.click(button);
-
     expect(mockShowModal).toHaveBeenCalled();
+
+    await user.click(dialog);
+    expect(mockCloseModal).toHaveBeenCalled();
   });
 });
