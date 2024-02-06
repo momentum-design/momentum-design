@@ -45,6 +45,7 @@ function Tools({ settings, selectedAssetSettingId }: Props) {
   };
   const modalClose = () => {
     setShow(false);
+    setData([]);
   };
   return (
     <div className="tools">
