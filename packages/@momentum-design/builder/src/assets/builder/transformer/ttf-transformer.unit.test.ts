@@ -1,3 +1,4 @@
+import path from 'path';
 import type { Formats, TTFFormat } from '../types';
 import Transformer from './transformer';
 import TTFTransformer from './ttf-transformer';
@@ -9,7 +10,7 @@ describe('@momentum-design/builder - TTF Font Transformer', () => {
   const FORMAT: Formats = { config: { fontName: FONT_NAME }, type: 'TTF' } as TTFFormat;
 
   beforeEach(() => {
-    transformer = new TTFTransformer(FORMAT, '/dist');
+    transformer = new TTFTransformer(FORMAT, 'dist');
     // @ts-ignore
     jest.spyOn(transformer.logger, 'debug').mockImplementation(() => {});
   });
@@ -21,14 +22,14 @@ describe('@momentum-design/builder - TTF Font Transformer', () => {
 
     it('should mount the format provided to the class object', () => {
       expect(transformer.format).toBe(FORMAT);
-      expect(transformer.destination).toBe('/dist');
+      expect(transformer.destination).toBe('dist');
     });
   });
 
   describe('generateTTFFont', () => {
     it('returns the correct result', () => {
       const result = transformer.generateTTFFont(mockSVGFontBuffer);
-      expect(result).toEqual({ fileCreated: '/dist/MyFont.ttf', data: expect.any(Object) });
+      expect(result).toEqual({ fileCreated: path.join('dist', 'MyFont.ttf'), data: expect.any(Object) });
     });
   });
   describe('transformFilesSync', () => {
@@ -41,8 +42,8 @@ describe('@momentum-design/builder - TTF Font Transformer', () => {
       expect(transformer.outputFiles).toEqual([
         {
           data: expect.any(Object),
-          distPath: '/dist/MyFont.ttf',
-          srcPath: '/dist/MyFont.ttf',
+          distPath: path.join('dist', 'MyFont.ttf'),
+          srcPath: path.join('dist', 'MyFont.ttf'),
         },
       ]);
     });

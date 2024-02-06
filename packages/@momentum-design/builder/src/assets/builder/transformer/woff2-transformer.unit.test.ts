@@ -1,3 +1,4 @@
+import path from 'path';
 import type { Formats, WOFF2Format } from '../types';
 import Transformer from './transformer';
 import { mockSVGFontBuffer } from '../../../test/fixtures/transformer.fixtures';
@@ -8,11 +9,11 @@ describe('@momentum-design/builder - WOFF2 Font Transformer', () => {
   let transformer: WOFF2Transformer;
   const FORMAT: Formats = { config: { fontName: 'MyFont' }, type: 'WOFF2' } as WOFF2Format;
 
-  const svgTransformer = new TTFTransformer({ type: 'TTF', config: { fontName: 'MyFont' } }, '/dist');
+  const svgTransformer = new TTFTransformer({ type: 'TTF', config: { fontName: 'MyFont' } }, 'dist');
   const ttfBuffer = svgTransformer.generateTTFFont(mockSVGFontBuffer).data;
 
   beforeEach(() => {
-    transformer = new WOFF2Transformer(FORMAT, '/dist');
+    transformer = new WOFF2Transformer(FORMAT, 'dist');
     // @ts-ignore
     jest.spyOn(transformer.logger, 'debug').mockImplementation(() => {});
   });
@@ -24,14 +25,14 @@ describe('@momentum-design/builder - WOFF2 Font Transformer', () => {
 
     it('should mount the format provided to the class object', () => {
       expect(transformer.format).toBe(FORMAT);
-      expect(transformer.destination).toBe('/dist');
+      expect(transformer.destination).toBe('dist');
     });
   });
 
   describe('generateWOFF2Font', () => {
     it('returns the correct result', async () => {
       const result = await transformer.generateWOFF2Font(ttfBuffer);
-      expect(result).toEqual({ fileCreated: '/dist/MyFont.woff2', data: expect.any(Object) });
+      expect(result).toEqual({ fileCreated: path.join('dist', 'MyFont.woff2'), data: expect.any(Object) });
     });
   });
 
@@ -45,8 +46,8 @@ describe('@momentum-design/builder - WOFF2 Font Transformer', () => {
       expect(transformer.outputFiles).toEqual([
         {
           data: expect.any(Object),
-          distPath: '/dist/MyFont.woff2',
-          srcPath: '/dist/MyFont.woff2',
+          distPath: path.join('dist', 'MyFont.woff2'),
+          srcPath: path.join('dist', 'MyFont.woff2'),
         },
       ]);
     });
