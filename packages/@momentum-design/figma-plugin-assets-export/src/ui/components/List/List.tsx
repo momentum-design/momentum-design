@@ -7,7 +7,7 @@ interface Props {
 }
 
 function List({ children }: Props) {
-  return <div className="list">{children}</div>;
+  return <div data-testid='list' className='list'>{children}</div>;
 }
 
 export default List;
