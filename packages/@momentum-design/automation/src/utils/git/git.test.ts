@@ -8,7 +8,7 @@ describe('@momentum-design/automation - utils.Git', () => {
       const commit = { value: 1, name: 'name-example', valid: true };
       const commitString = ` ${JSON.stringify(commit)} `;
       const commitsString = [commitString, commitString, commitString];
-      const commits = commitsString.map((c: string) => JSON.parse(c.trim()));
+      const commits = commitsString.map((c: string) => JSON.parse(JSON.stringify(c.trim().replace(/["']/g, ''))));
 
       it('should convert the provided commits to a JSON object', () => {
         expect(Git.commitsToJson(commitsString)).toMatchObject(commits);
@@ -20,7 +20,7 @@ describe('@momentum-design/automation - utils.Git', () => {
       const format = JSON.stringify(Git.CONSTANTS.FORMAT);
       const offset = count + Git.CONSTANTS.COMMIT_INDEX_OFFSET;
       const runResults = '{ "a": "a", "b": "b" }\n{ "a": "a", "b": "b" }\n{ "a": "a", "b": "b" }';
-      const rto = runResults.split('\n').map((line) => JSON.parse(line.trim()));
+      const rto = runResults.split('\n').map((line) => JSON.parse(JSON.stringify(line.trim().replace(/["']/g, ''))));
       let commitsToJsonSpy: jest.SpyInstance;
       let resultsToArraySpy: jest.SpyInstance;
       let runSpy: jest.SpyInstance;
