@@ -2050,6 +2050,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@momentum-design/brand-visuals@workspace:packages/@momentum-design/brand-visuals":
+  version: 0.0.0-use.local
+  resolution: "@momentum-design/brand-visuals@workspace:packages/@momentum-design/brand-visuals"
+  languageName: unknown
+  linkType: soft
+
 "@momentum-design/builder@workspace:^, @momentum-design/builder@workspace:packages/@momentum-design/builder":
   version: 0.0.0-use.local
   resolution: "@momentum-design/builder@workspace:packages/@momentum-design/builder"
