@@ -2,50 +2,32 @@ import React, { useEffect, useState, useMemo } from "react";
 import classnames from "classnames";
 import { Button, Row, RunIcon } from "../../components";
 import List from "../../components/List/List";
-import { gTagDetector, linkRedirect } from "../../utils/plugin";
+import { gTagDetector } from "../../utils/plugin";
 import { AssetType } from "../../../shared/action-constants";
 import "./Tools.css";
 
 interface Props {
   settings: any;
   selectedAssetSettingId: any;
+  gTagAsset: any;
+  setGTagAsset: any;
 }
 
-function Tools({ settings, selectedAssetSettingId }: Props) {
+function Tools({ settings, selectedAssetSettingId, gTagAsset, setGTagAsset }: Props) {
   const gTag = "<g> Detector";
   const [show, setShow] = useState<boolean>(false);
-  const [data, setData] = useState<any[]>([]);
+  const [gTagData, setGTagData] = useState<any[]>([]);
   const selectedAssetSetting = useMemo(() => settings?.assets[selectedAssetSettingId] || undefined, [settings]);
   useEffect(() => {
-    window.onmessage = (e: {
-      data: {
-        pluginMessage: {
-          type: string;
-          data: any;
-        };
-      };
-    }) => {
-      if (e.data.pluginMessage?.type === "tagAssets") {
-        e?.data?.pluginMessage?.data?.map((data: any) => {
-          data?.map((d: any) => {
-            if (d?.data?.includes("<g")) {
-              setData((prev) => [...prev, d.path]);
-            }
-          });
-        });
-      }
-    };
-  }, []);
+    setGTagData(gTagAsset);
+  }, [gTagAsset]);
   const tagClick = () => {
     gTagDetector(parent, selectedAssetSetting);
     setShow(true);
   };
-  const linkClick = () => {
-    linkRedirect(parent);
-  };
   const modalClose = () => {
     setShow(false);
-    setData([]);
+    setGTagAsset([]);
   };
   return (
     <div className="tools">
@@ -82,10 +64,10 @@ function Tools({ settings, selectedAssetSettingId }: Props) {
               &times;
             </span>
             <p className="bold">Icons List</p>
-            {data?.length > 0 ? (
-              data.map((d, index) => (
-                <a key={index} className="link" onClick={linkClick}>
-                  {d}
+            {gTagData?.length > 0 ? (
+              gTagData.map((tag, index) => (
+                <a key={index} className="link">
+                  {tag}
                 </a>
               ))
             ) : (

@@ -21,7 +21,4 @@ const gTagDetector = (parent: Window, assetSetting: any) => {
   parent.postMessage({ pluginMessage: { type: ACTIONS.G_TAG, assetSetting } }, "*");
 };
 
-const linkRedirect = (parent: Window) => {
-  parent.postMessage({ pluginMessage: { type: ACTIONS.G_TAG_LINK } }, "*");
-};
-export { requestSettingsFromStorage, saveSettingsToStorage, exportData, prCreated, gTagDetector, linkRedirect };
+export { requestSettingsFromStorage, saveSettingsToStorage, exportData, prCreated, gTagDetector };

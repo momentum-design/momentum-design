@@ -43,18 +43,17 @@
 }
 
 .modal-content {
-  background-color: #fefefe;
+  background-color: var(--figma-color-bg);
   margin: auto;
   padding: 20px;
-  border: 1px solid #888;
+  border: 1px solid var(--figma-color-border);
   width: 80%;
 }
 
 .close {
-  color: #aaaaaa;
+  color: var(--figma-color-icon);
   float: right;
-  font-size: 28px;
-  font-weight: bold;
+  font-size: 24px;
 }
 .bold {
   font-weight: bold;
@@ -62,7 +61,7 @@
 
 .close:hover,
 .close:focus {
-  color: #000;
+  color: var(--figma-color-icon-hover);
   text-decoration: none;
   cursor: pointer;
 }

@@ -36,10 +36,6 @@ figma.ui.onmessage = async (msg) => {
     const assetChunks = await document.getAssetChunksFromPages();
     figma.ui.postMessage({ type: "tagAssets", data: assetChunks }, { origin: "*" });
   }
-  if (msg.type === ACTIONS.G_TAG_LINK) {
-    figma.ui.close();
-    figma.viewport.scrollAndZoomIntoView([figma.root]);
-  }
   if (msg.type === ACTIONS.SET_SETTINGS) {
     figma.ui.postMessage({ type: "storage", data: "inprogress" }, { origin: "*" });
 
