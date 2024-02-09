@@ -48,7 +48,7 @@ class CreateRelease extends Command {
       logger.info(`Compressed archive: ${dist}`);
       const title = packdef.name;
       const { version } = packdef.definition;
-      const tag = `${pkg} - v${version}`;
+      const tag = `${pkg}@${version}`;
       logger.info(`Getting commit history with commit index: ${config['commit-index']}`);
       const commitLog = await Git.list(config['commit-index']);
       const notes = commitLog.map(({ subject }) => subject).join('\n')
@@ -65,7 +65,7 @@ class CreateRelease extends Command {
       releases.map(
         async (
           release,
-        ) => `Released: ${await Git.release(release.dist, release.tag, release.title, release.notes)}`,
+        ) => `Released: ${await Git.release(release.tag, release.title, release.notes, release.dist)}`,
       ),
     );
     result.forEach((res) => {
