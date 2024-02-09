@@ -7,7 +7,7 @@ import type { Changes, ListItem } from './types';
 class Git {
   public static commitsToJson(commits: Array<string>): Array<ListItem> {
     return commits.filter(((line) => !!line))
-      .map((line) => JSON.parse(line.trim()));
+      .map((line) => JSON.parse(JSON.stringify(line.trim().replace(/["']/g, ''))));
   }
 
   public static list(index: number = Git.CONSTANTS.MAX_COMMITS): Promise<Array<ListItem>> {
