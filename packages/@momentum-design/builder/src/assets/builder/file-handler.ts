@@ -110,7 +110,7 @@ class FileHandler {
    * @param cb - callback which will provide `error` & `filePaths` as args
    */
   public getFilePathsInFolder(globPattern: string, cb: (error: Error | null, filePaths: string[]) => void): void {
-    glob(globPattern, {}, cb);
+    glob(globPattern, { windowsPathsNoEscape: true }, cb);
   }
 
   /**
