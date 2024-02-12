@@ -41,21 +41,26 @@ function Export({
     branch,
     message,
     gitConfig,
+    inputConfig,
     handleTitleChange,
     handleBranchChange,
     handleMessageChange,
+    mode,
   } = useExportForm(settings.auth, selectedAssetSetting);
 
   const {
     exportError,
     exportMeta,
-    onExportComplete,
-    onExportFailure,
     onExportStart,
-  } = useExportFlow(
+  } = useExportFlow({
     setExportStatus,
-    selectedAssetSetting,
-  );
+    assetSetting: selectedAssetSetting,
+    exportStatus,
+    gitConfig,
+    mode,
+    inputConfig,
+    assetChunks,
+  });
 
   const handleSelectChange = (id: string) => {
     setSelectedAssetSettingId(id);
@@ -74,7 +79,7 @@ function Export({
           className="asset-select"
           setSelectValue={handleSelectChange}
           value={selectedAssetSettingId}
-          disabled={exportStatus === 'inprogress'}
+          disabled={['Calculating Changes In Progress', 'Exporting to Github In Progress'].includes(exportStatus)}
         >
           <Option value="" disabled selected>
             Select assets type
@@ -114,12 +119,8 @@ function Export({
       <Row>
         <ExportButton
           exportStatus={exportStatus}
-          selectedAssetSetting={selectedAssetSetting}
-          assetChunks={assetChunks}
           gitConfig={gitConfig}
           handleClick={onExportStart}
-          onExportComplete={onExportComplete}
-          onExportFailure={onExportFailure}
         />
       </Row>
       <Row style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
@@ -127,7 +128,7 @@ function Export({
           {exportStatus && `Status: ${exportStatus}`}
         </p>
         <p>
-          {exportStatus === 'complete' ? (
+          {exportStatus === 'Complete' ? (
             <Link url={exportMeta?.data?.html_url} target="_blank">
               Pull Request Link
             </Link>

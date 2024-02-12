@@ -8,6 +8,7 @@ const INITIAL_SETTINGS: Settings = {
   assets: {
     typeOfAsset: {
       name: '<type of asset>',
+      mode: 'ADD',
       description: {
         name: '<Name of git repo>',
         url: '<URL of the git repo only for informational purpose>',
@@ -30,6 +31,7 @@ const INITIAL_SETTINGS: Settings = {
               parts: ['WEIGHT', 'STATE', 'SIZE'],
               separator: '_',
             },
+            replaceNumbers: true,
           },
           // figma export settings (https://www.figma.com/plugin-docs/api/properties/nodes-exportasync/):
           exportSettings: {

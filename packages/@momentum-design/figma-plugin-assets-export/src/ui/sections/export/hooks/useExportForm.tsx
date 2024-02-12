@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals */
 import React, { useState, useMemo } from 'react';
-import type { AssetSetting, ExportAuth, GitSetting } from '../../../../shared/types';
+import type { AssetSetting, ExportAuth, GitSetting, InputSetting } from '../../../../shared/types';
 
 /**
  * Hook, managing the export form, including
@@ -36,11 +36,27 @@ const useExportForm = (auth: ExportAuth, selectedAssetSetting?: AssetSetting) =>
       githubPersonalToken: auth.githubPersonalToken,
       prTitle: title,
       prMessage: message,
+      prCommitMsg: message,
       gitBranch: branch,
     };
   }, [selectedAssetSetting, title, branch, message]);
 
-  return { title, branch, message, gitConfig, handleTitleChange, handleBranchChange, handleMessageChange };
+  const mode = useMemo(() => selectedAssetSetting?.mode, [selectedAssetSetting]);
+
+  const inputConfig = useMemo((): InputSetting | undefined => {
+    const inputPartOfSettings = selectedAssetSetting?.input;
+    if (!inputPartOfSettings) {
+      return undefined;
+    }
+
+    return {
+      ...inputPartOfSettings,
+    };
+  }, [selectedAssetSetting]);
+
+  return {
+    title, branch, message, gitConfig, inputConfig, mode, handleTitleChange, handleBranchChange, handleMessageChange,
+  };
 };
 
 export { useExportForm };
