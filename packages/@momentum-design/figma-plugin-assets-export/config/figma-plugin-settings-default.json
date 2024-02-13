@@ -1,0 +1,123 @@
+{
+  "auth": {
+    "githubPersonalToken": "<your token>"
+  },
+  "assets": {
+    "icons": {
+      "name": "Icons",
+      "mode": "FULL_SYNC",
+      "description": {
+        "name": "Icons",
+        "url": "https://github.com/momentum-design/momentum-design/tree/main/packages/%40momentum-design/icons",
+        "urlText": "Momentum icons package"
+      },
+      "input": {
+        "mapPagesToFolder": [
+          {
+            "page": "✅",
+            "folder": "core"
+          },
+          {
+            "page": "Colored Icons",
+            "folder": "colored"
+          },
+          {
+            "page": "Brand Icons",
+            "folder": "brand"
+          }
+        ],
+        "exclude": {
+          "byVariant": "sf alternative"
+        },
+        "asset": {
+          "fileName": {
+            "parts": [
+              "SET_OR_COMPONENT_NAME",
+              "SF_ALTERNATIVE",
+              "RTL"
+            ],
+            "separator": "-",
+            "suffix": {
+              "parts": [
+                "WEIGHT",
+                "STATE",
+                "SIZE"
+              ],
+              "separator": "-"
+            },
+            "replaceNumbers": true
+          },
+          "exportSettings": {
+            "format": "SVG",
+            "contentsOnly": true,
+            "useAbsoluteBounds": false
+          }
+        }
+      },
+      "output": {
+        "git": {
+          "githubOwner": "momentum-design",
+          "gitRepo": "momentum-design",
+          "gitBranch": "automation-icons-2023-07-07T21-07-54-934Z",
+          "prTitle": "Automated Icons Export 2023-07-07T21:07:54.936Z",
+          "prCommitMsg": "feat(assets/icons): Export 2023-07-07T21:07:54.936Z",
+          "prMessage": "feat(assets/icons): Export 2023-07-07T21:07:54.936Z",
+          "gitRepoFilePath": "packages/@momentum-design/icons/src"
+        }
+      }
+    },
+    "illustrations": {
+      "name": "Illustrations",
+      "mode": "FULL_SYNC",
+      "description": {
+        "name": "Illustrations",
+        "url": "https://github.com/momentum-design/momentum-design/tree/main/packages/%40momentum-design/illustrations",
+        "urlText": "Momentum illustrations package"
+      },
+      "input": {
+        "mapPagesToFolder": [
+          {
+            "page": "✅",
+            "folder": "src"
+          }
+        ],
+        "exclude": {
+          "byVariant": "sf alternative"
+        },
+        "asset": {
+          "fileName": {
+            "parts": [
+              "SET_OR_COMPONENT_NAME",
+              "SF_ALTERNATIVE",
+              "RTL"
+            ],
+            "separator": "-",
+            "suffix": {
+              "parts": [
+                "COLOR"
+              ],
+              "separator": "-"
+            },
+            "replaceNumbers": true
+          },
+          "exportSettings": {
+            "format": "SVG",
+            "contentsOnly": true,
+            "useAbsoluteBounds": false
+          }
+        }
+      },
+      "output": {
+        "git": {
+          "githubOwner": "momentum-design",
+          "gitRepo": "momentum-design",
+          "gitBranch": "automation-illustrations-2023-07-07T21-07-54-936Z",
+          "prTitle": "Automated Illustrations Export 2023-07-07T21:07:54.936Z",
+          "prCommitMsg": "feat(assets/illustrations): Export 2023-07-07T21:07:54.936Z",
+          "prMessage": "feat(assets/illustrations): Export 2023-07-07T21:07:54.936Z",
+          "gitRepoFilePath": "packages/@momentum-design/illustrations"
+        }
+      }
+    }
+  }
+}
