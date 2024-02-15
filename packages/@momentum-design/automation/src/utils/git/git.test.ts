@@ -8,7 +8,7 @@ describe('@momentum-design/automation - utils.Git', () => {
       const commit = { value: 1, name: 'name-example', valid: true };
       const commitString = ` ${JSON.stringify(commit)} `;
       const commitsString = [commitString, commitString, commitString];
-      const commits = commitsString.map((c: string) => JSON.parse(JSON.stringify(c.trim().replace(/["']/g, ''))));
+      const commits = commitsString.map((c: string) => JSON.parse(c.trim()));
 
       it('should convert the provided commits to a JSON object', () => {
         expect(Git.commitsToJson(commitsString)).toMatchObject(commits);
@@ -17,10 +17,10 @@ describe('@momentum-design/automation - utils.Git', () => {
 
     describe('list()', () => {
       const count = 5;
-      const format = JSON.stringify(Git.CONSTANTS.FORMAT);
+      const format = JSON.stringify(Git.CONSTANTS.FORMAT).replace(/"/g, '\'');
       const offset = count + Git.CONSTANTS.COMMIT_INDEX_OFFSET;
       const runResults = '{ "a": "a", "b": "b" }\n{ "a": "a", "b": "b" }\n{ "a": "a", "b": "b" }';
-      const rto = runResults.split('\n').map((line) => JSON.parse(JSON.stringify(line.trim().replace(/["']/g, ''))));
+      const rto = runResults.split('\n').map((line) => JSON.parse(line.trim()));
       let commitsToJsonSpy: jest.SpyInstance;
       let resultsToArraySpy: jest.SpyInstance;
       let runSpy: jest.SpyInstance;
@@ -38,12 +38,12 @@ describe('@momentum-design/automation - utils.Git', () => {
       it('should attempt to run a command with the provided count', async () => {
         await Git.list(count);
 
-        expect(runSpy).toHaveBeenCalledWith(`git --no-pager log -n ${offset} --pretty=format:'${format}'`);
+        expect(runSpy).toHaveBeenCalledWith(`git --no-pager log -n ${offset} --pretty=format:"${format}"`);
         expect(runSpy).toHaveBeenCalledTimes(1);
       });
 
       it('should attempt to convert the run results to an array', async () => {
-        const results = await Execute.run(`git log -${offset} --pretty=format:'${format}'`);
+        const results = await Execute.run(`git log -${offset} --pretty=format:"${format}"`);
 
         await Git.list(count);
 
