@@ -32,7 +32,7 @@
         },
         {
           "id": "Manifest",
-          "target": "./dist/**/*.*",
+          "target": "./dist/svg/**/*.*",
           "destination": "./dist/",
           "format": {
             "type": "MANIFEST",

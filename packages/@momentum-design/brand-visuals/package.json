@@ -11,6 +11,8 @@
     "analyze:prebuild": "echo \"script 'analyze:prebuild' has not been implemented\"",
     "clean": "yarn clean:dist",
     "clean:dist": "rimraf ./dist",
+    "publish": "yarn publish:npmjs",
+    "publish:npmjs": "echo \"script 'publish:npmjs' has not been implemented\"",
     "build": "yarn build:core",
     "build:core": "md-builder -- --definition --icons --config ./config/momentum.json",
     "docs": "echo \"script 'docs' has not been implemented\"",
