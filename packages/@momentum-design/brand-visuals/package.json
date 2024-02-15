@@ -14,6 +14,8 @@
     "build": "yarn build:core",
     "build:core": "md-builder -- --definition --icons --config ./config/momentum.json",
     "docs": "echo \"script 'docs' has not been implemented\"",
+    "publish": "yarn publish:npmjs",
+    "publish:npmjs": "echo \"script 'publish:npmjs' has not been implemented\"",
     "test": "yarn test:prebuild && yarn test:postbuild",
     "test:postbuild": "echo \"script 'test:prebuild' has not been implemented\"",
     "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\""
