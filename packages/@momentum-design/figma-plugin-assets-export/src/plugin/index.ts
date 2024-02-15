@@ -36,6 +36,19 @@ figma.ui.onmessage = async (msg) => {
     const assetChunks = await document.getAssetChunksFromPages();
     figma.ui.postMessage({ type: "tagAssets", data: assetChunks }, { origin: "*" });
   }
+  if (msg.type === ACTIONS.G_TAG_LINK) {
+    const document = new Document(figma.root, msg.assetSetting);
+    document?.pages?.map((page: any) => {
+      if (page.destination === msg.page) {
+        figma.currentPage = page.node;
+      }
+    });
+    const node = figma.currentPage.findAll((node) => node.name === msg.nodeName);
+    figma.viewport.zoom = 2;
+    figma.currentPage.selection = node;
+    figma.viewport.scrollAndZoomIntoView([node[0]]);
+    figma.closePlugin();
+  }
   if (msg.type === ACTIONS.SET_SETTINGS) {
     figma.ui.postMessage({ type: "storage", data: "inprogress" }, { origin: "*" });
 

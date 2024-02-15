@@ -21,4 +21,10 @@ const gTagDetector = (parent: Window, assetSetting: any) => {
   parent.postMessage({ pluginMessage: { type: ACTIONS.G_TAG, assetSetting } }, "*");
 };
 
-export { requestSettingsFromStorage, saveSettingsToStorage, exportData, prCreated, gTagDetector };
+const linkRedirect = (parent: Window, assetSetting: any, path: string) => {
+  const page = path?.split("/")[0] || "",
+    nodeName = path?.split("/")[1]?.split(".")[0] || "";
+  parent.postMessage({ pluginMessage: { type: ACTIONS.G_TAG_LINK, assetSetting, page, nodeName } }, "*");
+};
+
+export { requestSettingsFromStorage, saveSettingsToStorage, exportData, prCreated, gTagDetector, linkRedirect };

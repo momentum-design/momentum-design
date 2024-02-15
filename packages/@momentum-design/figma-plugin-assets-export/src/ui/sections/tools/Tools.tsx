@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import classnames from "classnames";
 import { Button, Row, RunIcon } from "../../components";
 import List from "../../components/List/List";
-import { gTagDetector } from "../../utils/plugin";
+import { gTagDetector, linkRedirect } from "../../utils/plugin";
 import { AssetType } from "../../../shared/action-constants";
 import "./Tools.css";
 
@@ -24,6 +24,9 @@ function Tools({ settings, selectedAssetSettingId, gTagAsset, setGTagAsset }: Pr
   const tagClick = () => {
     gTagDetector(parent, selectedAssetSetting);
     setShow(true);
+  };
+  const linkClick = (tag: string) => {
+    linkRedirect(parent, selectedAssetSetting, tag);
   };
   const modalClose = () => {
     setShow(false);
@@ -66,7 +69,7 @@ function Tools({ settings, selectedAssetSettingId, gTagAsset, setGTagAsset }: Pr
             <p className="bold">Icons List</p>
             {gTagData?.length > 0 ? (
               gTagData.map((tag, index) => (
-                <a key={index} className="link">
+                <a key={index} className="link" onClick={() => linkClick(tag)}>
                   {tag}
                 </a>
               ))

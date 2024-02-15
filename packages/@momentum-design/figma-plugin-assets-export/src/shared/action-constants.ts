@@ -4,6 +4,7 @@ const ACTIONS = {
   EXPORT: "export",
   PR_CREATED: "pr_created",
   G_TAG: "tag_detector",
+  G_TAG_LINK: "tag_link",
 };
 
 const AssetType = {
