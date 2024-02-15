@@ -6,7 +6,8 @@ class Execute {
   }
 
   public static resultsToArray(results: string): Array<string> {
-    return results.split('\n');
+    // using regex to split on both \r and \n (for win and mac)
+    return results.split(/\r?\n/);
   }
 
   public static run(command: string): Promise<string> {
