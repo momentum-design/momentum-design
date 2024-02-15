@@ -2053,6 +2053,8 @@ __metadata:
 "@momentum-design/brand-visuals@workspace:packages/@momentum-design/brand-visuals":
   version: 0.0.0-use.local
   resolution: "@momentum-design/brand-visuals@workspace:packages/@momentum-design/brand-visuals"
+  dependencies:
+    "@momentum-design/builder": "workspace:^"
   languageName: unknown
   linkType: soft
 
