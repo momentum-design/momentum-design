@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useMemo } from "react";
-import classnames from "classnames";
-import { Button, Row, RunIcon } from "../../components";
-import List from "../../components/List/List";
-import { gTagDetector, linkRedirect } from "../../utils/plugin";
-import { AssetType } from "../../../shared/action-constants";
-import "./Tools.css";
+/* eslint-disable no-restricted-globals */
+import React, { useEffect, useState, useMemo } from 'react';
+import classnames from 'classnames';
+import { Button, Row, RunIcon } from '../../components';
+import List from '../../components/List/List';
+import { gTagDetector, linkRedirect } from '../../utils/plugin';
+import { AssetType } from '../../../shared/action-constants';
+import './Tools.css';
 
 interface Props {
   settings: any;
@@ -14,41 +15,46 @@ interface Props {
 }
 
 function Tools({ settings, selectedAssetSettingId, gTagAsset, setGTagAsset }: Props) {
-  const gTag = "<g> Detector";
+  const gTag = '<g> Detector';
   const [show, setShow] = useState<boolean>(false);
   const [gTagData, setGTagData] = useState<any[]>([]);
   const selectedAssetSetting = useMemo(() => settings?.assets[selectedAssetSettingId] || undefined, [settings]);
+
   useEffect(() => {
     setGTagData(gTagAsset);
   }, [gTagAsset]);
+
   const tagClick = () => {
     gTagDetector(parent, selectedAssetSetting);
     setShow(true);
   };
+
   const linkClick = (tag: string) => {
     linkRedirect(parent, selectedAssetSetting, tag);
   };
+
   const modalClose = () => {
     setShow(false);
     setGTagAsset([]);
   };
+
   return (
     <div className="tools">
       <List>
         <Row type="large" className="tools-row">
-          <p className={classnames("bold-text", "disabled-text")}>Name verification (WIP)</p>
+          <p className={classnames('bold-text', 'disabled-text')}>Name verification (WIP)</p>
           <Button className="right-aligned-button" disabled>
             <RunIcon disabled />
           </Button>
         </Row>
         <Row type="large" className="tools-row">
-          <p className={classnames("bold-text", "disabled-text")}>Duplication check (WIP)</p>
+          <p className={classnames('bold-text', 'disabled-text')}>Duplication check (WIP)</p>
           <Button className="right-aligned-button" disabled>
             <RunIcon disabled />
           </Button>
         </Row>
         <Row type="large" className="tools-row">
-          <p className={classnames("bold-text", selectedAssetSettingId !== AssetType.Icons ? "disabled-text" : "")}>
+          <p className={classnames('bold-text', selectedAssetSettingId !== AssetType.Icons ? 'disabled-text' : '')}>
             {gTag}
           </p>
           <Button
