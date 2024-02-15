@@ -2055,6 +2055,7 @@ __metadata:
   resolution: "@momentum-design/brand-visuals@workspace:packages/@momentum-design/brand-visuals"
   dependencies:
     "@momentum-design/builder": "workspace:^"
+    rimraf: ^3.0.2
   languageName: unknown
   linkType: soft
 
