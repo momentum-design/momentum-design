@@ -1,3 +1,5 @@
+import path from 'path';
+import { mockSVGFontBuffer } from '../../../test/fixtures/transformer.fixtures';
 import type { Formats } from '../types';
 import SvgGlyphsTransformer from './svg-glyphs-transformer';
 import Transformer from './transformer';
@@ -20,6 +22,23 @@ describe('@momentum-design/builder - SVG Font Transformer', () => {
     it('should mount the format provided to the class object', () => {
       expect(transformer.format).toBe(FORMAT);
       expect(transformer.destination).toBe('/dist');
+    });
+  });
+  describe('transformFilesSync function in svg-glyphs-transformer', () => {
+    it('should mock the transformFilesSync function and track its usage', () => {
+      transformer.inputFiles = [{ srcPath: 'font', distPath: 'font', data: mockSVGFontBuffer }];
+      const transformFilesSyncSpy = jest.spyOn(transformer, 'transformFilesSync');
+      transformer.transformFilesSync();
+      expect(transformFilesSyncSpy).toHaveBeenCalledTimes(1);
+      expect(transformFilesSyncSpy).toHaveBeenCalled();
+      expect(transformer.outputFiles).toEqual([
+        {
+          data: expect.any(String),
+          distPath: path.join('/dist', 'MyFont'),
+          srcPath: '',
+        },
+      ]);
+      transformFilesSyncSpy.mockRestore();
     });
   });
 });

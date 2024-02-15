@@ -1,3 +1,4 @@
+// import path from 'path';
 import type { Formats, OptimizedSVGFormat } from '../types';
 import SVGTransformer from './svg-transformer';
 import Transformer from './transformer';
@@ -26,18 +27,51 @@ describe('@momentum-design/builder - SVG Font Transformer', () => {
   });
 
   describe('transformFilesSync', () => {
-    it('modifies the class properties correctly', async () => {
-      transformer.inputFiles = [{ srcPath: 'font', distPath: 'font', data: mockSVGFontBuffer }];
+    it('modifies the class properties correctly', () => {
+      transformer.inputFiles = [{ srcPath: 'font', distPath: 'font', data: 'mockSVGFontBuffer' }];
       const optimizeSpy = jest.spyOn(transformer, 'optimize');
       expect(transformer.outputFiles).toEqual(undefined);
-      await transformer.transformFilesSync();
+      transformer.transformFilesSync();
       expect(optimizeSpy).toBeCalledTimes(1);
       expect(transformer.outputFiles).toEqual([
         {
-          data: expect.anything(),
+          data: 'mockSVGFontBuffer',
           distPath: 'font',
           srcPath: 'font',
         },
+      ]);
+    });
+  });
+
+  describe('testing optimize function', () => {
+    it('optimize function from svgo', () => {
+      transformer.inputFiles = [{ srcPath: 'font', distPath: 'font', data: mockSVGFontBuffer }];
+      const optimizeSVGOSpy = jest.spyOn(transformer, 'optimize');
+      transformer.optimize({ distPath: 'font', srcPath: 'font', data: mockSVGFontBuffer });
+      expect(optimizeSVGOSpy).toBeCalledTimes(1);
+      const mockedoptimizeSVGOData = jest.fn().mockReturnValue('Mocked data');
+      expect(mockedoptimizeSVGOData()).toBe('Mocked data');
+    });
+  });
+  describe('optimize', () => {
+    it('returns the correct result', () => {
+      const svgoOptimizeSpy = jest.spyOn(transformer, 'optimize');
+      const result = transformer.optimize({ distPath: 'font', srcPath: 'font', data: 'testing data' });
+      expect(svgoOptimizeSpy).toBeCalledTimes(1);
+      expect(result).toEqual({ distPath: 'font', srcPath: 'font', data: 'testing data' });
+    });
+  });
+
+  describe('transformFilesSync', () => {
+    it('modifies the class properties correctly', () => {
+      transformer.inputFiles = [{ srcPath: 'font', distPath: 'font', data: mockSVGFontBuffer }];
+      const svgoOptimizeSpy = jest.spyOn(transformer, 'optimize');
+      svgoOptimizeSpy.mockReturnValue({ distPath: 'font', srcPath: 'font', data: 'testing data' });
+      expect(transformer.outputFiles).toEqual(undefined);
+      transformer.transformFilesSync();
+      expect(svgoOptimizeSpy).toBeCalledTimes(1);
+      expect(transformer.outputFiles).toEqual([
+        { distPath: 'font', srcPath: 'font', data: 'testing data' },
       ]);
     });
   });

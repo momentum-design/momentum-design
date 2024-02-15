@@ -1,11 +1,13 @@
+import path from 'path';
 import type { Formats } from '../types';
 import ManifestTransformer from './manifest-transformer';
 import Transformer from './transformer';
+import { mockSVGFontBuffer } from '../../../test/fixtures/transformer.fixtures';
 
 describe('@momentum-design/builder - Manifest-Transformer', () => {
   let transformer: ManifestTransformer;
-  const FONT_NAME = 'MyFont';
-  const FORMAT: Formats = { config: { fontName: FONT_NAME }, type: 'SVG_FONT' };
+  const DIST_NAME = 'MyFont';
+  const FORMAT: Formats = { config: { fileName: DIST_NAME }, type: 'MANIFEST' };
 
   beforeEach(() => {
     transformer = new ManifestTransformer(FORMAT, '/dist');
@@ -21,6 +23,23 @@ describe('@momentum-design/builder - Manifest-Transformer', () => {
     it('should mount the format provided to the class object', () => {
       expect(transformer.format).toBe(FORMAT);
       expect(transformer.destination).toBe('/dist');
+    });
+  });
+
+  describe('transformFilesSync function', () => {
+    it('should mock the transformFilesSync function and track its usage', () => {
+      transformer.inputFiles = [{ srcPath: 'font', distPath: 'font', data: mockSVGFontBuffer }];
+      const transformFilesSyncSpy = jest.spyOn(transformer, 'transformFilesSync');
+      transformer.transformFilesSync();
+      expect(transformFilesSyncSpy).toHaveBeenCalledTimes(1);
+      expect(transformer.outputFiles).toEqual([
+        {
+          data: expect.any(String),
+          distPath: path.join('/dist', 'MyFont'),
+          srcPath: '',
+        },
+      ]);
+      transformFilesSyncSpy.mockRestore();
     });
   });
 });
