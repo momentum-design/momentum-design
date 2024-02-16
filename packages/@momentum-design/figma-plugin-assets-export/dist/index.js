@@ -26,7 +26,9 @@
     GET_SETTINGS: "storage_get_settings",
     SET_SETTINGS: "storage_set_settings",
     EXPORT: "export",
-    PR_CREATED: "pr_created"
+    PR_CREATED: "pr_created",
+    G_TAG: "tag_detector",
+    G_TAG_LINK: "tag_link"
   };
 
   // src/plugin/constants.ts
@@ -346,12 +348,30 @@
   figma.skipInvisibleInstanceChildren = true;
   figma.showUI(__html__, { themeColors: true, height: 550, width: 450 });
   figma.ui.onmessage = (msg) => __async(void 0, null, function* () {
-    var _a, _b;
+    var _a, _b, _c;
     if (msg.type === ACTIONS.EXPORT) {
       const document = new document_default(figma.root, msg.assetSetting);
       const assetChunks = yield document.getAssetChunksFromPages();
       figma.ui.postMessage({ type: "assets", data: assetChunks }, { origin: "*" });
       figma.ui.postMessage({ type: "export" }, { origin: "*" });
+    }
+    if (msg.type === ACTIONS.G_TAG) {
+      const document = new document_default(figma.root, msg.assetSetting);
+      const assetChunks = yield document.getAssetChunksFromPages();
+      figma.ui.postMessage({ type: "tagAssets", data: assetChunks }, { origin: "*" });
+    }
+    if (msg.type === ACTIONS.G_TAG_LINK) {
+      const document = new document_default(figma.root, msg.assetSetting);
+      (_a = document == null ? void 0 : document.pages) == null ? void 0 : _a.map((page) => {
+        if (page.destination === msg.page) {
+          figma.currentPage = page.node;
+        }
+      });
+      const node = figma.currentPage.findAll((node2) => node2.name === msg.nodeName);
+      figma.viewport.zoom = 2;
+      figma.currentPage.selection = node;
+      figma.viewport.scrollAndZoomIntoView([node[0]]);
+      figma.closePlugin();
     }
     if (msg.type === ACTIONS.SET_SETTINGS) {
       figma.ui.postMessage({ type: "storage", data: "inprogress" }, { origin: "*" });
@@ -363,7 +383,7 @@
       figma.ui.postMessage({ type: "settings", data: settings }, { origin: "*" });
     }
     if (msg.type === ACTIONS.PR_CREATED) {
-      figma.notify(`Pull Request: ${(_b = (_a = msg.pullRequest) == null ? void 0 : _a.data) == null ? void 0 : _b.url}`);
+      figma.notify(`Pull Request: ${(_c = (_b = msg.pullRequest) == null ? void 0 : _b.data) == null ? void 0 : _c.url}`);
     }
   });
 })();
