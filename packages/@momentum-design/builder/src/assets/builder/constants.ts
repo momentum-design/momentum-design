@@ -23,6 +23,7 @@ const FORMATS = {
   MANIFEST: 'MANIFEST' as const,
   SWIFT: 'SWIFT' as const,
   SVG_GLYPHS: 'SVG_GLYPHS' as const,
+  SVG_PATH_MERGE: 'SVG_PATH_MERGE' as const,
 };
 
 // http://en.wikipedia.org/wiki/Private_Use_(Unicode)

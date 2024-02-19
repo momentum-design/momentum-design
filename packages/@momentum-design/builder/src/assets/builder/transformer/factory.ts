@@ -9,6 +9,7 @@ import WOFFTransformer from './woff-transformer';
 import WOFF2Transformer from './woff2-transformer';
 import SwiftTransformer from './swift-transformer';
 import SvgGlyphsTransformer from './svg-glyphs-transformer';
+import SvgPathMergeTransformer from './svg-path-merge-transformer';
 
 type Transformers =
   | Transformer
@@ -19,7 +20,8 @@ type Transformers =
   | WOFF2Transformer
   | ManifestTransformer
   | SwiftTransformer
-  | SvgGlyphsTransformer;
+  | SvgGlyphsTransformer
+  | SvgPathMergeTransformer;
 
 /**
  * Factory Pattern
@@ -44,6 +46,8 @@ function createTransformer(format: Formats, destination: string): Transformers {
       return new SvgGlyphsTransformer(format, destination);
     case CONSTANTS.FORMATS.SWIFT:
       return new SwiftTransformer(format, destination);
+    case CONSTANTS.FORMATS.SVG_PATH_MERGE:
+      return new SvgPathMergeTransformer(format, destination);
     default:
       return new Transformer(format, destination);
   }

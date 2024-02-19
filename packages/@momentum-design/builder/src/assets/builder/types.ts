@@ -99,6 +99,16 @@ export interface SvgGlyphsFormat {
 }
 
 /**
+ * SvgPathMerge Format
+ *
+ * @beta
+ */
+export interface SvgPathMergeFormat {
+  type: typeof CONSTANTS.FORMATS.SVG_PATH_MERGE;
+  config: { fileName: string };
+}
+
+/**
  * File Type
  *
  * @beta
@@ -152,6 +162,7 @@ export type Formats = (
   | ManifestFormat
   | SwiftFormat
   | SvgGlyphsFormat
+  | SvgPathMergeFormat
 ) & {
   encoding?: Encoding;
 };
