@@ -37,6 +37,20 @@
           }
         },
         {
+          "id": "optimise-path-merge-core-svgs",
+          "target": "./dist/svg/**/*.*",
+          "destination": "./dist/svg",
+          "fileNameReplacePatterns": [
+            {
+              "searchValue": "_",
+              "replaceValue": "-"
+            }
+          ],
+          "format": {
+            "type": "SVG_PATH_MERGE"
+          }
+        },
+        {
           "id": "optimise-brand-colored-svgs",
           "target": "./src/{colored,brand}/**/*.*",
           "destination": "./dist/svg",
@@ -221,22 +235,7 @@
               "hbsPath": "./config/templates/momentum.swift.hbs"
             }
           }
-        },
-        {
-          "id": "optimise-path-merge-core-svgs",
-          "target": "./dist/svg/**/*.*",
-          "destination": "./dist/svg",
-          "fileNameReplacePatterns": [
-            {
-              "searchValue": "_",
-              "replaceValue": "-"
-            }
-          ],
-          "format": {
-            "type": "SVG_PATH_MERGE"
-          }
         }
-        
       ],
       "type": "assets"
     }
