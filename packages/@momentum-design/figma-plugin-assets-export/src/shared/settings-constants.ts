@@ -32,6 +32,7 @@ const INITIAL_SETTINGS: Settings = {
               separator: '_',
             },
             replaceNumbers: true,
+            replaceDots: true,
           },
           // figma export settings (https://www.figma.com/plugin-docs/api/properties/nodes-exportasync/):
           exportSettings: {
