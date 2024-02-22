@@ -1,7 +1,7 @@
 import type { Formats, SwiftFormat } from '../types';
 import Transformer from './transformer';
 import SwiftTransformer from './swift-transformer';
-import { mockSVGFontBuffer } from '../../../test/fixtures/transformer.fixtures';
+import * as Utils from '../utils';
 
 describe('@momentum-design/builder - swift Transformer', () => {
   let transformer: SwiftTransformer;
@@ -26,17 +26,34 @@ describe('@momentum-design/builder - swift Transformer', () => {
 
   describe('transformFilesAsync function', () => {
     it('should return the correct data from the promise of transformFilesAsync() function', async () => {
-      transformer.inputFiles = [{ srcPath: 'font', distPath: 'font', data: mockSVGFontBuffer }];
+      transformer.inputFiles = [{
+        srcPath: 'font',
+        distPath: 'font',
+        // eslint-disable-next-line max-len, max-len
+        data: '{"0": {"name": "accessibility-bold","srcPath" : "testPath","codepoint" : "61697","codepointHexa" : "f101","unicode" : "testUnicode"}}' }];
       const transformFilesAsyncSpy = jest.spyOn(transformer, 'transformFilesAsync');
+
+      const templateSpy = jest.fn(({ glyphsData }) => glyphsData);
+      const transformHbsSpy = jest.spyOn(Utils, 'transformHbs').mockReturnValue(
+        new Promise((resolve) => { resolve(templateSpy); }),
+      );
+
       const result = await transformer.transformFilesAsync();
       expect(transformFilesAsyncSpy).toBeCalledTimes(1);
+      expect(transformHbsSpy).toBeCalledTimes(1);
+
       expect(result).toEqual(undefined);
-      expect(transformer.outputFiles).toEqual(undefined);
-      expect(transformer.outputFiles).not.toBe([
+      expect(transformer.outputFiles).toStrictEqual([
         {
-          data: expect.any(String),
-          distPath: 'font',
-          srcPath: 'font',
+          data: [{
+            codepoint: '61697',
+            codepointHexa: 'f101',
+            name: 'accessibility-bold',
+            srcPath: 'testPath',
+            unicode: 'testUnicode',
+          }],
+          distPath: '\\dist\\MyFont',
+          srcPath: '',
         },
       ]);
       transformFilesAsyncSpy.mockRestore();
