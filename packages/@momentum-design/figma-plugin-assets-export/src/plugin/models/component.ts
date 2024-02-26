@@ -76,6 +76,10 @@ class Component {
       name = name.replace(/[0-9]/g, (digit) => this.convertDigitToWord(digit));
     }
 
+    if (fileName.replaceDots) {
+      name = name.replace(/\./g, '');
+    }
+
     name += '.';
     name += exportSettings.format;
     return name.toLowerCase();
