@@ -37,6 +37,39 @@
           }
         },
         {
+          "id": "optimise-split-svgs",
+          "target": "./src/split/**/*.*",
+          "destination": "./dist/svg",
+          "fileNameReplacePatterns": [
+            {
+              "searchValue": "_",
+              "replaceValue": "-"
+            }
+          ],
+          "format": {
+            "type": "OPTIMIZED_SVG",
+            "config": {
+              "mergePaths": true,
+              "plugins": [
+                {
+                  "name": "preset-default",
+                  "params": {
+                    "overrides": {
+                      "removeViewBox": false
+                    }
+                  }
+                },
+                {
+                  "name": "removeAttrs",
+                  "params": {
+                    "attrs": "(fill|stroke)"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
           "id": "optimise-brand-colored-svgs",
           "target": "./src/{colored,brand}/**/*.*",
           "destination": "./dist/svg",

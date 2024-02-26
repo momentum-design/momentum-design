@@ -24,6 +24,10 @@
           {
             "page": "Brand Icons",
             "folder": "brand"
+          },
+          {            
+            "page": "Split Icons",            
+            "folder": "split"          
           }
         ],
         "exclude": {
@@ -45,7 +49,8 @@
               ],
               "separator": "-"
             },
-            "replaceNumbers": true
+            "replaceNumbers": true,
+            "replaceDots": true
           },
           "exportSettings": {
             "format": "SVG",
