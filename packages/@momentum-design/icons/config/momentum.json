@@ -31,6 +31,12 @@
                   "params": {
                     "attrs": "(fill|stroke)"
                   }
+                },
+                {
+                  "name":"mergePaths",
+                  "params":{
+                    "force":true
+                  }
                 }
               ]
             }
