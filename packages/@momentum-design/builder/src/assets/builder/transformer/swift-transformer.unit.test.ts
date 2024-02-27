@@ -1,3 +1,4 @@
+import path from 'path';
 import type { Formats, SwiftFormat } from '../types';
 import Transformer from './transformer';
 import SwiftTransformer from './swift-transformer';
@@ -43,6 +44,7 @@ describe('@momentum-design/builder - swift Transformer', () => {
       expect(transformHbsSpy).toBeCalledTimes(1);
 
       expect(result).toEqual(undefined);
+      expect(Array.isArray(transformer.outputFiles)).toBe(true);
       expect(transformer.outputFiles).toStrictEqual([
         {
           data: [{
@@ -52,7 +54,7 @@ describe('@momentum-design/builder - swift Transformer', () => {
             srcPath: 'testPath',
             unicode: 'testUnicode',
           }],
-          distPath: '\\dist\\MyFont',
+          distPath: path.join('/dist', 'MyFont'),
           srcPath: '',
         },
       ]);

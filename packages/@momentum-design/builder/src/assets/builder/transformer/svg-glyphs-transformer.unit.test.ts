@@ -62,7 +62,7 @@ describe('@momentum-design/builder - SVG glyphs Font Transformer', () => {
       expect(getNextCodepointSpy).toBeCalledTimes(4);
       expect(Utils.getNextCodepoint()).toBe(61702);
     });
-    it('should return the correct data from the promise of transformFilesAsync() function', () => {
+    it('should return the correct data from the promise of transformFilesSync() function', () => {
       transformer.inputFiles = [{
         srcPath: 'font',
         distPath: 'font',
@@ -77,9 +77,10 @@ describe('@momentum-design/builder - SVG glyphs Font Transformer', () => {
       transformer.transformFilesSync();
       expect(transformFilesSyncSpy).toBeCalledTimes(1);
       expect(getNextCodepointSpy).toHaveBeenCalled();
+      expect(Array.isArray(transformer.outputFiles)).toBe(true);
       expect(transformer.outputFiles).toStrictEqual([
         {
-          distPath: '\\dist\\MyFont',
+          distPath: path.join('/dist', 'MyFont'),
           srcPath: '',
           data: expect.any(String),
         },
