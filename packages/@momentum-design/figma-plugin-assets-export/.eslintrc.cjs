@@ -1,3 +1,3 @@
 const config = require('../../../.eslintrc.js');
 
-module.exports = { ...config };
+module.exports = { ...config, env: { ...config.env, jest: true } };

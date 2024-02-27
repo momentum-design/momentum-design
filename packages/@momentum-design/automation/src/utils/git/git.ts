@@ -12,10 +12,14 @@ class Git {
 
   public static list(index: number = Git.CONSTANTS.MAX_COMMITS): Promise<Array<ListItem>> {
     const offset = index + Git.CONSTANTS.COMMIT_INDEX_OFFSET;
-    const format = JSON.stringify(Git.CONSTANTS.FORMAT);
+    // turn format into single quotes since there are differences between windows and mac,
+    // when executing the command with child_process.exec
+    const format = JSON.stringify(Git.CONSTANTS.FORMAT).replace(/"/g, '\'');
 
-    return Execute.run(`git --no-pager log -n ${offset} --pretty=format:'${format}'`)
+    return Execute.run(`git --no-pager log -n ${offset} --pretty=format:"${format}"`)
       .then((results) => Execute.resultsToArray(results))
+      // replace the single quotes with double quotes for JSON parser to work correctly:
+      .then((list) => list.map((line) => line.replace(/'/g, '"')))
       .then((list) => Git.commitsToJson(list));
   }
 

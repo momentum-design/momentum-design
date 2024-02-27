@@ -1,13 +1,13 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-undef */
-import { ACTIONS } from '../shared/action-constants';
+import { ACTIONS } from "../shared/action-constants";
 
-import Document from './models/document';
-import Storage from './models/storage';
+import Document from "./models/document";
+import Storage from "./models/storage";
 
 const storage = new Storage();
 
-figma.on('run', async () => {
+figma.on("run", async () => {
   const settings = await storage.getSettings();
   if (!settings) {
     await storage.setSettings(storage.initialSettings);
@@ -27,24 +27,41 @@ figma.ui.onmessage = async (msg) => {
 
     const assetChunks = await document.getAssetChunksFromPages();
 
-    figma.ui.postMessage({ type: 'assets', data: assetChunks }, { origin: '*' });
+    figma.ui.postMessage({ type: "assets", data: assetChunks }, { origin: "*" });
 
-    figma.ui.postMessage({ type: 'export' }, { origin: '*' });
+    figma.ui.postMessage({ type: "export" }, { origin: "*" });
   }
-
+  if (msg.type === ACTIONS.G_TAG) {
+    const document = new Document(figma.root, msg.assetSetting);
+    const assetChunks = await document.getAssetChunksFromPages();
+    figma.ui.postMessage({ type: "tagAssets", data: assetChunks }, { origin: "*" });
+  }
+  if (msg.type === ACTIONS.G_TAG_LINK) {
+    const document = new Document(figma.root, msg.assetSetting);
+    document?.pages?.map((page: any) => {
+      if (page.destination === msg.page) {
+        figma.currentPage = page.node;
+      }
+    });
+    const node = figma.currentPage.findAll((node) => node.name === msg.nodeName);
+    figma.viewport.zoom = 2;
+    figma.currentPage.selection = node;
+    figma.viewport.scrollAndZoomIntoView([node[0]]);
+    figma.closePlugin();
+  }
   if (msg.type === ACTIONS.SET_SETTINGS) {
-    figma.ui.postMessage({ type: 'storage', data: 'inprogress' }, { origin: '*' });
+    figma.ui.postMessage({ type: "storage", data: "inprogress" }, { origin: "*" });
 
     await storage.setSettings(msg.settings);
 
-    figma.ui.postMessage({ type: 'storage', data: 'complete' }, { origin: '*' });
+    figma.ui.postMessage({ type: "storage", data: "complete" }, { origin: "*" });
   }
 
   if (msg.type === ACTIONS.GET_SETTINGS) {
     // get settings from local storage
     const settings = await storage.getSettings();
     // sending settings from storage back to UI:
-    figma.ui.postMessage({ type: 'settings', data: settings }, { origin: '*' });
+    figma.ui.postMessage({ type: "settings", data: settings }, { origin: "*" });
   }
 
   if (msg.type === ACTIONS.PR_CREATED) {

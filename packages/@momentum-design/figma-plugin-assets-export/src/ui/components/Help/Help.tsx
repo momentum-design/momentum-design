@@ -19,9 +19,13 @@ function Help({ tooltipContent }: Props) {
   };
 
   return (
-    <div className="tooltip">
-      <Button onClick={handleButtonClick} title="Help">?</Button>
-      <dialog ref={dialogRef} onClick={handleDialogClick} className="tooltipcontent"><div id="inner-content">{tooltipContent}</div></dialog>
+    <div className='tooltip'>
+      <Button onClick={handleButtonClick} title='Help'>
+        ?
+      </Button>
+      <dialog ref={dialogRef} onClick={handleDialogClick} className='tooltipcontent' data-testid='dialog'>
+        <div id='inner-content'>{tooltipContent}</div>
+      </dialog>
     </div>
   );
 }
