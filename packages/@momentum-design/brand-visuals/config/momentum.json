@@ -1,0 +1,48 @@
+{
+  "definitions": [
+    {
+      "buildName": "Brand-Visuals",
+      "flows": [
+        {
+          "id": "optimise-svgs",
+          "target": "./src/**/*.*",
+          "destination": "./dist/svg",
+          "fileNameReplacePatterns": [
+            {
+              "searchValue": "_",
+              "replaceValue": "-"
+            }
+          ],
+          "format": {
+            "type": "OPTIMIZED_SVG",
+            "config": {
+              "mergePaths": true,
+              "plugins": [
+                {
+                  "name": "preset-default",
+                  "params": {
+                    "overrides": {
+                      "removeViewBox": false
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "Manifest",
+          "target": "./dist/svg/**/*.*",
+          "destination": "./dist/",
+          "format": {
+            "type": "MANIFEST",
+            "config": {
+              "fileName": "manifest.json"
+            }
+          }
+        }
+      ],
+      "type": "assets"
+    }
+  ]
+}

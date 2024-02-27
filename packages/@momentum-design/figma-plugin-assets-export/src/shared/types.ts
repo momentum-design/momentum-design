@@ -59,6 +59,7 @@ export type InputSetting = {
         separator: string;
       };
       replaceNumbers?: boolean;
+      replaceDots?: boolean;
     };
     exportSettings: ExportSettingsSVG;
   };

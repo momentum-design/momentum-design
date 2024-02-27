@@ -55,6 +55,7 @@ module.exports = {
         allowTemplateLiterals: true,
       },
     ],
+    'linebreak-style': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
     'class-methods-use-this': 'off',
     'import/extensions': 'off',

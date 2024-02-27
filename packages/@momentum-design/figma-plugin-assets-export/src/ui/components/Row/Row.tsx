@@ -12,6 +12,7 @@ interface Props {
 function Row({ type, children, className, style }: Props) {
   return (
     <div
+      data-testid='row'
       className={
         classnames(
           'row',
