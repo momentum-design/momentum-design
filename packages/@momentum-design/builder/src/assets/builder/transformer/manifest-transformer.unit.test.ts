@@ -32,15 +32,13 @@ describe('@momentum-design/builder - Manifest-Transformer', () => {
       const transformFilesSyncSpy = jest.spyOn(transformer, 'transformFilesSync');
       transformer.transformFilesSync();
       expect(transformFilesSyncSpy).toHaveBeenCalledTimes(1);
-      expect(Array.isArray(transformer.outputFiles)).toBe(true);
       expect(transformer.outputFiles).toEqual([
         {
-          data: expect.any(String),
-          distPath: path.join('/dist', 'MyFont'),
+          data: '{\n  "font": "./font"\n}',
+          distPath: path.join('/dist', DIST_NAME),
           srcPath: '',
         },
       ]);
-      transformFilesSyncSpy.mockRestore();
     });
   });
 });
