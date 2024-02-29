@@ -123,6 +123,63 @@
           "gitRepoFilePath": "packages/@momentum-design/illustrations"
         }
       }
+    },
+    "brandvisuals": {
+      "name": "Brand Visuals",
+      "mode": "FULL_SYNC",
+      "description": {
+        "name": "Brand Visuals",
+        "url": "https://github.com/momentum-design/momentum-design/tree/main/packages/%40momentum-design/brand-visuals",
+        "urlText": "Momentum Brand Visuals package"
+      },
+      "input": {
+        "mapPagesToFolder": [
+          {
+            "page": "✅ Logos",
+            "folder": "logos"
+          },
+          {
+            "page": "✅ Images",
+            "folder": "images"
+          }
+        ],
+        "exclude": {
+          "byVariant": "sf alternative"
+        },
+        "asset": {
+          "fileName": {
+            "parts": [
+              "SET_OR_COMPONENT_NAME",
+              "SF_ALTERNATIVE",
+              "RTL"
+            ],
+            "separator": "-",
+            "suffix": {
+              "parts": [
+                "COLOR"
+              ],
+              "separator": "-"
+            },
+            "replaceNumbers": true
+          },
+          "exportSettings": {
+            "format": "SVG",
+            "contentsOnly": true,
+            "useAbsoluteBounds": false
+          }
+        }
+      },
+      "output": {
+        "git": {
+          "githubOwner": "momentum-design",
+          "gitRepo": "momentum-design",
+          "gitBranch": "automation-brand-visuals-2023-07-07T21-07-54-938Z",
+          "prTitle": "Automated Brand Visuals Export 2023-07-07T21:07:54.936Z",
+          "prCommitMsg": "feat(assets/brand-visuals): Export 2023-07-07T21:07:54.936Z",
+          "prMessage": "feat(assets/brand-visuals): Export 2023-07-07T21:07:54.936Z",
+          "gitRepoFilePath": "packages/@momentum-design/brand-visuals/src"
+        }
+      }
     }
   }
 }
