@@ -1,5 +1,22 @@
 const FILE_ENCODING: BufferEncoding = 'utf-8';
 
+const SD_TRANSFORMS = {
+  ATTRIBUTE_CTI: 'attribute/cti',
+  NAME_CTI_KABAB: 'name/cti/kebab',
+  NAME_CTI_CAMEL: 'name/cti/camel',
+};
+
+const LOCAL_TRANSFORMS = {
+  MD_ELEVATION: 'md/elevation',
+};
+
+const TRANSFORMS = {
+  ...SD_TRANSFORMS,
+  ...LOCAL_TRANSFORMS,
+};
+
+export type Transform = keyof typeof TRANSFORMS;
+
 // https://github.com/amzn/style-dictionary/blob/main/lib/common/formats.js
 const SD_FORMATS = {
   CSS_VARIABLES: {
@@ -8,6 +25,11 @@ const SD_FORMATS = {
     GROUP: 'css',
     NAME: 'css/variables',
     PATH: './css/',
+    TRANSFORMS: [
+      'ATTRIBUTE_CTI',
+      'NAME_CTI_KABAB',
+      'MD_ELEVATION',
+    ] as Array<Transform>,
   },
   SCSS_VARIABLES: {
     EXTENSION: 'scss',
@@ -15,6 +37,11 @@ const SD_FORMATS = {
     GROUP: 'scss',
     NAME: 'scss/variables',
     PATH: './scss/',
+    TRANSFORMS: [
+      'ATTRIBUTE_CTI',
+      'NAME_CTI_KABAB',
+      'MD_ELEVATION',
+    ] as Array<Transform>,
   },
   WEB_JSON: {
     EXTENSION: 'json',
@@ -22,6 +49,11 @@ const SD_FORMATS = {
     GROUP: 'web',
     NAME: 'web/json',
     PATH: './json/',
+    TRANSFORMS: [
+      'ATTRIBUTE_CTI',
+      'NAME_CTI_KABAB',
+      'MD_ELEVATION',
+    ]as Array<Transform>,
   },
   ANDROID_RESOURCES: {
     EXTENSION: 'xml',
@@ -29,6 +61,11 @@ const SD_FORMATS = {
     GROUP: 'android',
     NAME: 'android/resources',
     PATH: './resources/',
+    TRANSFORMS: [
+      'ATTRIBUTE_CTI',
+      'NAME_CTI_KABAB',
+      'MD_ELEVATION',
+    ] as Array<Transform>,
   },
   SWIFT_CLASS: {
     EXTENSION: 'swift',
@@ -36,6 +73,11 @@ const SD_FORMATS = {
     GROUP: 'ios',
     NAME: 'ios/swift',
     PATH: './ios/',
+    TRANSFORMS: [
+      'ATTRIBUTE_CTI',
+      'NAME_CTI_CAMEL',
+      'MD_ELEVATION',
+    ] as Array<Transform>,
   },
 };
 
@@ -46,26 +88,17 @@ const LOCAL_FORMATS = {
     GROUP: 'md',
     NAME: 'md/json-minimal',
     PATH: './json-minimal/',
+    TRANSFORMS: [
+      'ATTRIBUTE_CTI',
+      'NAME_CTI_KABAB',
+      'MD_ELEVATION',
+    ] as Array<Transform>,
   },
 };
 
 const FORMATS = {
   ...SD_FORMATS,
   ...LOCAL_FORMATS,
-};
-
-const SD_TRANSFORMS = {
-  ATTRIBUTE_CTI: 'attribute/cti',
-  NAME_CTI_KABAB: 'name/cti/kebab',
-};
-
-const LOCAL_TRANSFORMS = {
-  MD_ELEVATION: 'md/elevation',
-};
-
-const TRANSFORMS = {
-  ...SD_TRANSFORMS,
-  ...LOCAL_TRANSFORMS,
 };
 
 const CONSTANTS = {

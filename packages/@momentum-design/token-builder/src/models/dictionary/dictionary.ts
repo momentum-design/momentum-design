@@ -33,7 +33,7 @@ class Dictionary {
         format,
         output: this.output,
         prefix: this.prefix,
-        transforms: this.config.transforms,
+        transforms: CONSTANTS.FORMATS[format].TRANSFORMS,
       }),
     }), {});
   }
