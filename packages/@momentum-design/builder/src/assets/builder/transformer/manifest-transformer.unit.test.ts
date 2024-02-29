@@ -34,7 +34,7 @@ describe('@momentum-design/builder - Manifest-Transformer', () => {
       expect(transformFilesSyncSpy).toHaveBeenCalledTimes(1);
       expect(transformer.outputFiles).toEqual([
         {
-          data: '{\n  "font": "./font"\n}',
+          data: JSON.stringify(JSON.parse('{"font":"./font"}'), null, 2),
           distPath: path.join('/dist', DIST_NAME),
           srcPath: '',
         },
