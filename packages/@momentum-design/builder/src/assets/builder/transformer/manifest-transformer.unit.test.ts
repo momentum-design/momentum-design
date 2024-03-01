@@ -41,7 +41,6 @@ describe('@momentum-design/builder - Manifest-Transformer', () => {
       ]);
     });
     it('should mock the transformFilesSync function and track its usage', () => {
-      // mockSVGFontBuffer
       transformer.inputFiles = [{ srcPath: 'font', distPath: 'font', data: mockSVGFontBuffer }];
       const transformFilesSyncSpy = jest.spyOn(transformer, 'transformFilesSync');
       transformer.transformFilesSync();
