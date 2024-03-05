@@ -12,20 +12,31 @@ interface Props {
   selectedAssetSettingId: any;
   gTagAsset: any;
   setGTagAsset: any;
+  gTagAssetUpdate: any
+  setGTagAssetUpdate: any
 }
 
-function Tools({ settings, selectedAssetSettingId, gTagAsset, setGTagAsset }: Props) {
+function Tools({ settings, selectedAssetSettingId, gTagAsset, setGTagAsset,
+  gTagAssetUpdate, setGTagAssetUpdate }: Props) {
   const gTag = '<g> Detector';
   const [show, setShow] = useState<boolean>(false);
+  const [loader, setLoader] = useState<boolean>(true);
   const [gTagData, setGTagData] = useState<any[]>([]);
   const selectedAssetSetting = useMemo(() => settings?.assets[selectedAssetSettingId] || undefined, [settings]);
 
   useEffect(() => {
     setGTagData(gTagAsset);
-  }, [gTagAsset]);
+    if (show) {
+      setLoader(false);
+    }
+  }, [gTagAssetUpdate]);
+  useEffect(() => {
+    if (show) {
+      gTagDetector(parent, selectedAssetSetting);
+    }
+  }, [show]);
 
   const tagClick = () => {
-    gTagDetector(parent, selectedAssetSetting);
     setShow(true);
   };
 
@@ -35,7 +46,9 @@ function Tools({ settings, selectedAssetSettingId, gTagAsset, setGTagAsset }: Pr
 
   const modalClose = () => {
     setShow(false);
+    setLoader(true);
     setGTagAsset([]);
+    setGTagAssetUpdate(false);
   };
 
   return (
@@ -73,14 +86,13 @@ function Tools({ settings, selectedAssetSettingId, gTagAsset, setGTagAsset }: Pr
               &times;
             </span>
             <p className="bold">Icons List</p>
-            {gTagData?.length > 0 ? (
+            {!loader && gTagData?.length > 0 ? (
               gTagData.map((tag, index) => (
                 <a key={index} className="link" onClick={() => linkClick(tag)}>
                   {tag}
                 </a>
               ))
-            ) : (
-              <p>No tags detected.</p>
+            ) : (<p>{loader ? 'Loading...' : 'No tags detected.'}</p>
             )}
           </div>
         </div>

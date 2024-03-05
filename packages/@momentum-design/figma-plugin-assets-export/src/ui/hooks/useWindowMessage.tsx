@@ -8,6 +8,7 @@ const useWindowMessage = (
   setExporting: any,
   setStorage: any,
   setGTagAsset: any,
+  setGTagAssetUpdate: any,
 ) => {
   useEffect(() => {
     window.onmessage = (e: {
@@ -30,6 +31,7 @@ const useWindowMessage = (
             }
           });
         });
+        setGTagAssetUpdate(true);
       } else if (e.data.pluginMessage?.type === 'storage') {
         setStorage(e.data.pluginMessage.data);
       } else if (e.data.pluginMessage?.type === 'export') {
