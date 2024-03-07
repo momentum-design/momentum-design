@@ -30,16 +30,12 @@ function Tools({ settings, selectedAssetSettingId, gTagAsset, setGTagAsset,
       setLoader(false);
     }
   }, [gTagAssetUpdate]);
-  useEffect(() => {
-    if (show) {
-      setTimeout(() => {
-        gTagDetector(parent, selectedAssetSetting);
-      }, 50);
-    }
-  }, [show]);
 
   const tagClick = () => {
     setShow(true);
+    setTimeout(() => {
+      gTagDetector(parent, selectedAssetSetting);
+    }, 50);
   };
 
   const linkClick = (tag: string) => {
