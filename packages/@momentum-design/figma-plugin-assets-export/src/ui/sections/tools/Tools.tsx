@@ -32,7 +32,9 @@ function Tools({ settings, selectedAssetSettingId, gTagAsset, setGTagAsset,
   }, [gTagAssetUpdate]);
   useEffect(() => {
     if (show) {
-      gTagDetector(parent, selectedAssetSetting);
+      setTimeout(() => {
+        gTagDetector(parent, selectedAssetSetting);
+      }, 50);
     }
   }, [show]);
 
