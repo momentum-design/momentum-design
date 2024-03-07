@@ -20,14 +20,14 @@ function Tools({ settings, selectedAssetSettingId, gTagAsset, setGTagAsset,
   gTagAssetUpdate, setGTagAssetUpdate }: Props) {
   const gTag = '<g> Detector';
   const [show, setShow] = useState<boolean>(false);
-  const [loader, setLoader] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [gTagData, setGTagData] = useState<any[]>([]);
   const selectedAssetSetting = useMemo(() => settings?.assets[selectedAssetSettingId] || undefined, [settings]);
 
   useEffect(() => {
     setGTagData(gTagAsset);
     if (show) {
-      setLoader(false);
+      setIsLoading(false);
     }
   }, [gTagAssetUpdate]);
 
@@ -44,7 +44,7 @@ function Tools({ settings, selectedAssetSettingId, gTagAsset, setGTagAsset,
 
   const modalClose = () => {
     setShow(false);
-    setLoader(true);
+    setIsLoading(true);
     setGTagAsset([]);
     setGTagAssetUpdate(false);
   };
@@ -84,13 +84,13 @@ function Tools({ settings, selectedAssetSettingId, gTagAsset, setGTagAsset,
               &times;
             </span>
             <p className="bold">Icons List</p>
-            {!loader && gTagData?.length > 0 ? (
+            {!isLoading && gTagData?.length > 0 ? (
               gTagData.map((tag, index) => (
                 <a key={index} className="link" onClick={() => linkClick(tag)}>
                   {tag}
                 </a>
               ))
-            ) : (<p>{loader ? 'Loading...' : 'No tags detected.'}</p>
+            ) : (<p>{isLoading ? 'Loading...' : 'No tags detected.'}</p>
             )}
           </div>
         </div>
