@@ -4,9 +4,15 @@ import Transformer from './transformer';
 import SwiftTransformer from './swift-transformer';
 import * as Utils from '../utils';
 
+const inputFilesData = { 0: {
+  name: 'accessibility-bold',
+  srcPath: 'testPath',
+  codepoint: '61697',
+  codepointHexa: 'f101',
+  unicode: 'testUnicode' } };
 describe('@momentum-design/builder - swift Transformer', () => {
   let transformer: SwiftTransformer;
-  const FORMAT: Formats = { config: { fileName: 'MyFont', hbsPath: 'hpath' }, type: 'SWIFT' } as unknown as SwiftFormat;
+  const FORMAT: Formats = { config: { fileName: 'MyFont', hbsPath: 'hpath' }, type: 'SWIFT' } as SwiftFormat;
 
   beforeEach(() => {
     transformer = new SwiftTransformer(FORMAT, '/dist');
@@ -25,25 +31,21 @@ describe('@momentum-design/builder - swift Transformer', () => {
     });
   });
 
-  describe('transformFilesAsync function', () => {
+  describe('swift transformer - transformFilesAsync function', () => {
     it('should return the correct data from the promise of transformFilesAsync() function', async () => {
       transformer.inputFiles = [{
         srcPath: 'font',
         distPath: 'font',
-        // eslint-disable-next-line max-len, max-len
-        data: '{"0": {"name": "accessibility-bold","srcPath" : "testPath","codepoint" : "61697","codepointHexa" : "f101","unicode" : "testUnicode"}}',
+        data: JSON.stringify(inputFilesData),
       }];
       const transformFilesAsyncSpy = jest.spyOn(transformer, 'transformFilesAsync');
-
       const templateSpy = jest.fn(({ glyphsData }) => glyphsData);
       const transformHbsSpy = jest.spyOn(Utils, 'transformHbs').mockReturnValue(
         new Promise((resolve) => { resolve(templateSpy); }),
       );
-
       const result = await transformer.transformFilesAsync();
       expect(transformFilesAsyncSpy).toBeCalledTimes(1);
       expect(transformHbsSpy).toBeCalledTimes(1);
-
       expect(result).toEqual(undefined);
       expect(Array.isArray(transformer.outputFiles)).toBe(true);
       expect(transformer.outputFiles).toStrictEqual([
