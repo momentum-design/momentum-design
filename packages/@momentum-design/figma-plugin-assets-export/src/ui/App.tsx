@@ -23,11 +23,9 @@ function App() {
     setStorageStatus,
     gTagAsset,
     setGTagAsset,
-    gTagAssetUpdate,
-    setGTagAssetUpdate,
   } = useStateHandlers();
 
-  useWindowMessage(setSettings, setAssetChunks, setExportStatus, setStorageStatus, setGTagAsset, setGTagAssetUpdate);
+  useWindowMessage(setSettings, setAssetChunks, setExportStatus, setStorageStatus, setGTagAsset);
 
   return (
     <div className="wrapper">
@@ -49,8 +47,6 @@ function App() {
             selectedAssetSettingId={selectedAssetSettingId}
             gTagAsset={gTagAsset}
             setGTagAsset={setGTagAsset}
-            gTagAssetUpdate={gTagAssetUpdate}
-            setGTagAssetUpdate={setGTagAssetUpdate}
           />
         )}
         {activeTab === 'settings' && (

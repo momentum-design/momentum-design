@@ -12,12 +12,9 @@ interface Props {
   selectedAssetSettingId: any;
   gTagAsset: any;
   setGTagAsset: any;
-  gTagAssetUpdate: any
-  setGTagAssetUpdate: any
 }
 
-function Tools({ settings, selectedAssetSettingId, gTagAsset, setGTagAsset,
-  gTagAssetUpdate, setGTagAssetUpdate }: Props) {
+function Tools({ settings, selectedAssetSettingId, gTagAsset, setGTagAsset }: Props) {
   const gTag = '<g> Detector';
   const [show, setShow] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -26,13 +23,12 @@ function Tools({ settings, selectedAssetSettingId, gTagAsset, setGTagAsset,
 
   useEffect(() => {
     setGTagData(gTagAsset);
-    if (show) {
-      setIsLoading(false);
-    }
-  }, [gTagAssetUpdate]);
+    setIsLoading(false);
+  }, [gTagAsset]);
 
   const tagClick = () => {
     setShow(true);
+    setIsLoading(true);
     setTimeout(() => {
       gTagDetector(parent, selectedAssetSetting);
     }, 50);
@@ -44,9 +40,7 @@ function Tools({ settings, selectedAssetSettingId, gTagAsset, setGTagAsset,
 
   const modalClose = () => {
     setShow(false);
-    setIsLoading(true);
     setGTagAsset([]);
-    setGTagAssetUpdate(false);
   };
 
   return (
