@@ -29,6 +29,7 @@ function Tools({ settings, selectedAssetSettingId, gTagAsset, setGTagAsset }: Pr
   const tagClick = () => {
     setShow(true);
     setIsLoading(true);
+    // here we need to display popup immediately in UI. But, gTagDetector is async and await function, so used timeout
     setTimeout(() => {
       gTagDetector(parent, selectedAssetSetting);
     }, 50);
