@@ -6,12 +6,13 @@ import './Hint.css';
 
 interface Props {
   description: Description;
+  className?: string;
 }
-function Hint({ description }: Props) {
+function Hint({ description, className }: Props) {
   return (
     <p className="hint">
-      <span>{description.name} will be exported to </span>
-      <Link url={description.url} target="_blank">
+      <span className="name">{description.name} will be exported to </span>
+      <Link url={description.url} target="_blank" className={className}>
         {description.urlText}
       </Link>
       <span>.</span>

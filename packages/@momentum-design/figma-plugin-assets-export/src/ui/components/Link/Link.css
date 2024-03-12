@@ -1,3 +1,6 @@
 .link {
     color: var(--figma-color-text-brand);
 }
+.float-left {
+    float: left;
+}
