@@ -17,16 +17,22 @@ interface Props {
 function Tools({ settings, selectedAssetSettingId, gTagAsset, setGTagAsset }: Props) {
   const gTag = '<g> Detector';
   const [show, setShow] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [gTagData, setGTagData] = useState<any[]>([]);
   const selectedAssetSetting = useMemo(() => settings?.assets[selectedAssetSettingId] || undefined, [settings]);
 
   useEffect(() => {
     setGTagData(gTagAsset);
+    setIsLoading(false);
   }, [gTagAsset]);
 
   const tagClick = () => {
-    gTagDetector(parent, selectedAssetSetting);
     setShow(true);
+    setIsLoading(true);
+    // here we need to display popup immediately in UI. But, gTagDetector is async and await function, so used timeout
+    setTimeout(() => {
+      gTagDetector(parent, selectedAssetSetting);
+    }, 50);
   };
 
   const linkClick = (tag: string) => {
@@ -73,14 +79,13 @@ function Tools({ settings, selectedAssetSettingId, gTagAsset, setGTagAsset }: Pr
               &times;
             </span>
             <p className="bold">Icons List</p>
-            {gTagData?.length > 0 ? (
+            {!isLoading && gTagData?.length > 0 ? (
               gTagData.map((tag, index) => (
                 <a key={index} className="link" onClick={() => linkClick(tag)}>
                   {tag}
                 </a>
               ))
-            ) : (
-              <p>No tags detected.</p>
+            ) : (<p>{isLoading ? 'Loading...' : 'No tags detected.'}</p>
             )}
           </div>
         </div>
