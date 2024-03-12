@@ -2,9 +2,9 @@
     font-weight: 600;
 }
 
-.align-bottom-center {
+.align-bottom-left {
     margin-top: auto;
-    justify-content: center
+    justify-content: left;
 }
 
 .asset-select {
