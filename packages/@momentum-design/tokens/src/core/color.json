@@ -1485,6 +1485,40 @@
         "type": "color",
         "description": "HEX Value: 4285F4"
       }
+    },
+    "highcontrast": {
+      "white": {
+        "value": "#ffffff",
+        "type": "color"
+      },
+      "cyan": {
+        "value": "#1AEBFF",
+        "type": "color"
+      },
+      "blue": {
+        "value": "#00009F",
+        "type": "color"
+      },
+      "purple": {
+        "value": "#37006E",
+        "type": "color"
+      },
+      "black": {
+        "value": "#000000",
+        "type": "color"
+      },
+      "yellow": {
+        "value": "#ffff00",
+        "type": "color"
+      },
+      "green": {
+        "value": "#3FF23F",
+        "type": "color"
+      },
+      "red": {
+        "value": "#600000",
+        "type": "color"
+      }
     }
   }
 }
