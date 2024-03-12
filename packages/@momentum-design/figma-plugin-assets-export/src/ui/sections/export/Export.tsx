@@ -138,8 +138,9 @@ function Export({
         </p>
         {exportError ? <p>Error: {exportError.message}</p> : null}
       </Row>
-      <Row className="align-bottom-center">
-        {selectedAssetSetting?.description && <Hint description={selectedAssetSetting.description} />}
+      <Row className="align-bottom-left">
+        {selectedAssetSetting?.description
+         && <Hint description={selectedAssetSetting.description} className='float-left'/>}
       </Row>
     </List>
   );

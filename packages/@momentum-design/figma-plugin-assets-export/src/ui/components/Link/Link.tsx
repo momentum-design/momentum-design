@@ -5,10 +5,11 @@ interface Props {
     url: string;
     target?: string;
     children: React.ReactNode;
+    className?: string;
 }
-function Link({ url, target, children }: Props) {
+function Link({ url, target, children, className }: Props) {
   return (
-    <a className="link" href={url} target={target}>
+    <a className={`${className} link`} href={url} target={target}>
       {children}
     </a>
   );
