@@ -1802,6 +1802,52 @@
             "description": "[Dark Theme]\nTheme Token: color.theme.promotion.border.default\nCore Token: color.core.decorative.purple.60, color.core.decorative.pink.60\nHEX:  linear-gradient(46deg, #C233C4 -0.03%, #D43B52 99.99%);\nUsed for outline border of Promotional Buttons"
           }
         }
+      },
+      "highcontrast": {
+        "text": {
+          "default": {
+            "value": "{color.highcontrast.white}",
+            "type": "color",
+            "description": "Used for text colors"
+          },
+          "selected": {
+            "value": "{color.highcontrast.black}",
+            "type": "color",
+            "description": "Used for selected state texts"
+          }
+        },
+        "link": {
+          "value": "{color.highcontrast.yellow}",
+          "type": "color",
+          "description": "Used for hyperlinks"
+        },
+        "disabled": {
+          "value": "{color.highcontrast.green}",
+          "type": "color",
+          "description": "Used for all disabled states"
+        },
+        "outline": {
+          "value": "{color.highcontrast.white}",
+          "type": "color",
+          "description": "Used for outlineborders"
+        },
+        "btn": {
+          "value": "{color.highcontrast.black}",
+          "type": "color",
+          "description": "Used for button backgrounds"
+        },
+        "background": {
+          "default": {
+            "value": "{color.highcontrast.black}",
+            "type": "color",
+            "description": "Used for backgrounds"
+          },
+          "selected": {
+            "value": "{color.highcontrast.cyan}",
+            "type": "color",
+            "description": "Used for selected backgrounds"
+          }
+        }
       }
     }
   }
