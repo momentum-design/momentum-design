@@ -23,13 +23,15 @@ const useWindowMessage = (
       } else if (e.data.pluginMessage?.type === 'assets') {
         setAssetChunks(e.data.pluginMessage.data);
       } else if (e.data.pluginMessage?.type === 'tagAssets') {
+        const gTagData: any[] = [];
         e?.data?.pluginMessage?.data?.forEach((data: any) => {
           data?.forEach((d: any) => {
             if (d?.data?.includes('<g')) {
-              setGTagAsset((prev: any) => [...prev, d.path]);
+              gTagData.push(d.path);
             }
           });
         });
+        setGTagAsset(gTagData);
       } else if (e.data.pluginMessage?.type === 'storage') {
         setStorage(e.data.pluginMessage.data);
       } else if (e.data.pluginMessage?.type === 'export') {

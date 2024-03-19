@@ -2,3 +2,7 @@
     font-size: 1rem;
     color: var(--figma-color-text-secondary);
 }
+.name {
+    float: left;
+    margin-right: 3px;
+}
