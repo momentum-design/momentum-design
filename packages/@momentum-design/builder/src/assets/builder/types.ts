@@ -12,7 +12,7 @@ export type SVGOConfig = SVGOConfigType;
  *
  * @beta
  */
-interface OptimizedSVGFormat {
+export interface OptimizedSVGFormat {
   type: typeof CONSTANTS.FORMATS.OPTIMISED_SVG;
   config: SVGOConfig;
 }
