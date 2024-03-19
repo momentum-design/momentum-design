@@ -89,6 +89,5 @@
   ],
   "formats": ["CSS_VARIABLES", "SCSS_VARIABLES", "WEB_JSON", "ANDROID_RESOURCES", "SWIFT_CLASS", "MD_JSON_MINIMAL"],
   "prefix": "mds",
-  "outputReferences": true,
-  "transforms": ["ATTRIBUTE_CTI", "NAME_CTI_KABAB", "MD_ELEVATION"]
+  "outputReferences": true
 }
