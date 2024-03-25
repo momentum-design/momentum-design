@@ -1806,12 +1806,12 @@
       "highcontrast": {
         "text": {
           "default": {
-            "value": "{color.highcontrast.white}",
+            "value": "{color.highcontrast.black.SystemColorWindowTextColor}",
             "type": "color",
             "description": "Used for text colors"
           },
           "selected": {
-            "value": "{color.highcontrast.black}",
+            "value": "{color.highcontrast.black.SystemColorHighlightTextColor}",
             "type": "color",
             "description": "Used for selected state texts"
           }
@@ -1827,18 +1827,18 @@
           "description": "Used for all disabled states"
         },
         "outline": {
-          "value": "{color.highcontrast.white}",
+          "value": "{color.highcontrast.black.SystemColorWindowTextColor}",
           "type": "color",
           "description": "Used for outlineborders"
         },
         "btn": {
-          "value": "{color.highcontrast.black}",
+          "value": "{color.highcontrast.black.SystemColorHighlightTextColor}",
           "type": "color",
           "description": "Used for button backgrounds"
         },
         "background": {
           "default": {
-            "value": "{color.highcontrast.black}",
+            "value": "{color.highcontrast.black.SystemColorHighlightTextColor}",
             "type": "color",
             "description": "Used for backgrounds"
           },
