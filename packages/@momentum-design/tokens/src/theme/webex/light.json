@@ -1778,52 +1778,6 @@
             "description": "[Light Theme]\nTheme Token: color.theme.promotion.border.default\nCore Token: color.core.decorative.purple.100, color.core.decorative.pink.70\nHEX:  linear-gradient(46deg, #251329 -0.03%, #A12A3A 99.99%);\nUsed for outline border of Promotional Buttons"
           }
         }
-      },
-      "highcontrast": {
-        "text": {
-          "default": {
-            "value": "{color.highcontrast.black.SystemColorHighlightTextColor}",
-            "type": "color",
-            "description": "Used for text colors"
-          },
-          "selected": {
-            "value": "{color.highcontrast.black.SystemColorWindowTextColor}",
-            "type": "color",
-            "description": "Used for selected state texts"
-          }
-        },
-        "link": {
-          "value": "{color.highcontrast.blue}",
-          "type": "color",
-          "description": "Used for hyperlinks"
-        },
-        "disabled": {
-          "value": "{color.highcontrast.red}",
-          "type": "color",
-          "description": "Used for all disabled states"
-        },
-        "outline": {
-          "value": "{color.highcontrast.black.SystemColorWindowTextColor}",
-          "type": "color",
-          "description": "Used for outlineborders"
-        },
-        "btn": {
-          "value": "{color.highcontrast.black.SystemColorWindowTextColor}",
-          "type": "color",
-          "description": "Used for button backgrounds"
-        },
-        "background": {
-          "default": {
-            "value": "{color.highcontrast.black.SystemColorWindowTextColor}",
-            "type": "color",
-            "description": "Used for backgrounds"
-          },
-          "selected": {
-            "value": "{color.highcontrast.purple}",
-            "type": "color",
-            "description": "Used for selected backgrounds"
-          }
-        }
       }
     }
   }

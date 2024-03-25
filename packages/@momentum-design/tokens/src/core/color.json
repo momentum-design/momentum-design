@@ -1487,89 +1487,37 @@
       }
     },
     "highcontrast": {
-      "black": {
-        "SystemColorWindowTextColor": {
-          "value": "#ffffff",
-          "type": "color",
-          "description": "Text main color"
-        },
-        "SystemColorHotlightColor": {
-          "value": "#ffff00",
-          "type": "color",
-          "description": "SystemColorHighlightColor. Used for Hyperlink + Actionable Text/Icons"
-        },
-        "SystemColorGrayTextColor": {
-          "value": "#3FF23F",
-          "type": "color",
-          "description": "SystemColorGrayTextColor. Used for disabled state"
-        },
-        "SystemColorHighlightTextColor": {
-          "value": "#000000",
-          "type": "color",
-          "description": "SystemColorHighlightTextColor. Used for Inverted text color for active/highlighted items"
-        },
-        "SystemColorHighlightColor": {
-          "value": "#1AEBFF",
-          "type": "color",
-          "description": "SystemColorHighlightColor. Used for Highlight/Hover/Press/Active/Enabled"
-        },
-        "SystemColorButtonTextColor": {
-          "value": "#ffffff",
-          "type": "color",
-          "description": "SystemColorButtonTextColor"
-        },
-        "SystemColorButtonFaceColor": {
-          "value": "#000000",
-          "type": "color",
-          "description": "SystemColorButtonFaceColor. Used for button background"
-        },
-        "SystemColorWindowColor": {
-          "value": "#000000",
-          "type": "color",
-          "description": "SystemColorWindowColor. Used for Primary BG"
-        }
-      },
       "white": {
-        "SystemColorWindowTextColor": {
-          "value": "#000000",
-          "type": "color",
-          "description": "Text main color"
-        },
-        "SystemColorHotlightColor": {
-          "value": "#00009F",
-          "type": "color",
-          "description": "SystemColorHighlightColor. Used for Hyperlink + Actionable Text/Icons"
-        },
-        "SystemColorGrayTextColor": {
-          "value": "#600000",
-          "type": "color",
-          "description": "SystemColorGrayTextColor. Used for disabled state"
-        },
-        "SystemColorHighlightTextColor": {
-          "value": "#ffffff",
-          "type": "color",
-          "description": "SystemColorHighlightTextColor. Used for Inverted text color for active/highlighted items"
-        },
-        "SystemColorHighlightColor": {
-          "value": "#37006E",
-          "type": "color",
-          "description": "SystemColorHighlightColor. Used for Highlight/Hover/Press/Active/Enabled"
-        },
-        "SystemColorButtonTextColor": {
-          "value": "#000000",
-          "type": "color",
-          "description": "SystemColorButtonTextColor"
-        },
-        "SystemColorButtonFaceColor": {
-          "value": "#ffffff",
-          "type": "color",
-          "description": "SystemColorButtonFaceColor. Used for button background"
-        },
-        "SystemColorWindowColor": {
-          "value": "#ffffff",
-          "type": "color",
-          "description": "SystemColorWindowColor. Used for Primary BG"
-        }
+        "value": "#ffffff",
+        "type": "color"
+      },
+      "cyan": {
+        "value": "#1AEBFF",
+        "type": "color"
+      },
+      "blue": {
+        "value": "#00009F",
+        "type": "color"
+      },
+      "purple": {
+        "value": "#37006E",
+        "type": "color"
+      },
+      "black": {
+        "value": "#000000",
+        "type": "color"
+      },
+      "yellow": {
+        "value": "#ffff00",
+        "type": "color"
+      },
+      "green": {
+        "value": "#3FF23F",
+        "type": "color"
+      },
+      "red": {
+        "value": "#600000",
+        "type": "color"
       }
     }
   }
