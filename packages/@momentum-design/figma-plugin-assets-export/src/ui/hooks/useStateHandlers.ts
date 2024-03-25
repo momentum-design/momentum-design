@@ -7,6 +7,7 @@ const useStateHandlers = () => {
   const [assetChunks, setAssetChunks] = useState<AssetChunks>([[]]);
   const [exportStatus, setExportStatus] = useState<ExportStatus>('');
   const [storageStatus, setStorageStatus] = useState<StorageStatus>('');
+  const [gTagAsset, setGTagAsset] = useState<any[]>([]);
 
   return {
     settings,
@@ -17,6 +18,8 @@ const useStateHandlers = () => {
     setExportStatus,
     storageStatus,
     setStorageStatus,
+    gTagAsset,
+    setGTagAsset,
   };
 };
 

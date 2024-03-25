@@ -1,7 +1,7 @@
 {
   "name": "@momentum-design/brand-visuals",
   "packageManager": "yarn@3.2.4",
-  "private":"true",
+  "private": true,
   "files": [
     "./dist"
   ],
@@ -9,9 +9,19 @@
     "analyze": "yarn analyze:prebuild && yarn analyze:postbuild",
     "analyze:postbuild": "echo \"script 'analyze:postbuild' has not been implemented\"",
     "analyze:prebuild": "echo \"script 'analyze:prebuild' has not been implemented\"",
+    "clean": "yarn clean:dist",
+    "clean:dist": "rimraf ./dist",
+    "publish": "yarn publish:npmjs",
+    "publish:npmjs": "echo \"script 'publish:npmjs' has not been implemented\"",
+    "build": "yarn build:core",
+    "build:core": "md-builder -- --definition --icons --config ./config/momentum.json",
     "docs": "echo \"script 'docs' has not been implemented\"",
     "test": "yarn test:prebuild && yarn test:postbuild",
     "test:postbuild": "echo \"script 'test:prebuild' has not been implemented\"",
     "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\""
+  },
+  "devDependencies": {
+    "@momentum-design/builder": "workspace:^",
+    "rimraf": "^3.0.2"
   }
 }

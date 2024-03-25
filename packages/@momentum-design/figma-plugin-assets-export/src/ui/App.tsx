@@ -21,9 +21,11 @@ function App() {
     setExportStatus,
     storageStatus,
     setStorageStatus,
+    gTagAsset,
+    setGTagAsset,
   } = useStateHandlers();
 
-  useWindowMessage(setSettings, setAssetChunks, setExportStatus, setStorageStatus);
+  useWindowMessage(setSettings, setAssetChunks, setExportStatus, setStorageStatus, setGTagAsset);
 
   return (
     <div className="wrapper">
@@ -39,7 +41,14 @@ function App() {
             setExportStatus={setExportStatus}
           />
         )}
-        {activeTab === 'tools' && <Tools />}
+        {activeTab === 'tools' && (
+          <Tools
+            settings={settings}
+            selectedAssetSettingId={selectedAssetSettingId}
+            gTagAsset={gTagAsset}
+            setGTagAsset={setGTagAsset}
+          />
+        )}
         {activeTab === 'settings' && (
           <Settings
             settings={settings}
