@@ -1,7 +1,7 @@
 /** @jsxImportSource preact */
 import illustrationsManifest from '@momentum-design/illustrations/dist/manifest.json';
 import { useCallback, useMemo, useState } from 'preact/hooks';
-import { IllustrationSize } from './constants';
+import { IllustrationSize, illustrationSizeType } from './constants';
 import './IllustrationTable.css';
 
 type Props = {
@@ -81,7 +81,7 @@ export const Pagination = () => {
   const paginatedItems = useMemo(
     () => Object.entries(illustrationsManifest)
       // eslint-disable-next-line max-len
-      .filter(([key]) => (query ? key.includes(query) && key.includes(IllustrationSize[size as unknown as keyof typeof IllustrationSize]) : key.includes(IllustrationSize[size as unknown as keyof typeof IllustrationSize])))
+      .filter(([key]) => (query ? key.includes(query) && key.includes(IllustrationSize[size as illustrationSizeType]) : key.includes(IllustrationSize[size as illustrationSizeType])))
       .slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
       .reduce(
         (output, [key, value]) => ({
