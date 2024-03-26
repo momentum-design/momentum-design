@@ -4,18 +4,19 @@ import Transformer from './transformer';
 import SwiftTransformer from './swift-transformer';
 import * as Utils from '../utils';
 
-const inputFilesData = { 0: {
+const inputFilesData = {
   name: 'accessibility-bold',
   srcPath: 'testPath',
   codepoint: '61697',
   codepointHexa: 'f101',
-  unicode: 'testUnicode' } };
+  unicode: 'testUnicode' };
 describe('@momentum-design/builder - swift Transformer', () => {
   let transformer: SwiftTransformer;
   const FORMAT: Formats = { config: { fileName: 'MyFont', hbsPath: 'hpath' }, type: 'SWIFT' } as SwiftFormat;
+  const DIST_PATH = '/dist';
 
   beforeEach(() => {
-    transformer = new SwiftTransformer(FORMAT, '/dist');
+    transformer = new SwiftTransformer(FORMAT, DIST_PATH);
     // @ts-ignore
     jest.spyOn(transformer.logger, 'debug').mockImplementation(() => { });
   });
@@ -27,7 +28,7 @@ describe('@momentum-design/builder - swift Transformer', () => {
 
     it('should mount the format provided to the class object', () => {
       expect(transformer.format).toBe(FORMAT);
-      expect(transformer.destination).toBe('/dist');
+      expect(transformer.destination).toBe(DIST_PATH);
     });
   });
 
@@ -48,8 +49,8 @@ describe('@momentum-design/builder - swift Transformer', () => {
       expect(transformHbsSpy).toBeCalledTimes(1);
       expect(transformer.outputFiles).toStrictEqual([
         {
-          data: [inputFilesData[0]],
-          distPath: path.join('/dist', 'MyFont'),
+          data: Object.values(inputFilesData),
+          distPath: path.join(DIST_PATH, FORMAT.config.fileName),
           srcPath: '',
         },
       ]);
