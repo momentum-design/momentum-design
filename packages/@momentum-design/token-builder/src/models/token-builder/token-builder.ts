@@ -58,23 +58,24 @@ class TokenBuilder {
       .then(() => {
         const configObj = this.config.config as ExternalConfig;
 
-        if (configObj.transforms) {
-          configObj.transforms.filter((transform) => Object.keys(CONSTANTS.LOCAL_TRANSFORMS).includes(transform))
-            .forEach((transformKey) => {
-              const transformName = CONSTANTS.TRANSFORMS[transformKey];
-              let transform: ElevationTransform;
+        configObj.formats.forEach((format) => {
+          if (CONSTANTS.FORMATS[format]?.TRANSFORMS) {
+            // eslint-disable-next-line max-len, max-len
+            CONSTANTS.FORMATS[format].TRANSFORMS?.filter((transform) => Object.keys(CONSTANTS.LOCAL_TRANSFORMS).includes(transform))
+              .forEach((transformKey) => {
+                const transformName = CONSTANTS.TRANSFORMS[transformKey];
+                let transform: ElevationTransform;
+                switch (transformName) {
+                  case CONSTANTS.LOCAL_TRANSFORMS.MD_ELEVATION:
+                    transform = new ElevationTransform();
+                    StyleDictionary.registerTransform(transform.sdConfig);
+                    break;
 
-              switch (transformName) {
-                case CONSTANTS.LOCAL_TRANSFORMS.MD_ELEVATION:
-                  transform = new ElevationTransform();
-
-                  StyleDictionary.registerTransform(transform.sdConfig);
-                  break;
-
-                default:
-              }
-            });
-        }
+                  default:
+                }
+              });
+          }
+        });
 
         if (configObj.formats) {
           configObj.formats.filter((format) => Object.keys(CONSTANTS.LOCAL_FORMATS).includes(format))
