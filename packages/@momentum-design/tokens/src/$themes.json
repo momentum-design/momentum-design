@@ -328,6 +328,13 @@
       "color.theme.negative.border.default": "35f4cee3a717cca85a081eac580f10635ae9527e",
       "color.theme.notice.border.default": "42bef3afa49e3a0170bde077250eff2462826fe5",
       "color.theme.warning.border.default": "3956a67ab1dcef46119db9adebd66b65d9efe13d",
+      "color.theme.inverse.neutral.surface.default": "c8a6bc7c27dfbf9cbd0d07b8396a23b1a33096f8",
+      "color.theme.negative.btn.fixed.default": "190847298d72fc6053e818d4f5c1d49c6e7734ed",
+      "color.theme.negative.btn.fixed.hover": "f0e2a38593ee3dfba77d9e2071ae467750aaaf4a",
+      "color.theme.negative.btn.fixed.pressed": "158c0cf4576217cddbab2797208ef7076113aa02",
+      "color.theme.decorative.pink.indicator.pressed": "f6be062c8cbfa3e7da2477646e14b4456728903c",
+      "color.theme.accent.surface.mobile.active": "c65ce8cfbf18cb63c414ce05ab6caf2ede821fbc",
+      "color.theme.accent.border.moderate": "7ecaa4d3e04009d8aa8862b54dcbda9b98cccda7",
       "color.core.white-alpha.0": "d62bd1e35249f71c808ad8284d5410b82823d3b3",
       "color.core.white-alpha.5": "4a3053c3457e4bf7a1aa50df81e2a4e38cafca0c",
       "color.core.white-alpha.7": "2146d1a24bb8a7a6eddf2cd43f733d7669b9eea8",
@@ -577,14 +584,7 @@
       "color.partner.sheets": "59f7e58512ccea2a7252f9fecc804df406a7dc3e",
       "color.partner.slides": "45c4033fb06f9b2a9d6dcc80d3f0a432bea5141f",
       "color.partner.keynote": "b34d9c4b12738040889aba5e18f5efc6d02351db",
-      "color.partner.doc": "4a8f5d954b021e993f71b100990282c04bd97956",
-      "color.theme.inverse.neutral.surface.default": "c8a6bc7c27dfbf9cbd0d07b8396a23b1a33096f8",
-      "color.theme.negative.btn.fixed.default": "190847298d72fc6053e818d4f5c1d49c6e7734ed",
-      "color.theme.negative.btn.fixed.hover": "f0e2a38593ee3dfba77d9e2071ae467750aaaf4a",
-      "color.theme.negative.btn.fixed.pressed": "158c0cf4576217cddbab2797208ef7076113aa02",
-      "color.theme.decorative.pink.indicator.pressed": "f6be062c8cbfa3e7da2477646e14b4456728903c",
-      "color.theme.accent.surface.mobile.active": "c65ce8cfbf18cb63c414ce05ab6caf2ede821fbc",
-      "color.theme.accent.border.moderate": "7ecaa4d3e04009d8aa8862b54dcbda9b98cccda7"
+      "color.partner.doc": "4a8f5d954b021e993f71b100990282c04bd97956"
     }
   }
 ]
