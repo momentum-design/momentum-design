@@ -1,7 +1,14 @@
+import {
+  Logger,
+  generateMetadata,
+} from '@momentum-design/telemetry';
 import Execute from '../execute';
 
 import CONSTANTS from './constants';
 import type { Changes, ListItem } from './types';
+
+const PACKAGE = 'automation';
+const logger = Logger.child(generateMetadata(PACKAGE, 'create-release'));
 
 // Git utility class
 class Git {
@@ -39,6 +46,23 @@ class Git {
 
   public static async release(tag: string, title: string, notes: string, dist: string = ''): Promise<string> {
     return Execute.run(`gh release create ${tag} ${dist} --title "${tag} - ${title}" --notes "${notes}"`);
+  }
+
+  public static async getPullRequestDetails(commitSHA:string): Promise<any> {
+    return Execute.run('gh auth token').then(async (res) => {
+      try {
+        const response = await fetch(`${Git.CONSTANTS.REPO_URL}/${commitSHA}/pulls`, {
+          headers: {
+            Authorization: `Bearer ${res.trim()}`,
+          },
+        });
+        const result = await response.json();
+        return result;
+      } catch (error) {
+        logger.error(`Error fetching PR description': ${error}`);
+      }
+      return null;
+    });
   }
 
   public static get CONSTANTS(): typeof CONSTANTS {

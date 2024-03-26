@@ -51,8 +51,10 @@ class CreateRelease extends Command {
       const tag = `${pkg}@${version}`;
       logger.info(`Getting commit history with commit index: ${config['commit-index']}`);
       const commitLog = await Git.list(config['commit-index']);
-      const notes = commitLog.map(({ subject }) => subject).join('\n')
-        .concat(`\nPackage:\nhttps://www.npmjs.com/package/${pkg}/v/${version}`);
+      const pullRequestDesciption = await Git.getPullRequestDetails(commitLog[0].commit);
+
+      const notes = `### ${commitLog[0].subject}\r\n${pullRequestDesciption[0].body}`
+        .concat(`\r\n ### Package:\nhttps://www.npmjs.com/package/${pkg}/v/${version}`);
 
       return {
         dist,
