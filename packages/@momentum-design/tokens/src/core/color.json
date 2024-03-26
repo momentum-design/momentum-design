@@ -1485,6 +1485,92 @@
         "type": "color",
         "description": "HEX Value: 4285F4"
       }
+    },
+    "highcontrast": {
+      "black": {
+        "SystemColorWindowTextColor": {
+          "description": "Text main color",
+          "value": "#ffffff",
+          "type": "color"
+        },
+        "SystemColorHotlightColor": {
+          "description": "SystemColorHighlightColor. Used for Hyperlink + Actionable Text/Icons",
+          "value": "#ffff00",
+          "type": "color"
+        },
+        "SystemColorGrayTextColor": {
+          "description": "SystemColorGrayTextColor. Used for disabled state",
+          "value": "#3ff23f",
+          "type": "color"
+        },
+        "SystemColorHighlightTextColor": {
+          "description": "SystemColorHighlightTextColor. Used for Inverted text color for active/highlighted items",
+          "value": "#000000",
+          "type": "color"
+        },
+        "SystemColorHighlightColor": {
+          "description": "SystemColorHighlightColor. Used for Highlight/Hover/Press/Active/Enabled",
+          "value": "#1aebff",
+          "type": "color"
+        },
+        "SystemColorButtonTextColor": {
+          "description": "SystemColorButtonTextColor",
+          "value": "#ffffff",
+          "type": "color"
+        },
+        "SystemColorButtonFaceColor": {
+          "description": "SystemColorButtonFaceColor. Used for button background",
+          "value": "#000000",
+          "type": "color"
+        },
+        "SystemColorWindowColor": {
+          "description": "SystemColorWindowColor. Used for Primary BG",
+          "value": "#000000",
+          "type": "color"
+        }
+      },
+      "white": {
+        "SystemColorWindowTextColor": {
+          "description": "Text main color",
+          "value": "#000000",
+          "type": "color"
+        },
+        "SystemColorHotlightColor": {
+          "description": "SystemColorHighlightColor. Used for Hyperlink + Actionable Text/Icons",
+          "value": "#00009f",
+          "type": "color"
+        },
+        "SystemColorGrayTextColor": {
+          "description": "SystemColorGrayTextColor. Used for disabled state",
+          "value": "#600000",
+          "type": "color"
+        },
+        "SystemColorHighlightTextColor": {
+          "description": "SystemColorHighlightTextColor. Used for Inverted text color for active/highlighted items",
+          "value": "#ffffff",
+          "type": "color"
+        },
+        "SystemColorHighlightColor": {
+          "description": "SystemColorHighlightColor. Used for Highlight/Hover/Press/Active/Enabled",
+          "value": "#37006e",
+          "type": "color"
+        },
+        "SystemColorButtonTextColor": {
+          "description": "SystemColorButtonTextColor",
+          "value": "#000000",
+          "type": "color"
+        },
+        "SystemColorButtonFaceColor": {
+          "description": "SystemColorButtonFaceColor. Used for button background",
+          "value": "#ffffff",
+          "type": "color"
+        },
+        "SystemColorWindowColor": {
+          "description": "SystemColorWindowColor. Used for Primary BG",
+          "value": "#ffffff",
+          "type": "color"
+        }
+      }
     }
   }
 }
