@@ -927,13 +927,6 @@
             "description": ""
           }
         },
-        "gradient": {
-          "active": {
-            "value": "linear-gradient(44deg, {color.core.blue.50} 14.64%, {color.decorative.cyan.40} 51.1%, {color.core.green.30} 85.36%);",
-            "type": "color",
-            "description": "Theme Token: OutlineGradient-active\nCore Token: blue-50, cyan-40, green-30\nUsed for Webex Assitant AI , Halo Effect"
-          }
-        },
         "share": {
           "selected": {
             "value": "{color.core.green.50}",
@@ -1017,6 +1010,13 @@
             "value": "linear-gradient(46deg, {color.decorative.purple.60} -0.03%, {color.decorative.pink.60} 99.99%)",
             "type": "color",
             "description": "Used for border of Promotional Banner"
+          }
+        },
+        "gradient": {
+          "active": {
+            "value": "linear-gradient(44deg, {color.core.blue.50} 14.64%, {color.decorative.cyan.50} 51.1%, {color.core.green.40} 85.36%);",
+            "type": "color",
+            "description": "Theme Token: OutlineGradient-active\nCore Token: blue-50, cyan-50, green-40\nUsed for Webex Assitant AI , Halo Effect"
           }
         }
       },
