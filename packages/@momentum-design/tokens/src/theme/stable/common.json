@@ -180,6 +180,23 @@
                 "description": ""
               }
             }
+          },
+          "promotion": {
+            "normal": {
+              "value": "linear-gradient(46deg, {color.decorative.purple.70} -0.03%, {color.decorative.pink.70} 99.99%)",
+              "type": "color",
+              "description": "Used for rest state of promotional button"
+            },
+            "hover": {
+              "value": "linear-gradient(46deg, {color.decorative.purple.80} -0.04%, {color.decorative.pink.80} 99.97%)",
+              "type": "color",
+              "description": "Used for hover state of promotional button"
+            },
+            "active": {
+              "value": "linear-gradient(46deg, {color.decorative.purple.90} -0.05%, {color.decorative.pink.90} 99.96%)",
+              "type": "color",
+              "description": "Used for active state of promotional button"
+            }
           }
         },
         "outline": {

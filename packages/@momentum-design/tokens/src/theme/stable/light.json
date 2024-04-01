@@ -931,25 +931,6 @@
             "description": ""
           }
         },
-        "gradient": {
-          "active": {
-            "0": {
-              "value": "{color.decorative.cobalt.70}",
-              "type": "color",
-              "description": ""
-            },
-            "1": {
-              "value": "{color.decorative.cyan.40}",
-              "type": "color",
-              "description": ""
-            },
-            "2": {
-              "value": "{color.core.green.50}",
-              "type": "color",
-              "description": ""
-            }
-          }
-        },
         "share": {
           "selected": {
             "value": "{color.core.green.50}",
@@ -1026,6 +1007,20 @@
             "value": "{color.decorative.violet.40}",
             "type": "color",
             "description": ""
+          }
+        },
+        "promotion": {
+          "normal": {
+            "value": "linear-gradient(46deg, {color.decorative.purple.100} -0.03%, {color.decorative.pink.70} 99.99%)",
+            "type": "color",
+            "description": "Used for border of Promootion Banner"
+          }
+        },
+        "gradient": {
+          "active": {
+            "value": "linear-gradient(44deg, {color.core.blue.50} 14.64%, {color.decorative.cyan.50} 51.1%, {color.core.green.40} 85.36%);",
+            "type": "color",
+            "description": "Theme Token: OutlineGradient-active\nCore Token: blue-50, cyan-50, green-40\nUsed for Webex Assitant AI , Halo Effect"
           }
         }
       },
