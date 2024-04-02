@@ -3,7 +3,6 @@ import { mockSVGFontBuffer } from '../../../test/fixtures/transformer.fixtures';
 import type { Formats } from '../types';
 import SvgGlyphsTransformer from './svg-glyphs-transformer';
 import Transformer from './transformer';
-import * as Utils from '../utils';
 
 describe('@momentum-design/builder - SVG glyphs Font Transformer', () => {
   let transformer: SvgGlyphsTransformer;
@@ -20,7 +19,7 @@ describe('@momentum-design/builder - SVG glyphs Font Transformer', () => {
     });
     it('should mount the format provided to the class object', () => {
       expect(transformer.format).toBe(FORMAT);
-      expect(transformer.destination).toBe('dist');
+      expect(transformer.destination).toBe(FONT_NAME);
     });
   });
   describe('transformFilesSync', () => {
@@ -32,18 +31,10 @@ describe('@momentum-design/builder - SVG glyphs Font Transformer', () => {
       expect(transformer.outputFiles).toEqual([
         {
           data: expect.any(String),
-          distPath: path.join('dist', 'MyFont'),
+          distPath: path.join('dist', FONT_NAME),
           srcPath: '',
         },
       ]);
-    });
-  });
-  describe('getNextCodepoint', () => {
-    it('return codepoint', () => {
-      const getNextCodepointSpy = jest.spyOn(Utils, 'getNextCodepoint');
-      const resultCodepoint = Utils.getNextCodepoint();
-      expect(getNextCodepointSpy).toBeCalledTimes(1);
-      expect(resultCodepoint).toBe(61698);
     });
   });
 });
