@@ -1750,6 +1750,34 @@
             "description": "Theme Token: color.theme.miscellaneous.partner.keynote\nCore Token: color.partner.keynote\nUsed for content card component. (keynote)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
           }
         }
+      },
+      "promotion": {
+        "button": {
+          "fixed": {
+            "default": {
+              "value": "linear-gradient(46deg, {color.decorative.purple.70} -0.03%, {color.decorative.pink.70} 99.99%)",
+              "type": "color",
+              "description": "[Light Theme]\nTheme Token: color.theme.promotion.button.fixed.default\nCore Token: color.core.decorative.purple.70, color.core.decorative.pink.70\nHEX:  linear-gradient(46deg, #932099 -0.03%, #A12A3A 99.99%);\nUsed for default button background of Promotional Buttons\n\n*This color retains the same color in the dark/light theme."
+            },
+            "hover": {
+              "value": "linear-gradient(46deg, {color.decorative.purple.80} -0.04%, {color.decorative.pink.80} 99.97%)",
+              "type": "color",
+              "description": "[Light Theme]\nTheme Token: color.theme.promotion.button.fixed.hover\nCore Token: color.core.decorative.purple.80, color.core.decorative.pink.80\nHEX: linear-gradient(46deg, #601E66 -0.04%, #66262D 99.97%);\nUsed for hover button background of Promotional Buttons\n\n*This color retains the same color in the dark/light theme."
+            },
+            "active": {
+              "value": "linear-gradient(46deg, {color.decorative.purple.90} -0.05%, {color.decorative.pink.90} 99.96%)",
+              "type": "color",
+              "description": "[Light Theme]\nTheme Token: color.theme.promotion.button.fixed.active\nCore Token: color.core.decorative.purple.90, color.core.decorative.pink.90\nHEX:  linear-gradient(46deg, #3B1840 -0.05%, #3B1E21 99.96%);\nUsed for active button background of Promotional Buttons\n\n*This color retains the same color in the dark/light theme."
+            }
+          }
+        },
+        "border": {
+          "default": {
+            "value": "linear-gradient(46deg, {color.decorative.purple.100} -0.03%, {color.decorative.pink.70} 99.99%)",
+            "type": "color",
+            "description": "[Light Theme]\nTheme Token: color.theme.promotion.border.default\nCore Token: color.core.decorative.purple.100, color.core.decorative.pink.70\nHEX:  linear-gradient(46deg, #251329 -0.03%, #A12A3A 99.99%);\nUsed for outline border of Promotional Buttons"
+          }
+        }
       }
     }
   }
