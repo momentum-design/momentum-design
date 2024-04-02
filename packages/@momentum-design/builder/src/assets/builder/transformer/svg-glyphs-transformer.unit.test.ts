@@ -6,10 +6,11 @@ import Transformer from './transformer';
 
 describe('@momentum-design/builder - SVG glyphs Font Transformer', () => {
   let transformer: SvgGlyphsTransformer;
+  const DESTINATION = 'dist';
   const FONT_NAME = 'MyFont';
   const FORMAT: Formats = { config: { fileName: FONT_NAME }, type: 'SVG_GLYPHS' };
   beforeEach(() => {
-    transformer = new SvgGlyphsTransformer(FORMAT, 'dist');
+    transformer = new SvgGlyphsTransformer(FORMAT, DESTINATION);
     // @ts-ignore
     jest.spyOn(transformer.logger, 'debug').mockImplementation(() => { });
   });
@@ -19,7 +20,7 @@ describe('@momentum-design/builder - SVG glyphs Font Transformer', () => {
     });
     it('should mount the format provided to the class object', () => {
       expect(transformer.format).toBe(FORMAT);
-      expect(transformer.destination).toBe(FONT_NAME);
+      expect(transformer.destination).toBe(DESTINATION);
     });
   });
   describe('transformFilesSync', () => {
@@ -31,7 +32,7 @@ describe('@momentum-design/builder - SVG glyphs Font Transformer', () => {
       expect(transformer.outputFiles).toEqual([
         {
           data: expect.any(String),
-          distPath: path.join('dist', FONT_NAME),
+          distPath: path.join(DESTINATION, FONT_NAME),
           srcPath: '',
         },
       ]);
