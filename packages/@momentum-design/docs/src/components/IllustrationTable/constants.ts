@@ -5,5 +5,3 @@ export const IllustrationSize = {
   60: 'sixzero',
   '': '',
 };
-
-export type illustrationSizeType = keyof typeof IllustrationSize;
