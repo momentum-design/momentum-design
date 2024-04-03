@@ -37,5 +37,31 @@ describe('@momentum-design/builder - SVG glyphs Font Transformer', () => {
         },
       ]);
     });
+    it('filters the files and return empty data if srcpath include numbers', () => {
+      transformer.inputFiles = [{ srcPath: '12', distPath: 'font', data: mockSVGFontBuffer }];
+      const transformFilesSyncSpy = jest.spyOn(transformer, 'transformFilesSync');
+      transformer.transformFilesSync();
+      expect(transformFilesSyncSpy).toHaveBeenCalledTimes(1);
+      expect(transformer.outputFiles).toEqual([
+        {
+          data: '{}',
+          distPath: path.join(DESTINATION, FONT_NAME),
+          srcPath: '',
+        },
+      ]);
+    });
+
+    it('return the empty data if inputFiles not supplied', () => {
+      const transformFilesSyncSpy = jest.spyOn(transformer, 'transformFilesSync');
+      transformer.transformFilesSync();
+      expect(transformFilesSyncSpy).toHaveBeenCalledTimes(1);
+      expect(transformer.outputFiles).toEqual([
+        {
+          data: '{}',
+          distPath: path.join(DESTINATION, FONT_NAME),
+          srcPath: '',
+        },
+      ]);
+    });
   });
 });
