@@ -1,6 +1,5 @@
 import Svgo from 'svgo';
 import type { Formats, OptimizedSVGFormat } from '../types';
-import { FORMATS as CONSTANTS_FORMAT } from '../constants';
 import SVGTransformer from './svg-transformer';
 import Transformer from './transformer';
 import { mockSVGFontBuffer } from '../../../test/fixtures/transformer.fixtures';
@@ -12,7 +11,7 @@ describe('@momentum-design/builder - SVG Transformer', () => {
   const SRC_PATH = 'svg';
   const DESTINATION = 'dist';
   const FORMAT: Formats = {
-    config: { }, type: CONSTANTS_FORMAT.OPTIMISED_SVG,
+    config: { }, type: 'OPTIMIZED_SVG',
   } as OptimizedSVGFormat;
 
   beforeEach(() => {
