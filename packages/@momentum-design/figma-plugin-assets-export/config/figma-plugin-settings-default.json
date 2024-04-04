@@ -156,7 +156,11 @@
             "separator": "-",
             "suffix": {
               "parts": [
-                "COLOR"
+                "COLOR",
+                "THEME",
+                "TYPE",
+                "ORIENTATION",
+                "PRODUCT"
               ],
               "separator": "-"
             },
