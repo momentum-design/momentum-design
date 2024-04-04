@@ -45,7 +45,11 @@
     WEIGHT: "WEIGHT",
     COLOR: "COLOR",
     STATE: "STATE",
-    SIZE: "SIZE"
+    SIZE: "SIZE",
+    THEME: "THEME",
+    TYPE: "TYPE",
+    ORIENTATION: "ORIENTATION",
+    PRODUCT: "PRODUCT"
   };
   var FIGMA_VARIANTS = {
     WEIGHT: "weight",
@@ -53,7 +57,11 @@
     RTL: "right to left",
     SF_ALTERNATIVE: "sf alternative",
     STATE: "state",
-    SIZE: "size"
+    SIZE: "size",
+    THEME: "theme",
+    TYPE: "type",
+    ORIENTATION: "orientation",
+    PRODUCT: "product"
   };
   var CONSTANTS = {
     DOCUMENT,
@@ -84,7 +92,7 @@
       this.variants = normaliseObject(this.node.variantProperties);
     }
     get replacementMap() {
-      var _a, _b, _c, _d, _e, _f, _g, _h, _i;
+      var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m;
       const setOrComponentName = ((_a = this.node.parent) == null ? void 0 : _a.type) === "COMPONENT_SET" ? this.node.parent.name : this.node.name;
       const rtl = ((_b = this.variants) == null ? void 0 : _b[CONSTANTS.FIGMA_VARIANTS.RTL]) === "true" ? "rtl" : void 0;
       const sf = ((_c = this.variants) == null ? void 0 : _c[CONSTANTS.FIGMA_VARIANTS.SF_ALTERNATIVE]) === "true" ? "sf" : void 0;
@@ -96,6 +104,10 @@
         [CONSTANTS.REPLACE_TERMS.WEIGHT]: (_g = this.variants) == null ? void 0 : _g[CONSTANTS.FIGMA_VARIANTS.WEIGHT],
         [CONSTANTS.REPLACE_TERMS.STATE]: (_h = this == null ? void 0 : this.variants) == null ? void 0 : _h[CONSTANTS.FIGMA_VARIANTS.STATE],
         [CONSTANTS.REPLACE_TERMS.COLOR]: (_i = this.variants) == null ? void 0 : _i[CONSTANTS.FIGMA_VARIANTS.COLOR],
+        [CONSTANTS.REPLACE_TERMS.THEME]: (_j = this.variants) == null ? void 0 : _j[CONSTANTS.FIGMA_VARIANTS.THEME],
+        [CONSTANTS.REPLACE_TERMS.TYPE]: (_k = this.variants) == null ? void 0 : _k[CONSTANTS.FIGMA_VARIANTS.TYPE],
+        [CONSTANTS.REPLACE_TERMS.ORIENTATION]: (_l = this.variants) == null ? void 0 : _l[CONSTANTS.FIGMA_VARIANTS.ORIENTATION],
+        [CONSTANTS.REPLACE_TERMS.PRODUCT]: (_m = this.variants) == null ? void 0 : _m[CONSTANTS.FIGMA_VARIANTS.PRODUCT],
         [CONSTANTS.REPLACE_TERMS.SIZE]: size,
         [CONSTANTS.REPLACE_TERMS.RTL]: rtl,
         [CONSTANTS.REPLACE_TERMS.SF_ALTERNATIVE]: sf
@@ -127,6 +139,9 @@
       }
       if (fileName.replaceNumbers) {
         name = name.replace(/[0-9]/g, (digit) => this.convertDigitToWord(digit));
+      }
+      if (fileName.replaceDots) {
+        name = name.replace(/\./g, "");
       }
       name += ".";
       name += exportSettings.format;
@@ -290,7 +305,8 @@
                 parts: ["WEIGHT", "STATE", "SIZE"],
                 separator: "_"
               },
-              replaceNumbers: true
+              replaceNumbers: true,
+              replaceDots: true
             },
             exportSettings: {
               format: "SVG",
