@@ -137,10 +137,6 @@
           {
             "page": "✅ Logos",
             "folder": "logos"
-          },
-          {
-            "page": "✅ Images",
-            "folder": "images"
           }
         ],
         "exclude": {
@@ -156,7 +152,11 @@
             "separator": "-",
             "suffix": {
               "parts": [
-                "COLOR"
+                "COLOR",
+                "THEME",
+                "TYPE",
+                "ORIENTATION",
+                "PRODUCT"
               ],
               "separator": "-"
             },

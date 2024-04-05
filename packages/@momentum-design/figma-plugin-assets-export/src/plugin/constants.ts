@@ -14,6 +14,10 @@ const REPLACE_TERMS = {
   COLOR: 'COLOR' as const,
   STATE: 'STATE' as const,
   SIZE: 'SIZE' as const,
+  THEME: 'THEME' as const,
+  TYPE: 'TYPE' as const,
+  ORIENTATION: 'ORIENTATION' as const,
+  PRODUCT: 'PRODUCT' as const,
 };
 
 // note: variants have to be provided lowercase here:
@@ -24,6 +28,10 @@ const FIGMA_VARIANTS = {
   SF_ALTERNATIVE: 'sf alternative',
   STATE: 'state',
   SIZE: 'size',
+  THEME: 'theme',
+  TYPE: 'type',
+  ORIENTATION: 'orientation',
+  PRODUCT: 'product',
 };
 
 const CONSTANTS = {
