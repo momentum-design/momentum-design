@@ -1,7 +1,6 @@
 {
   "name": "@momentum-design/brand-visuals",
   "packageManager": "yarn@3.2.4",
-  "private": true,
   "files": [
     "./dist"
   ],
