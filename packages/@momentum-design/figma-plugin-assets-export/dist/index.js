@@ -188,6 +188,10 @@
     get assets() {
       return Promise.all(this.components.map((component) => component.asset));
     }
+    isNodeContainingImage(node) {
+      const rectangleNodes = node.findAllWithCriteria({ types: ["RECTANGLE"] });
+      return rectangleNodes.filter((node2) => node2.fills.filter((fill) => fill.type === "IMAGE").length > 0).length > 0;
+    }
     excludeComponents(componentNodes) {
       const { exclude } = this.assetSetting.input;
       if (!exclude) {
@@ -199,6 +203,9 @@
         returnValue = componentNodes.filter((n) => {
           var _a, _b;
           lastComponentNodeItIsGoingThrough = (_a = n.parent) == null ? void 0 : _a.name;
+          if (this.isNodeContainingImage(n)) {
+            return false;
+          }
           return !(((_b = normaliseObject(n.variantProperties)) == null ? void 0 : _b[exclude.byVariant]) === "true");
         });
       } catch (e) {
