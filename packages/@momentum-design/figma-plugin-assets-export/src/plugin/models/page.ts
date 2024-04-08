@@ -73,6 +73,7 @@ class Page {
     const componentNodes = this.node.findAllWithCriteria({
       types: CONSTANTS.SEARCH_CRITERIA,
     });
+
     const filteredComponents = this.excludeComponents(componentNodes);
     // return component instances:
     return filteredComponents.map((node: ComponentNode) => new Component(node, this.destination, this.assetSetting));
