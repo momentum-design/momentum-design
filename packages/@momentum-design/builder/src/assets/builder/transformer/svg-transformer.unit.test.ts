@@ -2,7 +2,7 @@ import Svgo from 'svgo';
 import type { Formats, OptimizedSVGFormat } from '../types';
 import SVGTransformer from './svg-transformer';
 import Transformer from './transformer';
-import { mockSVGFontBuffer } from '../../../test/fixtures/transformer.fixtures';
+import { mockSVG, mockOptimiseSVG } from '../../../test/fixtures/svg-transformer.fixtures';
 
 describe('@momentum-design/builder - SVG Transformer', () => {
   let transformer: SVGTransformer;
@@ -39,17 +39,13 @@ describe('@momentum-design/builder - SVG Transformer', () => {
       svgoSpy.mockRestore();
     });
 
-    it('checks optimize function called correctly', () => {
-      const svgoOptimizeSpy = jest.spyOn(transformer, 'optimize');
-      const result = transformer.optimize({ distPath: DIST_PATH, srcPath: SRC_PATH, data: mockSVGFontBuffer });
-      expect(svgoOptimizeSpy).toBeCalledTimes(1);
+    it('checks optimize function and optimize(svgoOptimize) function of svgo library called correctly', () => {
+      const optimizeSpy = jest.spyOn(transformer, 'optimize');
+      const result = transformer.optimize({ distPath: DIST_PATH, srcPath: SRC_PATH, data: mockSVG });
+      expect(optimizeSpy).toBeCalledTimes(1);
       expect(result).toEqual({ distPath: DIST_PATH, srcPath: SRC_PATH, data: expect.any(String) });
-    });
 
-    it('checks optimize(svgoOptimize) function of svgo library called', () => {
-      const result = transformer.optimize({ distPath: DIST_PATH, srcPath: SRC_PATH, data: mockSVGFontBuffer });
       expect(svgoSpy).toBeCalled();
-      expect(result).toEqual({ distPath: DIST_PATH, srcPath: SRC_PATH, data: expect.any(String) });
     });
 
     it('return same file in case of error in svgo library', () => {
@@ -61,17 +57,17 @@ describe('@momentum-design/builder - SVG Transformer', () => {
 
   describe('transformFilesSync', () => {
     it('checks transformFilesSync function called correctly and return optimize data', () => {
-      transformer.inputFiles = [{ distPath: DIST_PATH, srcPath: SRC_PATH, data: mockSVGFontBuffer }];
+      transformer.inputFiles = [{ distPath: DIST_PATH, srcPath: SRC_PATH, data: mockSVG }];
       const transformFilesSyncSpy = jest.spyOn(transformer, 'transformFilesSync');
       transformer.transformFilesSync();
       expect(transformFilesSyncSpy).toBeCalledTimes(1);
-      expect(transformer.outputFiles).toEqual([{ distPath: DIST_PATH, srcPath: SRC_PATH, data: expect.any(String) }]);
+      expect(transformer.outputFiles).toEqual([{ distPath: DIST_PATH, srcPath: SRC_PATH, data: mockOptimiseSVG }]);
     });
 
     it('checks optimize(svgoOptimize) function of svgo library called and return data for each Files', () => {
       const filesArray = [
-        { distPath: DIST_PATH, srcPath: SRC_PATH, data: mockSVGFontBuffer },
-        { distPath: DIST_PATH, srcPath: SRC_PATH, data: mockSVGFontBuffer },
+        { distPath: DIST_PATH, srcPath: SRC_PATH, data: mockSVG },
+        { distPath: DIST_PATH, srcPath: SRC_PATH, data: mockSVG },
       ];
       transformer.inputFiles = filesArray;
       svgoSpy = jest.spyOn(Svgo, 'optimize');
