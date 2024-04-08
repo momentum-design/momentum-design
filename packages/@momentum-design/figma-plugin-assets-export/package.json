@@ -31,7 +31,7 @@
     "dev": "concurrently -n tsc,build,vite 'npm:tsc:watch' 'npm:build:watch' 'vite'"
   },
   "devDependencies": {
-    "@figma/plugin-typings": "^1.56.0",
+    "@figma/plugin-typings": "^1.88.0",
     "@octokit/types": "^8.0.0",
     "@testing-library/jest-dom": "^6.2.0",
     "@testing-library/react": "^14.1.2",
