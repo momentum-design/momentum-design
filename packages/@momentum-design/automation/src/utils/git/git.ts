@@ -51,7 +51,7 @@ class Git {
   public static async getPullRequestDetails(commitSHA:string): Promise<any> {
     return Execute.run('gh auth token').then(async (res) => {
       try {
-        const response = await fetch(`${Git.CONSTANTS.REPO_URL}/${commitSHA}/pulls`, {
+        const response = await fetch(`${Git.CONSTANTS.COMMITS_API_URL}/${commitSHA}/pulls`, {
           headers: {
             Authorization: `Bearer ${res.trim()}`,
           },
