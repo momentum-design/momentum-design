@@ -23,6 +23,20 @@ class Page {
     return Promise.all(this.components.map((component) => component.asset));
   }
 
+  /**
+   * This function checks if node contains any IMAGE fill
+   *
+   * @returns true, if this.node contains any IMAGE fill, otherwise false
+   */
+  isNodeContainingImage(node: ComponentNode) {
+    const rectangleNodes: Array<RectangleNode> = node.findAllWithCriteria({ types: ['RECTANGLE'] });
+    // if there are any rectangleNodes as children, which do have a fill of type IMAGE, return true
+    return (
+      rectangleNodes.filter((node) => (node.fills as Paint[]).filter((fill) => fill.type === 'IMAGE').length > 0)
+        .length > 0
+    );
+  }
+
   excludeComponents(componentNodes: Array<ComponentNode>): Array<ComponentNode> {
     const { exclude } = this.assetSetting.input;
 
@@ -36,6 +50,11 @@ class Page {
     try {
       returnValue = componentNodes.filter((n) => {
         lastComponentNodeItIsGoingThrough = n.parent?.name;
+
+        if (this.isNodeContainingImage(n)) {
+          return false;
+        }
+
         return !(normaliseObject(n.variantProperties)?.[exclude.byVariant] === 'true');
       });
     } catch (e) {
