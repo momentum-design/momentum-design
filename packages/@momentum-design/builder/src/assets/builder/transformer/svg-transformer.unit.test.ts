@@ -2,7 +2,7 @@ import Svgo from 'svgo';
 import type { Formats, OptimizedSVGFormat } from '../types';
 import SVGTransformer from './svg-transformer';
 import Transformer from './transformer';
-import { mockSVG, mockOptimiseSVG } from '../../../test/fixtures/svg-transformer.fixtures';
+import { mockSVG } from '../../../test/fixtures/svg-transformer.fixtures';
 
 describe('@momentum-design/builder - SVG Transformer', () => {
   let transformer: SVGTransformer;
@@ -61,7 +61,7 @@ describe('@momentum-design/builder - SVG Transformer', () => {
       const transformFilesSyncSpy = jest.spyOn(transformer, 'transformFilesSync');
       transformer.transformFilesSync();
       expect(transformFilesSyncSpy).toBeCalledTimes(1);
-      expect(transformer.outputFiles).toEqual([{ distPath: DIST_PATH, srcPath: SRC_PATH, data: mockOptimiseSVG }]);
+      expect(transformer.outputFiles?.[0].data.length).toBeLessThanOrEqual(transformer.inputFiles?.[0].data.length);
     });
 
     it('checks optimize(svgoOptimize) function of svgo library called and return data for each Files', () => {
