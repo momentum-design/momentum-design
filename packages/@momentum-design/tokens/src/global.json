@@ -446,9 +446,9 @@
     },
     "Outlines": {
       "OutlinePrimary-normal": {
-        "description": "Theme Token: OutlinePrimary-normal\nCore Token: white-alpha-40",
-        "value": "#ffffff66",
-        "type": "color"
+        "value": "#ffffff50",
+        "type": "color",
+        "description": "Theme Token: OutlinePrimary-normal\nCore Token: white-alpha-50"
       },
       "OutlineTheme-normal": {
         "description": "Theme Token: OutlineTheme-normal\nCore Token: theme-40",
@@ -1339,9 +1339,9 @@
     },
     "Outlines": {
       "OutlinePrimary-normal": {
-        "description": "Theme Token: OutlinePrimary-normal\nCore Token: black-alpha-40",
-        "value": "#00000066",
-        "type": "color"
+        "value": "#00000050",
+        "type": "color",
+        "description": "Theme Token: OutlinePrimary-normal\nCore Token: black-alpha-50"
       },
       "OutlineTheme-normal": {
         "description": "Theme Token: OutlineTheme-normal\nCore Token: theme-60",
