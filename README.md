@@ -10,6 +10,7 @@ This currently includes the following delivered distributables:
 * [**@momentum-design/icons**](https://github.com/momentum-design/momentum-design/tree/main/packages/%40momentum-design/icons) - Icon assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/icons)
 * [**@momentum-design/illustrations**](https://github.com/momentum-design/momentum-design/tree/main/packages/%40momentum-design/illustrations) - Illustration assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/illustrations)
 * [**@momentum-design/tokens**](https://github.com/momentum-design/momentum-design/tree/main/packages/%40momentum-design/tokens) - Token assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/tokens)
+* [**@momentum-design/brand-visuals**](https://github.com/momentum-design/momentum-design/tree/main/packages/%40momentum-design/brand-visuals) - Brand Visual assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/brand-visuals)
 
 ## Consumption
 
