@@ -872,9 +872,9 @@
       "outline": {
         "primary": {
           "normal": {
-            "value": "{color.core.black-alpha.40}",
+            "value": "{color.core.black-alpha.50}",
             "type": "color",
-            "description": ""
+            "description": "Theme Token: OutlinePrimary-normal\nCore Token: black-alpha-50"
           }
         },
         "theme": {
@@ -905,9 +905,9 @@
         },
         "button": {
           "normal": {
-            "value": "{color.core.black-alpha.30}",
+            "value": "{color.core.black-alpha.50}",
             "type": "color",
-            "description": ""
+            "description": "Theme Token: OutlineButton-normal\nCore Token: black-alpha-50"
           }
         },
         "join": {
@@ -1148,19 +1148,19 @@
       "scrollbar": {
         "button": {
           "normal": {
-            "value": "{color.core.black-alpha.20}",
-            "type": "color",
-            "description": ""
-          },
-          "hover": {
-            "value": "{color.core.black-alpha.30}",
-            "type": "color",
-            "description": ""
-          },
-          "pressed": {
             "value": "{color.core.black-alpha.40}",
             "type": "color",
-            "description": ""
+            "description": "Theme Token:ScrollbarButton-normal\nCore Token: black-alpha-40"
+          },
+          "hover": {
+            "value": "{color.core.black-alpha.50}",
+            "type": "color",
+            "description": "Theme Token: ScrollbarButton-hover\nCore Token: black-alpha-50"
+          },
+          "pressed": {
+            "value": "{color.core.black-alpha.60}",
+            "type": "color",
+            "description": "Theme Token: ScrollbarButton-pressed\nCore Token: black-alpha-60"
           }
         },
         "arrow": {
@@ -1176,14 +1176,14 @@
               "description": ""
             },
             "hover": {
-              "value": "{color.core.black-alpha.11}",
-              "type": "color",
-              "description": ""
-            },
-            "pressed": {
               "value": "{color.core.black-alpha.20}",
               "type": "color",
-              "description": ""
+              "description": "Theme Token: ScrollbarArrowBackground-hover\nCore Token: black-alpha-20"
+            },
+            "pressed": {
+              "value": "{color.core.black-alpha.30}",
+              "type": "color",
+              "description": "Theme Token: ScrollbarArrowBackground-press\nCore Token: black-alpha-30"
             }
           }
         },
