@@ -53,10 +53,10 @@ class CreateRelease extends Command {
       const commitLog = await Git.list(config['commit-index']);
       const latestCommit = commitLog[0];
       const pullRequestDescription = await Git.getPullRequestDetails(latestCommit.commit);
-      const releaseNotes = '### $subject\r\n$body';
+      const releaseNotes = '### $title\r\n$body';
 
       const notes = releaseNotes
-        .replace('$subject', pullRequestDescription[0].subject)
+        .replace('$title', pullRequestDescription[0].title)
         .replace('$body', pullRequestDescription[0].body)
         .concat(`\r\n ### Package:\nhttps://www.npmjs.com/package/${pkg}/v/${version}`);
 
