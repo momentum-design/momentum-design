@@ -69,6 +69,7 @@ class Page {
   }
 
   get components(): Components {
+    figma.loadAllPagesAsync();
     // get all figma component nodes in current page:
     const componentNodes = this.node.findAllWithCriteria({
       types: CONSTANTS.SEARCH_CRITERIA,
