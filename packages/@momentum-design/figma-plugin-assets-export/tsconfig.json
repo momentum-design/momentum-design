@@ -4,6 +4,10 @@
       "lib": ["dom", "dom.iterable", "esnext"],
       "allowJs": true,
       "skipLibCheck": true,
+      "typeRoots": [
+        "../../../node_modules/@types",
+        "../../../node_modules/@figma"
+      ],
       "esModuleInterop": true,
       "allowSyntheticDefaultImports": true,
       "strict": true,
@@ -19,6 +23,6 @@
         "@/*": ["*"]
       }
     },
-    "include": ["src/**/*.ts", "src/**/*.tsx"],
+    "include": ["src/**/*.ts", "src/**/*.tsx", "src/plugin/**/*.ts"],
     "exclude": ["node_modules"]
-  }
+}
