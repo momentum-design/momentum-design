@@ -1297,10 +1297,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@figma/plugin-typings@npm:^1.56.0":
-  version: 1.56.0
-  resolution: "@figma/plugin-typings@npm:1.56.0"
-  checksum: fab6428b8d5f34e7cf2e1e84333398c7c015743a1e0d4000f68d850f215aa333ee01d8614c7cf125b0885d69cc954e7d6ad6df4cf897d3a7fee98a9b2d4f86e7
+"@figma/plugin-typings@npm:^1.90.0":
+  version: 1.90.0
+  resolution: "@figma/plugin-typings@npm:1.90.0"
+  checksum: eff354aa3ce63fbcbf02719a312a3cf8f353d5f6e138aa7c5cb19f266405fbc26e85dd07fdfbc5a3d85d838e1c4dec8aaf15901b092508fdc944f1ced064e33b
   languageName: node
   linkType: hard
 
@@ -2155,7 +2155,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@momentum-design/figma-plugin-assets-export@workspace:packages/@momentum-design/figma-plugin-assets-export"
   dependencies:
-    "@figma/plugin-typings": ^1.56.0
+    "@figma/plugin-typings": ^1.90.0
     "@octokit/core": ^4.1.0
     "@octokit/types": ^8.0.0
     "@testing-library/jest-dom": ^6.2.0

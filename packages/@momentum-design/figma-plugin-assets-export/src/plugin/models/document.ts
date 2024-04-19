@@ -40,6 +40,7 @@ class Document {
     const pagesTemp: Array<Page> = [];
     if ('children' in this.node) {
       for (const child of this.node.children) {
+        child.loadAsync();
         if (CONSTANTS.DOCUMENT.VALID_CHILD_TYPES.includes(child.type)) {
           const destination = this.getDestination(child.name, this.assetSetting.input.mapPagesToFolder);
           if (destination || destination === '') {
