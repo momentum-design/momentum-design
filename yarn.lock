@@ -2017,9 +2017,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@momentum-design/animations@workspace:packages/@momentum-design/animations":
+"@momentum-design/animations@workspace:packages/assets/animations":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/animations@workspace:packages/@momentum-design/animations"
+  resolution: "@momentum-design/animations@workspace:packages/assets/animations"
   dependencies:
     ncp: ^2.0.0
   languageName: unknown
@@ -2050,9 +2050,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/brand-visuals@workspace:packages/@momentum-design/brand-visuals":
+"@momentum-design/brand-visuals@workspace:packages/assets/brand-visuals":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/brand-visuals@workspace:packages/@momentum-design/brand-visuals"
+  resolution: "@momentum-design/brand-visuals@workspace:packages/assets/brand-visuals"
   dependencies:
     "@momentum-design/builder": "workspace:^"
     rimraf: ^3.0.2
@@ -2183,24 +2183,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/fonts@workspace:packages/@momentum-design/fonts":
+"@momentum-design/fonts@workspace:packages/assets/fonts":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/fonts@workspace:packages/@momentum-design/fonts"
+  resolution: "@momentum-design/fonts@workspace:packages/assets/fonts"
   languageName: unknown
   linkType: soft
 
-"@momentum-design/icons@workspace:^, @momentum-design/icons@workspace:packages/@momentum-design/icons":
+"@momentum-design/icons@workspace:^, @momentum-design/icons@workspace:packages/assets/icons":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/icons@workspace:packages/@momentum-design/icons"
+  resolution: "@momentum-design/icons@workspace:packages/assets/icons"
   dependencies:
     "@momentum-design/builder": "workspace:^"
     rimraf: ^3.0.2
   languageName: unknown
   linkType: soft
 
-"@momentum-design/illustrations@workspace:^, @momentum-design/illustrations@workspace:packages/@momentum-design/illustrations":
+"@momentum-design/illustrations@workspace:^, @momentum-design/illustrations@workspace:packages/assets/illustrations":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/illustrations@workspace:packages/@momentum-design/illustrations"
+  resolution: "@momentum-design/illustrations@workspace:packages/assets/illustrations"
   dependencies:
     "@momentum-design/builder": "workspace:^"
     rimraf: ^3.0.2
@@ -2256,9 +2256,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/tokens@workspace:^, @momentum-design/tokens@workspace:packages/@momentum-design/tokens":
+"@momentum-design/tokens@workspace:^, @momentum-design/tokens@workspace:packages/assets/tokens":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/tokens@workspace:packages/@momentum-design/tokens"
+  resolution: "@momentum-design/tokens@workspace:packages/assets/tokens"
   dependencies:
     "@momentum-design/token-builder": "workspace:^"
     rimraf: ^3.0.2
