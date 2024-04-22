@@ -2025,9 +2025,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/automation@workspace:^, @momentum-design/automation@workspace:packages/@momentum-design/automation":
+"@momentum-design/automation@workspace:^, @momentum-design/automation@workspace:packages/tools/automation":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/automation@workspace:packages/@momentum-design/automation"
+  resolution: "@momentum-design/automation@workspace:packages/tools/automation"
   dependencies:
     "@momentum-design/telemetry": "workspace:^"
     "@types/jest": ^29.2.2
@@ -2059,9 +2059,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/builder@workspace:^, @momentum-design/builder@workspace:packages/@momentum-design/builder":
+"@momentum-design/builder@workspace:^, @momentum-design/builder@workspace:packages/tools/builder":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/builder@workspace:packages/@momentum-design/builder"
+  resolution: "@momentum-design/builder@workspace:packages/tools/builder"
   dependencies:
     "@microsoft/api-documenter": ^7.19.24
     "@microsoft/api-extractor": ^7.33.6
@@ -2101,9 +2101,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/common@workspace:^, @momentum-design/common@workspace:packages/@momentum-design/common":
+"@momentum-design/common@workspace:^, @momentum-design/common@workspace:packages/tools/common":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/common@workspace:packages/@momentum-design/common"
+  resolution: "@momentum-design/common@workspace:packages/tools/common"
   dependencies:
     "@microsoft/api-documenter": ^7.19.24
     "@microsoft/api-extractor": ^7.33.6
@@ -2151,9 +2151,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/figma-plugin-assets-export@workspace:packages/@momentum-design/figma-plugin-assets-export":
+"@momentum-design/figma-plugin-assets-export@workspace:packages/tools/figma-plugins/assets-export":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/figma-plugin-assets-export@workspace:packages/@momentum-design/figma-plugin-assets-export"
+  resolution: "@momentum-design/figma-plugin-assets-export@workspace:packages/tools/figma-plugins/assets-export"
   dependencies:
     "@figma/plugin-typings": ^1.90.0
     "@octokit/core": ^4.1.0
@@ -2207,9 +2207,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/telemetry@workspace:^, @momentum-design/telemetry@workspace:packages/@momentum-design/telemetry":
+"@momentum-design/telemetry@workspace:^, @momentum-design/telemetry@workspace:packages/tools/telemetry":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/telemetry@workspace:packages/@momentum-design/telemetry"
+  resolution: "@momentum-design/telemetry@workspace:packages/tools/telemetry"
   dependencies:
     "@amplitude/analytics-browser": ^1.6.1
     "@microsoft/api-documenter": ^7.19.23
@@ -2229,9 +2229,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/token-builder@workspace:^, @momentum-design/token-builder@workspace:packages/@momentum-design/token-builder":
+"@momentum-design/token-builder@workspace:^, @momentum-design/token-builder@workspace:packages/tools/token-builder":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/token-builder@workspace:packages/@momentum-design/token-builder"
+  resolution: "@momentum-design/token-builder@workspace:packages/tools/token-builder"
   dependencies:
     "@microsoft/api-documenter": ^7.19.23
     "@microsoft/api-extractor": ^7.33.5
