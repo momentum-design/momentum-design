@@ -2183,9 +2183,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/fonts@workspace:packages/@momentum-design/fonts":
+"@momentum-design/fonts@workspace:packages/assets/fonts":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/fonts@workspace:packages/@momentum-design/fonts"
+  resolution: "@momentum-design/fonts@workspace:packages/assets/fonts"
   languageName: unknown
   linkType: soft
 
