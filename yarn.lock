@@ -2101,9 +2101,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/common@workspace:^, @momentum-design/common@workspace:packages/@momentum-design/common":
+"@momentum-design/common@workspace:^, @momentum-design/common@workspace:packages/tools/common":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/common@workspace:packages/@momentum-design/common"
+  resolution: "@momentum-design/common@workspace:packages/tools/common"
   dependencies:
     "@microsoft/api-documenter": ^7.19.24
     "@microsoft/api-extractor": ^7.33.6
