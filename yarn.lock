@@ -2050,9 +2050,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/brand-visuals@workspace:packages/@momentum-design/brand-visuals":
+"@momentum-design/brand-visuals@workspace:packages/assets/brand-visuals":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/brand-visuals@workspace:packages/@momentum-design/brand-visuals"
+  resolution: "@momentum-design/brand-visuals@workspace:packages/assets/brand-visuals"
   dependencies:
     "@momentum-design/builder": "workspace:^"
     rimraf: ^3.0.2
