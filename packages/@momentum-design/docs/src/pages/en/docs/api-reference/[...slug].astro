@@ -11,7 +11,7 @@ export async function getStaticPaths() {
     // fix index file (avoids creating a folder index-md)
     .replaceAll('/index-md', '');
 
-  const pages = await Astro.glob('../../../../../../*/docs/markdown/*.md');
+  const pages = await Astro.glob('../../../../../../../tools/telemetry/docs/markdown/*.md');
   return pages.map((page) => {
     const paths = page.file?.split('/');
     let fileName = paths.pop() || '';
