@@ -137,6 +137,10 @@
           {
             "page": "✅ Logos",
             "folder": "logos"
+          },
+          {
+            "page": "✅ Images",
+            "folder": "images"
           }
         ],
         "exclude": {
