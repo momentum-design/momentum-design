@@ -2017,17 +2017,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@momentum-design/animations@workspace:packages/@momentum-design/animations":
+"@momentum-design/animations@workspace:packages/assets/animations":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/animations@workspace:packages/@momentum-design/animations"
+  resolution: "@momentum-design/animations@workspace:packages/assets/animations"
   dependencies:
     ncp: ^2.0.0
   languageName: unknown
   linkType: soft
 
-"@momentum-design/automation@workspace:^, @momentum-design/automation@workspace:packages/@momentum-design/automation":
+"@momentum-design/automation@workspace:^, @momentum-design/automation@workspace:packages/tools/automation":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/automation@workspace:packages/@momentum-design/automation"
+  resolution: "@momentum-design/automation@workspace:packages/tools/automation"
   dependencies:
     "@momentum-design/telemetry": "workspace:^"
     "@types/jest": ^29.2.2
@@ -2050,18 +2050,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/brand-visuals@workspace:packages/@momentum-design/brand-visuals":
+"@momentum-design/brand-visuals@workspace:packages/assets/brand-visuals":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/brand-visuals@workspace:packages/@momentum-design/brand-visuals"
+  resolution: "@momentum-design/brand-visuals@workspace:packages/assets/brand-visuals"
   dependencies:
     "@momentum-design/builder": "workspace:^"
     rimraf: ^3.0.2
   languageName: unknown
   linkType: soft
 
-"@momentum-design/builder@workspace:^, @momentum-design/builder@workspace:packages/@momentum-design/builder":
+"@momentum-design/builder@workspace:^, @momentum-design/builder@workspace:packages/tools/builder":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/builder@workspace:packages/@momentum-design/builder"
+  resolution: "@momentum-design/builder@workspace:packages/tools/builder"
   dependencies:
     "@microsoft/api-documenter": ^7.19.24
     "@microsoft/api-extractor": ^7.33.6
@@ -2101,9 +2101,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/common@workspace:^, @momentum-design/common@workspace:packages/@momentum-design/common":
+"@momentum-design/common@workspace:^, @momentum-design/common@workspace:packages/tools/common":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/common@workspace:packages/@momentum-design/common"
+  resolution: "@momentum-design/common@workspace:packages/tools/common"
   dependencies:
     "@microsoft/api-documenter": ^7.19.24
     "@microsoft/api-extractor": ^7.33.6
@@ -2123,9 +2123,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/docs@workspace:packages/@momentum-design/docs":
+"@momentum-design/docs@workspace:packages/documentation":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/docs@workspace:packages/@momentum-design/docs"
+  resolution: "@momentum-design/docs@workspace:packages/documentation"
   dependencies:
     "@algolia/client-search": ^4.13.1
     "@astrojs/mdx": ^0.11.6
@@ -2151,9 +2151,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/figma-plugin-assets-export@workspace:packages/@momentum-design/figma-plugin-assets-export":
+"@momentum-design/figma-plugin-assets-export@workspace:packages/tools/figma-plugins/assets-export":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/figma-plugin-assets-export@workspace:packages/@momentum-design/figma-plugin-assets-export"
+  resolution: "@momentum-design/figma-plugin-assets-export@workspace:packages/tools/figma-plugins/assets-export"
   dependencies:
     "@figma/plugin-typings": ^1.90.0
     "@octokit/core": ^4.1.0
@@ -2183,24 +2183,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/fonts@workspace:packages/@momentum-design/fonts":
+"@momentum-design/fonts@workspace:packages/assets/fonts":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/fonts@workspace:packages/@momentum-design/fonts"
+  resolution: "@momentum-design/fonts@workspace:packages/assets/fonts"
   languageName: unknown
   linkType: soft
 
-"@momentum-design/icons@workspace:^, @momentum-design/icons@workspace:packages/@momentum-design/icons":
+"@momentum-design/icons@workspace:^, @momentum-design/icons@workspace:packages/assets/icons":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/icons@workspace:packages/@momentum-design/icons"
+  resolution: "@momentum-design/icons@workspace:packages/assets/icons"
   dependencies:
     "@momentum-design/builder": "workspace:^"
     rimraf: ^3.0.2
   languageName: unknown
   linkType: soft
 
-"@momentum-design/illustrations@workspace:^, @momentum-design/illustrations@workspace:packages/@momentum-design/illustrations":
+"@momentum-design/illustrations@workspace:^, @momentum-design/illustrations@workspace:packages/assets/illustrations":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/illustrations@workspace:packages/@momentum-design/illustrations"
+  resolution: "@momentum-design/illustrations@workspace:packages/assets/illustrations"
   dependencies:
     "@momentum-design/builder": "workspace:^"
     rimraf: ^3.0.2
@@ -2229,9 +2229,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/token-builder@workspace:^, @momentum-design/token-builder@workspace:packages/@momentum-design/token-builder":
+"@momentum-design/token-builder@workspace:^, @momentum-design/token-builder@workspace:packages/tools/token-builder":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/token-builder@workspace:packages/@momentum-design/token-builder"
+  resolution: "@momentum-design/token-builder@workspace:packages/tools/token-builder"
   dependencies:
     "@microsoft/api-documenter": ^7.19.23
     "@microsoft/api-extractor": ^7.33.5
@@ -2256,9 +2256,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/tokens@workspace:^, @momentum-design/tokens@workspace:packages/@momentum-design/tokens":
+"@momentum-design/tokens@workspace:^, @momentum-design/tokens@workspace:packages/assets/tokens":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/tokens@workspace:packages/@momentum-design/tokens"
+  resolution: "@momentum-design/tokens@workspace:packages/assets/tokens"
   dependencies:
     "@momentum-design/token-builder": "workspace:^"
     rimraf: ^3.0.2

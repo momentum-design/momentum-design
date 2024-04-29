@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+      "target": "ES6",
+      "lib": ["dom", "dom.iterable", "esnext"],
+      "allowJs": true,
+      "skipLibCheck": true,
+      "typeRoots": [
+        "../../../../node_modules/@types",
+        "../../../../node_modules/@figma"
+      ],
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      "strict": true,
+      "forceConsistentCasingInFileNames": true,
+      "noFallthroughCasesInSwitch": true,
+      "module": "CommonJS",
+      "moduleResolution": "node",
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "jsx": "react", // Specifies that the JSX should be treated as React JSX
+      "baseUrl": "./src",
+      "paths": {
+        "@/*": ["*"]
+      }
+    },
+    "include": ["src/**/*.ts", "src/**/*.tsx", "src/plugin/**/*.ts"],
+    "exclude": ["node_modules"]
+}

@@ -1,0 +1,904 @@
+{
+  "metadata": {
+    "toolPackage": "@microsoft/api-extractor",
+    "toolVersion": "7.33.6",
+    "schemaVersion": 1010,
+    "oldestForwardsCompatibleVersion": 1001,
+    "tsdocConfig": {
+      "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+      "noStandardTags": true,
+      "tagDefinitions": [
+        {
+          "tagName": "@alpha",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@beta",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@defaultValue",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@decorator",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@deprecated",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@eventProperty",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@example",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@experimental",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@inheritDoc",
+          "syntaxKind": "inline"
+        },
+        {
+          "tagName": "@internal",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@label",
+          "syntaxKind": "inline"
+        },
+        {
+          "tagName": "@link",
+          "syntaxKind": "inline",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@override",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@packageDocumentation",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@param",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@privateRemarks",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@public",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@readonly",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@remarks",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@returns",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@sealed",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@see",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@throws",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@typeParam",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@virtual",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@betaDocumentation",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@internalRemarks",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@preapproved",
+          "syntaxKind": "modifier"
+        }
+      ],
+      "supportForTags": {
+        "@alpha": true,
+        "@beta": true,
+        "@defaultValue": true,
+        "@decorator": true,
+        "@deprecated": true,
+        "@eventProperty": true,
+        "@example": true,
+        "@experimental": true,
+        "@inheritDoc": true,
+        "@internal": true,
+        "@label": true,
+        "@link": true,
+        "@override": true,
+        "@packageDocumentation": true,
+        "@param": true,
+        "@privateRemarks": true,
+        "@public": true,
+        "@readonly": true,
+        "@remarks": true,
+        "@returns": true,
+        "@sealed": true,
+        "@see": true,
+        "@throws": true,
+        "@typeParam": true,
+        "@virtual": true,
+        "@betaDocumentation": true,
+        "@internalRemarks": true,
+        "@preapproved": true
+      },
+      "reportUnsupportedHtmlElements": false
+    }
+  },
+  "kind": "Package",
+  "canonicalReference": "@momentum-design/common!",
+  "docComment": "/**\n * A package of common resources used within the momentum-design organization.\n *\n * @packageDocumentation\n */\n",
+  "name": "@momentum-design/common",
+  "preserveMemberOrder": false,
+  "members": [
+    {
+      "kind": "EntryPoint",
+      "canonicalReference": "@momentum-design/common!",
+      "name": "",
+      "preserveMemberOrder": false,
+      "members": [
+        {
+          "kind": "Class",
+          "canonicalReference": "@momentum-design/common!Command:class",
+          "docComment": "/**\n * The Abstract Command class to be extended by scoped Command classes.\n *\n * @beta\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "declare abstract class Command<O extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "Options",
+              "canonicalReference": "@momentum-design/common!CommandOptions:type"
+            },
+            {
+              "kind": "Content",
+              "text": ", P extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "Params",
+              "canonicalReference": "@momentum-design/common!CommandParams:type"
+            },
+            {
+              "kind": "Content",
+              "text": "> "
+            }
+          ],
+          "fileUrlPath": "src/models/command/command.ts",
+          "releaseTag": "Beta",
+          "typeParameters": [
+            {
+              "typeParameterName": "O",
+              "constraintTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "defaultTypeTokenRange": {
+                "startIndex": 0,
+                "endIndex": 0
+              }
+            },
+            {
+              "typeParameterName": "P",
+              "constraintTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "defaultTypeTokenRange": {
+                "startIndex": 0,
+                "endIndex": 0
+              }
+            }
+          ],
+          "name": "Command",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "Constructor",
+              "canonicalReference": "@momentum-design/common!Command:constructor(1)",
+              "docComment": "/**\n * Construct a new Command.\n *\n * @param options - Command options to process against the CLI command.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "constructor(options: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "O"
+                },
+                {
+                  "kind": "Content",
+                  "text": ");"
+                }
+              ],
+              "releaseTag": "Beta",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "options",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ]
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@momentum-design/common!Command#clean:member(1)",
+              "docComment": "/**\n * Clean the params mounted to this Command.\n *\n * @remarks\n *\n * This method removes all values that don't match the provided options parameter when constructing a new Command.\n *\n * @returns - This Command.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected clean(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "this"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Beta",
+              "isProtected": true,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "name": "clean"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@momentum-design/common!Command#collect:member(1)",
+              "docComment": "/**\n * Collect all CLI arguments as parameters.\n *\n * @remarks\n *\n * When providing a CLI execution string to a Command, the arguments must be seperated from the rest of the CLI execution command via the appropriate separator string, wrapped in one empty space on each side.\n *\n * @returns - A Record of parameters provided via the CLI execution.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "protected collect(): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Params",
+                  "canonicalReference": "@momentum-design/common!CommandParams:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "releaseTag": "Beta",
+              "isProtected": true,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "name": "collect"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@momentum-design/common!Command.CONSTANTS:member",
+              "docComment": "/**\n * Constants associated with this Command.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "static get CONSTANTS(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "typeof "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "CONSTANTS",
+                  "canonicalReference": "@momentum-design/common!~CONSTANTS:var"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Beta",
+              "name": "CONSTANTS",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "isStatic": true,
+              "isProtected": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@momentum-design/common!Command#options:member",
+              "docComment": "/**\n * Options to use when parsing the provided CLI command\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "options: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "O"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Beta",
+              "name": "options",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@momentum-design/common!Command#params:member",
+              "docComment": "/**\n * Params generated in reflection of the provided options and the CLI command.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "params: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Params",
+                  "canonicalReference": "@momentum-design/common!CommandParams:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Beta",
+              "name": "params",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@momentum-design/common!Command#prepare:member(1)",
+              "docComment": "/**\n * Prepare the processed results for emiting as a string.\n *\n * @remarks\n *\n * This method should be implemented in class definitions that extend this class. The scope of this method is to perform a transform on the provided results into a string. Since this can require async operation, the override method must return a Promise for API consistency.\n *\n * @param results - Processed results.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "abstract prepare(results: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "any"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<string>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 5
+              },
+              "releaseTag": "Beta",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "results",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "name": "prepare"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@momentum-design/common!Command#process:member(1)",
+              "docComment": "/**\n * Process the Command params into a new object for transport.\n *\n * @remarks\n *\n * This method should be implemented in class definitions that extend this class. The scope of this method is to process params interpreted from the provided CLI execution. This can return any data transfer Object, as the return is intended to be used within `Command.prepare()`. Since this can require async operation, the override method must return a Promise for API consistency.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "abstract process(): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<any>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "releaseTag": "Beta",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [],
+              "isOptional": false,
+              "name": "process"
+            }
+          ],
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "TypeAlias",
+          "canonicalReference": "@momentum-design/common!CommandOptions:type",
+          "docComment": "/**\n * Options interface to be provided as a generic to the abstract Command class.\n *\n * @remarks\n *\n * This interface reflects the shape of the Options object provided to the `yargs` dependency when processing CLI execution strings.\n *\n * @beta\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export type Options = "
+            },
+            {
+              "kind": "Reference",
+              "text": "Record",
+              "canonicalReference": "!Record:type"
+            },
+            {
+              "kind": "Content",
+              "text": "<string, "
+            },
+            {
+              "kind": "Reference",
+              "text": "YargsOptions",
+              "canonicalReference": "@types/yargs!yargs.Options:interface"
+            },
+            {
+              "kind": "Content",
+              "text": ">"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "src/models/command/types.ts",
+          "releaseTag": "Beta",
+          "name": "CommandOptions",
+          "typeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 5
+          }
+        },
+        {
+          "kind": "TypeAlias",
+          "canonicalReference": "@momentum-design/common!CommandParams:type",
+          "docComment": "/**\n * Params interface to be provided as a generic to the abstract Command class.\n *\n * @remarks\n *\n * This interface reflects the values that will be availble within the `new Command().params` class property.\n *\n * @beta\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export type Params = "
+            },
+            {
+              "kind": "Reference",
+              "text": "Record",
+              "canonicalReference": "!Record:type"
+            },
+            {
+              "kind": "Content",
+              "text": "<string, any>"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "src/models/command/types.ts",
+          "releaseTag": "Beta",
+          "name": "CommandParams",
+          "typeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@momentum-design/common!Execute:class",
+          "docComment": "/**\n * Execute class used for executing CLI interactions.\n *\n * @beta\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "declare class Execute "
+            }
+          ],
+          "fileUrlPath": "src/utils/execute/execute.ts",
+          "releaseTag": "Beta",
+          "name": "Execute",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "Method",
+              "canonicalReference": "@momentum-design/common!Execute.emit:member(1)",
+              "docComment": "/**\n * Emit a string value to CLI.\n *\n * @remarks\n *\n * This command can only emit single string primatives, as it directly interfaces with the `process.stdout` Object instead of using the `console` Object. The decision to use `process.stdout` was made to allow the usage of this method for CI/CD workflows.\n *\n * @param value - String value to emit to CLI.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "static emit(value: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": true,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Beta",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "value",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "name": "emit"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@momentum-design/common!Execute.run:member(1)",
+              "docComment": "/**\n * Run the provided command in a child process.\n *\n * @remarks\n *\n * This command can only accept a single string primative and runs the child process as an external thread. This method doesn't provide any hooks for actively intercepting CLI output, and provides a single buffer as a response.\n *\n * @param command - String command to execute as a child process.\n *\n * @returns - Promise that resolves to the executed child process' results.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "static run(command: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<string>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": true,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 5
+              },
+              "releaseTag": "Beta",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "command",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "name": "run"
+            }
+          ],
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@momentum-design/common!Json:class",
+          "docComment": "/**\n * Json class used for performing operations involving JSON Objects.\n *\n * @beta\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "declare class Json "
+            }
+          ],
+          "fileUrlPath": "src/utils/json/json.ts",
+          "releaseTag": "Beta",
+          "name": "Json",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "Property",
+              "canonicalReference": "@momentum-design/common!Json.CONSTANTS:member",
+              "docComment": "/**\n * Constants associated with this class.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "static get CONSTANTS(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "typeof "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "CONSTANTS",
+                  "canonicalReference": "@momentum-design/common!~CONSTANTS_2:var"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Beta",
+              "name": "CONSTANTS",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              },
+              "isStatic": true,
+              "isProtected": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@momentum-design/common!Json.read:member(1)",
+              "docComment": "/**\n * Read a file as json at the provided target path.\n *\n * @param target - Path to the file to attempt to read as json.\n *\n * @param encoding - Buffer encoding for the target file.\n *\n * @returns - Promise resolving in a json object read from the target file.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "static read(target: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", encoding?: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "BufferEncoding",
+                  "canonicalReference": "!\"\\\"buffer\\\"\".__global.BufferEncoding:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<any>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": true,
+              "returnTypeTokenRange": {
+                "startIndex": 5,
+                "endIndex": 7
+              },
+              "releaseTag": "Beta",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "target",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "encoding",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 4
+                  },
+                  "isOptional": true
+                }
+              ],
+              "isOptional": false,
+              "name": "read"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@momentum-design/common!Json.write:member(1)",
+              "docComment": "/**\n * Write the provided data to the target path formatted as json.\n *\n * @remarks\n *\n * This method also ammends an additional `\\n` character to the end of the provided data as a string in order to follow our \"new line at end-of-file\" rule.\n *\n * @param target - Destination file for the provided json object to be written to.\n *\n * @param data - Data to write to the target destination.\n *\n * @param tabSpacing - Spacing to use for indents within the output file.\n *\n * @returns - Promise that resolves once the file is successfully written.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "static write(target: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", data: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "any"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", tabSpacing?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Promise",
+                  "canonicalReference": "!Promise:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<void>"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": true,
+              "returnTypeTokenRange": {
+                "startIndex": 7,
+                "endIndex": 9
+              },
+              "releaseTag": "Beta",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "target",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "data",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 4
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "tabSpacing",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 5,
+                    "endIndex": 6
+                  },
+                  "isOptional": true
+                }
+              ],
+              "isOptional": false,
+              "name": "write"
+            }
+          ],
+          "implementsTokenRanges": []
+        }
+      ]
+    }
+  ]
+}
