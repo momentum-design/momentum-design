@@ -1,0 +1,1576 @@
+{
+  "color": {
+    "core": {
+      "white-alpha": {
+        "0": {
+          "value": "#ffffff00",
+          "type": "color",
+          "description": "Hex Code: #ffffff\nAlpha: 0%"
+        },
+        "5": {
+          "value": "#ffffff0d",
+          "type": "color",
+          "description": "Hex Code: #ffffff\nAlpha: 5%"
+        },
+        "7": {
+          "value": "#ffffff12",
+          "type": "color",
+          "description": "Hex Code: #ffffff\nAlpha: 7%"
+        },
+        "11": {
+          "value": "#ffffff1c",
+          "type": "color",
+          "description": "Hex Code: #ffffff\nAlpha: 11%"
+        },
+        "20": {
+          "value": "#ffffff33",
+          "type": "color",
+          "description": "Hex Code: #ffffff\nAlpha: 20%"
+        },
+        "24": {
+          "value": "#ffffff3d",
+          "type": "color",
+          "description": "HEX Code: #ffffff 24%\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "30": {
+          "value": "#ffffff4d",
+          "type": "color",
+          "description": "Hex Code: #ffffff\nAlpha: 30%"
+        },
+        "40": {
+          "value": "#ffffff66",
+          "type": "color",
+          "description": "Hex Code: #ffffff\nAlpha: 40%"
+        },
+        "46": {
+          "value": "#ffffff75",
+          "type": "color",
+          "description": "HEX Code: #ffffff 46%\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "50": {
+          "value": "#ffffff80",
+          "type": "color",
+          "description": "Hex Code: #ffffff\nAlpha: 50%"
+        },
+        "56": {
+          "value": "#ffffff8F",
+          "type": "color",
+          "description": "HEX Code: #ffffff 56%\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "60": {
+          "value": "#ffffff99",
+          "type": "color",
+          "description": "Hex Code: #ffffff\nAlpha: 60%"
+        },
+        "70": {
+          "value": "#ffffffb3",
+          "type": "color",
+          "description": "Hex Code: #ffffff\nAlpha: 70%"
+        },
+        "72": {
+          "value": "#ffffffB8",
+          "type": "color",
+          "description": "HEX Code: #ffffff 72%\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "80": {
+          "value": "#ffffffcc",
+          "type": "color",
+          "description": "Hex Code: #ffffff\nAlpha: 80%"
+        },
+        "88": {
+          "value": "#ffffffE0",
+          "type": "color",
+          "description": "HEX Code: #ffffff 88%\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "90": {
+          "value": "#ffffffe6",
+          "type": "color",
+          "description": "Hex Code: #ffffff\nAlpha: 90%"
+        },
+        "95": {
+          "value": "#fffffff2",
+          "type": "color",
+          "description": "Hex Code: #ffffff\nAlpha: 95%"
+        },
+        "100": {
+          "value": "#ffffff",
+          "type": "color",
+          "description": "Hex Code: #ffffff\nAlpha: 100%"
+        }
+      },
+      "black-alpha": {
+        "0": {
+          "value": "#00000000",
+          "type": "color",
+          "description": "Hex Code: #000000\nAlpha: 0%"
+        },
+        "4": {
+          "value": "#000000A",
+          "type": "color",
+          "description": "Hex Code: #000000\nAlpha: 4%"
+        },
+        "7": {
+          "value": "#0000012",
+          "type": "color",
+          "description": "Hex Code: #000000\nAlpha: 7%"
+        },
+        "11": {
+          "value": "#0000001c",
+          "type": "color",
+          "description": "Hex Code: #000000\nAlpha: 11%"
+        },
+        "20": {
+          "value": "#00000033",
+          "type": "color",
+          "description": "Hex Code: #000000\nAlpha: 20%"
+        },
+        "30": {
+          "value": "#0000004d",
+          "type": "color",
+          "description": "Hex Code: #000000\nAlpha: 30%"
+        },
+        "40": {
+          "value": "#00000066",
+          "type": "color",
+          "description": "Hex Code: #000000\nAlpha: 40%"
+        },
+        "50": {
+          "value": "#00000080",
+          "type": "color",
+          "description": "Hex Code: #000000\nAlpha: 50%"
+        },
+        "60": {
+          "value": "#00000099",
+          "type": "color",
+          "description": "Hex Code: #000000\nAlpha: 60%"
+        },
+        "70": {
+          "value": "#000000b3",
+          "type": "color",
+          "description": "Hex Code: #000000\nAlpha: 70%"
+        },
+        "78": {
+          "value": "#000000C7",
+          "type": "color",
+          "description": "HEX Code: #000000 78%\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "80": {
+          "value": "#000000cc",
+          "type": "color",
+          "description": "Hex Code: #000000\nAlpha: 80%"
+        },
+        "84": {
+          "value": "#000000D6",
+          "type": "color",
+          "description": "HEX Code: #000000 84%\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "88": {
+          "value": "#000000e0",
+          "type": "color",
+          "description": "HEX Code: #000000 88%\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "90": {
+          "value": "#000000e6",
+          "type": "color",
+          "description": "Hex Code: #000000\nAlpha: 90%"
+        },
+        "95": {
+          "value": "#000000f2",
+          "type": "color",
+          "description": "Hex Code: #000000\nAlpha: 95%"
+        },
+        "100": {
+          "value": "#000000",
+          "type": "color",
+          "description": "Hex Code: #000000\nAlpha: 100%"
+        }
+      },
+      "gray": {
+        "5": {
+          "value": "#f7f7f7",
+          "type": "color",
+          "description": "Hex Code: #f7f7f7"
+        },
+        "10": {
+          "value": "#ededed",
+          "type": "color",
+          "description": "Hex Code: #ededed"
+        },
+        "20": {
+          "value": "#dedede",
+          "type": "color",
+          "description": "Hex Code: #dedede"
+        },
+        "30": {
+          "value": "#c9c9c9",
+          "type": "color",
+          "description": "Hex Code: #c9c9c9"
+        },
+        "40": {
+          "value": "#adadad",
+          "type": "color",
+          "description": "Hex Code: #adadad"
+        },
+        "50": {
+          "value": "#8f8f8f",
+          "type": "color",
+          "description": "Hex Code: #8f8f8f"
+        },
+        "55": {
+          "value": "#80868B",
+          "type": "color",
+          "description": "HEX Code: #80868B\nAndroid:600\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "60": {
+          "value": "#707070",
+          "type": "color",
+          "description": "Hex Code: #707070"
+        },
+        "70": {
+          "value": "#545454",
+          "type": "color",
+          "description": "Hex Code: #545454"
+        },
+        "71": {
+          "value": "#5F6368",
+          "type": "color",
+          "description": "HEX Code: #5F6368\nAndrod: 700\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "75": {
+          "value": "#3C4043",
+          "type": "color",
+          "description": "HEX Code: #3C4043\nAndroid: 800\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "80": {
+          "value": "#3b3b3b",
+          "type": "color",
+          "description": "Hex Code: #3b3b3b"
+        },
+        "85": {
+          "value": "#2E3134",
+          "type": "color",
+          "description": "HEX Code: #2E3134\nAndroid: 846\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "86": {
+          "value": "#282A2D",
+          "type": "color",
+          "description": "HEX Code: #282A2D\nAndroid: 868\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "90": {
+          "value": "#262626",
+          "type": "color",
+          "description": "Hex Code: #262626"
+        },
+        "91": {
+          "value": "#202124",
+          "type": "color",
+          "description": "HEX Code: #202124\nAndroid: 900\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "93": {
+          "value": "#17181B",
+          "type": "color",
+          "description": "HEX Code: #17181B\nAndroid: 928\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "95": {
+          "value": "#1a1a1a",
+          "type": "color",
+          "description": "Hex Code: #1a1a1a"
+        },
+        "96": {
+          "value": "#0E1013",
+          "type": "color",
+          "description": "HEX Code: #0E1013\nAndroid: 958\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "100": {
+          "value": "#0f0f0f",
+          "type": "color",
+          "description": "Hex Code: #0f0f0f"
+        },
+        "110": {
+          "value": "#000000",
+          "type": "color",
+          "description": "HEX Code: #000000\nUsed for AAOS (Android Auto Operating System) only."
+        }
+      },
+      "blue": {
+        "5": {
+          "value": "#edf8ff",
+          "type": "color",
+          "description": "Hex Code: #edf8ff"
+        },
+        "10": {
+          "value": "#dbf0ff",
+          "type": "color",
+          "description": "Hex Code: #dbf0ff"
+        },
+        "20": {
+          "value": "#bfe3ff",
+          "type": "color",
+          "description": "Hex Code: #dfe3ff"
+        },
+        "30": {
+          "value": "#96d0ff",
+          "type": "color",
+          "description": "Hex Code: #96d0ff"
+        },
+        "40": {
+          "value": "#64b4fa",
+          "type": "color",
+          "description": "Hex Code: #64b4fa"
+        },
+        "50": {
+          "value": "#3492eb",
+          "type": "color",
+          "description": "Hex Code: #3492eb"
+        },
+        "60": {
+          "value": "#1170cf",
+          "type": "color",
+          "description": "Hex Code: #1170cf"
+        },
+        "70": {
+          "value": "#0353a8",
+          "type": "color",
+          "description": "Hex Code: #0353a8"
+        },
+        "80": {
+          "value": "#063a75",
+          "type": "color",
+          "description": "Hex Code: #063a75"
+        },
+        "90": {
+          "value": "#0a274a",
+          "type": "color",
+          "description": "Hex Code: #0a274a"
+        },
+        "95": {
+          "value": "#091a30",
+          "type": "color",
+          "description": "Hex Code: #091a30"
+        },
+        "100": {
+          "value": "#07101c",
+          "type": "color",
+          "description": "Hex Code: #07101c"
+        }
+      },
+      "green": {
+        "5": {
+          "value": "#edf7f5",
+          "type": "color",
+          "description": "Hex Code: #edf7f5"
+        },
+        "10": {
+          "value": "#cef5eb",
+          "type": "color",
+          "description": "Hex Code: #cef5eb"
+        },
+        "20": {
+          "value": "#9fedd8",
+          "type": "color",
+          "description": "Hex Code: #9fedd8"
+        },
+        "30": {
+          "value": "#68debd",
+          "type": "color",
+          "description": "Hex Code: #68debd"
+        },
+        "40": {
+          "value": "#3cc29a",
+          "type": "color",
+          "description": "Hex Code: #3cc29a"
+        },
+        "50": {
+          "value": "#27a17a",
+          "type": "color",
+          "description": "Hex Code: #27a17a"
+        },
+        "60": {
+          "value": "#1d805f",
+          "type": "color",
+          "description": "Hex Code: #1d805f"
+        },
+        "70": {
+          "value": "#185e46",
+          "type": "color",
+          "description": "Hex Code: #185e46"
+        },
+        "80": {
+          "value": "#134231",
+          "type": "color",
+          "description": "Hex Code: #134231"
+        },
+        "90": {
+          "value": "#0e2b20",
+          "type": "color",
+          "description": "Hex Code: #0e2b20"
+        },
+        "95": {
+          "value": "#0a1c15",
+          "type": "color",
+          "description": "Hex Code: #0a1c15"
+        },
+        "100": {
+          "value": "#07120d",
+          "type": "color",
+          "description": "Hex Code: #07120d"
+        }
+      },
+      "red": {
+        "5": {
+          "value": "#fff5f6",
+          "type": "color",
+          "description": "Hex Code: #fff5f6"
+        },
+        "10": {
+          "value": "#ffe8ea",
+          "type": "color",
+          "description": "Hex Code: #ffe8ea"
+        },
+        "20": {
+          "value": "#ffd4da",
+          "type": "color",
+          "description": "Hex Code: #ffd4da"
+        },
+        "30": {
+          "value": "#ffb8c1",
+          "type": "color",
+          "description": "Hex Code: #ffb8c1"
+        },
+        "40": {
+          "value": "#fc8b98",
+          "type": "color",
+          "description": "Hex Code: #fc8b98"
+        },
+        "50": {
+          "value": "#f55868",
+          "type": "color",
+          "description": "Hex Code: #f55868"
+        },
+        "60": {
+          "value": "#db1f2e",
+          "type": "color",
+          "description": "Hex Code: #db1f2e"
+        },
+        "70": {
+          "value": "#ab0a15",
+          "type": "color",
+          "description": "Hex Code: #ab0a15"
+        },
+        "80": {
+          "value": "#780d13",
+          "type": "color",
+          "description": "Hex Code: #780d13"
+        },
+        "90": {
+          "value": "#4f0e10",
+          "type": "color",
+          "description": "Hex Code: #4f0e10"
+        },
+        "95": {
+          "value": "#330d0e",
+          "type": "color",
+          "description": "Hex Code: #330d0e"
+        },
+        "100": {
+          "value": "#1f0a0a",
+          "type": "color",
+          "description": "Hex Code: #1f0a0a"
+        }
+      },
+      "yellow": {
+        "5": {
+          "value": "#fff6e3",
+          "type": "color",
+          "description": "Hex Code: #fff6e3"
+        },
+        "10": {
+          "value": "#ffebc2",
+          "type": "color",
+          "description": "Hex Code: #ffebc2"
+        },
+        "20": {
+          "value": "#ffda94",
+          "type": "color",
+          "description": "Hex Code: #ffda94"
+        },
+        "30": {
+          "value": "#ffbe4f",
+          "type": "color",
+          "description": "Hex Code: #ffbe4f"
+        },
+        "40": {
+          "value": "#f2990a",
+          "type": "color",
+          "description": "Hex Code: #f2990a"
+        },
+        "50": {
+          "value": "#cf7900",
+          "type": "color",
+          "description": "Hex Code: #cf7900"
+        },
+        "60": {
+          "value": "#a65e00",
+          "type": "color",
+          "description": "Hex Code: #a65e00"
+        },
+        "70": {
+          "value": "#7d4705",
+          "type": "color",
+          "description": "Hex Code: #7d4705"
+        },
+        "80": {
+          "value": "#57330a",
+          "type": "color",
+          "description": "Hex Code: #57330a"
+        },
+        "90": {
+          "value": "#36220c",
+          "type": "color",
+          "description": "Hex Code: #36220c"
+        },
+        "95": {
+          "value": "#24180b",
+          "type": "color",
+          "description": "Hex Code: #24180b"
+        },
+        "100": {
+          "value": "#140e08",
+          "type": "color",
+          "description": "Hex Code: #140e08"
+        }
+      },
+      "orange": {
+        "5": {
+          "value": "#FEF3E8",
+          "type": "color",
+          "description": "HEX Code: #FEF3E8"
+        },
+        "10": {
+          "value": "#FEEBD7",
+          "type": "color",
+          "description": "HEX Code: #FEEBD7"
+        },
+        "20": {
+          "value": "#FED5AC",
+          "type": "color",
+          "description": "HEX Code: #FED5AC"
+        },
+        "30": {
+          "value": "#FEBA7F",
+          "type": "color",
+          "description": "HEX Code: #FEBA7F"
+        },
+        "40": {
+          "value": "#FD884E",
+          "type": "color",
+          "description": "HEX Code: #FD884E"
+        },
+        "50": {
+          "value": "#EC6400",
+          "type": "color",
+          "description": "HEX Code: #EC6400"
+        },
+        "60": {
+          "value": "#C94403",
+          "type": "color",
+          "description": "HEX Code: #C94403"
+        },
+        "70": {
+          "value": "#9C3202",
+          "type": "color",
+          "description": "HEX Code: #9C3202"
+        },
+        "80": {
+          "value": "#682601",
+          "type": "color",
+          "description": "HEX Code: #682601"
+        },
+        "90": {
+          "value": "#411B04",
+          "type": "color",
+          "description": "HEX Code: #411B04"
+        },
+        "95": {
+          "value": "#291303",
+          "type": "color",
+          "description": "HEX Code: #291303"
+        },
+        "100": {
+          "value": "#170B02",
+          "type": "color",
+          "description": "HEX Code: #170B02"
+        }
+      }
+    },
+    "decorative": {
+      "gold": {
+        "10": {
+          "value": "#f7f6dc",
+          "type": "color",
+          "description": "HEX Code: #F7F6DC"
+        },
+        "20": {
+          "value": "#f5eaa2",
+          "type": "color",
+          "description": "HEX Code: #F5EAA2"
+        },
+        "30": {
+          "value": "#ebd460",
+          "type": "color",
+          "description": "HEX Code: #EBD460"
+        },
+        "40": {
+          "value": "#d6b220",
+          "type": "color",
+          "description": "HEX Code: #D6B220"
+        },
+        "50": {
+          "value": "#ba8c00",
+          "type": "color",
+          "description": "HEX Code: #BA8C00"
+        },
+        "60": {
+          "value": "#996e00",
+          "type": "color",
+          "description": "HEX Code: #996E00"
+        },
+        "70": {
+          "value": "#735107",
+          "type": "color",
+          "description": "HEX Code: #735107"
+        },
+        "80": {
+          "value": "#4d370c",
+          "type": "color",
+          "description": "HEX Code: #4D370C"
+        },
+        "90": {
+          "value": "#30240d",
+          "type": "color",
+          "description": "HEX Code:#30240D"
+        },
+        "100": {
+          "value": "#21190b",
+          "type": "color",
+          "description": "HEX Code:#21190B"
+        }
+      },
+      "olive": {
+        "10": {
+          "value": "#f3f5e4",
+          "type": "color",
+          "description": "HEX Code: #F3F5E4"
+        },
+        "20": {
+          "value": "#e7edb7",
+          "type": "color",
+          "description": "HEX Code: #E7ED87"
+        },
+        "30": {
+          "value": "#d3db7b",
+          "type": "color",
+          "description": "HEX Code: #D3DB7B"
+        },
+        "40": {
+          "value": "#b4ba43",
+          "type": "color",
+          "description": "HEX Code: #B4BA43"
+        },
+        "50": {
+          "value": "#999923",
+          "type": "color",
+          "description": "HEX Code: #999923"
+        },
+        "60": {
+          "value": "#7d7a18",
+          "type": "color",
+          "description": "HEX Code: #7D7A18"
+        },
+        "70": {
+          "value": "#5c5813",
+          "type": "color",
+          "description": "HEX Code: #5C5813"
+        },
+        "80": {
+          "value": "#403d11",
+          "type": "color",
+          "description": "HEX Code: #403D11"
+        },
+        "90": {
+          "value": "#29260d",
+          "type": "color",
+          "description": "HEX Code: #29260D"
+        },
+        "100": {
+          "value": "#1c1a0a",
+          "type": "color",
+          "description": "HEX Code: #1C1A0A"
+        }
+      },
+      "lime": {
+        "10": {
+          "value": "#f3f7e9",
+          "type": "color",
+          "description": "HEX Code: #F3F7E9"
+        },
+        "20": {
+          "value": "#ddf2ae",
+          "type": "color",
+          "description": "HEX Code: #DDF2AE"
+        },
+        "30": {
+          "value": "#bce36f",
+          "type": "color",
+          "description": "HEX Code: #BCE46F"
+        },
+        "40": {
+          "value": "#93c437",
+          "type": "color",
+          "description": "HEX Code: #93C437"
+        },
+        "50": {
+          "value": "#73a321",
+          "type": "color",
+          "description": "HEX Code: #73A321"
+        },
+        "60": {
+          "value": "#588219",
+          "type": "color",
+          "description": "HEX Code: #588219"
+        },
+        "70": {
+          "value": "#416116",
+          "type": "color",
+          "description": "HEX Code: #416116"
+        },
+        "80": {
+          "value": "#2d4214",
+          "type": "color",
+          "description": "HEX Code: #2D4214"
+        },
+        "90": {
+          "value": "#1e2b10",
+          "type": "color",
+          "description": "HEX Code: #1E2B10"
+        },
+        "100": {
+          "value": "#141c0c",
+          "type": "color",
+          "description": "HEX Code: #141C0C"
+        }
+      },
+      "mint": {
+        "10": {
+          "value": "#e9f7f3",
+          "type": "color",
+          "description": "HEX Code: #E9F7F3"
+        },
+        "20": {
+          "value": "#baf5e7",
+          "type": "color",
+          "description": "HEX Code: # BAF5E7"
+        },
+        "30": {
+          "value": "#74e8d1",
+          "type": "color",
+          "description": "HEX Code: #74E8D1"
+        },
+        "40": {
+          "value": "#30c9b0",
+          "type": "color",
+          "description": "HEX Code: #30C9B0"
+        },
+        "50": {
+          "value": "#16a693",
+          "type": "color",
+          "description": "HEX Code: #16A693"
+        },
+        "60": {
+          "value": "#148579",
+          "type": "color",
+          "description": "HEX Code: #148579"
+        },
+        "70": {
+          "value": "#12615a",
+          "type": "color",
+          "description": "HEX Code: #12615A"
+        },
+        "80": {
+          "value": "#12423f",
+          "type": "color",
+          "description": "HEX Code: #12423F"
+        },
+        "90": {
+          "value": "#102b2a",
+          "type": "color",
+          "description": "HEX Code: #102B2A"
+        },
+        "100": {
+          "value": "#0c1c1b",
+          "type": "color",
+          "description": "HEX Code: #0C1C1B"
+        }
+      },
+      "cyan": {
+        "10": {
+          "value": "#e6f9fa",
+          "type": "color",
+          "description": "HEX Code: #E6F9FA"
+        },
+        "20": {
+          "value": "#b2f4f7",
+          "type": "color",
+          "description": "HEX Code: #B2F4F7"
+        },
+        "30": {
+          "value": "#67e7f0",
+          "type": "color",
+          "description": "HEX Code: #67E7F0"
+        },
+        "40": {
+          "value": "#22c7d6",
+          "type": "color",
+          "description": "HEX Code: #22C7D6"
+        },
+        "50": {
+          "value": "#00a3b5",
+          "type": "color",
+          "description": "HEX Code: #00A3B5"
+        },
+        "60": {
+          "value": "#008094",
+          "type": "color",
+          "description": "HEX Code: #008094"
+        },
+        "70": {
+          "value": "#066070",
+          "type": "color",
+          "description": "HEX Code: #066070"
+        },
+        "80": {
+          "value": "#0a414d",
+          "type": "color",
+          "description": "HEX Code: #0A414D"
+        },
+        "90": {
+          "value": "#0b2a30",
+          "type": "color",
+          "description": "HEX Code: #0B2A30"
+        },
+        "100": {
+          "value": "#091c21",
+          "type": "color",
+          "description": "HEX Code: #091C21"
+        }
+      },
+      "cobalt": {
+        "10": {
+          "value": "#e5f8ff",
+          "type": "color",
+          "description": "HEX Code: #E5F8FF"
+        },
+        "20": {
+          "value": "#c7eeff",
+          "type": "color",
+          "description": "HEX Code: #C7EEFF"
+        },
+        "30": {
+          "value": "#99ddff",
+          "type": "color",
+          "description": "HEX Code: #99DDFF"
+        },
+        "40": {
+          "value": "#5ebff7",
+          "type": "color",
+          "description": "HEX Code: #5EBFF7"
+        },
+        "50": {
+          "value": "#279be8",
+          "type": "color",
+          "description": "HEX Code: #279BE8"
+        },
+        "60": {
+          "value": "#0a78cc",
+          "type": "color",
+          "description": "HEX Code: #0A78CC"
+        },
+        "70": {
+          "value": "#08599c",
+          "type": "color",
+          "description": "HEX Code: #08599C"
+        },
+        "80": {
+          "value": "#103c63",
+          "type": "color",
+          "description": "HEX Code: #103C63"
+        },
+        "90": {
+          "value": "#12283d",
+          "type": "color",
+          "description": "HEX Code: #12283D"
+        },
+        "100": {
+          "value": "#0f1a26",
+          "type": "color",
+          "description": "HEX Code: #0F1A26"
+        }
+      },
+      "slate": {
+        "10": {
+          "value": "#f2f4ff",
+          "type": "color",
+          "description": "HEX Code: #F2F4FF"
+        },
+        "20": {
+          "value": "#e3e7fa",
+          "type": "color",
+          "description": "HEX Code: #E3E7FA"
+        },
+        "30": {
+          "value": "#ced2ed",
+          "type": "color",
+          "description": "HEX Code: #CED2ED"
+        },
+        "40": {
+          "value": "#b0b4d9",
+          "type": "color",
+          "description": "HEX Code: #B0B4D9"
+        },
+        "50": {
+          "value": "#8c91bd",
+          "type": "color",
+          "description": "HEX Code: #8C91BD"
+        },
+        "60": {
+          "value": "#6f739e",
+          "type": "color",
+          "description": "HEX Code: #6F739E"
+        },
+        "70": {
+          "value": "#535573",
+          "type": "color",
+          "description": "HEX Code: #535573"
+        },
+        "80": {
+          "value": "#393a47",
+          "type": "color",
+          "description": "HEX Code: #393A47"
+        },
+        "90": {
+          "value": "#26262b",
+          "type": "color",
+          "description": "HEX Code: #26262B"
+        },
+        "100": {
+          "value": "#1a1a1c",
+          "type": "color",
+          "description": "HEX Code: #1A1A1C"
+        }
+      },
+      "violet": {
+        "10": {
+          "value": "#f8f2fc",
+          "type": "color",
+          "description": "HEX Code: #F8F2FC"
+        },
+        "20": {
+          "value": "#f0e3fc",
+          "type": "color",
+          "description": "HEX Code: #F0E3FC"
+        },
+        "30": {
+          "value": "#e2cafc",
+          "type": "color",
+          "description": "HEX Code: #E2CAFC"
+        },
+        "40": {
+          "value": "#c7a5fa",
+          "type": "color",
+          "description": "HEX Code: #C7A5FA"
+        },
+        "50": {
+          "value": "#a87ff0",
+          "type": "color",
+          "description": "HEX Code: #A87FF0"
+        },
+        "60": {
+          "value": "#875ae0",
+          "type": "color",
+          "description": "HEX Code: #875AE0"
+        },
+        "70": {
+          "value": "#643abd",
+          "type": "color",
+          "description": "HEX Code: #643ABD"
+        },
+        "80": {
+          "value": "#432c78",
+          "type": "color",
+          "description": "HEX Code: #432C78"
+        },
+        "90": {
+          "value": "#29223d",
+          "type": "color",
+          "description": "HEX Code: #29223D"
+        },
+        "100": {
+          "value": "#1b1824",
+          "type": "color",
+          "description": "HEX Code: #1B1824"
+        }
+      },
+      "purple": {
+        "10": {
+          "value": "#fcf2fc",
+          "type": "color",
+          "description": "HEX Code: #FCF2FC"
+        },
+        "20": {
+          "value": "#fce1fc",
+          "type": "color",
+          "description": "HEX Code: #FCE1FC"
+        },
+        "30": {
+          "value": "#fac3f8",
+          "type": "color",
+          "description": "HEX Code: #FAC3F8"
+        },
+        "40": {
+          "value": "#f294f1",
+          "type": "color",
+          "description": "HEX Code: #F294F1"
+        },
+        "50": {
+          "value": "#e060de",
+          "type": "color",
+          "description": "HEX Code: #E060DE"
+        },
+        "60": {
+          "value": "#c233c4",
+          "type": "color",
+          "description": "HEX Code: #C233C4"
+        },
+        "70": {
+          "value": "#932099",
+          "type": "color",
+          "description": "HEX Code: #932099"
+        },
+        "80": {
+          "value": "#601e66",
+          "type": "color"
+        },
+        "90": {
+          "value": "#3b1840",
+          "type": "color",
+          "description": "3B1840"
+        },
+        "100": {
+          "value": "#251329",
+          "type": "color",
+          "description": "HEX Code: #251329"
+        }
+      },
+      "pink": {
+        "10": {
+          "value": "#fff2f5",
+          "type": "color",
+          "description": "HEX Code: #FFF2F5"
+        },
+        "20": {
+          "value": "#ffe0e7",
+          "type": "color",
+          "description": "HEX Code: #FFE0E7"
+        },
+        "30": {
+          "value": "#ffc7d2",
+          "type": "color",
+          "description": "HEX Code: #FFC7D2"
+        },
+        "40": {
+          "value": "#fc97aa",
+          "type": "color",
+          "description": "HEX Code: #FC97AA"
+        },
+        "50": {
+          "value": "#f0677e",
+          "type": "color",
+          "description": "HEX Code: #F0677E"
+        },
+        "60": {
+          "value": "#d43b52",
+          "type": "color",
+          "description": "HEX Code: #D43B52"
+        },
+        "70": {
+          "value": "#a12a3a",
+          "type": "color",
+          "description": "HEX Code: #A12A3A"
+        },
+        "80": {
+          "value": "#66262d",
+          "type": "color",
+          "description": "HEX Code: #66262D"
+        },
+        "90": {
+          "value": "#3b1e21",
+          "type": "color",
+          "description": "HEX Code: #3B1E21"
+        },
+        "100": {
+          "value": "#241617",
+          "type": "color",
+          "description": "HEX Code: #241617"
+        }
+      }
+    },
+    "gradient": {
+      "default": {
+        "light": {
+          "secondary": {
+            "value": "linear-gradient(180deg, #fafafa 0%, #ffffff 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (FAFAFA, FFFFF)"
+          },
+          "primary": {
+            "value": "linear-gradient(180deg, #f0f0f0 0%, #ffffff 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (F0F0F0, FFFFF)"
+          }
+        },
+        "dark": {
+          "primary": {
+            "value": "linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (1A1A1A, 0F0F0F)"
+          },
+          "secondary": {
+            "value": "linear-gradient(180deg, #262626 0%, #0f0f0f 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (262626, 0F0F0F)"
+          }
+        }
+      },
+      "indigo": {
+        "light": {
+          "primary": {
+            "value": "linear-gradient(180deg, #ebeffc 0%, #ffffff 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (EBEFFC, FFFFF)"
+          },
+          "secondary": {
+            "value": "linear-gradient(180deg, #f7f9ff 0%, #ffffff 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (F7F9FF, FFFFF)"
+          }
+        },
+        "dark": {
+          "primary": {
+            "value": "linear-gradient(180deg, #13182b 0%, #0e111a 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (13182B, 0E111A)"
+          },
+          "secondary": {
+            "value": "linear-gradient(180deg, #212536 0%, #0e111a 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (212536, 0E111A)"
+          }
+        }
+      },
+      "jade": {
+        "light": {
+          "primary": {
+            "value": "linear-gradient(180deg, #e6f2f1 0%, #ffffff 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (E6F2F1, FFFFF)"
+          },
+          "secondary": {
+            "value": "linear-gradient(180deg, #f7fcfc 0%, #ffffff 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (F7FCFC, FFFFF)"
+          }
+        },
+        "dark": {
+          "primary": {
+            "value": "linear-gradient(180deg, #001c18 0%, #021412 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (001C18, 021412)"
+          },
+          "secondary": {
+            "value": "linear-gradient(180deg, #122925 0%, #021412 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (122925, 021412)"
+          }
+        }
+      },
+      "bronze": {
+        "light": {
+          "primary": {
+            "value": "linear-gradient(180deg, #f5efe4 0%, #ffffff 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (F5EFE4, FFFFF)"
+          },
+          "secondary": {
+            "value": "linear-gradient(180deg, #fcfaf4 0%, #ffffff 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (FCFAF4, FFFFF)"
+          }
+        },
+        "dark": {
+          "primary": {
+            "value": "linear-gradient(180deg, #1f1402 0%, #171002 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (1F1402, 171002)"
+          },
+          "secondary": {
+            "value": "linear-gradient(180deg, #2e2515 0%, #171002 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (2E2515, 171002)"
+          }
+        }
+      },
+      "rose": {
+        "light": {
+          "primary": {
+            "value": "linear-gradient(180deg, #fcebf5 0%, #ffffff 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (FCEBF5, FFFFF)"
+          },
+          "secondary": {
+            "value": "linear-gradient(180deg, #fff9fd 0%, #ffffff 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (FFF9FD, FFFFF)"
+          }
+        },
+        "dark": {
+          "primary": {
+            "value": "linear-gradient(180deg, #30041e 0%, #1f0615 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (30041E, 1F0615)"
+          },
+          "secondary": {
+            "value": "linear-gradient(180deg, #40162e 0%, #1f0615 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (40162E, 1F0615)"
+          }
+        }
+      },
+      "lavender": {
+        "light": {
+          "primary": {
+            "value": "linear-gradient(180deg, #f4ebff 0%, #ffffff 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (F4EBFF, FFFFF)"
+          },
+          "secondary": {
+            "value": "linear-gradient(180deg, #fbf7ff 0%, #ffffff 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (FBF7FF, FFFFF)"
+          }
+        },
+        "dark": {
+          "primary": {
+            "value": "linear-gradient(180deg, #231237 0%, #18082b 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (231237, 18082B)"
+          },
+          "secondary": {
+            "value": "linear-gradient(180deg, #301a4a 0%, #18082b 100%)",
+            "type": "color",
+            "description": "Values Top, Bottom (301A4A, 18082B)"
+          }
+        }
+      }
+    },
+    "mobile": {
+      "default": {
+        "light": {
+          "primary": {
+            "value": "#f7f7f7",
+            "type": "color",
+            "description": "HEX Code: #F7F7F7"
+          },
+          "secondary": {
+            "value": "#ffffff",
+            "type": "color",
+            "description": "HEX Code: #FFFFFF"
+          }
+        },
+        "dark": {
+          "primary": {
+            "value": "#000000",
+            "type": "color",
+            "description": "HEX Code: #000000"
+          },
+          "secondary": {
+            "value": "#1a1a1a",
+            "type": "color"
+          }
+        }
+      },
+      "indigo": {
+        "light": {
+          "primary": {
+            "value": "#ebeffc",
+            "type": "color",
+            "description": "HEX Code: #EBEFFC"
+          },
+          "secondary": {
+            "value": "#f7f9ff",
+            "type": "color",
+            "description": "HEX Code: #F7F9FF"
+          }
+        },
+        "dark": {
+          "primary": {
+            "value": "#0e111a",
+            "type": "color",
+            "description": "HEX Code: #0E111A"
+          },
+          "secondary": {
+            "value": "#13182b",
+            "type": "color",
+            "description": "HEX Code: #13182B"
+          }
+        }
+      },
+      "jade": {
+        "light": {
+          "primary": {
+            "value": "#e6f2f1",
+            "type": "color",
+            "description": "HEX Code: #E6F2F1"
+          },
+          "secondary": {
+            "value": "#f7fcfc",
+            "type": "color",
+            "description": "HEX Code: #F7FCFC"
+          }
+        },
+        "dark": {
+          "primary": {
+            "value": "#021412",
+            "type": "color",
+            "description": "HEX Code: #021412"
+          },
+          "secondary": {
+            "value": "#05201c",
+            "type": "color",
+            "description": "HEX Code: #05201C"
+          }
+        }
+      },
+      "bronze": {
+        "light": {
+          "primary": {
+            "value": "#f5efe4",
+            "type": "color",
+            "description": "HEX Code: #F5EFE4"
+          },
+          "secondary": {
+            "value": "#fcfaf4",
+            "type": "color",
+            "description": "HEX Code: #FCFAF4"
+          }
+        },
+        "dark": {
+          "primary": {
+            "value": "#171002",
+            "type": "color",
+            "description": "HEX Code: #171002"
+          },
+          "secondary": {
+            "value": "#231807",
+            "type": "color",
+            "description": "HEX Code: #231807"
+          }
+        }
+      },
+      "rose": {
+        "light": {
+          "primary": {
+            "value": "#fcebf5",
+            "type": "color",
+            "description": "HEX Code: #FCEBF5"
+          },
+          "secondary": {
+            "value": "#fff9fd",
+            "type": "color",
+            "description": "HEX Code: #FFF9FD"
+          }
+        },
+        "dark": {
+          "primary": {
+            "value": "#1f0615",
+            "type": "color",
+            "description": "HEX Code: #1F0615"
+          },
+          "secondary": {
+            "value": "#30041e",
+            "type": "color",
+            "description": "HEX Code: #30041E"
+          }
+        }
+      },
+      "lavender": {
+        "light": {
+          "primary": {
+            "value": "#f4ebff",
+            "type": "color",
+            "description": "HEX Code: #F4EBFF"
+          },
+          "secondary": {
+            "value": "#fbf7ff",
+            "type": "color",
+            "description": "HEX Code: #FBF7FF"
+          }
+        },
+        "dark": {
+          "primary": {
+            "value": "#18082b",
+            "type": "color",
+            "description": "HEX Code: #18082B"
+          },
+          "secondary": {
+            "value": "#27163b",
+            "type": "color",
+            "description": "HEX Code: #27163B"
+          }
+        }
+      }
+    },
+    "partner": {
+      "pdf": {
+        "value": "#EE0507",
+        "type": "color",
+        "description": "HEX: EE0507\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "word": {
+        "value": "#0078D6",
+        "type": "color",
+        "description": "HEX: 0078D6\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "powerpoint": {
+        "value": "#D93E17",
+        "type": "color",
+        "description": "HEX:D93E17\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "excel": {
+        "value": "#00893E",
+        "type": "color",
+        "description": "HEX:00893E\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "onenote": {
+        "value": "#B839DB",
+        "type": "color",
+        "description": "HEX:B839DB\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "sheets": {
+        "value": "#F4B400",
+        "type": "color",
+        "description": "HEX:F4B400\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "slides": {
+        "value": "#0F9D58",
+        "type": "color",
+        "description": "HEX:0F9D58\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "keynote": {
+        "value": "#029CFB",
+        "type": "color",
+        "description": "HEX:029CFB\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "doc": {
+        "value": "#4285f4",
+        "type": "color",
+        "description": "HEX Value: 4285F4"
+      }
+    },
+    "highcontrast": {
+      "black": {
+        "SystemColorWindowTextColor": {
+          "description": "Text main color",
+          "value": "#ffffff",
+          "type": "color"
+        },
+        "SystemColorHotlightColor": {
+          "description": "SystemColorHighlightColor. Used for Hyperlink + Actionable Text/Icons",
+          "value": "#ffff00",
+          "type": "color"
+        },
+        "SystemColorGrayTextColor": {
+          "description": "SystemColorGrayTextColor. Used for disabled state",
+          "value": "#3ff23f",
+          "type": "color"
+        },
+        "SystemColorHighlightTextColor": {
+          "description": "SystemColorHighlightTextColor. Used for Inverted text color for active/highlighted items",
+          "value": "#000000",
+          "type": "color"
+        },
+        "SystemColorHighlightColor": {
+          "description": "SystemColorHighlightColor. Used for Highlight/Hover/Press/Active/Enabled",
+          "value": "#1aebff",
+          "type": "color"
+        },
+        "SystemColorButtonTextColor": {
+          "description": "SystemColorButtonTextColor",
+          "value": "#ffffff",
+          "type": "color"
+        },
+        "SystemColorButtonFaceColor": {
+          "description": "SystemColorButtonFaceColor. Used for button background",
+          "value": "#000000",
+          "type": "color"
+        },
+        "SystemColorWindowColor": {
+          "description": "SystemColorWindowColor. Used for Primary BG",
+          "value": "#000000",
+          "type": "color"
+        }
+      },
+      "white": {
+        "SystemColorWindowTextColor": {
+          "description": "Text main color",
+          "value": "#000000",
+          "type": "color"
+        },
+        "SystemColorHotlightColor": {
+          "description": "SystemColorHighlightColor. Used for Hyperlink + Actionable Text/Icons",
+          "value": "#00009f",
+          "type": "color"
+        },
+        "SystemColorGrayTextColor": {
+          "description": "SystemColorGrayTextColor. Used for disabled state",
+          "value": "#600000",
+          "type": "color"
+        },
+        "SystemColorHighlightTextColor": {
+          "description": "SystemColorHighlightTextColor. Used for Inverted text color for active/highlighted items",
+          "value": "#ffffff",
+          "type": "color"
+        },
+        "SystemColorHighlightColor": {
+          "description": "SystemColorHighlightColor. Used for Highlight/Hover/Press/Active/Enabled",
+          "value": "#37006e",
+          "type": "color"
+        },
+        "SystemColorButtonTextColor": {
+          "description": "SystemColorButtonTextColor",
+          "value": "#000000",
+          "type": "color"
+        },
+        "SystemColorButtonFaceColor": {
+          "description": "SystemColorButtonFaceColor. Used for button background",
+          "value": "#ffffff",
+          "type": "color"
+        },
+        "SystemColorWindowColor": {
+          "description": "SystemColorWindowColor. Used for Primary BG",
+          "value": "#ffffff",
+          "type": "color"
+        }
+      }
+    }
+  }
+}

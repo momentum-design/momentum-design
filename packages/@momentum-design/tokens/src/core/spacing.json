@@ -1,0 +1,71 @@
+{
+  "spacing": {
+    "core": {
+      "none": {
+        "value": "0px",
+        "type": "spacing"
+      },
+      "micro": {
+        "value": "2px",
+        "type": "spacing"
+      },
+      "xxx-small": {
+        "value": "4px",
+        "type": "spacing",
+        "description": "Extra, extra, extra small."
+      },
+      "xx-small": {
+        "value": "8px",
+        "type": "spacing",
+        "description": "Extra, extra small."
+      },
+      "x-small": {
+        "value": "12px",
+        "type": "spacing",
+        "description": "Extra small."
+      },
+      "small": {
+        "value": "16px",
+        "type": "spacing",
+        "description": "Small."
+      },
+      "medium": {
+        "value": "20px",
+        "type": "spacing",
+        "description": "Medium."
+      },
+      "large": {
+        "value": "24px",
+        "type": "spacing",
+        "description": "Large."
+      },
+      "x-large": {
+        "value": "32px",
+        "type": "spacing",
+        "description": "Extra large."
+      },
+      "xx-large": {
+        "value": "40px",
+        "type": "spacing",
+        "description": "Extra, extra large."
+      },
+      "xxx-large": {
+        "value": "52px",
+        "type": "spacing",
+        "description": "Extra, extra, extra large."
+      },
+      "big": {
+        "value": "64px",
+        "type": "spacing"
+      },
+      "x-big": {
+        "value": "80px",
+        "type": "spacing"
+      },
+      "xx-big": {
+        "value": "100px",
+        "type": "spacing"
+      }
+    }
+  }
+}

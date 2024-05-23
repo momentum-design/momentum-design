@@ -1,5 +1,24 @@
 {
   "tokenSetOrder": [
-    "global"
+    "core/border-radius",
+    "core/border-width",
+    "core/color",
+    "core/elevation",
+    "core/spacing",
+    "core/type/apps",
+    "core/type/display",
+    "theme/webex/dark",
+    "theme/webex/light",
+    "theme/webex/border-radius",
+    "theme/webex/border-width",
+    "theme/webex/elevation",
+    "theme/webex/spacing",
+    "theme/aaos/day",
+    "theme/aaos/night",
+    "theme/stable/common",
+    "theme/stable/dark",
+    "theme/stable/light",
+    "theme/stable/hc_dark",
+    "theme/stable/hc_light"
   ]
 }

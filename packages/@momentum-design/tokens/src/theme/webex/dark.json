@@ -1,0 +1,1808 @@
+{
+  "color": {
+    "theme": {
+      "neutral": {
+        "bg": {
+          "primary": {
+            "value": "{color.gradient.default.dark.primary}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: neutral.\bbg.primary\nCore Token: gradient.default.dark.primary\nHEX: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%)\nUsed for a main app background (desktop & web)"
+          },
+          "secondary": {
+            "value": "{color.gradient.default.dark.secondary}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: neutral.bg.secondary\nCore Token: gradient.default.dark.secondary\nHEX: #262626, #0f0f0f\nUsed for the 3rd column in a main app background (desktop&web)"
+          },
+          "mob": {
+            "primary": {
+              "value": "{color.core.black-alpha.100}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.bg.mob.primary\nCore Token: mobile.default.dark.primary\nHEX: #000000\nUsed for App background for mobile [iOS] notch, top-bar"
+            },
+            "secondary": {
+              "value": "{color.core.gray.95}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token:base.bg.mob.secondary\nCore Token: mobile.default.dark.secondary\nHEX: #1A1A1A\nUsed for the app background for mobile, [Android] botton tabs"
+            }
+          }
+        },
+        "surface": {
+          "primary": {
+            "default": {
+              "value": "{color.core.white-alpha.0}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.surface.primary.default\nCore Token: core.white-alpha.0\nHEX: ffffff 0%\nUsed for rest states of app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas."
+            },
+            "hover": {
+              "value": "{color.core.white-alpha.7}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token:color.theme.neutral.surface.primary.hover\nCore Token: core.white-alpha.7\nHEX: ffffff 7%\nUsed for hover state of app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
+            },
+            "active": {
+              "value": "{color.core.white-alpha.11}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.surface.primary.active\nCore Token: core.white-alpha.11\nHEX: ffffff 11%\nUsed for pressed/active state of surface-0. Used it for app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
+            },
+            "disabled": {
+              "value": "{color.core.white-alpha.0}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token:color.theme.neutral.surface.primary.disabled\nCore Token: core.white-alpha.0\nHEX: ffffff 0%\nDisabled state of surface-primary. Used it for app-header/footer, chips, list items, list-header, bitmoji, messaging components, personas"
+            }
+          },
+          "secondary": {
+            "default": {
+              "value": "{color.core.white-alpha.11}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.surface.secondary.default\nCore Token: core.white-alpha.11\nHEX: ffffff 11%\nUsed for est state for meeting-content-cards, attachments, [ios] meeting-list"
+            },
+            "hover": {
+              "value": "{color.core.white-alpha.20}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.surface.secondary.hover\nCore Token: core.white-alpha.20\nHEX: ffffff 20%\nUsed for hover state of surface secondary. Used it for meeting-content-cards, attachments, [ios] meeting-list"
+            },
+            "active": {
+              "value": "{color.core.white-alpha.30}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.surface.secondary.active\nCore Token: core.white-alpha.30\nHEX: ffffff 30%\nUsed for press/active state of surface secondary. Used it for meeting-content-cards, attachments, [ios] meeting-list"
+            },
+            "disabled": {
+              "value": "{color.core.white-alpha.11}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.surface.secondary.disabled\nCore Token: color.core.white-alpha.11\nHEX: ffffff 11%\nDisabled state of surface secondary. Used it for meeting-content-cards, attachments, [ios] meeting-list"
+            }
+          },
+          "tertiary": {
+            "0": {
+              "value": "{color.core.black-alpha.100}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.surface.tertiary.0\nCore Token: core.black-alpha.100\nHEX: #000000\nUsed this for calendar picker, input-filed, toasts, panel-rectangles. Can also be used when layering surfaces one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
+            },
+            "1": {
+              "value": "{color.core.gray.95}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.surface.tertiary.1\nCore Token: core.gray.95\nHEX: #1A1A1A\n\nMedium solid surface. Used this for the surface of modal when layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
+            },
+            "2": {
+              "value": "{color.core.gray.90}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.surface.tertiary.2\nCore Token: core.gray.90\nHEX: #262626\nUsed this for the most top modal surface when layering one to another. For details, find \"UI Layering\" : \nhttps://www.figma.com/file/GAPJbRR46eugOlrHzFJ7Fe/UI-Layering?node-id=3%3A22089"
+            }
+          },
+          "overlay": {
+            "0": {
+              "value": "{color.core.black-alpha.90}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.surface.overlay.0\nCore Token: core.black-alpha.90\nHEX: #000000\n\nUsed for meeting reaction components. For the overlay background for modals, use Fix token."
+            },
+            "1": {
+              "value": "{color.core.black-alpha.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.surface.overlay.1\nCore Token: core.black-alpha.80\nHEX: #000000 80%\n\nUsed for meeting overlay\nFor the overlay background for modals, use Fixed token."
+            },
+            "fixed": {
+              "value": "{color.core.black-alpha.90}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.surface.overlay.fixed\nCore Token: core.black-alpha.90\nHEX: 000000 90%\nUsed for overlay surfaces; dialogs [Android] closed-caption\n\n*This color retains the same in dark/light theme."
+            }
+          },
+          "fixed": {
+            "0": {
+              "value": "{color.core.black-alpha.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.surface.fixed.0\nCore Token: color.core.black-alpha.80\nHEX: #000000 80%\nUsed for video preview background for meetings\n\n*This color retains the same in dark/light theme."
+            },
+            "1": {
+              "value": "{color.core.black-alpha.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.surface.fixed.1\nCore Token: core.black-alpha.40\nHEX: 000000 40%\nUsed for overlay background effect of avatar presence (typing), overlayFade-backgrounds\n\n*This color retains the same in dark/light theme."
+            }
+          }
+        },
+        "text": {
+          "primary": {
+            "value": "{color.core.white-alpha.95}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.neutral.text.primary\nCore Token: core.white-alpha.95\nHEX: FFFFFF 95%\nUsed for rest state of primary text."
+          },
+          "disabled": {
+            "value": "{color.core.white-alpha.20}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.neutral.text.disabled\nCore Token: core.white-alpha.20\nHEX: FFFFFF 20%\nUsed for disabled state for all text"
+          },
+          "secondary": {
+            "default": {
+              "value": "{color.core.white-alpha.70}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token:color.theme.neutral.text.secondary.default\nCore Token: core.white-alpha.70\nHEX: FFFFFF 70%\nUsed for secondary text"
+            },
+            "active": {
+              "value": "{color.core.white-alpha.95}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.text.secondary.active\nCore Token: core.white-alpha.95\nHEX: FFFFFF 95%\nUsed for active state of secondary text."
+            }
+          },
+          "fixed": {
+            "primary": {
+              "value": "{color.core.white-alpha.95}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.text.fixed.primary\nCore Token: core.white-alpha.95\nHEX: FFFFFF 95%\nUsed for fixed primary text\n\n\n*This color retains the same in dark/light theme."
+            },
+            "secondary": {
+              "value": "{color.core.white-alpha.70}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.text.fixed.secondary\nCore Token: color.core.white-alpha.70\nHEX: #FFFFFF 70%\nUsed for secondary text.\n\n*This color retains the same in dark/light theme."
+            },
+            "disabled": {
+              "value": "{color.core.white-alpha.20}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.text.fixed.disabled\nCore Token: core.white-alpha.20\nHEX: #FFFFFF 20%\nUsed for disabled state for all fixed text\n\n*This color retains the same in dark/light theme."
+            }
+          }
+        },
+        "btn": {
+          "primary": {
+            "default": {
+              "value": "{color.core.white-alpha.95}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token:color.theme.neutral.btn.primary.default\nCore Token: core.white-alpha.95\nHEX FFFFFF 95%\nRest state of primary buttons."
+            },
+            "hover": {
+              "value": "{color.core.white-alpha.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.btn.primary.hover\nCore Token: core.white-alpha.80\nHEX FFFFFF 80%\nHover state of primary buttons."
+            },
+            "pressed": {
+              "value": "{color.core.white-alpha.70}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.btn.primary.pressed\nCore Token: core.white-alpha.70\nHEX FFFFFF 70%\nPressed state of primary buttons."
+            },
+            "disabled": {
+              "value": "{color.core.white-alpha.20}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.btn.primary.disabled\nCore Token: core.white-alpha.20\nHEX FFFFFF 20%\nUsed for disabled buttons."
+            }
+          },
+          "secondary": {
+            "default": {
+              "value": "{color.core.white-alpha.0}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.btn.secondary.default\nCore Token: core.white-alpha.0\nHEX #FFFFFF 0%\nRest state of secondary buttons."
+            },
+            "hover": {
+              "value": "{color.core.white-alpha.7}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.btn.secondary.hover\nCore Token: core.white-alpha.7\nHEX FFFFFF 7%\nHover state of secondary buttons."
+            },
+            "pressed": {
+              "value": "{color.core.white-alpha.20}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.btn.secondary.pressed\nCore Token: core.white-alpha.20\nHEX FFFFFF 20%\nPressed state of secondary buttons."
+            },
+            "disabled": {
+              "value": "{color.core.white-alpha.0}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.btn.secondary.disabled\nCore Token: core.white-alpha.0\nHEX FFFFFF 0%\nDisabled state of secondary buttons."
+            },
+            "active": {
+              "default": {
+                "value": "{color.core.white-alpha.20}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.neutral.btn.secondary.active.default\nCore Token: core.white-alpha.20\nHEX FFFFFF 20%\nRest state of secondary-active buttons. Mostly for call-control component in the meeting panel."
+              },
+              "hover": {
+                "value": "{color.core.white-alpha.30}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.neutral.btn.secondary.active.hover\nCore Token: core.white-alpha.30\nHEX FFFFFF 30%\nhover state of secondary-active buttons. Mostly for call-control component in the meeting panel."
+              },
+              "pressed": {
+                "value": "{color.core.white-alpha.40}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.neutral.btn.secondary.active.pressed\nCore Token: core.white-alpha.40\nHEX FFFFFF 40%\nPressed state of secondary-active buttons. Mostly for call-control component in the meeting panel."
+              }
+            }
+          },
+          "fixed": {
+            "primary": {
+              "default": {
+                "value": "{color.core.white-alpha.95}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.neutral.btn.fixed.primary.default\nCore Token: color.core.white-alpha.95\nHEX: #FFFFFF 95%\nUsed for rest state of primary buttons. Mostly found meeting control.\n\n*This color retains the same in dark/light theme."
+              },
+              "hover": {
+                "value": "{color.core.white-alpha.80}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token:color.theme.neutral.btn.fixed.primary.hover\nCore Token: color.core.white-alpha.80\nHEX: #FFFFFF 80%\nUsed for hover state of primary buttons. Mostly found meeting control.\n\n*This color retains the same in dark/light theme."
+              },
+              "pressed": {
+                "value": "{color.core.white-alpha.70}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.neutral.btn.fixed.primary.pressed\nCore Token: color.core.white-alpha.70\nHEX: #FFFFFF 70%\nUsed for pressed state of primary buttons. Mostly found meeting control.\n\n*This color retains the same in dark/light theme."
+              },
+              "disabled": {
+                "value": "{color.core.white-alpha.20}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.neutral.btn.fixed.primary.disabled\nCore Token: color.core.white-alpha.20\nHEX: #FFFFFF 20%\nUsed for disabled state of primary buttons. Mostly found meeting control.\n\n*This color retains the same in dark/light theme."
+              }
+            },
+            "secondary": {
+              "default": {
+                "value": "#ffffff00",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.neutral.btn.fixed.secondary.default\nCore Token: color.core.white-alpha.0\nHEX: #FFFFFF 0%\nUsed for rest state of secondary buttons. mostly used for meeting controls. \n\n*This color retains the same in dark/light theme."
+              },
+              "hover": {
+                "value": "#ffffff12",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.neutral.btn.fixed.secondary.hover\nCore Token: color.core.white-alpha.7\nHEX: #FFFFFF 7%\nUsed for hover state of secondary buttons. mostly used for meeting controls. \n\n*This color retains the same in dark/light theme."
+              },
+              "pressed": {
+                "value": "#ffffff33",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.neutral.btn.fixed.secondary.pressed\nCore Token: color.core.white-alpha.20\nHEX: #FFFFFF 20%\nUsed for pressed state of secondary buttons. mostly used for meeting controls. \n\n*This color retains the same in dark/light theme."
+              },
+              "disabled": {
+                "value": "{color.core.white-alpha.0}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.neutral.btn.fixed.secondary.disabled\nCore Token: color.core.white-alpha.0\nHEX: #FFFFFF 0%\nUsed for disabled state of secondary buttons. mostly used for meeting controls. \n\n*This color retains the same in dark/light theme."
+              },
+              "active": {
+                "default": {
+                  "value": "{color.core.white-alpha.20}",
+                  "type": "color",
+                  "description": "[Dark Theme]\nTheme Token: color.theme.neutral.btn.fixed.secondary.active.default\nCore Token: color.white-alpha.20\nHEX FFFFFF 20%\nUsed for rest state of secondary active buttons. mostly used for meeting-control component.\n\n*This color retains the same in dark/light theme."
+                },
+                "hover": {
+                  "value": "{color.core.white-alpha.30}",
+                  "type": "color",
+                  "description": "[Dark Theme]\nTheme Token: color.theme.neutral.btn.fixed.secondary.active.hover\nCore Token: color.white-alpha.30\nHEX FFFFFF 30%\nUsed for hover state of secondary active buttons. mostly used for meeting-control component.\n\n*This color retains the same in dark/light theme."
+                },
+                "pressed": {
+                  "value": "{color.core.white-alpha.40}",
+                  "type": "color",
+                  "description": "[Dark Theme]\nTheme Token: color.theme.neutral.btn.fixed.secondary.active.pressed\nCore Token: color.white-alpha.40\nHEX FFFFFF 40%\nUsed for pressed state of secondary active buttons. mostly used for meeting-control component.\n\n*This color retains the same in dark/light theme."
+                }
+              }
+            }
+          }
+        },
+        "indicator": {
+          "default": {
+            "value": "{color.core.gray.50}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token:color.theme.neutral.indicator.default\nCore Token: color.core.gray.50\nHEX: #8F8F8F\nUsed for avatar presence (away, on-hold, on-device), meeting indicators(meeting-locked)"
+          },
+          "avatar": {
+            "fixed": {
+              "value": "{color.core.gray.70}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.indicator.avatar.fixed\nCore Token: color.color.core.gray.70\nHEX: #545454\nUsed for default avatars (initial without presence)\n\n*This color retains the same in dark/light theme."
+            }
+          },
+          "chip": {
+            "default": {
+              "value": "{color.core.gray.90}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.indicator.chip.default\nCore Token: color.core.gray.90\nHEX: #262626\nUsed for rest state of chips,alert-badge"
+            },
+            "hover": {
+              "value": "{color.core.gray.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.indicator.chip.hover\nCore Token: core.gray.80\nHEX: #3B3B3B\nUsed for hover state of chips, alert-badge"
+            },
+            "pressed": {
+              "value": "{color.core.gray.70}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Toekn: color.theme.neutral.indicator.chip.pressed\nCore Token: color.core.gray.70\nHEX: #545454\nUsed for pressed/active state of chips, alert-badge"
+            }
+          },
+          "fixed": {
+            "strong": {
+              "value": "{color.core.white-alpha.100}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.indicator.fixed.strong\nCore Token: color.core.white-alpha.100\nHEX: FFFFFF 100%\nUsed for avatars (typing), chips, whiteboard-pens\n\n*This color retains the same in dark/light theme."
+            },
+            "default": {
+              "value": "{color.core.gray.50}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.indicator.fixed.moderate\nCore Token: color.core.gray.50\nHEX: #8F8F8F\nUsed for typing indicator for avatars\n\n*This color retains the same in dark/light theme."
+            },
+            "moderate": {
+              "value": "{color.core.black-alpha.50}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.indicator.fixed.moderate\nCore Token: color.core.black-alpha.50\nHEX: #000000 50%\nUsed for video labels\n\n*This color retains the same in dark/light theme."
+            }
+          }
+        },
+        "control": {
+          "default": {
+            "value": "{color.core.white-alpha.20}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.neutral.control.default\nCore Token: color.core.white-alpha.20\nHEX: #FFFFFF 20%\nUsed for rest state of inactive control components; radio, toggle, checkbox, scrollbar thumb"
+          },
+          "hover": {
+            "value": "{color.core.white-alpha.30}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.neutral.control.hover\nCore Token: core.white-alpha.30\nHEX: #FFFFFF 30%\nUsed for hover state of control backgrounds; radio, toggle, checkbox, scrollbar thumb."
+          },
+          "pressed": {
+            "value": "{color.core.white-alpha.40}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.neutral.control.pressed\nCore Token: core.white-alpha.40\nHEX: #FFFFFF 40%\nUsed for pressed state of inactive control backgrounds; radio, toggle, checkbox, scrollbar thumb."
+          },
+          "disabled": {
+            "value": "{color.core.white-alpha.20}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.neutral.control.disabled\nCore Token: core.white-alpha.20\nHEX: #FFFFFF 20%\nUsed for disabled state of inactive control components background. (radio, toggle, checkbox)"
+          },
+          "slider": {
+            "default": {
+              "value": "{color.core.gray.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.control.slider.default\nCore Token: core.gray.40\nHEX:  #ADADAD\nUsed for slider border"
+            },
+            "disabled": {
+              "value": "{color.core.gray.60}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.control.slider.disabled\nCore Token: core.gray.60\nHEX: #707070\nUsed for disabled state of slider handle."
+            }
+          },
+          "scrollbar": {
+            "default": {
+              "value": "{color.core.white-alpha.0}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.control.scrollbar.default\nCore Token: core.white-alpha.0\nHEX: FFFFFF 0%\nRest state of scrollbar track and arrow background"
+            },
+            "hover": {
+              "value": "{color.core.white-alpha.11}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.control.scrollbar.hover\nCore Token: core.white-alpha.11\nHEX: #FFFFFF 11%\nUsed for hover state of arrow background and rest state of scrollbar track background."
+            },
+            "pressed": {
+              "value": "{color.core.white-alpha.20}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.control.scrollbar.pressed\nCore Token: core.white-alpha.20\nHEX: #FFFFFF 20%\nUsed for pressed state of arrow background."
+            }
+          },
+          "fixed": {
+            "default": {
+              "value": "{color.core.white-alpha.100}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.control.fixed.default\nCore Token: core.white-alpha.100\nHEX: #FFFFFF 100%\nUsed for rest state of toggle button, slider control.\n\n*This color retains the same in dark/light theme."
+            }
+          }
+        },
+        "border": {
+          "strong": {
+            "value": "{color.core.white-alpha.90}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.neutral.border.strong\nCore Token: core.white-alpha.90\nHEX:  #FFFFFF 90%\nUsed for strong outline; focused state of input components; search-field, text-field, combo-box"
+          },
+          "default": {
+            "value": "{color.core.white-alpha.50}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.neutral.border.default\nCore Token: core.white.alpha-50\nHEX: #FFFFFF 50%\nDefault border that passes min 3:1 contrast ratios; used for input-fields, sliders."
+          },
+          "moderate": {
+            "value": "{color.core.white-alpha.40}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.neutral.border.moderate\nCore Token:  core.white.alpha-40\nHEX: #FFFFFF 40%\nUsed for chips, grids, panels, meeting-markers, input-fields, tags"
+          },
+          "subtle": {
+            "value": "{color.core.white-alpha.30}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.neutral.border.subtle\nCore Token: core.white-alpha.30\nHEX: #FFFFFF 30%\nUsed for outline for secondary-buttons (Don't use it for disabled state)"
+          },
+          "weak": {
+            "value": "{color.core.white-alpha.20}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.neutral.border.weak\nCore Token: core.white-alpha.20\nHEX: #FFFFFF 20%\nUsed for disabled state and subtle border; calendar- picker, modal-bgs, dialog, toasts, menu-list, grids, disabled state of buttons and controls.\n[iOS] content-list, separator, bottom-tabs, content [AND] content-list, list-item, separator, toast, reaction-bar"
+          },
+          "fixed": {
+            "bold": {
+              "value": "{color.core.gray.60}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.border.fixed.bold\nCore Token: color.core.gray.60\nHEX: #707070\nUsed for outline of meetings/share/window-border (share-inactive)\n\n*This color retains the same in dark/light theme."
+            },
+            "default": {
+              "value": "{color.core.white-alpha.50}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.border.fixed.default\nCore Token: color. core.white.alpha-50\nHEX: #FFFFFF 50%\nDefault fixed border that passes min 3:1 contrast ratio.\n\n*This color retains the same in dark/light theme."
+            },
+            "moderate": {
+              "value": "{color.core.white-alpha.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.border.fixed.moderate\nCore Token: color.core.white-alpha.40\nHEX: FFFFFF 40%\n\n*This color retains the same in dark/light theme."
+            },
+            "subtle": {
+              "value": "{color.core.white-alpha.30}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.border.fixed.subtle\nCore Token: color.core.white-alpha.30\nHEX: FFFFFF 30%\nUsed for fixed secondary buttons. mostly used for call control components. \n\n*This color retains the same in dark/light theme."
+            },
+            "weak": {
+              "value": "{color.core.white-alpha.20}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.border.fixed.weak\nCore Token: color.core.white-alpha.20\nHEX: #FFFFFF 20%\n\nUsed for disabled state for fixed components.\n\n*This color retains the same in dark/light theme."
+            }
+          }
+        }
+      },
+      "accent": {
+        "surface": {
+          "default": {
+            "value": "{color.core.blue.90}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.accent.surface.default\nCore Token: color.core.blue.90\nHEX: #0A274A\nUsed for rest/hover state of alert-banners"
+          },
+          "active": {
+            "value": "{color.core.blue.80}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.accent.surface.active\nCore Token: core.blue.80\nHEX: #063A75\nUsed for active state of alert-banners"
+          },
+          "mobile": {
+            "default": {
+              "value": "{color.core.blue.50}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.accent.surface.mobile.default\nCore Token: core.blue.50\nHEX: #3492EB\nUsed for default/rest state of [iOS] Global Tint"
+            },
+            "active": {
+              "value": "{color.core.blue.60}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.accent.surface.mobile.active\nCore Token: color.core.blue.60\nHEX: #1170CF\nUsed for [ioS] Selected state of navigation/side-bar, search-bar"
+            }
+          }
+        },
+        "text": {
+          "default": {
+            "value": "{color.core.blue.40}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.accent.text.default\nCore Token: core.blue.40\nHEX: #64B4FA\nUsed for rest state of accent text. mostly used for button-hyperlink, interactive-icons, alert-badge"
+          },
+          "hover": {
+            "value": "{color.core.blue.20}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.accent.text.hover\nCore Token: core.blue.20\nHEX: BFE3FF\nUsed for hover state of accent text; \nmostly used for button-hyperlink, interactive-icons, alert-badge"
+          },
+          "active": {
+            "value": "{color.core.blue.20}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.accent.text.active\nCore Token: core.blue.20\nHEX: #BFE3FF\nUsed for active state of accent text. mostly used for button-hyperlink, interactive-icons, alert-badge"
+          }
+        },
+        "btn": {
+          "fixed": {
+            "default": {
+              "value": "{color.core.blue.60}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.accent.btn.fixed.default\nCore Token: core.blue.60\nHEX: #1170CF\nUsed for rest state of accent buttons\n\n*This color retains the same in dark/light theme."
+            },
+            "hover": {
+              "value": "{color.core.blue.70}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.accent.btn.fixed.hover\nCore Token: core.blue.70\nHEX: #0353A8\nUsed for hover state of accent buttons\n\n*This color retains the same in dark/light theme."
+            },
+            "pressed": {
+              "value": "{color.core.blue.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.accent.btn.fixed.pressed\nCore Token: core.blue.80\nHEX: #063A75\nUsed for pressed state of accent buttons.\n\n*This color retains the same in dark/light theme."
+            }
+          }
+        },
+        "indicator": {
+          "default": {
+            "value": "{color.core.blue.50}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.accent.indicator.default\nCore Token: core.blue.50\nHEX: #3492EB\nUsed for meeting indicator (Encryption)"
+          },
+          "badge": {
+            "fixed": {
+              "value": "{color.core.blue.60}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.accent.indicator.badge.fixed\nCore Token: color.core.blue.60\nHEX: #1170CF\nUsed for badges. \n\n*This color retains the same color in the dark/light theme."
+            }
+          },
+          "chip": {
+            "default": {
+              "value": "{color.core.blue.90}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.accent.indicator.chip.default\nCore Token: core.blue.90\nHEX: #0A274A\nUsed for rest state of alert-badge(chat-saved), chips"
+            },
+            "hover": {
+              "value": "{color.core.blue.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.accent.indicator.chip.hover\nCore Token: core.blue.80\nHEX: #063A75 \nUsed for hover state of alert-badge (chat-saved), chips"
+            },
+            "pressed": {
+              "value": "{color.core.blue.70}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.accent.indicator.chip.pressed\nCore Token: core.blue.70\nHEX: #0353A8\nUsed for pressed state of  alert-badge (chat-saved), chips"
+            }
+          },
+          "fixed": {
+            "default": {
+              "value": "{color.core.blue.50}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token:color.theme.accent.indicator.fixed.default\nCore Token: color.core.blue.50\nHEX: #3492EB\nUsed for whiteboard pens\n\n*This color retains the same color in the dark/light theme."
+            }
+          }
+        },
+        "control": {
+          "default": {
+            "value": "{color.core.blue.40}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.accent.control.default\nCore Token: core.blue.40\nHEX: #64B4FA\nUsed for rest state of active control components background. (radio, toggle, checkbox)"
+          },
+          "hover": {
+            "value": "{color.core.blue.50}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.accent.control.hover\nCore Token: core.blue.50\nHEX: #3492EB\nUsed for hover state of active control components backgroound. (radio, toggle, checkbox)"
+          },
+          "pressed": {
+            "value": "{color.core.blue.60}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.accent.control.pressed\nCore Token: core.blue.60\nHEX: #1170CF\nUsed for press state of active control components backgroound. (radio, toggle, checkbox)"
+          }
+        },
+        "border": {
+          "default": {
+            "value": "{color.core.blue.50}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.accent.border.default\nCore Token: color.core.blue.50\nHEX: #3492EB\nDefault border option that passes 3.1 contrast ratio."
+          },
+          "moderate": {
+            "value": "{color.core.blue.40}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.accent.border.moderate\nCore Token: core.blue.40\nHEX: #64B4FA\nUsed for outline of secondary accent buttons, attachment/fileViewer-preview, messaging/new, chip, input fields"
+          }
+        }
+      },
+      "positive": {
+        "surface": {
+          "default": {
+            "value": "{color.core.green.90}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token:color.theme.positive.surface.default\nCore Token: color.core.green.90\nHEX: #0E2B20\nUsed for rest state of alert banners"
+          },
+          "active": {
+            "value": "{color.core.green.80}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.positive.surface.active\nCore Token: color.core.green.80\nHEX: #134231\nUsed for meeting-cards, pressed state of availability cards, alert-banners"
+          }
+        },
+        "text": {
+          "default": {
+            "value": "{color.core.green.40}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.positive.text.default\nCore Token: core.green.40\nHEX: #3CC29A\nUsed for rest state of success, join text"
+          },
+          "hover": {
+            "value": "{color.core.green.20}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.positive.text.hover\nCore Token: color.core.green.20\nHEX: #9FEDD8\nUsed for hover state of success, join text"
+          },
+          "active": {
+            "value": "{color.core.green.20}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.positive.text.active\nCore Token: color.core.green.20\nHEX: #9FEDD8\nUsed for active state of success, join text"
+          },
+          "fixed": {
+            "default": {
+              "value": "{color.core.green.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.positive.text.fixed.default\nCore Token: color.core.green.40\nHEX: #3CC29A\nUsed for join/success text that are same color in dark/light.\n\n*This color retains the same color in the dark/light theme."
+            },
+            "hover": {
+              "value": "{color.core.green.20}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.positive.text.fixed.hover\nCore Token: color.core.green.20\nHEX: #9FEDD8\nUsed for hover state of join/success text that are same color in dark/light.\n\n*This color retains the same color in the dark/light theme."
+            }
+          }
+        },
+        "btn": {
+          "fixed": {
+            "default": {
+              "value": "{color.core.green.60}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.positive.btn.default\nCore Token: core.green.60\nHEX: #1D805F\nRest state of join buttons.\n\n*This color retains the same in dark/light theme."
+            },
+            "hover": {
+              "value": "{color.core.green.70}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.positive.btn.hover\nCore Token: core.green.70\nHEX: #185E46\nHover state of join buttons.\n\n*This color retains the same in dark/light theme."
+            },
+            "pressed": {
+              "value": "{color.core.green.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.positive.btn.pressed\nCore Token: core.green.80\nHEX: #134231\nPressed state of join buttons.\n\n*This color retains the same in dark/light theme."
+            }
+          }
+        },
+        "indicator": {
+          "default": {
+            "value": "{color.core.green.50}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.positive.indicator.default\nCore Token: color.core.green.50\nHEX: #27A17A\n\nUsed for presence(active) and meeting indicators (audio-video-on, media-quality-good)"
+          },
+          "fixed": {
+            "default": {
+              "value": "{color.core.green.50}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.positive.indicator.fixed.default\nCore Token: color.core.green.50\nHEX: #27A17A\nUsed for whiteboard pens\n\n*This color retains the same color in the dark/light theme."
+            }
+          }
+        },
+        "border": {
+          "default": {
+            "value": "{color.core.green.40}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.positive.border.default\nCore Token: color.core.green.40\nHEX: #3CC29A\nDefault outline border for positve state. Used for join/success buttons, inputs."
+          },
+          "fixed": {
+            "moderate": {
+              "value": "{color.core.green.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.positive.border.fixed.moderate\nCore Token: color.core.green.40\nHEX: #3CC29A\nUsed for meetings/share/window-border (share-selected)\n\n*This color retains the same color in the dark/light theme."
+            }
+          }
+        }
+      },
+      "negative": {
+        "surface": {
+          "default": {
+            "value": "{color.core.red.90}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.negative.surface.default\nCore Token: color.core.red.90\nHEX: #4F0E10\nUsed for rest state of error state cards, banners; availability-cards (unavailable)"
+          },
+          "active": {
+            "value": "{color.core.red.80}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.negative.surface.active\nCore Token: core.red.80\nHEX: #780D13\nUsed for alert-banners, availability-cards (blockers)"
+          },
+          "fixed": {
+            "value": "{color.core.red.40}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.negative.surface.fixed\nCore Token: color.core.red.40\nHEX: #FC8B9B\nUsed for whiteboard sticky note\n\n*This color retains the same color in the dark/light theme."
+          }
+        },
+        "text": {
+          "default": {
+            "value": "{color.core.red.40}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.negative.text.default\nCore Token: color.core.red.40\nHEX: #FC8B98\nUsed for rest state of error/cancel text."
+          },
+          "hover": {
+            "value": "{color.core.red.20}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.negative.text.hover\nCore Token: color.core.red.20\nHEX: #FFD4DA\nUsed for hover state of error/cancel text"
+          },
+          "active": {
+            "value": "{color.core.red.20}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.negative.text.active\nCore Token: color.core.red.20\nHEX: #FFD4DA\nUsed for active state of error/cancel text, alert-badge, interactive icons."
+          },
+          "fixed": {
+            "default": {
+              "value": "{color.core.red.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.negative.text.fixed.default\nCore Token: color.core.red.40\nHEX: #FC8B98\nUsed for rest state of error/cancel text\n\n*This color retains the same color in the dark/light theme."
+            },
+            "hover": {
+              "value": "{color.core.red.20}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.negative.text.fixed.hover\nCore Token: color.core.red.20\nHEX: #FFD4DA\nUsed for hover state of error/cancel text\n\n*This color retains the same color in the dark/light theme."
+            }
+          }
+        },
+        "btn": {
+          "fixed": {
+            "default": {
+              "value": "{color.core.red.60}",
+              "type": "color",
+              "description": "[Dark Theme] \nTheme Toekn: color.theme.negative.btn.fixed.default\nCore Token: color.core.red.60\nHEX: #DB1F2E\nUsed for rest state of error/cancel buttons.\n\n*This color retains the same color in the dark/light theme."
+            },
+            "hover": {
+              "value": "{color.core.red.70}",
+              "type": "color",
+              "description": "[Dark Theme] \nTheme Toekn: color.theme.negative.btn.fixed.hover\nCore Token: color.core.red.70\nHEX: #AB0A15\nHover state of cancel/error buttons\n\n*This color retains the same color in the dark/light theme."
+            },
+            "pressed": {
+              "value": "{color.core.red.80}",
+              "type": "color",
+              "description": "[Dark Theme] \nTheme Toekn: color.theme.negative.btn.fixed.pressed\nCore Token: color.core.red.80\nHEX: #780D13\nUsed for pressed state of cancel/error buttons\n\n*This color retains the same color in the dark/light theme."
+            }
+          }
+        },
+        "indicator": {
+          "default": {
+            "value": "{color.core.red.50}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.negative.indicator.default\nCore Token: color.core.red.50\nHEX: #F55868\nUsed for badge; presence(DoNotDisturb) and meeting indicators (audio-video-off, record-on, poor-media-quality,live)"
+          },
+          "chip": {
+            "default": {
+              "value": "{color.core.red.90}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.negative.indicator.chip.default\nCore Token: color.core.red.90\nHEX: #4F0E10\nUsed for rest state of alert-badge"
+            },
+            "hover": {
+              "value": "{color.core.red.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.negative.indicator.chip.hover\nCore Token: color.core.red.80\nHEX: #780D13\nUsed for hover state of chips, alert-badges"
+            },
+            "pressed": {
+              "value": "{color.core.red.70}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.negative.indicator.chip.pressed\nCore Token: color.core.red.70\nHEX: #AB0A15\nUsed for pressed state of chips, alert-badges"
+            }
+          },
+          "fixed": {
+            "default": {
+              "value": "{color.core.red.50}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.negative.indicator.fixed\nCore Token: color.core.red.50\nHEX: #F55868\nUsed for whiteboard pens\n\n*This color retains the same color in the dark/light theme."
+            }
+          }
+        },
+        "border": {
+          "default": {
+            "value": "{color.core.red.40}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.negative.border.default\nCore Token: color.core.red.40\nHEX: #FC8B98\nDefault error state for outline borders. Used for input, buttons."
+          }
+        }
+      },
+      "warning": {
+        "surface": {
+          "default": {
+            "value": "{color.core.yellow.90}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.warning.surface.default\nCore Token: color.core.yellow.90\nHEX: #36220C\nUsed for alert-banner"
+          },
+          "active": {
+            "value": "{color.core.yellow.80}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.warning.surface.active\nCore Token: color.core.yellow.80\nHEX: #57330A\nUsed for warning alert-banner"
+          },
+          "fixed": {
+            "value": "{color.core.yellow.40}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.warning.surface.fixed\nCore Token: color.core.yellow.40\nHEX: #F2990A\nUsed for whiteboard sticky note\n\n*This color retains the same color in the dark/light theme."
+          }
+        },
+        "text": {
+          "default": {
+            "value": "{color.core.yellow.40}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.warning.text.default\nCore Token: core.yellow.40\nHEX: #F2990A\nUsed for rest state of warning text; alert-badge, interactive icons."
+          },
+          "hover": {
+            "value": "{color.core.yellow.20}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.warning.text.hover\nCore Token: color.core.yellow.20\nHEX: #FFDA94\nUsed for hover state of warning text; alert-badge, interactive icons."
+          },
+          "active": {
+            "value": "{color.core.yellow.20}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.warning.text.active\nCore Token: color.core.yellow.20\nHEX: #FFDA94\nUsed for active state of warning text; alert-badge, interactive icons."
+          },
+          "fixed": {
+            "default": {
+              "value": "{color.core.yellow.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.warning.text.fixed.default\nCore Token: color.core.yellow.40\nHEX: #F2990A\nUsed for text of guest avatar that are unverified.\n\n*This color retains the same color in the dark/light theme."
+            }
+          }
+        },
+        "indicator": {
+          "default": {
+            "value": "{color.core.yellow.50}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.warning.indicator.default\nCore Token: color.core.yellow.50\nHEX: #CF7900\nUsed for warning meeting indicators (audio-error, video-error)"
+          },
+          "avatar": {
+            "fixed": {
+              "value": "{color.core.yellow.70}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.warning.indicator.avatar.fixed\nCore Token: color.core.yellow.70\nHEX: #7D4705\nUsed for unknown avatar\n\n*This color retains the same color in the dark/light theme."
+            }
+          },
+          "chip": {
+            "default": {
+              "value": "{color.core.yellow.90}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.warning.indicator.chip.default\nCore Token: color.core.yellow.90\nHEX: #36220C\nUsed for rest state of alert-badge, chips"
+            },
+            "hover": {
+              "value": "{color.core.yellow.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.warning.indicator.chip.hover\nCore Token: core.yellow.80\nHEX: #57330A\nUsed for hover state of alert-badge, chips"
+            },
+            "pressed": {
+              "value": "{color.core.yellow.70}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.warning.indicator.chip.pressed\nCore Token: core.yellow.70\nHEX: #7D4705\nUsed for pressed state of alert-badge, chips"
+            }
+          },
+          "fixed": {
+            "default": {
+              "value": "{color.core.yellow.50}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.warning.indicator.fixed.default\nCore Token: color.core.yellow.50\nHEX: #F2990A\nUsed for whiteboardpen\n\n*This color retains the same color in the dark/light theme."
+            }
+          }
+        },
+        "border": {
+          "default": {
+            "value": "{color.core.yellow.40}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.warning.border.default\nCore Token: color.core.yellow.40\nHEX: #F2990A\nDefault outline border option for warning state. Used for input fields."
+          }
+        }
+      },
+      "notice": {
+        "text": {
+          "default": {
+            "value": "{color.core.orange.40}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.notice.text.default\nCore Token: color.core.orange.40\nHEX:  #FD884E\nUsed for rest state of teams text."
+          },
+          "hover": {
+            "value": "{color.core.orange.20}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.notice.text.hover\nCore Token: color.core.orange.20\nHEX: #FED5AC\nUsed for hover state of teams text"
+          },
+          "active": {
+            "value": "{color.core.orange.20}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.notice.text.active\nCore Token: color.core.orange.20\nHEX: #FED5AC\nUsed for active state of teams text"
+          }
+        },
+        "indicator": {
+          "default": {
+            "value": "{color.core.orange.50}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.notice.indicator.default\nCore Token: color.core.orange.50\nHEX: #EC6400\nUsed for avatar presence (busy, meeting, call, device)"
+          },
+          "chip": {
+            "defualt": {
+              "value": "{color.core.orange.90}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.notice.indicator.chip.defualt\nCore Token: color.core.orange.90\nHEX: #411B04\nUsed for rest state of alert-badge, chips"
+            },
+            "hover": {
+              "value": "{color.core.orange.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.notice.indicator.chip.hover\nCore Token: color.core.orange.80\nHEX: #682601\nUsed for hover state of alert-badge"
+            },
+            "pressed": {
+              "value": "{color.core.orange.70}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.notice.indicator.chip.pressed\nCore Token: color.core.orange.70\nHEX: #9C3202\nUsed for pressed/active state of chips"
+            },
+            "fixed": {
+              "value": "{color.core.orange.60}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.notice.indicator.chip.fixed\nTheme Token: color.core.orange.60\nHEX: #C94403\nUsed for static tags in meeting (sharing)\n\n*This color retains the same color in the dark/light theme."
+            }
+          },
+          "avatar": {
+            "fixed": {
+              "value": "{color.core.orange.70}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.notice.indicator.avatar.fixed\nTheme Token: color.core.orange.70\nHEX: #9C3202\nUsed for initial avatar (avatar w/o presence)\n\n*This color retains the same color in the dark/light theme."
+            }
+          }
+        },
+        "border": {
+          "default": {
+            "value": "{color.core.orange.50}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.notice.border.default\nCore Token: color.core.orange.50\nHEX: #FD884E\nDefault outline border option that passes 3.1 contrast ratio. \nUsed for outline border for the orange tags."
+          },
+          "fixed": {
+            "bold": {
+              "value": "{color.core.orange.60}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.notice.border.fixed.bold\nTheme Token: color.core.orange.60\nHEX: #C94403\nUsed for outline of meetings/share/window-border (share-active)\n\n*This color retains the same color in the dark/light theme."
+            }
+          }
+        }
+      },
+      "inverse": {
+        "neutral": {
+          "surface": {
+            "default": {
+              "value": "{color.core.white-alpha.100}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.inverse.neutral.surface.default\nCore: color.core.white-alpha.100\nHEX: #FFFFFF\nUsed for inveted component surface; tooltip."
+            }
+          },
+          "text": {
+            "primary": {
+              "value": "{color.core.black-alpha.95}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.inverse.neutral.text.primary\nCore Token: color.core.black-alpha.95\nHEX: #000000f2\nUsed for inverted text primary."
+            },
+            "secondary": {
+              "value": "{color.core.black-alpha.60}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.inverse.neutral.text.secondary\nCore Token: color.core.black-alpha.60\nHEX: #00000099\nUsed for inverted text secondary."
+            },
+            "disabled": {
+              "value": "{color.core.black-alpha.20}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.inverse.neutral.text.disabled\nCore Token: core.black-alpha.20\nHEX: ##00000033\nUsed for disabled state of inverted text."
+            },
+            "fixed": {
+              "value": "{color.core.black-alpha.95}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.neutral.text.fixed.inverse-primary\nCore Token: color.core.black-alpha.95\nHEX: #000000 95%\nUsed it for black text in dark/light mode; chips/tags (overlay)\n\n*This color retains the same in dark/light theme."
+            }
+          },
+          "btn": {
+            "primary": {
+              "default": {
+                "value": "{color.core.gray.100}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.inverse.neutral.btn.primary.default\nCore Token: color.core.gray.100\nHEX: #0F0F0F\nRest state of inverted buttons."
+              },
+              "hover": {
+                "value": "{color.core.gray.90}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.inverse.neutral.btn.primary.hover\nCore Token: color.core.gray.90\nHEX: #262626\nHover state of inverted buttons."
+              },
+              "pressed": {
+                "value": "{color.core.gray.80}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.inverse.neutral.btn.primary.pressed\nCore Token: color.core.gray.80\nHEX #3B3B3B\nUsed for pressed state of inverted buttons."
+              },
+              "disabled": {
+                "value": "{color.core.black-alpha.20}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.inverse.neutral.btn.primary.disabled\nCore Token: color.core.black-alpha.20\nHEX: #000000 20%\nDisabled state of inverted buttons."
+              }
+            },
+            "secondary": {
+              "default": {
+                "value": "{color.core.black-alpha.0}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.inverse.neutral.btn.secondary.default\nCore Token: color.core.black-alpha.0\nHEX: #000000 0%\nRest state of secondary inverted buttons."
+              },
+              "hover": {
+                "value": "{color.core.black-alpha.7}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.inverse.neutral.btn.secondary.hover\nCore Token: color.core.black-alpha.7\nHEX: #000000 7%\nHover state of secondary inverted buttons."
+              },
+              "pressed": {
+                "value": "{color.core.black-alpha.20}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.inverse.neutral.btn.secondary.pressed\nCore Token: color.core.black-alpha.20\nHEX: #000000 20%\nHover state of secondary inverted buttons."
+              },
+              "disabled": {
+                "value": "{color.core.black-alpha.20}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.inverse.neutral.btn.secondary.disabled\nCore Token: color.core.black-alpha.20\nHEX: #000000 20%\nDisabled state of secondary inverted buttons."
+              }
+            },
+            "tertiary": {
+              "default": {
+                "value": "{color.core.black-alpha.0}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.inverse.neutral.btn.tertiary.default\nCore Token: color.core.black-alpha.0\nHEX: #000000 0%\nRest state of tertiary inverted buttons; tooltips"
+              },
+              "hover": {
+                "value": "{color.core.black-alpha.7}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.inverse.neutral.btn.tertiary.hover\nCore Token: color.core.black-alpha.7\nHEX: #000000 7%\nHover state of tertiary inverted buttons; tooltips"
+              },
+              "pressed": {
+                "value": "{color.core.black-alpha.20}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.inverse.neutral.btn.tertiary.pressed\nCore Token: color.core.black-alpha.20\nHEX: #000000 20%\nPressed state of tertiary inverted buttons; tooltips"
+              },
+              "disabled": {
+                "value": "{color.core.black-alpha.20}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.inverse.neutral.btn.tertiary.disabled\nCore Token: color.core.black-alpha.20\nHEX: #000000 20%\nDisabled state of tertiary inverted buttons; tooltips"
+              }
+            }
+          }
+        },
+        "accent": {
+          "text": {
+            "fixed": {
+              "default": {
+                "value": "{color.core.blue.70}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.inverse.accent.text.fixed.default\nCore Token: color.core.blue.70\nHEX: #0353A8\nUsed for inverted accent text; mostly used for tooltip\n\n*This color retains the same in dark/light theme."
+              },
+              "hover": {
+                "value": "{color.core.blue.90}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.inverse.accent.text.fixed.hover\nCore Token: color.core.blue.90\nHEX: #0A274A\nUsed for hover state of inverted accent text; mostly used for tooltip\n\n*This color retains the same in dark/light theme."
+              },
+              "active": {
+                "value": "{color.core.blue.90}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.inverse.accent.text.fixed.active\nCore color: core.blue.90\nHEX: #0A274A\nUsed for pressed/active state of inverted accent text; mostly used for tooltip\n\n*This color retains the same in dark/light theme."
+              }
+            }
+          }
+        }
+      },
+      "decorative": {
+        "neutral": {
+          "surface": {
+            "primary": {
+              "value": "linear-gradient(90deg, {color.core.gray.95} 60.56%,  {color.core.gray.95} 92.59%)",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.neutral.surface.primary\nCore Token: \nlinear-gradient(90deg, rgba(26, 26, 26, 0.72) 60.56%, rgba(26, 26, 26, 0) 92.59%)\nUsed for reaction components(meetings/reactions/feed). "
+            },
+            "secondary": {
+              "value": "linear-gradient(180deg, {color.core.black-alpha.90} 0%, {color.core.black-alpha.0} 100%)",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.neutral.surface.secondary\nCore Token: \nlinear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%)\nUsed for meeting reactions (overlay background)"
+            }
+          },
+          "border": {
+            "primary": {
+              "default": {
+                "value": "linear-gradient(90deg, {color.core.black-alpha.0} 0%, {color.core.black-alpha.20} 22.4%, {color.core.black-alpha.20} 72.4%, {color.core.black-alpha.0}  100%)",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.decorative.neutral.border.primary.default\nCore Token: core.white-alpha.0, core.white-alpha.20, core.white-alpha.20, core.white-alpha.0\nHEX: FFFFFF 0%, FFFFFF 20%,FFFFFF 20%, FFFFFF 0%,   \nUsed for divider default on compose area in space."
+              },
+              "hover": {
+                "value": "linear-gradient(90deg, {color.core.white-alpha.0} 0%, {color.core.white-alpha.60} 22.4%, {color.core.white-alpha.60} 72.4%, {color.core.white-alpha.0} 100%)",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.decorative.border.neutral.primary.hover\nCore Token: core.white-alpha.0, core.white-alpha.20, core.white-alpha.20, core.white-alpha.0\nHEX: FFFFFF 0%, FFFFFF 20%,FFFFFF 20%, FFFFFF 0%,   \nUsed for hover state of divider default on compose area in space."
+              }
+            }
+          }
+        },
+        "accent": {
+          "border": {
+            "default": {
+              "value": "linear-gradient(90deg, {color.core.blue.40}00 0%, {color.core.blue.40}99 22.4%, {color.core.blue.40}99 76.04%, {color.core.blue.40}00 100%)",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.accent.border.default\nCore Token: core.blue.40 0% 0%, core.blue.40 60% 22.4%, core.blue.40 60% 76.04%, core.blue.40 0% 100%\nHEX: linear-gradient(90deg, #64b4fa00 0%, #64b4fa99 22.4%, #64b4fa99 76.04%, #64b4fa00 100%) \nUsed for divider on the compose area for the announcement space.",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {
+                    "type": "lighten",
+                    "value": "0",
+                    "space": "lch"
+                  }
+                }
+              }
+            },
+            "hover": {
+              "value": "linear-gradient(90deg, {color.core.blue.40}00 0%,{color.core.blue.40}E6 22.4%, {color.core.blue.40}E6 76.04%, {color.core.blue.40}00 100%)",
+              "type": "color",
+              "description": "[Dark Theme]\n\nlinear-gradient(90deg, {color.core.blue.40}00 0%, {color.core.blue.40}90 22.4%, {color.core.blue.40}90 76.04%, {color.core.blue.40}00 100%)\n\nTheme Token: color.theme.decorative.accent.border.hover\nCore Token: core.blue.40 0% 0%, core.blue.40 90% 22.4%, core.blue.40 90% 76.04%, core.blue.40 0% 100%\nHEX: linear-gradient(90deg, #64B4fA00 0%, #64B4fAe6 22.4%, #64B4fAe6 76.04%, #64B4fA00 100%)\nUsed for hover state divider on the compose area for the announcement space."
+            }
+          }
+        },
+        "negative": {
+          "border": {
+            "default": {
+              "value": "linear-gradient(90deg, {color.core.red.40}00 0%, {color.core.red.40}99 22.4%, {color.core.red.40}99 76.04%,  {color.core.red.40}00 100%)",
+              "type": "color",
+              "description": "[Dark Theme]\nlinear-gradient(90deg, {color.core.red.40}00 0%, {color.core.red.40}99 22.4%, {color.core.red.40}99 76.04%, {color.core.red.40} 00 100%)\nTheme Token: color.theme.decorative.border.negative.default\nCore Token: core.red.40 0% 0%, core.red.40 60% 22.4%, core.red.40 60% 76.04%, core.red.40 0% 100%\nHEX: linear-gradient(90deg, #fC8B9800 0%, #fC8B9899 22.4%, #fC8B9899 76.04%, #fC8B9800 100%)\nUsed for divider default on the compose area for classified spaces."
+            },
+            "hover": {
+              "value": "linear-gradient(90deg, {color.core.red.40}00 0%, {color.core.red.40}e6 22.4%, {color.core.red.40}e6 76.04%, {color.core.red.40}00 100%)",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.border.negative.hover\nCore Token: linear-gradient(90deg, {color.core.red.40}00 0%, {color.core.red.40}E6 22.4%, {color.core.red.40}E6 76.04%,  {color.core.red.40}00 100%)\nHEX: linear-gradient(90deg, #FC8B9800 0%, #FC8B98e6 22.4%, #FC8B98e6 76.04%, #FC8B9800 100%)\nUsed for hover state of divider on the compose area for classified spaces."
+            }
+          }
+        },
+        "warning": {
+          "border": {
+            "default": {
+              "value": "linear-gradient(90deg, {color.core.yellow.40}00 0%, {color.core.yellow.40}99 22.4%, {color.core.yellow.40}99 76.04%, {color.core.yellow.40}00 100%)",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.border.warning.default\nCore Token: core.yellow.40 0% 0%, core.yellow.40 60% 22.4%, core.yellow.40 60% 76.04%, core.yellow.40 0% 100%\nHEX: linear-gradient(90deg, #F2990A00 0%, #F2990A99 22.4%, #F2990A99 76.04%, #F2990A00 100%)\nUsed for divider on the compose area for external participants."
+            },
+            "hover": {
+              "value": "linear-gradient(90deg, {color.core.yellow.40}00 0%, {color.core.yellow.40}e6 22.4%, {color.core.yellow.40}e6 76.04%, {color.core.yellow.40}00 100%)",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.border.warning.hover\nCore Token: core.yellow.40 0% 0%, core.yellow.40 90% 22.4%, core.yellow.40 90% 76.04%, core.yellow.40 0% 100%\nHEX: linear-gradient(90deg, #f2990A00 0%, #f2990Ae6 22.4%, #f2990Ae6 76.04%, #f2990A00 100%) \nUsed for divider on the compose area for external participants."
+            }
+          }
+        },
+        "gold": {
+          "text": {
+            "default": {
+              "value": "{color.decorative.gold.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.gold.text.default\nCore Token: color.decorative.gold.40\nHEX: #D6B220\nUsed for rest/hover state of teams"
+            },
+            "active": {
+              "value": "{color.decorative.gold.20}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.gold.text.active\nCore Token: color.decorative.gold.20\nHEX: #F5EAA2\nUsed for active state of teams"
+            }
+          },
+          "indicator": {
+            "default": {
+              "value": "{color.decorative.gold.90}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.gold.indicator.default\nCore Token: color.decorative.gold.90\nHEX: #30240D\nUsed for rest state of chips"
+            },
+            "hover": {
+              "value": "{color.decorative.gold.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.gold.indicator.hover\nCore Token: color.decorative.gold.80\nHEX: #4D370C\nUsed for hover state of chips"
+            },
+            "pressed": {
+              "value": "{color.decorative.gold.70}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.gold.indicator.pressed\nCore Token: color.decorative.gold.70\nHEX: #735107\nUsed for pressed state of chips"
+            },
+            "avatar": {
+              "fixed": {
+                "value": "{color.decorative.gold.70}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.decorative.gold.indicator.avatar.fixed\nCore Token: color.decorative.gold.70\nHEX: #735107\nUsed for initial avatar (avatar w/o presence)\n\n*This color retains the same in dark/light theme."
+              }
+            }
+          },
+          "border": {
+            "fixed": {
+              "value": "{color.decorative.gold.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.gold.border.fixed\nCore Token: color.decorative.gold.40\nHEX: #D6B220\nUsed for outline of chips\n\n*This color retains the same in dark/light theme."
+            }
+          }
+        },
+        "lime": {
+          "text": {
+            "default": {
+              "value": "{color.decorative.lime.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.lime.text.default\nCore Token: color.decorative.lime.40\nHEX: #93C437\nUsed for rest/hover state of team"
+            },
+            "active": {
+              "value": "{color.decorative.lime.20}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.lime.text.active\nCore Token: color.decorative.lime.20\nHEX: #DF2AE\nUsed for active state of teams"
+            }
+          },
+          "indicator": {
+            "default": {
+              "value": "{color.decorative.lime.90}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.lime.indicator.default \nCore Token: color.decorative.lime.90\nHEX: #1E2B10\nUsed for rest state of chips"
+            },
+            "hover": {
+              "value": "{color.decorative.lime.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.lime.indicator.hover\nCore Token: color.decorative.lime.80\nHEX: #2D4214\nUsed for hover state of chips"
+            },
+            "pressed": {
+              "value": "{color.decorative.lime.70}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.lime.indicator.pressed\nCore Token: color.decorative.lime.70\nHEX: #416116\nUsed for pressed state of chips"
+            },
+            "avatar": {
+              "fixed": {
+                "value": "{color.decorative.lime.70}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.decorative.lime.indicator.avatar.fixed\nCore Token: \ncolor.decorative.lime.70\nHEX: #416116\nUsed for initial avatar (avatar w/o presence)\n\n*This color retains the same in dark/light theme."
+              }
+            }
+          },
+          "border": {
+            "fixed": {
+              "value": "{color.decorative.lime.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.lime.border.fixed \nCore Token: color.decorative.lime.40\nHEX: #93C437\nUsed for outline of chips\n\n*This color retains the same in dark/light theme."
+            }
+          }
+        },
+        "mint": {
+          "surface": {
+            "fixed": {
+              "value": "{color.decorative.mint.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.mint.surface.fixed\nCore Token: color.decorative.mint.40\nHEX: #30C9B0\nUsed for whiteboard sticky note\n\n*This color retains the same in dark/light theme."
+            }
+          },
+          "text": {
+            "default": {
+              "value": "{color.decorative.mint.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.mint.text.default\nCore Token: color.decorative.mint.40\nHEX: #30C9B0\nUsed for rest/hover state of teams"
+            },
+            "active": {
+              "value": "{color.decorative.mint.20}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.mint.text.active\nCore Token: color.decorative.mint.20\nHEX: #BAF5E7\nUsed for active state of teams"
+            }
+          },
+          "indicator": {
+            "default": {
+              "value": "{color.decorative.mint.90}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.mint.indicator.default\nCore Token: color.decorative.mint.90\nHEX: #102B2A\nUsed for default state of chips"
+            },
+            "hover": {
+              "value": "{color.decorative.mint.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.mint.indicator.hover\nCore Token: color.decorative.mint.80\nHEX: #12423F\nUsed for hover state of chips"
+            },
+            "pressed": {
+              "value": "{color.decorative.mint.70}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.mint.indicator.pressed\nCore Token: color.decorative.mint.70\nHEX: #12615A\nUsed for pressed state of chips"
+            },
+            "avatar": {
+              "fixed": {
+                "value": "{color.decorative.mint.70}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.decorative.mint.indicator.avatar.fixed\nCore Token: color.decorative.mint.70\nHEX: #12615A\nUsed for initial avatar (avatar w/o presence)\n\n*This color retains the same in dark/light theme."
+              }
+            }
+          },
+          "border": {
+            "fixed": {
+              "value": "{color.decorative.mint.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.mint.indicator.default \nCore Token: color.decorative.mint.40\nHEX: #30C9B0\nUsed for outline of chips\n\n*This color retains the same in dark/light theme."
+            }
+          }
+        },
+        "cyan": {
+          "surface": {
+            "fixed": {
+              "value": "{color.decorative.cyan.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.cyan.surface.fixed\nCore Token: color.decorative.cyan.40\nHEX: #22C7D6 \nUsed for whiteboard sticky note\n\n*This color retains the same in dark/light theme."
+            }
+          },
+          "text": {
+            "default": {
+              "value": "{color.decorative.cyan.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.cyan.text.default\nCore Token: color.core.cyan.40\nHEX: #22C7D6\n\nUsed for rest/hover state of teams"
+            },
+            "active": {
+              "value": "{color.decorative.cyan.20}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.cyan.text.default\nCore Token: color.decorative.cyan.20\nHEX: #B2F4F7\nUsed for active state of teams"
+            }
+          },
+          "border": {
+            "fixed": {
+              "value": "{color.decorative.cyan.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.cyan.border.fixed\nCore Token: color.core.cyan.40\nHEX: #22C7D6\n\nUsed for outline of chips\n*This color retains the same in dark/light theme"
+            }
+          },
+          "indicator": {
+            "avatar": {
+              "fixed": {
+                "value": "{color.decorative.cyan.70}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.decorative.cyan.indicator.avatar.fixed\nCore Token: color.decorative.cyan.70\nHEX: #066070\nUsed for initial avatar (avatar w/o presence)\n\n*This color retains the same in dark/light theme."
+              }
+            }
+          }
+        },
+        "cobalt": {
+          "text": {
+            "default": {
+              "value": "{color.decorative.cobalt.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.cobalt.text.default\nCore Token: color.decorative.cobalt.40\nHEX: #5EBFF7\nUsed for rest/hover state of teams"
+            },
+            "active": {
+              "value": "{color.decorative.cobalt.20}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.cobalt.text.active\nCore Token: color.decorative.cobalt.20\nHEX: #C7EEFF\nUsed for active state of teams"
+            }
+          },
+          "indicator": {
+            "default": {
+              "value": "{color.decorative.cobalt.90}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.cobalt.indicator.default\nCore Token: color.decorative.cobalt.90\nHEX: #12283D\nUsed for rest state of chips"
+            },
+            "hover": {
+              "value": "{color.decorative.cobalt.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.cobalt.indicator.hover\nCore Token: color.decorative.cobalt.80\nHEX: #103C63\nUsed for hover state of chips"
+            },
+            "pressed": {
+              "value": "{color.decorative.cobalt.70}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.cobalt.indicator.pressed\nCore Token: color.decorative.cobalt.70\nHEX: #08599C\nUsed for pressed state of chips"
+            },
+            "avatar": {
+              "fixed": {
+                "value": "{color.decorative.cobalt.70}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.decorative.cobalt.indicator.avatar.fixed\nCore Token: color.decorative.cobalt.70\nHEX: #08599C\nUsed for initial avatar (avatar w/o presence)\n\n*This color retains the same in dark/light theme"
+              }
+            }
+          },
+          "border": {
+            "fixed": {
+              "value": "{color.decorative.cobalt.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.cobalt.border.fixed\nCore Token: color.decorative.cobalt.40\nHEX: #5EBFF7\nUsed for outline of chips\n\n*This color retains the same in dark/light theme"
+            }
+          }
+        },
+        "slate": {
+          "text": {
+            "default": {
+              "value": "{color.decorative.slate.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.slate.text.default\nCore Token: color.decorative.slate.40\nHEX: #B0B4D9\nUsed for rest/hover state of teams"
+            },
+            "active": {
+              "value": "{color.decorative.slate.20}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.slate.text.active\nCore Token: color.decorative.slate.20\nHEX: #E3E7FA\nUsed for active state of teams"
+            }
+          },
+          "indicator": {
+            "default": {
+              "value": "{color.decorative.slate.90}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.slate.indicator.default\nCore Token: color.decorative.slate.90\nHEX: #26262B\nUsed for rest state of chips"
+            },
+            "hover": {
+              "value": "{color.decorative.slate.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.slate.indicator.hover\nCore Token: color.decorative.slate.80\nHEX: #393A47\nUsed for hover state of chips"
+            },
+            "pressed": {
+              "value": "{color.decorative.slate.70}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.slate.indicator.pressed\nCore Token: color.decorative.slate.70\nHEX: #535573\nUsed for pressed state of chips"
+            },
+            "avatar": {
+              "fixed": {
+                "value": "{color.decorative.slate.70}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.decorative.slate.indicator.avatar.fixed\nCore Token: color.decorative.slate.70\nHEX: #535573\nUsed for initial avatar (avatar w/o presence)\n\n*This color retains the same in dark/light theme"
+              }
+            }
+          },
+          "border": {
+            "fixed": {
+              "value": "{color.decorative.slate.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.slate.border.fixed\nCore Token: color.decorative.decorative.slate.40\nHEX: #B0B4D9\nUsed for outline of chips\n\n*This color retains the same in dark/light theme"
+            }
+          }
+        },
+        "violet": {
+          "text": {
+            "default": {
+              "value": "{color.decorative.violet.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.violet.text.default\nCore Token: color.decorative.violet.40\nHEX: #C7A5FA\nUsed for rest/hover state of teams"
+            },
+            "active": {
+              "value": "{color.decorative.violet.20}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.violet.text.active\nCore Token: color.decorative.violet.20\nHEX: #F0E3FC\nUsed for active state of teams"
+            }
+          },
+          "indicator": {
+            "default": {
+              "value": "{color.decorative.violet.90}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.violet.indicator.default\nCore Token: color.decorative.violet.90\nHEX: #29223D\nUsed for rest state of chips"
+            },
+            "hover": {
+              "value": "{color.decorative.violet.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.violet.indicator.hover\nCore Token: color.decorative.violet.80\nHEX: #432C78\nUsed for hover state of chips"
+            },
+            "pressed": {
+              "value": "{color.decorative.violet.70}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.violet.indicator.pressed\nCore Token: color.decorative.violet.70\nHEX: #643ABD\nUsed for pressed state of chips"
+            },
+            "avatar": {
+              "fixed": {
+                "value": "{color.decorative.violet.70}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.decorative.violet.indicator.avatar.fixed\nCore Token: color.decorative.violet.70\nHEX: #643ABD\nUsed for initial avatar (avatar w/o presence)\n\n*This color retains the same in dark/light theme"
+              }
+            }
+          },
+          "border": {
+            "fixed": {
+              "value": "{color.decorative.violet.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.violet.border.fixed\nCore Token: color.decorative.violet.40\nHEX: #C7A5FA\nUsed for outline of chips\n\n*This color retains the same in dark/light theme"
+            }
+          }
+        },
+        "purple": {
+          "surface": {
+            "fixed": {
+              "value": "{color.decorative.purple.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.purple.surface.fixed\nCore Token: color.decorative.purple.40\nHEX: #F294F1\nUsed for whiteboard sticky note\n\n*This color retains the same in dark/light theme."
+            }
+          },
+          "text": {
+            "default": {
+              "value": "{color.decorative.purple.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.purple.text.default\nCore Token: color.decorative.purple.40\nHEX: #F294F1\nUsed for rest/hover state of teams"
+            },
+            "active": {
+              "value": "{color.decorative.purple.20}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.purple.text.active\nCore Token: color.decorative.purple.20\nHEX: #FCE1FC\nUsed for active state of teams"
+            }
+          },
+          "indicator": {
+            "default": {
+              "value": "{color.decorative.purple.90}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.purple.indicator.default\nCore Token: color.decorative.purple.90\nHEX: #3B1840\nUsed for rest state of alert-badge (admin), chips"
+            },
+            "hover": {
+              "value": "{color.decorative.purple.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.purple.indicator.default\nCore Token: color.decorative.purple.80\nHEX: #601E66\nUsed for hover state of alert-badge (admin), chips"
+            },
+            "pressed": {
+              "value": "{color.decorative.purple.70}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.purple.indicator.pressed\nCore Token: color.decorative.purple.70\nHEX: #932099\nUsed for active/pressed state of alert-badge (admin), chips"
+            },
+            "avatar": {
+              "fixed": {
+                "value": "{color.decorative.purple.70}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.decorative.purple.indicator.avatar.fixed\nCore Token: color.decorative.purple.70\nHEX: #932099\nUsed for initial avatar (avatar w/o presence)\n\n*This color retains the same in dark/light theme"
+              }
+            },
+            "fixed": {
+              "default": {
+                "value": "{color.decorative.purple.50}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.decorative.purple.indicator.fixed.default\nCore Token: color.decorative.purple.50\nHEX: #E060DE\nUsed for whiteboard pens\n\n*This color retains the same in dark/light theme"
+              }
+            }
+          },
+          "border": {
+            "fixed": {
+              "value": "{color.decorative.purple.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.purple.border.fixed\nCore Token: color.decorative.purple.40\nHEX: #F294F1\nUsed for outline of chips\n\n*This color retains the same color in the dark/light theme."
+            }
+          }
+        },
+        "pink": {
+          "text": {
+            "default": {
+              "value": "{color.decorative.pink.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.pink.text.default\nCore Token: color.decorative.pink.40\nHEX: #FC97AA\nUsed for rest/hover state of teams"
+            },
+            "active": {
+              "value": "{color.decorative.pink.20}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.pink.text.active\nCore Token: color.decorative.pink.20\nHEX: #FFE0E7\nUsed for active state of teams"
+            }
+          },
+          "indicator": {
+            "default": {
+              "value": "{color.decorative.pink.90}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.pink.indicator.default\nCore Token: color.decorative.pink.90\nHEX: #3B1E21\nUsed for rest state of chips"
+            },
+            "hover": {
+              "value": "{color.decorative.pink.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.pink.indicator.hover\nCore Token: color.decorative.pink.80\nHEX: #66262D\nUsed for hover state of chips"
+            },
+            "pressed": {
+              "value": "{color.decorative.pink.70}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.pink.indicator.pressed\nCore Token: color.decorative.pink.70\nHEX: #A12A3A\nUsed for pressed state of chips"
+            },
+            "avatar": {
+              "fixed": {
+                "value": "{color.decorative.pink.70}",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.decorative.pink.indicator.avatar.fixed\nCore Token: color.decorative.pink.70\nHEX: #A12A3A\nUsed for initial avatar (avatar w/o presence)\n\n*This color retains the same color in the dark/light theme."
+              }
+            }
+          },
+          "border": {
+            "fixed": {
+              "value": "{color.decorative.pink.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.pink.border.fixed\nCore Token: color.decorative.pink.40\nHEX: #FC97AA\nUsed for outline of chips\n\n*This color retains the same color in the dark/light theme."
+            }
+          }
+        },
+        "illustration": {
+          "default": {
+            "value": "{color.core.white-alpha.100}",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.decorative.illustration.default\nCore Token: color.core.white-alpha.100\nHEX: #FFFFFF 100%\nUsed for default illustrations. \nFor details, see Illustration guideline.\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
+          },
+          "fixed": {
+            "positive": {
+              "value": "linear-gradient(180deg, {color.core.green.40} 0%, {color.decorative.lime.40} 100%)",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.illustration.positive\nCore Token: linear-gradient(180deg, {color.core.green.40} 0%, {color.decorative.lime.40} 100%)\nHEX: #3CC29A, #93C437\nUsed for success-related illustrations. \nFor details, see Illustration guideline."
+            },
+            "negative": {
+              "value": "linear-gradient(180deg, {color.decorative.pink.50} 0%, {color.core.red.60} 100%)",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.illustration.negative\nCore Token: \nlinear-gradient(180deg, {color.decorative.pink.50} 0%, {color.core.red.60} 100%)\nHEX: #F0677E, #DB1F2E\nUsed for error-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1"
+            },
+            "onboarding": {
+              "0": {
+                "value": "linear-gradient(180deg, {color.core.yellow.30} 0%, {color.decorative.lime.40} 100%)",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.decorative.illustration.onboarding.0\nCore Token: linear-gradient(180deg, {color.core.yellow.30} 0%, {color.decorative.lime.40} 100%)\n\n*This color retains the same color in the dark/light theme."
+              },
+              "1": {
+                "value": "linear-gradient(180deg, {color.core.red.50} 0%, {color.decorative.violet.60} 100%)",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.decorative.illustration.onboarding.1\nCore Token: linear-gradient(180deg, {color.core.red.50} 0%, {color.decorative.violet.60} 100%)\n\n*This color retains the same color in the dark/light theme."
+              },
+              "2": {
+                "value": "linear-gradient(180deg, {color.core.yellow.30} 0%, {color.core.orange.50} 100%)",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.decorative.illustration.onboarding.2\nCore Token: linear-gradient(180deg, {color.core.yellow.30} 0%, {color.core.orange.50} 100%)\nHEX: FFBE4F, F26B1D\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1\n\n*This color retains the same color in the dark/light theme."
+              },
+              "3": {
+                "value": "linear-gradient(180deg, {color.decorative.lime.40} 0%, {color.decorative.cobalt.50} 100%)",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.decorative.illustration.onboarding.3\nCore Token: linear-gradient(180deg, {color.decorative.lime.40} 0%, {color.decorative.cobalt.50} 100%)\nHEX: 93C437, 279BE8\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1\n\n\n*This color retains the same color in the dark/light theme."
+              },
+              "4": {
+                "value": "linear-gradient(180deg, {color.decorative.cobalt.50} 0%, {color.decorative.violet.60} 100%)",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.decorative.illustration.onboarding.4\nCore Token: decorative.cobalt.50, \ndecorative.violet.60\nHEX: 279BE8, 875AE0\nUsed for onboarding-related illustrations. \nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1\n\n*This color retains the same color in the dark/light theme."
+              }
+            },
+            "empty": {
+              "0": {
+                "value": "linear-gradient(180deg, {color.decorative.cobalt.50} 0%, {color.decorative.violet.60} 100%)",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.decorative.illustration.empty.0\nCore Token: linear-gradient(180deg, {color.decorative.cobalt.50} 0%, {color.decorative.violet.60} 100%)\nHEX: #279BE8, #875AE0\nUsed for empty state.\nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1\n\n*This color retains the same color in the dark/light theme."
+              },
+              "1": {
+                "value": "linear-gradient(180deg, {color.decorative.lime.40} 0%, {color.decorative.cobalt.50} 100%)",
+                "type": "color",
+                "description": "[Dark Theme]\nTheme Token: color.theme.decorative.illustration.empty.1\nCore Token: linear-gradient(180deg, {color.decorative.lime.40} 0%, {color.decorative.cobalt.50} 100%)\nHEX: linear-gradient(180deg, #93c437 0%, #279be8 100%)\nUsed for empty state.\nFor details, see Illustration Guidelines\nhttps://www.figma.com/file/0CSTGFBEXaRfXclKNlVdnF/Illustration-Guidelines?node-id=0%3A1\n\n*This color retains the same color in the dark/light theme."
+              }
+            }
+          }
+        }
+      },
+      "miscellaneous": {
+        "mobile": {
+          "device-ring": {
+            "value": "linear-gradient(44deg, {color.decorative.cobalt.70} 0%, {color.decorative.cyan.40} 51.56%, {color.core.green.50} 100%)",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.decorative.miscellaneous.mobile.device-ring\nCore Token: linear-gradient(44deg, {color.decorative.cobalt.70} 0%, {color.decorative.cyan.40} 51.56%, {color.core.green.50} 100%)\nHEX: 08599C, 22C7D6, 27A17A\nUsed for gradient ring of video-halo for mobile.\n\n*This color retains the same in dark/light theme"
+          }
+        },
+        "macOS": {
+          "red": {
+            "default": {
+              "value": "{color.core.red.60}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.miscellaneous.macOS.red.default\nCore Token: color.core.red.60\nHEX: #DB1F2E\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
+            },
+            "pressed": {
+              "value": "{color.core.red.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.miscellaneous.macOS.red.pressed\nCore Token: color.core.red.80\nHEX: #780D13\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
+            },
+            "icon": {
+              "value": "{color.core.red.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.miscellaneous.macOS.red.icon\nCore Token: color.core.red.40\nHEX: fc8b98\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
+            }
+          },
+          "mint": {
+            "default": {
+              "value": "{color.decorative.mint.60}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.miscellaneous.macOS.mint.default\nCore Token: color.decorative.mint.60\nHEX: #148579\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
+            },
+            "pressed": {
+              "value": "{color.decorative.mint.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.miscellaneous.macOS.mint.pressed\nCore Token: color.decorative.mint.80\nHEX: #12423F\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
+            }
+          },
+          "purple": {
+            "default": {
+              "value": "{color.decorative.purple.60}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.miscellaneous.macOS.purple.default\nCore Token: color.decorative.purple.60\nHEX: #C233C4\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
+            },
+            "pressed": {
+              "value": "{color.decorative.purple.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.miscellaneous.macOS.purple.pressed\nCore Token: color.decorative.purple.80\nHEX: #601E66\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
+            }
+          },
+          "violet": {
+            "default": {
+              "value": "{color.decorative.violet.60}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.miscellaneous.macOS.violet.default\nCore Token: color.decorative.violet.60\nHEX: #875AE0\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
+            },
+            "pressed": {
+              "value": "{color.decorative.violet.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.miscellaneous.macOS.violet.pressed\nCore Token: color.decorative.violet.80\nHEX: #432C78\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
+            }
+          },
+          "orange": {
+            "default": {
+              "value": "{color.core.orange.60}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.miscellaneous.macOS.orange.default\nCore Token: color.core.orange.60\nHEX: #C94403\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
+            },
+            "pressed": {
+              "value": "{color.core.orange.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.miscellaneous.macOS.orange.pressed\nCore Token: color.core.orange.80\nHEX: 59311E\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
+            }
+          },
+          "green": {
+            "default": {
+              "value": "{color.core.green.60}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.miscellaneous.macOS.green.default\nCore Token: color.core.green.60\nHEX: #1D805F\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
+            },
+            "pressed": {
+              "value": "{color.core.green.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.miscellaneous.macOS.green.pressed\nCore Token: color.core.green.80\nHEX: #134231\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
+            },
+            "icon": {
+              "value": "{color.core.green.50}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.miscellaneous.macOS.green.icon\nCore Token: color.core.green.50\nHEX: #27A17A\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
+            }
+          },
+          "blue": {
+            "default": {
+              "value": "{color.core.blue.60}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.miscellaneous.macOS.blue.default\nCore Token: color.core.blue.60\nHEX: 1170CF \nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
+            },
+            "pressed": {
+              "value": "{color.core.blue.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.miscellaneous.macOS.blue.pressed\nCore Token: color.core.blue.80\nHEX: #063A75 \nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
+            },
+            "icon": {
+              "value": "{color.core.blue.40}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.miscellaneous.macOS.blue.icon\nCore Token: color.core.blue.40\nHEX: #64B4FA\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
+            }
+          },
+          "pink": {
+            "default": {
+              "value": "{color.decorative.pink.60}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.miscellaneous.macOS.pink.default\nCore Token: color.decorative.pink.60\nHEX: #D43B52\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
+            },
+            "pressed": {
+              "value": "{color.decorative.pink.80}",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.decorative.miscellaneous.macOS.pink.pressed\nCore Token: color.decorative.pink.60\nHEX: #66262D\nUsed for Mac OS Touchbar component: \nhttps://www.figma.com/file/H19CutixoN8SJGO5EXwcc8/Components---MacOS?node-id=15993%3A144494&t=8NO4r5L0RtC8QMfG-1"
+            }
+          }
+        },
+        "partner": {
+          "pdf": {
+            "value": "{color.partner.doc}",
+            "type": "color",
+            "description": "Theme Token: color.theme.miscellaneous.partner.pdf\nCore Token: color.partner.doc\nUsed for content card component. (pdf)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
+          },
+          "word": {
+            "value": "{color.partner.word}",
+            "type": "color",
+            "description": "Theme Token: color.theme.miscellaneous.partner.word\nCore Token: color.partner.word\nUsed for content card component. (word)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
+          },
+          "powerpoint": {
+            "value": "{color.partner.powerpoint}",
+            "type": "color",
+            "description": "Theme Token: color.theme.miscellaneous.partner.powerpoint\nCore Token: color.partner.powerpoint\nUsed for content card component. (powerpoint)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
+          },
+          "excel": {
+            "value": "{color.partner.excel}",
+            "type": "color",
+            "description": "Theme Token: color.theme.miscellaneous.partner.excel\nCore Token: color.partner.excel\nUsed for content card component. (excel)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
+          },
+          "onenote": {
+            "value": "{color.partner.onenote}",
+            "type": "color",
+            "description": "Theme Token: color.theme.miscellaneous.partner.onenote\nCore Token: color.partner.onenote\nUsed for content card component. (onenote)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
+          },
+          "doc": {
+            "value": "{color.partner.doc}",
+            "type": "color",
+            "description": "Theme Token: color.theme.miscellaneous.partner.doc\nCore Token: color.partner.doc\nUsed for content card component. (doc)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
+          },
+          "sheets": {
+            "value": "{color.partner.sheets}",
+            "type": "color",
+            "description": "Theme Token: ccolor.theme.miscellaneous.partner.sheets\nCore Token: color.partner.sheets\nUsed for content card component. (sheets)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
+          },
+          "slides": {
+            "value": "{color.partner.slides}",
+            "type": "color",
+            "description": "Theme Token: color.theme.miscellaneous.partner.slides\nCore Token: color.partner.slides\nUsed for content card component. (slides)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
+          },
+          "keynotes": {
+            "value": "{color.partner.keynote}",
+            "type": "color",
+            "description": "Theme Token: color.theme.miscellaneous.partner.keynote\nCore Token: color.partner.keynote\nUsed for content card component. (keynote)\nhttps://www.figma.com/file/NaNrfXjygZtRgMfHAFHjsp/Components---Windows?node-id=49651%3A115511&t=5ZjkoShaAOGEbskg-1"
+          }
+        }
+      },
+      "promotion": {
+        "button": {
+          "fixed": {
+            "default": {
+              "value": "linear-gradient(46deg, {color.decorative.purple.70} -0.03%, {color.decorative.pink.70} 99.99%)",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.promotion.button.fixed.default\nCore Token: color.core.decorative.purple.70, color.core.decorative.pink.70\nHEX:  linear-gradient(46deg, #932099 -0.03%, #A12A3A 99.99%);\nUsed for default button background of Promotional Buttons\n\n*This color retains the same color in the dark/light theme."
+            },
+            "hover": {
+              "value": "linear-gradient(46deg, {color.decorative.purple.80} -0.04%, {color.decorative.pink.80} 99.97%)",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.promotion.button.fixed.hover\nCore Token: color.core.decorative.purple.80, color.core.decorative.pink.80\nHEX: linear-gradient(46deg, #601E66 -0.04%, #66262D 99.97%);\nUsed for hover button background of Promotional Buttons\n\n*This color retains the same color in the dark/light theme."
+            },
+            "active": {
+              "value": "linear-gradient(46deg, {color.decorative.purple.90} -0.05%, {color.decorative.pink.90} 99.96%)",
+              "type": "color",
+              "description": "[Dark Theme]\nTheme Token: color.theme.promotion.button.fixed.active\nCore Token: color.core.decorative.purple.90, color.core.decorative.pink.90\nHEX:  linear-gradient(46deg, #3B1840 -0.05%, #3B1E21 99.96%);\nUsed for active button background of Promotional Buttons\n\n*This color retains the same color in the dark/light theme."
+            }
+          }
+        },
+        "border": {
+          "default": {
+            "value": "linear-gradient(46deg, {color.decorative.purple.60} -0.03%, {color.decorative.pink.60} 99.99%)",
+            "type": "color",
+            "description": "[Dark Theme]\nTheme Token: color.theme.promotion.border.default\nCore Token: color.core.decorative.purple.60, color.core.decorative.pink.60\nHEX:  linear-gradient(46deg, #C233C4 -0.03%, #D43B52 99.99%);\nUsed for outline border of Promotional Buttons"
+          }
+        }
+      }
+    }
+  }
+}

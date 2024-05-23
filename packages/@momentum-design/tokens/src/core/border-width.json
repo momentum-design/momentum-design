@@ -1,0 +1,26 @@
+{
+  "border-width": {
+    "core": {
+      "none": {
+        "value": "0px",
+        "type": "borderWidth",
+        "description": "Border Width None"
+      },
+      "small": {
+        "value": "1px",
+        "type": "borderWidth",
+        "description": "Small border; standard border size used in product."
+      },
+      "medium": {
+        "value": "2px",
+        "type": "borderWidth",
+        "description": "Medium border; not currently used in product."
+      },
+      "large": {
+        "value": "3px",
+        "type": "borderWidth",
+        "description": "Large border; not currently used in product."
+      }
+    }
+  }
+}
