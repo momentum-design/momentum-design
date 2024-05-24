@@ -1,18 +1,20 @@
 /** @jsxImportSource preact */
 import illustrationsManifest from '@momentum-design/illustrations/dist/manifest.json';
 import { useCallback, useMemo, useState } from 'preact/hooks';
+import { IllustrationSize } from './constants';
 import './IllustrationTable.css';
 
+type IllustrationSizeType = keyof typeof IllustrationSize;
 type Props = {
   illustrations: object;
   size: string;
 };
 
 const getSize = (key: string) => {
-  if (key.includes('320')) return 320;
-  if (key.includes('192')) return 192;
-  if (key.includes('120')) return 120;
-  if (key.includes('60')) return 60;
+  if (key.includes(IllustrationSize[320])) return 320;
+  if (key.includes(IllustrationSize[192])) return 192;
+  if (key.includes(IllustrationSize[120])) return 120;
+  if (key.includes(IllustrationSize[60])) return 60;
   return 320;
 };
 
@@ -43,7 +45,7 @@ export const IllustrationTable = ({ illustrations, size }: Props) => {
         })}
       </div>
     ),
-    [illustrations],
+    [illustrations, size],
   );
 
   return render;
@@ -79,7 +81,8 @@ export const Pagination = () => {
 
   const paginatedItems = useMemo(
     () => Object.entries(illustrationsManifest)
-      .filter(([key]) => (query ? key.includes(query) && key.includes(size) : key.includes(size)))
+      // eslint-disable-next-line max-len
+      .filter(([key]) => (query ? key.includes(query) && key.includes(IllustrationSize[size as IllustrationSizeType]) : key.includes(IllustrationSize[size as IllustrationSizeType])))
       .slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
       .reduce(
         (output, [key, value]) => ({
