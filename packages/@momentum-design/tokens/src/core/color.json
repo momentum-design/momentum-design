@@ -136,17 +136,9 @@
           "description": "Hex Code: #000000\nAlpha: 40%"
         },
         "46": {
-          "value": "#000000",
+          "value": "#00000075",
           "type": "color",
-          "$extensions": {
-            "studio.tokens": {
-              "modify": {
-                "type": "alpha",
-                "value": "0.46",
-                "space": "lch"
-              }
-            }
-          },
+          "$extensions": {},
           "description": "Hex Code: #000000\nAlpha: 46%"
         },
         "50": {
