@@ -105,13 +105,14 @@
           "description": "Hex Code: #000000\nAlpha: 0%"
         },
         "4": {
-          "value": "#000000A",
+          "value": "#0000000A",
           "type": "color",
           "description": "Hex Code: #000000\nAlpha: 4%"
         },
         "7": {
-          "value": "#0000012",
+          "value": "#00000012",
           "type": "color",
+          "$extensions": {},
           "description": "Hex Code: #000000\nAlpha: 7%"
         },
         "11": {

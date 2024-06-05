@@ -901,8 +901,7 @@
         "secondary": {
           "normal": {
             "value": "{color.core.white-alpha.0}",
-            "type": "color",
-            "$extensions": {}
+            "type": "color"
           },
           "hover": {
             "value": "{color.core.white-alpha.7}",
