@@ -63,6 +63,28 @@
       ]
     },
     {
+      "destination": "theme/webex/hc-dark-stable",
+      "filters": {
+        "types": ["theme"]
+      },
+      "cssSelector": ".mds-theme-stable-hcDarkWebex",
+      "targets": [
+        "core/*.json",
+        "theme/stable/hc_dark.json"
+      ]
+    },
+    {
+      "destination": "theme/webex/hc-light-stable",
+      "filters": {
+        "types": ["theme"]
+      },
+      "cssSelector": ".mds-theme-stable-hcLightWebex",
+      "targets": [
+        "core/*.json",
+        "theme/stable/hc_light.json"
+      ]
+    },
+    {
       "destination": "theme/aaos/day-complete",
       "filters": {
         "types": ["theme"]
