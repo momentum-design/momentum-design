@@ -126,12 +126,12 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-              "ciscosanstt": {
+              "inter": {
                   "$ref": "#/definitions/ValueType"
               }
           },
           "required": [
-              "ciscosanstt"
+              "inter"
           ],
           "title": "FontFamilies"
       },
@@ -150,30 +150,30 @@
               "type",
               "value"
           ],
-          "title": "Ciscosanstt"
+          "title": "Inter"
       },
       "FontWeights": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
-              "ciscosanstt-0": {
+              "inter-0": {
                   "$ref": "#/definitions/ValueType"
               },
-              "ciscosanstt-1": {
+              "inter-1": {
                   "$ref": "#/definitions/ValueType"
               },
-              "ciscosanstt-2": {
+              "inter-2": {
                   "$ref": "#/definitions/ValueType"
               },
-              "ciscosanstt-3": {
+              "inter-3": {
                   "$ref": "#/definitions/ValueType"
               }
           },
           "required": [
-              "ciscosanstt-0",
-              "ciscosanstt-1",
-              "ciscosanstt-2",
-              "ciscosanstt-3"
+              "inter-0",
+              "inter-1",
+              "inter-2",
+              "inter-3"
           ],
           "title": "FontWeights"
       },
@@ -213,17 +213,17 @@
       "FontFamily": {
           "type": "string",
           "enum": [
-              "{fontFamilies.ciscosanstt}"
+              "{fontFamilies.inter}"
           ],
           "title": "FontFamily"
       },
       "FontWeight": {
           "type": "string",
           "enum": [
-              "{fontWeights.ciscosanstt-2}",
-              "{fontWeights.ciscosanstt-1}",
-              "{fontWeights.ciscosanstt-0}",
-              "{fontWeights.ciscosanstt-3}"
+              "{fontWeights.inter-2}",
+              "{fontWeights.inter-1}",
+              "{fontWeights.inter-0}",
+              "{fontWeights.inter-3}"
           ],
           "title": "FontWeight"
       },
