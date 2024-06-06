@@ -1209,12 +1209,22 @@
             "description": ""
           }
         },
-        "text": {
-          "primary": {
+        "button": {
+          "secondary": {
             "normal": {
-              "value": "{color.core.black-alpha.95}",
+              "value": "{color.core.gray.100}",
               "type": "color",
-              "description": "Theme Token: InvertedTextPrimary-normal\nCore Token: black-alpha-95"
+              "description": "Theme Token: overlay.button.secondary.normal\nCore Token: color.core.gray.100"
+            },
+            "hover": {
+              "value": "{color.core.gray.90}",
+              "type": "color",
+              "description": "Theme Token: overlay.button.secondary.hover\nCore Token: color.core.gray.90"
+            },
+            "pressed": {
+              "value": "{color.core.black-alpha.100}",
+              "type": "color",
+              "description": "Theme Token: overlay.button.secondary.pressed\nCore Token: {color.core.black-alpha.100} "
             }
           }
         }
