@@ -112,6 +112,7 @@
         "7": {
           "value": "#00000012",
           "type": "color",
+          "$extensions": {},
           "description": "Hex Code: #000000\nAlpha: 7%"
         },
         "11": {
@@ -137,6 +138,7 @@
         "46": {
           "value": "#00000075",
           "type": "color",
+          "$extensions": {},
           "description": "Hex Code: #000000\nAlpha: 46%"
         },
         "50": {
