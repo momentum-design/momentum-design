@@ -19,10 +19,6 @@
     "theme/stable/dark",
     "theme/stable/light",
     "theme/stable/hc_dark",
-    "theme/stable/hc_light",
-    "dark/dark",
-    "Core/Core",
-    "Product Theme/Dark",
-    "Product Theme/Light"
+    "theme/stable/hc_light"
   ]
 }
