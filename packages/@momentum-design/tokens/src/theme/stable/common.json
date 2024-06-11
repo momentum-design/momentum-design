@@ -405,12 +405,12 @@
             }
           }
         },
-        "doc": {
-          "value": "{color.partner.doc}",
-          "type": "color",
-          "description": "Core:{color.partner.doc} \nHEX: #4285f4"
-        },
         "content": {
+          "doc": {
+            "value": "{color.partner.doc}",
+            "type": "color",
+            "description": "Core:{color.partner.doc} \nHEX: #4285f4"
+          },
           "excel": {
             "value": "{color.partner.excel}",
             "type": "color",
