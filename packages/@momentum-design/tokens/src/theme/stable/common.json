@@ -406,52 +406,50 @@
           }
         },
         "content": {
-          "partner": {
-            "doc": {
-              "value": "{color.partner.doc}",
-              "type": "color",
-              "description": "Core:{color.partner.doc} \nHEX: #4285f4"
-            },
-            "excel": {
-              "value": "{color.partner.excel}",
-              "type": "color",
-              "description": "Core:{color.partner.excel} \nHEX: #00893E\n"
-            },
-            "keynote": {
-              "value": "{color.partner.keynote}",
-              "type": "color",
-              "description": "Core:{color.partner.keynote} \nHEX: #029CFB"
-            },
-            "onenote": {
-              "value": "{color.partner.onenote}",
-              "type": "color",
-              "description": "Core:{color.partner.onenote} \nHEX: #B839DB"
-            },
-            "pdf": {
-              "value": "{color.partner.pdf}",
-              "type": "color",
-              "description": "Core:{color.partner.pdf} \nHEX: #EE0507"
-            },
-            "powerpoint": {
-              "value": "{color.partner.powerpoint}",
-              "type": "color",
-              "description": "Core:{color.partner.powerpoint} \nHEX: #D93E17"
-            },
-            "sheets": {
-              "value": "{color.partner.sheets}",
-              "type": "color",
-              "description": "Core:{color.partner.sheets} \nHEX: #F4B400"
-            },
-            "slides": {
-              "value": "{color.partner.slides}",
-              "type": "color",
-              "description": "Core:{color.partner.slides} \nHEX: #0F9D58"
-            },
-            "word": {
-              "value": "{color.partner.word}",
-              "type": "color",
-              "description": "Core:{color.partner.word} \nHEX: #0078D6"
-            }
+          "doc": {
+            "value": "{color.partner.doc}",
+            "type": "color",
+            "description": "Core:{color.partner.doc} \nHEX: #4285f4"
+          },
+          "excel": {
+            "value": "{color.partner.excel}",
+            "type": "color",
+            "description": "Core:{color.partner.excel} \nHEX: #00893E\n"
+          },
+          "keynote": {
+            "value": "{color.partner.keynote}",
+            "type": "color",
+            "description": "Core:{color.partner.keynote} \nHEX: #029CFB"
+          },
+          "onenote": {
+            "value": "{color.partner.onenote}",
+            "type": "color",
+            "description": "Core:{color.partner.onenote} \nHEX: #B839DB"
+          },
+          "pdf": {
+            "value": "{color.partner.pdf}",
+            "type": "color",
+            "description": "Core:{color.partner.pdf} \nHEX: #EE0507"
+          },
+          "powerpoint": {
+            "value": "{color.partner.powerpoint}",
+            "type": "color",
+            "description": "Core:{color.partner.powerpoint} \nHEX: #D93E17"
+          },
+          "sheets": {
+            "value": "{color.partner.sheets}",
+            "type": "color",
+            "description": "Core:{color.partner.sheets} \nHEX: #F4B400"
+          },
+          "slides": {
+            "value": "{color.partner.slides}",
+            "type": "color",
+            "description": "Core:{color.partner.slides} \nHEX: #0F9D58"
+          },
+          "word": {
+            "value": "{color.partner.word}",
+            "type": "color",
+            "description": "Core:{color.partner.word} \nHEX: #0078D6"
           }
         }
       }
