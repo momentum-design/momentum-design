@@ -874,13 +874,6 @@
         }
       },
       "button": {
-        "border": {
-          "normal": {
-            "value": "none",
-            "type": "color",
-            "description": ""
-          }
-        },
         "primary": {
           "normal": {
             "value": "{color.core.black-alpha.95}",
@@ -1017,6 +1010,10 @@
             "value": "{color.core.black-alpha.46}",
             "type": "color",
             "description": "Theme Token: OutlinePrimary-normal\nCore Token: black-alpha-46"
+          },
+          "disabled": {
+            "value": "{color.core.black-alpha.20}",
+            "type": "color"
           }
         },
         "theme": {
@@ -1062,13 +1059,6 @@
         "cancel": {
           "normal": {
             "value": "{color.core.red.70}",
-            "type": "color",
-            "description": ""
-          }
-        },
-        "disabled": {
-          "normal": {
-            "value": "{color.core.black-alpha.20}",
             "type": "color",
             "description": ""
           }
