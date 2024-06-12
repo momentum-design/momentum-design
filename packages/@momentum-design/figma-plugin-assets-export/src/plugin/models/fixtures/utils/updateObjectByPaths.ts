@@ -1,4 +1,7 @@
 const updateObjectByPath = (targetObject: any, path: string, value: any) => {
+  if (path.split('.').length === 0) {
+    return;
+  }
   const pathSegments = path.split('.');
   let current = targetObject;
   for (let i = 0; i < pathSegments.length - 1; i += 1) {
@@ -9,6 +12,9 @@ const updateObjectByPath = (targetObject: any, path: string, value: any) => {
     current = current[segment];
   }
   const finalSegment = pathSegments[pathSegments.length - 1];
+  if (!(finalSegment in current)) {
+    return;
+  }
   current[finalSegment] = value;
 };
 

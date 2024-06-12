@@ -228,6 +228,7 @@ export const componentNodeMock = {
     name: 'display',
   },
   exportAsync: jest.fn(),
+  findAllWithCriteria: jest.fn(),
 };
 
 export const componentNodeColorCheckMock = {
