@@ -1,0 +1,2338 @@
+{
+  "color": {
+    "theme": {
+      "text": {
+        "primary": {
+          "normal": {
+            "value": "{color.core.black-alpha.95}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "disabled": {
+            "value": "{color.core.black-alpha.40}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "secondary": {
+          "normal": {
+            "value": "{color.core.black-alpha.70}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "error": {
+          "normal": {
+            "value": "{color.core.red.70}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "hover": {
+            "value": "{color.core.red.90}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "active": {
+            "value": "{color.core.red.90}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "success": {
+          "normal": {
+            "value": "{color.core.green.70}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "hover": {
+            "value": "{color.core.green.90}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "active": {
+            "value": "{color.core.green.90}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "warning": {
+          "normal": {
+            "value": "{color.core.yellow.70}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "hover": {
+            "value": "{color.core.yellow.90}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "active": {
+            "value": "{color.core.yellow.90}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "highlight": {
+          "value": "{color.core.blue.20}",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": ""
+        },
+        "accent": {
+          "normal": {
+            "value": "{color.core.blue.70}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "hover": {
+            "value": "{color.core.blue.90}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "active": {
+            "value": "{color.core.blue.90}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "teamdefault": {
+          "normal": {
+            "value": "{color.core.black-alpha.70}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "hover": {
+            "value": "{color.core.black-alpha.70}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "active": {
+            "value": "{color.core.black-alpha.95}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "alert": {
+          "purple": {
+            "normal": {
+              "value": "{color.decorative.purple.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.decorative.purple.90}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.decorative.purple.90}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "orange": {
+            "normal": {
+              "value": "{color.core.orange.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.core.orange.90}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.core.orange.90}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          }
+        },
+        "team": {
+          "cobalt": {
+            "normal": {
+              "value": "{color.decorative.cobalt.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.decorative.cobalt.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.decorative.cobalt.90}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "cyan": {
+            "normal": {
+              "value": "{color.decorative.cyan.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.decorative.cyan.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.decorative.cyan.90}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "mint": {
+            "normal": {
+              "value": "{color.decorative.mint.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.decorative.mint.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.decorative.mint.90}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "lime": {
+            "normal": {
+              "value": "{color.decorative.lime.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.decorative.lime.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.decorative.lime.90}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "gold": {
+            "normal": {
+              "value": "{color.decorative.gold.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.decorative.gold.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.decorative.gold.90}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "orange": {
+            "normal": {
+              "value": "{color.core.orange.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.core.orange.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.core.orange.90}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "pink": {
+            "normal": {
+              "value": "{color.decorative.pink.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.decorative.pink.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.decorative.pink.90}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "purple": {
+            "normal": {
+              "value": "{color.decorative.purple.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.decorative.purple.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.decorative.purple.90}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "violet": {
+            "normal": {
+              "value": "{color.decorative.violet.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.decorative.violet.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.decorative.violet.90}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "slate": {
+            "normal": {
+              "value": "{color.decorative.slate.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.decorative.slate.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.decorative.slate.90}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          }
+        }
+      },
+      "inverted": {
+        "text": {
+          "primary": {
+            "normal": {
+              "value": "{color.core.white-alpha.95}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "disabled": {
+              "value": "{color.core.white-alpha.40}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "normal": {
+              "value": "{color.core.white-alpha.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "accent": {
+            "normal": {
+              "value": "{color.core.blue.40}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.core.blue.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          }
+        },
+        "background": {
+          "normal": {
+            "value": "{color.core.black-alpha.100}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "button": {
+          "primary": {
+            "normal": {
+              "value": "{color.core.white-alpha.95}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.core.white-alpha.80}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "pressed": {
+              "value": "{color.core.white-alpha.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "disabled": {
+              "value": "{color.core.white-alpha.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "normal": {
+              "value": "{color.core.white-alpha.0}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.core.white-alpha.7}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "pressed": {
+              "value": "{color.core.white-alpha.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "disabled": {
+              "value": "{color.core.white-alpha.0}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          }
+        },
+        "outline": {
+          "button": {
+            "normal": {
+              "value": "{color.core.white-alpha.50}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "primary": {
+            "normal": {
+              "value": "{color.core.white-alpha.40}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "disabled": {
+            "normal": {
+              "value": "{color.core.white-alpha.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          }
+        },
+        "control": {
+          "active": {
+            "normal": {
+              "value": "{color.core.blue.40}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.core.blue.50}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "pressed": {
+              "value": "{color.core.blue.80}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.core.blue.80}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "disabled": {
+              "value": "{color.core.white-alpha.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "inactive": {
+            "normal": {
+              "value": "{color.core.gray.50}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.core.white-alpha.30}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "pressed": {
+              "value": "{color.core.white-alpha.40}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "disabled": {
+              "value": "{color.core.white-alpha.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": "Core: {color.core.black-alpha.20} \nHEX: #000000 20%"
+            }
+          }
+        }
+      },
+      "background": {
+        "primary": {
+          "ghost": {
+            "value": "{color.core.black-alpha.0}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "hover": {
+            "value": "{color.core.black-alpha.7}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": "Core Token: color.core.white-alpha.7\nHEX: #FFFFFF 7%"
+          },
+          "active": {
+            "value": "{color.core.black-alpha.11}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "disabled": {
+            "value": "{color.core.black-alpha.11}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "solid": {
+          "primary": {
+            "normal": {
+              "value": "{color.core.white-alpha.100}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "normal": {
+              "value": "{color.core.gray.5}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "tertiary": {
+            "normal": {
+              "value": "{color.core.gray.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "quaternary": {
+            "normal": {
+              "value": "{color.core.white-alpha.100}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          }
+        },
+        "secondary": {
+          "normal": {
+            "value": "{color.core.black-alpha.11}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "hover": {
+            "value": "{color.core.black-alpha.20}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "active": {
+            "value": "{color.core.black-alpha.30}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "disabled": {
+            "value": "{color.core.black-alpha.0}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "accent": {
+          "normal": {
+            "value": "{color.core.blue.60}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "alert": {
+          "default": {
+            "normal": {
+              "value": "{color.core.gray.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.core.gray.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.core.gray.30}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "success": {
+            "normal": {
+              "value": "{color.core.green.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.core.green.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.core.green.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "warning": {
+            "normal": {
+              "value": "{color.core.yellow.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.core.yellow.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.core.yellow.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "error": {
+            "normal": {
+              "value": "{color.core.red.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.core.red.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.core.red.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "theme": {
+            "normal": {
+              "value": "{color.core.blue.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.core.blue.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.core.blue.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "purple": {
+            "normal": {
+              "value": "{color.decorative.purple.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.decorative.purple.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.decorative.purple.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "orange": {
+            "normal": {
+              "value": "{color.core.orange.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.core.orange.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.core.orange.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          }
+        },
+        "label": {
+          "cobalt": {
+            "normal": {
+              "value": "{color.decorative.cobalt.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.decorative.cobalt.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.decorative.cobalt.30}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "gold": {
+            "normal": {
+              "value": "{color.decorative.gold.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.decorative.gold.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.decorative.gold.30}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "lime": {
+            "normal": {
+              "value": "{color.decorative.lime.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.decorative.lime.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.decorative.lime.30}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "mint": {
+            "normal": {
+              "value": "{color.decorative.mint.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.decorative.mint.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.decorative.mint.30}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "orange": {
+            "normal": {
+              "value": "{color.core.orange.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.core.orange.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.core.orange.30}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "pink": {
+            "normal": {
+              "value": "{color.decorative.pink.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.decorative.pink.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.decorative.pink.30}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "purple": {
+            "normal": {
+              "value": "{color.decorative.purple.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.decorative.purple.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.decorative.purple.30}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "slate": {
+            "normal": {
+              "value": "{color.decorative.slate.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.decorative.slate.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.decorative.slate.30}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "violet": {
+            "normal": {
+              "value": "{color.decorative.violet.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.decorative.violet.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "value": "{color.decorative.violet.30}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          }
+        },
+        "common": {
+          "normal": {
+            "value": "{color.core.black-alpha.100}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "namelabel": {
+          "normal": {
+            "value": "{color.core.white-alpha.50}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        }
+      },
+      "button": {
+        "primary": {
+          "normal": {
+            "value": "{color.core.black-alpha.95}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "hover": {
+            "value": "{color.core.black-alpha.80}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "pressed": {
+            "value": "{color.core.black-alpha.70}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "disabled": {
+            "value": "{color.core.black-alpha.20}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "secondary": {
+          "normal": {
+            "value": "{color.core.black-alpha.0}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "hover": {
+            "value": "{color.core.black-alpha.7}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "pressed": {
+            "value": "{color.core.black-alpha.20}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "disabled": {
+            "value": "{color.core.black-alpha.0}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "active": {
+            "normal": {
+              "value": "{color.core.black-alpha.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.core.black-alpha.30}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "pressed": {
+              "value": "{color.core.black-alpha.40}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          }
+        },
+        "join": {
+          "normal": {
+            "value": "{color.core.green.60}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "hover": {
+            "value": "{color.core.green.70}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "pressed": {
+            "value": "{color.core.green.80}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "cancel": {
+          "normal": {
+            "value": "{color.core.red.60}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "hover": {
+            "value": "{color.core.red.70}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "pressed": {
+            "value": "{color.core.red.80}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "accent": {
+          "normal": {
+            "value": "{color.core.blue.60}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "hover": {
+            "value": "{color.core.blue.70}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "pressed": {
+            "value": "{color.core.blue.80}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        }
+      },
+      "outline": {
+        "primary": {
+          "normal": {
+            "value": "{color.core.black-alpha.46}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": "Theme Token: OutlinePrimary-normal\nCore Token: white-alpha-40"
+          }
+        },
+        "theme": {
+          "normal": {
+            "value": "{color.core.blue.60}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "secondary": {
+          "normal": {
+            "value": "{color.core.black-alpha.20}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "input": {
+          "normal": {
+            "value": "{color.core.black-alpha.50}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "active": {
+            "value": "{color.core.black-alpha.90}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "button": {
+          "normal": {
+            "value": "{color.core.black-alpha.50}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": "Theme Token: OutlineButton-normal\nCore Token: white-alpha-50"
+          }
+        },
+        "join": {
+          "normal": {
+            "value": "{color.core.green.50}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "cancel": {
+          "normal": {
+            "value": "{color.core.red.70}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "disabled": {
+          "normal": {
+            "value": "{color.core.black-alpha.20}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "share": {
+          "selected": {
+            "value": "{color.core.green.50}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "active": {
+            "value": "{color.core.orange.50}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "inactive": {
+            "value": "{color.core.gray.50}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "overlay": {
+          "normal": {
+            "value": "{color.core.gray.60}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "high-contrast": {
+          "focus": {
+            "value": "{color.core.black-alpha.100}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "label": {
+          "cobalt": {
+            "value": "{color.decorative.cobalt.40}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "gold": {
+            "value": "{color.decorative.gold.40}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "lime": {
+            "value": "{color.decorative.lime.40}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "mint": {
+            "value": "{color.decorative.mint.40}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "orange": {
+            "value": "{color.core.orange.40}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "pink": {
+            "value": "{color.decorative.pink.40}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "purple": {
+            "value": "{color.decorative.purple.40}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "slate": {
+            "value": "{color.decorative.slate.40}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "violet": {
+            "value": "{color.decorative.violet.40}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        }
+      },
+      "control": {
+        "active": {
+          "normal": {
+            "value": "{color.core.blue.60}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "hover": {
+            "value": "{color.core.blue.70}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "pressed": {
+            "value": "{color.core.blue.80}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "active": {
+            "value": "{color.core.blue.80}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "disabled": {
+            "value": "{color.core.black-alpha.20}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "indicator": {
+          "inactive": {
+            "normal": {
+              "value": "{color.core.gray.50}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": "Core Token: {color.core.gray.50}\nHEX: #8f8f8f\nUsed for progress indicator"
+            }
+          }
+        },
+        "inactive": {
+          "normal": {
+            "value": "{color.core.black-alpha.0}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "hover": {
+            "value": "{color.core.black-alpha.30}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "pressed": {
+            "value": "{color.core.black-alpha.40}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "disabled": {
+            "value": "{color.core.black-alpha.20}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": "Core: {color.core.white-alpha.20} \nHEX: #ffffff 20%"
+          }
+        }
+      },
+      "overlay": {
+        "meetings": {
+          "normal": {
+            "value": "{color.core.white-alpha.80}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "button": {
+          "secondary": {
+            "normal": {
+              "value": "{color.core.white-alpha.100}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": "Theme Token: overlay.button.secondary.normal\nCore Token: color.core.gray.100"
+            },
+            "hover": {
+              "value": "{color.core.gray.10}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": "Theme Token: overlay.button.secondary.hover\nCore Token: color.core.gray.90"
+            },
+            "pressed": {
+              "value": "{color.core.gray.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": "Theme Token: overlay.button.secondary.pressed\nCore Token: {color.core.black-alpha.100}"
+            }
+          }
+        }
+      },
+      "indicator": {
+        "unstable": {
+          "value": "{color.core.orange.60}",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": ""
+        },
+        "attention": {
+          "value": "{color.core.red.60}",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": ""
+        },
+        "stable": {
+          "value": "{color.core.green.60}",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": ""
+        },
+        "locked": {
+          "value": "{color.core.gray.60}",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": ""
+        },
+        "caution": {
+          "value": "{color.core.yellow.60}",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": ""
+        },
+        "secure": {
+          "value": "{color.core.blue.60}",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": ""
+        }
+      },
+      "whiteboard": {
+        "stickyNote": {
+          "yellow": {
+            "value": "{color.core.yellow.30}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "red": {
+            "value": "{color.core.red.40}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "purple": {
+            "value": "{color.decorative.purple.40}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "cyan": {
+            "value": "{color.decorative.cyan.40}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "mint": {
+            "value": "{color.decorative.mint.40}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        }
+      },
+      "scrollbar": {
+        "button": {
+          "normal": {
+            "value": "{color.core.black-alpha.46}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": "Theme Token: ScrollbarButton-normal\nCoreToken: white-alpha-40"
+          },
+          "hover": {
+            "value": "{color.core.black-alpha.50}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": "Theme Token: ScrollbarButton-hover\nCoreToken: white-alpha-50"
+          },
+          "pressed": {
+            "value": "{color.core.black-alpha.60}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": "Theme Token: ScrollbarButton-pressed\nCoreToken: white-alpha-60"
+          }
+        },
+        "arrow": {
+          "normal": {
+            "value": "{color.core.black-alpha.60}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "background": {
+            "normal": {
+              "value": "{color.core.black-alpha.0}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.core.black-alpha.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": "Theme Token: ScrollbarArrowBackground-hover\nCoreToken: white-alpha-20"
+            },
+            "pressed": {
+              "value": "{color.core.black-alpha.30}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": "Theme Token: ScrollbarArrowBackground-press\nCoreToken: white-alpha-30"
+            }
+          }
+        },
+        "background": {
+          "secondary": {
+            "ghost": {
+              "value": "{color.core.black-alpha.0}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "normal": {
+              "value": "{color.core.black-alpha.11}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          }
+        }
+      },
+      "illustrations": {
+        "empty": {
+          "primary": {
+            "0": {
+              "value": "{color.decorative.lime.40}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "1": {
+              "value": "{color.decorative.cobalt.50}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "0": {
+              "value": "{color.decorative.cobalt.50}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "1": {
+              "value": "{color.decorative.violet.60}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          }
+        },
+        "onboarding": {
+          "primary": {
+            "0": {
+              "value": "{color.core.yellow.30}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "1": {
+              "value": "{color.decorative.lime.40}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "0": {
+              "value": "{color.core.red.50}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "1": {
+              "value": "{color.decorative.violet.60}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "tertiary": {
+            "0": {
+              "value": "{color.core.yellow.30}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "1": {
+              "value": "{color.core.orange.50}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "quartenary": {
+            "0": {
+              "value": "{color.decorative.olive.40}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "1": {
+              "value": "{color.decorative.cobalt.50}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "quinary": {
+            "0": {
+              "value": "{color.decorative.cobalt.50}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "1": {
+              "value": "{color.decorative.violet.60}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          }
+        },
+        "success": {
+          "0": {
+            "value": "{color.core.green.40}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "1": {
+            "value": "{color.decorative.lime.40}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "error": {
+          "0": {
+            "value": "{color.decorative.pink.50}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "1": {
+            "value": "{color.core.red.60}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "default": {
+          "value": "{color.core.black-alpha.100}",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": ""
+        }
+      },
+      "globaltint": {
+        "normal": {
+          "value": "{color.core.blue.60}",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": ""
+        },
+        "selected": {
+          "value": "{color.core.blue.60}",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": ""
+        }
+      },
+      "groupedbackground": {
+        "primary": {
+          "normal": {
+            "value": "{color.core.gray.5}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "secondary": {
+          "normal": {
+            "value": "{color.core.white-alpha.100}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "tertiary": {
+          "normal": {
+            "value": "{color.core.gray.5}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "quaternary": {
+          "normal": {
+            "value": "{color.core.white-alpha.100}",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        }
+      },
+      "gradientdivider": {
+        "normal": {
+          "0": {
+            "value": "#ffffff00",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "1": {
+            "value": "#ffffff33",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "hover": {
+          "0": {
+            "value": "#ffffff00",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          },
+          "1": {
+            "value": "#ffffff99",
+            "type": "color",
+            "parent": "Theme/Light",
+            "description": ""
+          }
+        },
+        "error": {
+          "normal": {
+            "0": {
+              "value": "#fc8b9800",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "1": {
+              "value": "#fc8b9899",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "hover": {
+            "0": {
+              "value": "#fc8b9800",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "1": {
+              "value": "#fc8b98e6",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          }
+        },
+        "warning": {
+          "normal": {
+            "0": {
+              "value": "#f2990a00",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "1": {
+              "value": "#f2990a99",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "hover": {
+            "0": {
+              "value": "#f2990a00",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "1": {
+              "value": "#f2990ae6",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          }
+        },
+        "announce": {
+          "normal": {
+            "0": {
+              "value": "#64b4fa00",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "1": {
+              "value": "#64b4fae6",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "hover": {
+            "0": {
+              "value": "#64b4fa00",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "1": {
+              "value": "#64b4fae6",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          }
+        }
+      },
+      "avatar": {
+        "default": {
+          "value": "{color.core.gray.70}",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": ""
+        },
+        "cobalt": {
+          "value": "{color.decorative.cobalt.70}",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": ""
+        },
+        "cyan": {
+          "value": "{color.decorative.cyan.70}",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": ""
+        },
+        "gold": {
+          "value": "{color.decorative.gold.70}",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": ""
+        },
+        "lime": {
+          "value": "{color.decorative.lime.70}",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": ""
+        },
+        "mint": {
+          "value": "{color.decorative.mint.70}",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": ""
+        },
+        "orange": {
+          "value": "{color.core.orange.70}",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": ""
+        },
+        "pink": {
+          "value": "{color.decorative.pink.70}",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": ""
+        },
+        "purple": {
+          "value": "{color.decorative.purple.70}",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": ""
+        },
+        "slate": {
+          "value": "{color.decorative.slate.70}",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": ""
+        },
+        "violet": {
+          "value": "{color.decorative.violet.70}",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": ""
+        },
+        "yellow": {
+          "value": "{color.core.yellow.70}",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": ""
+        }
+      },
+      "common": {
+        "text": {
+          "primary": {
+            "normal": {
+              "value": "{color.core.white-alpha.95}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "disabled": {
+              "value": "{color.core.white-alpha.40}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "normal": {
+              "value": "{color.core.white-alpha.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "success": {
+            "normal": {
+              "value": "{color.core.green.40}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.core.green.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "error": {
+            "normal": {
+              "value": "{color.core.red.40}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.core.red.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "warning": {
+            "normal": {
+              "value": "{color.core.yellow.40}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.core.yellow.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          }
+        },
+        "inverted": {
+          "text": {
+            "primary": {
+              "normal": {
+                "value": "{color.core.black-alpha.95}",
+                "type": "color",
+                "parent": "Theme/Light",
+                "description": ""
+              }
+            }
+          }
+        },
+        "overlays": {
+          "primary": {
+            "normal": {
+              "value": "{color.core.black-alpha.90}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "normal": {
+              "value": "{color.core.black-alpha.40}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "meeting": {
+            "normal": {
+              "0": {
+                "value": "{color.core.black-alpha.0}",
+                "type": "color",
+                "parent": "Theme/Light",
+                "description": ""
+              },
+              "1": {
+                "value": "{color.core.black-alpha.30}",
+                "type": "color",
+                "parent": "Theme/Light",
+                "description": ""
+              },
+              "2": {
+                "value": "{color.core.white-alpha.80}",
+                "type": "color",
+                "parent": "Theme/Light",
+                "description": ""
+              }
+            }
+          }
+        },
+        "button": {
+          "primary": {
+            "normal": {
+              "value": "{color.core.white-alpha.95}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.core.white-alpha.80}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "pressed": {
+              "value": "{color.core.white-alpha.70}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "disabled": {
+              "value": "{color.core.white-alpha.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "normal": {
+              "value": "{color.core.white-alpha.0}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "hover": {
+              "value": "{color.core.white-alpha.7}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "active": {
+              "normal": {
+                "value": "{color.core.white-alpha.70}",
+                "type": "color",
+                "parent": "Theme/Light",
+                "description": ""
+              },
+              "hover": {
+                "value": "{color.core.white-alpha.30}",
+                "type": "color",
+                "parent": "Theme/Light",
+                "description": ""
+              },
+              "pressed": {
+                "value": "{color.core.white-alpha.40}",
+                "type": "color",
+                "parent": "Theme/Light",
+                "description": ""
+              },
+              "disabled": {
+                "value": "{color.core.white-alpha.11}",
+                "type": "color",
+                "parent": "Theme/Light",
+                "description": ""
+              }
+            },
+            "disabled": {
+              "value": "{color.core.white-alpha.0}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "promotion": {
+            "normal": {
+              "0": {
+                "value": "{color.decorative.purple.70}",
+                "type": "color",
+                "parent": "Theme/Light",
+                "description": ""
+              },
+              "1": {
+                "value": "{color.decorative.pink.70}",
+                "type": "color",
+                "parent": "Theme/Light",
+                "description": ""
+              }
+            },
+            "hover": {
+              "0": {
+                "value": "{color.decorative.purple.80}",
+                "type": "color",
+                "parent": "Theme/Light",
+                "description": ""
+              },
+              "1": {
+                "value": "{color.decorative.pink.80}",
+                "type": "color",
+                "parent": "Theme/Light",
+                "description": ""
+              }
+            },
+            "active": {
+              "0": {
+                "value": "{color.decorative.purple.80}",
+                "type": "color",
+                "parent": "Theme/Light",
+                "description": ""
+              },
+              "1": {
+                "value": "{color.decorative.pink.90}",
+                "type": "color",
+                "parent": "Theme/Light",
+                "description": ""
+              }
+            }
+          }
+        },
+        "outline": {
+          "button": {
+            "normal": {
+              "value": "{color.core.white-alpha.30}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "primary": {
+            "normal": {
+              "value": "{color.core.white-alpha.40}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            },
+            "disabled": {
+              "value": "{color.core.white-alpha.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          },
+          "input": {
+            "normal": {
+              "value": "{color.core.white-alpha.50}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          }
+        },
+        "control": {
+          "share": {
+            "content": {
+              "selected": {
+                "value": "{color.core.green.40}",
+                "type": "color",
+                "parent": "Theme/Light",
+                "description": ""
+              },
+              "active": {
+                "value": "{color.core.orange.60}",
+                "type": "color",
+                "parent": "Theme/Light",
+                "description": ""
+              },
+              "inactive": {
+                "value": "{color.core.gray.60}",
+                "type": "color",
+                "parent": "Theme/Light",
+                "description": ""
+              }
+            }
+          },
+          "inactive": {
+            "normal": {
+              "value": "{color.core.black-alpha.20}",
+              "type": "color",
+              "parent": "Theme/Light",
+              "description": ""
+            }
+          }
+        },
+        "background": {
+          "alert": {
+            "share": {
+              "normal": {
+                "value": "{color.core.orange.60}",
+                "type": "color",
+                "parent": "Theme/Light",
+                "description": ""
+              }
+            }
+          }
+        }
+      }
+    },
+    "highcontrast": {
+      "black": {
+        "SystemColorWindowTextColor": {
+          "value": "#ffffff",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": "Text main color"
+        },
+        "SystemColorHotlightColor": {
+          "value": "#ffff00",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": "SystemColorHighlightColor. Used for Hyperlink + Actionable Text/Icons"
+        },
+        "SystemColorGrayTextColor": {
+          "value": "#3ff23f",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": "SystemColorGrayTextColor. Used for disabled state"
+        },
+        "SystemColorHighlightTextColor": {
+          "value": "#000000",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": "SystemColorHighlightTextColor. Used for Inverted text color for active/highlighted items"
+        },
+        "SystemColorHighlightColor": {
+          "value": "#1aebff",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": "SystemColorHighlightColor. Used for Highlight/Hover/Press/Active/Enabled"
+        },
+        "SystemColorButtonTextColor": {
+          "value": "#ffffff",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": "SystemColorButtonTextColor"
+        },
+        "SystemColorButtonFaceColor": {
+          "value": "#000000",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": "SystemColorButtonFaceColor. Used for button background"
+        },
+        "SystemColorWindowColor": {
+          "value": "#000000",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": "SystemColorWindowColor. Used for Primary BG"
+        }
+      },
+      "white": {
+        "SystemColorWindowTextColor": {
+          "value": "#000000",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": "Text main color"
+        },
+        "SystemColorHotlightColor": {
+          "value": "#00009f",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": "SystemColorHighlightColor. Used for Hyperlink + Actionable Text/Icons"
+        },
+        "SystemColorGrayTextColor": {
+          "value": "#600000",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": "SystemColorGrayTextColor. Used for disabled state"
+        },
+        "SystemColorHighlightTextColor": {
+          "value": "#ffffff",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": "SystemColorHighlightTextColor. Used for Inverted text color for active/highlighted items"
+        },
+        "SystemColorHighlightColor": {
+          "value": "#37006e",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": "SystemColorHighlightColor. Used for Highlight/Hover/Press/Active/Enabled"
+        },
+        "SystemColorButtonTextColor": {
+          "value": "#000000",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": "SystemColorButtonTextColor"
+        },
+        "SystemColorButtonFaceColor": {
+          "value": "#ffffff",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": "SystemColorButtonFaceColor. Used for button background"
+        },
+        "SystemColorWindowColor": {
+          "value": "#ffffff",
+          "type": "color",
+          "parent": "Theme/Light",
+          "description": "SystemColorWindowColor. Used for Primary BG"
+        }
+      }
+    }
+  }
+}
