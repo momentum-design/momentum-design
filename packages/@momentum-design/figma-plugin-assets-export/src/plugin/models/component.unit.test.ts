@@ -78,7 +78,10 @@ describe('@momentum-design/figma-plugin-assets-export - models.Component', () =>
       try {
         await component.asset;
       } catch (err) {
-        expect(figmaNotifySpy).toHaveBeenCalled();
+        expect(figmaNotifySpy).toHaveBeenCalledWith(
+          'Component: display-sf-rtl-bold-state-twofour-blue.svg / Error: exportAsync failure',
+          { error: true },
+        );
         expect(err).toEqual('exportAsync failure');
       }
     });
