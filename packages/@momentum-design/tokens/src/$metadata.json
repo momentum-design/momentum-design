@@ -1,5 +1,11 @@
 {
   "tokenSetOrder": [
-    "core/color"
+    "theme/stable/dark",
+    "theme/stable/light",
+    "theme/dark",
+    "theme/light",
+    "theme/aaos/night",
+    "theme/aaos/day",
+    "core/core"
   ]
 }
