@@ -100,7 +100,7 @@ class Component {
           });
         })
         .catch((err) => {
-          figma.notify(err, { error: true });
+          figma.notify(`Component: ${this.assetName} / Error: ${err}`, { error: true });
           reject(err);
         });
     });
