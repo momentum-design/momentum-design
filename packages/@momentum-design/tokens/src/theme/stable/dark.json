@@ -1390,8 +1390,6 @@
         },
         "button": {
           "secondary": {
-        "button": {
-          "secondary": {
             "normal": {
               "parent": "theme/stable/dark",
               "type": "color",
