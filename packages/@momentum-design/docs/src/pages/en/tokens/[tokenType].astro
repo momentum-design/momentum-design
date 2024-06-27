@@ -15,5 +15,7 @@ const { tokenType } = Astro.params as { tokenType: TokenType };
   <a href={`/momentum-design/en/tokens/#${tokenType}`}>
     <h3>Back</h3>
   </a>
+
+  <p style={{ paddingBottom: '16px' }}><b>File:</b> core/complete.json</p>
   <TokenTable tokens={tokens[tokenType]} tokenType={tokenType}/>
 </MainLayout>
