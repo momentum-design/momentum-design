@@ -1,0 +1,2072 @@
+{
+  "color": {
+    "core": {
+      "white-alpha": {
+        "0": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffff00",
+          "description": "Hex Code: #ffffff\nAlpha: 0%"
+        },
+        "5": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffff0d",
+          "description": "Hex Code: #ffffff\nAlpha: 5%"
+        },
+        "7": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffff12",
+          "description": "Hex Code: #ffffff\nAlpha: 7%"
+        },
+        "11": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffff1c",
+          "description": "Hex Code: #ffffff\nAlpha: 11%"
+        },
+        "20": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffff33",
+          "description": "Hex Code: #ffffff\nAlpha: 20%"
+        },
+        "24": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffff3d",
+          "description": "HEX Code: #ffffff 24%\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "30": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffff4d",
+          "description": "Hex Code: #ffffff\nAlpha: 30%"
+        },
+        "40": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffff66",
+          "description": "Hex Code: #ffffff\nAlpha: 40%"
+        },
+        "46": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffff75",
+          "description": "HEX Code: #ffffff 46%\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "50": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffff80",
+          "description": "Hex Code: #ffffff\nAlpha: 50%"
+        },
+        "56": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffff8f",
+          "description": "HEX Code: #ffffff 56%\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "60": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffff99",
+          "description": "Hex Code: #ffffff\nAlpha: 60%"
+        },
+        "70": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffffb3",
+          "description": "Hex Code: #ffffff\nAlpha: 70%"
+        },
+        "72": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffffb8",
+          "description": "HEX Code: #ffffff 72%\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "80": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffffcc",
+          "description": "Hex Code: #ffffff\nAlpha: 80%"
+        },
+        "88": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffffe0",
+          "description": "HEX Code: #ffffff 88%\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "90": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffffe6",
+          "description": "Hex Code: #ffffff\nAlpha: 90%"
+        },
+        "95": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#fffffff2",
+          "description": "Hex Code: #ffffff\nAlpha: 95%"
+        },
+        "100": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffff",
+          "description": "Hex Code: #ffffff\nAlpha: 100%"
+        }
+      },
+      "black-alpha": {
+        "0": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#00000000",
+          "description": "Hex Code: #000000\nAlpha: 0%"
+        },
+        "4": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#0000000a",
+          "description": "Hex Code: #000000\nAlpha: 4%"
+        },
+        "7": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#00000012",
+          "description": "Hex Code: #000000\nAlpha: 7%"
+        },
+        "11": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#0000001c",
+          "description": "Hex Code: #000000\nAlpha: 11%"
+        },
+        "20": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#00000033",
+          "description": "Hex Code: #000000\nAlpha: 20%"
+        },
+        "30": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#0000004d",
+          "description": "Hex Code: #000000\nAlpha: 30%"
+        },
+        "40": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#00000066",
+          "description": "Hex Code: #000000\nAlpha: 40%"
+        },
+        "46": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#00000075",
+          "description": "Hex Code: #000000\nAlpha: 46%"
+        },
+        "50": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#00000080",
+          "description": "Hex Code: #000000\nAlpha: 50%"
+        },
+        "60": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#00000099",
+          "description": "Hex Code: #000000\nAlpha: 60%"
+        },
+        "70": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#000000b3",
+          "description": "Hex Code: #000000\nAlpha: 70%"
+        },
+        "78": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#000000c7",
+          "description": "HEX Code: #000000 78%\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "80": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#000000cc",
+          "description": "Hex Code: #000000\nAlpha: 80%"
+        },
+        "84": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#000000d6",
+          "description": "HEX Code: #000000 84%\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "88": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#000000e0",
+          "description": "HEX Code: #000000 88%\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "90": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#000000e6",
+          "description": "Hex Code: #000000\nAlpha: 90%"
+        },
+        "95": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#000000f2",
+          "description": "Hex Code: #000000\nAlpha: 95%"
+        },
+        "100": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#000000",
+          "description": "Hex Code: #000000\nAlpha: 100%"
+        }
+      },
+      "gray": {
+        "5": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#f7f7f7",
+          "description": "Hex Code: #f7f7f7"
+        },
+        "10": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ededed",
+          "description": "Hex Code: #ededed"
+        },
+        "20": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#dedede",
+          "description": "Hex Code: #dedede"
+        },
+        "30": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#c9c9c9",
+          "description": "Hex Code: #c9c9c9"
+        },
+        "40": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#adadad",
+          "description": "Hex Code: #adadad"
+        },
+        "50": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#8f8f8f",
+          "description": "Hex Code: #8f8f8f"
+        },
+        "55": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#80868b",
+          "description": "HEX Code: #80868B\nAndroid:600\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "60": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#707070",
+          "description": "Hex Code: #707070"
+        },
+        "70": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#545454",
+          "description": "Hex Code: #545454"
+        },
+        "71": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#5f6368",
+          "description": "HEX Code: #5F6368\nAndrod: 700\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "75": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#3c4043",
+          "description": "HEX Code: #3C4043\nAndroid: 800\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "80": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#3b3b3b",
+          "description": "Hex Code: #3b3b3b"
+        },
+        "85": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#2e3134",
+          "description": "HEX Code: #2E3134\nAndroid: 846\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "86": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#282a2d",
+          "description": "HEX Code: #282A2D\nAndroid: 868\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "90": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#262626",
+          "description": "Hex Code: #262626"
+        },
+        "91": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#202124",
+          "description": "HEX Code: #202124\nAndroid: 900\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "93": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#17181b",
+          "description": "HEX Code: #17181B\nAndroid: 928\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "95": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#1a1a1a",
+          "description": "Hex Code: #1a1a1a"
+        },
+        "96": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#0e1013",
+          "description": "HEX Code: #0E1013\nAndroid: 958\nUsed for AAOS (Android Auto Operating System) only."
+        },
+        "100": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#0f0f0f",
+          "description": "Hex Code: #0f0f0f"
+        },
+        "110": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#000000",
+          "description": "HEX Code: #000000\nUsed for AAOS (Android Auto Operating System) only."
+        }
+      },
+      "blue": {
+        "5": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#edf8ff",
+          "description": "Hex Code: #edf8ff"
+        },
+        "10": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#dbf0ff",
+          "description": "Hex Code: #dbf0ff"
+        },
+        "20": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#bfe3ff",
+          "description": "Hex Code: #dfe3ff"
+        },
+        "30": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#96d0ff",
+          "description": "Hex Code: #96d0ff"
+        },
+        "40": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#64b4fa",
+          "description": "Hex Code: #64b4fa"
+        },
+        "50": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#3492eb",
+          "description": "Hex Code: #3492eb"
+        },
+        "60": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#1170cf",
+          "description": "Hex Code: #1170cf"
+        },
+        "70": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#0353a8",
+          "description": "Hex Code: #0353a8"
+        },
+        "80": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#063a75",
+          "description": "Hex Code: #063a75"
+        },
+        "90": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#0a274a",
+          "description": "Hex Code: #0a274a"
+        },
+        "95": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#091a30",
+          "description": "Hex Code: #091a30"
+        },
+        "100": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#07101c",
+          "description": "Hex Code: #07101c"
+        }
+      },
+      "green": {
+        "5": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#edf7f5",
+          "description": "Hex Code: #edf7f5"
+        },
+        "10": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#cef5eb",
+          "description": "Hex Code: #cef5eb"
+        },
+        "20": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#9fedd8",
+          "description": "Hex Code: #9fedd8"
+        },
+        "30": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#68debd",
+          "description": "Hex Code: #68debd"
+        },
+        "40": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#3cc29a",
+          "description": "Hex Code: #3cc29a"
+        },
+        "50": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#27a17a",
+          "description": "Hex Code: #27a17a"
+        },
+        "60": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#1d805f",
+          "description": "Hex Code: #1d805f"
+        },
+        "70": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#185e46",
+          "description": "Hex Code: #185e46"
+        },
+        "80": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#134231",
+          "description": "Hex Code: #134231"
+        },
+        "90": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#0e2b20",
+          "description": "Hex Code: #0e2b20"
+        },
+        "95": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#0a1c15",
+          "description": "Hex Code: #0a1c15"
+        },
+        "100": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#07120d",
+          "description": "Hex Code: #07120d"
+        }
+      },
+      "red": {
+        "5": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#fff5f6",
+          "description": "Hex Code: #fff5f6"
+        },
+        "10": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffe8ea",
+          "description": "Hex Code: #ffe8ea"
+        },
+        "20": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffd4da",
+          "description": "Hex Code: #ffd4da"
+        },
+        "30": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffb8c1",
+          "description": "Hex Code: #ffb8c1"
+        },
+        "40": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#fc8b98",
+          "description": "Hex Code: #fc8b98"
+        },
+        "50": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#f55868",
+          "description": "Hex Code: #f55868"
+        },
+        "60": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#db1f2e",
+          "description": "Hex Code: #db1f2e"
+        },
+        "70": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ab0a15",
+          "description": "Hex Code: #ab0a15"
+        },
+        "80": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#780d13",
+          "description": "Hex Code: #780d13"
+        },
+        "90": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#4f0e10",
+          "description": "Hex Code: #4f0e10"
+        },
+        "95": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#330d0e",
+          "description": "Hex Code: #330d0e"
+        },
+        "100": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#1f0a0a",
+          "description": "Hex Code: #1f0a0a"
+        }
+      },
+      "yellow": {
+        "5": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#fff6e3",
+          "description": "Hex Code: #fff6e3"
+        },
+        "10": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffebc2",
+          "description": "Hex Code: #ffebc2"
+        },
+        "20": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffda94",
+          "description": "Hex Code: #ffda94"
+        },
+        "30": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffbe4f",
+          "description": "Hex Code: #ffbe4f"
+        },
+        "40": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#f2990a",
+          "description": "Hex Code: #f2990a"
+        },
+        "50": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#cf7900",
+          "description": "Hex Code: #cf7900"
+        },
+        "60": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#a65e00",
+          "description": "Hex Code: #a65e00"
+        },
+        "70": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#7d4705",
+          "description": "Hex Code: #7d4705"
+        },
+        "80": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#57330a",
+          "description": "Hex Code: #57330a"
+        },
+        "90": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#36220c",
+          "description": "Hex Code: #36220c"
+        },
+        "95": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#24180b",
+          "description": "Hex Code: #24180b"
+        },
+        "100": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#140e08",
+          "description": "Hex Code: #140e08"
+        }
+      },
+      "orange": {
+        "5": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#fef3e8",
+          "description": "HEX Code: #FEF3E8"
+        },
+        "10": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#feebd7",
+          "description": "HEX Code: #FEEBD7"
+        },
+        "20": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#fed5ac",
+          "description": "HEX Code: #FED5AC"
+        },
+        "30": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#feba7f",
+          "description": "HEX Code: #FEBA7F"
+        },
+        "40": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#fd884e",
+          "description": "HEX Code: #FD884E"
+        },
+        "50": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ec6400",
+          "description": "HEX Code: #EC6400"
+        },
+        "60": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#c94403",
+          "description": "HEX Code: #C94403"
+        },
+        "70": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#9c3202",
+          "description": "HEX Code: #9C3202"
+        },
+        "80": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#682601",
+          "description": "HEX Code: #682601"
+        },
+        "90": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#411b04",
+          "description": "HEX Code: #411B04"
+        },
+        "95": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#291303",
+          "description": "HEX Code: #291303"
+        },
+        "100": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#170b02",
+          "description": "HEX Code: #170B02"
+        }
+      }
+    },
+    "decorative": {
+      "gold": {
+        "10": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#f7f6dc",
+          "description": "HEX Code: #F7F6DC"
+        },
+        "20": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#f5eaa2",
+          "description": "HEX Code: #F5EAA2"
+        },
+        "30": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ebd460",
+          "description": "HEX Code: #EBD460"
+        },
+        "40": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#d6b220",
+          "description": "HEX Code: #D6B220"
+        },
+        "50": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ba8c00",
+          "description": "HEX Code: #BA8C00"
+        },
+        "60": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#996e00",
+          "description": "HEX Code: #996E00"
+        },
+        "70": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#735107",
+          "description": "HEX Code: #735107"
+        },
+        "80": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#4d370c",
+          "description": "HEX Code: #4D370C"
+        },
+        "90": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#30240d",
+          "description": "HEX Code:#30240D"
+        },
+        "100": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#21190b",
+          "description": "HEX Code:#21190B"
+        }
+      },
+      "olive": {
+        "10": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#f3f5e4",
+          "description": "HEX Code: #F3F5E4"
+        },
+        "20": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#e7edb7",
+          "description": "HEX Code: #E7ED87"
+        },
+        "30": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#d3db7b",
+          "description": "HEX Code: #D3DB7B"
+        },
+        "40": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#b4ba43",
+          "description": "HEX Code: #B4BA43"
+        },
+        "50": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#999923",
+          "description": "HEX Code: #999923"
+        },
+        "60": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#7d7a18",
+          "description": "HEX Code: #7D7A18"
+        },
+        "70": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#5c5813",
+          "description": "HEX Code: #5C5813"
+        },
+        "80": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#403d11",
+          "description": "HEX Code: #403D11"
+        },
+        "90": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#29260d",
+          "description": "HEX Code: #29260D"
+        },
+        "100": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#1c1a0a",
+          "description": "HEX Code: #1C1A0A"
+        }
+      },
+      "lime": {
+        "10": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#f3f7e9",
+          "description": "HEX Code: #F3F7E9"
+        },
+        "20": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ddf2ae",
+          "description": "HEX Code: #DDF2AE"
+        },
+        "30": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#bce36f",
+          "description": "HEX Code: #BCE46F"
+        },
+        "40": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#93c437",
+          "description": "HEX Code: #93C437"
+        },
+        "50": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#73a321",
+          "description": "HEX Code: #73A321"
+        },
+        "60": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#588219",
+          "description": "HEX Code: #588219"
+        },
+        "70": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#416116",
+          "description": "HEX Code: #416116"
+        },
+        "80": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#2d4214",
+          "description": "HEX Code: #2D4214"
+        },
+        "90": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#1e2b10",
+          "description": "HEX Code: #1E2B10"
+        },
+        "100": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#141c0c",
+          "description": "HEX Code: #141C0C"
+        }
+      },
+      "mint": {
+        "10": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#e9f7f3",
+          "description": "HEX Code: #E9F7F3"
+        },
+        "20": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#baf5e7",
+          "description": "HEX Code: # BAF5E7"
+        },
+        "30": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#74e8d1",
+          "description": "HEX Code: #74E8D1"
+        },
+        "40": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#30c9b0",
+          "description": "HEX Code: #30C9B0"
+        },
+        "50": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#16a693",
+          "description": "HEX Code: #16A693"
+        },
+        "60": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#148579",
+          "description": "HEX Code: #148579"
+        },
+        "70": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#12615a",
+          "description": "HEX Code: #12615A"
+        },
+        "80": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#12423f",
+          "description": "HEX Code: #12423F"
+        },
+        "90": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#102b2a",
+          "description": "HEX Code: #102B2A"
+        },
+        "100": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#0c1c1b",
+          "description": "HEX Code: #0C1C1B"
+        }
+      },
+      "cyan": {
+        "10": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#e6f9fa",
+          "description": "HEX Code: #E6F9FA"
+        },
+        "20": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#b2f4f7",
+          "description": "HEX Code: #B2F4F7"
+        },
+        "30": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#67e7f0",
+          "description": "HEX Code: #67E7F0"
+        },
+        "40": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#22c7d6",
+          "description": "HEX Code: #22C7D6"
+        },
+        "50": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#00a3b5",
+          "description": "HEX Code: #00A3B5"
+        },
+        "60": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#008094",
+          "description": "HEX Code: #008094"
+        },
+        "70": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#066070",
+          "description": "HEX Code: #066070"
+        },
+        "80": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#0a414d",
+          "description": "HEX Code: #0A414D"
+        },
+        "90": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#0b2a30",
+          "description": "HEX Code: #0B2A30"
+        },
+        "100": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#091c21",
+          "description": "HEX Code: #091C21"
+        }
+      },
+      "cobalt": {
+        "10": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#e5f8ff",
+          "description": "HEX Code: #E5F8FF"
+        },
+        "20": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#c7eeff",
+          "description": "HEX Code: #C7EEFF"
+        },
+        "30": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#99ddff",
+          "description": "HEX Code: #99DDFF"
+        },
+        "40": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#5ebff7",
+          "description": "HEX Code: #5EBFF7"
+        },
+        "50": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#279be8",
+          "description": "HEX Code: #279BE8"
+        },
+        "60": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#0a78cc",
+          "description": "HEX Code: #0A78CC"
+        },
+        "70": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#08599c",
+          "description": "HEX Code: #08599C"
+        },
+        "80": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#103c63",
+          "description": "HEX Code: #103C63"
+        },
+        "90": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#12283d",
+          "description": "HEX Code: #12283D"
+        },
+        "100": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#0f1a26",
+          "description": "HEX Code: #0F1A26"
+        }
+      },
+      "slate": {
+        "10": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#f2f4ff",
+          "description": "HEX Code: #F2F4FF"
+        },
+        "20": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#e3e7fa",
+          "description": "HEX Code: #E3E7FA"
+        },
+        "30": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ced2ed",
+          "description": "HEX Code: #CED2ED"
+        },
+        "40": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#b0b4d9",
+          "description": "HEX Code: #B0B4D9"
+        },
+        "50": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#8c91bd",
+          "description": "HEX Code: #8C91BD"
+        },
+        "60": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#6f739e",
+          "description": "HEX Code: #6F739E"
+        },
+        "70": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#535573",
+          "description": "HEX Code: #535573"
+        },
+        "80": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#393a47",
+          "description": "HEX Code: #393A47"
+        },
+        "90": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#26262b",
+          "description": "HEX Code: #26262B"
+        },
+        "100": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#1a1a1c",
+          "description": "HEX Code: #1A1A1C"
+        }
+      },
+      "violet": {
+        "10": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#f8f2fc",
+          "description": "HEX Code: #F8F2FC"
+        },
+        "20": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#f0e3fc",
+          "description": "HEX Code: #F0E3FC"
+        },
+        "30": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#e2cafc",
+          "description": "HEX Code: #E2CAFC"
+        },
+        "40": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#c7a5fa",
+          "description": "HEX Code: #C7A5FA"
+        },
+        "50": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#a87ff0",
+          "description": "HEX Code: #A87FF0"
+        },
+        "60": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#875ae0",
+          "description": "HEX Code: #875AE0"
+        },
+        "70": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#643abd",
+          "description": "HEX Code: #643ABD"
+        },
+        "80": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#432c78",
+          "description": "HEX Code: #432C78"
+        },
+        "90": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#29223d",
+          "description": "HEX Code: #29223D"
+        },
+        "100": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#1b1824",
+          "description": "HEX Code: #1B1824"
+        }
+      },
+      "purple": {
+        "10": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#fcf2fc",
+          "description": "HEX Code: #FCF2FC"
+        },
+        "20": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#fce1fc",
+          "description": "HEX Code: #FCE1FC"
+        },
+        "30": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#fac3f8",
+          "description": "HEX Code: #FAC3F8"
+        },
+        "40": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#f294f1",
+          "description": "HEX Code: #F294F1"
+        },
+        "50": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#e060de",
+          "description": "HEX Code: #E060DE"
+        },
+        "60": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#c233c4",
+          "description": "HEX Code: #C233C4"
+        },
+        "70": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#932099",
+          "description": "HEX Code: #932099"
+        },
+        "80": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#601e66",
+          "description": ""
+        },
+        "90": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#3b1840",
+          "description": "3B1840"
+        },
+        "100": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#251329",
+          "description": "HEX Code: #251329"
+        }
+      },
+      "pink": {
+        "10": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#fff2f5",
+          "description": "HEX Code: #FFF2F5"
+        },
+        "20": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffe0e7",
+          "description": "HEX Code: #FFE0E7"
+        },
+        "30": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffc7d2",
+          "description": "HEX Code: #FFC7D2"
+        },
+        "40": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#fc97aa",
+          "description": "HEX Code: #FC97AA"
+        },
+        "50": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#f0677e",
+          "description": "HEX Code: #F0677E"
+        },
+        "60": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#d43b52",
+          "description": "HEX Code: #D43B52"
+        },
+        "70": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#a12a3a",
+          "description": "HEX Code: #A12A3A"
+        },
+        "80": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#66262d",
+          "description": "HEX Code: #66262D"
+        },
+        "90": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#3b1e21",
+          "description": "HEX Code: #3B1E21"
+        },
+        "100": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#241617",
+          "description": "HEX Code: #241617"
+        }
+      }
+    },
+    "mobile": {
+      "default": {
+        "light": {
+          "primary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#f7f7f7",
+            "description": "HEX Code: #F7F7F7"
+          },
+          "secondary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#ffffff",
+            "description": "HEX Code: #FFFFFF"
+          }
+        },
+        "dark": {
+          "primary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#000000",
+            "description": "HEX Code: #000000"
+          },
+          "secondary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#1a1a1a",
+            "description": ""
+          }
+        }
+      },
+      "indigo": {
+        "light": {
+          "primary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#ebeffc",
+            "description": "HEX Code: #EBEFFC"
+          },
+          "secondary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#f7f9ff",
+            "description": "HEX Code: #F7F9FF"
+          }
+        },
+        "dark": {
+          "primary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#0e111a",
+            "description": "HEX Code: #0E111A"
+          },
+          "secondary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#13182b",
+            "description": "HEX Code: #13182B"
+          }
+        }
+      },
+      "jade": {
+        "light": {
+          "primary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#e6f2f1",
+            "description": "HEX Code: #E6F2F1"
+          },
+          "secondary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#f7fcfc",
+            "description": "HEX Code: #F7FCFC"
+          }
+        },
+        "dark": {
+          "primary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#021412",
+            "description": "HEX Code: #021412"
+          },
+          "secondary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#05201c",
+            "description": "HEX Code: #05201C"
+          }
+        }
+      },
+      "bronze": {
+        "light": {
+          "primary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#f5efe4",
+            "description": "HEX Code: #F5EFE4"
+          },
+          "secondary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#fcfaf4",
+            "description": "HEX Code: #FCFAF4"
+          }
+        },
+        "dark": {
+          "primary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#171002",
+            "description": "HEX Code: #171002"
+          },
+          "secondary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#231807",
+            "description": "HEX Code: #231807"
+          }
+        }
+      },
+      "rose": {
+        "light": {
+          "primary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#fcebf5",
+            "description": "HEX Code: #FCEBF5"
+          },
+          "secondary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#fff9fd",
+            "description": "HEX Code: #FFF9FD"
+          }
+        },
+        "dark": {
+          "primary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#1f0615",
+            "description": "HEX Code: #1F0615"
+          },
+          "secondary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#30041e",
+            "description": "HEX Code: #30041E"
+          }
+        }
+      },
+      "lavender": {
+        "light": {
+          "primary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#f4ebff",
+            "description": "HEX Code: #F4EBFF"
+          },
+          "secondary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#fbf7ff",
+            "description": "HEX Code: #FBF7FF"
+          }
+        },
+        "dark": {
+          "primary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#18082b",
+            "description": "HEX Code: #18082B"
+          },
+          "secondary": {
+            "parent": "core/value",
+            "type": "color",
+            "value": "#27163b",
+            "description": "HEX Code: #27163B"
+          }
+        }
+      }
+    },
+    "partner": {
+      "pdf": {
+        "parent": "core/value",
+        "type": "color",
+        "value": "#ee0507",
+        "description": "HEX: EE0507\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "word": {
+        "parent": "core/value",
+        "type": "color",
+        "value": "#0078d6",
+        "description": "HEX: 0078D6\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "powerpoint": {
+        "parent": "core/value",
+        "type": "color",
+        "value": "#d93e17",
+        "description": "HEX:D93E17\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "excel": {
+        "parent": "core/value",
+        "type": "color",
+        "value": "#00893e",
+        "description": "HEX:00893E\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "onenote": {
+        "parent": "core/value",
+        "type": "color",
+        "value": "#b839db",
+        "description": "HEX:B839DB\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "sheets": {
+        "parent": "core/value",
+        "type": "color",
+        "value": "#f4b400",
+        "description": "HEX:F4B400\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "slides": {
+        "parent": "core/value",
+        "type": "color",
+        "value": "#0f9d58",
+        "description": "HEX:0F9D58\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "keynote": {
+        "parent": "core/value",
+        "type": "color",
+        "value": "#029cfb",
+        "description": "HEX:029CFB\n---------------\nUsed for bacakground of attachment for content-list components."
+      },
+      "doc": {
+        "parent": "core/value",
+        "type": "color",
+        "value": "#4285f4",
+        "description": "HEX Value: 4285F4"
+      }
+    },
+    "highcontrast": {
+      "black": {
+        "WindowTextColor": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffff",
+          "description": "Text main color"
+        },
+        "HotlightColor": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffff00",
+          "description": "SystemColorHighlightColor. Used for Hyperlink + Actionable Text/Icons"
+        },
+        "GrayTextColor": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#3ff23f",
+          "description": "SystemColorGrayTextColor. Used for disabled state"
+        },
+        "HighlightTextColor": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#000000",
+          "description": "SystemColorHighlightTextColor. Used for Inverted text color for active/highlighted items"
+        },
+        "HighlightColor": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#1aebff",
+          "description": "SystemColorHighlightColor. Used for Highlight/Hover/Press/Active/Enabled"
+        },
+        "ButtonTextColor": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffff",
+          "description": "SystemColorButtonTextColor"
+        },
+        "ButtonFaceColor": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#000000",
+          "description": "SystemColorButtonFaceColor. Used for button background"
+        },
+        "WindowColor": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#000000",
+          "description": "SystemColorWindowColor. Used for Primary BG"
+        }
+      },
+      "white": {
+        "WindowTextColor": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#000000",
+          "description": "Text main color"
+        },
+        "HotlightColor": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#00009f",
+          "description": "SystemColorHighlightColor. Used for Hyperlink + Actionable Text/Icons"
+        },
+        "GrayTextColor": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#600000",
+          "description": "SystemColorGrayTextColor. Used for disabled state"
+        },
+        "HighlightTextColor": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffff",
+          "description": "SystemColorHighlightTextColor. Used for Inverted text color for active/highlighted items"
+        },
+        "HighlightColor": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#37006e",
+          "description": "SystemColorHighlightColor. Used for Highlight/Hover/Press/Active/Enabled"
+        },
+        "ButtonTextColor": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#000000",
+          "description": "SystemColorButtonTextColor"
+        },
+        "ButtonFaceColor": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffff",
+          "description": "SystemColorButtonFaceColor. Used for button background"
+        },
+        "WindowColor": {
+          "parent": "core/value",
+          "type": "color",
+          "value": "#ffffff",
+          "description": "SystemColorWindowColor. Used for Primary BG"
+        }
+      }
+    },
+    "gradient": {
+      "default": {
+        "light": {
+          "primary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#f0f0f0",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#ffffff",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#fafafa",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#ffffff",
+              "description": ""
+            }
+          }
+        },
+        "dark": {
+          "primary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#1a1a1a",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#0f0f0f",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#262626",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#0f0f0f",
+              "description": ""
+            }
+          }
+        }
+      },
+      "indigo": {
+        "light": {
+          "primary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#f0f0f0",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#ffffff",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#f7f9ff",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#ffffff",
+              "description": ""
+            }
+          }
+        },
+        "dark": {
+          "primary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#13182b",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#0e111a",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#212536",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#0e111a",
+              "description": ""
+            }
+          }
+        }
+      },
+      "jade": {
+        "light": {
+          "primary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#e6f2f1",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#ffffff",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#f7fcfc",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#ffffff",
+              "description": ""
+            }
+          }
+        },
+        "dark": {
+          "primary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#001c18",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#021412",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#122925",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#021412",
+              "description": ""
+            }
+          }
+        }
+      },
+      "bronze": {
+        "light": {
+          "primary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#f5efe4",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#ffffff",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#fcfaf4",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#ffffff",
+              "description": ""
+            }
+          }
+        },
+        "dark": {
+          "primary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#1f1402",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#171002",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#2e2515",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#171002",
+              "description": ""
+            }
+          }
+        }
+      },
+      "rose": {
+        "light": {
+          "primary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#fcebf5",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#ffffff",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#fff9fd",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#ffffff",
+              "description": ""
+            }
+          }
+        },
+        "dark": {
+          "primary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#30041e",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#1f0615",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#40162e",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#1f0615",
+              "description": ""
+            }
+          }
+        }
+      },
+      "lavender": {
+        "light": {
+          "primary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#f4ebff",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#ffffff",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#fbf7ff",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#ffffff",
+              "description": ""
+            }
+          }
+        },
+        "dark": {
+          "primary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#231237",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#18082b",
+              "description": ""
+            }
+          },
+          "secondary": {
+            "0": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#301a4a",
+              "description": ""
+            },
+            "1": {
+              "parent": "core/value",
+              "type": "color",
+              "value": "#18082b",
+              "description": ""
+            }
+          }
+        }
+      }
+    }
+  },
+  "apps": {
+    "parent": "core/value",
+    "type": "text",
+    "value": "Inter",
+    "description": ""
+  }
+}
