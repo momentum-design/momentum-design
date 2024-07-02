@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-undef */
+import { Buffer } from 'buffer';
 import { CONSTANTS } from '../constants';
 import { normaliseObject } from '../utils/object';
 import type { Asset, AssetSetting } from '../../shared/types';
@@ -91,12 +92,18 @@ class Component {
 
   get asset(): Promise<Asset> {
     return new Promise((resolve, reject) => {
+      const exportSettings = this.isNodeContainingImage(this.node)
+        ? this.assetSetting.input.asset.exportSettingsImage
+        : this.assetSetting.input.asset.exportSettings;
       this.node
-        .exportAsync(this.assetSetting.input.asset.exportSettings)
+        .exportAsync(exportSettings)
         .then((uint8Array: Uint8Array) => {
+          const imageSvgData = this.isNodeContainingImage(this.node)
+            ? Buffer.from(uint8Array).toString('base64')
+            : String.fromCharCode.apply(null, uint8Array as any);
           resolve({
             path: `${this.destination ? `${this.destination}/` : ''}${this.assetName}`,
-            data: String.fromCharCode.apply(null, uint8Array as any),
+            data: imageSvgData,
           });
         })
         .catch((err) => {
@@ -104,6 +111,20 @@ class Component {
           reject(err);
         });
     });
+  }
+
+  /**
+   * This function checks if node contains any IMAGE fill
+   *
+   * @returns true, if this.node contains any IMAGE fill, otherwise false
+   */
+  isNodeContainingImage(node: ComponentNode) {
+    const rectangleNodes: Array<RectangleNode> = node.findAllWithCriteria({ types: ['RECTANGLE'] });
+    // if there are any rectangleNodes as children, which do have a fill of type IMAGE, return true
+    return (
+      rectangleNodes.filter((node) => (node.fills as Paint[]).filter((fill) => fill.type === 'IMAGE').length > 0)
+        .length > 0
+    );
   }
 
   /**
