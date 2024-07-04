@@ -109,7 +109,7 @@ export const assetNamePathsCases = [
   {
     path: '',
     value: '',
-    expected: 'display-sf-rtl-bold-state-twofour-blue.svg',
+    expected: 'display-sf-rtl-bold-state-twofour-blue',
   },
   {
     path: 'input.asset.fileName.parts',
@@ -118,77 +118,77 @@ export const assetNamePathsCases = [
       'SF_ALTERNATIVE',
       'RTL',
     ],
-    expected: 'sf-rtl-bold-state-twofour-blue.svg',
+    expected: 'sf-rtl-bold-state-twofour-blue',
   },
   {
     path: 'input.asset.fileName.parts',
     value: ['SF_ALTERNATIVE'],
-    expected: 'sf-bold-state-twofour-blue.svg',
+    expected: 'sf-bold-state-twofour-blue',
   },
   {
     path: 'input.asset.fileName.parts',
     value: [],
-    expected: '-bold-state-twofour-blue.svg',
+    expected: '-bold-state-twofour-blue',
   },
   {
     path: 'input.asset.fileName.separator',
     value: '_',
-    expected: 'display_sf_rtl-bold-state-twofour-blue.svg',
+    expected: 'display_sf_rtl-bold-state-twofour-blue',
   },
   {
     path: 'input.asset.fileName.separator',
     value: '_',
-    expected: 'display_sf_rtl-bold-state-twofour-blue.svg',
+    expected: 'display_sf_rtl-bold-state-twofour-blue',
   },
   {
     path: ['input.asset.fileName.separator', 'input.asset.fileName.suffix.separator'],
     value: ['_', '_'],
-    expected: 'display_sf_rtl_bold_state_twofour_blue.svg',
+    expected: 'display_sf_rtl_bold_state_twofour_blue',
   },
   {
     path: 'input.asset.fileName.suffix.parts',
     value: ['STATE', 'SIZE'],
-    expected: 'display-sf-rtl-state-twofour.svg',
+    expected: 'display-sf-rtl-state-twofour',
   },
   {
     path: 'input.asset.fileName.suffix.parts',
     value: [],
-    expected: 'display-sf-rtl.svg',
+    expected: 'display-sf-rtl',
   },
   {
     path: 'input.asset.fileName.suffix.parts',
     value: ['COLOR'],
-    expected: 'display-sf-rtl-blue.svg',
+    expected: 'display-sf-rtl-blue',
   },
   {
     path: 'input.asset.fileName.suffix.parts',
     value: ['COLOR', 'SIZE'],
-    expected: 'display-sf-rtl-blue-twofour.svg',
+    expected: 'display-sf-rtl-blue-twofour',
   },
   {
     path: 'input.asset.fileName.replaceNumbers',
     value: false,
-    expected: 'display-sf-rtl-bold-state-24-blue.svg',
+    expected: 'display-sf-rtl-bold-state-24-blue',
   },
   {
     path: 'input.asset.fileName.replaceNumbers',
     value: true,
-    expected: 'display-sf-rtl-bold-state-twofour-blue.svg',
+    expected: 'display-sf-rtl-bold-state-twofour-blue',
   },
   {
     path: 'input.asset.fileName.replaceDots',
     value: false,
-    expected: 'display-sf-rtl-bold-state-twofour-bl.ue.svg',
+    expected: 'display-sf-rtl-bold-state-twofour-bl.ue',
   },
   {
     path: 'input.asset.fileName.replaceDots',
     value: true,
-    expected: 'display-sf-rtl-bold-state-twofour-blue.svg',
+    expected: 'display-sf-rtl-bold-state-twofour-blue',
   },
   {
     path: 'input.asset.exportSettings.format',
     value: 'JPG',
-    expected: 'display-sf-rtl-bold-state-twofour-blue.jpg',
+    expected: 'display-sf-rtl-bold-state-twofour-blue',
   },
 ];
 
@@ -228,6 +228,7 @@ export const componentNodeMock = {
     name: 'display',
   },
   exportAsync: jest.fn(),
+  findAllWithCriteria: jest.fn(),
 };
 
 export const componentNodeColorCheckMock = {
