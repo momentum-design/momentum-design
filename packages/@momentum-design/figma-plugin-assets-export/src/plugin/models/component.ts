@@ -52,7 +52,7 @@ class Component {
 
   get assetName() {
     let name = '';
-    const { fileName, exportSettings } = this.assetSetting.input.asset;
+    const { fileName } = this.assetSetting.input.asset;
     const nameParts = fileName.parts.reduce((filtered: Array<string>, part) => {
       const namePart = this.replacementMap[part];
       if (namePart) {
@@ -85,8 +85,6 @@ class Component {
       name = name.replace(/\./g, '');
     }
 
-    name += '.';
-    name += exportSettings.format;
     return name.toLowerCase();
   }
 
@@ -98,12 +96,13 @@ class Component {
       this.node
         .exportAsync(exportSettings)
         .then((uint8Array: Uint8Array) => {
-          const imageSvgData = this.isNodeContainingImage(this.node)
+          const imageData = this.isNodeContainingImage(this.node)
             ? Buffer.from(uint8Array).toString('base64')
-            : String.fromCharCode.apply(null, uint8Array as any);
+            : Buffer.from(uint8Array).toString();
+          const fileExtension = exportSettings.format.toLowerCase();
           resolve({
-            path: `${this.destination ? `${this.destination}/` : ''}${this.assetName}`,
-            data: imageSvgData,
+            path: `${this.destination ? `${this.destination}/` : ''}${this.assetName}.${fileExtension}`,
+            data: imageData,
           });
         })
         .catch((err) => {

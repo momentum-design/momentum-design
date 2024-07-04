@@ -170,6 +170,11 @@
             "format": "SVG",
             "contentsOnly": true,
             "useAbsoluteBounds": false
+          },
+          "exportSettingsImage": {
+            "format": "PNG",
+            "contentsOnly": true,
+            "useAbsoluteBounds": false
           }
         }
       },
