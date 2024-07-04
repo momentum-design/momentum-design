@@ -158,7 +158,7 @@ class Github {
   private calculateChangesChunks(data: AssetChunks): ChangesChunks {
     return data?.map((assets, index) => ({
       files: assets.reduce((accum: { [key: string]: any }, cur: Asset) => {
-        if (cur.path.match(/\.(jpg|jpeg|png|gif)$/i)) {
+        if (cur.path.match(/\.(png)$/i)) {
           accum[[this.config.git.gitRepoFilePath, cur.path].join('/')] = {
             content: cur.data,
             encoding: 'base64',

@@ -90,16 +90,17 @@ class Component {
 
   get asset(): Promise<Asset> {
     return new Promise((resolve, reject) => {
-      const exportSettings = this.isNodeContainingImage(this.node)
-        ? this.assetSetting.input.asset.exportSettingsImage
-        : this.assetSetting.input.asset.exportSettings;
+      const { exportSettings, exportSettingsImage } = this.assetSetting.input.asset;
+      const imageExportSettings = this.isNodeContainingImage(this.node)
+        ? exportSettingsImage
+        : exportSettings;
       this.node
-        .exportAsync(exportSettings)
+        .exportAsync(imageExportSettings)
         .then((uint8Array: Uint8Array) => {
           const imageData = this.isNodeContainingImage(this.node)
             ? Buffer.from(uint8Array).toString('base64')
             : Buffer.from(uint8Array).toString();
-          const fileExtension = exportSettings.format.toLowerCase();
+          const fileExtension = imageExportSettings.format.toLowerCase();
           resolve({
             path: `${this.destination ? `${this.destination}/` : ''}${this.assetName}.${fileExtension}`,
             data: imageData,

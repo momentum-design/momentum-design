@@ -50,7 +50,7 @@ interface ExportSettingsConstraints {
   value: number
 }
 interface ExportSettingsImage {
-  readonly format: 'JPG' | 'PNG';
+  readonly format: 'PNG';
   readonly contentsOnly?: boolean; // defaults to true
   readonly useAbsoluteBounds?: boolean; // defaults to false
   readonly suffix?: string;
