@@ -8,6 +8,10 @@ import {
   componentNodePathsCases,
   assetNamePathsCases,
   componentNodeColorCheckMock,
+  uint8ArraySvgMock,
+  uint8ArrayPngMock,
+  svgMock,
+  pngMock,
 } from './fixtures/component.fixture';
 import { updateObjectByPaths } from './fixtures/utils/updateObjectByPaths';
 
@@ -54,8 +58,8 @@ describe('@momentum-design/figma-plugin-assets-export - models.Component', () =>
     });
   });
   describe('asset', () => {
-    it('check the appropriate result', async () => {
-      componentNodeMock.exportAsync.mockImplementation(() => Promise.resolve(''));
+    it('check the appropriate result with svg image', async () => {
+      componentNodeMock.exportAsync.mockImplementation(() => Promise.resolve(new Uint8Array(uint8ArraySvgMock)));
       componentNodeMock.findAllWithCriteria.mockReturnValue([]);
       component = new Component(
         componentNodeMock as unknown as ComponentNode,
@@ -63,7 +67,23 @@ describe('@momentum-design/figma-plugin-assets-export - models.Component', () =>
         assetSettingMock as AssetSetting,
       );
       const assetData = await component.asset;
-      expect(assetData).toEqual({ path: `${DESTINATION}/display-sf-rtl-bold-state-twofour-blue.svg`, data: '' });
+      expect(assetData).toEqual({ path: `${DESTINATION}/display-sf-rtl-bold-state-twofour-blue.svg`, data: svgMock });
+    });
+
+    it('check the appropriate result with png image', async () => {
+      componentNodeMock.exportAsync.mockImplementation(() => Promise.resolve(new Uint8Array(uint8ArrayPngMock)));
+      componentNodeMock.findAllWithCriteria.mockReturnValue([{
+        fills: [{
+          type: 'IMAGE',
+        }],
+      }]);
+      component = new Component(
+        componentNodeMock as unknown as ComponentNode,
+        DESTINATION,
+        assetSettingMock as AssetSetting,
+      );
+      const assetData = await component.asset;
+      expect(assetData).toEqual({ path: `${DESTINATION}/display-sf-rtl-bold-state-twofour-blue.png`, data: pngMock });
     });
     it('check the failure', async () => {
       const figmaNotifySpy = jest.spyOn(figma, 'notify');
