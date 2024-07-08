@@ -137,6 +137,10 @@
           {
             "page": "✅ Logos",
             "folder": "logos"
+          },
+          {
+            "page": "✅ Images",
+            "folder": "images"
           }
         ],
         "exclude": {
@@ -164,6 +168,11 @@
           },
           "exportSettings": {
             "format": "SVG",
+            "contentsOnly": true,
+            "useAbsoluteBounds": false
+          },
+          "exportSettingsImage": {
+            "format": "PNG",
             "contentsOnly": true,
             "useAbsoluteBounds": false
           }

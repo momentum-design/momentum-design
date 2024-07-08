@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-undef */
+import { Buffer } from 'buffer';
 import { CONSTANTS } from '../constants';
 import { normaliseObject } from '../utils/object';
 import type { Asset, AssetSetting } from '../../shared/types';
@@ -51,7 +52,7 @@ class Component {
 
   get assetName() {
     let name = '';
-    const { fileName, exportSettings } = this.assetSetting.input.asset;
+    const { fileName } = this.assetSetting.input.asset;
     const nameParts = fileName.parts.reduce((filtered: Array<string>, part) => {
       const namePart = this.replacementMap[part];
       if (namePart) {
@@ -84,19 +85,25 @@ class Component {
       name = name.replace(/\./g, '');
     }
 
-    name += '.';
-    name += exportSettings.format;
     return name.toLowerCase();
   }
 
   get asset(): Promise<Asset> {
     return new Promise((resolve, reject) => {
+      const { exportSettings, exportSettingsImage } = this.assetSetting.input.asset;
+      const imageExportSettings = this.isNodeContainingImage(this.node)
+        ? exportSettingsImage
+        : exportSettings;
       this.node
-        .exportAsync(this.assetSetting.input.asset.exportSettings)
+        .exportAsync(imageExportSettings)
         .then((uint8Array: Uint8Array) => {
+          const imageData = this.isNodeContainingImage(this.node)
+            ? Buffer.from(uint8Array).toString('base64')
+            : Buffer.from(uint8Array).toString();
+          const fileExtension = imageExportSettings.format.toLowerCase();
           resolve({
-            path: `${this.destination ? `${this.destination}/` : ''}${this.assetName}`,
-            data: String.fromCharCode.apply(null, uint8Array as any),
+            path: `${this.destination ? `${this.destination}/` : ''}${this.assetName}.${fileExtension}`,
+            data: imageData,
           });
         })
         .catch((err) => {
@@ -104,6 +111,20 @@ class Component {
           reject(err);
         });
     });
+  }
+
+  /**
+   * This function checks if node contains any IMAGE fill
+   *
+   * @returns true, if this.node contains any IMAGE fill, otherwise false
+   */
+  isNodeContainingImage(node: ComponentNode) {
+    const rectangleNodes: Array<RectangleNode> = node.findAllWithCriteria({ types: ['RECTANGLE'] });
+    // if there are any rectangleNodes as children, which do have a fill of type IMAGE, return true
+    return (
+      rectangleNodes.filter((node) => (node.fills as Paint[]).filter((fill) => fill.type === 'IMAGE').length > 0)
+        .length > 0
+    );
   }
 
   /**
