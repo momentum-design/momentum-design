@@ -8,6 +8,7 @@ import TTFTransformer from './ttf-transformer';
 import WOFFTransformer from './woff-transformer';
 import WOFF2Transformer from './woff2-transformer';
 import SwiftTransformer from './swift-transformer';
+import CssTransformer from './css-transformer';
 import SvgGlyphsTransformer from './svg-glyphs-transformer';
 
 type Transformers =
@@ -19,6 +20,7 @@ type Transformers =
   | WOFF2Transformer
   | ManifestTransformer
   | SwiftTransformer
+  | CssTransformer
   | SvgGlyphsTransformer;
 
 /**
@@ -44,6 +46,8 @@ function createTransformer(format: Formats, destination: string): Transformers {
       return new SvgGlyphsTransformer(format, destination);
     case CONSTANTS.FORMATS.SWIFT:
       return new SwiftTransformer(format, destination);
+    case CONSTANTS.FORMATS.CSS:
+      return new CssTransformer(format, destination);
     default:
       return new Transformer(format, destination);
   }
