@@ -2,10 +2,8 @@
 import { AssetSetting } from '../../shared/types';
 import Component from './component';
 import { componentNodeMock } from './fixtures/component.fixture';
-import { assetSettingMock, PageNodeMock, componentNodeMocks } from './fixtures/page.fixture';
+import { assetSettingMock, DESTINATION, PageNodeMock, componentNodeMocks } from './fixtures/page.fixture';
 import Page from './page';
-
-const DESTINATION = 'dist';
 
 describe('@momentum-design/figma-plugin-assets-export - models.Page', () => {
   let page: Page;

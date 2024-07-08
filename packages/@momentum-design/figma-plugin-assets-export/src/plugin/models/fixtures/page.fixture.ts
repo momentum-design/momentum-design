@@ -86,3 +86,5 @@ export const assetSettingMock = {
     },
   },
 };
+
+export const DESTINATION = 'dist';
