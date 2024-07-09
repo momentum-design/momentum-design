@@ -17,9 +17,9 @@ describe('@momentum-design/builder - css Transformer', () => {
       fileName: 'MyFont',
       hbsPath: 'hpath',
       woffPath: 'woffPath',
-      woff2Path: 'woff2Path'
+      woff2Path: 'woff2Path',
     },
-    type: 'CSS'
+    type: 'CSS',
   } as CSSFormat;
   const DIST_PATH = '/dist';
 
@@ -40,16 +40,18 @@ describe('@momentum-design/builder - css Transformer', () => {
     });
   });
 
-  describe('css transformer - transformFilesAsync function', () => {
+  describe('Css transformer - transformFilesAsync function', () => {
     it('should return the correct data from the promise of transformFilesAsync() function', async () => {
       transformer.inputFiles = [{
         srcPath: 'font',
         distPath: 'font',
         data: JSON.stringify(inputFilesData),
       }];
-
       const transformFilesAsyncSpy = jest.spyOn(transformer, 'transformFilesAsync');
-      const transformHbsSpy = jest.spyOn(Utils, 'transformHbs');
+      const templateSpy = jest.fn(({ glyphsData }) => glyphsData);
+      const transformHbsSpy = jest.spyOn(Utils, 'transformHbs').mockReturnValue(
+        new Promise((resolve) => { resolve(templateSpy); }),
+      );
       await transformer.transformFilesAsync();
       expect(transformFilesAsyncSpy).toBeCalledTimes(1);
       expect(transformHbsSpy).toBeCalledTimes(1);

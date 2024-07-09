@@ -1,12 +1,7 @@
 import path from 'path';
-import { promisify } from 'util';
-import { createHash } from 'crypto';
-import fs from 'fs';
 import type { Formats, GlyphIconData } from '../types';
 import { transformHbs } from '../utils';
 import Transformer from './transformer';
-
-const readFile = promisify(fs.readFile);
 
 /**
  * The CssTransformer class.
@@ -32,18 +27,6 @@ class CssTransformer extends Transformer {
     return JSON.parse(GlyphDataBuffer.toString());
   }
 
-  private async calcHash(file: string) {
-    const hash = createHash('md5');
-    const fileContent = await readFile(file, 'utf8');
-    hash.update(fileContent);
-    return hash.digest('hex');
-  }
-
-  private async getFileNameWithHash(filePath: any) {
-    const hash = await this.calcHash(path.resolve(filePath));
-    return `${filePath}?${hash}`;
-  }
-
   /**
    * Generates the css data by using the glyph data and transform
    * it with the help of handlebars templating
@@ -56,9 +39,9 @@ class CssTransformer extends Transformer {
     return {
       data: template({
         glyphsData: Object.values(glyphData),
-        woffUrl: await this.getFileNameWithHash(this.format.config.woffPath),
-        woff2Url: await this.getFileNameWithHash(this.format.config.woff2Path)
-      })
+        woffUrl: this.format.config.woffPath,
+        woff2Url: this.format.config.woff2Path,
+      }),
     };
   }
 
