@@ -45,6 +45,18 @@ interface ExportSettingsSVG {
   readonly svgSimplifyStroke?: boolean; // defaults to true
 }
 
+interface ExportSettingsConstraints {
+  type: 'SCALE' | 'WIDTH' | 'HEIGHT'
+  value: number
+}
+interface ExportSettingsImage {
+  readonly format: 'PNG';
+  readonly contentsOnly?: boolean; // defaults to true
+  readonly useAbsoluteBounds?: boolean; // defaults to false
+  readonly suffix?: string;
+  readonly constraint?:ExportSettingsConstraints // Defaults to 100% of image size { type: "SCALE", value: 1 }.
+}
+
 export type InputSetting = {
   mapPagesToFolder: MapPagesToFolder;
   exclude?: {
@@ -62,6 +74,7 @@ export type InputSetting = {
       replaceDots?: boolean;
     };
     exportSettings: ExportSettingsSVG;
+    exportSettingsImage: ExportSettingsImage;
   };
 };
 

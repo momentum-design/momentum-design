@@ -8,7 +8,8 @@
     "analyze": "yarn analyze:prebuild && yarn analyze:postbuild",
     "analyze:postbuild": "echo \"script 'analyze:postbuild' has not been implemented\"",
     "analyze:prebuild": "echo \"script 'analyze:prebuild' has not been implemented\"",
-    "build": "ncp src dist",
+    "build": "ncp src dist && yarn build:manifest",
+    "build:manifest": "md-builder -- --definition --animations --config ./config/momentum.json",
     "clean": "echo \"script 'clean' has not been implemented\"",
     "docs": "echo \"script 'docs' has not been implemented\"",
     "publish": "yarn publish:npmjs",
@@ -18,6 +19,7 @@
     "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\""
   },
   "devDependencies": {
+    "@momentum-design/builder": "workspace:^",
     "ncp": "^2.0.0"
   }
 }

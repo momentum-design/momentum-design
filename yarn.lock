@@ -2021,6 +2021,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@momentum-design/animations@workspace:packages/@momentum-design/animations"
   dependencies:
+    "@momentum-design/builder": "workspace:^"
     ncp: ^2.0.0
   languageName: unknown
   linkType: soft
