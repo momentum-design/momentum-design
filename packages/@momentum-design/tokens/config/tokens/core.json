@@ -28,17 +28,6 @@
       ]
     },
     {
-      "destination": "theme/webex/common-stable",
-      "filters": {
-        "types": ["theme"]
-      },
-      "cssSelector": ".mds-theme-stable-commonWebex",
-      "targets": [
-        "core/*.json",
-        "theme/stable/common.json"
-      ]
-    },
-    {
       "destination": "theme/webex/dark-stable",
       "filters": {
         "types": ["theme"]
@@ -46,7 +35,6 @@
       "cssSelector": ".mds-theme-stable-darkWebex",
       "targets": [
         "core/*.json",
-        "theme/stable/common.json",
         "theme/stable/dark.json"
       ]
     },
@@ -58,7 +46,6 @@
       "cssSelector": ".mds-theme-stable-lightWebex",
       "targets": [
         "core/*.json",
-        "theme/stable/common.json",
         "theme/stable/light.json"
       ]
     },
@@ -70,7 +57,8 @@
       "cssSelector": ".mds-theme-stable-hcDarkWebex",
       "targets": [
         "core/*.json",
-        "theme/stable/hc_dark.json"
+        "theme/stable/highcontrast/hc_common.json",
+        "theme/stable/highcontrast/hc_dark.json"
       ]
     },
     {
@@ -81,7 +69,8 @@
       "cssSelector": ".mds-theme-stable-hcLightWebex",
       "targets": [
         "core/*.json",
-        "theme/stable/hc_light.json"
+        "theme/stable/highcontrast/hc_common.json",
+        "theme/stable/highcontrast/hc_light.json"
       ]
     },
     {
@@ -92,8 +81,8 @@
       "cssSelector": ".mds-theme-aaos-day",
       "targets": [
         "core/*.json",
-        "theme/aaos/common.json",
-        "theme/aaos/day.json"
+        "aaos/common.json",
+        "aaos/day.json"
       ]
     },
     {
@@ -104,8 +93,8 @@
       "cssSelector": ".mds-theme-aaos-night",
       "targets": [
         "core/*.json",
-        "theme/aaos/common.json",
-        "theme/aaos/night.json"
+        "aaos/common.json",
+        "aaos/night.json"
       ]
     }
   ],

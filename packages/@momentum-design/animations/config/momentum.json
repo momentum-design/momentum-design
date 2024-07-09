@@ -1,0 +1,21 @@
+{
+  "definitions": [
+    {
+      "buildName": "Animations",
+      "flows": [
+        {
+          "id": "Manifest",
+          "target": "./dist/lottie/**/*.*",
+          "destination": "./dist/",
+          "format": {
+            "type": "MANIFEST",
+            "config": {
+              "fileName": "manifest.json"
+            }
+          }
+        }
+      ],
+      "type": "assets"
+    }
+  ]
+}

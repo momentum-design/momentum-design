@@ -40,6 +40,11 @@ const INITIAL_SETTINGS: Settings = {
             contentsOnly: true,
             useAbsoluteBounds: false,
           },
+          exportSettingsImage: {
+            format: 'PNG',
+            contentsOnly: true,
+            useAbsoluteBounds: false,
+          },
         },
       },
       output: {

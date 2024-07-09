@@ -52,6 +52,9 @@ function generateJSXTable(jsonData: any, tokenType: TokenType) {
             </td>}
             <td>{item.path.join('-')}</td>
             <td>
+              <code>--{item.name}</code>
+            </td>
+            <td>
               <code>{item.value}</code>
             </td>
           </tr>
@@ -71,6 +74,7 @@ function generateJSXTable(jsonData: any, tokenType: TokenType) {
                 <tr>
                   {tokenType === TokenType.Color && <th>Sample</th>}
                   <th>Name</th>
+                  <th>CSS Variable</th>
                   <th>Value</th>
                 </tr>
               </thead>
