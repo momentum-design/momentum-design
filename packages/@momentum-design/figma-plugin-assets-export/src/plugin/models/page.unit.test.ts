@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 import { AssetSetting } from '../../shared/types';
 import Component from './component';
-import { componentNodeMock } from './fixtures/component.fixture';
 import { assetSettingMock, DESTINATION, PageNodeMock, componentNodeMocks } from './fixtures/page.fixture';
 import Page from './page';
 
@@ -33,8 +32,6 @@ describe('@momentum-design/figma-plugin-assets-export - models.Page', () => {
         DESTINATION,
         assetSettingMock as AssetSetting,
       );
-      const isNodeContainingImageSpy = jest.spyOn(page, 'isNodeContainingImage');
-      isNodeContainingImageSpy.mockReturnValue(false);
       const excludeComponentsSpy = jest.spyOn(page, 'excludeComponents');
       excludeComponentsSpy.mockReturnValue(componentNodeMocks as unknown as Array<ComponentNode>);
       expect(page.components).toHaveLength(2);
@@ -55,11 +52,8 @@ describe('@momentum-design/figma-plugin-assets-export - models.Page', () => {
         DESTINATION,
         assetSettingMock as AssetSetting,
       );
-      const isNodeContainingImageSpy = jest.spyOn(page, 'isNodeContainingImage');
-      isNodeContainingImageSpy.mockReturnValue(false);
 
       expect(page.components).toHaveLength(1);
-      expect(isNodeContainingImageSpy).toHaveBeenCalled();
       expect(figmaLoadAllPageAsyncSpy).toHaveBeenCalled();
     });
 
@@ -71,52 +65,12 @@ describe('@momentum-design/figma-plugin-assets-export - models.Page', () => {
         DESTINATION,
         assetSettingMock as AssetSetting,
       );
-      const isNodeContainingImageSpy = jest.spyOn(page, 'isNodeContainingImage');
-      isNodeContainingImageSpy.mockImplementation(() => {
-        throw new Error('isNodeContainingImage error');
-      });
       try {
         // eslint-disable-next-line no-unused-expressions
         page.components;
       } catch (err) {
         expect(err).not.toBeNull();
       }
-      expect(isNodeContainingImageSpy).toHaveBeenCalled();
-      expect(figmaLoadAllPageAsyncSpy).toHaveBeenCalled();
-    });
-  });
-
-  describe('isNodeContainingImage', () => {
-    let figmaLoadAllPageAsyncSpy: jest.SpyInstance;
-
-    beforeEach(() => {
-      figmaLoadAllPageAsyncSpy = jest.spyOn(figma, 'loadAllPagesAsync');
-      PageNodeMock.findAllWithCriteria.mockReturnValue(componentNodeMocks);
-      page = new Page(
-        PageNodeMock as unknown as PageNode,
-        DESTINATION,
-        assetSettingMock as AssetSetting,
-      );
-    });
-
-    it('return true if componentNode contains any image', () => {
-      componentNodeMock.findAllWithCriteria.mockImplementation(() => ([
-        { type: 'RECTANGLE', fills: [{ type: 'IMAGE' }] },
-        { type: 'RECTANGLE', fills: [{ type: 'IMAGE' }] },
-      ]));
-      const isNodeContainingImage = page.isNodeContainingImage(componentNodeMock as unknown as ComponentNode);
-
-      expect(isNodeContainingImage).toBe(true);
-      expect(figmaLoadAllPageAsyncSpy).toHaveBeenCalled();
-    });
-    it('return false if componentNode not contains any image', () => {
-      componentNodeMock.findAllWithCriteria.mockImplementation(() => ([
-        { type: 'RECTANGLE', fills: [{ type: 'LINE' }] },
-        { type: 'RECTANGLE', fills: [{ type: 'LINE' }] },
-      ]));
-      const isNodeContainingImage = page.isNodeContainingImage(componentNodeMock as unknown as ComponentNode);
-
-      expect(isNodeContainingImage).toBe(false);
       expect(figmaLoadAllPageAsyncSpy).toHaveBeenCalled();
     });
   });
