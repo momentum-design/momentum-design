@@ -3,7 +3,7 @@ import Document from './document';
 import { AssetSetting } from '../../shared/types';
 import { assetSettingMock, documentNodeMock } from './fixtures/document.fixture';
 
-jest.mock('./Page', () => jest.fn().mockImplementation(() => ({
+jest.mock('./page', () => jest.fn().mockImplementation(() => ({
   node: {
     name: 'Page 1',
     type: 'PAGE',
