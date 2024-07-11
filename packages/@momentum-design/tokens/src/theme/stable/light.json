@@ -1038,6 +1038,38 @@
               }
             }
           }
+        },
+        "reaction": {
+          "normal": {
+            "0": {
+              "value": "{color.core.white-alpha.100}",
+              "type": "color"
+            },
+            "1": {
+              "value": "{color.core.white-alpha.100}",
+              "type": "color"
+            }
+          }
+        },
+        "skeleton": {
+          "normal": {
+            "0": {
+              "value": "{color.core.white-alpha.20}",
+              "type": "color"
+            },
+            "1": {
+              "value": "{color.core.white-alpha.30}",
+              "type": "color"
+            },
+            "2": {
+              "value": "{color.core.white-alpha.40}",
+              "type": "color"
+            },
+            "3": {
+              "value": "{color.core.white-alpha.50}",
+              "type": "color"
+            }
+          }
         }
       },
       "button": {
@@ -1516,7 +1548,7 @@
               "description": ""
             }
           },
-          "Pen": {
+          "pen": {
             "black": {
               "parent": "theme/stable/light",
               "type": "color",
@@ -1635,6 +1667,37 @@
                 "type": "color",
                 "value": "{color.core.black-alpha.95}",
                 "description": ""
+              }
+            },
+            "secondary": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.black-alpha.60}"
+              }
+            }
+          },
+          "button": {
+            "secondary": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.black-alpha.0}"
+              },
+              "hover": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.black-alpha.7}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.black-alpha.20}"
+              },
+              "disabled": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.black-alpha.0}"
               }
             }
           }
@@ -1899,7 +1962,7 @@
             }
           }
         },
-        "partner": {
+        "content": {
           "pdf": {
             "parent": "theme/stable/light",
             "type": "color",
@@ -2068,6 +2131,10 @@
                 "value": "{color.core.red.80}",
                 "description": ""
               }
+            },
+            "transparent": {
+              "value": "{color.core.black-alpha.0}",
+              "type": "color"
             }
           },
           "icon": {

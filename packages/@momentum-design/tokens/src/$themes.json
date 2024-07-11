@@ -1549,8 +1549,7 @@
     "name": "common",
     "$figmaStyleReferences": {},
     "selectedTokenSets": {
-      "core/value": "source",
-      "theme/stable/highcontrast/hc_common": "enabled"
+      "core/value": "source"
     },
     "group": "theme/highcontrast"
   }

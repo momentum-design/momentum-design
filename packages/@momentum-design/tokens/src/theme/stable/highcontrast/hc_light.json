@@ -1003,6 +1003,18 @@
             "value": "{color.highcontrast.white.ButtonFaceColor}",
             "description": ""
           }
+        },
+        "reaction": {
+          "normal": {
+            "0": {
+              "value": "{color.highcontrast.white.WindowColor}",
+              "type": "color"
+            },
+            "1": {
+              "value": "{color.highcontrast.white.WindowColor}",
+              "type": "color"
+            }
+          }
         }
       },
       "button": {
@@ -1929,64 +1941,55 @@
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowTextColor}"
             },
             "disabled": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.GrayTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.GrayTextColor}"
             }
           },
           "secondary": {
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowTextColor}"
             }
           },
           "success": {
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowTextColor}"
             },
             "hover": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowTextColor}"
             }
           },
           "error": {
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowTextColor}"
             },
             "hover": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowTextColor}"
             }
           },
           "warning": {
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowTextColor}"
             },
             "hover": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowTextColor}"
             }
           }
         },
@@ -1996,8 +1999,7 @@
               "normal": {
                 "parent": "theme/stable/highcontrast/hc_light",
                 "type": "color",
-                "value": "{color.highcontrast.black.WindowTextColor}",
-                "description": ""
+                "value": "{color.highcontrast.white.WindowTextColor}"
               }
             }
           }
@@ -2007,16 +2009,14 @@
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowColor}"
             }
           },
           "secondary": {
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowColor}"
             }
           },
           "meeting": {
@@ -2024,20 +2024,17 @@
               "0": {
                 "parent": "theme/stable/highcontrast/hc_light",
                 "type": "color",
-                "value": "{color.highcontrast.black.WindowColor}",
-                "description": ""
+                "value": "{color.highcontrast.white.WindowColor}"
               },
               "1": {
                 "parent": "theme/stable/highcontrast/hc_light",
                 "type": "color",
-                "value": "{color.highcontrast.black.WindowColor}",
-                "description": ""
+                "value": "{color.highcontrast.white.WindowColor}"
               },
               "2": {
                 "parent": "theme/stable/highcontrast/hc_light",
                 "type": "color",
-                "value": "{color.highcontrast.black.WindowColor}",
-                "description": ""
+                "value": "{color.highcontrast.white.WindowColor}"
               }
             }
           }
@@ -2053,8 +2050,7 @@
             "hover": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.HighlightColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.HighlightColor}"
             },
             "pressed": {
               "parent": "theme/stable/highcontrast/hc_light",
@@ -2065,8 +2061,7 @@
             "disabled": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.GrayTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.GrayTextColor}"
             }
           },
           "secondary": {
@@ -2111,8 +2106,7 @@
             "disabled": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.GrayTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.GrayTextColor}"
             }
           },
           "promotion": {
@@ -2165,22 +2159,19 @@
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowColor}"
             }
           },
           "primary": {
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowTextColor}"
             },
             "disabled": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.GrayTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.GrayTextColor}"
             }
           },
           "input": {
@@ -2210,8 +2201,7 @@
               "inactive": {
                 "parent": "theme/stable/highcontrast/hc_light",
                 "type": "color",
-                "value": "{color.highcontrast.black.GrayTextColor}",
-                "description": ""
+                "value": "{color.highcontrast.white.GrayTextColor}"
               }
             }
           },
@@ -2219,8 +2209,7 @@
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.GrayTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.GrayTextColor}"
             }
           }
         },
@@ -2290,6 +2279,129 @@
             "type": "color",
             "value": "{color.highcontrast.black.WindowTextColor}",
             "description": "HEX Value: 4285F4"
+          }
+        },
+        "touchbar": {
+          "background": {
+            "blue": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              }
+            },
+            "pink": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              }
+            },
+            "mint": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              }
+            },
+            "purple": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              }
+            },
+            "violet": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              }
+            },
+            "orange": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              }
+            },
+            "green": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              }
+            },
+            "red": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.red.60}",
+                "description": ""
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.red.80}",
+                "description": ""
+              }
+            },
+            "transparent": {
+              "value": "{color.highcontrast.black.WindowColor}",
+              "type": "color"
+            }
+          },
+          "icon": {
+            "attention": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "{color.highcontrast.white.ButtonFaceColor}"
+            },
+            "stable": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "{color.highcontrast.white.ButtonFaceColor}"
+            },
+            "secure": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "{color.highcontrast.white.ButtonFaceColor}"
+            }
           }
         }
       }

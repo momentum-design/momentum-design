@@ -1003,6 +1003,18 @@
             "value": "{color.highcontrast.black.ButtonFaceColor}",
             "description": ""
           }
+        },
+        "reaction": {
+          "normal": {
+            "0": {
+              "value": "{color.highcontrast.black.WindowColor}",
+              "type": "color"
+            },
+            "1": {
+              "value": "{color.highcontrast.black.WindowColor}",
+              "type": "color"
+            }
+          }
         }
       },
       "button": {
@@ -2290,6 +2302,129 @@
             "type": "color",
             "value": "{color.highcontrast.black.WindowTextColor}",
             "description": "HEX Value: 4285F4"
+          }
+        },
+        "touchbar": {
+          "background": {
+            "blue": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              }
+            },
+            "pink": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              }
+            },
+            "mint": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              }
+            },
+            "purple": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              }
+            },
+            "violet": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              }
+            },
+            "orange": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              }
+            },
+            "green": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              }
+            },
+            "red": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.red.60}",
+                "description": ""
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.red.80}",
+                "description": ""
+              }
+            },
+            "transparent": {
+              "value": "{color.highcontrast.black.WindowColor}",
+              "type": "color"
+            }
+          },
+          "icon": {
+            "attention": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "{color.highcontrast.black.ButtonFaceColor}"
+            },
+            "stable": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "{color.highcontrast.black.ButtonFaceColor}"
+            },
+            "secure": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "{color.highcontrast.black.ButtonFaceColor}"
+            }
           }
         }
       }
