@@ -1003,6 +1003,18 @@
             "value": "{color.highcontrast.black.ButtonFaceColor}",
             "description": ""
           }
+        },
+        "reaction": {
+          "normal": {
+            "0": {
+              "type": "color",
+              "value": "{color.highcontrast.black.WindowColor}"
+            },
+            "1": {
+              "type": "color",
+              "value": "{color.highcontrast.black.WindowColor}"
+            }
+          }
         }
       },
       "button": {
@@ -2190,6 +2202,26 @@
               "value": "{color.highcontrast.black.WindowTextColor}",
               "description": ""
             }
+          },
+          "secondary": {
+            "primary": {
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {}
+                }
+              },
+              "type": "color",
+              "value": "{color.core.black-alpha.20}"
+            },
+            "disabled": {
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {}
+                }
+              },
+              "type": "color",
+              "value": "{color.core.black-alpha.20}"
+            }
           }
         },
         "control": {
@@ -2233,6 +2265,16 @@
                 "value": "{color.highcontrast.black.WindowTextColor}",
                 "description": ""
               }
+            }
+          },
+          "solid": {
+            "dark": {
+              "type": "color",
+              "value": "{color.highcontrast.black.WindowColor}"
+            },
+            "light": {
+              "type": "color",
+              "value": "{color.highcontrast.black.WindowColor}"
             }
           }
         },
@@ -2290,6 +2332,129 @@
             "type": "color",
             "value": "{color.highcontrast.black.WindowTextColor}",
             "description": "HEX Value: 4285F4"
+          }
+        },
+        "touchbar": {
+          "background": {
+            "blue": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              }
+            },
+            "pink": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              }
+            },
+            "mint": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              }
+            },
+            "purple": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              }
+            },
+            "violet": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              }
+            },
+            "orange": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              }
+            },
+            "green": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              }
+            },
+            "red": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.red.60}",
+                "description": ""
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.core.red.80}",
+                "description": ""
+              }
+            },
+            "transparent": {
+              "type": "color",
+              "value": "{color.highcontrast.black.WindowColor}"
+            }
+          },
+          "icon": {
+            "attention": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "{color.highcontrast.black.ButtonFaceColor}"
+            },
+            "stable": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "{color.highcontrast.black.ButtonFaceColor}"
+            },
+            "secure": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "{color.highcontrast.black.ButtonFaceColor}"
+            }
           }
         }
       }
