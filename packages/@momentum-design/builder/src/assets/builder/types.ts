@@ -24,6 +24,7 @@ export interface OptimizedSVGFormat {
  */
 export interface CSSFormat {
   type: typeof CONSTANTS.FORMATS.CSS;
+  // TODO: add CSS config type:
   config: any;
 }
 
