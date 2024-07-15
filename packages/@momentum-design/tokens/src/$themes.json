@@ -1543,15 +1543,5 @@
       "color.theme.border.decorative.gradient.device.2": "de3b13a2eb568b59c444a4d4c1f76ad8f06ec6fe"
     },
     "group": "theme/aaos"
-  },
-  {
-    "id": "82a8c3460577104513d472ff94e5cf90270de0dd",
-    "name": "common",
-    "$figmaStyleReferences": {},
-    "selectedTokenSets": {
-      "core/value": "source",
-      "theme/stable/highcontrast/hc_common": "enabled"
-    },
-    "group": "theme/highcontrast"
   }
 ]
