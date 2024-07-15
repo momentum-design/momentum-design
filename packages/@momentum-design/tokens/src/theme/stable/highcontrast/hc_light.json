@@ -1003,6 +1003,18 @@
             "value": "{color.highcontrast.white.ButtonFaceColor}",
             "description": ""
           }
+        },
+        "reaction": {
+          "normal": {
+            "0": {
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowColor}"
+            },
+            "1": {
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowColor}"
+            }
+          }
         }
       },
       "button": {
@@ -1326,8 +1338,7 @@
           "active": {
             "parent": "theme/stable/highcontrast/hc_light",
             "type": "color",
-            "value": "{color.core.blue.60}",
-            "description": ""
+            "value": "{color.highcontrast.white.ButtonFaceColor}"
           },
           "disabled": {
             "parent": "theme/stable/highcontrast/hc_light",
@@ -1929,64 +1940,55 @@
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowTextColor}"
             },
             "disabled": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.GrayTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.GrayTextColor}"
             }
           },
           "secondary": {
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowTextColor}"
             }
           },
           "success": {
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowTextColor}"
             },
             "hover": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowTextColor}"
             }
           },
           "error": {
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowTextColor}"
             },
             "hover": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowTextColor}"
             }
           },
           "warning": {
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowTextColor}"
             },
             "hover": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowTextColor}"
             }
           }
         },
@@ -1996,8 +1998,7 @@
               "normal": {
                 "parent": "theme/stable/highcontrast/hc_light",
                 "type": "color",
-                "value": "{color.highcontrast.black.WindowTextColor}",
-                "description": ""
+                "value": "{color.highcontrast.white.WindowTextColor}"
               }
             }
           }
@@ -2007,16 +2008,14 @@
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowColor}"
             }
           },
           "secondary": {
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowColor}"
             }
           },
           "meeting": {
@@ -2024,20 +2023,17 @@
               "0": {
                 "parent": "theme/stable/highcontrast/hc_light",
                 "type": "color",
-                "value": "{color.highcontrast.black.WindowColor}",
-                "description": ""
+                "value": "{color.highcontrast.white.WindowColor}"
               },
               "1": {
                 "parent": "theme/stable/highcontrast/hc_light",
                 "type": "color",
-                "value": "{color.highcontrast.black.WindowColor}",
-                "description": ""
+                "value": "{color.highcontrast.white.WindowColor}"
               },
               "2": {
                 "parent": "theme/stable/highcontrast/hc_light",
                 "type": "color",
-                "value": "{color.highcontrast.black.WindowColor}",
-                "description": ""
+                "value": "{color.highcontrast.white.WindowColor}"
               }
             }
           }
@@ -2047,72 +2043,61 @@
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.ButtonFaceColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.ButtonFaceColor}"
             },
             "hover": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.HighlightColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.HighlightColor}"
             },
             "pressed": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.HighlightColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.HighlightColor}"
             },
             "disabled": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.GrayTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.GrayTextColor}"
             }
           },
           "secondary": {
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.ButtonFaceColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.ButtonFaceColor}"
             },
             "hover": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.HighlightColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.HighlightColor}"
             },
             "active": {
               "normal": {
                 "parent": "theme/stable/highcontrast/hc_light",
                 "type": "color",
-                "value": "{color.highcontrast.black.ButtonFaceColor}",
-                "description": ""
+                "value": "{color.highcontrast.white.ButtonFaceColor}"
               },
               "hover": {
                 "parent": "theme/stable/highcontrast/hc_light",
                 "type": "color",
-                "value": "{color.highcontrast.black.HighlightColor}",
-                "description": ""
+                "value": "{color.highcontrast.white.HighlightColor}"
               },
               "pressed": {
                 "parent": "theme/stable/highcontrast/hc_light",
                 "type": "color",
-                "value": "{color.highcontrast.black.HighlightColor}",
-                "description": ""
+                "value": "{color.highcontrast.white.HighlightColor}"
               },
               "disabled": {
                 "parent": "theme/stable/highcontrast/hc_light",
                 "type": "color",
-                "value": "{color.highcontrast.black.GrayTextColor}",
-                "description": ""
+                "value": "{color.highcontrast.white.GrayTextColor}"
               }
             },
             "disabled": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.GrayTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.GrayTextColor}"
             }
           },
           "promotion": {
@@ -2120,42 +2105,36 @@
               "0": {
                 "parent": "theme/stable/highcontrast/hc_light",
                 "type": "color",
-                "value": "{color.highcontrast.black.ButtonFaceColor}",
-                "description": ""
+                "value": "{color.highcontrast.white.ButtonFaceColor}"
               },
               "1": {
                 "parent": "theme/stable/highcontrast/hc_light",
                 "type": "color",
-                "value": "{color.highcontrast.black.ButtonFaceColor}",
-                "description": ""
+                "value": "{color.highcontrast.white.ButtonFaceColor}"
               }
             },
             "hover": {
               "0": {
                 "parent": "theme/stable/highcontrast/hc_light",
                 "type": "color",
-                "value": "{color.highcontrast.black.HighlightColor}",
-                "description": ""
+                "value": "{color.highcontrast.white.HighlightColor}"
               },
               "1": {
                 "parent": "theme/stable/highcontrast/hc_light",
                 "type": "color",
-                "value": "{color.highcontrast.black.HighlightColor}",
-                "description": ""
+                "value": "{color.highcontrast.white.HighlightColor}"
               }
             },
             "active": {
               "0": {
                 "parent": "theme/stable/highcontrast/hc_light",
                 "type": "color",
-                "value": "{color.highcontrast.black.HighlightColor}",
-                "description": ""
+                "value": "{color.highcontrast.white.HighlightColor}"
               },
               "1": {
                 "parent": "theme/stable/highcontrast/hc_light",
                 "type": "color",
-                "value": "{color.highcontrast.black.HighlightColor}",
-                "description": ""
+                "value": "{color.highcontrast.white.HighlightColor}"
               }
             }
           }
@@ -2165,30 +2144,46 @@
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowColor}"
             }
           },
           "primary": {
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowTextColor}"
             },
             "disabled": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.GrayTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.GrayTextColor}"
             }
           },
           "input": {
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.WindowTextColor}"
+            }
+          },
+          "secondary": {
+            "primary": {
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {}
+                }
+              },
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowTextColor}"
+            },
+            "disabled": {
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {}
+                }
+              },
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowTextColor}"
             }
           }
         },
@@ -2210,8 +2205,7 @@
               "inactive": {
                 "parent": "theme/stable/highcontrast/hc_light",
                 "type": "color",
-                "value": "{color.highcontrast.black.GrayTextColor}",
-                "description": ""
+                "value": "{color.highcontrast.white.GrayTextColor}"
               }
             }
           },
@@ -2219,8 +2213,7 @@
             "normal": {
               "parent": "theme/stable/highcontrast/hc_light",
               "type": "color",
-              "value": "{color.highcontrast.black.GrayTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.white.GrayTextColor}"
             }
           }
         },
@@ -2230,9 +2223,18 @@
               "normal": {
                 "parent": "theme/stable/highcontrast/hc_light",
                 "type": "color",
-                "value": "{color.highcontrast.black.WindowTextColor}",
-                "description": ""
+                "value": "{color.highcontrast.white.WindowColor}"
               }
+            }
+          },
+          "solid": {
+            "dark": {
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowColor}"
+            },
+            "light": {
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowColor}"
             }
           }
         },
@@ -2240,56 +2242,177 @@
           "pdf": {
             "parent": "theme/stable/highcontrast/hc_light",
             "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
+            "value": "{color.highcontrast.white.WindowTextColor}",
             "description": "HEX: EE0507\n---------------\nUsed for bacakground of attachment for content-list components."
           },
           "word": {
             "parent": "theme/stable/highcontrast/hc_light",
             "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
+            "value": "{color.highcontrast.white.WindowTextColor}",
             "description": "HEX: 0078D6\n---------------\nUsed for bacakground of attachment for content-list components."
           },
           "powerpoint": {
             "parent": "theme/stable/highcontrast/hc_light",
             "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
+            "value": "{color.highcontrast.white.WindowTextColor}",
             "description": "HEX:D93E17\n---------------\nUsed for bacakground of attachment for content-list components."
           },
           "excel": {
             "parent": "theme/stable/highcontrast/hc_light",
             "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
+            "value": "{color.highcontrast.white.WindowTextColor}",
             "description": "HEX:00893E\n---------------\nUsed for bacakground of attachment for content-list components."
           },
           "onenote": {
             "parent": "theme/stable/highcontrast/hc_light",
             "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
+            "value": "{color.highcontrast.white.WindowTextColor}",
             "description": "HEX:B839DB\n---------------\nUsed for bacakground of attachment for content-list components."
           },
           "sheets": {
             "parent": "theme/stable/highcontrast/hc_light",
             "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
+            "value": "{color.highcontrast.white.WindowTextColor}",
             "description": "HEX:F4B400\n---------------\nUsed for bacakground of attachment for content-list components."
           },
           "slides": {
             "parent": "theme/stable/highcontrast/hc_light",
             "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
+            "value": "{color.highcontrast.white.WindowTextColor}",
             "description": "HEX:0F9D58\n---------------\nUsed for bacakground of attachment for content-list components."
           },
           "keynote": {
             "parent": "theme/stable/highcontrast/hc_light",
             "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
+            "value": "{color.highcontrast.white.WindowTextColor}",
             "description": "HEX:029CFB\n---------------\nUsed for bacakground of attachment for content-list components."
           },
           "doc": {
             "parent": "theme/stable/highcontrast/hc_light",
             "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
+            "value": "{color.highcontrast.white.WindowTextColor}",
             "description": "HEX Value: 4285F4"
+          }
+        },
+        "touchbar": {
+          "background": {
+            "blue": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.HighlightColor}"
+              }
+            },
+            "pink": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.HighlightColor}"
+              }
+            },
+            "mint": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.HighlightColor}"
+              }
+            },
+            "purple": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.HighlightColor}"
+              }
+            },
+            "violet": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.HighlightColor}"
+              }
+            },
+            "orange": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.HighlightColor}"
+              }
+            },
+            "green": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.ButtonFaceColor}"
+              }
+            },
+            "red": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.ButtonFaceColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.ButtonFaceColor}"
+              }
+            },
+            "transparent": {
+              "type": "color",
+              "value": "{color.highcontrast.white.WindowColor}"
+            }
+          },
+          "icon": {
+            "attention": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "{color.highcontrast.white.ButtonFaceColor}"
+            },
+            "stable": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "{color.highcontrast.white.ButtonFaceColor}"
+            },
+            "secure": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "{color.highcontrast.white.ButtonFaceColor}"
+            }
           }
         }
       }
