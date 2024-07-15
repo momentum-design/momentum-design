@@ -1039,6 +1039,38 @@
               }
             }
           }
+        },
+        "reaction": {
+          "normal": {
+            "0": {
+              "type": "color",
+              "value": "{color.core.gray.95}"
+            },
+            "1": {
+              "type": "color",
+              "value": "{color.core.gray.50}"
+            }
+          }
+        },
+        "skeleton": {
+          "normal": {
+            "0": {
+              "type": "color",
+              "value": "{color.core.black-alpha.20}"
+            },
+            "1": {
+              "type": "color",
+              "value": "{color.core.black-alpha.30}"
+            },
+            "2": {
+              "type": "color",
+              "value": "{color.core.black-alpha.40}"
+            },
+            "3": {
+              "type": "color",
+              "value": "{color.core.black-alpha.50}"
+            }
+          }
         }
       },
       "button": {
@@ -1517,7 +1549,7 @@
               "description": ""
             }
           },
-          "Pen": {
+          "pen": {
             "black": {
               "parent": "theme/stable/dark",
               "type": "color",
@@ -1630,12 +1662,43 @@
         },
         "inverted": {
           "text": {
+            "secondary": {
+              "normal": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.black-alpha.60}"
+              }
+            },
             "primary": {
               "normal": {
                 "parent": "theme/stable/dark",
                 "type": "color",
                 "value": "{color.core.black-alpha.95}",
                 "description": ""
+              }
+            }
+          },
+          "button": {
+            "secondary": {
+              "normal": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.black-alpha.0}"
+              },
+              "hover": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.black-alpha.7}"
+              },
+              "pressed": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.black-alpha.20}"
+              },
+              "disabled": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.black-alpha.0}"
               }
             }
           }
@@ -1854,6 +1917,26 @@
               "value": "{color.core.white-alpha.50}",
               "description": ""
             }
+          },
+          "secondary": {
+            "normal": {
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {}
+                }
+              },
+              "type": "color",
+              "value": "{color.core.black-alpha.20}"
+            },
+            "disabled": {
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {}
+                }
+              },
+              "type": "color",
+              "value": "{color.core.black-alpha.20}"
+            }
           }
         },
         "control": {
@@ -1898,9 +1981,19 @@
                 "description": ""
               }
             }
+          },
+          "solid": {
+            "dark": {
+              "type": "color",
+              "value": "{color.core.gray.95}"
+            },
+            "light": {
+              "type": "color",
+              "value": "{color.core.white-alpha.100}"
+            }
           }
         },
-        "partner": {
+        "content": {
           "pdf": {
             "parent": "theme/stable/dark",
             "type": "color",
@@ -2069,6 +2162,10 @@
                 "value": "{color.core.red.80}",
                 "description": ""
               }
+            },
+            "transparent": {
+              "type": "color",
+              "value": "{color.core.black-alpha.0}"
             }
           },
           "icon": {
