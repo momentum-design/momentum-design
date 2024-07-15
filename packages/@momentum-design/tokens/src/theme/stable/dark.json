@@ -1919,7 +1919,7 @@
             }
           },
           "secondary": {
-            "primary": {
+            "normal": {
               "$extensions": {
                 "studio.tokens": {
                   "modify": {}
