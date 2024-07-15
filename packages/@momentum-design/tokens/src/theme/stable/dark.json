@@ -1043,32 +1043,32 @@
         "reaction": {
           "normal": {
             "0": {
-              "value": "{color.core.gray.95}",
-              "type": "color"
+              "type": "color",
+              "value": "{color.core.gray.95}"
             },
             "1": {
-              "value": "{color.core.gray.50}",
-              "type": "color"
+              "type": "color",
+              "value": "{color.core.gray.50}"
             }
           }
         },
         "skeleton": {
           "normal": {
             "0": {
-              "value": "{color.core.black-alpha.20}",
-              "type": "color"
+              "type": "color",
+              "value": "{color.core.black-alpha.20}"
             },
             "1": {
-              "value": "{color.core.black-alpha.30}",
-              "type": "color"
+              "type": "color",
+              "value": "{color.core.black-alpha.30}"
             },
             "2": {
-              "value": "{color.core.black-alpha.40}",
-              "type": "color"
+              "type": "color",
+              "value": "{color.core.black-alpha.40}"
             },
             "3": {
-              "value": "{color.core.black-alpha.50}",
-              "type": "color"
+              "type": "color",
+              "value": "{color.core.black-alpha.50}"
             }
           }
         }
@@ -1917,6 +1917,26 @@
               "value": "{color.core.white-alpha.50}",
               "description": ""
             }
+          },
+          "secondary": {
+            "primary": {
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {}
+                }
+              },
+              "type": "color",
+              "value": "{color.core.black-alpha.20}"
+            },
+            "disabled": {
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {}
+                }
+              },
+              "type": "color",
+              "value": "{color.core.black-alpha.20}"
+            }
           }
         },
         "control": {
@@ -1961,9 +1981,19 @@
                 "description": ""
               }
             }
+          },
+          "solid": {
+            "dark": {
+              "type": "color",
+              "value": "{color.core.gray.95}"
+            },
+            "light": {
+              "type": "color",
+              "value": "{color.core.white-alpha.100}"
+            }
           }
         },
-        "partner": {
+        "content": {
           "pdf": {
             "parent": "theme/stable/dark",
             "type": "color",
@@ -2134,8 +2164,8 @@
               }
             },
             "transparent": {
-              "value": "{color.core.black-alpha.0}",
-              "type": "color"
+              "type": "color",
+              "value": "{color.core.black-alpha.0}"
             }
           },
           "icon": {

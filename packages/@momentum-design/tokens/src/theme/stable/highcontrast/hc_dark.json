@@ -1007,12 +1007,12 @@
         "reaction": {
           "normal": {
             "0": {
-              "value": "{color.highcontrast.black.WindowColor}",
-              "type": "color"
+              "type": "color",
+              "value": "{color.highcontrast.black.WindowColor}"
             },
             "1": {
-              "value": "{color.highcontrast.black.WindowColor}",
-              "type": "color"
+              "type": "color",
+              "value": "{color.highcontrast.black.WindowColor}"
             }
           }
         }
@@ -2202,6 +2202,26 @@
               "value": "{color.highcontrast.black.WindowTextColor}",
               "description": ""
             }
+          },
+          "secondary": {
+            "primary": {
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {}
+                }
+              },
+              "type": "color",
+              "value": "{color.core.black-alpha.20}"
+            },
+            "disabled": {
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {}
+                }
+              },
+              "type": "color",
+              "value": "{color.core.black-alpha.20}"
+            }
           }
         },
         "control": {
@@ -2245,6 +2265,16 @@
                 "value": "{color.highcontrast.black.WindowTextColor}",
                 "description": ""
               }
+            }
+          },
+          "solid": {
+            "dark": {
+              "type": "color",
+              "value": "{color.highcontrast.black.WindowColor}"
+            },
+            "light": {
+              "type": "color",
+              "value": "{color.highcontrast.black.WindowColor}"
             }
           }
         },
@@ -2405,8 +2435,8 @@
               }
             },
             "transparent": {
-              "value": "{color.highcontrast.black.WindowColor}",
-              "type": "color"
+              "type": "color",
+              "value": "{color.highcontrast.black.WindowColor}"
             }
           },
           "icon": {

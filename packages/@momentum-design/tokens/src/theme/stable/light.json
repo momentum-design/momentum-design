@@ -1042,32 +1042,32 @@
         "reaction": {
           "normal": {
             "0": {
-              "value": "{color.core.white-alpha.100}",
-              "type": "color"
+              "type": "color",
+              "value": "{color.core.white-alpha.100}"
             },
             "1": {
-              "value": "{color.core.white-alpha.100}",
-              "type": "color"
+              "type": "color",
+              "value": "{color.core.white-alpha.100}"
             }
           }
         },
         "skeleton": {
           "normal": {
             "0": {
-              "value": "{color.core.white-alpha.20}",
-              "type": "color"
+              "type": "color",
+              "value": "{color.core.white-alpha.20}"
             },
             "1": {
-              "value": "{color.core.white-alpha.30}",
-              "type": "color"
+              "type": "color",
+              "value": "{color.core.white-alpha.30}"
             },
             "2": {
-              "value": "{color.core.white-alpha.40}",
-              "type": "color"
+              "type": "color",
+              "value": "{color.core.white-alpha.40}"
             },
             "3": {
-              "value": "{color.core.white-alpha.50}",
-              "type": "color"
+              "type": "color",
+              "value": "{color.core.white-alpha.50}"
             }
           }
         }
@@ -1095,8 +1095,7 @@
           "disabled": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.0}",
-            "description": ""
+            "value": "{color.core.black-alpha.20}"
           }
         },
         "secondary": {
@@ -1916,6 +1915,26 @@
               "value": "{color.core.white-alpha.50}",
               "description": ""
             }
+          },
+          "secondary": {
+            "primary": {
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {}
+                }
+              },
+              "type": "color",
+              "value": "{color.core.black-alpha.20}"
+            },
+            "disabled": {
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {}
+                }
+              },
+              "type": "color",
+              "value": "{color.core.black-alpha.20}"
+            }
           }
         },
         "control": {
@@ -1959,6 +1978,16 @@
                 "value": "{color.core.orange.60}",
                 "description": ""
               }
+            }
+          },
+          "solid": {
+            "dark": {
+              "type": "color",
+              "value": "{color.core.gray.95}"
+            },
+            "light": {
+              "type": "color",
+              "value": "{color.core.white-alpha.100}"
             }
           }
         },
@@ -2133,8 +2162,8 @@
               }
             },
             "transparent": {
-              "value": "{color.core.black-alpha.0}",
-              "type": "color"
+              "type": "color",
+              "value": "{color.core.black-alpha.0}"
             }
           },
           "icon": {
