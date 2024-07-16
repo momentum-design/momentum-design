@@ -22,7 +22,7 @@ export interface OptimizedSVGFormat {
  *
  * @beta
  */
-interface CSSFormat {
+export interface CSSFormat {
   type: typeof CONSTANTS.FORMATS.CSS;
   // TODO: add CSS config type:
   config: any;
