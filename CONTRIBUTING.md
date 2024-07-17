@@ -46,10 +46,11 @@ Steps for creating a PR (after [First time setup](#first-time-setup) has been do
 
 1. Make sure your main branch is up to date with the remote, by executing `git pull upstream main -ff` and then push.
 2. Create a new branch and make your changes.
-3. Push your branch to the remote
-4. Create a PR against upstream/main on Github
-5. **Important: Add a proper description and title to the PR - it should be formatted, human-readable and also not include the description template text anymore.**
-6. Set the *validated* label on the PR to kick off the pipeline if you have the rights for it.
+3. Commit your changes, using [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/#summary).
+4. Push your branch to the origin remote
+5. Create a PR against base repository / main branch on Github
+6. **Important: Add a proper description and title to the PR - it should be formatted, human-readable and also not include the description template text anymore.**
+7. Set the *validated* label on the PR to kick off the pipeline if you have the access rights for it.
 
 ## PR Reviews
 
