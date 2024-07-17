@@ -1170,6 +1170,11 @@
             "type": "color",
             "value": "{color.core.green.80}",
             "description": ""
+          },
+          "default": {
+            "type": "color",
+            "value": "{color.core.green.40}",
+            "description": "This is a test - edit"
           }
         },
         "cancel": {
