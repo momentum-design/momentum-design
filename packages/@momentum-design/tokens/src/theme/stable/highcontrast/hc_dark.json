@@ -1015,6 +1015,36 @@
               "value": "{color.highcontrast.black.WindowColor}"
             }
           }
+        },
+        "gradient": {
+          "secondary": {
+            "normal": {
+              "0": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.WindowColor}"
+              },
+              "1": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.WindowColor}"
+              }
+            }
+          },
+          "primary": {
+            "normal": {
+              "0": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.WindowColor}"
+              },
+              "1": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.WindowColor}"
+              }
+            }
+          }
         }
       },
       "button": {
@@ -1158,6 +1188,10 @@
             "type": "color",
             "value": "{color.highcontrast.black.WindowTextColor}",
             "description": "Theme Token: OutlinePrimary-normal\nCore Token: white-alpha-40"
+          },
+          "disabled": {
+            "type": "color",
+            "value": "{color.highcontrast.black.GrayTextColor}"
           }
         },
         "theme": {
@@ -1218,8 +1252,7 @@
           "normal": {
             "parent": "theme/stable/highcontrast/hc_dark",
             "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
-            "description": ""
+            "value": "{color.highcontrast.black.GrayTextColor}"
           }
         },
         "share": {
@@ -2011,6 +2044,37 @@
                 "value": "{color.highcontrast.black.WindowTextColor}",
                 "description": ""
               }
+            },
+            "secondary": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.WindowTextColor}"
+              }
+            }
+          },
+          "button": {
+            "secondary": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              },
+              "hover": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.HighlightColor}"
+              },
+              "disabled": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
+              }
             }
           }
         },
@@ -2170,6 +2234,29 @@
                 "description": ""
               }
             }
+          },
+          "join": {
+            "animated": {
+              "gradient": {
+                "normal": {
+                  "0": {
+                    "parent": "theme/stable/light",
+                    "type": "color",
+                    "value": "{color.highcontrast.black.HighlightColor}"
+                  },
+                  "1": {
+                    "parent": "theme/stable/light",
+                    "type": "color",
+                    "value": "{color.highcontrast.black.HighlightColor}"
+                  },
+                  "2": {
+                    "parent": "theme/stable/light",
+                    "type": "color",
+                    "value": "{color.highcontrast.black.HighlightColor}"
+                  }
+                }
+              }
+            }
           }
         },
         "outline": {
@@ -2211,7 +2298,7 @@
                 }
               },
               "type": "color",
-              "value": "{color.core.black-alpha.20}"
+              "value": "{color.highcontrast.black.WindowTextColor}"
             },
             "disabled": {
               "$extensions": {
@@ -2220,7 +2307,7 @@
                 }
               },
               "type": "color",
-              "value": "{color.core.black-alpha.20}"
+              "value": "{color.highcontrast.black.GrayTextColor}"
             }
           }
         },
@@ -2424,14 +2511,12 @@
               "normal": {
                 "parent": "theme/stable/light",
                 "type": "color",
-                "value": "{color.core.red.60}",
-                "description": ""
+                "value": "{color.highcontrast.black.ButtonFaceColor}"
               },
               "pressed": {
                 "parent": "theme/stable/light",
                 "type": "color",
-                "value": "{color.core.red.80}",
-                "description": ""
+                "value": "{color.highcontrast.black.HighlightColor}"
               }
             },
             "transparent": {
