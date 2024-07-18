@@ -105,6 +105,27 @@ describe('@momentum-design/figma-plugin-assets-export - models.Component', () =>
       }
     });
   });
+
+  describe('isNodeContainingImage', () => {
+    it('return true if componentNode contains any image', () => {
+      componentNodeMock.findAllWithCriteria.mockImplementation(() => ([
+        { type: 'RECTANGLE', fills: [{ type: 'IMAGE' }] },
+        { type: 'RECTANGLE', fills: [{ type: 'IMAGE' }] },
+      ]));
+      const isNodeContainingImage = component.isNodeContainingImage(componentNodeMock as unknown as ComponentNode);
+
+      expect(isNodeContainingImage).toBe(true);
+    });
+    it('return false if componentNode not contains any image', () => {
+      componentNodeMock.findAllWithCriteria.mockImplementation(() => ([
+        { type: 'RECTANGLE', fills: [{ type: 'LINE' }] },
+        { type: 'RECTANGLE', fills: [{ type: 'LINE' }] },
+      ]));
+      const isNodeContainingImage = component.isNodeContainingImage(componentNodeMock as unknown as ComponentNode);
+
+      expect(isNodeContainingImage).toBe(false);
+    });
+  });
 });
 test.each(componentNodePathsCases.map(({ path, value, expected }) => {
   const componentNodeMockCopy = JSON.parse(JSON.stringify(componentNodeMock));
