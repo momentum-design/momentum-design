@@ -19,6 +19,11 @@
             "type": "color",
             "value": "{color.core.blue.90}",
             "description": "This is a test"
+          },
+          "active": {
+            "type": "color",
+            "value": "{color.core.blue.5}",
+            "description": "This is a test"
           }
         },
         "secondary": {
