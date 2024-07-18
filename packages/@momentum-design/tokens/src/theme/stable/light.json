@@ -14,6 +14,11 @@
             "type": "color",
             "value": "{color.core.black-alpha.40}",
             "description": ""
+          },
+          "hover": {
+            "type": "color",
+            "value": "{color.core.blue.90}",
+            "description": "This is a test"
           }
         },
         "secondary": {

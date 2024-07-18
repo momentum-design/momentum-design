@@ -834,7 +834,8 @@
       "color.theme.avatar.purple": "31d6cfcb7de5caa79937d9bbc105138d351bbd6d",
       "color.theme.avatar.slate": "848a316dded8cf4c8edc8eda735d3678cb61ea4b",
       "color.theme.avatar.violet": "3ad451ed49a8876e6db8f7dc5b21f13a670b914b",
-      "color.theme.avatar.yellow": "5eb8eb70f406259dada0b901d588b7f9b369c429"
+      "color.theme.avatar.yellow": "5eb8eb70f406259dada0b901d588b7f9b369c429",
+      "color.theme.text.primary.hover": "f4304f7443087724dfb328aa03c837fa181f2540"
     },
     "group": "theme/stable"
   },
@@ -1223,7 +1224,8 @@
       "color.theme.avatar.purple": "31d6cfcb7de5caa79937d9bbc105138d351bbd6d",
       "color.theme.avatar.slate": "848a316dded8cf4c8edc8eda735d3678cb61ea4b",
       "color.theme.avatar.violet": "3ad451ed49a8876e6db8f7dc5b21f13a670b914b",
-      "color.theme.avatar.yellow": "5eb8eb70f406259dada0b901d588b7f9b369c429"
+      "color.theme.avatar.yellow": "5eb8eb70f406259dada0b901d588b7f9b369c429",
+      "color.theme.text.primary.hover": "f4304f7443087724dfb328aa03c837fa181f2540"
     },
     "group": "theme/stable"
   },
