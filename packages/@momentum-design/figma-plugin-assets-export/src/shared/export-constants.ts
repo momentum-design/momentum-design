@@ -1,5 +1,5 @@
 const DEFAULTS = {
-  CHUNK_SIZE: 500,
+  CHUNK_SIZE: 250,
 };
 
 export { DEFAULTS };
