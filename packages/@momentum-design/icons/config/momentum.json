@@ -33,9 +33,9 @@
                   }
                 },
                 {
-                  "name":"mergePaths",
-                  "params":{
-                    "force":true
+                  "name": "mergePaths",
+                  "params": {
+                    "force": true
                   }
                 }
               ]
@@ -258,6 +258,20 @@
             "config": {
               "fileName": "MomentumIconsType.swift",
               "hbsPath": "./config/templates/momentum.swift.hbs"
+            }
+          }
+        },
+        {
+          "id": "css-icons",
+          "target": "./dist/fonts/glyphs.json",
+          "destination": "./dist/data",
+          "format": {
+            "type": "CSS",
+            "config": {
+              "fileName": "MomentumFontIcons.css",
+              "hbsPath": "./config/templates/momentum.css.hbs",
+              "woffPath": "./dist/fonts/MomentumFontIcon.woff",
+              "woff2Path": "./dist/fonts/MomentumFontIcon.woff2"
             }
           }
         }
