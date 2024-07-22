@@ -1,0 +1,14 @@
+@function char-from-code($iso-char) {
+  @return unquote('"\\#{$iso-char}"');
+}
+
+$icon-font-name:        'MomentumFontIcon' !default;
+$icon-font-path:        '~@momentum-design/icons/dist/fonts' !default;
+$icon-css-prefix:       icon !default;
+$icon-border-color:     #D2D5D6 !default; // $md-gray-30
+$icon-inverse-color:    #FFFFFF !default; // $md-white-100
+$icon-li-width:         2.14285714em !default;
+
+{{#each glyphsData}}
+$icon-{{../classPrefix}}{{name}}: char-from-code("{{codepointHexa}}");
+{{/each}}
