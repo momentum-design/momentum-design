@@ -14,11 +14,6 @@
             "type": "color",
             "value": "{color.core.black-alpha.40}",
             "description": ""
-          },
-          "hover": {
-            "type": "color",
-            "value": "{color.core.blue.90}",
-            "description": "This is a test"
           }
         },
         "secondary": {
@@ -1006,8 +1001,7 @@
           "normal": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.white-alpha.50}",
-            "description": ""
+            "value": "{color.core.black-alpha.60}"
           }
         },
         "gradient": {
