@@ -52,6 +52,7 @@ describe('@momentum-design/builder - css Transformer', () => {
       const transformHbsSpy = jest.spyOn(Utils, 'transformHbs').mockReturnValue(
         new Promise((resolve) => { resolve(templateSpy); }),
       );
+      jest.spyOn(Utils, 'generateSCSSFile').mockImplementation();
       await transformer.transformFilesAsync();
       expect(transformFilesAsyncSpy).toBeCalledTimes(1);
       expect(transformHbsSpy).toBeCalledTimes(1);
