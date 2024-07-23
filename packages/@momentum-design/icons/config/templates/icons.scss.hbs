@@ -1,0 +1,9 @@
+@import 'mixins';
+
+@include exports('momentum-font-icons') {
+
+{{#each glyphsData}}
+  .icon-{{../classPrefix}}{{name}}::before { content: char-from-code("{{codepointHexa}}"); }
+{{/each}}
+
+}

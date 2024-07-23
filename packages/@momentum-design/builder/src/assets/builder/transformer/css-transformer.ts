@@ -1,6 +1,6 @@
 import path from 'path';
 import type { Formats, GlyphIconData } from '../types';
-import { transformHbs } from '../utils';
+import { transformHbs, generateSCSSFile } from '../utils';
 import Transformer from './transformer';
 
 /**
@@ -33,8 +33,20 @@ class CssTransformer extends Transformer {
    * @param glyphData - glyph data to be used
    * @returns object with css data
    */
-  private async generateCssData(): Promise<{ data: string }> {
+  private async generateIconsData(): Promise<{ data: string }> {
     const glyphData = this.getGlyphData();
+    const templateData = {
+      glyphsData: Object.values(glyphData),
+      woffUrl: this.format.config.woffPath,
+      woff2Url: this.format.config.woff2Path,
+    };
+
+    const scssOutputPath = path.join(this.destination, 'scss');
+    await generateSCSSFile(this.format.config.hbsTemplatePath, scssOutputPath, 'icons.scss', templateData);
+    await generateSCSSFile(this.format.config.hbsTemplatePath, scssOutputPath, 'variables.scss', templateData);
+    await generateSCSSFile(this.format.config.hbsTemplatePath, scssOutputPath, 'placeholders.scss', templateData);
+    await generateSCSSFile(this.format.config.hbsTemplatePath, scssOutputPath, 'mixins.scss', templateData);
+
     const template = await transformHbs(path.resolve(this.format.config.hbsPath));
     return {
       data: template({
@@ -50,7 +62,7 @@ class CssTransformer extends Transformer {
    */
   public override transformFilesAsync(): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.generateCssData()
+      this.generateIconsData()
         .then((cssData) => {
           this.outputFiles = [
             {
