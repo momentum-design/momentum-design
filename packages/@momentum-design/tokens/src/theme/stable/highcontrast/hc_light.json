@@ -1015,6 +1015,36 @@
               "value": "{color.highcontrast.white.WindowColor}"
             }
           }
+        },
+        "gradient": {
+          "secondary": {
+            "normal": {
+              "0": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}"
+              },
+              "1": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}"
+              }
+            }
+          },
+          "primary": {
+            "normal": {
+              "0": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}"
+              },
+              "1": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowColor}"
+              }
+            }
+          }
         }
       },
       "button": {
@@ -1158,6 +1188,10 @@
             "type": "color",
             "value": "{color.highcontrast.white.WindowTextColor}",
             "description": "Theme Token: OutlinePrimary-normal\nCore Token: white-alpha-40"
+          },
+          "disabled": {
+            "type": "color",
+            "value": "{color.highcontrast.white.GrayTextColor}"
           }
         },
         "theme": {
@@ -2000,6 +2034,37 @@
                 "type": "color",
                 "value": "{color.highcontrast.white.WindowTextColor}"
               }
+            },
+            "secondary": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.WindowTextColor}"
+              }
+            }
+          },
+          "button": {
+            "secondary": {
+              "normal": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.ButtonFaceColor}"
+              },
+              "hover": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.HighlightColor}"
+              },
+              "pressed": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.HighlightColor}"
+              },
+              "disabled": {
+                "parent": "theme/stable/light",
+                "type": "color",
+                "value": "{color.highcontrast.white.ButtonFaceColor}"
+              }
             }
           }
         },
@@ -2137,6 +2202,29 @@
                 "value": "{color.highcontrast.white.HighlightColor}"
               }
             }
+          },
+          "join": {
+            "animated": {
+              "gradient": {
+                "normal": {
+                  "0": {
+                    "parent": "theme/stable/light",
+                    "type": "color",
+                    "value": "{color.highcontrast.white.HighlightColor}"
+                  },
+                  "1": {
+                    "parent": "theme/stable/light",
+                    "type": "color",
+                    "value": "{color.highcontrast.white.HighlightColor}"
+                  },
+                  "2": {
+                    "parent": "theme/stable/light",
+                    "type": "color",
+                    "value": "{color.highcontrast.white.HighlightColor}"
+                  }
+                }
+              }
+            }
           }
         },
         "outline": {
@@ -2183,7 +2271,7 @@
                 }
               },
               "type": "color",
-              "value": "{color.highcontrast.white.WindowTextColor}"
+              "value": "{color.highcontrast.white.GrayTextColor}"
             }
           }
         },
@@ -2377,7 +2465,7 @@
               "pressed": {
                 "parent": "theme/stable/light",
                 "type": "color",
-                "value": "{color.highcontrast.white.ButtonFaceColor}"
+                "value": "{color.highcontrast.white.HighlightColor}"
               }
             },
             "red": {
@@ -2389,7 +2477,7 @@
               "pressed": {
                 "parent": "theme/stable/light",
                 "type": "color",
-                "value": "{color.highcontrast.white.ButtonFaceColor}"
+                "value": "{color.highcontrast.white.HighlightColor}"
               }
             },
             "transparent": {

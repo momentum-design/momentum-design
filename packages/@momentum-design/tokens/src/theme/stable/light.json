@@ -1222,8 +1222,7 @@
           "disabled": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.20}",
-            "description": ""
+            "value": "{color.core.black-alpha.20}"
           }
         },
         "theme": {

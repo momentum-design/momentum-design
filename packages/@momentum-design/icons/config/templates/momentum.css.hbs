@@ -1,0 +1,261 @@
+@font-face {
+  font-family: "MomentumFontIcon";
+  src: url("{{woff2Url}}") format("woff2"), url("{{woffUrl}}") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+.icon {
+  position: relative;
+  font-family: MomentumFontIcon;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  white-space: pre;
+  text-transform: none;
+  direction: ltr;
+  font-feature-settings: "liga" 1;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-smoothing: antialiased;
+}
+
+.icon-lg {
+  font-size: 1.33333333em;
+  line-height: 0.75em;
+  vertical-align: -15%;
+}
+
+.icon-2x {
+  font-size: 2em;
+}
+
+.icon-3x {
+  font-size: 3em;
+}
+
+.icon-4x {
+  font-size: 4em;
+}
+
+.icon-5x {
+  font-size: 5em;
+}
+
+[class*=icon][class*=_8] {
+  font-size: 0.5rem;
+}
+
+[class*=icon][class*=_10] {
+  font-size: 0.625rem;
+}
+
+[class*=icon][class*=_12] {
+  font-size: 0.75rem;
+}
+
+[class*=icon][class*=_14] {
+  font-size: 0.875rem;
+}
+
+[class*=icon][class*=_16] {
+  font-size: 1rem;
+}
+
+[class*=icon][class*=_18] {
+  font-size: 1.125rem;
+}
+
+[class*=icon][class*=_20] {
+  font-size: 1.25rem;
+}
+
+[class*=icon][class*=_24] {
+  font-size: 1.5rem;
+}
+
+[class*=icon][class*=_28] {
+  font-size: 1.75rem;
+}
+
+[class*=icon][class*=_32] {
+  font-size: 2rem;
+}
+
+[class*=icon][class*=_36] {
+  font-size: 2.25rem;
+}
+
+[class*=icon][class*=_40] {
+  font-size: 2.5rem;
+}
+
+[class*=icon][class*=_44] {
+  font-size: 2.75rem;
+}
+
+[class*=icon][class*=_48] {
+  font-size: 3rem;
+}
+
+[class*=icon][class*=_56] {
+  font-size: 3.5rem;
+}
+
+[class*=icon][class*=_64] {
+  font-size: 4rem;
+}
+
+[class*=icon][class*=_72] {
+  font-size: 4.5rem;
+}
+
+[class*=icon][class*=_80] {
+  font-size: 5rem;
+}
+
+[class*=icon][class*=_100] {
+  font-size: 6.25rem;
+}
+
+.icon-fw {
+  width: 1.28571429em;
+  text-align: center;
+}
+
+.icon-ul {
+  padding-left: 0;
+  margin-left: 2.14285714em;
+  list-style-type: none;
+}
+.icon-ul > li {
+  position: relative;
+}
+.icon-li {
+  position: absolute;
+  left: -2.14285714em;
+  width: 2.14285714em;
+  top: 0.125em;
+  text-align: center;
+}
+.icon-li.icon-lg {
+  left: -1.89285714em;
+}
+
+.icon-border {
+  padding: 0.2em 0.25em 0.15em;
+  border: solid 0.08em #D2D5D6;
+  border-radius: 0.1em;
+}
+
+.icon-pull-left {
+  float: left;
+}
+
+.icon-pull-right {
+  float: right;
+}
+
+.icon.icon-pull-left {
+  margin-right: 0.3em;
+}
+.icon.icon-pull-right {
+  margin-left: 0.3em;
+}
+
+.pull-right {
+  float: right;
+}
+
+.pull-left {
+  float: left;
+}
+
+.icon.pull-left {
+  margin-right: 0.3em;
+}
+.icon.pull-right {
+  margin-left: 0.3em;
+}
+
+.icon-spin {
+  -webkit-animation: icon-spin 2s infinite linear;
+  animation: icon-spin 2s infinite linear;
+}
+.icon-pulse {
+  -webkit-animation: icon-spin 1s infinite steps(8);
+  animation: icon-spin 1s infinite steps(8);
+}
+
+@-webkit-keyframes icon-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+@keyframes icon-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+.icon-rotate-90 {
+  transform: rotate(90deg);
+}
+.icon-rotate-180 {
+  transform: rotate(180deg);
+}
+.icon-rotate-270 {
+  transform: rotate(270deg);
+}
+.icon-flip-horizontal {
+  transform: scale(-1, 1);
+}
+.icon-flip-vertical {
+  transform: scale(1, -1);
+}
+
+:root .icon-rotate-90, :root .icon-rotate-180, :root .icon-rotate-270, :root .icon-flip-horizontal, :root .icon-flip-vertical {
+  filter: none;
+}
+
+.icon-stack {
+  position: relative;
+  display: inline-block;
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  vertical-align: middle;
+}
+.icon-stack-1x, .icon-stack-2x {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+.icon-stack-1x {
+  line-height: inherit;
+}
+.icon-stack-2x {
+  font-size: 2em;
+}
+.icon-inverse {
+  color: #FFFFFF;
+}
+
+{{#each glyphsData}}
+.icon-{{name}}::before { 
+    content: "\\{{codepointHexa}}"; 
+}
+
+{{/each}}
