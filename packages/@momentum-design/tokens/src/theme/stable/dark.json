@@ -1002,8 +1002,7 @@
           "normal": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.black-alpha.50}",
-            "description": ""
+            "value": "{color.core.black-alpha.60}"
           }
         },
         "gradient": {
@@ -1048,7 +1047,7 @@
             },
             "1": {
               "type": "color",
-              "value": "{color.core.gray.50}"
+              "value": "{color.core.gray.95}"
             }
           }
         },
