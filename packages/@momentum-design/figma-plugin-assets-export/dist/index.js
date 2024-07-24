@@ -1830,7 +1830,7 @@
     get asset() {
       return new Promise((resolve, reject) => {
         const { exportSettings, exportSettingsImage } = this.assetSetting.input.asset;
-        const imageExportSettings = this.isNodeContainingImage(this.node) ? exportSettingsImage : exportSettings;
+        const imageExportSettings = this.isNodeContainingImage(this.node) && exportSettingsImage ? exportSettingsImage : exportSettings;
         this.node.exportAsync(imageExportSettings).then((uint8Array) => {
           const imageData = this.isNodeContainingImage(this.node) ? import_buffer.Buffer.from(uint8Array).toString("base64") : import_buffer.Buffer.from(uint8Array).toString();
           const fileExtension = imageExportSettings.format.toLowerCase();
