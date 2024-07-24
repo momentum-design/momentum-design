@@ -46,6 +46,7 @@ class CssTransformer extends Transformer {
     await generateSCSSFile(this.format.config.hbsTemplatePath, scssOutputPath, 'variables.scss', templateData);
     await generateSCSSFile(this.format.config.hbsTemplatePath, scssOutputPath, 'placeholders.scss', templateData);
     await generateSCSSFile(this.format.config.hbsTemplatePath, scssOutputPath, 'mixins.scss', templateData);
+    await generateSCSSFile(this.format.config.hbsTemplatePath, scssOutputPath, 'functions.scss', templateData);
 
     const template = await transformHbs(path.resolve(this.format.config.hbsPath));
     return {
