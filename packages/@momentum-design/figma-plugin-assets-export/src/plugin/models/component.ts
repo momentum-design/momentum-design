@@ -91,7 +91,7 @@ class Component {
   get asset(): Promise<Asset> {
     return new Promise((resolve, reject) => {
       const { exportSettings, exportSettingsImage } = this.assetSetting.input.asset;
-      const imageExportSettings = this.isNodeContainingImage(this.node)
+      const imageExportSettings = this.isNodeContainingImage(this.node) && exportSettingsImage
         ? exportSettingsImage
         : exportSettings;
       this.node
