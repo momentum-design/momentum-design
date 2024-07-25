@@ -381,8 +381,7 @@
             "normal": {
               "parent": "theme/stable/highcontrast/hc_dark",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.black.HighlightTextColor}"
             },
             "disabled": {
               "parent": "theme/stable/highcontrast/hc_dark",
@@ -395,16 +394,14 @@
             "normal": {
               "parent": "theme/stable/highcontrast/hc_dark",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.black.HighlightTextColor}"
             }
           },
           "accent": {
             "normal": {
               "parent": "theme/stable/highcontrast/hc_dark",
               "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+              "value": "{color.highcontrast.black.HighlightTextColor}"
             },
             "hover": {
               "parent": "theme/stable/highcontrast/hc_dark",
@@ -988,14 +985,6 @@
             }
           }
         },
-        "common": {
-          "normal": {
-            "parent": "theme/stable/highcontrast/hc_dark",
-            "type": "color",
-            "value": "{color.highcontrast.black.ButtonFaceColor}",
-            "description": ""
-          }
-        },
         "namelabel": {
           "normal": {
             "parent": "theme/stable/highcontrast/hc_dark",
@@ -1006,44 +995,51 @@
         },
         "reaction": {
           "normal": {
-            "0": {
-              "type": "color",
-              "value": "{color.highcontrast.black.WindowColor}"
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {}
+              }
             },
-            "1": {
-              "type": "color",
-              "value": "{color.highcontrast.black.WindowColor}"
-            }
+            "type": "color",
+            "value": "{color.highcontrast.black.WindowColor}"
           }
         },
         "gradient": {
           "secondary": {
             "normal": {
-              "0": {
-                "parent": "theme/stable/light",
-                "type": "color",
-                "value": "{color.highcontrast.black.WindowColor}"
+              "parent": "theme/stable/light",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {}
+                }
               },
-              "1": {
-                "parent": "theme/stable/light",
-                "type": "color",
-                "value": "{color.highcontrast.black.WindowColor}"
-              }
+              "type": "color",
+              "value": "{color.highcontrast.black.WindowColor}"
             }
           },
           "primary": {
             "normal": {
-              "0": {
-                "parent": "theme/stable/light",
-                "type": "color",
-                "value": "{color.highcontrast.black.WindowColor}"
+              "parent": "theme/stable/light",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {}
+                }
               },
-              "1": {
-                "parent": "theme/stable/light",
-                "type": "color",
-                "value": "{color.highcontrast.black.WindowColor}"
-              }
+              "type": "color",
+              "value": "{color.highcontrast.black.WindowColor}"
             }
+          }
+        },
+        "skeleton": {
+          "normal": {
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {}
+              }
+            },
+            "type": "color",
+            "value": "{color.highcontrast.black.WindowColor}",
+            "description": "Use for skeleton component"
           }
         }
       },
@@ -1345,6 +1341,25 @@
             "type": "color",
             "value": "{color.highcontrast.black.WindowTextColor}",
             "description": ""
+          }
+        },
+        "promotion": {
+          "normal": {
+            "type": "color",
+            "value": "{color.highcontrast.black.WindowTextColor}",
+            "description": "Used for border of promotional banner"
+          }
+        },
+        "gradient": {
+          "active": {
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {}
+              }
+            },
+            "type": "color",
+            "value": "{color.highcontrast.black.WindowTextColor}",
+            "description": "Used for Webex Assitant AI"
           }
         }
       },
@@ -1775,122 +1790,158 @@
         }
       },
       "gradientdivider": {
-        "normal": {
-          "0": {
+        "default": {
+          "normal": {
             "parent": "theme/stable/highcontrast/hc_dark",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {}
+              }
+            },
             "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
-            "description": ""
+            "value": "{color.highcontrast.black.WindowTextColor}"
           },
-          "1": {
+          "hover": {
             "parent": "theme/stable/highcontrast/hc_dark",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {}
+              }
+            },
             "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
-            "description": ""
-          }
-        },
-        "hover": {
-          "0": {
-            "parent": "theme/stable/highcontrast/hc_dark",
-            "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
-            "description": ""
-          },
-          "1": {
-            "parent": "theme/stable/highcontrast/hc_dark",
-            "type": "color",
-            "value": "{color.highcontrast.black.WindowTextColor}",
-            "description": ""
+            "value": "{color.highcontrast.black.WindowTextColor}"
           }
         },
         "error": {
           "normal": {
-            "0": {
-              "parent": "theme/stable/highcontrast/hc_dark",
-              "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+            "parent": "theme/stable/highcontrast/hc_dark",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {}
+              }
             },
-            "1": {
-              "parent": "theme/stable/highcontrast/hc_dark",
-              "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
-            }
+            "type": "color",
+            "value": "{color.highcontrast.black.WindowTextColor}"
           },
           "hover": {
-            "0": {
-              "parent": "theme/stable/highcontrast/hc_dark",
-              "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+            "parent": "theme/stable/highcontrast/hc_dark",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {}
+              }
             },
-            "1": {
-              "parent": "theme/stable/highcontrast/hc_dark",
-              "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
-            }
+            "type": "color",
+            "value": "{color.highcontrast.black.WindowTextColor}"
           }
         },
         "warning": {
           "normal": {
-            "0": {
-              "parent": "theme/stable/highcontrast/hc_dark",
-              "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+            "parent": "theme/stable/highcontrast/hc_dark",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {}
+              }
             },
-            "1": {
-              "parent": "theme/stable/highcontrast/hc_dark",
-              "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
-            }
+            "type": "color",
+            "value": "{color.highcontrast.black.WindowTextColor}"
           },
           "hover": {
-            "0": {
-              "parent": "theme/stable/highcontrast/hc_dark",
-              "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+            "parent": "theme/stable/highcontrast/hc_dark",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {}
+              }
             },
-            "1": {
-              "parent": "theme/stable/highcontrast/hc_dark",
-              "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
-            }
+            "type": "color",
+            "value": "{color.highcontrast.black.WindowTextColor}"
           }
         },
         "announce": {
           "normal": {
-            "0": {
-              "parent": "theme/stable/highcontrast/hc_dark",
-              "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+            "parent": "theme/stable/highcontrast/hc_dark",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {}
+              }
             },
-            "1": {
-              "parent": "theme/stable/highcontrast/hc_dark",
-              "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
-            }
+            "type": "color",
+            "value": "{color.highcontrast.black.WindowTextColor}"
           },
           "hover": {
-            "0": {
-              "parent": "theme/stable/highcontrast/hc_dark",
-              "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
+            "parent": "theme/stable/highcontrast/hc_dark",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {}
+              }
             },
-            "1": {
-              "parent": "theme/stable/highcontrast/hc_dark",
-              "type": "color",
-              "value": "{color.highcontrast.black.WindowTextColor}",
-              "description": ""
-            }
+            "type": "color",
+            "value": "{color.highcontrast.black.WindowTextColor}"
+          }
+        },
+        "success": {
+          "normal": {
+            "parent": "theme/stable/highcontrast/hc_dark",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {}
+              }
+            },
+            "type": "color",
+            "value": "{color.highcontrast.black.WindowTextColor}"
+          },
+          "hover": {
+            "parent": "theme/stable/highcontrast/hc_dark",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {}
+              }
+            },
+            "type": "color",
+            "value": "{color.highcontrast.black.WindowTextColor}"
+          }
+        },
+        "orange": {
+          "normal": {
+            "parent": "theme/stable/highcontrast/hc_dark",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {}
+              }
+            },
+            "type": "color",
+            "value": "{color.highcontrast.black.WindowTextColor}"
+          },
+          "hover": {
+            "parent": "theme/stable/highcontrast/hc_dark",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {}
+              }
+            },
+            "type": "color",
+            "value": "{color.highcontrast.black.WindowTextColor}"
+          }
+        },
+        "purple": {
+          "normal": {
+            "parent": "theme/stable/highcontrast/hc_dark",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {}
+              }
+            },
+            "type": "color",
+            "value": "{color.highcontrast.black.WindowTextColor}"
+          },
+          "hover": {
+            "parent": "theme/stable/highcontrast/hc_dark",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {}
+              }
+            },
+            "type": "color",
+            "value": "{color.highcontrast.black.WindowTextColor}"
           }
         }
       },
@@ -2041,15 +2092,14 @@
               "normal": {
                 "parent": "theme/stable/highcontrast/hc_dark",
                 "type": "color",
-                "value": "{color.highcontrast.black.WindowTextColor}",
-                "description": ""
+                "value": "{color.highcontrast.black.HighlightTextColor}"
               }
             },
             "secondary": {
               "normal": {
                 "parent": "theme/stable/light",
                 "type": "color",
-                "value": "{color.highcontrast.black.WindowTextColor}"
+                "value": "{color.highcontrast.black.HighlightTextColor}"
               }
             }
           },
@@ -2193,67 +2243,48 @@
           },
           "promotion": {
             "normal": {
-              "0": {
-                "parent": "theme/stable/highcontrast/hc_dark",
-                "type": "color",
-                "value": "{color.highcontrast.black.ButtonFaceColor}",
-                "description": ""
+              "parent": "theme/stable/highcontrast/hc_dark",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {}
+                }
               },
-              "1": {
-                "parent": "theme/stable/highcontrast/hc_dark",
-                "type": "color",
-                "value": "{color.highcontrast.black.ButtonFaceColor}",
-                "description": ""
-              }
+              "type": "color",
+              "value": "{color.highcontrast.black.ButtonFaceColor}"
             },
             "hover": {
-              "0": {
-                "parent": "theme/stable/highcontrast/hc_dark",
-                "type": "color",
-                "value": "{color.highcontrast.black.HighlightColor}",
-                "description": ""
+              "parent": "theme/stable/highcontrast/hc_dark",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {}
+                }
               },
-              "1": {
-                "parent": "theme/stable/highcontrast/hc_dark",
-                "type": "color",
-                "value": "{color.highcontrast.black.HighlightColor}",
-                "description": ""
-              }
+              "type": "color",
+              "value": "{color.highcontrast.black.HighlightColor}"
             },
             "active": {
-              "0": {
-                "parent": "theme/stable/highcontrast/hc_dark",
-                "type": "color",
-                "value": "{color.highcontrast.black.HighlightColor}",
-                "description": ""
+              "parent": "theme/stable/highcontrast/hc_dark",
+              "$extensions": {
+                "studio.tokens": {
+                  "modify": {}
+                }
               },
-              "1": {
-                "parent": "theme/stable/highcontrast/hc_dark",
-                "type": "color",
-                "value": "{color.highcontrast.black.HighlightColor}",
-                "description": ""
-              }
+              "type": "color",
+              "value": "{color.highcontrast.black.HighlightColor}"
             }
           },
           "join": {
             "animated": {
               "gradient": {
                 "normal": {
-                  "0": {
-                    "parent": "theme/stable/light",
-                    "type": "color",
-                    "value": "{color.highcontrast.black.HighlightColor}"
+                  "parent": "theme/stable/light",
+                  "$extensions": {
+                    "studio.tokens": {
+                      "modify": {}
+                    }
                   },
-                  "1": {
-                    "parent": "theme/stable/light",
-                    "type": "color",
-                    "value": "{color.highcontrast.black.HighlightColor}"
-                  },
-                  "2": {
-                    "parent": "theme/stable/light",
-                    "type": "color",
-                    "value": "{color.highcontrast.black.HighlightColor}"
-                  }
+                  "type": "color",
+                  "value": "{color.highcontrast.black.HighlightColor}"
                 }
               }
             }
@@ -2317,14 +2348,12 @@
               "selected": {
                 "parent": "theme/stable/highcontrast/hc_dark",
                 "type": "color",
-                "value": "{color.highcontrast.black.WindowTextColor}",
-                "description": ""
+                "value": "{color.highcontrast.black.HighlightColor}"
               },
               "active": {
                 "parent": "theme/stable/highcontrast/hc_dark",
                 "type": "color",
-                "value": "{color.highcontrast.black.WindowTextColor}",
-                "description": ""
+                "value": "{color.highcontrast.black.HighlightColor}"
               },
               "inactive": {
                 "parent": "theme/stable/highcontrast/hc_dark",
