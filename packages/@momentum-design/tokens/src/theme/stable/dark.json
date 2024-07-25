@@ -1352,9 +1352,9 @@
           }
         },
         "promotion": {
-          "normal": {
+          "normal-copy": {
             "type": "color",
-            "value": "linear-gradient(46deg, {color.decorative.purple.60} -0.03%, {color.decorative.pink.60} 99.99%)",
+            "value": "linear-gradient(46deg, {color.decorative.purple.60} 0%, {color.decorative.pink.60} 100%)",
             "description": "Used for border of promotional banner"
           }
         },
@@ -1815,7 +1815,7 @@
                 }
               },
               "type": "color",
-              "value": "linear-gradient(46deg, {color.decorative.purple.70} -0.03%, {color.decorative.pink.70} 99.99%)",
+              "value": "linear-gradient(46deg, {color.decorative.purple.70} 0%, {color.decorative.pink.70} 100%)",
               "description": "Used for rest state of promotional button"
             },
             "hover": {
@@ -1826,7 +1826,7 @@
                 }
               },
               "type": "color",
-              "value": "linear-gradient(46deg, {color.decorative.purple.80} -0.04%, {color.decorative.pink.80} 99.97%)",
+              "value": "linear-gradient(46deg, {color.decorative.purple.80} 0%, {color.decorative.pink.80} 100%)",
               "description": "Used for hover state of promotional button"
             },
             "active": {
@@ -1837,7 +1837,7 @@
                 }
               },
               "type": "color",
-              "value": "linear-gradient(46deg, {color.decorative.purple.90} -0.05%, {color.decorative.pink.90} 99.96%)",
+              "value": "linear-gradient(46deg, {color.decorative.purple.90} 0%, {color.decorative.pink.90} 100%)",
               "description": "Used for active state of promotional button"
             }
           },
