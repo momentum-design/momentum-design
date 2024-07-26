@@ -271,8 +271,8 @@
               "fileName": "MomentumFontIcons.css",
               "hbsPath": "./config/templates/momentum.css.hbs",
               "hbsTemplatePath": "./config/templates/",
-              "woffPath": "./dist/fonts/MomentumFontIcon.woff",
-              "woff2Path": "./dist/fonts/MomentumFontIcon.woff2"
+              "woffPath": "../fonts/MomentumFontIcon.woff",
+              "woff2Path": "../fonts/MomentumFontIcon.woff2"
             }
           }
         }
