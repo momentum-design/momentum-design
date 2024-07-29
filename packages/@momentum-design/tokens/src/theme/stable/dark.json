@@ -2424,7 +2424,7 @@
               }
             },
             "type": "color",
-            "value": "linear-gradient(90deg, {color.core.white-alpha.0} 0%, {color.core.black-alpha.20} 22.4%, {color.core.white-alpha.20} 72.4%, {color.core.white-alpha.0} 100%)",
+            "value": "linear-gradient(90deg, {color.core.white-alpha.0} 0%, {color.core.white-alpha.20} 22.4%, {color.core.white-alpha.20} 72.4%, {color.core.white-alpha.0} 100%)",
             "description": "linear-gradient(90deg, #ffffff00 0%, #ffffff33 22.4%, #ffffff33 72.4%, #ffffff00 100%)\nUsed for default default on compose area in space"
           },
           "hover": {
