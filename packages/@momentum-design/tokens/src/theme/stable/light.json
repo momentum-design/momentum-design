@@ -2500,8 +2500,8 @@
               }
             },
             "type": "color",
-            "value": "linear-gradient(90deg, {color.core.black-alpha.0} 0%, {color.core.black-alpha.20} 100%, {color.core.black-alpha.20} 100%, {color.core.black-alpha.0} 0%)",
-            "description": "linear-gradient(90deg, #00000000 0%, #0000033 22.4%, #00000033 72.4%, #00000000 100%)\nUsed for default default on compose area in space"
+            "value": "linear-gradient(90deg, {color.core.black-alpha.0} 0%, {color.core.black-alpha.20} 22.4%, {color.core.black-alpha.20} 72.4%, {color.core.black-alpha.0} 100%)",
+            "description": "linear-gradient(90deg, #00000000 0%, #00000033 22.4%, #00000033 72.4%, #00000000 100%)\nUsed for default default on compose area in space"
           },
           "hover": {
             "parent": "theme/stable/dark",
@@ -2512,7 +2512,7 @@
             },
             "type": "color",
             "value": "linear-gradient(90deg, {color.core.black-alpha.0} 0%, {color.core.black-alpha.60} 22.4%, {color.core.black-alpha.60} 72.4%, {color.core.black-alpha.0} 100%)",
-            "description": "(90deg, #00000000 0%, #00000099 22.4%, #00000099 72.4%, #00000000 100%)\nUsed for hover state of gradient divider for spaces"
+            "description": "linear-gradient(90deg, #00000000 0%, #00000099 22.4%, #00000099 72.4%, #00000000 100%)\nUsed for hover state of gradient divider for spaces"
           }
         },
         "error": {
