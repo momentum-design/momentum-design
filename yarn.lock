@@ -2520,7 +2520,7 @@ __metadata:
   resolution: "@momentum-design/tokens@workspace:packages/@momentum-design/tokens"
   dependencies:
     "@momentum-design/token-builder": "workspace:^"
-    rimraf: ^3.0.2
+    rimraf: ^6.0.1
   languageName: unknown
   linkType: soft
 
