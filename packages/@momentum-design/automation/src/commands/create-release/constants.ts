@@ -7,7 +7,7 @@ const OPTIONS: CommandOptions = {
   targets: {
     default: [
       '@momentum-design/tokens',
-      '@momentum-design/icons',
+      'icons',
       '@momentum-design/illustrations',
       '@momentum-design/brand-visuals',
     ],

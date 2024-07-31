@@ -1,5 +1,5 @@
 {
-  "name": "@momentum-design/icons",
+  "name": "icons",
   "packageManager": "yarn@3.2.4",
   "files": [
     "./dist/"
@@ -24,5 +24,6 @@
   "devDependencies": {
     "@momentum-design/builder": "workspace:^",
     "rimraf": "^3.0.2"
-  }
+  },
+  "version": "0.0.1"
 }

@@ -1,5 +1,5 @@
 /** @jsxImportSource preact */
-import iconsManifest from '@momentum-design/icons/dist/manifest.json';
+import iconsManifest from 'icons/dist/manifest.json';
 import { useCallback, useMemo, useState } from 'preact/hooks';
 import './IconTable.css';
 

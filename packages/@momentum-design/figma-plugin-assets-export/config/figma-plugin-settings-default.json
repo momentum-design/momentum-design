@@ -67,7 +67,7 @@
           "prTitle": "Automated Icons Export 2023-07-07T21:07:54.936Z",
           "prCommitMsg": "feat(assets/icons): Export 2023-07-07T21:07:54.936Z",
           "prMessage": "feat(assets/icons): Export 2023-07-07T21:07:54.936Z",
-          "gitRepoFilePath": "packages/@momentum-design/icons/src"
+          "gitRepoFilePath": "packages/icons/src"
         }
       }
     },
