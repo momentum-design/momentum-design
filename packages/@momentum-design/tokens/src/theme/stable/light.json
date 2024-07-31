@@ -1032,7 +1032,8 @@
               }
             },
             "type": "color",
-            "value": "linear-gradient(90deg, {color.core.white-alpha.100} 90%,  {color.core.white-alpha.100} 0%)"
+            "value": "linear-gradient(90deg, {color.core.white-alpha.90} 0%, {color.core.white-alpha.0} 100%)",
+            "description": "linear-gradient(90deg, #ffffffe6 0%, #ffffff00 100%)\nUsed for background of meeting reaction"
           }
         },
         "skeleton": {
