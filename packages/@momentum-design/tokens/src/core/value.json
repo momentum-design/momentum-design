@@ -1757,8 +1757,7 @@
             "0": {
               "parent": "core/value",
               "type": "color",
-              "value": "#f0f0f0",
-              "description": ""
+              "value": "#ebeffc"
             },
             "1": {
               "parent": "core/value",
