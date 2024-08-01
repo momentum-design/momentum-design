@@ -26,30 +26,31 @@ class GetPackages extends Command {
     }
 
     return promise.then(
-      (parsedChanged) => PackageCollection.getAllPackageDetails({ scope, since: parsedChanged })
+      (parsedChanged) => PackageCollection.getAllPackageDetails({ scope, since: parsedChanged }),
     ).then(
       (allPackageDetails) => {
-      const packageDetails = packages?.length
-        ? allPackageDetails.filter((eachPackage: ListItem) => packages.find((name) => name === eachPackage.name))
-        : allPackageDetails;
-      const finalPackages = packageDetails.map((eachPackage: ListItem) => {
-        const [scope, name] = eachPackage.name.split("/");
+        const packageDetails = packages?.length
+          ? allPackageDetails.filter((eachPackage: ListItem) => packages.find((name) => name === eachPackage.name))
+          : allPackageDetails;
+        const finalPackages = packageDetails.map((eachPackage: ListItem) => {
+          const [scope, name] = eachPackage.name.split('/');
 
-        return new Package({
-          name,
-          scope,
-          packagesPath: eachPackage.location,
+          return new Package({
+            name,
+            scope,
+            packagesPath: eachPackage.location,
+          });
         });
-      });
 
-      packageCollection.mount(...finalPackages);
+        packageCollection.mount(...finalPackages);
 
-      if (dependent) {
-        return packageCollection.getDependents(true);
-      }
+        if (dependent) {
+          return packageCollection.getDependents(true);
+        }
 
-      return Promise.resolve(packageCollection);
-    });
+        return Promise.resolve(packageCollection);
+      },
+    );
   }
 
   public static override get CONSTANTS(): typeof CONSTANTS {
