@@ -1033,8 +1033,8 @@
               }
             },
             "type": "color",
-            "value": "linear-gradient(180deg, {color.core.gray.95} 90%, {color.core.gray.95} 0%)",
-            "description": "linear-gradient(180deg, #1A1A1A 90%, #1A1A1A 0%\nUsed for meeting reaction background "
+            "value": "linear-gradient(90deg, {color.core.gray.95}e6 0%, {color.core.gray.95}00 100%)",
+            "description": "linear-gradient(90deg, #1a1a1ae6 0%, #1a1a1a00 100%)\nUsed for meeting reaction background  "
           }
         },
         "skeleton": {
