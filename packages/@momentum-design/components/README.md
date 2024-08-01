@@ -5,7 +5,7 @@
 
 ## Overview
 
-This component package was generated with a script, please report any issues.
+This package is WIP - there is no guarantee for consistency, stability till properly released.
 
 ## Contributing
 
