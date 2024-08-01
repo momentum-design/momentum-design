@@ -1032,7 +1032,8 @@
               }
             },
             "type": "color",
-            "value": "linear-gradient(90deg, {color.core.white-alpha.100} 90%,  {color.core.white-alpha.100} 0%)"
+            "value": "linear-gradient(90deg, {color.core.white-alpha.90} 0%, {color.core.white-alpha.0} 100%)",
+            "description": "linear-gradient(90deg, #ffffffe6 0%, #ffffff00 100%)\nUsed for background of meeting reaction"
           }
         },
         "skeleton": {
@@ -2548,8 +2549,8 @@
               }
             },
             "type": "color",
-            "value": "linear-gradient(90deg, {color.core.yellow.70}00 0%, {color.core.yellow.40}22.4%, {color.core.yellow.40}99 76.04%, {color.core.yellow.40}00 100%)",
-            "description": "linear-gradient(90deg, #7d4705 0%, #7d4705 60%, #7d4705 60%, #7d4705 0%)"
+            "value": "linear-gradient(90deg, {color.core.yellow.70}00 0%, {color.core.yellow.70}99 22.4%, {color.core.yellow.70}99 76.04%, {color.core.yellow.70}00 100%)",
+            "description": "linear-gradient(90deg, #7d470500 0%, #7d470599 22.4%, #7d470599 76.04%, #7d470500 100%)"
           },
           "hover": {
             "parent": "theme/stable/dark",
@@ -2560,7 +2561,7 @@
             },
             "type": "color",
             "value": "linear-gradient(90deg, {color.core.yellow.70}00 0%, {color.core.yellow.70}e6 22.4%, {color.core.yellow.70}e6 76.04%, {color.core.yellow.70}00 100%)",
-            "description": "linear-gradient(90deg, #7d4705 0%, #7d4705 90%, #7d4705 90%, #7d4705 0%)"
+            "description": "linear-gradient(90deg, #7d470500 0%, #7d4705e6 22.4%, #7d4705e6 76.04%, #7d470500 100%)"
           }
         },
         "announce": {
@@ -2572,7 +2573,8 @@
               }
             },
             "type": "color",
-            "value": "linear-gradient(90deg, {color.core.blue.70}00 0%, {color.core.blue.70}99 22.4%, {color.core.blue.70}99 22.4%, {color.core.blue.70}00 100%)"
+            "value": "linear-gradient(90deg, {color.core.blue.70}00 0%, {color.core.blue.70}99 22.4%, {color.core.blue.70}99 22.4%, {color.core.blue.70}00 100%)",
+            "description": "linear-gradient(90deg, #0352a600 0%, #0352a699 22.4%, #0352a699 76.04%, #0352a600 100%)"
           },
           "hover": {
             "parent": "theme/stable/dark",
@@ -2596,7 +2598,7 @@
             },
             "type": "color",
             "value": "linear-gradient(90deg, {color.core.green.70}00 0%, {color.core.green.70}99 22.4%, {color.core.green.70}99 76.04%, {color.core.green.70}00 100%)",
-            "description": "linear-gradient(90deg, #185e46 0%, #185e46 60%, #185e46 60%, #185e46 0%)"
+            "description": "linear-gradient(90deg, #185e4600 0%, #185e4699 22.4%, #185e4699 76.04%, #185e4600 100%)"
           },
           "hover": {
             "parent": "theme/stable/dark",
@@ -2606,8 +2608,8 @@
               }
             },
             "type": "color",
-            "value": "linear-gradient(90deg, {color.core.green.70}00 0%,{color.core.green.70}E6 22.4%, {color.core.green.70}E6 76.04%, {color.core.green.70}00 100%)",
-            "description": "linear-gradient(90deg, #185e46 0%, #185e46 90%, #185e46 90%, #185e46 0%)"
+            "value": "linear-gradient(90deg, {color.core.green.70}00 0%, {color.core.green.70}E6 22.4%, {color.core.green.70}E6 76.04%, {color.core.green.70}00 100%)",
+            "description": "linear-gradient(90deg, #185e5100 0%, #185e46e6 22.4%, #185e46e6 76.04%, #185e4600 100%)"
           }
         },
         "orange": {
@@ -2620,7 +2622,7 @@
             },
             "type": "color",
             "value": "linear-gradient(90deg, {color.core.orange.70}00 0%, {color.core.orange.70}99 22.4%, {color.core.orange.70}99 76.04%, {color.core.orange.70}00 100%)",
-            "description": "linear-gradient(90deg, #9c3202 0%, #9c3202 60%, #9c3202 60%, #9c3202 0%)\n"
+            "description": "linear-gradient(90deg, #9c320200 0%, #9c320299 15.1%, #9c320299 76.04%, #9c320200 100%)"
           },
           "hover": {
             "parent": "theme/stable/dark",
@@ -2630,8 +2632,8 @@
               }
             },
             "type": "color",
-            "value": "linear-gradient(90deg, {color.core.orange.70}00 0%,{color.core.orange.70}E6 22.4%, {color.core.orange.70}E6 76.04%, {color.core.orange.70}00 100%)",
-            "description": "linear-gradient(90deg, #9c3202 0%, #9c3202 90%, #9c3202 90%, #9c3202 0%)\n"
+            "value": "linear-gradient(90deg, {color.core.orange.70}00 0%, {color.core.orange.70}e6 22.4%, {color.core.orange.70}e6 76.04%, {color.core.orange.70}00 100%)",
+            "description": "linear-gradient(90deg, #91401700 0%, #914017e6 22.4%, #914017e6 76.04%, #91401700 100%)"
           }
         },
         "purple": {
