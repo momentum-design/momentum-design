@@ -1780,8 +1780,7 @@
               "normal": {
                 "parent": "theme/stable/light",
                 "type": "color",
-                "value": "{color.core.white-alpha.70}",
-                "description": ""
+                "value": "{color.core.white-alpha.20}"
               },
               "hover": {
                 "parent": "theme/stable/light",
@@ -1792,8 +1791,7 @@
               "pressed": {
                 "parent": "theme/stable/light",
                 "type": "color",
-                "value": "{color.core.white-alpha.40}",
-                "description": ""
+                "value": "{color.core.white-alpha.20}"
               },
               "disabled": {
                 "parent": "theme/stable/light",
