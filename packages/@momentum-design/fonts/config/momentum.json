@@ -1,0 +1,22 @@
+{
+    "definitions": [
+      {
+        "buildName": "Fonts",
+        "flows": [
+          {
+            "id": "Manifest",
+            "target": "./dist/**/*.*",
+            "destination": "./dist/",
+            "format": {
+              "type": "MANIFEST",
+              "config": {
+                "fileName": "manifest.json"
+              }
+            }
+          }
+        ],
+        "type": "assets"
+      }
+    ]
+  }
+  
