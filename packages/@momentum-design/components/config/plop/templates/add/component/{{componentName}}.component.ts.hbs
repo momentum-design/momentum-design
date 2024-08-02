@@ -1,0 +1,22 @@
+import { html } from 'lit';
+import { property } from 'lit/decorators.js';
+import styles from './{{componentName}}.styles';
+import { Component } from '../../models';
+
+/**
+ * @slot - This is a default/unnamed slot
+ *
+ * @summary This is MyElement
+ *
+ * @tag {{prefix}}-{{componentName}}
+ * @tagname {{prefix}}-{{componentName}}
+ */
+class {{sentenceCase prefix}}{{sentenceCase componentName}} extends Component {
+  public override render() {
+    return html`<p>This is a dummy component!</p><slot></slot>`;
+  }
+
+  public static override styles = styles;
+}
+
+export default {{sentenceCase componentName}};

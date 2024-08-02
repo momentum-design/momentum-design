@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "moduleResolution": "node"
+  },
+  "exclude": [
+    "./templates"
+  ]
+}
