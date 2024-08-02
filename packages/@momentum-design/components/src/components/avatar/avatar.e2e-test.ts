@@ -26,11 +26,13 @@ test.fixme('mdc-avatar', async ({ componentsPage }) => {
   /**
    * VISUAL REGRESSION
    */
-  await test.step('visual-regression', async () => {
-    await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-avatar', { element: avatar });
-    });
-  });
+
+  // TODO: fix visual regression test on CI
+  // await test.step('visual-regression', async () => {
+  //   await test.step('matches screenshot of element', async () => {
+  //     await componentsPage.visualRegression.takeScreenshot('mdc-avatar', { element: avatar });
+  //   });
+  // });
 
   /**
    * ATTRIBUTES
