@@ -1,0 +1,13 @@
+import { html } from 'lit';
+
+type Args = {}
+
+const base = (args: Args) => html`
+    <{{prefix}}{{separator}}{{componentName}}></{{prefix}}{{separator}}{{componentName}}>
+`;
+
+const fixtures = {
+  base,
+};
+
+export default fixtures;
