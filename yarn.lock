@@ -3820,9 +3820,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/icons@workspace:^, @momentum-design/icons@workspace:packages/@momentum-design/icons":
+"@momentum-design/icons@workspace:^, @momentum-design/icons@workspace:packages/assets/icons":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/icons@workspace:packages/@momentum-design/icons"
+  resolution: "@momentum-design/icons@workspace:packages/assets/icons"
   dependencies:
     "@momentum-design/builder": "workspace:^"
     rimraf: ^6.0.1
