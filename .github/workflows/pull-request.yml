@@ -333,6 +333,9 @@ jobs:
 
       - name: Synchronize Packages
         run: yarn
-        
+
+      - name: List components package
+        run: echo "$(ls ./packages/@momentum-design/components -all)"
+       
       - name: Test - Postbuild
         run: yarn workspace ${{ matrix.package }} test:postbuild
