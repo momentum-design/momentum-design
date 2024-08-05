@@ -114,12 +114,15 @@ dist
 # TernJS port file
 .tern-port
 
+# Playwright Test Results & Report
+test-results/
+playwright-report/
+tests-out/
+
 ### SPECIAL CASES ###
 
-# figma plugin so that Design doesn't have to run a build
-# this means that we will have to build and push
-# not part of pipeline as of now
-!packages/@momentum-design/figma-plugin-assets-export/dist
+packages/@momentum-design/figma-plugin-assets-export/dist
+packages/@momentum-design/components/config/storybook/public/icons
 
 # MAC system File
 **/.DS_Store

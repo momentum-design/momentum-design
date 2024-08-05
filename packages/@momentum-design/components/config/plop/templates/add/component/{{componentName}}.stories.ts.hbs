@@ -1,0 +1,18 @@
+import type { Meta, StoryObj, Args } from '@storybook/web-components';
+import '.';
+import fixtures from './{{componentName}}.fixtures';
+
+const render = (args: Args) => fixtures.base(args);
+
+const meta: Meta = {
+  tags: ['autodocs'],
+  component: '{{prefix}}{{separator}}{{componentName}}',
+  render,
+  argTypes: {},
+};
+
+export default meta;
+
+export const Primary: StoryObj = {
+  args: {},
+};
