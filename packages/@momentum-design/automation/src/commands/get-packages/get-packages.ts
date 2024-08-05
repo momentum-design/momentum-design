@@ -1,5 +1,6 @@
 import { Command, Package, PackageCollection } from '../../models';
 import { Git } from '../../utils';
+import { ListItem } from '../../utils/yarn/types';
 
 import CONSTANTS from './constants';
 import type { Config, Options } from './types';
@@ -24,27 +25,32 @@ class GetPackages extends Command {
       promise = Promise.resolve(changed);
     }
 
-    return promise.then((parsedChanged) => packages
-      ? Promise.resolve(packages)
-      : PackageCollection.getAllPackageNames({ scope, since: parsedChanged })).then((packageNames) => {
-      const packages = packageNames.map((packageName) => {
-        const [scope, name] = packageName.split('/');
+    return promise.then(
+      (parsedChanged) => PackageCollection.getAllPackageDetails({ scope, since: parsedChanged }),
+    ).then(
+      (allPackageDetails) => {
+        const packageDetails = packages?.length
+          ? allPackageDetails.filter((eachPackage: ListItem) => packages.find((name) => name === eachPackage.name))
+          : allPackageDetails;
+        const finalPackages = packageDetails.map((eachPackage: ListItem) => {
+          const [scope, name] = eachPackage.name.split('/');
 
-        return new Package({
-          name,
-          scope,
-          packagesPath,
+          return new Package({
+            name,
+            scope,
+            packagesPath: eachPackage.location,
+          });
         });
-      });
 
-      packageCollection.mount(...packages);
+        packageCollection.mount(...finalPackages);
 
-      if (dependent) {
-        return packageCollection.getDependents(true);
-      }
+        if (dependent) {
+          return packageCollection.getDependents(true);
+        }
 
-      return Promise.resolve(packageCollection);
-    });
+        return Promise.resolve(packageCollection);
+      },
+    );
   }
 
   public static override get CONSTANTS(): typeof CONSTANTS {
