@@ -37,7 +37,7 @@
     "test:unit": "jest ./src/**/*.test.ts"
   },
   "dependencies": {
-    "@amplitude/analytics-browser": "^1.6.1",
+    "@amplitude/analytics-browser": "^2.10.0",
     "winston": "^3.8.2",
     "winston-transport": "^4.7.1"
   },
@@ -45,7 +45,7 @@
     "@microsoft/api-documenter": "^7.25.10",
     "@microsoft/api-extractor": "^7.47.5",
     "@types/jest": "^29.5.12",
-    "@types/node": "^18.11.9",
+    "@types/node": "^22.1.0",
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "@typescript-eslint/parser": "^5.41.0",
     "eslint": "^8.26.0",
