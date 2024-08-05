@@ -1,0 +1,12 @@
+import {{sentenceCase componentName}} from './{{componentName}}.component';
+import { TAG_NAME } from './{{componentName}}.constants';
+
+{{sentenceCase componentName}}.register(TAG_NAME);
+
+declare global {
+    interface HTMLElementTagNameMap {
+        ['{{prefix}}{{separator}}{{componentName}}']: {{sentenceCase componentName}}
+    }
+}
+
+export default {{sentenceCase componentName}};
