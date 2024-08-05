@@ -158,6 +158,7 @@ jobs:
   deploy-npmjs:
     name: ( ${{ matrix.package }} ) Deploy - NPMJS
     needs: [build, generate-package-matrix]
+    if: ${{ needs.generate-package-matrix.outputs.packages != '[]' && needs.generate-package-matrix.outputs.packages != '' }}
     runs-on: ubuntu-latest
 
     strategy:
