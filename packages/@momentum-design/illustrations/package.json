@@ -21,7 +21,6 @@
     "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\""
   },
   "devDependencies": {
-    "@momentum-design/builder": "workspace:^",
-    "rimraf": "^6.0.1"
+    "@momentum-design/builder": "workspace:^"
   }
 }
