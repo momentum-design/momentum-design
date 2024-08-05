@@ -1112,8 +1112,7 @@
             "hover": {
               "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.white-alpha.20}",
-              "description": ""
+              "value": "{color.core.white-alpha.30}"
             },
             "pressed": {
               "parent": "theme/stable/dark",
@@ -1782,8 +1781,7 @@
               "normal": {
                 "parent": "theme/stable/dark",
                 "type": "color",
-                "value": "{color.core.white-alpha.70}",
-                "description": ""
+                "value": "{color.core.white-alpha.20}"
               },
               "hover": {
                 "parent": "theme/stable/dark",
@@ -1794,8 +1792,7 @@
               "pressed": {
                 "parent": "theme/stable/dark",
                 "type": "color",
-                "value": "{color.core.white-alpha.40}",
-                "description": ""
+                "value": "{color.core.white-alpha.40}"
               },
               "disabled": {
                 "parent": "theme/stable/dark",
