@@ -4006,7 +4006,6 @@ __metadata:
   resolution: "@momentum-design/icons@workspace:packages/@momentum-design/icons"
   dependencies:
     "@momentum-design/builder": "workspace:^"
-    rimraf: ^6.0.1
   languageName: unknown
   linkType: soft
 
