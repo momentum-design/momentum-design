@@ -68,12 +68,10 @@ jobs:
           key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install Dependencies
-        if: steps.validate-dependencies.outputs.cache-hit != 'true'
         run: yarn
 
       - name: Cache Dependencies
         uses: actions/cache@v3
-        if: steps.validate-dependencies.outputs.cache-hit != 'true'
         with:
           path: '**/node_modules'
           key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
@@ -333,9 +331,6 @@ jobs:
 
       - name: Synchronize Packages
         run: yarn
-
-      - name: List components package
-        run: echo "$(ls ./packages/@momentum-design/components -all)"
        
       - name: Test - Postbuild
         run: yarn workspace ${{ matrix.package }} test:postbuild
