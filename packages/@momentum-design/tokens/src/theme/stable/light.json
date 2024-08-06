@@ -1044,8 +1044,8 @@
               }
             },
             "type": "color",
-            "value": "linear-gradient(123deg, {color.core.white-alpha.100}33 14.98%, {color.core.white-alpha.100}4d  38.98%, {color.core.white-alpha.100} 64.82%, {color.core.white-alpha.100}80);",
-            "description": "white-alpha-20 20%, white-alpha-30 30%, \nwhite-alpha-40 40%, white-alpha-50 50%"
+            "value": "linear-gradient(123deg, {color.core.black-alpha.20} 0%, {color.core.black-alpha.30} 27.6%, {color.core.black-alpha.40} 58.85%, {color.core.black-alpha.50} 100%);",
+            "description": "linear-gradient(123deg, #00000033 0%, #0000004d 27.6%, #00000066 58.85%, #00000080 100%)"
           }
         }
       },
