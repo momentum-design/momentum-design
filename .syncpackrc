@@ -49,7 +49,7 @@
       ]
     },
     {
-      "label": "Dependencies should be within the same version range",
+      "label": "Dependencies should be the same version",
       "dependencies": [
         "**"
       ],
