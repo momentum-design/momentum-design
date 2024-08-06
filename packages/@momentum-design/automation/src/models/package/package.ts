@@ -39,7 +39,7 @@ class Package {
   }
 
   public get path(): string {
-    return path.join(this.config.packagesPath, this.package);
+    return path.join(this.config.packagesPath);
   }
 
   public get scope(): string {
