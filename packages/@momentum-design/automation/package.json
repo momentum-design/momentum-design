@@ -32,9 +32,10 @@
     "publish": "yarn publish:npmjs",
     "publish:npmjs": "echo \"script 'publish:npmjs' has not been implemented\"",
     "test": "yarn test:prebuild && yarn test:postbuild",
-    "test:postbuild": "echo \"script 'test:prebuild' has not been implemented\"",
-    "test:prebuild": "yarn test:unit",
-    "test:unit": "jest ./src/**/*.test.ts"
+    "test:prebuild": "yarn test:unit:prebuild",
+    "test:unit:prebuild": "jest ./src/**/*.test.ts --testPathIgnorePatterns=ignore",
+    "test:postbuild": "yarn test:unit:postbuild",
+    "test:unit:postbuild": "jest ./src/**/*.test.ts"
   },
   "dependencies": {
     "@momentum-design/telemetry": "workspace:^",
