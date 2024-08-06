@@ -77,6 +77,7 @@ class File {
         accessControl: this.iosAccessControl,
         import: this.iosImport,
         objectType: this.iosObjectType,
+        iosHandlebarsPath: this.iosHandlebarsPath,
       },
     };
   }
@@ -110,6 +111,10 @@ class File {
 
   public get iosObjectType(): string | undefined {
     return this.config.iosObjectType;
+  }
+
+  public get iosHandlebarsPath(): string | undefined {
+    return this.config.iosHandlebarsPath;
   }
 
   public get types(): Array<string> {
