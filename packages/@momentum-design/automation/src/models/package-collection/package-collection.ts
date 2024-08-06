@@ -1,8 +1,9 @@
 import { Yarn } from '../../utils';
+import { ListItem } from '../../utils/yarn/types';
 
 import Package from '../package';
 
-import type { Config, Data } from './types';
+import type { Config, Data, PackageListDetails } from './types';
 
 class PackageCollection {
   protected config: Config;
@@ -76,10 +77,9 @@ class PackageCollection {
     return this;
   }
 
-  public static getAllPackageNames({ scope, since }: { scope?: string, since?: string } = {}): Promise<Array<string>> {
-    return Yarn.list(since)
-      .then((list) => scope ? list.filter(({ name }) => name.includes(scope)) : list)
-      .then((list) => list.map(({ name }) => name));
+  public static getAllPackageDetails(details: PackageListDetails): Promise<Array<ListItem>> {
+    return Yarn.list(details.since)
+      .then((list) => details.scope ? list.filter(({ name }) => name.includes(details?.scope ?? '')) : list);
   }
 }
 
