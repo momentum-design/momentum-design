@@ -37,7 +37,7 @@
     "test:unit": "jest ./src/**/*.test.ts"
   },
   "dependencies": {
-    "@amplitude/analytics-browser": "^2.10.0",
+    "@amplitude/analytics-browser": "^1.6.1",
     "winston": "^3.8.2",
     "winston-transport": "^4.7.1"
   },
