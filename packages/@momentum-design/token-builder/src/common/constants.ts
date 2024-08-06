@@ -94,6 +94,18 @@ const LOCAL_FORMATS = {
       'MD_ELEVATION',
     ] as Array<Transform>,
   },
+  IOS_HANDLEBARS: {
+    EXTENSION: 'swift',
+    FORMAT: 'md-ios-handlebars',
+    GROUP: 'md',
+    NAME: 'md/ios-handlebars',
+    PATH: './ios-handlebars/',
+    TRANSFORMS: [
+      'ATTRIBUTE_CTI',
+      'NAME_CTI_CAMEL',
+      'MD_ELEVATION',
+    ] as Array<Transform>,
+  },
 };
 
 const FORMATS = {
