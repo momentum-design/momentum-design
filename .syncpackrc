@@ -1,0 +1,62 @@
+{
+  "lintFormatting": false,
+  "customTypes": {
+    "nodeEngine": {
+      "path": "engines.node",
+      "strategy": "version"
+    }
+  },
+  "dependencyTypes": [
+    "prod",
+    "dev",
+    "nodeEngine"
+  ],
+  "semverGroups": [
+    {
+      "label": "use caret versions in production",
+      "packages": [
+        "**"
+      ],
+      "dependencyTypes": [
+        "prod",
+        "dev"
+      ],
+      "dependencies": [
+        "**"
+      ],
+      "range": "^"
+    }
+  ],
+  "versionGroups": [
+    {
+      "label": "Ensure all node engines are in the same range",
+      "dependencyTypes": [
+        "nodeEngine"
+      ],
+      "preferVersion": "20.0.0"
+    },
+    {
+      "label": "Ensure all packages use same esbuild, typescript as the components package is using",
+      "dependencies": [
+        "esbuild",
+        "typescript"
+      ],
+      "packages": [
+        "**"
+      ],
+      "snapTo": [
+        "@momentum-design/components"
+      ]
+    },
+    {
+      "label": "Dependencies should be the same version",
+      "dependencies": [
+        "**"
+      ],
+      "packages": [
+        "**"
+      ],
+      "policy": "same"
+    }
+  ]
+}
