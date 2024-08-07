@@ -34,7 +34,7 @@
     "test": "yarn test:prebuild && yarn test:postbuild",
     "test:prebuild": "yarn test:unit:prebuild",
     "test:unit:prebuild": "jest ./src/**/*.test.ts --testPathIgnorePatterns=ignore",
-    "test:postbuild": "yarn test:unit:postbuild",
+    "test:postbuild": "yarn build && yarn test:unit:postbuild",
     "test:unit:postbuild": "jest ./src/**/*.test.ts"
   },
   "dependencies": {
