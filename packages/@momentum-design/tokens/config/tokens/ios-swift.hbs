@@ -1,3 +1,44 @@
+import UIKit
+
+{{#if (isCoreTokens destination)}}
+extension UIColor {
 {{#each tokens}}
-  <div>{{name}} {{value}}</div>
+    {{#if (valueIsHex value)}}
+    public static let {{transformCoreColorName name}} = {{hexToUIColor value}}
+    {{/if}} 
 {{/each}}
+}
+{{else}}
+{{#if (isBaseTheme (classNameFromPath destination))}}
+{{#each (groupTokens tokens)}}
+@objc public protocol MomentumTheme{{category}}ColorPaletteProtocol: AnyObject {
+    {{#each items}}
+    {{#if (valueIsHex this.value)}}
+    var {{this.name}}: UIColor { get }
+    {{/if}} 
+    {{/each}}
+}
+{{/each}}
+@objc public protocol MomentumThemeTokensProtocol: AnyObject {
+{{#each (groupTokens tokens)}}
+    var {{lowercaseFirst category}}: any MomentumTheme{{category}}ColorPaletteProtocol { get }
+{{/each}}
+}
+{{/if}} 
+{{#each (groupTokens tokens)}}
+open class {{classNameFromPath ../destination}}MomentumTheme{{category}}ColorPalette: MomentumTheme{{category}}ColorPaletteProtocol {
+    {{#each items}}
+    {{#if (valueIsHex value)}}
+    open var {{this.name}}: UIColor { return {{hexToUIColor this.value}} }
+    {{/if}} 
+    {{/each}}
+    public init() {}
+}
+{{/each}}
+open class {{classNameFromPath destination}}MomentumTheme: MomentumThemeTokensProtocol {
+    {{#each (groupTokens tokens)}}
+    public let {{lowercaseFirst category}}: any MomentumTheme{{category}}ColorPaletteProtocol = {{classNameFromPath ../destination}}MomentumTheme{{category}}ColorPalette()
+    {{/each}}
+    public init() {}
+}
+{{/if}}
