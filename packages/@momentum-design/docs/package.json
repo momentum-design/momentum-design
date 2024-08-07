@@ -4,7 +4,7 @@
   "type": "commonjs",
   "private": true,
   "engines": {
-    "node": ">=18.0.0",
+    "node": ">=20.0.0",
     "npm": ">=8.0.0",
     "yarn": ">=3.0.0"
   },
@@ -38,14 +38,14 @@
     "@momentum-design/illustrations": "workspace:^",
     "@momentum-design/token-builder": "workspace:^",
     "@momentum-design/tokens": "workspace:^",
-    "@types/node": "^18.0.0",
-    "@types/react": "^17.0.45",
-    "@types/react-dom": "^18.0.0",
+    "@types/node": "^18.11.9",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.0.9",
     "astro": "^1.6.10",
     "lodash": "^4.17.21",
     "preact": "^10.7.3",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "rollup-plugin-copy": "^3.4.0"
   },
   "devDependencies": {

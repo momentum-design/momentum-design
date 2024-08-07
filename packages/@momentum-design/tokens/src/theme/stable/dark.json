@@ -1045,8 +1045,8 @@
               }
             },
             "type": "color",
-            "value": "linear-gradient(123deg, {color.core.white-alpha.20} 14.98%, {color.core.white-alpha.30}  38.98%, {color.core.white-alpha.40} 64.82%, {color.core.white-alpha.50})",
-            "description": "Core Token: white-alpha.20, white-alpha.30, white-alpha.40, white-alpha.50\nUse for skeleton component"
+            "value": "linear-gradient(123deg, {color.core.white-alpha.20} 0%, {color.core.white-alpha.30} 33.85%, {color.core.white-alpha.40} 70.31%, {color.core.white-alpha.50} 100%)",
+            "description": "linear-gradient(123deg, #ffffff33 0%, #ffffff4d 33.85%, #ffffff66 70.31%, #ffffff80 100%)\nUse for skeleton component"
           }
         }
       },
