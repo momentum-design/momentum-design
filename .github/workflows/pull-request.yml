@@ -64,18 +64,22 @@ jobs:
         id: validate-dependencies
         uses: actions/cache@v3
         with:
-          path: '**/node_modules'
+          path: |
+            node_modules
+            packages/**/node_modules
           key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install Dependencies
         if: steps.validate-dependencies.outputs.cache-hit != 'true'
-        run: yarn
+        run: yarn install --frozen-lockfile
 
       - name: Cache Dependencies
         uses: actions/cache@v3
         if: steps.validate-dependencies.outputs.cache-hit != 'true'
         with:
-          path: '**/node_modules'
+          path: |
+            node_modules
+            packages/**/node_modules
           key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
 
   generate-package-matrix:
@@ -111,7 +115,9 @@ jobs:
       - name: Uncache Dependencies
         uses: actions/cache@v3
         with:
-          path: '**/node_modules'
+          path: |
+            node_modules
+            packages/**/node_modules
           key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Synchronize Packages
@@ -157,7 +163,9 @@ jobs:
       - name: Uncache Dependencies
         uses: actions/cache@v3
         with:
-          path: '**/node_modules'
+          path: |
+            node_modules
+            packages/**/node_modules
           key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Uncache Telemetry Dist
@@ -198,7 +206,9 @@ jobs:
       - name: Uncache Dependencies
         uses: actions/cache@v3
         with:
-          path: '**/node_modules'
+          path: |
+            node_modules
+            packages/**/node_modules
           key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
       
       - name: Uncache Telemetry Dist
@@ -238,7 +248,9 @@ jobs:
       - name: Uncache Dependencies
         uses: actions/cache@v3
         with:
-          path: '**/node_modules'
+          path: |
+            node_modules
+            packages/**/node_modules
           key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Synchronize Packages
@@ -281,7 +293,9 @@ jobs:
       - name: Uncache Dependencies
         uses: actions/cache@v3
         with:
-          path: '**/node_modules'
+          path: |
+            node_modules
+            packages/**/node_modules
           key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Uncache Dist
@@ -322,7 +336,9 @@ jobs:
       - name: Uncache Dependencies
         uses: actions/cache@v3
         with:
-          path: '**/node_modules'
+          path: |
+            node_modules
+            packages/**/node_modules
           key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Uncache Dist
