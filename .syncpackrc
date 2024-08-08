@@ -36,6 +36,16 @@
       "preferVersion": "20.0.0"
     },
     {
+      "label": "Ensure @types/node corresponds to the node engine",
+      "dependencies": [
+        "@types/node"
+      ],
+      "packages": [
+        "**"
+      ],
+      "pinVersion": "20.14.9"
+    },
+    {
       "label": "Ensure all packages use same esbuild, typescript as the components package is using",
       "dependencies": [
         "esbuild",
