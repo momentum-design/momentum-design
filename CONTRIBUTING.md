@@ -52,6 +52,34 @@ Steps for creating a PR (after [First time setup](#first-time-setup) has been do
 6. **Important: Add a proper description and title to the PR - it should be formatted, human-readable and also not include the description template text anymore.**
 7. Set the *validated* label on the PR to kick off the pipeline if you have the access rights for it.
 
+## Steps to contribute for components package
+
+- Clone this repository locally:
+    ```
+    git clone https://github.com/momentum-design/momentum-design.git
+    ```
+- Go to the project and run yarn
+    ```
+    cd momentum-design
+    nvm use
+    yarn
+    ```
+- Install dependencies before we start components package
+    ```
+        yarn @momentum-design/token-builder build
+        yarn @momentum-design/tokens build
+        yarn @momentum-design/fonts build
+        yarn @momentum-design/common build
+        yarn @momentum-design/builder build
+        yarn @momentum-design/icons build
+    ```
+- Finally, you can run dev
+    ```
+        yarn @momentum-design/components dev
+    ```
+- Your localhost will fire up: http://localhost:6006/
+- Done.
+
 ## PR Reviews
 
 ### Asking for Review
