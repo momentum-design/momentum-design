@@ -19,8 +19,19 @@ More specific information is provided in each sub-package.
 
 1. Fork the repository
 2. Clone the forked repository
-3. Verify that your forked repos are set up with the correct remote references.
-    Running git remote -v in your repository directory should return settings like these:
+    ```
+    git clone https://github.com/{username}/momentum-design.git
+    ```
+3. Navigate to the root of the repo.
+    ```
+    cd momentum-design
+    ```
+4. Setup upstream remote references in your local
+    ```
+    git remote add upstream https://github.com/momentum-design/momentum-design.git
+    ```
+5. Verify that your forked repos are set up with the correct remote references.
+    Running `git remote -v` in your repository directory should return settings like these:
 
     ```bash
     origin git@github.com:{username}/momentum-design.git (fetch)
@@ -28,9 +39,8 @@ More specific information is provided in each sub-package.
     upstream git@github.com:momentum-design/momentum-design.git (fetch)
     upstream git@github.com:momentum-design/momentum-design.git (push)
     ```
-
-4. Run `yarn` in the root of the repo
-5. Run `yarn build` in the root of the repo
+6. Run `yarn` in the root of the repo
+7. Run `yarn build` in the root of the repo
 
 ## Executing scripts in the packages
 
