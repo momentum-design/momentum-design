@@ -71,7 +71,7 @@ jobs:
 
       - name: Install Dependencies
         if: steps.validate-dependencies.outputs.cache-hit != 'true'
-        run: yarn install --frozen-lockfile
+        run: yarn
 
       - name: Cache Dependencies
         uses: actions/cache@v3
@@ -138,14 +138,13 @@ jobs:
         run: echo "generated package matrix - ${{ steps.generate-package-matrix.outputs.packages }}"
 
   analyze-root:
-    name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Analyze Root
+    name: Analyze Root
     needs: [generate-package-matrix, initialize]
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
         os: [ubuntu-latest]
-        package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
       - name: Checkout Project
