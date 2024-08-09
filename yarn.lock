@@ -3627,7 +3627,7 @@ __metadata:
   dependencies:
     "@momentum-design/telemetry": "workspace:^"
     "@types/jest": ^29.2.3
-    "@types/node": ^18.11.9
+    "@types/node": 20.14.9
     "@types/tar": ^6.1.3
     "@types/yargs": ^17.0.13
     "@typescript-eslint/eslint-plugin": ^5.43.0
@@ -3666,7 +3666,7 @@ __metadata:
     "@types/fs-extra": ^9.0.13
     "@types/glob": ^8.0.0
     "@types/jest": ^29.2.3
-    "@types/node": ^18.11.9
+    "@types/node": 20.14.9
     "@types/svg2ttf": ^5.0.1
     "@types/svgicons2svgfont": ^10.0.1
     "@types/ttf2woff": ^2.0.2
@@ -3704,7 +3704,7 @@ __metadata:
     "@microsoft/api-documenter": ^7.25.9
     "@microsoft/api-extractor": ^7.47.4
     "@types/jest": ^29.2.3
-    "@types/node": ^18.11.9
+    "@types/node": 20.14.9
     "@types/yargs": ^17.0.13
     "@typescript-eslint/eslint-plugin": ^5.43.0
     "@typescript-eslint/parser": ^5.43.0
@@ -3766,7 +3766,7 @@ __metadata:
     "@momentum-design/token-builder": "workspace:^"
     "@momentum-design/tokens": "workspace:^"
     "@types/lodash": ^4.14.189
-    "@types/node": ^18.11.9
+    "@types/node": 20.14.9
     "@types/react": ^18.3.3
     "@types/react-dom": ^18.0.9
     astro: ^1.6.10
@@ -3820,9 +3820,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/icons@workspace:^, @momentum-design/icons@workspace:packages/@momentum-design/icons":
+"@momentum-design/icons@workspace:^, @momentum-design/icons@workspace:packages/assets/icons":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/icons@workspace:packages/@momentum-design/icons"
+  resolution: "@momentum-design/icons@workspace:packages/assets/icons"
   dependencies:
     "@momentum-design/builder": "workspace:^"
     rimraf: ^6.0.1
@@ -3846,7 +3846,7 @@ __metadata:
     "@microsoft/api-documenter": ^7.25.9
     "@microsoft/api-extractor": ^7.47.4
     "@types/jest": ^29.2.3
-    "@types/node": ^18.11.9
+    "@types/node": 20.14.9
     "@typescript-eslint/eslint-plugin": ^5.43.0
     "@typescript-eslint/parser": ^5.43.0
     eslint: ^8.27.0
@@ -3869,7 +3869,7 @@ __metadata:
     "@momentum-design/telemetry": "workspace:^"
     "@types/glob": ^8.0.0
     "@types/jest": ^29.2.3
-    "@types/node": ^18.11.9
+    "@types/node": 20.14.9
     "@types/yargs": ^17.0.13
     "@typescript-eslint/eslint-plugin": ^5.43.0
     "@typescript-eslint/parser": ^5.43.0
@@ -5123,10 +5123,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^18.0.0, @types/node@npm:^18.11.9":
+"@types/node@npm:*, @types/node@npm:^18.0.0":
   version: 18.11.9
   resolution: "@types/node@npm:18.11.9"
   checksum: cc0aae109e9b7adefc32eecb838d6fad931663bb06484b5e9cbbbf74865c721b03d16fd8d74ad90e31dbe093d956a7c2c306ba5429ba0c00f3f7505103d7a496
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:20.14.9":
+  version: 20.14.9
+  resolution: "@types/node@npm:20.14.9"
+  dependencies:
+    undici-types: ~5.26.4
+  checksum: 5e9eda1ac8c6cc6bcd1063903ae195eaede9aad1bdad00408a919409cfbcdd2d6535aa3d50346f0d385528f9e03dafc7d1b3bad25aedb1dcd79a6ad39d06c35d
   languageName: node
   linkType: hard
 
@@ -17919,6 +17928,13 @@ __metadata:
   version: 0.1.2
   resolution: "unc-path-regex@npm:0.1.2"
   checksum: a05fa2006bf4606051c10fc7968f08ce7b28fa646befafa282813aeb1ac1a56f65cb1b577ca7851af2726198d59475bb49b11776036257b843eaacee2860a4ec
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~5.26.4":
+  version: 5.26.5
+  resolution: "undici-types@npm:5.26.5"
+  checksum: 3192ef6f3fd5df652f2dc1cd782b49d6ff14dc98e5dced492aa8a8c65425227da5da6aafe22523c67f035a272c599bb89cfe803c1db6311e44bed3042fc25487
   languageName: node
   linkType: hard
 
