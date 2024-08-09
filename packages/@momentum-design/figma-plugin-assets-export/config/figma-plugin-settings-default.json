@@ -25,9 +25,9 @@
             "page": "Brand Icons",
             "folder": "brand"
           },
-          {            
-            "page": "Split Icons",            
-            "folder": "split"          
+          {
+            "page": "Split Icons",
+            "folder": "split"
           }
         ],
         "exclude": {
@@ -129,7 +129,7 @@
       "mode": "FULL_SYNC",
       "description": {
         "name": "Brand Visuals",
-        "url": "https://github.com/momentum-design/momentum-design/tree/main/packages/%40momentum-design/brand-visuals",
+        "url": "https://github.com/momentum-design/momentum-design/tree/main/packages/assets/brand-visuals",
         "urlText": "Momentum Brand Visuals package"
       },
       "input": {
@@ -186,7 +186,7 @@
           "prTitle": "Automated Brand Visuals Export 2023-07-07T21:07:54.936Z",
           "prCommitMsg": "feat(assets/brand-visuals): Export 2023-07-07T21:07:54.936Z",
           "prMessage": "feat(assets/brand-visuals): Export 2023-07-07T21:07:54.936Z",
-          "gitRepoFilePath": "packages/@momentum-design/brand-visuals/src"
+          "gitRepoFilePath": "packages/assets/brand-visuals/src"
         }
       }
     }
