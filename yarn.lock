@@ -3621,12 +3621,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/another-package@workspace:packages/@momentum-design/anotherPackage":
-  version: 0.0.0-use.local
-  resolution: "@momentum-design/another-package@workspace:packages/@momentum-design/anotherPackage"
-  languageName: unknown
-  linkType: soft
-
 "@momentum-design/automation@workspace:^, @momentum-design/automation@workspace:packages/@momentum-design/automation":
   version: 0.0.0-use.local
   resolution: "@momentum-design/automation@workspace:packages/@momentum-design/automation"
@@ -3842,12 +3836,6 @@ __metadata:
   dependencies:
     "@momentum-design/builder": "workspace:^"
     rimraf: ^6.0.1
-  languageName: unknown
-  linkType: soft
-
-"@momentum-design/new-package@workspace:packages/@momentum-design/newPackage":
-  version: 0.0.0-use.local
-  resolution: "@momentum-design/new-package@workspace:packages/@momentum-design/newPackage"
   languageName: unknown
   linkType: soft
 
