@@ -27,6 +27,6 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "preserveConstEnums": true,
-  },
+    "preserveConstEnums": true
+  }
 }
