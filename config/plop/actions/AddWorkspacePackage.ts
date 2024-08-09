@@ -11,7 +11,7 @@ export const AddWorkspacePackage: ActionType = {
   templateFiles: `${join(
     `${base}`,
     '**',
-    `*.(${FILE_TYPE.DEFAULT}|${FILE_TYPE.MARKDOWN}|${FILE_TYPE.JSON}|${FILE_TYPE.TYPESCRIPT})`,
+    `*.(${FILE_TYPE.DEFAULT})`,
   )}`,
   destination: `${join(
     `${folders.workspace}`,
