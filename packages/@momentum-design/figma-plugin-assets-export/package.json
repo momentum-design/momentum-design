@@ -17,7 +17,7 @@
     "tsc:ui": "tsc --noEmit -p src/ui",
     "tsc:watch": "concurrently -n widget,iframe \"npm run tsc:plugin -- --watch --preserveWatchOutput\" \"npm run tsc:ui -- --watch --preserveWatchOutput\"",
     "build": "npm run build:ui && npm run build:plugin -- --minify",
-    "build:plugin": "esbuild src/plugin/index.ts --bundle --outfile=dist/index.js",
+    "build:plugin": "esbuild src/plugin/index.ts --bundle --outfile=dist/index.js --target='es6'",
     "build:ui": "vite build --minify esbuild --emptyOutDir=false",
     "build:watch": "concurrently -n widget,iframe \"npm run build:plugin -- --watch\" \"npm run build:ui -- --watch\"",
     "clean": "echo \"script 'clean' has not been implemented\"",
