@@ -19,8 +19,19 @@ More specific information is provided in each sub-package.
 
 1. Fork the repository
 2. Clone the forked repository
-3. Verify that your forked repos are set up with the correct remote references.
-    Running git remote -v in your repository directory should return settings like these:
+    ```
+    git clone https://github.com/{username}/momentum-design.git
+    ```
+3. Navigate to the root of the repo.
+    ```
+    cd momentum-design
+    ```
+4. Setup upstream remote references in your local
+    ```
+    git remote add upstream https://github.com/momentum-design/momentum-design.git
+    ```
+5. Verify that your forked repos are set up with the correct remote references.
+    Running `git remote -v` in your repository directory should return settings like these:
 
     ```bash
     origin git@github.com:{username}/momentum-design.git (fetch)
@@ -28,9 +39,8 @@ More specific information is provided in each sub-package.
     upstream git@github.com:momentum-design/momentum-design.git (fetch)
     upstream git@github.com:momentum-design/momentum-design.git (push)
     ```
-
-4. Run `yarn` in the root of the repo
-5. Run `yarn build` in the root of the repo
+6. Run `yarn` in the root of the repo
+7. Run `yarn build` in the root of the repo
 
 ## Executing scripts in the packages
 
@@ -51,34 +61,6 @@ Steps for creating a PR (after [First time setup](#first-time-setup) has been do
 5. Create a PR against base repository / main branch on Github
 6. **Important: Add a proper description and title to the PR - it should be formatted, human-readable and also not include the description template text anymore.**
 7. Set the *validated* label on the PR to kick off the pipeline if you have the access rights for it.
-
-## Steps to contribute for components package
-
-- Clone this repository locally:
-    ```
-    git clone https://github.com/momentum-design/momentum-design.git
-    ```
-- Go to the project and run yarn
-    ```
-    cd momentum-design
-    nvm use
-    yarn
-    ```
-- Install dependencies before we start components package
-    ```
-        yarn @momentum-design/token-builder build
-        yarn @momentum-design/tokens build
-        yarn @momentum-design/fonts build
-        yarn @momentum-design/common build
-        yarn @momentum-design/builder build
-        yarn @momentum-design/icons build
-    ```
-- Finally, you can run dev
-    ```
-        yarn @momentum-design/components dev
-    ```
-- Your localhost will fire up: http://localhost:6006/
-- Done.
 
 ## PR Reviews
 
