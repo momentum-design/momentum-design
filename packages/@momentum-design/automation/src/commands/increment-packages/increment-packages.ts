@@ -13,11 +13,13 @@ class IncrementPackages extends Command {
   }
 
   public static process(config: Config): Promise<Array<string>> {
-    const { step, ...getPackagesConfig } = config;
+    const { dryRun, step, ...getPackagesConfig } = config;
     const previousVersions: Array<string> = [];
 
     return GetPackages.process({ ...getPackagesConfig })
-      .then((packages) => Promise.all(packages.collection.map((pack) => pack.readDefinition())))
+      .then((packages) => dryRun
+        ? packages.collection
+        : Promise.all(packages.collection.map((pack) => pack.readDefinition())))
       .then((packages) => packages.map((pack) => {
         previousVersions.push(pack.definition.version || '0.0.0');
 
@@ -27,7 +29,7 @@ class IncrementPackages extends Command {
           patch: step[2],
         });
       }))
-      .then((packages) => Promise.all(packages.map((pack) => pack.writeDefinition())))
+      .then((packages) => dryRun ? packages : Promise.all(packages.map((pack) => pack.writeDefinition())))
       .then((packages) => packages.map(
         (pack, index) => `${pack.package}: ${previousVersions[index]} => ${pack.definition.version}`,
       ));
