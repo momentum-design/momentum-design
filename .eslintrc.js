@@ -12,7 +12,7 @@ module.exports = {
   globals: {
     BufferEncoding: 'readonly',
   },
-  ignorePatterns: ['**/dist/**', '*.hbs', 'scripts/**'],
+  ignorePatterns: ['**/dist/**', '*.hbs', 'scripts/**', '**/husky/**'],
   overrides: [
     {
       files: ['**/*.test.ts'],
@@ -77,6 +77,7 @@ module.exports = {
     'tsdoc/syntax': 'warn',
     'no-unsafe-optional-chaining': 'off',
     'no-nonoctal-decimal-escape': 'off',
+    'json/*': ['error', { allowComments: true }],
   },
   settings: {
     'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],

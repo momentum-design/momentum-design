@@ -12,6 +12,9 @@
     "./packages/**/*"
   ],
   "scripts": {
+    "analyze:dependencies": "yarn syncpack lint",
+    "analyze:config": "eslint \"./config/**\"",
+    "analyze:root": "yarn analyze:config && yarn analyze:dependencies",
     "analyze": "yarn workspaces foreach --topological-dev -p run analyze",
     "build": "yarn workspaces foreach --topological-dev -p run build",
     "test": "NODE_ENV=test yarn workspaces foreach --topological-dev -p run test",
@@ -19,7 +22,6 @@
     "publish:npmjs": "yarn workspaces foreach --topological-dev -p run publish:npmjs",
     "postinstall": "husky ./config/husky",
     "upgrade:vscode": "yarn dlx @yarnpkg/sdks vscode",
-    "analyze:config": "eslint \"./config/**\"",
     "clean:plop": "rimraf ./config/plop/dist",
     "build:plop": "yarn clean:plop && node ./config/plop/esbuild.config.plop.js",
     "generate": "yarn generate:plop && yarn install",

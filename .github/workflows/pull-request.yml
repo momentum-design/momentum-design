@@ -137,9 +137,52 @@ jobs:
       - name: Display Package Matrix
         run: echo "generated package matrix - ${{ steps.generate-package-matrix.outputs.packages }}"
 
+  analyze-root:
+    name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Analyze Root
+    needs: [generate-package-matrix, initialize]
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
+    
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v3.7.0
+        with:
+          node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
+          
+      - name: Uncache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            packages/**/node_modules
+          key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Uncache Telemetry Dist
+        uses: actions/cache@v3
+        with:
+          path: 'packages/@momentum-design/telemetry/dist'
+          key: momentum-design-telemetry-dist-${{ matrix.os }}-${{ env.rid }}
+
+      - name: Synchronize Packages
+        run: yarn
+
+      - name: Analyze
+        run: yarn analyze:root
+
   analyze-prebuild:
     name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Analyze - Prebuild
-    needs: [generate-package-matrix, initialize]
+    needs: [analyze-root, generate-package-matrix, initialize]
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -182,7 +225,7 @@ jobs:
 
   test-prebuild:
     name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Test - Prebuild
-    needs: [generate-package-matrix, initialize]
+    needs: [analyze-root, generate-package-matrix, initialize]
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -225,7 +268,7 @@ jobs:
 
   build:
     name: ${{ matrix.os }} Build
-    needs: initialize
+    needs: [analyze-root, initialize]
     runs-on: ${{ matrix.os }}
 
     strategy:
