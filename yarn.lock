@@ -3816,9 +3816,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/illustrations@workspace:^, @momentum-design/illustrations@workspace:packages/@momentum-design/illustrations":
+"@momentum-design/illustrations@workspace:^, @momentum-design/illustrations@workspace:packages/assets/illustrations":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/illustrations@workspace:packages/@momentum-design/illustrations"
+  resolution: "@momentum-design/illustrations@workspace:packages/assets/illustrations"
   dependencies:
     "@momentum-design/builder": "workspace:^"
     rimraf: ^6.0.1
