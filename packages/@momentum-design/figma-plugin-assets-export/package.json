@@ -31,14 +31,15 @@
     "dev": "concurrently -n tsc,build,vite 'npm:tsc:watch' 'npm:build:watch' 'vite'"
   },
   "devDependencies": {
-    "@figma/plugin-typings": "^1.90.0",
-    "@octokit/types": "^8.0.0",
-    "@testing-library/jest-dom": "^6.2.0",
-    "@testing-library/react": "^14.1.2",
+    "@figma/plugin-typings": "^1.97.0",
+    "@octokit/types": "^13.5.0",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.4.8",
+    "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.5.2",
-    "@types/jest": "^29.2.3",
+    "@types/jest": "^29.5.12",
     "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.0.9",
+    "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react-refresh": "^1.3.6",
     "concurrently": "^8.2.2",
     "esbuild": "^0.23.0",
@@ -46,17 +47,17 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "ncp": "^2.0.0",
-    "ts-jest": "^29.1.1",
+    "ts-jest": "^29.2.4",
     "typescript": "^4.8.4",
-    "vite": "^3.2.5",
-    "vite-plugin-singlefile": "^0.13.1"
+    "vite": "^5.4.0",
+    "vite-plugin-singlefile": "^2.0.2"
   },
   "dependencies": {
-    "@octokit/core": "^4.1.0",
-    "classnames": "^2.3.2",
+    "@octokit/core": "^6.1.2",
+    "classnames": "^2.5.1",
     "isomorphic-fetch": "^3.0.0",
-    "octokit-plugin-create-pull-request": "^4.0.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "octokit-plugin-create-pull-request": "^6.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   }
 }
