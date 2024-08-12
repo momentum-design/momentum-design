@@ -110,7 +110,7 @@ jobs:
       - name: Cache Telemetry Dist
         uses: actions/cache@v3
         with:
-          path: 'packages/@momentum-design/telemetry/dist'
+          path: 'packages/tools/telemetry/dist'
           key: momentum-design-telemetry-dist-ubuntu-latest-${{ env.rid }} # this will need to be updated to match the os matrix
 
       - name: Uncache Dependencies
@@ -171,7 +171,7 @@ jobs:
       - name: Uncache Telemetry Dist
         uses: actions/cache@v3
         with:
-          path: 'packages/@momentum-design/telemetry/dist'
+          path: 'packages/tools/telemetry/dist'
           key: momentum-design-telemetry-dist-${{ matrix.os }}-${{ env.rid }}
 
       - name: Synchronize Packages
@@ -214,7 +214,7 @@ jobs:
       - name: Uncache Telemetry Dist
         uses: actions/cache@v3
         with:
-          path: 'packages/@momentum-design/telemetry/dist'
+          path: 'packages/tools/telemetry/dist'
           key: momentum-design-telemetry-dist-${{ matrix.os }}-${{ env.rid }}
 
       - name: Synchronize Packages
@@ -257,7 +257,7 @@ jobs:
       - name: Uncache Telemetry Dist
         uses: actions/cache@v3
         with:
-          path: 'packages/@momentum-design/telemetry/dist'
+          path: 'packages/tools/telemetry/dist'
           key: momentum-design-telemetry-dist-${{ matrix.os }}-${{ env.rid }}
 
       - name: Synchronize Packages
