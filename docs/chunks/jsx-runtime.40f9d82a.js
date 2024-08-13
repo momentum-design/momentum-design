@@ -1,4 +1,4 @@
-import{r as u}from"./index.95a01558.js";const f={English:"en",Spanish:"es"};Object.values(f);const L={indexName:{BASE_URL:"/momentum-design/",MODE:"production",DEV:!1,PROD:!0}.ALGOLIA_INDEX_NAME,appId:{BASE_URL:"/momentum-design/",MODE:"production",DEV:!1,PROD:!0}.ALGOLIA_APP_ID,apiKey:{BASE_URL:"/momentum-design/",MODE:"production",DEV:!1,PROD:!0}.ALGOLIA_DOC_SEARCH};var m={exports:{}},n={};/**
+import{r as u}from"./index.c4a0e63f.js";const f={English:"en",Spanish:"es"};Object.values(f);const L={indexName:{BASE_URL:"/momentum-design/",MODE:"production",DEV:!1,PROD:!0}.ALGOLIA_INDEX_NAME,appId:{BASE_URL:"/momentum-design/",MODE:"production",DEV:!1,PROD:!0}.ALGOLIA_APP_ID,apiKey:{BASE_URL:"/momentum-design/",MODE:"production",DEV:!1,PROD:!0}.ALGOLIA_DOC_SEARCH};var m={exports:{}},n={};/**
  * @license React
  * react-jsx-runtime.production.min.js
  *
