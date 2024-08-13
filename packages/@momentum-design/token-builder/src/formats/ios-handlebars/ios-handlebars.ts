@@ -43,25 +43,27 @@ Handlebars.registerHelper('transformCoreColorName', (name) => {
   return name.replace(/^mdsColor/, 'momentum');
 });
 
-Handlebars.registerHelper('groupTokens', (tokens) => {
-  const groups = {};
-
-  // Define a mapping of invalid names to their alternate values
+Handlebars.registerHelper('sanitizedName', (string) => {
+  // Define a dictionary of incorrect to correct values
   const invalidNames = {
     default: 'defaultColor',
+    Globaltint: 'GlobalTint',
+    Groupedbackground: 'GroupedBackground',
+    Gradientdivider: 'GradientDivider',
   };
+
+  // Check if the string is in the dictionary and return the corrected value if it is
+  return invalidNames[string] || string;
+});
+
+Handlebars.registerHelper('groupTokens', (tokens) => {
+  const groups = {};
 
   tokens.forEach((token) => {
     const match = token.name.match(/^mdsColorTheme(.*?)([A-Z][a-z]+)(.*)$/);
     if (match) {
       const category = match[2];
-      let name = match[3].charAt(0).toLowerCase() + match[3].slice(1);
-
-      // Check if the name is in the invalidNames mapping and replace it if necessary
-      if (invalidNames[name]) {
-        name = invalidNames[name];
-      }
-
+      const name = match[3].charAt(0).toLowerCase() + match[3].slice(1);
       if (!groups[category]) {
         groups[category] = [];
       }
