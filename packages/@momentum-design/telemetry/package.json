@@ -39,11 +39,11 @@
   "dependencies": {
     "@amplitude/analytics-browser": "^1.6.1",
     "winston": "^3.8.2",
-    "winston-transport": "^4.5.0"
+    "winston-transport": "^4.5.1"
   },
   "devDependencies": {
-    "@microsoft/api-documenter": "^7.25.9",
-    "@microsoft/api-extractor": "^7.47.4",
+    "@microsoft/api-documenter": "^7.25.10",
+    "@microsoft/api-extractor": "^7.47.5",
     "@types/jest": "^29.5.12",
     "@types/node": "20.14.9",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
