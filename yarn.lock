@@ -3597,9 +3597,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@momentum-design/animations@workspace:packages/@momentum-design/animations":
+"@momentum-design/animations@workspace:packages/assets/animations":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/animations@workspace:packages/@momentum-design/animations"
+  resolution: "@momentum-design/animations@workspace:packages/assets/animations"
   dependencies:
     "@momentum-design/builder": "workspace:^"
     ncp: ^2.0.0
