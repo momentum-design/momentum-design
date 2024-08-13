@@ -2,93 +2,12 @@ import { Format as SDFormat, Formatter as SDFormatter } from 'style-dictionary';
 import Handlebars from 'handlebars';
 import fs from 'fs';
 import path from 'path';
+import HandlebarsHelpers from './handlebars-helpers';
 import CONSTANTS from './constants';
 
 const template = (filePath: string) => Handlebars.compile(
   fs.readFileSync(path.resolve(__dirname, '../../../../', filePath), { encoding: 'utf8' }),
 );
-
-Handlebars.registerHelper('isBaseTheme', (themeName) => themeName === 'Light');
-Handlebars.registerHelper('isCoreTokens', (destination) => destination.startsWith('core'));
-Handlebars.registerHelper('valueIsHex', (value) => value.startsWith('#'));
-Handlebars.registerHelper('lowercaseFirst', (value) => value.charAt(0).toLowerCase() + value.slice(1));
-Handlebars.registerHelper('hexToUIColor', (hex) => {
-  const sanitizedHex = hex.replace(/^#/, '');
-
-  if (sanitizedHex.length === 8) {
-    const alpha = (parseInt(sanitizedHex.substring(6, 8), 16) / 255).toFixed(2);
-    return `UIColor(hex: 0x${sanitizedHex.substring(0, 6).toUpperCase()}, withAlpha: ${alpha})`;
-  } if (sanitizedHex.length === 6) {
-    return `UIColor(hex: 0x${sanitizedHex.toUpperCase()})`;
-  }
-
-  return '';
-});
-
-Handlebars.registerHelper('transformCoreColorName', (name) => {
-  // Define the prefix replacements
-  const prefixReplacements = {
-    mdsColorCore: 'momentum',
-    mdsColorDecorative: 'momentum',
-  };
-
-  // Check for each prefix and replace it
-  for (const [prefix, replacement] of Object.entries(prefixReplacements)) {
-    if (name.startsWith(prefix)) {
-      return name.replace(prefix, replacement);
-    }
-  }
-
-  // If no specific prefix is matched, default to replacing 'mdsColor' with 'momentum'
-  return name.replace(/^mdsColor/, 'momentum');
-});
-
-Handlebars.registerHelper('sanitizedName', (string) => {
-  // Define a dictionary of incorrect to correct values
-  const invalidNames = {
-    default: 'defaultColor',
-    Globaltint: 'GlobalTint',
-    Groupedbackground: 'GroupedBackground',
-    Gradientdivider: 'GradientDivider',
-  };
-
-  // Check if the string is in the dictionary and return the corrected value if it is
-  return invalidNames[string] || string;
-});
-
-Handlebars.registerHelper('groupTokens', (tokens) => {
-  const groups = {};
-
-  tokens.forEach((token) => {
-    const match = token.name.match(/^mdsColorTheme(.*?)([A-Z][a-z]+)(.*)$/);
-    if (match) {
-      const category = match[2];
-      const name = match[3].charAt(0).toLowerCase() + match[3].slice(1);
-      if (!groups[category]) {
-        groups[category] = [];
-      }
-      groups[category].push({ name, value: token.value });
-    }
-  });
-
-  return Object.entries(groups).map(([category, items]) => ({ category, items }));
-});
-
-Handlebars.registerHelper('classNameFromPath', (path) => {
-  // Extract the file name from the path
-  const fileName = path.split('/').pop();
-
-  // Remove the file extension
-  const baseName = fileName.replace(/\.[^/.]+$/, '');
-
-  // Remove the word "Stable"
-  const cleanedName = baseName.replace(/-stable/i, '');
-
-  // Convert to PascalCase (e.g., "light" -> "Light")
-  const className = cleanedName.split('-').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join('');
-
-  return className;
-});
 
 class IosHandlebars {
   iosHandlebarsPath: string;
@@ -98,13 +17,14 @@ class IosHandlebars {
       throw new Error('ios handlebars path not found!');
     }
     this.iosHandlebarsPath = iosHandlebarsPath;
+
+    HandlebarsHelpers.register();
   }
 
   public get formatter(): SDFormatter {
     return ({ dictionary, file }): string => template(this.iosHandlebarsPath!)({
       tokens: dictionary.allTokens,
       destination: file.destination,
-      theme: file.destination,
     });
   }
 
