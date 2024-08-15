@@ -38,9 +38,18 @@ open class {{classNameFromPath ../destination}}MomentumTheme{{sanitizedName cate
 {{/each}}
 open class {{classNameFromPath destination}}MomentumTheme: MomentumThemeTokensProtocol {
     {{#each (groupTokens tokens)}}
-    public let {{lowercaseFirst (sanitizedName category)}}: any MomentumTheme{{sanitizedName category}}ColorPaletteProtocol = {{classNameFromPath ../destination}}MomentumTheme{{sanitizedName category}}ColorPalette()
+    open var {{lowercaseFirst (sanitizedName category)}}: any MomentumTheme{{sanitizedName category}}ColorPaletteProtocol
     {{/each}}
-    public init() {}
+
+    public init(
+        {{#each (groupTokens tokens)}}
+        {{lowercaseFirst (sanitizedName category)}}: any MomentumTheme{{sanitizedName category}}ColorPaletteProtocol = {{classNameFromPath ../destination}}MomentumTheme{{sanitizedName category}}ColorPalette(){{#unless @last}},{{/unless}}
+        {{/each}}
+    ) {
+        {{#each (groupTokens tokens)}}
+        self.{{lowercaseFirst (sanitizedName category)}} = {{lowercaseFirst (sanitizedName category)}}
+        {{/each}}
+    }
 }
 {{/if}}
 
