@@ -1,8 +1,8 @@
 /// <reference types="astro/client" />
 interface ImportMetaEnv {
-  readonly ALGOLIA_DOC_SEARCH: string;
-  readonly ALGOLIA_INDEX_NAME: string;
-  readonly ALGOLIA_APP_ID: string;
+  readonly PUBLIC_ALGOLIA_DOC_SEARCH: string;
+  readonly PUBLIC_ALGOLIA_INDEX_NAME: string;
+  readonly PUBLIC_ALGOLIA_APP_ID: string;
 }
 
 interface ImportMeta {
