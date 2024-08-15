@@ -983,6 +983,40 @@
               "value": "{color.highcontrast.white.HighlightColor}",
               "description": ""
             }
+          },
+          "default": {
+            "normal": {
+              "value": "{color.highcontrast.white.ButtonFaceColor}",
+              "type": "color",
+              "description": "HEX: #262626\nUsed for chips."
+            },
+            "hover": {
+              "value": "{color.highcontrast.white.HighlightColor}",
+              "type": "color",
+              "description": "HEX: ##3b3b3b\nUsed for chips."
+            },
+            "active": {
+              "value": "{color.highcontrast.white.HighlightColor}",
+              "type": "color",
+              "description": "HEX: #545454\nUsed for chips."
+            }
+          },
+          "error": {
+            "normal": {
+              "value": "{color.highcontrast.white.ButtonFaceColor}",
+              "type": "color",
+              "description": "HEX: #4f0e10\nUsed for chips."
+            },
+            "hover": {
+              "value": "{color.highcontrast.white.HighlightColor}",
+              "type": "color",
+              "description": "HEX: ##780d13\nUsed for chips."
+            },
+            "active": {
+              "value": "{color.highcontrast.white.HighlightColor}",
+              "type": "color",
+              "description": "HEX: #ab0a15\nUsed for chips."
+            }
           }
         },
         "namelabel": {

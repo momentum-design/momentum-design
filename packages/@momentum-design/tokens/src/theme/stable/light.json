@@ -987,6 +987,40 @@
               "value": "{color.decorative.violet.30}",
               "description": ""
             }
+          },
+          "default": {
+            "normal": {
+              "value": "{color.core.gray.10}",
+              "type": "color",
+              "description": "HEX: #ededed\nUsed for chips."
+            },
+            "hover": {
+              "value": "{color.core.gray.20}",
+              "type": "color",
+              "description": "HEX: #dedede\nUsed for chips."
+            },
+            "active": {
+              "value": "{color.core.gray.30}",
+              "type": "color",
+              "description": "HEX: #c9c9c9\nUsed for chips."
+            }
+          },
+          "error": {
+            "normal": {
+              "value": "{color.core.red.10}",
+              "type": "color",
+              "description": "HEX: #ffe8ea\nUsed for chips."
+            },
+            "hover": {
+              "value": "{color.core.red.20}",
+              "type": "color",
+              "description": "HEX: #ffd4da\nUsed for chips."
+            },
+            "active": {
+              "value": "{color.core.red.30}",
+              "type": "color",
+              "description": "HEX: #ffb8c1\nUsed for chips."
+            }
           }
         },
         "namelabel": {
