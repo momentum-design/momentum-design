@@ -1,4 +1,4 @@
-import tar from 'tar';
+import * as tar from 'tar';
 
 const compress = (path: string): Promise<string> => {
   const gzPath = `${path.split('/').pop()}.tgz`;
