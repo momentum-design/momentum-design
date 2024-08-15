@@ -31,8 +31,6 @@ jobs:
           echo from base $FROM_BASE
           echo validated $VALIDATED
 
-          echo algolia ${{ env.ALGOLIA_APP_ID }}
-
           if [[ $FROM_BASE == 1 || $VALIDATED == 1 ]]
           then
             echo 'pull request is validated, running tests'
@@ -125,8 +123,8 @@ jobs:
           key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Synchronize Packages
-        run: yarn
-
+        run: yarn &  echo algolia ${{ env.ALGOLIA_APP_ID }}
+         
       - name: Update Main Branch
         run: |
           git fetch origin main --unshallow
