@@ -25,11 +25,11 @@ export default defineConfig({
           copy({
             targets: [
               {
-                src: path.join(process.cwd(), '../', 'icons/dist/svg/*.svg'),
+                src: path.join(process.cwd(), '../../', 'assets/icons/dist/svg/*.svg'),
                 dest: 'dist/icons',
               },
               {
-                src: path.join(process.cwd(), '../', 'illustrations/dist/svg/*.svg'),
+                src: path.join(process.cwd(), '../../', 'assets/illustrations/dist/svg/*.svg'),
                 dest: 'dist/illustrations',
               },
             ],
