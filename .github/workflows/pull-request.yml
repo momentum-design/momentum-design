@@ -10,7 +10,6 @@ on:
 
 env:
   rid: ${{ github.run_id }}-${{ github.run_number }}
-  ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
 
 
 jobs:
@@ -123,7 +122,7 @@ jobs:
           key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Synchronize Packages
-        run: yarn &  echo algolia ${{ env.ALGOLIA_APP_ID }}
+        run: yarn
          
       - name: Update Main Branch
         run: |
