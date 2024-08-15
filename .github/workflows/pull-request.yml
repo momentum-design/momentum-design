@@ -10,6 +10,8 @@ on:
 
 env:
   rid: ${{ github.run_id }}-${{ github.run_number }}
+  ALGOLIA_APP_ID: ${{ vars.ALGOLIA_APP_ID }}
+
 
 jobs:
   validate-action:
@@ -28,6 +30,8 @@ jobs:
 
           echo from base $FROM_BASE
           echo validated $VALIDATED
+
+          echo ${{ env.ALGOLIA_APP_ID }}
 
           if [[ $FROM_BASE == 1 || $VALIDATED == 1 ]]
           then

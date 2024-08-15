@@ -3657,7 +3657,6 @@ __metadata:
     "@momentum-design/telemetry": "workspace:^"
     "@types/jest": ^29.5.12
     "@types/node": 20.14.9
-    "@types/tar": ^6.1.3
     "@types/yargs": ^17.0.32
     "@typescript-eslint/eslint-plugin": ^5.43.0
     "@typescript-eslint/parser": ^5.43.0
@@ -5359,16 +5358,6 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: 03028cc34b81802e150925202dea7ce5740913fca60c9b9f4b757332bd6ec5164462ca30dbc16b24d8bc0e379b516b7ee3bde3f60b09d01bf11045a98055c8bd
-  languageName: node
-  linkType: hard
-
-"@types/tar@npm:^6.1.3":
-  version: 6.1.3
-  resolution: "@types/tar@npm:6.1.3"
-  dependencies:
-    "@types/node": "*"
-    minipass: ^3.3.5
-  checksum: 3a221f74adfcef8555b9c4cc951907dfd567630744ffe5211da1b44caf2a4c3b02297b73c9fb02d171e93a7a7c74fb15c1826e3f0438f0e5e8f4c790db59ddcf
   languageName: node
   linkType: hard
 
@@ -13863,7 +13852,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minipass@npm:^3.0.0, minipass@npm:^3.1.1, minipass@npm:^3.1.6, minipass@npm:^3.3.5":
+"minipass@npm:^3.0.0, minipass@npm:^3.1.1, minipass@npm:^3.1.6":
   version: 3.3.5
   resolution: "minipass@npm:3.3.5"
   dependencies:
