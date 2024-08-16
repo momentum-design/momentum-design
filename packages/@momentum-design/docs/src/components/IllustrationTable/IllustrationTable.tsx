@@ -27,7 +27,7 @@ export const IllustrationTable = ({ illustrations, size }: Props) => {
     () => (
       <div className={`illustrationGrid grid${getSize(size)}`}>
         {Object.entries(illustrations).map(([key, path]) => {
-          const finalPath = `${path.replace('./svg', '/dist/illustrations')}`;
+          const finalPath = `${path.replace('./svg', '/momentum-design/illustrations')}`;
           return (
             <div className="illustrationWrapper">
               <img
