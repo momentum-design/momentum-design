@@ -7,6 +7,7 @@ import copy from 'rollup-plugin-copy';
 import mdx from '@astrojs/mdx';
 import path from 'path';
 
+// `import.meta.resolve` provides accurate, stable paths for the icons and illustrations packages, ensuring reliable path resolution for tasks like copying files, compared to using relative paths.
 const iconsDistFolder = path.dirname(import.meta.resolve('@momentum-design/icons/dist/manifest.json'));
 const illustrationsDistFolder = path.dirname(import.meta.resolve('@momentum-design/illustrations/dist/manifest.json'));
 
