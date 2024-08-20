@@ -7,6 +7,9 @@ import copy from 'rollup-plugin-copy';
 import mdx from '@astrojs/mdx';
 import path from 'path';
 
+const iconsDistFolder = path.dirname(import.meta.resolve('@momentum-design/icons/dist/manifest.json'));
+const illustrationsDistFolder = path.dirname(import.meta.resolve('@momentum-design/illustrations/dist/manifest.json'));
+
 // https://astro.build/config
 export default defineConfig({
   integrations: [
@@ -25,11 +28,11 @@ export default defineConfig({
           copy({
             targets: [
               {
-                src: path.join(process.cwd(), '../../', 'assets/icons/dist/svg/*.svg'),
+                src: path.join(iconsDistFolder, '/svg/*.svg'),
                 dest: 'dist/icons',
               },
               {
-                src: path.join(process.cwd(), '../../', 'assets/illustrations/dist/svg/*.svg'),
+                src: path.join(illustrationsDistFolder, '/svg/*.svg'),
                 dest: 'dist/illustrations',
               },
             ],
