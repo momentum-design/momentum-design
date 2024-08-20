@@ -7,7 +7,7 @@
             "parent": "theme/stable/light",
             "type": "color",
             "value": "{color.core.black-alpha.95}",
-            "description": ""
+            "description": "#000000 95%"
           },
           "disabled": {
             "parent": "theme/stable/light",
@@ -1038,13 +1038,8 @@
         },
         "skeleton": {
           "normal": {
-            "$extensions": {
-              "studio.tokens": {
-                "modify": {}
-              }
-            },
             "type": "color",
-            "value": "linear-gradient(123deg, {color.core.black-alpha.20} 0%, {color.core.black-alpha.30} 27.6%, {color.core.black-alpha.40} 58.85%, {color.core.black-alpha.50} 100%);",
+            "value": "linear-gradient(123deg, {color.core.black-alpha.20} 0%, {color.core.black-alpha.30} 27.6%, {color.core.black-alpha.40} 58.85%, {color.core.black-alpha.50} 100%)",
             "description": "linear-gradient(123deg, #00000033 0%, #0000004d 27.6%, #00000066 58.85%, #00000080 100%)"
           }
         }

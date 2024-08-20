@@ -11,9 +11,9 @@ env:
   BUILD_PATH: '.' # default value when not using subfolders
   rid: ${{ github.run_id }}-${{ github.run_number }}
   # Setting an environment variable with the value of a configuration variable
-  ALGOLIA_APP_ID: ${{ vars.ALGOLIA_APP_ID }}
-  ALGOLIA_INDEX_NAME: ${{ vars.ALGOLIA_INDEX_NAME }}
-  ALGOLIA_DOC_SEARCH: ${{ vars.ALGOLIA_DOC_SEARCH }}
+  PUBLIC_ALGOLIA_APP_ID: ${{ secrets.PUBLIC_ALGOLIA_APP_ID }}
+  PUBLIC_ALGOLIA_INDEX_NAME: ${{ secrets.PUBLIC_ALGOLIA_INDEX_NAME }}
+  PUBLIC_ALGOLIA_DOC_SEARCH: ${{ secrets.PUBLIC_ALGOLIA_DOC_SEARCH }}
 
 
 jobs:
@@ -75,7 +75,7 @@ jobs:
         run: yarn
 
       - name: Build docs with astro (includes all dependencies + astro)
-        run: yarn build
+        run: PUBLIC_ALGOLIA_APP_ID=${{ env.PUBLIC_ALGOLIA_APP_ID }} PUBLIC_ALGOLIA_INDEX_NAME=${{ env.PUBLIC_ALGOLIA_INDEX_NAME }} PUBLIC_ALGOLIA_DOC_SEARCH=${{ env.PUBLIC_ALGOLIA_DOC_SEARCH }} yarn build
         working-directory: ${{ env.BUILD_PATH }}
         
       - name: Cache Documentation
