@@ -411,6 +411,11 @@
               "type": "color",
               "value": "{color.core.blue.90}",
               "description": ""
+            },
+            "active": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "{color.core.blue.90}"
             }
           }
         },

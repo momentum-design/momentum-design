@@ -411,6 +411,10 @@
               "type": "color",
               "value": "{color.core.blue.20}",
               "description": ""
+            },
+            "active": {
+              "value": "{color.core.blue.20}",
+              "type": "color"
             }
           }
         },

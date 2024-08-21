@@ -408,6 +408,10 @@
               "type": "color",
               "value": "{color.highcontrast.black.WindowTextColor}",
               "description": ""
+            },
+            "active": {
+              "value": "{color.highcontrast.black.WindowTextColor}",
+              "type": "color"
             }
           }
         },
