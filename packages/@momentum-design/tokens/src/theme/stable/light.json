@@ -1399,6 +1399,12 @@
             "value": "linear-gradient(44deg, {color.core.blue.50} 14.64%, {color.decorative.cyan.50} 51.1%, {color.core.green.40} 85.36%)",
             "description": "Used for Webex Assitant AI"
           }
+        },
+        "warning": {
+          "normal": {
+            "value": "{color.core.yellow.70}",
+            "type": "color"
+          }
         }
       },
       "control": {

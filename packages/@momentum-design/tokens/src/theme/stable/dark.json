@@ -1406,6 +1406,12 @@
             "value": "linear-gradient(44deg, {color.core.blue.50} 14.64%, {color.decorative.cyan.40} 51.1%, {color.core.green.30} 85.36%)",
             "description": "linear-gradient(44deg, #3492eb 14.64%, #22c7d6 51.1%, #68debd 85.36%)\nUsed for Webex Assitant AI"
           }
+        },
+        "warning": {
+          "normal": {
+            "value": "{color.core.yellow.40}",
+            "type": "color"
+          }
         }
       },
       "control": {
@@ -1943,6 +1949,12 @@
               },
               "type": "color",
               "value": "{color.core.black-alpha.20}"
+            }
+          },
+          "warning": {
+            "normal": {
+              "value": "{color.core.yellow.40}",
+              "type": "color"
             }
           }
         },
