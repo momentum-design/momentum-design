@@ -3683,9 +3683,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/builder@workspace:^, @momentum-design/builder@workspace:packages/@momentum-design/builder":
+"@momentum-design/builder@workspace:^, @momentum-design/builder@workspace:packages/tools/builder":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/builder@workspace:packages/@momentum-design/builder"
+  resolution: "@momentum-design/builder@workspace:packages/tools/builder"
   dependencies:
     "@microsoft/api-documenter": ^7.25.10
     "@microsoft/api-extractor": ^7.47.5
