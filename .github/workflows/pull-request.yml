@@ -162,7 +162,7 @@ jobs:
       - name: Cache Telemetry Dist
         uses: actions/cache@v4
         with:
-          path: 'packages/@momentum-design/telemetry/dist'
+          path: 'packages/tools/telemetry/dist'
           key: momentum-design-telemetry-dist-${{ env.rid }}
 
   analyze-root:
@@ -227,7 +227,7 @@ jobs:
       - name: Uncache Telemetry Dist
         uses: actions/cache@v4
         with:
-          path: 'packages/@momentum-design/telemetry/dist'
+          path: 'packages/tools/telemetry/dist'
           key: momentum-design-telemetry-dist-${{ env.rid }}
 
       - name: Synchronize Packages
@@ -268,7 +268,7 @@ jobs:
       - name: Uncache Telemetry Dist
         uses: actions/cache@v4
         with:
-          path: 'packages/@momentum-design/telemetry/dist'
+          path: 'packages/tools/telemetry/dist'
           key: momentum-design-telemetry-dist-${{ env.rid }}
 
       - name: Synchronize Packages
