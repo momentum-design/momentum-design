@@ -121,7 +121,7 @@ tests-out/
 
 ### SPECIAL CASES ###
 
-packages/tools/figma-plugins/asset-export/dist
+packages/tools/figma-plugins/assets-export/dist
 packages/@momentum-design/components/config/storybook/public/icons
 
 # MAC system File
