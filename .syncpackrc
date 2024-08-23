@@ -59,6 +59,16 @@
       ]
     },
     {
+      "label": "Ensure Eslint is on version 8.27.0 due to ESM support needed in latest version 9.9.0",
+      "dependencies": [
+        "eslint"
+      ],
+      "packages": [
+        "**"
+      ],
+      "pinVersion": "8.27.0"
+    },
+    {
       "label": "Dependencies should be the same version",
       "dependencies": [
         "**"
