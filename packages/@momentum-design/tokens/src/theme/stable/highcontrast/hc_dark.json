@@ -2061,6 +2061,14 @@
           "type": "color",
           "value": "{color.highcontrast.black.WindowTextColor}",
           "description": ""
+        },
+        "hover": {
+          "value": "{color.highcontrast.black.WindowTextColor}",
+          "type": "color"
+        },
+        "pressed": {
+          "value": "{color.highcontrast.black.WindowTextColor}",
+          "type": "color"
         }
       },
       "common": {

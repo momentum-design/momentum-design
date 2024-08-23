@@ -2526,6 +2526,14 @@
           "type": "color",
           "value": "{color.core.yellow.70}",
           "description": ""
+        },
+        "hover": {
+          "value": "{color.core.black-alpha.7}",
+          "type": "color"
+        },
+        "pressed": {
+          "value": "{color.core.black-alpha.20}",
+          "type": "color"
         }
       },
       "gradientdivider": {

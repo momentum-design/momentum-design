@@ -2638,6 +2638,16 @@
           "value": "{color.core.gray.70}",
           "description": ""
         },
+        "hover": {
+          "parent": "theme/stable/dark",
+          "type": "color",
+          "value": "{color.core.white-alpha.7}"
+        },
+        "pressed": {
+          "parent": "theme/stable/dark",
+          "type": "color",
+          "value": "{color.core.white-alpha.20}"
+        },
         "cobalt": {
           "parent": "theme/stable/dark",
           "type": "color",

@@ -1905,6 +1905,14 @@
           "type": "color",
           "value": "{color.highcontrast.white.WindowTextColor}",
           "description": ""
+        },
+        "hover": {
+          "value": "{color.highcontrast.white.WindowTextColor}",
+          "type": "color"
+        },
+        "pressed": {
+          "value": "{color.highcontrast.white.WindowTextColor}",
+          "type": "color"
         }
       },
       "common": {
