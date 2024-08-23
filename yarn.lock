@@ -3807,9 +3807,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/figma-plugin-assets-export@workspace:packages/tools/figma-plugins/asset-export":
+"@momentum-design/figma-plugin-assets-export@workspace:packages/tools/figma-plugins/assets-export":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/figma-plugin-assets-export@workspace:packages/tools/figma-plugins/asset-export"
+  resolution: "@momentum-design/figma-plugin-assets-export@workspace:packages/tools/figma-plugins/assets-export"
   dependencies:
     "@figma/plugin-typings": ^1.97.0
     "@octokit/core": ^6.1.2
