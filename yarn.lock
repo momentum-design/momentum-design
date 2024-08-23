@@ -3650,9 +3650,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/automation@workspace:^, @momentum-design/automation@workspace:packages/@momentum-design/automation":
+"@momentum-design/automation@workspace:^, @momentum-design/automation@workspace:packages/tools/automation":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/automation@workspace:packages/@momentum-design/automation"
+  resolution: "@momentum-design/automation@workspace:packages/tools/automation"
   dependencies:
     "@momentum-design/telemetry": "workspace:^"
     "@types/jest": ^29.5.12
