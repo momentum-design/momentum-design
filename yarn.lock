@@ -3868,9 +3868,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/telemetry@workspace:^, @momentum-design/telemetry@workspace:packages/@momentum-design/telemetry":
+"@momentum-design/telemetry@workspace:^, @momentum-design/telemetry@workspace:packages/tools/telemetry":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/telemetry@workspace:packages/@momentum-design/telemetry"
+  resolution: "@momentum-design/telemetry@workspace:packages/tools/telemetry"
   dependencies:
     "@amplitude/analytics-browser": ^1.6.1
     "@microsoft/api-documenter": ^7.25.10
