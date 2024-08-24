@@ -411,6 +411,10 @@
               "type": "color",
               "value": "{color.core.blue.20}",
               "description": ""
+            },
+            "active": {
+              "value": "{color.core.blue.20}",
+              "type": "color"
             }
           }
         },
@@ -987,6 +991,40 @@
               "value": "{color.decorative.violet.30}",
               "description": ""
             }
+          },
+          "default": {
+            "normal": {
+              "value": "{color.core.gray.10}",
+              "type": "color",
+              "description": "HEX: #ededed\nUsed for chips."
+            },
+            "hover": {
+              "value": "{color.core.gray.20}",
+              "type": "color",
+              "description": "HEX: #dedede\nUsed for chips."
+            },
+            "active": {
+              "value": "{color.core.gray.30}",
+              "type": "color",
+              "description": "HEX: #c9c9c9\nUsed for chips."
+            }
+          },
+          "error": {
+            "normal": {
+              "value": "{color.core.red.10}",
+              "type": "color",
+              "description": "HEX: #ffe8ea\nUsed for chips."
+            },
+            "hover": {
+              "value": "{color.core.red.20}",
+              "type": "color",
+              "description": "HEX: #ffd4da\nUsed for chips."
+            },
+            "active": {
+              "value": "{color.core.red.30}",
+              "type": "color",
+              "description": "HEX: #ffb8c1\nUsed for chips."
+            }
           }
         },
         "namelabel": {
@@ -1360,6 +1398,12 @@
             "type": "color",
             "value": "linear-gradient(44deg, {color.core.blue.50} 14.64%, {color.decorative.cyan.50} 51.1%, {color.core.green.40} 85.36%)",
             "description": "Used for Webex Assitant AI"
+          }
+        },
+        "warning": {
+          "normal": {
+            "value": "{color.core.yellow.70}",
+            "type": "color"
           }
         }
       },
@@ -2482,6 +2526,14 @@
           "type": "color",
           "value": "{color.core.yellow.70}",
           "description": ""
+        },
+        "hover": {
+          "value": "{color.core.black-alpha.7}",
+          "type": "color"
+        },
+        "pressed": {
+          "value": "{color.core.black-alpha.20}",
+          "type": "color"
         }
       },
       "gradientdivider": {
