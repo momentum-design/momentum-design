@@ -9,11 +9,11 @@
       "DOM.Iterable"
     ],
     "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "inlineSources": true,
-    "outDir": "./dist/module",
-    "declarationDir": "./dist/types",
+    "declarationMap": false,
+    "declarationDir": "./dist",
+    "sourceMap": false,
+    "inlineSources": false,
+    "outDir": "./dist",
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -27,15 +27,16 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitOverride": true,
     "useDefineForClassFields": false,
+    "removeComments": false,
     "plugins": [
       {
         "name": "ts-lit-plugin",
         "strict": true
       }
-    ]
+    ],
   },
-  "include": [
-    "src/**/*.*",
+  "files": [
+    "src/index.ts"
   ],
   "exclude": [
     "**/*.e2e-test.ts",

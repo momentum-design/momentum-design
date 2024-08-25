@@ -1,6 +1,6 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
 import { devices } from '@playwright/test';
-import { port } from '../esbuild/e2e-config';
+import { port } from '../esbuild/configs/e2e';
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv

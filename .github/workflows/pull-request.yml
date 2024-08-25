@@ -205,7 +205,7 @@ jobs:
 
   analyze-prebuild:
     name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Analyze - Prebuild
-    needs: [analyze-root, generate-package-matrix, initialize]
+    needs: [analyze-root, generate-package-matrix, build]
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -248,7 +248,7 @@ jobs:
 
   test-prebuild:
     name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Test - Prebuild
-    needs: [analyze-root, generate-package-matrix, initialize]
+    needs: [analyze-root, generate-package-matrix, build]
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -291,7 +291,7 @@ jobs:
 
   analyze-postbuild:
     name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Analyze - Postbuild
-    needs: [generate-package-matrix, build]
+    needs: [analyze-root, generate-package-matrix, build]
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -334,7 +334,7 @@ jobs:
 
   test-postbuild:
     name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Test - Postbuild
-    needs: [generate-package-matrix, build]
+    needs: [analyze-root, generate-package-matrix, build]
     runs-on: ${{ matrix.os }}
 
     strategy:

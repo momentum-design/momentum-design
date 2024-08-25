@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 const esbuild = require('esbuild');
 const chalk = require('chalk');
 const { join } = require('path');
-const { config, outPath } = require('./build-config');
-const { publicPath, port } = require('./e2e-config');
+const { config, outPath } = require('./configs/browser');
+const { publicPath, port } = require('./configs/e2e');
 
 const iife = async () => {
   const ctx = await esbuild.context({
