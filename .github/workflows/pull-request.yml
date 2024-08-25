@@ -114,8 +114,9 @@ jobs:
         run: |
           git fetch origin main --unshallow
 
+      # Build Automation Tooling (Telemetry as precondition)
       - name: Build Automation Tooling
-        run: yarn automation build:cli
+        run: yarn telemetry build && yarn automation build:cli
 
       - id: generate-package-matrix
         name: Generate Package Matrix
