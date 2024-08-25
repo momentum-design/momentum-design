@@ -4,12 +4,12 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "src/components/badge/badge.component.ts",
+      "path": "src/components/avatar/avatar.component.ts",
       "declarations": [
         {
           "kind": "class",
           "description": "",
-          "name": "Badge",
+          "name": "Avatar",
           "slots": [
             {
               "description": "This is a default/unnamed slot",
@@ -21,11 +21,26 @@
               "kind": "field",
               "name": "type",
               "type": {
-                "text": "BadgeType | undefined"
+                "text": "AvatarType | undefined"
               },
-              "description": "Type of the badge\nCan be `regular`, `icon`, `text` or `warning`\n\nDefault: `regular`",
               "attribute": "type",
               "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "alt",
+              "type": {
+                "text": "string | undefined"
+              },
+              "attribute": "alt"
+            },
+            {
+              "kind": "field",
+              "name": "src",
+              "type": {
+                "text": "string | undefined"
+              },
+              "attribute": "src"
             },
             {
               "kind": "field",
@@ -33,101 +48,56 @@
               "type": {
                 "text": "number | undefined"
               },
-              "description": "Scale of the badge (works in combination with length unit)\n\nDefault: `1`",
+              "description": "Scale of the avatar",
               "attribute": "scale"
-            },
-            {
-              "kind": "field",
-              "name": "lengthUnit",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Length unit attribute for scale\n\nDefault: `rem`",
-              "attribute": "length-unit"
-            },
-            {
-              "kind": "field",
-              "name": "iconName",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "If `type` is set to `icon`, attribute `iconName` can\nbe used to choose which icon should be shown\n\nIf no `iconName` is provided, no icon will be rendered.",
-              "attribute": "icon-name"
-            },
-            {
-              "kind": "field",
-              "name": "text",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "If `type` is set to `text`, attribute `text` can\nbe used to pass in any text to be displayed in the badge.",
-              "attribute": "text"
             },
             {
               "kind": "method",
               "name": "updateSize",
-              "privacy": "private"
+              "privacy": "private",
+              "description": "Updates the size by setting the width and height"
             },
             {
               "kind": "method",
-              "name": "iconTemplate"
-            },
-            {
-              "kind": "method",
-              "name": "textTemplate"
-            },
-            {
-              "kind": "method",
-              "name": "warningTemplate"
+              "name": "photoTemplate"
             }
           ],
           "attributes": [
             {
               "name": "type",
               "type": {
-                "text": "BadgeType | undefined"
+                "text": "AvatarType | undefined"
               },
-              "description": "Type of the badge\nCan be `regular`, `icon`, `text` or `warning`\n\nDefault: `regular`",
               "fieldName": "type"
+            },
+            {
+              "name": "alt",
+              "type": {
+                "text": "string | undefined"
+              },
+              "fieldName": "alt"
+            },
+            {
+              "name": "src",
+              "type": {
+                "text": "string | undefined"
+              },
+              "fieldName": "src"
             },
             {
               "name": "scale",
               "type": {
                 "text": "number | undefined"
               },
-              "description": "Scale of the badge (works in combination with length unit)\n\nDefault: `1`",
+              "description": "Scale of the avatar",
               "fieldName": "scale"
-            },
-            {
-              "name": "length-unit",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Length unit attribute for scale\n\nDefault: `rem`",
-              "fieldName": "lengthUnit"
-            },
-            {
-              "name": "icon-name",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "If `type` is set to `icon`, attribute `iconName` can\nbe used to choose which icon should be shown\n\nIf no `iconName` is provided, no icon will be rendered.",
-              "fieldName": "iconName"
-            },
-            {
-              "name": "text",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "If `type` is set to `text`, attribute `text` can\nbe used to pass in any text to be displayed in the badge.",
-              "fieldName": "text"
             }
           ],
           "superclass": {
             "name": "Component",
             "module": "/src/models"
           },
-          "tagName": "mdc-badge",
+          "tagName": "mdc-avatar",
           "summary": "This is MyElement",
           "customElement": true
         }
@@ -137,8 +107,8 @@
           "kind": "js",
           "name": "default",
           "declaration": {
-            "name": "Badge",
-            "module": "src/components/badge/badge.component.ts"
+            "name": "Avatar",
+            "module": "src/components/avatar/avatar.component.ts"
           }
         }
       ]
@@ -309,12 +279,12 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/avatar/avatar.component.ts",
+      "path": "src/components/badge/badge.component.ts",
       "declarations": [
         {
           "kind": "class",
           "description": "",
-          "name": "Avatar",
+          "name": "Badge",
           "slots": [
             {
               "description": "This is a default/unnamed slot",
@@ -326,26 +296,11 @@
               "kind": "field",
               "name": "type",
               "type": {
-                "text": "AvatarType | undefined"
+                "text": "BadgeType | undefined"
               },
+              "description": "Type of the badge\nCan be `regular`, `icon`, `text` or `warning`\n\nDefault: `regular`",
               "attribute": "type",
               "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "alt",
-              "type": {
-                "text": "string | undefined"
-              },
-              "attribute": "alt"
-            },
-            {
-              "kind": "field",
-              "name": "src",
-              "type": {
-                "text": "string | undefined"
-              },
-              "attribute": "src"
             },
             {
               "kind": "field",
@@ -353,56 +308,101 @@
               "type": {
                 "text": "number | undefined"
               },
-              "description": "Scale of the avatar",
+              "description": "Scale of the badge (works in combination with length unit)\n\nDefault: `1`",
               "attribute": "scale"
+            },
+            {
+              "kind": "field",
+              "name": "lengthUnit",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Length unit attribute for scale\n\nDefault: `rem`",
+              "attribute": "length-unit"
+            },
+            {
+              "kind": "field",
+              "name": "iconName",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "If `type` is set to `icon`, attribute `iconName` can\nbe used to choose which icon should be shown\n\nIf no `iconName` is provided, no icon will be rendered.",
+              "attribute": "icon-name"
+            },
+            {
+              "kind": "field",
+              "name": "text",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "If `type` is set to `text`, attribute `text` can\nbe used to pass in any text to be displayed in the badge.",
+              "attribute": "text"
             },
             {
               "kind": "method",
               "name": "updateSize",
-              "privacy": "private",
-              "description": "Updates the size by setting the width and height"
+              "privacy": "private"
             },
             {
               "kind": "method",
-              "name": "photoTemplate"
+              "name": "iconTemplate"
+            },
+            {
+              "kind": "method",
+              "name": "textTemplate"
+            },
+            {
+              "kind": "method",
+              "name": "warningTemplate"
             }
           ],
           "attributes": [
             {
               "name": "type",
               "type": {
-                "text": "AvatarType | undefined"
+                "text": "BadgeType | undefined"
               },
+              "description": "Type of the badge\nCan be `regular`, `icon`, `text` or `warning`\n\nDefault: `regular`",
               "fieldName": "type"
-            },
-            {
-              "name": "alt",
-              "type": {
-                "text": "string | undefined"
-              },
-              "fieldName": "alt"
-            },
-            {
-              "name": "src",
-              "type": {
-                "text": "string | undefined"
-              },
-              "fieldName": "src"
             },
             {
               "name": "scale",
               "type": {
                 "text": "number | undefined"
               },
-              "description": "Scale of the avatar",
+              "description": "Scale of the badge (works in combination with length unit)\n\nDefault: `1`",
               "fieldName": "scale"
+            },
+            {
+              "name": "length-unit",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Length unit attribute for scale\n\nDefault: `rem`",
+              "fieldName": "lengthUnit"
+            },
+            {
+              "name": "icon-name",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "If `type` is set to `icon`, attribute `iconName` can\nbe used to choose which icon should be shown\n\nIf no `iconName` is provided, no icon will be rendered.",
+              "fieldName": "iconName"
+            },
+            {
+              "name": "text",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "If `type` is set to `text`, attribute `text` can\nbe used to pass in any text to be displayed in the badge.",
+              "fieldName": "text"
             }
           ],
           "superclass": {
             "name": "Component",
             "module": "/src/models"
           },
-          "tagName": "mdc-avatar",
+          "tagName": "mdc-badge",
           "summary": "This is MyElement",
           "customElement": true
         }
@@ -412,114 +412,8 @@
           "kind": "js",
           "name": "default",
           "declaration": {
-            "name": "Avatar",
-            "module": "src/components/avatar/avatar.component.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/iconprovider/iconprovider.component.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "IconProvider component, which allows to be consumed from sub components\n(see `providerUtils.consume` for how to consume)\n\nBundling icons will be up to the consumer of this component, such\nthat only a url has to be passed in from which the icons will be\nfetched.",
-          "name": "IconProvider",
-          "members": [
-            {
-              "kind": "field",
-              "name": "Context",
-              "privacy": "public",
-              "static": true,
-              "readonly": true
-            },
-            {
-              "kind": "field",
-              "name": "url",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Url of where icons will be fetched from",
-              "attribute": "url"
-            },
-            {
-              "kind": "field",
-              "name": "fileExtension",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "File extension of icons, default: 'svg'",
-              "attribute": "file-extension",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "lengthUnit",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Length unit used for sizing of icons, default: 'em'",
-              "attribute": "length-unit",
-              "reflects": true
-            },
-            {
-              "kind": "method",
-              "name": "updateValuesInContext",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "updateContext",
-              "privacy": "protected",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              }
-            }
-          ],
-          "attributes": [
-            {
-              "name": "url",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Url of where icons will be fetched from",
-              "fieldName": "url"
-            },
-            {
-              "name": "file-extension",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "File extension of icons, default: 'svg'",
-              "fieldName": "fileExtension"
-            },
-            {
-              "name": "length-unit",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Length unit used for sizing of icons, default: 'em'",
-              "fieldName": "lengthUnit"
-            }
-          ],
-          "superclass": {
-            "name": "Provider",
-            "module": "/src/models"
-          },
-          "tagName": "mdc-iconprovider",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "default",
-          "declaration": {
-            "name": "IconProvider",
-            "module": "src/components/iconprovider/iconprovider.component.ts"
+            "name": "Badge",
+            "module": "src/components/badge/badge.component.ts"
           }
         }
       ]
@@ -669,6 +563,112 @@
           "declaration": {
             "name": "ThemeProvider",
             "module": "src/components/themeprovider/themeprovider.component.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/iconprovider/iconprovider.component.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "IconProvider component, which allows to be consumed from sub components\n(see `providerUtils.consume` for how to consume)\n\nBundling icons will be up to the consumer of this component, such\nthat only a url has to be passed in from which the icons will be\nfetched.",
+          "name": "IconProvider",
+          "members": [
+            {
+              "kind": "field",
+              "name": "Context",
+              "privacy": "public",
+              "static": true,
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "url",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Url of where icons will be fetched from",
+              "attribute": "url"
+            },
+            {
+              "kind": "field",
+              "name": "fileExtension",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "File extension of icons, default: 'svg'",
+              "attribute": "file-extension",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "lengthUnit",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Length unit used for sizing of icons, default: 'em'",
+              "attribute": "length-unit",
+              "reflects": true
+            },
+            {
+              "kind": "method",
+              "name": "updateValuesInContext",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "updateContext",
+              "privacy": "protected",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "url",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Url of where icons will be fetched from",
+              "fieldName": "url"
+            },
+            {
+              "name": "file-extension",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "File extension of icons, default: 'svg'",
+              "fieldName": "fileExtension"
+            },
+            {
+              "name": "length-unit",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Length unit used for sizing of icons, default: 'em'",
+              "fieldName": "lengthUnit"
+            }
+          ],
+          "superclass": {
+            "name": "Provider",
+            "module": "/src/models"
+          },
+          "tagName": "mdc-iconprovider",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "IconProvider",
+            "module": "src/components/iconprovider/iconprovider.component.ts"
           }
         }
       ]
