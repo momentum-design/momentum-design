@@ -5,7 +5,8 @@
 
 ## Overview
 
-This package is WIP - there is no guarantee for consistency, stability till properly released.
+This package is Work In Progress - there is no guarantee for consistency, stability till properly released.
+There will be breaking changes coming up - it is not recommended to consume this package in this early stage.
 
 ## Steps to run this package
 
