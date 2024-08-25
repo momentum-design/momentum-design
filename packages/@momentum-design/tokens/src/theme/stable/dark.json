@@ -411,6 +411,11 @@
               "type": "color",
               "value": "{color.core.blue.90}",
               "description": ""
+            },
+            "active": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "{color.core.blue.90}"
             }
           }
         },
@@ -987,6 +992,40 @@
               "value": "{color.decorative.violet.70}",
               "description": ""
             }
+          },
+          "default": {
+            "normal": {
+              "value": "{color.core.gray.90}",
+              "type": "color",
+              "description": "HEX: #262626\nUsed for chips."
+            },
+            "hover": {
+              "value": "{color.core.gray.80}",
+              "type": "color",
+              "description": "HEX: ##3b3b3b\nUsed for chips."
+            },
+            "active": {
+              "value": "{color.core.gray.70}",
+              "type": "color",
+              "description": "HEX: #545454\nUsed for chips."
+            }
+          },
+          "error": {
+            "normal": {
+              "value": "{color.core.red.90}",
+              "type": "color",
+              "description": "HEX: #4f0e10\nUsed for chips."
+            },
+            "hover": {
+              "value": "{color.core.red.80}",
+              "type": "color",
+              "description": "HEX: ##780d13\nUsed for chips."
+            },
+            "active": {
+              "value": "{color.core.red.70}",
+              "type": "color",
+              "description": "HEX: #ab0a15\nUsed for chips."
+            }
           }
         },
         "namelabel": {
@@ -1366,6 +1405,12 @@
             "type": "color",
             "value": "linear-gradient(44deg, {color.core.blue.50} 14.64%, {color.decorative.cyan.40} 51.1%, {color.core.green.30} 85.36%)",
             "description": "linear-gradient(44deg, #3492eb 14.64%, #22c7d6 51.1%, #68debd 85.36%)\nUsed for Webex Assitant AI"
+          }
+        },
+        "warning": {
+          "normal": {
+            "value": "{color.core.yellow.40}",
+            "type": "color"
           }
         }
       },
@@ -1904,6 +1949,12 @@
               },
               "type": "color",
               "value": "{color.core.black-alpha.20}"
+            }
+          },
+          "warning": {
+            "normal": {
+              "value": "{color.core.yellow.40}",
+              "type": "color"
             }
           }
         },
@@ -2586,6 +2637,16 @@
           "type": "color",
           "value": "{color.core.gray.70}",
           "description": ""
+        },
+        "hover": {
+          "parent": "theme/stable/dark",
+          "type": "color",
+          "value": "{color.core.white-alpha.7}"
+        },
+        "pressed": {
+          "parent": "theme/stable/dark",
+          "type": "color",
+          "value": "{color.core.white-alpha.20}"
         },
         "cobalt": {
           "parent": "theme/stable/dark",
