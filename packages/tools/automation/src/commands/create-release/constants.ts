@@ -10,6 +10,7 @@ const OPTIONS: CommandOptions = {
       '@momentum-design/icons',
       '@momentum-design/illustrations',
       '@momentum-design/brand-visuals',
+      '@momentum-design/components',
     ],
     describe: 'Array of package name strings (fully qualified) to send telemetry for',
     type: 'array',

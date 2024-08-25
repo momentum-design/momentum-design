@@ -3,6 +3,7 @@ const { join } = require('path');
 const projectPath = process.cwd();
 const outPath = join('dist', 'browser', 'index.js');
 
+// todo: define browser targets here:
 const browsers = ['chrome114', 'firefox114'];
 
 const buildConfig = {
@@ -11,10 +12,7 @@ const buildConfig = {
   minify: true,
   sourcemap: true,
   outfile: `${join(projectPath, outPath)}`,
-  // todo: define browser targets here:
   target: browsers,
-  plugins: [
-  ],
 };
 
 module.exports = {
