@@ -18,10 +18,10 @@ jobs:
 
     steps:
       - name: Checkout Project
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node
-        uses: actions/setup-node@v3.7.0
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
@@ -29,7 +29,7 @@ jobs:
           
       - name: Validate Dependencies
         id: validate-dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             node_modules
@@ -41,7 +41,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Cache Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         if: steps.validate-dependencies.outputs.cache-hit != 'true'
         with:
           path: |
@@ -56,17 +56,17 @@ jobs:
 
     steps:
       - name: Checkout Project
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
       - name: Setup Node
-        uses: actions/setup-node@v3.7.0
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
           
       - name: Uncache Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             node_modules
@@ -80,7 +80,7 @@ jobs:
         run: yarn telemetry build && yarn automation build:cli
 
       - name: Cache Automation
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: '**/automation/dist'
           key: automation-dist-${{ runner.os }}-${{ env.rid }}
@@ -95,17 +95,17 @@ jobs:
 
     steps:
       - name: Checkout Project
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
       - name: Setup Node
-        uses: actions/setup-node@v3.7.0
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
           
       - name: Uncache Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             node_modules
@@ -113,7 +113,7 @@ jobs:
           key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Uncache Automation
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: '**/automation/dist'
           key: automation-dist-${{ runner.os }}-${{ env.rid }}
@@ -139,17 +139,17 @@ jobs:
 
     steps:
       - name: Checkout Project
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node
-        uses: actions/setup-node@v3.7.0
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
           
       - name: Uncache Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             node_modules
@@ -163,7 +163,7 @@ jobs:
         run: yarn build
 
       - name: Cache Dist
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: '**/dist'
           key: dist-${{ runner.os }}-${{ env.rid }}
@@ -180,17 +180,17 @@ jobs:
 
     steps:
       - name: Checkout Project
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node
-        uses: actions/setup-node@v3.7.0
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
           
       - name: Uncache Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             node_modules
@@ -198,7 +198,7 @@ jobs:
           key: node-modules-next-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Uncache Dist
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: '**/dist'
           key: dist-${{ runner.os }}-${{ env.rid }}
@@ -230,17 +230,17 @@ jobs:
 
     steps:
       - name: Checkout Project
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node
-        uses: actions/setup-node@v3.7.0
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
           
       - name: Uncache Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             node_modules
@@ -248,7 +248,7 @@ jobs:
           key: node-modules-next-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Uncache Dist
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: '**/dist'
           key: dist-${{ runner.os }}-${{ env.rid }}
@@ -275,17 +275,17 @@ jobs:
 
      steps:
        - name: Checkout Project
-         uses: actions/checkout@v3
+         uses: actions/checkout@v4
 
        - name: Setup Node
-         uses: actions/setup-node@v3.7.0
+         uses: actions/setup-node@v4
          with:
            node-version-file: '.nvmrc'
            registry-url: 'https://registry.npmjs.org'
            cache: 'yarn'
 
        - name: Uncache Dependencies
-         uses: actions/cache@v3
+         uses: actions/cache@v4
          with:
            path: |
             node_modules
@@ -293,7 +293,7 @@ jobs:
            key: node-modules-next-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
        - name: Uncache Dist
-         uses: actions/cache@v3
+         uses: actions/cache@v4
          with:
            path: '**/dist'
            key: dist-${{ runner.os }}-${{ env.rid }}
