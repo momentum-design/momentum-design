@@ -22,15 +22,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Project
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
+      - run: yarn
           
       - name: Validate Dependencies
         id: validate-dependencies
@@ -55,15 +53,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: initialize
     steps:
-      - name: Checkout Project
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
+      - run: yarn
           
       - name: Uncache Dependencies
         uses: actions/cache@v4
@@ -79,7 +75,7 @@ jobs:
         working-directory: ${{ env.BUILD_PATH }}
         
       - name: Cache Documentation
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist/
           key: docs-${{ runner.os }}-${{ env.rid }}
@@ -89,8 +85,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Project
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           ref: docs
 

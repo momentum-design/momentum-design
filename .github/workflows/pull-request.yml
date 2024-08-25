@@ -44,17 +44,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Project
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
+      - run: yarn
           
       - name: Validate Dependencies
         id: validate-dependencies
@@ -87,17 +85,15 @@ jobs:
       packages: ${{ steps.generate-package-matrix.outputs.packages }}
 
     steps:
-      - name: Checkout Project
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-      
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
+      - run: yarn
           
       - name: Uncache Dependencies
         uses: actions/cache@v4
@@ -131,17 +127,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Project
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
+      - run: yarn
           
       - name: Uncache Dependencies
         uses: actions/cache@v4
@@ -177,17 +171,15 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout Project
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
+      - run: yarn
           
       - name: Uncache Dependencies
         uses: actions/cache@v4
@@ -214,17 +206,15 @@ jobs:
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
-      - name: Checkout Project
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
+      - run: yarn
           
       - name: Uncache Dependencies
         uses: actions/cache@v4
@@ -257,17 +247,15 @@ jobs:
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
-      - name: Checkout Project
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
+      - run: yarn
           
       - name: Uncache Dependencies
         uses: actions/cache@v4
@@ -300,17 +288,15 @@ jobs:
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
-      - name: Checkout Project
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
+      - run: yarn
           
       - name: Uncache Dependencies
         uses: actions/cache@v4
@@ -343,17 +329,15 @@ jobs:
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
-      - name: Checkout Project
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
+      - run: yarn
           
       - name: Uncache Dependencies
         uses: actions/cache@v4
