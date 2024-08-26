@@ -1,19 +1,19 @@
 {
-  "extends": "../../../config/typescript/tsconfig.base.json",
+  "extends": "../../config/typescript/tsconfig.base.json",
   "compilerOptions": {
     "target": "es2019",
-    "module": "es2020",
+    "module": "CommonJS",
     "lib": [
       "es2020",
       "DOM",
       "DOM.Iterable"
     ],
     "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "inlineSources": true,
+    "declarationMap": false,
+    "declarationDir": "./dist",
+    "sourceMap": false,
+    "inlineSources": false,
     "outDir": "./dist",
-    "rootDir": "./",
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -27,19 +27,21 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitOverride": true,
     "useDefineForClassFields": false,
+    "removeComments": false,
     "plugins": [
       {
         "name": "ts-lit-plugin",
         "strict": true
       }
-    ]
+    ],
   },
-  "include": [
-    "src/**/*.ts",
-    "config",
-    ".eslintrc.js"
+  "files": [
+    "src/index.ts"
   ],
   "exclude": [
+    "**/*.e2e-test.ts",
+    "**/*.fixtures.ts",
+    "**/*.stories.ts",
     "node_modules"
   ],
 }
