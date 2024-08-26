@@ -155,12 +155,6 @@ jobs:
           path: '**/dist'
           key: dist-${{ env.rid }}
 
-      - name: Cache Telemetry Dist
-        uses: actions/cache@v4
-        with:
-          path: 'packages/tools/telemetry/dist'
-          key: momentum-design-telemetry-dist-${{ env.rid }}
-
   analyze-root:
     name: Analyze Root
     needs: initialize
@@ -218,11 +212,11 @@ jobs:
             packages/**/node_modules
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Uncache Telemetry Dist
+      - name: Uncache Dist
         uses: actions/cache@v4
         with:
-          path: 'packages/tools/telemetry/dist'
-          key: momentum-design-telemetry-dist-${{ env.rid }}
+          path: '**/dist'
+          key: dist-${{ env.rid }}
 
       - name: Synchronize Packages
         run: yarn
@@ -258,11 +252,11 @@ jobs:
             packages/**/node_modules
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
       
-      - name: Uncache Telemetry Dist
+      - name: Uncache Dist
         uses: actions/cache@v4
         with:
-          path: 'packages/tools/telemetry/dist'
-          key: momentum-design-telemetry-dist-${{ env.rid }}
+          path: '**/dist'
+          key: dist-${{ env.rid }}
 
       - name: Synchronize Packages
         run: yarn
