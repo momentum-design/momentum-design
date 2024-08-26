@@ -24,7 +24,7 @@ class HandlebarsHelpers {
   }
 
   static isBaseTheme(themeName: string): boolean {
-    return themeName === 'Light';
+    return themeName.toLowerCase().includes('light');
   }
 
   static isCoreTokens(destination: string): boolean {
