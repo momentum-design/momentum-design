@@ -74,7 +74,7 @@ jobs:
       - name: Cache Documentation
         uses: actions/cache@v4
         with:
-          path: ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist/
+          path: ${{ env.BUILD_PATH }}/packages/documentation/dist/
           key: docs-${{ env.rid }}
 
   deploy:
@@ -93,11 +93,11 @@ jobs:
       - name: Uncache Documentation
         uses: actions/cache@v4
         with:
-          path: ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist/
+          path: ${{ env.BUILD_PATH }}/packages/documentation/dist/
           key: docs-${{ env.rid }}
       
       - name: Process Cached Docs
-        run: cp -avr ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist docs/
+        run: cp -avr ${{ env.BUILD_PATH }}/packages/documentation/dist docs/
 
       - name: Generate GitHub Pages Config
         run: |
