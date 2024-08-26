@@ -94,6 +94,18 @@ const LOCAL_FORMATS = {
       'MD_ELEVATION',
     ] as Array<Transform>,
   },
+  IOS_WEBEX: {
+    EXTENSION: 'swift',
+    FORMAT: 'md-ios-webex',
+    GROUP: 'md',
+    NAME: 'md/ios-webex',
+    PATH: './ios-webex/',
+    TRANSFORMS: [
+      'ATTRIBUTE_CTI',
+      'NAME_CTI_CAMEL',
+      'MD_ELEVATION',
+    ] as Array<Transform>,
+  },
 };
 
 const FORMATS = {

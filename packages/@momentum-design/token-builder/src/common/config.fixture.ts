@@ -9,6 +9,7 @@ const CONFIG_FIXTURE: Config = {
   ],
   formats: Object.keys(CONSTANTS.FORMATS) as Array<Format>,
   prefix: 'config-prefix',
+  iosWebexPath: '@momentum-design/tokens/config/tokens/ios-swift.hbs',
 };
 
 export default CONFIG_FIXTURE;

@@ -43,6 +43,13 @@ const LOCAL_FORMATS = {
     NAME: 'md/json-minimal',
     PATH: './json-minimal/',
   },
+  IOS_WEBEX: {
+    EXTENSION: 'swift',
+    FORMAT: 'md-ios-webex',
+    GROUP: 'md',
+    NAME: 'md/ios-webex',
+    PATH: './ios-webex/',
+  },
 };
 
 const FORMATS = {

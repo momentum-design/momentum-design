@@ -98,7 +98,8 @@
       ]
     }
   ],
-  "formats": ["CSS_VARIABLES", "SCSS_VARIABLES", "WEB_JSON", "ANDROID_RESOURCES", "SWIFT_CLASS", "MD_JSON_MINIMAL"],
+  "formats": ["CSS_VARIABLES", "SCSS_VARIABLES", "WEB_JSON", "ANDROID_RESOURCES", "SWIFT_CLASS", "MD_JSON_MINIMAL", "IOS_WEBEX"],
   "prefix": "mds",
+  "iosWebexPath": "@momentum-design/tokens/config/tokens/ios-swift.hbs",
   "outputReferences": true
 }
