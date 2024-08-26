@@ -28,17 +28,15 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-      - run: yarn
           
       - name: Validate Dependencies
         id: validate-dependencies
         uses: actions/cache@v4
         with:
           path: '**/node_modules'
-          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install Dependencies
-        if: steps.validate-dependencies.outputs.cache-hit != 'true'
         run: yarn
 
       - name: Cache Dependencies
@@ -46,7 +44,7 @@ jobs:
         if: steps.validate-dependencies.outputs.cache-hit != 'true'
         with:
           path: '**/node_modules'
-          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
   build:
     name: Build
@@ -59,13 +57,12 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-      - run: yarn
           
       - name: Uncache Dependencies
         uses: actions/cache@v4
         with:
           path: '**/node_modules'
-          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Synchronize Packages
         run: yarn
@@ -78,7 +75,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist/
-          key: docs-${{ runner.os }}-${{ env.rid }}
+          key: docs-${{ env.rid }}
 
   deploy:
     name: Deploy
@@ -94,10 +91,10 @@ jobs:
           rm -rf ${{ env.BUILD_PATH }}/docs
 
       - name: Uncache Documentation
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist/
-          key: docs-${{ runner.os }}-${{ env.rid }}
+          key: docs-${{ env.rid }}
       
       - name: Process Cached Docs
         run: cp -avr ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist docs/

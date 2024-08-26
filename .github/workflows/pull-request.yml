@@ -52,7 +52,6 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-      - run: yarn
           
       - name: Validate Dependencies
         id: validate-dependencies
@@ -64,7 +63,6 @@ jobs:
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install Dependencies
-        if: steps.validate-dependencies.outputs.cache-hit != 'true'
         run: yarn
 
       - name: Cache Dependencies
@@ -93,7 +91,6 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-      - run: yarn
           
       - name: Uncache Dependencies
         uses: actions/cache@v4
@@ -135,7 +132,6 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-      - run: yarn
           
       - name: Uncache Dependencies
         uses: actions/cache@v4
@@ -179,7 +175,6 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-      - run: yarn
           
       - name: Uncache Dependencies
         uses: actions/cache@v4
@@ -214,7 +209,6 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-      - run: yarn
           
       - name: Uncache Dependencies
         uses: actions/cache@v4
@@ -255,7 +249,6 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-      - run: yarn
           
       - name: Uncache Dependencies
         uses: actions/cache@v4
@@ -296,7 +289,6 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-      - run: yarn
           
       - name: Uncache Dependencies
         uses: actions/cache@v4
@@ -337,7 +329,6 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-      - run: yarn
           
       - name: Uncache Dependencies
         uses: actions/cache@v4
