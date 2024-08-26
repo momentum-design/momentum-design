@@ -77,6 +77,7 @@ class File {
         accessControl: this.iosAccessControl,
         import: this.iosImport,
         objectType: this.iosObjectType,
+        iosWebexPath: this.iosWebexPath,
       },
     };
   }
@@ -110,6 +111,10 @@ class File {
 
   public get iosObjectType(): string | undefined {
     return this.config.iosObjectType;
+  }
+
+  public get iosWebexPath(): string | undefined {
+    return this.config.iosWebexPath;
   }
 
   public get types(): Array<string> {
