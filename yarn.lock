@@ -3747,9 +3747,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/components@workspace:packages/@momentum-design/components":
+"@momentum-design/components@workspace:packages/components":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/components@workspace:packages/@momentum-design/components"
+  resolution: "@momentum-design/components@workspace:packages/components"
   dependencies:
     "@axe-core/playwright": ^4.9.1
     "@custom-elements-manifest/analyzer": ^0.10.3
