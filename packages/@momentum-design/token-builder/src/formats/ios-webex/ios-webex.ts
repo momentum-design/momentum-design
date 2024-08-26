@@ -6,7 +6,7 @@ import HandlebarsHelpers from './handlebars-helpers';
 import CONSTANTS from './constants';
 
 const template = (filePath: string) => Handlebars.compile(
-  fs.readFileSync(path.resolve(__dirname, '../../../../', filePath), { encoding: 'utf-8' }),
+  fs.readFileSync(path.resolve(__dirname, require.resolve(filePath)), { encoding: 'utf-8' }),
 );
 
 class IOSWebex {
