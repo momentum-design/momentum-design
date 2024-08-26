@@ -94,12 +94,12 @@ const LOCAL_FORMATS = {
       'MD_ELEVATION',
     ] as Array<Transform>,
   },
-  IOS_HANDLEBARS: {
+  IOS_WEBEX: {
     EXTENSION: 'swift',
-    FORMAT: 'md-ios-handlebars',
+    FORMAT: 'md-ios-webex',
     GROUP: 'md',
-    NAME: 'md/ios-handlebars',
-    PATH: './ios-handlebars/',
+    NAME: 'md/ios-webex',
+    PATH: './ios-webex/',
     TRANSFORMS: [
       'ATTRIBUTE_CTI',
       'NAME_CTI_CAMEL',

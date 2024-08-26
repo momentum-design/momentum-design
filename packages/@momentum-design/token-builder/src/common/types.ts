@@ -34,7 +34,7 @@ export interface Config {
   transforms?: Array<Transform>;
   schemaFiles?: Array<string>;
   strict?: boolean;
-  iosHandlebarsPath?: string;
+  iosWebexPath?: string;
 }
 
 export type SchemaMap = {fileName: string, jsonSchema: SomeJSONSchema}[]

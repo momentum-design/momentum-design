@@ -1,7 +1,7 @@
 import JsonMinimal from './json-minimal';
-import IosHandlebars from './ios-handlebars';
+import IOSWebex from './ios-webex';
 
 export {
   JsonMinimal as JsonMinimalFormat,
-  IosHandlebars as IosHandlebarsFormat,
+  IOSWebex as IOSWebexFormat,
 };

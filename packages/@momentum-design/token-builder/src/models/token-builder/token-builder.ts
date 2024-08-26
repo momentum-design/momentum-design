@@ -13,7 +13,7 @@ import {
 import { SomeJSONSchema } from 'ajv/dist/types/json-schema';
 import { CONSTANTS, Config as ExternalConfig } from '../../common';
 import { ElevationTransform } from '../../transforms';
-import { IosHandlebarsFormat, JsonMinimalFormat } from '../../formats';
+import { IOSWebexFormat, JsonMinimalFormat } from '../../formats';
 import Dictionary from '../dictionary';
 
 import type { Config } from './types';
@@ -82,7 +82,7 @@ class TokenBuilder {
             .forEach((formatKey) => {
               const formatName = CONSTANTS.FORMATS[formatKey].NAME;
 
-              let format: JsonMinimalFormat | IosHandlebarsFormat;
+              let format: JsonMinimalFormat | IOSWebexFormat;
 
               switch (formatName) {
                 case CONSTANTS.LOCAL_FORMATS.MD_JSON_MINIMAL.NAME:
@@ -91,8 +91,8 @@ class TokenBuilder {
                   StyleDictionary.registerFormat(format.sdConfig);
                   break;
 
-                case CONSTANTS.LOCAL_FORMATS.IOS_HANDLEBARS.NAME:
-                  format = new IosHandlebarsFormat(configObj.iosHandlebarsPath);
+                case CONSTANTS.LOCAL_FORMATS.IOS_WEBEX.NAME:
+                  format = new IOSWebexFormat(configObj.iosWebexPath);
 
                   StyleDictionary.registerFormat(format.sdConfig);
                   break;

@@ -9,27 +9,27 @@ const template = (filePath: string) => Handlebars.compile(
   fs.readFileSync(path.resolve(__dirname, '../../../../', filePath), { encoding: 'utf8' }),
 );
 
-class IosHandlebars {
-  iosHandlebarsPath: string;
+class IOSWebex {
+  iosWebexPath: string;
 
-  constructor(iosHandlebarsPath?: string) {
-    if (!iosHandlebarsPath) {
-      throw new Error('ios handlebars path not found!');
+  constructor(iosWebexPath?: string) {
+    if (!iosWebexPath) {
+      throw new Error('ios webex path not found!');
     }
-    this.iosHandlebarsPath = iosHandlebarsPath;
+    this.iosWebexPath = iosWebexPath;
 
     HandlebarsHelpers.register();
   }
 
   public get formatter(): SDFormatter {
-    return ({ dictionary, file }): string => template(this.iosHandlebarsPath!)({
+    return ({ dictionary, file }): string => template(this.iosWebexPath!)({
       tokens: dictionary.allTokens,
       destination: file.destination,
     });
   }
 
   public get name(): string {
-    return IosHandlebars.CONSTANTS.NAME;
+    return IOSWebex.CONSTANTS.NAME;
   }
 
   public get sdConfig(): SDFormat {
@@ -44,4 +44,4 @@ class IosHandlebars {
   }
 }
 
-export default IosHandlebars;
+export default IOSWebex;

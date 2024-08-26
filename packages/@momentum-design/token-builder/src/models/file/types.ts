@@ -11,5 +11,5 @@ export interface Config {
   iosAccessControl?: string;
   iosImport?: string | Array<string>;
   iosObjectType?: string;
-  iosHandlebarsPath?: string;
+  iosWebexPath?: string;
 }
