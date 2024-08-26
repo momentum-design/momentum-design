@@ -122,7 +122,7 @@ tests-out/
 ### SPECIAL CASES ###
 
 packages/tools/figma-plugins/assets-export/dist
-packages/@momentum-design/components/config/storybook/public/icons
+packages/components/config/storybook/public/icons
 
 # MAC system File
 **/.DS_Store
