@@ -3779,9 +3779,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/docs@workspace:packages/@momentum-design/docs":
+"@momentum-design/docs@workspace:packages/documentation":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/docs@workspace:packages/@momentum-design/docs"
+  resolution: "@momentum-design/docs@workspace:packages/documentation"
   dependencies:
     "@algolia/client-search": ^4.24.0
     "@astrojs/mdx": ^0.11.6
@@ -3798,6 +3798,7 @@ __metadata:
     "@types/react": ^18.3.3
     "@types/react-dom": ^18.3.0
     astro: ^1.6.10
+    fast-glob: ^3.3.2
     html-escaper: ^3.0.3
     lodash: ^4.17.21
     preact: ^10.23.1

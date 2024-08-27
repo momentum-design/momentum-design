@@ -30,7 +30,7 @@ export const KNOWN_LANGUAGES = {
 export const KNOWN_LANGUAGE_CODES = Object.values(KNOWN_LANGUAGES);
 
 // eslint-disable-next-line max-len
-export const GITHUB_EDIT_URL = 'https://github.com/momentum-design/momentum-design/tree/main/packages/%40momentum-design/docs/src/pages';
+export const GITHUB_EDIT_URL = 'https://github.com/momentum-design/momentum-design/tree/main/packages/documentation/src/pages';
 
 export const COMMUNITY_INVITE_URL = '/momentum-design/en';
 
