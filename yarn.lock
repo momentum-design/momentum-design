@@ -3919,9 +3919,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/tokens@workspace:^, @momentum-design/tokens@workspace:packages/@momentum-design/tokens":
+"@momentum-design/tokens@workspace:^, @momentum-design/tokens@workspace:packages/assets/tokens":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/tokens@workspace:packages/@momentum-design/tokens"
+  resolution: "@momentum-design/tokens@workspace:packages/assets/tokens"
   dependencies:
     "@momentum-design/token-builder": "workspace:^"
     rimraf: ^6.0.1

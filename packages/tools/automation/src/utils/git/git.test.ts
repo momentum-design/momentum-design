@@ -73,12 +73,12 @@ describe('@momentum-design/automation - utils.Git', () => {
       const offset = Git.CONSTANTS.COMMIT_INDEX_OFFSET;
       const head = 'head';
       const previous = 'previous';
-      const runResults = '1\t1\tpackages/@momentum-design/tokens/test.file';
+      const runResults = '1\t1\tpackages/tools/tokens/test.file';
       const results = [
         {
           added: 1,
           removed: 1,
-          file: 'packages/@momentum-design/tokens/test.file',
+          file: 'packages/tools/tokens/test.file',
         },
       ];
       let listSpy: jest.SpyInstance;
