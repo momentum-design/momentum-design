@@ -663,6 +663,11 @@
             "type": "color",
             "value": "{color.highcontrast.black.WindowColor}",
             "description": ""
+          },
+          "active": {
+            "value": "{color.highcontrast.black.WindowColor}",
+            "type": "color",
+            "description": "Used for selected text paragraph background"
           }
         },
         "alert": {

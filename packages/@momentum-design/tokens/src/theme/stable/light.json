@@ -667,6 +667,12 @@
             "type": "color",
             "value": "{color.core.blue.60}",
             "description": ""
+          },
+          "active": {
+            "parent": "theme/stable/light",
+            "type": "color",
+            "value": "{color.core.blue.70}",
+            "description": "Used for selected text paragraph background"
           }
         },
         "alert": {
@@ -1848,6 +1854,14 @@
           },
           "promotion": {
             "normal": {
+              "0": {
+                "value": "{color.decorative.purple.70}",
+                "type": "color"
+              },
+              "1": {
+                "value": "{color.decorative.pink.70}",
+                "type": "color"
+              },
               "parent": "theme/stable/light",
               "$extensions": {
                 "studio.tokens": {
@@ -1859,6 +1873,14 @@
               "description": "Used for rest state of promotional button"
             },
             "hover": {
+              "0": {
+                "value": "{color.decorative.purple.80}",
+                "type": "color"
+              },
+              "1": {
+                "value": "{color.decorative.pink.80}",
+                "type": "color"
+              },
               "parent": "theme/stable/light",
               "$extensions": {
                 "studio.tokens": {
@@ -1870,6 +1892,10 @@
               "description": "Used for hover state of promotion button"
             },
             "active": {
+              "0": {
+                "value": "{color.decorative.purple.90}",
+                "type": "color"
+              },
               "parent": "theme/stable/light",
               "$extensions": {
                 "studio.tokens": {
