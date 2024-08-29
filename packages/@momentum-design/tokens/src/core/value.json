@@ -2061,11 +2061,5 @@
         }
       }
     }
-  },
-  "apps": {
-    "parent": "core/value",
-    "type": "text",
-    "value": "Inter",
-    "description": ""
   }
 }
