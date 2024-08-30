@@ -18,7 +18,8 @@
     "publish:npmjs": "yarn npm publish --access=public",
     "test": "yarn test:prebuild && yarn test:postbuild",
     "test:postbuild": "echo \"script 'test:prebuild' has not been implemented\"",
-    "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\""
+    "test:prebuild": "yarn test:unit",
+    "test:unit": "jest ./src/**/*.test.ts"
   },
   "devDependencies": {
     "@momentum-design/token-builder": "workspace:^",
