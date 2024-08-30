@@ -1,7 +1,6 @@
 ---
 import path from 'path';
 import DocsLayout from '../../../../layouts/DocsLayout.astro';
-import fg from 'fast-glob';
 
 export async function getStaticPaths() {
   const processMDFiles = (compiledContent: string, packageName: string) => compiledContent
@@ -12,7 +11,7 @@ export async function getStaticPaths() {
     // fix index file (avoids creating a folder index-md)
     .replaceAll('/index-md', '');
 
-  const pages = await fg(['packages/**/docs/markdown/*.md'], { dot: true });
+  const pages = await Astro.glob('../../../../../../**/docs/markdown/*.md');
   return pages.map((page) => {
     const paths = page.file?.split('/');
     let fileName = paths.pop() || '';
