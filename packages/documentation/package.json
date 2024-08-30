@@ -42,7 +42,6 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "astro": "^1.6.10",
-    "fast-glob": "^3.3.2",
     "lodash": "^4.17.21",
     "preact": "^10.23.1",
     "react": "^18.3.1",
