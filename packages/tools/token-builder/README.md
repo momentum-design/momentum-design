@@ -58,14 +58,14 @@ When utilizing the functionality of this project as either a JavaScript module o
 
 In order to provide a better understanding of each key and its relative value within the configuration file example provided above, we have defined each section in the list below:
 
-* **files** `Array<ConfigFile>` - A list of file configuration objects, each resulting in a built token file. (See [the **ConfigFile** interface](https://github.com/momentum-design/momentum-design/blob/design-token-updates/packages/%40momentum-design/token-builder/src/common/types.ts))
+* **files** `Array<ConfigFile>` - A list of file configuration objects, each resulting in a built token file. (See [the **ConfigFile** interface](https://github.com/momentum-design/momentum-design/blob/design-token-updates/packages/tools/token-builder/src/common/types.ts))
   * **destination** `string` - The destination path and file name (without extension) for the built token file.
-  * **filters** `Filters` - Inclusive CTI model filters to apply when generating the built token file. (See [the **Filters** interface](https://github.com/momentum-design/momentum-design/blob/design-token-updates/packages/%40momentum-design/token-builder/src/common/types.ts))
+  * **filters** `Filters` - Inclusive CTI model filters to apply when generating the built token file. (See [the **Filters** interface](https://github.com/momentum-design/momentum-design/blob/design-token-updates/packages/tools/token-builder/src/common/types.ts))
     * **categories** `Array<string>` - Categories within the CTI model to filter for. This is the first tier within the token object.
     * **items** `Array<string>` - Items within the CTI model to filter for. This is the third tier within the token object.
     * **types** `Array<string>` - Types within the CTI model to filter for. this is the second tier within the token object.
   * **targets** `Array<string>` - Absolute or glob pattern file selectors to use when retreiving source tokens from the target input directory.
-* **formats** `Array<Format>` - Array of supported formats to build source tokens into. (See [the **Format** interface](https://github.com/momentum-design/momentum-design/blob/design-token-updates/packages/%40momentum-design/token-builder/src/common/types.ts))
+* **formats** `Array<Format>` - Array of supported formats to build source tokens into. (See [the **Format** interface](https://github.com/momentum-design/momentum-design/blob/design-token-updates/packages/tools/token-builder/src/common/types.ts))
 * **prefix** `string` - Prefix to prepend to variable names within supporting formats.
 * **outputReferences** `boolean` - If to output references when possible.
 * **cssSelector** `string` - Text that overrides the root css selector.
@@ -75,7 +75,7 @@ In order to provide a better understanding of each key and its relative value wi
 * **iosImport** `string` - Modules to import. Can be a string or array of string. Default: 'UIKit'.
 * **iosObjectType** `string` - The type of the object in the final file. Could be a class, enum, struct, etc. Default: 'class'.
 
-Note that the **formats** key Array can only contain one or more of this tool's supported formats. These can be found as keys of `CONSTANTS.FORMATS` within [this file](https://github.com/momentum-design/momentum-design/blob/design-token-updates/packages/%40momentum-design/token-builder/src/common/constants.ts).
+Note that the **formats** key Array can only contain one or more of this tool's supported formats. These can be found as keys of `CONSTANTS.FORMATS` within [this file](https://github.com/momentum-design/momentum-design/blob/design-token-updates/packages/tools/token-builder/src/common/constants.ts).
 
 ### Tokens
 
