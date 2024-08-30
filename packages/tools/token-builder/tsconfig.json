@@ -15,7 +15,7 @@
   ],
   "paths": {
     "@momentum-design/telemetry": [
-      "../../tools/telemetry/src/index.ts"
+      "../telemetry/src/index.ts"
     ],
   },
 }

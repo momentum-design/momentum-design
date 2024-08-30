@@ -3891,9 +3891,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/token-builder@workspace:^, @momentum-design/token-builder@workspace:packages/@momentum-design/token-builder":
+"@momentum-design/token-builder@workspace:^, @momentum-design/token-builder@workspace:packages/tools/token-builder":
   version: 0.0.0-use.local
-  resolution: "@momentum-design/token-builder@workspace:packages/@momentum-design/token-builder"
+  resolution: "@momentum-design/token-builder@workspace:packages/tools/token-builder"
   dependencies:
     "@microsoft/api-documenter": ^7.25.10
     "@microsoft/api-extractor": ^7.47.5
