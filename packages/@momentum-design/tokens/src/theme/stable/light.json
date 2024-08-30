@@ -7,7 +7,7 @@
             "parent": "theme/stable/light",
             "type": "color",
             "value": "{color.core.black-alpha.95}",
-            "description": "#000000 95%"
+            "description": "HEX: #000000 95%"
           },
           "disabled": {
             "parent": "theme/stable/light",
