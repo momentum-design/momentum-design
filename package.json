@@ -9,7 +9,7 @@
   "private": true,
   "type": "commonjs",
   "workspaces": [
-    "./packages/**/*"
+    "packages/**/*"
   ],
   "scripts": {
     "analyze:dependencies": "yarn syncpack lint",
