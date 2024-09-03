@@ -3754,8 +3754,9 @@ __metadata:
     "@axe-core/playwright": ^4.9.1
     "@custom-elements-manifest/analyzer": ^0.10.3
     "@lit-labs/context": ^0.5.1
-    "@momentum-design/icons": "workspace:^"
-    "@momentum-design/tokens": "workspace:^"
+    "@momentum-design/fonts": "workspace:*"
+    "@momentum-design/icons": "workspace:*"
+    "@momentum-design/tokens": "workspace:*"
     "@playwright/test": ^1.45.3
     "@storybook/addon-a11y": ^8.2.5
     "@storybook/addon-controls": ^8.2.5
@@ -3776,6 +3777,10 @@ __metadata:
     rimraf: ^6.0.1
     storybook: ^8.2.5
     typescript: ^4.8.4
+  peerDependencies:
+    "@momentum-design/fonts": "workspace:*"
+    "@momentum-design/icons": "workspace:*"
+    "@momentum-design/tokens": "workspace:*"
   languageName: unknown
   linkType: soft
 
@@ -3789,10 +3794,10 @@ __metadata:
     "@astrojs/react": ^1.2.2
     "@docsearch/css": ^3.6.1
     "@docsearch/react": ^3.6.1
-    "@momentum-design/icons": "workspace:^"
+    "@momentum-design/icons": "workspace:*"
     "@momentum-design/illustrations": "workspace:^"
     "@momentum-design/token-builder": "workspace:^"
-    "@momentum-design/tokens": "workspace:^"
+    "@momentum-design/tokens": "workspace:*"
     "@types/lodash": ^4.17.7
     "@types/node": 20.14.9
     "@types/react": ^18.3.3
@@ -3840,7 +3845,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/fonts@workspace:packages/assets/fonts":
+"@momentum-design/fonts@workspace:*, @momentum-design/fonts@workspace:packages/assets/fonts":
   version: 0.0.0-use.local
   resolution: "@momentum-design/fonts@workspace:packages/assets/fonts"
   dependencies:
@@ -3849,7 +3854,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/icons@workspace:^, @momentum-design/icons@workspace:packages/assets/icons":
+"@momentum-design/icons@workspace:*, @momentum-design/icons@workspace:packages/assets/icons":
   version: 0.0.0-use.local
   resolution: "@momentum-design/icons@workspace:packages/assets/icons"
   dependencies:
@@ -3918,7 +3923,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/tokens@workspace:^, @momentum-design/tokens@workspace:packages/assets/tokens":
+"@momentum-design/tokens@workspace:*, @momentum-design/tokens@workspace:packages/assets/tokens":
   version: 0.0.0-use.local
   resolution: "@momentum-design/tokens@workspace:packages/assets/tokens"
   dependencies:
