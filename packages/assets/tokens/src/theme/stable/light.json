@@ -13,7 +13,7 @@
             "parent": "theme/stable/light",
             "type": "color",
             "value": "{color.core.black-alpha.40}",
-            "description": "HEX: 000000 40%"
+            "description": ""
           }
         },
         "secondary": {

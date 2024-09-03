@@ -11,7 +11,6 @@ on:
 env:
   rid: ${{ github.run_id }}-${{ github.run_number }}
 
-
 jobs:
   validate-action:
     name: Validate Action
@@ -45,13 +44,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Project
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Setup Node
-        uses: actions/setup-node@v3.7.0
+      - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
@@ -59,25 +55,24 @@ jobs:
           
       - name: Validate Dependencies
         id: validate-dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             node_modules
             packages/**/node_modules
-          key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install Dependencies
-        if: steps.validate-dependencies.outputs.cache-hit != 'true'
         run: yarn
 
       - name: Cache Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         if: steps.validate-dependencies.outputs.cache-hit != 'true'
         with:
           path: |
             node_modules
             packages/**/node_modules
-          key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
   generate-package-matrix:
     name: Generate Package Matrix
@@ -88,34 +83,22 @@ jobs:
       packages: ${{ steps.generate-package-matrix.outputs.packages }}
 
     steps:
-      - name: Checkout Project
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-      
-      - name: Setup Node
-        uses: actions/setup-node@v3.7.0
+      - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
           
-      - name: Build Telemetry
-        run: yarn && yarn telemetry build
-
-      - name: Cache Telemetry Dist
-        uses: actions/cache@v3
-        with:
-          path: 'packages/@momentum-design/telemetry/dist'
-          key: momentum-design-telemetry-dist-ubuntu-latest-${{ env.rid }} # this will need to be updated to match the os matrix
-
       - name: Uncache Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             node_modules
             packages/**/node_modules
-          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Synchronize Packages
         run: yarn
@@ -124,8 +107,9 @@ jobs:
         run: |
           git fetch origin main --unshallow
 
+      # Build Automation Tooling (Telemetry as precondition)
       - name: Build Automation Tooling
-        run: yarn automation build:cli
+        run: yarn telemetry build && yarn automation build:cli
 
       - id: generate-package-matrix
         name: Generate Package Matrix
@@ -134,153 +118,28 @@ jobs:
       - name: Display Package Matrix
         run: echo "generated package matrix - ${{ steps.generate-package-matrix.outputs.packages }}"
 
-  analyze-root:
-    name: Analyze Root
+  build:
+    name: Build
     needs: initialize
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout Project
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Setup Node
-        uses: actions/setup-node@v3.7.0
+      - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
           
       - name: Uncache Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             node_modules
             packages/**/node_modules
-          key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Synchronize Packages
-        run: yarn
-
-      - name: Analyze
-        run: yarn analyze:root
-
-  analyze-prebuild:
-    name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Analyze - Prebuild
-    needs: [analyze-root, generate-package-matrix, initialize]
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
-    
-    steps:
-      - name: Checkout Project
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Setup Node
-        uses: actions/setup-node@v3.7.0
-        with:
-          node-version-file: '.nvmrc'
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'yarn'
-          
-      - name: Uncache Dependencies
-        uses: actions/cache@v3
-        with:
-          path: |
-            node_modules
-            packages/**/node_modules
-          key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Uncache Telemetry Dist
-        uses: actions/cache@v3
-        with:
-          path: 'packages/@momentum-design/telemetry/dist'
-          key: momentum-design-telemetry-dist-${{ matrix.os }}-${{ env.rid }}
-
-      - name: Synchronize Packages
-        run: yarn
-
-      - name: Analyze - Prebuild
-        run: yarn workspace ${{ matrix.package }} analyze:prebuild
-
-  test-prebuild:
-    name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Test - Prebuild
-    needs: [analyze-root, generate-package-matrix, initialize]
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
-    
-    steps:
-      - name: Checkout Project
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Setup Node
-        uses: actions/setup-node@v3.7.0
-        with:
-          node-version-file: '.nvmrc'
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'yarn'
-          
-      - name: Uncache Dependencies
-        uses: actions/cache@v3
-        with:
-          path: |
-            node_modules
-            packages/**/node_modules
-          key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
-      
-      - name: Uncache Telemetry Dist
-        uses: actions/cache@v3
-        with:
-          path: 'packages/@momentum-design/telemetry/dist'
-          key: momentum-design-telemetry-dist-${{ matrix.os }}-${{ env.rid }}
-
-      - name: Synchronize Packages
-        run: yarn
-
-      - name: Test - Prebuild
-        run: yarn workspace ${{ matrix.package }} test:prebuild
-
-  build:
-    name: ${{ matrix.os }} Build
-    needs: [analyze-root, initialize]
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-
-    steps:
-      - name: Checkout Project
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Setup Node
-        uses: actions/setup-node@v3.7.0
-        with:
-          node-version-file: '.nvmrc'
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'yarn'
-          
-      - name: Uncache Dependencies
-        uses: actions/cache@v3
-        with:
-          path: |
-            node_modules
-            packages/**/node_modules
-          key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Synchronize Packages
         run: yarn
@@ -291,14 +150,43 @@ jobs:
           MOMENTUM_METRICS_API_KEY: ${{ secrets.MOMENTUM_METRICS_API_KEY }}
 
       - name: Cache Dist
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: '**/dist'
-          key: dist-${{ matrix.os }}-${{ env.rid }}
+          key: dist-${{ env.rid }}
 
-  analyze-postbuild:
-    name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Analyze - Postbuild
-    needs: [generate-package-matrix, build]
+  analyze-root:
+    name: Analyze Root
+    needs: initialize
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
+          
+      - name: Uncache Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            packages/**/node_modules
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Synchronize Packages
+        run: yarn
+
+      - name: Analyze
+        run: yarn analyze:root
+
+  analyze-prebuild:
+    name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Analyze - Prebuild
+    needs: [analyze-root, generate-package-matrix, build]
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -307,31 +195,108 @@ jobs:
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
-      - name: Checkout Project
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Setup Node
-        uses: actions/setup-node@v3.7.0
+      - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
           
       - name: Uncache Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             node_modules
             packages/**/node_modules
-          key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Uncache Dist
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: '**/dist'
-          key: dist-${{ matrix.os }}-${{ env.rid }}
+          key: dist-${{ env.rid }}
+
+      - name: Synchronize Packages
+        run: yarn
+
+      - name: Analyze - Prebuild
+        run: yarn workspace ${{ matrix.package }} analyze:prebuild
+
+  test-prebuild:
+    name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Test - Prebuild
+    needs: [analyze-root, generate-package-matrix, build]
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
+          
+      - name: Uncache Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            packages/**/node_modules
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
+      
+      - name: Uncache Dist
+        uses: actions/cache@v4
+        with:
+          path: '**/dist'
+          key: dist-${{ env.rid }}
+
+      - name: Synchronize Packages
+        run: yarn
+
+      - name: Test - Prebuild
+        run: yarn workspace ${{ matrix.package }} test:prebuild
+
+  analyze-postbuild:
+    name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Analyze - Postbuild
+    needs: [analyze-root, generate-package-matrix, build]
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
+          
+      - name: Uncache Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            packages/**/node_modules
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Uncache Dist
+        uses: actions/cache@v4
+        with:
+          path: '**/dist'
+          key: dist-${{ env.rid }}
 
       - name: Synchronize Packages
         run: yarn
@@ -341,7 +306,7 @@ jobs:
 
   test-postbuild:
     name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Test - Postbuild
-    needs: [generate-package-matrix, build]
+    needs: [analyze-root, generate-package-matrix, build]
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -350,31 +315,28 @@ jobs:
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
     
     steps:
-      - name: Checkout Project
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Setup Node
-        uses: actions/setup-node@v3.7.0
+      - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
           
       - name: Uncache Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             node_modules
             packages/**/node_modules
-          key: node-modules-${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Uncache Dist
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: '**/dist'
-          key: dist-${{ matrix.os }}-${{ env.rid }}
+          key: dist-${{ env.rid }}
 
       - name: Synchronize Packages
         run: yarn

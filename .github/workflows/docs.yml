@@ -22,11 +22,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Project
-        uses: actions/checkout@v3
-
-      - name: Setup Node
-        uses: actions/setup-node@v3.7.0
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
@@ -34,42 +31,38 @@ jobs:
           
       - name: Validate Dependencies
         id: validate-dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: '**/node_modules'
-          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install Dependencies
-        if: steps.validate-dependencies.outputs.cache-hit != 'true'
         run: yarn
 
       - name: Cache Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         if: steps.validate-dependencies.outputs.cache-hit != 'true'
         with:
           path: '**/node_modules'
-          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
   build:
     name: Build
     runs-on: ubuntu-latest
     needs: initialize
     steps:
-      - name: Checkout Project
-        uses: actions/checkout@v3
-
-      - name: Setup Node
-        uses: actions/setup-node@v3.7.0
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
           
       - name: Uncache Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: '**/node_modules'
-          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Synchronize Packages
         run: yarn
@@ -79,18 +72,17 @@ jobs:
         working-directory: ${{ env.BUILD_PATH }}
         
       - name: Cache Documentation
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
-          path: ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist/
-          key: docs-${{ runner.os }}-${{ env.rid }}
+          path: ${{ env.BUILD_PATH }}/packages/documentation/dist/
+          key: docs-${{ env.rid }}
 
   deploy:
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Project
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           ref: docs
 
@@ -99,13 +91,13 @@ jobs:
           rm -rf ${{ env.BUILD_PATH }}/docs
 
       - name: Uncache Documentation
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
-          path: ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist/
-          key: docs-${{ runner.os }}-${{ env.rid }}
+          path: ${{ env.BUILD_PATH }}/packages/documentation/dist/
+          key: docs-${{ env.rid }}
       
       - name: Process Cached Docs
-        run: cp -avr ${{ env.BUILD_PATH }}/packages/@momentum-design/docs/dist docs/
+        run: cp -avr ${{ env.BUILD_PATH }}/packages/documentation/dist docs/
 
       - name: Generate GitHub Pages Config
         run: |
