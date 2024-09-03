@@ -3794,10 +3794,10 @@ __metadata:
     "@astrojs/react": ^1.2.2
     "@docsearch/css": ^3.6.1
     "@docsearch/react": ^3.6.1
-    "@momentum-design/icons": "workspace:^"
+    "@momentum-design/icons": "workspace:*"
     "@momentum-design/illustrations": "workspace:^"
     "@momentum-design/token-builder": "workspace:^"
-    "@momentum-design/tokens": "workspace:^"
+    "@momentum-design/tokens": "workspace:*"
     "@types/lodash": ^4.17.7
     "@types/node": 20.14.9
     "@types/react": ^18.3.3
@@ -3854,7 +3854,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/icons@workspace:*, @momentum-design/icons@workspace:^, @momentum-design/icons@workspace:packages/assets/icons":
+"@momentum-design/icons@workspace:*, @momentum-design/icons@workspace:packages/assets/icons":
   version: 0.0.0-use.local
   resolution: "@momentum-design/icons@workspace:packages/assets/icons"
   dependencies:
@@ -3923,7 +3923,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/tokens@workspace:*, @momentum-design/tokens@workspace:^, @momentum-design/tokens@workspace:packages/assets/tokens":
+"@momentum-design/tokens@workspace:*, @momentum-design/tokens@workspace:packages/assets/tokens":
   version: 0.0.0-use.local
   resolution: "@momentum-design/tokens@workspace:packages/assets/tokens"
   dependencies:
