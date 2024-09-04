@@ -28,6 +28,9 @@ const main = async () => {
     }
   }
 
+  delete packageJson.scripts;
+  delete packageJson.devDependencies;
+
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
 };
 
