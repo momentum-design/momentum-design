@@ -35,7 +35,8 @@
     "copy:fonts": "node scripts/copyFonts.js",
     "docs": "echo \"script 'docs' has not been implemented\"",
     "publish": "yarn publish:npmjs",
-    "publish:npmjs": "yarn npm publish --access=public",
+    "publish:npmjs:prepare": "node scripts/prepareForPublish.js",
+    "publish:npmjs": "yarn publish:npmjs:prepare && yarn npm publish --access=public",
     "test": "yarn test:prebuild && yarn test:postbuild",
     "test:postbuild": "yarn test:e2e",
     "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\"",
@@ -50,13 +51,14 @@
   },
   "dependencies": {
     "@lit-labs/context": "^0.5.1",
-    "@momentum-design/icons": "workspace:^",
-    "@momentum-design/tokens": "workspace:^",
     "lit": "^3.1.4"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.9.1",
     "@custom-elements-manifest/analyzer": "^0.10.3",
+    "@momentum-design/fonts": "workspace:*",
+    "@momentum-design/icons": "workspace:*",
+    "@momentum-design/tokens": "workspace:*",
     "@playwright/test": "^1.45.3",
     "@storybook/addon-a11y": "^8.2.5",
     "@storybook/addon-controls": "^8.2.5",
@@ -76,5 +78,10 @@
     "rimraf": "^6.0.1",
     "storybook": "^8.2.5",
     "typescript": "^4.8.4"
+  },
+  "peerDependencies": {
+    "@momentum-design/fonts": "workspace:*",
+    "@momentum-design/icons": "workspace:*",
+    "@momentum-design/tokens": "workspace:*"
   }
 }
