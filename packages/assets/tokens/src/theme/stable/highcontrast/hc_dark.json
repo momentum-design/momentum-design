@@ -665,7 +665,7 @@
             "description": ""
           },
           "active": {
-            "value": "{color.highcontrast.black.WindowColor}",
+            "value": "{color.highcontrast.black.HighlightColor}",
             "type": "color",
             "description": "Used for selected text paragraph background"
           }
