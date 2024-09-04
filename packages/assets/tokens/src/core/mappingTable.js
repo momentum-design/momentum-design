@@ -7,7 +7,7 @@ module.exports = {
     },
     HotlightColor: {
       value: '#ffff00',
-      description: 'SystemColorHighlightColor. Used for Hyperlink + Actionable Text/Icons'
+      description: 'SystemColorHotlightColor. Used for Hyperlink + Actionable Text/Icons'
     },
     GrayTextColor: {
       value: '#3ff23f',
@@ -41,7 +41,7 @@ module.exports = {
     },
     HotlightColor: {
       value: '#00009f',
-      description: 'SystemColorHighlightColor. Used for Hyperlink + Actionable Text/Icons'
+      description: 'SystemColorHotlightColor. Used for Hyperlink + Actionable Text/Icons'
     },
     GrayTextColor: {
       value: '#600000',
