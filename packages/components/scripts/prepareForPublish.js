@@ -7,7 +7,6 @@ const main = async () => {
   const packageJson = require(packageJsonPath);
 
   const dependencies = packageJson.dependencies || {};
-  const devDependencies = packageJson.devDependencies || {};
   const peerDependencies = packageJson.peerDependencies || {};
 
   for (const dep in dependencies) {
