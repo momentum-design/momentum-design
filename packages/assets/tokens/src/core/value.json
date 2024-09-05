@@ -1592,13 +1592,13 @@
           "parent": "core/value",
           "type": "color",
           "value": "#ffffff",
-          "description": "Text main color"
+          "description": "SystemColorWindowTextColor.  Used for Text main color."
         },
         "HotlightColor": {
           "parent": "core/value",
           "type": "color",
           "value": "#ffff00",
-          "description": "SystemColorHighlightColor. Used for Hyperlink + Actionable Text/Icons"
+          "description": "SystemColorHotlightColor. Used for Hyperlink + Actionable Text/Icons"
         },
         "GrayTextColor": {
           "parent": "core/value",
@@ -1642,13 +1642,13 @@
           "parent": "core/value",
           "type": "color",
           "value": "#000000",
-          "description": "Text main color"
+          "description": "SystemColorWindowTextColor. Text main color"
         },
         "HotlightColor": {
           "parent": "core/value",
           "type": "color",
           "value": "#00009f",
-          "description": "SystemColorHighlightColor. Used for Hyperlink + Actionable Text/Icons"
+          "description": "SystemColorHotlightColor. Used for Hyperlink + Actionable Text/Icons"
         },
         "GrayTextColor": {
           "parent": "core/value",
