@@ -16,12 +16,6 @@ const main = async () => {
       }
   }
 
-  for (const dep in devDependencies) {
-    if (devDependencies[dep].startsWith('workspace:')) {
-        devDependencies[dep] = `*`;
-    }
-  }
-
   for (const dep in peerDependencies) {
     if (peerDependencies[dep].startsWith('workspace:')) {
         peerDependencies[dep] = `*`;
