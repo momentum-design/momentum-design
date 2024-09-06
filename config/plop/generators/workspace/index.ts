@@ -9,7 +9,11 @@ const generator: Partial<PlopGeneratorConfig> = {
   description: 'Scaffold a new package',
   prompts: [
     prompt(`${packageName}`, `${packageName} you'd like to scaffold`, PROMPT_TYPE.INPUT),
-    prompt(`${destinationFolderName}`, `${destinationFolderName} Destination folder within the workspace (e.g., tools, assets)`, PROMPT_TYPE.INPUT)
+    prompt(
+      `${destinationFolderName}`,
+      `${destinationFolderName} Destination folder within the workspace (e.g., tools, assets)`,
+      PROMPT_TYPE.INPUT,
+    ),
   ],
   actions: [
     AddWorkspacePackage,
