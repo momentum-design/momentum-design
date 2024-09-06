@@ -7,7 +7,6 @@ const main = async () => {
   const packageJson = require(packageJsonPath);
 
   const dependencies = packageJson.dependencies || {};
-  const devDependencies = packageJson.devDependencies || {};
   const peerDependencies = packageJson.peerDependencies || {};
 
   for (const dep in dependencies) {
@@ -16,17 +15,14 @@ const main = async () => {
       }
   }
 
-  for (const dep in devDependencies) {
-    if (devDependencies[dep].startsWith('workspace:')) {
-        devDependencies[dep] = `*`;
-    }
-  }
-
   for (const dep in peerDependencies) {
     if (peerDependencies[dep].startsWith('workspace:')) {
         peerDependencies[dep] = `*`;
     }
   }
+
+  delete packageJson.scripts;
+  delete packageJson.devDependencies;
 
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
 };
