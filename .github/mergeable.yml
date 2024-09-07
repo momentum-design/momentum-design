@@ -1,0 +1,26 @@
+version: 2
+mergeable:
+  - when: pull_request.*
+    name: 'Pull Request / Generic'
+    validate:
+      - do: title
+        begins_with:
+          match: ['build','chore','ci','docs','feat','fix','perf','refactor','revert','style','test']
+          message: 'Title must follow semantic commit message format. Please use one of the following to start the title with: `build`,`chore`,`ci`,`docs`,`feat`,`fix`,`perf`,`refactor`,`revert`,`style`,`test`'
+        must_exclude:
+          regex: ^\[WIP\]|^\[DRAFT\]
+      - do: labels
+        must_exclude:
+          regex: 'wip|draft'
+      - do: description
+        no_empty:
+          enabled: true
+          message: Description matter and should not be empty. Provide detail with **what** was changed, **why** it was changed.
+  - when: pull_request.*
+    name: 'Pull Request / Core Team'
+    filter:
+      - do: author
+        team: 'momentum-design/momentum-design-engineers'
+    pass:
+      - do: labels
+        add: 'Core Team'
