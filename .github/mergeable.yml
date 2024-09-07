@@ -15,12 +15,13 @@ mergeable:
       - do: description
         no_empty:
           enabled: true
-          message: Description matter and should not be empty. Provide detail with **what** was changed, **why** it was changed.
-  - when: pull_request.*
+          message: 'Description matters and should not be empty. Provide detail with **what** was changed, **why** it was changed.'
+  - when: pull_request.opened
     name: 'Pull Request / Core Team'
     filter:
       - do: author
         team: 'momentum-design/momentum-design-engineers'
+    validate: []
     pass:
       - do: labels
         add: 'Core Team'
