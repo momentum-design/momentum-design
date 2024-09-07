@@ -9,7 +9,7 @@ mergeable:
           message: 'Title must follow semantic commit message format. Please use one of the following to start the title with: `build`,`chore`,`ci`,`docs`,`feat`,`fix`,`perf`,`refactor`,`revert`,`style`,`test`'
         must_exclude:
           regex: ^\[WIP\]|^\[DRAFT\]
-      - do: labels
+      - do: label
         must_exclude:
           regex: 'wip|draft'
       - do: description
