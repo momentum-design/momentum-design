@@ -26,8 +26,8 @@ mergeable:
     name: 'Pull Request / Icons Label'
     validate:
       - do: changeset
-        - must_include:
-            regex: 'packages/assets/icons/*'
+        must_include:
+          regex: 'packages/assets/icons/*'
     pass:
       - do: labels
         add: 'icons'
