@@ -5,7 +5,7 @@ mergeable:
     validate:
       - do: title
         must_include:
-          regex: '^(feat|docs|chore|fix|refactor|test|style|perf|revert|build|ci)(\(\w+\))?:.+$/i'
+          regex: '^(feat|docs|chore|fix|refactor|test|style|perf|revert|build|ci)(\(\w+\))?:.+$'
           message: 'Title must follow semantic commit message format. Please use one of the following to start the title with: `feat`,`docs`,`chore`,`fix`,`refactor`,`test`,`style`,`perf`,`revert`,`build`,`ci`'
       - do: description
         no_empty:
