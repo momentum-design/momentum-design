@@ -73,7 +73,7 @@ test('mdc-icon', async ({ componentsPage }) => {
   /**
    * ATTRIBUTES
    */
-  await test.step('attributes', async () => {
+  await test.step('attributes temp change', async () => {
     await test.step('attributes should be present on component by default', async () => {
       const icon = await setup({ componentsPage, name });
       await expect(icon).toHaveAttribute('name', name);
