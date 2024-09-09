@@ -25,6 +25,7 @@ export enum FILE_TYPE {
 }
 
 export const packageName: string = 'packageName';
+export const destinationFolderName: string = 'destinationFolderName';
 export const root: string = process.cwd();
 export const plop: string = `${join(root, 'config', 'plop')}`;
 

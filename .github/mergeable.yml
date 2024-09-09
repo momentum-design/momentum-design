@@ -1,0 +1,34 @@
+version: 2
+mergeable:
+  - when: pull_request.*, pull_request_review.*
+    name: 'Pull Request / Title & Description Check'
+    validate:
+      - do: title
+        must_include:
+          regex: '^(feat|docs|chore|fix|refactor|test|style|perf|revert|build|ci)(\(\w+\))?:.+$'
+          message: 'Title must follow semantic commit message format. Please use one of the following to start the title with: `feat`,`docs`,`chore`,`fix`,`refactor`,`test`,`style`,`perf`,`revert`,`build`,`ci`'
+      - do: description
+        no_empty:
+          enabled: true
+          message: 'Description matters and should not be empty. Provide detail with **what** was changed, **why** it was changed and **how** it will impact our consumers.'
+
+  - when: pull_request.opened
+    name: 'Pull Request / Core Team'
+    filter:
+      - do: author
+        team: 'momentum-design/momentum-design-engineers'
+    validate: []
+    pass:
+      - do: labels
+        add: 'Author: Core Team'
+
+  - when: pull_request.opened
+    name: 'Pull Request / Icons Label'
+    validate:
+      - do: changeset
+        must_include:
+          regex: 'packages/assets/icons/*'
+    pass:
+      - do: labels
+        add: 'icons'
+        
