@@ -3935,6 +3935,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@momentum-design/utils@workspace:packages/assets/utils":
+  version: 0.0.0-use.local
+  resolution: "@momentum-design/utils@workspace:packages/assets/utils"
+  dependencies:
+    "@types/node": 20.14.9
+    "@typescript-eslint/eslint-plugin": ^5.43.0
+    "@typescript-eslint/parser": ^5.43.0
+    eslint: 8.27.0
+    eslint-plugin: ^1.0.1
+    eslint-plugin-import: ^2.26.0
+    rimraf: ^6.0.1
+    typescript: ^4.8.4
+  languageName: unknown
+  linkType: soft
+
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
