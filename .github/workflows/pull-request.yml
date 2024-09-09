@@ -342,16 +342,7 @@ jobs:
         run: yarn
         
       - name: Test - Postbuild
-        run: |
-          echo "Checking directories..."
-          ls 
-          ls -R packages/components/playwright-report/
-
-      - name: Debug Directory Structure
-        run: |
-          echo "Checking directories..."
-          ls -R packages/components/
-          ls -R packages/components/playwright-report/
+        run: yarn workspace ${{ matrix.package }} test:postbuild
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
