@@ -343,3 +343,11 @@ jobs:
         
       - name: Test - Postbuild
         run: yarn workspace ${{ matrix.package }} test:postbuild
+
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v4
+        if: ${{ always() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
