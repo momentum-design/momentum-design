@@ -1,21 +1,17 @@
 version: 2
 mergeable:
-  - when: pull_request.*
-    name: 'Pull Request / Generic'
+  - when: pull_request.*, pull_request_review.*
+    name: 'Pull Request / Title & Description Check'
     validate:
       - do: title
-        begins_with:
-          match: ['build','chore','ci','docs','feat','fix','perf','refactor','revert','style','test']
-          message: 'Title must follow semantic commit message format. Please use one of the following to start the title with: `build`,`chore`,`ci`,`docs`,`feat`,`fix`,`perf`,`refactor`,`revert`,`style`,`test`'
-        must_exclude:
-          regex: ^\[WIP\]|^\[DRAFT\]
-      - do: label
-        must_exclude:
-          regex: 'wip|draft'
+        must_include:
+          regex: '^(feat|docs|chore|fix|refactor|test|style|perf|revert|build|ci)(\(\w+\))?:.+$'
+          message: 'Title must follow semantic commit message format. Please use one of the following to start the title with: `feat`,`docs`,`chore`,`fix`,`refactor`,`test`,`style`,`perf`,`revert`,`build`,`ci`'
       - do: description
         no_empty:
           enabled: true
-          message: 'Description matters and should not be empty. Provide detail with **what** was changed, **why** it was changed.'
+          message: 'Description matters and should not be empty. Provide detail with **what** was changed, **why** it was changed and **how** it will impact our consumers.'
+
   - when: pull_request.opened
     name: 'Pull Request / Core Team'
     filter:
@@ -24,4 +20,15 @@ mergeable:
     validate: []
     pass:
       - do: labels
-        add: 'Core Team'
+        add: 'Author: Core Team'
+
+  - when: pull_request.opened
+    name: 'Pull Request / Icons Label'
+    validate:
+      - do: changeset
+        must_include:
+          regex: 'packages/assets/icons/*'
+    pass:
+      - do: labels
+        add: 'icons'
+        
