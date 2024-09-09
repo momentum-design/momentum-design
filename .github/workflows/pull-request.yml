@@ -344,6 +344,9 @@ jobs:
       - name: Test - Postbuild
         run: yarn workspace ${{ matrix.package }} test:postbuild
 
+      - name: List Playwright Report Directory
+        run: ls -R packages/components/playwright-report/
+
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
         if: ${{ always() }}
