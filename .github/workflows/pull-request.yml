@@ -344,6 +344,10 @@ jobs:
       - name: Test - Postbuild
         run: yarn workspace ${{ matrix.package }} test:postbuild
 
+      - name: Open latest test report 
+        if: ${{ matrix.package == '@momentum-design/components' }}
+        run: yarn workspace ${{ matrix.package }} test:e2e:report
+
       - name: Display Playwright Report in Job Summary
         if: ${{ matrix.package == '@momentum-design/components' }}
         run: |
