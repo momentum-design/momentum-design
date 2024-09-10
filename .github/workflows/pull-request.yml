@@ -345,7 +345,7 @@ jobs:
         run: yarn workspace ${{ matrix.package }} test:postbuild
 
       - name: Display Playwright Report in Job Summary
-        if: ${{ matrix.package == 'components' }}
+        if: ${{ matrix.package == '@momentum-design/components' }}
         run: |
           # Append the HTML content of index.html to $GITHUB_STEP_SUMMARY
           echo "<details><summary>Playwright Test Report</summary>" >> $GITHUB_STEP_SUMMARY
@@ -354,7 +354,7 @@ jobs:
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() && matrix.package == 'components' }}
+        if: ${{ !cancelled() && matrix.package == '@momentum-design/components' }}
         with:
           name: playwright-report
           path: packages/components/playwright-report/
@@ -362,6 +362,6 @@ jobs:
         
       - name: Download Playwright Report
         uses: actions/download-artifact@v4
-        if: ${{ matrix.package == 'components' }}
+        if: ${{ matrix.package == '@momentum-design/components' }}
         with:
           name: playwright-report
