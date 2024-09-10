@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Color Picker Example</title>
+</head>
+
+<body>
+    <h1 class="title">Color Picker Example</h1>
+    <div>
+        <label for="background-color">Background Color:</label>
+        <input type="color" id="background-color" name="background-color">
+        <span id="bg-color-text"></span>
+    </div>
+    
+    <div>
+        <label for="foreground-color">Foreground Color:</label>
+        <input type="color" id="foreground-color" name="foreground-color" readonly>
+        <span id="fg-color-text"></span>
+    </div>
+
+    <iframe height="1000px" width="800px" id="iframe" src="https://webaim.org/resources/contrastchecker/"></iframe>
+
+    <script src="./test.js" type="text/javascript"></script>
+</body>
+
+</html>

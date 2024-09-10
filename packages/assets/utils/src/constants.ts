@@ -1,0 +1,5 @@
+const CONSTANTS = {
+  DEFAULT_DESIRED_CONTRAST_RATIO: 4.5,
+};
+
+export default CONSTANTS;
