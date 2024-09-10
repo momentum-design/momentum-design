@@ -340,6 +340,9 @@ jobs:
 
       - name: Synchronize Packages
         run: yarn
+
+      - name: Install Pandoc
+        run: sudo apt-get install -y pandoc
         
       - name: Test - Postbuild
         run: yarn workspace ${{ matrix.package }} test:postbuild
