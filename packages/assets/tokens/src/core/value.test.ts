@@ -7,7 +7,7 @@ const validateSystemColorPrefix = (description, tokenName) => {
     return description.startsWith(expectedPrefix);
 };
 
-describe('High Contrast Colors', () => {
+describe('High Contrast Colors temporary change', () => {
   it('Black high contrast tokens should match expected values and descriptions', () => {
     const blackColors = values.color.highcontrast.black;
     const expectedBlackColors = expectedColors.black;
