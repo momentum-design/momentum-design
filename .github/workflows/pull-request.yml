@@ -346,8 +346,9 @@ jobs:
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && matrix.package == 'components' }}
         with:
           name: playwright-report
           path: packages/components/playwright-report/
+          compression-level: 0
           retention-days: 30
