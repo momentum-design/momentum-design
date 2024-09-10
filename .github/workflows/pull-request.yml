@@ -344,16 +344,14 @@ jobs:
       - name: Test - Postbuild
         run: yarn workspace ${{ matrix.package }} test:postbuild
 
-      - name: Open latest test report 
-        if: ${{ matrix.package == '@momentum-design/components' }}
-        run: yarn workspace ${{ matrix.package }} test:e2e:report
-
-      - name: Display Playwright Report in Job Summary
-        if: ${{ matrix.package == '@momentum-design/components' }}
+      - name: Convert HTML format of test report to Markdown
         run: |
-          # Append the HTML content of index.html to $GITHUB_STEP_SUMMARY
+          pandoc -f html -t markdown -o report.md packages/components/playwright-report/index.html
+
+      - name: Display Report in Job Summary
+        run: |
           echo "<details><summary>Playwright Test Report</summary>" >> $GITHUB_STEP_SUMMARY
-          cat packages/components/playwright-report/index.html >> $GITHUB_STEP_SUMMARY
+          cat report.md >> $GITHUB_STEP_SUMMARY
           echo "</details>" >> $GITHUB_STEP_SUMMARY
 
       - name: Upload Playwright Report
