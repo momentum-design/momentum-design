@@ -70,5 +70,8 @@
     "syncpack": "^12.4.0",
     "typescript": "^4.8.4",
     "yargs": "^17.7.2"
+  },
+  "dependencies": {
+    "@estruyf/github-actions-reporter": "^1.9.2"
   }
 }

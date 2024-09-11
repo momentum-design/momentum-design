@@ -341,22 +341,6 @@ jobs:
       - name: Synchronize Packages
         run: yarn
 
-      - name: Install Pandoc
-        run: sudo apt-get install -y pandoc
-        
-      - name: Test - Postbuild
-        run: yarn workspace ${{ matrix.package }} test:postbuild
-
-      - name: Convert HTML format of test report to Markdown
-        run: |
-          pandoc -f html -t markdown -o report.md packages/components/playwright-report/index.html
-
-      - name: Display Report in Job Summary
-        run: |
-          echo "<details><summary>Playwright Test Report</summary>" >> $GITHUB_STEP_SUMMARY
-          cat report.md >> $GITHUB_STEP_SUMMARY
-          echo "</details>" >> $GITHUB_STEP_SUMMARY
-
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() && matrix.package == '@momentum-design/components' }}
@@ -364,9 +348,3 @@ jobs:
           name: playwright-report
           path: packages/components/playwright-report/
           retention-days: 30
-        
-      - name: Download Playwright Report
-        uses: actions/download-artifact@v4
-        if: ${{ matrix.package == '@momentum-design/components' }}
-        with:
-          name: playwright-report
