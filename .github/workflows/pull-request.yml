@@ -343,3 +343,11 @@ jobs:
         
       - name: Test - Postbuild
         run: yarn workspace ${{ matrix.package }} test:postbuild
+
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() && matrix.package == '@momentum-design/components' }}
+        with:
+          name: playwright-report
+          path: packages/components/playwright-report/
+          retention-days: 30

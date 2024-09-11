@@ -54,7 +54,7 @@ test('mdc-icon', async ({ componentsPage }) => {
    * VISUAL REGRESSION
    */
 
-  // TODO: fix visual regression test on CI
+  //TODO: fix visual regression test on CI
   // await test.step('visual-regression', async () => {
   //   await test.step('matches screenshot of element with role / aria-label passed in', async () => {
   //     await componentsPage.visualRegression.takeScreenshot('mdc-icon-default', { element: iconWithRole });
@@ -73,7 +73,7 @@ test('mdc-icon', async ({ componentsPage }) => {
   /**
    * ATTRIBUTES
    */
-  await test.step('attributes', async () => {
+  await test.step('attributes : add temporary change', async () => {
     await test.step('attributes should be present on component by default', async () => {
       const icon = await setup({ componentsPage, name });
       await expect(icon).toHaveAttribute('name', name);
