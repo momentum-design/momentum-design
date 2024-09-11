@@ -3,6 +3,6 @@
 ## Overview
 
 Currently supported fonts:
-- CiscoSans
+- Inter
 
 ## Contact Information

@@ -2,7 +2,7 @@
   "name": "@momentum-design/fonts",
   "packageManager": "yarn@3.2.4",
   "files": [
-    "./src/*"
+    "./dist/"
   ],
   "scripts": {
     "analyze": "yarn analyze:prebuild && yarn analyze:postbuild",
