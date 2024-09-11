@@ -340,6 +340,9 @@ jobs:
 
       - name: Synchronize Packages
         run: yarn
+        
+      - name: Test - Postbuild
+        run: yarn workspace ${{ matrix.package }} test:postbuild
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
