@@ -668,6 +668,11 @@
             "type": "color",
             "value": "{color.core.blue.60}",
             "description": ""
+          },
+          "active": {
+            "value": "{color.core.blue.40}",
+            "type": "color",
+            "description": "Used for selected text paragraph background"
           }
         },
         "alert": {
