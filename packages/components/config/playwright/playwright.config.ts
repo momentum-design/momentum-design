@@ -1,4 +1,5 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
+import type { GitHubActionOptions } from '@estruyf/github-actions-reporter';
 import { devices } from '@playwright/test';
 import { port } from '../esbuild/configs/e2e';
 /**
@@ -8,6 +9,15 @@ import { port } from '../esbuild/configs/e2e';
 // require('dotenv').config();
 
 const url = `http://localhost:${port}`;
+
+// GitHub Actions reporter options
+const githubActionsReporterOptions: GitHubActionOptions = {
+  title: 'Playwright E2E Test results',
+  useDetails: true,
+  showTags: true,
+  showError: true,
+  includeResults: ['fail', 'flaky']
+};
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -35,7 +45,7 @@ const config: PlaywrightTestConfig = {
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: process.env.CI ? [
     ['html'],
-    ['@estruyf/github-actions-reporter']
+    ['@estruyf/github-actions-reporter', githubActionsReporterOptions]
   ] : 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
