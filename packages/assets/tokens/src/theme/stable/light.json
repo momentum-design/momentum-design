@@ -1863,11 +1863,6 @@
                 "type": "color"
               },
               "parent": "theme/stable/light",
-              "$extensions": {
-                "studio.tokens": {
-                  "modify": {}
-                }
-              },
               "type": "color",
               "value": "linear-gradient(46deg, {color.decorative.purple.70} 0%, {color.decorative.pink.70} 100%)",
               "description": "Used for rest state of promotional button"
@@ -1897,11 +1892,6 @@
                 "type": "color"
               },
               "parent": "theme/stable/light",
-              "$extensions": {
-                "studio.tokens": {
-                  "modify": {}
-                }
-              },
               "type": "color",
               "value": "linear-gradient(46deg, {color.decorative.purple.90} 0%, {color.decorative.pink.90} 100%)",
               "description": "Used for active state of promotion button"
