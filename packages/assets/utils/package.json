@@ -21,6 +21,7 @@
     "build": "yarn build:module",
     "build:module": "tsc",
     "clean": "yarn clean:dist",
+    "clean:dist": "rimraf ./dist",
     "docs": "echo \"script 'docs' has not been implemented\"",
     "prepublishOnly": "yarn clean && yarn build",
     "publish": "yarn publish:npmjs",
