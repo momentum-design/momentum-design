@@ -5,7 +5,8 @@ on:
   pull_request_target:
     branches:
       - main
-    types: [opened, labeled, reopened, synchronize]
+      # do not add "labeled" type here, it will trigger the workflow on every label change (double run cause of mergeable.yml)
+    types: [opened, reopened, synchronize]
   workflow_dispatch:
 
 env:
@@ -31,10 +32,10 @@ jobs:
 
           if [[ $FROM_BASE == 1 || $VALIDATED == 1 ]]
           then
-            echo 'pull request is validated, running tests'
+            echo 'Pull request is validated, continuing.'
             exit 0
           else
-            echo 'pull request is not validated, exiting'
+            echo 'Pull request is not validated, exiting. To validate, add the "validated" label or reach out to the Core Team and re-run the workflow.'
             exit 1
           fi
 
