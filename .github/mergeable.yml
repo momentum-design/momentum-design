@@ -12,7 +12,7 @@ mergeable:
           enabled: true
           message: 'Description matters and should not be empty. Provide detail with **what** was changed, **why** it was changed and **how** it will impact our consumers.'
 
-  - when: pull_request.opened, pull_request.reopened, pull_request.edited
+  - when: pull_request.opened, pull_request.reopened
     name: 'Pull Request / Core Team'
     filter:
       - do: author
