@@ -95,7 +95,7 @@ test('mdc-icon', async ({ componentsPage }) => {
         ariaLabel: 'test aria label',
       });
       await expect(iconWithRole).toHaveAttribute('name', name);
-      await expect(iconWithRole).toHaveAttribute('style', 'width: 1em; height: 1em;');
+      await expect(iconWithRole).toHaveAttribute('style', 'width: 2em; height: 1em;');
     });
   });
 });
