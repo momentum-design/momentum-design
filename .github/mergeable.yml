@@ -1,6 +1,6 @@
 version: 2
 mergeable:
-  - when: pull_request.*, pull_request_review.*
+  - when: pull_request.opened, pull_request.reopened, pull_request.edited
     name: 'Pull Request / Title & Description Check'
     validate:
       - do: title
@@ -12,7 +12,7 @@ mergeable:
           enabled: true
           message: 'Description matters and should not be empty. Provide detail with **what** was changed, **why** it was changed and **how** it will impact our consumers.'
 
-  - when: pull_request.*
+  - when: pull_request.opened, pull_request.reopened, pull_request.edited
     name: 'Pull Request / Core Team'
     filter:
       - do: author
@@ -22,14 +22,14 @@ mergeable:
       - do: labels
         add: ['Author: Core Team']
   
-  - when: pull_request.*
+  - when: pull_request.opened, pull_request.reopened, pull_request.edited, pull_request.synchronize
     name: 'Pull Request / Cleanup Labels'
     validate: []
     pass:
       - do: labels
         delete: ['animations', 'brand-visuals', 'fonts', 'icons', 'illustrations', 'tokens', 'utils', 'components', 'docs', 'tools' ]
 
-  - when: pull_request.*
+  - when: pull_request.opened, pull_request.reopened, pull_request.edited, pull_request.synchronize
     name: 'Pull Request / Animations Label'
     validate:
       - do: changeset
@@ -39,7 +39,7 @@ mergeable:
       - do: labels
         add: ['animations']
 
-  - when: pull_request.*
+  - when: pull_request.opened, pull_request.reopened, pull_request.edited, pull_request.synchronize
     name: 'Pull Request / Brand Visuals Label'
     validate:
       - do: changeset
@@ -49,7 +49,7 @@ mergeable:
       - do: labels
         add: ['brand-visuals']
 
-  - when: pull_request.*
+  - when: pull_request.opened, pull_request.reopened, pull_request.edited, pull_request.synchronize
     name: 'Pull Request / Fonts Label'
     validate:
       - do: changeset
@@ -59,7 +59,7 @@ mergeable:
       - do: labels
         add: ['fonts']
 
-  - when: pull_request.*
+  - when: pull_request.opened, pull_request.reopened, pull_request.edited, pull_request.synchronize
     name: 'Pull Request / Icons Label'
     validate:
       - do: changeset
@@ -69,7 +69,7 @@ mergeable:
       - do: labels
         add: ['icons']
 
-  - when: pull_request.*
+  - when: pull_request.opened, pull_request.reopened, pull_request.edited, pull_request.synchronize
     name: 'Pull Request / Illustrations Label'
     validate:
       - do: changeset
@@ -79,7 +79,7 @@ mergeable:
       - do: labels
         add: ['illustrations']
 
-  - when: pull_request.*
+  - when: pull_request.opened, pull_request.reopened, pull_request.edited, pull_request.synchronize
     name: 'Pull Request / Tokens Label'
     validate:
       - do: changeset
@@ -89,7 +89,7 @@ mergeable:
       - do: labels
         add: ['tokens']
   
-  - when: pull_request.*
+  - when: pull_request.opened, pull_request.reopened, pull_request.edited, pull_request.synchronize
     name: 'Pull Request / Utils Label'
     validate:
       - do: changeset
@@ -99,7 +99,7 @@ mergeable:
       - do: labels
         add: ['utils']
   
-  - when: pull_request.*
+  - when: pull_request.opened, pull_request.reopened, pull_request.edited, pull_request.synchronize
     name: 'Pull Request / Components Label'
     validate:
       - do: changeset
@@ -109,7 +109,7 @@ mergeable:
       - do: labels
         add: ['components']
   
-  - when: pull_request.*
+  - when: pull_request.opened, pull_request.reopened, pull_request.edited, pull_request.synchronize
     name: 'Pull Request / Documentation Label'
     validate:
       - do: changeset
@@ -119,7 +119,7 @@ mergeable:
       - do: labels
         add: ['docs']
   
-  - when: pull_request.*
+  - when: pull_request.opened, pull_request.reopened, pull_request.edited, pull_request.synchronize
     name: 'Pull Request / Tools Label'
     validate:
       - do: changeset
