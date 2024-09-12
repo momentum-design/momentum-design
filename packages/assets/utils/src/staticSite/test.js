@@ -1,5 +1,12 @@
 function convertHexToRgb(hexColor) {
-  const hexColorCode = hexColor.replace('#', '');
+  let hexColorCode = hexColor.replace('#', '');
+
+  if (hexColorCode.length === 3) {
+    hexColorCode = hexColorCode.split('').map((char) => char + char).join('');
+  }
+  if (hexColorCode.length !== 6 || !/^[0-9A-Fa-f]{6}$/.test(hexColorCode)) {
+    throw new Error('Invalid HEX color format');
+  }
 
   const r = parseInt(hexColorCode.substring(0, 2), 16);
   const g = parseInt(hexColorCode.substring(2, 4), 16);
@@ -9,8 +16,11 @@ function convertHexToRgb(hexColor) {
 }
 
 function calculateRelativeLuminanceComponent(color) {
-  const normalizedColor = color / 255;
+  if (color < 0 || color > 255) {
+    throw new Error('Invalid color value');
+  }
 
+  const normalizedColor = color / 255;
   if (normalizedColor <= 0.03928) {
     return normalizedColor / 12.92;
   }
@@ -32,6 +42,11 @@ function calculateRelativeLuminance(hexColor) {
         + (0.7152 * calculateRelativeLuminanceComponent(g))
         + (0.0722 * calculateRelativeLuminanceComponent(b));
 
+  // Check if the relative luminance is valid
+  if (Number.isNaN(relativeLuminance)) {
+    throw new Error('Invalid relative luminance value');
+  }
+
   return relativeLuminance;
 }
 
@@ -44,29 +59,45 @@ function calculateContrastRatio(foregroundColor, backgroundColor) {
   const contrastRatio = (Math.max(foregroundLuminance, backgroundLuminance) + 0.05)
     / (Math.min(foregroundLuminance, backgroundLuminance) + 0.05);
 
+  // Check if the contrast ratio is valid
+  if (Number.isNaN(contrastRatio)) {
+    throw new Error('Invalid contrast ratio value');
+  }
+
   return contrastRatio;
 }
 
-function determineForegroundColor(backgroundColor) {
-  let foregroundColor = '#000000'; // Default to black
-
-  // Generate a range of foreground colors to test
-  for (let i = 0; i <= 255; i += 1) {
-    const hexColor = i.toString(16).padStart(2, '0');
-    const testColor = `#${hexColor}${hexColor}${hexColor}`;
-
-    // Calculate the contrast ratio between the background color and the test color
-    const contrastRatio = calculateContrastRatio(testColor, backgroundColor);
-
-    // Check if the contrast ratio meets the desired value
-    if (contrastRatio >= 4.5) {
-      foregroundColor = testColor;
-      break;
-    }
+function calculateForegroundColor(backgroundColor) {
+  const primaryContrast = calculateContrastRatio('#ffffff', backgroundColor);
+  if (primaryContrast >= 4.5) {
+    return {
+      name: 'color-theme-common-text-primary-normal',
+      value: '#ffffff',
+    };
   }
-
-  return foregroundColor;
+  return {
+    name: 'color-theme-common-inverted-text-primary-normal',
+    value: '#000000',
+  };
 }
+
+// function generateHexColors() {
+//   const hexColors = [];
+
+//   for (let r = 0; r <= 255; r += 51) {
+//     for (let g = 0; g <= 255; g += 51) {
+//       for (let b = 0; b <= 255; b += 51) {
+//         const hexColor = `#${
+//           r.toString(16).padStart(2, '0')
+//         }${g.toString(16).padStart(2, '0')
+//         }${b.toString(16).padStart(2, '0')}`;
+//         hexColors.push(hexColor);
+//       }
+//     }
+//   }
+
+//   return hexColors;
+// }
 
 // Get the HTML element with the background color
 const bgElement = document.getElementById('background-color');
@@ -82,7 +113,7 @@ fgElement.style.margin = '1rem';
 bgElement.addEventListener('change', () => {
   const bgColor = bgElement.value;
   bgElementText.innerHTML = bgColor;
-  const fgColor = determineForegroundColor(bgColor);
-  fgElementText.innerHTML = fgColor;
-  fgElement.value = fgColor;
+  const fgColor = calculateForegroundColor(bgColor);
+  fgElementText.innerHTML = `${fgColor.value} (${fgColor.name})`;
+  fgElement.value = fgColor.value;
 });

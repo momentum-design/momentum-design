@@ -1,7 +1,15 @@
 import CONSTANTS from './constants';
 
 export function convertHexToRgb(hexColor: string): string {
-  const hexColorCode = hexColor.replace('#', '');
+  let hexColorCode = hexColor.replace('#', '');
+
+  if (hexColorCode.length === 3) {
+    hexColorCode = hexColorCode.split('').map((char) => char + char).join('');
+  }
+
+  if (hexColorCode.length !== 6 || !/^[0-9A-Fa-f]{6}$/.test(hexColorCode)) {
+    throw new Error('Invalid HEX color format');
+  }
 
   const r = parseInt(hexColorCode.substring(0, 2), 16);
   const g = parseInt(hexColorCode.substring(2, 4), 16);
@@ -11,8 +19,11 @@ export function convertHexToRgb(hexColor: string): string {
 }
 
 export function calculateRelativeLuminanceComponent(color: number): number {
-  const normalizedColor = color / 255;
+  if (color < 0 || color > 255) {
+    throw new Error('Invalid color value');
+  }
 
+  const normalizedColor = color / 255;
   if (normalizedColor <= 0.03928) {
     return normalizedColor / 12.92;
   }
@@ -34,6 +45,11 @@ export function calculateRelativeLuminance(hexColor: string): number {
         + (0.7152 * calculateRelativeLuminanceComponent(g))
         + (0.0722 * calculateRelativeLuminanceComponent(b));
 
+  // Check if the relative luminance is valid
+  if (Number.isNaN(relativeLuminance)) {
+    throw new Error('Invalid relative luminance value');
+  }
+
   return relativeLuminance;
 }
 
@@ -46,26 +62,24 @@ export function calculateContrastRatio(foregroundColor: string, backgroundColor:
   const contrastRatio = (Math.max(foregroundLuminance, backgroundLuminance) + 0.05)
     / (Math.min(foregroundLuminance, backgroundLuminance) + 0.05);
 
+  // Check if the contrast ratio is valid
+  if (Number.isNaN(contrastRatio)) {
+    throw new Error('Invalid contrast ratio value');
+  }
+
   return contrastRatio;
 }
 
-export function determineForegroundColor(backgroundColor: string): string {
-  let foregroundColor = '#000000'; // Default to black
-
-  // Generate a range of foreground colors to test
-  for (let i = 0; i <= 255; i += 1) {
-    const hexColor = i.toString(16).padStart(2, '0');
-    const testColor = `#${hexColor}${hexColor}${hexColor}`;
-
-    // Calculate the contrast ratio between the background color and the test color
-    const contrastRatio = calculateContrastRatio(testColor, backgroundColor);
-
-    // Check if the contrast ratio meets the desired value
-    if (contrastRatio >= CONSTANTS.DEFAULT_DESIRED_CONTRAST_RATIO) {
-      foregroundColor = testColor;
-      break;
-    }
+export function calculateForegroundColor(backgroundColor: string):{name: string, value: string} {
+  const primaryContrast = calculateContrastRatio('#ffffff', backgroundColor);
+  if (primaryContrast >= CONSTANTS.DEFAULT_DESIRED_CONTRAST_RATIO) {
+    return {
+      name: 'color-theme-common-text-primary-normal',
+      value: '#ffffff',
+    };
   }
-
-  return foregroundColor;
+  return {
+    name: 'color-theme-common-inverted-text-primary-normal',
+    value: '#000000',
+  };
 }
