@@ -5,6 +5,7 @@ export const packagesList = [
   '@momentum-design/icons',
   '@momentum-design/illustrations',
   '@momentum-design/tokens',
+  '@momentum-design/utils',
   '@momentum-design/components',
   '@momentum-design/docs',
   '@momentum-design/automation',
