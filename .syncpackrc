@@ -4,12 +4,22 @@
     "nodeEngine": {
       "path": "engines.node",
       "strategy": "version"
+    },
+    "packageManager": {
+      "path": "packageManager",
+      "strategy": "version"
+    },
+    "yarnEngine": {
+      "path": "engines.yarn",
+      "strategy": "version"
     }
   },
   "dependencyTypes": [
     "prod",
     "dev",
-    "nodeEngine"
+    "nodeEngine",
+    "packageManager",
+    "yarnEngine"
   ],
   "semverGroups": [
     {
@@ -34,6 +44,20 @@
         "nodeEngine"
       ],
       "preferVersion": "20.0.0"
+    },
+    {
+      "label": "Ensure all package manager are in the same range",
+      "dependencyTypes": [
+        "packageManager"
+      ],
+      "pinVersion": "yarn@3.2.4"
+    },
+    {
+      "label": "Ensure all yarn engines are not set",
+      "dependencyTypes": [
+        "yarnEngine"
+      ],
+      "isBanned": true
     },
     {
       "label": "Ensure @types/node corresponds to the node engine",
