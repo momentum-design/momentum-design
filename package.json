@@ -3,8 +3,7 @@
   "packageManager": "yarn@3.2.4",
   "engines": {
     "node": ">=20.0.0",
-    "npm": ">=8.0.0",
-    "yarn": ">=3.0.0"
+    "npm": ">=8.0.0"
   },
   "private": true,
   "type": "commonjs",
@@ -44,7 +43,8 @@
     "brand-visuals": "yarn workspace @momentum-design/brand-visuals",
     "fonts": "yarn workspace @momentum-design/fonts",
     "components": "yarn workspace @momentum-design/components",
-    "assets-export": "yarn workspace @momentum-design/figma-plugin-assets-export"
+    "assets-export": "yarn workspace @momentum-design/figma-plugin-assets-export",
+    "utils": "yarn workspace @momentum-design/utils"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.4.0",
