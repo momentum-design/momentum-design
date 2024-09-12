@@ -3945,6 +3945,7 @@ __metadata:
     "@typescript-eslint/parser": ^5.43.0
     eslint: 8.27.0
     eslint-plugin: ^1.0.1
+    eslint-plugin-html: ^8.1.1
     eslint-plugin-import: ^2.26.0
     jest: ^29.7.0
     rimraf: ^6.0.1
@@ -7949,7 +7950,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"domhandler@npm:^5.0.1, domhandler@npm:^5.0.2":
+"domhandler@npm:^5.0.1, domhandler@npm:^5.0.2, domhandler@npm:^5.0.3":
   version: 5.0.3
   resolution: "domhandler@npm:5.0.3"
   dependencies:
@@ -7966,6 +7967,17 @@ __metadata:
     domelementtype: ^2.3.0
     domhandler: ^5.0.1
   checksum: 23aa7a840572d395220e173cb6263b0d028596e3950100520870a125af33ff819e6f609e1606d6f7d73bd9e7feb03bb404286e57a39063b5384c62b724d987b3
+  languageName: node
+  linkType: hard
+
+"domutils@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "domutils@npm:3.1.0"
+  dependencies:
+    dom-serializer: ^2.0.0
+    domelementtype: ^2.3.0
+    domhandler: ^5.0.3
+  checksum: e5757456ddd173caa411cfc02c2bb64133c65546d2c4081381a3bafc8a57411a41eed70494551aa58030be9e58574fcc489828bebd673863d39924fb4878f416
   languageName: node
   linkType: hard
 
@@ -8119,7 +8131,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"entities@npm:^4.4.0":
+"entities@npm:^4.4.0, entities@npm:^4.5.0":
   version: 4.5.0
   resolution: "entities@npm:4.5.0"
   checksum: 853f8ebd5b425d350bffa97dd6958143179a5938352ccae092c62d1267c4e392a039be1bae7d51b6e4ffad25f51f9617531fedf5237f15df302ccfb452cbf2d7
@@ -8976,6 +8988,15 @@ __metadata:
   peerDependencies:
     eslint: ">=7.0.0"
   checksum: fb94a670b20c55827cc50b78eac4bfb447d39577b728288eb6b3464852ca11de50a389d902c4fd288584de5ce8c67ca02f9c60b3f9f24071dd9810183dad77ee
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-html@npm:^8.1.1":
+  version: 8.1.1
+  resolution: "eslint-plugin-html@npm:8.1.1"
+  dependencies:
+    htmlparser2: ^9.1.0
+  checksum: d7e6148f77554ac15a04a316fa6afed38bec633f47ad1a0125edd6dbc0f9cb05bc1101698e938114afea77d187de44ebb7bfb0b0b1d9c97db48cf79a9ef670e6
   languageName: node
   linkType: hard
 
@@ -10746,6 +10767,18 @@ __metadata:
   version: 2.0.1
   resolution: "html-void-elements@npm:2.0.1"
   checksum: 06d41f13b9d5d6e0f39861c4bec9a9196fa4906d56cd5cf6cf54ad2e52a85bf960cca2bf9600026bde16c8331db171bedba5e5a35e2e43630c8f1d497b2fb658
+  languageName: node
+  linkType: hard
+
+"htmlparser2@npm:^9.1.0":
+  version: 9.1.0
+  resolution: "htmlparser2@npm:9.1.0"
+  dependencies:
+    domelementtype: ^2.3.0
+    domhandler: ^5.0.3
+    domutils: ^3.1.0
+    entities: ^4.5.0
+  checksum: e5f8d5193967e4a500226f37bdf2c0f858cecb39dde14d0439f24bf2c461a4342778740d988fbaba652b0e4cb6052f7f2e99e69fc1a329a86c629032bb76e7c8
   languageName: node
   linkType: hard
 
