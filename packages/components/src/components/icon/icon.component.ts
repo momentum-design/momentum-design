@@ -146,7 +146,7 @@ class Icon extends Component {
   }
 
   override render() {
-    return html` ${this.iconData} `;
+    return html` ${this.iconData} temp`;
   }
 
   static override styles = styles;
