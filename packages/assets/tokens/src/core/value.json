@@ -2061,5 +2061,37 @@
         }
       }
     }
+  },
+  "primary": {
+    "value": "Inter",
+    "type": "fontFamilies"
+  },
+  "body_small": {
+    "value": "12",
+    "type": "fontSizes"
+  },
+  "body_midsize": {
+    "value": "14",
+    "type": "fontSizes"
+  },
+  "regular": {
+    "value": "regular",
+    "type": "fontWeights"
+  },
+  "light": {
+    "value": "light",
+    "type": "fontWeights"
+  },
+  "medium": {
+    "value": "medium",
+    "type": "fontWeights"
+  },
+  "bold": {
+    "value": "bold",
+    "type": "fontWeights"
+  },
+  "small": {
+    "value": "16",
+    "type": "lineHeights"
   }
 }
