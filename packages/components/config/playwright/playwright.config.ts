@@ -10,7 +10,6 @@ import { port } from '../esbuild/configs/e2e';
 
 const url = `http://localhost:${port}`;
 
-// GitHub Actions reporter options
 const githubActionsReporterOptions: GitHubActionOptions = {
   title: 'Playwright E2E Test results',
   useDetails: true,
