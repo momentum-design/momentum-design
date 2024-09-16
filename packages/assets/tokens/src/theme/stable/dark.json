@@ -1044,11 +1044,6 @@
           "primary": {
             "normal": {
               "parent": "theme/stable/dark",
-              "$extensions": {
-                "studio.tokens": {
-                  "modify": {}
-                }
-              },
               "type": "color",
               "value": "linear-gradient(180deg, {color.gradient.default.dark.primary.0} 0%, {color.gradient.default.dark.primary.1} 100%)",
               "description": "linear-gradient(180deg, {color.gradient.default.dark.primary.0} 0%, {color.gradient.default.dark.primary.1} 100%)"
@@ -1057,11 +1052,6 @@
           "secondary": {
             "normal": {
               "parent": "theme/stable/dark",
-              "$extensions": {
-                "studio.tokens": {
-                  "modify": {}
-                }
-              },
               "type": "color",
               "value": "linear-gradient(180deg, {color.gradient.default.dark.secondary.0} 0%, {color.gradient.default.dark.secondary.1} 100%)",
               "description": "linear-gradient(180deg, {color.gradient.default.dark.secondary.0} 0%, {color.gradient.default.dark.secondary.1} 100%)"
@@ -1070,11 +1060,6 @@
         },
         "reaction": {
           "normal": {
-            "$extensions": {
-              "studio.tokens": {
-                "modify": {}
-              }
-            },
             "type": "color",
             "value": "linear-gradient(90deg, {color.core.gray.95}e6 0%, {color.core.gray.95}00 100%)",
             "description": "linear-gradient(90deg, #1a1a1ae6 0%, #1a1a1a00 100%)\nUsed for meeting reaction background  "
@@ -1082,11 +1067,6 @@
         },
         "skeleton": {
           "normal": {
-            "$extensions": {
-              "studio.tokens": {
-                "modify": {}
-              }
-            },
             "type": "color",
             "value": "linear-gradient(123deg, {color.core.white-alpha.20} 0%, {color.core.white-alpha.30} 33.85%, {color.core.white-alpha.40} 70.31%, {color.core.white-alpha.50} 100%)",
             "description": "linear-gradient(123deg, #ffffff33 0%, #ffffff4d 33.85%, #ffffff66 70.31%, #ffffff80 100%)\nUse for skeleton component"
@@ -1395,11 +1375,6 @@
         },
         "promotion": {
           "normal": {
-            "$extensions": {
-              "studio.tokens": {
-                "modify": {}
-              }
-            },
             "type": "color",
             "value": "linear-gradient(46deg, {color.decorative.purple.60} 0%, {color.decorative.pink.60} 100%)",
             "description": "Used for border of promotional banner"
@@ -1861,11 +1836,6 @@
             "animated": {
               "gradient": {
                 "normal": {
-                  "$extensions": {
-                    "studio.tokens": {
-                      "modify": {}
-                    }
-                  },
                   "type": "color",
                   "value": "linear-gradient(90deg, {color.decorative.mint.40} 0%, {color.core.blue.40} 51%, {color.decorative.mint.40} 100%)",
                   "description": "linear-gradient(90deg, #30c9b0 0%, #64b4fa 51%, #529e91 100%)\nlinear-gradient(90deg, {color.decorative.mint.40} 0%, {color.core.blue.40} 51%, {color.decorative.mint.40} 100%)"
@@ -1875,31 +1845,16 @@
           },
           "promotion": {
             "normal": {
-              "$extensions": {
-                "studio.tokens": {
-                  "modify": {}
-                }
-              },
               "type": "color",
               "value": "linear-gradient(45deg, {color.decorative.purple.70} 0%, {color.decorative.pink.70} 100%)",
               "description": "linear-gradient(45deg, #932099 0%, #a12a3a 100%)"
             },
             "hover": {
-              "$extensions": {
-                "studio.tokens": {
-                  "modify": {}
-                }
-              },
               "type": "color",
               "value": "linear-gradient(45deg, {color.decorative.purple.80} 0%, {color.decorative.pink.80} 100%)",
               "description": "linear-gradient(45deg, #601e66 0%, #66262d 100%)"
             },
             "active": {
-              "$extensions": {
-                "studio.tokens": {
-                  "modify": {}
-                }
-              },
               "type": "color",
               "value": "linear-gradient(45deg, {color.decorative.purple.90} 0%, {color.decorative.pink.90} 100%)"
             }
@@ -1938,20 +1893,10 @@
           },
           "secondary": {
             "normal": {
-              "$extensions": {
-                "studio.tokens": {
-                  "modify": {}
-                }
-              },
               "type": "color",
               "value": "{color.core.black-alpha.20}"
             },
             "disabled": {
-              "$extensions": {
-                "studio.tokens": {
-                  "modify": {}
-                }
-              },
               "type": "color",
               "value": "{color.core.black-alpha.20}"
             }
@@ -2470,22 +2415,12 @@
         "default": {
           "normal": {
             "parent": "theme/stable/dark",
-            "$extensions": {
-              "studio.tokens": {
-                "modify": {}
-              }
-            },
             "type": "color",
             "value": "linear-gradient(90deg, {color.core.white-alpha.0} 0%, {color.core.white-alpha.20} 22.4%, {color.core.white-alpha.20} 72.4%, {color.core.white-alpha.0} 100%)",
             "description": "linear-gradient(90deg, #ffffff00 0%, #ffffff33 22.4%, #ffffff33 72.4%, #ffffff00 100%)\nUsed for default default on compose area in space"
           },
           "hover": {
             "parent": "theme/stable/dark",
-            "$extensions": {
-              "studio.tokens": {
-                "modify": {}
-              }
-            },
             "type": "color",
             "value": "linear-gradient(90deg, {color.core.white-alpha.0} 0%, {color.core.white-alpha.60} 22.4%, {color.core.white-alpha.60} 72.4%, {color.core.white-alpha.0} 100%)",
             "description": "linear-gradient(90deg, #ffffff00 0%, #ffffff99 22.4%, #ffffff99 72.4%, #ffffff00 100%)\nUsed for hover state of gradient divider for spaces"
@@ -2494,22 +2429,12 @@
         "error": {
           "normal": {
             "parent": "theme/stable/dark",
-            "$extensions": {
-              "studio.tokens": {
-                "modify": {}
-              }
-            },
             "type": "color",
             "value": "linear-gradient(90deg, {color.core.red.40}00 0%, {color.core.red.40}99 22.4%, {color.core.red.40}99 76.04%, {color.core.red.40}00 100%)",
             "description": "linear-gradient(90deg, #fc8b98 0%, #fc8b98 60%, #fc8b98 60%, #fc8b98 0%)\nUsed for divider on the compose area for classified spaces"
           },
           "hover": {
             "parent": "theme/stable/dark",
-            "$extensions": {
-              "studio.tokens": {
-                "modify": {}
-              }
-            },
             "type": "color",
             "value": "linear-gradient(90deg, {color.core.red.40}00 0%, {color.core.red.40}e6 22.4%, {color.core.red.40}e6 76.04%, {color.core.red.40}00 100%)",
             "description": "linear-gradient(90deg, #fc8b9800 0%, #fc8b98e6 22.4%, #fc8b98e6 76.04%, #fc8b9800 100%)"
@@ -2518,22 +2443,12 @@
         "warning": {
           "normal": {
             "parent": "theme/stable/dark",
-            "$extensions": {
-              "studio.tokens": {
-                "modify": {}
-              }
-            },
             "type": "color",
             "value": "linear-gradient(90deg, {color.core.yellow.40}00 0%, {color.core.yellow.40}99 22.4%, {color.core.yellow.40}99 76.04%, {color.core.yellow.40}00 100%)",
             "description": "linear-gradient(90deg, #f2990a00 0%, #f2990a99 22.4%, #f2990a99 76.04%, #f2990a00 100%)"
           },
           "hover": {
             "parent": "theme/stable/dark",
-            "$extensions": {
-              "studio.tokens": {
-                "modify": {}
-              }
-            },
             "type": "color",
             "value": "linear-gradient(90deg, {color.core.yellow.40}00 0%, {color.core.yellow.40}e6 22.4%, {color.core.yellow.40}e6 76.04%, {color.core.yellow.40}00 100%)",
             "description": "linear-gradient(90deg, #f2990a00 0%, #f2990ae6 22.4%, #f2990ae6 76.04%, #f2990a00 100%)"
@@ -2542,22 +2457,12 @@
         "announce": {
           "normal": {
             "parent": "theme/stable/dark",
-            "$extensions": {
-              "studio.tokens": {
-                "modify": {}
-              }
-            },
             "type": "color",
             "value": "linear-gradient(90deg, {color.core.blue.40}00 0%, {color.core.blue.40}99 22.4%, {color.core.blue.40}99 76.04%, {color.core.blue.40}00 100%)",
             "description": "linear-gradient(90deg, #64b4fa 0%, #64b4fa 60%, #64b4fa60%, #64b4fa 0%)\n"
           },
           "hover": {
             "parent": "theme/stable/dark",
-            "$extensions": {
-              "studio.tokens": {
-                "modify": {}
-              }
-            },
             "type": "color",
             "value": "linear-gradient(90deg, {color.core.blue.40}00 0%,{color.core.blue.40}E6 22.4%, {color.core.blue.40}E6 76.04%, {color.core.blue.40}00 100%)",
             "description": "linear-gradient(90deg, #64b4fa 0%, #64b4fa 90%, #64b4fa90%, #64b4fa 0%)\n"
@@ -2566,22 +2471,12 @@
         "success": {
           "normal": {
             "parent": "theme/stable/dark",
-            "$extensions": {
-              "studio.tokens": {
-                "modify": {}
-              }
-            },
             "type": "color",
             "value": "linear-gradient(90deg, {color.core.green.40}00 0%, {color.core.green.40}99 22.4%, {color.core.green.40}99 76.04%, {color.core.green.40}00 100%)",
             "description": "linear-gradient(90deg, #3cc29a00 0%, #3cc29a99 22.4%, #3cc29a99 76.04%, #3cc29a00 100%)"
           },
           "hover": {
             "parent": "theme/stable/dark",
-            "$extensions": {
-              "studio.tokens": {
-                "modify": {}
-              }
-            },
             "type": "color",
             "value": "linear-gradient(90deg, {color.core.green.40}00 0%,{color.core.green.40}E6 22.4%, {color.core.green.40}E6 76.04%, {color.core.green.40}00 100%)",
             "description": "linear-gradient(90deg, #3cc29a00 0%, #3cc29a99 22.4%, #3cc29a99 76.04%, #3cc29a00 100%)"
@@ -2590,22 +2485,12 @@
         "orange": {
           "normal": {
             "parent": "theme/stable/dark",
-            "$extensions": {
-              "studio.tokens": {
-                "modify": {}
-              }
-            },
             "type": "color",
             "value": "linear-gradient(90deg, {color.core.orange.40}00 0%, {color.core.orange.40}99 22.4%, {color.core.orange.40}99 76.04%, {color.core.orange.40}00 100%)",
             "description": "linear-gradient(90deg, #ff9d5200 0%, #ff9d5299 22.4%, #ff9d5299 76.04%, #ff9d5200 100%)"
           },
           "hover": {
             "parent": "theme/stable/dark",
-            "$extensions": {
-              "studio.tokens": {
-                "modify": {}
-              }
-            },
             "type": "color",
             "value": "linear-gradient(90deg, {color.core.orange.40}00 0%,{color.core.orange.40}E6 22.4%, {color.core.orange.40}E6 76.04%, {color.core.orange.40}00 100%)",
             "description": "linear-gradient(90deg, #ff9d5200 0%, #ff9d52e6 22.4%, #ff9d52e6 76.04%, #ff9d5200 100%)"
@@ -2614,22 +2499,12 @@
         "purple": {
           "normal": {
             "parent": "theme/stable/dark",
-            "$extensions": {
-              "studio.tokens": {
-                "modify": {}
-              }
-            },
             "type": "color",
             "value": "linear-gradient(90deg, {color.decorative.purple.40}00 0%, {color.decorative.purple.40}99 22.4%, {color.decorative.purple.40}99 76.04%, {color.decorative.purple.40}00 100%)",
             "description": "linear-gradient(90deg, #f294f100 0%, #f294f199 22.4%, #f294f199 76.04%, #f294f100 100%)"
           },
           "hover": {
             "parent": "theme/stable/dark",
-            "$extensions": {
-              "studio.tokens": {
-                "modify": {}
-              }
-            },
             "type": "color",
             "value": "linear-gradient(90deg, {color.decorative.purple.40}00 0%, {color.decorative.purple.40}E6 22.4%, {color.decorative.purple.40}E6 76.04%, {color.decorative.purple.40}00 100%)",
             "description": "linear-gradient(90deg, #f294f100 0%, #f294f1e6 22.4%, #f294f1e6 76.04%, #fc8b9800 100%, #f294f100 100%)"
