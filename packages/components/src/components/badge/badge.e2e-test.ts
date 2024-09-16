@@ -25,7 +25,6 @@ test('mdc-badge', async ({ componentsPage }) => {
   /**
    * VISUAL REGRESSION
    */
-  // TODO: fix visual regression test on CI
   await test.step('visual-regression', async () => {
     await test.step('matches screenshot of element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-badge', { element: badge });

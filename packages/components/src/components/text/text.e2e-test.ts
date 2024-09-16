@@ -49,7 +49,6 @@ test.describe('mdc-text', () => {
       /**
        * VISUAL REGRESSION
        */
-      // TODO: fix visual regression test on CI
       await test.step('visual-regression', async () => {
         await test.step('matches screenshot of element', async () => {
           await componentsPage.visualRegression.takeScreenshot(`mdc-text-${textType}`, { element: text });

@@ -14,6 +14,7 @@ const ACCESSIBILITY = {
   RULES_TO_DISABLE: [],
 };
 
+// we keep the threshold, max_diff_pixels_ratio at a higher value until we have pixel perfect visual regression testing enabled.
 const VISUAL_REGRESSION = {
   THRESHOLD: 0.1,
   MAX_DIFF_PIXELS_RATIO: 0.05,
