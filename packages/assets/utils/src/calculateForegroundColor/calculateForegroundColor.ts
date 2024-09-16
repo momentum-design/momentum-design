@@ -8,7 +8,6 @@ import { calculateContrastRatio } from './helper';
  * @returns The token name and value for the foreground color
  */
 export function calculateForegroundColor(backgroundColor: string):{tokenName: string, tokenValue: string} {
-  // TODO: check if we need to maintain hex6 or change implementation to support hex8
   const primaryForegroundColor = darkStable.color.theme.common.text.primary.normal;
   const primaryContrast = calculateContrastRatio(primaryForegroundColor, backgroundColor);
   if (primaryContrast >= CONSTANTS.DEFAULT_DESIRED_CONTRAST_RATIO) {

@@ -9,16 +9,21 @@ export function convertHexToRgb(hexColor: string): string {
 
   if (hexColorCode.length === 3) {
     hexColorCode = hexColorCode.split('').map((char) => char + char).join('');
+  } else if (hexColorCode.length === 4) {
+    hexColorCode = hexColorCode.split('').map((char) => char + char).join('') + hexColorCode[3] + hexColorCode[3];
   }
 
-  if (hexColorCode.length !== 6 || !/^[0-9A-Fa-f]{6}$/.test(hexColorCode)) {
+  if (!/^[0-9A-Fa-f]{6}$/.test(hexColorCode) && !/^[0-9A-Fa-f]{8}$/.test(hexColorCode)) {
     throw new Error('Invalid HEX color format');
   }
 
   const r = parseInt(hexColorCode.substring(0, 2), 16);
   const g = parseInt(hexColorCode.substring(2, 4), 16);
   const b = parseInt(hexColorCode.substring(4, 6), 16);
-
+  if (hexColorCode.length === 8) {
+    const a = hexColorCode.length === 8 ? parseInt(hexColorCode.substring(6, 8), 16) / 255 : 1;
+    return `rgba(${r}, ${g}, ${b}, ${a})`;
+  }
   return `rgb(${r}, ${g}, ${b})`;
 }
 
@@ -32,7 +37,7 @@ export function calculateRelativeLuminanceComponent(color: number): number {
   if (color < 0 || color > 255) {
     throw new Error('Invalid color value');
   }
-
+  // Normalize the color value - Read mode at https://www.w3.org/TR/WCAG20/#relativeluminancedef
   const normalizedColor = color / 255;
   if (normalizedColor <= 0.03928) {
     return normalizedColor / 12.92;
@@ -48,13 +53,13 @@ export function calculateRelativeLuminanceComponent(color: number): number {
  */
 export function calculateRelativeLuminance(hexColor: string): number {
   const rgbColor = convertHexToRgb(hexColor);
-
+  const index = rgbColor.indexOf('rgba') !== -1 ? 5 : 4;
   const [r, g, b] = rgbColor
-    .substring(4, rgbColor.length - 1)
+    .substring(index, rgbColor.length - 1)
     .split(',')
     .map((value) => parseInt(value.trim(), 10));
 
-  // Apply the relative luminance formula
+  // Apply the relative luminance formula - Read more at https://www.w3.org/WAI/GL/wiki/Relative_luminance
   const relativeLuminance = (0.2126 * calculateRelativeLuminanceComponent(r))
         + (0.7152 * calculateRelativeLuminanceComponent(g))
         + (0.0722 * calculateRelativeLuminanceComponent(b));
@@ -78,6 +83,7 @@ export function calculateContrastRatio(foregroundColor: string, backgroundColor:
   const backgroundLuminance = calculateRelativeLuminance(backgroundColor);
 
   // Calculate the contrast ratio - light colors have a greater luminance than dark colors
+  // Read more at https://www.w3.org/TR/WCAG20/#contrast-ratiodef
   const contrastRatio = (Math.max(foregroundLuminance, backgroundLuminance) + 0.05)
     / (Math.min(foregroundLuminance, backgroundLuminance) + 0.05);
 
