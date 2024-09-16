@@ -1,7 +1,7 @@
 import CONSTANTS from './constants';
-import * as utils from './utils';
+import { calculateForegroundColor } from './calculateForegroundColor/calculateForegroundColor';
 
 export {
   CONSTANTS,
-  utils,
+  calculateForegroundColor,
 };

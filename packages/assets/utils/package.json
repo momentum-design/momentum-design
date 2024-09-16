@@ -30,6 +30,9 @@
     "test:prebuild": "yarn test:unit",
     "test:unit": "jest ./src/**/*.test.ts"
   },
+  "dependencies": {
+    "@momentum-design/tokens": "workspace:*"
+  },
   "devDependencies": {
     "@types/jest": "^29.5.12",
     "@types/node": "20.14.9",

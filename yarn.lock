@@ -3939,6 +3939,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@momentum-design/utils@workspace:packages/assets/utils"
   dependencies:
+    "@momentum-design/tokens": "workspace:*"
     "@types/jest": ^29.5.12
     "@types/node": 20.14.9
     "@typescript-eslint/eslint-plugin": ^5.43.0

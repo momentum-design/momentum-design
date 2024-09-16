@@ -1,5 +1,9 @@
-import CONSTANTS from './constants';
-
+/**
+ * Convert a HEX color to RGB format
+ * @param hexColor - The HEX color code string to convert
+ * @returns The RGB color code as string
+ * @throws {Error} Thrown if the HEX color format is invalid
+ */
 export function convertHexToRgb(hexColor: string): string {
   let hexColorCode = hexColor.replace('#', '');
 
@@ -18,6 +22,12 @@ export function convertHexToRgb(hexColor: string): string {
   return `rgb(${r}, ${g}, ${b})`;
 }
 
+/**
+ * Calculate the relative luminance component for a color
+ * @param color - The color value (as number) to calculate the relative luminance for
+ * @returns The relative luminance component as number
+ * @throws {Error} Thrown if the color value is invalid
+ */
 export function calculateRelativeLuminanceComponent(color: number): number {
   if (color < 0 || color > 255) {
     throw new Error('Invalid color value');
@@ -30,11 +40,15 @@ export function calculateRelativeLuminanceComponent(color: number): number {
   return ((normalizedColor + 0.055) / 1.055) ** 2.4;
 }
 
+/**
+ * Calculate the relative luminance for a color
+ * @param hexColor - The HEX color code string to calculate the relative luminance for
+ * @returns The relative luminance as number
+ * @throws {Error} Thrown if the relative luminance value is invalid
+ */
 export function calculateRelativeLuminance(hexColor: string): number {
-  // Convert the hex color code to RGB
   const rgbColor = convertHexToRgb(hexColor);
 
-  // Extract the individual RGB values
   const [r, g, b] = rgbColor
     .substring(4, rgbColor.length - 1)
     .split(',')
@@ -45,7 +59,6 @@ export function calculateRelativeLuminance(hexColor: string): number {
         + (0.7152 * calculateRelativeLuminanceComponent(g))
         + (0.0722 * calculateRelativeLuminanceComponent(b));
 
-  // Check if the relative luminance is valid
   if (Number.isNaN(relativeLuminance)) {
     throw new Error('Invalid relative luminance value');
   }
@@ -53,8 +66,14 @@ export function calculateRelativeLuminance(hexColor: string): number {
   return relativeLuminance;
 }
 
+/**
+ * Calculate the contrast ratio between two colors
+ * @param foregroundColor - The HEX color code string for the foreground color
+ * @param backgroundColor - The HEX color code string for the background color
+ * @returns The contrast ratio as number
+ * @throws {Error} Thrown if the contrast ratio value is invalid
+ */
 export function calculateContrastRatio(foregroundColor: string, backgroundColor: string): number {
-  // Calculate the relative luminance of the foreground and background colors
   const foregroundLuminance = calculateRelativeLuminance(foregroundColor);
   const backgroundLuminance = calculateRelativeLuminance(backgroundColor);
 
@@ -62,24 +81,9 @@ export function calculateContrastRatio(foregroundColor: string, backgroundColor:
   const contrastRatio = (Math.max(foregroundLuminance, backgroundLuminance) + 0.05)
     / (Math.min(foregroundLuminance, backgroundLuminance) + 0.05);
 
-  // Check if the contrast ratio is valid
   if (Number.isNaN(contrastRatio)) {
     throw new Error('Invalid contrast ratio value');
   }
 
   return contrastRatio;
-}
-
-export function calculateForegroundColor(backgroundColor: string):{name: string, value: string} {
-  const primaryContrast = calculateContrastRatio('#ffffff', backgroundColor);
-  if (primaryContrast >= CONSTANTS.DEFAULT_DESIRED_CONTRAST_RATIO) {
-    return {
-      name: 'color-theme-common-text-primary-normal',
-      value: '#ffffff',
-    };
-  }
-  return {
-    name: 'color-theme-common-inverted-text-primary-normal',
-    value: '#000000',
-  };
 }
