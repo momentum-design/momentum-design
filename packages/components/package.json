@@ -59,6 +59,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.9.1",
     "@custom-elements-manifest/analyzer": "^0.10.3",
+    "@estruyf/github-actions-reporter": "^1.9.2",
     "@momentum-design/fonts": "workspace:*",
     "@momentum-design/icons": "workspace:*",
     "@momentum-design/tokens": "workspace:*",
