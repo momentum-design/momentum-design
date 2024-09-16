@@ -317,17 +317,40 @@
       "color.gradient.lavender.dark.primary.0": "S:66ef3d5d1a7ae1781386016e83796b3aaa91d4de,",
       "color.gradient.lavender.dark.primary.1": "S:585c215b92622fdf7a2fcbec3b46ae0ca65092fe,",
       "color.gradient.lavender.dark.secondary.0": "S:41f7ec29cabb45f1fe30f77436b6fda875abfac5,",
-      "color.gradient.lavender.dark.secondary.1": "S:c97ea44216fa494606f74d7c0ebcd78b830bce64,"
+      "color.gradient.lavender.dark.secondary.1": "S:c97ea44216fa494606f74d7c0ebcd78b830bce64,",
+      "apps.body.small.regular": "S:8ee05063d009d88e3daf4bd93bd08f104e6be286,",
+      "apps.body.small.medium": "S:94b5e66522a0ea6317d1b3a715d7f34de4151613,",
+      "apps.body.small.bold": "S:8c9122aea157f6ef4ca47dfab83eca04a83d07a6,"
     },
     "selectedTokenSets": {
       "core/value": "enabled"
     },
     "group": "core",
-    "$figmaCollectionId": "VariableCollectionId:1131:72",
-    "$figmaModeId": "1346:5",
+    "$figmaCollectionId": "VariableCollectionId:1393:5179",
+    "$figmaModeId": "1393:1",
     "$figmaVariableReferences": {
-      "primary": "ff1d5f7b5176a08f0389f9036498b072cfc82f7c",
-      "body_small": "eca0b4d58da5c3d45c7a6e7fcf96dd8829c7649c"
+      "font.lineheight.base": "d7d205621dd781204790611da72e0b2598e4691f",
+      "font.lineheight.body.small": "52b9ce51241d8ec6bdc5fe7f78fda26a14bf4814",
+      "font.lineheight.body.midsize": "b6a35bbde80eac8b7a5ded33f2b7ef11e7ec5c13",
+      "font.lineheight.body.large": "75c36d760183632d13e1ed2cba28eac544cd9c52",
+      "font.lineheight.heading.small": "2e9b69e6d38c29993e5f5a3d4a1fc1f5e21c4f28",
+      "font.lineheight.heading.midsize": "1ce5fbae05f7b74b5d624089ebdaf39fe8830fae",
+      "font.lineheight.heading.large": "51e2a6336c73881e22cc9a6a3a080071805fa154",
+      "font.lineheight.heading.xlarge": "df81e8d0e327f8a89902f31023bcd6f3d2777376",
+      "font.lineheight.headline.small": "4403ff1212f9c98ecc7a6360997818a14fc3d2a4",
+      "font.family.primary": "3bfe30b83f752300c259a43a693bf407a9af4e5b",
+      "font.weight.regular": "d6b991ebe83f9f4b13d53f8d5f2a74f0730c8ed5",
+      "font.weight.medium": "2982704cc2f462f582c55d19ce8d118d79a3d786",
+      "font.weight.bold": "6deb7b731f532f3959eed05ba8feeb34535134e9",
+      "font.size.base": "45acc2518386fb1af9dd66484bb8e9e2b82d0e91",
+      "font.size.body.small": "10a17046bfa5d620f5961dbceaff9560538d7adf",
+      "font.size.body.midsize": "d1de8e0240a0598356f9beeb3c7573a4b325d277",
+      "font.size.body.large": "1e7a28908ccea65c26fc91f3c7ab7e9cc123c46e",
+      "font.size.heading.small": "a38d86e8fef5814c7a5675645629d2684fc36970",
+      "font.size.heading.midsize": "b75d6e6d75889f5416e102f5e3e230b5dd12d330",
+      "font.size.heading.large": "6451793db19cef51e6656e5c21590a31047aeef6",
+      "font.size.heading.xlarge": "90dd28c1bbf52ae9e10823dc6c219ba802dcbb82",
+      "font.size.headline.small": "a28089cd15cb3aa002e43d9494b05c2f910a7014"
     }
   },
   {

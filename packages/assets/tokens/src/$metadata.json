@@ -6,7 +6,6 @@
     "theme/stable/highcontrast/hc_dark",
     "theme/stable/highcontrast/hc_light",
     "aaos/night",
-    "aaos/day",
-    "test/value"
+    "aaos/day"
   ]
 }
