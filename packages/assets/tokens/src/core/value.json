@@ -2257,15 +2257,61 @@
             "textDecoration": "{font.decoration.none}"
           },
           "type": "typography"
-        },
-        "bold-underline": {
+        }
+      },
+      "midsize": {
+        "regular": {
           "value": {
             "fontFamily": "{font.family.primary}",
-            "fontWeight": "{font.weight.bold}",
+            "fontWeight": "{font.weight.regular}",
+            "lineHeight": "{font.lineheight.body.midsize}",
+            "fontSize": "{font.size.body.midsize}",
+            "textCase": "{font.text-transform.none}",
+            "textDecoration": "{font.decoration.none}"
+          },
+          "type": "typography"
+        },
+        "regular-underline": {
+          "value": {
+            "fontFamily": "{font.family.primary}",
+            "fontWeight": "{font.weight.regular}",
             "lineHeight": "{font.lineheight.body.small}",
             "fontSize": "{font.size.body.small}",
             "textCase": "{font.text-transform.none}",
             "textDecoration": "{font.decoration.underline}"
+          },
+          "type": "typography"
+        },
+        "medium": {
+          "value": {
+            "fontFamily": "{font.family.primary}",
+            "fontWeight": "{font.weight.medium}",
+            "lineHeight": "{font.lineheight.body.midsize}",
+            "fontSize": "{font.size.body.midsize}",
+            "textCase": "{font.text-transform.none}",
+            "textDecoration": "{font.decoration.none}"
+          },
+          "type": "typography"
+        },
+        "medium-underline": {
+          "value": {
+            "fontFamily": "{font.family.primary}",
+            "fontWeight": "{font.weight.medium}",
+            "lineHeight": "{font.lineheight.body.midsize}",
+            "fontSize": "{font.size.body.midsize}",
+            "textCase": "{font.text-transform.none}",
+            "textDecoration": "{font.decoration.underline}"
+          },
+          "type": "typography"
+        },
+        "bold": {
+          "value": {
+            "fontFamily": "{font.family.primary}",
+            "fontWeight": "{font.weight.bold}",
+            "lineHeight": "{font.lineheight.body.midsize}",
+            "fontSize": "{font.size.body.midsize}",
+            "textCase": "{font.text-transform.none}",
+            "textDecoration": "{font.decoration.none}"
           },
           "type": "typography"
         }
