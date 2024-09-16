@@ -2093,5 +2093,25 @@
   "small": {
     "value": "16",
     "type": "lineHeights"
+  },
+  "Font": {
+    "Family": {
+      "Primary": {
+        "value": "Inter",
+        "type": "fontFamilies"
+      }
+    },
+    "Weight": {
+      "Regular": {
+        "value": "regular",
+        "type": "fontWeights"
+      }
+    },
+    "Size": {
+      "body_small": {
+        "value": "12",
+        "type": "fontSizes"
+      }
+    }
   }
 }
