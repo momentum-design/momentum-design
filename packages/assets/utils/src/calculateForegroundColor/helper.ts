@@ -2,15 +2,23 @@
  * Convert a HEX color to RGB format
  * @param hexColor - The HEX color code string to convert
  * @returns The RGB color code as string
- * @throws {Error} Thrown if the HEX color format is invalid
+ * @throws { Error } Thrown if the HEX color format is invalid
  */
 export function convertHexToRgb(hexColor: string): string {
   let hexColorCode = hexColor.replace('#', '');
 
   if (hexColorCode.length === 3) {
-    hexColorCode = hexColorCode.split('').map((char) => char + char).join('');
+    hexColorCode = hexColorCode
+      .split('')
+      .map((char) => char + char)
+      .join('');
   } else if (hexColorCode.length === 4) {
-    hexColorCode = hexColorCode.split('').map((char) => char + char).join('') + hexColorCode[3] + hexColorCode[3];
+    hexColorCode = hexColorCode
+      .split('')
+      .map((char) => char + char)
+      .join('')
+      + hexColorCode[3]
+      + hexColorCode[3];
   }
 
   if (!/^[0-9A-Fa-f]{6}$/.test(hexColorCode) && !/^[0-9A-Fa-f]{8}$/.test(hexColorCode)) {
@@ -31,7 +39,7 @@ export function convertHexToRgb(hexColor: string): string {
  * Calculate the relative luminance component for a color
  * @param color - The color value (as number) to calculate the relative luminance for
  * @returns The relative luminance component as number
- * @throws {Error} Thrown if the color value is invalid
+ * @throws { Error } Thrown if the color value is invalid
  */
 export function calculateRelativeLuminanceComponent(color: number): number {
   if (color < 0 || color > 255) {
@@ -49,7 +57,7 @@ export function calculateRelativeLuminanceComponent(color: number): number {
  * Calculate the relative luminance for a color
  * @param hexColor - The HEX color code string to calculate the relative luminance for
  * @returns The relative luminance as number
- * @throws {Error} Thrown if the relative luminance value is invalid
+ * @throws { Error } Thrown if the relative luminance value is invalid
  */
 export function calculateRelativeLuminance(hexColor: string): number {
   const rgbColor = convertHexToRgb(hexColor);
@@ -60,9 +68,9 @@ export function calculateRelativeLuminance(hexColor: string): number {
     .map((value) => parseInt(value.trim(), 10));
 
   // Apply the relative luminance formula - Read more at https://www.w3.org/WAI/GL/wiki/Relative_luminance
-  const relativeLuminance = (0.2126 * calculateRelativeLuminanceComponent(r))
-        + (0.7152 * calculateRelativeLuminanceComponent(g))
-        + (0.0722 * calculateRelativeLuminanceComponent(b));
+  const relativeLuminance = 0.2126 * calculateRelativeLuminanceComponent(r)
+    + 0.7152 * calculateRelativeLuminanceComponent(g)
+    + 0.0722 * calculateRelativeLuminanceComponent(b);
 
   if (Number.isNaN(relativeLuminance)) {
     throw new Error('Invalid relative luminance value');
@@ -76,7 +84,7 @@ export function calculateRelativeLuminance(hexColor: string): number {
  * @param foregroundColor - The HEX color code string for the foreground color
  * @param backgroundColor - The HEX color code string for the background color
  * @returns The contrast ratio as number
- * @throws {Error} Thrown if the contrast ratio value is invalid
+ * @throws { Error } Thrown if the contrast ratio value is invalid
  */
 export function calculateContrastRatio(foregroundColor: string, backgroundColor: string): number {
   const foregroundLuminance = calculateRelativeLuminance(foregroundColor);

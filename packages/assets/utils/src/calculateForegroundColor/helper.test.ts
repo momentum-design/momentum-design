@@ -1,7 +1,9 @@
-import { convertHexToRgb,
+import {
+  convertHexToRgb,
   calculateRelativeLuminanceComponent,
   calculateRelativeLuminance,
-  calculateContrastRatio } from './helper';
+  calculateContrastRatio,
+} from './helper';
 
 describe('convertHexToRgb', () => {
   const validHexColors = [
@@ -62,13 +64,10 @@ describe('calculateContrastRatio1', () => {
     ['#000000', '#ffffff', 21],
     ['#ff0000', '#00ff00', 2.9139],
     ['#00ff00', '#0000ff', 6.2618],
-  ])(
-    'should calculate the contrast ratio between %s and %s',
-    (color1, color2, expected) => {
-      const result = calculateContrastRatio(color1, color2);
-      expect(result).toBeCloseTo(expected);
-    },
-  );
+  ])('should calculate the contrast ratio between %s and %s', (color1, color2, expected) => {
+    const result = calculateContrastRatio(color1, color2);
+    expect(result).toBeCloseTo(expected);
+  });
 
   it('should throw an error for invalid hex color', () => {
     expect(() => calculateContrastRatio('#ggg', '#000000')).toThrow('Invalid HEX color format');

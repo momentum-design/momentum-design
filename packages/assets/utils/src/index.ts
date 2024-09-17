@@ -1,3 +1,3 @@
 import { calculateForegroundColor } from './calculateForegroundColor';
 
-export {calculateForegroundColor};
+export { calculateForegroundColor };
