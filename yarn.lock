@@ -3964,7 +3964,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/tokens@workspace:*, @momentum-design/tokens@workspace:packages/assets/tokens":
+"@momentum-design/tokens@workspace:*, @momentum-design/tokens@workspace:^, @momentum-design/tokens@workspace:packages/assets/tokens":
   version: 0.0.0-use.local
   resolution: "@momentum-design/tokens@workspace:packages/assets/tokens"
   dependencies:
@@ -3980,7 +3980,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@momentum-design/utils@workspace:packages/assets/utils"
   dependencies:
-    "@momentum-design/tokens": "workspace:*"
+    "@momentum-design/tokens": "workspace:^"
     "@types/jest": ^29.5.12
     "@types/node": 20.14.9
     "@typescript-eslint/eslint-plugin": ^5.43.0
@@ -3995,8 +3995,6 @@ __metadata:
     serve: ^14.2.3
     ts-jest: ^29.2.4
     typescript: ^4.8.4
-  peerDependencies:
-    "@momentum-design/tokens": "workspace:*"
   languageName: unknown
   linkType: soft
 

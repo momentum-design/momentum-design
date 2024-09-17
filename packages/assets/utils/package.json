@@ -17,8 +17,7 @@
     "analyze:syntax": "tsc --noEmit",
     "analyze:postbuild": "echo \"script 'analyze:postbuild' has not been implemented\"",
     "analyze:prebuild": "yarn analyze:lint && yarn analyze:syntax",
-    "build": "yarn build:module && yarn build:browser",
-    "build:module": "tsc",
+    "build": "yarn build:browser",
     "build:browser": "node ./esbuild.config.js",
     "clean": "yarn clean:dist",
     "clean:dist": "rimraf ./dist",
@@ -27,21 +26,15 @@
     "docs": "echo \"script 'docs' has not been implemented\"",
     "prepublishOnly": "yarn clean && yarn build",
     "publish": "yarn publish:npmjs",
-    "publish:npmjs:prepare": "node scripts/prepareForPublish.js",
-    "publish:npmjs": "yarn publish:npmjs:prepare && yarn npm publish --access=public",
+    "publish:npmjs": "yarn npm publish --access=public",
     "serve": "serve ./src/staticSite",
     "test": "yarn test:prebuild && yarn test:postbuild",
     "test:postbuild": "echo \"script 'test:prebuild' has not been implemented\"",
     "test:prebuild": "yarn test:unit",
     "test:unit": "jest ./src/**/*.test.ts"
   },
-  "dependencies": {
-    "@momentum-design/tokens": "workspace:*"
-  },
-  "peerDependencies": {
-    "@momentum-design/tokens": "workspace:*"
-  },
   "devDependencies": {
+    "@momentum-design/tokens": "workspace:^",
     "@types/jest": "^29.5.12",
     "@types/node": "20.14.9",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
