@@ -1,7 +1,5 @@
-import { calculateForegroundColor } from '../../dist/module';
+import { calculateForegroundColor } from '../../dist/module/index.js';
 
-document.getElementById('title').innerHTML = 'Hello World!';
-// Get the HTML element with the background color
 const bgElement = document.getElementById('background-color');
 const fgElement = document.getElementById('foreground-color');
 const fgElementText = document.getElementById('fg-color-text');
@@ -17,6 +15,6 @@ bgElement.addEventListener('change', () => {
   const bgColor = bgElement.value;
   bgElementText.innerHTML = bgColor;
   const fgColor = calculateForegroundColor(bgColor);
-  fgElementText.innerHTML = `${fgColor.value} (${fgColor.name})`;
-  fgElement.style.backgroundColor = fgColor.value;
+  fgElementText.innerHTML = `${fgColor.tokenValue} (${fgColor.tokenName})`;
+  fgElement.style.backgroundColor = fgColor.tokenValue;
 });
