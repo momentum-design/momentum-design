@@ -4,10 +4,12 @@ describe("calculateForegroundColor", () => {
   const colors = {
     inverted: {
       tokenName: "color-theme-common-inverted-text-primary-normal",
+      tokenCSSVariable: "--mds-color-theme-common-inverted-text-primary-normal",
       tokenValue: "#000000f2",
     },
     primary: {
       tokenName: "color-theme-common-text-primary-normal",
+      tokenCSSVariable: "--mds-color-theme-common-text-primary-normal",
       tokenValue: "#fffffff2",
     },
   };

@@ -34,7 +34,7 @@
     "test:unit": "jest ./src/**/*.test.ts"
   },
   "devDependencies": {
-    "@momentum-design/tokens": "workspace:^",
+    "@momentum-design/tokens": "workspace:*",
     "@types/jest": "^29.5.12",
     "@types/node": "20.14.9",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
