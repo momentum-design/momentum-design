@@ -17,20 +17,28 @@
     "analyze:syntax": "tsc --noEmit",
     "analyze:postbuild": "echo \"script 'analyze:postbuild' has not been implemented\"",
     "analyze:prebuild": "yarn analyze:lint && yarn analyze:syntax",
-    "build": "yarn build:module",
+    "build": "yarn build:module && yarn build:browser",
     "build:module": "tsc",
+    "build:browser": "node ./esbuild.config.js",
     "clean": "yarn clean:dist",
     "clean:dist": "rimraf ./dist",
+    "dev:prepare": "rimraf ./src/staticSite/public && ncp ./dist ./src/staticSite/public",
+    "dev": "yarn clean && yarn build && yarn dev:prepare && yarn serve",
     "docs": "echo \"script 'docs' has not been implemented\"",
     "prepublishOnly": "yarn clean && yarn build",
     "publish": "yarn publish:npmjs",
-    "publish:npmjs": "echo \"script 'publish:npmjs' has not been implemented\"",
+    "publish:npmjs:prepare": "node scripts/prepareForPublish.js",
+    "publish:npmjs": "yarn publish:npmjs:prepare && yarn npm publish --access=public",
+    "serve": "serve ./src/staticSite",
     "test": "yarn test:prebuild && yarn test:postbuild",
     "test:postbuild": "echo \"script 'test:prebuild' has not been implemented\"",
     "test:prebuild": "yarn test:unit",
     "test:unit": "jest ./src/**/*.test.ts"
   },
   "dependencies": {
+    "@momentum-design/tokens": "workspace:*"
+  },
+  "peerDependencies": {
     "@momentum-design/tokens": "workspace:*"
   },
   "devDependencies": {
@@ -43,7 +51,9 @@
     "eslint-plugin-html": "^8.1.1",
     "eslint-plugin-import": "^2.26.0",
     "jest": "^29.7.0",
+    "ncp": "^2.0.0",
     "rimraf": "^6.0.1",
+    "serve": "^14.2.3",
     "ts-jest": "^29.2.4",
     "typescript": "^4.8.4"
   }

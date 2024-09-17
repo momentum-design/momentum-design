@@ -123,6 +123,6 @@ tests-out/
 
 packages/tools/figma-plugins/assets-export/dist
 packages/components/config/storybook/public/icons
-
+packages/assets/utils/src/staticSite/public
 # MAC system File
 **/.DS_Store

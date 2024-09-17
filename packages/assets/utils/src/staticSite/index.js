@@ -1,4 +1,4 @@
-import { calculateForegroundColor } from '../../dist/module/index.js';
+import {calculateForegroundColor} from './public/index.js';
 
 const bgElement = document.getElementById('background-color');
 const fgElement = document.getElementById('foreground-color');

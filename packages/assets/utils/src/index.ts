@@ -1,7 +1,3 @@
-import CONSTANTS from './constants';
-import { calculateForegroundColor } from './calculateForegroundColor/calculateForegroundColor';
+import { calculateForegroundColor } from './calculateForegroundColor';
 
-export {
-  CONSTANTS,
-  calculateForegroundColor,
-};
+export {calculateForegroundColor};
