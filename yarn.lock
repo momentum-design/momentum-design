@@ -3995,6 +3995,8 @@ __metadata:
     serve: ^14.2.3
     ts-jest: ^29.2.4
     typescript: ^4.8.4
+  peerDependencies:
+    "@momentum-design/tokens": "workspace:*"
   languageName: unknown
   linkType: soft
 
