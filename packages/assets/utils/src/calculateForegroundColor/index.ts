@@ -3,9 +3,18 @@ import CONSTANTS from '../constants';
 import { calculateContrastRatio } from './helper';
 
 /**
- * Calculate the foreground color based on the background color
- * @param backgroundColor - The HEX color code string for the background color
- * @returns The token name and value for the foreground color
+ * Determines the appropriate foreground color based on a given background color.
+ * This function calculates the contrast ratio between a predefined primary foreground color
+ * and the specified background color. If the contrast ratio meets or exceeds a defined threshold,
+ * it returns the primary foreground color; otherwise, it returns an inverted version of the foreground color.
+ *
+ * @param backgroundColor - A string representing the background color in hexadecimal format (e.g. "#RRGGBB" or "#RGB").
+ * @returns An object containing:
+ *  - tokenName: A string representing the name of the color token.
+ *  - tokenCSSVariable: A string representing the corresponding CSS variable for the color token.
+ *  - tokenValue: A string representing the actual color value in hexadecimal format.
+ *
+ * @throws Error if there is an issue calculating the contrast ratio or if required variables are undefined.
  */
 export function calculateForegroundColor(backgroundColor: string): {
   tokenName: string;

@@ -2,7 +2,7 @@
  * Convert a HEX color to RGB format
  * @param hexColor - The HEX color code string to convert
  * @returns The RGB color code as string
- * @throws { Error } Thrown if the HEX color format is invalid
+ * @throws Error if the provided hex color format is invalid.
  */
 export function convertHexToRgb(hexColor: string): string {
   let hexColorCode = hexColor.replace('#', '');
@@ -39,7 +39,7 @@ export function convertHexToRgb(hexColor: string): string {
  * Calculate the relative luminance component for a color
  * @param color - The color value (as number) to calculate the relative luminance for
  * @returns The relative luminance component as number
- * @throws { Error } Thrown if the color value is invalid
+ * @throws Error if the provided color value is outside the valid range (0-255).
  */
 export function calculateRelativeLuminanceComponent(color: number): number {
   if (color < 0 || color > 255) {
@@ -57,7 +57,7 @@ export function calculateRelativeLuminanceComponent(color: number): number {
  * Calculate the relative luminance for a color
  * @param hexColor - The HEX color code string to calculate the relative luminance for
  * @returns The relative luminance as number
- * @throws { Error } Thrown if the relative luminance value is invalid
+ * @throws Error if the provided hex color is invalid or results in an invalid relative luminance value.
  */
 export function calculateRelativeLuminance(hexColor: string): number {
   const rgbColor = convertHexToRgb(hexColor);
@@ -84,7 +84,7 @@ export function calculateRelativeLuminance(hexColor: string): number {
  * @param foregroundColor - The HEX color code string for the foreground color
  * @param backgroundColor - The HEX color code string for the background color
  * @returns The contrast ratio as number
- * @throws { Error } Thrown if the contrast ratio value is invalid
+ * @throws Error if the calculated contrast ratio is invalid.
  */
 export function calculateContrastRatio(foregroundColor: string, backgroundColor: string): number {
   const foregroundLuminance = calculateRelativeLuminance(foregroundColor);
