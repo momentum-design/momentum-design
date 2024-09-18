@@ -1,3 +1,6 @@
 const config = require('../../../.eslintrc.js');
 
-module.exports = { ...config };
+module.exports = {
+  ...config,
+  ignorePatterns: [...config.ignorePatterns, 'src/staticSite/'],
+};

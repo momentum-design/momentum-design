@@ -4,9 +4,10 @@
   "compilerOptions": {
     "outDir": "./dist/module",
     "declarationDir": "./dist/types",
-    "module": "CommonJS"
+    "module": "ESNext",
+    "target": "ES6",
   },
   "include": [
     "./src/**/*"
-  ]
+  ],
 }
