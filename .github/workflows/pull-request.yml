@@ -27,6 +27,8 @@ jobs:
           HAS_VALIDATED_LABEL=${{ contains(github.event.pull_request.labels.*.name, 'validated') || contains(github.event.workflow_run.labels.*.name, 'validated') || contains(github.event.label.name, 'validated') }}
           VALIDATED=0; [ "$HAS_VALIDATED_LABEL" == "true" ] && VALIDATED=1
 
+          echo github.event
+          
           echo from base $FROM_BASE
           echo validated $VALIDATED
 
