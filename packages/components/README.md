@@ -5,35 +5,21 @@
 
 ## Overview
 
-This package is Work In Progress - there is no guarantee for consistency, stability till properly released.
+This package is **Work In Progress** - there is no guarantee for consistency, stability till properly released.
 There will be breaking changes coming up - it is not recommended to consume this package in this early stage.
 
-## Steps to run this package
+## Consumption
 
-- Follow the steps mentioned in the [first time setup](https://github.com/momentum-design/momentum-design/blob/main/CONTRIBUTING.md#first-time-setup).
-- Build all dependencies to run components package
-    ```
-    yarn telemetry build
-    yarn token-builder build
-    yarn tokens build
-    yarn common build
-    yarn builder build
-    yarn fonts build
-    yarn icons build
-    ```
-- Run this to start storybook and develop components
-    ```
-    yarn components dev
-    ```
+To be provided once finalised.
 
 ## Contributing
 
-See [our contributing guide](./CONTRIBUTING.md)
+See [our contributing guide](./CONTRIBUTING.md).
 
 ## Scripts
 
-See [our script documentation](./SCRIPTS.md)
+See [our script documentation](./SCRIPTS.md).
 
 ## Testing
 
-See [our testing documentation](./TESTING.md)
+See [our testing documentation](./TESTING.md).
