@@ -40,13 +40,14 @@ const esm = async (
   outfile = 'index.js',
   tsconfig = 'tsconfig.json',
   platform = 'node',
+  sourcemap = true,
 ) => {
   await esbuild.build({
     bundle: true,
     entryPoints: [`${join(projectPath, entryPointPath)}`],
     format: 'esm',
     minify: true,
-    sourcemap: true,
+    sourcemap,
     outfile: `${join(projectPath, 'dist', outfile)}`,
     tsconfig: `${join(projectPath, tsconfig)}`,
     platform,

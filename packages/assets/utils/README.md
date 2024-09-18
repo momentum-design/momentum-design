@@ -14,3 +14,11 @@ See [our contributing guide](./CONTRIBUTING.md)
 ## Scripts
 
 See [our script documentation](./SCRIPTS.md)
+
+## Dev Testing
+
+### Calculating Foreground Color
+
+We have created a utils function to calculate foreground color. Use the following steps to run the static site to test the foreground color and check its contrast ratio.
+Run `yarn` at the root level of momentum-design to install all the dependencies.
+Run `yarn utils dev` to start the local server.
