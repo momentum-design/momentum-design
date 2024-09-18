@@ -1,6 +1,6 @@
 version: 2
 mergeable:
-  - when: pull_request.opened, pull_request.reopened, pull_request.edited
+  - when: pull_request.opened, pull_request.reopened, pull_request.edited, pull_request.synchronize
     name: 'Pull Request / Title & Description Check'
     validate:
       - do: title
