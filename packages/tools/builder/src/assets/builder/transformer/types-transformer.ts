@@ -14,12 +14,10 @@ class TypesTransformer extends Transformer {
   }
 
   /**
-     * Generates the types data from the config
-     * @returns object with types data
-     */
-
+   * Generates the types data from the config
+   * @returns object with types data
+   */
   private async generateTypesData(): Promise<{data: string}> {
-    // const glyphData = this.getGlyphData();
     const template = await transformHbs(path.resolve(this.format.config.hbsPath));
     return { data: template({ name: this.format.config.name, path: this.format.config.manifestPath }) };
   }
