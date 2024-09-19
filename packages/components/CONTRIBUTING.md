@@ -19,13 +19,7 @@ Make sure to follow the steps mentioned in the [first time setup](https://github
 After setting up, you can build all the dependencies by running the following commands:
 
 ```sh
-yarn telemetry build
-yarn token-builder build
-yarn tokens build
-yarn common build
-yarn builder build
-yarn fonts build
-yarn icons build
+yarn build
 ```
 
 To **start storybook and develop components**, run the following command:
