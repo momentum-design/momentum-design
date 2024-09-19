@@ -13,6 +13,20 @@
               "fileName": "manifest.json"
             }
           }
+        },
+        {
+          "id": "Types",
+          "target": "./dist/manifest.json",
+          "destination": "./dist/types/",
+          "format": {
+            "type": "TYPES",
+            "config": {
+              "fileName": "types.d.ts",
+              "hbsPath": "./config/templates/types.d.ts.hbs",
+              "name": "AnimationNames",
+              "manifestPath": "../manifest.json"
+            }
+          }
         }
       ],
       "type": "assets"
