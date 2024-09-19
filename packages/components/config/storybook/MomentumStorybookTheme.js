@@ -3,14 +3,14 @@ import { create } from '@storybook/theming/create';
 export default create({
   base: 'dark',
 
-  // Typography for Manager 
+  // Typography for Manager
   // (can't use Inter here without a lot of workarounds):
   fontBase: 'Helvetica Neue, sans-serif',
   fontCode: 'monospace',
 
   brandTitle: 'Momentum Design',
   brandUrl: 'https://momentum.design',
-  brandImage: '/momentum-logo.png',
+  brandImage: './momentum-logo.png',
   brandTarget: '_self',
 
   colorPrimary: '#64b4fa',

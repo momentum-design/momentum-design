@@ -256,6 +256,112 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/iconprovider/iconprovider.component.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "IconProvider component, which allows to be consumed from sub components\n(see `providerUtils.consume` for how to consume)\n\nBundling icons will be up to the consumer of this component, such\nthat only a url has to be passed in from which the icons will be\nfetched.",
+          "name": "IconProvider",
+          "members": [
+            {
+              "kind": "field",
+              "name": "Context",
+              "privacy": "public",
+              "static": true,
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "url",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Url of where icons will be fetched from",
+              "attribute": "url"
+            },
+            {
+              "kind": "field",
+              "name": "fileExtension",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "File extension of icons, default: 'svg'",
+              "attribute": "file-extension",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "lengthUnit",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Length unit used for sizing of icons, default: 'em'",
+              "attribute": "length-unit",
+              "reflects": true
+            },
+            {
+              "kind": "method",
+              "name": "updateValuesInContext",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "updateContext",
+              "privacy": "protected",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "url",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Url of where icons will be fetched from",
+              "fieldName": "url"
+            },
+            {
+              "name": "file-extension",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "File extension of icons, default: 'svg'",
+              "fieldName": "fileExtension"
+            },
+            {
+              "name": "length-unit",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Length unit used for sizing of icons, default: 'em'",
+              "fieldName": "lengthUnit"
+            }
+          ],
+          "superclass": {
+            "name": "Provider",
+            "module": "/src/models"
+          },
+          "tagName": "mdc-iconprovider",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "IconProvider",
+            "module": "src/components/iconprovider/iconprovider.component.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/icon/icon.component.ts",
       "declarations": [
         {
@@ -420,57 +526,27 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/iconprovider/iconprovider.component.ts",
+      "path": "src/components/text/text.component.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "IconProvider component, which allows to be consumed from sub components\n(see `providerUtils.consume` for how to consume)\n\nBundling icons will be up to the consumer of this component, such\nthat only a url has to be passed in from which the icons will be\nfetched.",
-          "name": "IconProvider",
+          "description": "Text component, which helps creating a text element aligning with\nstyling.\n\nThe `type` attribute allows changing the type of text, like `heading-1`, etc.\n\nFor accessibility the `role` and `aria-level` on the component are going to be set\nautomatically based on the type e.g. heading-1 will lead to `role=\"heading\"` and `aria-level=1`.",
+          "name": "Text",
           "members": [
             {
               "kind": "field",
-              "name": "Context",
+              "name": "type",
+              "type": {
+                "text": "FontType | undefined"
+              },
               "privacy": "public",
-              "static": true,
-              "readonly": true
-            },
-            {
-              "kind": "field",
-              "name": "url",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Url of where icons will be fetched from",
-              "attribute": "url"
-            },
-            {
-              "kind": "field",
-              "name": "fileExtension",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "File extension of icons, default: 'svg'",
-              "attribute": "file-extension",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "lengthUnit",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Length unit used for sizing of icons, default: 'em'",
-              "attribute": "length-unit",
+              "description": "Text Type - defines how the text should be rendered\n\nPossible values: `heading-1` | `heading-2` | `heading-3` | `heading-4`\n| `heading-5` | `heading-6` | `heading-7` | `body-large` | `body-regular`\n| `body-small` | `image-title` | `label`;",
+              "attribute": "type",
               "reflects": true
             },
             {
               "kind": "method",
-              "name": "updateValuesInContext",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "updateContext",
+              "name": "handleTypeChanged",
               "privacy": "protected",
               "return": {
                 "type": {
@@ -481,35 +557,19 @@
           ],
           "attributes": [
             {
-              "name": "url",
+              "name": "type",
               "type": {
-                "text": "string | undefined"
+                "text": "FontType | undefined"
               },
-              "description": "Url of where icons will be fetched from",
-              "fieldName": "url"
-            },
-            {
-              "name": "file-extension",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "File extension of icons, default: 'svg'",
-              "fieldName": "fileExtension"
-            },
-            {
-              "name": "length-unit",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Length unit used for sizing of icons, default: 'em'",
-              "fieldName": "lengthUnit"
+              "description": "Text Type - defines how the text should be rendered\n\nPossible values: `heading-1` | `heading-2` | `heading-3` | `heading-4`\n| `heading-5` | `heading-6` | `heading-7` | `body-large` | `body-regular`\n| `body-small` | `image-title` | `label`;",
+              "fieldName": "type"
             }
           ],
           "superclass": {
-            "name": "Provider",
+            "name": "Component",
             "module": "/src/models"
           },
-          "tagName": "mdc-iconprovider",
+          "tagName": "mdc-text",
           "customElement": true
         }
       ],
@@ -518,8 +578,8 @@
           "kind": "js",
           "name": "default",
           "declaration": {
-            "name": "IconProvider",
-            "module": "src/components/iconprovider/iconprovider.component.ts"
+            "name": "Text",
+            "module": "src/components/text/text.component.ts"
           }
         }
       ]
@@ -609,66 +669,6 @@
           "declaration": {
             "name": "ThemeProvider",
             "module": "src/components/themeprovider/themeprovider.component.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/text/text.component.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Text component, which helps creating a text element aligning with\nstyling.\n\nThe `type` attribute allows changing the type of text, like `heading-1`, etc.\n\nFor accessibility the `role` and `aria-level` on the component are going to be set\nautomatically based on the type e.g. heading-1 will lead to `role=\"heading\"` and `aria-level=1`.",
-          "name": "Text",
-          "members": [
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "FontType | undefined"
-              },
-              "privacy": "public",
-              "description": "Text Type - defines how the text should be rendered\n\nPossible values: `heading-1` | `heading-2` | `heading-3` | `heading-4`\n| `heading-5` | `heading-6` | `heading-7` | `body-large` | `body-regular`\n| `body-small` | `image-title` | `label`;",
-              "attribute": "type",
-              "reflects": true
-            },
-            {
-              "kind": "method",
-              "name": "handleTypeChanged",
-              "privacy": "protected",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              }
-            }
-          ],
-          "attributes": [
-            {
-              "name": "type",
-              "type": {
-                "text": "FontType | undefined"
-              },
-              "description": "Text Type - defines how the text should be rendered\n\nPossible values: `heading-1` | `heading-2` | `heading-3` | `heading-4`\n| `heading-5` | `heading-6` | `heading-7` | `body-large` | `body-regular`\n| `body-small` | `image-title` | `label`;",
-              "fieldName": "type"
-            }
-          ],
-          "superclass": {
-            "name": "Component",
-            "module": "/src/models"
-          },
-          "tagName": "mdc-text",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "default",
-          "declaration": {
-            "name": "Text",
-            "module": "src/components/text/text.component.ts"
           }
         }
       ]
