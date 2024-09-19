@@ -89,6 +89,16 @@ export interface SwiftFormat {
 }
 
 /**
+ * Types Format
+ *
+ * @beta
+ */
+export interface TypesFormat {
+  type: typeof CONSTANTS.FORMATS.TYPES;
+  config: { fileName: string; hbsPath: string, name: string, manifestPath: string };
+}
+
+/**
  * SvgGlyphs Format
  *
  * @beta
@@ -152,6 +162,7 @@ export type Formats = (
   | ManifestFormat
   | SwiftFormat
   | SvgGlyphsFormat
+  | TypesFormat
 ) & {
   encoding?: Encoding;
 };
