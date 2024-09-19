@@ -10,6 +10,7 @@ import WOFF2Transformer from './woff2-transformer';
 import SwiftTransformer from './swift-transformer';
 import CssTransformer from './css-transformer';
 import SvgGlyphsTransformer from './svg-glyphs-transformer';
+import TypesTransformer from './types-transformer';
 
 type Transformers =
   | Transformer
@@ -21,7 +22,8 @@ type Transformers =
   | ManifestTransformer
   | SwiftTransformer
   | CssTransformer
-  | SvgGlyphsTransformer;
+  | SvgGlyphsTransformer
+  | TypesTransformer;
 
 /**
  * Factory Pattern
@@ -48,6 +50,8 @@ function createTransformer(format: Formats, destination: string): Transformers {
       return new SwiftTransformer(format, destination);
     case CONSTANTS.FORMATS.CSS:
       return new CssTransformer(format, destination);
+    case CONSTANTS.FORMATS.TYPES:
+      return new TypesTransformer(format, destination);
     default:
       return new Transformer(format, destination);
   }
