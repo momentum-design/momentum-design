@@ -11,9 +11,11 @@ import path from 'path';
 // `import.meta.resolve` provides accurate, stable paths for the icons and illustrations packages,
 // ensuring reliable path resolution for tasks like copying files, compared to using relative paths.
 const getAssetsFolder = (manifestEntryPoint) => path.dirname(fileURLToPath(import.meta.resolve(manifestEntryPoint)));
+const getStorybookFolder = (relativePath) => path.dirname(fileURLToPath(import.meta.resolve(relativePath)));
 
 const iconsDistFolder = getAssetsFolder('@momentum-design/icons/dist/manifest.json');
 const illustrationsDistFolder = getAssetsFolder('@momentum-design/illustrations/dist/manifest.json');
+const storybookDistFolder = getStorybookFolder('@momentum-design/components/storybook-static');
 
 // https://astro.build/config
 export default defineConfig({
@@ -39,6 +41,10 @@ export default defineConfig({
               {
                 src: path.join(illustrationsDistFolder, '/svg/*.svg'),
                 dest: 'dist/illustrations',
+              },
+              {
+                src: path.join(storybookDistFolder, '/storybook-static/*'),
+                dest: 'dist/storybook-static',
               },
             ],
           }),
