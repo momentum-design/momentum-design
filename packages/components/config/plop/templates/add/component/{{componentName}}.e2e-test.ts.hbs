@@ -4,13 +4,13 @@ import steps from '../../../config/playwright/setup/steps/accessibility';
 test.beforeEach(async ({ componentsPage }) => {
   await componentsPage.mount({
     html: `
-        <{{componentName}} />
+        <{{prefix}}{{separator}}{{componentName}} />
       `,
   });
 });
 
-test('{{componentName}}', async ({ componentsPage }) => {
-  const {{componentName}} = componentsPage.page.locator('{{componentName}}');
+test('{{prefix}}{{separator}}{{componentName}}', async ({ componentsPage }) => {
+  const {{componentName}} = componentsPage.page.locator('{{prefix}}-{{componentName}}');
 
   // initial check for the {{componentName}} be visible on the screen:
   await {{componentName}}.waitFor();
@@ -27,7 +27,7 @@ test('{{componentName}}', async ({ componentsPage }) => {
    */
   await test.step('visual-regression', async () => {
     await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('{{componentName}}', { element: {{componentName}} });
+      await componentsPage.visualRegression.takeScreenshot('{{prefix}}{{separator}}{{componentName}}', { element: {{componentName}} });
     });
   });
 

@@ -1,14 +1,13 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import {{componentName}} from './{{componentName}}.component';
 
 const render = (args: Args) => html`
-  <{{componentName}} args="${args}"></{{componentName}}>`;
+  <{{prefix}}{{separator}}{{componentName}} args="${args}"></{{prefix}}{{separator}}{{componentName}}>`;
 
-const meta: Meta<{{componentName}}> = {
+const meta: Meta = {
   title: 'Components/{{componentName}}',
-  component: '{{componentName}}',
+  component: '{{prefix}}{{separator}}{{componentName}}',
   render,
   argTypes: {},
 };
