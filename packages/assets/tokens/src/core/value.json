@@ -2115,19 +2115,19 @@
     },
     "weight": {
       "light": {
-        "value": "light",
+        "value": "300",
         "type": "fontWeights"
       },
       "regular": {
-        "value": "regular",
+        "value": "400",
         "type": "fontWeights"
       },
       "medium": {
-        "value": "medium",
+        "value": "500",
         "type": "fontWeights"
       },
       "bold": {
-        "value": "bold",
+        "value": "700",
         "type": "fontWeights"
       }
     },
@@ -2180,11 +2180,11 @@
         "value": "none",
         "type": "textCase"
       },
-      " uppercase": {
+      "uppercase": {
         "value": "uppercase",
         "type": "textCase"
       },
-      " lowercase": {
+      "lowercase": {
         "value": "lowercase",
         "type": "textCase"
       },
