@@ -32,12 +32,26 @@
         },
         {
           "id": "Manifest",
-          "target": "./dist/**/*.*",
+          "target": "./dist/svg/**/*.*",
           "destination": "./dist/",
           "format": {
             "type": "MANIFEST",
             "config": {
               "fileName": "manifest.json"
+            }
+          }
+        },
+        {
+          "id": "Types",
+          "target": "./dist/manifest.json",
+          "destination": "./dist/types/",
+          "format": {
+            "type": "TYPES",
+            "config": {
+              "fileName": "types.d.ts",
+              "hbsPath": "./config/templates/types.d.ts.hbs",
+              "name": "IllustrationNames",
+              "manifestPath": "../manifest.json"
             }
           }
         }

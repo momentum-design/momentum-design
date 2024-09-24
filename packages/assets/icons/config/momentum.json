@@ -180,6 +180,20 @@
           }
         },
         {
+          "id": "Types",
+          "target": "./dist/manifest.json",
+          "destination": "./dist/types/",
+          "format": {
+            "type": "TYPES",
+            "config": {
+              "fileName": "types.d.ts",
+              "hbsPath": "./config/templates/types.d.ts.hbs",
+              "name": "IconNames",
+              "manifestPath": "../manifest.json"
+            }
+          }
+        },
+        {
           "id": "SVG-glyphs-data",
           "target": "./dist/svg/**/*.*",
           "destination": "./dist/fonts",
