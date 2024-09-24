@@ -4,117 +4,6 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "src/components/avatar/avatar.component.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "Avatar",
-          "slots": [
-            {
-              "description": "This is a default/unnamed slot",
-              "name": ""
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "AvatarType | undefined"
-              },
-              "attribute": "type",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "alt",
-              "type": {
-                "text": "string | undefined"
-              },
-              "attribute": "alt"
-            },
-            {
-              "kind": "field",
-              "name": "src",
-              "type": {
-                "text": "string | undefined"
-              },
-              "attribute": "src"
-            },
-            {
-              "kind": "field",
-              "name": "scale",
-              "type": {
-                "text": "number | undefined"
-              },
-              "description": "Scale of the avatar",
-              "attribute": "scale"
-            },
-            {
-              "kind": "method",
-              "name": "updateSize",
-              "privacy": "private",
-              "description": "Updates the size by setting the width and height"
-            },
-            {
-              "kind": "method",
-              "name": "photoTemplate"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "type",
-              "type": {
-                "text": "AvatarType | undefined"
-              },
-              "fieldName": "type"
-            },
-            {
-              "name": "alt",
-              "type": {
-                "text": "string | undefined"
-              },
-              "fieldName": "alt"
-            },
-            {
-              "name": "src",
-              "type": {
-                "text": "string | undefined"
-              },
-              "fieldName": "src"
-            },
-            {
-              "name": "scale",
-              "type": {
-                "text": "number | undefined"
-              },
-              "description": "Scale of the avatar",
-              "fieldName": "scale"
-            }
-          ],
-          "superclass": {
-            "name": "Component",
-            "module": "/src/models"
-          },
-          "tagName": "mdc-avatar",
-          "summary": "This is MyElement",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "default",
-          "declaration": {
-            "name": "Avatar",
-            "module": "src/components/avatar/avatar.component.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/badge/badge.component.ts",
       "declarations": [
         {
@@ -250,6 +139,266 @@
           "declaration": {
             "name": "Badge",
             "module": "src/components/badge/badge.component.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/text/text.component.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Text component, which helps creating a text element aligning with\nstyling.\n\nThe `type` attribute allows changing the type of text, like `heading-1`, etc.\n\nFor accessibility the `role` and `aria-level` on the component are going to be set\nautomatically based on the type e.g. heading-1 will lead to `role=\"heading\"` and `aria-level=1`.",
+          "name": "Text",
+          "members": [
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "FontType | undefined"
+              },
+              "privacy": "public",
+              "description": "Text Type - defines how the text should be rendered\n\nPossible values: `heading-1` | `heading-2` | `heading-3` | `heading-4`\n| `heading-5` | `heading-6` | `heading-7` | `body-large` | `body-regular`\n| `body-small` | `image-title` | `label`;",
+              "attribute": "type",
+              "reflects": true
+            },
+            {
+              "kind": "method",
+              "name": "handleTypeChanged",
+              "privacy": "protected",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "type",
+              "type": {
+                "text": "FontType | undefined"
+              },
+              "description": "Text Type - defines how the text should be rendered\n\nPossible values: `heading-1` | `heading-2` | `heading-3` | `heading-4`\n| `heading-5` | `heading-6` | `heading-7` | `body-large` | `body-regular`\n| `body-small` | `image-title` | `label`;",
+              "fieldName": "type"
+            }
+          ],
+          "superclass": {
+            "name": "Component",
+            "module": "/src/models"
+          },
+          "tagName": "mdc-text",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Text",
+            "module": "src/components/text/text.component.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/themeprovider/themeprovider.component.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "ThemeProvider component, which sets the theme css variables\nfor the child dom nodes and allows to be consumed from sub components\n(see providerUtils.consume for how to consume)\n\nThemeProvider also includes the different font faces available\nfor Text components.",
+          "name": "ThemeProvider",
+          "members": [
+            {
+              "kind": "field",
+              "name": "Context",
+              "privacy": "public",
+              "static": true,
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "themes",
+              "type": {
+                "text": "string"
+              },
+              "description": "Available themes to switch to\n\nHas to be a space separated string, like className\ne.g.: `mds-theme-stable-darkWebex mds-theme-stable-lightWebex`",
+              "attribute": "themes"
+            },
+            {
+              "kind": "field",
+              "name": "theme",
+              "type": {
+                "text": "Theme"
+              },
+              "description": "Current theme attribute\n\nHas to be fully qualified, such that\nthe theme name matches the className of the respective\ntheme stylesheet",
+              "attribute": "theme"
+            },
+            {
+              "kind": "method",
+              "name": "updateContext",
+              "privacy": "protected",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Update all observing components of this\nprovider to update the theme"
+            },
+            {
+              "kind": "method",
+              "name": "updateActiveThemeClass",
+              "privacy": "private",
+              "description": "Function to update the active theme classname to update the theme tokens\nas CSS variables on the web component."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "themes",
+              "type": {
+                "text": "string"
+              },
+              "description": "Available themes to switch to\n\nHas to be a space separated string, like className\ne.g.: `mds-theme-stable-darkWebex mds-theme-stable-lightWebex`",
+              "fieldName": "themes"
+            },
+            {
+              "name": "theme",
+              "type": {
+                "text": "Theme"
+              },
+              "description": "Current theme attribute\n\nHas to be fully qualified, such that\nthe theme name matches the className of the respective\ntheme stylesheet",
+              "fieldName": "theme"
+            }
+          ],
+          "superclass": {
+            "name": "Provider",
+            "module": "/src/models"
+          },
+          "tagName": "mdc-themeprovider",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "ThemeProvider",
+            "module": "src/components/themeprovider/themeprovider.component.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/avatar/avatar.component.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "Avatar",
+          "slots": [
+            {
+              "description": "This is a default/unnamed slot",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "AvatarType | undefined"
+              },
+              "attribute": "type",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "alt",
+              "type": {
+                "text": "string | undefined"
+              },
+              "attribute": "alt"
+            },
+            {
+              "kind": "field",
+              "name": "src",
+              "type": {
+                "text": "string | undefined"
+              },
+              "attribute": "src"
+            },
+            {
+              "kind": "field",
+              "name": "scale",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Scale of the avatar",
+              "attribute": "scale"
+            },
+            {
+              "kind": "method",
+              "name": "updateSize",
+              "privacy": "private",
+              "description": "Updates the size by setting the width and height"
+            },
+            {
+              "kind": "method",
+              "name": "photoTemplate"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "type",
+              "type": {
+                "text": "AvatarType | undefined"
+              },
+              "fieldName": "type"
+            },
+            {
+              "name": "alt",
+              "type": {
+                "text": "string | undefined"
+              },
+              "fieldName": "alt"
+            },
+            {
+              "name": "src",
+              "type": {
+                "text": "string | undefined"
+              },
+              "fieldName": "src"
+            },
+            {
+              "name": "scale",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Scale of the avatar",
+              "fieldName": "scale"
+            }
+          ],
+          "superclass": {
+            "name": "Component",
+            "module": "/src/models"
+          },
+          "tagName": "mdc-avatar",
+          "summary": "This is MyElement",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Avatar",
+            "module": "src/components/avatar/avatar.component.ts"
           }
         }
       ]
@@ -520,155 +669,6 @@
           "declaration": {
             "name": "Icon",
             "module": "src/components/icon/icon.component.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/text/text.component.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Text component, which helps creating a text element aligning with\nstyling.\n\nThe `type` attribute allows changing the type of text, like `heading-1`, etc.\n\nFor accessibility the `role` and `aria-level` on the component are going to be set\nautomatically based on the type e.g. heading-1 will lead to `role=\"heading\"` and `aria-level=1`.",
-          "name": "Text",
-          "members": [
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "FontType | undefined"
-              },
-              "privacy": "public",
-              "description": "Text Type - defines how the text should be rendered\n\nPossible values: `heading-1` | `heading-2` | `heading-3` | `heading-4`\n| `heading-5` | `heading-6` | `heading-7` | `body-large` | `body-regular`\n| `body-small` | `image-title` | `label`;",
-              "attribute": "type",
-              "reflects": true
-            },
-            {
-              "kind": "method",
-              "name": "handleTypeChanged",
-              "privacy": "protected",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              }
-            }
-          ],
-          "attributes": [
-            {
-              "name": "type",
-              "type": {
-                "text": "FontType | undefined"
-              },
-              "description": "Text Type - defines how the text should be rendered\n\nPossible values: `heading-1` | `heading-2` | `heading-3` | `heading-4`\n| `heading-5` | `heading-6` | `heading-7` | `body-large` | `body-regular`\n| `body-small` | `image-title` | `label`;",
-              "fieldName": "type"
-            }
-          ],
-          "superclass": {
-            "name": "Component",
-            "module": "/src/models"
-          },
-          "tagName": "mdc-text",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "default",
-          "declaration": {
-            "name": "Text",
-            "module": "src/components/text/text.component.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/themeprovider/themeprovider.component.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "ThemeProvider component, which sets the theme css variables\nfor the child dom nodes and allows to be consumed from sub components\n(see providerUtils.consume for how to consume)\n\nThemeProvider also includes the different font faces available\nfor Text components.",
-          "name": "ThemeProvider",
-          "members": [
-            {
-              "kind": "field",
-              "name": "Context",
-              "privacy": "public",
-              "static": true,
-              "readonly": true
-            },
-            {
-              "kind": "field",
-              "name": "themes",
-              "type": {
-                "text": "string"
-              },
-              "description": "Available themes to switch to\n\nHas to be a space separated string, like className\ne.g.: `mds-theme-stable-darkWebex mds-theme-stable-lightWebex`",
-              "attribute": "themes"
-            },
-            {
-              "kind": "field",
-              "name": "theme",
-              "type": {
-                "text": "Theme"
-              },
-              "description": "Current theme attribute\n\nHas to be fully qualified, such that\nthe theme name matches the className of the respective\ntheme stylesheet",
-              "attribute": "theme"
-            },
-            {
-              "kind": "method",
-              "name": "updateContext",
-              "privacy": "protected",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "description": "Update all observing components of this\nprovider to update the theme"
-            },
-            {
-              "kind": "method",
-              "name": "updateActiveThemeClass",
-              "privacy": "private",
-              "description": "Function to update the active theme classname to update the theme tokens\nas CSS variables on the web component."
-            }
-          ],
-          "attributes": [
-            {
-              "name": "themes",
-              "type": {
-                "text": "string"
-              },
-              "description": "Available themes to switch to\n\nHas to be a space separated string, like className\ne.g.: `mds-theme-stable-darkWebex mds-theme-stable-lightWebex`",
-              "fieldName": "themes"
-            },
-            {
-              "name": "theme",
-              "type": {
-                "text": "Theme"
-              },
-              "description": "Current theme attribute\n\nHas to be fully qualified, such that\nthe theme name matches the className of the respective\ntheme stylesheet",
-              "fieldName": "theme"
-            }
-          ],
-          "superclass": {
-            "name": "Provider",
-            "module": "/src/models"
-          },
-          "tagName": "mdc-themeprovider",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "default",
-          "declaration": {
-            "name": "ThemeProvider",
-            "module": "src/components/themeprovider/themeprovider.component.ts"
           }
         }
       ]

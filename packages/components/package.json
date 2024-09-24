@@ -31,6 +31,7 @@
     "build:browser:e2e": "node config/esbuild/esbuild-e2e.config.js",
     "build:browser": "node config/esbuild/esbuild.config.js",
     "build:module": "tsc --project \"./tsconfig.module.json\"",
+    "build-storybook": "storybook build -c config/storybook -o dist/storybook-static",
     "build": "yarn build:module && yarn build:browser && yarn build-storybook",
     "clean": "yarn clean:dist",
     "clean:dist": "rimraf ./dist",
@@ -48,7 +49,6 @@
     "test:e2e:setup": "concurrently --names 'copy:tokens,copy:icons,copy:fonts' -c 'magenta.bold,cyan.bold,blue.bold' 'yarn copy:tokens' 'yarn copy:icons playwright' 'yarn copy:fonts playwright' && yarn build:browser:e2e",
     "test:e2e": "playwright test --config './config/playwright/playwright.config.ts'",
     "test:e2e:ui": "yarn test:e2e --ui",
-    "build-storybook": "storybook build -c config/storybook -o dist/storybook-static",
     "clean:plop": "rimraf ./config/plop/dist",
     "build:plop": "yarn clean:plop && node ./config/plop/esbuild.config.plop.js",
     "generate:component": "yarn build:plop && plop --plopfile config/plop/dist/plopfile.mjs"
