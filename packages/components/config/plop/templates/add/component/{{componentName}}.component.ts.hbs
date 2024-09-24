@@ -4,15 +4,17 @@ import { Component } from '../../models';
 
 /**
  * @slot - This is a default/unnamed slot
- *
- * @summary This is MyElement
- *
+ * @summary - Description of the component
  * @tag {{componentName}}
  * @tagname {{componentName}}
+ * @prop [type] propertyName - Description of the custom property
+ * @attr [type] attributeName - Description of the custom attribute
+ * @fires eventName - Description of the custom event
+ * @cssprop --custom-property-name - Description of the CSS custom property
  */
 class {{sentenceCase componentName}} extends Component {
   public override render() {
-    return html`<p>This is a dummy component!</p><slot></slot>`;
+    return html`<p>This is a dummy {{componentName}} component!</p><slot></slot>`;
   }
 
   public static override styles = styles;

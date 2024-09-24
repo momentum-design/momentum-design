@@ -3,10 +3,10 @@ import '.';
 import { html } from 'lit';
 
 const render = (args: Args) => html`
-  <{{prefix}}{{separator}}{{componentName}} args="${args}"></{{prefix}}{{separator}}{{componentName}}>`;
+  <{{prefix}}{{separator}}{{componentName}} args.property="${args.property}"></{{prefix}}{{separator}}{{componentName}}>`;
 
 const meta: Meta = {
-  title: 'Components/{{componentName}}',
+  title: 'Work In Progress/{{componentName}}',
   component: '{{prefix}}{{separator}}{{componentName}}',
   render,
   argTypes: {},
