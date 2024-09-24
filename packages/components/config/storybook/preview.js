@@ -38,7 +38,7 @@ const preview = {
     },
     options: {
       storySort: {
-        order: ['System', 'Components'],
+        order: ['Components', 'Work In Progress'],
       },
     },
   },

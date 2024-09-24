@@ -1,15 +1,9 @@
 .dark {
     background-color: #000000;
     height: 100vh;
-    background-image: url('../background-graphic.png');
-    background-repeat: no-repeat;
-    background-position: top right;
 }
 
 .light {
     background-color: #ffffff;
     height: 100vh;
-    background-image: url('../background-graphic.png');
-    background-repeat: no-repeat;
-    background-position: top right;
 }

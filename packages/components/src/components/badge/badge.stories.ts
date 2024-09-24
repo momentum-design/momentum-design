@@ -14,6 +14,7 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
+  title: 'Work In Progress/badge',
   tags: ['autodocs'],
   component: 'mdc-badge',
   render,

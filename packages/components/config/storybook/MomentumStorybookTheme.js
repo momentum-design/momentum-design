@@ -8,10 +8,7 @@ export default create({
   fontBase: 'Helvetica Neue, sans-serif',
   fontCode: 'monospace',
 
-  brandTitle: 'Momentum Design',
-  brandUrl: 'https://momentum.design',
-  brandImage: './momentum-logo.png',
-  brandTarget: '_self',
+  brandTitle: ' ',
 
   colorPrimary: '#64b4fa',
   colorSecondary: '#64b4fa',
