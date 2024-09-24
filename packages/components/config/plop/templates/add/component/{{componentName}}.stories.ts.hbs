@@ -1,11 +1,12 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
-import fixtures from './{{componentName}}.fixtures';
+import { html } from 'lit';
 
-const render = (args: Args) => fixtures.base(args);
+const render = (args: Args) => html`
+  <{{prefix}}{{separator}}{{componentName}} args.property="${args.property}"></{{prefix}}{{separator}}{{componentName}}>`;
 
 const meta: Meta = {
-  tags: ['autodocs'],
+  title: 'Work In Progress/{{componentName}}',
   component: '{{prefix}}{{separator}}{{componentName}}',
   render,
   argTypes: {},
@@ -13,6 +14,6 @@ const meta: Meta = {
 
 export default meta;
 
-export const Primary: StoryObj = {
+export const Default: StoryObj = {
   args: {},
 };

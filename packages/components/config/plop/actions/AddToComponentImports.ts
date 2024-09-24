@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import { join } from 'path';
 import { ActionType } from 'plop';
-import { folders, componentName, componentNamePrefix } from '../constants';
+import { folders, componentName } from '../constants';
 
 export const AddToComponentImports: ActionType = {
   type: 'modify',
@@ -9,8 +9,7 @@ export const AddToComponentImports: ActionType = {
   pattern: /(\nexport)/g,
   data: {
     componentName,
-    prefix: componentNamePrefix,
   },
   template:
-    `import {{sentenceCase prefix}}{{sentenceCase ${componentName}}} from './components/{{${componentName}}}';\n$1`,
+    `import {{sentenceCase ${componentName}}} from './components/{{${componentName}}}';\n$1`,
 };
