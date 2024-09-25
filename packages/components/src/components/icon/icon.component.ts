@@ -118,6 +118,7 @@ class Icon extends Component {
   }
 
   override updated(changedProperties: Map<string, any>) {
+    console.log('heyyy');
     super.updated(changedProperties);
 
     if (changedProperties.has('name')) {
