@@ -3,8 +3,8 @@ const fse = require('fs-extra');
 const path = require('path');
 const chalk = require('chalk');
 
-const fontsFolder = path.dirname(require.resolve('@momentum-design/fonts/dist/inter/Inter.var.woff2'));
 const root = process.cwd();
+const fontsFolder = path.join(root, '..', 'assets', 'fonts', 'dist');
 const playwrightPublicDist = path.join(root, 'config', 'playwright', 'public', 'dist', 'fonts');
 const storybookPublicDist = path.join(root, 'config', 'storybook', 'public', 'fonts');
 
