@@ -31,7 +31,7 @@
     "build:browser": "node config/esbuild/esbuild.config.js",
     "build:module": "tsc --project \"./tsconfig.module.json\"",
     "build:storybook": "storybook build -c config/storybook",
-    "build": "yarn build:module && yarn build:browser && yarn build:storybook",
+    "build": "yarn build:module && yarn build:browser",
     "clean": "yarn clean:dist",
     "clean:dist": "rimraf ./dist",
     "copy:tokens": "node scripts/copyTokens.js",
