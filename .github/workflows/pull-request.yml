@@ -154,9 +154,6 @@ jobs:
         env:
           MOMENTUM_METRICS_API_KEY: ${{ secrets.MOMENTUM_METRICS_API_KEY }}
 
-      - name: Build Storybook for Documentation
-        run: yarn workspace @momentum-design/components build:storybook
-
       - name: Cache Dist
         uses: actions/cache@v4
         with:
