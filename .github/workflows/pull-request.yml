@@ -160,6 +160,24 @@ jobs:
           path: '**/dist'
           key: dist-${{ env.rid }}
 
+  build-storybook:
+    name: Build Storybook
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
+      - name: Install Dependencies
+        run: yarn
+      - name: Build Storybook
+        run: yarn build:storybook
+
   analyze-root:
     name: Analyze Root
     needs: initialize
