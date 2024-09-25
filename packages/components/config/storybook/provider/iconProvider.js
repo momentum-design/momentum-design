@@ -1,4 +1,5 @@
 import { html } from 'lit';
+import '../../../src/components/iconprovider';
 
 export const withIconProvider = (story) =>
   html`<mdc-iconprovider
