@@ -14,8 +14,7 @@
       "types": "./dist/index.d.ts"
     },
     "./module": "./dist/components",
-    "./browser": "./dist/browser",
-    "./storybook-static": "./dist/storybook-static"
+    "./browser": "./dist/browser"
   },
   "files": [
     "./dist/"
@@ -31,7 +30,7 @@
     "build:browser:e2e": "node config/esbuild/esbuild-e2e.config.js",
     "build:browser": "node config/esbuild/esbuild.config.js",
     "build:module": "tsc --project \"./tsconfig.module.json\"",
-    "build-storybook": "storybook build -c config/storybook -o dist/storybook-static",
+    "build:storybook": "storybook build -c config/storybook",
     "build": "yarn build:module && yarn build:browser && yarn build-storybook",
     "clean": "yarn clean:dist",
     "clean:dist": "rimraf ./dist",
