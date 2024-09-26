@@ -11,6 +11,8 @@ Consume each individual package by adding the NPM dependency to `package.json` w
 * [**@momentum-design/illustrations**](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/illustrations) - Illustration assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/illustrations)
 * [**@momentum-design/tokens**](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/tokens) - Token assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/tokens)
 * [**@momentum-design/brand-visuals**](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/brand-visuals) - Brand Visual assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/brand-visuals)
+* [**@momentum-design/fonts**](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/fonts) - Fonts assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/fonts)
+* [**@momentum-design/utils**](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/utils) - Common utilities. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/utils)
 
 ## without NPM
 
