@@ -65,6 +65,18 @@ class Git {
     });
   }
 
+  public static async getPullRequestTitlePrefix(commitSHA: string): Promise<string | null> {
+    const pullRequestDetails = await Git.getPullRequestDetails(commitSHA);
+    if (pullRequestDetails && pullRequestDetails.length > 0) {
+      const { title } = pullRequestDetails[0];
+      const prefixMatch = title.match(/^(\w+)(?:\(\w+\))?:/);
+      if (prefixMatch) {
+        return prefixMatch[1];
+      }
+    }
+    return null;
+  }
+
   public static get CONSTANTS(): typeof CONSTANTS {
     return structuredClone(CONSTANTS);
   }
