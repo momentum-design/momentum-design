@@ -14,6 +14,8 @@ const getAssetsFolder = (manifestEntryPoint) => path.dirname(fileURLToPath(impor
 
 const iconsDistFolder = getAssetsFolder('@momentum-design/icons/dist/manifest.json');
 const illustrationsDistFolder = getAssetsFolder('@momentum-design/illustrations/dist/manifest.json');
+// Using relative path approach for now as we don't keep storybook-static folder inside dist of components
+const storybookFolder = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'components');
 
 // https://astro.build/config
 export default defineConfig({
@@ -39,6 +41,10 @@ export default defineConfig({
               {
                 src: path.join(illustrationsDistFolder, '/svg/*.svg'),
                 dest: 'dist/illustrations',
+              },
+              {
+                src: path.join(storybookFolder, '/storybook-static/*'),
+                dest: 'dist/storybook-static',
               },
             ],
           }),

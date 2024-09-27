@@ -8,6 +8,7 @@ const renderAccessibility = (args: Args) => html`
 `;
 
 const meta: Meta = {
+  title: 'Work In Progress/icon',
   tags: ['autodocs'],
   component: 'mdc-icon',
   render,
