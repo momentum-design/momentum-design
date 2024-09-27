@@ -8,6 +8,7 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
+  title: 'Work In Progress/avatar',
   component: 'mdc-avatar',
   render,
   argTypes: {},

@@ -18,6 +18,7 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
+  title: 'Work In Progress/themeprovider',
   tags: ['autodocs'],
   component: 'mdc-themeprovider',
   render,
