@@ -9,9 +9,9 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.js"
     },
     "./module": "./dist/components",
     "./browser": "./dist/browser"
@@ -53,8 +53,8 @@
     "generate:component": "yarn build:plop && plop --plopfile config/plop/dist/plopfile.mjs"
   },
   "dependencies": {
-    "@lit-labs/context": "^0.5.1",
-    "lit": "^3.1.4"
+    "@lit/context": "^1.1.2",
+    "lit": "^3.2.0"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.9.1",
