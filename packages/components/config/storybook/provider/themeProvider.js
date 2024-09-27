@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import { themes } from '../themes';
+import '../../../src/components/themeprovider';
 import '../themes/themes.css';
 
 const clearStyles = (element) => {
@@ -22,10 +23,10 @@ export const withThemeProvider = (story, context) => {
   applyStyle(body, themeObject.className);
 
   return html`<mdc-themeprovider
-      id="theme-provider"
-      theme="${themeObject.name}"
-      themes="mds-theme-stable-darkWebex mds-theme-stable-lightWebex"
-    >
-      ${story()}
-    </mdc-themeprovider>`;
+    id="theme-provider"
+    theme="${themeObject.name}"
+    themes="mds-theme-stable-darkWebex mds-theme-stable-lightWebex"
+  >
+    ${story()}
+  </mdc-themeprovider>`;
 };

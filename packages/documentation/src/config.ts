@@ -91,6 +91,10 @@ export const MAIN_MENU: Menu = {
       index: 'momentum-design/en/docs',
       submenu: [],
     },
+    Components: {
+      index: 'momentum-design/en/components',
+      submenu: [],
+    },
   },
   es: {},
 };
