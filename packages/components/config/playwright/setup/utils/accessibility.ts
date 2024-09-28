@@ -1,8 +1,10 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-await-in-loop */
-import { Locator, Page, expect, TestInfo } from '@playwright/test';
-import AxeBuilder from '@axe-core/playwright';
-import CONSTANTS from '../constants';
+import fs from "fs";
+import { Locator, Page, expect, TestInfo } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
+import {createHtmlReport} from 'axe-html-reporter';
+import CONSTANTS from "../constants";
 
 interface Accessibility {
   page: Page;
@@ -19,15 +21,40 @@ class Accessibility {
   }
 
   /**
-   * Attaches the provided scan results as JSON
+   * Attaches the provided file to the test report
+   *
+   * File will be deleted after being attached, since after attaching to test report, the file is not needed anymore locally
+   *
+   * @param fileName name of the file to attach
+   */
+  async attachToReport(fileName: string) {
+    await this.testInfo.attach(fileName, {
+      path: `./${fileName}`,
+    });
+
+    fs.unlinkSync(`./${fileName}`);
+  }
+
+  /**
+   * Attaches the provided scan results as HTML
    * to the test report
    * @param accessibilityScanResults
    */
-  async attachA11yResults(accessibilityScanResults: any) {
-    await this.testInfo.attach('accessibility-scan-results', {
-      body: JSON.stringify(accessibilityScanResults, null, 2),
-      contentType: 'application/json',
+  async attachA11yResults(testResultsName: string, accessibilityScanResults: any) {
+    const fileName = `accessibility-scan-results-${testResultsName}.html`;
+
+    // todo: add option to suppress the output of the report if
+    // https://github.com/lpelypenko/axe-html-reporter/issues/40 is resolved
+    createHtmlReport({
+      results: accessibilityScanResults,
+      options: {
+        projectKey: `"${this.testInfo.title}"`,
+        outputDir: "./",
+        reportFileName: fileName,
+      },
     });
+
+    await this.attachToReport(fileName);
   }
 
   /**
@@ -38,15 +65,34 @@ class Accessibility {
    *
    * This function will fail if there are any accessibility violations.
    */
-  async checkForA11yViolations() {
-    const accessibilityScanResults = await new AxeBuilder({ page: this.page })
-      .withTags(CONSTANTS.ACCESSIBILITY.WCAG_TAGS_TO_CHECK)
-      .disableRules(CONSTANTS.ACCESSIBILITY.RULES_TO_DISABLE)
-      .analyze();
+  async checkForA11yViolations(
+    testResultsName: string,
+    shouldCheck = true,
+    options: {
+      tags?: string[];
+      rules?: string[];
+      exclusions?: string[];
+      inclusions?: string[];
+    } = {},
+  ) {
+    const {exclusions, inclusions, rules, tags} = {...CONSTANTS.DEFAULT_ACCESSIBILITY_SCAN_OPTIONS, ...options};
+    const accessibilityScanner = new AxeBuilder({page: this.page}).withTags(tags).disableRules(rules);
 
-    await this.attachA11yResults(accessibilityScanResults);
+    exclusions?.forEach((exclusion) => {
+      accessibilityScanner.exclude(exclusion);
+    });
 
-    expect(accessibilityScanResults.violations).toEqual([]);
+    inclusions?.forEach((inclusion) => {
+      accessibilityScanner.include(inclusion);
+    });
+
+    const accessibilityScanResults = await accessibilityScanner.analyze();
+
+    await this.attachA11yResults(testResultsName, accessibilityScanResults);
+
+    if (shouldCheck) {
+      expect(accessibilityScanResults.violations).toEqual([]);
+    }
   }
 
   /**

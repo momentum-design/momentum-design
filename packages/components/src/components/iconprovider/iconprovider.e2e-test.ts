@@ -1,6 +1,5 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import steps from '../../../config/playwright/setup/steps/accessibility';
 import { DEFAULTS } from './iconprovider.constants';
 
 type SetupOptions = {
@@ -36,8 +35,8 @@ test('mdc-iconprovider', async ({ componentsPage }) => {
   /**
    * ACCESSIBILITY
    */
-  await test.step('accessibility', async () => {
-    await steps.automaticA11yCheckStep(componentsPage);
+  await test.step('accessibility', async () => { 
+    await componentsPage.accessibility.checkForA11yViolations('icon-provider-default');
   });
 
   /**
