@@ -30,7 +30,7 @@
     "build:browser:e2e": "node config/esbuild/esbuild-e2e.config.js",
     "build:browser": "node config/esbuild/esbuild.config.js",
     "build:module": "tsc --project \"./tsconfig.module.json\"",
-    "build:storybook": "storybook build -c config/storybook",
+    "build:storybook": "yarn dev:storybook:setup && storybook build -c config/storybook",
     "build": "yarn build:module && yarn build:browser && yarn build:storybook",
     "clean": "yarn clean:dist",
     "clean:dist": "rimraf ./dist",
