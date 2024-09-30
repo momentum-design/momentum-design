@@ -8,6 +8,5 @@
     ],
     "formats": ["CSS_VARIABLES", "SCSS_VARIABLES", "WEB_JSON", "ANDROID_RESOURCES", "SWIFT_CLASS", "MD_JSON_MINIMAL"],
     "prefix": "mds",
-    "type": "typography",
     "outputReferences": true
   }
