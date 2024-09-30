@@ -1,7 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import steps from '../../../config/playwright/setup/steps/accessibility';
 import { VALUES } from './text.constants';
 import { FontType } from './text.types';
 import { getAriaLevel, isHeading } from './text.utils';
@@ -43,7 +42,7 @@ test.describe('mdc-text', () => {
        * ACCESSIBILITY
        */
       await test.step('accessibility', async () => {
-        await steps.automaticA11yCheckStep(componentsPage);
+        await componentsPage.accessibility.checkForA11yViolations(`text-default-${textType}`);
       });
 
       /**

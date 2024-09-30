@@ -1,5 +1,4 @@
 import { test } from '../../../config/playwright/setup';
-import steps from '../../../config/playwright/setup/steps/accessibility';
 
 test.beforeEach(async ({ componentsPage }) => {
   await componentsPage.mount({
@@ -20,7 +19,7 @@ test.fixme('mdc-avatar', async ({ componentsPage }) => {
    * ACCESSIBILITY
    */
   await test.step('accessibility', async () => {
-    await steps.automaticA11yCheckStep(componentsPage);
+    await componentsPage.accessibility.checkForA11yViolations('avatar-default');
   });
 
   /**
