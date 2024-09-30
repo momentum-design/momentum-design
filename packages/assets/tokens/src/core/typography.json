@@ -7,7 +7,7 @@
       },
       "body": {
         "small": {
-          "value": "{font.lineheight.base} * 1",
+          "value": "{font.lineheight.base} *1",
           "type": "lineHeights"
         },
         "midsize": {
