@@ -4,7 +4,7 @@ import '@momentum-design/tokens/dist/css/theme/webex/light-stable.css';
 import '@momentum-design/fonts/dist/css/fonts.css';
 
 import { setCustomElementsManifest } from '@storybook/web-components';
-import customElements from '../../data/custom-elements.json';
+import customElements from '../../dist/custom-elements.json';
 import { themes } from './themes';
 import { withThemeProvider } from './provider/themeProvider';
 import { withIconProvider } from './provider/iconProvider';

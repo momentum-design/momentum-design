@@ -1,5 +1,5 @@
 /* eslint-disable no-redeclare */
-import { Page, expect, Locator, TestInfo } from '@playwright/test';
+import { Page, expect, Locator, TestInfo, test } from '@playwright/test';
 import type { ThemeName } from '../../../src/components/themeprovider/themeprovider.types';
 import utils from '../../../src/components/themeprovider/themeprovider.utils';
 import Accessibility from './utils/accessibility';
@@ -17,7 +17,7 @@ interface ComponentsPage {
   accessibility: Accessibility;
   visualRegression: VisualRegression;
   page: Page;
-  testInfo: TestInfo
+  testInfo: TestInfo;
 }
 
 /**
@@ -94,24 +94,26 @@ class ComponentsPage {
    * @param options - a object with options, including the `html` string to mount
    */
   async mount({ html, clearDocument = false }: MountOptions) {
-    await this.page.evaluate(
-      (args) => {
-        function htmlToElement(htmlString: string): Element {
-          const template = document.createElement('template');
-          template.innerHTML = htmlString.trim();
-          return template.content.firstChild as Element;
-        }
-        const rootElement = window.document.querySelector(args.htmlRootElementSelector);
-        if (rootElement) {
-          // delete children of textContent before mounting the passed in html:
-          if (args.clearDocument) {
-            rootElement.textContent = '';
+    await test.step('Mounting HTML', async () => {
+      await this.page.evaluate(
+        (args) => {
+          function htmlToElement(htmlString: string): Element {
+            const template = document.createElement('template');
+            template.innerHTML = htmlString.trim();
+            return template.content.firstChild as Element;
           }
-          rootElement.appendChild(htmlToElement(args.html));
-        }
-      },
-      { html, htmlRootElementSelector, clearDocument },
-    );
+          const rootElement = window.document.querySelector(args.htmlRootElementSelector);
+          if (rootElement) {
+            // delete children of textContent before mounting the passed in html:
+            if (args.clearDocument) {
+              rootElement.textContent = '';
+            }
+            rootElement.appendChild(htmlToElement(args.html));
+          }
+        },
+        { html, htmlRootElementSelector, clearDocument },
+      );
+    });
   }
 
   /**
@@ -122,11 +124,12 @@ class ComponentsPage {
    */
   async waitForEvent(locator: Locator, eventName: string) {
     return locator.evaluate(
-      (element: HTMLElement, args) => new Promise((resolve: (value?: unknown) => void) => {
-        element.addEventListener(args.eventName, () => {
-          resolve();
-        });
-      }),
+      (element: HTMLElement, args) =>
+        new Promise((resolve: (value?: unknown) => void) => {
+          element.addEventListener(args.eventName, () => {
+            resolve();
+          });
+        }),
       { eventName },
     );
   }
