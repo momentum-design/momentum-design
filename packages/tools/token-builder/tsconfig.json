@@ -8,14 +8,14 @@
     "allowJs": true,
     "declarationDir": "./dist/types",
     "module": "CommonJS",
-    "outDir": "./dist/module"
+    "outDir": "./dist/module",
+    "paths": {
+      "@momentum-design/telemetry": [
+        "../telemetry/src/index.ts"
+      ],
+    },
   },
   "include": [
     "./src/**/*"
   ],
-  "paths": {
-    "@momentum-design/telemetry": [
-      "../telemetry/src/index.ts"
-    ],
-  },
 }
