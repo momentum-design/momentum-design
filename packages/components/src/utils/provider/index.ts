@@ -1,4 +1,4 @@
-import { Context, ContextConsumer } from '@lit-labs/context';
+import { Context, ContextConsumer } from '@lit/context';
 import { ReactiveElement } from 'lit';
 
 type ConsumeOptions<C> = {
