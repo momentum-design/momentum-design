@@ -1,12 +1,12 @@
 /* eslint-disable no-redeclare */
-import { Page, expect, Locator, TestInfo, test } from "@playwright/test";
-import type { ThemeName } from "../../../src/components/themeprovider/themeprovider.types";
-import utils from "../../../src/components/themeprovider/themeprovider.utils";
-import Accessibility from "./utils/accessibility";
-import VisualRegression from "./utils/visual-regression";
+import { Page, expect, Locator, TestInfo, test } from '@playwright/test';
+import type { ThemeName } from '../../../src/components/themeprovider/themeprovider.types';
+import utils from '../../../src/components/themeprovider/themeprovider.utils';
+import Accessibility from './utils/accessibility';
+import VisualRegression from './utils/visual-regression';
 
-const componentsDevPageTitle = "Momentum Components Dev Page";
-const htmlRootElementSelector = "#root";
+const componentsDevPageTitle = 'Momentum Components Dev Page';
+const htmlRootElementSelector = '#root';
 
 interface MountOptions {
   html: string;
@@ -46,9 +46,9 @@ class ComponentsPage {
     const themeClass = utils.getFullQualifiedTheme(theme);
     await this.page.evaluate(
       (args) => {
-        const themeProvider = window.document.querySelector("body mdc-themeprovider");
+        const themeProvider = window.document.querySelector('body mdc-themeprovider');
         if (themeProvider) {
-          themeProvider.setAttribute("theme", args.themeClass);
+          themeProvider.setAttribute('theme', args.themeClass);
         }
       },
       { themeClass },
@@ -84,7 +84,7 @@ class ComponentsPage {
    * - Await till page has been loaded
    */
   async navigate(url?: string) {
-    await this.page.goto(url || "");
+    await this.page.goto(url || '');
     await expect(this.page).toHaveTitle(componentsDevPageTitle);
   }
 
@@ -94,11 +94,11 @@ class ComponentsPage {
    * @param options - a object with options, including the `html` string to mount
    */
   async mount({ html, clearDocument = false }: MountOptions) {
-    await test.step("Mounting HTML", async () => {
+    await test.step('Mounting HTML', async () => {
       await this.page.evaluate(
         (args) => {
           function htmlToElement(htmlString: string): Element {
-            const template = document.createElement("template");
+            const template = document.createElement('template');
             template.innerHTML = htmlString.trim();
             return template.content.firstChild as Element;
           }
@@ -106,7 +106,7 @@ class ComponentsPage {
           if (rootElement) {
             // delete children of textContent before mounting the passed in html:
             if (args.clearDocument) {
-              rootElement.textContent = "";
+              rootElement.textContent = '';
             }
             rootElement.appendChild(htmlToElement(args.html));
           }

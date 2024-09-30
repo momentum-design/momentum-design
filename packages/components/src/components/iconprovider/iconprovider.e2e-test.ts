@@ -35,7 +35,7 @@ test('mdc-iconprovider', async ({ componentsPage }) => {
   /**
    * ACCESSIBILITY
    */
-  await test.step('accessibility', async () => { 
+  await test.step('accessibility', async () => {
     await componentsPage.accessibility.checkForA11yViolations('icon-provider-default');
   });
 

@@ -18,7 +18,7 @@ test.fixme('mdc-avatar', async ({ componentsPage }) => {
   /**
    * ACCESSIBILITY
    */
-  await test.step('accessibility', async () => { 
+  await test.step('accessibility', async () => {
     await componentsPage.accessibility.checkForA11yViolations('avatar-default');
   });
 

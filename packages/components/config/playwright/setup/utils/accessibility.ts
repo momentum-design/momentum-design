@@ -1,10 +1,10 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-await-in-loop */
-import fs from "fs";
-import { Locator, Page, expect, TestInfo } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
-import {createHtmlReport} from 'axe-html-reporter';
-import CONSTANTS from "../constants";
+import fs from 'fs';
+import { Locator, Page, expect, TestInfo } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
+import { createHtmlReport } from 'axe-html-reporter';
+import CONSTANTS from '../constants';
 
 interface Accessibility {
   page: Page;
@@ -23,7 +23,8 @@ class Accessibility {
   /**
    * Attaches the provided file to the test report
    *
-   * File will be deleted after being attached, since after attaching to test report, the file is not needed anymore locally
+   * File will be deleted after being attached, since after attaching to test report,
+   * the file is not needed anymore locally
    *
    * @param fileName name of the file to attach
    */
@@ -49,7 +50,7 @@ class Accessibility {
       results: accessibilityScanResults,
       options: {
         projectKey: `"${this.testInfo.title}"`,
-        outputDir: "./",
+        outputDir: './',
         reportFileName: fileName,
       },
     });
@@ -75,8 +76,8 @@ class Accessibility {
       inclusions?: string[];
     } = {},
   ) {
-    const {exclusions, inclusions, rules, tags} = {...CONSTANTS.DEFAULT_ACCESSIBILITY_SCAN_OPTIONS, ...options};
-    const accessibilityScanner = new AxeBuilder({page: this.page}).withTags(tags).disableRules(rules);
+    const { exclusions, inclusions, rules, tags } = { ...CONSTANTS.DEFAULT_ACCESSIBILITY_SCAN_OPTIONS, ...options };
+    const accessibilityScanner = new AxeBuilder({ page: this.page }).withTags(tags).disableRules(rules);
 
     exclusions?.forEach((exclusion) => {
       accessibilityScanner.exclude(exclusion);

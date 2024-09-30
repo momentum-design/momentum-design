@@ -35,7 +35,7 @@ const testToRun = async (componentsPage: ComponentsPage, theme: ThemeName) => {
   /**
    * ACCESSIBILITY
    */
-  await test.step('accessibility', async () => { 
+  await test.step('accessibility', async () => {
     await componentsPage.accessibility.checkForA11yViolations('theme-provider-default');
   });
 

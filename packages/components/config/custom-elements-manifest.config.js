@@ -2,9 +2,7 @@ module.exports = {
   /** Globs to analyze */
   globs: ['src/components/**/*.component.ts'],
   /** Globs to exclude */
-  exclude: [
-    '*.js',
-  ],
+  exclude: ['*.js'],
   /** Directory to output CEM to */
   outdir: 'dist',
   /** Run in dev mode, provides extra logging */
