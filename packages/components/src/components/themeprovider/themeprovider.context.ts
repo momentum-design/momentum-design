@@ -1,4 +1,4 @@
-import { createContext } from '@lit-labs/context';
+import { createContext } from '@lit/context';
 
 import { TAG_NAME } from './themeprovider.constants';
 import type { Theme } from './themeprovider.types';
