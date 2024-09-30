@@ -1,6 +1,5 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import steps from '../../../config/playwright/setup/steps/accessibility';
 import { THEME_NAMES } from './themeprovider.constants';
 import type { ThemeName } from './themeprovider.types';
 import utils from './themeprovider.utils';
@@ -37,7 +36,7 @@ const testToRun = async (componentsPage: ComponentsPage, theme: ThemeName) => {
    * ACCESSIBILITY
    */
   await test.step('accessibility', async () => {
-    await steps.automaticA11yCheckStep(componentsPage);
+    await componentsPage.accessibility.checkForA11yViolations('theme-provider-default');
   });
 
   /**

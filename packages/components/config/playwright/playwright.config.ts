@@ -13,9 +13,10 @@ const url = `http://localhost:${port}`;
 const githubActionsReporterOptions: GitHubActionOptions = {
   title: 'Playwright E2E Test results',
   useDetails: true,
+  showAnnotations: true,
   showTags: true,
   showError: true,
-  includeResults: ['fail', 'flaky']
+  includeResults: ['fail', 'flaky'],
 };
 
 /**
@@ -42,18 +43,16 @@ const config: PlaywrightTestConfig = {
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: process.env.CI ? [
-    ['html'],
-    ['@estruyf/github-actions-reporter', githubActionsReporterOptions]
-  ] : 'html',
+  reporter: process.env.CI ? [['html'], ['@estruyf/github-actions-reporter', githubActionsReporterOptions]] : 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
     actionTimeout: 0,
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: url,
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'retain-on-failure',
+    /* On CI: Collect trace when retrying the failed test /
+    Locally: always collect trace. See https://playwright.dev/docs/trace-viewer */
+    trace: process.env.CI ? 'retain-on-failure' : 'on',
   },
 
   snapshotPathTemplate: '{testDir}/{testFileDir}/__screenshots__/{arg}{ext}',
