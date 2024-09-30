@@ -1,4 +1,4 @@
-import { ContextProvider } from '@lit-labs/context';
+import { ContextProvider } from '@lit/context';
 import { CSSResult, html } from 'lit';
 
 import Component from '../component';
