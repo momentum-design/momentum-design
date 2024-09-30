@@ -9,7 +9,7 @@ module.exports = {
   outdir: 'dist',
   /** Run in dev mode, provides extra logging */
   dev: false,
-  /** Run in watch mode, runs on file changes */
+  /** Not run in watch mode, for build */
   watch: false,
   /** Include third party custom elements manifests */
   dependencies: false,
