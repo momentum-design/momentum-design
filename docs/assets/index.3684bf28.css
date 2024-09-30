@@ -1,0 +1,1 @@
+body{width:100%;display:grid;grid-template-rows:var(--theme-navbar-height) 1fr;--gutter: .5rem;--doc-padding: 0}.layout:where(.astro-PQSNX7KH){padding:0;display:grid;max-width:none;margin:0;width:100%}#grid-main:where(.astro-PQSNX7KH){width:100%;height:100%}
