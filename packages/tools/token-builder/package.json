@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "@momentum-design/telemetry": "workspace:^",
+    "@tokens-studio/sd-transforms": "^0.12.2",
     "ajv": "^8.17.1",
     "style-dictionary": "^3.7.1",
     "yargs": "^17.7.2"
