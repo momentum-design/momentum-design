@@ -45,7 +45,7 @@
     "test:postbuild": "yarn test:e2e",
     "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\"",
     "test:e2e:report": "yarn playwright show-report",
-    "test:e2e:setup": "concurrently --names 'copy:tokens,copy:icons,copy:fonts' -c 'magenta.bold,cyan.bold,blue.bold' 'yarn copy:tokens' 'yarn copy:icons playwright' 'yarn copy:fonts playwright' && yarn build:browser:e2e",
+    "test:e2e:setup": "playwright install && concurrently --names 'copy:tokens,copy:icons,copy:fonts' -c 'magenta.bold,cyan.bold,blue.bold' 'yarn copy:tokens' 'yarn copy:icons playwright' 'yarn copy:fonts playwright' && yarn build:browser:e2e",
     "test:e2e": "playwright test --config './config/playwright/playwright.config.ts'",
     "test:e2e:ui": "yarn test:e2e --ui",
     "clean:plop": "rimraf ./config/plop/dist",
