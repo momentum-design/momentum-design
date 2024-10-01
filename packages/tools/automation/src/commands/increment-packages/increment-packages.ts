@@ -3,6 +3,7 @@ import GetPackages from '../get-packages';
 import { Git } from '../../utils';
 import CONSTANTS from './constants';
 import { Config, Options } from './types';
+import { PULL_REQUEST_TITLE_PREFIX } from '../get-packages/constants';
 
 class IncrementPackages extends Command {
   public static override execute(): Promise<string> {
@@ -17,15 +18,16 @@ class IncrementPackages extends Command {
     minor: Array<number>,
     patch: Array<number>,
   ): Array<number> {
-    return pullRequestTitlePrefix === 'feat' ? minor : patch;
+    return pullRequestTitlePrefix === PULL_REQUEST_TITLE_PREFIX.feat ? minor : patch;
   }
 
   public static async process(config: Config): Promise<Array<string>> {
     const { dryRun, minor, patch, ...getPackagesConfig } = config;
     const previousVersions: Array<string> = [];
     const commitLog = await Git.list(config['commit-index']);
-    const pullRequestTitlePrefix = await Git.getPullRequestTitlePrefix(commitLog[1].commit);
-    const calculatedStep = this.getStepFromPullRequestTitlePrefix(pullRequestTitlePrefix ?? '', minor, patch);
+    const latestCommit = commitLog[0];
+    const pullRequestTitlePrefix = await Git.getPullRequestTitlePrefix(latestCommit.commit);
+    const step = this.getStepFromPullRequestTitlePrefix(pullRequestTitlePrefix ?? '', minor, patch);
 
     return GetPackages.process({ ...getPackagesConfig })
       .then((packages) => dryRun
@@ -35,9 +37,9 @@ class IncrementPackages extends Command {
         previousVersions.push(pack.definition.version || '0.0.0');
 
         return pack.incrementVersion({
-          major: calculatedStep[0],
-          minor: calculatedStep[1],
-          patch: calculatedStep[2],
+          major: step[0],
+          minor: step[1],
+          patch: step[2],
         });
       }))
       .then((packages) => dryRun ? packages : Promise.all(packages.map((pack) => pack.writeDefinition())))
