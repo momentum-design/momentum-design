@@ -1,0 +1,1 @@
+.themeWrapper{display:flex;flex-direction:column;width:30%;background:var(--mds-color-theme-background-solid-primary-normal);padding:10px;border:1px solid var(--mds-color-theme-text-primary-normal)}.themeWrapper+.themeWrapper{margin-top:10px}.colorBox{width:100%;height:10px;border-radius:5px}.colorBox+.colorBox{margin-top:10px}
