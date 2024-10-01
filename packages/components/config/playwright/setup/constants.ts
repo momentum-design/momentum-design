@@ -8,13 +8,25 @@
  *
  * RULES_TO_DISABLE which should not be checked,
  * see full list here: https://github.com/dequelabs/axe-core/blob/master/doc/rule-descriptions.md
+ *
+ * INCLUSIONS and EXCLUSIONS are used to include or exclude specific html elements from the scan
  */
 const ACCESSIBILITY = {
-  WCAG_TAGS_TO_CHECK: ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'],
+  WCAG_TAGS_TO_CHECK: ['best-practice', 'wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'],
   RULES_TO_DISABLE: [],
+  INCLUSIONS: [],
+  EXCLUSIONS: [],
 };
 
-// we keep the threshold, max_diff_pixels_ratio at a higher value until we have pixel perfect visual regression testing enabled.
+const DEFAULT_ACCESSIBILITY_SCAN_OPTIONS = {
+  tags: ACCESSIBILITY.WCAG_TAGS_TO_CHECK,
+  rules: ACCESSIBILITY.RULES_TO_DISABLE,
+  exclusions: ACCESSIBILITY.EXCLUSIONS,
+  inclusions: ACCESSIBILITY.INCLUSIONS,
+};
+
+// we keep the threshold, max_diff_pixels_ratio at a higher value until
+// we have pixel perfect visual regression testing enabled.
 const VISUAL_REGRESSION = {
   THRESHOLD: 0.1,
   MAX_DIFF_PIXELS_RATIO: 0.07,
@@ -22,7 +34,7 @@ const VISUAL_REGRESSION = {
 };
 
 const CONSTANTS = {
-  ACCESSIBILITY,
+  DEFAULT_ACCESSIBILITY_SCAN_OPTIONS,
   VISUAL_REGRESSION,
 };
 export default CONSTANTS;
