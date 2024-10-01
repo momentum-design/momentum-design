@@ -72,6 +72,7 @@ test.describe.parallel('mdc-themeprovider', () => {
         width: 1200,
         height: 300,
       },
+      deviceScaleFactor: 1, 
       theme: THEME_NAMES.LIGHT_WEBEX,
     });
 
@@ -86,6 +87,7 @@ test.describe.parallel('mdc-themeprovider', () => {
         width: 1200,
         height: 300,
       },
+      deviceScaleFactor: 1, 
       theme: THEME_NAMES.DARK_WEBEX,
     });
 
