@@ -9,7 +9,7 @@ test.beforeEach(async ({ componentsPage, theme }) => {
   await componentsPage.mount({
     html: `
     <mdc-themeprovider class="themeWrapper" id="local" theme="${themeClass}">
-      <p>Current theme: ${themeClass}</p>
+      <mdc-text class="themeText">Current theme: ${themeClass}</mdc-text>
       <div>
         <div class="colorBox" style="background: var(--mds-color-theme-text-accent-normal);"></div>
         <div class="colorBox" style="background: var(--mds-color-theme-text-warning-normal);"></div>

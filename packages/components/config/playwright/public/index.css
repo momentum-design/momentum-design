@@ -28,6 +28,10 @@ main {
     border: 1px solid var(--mds-color-theme-text-primary-normal)
 }
 
+.themeText {
+    padding: 1rem 0 1rem 0;
+}
+
 .themeWrapper+.themeWrapper {
     margin-top: 10px;
 }
