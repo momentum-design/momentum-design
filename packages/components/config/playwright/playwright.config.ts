@@ -13,6 +13,7 @@ const url = `http://localhost:${port}`;
 const githubActionsReporterOptions: GitHubActionOptions = {
   title: "Playwright E2E Test results",
   useDetails: true,
+  showAnnotations: true,
   showTags: true,
   showError: true,
   includeResults: ["fail", "flaky"],
@@ -51,8 +52,9 @@ const config: PlaywrightTestConfig = {
     actionTimeout: 0,
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: url,
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: "retain-on-failure",
+    /* On CI: Collect trace when retrying the failed test /
+    Locally: always collect trace. See https://playwright.dev/docs/trace-viewer */
+    trace: process.env.CI ? "retain-on-failure" : "on",
   },
 
   snapshotPathTemplate: "{testDir}/{testFileDir}/__screenshots__/{projectName}/{arg}{ext}",

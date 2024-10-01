@@ -9,9 +9,9 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.js"
     },
     "./module": "./dist/components",
     "./browser": "./dist/browser"
@@ -23,15 +23,16 @@
     "analyze": "yarn analyze:prebuild && yarn analyze:postbuild",
     "analyze:postbuild": "echo \"script 'analyze:postbuild' has not been implemented\"",
     "analyze:prebuild": "echo \"script 'analyze:prebuild' has not been implemented\"",
-    "dev": "concurrently --names 'manifest,storybook' -c 'blue.bold,magenta.bold' 'yarn:dev:generate-manifest' 'yarn:dev:storybook'",
-    "dev:generate-manifest": "custom-elements-manifest analyze --config config/custom-elements-manifest.config.js",
+    "dev:manifest": "custom-elements-manifest analyze --config config/custom-elements-manifest-watch.config.js",
+    "dev": "concurrently --names 'manifest,storybook' -c 'blue.bold,magenta.bold' 'yarn:dev:manifest' 'yarn:dev:storybook'",
     "dev:storybook:setup": "concurrently --names 'copy:icons,copy:fonts' -c 'cyan.bold,blue.bold' 'yarn copy:icons storybook' 'yarn copy:fonts storybook'",
     "dev:storybook": "yarn dev:storybook:setup && storybook dev -p 6006 -c config/storybook",
     "build:browser:e2e": "node config/esbuild/esbuild-e2e.config.js",
     "build:browser": "node config/esbuild/esbuild.config.js",
+    "build:manifest": "custom-elements-manifest analyze --config config/custom-elements-manifest.config.js",
     "build:module": "tsc --project \"./tsconfig.module.json\"",
-    "build:storybook": "storybook build -c config/storybook",
-    "build": "yarn build:module && yarn build:browser && yarn build:storybook",
+    "build:storybook": "yarn dev:storybook:setup && yarn build:manifest && storybook build -c config/storybook",
+    "build": "concurrently --names 'module,browser,storybook' -c 'blue.bold,magenta.bold,cyan.bold' 'yarn:build:module' 'yarn:build:browser' 'yarn:build:storybook'",
     "clean": "yarn clean:dist",
     "clean:dist": "rimraf ./dist",
     "copy:tokens": "node scripts/copyTokens.js",
@@ -53,8 +54,8 @@
     "generate:component": "yarn build:plop && plop --plopfile config/plop/dist/plopfile.mjs"
   },
   "dependencies": {
-    "@lit-labs/context": "^0.5.1",
-    "lit": "^3.1.4"
+    "@lit/context": "^1.1.2",
+    "lit": "^3.2.0"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.9.1",
@@ -73,6 +74,7 @@
     "@storybook/theming": "^8.2.5",
     "@storybook/web-components": "^8.2.5",
     "@storybook/web-components-vite": "^8.2.5",
+    "axe-html-reporter": "^2.2.11",
     "chalk": "^4.1.2",
     "concurrently": "^8.2.2",
     "esbuild": "^0.23.0",

@@ -72,7 +72,7 @@ interface RecordLeveledLogMethod {
 
 export interface ExtendedLogger extends Logger {
   record: RecordLeveledLogMethod;
-  child: (options: Object) => ExtendedLogger;
+  child: (options: Object) => this;
 }
 
 const enum Transports {
