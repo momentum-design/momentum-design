@@ -14,7 +14,7 @@
       "require": "./dist/index.js"
     },
     "./module": "./dist/components",
-    "./browser": "./dist/browser"
+    "./browser": "./dist/browser/index.js"
   },
   "files": [
     "./dist/"

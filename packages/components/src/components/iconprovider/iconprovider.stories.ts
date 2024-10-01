@@ -4,7 +4,11 @@ import './iconprovider.stories.utils';
 import { html } from 'lit';
 
 const render = (args: Args) => html`
-  <mdc-iconprovider url="${args.url}" file-extension="${args.fileExtension}" length-unit="${args.lengthUnit}">
+  <mdc-iconprovider 
+    url=${args.url}
+    file-extension=${args.fileExtension}
+    length-unit=${args.lengthUnit}
+    default-size=${args.defaultSize}>
     <mdc-subcomponent-icon></mdc-subcomponent-icon>
   </mdc-iconprovider>
 `;
@@ -24,5 +28,6 @@ export const Primary: StoryObj = {
     url: '/test',
     fileExtension: 'svg',
     lengthUnit: 'em',
+    defaultSize: 1,
   },
 };
