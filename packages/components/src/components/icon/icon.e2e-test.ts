@@ -1,6 +1,5 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import steps from '../../../config/playwright/setup/steps/accessibility';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -36,7 +35,7 @@ test('mdc-icon', async ({ componentsPage }) => {
    * ACCESSIBILITY
    */
   await test.step('accessibility with default props', async () => {
-    await steps.automaticA11yCheckStep(componentsPage);
+    await componentsPage.accessibility.checkForA11yViolations('icon-default');
   });
 
   const iconWithRole = await setup({
@@ -47,7 +46,7 @@ test('mdc-icon', async ({ componentsPage }) => {
   });
 
   await test.step('accessibility with role / aria-label passed in', async () => {
-    await steps.automaticA11yCheckStep(componentsPage);
+    await componentsPage.accessibility.checkForA11yViolations('icon-aria-passed-in');
   });
 
   /**
