@@ -1,7 +1,7 @@
-import type { PlaywrightTestConfig } from "@playwright/test";
-import type { GitHubActionOptions } from "@estruyf/github-actions-reporter";
-import { devices } from "@playwright/test";
-import { port } from "../esbuild/configs/e2e";
+import type { PlaywrightTestConfig } from '@playwright/test';
+import type { GitHubActionOptions } from '@estruyf/github-actions-reporter';
+import { devices } from '@playwright/test';
+import { port } from '../esbuild/configs/e2e';
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -11,19 +11,19 @@ import { port } from "../esbuild/configs/e2e";
 const url = `http://localhost:${port}`;
 
 const githubActionsReporterOptions: GitHubActionOptions = {
-  title: "Playwright E2E Test results",
+  title: 'Playwright E2E Test results',
   useDetails: true,
   showAnnotations: true,
   showTags: true,
   showError: true,
-  includeResults: ["fail", "flaky"],
+  includeResults: ['fail', 'flaky'],
 };
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 const config: PlaywrightTestConfig = {
-  testDir: "../../src",
+  testDir: '../../src',
   testMatch: /.*\.e2e-test\.ts/,
   /* Maximum time one test can run for. */
   timeout: 30 * 1000,
@@ -44,8 +44,8 @@ const config: PlaywrightTestConfig = {
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: process.env.CI
-    ? [["html"], ["@estruyf/github-actions-reporter", githubActionsReporterOptions]]
-    : [["list"], ["html"]],
+    ? [['html'], ['@estruyf/github-actions-reporter', githubActionsReporterOptions]]
+    : [['list'], ['html']],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
@@ -54,63 +54,63 @@ const config: PlaywrightTestConfig = {
     baseURL: url,
     /* On CI: Collect trace when retrying the failed test /
     Locally: always collect trace. See https://playwright.dev/docs/trace-viewer */
-    trace: process.env.CI ? "retain-on-failure" : "on",
+    trace: process.env.CI ? 'retain-on-failure' : 'on',
   },
 
-  snapshotPathTemplate: "{testDir}/{testFileDir}/__screenshots__/{projectName}/{arg}{ext}",
+  snapshotPathTemplate: '{testDir}/{testFileDir}/__screenshots__/{projectName}/{arg}{ext}',
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: "Google Chrome",
+      name: 'Google Chrome',
       use: {
-        ...devices["Desktop Chrome"],
-        channel: "chrome",
+        ...devices['Desktop Chrome'],
+        channel: 'chrome',
       },
     },
     {
-      name: "firefox",
+      name: 'firefox',
       use: {
-        ...devices["Desktop Firefox"],
+        ...devices['Desktop Firefox'],
       },
     },
 
     {
-      name: "webkit",
+      name: 'webkit',
       use: {
-        ...devices["Desktop Safari"],
+        ...devices['Desktop Safari'],
       },
     },
 
     /* Test against mobile viewports. */
     {
-      name: "Mobile Chrome",
+      name: 'Mobile Chrome',
       use: {
-        ...devices["Pixel 5"],
+        ...devices['Pixel 5'],
       },
     },
     {
-      name: "Mobile Safari",
+      name: 'Mobile Safari',
       use: {
-        ...devices["iPhone 12"],
+        ...devices['iPhone 12'],
       },
     },
 
     /* Test against branded browsers. */
     {
-      name: "Microsoft Edge",
+      name: 'Microsoft Edge',
       use: {
-        channel: "msedge",
+        channel: 'msedge',
       },
     },
   ],
 
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
-  outputDir: "test-results/",
+  outputDir: 'test-results/',
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: "yarn test:e2e:setup",
+    command: 'yarn test:e2e:setup',
     url,
     timeout: 240 * 1000,
     reuseExistingServer: !process.env.CI,
