@@ -68,6 +68,10 @@ const testToRun = async (componentsPage: ComponentsPage, theme: ThemeName) => {
 test.describe.parallel('mdc-themeprovider', () => {
   test.describe('light theme tests', () => {
     test.use({
+      viewport: {
+        width: 1200,
+        height: 300,
+      },
       theme: THEME_NAMES.LIGHT_WEBEX,
     });
 
@@ -78,6 +82,10 @@ test.describe.parallel('mdc-themeprovider', () => {
 
   test.describe('dark theme tests', () => {
     test.use({
+      viewport: {
+        width: 1200,
+        height: 300,
+      },
       theme: THEME_NAMES.DARK_WEBEX,
     });
 
