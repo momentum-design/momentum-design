@@ -28,9 +28,9 @@ jobs:
           VALIDATED=0; [ "$HAS_VALIDATED_LABEL" == "true" ] && VALIDATED=1
 
           echo github.event
-          
 
-          
+
+
           echo from base $FROM_BASE
           echo validated $VALIDATED
 
@@ -57,7 +57,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-          
+
       - name: Validate Dependencies
         id: validate-dependencies
         uses: actions/cache@v4
@@ -96,7 +96,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-          
+
       - name: Uncache Dependencies
         uses: actions/cache@v4
         with:
@@ -107,7 +107,7 @@ jobs:
 
       - name: Synchronize Packages
         run: yarn
-         
+
       - name: Update Main Branch
         run: |
           git fetch origin main --unshallow
@@ -137,7 +137,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-          
+
       - name: Uncache Dependencies
         uses: actions/cache@v4
         with:
@@ -164,7 +164,7 @@ jobs:
     name: Analyze Root
     needs: initialize
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -174,7 +174,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-          
+
       - name: Uncache Dependencies
         uses: actions/cache@v4
         with:
@@ -198,7 +198,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
-    
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -208,7 +208,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-          
+
       - name: Uncache Dependencies
         uses: actions/cache@v4
         with:
@@ -238,7 +238,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
-    
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -248,7 +248,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-          
+
       - name: Uncache Dependencies
         uses: actions/cache@v4
         with:
@@ -256,7 +256,7 @@ jobs:
             node_modules
             packages/**/node_modules
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
-      
+
       - name: Uncache Dist
         uses: actions/cache@v4
         with:
@@ -278,7 +278,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
-    
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -288,7 +288,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-          
+
       - name: Uncache Dependencies
         uses: actions/cache@v4
         with:
@@ -318,7 +318,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
-    
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -328,7 +328,7 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
-          
+
       - name: Uncache Dependencies
         uses: actions/cache@v4
         with:
@@ -345,11 +345,9 @@ jobs:
 
       - name: Synchronize Packages
         run: yarn
-        
+
       - name: Test - Postbuild
-        run: ｜
-        yarn playwright install msedge
-        yarn workspace ${{ matrix.package }} test:postbuild
+        run: yarn workspace ${{ matrix.package }} test:postbuild
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
