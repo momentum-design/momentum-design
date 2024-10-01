@@ -33,6 +33,7 @@
     "@astrojs/react": "^1.2.2",
     "@docsearch/css": "^3.6.1",
     "@docsearch/react": "^3.6.1",
+    "@momentum-design/components": "workspace:*",
     "@momentum-design/icons": "workspace:*",
     "@momentum-design/illustrations": "workspace:^",
     "@momentum-design/token-builder": "workspace:^",

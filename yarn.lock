@@ -2293,7 +2293,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/components@workspace:packages/components":
+"@momentum-design/components@workspace:*, @momentum-design/components@workspace:packages/components":
   version: 0.0.0-use.local
   resolution: "@momentum-design/components@workspace:packages/components"
   dependencies:
@@ -2341,6 +2341,7 @@ __metadata:
     "@astrojs/react": ^1.2.2
     "@docsearch/css": ^3.6.1
     "@docsearch/react": ^3.6.1
+    "@momentum-design/components": "workspace:*"
     "@momentum-design/icons": "workspace:*"
     "@momentum-design/illustrations": "workspace:^"
     "@momentum-design/token-builder": "workspace:^"
