@@ -44,7 +44,7 @@ module.exports = {
           //
           // But we want them to look like this:
           //
-          //  components/avatar/avatar.component.ts
+          //  components/avatar/avatar.component.js
           //
           const terms = [
             { from: /^src\//, to: '' }, // Strip the src/ prefix
@@ -80,7 +80,7 @@ module.exports = {
           const classDoc = moduleDoc?.declarations?.find((declaration) => declaration.name === className);
 
           // This is what allows us to map JSDOC comments to ReactWrappers.
-          // this will only parse the JSDoc comment (which is not part of a tag)
+          // this will only parse the full JSDoc comment (including web component tags)
           classDoc.jsDoc = node.jsDoc?.map((jsDoc) => jsDoc.getFullText()).join('\n');
         }
       },
