@@ -354,7 +354,6 @@ jobs:
         run: |
           if [ ${{ matrix.package }} == '@momentum-design/components' ]; then
             yarn workspaces foreach -pR --topological-dev --from @momentum-design/components run build
-            yarn workspace @momentum-design/components test:e2e:install
             yarn workspace @momentum-design/components test:postbuild
           else
             yarn workspace ${{ matrix.package }} test:postbuild
