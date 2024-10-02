@@ -1,6 +1,8 @@
 {
-  "extends": "../../config/typescript/tsconfig.base.json",
+  "extends": "../../../config/typescript/tsconfig.base.json",
   "compilerOptions": {
+    "composite": true,
+    "tsBuildInfoFile": null,
     "target": "es2019",
     "module": "CommonJS",
     "lib": [
@@ -10,10 +12,10 @@
     ],
     "declaration": true,
     "declarationMap": false,
-    "declarationDir": "./dist",
+    "declarationDir": "../dist",
     "sourceMap": false,
     "inlineSources": false,
-    "outDir": "./dist",
+    "outDir": "../dist",
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -36,7 +38,10 @@
     ],
   },
   "files": [
-    "src/index.ts"
+    "index.ts",
+  ],
+  "include": [
+    "**/*.ts",
   ],
   "exclude": [
     "**/*.e2e-test.ts",

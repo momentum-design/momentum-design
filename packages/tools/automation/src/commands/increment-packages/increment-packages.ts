@@ -1,8 +1,9 @@
 import { Command } from '../../models';
 import GetPackages from '../get-packages';
-
+import { Git } from '../../utils';
 import CONSTANTS from './constants';
 import { Config, Options } from './types';
+import { PULL_REQUEST_TITLE_PREFIX } from '../get-packages/constants';
 
 class IncrementPackages extends Command {
   public static override execute(): Promise<string> {
@@ -12,9 +13,21 @@ class IncrementPackages extends Command {
       .then((results) => results.map((line) => `${line}\n`).join(''));
   }
 
-  public static process(config: Config): Promise<Array<string>> {
-    const { dryRun, step, ...getPackagesConfig } = config;
+  public static getStepFromPullRequestTitlePrefix(
+    pullRequestTitlePrefix: string,
+    minor: Array<number>,
+    patch: Array<number>,
+  ): Array<number> {
+    return pullRequestTitlePrefix === PULL_REQUEST_TITLE_PREFIX.feat ? minor : patch;
+  }
+
+  public static async process(config: Config): Promise<Array<string>> {
+    const { dryRun, minor, patch, ...getPackagesConfig } = config;
     const previousVersions: Array<string> = [];
+    const commitLog = await Git.list(config['commit-index']);
+    const latestCommit = commitLog[0];
+    const pullRequestTitlePrefix = await Git.getPullRequestTitlePrefix(latestCommit.commit);
+    const step = this.getStepFromPullRequestTitlePrefix(pullRequestTitlePrefix ?? '', minor, patch);
 
     return GetPackages.process({ ...getPackagesConfig })
       .then((packages) => dryRun

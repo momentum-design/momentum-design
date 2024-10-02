@@ -42,4 +42,8 @@ const CONSTANTS = {
   OPTIONS,
 };
 
+export const PULL_REQUEST_TITLE_PREFIX = {
+  feat: 'feat',
+};
+
 export default CONSTANTS;
