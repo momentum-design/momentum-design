@@ -16,5 +16,8 @@ export const packagesList = [
   '@momentum-design/token-builder',
 ];
 
-export const packageVersionIncrementList: string[] = packagesList
+export const patchVersionIncrementList: string[] = packagesList
   .map((packageName) => `${packageName}: 0.0.0 => 0.0.1`);
+
+export const minorVersionIncrementList: string[] = packagesList
+  .map((packageName) => `${packageName}: 0.0.0 => 0.1.0`);
