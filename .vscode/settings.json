@@ -33,6 +33,9 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "cSpell.words": [
-    "initialise"
+    "autodocs",
+    "iconprovider",
+    "initialise",
+    "themeprovider"
   ],
 }
