@@ -69,7 +69,6 @@ describe('@momentum-design/automation - utils.Git', () => {
     });
 
     describe('changes()', () => {
-      // const format = JSON.stringify(Git.CONSTANTS.FORMAT);
       const offset = Git.CONSTANTS.COMMIT_INDEX_OFFSET;
       const head = 'head';
       const previous = 'previous';
@@ -120,6 +119,138 @@ describe('@momentum-design/automation - utils.Git', () => {
         expect(runSpy).toHaveBeenLastCalledWith(`git diff --numstat ${previous} ${head}`);
         expect(listSpy).toHaveBeenCalledTimes(1);
         expect(changes).toEqual([]);
+      });
+    });
+
+    describe('release()', () => {
+      const tag = 'v1.0.0';
+      const title = 'Release Title';
+      const notes = 'Release Notes';
+      const dist = 'dist';
+      let runSpy: jest.SpyInstance;
+
+      beforeEach(() => {
+        runSpy = jest.spyOn(Execute, 'run').mockImplementation(() => Promise.resolve('Release created'));
+      });
+
+      afterEach(() => {
+        jest.restoreAllMocks();
+      });
+
+      it('should create a release with the provided tag, title, notes, and dist', async () => {
+        const result = await Git.release(tag, title, notes, dist);
+
+        expect(runSpy).toHaveBeenCalledWith(
+          `gh release create ${tag} ${dist} --title "${tag} - ${title}" --notes "${notes}"`,
+        );
+        expect(runSpy).toHaveBeenCalledTimes(1);
+        expect(result).toBe('Release created');
+      });
+
+      it('should create a release with the provided tag, title, and notes without dist', async () => {
+        const result = await Git.release(tag, title, notes);
+
+        expect(runSpy).toHaveBeenCalledWith(`gh release create ${tag}  --title "${tag} - ${title}" --notes "${notes}"`);
+        expect(runSpy).toHaveBeenCalledTimes(1);
+        expect(result).toBe('Release created');
+      });
+    });
+
+    describe('getPullRequestDetails()', () => {
+      const commitSHA = 'abc123';
+      const token = 'fake-token';
+      const pullRequestDetails = [{ title: 'PR Title' }];
+      let runSpy: jest.SpyInstance;
+      let fetchSpy: jest.SpyInstance;
+
+      beforeEach(() => {
+        runSpy = jest.spyOn(Execute, 'run').mockImplementation(() => Promise.resolve(token));
+        fetchSpy = jest.spyOn(global, 'fetch').mockImplementation(() => Promise.resolve({
+          json: () => Promise.resolve(pullRequestDetails),
+        } as Response));
+      });
+
+      afterEach(() => {
+        jest.restoreAllMocks();
+      });
+
+      it('should fetch pull request details for the given commit SHA', async () => {
+        const result = await Git.getPullRequestDetails(commitSHA);
+
+        expect(runSpy).toHaveBeenCalledWith('gh auth token');
+        expect(runSpy).toHaveBeenCalledTimes(1);
+        expect(fetchSpy).toHaveBeenCalledWith(`${Git.CONSTANTS.COMMITS_API_URL}/${commitSHA}/pulls`, {
+          headers: {
+            Authorization: `Bearer ${token.trim()}`,
+          },
+        });
+        expect(fetchSpy).toHaveBeenCalledTimes(1);
+        expect(result).toEqual(pullRequestDetails);
+      });
+
+      it('should return null if an error occurs while fetching pull request details', async () => {
+        fetchSpy.mockImplementationOnce(() => Promise.reject(new Error('Fetch error')));
+
+        const result = await Git.getPullRequestDetails(commitSHA);
+
+        expect(runSpy).toHaveBeenCalledWith('gh auth token');
+        expect(runSpy).toHaveBeenCalledTimes(1);
+        expect(fetchSpy).toHaveBeenCalledTimes(1);
+        expect(result).toBeNull();
+      });
+    });
+
+    describe('getPullRequestTitlePrefix()', () => {
+      const commitSHA = 'abc123';
+      const pullRequestDetails = [{ title: 'feat(scope): PR Title' }];
+      let getPullRequestDetailsSpy: jest.SpyInstance;
+
+      beforeEach(() => {
+        getPullRequestDetailsSpy = jest
+          .spyOn(Git, 'getPullRequestDetails')
+          .mockImplementation(() => Promise.resolve(pullRequestDetails));
+      });
+
+      afterEach(() => {
+        jest.restoreAllMocks();
+      });
+
+      it('should return the prefix from the pull request title', async () => {
+        const result = await Git.getPullRequestTitlePrefix(commitSHA);
+
+        expect(getPullRequestDetailsSpy).toHaveBeenCalledWith(commitSHA);
+        expect(getPullRequestDetailsSpy).toHaveBeenCalledTimes(1);
+        expect(result).toBe('feat');
+      });
+
+      it('should return the prefix only the pull request title', async () => {
+        getPullRequestDetailsSpy.mockImplementationOnce(() => Promise.resolve([{ title: 'fix: PR Title fixes' }]));
+
+        const result = await Git.getPullRequestTitlePrefix(commitSHA);
+
+        expect(getPullRequestDetailsSpy).toHaveBeenCalledWith(commitSHA);
+        expect(getPullRequestDetailsSpy).toHaveBeenCalledTimes(1);
+        expect(result).toBe('fix');
+      });
+
+      it('should return null if no prefix is found in the pull request title', async () => {
+        getPullRequestDetailsSpy.mockImplementationOnce(() => Promise.resolve([{ title: 'PR Title' }]));
+
+        const result = await Git.getPullRequestTitlePrefix(commitSHA);
+
+        expect(getPullRequestDetailsSpy).toHaveBeenCalledWith(commitSHA);
+        expect(getPullRequestDetailsSpy).toHaveBeenCalledTimes(1);
+        expect(result).toBeNull();
+      });
+
+      it('should return null if no pull request details are found', async () => {
+        getPullRequestDetailsSpy.mockImplementationOnce(() => Promise.resolve([]));
+
+        const result = await Git.getPullRequestTitlePrefix(commitSHA);
+
+        expect(getPullRequestDetailsSpy).toHaveBeenCalledWith(commitSHA);
+        expect(getPullRequestDetailsSpy).toHaveBeenCalledTimes(1);
+        expect(result).toBeNull();
       });
     });
   });

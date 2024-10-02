@@ -6,6 +6,7 @@ export type Options = typeof CONSTANTS.OPTIONS;
 
 export interface Config extends GetPackagesConfig {
   dryRun: boolean;
-  step: Array<number>;
+  minor: Array<number>;
+  patch: Array<number>;
   target: number;
 }

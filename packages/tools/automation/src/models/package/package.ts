@@ -75,13 +75,18 @@ class Package {
       ? this.definition.version.split('.').map((value: string) => parseInt(value, 10))
       : [0, 0, 0];
 
-    const nextVersion = [
-      prevMajor + major || 0,
-      prevMinor + minor || 0,
-      prevPatch + patch || 0,
-    ];
+    const nextMajor = prevMajor + (major || 0);
+    let nextMinor = prevMinor + (minor || 0);
+    let nextPatch = prevPatch + (patch || 0);
 
-    this.data.definition.version = nextVersion.join('.');
+    if (major > 0) {
+      nextMinor = 0;
+      nextPatch = 0;
+    } else if (minor > 0) {
+      nextPatch = 0;
+    }
+
+    this.data.definition.version = [nextMajor, nextMinor, nextPatch].join('.');
 
     return this;
   }
