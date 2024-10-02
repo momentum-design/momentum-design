@@ -57,6 +57,7 @@
     "test": "yarn test:prebuild && yarn test:postbuild",
     "test:postbuild": "yarn test:e2e",
     "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\"",
+    "test:e2e:install": "playwright install-deps && playwright install",
     "test:e2e": "playwright test --config './config/playwright/playwright.config.ts'",
     "test:e2e:ui": "yarn test:e2e --ui",
     "test:e2e:setup": "yarn copy:playwright && yarn build:browser:e2e",
