@@ -29,7 +29,7 @@ const preview = {
     },
     actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
-      controls: { expanded: true },
+      expanded: true,
       matchers: {
         color: /(background|color)$/i,
         date: /Date$/,
