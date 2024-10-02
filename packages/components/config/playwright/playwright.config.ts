@@ -60,7 +60,7 @@ const config: PlaywrightTestConfig = {
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'Google Chrome',
+      name: 'chrome',
       use: {
         ...devices['Desktop Chrome'],
         channel: 'chrome',
@@ -96,7 +96,7 @@ const config: PlaywrightTestConfig = {
 
     /* Test against branded browsers. */
     {
-      name: 'Microsoft Edge',
+      name: 'msedge',
       use: {
         channel: 'msedge',
       },
