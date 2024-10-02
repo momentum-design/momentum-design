@@ -196,6 +196,8 @@ jobs:
 
       - name: Increment Packages
         run: yarn md-automation -- --command increment-packages --packages ${{ matrix.package }}
+        env:
+           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Configure Yarn
         run: yarn config set npmAuthToken ${{ secrets.NPM_TOKEN_CISCO_MD }}
