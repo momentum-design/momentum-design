@@ -9,7 +9,6 @@ test.beforeEach(async ({ componentsPage, theme }) => {
   await componentsPage.mount({
     html: `
     <mdc-themeprovider class="themeWrapper" id="local" theme="${themeClass}">
-      <p>Current theme: ${themeClass}</p>
       <div>
         <div class="colorBox" style="background: var(--mds-color-theme-text-accent-normal);"></div>
         <div class="colorBox" style="background: var(--mds-color-theme-text-warning-normal);"></div>
@@ -65,23 +64,24 @@ const testToRun = async (componentsPage: ComponentsPage, theme: ThemeName) => {
   });
 };
 
-// test.describe('mdc-themeprovider', () => {
-//   test.use({
-//     theme: THEME_NAMES.DARK_WEBEX,
-//   });
+test.describe.parallel('mdc-themeprovider', () => {
+  test.describe('light theme tests', () => {
+    test.use({
+      theme: THEME_NAMES.LIGHT_WEBEX,
+    });
 
-//   test('dark', async ({ componentsPage, theme }) => {
-//     await testToRun(componentsPage, theme);
-//   });
-// });
-
-test.describe('mdc-themeprovider', () => {
-  test.use({
-    theme: THEME_NAMES.LIGHT_WEBEX,
+    test('light', async ({ componentsPage, theme }) => {
+      await testToRun(componentsPage, theme);
+    });
   });
 
-  // TODO: fix e2e test
-  test.fixme('light', async ({ componentsPage, theme }) => {
-    await testToRun(componentsPage, theme);
+  test.describe('dark theme tests', () => {
+    test.use({
+      theme: THEME_NAMES.DARK_WEBEX,
+    });
+
+    test('dark', async ({ componentsPage, theme }) => {
+      await testToRun(componentsPage, theme);
+    });
   });
 });

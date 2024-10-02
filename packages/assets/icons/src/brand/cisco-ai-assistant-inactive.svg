@@ -1,22 +1,22 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M23.5 18C27.6421 18 31 14.6421 31 10.5C31 6.35786 27.6421 3 23.5 3C19.3579 3 16 6.35787 16 10.5C16 14.6421 19.3579 18 23.5 18Z" fill="url(#paint0_linear_49584_209)"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M16 23.585C20.1882 23.585 23.5833 20.1908 23.5833 16.0038C23.5833 11.8169 20.1882 8.42268 16 8.42268C11.8118 8.42268 8.41667 11.8169 8.41667 16.0038C8.41667 20.1908 11.8118 23.585 16 23.585ZM29 16.0038C29 23.1815 23.1797 29.0001 16 29.0001C8.8203 29.0001 3 23.1815 3 16.0038C3 8.82619 8.8203 3.00757 16 3.00757C23.1797 3.00757 29 8.82619 29 16.0038Z" fill="url(#paint1_linear_49584_209)"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M29 15.6129C27.6309 17.0816 25.6792 18 23.5129 18C23.4503 18 23.3879 17.9992 23.3257 17.9977C23.4984 17.3624 23.5906 16.6939 23.5906 16.0038C23.5906 11.9151 20.3538 8.58238 16.3027 8.42824C16.8984 6.35141 18.3671 4.64368 20.2862 3.72766C25.246 5.45535 28.8373 10.1038 29 15.6129Z" fill="url(#paint2_linear_49584_209)"/>
-<path d="M23.5 18C27.6421 18 31 14.6421 31 10.5C31 6.35786 27.6421 3 23.5 3C19.3579 3 16 6.35787 16 10.5C16 14.6421 19.3579 18 23.5 18Z" fill="url(#paint3_radial_49584_209)"/>
+<svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M24.2532 18C28.3954 18 31.7532 14.6421 31.7532 10.5C31.7532 6.35786 28.3954 3 24.2532 3C20.1111 3 16.7532 6.35787 16.7532 10.5C16.7532 14.6421 20.1111 18 24.2532 18Z" fill="url(#paint0_linear_49584_209)"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.7532 23.585C20.9414 23.585 24.3366 20.1908 24.3366 16.0038C24.3366 11.8169 20.9414 8.42268 16.7532 8.42268C12.5651 8.42268 9.1699 11.8169 9.1699 16.0038C9.1699 20.1908 12.5651 23.585 16.7532 23.585ZM29.7532 16.0038C29.7532 23.1815 23.9329 29.0001 16.7532 29.0001C9.57353 29.0001 3.75324 23.1815 3.75324 16.0038C3.75324 8.82619 9.57354 3.00757 16.7532 3.00757C23.9329 3.00757 29.7532 8.82619 29.7532 16.0038Z" fill="url(#paint1_linear_49584_209)"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29.7532 15.6129C28.3841 17.0816 26.4323 18 24.2661 18C24.2035 18 24.1411 17.9992 24.0789 17.9977C24.2516 17.3624 24.3438 16.6939 24.3438 16.0038C24.3438 11.9151 21.107 8.58238 17.0559 8.42824C17.6516 6.35141 19.1203 4.64368 21.0394 3.72766C25.9991 5.45535 29.5905 10.1038 29.7532 15.6129Z" fill="url(#paint2_linear_49584_209)"/>
+<path d="M24.2532 18C28.3954 18 31.7532 14.6421 31.7532 10.5C31.7532 6.35786 28.3954 3 24.2532 3C20.1111 3 16.7532 6.35787 16.7532 10.5C16.7532 14.6421 20.1111 18 24.2532 18Z" fill="url(#paint3_radial_49584_209)"/>
 <defs>
-<linearGradient id="paint0_linear_49584_209" x1="16.1487" y1="3.14873" x2="28.4303" y2="15.4302" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint0_linear_49584_209" x1="16.9019" y1="3.14873" x2="29.1835" y2="15.4302" gradientUnits="userSpaceOnUse">
 <stop stop-color="#767676"/>
 <stop offset="1" stop-color="#DADADA"/>
 </linearGradient>
-<linearGradient id="paint1_linear_49584_209" x1="2.99946" y1="29.0001" x2="28.9845" y2="3.00009" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint1_linear_49584_209" x1="3.75269" y1="29.0001" x2="29.7377" y2="3.00009" gradientUnits="userSpaceOnUse">
 <stop stop-color="#BBBBBB"/>
 <stop offset="1" stop-color="#616161"/>
 </linearGradient>
-<linearGradient id="paint2_linear_49584_209" x1="20.6785" y1="8.23447" x2="27.6314" y2="16.2762" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint2_linear_49584_209" x1="21.4317" y1="8.23447" x2="28.3846" y2="16.2762" gradientUnits="userSpaceOnUse">
 <stop stop-color="#9D9D9D" stop-opacity="0"/>
 <stop offset="1" stop-color="#9D9D9D"/>
 </linearGradient>
-<radialGradient id="paint3_radial_49584_209" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(31.0001 18) rotate(-135) scale(21.2132 21.2042)">
+<radialGradient id="paint3_radial_49584_209" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(31.7533 18) rotate(-135) scale(21.2132 21.2042)">
 <stop stop-color="#8E8E8E" stop-opacity="0"/>
 <stop offset="0.66696" stop-color="#8E8E8E" stop-opacity="0"/>
 <stop offset="1" stop-color="white"/>
