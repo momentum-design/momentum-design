@@ -20,7 +20,7 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.lengthUnit ? `length-unit="${restArgs.lengthUnit}"` : ''}
       ${restArgs.defaultSize ? `default-size="${restArgs.defaultSize}"` : ''}
     >
-      <mdc-icon name="accessibility-regular" scale="2"></mdc-icon>
+      <mdc-icon name="accessibility-regular" size="2"></mdc-icon>
     </mdc-iconprovider>
       `,
   });

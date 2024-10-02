@@ -18,10 +18,10 @@ import { DEFAULTS } from './icon.constants';
  * Once fetched, the icon will be mounted. If fetching wasn't successful,
  * nothing will be shown.
  *
- * The `scale` attribute allows scaling the icon based on the provided
+ * The `size` attribute allows sizing the icon based on the provided
  * `length-unit` attribute (which will either come from the IconProvider or
  * could be overridden per icon). For example:
- * if `scale = 1` and `length-unit = 'em'`, the size of the icon will be
+ * if `size = 1` and `length-unit = 'em'`, the size of the icon will be
  * `width: 1em; height: 1em`.
  *
  * For accessibility the `role` and `aria-label` of the icon can be set.
@@ -36,6 +36,9 @@ class Icon extends Component {
   @state()
   private lengthUnitFromContext?: string;
 
+  @state()
+  private defaultSizeFromContext?: number;
+
   /**
    * Name of the icon (= filename)
    */
@@ -46,10 +49,10 @@ class Icon extends Component {
    * Scale of the icon (works in combination with length unit)
    */
   @property({ type: Number })
-  scale?: number = DEFAULTS.SCALE;
+  size: number = DEFAULTS.SIZE;
 
   /**
-   * Length unit attribute for overridding length-unit from `IconProvider`
+   * Length unit attribute for overriding length-unit from `IconProvider`
    */
   @property({ type: String, attribute: 'length-unit' })
   lengthUnit?: string;
@@ -66,7 +69,7 @@ class Icon extends Component {
   @property({ type: String, attribute: 'aria-label' })
   override ariaLabel: string | null = null;
 
-  private iconProviderContext = providerUtils.consume({ host: this, context: IconProvider.Context });
+  private readonly iconProviderContext = providerUtils.consume({ host: this, context: IconProvider.Context });
 
   /**
    * Get Icon Data function which will fetch the icon (currently only svg)
@@ -92,8 +95,8 @@ class Icon extends Component {
    * Updates the size by setting the width and height
    */
   private updateSize() {
-    if (this.scale && (this.lengthUnit || this.lengthUnitFromContext)) {
-      const value = `${this.scale}${this.lengthUnit || this.lengthUnitFromContext}`;
+    if (this.computedIconSize && (this.lengthUnit || this.lengthUnitFromContext)) {
+      const value = `${this.computedIconSize}${this.lengthUnit ?? this.lengthUnitFromContext}`;
       this.style.width = value;
       this.style.height = value;
     }
@@ -117,6 +120,10 @@ class Icon extends Component {
     }
   }
 
+  private get computedIconSize() {
+    return this.size ?? this.defaultSizeFromContext ?? DEFAULTS.SIZE;
+  }
+
   override updated(changedProperties: Map<string, any>) {
     super.updated(changedProperties);
 
@@ -135,12 +142,17 @@ class Icon extends Component {
       this.setAriaLabelOnIcon();
     }
 
-    if (changedProperties.has('scale') || changedProperties.has('lengthUnit')) {
+    if (changedProperties.has('size') || changedProperties.has('lengthUnit')) {
       this.updateSize();
     }
 
     if (this.lengthUnitFromContext !== this.iconProviderContext.value?.lengthUnit) {
       this.lengthUnitFromContext = this.iconProviderContext.value?.lengthUnit;
+      this.updateSize();
+    }
+
+    if (this.defaultSizeFromContext !== this.iconProviderContext.value?.defaultSize) {
+      this.defaultSizeFromContext = this.iconProviderContext.value?.defaultSize;
       this.updateSize();
     }
   }

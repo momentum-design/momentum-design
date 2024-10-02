@@ -5,6 +5,7 @@ import { Component } from '../../models';
 import { DEFAULTS, WARNING_ICON_NAME } from './badge.constants';
 import styles from './badge.styles';
 import type { BadgeType } from './badge.types';
+import '../icon';
 
 /**
  * @slot - This is a default/unnamed slot
@@ -30,7 +31,7 @@ class Badge extends Component {
    * Default: `1`
    */
   @property({ type: Number })
-  scale?: number = DEFAULTS.SCALE;
+  size?: number = DEFAULTS.SIZE;
 
   /**
    * Length unit attribute for scale
@@ -68,14 +69,14 @@ class Badge extends Component {
 
   override updated(changedProperties: Map<string, any>) {
     super.updated(changedProperties);
-    if (changedProperties.has('scale') || changedProperties.has('lengthUnit')) {
+    if (changedProperties.has('size') || changedProperties.has('lengthUnit')) {
       this.updateSize();
     }
   }
 
   iconTemplate() {
     return html`<div class="mdc-badge-icon-container">
-      <mdc-icon name="${this.iconName}" scale="100" length-unit="%"></mdc-icon>
+      <mdc-icon name="${this.iconName}" size="100" length-unit="%"></mdc-icon>
     </div>`;
   }
 
@@ -89,7 +90,7 @@ class Badge extends Component {
 
   public override render() {
     let content;
-    const size = `${this.scale}${this.lengthUnit}`;
+    const size = `${this.size}${this.lengthUnit}`;
     let sizeStyles: StyleInfo = { width: size, height: size };
 
     switch (this.type) {

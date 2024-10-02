@@ -84,7 +84,7 @@ class ComponentsPage {
    * - Await till page has been loaded
    */
   async navigate(url?: string) {
-    await this.page.goto(url || '');
+    await this.page.goto(url ?? '');
     await expect(this.page).toHaveTitle(componentsDevPageTitle);
   }
 
