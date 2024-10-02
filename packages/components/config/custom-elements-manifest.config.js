@@ -1,3 +1,13 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-param-reassign */
+function replace(string, terms) {
+  terms.forEach(({ from, to }) => {
+    string = string?.replace(from, to);
+  });
+
+  return string;
+}
+
 module.exports = {
   /** Globs to analyze */
   globs: ['src/components/**/*.component.ts'],
@@ -22,5 +32,58 @@ module.exports = {
   /** Enable special handling for stencil */
   stencil: false,
   /** Provide custom plugins */
-  plugins: [],
+  plugins: [
+    {
+      name: 'momentum-translate-module-paths',
+      packageLinkPhase({ customElementsManifest }) {
+        customElementsManifest?.modules?.forEach((mod) => {
+          //
+          // CEM paths look like this:
+          //
+          //  src/components/avatar/avatar.component.ts
+          //
+          // But we want them to look like this:
+          //
+          //  components/avatar/avatar.component.ts
+          //
+          const terms = [
+            { from: /^src\//, to: '' }, // Strip the src/ prefix
+            { from: /\.(t|j)sx?$/, to: '.js' }, // Convert .ts to .js
+          ];
+
+          mod.path = replace(mod.path, terms);
+
+          for (const ex of mod.exports ?? []) {
+            ex.declaration.module = replace(ex.declaration.module, terms);
+          }
+
+          for (const dec of mod.declarations ?? []) {
+            if (dec.kind === 'class') {
+              for (const member of dec.members ?? []) {
+                if (member.inheritedFrom) {
+                  member.inheritedFrom.module = replace(member.inheritedFrom.module, terms);
+                }
+              }
+              if (dec.superClass?.module) {
+                dec.superClass.module = replace(dec.superClass.module, terms);
+              }
+            }
+          }
+        });
+      },
+    },
+    {
+      name: 'momentum-jsdocs',
+      analyzePhase({ ts, node, moduleDoc }) {
+        if (node.kind === ts.SyntaxKind.ClassDeclaration) {
+          const className = node.name.getText();
+          const classDoc = moduleDoc?.declarations?.find((declaration) => declaration.name === className);
+
+          // This is what allows us to map JSDOC comments to ReactWrappers.
+          // this will only parse the JSDoc comment (which is not part of a tag)
+          classDoc.jsDoc = node.jsDoc?.map((jsDoc) => jsDoc.getFullText()).join('\n');
+        }
+      },
+    },
+  ],
 };

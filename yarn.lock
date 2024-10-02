@@ -2031,6 +2031,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lit/react@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "@lit/react@npm:1.0.5"
+  peerDependencies:
+    "@types/react": 17 || 18
+  checksum: 5c3ae8e622c9af71538b91c7885704706a81d5fd833b4071af5d332cfaa07aad14fbdbed03e5d31c8ff8cd5048968a6f8b62af571ec905a163d482e89ed53d66
+  languageName: node
+  linkType: hard
+
 "@lit/reactive-element@npm:^1.6.2 || ^2.0.0, @lit/reactive-element@npm:^2.0.4":
   version: 2.0.4
   resolution: "@lit/reactive-element@npm:2.0.4"
@@ -2301,6 +2310,7 @@ __metadata:
     "@custom-elements-manifest/analyzer": ^0.10.3
     "@estruyf/github-actions-reporter": ^1.9.2
     "@lit/context": ^1.1.2
+    "@lit/react": ^1.0.5
     "@momentum-design/fonts": "workspace:*"
     "@momentum-design/icons": "workspace:*"
     "@momentum-design/tokens": "workspace:*"
@@ -2322,6 +2332,7 @@ __metadata:
     fs-extra: ^11.2.0
     lit: ^3.2.0
     plop: ^4.0.1
+    prettier: ^3.3.3
     rimraf: ^6.0.1
     storybook: ^8.2.5
     typescript: ^4.8.4
