@@ -16,7 +16,7 @@ const iife = async () => {
     servedir: publicPath,
     port,
   });
-  console.log(chalk.cyan('Serving at http://localhost:4000'));
+  console.log(chalk.cyan(`Serving at http://localhost:${port}`));
 };
 
 iife();

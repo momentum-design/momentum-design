@@ -1,14 +1,14 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
 import type { GitHubActionOptions } from '@estruyf/github-actions-reporter';
 import { devices } from '@playwright/test';
-import { port } from '../esbuild/configs/e2e';
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
 // require('dotenv').config();
 
-const url = `http://localhost:${port}`;
+const url = 'http://localhost:4000';
 
 const githubActionsReporterOptions: GitHubActionOptions = {
   title: 'Playwright E2E Test results',
