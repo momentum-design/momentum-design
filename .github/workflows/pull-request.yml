@@ -29,8 +29,6 @@ jobs:
 
           echo github.event
           
-
-          
           echo from base $FROM_BASE
           echo validated $VALIDATED
 
