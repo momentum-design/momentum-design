@@ -122,8 +122,12 @@ tests-out/
 ### SPECIAL CASES ###
 
 packages/tools/figma-plugins/assets-export/dist
+
 packages/components/config/storybook/public
 packages/components/storybook-static
+packages/components/src/react
+
 packages/assets/utils/src/staticSite/public
+
 # MAC system File
 **/.DS_Store

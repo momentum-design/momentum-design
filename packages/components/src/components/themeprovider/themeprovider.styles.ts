@@ -1,4 +1,4 @@
-import { css } from "lit";
+import { css } from 'lit';
 
 const styles = css`
   :host {
