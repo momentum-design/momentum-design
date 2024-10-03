@@ -37,7 +37,7 @@ class Icon extends Component {
   private lengthUnitFromContext?: string;
 
   @state()
-  private defaultSizeFromContext?: number;
+  private sizeFromContext?: number;
 
   /**
    * Name of the icon (= filename)
@@ -121,7 +121,7 @@ class Icon extends Component {
   }
 
   private get computedIconSize() {
-    return this.size ?? this.defaultSizeFromContext ?? DEFAULTS.SIZE;
+    return this.size ?? this.sizeFromContext ?? DEFAULTS.SIZE;
   }
 
   override updated(changedProperties: Map<string, any>) {
@@ -151,8 +151,8 @@ class Icon extends Component {
       this.updateSize();
     }
 
-    if (this.defaultSizeFromContext !== this.iconProviderContext.value?.defaultSize) {
-      this.defaultSizeFromContext = this.iconProviderContext.value?.defaultSize;
+    if (this.sizeFromContext !== this.iconProviderContext.value?.size) {
+      this.sizeFromContext = this.iconProviderContext.value?.size;
       this.updateSize();
     }
   }

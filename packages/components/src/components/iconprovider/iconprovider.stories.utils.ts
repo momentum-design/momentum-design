@@ -13,7 +13,7 @@ class SubComponentIconProvider extends Component {
       <p>URL: ${this.iconProviderContext.value?.url}</p>
       <p>File Extension: ${this.iconProviderContext.value?.fileExtension}</p>
       <p>Length Unit: ${this.iconProviderContext.value?.lengthUnit}</p>
-      <p>Default Size: ${this.iconProviderContext.value?.defaultSize}</p>
+      <p>Default Size: ${this.iconProviderContext.value?.size}</p>
     `;
   }
 }

@@ -8,7 +8,7 @@ const render = (args: Args) => html`
     url=${args.url}
     file-extension=${args.fileExtension}
     length-unit=${args.lengthUnit}
-    default-size=${args.defaultSize}>
+    size=${args.size}>
     <mdc-subcomponent-icon></mdc-subcomponent-icon>
   </mdc-iconprovider>
 `;
@@ -28,6 +28,6 @@ export const Primary: StoryObj = {
     url: '/test',
     fileExtension: 'svg',
     lengthUnit: 'em',
-    defaultSize: 1,
+    size: 1,
   },
 };

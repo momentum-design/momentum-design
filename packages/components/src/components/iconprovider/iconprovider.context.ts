@@ -9,7 +9,7 @@ class IconProviderContext {
 
   public lengthUnit?: string;
 
-  public defaultSize?: number;
+  public size?: number;
 
   // create typed lit context as part of the IconProviderContext
   public static readonly context = createContext<IconProviderContext>(TAG_NAME);

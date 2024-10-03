@@ -1,7 +1,11 @@
 import { property } from 'lit/decorators.js';
 import { Provider } from '../../models';
 import IconProviderContext from './iconprovider.context';
-import { ALLOWED_FILE_EXTENSIONS, DEFAULTS, LENGTH_UNIT_DEFAULT_SIZE } from './iconprovider.constants';
+import {
+  ALLOWED_FILE_EXTENSIONS,
+  DEFAULTS,
+  LENGTH_UNIT_DEFAULT_SIZE,
+  ALLOWED_LENGTH_UNITS } from './iconprovider.constants';
 
 /**
  * IconProvider component, which allows to be consumed from sub components
@@ -47,11 +51,11 @@ class IconProvider extends Provider<IconProviderContext> {
 
   /**
    * The default size of the icon.
-   * This property can be set via the 'default-size' attribute.
+   * This property can be set via the 'size' attribute.
    * If not set, it falls back to the size defined by the length unit.
    */
-  @property({ type: Number, attribute: 'default-size', reflect: true })
-  defaultSize?: number = LENGTH_UNIT_DEFAULT_SIZE[DEFAULTS.LENGTH_UNIT];
+  @property({ type: Number, reflect: true })
+  size?: number = LENGTH_UNIT_DEFAULT_SIZE[DEFAULTS.LENGTH_UNIT];
 
   private updateValuesInContext() {
     // only update fileExtension on context if its an allowed fileExtension
@@ -59,8 +63,12 @@ class IconProvider extends Provider<IconProviderContext> {
       this.context.value.fileExtension = this.fileExtension;
     }
     this.context.value.url = this.url;
-    this.context.value.lengthUnit = this.lengthUnit;
-    this.context.value.defaultSize = this.defaultSize;
+
+    if (this.lengthUnit && ALLOWED_LENGTH_UNITS.includes(this.lengthUnit)) {
+      this.context.value.lengthUnit = this.lengthUnit;
+    }
+
+    this.context.value.size = this.size;
   }
 
   protected updateContext(): void {
@@ -70,7 +78,7 @@ class IconProvider extends Provider<IconProviderContext> {
       this.context.value.fileExtension !== this.fileExtension
       || this.context.value.url !== this.url
       || this.context.value.lengthUnit !== this.lengthUnit
-      || this.context.value.defaultSize !== this.defaultSize
+      || this.context.value.size !== this.size
     ) {
       this.updateValuesInContext();
 

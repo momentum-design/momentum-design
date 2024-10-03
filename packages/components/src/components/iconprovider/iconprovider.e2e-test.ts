@@ -7,7 +7,7 @@ type SetupOptions = {
   url: string;
   fileExtension?: string;
   lengthUnit?: string;
-  defaultSize?: number;
+  size?: number;
 };
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
@@ -18,7 +18,7 @@ const setup = async (args: SetupOptions) => {
       id="local" 
       ${restArgs.fileExtension ? `file-extension="${restArgs.fileExtension}"` : ''}
       ${restArgs.lengthUnit ? `length-unit="${restArgs.lengthUnit}"` : ''}
-      ${restArgs.defaultSize ? `default-size="${restArgs.defaultSize}"` : ''}
+      ${restArgs.size ? `size="${restArgs.size}"` : ''}
     >
       <mdc-icon name="accessibility-regular" size="2"></mdc-icon>
     </mdc-iconprovider>
@@ -61,7 +61,7 @@ test('mdc-iconprovider', async ({ componentsPage }) => {
       await expect(iconprovider).toHaveAttribute('file-extension', DEFAULTS.FILE_EXTENSION);
       await expect(iconprovider).toHaveAttribute('length-unit', DEFAULTS.LENGTH_UNIT);
       await expect(iconprovider).toHaveAttribute(
-        'default-size',
+        'size',
         LENGTH_UNIT_DEFAULT_SIZE[DEFAULTS.LENGTH_UNIT].toString(),
       );
     });
