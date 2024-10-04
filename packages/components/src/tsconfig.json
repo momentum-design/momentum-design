@@ -44,9 +44,8 @@
     "**/*.ts",
   ],
   "exclude": [
-    "**/*.e2e-test.ts",
-    "**/*.fixtures.ts",
-    "**/*.stories.ts",
+    "**/*.e2e-test*",
+    "**/*.stories*",
     "node_modules"
   ],
 }

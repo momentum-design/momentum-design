@@ -33,8 +33,14 @@ const VISUAL_REGRESSION = {
   FILE_EXTENSION: 'png',
 };
 
+const THEME_CLASSES = {
+  DARK_WEBEX: 'mds-theme-stable-darkWebex',
+  LIGHT_WEBEX: 'mds-theme-stable-lightWebex',
+} as const;
+
 const CONSTANTS = {
   DEFAULT_ACCESSIBILITY_SCAN_OPTIONS,
   VISUAL_REGRESSION,
+  THEME_CLASSES,
 };
 export default CONSTANTS;

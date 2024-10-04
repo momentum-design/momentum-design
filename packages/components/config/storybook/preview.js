@@ -29,6 +29,7 @@ const preview = {
     },
     actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
+      disableSaveFromUI: true,
       expanded: true,
       matchers: {
         color: /(background|color)$/i,
