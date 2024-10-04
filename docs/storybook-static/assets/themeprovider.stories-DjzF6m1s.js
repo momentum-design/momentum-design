@@ -32,7 +32,7 @@ import{R as v,k as i}from"./lit-element-CPYlYYac.js";import{e as p,i as u,t as x
       <div class="colorBox" style="background: var(--mds-color-theme-text-team-slate-normal);"></div>
     </div>
   </mdc-themeprovider>
-`,$={title:"Work In Progress/themeprovider",tags:["autodocs"],component:"mdc-themeprovider",render:S,argTypes:{themeclass:{options:h,control:{type:"radio"}},...T(["Context","default","--mdc-themeprovider-font-family","--mdc-themeprovider-color-default"]),...B,...C}},r={args:{themeclass:h[0],class:"custom-classname",style:"margin-top: 20px;"}};var n,m,d;r.parameters={...r.parameters,docs:{...(n=r.parameters)==null?void 0:n.docs,source:{originalSource:`{
+`,$={title:"Work In Progress/themeprovider",tags:["autodocs"],component:"mdc-themeprovider",render:S,parameters:{badges:["wip"]},argTypes:{themeclass:{options:h,control:{type:"radio"}},...T(["Context","default","--mdc-themeprovider-font-family","--mdc-themeprovider-color-default"]),...B,...C}},r={args:{themeclass:h[0],class:"custom-classname",style:"margin-top: 20px;"}};var n,m,d;r.parameters={...r.parameters,docs:{...(n=r.parameters)==null?void 0:n.docs,source:{originalSource:`{
   args: {
     themeclass: THEMES[0],
     class: 'custom-classname',
