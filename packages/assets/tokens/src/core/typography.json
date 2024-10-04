@@ -75,39 +75,39 @@
       },
       "body": {
         "small": {
-          "value": "{font.size.base} *0.75",
+          "value": "{font.size.base}*0.75",
           "type": "fontSizes"
         },
         "midsize": {
-          "value": "{font.size.base} *0.875",
+          "value": "{font.size.base}*0.875",
           "type": "fontSizes"
         },
         "large": {
-          "value": "{font.size.base} *1",
+          "value": "{font.size.base}*1",
           "type": "fontSizes"
         }
       },
       "heading": {
         "small": {
-          "value": "{font.size.base} *1.25",
+          "value": "{font.size.base}*1.25",
           "type": "fontSizes"
         },
         "midsize": {
-          "value": "{font.size.base} *1.5",
+          "value": "{font.size.base}*1.5",
           "type": "fontSizes"
         },
         "large": {
-          "value": "{font.size.base} *2",
+          "value": "{font.size.base}*2",
           "type": "fontSizes"
         },
         "xlarge": {
-          "value": "{font.size.base} *2.5",
+          "value": "{font.size.base}*2.5",
           "type": "fontSizes"
         }
       },
       "headline": {
         "small": {
-          "value": "{font.size.base} *3.25",
+          "value": "{font.size.base}*3.25",
           "type": "fontSizes"
         }
       }
