@@ -4,7 +4,6 @@ import IconProviderContext from './iconprovider.context';
 import {
   ALLOWED_FILE_EXTENSIONS,
   DEFAULTS,
-  LENGTH_UNIT_DEFAULT_SIZE,
   ALLOWED_LENGTH_UNITS } from './iconprovider.constants';
 
 /**
@@ -51,11 +50,10 @@ class IconProvider extends Provider<IconProviderContext> {
 
   /**
    * The default size of the icon.
-   * This property can be set via the 'size' attribute.
    * If not set, it falls back to the size defined by the length unit.
    */
   @property({ type: Number, reflect: true })
-  size?: number = LENGTH_UNIT_DEFAULT_SIZE[DEFAULTS.LENGTH_UNIT];
+  size?: number = DEFAULTS.LENGTH_UNIT_SIZE[DEFAULTS.LENGTH_UNIT];
 
   private updateValuesInContext() {
     // only update fileExtension on context if its an allowed fileExtension

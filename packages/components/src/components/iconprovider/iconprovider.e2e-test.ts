@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import { DEFAULTS, LENGTH_UNIT_DEFAULT_SIZE } from './iconprovider.constants';
+import { DEFAULTS } from './iconprovider.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -62,7 +62,7 @@ test('mdc-iconprovider', async ({ componentsPage }) => {
       await expect(iconprovider).toHaveAttribute('length-unit', DEFAULTS.LENGTH_UNIT);
       await expect(iconprovider).toHaveAttribute(
         'size',
-        LENGTH_UNIT_DEFAULT_SIZE[DEFAULTS.LENGTH_UNIT].toString(),
+        DEFAULTS.LENGTH_UNIT_SIZE[DEFAULTS.LENGTH_UNIT].toString(),
       );
     });
   });

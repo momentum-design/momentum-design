@@ -6,7 +6,6 @@ import { Component } from '../../models';
 import { DEFAULTS, WARNING_ICON_NAME } from './badge.constants';
 import styles from './badge.styles';
 import type { BadgeType } from './badge.types';
-import '../icon';
 
 /**
  * @slot - This is a default/unnamed slot
