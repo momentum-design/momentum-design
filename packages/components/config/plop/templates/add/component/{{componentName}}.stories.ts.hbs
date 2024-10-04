@@ -10,6 +10,9 @@ const meta: Meta = {
   title: 'Work In Progress/{{componentName}}',
   component: '{{prefix}}{{separator}}{{componentName}}',
   render,
+  parameters: {
+    badges: ['wip'],
+  },
   argTypes: { 
     ...classArgType,
     ...styleArgType

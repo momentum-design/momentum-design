@@ -1677,6 +1677,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@geometricpanda/storybook-addon-badges@npm:^2.0.4":
+  version: 2.0.4
+  resolution: "@geometricpanda/storybook-addon-badges@npm:2.0.4"
+  peerDependencies:
+    "@storybook/blocks": ^8.3.0
+    "@storybook/components": ^8.3.0
+    "@storybook/core-events": ^8.3.0
+    "@storybook/manager-api": ^8.3.0
+    "@storybook/preview-api": ^8.3.0
+    "@storybook/theming": ^8.3.0
+    "@storybook/types": ^8.3.0
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 962e37dcaf7085b7e0253fe18f521e70cd76176a3bec53ab05dc09675a0029844b228b4c98797625de9589d649334517f32d49c676f271ffc2f99e026bb57d88
+  languageName: node
+  linkType: hard
+
 "@github/catalyst@npm:^1.6.0":
   version: 1.6.0
   resolution: "@github/catalyst@npm:1.6.0"
@@ -2325,6 +2347,7 @@ __metadata:
     "@axe-core/playwright": ^4.9.1
     "@custom-elements-manifest/analyzer": ^0.10.3
     "@estruyf/github-actions-reporter": ^1.9.2
+    "@geometricpanda/storybook-addon-badges": ^2.0.4
     "@lit/context": ^1.1.2
     "@lit/react": ^1.0.5
     "@momentum-design/fonts": "workspace:*"
