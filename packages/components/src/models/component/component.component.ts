@@ -4,6 +4,9 @@ import { LitElement } from 'lit';
  * Core Component class to ultimately be inherited by all Web Components within
  * this package.
  *
+ * LitElement defines class and style automatically to allow passing in styling
+ * overrides. We are keeping those to allow for further customization.
+ *
  * @public
  */
 class Component extends LitElement {

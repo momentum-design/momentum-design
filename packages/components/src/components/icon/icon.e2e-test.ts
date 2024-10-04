@@ -4,7 +4,7 @@ import { ComponentsPage, test } from '../../../config/playwright/setup';
 type SetupOptions = {
   componentsPage: ComponentsPage;
   name: string;
-  scale?: number;
+  size?: number;
   role?: string;
   ariaLabel?: string;
 };
@@ -14,7 +14,7 @@ const setup = async (args: SetupOptions) => {
     html: `
     <mdc-icon 
       name="${restArgs.name}" 
-      ${restArgs.scale ? `scale="${restArgs.scale}"` : ''}
+      ${restArgs.size ? `size="${restArgs.size}"` : ''}
       ${restArgs.role ? `role="${restArgs.role}"` : ''}
       ${restArgs.ariaLabel ? `aria-label="${restArgs.ariaLabel}"` : ''}
     >
@@ -58,11 +58,11 @@ test('mdc-icon', async ({ componentsPage }) => {
       await componentsPage.visualRegression.takeScreenshot('mdc-icon-default', { element: iconWithRole });
     });
 
-    await test.step('matches screenshot of element with scale set to 2', async () => {
+    await test.step('matches screenshot of element with size set to 2', async () => {
       const iconScaled = await setup({
         componentsPage,
         name,
-        scale: 2,
+        size: 2,
       });
       await componentsPage.visualRegression.takeScreenshot('mdc-icon-scale', { element: iconScaled });
     });
@@ -78,10 +78,10 @@ test('mdc-icon', async ({ componentsPage }) => {
       await expect(icon).toHaveAttribute('style', 'width: 1em; height: 1em;');
     });
 
-    await test.step('attributes should be present on component with scale passed in', async () => {
-      const icon = await setup({ componentsPage, name, scale: 2 });
+    await test.step('attributes should be present on component with size passed in', async () => {
+      const icon = await setup({ componentsPage, name, size: 2 });
       await expect(icon).toHaveAttribute('name', name);
-      await expect(icon).toHaveAttribute('scale', '2');
+      await expect(icon).toHaveAttribute('size', '2');
       await expect(icon).toHaveAttribute('style', 'width: 2em; height: 2em;');
     });
 

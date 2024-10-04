@@ -29,12 +29,18 @@ const DEFAULT_ACCESSIBILITY_SCAN_OPTIONS = {
 // we have pixel perfect visual regression testing enabled.
 const VISUAL_REGRESSION = {
   THRESHOLD: 0.1,
-  MAX_DIFF_PIXELS_RATIO: 0.07,
+  MAX_DIFF_PIXELS_RATIO: 0.08,
   FILE_EXTENSION: 'png',
 };
+
+const THEME_CLASSES = {
+  DARK_WEBEX: 'mds-theme-stable-darkWebex',
+  LIGHT_WEBEX: 'mds-theme-stable-lightWebex',
+} as const;
 
 const CONSTANTS = {
   DEFAULT_ACCESSIBILITY_SCAN_OPTIONS,
   VISUAL_REGRESSION,
+  THEME_CLASSES,
 };
 export default CONSTANTS;

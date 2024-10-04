@@ -1,3 +1,5 @@
+// this tsconfig acts as the config file for creating the dist folder
+// the tsconfig.json file in the root of the components folder is used for storybook, e2e tests etc
 {
   "extends": "../../config/typescript/tsconfig.base.json",
   "compilerOptions": {
@@ -12,7 +14,6 @@
     "declarationMap": true,
     "sourceMap": true,
     "inlineSources": true,
-    "outDir": "./dist",
     "rootDir": "./",
     "strict": true,
     "noUnusedLocals": true,
@@ -27,19 +28,18 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitOverride": true,
     "useDefineForClassFields": false,
-    "plugins": [
-      {
-        "name": "ts-lit-plugin",
-        "strict": true
-      }
-    ]
   },
   "include": [
-    "src/**/*.ts",
     "config",
-    ".eslintrc.js"
+    "src/**/*.stories.ts",
+    "src/**/*.e2e-test.ts"
   ],
   "exclude": [
     "node_modules"
   ],
+  "references": [
+    {
+      "path": "./src/tsconfig.json"
+    }
+  ]
 }

@@ -1,14 +1,14 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
 import type { GitHubActionOptions } from '@estruyf/github-actions-reporter';
 import { devices } from '@playwright/test';
-import { port } from '../esbuild/configs/e2e';
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
 // require('dotenv').config();
 
-const url = `http://localhost:${port}`;
+const url = 'http://localhost:4000';
 
 const githubActionsReporterOptions: GitHubActionOptions = {
   title: 'Playwright E2E Test results',
@@ -55,30 +55,30 @@ const config: PlaywrightTestConfig = {
     trace: process.env.CI ? 'retain-on-failure' : 'on',
   },
 
-  snapshotPathTemplate: '{testDir}/{testFileDir}/__screenshots__/{arg}{ext}',
+  snapshotPathTemplate: '{testDir}/{testFileDir}/__screenshots__/{projectName}/{arg}{ext}',
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'Google Chrome',
+      name: 'chrome',
       use: {
         ...devices['Desktop Chrome'],
         channel: 'chrome',
       },
     },
-    // {
-    //   name: 'firefox',
-    //   use: {
-    //     ...devices['Desktop Firefox'],
-    //   },
-    // },
+    {
+      name: 'firefox',
+      use: {
+        ...devices['Desktop Firefox'],
+      },
+    },
 
-    // {
-    //   name: 'webkit',
-    //   use: {
-    //     ...devices['Desktop Safari'],
-    //   },
-    // },
+    {
+      name: 'webkit',
+      use: {
+        ...devices['Desktop Safari'],
+      },
+    },
 
     /* Test against mobile viewports. */
     // {
@@ -95,12 +95,12 @@ const config: PlaywrightTestConfig = {
     // },
 
     /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: {
-    //     channel: 'msedge',
-    //   },
-    // },
+    {
+      name: 'msedge',
+      use: {
+        channel: 'msedge',
+      },
+    },
   ],
 
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */

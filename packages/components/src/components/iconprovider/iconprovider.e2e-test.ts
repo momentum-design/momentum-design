@@ -7,6 +7,7 @@ type SetupOptions = {
   url: string;
   fileExtension?: string;
   lengthUnit?: string;
+  size?: number;
 };
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
@@ -17,8 +18,9 @@ const setup = async (args: SetupOptions) => {
       id="local" 
       ${restArgs.fileExtension ? `file-extension="${restArgs.fileExtension}"` : ''}
       ${restArgs.lengthUnit ? `length-unit="${restArgs.lengthUnit}"` : ''}
+      ${restArgs.size ? `size="${restArgs.size}"` : ''}
     >
-      <mdc-icon name="accessibility-regular" scale="2"></mdc-icon>
+      <mdc-icon name="accessibility-regular" size="2"></mdc-icon>
     </mdc-iconprovider>
       `,
   });
@@ -58,6 +60,10 @@ test('mdc-iconprovider', async ({ componentsPage }) => {
       await expect(iconprovider).toHaveAttribute('url', url);
       await expect(iconprovider).toHaveAttribute('file-extension', DEFAULTS.FILE_EXTENSION);
       await expect(iconprovider).toHaveAttribute('length-unit', DEFAULTS.LENGTH_UNIT);
+      await expect(iconprovider).toHaveAttribute(
+        'size',
+        DEFAULTS.LENGTH_UNIT_SIZE[DEFAULTS.LENGTH_UNIT].toString(),
+      );
     });
   });
 });

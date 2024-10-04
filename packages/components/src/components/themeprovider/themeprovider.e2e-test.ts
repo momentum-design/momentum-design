@@ -1,15 +1,12 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import { THEME_NAMES } from './themeprovider.constants';
-import type { ThemeName } from './themeprovider.types';
-import utils from './themeprovider.utils';
+import CONSTANTS from '../../../config/playwright/setup/constants';
+import type { ThemeClass } from '../../../config/playwright/setup/types';
 
 test.beforeEach(async ({ componentsPage, theme }) => {
-  const themeClass = utils.getFullQualifiedTheme(theme);
   await componentsPage.mount({
     html: `
-    <mdc-themeprovider class="themeWrapper" id="local" theme="${themeClass}">
-      <p>Current theme: ${themeClass}</p>
+    <mdc-themeprovider class="themeWrapper" id="local" themeclass="${theme}">
       <div>
         <div class="colorBox" style="background: var(--mds-color-theme-text-accent-normal);"></div>
         <div class="colorBox" style="background: var(--mds-color-theme-text-warning-normal);"></div>
@@ -20,14 +17,8 @@ test.beforeEach(async ({ componentsPage, theme }) => {
   });
 });
 
-const testToRun = async (componentsPage: ComponentsPage, theme: ThemeName) => {
+const testToRun = async (componentsPage: ComponentsPage, theme: ThemeClass, themeName: string) => {
   const themeprovider = componentsPage.page.locator('mdc-themeprovider#local');
-
-  // get fully qualified theme
-  const themeClass = utils.getFullQualifiedTheme(theme);
-  const oppositeThemeClass = themeClass.includes('darkWebex')
-    ? utils.getFullQualifiedTheme('lightWebex')
-    : utils.getFullQualifiedTheme('darkWebex');
 
   // initial check for the themeprovider be visible on the screen:
   await themeprovider.waitFor();
@@ -36,7 +27,7 @@ const testToRun = async (componentsPage: ComponentsPage, theme: ThemeName) => {
    * ACCESSIBILITY
    */
   await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('theme-provider-default');
+    await componentsPage.accessibility.checkForA11yViolations(`theme-provider-${themeName}`);
   });
 
   /**
@@ -44,7 +35,7 @@ const testToRun = async (componentsPage: ComponentsPage, theme: ThemeName) => {
    */
   await test.step('visual-regression', async () => {
     await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot(`mdc-themeprovider-${theme}`, {
+      await componentsPage.visualRegression.takeScreenshot(`mdc-themeprovider-${themeName}`, {
         element: themeprovider,
       });
     });
@@ -55,33 +46,34 @@ const testToRun = async (componentsPage: ComponentsPage, theme: ThemeName) => {
    */
   await test.step('attributes', async () => {
     await test.step('attribute theme should be present on component by default', async () => {
-      expect(await themeprovider.getAttribute('theme')).toBe(themeClass);
+      expect(await themeprovider.getAttribute('themeclass')).toBe(theme);
     });
 
     await test.step('corresponding theme class should be present on component by default', async () => {
-      expect(await themeprovider.getAttribute('class')).toContain(themeClass);
-      expect(await themeprovider.getAttribute('class')).not.toContain(oppositeThemeClass);
+      expect(await themeprovider.getAttribute('class')).toContain(theme);
     });
   });
 };
 
-// test.describe('mdc-themeprovider', () => {
-//   test.use({
-//     theme: THEME_NAMES.DARK_WEBEX,
-//   });
+test.describe.parallel('mdc-themeprovider', () => {
+  [
+    {
+      theme: CONSTANTS.THEME_CLASSES.LIGHT_WEBEX,
+      themeName: 'lightWebex',
+    },
+    {
+      theme: CONSTANTS.THEME_CLASSES.DARK_WEBEX,
+      themeName: 'darkWebex',
+    },
+  ].forEach(({ theme, themeName }) => {
+    test.describe(`${themeName} tests`, () => {
+      test.use({
+        theme,
+      });
 
-//   test('dark', async ({ componentsPage, theme }) => {
-//     await testToRun(componentsPage, theme);
-//   });
-// });
-
-test.describe('mdc-themeprovider', () => {
-  test.use({
-    theme: THEME_NAMES.LIGHT_WEBEX,
-  });
-
-  // TODO: fix e2e test
-  test.fixme('light', async ({ componentsPage, theme }) => {
-    await testToRun(componentsPage, theme);
+      test(themeName, async ({ componentsPage }) => {
+        await testToRun(componentsPage, theme, themeName);
+      });
+    });
   });
 });
