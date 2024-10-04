@@ -12,6 +12,9 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-icon',
   render,
+  parameters: {
+    badges: ['wip'],
+  },
   argTypes: {},
 };
 

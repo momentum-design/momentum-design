@@ -11,6 +11,9 @@ const meta: Meta = {
   title: 'Work In Progress/avatar',
   component: 'mdc-avatar',
   render,
+  parameters: {
+    badges: ['wip'],
+  },
   argTypes: {},
 };
 
