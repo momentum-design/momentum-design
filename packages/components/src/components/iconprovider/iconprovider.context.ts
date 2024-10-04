@@ -9,8 +9,10 @@ class IconProviderContext {
 
   public lengthUnit?: string;
 
+  public size?: number;
+
   // create typed lit context as part of the IconProviderContext
-  public static context = createContext<IconProviderContext>(TAG_NAME);
+  public static readonly context = createContext<IconProviderContext>(TAG_NAME);
 }
 
 export default IconProviderContext;

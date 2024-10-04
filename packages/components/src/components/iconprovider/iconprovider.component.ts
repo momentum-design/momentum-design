@@ -1,7 +1,10 @@
 import { property } from 'lit/decorators.js';
 import { Provider } from '../../models';
 import IconProviderContext from './iconprovider.context';
-import { ALLOWED_FILE_EXTENSIONS, DEFAULTS } from './iconprovider.constants';
+import {
+  ALLOWED_FILE_EXTENSIONS,
+  DEFAULTS,
+  ALLOWED_LENGTH_UNITS } from './iconprovider.constants';
 
 /**
  * IconProvider component, which allows to be consumed from sub components
@@ -43,7 +46,14 @@ class IconProvider extends Provider<IconProviderContext> {
    * Length unit used for sizing of icons, default: 'em'
    */
   @property({ type: String, attribute: 'length-unit', reflect: true })
-  lengthUnit?: string = DEFAULTS.LENGTH_UNIT;
+  lengthUnit: string = DEFAULTS.LENGTH_UNIT;
+
+  /**
+   * The default size of the icon.
+   * If not set, it falls back to the size defined by the length unit.
+   */
+  @property({ type: Number, reflect: true })
+  size?: number = DEFAULTS.LENGTH_UNIT_SIZE[DEFAULTS.LENGTH_UNIT];
 
   private updateValuesInContext() {
     // only update fileExtension on context if its an allowed fileExtension
@@ -51,7 +61,12 @@ class IconProvider extends Provider<IconProviderContext> {
       this.context.value.fileExtension = this.fileExtension;
     }
     this.context.value.url = this.url;
-    this.context.value.lengthUnit = this.lengthUnit;
+
+    if (this.lengthUnit && ALLOWED_LENGTH_UNITS.includes(this.lengthUnit)) {
+      this.context.value.lengthUnit = this.lengthUnit;
+    }
+
+    this.context.value.size = this.size;
   }
 
   protected updateContext(): void {
@@ -61,6 +76,7 @@ class IconProvider extends Provider<IconProviderContext> {
       this.context.value.fileExtension !== this.fileExtension
       || this.context.value.url !== this.url
       || this.context.value.lengthUnit !== this.lengthUnit
+      || this.context.value.size !== this.size
     ) {
       this.updateValuesInContext();
 
