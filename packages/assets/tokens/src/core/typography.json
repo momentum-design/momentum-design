@@ -7,39 +7,39 @@
       },
       "body": {
         "small": {
-          "value": "{font.lineheight.base} *1",
+          "value": "{font.lineheight.base}*1",
           "type": "lineHeights"
         },
         "midsize": {
-          "value": "{font.lineheight.base} *1.25",
+          "value": "{font.lineheight.base}*1.25",
           "type": "lineHeights"
         },
         "large": {
-          "value": "{font.lineheight.base} *1.5",
+          "value": "{font.lineheight.base}*1.5",
           "type": "lineHeights"
         }
       },
       "heading": {
         "small": {
-          "value": "{font.lineheight.base} *1.75",
+          "value": "{font.lineheight.base}*1.75",
           "type": "lineHeights"
         },
         "midsize": {
-          "value": "{font.lineheight.base} *2",
+          "value": "{font.lineheight.base}*2",
           "type": "lineHeights"
         },
         "large": {
-          "value": "{font.lineheight.base} *2.5",
+          "value": "{font.lineheight.base}*2.5",
           "type": "lineHeights"
         },
         "xlarge": {
-          "value": "{font.lineheight.base} *3.25",
+          "value": "{font.lineheight.base}*3.25",
           "type": "lineHeights"
         }
       },
       "headline": {
         "small": {
-          "value": "{font.lineheight.base} *4",
+          "value": "{font.lineheight.base}*4",
           "type": "lineHeights"
         }
       }
