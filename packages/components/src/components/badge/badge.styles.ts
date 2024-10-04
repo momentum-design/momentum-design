@@ -6,6 +6,7 @@ const styles = [
   css`
     :host {
       --mdc-badge-icon-background-color: var(--mds-color-theme-background-accent-normal);
+      --mdc-badge-icon-color: var(--mds-color-theme-common-text-primary-normal);
     }
 
     .mdc-badge-container {
@@ -14,6 +15,7 @@ const styles = [
       align-items: center;
       border-radius: 9999px;
       background-color: var(--mdc-badge-icon-background-color);
+      color: var(--mdc-badge-icon-color);
     }
 
     .mdc-badge-icon-container {

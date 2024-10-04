@@ -26,7 +26,7 @@ class Accessibility {
    * File will be deleted after being attached, since after attaching to test report,
    * the file is not needed anymore locally
    *
-   * @param fileName name of the file to attach
+   * @param fileName - name of the file to attach
    */
   async attachToReport(fileName: string) {
     await this.testInfo.attach(fileName, {
@@ -39,7 +39,7 @@ class Accessibility {
   /**
    * Attaches the provided scan results as HTML
    * to the test report
-   * @param accessibilityScanResults
+   * @param accessibilityScanResults - scan results
    */
   async attachA11yResults(testResultsName: string, accessibilityScanResults: any) {
     const fileName = `accessibility-scan-results-${testResultsName}.html`;
@@ -103,8 +103,8 @@ class Accessibility {
    *
    * If only 1 keyPress needs to be done, just simply provide the `elementsToBeFocused` array with
    * 1 element, which should receive focus.
-   * @param keyToPress key which should be pressed
-   * @param elementsToBeFocused array of elements, which have to be focused after pressing a key
+   * @param keyToPress - key which should be pressed
+   * @param elementsToBeFocused - array of elements, which have to be focused after pressing a key
    */
   async pressAndCheckFocus(keyToPress: string, elementsToBeFocused: Array<Locator>) {
     for (const elementToBeFocused of elementsToBeFocused) {

@@ -28,14 +28,14 @@ class Avatar extends Component {
    * Scale of the avatar
    */
   @property({ type: Number })
-  scale?: number = DEFAULTS.SCALE;
+  size?: number = DEFAULTS.SIZE;
 
   /**
    * Updates the size by setting the width and height
    */
   private updateSize() {
-    if (this.scale) {
-      const value = `${this.scale}${LENGTH_UNIT}`;
+    if (this.size) {
+      const value = `${this.size}${LENGTH_UNIT}`;
       this.style.width = value;
       this.style.height = value;
     }
@@ -44,7 +44,7 @@ class Avatar extends Component {
   override updated(changedProperties: Map<string, any>) {
     super.updated(changedProperties);
 
-    if (changedProperties.has('scale')) {
+    if (changedProperties.has('size')) {
       this.updateSize();
     }
   }

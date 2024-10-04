@@ -7,7 +7,7 @@ const render = (args: Args) => html`
   <mdc-badge
     type="${args.type}"
     icon-name="${args.iconName}"
-    scale="${args.scale}"
+    size="${args.size}"
     length-unit="${args.lengthUnit}"
     text="${args.text}"
   ></mdc-badge>
@@ -27,7 +27,7 @@ export const Primary: StoryObj = {
   args: {
     type: DEFAULTS.TYPE,
     iconName: 'accessibility-regular',
-    scale: 1,
+    size: 1,
     lengthUnit: 'rem',
     text: '99+',
   },
