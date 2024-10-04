@@ -46,10 +46,10 @@ class Icon extends Component {
   name?: string = DEFAULTS.NAME;
 
   /**
-   * Scale of the icon (works in combination with length unit)
+   * Size of the icon (works in combination with length unit)
    */
   @property({ type: Number })
-  size: number = DEFAULTS.SIZE;
+  size?: number;
 
   /**
    * Length unit attribute for overriding length-unit from `IconProvider`
