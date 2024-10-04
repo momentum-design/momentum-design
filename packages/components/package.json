@@ -14,8 +14,14 @@
       "require": "./dist/index.js"
     },
     "./browser": "./dist/browser/index.js",
-    "./module": "./dist/components",
-    "./react": "./dist/react"
+    "./react": "./dist/react/index.js",
+    "./react/*": "./dist/react/*",
+    "./dist/react": "./dist/react/index.js",
+    "./dist/react/*": "./dist/react/*",
+    "./components": "./dist/components/index.js",
+    "./components/*": "./dist/components/*",
+    "./dist/components": "./dist/components/index.js",
+    "./dist/components/*": "./dist/components/*"
   },
   "files": [
     "./dist/",
