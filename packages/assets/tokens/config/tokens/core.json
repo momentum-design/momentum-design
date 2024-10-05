@@ -3,7 +3,7 @@
     {
       "destination": "core/complete",
       "cssSelector": ".mds-core",
-      "targets": ["core/*.json"]
+      "targets": ["core/value.json"]
     },
     {
       "destination": "theme/webex/dark-complete",
@@ -12,7 +12,7 @@
       },
       "cssSelector": ".mds-theme-webex-dark",
       "targets": [
-        "core/*.json",
+        "core/value.json",
         "theme/webex/dark.json"
       ]
     },
@@ -23,7 +23,7 @@
       },
       "cssSelector": ".mds-theme-webex-light",
       "targets": [
-        "core/*.json",
+        "core/value.json",
         "theme/webex/light.json"
       ]
     },
@@ -34,7 +34,7 @@
       },
       "cssSelector": ".mds-theme-stable-darkWebex",
       "targets": [
-        "core/*.json",
+        "core/value.json",
         "theme/stable/dark.json"
       ]
     },
@@ -45,7 +45,7 @@
       },
       "cssSelector": ".mds-theme-stable-lightWebex",
       "targets": [
-        "core/*.json",
+        "core/value.json",
         "theme/stable/light.json"
       ]
     },
@@ -56,7 +56,7 @@
       },
       "cssSelector": ".mds-theme-stable-hcDarkWebex",
       "targets": [
-        "core/*.json",
+        "core/value.json",
         "theme/stable/highcontrast/hc_common.json",
         "theme/stable/highcontrast/hc_dark.json"
       ]
@@ -68,7 +68,7 @@
       },
       "cssSelector": ".mds-theme-stable-hcLightWebex",
       "targets": [
-        "core/*.json",
+        "core/value.json",
         "theme/stable/highcontrast/hc_common.json",
         "theme/stable/highcontrast/hc_light.json"
       ]
@@ -80,7 +80,7 @@
       },
       "cssSelector": ".mds-theme-aaos-day",
       "targets": [
-        "core/*.json",
+        "core/value.json",
         "aaos/common.json",
         "aaos/day.json"
       ]
@@ -92,7 +92,7 @@
       },
       "cssSelector": ".mds-theme-aaos-night",
       "targets": [
-        "core/*.json",
+        "core/value.json",
         "aaos/common.json",
         "aaos/night.json"
       ]
