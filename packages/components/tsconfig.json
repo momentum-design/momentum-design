@@ -31,8 +31,8 @@
   },
   "include": [
     "config",
-    "src/**/*.stories.ts",
-    "src/**/*.e2e-test.ts"
+    "src/**/*.stories*",
+    "src/**/*.e2e-test*",
   ],
   "exclude": [
     "node_modules"
