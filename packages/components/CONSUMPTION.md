@@ -4,7 +4,7 @@ This consumption guide for the Global Library, `@momentum-design/components` pro
 
 ## Installation
 
-To install the library for use, consume below package by adding the NPM dependency to `package.json` with the version number required:
+To install the library, add the following NPM dependency to your `package.json` with the required version number:
 
 * [**@momentum-design/components**](https://github.com/momentum-design/momentum-design/tree/main/packages/components) - Components Package. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/components)
 
@@ -21,31 +21,46 @@ yarn add @momentum-design/components
 
 ## Compatibility
 
-To ensure compatibility with lit 3 and Webpack 4, follow these recommendations:
+* Webpack 4 (refer to [**Best Practices**](https://lit.dev/docs/releases/upgrade/#using-lit-3-with-webpack-4))
 
-Please refer [**Best Practices**](https://lit.dev/docs/releases/upgrade/#using-lit-3-with-webpack-4)
+* TypeScript >= 4.7
+
+## PreRequisites 
+
+```bash
+import '@momentum-design/fonts/dist/css/fonts.css';
+import '@momentum-design/tokens/dist/css/theme/webex/dark-stable.css';
+import '@momentum-design/tokens/dist/css/theme/webex/light-stable.css';
+``` 
 
 ## Usage 
 
-To use the components in a web application:
+Note: 
+All code examples below can work with TypeScript versions lower than 4.7 by adding dist into the import path.
+For detailed information about each component, refer to the [**Components Docs**](https://momentum-design.github.io/momentum-design/en/components/)
 
-1. Import the component in your JavaScript file. For example, import avatar component.
+### Top-level Import
 
-### Web Components
+Import the browser bundle on the top of the app:
+
+index.html
+```bash
+<script src="@momentum-design/components/browser/index.js"></script>
+<mdc-avatar></mdc-avatar>
+``` 
+
+### Component Import
+
+#### Web Components
 
 ```bash
 import '@momentum-design/components/components/avatar';
+<mdc-avatar></mdc-avatar>
 ``` 
 
-### React
+#### React
 
 ```bash
-import '@momentum-design/components/react/avatar';
+import { Avatar } '@momentum-design/components/react';
+<Avatar />
 ``` 
-
-2. Add the components to your HTML file.
-
-```bash
-<mdc-avatar src="" scale="" type=""></mdc-avatar>
-``` 
-In order to understand properties and attributes of the component in detail, Please refer [**Components Docs**](https://momentum-design.github.io/momentum-design/en/components/)
