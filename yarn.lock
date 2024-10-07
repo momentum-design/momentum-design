@@ -1677,6 +1677,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@geometricpanda/storybook-addon-badges@npm:^2.0.4":
+  version: 2.0.4
+  resolution: "@geometricpanda/storybook-addon-badges@npm:2.0.4"
+  peerDependencies:
+    "@storybook/blocks": ^8.3.0
+    "@storybook/components": ^8.3.0
+    "@storybook/core-events": ^8.3.0
+    "@storybook/manager-api": ^8.3.0
+    "@storybook/preview-api": ^8.3.0
+    "@storybook/theming": ^8.3.0
+    "@storybook/types": ^8.3.0
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 962e37dcaf7085b7e0253fe18f521e70cd76176a3bec53ab05dc09675a0029844b228b4c98797625de9589d649334517f32d49c676f271ffc2f99e026bb57d88
+  languageName: node
+  linkType: hard
+
 "@github/catalyst@npm:^1.6.0":
   version: 1.6.0
   resolution: "@github/catalyst@npm:1.6.0"
@@ -2325,6 +2347,7 @@ __metadata:
     "@axe-core/playwright": ^4.9.1
     "@custom-elements-manifest/analyzer": ^0.10.3
     "@estruyf/github-actions-reporter": ^1.9.2
+    "@geometricpanda/storybook-addon-badges": ^2.0.4
     "@lit/context": ^1.1.2
     "@lit/react": ^1.0.5
     "@momentum-design/fonts": "workspace:*"
@@ -2480,6 +2503,7 @@ __metadata:
     "@microsoft/api-documenter": ^7.25.10
     "@microsoft/api-extractor": ^7.47.5
     "@momentum-design/telemetry": "workspace:^"
+    "@tokens-studio/sd-transforms": ^0.12.2
     "@types/glob": ^8.0.0
     "@types/jest": ^29.5.12
     "@types/node": 20.14.9
@@ -3391,6 +3415,29 @@ __metadata:
   peerDependencies:
     "@testing-library/dom": ">=7.21.4"
   checksum: d76937dffcf0082fbf3bb89eb2b81a31bf5448048dd61c33928c5f10e33a58e035321d39145cefd469bb5a499c68a5b4086b22f1a44e3e7c7e817dc5f6782867
+  languageName: node
+  linkType: hard
+
+"@tokens-studio/sd-transforms@npm:^0.12.2":
+  version: 0.12.2
+  resolution: "@tokens-studio/sd-transforms@npm:0.12.2"
+  dependencies:
+    "@tokens-studio/types": ^0.2.4
+    color2k: ^2.0.1
+    colorjs.io: ^0.4.3
+    deepmerge: ^4.3.1
+    expr-eval: ^2.0.2
+    is-mergeable-object: ^1.1.1
+    postcss-calc-ast-parser: ^0.1.4
+    style-dictionary: ^3.8.0
+  checksum: b8f2ad90654eb3612358adfcb8773caa1cdf2d073232e6e548c35f41e6ab0d0255f69ee28f711c1aec132847844c4018b5a09885494a7b004411d7d6160b5276
+  languageName: node
+  linkType: hard
+
+"@tokens-studio/types@npm:^0.2.4":
+  version: 0.2.5
+  resolution: "@tokens-studio/types@npm:0.2.5"
+  checksum: 189cadb9fd4856d0f8494fab36b0e35b181834450358821ee734126f06ba6c36b41942bda30bc173dc5614333be96081c1d974e171d91007d393157021f70086
   languageName: node
   linkType: hard
 
@@ -5637,6 +5684,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"color2k@npm:^2.0.1":
+  version: 2.0.3
+  resolution: "color2k@npm:2.0.3"
+  checksum: 0748e16e43c1740045af61f44de5d181f3f7a2a9cb0d5cccdccee23d04e3f107f02aaafebb7ca3335cca1d11849c6321aba702eb2f893e993a77f65761de7661
+  languageName: node
+  linkType: hard
+
 "color@npm:^3.1.3":
   version: 3.2.1
   resolution: "color@npm:3.2.1"
@@ -5651,6 +5705,13 @@ __metadata:
   version: 1.4.0
   resolution: "colorette@npm:1.4.0"
   checksum: 01c3c16058b182a4ab4c126a65a75faa4d38a20fa7c845090b25453acec6c371bb2c5dceb0a2338511f17902b9d1a9af0cadd8509c9403894b79311032c256c3
+  languageName: node
+  linkType: hard
+
+"colorjs.io@npm:^0.4.3":
+  version: 0.4.5
+  resolution: "colorjs.io@npm:0.4.5"
+  checksum: 6e802f02aad45471ad804b2f4bba0cb5521366cb09837fbd1a2350e8bb35af0376dcfd3f951f4419de5d9b9dee7c7c228533d0aa418fe561f877ba26469a62f1
   languageName: node
   linkType: hard
 
@@ -6223,7 +6284,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deepmerge@npm:^4.2.2":
+"deepmerge@npm:^4.2.2, deepmerge@npm:^4.3.1":
   version: 4.3.1
   resolution: "deepmerge@npm:4.3.1"
   checksum: 2024c6a980a1b7128084170c4cf56b0fd58a63f2da1660dcfe977415f27b17dbe5888668b59d0b063753f3220719d5e400b7f113609489c90160bb9a5518d052
@@ -7649,6 +7710,13 @@ __metadata:
   version: 3.1.1
   resolution: "exponential-backoff@npm:3.1.1"
   checksum: 3d21519a4f8207c99f7457287291316306255a328770d320b401114ec8481986e4e467e854cb9914dd965e0a1ca810a23ccb559c642c88f4c7f55c55778a9b48
+  languageName: node
+  linkType: hard
+
+"expr-eval@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "expr-eval@npm:2.0.2"
+  checksum: 01862f09b50b17b45a6268b1153280afede99e1b51752a323661f7f4010eaed34cd6c682bf439b7f8a92df6aa82f326f0ce0aa20964d175feee97377fe53921d
   languageName: node
   linkType: hard
 
@@ -9389,6 +9457,13 @@ __metadata:
   version: 1.0.1
   resolution: "is-lambda@npm:1.0.1"
   checksum: 93a32f01940220532e5948538699ad610d5924ac86093fcee83022252b363eb0cc99ba53ab084a04e4fb62bf7b5731f55496257a4c38adf87af9c4d352c71c35
+  languageName: node
+  linkType: hard
+
+"is-mergeable-object@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "is-mergeable-object@npm:1.1.1"
+  checksum: 19a29bc6184f8fcb0b8e868715ebd97fb3872098de759988e90a56b0999473c74b16532aeaa80d6302005f515674a791274aeb50e2e93a725e658db5adf1a388
   languageName: node
   linkType: hard
 
@@ -13027,6 +13102,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"postcss-calc-ast-parser@npm:^0.1.4":
+  version: 0.1.4
+  resolution: "postcss-calc-ast-parser@npm:0.1.4"
+  dependencies:
+    postcss-value-parser: ^3.3.1
+  checksum: 00aababdcdfafae8c1d58196b59fc6e0d0f624324e26b7a451614d3856f2e95bd16ef874ce9feafd8c3bb530b3ca0d23489ca20116afa95e4a57dd1ce6875a8c
+  languageName: node
+  linkType: hard
+
 "postcss-load-config@npm:^3.1.4":
   version: 3.1.4
   resolution: "postcss-load-config@npm:3.1.4"
@@ -13052,6 +13136,13 @@ __metadata:
     cssesc: ^3.0.0
     util-deprecate: ^1.0.2
   checksum: ce9440fc42a5419d103f4c7c1847cb75488f3ac9cbe81093b408ee9701193a509f664b4d10a2b4d82c694ee7495e022f8f482d254f92b7ffd9ed9dea696c6f84
+  languageName: node
+  linkType: hard
+
+"postcss-value-parser@npm:^3.3.1":
+  version: 3.3.1
+  resolution: "postcss-value-parser@npm:3.3.1"
+  checksum: 62cd26e1cdbcf2dcc6bcedf3d9b409c9027bc57a367ae20d31dd99da4e206f730689471fd70a2abe866332af83f54dc1fa444c589e2381bf7f8054c46209ce16
   languageName: node
   linkType: hard
 
@@ -14740,7 +14831,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"style-dictionary@npm:^3.7.1":
+"style-dictionary@npm:^3.7.1, style-dictionary@npm:^3.8.0":
   version: 3.9.2
   resolution: "style-dictionary@npm:3.9.2"
   dependencies:

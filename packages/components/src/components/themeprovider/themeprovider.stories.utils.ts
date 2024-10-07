@@ -11,7 +11,10 @@ class SubComponentThemeProvider extends Component {
   private themeProviderContext = providerUtils.consume({ host: this, context: ThemeProvider.Context });
 
   override render() {
-    return html` <p>${this.themeProviderContext.value?.theme}</p> `;
+    return html`
+      <p>Lit Component consuming ThemeProvider Context:</p>
+      <p style="border: 1px solid">${this.themeProviderContext.value?.themeclass}</p>
+    `;
   }
 }
 

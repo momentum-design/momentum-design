@@ -4,6 +4,7 @@ const SD_TRANSFORMS = {
   ATTRIBUTE_CTI: 'attribute/cti',
   NAME_CTI_KABAB: 'name/cti/kebab',
   NAME_CTI_CAMEL: 'name/cti/camel',
+  RESOLVE_MATH: 'ts/resolveMath',
 };
 
 const LOCAL_TRANSFORMS = {
@@ -29,6 +30,7 @@ const SD_FORMATS = {
       'ATTRIBUTE_CTI',
       'NAME_CTI_KABAB',
       'MD_ELEVATION',
+      'RESOLVE_MATH',
     ] as Array<Transform>,
   },
   SCSS_VARIABLES: {
@@ -41,6 +43,7 @@ const SD_FORMATS = {
       'ATTRIBUTE_CTI',
       'NAME_CTI_KABAB',
       'MD_ELEVATION',
+      'RESOLVE_MATH',
     ] as Array<Transform>,
   },
   WEB_JSON: {
@@ -53,6 +56,7 @@ const SD_FORMATS = {
       'ATTRIBUTE_CTI',
       'NAME_CTI_KABAB',
       'MD_ELEVATION',
+      'RESOLVE_MATH',
     ]as Array<Transform>,
   },
   ANDROID_RESOURCES: {
@@ -65,6 +69,7 @@ const SD_FORMATS = {
       'ATTRIBUTE_CTI',
       'NAME_CTI_KABAB',
       'MD_ELEVATION',
+      'RESOLVE_MATH',
     ] as Array<Transform>,
   },
   SWIFT_CLASS: {
@@ -77,6 +82,7 @@ const SD_FORMATS = {
       'ATTRIBUTE_CTI',
       'NAME_CTI_CAMEL',
       'MD_ELEVATION',
+      'RESOLVE_MATH',
     ] as Array<Transform>,
   },
 };
@@ -92,6 +98,7 @@ const LOCAL_FORMATS = {
       'ATTRIBUTE_CTI',
       'NAME_CTI_KABAB',
       'MD_ELEVATION',
+      'RESOLVE_MATH',
     ] as Array<Transform>,
   },
   IOS_WEBEX: {
