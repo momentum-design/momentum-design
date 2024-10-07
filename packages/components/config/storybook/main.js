@@ -1,10 +1,11 @@
 const config = {
-  stories: ['../../src/**/*.stories.@(js|jsx|ts|tsx)'],
+  stories: ['../../src/*.mdx', '../../src/**/*.stories.@(js|jsx|ts|tsx|mdx)'],
   addons: [
     '@storybook/addon-controls',
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-a11y',
+    '@storybook/addon-docs',
     '@geometricpanda/storybook-addon-badges',
   ],
   framework: {
