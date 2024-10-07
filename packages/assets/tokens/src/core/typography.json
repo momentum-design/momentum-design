@@ -2,7 +2,7 @@
   "font": {
     "lineheight": {
       "base": {
-        "value": "16",
+        "value": "16px",
         "type": "lineHeights"
       },
       "body": {
@@ -70,7 +70,7 @@
     },
     "size": {
       "base": {
-        "value": "16",
+        "value": "16px",
         "type": "fontSizes"
       },
       "body": {
