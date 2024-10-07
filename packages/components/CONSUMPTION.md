@@ -33,6 +33,8 @@ import '@momentum-design/tokens/dist/css/theme/webex/dark-stable.css';
 import '@momentum-design/tokens/dist/css/theme/webex/light-stable.css';
 ``` 
 
+* Your build config needs to be able to have file loaders for CSS and WOFF.
+
 ## Usage 
 
 Note: 
