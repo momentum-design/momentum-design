@@ -23,7 +23,7 @@ yarn add @momentum-design/components
 
 * Webpack 4 (refer to [**Best Practices**](https://lit.dev/docs/releases/upgrade/#using-lit-3-with-webpack-4))
 
-* TypeScript >= 4.7
+* TypeScript > 4.7
 
 ## PreRequisites 
 
