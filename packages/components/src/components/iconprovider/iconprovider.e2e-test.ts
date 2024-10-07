@@ -75,7 +75,7 @@ test.describe.parallel('mdc-IconProvider', () => {
     test('should fallback to default values when invalid attributes are passed', async ({ componentsPage }) => {
       await setup({
         componentsPage,
-        url: url,
+        url,
         fileExtension: 'exe',
         lengthUnit: 'mm',
         size: 9999,
@@ -83,7 +83,7 @@ test.describe.parallel('mdc-IconProvider', () => {
 
       const iconprovider = componentsPage.page.locator('mdc-iconprovider#local');
 
-      await iconprovider.waitFor();  
+      await iconprovider.waitFor();
 
       await expect(iconprovider).toHaveAttribute('file-extension', DEFAULTS.FILE_EXTENSION);
       await expect(iconprovider).toHaveAttribute('length-unit', DEFAULTS.LENGTH_UNIT);
@@ -98,7 +98,7 @@ test.describe.parallel('mdc-IconProvider', () => {
     test('should only accept allowed file extensions and length units', async ({ componentsPage }) => {
       const validSetup = {
         componentsPage,
-        url: url,
+        url,
         fileExtension: 'svg',
         lengthUnit: 'rem',
       };

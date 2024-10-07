@@ -59,8 +59,7 @@ class IconProvider extends Provider<IconProviderContext> {
     // only update fileExtension on context if its an allowed fileExtension
     if (this.fileExtension && ALLOWED_FILE_EXTENSIONS.includes(this.fileExtension)) {
       this.context.value.fileExtension = this.fileExtension;
-    }
-    else {
+    } else {
     // Ensure both fileExtension and context are updated to the default if its not an allowed fileExtension
       this.fileExtension = DEFAULTS.FILE_EXTENSION;
       this.context.value.fileExtension = DEFAULTS.FILE_EXTENSION;
@@ -70,8 +69,7 @@ class IconProvider extends Provider<IconProviderContext> {
 
     if (this.lengthUnit && ALLOWED_LENGTH_UNITS.includes(this.lengthUnit)) {
       this.context.value.lengthUnit = this.lengthUnit;
-    }
-    else {
+    } else {
     // Ensure both lengthUnit and context are updated to the default if its not an allowed lengthUnit
       this.lengthUnit = DEFAULTS.LENGTH_UNIT;
       this.context.value.lengthUnit = DEFAULTS.LENGTH_UNIT;
