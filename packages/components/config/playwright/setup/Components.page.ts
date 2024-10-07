@@ -1,9 +1,8 @@
 /* eslint-disable no-redeclare */
 import { Page, expect, Locator, TestInfo, test } from '@playwright/test';
-import type { ThemeName } from '../../../src/components/themeprovider/themeprovider.types';
-import utils from '../../../src/components/themeprovider/themeprovider.utils';
 import Accessibility from './utils/accessibility';
 import VisualRegression from './utils/visual-regression';
+import type { ThemeClass } from './types';
 
 const componentsDevPageTitle = 'Momentum Components Dev Page';
 const htmlRootElementSelector = '#root';
@@ -40,15 +39,14 @@ class ComponentsPage {
    * Sets the theme on the global theme provider
    * for e2e tests. This allows testing
    * with specified themes.
-   * @param theme - themeName to be used for setting theme on themeprovider
+   * @param themeClass - themeclass to be used for setting theme on themeprovider
    */
-  async setGlobalTheme(theme: ThemeName) {
-    const themeClass = utils.getFullQualifiedTheme(theme);
+  async setGlobalTheme(themeClass: ThemeClass) {
     await this.page.evaluate(
       (args) => {
         const themeProvider = window.document.querySelector('body mdc-themeprovider');
         if (themeProvider) {
-          themeProvider.setAttribute('theme', args.themeClass);
+          themeProvider.setAttribute('themeclass', args.themeClass);
         }
       },
       { themeClass },
@@ -84,7 +82,7 @@ class ComponentsPage {
    * - Await till page has been loaded
    */
   async navigate(url?: string) {
-    await this.page.goto(url || '');
+    await this.page.goto(url ?? '');
     await expect(this.page).toHaveTitle(componentsDevPageTitle);
   }
 

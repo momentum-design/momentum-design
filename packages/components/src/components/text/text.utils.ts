@@ -35,7 +35,7 @@ const getRole = (type?: FontType) => {
 
 /**
  * Get corresponding aria-level to type
- * @param type type to find corresponding level for
+ * @param type - type to find corresponding level for
  * @returns aria-level (has to be a number)
  */
 const getAriaLevel = (type?: FontType) => {

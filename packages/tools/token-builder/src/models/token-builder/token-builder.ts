@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import StyleDictionary from 'style-dictionary';
+import { registerTransforms } from '@tokens-studio/sd-transforms';
 
 import {
   Logger,
@@ -57,6 +58,10 @@ class TokenBuilder {
       })
       .then(() => {
         const configObj = this.config.config as ExternalConfig;
+        registerTransforms(StyleDictionary, {
+          expand: { composition: true, typography: true, border: true, shadow: true },
+          excludeParentKeys: false,
+        });
 
         configObj.formats.forEach((format) => {
           if (CONSTANTS.FORMATS[format]?.TRANSFORMS) {
