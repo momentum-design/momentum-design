@@ -12,6 +12,9 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-text',
   render,
+  parameters: {
+    badges: ['wip'],
+  },
   argTypes: {
     type: {
       control: 'radio',

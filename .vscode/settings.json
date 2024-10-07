@@ -32,4 +32,10 @@
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "cSpell.words": [
+    "autodocs",
+    "iconprovider",
+    "initialise",
+    "themeprovider"
+  ],
 }

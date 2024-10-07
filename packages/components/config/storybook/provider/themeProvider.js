@@ -18,14 +18,14 @@ export const withThemeProvider = (story, context) => {
   const currentTheme = context.globals.theme;
   const themeObject = themes.find((theme) => theme.displayName === currentTheme);
 
+  // this body override is necessary cause the themeprovider is not available on the body
   const body = document.querySelector('body.sb-show-main');
   clearStyles(body);
   applyStyle(body, themeObject.className);
 
   return html`<mdc-themeprovider
     id="theme-provider"
-    theme="${themeObject.name}"
-    themes="mds-theme-stable-darkWebex mds-theme-stable-lightWebex"
+    themeclass="${themeObject.themeclass}"
   >
     ${story()}
   </mdc-themeprovider>`;

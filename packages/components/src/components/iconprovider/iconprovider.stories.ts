@@ -4,7 +4,11 @@ import './iconprovider.stories.utils';
 import { html } from 'lit';
 
 const render = (args: Args) => html`
-  <mdc-iconprovider url="${args.url}" file-extension="${args.fileExtension}" length-unit="${args.lengthUnit}">
+  <mdc-iconprovider 
+    url=${args.url}
+    file-extension=${args.fileExtension}
+    length-unit=${args.lengthUnit}
+    size=${args.size}>
     <mdc-subcomponent-icon></mdc-subcomponent-icon>
   </mdc-iconprovider>
 `;
@@ -14,6 +18,9 @@ const meta: Meta = {
   tags: ['autodocs'],
   component: 'mdc-iconprovider',
   render,
+  parameters: {
+    badges: ['wip'],
+  },
   argTypes: {},
 };
 
@@ -24,5 +31,6 @@ export const Primary: StoryObj = {
     url: '/test',
     fileExtension: 'svg',
     lengthUnit: 'em',
+    size: 1,
   },
 };
