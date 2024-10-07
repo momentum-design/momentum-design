@@ -9,6 +9,7 @@ type SetupOptions = {
   lengthUnit?: string;
   size?: number;
 };
+
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
@@ -26,43 +27,91 @@ const setup = async (args: SetupOptions) => {
   });
 };
 
-test('mdc-iconprovider', async ({ componentsPage }) => {
+test.describe.parallel('mdc-IconProvider', () => {
   const url = '/dist/icons/svg';
-  await setup({ componentsPage, url });
-  const iconprovider = componentsPage.page.locator('mdc-iconprovider#local');
 
-  // initial check for the iconprovider be visible on the screen:
-  await iconprovider.waitFor();
+  test.describe('accessibility', () => {
+    test('should pass accessibility checks for default state', async ({ componentsPage }) => {
+      await setup({ componentsPage, url });
+      const iconprovider = componentsPage.page.locator('mdc-iconprovider#local');
 
-  /**
-   * ACCESSIBILITY
-   */
-  await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('icon-provider-default');
+      await iconprovider.waitFor();
+
+      await componentsPage.accessibility.checkForA11yViolations('icon-provider-default');
+    });
   });
 
-  /**
-   * VISUAL REGRESSION
-   */
-  await test.step('visual-regression', async () => {
-    await test.step('matches screenshot of element with default values', async () => {
+  test.describe('visual regression', () => {
+    test('should match screenshot with default values', async ({ componentsPage }) => {
+      await setup({ componentsPage, url });
+      const iconprovider = componentsPage.page.locator('mdc-iconprovider#local');
+
+      await iconprovider.waitFor();
+
       await componentsPage.visualRegression.takeScreenshot('mdc-iconprovider', {
         element: iconprovider,
       });
     });
   });
 
-  /**
-   * ATTRIBUTES
-   */
-  await test.step('attributes', async () => {
-    await test.step('attribute X should be present on component by default', async () => {
+  test.describe('defaults', () => {
+    test('should have default attributes when no attributes are passed', async ({ componentsPage }) => {
+      await setup({ componentsPage, url });
+      const iconprovider = componentsPage.page.locator('mdc-iconprovider#local');
+
+      await iconprovider.waitFor();
+
       await expect(iconprovider).toHaveAttribute('url', url);
       await expect(iconprovider).toHaveAttribute('file-extension', DEFAULTS.FILE_EXTENSION);
       await expect(iconprovider).toHaveAttribute('length-unit', DEFAULTS.LENGTH_UNIT);
       await expect(iconprovider).toHaveAttribute(
         'size',
         DEFAULTS.LENGTH_UNIT_SIZE[DEFAULTS.LENGTH_UNIT].toString(),
+      );
+    });
+  });
+
+  test.describe('edge cases', () => {
+    test('should fallback to default values when invalid attributes are passed', async ({ componentsPage }) => {
+      await setup({
+        componentsPage,
+        url: url,
+        fileExtension: 'exe',
+        lengthUnit: 'mm',
+        size: 9999,
+      });
+
+      const iconprovider = componentsPage.page.locator('mdc-iconprovider#local');
+
+      await iconprovider.waitFor();  
+
+      await expect(iconprovider).toHaveAttribute('file-extension', DEFAULTS.FILE_EXTENSION);
+      await expect(iconprovider).toHaveAttribute('length-unit', DEFAULTS.LENGTH_UNIT);
+      await expect(iconprovider).toHaveAttribute(
+        'size',
+        DEFAULTS.LENGTH_UNIT_SIZE[DEFAULTS.LENGTH_UNIT].toString(),
+      );
+    });
+  });
+
+  test.describe('allowed list testing', () => {
+    test('should only accept allowed file extensions and length units', async ({ componentsPage }) => {
+      const validSetup = {
+        componentsPage,
+        url: url,
+        fileExtension: 'svg',
+        lengthUnit: 'rem',
+      };
+      await setup(validSetup);
+      const iconprovider = componentsPage.page.locator('mdc-iconprovider#local');
+
+      await iconprovider.waitFor();
+
+      await expect(iconprovider).toHaveAttribute('file-extension', 'svg');
+      await expect(iconprovider).toHaveAttribute('length-unit', 'rem');
+      await expect(iconprovider).toHaveAttribute(
+        'size',
+        DEFAULTS.LENGTH_UNIT_SIZE[validSetup.lengthUnit].toString(),
       );
     });
   });

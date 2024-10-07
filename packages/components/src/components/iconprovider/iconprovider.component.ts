@@ -60,13 +60,24 @@ class IconProvider extends Provider<IconProviderContext> {
     if (this.fileExtension && ALLOWED_FILE_EXTENSIONS.includes(this.fileExtension)) {
       this.context.value.fileExtension = this.fileExtension;
     }
+    else {
+    // Ensure both fileExtension and context are updated to the default if its not an allowed fileExtension
+      this.fileExtension = DEFAULTS.FILE_EXTENSION;
+      this.context.value.fileExtension = DEFAULTS.FILE_EXTENSION;
+    }
     this.context.value.url = this.url;
+    this.context.value.size = this.size;
 
     if (this.lengthUnit && ALLOWED_LENGTH_UNITS.includes(this.lengthUnit)) {
       this.context.value.lengthUnit = this.lengthUnit;
     }
-
-    this.context.value.size = this.size;
+    else {
+    // Ensure both lengthUnit and context are updated to the default if its not an allowed lengthUnit
+      this.lengthUnit = DEFAULTS.LENGTH_UNIT;
+      this.context.value.lengthUnit = DEFAULTS.LENGTH_UNIT;
+      this.context.value.size = DEFAULTS.LENGTH_UNIT_SIZE[DEFAULTS.LENGTH_UNIT];
+      this.size = DEFAULTS.LENGTH_UNIT_SIZE[DEFAULTS.LENGTH_UNIT];
+    }
   }
 
   protected updateContext(): void {
