@@ -8,6 +8,7 @@ module.exports = {
     'airbnb-base',
     'plugin:json/recommended',
     'plugin:astro/recommended',
+    'plugin:mdx/recommended',
   ],
   globals: {
     BufferEncoding: 'readonly',
@@ -36,11 +37,6 @@ module.exports = {
         'prettier/prettier': 'off',
         'no-tabs': 'off',
       },
-    },
-    {
-      // Define the configuration for `.mdx` file.
-      files: '*.mdx',
-      extends: 'plugin:mdx/recommended',
     },
   ],
   parser: '@typescript-eslint/parser',
