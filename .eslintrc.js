@@ -42,6 +42,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
+    extraFileExtensions: ['.mdx'],
   },
   plugins: [
     '@typescript-eslint',
