@@ -37,6 +37,14 @@ module.exports = {
         'no-tabs': 'off',
       },
     },
+    {
+      // Define the configuration for `.mdx` file.
+      files: ['*.mdx'],
+      parser: 'eslint-mdx',
+      parserOptions: {
+        extraFileExtensions: ['.mdx'],
+      },
+    },
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
