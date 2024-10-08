@@ -50,6 +50,7 @@
     "clean:react": "rimraf ./src/react",
     "clean:storybook": "rimraf ./storybook-static",
     "clean:plop": "rimraf ./config/plop/dist",
+    "clean:e2e": "rimraf ./config/playwright/public/dist",
     "copy:storybook": "concurrently --names 'copy:icons,copy:fonts' -c 'cyan.bold,blue.bold' 'yarn copy:icons storybook' 'yarn copy:fonts storybook'",
     "copy:playwright": "concurrently --names 'copy:tokens,copy:icons,copy:fonts' -c 'magenta.bold,cyan.bold,blue.bold' 'yarn copy:tokens' 'yarn copy:icons playwright' 'yarn copy:fonts playwright'",
     "copy:tokens": "node scripts/copyTokens.js",
@@ -70,7 +71,7 @@
     "test:e2e:webkit": "yarn test:e2e --project='webkit'",
     "test:e2e:edge": "yarn test:e2e --project='msedge'",
     "test:e2e:ui": "yarn test:e2e --ui",
-    "test:e2e:setup": "yarn copy:playwright && yarn build:browser:e2e",
+    "test:e2e:setup": "yarn clean:e2e && yarn copy:playwright && yarn build:browser:e2e",
     "test:e2e:report": "yarn playwright show-report"
   },
   "dependencies": {
