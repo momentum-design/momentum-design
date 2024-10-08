@@ -39,11 +39,8 @@ module.exports = {
     },
     {
       // Define the configuration for `.mdx` file.
-      files: ['*.mdx'],
-      parser: 'eslint-mdx',
-      parserOptions: {
-        extraFileExtensions: ['.mdx'],
-      },
+      files: '*.mdx',
+      extends: 'plugin:mdx/recommended',
     },
   ],
   parser: '@typescript-eslint/parser',
