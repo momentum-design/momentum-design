@@ -5,7 +5,6 @@ const config = {
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-a11y',
-    '@storybook/addon-docs',
     '@geometricpanda/storybook-addon-badges',
   ],
   framework: {
