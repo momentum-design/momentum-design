@@ -8,7 +8,6 @@ module.exports = {
     'airbnb-base',
     'plugin:json/recommended',
     'plugin:astro/recommended',
-    'plugin:mdx/recommended',
   ],
   globals: {
     BufferEncoding: 'readonly',
