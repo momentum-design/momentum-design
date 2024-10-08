@@ -73,8 +73,6 @@ class IconProvider extends Provider<IconProviderContext> {
     // Ensure both lengthUnit and context are updated to the default if its not an allowed lengthUnit
       this.lengthUnit = DEFAULTS.LENGTH_UNIT;
       this.context.value.lengthUnit = DEFAULTS.LENGTH_UNIT;
-      this.context.value.size = DEFAULTS.LENGTH_UNIT_SIZE[DEFAULTS.LENGTH_UNIT];
-      this.size = DEFAULTS.LENGTH_UNIT_SIZE[DEFAULTS.LENGTH_UNIT];
     }
   }
 
