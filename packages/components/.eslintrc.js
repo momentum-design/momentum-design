@@ -12,5 +12,5 @@ module.exports = {
     'import/no-unresolved': ['error', { ignore: ['dist'] }],
     'json/*': 'off',
   },
-  ignorePatterns: [...config.ignorePatterns, '.eslintrc.js', 'prettier.config.js', '*.png', '*.css', 'tsdoc.json'],
+  ignorePatterns: [...config.ignorePatterns, '.eslintrc.js', 'prettier.config.js', '*.png', '*.css', 'tsdoc.json', '*.mdx'],
 };
