@@ -46,7 +46,7 @@
     },
     "family": {
       "primary": {
-        "value": "Inter",
+        "value": "Momentum, Inter, Arial, Helvetica Neue, Helvetica, sans-serif",
         "type": "fontFamilies"
       }
     },
