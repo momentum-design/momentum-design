@@ -1,4 +1,4 @@
-import{R as v,k as i}from"./lit-element-CPYlYYac.js";import{e as p,i as u,t as x}from"./directive-Ctav8iJK.js";import{T as g}from"./index-9ZRMM_85.js";import{C as y}from"./index-CFYjfE6c.js";import{p as b}from"./index-BCUDnuze.js";import"./state-CxB-wGrk.js";import"./create-context-89xeped_.js";/**
+import{R as v,k as i}from"./lit-element-CPYlYYac.js";import{e as p,i as u,t as x}from"./directive-Ctav8iJK.js";import{T as g}from"./index-Coh5X-aW.js";import{C as y}from"./index-CFYjfE6c.js";import{p as b}from"./index-BCUDnuze.js";import"./state-CxB-wGrk.js";import"./create-context-89xeped_.js";/**
  * @license
  * Copyright 2018 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
@@ -32,10 +32,10 @@ import{R as v,k as i}from"./lit-element-CPYlYYac.js";import{e as p,i as u,t as x
       <div class="colorBox" style="background: var(--mds-color-theme-text-team-slate-normal);"></div>
     </div>
   </mdc-themeprovider>
-`,$={title:"Work In Progress/themeprovider",tags:["autodocs"],component:"mdc-themeprovider",render:S,parameters:{badges:["wip"]},argTypes:{themeclass:{options:h,control:{type:"radio"}},...T(["Context","default","--mdc-themeprovider-font-family","--mdc-themeprovider-color-default"]),...B,...C}},r={args:{themeclass:h[0],class:"custom-classname",style:"margin-top: 20px;"}};var n,m,d;r.parameters={...r.parameters,docs:{...(n=r.parameters)==null?void 0:n.docs,source:{originalSource:`{
+`,M={title:"Components/themeprovider",tags:["autodocs"],component:"mdc-themeprovider",render:S,parameters:{badges:["stable"]},argTypes:{themeclass:{options:h,control:{type:"radio"}},...T(["Context","default","--mdc-themeprovider-font-family","--mdc-themeprovider-color-default"]),...B,...C}},r={args:{themeclass:h[0],class:"custom-classname",style:"margin-top: 20px;"}};var n,m,d;r.parameters={...r.parameters,docs:{...(n=r.parameters)==null?void 0:n.docs,source:{originalSource:`{
   args: {
     themeclass: THEMES[0],
     class: 'custom-classname',
     style: 'margin-top: 20px;'
   }
-}`,...(d=(m=r.parameters)==null?void 0:m.docs)==null?void 0:d.source}}};const M=["Primary"];export{r as Primary,M as __namedExportsOrder,$ as default};
+}`,...(d=(m=r.parameters)==null?void 0:m.docs)==null?void 0:d.source}}};const W=["Primary"];export{r as Primary,W as __namedExportsOrder,M as default};
