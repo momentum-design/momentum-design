@@ -47,12 +47,12 @@ const setup = async (args: SetupOptions) => {
   }
 };
 
-const updateAttributes = async (componentsPage: ComponentsPage, type, attributes: Record<string, string>) => {
+const updateAttributes = async (componentsPage: ComponentsPage, type: string, attributes: Record<string, string>) => {
   await componentsPage.page.evaluate(({ type, attrs }) => {
     const element = document.querySelector('mdc-iconprovider#local');
-    let nestedElement;
+    let nestedElement: Element;
     if (type === 'nested') {
-      nestedElement = document.querySelector('mdc-iconprovider#nested');
+      nestedElement = document.querySelector('mdc-iconprovider#nested') as Element;
     }
     if (element) {
       Object.keys(attrs).forEach((key) => {
@@ -65,12 +65,12 @@ const updateAttributes = async (componentsPage: ComponentsPage, type, attributes
   }, { type, attrs: attributes });
 };
 
-const testToRun = async ({ componentsPage, type }) => {
+const testToRun = async (componentsPage: ComponentsPage, type: string) => {
   const url = '/dist/icons/svg';
 
   await setup({ componentsPage, url, type });
   const iconprovider = componentsPage.page.locator('mdc-iconprovider#local');
-  let nestedIconProvider;
+  let nestedIconProvider: any;
   if (type === 'nested') {
     nestedIconProvider = componentsPage.page.locator('mdc-iconprovider#nested');
 
@@ -166,10 +166,10 @@ const testToRun = async ({ componentsPage, type }) => {
 
 test.describe.parallel('mdc-IconProvider', () => {
   test('standalone', async ({ componentsPage }) => {
-    await testToRun({ componentsPage, type: 'standalone' });
+    await testToRun(componentsPage, 'standalone');
   });
 
   test('nested', async ({ componentsPage }) => {
-    await testToRun({ componentsPage, type: 'nested' });
+    await testToRun(componentsPage, 'nested');
   });
 });
