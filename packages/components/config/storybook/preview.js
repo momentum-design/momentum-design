@@ -59,8 +59,7 @@ const preview = {
           title: 'This Component is Stable',
           desc: 'Ready for use.',
           links: [
-            // TODO: update once available
-            { title: 'Consumption guide', href: 'https://github.com/momentum-design/momentum-design' },
+            { title: 'Consumption guide', href: 'https://momentum-design.github.io/momentum-design/en/components/' },
             { title: 'Release history', href: 'https://github.com/momentum-design/momentum-design/releases' },
             {
               title: 'Leave feedback',
@@ -99,7 +98,7 @@ const preview = {
     },
     options: {
       storySort: {
-        order: ['Components', 'Work In Progress'],
+        order: ['Consumption', 'Components', 'Work In Progress'],
       },
     },
   },
