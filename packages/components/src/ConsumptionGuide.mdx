@@ -1,6 +1,6 @@
-# Consumption Guide for Global web Library
+# Consumption Guide
 
-This consumption guide for the Global Library, `@momentum-design/components` provides detailed instructions on how to effectively access and utilize these components in your web applications, specifically focusing on Web Components and React.
+This consumption guide for the Global Web Library, `@momentum-design/components` provides detailed instructions on how to effectively access and utilize these components in your web applications, specifically focusing on Web Components and React.
 
 ## Installation
 
@@ -8,14 +8,14 @@ To install the library, add the following NPM dependency to your `package.json` 
 
 * [**@momentum-design/components**](https://github.com/momentum-design/momentum-design/tree/main/packages/components) - Components Package. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/components)
 
-In order to execute, run the following command:
+In order to install, run the following command:
 
-```bash
+```javascript
 npm install @momentum-design/components
 ``` 
 or
 
-```bash
+```javascript
 yarn add @momentum-design/components
 ``` 
 
@@ -23,7 +23,7 @@ yarn add @momentum-design/components
 
 * Webpack 4 (refer to [**Best Practices**](https://lit.dev/docs/releases/upgrade/#using-lit-3-with-webpack-4))
 
-* TypeScript > 4.7
+* TypeScript > 4.7 (refer to [**Best Practices**](https://stackoverflow.com/a/70020984))
 
 ## PreRequisites 
 
@@ -33,21 +33,23 @@ import '@momentum-design/tokens/dist/css/theme/webex/dark-stable.css';
 import '@momentum-design/tokens/dist/css/theme/webex/light-stable.css';
 ``` 
 
-* Your build config needs to be able to have file loaders for CSS and WOFF.
+* Your build config needs to be able to have file loaders for CSS and WOFF2.
 
 ## Usage 
 
 Note: 
 All code examples below can work with TypeScript versions lower than 4.7 by adding dist into the import path.
-For detailed information about each component, refer to the [**Components Docs**](https://momentum-design.github.io/momentum-design/en/components/)
+For detailed information about each component, refer to the [**indvidual**](https://momentum-design.github.io/momentum-design/en/components/)
 
 ### Top-level Import
 
 Import the browser bundle on the top of the app:
 
-index.html
 ```bash
+// index.html
+
 <script src="@momentum-design/components/browser/index.js"></script>
+
 <mdc-avatar></mdc-avatar>
 ``` 
 
@@ -63,6 +65,6 @@ import '@momentum-design/components/components/avatar';
 #### React
 
 ```bash
-import { Avatar } '@momentum-design/components/react';
+import { Avatar } from '@momentum-design/components/react';
 <Avatar />
 ``` 
