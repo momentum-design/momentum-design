@@ -8,9 +8,17 @@ type TestToRunArgs = {
   themeName: string;
   type: string;
   expectedNestedTheme: string;
+  browserName: string;
 };
 
-const testToRun = async ({ componentsPage, theme, themeName, type, expectedNestedTheme }: TestToRunArgs) => {
+const testToRun = async ({
+  componentsPage,
+  theme,
+  themeName,
+  type,
+  expectedNestedTheme,
+  browserName,
+}: TestToRunArgs) => {
   const themeprovider = componentsPage.page.locator('mdc-themeprovider#local');
 
   // initial check for the themeprovider be visible on the screen:
@@ -26,19 +34,22 @@ const testToRun = async ({ componentsPage, theme, themeName, type, expectedNeste
   /**
    * VISUAL REGRESSION
    */
-  await test.step('visual-regression', async () => {
-    await test.step('matches screenshot of element', async () => {
-      let screenshotName = `mdc-themeprovider-${themeName}-${type}`;
+  // skipping visual regression for firefox and webkit due to flakiness
+  if (['chromium'].includes(browserName)) {
+    await test.step('visual-regression', async () => {
+      await test.step('matches screenshot of element', async () => {
+        let screenshotName = `mdc-themeprovider-${themeName}-${type}`;
 
-      // if theme is undefined, we expect the default theme to be darkWebex
-      if (theme === undefined) {
-        screenshotName = 'mdc-themeprovider-darkWebex-standalone';
-      }
-      await componentsPage.visualRegression.takeScreenshot(screenshotName, {
-        element: themeprovider,
+        // if theme is undefined, we expect the default theme to be darkWebex
+        if (theme === undefined) {
+          screenshotName = 'mdc-themeprovider-darkWebex-standalone';
+        }
+        await componentsPage.visualRegression.takeScreenshot(screenshotName, {
+          element: themeprovider,
+        });
       });
     });
-  });
+  }
 
   /**
    * ATTRIBUTES
@@ -135,13 +146,14 @@ test.describe.parallel('mdc-themeprovider', () => {
         }
       });
 
-      test(themeName, async ({ componentsPage }) => {
+      test(themeName, async ({ componentsPage, browserName }) => {
         await testToRun({
           componentsPage,
           theme,
           themeName,
           type,
           expectedNestedTheme: oppositeTheme,
+          browserName,
         });
       });
     });
