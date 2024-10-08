@@ -2,6 +2,7 @@ import { css } from 'lit';
 
 const styles = css`
   :host {
+    // todo: use type tokens once the full set with fallbacks is available
     --mdc-themeprovider-font-family: "Momentum";
     --mdc-themeprovider-color-default: var(--mds-color-theme-text-primary-normal);
 

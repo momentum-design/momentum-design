@@ -2,13 +2,20 @@
 const esbuild = require('esbuild');
 const chalk = require('chalk');
 const { join } = require('path');
-const { config, outPath } = require('./configs/browser');
+const { config } = require('./configs/browser');
 const { publicPath, port } = require('./configs/e2e');
 
 const iife = async () => {
   const ctx = await esbuild.context({
     ...config,
-    outfile: `${join(publicPath, outPath)}`,
+    entryPoints: [
+      ...config.entryPoints,
+      // build e2e-test utils for themeprovider, making sure the sub-component defined there will also
+      // be available for e2e tests
+      `${join(process.cwd(), 'src/components/themeprovider/themeprovider.e2e-test.utils.ts')}`,
+    ],
+    outfile: undefined,
+    outdir: `${join(publicPath, 'dist')}`,
   });
 
   await ctx.watch();
