@@ -6,12 +6,13 @@ Consumption can vary by package - the information below is for general consumpti
 
 Consume each individual package by adding the NPM dependency to `package.json` with the version number required:
 
+* [**@momentum-design/components**](https://github.com/momentum-design/momentum-design/tree/main/packages/components) - Web Components. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/components)
 * [**@momentum-design/animations**](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/animations) - Animation assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/animations)
+* [**@momentum-design/brand-visuals**](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/brand-visuals) - Brand Visual assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/brand-visuals)
+* [**@momentum-design/fonts**](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/fonts) - Fonts assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/fonts)
 * [**@momentum-design/icons**](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/icons) - Icon assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/icons)
 * [**@momentum-design/illustrations**](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/illustrations) - Illustration assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/illustrations)
 * [**@momentum-design/tokens**](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/tokens) - Token assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/tokens)
-* [**@momentum-design/brand-visuals**](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/brand-visuals) - Brand Visual assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/brand-visuals)
-* [**@momentum-design/fonts**](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/fonts) - Fonts assets. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/fonts)
 * [**@momentum-design/utils**](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/utils) - Common utilities. [NPMJS Package](https://www.npmjs.com/package/@momentum-design/utils)
 
 ## without NPM
