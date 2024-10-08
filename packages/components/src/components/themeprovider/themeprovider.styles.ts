@@ -1,5 +1,6 @@
 import { css } from 'lit';
 
+// todo: use type tokens once the full set with fallbacks is available
 const styles = css`
   :host {
     --mdc-themeprovider-font-family: "Momentum";

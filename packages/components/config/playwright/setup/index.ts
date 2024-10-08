@@ -25,11 +25,12 @@ export const test = base.extend<Fixtures & Options>({
   componentsPage: async ({ page, theme }, use, testInfo) => {
     const componentsPage = new ComponentsPage(page, testInfo);
 
+    // navigate to the baseURL at the beginning
+    await componentsPage.setup();
+
     if (theme) {
       await componentsPage.setGlobalTheme(theme);
     }
-    // navigate to the baseURL at the beginning
-    await componentsPage.setup();
 
     // Use the fixture value in the test:
     await use(componentsPage);

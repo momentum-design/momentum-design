@@ -41,12 +41,12 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/themeprovider',
+  title: 'Components/themeprovider',
   tags: ['autodocs'],
   component: 'mdc-themeprovider',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     themeclass: {
