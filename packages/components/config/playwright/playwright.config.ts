@@ -1,5 +1,5 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
-// import type { GitHubActionOptions } from '@estruyf/github-actions-reporter';
+import type { GitHubActionOptions } from '@estruyf/github-actions-reporter';
 import { devices } from '@playwright/test';
 
 /**
@@ -10,14 +10,14 @@ import { devices } from '@playwright/test';
 
 const url = 'http://localhost:4000';
 
-// const githubActionsReporterOptions: GitHubActionOptions = {
-//   title: 'Playwright E2E Test results',
-//   useDetails: true,
-//   showAnnotations: true,
-//   showTags: true,
-//   showError: true,
-//   includeResults: ['fail', 'flaky'],
-// };
+const githubActionsReporterOptions: GitHubActionOptions = {
+  title: 'Playwright E2E Test results',
+  useDetails: true,
+  showAnnotations: true,
+  showTags: true,
+  showError: true,
+  includeResults: ['fail', 'flaky'],
+};
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -41,10 +41,9 @@ const config: PlaywrightTestConfig = {
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 4 : undefined,
+  workers: process.env.CI ? '50%' : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  // process.env.CI ? [['html'], ['@estruyf/github-actions-reporter', githubActionsReporterOptions]] :
-  reporter: 'html',
+  reporter: process.env.CI ? [['html'], ['@estruyf/github-actions-reporter', githubActionsReporterOptions]] : 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
