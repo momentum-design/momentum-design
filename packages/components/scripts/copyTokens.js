@@ -9,16 +9,21 @@ const light = require.resolve('@momentum-design/tokens/dist/css/theme/webex/ligh
 const root = process.cwd();
 const playwrightPublicDist = path.join(root, 'config', 'playwright', 'public', 'dist');
 
+const copyFileToFolder = (src, destFolder) => {
+  const dest = path.join(destFolder, path.basename(src));
 
-const copyToFolder = (src, destFolder) => {
-    const dest = path.join(destFolder, path.basename(src));
-    fs.copyFile(src, dest, (err) => {
-        if (err) throw err;
+  // Create the destination folder if it doesn't exist
+  if (!fs.existsSync(destFolder)) {
+    fs.mkdirSync(destFolder, {}, err => {
+      if (err) throw err;
     });
-}
+  }
+  
+  fs.copyFileSync(src, dest);
+};
 
-copyToFolder(typography, playwrightPublicDist);
-copyToFolder(dark, playwrightPublicDist);
-copyToFolder(light, playwrightPublicDist);
+copyFileToFolder(complete, playwrightPublicDist);
+copyFileToFolder(dark, playwrightPublicDist);
+copyFileToFolder(light, playwrightPublicDist);
 
 console.log(chalk.gray('Tokens have been copied successfully!'));
