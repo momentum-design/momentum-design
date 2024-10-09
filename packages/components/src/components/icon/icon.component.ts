@@ -24,7 +24,9 @@ import { DEFAULTS } from './icon.constants';
  * if `size = 1` and `length-unit = 'em'`, the size of the icon will be
  * `width: 1em; height: 1em`.
  *
- * For accessibility the `role` and `aria-label` of the icon can be set.
+ * For accessibility:
+ * - the `role` will always be 'img'.
+ * - `aria-label` of the icon can be set.
  *
  * @tag mdc-icon
  * @tagname mdc-icon
