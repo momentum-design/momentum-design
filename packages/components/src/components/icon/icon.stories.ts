@@ -1,10 +1,22 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
-const render = (args: Args) => html` <mdc-icon name="${args.name}" size="${args.size}"></mdc-icon> `;
+const render = (args: Args) => html`
+  <mdc-icon
+    class="${args.class}"
+    name="${args.name}"
+    size="${args.size}"
+    style="${args.style}"
+  ></mdc-icon> `;
 const renderAccessibility = (args: Args) => html`
-  <mdc-icon name="${args.name}" size="${args.size}" role="${args.role}" aria-label="${args['aria-label']}"></mdc-icon>
+  <mdc-icon
+    aria-label="${args['aria-label']}"
+    class="${args.class}"
+    name="${args.name}"
+    size="${args.size}"
+  ></mdc-icon>
 `;
 
 const meta: Meta = {
@@ -15,7 +27,10 @@ const meta: Meta = {
   parameters: {
     badges: ['wip'],
   },
-  argTypes: {},
+  argTypes: {
+    ...classArgType,
+    ...styleArgType,
+  },
 };
 
 export default meta;
@@ -24,15 +39,18 @@ export const Primary: StoryObj = {
   args: {
     name: 'accessibility-regular',
     size: 1,
+    class: 'custom-classname',
+    style: 'display: block;',
   },
 };
 
 export const Accessibility: StoryObj = {
   render: renderAccessibility,
   args: {
+    'aria-label': 'This is the accessibility icon',
     name: 'accessibility-regular',
     size: 1,
-    role: 'graphics-document',
-    'aria-label': 'This is the accessibility icon',
+    class: 'custom-classname',
+    style: 'display: block;',
   },
 };
