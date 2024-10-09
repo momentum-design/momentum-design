@@ -16,6 +16,7 @@ const renderAccessibility = (args: Args) => html`
     class="${args.class}"
     name="${args.name}"
     size="${args.size}"
+    role="img"
   ></mdc-icon>
 `;
 
