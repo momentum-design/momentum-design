@@ -77,8 +77,6 @@ class IconProvider extends Provider<IconProviderContext> {
   }
 
   protected updateContext(): void {
-    let shouldUpdateConsumers = false;
-
     if (
       this.context.value.fileExtension !== this.fileExtension
       || this.context.value.url !== this.url
@@ -86,11 +84,6 @@ class IconProvider extends Provider<IconProviderContext> {
       || this.context.value.size !== this.size
     ) {
       this.updateValuesInContext();
-
-      shouldUpdateConsumers = true;
-    }
-
-    if (shouldUpdateConsumers) {
       this.context.updateObservers();
     }
   }

@@ -21,6 +21,7 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.lengthUnit ? `length-unit="${restArgs.lengthUnit}"` : ''}
       ${restArgs.size ? `size="${restArgs.size}"` : ''}
     >
+      <mdc-subcomponent-icon icon-label-prefix="IconProvider File Extension: "></mdc-subcomponent-icon>
       <mdc-icon name="accessibility-regular" size="2"></mdc-icon>
       ${children}
     </mdc-iconprovider>
@@ -36,6 +37,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.lengthUnit ? `length-unit="${restArgs.lengthUnit}"` : ''}
         ${restArgs.size ? `size="${restArgs.size}"` : ''}
       >
+        <mdc-subcomponent-icon icon-label-prefix="Nested IconProvider File Extension: "></mdc-subcomponent-icon>
         <mdc-icon name="accessibility-regular" size="2"></mdc-icon>
       </mdc-iconprovider>
         `),
@@ -45,24 +47,6 @@ const setup = async (args: SetupOptions) => {
       html: renderIconProvider(),
     });
   }
-};
-
-const updateAttributes = async (componentsPage: ComponentsPage, type: string, attributes: Record<string, string>) => {
-  await componentsPage.page.evaluate(({ type, attrs }) => {
-    const element = document.querySelector('mdc-iconprovider#local');
-    let nestedElement: Element;
-    if (type === 'nested') {
-      nestedElement = document.querySelector('mdc-iconprovider#nested') as Element;
-    }
-    if (element) {
-      Object.keys(attrs).forEach((key) => {
-        element.setAttribute(key, attrs[key]);
-        if (type === 'nested') {
-          nestedElement.setAttribute(key, attrs[key]);
-        }
-      });
-    }
-  }, { type, attrs: attributes });
 };
 
 const testToRun = async (componentsPage: ComponentsPage, type: string) => {
@@ -125,11 +109,11 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
   });
 
   await test.step('should fallback to default values when invalid attributes are passed', async () => {
-    await updateAttributes(componentsPage, type, {
+    await componentsPage.setAttributes(iconprovider, {
       'file-extension': 'exe',
       'length-unit': 'mm',
       size: '9999',
-    });
+    }, type === 'nested' ? nestedIconProvider : undefined);
 
     await expect(iconprovider).toHaveAttribute('file-extension', DEFAULTS.FILE_EXTENSION);
     await expect(iconprovider).toHaveAttribute('length-unit', DEFAULTS.LENGTH_UNIT);
@@ -149,10 +133,10 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
   });
 
   await test.step('should only accept allowed file extensions and length units', async () => {
-    await updateAttributes(componentsPage, type, {
+    await componentsPage.setAttributes(iconprovider, {
       'file-extension': 'svg',
       'length-unit': 'rem',
-    });
+    }, type === 'nested' ? nestedIconProvider : undefined);
 
     await expect(iconprovider).toHaveAttribute('file-extension', 'svg');
     await expect(iconprovider).toHaveAttribute('length-unit', 'rem');

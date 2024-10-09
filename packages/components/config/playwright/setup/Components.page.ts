@@ -148,6 +148,30 @@ class ComponentsPage {
   }
 
   /**
+ * Update one or multiple attributes on a HTMLElement, queried by the passed in `locator`.
+ * Additionally, you can update attributes of a nested element by passing an optional nested `Locator`.
+ *
+ * @param locator - Playwright locator
+ * @param attributes - A record object where keys are attribute names, and values are the attribute values to be set.
+ * @param nestedLocator - An optional Playwright `Locator` representing a nested HTML element.
+ */
+  async setAttributes(locator: Locator, attributes: Record<string, string>, nestedLocator?: Locator) {
+    await locator.evaluate((element, attrs) => {
+      Object.keys(attrs).forEach((key) => {
+        element.setAttribute(key, attrs[key]);
+      });
+    }, attributes);
+
+    if (nestedLocator) {
+      await nestedLocator.evaluate((nestedElement, attrs) => {
+        Object.keys(attrs).forEach((key) => {
+          nestedElement.setAttribute(key, attrs[key]);
+        });
+      }, attributes);
+    }
+  }
+
+  /**
    * Remove a attribute of a HTMLElement, queried by the passed in `locator`
    * @param locator - Playwright locator
    * @param qualifiedName - qualifiedName of the attribute to be removed
