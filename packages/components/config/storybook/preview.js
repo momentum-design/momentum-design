@@ -23,7 +23,7 @@ const preview = {
     },
     actions: { argTypesRegex: '^on[A-Z].*' },
     backgrounds: {
-      disable: true,
+      default: 'dark',
       grid: {
         disable: true,
       },
