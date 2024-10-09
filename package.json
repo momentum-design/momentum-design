@@ -19,6 +19,7 @@
     "test": "NODE_ENV=test yarn workspaces foreach --topological-dev -p run test",
     "clean": "yarn workspaces foreach --topological-dev -p run clean",
     "publish:npmjs": "yarn workspaces foreach --topological-dev -p run publish:npmjs",
+    "prepare:components": "yarn workspaces foreach -pR --topological-dev --from @momentum-design/components run build",
     "postinstall": "husky ./config/husky",
     "upgrade:vscode": "yarn dlx @yarnpkg/sdks vscode",
     "clean:plop": "rimraf ./config/plop/dist",
@@ -43,7 +44,6 @@
     "brand-visuals": "yarn workspace @momentum-design/brand-visuals",
     "fonts": "yarn workspace @momentum-design/fonts",
     "components": "yarn workspace @momentum-design/components",
-    "components:build": "yarn workspaces foreach -pR --topological-dev --from @momentum-design/components run build",
     "assets-export": "yarn workspace @momentum-design/figma-plugin-assets-export",
     "utils": "yarn workspace @momentum-design/utils"
   },
