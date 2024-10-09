@@ -2,7 +2,7 @@
   "font": {
     "lineheight": {
       "base": {
-        "value": "16",
+        "value": "16px",
         "type": "lineHeights"
       },
       "body": {
@@ -46,7 +46,7 @@
     },
     "family": {
       "primary": {
-        "value": "Inter",
+        "value": "Momentum, Inter, Arial, Helvetica Neue, Helvetica, sans-serif",
         "type": "fontFamilies"
       }
     },
@@ -70,7 +70,7 @@
     },
     "size": {
       "base": {
-        "value": "16",
+        "value": "16px",
         "type": "fontSizes"
       },
       "body": {
