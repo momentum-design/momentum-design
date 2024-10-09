@@ -111,7 +111,7 @@ const config: PlaywrightTestConfig = {
     command: 'yarn test:e2e:setup',
     url,
     timeout: 240 * 1000,
-    reuseExistingServer: true,
+    reuseExistingServer: !process.env.CI,
   },
 };
 
