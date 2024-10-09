@@ -22,6 +22,7 @@ import{j as n}from"./jsx-runtime-N83kn9-W.js";import{useMDXComponents as t}from"
 `]}),`
 `,n.jsx(e.h2,{id:"prerequisites",children:"PreRequisites"}),`
 `,n.jsx(e.pre,{children:n.jsx(e.code,{className:"language-javascript",children:`import '@momentum-design/fonts/dist/css/fonts.css';
+import '@momentum-design/tokens/dist/css/typography/complete.css';
 import '@momentum-design/tokens/dist/css/theme/webex/dark-stable.css';
 import '@momentum-design/tokens/dist/css/theme/webex/light-stable.css';
 `})}),`
