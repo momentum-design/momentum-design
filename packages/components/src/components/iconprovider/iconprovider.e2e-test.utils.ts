@@ -9,13 +9,13 @@ import providerUtils from '../../utils/provider';
 // (this file is imported in the esbuild config for e2e tests ('/config/esbuild/esbuild-e2e.config.js'))
 class SubComponentIconProvider extends Component {
   @property({ type: String, attribute: 'icon-label-prefix' })
-  iconLabelPrefix?: string = 'testing';
+  iconLabelPrefix?: string = '';
 
   private iconProviderContext = providerUtils.consume({ host: this, context: IconProvider.Context });
 
   override render() {
     return html`
-      <p style="border: 1px solid">${this.iconLabelPrefix}${this.iconProviderContext.value?.fileExtension}</p>
+      <p>${this.iconLabelPrefix}${this.iconProviderContext.value?.lengthUnit}</p>
     `;
   }
 }

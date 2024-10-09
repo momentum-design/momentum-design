@@ -21,7 +21,7 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.lengthUnit ? `length-unit="${restArgs.lengthUnit}"` : ''}
       ${restArgs.size ? `size="${restArgs.size}"` : ''}
     >
-      <mdc-subcomponent-icon icon-label-prefix="IconProvider File Extension: "></mdc-subcomponent-icon>
+      <mdc-subcomponent-icon id="sub-local" icon-label-prefix="IconProvider Length Unit: "></mdc-subcomponent-icon>
       <mdc-icon name="accessibility-regular" size="2"></mdc-icon>
       ${children}
     </mdc-iconprovider>
@@ -37,7 +37,8 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.lengthUnit ? `length-unit="${restArgs.lengthUnit}"` : ''}
         ${restArgs.size ? `size="${restArgs.size}"` : ''}
       >
-        <mdc-subcomponent-icon icon-label-prefix="Nested IconProvider File Extension: "></mdc-subcomponent-icon>
+        <mdc-subcomponent-icon id="sub-nested" icon-label-prefix="Nested IconProvider Length Unit: ">
+        </mdc-subcomponent-icon>
         <mdc-icon name="accessibility-regular" size="2"></mdc-icon>
       </mdc-iconprovider>
         `),
@@ -54,10 +55,13 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
 
   await setup({ componentsPage, url, type });
   const iconprovider = componentsPage.page.locator('mdc-iconprovider#local');
+  const subComponentLocator = componentsPage.page.locator('mdc-subcomponent-icon#sub-local');
+
   let nestedIconProvider: any;
+  let nestedSubComponentLocator: any;
   if (type === 'nested') {
     nestedIconProvider = componentsPage.page.locator('mdc-iconprovider#nested');
-
+    nestedSubComponentLocator = componentsPage.page.locator('mdc-subcomponent-icon#sub-nested');
     await nestedIconProvider.waitFor();
   }
 
@@ -95,6 +99,9 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
         'size',
         DEFAULTS.LENGTH_UNIT_SIZE[DEFAULTS.LENGTH_UNIT].toString(),
       );
+      // SUBCOMPONENT
+      await expect(subComponentLocator).toBeVisible();
+      await expect(subComponentLocator).toContainText(`IconProvider Length Unit: ${DEFAULTS.LENGTH_UNIT}`);
 
       if (type === 'nested') {
         await expect(nestedIconProvider).toHaveAttribute('url', url);
@@ -104,6 +111,8 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
           'size',
           DEFAULTS.LENGTH_UNIT_SIZE[DEFAULTS.LENGTH_UNIT].toString(),
         );
+        await expect(nestedSubComponentLocator).toBeVisible();
+        await expect(nestedSubComponentLocator).toContainText(`IconProvider Length Unit: ${DEFAULTS.LENGTH_UNIT}`);
       }
     });
   });
@@ -113,7 +122,7 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
       'file-extension': 'exe',
       'length-unit': 'mm',
       size: '9999',
-    }, type === 'nested' ? nestedIconProvider : undefined);
+    });
 
     await expect(iconprovider).toHaveAttribute('file-extension', DEFAULTS.FILE_EXTENSION);
     await expect(iconprovider).toHaveAttribute('length-unit', DEFAULTS.LENGTH_UNIT);
@@ -121,14 +130,23 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
       'size',
       '9999',
     );
+    // SUBCOMPONENT
+    await expect(subComponentLocator).toContainText(`IconProvider Length Unit: ${DEFAULTS.LENGTH_UNIT}`);
 
     if (type === 'nested') {
+      await componentsPage.setAttributes(nestedIconProvider, {
+        'file-extension': 'exe',
+        'length-unit': 'mm',
+        size: '9999',
+      });
+
       await expect(nestedIconProvider).toHaveAttribute('file-extension', DEFAULTS.FILE_EXTENSION);
       await expect(nestedIconProvider).toHaveAttribute('length-unit', DEFAULTS.LENGTH_UNIT);
       await expect(nestedIconProvider).toHaveAttribute(
         'size',
         '9999',
       );
+      await expect(nestedSubComponentLocator).toContainText(`IconProvider Length Unit: ${DEFAULTS.LENGTH_UNIT}`);
     }
   });
 
@@ -136,14 +154,22 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
     await componentsPage.setAttributes(iconprovider, {
       'file-extension': 'svg',
       'length-unit': 'rem',
-    }, type === 'nested' ? nestedIconProvider : undefined);
+    });
 
     await expect(iconprovider).toHaveAttribute('file-extension', 'svg');
     await expect(iconprovider).toHaveAttribute('length-unit', 'rem');
+    // SUBCOMPONENT
+    await expect(subComponentLocator).toContainText('IconProvider Length Unit: rem');
 
     if (type === 'nested') {
+      await componentsPage.setAttributes(nestedIconProvider, {
+        'file-extension': 'svg',
+        'length-unit': 'rem',
+      });
+
       await expect(nestedIconProvider).toHaveAttribute('file-extension', 'svg');
       await expect(nestedIconProvider).toHaveAttribute('length-unit', 'rem');
+      await expect(nestedSubComponentLocator).toContainText('IconProvider Length Unit: rem');
     }
   });
 };
