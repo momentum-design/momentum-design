@@ -65,7 +65,7 @@
     "test:postbuild": "yarn test:e2e",
     "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\"",
     "test:e2e:install": "playwright install-deps && playwright install && yarn playwright install msedge",
-    "test:e2e": "DEBUG=pw:api playwright test --config './config/playwright/playwright.config.ts'",
+    "test:e2e": "DEBUG=pw:webserver playwright test --config './config/playwright/playwright.config.ts'",
     "test:e2e:chrome": "yarn test:e2e --project='chrome'",
     "test:e2e:firefox": "yarn test:e2e --project='firefox'",
     "test:e2e:webkit": "yarn test:e2e --project='webkit'",
