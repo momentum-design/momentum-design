@@ -5,6 +5,7 @@ const TAG_NAME = utils.constructTagName('themeprovider');
 
 const DEFAULTS = {
   THEMECLASS: 'mds-theme-stable-darkWebex' as const,
+  TYPOGRAPHYCLASS: 'mds-typography' as const,
 };
 
 export { DEFAULTS, TAG_NAME };
