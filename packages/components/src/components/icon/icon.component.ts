@@ -58,12 +58,6 @@ class Icon extends Component {
   lengthUnit?: string;
 
   /**
-   * Role attribute to be set for accessibility
-   */
-  @property({ type: String })
-  override role: string | null = null;
-
-  /**
    * Aria-label attribute to be set for accessibility
    */
   @property({ type: String, attribute: 'aria-label' })
@@ -87,6 +81,7 @@ class Icon extends Component {
         // when icon got fetched, set role and aria-label:
         this.setRoleOnIcon();
         this.setAriaLabelOnIcon();
+        this.setAriaHiddenOnIcon();
       }
     }
   }
@@ -103,12 +98,16 @@ class Icon extends Component {
   }
 
   private setRoleOnIcon() {
-    if (this.role) {
-      // pass through role attribute to svg if set on mdc-icon
-      this.iconData?.setAttribute('role', this.role);
+    if (this.ariaLabel) {
+      this.iconData?.setAttribute('role', 'img');
     } else {
       this.iconData?.removeAttribute('role');
     }
+  }
+
+  private setAriaHiddenOnIcon() {
+    // set aria-hidden=true for SVG to avoid screen readers
+    this.iconData?.setAttribute('aria-hidden', 'true');
   }
 
   private setAriaLabelOnIcon() {
@@ -132,10 +131,6 @@ class Icon extends Component {
       this.getIconData().catch((err) => {
         console.error(err);
       });
-    }
-
-    if (changedProperties.has('role')) {
-      this.setRoleOnIcon();
     }
 
     if (changedProperties.has('ariaLabel')) {
