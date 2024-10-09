@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 
-const complete = require.resolve('@momentum-design/tokens/dist/css/core/complete.css');
 const typography = require.resolve('@momentum-design/tokens/dist/css/typography/complete.css');
 const dark = require.resolve('@momentum-design/tokens/dist/css/theme/webex/dark-stable.css');
 const light = require.resolve('@momentum-design/tokens/dist/css/theme/webex/light-stable.css');
@@ -18,7 +17,6 @@ const copyToFolder = (src, destFolder) => {
     });
 }
 
-copyToFolder(complete, playwrightPublicDist);
 copyToFolder(typography, playwrightPublicDist);
 copyToFolder(dark, playwrightPublicDist);
 copyToFolder(light, playwrightPublicDist);
