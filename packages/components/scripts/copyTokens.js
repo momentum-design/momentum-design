@@ -22,7 +22,7 @@ const copyFileToFolder = (src, destFolder) => {
   fs.copyFileSync(src, dest);
 };
 
-copyFileToFolder(complete, playwrightPublicDist);
+copyFileToFolder(typography, playwrightPublicDist);
 copyFileToFolder(dark, playwrightPublicDist);
 copyFileToFolder(light, playwrightPublicDist);
 
