@@ -29,6 +29,7 @@ class ThemeProvider extends Provider<ThemeProviderContext> {
       context: ThemeProviderContext.context,
       initialValue: new ThemeProviderContext(DEFAULTS.THEMECLASS),
     });
+    this.classList.add(DEFAULTS.TYPOGRAPHYCLASS);
   }
 
   /**
