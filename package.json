@@ -43,6 +43,7 @@
     "brand-visuals": "yarn workspace @momentum-design/brand-visuals",
     "fonts": "yarn workspace @momentum-design/fonts",
     "components": "yarn workspace @momentum-design/components",
+    "components:build": "yarn workspaces foreach -pR --topological-dev --from @momentum-design/components run build",
     "assets-export": "yarn workspace @momentum-design/figma-plugin-assets-export",
     "utils": "yarn workspace @momentum-design/utils"
   },
