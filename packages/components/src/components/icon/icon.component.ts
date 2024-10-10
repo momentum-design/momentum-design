@@ -34,6 +34,8 @@ import { DEFAULTS } from './icon.constants';
  * - if the `aria-label` is not set, then the role will be unset.
  *
  * @tagname mdc-icon
+ *
+ * @cssproperty --mdc-icon-fill-color - Option to override the default color
  */
 class Icon extends Component {
   @state()

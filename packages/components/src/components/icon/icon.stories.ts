@@ -2,6 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { disableControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
   <mdc-icon
@@ -29,6 +30,7 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
+    ...disableControls(['--mdc-icon-fill-color']),
     ...classArgType,
     ...styleArgType,
   },
@@ -36,7 +38,7 @@ const meta: Meta = {
 
 export default meta;
 
-export const Primary: StoryObj = {
+export const Decorative: StoryObj = {
   args: {
     name: 'accessibility-regular',
     size: 2,
@@ -45,7 +47,7 @@ export const Primary: StoryObj = {
   },
 };
 
-export const Accessibility: StoryObj = {
+export const Informative: StoryObj = {
   render: renderAccessibility,
   args: {
     'aria-label': 'This is the accessibility icon',
