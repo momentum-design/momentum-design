@@ -14,7 +14,6 @@ import { getRole, getAriaLevel } from './text.utils';
  * For accessibility the `role` and `aria-level` on the component are going to be set
  * automatically based on the type e.g. heading-1 will lead to `role="heading"` and `aria-level=1`.
  *
- * @tag mdc-text
  * @tagname mdc-text
  */
 class Text extends Component {

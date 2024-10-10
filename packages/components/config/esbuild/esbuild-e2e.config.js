@@ -10,9 +10,10 @@ const iife = async () => {
     ...config,
     entryPoints: [
       ...config.entryPoints,
-      // build e2e-test utils for themeprovider, making sure the sub-component defined there will also
+      // build e2e-test utils, making sure the sub-component defined there will also
       // be available for e2e tests
       `${join(process.cwd(), 'src/components/themeprovider/themeprovider.e2e-test.utils.ts')}`,
+      `${join(process.cwd(), 'src/components/iconprovider/iconprovider.e2e-test.utils.ts')}`,
     ],
     outfile: undefined,
     outdir: `${join(publicPath, 'dist')}`,

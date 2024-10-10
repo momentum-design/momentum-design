@@ -12,7 +12,6 @@ import type { BadgeType } from './badge.types';
  *
  * @summary This is MyElement
  *
- * @tag mdc-badge
  * @tagname mdc-badge
  */
 class Badge extends Component {
