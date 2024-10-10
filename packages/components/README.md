@@ -6,10 +6,6 @@
 
 This package is **Work In Progress** - there is no guarantee for consistency, stability till properly released.
 
-We are 
-
 ## Consumption
 
 Visit the [Storybook link](https://momentum-design.github.io/momentum-design/en/components/) to learn about the available components.
-
-Read more about consumption of the components [here](./guides/component-consumption.md).
