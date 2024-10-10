@@ -26,7 +26,6 @@ import { DEFAULTS } from './icon.constants';
  *
  * For accessibility the `role` and `aria-label` of the icon can be set.
  *
- * @tag mdc-icon
  * @tagname mdc-icon
  */
 class Icon extends Component {
