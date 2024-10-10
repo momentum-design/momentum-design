@@ -39,9 +39,9 @@ export default meta;
 export const Primary: StoryObj = {
   args: {
     name: 'accessibility-regular',
-    size: 1,
+    size: 2,
     class: 'custom-classname',
-    style: 'display: block;',
+    style: 'margin: 16px;',
   },
 };
 
@@ -50,8 +50,9 @@ export const Accessibility: StoryObj = {
   args: {
     'aria-label': 'This is the accessibility icon',
     name: 'accessibility-regular',
-    size: 1,
+    size: 2,
     class: 'custom-classname',
-    style: 'display: block;',
+    style: 'margin: 16px;',
+    role: 'img',
   },
 };

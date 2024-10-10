@@ -25,10 +25,14 @@ import { DEFAULTS } from './icon.constants';
  * `width: 1em; height: 1em`.
  *
  * For accessibility:
- * - the `role` will always be 'img'.
- * - `aria-label` of the icon can be set.
+ * There are two types of icons, decorative and informative.
+ * - Decorative icons must be hide from the SR (screen reader) to avoid confusion on the user side.
+ * - For decorative icons `aria-label` is not needed and `role` will be set to null.
+ * - Informative icons represent valuable information and it must be announced.
+ * - For informative icons `aria-label` is needed and `role` will be set to "img".
+ * - the `role` will be set to 'img' if `aria-label` is set.
+ * - if the `aria-label` is not set, then the role will be unset.
  *
- * @tag mdc-icon
  * @tagname mdc-icon
  */
 class Icon extends Component {
@@ -131,11 +135,13 @@ class Icon extends Component {
     if (changedProperties.has('name')) {
       // fetch icon data if name changes:
       this.getIconData().catch((err) => {
+        // eslint-disable-next-line no-console
         console.error(err);
       });
     }
 
     if (changedProperties.has('ariaLabel')) {
+      this.setRoleOnIcon();
       this.setAriaLabelOnIcon();
     }
 
