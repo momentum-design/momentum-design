@@ -1,4 +1,4 @@
-import"./index-CAcrsXMa.js";import{k as m}from"./lit-element-CPYlYYac.js";import{C as a}from"./index-CFYjfE6c.js";import{I as d}from"./iconprovider.component-hEDdJftO.js";import{p as l}from"./index-BCUDnuze.js";import"./create-context-89xeped_.js";class u extends a{constructor(){super(...arguments),this.iconProviderContext=l.consume({host:this,context:d.Context})}render(){var t,n,r,i;return m`
+import"./index-BG-hdIxz.js";import{k as m}from"./lit-element-CPYlYYac.js";import{C as a}from"./index-fQJcZKNb.js";import{I as d}from"./iconprovider.component-w_FmVHM-.js";import{p as l}from"./index-CQ1swJS0.js";import"./create-context-89xeped_.js";class u extends a{constructor(){super(...arguments),this.iconProviderContext=l.consume({host:this,context:d.Context})}render(){var t,n,r,i;return m`
       <p>URL: ${(t=this.iconProviderContext.value)==null?void 0:t.url}</p>
       <p>File Extension: ${(n=this.iconProviderContext.value)==null?void 0:n.fileExtension}</p>
       <p>Length Unit: ${(r=this.iconProviderContext.value)==null?void 0:r.lengthUnit}</p>

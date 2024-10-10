@@ -1,4 +1,4 @@
-import{i as p,k as f}from"./lit-element-CPYlYYac.js";import{C as y,n as u,u as x}from"./index-CFYjfE6c.js";const b=p`
+import{i as p,k as f}from"./lit-element-CPYlYYac.js";import{C as y,n as u,u as x}from"./index-fQJcZKNb.js";const b=p`
   :host([type="heading-1"]) {
     font-size: 7.5rem;
     font-style: normal;
