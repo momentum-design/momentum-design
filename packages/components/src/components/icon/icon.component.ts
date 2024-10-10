@@ -8,7 +8,9 @@ import { dynamicSVGImport } from './icon.utils';
 import { DEFAULTS } from './icon.constants';
 
 /**
- * Icon component, which has to be mounted inside of a `IconProvider`
+ * Icon component that can dynamically display SVG icons with a valid name.
+ *
+ * It has to be mounted inside of a `IconProvider`
  * component.
  *
  * The `IconProvider` component defines where icons should be consumed from (`url`).
@@ -24,9 +26,23 @@ import { DEFAULTS } from './icon.constants';
  * if `size = 1` and `length-unit = 'em'`, the size of the icon will be
  * `width: 1em; height: 1em`.
  *
- * For accessibility the `role` and `aria-label` of the icon can be set.
+ * In terms of `accessibility`, there are two types of icons, decorative and informative.
+ *
+ * #### Decorative icons
+ *  - Decorative icons don't add information to the content of a page.
+ *  - They must be hide from the SR (screen readers) to avoid confusion on the user side.
+ *  - For decorative icons `aria-label` is not needed and `role` will be set to null.
+ *
+ * #### Informative icons
+ *  - Informative icons convey important information that surrounding text/component doesn't.
+ *  - They represent valuable information and it must be announced.
+ *  - For informative icons `aria-label` is needed and `role` will be set to "img".
+ *  - The `role` will be set to 'img' if `aria-label` is set.
+ *  - If the `aria-label` is not set, then the role will be unset.
  *
  * @tagname mdc-icon
+ *
+ * @cssproperty --mdc-icon-fill-color - Option to override the default color
  */
 class Icon extends Component {
   @state()
@@ -57,12 +73,6 @@ class Icon extends Component {
   lengthUnit?: string;
 
   /**
-   * Role attribute to be set for accessibility
-   */
-  @property({ type: String })
-  override role: string | null = null;
-
-  /**
    * Aria-label attribute to be set for accessibility
    */
   @property({ type: String, attribute: 'aria-label' })
@@ -86,6 +96,7 @@ class Icon extends Component {
         // when icon got fetched, set role and aria-label:
         this.setRoleOnIcon();
         this.setAriaLabelOnIcon();
+        this.setAriaHiddenOnIcon();
       }
     }
   }
@@ -102,12 +113,16 @@ class Icon extends Component {
   }
 
   private setRoleOnIcon() {
-    if (this.role) {
-      // pass through role attribute to svg if set on mdc-icon
-      this.iconData?.setAttribute('role', this.role);
+    if (this.ariaLabel) {
+      this.iconData?.setAttribute('role', 'img');
     } else {
       this.iconData?.removeAttribute('role');
     }
+  }
+
+  private setAriaHiddenOnIcon() {
+    // set aria-hidden=true for SVG to avoid screen readers
+    this.iconData?.setAttribute('aria-hidden', 'true');
   }
 
   private setAriaLabelOnIcon() {
@@ -129,15 +144,13 @@ class Icon extends Component {
     if (changedProperties.has('name')) {
       // fetch icon data if name changes:
       this.getIconData().catch((err) => {
+        // eslint-disable-next-line no-console
         console.error(err);
       });
     }
 
-    if (changedProperties.has('role')) {
-      this.setRoleOnIcon();
-    }
-
     if (changedProperties.has('ariaLabel')) {
+      this.setRoleOnIcon();
       this.setAriaLabelOnIcon();
     }
 

@@ -4,10 +4,13 @@ import { hostFitContentStyles } from '../../utils/styles';
 const styles = [
   hostFitContentStyles,
   css`
+    :host {
+      --mdc-icon-fill-color: currentColor;
+    }
     svg {
       height: 100%;
       width: 100%;
-      fill: currentColor;
+      fill: var(--mdc-icon-fill-color);
     }
   `,
 ];
