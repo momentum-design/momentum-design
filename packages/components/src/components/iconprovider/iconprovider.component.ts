@@ -87,5 +87,4 @@ class IconProvider extends Provider<IconProviderContext> {
     }
   }
 }
-
 export default IconProvider;

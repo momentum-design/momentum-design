@@ -1,4 +1,5 @@
 import { property, state } from 'lit/decorators.js';
+import { CSSResult } from 'lit';
 import { DEFAULTS } from './themeprovider.constants';
 import { Provider } from '../../models';
 import ThemeProviderContext from './themeprovider.context';
@@ -96,7 +97,7 @@ class ThemeProvider extends Provider<ThemeProviderContext> {
     }
   }
 
-  public static override styles = styles;
+  public static override styles: Array<CSSResult> = [...Provider.styles, styles];
 }
 
 export default ThemeProvider;
