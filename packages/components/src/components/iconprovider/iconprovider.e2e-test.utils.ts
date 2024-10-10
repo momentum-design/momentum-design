@@ -15,7 +15,7 @@ class SubComponentIconProvider extends Component {
 
   override render() {
     return html`
-      <p>${this.iconLabelPrefix}${this.iconProviderContext.value?.lengthUnit}</p>
+      <p style="margin: 0;">${this.iconLabelPrefix}${this.iconProviderContext.value?.lengthUnit}</p>
     `;
   }
 }

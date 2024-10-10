@@ -11,7 +11,6 @@ import { DEFAULTS, LENGTH_UNIT } from './avatar.constants';
  *
  * @summary This is MyElement
  *
- * @tag mdc-avatar
  * @tagname mdc-avatar
  */
 class Avatar extends Component {

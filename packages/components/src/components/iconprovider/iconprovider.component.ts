@@ -14,7 +14,6 @@ import {
  * that only a url has to be passed in from which the icons will be
  * fetched.
  *
- * @tag mdc-iconprovider
  * @tagname mdc-iconprovider
  */
 class IconProvider extends Provider<IconProviderContext> {
