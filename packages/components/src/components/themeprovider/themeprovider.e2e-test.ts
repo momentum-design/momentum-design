@@ -44,9 +44,7 @@ const testToRun = async ({
         if (theme === undefined) {
           screenshotName = 'mdc-themeprovider-darkWebex-standalone';
         }
-        await componentsPage.visualRegression.takeScreenshot(screenshotName, {
-          element: themeprovider,
-        });
+        await componentsPage.visualRegression.takeScreenshot(screenshotName);
       });
     });
   }
