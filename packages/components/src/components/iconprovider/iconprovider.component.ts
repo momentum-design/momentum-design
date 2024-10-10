@@ -1,6 +1,7 @@
 import { property } from 'lit/decorators.js';
 import { Provider } from '../../models';
 import IconProviderContext from './iconprovider.context';
+import styles from './iconprovider.styles';
 import {
   ALLOWED_FILE_EXTENSIONS,
   DEFAULTS,
@@ -86,6 +87,8 @@ class IconProvider extends Provider<IconProviderContext> {
       this.context.updateObservers();
     }
   }
+
+  public static override styles = styles;
 }
 
 export default IconProvider;
