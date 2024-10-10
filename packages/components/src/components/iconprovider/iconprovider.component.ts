@@ -86,6 +86,5 @@ class IconProvider extends Provider<IconProviderContext> {
       this.context.updateObservers();
     }
   }
-
 }
 export default IconProvider;
