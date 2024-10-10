@@ -8,4 +8,4 @@ This package is **Work In Progress** - there is no guarantee for consistency, st
 
 ## Consumption
 
-Storybook & Guide can be found [here](https://momentum-design.github.io/momentum-design/en/components/).
+Visit the [Storybook link](https://momentum-design.github.io/momentum-design/en/components/) to learn about the available components.
