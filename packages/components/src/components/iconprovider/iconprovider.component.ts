@@ -89,7 +89,6 @@ class IconProvider extends Provider<IconProviderContext> {
     }
   }
 
-  public static override styles: Array<CSSResult> = [...Provider.styles, styles];
 }
 
 export default IconProvider;

@@ -81,9 +81,7 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
     await test.step('matches screenshot of element', async () => {
       const screenshotName = `mdc-iconprovider-${type}`;
 
-      await componentsPage.visualRegression.takeScreenshot(screenshotName, {
-        element: iconprovider,
-      });
+      await componentsPage.visualRegression.takeScreenshot(screenshotName);
     });
   });
 
