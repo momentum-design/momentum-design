@@ -1,8 +1,6 @@
 import { property } from 'lit/decorators.js';
-import { CSSResult } from 'lit';
 import { Provider } from '../../models';
 import IconProviderContext from './iconprovider.context';
-import styles from './iconprovider.styles';
 import {
   ALLOWED_FILE_EXTENSIONS,
   DEFAULTS,
@@ -90,5 +88,4 @@ class IconProvider extends Provider<IconProviderContext> {
   }
 
 }
-
 export default IconProvider;
