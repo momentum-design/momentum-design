@@ -1,4 +1,5 @@
 import { property } from 'lit/decorators.js';
+import { CSSResult } from 'lit';
 import { Provider } from '../../models';
 import IconProviderContext from './iconprovider.context';
 import styles from './iconprovider.styles';
@@ -88,7 +89,7 @@ class IconProvider extends Provider<IconProviderContext> {
     }
   }
 
-  public static override styles = styles;
+  public static override styles: Array<CSSResult> = [...Provider.styles, styles];
 }
 
 export default IconProvider;
