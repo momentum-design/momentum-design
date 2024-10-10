@@ -41,7 +41,7 @@ export const Primary: StoryObj = {
     name: 'accessibility-regular',
     size: 2,
     class: 'custom-classname',
-    style: 'margin: 16px;',
+    style: 'margin: 0px;',
   },
 };
 
@@ -52,7 +52,7 @@ export const Accessibility: StoryObj = {
     name: 'accessibility-regular',
     size: 2,
     class: 'custom-classname',
-    style: 'margin: 16px;',
+    style: 'margin: 0px;',
     role: 'img',
   },
 };
