@@ -1,0 +1,2 @@
+const a={class:{description:`A space-separated list of the classes of the element. 
+    This is a string that can be used to add custom CSS classes to the element.`,table:{category:"Styling"}}},o={style:{description:"A string that can be used to add custom CSS styles to the element.",table:{category:"Styling"}}},c=e=>{const t={};return e.forEach(s=>{t[s]={control:!1}}),t};export{a as c,c as d,o as s};
