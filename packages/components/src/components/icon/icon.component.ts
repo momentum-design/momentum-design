@@ -8,41 +8,41 @@ import { dynamicSVGImport } from './icon.utils';
 import { DEFAULTS } from './icon.constants';
 
 /**
- * Icon component that can dynamically display SVG icons with a valid name.
+ * Icon component that dynamically displays SVG icons based on a valid name.
  *
- * It has to be mounted inside of a `IconProvider`
- * component.
+ * This component must be mounted within an `IconProvider` component.
  *
- * The `IconProvider` component defines where icons should be consumed from (`url`).
- * This `Icon` component accepts the `name` attribute, which will be
- * the file name of the icon to be loaded from the given `url`.
+ * The `IconProvider` defines the source URL from which icons are consumed.
+ * The `Icon` component accepts a `name` attribute, which corresponds to
+ * the file name of the icon to be loaded from the specified URL.
  *
- * Once fetched, the icon will be mounted. If fetching wasn't successful,
- * nothing will be shown.
+ * Once fetched, the icon will be rendered. If the fetching process is unsuccessful,
+ * no icon will be displayed.
  *
- * The `size` attribute allows sizing the icon based on the provided
- * `length-unit` attribute (which will either come from the IconProvider or
- * could be overridden per icon). For example:
- * if `size = 1` and `length-unit = 'em'`, the size of the icon will be
+ * The `size` attribute allows for dynamic sizing of the icon based on the provided
+ * `length-unit` attribute. This unit can either come from the `IconProvider`
+ * or can be overridden for each individual icon. For example:
+ * if `size = 1` and `length-unit = 'em'`, the dimensions of the icon will be
  * `width: 1em; height: 1em`.
  *
- * In terms of `accessibility`, there are two types of icons, decorative and informative.
+ * Regarding accessibility, there are two types of icons: decorative and informative.
  *
- * #### Decorative icons
- *  - Decorative icons don't add information to the content of a page.
- *  - They must be hide from the SR (screen readers) to avoid confusion on the user side.
- *  - For decorative icons `aria-label` is not needed and `role` will be set to null.
+ * ### Decorative Icons
+ * - Decorative icons do not convey any essential information to the content of a page.
+ * - They should be hidden from screen readers (SR) to prevent confusion for users.
+ * - For decorative icons, an `aria-label` is not required, and the `role` will be set to null.
  *
- * #### Informative icons
- *  - Informative icons convey important information that surrounding text/component doesn't.
- *  - They represent valuable information and it must be announced.
- *  - For informative icons `aria-label` is needed and `role` will be set to "img".
- *  - The `role` will be set to 'img' if `aria-label` is set.
- *  - If the `aria-label` is not set, then the role will be unset.
+ * ### Informative Icons
+ * - Informative icons convey important information that is not adequately represented
+ *   by surrounding text or components.
+ * - They provide valuable context and must be announced by assistive technologies.
+ * - For informative icons, an `aria-label` is required, and the `role` will be set to "img".
+ * - If an `aria-label` is provided, the role will be set to 'img'; if it is absent,
+ *   the role will be unset.
  *
  * @tagname mdc-icon
  *
- * @cssproperty --mdc-icon-fill-color - Option to override the default color
+ * @cssproperty --mdc-icon-fill-color - Allows customization of the default fill color.
  */
 class Icon extends Component {
   @state()
