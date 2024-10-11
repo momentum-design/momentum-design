@@ -1,51 +1,15 @@
-import { FontType } from './text.types';
+type ValidTextTags =
+    | 'a' | 'abbr' | 'address' | 'article' | 'aside'
+    | 'b' | 'bdi' | 'bdo' | 'blockquote' | 'br'
+    | 'cite' | 'code' | 'data' | 'del' | 'dfn'
+    | 'em' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5'
+    | 'h6' | 'i' | 'img' | 'ins' | 'kbd'
+    | 'mark' | 'meter' | 'noscript' | 'p'
+    | 'pre' | 'q' | 'rp' | 'rt' | 'ruby'
+    | 's' | 'samp' | 'small' | 'span'
+    | 'strong' | 'sub' | 'sup'
+    | 'time' | 'u';
 
-/**
- * Split the passed in type and return the parts
- */
-const getTypeParts = (type: FontType) => {
-  const parts = type.split('-');
-  return { firstPart: parts[0], secondPart: parts[1] };
-};
-
-/**
- * Check if passed in type is a heading
- * @param type - type to check
- * @returns boolean, true if it is a heading
- */
-const isHeading = (type: FontType) => {
-  const { firstPart, secondPart } = getTypeParts(type);
-  return firstPart === 'heading' && +secondPart > 0 && +secondPart < 7;
-};
-
-/**
- * Get corresponding aria-role to type
- * @param type - type to find corresponding role for
- * @returns role
- */
-const getRole = (type?: FontType) => {
-  if (type) {
-    if (isHeading(type)) {
-      return 'heading';
-    }
-    return 'paragraph';
-  }
-  return null;
-};
-
-/**
- * Get corresponding aria-level to type
- * @param type - type to find corresponding level for
- * @returns aria-level (has to be a number)
- */
-const getAriaLevel = (type?: FontType) => {
-  if (type) {
-    if (isHeading(type)) {
-      const { secondPart } = getTypeParts(type);
-      return secondPart;
-    }
-  }
-  return null;
-};
-
-export { isHeading, getAriaLevel, getRole };
+export function isValidTag(tagName: string): tagName is ValidTextTags {
+  return (tagName.toLowerCase() as ValidTextTags) !== undefined;
+}

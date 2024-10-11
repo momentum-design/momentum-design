@@ -4,7 +4,8 @@ import type { FontType } from './text.types';
 const TAG_NAME = utils.constructTagName('text');
 
 const DEFAULTS = {
-  TYPE: 'body-regular' as const,
+  TYPE: 'body-large-regular' as const,
+  TAG_NAME: 'p' as const,
 };
 
 const VALUES: {TYPE: Array<FontType>} = {
