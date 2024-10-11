@@ -113,11 +113,7 @@ class Icon extends Component {
   }
 
   private setRoleOnIcon() {
-    if (this.ariaLabel) {
-      this.iconData?.setAttribute('role', 'img');
-    } else {
-      this.iconData?.removeAttribute('role');
-    }
+    this.role = this.ariaLabel ? 'img' : null;
   }
 
   private setAriaHiddenOnIcon() {

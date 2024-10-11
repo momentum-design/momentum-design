@@ -17,7 +17,6 @@ const renderAccessibility = (args: Args) => html`
     class="${args.class}"
     name="${args.name}"
     size="${args.size}"
-    role="img"
   ></mdc-icon>
 `;
 
@@ -55,6 +54,5 @@ export const Informative: StoryObj = {
     size: 2,
     class: 'custom-classname',
     style: 'margin: 0px;',
-    role: 'img',
   },
 };
