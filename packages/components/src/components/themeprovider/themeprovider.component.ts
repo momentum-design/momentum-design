@@ -30,7 +30,6 @@ class ThemeProvider extends Provider<ThemeProviderContext> {
       context: ThemeProviderContext.context,
       initialValue: new ThemeProviderContext(DEFAULTS.THEMECLASS),
     });
-    this.classList.add(DEFAULTS.TYPOGRAPHYCLASS);
   }
 
   /**
@@ -58,6 +57,13 @@ class ThemeProvider extends Provider<ThemeProviderContext> {
    */
   @property({ type: String })
   themeclass: string = DEFAULTS.THEMECLASS;
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+
+    // Set the default typography class
+    this.classList.add(DEFAULTS.TYPOGRAPHYCLASS);
+  }
 
   protected override updated(changedProperties: Map<string, any>) {
     super.updated(changedProperties);
