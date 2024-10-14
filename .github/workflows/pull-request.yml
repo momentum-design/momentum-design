@@ -344,14 +344,17 @@ jobs:
       - name: Synchronize Packages
         run: yarn
 
-      - name: Install Playwright
+      - name: Test - Docker
         run: |
           if [ ${{ matrix.package }} == '@momentum-design/components' ]; then
-            yarn workspace @momentum-design/components test:e2e:install
+            yarn workspace @momentum-design/components test:e2e:docker:all
           fi
 
       - name: Test - Postbuild
-        run: yarn workspace ${{ matrix.package }} test:postbuild
+          run: |
+          if [ ${{ matrix.package }} != '@momentum-design/components' ]; then
+            yarn workspace ${{ matrix.package }} test:postbuild
+          fi
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4

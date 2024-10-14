@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 
-const isSnapshotRun = process.env.E2E_SNAPSHOT === 'true';
+const isSnapshotRun = process.env.E2E_SKIP_SNAPSHOT !== 'true';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;

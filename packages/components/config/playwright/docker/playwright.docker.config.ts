@@ -59,13 +59,13 @@ const config: PlaywrightTestConfig = {
 
   /* Configure projects for major browsers */
   projects: [
-    // {
-    //   name: 'chrome',
-    //   use: {
-    //     ...devices['Desktop Chrome'],
-    //     channel: 'chrome',
-    //   },
-    // },
+    {
+      name: 'chrome',
+      use: {
+        ...devices['Desktop Chrome'],
+        channel: 'chrome',
+      },
+    },
     {
       name: 'firefox',
       use: {
@@ -95,12 +95,12 @@ const config: PlaywrightTestConfig = {
     // },
 
     /* Test against branded browsers. */
-    // {
-    //   name: 'msedge',
-    //   use: {
-    //     channel: 'msedge',
-    //   },
-    // },
+    {
+      name: 'msedge',
+      use: {
+        channel: 'msedge',
+      },
+    },
   ],
 
   /* Run your local dev server before starting the tests */

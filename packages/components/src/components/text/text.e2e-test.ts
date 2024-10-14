@@ -5,7 +5,7 @@ import { VALUES } from './text.constants';
 import { FontType } from './text.types';
 import { getAriaLevel, isHeading } from './text.utils';
 
-const isSnapshotRun = process.env.E2E_SNAPSHOT === 'true';
+const isSnapshotRun = process.env.E2E_SKIP_SNAPSHOT !== 'true';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;

@@ -1,6 +1,6 @@
 import { test } from '../../../config/playwright/setup';
 
-const isSnapshotRun = process.env.E2E_SNAPSHOT === 'true';
+const isSnapshotRun = process.env.E2E_SKIP_SNAPSHOT !== 'true';
 
 test.beforeEach(async ({ componentsPage }) => {
   await componentsPage.mount({
