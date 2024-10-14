@@ -1,0 +1,7 @@
+FROM mcr.microsoft.com/playwright:v1.45.3-focal
+
+WORKDIR /app
+
+RUN npm install -g corepack && corepack enable && corepack prepare yarn@3.2.4 --activate
+
+# CMD ["npm", "run", "test:e2e:docker"]

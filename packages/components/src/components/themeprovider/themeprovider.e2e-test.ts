@@ -2,13 +2,14 @@ import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import CONSTANTS from '../../../config/playwright/setup/constants';
 
+const isSnapshotRun = process.env.E2E_SNAPSHOT === 'true';
+
 type TestToRunArgs = {
   componentsPage: ComponentsPage;
   theme?: string;
   themeName: string;
   type: string;
   expectedNestedTheme: string;
-  browserName: string;
 };
 
 const testToRun = async ({
@@ -17,7 +18,6 @@ const testToRun = async ({
   themeName,
   type,
   expectedNestedTheme,
-  browserName,
 }: TestToRunArgs) => {
   const themeprovider = componentsPage.page.locator('mdc-themeprovider#local');
 
@@ -34,8 +34,7 @@ const testToRun = async ({
   /**
    * VISUAL REGRESSION
    */
-  // skipping visual regression for firefox and webkit due to flakiness
-  if (['chromium'].includes(browserName)) {
+  if (isSnapshotRun) {
     await test.step('visual-regression', async () => {
       await test.step('matches screenshot of element', async () => {
         let screenshotName = `mdc-themeprovider-${themeName}-${type}`;
@@ -144,14 +143,13 @@ test.describe.parallel('mdc-themeprovider', () => {
         }
       });
 
-      test(themeName, async ({ componentsPage, browserName }) => {
+      test(themeName, async ({ componentsPage }) => {
         await testToRun({
           componentsPage,
           theme,
           themeName,
           type,
           expectedNestedTheme: oppositeTheme,
-          browserName,
         });
       });
     });
