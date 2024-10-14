@@ -28,3 +28,6 @@ export type FontType =
     | 'heading-xlarge-bold'
     | 'headline-small-light'
     | 'headline-small-regular';
+
+export type ValidTextTags = 'h1' | 'h2' | 'h3' | 'h4' | 'h5'
+    | 'h6' | 'p' | 'small' | 'span' | 'div' | 'section';
