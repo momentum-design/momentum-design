@@ -63,6 +63,12 @@ class TokenBuilder {
           excludeParentKeys: false,
         });
 
+        StyleDictionary.registerTransform({
+          ...StyleDictionary.transform['size/pxToRem'],
+          name: 'size/pxToRem',
+          matcher: (token) => ['lineHeights', 'fontSizes'].includes(token.type),
+        });
+
         configObj.formats.forEach((format) => {
           if (CONSTANTS.FORMATS[format]?.TRANSFORMS) {
             // eslint-disable-next-line max-len, max-len
@@ -75,7 +81,7 @@ class TokenBuilder {
                     transform = new ElevationTransform();
                     StyleDictionary.registerTransform(transform.sdConfig);
                     break;
-
+                    // create 2 more test cases here for px_to_rem_lineheight and px_to_rem_fontsize
                   default:
                 }
               });

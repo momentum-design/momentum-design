@@ -31,8 +31,8 @@ const SD_FORMATS = {
       'ATTRIBUTE_CTI',
       'NAME_CTI_KABAB',
       'MD_ELEVATION',
-      'RESOLVE_MATH',
       'PX_TO_REM',
+      'RESOLVE_MATH',
     ] as Array<Transform>,
   },
   SCSS_VARIABLES: {
