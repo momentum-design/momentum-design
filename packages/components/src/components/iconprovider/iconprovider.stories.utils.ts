@@ -14,7 +14,7 @@ class SubComponentIconProvider extends Component {
       <p>File Extension: ${this.iconProviderContext.value?.fileExtension}</p>
       <p>Length Unit: ${this.iconProviderContext.value?.lengthUnit}</p>
       <p>Default Size: ${this.iconProviderContext.value?.size}</p>
-      <mdc-iconprovider url=${this.iconProviderContext.value?.url} size=${this.iconProviderContext.value?.size} fileExtension=${this.iconProviderContext.value?.fileExtension} lengthUnit=${this.iconProviderContext.value?.lengthUnit}>
+      <mdc-iconprovider url=${this.iconProviderContext.value?.url} size=${this.iconProviderContext.value?.size} file-extension=${this.iconProviderContext.value?.fileExtension} length-unit=${this.iconProviderContext.value?.lengthUnit}>
         <mdc-icon name="accessibility-regular"></mdc-icon>
       </mdc-iconprovider>
     `;

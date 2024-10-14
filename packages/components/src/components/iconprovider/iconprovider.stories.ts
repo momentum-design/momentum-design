@@ -8,8 +8,8 @@ import { disableControls } from '../../../config/storybook/utils';
 const render = (args: Args) => html`
   <mdc-iconprovider 
     url=${args.url}
-    file-extension=${args.fileExtension}
-    length-unit=${args.lengthUnit}
+    file-extension=${args['file-extension']}
+    length-unit=${args['length-unit']}
     size=${args.size}>
     <mdc-subcomponent-icon></mdc-subcomponent-icon>
   </mdc-iconprovider>
@@ -24,11 +24,11 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
-    fileExtension: {
+    'file-extension': {
       options: ALLOWED_FILE_EXTENSIONS,
       control: { type: 'radio' },
     },
-    lengthUnit: {
+    'length-unit': {
       options: ALLOWED_LENGTH_UNITS,
       control: { type: 'inline-radio' },
     },
@@ -41,8 +41,8 @@ export default meta;
 export const Primary: StoryObj = {
   args: {
     url: './icons/svg',
-    fileExtension: 'svg',
-    lengthUnit: 'em',
+    'file-extension': 'svg',
+    'length-unit': 'em',
     size: 1,
   },
 };
