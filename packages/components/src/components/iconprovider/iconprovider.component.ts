@@ -15,7 +15,7 @@ import {
  * fetched.
  *
  * @tagname mdc-iconprovider
- * 
+ *
  * @slot default - children
  */
 class IconProvider extends Provider<IconProviderContext> {
