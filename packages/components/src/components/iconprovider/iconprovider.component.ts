@@ -15,6 +15,8 @@ import {
  * fetched.
  *
  * @tagname mdc-iconprovider
+ * 
+ * @slot default - children
  */
 class IconProvider extends Provider<IconProviderContext> {
   constructor() {
@@ -25,6 +27,9 @@ class IconProvider extends Provider<IconProviderContext> {
     });
   }
 
+  /**
+   * Context object of the IconProvider, to be consumed by child components
+   */
   public static get Context() {
     return IconProviderContext.context;
   }

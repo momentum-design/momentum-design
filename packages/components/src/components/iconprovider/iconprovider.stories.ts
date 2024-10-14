@@ -2,6 +2,8 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import './iconprovider.stories.utils';
 import { html } from 'lit';
+import { ALLOWED_LENGTH_UNITS, ALLOWED_FILE_EXTENSIONS } from './iconprovider.constants';
+import { disableControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
   <mdc-iconprovider 
@@ -21,14 +23,24 @@ const meta: Meta = {
   parameters: {
     badges: ['wip'],
   },
-  argTypes: {},
+  argTypes: {
+    fileExtension: {
+      options: ALLOWED_FILE_EXTENSIONS,
+      control: { type: 'radio' },
+    },
+    lengthUnit: {
+      options: ALLOWED_LENGTH_UNITS,
+      control: { type: 'inline-radio' },
+    },
+    ...disableControls(['Context', 'default']),
+  },
 };
 
 export default meta;
 
 export const Primary: StoryObj = {
   args: {
-    url: '/test',
+    url: './icons/svg',
     fileExtension: 'svg',
     lengthUnit: 'em',
     size: 1,
