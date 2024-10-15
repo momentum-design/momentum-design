@@ -5,8 +5,8 @@ type SetupOptions = {
   componentsPage: ComponentsPage;
   name: string;
   size?: number;
-  role?: string;
   ariaLabel?: string;
+  lengthUnit?: string;
 };
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
@@ -15,8 +15,8 @@ const setup = async (args: SetupOptions) => {
     <mdc-icon 
       name="${restArgs.name}" 
       ${restArgs.size ? `size="${restArgs.size}"` : ''}
-      ${restArgs.role ? `role="${restArgs.role}"` : ''}
       ${restArgs.ariaLabel ? `aria-label="${restArgs.ariaLabel}"` : ''}
+      ${restArgs.lengthUnit ? `length-unit="${restArgs.lengthUnit}"` : ''}
     >
     </mdc-icon>
       `,
@@ -29,6 +29,7 @@ const setup = async (args: SetupOptions) => {
 
 test('mdc-icon', async ({ componentsPage }) => {
   const name = 'accessibility-regular';
+  const ariaLabel = 'test aria label';
   await setup({ componentsPage, name });
 
   /**
@@ -38,14 +39,13 @@ test('mdc-icon', async ({ componentsPage }) => {
     await componentsPage.accessibility.checkForA11yViolations('icon-default');
   });
 
-  const iconWithRole = await setup({
+  const iconWithAriaLabel = await setup({
     componentsPage,
     name,
-    role: 'graphics-document',
-    ariaLabel: 'test aria label',
+    ariaLabel,
   });
 
-  await test.step('accessibility with role / aria-label passed in', async () => {
+  await test.step('accessibility with aria-label passed in', async () => {
     await componentsPage.accessibility.checkForA11yViolations('icon-aria-passed-in');
   });
 
@@ -54,8 +54,8 @@ test('mdc-icon', async ({ componentsPage }) => {
    */
 
   await test.step('visual-regression', async () => {
-    await test.step('matches screenshot of element with role / aria-label passed in', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-icon-default', { element: iconWithRole });
+    await test.step('matches screenshot of element with aria-label passed in', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-icon-default', { element: iconWithAriaLabel });
     });
 
     await test.step('matches screenshot of element with size set to 2', async () => {
@@ -85,15 +85,37 @@ test('mdc-icon', async ({ componentsPage }) => {
       await expect(icon).toHaveAttribute('style', 'width: 2em; height: 2em;');
     });
 
-    await test.step('attributes should be present on component with role / aria-label passed in', async () => {
+    await test.step('attribute length unit should change the default size of em', async () => {
+      const icon = await setup({ componentsPage, name, lengthUnit: 'px' });
+      await expect(icon).toHaveAttribute('name', name);
+      await expect(icon).toHaveAttribute('style', 'width: 1px; height: 1px;');
+    });
+
+    await test.step('attributes should be present on component with aria-label passed in', async () => {
       const iconWithRole = await setup({
         componentsPage,
         name,
-        role: 'graphics-document',
-        ariaLabel: 'test aria label',
+        ariaLabel,
       });
       await expect(iconWithRole).toHaveAttribute('name', name);
       await expect(iconWithRole).toHaveAttribute('style', 'width: 1em; height: 1em;');
+      await expect(iconWithRole).toHaveAttribute('aria-label', ariaLabel);
+      await expect(iconWithRole).toHaveAttribute('role', 'img');
+    });
+
+    await test.step('role attribute should not be present on component when aria-label is not passed in', async () => {
+      const iconWithoutRole = await setup({
+        componentsPage,
+        name,
+      });
+      await expect(iconWithoutRole).toHaveAttribute('name', name);
+      await expect(iconWithoutRole).toHaveAttribute('style', 'width: 1em; height: 1em;');
+      await expect(iconWithoutRole).not.toHaveAttribute('role');
+    });
+
+    await test.step('attribute aria-hidden should always be set to true for SVG', async () => {
+      const svgIcon = componentsPage.page.locator('svg');
+      await expect(svgIcon).toHaveAttribute('aria-hidden', 'true');
     });
   });
 });
