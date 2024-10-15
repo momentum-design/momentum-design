@@ -76,7 +76,7 @@
     "test:e2e:setup": "yarn clean:e2e && yarn copy:playwright && yarn build:browser:e2e",
     "test:e2e:report": "yarn playwright show-report",
     "test:e2e:docker": "playwright test --config './config/playwright/docker/playwright.docker.config.ts'",
-    "test:e2e:docker:all": "yarn docker:build && yarn docker:run @momentum-design/components test:e2e:docker themeprovider.e2e-test.ts",
+    "test:e2e:docker:all": "yarn docker:build && yarn docker:run @momentum-design/components test:e2e:docker",
     "test:e2e:docker:update:snapshot": "yarn docker:build && yarn docker:run @momentum-design/components test:e2e:docker --update-snapshots"
   },
   "dependencies": {
