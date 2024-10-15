@@ -1,4 +1,4 @@
-import{i as p,k as f}from"./lit-element-CPYlYYac.js";import{C as y,n as u,u as x}from"./index-fQJcZKNb.js";const b=p`
+import{i as f,k as d}from"./lit-element-CPYlYYac.js";import{C as h,n as u,u as x}from"./index-BLShQaRP.js";const b=f`
   :host([type="heading-1"]) {
     font-size: 7.5rem;
     font-style: normal;
@@ -92,18 +92,18 @@ import{i as p,k as f}from"./lit-element-CPYlYYac.js";import{C as y,n as u,u as x
     line-height: 150%; /* 1.5rem */
     letter-spacing: 0.02rem;
   }
-`,z=[p`
+`,z=[f`
     :host {
       --mdc-text-font-family: var(--mdc-themeprovider-font-family);
 
       display: block;
       font-family: var(--mdc-text-font-family);
     }
-  `,b],d=e=>{const t=e.split("-");return{firstPart:t[0],secondPart:t[1]}},c=e=>{const{firstPart:t,secondPart:r}=d(e);return t==="heading"&&+r>0&&+r<7},w=e=>e?c(e)?"heading":"paragraph":null,P=e=>{if(e&&c(e)){const{secondPart:t}=d(e);return t}return null};var v=Object.defineProperty,T=(e,t,r,E)=>{for(var n=void 0,a=e.length-1,l;a>=0;a--)(l=e[a])&&(n=l(t,r,n)||n);return n&&v(t,r,n),n};const s=class s extends y{handleTypeChanged(){this.role=w(this.type),this.ariaLevel=P(this.type)}updated(t){super.updated(t),t.has("type")&&this.handleTypeChanged()}render(){return f`<slot></slot>`}};s.styles=z;let o=s;T([u({attribute:"type",reflect:!0,type:String})],o.prototype,"type");const k=x.constructTagName("text"),_={TYPE:["heading-1","heading-2","heading-3","heading-4","heading-5","heading-6","heading-7","body-large","body-regular","body-small","image-title","label"]};o.register(k);const C=e=>f`
+  `,b],c=e=>{const t=e.split("-");return{firstPart:t[0],secondPart:t[1]}},y=e=>{const{firstPart:t,secondPart:r}=c(e);return t==="heading"&&+r>0&&+r<7},w=e=>e?y(e)?"heading":"paragraph":null,P=e=>{if(e&&y(e)){const{secondPart:t}=c(e);return t}return null};var v=Object.defineProperty,T=(e,t,r,E)=>{for(var n=void 0,a=e.length-1,l;a>=0;a--)(l=e[a])&&(n=l(t,r,n)||n);return n&&v(t,r,n),n};const s=class s extends h{handleTypeChanged(){this.role=w(this.type),this.ariaLevel=P(this.type)}updated(t){super.updated(t),t.has("type")&&this.handleTypeChanged()}render(){return d`<slot></slot>`}};s.styles=[...h.styles,...z];let o=s;T([u({attribute:"type",reflect:!0,type:String})],o.prototype,"type");const k=x.constructTagName("text"),_={TYPE:["heading-1","heading-2","heading-3","heading-4","heading-5","heading-6","heading-7","body-large","body-regular","body-small","image-title","label"]};o.register(k);const C=e=>d`
 <mdc-text type="${e.type}">${e.children}</mdc-text>
-`,L={title:"Work In Progress/text",tags:["autodocs"],component:"mdc-text",render:C,parameters:{badges:["wip"]},argTypes:{type:{control:"radio",options:_.TYPE}}},i={args:{type:"heading-1",children:"This is a test text"}};var h,m,g;i.parameters={...i.parameters,docs:{...(h=i.parameters)==null?void 0:h.docs,source:{originalSource:`{
+`,L={title:"Work In Progress/text",tags:["autodocs"],component:"mdc-text",render:C,parameters:{badges:["wip"]},argTypes:{type:{control:"radio",options:_.TYPE}}},i={args:{type:"heading-1",children:"This is a test text"}};var m,g,p;i.parameters={...i.parameters,docs:{...(m=i.parameters)==null?void 0:m.docs,source:{originalSource:`{
   args: {
     type: 'heading-1',
     children: 'This is a test text'
   }
-}`,...(g=(m=i.parameters)==null?void 0:m.docs)==null?void 0:g.source}}};const N=["Primary"];export{i as Primary,N as __namedExportsOrder,L as default};
+}`,...(p=(g=i.parameters)==null?void 0:g.docs)==null?void 0:p.source}}};const N=["Primary"];export{i as Primary,N as __namedExportsOrder,L as default};
