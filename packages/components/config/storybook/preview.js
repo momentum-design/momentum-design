@@ -9,7 +9,25 @@ import { themes } from './themes';
 import { withThemeProvider } from './provider/themeProvider';
 import { withIconProvider } from './provider/iconProvider';
 
-setCustomElementsManifest(customElements);
+function refactorCustomElements(customElements) {
+  const toCamelCase = str => {
+    return str.replace(/-([a-z])/g, g => g[1].toUpperCase());
+  };
+
+  customElements.modules.forEach(module => {
+    module.declarations.forEach(declaration => {
+      const attributesMap = new Set(declaration.attributes.map(attr => toCamelCase(attr.name)));
+      // Filter members based on attributesMap
+      declaration.members = declaration.members.filter(member => !attributesMap.has(member.name));
+    });
+  });
+
+  return customElements;
+}
+
+const refactoredCustomElements = refactorCustomElements(customElements);
+
+setCustomElementsManifest(refactoredCustomElements);
 
 const preview = {
   parameters: {
