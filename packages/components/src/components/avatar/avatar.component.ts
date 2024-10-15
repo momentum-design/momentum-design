@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './avatar.styles';
@@ -67,7 +67,7 @@ class Avatar extends Component {
     return html`${content}`;
   }
 
-  public static override styles = styles;
+  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
 export default Avatar;
