@@ -53,7 +53,7 @@ abstract class Provider<C> extends Component {
   /**
    * Styles associated with this Provider Component.
    */
-  public static override styles: Array<CSSResult> = [styles];
+  public static override styles: Array<CSSResult> = [...Component.styles, styles];
 
   /**
    * Update the context of this Provider and trigger its consumers to update.
