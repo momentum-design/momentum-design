@@ -16,12 +16,12 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/iconprovider',
+  title: 'Components/iconprovider',
   tags: ['autodocs'],
   component: 'mdc-iconprovider',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     'file-extension': {
