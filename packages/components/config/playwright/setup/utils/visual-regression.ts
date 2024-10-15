@@ -28,7 +28,8 @@ class VisualRegression {
       name: `${name}.${CONSTANTS.VISUAL_REGRESSION.FILE_EXTENSION}`,
       threshold: CONSTANTS.VISUAL_REGRESSION.THRESHOLD,
       maxDiffPixelRatio: CONSTANTS.VISUAL_REGRESSION.MAX_DIFF_PIXELS_RATIO,
-    });
+      _comparator: 'ssim-cie94' as any,
+    } as any);
   }
 }
 
