@@ -108,7 +108,7 @@ class ThemeProvider extends Provider<ThemeProviderContext> {
     }
   }
 
-  public static override styles: Array<CSSResult> = [...Provider.styles, styles];
+  public static override styles: Array<CSSResult> = [...Provider.styles, ...styles];
 }
 
 export default ThemeProvider;
