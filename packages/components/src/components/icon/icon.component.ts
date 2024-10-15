@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { CSSResult, html } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import styles from './icon.styles';
 import { Component } from '../../models';
@@ -169,7 +169,7 @@ class Icon extends Component {
     return html` ${this.iconData} `;
   }
 
-  static override styles = styles;
+  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
 export default Icon;
