@@ -61,12 +61,11 @@ test('mdc-icon', async ({ componentsPage }) => {
       });
 
       await test.step('matches screenshot of element with size set to 2', async () => {
-        const iconScaled = await setup({
-          componentsPage,
-          name,
-          size: 2,
+        await componentsPage.setAttributes(iconWithRole, {
+          size: '2',
         });
-        await componentsPage.visualRegression.takeScreenshot('mdc-icon-scale', { element: iconScaled });
+
+        await componentsPage.visualRegression.takeScreenshot('mdc-icon-scale', { element: iconWithRole });
       });
     });
   }

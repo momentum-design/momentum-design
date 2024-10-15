@@ -347,7 +347,7 @@ jobs:
       - name: Test - Docker
         run: |
           if [ ${{ matrix.package }} == '@momentum-design/components' ]; then
-            yarn workspace @momentum-design/components test:e2e:docker:all
+            yarn workspace @momentum-design/components test:docker:postbuild
           fi
 
       - name: Test - Postbuild
