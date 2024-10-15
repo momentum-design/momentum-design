@@ -51,7 +51,7 @@ const VALUES: {TYPE: Array<FontType>, TAGNAME: Array<ValidTextTags>} = {
 };
 
 const DEFAULTS = {
-  TAGNAME: VALUES.TAGNAME[6],
+  TAGNAME: 'p' as ValidTextTags,
 };
 
 export { TAG_NAME, DEFAULTS, VALUES };

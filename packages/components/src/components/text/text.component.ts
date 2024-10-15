@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, literal, StaticValue } from 'lit/static-html.js';
 import { property } from 'lit/decorators.js';
 import styles from './text.styles';
 import { Component } from '../../models';
@@ -72,26 +72,31 @@ class Text extends Component {
   @property({ attribute: 'tagname', reflect: true, type: String })
   public tagname?: ValidTextTags = DEFAULTS.TAGNAME;
 
+  private getTagName(tagname: string): StaticValue {
+    switch (tagname) {
+      case 'h1': return literal`h1`;
+      case 'h2': return literal`h2`;
+      case 'h3': return literal`h3`;
+      case 'h4': return literal`h4`;
+      case 'h5': return literal`h5`;
+      case 'h6': return literal`h6`;
+      case 'div': return literal`div`;
+      case 'span': return literal`span`;
+      case 'section': return literal`section`;
+      case 'small': return literal`small`;
+      default: return literal`p`;
+    }
+  }
+
   public override render() {
     if (!this.type) {
+      // eslint-disable-next-line no-console
       console.error('Type attribute is required for mdc-text component');
       return null;
     }
-
-    switch (this.tagname) {
-      case 'h1': return html`<h1><slot></slot></h1>`;
-      case 'h2': return html`<h2><slot></slot></h2>`;
-      case 'h3': return html`<h3><slot></slot></h3>`;
-      case 'h4': return html`<h4><slot></slot></h4>`;
-      case 'h5': return html`<h5><slot></slot></h5>`;
-      case 'h6': return html`<h6><slot></slot></h6>`;
-      case 'p': return html`<p><slot></slot></p>`;
-      case 'small': return html`<small><slot></slot></small>`;
-      case 'div': return html`<div><slot></slot></div>`;
-      case 'span': return html`<span><slot></slot></span>`;
-      case 'section': return html`<section><slot></slot></section>`;
-      default: return html`<p><slot></slot></p>`;
-    }
+    const tag = this.getTagName(this.tagname ?? DEFAULTS.TAGNAME);
+    // eslint-disable-next-line lit/binding-positions, lit/no-invalid-html
+    return html`<${tag}><slot></slot></${tag}>`;
   }
 
   public static override styles = styles;
