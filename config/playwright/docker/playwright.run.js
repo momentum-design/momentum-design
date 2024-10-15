@@ -9,7 +9,6 @@ if (!workspace || !scriptName) {
 }
 
 try {
-  // Construct the Docker command based on whether `project` is provided
   let dockerCommand = 'docker run --platform linux/amd64 --rm --network=\'host\' -v .:/app docker-test-postbuild sh -c '
     + `"yarn docker:install && yarn workspace ${workspace} ${scriptName}`;
 

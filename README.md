@@ -59,6 +59,11 @@ For the best local development experience, the following E2E setup testing is re
      yarn test:e2e # with snapshot
      # snapshot tests might fail due to the pixel difference on local vs CI/CD LINUX
    ```
+    - To run the tests in `headed mode`, run:
+   ```bash
+     yarn test:e2e:skip:snapshot -- --headed # without snapshot
+     yarn test:e2e -- --headed # with snapshot
+   ```
 3. To Run <strong>single</strong> E2E Test file, run:
    ```bash
      yarn test:e2e:skip:snapshot XXX.e2e-test.ts # without snapshot (Recommended)
