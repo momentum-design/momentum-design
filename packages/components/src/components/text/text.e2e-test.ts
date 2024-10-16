@@ -5,7 +5,6 @@ import { VALUES } from './text.constants';
 import { FontType } from './text.types';
 import { getAriaLevel, isHeading } from './text.utils';
 
-
 type SetupOptions = {
   componentsPage: ComponentsPage;
   type: FontType;
