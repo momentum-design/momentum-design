@@ -13,29 +13,29 @@ const hostFitContentStyles = css`
 const hostFocusRingStyles = css`
   :host([focusRingVisible]) {
     position: relative;
-    outline: 0.046875rem solid black; 
+    outline: 0.125rem solid black;
   }
 
   :host([focusRingVisible])::before {
     content: "";
     position: absolute;
-    top: -0.04625rem;    
-    left: -0.04625rem;   
-    right: -0.04625rem;  
-    bottom: -0.04625rem; 
-    outline: 0.0625rem solid blue;
+    top: -0.125rem;    
+    left: -0.125rem;   
+    right: -0.125rem;  
+    bottom: -0.125rem; 
+    outline: 0.125rem solid blue;
     border-radius: inherit;
   }
 
   :host([focusRingVisible])::after {
     content: "";
     position: absolute;
-    top: -0.10875rem;    
-    left: -0.10875rem;   
-    right: -0.10875rem;  
-    bottom: -0.10875rem; 
-    outline: 0.03125rem solid lightblue;
-    border-radius: inherit; 
+    top: -0.25rem;     
+    left: -0.25rem;    
+    right: -0.25rem;   
+    bottom: -0.25rem;  
+    outline: 0.0625rem solid lightblue;
+    border-radius: inherit;
   }
 `;
 
