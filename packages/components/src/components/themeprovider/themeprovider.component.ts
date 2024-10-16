@@ -21,8 +21,13 @@ import styles from './themeprovider.styles';
  *
  * @slot default - children
  *
- * @cssproperty --mdc-themeprovider-font-family - Option to override the font family
- * @cssproperty --mdc-themeprovider-color-default - Option to override the default color
+ * @cssproperty --mdc-themeprovider-color-default - Option to override the default color,
+ * default: color-theme-text-primary-normal
+ * @cssproperty --mdc-themeprovider-font-family - Option to override the font family,
+ * default: `Momentum` (from momentum-design/fonts)
+ * @cssproperty --mdc-themeprovider-font-weight - Option to override the font weight, default: `400`
+ * @cssproperty --mdc-themeprovider-letter-spacing-adjustment - Option to override the default letter-spacing,
+ * default: `-0.25px` (this is to match the old CiscoSans)
  */
 class ThemeProvider extends Provider<ThemeProviderContext> {
   constructor() {
@@ -30,7 +35,6 @@ class ThemeProvider extends Provider<ThemeProviderContext> {
       context: ThemeProviderContext.context,
       initialValue: new ThemeProviderContext(DEFAULTS.THEMECLASS),
     });
-    this.classList.add(DEFAULTS.TYPOGRAPHYCLASS);
   }
 
   /**
@@ -58,6 +62,13 @@ class ThemeProvider extends Provider<ThemeProviderContext> {
    */
   @property({ type: String })
   themeclass: string = DEFAULTS.THEMECLASS;
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+
+    // Set the default typography class
+    this.classList.add(DEFAULTS.TYPOGRAPHYCLASS);
+  }
 
   protected override updated(changedProperties: Map<string, any>) {
     super.updated(changedProperties);
@@ -97,7 +108,7 @@ class ThemeProvider extends Provider<ThemeProviderContext> {
     }
   }
 
-  public static override styles: Array<CSSResult> = [...Provider.styles, styles];
+  public static override styles: Array<CSSResult> = [...Provider.styles, ...styles];
 }
 
 export default ThemeProvider;

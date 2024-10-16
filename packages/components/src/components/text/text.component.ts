@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import styles from './text.styles';
 import { Component } from '../../models';
@@ -44,7 +44,7 @@ class Text extends Component {
     return html`<slot></slot>`;
   }
 
-  public static override styles = styles;
+  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
 export default Text;

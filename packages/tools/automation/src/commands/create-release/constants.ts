@@ -6,10 +6,13 @@ const OPTIONS: CommandOptions = {
   ...GetPackages.CONSTANTS.OPTIONS,
   targets: {
     default: [
-      '@momentum-design/tokens',
+      '@momentum-design/animations',
+      '@momentum-design/brand-visuals',
+      '@momentum-design/fonts',
       '@momentum-design/icons',
       '@momentum-design/illustrations',
-      '@momentum-design/brand-visuals',
+      '@momentum-design/tokens',
+      '@momentum-design/utils',
       '@momentum-design/components',
     ],
     describe: 'Array of package name strings (fully qualified) to send telemetry for',
