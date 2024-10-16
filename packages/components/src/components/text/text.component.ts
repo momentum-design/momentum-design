@@ -81,6 +81,7 @@ class Text extends Component {
       case 'h5': return literal`h5`;
       case 'h6': return literal`h6`;
       case 'div': return literal`div`;
+      case 'p': return literal`p`;
       case 'span': return literal`span`;
       case 'section': return literal`section`;
       case 'small': return literal`small`;
