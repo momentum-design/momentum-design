@@ -60,12 +60,13 @@ const cjs = async (
   outfile = 'index.js',
   tsconfig = 'tsconfig.json',
   platform = 'node',
+  minify = false,
 ) => {
   await esbuild.build({
     bundle: true,
     entryPoints: [`${join(projectPath, entryPointPath)}`],
     format: 'cjs',
-    minify: false,
+    minify,
     outfile: `${join(projectPath, 'dist', outfile)}`,
     tsconfig: `${join(projectPath, tsconfig)}`,
     platform,
