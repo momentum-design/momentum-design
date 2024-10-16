@@ -97,7 +97,7 @@ class Text extends Component {
     }
     const tag = this.getTagName(this.tagname ?? DEFAULTS.TAGNAME);
     // eslint-disable-next-line lit/binding-positions, lit/no-invalid-html
-    return html`<${tag}><slot></slot></${tag}>`;
+    return html`<${tag} part="text"><slot></slot></${tag}>`;
   }
 
   public static override styles = styles;
