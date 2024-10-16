@@ -6,7 +6,7 @@ export type Matcher = (token: Token) => boolean;
 
 export type Transformer = (token: Token, options: any) => string;
 
-export type Type = 'attribute' | 'name' | 'value';
+export type Type = 'name' | 'value';
 
 export interface Config {
   transitive?: boolean;

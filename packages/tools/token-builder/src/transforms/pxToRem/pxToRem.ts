@@ -52,7 +52,7 @@ class PxToRem {
   public get sdConfig(): Named<SDTransform> {
     return {
       name: this.name,
-      type: 'value',
+      type: this.type,
       transitive: this.transitive,
       matcher: this.matcher,
       transformer: this.transformer,
