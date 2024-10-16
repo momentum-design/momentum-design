@@ -2,6 +2,7 @@ import utils from '../../utils/tag-name';
 import type { FontType, ValidTextTags } from './text.types';
 
 const TAG_NAME = utils.constructTagName('text');
+const PART_NAME = 'text';
 
 const VALUES: {TYPE: Array<FontType>, TAGNAME: Array<ValidTextTags>} = {
   TYPE: [
@@ -54,4 +55,4 @@ const DEFAULTS = {
   TAGNAME: 'p' as ValidTextTags,
 };
 
-export { TAG_NAME, DEFAULTS, VALUES };
+export { TAG_NAME, DEFAULTS, VALUES, PART_NAME };

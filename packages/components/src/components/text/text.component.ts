@@ -3,7 +3,7 @@ import { property } from 'lit/decorators.js';
 import styles from './text.styles';
 import { Component } from '../../models';
 import type { FontType, ValidTextTags } from './text.types';
-import { DEFAULTS } from './text.constants';
+import { DEFAULTS, PART_NAME } from './text.constants';
 
 /**
  * Text component for creating styled text elements.
@@ -81,17 +81,17 @@ class Text extends Component {
     // Lit does not support dynamically changing values for the tag name of a custom element.
     // Read more: https://lit.dev/docs/templates/expressions/#invalid-locations
     switch (this.tagname) {
-      case 'h1': return html`<h1 part="text"><slot></slot></h1>`;
-      case 'h2': return html`<h2 part="text"><slot></slot></h2>`;
-      case 'h3': return html`<h3 part="text"><slot></slot></h3>`;
-      case 'h4': return html`<h4 part="text"><slot></slot></h4>`;
-      case 'h5': return html`<h5 part="text"><slot></slot></h5>`;
-      case 'h6': return html`<h6 part="text"><slot></slot></h6>`;
-      case 'div': return html`<div part="text"><slot></slot></div>`;
-      case 'p': return html`<p part="text"><slot></slot></p>`;
-      case 'span': return html`<span part="text"><slot></slot></span>`;
-      case 'small': return html`<small part="text"><slot></slot></small>`;
-      default: return html`<p part="text"><slot></slot></p>`;
+      case 'h1': return html`<h1 part=${PART_NAME}><slot></slot></h1>`;
+      case 'h2': return html`<h2 part=${PART_NAME}><slot></slot></h2>`;
+      case 'h3': return html`<h3 part=${PART_NAME}><slot></slot></h3>`;
+      case 'h4': return html`<h4 part=${PART_NAME}><slot></slot></h4>`;
+      case 'h5': return html`<h5 part=${PART_NAME}><slot></slot></h5>`;
+      case 'h6': return html`<h6 part=${PART_NAME}><slot></slot></h6>`;
+      case 'div': return html`<div part=${PART_NAME}><slot></slot></div>`;
+      case 'p': return html`<p part=${PART_NAME}><slot></slot></p>`;
+      case 'span': return html`<span part=${PART_NAME}><slot></slot></span>`;
+      case 'small': return html`<small part=${PART_NAME}><slot></slot></small>`;
+      default: return html`<p part=${PART_NAME}><slot></slot></p>`;
     }
   }
 
