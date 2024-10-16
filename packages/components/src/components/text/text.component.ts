@@ -1,4 +1,4 @@
-import { html, literal, StaticValue } from 'lit/static-html.js';
+import { html } from 'lit';
 import { property } from 'lit/decorators.js';
 import styles from './text.styles';
 import { Component } from '../../models';
@@ -72,32 +72,27 @@ class Text extends Component {
   @property({ attribute: 'tagname', reflect: true, type: String })
   public tagname?: ValidTextTags = DEFAULTS.TAGNAME;
 
-  private getTagName(tagname: string): StaticValue {
-    switch (tagname) {
-      case 'h1': return literal`h1`;
-      case 'h2': return literal`h2`;
-      case 'h3': return literal`h3`;
-      case 'h4': return literal`h4`;
-      case 'h5': return literal`h5`;
-      case 'h6': return literal`h6`;
-      case 'div': return literal`div`;
-      case 'p': return literal`p`;
-      case 'span': return literal`span`;
-      case 'section': return literal`section`;
-      case 'small': return literal`small`;
-      default: return literal`p`;
-    }
-  }
-
   public override render() {
     if (!this.type) {
       // eslint-disable-next-line no-console
       console.error('Type attribute is required for mdc-text component');
       return null;
     }
-    const tag = this.getTagName(this.tagname ?? DEFAULTS.TAGNAME);
-    // eslint-disable-next-line lit/binding-positions, lit/no-invalid-html
-    return html`<${tag} part="text"><slot></slot></${tag}>`;
+    // Lit does not support dynamically changing values for the tag name of a custom element.
+    // Read more: https://lit.dev/docs/templates/expressions/#invalid-locations
+    switch (this.tagname) {
+      case 'h1': return html`<h1 part="text"><slot></slot></h1>`;
+      case 'h2': return html`<h2 part="text"><slot></slot></h2>`;
+      case 'h3': return html`<h3 part="text"><slot></slot></h3>`;
+      case 'h4': return html`<h4 part="text"><slot></slot></h4>`;
+      case 'h5': return html`<h5 part="text"><slot></slot></h5>`;
+      case 'h6': return html`<h6 part="text"><slot></slot></h6>`;
+      case 'div': return html`<div part="text"><slot></slot></div>`;
+      case 'p': return html`<p part="text"><slot></slot></p>`;
+      case 'span': return html`<span part="text"><slot></slot></span>`;
+      case 'small': return html`<small part="text"><slot></slot></small>`;
+      default: return html`<p part="text"><slot></slot></p>`;
+    }
   }
 
   public static override styles = styles;
