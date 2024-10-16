@@ -5,11 +5,11 @@ const SD_TRANSFORMS = {
   NAME_CTI_KABAB: 'name/cti/kebab',
   NAME_CTI_CAMEL: 'name/cti/camel',
   RESOLVE_MATH: 'ts/resolveMath',
-  PX_TO_REM: 'size/pxToRem',
 };
 
 const LOCAL_TRANSFORMS = {
   MD_ELEVATION: 'md/elevation',
+  PX_TO_REM: 'size/pxToRem',
 };
 
 const TRANSFORMS = {
