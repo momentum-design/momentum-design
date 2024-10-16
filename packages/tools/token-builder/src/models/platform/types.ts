@@ -6,4 +6,5 @@ export interface Config {
   output: string;
   prefix?: string;
   transforms?: Array<Transform>;
+  basePxFontSize?: number;
 }
