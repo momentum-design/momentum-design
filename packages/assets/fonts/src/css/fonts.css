@@ -1,4 +1,8 @@
 @font-face {
     font-family: "Momentum";
     src: url("../inter/Inter.var.woff2") format("woff2");
+    font-style: normal;
+    font-display: swap;
+    /* Required for Safari support */
+    font-weight: 1 1000;   
 }
