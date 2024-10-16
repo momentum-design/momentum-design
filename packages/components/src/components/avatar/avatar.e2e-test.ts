@@ -1,7 +1,5 @@
 import { test } from '../../../config/playwright/setup';
 
-const isSnapshotRun = process.env.E2E_SKIP_SNAPSHOT !== 'true';
-
 test.beforeEach(async ({ componentsPage }) => {
   await componentsPage.mount({
     html: `
@@ -27,13 +25,11 @@ test.fixme('mdc-avatar', async ({ componentsPage }) => {
   /**
    * VISUAL REGRESSION
    */
-  if (isSnapshotRun) {
-    await test.step('visual-regression', async () => {
-      await test.step('matches screenshot of element', async () => {
-        await componentsPage.visualRegression.takeScreenshot('mdc-avatar', { element: avatar });
-      });
+  await test.step('visual-regression', async () => {
+    await test.step('matches screenshot of element', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-avatar', { element: avatar });
     });
-  }
+  });
 
   /**
    * ATTRIBUTES

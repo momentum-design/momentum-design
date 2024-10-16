@@ -2,7 +2,6 @@ import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import CONSTANTS from '../../../config/playwright/setup/constants';
 
-const isSnapshotRun = process.env.E2E_SKIP_SNAPSHOT !== 'true';
 
 type TestToRunArgs = {
   componentsPage: ComponentsPage;
@@ -34,19 +33,17 @@ const testToRun = async ({
   /**
    * VISUAL REGRESSION
    */
-  if (isSnapshotRun) {
-    await test.step('visual-regression', async () => {
-      await test.step('matches screenshot of element', async () => {
-        let screenshotName = `mdc-themeprovider-${themeName}-${type}`;
+  await test.step('visual-regression', async () => {
+    await test.step('matches screenshot of element', async () => {
+      let screenshotName = `mdc-themeprovider-${themeName}-${type}`;
 
-        // if theme is undefined, we expect the default theme to be darkWebex
-        if (theme === undefined) {
-          screenshotName = 'mdc-themeprovider-darkWebex-standalone';
-        }
-        await componentsPage.visualRegression.takeScreenshot(screenshotName);
-      });
+      // if theme is undefined, we expect the default theme to be darkWebex
+      if (theme === undefined) {
+        screenshotName = 'mdc-themeprovider-darkWebex-standalone';
+      }
+      await componentsPage.visualRegression.takeScreenshot(screenshotName);
     });
-  }
+  });
 
   /**
    * ATTRIBUTES

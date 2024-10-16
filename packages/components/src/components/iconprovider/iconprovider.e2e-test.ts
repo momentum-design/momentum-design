@@ -2,8 +2,6 @@ import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import { DEFAULTS } from './iconprovider.constants';
 
-const isSnapshotRun = process.env.E2E_SKIP_SNAPSHOT !== 'true';
-
 type SetupOptions = {
   componentsPage: ComponentsPage;
   url: string;
@@ -79,15 +77,13 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
   /**
    * VISUAL REGRESSION
    */
-  if (isSnapshotRun) {
-    await test.step('visual-regression', async () => {
-      await test.step('matches screenshot of element', async () => {
-        const screenshotName = `mdc-iconprovider-${type}`;
+  await test.step('visual-regression', async () => {
+    await test.step('matches screenshot of element', async () => {
+      const screenshotName = `mdc-iconprovider-${type}`;
 
-        await componentsPage.visualRegression.takeScreenshot(screenshotName);
-      });
+      await componentsPage.visualRegression.takeScreenshot(screenshotName);
     });
-  }
+  });
 
   /**
    * ATTRIBUTES

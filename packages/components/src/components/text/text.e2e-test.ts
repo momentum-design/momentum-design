@@ -5,7 +5,6 @@ import { VALUES } from './text.constants';
 import { FontType } from './text.types';
 import { getAriaLevel, isHeading } from './text.utils';
 
-const isSnapshotRun = process.env.E2E_SKIP_SNAPSHOT !== 'true';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -50,13 +49,11 @@ test.describe('mdc-text', () => {
       /**
        * VISUAL REGRESSION
        */
-      if (isSnapshotRun) {
-        await test.step('visual-regression', async () => {
-          await test.step('matches screenshot of element', async () => {
-            await componentsPage.visualRegression.takeScreenshot(`mdc-text-${textType}`, { element: text });
-          });
+      await test.step('visual-regression', async () => {
+        await test.step('matches screenshot of element', async () => {
+          await componentsPage.visualRegression.takeScreenshot(`mdc-text-${textType}`, { element: text });
         });
-      }
+      });
 
       /**
        * ATTRIBUTES

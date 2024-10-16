@@ -1,8 +1,6 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 
-const isSnapshotRun = process.env.E2E_SKIP_SNAPSHOT !== 'true';
-
 type SetupOptions = {
   componentsPage: ComponentsPage;
   name: string;
@@ -54,21 +52,19 @@ test('mdc-icon', async ({ componentsPage }) => {
   /**
    * VISUAL REGRESSION
    */
-  if (isSnapshotRun) {
-    await test.step('visual-regression', async () => {
-      await test.step('matches screenshot of element with role / aria-label passed in', async () => {
-        await componentsPage.visualRegression.takeScreenshot('mdc-icon-default', { element: iconWithRole });
-      });
-
-      await test.step('matches screenshot of element with size set to 2', async () => {
-        await componentsPage.setAttributes(iconWithRole, {
-          size: '2',
-        });
-
-        await componentsPage.visualRegression.takeScreenshot('mdc-icon-scale', { element: iconWithRole });
-      });
+  await test.step('visual-regression', async () => {
+    await test.step('matches screenshot of element with role / aria-label passed in', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-icon-default', { element: iconWithRole });
     });
-  }
+
+    await test.step('matches screenshot of element with size set to 2', async () => {
+      await componentsPage.setAttributes(iconWithRole, {
+        size: '2',
+      });
+
+      await componentsPage.visualRegression.takeScreenshot('mdc-icon-scale', { element: iconWithRole });
+    });
+  });
 
   /**
    * ATTRIBUTES
