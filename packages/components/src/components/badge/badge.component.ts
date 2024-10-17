@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { StyleInfo, styleMap } from 'lit/directives/style-map.js';
@@ -12,7 +12,6 @@ import type { BadgeType } from './badge.types';
  *
  * @summary This is MyElement
  *
- * @tag mdc-badge
  * @tagname mdc-badge
  */
 class Badge extends Component {
@@ -116,7 +115,7 @@ class Badge extends Component {
     return html`<div class="mdc-badge-container" style=${styleMap(sizeStyles)}>${content}</div>`;
   }
 
-  public static override styles = styles;
+  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
 export default Badge;

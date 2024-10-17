@@ -14,8 +14,9 @@ import {
  * that only a url has to be passed in from which the icons will be
  * fetched.
  *
- * @tag mdc-iconprovider
  * @tagname mdc-iconprovider
+ *
+ * @slot default - children
  */
 class IconProvider extends Provider<IconProviderContext> {
   constructor() {
@@ -26,6 +27,9 @@ class IconProvider extends Provider<IconProviderContext> {
     });
   }
 
+  /**
+   * Context object of the IconProvider, to be consumed by child components
+   */
   public static get Context() {
     return IconProviderContext.context;
   }
@@ -59,19 +63,24 @@ class IconProvider extends Provider<IconProviderContext> {
     // only update fileExtension on context if its an allowed fileExtension
     if (this.fileExtension && ALLOWED_FILE_EXTENSIONS.includes(this.fileExtension)) {
       this.context.value.fileExtension = this.fileExtension;
+    } else {
+    // Ensure both fileExtension and context are updated to the default if its not an allowed fileExtension
+      this.fileExtension = DEFAULTS.FILE_EXTENSION;
+      this.context.value.fileExtension = DEFAULTS.FILE_EXTENSION;
     }
     this.context.value.url = this.url;
+    this.context.value.size = this.size;
 
     if (this.lengthUnit && ALLOWED_LENGTH_UNITS.includes(this.lengthUnit)) {
       this.context.value.lengthUnit = this.lengthUnit;
+    } else {
+    // Ensure both lengthUnit and context are updated to the default if its not an allowed lengthUnit
+      this.lengthUnit = DEFAULTS.LENGTH_UNIT;
+      this.context.value.lengthUnit = DEFAULTS.LENGTH_UNIT;
     }
-
-    this.context.value.size = this.size;
   }
 
   protected updateContext(): void {
-    let shouldUpdateConsumers = false;
-
     if (
       this.context.value.fileExtension !== this.fileExtension
       || this.context.value.url !== this.url
@@ -79,14 +88,8 @@ class IconProvider extends Provider<IconProviderContext> {
       || this.context.value.size !== this.size
     ) {
       this.updateValuesInContext();
-
-      shouldUpdateConsumers = true;
-    }
-
-    if (shouldUpdateConsumers) {
       this.context.updateObservers();
     }
   }
 }
-
 export default IconProvider;

@@ -1,6 +1,6 @@
-import '@momentum-design/tokens/dist/css/core/complete.css';
 import '@momentum-design/tokens/dist/css/theme/webex/dark-stable.css';
 import '@momentum-design/tokens/dist/css/theme/webex/light-stable.css';
+import '@momentum-design/tokens/dist/css/typography/complete.css';
 import '@momentum-design/fonts/dist/css/fonts.css';
 
 import { setCustomElementsManifest } from '@storybook/web-components';
@@ -9,7 +9,25 @@ import { themes } from './themes';
 import { withThemeProvider } from './provider/themeProvider';
 import { withIconProvider } from './provider/iconProvider';
 
-setCustomElementsManifest(customElements);
+function refactorCustomElements(customElements) {
+  const toCamelCase = str => {
+    return str.replace(/-([a-z])/g, g => g[1].toUpperCase());
+  };
+
+  customElements.modules.forEach(module => {
+    module.declarations.forEach(declaration => {
+      const attributesMap = new Set(declaration.attributes.map(attr => toCamelCase(attr.name)));
+      // Filter members based on attributesMap
+      declaration.members = declaration.members.filter(member => !attributesMap.has(member.name));
+    });
+  });
+
+  return customElements;
+}
+
+const refactoredCustomElements = refactorCustomElements(customElements);
+
+setCustomElementsManifest(refactoredCustomElements);
 
 const preview = {
   parameters: {

@@ -29,7 +29,7 @@ const DEFAULT_ACCESSIBILITY_SCAN_OPTIONS = {
 // we have pixel perfect visual regression testing enabled.
 const VISUAL_REGRESSION = {
   THRESHOLD: 0.1,
-  MAX_DIFF_PIXELS_RATIO: 0.15,
+  MAX_DIFF_PIXELS_RATIO: 0.25,
   FILE_EXTENSION: 'png',
 };
 

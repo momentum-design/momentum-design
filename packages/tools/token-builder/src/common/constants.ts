@@ -9,6 +9,7 @@ const SD_TRANSFORMS = {
 
 const LOCAL_TRANSFORMS = {
   MD_ELEVATION: 'md/elevation',
+  PX_TO_REM: 'size/pxToRem',
 };
 
 const TRANSFORMS = {
@@ -30,6 +31,7 @@ const SD_FORMATS = {
       'ATTRIBUTE_CTI',
       'NAME_CTI_KABAB',
       'MD_ELEVATION',
+      'PX_TO_REM',
       'RESOLVE_MATH',
     ] as Array<Transform>,
   },
