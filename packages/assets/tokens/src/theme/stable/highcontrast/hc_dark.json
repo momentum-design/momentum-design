@@ -2467,6 +2467,23 @@
             }
           }
         }
+      },
+      "focus": {
+        "0": {
+          "value": "{color.highcontrast.black.ButtonFaceColor}",
+          "type": "color",
+          "description": "Used for focus ring effect"
+        },
+        "1": {
+          "value": "{color.highcontrast.black.ButtonTextColor}",
+          "type": "color",
+          "description": "Used for focus ring effect"
+        },
+        "2": {
+          "value": "{color.highcontrast.black.ButtonTextColor}",
+          "type": "color",
+          "description": "Used for focus ring effect"
+        }
       }
     }
   }
