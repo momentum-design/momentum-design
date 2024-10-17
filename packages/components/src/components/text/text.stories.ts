@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { VALUES } from './text.constants';
 
 const render = (args: Args) => html`
-<mdc-text type="${args.type}">${args.children}</mdc-text>
+<mdc-text type="${args.type}" tagname="${args.tagname}">${args.children}</mdc-text>
 `;
 
 const meta: Meta = {
@@ -18,7 +18,10 @@ const meta: Meta = {
   argTypes: {
     type: {
       control: 'radio',
-      options: VALUES.TYPE,
+      options: [null, ...VALUES.TYPE],
+    },
+    tagname: {
+      control: 'text',
     },
   },
 };
@@ -27,7 +30,8 @@ export default meta;
 
 export const Primary: StoryObj = {
   args: {
-    type: 'heading-1',
+    type: 'body-large-regular',
+    tagname: '',
     children: 'This is a test text',
   },
 };
