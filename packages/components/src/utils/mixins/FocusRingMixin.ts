@@ -1,6 +1,6 @@
 import { LitElement } from 'lit';
-import { Constructor } from '../types';
 import { state } from 'lit/decorators.js';
+import { Constructor } from '../types';
 
 /**
  * Events that the focus ring listens to.
@@ -9,14 +9,12 @@ const EVENTS: (keyof HTMLElementEventMap)[] = ['focus', 'blur'];
 
 /**
  * A mixin that adds focus ring visibility handling to a LitElement.
- * 
- * @template T - The type of the superclass being extended.
+ *
  * @param superClass - The superclass to extend.
  * @returns A class that extends the provided superclass with focus ring functionality.
  */
 export const FocusRingMixin = <T extends Constructor<LitElement>>(superClass: T) => {
   class FocusRingClass extends superClass {
-
     @state()
     protected focusRingVisible = false;
 
@@ -26,7 +24,7 @@ export const FocusRingMixin = <T extends Constructor<LitElement>>(superClass: T)
      */
     constructor(...args: any[]) {
       super(...args);
-      EVENTS.forEach(event => this.addEventListener(event, this.handleEvent));
+      EVENTS.forEach((event) => this.addEventListener(event, this.handleEvent));
     }
 
     /**
@@ -43,16 +41,18 @@ export const FocusRingMixin = <T extends Constructor<LitElement>>(superClass: T)
             this.focusRingVisible = false;
             this.removeAttribute('focusRingVisible');
             break;
+          default:
+            break;
         }
       }
-    }
+    };
 
     /**
      * Cleanup event listeners when the element is disconnected from the DOM.
      */
     override disconnectedCallback() {
       super.disconnectedCallback();
-      EVENTS.forEach(event => this.removeEventListener(event, this.handleEvent));
+      EVENTS.forEach((event) => this.removeEventListener(event, this.handleEvent));
     }
   }
 
