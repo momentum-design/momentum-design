@@ -1,5 +1,4 @@
 import { LitElement } from 'lit';
-import { state } from 'lit/decorators.js';
 import { Constructor } from '../types';
 
 /**
@@ -15,7 +14,10 @@ const EVENTS: (keyof HTMLElementEventMap)[] = ['focus', 'blur'];
  */
 export const FocusRingMixin = <T extends Constructor<LitElement>>(superClass: T) => {
   class FocusRingClass extends superClass {
-    @state()
+    /**
+     * Indicates if the focus ring is visible.
+     * Set to true on focus and false on blur.
+    */
     protected focusRingVisible = false;
 
     /**
