@@ -58,11 +58,11 @@ test('mdc-icon', async ({ componentsPage }) => {
     });
 
     await test.step('matches screenshot of element with size set to 2', async () => {
-      await componentsPage.setAttributes(iconWithRole, {
+      await componentsPage.setAttributes(iconWithAriaLabel, {
         size: '2',
       });
 
-      await componentsPage.visualRegression.takeScreenshot('mdc-icon-scale', { element: iconWithRole });
+      await componentsPage.visualRegression.takeScreenshot('mdc-icon-scale', { element: iconWithAriaLabel });
     });
 
     await test.step('matches screenshot of element with icon color set to red using css property', async () => {

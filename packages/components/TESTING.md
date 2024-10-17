@@ -67,7 +67,7 @@ For the best local development experience, the following E2E setup testing is re
 
    - where the test file is `"./src/components/iconprovider/iconprovider.e2e-test.ts"`, while within the file, the test naming structure is `mdc-IconmProvider nested`.
 
-#### Testing method (Components)
+#### Testing method
 
 ```bash
   # E2E test methods
