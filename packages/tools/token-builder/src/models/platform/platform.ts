@@ -48,6 +48,10 @@ class Platform {
     return this.config.prefix;
   }
 
+  public get basePxFontSize(): number | undefined {
+    return this.config.basePxFontSize;
+  }
+
   public get sdConfig(): SDPlatform {
     return {
       prefix: this.prefix,
@@ -55,6 +59,7 @@ class Platform {
       transforms: this.transforms,
       buildPath: this.output,
       files: [this.file.sdConfig],
+      basePxFontSize: this.basePxFontSize,
     };
   }
 

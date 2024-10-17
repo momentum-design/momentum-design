@@ -6,6 +6,7 @@
     "declarationDir": "./dist/types",
     "module": "ESNext",
     "target": "ES6",
+    "declarationMap": false
   },
   "include": [
     "./src/**/*"
