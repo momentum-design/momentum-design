@@ -37,11 +37,11 @@ export const FocusRingMixin = <T extends Constructor<LitElement>>(superClass: T)
         switch (event.type) {
           case 'focus':
             this.focusRingVisible = true;
-            this.setAttribute('focus-ring-visible', '');
+            this.setAttribute('focusRingVisible', '');
             break;
           case 'blur':
             this.focusRingVisible = false;
-            this.removeAttribute('focus-ring-visible');
+            this.removeAttribute('focusRingVisible');
             break;
         }
       }
