@@ -23,7 +23,7 @@ const hostFocusRingStyles = css`
     left: -0.125rem;   
     right: -0.125rem;  
     bottom: -0.125rem; 
-    outline: 0.125rem solid blue;
+    outline: 0.125rem solid var(--mds-color-theme-outline-theme-normal);
     border-radius: inherit;
   }
 
