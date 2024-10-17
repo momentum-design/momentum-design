@@ -7,7 +7,7 @@ import { DEFAULTS, PART_NAME } from './text.constants';
 
 /**
  * Text component for creating styled text elements.
- * It is mounted within the ThemeProvider to access color and font tokens.
+ * It has to be mounted within the ThemeProvider to access color and font tokens.
  *
  * The `type` attribute allows changing the text style.
  * The `tagname` attribute allows changing the tag name of the text element.
@@ -58,7 +58,7 @@ class Text extends Component {
    * - 'headline-small-regular'
    */
   @property({ attribute: 'type', reflect: true, type: String })
-  public type: FontType | null = null;
+  public type: FontType = DEFAULTS.TYPE;
 
   /**
    * Specifies the HTML tag name for the text element. The default tag name is `p`.
@@ -73,11 +73,6 @@ class Text extends Component {
   public tagname?: ValidTextTags = DEFAULTS.TAGNAME;
 
   public override render() {
-    if (!this.type) {
-      // eslint-disable-next-line no-console
-      console.error('Type attribute is required for mdc-text component');
-      return null;
-    }
     // Lit does not support dynamically changing values for the tag name of a custom element.
     // Read more: https://lit.dev/docs/templates/expressions/#invalid-locations
     switch (this.tagname) {
