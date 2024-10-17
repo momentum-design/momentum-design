@@ -13,7 +13,7 @@ const hostFitContentStyles = css`
 const hostFocusRingStyles = css`
   :host([focusRingVisible]) {
     position: relative;
-    outline: 0.125rem solid black;
+    outline: 0.125rem solid var(--mds-color-theme-text-primary-normal);
   }
 
   :host([focusRingVisible])::before {
