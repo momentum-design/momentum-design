@@ -1,39 +1,60 @@
 import { LitElement } from 'lit';
-import { property } from 'lit/decorators.js';
+import { Constructor } from '../types';
+import { state } from 'lit/decorators.js';
 
-type Constructor<T = {}> = new (...args: any[]) => T;
+/**
+ * Events that the focus ring listens to.
+ */
+const EVENTS: (keyof HTMLElementEventMap)[] = ['focus', 'blur'];
 
-export interface FocusRingMixinInterface {}
-
+/**
+ * A mixin that adds focus ring visibility handling to a LitElement.
+ * 
+ * @template T - The type of the superclass being extended.
+ * @param superClass - The superclass to extend.
+ * @returns A class that extends the provided superclass with focus ring functionality.
+ */
 export const FocusRingMixin = <T extends Constructor<LitElement>>(superClass: T) => {
   class FocusRingClass extends superClass {
-    @property({ type: Boolean, reflect: true })
+
+    @state()
     protected focusRingVisible = false;
 
-    private handleFocusBound = this.handleFocus.bind(this);
-
-    private handleBlurBound = this.handleBlur.bind(this);
-
+    /**
+     * Creates an instance of the FocusRingClass.
+     * @param args - Arguments to be passed to the superclass constructor.
+     */
     constructor(...args: any[]) {
       super(...args);
-      this.addEventListener('focusin', this.handleFocusBound);
-      this.addEventListener('focusout', this.handleBlurBound);
+      EVENTS.forEach(event => this.addEventListener(event, this.handleEvent));
     }
 
-    handleFocus() {
-      this.focusRingVisible = true;
+    /**
+     * Handles focus and blur events to show/hide the focus ring.
+     */
+    private handleEvent = (event: Event) => {
+      if (event instanceof FocusEvent) {
+        switch (event.type) {
+          case 'focus':
+            this.focusRingVisible = true;
+            this.setAttribute('focus-ring-visible', '');
+            break;
+          case 'blur':
+            this.focusRingVisible = false;
+            this.removeAttribute('focus-ring-visible');
+            break;
+        }
+      }
     }
 
-    handleBlur() {
-      this.focusRingVisible = false;
-    }
-
+    /**
+     * Cleanup event listeners when the element is disconnected from the DOM.
+     */
     override disconnectedCallback() {
       super.disconnectedCallback();
-      this.removeEventListener('focusin', this.handleFocusBound);
-      this.removeEventListener('focusout', this.handleBlurBound);
+      EVENTS.forEach(event => this.removeEventListener(event, this.handleEvent));
     }
   }
 
-  return FocusRingClass as Constructor<FocusRingMixinInterface> & T;
+  return FocusRingClass as T;
 };
