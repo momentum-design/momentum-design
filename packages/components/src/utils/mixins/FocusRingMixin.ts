@@ -11,6 +11,7 @@ export const FocusRingMixin = <T extends Constructor<LitElement>>(superClass: T)
     protected focusRingVisible = false;
 
     private handleFocusBound = this.handleFocus.bind(this);
+
     private handleBlurBound = this.handleBlur.bind(this);
 
     constructor(...args: any[]) {
@@ -20,11 +21,11 @@ export const FocusRingMixin = <T extends Constructor<LitElement>>(superClass: T)
     }
 
     handleFocus() {
-      this.focusRingVisible = true; 
+      this.focusRingVisible = true;
     }
 
     handleBlur() {
-      this.focusRingVisible = false; 
+      this.focusRingVisible = false;
     }
 
     override disconnectedCallback() {
