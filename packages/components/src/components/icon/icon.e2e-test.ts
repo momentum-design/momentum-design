@@ -66,6 +66,17 @@ test('mdc-icon', async ({ componentsPage }) => {
       });
       await componentsPage.visualRegression.takeScreenshot('mdc-icon-scale', { element: iconScaled });
     });
+
+    await test.step('matches screenshot of element with icon color set to red using css property', async () => {
+      const iconWithColor = await setup({
+        componentsPage,
+        name,
+      });
+      await componentsPage.setAttributes(iconWithColor, {
+        style: '--mdc-icon-fill-color: red;',
+      });
+      await componentsPage.visualRegression.takeScreenshot('mdc-icon-color', { element: iconWithColor });
+    });
   });
 
   /**
@@ -85,10 +96,10 @@ test('mdc-icon', async ({ componentsPage }) => {
       await expect(icon).toHaveAttribute('style', 'width: 2em; height: 2em;');
     });
 
-    await test.step('attribute length unit should change the default size of em', async () => {
-      const icon = await setup({ componentsPage, name, lengthUnit: 'px' });
+    await test.step('attribute length unit can be overridden to rem', async () => {
+      const icon = await setup({ componentsPage, name, lengthUnit: 'rem' });
       await expect(icon).toHaveAttribute('name', name);
-      await expect(icon).toHaveAttribute('style', 'width: 1px; height: 1px;');
+      await expect(icon).toHaveAttribute('style', 'width: 1rem; height: 1rem;');
     });
 
     await test.step('attributes should be present on component with aria-label passed in', async () => {
