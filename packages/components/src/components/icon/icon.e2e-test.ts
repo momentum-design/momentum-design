@@ -52,19 +52,17 @@ test('mdc-icon', async ({ componentsPage }) => {
   /**
    * VISUAL REGRESSION
    */
-
   await test.step('visual-regression', async () => {
     await test.step('matches screenshot of element with aria-label passed in', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-icon-default', { element: iconWithAriaLabel });
     });
 
     await test.step('matches screenshot of element with size set to 2', async () => {
-      const iconScaled = await setup({
-        componentsPage,
-        name,
-        size: 2,
+      await componentsPage.setAttributes(iconWithAriaLabel, {
+        size: '2',
       });
-      await componentsPage.visualRegression.takeScreenshot('mdc-icon-scale', { element: iconScaled });
+
+      await componentsPage.visualRegression.takeScreenshot('mdc-icon-scale', { element: iconWithAriaLabel });
     });
 
     await test.step('matches screenshot of element with icon color set to red using css property', async () => {

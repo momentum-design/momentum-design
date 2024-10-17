@@ -8,7 +8,6 @@ type TestToRunArgs = {
   themeName: string;
   type: string;
   expectedNestedTheme: string;
-  browserName: string;
 };
 
 const testToRun = async ({
@@ -17,7 +16,6 @@ const testToRun = async ({
   themeName,
   type,
   expectedNestedTheme,
-  browserName,
 }: TestToRunArgs) => {
   const themeprovider = componentsPage.page.locator('mdc-themeprovider#local');
 
@@ -34,20 +32,17 @@ const testToRun = async ({
   /**
    * VISUAL REGRESSION
    */
-  // skipping visual regression for firefox and webkit due to flakiness
-  if (['chromium'].includes(browserName)) {
-    await test.step('visual-regression', async () => {
-      await test.step('matches screenshot of element', async () => {
-        let screenshotName = `mdc-themeprovider-${themeName}-${type}`;
+  await test.step('visual-regression', async () => {
+    await test.step('matches screenshot of element', async () => {
+      let screenshotName = `mdc-themeprovider-${themeName}-${type}`;
 
-        // if theme is undefined, we expect the default theme to be darkWebex
-        if (theme === undefined) {
-          screenshotName = 'mdc-themeprovider-darkWebex-standalone';
-        }
-        await componentsPage.visualRegression.takeScreenshot(screenshotName);
-      });
+      // if theme is undefined, we expect the default theme to be darkWebex
+      if (theme === undefined) {
+        screenshotName = 'mdc-themeprovider-darkWebex-standalone';
+      }
+      await componentsPage.visualRegression.takeScreenshot(screenshotName);
     });
-  }
+  });
 
   /**
    * ATTRIBUTES
@@ -144,14 +139,13 @@ test.describe.parallel('mdc-themeprovider', () => {
         }
       });
 
-      test(themeName, async ({ componentsPage, browserName }) => {
+      test(themeName, async ({ componentsPage }) => {
         await testToRun({
           componentsPage,
           theme,
           themeName,
           type,
           expectedNestedTheme: oppositeTheme,
-          browserName,
         });
       });
     });

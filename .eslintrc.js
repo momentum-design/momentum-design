@@ -12,7 +12,7 @@ module.exports = {
   globals: {
     BufferEncoding: 'readonly',
   },
-  ignorePatterns: ['**/dist/**', '*.hbs', 'scripts/**', '**/husky/**'],
+  ignorePatterns: ['**/dist/**', '*.hbs', 'scripts/**', '**/husky/**', '**/Dockerfile.*'],
   overrides: [
     {
       files: ['**/*.test.ts'],
