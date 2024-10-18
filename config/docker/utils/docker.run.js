@@ -10,7 +10,7 @@ if (!workspace || !scriptName) {
 
 try {
   const dockerCmd = 'docker run --platform linux/amd64 --rm --network=\'host\' -v .:/app docker-test-postbuild sh -c '
-    + '"yarn install && yarn build && yarn test:e2e:docker:install && yarn workspace'
+    + '"yarn test:e2e:docker:install && yarn workspace'
     + ` ${workspace} ${scriptName} ${project}"`;
 
   // Execute the Docker command
