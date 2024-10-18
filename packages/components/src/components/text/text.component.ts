@@ -21,7 +21,7 @@ import { DEFAULTS } from './text.constants';
  * @tagname mdc-text
  * @slot - Default slot for text content
  *
- * @cssPart text - The text element
+ * @csspart text - The text element
  */
 class Text extends Component {
   /**

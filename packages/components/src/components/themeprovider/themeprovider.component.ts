@@ -19,7 +19,7 @@ import styles from './themeprovider.styles';
  *
  * @tagname mdc-themeprovider
  *
- * @slot default - children
+ * @slot - children
  *
  * @cssproperty --mdc-themeprovider-color-default - Option to override the default color,
  * default: color-theme-text-primary-normal
