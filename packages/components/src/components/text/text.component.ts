@@ -66,7 +66,19 @@ class Text extends Component {
    * Specifies the HTML tag name for the text element. The default tag name is `p`.
    * This attribute is optional. When set, it changes the tag name of the text element.
    *
-   * Acceptable values include: 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'small', 'span', 'div', 'section'.
+   * Acceptable values include:
+   *
+   * - 'h1'
+   * - 'h2'
+   * - 'h3'
+   * - 'h4'
+   * - 'h5'
+   * - 'h6'
+   * - 'p'
+   * - 'small'
+   * - 'span'
+   * - 'div'
+   * - 'section'
    *
    * For instance, setting this attribute to `h2` will render the text element as an `h2` element.
    * Note that the styling is determined by the `type` attribute.
