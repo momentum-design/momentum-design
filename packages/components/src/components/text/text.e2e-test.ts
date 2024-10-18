@@ -3,7 +3,6 @@ import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import { VALUES } from './text.constants';
 import { FontType } from './text.types';
-import { getAriaLevel, isHeading } from './text.utils';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -58,16 +57,9 @@ test.describe('mdc-text', () => {
        * ATTRIBUTES
        */
       await test.step('attributes', async () => {
-        if (isHeading(textType)) {
-          await test.step('attribute role=heading should be present on component if type is heading', async () => {
-            expect(await text.getAttribute('role')).toBe('heading');
-          });
-
-          await test.step('attribute aria-level should be present on component if type is heading', async () => {
-            const expectedLevel = getAriaLevel(textType);
-            expect(await text.getAttribute('aria-level')).toBe(expectedLevel);
-          });
-        }
+        await test.step('attribute type should be present on component', async () => {
+          expect(await text.getAttribute('type')).toBe(textType);
+        });
       });
     });
   }
