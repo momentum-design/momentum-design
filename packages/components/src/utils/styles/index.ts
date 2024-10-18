@@ -12,9 +12,9 @@ const hostFitContentStyles = css`
 
 const hostFocusRingStyles = css`
   :host {
-    --mdc-focus-ring-inner-color: var(--mds-color-theme-text-primary-normal);
-    --mdc-focus-ring-middle-color: var(--mds-color-theme-outline-theme-normal);
-    --mdc-focus-ring-outer-color: lightblue;
+    --mdc-focus-ring-inner-color: var(--mds-color-theme-focus-0);
+    --mdc-focus-ring-middle-color: var(--mds-color-theme-focus-1);
+    --mdc-focus-ring-outer-color: var(--mds-color-theme-focus-2);
 
     --mdc-focus-ring-inner-width: 0.125rem;
     --mdc-focus-ring-middle-width: 0.125rem;
@@ -26,13 +26,13 @@ const hostFocusRingStyles = css`
     --mdc-focus-ring-z-index: 1; 
   }
 
-  :host([focusRingVisible]) {
+  :host(.focus-ring-visible) {
     position: relative;
     outline: var(--mdc-focus-ring-inner-width) solid var(--mdc-focus-ring-inner-color);
     z-index: var(--mdc-focus-ring-z-index)
   }
 
-  :host([focusRingVisible])::before {
+  :host(.focus-ring-visible)::before {
     content: "";
     position: absolute;
     top: calc(-1 * var(--mdc-focus-ring-middle-offset));    
@@ -43,7 +43,7 @@ const hostFocusRingStyles = css`
     border-radius: inherit;
   }
 
-  :host([focusRingVisible])::after {
+  :host(.focus-ring-visible)::after {
     content: "";
     position: absolute;
     top: calc(-1 * var(--mdc-focus-ring-outer-offset));      
