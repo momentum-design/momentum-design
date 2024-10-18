@@ -1,8 +1,12 @@
-import { LitElement } from 'lit';
+import { CSSResult, LitElement } from 'lit';
+import styles from './component.styles';
 
 /**
  * Core Component class to ultimately be inherited by all Web Components within
  * this package.
+ *
+ * LitElement defines class and style automatically to allow passing in styling
+ * overrides. We are keeping those to allow for further customization.
  *
  * @public
  */
@@ -41,6 +45,11 @@ class Component extends LitElement {
 
     customElements.define(namespace, this as any);
   }
+
+  /**
+   * Styles associated with the Base Component.
+   */
+  public static override styles: Array<CSSResult> = [styles];
 }
 
 export default Component;

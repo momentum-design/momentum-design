@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './avatar.styles';
@@ -11,7 +11,6 @@ import { DEFAULTS, LENGTH_UNIT } from './avatar.constants';
  *
  * @summary This is MyElement
  *
- * @tag mdc-avatar
  * @tagname mdc-avatar
  */
 class Avatar extends Component {
@@ -28,14 +27,14 @@ class Avatar extends Component {
    * Scale of the avatar
    */
   @property({ type: Number })
-  scale?: number = DEFAULTS.SCALE;
+  size?: number = DEFAULTS.SIZE;
 
   /**
    * Updates the size by setting the width and height
    */
   private updateSize() {
-    if (this.scale) {
-      const value = `${this.scale}${LENGTH_UNIT}`;
+    if (this.size) {
+      const value = `${this.size}${LENGTH_UNIT}`;
       this.style.width = value;
       this.style.height = value;
     }
@@ -44,7 +43,7 @@ class Avatar extends Component {
   override updated(changedProperties: Map<string, any>) {
     super.updated(changedProperties);
 
-    if (changedProperties.has('scale')) {
+    if (changedProperties.has('size')) {
       this.updateSize();
     }
   }
@@ -68,7 +67,7 @@ class Avatar extends Component {
     return html`${content}`;
   }
 
-  public static override styles = styles;
+  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
 export default Avatar;

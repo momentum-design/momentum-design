@@ -1,33 +1,25 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import { THEME_NAMES } from './themeprovider.constants';
-import type { ThemeName } from './themeprovider.types';
-import utils from './themeprovider.utils';
+import CONSTANTS from '../../../config/playwright/setup/constants';
 
-test.beforeEach(async ({ componentsPage, theme }) => {
-  const themeClass = utils.getFullQualifiedTheme(theme);
-  await componentsPage.mount({
-    html: `
-    <mdc-themeprovider class="themeWrapper" id="local" theme="${themeClass}">
-      <p>Current theme: ${themeClass}</p>
-      <div>
-        <div class="colorBox" style="background: var(--mds-color-theme-text-accent-normal);"></div>
-        <div class="colorBox" style="background: var(--mds-color-theme-text-warning-normal);"></div>
-        <div class="colorBox" style="background: var(--mds-color-theme-background-alert-success-normal);"></div>
-      </div>
-    </mdc-themeprovider>
-      `,
-  });
-});
+type TestToRunArgs = {
+  componentsPage: ComponentsPage;
+  theme?: string;
+  themeName: string;
+  type: string;
+  expectedNestedTheme: string;
+  browserName: string;
+};
 
-const testToRun = async (componentsPage: ComponentsPage, theme: ThemeName) => {
+const testToRun = async ({
+  componentsPage,
+  theme,
+  themeName,
+  type,
+  expectedNestedTheme,
+  browserName,
+}: TestToRunArgs) => {
   const themeprovider = componentsPage.page.locator('mdc-themeprovider#local');
-
-  // get fully qualified theme
-  const themeClass = utils.getFullQualifiedTheme(theme);
-  const oppositeThemeClass = themeClass.includes('darkWebex')
-    ? utils.getFullQualifiedTheme('lightWebex')
-    : utils.getFullQualifiedTheme('darkWebex');
 
   // initial check for the themeprovider be visible on the screen:
   await themeprovider.waitFor();
@@ -36,52 +28,132 @@ const testToRun = async (componentsPage: ComponentsPage, theme: ThemeName) => {
    * ACCESSIBILITY
    */
   await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('theme-provider-default');
+    await componentsPage.accessibility.checkForA11yViolations(`mdc-themeprovider-${themeName}-${type}`, true);
   });
 
   /**
    * VISUAL REGRESSION
    */
-  await test.step('visual-regression', async () => {
-    await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot(`mdc-themeprovider-${theme}`, {
-        element: themeprovider,
+  // skipping visual regression for firefox and webkit due to flakiness
+  if (['chromium'].includes(browserName)) {
+    await test.step('visual-regression', async () => {
+      await test.step('matches screenshot of element', async () => {
+        let screenshotName = `mdc-themeprovider-${themeName}-${type}`;
+
+        // if theme is undefined, we expect the default theme to be darkWebex
+        if (theme === undefined) {
+          screenshotName = 'mdc-themeprovider-darkWebex-standalone';
+        }
+        await componentsPage.visualRegression.takeScreenshot(screenshotName);
       });
     });
-  });
+  }
 
   /**
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
-    await test.step('attribute theme should be present on component by default', async () => {
-      expect(await themeprovider.getAttribute('theme')).toBe(themeClass);
+    await test.step('attribute themeclass should be present on component by default', async () => {
+      expect(await themeprovider.getAttribute('themeclass')).toBe(theme || 'mds-theme-stable-darkWebex');
     });
 
-    await test.step('corresponding theme class should be present on component by default', async () => {
-      expect(await themeprovider.getAttribute('class')).toContain(themeClass);
-      expect(await themeprovider.getAttribute('class')).not.toContain(oppositeThemeClass);
+    await test.step('corresponding class should be present on component by default', async () => {
+      expect(await themeprovider.getAttribute('class')).toContain(theme || 'mds-theme-stable-darkWebex');
     });
+
+    if (type === 'nested') {
+      const nestedThemeProvider = componentsPage.page.locator('mdc-themeprovider#nested');
+      await test.step('attribute themeclass should be set to the expected nested theme', async () => {
+        expect(await nestedThemeProvider.getAttribute('themeclass')).toBe(expectedNestedTheme);
+      });
+
+      await test.step('corresponding class should be set to the expected nested theme class', async () => {
+        expect(await nestedThemeProvider.getAttribute('class')).toContain(expectedNestedTheme);
+      });
+    }
   });
 };
 
-// test.describe('mdc-themeprovider', () => {
-//   test.use({
-//     theme: THEME_NAMES.DARK_WEBEX,
-//   });
+test.describe.parallel('mdc-themeprovider', () => {
+  [
+    {
+      theme: CONSTANTS.THEME_CLASSES.LIGHT_WEBEX,
+      themeName: 'lightWebex',
+      type: 'standalone',
+    },
+    {
+      theme: CONSTANTS.THEME_CLASSES.DARK_WEBEX,
+      themeName: 'darkWebex',
+      type: 'standalone',
+    },
+    {
+      theme: CONSTANTS.THEME_CLASSES.LIGHT_WEBEX,
+      themeName: 'lightWebex',
+      type: 'nested',
+    },
+    {
+      theme: CONSTANTS.THEME_CLASSES.DARK_WEBEX,
+      themeName: 'darkWebex',
+      type: 'nested',
+    },
+    {
+      theme: undefined,
+      themeName: 'undefined',
+      type: 'error case',
+    },
+    {
+      theme: 'a-other-theme-which-does-not-exist',
+      themeName: 'a-other-theme-which-does-not-exist',
+      type: 'error case',
+    },
+  ].forEach(({ theme, themeName, type }) => {
+    test.describe(`${type} tests`, () => {
+      const oppositeTheme = theme === 'mds-theme-stable-darkWebex'
+        ? 'mds-theme-stable-lightWebex' : 'mds-theme-stable-darkWebex';
 
-//   test('dark', async ({ componentsPage, theme }) => {
-//     await testToRun(componentsPage, theme);
-//   });
-// });
+      test.use({
+        theme: theme as any,
+      });
 
-test.describe('mdc-themeprovider', () => {
-  test.use({
-    theme: THEME_NAMES.LIGHT_WEBEX,
-  });
+      test.beforeEach(async ({ componentsPage, theme }) => {
+        const renderThemeProvider = (children: string = '') => `
+            <mdc-themeprovider class="themeWrapper" id="local" themeclass="${theme}">
+              <mdc-subcomponent theme-label-prefix="Theme: "></mdc-subcomponent>
+              <div class="colorBox" style="background: var(--mds-color-theme-text-accent-normal);"></div>
+              <div class="colorBox" style="background: var(--mds-color-theme-text-warning-normal);"></div>
+              <div class="colorBox" style="background: var(--mds-color-theme-background-alert-success-normal);"></div>
+              ${children}
+            </mdc-themeprovider>
+            `;
 
-  // TODO: fix e2e test
-  test.fixme('light', async ({ componentsPage, theme }) => {
-    await testToRun(componentsPage, theme);
+        if (type === 'nested') {
+          await componentsPage.mount({
+            html: renderThemeProvider(`
+              <mdc-themeprovider class="nestedThemeWrapper" id="nested" themeclass="${oppositeTheme}">
+                <mdc-subcomponent theme-label-prefix="Nested Theme: "></mdc-subcomponent>
+                <div class="colorBox" style="background: var(--mds-color-theme-text-accent-normal);"></div>
+                <div class="colorBox" style="background: var(--mds-color-theme-text-warning-normal);"></div>
+                <div class="colorBox" style="background: var(--mds-color-theme-background-alert-success-normal);"></div>
+              </mdc-themeprovider>
+              `),
+          });
+        } else {
+          await componentsPage.mount({
+            html: renderThemeProvider(),
+          });
+        }
+      });
+
+      test(themeName, async ({ componentsPage, browserName }) => {
+        await testToRun({
+          componentsPage,
+          theme,
+          themeName,
+          type,
+          expectedNestedTheme: oppositeTheme,
+          browserName,
+        });
+      });
+    });
   });
 });

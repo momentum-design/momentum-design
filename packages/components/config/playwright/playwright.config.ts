@@ -1,14 +1,14 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
 import type { GitHubActionOptions } from '@estruyf/github-actions-reporter';
 import { devices } from '@playwright/test';
-import { port } from '../esbuild/configs/e2e';
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
 // require('dotenv').config();
 
-const url = `http://localhost:${port}`;
+const url = 'http://localhost:4000';
 
 const githubActionsReporterOptions: GitHubActionOptions = {
   title: 'Playwright E2E Test results',
@@ -41,7 +41,7 @@ const config: PlaywrightTestConfig = {
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? '50%' : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: process.env.CI ? [['html'], ['@estruyf/github-actions-reporter', githubActionsReporterOptions]] : 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -55,30 +55,30 @@ const config: PlaywrightTestConfig = {
     trace: process.env.CI ? 'retain-on-failure' : 'on',
   },
 
-  snapshotPathTemplate: '{testDir}/{testFileDir}/__screenshots__/{arg}{ext}',
+  snapshotPathTemplate: '{testDir}/{testFileDir}/__screenshots__/{projectName}/{arg}{ext}',
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'Google Chrome',
+      name: 'chrome',
       use: {
         ...devices['Desktop Chrome'],
         channel: 'chrome',
       },
     },
-    // {
-    //   name: 'firefox',
-    //   use: {
-    //     ...devices['Desktop Firefox'],
-    //   },
-    // },
+    {
+      name: 'firefox',
+      use: {
+        ...devices['Desktop Firefox'],
+      },
+    },
 
-    // {
-    //   name: 'webkit',
-    //   use: {
-    //     ...devices['Desktop Safari'],
-    //   },
-    // },
+    {
+      name: 'webkit',
+      use: {
+        ...devices['Desktop Safari'],
+      },
+    },
 
     /* Test against mobile viewports. */
     // {
@@ -95,12 +95,12 @@ const config: PlaywrightTestConfig = {
     // },
 
     /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: {
-    //     channel: 'msedge',
-    //   },
-    // },
+    {
+      name: 'msedge',
+      use: {
+        channel: 'msedge',
+      },
+    },
   ],
 
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
@@ -110,8 +110,10 @@ const config: PlaywrightTestConfig = {
   webServer: {
     command: 'yarn test:e2e:setup',
     url,
+    stdout: 'pipe',
+    stderr: 'pipe',
     timeout: 240 * 1000,
-    reuseExistingServer: true,
+    reuseExistingServer: !process.env.CI,
   },
 };
 

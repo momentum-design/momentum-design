@@ -1,91 +1,114 @@
-import { property } from 'lit/decorators.js';
-import { DEFAULTS, THEMES } from './themeprovider.constants';
+import { property, state } from 'lit/decorators.js';
+import { CSSResult } from 'lit';
+import { DEFAULTS } from './themeprovider.constants';
 import { Provider } from '../../models';
 import ThemeProviderContext from './themeprovider.context';
 import styles from './themeprovider.styles';
-import type { Theme } from './themeprovider.types';
 
 /**
- * ThemeProvider component, which sets the theme css variables
- * for the child dom nodes and allows to be consumed from sub components
+ * ThemeProvider component, which sets the passed in themeclass as class.
+ * If the themeclass switches, the existing themeclass will be removed as a class
+ * and the new themeclass will be added.
+ *
+ * CSS variables defined in the themeclass will be used for the styling of child dom nodes.
+ *
+ * Themeclass context can be be consumed from Lit child components
  * (see providerUtils.consume for how to consume)
  *
- * ThemeProvider also includes the different font faces available
- * for Text components.
+ * ThemeProvider also includes basic font defaults for text.
  *
- * @tag mdc-themeprovider
  * @tagname mdc-themeprovider
+ *
+ * @slot default - children
+ *
+ * @cssproperty --mdc-themeprovider-color-default - Option to override the default color,
+ * default: color-theme-text-primary-normal
+ * @cssproperty --mdc-themeprovider-font-family - Option to override the font family,
+ * default: `Momentum` (from momentum-design/fonts)
+ * @cssproperty --mdc-themeprovider-font-weight - Option to override the font weight, default: `400`
+ * @cssproperty --mdc-themeprovider-letter-spacing-adjustment - Option to override the default letter-spacing,
+ * default: `-0.25px` (this is to match the old CiscoSans)
  */
 class ThemeProvider extends Provider<ThemeProviderContext> {
   constructor() {
-    // initialise the context by running the Provider constructor:
     super({
       context: ThemeProviderContext.context,
-      initialValue: new ThemeProviderContext(DEFAULTS.THEME),
+      initialValue: new ThemeProviderContext(DEFAULTS.THEMECLASS),
     });
   }
 
+  /**
+   * Context object of the ThemeProvider, to be consumed by child components
+   */
   public static get Context() {
     return ThemeProviderContext.context;
   }
 
   /**
-   * Available themes to switch to
-   *
-   * Has to be a space separated string, like className
-   * e.g.: `mds-theme-stable-darkWebex mds-theme-stable-lightWebex`
+   * To keep track of the current theme class
+   * @internal
    */
-  @property({ type: String })
-  themes: string = THEMES.join(' ');
+  @state()
+  private currentThemeClass?: string;
 
   /**
-   * Current theme attribute
+   * Current theme class
    *
    * Has to be fully qualified, such that
-   * the theme name matches the className of the respective
+   * the theme class matches the class of the respective
    * theme stylesheet
+   *
+   * Default: 'mds-theme-stable-darkWebex'
    */
   @property({ type: String })
-  theme: Theme = DEFAULTS.THEME;
+  themeclass: string = DEFAULTS.THEMECLASS;
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+
+    // Set the default typography class
+    this.classList.add(DEFAULTS.TYPOGRAPHYCLASS);
+  }
 
   protected override updated(changedProperties: Map<string, any>) {
     super.updated(changedProperties);
 
-    if (changedProperties.has('theme')) {
-      this.updateActiveThemeClass();
+    if (changedProperties.has('themeclass')) {
+      this.setThemeInClassList();
+      this.currentThemeClass = this.themeclass;
     }
   }
 
   /**
    * Update all observing components of this
-   * provider to update the theme
+   * provider to update the themeclass
+   *
+   * Is called on every re-render, see Provider class
    */
   protected updateContext(): void {
-    let shouldUpdateConsumers = false;
+    if (this.context.value.themeclass !== this.themeclass) {
+      this.context.value.themeclass = this.themeclass;
 
-    if (this.context.value.theme !== this.theme) {
-      this.context.value.theme = this.theme;
-
-      shouldUpdateConsumers = true;
-    }
-
-    if (shouldUpdateConsumers) {
       this.context.updateObservers();
     }
   }
 
   /**
-   * Function to update the active theme classname to update the theme tokens
+   * Function to update the active theme classnames to update the theme tokens
    * as CSS variables on the web component.
    */
-  private updateActiveThemeClass() {
+  private setThemeInClassList() {
     // remove all existing theme classes from the classList:
-    this.classList.remove(...this.themes.split(' '));
+    if (this.currentThemeClass) {
+      this.classList.remove(...this.currentThemeClass.split(' '));
+    }
     // add current theme class to classList:
-    this.classList.add(this.theme);
+    if (this.themeclass) {
+      this.classList.add(...this.themeclass.split(' '));
+    }
   }
 
-  public static override styles = styles;
+  public static override styles: Array<CSSResult> = [...Provider.styles, ...styles];
 }
 
 export default ThemeProvider;

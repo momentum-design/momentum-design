@@ -4,6 +4,8 @@ const SD_TRANSFORMS = {
   ATTRIBUTE_CTI: 'attribute/cti',
   NAME_CTI_KABAB: 'name/cti/kebab',
   NAME_CTI_CAMEL: 'name/cti/camel',
+  RESOLVE_MATH: 'ts/resolveMath',
+  PX_TO_REM: 'size/pxToRem',
 };
 
 const LOCAL_TRANSFORMS = {

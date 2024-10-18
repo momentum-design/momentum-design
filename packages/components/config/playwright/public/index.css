@@ -14,7 +14,7 @@ main {
 #root {
     height: 100%;
     width: 100%;
-    background: var(--mds-color-theme-background-solid-primary-normal);
+    background: var(--mds-color-theme-background-gradient-primary-normal);
 }
 
 .themeWrapper {
@@ -22,8 +22,18 @@ main {
     flex-direction: column;
     width: calc(30%);
     height: auto;
-    background: var(--mds-color-theme-background-solid-primary-normal);
-    color: var(--mds-color-theme-text-primary-normal);
+    background: var(--mds-color-theme-background-gradient-primary-normal);
+    padding: 10px;
+    border: 1px solid var(--mds-color-theme-text-primary-normal)
+}
+
+.nestedThemeWrapper {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 20px);
+    height: auto;
+    background: var(--mds-color-theme-background-gradient-primary-normal);
     padding: 10px;
     border: 1px solid var(--mds-color-theme-text-primary-normal)
 }

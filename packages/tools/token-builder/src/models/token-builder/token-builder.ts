@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import StyleDictionary from 'style-dictionary';
+import { registerTransforms } from '@tokens-studio/sd-transforms';
 
 import {
   Logger,
@@ -12,7 +13,7 @@ import {
 } from '@momentum-design/telemetry';
 import { SomeJSONSchema } from 'ajv/dist/types/json-schema';
 import { CONSTANTS, Config as ExternalConfig } from '../../common';
-import { ElevationTransform } from '../../transforms';
+import { ElevationTransform, PxToRemTransform } from '../../transforms';
 import { IOSWebexFormat, JsonMinimalFormat } from '../../formats';
 import Dictionary from '../dictionary';
 
@@ -57,6 +58,10 @@ class TokenBuilder {
       })
       .then(() => {
         const configObj = this.config.config as ExternalConfig;
+        registerTransforms(StyleDictionary, {
+          expand: { composition: true, typography: true, border: true, shadow: true },
+          excludeParentKeys: false,
+        });
 
         configObj.formats.forEach((format) => {
           if (CONSTANTS.FORMATS[format]?.TRANSFORMS) {
@@ -64,13 +69,16 @@ class TokenBuilder {
             CONSTANTS.FORMATS[format].TRANSFORMS?.filter((transform) => Object.keys(CONSTANTS.LOCAL_TRANSFORMS).includes(transform))
               .forEach((transformKey) => {
                 const transformName = CONSTANTS.TRANSFORMS[transformKey];
-                let transform: ElevationTransform;
+                let transform: ElevationTransform | PxToRemTransform;
                 switch (transformName) {
                   case CONSTANTS.LOCAL_TRANSFORMS.MD_ELEVATION:
                     transform = new ElevationTransform();
                     StyleDictionary.registerTransform(transform.sdConfig);
                     break;
-
+                  case CONSTANTS.LOCAL_TRANSFORMS.PX_TO_REM:
+                    transform = new PxToRemTransform();
+                    StyleDictionary.registerTransform(transform.sdConfig);
+                    break;
                   default:
                 }
               });

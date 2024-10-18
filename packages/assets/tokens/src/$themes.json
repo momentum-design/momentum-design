@@ -318,9 +318,9 @@
       "color.gradient.lavender.dark.primary.1": "S:585c215b92622fdf7a2fcbec3b46ae0ca65092fe,",
       "color.gradient.lavender.dark.secondary.0": "S:41f7ec29cabb45f1fe30f77436b6fda875abfac5,",
       "color.gradient.lavender.dark.secondary.1": "S:c97ea44216fa494606f74d7c0ebcd78b830bce64,",
-      "apps.body.small.regular": "S:8ee05063d009d88e3daf4bd93bd08f104e6be286,",
-      "apps.body.small.medium": "S:94b5e66522a0ea6317d1b3a715d7f34de4151613,",
-      "apps.body.small.bold": "S:8c9122aea157f6ef4ca47dfab83eca04a83d07a6,"
+      "font.apps.body.small.regular": "S:8ee05063d009d88e3daf4bd93bd08f104e6be286,",
+      "font.apps.body.small.medium": "S:94b5e66522a0ea6317d1b3a715d7f34de4151613,",
+      "font.apps.body.small.bold": "S:8c9122aea157f6ef4ca47dfab83eca04a83d07a6,"
     },
     "selectedTokenSets": {
       "core/value": "enabled"

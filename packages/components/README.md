@@ -5,8 +5,7 @@
 ## Overview
 
 This package is **Work In Progress** - there is no guarantee for consistency, stability till properly released.
-There will be breaking changes coming up - it is not recommended to consume this package in this early stage.
 
 ## Consumption
 
-To be provided once available.
+Visit the [Storybook link](https://momentum-design.github.io/momentum-design/en/components/) to learn about the available components.
