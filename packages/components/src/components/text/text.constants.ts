@@ -1,27 +1,59 @@
 import utils from '../../utils/tag-name';
-import type { FontType } from './text.types';
+import type { FontType, ValidTextTags } from './text.types';
 
 const TAG_NAME = utils.constructTagName('text');
+const PART_NAME = 'text';
 
-const DEFAULTS = {
-  TYPE: 'body-regular' as const,
-};
-
-const VALUES: {TYPE: Array<FontType>} = {
+const VALUES: {TYPE: Array<FontType>, TAGNAME: Array<ValidTextTags>} = {
   TYPE: [
-    'heading-1',
-    'heading-2',
-    'heading-3',
-    'heading-4',
-    'heading-5',
-    'heading-6',
-    'heading-7',
-    'body-large',
-    'body-regular',
-    'body-small',
-    'image-title',
-    'label',
+    'body-small-regular',
+    'body-small-medium',
+    'body-small-bold',
+    'body-midsize-regular',
+    'body-midsize-medium',
+    'body-midsize-bold',
+    'body-large-regular',
+    'body-large-medium',
+    'body-large-bold',
+    'body-small-regular-underline',
+    'body-small-medium-underline',
+    'body-midsize-regular-underline',
+    'body-midsize-medium-underline',
+    'body-large-regular-underline',
+    'body-large-medium-underline',
+    'heading-small-regular',
+    'heading-small-medium',
+    'heading-small-bold',
+    'heading-midsize-regular',
+    'heading-midsize-medium',
+    'heading-midsize-bold',
+    'heading-large-regular',
+    'heading-large-medium',
+    'heading-large-bold',
+    'heading-xlarge-regular',
+    'heading-xlarge-medium',
+    'heading-xlarge-bold',
+    'headline-small-light',
+    'headline-small-regular',
+  ],
+  TAGNAME: [
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'p',
+    'small',
+    'span',
+    'div',
+    'section',
   ],
 };
 
-export { TAG_NAME, DEFAULTS, VALUES };
+const DEFAULTS = {
+  TAGNAME: 'p' as ValidTextTags,
+  TYPE: 'body-midsize-regular' as FontType,
+};
+
+export { TAG_NAME, DEFAULTS, VALUES, PART_NAME };
