@@ -82,7 +82,7 @@ and sets state and attributes once fetched successfully`},{kind:"method",name:"u
 
 Bundling icons will be up to the consumer of this component, such
 that only a url has to be passed in from which the icons will be
-fetched.`,name:"IconProvider",slots:[{description:"children",name:"default"}],members:[{kind:"field",name:"Context",privacy:"public",static:!0,description:"Context object of the IconProvider, to be consumed by child components",readonly:!0},{kind:"field",name:"url",type:{text:"string | undefined"},description:"Url of where icons will be fetched from",attribute:"url"},{kind:"field",name:"fileExtension",type:{text:"string | undefined"},description:"File extension of icons, default: 'svg'",attribute:"file-extension",reflects:!0},{kind:"field",name:"lengthUnit",type:{text:"string"},description:"Length unit used for sizing of icons, default: 'em'",attribute:"length-unit",reflects:!0},{kind:"field",name:"size",type:{text:"number | undefined"},default:"DEFAULTS.LENGTH_UNIT_SIZE[DEFAULTS.LENGTH_UNIT]",description:`The default size of the icon.
+fetched.`,name:"IconProvider",slots:[{description:"children",name:""}],members:[{kind:"field",name:"Context",privacy:"public",static:!0,description:"Context object of the IconProvider, to be consumed by child components",readonly:!0},{kind:"field",name:"url",type:{text:"string | undefined"},description:"Url of where icons will be fetched from",attribute:"url"},{kind:"field",name:"fileExtension",type:{text:"string | undefined"},description:"File extension of icons, default: 'svg'",attribute:"file-extension",reflects:!0},{kind:"field",name:"lengthUnit",type:{text:"string"},description:"Length unit used for sizing of icons, default: 'em'",attribute:"length-unit",reflects:!0},{kind:"field",name:"size",type:{text:"number | undefined"},default:"DEFAULTS.LENGTH_UNIT_SIZE[DEFAULTS.LENGTH_UNIT]",description:`The default size of the icon.
 If not set, it falls back to the size defined by the length unit.`,attribute:"size",reflects:!0},{kind:"method",name:"updateValuesInContext",privacy:"private"},{kind:"method",name:"updateContext",privacy:"protected",return:{type:{text:"void"}}}],attributes:[{name:"url",type:{text:"string | undefined"},description:"Url of where icons will be fetched from",fieldName:"url"},{name:"file-extension",type:{text:"string | undefined"},description:"File extension of icons, default: 'svg'",fieldName:"fileExtension"},{name:"length-unit",type:{text:"string"},description:"Length unit used for sizing of icons, default: 'em'",fieldName:"lengthUnit"},{name:"size",type:{text:"number | undefined"},default:"DEFAULTS.LENGTH_UNIT_SIZE[DEFAULTS.LENGTH_UNIT]",description:`The default size of the icon.
 If not set, it falls back to the size defined by the length unit.`,fieldName:"size"}],superclass:{name:"Provider",module:"/src/models"},tagName:"mdc-iconprovider",jsDoc:`/**
  * IconProvider component, which allows to be consumed from sub components
@@ -94,8 +94,8 @@ If not set, it falls back to the size defined by the length unit.`,fieldName:"si
  *
  * @tagname mdc-iconprovider
  *
- * @slot default - children
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"IconProvider",module:"components/iconprovider/iconprovider.component.js"}}]},{kind:"javascript-module",path:"components/text/text.component.js",declarations:[{kind:"class",description:"Text component for creating styled text elements.\nIt has to be mounted within the ThemeProvider to access color and font tokens.\n\nThe `type` attribute allows changing the text style.\nThe `tagname` attribute allows changing the tag name of the text element.\nThe default tag name is `p`.\n\nThe `tagname` attribute should be a valid HTML tag name.\nIf the `tagname` attribute is not a valid HTML tag name, the default tag name will be used.\n\nThe styling is applied based on the `type` attribute.",name:"Text",slots:[{description:"Default slot for text content",name:""}],members:[{kind:"field",name:"type",type:{text:"FontType"},privacy:"public",description:`Specifies the text style to be applied.
+ * @slot - children
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"IconProvider",module:"components/iconprovider/iconprovider.component.js"}}]},{kind:"javascript-module",path:"components/text/text.component.js",declarations:[{kind:"class",description:"Text component for creating styled text elements.\nIt has to be mounted within the ThemeProvider to access color and font tokens.\n\nThe `type` attribute allows changing the text style.\nThe `tagname` attribute allows changing the tag name of the text element.\nThe default tag name is `p`.\n\nThe `tagname` attribute should be a valid HTML tag name.\nIf the `tagname` attribute is not a valid HTML tag name, the default tag name will be used.\n\nThe styling is applied based on the `type` attribute.",name:"Text",cssParts:[{description:"The text element",name:"text"}],slots:[{description:"Default slot for text content",name:""}],members:[{kind:"field",name:"type",type:{text:"FontType"},privacy:"public",description:`Specifies the text style to be applied.
 
 Acceptable values include:
 
@@ -174,6 +174,8 @@ Acceptable values include:
  *
  * @tagname mdc-text
  * @slot - Default slot for text content
+ *
+ * @csspart text - The text element
  */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Text",module:"components/text/text.component.js"}}]},{kind:"javascript-module",path:"components/themeprovider/themeprovider.component.js",declarations:[{kind:"class",description:`ThemeProvider component, which sets the passed in themeclass as class.
 If the themeclass switches, the existing themeclass will be removed as a class
 and the new themeclass will be added.
@@ -183,7 +185,7 @@ CSS variables defined in the themeclass will be used for the styling of child do
 Themeclass context can be be consumed from Lit child components
 (see providerUtils.consume for how to consume)
 
-ThemeProvider also includes basic font defaults for text.`,name:"ThemeProvider",cssProperties:[{description:"Option to override the default color, default: color-theme-text-primary-normal",name:"--mdc-themeprovider-color-default"},{description:"Option to override the font family, default: `Momentum` (from momentum-design/fonts)",name:"--mdc-themeprovider-font-family"},{description:"Option to override the font weight, default: `400`",name:"--mdc-themeprovider-font-weight"},{description:"Option to override the default letter-spacing, default: `-0.25px` (this is to match the old CiscoSans)",name:"--mdc-themeprovider-letter-spacing-adjustment"}],slots:[{description:"children",name:"default"}],members:[{kind:"field",name:"Context",privacy:"public",static:!0,description:"Context object of the ThemeProvider, to be consumed by child components",readonly:!0},{kind:"field",name:"themeclass",type:{text:"string"},description:`Current theme class
+ThemeProvider also includes basic font defaults for text.`,name:"ThemeProvider",cssProperties:[{description:"Option to override the default color, default: color-theme-text-primary-normal",name:"--mdc-themeprovider-color-default"},{description:"Option to override the font family, default: `Momentum` (from momentum-design/fonts)",name:"--mdc-themeprovider-font-family"},{description:"Option to override the font weight, default: `400`",name:"--mdc-themeprovider-font-weight"},{description:"Option to override the default letter-spacing, default: `-0.25px` (this is to match the old CiscoSans)",name:"--mdc-themeprovider-letter-spacing-adjustment"}],slots:[{description:"children",name:""}],members:[{kind:"field",name:"Context",privacy:"public",static:!0,description:"Context object of the ThemeProvider, to be consumed by child components",readonly:!0},{kind:"field",name:"themeclass",type:{text:"string"},description:`Current theme class
 
 Has to be fully qualified, such that
 the theme class matches the class of the respective
@@ -213,7 +215,7 @@ Default: 'mds-theme-stable-darkWebex'`,fieldName:"themeclass"}],superclass:{name
  *
  * @tagname mdc-themeprovider
  *
- * @slot default - children
+ * @slot - children
  *
  * @cssproperty --mdc-themeprovider-color-default - Option to override the default color,
  * default: color-theme-text-primary-normal
