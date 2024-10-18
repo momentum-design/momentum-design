@@ -32,7 +32,7 @@ const meta: Meta = {
       options: ALLOWED_LENGTH_UNITS,
       control: { type: 'inline-radio' },
     },
-    ...disableControls(['Context', 'default']),
+    ...disableControls(['Context']),
   },
 };
 
