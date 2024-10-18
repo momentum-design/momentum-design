@@ -21,12 +21,12 @@ const renderAccessibility = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/icon',
+  title: 'Components/icon',
   tags: ['autodocs'],
   component: 'mdc-icon',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     ...disableControls(['--mdc-icon-fill-color']),
