@@ -6,7 +6,7 @@
     "npm": ">=8.0.0"
   },
   "type": "commonjs",
-  "main": "./dist/module/index.js",
+  "main": "./dist/index.js",
   "types": "./dist/types/index.d.ts",
   "files": [
     "./dist"
@@ -17,8 +17,9 @@
     "analyze:syntax": "tsc --noEmit",
     "analyze:postbuild": "echo \"script 'analyze:postbuild' has not been implemented\"",
     "analyze:prebuild": "yarn analyze:lint && yarn analyze:syntax",
-    "build": "yarn build:browser",
+    "build": "yarn build:browser && yarn build:types",
     "build:browser": "node ./esbuild.config.js",
+    "build:types": "tsc --emitDeclarationOnly",
     "clean": "yarn clean:dist",
     "clean:dist": "rimraf ./dist",
     "dev:prepare": "rimraf ./src/staticSite/public && ncp ./dist ./src/staticSite/public",
