@@ -40,7 +40,7 @@ export default meta;
 
 export const Primary: StoryObj = {
   args: {
-    type: 'body-midsize-regular',
+    type: 'body-large-regular',
     tagname: '',
     children: 'The quick brown fox jumps over the lazy dog',
   },
