@@ -64,7 +64,7 @@
     "test": "yarn test:prebuild && yarn test:postbuild",
     "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\"",
     "test:postbuild": "yarn test:e2e:docker:all",
-    "test:e2e:docker:all": "yarn docker:build && yarn docker:run @momentum-design/components test:e2e",
+    "test:e2e:docker:all": "yarn docker:build && yarn docker:run @momentum-design/components test:e2e text",
     "test:e2e:docker:install": "yarn test:e2e:install && yarn playwright install chrome",
     "test:e2e:docker:update-snapshot": "yarn docker:build && yarn docker:run @momentum-design/components test:e2e --update-snapshots",
     "test:e2e": "playwright test --config './config/playwright/playwright.config.ts'",
