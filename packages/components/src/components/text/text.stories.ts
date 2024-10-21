@@ -10,12 +10,12 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/text',
+  title: 'Components/text',
   tags: ['autodocs'],
   component: 'mdc-text',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     children: {
