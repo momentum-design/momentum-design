@@ -2614,7 +2614,7 @@
       },
       "focus": {
         "0": {
-          "value": "{color.core.black-alpha.100}",
+          "value": "{color.core.white-alpha.100}",
           "type": "color",
           "description": "Used for focus ring effect"
         },
