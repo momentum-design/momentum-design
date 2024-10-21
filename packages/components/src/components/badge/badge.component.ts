@@ -1,44 +1,22 @@
 import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
-import { StyleInfo, styleMap } from 'lit/directives/style-map.js';
 import { Component } from '../../models';
-import { DEFAULTS, WARNING_ICON_NAME } from './badge.constants';
+import { DEFAULTS } from './badge.constants';
 import styles from './badge.styles';
-import type { BadgeType } from './badge.types';
+import type { BadgeType, BadgeVariant } from './badge.types';
 
 /**
- * @slot - This is a default/unnamed slot
- *
- * @summary This is MyElement
- *
  * @tagname mdc-badge
  */
 class Badge extends Component {
   /**
    * Type of the badge
-   * Can be `regular`, `icon`, `text` or `warning`
+   * Can be `notification`, `icon`, `counter` and `text`
    *
-   * Default: `regular`
+   * Default: `notification`
    */
   @property({ type: String, reflect: true })
   type?: BadgeType = DEFAULTS.TYPE;
-
-  /**
-   * Scale of the badge (works in combination with length unit)
-   *
-   * Default: `1`
-   */
-  @property({ type: Number })
-  size?: number = DEFAULTS.SIZE;
-
-  /**
-   * Length unit attribute for scale
-   *
-   * Default: `rem`
-   */
-  @property({ type: String, attribute: 'length-unit' })
-  lengthUnit?: string = DEFAULTS.LENGTH_UNIT;
 
   /**
    * If `type` is set to `icon`, attribute `iconName` can
@@ -56,63 +34,40 @@ class Badge extends Component {
   @property({ type: String })
   text?: string;
 
-  private updateSize() {
-    // if (this.scale && this.lengthUnit) {
-    //   const value = `${this.scale}${this.lengthUnit}`;
-    //   this.style.height = value;
-    //   if (this.type !== 'text') {
-    //     this.style.width = value;
-    //   }
-    // }
-  }
+  /**
+   * badge variant
+   */
+  @property({ type: String })
+  variant?: BadgeVariant;
 
-  override updated(changedProperties: Map<string, any>) {
-    super.updated(changedProperties);
-    if (changedProperties.has('size') || changedProperties.has('lengthUnit')) {
-      this.updateSize();
+  @property({ type: Number })
+  counter?: number;
+
+  @property({ type: Number, attribute: 'max-counter' })
+  maxCounter?: number;
+
+  @property({ type: Boolean })
+  overlay?: boolean;
+
+  /**
+   * Aria-label attribute to be set for accessibility
+   */
+  @property({ type: String, attribute: 'aria-label' })
+  override ariaLabel: string | null = null;
+
+  private getBadgeContentBasedOnType() {
+    switch (this.type) {
+      default:
+        return html``;
     }
-  }
-
-  iconTemplate() {
-    return html`<div class="mdc-badge-icon-container">
-      <mdc-icon name=${ifDefined(this.iconName)} size="100" length-unit="%"></mdc-icon>
-    </div>`;
-  }
-
-  textTemplate() {
-    return html`${this.text}`;
-  }
-
-  warningTemplate() {
-    return html` <mdc-icon name="${WARNING_ICON_NAME}" class="mdc-badge-warning"></mdc-icon> `;
   }
 
   public override render() {
-    let content;
-    const size = `${this.size}${this.lengthUnit}`;
-    let sizeStyles: StyleInfo = { width: size, height: size };
-
-    switch (this.type) {
-      case 'regular':
-        content = html``;
-        break;
-      case 'icon':
-        content = this.iconTemplate();
-        break;
-      case 'text':
-        content = this.textTemplate();
-        // make width flexible when text -> only set the height:
-        sizeStyles = { height: sizeStyles.height };
-        break;
-      case 'warning':
-        content = this.warningTemplate();
-        break;
-      default:
-        content = html``;
-        break;
-    }
-
-    return html`<div class="mdc-badge-container" style=${styleMap(sizeStyles)}>${content}</div>`;
+    return html`
+      <div class="mdc-badge-container">
+        ${this.getBadgeContentBasedOnType()}
+      </div>
+    `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
