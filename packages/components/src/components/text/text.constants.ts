@@ -46,7 +46,6 @@ const VALUES: {TYPE: Array<FontType>, TAGNAME: Array<ValidTextTags>} = {
     'small',
     'span',
     'div',
-    'section',
   ],
 };
 
