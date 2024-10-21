@@ -1,21 +1,25 @@
 /* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import { VALUES } from './text.constants';
-import { FontType } from './text.types';
+import { DEFAULTS, VALUES } from './text.constants';
+import type { FontType, ValidTextTags } from './text.types';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
   type: FontType;
   children: any;
+  tagname?: ValidTextTags;
 };
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
-    <mdc-text type="${restArgs.type}">${restArgs.children}</mdc-text>
-      `,
+      <mdc-text
+        type="${restArgs.type}"
+        ${restArgs.tagname ? `tagname="${restArgs.tagname}"` : ''}
+      >${restArgs.children}</mdc-text>
+    `,
     clearDocument: true,
   });
   const text = componentsPage.page.locator('mdc-text');
@@ -24,6 +28,8 @@ const setup = async (args: SetupOptions) => {
 };
 
 const typesToTest: Array<FontType> = VALUES.TYPE;
+const tagnameToTest: Array<ValidTextTags> = VALUES.TAGNAME;
+const textContent = 'abcdefghijklmnopqrstuvwxyz1234567890';
 
 test.describe('mdc-text', () => {
   test.use({
@@ -34,7 +40,6 @@ test.describe('mdc-text', () => {
   });
   for (const textType of typesToTest) {
     test(textType, async ({ componentsPage }) => {
-      const textContent = 'abcdefghijklmnopqrstuvwxyz1234567890';
       const text = await setup({ componentsPage, type: textType, children: textContent });
 
       /**
@@ -60,6 +65,16 @@ test.describe('mdc-text', () => {
         await test.step('attribute type should be present on component', async () => {
           expect(await text.getAttribute('type')).toBe(textType);
         });
+      });
+    });
+  }
+
+  for (const tagname of tagnameToTest) {
+    test(tagname, async ({ componentsPage }) => {
+      const text = await setup({ componentsPage, type: DEFAULTS.TYPE, tagname, children: textContent });
+
+      await test.step('tagname should be present on component', async () => {
+        expect(await text.getAttribute('tagname')).toBe(tagname);
       });
     });
   }
