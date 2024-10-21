@@ -2611,6 +2611,32 @@
             "description": "linear-gradient(90deg, #932099 0%, #932099 90%, #932099 90%, #fd884e 0%)\n"
           }
         }
+      },
+      "focus": {
+        "0": {
+          "value": "{color.core.white-alpha.100}",
+          "type": "color",
+          "description": "Used for focus ring effect"
+        },
+        "1": {
+          "value": "{color.core.blue.60}",
+          "type": "color",
+          "description": "Used for focus ring effect"
+        },
+        "2": {
+          "value": "{color.core.blue.60}",
+          "type": "color",
+          "$extensions": {
+            "studio.tokens": {
+              "modify": {
+                "type": "alpha",
+                "value": "0.35",
+                "space": "lch"
+              }
+            }
+          },
+          "description": "Used for focus ring effect"
+        }
       }
     }
   }
