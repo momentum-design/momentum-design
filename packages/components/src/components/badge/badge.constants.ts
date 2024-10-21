@@ -2,10 +2,8 @@ import utils from '../../utils/tag-name';
 
 const TAG_NAME = utils.constructTagName('badge');
 
-const WARNING_ICON_NAME = 'warning-badge-filled';
-
 const DEFAULTS = {
-  TYPE: 'regular' as const,
+  TYPE: 'notification' as const,
   SIZE: 1,
   LENGTH_UNIT: 'rem',
 };
@@ -13,5 +11,4 @@ const DEFAULTS = {
 export {
   TAG_NAME,
   DEFAULTS,
-  WARNING_ICON_NAME,
 };
