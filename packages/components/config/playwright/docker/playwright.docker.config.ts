@@ -23,7 +23,7 @@ const githubActionsReporterOptions: GitHubActionOptions = {
  * See https://playwright.dev/docs/test-configuration.
  */
 const config: PlaywrightTestConfig = {
-  testDir: '../../src',
+  testDir: '../../../src',
   testMatch: /.*\.e2e-test\.ts/,
   /* Maximum time one test can run for. */
   timeout: 30 * 1000,
@@ -100,6 +100,26 @@ const config: PlaywrightTestConfig = {
       use: {
         channel: 'msedge',
       },
+    },
+  ],
+
+  /* Run your local dev server before starting the tests */
+  webServer: [
+    {
+      command: 'yarn test:e2e:setup',
+      url: 'http://localhost:4000',
+      stdout: 'pipe',
+      stderr: 'pipe',
+      timeout: 240 * 1000,
+      reuseExistingServer: !process.env.CI,
+    },
+    {
+      command: 'yarn test:e2e:docker:run',
+      url: 'http://localhost:3000',
+      stdout: 'pipe',
+      stderr: 'pipe',
+      timeout: 240 * 1000,
+      reuseExistingServer: !process.env.CI,
     },
   ],
 };

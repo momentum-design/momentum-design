@@ -18,8 +18,6 @@
     "build": "yarn workspaces foreach --topological-dev -p run build",
     "test": "NODE_ENV=test yarn workspaces foreach --topological-dev -p run test",
     "clean": "yarn workspaces foreach --topological-dev -p run clean",
-    "docker:build": "docker build --platform linux/amd64 -f ./config/docker/utils/Dockerfile.test.postbuild -t docker-test-postbuild .",
-    "docker:run": "node ./config/docker/utils/docker.run.js",
     "publish:npmjs": "yarn workspaces foreach --topological-dev -p run publish:npmjs",
     "prepare:components": "yarn workspaces foreach -pR --topological-dev --from @momentum-design/components run build",
     "postinstall": "husky ./config/husky",

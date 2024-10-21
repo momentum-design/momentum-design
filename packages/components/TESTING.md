@@ -40,45 +40,82 @@ For the best local development experience, the following E2E setup testing is re
 
 1. In the terminal, run:
    ```bash
-     yarn component test:e2e:install # install all browsers for playwright to run on local
+     yarn components test:e2e:install # install all browsers for playwright to run on local
      # you don't have to install if you already have them
    ```
-2. Once the install completes, start run the test:
+2. Once the install completes, setup the webserver:
    ```bash
-     yarn component test:e2e:skip-snapshot # without snapshot (Recommended)
+     yarn components test:e2e:setup # setup server on localhost:4000
    ```
-   - OR to run everything including snapshot (Use Docker):
+3. Now you can start run the test:
    ```bash
-     yarn component yarn test:e2e:docker:all # with snapshot
-     # this only works if docker is installed
+     yarn components test:e2e:skip-snapshot # without snapshot 
+     # if you want to test the snapshot, please see Docker Testing
    ```
    - To run the tests in `headed mode`, run:
    ```bash
-     yarn component test:e2e:skip-snapshot -- --headed # without snapshot
+     yarn components test:e2e:skip-snapshot -- --headed # without snapshot
    ```
-3. To Run <strong>single</strong> E2E Test file, run:
+4. To Run <strong>single</strong> E2E Test file, run:
    ```bash
-     yarn component test:e2e:skip-snapshot XXX.e2e-test.ts # without snapshot
+     yarn components test:e2e:skip-snapshot XXX.e2e-test.ts # without snapshot
    ```
-4. To Run <strong>individual</strong> test in a testing file, run:
+5. To Run <strong>individual</strong> test in a testing file, run:
    ```bash
-     yarn component test:e2e:skip-snapshot -- './src/components/iconprovider/iconprovider.e2e-test.ts' -g 'mdc-IconmProvider nested'
+     yarn components test:e2e:skip-snapshot -- './src/components/iconprovider/iconprovider.e2e-test.ts' -g 'mdc-IconmProvider nested'
+   ```
+    - where the test file is `"./src/components/iconprovider/iconprovider.e2e-test.ts"`, while within the file, the test naming structure is `mdc-IconmProvider nested`.
+
+6. To Run test in <strong>specific</strong> browser, run:
+   ```bash
+     yarn components test:e2e:chrome # run on chrome whithout snapshots
+     yarn components test:e2e:firefox # run on firefox whithout snapshots
    ```
 
-   - where the test file is `"./src/components/iconprovider/iconprovider.e2e-test.ts"`, while within the file, the test naming structure is `mdc-IconmProvider nested`.
+### Docker Testing
+
+Follow the steps below to run E2E testing on Docker:
+
+1. You need to have docker installed on local.
+
+2. Pull latest docker plawright image to local:
+   ```bash
+     docker pull ghcr.io/momentum-design/momentum-design/docker-playwright:v.1.47.2
+     # docker image with all required playwright browser
+   ```
+3. Open a terminal to setup webserver:
+   ```bash
+     yarn components test:e2e:setup # setup server on localhost:4000
+   ```
+4. Open another terminal to run docker image:
+   ```bash
+     yarn components test:e2e:docker:run # run docker image on localhost:3000
+   ```
+5. Open another terminal to start run the test:
+   ```bash
+     yarn components test:e2e:docker # run all the e2e test
+     yarn components test:e2e:docker:update-snapshot # update snapshots
+   ```
+6. To Run <strong>single</strong> E2E Test file, run:
+   ```bash
+     yarn components test:e2e:docker XXX.e2e-test.ts 
+     yarn components test:e2e:docker:update-snapshot XXX.e2e-test.ts # update snapshots
+   ```
 
 #### Testing method
 
 ```bash
   # E2E test methods
-  yarn component test:e2e:skip-snapshot # you should run this on local, test are filter test base on snapshot condition check
-  yarn component test:e2e # the general playwright script for local and docker to run,
-  yarn component test:e2e:install # install all the browsers dependencies
-  yarn component test:e2e:chrome # runs all test on specific browser, without snapshot
-  yarn component test:e2e:report # shows the previous test report (also work for docker test)
+  yarn components test:e2e:skip-snapshot # you should run this on local, test are filter test base on snapshot condition check
+  yarn components test:e2e # the general playwright script for local to run
+  yarn components test:e2e:install # install all the browsers dependencies to local
+  yarn components test:e2e:chrome # runs all test on specific browser, without snapshot
+  yarn components test:e2e:report # shows the previous test report (also work for docker test)
 
-  yarn component test:e2e:docker:all # build and run all tests in docker (Only works if docker is installed)
-  yarn component test:e2e:docker:update-snapshot # build and update snapshots (Only works if docker is installed)
+  yarn components test:e2e:docker:build # build docker image that required for testing (can pull from GHCR)
+  yarn components test:e2e:docker:run # run docker image to run the test
+  yarn components test:e2e:docker # the general playwright script for docker to run (Follow Docker Testing Instruction)
+  yarn components test:e2e:docker:update-snapshot # build and update snapshots (Only works if docker is installed)
 ```
 
 #### Other ways of running tests
@@ -90,3 +127,22 @@ For the best local development experience, the following E2E setup testing is re
 
 Since Docker runs on the `amd64` architecture, using Docker on Mac with M chips may result in slower performance due to the emulation layer provided by Rosetta 2. For faster performance, it's recommended to run Docker in a native `amd64` environment or be aware of the potential delays when running locally on Mac.
 
+
+### Upload Latest Version of Docker Playwright Image
+1. You need to have docker installed on local.
+
+2. Set the version to latest playwright version and build the new image to local :
+   ```bash
+     "test:e2e:docker:build": "docker build --platform linux/amd64 -f ./config/playwright/docker/utils/Dockerfile.test.postbuild -t ghcr.io/momentum-design/momentum-design/docker-playwright:v1.47.2 ."
+     # replace the v1.47.2 to the latest version of playwright and run this script to build new image
+   ```
+3. After the build is done, login to the docker ghrc.io:
+   ```bash
+     docker login ghcr.io # login to docker with you github credentials
+   ```
+4. Now you can push the latest image to GHRC:
+   ```bash
+     docker push ghcr.io/momentum-design/momentum-design/docker-playwright:v1.47.2
+     # replace the v1.47.2 to the version you want to push
+   ```
+5. You can check the image that you push here [Docker-Playwright](https://github.com/orgs/momentum-design/packages/container/package/momentum-design%2Fdocker-playwright)

@@ -1,0 +1,11 @@
+FROM mcr.microsoft.com/playwright:v1.47.2-focal
+
+RUN npm install -g playwright@1.47.2
+
+RUN npx playwright install
+
+RUN npx playwright install chrome
+
+RUN npx playwright install msedge
+
+CMD ["npx", "playwright", "run-server", "--port", "3000", "--host", "0.0.0.0"]

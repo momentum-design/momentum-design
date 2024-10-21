@@ -344,21 +344,19 @@ jobs:
       - name: Synchronize Packages
         run: yarn
 
-      - name: Start Web Server
+      - name: Pull Docker Image
         run: |
           if [ ${{ matrix.package }} == '@momentum-design/components' ]; then
-            yarn workspace @momentum-design/components test:e2e:setup &
-
-            npx wait-on http://localhost:4000
+            docker pull ghcr.io/momentum-design/momentum-design/docker-playwright:v.1.47.2
           fi  
 
       - name: Test - Postbuild
         run: yarn workspace ${{ matrix.package }} test:postbuild
 
-      - name: Stop Web Server
+      - name: Stop Docker Server
         run: |
           if [ ${{ matrix.package }} == '@momentum-design/components' ]; then
-            kill $(lsof -t -i:4000)
+            kill $(lsof -t -i:3000)
           fi    
 
       - name: Upload Playwright Report

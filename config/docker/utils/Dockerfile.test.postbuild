@@ -1,9 +1,0 @@
-FROM mcr.microsoft.com/playwright:v1.45.3-focal
-
-WORKDIR /app
-
-RUN npm install -g corepack && corepack enable 
-
-COPY .yarnrc.yml .
-
-RUN corepack prepare yarn@stable --activate
