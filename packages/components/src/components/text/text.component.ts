@@ -78,7 +78,6 @@ class Text extends Component {
    * - 'small'
    * - 'span'
    * - 'div'
-   * - 'section'
    *
    * For instance, setting this attribute to `h2` will render the text element as an `h2` element.
    * Note that the styling is determined by the `type` attribute.
