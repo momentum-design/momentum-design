@@ -127,7 +127,24 @@ Acceptable values include:
 - 'heading-xlarge-medium'
 - 'heading-xlarge-bold'
 - 'headline-small-light'
-- 'headline-small-regular'`,attribute:"type",reflects:!0},{kind:"field",name:"tagname",type:{text:"ValidTextTags | undefined"},privacy:"public",description:"Specifies the HTML tag name for the text element. The default tag name is `p`.\nThis attribute is optional. When set, it changes the tag name of the text element.\n\nAcceptable values include: 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'small', 'span', 'div', 'section'.\n\nFor instance, setting this attribute to `h2` will render the text element as an `h2` element.\nNote that the styling is determined by the `type` attribute.",attribute:"tagname",reflects:!0}],attributes:[{name:"type",type:{text:"FontType"},description:`Specifies the text style to be applied.
+- 'headline-small-regular'`,attribute:"type",reflects:!0},{kind:"field",name:"tagname",type:{text:"ValidTextTags | undefined"},privacy:"public",description:`Specifies the HTML tag name for the text element. The default tag name is \`p\`.
+This attribute is optional. When set, it changes the tag name of the text element.
+
+Acceptable values include:
+
+- 'h1'
+- 'h2'
+- 'h3'
+- 'h4'
+- 'h5'
+- 'h6'
+- 'p'
+- 'small'
+- 'span'
+- 'div'
+
+For instance, setting this attribute to \`h2\` will render the text element as an \`h2\` element.
+Note that the styling is determined by the \`type\` attribute.`,attribute:"tagname",reflects:!0}],attributes:[{name:"type",type:{text:"FontType"},description:`Specifies the text style to be applied.
 
 Acceptable values include:
 
@@ -159,7 +176,24 @@ Acceptable values include:
 - 'heading-xlarge-medium'
 - 'heading-xlarge-bold'
 - 'headline-small-light'
-- 'headline-small-regular'`,fieldName:"type"},{name:"tagname",type:{text:"ValidTextTags | undefined"},description:"Specifies the HTML tag name for the text element. The default tag name is `p`.\nThis attribute is optional. When set, it changes the tag name of the text element.\n\nAcceptable values include: 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'small', 'span', 'div', 'section'.\n\nFor instance, setting this attribute to `h2` will render the text element as an `h2` element.\nNote that the styling is determined by the `type` attribute.",fieldName:"tagname"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-text",jsDoc:`/**
+- 'headline-small-regular'`,fieldName:"type"},{name:"tagname",type:{text:"ValidTextTags | undefined"},description:`Specifies the HTML tag name for the text element. The default tag name is \`p\`.
+This attribute is optional. When set, it changes the tag name of the text element.
+
+Acceptable values include:
+
+- 'h1'
+- 'h2'
+- 'h3'
+- 'h4'
+- 'h5'
+- 'h6'
+- 'p'
+- 'small'
+- 'span'
+- 'div'
+
+For instance, setting this attribute to \`h2\` will render the text element as an \`h2\` element.
+Note that the styling is determined by the \`type\` attribute.`,fieldName:"tagname"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-text",jsDoc:`/**
  * Text component for creating styled text elements.
  * It has to be mounted within the ThemeProvider to access color and font tokens.
  *
