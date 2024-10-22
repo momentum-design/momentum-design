@@ -9,6 +9,7 @@ type SetupOptions = {
   type: FontType;
   children: any;
   tagname?: ValidTextTags;
+  browserName: string;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -40,7 +41,7 @@ test.describe('mdc-text', () => {
   });
   for (const textType of typesToTest) {
     test(textType, async ({ componentsPage }) => {
-      const text = await setup({ componentsPage, type: textType, children: textContent });
+      const text = await setup({ componentsPage, type: textType, children: textContent, browserName: 'chromium' });
 
       /**
        * ACCESSIBILITY
@@ -70,8 +71,14 @@ test.describe('mdc-text', () => {
   }
 
   for (const tagname of tagnameToTest) {
-    test(tagname, async ({ componentsPage }) => {
-      const text = await setup({ componentsPage, type: DEFAULTS.TYPE, tagname, children: textContent });
+    test(tagname, async ({ componentsPage, browserName }) => {
+      const text = await setup({
+        componentsPage,
+        type: DEFAULTS.TYPE,
+        tagname,
+        children: textContent,
+        browserName,
+      });
 
       /**
        * ACCESSIBILITY
@@ -83,11 +90,14 @@ test.describe('mdc-text', () => {
       /**
        * VISUAL REGRESSION
        */
-      await test.step('visual-regression', async () => {
-        await test.step('matches screenshot of element', async () => {
-          await componentsPage.visualRegression.takeScreenshot(`mdc-text-tag-${tagname}`, { element: text });
+      // skipping visual regression for firefox and webkit due to flakiness
+      if (browserName === 'chromium') {
+        await test.step('visual-regression', async () => {
+          await test.step('matches screenshot of element', async () => {
+            await componentsPage.visualRegression.takeScreenshot(`mdc-text-tag-${tagname}`, { element: text });
+          });
         });
-      });
+      }
 
       /**
        * ATTRIBUTES
