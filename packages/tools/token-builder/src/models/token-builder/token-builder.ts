@@ -61,6 +61,9 @@ class TokenBuilder {
         registerTransforms(StyleDictionary, {
           expand: { composition: true, typography: true, border: true, shadow: true },
           excludeParentKeys: false,
+          'ts/color/modifiers': {
+            format: 'hex',
+          },
         });
 
         configObj.formats.forEach((format) => {
