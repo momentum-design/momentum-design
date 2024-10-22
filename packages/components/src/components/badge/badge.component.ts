@@ -1,10 +1,12 @@
 import { CSSResult, html, TemplateResult } from 'lit';
+import { styleMap } from 'lit-html/directives/style-map.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
 import { DEFAULTS } from './badge.constants';
 import styles from './badge.styles';
-import type { BadgeType, BadgeVariant } from './badge.types';
+import { BadgeType, BadgeVariant } from './badge.types';
 import '../icon';
 import '../text';
 
@@ -19,7 +21,7 @@ class Badge extends Component {
    * Default: `notification`
    */
   @property({ type: String, reflect: true })
-  type?: BadgeType = DEFAULTS.TYPE;
+  type: BadgeType = DEFAULTS.TYPE;
 
   /**
    * If `type` is set to `icon`, attribute `iconName` can
@@ -49,7 +51,7 @@ class Badge extends Component {
   @property({ type: Number, attribute: 'max-counter' })
   maxCounter: number = DEFAULTS.MAX_COUNTER;
 
-  @property({ type: String })
+  @property({ type: Boolean })
   overlay = false;
 
   /**
@@ -58,49 +60,91 @@ class Badge extends Component {
   @property({ type: String, attribute: 'aria-label' })
   override ariaLabel: string | null = null;
 
-  private getIconTypeBadgeHtml(): TemplateResult {
+  /**
+   * If `type` is set to `counter` and if `counter` is greater than `maxCounter`,
+   * then it will return a string the maxCounter value as string.
+   * Otherwise, it will return a string representation of `counter`.
+   * If `counter` is not a number, it will return an empty string.
+   */
+  private getCounterText(maxCounter: number, counter?: number): string {
+    if (counter === undefined || typeof counter !== 'number') {
+      return '';
+    }
+    return counter > maxCounter ? `${maxCounter}+` : `${counter}`;
+  }
+
+  /**
+   * Method to generate the badge icon and notification template.
+   * @param iconName name of the icon to be used.
+   * @param ariaLabel aria-label attribute for accessibility.
+   * @param variant variant of the badge.
+   * @param type type of the badge.
+   * @param overlay whether the badge should have an overlay.
+   * @returns the template result of the icon.
+   */
+  private getBadgeIcon(
+    iconName: string,
+    ariaLabel: string | null,
+    variant: BadgeVariant,
+    type: BadgeType,
+    overlay: boolean,
+  ): TemplateResult {
+    const colorVariant = variant === undefined ? BadgeVariant.SECURE : variant;
+    const iconStyles = {
+      color: `var(--mds-color-theme-indicator-${colorVariant})`,
+    };
     return html`
       <mdc-icon
-        name="${ifDefined(this.iconName)}"
-        aria-hidden="${ifDefined(this.ariaLabel ? 'true' : 'false')}"
-        aria-label="${ifDefined(this.ariaLabel || '')}"
+        name="${ifDefined(iconName)}"
+        length-unit="${DEFAULTS.LENGTH_UNIT}"
+        size="${type === BadgeType.NOTIFICATION ? 1 : DEFAULTS.ICON_SIZE}" 
+        aria-hidden="${ifDefined(ariaLabel ? 'true' : 'false')}"
+        aria-label="${ifDefined(ariaLabel || '')}"
+        style=${styleMap(iconStyles)}
+        class="${classMap({ 'mdc-badge-overlay': overlay })}"
       ></mdc-icon>
     `;
   }
 
-  private getCounterToDisplay(counter: number, maxCounter: number): string {
-    return counter > maxCounter ? `${maxCounter}+` : `${counter}`;
-  }
-
-  private getCounterTypeBadgeHtml(): TemplateResult {
-    if (this.counter === undefined || typeof this.counter !== 'number') {
-      return html``;
-    }
-    const counterToDisplay = this.getCounterToDisplay(this.counter, this.maxCounter);
+  /**
+   * Method to generate the badge text and counter template.
+   * @param text text to be displayed in the badge.
+   * @param overlay whether the badge should have an overlay.
+   * @returns the template result of the text.
+   */
+  private getBadgeText(text: string, overlay: boolean): TemplateResult {
     return html`
-      <mdc-text>${counterToDisplay}</mdc-text>
+      <mdc-text
+        type="body-small-medium"
+        tagname="span"
+        class="mdc-badge-text ${classMap({ 'mdc-badge-overlay': overlay })}"
+      >
+        ${text}
+      </mdc-text>
     `;
   }
 
-  private getBadgeContentBasedOnType() {
-    switch (this.type) {
-      case 'notification':
-        return html`<span class="mdc-badge-base"></span>`;
-      case 'icon':
-        return this.getIconTypeBadgeHtml();
-      case 'counter':
-        return this.getCounterTypeBadgeHtml();
-      case 'text':
+  /**
+   * Generates the content of the badge based on the type.
+   * @returns the template result of the text.
+   */
+  private getBadgeContentBasedOnType(): TemplateResult {
+    const { ariaLabel, counter, iconName, maxCounter, overlay, text, type, variant } = this;
+    switch (type) {
+      case BadgeType.NOTIFICATION:
+        return this.getBadgeIcon(DEFAULTS.ICON_NAME, ariaLabel, variant, type, overlay);
+      case BadgeType.ICON:
+        return this.getBadgeIcon(iconName || '', ariaLabel, variant, type, overlay);
+      case BadgeType.COUNTER: {
+        const counterText = this.getCounterText(maxCounter, counter);
+        return this.getBadgeText(counterText, overlay);
+      }
+      case BadgeType.TEXT:
         // All text is limited up to 4 characters only.
-        return html`<mdc-text>${this.text?.slice(0, 4)}</mdc-text>`;
+        return this.getBadgeText(text?.slice(0, 4) || '', overlay);
       default:
         return html``;
     }
-  }
-
-  private getBadgeBackgroundColor(): string {
-    return ['icon', 'notification']
-      .includes(this.type || '') ? `var(--mds-color-theme-indicator-${this.variant})` : 'initial';
   }
 
   public override render() {
@@ -108,7 +152,6 @@ class Badge extends Component {
       <div
         class="mdc-badge-container"
         role="${ifDefined(this.ariaLabel ? 'img' : undefined)}"
-        style="background-color: ${this.getBadgeBackgroundColor()};"
         aria-label="${this.ariaLabel || ''}"
       >
         ${this.getBadgeContentBasedOnType()}

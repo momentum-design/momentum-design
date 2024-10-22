@@ -13,7 +13,6 @@ const render = (args: Args) => html`
     counter="${args.counter}"
     maxCounter="${args.maxCounter}"
     variant="${args.variant}"
-    overlay="${args.overlay}"
   ></mdc-badge>
 `;
 
@@ -33,13 +32,12 @@ export default meta;
 export const Primary: StoryObj = {
   args: {
     type: DEFAULTS.TYPE,
-    iconName: 'accessibility-regular',
+    iconName: 'error-legacy-filled',
     size: 1,
     lengthUnit: 'rem',
     text: '99+',
     counter: 1,
     maxCounter: 99,
-    variant: 'secure',
-    overlay: 'false',
+    variant: DEFAULTS.VARIANT,
   },
 };

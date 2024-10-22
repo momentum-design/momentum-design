@@ -1,2 +1,15 @@
-export type BadgeType = 'notification' | 'icon' | 'counter' | 'text';
-export type BadgeVariant = 'secure' | 'locked' | 'stable' | 'unstable' | 'attention' | 'caution';
+export enum BadgeType {
+  NOTIFICATION = 'notification',
+  ICON = 'icon',
+  COUNTER = 'counter',
+  TEXT = 'text'
+}
+
+export enum BadgeVariant {
+  SECURE = 'secure',
+  LOCKED = 'locked',
+  STABLE = 'stable',
+  UNSTABLE = 'unstable',
+  ATTENTION = 'attention',
+  CAUTION = 'caution',
+}
