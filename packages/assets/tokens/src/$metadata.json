@@ -2,8 +2,8 @@
   "tokenSetOrder": [
     "core/value",
     "core/typography",
-    "theme/stable/light",
     "theme/stable/dark",
+    "theme/stable/light",
     "theme/stable/highcontrast/hc_dark",
     "theme/stable/highcontrast/hc_light",
     "aaos/night",

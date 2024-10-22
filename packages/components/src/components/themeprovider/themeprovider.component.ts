@@ -19,7 +19,7 @@ import styles from './themeprovider.styles';
  *
  * @tagname mdc-themeprovider
  *
- * @slot default - children
+ * @slot - children
  *
  * @cssproperty --mdc-themeprovider-color-default - Option to override the default color,
  * default: color-theme-text-primary-normal
@@ -62,13 +62,6 @@ class ThemeProvider extends Provider<ThemeProviderContext> {
    */
   @property({ type: String })
   themeclass: string = DEFAULTS.THEMECLASS;
-
-  override connectedCallback(): void {
-    super.connectedCallback();
-
-    // Set the default typography class
-    this.classList.add(DEFAULTS.TYPOGRAPHYCLASS);
-  }
 
   protected override updated(changedProperties: Map<string, any>) {
     super.updated(changedProperties);
