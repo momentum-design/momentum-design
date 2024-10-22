@@ -4,23 +4,16 @@ import { hostFitContentStyles } from '../../utils/styles';
 const styles = [
   hostFitContentStyles,
   css`
-    :host {
-      --mdc-badge-icon-background-color: var(--mds-color-theme-background-accent-normal);
-      --mdc-badge-icon-color: var(--mds-color-theme-common-text-primary-normal);
-    }
-
     .mdc-badge-container {
+      max-height: 1rem;
       display: flex;
       justify-content: center;
       align-items: center;
       border-radius: 9999px;
-      background-color: var(--mdc-badge-icon-background-color);
-      color: var(--mdc-badge-icon-color);
     }
-
-    .mdc-badge-icon-container {
-      height: 80%;
-      width: 80%;
+    .mdc-badge-base {
+      padding: 8px;
+      height: 12px;
     }
   `,
 ];

@@ -10,6 +10,10 @@ const render = (args: Args) => html`
     size="${args.size}"
     length-unit="${args.lengthUnit}"
     text="${args.text}"
+    counter="${args.counter}"
+    maxCounter="${args.maxCounter}"
+    variant="${args.variant}"
+    overlay="${args.overlay}"
   ></mdc-badge>
 `;
 
@@ -33,5 +37,9 @@ export const Primary: StoryObj = {
     size: 1,
     lengthUnit: 'rem',
     text: '99+',
+    counter: 1,
+    maxCounter: 99,
+    variant: 'secure',
+    overlay: 'false',
   },
 };
