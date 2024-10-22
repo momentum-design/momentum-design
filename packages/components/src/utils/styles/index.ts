@@ -22,36 +22,29 @@ const hostFocusRingStyles = css`
 
     --mdc-focus-ring-middle-offset: var(--mdc-focus-ring-inner-width);
     --mdc-focus-ring-outer-offset: calc(var(--mdc-focus-ring-inner-width) + var(--mdc-focus-ring-middle-width));
-
-    --mdc-focus-ring-z-index: 1; 
   }
 
-  :host(.focus-ring-visible) {
+  :host(:focus-visible) {
     position: relative;
     outline: var(--mdc-focus-ring-inner-width) solid var(--mdc-focus-ring-inner-color);
-    z-index: var(--mdc-focus-ring-z-index)
   }
 
-  :host(.focus-ring-visible)::before {
+  :host(:focus-visible)::before,
+  :host(:focus-visible)::after {
     content: "";
     position: absolute;
-    top: calc(-1 * var(--mdc-focus-ring-middle-offset));    
-    left: calc(-1 * var(--mdc-focus-ring-middle-offset));   
-    right: calc(-1 * var(--mdc-focus-ring-middle-offset));  
-    bottom: calc(-1 * var(--mdc-focus-ring-middle-offset)); 
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  :host(:focus-visible)::before {
     outline: var(--mdc-focus-ring-middle-width) solid var(--mdc-focus-ring-middle-color);
-    border-radius: inherit;
+    outline-offset: var(--mdc-focus-ring-middle-offset);
   }
 
-  :host(.focus-ring-visible)::after {
-    content: "";
-    position: absolute;
-    top: calc(-1 * var(--mdc-focus-ring-outer-offset));      
-    left: calc(-1 * var(--mdc-focus-ring-outer-offset));     
-    right: calc(-1 * var(--mdc-focus-ring-outer-offset));    
-    bottom: calc(-1 * var(--mdc-focus-ring-outer-offset));   
+  :host(:focus-visible)::after {
     outline: var(--mdc-focus-ring-outer-width) solid var(--mdc-focus-ring-outer-color);
-    border-radius: inherit;
+    outline-offset: var(--mdc-focus-ring-outer-offset);
   }
 `;
 
