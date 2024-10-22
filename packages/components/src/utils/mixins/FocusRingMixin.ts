@@ -26,7 +26,9 @@ export const FocusRingMixin = <T extends Constructor<LitElement>>(superClass: T)
      */
     constructor(...args: any[]) {
       super(...args);
-      EVENTS.forEach((event) => this.addEventListener(event, this.handleEvent));
+      EVENTS.forEach((event) => {
+        this.addEventListener(event, this.handleEvent);
+      });
     }
 
     /**
@@ -37,11 +39,9 @@ export const FocusRingMixin = <T extends Constructor<LitElement>>(superClass: T)
         switch (event.type) {
           case 'focus':
             this.focusRingVisible = true;
-            this.classList.add('focus-ring-visible');
             break;
           case 'blur':
             this.focusRingVisible = false;
-            this.classList.remove('focus-ring-visible');
             break;
           default:
             break;
