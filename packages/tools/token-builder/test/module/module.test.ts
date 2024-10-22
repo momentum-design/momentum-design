@@ -32,8 +32,12 @@ describe('Token Builder module', () => {
       output: './test/dist',
     });
 
+    const normalizeContent = (content: any) => content.replace(/\r\n/g, '\n');
     const pathRealOutput = `./test/dist/css/${configThemeColor.files[0].destination}.css`;
     const pathExpectedOutput = './test/fixtures/outputs/web/color-theme.css';
-    expect(fs.readFileSync(pathRealOutput, 'utf-8')).toEqual(fs.readFileSync(pathExpectedOutput, 'utf-8'));
+    const realContent = fs.readFileSync(pathRealOutput, 'utf-8');
+    const expectedContent = fs.readFileSync(pathExpectedOutput, 'utf-8');
+    
+    expect(normalizeContent(realContent)).toEqual(normalizeContent(expectedContent));  
   });
 });
