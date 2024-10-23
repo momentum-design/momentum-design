@@ -27,7 +27,7 @@
       "allowMultiple": true
     },
     {
-      "tagName": "dependency",
+      "tagName": "@dependency",
       "syntaxKind": "modifier",
       "allowMultiple": true
     }
