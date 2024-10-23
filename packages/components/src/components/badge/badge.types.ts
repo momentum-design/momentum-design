@@ -1,8 +1,7 @@
 export enum BadgeType {
   NOTIFICATION = 'notification',
   ICON = 'icon',
-  COUNTER = 'counter',
-  TEXT = 'text'
+  COUNTER = 'counter'
 }
 
 export enum BadgeVariant {
