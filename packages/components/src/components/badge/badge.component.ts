@@ -95,7 +95,7 @@ class Badge extends Component {
     type: BadgeType,
     overlay: boolean,
   ): TemplateResult {
-    const colorVariant = variant === undefined ? BadgeVariant.SECURE : variant;
+    const colorVariant = (variant === undefined || type === BadgeType.NOTIFICATION) ? BadgeVariant.SECURE : variant;
     const iconStyles = {
       color: `var(--mds-color-theme-indicator-${colorVariant})`,
     };
@@ -103,7 +103,7 @@ class Badge extends Component {
       <mdc-icon
         name="${ifDefined(iconName)}"
         length-unit="${DEFAULTS.LENGTH_UNIT}"
-        size="${type === BadgeType.NOTIFICATION ? 1 : DEFAULTS.ICON_SIZE}" 
+        size="${type === BadgeType.NOTIFICATION ? DEFAULTS.NOTIFICATION_ICON_SIZE_IN_REM : DEFAULTS.ICON_SIZE}" 
         aria-hidden="${ifDefined(ariaLabel ? 'true' : 'false')}"
         aria-label="${ifDefined(ariaLabel || '')}"
         style=${styleMap(iconStyles)}
