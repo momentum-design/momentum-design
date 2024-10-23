@@ -26,8 +26,10 @@ const hostFocusRingStyles = css`
   
   :host(:focus) {
     position: relative;
-    box-shadow: 0 0 0 var( --mdc-focus-ring-inner-width) var(--mdc-focus-ring-inner-color),
-      0 0 0 var(--mdc-focus-ring-middle-width) var(--mdc-focus-ring-middle-color), 0 0 0 var(--mdc-focus-ring-outer-width) var(--mdc-focus-ring-outer-color);
+    box-shadow: 
+        0 0 0 var(--mdc-focus-ring-inner-width) var(--mdc-focus-ring-inner-color),
+        0 0 0 var(--mdc-focus-ring-middle-width) var(--mdc-focus-ring-middle-color),
+        0 0 0 var(--mdc-focus-ring-outer-width) var(--mdc-focus-ring-outer-color);
   }
 `;
 
