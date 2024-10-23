@@ -75,11 +75,11 @@ class Badge extends Component {
 
   /**
    * Method to generate the badge icon and notification template.
-   * @param iconName name of the icon to be used.
-   * @param ariaLabel aria-label attribute for accessibility.
-   * @param variant variant of the badge.
-   * @param type type of the badge.
-   * @param overlay whether the badge should have an overlay.
+   * @param iconName - name of the icon to be used.
+   * @param ariaLabel - aria-label attribute for accessibility.
+   * @param variant - variant of the badge.
+   * @param type - type of the badge.
+   * @param overlay - whether the badge should have an overlay.
    * @returns the template result of the icon.
    */
   private getBadgeIcon(
@@ -108,8 +108,8 @@ class Badge extends Component {
 
   /**
    * Method to generate the badge text and counter template.
-   * @param text text to be displayed in the badge.
-   * @param overlay whether the badge should have an overlay.
+   * @param text - text to be displayed in the badge.
+   * @param overlay - whether the badge should have an overlay.
    * @returns the template result of the text.
    */
   private getBadgeText(text: string, overlay: boolean): TemplateResult {
