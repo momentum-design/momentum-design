@@ -1,6 +1,7 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
 import type { GitHubActionOptions } from '@estruyf/github-actions-reporter';
 import { devices } from '@playwright/test';
+import os from 'os';
 
 /**
  * Read environment variables from file.
@@ -8,7 +9,12 @@ import { devices } from '@playwright/test';
  */
 // require('dotenv').config();
 
-const url = 'http://host.docker.internal:4000';
+let url;
+if(os.platform() === 'linux') {
+  url = 'http://172.17.0.1:4000';
+} else {
+  url = 'http://host.docker.internal:4000';
+}
 
 const githubActionsReporterOptions: GitHubActionOptions = {
   title: 'Playwright E2E Test results',
