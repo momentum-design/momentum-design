@@ -10,7 +10,7 @@ import os from 'os';
 // require('dotenv').config();
 
 let url;
-if(os.platform() === 'linux') {
+if (os.platform() === 'linux') {
   url = 'http://172.17.0.1:4000';
 } else {
   url = 'http://host.docker.internal:4000';
@@ -121,7 +121,7 @@ const config: PlaywrightTestConfig = {
     },
     {
       command: 'yarn test:e2e:docker:run',
-      url: 'http://localhost:3333',
+      url: 'http://localhost:3000',
       stdout: 'pipe',
       stderr: 'pipe',
       timeout: 240 * 1000,
