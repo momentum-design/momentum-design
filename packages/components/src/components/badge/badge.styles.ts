@@ -16,10 +16,10 @@ const styles = [
       border-radius: 100%;
     }
     .mdc-badge-overlay {
-      border: 1px solid black;
+      outline: 1px solid var(--mdc-badge-text-color);
     }
     .mdc-badge-text {
-      padding: 0 4px;
+      padding: 0 0.25rem;
       border-radius: 6.25rem;
       line-height: 1px;
       color: var(--mdc-badge-text-color);
