@@ -115,7 +115,7 @@ const config: PlaywrightTestConfig = {
     },
     {
       command: 'yarn test:e2e:docker:run',
-      url: 'http://localhost:3000',
+      url: 'http://localhost:3333',
       stdout: 'pipe',
       stderr: 'pipe',
       timeout: 240 * 1000,
