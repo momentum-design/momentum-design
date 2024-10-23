@@ -4,6 +4,10 @@ import { hostFitContentStyles } from '../../utils/styles';
 const styles = [
   hostFitContentStyles,
   css`
+    :host {
+      --mdc-badge-text-color: var(--mds-color-theme-text-primary-normal);
+      --mdc-badge-text-background-color: var(--mds-color-theme-indicator-secure);
+    }
     .mdc-badge-container {
       max-height: 1rem;
       display: flex;
@@ -18,8 +22,8 @@ const styles = [
       padding: 0 4px;
       border-radius: 6.25rem;
       line-height: 1px;
-      color: var(--mds-color-theme-text-primary-normal);
-      background-color: var(--mds-color-theme-indicator-secure);
+      color: var(--mdc-badge-text-color);
+      background-color: var(--mdc-badge-text-background-color);
     }
   `,
 ];
