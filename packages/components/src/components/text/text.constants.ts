@@ -2,7 +2,6 @@ import utils from '../../utils/tag-name';
 import type { FontType, ValidTextTags } from './text.types';
 
 const TAG_NAME = utils.constructTagName('text');
-const PART_NAME = 'text';
 
 const VALUES: {TYPE: Array<FontType>, TAGNAME: Array<ValidTextTags>} = {
   TYPE: [
@@ -47,13 +46,13 @@ const VALUES: {TYPE: Array<FontType>, TAGNAME: Array<ValidTextTags>} = {
     'small',
     'span',
     'div',
-    'section',
   ],
 };
 
 const DEFAULTS = {
-  TAGNAME: 'p' as ValidTextTags,
   TYPE: 'body-midsize-regular' as FontType,
+  TEXT_ELEMENT_TAGNAME: 'p' as ValidTextTags,
+  CSS_PART_TEXT: 'text',
 };
 
-export { TAG_NAME, DEFAULTS, VALUES, PART_NAME };
+export { TAG_NAME, DEFAULTS, VALUES };

@@ -1,20 +1,25 @@
 {
-    "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
-    "tagDefinitions": [
-      {
-        "tagName": "@cssproperty",
-        "syntaxKind": "modifier",
-        "allowMultiple": true
-      },
-      {
-        "tagName": "@slot",
-        "syntaxKind": "modifier",
-        "allowMultiple": true
-      },
-      {
-        "tagName": "@tagname",
-        "syntaxKind": "modifier",
-        "allowMultiple": false
-      }
-    ]
-  }
+  "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+  "tagDefinitions": [
+    {
+      "tagName": "@csspart",
+      "syntaxKind": "modifier",
+      "allowMultiple": true
+    },
+    {
+      "tagName": "@cssproperty",
+      "syntaxKind": "modifier",
+      "allowMultiple": true
+    },
+    {
+      "tagName": "@slot",
+      "syntaxKind": "modifier",
+      "allowMultiple": true
+    },
+    {
+      "tagName": "@tagname",
+      "syntaxKind": "modifier",
+      "allowMultiple": false
+    }
+  ]
+}

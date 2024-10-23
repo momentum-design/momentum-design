@@ -50,7 +50,6 @@ const meta: Meta = {
     },
     ...disableControls([
       'Context',
-      'default',
       '--mdc-themeprovider-color-default',
       '--mdc-themeprovider-font-family',
       '--mdc-themeprovider-font-weight',

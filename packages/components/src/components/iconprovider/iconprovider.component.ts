@@ -16,7 +16,7 @@ import {
  *
  * @tagname mdc-iconprovider
  *
- * @slot default - children
+ * @slot - children
  */
 class IconProvider extends Provider<IconProviderContext> {
   constructor() {
