@@ -25,27 +25,27 @@ function getAllComponents(metadata) {
   return allComponents;
 }
 
-const distFolder = path.join("./dist");
-const srcFolder = path.join("./src");
-const reactDir = path.join(srcFolder, "react");
+const distFolder = path.posix.join("./dist");
+const srcFolder = path.posix.join("./src");
+const reactDir = path.posix.join(srcFolder, "react");
 
 // Clear react directory
 rimraf.sync(reactDir);
 fs.mkdirSync(reactDir, { recursive: true });
 
 // Fetch component metadata
-const metadata = JSON.parse(fs.readFileSync(path.join(distFolder, "custom-elements.json"), "utf8"));
+const metadata = JSON.parse(fs.readFileSync(path.posix.join(distFolder, "custom-elements.json"), "utf8"));
 const components = getAllComponents(metadata);
 const index = [];
 
 async function loop() {
   for await (const component of components) {
     const tagWithoutPrefix = component.tagName.replace(/^mdc-/, "");
-    const reactComponentDir = path.join(reactDir, tagWithoutPrefix);
-    const reactComponentFile = path.join(reactComponentDir, "index.ts");
+    const reactComponentDir = path.posix.join(reactDir, tagWithoutPrefix);
+    const reactComponentFile = path.posix.join(reactComponentDir, "index.ts");
 
     const webComponentDir = path.dirname(component.path);
-    const webComponentConstantsFile = path.join(webComponentDir, `${tagWithoutPrefix}.constants`);
+    const webComponentConstantsFile = path.posix.join(webComponentDir, `${tagWithoutPrefix}.constants`);
 
     fs.mkdirSync(reactComponentDir, { recursive: true });
 
@@ -85,6 +85,6 @@ async function loop() {
 
 loop().then(() => {
   // Generate the index file
-  fs.writeFileSync(path.join(reactDir, "index.ts"), index.join("\n"), "utf8");
+  fs.writeFileSync(path.posix.join(reactDir, "index.ts"), index.join("\n"), "utf8");
   console.log("React components generated");
 });
