@@ -53,7 +53,7 @@ class Dictionary {
   }
 
   public get targets(): Array<string> {
-    return this.config.file.targets.map((target) => path.join(this.input, target));
+    return this.config.file.targets.map((target) => path.posix.join(this.input, target));
   }
 }
 
