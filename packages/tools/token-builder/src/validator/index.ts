@@ -6,7 +6,7 @@ import {
   generateMetadata,
 } from '@momentum-design/telemetry';
 import glob from 'glob';
-import { join } from 'path';
+import posix from 'path';
 
 import Ajv from 'ajv/dist/2019';
 import * as draft6MetaSchema from 'ajv/dist/refs/json-schema-draft-06.json';
@@ -64,7 +64,7 @@ class Validator implements IValidator {
 
     const completePathPromises = await
     Promise.all(fileSet.map((path) => new Promise<string[]>((resolve, reject) => {
-      glob(`${join(workingDir, path)}`, (err: Error | null, res: string[]) => {
+      glob(`${posix.join(workingDir, path)}`, (err: Error | null, res: string[]) => {
         if (err) {
           return reject(err);
         }
