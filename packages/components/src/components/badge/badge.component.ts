@@ -11,6 +11,12 @@ import '../icon';
 import '../text';
 
 /**
+ * A badge is a small, visually distinct element that provides additional information
+ * or highlights the status of an item.
+ * Badges are often used to display notifications, counts,
+ * or text in a compact form, making them a useful tool for conveying information quickly
+ * without taking up much space.
+ *
  * @tagname mdc-badge
  */
 class Badge extends Component {
