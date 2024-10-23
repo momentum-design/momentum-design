@@ -13,16 +13,15 @@ import '../text';
 /**
  * A badge is a small, visually distinct element that provides additional information
  * or highlights the status of an item.
- * Badges are often used to display notifications, counts,
- * or text in a compact form, making them a useful tool for conveying information quickly
- * without taking up much space.
+ * Badges are often used to display notifications, counts, making them a useful tool for
+ * conveying information quickly without taking up much space.
  *
  * @tagname mdc-badge
  */
 class Badge extends Component {
   /**
    * Type of the badge
-   * Can be `notification`, `icon`, `counter` and `text`
+   * Can be `notification`, `icon` and `counter`
    *
    * Default: `notification`
    */
@@ -37,13 +36,6 @@ class Badge extends Component {
    */
   @property({ type: String, attribute: 'icon-name' })
   iconName?: string;
-
-  /**
-   * If `type` is set to `text`, attribute `text` can
-   * be used to pass in any text to be displayed in the badge.
-   */
-  @property({ type: String })
-  text?: string;
 
   /**
    * badge variant
@@ -71,6 +63,9 @@ class Badge extends Component {
    * then it will return a string the maxCounter value as string.
    * Otherwise, it will return a string representation of `counter`.
    * If `counter` is not a number, it will return an empty string.
+   * @param maxCounter - the maximum limit which can be displayed on the badge
+   * @param counter - the number to be displayed on the badge
+   * @returns the string representation of the counter
    */
   private getCounterText(maxCounter: number, counter?: number): string {
     if (counter === undefined || typeof counter !== 'number') {
@@ -116,16 +111,17 @@ class Badge extends Component {
    * Method to generate the badge text and counter template.
    * @param text - text to be displayed in the badge.
    * @param overlay - whether the badge should have an overlay.
+   * @param counter - the number to be displayed on the badge
    * @returns the template result of the text.
    */
-  private getBadgeText(text: string, overlay: boolean): TemplateResult {
+  private getBadgeText(maxCounter: number, overlay: boolean, counter?: number): TemplateResult {
     return html`
       <mdc-text
         type="body-small-medium"
         tagname="span"
         class="mdc-badge-text ${classMap({ 'mdc-badge-overlay': overlay })}"
       >
-        ${text}
+        ${this.getCounterText(maxCounter, counter)}
       </mdc-text>
     `;
   }
@@ -135,19 +131,14 @@ class Badge extends Component {
    * @returns the template result of the text.
    */
   private getBadgeContentBasedOnType(): TemplateResult {
-    const { ariaLabel, counter, iconName, maxCounter, overlay, text, type, variant } = this;
+    const { ariaLabel, counter, iconName, maxCounter, overlay, type, variant } = this;
     switch (type) {
       case BadgeType.NOTIFICATION:
         return this.getBadgeIcon(DEFAULTS.ICON_NAME, ariaLabel, variant, type, overlay);
       case BadgeType.ICON:
         return this.getBadgeIcon(iconName || '', ariaLabel, variant, type, overlay);
-      case BadgeType.COUNTER: {
-        const counterText = this.getCounterText(maxCounter, counter);
-        return this.getBadgeText(counterText, overlay);
-      }
-      case BadgeType.TEXT:
-        // All text is limited up to 4 characters only.
-        return this.getBadgeText(text?.slice(0, 4) || '', overlay);
+      case BadgeType.COUNTER:
+        return this.getBadgeText(maxCounter, overlay, counter);
       default:
         return html``;
     }
