@@ -344,20 +344,8 @@ jobs:
       - name: Synchronize Packages
         run: yarn
 
-      - name: Pull Docker Image
-        run: |
-          if [ ${{ matrix.package }} == '@momentum-design/components' ]; then
-            docker pull ghcr.io/momentum-design/momentum-design/docker-playwright:v.1.47.2
-          fi  
-
       - name: Test - Postbuild
-        run: yarn workspace ${{ matrix.package }} test:postbuild
-
-      - name: Stop Docker Server
-        run: |
-          if [ ${{ matrix.package }} == '@momentum-design/components' ]; then
-            kill $(lsof -t -i:3000)
-          fi    
+        run: yarn workspace ${{ matrix.package }} test:postbuild  
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4

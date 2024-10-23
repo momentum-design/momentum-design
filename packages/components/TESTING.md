@@ -27,11 +27,11 @@
 - On Local:
   - You can run functional tests locally (for easier debugging) or in Docker.
   - Update snapshot images (golden images) only using Docker with the official Playwright image, via the provided yarn scripts.
-  - Uses `playwright.config.ts`, relying on external Docker mounting or local and a web server.
+  - Uses `playwright.config.ts`, relying on local and a web server.
 - On Github Workflow:
   - GitHub Workflow build the Playwright Docker image to run all tests, including snapshot tests.
 - Playwright projects:
-  - Default = Functional tests and Snapshot tests (Use Docker)
+  - Default = Functional tests and Snapshot tests (Docker required)
   - Skip Snapshot = Snapshot tests (Recommend for local)
 
 ### Local development
@@ -47,7 +47,7 @@ For the best local development experience, the following E2E setup testing is re
    ```bash
      yarn components test:e2e:setup # setup server on localhost:4000
    ```
-3. Now you can start run the test:
+3. Open another terminal, now you can start run the test:
    ```bash
      yarn components test:e2e:skip-snapshot # without snapshot 
      # if you want to test the snapshot, please see Docker Testing
@@ -78,25 +78,20 @@ Follow the steps below to run E2E testing on Docker:
 
 1. You need to have docker installed on local.
 
-2. Pull latest docker plawright image to local:
-   ```bash
-     docker pull ghcr.io/momentum-design/momentum-design/docker-playwright:v.1.47.2
-     # docker image with all required playwright browser
-   ```
-3. Open a terminal to setup webserver:
+2. Open a terminal to setup webserver:
    ```bash
      yarn components test:e2e:setup # setup server on localhost:4000
    ```
-4. Open another terminal to run docker image:
+3. Open another terminal to run docker image:
    ```bash
      yarn components test:e2e:docker:run # run docker image on localhost:3000
    ```
-5. Open another terminal to start run the test:
+4. Open another terminal to start run the test:
    ```bash
      yarn components test:e2e:docker # run all the e2e test
      yarn components test:e2e:docker:update-snapshot # update snapshots
    ```
-6. To Run <strong>single</strong> E2E Test file, run:
+5. To Run <strong>single</strong> E2E Test file, run:
    ```bash
      yarn components test:e2e:docker XXX.e2e-test.ts 
      yarn components test:e2e:docker:update-snapshot XXX.e2e-test.ts # update snapshots
@@ -134,7 +129,7 @@ Since Docker runs on the `amd64` architecture, using Docker on Mac with M chips 
 2. Set the version to latest playwright version and build the new image to local :
    ```bash
      "test:e2e:docker:build": "docker build --platform linux/amd64 -f ./config/playwright/docker/utils/Dockerfile.test.postbuild -t ghcr.io/momentum-design/momentum-design/docker-playwright:v1.47.2 ."
-     # replace the v1.47.2 to the latest version of playwright and run this script to build new image
+     # replace all the v1.47.2 to the latest version of playwright and run this script to build new image
    ```
 3. After the build is done, login to the docker ghrc.io:
    ```bash
