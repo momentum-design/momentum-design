@@ -88,7 +88,7 @@ class Badge extends Component {
     ariaLabel: string | null,
     variant: BadgeVariant,
     type: BadgeType,
-    overlay: boolean,
+    overlay?: boolean,
   ): TemplateResult {
     const colorVariant = (variant === undefined || type === BadgeType.NOTIFICATION) ? BadgeVariant.SECURE : variant;
     const iconStyles = {
@@ -102,7 +102,7 @@ class Badge extends Component {
         aria-hidden="${ifDefined(ariaLabel ? 'true' : 'false')}"
         aria-label="${ifDefined(ariaLabel || '')}"
         style=${styleMap(iconStyles)}
-        class="${classMap({ 'mdc-badge-overlay': overlay })}"
+        class="${classMap({ 'mdc-badge-overlay': !!overlay })}"
       ></mdc-icon>
     `;
   }
@@ -136,7 +136,7 @@ class Badge extends Component {
       case BadgeType.NOTIFICATION:
         return this.getBadgeIcon(DEFAULTS.ICON_NAME, ariaLabel, variant, type, overlay);
       case BadgeType.ICON:
-        return this.getBadgeIcon(iconName || '', ariaLabel, variant, type, overlay);
+        return this.getBadgeIcon(iconName || '', ariaLabel, variant, type);
       case BadgeType.COUNTER:
         return this.getBadgeText(maxCounter, overlay, counter);
       default:
