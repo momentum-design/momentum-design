@@ -41,7 +41,7 @@ describe('@momentum-design/builder - types Transformer', () => {
       expect(transformer.outputFiles).toStrictEqual([
         {
           data: { name: FORMAT.config.name, path: FORMAT.config.manifestPath },
-          distPath: path.join(DIST_PATH, FORMAT.config.fileName),
+          distPath: path.posix.join(DIST_PATH, FORMAT.config.fileName),
           srcPath: '',
         },
       ]);

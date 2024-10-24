@@ -29,7 +29,7 @@ class WOFF2Transformer extends Transformer {
         .then((buffer) => {
           resolve({
             data: buffer,
-            fileCreated: path.join(this.destination, filename),
+            fileCreated: path.posix.join(this.destination, filename),
           });
         })
         .catch((err) => reject(err));

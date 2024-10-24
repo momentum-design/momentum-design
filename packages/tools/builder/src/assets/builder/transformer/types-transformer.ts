@@ -32,7 +32,7 @@ class TypesTransformer extends Transformer {
           this.outputFiles = [
             {
               srcPath: '',
-              distPath: path.join(this.destination, this.format.config.fileName),
+              distPath: path.posix.join(this.destination, this.format.config.fileName),
               data: typesData.data,
             },
           ];

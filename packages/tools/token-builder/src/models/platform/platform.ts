@@ -37,7 +37,7 @@ class Platform {
   }
 
   public get output(): string {
-    return path.join(this.config.output, this.path, '/');
+    return path.posix.join(this.config.output, this.path, '/');
   }
 
   public get path(): string {

@@ -26,7 +26,7 @@ class TTFTransformer extends Transformer {
     );
     return {
       data,
-      fileCreated: path.join(this.destination, filename),
+      fileCreated: path.posix.join(this.destination, filename),
     };
   }
 

@@ -30,6 +30,7 @@ export const withThemeProvider = (story, context) => {
   const body = document.querySelector('body.sb-show-main');
   clearStyles(body);
   applyStyle(body, themeObject.className);
+  applyStyle(body, 'mds-typography');
 
   // This will set the all canvas in "Docs" with the current theme background color
   setCanvasBackgroundOnDocs(themeObject.backgroundColor);

@@ -10,12 +10,12 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/text',
+  title: 'Components/text',
   tags: ['autodocs'],
   component: 'mdc-text',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     children: {
@@ -23,11 +23,10 @@ const meta: Meta = {
       description: 'Children (passed into "default" slot)',
     },
     type: {
-      control: 'radio',
-      options: [null, ...VALUES.TYPE],
+      options: VALUES.TYPE,
     },
     tagname: {
-      control: 'text',
+      options: VALUES.TAGNAME,
     },
     ...classArgType,
     ...styleArgType,
@@ -43,6 +42,6 @@ export const Primary: StoryObj = {
   args: {
     type: 'body-large-regular',
     tagname: '',
-    children: 'This is a test text',
+    children: 'The quick brown fox jumps over the lazy dog',
   },
 };
