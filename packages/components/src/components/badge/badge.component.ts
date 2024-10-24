@@ -1,12 +1,11 @@
-import { CSSResult, html, TemplateResult } from 'lit';
+import { CSSResult, html, PropertyValues, TemplateResult } from 'lit';
 import { styleMap } from 'lit-html/directives/style-map.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
-import { DEFAULTS } from './badge.constants';
+import { BADGE_TYPE, BADGE_VARIANT, DEFAULTS } from './badge.constants';
 import styles from './badge.styles';
-import { BadgeType, BadgeVariant } from './badge.types';
 
 /**
  * A badge is a small, visually distinct element that provides additional information
@@ -26,7 +25,7 @@ class Badge extends Component {
    * Default: `notification`
    */
   @property({ type: String, reflect: true })
-  type: BadgeType = DEFAULTS.TYPE;
+  type = DEFAULTS.TYPE;
 
   /**
    * If `type` is set to `icon`, attribute `iconName` can
@@ -41,7 +40,7 @@ class Badge extends Component {
    * badge variant
    */
   @property({ type: String })
-  variant: BadgeVariant = DEFAULTS.VARIANT;
+  variant = DEFAULTS.VARIANT;
 
   @property({ type: Number })
   counter?: number;
@@ -77,39 +76,26 @@ class Badge extends Component {
   /**
    * Method to generate the badge icon and notification template.
    * @param iconName - name of the icon to be used.
-   * @param ariaLabel - aria-label attribute for accessibility.
    * @param variant - variant of the badge.
-   * @param type - type of the badge.
-   * @param overlay - whether the badge should have an overlay.
    * @returns the template result of the icon.
    */
   private getBadgeIcon(
     iconName: string,
-    ariaLabel: string | null,
-    variant: BadgeVariant,
-    type: BadgeType,
-    overlay?: boolean,
+    variant: string,
   ): TemplateResult {
-    const colorVariant = (variant === undefined || type === BadgeType.NOTIFICATION) ? BadgeVariant.SECURE : variant;
-    const iconStyles = {
-      color: `var(--mds-color-theme-indicator-${colorVariant})`,
-    };
     return html`
       <mdc-icon
         name="${ifDefined(iconName)}"
         length-unit="${DEFAULTS.LENGTH_UNIT}"
-        size="${type === BadgeType.NOTIFICATION ? DEFAULTS.NOTIFICATION_ICON_SIZE_IN_REM : DEFAULTS.ICON_SIZE}" 
-        aria-hidden="${ifDefined(ariaLabel ? 'true' : 'false')}"
-        aria-label="${ifDefined(ariaLabel || '')}"
-        style=${styleMap(iconStyles)}
-        class="${classMap({ 'mdc-badge-overlay': !!overlay })}"
+        size="${DEFAULTS.ICON_SIZE}"
+        style="${styleMap({ color: this.getColorThemeByVariant(variant) })}"
       ></mdc-icon>
     `;
   }
 
   /**
    * Method to generate the badge text and counter template.
-   * @param text - text to be displayed in the badge.
+   * @param maxCounter - the maximum limit which can be displayed on the badge
    * @param overlay - whether the badge should have an overlay.
    * @param counter - the number to be displayed on the badge
    * @returns the template result of the text.
@@ -118,7 +104,8 @@ class Badge extends Component {
     return html`
       <mdc-text
         type="body-small-medium"
-        tagname="span"
+        tagname="div"
+        style="${styleMap({ backgroundColor: this.getColorThemeByVariant() })}"
         class="mdc-badge-text ${classMap({ 'mdc-badge-overlay': overlay })}"
       >
         ${this.getCounterText(maxCounter, counter)}
@@ -127,33 +114,68 @@ class Badge extends Component {
   }
 
   /**
+   * Given a variant, it returns the color theme variable string.
+   * If no variant is given, it will return the default SECURE color theme variable string.
+   * @param variant - the variant to get the color theme variable string
+   * @returns the color theme variable string
+   */
+  private getColorThemeByVariant(variant?: string): string {
+    if (variant && Object.values(BADGE_VARIANT).includes(variant)) {
+      return `var(--mds-color-theme-indicator-${variant})`;
+    }
+    return `var(--mds-color-theme-indicator-${BADGE_VARIANT.SECURE})`;
+  }
+
+  private setRoleByAriaLabel(): void {
+    if (this.ariaLabel) {
+      this.role = 'img';
+    } else {
+      this.role = null;
+    }
+  }
+
+  /**
+   * Method to generate the badge notification template.
+   * @param overlay - whether the badge should have an overlay.
+   * @param variant - variant of the badge.
+   * @returns the template result of the notification.
+   */
+  private getBadgeNotification(overlay: boolean, variant: string): TemplateResult {
+    return html`
+      <div
+        class="mdc-badge-notification ${classMap({ 'mdc-badge-overlay': overlay })}"
+        style="${styleMap({ backgroundColor: this.getColorThemeByVariant(variant) })}"
+      ></div>`;
+  }
+
+  /**
    * Generates the content of the badge based on the type.
    * @returns the template result of the text.
    */
   private getBadgeContentBasedOnType(): TemplateResult {
-    const { ariaLabel, counter, iconName, maxCounter, overlay, type, variant } = this;
+    const { counter, iconName, maxCounter, overlay, type, variant } = this;
     switch (type) {
-      case BadgeType.NOTIFICATION:
-        return this.getBadgeIcon(DEFAULTS.ICON_NAME, ariaLabel, variant, type, overlay);
-      case BadgeType.ICON:
-        return this.getBadgeIcon(iconName || '', ariaLabel, variant, type);
-      case BadgeType.COUNTER:
+      case BADGE_TYPE.NOTIFICATION:
+        return this.getBadgeNotification(overlay, variant);
+      case BADGE_TYPE.ICON:
+        return this.getBadgeIcon(iconName || '', variant);
+      case BADGE_TYPE.COUNTER:
         return this.getBadgeText(maxCounter, overlay, counter);
       default:
         return html``;
     }
   }
 
+  public override update(changedProperties: PropertyValues): void {
+    super.update(changedProperties);
+
+    if (changedProperties.has('ariaLabel')) {
+      this.setRoleByAriaLabel();
+    }
+  }
+
   public override render() {
-    return html`
-      <div
-        class="mdc-badge-container"
-        role="${ifDefined(this.ariaLabel ? 'img' : undefined)}"
-        aria-label="${this.ariaLabel || ''}"
-      >
-        ${this.getBadgeContentBasedOnType()}
-      </div>
-    `;
+    return this.getBadgeContentBasedOnType();
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
