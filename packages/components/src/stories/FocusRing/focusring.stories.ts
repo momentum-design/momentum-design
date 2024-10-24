@@ -6,19 +6,19 @@ import './focusring.component';
 const SHAPES = ['mds-div', 'mds-anchor', 'mds-button', 'mds-radio'];
 
 const render = (args: Args) => html`
-    <mdc-subcomponent-focusring shapeclass="${args.shapeclass}"></mdc-subcomponent-focusring>
+    <mdc-subcomponent-focusring shape="${args.shape}"></mdc-subcomponent-focusring>
 `;
 
 const meta: Meta = {
-  title: 'Utils/focusring',
+  title: 'Styling/focusring',
   tags: ['autodocs'],
-  component: 'mdc-focusring',
+  component: 'mdc-subcomponent-focusring',
   render,
   parameters: {
     badges: ['wip'],
   },
   argTypes: {
-    shapeclass: {
+    shape: {
       options: SHAPES,
       control: { type: 'radio' },
     },
@@ -29,6 +29,6 @@ export default meta;
 
 export const Primary: StoryObj = {
   args: {
-    shapeclass: SHAPES[0]
+    shape: SHAPES[0]
   },
 };

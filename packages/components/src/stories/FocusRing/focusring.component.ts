@@ -5,7 +5,7 @@ import { DEFAULTS } from './focusring.constants';
 import styles from './focusring.styles';
 
 // Subcomponent to be rendered in storybook, to showcase that the
-// shape can be consumed as a subcomponent
+// focusring can be consumed as a subcomponent
 class SubComponentFocusRing extends Component {
   /**
    * Current shape class
@@ -13,10 +13,10 @@ class SubComponentFocusRing extends Component {
    * Default: 'mds-div'
    */
   @property({ type: String})
-  shapeclass: string = DEFAULTS.SHAPE_CLASS;
+  shape: string = DEFAULTS.SHAPE;
  
   override render() {
-    switch (this.shapeclass) {
+    switch (this.shape) {
       case 'mds-div':
         return html`<div tabindex="0" class="mds-div">Focusable Div</div>`;
       case 'mds-anchor':
@@ -26,7 +26,7 @@ class SubComponentFocusRing extends Component {
       case 'mds-radio':
         return html`<input type="radio" id="radio" name="group" class="mds-radio"><label for="radio">SelectMe</label>`;
       default:
-        return null; // In case of an invalid shapeclass
+        return null; // In case of an invalid shape
     }
   }
 
