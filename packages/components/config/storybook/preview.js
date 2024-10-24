@@ -116,7 +116,7 @@ const preview = {
     },
     options: {
       storySort: {
-        order: ['Consumption', 'Components', 'Work In Progress'],
+        order: ['Consumption', 'Styling', 'Components', 'Work In Progress'],
       },
     },
   },

@@ -14,7 +14,7 @@ const hostFocusRingStyles = css`
   :host {
     --mdc-focus-ring-inner-color: var(--mds-color-theme-focus-0);
     --mdc-focus-ring-middle-color: var(--mds-color-theme-focus-1);
-    --mdc-focus-ring-outer-color: var(--mds-color-theme-focus-2;
+    --mdc-focus-ring-outer-color: var(--mds-color-theme-focus-2);
 
     --mdc-focus-ring-inner-width: 0.125rem;
     --mdc-focus-ring-middle-width: calc(2 * var(--mdc-focus-ring-inner-width));
