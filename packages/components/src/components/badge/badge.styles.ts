@@ -5,22 +5,22 @@ const styles = [
   hostFitContentStyles,
   css`
     :host {
-      --mdc-badge-icon-background-color: var(--mds-color-theme-background-accent-normal);
-      --mdc-badge-icon-color: var(--mds-color-theme-common-text-primary-normal);
+      --mdc-badge-text-color: var(--mds-color-theme-text-primary-normal);
+      --mdc-badge-text-background-color: var(--mds-color-theme-indicator-secure);
+      
+      color: var(--mdc-badge-text-color);
     }
-
-    .mdc-badge-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 9999px;
-      background-color: var(--mdc-badge-icon-background-color);
-      color: var(--mdc-badge-icon-color);
+    .mdc-badge-overlay {
+      outline: 0.063rem solid var(--mdc-badge-text-color);
     }
-
-    .mdc-badge-icon-container {
-      height: 80%;
-      width: 80%;
+    .mdc-badge-text {
+      padding: 0 0.25rem;
+      border-radius: 6.25rem;
+    }
+    .mdc-badge-notification {
+      width: 0.75rem;
+      height: 0.75rem;
+      border-radius: 50%;
     }
   `,
 ];
