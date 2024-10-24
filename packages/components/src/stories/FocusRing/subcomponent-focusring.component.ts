@@ -1,8 +1,8 @@
 import { html, CSSResult } from 'lit';
 import { Component } from '../../models';
 import { property } from 'lit/decorators.js';
-import { DEFAULTS } from './focusring.constants';
-import styles from './focusring.styles';
+import { DEFAULTS } from './subcomponent-focusring.constants';
+import styles from './subcomponent-focusring.styles';
 
 /**
  * The Focus Ring provides a visual indication of focus for users navigating via keyboard or mouse. 

@@ -1,6 +1,7 @@
-import SubComponentFocusRing from './focusring.component';
+import SubComponentFocusRing from './subcomponent-focusring.component';
+import { TAG_NAME } from './subcomponent-focusring.constants';
 
-SubComponentFocusRing.register('mdc-subcomponent-focusring');
+SubComponentFocusRing.register(TAG_NAME);
 
 declare global {
     interface HTMLElementTagNameMap {
