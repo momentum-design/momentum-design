@@ -7,14 +7,14 @@ import { Component } from '../../models';
 import { DEFAULTS } from './badge.constants';
 import styles from './badge.styles';
 import { BadgeType, BadgeVariant } from './badge.types';
-import '../icon';
-import '../text';
 
 /**
  * A badge is a small, visually distinct element that provides additional information
  * or highlights the status of an item.
  * Badges are often used to display notifications, counts, making them a useful tool for
  * conveying information quickly without taking up much space.
+ * @dependency mdc-icon
+ * @dependency mdc-text
  *
  * @tagname mdc-badge
  */

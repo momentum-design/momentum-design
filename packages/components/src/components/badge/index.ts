@@ -1,5 +1,7 @@
 import Badge from './badge.component';
 import { TAG_NAME } from './badge.constants';
+import '../icon';
+import '../text';
 
 Badge.register(TAG_NAME);
 
