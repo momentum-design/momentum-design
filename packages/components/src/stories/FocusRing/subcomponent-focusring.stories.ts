@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import { html } from 'lit';
-import '.';
-import './subcomponent-focusring.component';
+import './subcomponent-focusring.stories.utils';
+import { FOCUS_RING_DESCRIPTION } from './subcomponent-focusring.constants';
 
 const SHAPES = ['mds-div', 'mds-anchor', 'mds-button', 'mds-radio'];
 
@@ -16,6 +16,11 @@ const meta: Meta = {
   render,
   parameters: {
     badges: ['wip'],
+    docs: {
+      description: {
+        component: FOCUS_RING_DESCRIPTION
+      }
+    }
   },
   argTypes: {
     shape: {

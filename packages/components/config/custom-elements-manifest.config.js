@@ -10,7 +10,7 @@ function replace(string, terms) {
 
 module.exports = {
   /** Globs to analyze */
-  globs: ['src/components/**/*.component.ts', 'src/stories/**/*.component.ts'],
+  globs: ['src/components/**/*.component.ts'],
   /** Globs to exclude */
   exclude: ['*.js'],
   /** Directory to output CEM to */
