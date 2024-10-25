@@ -10,7 +10,7 @@ const render = (args: Args) => html`
     counter="${args.counter}"
     max-counter="${args['max-counter']}"
     variant="${args.variant}"
-    overlay=${args.overlay}
+    ?overlay=${args.overlay}
   ></mdc-badge>
 `;
 
