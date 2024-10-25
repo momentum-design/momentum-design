@@ -344,14 +344,16 @@ jobs:
       - name: Synchronize Packages
         run: yarn
 
-      - name: Install Playwright
-        run: |
-          if [ ${{ matrix.package }} == '@momentum-design/components' ]; then
-            yarn workspace @momentum-design/components test:e2e:install
-          fi
+      - name: Log in to GitHub Container Registry
+        if: ${{ matrix.package == '@momentum-design/components' }}
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Test - Postbuild
-        run: yarn workspace ${{ matrix.package }} test:postbuild
+        run: yarn workspace ${{ matrix.package }} test:postbuild  
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
