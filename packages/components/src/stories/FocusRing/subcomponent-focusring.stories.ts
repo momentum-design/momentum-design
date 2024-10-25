@@ -5,9 +5,7 @@ import { FOCUS_RING_DESCRIPTION } from './subcomponent-focusring.constants';
 
 const SHAPES = ['mds-div', 'mds-anchor', 'mds-button', 'mds-radio'];
 
-const render = (args: Args) => html`
-    <mdc-subcomponent-focusring shape="${args.shape}"></mdc-subcomponent-focusring>
-`;
+const render = (args: Args) => html` <mdc-subcomponent-focusring shape="${args.shape}"></mdc-subcomponent-focusring> `;
 
 const meta: Meta = {
   title: 'Styling/Focus Ring',
@@ -18,9 +16,9 @@ const meta: Meta = {
     badges: ['wip'],
     docs: {
       description: {
-        component: FOCUS_RING_DESCRIPTION
-      }
-    }
+        component: FOCUS_RING_DESCRIPTION,
+      },
+    },
   },
   argTypes: {
     shape: {
@@ -34,6 +32,6 @@ export default meta;
 
 export const Primary: StoryObj = {
   args: {
-    shape: SHAPES[0]
+    shape: SHAPES[0],
   },
 };

@@ -1,12 +1,11 @@
 import { html, CSSResult } from 'lit';
-import { Component } from '../../models';
 import { property } from 'lit/decorators.js';
-import { DEFAULTS } from './subcomponent-focusring.constants';
+import { Component } from '../../models';
+import { DEFAULTS, TAG_NAME } from './subcomponent-focusring.constants';
 import styles from './subcomponent-focusring.styles';
-import { TAG_NAME } from './subcomponent-focusring.constants';
 
 /**
- * The Focus Ring provides a visual indication of focus for users navigating via keyboard or mouse. 
+ * The Focus Ring provides a visual indication of focus for users navigating via keyboard or mouse.
  * @tagname mdc-subcomponent-focusring
  */
 class SubComponentFocusRing extends Component {
@@ -15,9 +14,9 @@ class SubComponentFocusRing extends Component {
    *
    * Default: 'mds-div'
    */
-  @property({ type: String})
+  @property({ type: String })
   shape: string = DEFAULTS.SHAPE;
- 
+
   override render() {
     switch (this.shape) {
       case 'mds-div':
@@ -27,7 +26,9 @@ class SubComponentFocusRing extends Component {
       case 'mds-button':
         return html`<button class="mds-button">ClickMe</button>`;
       case 'mds-radio':
-        return html`<input type="radio" id="radio" name="group" class="mds-radio"><label for="radio">SelectMe</label>`;
+        return html`<input type="radio" id="radio" name="group" class="mds-radio" /><label for="radio"
+            >SelectMe</label
+          >`;
       default:
         return null; // In case of an invalid shape
     }
@@ -39,7 +40,7 @@ class SubComponentFocusRing extends Component {
 SubComponentFocusRing.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-subcomponent-focusring']: SubComponentFocusRing;
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-subcomponent-focusring']: SubComponentFocusRing;
+  }
 }
