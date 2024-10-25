@@ -96,7 +96,7 @@ To update Visual Regression snapshots, follow the steps below to run E2E testing
 3. Login to the docker ghrc.io:
 
    ```bash
-     docker login ghcr.io # login to docker with you github credentials
+    echo $PAT | docker login ghcr.io -u username --password-stdin # login to docker with you github credentials (replace $PAT with personal access token (access token needs write packages access))
    ```
 
 4. Open a terminal to setup webserver:
