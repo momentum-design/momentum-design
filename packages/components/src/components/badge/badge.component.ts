@@ -69,7 +69,7 @@ class Badge extends Component {
    * This will help distinguish between the badge inside a button.
    */
   @property({ type: Boolean })
-  overlay = false;
+  overlay = true;
 
   /**
    * Aria-label attribute to be set for accessibility
