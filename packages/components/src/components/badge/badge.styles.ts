@@ -22,6 +22,9 @@ const styles = [
       
       --mdc-badge-overlay-background-color: var(--mds-color-theme-background-solid-primary-normal);
       --mdc-badge-secondary-background-color: var(--mds-color-theme-background-alert-default-normal);
+
+      --mdc-badge-success-foreground-color: var(--mds-color-theme-text-success-normal);
+      --mdc-badge-success-background-color: var(--mds-color-theme-background-alert-success-normal);
       
       color: var(--mdc-badge-primary-foreground-color);
     }
