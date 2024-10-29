@@ -112,7 +112,7 @@ const config: PlaywrightTestConfig = {
   /* Run your local dev server before starting the tests */
   webServer: [
     {
-      command: 'yarn test:e2e:setup',
+      command: 'yarn test:e2e:serve',
       url: 'http://localhost:4000',
       stdout: 'pipe',
       stderr: 'pipe',
