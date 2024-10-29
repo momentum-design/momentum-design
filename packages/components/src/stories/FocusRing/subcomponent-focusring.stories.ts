@@ -2,7 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import { html } from 'lit';
 import './subcomponent-focusring.stories.utils';
 import { SHAPES } from './subcomponent-focusring.constants';
-import  './subcomponent-focusring.stories.docs.mdx';
+import './subcomponent-focusring.stories.docs.mdx';
 
 const render = (args: Args) => html` <mdc-subcomponent-focusring shape="${args.shape}"></mdc-subcomponent-focusring> `;
 
