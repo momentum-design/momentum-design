@@ -20,6 +20,9 @@ const ICON_NAMES_LIST = {
 const ICON_VARIANT = {
   PRIMARY: 'primary',
   SECONDARY: 'secondary',
+};
+
+const ICON_STATE = {
   SUCCESS: 'success',
   WARNING: 'warning',
   ERROR: 'error',
@@ -38,6 +41,7 @@ export {
   TAG_NAME,
   DEFAULTS,
   BADGE_TYPE,
+  ICON_STATE,
   ICON_VARIANT,
   ICON_NAMES_LIST,
 };

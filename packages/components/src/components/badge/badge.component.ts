@@ -3,7 +3,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
-import { BADGE_TYPE, ICON_NAMES_LIST, DEFAULTS, ICON_VARIANT } from './badge.constants';
+import { BADGE_TYPE, ICON_NAMES_LIST, DEFAULTS, ICON_VARIANT, ICON_STATE } from './badge.constants';
 import styles from './badge.styles';
 
 /**
@@ -89,10 +89,11 @@ class Badge extends Component {
     iconName: string,
     overlay: boolean,
     iconVariant: string,
+    type?: string,
   ): TemplateResult {
     return html`
       <mdc-icon
-        class="mdc-badge-icon ${classMap(this.getIconClasses(overlay, iconVariant))}"
+        class="mdc-badge-icon ${classMap(this.getIconClasses(overlay, iconVariant, type))}"
         name="${ifDefined(iconName)}"
         length-unit="${DEFAULTS.LENGTH_UNIT}"
         size="${DEFAULTS.ICON_SIZE}"
@@ -115,9 +116,10 @@ class Badge extends Component {
    * @param iconVariant - the variant of the icon badge.
    * @returns - an object containing the CSS classes for the icon.
    */
-  private getIconClasses(overlay: boolean, iconVariant: string): { [key: string]: boolean } {
+  private getIconClasses(overlay: boolean, iconVariant: string, type?: string): { [key: string]: boolean } {
     const overLayClass = { 'mdc-badge-overlay': overlay };
-    const iconVariantType = Object.values(ICON_VARIANT).includes(iconVariant)
+    const variantTypes = type === BADGE_TYPE.ICON ? ICON_VARIANT : ICON_STATE;
+    const iconVariantType = Object.values(variantTypes).includes(iconVariant)
       ? iconVariant : DEFAULTS.VARIANT;
     const backgroundClass = { [`mdc-badge-icon__${iconVariantType}`]: true };
     return {
@@ -159,15 +161,15 @@ class Badge extends Component {
       case BADGE_TYPE.DOT:
         return this.getBadgeDot(overlay);
       case BADGE_TYPE.ICON:
-        return this.getBadgeIcon(iconName || '', overlay, variant);
+        return this.getBadgeIcon(iconName || '', overlay, variant, type);
       case BADGE_TYPE.COUNTER:
         return this.getBadgeCounterText(maxCounter, overlay, counter);
       case BADGE_TYPE.SUCCESS:
-        return this.getBadgeIcon(ICON_NAMES_LIST.SUCCESS_ICON_NAME, overlay, ICON_VARIANT.SUCCESS);
+        return this.getBadgeIcon(ICON_NAMES_LIST.SUCCESS_ICON_NAME, overlay, ICON_STATE.SUCCESS);
       case BADGE_TYPE.WARNING:
-        return this.getBadgeIcon(ICON_NAMES_LIST.WARNING_ICON_NAME, overlay, ICON_VARIANT.WARNING);
+        return this.getBadgeIcon(ICON_NAMES_LIST.WARNING_ICON_NAME, overlay, ICON_STATE.WARNING);
       case BADGE_TYPE.ERROR:
-        return this.getBadgeIcon(ICON_NAMES_LIST.ERROR_ICON_NAME, overlay, ICON_VARIANT.ERROR);
+        return this.getBadgeIcon(ICON_NAMES_LIST.ERROR_ICON_NAME, overlay, ICON_STATE.ERROR);
       default:
         return html``;
     }
