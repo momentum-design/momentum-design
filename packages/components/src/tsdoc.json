@@ -20,6 +20,16 @@
       "tagName": "@tagname",
       "syntaxKind": "modifier",
       "allowMultiple": false
+    },
+    {
+      "tagName": "@event",
+      "syntaxKind": "modifier",
+      "allowMultiple": true
+    },
+    {
+      "tagName": "@dependency",
+      "syntaxKind": "modifier",
+      "allowMultiple": true
     }
   ]
 }
