@@ -1,16 +1,15 @@
 import { CSSResult, html, PropertyValues, TemplateResult } from 'lit';
-import { styleMap } from 'lit-html/directives/style-map.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
-import { BADGE_TYPE, BADGE_VARIANT, DEFAULTS } from './badge.constants';
+import { BADGE_TYPE, ICON_NAMES_LIST, DEFAULTS, ICON_VARIANT } from './badge.constants';
 import styles from './badge.styles';
 
 /**
  * A badge is a small, visually distinct element that provides additional information
  * or highlights the status of an item.
- * Badges are often used to display notifications, counts, making them a useful tool for
+ * Badges are often used to display notification dot, counts, making them a useful tool for
  * conveying information quickly without taking up much space.
  * @dependency mdc-icon
  * @dependency mdc-text
@@ -20,9 +19,9 @@ import styles from './badge.styles';
 class Badge extends Component {
   /**
    * Type of the badge
-   * Can be `notification`, `icon` and `counter`
+   * Can be `dot` (notification) , `icon` and `counter`
    *
-   * Default: `notification`
+   * Default: `dot`
    */
   @property({ type: String, reflect: true })
   type = DEFAULTS.TYPE;
@@ -49,7 +48,7 @@ class Badge extends Component {
   maxCounter: number = DEFAULTS.MAX_COUNTER;
 
   @property({ type: Boolean })
-  overlay = false;
+  overlay = true;
 
   /**
    * Aria-label attribute to be set for accessibility
@@ -70,27 +69,46 @@ class Badge extends Component {
     if (counter === undefined || typeof counter !== 'number') {
       return '';
     }
-    return counter > maxCounter ? `${maxCounter}+` : `${counter}`;
+    if (counter > maxCounter) {
+      return `${maxCounter}+`;
+    }
+    // At any given time, the max limit should not cross 999.
+    if (counter > DEFAULTS.MAX_COUNTER_LIMIT) {
+      return `${DEFAULTS.MAX_COUNTER_LIMIT}+`;
+    }
+    return counter.toString();
   }
 
   /**
-   * Method to generate the badge icon and notification template.
+   * Method to generate the badge icon template.
    * @param iconName - name of the icon to be used.
    * @param variant - variant of the badge.
    * @returns the template result of the icon.
    */
   private getBadgeIcon(
     iconName: string,
-    variant: string,
+    overlay: boolean,
+    iconVariant: string,
   ): TemplateResult {
     return html`
       <mdc-icon
+        class="mdc-badge-icon ${classMap(this.getIconClasses(overlay, iconVariant))}"
         name="${ifDefined(iconName)}"
         length-unit="${DEFAULTS.LENGTH_UNIT}"
         size="${DEFAULTS.ICON_SIZE}"
-        style="${styleMap({ color: this.getColorThemeByVariant(variant) })}"
       ></mdc-icon>
     `;
+  }
+
+  private getIconClasses(overlay: boolean, iconVariant: string) {
+    const overLayClass = { 'mdc-badge-overlay': overlay };
+    const iconVariantType = Object.values(ICON_VARIANT).includes(iconVariant)
+      ? iconVariant : DEFAULTS.VARIANT;
+    const backgroundClass = { [`mdc-badge-icon__${iconVariantType}`]: true };
+    return {
+      ...overLayClass,
+      ...backgroundClass,
+    };
   }
 
   /**
@@ -100,30 +118,16 @@ class Badge extends Component {
    * @param counter - the number to be displayed on the badge
    * @returns the template result of the text.
    */
-  private getBadgeText(maxCounter: number, overlay: boolean, counter?: number): TemplateResult {
+  private getBadgeCounterText(maxCounter: number, overlay: boolean, counter?: number): TemplateResult {
     return html`
       <mdc-text
         type="body-small-medium"
         tagname="div"
-        style="${styleMap({ backgroundColor: this.getColorThemeByVariant() })}"
         class="mdc-badge-text ${classMap({ 'mdc-badge-overlay': overlay })}"
       >
         ${this.getCounterText(maxCounter, counter)}
       </mdc-text>
     `;
-  }
-
-  /**
-   * Given a variant, it returns the color theme variable string.
-   * If no variant is given, it will return the default SECURE color theme variable string.
-   * @param variant - the variant to get the color theme variable string
-   * @returns the color theme variable string
-   */
-  private getColorThemeByVariant(variant?: string): string {
-    if (variant && Object.values(BADGE_VARIANT).includes(variant)) {
-      return `var(--mds-color-theme-indicator-${variant})`;
-    }
-    return `var(--mds-color-theme-indicator-${BADGE_VARIANT.SECURE})`;
   }
 
   private setRoleByAriaLabel(): void {
@@ -135,32 +139,24 @@ class Badge extends Component {
   }
 
   /**
-   * Method to generate the badge notification template.
-   * @param overlay - whether the badge should have an overlay.
-   * @param variant - variant of the badge.
-   * @returns the template result of the notification.
-   */
-  private getBadgeNotification(overlay: boolean, variant: string): TemplateResult {
-    return html`
-      <div
-        class="mdc-badge-notification ${classMap({ 'mdc-badge-overlay': overlay })}"
-        style="${styleMap({ backgroundColor: this.getColorThemeByVariant(variant) })}"
-      ></div>`;
-  }
-
-  /**
    * Generates the content of the badge based on the type.
    * @returns the template result of the text.
    */
   private getBadgeContentBasedOnType(): TemplateResult {
     const { counter, iconName, maxCounter, overlay, type, variant } = this;
     switch (type) {
-      case BADGE_TYPE.NOTIFICATION:
-        return this.getBadgeNotification(overlay, variant);
+      case BADGE_TYPE.DOT:
+        return html`<div class="mdc-badge-dot ${classMap({ 'mdc-badge-overlay': overlay })}"></div>`;
       case BADGE_TYPE.ICON:
-        return this.getBadgeIcon(iconName || '', variant);
+        return this.getBadgeIcon(iconName || '', overlay, variant);
       case BADGE_TYPE.COUNTER:
-        return this.getBadgeText(maxCounter, overlay, counter);
+        return this.getBadgeCounterText(maxCounter, overlay, counter);
+      case BADGE_TYPE.SUCCESS:
+        return this.getBadgeIcon(ICON_NAMES_LIST.SUCCESS_ICON_NAME, overlay, ICON_VARIANT.SUCCESS);
+      case BADGE_TYPE.WARNING:
+        return this.getBadgeIcon(ICON_NAMES_LIST.WARNING_ICON_NAME, overlay, ICON_VARIANT.WARNING);
+      case BADGE_TYPE.ERROR:
+        return this.getBadgeIcon(ICON_NAMES_LIST.ERROR_ICON_NAME, overlay, ICON_VARIANT.ERROR);
       default:
         return html``;
     }
