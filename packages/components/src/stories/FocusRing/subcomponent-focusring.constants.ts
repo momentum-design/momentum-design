@@ -4,8 +4,10 @@ import utils from '../../utils/tag-name';
 const TAG_NAME = utils.constructTagName('subcomponent-focusring');
 
 const DEFAULTS = {
-  SHAPE: 'mds-div' as const,
+  SHAPE: 'mds-button' as const,
 };
+
+const SHAPES = ['mds-button', 'mds-radio', 'mds-checkbox'];
 
 const FOCUS_RING_DESCRIPTION = `
   **The Focus Ring provides a visual indication of focus for users navigating via keyboard or mouse.** 
@@ -25,4 +27,4 @@ const FOCUS_RING_DESCRIPTION = `
   As you select any shape from the options below, you will see the focus ring wrap around the component.
 `;
 
-export { DEFAULTS, TAG_NAME, FOCUS_RING_DESCRIPTION };
+export { DEFAULTS, TAG_NAME, SHAPES, FOCUS_RING_DESCRIPTION };

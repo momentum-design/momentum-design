@@ -12,25 +12,26 @@ class SubComponentFocusRing extends Component {
   /**
    * Current shape class
    *
-   * Default: 'mds-div'
+   * Default: 'mds-button'
    */
   @property({ type: String })
   shape: string = DEFAULTS.SHAPE;
 
   override render() {
     switch (this.shape) {
-      case 'mds-div':
-        return html`<div tabindex="0" class="mds-div">Focusable Div</div>`;
-      case 'mds-anchor':
-        return html`<a href="#" class="mds-anchor">LinkText</a>`;
       case 'mds-button':
         return html`<button class="mds-button">ClickMe</button>`;
       case 'mds-radio':
         return html`<input type="radio" id="radio" name="group" class="mds-radio" /><label for="radio"
             >SelectMe</label
           >`;
+      case 'mds-checkbox':
+        return html`
+          <input type="checkbox" id="checkbox" name="terms" class="mds-checkbox" />
+          <label for="checkbox">Accept Terms</label>
+        `;
       default:
-        return null; // In case of an invalid shape
+        return null;
     }
   }
 

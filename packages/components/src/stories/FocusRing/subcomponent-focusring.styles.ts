@@ -6,12 +6,6 @@ const styles = [
   css`
     :host {
       font-family: sans-serif;
-      border: 3px solid orange;
-    }
-
-    div.mds-div {
-      background-color: #555;
-      border: 3px solid red;
     }
   `,
   hostFocusRingStyles,
