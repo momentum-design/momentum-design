@@ -37,7 +37,7 @@ enum ButtonStyle {
 
 Given the challenges associated with enums, developers can consider alternative approaches:
 
-### 1. Using Objecets with `as const`
+### 1. Using Objects with `as const`
 
 Instead of using enums, developers can utilize objects with `as const` for defining constants:
 
@@ -84,4 +84,11 @@ type Basic = 'hello' | 'world';
 
 ## Conclusion
 
-While enums provide a useful mechanism for defining named constants in TypeScript, they come with several limitations that developers should consider. By exploring alternatives such as using objects with as const and union types, developers can achieve similar functionality while avoiding some of the pitfalls associated with traditional enums. Adopting these practices will lead to cleaner, more maintainable code while ensuring type safety and consistency across the application.
+We are going ahead with using objects with the as const approach, as it provides greater clarity by ensuring that types and values are treated as constants.
+
+### References
+
+- [Enum Documentation](https://www.typescriptlang.org/docs/handbook/enums.html)
+- [const enum pitfalls](https://www.typescriptlang.org/docs/handbook/enums.html#const-enum-pitfalls)
+- [Enums considered harmful](https://www.youtube.com/watch?v=jjMbPt_H3RQ&t=2s)
+- [Enums are MISUNDERSTOOD (not terrible): Josh Goldberg, typescript-eslint maintainer](https://www.youtube.com/watch?v=XTXPKbPcvl4)-

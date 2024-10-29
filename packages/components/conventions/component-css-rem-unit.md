@@ -40,7 +40,7 @@ This consistency makes `rem` a powerful tool for responsive design and accessibi
 
 ## Implementation Guidelines
 
-1. **Set a Base Font Size**:
+1. **Set a Base Font Size**:  It is important to clarify that this is an action to be taken by the application or consumer, and that the our (Momentum Design) team should not set the base font size within our components.
 
     ```css
     html {

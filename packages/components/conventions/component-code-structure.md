@@ -20,10 +20,10 @@ When this command is run, a prompt will appear for the user to enter the compone
 
 ### Generated Structure
 
-Once the user enters the component name, a folder will be created within p`ackages/components/src/components/` with the specified name. The following files will be added inside this folder:
+Once the user enters the component name, a folder will be created within `packages/components/src/components/` with the specified name. The following files will be added inside this folder:
 
-1. `index.js`: This file serves as the entry point for the component. It typically exports the main component or other relevant modules, making them accessible for import in other parts of the application.
-1. `x.component.ts`: This file contains the presentational component. It should focus on props, avoiding selectors, dispatches, and side effects.
+1. `index.ts`: This file serves as the registration point for the web component, ensuring that the component is properly registered and available for use throughout the application.
+1. `x.component.ts`: This file contains the presentational component. It should focus on class defintion, reactive properties, render() and life cycle methods.
 1. `x.stories.ts`: This file is used for creating stories for the presentational component. The implementer can decide how to structure these stories.
 1. `x.e2e-test.ts`:This file contains end-to-end tests, including test hooks and utilities, as well as individual tests for the presentational component.
 1. `x.styles.ts`: This file is designated for adding CSS styling to the component.
@@ -35,15 +35,10 @@ Developers may also include specific files for their components if needed:
 
 - `x.types.ts`: A types file for defining Typescript types.
 - `x.utils.ts`: A utilities file for complex functions, if necessary.
+- `x.fixtures.ts`: A fixtures file for providing sample data or mock implementations for testing purposes.
 
 While this convention provides a useful guideline for structuring components, it may not apply to every scenario. Developers should use their discretion to determine when to implement specific files based on the requirements of individual components.
 
-## Advantages of this structure
-
-- **Isolated Testing in Storybook**: Testing components in isolation enhances code quality and ensures that each component behaves as expected.
-- **Better Unit Testing of Logic**: A consistent structure allows for improved unit testing of logic within components.
-- **Common Structure Across Components**: Following a standardized structure promotes familiarity and ease of understanding among team members working on different components.
-
 ## Conclusion
 
-By adhering to this documented component code structure, developers can create maintainable, testable, and consistent components within the project. This approach not only improves code quality but also fosters collaboration among team members by providing a clear framework for development.
+The structured naming of files within the project, such as x.component.ts for component implementations and x.e2e.test.ts for end-to-end tests, offers clear insight into each file's purpose, facilitating a better understanding of their roles within the application. This consistent naming convention enables developers to quickly identify the content and functionality of various files throughout the codebase.

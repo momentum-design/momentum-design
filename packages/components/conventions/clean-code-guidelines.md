@@ -1,4 +1,4 @@
-# Clean Code Guidelines for Master Branches
+# Clean Code Guidelines
 
 ## Introduction
 
@@ -9,39 +9,26 @@ Maintaining clean code is essential for the health and readability of our codeba
 ### 1. Avoid Console Logs in Production
 
 - **Rule:** The use of `console.log`, `console.error`, or similar debugging statements should not be merged into production code unless explicitly necessary (e.g., for error handling).
-- **Action:** Implement a linter rule to automatically flag these statements during the code review process.
 
-### 2. Eliminate Non-Relevant Commented-Out Code
+### 2. Clean Up Commented-Out Code and Incomplete Comments
 
-- **Rule:** Any commented-out code that is not relevant to the current functionality must be removed before merging into production. For example:
+- **Rule:** All commented-out code that is not relevant to the current functionality must be removed before merging into production. This includes any lines of code that do not serve a purpose, as well as comments indicating unfinished work or "TODO" comments that lack proper context. For example:
 
 ```js
 function demo() {
     // oldFunctionCall(); // This line should be removed
-    ... other code
+    // function will be finished in upcoming PR
+    /*
+    function demo() {
+    }
+    */
 }
 ```
 
-- **Action:** Ensure that all commented-out lines that do not serve a purpose are cleaned up during the review.
-
-### 3. Prohibit Incomplete Code Comments
-
-- **Rule:** Commented-out code that indicates unfinished work (e.g., comments suggesting that a function will be completed in an upcoming PR) should not be included in production. For example:
-
-```js
-// function will be finished in upcoming PR
-/*
-function demo() {
-}
-*/
-```
-
-- **Action:** Remove any such comments before merging to maintain clarity and prevent confusion about the state of the code.
-
-### 4. Remove "TODO" Comments
-
-- **Rule:** "TODO" comments should not remain in the code unless they reference an open JIRA ticket and split work at a sensible place.
-- **Action:** Regularly audit the codebase for "TODO" comments, ensuring they meet the criteria for retention.
+- **Action**: During the code review process, ensure that:  
+  - Any commented-out lines that do not contribute to the current functionality are cleaned up.
+  - Comments indicating unfinished work are removed to maintain clarity.
+  - "TODO" comments are only retained if they reference an open JIRA ticket and are placed sensibly within the code. Regular audits of the codebase should be conducted to enforce these standards.
 
 ## Benefits of using these Clean Code Practices
 
@@ -52,3 +39,6 @@ function demo() {
 ## Conclusion
 
 By adhering to these guidelines, we can significantly enhance the quality of our codebase. Clean code is not just a best practice; it is essential for maintaining a productive and collaborative development environment. Let’s commit to these standards and ensure our master branches remain pristine!
+
+
+lint rule to highlight on unnecessary comments and TODO
