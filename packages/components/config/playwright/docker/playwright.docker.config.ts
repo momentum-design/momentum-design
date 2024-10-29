@@ -120,7 +120,7 @@ const config: PlaywrightTestConfig = {
       reuseExistingServer: !process.env.CI,
     },
     {
-      command: 'yarn test:e2e:docker:run',
+      command: 'yarn test:e2e:docker:serve',
       url: 'http://localhost:3000',
       stdout: 'pipe',
       stderr: 'pipe',
