@@ -4,8 +4,8 @@ import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 const styles = [
   hostFitContentStyles,
   css`
-    :host {
-      font-family: sans-serif;
+    .button:focus, .radio:focus, .checkbox:focus {
+      outline: none;
     }
   `,
   hostFocusRingStyles,
