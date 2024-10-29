@@ -8,8 +8,8 @@ const styles = [
       --mdc-badge-default-foreground-color: var(--mds-color-theme-common-text-primary-normal);
       --mdc-badge-secondary-foreground-color: var(--mds-color-theme-text-secondary-normal);
       --mdc-badge-success-foreground-color: var(--mds-color-theme-text-success-normal);
-      --mdc-badge-warning-foreground-color: var(--mds-color-theme-text-success-normal);
-      --mdc-badge-error-foreground-color: var(--mds-color-theme-text-success-normal);
+      --mdc-badge-warning-foreground-color: var(--mds-color-theme-text-warning-normal);
+      --mdc-badge-error-foreground-color: var(--mds-color-theme-text-error-normal);
       --mdc-badge-success-background-color: var(--mds-color-theme-background-alert-success-normal);
       --mdc-badge-warning-background-color: var(--mds-color-theme-background-alert-warning-normal);
       --mdc-badge-error-background-color: var(--mds-color-theme-background-alert-error-normal);
