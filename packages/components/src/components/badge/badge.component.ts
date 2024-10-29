@@ -69,12 +69,12 @@ class Badge extends Component {
     if (counter === undefined || typeof counter !== 'number') {
       return '';
     }
-    if (counter > maxCounter) {
-      return `${maxCounter}+`;
-    }
     // At any given time, the max limit should not cross 999.
     if (counter > DEFAULTS.MAX_COUNTER_LIMIT) {
       return `${DEFAULTS.MAX_COUNTER_LIMIT}+`;
+    }
+    if (counter > maxCounter) {
+      return `${maxCounter}+`;
     }
     return counter.toString();
   }
@@ -114,6 +114,7 @@ class Badge extends Component {
    * This method generates the CSS classes for the badge icon.
    * @param overlay - boolean indicating whether the badge should have an overlay.
    * @param iconVariant - the variant of the icon badge.
+   * @param type - the type of the badge.
    * @returns - an object containing the CSS classes for the icon.
    */
   private getIconClasses(overlay: boolean, iconVariant: string, type?: string): { [key: string]: boolean } {
@@ -147,6 +148,11 @@ class Badge extends Component {
     `;
   }
 
+  /**
+   * Method to set the role based on the aria-label provided.
+   * If the aria-label is provided, the role of the element will be 'img'.
+   * Otherwise, the role will be null.
+   */
   private setRoleByAriaLabel(): void {
     if (this.ariaLabel) {
       this.role = 'img';
@@ -155,6 +161,13 @@ class Badge extends Component {
     }
   }
 
+  /**
+   * Generates the badge content based on the badge type.
+   * Utilizes various helper methods to create the appropriate badge template based on the
+   * current badge type. Supports 'dot', 'icon', 'counter', 'success', 'warning', and 'error'
+   * types, returning the corresponding template result for each type.
+   * @returns the TemplateResult for the current badge type.
+   */
   private getBadgeContentBasedOnType(): TemplateResult {
     const { counter, iconName, maxCounter, overlay, type, variant } = this;
     switch (type) {
