@@ -48,7 +48,7 @@ class Badge extends Component {
   maxCounter: number = DEFAULTS.MAX_COUNTER;
 
   @property({ type: Boolean })
-  overlay = true;
+  overlay = false;
 
   /**
    * Aria-label attribute to be set for accessibility
@@ -100,7 +100,22 @@ class Badge extends Component {
     `;
   }
 
-  private getIconClasses(overlay: boolean, iconVariant: string) {
+  /**
+   * Method to generate the badge dot template.
+   * @param overlay - boolean indicating whether the badge should have an overlay.
+   * @returns the template result of the dot with mdc-badge-dot class.
+   */
+  private getBadgeDot(overlay: boolean): TemplateResult {
+    return html`<div class="mdc-badge-dot ${classMap({ 'mdc-badge-overlay': overlay })}"></div>`;
+  }
+
+  /**
+   * This method generates the CSS classes for the badge icon.
+   * @param overlay - boolean indicating whether the badge should have an overlay.
+   * @param iconVariant - the variant of the icon badge.
+   * @returns - an object containing the CSS classes for the icon.
+   */
+  private getIconClasses(overlay: boolean, iconVariant: string): { [key: string]: boolean } {
     const overLayClass = { 'mdc-badge-overlay': overlay };
     const iconVariantType = Object.values(ICON_VARIANT).includes(iconVariant)
       ? iconVariant : DEFAULTS.VARIANT;
@@ -138,15 +153,11 @@ class Badge extends Component {
     }
   }
 
-  /**
-   * Generates the content of the badge based on the type.
-   * @returns the template result of the text.
-   */
   private getBadgeContentBasedOnType(): TemplateResult {
     const { counter, iconName, maxCounter, overlay, type, variant } = this;
     switch (type) {
       case BADGE_TYPE.DOT:
-        return html`<div class="mdc-badge-dot ${classMap({ 'mdc-badge-overlay': overlay })}"></div>`;
+        return this.getBadgeDot(overlay);
       case BADGE_TYPE.ICON:
         return this.getBadgeIcon(iconName || '', overlay, variant);
       case BADGE_TYPE.COUNTER:
