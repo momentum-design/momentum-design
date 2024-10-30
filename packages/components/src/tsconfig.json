@@ -46,6 +46,7 @@
   "exclude": [
     "**/*.e2e-test*",
     "**/*.stories*",
-    "node_modules"
+    "node_modules",
+    "stories"
   ],
 }
