@@ -1,14 +1,13 @@
 /* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import { DEFAULTS, VALUES } from './text.constants';
-import type { FontType, ValidTextTags } from './text.types';
+import { DEFAULTS, FONT_TYPE, VALID_TEXT_TAGS } from './text.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
-  type: FontType;
+  type: string;
   children: any;
-  tagname?: ValidTextTags;
+  tagname?: string;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -27,8 +26,6 @@ const setup = async (args: SetupOptions) => {
   return text;
 };
 
-const typesToTest: Array<FontType> = VALUES.TYPE;
-const tagnameToTest: Array<ValidTextTags> = VALUES.TAGNAME;
 const textContent = 'abcdefghijklmnopqrstuvwxyz1234567890';
 
 test.describe('mdc-text', () => {
@@ -38,7 +35,7 @@ test.describe('mdc-text', () => {
       height: 500,
     },
   });
-  for (const textType of typesToTest) {
+  for (const textType of Object.values(FONT_TYPE)) {
     test(textType, async ({ componentsPage }) => {
       const text = await setup({ componentsPage, type: textType, children: textContent });
 
@@ -69,11 +66,11 @@ test.describe('mdc-text', () => {
     });
   }
 
-  for (const tagname of tagnameToTest) {
+  for (const tagname of Object.values(VALID_TEXT_TAGS)) {
     test(tagname, async ({ componentsPage }) => {
       const text = await setup({
         componentsPage,
-        type: DEFAULTS.TYPE,
+        type: FONT_TYPE.BODY_MIDSIZE_REGULAR,
         tagname,
         children: textContent,
       });
