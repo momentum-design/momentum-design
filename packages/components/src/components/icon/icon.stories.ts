@@ -46,7 +46,11 @@ export default meta;
 
 export const Decorative: StoryObj = {
   argTypes: {
-    ...disableControls(['aria-label']),
+    'aria-label': {
+      table: {
+        disable: true,
+      },
+    },
   },
   args: {
     name: 'accessibility-regular',
