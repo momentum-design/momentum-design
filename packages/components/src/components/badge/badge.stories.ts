@@ -26,11 +26,6 @@ const meta: Meta = {
     type: {
       control: 'select',
       options: Object.values(BADGE_TYPE),
-      table: {
-        defaultValue: {
-          summary: DEFAULTS.TYPE,
-        },
-      },
     },
     overlay: {
       control: 'boolean',

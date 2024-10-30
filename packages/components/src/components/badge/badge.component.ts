@@ -34,7 +34,7 @@ class Badge extends Component {
    * Can be `dot` (notification) , `icon`, `counter`, `success`, `warning` or `error`.
    */
   @property({ type: String, reflect: true })
-  type = DEFAULTS.TYPE;
+  type?: string;
 
   /**
    * Name of the icon (= filename).
