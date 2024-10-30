@@ -33,10 +33,6 @@ const meta: Meta = {
       },
     },
     overlay: {
-      if: {
-        arg: 'type',
-        neq: BADGE_TYPE.ICON,
-      },
       control: 'boolean',
     },
     counter: {
@@ -79,13 +75,48 @@ const meta: Meta = {
 
 export default meta;
 
-export const Primary: StoryObj = {
+export const Dot: StoryObj = {
   args: {
-    type: DEFAULTS.TYPE,
-    'icon-name': 'error-legacy-filled',
-    counter: 1,
+    type: BADGE_TYPE.DOT,
+    overlay: false,
+  },
+};
+
+export const Icon: StoryObj = {
+  args: {
+    type: BADGE_TYPE.ICON,
+    'icon-name': 'accessibility-regular',
+    variant: ICON_VARIANT.PRIMARY,
+    overlay: false,
+  },
+};
+
+export const Counter: StoryObj = {
+  args: {
+    type: BADGE_TYPE.COUNTER,
+    counter: 10,
     'max-counter': MAX_COUNTER_LIST[1],
-    variant: DEFAULTS.VARIANT,
+    overlay: false,
+  },
+};
+
+export const Success: StoryObj = {
+  args: {
+    type: BADGE_TYPE.SUCCESS,
+    overlay: false,
+  },
+};
+
+export const Warning: StoryObj = {
+  args: {
+    type: BADGE_TYPE.WARNING,
+    overlay: false,
+  },
+};
+
+export const Error: StoryObj = {
+  args: {
+    type: BADGE_TYPE.ERROR,
     overlay: false,
   },
 };
