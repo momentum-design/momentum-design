@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { BADGE_TYPE, BADGE_VARIANT, DEFAULTS } from './badge.constants';
+import { BADGE_TYPE, ICON_VARIANT, DEFAULTS, MAX_COUNTER_LIST } from './badge.constants';
 
 const render = (args: Args) => html`
   <mdc-badge
@@ -51,7 +51,8 @@ const meta: Meta = {
         arg: 'type',
         eq: BADGE_TYPE.COUNTER,
       },
-      control: 'number',
+      control: 'select',
+      options: MAX_COUNTER_LIST,
     },
     'icon-name': {
       if: {
@@ -63,10 +64,10 @@ const meta: Meta = {
     variant: {
       if: {
         arg: 'type',
-        neq: BADGE_TYPE.COUNTER,
+        eq: BADGE_TYPE.ICON,
       },
       control: 'select',
-      options: Object.values(BADGE_VARIANT),
+      options: Object.values(ICON_VARIANT),
       table: {
         defaultValue: {
           summary: DEFAULTS.VARIANT,
@@ -83,7 +84,7 @@ export const Primary: StoryObj = {
     type: DEFAULTS.TYPE,
     'icon-name': 'error-legacy-filled',
     counter: 1,
-    'max-counter': 99,
+    'max-counter': MAX_COUNTER_LIST[1],
     variant: DEFAULTS.VARIANT,
     overlay: false,
   },
