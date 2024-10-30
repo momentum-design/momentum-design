@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import { DEFAULTS, FONT_TYPE, VALID_TEXT_TAGS } from './text.constants';
+import { FONT_TYPE, VALID_TEXT_TAGS } from './text.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
