@@ -59,8 +59,7 @@ This consistency makes `rem` a powerful tool for responsive design and accessibi
     ```
 
 3. **Avoid Using `px` Directly**:
-    - Refrain from using `px` for font sizes, margins, paddings, and other dimensions.
-    - Use `px` only when absolutely necessary, such as for border widths or media queries.
+    - We should refrain from using `px` unless absolutely necessary. Any instances where `px` might be required should be discussed prior to implementation.
 
 ## Conclusion
 
