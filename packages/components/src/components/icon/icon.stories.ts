@@ -29,7 +29,14 @@ const meta: Meta = {
     badges: ['stable'],
   },
   argTypes: {
-    ...disableControls(['--mdc-icon-fill-color']),
+    ...disableControls([
+      'iconData',
+      'lengthUnitFromContext',
+      'sizeFromContext',
+      'iconProviderContext',
+      'computedIconSize',
+      '--mdc-icon-fill-color',
+    ]),
     ...classArgType,
     ...styleArgType,
   },
@@ -38,6 +45,9 @@ const meta: Meta = {
 export default meta;
 
 export const Decorative: StoryObj = {
+  argTypes: {
+    ...disableControls(['aria-label']),
+  },
   args: {
     name: 'accessibility-regular',
     size: 2,
