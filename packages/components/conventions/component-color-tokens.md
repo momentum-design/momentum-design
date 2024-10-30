@@ -1,10 +1,10 @@
-# Usage of theme and color tokens in momentum-design components
+# Usage of color tokens in momentum-design components
 
-In the Momentum Design System, it is essential to always use theme tokens and color tokens when defining colors within our components. This practice ensures consistency, accessibility, and a cohesive visual identity across all applications.
+In the Momentum Design System, it is essential to always use color tokens when defining colors within our components. This practice ensures consistency, accessibility, and a cohesive visual identity across all applications.
 
 ## Token Definitions
 
-We have defined theme tokens and color tokens that can be found at the following link: [Momentum Design Tokens](https://momentum-design.github.io/momentum-design/en/tokens/). These tokens serve as the standardized color palette for all components.
+We have defined color tokens that can be found at the following link: [Momentum Design Tokens](https://momentum-design.github.io/momentum-design/en/tokens/theme-stable/). These tokens serve as the standardized color palette for all components.
 
 ## Guidelines for Using Color Tokens
 

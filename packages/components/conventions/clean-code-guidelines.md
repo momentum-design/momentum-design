@@ -39,6 +39,3 @@ function demo() {
 ## Conclusion
 
 By adhering to these guidelines, we can significantly enhance the quality of our codebase. Clean code is not just a best practice; it is essential for maintaining a productive and collaborative development environment. Let’s commit to these standards and ensure our master branches remain pristine!
-
-
-lint rule to highlight on unnecessary comments and TODO
