@@ -46,7 +46,7 @@ class Badge extends Component {
 
   /**
    * Type of the variant can be `primary` or `secondary`.
-   * It defines the background color of the icon.
+   * It defines the background and foreground color of the icon.
    */
   @property({ type: String })
   variant = DEFAULTS.VARIANT;
@@ -101,9 +101,11 @@ class Badge extends Component {
   }
 
   /**
-   * Method to generate the badge icon template.
-   * @param iconName - name of the icon to be used.
-   * @param variant - variant of the badge.
+   * Method to generate the badge icon.
+   * @param iconName - the name of the icon from the icon set
+   * @param overlay - boolean indicating whether the badge should have an overlay.
+   * @param iconVariant - the variant of the icon badge.
+   * @param type - the type of the badge.
    * @returns the template result of the icon.
    */
   private getBadgeIcon(
