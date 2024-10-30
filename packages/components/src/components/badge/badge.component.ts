@@ -87,11 +87,11 @@ class Badge extends Component {
    * @returns the string representation of the counter
    */
   private getCounterText(maxCounter: number, counter?: number): string {
-    if (counter === undefined || typeof counter !== 'number') {
+    if (counter === undefined || typeof counter !== 'number' || maxCounter === 0) {
       return '';
     }
     // At any given time, the max limit should not cross 999.
-    if (counter > DEFAULTS.MAX_COUNTER_LIMIT) {
+    if (maxCounter > DEFAULTS.MAX_COUNTER_LIMIT || counter > DEFAULTS.MAX_COUNTER_LIMIT) {
       return `${DEFAULTS.MAX_COUNTER_LIMIT}+`;
     }
     if (counter > maxCounter) {

@@ -78,7 +78,10 @@ export default meta;
 export const Dot: StoryObj = {
   args: {
     type: BADGE_TYPE.DOT,
+    counter: 1,
     overlay: false,
+    'icon-name': 'error-legacy-filled',
+    'max-counter': MAX_COUNTER_LIST[0],
   },
 };
 
