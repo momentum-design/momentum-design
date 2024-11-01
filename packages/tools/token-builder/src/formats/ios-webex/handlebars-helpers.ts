@@ -93,7 +93,17 @@ class HandlebarsHelpers {
         if (!groups[category]) {
           groups[category] = [];
         }
-        groups[category].push({ name, value: token.value });
+
+        if (token.value.startsWith('linear-gradient')) {
+          const hexValues = token.value.match(/#(?:[0-9a-fA-F]{3}){1,2}(?:[0-9a-fA-F]{2})?/g);
+          if (hexValues) {
+            hexValues.forEach((hex, index) => {
+              groups[category].push({ name: `${name}${index}`, value: hex });
+            });
+          }
+        } else {
+          groups[category].push({ name, value: token.value });
+        }
       }
     });
 
