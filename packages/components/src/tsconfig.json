@@ -4,7 +4,7 @@
     "composite": true,
     "tsBuildInfoFile": null,
     "target": "es2019",
-    "module": "CommonJS",
+    "module": "ES2020",
     "lib": [
       "es2020",
       "DOM",
@@ -30,6 +30,7 @@
     "noImplicitOverride": true,
     "useDefineForClassFields": false,
     "removeComments": false,
+    "importHelpers": false,
     "plugins": [
       {
         "name": "ts-lit-plugin",
@@ -46,6 +47,7 @@
   "exclude": [
     "**/*.e2e-test*",
     "**/*.stories*",
-    "node_modules"
+    "node_modules",
+    "stories"
   ],
 }

@@ -25,6 +25,21 @@ Usage: can be multiple
 Describes the CSS Properties of the component, which can be used by consumers to override styling of the component.
 Usage: can be multiple
 
+### @csspart
+
+Describes the Shadow Parts of the component, allowing consumers to style specific elements within the shadow DOM.
+Usage: can be multiple
+
+### @dependency
+
+Describes the dependencies of the component, indicating which other packages or modules are required for its functionality.
+Usage: can be multiple
+
+### @event
+
+Describes an event that can be emitted by the component, detailing the specific actions or occurrences that can trigger it.
+Usage: can be multiple
+
 Example:
 
 ```javascript
