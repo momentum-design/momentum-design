@@ -599,8 +599,7 @@
           "disabled": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.white-alpha.11}",
-            "description": ""
+            "value": "{color.core.white-alpha.0}"
           }
         },
         "solid": {
