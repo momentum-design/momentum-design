@@ -4,7 +4,6 @@ const TAG_NAME = utils.constructTagName('badge');
 
 const ALLOWED_ICON_VARIANT = ['primary', 'secondary'];
 
-
 const BADGE_TYPE = {
   DOT: 'dot',
   ICON: 'icon',
@@ -40,12 +39,4 @@ const DEFAULTS = {
   ICON_SIZE: 1,
 };
 
-export {
-  TAG_NAME,
-  DEFAULTS,
-  BADGE_TYPE,
-  ICON_STATE,
-  ICON_VARIANT,
-  ICON_NAMES_LIST,
-  ALLOWED_ICON_VARIANT
-};
+export { TAG_NAME, DEFAULTS, BADGE_TYPE, ICON_STATE, ICON_VARIANT, ICON_NAMES_LIST, ALLOWED_ICON_VARIANT };

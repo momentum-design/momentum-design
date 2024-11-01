@@ -3,7 +3,14 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
-import { BADGE_TYPE, ICON_NAMES_LIST, DEFAULTS, ICON_VARIANT, ICON_STATE, ALLOWED_ICON_VARIANT } from './badge.constants';
+import {
+  BADGE_TYPE,
+  ICON_NAMES_LIST,
+  DEFAULTS,
+  ICON_VARIANT,
+  ICON_STATE,
+  ALLOWED_ICON_VARIANT,
+} from './badge.constants';
 import styles from './badge.styles';
 
 /**
@@ -85,12 +92,7 @@ class Badge extends Component {
    * @param variant - variant of the badge.
    * @returns the template result of the icon.
    */
-  private getBadgeIcon(
-    iconName: string,
-    overlay: boolean,
-    iconVariant: string,
-    type?: string,
-  ): TemplateResult {
+  private getBadgeIcon(iconName: string, overlay: boolean, iconVariant: string, type?: string): TemplateResult {
     return html`
       <mdc-icon
         class="mdc-badge-icon ${classMap(this.getIconClasses(overlay, iconVariant, type))}"
@@ -120,8 +122,7 @@ class Badge extends Component {
   private getIconClasses(overlay: boolean, iconVariant: string, type?: string): { [key: string]: boolean } {
     const overLayClass = { 'mdc-badge-overlay': overlay };
     const variantTypes = type === BADGE_TYPE.ICON ? ICON_VARIANT : ICON_STATE;
-    const iconVariantType = Object.values(variantTypes).includes(iconVariant)
-      ? iconVariant : DEFAULTS.VARIANT;
+    const iconVariantType = Object.values(variantTypes).includes(iconVariant) ? iconVariant : DEFAULTS.VARIANT;
     const backgroundClass = { [`mdc-badge-icon__${iconVariantType}`]: true };
     return {
       ...overLayClass,
@@ -169,7 +170,7 @@ class Badge extends Component {
    * @returns the TemplateResult for the current badge type.
    */
   private getBadgeContentBasedOnType(): TemplateResult {
-    if(this.variant && !ALLOWED_ICON_VARIANT.includes(this.variant)) {
+    if (this.variant && !ALLOWED_ICON_VARIANT.includes(this.variant)) {
       this.variant = ICON_VARIANT.PRIMARY;
     }
     const { counter, iconName, maxCounter, overlay, type, variant } = this;

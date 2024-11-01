@@ -1,6 +1,6 @@
+import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import { BADGE_TYPE, ICON_NAMES_LIST, DEFAULTS, ICON_VARIANT } from './badge.constants';
-import { expect } from '@playwright/test';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -45,7 +45,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
   });
 
   await componentsPage.setAttributes(badge, {
-    'ariaLabel': ariaLabel,
+    'aria-label': ariaLabel,
   });
 
   await test.step('accessibility with aria-label passed in', async () => {
@@ -61,7 +61,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
     });
 
     await componentsPage.setAttributes(badge, {
-      'type': BADGE_TYPE.ICON,
+      type: BADGE_TYPE.ICON,
       'icon-name': ICON_NAMES_LIST.SUCCESS_ICON_NAME,
     });
 
@@ -70,8 +70,8 @@ const testToRun = async (componentsPage: ComponentsPage) => {
     });
 
     await componentsPage.setAttributes(badge, {
-      'type': BADGE_TYPE.COUNTER,
-      'counter': '10000',
+      type: BADGE_TYPE.COUNTER,
+      counter: '10000',
       'max-counter': '999',
     });
 
@@ -80,7 +80,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
     });
 
     await componentsPage.setAttributes(badge, {
-      'type': BADGE_TYPE.SUCCESS,
+      type: BADGE_TYPE.SUCCESS,
     });
 
     await test.step('matches screenshot of Success element', async () => {
@@ -88,7 +88,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
     });
 
     await componentsPage.setAttributes(badge, {
-      'type': BADGE_TYPE.WARNING,
+      type: BADGE_TYPE.WARNING,
     });
 
     await test.step('matches screenshot of Warning element', async () => {
@@ -96,8 +96,8 @@ const testToRun = async (componentsPage: ComponentsPage) => {
     });
 
     await componentsPage.setAttributes(badge, {
-      'type': BADGE_TYPE.ERROR,
-      'overlay': 'true',
+      type: BADGE_TYPE.ERROR,
+      overlay: 'true',
     });
 
     await test.step('matches screenshot of Error element with overlay', async () => {
@@ -105,13 +105,12 @@ const testToRun = async (componentsPage: ComponentsPage) => {
     });
   });
 
-
   /**
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
     const badge = await setup({ componentsPage });
-    
+
     await test.step('attribute should be present on component by default', async () => {
       await expect(badge).toHaveAttribute('type', DEFAULTS.TYPE);
       await expect(badge).toHaveAttribute('variant', DEFAULTS.VARIANT);
@@ -121,8 +120,8 @@ const testToRun = async (componentsPage: ComponentsPage) => {
 
     await test.step('should fallback to default values when invalid attributes are passed', async () => {
       await componentsPage.setAttributes(badge, {
-        'type': 'invalid',
-        'variant': 'invalid'
+        type: 'invalid',
+        variant: 'invalid',
       });
 
       await expect(badge).toHaveAttribute('type', DEFAULTS.TYPE);
@@ -131,8 +130,8 @@ const testToRun = async (componentsPage: ComponentsPage) => {
 
     await test.step('should only accept allowed type and variant', async () => {
       await componentsPage.setAttributes(badge, {
-        'type': BADGE_TYPE.ICON,
-        'variant': ICON_VARIANT.SECONDARY
+        type: BADGE_TYPE.ICON,
+        variant: ICON_VARIANT.SECONDARY,
       });
 
       await expect(badge).toHaveAttribute('type', BADGE_TYPE.ICON);
@@ -150,8 +149,8 @@ const testToRun = async (componentsPage: ComponentsPage) => {
 
     await test.step('should only show 99+ if counter more than 99 and maxCounter set to 99', async () => {
       await componentsPage.setAttributes(badge, {
-        'type': BADGE_TYPE.COUNTER,
-        'counter': '100',
+        type: BADGE_TYPE.COUNTER,
+        counter: '100',
       });
 
       await expect(badge).toHaveAttribute('type', BADGE_TYPE.COUNTER);
@@ -163,8 +162,8 @@ const testToRun = async (componentsPage: ComponentsPage) => {
 
     await test.step('should only show 1234 if counter set to 1234 and maxCounter set to 9999', async () => {
       await componentsPage.setAttributes(badge, {
-        'type': BADGE_TYPE.COUNTER,
-        'counter': '1234',
+        type: BADGE_TYPE.COUNTER,
+        counter: '1234',
         'max-counter': '9999',
       });
 
@@ -177,8 +176,8 @@ const testToRun = async (componentsPage: ComponentsPage) => {
 
     await test.step('should only show 999+ if counter more than 9999 and maxCounter set to 9999', async () => {
       await componentsPage.setAttributes(badge, {
-        'type': BADGE_TYPE.COUNTER,
-        'counter': '10000',
+        type: BADGE_TYPE.COUNTER,
+        counter: '10000',
         'max-counter': '9999',
       });
 
@@ -188,9 +187,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
 
       expect(textContent?.trim()).toBe('999+');
     });
-
   });
-
 };
 
 test.describe.parallel('mdc-Badge', () => {
@@ -198,4 +195,3 @@ test.describe.parallel('mdc-Badge', () => {
     await testToRun(componentsPage);
   });
 });
-
