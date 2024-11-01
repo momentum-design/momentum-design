@@ -75,6 +75,10 @@ class HandlebarsHelpers {
       Gradientdivider: 'GradientDivider',
     };
 
+    if (!Number.isNaN(Number(name))) {
+      return `level${name}`;
+    }
+
     return invalidNames[name] || name;
   }
 
