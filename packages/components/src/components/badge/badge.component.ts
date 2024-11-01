@@ -3,7 +3,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
-import { BADGE_TYPE, ICON_NAMES_LIST, DEFAULTS, ICON_VARIANT, ICON_STATE } from './badge.constants';
+import { BADGE_TYPE, ICON_NAMES_LIST, DEFAULTS, ICON_VARIANT, ICON_STATE, ALLOWED_ICON_VARIANT } from './badge.constants';
 import styles from './badge.styles';
 
 /**
@@ -38,13 +38,13 @@ class Badge extends Component {
   /**
    * badge variant
    */
-  @property({ type: String })
+  @property({ type: String, reflect: true })
   variant = DEFAULTS.VARIANT;
 
   @property({ type: Number })
   counter?: number;
 
-  @property({ type: Number, attribute: 'max-counter' })
+  @property({ type: Number, attribute: 'max-counter', reflect: true })
   maxCounter: number = DEFAULTS.MAX_COUNTER;
 
   @property({ type: Boolean })
@@ -69,8 +69,8 @@ class Badge extends Component {
     if (counter === undefined || typeof counter !== 'number') {
       return '';
     }
-    // At any given time, the max limit should not cross 999.
-    if (counter > DEFAULTS.MAX_COUNTER_LIMIT) {
+    // At any given time, the max limit should not cross 9999.
+    if (counter > 9999) {
       return `${DEFAULTS.MAX_COUNTER_LIMIT}+`;
     }
     if (counter > maxCounter) {
@@ -169,6 +169,9 @@ class Badge extends Component {
    * @returns the TemplateResult for the current badge type.
    */
   private getBadgeContentBasedOnType(): TemplateResult {
+    if(this.variant && !ALLOWED_ICON_VARIANT.includes(this.variant)) {
+      this.variant = ICON_VARIANT.PRIMARY;
+    }
     const { counter, iconName, maxCounter, overlay, type, variant } = this;
     switch (type) {
       case BADGE_TYPE.DOT:
@@ -184,7 +187,8 @@ class Badge extends Component {
       case BADGE_TYPE.ERROR:
         return this.getBadgeIcon(ICON_NAMES_LIST.ERROR_ICON_NAME, overlay, ICON_STATE.ERROR);
       default:
-        return html``;
+        this.type = BADGE_TYPE.DOT;
+        return this.getBadgeDot(overlay);
     }
   }
 

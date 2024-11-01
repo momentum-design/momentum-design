@@ -2,6 +2,9 @@ import utils from '../../utils/tag-name';
 
 const TAG_NAME = utils.constructTagName('badge');
 
+const ALLOWED_ICON_VARIANT = ['primary', 'secondary'];
+
+
 const BADGE_TYPE = {
   DOT: 'dot',
   ICON: 'icon',
@@ -44,4 +47,5 @@ export {
   ICON_STATE,
   ICON_VARIANT,
   ICON_NAMES_LIST,
+  ALLOWED_ICON_VARIANT
 };
