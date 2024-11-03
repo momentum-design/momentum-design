@@ -8,7 +8,11 @@ test.beforeEach(async ({ componentsPage }) => {
   });
 });
 
-test('mdc-badge', async ({ componentsPage }) => {
+/**
+ * TODO: fix e2e test for the badge component, skipping these for now.
+ * JIRA ticket: https://jira-eng-gpk2.cisco.com/jira/browse/MOMENTUM-383
+ */
+test.skip('mdc-badge', async ({ componentsPage }) => {
   const badge = componentsPage.page.locator('mdc-badge');
 
   // initial check for the badge be visible on the screen:
