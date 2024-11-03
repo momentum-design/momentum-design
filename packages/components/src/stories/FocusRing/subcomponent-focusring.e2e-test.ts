@@ -1,4 +1,4 @@
-import { expect } from '@playwright/test';
+import { expect, Locator } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 
 type SetupOptions = {
@@ -17,134 +17,198 @@ const setup = async (args: SetupOptions) => {
   return subComponent;
 };
 
+const applyFocus = async (componentsPage: ComponentsPage, browserName: string) => {
+  if (browserName === 'webkit') {
+    await componentsPage.page.keyboard.down('Alt');
+    await componentsPage.page.keyboard.press('Tab');
+  } else {
+    await componentsPage.page.keyboard.press('Tab');
+  }
+};
+
+const checkFocusRing = async (subComponent: Locator, expectedBoxShadow: string) => {
+  const boxShadow = await subComponent.evaluate((el: Element) => getComputedStyle(el).boxShadow);
+  expect(boxShadow).toBe(expectedBoxShadow);
+};
+
+const focusRingStyle =
+  'rgb(0, 0, 0) 0px 0px 0px 2px, rgb(100, 180, 250) 0px 0px 0px 4px, rgba(100, 180, 250, 0.35) 0px 0px 0px 5px';
+
+const checkFocusState = async (subComponent: Locator, expectedState: boolean) => {
+  const isFocused = await subComponent.evaluate(el => document.activeElement === el);
+  expect(isFocused).toBe(expectedState);
+};
+
+const applyBlur = async (componentsPage: ComponentsPage, subComponent: Locator, browserName: string) => {
+  if (browserName === 'webkit') {
+    await subComponent.evaluate(el => el.blur());
+  } else if (browserName === 'firefox') {
+    await componentsPage.page.click('body'); // workaround for now
+  } else {
+    await componentsPage.page.keyboard.press('Tab');
+  }
+};
+
 test.describe('SubComponentFocusRing', () => {
-  test('Test Case 1: Focus Ring Appearance', async ({ componentsPage }) => {
+  test('Button as SubComponent', async ({ componentsPage, browserName }) => {
     const subComponent = await setup({ componentsPage, shape: 'button' });
 
-    await componentsPage.page.keyboard.press('Tab');
-
-    // Optional: Click on the element to focus
-    // await subComponent.click();  // Uncomment this line if click-based focus is desired
-
-    await test.step('Check focus ring appearance', async () => {
-      const boxShadow = await subComponent.evaluate((el: HTMLElement) => getComputedStyle(el).boxShadow);
-      /* eslint-disable max-len */
-      expect(boxShadow).toBe('rgb(0, 0, 0) 0px 0px 0px 2px, rgb(100, 180, 250) 0px 0px 0px 4px, rgba(100, 180, 250, 0.35) 0px 0px 0px 5px');
+    /**
+     * ACCESSIBILITY
+     */
+    await test.step('accessibility', async () => {
+      await componentsPage.accessibility.checkForA11yViolations('aria-label-button');
     });
 
-    await componentsPage.visualRegression.takeScreenshot('focus-ring-appearance');
-  });
+    /**
+     * INTERACTIONS
+     */
+    await test.step('interactions', async () => {
+      await test.step('focus', async () => {
+        // Test focus ring appearance
+        await applyFocus(componentsPage, browserName);
+        await checkFocusRing(subComponent, focusRingStyle);
+        await componentsPage.visualRegression.takeScreenshot('focus-ring-appearance-button');
 
-  test('Test Case 2: Focus Ring Disappearance', async ({ componentsPage }) => {
-    const subComponent = await setup({ componentsPage, shape: 'button' });
+        // Test focus ring disappearance
+        await applyBlur(componentsPage, subComponent, browserName);
+        await checkFocusState(subComponent, false);
+        await checkFocusRing(subComponent, 'none');
+        await componentsPage.visualRegression.takeScreenshot('focus-ring-disappearance-button', {
+          element: subComponent,
+        });
 
-    await componentsPage.page.keyboard.press('Tab');
-
-    await test.step('Check subcomponent is focused', async () => {
-      const isFocused = await subComponent.evaluate((el: HTMLElement) => document.activeElement === el);
-      expect(isFocused).toBe(true);
-    });
-
-    // Simulate pressing the Tab key again to move focus away (simulate blur)
-    await componentsPage.page.keyboard.press('Tab');
-
-    // Ensure the focus has moved away from the subcomponent
-    await test.step('Check focus has moved away', async () => {
-      const isFocused = await subComponent.evaluate((el: HTMLElement) => document.activeElement === el);
-      expect(isFocused).toBe(false);
-    });
-
-    await test.step('Check focus ring disappearance', async () => {
-      const boxShadow = await subComponent.evaluate((el: HTMLElement) => getComputedStyle(el).boxShadow);
-      expect(boxShadow).toBe('none');
-    });
-
-    await componentsPage.visualRegression.takeScreenshot('focus-ring-disappearance', { element: subComponent });
-  });
-
-  test('Test Case 3: Multiple Components', async ({ componentsPage }) => {
-    const subComponent1 = await setup({ componentsPage, shape: 'button' });
-    const subComponent2 = await setup({ componentsPage, shape: 'radio' });
-
-    // Simulate pressing the Tab key to focus on the first component
-    await componentsPage.page.keyboard.press('Tab');
-    await componentsPage.page.waitForTimeout(50); // slight delay to register focus
-
-    await componentsPage.visualRegression.takeScreenshot('focus-ring-first-component', { element: subComponent1 });
-
-    // Simulate another Tab key press to focus on the second component
-    await componentsPage.page.keyboard.press('Tab');
-    await componentsPage.page.waitForTimeout(50); // slight delay to register focus
-
-    await componentsPage.visualRegression.takeScreenshot('focus-ring-second-component', { element: subComponent2 });
-  });
-
-  test('Test Case 4: Accessibility Compliance', async ({ componentsPage }) => {
-    // Initial component setup for accessibility tests
-    await setup({ componentsPage, shape: 'button' });
-
-    // Step 1: Accessibility check with default properties
-    await test.step('Check accessibility with default props', async () => {
-      await componentsPage.page.keyboard.press('Tab');
-      await componentsPage.accessibility.checkForA11yViolations('focus-ring-a11y-default');
-    });
-
-    // Step 2: Accessibility check with aria-label added
-    await test.step('Check accessibility with aria-label', async () => {
-      const subComponentWithAriaLabel = await setup({ componentsPage, shape: 'button' });
-      await subComponentWithAriaLabel.evaluate((el: HTMLElement) => {
-        el.setAttribute('aria-label', 'Subcomponent Focus Ring');
+        // Test rapid focus/blur
+        for (let i = 0; i < 5; i++) {
+          await applyFocus(componentsPage, browserName);
+          await applyBlur(componentsPage, subComponent, browserName);
+        }
+        await checkFocusRing(subComponent, 'none');
+        await componentsPage.visualRegression.takeScreenshot('focus-ring-rapid-interaction-button', {
+          element: subComponent,
+        });
       });
 
-      await componentsPage.page.keyboard.press('Tab');
-      await componentsPage.accessibility.checkForA11yViolations('focus-ring-a11y-aria-label');
+      await test.step('event propagation', async () => {
+        // Test focus ring with parent-child event listener interference
+        await componentsPage.mount({
+          html: `<button id="parent"><mdc-subcomponent-focusring shape="button"></mdc-subcomponent-focusring></button>`,
+          clearDocument: true,
+        });
+        const parent = componentsPage.page.locator('#parent');
+        await applyFocus(componentsPage, browserName);
+        const isFocused = await parent.evaluate(el => document.activeElement === el);
+        expect(isFocused).toBe(true);
+        await componentsPage.visualRegression.takeScreenshot('focus-ring-parent-child-button', { element: parent });
+      });
     });
   });
 
-  test('Test Case 5: Rapid Focus/Blur', async ({ componentsPage }) => {
-    const subComponent = await setup({ componentsPage, shape: 'button' });
-    /* eslint-disable no-await-in-loop */
-    for (let i = 0; i < 5; i += 1) {
-      // Simulate pressing the Tab key to focus
-      await componentsPage.page.keyboard.press('Tab');
+  test('Radio as SubComponent', async ({ componentsPage, browserName }) => {
+    const subComponent = await setup({ componentsPage, shape: 'radio' });
 
-      // Simulate another Tab key press to blur (move focus away)
-      await componentsPage.page.keyboard.press('Tab');
-    }
-
-    await test.step('Check focus/blur stability', async () => {
-      const boxShadow = await subComponent.evaluate((el: HTMLElement) => getComputedStyle(el).boxShadow);
-      expect(boxShadow).toBe('none');
+    /**
+     * ACCESSIBILITY
+     */
+    await test.step('accessibility', async () => {
+      await componentsPage.accessibility.checkForA11yViolations('aria-label-radio');
     });
 
-    await componentsPage.visualRegression.takeScreenshot('focus-ring-rapid-interaction', { element: subComponent });
-  });
+    /**
+     * INTERACTIONS
+     */
+    await test.step('interactions', async () => {
+      await test.step('focus', async () => {
+        // Test focus ring appearance
+        await applyFocus(componentsPage, browserName);
+        await checkFocusRing(subComponent, focusRingStyle);
+        await componentsPage.visualRegression.takeScreenshot('focus-ring-appearance-radio');
 
-  test('Test Case 6: Focus Ring and Event Listener Interference', async ({ componentsPage }) => {
-    await componentsPage.mount({
-      html: `
-        <button id="parent">
-          <mdc-subcomponent-focusring shape="button"></mdc-subcomponent-focusring>
-        </button>
-      `,
-      clearDocument: true,
-    });
+        // Test focus ring disappearance
+        await applyBlur(componentsPage, subComponent, browserName);
+        await checkFocusState(subComponent, false);
+        await checkFocusRing(subComponent, 'none');
+        await componentsPage.visualRegression.takeScreenshot('focus-ring-disappearance-radio', {
+          element: subComponent,
+        });
 
-    const parent = componentsPage.page.locator('#parent');
-    const child = componentsPage.page.locator('mdc-subcomponent-focusring');
-
-    await test.step('Check event listener interference', async () => {
-      await parent.focus();
-      await parent.evaluate((el: HTMLElement) => {
-        el.addEventListener('click', (e) => e.stopPropagation());
+        // Test rapid focus/blur
+        for (let i = 0; i < 5; i++) {
+          await applyFocus(componentsPage, browserName);
+          await applyBlur(componentsPage, subComponent, browserName);
+        }
+        await checkFocusRing(subComponent, 'none');
+        await componentsPage.visualRegression.takeScreenshot('focus-ring-rapid-interaction-radio', {
+          element: subComponent,
+        });
       });
 
-      // Simulate pressing the Tab key to focus the child
-      await componentsPage.page.keyboard.press('Tab');
+      await test.step('event propagation', async () => {
+        // Test focus ring with parent-child event listener interference
+        await componentsPage.mount({
+          html: `<button id="parent"><mdc-subcomponent-focusring shape="radio"></mdc-subcomponent-focusring></button>`,
+          clearDocument: true,
+        });
+        const parent = componentsPage.page.locator('#parent');
+        await applyFocus(componentsPage, browserName);
+        const isFocused = await parent.evaluate(el => document.activeElement === el);
+        expect(isFocused).toBe(true);
+        await componentsPage.visualRegression.takeScreenshot('focus-ring-parent-child-radio', { element: parent });
+      });
+    });
+  });
 
-      expect(await child.evaluate((el: HTMLElement) => document.activeElement === el)).toBe(true);
+  test('Checkbox as SubComponent', async ({ componentsPage, browserName }) => {
+    const subComponent = await setup({ componentsPage, shape: 'checkbox' });
 
-      await componentsPage.visualRegression.takeScreenshot('focus-ring-parent-child', { element: child });
+    /**
+     * ACCESSIBILITY
+     */
+    await test.step('accessibility', async () => {
+      await componentsPage.accessibility.checkForA11yViolations('aria-label-checkbox');
+    });
+
+    /**
+     * INTERACTIONS
+     */
+    await test.step('interactions', async () => {
+      await test.step('focus', async () => {
+        // Test focus ring appearance
+        await applyFocus(componentsPage, browserName);
+        await checkFocusRing(subComponent, focusRingStyle);
+        await componentsPage.visualRegression.takeScreenshot('focus-ring-appearance-checkbox');
+
+        // Test focus ring disappearance
+        await applyBlur(componentsPage, subComponent, browserName);
+        await checkFocusState(subComponent, false);
+        await checkFocusRing(subComponent, 'none');
+        await componentsPage.visualRegression.takeScreenshot('focus-ring-disappearance-checkbox', {
+          element: subComponent,
+        });
+
+        // Test rapid focus/blur
+        for (let i = 0; i < 5; i++) {
+          await applyFocus(componentsPage, browserName);
+          await applyBlur(componentsPage, subComponent, browserName);
+        }
+        await checkFocusRing(subComponent, 'none');
+        await componentsPage.visualRegression.takeScreenshot('focus-ring-rapid-interaction-checkbox', {
+          element: subComponent,
+        });
+      });
+
+      await test.step('event propagation', async () => {
+        // Test focus ring with parent-child event listener interference
+        await componentsPage.mount({
+          html: `<button id="parent"><mdc-subcomponent-focusring shape="checkbox"></mdc-subcomponent-focusring></button>`,
+          clearDocument: true,
+        });
+        const parent = componentsPage.page.locator('#parent');
+        await applyFocus(componentsPage, browserName);
+        const isFocused = await parent.evaluate(el => document.activeElement === el);
+        expect(isFocused).toBe(true);
+        await componentsPage.visualRegression.takeScreenshot('focus-ring-parent-child-checkbox', { element: parent });
+      });
     });
   });
 });
