@@ -3,14 +3,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
-import {
-  BADGE_TYPE,
-  ICON_NAMES_LIST,
-  DEFAULTS,
-  ICON_VARIANT,
-  ICON_STATE,
-  ALLOWED_ICON_VARIANT,
-} from './badge.constants';
+import { BADGE_TYPE, ICON_NAMES_LIST, DEFAULTS, ICON_VARIANT, ICON_STATE } from './badge.constants';
 import styles from './badge.styles';
 
 /**
@@ -93,7 +86,7 @@ class Badge extends Component {
    * @returns the template result of the icon.
    */
   private getBadgeIcon(iconName: string, overlay: boolean, iconVariant: string, type?: string): TemplateResult {
-    if (iconVariant && !ALLOWED_ICON_VARIANT.includes(iconVariant)) {
+    if (iconVariant && !Object.values(ICON_VARIANT).includes(iconVariant)) {
       this.variant = ICON_VARIANT.PRIMARY;
       iconVariant = ICON_VARIANT.PRIMARY;
     }
