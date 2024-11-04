@@ -14,6 +14,7 @@ const render = (args: Args) => html`
     max-counter="${args['max-counter']}"
     variant="${args.variant}"
     ?overlay=${args.overlay}
+    aria-label="${args['aria-label']}"
   ></mdc-badge>
 `;
 
