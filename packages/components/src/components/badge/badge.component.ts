@@ -111,10 +111,6 @@ class Badge extends Component {
    * @returns the template result of the icon.
    */
   private getBadgeIcon(iconName: string, overlay: boolean, iconVariant: string, type?: string): TemplateResult {
-    if (iconVariant && !Object.values(ICON_VARIANT).includes(iconVariant) && !Object.values(ICON_STATE).includes(iconVariant)) {
-      this.variant = ICON_VARIANT.PRIMARY;
-      iconVariant = ICON_VARIANT.PRIMARY;
-    }
     return html`
       <mdc-icon
         class="mdc-badge-icon ${classMap(this.getIconClasses(overlay, iconVariant, type))}"
@@ -192,6 +188,9 @@ class Badge extends Component {
    * @returns the TemplateResult for the current badge type.
    */
   private getBadgeContentBasedOnType(): TemplateResult {
+    if (this.variant && !Object.values(ICON_VARIANT).includes(this.variant)) {
+      this.variant = ICON_VARIANT.PRIMARY;
+    }
     const { counter, iconName, maxCounter, overlay, type, variant } = this;
     switch (type) {
       case BADGE_TYPE.ICON:
