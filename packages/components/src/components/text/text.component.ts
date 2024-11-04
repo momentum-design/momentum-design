@@ -23,11 +23,64 @@ import { DEFAULTS, VALID_TEXT_TAGS } from './text.constants';
  * @csspart text - The text element
  */
 class Text extends Component {
-  // Description for this property is moved to `./text.stories.ts` file
+  /**
+   * Specifies the text style to be applied.
+   *
+   * Acceptable values include:
+   *
+   * - 'body-small-regular'
+   * - 'body-small-medium'
+   * - 'body-small-bold'
+   * - 'body-midsize-regular'
+   * - 'body-midsize-medium'
+   * - 'body-midsize-bold'
+   * - 'body-large-regular'
+   * - 'body-large-medium'
+   * - 'body-large-bold'
+   * - 'body-small-regular-underline'
+   * - 'body-small-medium-underline'
+   * - 'body-midsize-regular-underline'
+   * - 'body-midsize-medium-underline'
+   * - 'body-large-regular-underline'
+   * - 'body-large-medium-underline'
+   * - 'heading-small-regular'
+   * - 'heading-small-medium'
+   * - 'heading-small-bold'
+   * - 'heading-midsize-regular'
+   * - 'heading-midsize-medium'
+   * - 'heading-midsize-bold'
+   * - 'heading-large-regular'
+   * - 'heading-large-medium'
+   * - 'heading-large-bold'
+   * - 'heading-xlarge-regular'
+   * - 'heading-xlarge-medium'
+   * - 'heading-xlarge-bold'
+   * - 'headline-small-light'
+   * - 'headline-small-regular'
+   */
   @property({ attribute: 'type', reflect: true, type: String })
   public type = DEFAULTS.TYPE;
 
-  // Description for this property is moved to `./text.stories.ts` file
+  /**
+   * Specifies the HTML tag name for the text element. The default tag name is `p`.
+   * This attribute is optional. When set, it changes the tag name of the text element.
+   *
+   * Acceptable values include:
+   *
+   * - 'h1'
+   * - 'h2'
+   * - 'h3'
+   * - 'h4'
+   * - 'h5'
+   * - 'h6'
+   * - 'p'
+   * - 'small'
+   * - 'span'
+   * - 'div'
+   *
+   * For instance, setting this attribute to `h2` will render the text element as an `h2` element.
+   * Note that the styling is determined by the `type` attribute.
+   */
   @property({ attribute: 'tagname', reflect: true, type: String })
   public tagname? = DEFAULTS.TEXT_ELEMENT_TAGNAME;
 
