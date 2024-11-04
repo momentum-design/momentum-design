@@ -9,10 +9,12 @@ type SetupOptions = {
 const setup = async (args: SetupOptions) => {
   const { componentsPage, shape } = args;
   await componentsPage.mount({
-    html: `<mdc-subcomponent-focusring shape="${shape}" class="focus-ring"></mdc-subcomponent-focusring>`,
-    clearDocument: true,
+    html: `<mdc-subcomponent-focusring shape="${shape}" id='firstComponent' class="focus-ring"></mdc-subcomponent-focusring>`,
   });
-  const subComponent = componentsPage.page.locator('mdc-subcomponent-focusring');
+  await componentsPage.mount({
+    html: `<mdc-subcomponent-focusring id='secondComponent' shape="${shape}" class="focus-ring"></mdc-subcomponent-focusring>`,
+  });
+  const subComponent = componentsPage.page.locator('#firstComponent');
   await subComponent.waitFor();
   return subComponent;
 };
@@ -42,15 +44,6 @@ const checkFocusState = async (subComponent: Locator, expectedState: boolean) =>
 const applyBlur = async (componentsPage: ComponentsPage, subComponent: Locator, browserName: string) => {
   if (browserName === 'webkit') {
     await subComponent.evaluate((el) => el.blur());
-  } else if (browserName === 'firefox') {
-    // workaround for now
-    await componentsPage.page.evaluate(() => {
-      const dummyElement = document.createElement('div');
-      dummyElement.tabIndex = -1; // Make it focusable temporarily
-      document.body.appendChild(dummyElement);
-      dummyElement.focus(); // Shift focus away from the subComponent
-      document.body.removeChild(dummyElement); // Clean up
-    });
   } else {
     await componentsPage.page.keyboard.press('Tab');
   }
