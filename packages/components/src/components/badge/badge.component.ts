@@ -62,7 +62,7 @@ class Badge extends Component {
    * The max counter can be `9`, `99` or `999`.
    */
   @property({ type: Number, attribute: 'max-counter' })
-  maxCounter: number = 99;
+  maxCounter: number = DEFAULTS.MAX_COUNTER;
 
   /**
    * Overlay is to add a thin outline to the badge.
@@ -91,12 +91,12 @@ class Badge extends Component {
     if (counter === undefined || typeof counter !== 'number' || maxCounter === 0) {
       return '';
     }
+    if (counter > maxCounter) {
+      return `${maxCounter}+`;
+    }
     // At any given time, the max limit should not cross 999.
     if (maxCounter > DEFAULTS.MAX_COUNTER_LIMIT || counter > DEFAULTS.MAX_COUNTER_LIMIT) {
       return `${DEFAULTS.MAX_COUNTER_LIMIT}+`;
-    }
-    if (counter > maxCounter) {
-      return `${maxCounter}+`;
     }
     return counter.toString();
   }

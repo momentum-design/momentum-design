@@ -67,6 +67,9 @@ const meta: Meta = {
         },
       },
     },
+    'aria-label': {
+      control: 'text',
+    },
   },
 };
 
