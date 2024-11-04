@@ -47,6 +47,7 @@ const styles = [
     }
     .mdc-badge-icon__primary {
       background-color: var(--mdc-badge-primary-background-color);
+      color: var(--mdc-badge-primary-foreground-color);
     }
     .mdc-badge-icon__success {
       background-color: var(--mdc-badge-success-background-color);
