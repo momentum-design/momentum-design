@@ -11,12 +11,12 @@ class SubComponentFocusRing extends Component {
   override render() {
     switch (this.shape) {
       case 'button':
-        return html`<button tabindex="0" class="button" aria-label="Subcomponent Focus Ring">ClickMe</button>`;
+        return html`<button class="button" aria-label="Subcomponent Focus Ring">ClickMe</button>`;
       case 'radio':
-        return html`<input tabindex="0" type="radio" aria-label="Subcomponent Focus Ring" id="radio" name="group" class="radio" />
+        return html`<input type="radio" aria-label="Subcomponent Focus Ring" id="radio" name="group" class="radio" />
         <label for="radio">SelectMe</label>`;
       case 'checkbox':
-        return html`<input tabindex="0" type="checkbox" aria-label="Accept Terms" id="checkbox" name="terms" class="checkbox" />
+        return html`<input type="checkbox" aria-label="Accept Terms" id="checkbox" name="terms" class="checkbox" />
         <label for="checkbox">Accept Terms</label>`;
       default:
         return null;

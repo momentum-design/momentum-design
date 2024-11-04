@@ -107,23 +107,11 @@ const testEventPropagation = async (componentsPage: ComponentsPage, browserName:
   });
 };
 
-// Runs accessibility check on the subcomponent based on aria-label
-const testAccessibility = async (componentsPage: ComponentsPage, shape: string) => {
-  await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations(`aria-label-${shape}`);
-  });
-};
-
 // Main test suite for SubComponentFocusRing with dynamic shapes (button, radio, checkbox)
 test.describe('SubComponentFocusRing', () => {
   ['button', 'radio', 'checkbox'].forEach((shape) => {
     test(`${shape} as SubComponent`, async ({ componentsPage, browserName }) => {
       const subComponent = await setup({ componentsPage, shape });
-
-      /**
-       * ACCESSIBILITY
-       */
-      //await testAccessibility(componentsPage, shape);
 
       /**
        * INTERACTIONS
