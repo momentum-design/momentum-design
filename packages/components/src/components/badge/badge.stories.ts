@@ -1,7 +1,9 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { BADGE_TYPE, ICON_VARIANT, DEFAULTS, MAX_COUNTER_LIST } from './badge.constants';
+import { BADGE_TYPE, ICON_VARIANT, DEFAULTS } from './badge.constants';
+
+const MAX_COUNTER_LIST = [9, 99, 999];
 
 const render = (args: Args) => html`
   <mdc-badge

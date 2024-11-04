@@ -62,11 +62,12 @@ class Badge extends Component {
    * The max counter can be `9`, `99` or `999`.
    */
   @property({ type: Number, attribute: 'max-counter' })
-  maxCounter: number = DEFAULTS.MAX_COUNTER;
+  maxCounter: number = 99;
 
   /**
    * Overlay is to add a thin outline to the badge.
-   * This will help distinguish between the badge inside a button.
+   * This will help distinguish between the badge and the button,
+   * where the badge will be layered on top of a button.
    */
   @property({ type: Boolean })
   overlay = false;
