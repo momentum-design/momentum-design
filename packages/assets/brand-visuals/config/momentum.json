@@ -5,7 +5,7 @@
       "flows": [
         {
           "id": "optimise-svgs",
-          "target": "./src/**/*.*",
+          "target": "./src/**/*.svg",
           "destination": "./dist/svg",
           "fileNameReplacePatterns": [
             {
@@ -31,8 +31,25 @@
           }
         },
         {
+          "id": "copy-images",
+          "target": "./src/**/*.png",
+          "destination": "./dist/images",
+          "fileNameReplacePatterns": [
+            {
+              "searchValue": "_",
+              "replaceValue": "-"
+            }
+          ],
+          "format": {
+            "type": "COPY_IMAGE",
+            "config": {
+              "mergePaths": true
+            }
+          }
+        },
+        {
           "id": "Manifest",
-          "target": "./dist/svg/**/*.*",
+          "target": "./dist/{svg,images}/**/*.*",
           "destination": "./dist/",
           "format": {
             "type": "MANIFEST",
