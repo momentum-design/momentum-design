@@ -77,7 +77,7 @@ class Badge extends Component {
       return '';
     }
     // At any given time, the max limit should not cross 9999.
-    if (counter > 9999) {
+    if (counter > DEFAULTS.MAX_COUNTER_LIMIT) {
       return `${DEFAULTS.MAX_COUNTER_LIMIT}+`;
     }
     if (counter > maxCounter) {
@@ -93,6 +93,10 @@ class Badge extends Component {
    * @returns the template result of the icon.
    */
   private getBadgeIcon(iconName: string, overlay: boolean, iconVariant: string, type?: string): TemplateResult {
+    if (iconVariant && !ALLOWED_ICON_VARIANT.includes(iconVariant)) {
+      this.variant = ICON_VARIANT.PRIMARY;
+      iconVariant = ICON_VARIANT.PRIMARY;
+    }
     return html`
       <mdc-icon
         class="mdc-badge-icon ${classMap(this.getIconClasses(overlay, iconVariant, type))}"
@@ -170,13 +174,8 @@ class Badge extends Component {
    * @returns the TemplateResult for the current badge type.
    */
   private getBadgeContentBasedOnType(): TemplateResult {
-    if (this.variant && !ALLOWED_ICON_VARIANT.includes(this.variant)) {
-      this.variant = ICON_VARIANT.PRIMARY;
-    }
     const { counter, iconName, maxCounter, overlay, type, variant } = this;
     switch (type) {
-      case BADGE_TYPE.DOT:
-        return this.getBadgeDot(overlay);
       case BADGE_TYPE.ICON:
         return this.getBadgeIcon(iconName || '', overlay, variant, type);
       case BADGE_TYPE.COUNTER:
@@ -187,6 +186,7 @@ class Badge extends Component {
         return this.getBadgeIcon(ICON_NAMES_LIST.WARNING_ICON_NAME, overlay, ICON_STATE.WARNING);
       case BADGE_TYPE.ERROR:
         return this.getBadgeIcon(ICON_NAMES_LIST.ERROR_ICON_NAME, overlay, ICON_STATE.ERROR);
+      case BADGE_TYPE.DOT:
       default:
         this.type = BADGE_TYPE.DOT;
         return this.getBadgeDot(overlay);

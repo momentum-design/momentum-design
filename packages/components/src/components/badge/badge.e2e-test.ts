@@ -22,7 +22,7 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
       ${restArgs.counter ? `counter="${restArgs.counter}"` : ''}
       ${restArgs.maxCounter ? `max-counter="${restArgs.maxCounter}"` : ''}
-      ${restArgs.ariaLabel ? `ariaLabel="${restArgs.ariaLabel}"` : ''}
+      ${restArgs.ariaLabel ? `aria-label="${restArgs.ariaLabel}"` : ''}
     >
     </mdc-badge> 
       `,
@@ -160,7 +160,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       expect(textContent?.trim()).toBe('99+');
     });
 
-    await test.step('should only show 1234 if counter set to 1234 and maxCounter set to 9999', async () => {
+    await test.step('should only show 999+ if counter set to 1234 and maxCounter set to 9999', async () => {
       await componentsPage.setAttributes(badge, {
         type: BADGE_TYPE.COUNTER,
         counter: '1234',
@@ -171,21 +171,21 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       const mdcTextElement = await componentsPage.page.locator('mdc-text');
       const textContent = await mdcTextElement.textContent();
 
-      expect(textContent?.trim()).toBe('1234');
+      expect(textContent?.trim()).toBe('999+');
     });
 
-    await test.step('should only show 999+ if counter more than 9999 and maxCounter set to 9999', async () => {
+    await test.step('should only show 9+ if counter set to 10000 and maxCounter set to 9', async () => {
       await componentsPage.setAttributes(badge, {
         type: BADGE_TYPE.COUNTER,
         counter: '10000',
-        'max-counter': '9999',
+        'max-counter': '9',
       });
 
       await expect(badge).toHaveAttribute('type', BADGE_TYPE.COUNTER);
       const mdcTextElement = await componentsPage.page.locator('mdc-text');
       const textContent = await mdcTextElement.textContent();
 
-      expect(textContent?.trim()).toBe('999+');
+      expect(textContent?.trim()).toBe('9+');
     });
   });
 };
