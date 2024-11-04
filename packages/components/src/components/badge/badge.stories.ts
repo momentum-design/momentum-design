@@ -2,6 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { BADGE_TYPE, ICON_VARIANT, DEFAULTS } from './badge.constants';
+import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 const MAX_COUNTER_LIST = [9, 99, 999];
 
@@ -70,6 +71,8 @@ const meta: Meta = {
     'aria-label': {
       control: 'text',
     },
+    ...classArgType,
+    ...styleArgType,
   },
 };
 
