@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { VALUES } from './text.constants';
+import { DEFAULTS, FONT_TYPE, VALID_TEXT_TAGS } from './text.constants';
 import { disableControls } from '../../../config/storybook/utils';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
@@ -23,10 +23,12 @@ const meta: Meta = {
       description: 'Children (passed into "default" slot)',
     },
     type: {
-      options: VALUES.TYPE,
+      control: 'select',
+      options: Object.values(FONT_TYPE),
     },
     tagname: {
-      options: VALUES.TAGNAME,
+      control: 'select',
+      options: Object.values(VALID_TEXT_TAGS),
     },
     ...classArgType,
     ...styleArgType,
@@ -40,8 +42,8 @@ export default meta;
 
 export const Primary: StoryObj = {
   args: {
-    type: 'body-large-regular',
+    type: DEFAULTS.TYPE,
     tagname: '',
-    children: 'The quick brown fox jumps over the lazy dog',
+    children: DEFAULTS.CHILDREN,
   },
 };
