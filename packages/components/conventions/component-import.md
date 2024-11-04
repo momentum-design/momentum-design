@@ -2,9 +2,9 @@
 
 In our development process, maintaining a clean and organized structure for our components is essential. This document outlines the best practice of importing dependent components in the index file rather than within the class itself. This approach enhances modularity, improves readability, and simplifies dependency management, ultimately leading to a more maintainable codebase.
 
-## Current Component Structure
+## Implementation
 
-Here’s an overview of our current component structure using the Badge component as an example:
+Here’s an overview of our component structure using the Badge component as an example:
 
 ```js
 // badge.component.ts
