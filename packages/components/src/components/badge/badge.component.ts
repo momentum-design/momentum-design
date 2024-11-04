@@ -111,7 +111,7 @@ class Badge extends Component {
    * @returns the template result of the icon.
    */
   private getBadgeIcon(iconName: string, overlay: boolean, iconVariant: string, type?: string): TemplateResult {
-    if (iconVariant && !Object.values(ICON_VARIANT).includes(iconVariant)) {
+    if (iconVariant && !Object.values(ICON_VARIANT).includes(iconVariant) && !Object.values(ICON_STATE).includes(iconVariant)) {
       this.variant = ICON_VARIANT.PRIMARY;
       iconVariant = ICON_VARIANT.PRIMARY;
     }
