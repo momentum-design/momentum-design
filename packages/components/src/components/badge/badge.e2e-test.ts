@@ -121,10 +121,13 @@ const testToRun = async (componentsPage: ComponentsPage) => {
     await test.step('should fallback to default values when invalid attributes are passed', async () => {
       await componentsPage.setAttributes(badge, {
         type: 'invalid',
+      });
+      await expect(badge).toHaveAttribute('type', DEFAULTS.TYPE);
+
+      await componentsPage.setAttributes(badge, {
+        type: BADGE_TYPE.ICON,
         variant: 'invalid',
       });
-
-      await expect(badge).toHaveAttribute('type', DEFAULTS.TYPE);
       await expect(badge).toHaveAttribute('variant', DEFAULTS.VARIANT);
     });
 
