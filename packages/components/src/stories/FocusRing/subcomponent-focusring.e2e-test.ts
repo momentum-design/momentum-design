@@ -12,20 +12,15 @@ const setup = async (args: SetupOptions) => {
     html: `<mdc-subcomponent-focusring shape="${shape}" id='firstComponent' class="focus-ring"></mdc-subcomponent-focusring>`,
   });
   await componentsPage.mount({
-    html: `<mdc-subcomponent-focusring id='secondComponent' shape="${shape}" class="focus-ring"></mdc-subcomponent-focusring>`,
+    html: `<mdc-subcomponent-focusring id='secondComponent' shape="button" class="focus-ring"></mdc-subcomponent-focusring>`,
   });
   const subComponent = componentsPage.page.locator('#firstComponent');
   await subComponent.waitFor();
   return subComponent;
 };
 
-const applyFocus = async (componentsPage: ComponentsPage, browserName: string) => {
-  if (browserName === 'webkit') {
-    await componentsPage.page.keyboard.down('Alt');
+const applyFocus = async (componentsPage: ComponentsPage) => {
     await componentsPage.page.keyboard.press('Tab');
-  } else {
-    await componentsPage.page.keyboard.press('Tab');
-  }
 };
 
 const checkFocusRing = async (subComponent: Locator, expectedBoxShadow: string) => {
@@ -41,16 +36,12 @@ const checkFocusState = async (subComponent: Locator, expectedState: boolean) =>
   expect(isFocused).toBe(expectedState);
 };
 
-const applyBlur = async (componentsPage: ComponentsPage, subComponent: Locator, browserName: string) => {
-  if (browserName === 'webkit') {
-    await subComponent.evaluate((el) => el.blur());
-  } else {
+const applyBlur = async (componentsPage: ComponentsPage) => {
     await componentsPage.page.keyboard.press('Tab');
-  }
 };
 
 test.describe('SubComponentFocusRing', () => {
-  test('Button as SubComponent', async ({ componentsPage, browserName }) => {
+  test('Button as SubComponent', async ({ componentsPage }) => {
     const subComponent = await setup({ componentsPage, shape: 'button' });
 
     /**
@@ -66,12 +57,12 @@ test.describe('SubComponentFocusRing', () => {
     await test.step('interactions', async () => {
       await test.step('focus', async () => {
         // Test focus ring appearance
-        await applyFocus(componentsPage, browserName);
+        await applyFocus(componentsPage);
         await checkFocusRing(subComponent, focusRingStyle);
         await componentsPage.visualRegression.takeScreenshot('focus-ring-appearance-button');
 
         // Test focus ring disappearance
-        await applyBlur(componentsPage, subComponent, browserName);
+        await applyBlur(componentsPage);
         await checkFocusState(subComponent, false);
         await checkFocusRing(subComponent, 'none');
         await componentsPage.visualRegression.takeScreenshot('focus-ring-disappearance-button', {
@@ -81,8 +72,8 @@ test.describe('SubComponentFocusRing', () => {
         // Test rapid focus/blur
         await Promise.all(
           Array.from({ length: 5 }).map(async () => {
-            await applyFocus(componentsPage, browserName);
-            await applyBlur(componentsPage, subComponent, browserName);
+            await applyFocus(componentsPage);
+            await applyBlur(componentsPage);
           }),
         );
         await checkFocusRing(subComponent, 'none');
@@ -94,11 +85,11 @@ test.describe('SubComponentFocusRing', () => {
       await test.step('event propagation', async () => {
         // Test focus ring with parent-child event listener interference
         await componentsPage.mount({
-          html: `<button id='parent'><mdc-subcomponent-focusring shape='button'></mdc-subcomponent-focusring></button>`,
+          html: `<button tabindex="0" id='parent'><mdc-subcomponent-focusring shape='button'></mdc-subcomponent-focusring></button>`,
           clearDocument: true,
         });
         const parent = componentsPage.page.locator('#parent');
-        await applyFocus(componentsPage, browserName);
+        await applyFocus(componentsPage);
         const isFocused = await parent.evaluate((el) => document.activeElement === el);
         expect(isFocused).toBe(true);
         await componentsPage.visualRegression.takeScreenshot('focus-ring-parent-child-button', { element: parent });
@@ -106,7 +97,7 @@ test.describe('SubComponentFocusRing', () => {
     });
   });
 
-  test('Radio as SubComponent', async ({ componentsPage, browserName }) => {
+  test('Radio as SubComponent', async ({ componentsPage }) => {
     const subComponent = await setup({ componentsPage, shape: 'radio' });
 
     /**
@@ -122,12 +113,12 @@ test.describe('SubComponentFocusRing', () => {
     await test.step('interactions', async () => {
       await test.step('focus', async () => {
         // Test focus ring appearance
-        await applyFocus(componentsPage, browserName);
+        await applyFocus(componentsPage);
         await checkFocusRing(subComponent, focusRingStyle);
         await componentsPage.visualRegression.takeScreenshot('focus-ring-appearance-radio');
 
         // Test focus ring disappearance
-        await applyBlur(componentsPage, subComponent, browserName);
+        await applyBlur(componentsPage);
         await checkFocusState(subComponent, false);
         await checkFocusRing(subComponent, 'none');
         await componentsPage.visualRegression.takeScreenshot('focus-ring-disappearance-radio', {
@@ -137,8 +128,8 @@ test.describe('SubComponentFocusRing', () => {
         // Test rapid focus/blur
         await Promise.all(
           Array.from({ length: 5 }).map(async () => {
-            await applyFocus(componentsPage, browserName);
-            await applyBlur(componentsPage, subComponent, browserName);
+            await applyFocus(componentsPage);
+            await applyBlur(componentsPage);
           }),
         );
         await checkFocusRing(subComponent, 'none');
@@ -150,11 +141,11 @@ test.describe('SubComponentFocusRing', () => {
       await test.step('event propagation', async () => {
         // Test focus ring with parent-child event listener interference
         await componentsPage.mount({
-          html: `<button id='parent'><mdc-subcomponent-focusring shape='radio'></mdc-subcomponent-focusring></button>`,
+          html: `<button tabindex="0" id='parent'><mdc-subcomponent-focusring shape='radio'></mdc-subcomponent-focusring></button>`,
           clearDocument: true,
         });
         const parent = componentsPage.page.locator('#parent');
-        await applyFocus(componentsPage, browserName);
+        await applyFocus(componentsPage);
         const isFocused = await parent.evaluate((el) => document.activeElement === el);
         expect(isFocused).toBe(true);
         await componentsPage.visualRegression.takeScreenshot('focus-ring-parent-child-radio', { element: parent });
@@ -162,7 +153,7 @@ test.describe('SubComponentFocusRing', () => {
     });
   });
 
-  test('Checkbox as SubComponent', async ({ componentsPage, browserName }) => {
+  test('Checkbox as SubComponent', async ({ componentsPage }) => {
     const subComponent = await setup({ componentsPage, shape: 'checkbox' });
 
     /**
@@ -178,12 +169,12 @@ test.describe('SubComponentFocusRing', () => {
     await test.step('interactions', async () => {
       await test.step('focus', async () => {
         // Test focus ring appearance
-        await applyFocus(componentsPage, browserName);
+        await applyFocus(componentsPage);
         await checkFocusRing(subComponent, focusRingStyle);
         await componentsPage.visualRegression.takeScreenshot('focus-ring-appearance-checkbox');
 
         // Test focus ring disappearance
-        await applyBlur(componentsPage, subComponent, browserName);
+        await applyBlur(componentsPage);
         await checkFocusState(subComponent, false);
         await checkFocusRing(subComponent, 'none');
         await componentsPage.visualRegression.takeScreenshot('focus-ring-disappearance-checkbox', {
@@ -193,8 +184,8 @@ test.describe('SubComponentFocusRing', () => {
         // Test rapid focus/blur
         await Promise.all(
           Array.from({ length: 5 }).map(async () => {
-            await applyFocus(componentsPage, browserName);
-            await applyBlur(componentsPage, subComponent, browserName);
+            await applyFocus(componentsPage);
+            await applyBlur(componentsPage);
           }),
         );
         await checkFocusRing(subComponent, 'none');
@@ -207,11 +198,11 @@ test.describe('SubComponentFocusRing', () => {
         // Test focus ring with parent-child event listener interference
         await componentsPage.mount({
           // eslint-disable-next-line max-len
-          html: `<button id='parent'><mdc-subcomponent-focusring shape='checkbox'></mdc-subcomponent-focusring></button>`,
+          html: `<button tabindex="0" id='parent'><mdc-subcomponent-focusring shape='checkbox'></mdc-subcomponent-focusring></button>`,
           clearDocument: true,
         });
         const parent = componentsPage.page.locator('#parent');
-        await applyFocus(componentsPage, browserName);
+        await applyFocus(componentsPage);
         const isFocused = await parent.evaluate((el) => document.activeElement === el);
         expect(isFocused).toBe(true);
         await componentsPage.visualRegression.takeScreenshot('focus-ring-parent-child-checkbox', { element: parent });
