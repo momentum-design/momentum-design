@@ -106,7 +106,7 @@ If not set, it falls back to the size defined by the length unit.`,fieldName:"si
  * @tagname mdc-iconprovider
  *
  * @slot - children
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"IconProvider",module:"components/iconprovider/iconprovider.component.js"}}]},{kind:"javascript-module",path:"components/text/text.component.js",declarations:[{kind:"class",description:"Text component for creating styled text elements.\nIt has to be mounted within the ThemeProvider to access color and font tokens.\n\nThe `type` attribute allows changing the text style.\nThe `tagname` attribute allows changing the tag name of the text element.\nThe default tag name is `p`.\n\nThe `tagname` attribute should be a valid HTML tag name.\nIf the `tagname` attribute is not a valid HTML tag name, the default tag name will be used.\n\nThe styling is applied based on the `type` attribute.",name:"Text",cssParts:[{description:"The text element",name:"text"}],slots:[{description:"Default slot for text content",name:""}],members:[{kind:"field",name:"type",type:{text:"FontType"},privacy:"public",description:`Specifies the text style to be applied.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"IconProvider",module:"components/iconprovider/iconprovider.component.js"}}]},{kind:"javascript-module",path:"components/text/text.component.js",declarations:[{kind:"class",description:"Text component for creating styled text elements.\nIt has to be mounted within the ThemeProvider to access color and font tokens.\n\nThe `type` attribute allows changing the text style.\nThe `tagname` attribute allows changing the tag name of the text element.\nThe default tag name is `p`.\n\nThe `tagname` attribute should be a valid HTML tag name.\nIf the `tagname` attribute is not a valid HTML tag name, the default tag name will be used.\n\nThe styling is applied based on the `type` attribute.",name:"Text",cssParts:[{description:"The text element",name:"text"}],slots:[{description:"Default slot for text content",name:""}],members:[{kind:"field",name:"type",privacy:"public",description:`Specifies the text style to be applied.
 
 Acceptable values include:
 
@@ -138,7 +138,7 @@ Acceptable values include:
 - 'heading-xlarge-medium'
 - 'heading-xlarge-bold'
 - 'headline-small-light'
-- 'headline-small-regular'`,attribute:"type",reflects:!0},{kind:"field",name:"tagname",type:{text:"ValidTextTags | undefined"},privacy:"public",description:`Specifies the HTML tag name for the text element. The default tag name is \`p\`.
+- 'headline-small-regular'`,attribute:"type",reflects:!0},{kind:"field",name:"tagname",privacy:"public",description:`Specifies the HTML tag name for the text element. The default tag name is \`p\`.
 This attribute is optional. When set, it changes the tag name of the text element.
 
 Acceptable values include:
@@ -155,7 +155,7 @@ Acceptable values include:
 - 'div'
 
 For instance, setting this attribute to \`h2\` will render the text element as an \`h2\` element.
-Note that the styling is determined by the \`type\` attribute.`,attribute:"tagname",reflects:!0}],attributes:[{name:"type",type:{text:"FontType"},description:`Specifies the text style to be applied.
+Note that the styling is determined by the \`type\` attribute.`,attribute:"tagname",reflects:!0}],attributes:[{name:"type",description:`Specifies the text style to be applied.
 
 Acceptable values include:
 
@@ -187,7 +187,7 @@ Acceptable values include:
 - 'heading-xlarge-medium'
 - 'heading-xlarge-bold'
 - 'headline-small-light'
-- 'headline-small-regular'`,fieldName:"type"},{name:"tagname",type:{text:"ValidTextTags | undefined"},description:`Specifies the HTML tag name for the text element. The default tag name is \`p\`.
+- 'headline-small-regular'`,fieldName:"type"},{name:"tagname",description:`Specifies the HTML tag name for the text element. The default tag name is \`p\`.
 This attribute is optional. When set, it changes the tag name of the text element.
 
 Acceptable values include:
