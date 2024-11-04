@@ -3,6 +3,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
+import { FONT_TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { BADGE_TYPE, ICON_NAMES_LIST, DEFAULTS, ICON_VARIANT, ICON_STATE } from './badge.constants';
 import styles from './badge.styles';
 
@@ -139,8 +140,8 @@ class Badge extends Component {
   private getBadgeCounterText(maxCounter: number, overlay: boolean, counter?: number): TemplateResult {
     return html`
       <mdc-text
-        type="body-small-medium"
-        tagname="div"
+        type="${FONT_TYPE.BODY_SMALL_MEDIUM}"
+        tagname="${VALID_TEXT_TAGS.DIV}"
         class="mdc-badge-text ${classMap({ 'mdc-badge-overlay': overlay })}"
       >
         ${this.getCounterText(maxCounter, counter)}
