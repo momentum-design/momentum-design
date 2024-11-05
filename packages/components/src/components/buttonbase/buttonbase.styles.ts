@@ -11,9 +11,23 @@ const styles = css`
     font-size: var(--mds-font-apps-body-large-medium-font-size);
     font-weight: var(--mds-font-apps-body-large-medium-font-weight);
     line-height: var(--mds-font-apps-body-large-medium-line-height);
+    background: var(--color-theme-button-primary-normal, rgba(255, 255, 255, 0.95));
+    color: var(--color-theme-inverted-text-primary-normal, rgba(0, 0, 0, 0.95));
+
   }
 
-  :host([disabled]), :host([soft-disabled]), :host([active][disabled]), :host([active][soft-disabled]){
+  :host([disabled]), :host([disabled]:hover), :host([disabled]:focus), :host([disabled]:active),
+  :host([active][disabled]),:host([active][disabled]:hover), 
+  :host([active][disabled]:focus), :host([active][disabled]:active){
+    background: var(--color-theme-button-primary-disabled, rgba(255, 255, 255, 0.20));
+    color: var(--color-theme-text-primary-disabled, rgba(255, 255, 255, 0.40));
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  :host([soft-disabled]), :host([soft-disabled]:hover), :host([soft-disabled]:active), :host([soft-disabled]:focus),
+  :host([active][soft-disabled]), :host([active][soft-disabled]:hover),
+   :host([active][soft-disabled]:active), :host([active][soft-disabled]:focus){
     background: var(--color-theme-button-primary-disabled, rgba(255, 255, 255, 0.20));
     color: var(--color-theme-text-primary-disabled, rgba(255, 255, 255, 0.40));
     cursor: not-allowed;

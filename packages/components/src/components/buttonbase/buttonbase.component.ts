@@ -4,7 +4,8 @@ import styles from './buttonbase.styles';
 import { Component } from '../../models';
 
 /**
- * ButtonBase component that behaves like a button using ARIA roles.
+ * ButtonBase is a simple button component with all the interactions a button can have.
+ * This class is extended to create Button component.
  *
  * @tagname mdc-buttonbase
  *
@@ -35,7 +36,7 @@ class ButtonBase extends Component {
     /**
      * Custom click handler for the button.
      */
-    @property({ type: Function }) onClick?: (event: MouseEvent) => void;
+    @property({ type: Object, attribute: false }) onClick?: (event: MouseEvent) => void;
 
     constructor() {
       super();
@@ -85,19 +86,23 @@ class ButtonBase extends Component {
       }
     }
 
-    private setSoftDisabled(element: HTMLElement, disabled: boolean) {
-      if (disabled) {
+    private setSoftDisabled(element: HTMLElement, softDisabled: boolean) {
+      if (softDisabled) {
+        element.setAttribute('soft-disabled', 'true');
         element.setAttribute('aria-disabled', 'true');
       } else {
+        element.removeAttribute('soft-disabled');
         element.removeAttribute('aria-disabled');
       }
     }
 
     private setDisabled(element: HTMLElement, disabled: boolean) {
       if (disabled) {
+        element.setAttribute('disabled', 'true');
         element.setAttribute('aria-disabled', 'true');
         element.setAttribute('tabindex', '-1');
       } else {
+        element.removeAttribute('disabled');
         element.removeAttribute('aria-disabled');
         element.setAttribute('tabindex', '0');
       }
