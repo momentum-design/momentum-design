@@ -3,22 +3,22 @@ import { test } from '../../../config/playwright/setup';
 test.beforeEach(async ({ componentsPage }) => {
   await componentsPage.mount({
     html: `
-        <mdc-buttonbase />
+        <mdc-button />
       `,
   });
 });
 
-test('mdc-buttonbase', async ({ componentsPage }) => {
-  const buttonbase = componentsPage.page.locator('mdc-buttonbase');
+test('mdc-button', async ({ componentsPage }) => {
+  const button = componentsPage.page.locator('mdc-button');
 
-  // initial check for the buttonbase be visible on the screen:
-  await buttonbase.waitFor();
+  // initial check for the button be visible on the screen:
+  await button.waitFor();
 
   /**
    * ACCESSIBILITY
    */
-  await test.step('accessibility', async () => { 
-    await componentsPage.accessibility.checkForA11yViolations('buttonbase-default');
+  await test.step('accessibility', async () => {
+    await componentsPage.accessibility.checkForA11yViolations('button-default');
   });
 
   /**
@@ -26,7 +26,7 @@ test('mdc-buttonbase', async ({ componentsPage }) => {
    */
   await test.step('visual-regression', async () => {
     await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-buttonbase', { element: buttonbase });
+      await componentsPage.visualRegression.takeScreenshot('mdc-button', { element: button });
     });
   });
 
