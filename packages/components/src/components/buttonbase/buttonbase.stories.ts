@@ -7,12 +7,13 @@ const render = (args: Args) => html`
   <mdc-buttonbase 
   ?active=${args.active} 
   ?disabled=${args.disabled} 
-  ?soft-disabled=${args.softDisabled}
+  ?soft-disabled=${args['soft-disabled']}
   .onClick=${args.onClick}
   >${args.children}</mdc-buttonbase>`;
 
 const meta: Meta = {
   title: 'Work In Progress/buttonbase',
+  tags: ['autodocs'],
   component: 'mdc-buttonbase',
   render,
   parameters: {
