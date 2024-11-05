@@ -3,62 +3,20 @@ import utils from '../../utils/tag-name';
 const TAG_NAME = utils.constructTagName('presence');
 
 const PRESENCE_TYPE = {
-  ACTIVE: {
-    name: 'active',
-    icon: 'active-presence-small-filled',
-  },
-  AWAY: {
-    name: 'away',
-    icon: 'recents-presence-badge-filled',
-  },
-  AWAY_CALLING: {
-    name: 'away-calling',
-    icon: 'away-calling-presence-filled',
-  },
-  BUSY: {
-    name: 'busy',
-    icon: 'busy-presence-bold',
-  },
-  DND: {
-    name: 'dnd',
-    icon: 'dnd-presence-badge-filled',
-  },
-  MEETING: {
-    name: 'meeting',
-    icon: 'camera-filled',
-  },
-  ON_CALL: {
-    name: 'on-call',
-    icon: 'handset-filled',
-  },
-  ON_DEVICE: {
-    name: 'on-device',
-    icon: 'generic-device-video-badge-filled',
-  },
-  ON_MOBILE: {
-    name: 'on-mobile',
-    icon: 'phone-badge-filled',
-  },
-  PAUSE: {
-    name: 'pause',
-    icon: 'pause-badge-filled',
-  },
-  PTO: {
-    name: 'pto',
-    icon: 'pto-presence-filled',
-  },
-  PRESENTING: {
-    name: 'presenting',
-    icon: 'share-screen-badge-filled',
-  },
-  QUIET: {
-    name: 'quiet',
-    icon: 'quiet-hours-presence-filled',
-  },
-  SCHEDULED: {
-    name: 'scheduled',
-    icon: 'meetings-presence-badge-filled',
-  },
+  ACTIVE: 'active',
+  AWAY: 'away',
+  AWAY_CALLING: 'away-calling',
+  BUSY: 'busy',
+  DND: 'dnd',
+  MEETING: 'meeting',
+  ON_CALL: 'on-call',
+  ON_DEVICE: 'on-device',
+  ON_MOBILE: 'on-mobile',
+  PAUSE: 'pause',
+  PTO: 'pto',
+  PRESENTING: 'presenting',
+  QUIET: 'quiet',
+  SCHEDULED: 'scheduled',
 };
 
 const PRESENCE_SIZE = {

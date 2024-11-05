@@ -2,7 +2,7 @@ import { CSSResult, html, PropertyValues } from 'lit';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
-import { PRESENCE_TYPE, DEFAULTS } from './presence.constants';
+import { DEFAULTS } from './presence.constants';
 import styles from './presence.styles';
 
 /**
@@ -36,7 +36,7 @@ class Presence extends Component {
   /**
    * Type of the presence
    */
-  @property({ type: PRESENCE_TYPE, reflect: true })
+  @property({ type: String, reflect: true })
   type = DEFAULTS.TYPE;
 
   /**
@@ -46,12 +46,49 @@ class Presence extends Component {
   size = DEFAULTS.SIZE;
 
   /**
+   * Get the icon name based on the presence type
+   */
+  private get icon() {
+    switch (this.type) {
+      case 'away':
+        return 'away-presence-small-filled';
+      case 'away-calling':
+        return 'away-calling-icon';
+      case 'busy':
+        return 'busy-presence-icon';
+      case 'dnd':
+        return 'dnd-icon';
+      case 'meeting':
+        return 'camera-filled';
+      case 'on-call':
+        return 'handset-filled';
+      case 'on-device':
+        return 'generic-device-video-badge-filled';
+      case 'on-mobile':
+        return 'phone-badge-filled';
+      case 'pause':
+        return 'pause-badge-filled';
+      case 'pto':
+        return 'pto-presence-filled';
+      case 'presenting':
+        return 'share-screen-badge-filled';
+      case 'quiet':
+        return 'quiet-hours-presence-filled';
+      case 'scheduled':
+        return 'meetings-presence-badge-filled';
+      case 'active':
+      default:
+        return 'active-presence-small-filled';
+    }
+  }
+
+  /**
    * This method generates the CSS classes for the presence icon.
    * @returns - an object containing the CSS classes for the icon.
    */
   private getIconClasses(): { [key: string]: boolean } {
     const sizeClass = { [`mdc-presence-icon__${this.size}`]: true };
-    const backgroundClass = { [`mdc-presence-icon__${this.type.name}`]: true };
+    const backgroundClass = { [`mdc-presence-icon__${this.type}`]: true };
     return {
       ...backgroundClass,
       ...sizeClass,
@@ -66,7 +103,7 @@ class Presence extends Component {
     return html`
       <mdc-icon
         class="mdc-presence-icon ${classMap(this.getIconClasses())}"
-        name="${this.type.icon}"
+        name="${this.icon}"
         length-unit="${DEFAULTS.LENGTH_UNIT}"
         size="${this.size}"
       ></mdc-icon>
