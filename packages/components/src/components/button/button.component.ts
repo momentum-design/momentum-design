@@ -77,19 +77,32 @@ class Button extends Component {
      */
     @property({ type: String }) color? = DEFAULTS.COLOR;
 
+    /**
+     * The tabindex of the button.
+     */
+    @property({ type: Number }) override tabIndex = 0;
+
     constructor() {
       super();
-      this.active = false;
-      this.initializeButtonAttributes();
+      this.role = 'button';
     }
 
-    private initializeButtonAttributes() {
-      this.role = 'button';
+    public override connectedCallback() {
+      super.connectedCallback();
       this.addEventListener('click', this.handleClick);
       this.addEventListener('keydown', this.handleKeyDown);
       this.addEventListener('keyup', this.handleKeyUp);
       this.addEventListener('focus', this.handleFocus);
       this.addEventListener('blur', this.handleBlur);
+    }
+
+    public override disconnectedCallback() {
+      super.disconnectedCallback();
+      this.removeEventListener('click', this.handleClick);
+      this.removeEventListener('keydown', this.handleKeyDown);
+      this.removeEventListener('keyup', this.handleKeyUp);
+      this.removeEventListener('focus', this.handleFocus);
+      this.removeEventListener('blur', this.handleBlur);
     }
 
     public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
@@ -135,15 +148,20 @@ class Button extends Component {
       }
     }
 
+    private prevTabindex = 0;
+
     private setDisabled(element: HTMLElement, disabled: boolean) {
       if (disabled) {
         element.setAttribute('disabled', 'true');
         element.setAttribute('aria-disabled', 'true');
-        element.setAttribute('tabindex', '-1');
+        this.prevTabindex = this.tabIndex;
+        this.tabIndex = -1;
+        element.setAttribute('tabindex', `${this.tabIndex}`);
       } else {
+        this.tabIndex = this.prevTabindex;
         element.removeAttribute('disabled');
         element.removeAttribute('aria-disabled');
-        element.setAttribute('tabindex', '0');
+        element.setAttribute('tabindex', `${this.tabIndex}`);
       }
     }
 
