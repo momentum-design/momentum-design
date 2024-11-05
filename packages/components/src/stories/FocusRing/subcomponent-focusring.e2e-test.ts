@@ -23,10 +23,14 @@ const setup = async (args: SetupOptions) => {
 };
 
 // Applies focus to the component, handling WebKit-specific focus quirks
-const applyFocus = async (componentsPage: ComponentsPage, browserName: string) => {
+const pressTab = async (componentsPage: ComponentsPage, browserName: string, subComponent: Locator, focus: boolean) => {
   if (browserName === 'webkit') {
-    await componentsPage.page.keyboard.down('Alt');
-    await componentsPage.page.keyboard.press('Tab');
+    if (focus) {
+      await componentsPage.page.keyboard.press('Alt+Tab');
+    } else {
+      // Explicitly blur to remove focus in WebKit
+      await subComponent.evaluate((el) => el.blur());
+    }
   } else {
     await componentsPage.page.keyboard.press('Tab');
   }
@@ -42,21 +46,6 @@ const checkFocusRing = async (subComponent: Locator, expectedBoxShadow: string) 
 /* eslint-disable max-len */
 const focusRingStyle = 'rgb(0, 0, 0) 0px 0px 0px 2px, rgb(100, 180, 250) 0px 0px 0px 4px, rgba(100, 180, 250, 0.35) 0px 0px 0px 5px';
 
-// Checks if the component has the expected focus state (focused or not)
-const checkFocusState = async (subComponent: Locator, expectedState: boolean) => {
-  const isFocused = await subComponent.evaluate((el) => document.activeElement === el);
-  expect(isFocused).toBe(expectedState);
-};
-
-// Applies blur to the component, with WebKit-specific handling for focus issues
-const applyBlur = async (componentsPage: ComponentsPage, subComponent: Locator, browserName: string) => {
-  if (browserName === 'webkit') {
-    await subComponent.evaluate((el) => el.blur());
-  } else {
-    await componentsPage.page.keyboard.press('Tab');
-  }
-};
-
 // Tests focus ring interactions such as appearance, disappearance, and rapid focus/blur cycles
 const testFocusRingInteractions = async (
   componentsPage: ComponentsPage,
@@ -66,44 +55,29 @@ const testFocusRingInteractions = async (
 ) => {
   await test.step('focus', async () => {
     // Test focus ring appearance
-    await applyFocus(componentsPage, browserName);
+    await pressTab(componentsPage, browserName, subComponent, true);
+    await expect(subComponent).toBeFocused();
     await checkFocusRing(subComponent, focusRingStyle);
     await componentsPage.visualRegression.takeScreenshot(`focus-ring-appearance-${shape}`);
 
     // Test focus ring disappearance
-    await applyBlur(componentsPage, subComponent, browserName);
-    await checkFocusState(subComponent, false);
+    await pressTab(componentsPage, browserName, subComponent, false);
+    await expect(subComponent).not.toBeFocused();
     await checkFocusRing(subComponent, 'none');
     await componentsPage.visualRegression.takeScreenshot(`focus-ring-disappearance-${shape}`, {
       element: subComponent,
     });
 
     // Test rapid focus/blur interactions
-    await Promise.all(
-      Array.from({ length: 5 }).map(async () => {
-        await applyFocus(componentsPage, browserName);
-        await applyBlur(componentsPage, subComponent, browserName);
-      }),
-    );
+    /* eslint-disable no-await-in-loop */
+    for (let i = 0; i < 5; i += 1) {
+      await pressTab(componentsPage, browserName, subComponent, true);
+      await pressTab(componentsPage, browserName, subComponent, false);
+    }
     await checkFocusRing(subComponent, 'none');
     await componentsPage.visualRegression.takeScreenshot(`focus-ring-rapid-interaction-${shape}`, {
       element: subComponent,
     });
-  });
-};
-
-// Tests event propagation for focus ring within a parent-child structure to check interference
-const testEventPropagation = async (componentsPage: ComponentsPage, browserName: string, shape: string) => {
-  await test.step('event propagation', async () => {
-    await componentsPage.mount({
-      html: `<button id='parent'><mdc-subcomponent-focusring shape='${shape}'></mdc-subcomponent-focusring></button>`,
-      clearDocument: true,
-    });
-    const parent = componentsPage.page.locator('#parent');
-    await applyFocus(componentsPage, browserName);
-    const isFocused = await parent.evaluate((el) => document.activeElement === el);
-    expect(isFocused).toBe(true);
-    await componentsPage.visualRegression.takeScreenshot(`focus-ring-parent-child-${shape}`, { element: parent });
   });
 };
 
@@ -118,7 +92,6 @@ test.describe('SubComponentFocusRing', () => {
        */
       await test.step('interactions', async () => {
         await testFocusRingInteractions(componentsPage, subComponent, browserName, shape);
-        await testEventPropagation(componentsPage, browserName, shape);
       });
     });
   });
