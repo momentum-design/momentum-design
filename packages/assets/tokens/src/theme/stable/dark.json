@@ -2595,29 +2595,31 @@
         }
       },
       "focus": {
-        "0": {
-          "value": "{color.core.black-alpha.100}",
-          "type": "color",
-          "description": "Used for focus ring effect"
-        },
-        "1": {
-          "value": "{color.core.blue.40}",
-          "type": "color",
-          "description": "Used for focus ring effect"
-        },
-        "2": {
-          "value": "{color.core.blue.40}",
-          "type": "color",
-          "$extensions": {
-            "studio.tokens": {
-              "modify": {
-                "type": "alpha",
-                "value": "0.35",
-                "space": "lch"
-              }
-            }
+        "default": {
+          "0": {
+            "value": "{color.core.black-alpha.100}",
+            "type": "color",
+            "description": "Used for focus ring effect"
           },
-          "description": "Used for focus ring effect"
+          "1": {
+            "value": "{color.core.blue.40}",
+            "type": "color",
+            "description": "Used for focus ring effect"
+          },
+          "2": {
+            "value": "{color.core.blue.40}",
+            "type": "color",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {
+                  "type": "alpha",
+                  "value": "0.35",
+                  "space": "lch"
+                }
+              }
+            },
+            "description": "Used for focus ring effect"
+          }
         }
       }
     }
