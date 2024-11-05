@@ -1,4 +1,4 @@
-import"./index-DkGCxfPr.js";import{k as l}from"./lit-element-CPYlYYac.js";import{c as m,s as p}from"./commonArgTypes-BluK8w5L.js";import{d}from"./utils-DCJ3yZC1.js";import"./index-BLShQaRP.js";import"./state-I_twzcUk.js";import"./index-yOpQnEvF.js";import"./index-BGH6lGYG.js";import"./iconprovider.component-DlI5gUhJ.js";import"./create-context-89xeped_.js";const b=e=>l`
+import"./index-C0WGh0MV.js";import{k as l}from"./lit-element-CPYlYYac.js";import{c as m,s as p}from"./commonArgTypes-BluK8w5L.js";import{d}from"./utils-DCJ3yZC1.js";import"./index-BLShQaRP.js";import"./state-I_twzcUk.js";import"./index-DOMSj5Ok.js";import"./index-BGH6lGYG.js";import"./iconprovider.component-DlI5gUhJ.js";import"./create-context-89xeped_.js";const b=e=>l`
   <mdc-icon
     class="${e.class}"
     name="${e.name}"
