@@ -2441,20 +2441,22 @@
         }
       },
       "focus": {
-        "0": {
-          "value": "{color.highcontrast.white.ButtonFaceColor}",
-          "type": "color",
-          "description": "Used for focus ring effect"
-        },
-        "1": {
-          "value": "{color.highcontrast.white.ButtonTextColor}",
-          "type": "color",
-          "description": "Used for focus ring effect"
-        },
-        "2": {
-          "value": "{color.highcontrast.white.ButtonTextColor}",
-          "type": "color",
-          "description": "Used for focus ring effect"
+        "default": {
+          "0": {
+            "value": "{color.highcontrast.white.ButtonFaceColor}",
+            "type": "color",
+            "description": "Used for focus ring effect"
+          },
+          "1": {
+            "value": "{color.highcontrast.white.ButtonTextColor}",
+            "type": "color",
+            "description": "Used for focus ring effect"
+          },
+          "2": {
+            "value": "{color.highcontrast.white.ButtonTextColor}",
+            "type": "color",
+            "description": "Used for focus ring effect"
+          }
         }
       }
     }
