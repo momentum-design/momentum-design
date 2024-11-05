@@ -49,7 +49,7 @@ class Badge extends Component {
    * Type of the variant can be `primary` or `secondary`.
    * It defines the background and foreground color of the icon.
    */
-  @property({ type: String })
+  @property({ type: String, reflect: true })
   variant = DEFAULTS.VARIANT;
 
   /**
@@ -62,7 +62,7 @@ class Badge extends Component {
    * The maximum number can be set up to 999, anything about that will be rendered as _999+_.
    * The max counter can be `9`, `99` or `999`.
    */
-  @property({ type: Number, attribute: 'max-counter' })
+  @property({ type: Number, attribute: 'max-counter', reflect: true })
   maxCounter: number = DEFAULTS.MAX_COUNTER;
 
   /**
@@ -110,12 +110,7 @@ class Badge extends Component {
    * @param type - the type of the badge.
    * @returns the template result of the icon.
    */
-  private getBadgeIcon(
-    iconName: string,
-    overlay: boolean,
-    iconVariant: string,
-    type?: string,
-  ): TemplateResult {
+  private getBadgeIcon(iconName: string, overlay: boolean, iconVariant: string, type?: string): TemplateResult {
     return html`
       <mdc-icon
         class="mdc-badge-icon ${classMap(this.getIconClasses(overlay, iconVariant, type))}"
@@ -145,8 +140,7 @@ class Badge extends Component {
   private getIconClasses(overlay: boolean, iconVariant: string, type?: string): { [key: string]: boolean } {
     const overLayClass = { 'mdc-badge-overlay': overlay };
     const variantTypes = type === BADGE_TYPE.ICON ? ICON_VARIANT : ICON_STATE;
-    const iconVariantType = Object.values(variantTypes).includes(iconVariant)
-      ? iconVariant : DEFAULTS.VARIANT;
+    const iconVariantType = Object.values(variantTypes).includes(iconVariant) ? iconVariant : DEFAULTS.VARIANT;
     const backgroundClass = { [`mdc-badge-icon__${iconVariantType}`]: true };
     return {
       ...overLayClass,
@@ -194,10 +188,11 @@ class Badge extends Component {
    * @returns the TemplateResult for the current badge type.
    */
   private getBadgeContentBasedOnType(): TemplateResult {
+    if (this.variant && !Object.values(ICON_VARIANT).includes(this.variant)) {
+      this.variant = ICON_VARIANT.PRIMARY;
+    }
     const { counter, iconName, maxCounter, overlay, type, variant } = this;
     switch (type) {
-      case BADGE_TYPE.DOT:
-        return this.getBadgeDot(overlay);
       case BADGE_TYPE.ICON:
         return this.getBadgeIcon(iconName || '', overlay, variant, type);
       case BADGE_TYPE.COUNTER:
@@ -208,8 +203,10 @@ class Badge extends Component {
         return this.getBadgeIcon(ICON_NAMES_LIST.WARNING_ICON_NAME, overlay, ICON_STATE.WARNING);
       case BADGE_TYPE.ERROR:
         return this.getBadgeIcon(ICON_NAMES_LIST.ERROR_ICON_NAME, overlay, ICON_STATE.ERROR);
+      case BADGE_TYPE.DOT:
       default:
-        return html``;
+        this.type = BADGE_TYPE.DOT;
+        return this.getBadgeDot(overlay);
     }
   }
 
