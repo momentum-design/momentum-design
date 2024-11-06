@@ -59,7 +59,7 @@ const styles = [
     }
     .mdc-presence__x_large {
       width: 1.951875rem;
-      height: 1.9518rem;
+      height: 1.951875rem;
     }
     .mdc-presence__xx_large {
       width: 2.75rem;
