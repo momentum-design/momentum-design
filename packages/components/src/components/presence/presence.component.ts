@@ -72,13 +72,13 @@ class Presence extends Component {
   private get icon() {
     switch (this.type) {
       case 'away':
-        return 'away-presence-small-filled';
+        return 'recents-presence-badge-filled';
       case 'away-calling':
-        return 'away-calling-icon';
+        return 'away-calling-presence-filled';
       case 'busy':
-        return 'busy-presence-icon';
+        return 'busy-presence-bold';
       case 'dnd':
-        return 'dnd-icon';
+        return 'dnd-presence-badge-filled';
       case 'meeting':
         return 'camera-filled';
       case 'on-call':
