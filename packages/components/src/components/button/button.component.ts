@@ -156,7 +156,7 @@ class Button extends Component {
   }
 
   private setColor(color: string) {
-    if (!BUTTON_COLORS[color as keyof typeof BUTTON_COLORS] || this.variant === 'tertiary') {
+    if (!Object.values(BUTTON_COLORS).includes(color) || this.variant === 'tertiary') {
       this.setAttribute('color', `${DEFAULTS.COLOR}`);
     } else {
       this.setAttribute('color', color);
