@@ -50,15 +50,15 @@ const styles = [
       height: 1.0625rem;
     }
     .mdc-presence__midsize {
-      width: 1.4193rem;
-      height: 1.4193rem;
+      width: 1.419375rem;
+      height: 1.419375rem;
     }
     .mdc-presence__large {
-      width: 1.5968rem;
-      height: 1.5968rem;
+      width: 1.596875rem;
+      height: 1.596875rem;
     }
     .mdc-presence__x_large {
-      width: 1.9518rem;
+      width: 1.951875rem;
       height: 1.9518rem;
     }
     .mdc-presence__xx_large {

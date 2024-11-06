@@ -39,32 +39,30 @@ class Presence extends Component {
   type = DEFAULTS.TYPE;
 
   /**
-   * Size of the presence icon in rem
-   *
    * Acceptable values include:
-   * - XX_SMALL: 0.875,
-   * - X_SMALL: 0.875,
-   * - SMALL: 0.875,
-   * - MIDSIZE: 1.15,
-   * - LARGE: 1.3,
-   * - X_LARGE: 1.6,
-   * - XX_LARGE: 2.25,
+   * - XX_SMALL
+   * - X_SMALL
+   * - SMALL
+   * - MIDSIZE
+   * - LARGE
+   * - X_LARGE
+   * - XX_LARGE
    *
    */
   @property({ type: String, reflect: true })
   size = DEFAULTS.SIZE;
 
   /**
-   * Get the size of the presence based on the given size type
+   * Get the size of the presence icon based on the given size type
    */
-  private get presenceSize() {
+  private get iconSize() {
     switch (this.size) {
       case 'midsize':
-        return 1.15;
+        return 1.16125;
       case 'large':
-        return 1.3;
+        return 1.30625;
       case 'x_large':
-        return 1.6;
+        return 1.596875;
       case 'xx_large':
         return 2.25;
       case 'xx_small':
@@ -143,7 +141,7 @@ class Presence extends Component {
       <mdc-icon
         class="mdc-presence-icon ${classMap(this.getIconClasses())}"
         name="${this.icon}"
-        size="${this.presenceSize}"
+        size="${this.iconSize}"
       ></mdc-icon>
     `;
   }
