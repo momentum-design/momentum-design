@@ -2,7 +2,7 @@ import { CSSResult, html, PropertyValues } from 'lit';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
-import { DEFAULTS } from './presence.constants';
+import { DEFAULTS, PRESENCE_TYPE } from './presence.constants';
 import styles from './presence.styles';
 
 /**
@@ -62,6 +62,7 @@ class Presence extends Component {
       case 'x_small':
       case 'small':
       default:
+        this.size = DEFAULTS.SIZE;
         return 0.875;
     }
   }
@@ -72,13 +73,13 @@ class Presence extends Component {
   private get icon() {
     switch (this.type) {
       case 'away':
-        return 'away-presence-small-filled';
+        return 'recents-presence-badge-filled';
       case 'away-calling':
-        return 'away-calling-icon';
+        return 'away-calling-presence-filled';
       case 'busy':
-        return 'busy-presence-icon';
+        return 'busy-presence-bold';
       case 'dnd':
-        return 'dnd-icon';
+        return 'dnd-presence-badge-filled';
       case 'meeting':
         return 'camera-filled';
       case 'on-call':
@@ -118,6 +119,10 @@ class Presence extends Component {
 
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
+
+    if (!Object.values(PRESENCE_TYPE).includes(this.type)) {
+      this.type = DEFAULTS.TYPE;
+    }
   }
 
   public override render() {

@@ -38,24 +38,25 @@ const styles = [
 
     .mdc-presence-icon {
       border-radius: 50%;
+      background-color: var(--mdc-presence-overlay-background-color);
     }
 
     .mdc-presence-icon__xx_small,
     .mdc-presence-icon__x_small,
-    .mdc-presence-icon__small,{
-      outline: 0.09375rem solid var(--mdc-presence-overlay-background-color);
+    .mdc-presence-icon__small {
+      box-shadow: 0 0 0 0.09375rem var(--mdc-presence-overlay-background-color);
     }
     .mdc-presence-icon__midsize {
-      outline: 0.129rem solid var(--mdc-presence-overlay-background-color);
+      box-shadow: 0 0 0 0.129rem var(--mdc-presence-overlay-background-color);
     }
     .mdc-presence-icon__large {
-      outline: 0.14375rem solid var(--mdc-presence-overlay-background-color);
+      box-shadow: 0 0 0 0.1775rem var(--mdc-presence-overlay-background-color);
     }
     .mdc-presence-icon__x_large {
-      outline: 0.1775rem solid var(--mdc-presence-overlay-background-color);
+      box-shadow: 0 0 0 0.1775rem var(--mdc-presence-overlay-background-color);
     }
     .mdc-presence-icon__xx_large {
-      outline: 0.25rem solid var(--mdc-presence-overlay-background-color);
+      box-shadow: 0 0 0 0.25rem var(--mdc-presence-overlay-background-color);
     }
 
     .mdc-presence-icon__active {

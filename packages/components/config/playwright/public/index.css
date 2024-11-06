@@ -51,3 +51,14 @@ main {
 .colorBox+.colorBox {
     margin-top: 10px;
 }
+
+.presence-list {
+    background-color: var(--mds-color-theme-text-primary-normal); 
+    padding: 10px;
+}
+
+.presence-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
