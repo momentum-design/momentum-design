@@ -42,8 +42,29 @@ class Presence extends Component {
   /**
    * Size of the presence icon
    */
-  @property({ type: Number, reflect: true  })
+  @property({ type: String, reflect: true  })
   size = DEFAULTS.SIZE;
+
+  /**
+   * Get the size of the presence based on the given size type
+   */
+  private get presenceSize() {
+    switch (this.size) {
+      case 'midsize':
+        return 1.15;
+      case 'large':
+        return 1.3;
+      case 'x_large':
+        return 1.6;
+      case 'xx_large':
+        return 2.25;
+      case 'xx_small':
+      case 'x_small':
+      case 'small':
+      default:
+        return 0.875;
+    }
+  }
 
   /**
    * Get the icon name based on the presence type
@@ -105,7 +126,7 @@ class Presence extends Component {
         class="mdc-presence-icon ${classMap(this.getIconClasses())}"
         name="${this.icon}"
         length-unit="${DEFAULTS.LENGTH_UNIT}"
-        size="${this.size}"
+        size="${this.presenceSize}"
       ></mdc-icon>
     `;
   }

@@ -20,13 +20,13 @@ const PRESENCE_TYPE = {
 };
 
 const PRESENCE_SIZE = {
-  XX_SMALL: 0.875,
-  X_SMALL: 0.875,
-  SMALL: 0.875,
-  MIDSIZE: 1.15,
-  LARGE: 1.3,
-  X_LARGE: 1.6,
-  XX_LARGE: 2.25,
+  XX_SMALL: 'xx_small',
+  X_SMALL: 'x_small',
+  SMALL: 'small',
+  MIDSIZE: 'midsize',
+  LARGE: 'large',
+  X_LARGE: 'x_large',
+  XX_LARGE: 'xx_large',
 };
 
 const DEFAULTS = {
