@@ -32,37 +32,31 @@ const meta: Meta = {
     },
     active: {
       description: 'Indicates whether the button is active.',
-      control: {
-        type: 'boolean',
-      },
+      control: 'boolean',
     },
     disabled: {
       description: 'Indicates whether the button is disabled.',
-      control: {
-        type: 'boolean',
-      },
+      control: 'boolean',
     },
     'soft-disabled': {
       description: 'Indicates whether the button is soft disabled.',
-      control: {
-        type: 'boolean',
-      },
-      variant: {
-        description: 'The variant of the button.',
-        control: 'select',
-        options: Object.values(BUTTON_VARIANTS),
-      },
-      size: {
-        description: 'The size of the button.',
-        control: 'select',
-        options: Object.values(BUTTON_SIZES),
+      control: 'boolean',
+    },
+    variant: {
+      description: 'The variant of the button.',
+      control: 'select',
+      options: Object.values(BUTTON_VARIANTS),
+    },
+    size: {
+      description: 'The size of the button.',
+      control: 'select',
+      options: Object.values(BUTTON_SIZES),
 
-      },
-      color: {
-        description: 'The color of the button.',
-        control: 'select',
-        options: Object.values(BUTTON_COLORS),
-      },
+    },
+    color: {
+      description: 'The color of the button.',
+      control: 'select',
+      options: Object.values(BUTTON_COLORS),
     },
     ...classArgType,
     ...styleArgType,
@@ -81,4 +75,30 @@ export const Default: StoryObj = {
     size: BUTTON_SIZES[32],
     color: BUTTON_COLORS.ACTIVE,
   },
+};
+
+export const PrefixIcon: StoryObj = {
+  render: () => html`
+    <mdc-button>
+      <mdc-icon name="info-circle-bold" slot="prefix-icon"></mdc-icon>
+      <p slot="label-text">Left Icon</p>
+    </mdc-button>
+  `,
+};
+
+export const PostfixIcon: StoryObj = {
+  render: () => html`
+    <mdc-button>
+      <p slot="label-text">Right Icon</p>
+      <mdc-icon name="info-circle-bold" slot="postfix-icon"></mdc-icon>
+    </mdc-button>
+  `,
+};
+
+export const Icon: StoryObj = {
+  render: () => html`
+    <mdc-button>
+      <mdc-icon name="info-circle-bold"></mdc-icon>
+    </mdc-button>
+  `,
 };

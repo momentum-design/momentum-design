@@ -2,7 +2,7 @@ import { CSSResult, html, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 import styles from './button.styles';
 import { Component } from '../../models';
-import { DEFAULTS } from './button.constants';
+import { BUTTON_COLORS, BUTTON_SIZES, BUTTON_VARIANTS, DEFAULTS } from './button.constants';
 
 /**
  * `mdc-button` is a versatile component that can be configured in various ways to suit different use cases.
@@ -16,6 +16,13 @@ import { DEFAULTS } from './button.constants';
  * - **Primary**: Solid background color.
  * - **Secondary**: Transparent background with a solid border.
  * - **Tertiary**: No background or border, appears as plain text but retains all button functionalities.
+ *
+ * Button Colors:
+ * - **Positive**: Green color.
+ * - **Negative**: Red color.
+ * - **Accent**: Blue color.
+ * - **Promotional**: Yellow color.
+ * - **Active**: White color.
  *
  * Button Sizes (in REM units):
  * - **Pill button**: 40, 32, 28, 24.
@@ -43,170 +50,206 @@ class Button extends Component {
   /**
    * Indicates whether the button is active.
    */
-    @property({ type: Boolean }) active: boolean = false;
+  @property({ type: Boolean }) active: boolean = false;
 
-    /**
-     * Indicates whether the button is disabled.
-     */
-    @property({ type: Boolean }) disabled: boolean = false;
+  /**
+   * Indicates whether the button is disabled.
+   */
+  @property({ type: Boolean }) disabled: boolean = false;
 
-    /**
-     * Indicates whether the button is soft disabled.
-     * The button is currently disabled for user interaction; however, it remains focusable.
-     */
-    @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled: boolean = false;
+  /**
+   * Indicates whether the button is soft disabled.
+   * The button is currently disabled for user interaction; however, it remains focusable.
+   */
+  @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled: boolean = false;
 
-    /**
-     * Aria label for the button.
-     */
-    @property({ type: String, attribute: 'aria-label' }) override ariaLabel: string = '';
+  /**
+   * Aria label for the button.
+   */
+  @property({ type: String, attribute: 'aria-label' }) override ariaLabel: string = '';
 
-    /**
-     * There are 3 variants of button: primary, secondary, tertiary.
-     */
-    @property({ type: String }) variant? = DEFAULTS.VARIANT;
+  /**
+   * There are 3 variants of button: primary, secondary, tertiary.
+   */
+  @property({ type: String }) variant = DEFAULTS.VARIANT;
 
-    /**
-     * There are 4 sizes for button: 40, 32, 28 and 24
-     * Tertiary button can have 20 size.
-     */
-    @property({ type: Number }) size? = DEFAULTS.SIZE;
+  /**
+   * There are 4 sizes for button: 40, 32, 28 and 24
+   * Tertiary button can have 20 size.
+   */
+  @property({ type: Number }) size = DEFAULTS.SIZE;
 
-    /**
-     * There are 5 colors for button: positive, negative, accent, promotional, active.
-     */
-    @property({ type: String }) color? = DEFAULTS.COLOR;
+  /**
+   * There are 5 colors for button: positive, negative, accent, promotional, active.
+   */
+  @property({ type: String }) color = DEFAULTS.COLOR;
 
-    /**
-     * The tabindex of the button.
-     */
-    @property({ type: Number }) override tabIndex = 0;
+  /**
+   * The tabindex of the button.
+   */
+  @property({ type: Number }) override tabIndex = 0;
 
-    constructor() {
-      super();
-      this.role = 'button';
+  constructor() {
+    super();
+    this.role = 'button';
+  }
+
+  public override connectedCallback() {
+    super.connectedCallback();
+    this.addEventListener('click', this.handleClick);
+    this.addEventListener('keydown', this.handleKeyDown);
+    this.addEventListener('keyup', this.handleKeyUp);
+    this.addEventListener('focus', this.handleFocus);
+    this.addEventListener('blur', this.handleBlur);
+  }
+
+  public override disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener('click', this.handleClick);
+    this.removeEventListener('keydown', this.handleKeyDown);
+    this.removeEventListener('keyup', this.handleKeyUp);
+    this.removeEventListener('focus', this.handleFocus);
+    this.removeEventListener('blur', this.handleBlur);
+  }
+
+  public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    super.update(changedProperties);
+
+    if (changedProperties.has('disabled')) {
+      this.setDisabled(this, this.disabled);
     }
-
-    public override connectedCallback() {
-      super.connectedCallback();
-      this.addEventListener('click', this.handleClick);
-      this.addEventListener('keydown', this.handleKeyDown);
-      this.addEventListener('keyup', this.handleKeyUp);
-      this.addEventListener('focus', this.handleFocus);
-      this.addEventListener('blur', this.handleBlur);
+    if (changedProperties.has('softDisabled')) {
+      this.setSoftDisabled(this, this.softDisabled);
     }
-
-    public override disconnectedCallback() {
-      super.disconnectedCallback();
-      this.removeEventListener('click', this.handleClick);
-      this.removeEventListener('keydown', this.handleKeyDown);
-      this.removeEventListener('keyup', this.handleKeyUp);
-      this.removeEventListener('focus', this.handleFocus);
-      this.removeEventListener('blur', this.handleBlur);
+    if (changedProperties.has('arialabel')) {
+      this.setAriaLabel(this, this.ariaLabel);
     }
-
-    public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
-      super.update(changedProperties);
-
-      if (changedProperties.has('disabled')) {
-        this.setDisabled(this, this.disabled);
-      }
-      if (changedProperties.has('softDisabled')) {
-        this.setSoftDisabled(this, this.softDisabled);
-      }
-      if (changedProperties.has('arialabel')) {
-        this.setAriaLabel(this, this.ariaLabel);
-      }
-      if (changedProperties.has('active')) {
-        this.setAriaPressed(this, this.active);
-      }
+    if (changedProperties.has('active')) {
+      this.setAriaPressed(this, this.active);
     }
-
-    private setAriaPressed(element: HTMLElement, active: boolean) {
-      if (active) {
-        element.setAttribute('aria-pressed', 'true');
-      } else {
-        element.removeAttribute('aria-pressed');
-      }
+    if (changedProperties.has('size')) {
+      this.setSize(this.size);
     }
-
-    private setAriaLabel(element: HTMLElement, ariaLabel: string) {
-      if (ariaLabel) {
-        element.setAttribute('aria-label', ariaLabel);
-      } else {
-        element.removeAttribute('aria-label');
-      }
+    if (changedProperties.has('variant')) {
+      this.setVariant(this.variant);
     }
-
-    private setSoftDisabled(element: HTMLElement, softDisabled: boolean) {
-      if (softDisabled) {
-        element.setAttribute('soft-disabled', 'true');
-        element.setAttribute('aria-disabled', 'true');
-      } else {
-        element.removeAttribute('soft-disabled');
-        element.removeAttribute('aria-disabled');
-      }
+    if (changedProperties.has('color')) {
+      this.setColor(this.color);
     }
+  }
 
-    private prevTabindex = 0;
-
-    private setDisabled(element: HTMLElement, disabled: boolean) {
-      if (disabled) {
-        element.setAttribute('disabled', 'true');
-        element.setAttribute('aria-disabled', 'true');
-        this.prevTabindex = this.tabIndex;
-        this.tabIndex = -1;
-        element.setAttribute('tabindex', `${this.tabIndex}`);
-      } else {
-        this.tabIndex = this.prevTabindex;
-        element.removeAttribute('disabled');
-        element.removeAttribute('aria-disabled');
-        element.setAttribute('tabindex', `${this.tabIndex}`);
-      }
+  private setVariant(variant: string) {
+    if (!Object.values(BUTTON_VARIANTS).includes(variant)) {
+      this.setAttribute('variant', `${DEFAULTS.VARIANT}`);
+    } else {
+      this.setAttribute('variant', variant);
     }
+  }
 
-    public override render() {
-      return html`
-                <slot></slot>
-        `;
+  private setSize(size: number) {
+    if (!BUTTON_SIZES[size as keyof typeof BUTTON_SIZES]
+      || (size === BUTTON_SIZES[20] && this.variant !== 'tertiary')) {
+      this.setAttribute('size', `${DEFAULTS.SIZE}`);
+    } else {
+      this.setAttribute('size', `${size}`);
     }
+  }
 
-    private handleClick(event: MouseEvent) {
-      if (!this.disabled && !this.softDisabled) {
-        if (this.onclick) {
-          this.onclick(event);
-        }
-      }
+  private setColor(color: string) {
+    if (!BUTTON_COLORS[color as keyof typeof BUTTON_COLORS] || this.variant === 'tertiary') {
+      this.setAttribute('color', `${DEFAULTS.COLOR}`);
+    } else {
+      this.setAttribute('color', color);
     }
+  }
 
-    private handleFocus(event: FocusEvent) {
-      if (this.softDisabled) {
-        event.preventDefault();
+  private setAriaPressed(element: HTMLElement, active: boolean) {
+    if (active) {
+      element.setAttribute('aria-pressed', 'true');
+    } else {
+      element.removeAttribute('aria-pressed');
+    }
+  }
+
+  private setAriaLabel(element: HTMLElement, ariaLabel: string) {
+    if (ariaLabel) {
+      element.setAttribute('aria-label', ariaLabel);
+    } else {
+      element.removeAttribute('aria-label');
+    }
+  }
+
+  private setSoftDisabled(element: HTMLElement, softDisabled: boolean) {
+    if (softDisabled) {
+      element.setAttribute('soft-disabled', 'true');
+      element.setAttribute('aria-disabled', 'true');
+    } else {
+      element.removeAttribute('soft-disabled');
+      element.removeAttribute('aria-disabled');
+    }
+  }
+
+  private prevTabindex = 0;
+
+  private setDisabled(element: HTMLElement, disabled: boolean) {
+    if (disabled) {
+      element.setAttribute('disabled', 'true');
+      element.setAttribute('aria-disabled', 'true');
+      this.prevTabindex = this.tabIndex;
+      this.tabIndex = -1;
+      element.setAttribute('tabindex', `${this.tabIndex}`);
+    } else {
+      this.tabIndex = this.prevTabindex;
+      element.removeAttribute('disabled');
+      element.removeAttribute('aria-disabled');
+      element.setAttribute('tabindex', `${this.tabIndex}`);
+    }
+  }
+
+  private handleClick(event: MouseEvent) {
+    if (!this.disabled && !this.softDisabled) {
+      if (this.onclick) {
+        this.onclick(event);
       }
     }
+  }
 
-    private handleBlur(event: FocusEvent) {
-      if (this.softDisabled) {
-        event.preventDefault();
-      }
+  private handleFocus(event: FocusEvent) {
+    if (this.softDisabled) {
+      event.preventDefault();
+    }
+  }
+
+  private handleBlur(event: FocusEvent) {
+    if (this.softDisabled) {
+      event.preventDefault();
+    }
+    this.classList.remove('pressed');
+  }
+
+  private handleKeyDown(event: KeyboardEvent) {
+    if (!this.disabled && (event.key === 'Enter' || event.key === ' ')) {
+      event.preventDefault();
+      this.classList.add('pressed');
+    }
+  }
+
+  private handleKeyUp(event: KeyboardEvent) {
+    if (!this.disabled && (event.key === 'Enter' || event.key === ' ')) {
+      this.handleClick(event as unknown as MouseEvent);
       this.classList.remove('pressed');
     }
+  }
 
-    private handleKeyDown(event: KeyboardEvent) {
-      if (!this.disabled && (event.key === 'Enter' || event.key === ' ')) {
-        event.preventDefault();
-        this.classList.add('pressed');
-      }
-    }
+  public override render() {
+    return html`
+      <slot name="prefix-icon"></slot>
+      <slot></slot>
+      <slot name="postfix-icon"></slot>
+    `;
+  }
 
-    private handleKeyUp(event: KeyboardEvent) {
-      if (!this.disabled && (event.key === 'Enter' || event.key === ' ')) {
-        this.handleClick(event as unknown as MouseEvent);
-        this.classList.remove('pressed');
-      }
-    }
-
-    public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
 export default Button;
