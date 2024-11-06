@@ -33,7 +33,7 @@ const styles = [
 
       --mdc-presence-scheduled-background-color: var(--mds-color-theme-indicator-unstable);
 
-      --mdc-badge-overlay-background-color: var(--mds-color-theme-background-solid-primary-normal);
+      --mdc-presence-overlay-background-color: var(--mds-color-theme-background-solid-primary-normal);
     }
 
     .mdc-presence-icon {
@@ -41,19 +41,19 @@ const styles = [
     }
 
     .mdc-presence-icon__0.875 {
-      outline: 0.09375rem solid var(--mdc-badge-overlay-background-color);
+      outline: 0.09375rem solid var(--mdc-presence-overlay-background-color);
     }
     .mdc-presence-icon__1.15 {
-      outline: 0.129rem solid var(--mdc-badge-overlay-background-color);
+      outline: 0.129rem solid var(--mdc-presence-overlay-background-color);
     }
     .mdc-presence-icon__1.3 {
-      outline: 0.14375rem solid var(--mdc-badge-overlay-background-color);
+      outline: 0.14375rem solid var(--mdc-presence-overlay-background-color);
     }
     .mdc-presence-icon__1.6 {
-      outline: 0.1775rem solid var(--mdc-badge-overlay-background-color);
+      outline: 0.1775rem solid var(--mdc-presence-overlay-background-color);
     }
     .mdc-presence-icon__2.25 {
-      outline: 0.25rem solid var(--mdc-badge-overlay-background-color);
+      outline: 0.25rem solid var(--mdc-presence-overlay-background-color);
     }
 
     .mdc-presence-icon__active {

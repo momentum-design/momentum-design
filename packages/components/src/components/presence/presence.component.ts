@@ -42,7 +42,7 @@ class Presence extends Component {
   /**
    * Size of the presence icon
    */
-  @property({ type: Number })
+  @property({ type: Number, reflect: true  })
   size = DEFAULTS.SIZE;
 
   /**
