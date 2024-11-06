@@ -33,14 +33,14 @@ class Presence extends Component {
    * - `presenting`
    * - `quiet`
    * - `scheduled`
-   * 
+   *
    */
   @property({ type: String, reflect: true })
   type = DEFAULTS.TYPE;
 
   /**
    * Size of the presence icon in rem
-   * 
+   *
    * Acceptable values include:
    * - XX_SMALL: 0.875,
    * - X_SMALL: 0.875,
@@ -49,7 +49,7 @@ class Presence extends Component {
    * - LARGE: 1.3,
    * - X_LARGE: 1.6,
    * - XX_LARGE: 2.25,
-   * 
+   *
    */
   @property({ type: String, reflect: true })
   size = DEFAULTS.SIZE;
@@ -116,12 +116,12 @@ class Presence extends Component {
    * This method generates the CSS classes for the presence.
    * @returns - an object containing the CSS classes for the presence div.
    */
-    private getPresenceClasses(): { [key: string]: boolean } {
-      const sizeClass = { [`mdc-presence__${this.size}`]: true };
-      return {
-        ...sizeClass,
-      };
-    }
+  private getPresenceClasses(): { [key: string]: boolean } {
+    const sizeClass = { [`mdc-presence__${this.size}`]: true };
+    return {
+      ...sizeClass,
+    };
+  }
 
   /**
    * This method generates the CSS classes for the presence icon.
@@ -133,6 +133,7 @@ class Presence extends Component {
       ...backgroundClass,
     };
   }
+
   /**
    * Method to generate the presence icon.
    * @returns the template result of the icon.
@@ -148,11 +149,7 @@ class Presence extends Component {
   }
 
   public override render() {
-    return html`
-      <div class="mdc-presence ${classMap(this.getPresenceClasses())}">
-        ${this.getPresenceIcon()}
-      </div>
-    `;
+    return html` <div class="mdc-presence ${classMap(this.getPresenceClasses())}">${this.getPresenceIcon()}</div> `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
