@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { BUTTON_COLORS, BUTTON_SIZES, BUTTON_VARIANTS } from './button.constants';
+import { BUTTON_COLORS, ICON_BUTTON_SIZES, BUTTON_VARIANTS } from './button.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 const render = (args: Args) => html`
@@ -9,7 +9,6 @@ const render = (args: Args) => html`
   ?active="${args.active}"
   ?disabled="${args.disabled}"
   ?soft-disabled="${args['soft-disabled']}"
-  @click="${args.onclick}"
   variant="${args.variant}"
   size="${args.size}"
   color="${args.color}"
@@ -50,8 +49,7 @@ const meta: Meta = {
     size: {
       description: 'The size of the button.',
       control: 'select',
-      options: Object.values(BUTTON_SIZES),
-
+      options: ICON_BUTTON_SIZES,
     },
     color: {
       description: 'The color of the button.',
@@ -72,33 +70,45 @@ export const Default: StoryObj = {
     disabled: false,
     'soft-disabled': false,
     variant: BUTTON_VARIANTS.PRIMARY,
-    size: BUTTON_SIZES[32],
+    size: ICON_BUTTON_SIZES[32],
     color: BUTTON_COLORS.ACTIVE,
   },
 };
 
 export const PrefixIcon: StoryObj = {
-  render: () => html`
-    <mdc-button>
-      <mdc-icon name="info-circle-bold" slot="prefix-icon"></mdc-icon>
-      <p slot="label-text">Left Icon</p>
-    </mdc-button>
-  `,
+  args: {
+    children: html`<mdc-icon name="info-circle-bold" slot="prefix-icon"></mdc-icon>
+      <p slot="label-text">Left Icon</p>`,
+    active: false,
+    disabled: false,
+    'soft-disabled': false,
+    variant: BUTTON_VARIANTS.PRIMARY,
+    size: ICON_BUTTON_SIZES[32],
+    color: BUTTON_COLORS.ACTIVE,
+  },
 };
 
 export const PostfixIcon: StoryObj = {
-  render: () => html`
-    <mdc-button>
-      <p slot="label-text">Right Icon</p>
-      <mdc-icon name="info-circle-bold" slot="postfix-icon"></mdc-icon>
-    </mdc-button>
-  `,
+  args: {
+    children: html`<p slot="label-text">Right Icon</p>
+      <mdc-icon name="info-circle-bold" slot="postfix-icon"></mdc-icon>`,
+    active: false,
+    disabled: false,
+    'soft-disabled': false,
+    variant: BUTTON_VARIANTS.PRIMARY,
+    size: ICON_BUTTON_SIZES[32],
+    color: BUTTON_COLORS.ACTIVE,
+  },
 };
 
 export const Icon: StoryObj = {
-  render: () => html`
-    <mdc-button>
-      <mdc-icon name="info-circle-bold"></mdc-icon>
-    </mdc-button>
-  `,
+  args: {
+    children: html`<mdc-icon name="info-circle-bold"></mdc-icon>`,
+    active: false,
+    disabled: false,
+    'soft-disabled': false,
+    variant: BUTTON_VARIANTS.PRIMARY,
+    size: ICON_BUTTON_SIZES[32],
+    color: BUTTON_COLORS.ACTIVE,
+  },
 };

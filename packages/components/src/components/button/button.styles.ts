@@ -1,10 +1,11 @@
 import { css } from 'lit';
+import { hostFocusRingStyles } from '../../utils/styles';
 
-const styles = css`
+const styles = [css`
   :host {
     display: flex;
     align-items: center;
-    cursor: auto;
+    cursor: pointer;
     padding: 0.5rem 1rem;
     border-radius: 1.25rem;
     width: fit-content;
@@ -32,6 +33,8 @@ const styles = css`
     --mdc-button-tertiary-disabled-background-color: var(--mds-color-theme-button-secondary-disabled);
     --mdc-button-tertiary-disabled-color: var(--mds-color-theme-text-primary-disabled);
 
+    --mdc-button-size-64: 4rem;
+    --mdc-button-size-52: 3.25rem;
     --mdc-button-size-40: 2.5rem;
     --mdc-button-size-32: 2rem;
     --mdc-button-size-28: 1.75rem;
@@ -41,15 +44,6 @@ const styles = css`
 
   :host([active]){
     font-weight: var(--mds-font-apps-body-large-bold-font-weight);
-  }
-
-  //FIXME: use focus ring instead of this styles
-  :host([variant="primary"]:focus), :host([variant="secondary"]:focus),:host([variant="tertiary"]:focus){
-    box-shadow: var(--Focus-0-X, 0px) var(--Focus-0-Y, 0px) var(--Focus-0-Blur, 0px) 
-    var(--Focus-0-Spread, 2px) var(--Focus-0-Shadow, #000), var(--Focus-2-X, 0px) 
-    var(--Focus-2-Y, 0px) var(--Focus-2-Blur, 0px) var(--Focus-2-Spread, 5px) 
-    var(--Focus-2-Shadow, rgba(100, 180, 250, 0.35)), var(--Focus-1-X, 0px) 
-    var(--Focus-1-Y, 0px) var(--Focus-2-Blur, 0px) var(--Focus-1-Spread, 4px) var(--Focus-1-Shadow, #64B4FA);
   }
 
   :host([variant="primary"]){
@@ -65,9 +59,7 @@ const styles = css`
   :host([variant="primary"]:disabled), :host([variant="primary"][disabled]), :host([variant="primary"][soft-disabled]){
     background: var(--mdc-button-primary-disabled-background-color);
     color: var(--mdc-button-primary-disabled-color);
-  }
-  :host([variant="primary"]:disabled), :host([variant="primary"][disabled]){
-    box-shadow: none;
+    cursor: auto;
   }
 
   :host([variant="secondary"]){
@@ -85,9 +77,7 @@ const styles = css`
     color: var(--mdc-button-primary-disabled-color);
     border: 1px solid var(--mdc-button-secondary-disabled-border-color);
     background: var(--mdc-button-secondary-disabled-background-color);
-  }
-  :host([variant="secondary"]:disabled), :host([variant="secondary"][disabled]){
-    box-shadow: none;
+    cursor: auto;
   }
 
   :host([variant="tertiary"]){
@@ -104,11 +94,15 @@ const styles = css`
   :host([variant="tertiary"][soft-disabled]){
     color: var(--mdc-button-tertiary-disabled-color);
     background: var(--mdc-button-tertiary-disabled-background-color);
+    cursor: auto;
   }
-  :host([variant="tertiary"]:disabled), :host([variant="tertiary"][disabled]){
-    box-shadow: none;
+  
+  :host([size="64"]){
+    height: var(--mdc-button-size-64);
   }
-
+  :host([size="52"]){
+    height: var(--mdc-button-size-52);
+  }
   :host([size="40"]){
     height: var(--mdc-button-size-40);
   }
@@ -169,6 +163,6 @@ const styles = css`
     --mdc-button-secondary-hover-background-color: var(--mds-color-theme-button-secondary-hover);
     --mdc-button-secondary-pressed-background-color: var(--mds-color-theme-button-secondary-pressed);
   }
-`;
+`, hostFocusRingStyles];
 
-export default [styles];
+export default styles;

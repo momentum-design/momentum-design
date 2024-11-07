@@ -1,8 +1,9 @@
 import { CSSResult, html, PropertyValueMap } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import styles from './button.styles';
 import { Component } from '../../models';
-import { BUTTON_COLORS, BUTTON_SIZES, BUTTON_VARIANTS, DEFAULTS } from './button.constants';
+import { BUTTON_COLORS, BUTTON_VARIANTS, DEFAULTS } from './button.constants';
+import { isValidIconSize, isValidPillSize } from './button.utils';
 
 /**
  * `mdc-button` is a versatile component that can be configured in various ways to suit different use cases.
@@ -89,6 +90,8 @@ class Button extends Component {
    */
   @property({ type: Number }) override tabIndex = 0;
 
+  @state() private type = DEFAULTS.TYPE;
+
   constructor() {
     super();
     this.role = 'button';
@@ -147,8 +150,12 @@ class Button extends Component {
   }
 
   private setSize(size: number) {
-    if (!BUTTON_SIZES[size as keyof typeof BUTTON_SIZES]
-      || (size === BUTTON_SIZES[20] && this.variant !== 'tertiary')) {
+    const isIconType = this.type === 'icon';
+    const isValidSize = isIconType
+      ? isValidIconSize(size, this.variant)
+      : isValidPillSize(size);
+
+    if (!isValidSize) {
       this.setAttribute('size', `${DEFAULTS.SIZE}`);
     } else {
       this.setAttribute('size', `${size}`);
