@@ -1,14 +1,11 @@
 import { css } from 'lit';
-import { hostFocusRingStyles } from '../../utils/styles';
+import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 
-const styles = [css`
+const styles = [hostFitContentStyles, css`
   :host {
-    display: flex;
-    align-items: center;
     cursor: pointer;
     padding: 0.5rem 1rem;
     border-radius: 1.25rem;
-    width: fit-content;
     font-weight: var(--mds-font-apps-body-large-medium-font-weight);
     outline: none;
 
