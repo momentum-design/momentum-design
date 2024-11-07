@@ -1,5 +1,4 @@
-import { CSSResult, html, TemplateResult } from 'lit';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DEFAULTS } from './presence.constants';
@@ -110,44 +109,16 @@ class Presence extends Component {
     }
   }
 
-  /**
-   * This method generates the CSS classes for the presence.
-   * @returns - an object containing the CSS classes for the presence div.
-   */
-  private getPresenceClasses(): { [key: string]: boolean } {
-    const sizeClass = { [`mdc-presence__${this.size}`]: true };
-    return {
-      ...sizeClass,
-    };
-  }
-
-  /**
-   * This method generates the CSS classes for the presence icon.
-   * @returns - an object containing the CSS classes for the icon.
-   */
-  private getIconClasses(): { [key: string]: boolean } {
-    const backgroundClass = { [`mdc-presence-icon__${this.type}`]: true };
-    return {
-      ...backgroundClass,
-    };
-  }
-
-  /**
-   * Method to generate the presence icon.
-   * @returns the template result of the icon.
-   */
-  private getPresenceIcon(): TemplateResult {
-    return html`
-      <mdc-icon
-        class="mdc-presence-icon ${classMap(this.getIconClasses())}"
-        name="${this.icon}"
-        size="${this.iconSize}"
-      ></mdc-icon>
-    `;
-  }
-
   public override render() {
-    return html` <div class="mdc-presence ${classMap(this.getPresenceClasses())}">${this.getPresenceIcon()}</div> `;
+    return html`
+      <div class="mdc-presence mdc-presence__${this.size}">
+        <mdc-icon
+          class="mdc-presence-icon mdc-presence-icon__${this.type}"
+          name="${this.icon}"
+          size="${this.iconSize}"
+        ></mdc-icon>
+      </div>
+    `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
