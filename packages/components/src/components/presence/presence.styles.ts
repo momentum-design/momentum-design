@@ -68,7 +68,6 @@ const styles = [
 
     .mdc-presence-icon {
       border-radius: 50%;
-      background-color: var(--mdc-presence-overlay-background-color);
     }
 
     .mdc-presence-icon__active {
