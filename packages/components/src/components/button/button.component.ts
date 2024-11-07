@@ -141,6 +141,13 @@ class Button extends Component {
     }
   }
 
+  /**
+   * Sets the variant attribute for the button component.
+   * If the provided variant is not included in the BUTTON_VARIANTS,
+   * it defaults to the value specified in DEFAULTS.VARIANT.
+   *
+   * @param variant - The variant to set.
+   */
   private setVariant(variant: string) {
     if (!Object.values(BUTTON_VARIANTS).includes(variant)) {
       this.setAttribute('variant', `${DEFAULTS.VARIANT}`);
@@ -149,6 +156,13 @@ class Button extends Component {
     }
   }
 
+  /**
+   * Sets the size attribute for the button component.
+   * Validates the size based on the button type (icon, pill, or tertiary).
+   * Defaults to DEFAULTS.SIZE if invalid.
+   *
+   * @param size - The size to set.
+   */
   private setSize(size: number) {
     const isIconType = this.type === 'icon';
     const isValidSize = isIconType
@@ -162,6 +176,12 @@ class Button extends Component {
     }
   }
 
+  /**
+   * Sets the color attribute for the button.
+   * Defaults to DEFAULTS.COLOR if invalid or for tertiary buttons.
+   *
+   * @param color - The color to set.
+   */
   private setColor(color: string) {
     if (!Object.values(BUTTON_COLORS).includes(color) || this.variant === 'tertiary') {
       this.setAttribute('color', `${DEFAULTS.COLOR}`);
@@ -170,6 +190,12 @@ class Button extends Component {
     }
   }
 
+  /**
+   * Sets or removes the aria-pressed attribute based on the active state.
+   *
+   * @param element - The target element.
+   * @param active - The active state.
+   */
   private setAriaPressed(element: HTMLElement, active: boolean) {
     if (active) {
       element.setAttribute('aria-pressed', 'true');
@@ -178,6 +204,12 @@ class Button extends Component {
     }
   }
 
+  /**
+   * Sets or removes the aria-label attribute.
+   *
+   * @param element - The target element.
+   * @param ariaLabel - The aria-label value.
+   */
   private setAriaLabel(element: HTMLElement, ariaLabel: string) {
     if (ariaLabel) {
       element.setAttribute('aria-label', ariaLabel);
@@ -186,6 +218,13 @@ class Button extends Component {
     }
   }
 
+  /**
+   * Sets the soft-disabled attribute for the button.
+   * When soft-disabled, the button remains focusable but not clickable.
+   *
+   * @param element - The button element.
+   * @param softDisabled - The soft-disabled state.
+   */
   private setSoftDisabled(element: HTMLElement, softDisabled: boolean) {
     if (softDisabled) {
       element.setAttribute('soft-disabled', 'true');
@@ -198,6 +237,15 @@ class Button extends Component {
 
   private prevTabindex = 0;
 
+  /**
+   * Sets the disabled attribute for the button.
+   * When disabled, the button is not focusable or clickable, and tabindex is set to -1.
+   * The previous tabindex is stored and restored when enabled.
+   * Also sets/removes aria-disabled attribute.
+   *
+   * @param element - The button element.
+   * @param disabled - The disabled state.
+   */
   private setDisabled(element: HTMLElement, disabled: boolean) {
     if (disabled) {
       element.setAttribute('disabled', 'true');
@@ -213,6 +261,13 @@ class Button extends Component {
     }
   }
 
+  /**
+   * Handles the click event on the button.
+   * If the button is not disabled or soft-disabled, the onclick event is triggered.
+   * The onclick method is provided by the consumer.
+   *
+   * @param event - The mouse event.
+   */
   private handleClick(event: MouseEvent) {
     if (!this.disabled && !this.softDisabled) {
       if (this.onclick) {
@@ -221,12 +276,22 @@ class Button extends Component {
     }
   }
 
+  /**
+ * Handles the focus event on the button.
+ *
+ * @param event - The focus event.
+ */
   private handleFocus(event: FocusEvent) {
     if (this.softDisabled) {
       event.preventDefault();
     }
   }
 
+  /**
+   * Handles the blur event on the button.
+   *
+   * @param event - The blur event.
+   */
   private handleBlur(event: FocusEvent) {
     if (this.softDisabled) {
       event.preventDefault();
@@ -234,6 +299,12 @@ class Button extends Component {
     this.classList.remove('pressed');
   }
 
+  /**
+   * Handles the keydown event on the button.
+   * If the key is 'Enter' or 'Space', the button is pressed.
+   *
+   * @param event - The keyboard event.
+   */
   private handleKeyDown(event: KeyboardEvent) {
     if (!this.disabled && (event.key === 'Enter' || event.key === ' ')) {
       event.preventDefault();
@@ -241,6 +312,12 @@ class Button extends Component {
     }
   }
 
+  /**
+   * Handles the keyup event on the button.
+   * If the key is 'Enter' or 'Space', the button is clicked.
+   *
+   * @param event - The keyboard event.
+   */
   private handleKeyUp(event: KeyboardEvent) {
     if (!this.disabled && (event.key === 'Enter' || event.key === ' ')) {
       this.handleClick(event as unknown as MouseEvent);
