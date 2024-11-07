@@ -27,6 +27,11 @@ const setup = async (args: SetupOptions) => {
 
 const visualTestingSetup = async (args: SetupOptions) => {
   const { componentsPage } = args;
+  const presences = (type: string) =>
+    Object.values(PRESENCE_SIZE)
+      .map((size) => `<mdc-presence type="${type}" size="${size}"></mdc-presence>`)
+      .join('');
+
   await componentsPage.mount({
     html: `
     <div class="presence-list">
@@ -34,13 +39,7 @@ const visualTestingSetup = async (args: SetupOptions) => {
     .map(
       (type) => `
       <div class="presence-row">
-        ${Object.values(PRESENCE_SIZE)
-    .map(
-      (size) => `
-          <mdc-presence type="${type}" size="${size}"></mdc-presence>
-        `,
-    )
-    .join('')}
+        ${presences(type)}
       </div>
     `,
     )
@@ -48,22 +47,25 @@ const visualTestingSetup = async (args: SetupOptions) => {
     </div>
       `,
   });
+  const presence = componentsPage.page.locator('.presence-list');
   await componentsPage.page.waitForTimeout(500);
+  return presence;
 };
 
 const testToRun = async (componentsPage: ComponentsPage) => {
-  await visualTestingSetup({ componentsPage });
+  const visualPresence = await visualTestingSetup({ componentsPage });
 
   /**
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
     await test.step('matches screenshot of default element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-presence');
+      await componentsPage.visualRegression.takeScreenshot('mdc-presence', { element: visualPresence });
     });
   });
 
   const presence = await setup({ componentsPage });
+
   /**
    * ACCESSIBILITY
    */

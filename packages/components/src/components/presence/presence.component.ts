@@ -1,29 +1,12 @@
-import { CSSResult, html, PropertyValues } from 'lit';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
-import { DEFAULTS, PRESENCE_TYPE } from './presence.constants';
+import { DEFAULTS } from './presence.constants';
 import styles from './presence.styles';
 
 /**
  * The `mdc-presence` component is a versatile UI element used to
  * display the presence status of a user or entity within an avatar component.
- *
- * Supported presence types:
- * - `active`
- * - `away`
- * - `away-calling`
- * - `busy`
- * - `dnd`
- * - `meeting`
- * - `on-call`
- * - `on-device`
- * - `on-mobile`
- * - `pause`
- * - `pto`
- * - `presenting`
- * - `quiet`
- * - `scheduled`
  *
  * This component is ideal for use within avatar UIs where the presence status
  * needs to be visually represented.
@@ -34,28 +17,51 @@ import styles from './presence.styles';
  */
 class Presence extends Component {
   /**
-   * Type of the presence
+   * Supported presence types:
+   * - `active`
+   * - `away`
+   * - `away-calling`
+   * - `busy`
+   * - `dnd`
+   * - `meeting`
+   * - `on-call`
+   * - `on-device`
+   * - `on-mobile`
+   * - `pause`
+   * - `pto`
+   * - `presenting`
+   * - `quiet`
+   * - `scheduled`
+   *
    */
   @property({ type: String, reflect: true })
   type = DEFAULTS.TYPE;
 
   /**
-   * Size of the presence icon
+   * Acceptable values include:
+   * - XX_SMALL
+   * - X_SMALL
+   * - SMALL
+   * - MIDSIZE
+   * - LARGE
+   * - X_LARGE
+   * - XX_LARGE
+   *
    */
   @property({ type: String, reflect: true })
   size = DEFAULTS.SIZE;
 
   /**
-   * Get the size of the presence based on the given size type
+   * Get the size of the presence icon based on the given size type
    */
-  private get presenceSize() {
+  private get iconSize() {
     switch (this.size) {
       case 'midsize':
-        return 1.15;
+        return 1.16125;
       case 'large':
-        return 1.3;
+        return 1.30625;
       case 'x_large':
-        return 1.6;
+        return 1.596875;
       case 'xx_large':
         return 2.25;
       case 'xx_small':
@@ -100,39 +106,20 @@ class Presence extends Component {
         return 'meetings-presence-badge-filled';
       case 'active':
       default:
+        this.type = DEFAULTS.TYPE;
         return 'active-presence-small-filled';
-    }
-  }
-
-  /**
-   * This method generates the CSS classes for the presence icon.
-   * @returns - an object containing the CSS classes for the icon.
-   */
-  private getIconClasses(): { [key: string]: boolean } {
-    const sizeClass = { [`mdc-presence-icon__${this.size}`]: true };
-    const backgroundClass = { [`mdc-presence-icon__${this.type}`]: true };
-    return {
-      ...backgroundClass,
-      ...sizeClass,
-    };
-  }
-
-  public override update(changedProperties: PropertyValues): void {
-    super.update(changedProperties);
-
-    if (!Object.values(PRESENCE_TYPE).includes(this.type)) {
-      this.type = DEFAULTS.TYPE;
     }
   }
 
   public override render() {
     return html`
-      <mdc-icon
-        class="mdc-presence-icon ${classMap(this.getIconClasses())}"
-        name="${this.icon}"
-        length-unit="${DEFAULTS.LENGTH_UNIT}"
-        size="${this.presenceSize}"
-      ></mdc-icon>
+      <div class="mdc-presence mdc-presence__${this.size}">
+        <mdc-icon
+          class="mdc-presence-icon mdc-presence-icon__${this.type}"
+          name="${this.icon}"
+          size="${this.iconSize}"
+        ></mdc-icon>
+      </div>
     `;
   }
 
