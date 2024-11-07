@@ -69,7 +69,6 @@ const styles = [
     .mdc-presence-icon {
       border-radius: 50%;
     }
-
     .mdc-presence-icon__active {
       color: var(--mdc-presence-active-background-color);
     }
