@@ -47,19 +47,21 @@ const visualTestingSetup = async (args: SetupOptions) => {
     </div>
       `,
   });
-  const presenceRow = componentsPage.page.locator('.presence-row').last();
-  await presenceRow.waitFor();
+  const presence_list = componentsPage.page.locator('.presence-list');
+  const presence_row = componentsPage.page.locator('.mdc-presence').last();
+  await presence_row.waitFor();
+  return presence_list;
 };
 
 const testToRun = async (componentsPage: ComponentsPage) => {
-  await visualTestingSetup({ componentsPage });
+  const visualPresence = await visualTestingSetup({ componentsPage });
 
   /**
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
     await test.step('matches screenshot of default element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-presence');
+      await componentsPage.visualRegression.takeScreenshot('mdc-presence', { element: visualPresence });
     });
   });
 
