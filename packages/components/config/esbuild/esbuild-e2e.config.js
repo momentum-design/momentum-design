@@ -14,6 +14,7 @@ const iife = async () => {
       // be available for e2e tests
       `${join(process.cwd(), 'src/components/themeprovider/themeprovider.e2e-test.utils.ts')}`,
       `${join(process.cwd(), 'src/components/iconprovider/iconprovider.e2e-test.utils.ts')}`,
+      `${join(process.cwd(), 'src/stories/FocusRing/subcomponent-focusring.e2e-test.utils.ts')}`,
     ],
     outfile: undefined,
     outdir: `${join(publicPath, 'dist')}`,

@@ -3,6 +3,7 @@ import Icon from './components/icon';
 import IconProvider from './components/iconprovider';
 import Avatar from './components/avatar';
 import Badge from './components/badge';
+import Presence from './components/presence';
 import Text from './components/text';
 import Button from './components/button';
 
@@ -12,6 +13,7 @@ export {
   IconProvider,
   Avatar,
   Badge,
+  Presence,
   Text,
   Button,
 };
