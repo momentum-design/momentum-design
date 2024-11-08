@@ -8,6 +8,7 @@ const styles = [hostFitContentStyles, css`
     border-radius: 1.25rem;
     font-weight: var(--mds-font-apps-body-large-medium-font-weight);
     outline: none;
+    gap: 0.5rem;
 
     --mdc-button-primary-color: var(--mds-color-theme-inverted-text-primary-normal);
     --mdc-button-primary-background-color: var(--mds-color-theme-button-primary-normal);
@@ -102,15 +103,19 @@ const styles = [hostFitContentStyles, css`
   }
   :host([size="40"]){
     height: var(--mdc-button-size-40);
+    font-size: var(--mdc-font-size-body-large);
   }
   :host([size="32"]){
     height: var(--mdc-button-size-32);
+    font-size: var(--mdc-font-size-body-large);
   }
   :host([size="28"]){
     height: var(--mdc-button-size-28);
+    font-size: var(--mdc-font-size-body-midsize);
   }
   :host([size="24"]){
     height: var(--mdc-button-size-24);
+    font-size: var(--mdc-font-size-body-small);
   }
   :host([size="20"]){
     height: var(--mdc-button-size-20);

@@ -17,7 +17,7 @@ const BUTTON_COLORS = {
   NEGATIVE: 'negative',
   ACCENT: 'accent',
   PROMOTIONAL: 'promotional',
-  ACTIVE: 'active',
+  DEFAULT: 'default',
 };
 
 const BUTTON_TYPE = {
@@ -28,8 +28,8 @@ const BUTTON_TYPE = {
 
 const DEFAULTS = {
   VARIANT: BUTTON_VARIANTS.PRIMARY,
-  SIZE: ICON_BUTTON_SIZES[32],
-  COLOR: BUTTON_COLORS.ACTIVE,
+  SIZE: 32,
+  COLOR: BUTTON_COLORS.DEFAULT,
   TYPE: BUTTON_TYPE.PILL,
 };
 

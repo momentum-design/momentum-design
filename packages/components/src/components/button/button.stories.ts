@@ -71,33 +71,33 @@ export const Default: StoryObj = {
     'soft-disabled': false,
     variant: BUTTON_VARIANTS.PRIMARY,
     size: ICON_BUTTON_SIZES[32],
-    color: BUTTON_COLORS.ACTIVE,
+    color: BUTTON_COLORS.DEFAULT,
   },
 };
 
 export const PrefixIcon: StoryObj = {
   args: {
     children: html`<mdc-icon name="info-circle-bold" slot="prefix-icon"></mdc-icon>
-      <p slot="label-text">Left Icon</p>`,
+      <span>Left Icon</span>`,
     active: false,
     disabled: false,
     'soft-disabled': false,
     variant: BUTTON_VARIANTS.PRIMARY,
     size: ICON_BUTTON_SIZES[32],
-    color: BUTTON_COLORS.ACTIVE,
+    color: BUTTON_COLORS.DEFAULT,
   },
 };
 
 export const PostfixIcon: StoryObj = {
   args: {
-    children: html`<p slot="label-text">Right Icon</p>
+    children: html`<p>Right Icon</p>
       <mdc-icon name="info-circle-bold" slot="postfix-icon"></mdc-icon>`,
     active: false,
     disabled: false,
     'soft-disabled': false,
     variant: BUTTON_VARIANTS.PRIMARY,
     size: ICON_BUTTON_SIZES[32],
-    color: BUTTON_COLORS.ACTIVE,
+    color: BUTTON_COLORS.DEFAULT,
   },
 };
 
@@ -109,6 +109,18 @@ export const Icon: StoryObj = {
     'soft-disabled': false,
     variant: BUTTON_VARIANTS.PRIMARY,
     size: ICON_BUTTON_SIZES[32],
-    color: BUTTON_COLORS.ACTIVE,
+    color: BUTTON_COLORS.DEFAULT,
+  },
+};
+
+export const Text: StoryObj = {
+  args: {
+    children: html`<span>Label</span>`,
+    active: false,
+    disabled: false,
+    'soft-disabled': false,
+    variant: BUTTON_VARIANTS.PRIMARY,
+    size: ICON_BUTTON_SIZES[32],
+    color: BUTTON_COLORS.DEFAULT,
   },
 };
