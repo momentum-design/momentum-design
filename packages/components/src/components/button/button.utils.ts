@@ -3,9 +3,17 @@ import { ICON_BUTTON_SIZES, PILL_BUTTON_SIZES } from './button.constants';
 const isValidIconSize = (
   size: number,
   variant: string,
-): number | boolean => ICON_BUTTON_SIZES.includes(size)
-    && !(size === ICON_BUTTON_SIZES[20] && variant !== 'tertiary');
+): number | boolean => Object.values(ICON_BUTTON_SIZES).includes(size)
+    && !(size === 20 && variant !== 'tertiary');
 
-const isValidPillSize = (size: number): number | boolean => PILL_BUTTON_SIZES.includes(size);
+const isValidPillSize = (size: number): number | boolean => Object.values(PILL_BUTTON_SIZES).includes(size);
 
-export { isValidIconSize, isValidPillSize };
+const getIconSize = (size: number): number => {
+  switch (size) {
+    case ICON_BUTTON_SIZES[64]: return 2;
+    case ICON_BUTTON_SIZES[52]: return 1.75;
+    case ICON_BUTTON_SIZES[40]: return 1.25;
+    default: return 1;
+  }
+};
+export { isValidIconSize, isValidPillSize, getIconSize };

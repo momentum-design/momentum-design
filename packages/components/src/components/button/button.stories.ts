@@ -49,7 +49,7 @@ const meta: Meta = {
     size: {
       description: 'The size of the button.',
       control: 'select',
-      options: ICON_BUTTON_SIZES,
+      options: Object.values(ICON_BUTTON_SIZES),
     },
     color: {
       description: 'The color of the button.',

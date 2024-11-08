@@ -4,7 +4,6 @@ import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 const styles = [hostFitContentStyles, css`
   :host {
     cursor: pointer;
-    padding: 0.5rem 1rem;
     border-radius: 1.25rem;
     font-weight: var(--mds-font-apps-body-large-medium-font-weight);
     outline: none;
@@ -97,28 +96,54 @@ const styles = [hostFitContentStyles, css`
   
   :host([size="64"]){
     height: var(--mdc-button-size-64);
+    padding: 1rem;
+    border-radius: 6.25rem;
   }
   :host([size="52"]){
     height: var(--mdc-button-size-52);
+    padding: 0.75rem;
+    border-radius: 6.25rem;
   }
   :host([size="40"]){
     height: var(--mdc-button-size-40);
     font-size: var(--mdc-font-size-body-large);
+    padding: 0.5rem 1rem;
+  }
+  :host([size="40"].icon){
+    padding: 0.625rem;
+    border-radius: 6.25rem;
   }
   :host([size="32"]){
     height: var(--mdc-button-size-32);
     font-size: var(--mdc-font-size-body-large);
+    padding: 0.25rem 0.75rem;
+  }
+  :host([size="32"].icon){
+    padding: 0.5rem;
+    border-radius: 6.25rem;
   }
   :host([size="28"]){
     height: var(--mdc-button-size-28);
     font-size: var(--mdc-font-size-body-midsize);
+    padding: 0.125rem 0.75rem;
+  }
+  :host([size="28"].icon){
+    padding: 0.375rem;
+    border-radius: 6.25rem;
   }
   :host([size="24"]){
     height: var(--mdc-button-size-24);
     font-size: var(--mdc-font-size-body-small);
+    padding: 0 0.625rem;
+  }
+  :host([size="24"].icon){
+    padding: 0.25rem;
+    border-radius: 6.25rem;
   }
   :host([size="20"]){
     height: var(--mdc-button-size-20);
+    padding: 0.125rem;
+    border-radius: 6.25rem;
   }
 
   :host([color="accent"]){

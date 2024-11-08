@@ -8,9 +8,18 @@ const BUTTON_VARIANTS = {
   TERTIARY: 'tertiary',
 };
 
-const PILL_BUTTON_SIZES = [40, 32, 28, 24];
+const PILL_BUTTON_SIZES = {
+  40: 40,
+  32: 32,
+  24: 24,
+};
 
-const ICON_BUTTON_SIZES = [64, 52, 20, ...PILL_BUTTON_SIZES];
+const ICON_BUTTON_SIZES = {
+  64: 64,
+  52: 52,
+  20: 20,
+  ...PILL_BUTTON_SIZES,
+};
 
 const BUTTON_COLORS = {
   POSITIVE: 'positive',
@@ -28,7 +37,7 @@ const BUTTON_TYPE = {
 
 const DEFAULTS = {
   VARIANT: BUTTON_VARIANTS.PRIMARY,
-  SIZE: 32,
+  SIZE: PILL_BUTTON_SIZES[32],
   COLOR: BUTTON_COLORS.DEFAULT,
   TYPE: BUTTON_TYPE.PILL,
 };

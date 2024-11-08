@@ -2,8 +2,8 @@ import { CSSResult, html, PropertyValueMap } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import styles from './button.styles';
 import { Component } from '../../models';
-import { BUTTON_COLORS, BUTTON_VARIANTS, DEFAULTS } from './button.constants';
-import { isValidIconSize, isValidPillSize } from './button.utils';
+import { BUTTON_COLORS, BUTTON_TYPE, BUTTON_VARIANTS, DEFAULTS } from './button.constants';
+import { getIconSize, isValidIconSize, isValidPillSize } from './button.utils';
 
 /**
  * `mdc-button` is a versatile component that can be configured in various ways to suit different use cases.
@@ -44,7 +44,7 @@ import { isValidIconSize, isValidPillSize } from './button.utils';
  * @tagname mdc-button
  *
  * @slot prefix-icon - Icon positioned to the left of the button text or within an icon button.
- * @slot label-text - Text label of the button.
+ * @slot default slot - Text slot of the button.
  * @slot postfix-icon - Icon positioned to the right of the button text.
  */
 class Button extends Component {
@@ -92,6 +92,8 @@ class Button extends Component {
 
   @state() private type = DEFAULTS.TYPE;
 
+  @state() private iconSize = 1;
+
   constructor() {
     super();
     this.role = 'button';
@@ -135,9 +137,26 @@ class Button extends Component {
     }
     if (changedProperties.has('variant')) {
       this.setVariant(this.variant);
+      this.setSize(this.size);
     }
     if (changedProperties.has('color')) {
       this.setColor(this.color);
+    }
+    if (changedProperties.has('type')) {
+      this.setSize(this.size);
+      this.setClassBasedOnType(this.type);
+    }
+  }
+
+  /**
+   * Sets the class of 'icon' for icon buttons.
+   * @param type - The type of the button.
+   */
+  private setClassBasedOnType(type: string) {
+    if (type === BUTTON_TYPE.ICON) {
+      this.classList.add('icon');
+    } else {
+      this.classList.remove('icon');
     }
   }
 
@@ -164,7 +183,7 @@ class Button extends Component {
    * @param size - The size to set.
    */
   private setSize(size: number) {
-    const isIconType = this.type === 'icon';
+    const isIconType = this.type === BUTTON_TYPE.ICON;
     const isValidSize = isIconType
       ? isValidIconSize(size, this.variant)
       : isValidPillSize(size);
@@ -174,6 +193,7 @@ class Button extends Component {
     } else {
       this.setAttribute('size', `${size}`);
     }
+    this.iconSize = getIconSize(size);
   }
 
   /**
@@ -325,7 +345,38 @@ class Button extends Component {
     }
   }
 
+  /**
+   * Infers the button type based on the slots provided.
+   * If the button contains a prefix-icon and postfix-icon slot, the type is 'pill-with-icon'.
+   * If the button contains a prefix-icon slot, the type is 'icon'.
+   * Otherwise, the type is 'pill'.
+   *
+   * @param nodes - The child nodes of the button.
+   */
+  private inferButtonType(nodes: ChildNode[]) {
+    if (nodes.length === 1) {
+      if (nodes[0].nodeName === 'MDC-ICON') {
+        this.type = BUTTON_TYPE.ICON;
+        this.setIconSize(nodes[0]);
+      } else {
+        this.type = BUTTON_TYPE.PILL;
+      }
+    } else if (nodes.some((node) => node.nodeName === 'MDC-ICON')) {
+      this.type = BUTTON_TYPE.PILL_WITH_ICON;
+      nodes.filter((node) => node.nodeName === 'MDC-ICON').forEach(this.setIconSize);
+    }
+  }
+
+  private setIconSize(node: ChildNode) {
+    const icon = node as HTMLElement;
+    icon.setAttribute('size', `${this.iconSize}`);
+    icon.setAttribute('length-unit', 'rem');
+  }
+
   public override render() {
+    const filteredNodes = Array.from(this.childNodes).filter((node) => node.nodeType === Node.ELEMENT_NODE);
+    this.inferButtonType(filteredNodes);
+
     return html`
       <slot name="prefix-icon"></slot>
       <slot></slot>
