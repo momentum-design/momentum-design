@@ -47,10 +47,10 @@ const visualTestingSetup = async (args: SetupOptions) => {
     </div>
       `,
   });
-  const presence_list = componentsPage.page.locator('.presence-list');
-  const presence_row = componentsPage.page.locator('.mdc-presence').last();
-  await presence_row.waitFor();
-  return presence_list;
+  const presenceList = componentsPage.page.locator('.presence-list');
+  const presence = componentsPage.page.locator('.mdc-presence').last();
+  await presence.waitFor();
+  return presenceList;
 };
 
 const testToRun = async (componentsPage: ComponentsPage) => {
