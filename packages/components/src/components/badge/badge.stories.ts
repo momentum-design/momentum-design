@@ -7,15 +7,17 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 const MAX_COUNTER_LIST = [9, 99, 999];
 
 const render = (args: Args) => html`
-  <mdc-badge
-    type="${args.type}"
-    icon-name="${args['icon-name']}"
-    counter="${args.counter}"
-    max-counter="${args['max-counter']}"
-    variant="${args.variant}"
-    ?overlay=${args.overlay}
-    aria-label="${args['aria-label']}"
-  ></mdc-badge>
+    <div style="background-color: ${args.overlay ? 'white' : 'initial'}; padding: 5px;">
+      <mdc-badge
+        type="${args.type}"
+        icon-name="${args['icon-name']}"
+        counter="${args.counter}"
+        max-counter="${args['max-counter']}"
+        variant="${args.variant}"
+        ?overlay=${args.overlay}
+        aria-label="${args['aria-label']}"
+      ></mdc-badge>
+    </div>
 `;
 
 const meta: Meta = {
@@ -82,7 +84,7 @@ export default meta;
 export const Dot: StoryObj = {
   args: {
     type: DEFAULTS.TYPE,
-    'icon-name': 'error-legacy-filled',
+    'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
     counter: 1,
     'max-counter': MAX_COUNTER_LIST[1],
@@ -93,7 +95,7 @@ export const Dot: StoryObj = {
 export const Icon: StoryObj = {
   args: {
     type: BADGE_TYPE.ICON,
-    'icon-name': 'accessibility-regular',
+    'icon-name': 'placeholder-bold',
     variant: ICON_VARIANT.PRIMARY,
     overlay: false,
   },

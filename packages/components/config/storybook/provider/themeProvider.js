@@ -35,7 +35,8 @@ export const withThemeProvider = (story, context) => {
   // This will set the all canvas in "Docs" with the current theme background color
   setCanvasBackgroundOnDocs(themeObject.backgroundColor);
 
-  return html`<mdc-themeprovider
+  return html`
+  <mdc-themeprovider
     id="theme-provider"
     themeclass="${themeObject.themeclass}"
   >
