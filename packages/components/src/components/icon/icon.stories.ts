@@ -11,7 +11,7 @@ const render = (args: Args) => html`
       size="${args.size}"
       style="${args.style}"
     ></mdc-icon> `;
-  const renderAccessibility = (args: Args) => html`
+const renderAccessibility = (args: Args) => html`
     <mdc-icon
       aria-label="${args['aria-label']}"
       class="${args.class}"

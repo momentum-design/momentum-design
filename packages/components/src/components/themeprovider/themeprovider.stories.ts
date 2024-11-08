@@ -10,7 +10,11 @@ import { disableControls } from '../../../config/storybook/utils';
 const THEMES = ['mds-theme-stable-darkWebex', 'mds-theme-stable-lightWebex'];
 
 const render = (args: Args) => html`
-    <mdc-themeprovider class="${classMap({ [args.class]: true })}" style="${args.style}" themeclass="${args.themeclass}">
+    <mdc-themeprovider 
+      class="${classMap({ [args.class]: true })}" 
+      style="${args.style}" 
+      themeclass="${args.themeclass}"
+    >
       <div class="${classMap({ themeWrapper: true })}">
         <mdc-subcomponent></mdc-subcomponent>
         <p>Color examples:</p>
