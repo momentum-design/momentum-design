@@ -11,6 +11,7 @@ const BUTTON_VARIANTS = {
 const PILL_BUTTON_SIZES = {
   40: 40,
   32: 32,
+  28: 28,
   24: 24,
 };
 

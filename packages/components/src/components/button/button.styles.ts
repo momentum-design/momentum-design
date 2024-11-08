@@ -7,7 +7,6 @@ const styles = [hostFitContentStyles, css`
     border-radius: 1.25rem;
     font-weight: var(--mds-font-apps-body-large-medium-font-weight);
     outline: none;
-    gap: 0.5rem;
 
     --mdc-button-primary-color: var(--mds-color-theme-inverted-text-primary-normal);
     --mdc-button-primary-background-color: var(--mds-color-theme-button-primary-normal);
@@ -106,8 +105,9 @@ const styles = [hostFitContentStyles, css`
   }
   :host([size="40"]){
     height: var(--mdc-button-size-40);
-    font-size: var(--mdc-font-size-body-large);
+    font-size: var(--mds-font-size-body-large);
     padding: 0.5rem 1rem;
+    gap: 0.5rem;
   }
   :host([size="40"].icon){
     padding: 0.625rem;
@@ -115,8 +115,9 @@ const styles = [hostFitContentStyles, css`
   }
   :host([size="32"]){
     height: var(--mdc-button-size-32);
-    font-size: var(--mdc-font-size-body-large);
+    font-size: var(--mds-font-size-body-large);
     padding: 0.25rem 0.75rem;
+    gap: 0.375rem;
   }
   :host([size="32"].icon){
     padding: 0.5rem;
@@ -124,8 +125,9 @@ const styles = [hostFitContentStyles, css`
   }
   :host([size="28"]){
     height: var(--mdc-button-size-28);
-    font-size: var(--mdc-font-size-body-midsize);
+    font-size: var(--mds-font-size-body-midsize);
     padding: 0.125rem 0.75rem;
+    gap: 0.375rem;
   }
   :host([size="28"].icon){
     padding: 0.375rem;
@@ -133,8 +135,9 @@ const styles = [hostFitContentStyles, css`
   }
   :host([size="24"]){
     height: var(--mdc-button-size-24);
-    font-size: var(--mdc-font-size-body-small);
+    font-size: var(--mds-font-size-body-small);
     padding: 0 0.625rem;
+    gap: 0.25rem;
   }
   :host([size="24"].icon){
     padding: 0.25rem;

@@ -353,17 +353,21 @@ class Button extends Component {
    *
    * @param nodes - The child nodes of the button.
    */
-  private inferButtonType(nodes: ChildNode[]) {
-    if (nodes.length === 1) {
-      if (nodes[0].nodeName === 'MDC-ICON') {
+  private inferButtonType(children: HTMLCollection) {
+    if (children.length === 1) {
+      if (children[0].nodeName === 'MDC-ICON') {
         this.type = BUTTON_TYPE.ICON;
-        this.setIconSize(nodes[0]);
+        this.setIconSize(children[0]);
       } else {
         this.type = BUTTON_TYPE.PILL;
       }
-    } else if (nodes.some((node) => node.nodeName === 'MDC-ICON')) {
+    } else if (Array.from(children).some((node) => node.nodeName === 'MDC-ICON')) {
       this.type = BUTTON_TYPE.PILL_WITH_ICON;
-      nodes.filter((node) => node.nodeName === 'MDC-ICON').forEach(this.setIconSize);
+      Array.from(children).forEach((el) => {
+        if (el.nodeName === 'MDC-ICON') {
+          this.setIconSize(el);
+        }
+      });
     }
   }
 
@@ -374,8 +378,7 @@ class Button extends Component {
   }
 
   public override render() {
-    const filteredNodes = Array.from(this.childNodes).filter((node) => node.nodeType === Node.ELEMENT_NODE);
-    this.inferButtonType(filteredNodes);
+    this.inferButtonType(this.children);
 
     return html`
       <slot name="prefix-icon"></slot>
