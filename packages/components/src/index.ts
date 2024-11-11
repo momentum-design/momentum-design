@@ -5,6 +5,7 @@ import Avatar from './components/avatar';
 import Badge from './components/badge';
 import Presence from './components/presence';
 import Text from './components/text';
+import Button from './components/button';
 
 export {
   ThemeProvider,
@@ -14,4 +15,5 @@ export {
   Badge,
   Presence,
   Text,
+  Button,
 };
