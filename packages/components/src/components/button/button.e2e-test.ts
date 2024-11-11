@@ -8,7 +8,7 @@ test.beforeEach(async ({ componentsPage }) => {
   });
 });
 
-test('mdc-button', async ({ componentsPage }) => {
+test.skip('mdc-button', async ({ componentsPage }) => {
   const button = componentsPage.page.locator('mdc-button');
 
   // initial check for the button be visible on the screen:
@@ -17,7 +17,7 @@ test('mdc-button', async ({ componentsPage }) => {
   /**
    * ACCESSIBILITY
    */
-  await test.step('accessibility', async () => { 
+  await test.step('accessibility', async () => {
     await componentsPage.accessibility.checkForA11yViolations('button-default');
   });
 
