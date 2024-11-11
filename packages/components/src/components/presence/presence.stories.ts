@@ -9,12 +9,12 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/presence',
+  title: 'Components/presence',
   tags: ['autodocs'],
   component: 'mdc-presence',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     type: {
