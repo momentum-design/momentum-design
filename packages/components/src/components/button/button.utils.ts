@@ -16,4 +16,11 @@ const getIconSize = (size: number): number => {
     default: return 1;
   }
 };
-export { isValidIconSize, isValidPillSize, getIconSize };
+
+const getIconNameWithoutStyle = (iconName: string): string => {
+  const iconParts = iconName.split('-');
+  const variants = ['bold', 'filled', 'regular', 'light'];
+  return iconParts.filter((part) => !variants.includes(part)).join('-');
+};
+
+export { isValidIconSize, isValidPillSize, getIconSize, getIconNameWithoutStyle };

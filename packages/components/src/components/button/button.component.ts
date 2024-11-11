@@ -3,7 +3,7 @@ import { property, state } from 'lit/decorators.js';
 import styles from './button.styles';
 import { Component } from '../../models';
 import { BUTTON_COLORS, BUTTON_TYPE, BUTTON_VARIANTS, DEFAULTS } from './button.constants';
-import { getIconSize, isValidIconSize, isValidPillSize } from './button.utils';
+import { getIconNameWithoutStyle, getIconSize, isValidIconSize, isValidPillSize } from './button.utils';
 
 /**
  * button component, which ...
@@ -209,7 +209,7 @@ class Button extends Component {
     if (children.length === 1) {
       if (children[0].nodeName === 'MDC-ICON') {
         this.type = BUTTON_TYPE.ICON;
-        this.setIconSize(children[0]);
+        this.modifyIconSizeAndStyle(children[0]);
       } else {
         this.type = BUTTON_TYPE.PILL;
       }
@@ -217,16 +217,26 @@ class Button extends Component {
       this.type = BUTTON_TYPE.PILL_WITH_ICON;
       Array.from(children).forEach((el) => {
         if (el.nodeName === 'MDC-ICON') {
-          this.setIconSize(el);
+          this.modifyIconSizeAndStyle(el);
         }
       });
     }
   }
 
-  private setIconSize(node: ChildNode) {
+  private prevIconName = '';
+
+  private modifyIconSizeAndStyle(node: ChildNode) {
     const icon = node as HTMLElement;
     icon.setAttribute('size', `${this.iconSize}`);
     icon.setAttribute('length-unit', 'rem');
+    if (this.active) {
+      const name = icon.getAttribute('name')!;
+      this.prevIconName = name;
+      const iconNameWithoutStyle = getIconNameWithoutStyle(name);
+      icon.setAttribute('name', `${iconNameWithoutStyle}-filled`); // TODO: add a check to see if it exists
+    } else if (this.prevIconName) {
+      icon.setAttribute('name', this.prevIconName);
+    }
   }
 
   public override render() {
