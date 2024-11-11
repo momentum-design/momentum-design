@@ -116,7 +116,7 @@ import{i as y,k as g}from"./lit-element-CPYlYYac.js";import{u as k,C as i,n as _
       </div>
     `}};a.styles=[...i.styles,...x];let o=a;v([_({type:String,reflect:!0})],o.prototype,"type");v([_({type:String,reflect:!0})],o.prototype,"size");o.register(S);const L=r=>g`
   <mdc-presence type="${r.type}" size="${r.size}"></mdc-presence>
-`,M={title:"Work In Progress/presence",tags:["autodocs"],component:"mdc-presence",render:L,parameters:{badges:["wip"]},argTypes:{type:{options:Object.values(b),control:{type:"select"}},size:{options:Object.values(h),control:{type:"select"}},...f(["iconSize","icon"])}},n={args:{type:c.TYPE,size:c.SIZE}};var m,p,u;n.parameters={...n.parameters,docs:{...(m=n.parameters)==null?void 0:m.docs,source:{originalSource:`{
+`,M={title:"Components/presence",tags:["autodocs"],component:"mdc-presence",render:L,parameters:{badges:["stable"]},argTypes:{type:{options:Object.values(b),control:{type:"select"}},size:{options:Object.values(h),control:{type:"select"}},...f(["iconSize","icon"])}},n={args:{type:c.TYPE,size:c.SIZE}};var m,p,u;n.parameters={...n.parameters,docs:{...(m=n.parameters)==null?void 0:m.docs,source:{originalSource:`{
   args: {
     type: DEFAULTS.TYPE,
     size: DEFAULTS.SIZE
