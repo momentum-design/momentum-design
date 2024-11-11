@@ -39,6 +39,11 @@ const preview = {
         },
       },
     },
+    docs: {
+      source: {
+        excludeDecorators: true,
+      },
+    },
     actions: { argTypesRegex: '^on[A-Z].*' },
     backgrounds: {
       disable: true,
@@ -130,7 +135,7 @@ const preview = {
         title: 'Theme',
         icon: 'globe',
         // Array of plain string values or MenuItem shape (see below)
-        items: themes.map((theme) => theme.displayName),
+        items: themes.map(theme => theme.displayName),
         // Change title based on selected value
         dynamicTitle: true,
       },
