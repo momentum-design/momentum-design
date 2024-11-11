@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { BUTTON_COLORS, ICON_BUTTON_SIZES, BUTTON_VARIANTS } from './button.constants';
+import { BUTTON_COLORS, PILL_BUTTON_SIZES, BUTTON_VARIANTS, ICON_BUTTON_SIZES } from './button.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 const render = (args: Args) => html`
@@ -49,7 +49,7 @@ const meta: Meta = {
     size: {
       description: 'The size of the button.',
       control: 'select',
-      options: Object.values(ICON_BUTTON_SIZES),
+      options: Object.values(PILL_BUTTON_SIZES),
     },
     color: {
       description: 'The color of the button.',
@@ -70,7 +70,7 @@ export const Primary: StoryObj = {
     disabled: false,
     'soft-disabled': false,
     variant: BUTTON_VARIANTS.PRIMARY,
-    size: ICON_BUTTON_SIZES[32],
+    size: PILL_BUTTON_SIZES[32],
     color: BUTTON_COLORS.DEFAULT,
   },
 };
@@ -83,7 +83,7 @@ export const PrefixIcon: StoryObj = {
     disabled: false,
     'soft-disabled': false,
     variant: BUTTON_VARIANTS.PRIMARY,
-    size: ICON_BUTTON_SIZES[32],
+    size: PILL_BUTTON_SIZES[32],
     color: BUTTON_COLORS.DEFAULT,
   },
 };
@@ -96,12 +96,17 @@ export const PostfixIcon: StoryObj = {
     disabled: false,
     'soft-disabled': false,
     variant: BUTTON_VARIANTS.PRIMARY,
-    size: ICON_BUTTON_SIZES[32],
+    size: PILL_BUTTON_SIZES[32],
     color: BUTTON_COLORS.DEFAULT,
   },
 };
 
 export const Icon: StoryObj = {
+  argTypes: {
+    size: {
+      options: Object.values(ICON_BUTTON_SIZES),
+    },
+  },
   args: {
     children: html`<mdc-icon name="info-circle-bold"></mdc-icon>`,
     active: false,
@@ -120,7 +125,7 @@ export const Text: StoryObj = {
     disabled: false,
     'soft-disabled': false,
     variant: BUTTON_VARIANTS.PRIMARY,
-    size: ICON_BUTTON_SIZES[32],
+    size: PILL_BUTTON_SIZES[32],
     color: BUTTON_COLORS.DEFAULT,
   },
 };
