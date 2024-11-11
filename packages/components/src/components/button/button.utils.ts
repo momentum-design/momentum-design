@@ -1,5 +1,11 @@
 import { ICON_BUTTON_SIZES } from './button.constants';
 
+/**
+ * Returns the icon size multiplier based on the provided button size.
+ *
+ * @param size - The size of the button.
+ * @returns The multiplier for the icon size.
+ */
 const getIconSize = (size: number): number => {
   switch (size) {
     case ICON_BUTTON_SIZES[64]: return 2;
@@ -9,6 +15,12 @@ const getIconSize = (size: number): number => {
   }
 };
 
+/**
+ * Returns the name of the icon without the style suffix.
+ *
+ * @param iconName - The name of the icon.
+ * @returns The name of the icon without the suffix.
+ */
 const getIconNameWithoutStyle = (iconName: string): string => {
   const iconParts = iconName.split('-');
   const variants = ['bold', 'filled', 'regular', 'light'];
