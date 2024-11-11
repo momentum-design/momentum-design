@@ -1,8 +1,8 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { BUTTON_COLORS, ICON_BUTTON_SIZES, BUTTON_VARIANTS } from './button.constants';
+import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 const render = (args: Args) => html`
   <mdc-button 
@@ -60,11 +60,62 @@ const meta: Meta = {
     ...styleArgType,
   },
 };
+
 export default meta;
 
 export const Primary: StoryObj = {
   args: {
     children: 'Click Me',
+    active: false,
+    disabled: false,
+    'soft-disabled': false,
+    variant: BUTTON_VARIANTS.PRIMARY,
+    size: ICON_BUTTON_SIZES[32],
+    color: BUTTON_COLORS.DEFAULT,
+  },
+};
+
+export const PrefixIcon: StoryObj = {
+  args: {
+    children: html`<mdc-icon name="info-circle-bold" slot="prefix-icon"></mdc-icon>
+      <span>Left Icon</span>`,
+    active: false,
+    disabled: false,
+    'soft-disabled': false,
+    variant: BUTTON_VARIANTS.PRIMARY,
+    size: ICON_BUTTON_SIZES[32],
+    color: BUTTON_COLORS.DEFAULT,
+  },
+};
+
+export const PostfixIcon: StoryObj = {
+  args: {
+    children: html`<p>Right Icon</p>
+      <mdc-icon name="info-circle-bold" slot="postfix-icon"></mdc-icon>`,
+    active: false,
+    disabled: false,
+    'soft-disabled': false,
+    variant: BUTTON_VARIANTS.PRIMARY,
+    size: ICON_BUTTON_SIZES[32],
+    color: BUTTON_COLORS.DEFAULT,
+  },
+};
+
+export const Icon: StoryObj = {
+  args: {
+    children: html`<mdc-icon name="info-circle-bold"></mdc-icon>`,
+    active: false,
+    disabled: false,
+    'soft-disabled': false,
+    variant: BUTTON_VARIANTS.PRIMARY,
+    size: ICON_BUTTON_SIZES[32],
+    color: BUTTON_COLORS.DEFAULT,
+  },
+};
+
+export const Text: StoryObj = {
+  args: {
+    children: html`<span>Label</span>`,
     active: false,
     disabled: false,
     'soft-disabled': false,
