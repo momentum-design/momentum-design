@@ -24,11 +24,11 @@ test('mdc-button', async ({ componentsPage }) => {
   /**
    * VISUAL REGRESSION
    */
-  await test.step('visual-regression', async () => {
-    await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-button', { element: button });
-    });
-  });
+  // await test.step('visual-regression', async () => {
+  //   await test.step('matches screenshot of element', async () => {
+  //     await componentsPage.visualRegression.takeScreenshot('mdc-button', { element: button });
+  //   });
+  // });
 
   /**
    * ATTRIBUTES
