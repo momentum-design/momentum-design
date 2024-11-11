@@ -5,13 +5,13 @@ import"./index-xE1mO55Y.js";import{k as m}from"./lit-element-CPYlYYac.js";import
       <p>Default Size: ${(r=this.iconProviderContext.value)==null?void 0:r.size}</p>
       <mdc-icon name="accessibility-regular"></mdc-icon>
     `}}g.register("mdc-subcomponent-icon");const h=e=>m`
-  <mdc-iconprovider 
-    url=${e.url}
-    file-extension=${e["file-extension"]}
-    length-unit=${e["length-unit"]}
-    size=${e.size}>
-    <mdc-subcomponent-icon></mdc-subcomponent-icon>
-  </mdc-iconprovider>
+<mdc-iconprovider 
+  url=${e.url}
+  file-extension=${e["file-extension"]}
+  length-unit=${e["length-unit"]}
+  size=${e.size}>
+  <mdc-subcomponent-icon></mdc-subcomponent-icon>
+</mdc-iconprovider>
 `,y={title:"Components/iconprovider",tags:["autodocs"],component:"mdc-iconprovider",render:h,parameters:{badges:["stable"]},argTypes:{"file-extension":{options:d,control:{type:"radio"}},"length-unit":{options:u,control:{type:"inline-radio"}},...x(["Context"])}},o={args:{url:"./icons/svg","file-extension":"svg","length-unit":"em",size:1}};var s,c,a;o.parameters={...o.parameters,docs:{...(s=o.parameters)==null?void 0:s.docs,source:{originalSource:`{
   args: {
     url: './icons/svg',
