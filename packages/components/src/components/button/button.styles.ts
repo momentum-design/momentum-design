@@ -189,7 +189,7 @@ const styles = [hostFitContentStyles, css`
     --mdc-button-primary-pressed-background-color: var(--mds-color-theme-common-button-promotion-active);
 
     --mdc-button-secondary-color: var(--mds-color-theme-text-primary-normal);
-    --mdc-button-secondary-border-color: var(--mds-color-theme-outline-promotion-normal); //FIXME: waiting for changes
+    --mdc-button-secondary-border-color: var(--mds-color-theme-outline-promotion-normal);
     --mdc-button-secondary-hover-background-color: var(--mds-color-theme-button-secondary-hover);
     --mdc-button-secondary-pressed-background-color: var(--mds-color-theme-button-secondary-pressed);
   }
