@@ -15,7 +15,7 @@ import styles from './badge.styles';
  * - `dot`: Displays a dot notification badge with a blue color.
  * - `icon`: Displays a badge with a specified icon using the `icon-name` attribute.
  * - `counter`: Displays a badge with a counter value. If the counter exceeds the `max-counter`,
- * it shows `maxCounter+`. The maximum value of the counter is 999 and anything about that will be set to `999+`.
+ * it shows `maxCounter+`. The maximum value of the counter is 999 and anything above that will be set to `999+`.
  * - `success`: Displays a success badge with a check circle icon and green color.
  * - `warning`: Displays a warning badge with a warning icon and yellow color.
  * - `error`: Displays a error badge with a error legacy icon and red color.
@@ -59,7 +59,7 @@ class Badge extends Component {
   counter?: number;
 
   /**
-   * The maximum number can be set up to 999, anything about that will be rendered as _999+_.
+   * The maximum number can be set up to 999, anything above that will be rendered as _999+_.
    * The max counter can be `9`, `99` or `999`.
    */
   @property({ type: Number, attribute: 'max-counter', reflect: true })
@@ -115,7 +115,6 @@ class Badge extends Component {
       <mdc-icon
         class="mdc-badge-icon ${classMap(this.getIconClasses(overlay, iconVariant, type))}"
         name="${ifDefined(iconName)}"
-        length-unit="${DEFAULTS.LENGTH_UNIT}"
         size="${DEFAULTS.ICON_SIZE}"
       ></mdc-icon>
     `;
