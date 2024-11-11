@@ -1375,7 +1375,7 @@
         "promotion": {
           "normal": {
             "type": "color",
-            "value": "linear-gradient(46deg, {color.decorative.purple.60} 0%, {color.decorative.pink.60} 100%)",
+            "value": "{color.decorative.purple.60}",
             "description": "Used for border of promotional banner"
           }
         },

@@ -68,6 +68,7 @@ class Presence extends Component {
       case 'x_small':
       case 'small':
       default:
+        this.size = DEFAULTS.SIZE;
         return 0.875;
     }
   }
@@ -105,6 +106,7 @@ class Presence extends Component {
         return 'meetings-presence-badge-filled';
       case 'active':
       default:
+        this.type = DEFAULTS.TYPE;
         return 'active-presence-small-filled';
     }
   }
