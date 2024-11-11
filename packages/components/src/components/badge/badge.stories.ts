@@ -19,12 +19,12 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/badge',
+  title: 'Components/badge',
   tags: ['autodocs'],
   component: 'mdc-badge',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     type: {
