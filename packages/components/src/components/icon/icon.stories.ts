@@ -5,19 +5,19 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { disableControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
-    <mdc-icon
-      class="${args.class}"
-      name="${args.name}"
-      size="${args.size}"
-      style="${args.style}"
-    ></mdc-icon> `;
+  <mdc-icon
+    class="${args.class}"
+    name="${args.name}"
+    size="${args.size}"
+    style="${args.style}"
+  ></mdc-icon> `;
 const renderAccessibility = (args: Args) => html`
-    <mdc-icon
-      aria-label="${args['aria-label']}"
-      class="${args.class}"
-      name="${args.name}"
-      size="${args.size}"
-    ></mdc-icon>
+  <mdc-icon
+    aria-label="${args['aria-label']}"
+    class="${args.class}"
+    name="${args.name}"
+    size="${args.size}"
+  ></mdc-icon>
 `;
 
 const meta: Meta = {
