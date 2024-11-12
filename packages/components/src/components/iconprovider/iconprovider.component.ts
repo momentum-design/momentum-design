@@ -60,7 +60,7 @@ class IconProvider extends Provider<IconProviderContext> {
    * @default 1
    */
   @property({ type: Number, reflect: true })
-  size?: number = DEFAULTS.DEFAULT_SIZE;
+  size?: number = DEFAULTS.SIZE;
 
   private updateValuesInContext() {
     // only update fileExtension on context if its an allowed fileExtension
