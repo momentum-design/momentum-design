@@ -1,7 +1,7 @@
 import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
-import { DEFAULTS } from './presence.constants';
+import { DEFAULTS, PRESENCE_SIZE, PRESENCE_TYPE } from './presence.constants';
 import styles from './presence.styles';
 
 /**
@@ -56,17 +56,17 @@ class Presence extends Component {
    */
   private get iconSize() {
     switch (this.size) {
-      case 'midsize':
+      case PRESENCE_SIZE.MIDSIZE:
         return 1.16125;
-      case 'large':
+      case PRESENCE_SIZE.LARGE:
         return 1.30625;
-      case 'x_large':
+      case PRESENCE_SIZE.X_LARGE:
         return 1.596875;
-      case 'xx_large':
+      case PRESENCE_SIZE.XX_LARGE:
         return 2.25;
-      case 'xx_small':
-      case 'x_small':
-      case 'small':
+      case PRESENCE_SIZE.XX_SMALL:
+      case PRESENCE_SIZE.X_SMALL:
+      case PRESENCE_SIZE.SMALL:
       default:
         this.size = DEFAULTS.SIZE;
         return 0.875;
@@ -78,33 +78,33 @@ class Presence extends Component {
    */
   private get icon() {
     switch (this.type) {
-      case 'away':
+      case PRESENCE_TYPE.AWAY:
         return 'recents-presence-badge-filled';
-      case 'away-calling':
+      case PRESENCE_TYPE.AWAY_CALLING:
         return 'away-calling-presence-filled';
-      case 'busy':
+      case PRESENCE_TYPE.BUSY:
         return 'busy-presence-bold';
-      case 'dnd':
+      case PRESENCE_TYPE.DND:
         return 'dnd-presence-badge-filled';
-      case 'meeting':
+      case PRESENCE_TYPE.MEETING:
         return 'camera-filled';
-      case 'on-call':
+      case PRESENCE_TYPE.ON_CALL:
         return 'handset-filled';
-      case 'on-device':
+      case PRESENCE_TYPE.ON_DEVICE:
         return 'generic-device-video-badge-filled';
-      case 'on-mobile':
+      case PRESENCE_TYPE.ON_MOBILE:
         return 'phone-badge-filled';
-      case 'pause':
+      case PRESENCE_TYPE.PAUSE:
         return 'pause-badge-filled';
-      case 'pto':
+      case PRESENCE_TYPE.PTO:
         return 'pto-presence-filled';
-      case 'presenting':
+      case PRESENCE_TYPE.PRESENTING:
         return 'share-screen-badge-filled';
-      case 'quiet':
+      case PRESENCE_TYPE.QUIET:
         return 'quiet-hours-presence-filled';
-      case 'scheduled':
+      case PRESENCE_TYPE.SCHEDULED:
         return 'meetings-presence-badge-filled';
-      case 'active':
+      case PRESENCE_TYPE.ACTIVE:
       default:
         this.type = DEFAULTS.TYPE;
         return 'active-presence-small-filled';

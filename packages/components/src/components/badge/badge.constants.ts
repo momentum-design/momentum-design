@@ -12,9 +12,9 @@ const BADGE_TYPE = {
 };
 
 const ICON_NAMES_LIST = {
-  SUCCESS_ICON_NAME: 'check-circle-filled',
-  WARNING_ICON_NAME: 'warning-filled',
-  ERROR_ICON_NAME: 'error-legacy-filled',
+  SUCCESS_ICON_NAME: 'check-circle-badge-filled',
+  WARNING_ICON_NAME: 'warning-badge-filled',
+  ERROR_ICON_NAME: 'error-legacy-badge-filled',
 };
 
 const ICON_VARIANT = {
@@ -30,7 +30,6 @@ const ICON_STATE = {
 
 const DEFAULTS = {
   TYPE: BADGE_TYPE.DOT,
-  LENGTH_UNIT: 'rem',
   MAX_COUNTER: 99,
   MAX_COUNTER_LIMIT: 999,
   VARIANT: ICON_VARIANT.PRIMARY,
