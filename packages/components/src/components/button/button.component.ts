@@ -13,27 +13,80 @@ import {
 import { getIconNameWithoutStyle, getIconSize } from './button.utils';
 import { TAG_NAME as ICON_TAGNAME } from '../icon/icon.constants';
 /**
- * button component, which ...
+ * `mdc-button` is a component that can be configured in various ways to suit different use cases.
+ *
+ * Button Types:
+ * - **Pill button**: A button that contains text value. Commonly used for call to action, tags, or filters.
+ * - **Pill button with icons**: A button containing an icon either on the left or right side of the button.
+ * - **Icon button**: A button represented by just an icon without any text.
+ * The button type is determined based on the slots provided.
+ *
+ * Button Variants:
+ * - **Primary**: Solid background color.
+ * - **Secondary**: Transparent background with a solid border.
+ * - **Tertiary**: No background or border, appears as plain text but retains all button functionalities.
+ *
+ * Button Colors:
+ * - **Positive**: Green color.
+ * - **Negative**: Red color.
+ * - **Accent**: Blue color.
+ * - **Promotional**: Purple color.
+ * - **Active**: White color.
+ *
+ * Button Sizes (in REM units):
+ * - **Pill button**: 40, 32, 28, 24.
+ * - **Icon button**: 64, 52, 40, 32, 28, 24.
+ * - **Tertiary icon button**: 20.
+ *
+ * @dependency mdc-icon
  *
  * @tagname mdc-button
  *
- * @slot default - This is a default/unnamed slot
- *
- * @cssprop --custom-property-name - Description of the CSS custom property
+ * @slot prefix-icon - Icon positioned to the left of the button text or within an icon button.
+ * @slot default slot - Text slot of the button.
+ * @slot postfix-icon - Icon positioned to the right of the button text.
  */
 class Button extends Component {
-  @property({ type: Boolean }) active = false;
+  /**
+   * Indicates whether the button is active.
+   */
+  @property({ type: Boolean }) active: boolean = false;
 
-  @property({ type: Boolean }) disabled = false;
+  /**
+   * Indicates whether the button is disabled.
+   */
+  @property({ type: Boolean }) disabled: boolean = false;
 
-  @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled = false;
+  /**
+   * Indicates whether the button is soft disabled.
+   * The button is currently disabled for user interaction; however, it remains focusable.
+   */
+  @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled: boolean = false;
 
+  /**
+   * There are 3 variants of button: primary, secondary, tertiary. They are styled differently.
+   * - **Primary**: Solid background color.
+   * - **Secondary**: Transparent background with a solid border.
+   * - **Tertiary**: No background or border, appears as plain text but retains all button functionalities.
+   */
   @property({ type: String }) variant = DEFAULTS.VARIANT;
 
+  /**
+   * Button sizing is based on the button type.
+   * - **Pill button**: 40, 32, 28, 24.
+   * - **Icon button**: 64, 52, 40, 32, 28, 24.
+   * - Tertiary icon button cam also be 20.
+   */
   @property({ type: Number }) size = DEFAULTS.SIZE;
 
+  /**
+   * There are 5 colors for button: positive, negative, accent, promotional, active.
+   */
   @property({ type: String }) color = DEFAULTS.COLOR;
 
+  /**
+   * The tabindex of the button.
+   */
   @property({ type: Number }) override tabIndex = 0;
 
   @property({ type: String }) override role = 'button';
@@ -80,6 +133,10 @@ class Button extends Component {
     }
   }
 
+  /**
+   * Sets the class of 'icon' for icon buttons.
+   * @param type - The type of the button.
+   */
   private setClassBasedOnType(type: string) {
     if (type === BUTTON_TYPE.ICON) {
       this.classList.add('icon');
@@ -88,6 +145,13 @@ class Button extends Component {
     }
   }
 
+  /**
+   * Sets the variant attribute for the button component.
+   * If the provided variant is not included in the BUTTON_VARIANTS,
+   * it defaults to the value specified in DEFAULTS.VARIANT.
+   *
+   * @param variant - The variant to set.
+   */
   private setVariant(variant: string) {
     if (!Object.values(BUTTON_VARIANTS).includes(variant)) {
       this.setAttribute('variant', `${DEFAULTS.VARIANT}`);
@@ -96,6 +160,13 @@ class Button extends Component {
     }
   }
 
+  /**
+   * Sets the size attribute for the button component.
+   * Validates the size based on the button type (icon, pill, or tertiary).
+   * Defaults to DEFAULTS.SIZE if invalid.
+   *
+   * @param size - The size to set.
+   */
   private setSize(size: number) {
     const isIconType = this.type === BUTTON_TYPE.ICON;
     const isValidSize = isIconType
@@ -111,6 +182,12 @@ class Button extends Component {
     this.iconSize = getIconSize(size);
   }
 
+  /**
+   * Sets the color attribute for the button.
+   * Defaults to DEFAULTS.COLOR if invalid or for tertiary buttons.
+   *
+   * @param color - The color to set.
+   */
   private setColor(color: string) {
     if (!Object.values(BUTTON_COLORS).includes(color) || this.variant === BUTTON_VARIANTS.TERTIARY) {
       this.setAttribute('color', `${DEFAULTS.COLOR}`);
@@ -119,6 +196,12 @@ class Button extends Component {
     }
   }
 
+  /**
+   * Sets or removes the aria-pressed attribute based on the active state.
+   *
+   * @param element - The target element.
+   * @param active - The active state.
+   */
   private setAriaPressed(element: HTMLElement, active: boolean) {
     if (active) {
       element.setAttribute('aria-pressed', 'true');
@@ -127,6 +210,13 @@ class Button extends Component {
     }
   }
 
+  /**
+   * Sets the soft-disabled attribute for the button.
+   * When soft-disabled, the button remains focusable but not clickable.
+   *
+   * @param element - The button element.
+   * @param softDisabled - The soft-disabled state.
+   */
   private setSoftDisabled(element: HTMLElement, softDisabled: boolean) {
     if (softDisabled) {
       element.setAttribute('soft-disabled', 'true');
@@ -137,6 +227,15 @@ class Button extends Component {
     }
   }
 
+  /**
+   * Sets the disabled attribute for the button.
+   * When disabled, the button is not focusable or clickable, and tabindex is set to -1.
+   * The previous tabindex is stored and restored when enabled.
+   * Also sets/removes aria-disabled attribute.
+   *
+   * @param element - The button element.
+   * @param disabled - The disabled state.
+   */
   private setDisabled(element: HTMLElement, disabled: boolean) {
     if (disabled) {
       element.setAttribute('disabled', 'true');
@@ -152,6 +251,13 @@ class Button extends Component {
     }
   }
 
+  /**
+   * Handles the click event on the button.
+   * If the button is not disabled or soft-disabled, the onclick event is triggered.
+   * The onclick method is provided by the consumer.
+   *
+   * @param event - The mouse event.
+   */
   private handleClick(event: MouseEvent) {
     if (!this.disabled && !this.softDisabled) {
       if (this.onclick) {
@@ -160,6 +266,12 @@ class Button extends Component {
     }
   }
 
+  /**
+   * Handles the keydown event on the button.
+   * If the key is 'Enter' or 'Space', the button is pressed.
+   *
+   * @param event - The keyboard event.
+   */
   private handleKeyDown(event: KeyboardEvent) {
     if (!this.disabled && (event.key === 'Enter' || event.key === ' ')) {
       event.preventDefault();
@@ -167,6 +279,12 @@ class Button extends Component {
     }
   }
 
+  /**
+   * Handles the keyup event on the button.
+   * If the key is 'Enter' or 'Space', the button is clicked.
+   *
+   * @param event - The keyboard event.
+   */
   private handleKeyUp(event: KeyboardEvent) {
     if (!this.disabled && (event.key === 'Enter' || event.key === ' ')) {
       this.handleClick(event as unknown as MouseEvent);
@@ -174,6 +292,14 @@ class Button extends Component {
     }
   }
 
+  /**
+   * Infers the button type based on the slots provided.
+   * If the button contains a prefix-icon and postfix-icon slot, the type is 'pill-with-icon'.
+   * If the button contains a prefix-icon slot, the type is 'icon'.
+   * Otherwise, the type is 'pill'.
+   *
+   * @param nodes - The child nodes of the button.
+   */
   private inferButtonType(children: HTMLCollection) {
     if (children.length === 1) {
       if (children[0].nodeName === ICON_TAGNAME.toUpperCase()) {
