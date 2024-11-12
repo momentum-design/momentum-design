@@ -9,9 +9,10 @@ import {
   DEFAULTS,
   ICON_BUTTON_SIZES,
   PILL_BUTTON_SIZES,
+  ICON_TAGNAME,
 } from './button.constants';
 import { getIconNameWithoutStyle, getIconSize } from './button.utils';
-import { TAG_NAME as ICON_TAGNAME } from '../icon/icon.constants';
+
 /**
  * `mdc-button` is a component that can be configured in various ways to suit different use cases.
  *
@@ -338,9 +339,9 @@ class Button extends Component {
     this.inferButtonType(this.children);
 
     return html`
-      <slot name="prefix-icon"></slot>
+      <!-- <slot name="prefix-icon"></slot> -->
       <slot></slot>
-      <slot name="postfix-icon"></slot>
+      <!-- <slot name="postfix-icon"></slot> -->
     `;
   }
 

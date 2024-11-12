@@ -1,4 +1,5 @@
 import utils from '../../utils/tag-name';
+import { TAG_NAME as ICON_TAGNAME } from '../icon/icon.constants';
 
 const TAG_NAME = utils.constructTagName('button');
 
@@ -43,4 +44,13 @@ const DEFAULTS = {
   TYPE: BUTTON_TYPE.PILL,
 };
 
-export { TAG_NAME, DEFAULTS, BUTTON_VARIANTS, PILL_BUTTON_SIZES, ICON_BUTTON_SIZES, BUTTON_COLORS, BUTTON_TYPE };
+export {
+  TAG_NAME,
+  DEFAULTS,
+  BUTTON_VARIANTS,
+  PILL_BUTTON_SIZES,
+  ICON_BUTTON_SIZES,
+  BUTTON_COLORS,
+  BUTTON_TYPE,
+  ICON_TAGNAME,
+};
