@@ -40,6 +40,11 @@ Usage: can be multiple
 Describes an event that can be emitted by the component, detailing the specific actions or occurrences that can trigger it.
 Usage: can be multiple
 
+### @default
+
+Indicates the initial value a property or parameter takes if none is provided.
+Usage: can be multiple
+
 Example:
 
 ```javascript
