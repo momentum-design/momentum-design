@@ -1,8 +1,8 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { BUTTON_COLORS, PILL_BUTTON_SIZES, BUTTON_VARIANTS, ICON_BUTTON_SIZES } from './button.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { BUTTON_COLORS, ICON_BUTTON_SIZES, BUTTON_VARIANTS } from './button.constants';
 
 const render = (args: Args) => html`
   <mdc-button 
@@ -49,7 +49,7 @@ const meta: Meta = {
     size: {
       description: 'The size of the button.',
       control: 'select',
-      options: Object.values(ICON_BUTTON_SIZES),
+      options: Object.values(PILL_BUTTON_SIZES),
     },
     color: {
       description: 'The color of the button.',
@@ -60,11 +60,55 @@ const meta: Meta = {
     ...styleArgType,
   },
 };
+
 export default meta;
 
-export const Primary: StoryObj = {
+export const PillButton: StoryObj = {
   args: {
     children: 'Click Me',
+    active: false,
+    disabled: false,
+    'soft-disabled': false,
+    variant: BUTTON_VARIANTS.PRIMARY,
+    size: PILL_BUTTON_SIZES[32],
+    color: BUTTON_COLORS.DEFAULT,
+  },
+};
+
+export const PillWithPrefixIcon: StoryObj = {
+  args: {
+    children: html`<mdc-icon name="info-circle-bold" slot="prefix-icon"></mdc-icon>
+    Left Icon`,
+    active: false,
+    disabled: false,
+    'soft-disabled': false,
+    variant: BUTTON_VARIANTS.PRIMARY,
+    size: PILL_BUTTON_SIZES[32],
+    color: BUTTON_COLORS.DEFAULT,
+  },
+};
+
+export const PillWithPostfixIcon: StoryObj = {
+  args: {
+    children: html`Right Icon
+      <mdc-icon name="info-circle-bold" slot="postfix-icon"></mdc-icon>`,
+    active: false,
+    disabled: false,
+    'soft-disabled': false,
+    variant: BUTTON_VARIANTS.PRIMARY,
+    size: PILL_BUTTON_SIZES[32],
+    color: BUTTON_COLORS.DEFAULT,
+  },
+};
+
+export const IconButton: StoryObj = {
+  argTypes: {
+    size: {
+      options: Object.values(ICON_BUTTON_SIZES),
+    },
+  },
+  args: {
+    children: html`<mdc-icon name="info-circle-bold"></mdc-icon>`,
     active: false,
     disabled: false,
     'soft-disabled': false,
