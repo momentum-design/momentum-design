@@ -63,7 +63,7 @@ const meta: Meta = {
 
 export default meta;
 
-export const Primary: StoryObj = {
+export const PillButton: StoryObj = {
   args: {
     children: 'Click Me',
     active: false,
@@ -75,10 +75,10 @@ export const Primary: StoryObj = {
   },
 };
 
-export const PrefixIcon: StoryObj = {
+export const PillWithPrefixIcon: StoryObj = {
   args: {
     children: html`<mdc-icon name="info-circle-bold" slot="prefix-icon"></mdc-icon>
-      <span>Left Icon</span>`,
+    Left Icon`,
     active: false,
     disabled: false,
     'soft-disabled': false,
@@ -88,9 +88,9 @@ export const PrefixIcon: StoryObj = {
   },
 };
 
-export const PostfixIcon: StoryObj = {
+export const PillWithPostfixIcon: StoryObj = {
   args: {
-    children: html`<p>Right Icon</p>
+    children: html`Right Icon
       <mdc-icon name="info-circle-bold" slot="postfix-icon"></mdc-icon>`,
     active: false,
     disabled: false,
@@ -101,7 +101,7 @@ export const PostfixIcon: StoryObj = {
   },
 };
 
-export const Icon: StoryObj = {
+export const IconButton: StoryObj = {
   argTypes: {
     size: {
       options: Object.values(ICON_BUTTON_SIZES),
@@ -114,18 +114,6 @@ export const Icon: StoryObj = {
     'soft-disabled': false,
     variant: BUTTON_VARIANTS.PRIMARY,
     size: ICON_BUTTON_SIZES[32],
-    color: BUTTON_COLORS.DEFAULT,
-  },
-};
-
-export const Text: StoryObj = {
-  args: {
-    children: html`<span>Label</span>`,
-    active: false,
-    disabled: false,
-    'soft-disabled': false,
-    variant: BUTTON_VARIANTS.PRIMARY,
-    size: PILL_BUTTON_SIZES[32],
     color: BUTTON_COLORS.DEFAULT,
   },
 };
