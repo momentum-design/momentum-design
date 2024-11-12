@@ -48,6 +48,7 @@ class Badge extends Component {
   /**
    * Type of the variant can be `primary` or `secondary`.
    * It defines the background and foreground color of the icon.
+   * @default primary
    */
   @property({ type: String, reflect: true })
   variant = DEFAULTS.VARIANT;
@@ -61,6 +62,7 @@ class Badge extends Component {
   /**
    * The maximum number can be set up to 999, anything about that will be rendered as _999+_.
    * The max counter can be `9`, `99` or `999`.
+   * @default 99
    */
   @property({ type: Number, attribute: 'max-counter', reflect: true })
   maxCounter: number = DEFAULTS.MAX_COUNTER;
@@ -69,12 +71,14 @@ class Badge extends Component {
    * Overlay is to add a thin outline to the badge.
    * This will help distinguish between the badge and the button,
    * where the badge will be layered on top of a button.
+   * @default false
    */
   @property({ type: Boolean })
   overlay = false;
 
   /**
    * Aria-label attribute to be set for accessibility
+   * @default null
    */
   @property({ type: String, attribute: 'aria-label' })
   override ariaLabel: string | null = null;
