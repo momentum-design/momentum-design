@@ -34,7 +34,7 @@
     {
       "tagName": "@default",
       "syntaxKind": "modifier",
-      "allowMultiple": true
+      "allowMultiple": false
     }
   ]
 }

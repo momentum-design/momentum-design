@@ -43,7 +43,7 @@ Usage: can be multiple
 ### @default
 
 Indicates the initial value a property of the component takes if none is provided.
-Usage: can be multiple
+Usage: only once
 
 Example:
 
