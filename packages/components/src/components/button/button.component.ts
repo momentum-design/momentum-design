@@ -2,9 +2,16 @@ import { CSSResult, html, PropertyValueMap } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import styles from './button.styles';
 import { Component } from '../../models';
-import { BUTTON_COLORS, BUTTON_TYPE, BUTTON_VARIANTS, DEFAULTS } from './button.constants';
-import { getIconNameWithoutStyle, getIconSize, isValidIconSize, isValidPillSize } from './button.utils';
-
+import {
+  BUTTON_COLORS,
+  BUTTON_TYPE,
+  BUTTON_VARIANTS,
+  DEFAULTS,
+  ICON_BUTTON_SIZES,
+  PILL_BUTTON_SIZES,
+} from './button.constants';
+import { getIconNameWithoutStyle, getIconSize } from './button.utils';
+import { TAG_NAME as ICON_TAGNAME } from '../icon/icon.constants';
 /**
  * button component, which ...
  *
@@ -15,13 +22,11 @@ import { getIconNameWithoutStyle, getIconSize, isValidIconSize, isValidPillSize 
  * @cssprop --custom-property-name - Description of the CSS custom property
  */
 class Button extends Component {
-  @property({ type: Boolean }) active: boolean = false;
+  @property({ type: Boolean }) active = false;
 
-  @property({ type: Boolean }) disabled: boolean = false;
+  @property({ type: Boolean }) disabled = false;
 
-  @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled: boolean = false;
-
-  @property({ type: String, attribute: 'aria-label' }) override ariaLabel: string = '';
+  @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled = false;
 
   @property({ type: String }) variant = DEFAULTS.VARIANT;
 
@@ -31,31 +36,20 @@ class Button extends Component {
 
   @property({ type: Number }) override tabIndex = 0;
 
+  @property({ type: String }) override role = 'button';
+
   @state() private type = DEFAULTS.TYPE;
 
   @state() private iconSize = 1;
 
+  private prevTabindex = 0;
+
   constructor() {
     super();
-    this.role = 'button';
-  }
 
-  public override connectedCallback() {
-    super.connectedCallback();
     this.addEventListener('click', this.handleClick);
     this.addEventListener('keydown', this.handleKeyDown);
     this.addEventListener('keyup', this.handleKeyUp);
-    this.addEventListener('focus', this.handleFocus);
-    this.addEventListener('blur', this.handleBlur);
-  }
-
-  public override disconnectedCallback() {
-    super.disconnectedCallback();
-    this.removeEventListener('click', this.handleClick);
-    this.removeEventListener('keydown', this.handleKeyDown);
-    this.removeEventListener('keyup', this.handleKeyUp);
-    this.removeEventListener('focus', this.handleFocus);
-    this.removeEventListener('blur', this.handleBlur);
   }
 
   public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
@@ -66,9 +60,6 @@ class Button extends Component {
     }
     if (changedProperties.has('softDisabled')) {
       this.setSoftDisabled(this, this.softDisabled);
-    }
-    if (changedProperties.has('arialabel')) {
-      this.setAriaLabel(this, this.ariaLabel);
     }
     if (changedProperties.has('active')) {
       this.setAriaPressed(this, this.active);
@@ -108,8 +99,9 @@ class Button extends Component {
   private setSize(size: number) {
     const isIconType = this.type === BUTTON_TYPE.ICON;
     const isValidSize = isIconType
-      ? isValidIconSize(size, this.variant)
-      : isValidPillSize(size);
+      ? Object.values(ICON_BUTTON_SIZES).includes(size)
+      && !(size === ICON_BUTTON_SIZES[20] && this.variant !== BUTTON_VARIANTS.TERTIARY)
+      : Object.values(PILL_BUTTON_SIZES).includes(size);
 
     if (!isValidSize) {
       this.setAttribute('size', `${DEFAULTS.SIZE}`);
@@ -120,7 +112,7 @@ class Button extends Component {
   }
 
   private setColor(color: string) {
-    if (!Object.values(BUTTON_COLORS).includes(color) || this.variant === 'tertiary') {
+    if (!Object.values(BUTTON_COLORS).includes(color) || this.variant === BUTTON_VARIANTS.TERTIARY) {
       this.setAttribute('color', `${DEFAULTS.COLOR}`);
     } else {
       this.setAttribute('color', color);
@@ -135,14 +127,6 @@ class Button extends Component {
     }
   }
 
-  private setAriaLabel(element: HTMLElement, ariaLabel: string) {
-    if (ariaLabel) {
-      element.setAttribute('aria-label', ariaLabel);
-    } else {
-      element.removeAttribute('aria-label');
-    }
-  }
-
   private setSoftDisabled(element: HTMLElement, softDisabled: boolean) {
     if (softDisabled) {
       element.setAttribute('soft-disabled', 'true');
@@ -152,8 +136,6 @@ class Button extends Component {
       element.removeAttribute('aria-disabled');
     }
   }
-
-  private prevTabindex = 0;
 
   private setDisabled(element: HTMLElement, disabled: boolean) {
     if (disabled) {
@@ -178,19 +160,6 @@ class Button extends Component {
     }
   }
 
-  private handleFocus(event: FocusEvent) {
-    if (this.softDisabled) {
-      event.preventDefault();
-    }
-  }
-
-  private handleBlur(event: FocusEvent) {
-    if (this.softDisabled) {
-      event.preventDefault();
-    }
-    this.classList.remove('pressed');
-  }
-
   private handleKeyDown(event: KeyboardEvent) {
     if (!this.disabled && (event.key === 'Enter' || event.key === ' ')) {
       event.preventDefault();
@@ -207,16 +176,16 @@ class Button extends Component {
 
   private inferButtonType(children: HTMLCollection) {
     if (children.length === 1) {
-      if (children[0].nodeName === 'MDC-ICON') {
+      if (children[0].nodeName === ICON_TAGNAME.toUpperCase()) {
         this.type = BUTTON_TYPE.ICON;
         this.modifyIconSizeAndStyle(children[0]);
       } else {
         this.type = BUTTON_TYPE.PILL;
       }
-    } else if (Array.from(children).some((node) => node.nodeName === 'MDC-ICON')) {
+    } else if (Array.from(children).some((node) => node.nodeName === ICON_TAGNAME.toUpperCase())) {
       this.type = BUTTON_TYPE.PILL_WITH_ICON;
       Array.from(children).forEach((el) => {
-        if (el.nodeName === 'MDC-ICON') {
+        if (el.nodeName === ICON_TAGNAME.toUpperCase()) {
           this.modifyIconSizeAndStyle(el);
         }
       });

@@ -1,12 +1,4 @@
-import { ICON_BUTTON_SIZES, PILL_BUTTON_SIZES } from './button.constants';
-
-const isValidIconSize = (
-  size: number,
-  variant: string,
-): number | boolean => Object.values(ICON_BUTTON_SIZES).includes(size)
-    && !(size === 20 && variant !== 'tertiary');
-
-const isValidPillSize = (size: number): number | boolean => Object.values(PILL_BUTTON_SIZES).includes(size);
+import { ICON_BUTTON_SIZES } from './button.constants';
 
 const getIconSize = (size: number): number => {
   switch (size) {
@@ -23,4 +15,4 @@ const getIconNameWithoutStyle = (iconName: string): string => {
   return iconParts.filter((part) => !variants.includes(part)).join('-');
 };
 
-export { isValidIconSize, isValidPillSize, getIconSize, getIconNameWithoutStyle };
+export { getIconSize, getIconNameWithoutStyle };
