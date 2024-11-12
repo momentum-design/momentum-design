@@ -13,12 +13,13 @@ import {
 import { getIconNameWithoutStyle, getIconSize } from './button.utils';
 import { TAG_NAME as ICON_TAGNAME } from '../icon/icon.constants';
 /**
- * `mdc-button` is a versatile component that can be configured in various ways to suit different use cases.
+ * `mdc-button` is a component that can be configured in various ways to suit different use cases.
  *
  * Button Types:
  * - **Pill button**: A button that contains text value. Commonly used for call to action, tags, or filters.
  * - **Pill button with icons**: A button containing an icon either on the left or right side of the button.
  * - **Icon button**: A button represented by just an icon without any text.
+ * The button type is determined based on the slots provided.
  *
  * Button Variants:
  * - **Primary**: Solid background color.
@@ -36,15 +37,6 @@ import { TAG_NAME as ICON_TAGNAME } from '../icon/icon.constants';
  * - **Pill button**: 40, 32, 28, 24.
  * - **Icon button**: 64, 52, 40, 32, 28, 24.
  * - **Tertiary icon button**: 20.
- *
- * Slots:
- * - **prefix-icon**: `<mdc-icon>` component serves as either an icon within the icon button or
- *                   as an icon positioned to the left of the button text in a pill button with icon.
- * - **label-text**: A component to represent the text label of the button.
- * - **postfix-icon**: `<mdc-icon>` component serves as an icon positioned to the right
- *                      of the button text in a pill button with icon.
- *
- * The button type is determined based on the slots provided.
  *
  * @dependency mdc-icon
  *
@@ -72,13 +64,18 @@ class Button extends Component {
   @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled: boolean = false;
 
   /**
-   * There are 3 variants of button: primary, secondary, tertiary.
+   * There are 3 variants of button: primary, secondary, tertiary. They are styled differently.
+   * - **Primary**: Solid background color.
+   * - **Secondary**: Transparent background with a solid border.
+   * - **Tertiary**: No background or border, appears as plain text but retains all button functionalities.
    */
   @property({ type: String }) variant = DEFAULTS.VARIANT;
 
   /**
-   * There are 4 sizes for button: 40, 32, 28 and 24
-   * Tertiary button can have 20 size.
+   * Button sizing is based on the button type.
+   * - **Pill button**: 40, 32, 28, 24.
+   * - **Icon button**: 64, 52, 40, 32, 28, 24.
+   * - Tertiary icon button cam also be 20.
    */
   @property({ type: Number }) size = DEFAULTS.SIZE;
 
