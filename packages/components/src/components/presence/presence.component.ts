@@ -68,6 +68,7 @@ class Presence extends Component {
       case PRESENCE_SIZE.X_SMALL:
       case PRESENCE_SIZE.SMALL:
       default:
+        this.size = DEFAULTS.SIZE;
         return 0.875;
     }
   }
