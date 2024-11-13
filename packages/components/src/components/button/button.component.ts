@@ -64,6 +64,10 @@ class Button extends Component {
    */
   @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled: boolean = false;
 
+  @property({ type: String, attribute: 'prefix-icon' }) prefixIcon?: string;
+
+  @property({ type: String, attribute: 'postfix-icon' }) postfixIcon?: string;
+
   /**
    * There are 3 variants of button: primary, secondary, tertiary. They are styled differently.
    * - **Primary**: Solid background color.
@@ -98,6 +102,10 @@ class Button extends Component {
 
   private prevTabindex = 0;
 
+  private prevPrefixIcon?: string;
+
+  private prevPostfixIcon?: string;
+
   constructor() {
     super();
 
@@ -117,6 +125,7 @@ class Button extends Component {
     }
     if (changedProperties.has('active')) {
       this.setAriaPressed(this, this.active);
+      this.modifyIconName(this.active);
     }
     if (changedProperties.has('size')) {
       this.setSize(this.size);
@@ -131,6 +140,34 @@ class Button extends Component {
     if (changedProperties.has('type')) {
       this.setSize(this.size);
       this.setClassBasedOnType(this.type);
+    }
+  }
+
+  /**
+   * Modifies the icon name based on the active state.
+   * If the button is active, the icon name is suffixed with '-filled'.
+   * If the button is inactive, the icon name is restored to its original value.
+   * If '-filled' icon is not available, the icon name remains unchanged.
+   *
+   * @param active - The active state.
+   */
+  private modifyIconName(active: boolean) {
+    if (active) {
+      if (this.prefixIcon) {
+        this.prevPrefixIcon = this.prefixIcon;
+        this.prefixIcon = `${getIconNameWithoutStyle(this.prefixIcon)}-filled`;
+      }
+      if (this.postfixIcon) {
+        this.prevPostfixIcon = this.postfixIcon;
+        this.postfixIcon = `${getIconNameWithoutStyle(this.postfixIcon)}-filled`;
+      }
+    } else {
+      if (this.prevPrefixIcon) {
+        this.prefixIcon = this.prevPrefixIcon;
+      }
+      if (this.prevPostfixIcon) {
+        this.postfixIcon = this.prevPostfixIcon;
+      }
     }
   }
 
@@ -293,55 +330,35 @@ class Button extends Component {
     }
   }
 
-  /**
-   * Infers the button type based on the slots provided.
-   * If the button contains a prefix-icon and postfix-icon slot, the type is 'pill-with-icon'.
-   * If the button contains a prefix-icon slot, the type is 'icon'.
-   * Otherwise, the type is 'pill'.
-   *
-   * @param nodes - The child nodes of the button.
-   */
-  private inferButtonType(children: HTMLCollection) {
-    if (children.length === 1) {
-      if (children[0].nodeName === ICON_TAGNAME.toUpperCase()) {
-        this.type = BUTTON_TYPE.ICON;
-        this.modifyIconSizeAndStyle(children[0]);
-      } else {
-        this.type = BUTTON_TYPE.PILL;
-      }
-    } else if (Array.from(children).some((node) => node.nodeName === ICON_TAGNAME.toUpperCase())) {
+  private handleSlotchange(event: Event) {
+    const slot = event.target as HTMLSlotElement;
+    if (slot && (this.prefixIcon || this.postfixIcon)) {
       this.type = BUTTON_TYPE.PILL_WITH_ICON;
-      Array.from(children).forEach((el) => {
-        if (el.nodeName === ICON_TAGNAME.toUpperCase()) {
-          this.modifyIconSizeAndStyle(el);
-        }
-      });
-    }
-  }
-
-  private prevIconName = '';
-
-  private modifyIconSizeAndStyle(node: ChildNode) {
-    const icon = node as HTMLElement;
-    icon.setAttribute('size', `${this.iconSize}`);
-    icon.setAttribute('length-unit', 'rem');
-    if (this.active) {
-      const name = icon.getAttribute('name')!;
-      this.prevIconName = name;
-      const iconNameWithoutStyle = getIconNameWithoutStyle(name);
-      icon.setAttribute('name', `${iconNameWithoutStyle}-filled`); // TODO: add a check to see if it exists
-    } else if (this.prevIconName) {
-      icon.setAttribute('name', this.prevIconName);
+    } else if ((!slot && (this.prefixIcon || this.postfixIcon))
+    || (slot.assignedNodes().length === 1 && slot.assignedNodes()[0].nodeName === ICON_TAGNAME.toUpperCase())) {
+      this.type = BUTTON_TYPE.ICON;
+    } else {
+      this.type = BUTTON_TYPE.PILL;
     }
   }
 
   public override render() {
-    this.inferButtonType(this.children);
-
     return html`
-      <!-- <slot name="prefix-icon"></slot> -->
-      <slot></slot>
-      <!-- <slot name="postfix-icon"></slot> -->
+      ${this.prefixIcon ? html`
+        <mdc-icon 
+          name="${this.prefixIcon}" 
+          part="prefix-icon" 
+          size=${this.iconSize} 
+          length-unit="rem">
+        </mdc-icon>` : ''}
+      <slot @slotchange=${this.handleSlotchange}></slot>
+      ${this.postfixIcon ? html`
+        <mdc-icon 
+          name="${this.postfixIcon}" 
+          part="postfix-icon" 
+          size=${this.iconSize} 
+          length-unit="rem">
+        </mdc-icon>` : ''}
     `;
   }
 
