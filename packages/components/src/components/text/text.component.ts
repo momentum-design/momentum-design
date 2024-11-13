@@ -57,6 +57,7 @@ class Text extends Component {
    * - 'heading-xlarge-bold'
    * - 'headline-small-light'
    * - 'headline-small-regular'
+   * @default body-large-regular
    */
   @property({ attribute: 'type', reflect: true, type: String })
   public type = DEFAULTS.TYPE;
