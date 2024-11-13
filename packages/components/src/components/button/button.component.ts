@@ -20,7 +20,6 @@ import { getIconNameWithoutStyle, getIconSize } from './button.utils';
  * - **Pill button**: A button that contains text value. Commonly used for call to action, tags, or filters.
  * - **Pill button with icons**: A button containing an icon either on the left or right side of the button.
  * - **Icon button**: A button represented by just an icon without any text.
- * The button type is determined based on the slots provided.
  *
  * Button Variants:
  * - **Primary**: Solid background color.
@@ -32,7 +31,7 @@ import { getIconNameWithoutStyle, getIconSize } from './button.utils';
  * - **Negative**: Red color.
  * - **Accent**: Blue color.
  * - **Promotional**: Purple color.
- * - **Active**: White color.
+ * - **Default**: White color.
  *
  * Button Sizes (in REM units):
  * - **Pill button**: 40, 32, 28, 24.
@@ -43,29 +42,39 @@ import { getIconNameWithoutStyle, getIconSize } from './button.utils';
  *
  * @tagname mdc-button
  *
- * @slot prefix-icon - Icon positioned to the left of the button text or within an icon button.
- * @slot default slot - Text slot of the button.
- * @slot postfix-icon - Icon positioned to the right of the button text.
+ * @slot default slot - Text label of the button.
  */
 class Button extends Component {
   /**
    * Indicates whether the button is active.
+   * @default false
    */
   @property({ type: Boolean }) active: boolean = false;
 
   /**
    * Indicates whether the button is disabled.
+   * The button is currently disabled for user interaction; it is not focusable or clickable.
+   * @default false
    */
   @property({ type: Boolean }) disabled: boolean = false;
 
   /**
    * Indicates whether the button is soft disabled.
    * The button is currently disabled for user interaction; however, it remains focusable.
+   * @default false
    */
   @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled: boolean = false;
 
+  /**
+   * The name of the icon to display as a prefix.
+   * The icon is displayed on the left side of the button.
+   */
   @property({ type: String, attribute: 'prefix-icon' }) prefixIcon?: string;
 
+  /**
+   * The name of the icon to display as a postfix.
+   * The icon is displayed on the right side of the button.
+   */
   @property({ type: String, attribute: 'postfix-icon' }) postfixIcon?: string;
 
   /**
@@ -73,6 +82,7 @@ class Button extends Component {
    * - **Primary**: Solid background color.
    * - **Secondary**: Transparent background with a solid border.
    * - **Tertiary**: No background or border, appears as plain text but retains all button functionalities.
+   * @default primary
    */
   @property({ type: String }) variant = DEFAULTS.VARIANT;
 
@@ -81,19 +91,26 @@ class Button extends Component {
    * - **Pill button**: 40, 32, 28, 24.
    * - **Icon button**: 64, 52, 40, 32, 28, 24.
    * - Tertiary icon button cam also be 20.
+   * @default 32
    */
   @property({ type: Number }) size = DEFAULTS.SIZE;
 
   /**
-   * There are 5 colors for button: positive, negative, accent, promotional, active.
+   * There are 5 colors for button: positive, negative, accent, promotional, default.
+   * @default default
    */
   @property({ type: String }) color = DEFAULTS.COLOR;
 
   /**
    * The tabindex of the button.
+   * @default 0
    */
   @property({ type: Number }) override tabIndex = 0;
 
+  /**
+   * The role of the button.
+   * @default button
+   */
   @property({ type: String }) override role = 'button';
 
   @state() private type = DEFAULTS.TYPE;
