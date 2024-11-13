@@ -12,6 +12,8 @@ const render = (args: Args) => html`
   variant="${args.variant}"
   size="${args.size}"
   color="${args.color}"
+  prefix-icon="${args.prefixIcon}"
+  postfix-icon="${args.postfixIcon}"
   >${args.children}</mdc-button>`;
 
 const meta: Meta = {
@@ -25,6 +27,18 @@ const meta: Meta = {
   argTypes: {
     children: {
       description: 'Button content',
+      control: {
+        type: 'text',
+      },
+    },
+    prefixIcon: {
+      description: 'The name of the icon to display as a prefix.',
+      control: {
+        type: 'text',
+      },
+    },
+    postfixIcon: {
+      description: 'The name of the icon to display as a postfix.',
       control: {
         type: 'text',
       },
@@ -77,8 +91,8 @@ export const PillButton: StoryObj = {
 
 export const PillWithPrefixIcon: StoryObj = {
   args: {
-    children: html`<mdc-icon name="info-circle-bold" slot="prefix-icon"></mdc-icon>
-    Left Icon`,
+    children: 'Left Icon',
+    prefixIcon: 'info-circle-bold',
     active: false,
     disabled: false,
     'soft-disabled': false,
@@ -90,8 +104,8 @@ export const PillWithPrefixIcon: StoryObj = {
 
 export const PillWithPostfixIcon: StoryObj = {
   args: {
-    children: html`Right Icon
-      <mdc-icon name="info-circle-bold" slot="postfix-icon"></mdc-icon>`,
+    children: 'Right Icon',
+    postfixIcon: 'info-circle-bold',
     active: false,
     disabled: false,
     'soft-disabled': false,
@@ -108,12 +122,24 @@ export const IconButton: StoryObj = {
     },
   },
   args: {
-    children: html`<mdc-icon name="info-circle-bold"></mdc-icon>`,
+    prefixIcon: 'info-circle-bold',
     active: false,
     disabled: false,
     'soft-disabled': false,
     variant: BUTTON_VARIANTS.PRIMARY,
     size: ICON_BUTTON_SIZES[32],
+    color: BUTTON_COLORS.DEFAULT,
+  },
+};
+
+export const Test: StoryObj = {
+  args: {
+    children: html`<span>Test</span>`,
+    active: false,
+    disabled: false,
+    'soft-disabled': false,
+    variant: BUTTON_VARIANTS.PRIMARY,
+    size: PILL_BUTTON_SIZES[32],
     color: BUTTON_COLORS.DEFAULT,
   },
 };
