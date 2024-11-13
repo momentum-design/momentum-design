@@ -1,4 +1,4 @@
-import"./index-xE1mO55Y.js";import{k as m}from"./lit-element-CPYlYYac.js";import{C as p}from"./index-BLShQaRP.js";import{I as l,A as d,a as u}from"./iconprovider.component-DlI5gUhJ.js";import{p as v}from"./index-BGH6lGYG.js";import{d as x}from"./utils-DCJ3yZC1.js";import"./create-context-89xeped_.js";class g extends p{constructor(){super(...arguments),this.iconProviderContext=v.consume({host:this,context:l.Context})}render(){var n,t,i,r;return m`
+import"./index-BPEZwjcw.js";import{k as m}from"./lit-element-CPYlYYac.js";import{C as p}from"./index-BLShQaRP.js";import{I as l,A as d,a as u}from"./iconprovider.component-DQf4k71i.js";import{p as v}from"./index-BGH6lGYG.js";import{d as x}from"./utils-DCJ3yZC1.js";import"./create-context-89xeped_.js";class g extends p{constructor(){super(...arguments),this.iconProviderContext=v.consume({host:this,context:l.Context})}render(){var n,t,i,r;return m`
       <p>URL: ${(n=this.iconProviderContext.value)==null?void 0:n.url}</p>
       <p>File Extension: ${(t=this.iconProviderContext.value)==null?void 0:t.fileExtension}</p>
       <p>Length Unit: ${(i=this.iconProviderContext.value)==null?void 0:i.lengthUnit}</p>
