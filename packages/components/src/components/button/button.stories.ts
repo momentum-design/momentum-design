@@ -131,15 +131,3 @@ export const IconButton: StoryObj = {
     color: BUTTON_COLORS.DEFAULT,
   },
 };
-
-export const Test: StoryObj = {
-  args: {
-    children: html`<span>Test</span>`,
-    active: false,
-    disabled: false,
-    'soft-disabled': false,
-    variant: BUTTON_VARIANTS.PRIMARY,
-    size: PILL_BUTTON_SIZES[32],
-    color: BUTTON_COLORS.DEFAULT,
-  },
-};
