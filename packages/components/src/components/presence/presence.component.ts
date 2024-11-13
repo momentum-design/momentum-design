@@ -32,7 +32,7 @@ class Presence extends Component {
    * - `presenting`
    * - `quiet`
    * - `scheduled`
-   *
+   * @default active
    */
   @property({ type: String, reflect: true })
   type = DEFAULTS.TYPE;
@@ -46,7 +46,7 @@ class Presence extends Component {
    * - LARGE
    * - X_LARGE
    * - XX_LARGE
-   *
+   * @default small
    */
   @property({ type: String, reflect: true })
   size = DEFAULTS.SIZE;
