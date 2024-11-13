@@ -76,11 +76,6 @@ const meta: Meta = {
       },
       control: 'select',
       options: Object.values(ICON_VARIANT),
-      table: {
-        defaultValue: {
-          summary: DEFAULTS.VARIANT,
-        },
-      },
     },
     'aria-label': {
       control: 'text',
