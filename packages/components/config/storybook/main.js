@@ -6,6 +6,7 @@ const config = {
     '@storybook/addon-essentials',
     '@storybook/addon-a11y',
     '@geometricpanda/storybook-addon-badges',
+    'storybook-addon-rtl'
   ],
   framework: {
     name: '@storybook/web-components-vite',
