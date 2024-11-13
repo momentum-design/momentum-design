@@ -31,13 +31,13 @@ const meta: Meta = {
         type: 'text',
       },
     },
-    prefixIcon: {
+    'prefix-icon': {
       description: 'The name of the icon to display as a prefix.',
       control: {
         type: 'text',
       },
     },
-    postfixIcon: {
+    'postfix-icon': {
       description: 'The name of the icon to display as a postfix.',
       control: {
         type: 'text',
@@ -92,7 +92,7 @@ export const PillButton: StoryObj = {
 export const PillWithPrefixIcon: StoryObj = {
   args: {
     children: 'Left Icon',
-    prefixIcon: 'info-circle-bold',
+    'prefix-icon': 'info-circle-bold',
     active: false,
     disabled: false,
     'soft-disabled': false,
@@ -105,7 +105,7 @@ export const PillWithPrefixIcon: StoryObj = {
 export const PillWithPostfixIcon: StoryObj = {
   args: {
     children: 'Right Icon',
-    postfixIcon: 'info-circle-bold',
+    'postfix-icon': 'info-circle-bold',
     active: false,
     disabled: false,
     'soft-disabled': false,
@@ -122,7 +122,7 @@ export const IconButton: StoryObj = {
     },
   },
   args: {
-    prefixIcon: 'info-circle-bold',
+    'prefix-icon': 'info-circle-bold',
     active: false,
     disabled: false,
     'soft-disabled': false,
