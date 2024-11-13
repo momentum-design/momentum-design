@@ -9,7 +9,6 @@ import {
   DEFAULTS,
   ICON_BUTTON_SIZES,
   PILL_BUTTON_SIZES,
-  ICON_TAGNAME,
 } from './button.constants';
 import { getIconNameWithoutStyle, getIconSize } from './button.utils';
 
@@ -49,21 +48,21 @@ class Button extends Component {
    * Indicates whether the button is active.
    * @default false
    */
-  @property({ type: Boolean }) active: boolean = false;
+  @property({ type: Boolean }) active = false;
 
   /**
    * Indicates whether the button is disabled.
    * The button is currently disabled for user interaction; it is not focusable or clickable.
    * @default false
    */
-  @property({ type: Boolean }) disabled: boolean = false;
+  @property({ type: Boolean }) disabled = false;
 
   /**
    * Indicates whether the button is soft disabled.
    * The button is currently disabled for user interaction; however, it remains focusable.
    * @default false
    */
-  @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled: boolean = false;
+  @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled = false;
 
   /**
    * The name of the icon to display as a prefix.
@@ -329,7 +328,6 @@ class Button extends Component {
    */
   private handleKeyDown(event: KeyboardEvent) {
     if (!this.disabled && (event.key === 'Enter' || event.key === ' ')) {
-      event.preventDefault();
       this.classList.add('pressed');
     }
   }
@@ -351,8 +349,7 @@ class Button extends Component {
     const slot = event.target as HTMLSlotElement;
     if (slot && (this.prefixIcon || this.postfixIcon)) {
       this.type = BUTTON_TYPE.PILL_WITH_ICON;
-    } else if ((!slot && (this.prefixIcon || this.postfixIcon))
-    || (slot.assignedNodes().length === 1 && slot.assignedNodes()[0].nodeName === ICON_TAGNAME.toUpperCase())) {
+    } else if (!slot && (this.prefixIcon || this.postfixIcon)) {
       this.type = BUTTON_TYPE.ICON;
     } else {
       this.type = BUTTON_TYPE.PILL;
