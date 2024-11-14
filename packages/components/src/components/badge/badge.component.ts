@@ -6,7 +6,7 @@ import { Component } from '../../models';
 import { FONT_TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { BADGE_TYPE, ICON_NAMES_LIST, DEFAULTS, ICON_VARIANT, ICON_STATE } from './badge.constants';
 import styles from './badge.styles';
-
+import type { IconVariant, BadgeType } from './badge.types';
 /**
  * The `mdc-badge` component is a versatile UI element used to
  * display dot, icons, counters, success, warning and error type badge.
@@ -35,7 +35,7 @@ class Badge extends Component {
    * Can be `dot` (notification) , `icon`, `counter`, `success`, `warning` or `error`.
    */
   @property({ type: String, reflect: true })
-  type?: string;
+  type?: BadgeType;
 
   /**
    * Name of the icon (= filename).
@@ -51,7 +51,7 @@ class Badge extends Component {
    * @default primary
    */
   @property({ type: String, reflect: true })
-  variant = DEFAULTS.VARIANT;
+  variant: IconVariant = DEFAULTS.VARIANT;
 
   /**
    * Counter is the number which can be provided in the badge.
@@ -109,15 +109,16 @@ class Badge extends Component {
   /**
    * Method to generate the badge icon.
    * @param iconName - the name of the icon from the icon set
-   * @param overlay - boolean indicating whether the badge should have an overlay.
-   * @param iconVariant - the variant of the icon badge.
-   * @param type - the type of the badge.
+   * @param backgroundClassPostfix - postfix for the class to style the badge icon.
    * @returns the template result of the icon.
    */
-  private getBadgeIcon(iconName: string, overlay: boolean, iconVariant: string, type?: string): TemplateResult {
+  private getBadgeIcon(iconName: string, backgroundClassPostfix: string): TemplateResult {
     return html`
       <mdc-icon
-        class="mdc-badge-icon ${classMap(this.getIconClasses(overlay, iconVariant, type))}"
+        class="mdc-badge-icon ${classMap({
+    'mdc-badge-overlay': this.overlay,
+    [`mdc-badge-icon__${backgroundClassPostfix}`]: true,
+  })}"
         name="${ifDefined(iconName)}"
         size="${DEFAULTS.ICON_SIZE}"
       ></mdc-icon>
@@ -126,46 +127,24 @@ class Badge extends Component {
 
   /**
    * Method to generate the badge dot template.
-   * @param overlay - boolean indicating whether the badge should have an overlay.
    * @returns the template result of the dot with mdc-badge-dot class.
    */
-  private getBadgeDot(overlay: boolean): TemplateResult {
-    return html`<div class="mdc-badge-dot ${classMap({ 'mdc-badge-overlay': overlay })}"></div>`;
-  }
-
-  /**
-   * This method generates the CSS classes for the badge icon.
-   * @param overlay - boolean indicating whether the badge should have an overlay.
-   * @param iconVariant - the variant of the icon badge.
-   * @param type - the type of the badge.
-   * @returns - an object containing the CSS classes for the icon.
-   */
-  private getIconClasses(overlay: boolean, iconVariant: string, type?: string): { [key: string]: boolean } {
-    const overLayClass = { 'mdc-badge-overlay': overlay };
-    const variantTypes = type === BADGE_TYPE.ICON ? ICON_VARIANT : ICON_STATE;
-    const iconVariantType = Object.values(variantTypes).includes(iconVariant) ? iconVariant : DEFAULTS.VARIANT;
-    const backgroundClass = { [`mdc-badge-icon__${iconVariantType}`]: true };
-    return {
-      ...overLayClass,
-      ...backgroundClass,
-    };
+  private getBadgeDot(): TemplateResult {
+    return html`<div class="mdc-badge-dot ${classMap({ 'mdc-badge-overlay': this.overlay })}"></div>`;
   }
 
   /**
    * Method to generate the badge text and counter template.
-   * @param maxCounter - the maximum limit which can be displayed on the badge
-   * @param overlay - whether the badge should have an overlay.
-   * @param counter - the number to be displayed on the badge
    * @returns the template result of the text.
    */
-  private getBadgeCounterText(maxCounter: number, overlay: boolean, counter?: number): TemplateResult {
+  private getBadgeCounterText(): TemplateResult {
     return html`
       <mdc-text
         type="${FONT_TYPE.BODY_SMALL_MEDIUM}"
         tagname="${VALID_TEXT_TAGS.DIV}"
-        class="mdc-badge-text ${classMap({ 'mdc-badge-overlay': overlay })}"
+        class="mdc-badge-text ${classMap({ 'mdc-badge-overlay': this.overlay })}"
       >
-        ${this.getCounterText(maxCounter, counter)}
+        ${this.getCounterText(this.maxCounter, this.counter)}
       </mdc-text>
     `;
   }
@@ -192,24 +171,24 @@ class Badge extends Component {
    */
   private getBadgeContentBasedOnType(): TemplateResult {
     if (this.variant && !Object.values(ICON_VARIANT).includes(this.variant)) {
-      this.variant = ICON_VARIANT.PRIMARY;
+      this.variant = DEFAULTS.VARIANT;
     }
-    const { counter, iconName, maxCounter, overlay, type, variant } = this;
+    const { iconName, type, variant } = this;
     switch (type) {
       case BADGE_TYPE.ICON:
-        return this.getBadgeIcon(iconName || '', overlay, variant, type);
+        return this.getBadgeIcon(iconName || '', variant);
       case BADGE_TYPE.COUNTER:
-        return this.getBadgeCounterText(maxCounter, overlay, counter);
+        return this.getBadgeCounterText();
       case BADGE_TYPE.SUCCESS:
-        return this.getBadgeIcon(ICON_NAMES_LIST.SUCCESS_ICON_NAME, overlay, ICON_STATE.SUCCESS);
+        return this.getBadgeIcon(ICON_NAMES_LIST.SUCCESS_ICON_NAME, ICON_STATE.SUCCESS);
       case BADGE_TYPE.WARNING:
-        return this.getBadgeIcon(ICON_NAMES_LIST.WARNING_ICON_NAME, overlay, ICON_STATE.WARNING);
+        return this.getBadgeIcon(ICON_NAMES_LIST.WARNING_ICON_NAME, ICON_STATE.WARNING);
       case BADGE_TYPE.ERROR:
-        return this.getBadgeIcon(ICON_NAMES_LIST.ERROR_ICON_NAME, overlay, ICON_STATE.ERROR);
+        return this.getBadgeIcon(ICON_NAMES_LIST.ERROR_ICON_NAME, ICON_STATE.ERROR);
       case BADGE_TYPE.DOT:
       default:
         this.type = BADGE_TYPE.DOT;
-        return this.getBadgeDot(overlay);
+        return this.getBadgeDot();
     }
   }
 

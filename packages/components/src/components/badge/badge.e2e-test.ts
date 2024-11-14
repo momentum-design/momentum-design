@@ -1,12 +1,13 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import { BADGE_TYPE, ICON_NAMES_LIST, DEFAULTS, ICON_VARIANT } from './badge.constants';
+import type { BadgeType, IconVariant } from './badge.types';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
-  type?: string;
+  type?: BadgeType;
   iconName?: string;
-  variant?: string;
+  variant?: IconVariant;
   counter?: number;
   maxCounter?: number;
   ariaLabel?: string;

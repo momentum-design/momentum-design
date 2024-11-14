@@ -3,6 +3,7 @@ import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DEFAULTS, PRESENCE_SIZE, PRESENCE_TYPE } from './presence.constants';
 import styles from './presence.styles';
+import type { PresenceType, PresenceSize } from './presence.types';
 
 /**
  * The `mdc-presence` component is a versatile UI element used to
@@ -35,7 +36,7 @@ class Presence extends Component {
    * @default active
    */
   @property({ type: String, reflect: true })
-  type = DEFAULTS.TYPE;
+  type: PresenceType = DEFAULTS.TYPE;
 
   /**
    * Acceptable values include:
@@ -49,7 +50,7 @@ class Presence extends Component {
    * @default small
    */
   @property({ type: String, reflect: true })
-  size = DEFAULTS.SIZE;
+  size: PresenceSize = DEFAULTS.SIZE;
 
   /**
    * Get the size of the presence icon based on the given size type
