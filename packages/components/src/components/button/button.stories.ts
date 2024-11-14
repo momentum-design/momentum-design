@@ -12,8 +12,8 @@ const render = (args: Args) => html`
   variant="${args.variant}"
   size="${args.size}"
   color="${args.color}"
-  prefix-icon="${args.prefixIcon}"
-  postfix-icon="${args.postfixIcon}"
+  prefix-icon="${args['prefix-icon']}"
+  postfix-icon="${args['postfix-icon']}"
   >${args.children}</mdc-button>`;
 
 const meta: Meta = {
@@ -92,7 +92,7 @@ export const PillButton: StoryObj = {
 export const PillWithPrefixIcon: StoryObj = {
   args: {
     children: 'Left Icon',
-    prefixIcon: 'info-circle-bold',
+    'prefix-icon': 'info-circle-bold',
     active: false,
     disabled: false,
     'soft-disabled': false,
@@ -105,7 +105,7 @@ export const PillWithPrefixIcon: StoryObj = {
 export const PillWithPostfixIcon: StoryObj = {
   args: {
     children: 'Right Icon',
-    postfixIcon: 'info-circle-bold',
+    'postfix-icon': 'info-circle-bold',
     active: false,
     disabled: false,
     'soft-disabled': false,
@@ -122,7 +122,7 @@ export const IconButton: StoryObj = {
     },
   },
   args: {
-    prefixIcon: 'info-circle-bold',
+    'prefix-icon': 'info-circle-bold',
     active: false,
     disabled: false,
     'soft-disabled': false,
