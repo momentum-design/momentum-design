@@ -10,7 +10,7 @@ import {
   ICON_BUTTON_SIZES,
   PILL_BUTTON_SIZES,
 } from './button.constants';
-import {
+import type {
   ButtonColor,
   ButtonType,
   ButtonVariant,
