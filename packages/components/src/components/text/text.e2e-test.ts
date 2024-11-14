@@ -70,11 +70,11 @@ test.describe('mdc-text', () => {
     // skipping visual regression for firefox and webkit due to flakiness
     await test.step('visual-regression', async () => {
       await test.step('matches screenshot of element', async () => {
-        await componentsPage.visualRegression.takeScreenshot('mdc-text, { element: text });
+        await componentsPage.visualRegression.takeScreenshot('mdc-text', { element: text });
       });
     });
   });
-  
+
   for (const textType of Object.values(FONT_TYPE)) {
     test(textType, async ({ componentsPage }) => {
       const text = await setup({ componentsPage, type: textType, children: textContent });
