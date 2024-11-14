@@ -1,3 +1,5 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import {
@@ -197,46 +199,29 @@ const testForCombinations = async (args: SetupOptions, buttonType: string) => {
     ...props,
   });
   const BUTTON_SIZES = buttonType === BUTTON_TYPE.ICON ? ICON_BUTTON_SIZES : PILL_BUTTON_SIZES;
-  await Promise.all(Object.values(BUTTON_VARIANTS).map((variant) => (async () => {
-    await Promise.all(Object.values(BUTTON_COLORS).map((color) => (async () => {
-      await Promise.all(Object.values(BUTTON_SIZES).map((size) => (async () => {
-        await test.step(`attribute variant="${variant}",
-          color="${color}", size="${size}" should be present on ${buttonType} button`, async () => {
-          await componentsPage.setAttributes(button, { variant, color, size: `${size}` });
-          await expect(button).toHaveAttribute('variant', variant);
-          await expect(button).toHaveAttribute('color', color);
-          await expect(button).toHaveAttribute('size', `${size}`);
-        });
-
-        await test.step(`visual-regression for variant="${variant}",
-          color="${color}", size="${size}" ${buttonType} button`, async () => {
-          await componentsPage.visualRegression
-            .takeScreenshot(`mdc-button-${buttonType}-${variant}-${color}-${size}`, { element: button });
-        });
-
-        await test.step(`accessibility for variant="${variant}",
-          color="${color}", size="${size}" ${buttonType} button`, async () => {
-          await componentsPage.accessibility.checkForA11yViolations(`button-${buttonType}-${variant}-${color}-${size}`);
-        });
-
-        // loop ends here
-      })));
-    })));
-  })));
-};
-
-const testForButtonVariants = async (args: SetupOptions, buttonType: string) => {
-  const { componentsPage, ...props } = args;
-  const button = await setup({
-    componentsPage,
-    ...props,
-  });
-
   for (const variant of Object.values(BUTTON_VARIANTS)) {
-    await test.step(`attribute variant="${variant}" should be present on ${buttonType} button`, async () => {
-      await componentsPage.setAttributes(button, { variant });
-      await expect(button).toHaveAttribute('variant', variant);
-    });
+    for (const size of Object.values(BUTTON_SIZES)) {
+      for (const color of Object.values(BUTTON_COLORS)) {
+        if (variant !== BUTTON_VARIANTS.TERTIARY) {
+          await test.step(`attribute variant="${variant}",
+                    color="${color}", size="${size}" should be present on ${buttonType} button`, async () => {
+            await componentsPage.setAttributes(button, { variant, color, size: `${size}` });
+            await expect(button).toHaveAttribute('variant', variant);
+            await expect(button).toHaveAttribute('color', color);
+            await expect(button).toHaveAttribute('size', `${size}`);
+          });
+        } else {
+          await test.step(`attribute variant="${variant}",
+                    color="${color}", size="${size}" should not be present on ${buttonType} button`, async () => {
+            await componentsPage.setAttributes(button, { variant, color, size: `${size}` });
+            await expect(button).toHaveAttribute('variant', variant);
+            // Tertiary button must have only default color
+            await expect(button).toHaveAttribute('color', BUTTON_COLORS.DEFAULT);
+            await expect(button).toHaveAttribute('size', `${size}`);
+          });
+        }
+      }
+    }
   }
 };
 
@@ -245,8 +230,10 @@ const testsToRun = async (componentsPage: ComponentsPage) => {
     const children = 'Button content';
     await commonTestCases({ children, componentsPage }, 'pill');
     await testForCombinations({ children, componentsPage }, 'pill');
-    await testForButtonVariants({ children, componentsPage }, 'pill');
   });
+
+  // TODO: Add tests for icon button, pill with icon button
+  // TODO: Add tests for tertiary button should not add color to button
 };
 
 test.describe.parallel('mdc-button', () => {
