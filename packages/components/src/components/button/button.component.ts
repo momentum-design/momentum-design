@@ -10,6 +10,13 @@ import {
   ICON_BUTTON_SIZES,
   PILL_BUTTON_SIZES,
 } from './button.constants';
+import {
+  ButtonColor,
+  ButtonType,
+  ButtonVariant,
+  PillButtonSize,
+  IconButtonSize,
+} from './button.types';
 import { getIconNameWithoutStyle, getIconSize } from './button.utils';
 
 /**
@@ -83,7 +90,7 @@ class Button extends Component {
    * - **Tertiary**: No background or border, appears as plain text but retains all button functionalities.
    * @default primary
    */
-  @property({ type: String }) variant = DEFAULTS.VARIANT;
+  @property({ type: String }) variant: ButtonVariant = DEFAULTS.VARIANT;
 
   /**
    * Button sizing is based on the button type.
@@ -92,13 +99,13 @@ class Button extends Component {
    * - Tertiary icon button cam also be 20.
    * @default 32
    */
-  @property({ type: Number }) size = DEFAULTS.SIZE;
+  @property({ type: Number }) size: PillButtonSize | IconButtonSize = DEFAULTS.SIZE;
 
   /**
    * There are 5 colors for button: positive, negative, accent, promotional, default.
    * @default default
    */
-  @property({ type: String }) color = DEFAULTS.COLOR;
+  @property({ type: String }) color: ButtonColor = DEFAULTS.COLOR;
 
   /**
    * The tabindex of the button.
@@ -112,7 +119,7 @@ class Button extends Component {
    */
   @property({ type: String }) override role = 'button';
 
-  @state() private type = DEFAULTS.TYPE;
+  @state() private type: ButtonType = DEFAULTS.TYPE;
 
   @state() private iconSize = 1;
 
@@ -124,7 +131,6 @@ class Button extends Component {
 
   constructor() {
     super();
-
     this.addEventListener('click', this.handleClick);
     this.addEventListener('keydown', this.handleKeyDown);
     this.addEventListener('keyup', this.handleKeyUp);
@@ -206,7 +212,7 @@ class Button extends Component {
    *
    * @param variant - The variant to set.
    */
-  private setVariant(variant: string) {
+  private setVariant(variant: ButtonVariant) {
     if (!Object.values(BUTTON_VARIANTS).includes(variant)) {
       this.setAttribute('variant', `${DEFAULTS.VARIANT}`);
     } else {
@@ -221,12 +227,12 @@ class Button extends Component {
    *
    * @param size - The size to set.
    */
-  private setSize(size: number) {
+  private setSize(size: PillButtonSize | IconButtonSize) {
     const isIconType = this.type === BUTTON_TYPE.ICON;
     const isValidSize = isIconType
       ? Object.values(ICON_BUTTON_SIZES).includes(size)
       && !(size === ICON_BUTTON_SIZES[20] && this.variant !== BUTTON_VARIANTS.TERTIARY)
-      : Object.values(PILL_BUTTON_SIZES).includes(size);
+      : Object.values(PILL_BUTTON_SIZES).includes(size as PillButtonSize);
 
     if (!isValidSize) {
       this.setAttribute('size', `${DEFAULTS.SIZE}`);
@@ -242,7 +248,7 @@ class Button extends Component {
    *
    * @param color - The color to set.
    */
-  private setColor(color: string) {
+  private setColor(color: ButtonColor) {
     if (!Object.values(BUTTON_COLORS).includes(color) || this.variant === BUTTON_VARIANTS.TERTIARY) {
       this.setAttribute('color', `${DEFAULTS.COLOR}`);
     } else {
