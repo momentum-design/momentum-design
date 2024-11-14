@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
-import { expect } from '@playwright/test';
+import { expect, Locator } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import {
   BUTTON_COLORS,
@@ -53,23 +53,15 @@ const commonTestCases = async (args: SetupOptions, buttonType: string) => {
     componentsPage,
     ...props,
   });
-  /**
-   * ACCESSIBILITY
-   */
+
+  // Default values for button
   await test.step(`accessibility for ${buttonType} button`, async () => {
     await componentsPage.accessibility.checkForA11yViolations(`button-${buttonType}-default`);
   });
 
-  /**
-   * VISUAL REGRESSION
-   */
   await test.step(`visual-regression for ${buttonType} button`, async () => {
     await componentsPage.visualRegression.takeScreenshot(`mdc-button-${buttonType}-default`, { element: button });
   });
-
-  /**
-   * ATTRIBUTES
-   */
 
   await test.step(`attributes for ${buttonType} button`, async () => {
     await test.step('attributes should be present on component by default', async () => {
@@ -89,7 +81,9 @@ const commonTestCases = async (args: SetupOptions, buttonType: string) => {
     await expect(button).toHaveAttribute('size', `${DEFAULTS.SIZE}`);
     await expect(button).toHaveAttribute('color', DEFAULTS.COLOR);
   });
+};
 
+const testForAttributes = async (componentsPage: ComponentsPage, button: Locator, buttonType: string) => {
   // Disabled button
   await test.step(`attribute disabled should be present on ${buttonType} button`, async () => {
     await componentsPage.setAttributes(button, {
@@ -210,12 +204,18 @@ const testForCombinations = async (args: SetupOptions, buttonType: string) => {
             await expect(button).toHaveAttribute('color', color);
             await expect(button).toHaveAttribute('size', `${size}`);
           });
+          await test.step(`accessibility,
+            visual-regression and attributes for 
+            variant="${variant}", color="${color}", size="${size}" ${buttonType} button`, async () => {
+            await testForAttributes(componentsPage, button, `${buttonType}-${variant}-${color}-${size}`);
+          });
         } else {
           await test.step(`attribute variant="${variant}",
                     color="${color}", size="${size}" should not be present on ${buttonType} button`, async () => {
             await componentsPage.setAttributes(button, { variant, color, size: `${size}` });
             await expect(button).toHaveAttribute('variant', variant);
             // Tertiary button must have only default color
+            await expect(button).not.toHaveAttribute('color', color);
             await expect(button).toHaveAttribute('color', BUTTON_COLORS.DEFAULT);
             await expect(button).toHaveAttribute('size', `${size}`);
           });
@@ -233,7 +233,8 @@ const testsToRun = async (componentsPage: ComponentsPage) => {
   });
 
   // TODO: Add tests for icon button, pill with icon button
-  // TODO: Add tests for tertiary button should not add color to button
+  // TODO: Pill should not support icon button sizing
+  // TODO: Key pressed, focused events test.
 };
 
 test.describe.parallel('mdc-button', () => {
