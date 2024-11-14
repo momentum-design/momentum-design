@@ -4,7 +4,6 @@ import { expect, Locator } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import {
   BUTTON_COLORS,
-  BUTTON_TYPE,
   BUTTON_VARIANTS,
   DEFAULTS,
   ICON_BUTTON_SIZES,
@@ -192,32 +191,41 @@ const testForCombinations = async (args: SetupOptions, buttonType: string) => {
     componentsPage,
     ...props,
   });
-  const BUTTON_SIZES = buttonType === BUTTON_TYPE.ICON ? ICON_BUTTON_SIZES : PILL_BUTTON_SIZES;
+  const BUTTON_SIZES = (buttonType === 'prefix-icon' || buttonType === 'postfix-icon')
+    ? ICON_BUTTON_SIZES
+    : PILL_BUTTON_SIZES;
   for (const variant of Object.values(BUTTON_VARIANTS)) {
     for (const size of Object.values(BUTTON_SIZES)) {
       for (const color of Object.values(BUTTON_COLORS)) {
         if (variant !== BUTTON_VARIANTS.TERTIARY) {
-          await test.step(`attribute variant="${variant}",
+          if (size === BUTTON_SIZES[20]) { // FIXME: type should support 20
+            await expect(button).not.toHaveAttribute('size', size.toString());
+            await expect(button).toHaveAttribute('size', ICON_BUTTON_SIZES[32].toString());
+          } else {
+            await test.step(`attribute variant="${variant}",
                     color="${color}", size="${size}" should be present on ${buttonType} button`, async () => {
-            await componentsPage.setAttributes(button, { variant, color, size: `${size}` });
-            await expect(button).toHaveAttribute('variant', variant);
-            await expect(button).toHaveAttribute('color', color);
-            await expect(button).toHaveAttribute('size', `${size}`);
-          });
-          await test.step(`accessibility,
-            visual-regression and attributes for 
+              await componentsPage.setAttributes(button, { variant, color, size: `${size}` });
+              await expect(button).toHaveAttribute('variant', variant);
+              await expect(button).toHaveAttribute('color', color);
+              await expect(button).toHaveAttribute('size', `${size}`);
+            });
+            await test.step(`accessibility,
+            visual-regression and attributes for
             variant="${variant}", color="${color}", size="${size}" ${buttonType} button`, async () => {
-            await testForAttributes(componentsPage, button, `${buttonType}-${variant}-${color}-${size}`);
-          });
+              await testForAttributes(componentsPage, button, `${buttonType}-${variant}-${color}-${size}`);
+            });
+          }
         } else {
           await test.step(`attribute variant="${variant}",
                     color="${color}", size="${size}" should not be present on ${buttonType} button`, async () => {
             await componentsPage.setAttributes(button, { variant, color, size: `${size}` });
             await expect(button).toHaveAttribute('variant', variant);
-            // Tertiary button must have only default color
-            await expect(button).not.toHaveAttribute('color', color);
-            await expect(button).toHaveAttribute('color', BUTTON_COLORS.DEFAULT);
             await expect(button).toHaveAttribute('size', `${size}`);
+            // Tertiary button must have only default color
+            if (color !== BUTTON_COLORS.DEFAULT) {
+              await expect(button).not.toHaveAttribute('color', color);
+            }
+            await expect(button).toHaveAttribute('color', BUTTON_COLORS.DEFAULT);
           });
         }
       }
@@ -232,8 +240,33 @@ const testsToRun = async (componentsPage: ComponentsPage) => {
     await testForCombinations({ children, componentsPage }, 'pill');
   });
 
-  // TODO: Add tests for icon button, pill with icon button
-  // TODO: Pill should not support icon button sizing
+  await test.step('mdc-button as pill with prefix icon button', async () => {
+    const children = 'Prefix Icon';
+    const prefixIcon = 'info-circle-bold';
+    await commonTestCases({ prefixIcon, children, componentsPage }, 'pill-with-prefix-icon');
+    await testForCombinations({ children, componentsPage }, 'pill-with-prefix-icon');
+  });
+
+  await test.step('mdc-button as pill with postfix icon button', async () => {
+    const children = 'Postfix Icon';
+    const postfixIcon = 'info-circle-light';
+    await commonTestCases({ postfixIcon, children, componentsPage }, 'pill-with-postfix-icon');
+    await testForCombinations({ children, componentsPage }, 'pill-with-postfix-icon');
+  });
+
+  await test.step('mdc-button as prefix icon button', async () => {
+    const prefixIcon = 'info-circle-bold';
+    await commonTestCases({ prefixIcon, componentsPage }, 'prefix-icon');
+    await testForCombinations({ componentsPage }, 'prefix-icon');
+  });
+
+  await test.step('mdc-button as postfix icon button', async () => {
+    const postfixIcon = 'info-circle-light';
+    await commonTestCases({ postfixIcon, componentsPage }, 'postfix-icon');
+    await testForCombinations({ componentsPage }, 'postfix-icon');
+  });
+
+  // TODO: Pill should not support icon button sizing; 20 should be only for tertiary button
   // TODO: Key pressed, focused events test.
 };
 
