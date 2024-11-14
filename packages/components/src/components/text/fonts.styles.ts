@@ -1,16 +1,16 @@
 import { css } from 'lit';
 
 export const fontsStyles = css`
-  :host([tagname='h1']),
-  :host([tagname='h2']),
-  :host([tagname='h3']),
-  :host([tagname='h4']),
-  :host([tagname='h5']),
-  :host([tagname='h6']),
-  :host([tagname='p']),
-  :host([tagname='small']),
-  :host([tagname='span']),
-  :host([tagname='div']) {
+  :host([tagname='h1'])::part(text),
+  :host([tagname='h2'])::part(text),
+  :host([tagname='h3'])::part(text),
+  :host([tagname='h4'])::part(text),
+  :host([tagname='h5'])::part(text),
+  :host([tagname='h6'])::part(text),
+  :host([tagname='p'])::part(text),
+  :host([tagname='small'])::part(text),
+  :host([tagname='span'])::part(text),
+  :host([tagname='div'])::part(text) {
     all: unset; /* This removes default styles applied by the browser */
   }
 
