@@ -124,6 +124,7 @@ const preview = {
         order: ['Consumption', 'Styling', 'Components', 'Work In Progress'],
       },
     },
+    direction: 'ltr'
   },
   decorators: [withThemeProvider, withIconProvider],
   globalTypes: {
