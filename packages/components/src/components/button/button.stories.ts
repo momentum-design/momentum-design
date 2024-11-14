@@ -92,7 +92,7 @@ export const PillButton: StoryObj = {
 export const PillWithPrefixIcon: StoryObj = {
   args: {
     children: 'Left Icon',
-    'prefix-icon': 'info-circle-bold',
+    prefixIcon: 'info-circle-bold',
     active: false,
     disabled: false,
     'soft-disabled': false,
@@ -105,7 +105,7 @@ export const PillWithPrefixIcon: StoryObj = {
 export const PillWithPostfixIcon: StoryObj = {
   args: {
     children: 'Right Icon',
-    'postfix-icon': 'info-circle-bold',
+    postfixIcon: 'info-circle-bold',
     active: false,
     disabled: false,
     'soft-disabled': false,
@@ -122,7 +122,7 @@ export const IconButton: StoryObj = {
     },
   },
   args: {
-    'prefix-icon': 'info-circle-bold',
+    prefixIcon: 'info-circle-bold',
     active: false,
     disabled: false,
     'soft-disabled': false,
