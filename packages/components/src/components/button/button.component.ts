@@ -120,7 +120,7 @@ class Button extends Component {
    * The role of the button.
    * @default button
    */
-  @property({ type: String }) override role = 'button';
+  @property({ type: String, reflect: true }) override role = 'button';
 
   @state() private type: ButtonType = DEFAULTS.TYPE;
 
