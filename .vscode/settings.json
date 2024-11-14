@@ -3,20 +3,14 @@
     "**/.yarn": true,
     "**/.pnp.*": true
   },
-  "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
+  "prettier.prettierPath": "node_modules/prettier",
   "typescript.tsdk": ".yarn/sdks/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "eslint.nodePath": ".yarn/sdks",
   "files.associations": {
     "*.json": "jsonc"
   },
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "astro",
-    "typescript",
-    "typescriptreact"
-  ],
+  "eslint.validate": ["javascript", "javascriptreact", "astro", "typescript", "typescriptreact"],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
@@ -30,12 +24,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "ms-vsliveshare.vsliveshare"
   },
-  "cSpell.words": [
-    "autodocs",
-    "iconprovider",
-    "initialise",
-    "themeprovider"
-  ],
+  "cSpell.words": ["autodocs", "iconprovider", "initialise", "themeprovider"]
 }

@@ -87,18 +87,32 @@ const config: PlaywrightTestConfig = {
     },
 
     /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: {
-    //     ...devices['Pixel 5'],
-    //   },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: {
-    //     ...devices['iPhone 12'],
-    //   },
-    // },
+    {
+      name: 'mobile chrome',
+      use: {
+        ...devices['Pixel 5'],
+      },
+    },
+    {
+      name: 'mobile safari',
+      use: {
+        ...devices['iPhone 12'],
+      },
+    },
+
+    /* Test against tablet viewports. */
+    {
+      name: 'tablet safari',
+      use: {
+        ...devices['iPad Pro 11'],
+      },
+    },
+    {
+      name: 'tablet chrome',
+      use: {
+        ...devices['Galaxy Tab S4'],
+      },
+    },
 
     /* Test against branded browsers. */
     {

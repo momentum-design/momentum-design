@@ -26,8 +26,22 @@ class VisualRegression {
     const isSnapshotRun = process.env.E2E_SKIP_SNAPSHOT !== 'true';
 
     if (isSnapshotRun) {
+      // LTR Screenshot
+      await this.page.evaluate(() => {
+        document.documentElement.setAttribute('dir', 'ltr');
+      });
       expect(await elementToTakeScreenShotFrom.screenshot(options)).toMatchSnapshot({
         name: `${name}.${CONSTANTS.VISUAL_REGRESSION.FILE_EXTENSION}`,
+        threshold: CONSTANTS.VISUAL_REGRESSION.THRESHOLD,
+        maxDiffPixelRatio: CONSTANTS.VISUAL_REGRESSION.MAX_DIFF_PIXELS_RATIO,
+      });
+
+      // RTL Screenshot
+      await this.page.evaluate(() => {
+        document.documentElement.setAttribute('dir', 'rtl');
+      });
+      expect(await elementToTakeScreenShotFrom.screenshot(options)).toMatchSnapshot({
+        name: `${name}-rtl.${CONSTANTS.VISUAL_REGRESSION.FILE_EXTENSION}`,
         threshold: CONSTANTS.VISUAL_REGRESSION.THRESHOLD,
         maxDiffPixelRatio: CONSTANTS.VISUAL_REGRESSION.MAX_DIFF_PIXELS_RATIO,
       });
