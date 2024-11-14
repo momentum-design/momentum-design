@@ -1,11 +1,12 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import { DEFAULTS, PRESENCE_TYPE, PRESENCE_SIZE } from './presence.constants';
+import type { PresenceType, PresenceSize } from './presence.types';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
-  type?: string;
-  size?: string;
+  type?: PresenceType;
+  size?: PresenceSize;
 };
 
 const setup = async (args: SetupOptions) => {
