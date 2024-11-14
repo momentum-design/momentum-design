@@ -30,6 +30,11 @@
       "tagName": "@dependency",
       "syntaxKind": "modifier",
       "allowMultiple": true
+    },
+    {
+      "tagName": "@default",
+      "syntaxKind": "modifier",
+      "allowMultiple": false
     }
   ]
 }

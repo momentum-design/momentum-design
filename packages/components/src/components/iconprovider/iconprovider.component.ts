@@ -41,13 +41,15 @@ class IconProvider extends Provider<IconProviderContext> {
   url?: string;
 
   /**
-   * File extension of icons, default: 'svg'
+   * File extension of icons
+   * @default svg
    */
   @property({ type: String, attribute: 'file-extension', reflect: true })
   fileExtension?: string = DEFAULTS.FILE_EXTENSION;
 
   /**
-   * Length unit used for sizing of icons, default: 'em'
+   * Length unit used for sizing of icons
+   * @default em
    */
   @property({ type: String, attribute: 'length-unit', reflect: true })
   lengthUnit: string = DEFAULTS.LENGTH_UNIT;
@@ -55,9 +57,10 @@ class IconProvider extends Provider<IconProviderContext> {
   /**
    * The default size of the icon.
    * If not set, it falls back to the size defined by the length unit.
+   * @default 1
    */
   @property({ type: Number, reflect: true })
-  size?: number = DEFAULTS.LENGTH_UNIT_SIZE[DEFAULTS.LENGTH_UNIT];
+  size?: number = DEFAULTS.SIZE;
 
   private updateValuesInContext() {
     // only update fileExtension on context if its an allowed fileExtension
