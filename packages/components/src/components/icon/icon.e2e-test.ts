@@ -67,7 +67,7 @@ test('mdc-icon', async ({ componentsPage }) => {
   });
 
   const visualIcons = await visualTestingSetup({ componentsPage, name });
-  
+
   /**
    * VISUAL REGRESSION
    */
