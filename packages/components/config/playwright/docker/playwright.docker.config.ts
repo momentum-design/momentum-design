@@ -90,8 +90,7 @@ const config: PlaywrightTestConfig = {
     {
       name: 'mobile chrome',
       use: {
-        ...devices['Pixel 5'],
-        channel: 'chrome',
+        ...devices['Galaxy S9+'],
       },
     },
     {
@@ -103,16 +102,15 @@ const config: PlaywrightTestConfig = {
 
     /* Test against tablet viewports. */
     {
-      name: 'tablet safari',
+      name: 'tablet chrome',
       use: {
-        ...devices['iPad Pro 11'],
+        ...devices['Galaxy Tab A'],
       },
     },
     {
-      name: 'tablet chrome',
+      name: 'tablet safari',
       use: {
-        ...devices['Galaxy Tab S4'],
-        channel: 'chrome',
+        ...devices['iPad Pro 11'],
       },
     },
 
