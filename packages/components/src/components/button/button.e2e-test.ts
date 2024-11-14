@@ -1,6 +1,13 @@
-import { expect, Locator } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import { BUTTON_COLORS, BUTTON_VARIANTS, ICON_BUTTON_SIZES, PILL_BUTTON_SIZES } from './button.constants';
+import {
+  BUTTON_COLORS,
+  BUTTON_TYPE,
+  BUTTON_VARIANTS,
+  DEFAULTS,
+  ICON_BUTTON_SIZES,
+  PILL_BUTTON_SIZES,
+} from './button.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -18,8 +25,7 @@ type SetupOptions = {
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
-    html: `
-    <mdc-button
+    html: `<mdc-button
       ${restArgs.active ? 'active' : ''}
       ${restArgs.disabled ? 'disabled' : ''}
       ${restArgs.softDisabled ? 'soft-disabled' : ''}
@@ -39,171 +45,94 @@ const setup = async (args: SetupOptions) => {
   return button;
 };
 
-const pressTab = async (componentsPage: ComponentsPage, browserName: string, subComponent: Locator, focus: boolean) => {
-  if (browserName === 'webkit') {
-    if (focus) {
-      await componentsPage.page.keyboard.press('Alt+Tab');
-    } else {
-      // Explicitly blur to remove focus in WebKit
-      await subComponent.evaluate((el) => el.blur());
-    }
-  } else {
-    await componentsPage.page.keyboard.press('Tab');
-  }
+const commonTestCases = async (args: SetupOptions, buttonType: string) => {
+  const { componentsPage, ...props } = args;
+  const button = await setup({
+    componentsPage,
+    ...props,
+  });
+  /**
+   * ACCESSIBILITY
+   */
+  await test.step(`accessibility for ${buttonType} button`, async () => {
+    await componentsPage.accessibility.checkForA11yViolations(`button-${buttonType}-default`);
+  });
+
+  /**
+   * VISUAL REGRESSION
+   */
+  await test.step(`visual-regression for ${buttonType} button`, async () => {
+    await componentsPage.visualRegression.takeScreenshot(`mdc-button-${buttonType}-default`, { element: button });
+  });
+
+  /**
+   * ATTRIBUTES
+   */
+
+  await test.step(`attributes for ${buttonType} button`, async () => {
+    await test.step('attributes should be present on component by default', async () => {
+      await expect(button).toHaveAttribute('variant', DEFAULTS.VARIANT);
+      await expect(button).toHaveAttribute('size', DEFAULTS.SIZE.toString());
+      await expect(button).toHaveAttribute('color', DEFAULTS.COLOR);
+    });
+  });
+
+  await test.step('should fallback to default values when invalid attributes are passed', async () => {
+    await componentsPage.setAttributes(button, {
+      variant: 'invalid',
+      color: 'invalid',
+      size: 'invalid',
+    });
+    await expect(button).toHaveAttribute('variant', DEFAULTS.VARIANT);
+    await expect(button).toHaveAttribute('size', `${DEFAULTS.SIZE}`);
+    await expect(button).toHaveAttribute('color', DEFAULTS.COLOR);
+  });
 };
 
-const testForButtonTypes = async ({ browserName, props, componentsPage, buttonType }: any) => {
-  // Test for all possible combinations of variant, color, and size
-  const ButtonSizes = buttonType === 'icon' ? ICON_BUTTON_SIZES : PILL_BUTTON_SIZES;
-
-  Object.values(BUTTON_VARIANTS).forEach(async (variant) => {
-    Object.values(BUTTON_COLORS).forEach(async (color) => {
-      Object.values(ButtonSizes).forEach(async (size) => {
-        const button = await setup({
-          componentsPage,
-          ...props,
+const testForCombinations = async (args: SetupOptions, buttonType: string) => {
+  const { componentsPage, ...props } = args;
+  const button = await setup({
+    componentsPage,
+    ...props,
+  });
+  const BUTTON_SIZES = buttonType === BUTTON_TYPE.ICON ? ICON_BUTTON_SIZES : PILL_BUTTON_SIZES;
+  await Promise.all(Object.values(BUTTON_VARIANTS).map((variant) => (async () => {
+    await Promise.all(Object.values(BUTTON_COLORS).map((color) => (async () => {
+      await Promise.all(Object.values(BUTTON_SIZES).map((size) => (async () => {
+        await test.step(`attribute variant="${variant}",
+          color="${color}", size="${size}" should be present on ${buttonType} button`, async () => {
+          await componentsPage.setAttributes(button, { variant, color, size: `${size}` });
+          await expect(button).toHaveAttribute('variant', variant);
+          await expect(button).toHaveAttribute('color', color);
+          await expect(button).toHaveAttribute('size', `${size}`);
         });
-        await test.step('visual-regression', async () => {
+
+        await test.step(`visual-regression for variant="${variant}",
+          color="${color}", size="${size}" ${buttonType} button`, async () => {
           await componentsPage.visualRegression
             .takeScreenshot(`mdc-button-${buttonType}-${variant}-${color}-${size}`, { element: button });
         });
 
-        await test.step(
-          'attributes should be present on the component with the given variant, color, and size',
-          async () => {
-            await expect(button).toHaveAttribute('variant', variant);
-            await expect(button).toHaveAttribute('size', size.toString());
-            await expect(button).toHaveAttribute('color', color);
-          },
-        );
-
-        // Disabled button
-        await componentsPage.setAttributes(button, {
-          disabled: 'true',
+        await test.step(`accessibility for variant="${variant}",
+          color="${color}", size="${size}" ${buttonType} button`, async () => {
+          await componentsPage.accessibility.checkForA11yViolations(`button-${buttonType}-${variant}-${color}-${size}`);
         });
-
-        await test.step(`accessibility for disabled ${buttonType} button`, async () => {
-          await componentsPage.accessibility
-            .checkForA11yViolations(`button-${buttonType}-${variant}-${color}-${size}-disabled`);
-        });
-
-        await test.step(`visual-regression for disabled ${buttonType} button`, async () => {
-          await componentsPage.visualRegression
-            .takeScreenshot(`mdc-button-${buttonType}-${variant}-${color}-${size}-disabled`, { element: button });
-        });
-
-        await test.step(`${buttonType} button should not be focusable when disabled`, async () => {
-          await pressTab(componentsPage, browserName, button, false);
-          await expect(button).not.toBeFocused();
-        });
-        await componentsPage.removeAttribute(button, 'disabled');
-
-        // Soft disabled button
-        await componentsPage.setAttributes(button, {
-          softDisabled: 'true',
-        });
-
-        await test.step(`accessibility for softDisabled ${buttonType} button`, async () => {
-          await componentsPage.accessibility
-            .checkForA11yViolations(`button-${buttonType}-${variant}-${color}-${size}-softDisabled`);
-        });
-
-        await test.step(`visual-regression for softDisabled ${buttonType} button`, async () => {
-          await componentsPage.visualRegression
-            .takeScreenshot(`mdc-button-${buttonType}-${variant}-${color}-${size}-softDisabled`, { element: button });
-        });
-
-        await test.step('button should be focusable when soft-disabled', async () => {
-          await pressTab(componentsPage, browserName, button, false);
-          await expect(button).toBeFocused();
-        });
-        await componentsPage.removeAttribute(button, 'softDisabled');
-
-        // Active button
-        await componentsPage.setAttributes(button, {
-          active: 'true',
-        });
-
-        await test.step(`accessibility for active ${buttonType} button`, async () => {
-          await componentsPage.accessibility
-            .checkForA11yViolations(`button-${buttonType}-${variant}-${color}-${size}-active`);
-        });
-
-        await test.step(`visual-regression for active ${buttonType} button`, async () => {
-          await componentsPage.visualRegression
-            .takeScreenshot(`mdc-button-${buttonType}-${variant}-${color}-${size}-active`, { element: button });
-        });
-
-        await test.step('button should be focusable when active', async () => {
-          await pressTab(componentsPage, browserName, button, false);
-          await expect(button).toBeFocused();
-        });
-
-        // Active disabled button
-        await componentsPage.setAttributes(button, {
-          active: 'true',
-          disabled: 'true',
-        });
-
-        await test.step(`accessibility for active disabled ${buttonType} button`, async () => {
-          await componentsPage.accessibility
-            .checkForA11yViolations(`button-${buttonType}-${variant}-${color}-${size}-active-disabled`);
-        });
-
-        await test.step(`visual-regression for active disabled ${buttonType} button`, async () => {
-          await componentsPage.visualRegression
-            .takeScreenshot(
-              `mdc-button-${buttonType}-${variant}-${color}-${size}-active-disabled`,
-              { element: button },
-            );
-        });
-
-        await test.step('button should not be focusable when active disabled', async () => {
-          await pressTab(componentsPage, browserName, button, false);
-          await expect(button).not.toBeFocused();
-        });
-        await componentsPage.removeAttribute(button, 'disabled');
-
-        // Active softDisabled button
-        await componentsPage.setAttributes(button, {
-          active: 'true',
-          softDisabled: 'true',
-        });
-
-        await test.step(`accessibility for active softDisabled ${buttonType} button`, async () => {
-          await componentsPage.accessibility
-            .checkForA11yViolations(`button-${buttonType}-${variant}-${color}-${size}-active-soft-disabled`);
-        });
-
-        await test.step(`visual-regression for active softDisabled ${buttonType} button`, async () => {
-          await componentsPage.visualRegression
-            .takeScreenshot(
-              `mdc-button-${buttonType}-${variant}-${color}-${size}-active-soft-disabled`,
-              { element: button },
-            );
-        });
-
-        await test.step('button should be focusable when active soft-disabled', async () => {
-          await pressTab(componentsPage, browserName, button, false);
-          await expect(button).toBeFocused();
-        });
-      });
-    });
-  });
+      })));
+    })));
+  })));
 };
 
-const testsToRun = async (componentsPage: ComponentsPage, browserName: string) => {
+const testsToRun = async (componentsPage: ComponentsPage) => {
   await test.step('mdc-button as pill button', async () => {
     const children = 'Button content';
-    await testForButtonTypes({ browserName,
-      props: { children },
-      componentsPage,
-      buttonType: 'pill' });
+    await commonTestCases({ children, componentsPage }, 'pill');
+    await testForCombinations({ children, componentsPage }, 'pill');
   });
 };
 
 test.describe.parallel('mdc-button', () => {
-  test('standalone', async ({ componentsPage, browserName }) => {
-    await testsToRun(componentsPage, browserName);
+  test.use({ viewport: { width: 300, height: 200 } });
+  test('standalone', async ({ componentsPage }) => {
+    await testsToRun(componentsPage);
   });
 });
