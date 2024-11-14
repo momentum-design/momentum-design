@@ -87,6 +87,107 @@ const commonTestCases = async (args: SetupOptions, buttonType: string) => {
     await expect(button).toHaveAttribute('size', `${DEFAULTS.SIZE}`);
     await expect(button).toHaveAttribute('color', DEFAULTS.COLOR);
   });
+
+  // Disabled button
+  await test.step(`attribute disabled should be present on ${buttonType} button`, async () => {
+    await componentsPage.setAttributes(button, {
+      disabled: 'true',
+    });
+    await expect(button).toHaveAttribute('disabled');
+  });
+
+  await test.step(`accessibility for disabled ${buttonType} button`, async () => {
+    await componentsPage.accessibility
+      .checkForA11yViolations(`button-${buttonType}-disabled`);
+  });
+
+  await test.step(`visual-regression for disabled ${buttonType} button`, async () => {
+    await componentsPage.visualRegression
+      .takeScreenshot(`mdc-button-${buttonType}-disabled`, { element: button });
+    await componentsPage.removeAttribute(button, 'disabled');
+  });
+
+  // Soft Disabled button
+  await test.step(`attribute soft-disabled should be present on ${buttonType} button`, async () => {
+    await componentsPage.setAttributes(button, {
+      'soft-disabled': 'true',
+    });
+    await expect(button).toHaveAttribute('soft-disabled');
+  });
+
+  await test.step(`accessibility for soft-disabled ${buttonType} button`, async () => {
+    await componentsPage.accessibility
+      .checkForA11yViolations(`button-${buttonType}-soft-disabled`);
+  });
+
+  await test.step(`visual-regression for soft-disabled ${buttonType} button`, async () => {
+    await componentsPage.visualRegression
+      .takeScreenshot(`mdc-button-${buttonType}-soft-disabled`, { element: button });
+    await componentsPage.removeAttribute(button, 'soft-disabled');
+  });
+
+  // Active button
+  await test.step(`attribute active should be present on ${buttonType} button`, async () => {
+    await componentsPage.setAttributes(button, {
+      active: 'true',
+    });
+    await expect(button).toHaveAttribute('active');
+  });
+
+  await test.step(`accessibility for active ${buttonType} button`, async () => {
+    await componentsPage.accessibility.checkForA11yViolations(`button-${buttonType}-active`);
+  });
+
+  await test.step(`visual-regression for active ${buttonType} button`, async () => {
+    await componentsPage.visualRegression
+      .takeScreenshot(`mdc-button-${buttonType}-active`, { element: button });
+    await componentsPage.removeAttribute(button, 'active');
+  });
+
+  // Active Disabled button
+  await test.step(`attribute active and disabled should be present on ${buttonType} button`, async () => {
+    await componentsPage.setAttributes(button, {
+      disabled: 'true',
+      active: 'true',
+    });
+    await expect(button).toHaveAttribute('disabled');
+    await expect(button).toHaveAttribute('active');
+  });
+
+  await test.step(`accessibility for active and disabled ${buttonType} button`, async () => {
+    await componentsPage.setAttributes(button, { role: 'button' });
+    await componentsPage.accessibility
+      .checkForA11yViolations(`button-${buttonType}-active-disabled`);
+  });
+
+  await test.step(`visual-regression for active and disabled ${buttonType} button`, async () => {
+    await componentsPage.visualRegression
+      .takeScreenshot(`mdc-button-${buttonType}-active-disabled`, { element: button });
+    await componentsPage.removeAttribute(button, 'disabled');
+    await componentsPage.removeAttribute(button, 'active');
+  });
+
+  // Soft Disabled button
+  await test.step(`attribute active and soft-disabled should be present on ${buttonType} button`, async () => {
+    await componentsPage.setAttributes(button, {
+      'soft-disabled': 'true',
+      active: 'true',
+    });
+    await expect(button).toHaveAttribute('soft-disabled');
+    await expect(button).toHaveAttribute('active');
+  });
+
+  await test.step(`accessibility for active and soft-disabled ${buttonType} button`, async () => {
+    await componentsPage.accessibility
+      .checkForA11yViolations(`button-${buttonType}-active-soft-disabled`);
+  });
+
+  await test.step(`visual-regression for active and soft-disabled ${buttonType} button`, async () => {
+    await componentsPage.visualRegression
+      .takeScreenshot(`mdc-button-${buttonType}-active-soft-disabled`, { element: button });
+    await componentsPage.removeAttribute(button, 'soft-disabled');
+    await componentsPage.removeAttribute(button, 'active');
+  });
 };
 
 const testForCombinations = async (args: SetupOptions, buttonType: string) => {
@@ -117,9 +218,26 @@ const testForCombinations = async (args: SetupOptions, buttonType: string) => {
           color="${color}", size="${size}" ${buttonType} button`, async () => {
           await componentsPage.accessibility.checkForA11yViolations(`button-${buttonType}-${variant}-${color}-${size}`);
         });
+
+        // loop ends here
       })));
     })));
   })));
+};
+
+const testForButtonVariants = async (args: SetupOptions, buttonType: string) => {
+  const { componentsPage, ...props } = args;
+  const button = await setup({
+    componentsPage,
+    ...props,
+  });
+
+  for (const variant of Object.values(BUTTON_VARIANTS)) {
+    await test.step(`attribute variant="${variant}" should be present on ${buttonType} button`, async () => {
+      await componentsPage.setAttributes(button, { variant });
+      await expect(button).toHaveAttribute('variant', variant);
+    });
+  }
 };
 
 const testsToRun = async (componentsPage: ComponentsPage) => {
@@ -127,6 +245,7 @@ const testsToRun = async (componentsPage: ComponentsPage) => {
     const children = 'Button content';
     await commonTestCases({ children, componentsPage }, 'pill');
     await testForCombinations({ children, componentsPage }, 'pill');
+    await testForButtonVariants({ children, componentsPage }, 'pill');
   });
 };
 
