@@ -1,10 +1,12 @@
 ---
-import tokens from '@momentum-design/tokens/dist/json/core/complete.json';
+import coreTokens from '@momentum-design/tokens/dist/json/core/complete.json';
+import typographyTokens from '@momentum-design/tokens/dist/json/typography/complete.json';
 import TokenCard from './TokenCard.astro';
 import './TokenCard.css';
 
 ---
 
 <div class="tokenCardWrapper">
-  {Object.keys(tokens).map((token) => (<TokenCard name={token} link={`/momentum-design/en/tokens/${token}`} />))}
+  {Object.keys(coreTokens).map((token) => (<TokenCard name={token} link={`/momentum-design/en/tokens/${token}`} />))}
+  {Object.keys(typographyTokens).map((token) => (<TokenCard name={token} link={`/momentum-design/en/tokens/${token}`} />))}
 </div>
