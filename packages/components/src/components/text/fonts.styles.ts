@@ -11,7 +11,7 @@ export const fontsStyles = css`
   :host([tagname='small']),
   :host([tagname='span']),
   :host([tagname='div']) {
-    all: unset; /* This removes default heading styles applied by the browser */
+    all: unset; /* This removes default styles applied by the browser */
   }
 
   :host([type="headline-small-regular"]) {
