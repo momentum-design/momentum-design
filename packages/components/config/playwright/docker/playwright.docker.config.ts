@@ -91,6 +91,7 @@ const config: PlaywrightTestConfig = {
       name: 'mobile chrome',
       use: {
         ...devices['Pixel 5'],
+        channel: 'chrome',
       },
     },
     {
@@ -111,6 +112,7 @@ const config: PlaywrightTestConfig = {
       name: 'tablet chrome',
       use: {
         ...devices['Galaxy Tab S4'],
+        channel: 'chrome',
       },
     },
 

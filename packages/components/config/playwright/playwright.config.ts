@@ -82,13 +82,14 @@ const config: PlaywrightTestConfig = {
 
     /* Test against mobile viewports. */
     {
-      name: 'Mobile Chrome',
+      name: 'mobile chrome',
       use: {
         ...devices['Pixel 5'],
+        channel: 'chrome',
       },
     },
     {
-      name: 'Mobile Safari',
+      name: 'mobile safari',
       use: {
         ...devices['iPhone 12'],
       },
@@ -96,15 +97,16 @@ const config: PlaywrightTestConfig = {
 
     /* Test against tablet viewports. */
     {
-      name: 'Tablet iPad',
+      name: 'tablet safari',
       use: {
         ...devices['iPad Pro 11'],
       },
     },
     {
-      name: 'Tablet Galaxy Tab',
+      name: 'tablet chrome',
       use: {
         ...devices['Galaxy Tab S4'],
+        channel: 'chrome',
       },
     },
 
