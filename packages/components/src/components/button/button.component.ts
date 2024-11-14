@@ -163,6 +163,9 @@ class Button extends Component {
       this.setSize(this.size);
       this.setClassBasedOnType(this.type);
     }
+    if (changedProperties.has('prefixIcon') || changedProperties.has('postfixIcon')) {
+      this.inferButtonType();
+    }
   }
 
   /**
@@ -351,8 +354,11 @@ class Button extends Component {
     }
   }
 
-  private handleSlotchange(event: Event) {
-    const slot = event.target as HTMLSlotElement;
+  /**
+   * Infers the type of button based on the presence of slot and/or prefix and postfix icons.
+   * @param slot - default slot of button
+   */
+  private inferButtonType(slot?: HTMLSlotElement) {
     if (slot && (this.prefixIcon || this.postfixIcon)) {
       this.type = BUTTON_TYPE.PILL_WITH_ICON;
     } else if (!slot && (this.prefixIcon || this.postfixIcon)) {
@@ -360,6 +366,11 @@ class Button extends Component {
     } else {
       this.type = BUTTON_TYPE.PILL;
     }
+  }
+
+  private handleSlotchange(event: Event) {
+    const slot = event.target as HTMLSlotElement;
+    this.inferButtonType(slot);
   }
 
   public override render() {
