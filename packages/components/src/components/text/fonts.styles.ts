@@ -99,7 +99,7 @@ export const fontsStyles = css`
 
   :host([type="heading-small-bold"]) {
     font-size: var(--mds-font-apps-heading-small-bold-font-size);
-    font-weight: var(-mds-font-apps-heading-small-bold-font-weight);
+    font-weight: var(--mds-font-apps-heading-small-bold-font-weight);
     line-height: var(--mds-font-apps-heading-small-bold-line-height);
     text-decoration: var(--mds-font-apps-heading-small-bold-text-decoration);
     text-transform: var(--mds-font-apps-heading-small-bold-text-case);
