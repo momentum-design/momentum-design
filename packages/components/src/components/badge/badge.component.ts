@@ -3,8 +3,8 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
-import { FONT_TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
-import { BADGE_TYPE, ICON_NAMES_LIST, DEFAULTS, ICON_VARIANT, ICON_STATE } from './badge.constants';
+import { TYPE as FONT_TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import { TYPE as BADGE_TYPE, ICON_NAMES_LIST, DEFAULTS, ICON_VARIANT, ICON_STATE } from './badge.constants';
 import styles from './badge.styles';
 import type { IconVariant, BadgeType } from './badge.types';
 /**
