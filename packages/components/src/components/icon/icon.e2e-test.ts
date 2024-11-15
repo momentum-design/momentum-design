@@ -1,9 +1,10 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
+import IconNames from '../../../../assets/icons/dist/types/types';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
-  name: string;
+  name: IconNames;
   size?: number;
   ariaLabel?: string;
   lengthUnit?: string;
