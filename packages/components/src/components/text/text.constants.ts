@@ -32,7 +32,7 @@ const FONT_TYPE = {
   HEADING_XLARGE_BOLD: 'heading-xlarge-bold',
   HEADLINE_SMALL_LIGHT: 'headline-small-light',
   HEADLINE_SMALL_REGULAR: 'headline-small-regular',
-};
+} as const;
 
 const VALID_TEXT_TAGS = {
   H1: 'h1',
@@ -45,13 +45,13 @@ const VALID_TEXT_TAGS = {
   SMALL: 'small',
   SPAN: 'span',
   DIV: 'div',
-};
+} as const;
 
 const DEFAULTS = {
   TYPE: FONT_TYPE.BODY_LARGE_REGULAR,
   TEXT_ELEMENT_TAGNAME: VALID_TEXT_TAGS.P,
   CSS_PART_TEXT: 'text',
   CHILDREN: 'The quick brown fox jumps over the lazy dog',
-};
+} as const;
 
 export { TAG_NAME, DEFAULTS, FONT_TYPE, VALID_TEXT_TAGS };

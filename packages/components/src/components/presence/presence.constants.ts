@@ -17,7 +17,7 @@ const PRESENCE_TYPE = {
   PRESENTING: 'presenting',
   QUIET: 'quiet',
   SCHEDULED: 'scheduled',
-};
+} as const;
 
 const PRESENCE_SIZE = {
   XX_SMALL: 'xx_small',
@@ -27,11 +27,11 @@ const PRESENCE_SIZE = {
   LARGE: 'large',
   X_LARGE: 'x_large',
   XX_LARGE: 'xx_large',
-};
+} as const;
 
 const DEFAULTS = {
   TYPE: PRESENCE_TYPE.ACTIVE,
   SIZE: PRESENCE_SIZE.SMALL,
-};
+} as const;
 
 export { TAG_NAME, DEFAULTS, PRESENCE_TYPE, PRESENCE_SIZE };

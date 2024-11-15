@@ -9,24 +9,29 @@ const BADGE_TYPE = {
   SUCCESS: 'success',
   WARNING: 'warning',
   ERROR: 'error',
-};
+} as const;
 
 const ICON_NAMES_LIST = {
   SUCCESS_ICON_NAME: 'check-circle-badge-filled',
   WARNING_ICON_NAME: 'warning-badge-filled',
   ERROR_ICON_NAME: 'error-legacy-badge-filled',
-};
+} as const;
 
 const ICON_VARIANT = {
   PRIMARY: 'primary',
   SECONDARY: 'secondary',
-};
+} as const;
 
 const ICON_STATE = {
   SUCCESS: 'success',
   WARNING: 'warning',
   ERROR: 'error',
-};
+} as const;
+
+const BACKGROUND_STYLES = {
+  ...ICON_VARIANT,
+  ...ICON_STATE,
+} as const;
 
 const DEFAULTS = {
   TYPE: BADGE_TYPE.DOT,
@@ -34,6 +39,6 @@ const DEFAULTS = {
   MAX_COUNTER_LIMIT: 999,
   VARIANT: ICON_VARIANT.PRIMARY,
   ICON_SIZE: 1,
-};
+} as const;
 
-export { TAG_NAME, DEFAULTS, BADGE_TYPE, ICON_STATE, ICON_VARIANT, ICON_NAMES_LIST };
+export { TAG_NAME, DEFAULTS, BADGE_TYPE, ICON_STATE, ICON_VARIANT, ICON_NAMES_LIST, BACKGROUND_STYLES };
