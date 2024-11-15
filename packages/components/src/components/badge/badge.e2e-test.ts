@@ -41,11 +41,11 @@ const visualTestingSetup = async (args: SetupOptions) => {
     html: `
       <div class="badges-container">
         <mdc-badge></mdc-badge>
-        <mdc-badge type="${BADGE_TYPE.ICON}" icon-name="${ICON_NAMES_LIST.SUCCESS_ICON_NAME}"></mdc-badge>
-        <mdc-badge type="${BADGE_TYPE.COUNTER}" counter="10000" max-counter="999"></mdc-badge>
-        <mdc-badge type="${BADGE_TYPE.SUCCESS}"></mdc-badge>
-        <mdc-badge type="${BADGE_TYPE.WARNING}"></mdc-badge>
-        <mdc-badge type="${BADGE_TYPE.ERROR}" overlay="true"></mdc-badge>
+        <mdc-badge type="${TYPE.ICON}" icon-name="${ICON_NAMES_LIST.SUCCESS_ICON_NAME}"></mdc-badge>
+        <mdc-badge type="${TYPE.COUNTER}" counter="10000" max-counter="999"></mdc-badge>
+        <mdc-badge type="${TYPE.SUCCESS}"></mdc-badge>
+        <mdc-badge type="${TYPE.WARNING}"></mdc-badge>
+        <mdc-badge type="${TYPE.ERROR}" overlay="true"></mdc-badge>
       </div>
     `,
     clearDocument: true,
