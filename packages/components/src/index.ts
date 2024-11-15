@@ -6,6 +6,8 @@ import Badge from './components/badge';
 import Presence from './components/presence';
 import Text from './components/text';
 
+import type { TextType } from './components/text/text.types';
+
 export {
   ThemeProvider,
   Icon,
@@ -14,4 +16,8 @@ export {
   Badge,
   Presence,
   Text,
+};
+
+export type {
+  TextType,
 };

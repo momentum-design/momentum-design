@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import { FONT_TYPE, VALID_TEXT_TAGS } from './text.constants';
+import { TYPE, VALID_TEXT_TAGS } from './text.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -29,7 +29,7 @@ const setup = async (args: SetupOptions) => {
 const visualTestingSetup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
   const textType = () =>
-    Object.values(FONT_TYPE)
+    Object.values(TYPE)
       .map((type) => `<mdc-text type="${type}">${restArgs.children}</mdc-text>`)
       .join('');
   const textTage = () =>
@@ -75,7 +75,7 @@ test.describe('mdc-text', () => {
     });
   });
 
-  for (const textType of Object.values(FONT_TYPE)) {
+  for (const textType of Object.values(TYPE)) {
     test(textType, async ({ componentsPage }) => {
       const text = await setup({ componentsPage, type: textType, children: textContent });
 
@@ -101,7 +101,7 @@ test.describe('mdc-text', () => {
     test(tagname, async ({ componentsPage }) => {
       const text = await setup({
         componentsPage,
-        type: FONT_TYPE.BODY_MIDSIZE_REGULAR,
+        type: TYPE.BODY_MIDSIZE_REGULAR,
         tagname,
         children: textContent,
       });
