@@ -1,4 +1,5 @@
 import { ICON_BUTTON_SIZES } from './button.constants';
+import { IconButtonSize } from './button.types';
 
 /**
  * Returns the icon size multiplier based on the provided button size.
@@ -6,7 +7,7 @@ import { ICON_BUTTON_SIZES } from './button.constants';
  * @param size - The size of the button.
  * @returns The multiplier for the icon size.
  */
-const getIconSize = (size: number): number => {
+const getIconSize = (size: IconButtonSize): number => {
   switch (size) {
     case ICON_BUTTON_SIZES[64]: return 2;
     case ICON_BUTTON_SIZES[52]: return 1.75;

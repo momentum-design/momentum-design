@@ -22,11 +22,6 @@ import { getIconNameWithoutStyle, getIconSize } from './button.utils';
 /**
  * `mdc-button` is a component that can be configured in various ways to suit different use cases.
  *
- * Button Types:
- * - **Pill button**: A button that contains text value. Commonly used for call to action, tags, or filters.
- * - **Pill button with icons**: A button containing an icon either on the left or right side of the button.
- * - **Icon button**: A button represented by just an icon without any text.
- *
  * Button Variants:
  * - **Primary**: Solid background color.
  * - **Secondary**: Transparent background with a solid border.
@@ -43,6 +38,12 @@ import { getIconNameWithoutStyle, getIconSize } from './button.utils';
  * - **Pill button**: 40, 32, 28, 24.
  * - **Icon button**: 64, 52, 40, 32, 28, 24.
  * - **Tertiary icon button**: 20.
+ *
+ * Button Types:
+ * - **Pill button**: A button that contains text value. Commonly used for call to action, tags, or filters.
+ * - **Pill button with icons**: A button containing an icon either on the left or right side of the button.
+ * - **Icon button**: A button represented by just an icon without any text.
+ * The type of button is inferred based on the presence of slot and/or prefix and postfix icons.
  *
  * @dependency mdc-icon
  *
@@ -282,10 +283,8 @@ class Button extends Component {
    */
   private setSoftDisabled(element: HTMLElement, softDisabled: boolean) {
     if (softDisabled) {
-      element.setAttribute('soft-disabled', 'true');
       element.setAttribute('aria-disabled', 'true');
     } else {
-      element.removeAttribute('soft-disabled');
       element.removeAttribute('aria-disabled');
     }
   }
@@ -301,14 +300,12 @@ class Button extends Component {
    */
   private setDisabled(element: HTMLElement, disabled: boolean) {
     if (disabled) {
-      element.setAttribute('disabled', 'true');
       element.setAttribute('aria-disabled', 'true');
       this.prevTabindex = this.tabIndex;
       this.tabIndex = -1;
       element.setAttribute('tabindex', `${this.tabIndex}`);
     } else {
       this.tabIndex = this.prevTabindex;
-      element.removeAttribute('disabled');
       element.removeAttribute('aria-disabled');
       element.setAttribute('tabindex', `${this.tabIndex}`);
     }
@@ -369,8 +366,7 @@ class Button extends Component {
   }
 
   private handleSlotchange(event: Event) {
-    const slot = event.target as HTMLSlotElement;
-    this.inferButtonType(slot);
+    this.inferButtonType(event.target as HTMLSlotElement);
   }
 
   public override render() {
