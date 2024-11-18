@@ -26,47 +26,33 @@ const meta: Meta = {
   },
   argTypes: {
     children: {
-      description: 'Button content',
-      control: {
-        type: 'text',
-      },
+      description: 'Text label for the button.',
+      control: 'text',
     },
     'prefix-icon': {
-      description: 'The name of the icon to display as a prefix.',
-      control: {
-        type: 'text',
-      },
+      control: 'text',
     },
     'postfix-icon': {
-      description: 'The name of the icon to display as a postfix.',
-      control: {
-        type: 'text',
-      },
+      control: 'text',
     },
     active: {
-      description: 'Indicates whether the button is active.',
       control: 'boolean',
     },
     disabled: {
-      description: 'Indicates whether the button is disabled.',
       control: 'boolean',
     },
     'soft-disabled': {
-      description: 'Indicates whether the button is soft disabled.',
       control: 'boolean',
     },
     variant: {
-      description: 'The variant of the button.',
       control: 'select',
       options: Object.values(BUTTON_VARIANTS),
     },
     size: {
-      description: 'The size of the button.',
       control: 'select',
       options: Object.values(PILL_BUTTON_SIZES),
     },
     color: {
-      description: 'The color of the button.',
       control: 'select',
       options: Object.values(BUTTON_COLORS),
     },
