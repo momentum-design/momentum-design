@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { DEFAULTS, FONT_TYPE, VALID_TEXT_TAGS } from './text.constants';
+import { DEFAULTS, TYPE, VALID_TEXT_TAGS } from './text.constants';
 import { disableControls } from '../../../config/storybook/utils';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
@@ -24,7 +24,7 @@ const meta: Meta = {
     },
     type: {
       control: 'select',
-      options: Object.values(FONT_TYPE),
+      options: Object.values(TYPE),
     },
     tagname: {
       control: 'select',

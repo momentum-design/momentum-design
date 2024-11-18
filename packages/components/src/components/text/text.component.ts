@@ -3,7 +3,7 @@ import { property } from 'lit/decorators.js';
 import styles from './text.styles';
 import { Component } from '../../models';
 import { DEFAULTS, VALID_TEXT_TAGS } from './text.constants';
-import type { FontType, TagName } from './text.types';
+import type { TextType, TagName } from './text.types';
 
 /**
  * Text component for creating styled text elements.
@@ -61,7 +61,7 @@ class Text extends Component {
    * @default body-large-regular
    */
   @property({ attribute: 'type', reflect: true, type: String })
-  public type: FontType = DEFAULTS.TYPE;
+  public type: TextType = DEFAULTS.TYPE;
 
   /**
    * Specifies the HTML tag name for the text element. The default tag name is `p`.
