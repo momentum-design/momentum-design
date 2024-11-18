@@ -3,7 +3,8 @@ import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './avatar.styles';
 import { Component } from '../../models';
-import { AvatarType } from './avatar.types';
+import type { AvatarType } from './avatar.types';
+import { AVATAR_TYPES, MAX_COUNTER } from './avatar.constants';
 import '../presence';
 
 /**
@@ -24,93 +25,119 @@ class Avatar extends Component {
   @property({ type: Number })
   counter?: number;
 
+  @property({ type: String })
+  presence?: string;
+
   @property({ type: String, attribute: 'icon-name' })
   iconName?: string;
+
+  @property({ type: Boolean, attribute: 'is-typing' })
+  isTyping = false;
+
+  @property({ type: Boolean, attribute: 'is-clickable' })
+  isClickable = false;
 
   override updated(changedProperties: Map<string, any>) {
     super.updated(changedProperties);
   }
 
-  photoTemplate() {
+  private getPresenceTemplateBasedOnType(type: AvatarType) {
+    // avatar type of counter should not have presence
+    if (type === AVATAR_TYPES.TEXT && this.counter) {
+      return html``;
+    }
+    if (this.presence) {
+      return html`
+        <mdc-presence class="presence" type="${this.presence}" size="xx_large"></mdc-presence>
+      `;
+    }
+    return html``;
+  }
+
+  private photoTemplate() {
     return html`
-      <mdc-button class="container">
-        <img
-          class="photo"
-          src="${ifDefined(this.src)}"
-          alt="${ifDefined(this.alt)}"
-        />
-        <mdc-presence class="presence" type="active" size="xx_large"></mdc-presence>
-      </mdc-button>
+      <img
+        class="photo"
+        src="${ifDefined(this.src)}"
+        alt="${ifDefined(this.alt)}"
+      />
     `;
   }
 
-  iconTemplate() {
+  private iconTemplate() {
     return html`
-    <mdc-button class="container">
       <mdc-icon
         class="icon"
         name="${ifDefined(this.iconName)}"
         size="3"
       ></mdc-icon>
-      <mdc-presence class="presence" type="active" size="xx_large"></mdc-presence>
-      </mdc-button>
     `;
   }
 
-  textTemplate(type: string) {
+  private textTemplate(type: string) {
     let content = '';
     if (type === 'text' && this.initials) {
       content = this.initials.toUpperCase().slice(0, 2);
     }
     if (type === 'counter' && this.counter) {
-      if (this.counter > 99) {
-        content = '99+';
+      if (this.counter > MAX_COUNTER) {
+        content = `${MAX_COUNTER}+`;
       } else {
         content = this.counter.toString();
       }
     }
     return html`
-      <mdc-button class="container">
-        <mdc-text>${content}</mdc-text>
-        <mdc-presence class="presence" type="active" size="xx_large"></mdc-presence>
-      </mdc-button>
+      <mdc-text>${content}</mdc-text>
     `;
   }
 
   private getTypeBasedOnInputs(): AvatarType {
     if (this.src && this.alt) {
-      return 'photo';
+      return AVATAR_TYPES.PHOTO;
     }
     if (this.initials) {
-      return 'text';
+      return AVATAR_TYPES.TEXT;
     }
     if (this.iconName) {
-      return 'icon';
+      return AVATAR_TYPES.ICON;
     }
     if (this.counter) {
-      return 'counter';
+      return AVATAR_TYPES.COUNTER;
     }
-    return 'icon';
+    return AVATAR_TYPES.ICON;
+  }
+
+  private getTemplateBasedOnType(type: AvatarType) {
+    switch (type) {
+      case AVATAR_TYPES.PHOTO:
+        return this.photoTemplate();
+      case AVATAR_TYPES.TEXT:
+      case AVATAR_TYPES.COUNTER:
+        return this.textTemplate(type);
+      case AVATAR_TYPES.ICON:
+      default:
+        return this.iconTemplate();
+    }
   }
 
   public override render() {
-    let content;
     const type = this.getTypeBasedOnInputs();
-    switch (type) {
-      case 'photo':
-        return this.photoTemplate();
-      case 'icon':
-        return this.iconTemplate();
-      case 'text':
-      case 'counter':
-        return this.textTemplate(type);
-      default:
-        content = html`
-          <span class="initials">${this.initials}</span>
-        `;
-        break;
+    const content = this.getTemplateBasedOnType(type);
+    const presence = this.getPresenceTemplateBasedOnType(type);
+    if (this.isClickable) {
+      return html`
+        <mdc-button class="container">
+          ${content}
+          ${presence}
+        </mdc-button>
+      `;
     }
-    return html`${content}`;
+    return html`
+      <div class="container place-center">
+        ${content}
+        ${presence}
+      </div>
+    `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
