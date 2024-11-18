@@ -53,7 +53,9 @@ import { getIconNameWithoutStyle, getIconSize } from './button.utils';
  */
 class Button extends Component {
   /**
-   * Indicates whether the button is active.
+   * The button's active state indicates whether it is currently toggled on (active) or off (inactive).
+   * When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
+   * Conversely, when the active state is false, the button is in an inactive state, indicating it is toggled off.
    * @default false
    */
   @property({ type: Boolean }) active = false;
@@ -336,6 +338,9 @@ class Button extends Component {
     if (!this.disabled && (event.key === 'Enter' || event.key === ' ')) {
       this.classList.add('pressed');
     }
+    if (event.key === 'Enter') {
+      this.handleClick(event as unknown as MouseEvent);
+    }
   }
 
   /**
@@ -346,8 +351,10 @@ class Button extends Component {
    */
   private handleKeyUp(event: KeyboardEvent) {
     if (!this.disabled && (event.key === 'Enter' || event.key === ' ')) {
-      this.handleClick(event as unknown as MouseEvent);
       this.classList.remove('pressed');
+    }
+    if (event.key === ' ') {
+      this.handleClick(event as unknown as MouseEvent);
     }
   }
 
