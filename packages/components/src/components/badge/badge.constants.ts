@@ -2,7 +2,7 @@ import utils from '../../utils/tag-name';
 
 const TAG_NAME = utils.constructTagName('badge');
 
-const BADGE_TYPE = {
+const TYPE = {
   DOT: 'dot',
   ICON: 'icon',
   COUNTER: 'counter',
@@ -34,11 +34,11 @@ const BACKGROUND_STYLES = {
 } as const;
 
 const DEFAULTS = {
-  TYPE: BADGE_TYPE.DOT,
+  TYPE: TYPE.DOT,
   MAX_COUNTER: 99,
   MAX_COUNTER_LIMIT: 999,
   VARIANT: ICON_VARIANT.PRIMARY,
   ICON_SIZE: 1,
 } as const;
 
-export { TAG_NAME, DEFAULTS, BADGE_TYPE, ICON_STATE, ICON_VARIANT, ICON_NAMES_LIST, BACKGROUND_STYLES };
+export { TAG_NAME, DEFAULTS, TYPE, ICON_STATE, ICON_VARIANT, ICON_NAMES_LIST, BACKGROUND_STYLES };

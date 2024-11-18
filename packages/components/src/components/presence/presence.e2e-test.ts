@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import { DEFAULTS, PRESENCE_TYPE, PRESENCE_SIZE } from './presence.constants';
+import { DEFAULTS, TYPE, SIZE } from './presence.constants';
 import type { PresenceType, PresenceSize } from './presence.types';
 
 type SetupOptions = {
@@ -29,14 +29,14 @@ const setup = async (args: SetupOptions) => {
 const visualTestingSetup = async (args: SetupOptions) => {
   const { componentsPage } = args;
   const presences = (type: string) =>
-    Object.values(PRESENCE_SIZE)
+    Object.values(SIZE)
       .map((size) => `<mdc-presence type="${type}" size="${size}"></mdc-presence>`)
       .join('');
 
   await componentsPage.mount({
     html: `
     <div class="presence-list">
-    ${Object.values(PRESENCE_TYPE)
+    ${Object.values(TYPE)
     .map(
       (type) => `
       <div class="presence-row">
@@ -95,12 +95,12 @@ const testToRun = async (componentsPage: ComponentsPage) => {
 
     await test.step('should only accept allowed type and size', async () => {
       await componentsPage.setAttributes(presence, {
-        type: PRESENCE_TYPE.MEETING,
-        size: PRESENCE_SIZE.XX_LARGE,
+        type: TYPE.MEETING,
+        size: SIZE.XX_LARGE,
       });
 
-      await expect(presence).toHaveAttribute('type', PRESENCE_TYPE.MEETING);
-      await expect(presence).toHaveAttribute('size', PRESENCE_SIZE.XX_LARGE);
+      await expect(presence).toHaveAttribute('type', TYPE.MEETING);
+      await expect(presence).toHaveAttribute('size', SIZE.XX_LARGE);
     });
   });
 };
