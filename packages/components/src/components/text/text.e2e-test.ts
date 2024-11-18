@@ -67,7 +67,6 @@ test.describe('mdc-text', () => {
     /**
      * VISUAL REGRESSION
      */
-    // skipping visual regression for firefox and webkit due to flakiness
     await test.step('visual-regression', async () => {
       await test.step('matches screenshot of element', async () => {
         await componentsPage.visualRegression.takeScreenshot('mdc-text', { element: text });
