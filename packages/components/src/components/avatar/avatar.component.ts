@@ -4,65 +4,111 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './avatar.styles';
 import { Component } from '../../models';
 import { AvatarType } from './avatar.types';
-import { DEFAULTS, LENGTH_UNIT } from './avatar.constants';
+import '../presence';
 
 /**
  * @slot - This is a default/unnamed slot
  *
- * @summary This is MyElement
- *
  * @tagname mdc-avatar
  */
 class Avatar extends Component {
-  @property({ type: String, reflect: true })
-  type?: AvatarType = DEFAULTS.TYPE;
+  @property({ type: String })
+  src?: string;
 
   @property({ type: String })
   alt?: string;
 
   @property({ type: String })
-  src?: string;
+  initials?: string;
 
-  /**
-   * Scale of the avatar
-   */
   @property({ type: Number })
-  size?: number = DEFAULTS.SIZE;
+  counter?: number;
 
-  /**
-   * Updates the size by setting the width and height
-   */
-  private updateSize() {
-    if (this.size) {
-      const value = `${this.size}${LENGTH_UNIT}`;
-      this.style.width = value;
-      this.style.height = value;
-    }
-  }
+  @property({ type: String, attribute: 'icon-name' })
+  iconName?: string;
 
   override updated(changedProperties: Map<string, any>) {
     super.updated(changedProperties);
-
-    if (changedProperties.has('size')) {
-      this.updateSize();
-    }
   }
 
   photoTemplate() {
     return html`
-      <img
-        src="${ifDefined(this.src)}"
-        alt="${ifDefined(this.alt)}"
-      />
+      <mdc-button class="container">
+        <img
+          class="photo"
+          src="${ifDefined(this.src)}"
+          alt="${ifDefined(this.alt)}"
+        />
+        <mdc-presence class="presence" type="active" size="xx_large"></mdc-presence>
+      </mdc-button>
     `;
+  }
+
+  iconTemplate() {
+    return html`
+    <mdc-button class="container">
+      <mdc-icon
+        class="icon"
+        name="${ifDefined(this.iconName)}"
+        size="3"
+      ></mdc-icon>
+      <mdc-presence class="presence" type="active" size="xx_large"></mdc-presence>
+      </mdc-button>
+    `;
+  }
+
+  textTemplate(type: string) {
+    let content = '';
+    if (type === 'text' && this.initials) {
+      content = this.initials.toUpperCase().slice(0, 2);
+    }
+    if (type === 'counter' && this.counter) {
+      if (this.counter > 99) {
+        content = '99+';
+      } else {
+        content = this.counter.toString();
+      }
+    }
+    return html`
+      <mdc-button class="container">
+        <mdc-text>${content}</mdc-text>
+        <mdc-presence class="presence" type="active" size="xx_large"></mdc-presence>
+      </mdc-button>
+    `;
+  }
+
+  private getTypeBasedOnInputs(): AvatarType {
+    if (this.src && this.alt) {
+      return 'photo';
+    }
+    if (this.initials) {
+      return 'text';
+    }
+    if (this.iconName) {
+      return 'icon';
+    }
+    if (this.counter) {
+      return 'counter';
+    }
+    return 'icon';
   }
 
   public override render() {
     let content;
-    if (this.type === 'photo') {
-      content = this.photoTemplate();
-    } else {
-      content = html``;
+    const type = this.getTypeBasedOnInputs();
+    switch (type) {
+      case 'photo':
+        return this.photoTemplate();
+      case 'icon':
+        return this.iconTemplate();
+      case 'text':
+      case 'counter':
+        return this.textTemplate(type);
+      default:
+        content = html`
+          <span class="initials">${this.initials}</span>
+        `;
+        break;
     }
     return html`${content}`;
   }
