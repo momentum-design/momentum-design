@@ -41,6 +41,11 @@ const styles = [hostFitContentStyles, css`
   :host([active]){
     font-weight: var(--mds-font-apps-body-large-bold-font-weight);
   }
+  :host([variant="primary"]:disabled), :host([variant="primary"][disabled]),
+  :host([variant="secondary"]:disabled), :host([variant="secondary"][disabled]),
+  :host([variant="tertiary"]:disabled), :host([variant="tertiary"][disabled]){
+    box-shadow: none;
+  }
 
   :host([variant="primary"]){
     background: var(--mdc-button-primary-background-color);
