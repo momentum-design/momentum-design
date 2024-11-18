@@ -10,6 +10,8 @@ const render = (args: Args) => html`
     alt="${args.alt}"
     initials="${args.initials}"
     counter="${args.counter}"
+    presence="${args.presence}"
+    ?is-clickable="${args['is-clickable']}"
   ></mdc-avatar>
 `;
 
@@ -28,6 +30,9 @@ export default meta;
 export const Primary: StoryObj = {
   args: {
     src: 'https://picsum.photos/256',
-    counter: 21,
+    presence: 'active',
+    alt: 'test',
+    'icon-name': 'user-regular',
+    'is-clickable': false,
   },
 };

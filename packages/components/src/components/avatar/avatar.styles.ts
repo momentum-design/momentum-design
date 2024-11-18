@@ -1,6 +1,11 @@
 import { css } from 'lit';
 
 const styles = css`
+  .place-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .container {
     padding: unset;
     margin: unset;
