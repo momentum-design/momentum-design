@@ -1,4 +1,4 @@
-import{T as n,V as c,D as r}from"./index-CEBITd5U.js";import{k as m}from"./lit-element-CPYlYYac.js";import{d as p}from"./utils-DCJ3yZC1.js";import{c as d,s as l}from"./commonArgTypes-BluK8w5L.js";import"./index-BLShQaRP.js";const i=t=>m`
+import{T as n,V as c,D as r}from"./index-JGLRkhS4.js";import{k as m}from"./lit-element-CPYlYYac.js";import{d as p}from"./utils-DCJ3yZC1.js";import{c as d,s as l}from"./commonArgTypes-BluK8w5L.js";import"./index-BLShQaRP.js";const i=t=>m`
 <mdc-text type="${t.type}" tagname="${t.tagname}">${t.children}</mdc-text>
 `,x={title:"Components/text",tags:["autodocs"],component:"mdc-text",render:i,parameters:{badges:["stable"]},argTypes:{children:{control:"text",description:'Children (passed into "default" slot)'},type:{control:"select",options:Object.values(n)},tagname:{control:"select",options:Object.values(c)},...d,...l,...p(["text"])}},e={args:{type:r.TYPE,tagname:"",children:r.CHILDREN}};var a,s,o;e.parameters={...e.parameters,docs:{...(a=e.parameters)==null?void 0:a.docs,source:{originalSource:`{
   args: {
