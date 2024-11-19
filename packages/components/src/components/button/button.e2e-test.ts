@@ -310,30 +310,30 @@ const testForIconButtonSizes = async (args: SetupOptions, buttonType: string) =>
 
 const testsToRun = async (componentsPage: ComponentsPage) => {
   await test.step('mdc-button as pill button', async () => {
-    const children = 'Button content';
+    const children = 'Pill Button';
     await testForCombinations({ children, componentsPage }, 'pill');
   });
 
   await test.step('mdc-button as pill with prefix icon button', async () => {
-    const children = 'Prefix Icon';
-    const prefixIcon = 'info-circle-bold';
+    const children = 'Pill with Prefix Icon';
+    const prefixIcon = 'placeholder-bold';
     await testForCombinations({ prefixIcon, children, componentsPage }, 'pill-with-prefix-icon');
   });
 
   await test.step('mdc-button as pill with postfix icon button', async () => {
-    const children = 'Postfix Icon';
-    const postfixIcon = 'info-circle-light';
+    const children = 'Pill with Postfix Icon';
+    const postfixIcon = 'placeholder-light';
     await testForCombinations({ postfixIcon, children, componentsPage }, 'pill-with-postfix-icon');
   });
 
   await test.step('mdc-button as prefix icon button', async () => {
-    const prefixIcon = 'info-circle-bold';
+    const prefixIcon = 'placeholder-bold';
     await testForCombinations({ prefixIcon, componentsPage }, 'prefix-icon');
     await testForIconButtonSizes({ prefixIcon, componentsPage }, 'prefix-icon');
   });
 
   await test.step('mdc-button as postfix icon button', async () => {
-    const postfixIcon = 'info-circle-light';
+    const postfixIcon = 'placeholder-light';
     await testForCombinations({ postfixIcon, componentsPage }, 'postfix-icon');
     await testForIconButtonSizes({ postfixIcon, componentsPage }, 'prefix-icon');
   });
