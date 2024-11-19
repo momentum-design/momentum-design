@@ -62,3 +62,12 @@ main {
     gap: 10px;
     margin-bottom: 5px;
 }
+
+.badges-container,
+.icon-container,
+.focus-ring-container {
+    display: flex; 
+    gap: 16px; 
+    flex-wrap: wrap; 
+    padding: 5px;
+}

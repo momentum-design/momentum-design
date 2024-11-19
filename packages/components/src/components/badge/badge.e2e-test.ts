@@ -34,6 +34,28 @@ const setup = async (args: SetupOptions) => {
   return badge;
 };
 
+const visualTestingSetup = async (args: SetupOptions) => {
+  const { componentsPage } = args;
+
+  await componentsPage.mount({
+    html: `
+      <div class="badges-container">
+        <mdc-badge></mdc-badge>
+        <mdc-badge type="${TYPE.ICON}" icon-name="${ICON_NAMES_LIST.SUCCESS_ICON_NAME}"></mdc-badge>
+        <mdc-badge type="${TYPE.COUNTER}" counter="10000" max-counter="999"></mdc-badge>
+        <mdc-badge type="${TYPE.SUCCESS}"></mdc-badge>
+        <mdc-badge type="${TYPE.WARNING}"></mdc-badge>
+        <mdc-badge type="${TYPE.ERROR}" overlay="true"></mdc-badge>
+      </div>
+    `,
+    clearDocument: true,
+  });
+
+  const badgesContainer = componentsPage.page.locator('.badges-container');
+  await badgesContainer.waitFor();
+  return badgesContainer;
+};
+
 const testToRun = async (componentsPage: ComponentsPage) => {
   const ariaLabel = 'test aria label';
   const badge = await setup({ componentsPage });
@@ -53,56 +75,14 @@ const testToRun = async (componentsPage: ComponentsPage) => {
     await componentsPage.accessibility.checkForA11yViolations('badge-aria-passed-in');
   });
 
+  const visualBadge = await visualTestingSetup({ componentsPage });
+
   /**
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
-    await test.step('matches screenshot of default element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-badge-default', { element: badge });
-    });
-
-    await componentsPage.setAttributes(badge, {
-      type: TYPE.ICON,
-      'icon-name': ICON_NAMES_LIST.SUCCESS_ICON_NAME,
-    });
-
-    await test.step('matches screenshot of Icon element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-badge-icon', { element: badge });
-    });
-
-    await componentsPage.setAttributes(badge, {
-      type: TYPE.COUNTER,
-      counter: '10000',
-      'max-counter': '999',
-    });
-
-    await test.step('matches screenshot of Counter element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-badge-counter', { element: badge });
-    });
-
-    await componentsPage.setAttributes(badge, {
-      type: TYPE.SUCCESS,
-    });
-
-    await test.step('matches screenshot of Success element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-badge-success', { element: badge });
-    });
-
-    await componentsPage.setAttributes(badge, {
-      type: TYPE.WARNING,
-    });
-
-    await test.step('matches screenshot of Warning element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-badge-warning', { element: badge });
-    });
-
-    await componentsPage.setAttributes(badge, {
-      type: TYPE.ERROR,
-      overlay: 'true',
-    });
-
-    await test.step('matches screenshot of Error element with overlay', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-badge-error-overlay', { element: badge });
+    await test.step('matches screenshot of different types element', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-badge', { element: visualBadge });
     });
   });
 
