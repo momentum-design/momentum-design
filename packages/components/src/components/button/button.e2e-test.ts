@@ -25,22 +25,41 @@ type SetupOptions = {
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
-  await componentsPage.mount({
-    html: `<mdc-button
-      ${restArgs.active ? 'active' : ''}
-      ${restArgs.disabled ? 'disabled' : ''}
-      ${restArgs.softDisabled ? 'soft-disabled' : ''}
-      ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
-      ${restArgs.size ? `size="${restArgs.size}"` : ''}
-      ${restArgs.color ? `color="${restArgs.color}"` : ''}
-      ${restArgs.prefixIcon ? `prefix-icon="${restArgs.prefixIcon}"` : ''}
-      ${restArgs.postfixIcon ? `postfix-icon="${restArgs.postfixIcon}"` : ''}
-    >
-      ${restArgs.children}
-    </mdc-button>
-      `,
-    clearDocument: true,
-  });
+  if (restArgs.children) {
+    await componentsPage.mount({
+      html: `<mdc-button
+        ${restArgs.active ? 'active' : ''}
+        ${restArgs.disabled ? 'disabled' : ''}
+        ${restArgs.softDisabled ? 'soft-disabled' : ''}
+        ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
+        ${restArgs.size ? `size="${restArgs.size}"` : ''}
+        ${restArgs.color ? `color="${restArgs.color}"` : ''}
+        ${restArgs.prefixIcon ? `prefix-icon="${restArgs.prefixIcon}"` : ''}
+        ${restArgs.postfixIcon ? `postfix-icon="${restArgs.postfixIcon}"` : ''}
+      >
+        ${restArgs.children}
+      </mdc-button>
+        `,
+      clearDocument: true,
+    });
+  } else {
+    await componentsPage.mount({
+      html: `<mdc-button
+        ${restArgs.active ? 'active' : ''}
+        ${restArgs.disabled ? 'disabled' : ''}
+        ${restArgs.softDisabled ? 'soft-disabled' : ''}
+        ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
+        ${restArgs.size ? `size="${restArgs.size}"` : ''}
+        ${restArgs.color ? `color="${restArgs.color}"` : ''}
+        ${restArgs.prefixIcon ? `prefix-icon="${restArgs.prefixIcon}"` : ''}
+        ${restArgs.postfixIcon ? `postfix-icon="${restArgs.postfixIcon}"` : ''}
+      >
+      </mdc-button>
+        `,
+      clearDocument: true,
+    });
+  }
+
   const button = componentsPage.page.locator('mdc-button');
   await button.waitFor();
   return button;
