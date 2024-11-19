@@ -2378,10 +2378,6 @@ __metadata:
     storybook: ^8.2.5
     storybook-addon-rtl: ^1.0.1
     typescript: ^4.8.4
-  peerDependencies:
-    "@momentum-design/fonts": "workspace:*"
-    "@momentum-design/icons": "workspace:*"
-    "@momentum-design/tokens": "workspace:*"
   languageName: unknown
   linkType: soft
 
