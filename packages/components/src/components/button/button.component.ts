@@ -220,8 +220,10 @@ class Button extends Component {
   private setClassBasedOnType(type: string) {
     if (type === BUTTON_TYPE.ICON) {
       this.classList.add('icon');
+      this.setAttribute('aria-label', this.prefixIcon || this.postfixIcon || 'icon-button');
     } else {
       this.classList.remove('icon');
+      this.removeAttribute('aria-label');
     }
   }
 

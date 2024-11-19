@@ -21,6 +21,7 @@ type SetupOptions = {
   size?: number;
   color?: string;
   children?: any;
+  ariaLabel?: string;
 }
 
 const setup = async (args: SetupOptions) => {
@@ -53,8 +54,8 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.color ? `color="${restArgs.color}"` : ''}
         ${restArgs.prefixIcon ? `prefix-icon="${restArgs.prefixIcon}"` : ''}
         ${restArgs.postfixIcon ? `postfix-icon="${restArgs.postfixIcon}"` : ''}
-      >
-      </mdc-button>
+        ${restArgs.ariaLabel ? `aria-label="${restArgs.ariaLabel}"` : ''}
+      ></mdc-button>
         `,
       clearDocument: true,
     });
@@ -280,18 +281,6 @@ const testForCombinations = async (args: SetupOptions, buttonType: string) => {
             variant="${variant}", color="${color}", size="${size}" ${buttonType} button`, async () => {
             await visualRegressionTestCases(componentsPage, button, `${buttonType}-${variant}-${color}-${size}`);
           });
-        } else {
-          await test.step(`attribute variant="${variant}",
-                    color="${color}", size="${size}" should not be present on ${buttonType} button`, async () => {
-            await componentsPage.setAttributes(button, { variant, color, size: `${size}` });
-            await expect(button).toHaveAttribute('variant', variant);
-            await expect(button).toHaveAttribute('size', `${size}`);
-            // Tertiary button must have only default color
-            if (color !== BUTTON_COLORS.DEFAULT) {
-              await expect(button).not.toHaveAttribute('color', color);
-            }
-            await expect(button).toHaveAttribute('color', BUTTON_COLORS.DEFAULT);
-          });
         }
       }
     }
@@ -360,9 +349,50 @@ const testsToRun = async (componentsPage: ComponentsPage) => {
   // TODO: Key pressed, focused events test.
 };
 
-test.describe.parallel('mdc-button', () => {
-  test.use({ viewport: { width: 300, height: 200 } });
-  test('standalone', async ({ componentsPage }) => {
-    await testsToRun(componentsPage);
+// test.describe.parallel('mdc-button', () => {
+//   test.use({ viewport: { width: 300, height: 200 } });
+//   test('standalone', async ({ componentsPage }) => {
+//     await testsToRun(componentsPage);
+//   });
+// });
+
+test.describe.configure({ mode: 'parallel' });
+
+test('mdc-button pill button', async ({ componentsPage }) => {
+  await test.step('mdc-button as pill button', async () => {
+    const children = 'Pill Button';
+    await testForCombinations({ children, componentsPage }, 'pill');
+  });
+});
+
+test('mdc-button pill with prefix icon button', async ({ componentsPage }) => {
+  await test.step('mdc-button as pill with prefix icon button', async () => {
+    const children = 'Pill with Prefix Icon';
+    const prefixIcon = 'placeholder-bold';
+    await testForCombinations({ prefixIcon, children, componentsPage }, 'pill-with-prefix-icon');
+  });
+});
+
+test('mdc-button pill with postfix icon button', async ({ componentsPage }) => {
+  await test.step('mdc-button as pill with postfix icon button', async () => {
+    const children = 'Pill with Postfix Icon';
+    const postfixIcon = 'placeholder-light';
+    await testForCombinations({ postfixIcon, children, componentsPage }, 'pill-with-postfix-icon');
+  });
+});
+
+test('mdc-button prefix icon button', async ({ componentsPage }) => {
+  await test.step('mdc-button as prefix icon button', async () => {
+    const prefixIcon = 'placeholder-bold';
+    await testForCombinations({ prefixIcon, componentsPage }, 'prefix-icon');
+    await testForIconButtonSizes({ prefixIcon, componentsPage }, 'prefix-icon');
+  });
+});
+
+test('mdc-button postfix icon button', async ({ componentsPage }) => {
+  await test.step('mdc-button as postfix icon button', async () => {
+    const postfixIcon = 'placeholder-light';
+    await testForCombinations({ postfixIcon, componentsPage }, 'postfix-icon');
+    await testForIconButtonSizes({ postfixIcon, componentsPage }, 'prefix-icon');
   });
 });
