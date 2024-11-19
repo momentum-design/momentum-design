@@ -7,6 +7,8 @@ import Presence from './components/presence';
 import Text from './components/text';
 import Button from './components/button';
 
+import type { TextType } from './components/text/text.types';
+
 export {
   ThemeProvider,
   Icon,
@@ -16,4 +18,8 @@ export {
   Presence,
   Text,
   Button,
+};
+
+export type {
+  TextType,
 };

@@ -112,12 +112,17 @@ class Button extends Component {
 
   /**
    * The tabindex of the button.
+   * @internal
    * @default 0
    */
   @property({ type: Number }) override tabIndex = 0;
 
   /**
    * The role of the button.
+   * This property defines the ARIA role for the element. By default, it is set to 'button'.
+   * Consumers should override this role when:
+   * - The element is being used in a context where a different role is more appropriate.
+   * - Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.
    * @default button
    */
   @property({ type: String, reflect: true }) override role = 'button';
@@ -126,10 +131,19 @@ class Button extends Component {
 
   @state() private iconSize = 1;
 
+  /**
+   * @internal
+   */
   private prevTabindex = 0;
 
+  /**
+   * @internal
+   */
   private prevPrefixIcon?: string;
 
+  /**
+   * @internal
+   */
   private prevPostfixIcon?: string;
 
   constructor() {
@@ -219,11 +233,7 @@ class Button extends Component {
    * @param variant - The variant to set.
    */
   private setVariant(variant: ButtonVariant) {
-    if (!Object.values(BUTTON_VARIANTS).includes(variant)) {
-      this.setAttribute('variant', `${DEFAULTS.VARIANT}`);
-    } else {
-      this.setAttribute('variant', variant);
-    }
+    this.setAttribute('variant', Object.values(BUTTON_VARIANTS).includes(variant) ? variant : DEFAULTS.VARIANT);
   }
 
   /**
@@ -236,15 +246,11 @@ class Button extends Component {
   private setSize(size: PillButtonSize | IconButtonSize) {
     const isIconType = this.type === BUTTON_TYPE.ICON;
     const isValidSize = isIconType
-      ? Object.values(ICON_BUTTON_SIZES).includes(size)
-      && !(size === ICON_BUTTON_SIZES[20] && this.variant !== BUTTON_VARIANTS.TERTIARY)
+      ? (Object.values(ICON_BUTTON_SIZES).includes(size)
+      && !(size === ICON_BUTTON_SIZES[20] && this.variant !== BUTTON_VARIANTS.TERTIARY))
       : Object.values(PILL_BUTTON_SIZES).includes(size as PillButtonSize);
 
-    if (!isValidSize) {
-      this.setAttribute('size', `${DEFAULTS.SIZE}`);
-    } else {
-      this.setAttribute('size', `${size}`);
-    }
+    this.setAttribute('size', isValidSize ? `${size}` : `${DEFAULTS.SIZE}`);
     this.iconSize = getIconSize(size);
   }
 
@@ -362,7 +368,8 @@ class Button extends Component {
    * Infers the type of button based on the presence of slot and/or prefix and postfix icons.
    * @param slot - default slot of button
    */
-  private inferButtonType(slot?: HTMLSlotElement) {
+  private inferButtonType() {
+    const slot = this.shadowRoot?.querySelector('slot')?.assignedNodes().length;
     if (slot && (this.prefixIcon || this.postfixIcon)) {
       this.type = BUTTON_TYPE.PILL_WITH_ICON;
     } else if (!slot && (this.prefixIcon || this.postfixIcon)) {
@@ -370,10 +377,6 @@ class Button extends Component {
     } else {
       this.type = BUTTON_TYPE.PILL;
     }
-  }
-
-  private handleSlotchange(event: Event) {
-    this.inferButtonType(event.target as HTMLSlotElement);
   }
 
   public override render() {
@@ -385,7 +388,7 @@ class Button extends Component {
           size=${this.iconSize} 
           length-unit="rem">
         </mdc-icon>` : ''}
-      <slot @slotchange=${this.handleSlotchange}></slot>
+      <slot @slotchange=${this.inferButtonType}></slot>
       ${this.postfixIcon ? html`
         <mdc-icon 
           name="${this.postfixIcon}" 

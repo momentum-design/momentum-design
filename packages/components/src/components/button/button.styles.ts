@@ -7,6 +7,7 @@ const styles = [hostFitContentStyles, css`
     border-radius: 1.25rem;
     font-weight: var(--mds-font-apps-body-large-medium-font-weight);
     outline: none;
+    border: 1px solid transparent;
 
     --mdc-button-primary-color: var(--mds-color-theme-inverted-text-primary-normal);
     --mdc-button-primary-background-color: var(--mds-color-theme-button-primary-normal);
@@ -29,17 +30,27 @@ const styles = [hostFitContentStyles, css`
     --mdc-button-tertiary-disabled-background-color: var(--mds-color-theme-button-secondary-disabled);
     --mdc-button-tertiary-disabled-color: var(--mds-color-theme-text-primary-disabled);
 
-    --mdc-button-size-64: 4rem;
-    --mdc-button-size-52: 3.25rem;
-    --mdc-button-size-40: 2.5rem;
-    --mdc-button-size-32: 2rem;
-    --mdc-button-size-28: 1.75rem;
-    --mdc-button-size-24: 1.5rem;
-    --mdc-button-size-20: 1.25rem;
+    --mdc-button-height-size-64: 4rem;
+    --mdc-button-height-size-52: 3.25rem;
+    --mdc-button-height-size-40: 2.5rem;
+    --mdc-button-height-size-32: 2rem;
+    --mdc-button-height-size-28: 1.75rem;
+    --mdc-button-height-size-24: 1.5rem;
+    --mdc-button-height-size-20: 1.25rem;
+
+    --mdc-button-line-height-size-40: var(--mds-font-lineheight-body-large);
+    --mdc-button-line-height-size-32: var(--mds-font-lineheight-body-large);
+    --mdc-button-line-height-size-28: var(--mds-font-lineheight-body-midsize);
+    --mdc-button-line-height-size-24:  var(--mds-font-lineheight-body-small);
   }
 
   :host([active]){
     font-weight: var(--mds-font-apps-body-large-bold-font-weight);
+  }
+  :host([variant="primary"]:disabled), :host([variant="primary"][disabled]),
+  :host([variant="secondary"]:disabled), :host([variant="secondary"][disabled]),
+  :host([variant="tertiary"]:disabled), :host([variant="tertiary"][disabled]){
+    box-shadow: none;
   }
 
   :host([variant="primary"]){
@@ -60,7 +71,7 @@ const styles = [hostFitContentStyles, css`
 
   :host([variant="secondary"]){
     color: var(--mdc-button-secondary-color);
-    border: 1px solid var(--mdc-button-secondary-border-color);
+    border-color: var(--mdc-button-secondary-border-color);
   }
   :host([variant="secondary"]:hover){
     background: var(--mdc-button-secondary-hover-background-color);
@@ -71,13 +82,13 @@ const styles = [hostFitContentStyles, css`
   :host([variant="secondary"]:disabled), :host([variant="secondary"][disabled]),
    :host([variant="secondary"][soft-disabled]){
     color: var(--mdc-button-primary-disabled-color);
-    border: 1px solid var(--mdc-button-secondary-disabled-border-color);
+    border-color: var(--mdc-button-secondary-disabled-border-color);
     background: var(--mdc-button-secondary-disabled-background-color);
     cursor: auto;
   }
 
   :host([variant="tertiary"]){
-    border: none;
+    border-color: transparent;
     color: var(--mdc-button-tertiary-color);
   }
   :host([variant="tertiary"]:hover){
@@ -96,52 +107,56 @@ const styles = [hostFitContentStyles, css`
     border-radius: 6.25rem;
   }
   :host([size="64"]){
-    height: var(--mdc-button-size-64);
-    padding: 1rem;
+    height: var(--mdc-button-height-size-64);
+    padding: calc(1rem - 0.0625rem);
   }
   :host([size="52"]){
-    height: var(--mdc-button-size-52);
-    padding: 0.75rem;
+    height: var(--mdc-button-height-size-52);
+    padding: calc(0.75rem - 0.0625rem);
   }
   :host([size="40"]){
-    height: var(--mdc-button-size-40);
+    height: var(--mdc-button-height-size-40);
     font-size: var(--mds-font-size-body-large);
+    line-height: var(--mdc-button-line-height-size-40);
     padding: 0.5rem 1rem;
     gap: 0.5rem;
   }
   :host([size="40"].icon){
-    padding: 0.625rem;
+    padding: calc(0.625rem - 0.0625rem);
   }
   :host([size="32"]){
-    height: var(--mdc-button-size-32);
+    height: var(--mdc-button-height-size-32);
     font-size: var(--mds-font-size-body-large);
-    padding: 0.25rem 0.75rem;
+    line-height: var(--mdc-button-line-height-size-32);
+    padding: 0 0.75rem;
     gap: 0.375rem;
   }
   :host([size="32"].icon){
-    padding: 0.5rem;
+    padding: calc(0.5rem - 0.0625rem);
   }
   :host([size="28"]){
-    height: var(--mdc-button-size-28);
+    height: var(--mdc-button-height-size-28);
     font-size: var(--mds-font-size-body-midsize);
-    padding: 0.125rem 0.75rem;
+    line-height: var(--mdc-button-line-height-size-28);
+    padding: 0 0.75rem;
     gap: 0.375rem;
   }
   :host([size="28"].icon){
-    padding: 0.375rem;
+    padding: calc(0.375rem - 0.0625rem);
   }
   :host([size="24"]){
-    height: var(--mdc-button-size-24);
+    height: var(--mdc-button-height-size-24);
     font-size: var(--mds-font-size-body-small);
+    line-height: var(--mdc-button-line-height-size-24);
     padding: 0 0.625rem;
     gap: 0.25rem;
   }
   :host([size="24"].icon){
-    padding: 0.25rem;
+    padding: calc(0.25rem - 0.0625rem);
   }
   :host([size="20"]){
-    height: var(--mdc-button-size-20);
-    padding: 0.125rem;
+    height: var(--mdc-button-height-size-20);
+    padding: calc(0.125rem - 0.0625rem);
   }
 
   :host([color="accent"]){

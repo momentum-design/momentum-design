@@ -1,8 +1,9 @@
 import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
-import { DEFAULTS, PRESENCE_SIZE, PRESENCE_TYPE } from './presence.constants';
+import { DEFAULTS, SIZE, TYPE } from './presence.constants';
 import styles from './presence.styles';
+import type { PresenceType, PresenceSize } from './presence.types';
 
 /**
  * The `mdc-presence` component is a versatile UI element used to
@@ -35,7 +36,7 @@ class Presence extends Component {
    * @default active
    */
   @property({ type: String, reflect: true })
-  type = DEFAULTS.TYPE;
+  type: PresenceType = DEFAULTS.TYPE;
 
   /**
    * Acceptable values include:
@@ -49,24 +50,24 @@ class Presence extends Component {
    * @default small
    */
   @property({ type: String, reflect: true })
-  size = DEFAULTS.SIZE;
+  size: PresenceSize = DEFAULTS.SIZE;
 
   /**
    * Get the size of the presence icon based on the given size type
    */
   private get iconSize() {
     switch (this.size) {
-      case PRESENCE_SIZE.MIDSIZE:
+      case SIZE.MIDSIZE:
         return 1.16125;
-      case PRESENCE_SIZE.LARGE:
+      case SIZE.LARGE:
         return 1.30625;
-      case PRESENCE_SIZE.X_LARGE:
+      case SIZE.X_LARGE:
         return 1.596875;
-      case PRESENCE_SIZE.XX_LARGE:
+      case SIZE.XX_LARGE:
         return 2.25;
-      case PRESENCE_SIZE.XX_SMALL:
-      case PRESENCE_SIZE.X_SMALL:
-      case PRESENCE_SIZE.SMALL:
+      case SIZE.XX_SMALL:
+      case SIZE.X_SMALL:
+      case SIZE.SMALL:
       default:
         this.size = DEFAULTS.SIZE;
         return 0.875;
@@ -78,33 +79,33 @@ class Presence extends Component {
    */
   private get icon() {
     switch (this.type) {
-      case PRESENCE_TYPE.AWAY:
+      case TYPE.AWAY:
         return 'recents-presence-badge-filled';
-      case PRESENCE_TYPE.AWAY_CALLING:
+      case TYPE.AWAY_CALLING:
         return 'away-calling-presence-filled';
-      case PRESENCE_TYPE.BUSY:
+      case TYPE.BUSY:
         return 'busy-presence-bold';
-      case PRESENCE_TYPE.DND:
+      case TYPE.DND:
         return 'dnd-presence-badge-filled';
-      case PRESENCE_TYPE.MEETING:
+      case TYPE.MEETING:
         return 'camera-filled';
-      case PRESENCE_TYPE.ON_CALL:
+      case TYPE.ON_CALL:
         return 'handset-filled';
-      case PRESENCE_TYPE.ON_DEVICE:
+      case TYPE.ON_DEVICE:
         return 'generic-device-video-badge-filled';
-      case PRESENCE_TYPE.ON_MOBILE:
+      case TYPE.ON_MOBILE:
         return 'phone-badge-filled';
-      case PRESENCE_TYPE.PAUSE:
+      case TYPE.PAUSE:
         return 'pause-badge-filled';
-      case PRESENCE_TYPE.PTO:
+      case TYPE.PTO:
         return 'pto-presence-filled';
-      case PRESENCE_TYPE.PRESENTING:
+      case TYPE.PRESENTING:
         return 'share-screen-badge-filled';
-      case PRESENCE_TYPE.QUIET:
+      case TYPE.QUIET:
         return 'quiet-hours-presence-filled';
-      case PRESENCE_TYPE.SCHEDULED:
+      case TYPE.SCHEDULED:
         return 'meetings-presence-badge-filled';
-      case PRESENCE_TYPE.ACTIVE:
+      case TYPE.ACTIVE:
       default:
         this.type = DEFAULTS.TYPE;
         return 'active-presence-small-filled';

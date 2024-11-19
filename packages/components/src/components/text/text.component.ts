@@ -3,6 +3,7 @@ import { property } from 'lit/decorators.js';
 import styles from './text.styles';
 import { Component } from '../../models';
 import { DEFAULTS, VALID_TEXT_TAGS } from './text.constants';
+import type { TextType, TagName } from './text.types';
 
 /**
  * Text component for creating styled text elements.
@@ -60,7 +61,7 @@ class Text extends Component {
    * @default body-large-regular
    */
   @property({ attribute: 'type', reflect: true, type: String })
-  public type = DEFAULTS.TYPE;
+  public type: TextType = DEFAULTS.TYPE;
 
   /**
    * Specifies the HTML tag name for the text element. The default tag name is `p`.
@@ -83,7 +84,7 @@ class Text extends Component {
    * Note that the styling is determined by the `type` attribute.
    */
   @property({ attribute: 'tagname', reflect: true, type: String })
-  public tagname? = DEFAULTS.TEXT_ELEMENT_TAGNAME;
+  public tagname?: TagName = DEFAULTS.TEXT_ELEMENT_TAGNAME;
 
   public override render() {
     // Lit does not support dynamically changing values for the tag name of a custom element.
