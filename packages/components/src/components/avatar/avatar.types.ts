@@ -1,4 +1,6 @@
-import { AVATAR_TYPES } from './avatar.constants';
+import { AVATAR_TYPE } from './avatar.constants';
+import { PRESENCE_SIZE as AVATAR_SIZE } from '../presence/presence.constants';
 import type { ValueOf } from '../../utils/types';
 
-export type AvatarType = ValueOf<typeof AVATAR_TYPES>;
+export type AvatarType = ValueOf<typeof AVATAR_TYPE>;
+export type AvatarSize = ValueOf<typeof AVATAR_SIZE>;

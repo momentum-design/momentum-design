@@ -1,11 +1,14 @@
-import { CSSResult, html } from 'lit';
+import { CSSResult, html, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { styleMap } from 'lit-html/directives/style-map.js';
+import { DirectiveResult } from 'lit-html/directive';
 import styles from './avatar.styles';
 import { Component } from '../../models';
-import type { AvatarType } from './avatar.types';
-import { AVATAR_TYPES, MAX_COUNTER } from './avatar.constants';
+import type { AvatarSize, AvatarType } from './avatar.types';
+import { AVATAR_TYPE, MAX_COUNTER, DEFAULTS } from './avatar.constants';
 import '../presence';
+import { getAvatarSize, getAvatarIconSize, getAvatarTextFontSize } from './avatar.utils';
 
 /**
  * @slot - This is a default/unnamed slot
@@ -28,6 +31,9 @@ class Avatar extends Component {
   @property({ type: String })
   presence?: string;
 
+  @property({ type: String, reflect: true })
+  size: AvatarSize = DEFAULTS.SIZE;
+
   @property({ type: String, attribute: 'icon-name' })
   iconName?: string;
 
@@ -41,20 +47,20 @@ class Avatar extends Component {
     super.updated(changedProperties);
   }
 
-  private getPresenceTemplateBasedOnType(type: AvatarType) {
+  private getPresenceTemplateBasedOnType(type: AvatarType): TemplateResult {
     // avatar type of counter should not have presence
-    if (type === AVATAR_TYPES.TEXT && this.counter) {
+    if (type === AVATAR_TYPE.COUNTER && this.counter) {
       return html``;
     }
     if (this.presence) {
       return html`
-        <mdc-presence class="presence" type="${this.presence}" size="xx_large"></mdc-presence>
+        <mdc-presence class="presence" type="${this.presence}" size="${this.size}"></mdc-presence>
       `;
     }
     return html``;
   }
 
-  private photoTemplate() {
+  private photoTemplate(): TemplateResult {
     return html`
       <img
         class="photo"
@@ -64,78 +70,100 @@ class Avatar extends Component {
     `;
   }
 
-  private iconTemplate() {
+  private iconTemplate(): TemplateResult {
     return html`
       <mdc-icon
         class="icon"
         name="${ifDefined(this.iconName)}"
-        size="3"
+        length-unit="rem"
+        size="${getAvatarIconSize(this.size)}"
       ></mdc-icon>
     `;
   }
 
-  private textTemplate(type: string) {
+  private textTemplate(type: AvatarType): TemplateResult {
     let content = '';
-    if (type === 'text' && this.initials) {
+    if (type === AVATAR_TYPE.TEXT && this.initials) {
       content = this.initials.toUpperCase().slice(0, 2);
     }
-    if (type === 'counter' && this.counter) {
+    if (type === AVATAR_TYPE.COUNTER && this.counter) {
       if (this.counter > MAX_COUNTER) {
-        content = `${MAX_COUNTER}+`;
+        content = [MAX_COUNTER, '+'].join('');
       } else {
         content = this.counter.toString();
       }
     }
     return html`
-      <mdc-text>${content}</mdc-text>
+      <mdc-text
+        class="place-center"
+        type="${getAvatarTextFontSize(this.size)}"
+        tagname="span"
+        style="${this.generateAvatarDimensions()}"
+      >
+        ${content}
+      </mdc-text>
     `;
   }
 
   private getTypeBasedOnInputs(): AvatarType {
     if (this.src && this.alt) {
-      return AVATAR_TYPES.PHOTO;
+      return AVATAR_TYPE.PHOTO;
     }
     if (this.initials) {
-      return AVATAR_TYPES.TEXT;
+      return AVATAR_TYPE.TEXT;
     }
     if (this.iconName) {
-      return AVATAR_TYPES.ICON;
+      return AVATAR_TYPE.ICON;
     }
     if (this.counter) {
-      return AVATAR_TYPES.COUNTER;
+      return AVATAR_TYPE.COUNTER;
     }
-    return AVATAR_TYPES.ICON;
+    return AVATAR_TYPE.ICON;
   }
 
-  private getTemplateBasedOnType(type: AvatarType) {
+  private getTemplateBasedOnType(type: AvatarType): TemplateResult {
     switch (type) {
-      case AVATAR_TYPES.PHOTO:
+      case AVATAR_TYPE.PHOTO:
         return this.photoTemplate();
-      case AVATAR_TYPES.TEXT:
-      case AVATAR_TYPES.COUNTER:
+      case AVATAR_TYPE.TEXT:
+      case AVATAR_TYPE.COUNTER:
         return this.textTemplate(type);
-      case AVATAR_TYPES.ICON:
+      case AVATAR_TYPE.ICON:
       default:
         return this.iconTemplate();
     }
+  }
+
+  private generateAvatarDimensions(): DirectiveResult {
+    const rems = [getAvatarSize(this.size), 'rem'].join('');
+    return styleMap({
+      width: rems,
+      height: rems,
+    });
   }
 
   public override render() {
     const type = this.getTypeBasedOnInputs();
     const content = this.getTemplateBasedOnType(type);
     const presence = this.getPresenceTemplateBasedOnType(type);
+    const dimensions = this.generateAvatarDimensions();
+
     if (this.isClickable) {
       return html`
-        <mdc-button class="container">
-          ${content}
-          ${presence}
+        <mdc-button class="container" style="${dimensions}">
+          <div class="content" style="${dimensions}">
+            ${content}
+            ${presence}
+          </div>
         </mdc-button>
       `;
     }
     return html`
-      <div class="container place-center">
-        ${content}
-        ${presence}
+      <div class="container place-center" style="${dimensions}">
+        <div class="content" style="${dimensions}">
+          ${content}
+          ${presence}
+        </div>
       </div>
     `;
   }
