@@ -54,10 +54,6 @@ const commonTestCases = async (args: SetupOptions, buttonType: string) => {
   });
 
   // Default values for button
-  await test.step(`accessibility for ${buttonType} button`, async () => {
-    await componentsPage.accessibility.checkForA11yViolations(`button-${buttonType}-default`);
-  });
-
   await test.step(`visual-regression for ${buttonType} button`, async () => {
     await componentsPage.visualRegression.takeScreenshot(`mdc-button-${buttonType}-default`, { element: button });
   });
@@ -82,23 +78,74 @@ const commonTestCases = async (args: SetupOptions, buttonType: string) => {
   });
 };
 
-const testForAttributes = async (componentsPage: ComponentsPage, button: Locator, buttonType: string) => {
+const accessibilityTestCases = async (args: SetupOptions, buttonType: string) => {
+  const { componentsPage, ...props } = args;
+  const button = await setup({
+    componentsPage,
+    ...props,
+  });
+
+  // Default
+  await test.step(`accessibility for ${buttonType} button`, async () => {
+    await componentsPage.accessibility.checkForA11yViolations(`button-${buttonType}-default`);
+  });
+
+  // Disabled
+  await test.step(`accessibility for disabled ${buttonType} button`, async () => {
+    await componentsPage.setAttributes(button, { disabled: 'true' });
+    await componentsPage.accessibility
+      .checkForA11yViolations(`button-${buttonType}-disabled`);
+    await componentsPage.removeAttribute(button, 'disabled');
+  });
+
+  // Soft Disabled
+  await test.step(`accessibility for soft-disabled ${buttonType} button`, async () => {
+    await componentsPage.setAttributes(button, { 'soft-disabled': 'true' });
+    await componentsPage.accessibility
+      .checkForA11yViolations(`button-${buttonType}-soft-disabled`);
+    await componentsPage.removeAttribute(button, 'soft-disabled');
+  });
+
+  // Active
+  await test.step(`accessibility for active ${buttonType} button`, async () => {
+    await componentsPage.setAttributes(button, { active: 'true' });
+    await componentsPage.accessibility
+      .checkForA11yViolations(`button-${buttonType}-active`);
+    await componentsPage.removeAttribute(button, 'active');
+  });
+
+  // Active Disabled
+  await test.step(`accessibility for active and disabled ${buttonType} button`, async () => {
+    await componentsPage.setAttributes(button, { disabled: 'true', active: 'true' });
+    await componentsPage.accessibility
+      .checkForA11yViolations(`button-${buttonType}-active-disabled`);
+    await componentsPage.removeAttribute(button, 'disabled');
+    await componentsPage.removeAttribute(button, 'active');
+  });
+
+  // Active Soft Disabled
+  await test.step(`accessibility for active and soft-disabled ${buttonType} button`, async () => {
+    await componentsPage.setAttributes(button, { 'soft-disabled': 'true', active: 'true' });
+    await componentsPage.accessibility
+      .checkForA11yViolations(`button-${buttonType}-active-soft-disabled`);
+    await componentsPage.removeAttribute(button, 'soft-disabled');
+    await componentsPage.removeAttribute(button, 'active');
+  });
+};
+
+const attributeTestCases = async (args: SetupOptions, buttonType: string) => {
+  const { componentsPage, ...props } = args;
+  const button = await setup({
+    componentsPage,
+    ...props,
+  });
+
   // Disabled button
   await test.step(`attribute disabled should be present on ${buttonType} button`, async () => {
     await componentsPage.setAttributes(button, {
       disabled: 'true',
     });
     await expect(button).toHaveAttribute('disabled');
-  });
-
-  await test.step(`accessibility for disabled ${buttonType} button`, async () => {
-    await componentsPage.accessibility
-      .checkForA11yViolations(`button-${buttonType}-disabled`);
-  });
-
-  await test.step(`visual-regression for disabled ${buttonType} button`, async () => {
-    await componentsPage.visualRegression
-      .takeScreenshot(`mdc-button-${buttonType}-disabled`, { element: button });
     await componentsPage.removeAttribute(button, 'disabled');
   });
 
@@ -108,16 +155,6 @@ const testForAttributes = async (componentsPage: ComponentsPage, button: Locator
       'soft-disabled': 'true',
     });
     await expect(button).toHaveAttribute('soft-disabled');
-  });
-
-  await test.step(`accessibility for soft-disabled ${buttonType} button`, async () => {
-    await componentsPage.accessibility
-      .checkForA11yViolations(`button-${buttonType}-soft-disabled`);
-  });
-
-  await test.step(`visual-regression for soft-disabled ${buttonType} button`, async () => {
-    await componentsPage.visualRegression
-      .takeScreenshot(`mdc-button-${buttonType}-soft-disabled`, { element: button });
     await componentsPage.removeAttribute(button, 'soft-disabled');
   });
 
@@ -127,15 +164,6 @@ const testForAttributes = async (componentsPage: ComponentsPage, button: Locator
       active: 'true',
     });
     await expect(button).toHaveAttribute('active');
-  });
-
-  await test.step(`accessibility for active ${buttonType} button`, async () => {
-    await componentsPage.accessibility.checkForA11yViolations(`button-${buttonType}-active`);
-  });
-
-  await test.step(`visual-regression for active ${buttonType} button`, async () => {
-    await componentsPage.visualRegression
-      .takeScreenshot(`mdc-button-${buttonType}-active`, { element: button });
     await componentsPage.removeAttribute(button, 'active');
   });
 
@@ -147,22 +175,11 @@ const testForAttributes = async (componentsPage: ComponentsPage, button: Locator
     });
     await expect(button).toHaveAttribute('disabled');
     await expect(button).toHaveAttribute('active');
-  });
-
-  await test.step(`accessibility for active and disabled ${buttonType} button`, async () => {
-    await componentsPage.setAttributes(button, { role: 'button' });
-    await componentsPage.accessibility
-      .checkForA11yViolations(`button-${buttonType}-active-disabled`);
-  });
-
-  await test.step(`visual-regression for active and disabled ${buttonType} button`, async () => {
-    await componentsPage.visualRegression
-      .takeScreenshot(`mdc-button-${buttonType}-active-disabled`, { element: button });
     await componentsPage.removeAttribute(button, 'disabled');
     await componentsPage.removeAttribute(button, 'active');
   });
 
-  // Soft Disabled button
+  // Active Soft Disabled button
   await test.step(`attribute active and soft-disabled should be present on ${buttonType} button`, async () => {
     await componentsPage.setAttributes(button, {
       'soft-disabled': 'true',
@@ -170,14 +187,44 @@ const testForAttributes = async (componentsPage: ComponentsPage, button: Locator
     });
     await expect(button).toHaveAttribute('soft-disabled');
     await expect(button).toHaveAttribute('active');
+    await componentsPage.removeAttribute(button, 'soft-disabled');
+    await componentsPage.removeAttribute(button, 'active');
+  });
+};
+
+const visualRegressionTestCases = async (componentsPage: ComponentsPage, button: Locator, buttonType: string) => {
+  // Disbabled button
+  await test.step(`visual-regression for disabled ${buttonType} button`, async () => {
+    await componentsPage.setAttributes(button, { disabled: 'true' });
+    await componentsPage.visualRegression
+      .takeScreenshot(`mdc-button-${buttonType}-disabled`, { element: button });
+    await componentsPage.removeAttribute(button, 'disabled');
   });
 
-  await test.step(`accessibility for active and soft-disabled ${buttonType} button`, async () => {
-    await componentsPage.accessibility
-      .checkForA11yViolations(`button-${buttonType}-active-soft-disabled`);
+  await test.step(`visual-regression for soft-disabled ${buttonType} button`, async () => {
+    await componentsPage.setAttributes(button, { 'soft-disabled': 'true' });
+    await componentsPage.visualRegression
+      .takeScreenshot(`mdc-button-${buttonType}-soft-disabled`, { element: button });
+    await componentsPage.removeAttribute(button, 'soft-disabled');
+  });
+
+  await test.step(`visual-regression for active ${buttonType} button`, async () => {
+    await componentsPage.setAttributes(button, { active: 'true' });
+    await componentsPage.visualRegression
+      .takeScreenshot(`mdc-button-${buttonType}-active`, { element: button });
+    await componentsPage.removeAttribute(button, 'active');
+  });
+
+  await test.step(`visual-regression for active and disabled ${buttonType} button`, async () => {
+    await componentsPage.setAttributes(button, { disabled: 'true', active: 'true' });
+    await componentsPage.visualRegression
+      .takeScreenshot(`mdc-button-${buttonType}-active-disabled`, { element: button });
+    await componentsPage.removeAttribute(button, 'disabled');
+    await componentsPage.removeAttribute(button, 'active');
   });
 
   await test.step(`visual-regression for active and soft-disabled ${buttonType} button`, async () => {
+    await componentsPage.setAttributes(button, { 'soft-disabled': 'true', active: 'true' });
     await componentsPage.visualRegression
       .takeScreenshot(`mdc-button-${buttonType}-active-soft-disabled`, { element: button });
     await componentsPage.removeAttribute(button, 'soft-disabled');
@@ -186,35 +233,32 @@ const testForAttributes = async (componentsPage: ComponentsPage, button: Locator
 };
 
 const testForCombinations = async (args: SetupOptions, buttonType: string) => {
+  await commonTestCases(args, buttonType);
+  await attributeTestCases(args, buttonType);
+  await accessibilityTestCases(args, buttonType);
+
   const { componentsPage, ...props } = args;
   const button = await setup({
     componentsPage,
     ...props,
   });
-  const BUTTON_SIZES = (buttonType === 'prefix-icon' || buttonType === 'postfix-icon')
-    ? ICON_BUTTON_SIZES
-    : PILL_BUTTON_SIZES;
+
   for (const variant of Object.values(BUTTON_VARIANTS)) {
-    for (const size of Object.values(BUTTON_SIZES)) {
+    for (const size of Object.values(PILL_BUTTON_SIZES)) {
       for (const color of Object.values(BUTTON_COLORS)) {
         if (variant !== BUTTON_VARIANTS.TERTIARY) {
-          if (size === BUTTON_SIZES[20]) { // FIXME: type should support 20
-            await expect(button).not.toHaveAttribute('size', size.toString());
-            await expect(button).toHaveAttribute('size', ICON_BUTTON_SIZES[32].toString());
-          } else {
-            await test.step(`attribute variant="${variant}",
+          await test.step(`attribute variant="${variant}",
                     color="${color}", size="${size}" should be present on ${buttonType} button`, async () => {
-              await componentsPage.setAttributes(button, { variant, color, size: `${size}` });
-              await expect(button).toHaveAttribute('variant', variant);
-              await expect(button).toHaveAttribute('color', color);
-              await expect(button).toHaveAttribute('size', `${size}`);
-            });
-            await test.step(`accessibility,
+            await componentsPage.setAttributes(button, { variant, color, size: `${size}` });
+            await expect(button).toHaveAttribute('variant', variant);
+            await expect(button).toHaveAttribute('color', color);
+            await expect(button).toHaveAttribute('size', `${size}`);
+          });
+          await test.step(`accessibility,
             visual-regression and attributes for
             variant="${variant}", color="${color}", size="${size}" ${buttonType} button`, async () => {
-              await testForAttributes(componentsPage, button, `${buttonType}-${variant}-${color}-${size}`);
-            });
-          }
+            await visualRegressionTestCases(componentsPage, button, `${buttonType}-${variant}-${color}-${size}`);
+          });
         } else {
           await test.step(`attribute variant="${variant}",
                     color="${color}", size="${size}" should not be present on ${buttonType} button`, async () => {
@@ -233,40 +277,65 @@ const testForCombinations = async (args: SetupOptions, buttonType: string) => {
   }
 };
 
+const testForIconButtonSizes = async (args: SetupOptions, buttonType: string) => {
+  const { componentsPage, ...props } = args;
+  const button = await setup({
+    componentsPage,
+    ...props,
+  });
+
+  for (const size of Object.values(ICON_BUTTON_SIZES)) {
+    if (size !== ICON_BUTTON_SIZES[20]) {
+      await test.step(`attribute size="${size}" should be present on ${buttonType} button`, async () => {
+        await componentsPage.setAttributes(button, { size: `${size}` });
+        await expect(button).toHaveAttribute('size', `${size}`);
+      });
+
+      await test.step(`accessibility,
+      visual-regression and attributes for size="${size}" ${buttonType} button`, async () => {
+        await visualRegressionTestCases(componentsPage, button, `${buttonType}-${size}`);
+      });
+    }
+  }
+
+  await test.step('attribute size="20" should be present on tertiary prefix-icon button', async () => {
+    await componentsPage.setAttributes(button, { size: `${ICON_BUTTON_SIZES[20]}`, variant: BUTTON_VARIANTS.TERTIARY });
+    await expect(button).toHaveAttribute('size', `${ICON_BUTTON_SIZES[20]}`);
+    await componentsPage.visualRegression
+      .takeScreenshot(`mdc-button-${buttonType}-${ICON_BUTTON_SIZES[20]}`, { element: button });
+  });
+};
+
 const testsToRun = async (componentsPage: ComponentsPage) => {
   await test.step('mdc-button as pill button', async () => {
     const children = 'Button content';
-    await commonTestCases({ children, componentsPage }, 'pill');
     await testForCombinations({ children, componentsPage }, 'pill');
   });
 
   await test.step('mdc-button as pill with prefix icon button', async () => {
     const children = 'Prefix Icon';
     const prefixIcon = 'info-circle-bold';
-    await commonTestCases({ prefixIcon, children, componentsPage }, 'pill-with-prefix-icon');
-    await testForCombinations({ children, componentsPage }, 'pill-with-prefix-icon');
+    await testForCombinations({ prefixIcon, children, componentsPage }, 'pill-with-prefix-icon');
   });
 
   await test.step('mdc-button as pill with postfix icon button', async () => {
     const children = 'Postfix Icon';
     const postfixIcon = 'info-circle-light';
-    await commonTestCases({ postfixIcon, children, componentsPage }, 'pill-with-postfix-icon');
-    await testForCombinations({ children, componentsPage }, 'pill-with-postfix-icon');
+    await testForCombinations({ postfixIcon, children, componentsPage }, 'pill-with-postfix-icon');
   });
 
   await test.step('mdc-button as prefix icon button', async () => {
     const prefixIcon = 'info-circle-bold';
-    await commonTestCases({ prefixIcon, componentsPage }, 'prefix-icon');
-    await testForCombinations({ componentsPage }, 'prefix-icon');
+    await testForCombinations({ prefixIcon, componentsPage }, 'prefix-icon');
+    await testForIconButtonSizes({ prefixIcon, componentsPage }, 'prefix-icon');
   });
 
   await test.step('mdc-button as postfix icon button', async () => {
     const postfixIcon = 'info-circle-light';
-    await commonTestCases({ postfixIcon, componentsPage }, 'postfix-icon');
-    await testForCombinations({ componentsPage }, 'postfix-icon');
+    await testForCombinations({ postfixIcon, componentsPage }, 'postfix-icon');
+    await testForIconButtonSizes({ postfixIcon, componentsPage }, 'prefix-icon');
   });
 
-  // TODO: Pill should not support icon button sizing; 20 should be only for tertiary button
   // TODO: Key pressed, focused events test.
 };
 
