@@ -368,7 +368,8 @@ class Button extends Component {
    * Infers the type of button based on the presence of slot and/or prefix and postfix icons.
    * @param slot - default slot of button
    */
-  private inferButtonType(slot?: HTMLSlotElement) {
+  private inferButtonType() {
+    const slot = this.shadowRoot?.querySelector('slot')?.assignedNodes().length;
     if (slot && (this.prefixIcon || this.postfixIcon)) {
       this.type = BUTTON_TYPE.PILL_WITH_ICON;
     } else if (!slot && (this.prefixIcon || this.postfixIcon)) {
@@ -376,10 +377,6 @@ class Button extends Component {
     } else {
       this.type = BUTTON_TYPE.PILL;
     }
-  }
-
-  private handleSlotchange(event: Event) {
-    this.inferButtonType(event.target as HTMLSlotElement);
   }
 
   public override render() {
@@ -391,7 +388,7 @@ class Button extends Component {
           size=${this.iconSize} 
           length-unit="rem">
         </mdc-icon>` : ''}
-      <slot @slotchange=${this.handleSlotchange}></slot>
+      <slot @slotchange=${this.inferButtonType}></slot>
       ${this.postfixIcon ? html`
         <mdc-icon 
           name="${this.postfixIcon}" 
