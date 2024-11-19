@@ -108,11 +108,11 @@ const styles = [hostFitContentStyles, css`
   }
   :host([size="64"]){
     height: var(--mdc-button-height-size-64);
-    padding: 1rem;
+    padding: calc(1rem - 0.0625rem);
   }
   :host([size="52"]){
     height: var(--mdc-button-height-size-52);
-    padding: 0.75rem;
+    padding: calc(0.75rem - 0.0625rem);
   }
   :host([size="40"]){
     height: var(--mdc-button-height-size-40);
@@ -122,7 +122,7 @@ const styles = [hostFitContentStyles, css`
     gap: 0.5rem;
   }
   :host([size="40"].icon){
-    padding: 0.625rem;
+    padding: calc(0.625rem - 0.0625rem);
   }
   :host([size="32"]){
     height: var(--mdc-button-height-size-32);
@@ -132,7 +132,7 @@ const styles = [hostFitContentStyles, css`
     gap: 0.375rem;
   }
   :host([size="32"].icon){
-    padding: 0.5rem;
+    padding: calc(0.5rem - 0.0625rem);
   }
   :host([size="28"]){
     height: var(--mdc-button-height-size-28);
@@ -142,7 +142,7 @@ const styles = [hostFitContentStyles, css`
     gap: 0.375rem;
   }
   :host([size="28"].icon){
-    padding: 0.375rem;
+    padding: calc(0.375rem - 0.0625rem);
   }
   :host([size="24"]){
     height: var(--mdc-button-height-size-24);
@@ -152,11 +152,11 @@ const styles = [hostFitContentStyles, css`
     gap: 0.25rem;
   }
   :host([size="24"].icon){
-    padding: 0.25rem;
+    padding: calc(0.25rem - 0.0625rem);
   }
   :host([size="20"]){
     height: var(--mdc-button-height-size-20);
-    padding: 0.125rem;
+    padding: calc(0.125rem - 0.0625rem);
   }
 
   :host([color="accent"]){
