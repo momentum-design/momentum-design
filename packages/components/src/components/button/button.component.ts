@@ -219,9 +219,9 @@ class Button extends Component {
    */
   private setClassBasedOnType(type: string) {
     if (type === BUTTON_TYPE.ICON) {
-      this.classList.add('icon');
+      this.classList.add('mdc-icon-button');
     } else {
-      this.classList.remove('icon');
+      this.classList.remove('mdc-icon-button');
     }
   }
 
