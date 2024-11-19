@@ -74,7 +74,6 @@ const commonTestCases = async (args: SetupOptions, buttonType: string) => {
   });
 
   // Default values for button
-
   await test.step(`attributes for ${buttonType} button`, async () => {
     await test.step('attributes should be present on component by default', async () => {
       await expect(button).toHaveAttribute('variant', DEFAULTS.VARIANT);
@@ -276,8 +275,7 @@ const testForCombinations = async (args: SetupOptions, buttonType: string) => {
             await expect(button).toHaveAttribute('color', color);
             await expect(button).toHaveAttribute('size', `${size}`);
           });
-          await test.step(`accessibility,
-            visual-regression and attributes for
+          await test.step(`visual-regression for
             variant="${variant}", color="${color}", size="${size}" ${buttonType} button`, async () => {
             await visualRegressionTestCases(componentsPage, button, `${buttonType}-${variant}-${color}-${size}`);
           });
@@ -316,83 +314,46 @@ const testForIconButtonSizes = async (args: SetupOptions, buttonType: string) =>
   });
 };
 
-const testsToRun = async (componentsPage: ComponentsPage) => {
-  await test.step('mdc-button as pill button', async () => {
-    const children = 'Pill Button';
-    await testForCombinations({ children, componentsPage }, 'pill');
+test.describe.parallel('mdc-button', () => {
+  test.use({ viewport: { width: 300, height: 200 } });
+  test('mdc-button pill button', async ({ componentsPage }) => {
+    await test.step('mdc-button as pill button', async () => {
+      const children = 'Pill Button';
+      await testForCombinations({ children, componentsPage }, 'pill');
+    });
   });
 
-  await test.step('mdc-button as pill with prefix icon button', async () => {
-    const children = 'Pill with Prefix Icon';
-    const prefixIcon = 'placeholder-bold';
-    await testForCombinations({ prefixIcon, children, componentsPage }, 'pill-with-prefix-icon');
+  test('mdc-button pill with prefix icon button', async ({ componentsPage }) => {
+    await test.step('mdc-button as pill with prefix icon button', async () => {
+      const children = 'Pill with Prefix Icon';
+      const prefixIcon = 'placeholder-bold';
+      await testForCombinations({ prefixIcon, children, componentsPage }, 'pill-with-prefix-icon');
+    });
   });
 
-  await test.step('mdc-button as pill with postfix icon button', async () => {
-    const children = 'Pill with Postfix Icon';
-    const postfixIcon = 'placeholder-light';
-    await testForCombinations({ postfixIcon, children, componentsPage }, 'pill-with-postfix-icon');
+  test('mdc-button pill with postfix icon button', async ({ componentsPage }) => {
+    await test.step('mdc-button as pill with postfix icon button', async () => {
+      const children = 'Pill with Postfix Icon';
+      const postfixIcon = 'placeholder-light';
+      await testForCombinations({ postfixIcon, children, componentsPage }, 'pill-with-postfix-icon');
+    });
   });
 
-  await test.step('mdc-button as prefix icon button', async () => {
-    const prefixIcon = 'placeholder-bold';
-    await testForCombinations({ prefixIcon, componentsPage }, 'prefix-icon');
-    await testForIconButtonSizes({ prefixIcon, componentsPage }, 'prefix-icon');
+  test('mdc-button prefix icon button', async ({ componentsPage }) => {
+    await test.step('mdc-button as prefix icon button', async () => {
+      const prefixIcon = 'placeholder-bold';
+      await testForCombinations({ prefixIcon, componentsPage }, 'prefix-icon');
+      await testForIconButtonSizes({ prefixIcon, componentsPage }, 'prefix-icon');
+    });
   });
 
-  await test.step('mdc-button as postfix icon button', async () => {
-    const postfixIcon = 'placeholder-light';
-    await testForCombinations({ postfixIcon, componentsPage }, 'postfix-icon');
-    await testForIconButtonSizes({ postfixIcon, componentsPage }, 'prefix-icon');
+  test('mdc-button postfix icon button', async ({ componentsPage }) => {
+    await test.step('mdc-button as postfix icon button', async () => {
+      const postfixIcon = 'placeholder-light';
+      await testForCombinations({ postfixIcon, componentsPage }, 'postfix-icon');
+      await testForIconButtonSizes({ postfixIcon, componentsPage }, 'prefix-icon');
+    });
   });
 
   // TODO: Key pressed, focused events test.
-};
-
-// test.describe.parallel('mdc-button', () => {
-//   test.use({ viewport: { width: 300, height: 200 } });
-//   test('standalone', async ({ componentsPage }) => {
-//     await testsToRun(componentsPage);
-//   });
-// });
-
-test.describe.configure({ mode: 'parallel' });
-
-test('mdc-button pill button', async ({ componentsPage }) => {
-  await test.step('mdc-button as pill button', async () => {
-    const children = 'Pill Button';
-    await testForCombinations({ children, componentsPage }, 'pill');
-  });
-});
-
-test('mdc-button pill with prefix icon button', async ({ componentsPage }) => {
-  await test.step('mdc-button as pill with prefix icon button', async () => {
-    const children = 'Pill with Prefix Icon';
-    const prefixIcon = 'placeholder-bold';
-    await testForCombinations({ prefixIcon, children, componentsPage }, 'pill-with-prefix-icon');
-  });
-});
-
-test('mdc-button pill with postfix icon button', async ({ componentsPage }) => {
-  await test.step('mdc-button as pill with postfix icon button', async () => {
-    const children = 'Pill with Postfix Icon';
-    const postfixIcon = 'placeholder-light';
-    await testForCombinations({ postfixIcon, children, componentsPage }, 'pill-with-postfix-icon');
-  });
-});
-
-test('mdc-button prefix icon button', async ({ componentsPage }) => {
-  await test.step('mdc-button as prefix icon button', async () => {
-    const prefixIcon = 'placeholder-bold';
-    await testForCombinations({ prefixIcon, componentsPage }, 'prefix-icon');
-    await testForIconButtonSizes({ prefixIcon, componentsPage }, 'prefix-icon');
-  });
-});
-
-test('mdc-button postfix icon button', async ({ componentsPage }) => {
-  await test.step('mdc-button as postfix icon button', async () => {
-    const postfixIcon = 'placeholder-light';
-    await testForCombinations({ postfixIcon, componentsPage }, 'postfix-icon');
-    await testForIconButtonSizes({ postfixIcon, componentsPage }, 'prefix-icon');
-  });
 });
