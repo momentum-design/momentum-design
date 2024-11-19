@@ -54,9 +54,6 @@ const commonTestCases = async (args: SetupOptions, buttonType: string) => {
   });
 
   // Default values for button
-  await test.step(`visual-regression for ${buttonType} button`, async () => {
-    await componentsPage.visualRegression.takeScreenshot(`mdc-button-${buttonType}-default`, { element: button });
-  });
 
   await test.step(`attributes for ${buttonType} button`, async () => {
     await test.step('attributes should be present on component by default', async () => {
@@ -193,6 +190,11 @@ const attributeTestCases = async (args: SetupOptions, buttonType: string) => {
 };
 
 const visualRegressionTestCases = async (componentsPage: ComponentsPage, button: Locator, buttonType: string) => {
+  await test.step(`visual-regression for disabled ${buttonType} button`, async () => {
+    await componentsPage.visualRegression
+      .takeScreenshot(`mdc-button-${buttonType}`, { element: button });
+  });
+
   // Disbabled button
   await test.step(`visual-regression for disabled ${buttonType} button`, async () => {
     await componentsPage.setAttributes(button, { disabled: 'true' });
