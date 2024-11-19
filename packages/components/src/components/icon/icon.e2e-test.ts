@@ -27,6 +27,23 @@ const setup = async (args: SetupOptions) => {
   return icon;
 };
 
+const visualTestingSetup = async (args: SetupOptions) => {
+  const { componentsPage, ...restArgs } = args;
+  await componentsPage.mount({
+    html: `
+    <div class="icon-container">
+      <mdc-icon name="${restArgs.name}"></mdc-icon>
+      <mdc-icon name="${restArgs.name}" size="2"></mdc-icon>
+      <mdc-icon name="${restArgs.name}" size="2" style="--mdc-icon-fill-color: red;"></mdc-icon>
+    </div>
+      `,
+    clearDocument: true,
+  });
+  const icon = componentsPage.page.locator('.icon-container');
+  await icon.waitFor();
+  return icon;
+};
+
 test('mdc-icon', async ({ componentsPage }) => {
   const name = 'accessibility-regular';
   const ariaLabel = 'test aria label';
@@ -39,7 +56,7 @@ test('mdc-icon', async ({ componentsPage }) => {
     await componentsPage.accessibility.checkForA11yViolations('icon-default');
   });
 
-  const iconWithAriaLabel = await setup({
+  await setup({
     componentsPage,
     name,
     ariaLabel,
@@ -49,31 +66,14 @@ test('mdc-icon', async ({ componentsPage }) => {
     await componentsPage.accessibility.checkForA11yViolations('icon-aria-passed-in');
   });
 
+  const visualIcons = await visualTestingSetup({ componentsPage, name });
+
   /**
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
-    await test.step('matches screenshot of element with aria-label passed in', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-icon-default', { element: iconWithAriaLabel });
-    });
-
-    await test.step('matches screenshot of element with size set to 2', async () => {
-      await componentsPage.setAttributes(iconWithAriaLabel, {
-        size: '2',
-      });
-
-      await componentsPage.visualRegression.takeScreenshot('mdc-icon-scale', { element: iconWithAriaLabel });
-    });
-
-    await test.step('matches screenshot of element with icon color set to red using css property', async () => {
-      const iconWithColor = await setup({
-        componentsPage,
-        name,
-      });
-      await componentsPage.setAttributes(iconWithColor, {
-        style: '--mdc-icon-fill-color: red;',
-      });
-      await componentsPage.visualRegression.takeScreenshot('mdc-icon-color', { element: iconWithColor });
+    await test.step('matches screenshot of elements with default, size equal 2 and color set to red', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-icon', { element: visualIcons });
     });
   });
 
