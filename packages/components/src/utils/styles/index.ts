@@ -23,8 +23,10 @@ const hostFocusRingStyles = css`
     --mdc-focus-ring-middle-offset: var(--mdc-focus-ring-inner-width);
     --mdc-focus-ring-outer-offset: calc(var(--mdc-focus-ring-inner-width) + var(--mdc-focus-ring-middle-width));
   }
-  
-  :host(:focus) {
+  :host([disabled]:focus) {
+    box-shadow: none;
+  }
+  :host(:focus), :host:not([disabled]:focus) {
     position: relative;
     box-shadow: 
         0 0 0 var(--mdc-focus-ring-inner-width) var(--mdc-focus-ring-inner-color),

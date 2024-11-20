@@ -47,11 +47,7 @@ const styles = [hostFitContentStyles, css`
   :host([active]){
     font-weight: var(--mds-font-apps-body-large-bold-font-weight);
   }
-  :host([variant="primary"]:disabled), :host([variant="primary"][disabled]),
-  :host([variant="secondary"]:disabled), :host([variant="secondary"][disabled]),
-  :host([variant="tertiary"]:disabled), :host([variant="tertiary"][disabled]){
-    box-shadow: none;
-  }
+
 
   :host([variant="primary"]){
     background: var(--mdc-button-primary-background-color);
@@ -63,7 +59,7 @@ const styles = [hostFitContentStyles, css`
   :host([variant="primary"]:active), :host([variant="primary"].pressed){
     background: var(--mdc-button-primary-pressed-background-color);
   }
-  :host([variant="primary"]:disabled), :host([variant="primary"][disabled]), :host([variant="primary"][soft-disabled]){
+  :host([variant="primary"][disabled]), :host([variant="primary"][soft-disabled]){
     background: var(--mdc-button-primary-disabled-background-color);
     color: var(--mdc-button-primary-disabled-color);
     cursor: auto;
@@ -79,7 +75,7 @@ const styles = [hostFitContentStyles, css`
   :host([variant="secondary"]:active), :host([variant="secondary"].pressed){
     background: var(--mdc-button-secondary-pressed-background-color);
   }
-  :host([variant="secondary"]:disabled), :host([variant="secondary"][disabled]),
+  :host([variant="secondary"][disabled]),
    :host([variant="secondary"][soft-disabled]){
     color: var(--mdc-button-primary-disabled-color);
     border-color: var(--mdc-button-secondary-disabled-border-color);
@@ -97,7 +93,7 @@ const styles = [hostFitContentStyles, css`
   :host([variant="tertiary"]:active), :host([variant="tertiary"].pressed){
     background: var(--mdc-button-tertiary-pressed-background-color);
   }
-  :host([variant="tertiary"]:disabled), :host([variant="tertiary"][disabled]), 
+  :host([variant="tertiary"][disabled]), 
   :host([variant="tertiary"][soft-disabled]){
     color: var(--mdc-button-tertiary-disabled-color);
     background: var(--mdc-button-tertiary-disabled-background-color);
