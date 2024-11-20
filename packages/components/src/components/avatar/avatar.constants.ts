@@ -15,6 +15,7 @@ const MAX_COUNTER = 99;
 const DEFAULTS = {
   TYPE: AVATAR_TYPE.PHOTO,
   SIZE: AVATAR_SIZE.X_SMALL,
+  ICON_NAME: 'user-regular',
 } as const;
 
 export {

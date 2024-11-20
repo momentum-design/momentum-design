@@ -11,8 +11,6 @@ import '../presence';
 import { getAvatarSize, getAvatarIconSize, getAvatarTextFontSize, getAvatarLoadingScaleSize } from './avatar.utils';
 
 /**
- * @slot - This is a default/unnamed slot
- *
  * @tagname mdc-avatar
  */
 class Avatar extends Component {
@@ -43,6 +41,13 @@ class Avatar extends Component {
   @property({ type: Boolean, attribute: 'is-clickable' })
   isClickable = false;
 
+  /**
+   * Aria-label attribute to be set for accessibility
+   * @default null
+   */
+  @property({ type: String, attribute: 'aria-label' })
+  override ariaLabel: string | null = null;
+
   private getPresenceTemplateBasedOnType(type: AvatarType): TemplateResult {
     // while typing the loading spinner will be displayed and presence will be hidden
     if (this.isTyping) {
@@ -66,15 +71,17 @@ class Avatar extends Component {
         class="photo"
         src="${ifDefined(this.src)}"
         alt="${ifDefined(this.alt)}"
+        aria-hidden="true"
       />
     `;
   }
 
   private iconTemplate(): TemplateResult {
+    const name = this.iconName ? this.iconName : DEFAULTS.ICON_NAME;
     return html`
       <mdc-icon
         class="icon"
-        name="${ifDefined(this.iconName)}"
+        name="${ifDefined(name)}"
         length-unit="rem"
         size="${getAvatarIconSize(this.size)}"
       ></mdc-icon>
@@ -182,7 +189,7 @@ class Avatar extends Component {
 
     if (this.isClickable) {
       return html`
-        <mdc-button class="container" style="${dimensions}">
+        <mdc-button class="container" style="${dimensions}" aria-label="${ifDefined(this.ariaLabel || '')}">
           <div class="content" style="${dimensions}">
             ${mainContent}
             ${presence}
