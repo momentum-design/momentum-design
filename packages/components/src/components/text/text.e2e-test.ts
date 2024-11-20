@@ -5,7 +5,7 @@ import { TYPE, VALID_TEXT_TAGS } from './text.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
-  type: string;
+  type?: string;
   children: any;
   tagname?: string;
 };
@@ -26,15 +26,54 @@ const setup = async (args: SetupOptions) => {
   return text;
 };
 
+const visualTestingSetup = async (args: SetupOptions) => {
+  const { componentsPage, ...restArgs } = args;
+  const textType = () =>
+    Object.values(TYPE)
+      .map((type) => `<mdc-text type="${type}">${restArgs.children}</mdc-text>`)
+      .join('');
+  const textTage = () =>
+    Object.values(VALID_TEXT_TAGS)
+      .map((tagname) => `<mdc-text tagname="${tagname}">${restArgs.children}</mdc-text>`)
+      .join('');
+
+  await componentsPage.mount({
+    html: `
+    <div class="text-container" style="backrgound-color: black">
+      ${textType()}
+      ${textTage()}
+    </div>
+    `,
+    clearDocument: true,
+  });
+  const text = componentsPage.page.locator('.text-container');
+  await text.waitFor();
+  return text;
+};
+
 const textContent = 'abcdefghijklmnopqrstuvwxyz1234567890';
 
 test.describe('mdc-text', () => {
   test.use({
     viewport: {
-      width: 3000,
-      height: 500,
+      width: 1280,
+      height: 2040,
     },
   });
+
+  test('matches screenshot of all elements', async ({ componentsPage }) => {
+    const text = await visualTestingSetup({ componentsPage, children: textContent });
+
+    /**
+     * VISUAL REGRESSION
+     */
+    await test.step('visual-regression', async () => {
+      await test.step('matches screenshot of element', async () => {
+        await componentsPage.visualRegression.takeScreenshot('mdc-text', { element: text });
+      });
+    });
+  });
+
   for (const textType of Object.values(TYPE)) {
     test(textType, async ({ componentsPage }) => {
       const text = await setup({ componentsPage, type: textType, children: textContent });
@@ -44,15 +83,6 @@ test.describe('mdc-text', () => {
        */
       await test.step('accessibility', async () => {
         await componentsPage.accessibility.checkForA11yViolations(`text-default-${textType}`);
-      });
-
-      /**
-       * VISUAL REGRESSION
-       */
-      await test.step('visual-regression', async () => {
-        await test.step('matches screenshot of element', async () => {
-          await componentsPage.visualRegression.takeScreenshot(`mdc-text-${textType}`, { element: text });
-        });
       });
 
       /**
@@ -80,16 +110,6 @@ test.describe('mdc-text', () => {
        */
       await test.step('accessibility', async () => {
         await componentsPage.accessibility.checkForA11yViolations(`text-with-${tagname}-tag`);
-      });
-
-      /**
-       * VISUAL REGRESSION
-       */
-      // skipping visual regression for firefox and webkit due to flakiness
-      await test.step('visual-regression', async () => {
-        await test.step('matches screenshot of element', async () => {
-          await componentsPage.visualRegression.takeScreenshot(`mdc-text-tag-${tagname}`, { element: text });
-        });
       });
 
       /**

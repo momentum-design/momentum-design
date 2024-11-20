@@ -11,11 +11,11 @@ const setup = async (args: SetupOptions) => {
   const { componentsPage, shape } = args;
   await componentsPage.mount({
     /* eslint-disable max-len */
-    html: `<mdc-subcomponent-focusring shape="${shape}" id='firstComponent' class="focus-ring"></mdc-subcomponent-focusring>`,
-  });
-  await componentsPage.mount({
-    /* eslint-disable max-len */
-    html: `<mdc-subcomponent-focusring shape="${shape}" id='secondComponent' class="focus-ring"></mdc-subcomponent-focusring>`,
+    html: `
+    <div class="focus-ring-container">
+      <mdc-subcomponent-focusring shape="${shape}" id='firstComponent' class="focus-ring"></mdc-subcomponent-focusring>
+      <mdc-subcomponent-focusring shape="${shape}" id='secondComponent' class="focus-ring"></mdc-subcomponent-focusring>
+    <div>`,
   });
   const subComponent = componentsPage.page.locator('#firstComponent');
   await subComponent.waitFor();
