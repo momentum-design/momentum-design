@@ -12,6 +12,7 @@ const render = (args: Args) => html`
     initials="${args.initials}"
     counter="${args.counter}"
     presence="${args.presence}"
+    aria-label="${args['aria-label']}"
     ?is-clickable="${args['is-clickable']}"
     ?is-typing="${args['is-typing']}"
   ></mdc-avatar>
@@ -44,5 +45,10 @@ export const Primary: StoryObj = {
     'is-clickable': false,
     'is-typing': false,
     'icon-name': 'placeholder-bold',
+    'aria-label': '',
   },
+};
+
+export const Default: StoryObj = {
+  args: {},
 };
