@@ -148,9 +148,9 @@ class Button extends Component {
 
   constructor() {
     super();
-    this.addEventListener('click', this.handleClick);
-    this.addEventListener('keydown', this.handleKeyDown);
-    this.addEventListener('keyup', this.handleKeyUp);
+    this.addEventListener('click', this.handleClick.bind(this));
+    this.addEventListener('keydown', this.handleKeyDown.bind(this));
+    this.addEventListener('keyup', this.handleKeyUp.bind(this));
   }
 
   public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
@@ -327,10 +327,8 @@ class Button extends Component {
    * @param event - The mouse event.
    */
   private handleClick(event: MouseEvent) {
-    if (!this.disabled && !this.softDisabled) {
-      if (this.onclick) {
-        this.onclick(event);
-      }
+    if (!this.disabled && !this.softDisabled && this.onclick) {
+      this.onclick(event);
     }
   }
 
@@ -341,9 +339,12 @@ class Button extends Component {
    * @param event - The keyboard event.
    */
   private handleKeyDown(event: KeyboardEvent) {
-    if (!this.disabled && (event.key === 'Enter' || event.key === ' ')) {
+    if (this.disabled) return;
+
+    if (['Enter', ' '].includes(event.key)) {
       this.classList.add('pressed');
     }
+
     if (event.key === 'Enter') {
       this.handleClick(event as unknown as MouseEvent);
     }
@@ -356,11 +357,13 @@ class Button extends Component {
    * @param event - The keyboard event.
    */
   private handleKeyUp(event: KeyboardEvent) {
-    if (!this.disabled && (event.key === 'Enter' || event.key === ' ')) {
+    if (this.disabled) return;
+
+    if (['Enter', ' '].includes(event.key)) {
       this.classList.remove('pressed');
-    }
-    if (event.key === ' ') {
-      this.handleClick(event as unknown as MouseEvent);
+      if (event.key === ' ') {
+        this.handleClick(event as unknown as MouseEvent);
+      }
     }
   }
 
