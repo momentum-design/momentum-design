@@ -13,6 +13,7 @@ const render = (args: Args) => html`
     counter="${args.counter}"
     presence="${args.presence}"
     ?is-clickable="${args['is-clickable']}"
+    ?is-typing="${args['is-typing']}"
   ></mdc-avatar>
 `;
 
@@ -40,6 +41,8 @@ export const Primary: StoryObj = {
     initials: 'ma',
     counter: '1',
     size: 'xx_large',
-    'is-clickable': true,
+    'is-clickable': false,
+    'is-typing': false,
+    'icon-name': 'placeholder-bold',
   },
 };
