@@ -26,7 +26,7 @@ const hostFocusRingStyles = css`
   :host([disabled]:focus) {
     box-shadow: none;
   }
-  :host(:focus), :host:not([disabled]:focus) {
+  :host(:focus) {
     position: relative;
     box-shadow: 
         0 0 0 var(--mdc-focus-ring-inner-width) var(--mdc-focus-ring-inner-color),
