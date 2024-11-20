@@ -4,6 +4,7 @@ import styles from './icon.styles';
 import { Component } from '../../models';
 import providerUtils from '../../utils/provider';
 import IconProvider from '../iconprovider/iconprovider.component';
+import IconNames from '../../../../assets/icons/dist/types/types';
 import { dynamicSVGImport } from './icon.utils';
 import { DEFAULTS } from './icon.constants';
 
@@ -58,7 +59,7 @@ class Icon extends Component {
    * Name of the icon (= filename)
    */
   @property({ type: String, reflect: true })
-  name?: string = DEFAULTS.NAME;
+  name?: IconNames = DEFAULTS.NAME;
 
   /**
    * Size of the icon (works in combination with length unit)
