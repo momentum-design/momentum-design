@@ -8,7 +8,7 @@ import { Component } from '../../models';
 import type { AvatarSize, AvatarType } from './avatar.types';
 import { AVATAR_TYPE, MAX_COUNTER, DEFAULTS } from './avatar.constants';
 import '../presence';
-import { getAvatarSize, getAvatarIconSize, getAvatarTextFontSize } from './avatar.utils';
+import { getAvatarSize, getAvatarIconSize, getAvatarTextFontSize, getAvatarLoadingScaleSize } from './avatar.utils';
 
 /**
  * @slot - This is a default/unnamed slot
@@ -43,11 +43,11 @@ class Avatar extends Component {
   @property({ type: Boolean, attribute: 'is-clickable' })
   isClickable = false;
 
-  override updated(changedProperties: Map<string, any>) {
-    super.updated(changedProperties);
-  }
-
   private getPresenceTemplateBasedOnType(type: AvatarType): TemplateResult {
+    // while typing the loading spinner will be displayed and presence will be hidden
+    if (this.isTyping) {
+      return html``;
+    }
     // avatar type of counter should not have presence
     if (type === AVATAR_TYPE.COUNTER && this.counter) {
       return html``;
@@ -142,27 +142,61 @@ class Avatar extends Component {
     });
   }
 
+  private getLoadingContent(): TemplateResult {
+    if (!this.isTyping) {
+      return html``;
+    }
+    const loadStyle = styleMap({ transform: getAvatarLoadingScaleSize(this.size) });
+    return html`
+      <div class="loading__container" aria-hidden="true" style="${loadStyle}">
+        <div class="loading__wrapper">
+          <mdc-icon
+            name="active-presence-small-filled"
+            class="loading__icon"
+            length-unit="rem"
+            size="4"
+          ></mdc-icon>
+          <mdc-icon
+            name="active-presence-small-filled"
+            class="loading__icon"
+            length-unit="rem"
+            size="4"
+          ></mdc-icon>
+          <mdc-icon
+            name="active-presence-small-filled"
+            class="loading__icon"
+            length-unit="rem"
+            size="4"
+          ></mdc-icon>
+        </div>
+      </div>
+    `;
+  }
+
   public override render() {
     const type = this.getTypeBasedOnInputs();
-    const content = this.getTemplateBasedOnType(type);
+    const mainContent = this.getTemplateBasedOnType(type);
     const presence = this.getPresenceTemplateBasedOnType(type);
     const dimensions = this.generateAvatarDimensions();
+    const loadingContent = this.getLoadingContent();
 
     if (this.isClickable) {
       return html`
         <mdc-button class="container" style="${dimensions}">
           <div class="content" style="${dimensions}">
-            ${content}
+            ${mainContent}
             ${presence}
+            ${loadingContent}
           </div>
         </mdc-button>
       `;
     }
     return html`
-      <div class="container place-center" style="${dimensions}">
+      <div class="container place-center" style="${dimensions}" aria-hidden="true">
         <div class="content" style="${dimensions}">
-          ${content}
+          ${mainContent}
           ${presence}
+          ${loadingContent}
         </div>
       </div>
     `;
