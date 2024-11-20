@@ -7,7 +7,7 @@ const styles = [hostFitContentStyles, css`
     border-radius: 1.25rem;
     font-weight: var(--mds-font-apps-body-large-medium-font-weight);
     outline: none;
-    border: 1px solid transparent;
+    border: 0.0625rem solid transparent;
 
     --mdc-button-primary-color: var(--mds-color-theme-inverted-text-primary-normal);
     --mdc-button-primary-background-color: var(--mds-color-theme-button-primary-normal);
