@@ -1,5 +1,6 @@
 import { Page, expect } from '@playwright/test';
 import type { ScreenShotOptions } from '../types';
+import { ComponentsPage } from '../../setup';
 import CONSTANTS from '../constants';
 
 interface VisualRegression {
@@ -47,6 +48,52 @@ class VisualRegression {
       });
     }
   }
+
+  async createStickerSheet(componentsPage: ComponentsPage, componentTag: string, attributes: ) {
+    const generateComponentMarkup = () => {
+      const attributeCombinations = Object.entries(attributes).map(([key, values]) => {
+        return Array.isArray(values) ? values.map(value => `${key}="${value}"`) : [`${key}="${values}"`];
+      });
+  
+      const combinations = attributeCombinations.reduce((acc, curr) => {
+        if (acc.length === 0) return curr;
+        const combined = [];
+        acc.forEach(prev => {
+          curr.forEach(currVal => {
+            combined.push(`${prev} ${currVal}`);
+          });
+        });
+        return combined;
+      }, []);
+  
+      return combinations
+        .map((combination) => `<${componentTag} ${combination}></${componentTag}>`)
+        .join('');
+    };
+ 
+    
+    await componentsPage.mount({
+      html: `
+      <div class="presence-list">
+      ${Object.values(typeValues)
+        .map(
+          (type: any) => `
+        <div class="presence-row">
+          ${generateComponentMarkup(type)}
+        </div>
+      `,
+        )
+        .join('')}
+      </div>
+      `,
+    });
+  
+    const componentList = componentsPage.page.locator('.presence-list');
+    const lastComponent = componentsPage.page.locator(`${componentTag}`).last();
+    await lastComponent.waitFor();
+  
+    return componentList;
+  };
 }
 
 export default VisualRegression;
