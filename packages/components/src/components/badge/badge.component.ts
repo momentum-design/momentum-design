@@ -117,9 +117,9 @@ class Badge extends Component {
     return html`
       <mdc-icon
         class="mdc-badge-icon ${classMap({
-          'mdc-badge-overlay': this.overlay,
-          [`mdc-badge-icon__${backgroundClassPostfix}`]: true,
-        })}"
+    'mdc-badge-overlay': this.overlay,
+    [`mdc-badge-icon__${backgroundClassPostfix}`]: true,
+  })}"
         name="${ifDefined(iconName)}"
         size="${DEFAULTS.ICON_SIZE}"
       ></mdc-icon>

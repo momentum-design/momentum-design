@@ -44,8 +44,7 @@ const checkFocusRing = async (subComponent: Locator, expectedBoxShadow: string) 
 
 // Expected focus ring style for verification
 /* eslint-disable max-len */
-const focusRingStyle =
-  'rgb(0, 0, 0) 0px 0px 0px 2px, rgb(100, 180, 250) 0px 0px 0px 4px, rgba(100, 180, 250, 0.35) 0px 0px 0px 5px';
+const focusRingStyle = 'rgb(0, 0, 0) 0px 0px 0px 2px, rgb(100, 180, 250) 0px 0px 0px 4px, rgba(100, 180, 250, 0.35) 0px 0px 0px 5px';
 
 // Tests focus ring interactions such as appearance, disappearance, and rapid focus/blur cycles
 const testFocusRingInteractions = async (
