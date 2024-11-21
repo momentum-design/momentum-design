@@ -1,5 +1,6 @@
 import { CSSResult, html, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { repeat } from 'lit/directives/repeat.js';
+import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 import { DirectiveResult } from 'lit-html/directive';
@@ -7,7 +8,6 @@ import styles from './avatar.styles';
 import { Component } from '../../models';
 import type { AvatarSize, AvatarType } from './avatar.types';
 import { AVATAR_TYPE, MAX_COUNTER, DEFAULTS } from './avatar.constants';
-import '../presence';
 import { getAvatarSize, getAvatarIconSize, getAvatarTextFontSize, getAvatarLoadingScaleSize } from './avatar.utils';
 
 /**
@@ -26,6 +26,7 @@ class Avatar extends Component {
   @property({ type: Number })
   counter?: number;
 
+  // FIXME: Replace "string" with PRESENCE_TYPE const
   @property({ type: String })
   presence?: string;
 
@@ -40,6 +41,8 @@ class Avatar extends Component {
 
   @property({ type: Boolean, attribute: 'is-clickable' })
   isClickable = false;
+
+  @state() private isPhotoLoaded = false;
 
   /**
    * Aria-label attribute to be set for accessibility
@@ -65,6 +68,15 @@ class Avatar extends Component {
     return html``;
   }
 
+  private handleOnLoad(): void {
+    this.isPhotoLoaded = true;
+  }
+
+  private handleOnError(): void {
+    this.isPhotoLoaded = false;
+    throw new Error('There was a problem while fetching the <img/>. Please check the src attribute and try again.');
+  }
+
   private photoTemplate(): TemplateResult {
     return html`
       <img
@@ -72,6 +84,9 @@ class Avatar extends Component {
         src="${ifDefined(this.src)}"
         alt="${ifDefined(this.alt)}"
         aria-hidden="true"
+        ?hidden="${!this.isPhotoLoaded}"
+        @load="${this.handleOnLoad}"
+        @error="${this.handleOnError}"
       />
     `;
   }
@@ -88,18 +103,7 @@ class Avatar extends Component {
     `;
   }
 
-  private textTemplate(type: AvatarType): TemplateResult {
-    let content = '';
-    if (type === AVATAR_TYPE.TEXT && this.initials) {
-      content = this.initials.toUpperCase().slice(0, 2);
-    }
-    if (type === AVATAR_TYPE.COUNTER && this.counter) {
-      if (this.counter > MAX_COUNTER) {
-        content = [MAX_COUNTER, '+'].join('');
-      } else {
-        content = this.counter.toString();
-      }
-    }
+  private textTemplate(content: string): TemplateResult {
     return html`
       <mdc-text
         class="place-center"
@@ -110,6 +114,28 @@ class Avatar extends Component {
         ${content}
       </mdc-text>
     `;
+  }
+
+  private generateCounterText(counter: number): string {
+    if (counter > MAX_COUNTER) {
+      return [MAX_COUNTER, '+'].join('');
+    }
+    return counter.toString();
+  }
+
+  private generateInitialsText(initials: string): string {
+    return initials.toUpperCase().slice(0, 2);
+  }
+
+  private generateTextContent(type: AvatarType): TemplateResult {
+    let content = '';
+    if (type === AVATAR_TYPE.TEXT && this.initials) {
+      content = this.generateInitialsText(this.initials);
+    }
+    if (type === AVATAR_TYPE.COUNTER && this.counter) {
+      content = this.generateCounterText(this.counter);
+    }
+    return this.textTemplate(content);
   }
 
   private getTypeBasedOnInputs(): AvatarType {
@@ -134,7 +160,7 @@ class Avatar extends Component {
         return this.photoTemplate();
       case AVATAR_TYPE.TEXT:
       case AVATAR_TYPE.COUNTER:
-        return this.textTemplate(type);
+        return this.generateTextContent(type);
       case AVATAR_TYPE.ICON:
       default:
         return this.iconTemplate();
@@ -157,43 +183,54 @@ class Avatar extends Component {
     return html`
       <div class="loading__container" aria-hidden="true" style="${loadStyle}">
         <div class="loading__wrapper">
-          <mdc-icon
-            name="active-presence-small-filled"
-            class="loading__icon"
-            length-unit="rem"
-            size="4"
-          ></mdc-icon>
-          <mdc-icon
-            name="active-presence-small-filled"
-            class="loading__icon"
-            length-unit="rem"
-            size="4"
-          ></mdc-icon>
-          <mdc-icon
-            name="active-presence-small-filled"
-            class="loading__icon"
-            length-unit="rem"
-            size="4"
-          ></mdc-icon>
+          <!-- Load 3 small filled icons -->
+          ${repeat(Array(3), () => html`
+            <mdc-icon
+              name="active-presence-small-filled"
+              class="loading__icon"
+              length-unit="rem"
+              size="4"
+            ></mdc-icon>
+          `)}
         </div>
       </div>
     `;
   }
 
-  public override render() {
+  private getPhotoPlaceHolderContent(type: AvatarType): TemplateResult {
+    // if photo is already loaded then no need to show placeholder
+    if (this.isPhotoLoaded) {
+      return html``;
+    }
+    if (this.initials && type === AVATAR_TYPE.PHOTO) {
+      return this.textTemplate(this.generateInitialsText(this.initials));
+    }
+    return html``;
+  }
+
+  private renderedContent(): TemplateResult {
     const type = this.getTypeBasedOnInputs();
+    const photoPlaceHolder = this.getPhotoPlaceHolderContent(type);
     const mainContent = this.getTemplateBasedOnType(type);
     const presence = this.getPresenceTemplateBasedOnType(type);
-    const dimensions = this.generateAvatarDimensions();
     const loadingContent = this.getLoadingContent();
+    return html`
+      ${photoPlaceHolder}
+      ${mainContent}
+      ${presence}
+      ${loadingContent}
+    `;
+  }
+
+  public override render(): TemplateResult {
+    const dimensions = this.generateAvatarDimensions();
+    const renderedContent = this.renderedContent();
 
     if (this.isClickable) {
       return html`
         <mdc-button class="container" style="${dimensions}" aria-label="${ifDefined(this.ariaLabel || '')}">
           <div class="content" style="${dimensions}">
-            ${mainContent}
-            ${presence}
-            ${loadingContent}
+            ${renderedContent}
           </div>
         </mdc-button>
       `;
@@ -201,9 +238,7 @@ class Avatar extends Component {
     return html`
       <div class="container place-center" style="${dimensions}" aria-hidden="true">
         <div class="content" style="${dimensions}">
-          ${mainContent}
-          ${presence}
-          ${loadingContent}
+          ${renderedContent}
         </div>
       </div>
     `;

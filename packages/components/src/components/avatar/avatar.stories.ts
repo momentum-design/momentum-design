@@ -52,3 +52,10 @@ export const Primary: StoryObj = {
 export const Default: StoryObj = {
   args: {},
 };
+
+export const Image: StoryObj = {
+  args: {
+    src: 'https://picsum.photos/256',
+    alt: 'Lorem ipsum',
+  },
+};
