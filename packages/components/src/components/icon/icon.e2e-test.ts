@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import IconNames from '../../../../assets/icons/dist/types/types';
+import type { IconNames } from './icon.types';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;

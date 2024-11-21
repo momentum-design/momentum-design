@@ -27,7 +27,6 @@ const setup = async (args: SetupOptions) => {
 };
 
 const testToRun = async (componentsPage: ComponentsPage) => {
-
   /**
    * VISUAL REGRESSION
    */
@@ -36,7 +35,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       type: TYPE,
       size: SIZE,
     });
-    
+
     await test.step('matches screenshot of default element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-presence', { element: visualPresence });
     });

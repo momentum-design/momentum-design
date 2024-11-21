@@ -4,9 +4,9 @@ import styles from './icon.styles';
 import { Component } from '../../models';
 import providerUtils from '../../utils/provider';
 import IconProvider from '../iconprovider/iconprovider.component';
-import IconNames from '../../../../assets/icons/dist/types/types';
 import { dynamicSVGImport } from './icon.utils';
 import { DEFAULTS } from './icon.constants';
+import type { IconNames } from './icon.types';
 
 /**
  * Icon component that dynamically displays SVG icons based on a valid name.

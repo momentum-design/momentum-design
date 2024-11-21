@@ -49,21 +49,21 @@ class VisualRegression {
     }
   }
 
-/**
- * Creates a sticker sheet on the page, grouping variants of components for visual regression testing.
- *
- * @param componentsPage - The page object used to interact with the components.
- * @param componentTag - The tag name of the component to generate.
- * @param attributes - Attributes to apply to the components, with key-value pairs representing attribute names and their possible values.
- *                     The values are defined as an object of key-value pairs.
- *
- * @returns Locator for the component list containing all generated components.
- */
+  /**
+   * Creates a sticker sheet on the page, grouping variants of components for visual regression testing.
+   *
+   * @param componentsPage - The page object used to interact with the components.
+   * @param componentTag - The tag name of the component to generate.
+   * @param attributes - Attributes to apply to the components, with key-value pairs representing attribute names and their possible values.
+   *                     The values are defined as an object of key-value pairs.
+   *
+   * @returns Locator for the component list containing all generated components.
+   */
   async createStickerSheet(
     componentsPage: ComponentsPage,
     componentTag: string,
     attributes: Record<string, Record<string, string>>,
-    children = ''
+    children = '',
   ) {
     const generateComponentMarkup = () => {
       const attributeEntries = Object.entries(attributes);
@@ -103,7 +103,10 @@ class VisualRegression {
 
           rowMarkup = `<div class="componentRowWrapper">
             ${combinations
-              .map(combination => `<${componentTag} ${primaryKey}="${primaryValue}" ${combination}>${children}</${componentTag}>`)
+              .map(
+                combination =>
+                  `<${componentTag} ${primaryKey}="${primaryValue}" ${combination}>${children}</${componentTag}>`,
+              )
               .join('')}
           </div>`;
         }

@@ -41,16 +41,26 @@ test.describe('mdc-text', () => {
    * VISUAL REGRESSION
    */
   test('visual-regression', async ({ componentsPage }) => {
-    const textTypes = await componentsPage.visualRegression.createStickerSheet(componentsPage, 'mdc-text', {
-      type: TYPE,
-    }, textContent);
+    const textTypes = await componentsPage.visualRegression.createStickerSheet(
+      componentsPage,
+      'mdc-text',
+      {
+        type: TYPE,
+      },
+      textContent,
+    );
     await test.step('matches screenshot of element types', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-text-types', { element: textTypes });
     });
 
-    const textTags = await componentsPage.visualRegression.createStickerSheet(componentsPage, 'mdc-text', {
-      tagname: VALID_TEXT_TAGS,
-    }, textContent);
+    const textTags = await componentsPage.visualRegression.createStickerSheet(
+      componentsPage,
+      'mdc-text',
+      {
+        tagname: VALID_TEXT_TAGS,
+      },
+      textContent,
+    );
     await test.step('matches screenshot of element tagnames', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-text-tagname', { element: textTags });
     });
