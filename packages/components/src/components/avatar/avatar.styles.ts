@@ -20,6 +20,7 @@ const styles = css`
     color: var(--mdc-avatar-default-foreground-color);
   }
   .content {
+    cursor: pointer;
     background-color: var(--mdc-avatar-default-background-color);
     border-radius: 100vh;
     position: relative;
