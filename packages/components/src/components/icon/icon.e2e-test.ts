@@ -31,7 +31,7 @@ const visualTestingSetup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
-    <div class="icon-container">
+    <div class="componentWrapper componentRowWrapper">
       <mdc-icon name="${restArgs.name}"></mdc-icon>
       <mdc-icon name="${restArgs.name}" size="2"></mdc-icon>
       <mdc-icon name="${restArgs.name}" size="2" style="--mdc-icon-fill-color: red;"></mdc-icon>
@@ -39,7 +39,7 @@ const visualTestingSetup = async (args: SetupOptions) => {
       `,
     clearDocument: true,
   });
-  const icon = componentsPage.page.locator('.icon-container');
+  const icon = componentsPage.page.locator('.componentRowWrapper');
   await icon.waitFor();
   return icon;
 };
@@ -66,12 +66,11 @@ test('mdc-icon', async ({ componentsPage }) => {
     await componentsPage.accessibility.checkForA11yViolations('icon-aria-passed-in');
   });
 
-  const visualIcons = await visualTestingSetup({ componentsPage, name });
-
   /**
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
+    const visualIcons = await visualTestingSetup({ componentsPage, name });
     await test.step('matches screenshot of elements with default, size equal 2 and color set to red', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-icon', { element: visualIcons });
     });

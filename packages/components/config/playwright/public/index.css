@@ -52,22 +52,13 @@ main {
     margin-top: 10px;
 }
 
-.presence-list {
-    background-color: var(--mds-color-theme-text-primary-normal); 
+.componentWrapper {
     padding: 10px;
 }
 
-.presence-row {
+.componentRowWrapper {
     display: flex;
-    gap: 10px;
-    margin-bottom: 5px;
-}
-
-.badges-container,
-.icon-container,
-.focus-ring-container {
-    display: flex; 
-    gap: 16px; 
     flex-wrap: wrap; 
-    padding: 5px;
+    gap: 10px;
+    margin-bottom: 2px;
 }
