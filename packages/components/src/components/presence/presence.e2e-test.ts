@@ -27,6 +27,7 @@ const setup = async (args: SetupOptions) => {
 };
 
 const testToRun = async (componentsPage: ComponentsPage) => {
+
   /**
    * VISUAL REGRESSION
    */
