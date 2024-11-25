@@ -1,6 +1,6 @@
 import { Page, expect } from '@playwright/test';
 import type { ScreenShotOptions } from '../types';
-import { ComponentsPage } from '../../setup';
+import type { ComponentsPage } from '..';
 import CONSTANTS from '../constants';
 
 interface VisualRegression {
@@ -54,8 +54,8 @@ class VisualRegression {
    *
    * @param componentsPage - The page object used to interact with the components.
    * @param componentTag - The tag name of the component to generate.
-   * @param attributes - Attributes to apply to the components, with key-value pairs representing attribute names and their possible values.
-   *                     The values are defined as an object of key-value pairs.
+   * @param attributes - Attributes to apply to the components, with key-value pairs representing attribute
+   *                     names and their possible values. The values are defined as an object of key-value pairs.
    *
    * @returns Locator for the component list containing all generated components.
    */
@@ -76,6 +76,7 @@ class VisualRegression {
       const [primaryAttribute, ...otherAttributes] = attributeEntries;
       const [primaryKey, primaryValues] = primaryAttribute;
 
+      // eslint-disable-next-line
       for (const primaryValue of Object.values(primaryValues)) {
         let rowMarkup = '';
 
@@ -88,11 +89,11 @@ class VisualRegression {
             (acc, [key, values]) => {
               const valueArray = Object.values(values);
               if (acc.length === 0) {
-                return valueArray.map(value => `${key}="${value}"`);
+                return valueArray.map((value) => `${key}="${value}"`);
               }
               const combined: string[] = [];
-              acc.forEach(prev => {
-                valueArray.forEach(currVal => {
+              acc.forEach((prev) => {
+                valueArray.forEach((currVal) => {
                   combined.push(`${prev} ${key}="${currVal}"`);
                 });
               });
@@ -103,11 +104,11 @@ class VisualRegression {
 
           rowMarkup = `<div class="componentRowWrapper">
             ${combinations
-              .map(
-                combination =>
-                  `<${componentTag} ${primaryKey}="${primaryValue}" ${combination}>${children}</${componentTag}>`,
-              )
-              .join('')}
+    .map(
+      (combination) =>
+        `<${componentTag} ${primaryKey}="${primaryValue}" ${combination}>${children}</${componentTag}>`,
+    )
+    .join('')}
           </div>`;
         }
 
