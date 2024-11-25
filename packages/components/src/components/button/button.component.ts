@@ -148,7 +148,6 @@ class Button extends Component {
 
   constructor() {
     super();
-    this.addEventListener('click', this.handleClick.bind(this));
     this.addEventListener('keydown', this.handleKeyDown.bind(this));
     this.addEventListener('keyup', this.handleKeyUp.bind(this));
   }
@@ -327,9 +326,18 @@ class Button extends Component {
    * @param event - The mouse event.
    */
   private handleClick(event: MouseEvent) {
-    if (!this.disabled && !this.softDisabled && this.onclick) {
-      this.onclick(event);
+    if (this.disabled || this.softDisabled) {
+      event.stopPropagation();
     }
+  }
+
+  private triggerClickEvent() {
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    });
+    this.dispatchEvent(clickEvent);
   }
 
   /**
@@ -339,14 +347,13 @@ class Button extends Component {
    * @param event - The keyboard event.
    */
   private handleKeyDown(event: KeyboardEvent) {
-    if (this.disabled) return;
-
-    if (['Enter', ' '].includes(event.key)) {
+    if (this.disabled || this.softDisabled) {
+      event.stopPropagation();
+    } else if (['Enter', ' '].includes(event.key)) {
       this.classList.add('pressed');
-    }
-
-    if (event.key === 'Enter') {
-      this.handleClick(event as unknown as MouseEvent);
+      if (event.key === 'Enter') {
+        this.triggerClickEvent();
+      }
     }
   }
 
@@ -357,12 +364,12 @@ class Button extends Component {
    * @param event - The keyboard event.
    */
   private handleKeyUp(event: KeyboardEvent) {
-    if (this.disabled) return;
-
-    if (['Enter', ' '].includes(event.key)) {
+    if (this.disabled || this.softDisabled) {
+      event.stopPropagation();
+    } else if (['Enter', ' '].includes(event.key)) {
       this.classList.remove('pressed');
       if (event.key === ' ') {
-        this.handleClick(event as unknown as MouseEvent);
+        this.triggerClickEvent();
       }
     }
   }
@@ -382,18 +389,22 @@ class Button extends Component {
     }
   }
 
+  // Note: @click is attached to each of the children of the button.
+  // Adding click listener within the constructor will not work properly when button is disabled.
+  // https://discord.com/channels/1012791295170859069/1047015641225371718/threads/1309446072413720576
   public override render() {
     return html`
       ${this.prefixIcon ? html`
-        <mdc-icon 
+        <mdc-icon @click=${this.handleClick}
           name="${this.prefixIcon}" 
           part="prefix-icon" 
           size=${this.iconSize} 
           length-unit="rem">
         </mdc-icon>` : ''}
-      <slot @slotchange=${this.inferButtonType}></slot>
+      <slot @slotchange=${this.inferButtonType} 
+      @click=${this.handleClick}></slot>
       ${this.postfixIcon ? html`
-        <mdc-icon 
+        <mdc-icon @click=${this.handleClick}
           name="${this.postfixIcon}" 
           part="postfix-icon" 
           size=${this.iconSize} 
