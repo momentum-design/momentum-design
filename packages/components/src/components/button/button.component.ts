@@ -118,7 +118,6 @@ class Button extends Component {
   @property({ type: Number }) override tabIndex = 0;
 
   /**
-   * The role of the button.
    * This property defines the ARIA role for the element. By default, it is set to 'button'.
    * Consumers should override this role when:
    * - The element is being used in a context where a different role is more appropriate.
@@ -127,7 +126,18 @@ class Button extends Component {
    */
   @property({ type: String, reflect: true }) override role = 'button';
 
-  @state() private type: ButtonType = DEFAULTS.TYPE;
+  /**
+   * This property defines the type attribute for the button element.
+   * The type attribute specifies the behavior of the button when it is clicked.
+   * - **submit**: The button submits the form data to the server.
+   * - **reset**: The button resets the form data to its initial state.
+   * - **button**: The button does nothing when clicked.
+   * @default button
+   */
+  @property({ reflect: true })
+  type: 'submit' | 'reset' | 'button' = 'button';
+
+  @state() private buttonType: ButtonType = DEFAULTS.TYPE;
 
   @state() private iconSize = 1;
 
@@ -146,45 +156,67 @@ class Button extends Component {
    */
   private prevPostfixIcon?: string;
 
-  constructor() {
-    super();
-    this.addEventListener('keydown', this.handleKeyDown.bind(this));
-    this.addEventListener('keyup', this.handleKeyUp.bind(this));
-  }
+   /** @internal */
+   static formAssociated = true;
 
-  public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
-    super.update(changedProperties);
+    /** @internal */
+    private internals: ElementInternals;
 
-    if (changedProperties.has('disabled')) {
-      this.setDisabled(this, this.disabled);
+    get form(): HTMLFormElement | null {
+      return this.internals.form;
     }
-    if (changedProperties.has('softDisabled')) {
-      this.setSoftDisabled(this, this.softDisabled);
-    }
-    if (changedProperties.has('active')) {
-      this.setAriaPressed(this, this.active);
-      this.modifyIconName(this.active);
-    }
-    if (changedProperties.has('size')) {
-      this.setSize(this.size);
-    }
-    if (changedProperties.has('variant')) {
-      this.setVariant(this.variant);
-      this.setSize(this.size);
-    }
-    if (changedProperties.has('color')) {
-      this.setColor(this.color);
-    }
-    if (changedProperties.has('type')) {
-      this.setSize(this.size);
-      this.setClassBasedOnType(this.type);
-    }
-    if (changedProperties.has('prefixIcon') || changedProperties.has('postfixIcon')) {
-      this.inferButtonType();
-    }
-  }
 
-  /**
+    constructor() {
+      super();
+      this.addEventListener('click', this.handleClick.bind(this));
+      this.addEventListener('keydown', this.handleKeyDown.bind(this));
+      this.addEventListener('keyup', this.handleKeyUp.bind(this));
+      this.internals = this.attachInternals();
+    }
+
+    public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+      super.update(changedProperties);
+
+      if (changedProperties.has('disabled')) {
+        this.setDisabled(this, this.disabled);
+      }
+      if (changedProperties.has('softDisabled')) {
+        this.setSoftDisabled(this, this.softDisabled);
+      }
+      if (changedProperties.has('active')) {
+        this.setAriaPressed(this, this.active);
+        this.modifyIconName(this.active);
+      }
+      if (changedProperties.has('size')) {
+        this.setSize(this.size);
+      }
+      if (changedProperties.has('variant')) {
+        this.setVariant(this.variant);
+        this.setSize(this.size);
+      }
+      if (changedProperties.has('color')) {
+        this.setColor(this.color);
+      }
+      if (changedProperties.has('buttonType')) {
+        this.setSize(this.size);
+        this.setClassBasedOnType(this.buttonType);
+      }
+      if (changedProperties.has('prefixIcon') || changedProperties.has('postfixIcon')) {
+        this.inferButtonType();
+      }
+    }
+
+    private executeAction() {
+      if (this.type === 'submit' && this.internals.form) {
+        this.internals.form.requestSubmit();
+      }
+
+      if (this.type === 'reset' && this.internals.form) {
+        this.internals.form.reset();
+      }
+    }
+
+    /**
    * Modifies the icon name based on the active state.
    * If the button is active, the icon name is suffixed with '-filled'.
    * If the button is inactive, the icon name is restored to its original value.
@@ -192,111 +224,111 @@ class Button extends Component {
    *
    * @param active - The active state.
    */
-  private modifyIconName(active: boolean) {
-    if (active) {
-      if (this.prefixIcon) {
-        this.prevPrefixIcon = this.prefixIcon;
-        this.prefixIcon = `${getIconNameWithoutStyle(this.prefixIcon)}-filled`;
-      }
-      if (this.postfixIcon) {
-        this.prevPostfixIcon = this.postfixIcon;
-        this.postfixIcon = `${getIconNameWithoutStyle(this.postfixIcon)}-filled`;
-      }
-    } else {
-      if (this.prevPrefixIcon) {
-        this.prefixIcon = this.prevPrefixIcon;
-      }
-      if (this.prevPostfixIcon) {
-        this.postfixIcon = this.prevPostfixIcon;
+    private modifyIconName(active: boolean) {
+      if (active) {
+        if (this.prefixIcon) {
+          this.prevPrefixIcon = this.prefixIcon;
+          this.prefixIcon = `${getIconNameWithoutStyle(this.prefixIcon)}-filled`;
+        }
+        if (this.postfixIcon) {
+          this.prevPostfixIcon = this.postfixIcon;
+          this.postfixIcon = `${getIconNameWithoutStyle(this.postfixIcon)}-filled`;
+        }
+      } else {
+        if (this.prevPrefixIcon) {
+          this.prefixIcon = this.prevPrefixIcon;
+        }
+        if (this.prevPostfixIcon) {
+          this.postfixIcon = this.prevPostfixIcon;
+        }
       }
     }
-  }
 
-  /**
+    /**
    * Sets the class of 'icon' for icon buttons.
    * @param type - The type of the button.
    */
-  private setClassBasedOnType(type: string) {
-    if (type === BUTTON_TYPE.ICON) {
-      this.classList.add('mdc-icon-button');
-    } else {
-      this.classList.remove('mdc-icon-button');
+    private setClassBasedOnType(type: string) {
+      if (type === BUTTON_TYPE.ICON) {
+        this.classList.add('mdc-icon-button');
+      } else {
+        this.classList.remove('mdc-icon-button');
+      }
     }
-  }
 
-  /**
+    /**
    * Sets the variant attribute for the button component.
    * If the provided variant is not included in the BUTTON_VARIANTS,
    * it defaults to the value specified in DEFAULTS.VARIANT.
    *
    * @param variant - The variant to set.
    */
-  private setVariant(variant: ButtonVariant) {
-    this.setAttribute('variant', Object.values(BUTTON_VARIANTS).includes(variant) ? variant : DEFAULTS.VARIANT);
-  }
+    private setVariant(variant: ButtonVariant) {
+      this.setAttribute('variant', Object.values(BUTTON_VARIANTS).includes(variant) ? variant : DEFAULTS.VARIANT);
+    }
 
-  /**
+    /**
    * Sets the size attribute for the button component.
    * Validates the size based on the button type (icon, pill, or tertiary).
    * Defaults to DEFAULTS.SIZE if invalid.
    *
    * @param size - The size to set.
    */
-  private setSize(size: PillButtonSize | IconButtonSize) {
-    const isIconType = this.type === BUTTON_TYPE.ICON;
-    const isValidSize = isIconType
-      ? (Object.values(ICON_BUTTON_SIZES).includes(size)
+    private setSize(size: PillButtonSize | IconButtonSize) {
+      const isIconType = this.buttonType === BUTTON_TYPE.ICON;
+      const isValidSize = isIconType
+        ? (Object.values(ICON_BUTTON_SIZES).includes(size)
       && !(size === ICON_BUTTON_SIZES[20] && this.variant !== BUTTON_VARIANTS.TERTIARY))
-      : Object.values(PILL_BUTTON_SIZES).includes(size as PillButtonSize);
+        : Object.values(PILL_BUTTON_SIZES).includes(size as PillButtonSize);
 
-    this.setAttribute('size', isValidSize ? `${size}` : `${DEFAULTS.SIZE}`);
-    this.iconSize = getIconSize(size);
-  }
+      this.setAttribute('size', isValidSize ? `${size}` : `${DEFAULTS.SIZE}`);
+      this.iconSize = getIconSize(size);
+    }
 
-  /**
+    /**
    * Sets the color attribute for the button.
    * Defaults to DEFAULTS.COLOR if invalid or for tertiary buttons.
    *
    * @param color - The color to set.
    */
-  private setColor(color: ButtonColor) {
-    if (!Object.values(BUTTON_COLORS).includes(color) || this.variant === BUTTON_VARIANTS.TERTIARY) {
-      this.setAttribute('color', `${DEFAULTS.COLOR}`);
-    } else {
-      this.setAttribute('color', color);
+    private setColor(color: ButtonColor) {
+      if (!Object.values(BUTTON_COLORS).includes(color) || this.variant === BUTTON_VARIANTS.TERTIARY) {
+        this.setAttribute('color', `${DEFAULTS.COLOR}`);
+      } else {
+        this.setAttribute('color', color);
+      }
     }
-  }
 
-  /**
+    /**
    * Sets or removes the aria-pressed attribute based on the active state.
    *
    * @param element - The target element.
    * @param active - The active state.
    */
-  private setAriaPressed(element: HTMLElement, active: boolean) {
-    if (active) {
-      element.setAttribute('aria-pressed', 'true');
-    } else {
-      element.removeAttribute('aria-pressed');
+    private setAriaPressed(element: HTMLElement, active: boolean) {
+      if (active) {
+        element.setAttribute('aria-pressed', 'true');
+      } else {
+        element.removeAttribute('aria-pressed');
+      }
     }
-  }
 
-  /**
+    /**
    * Sets the soft-disabled attribute for the button.
    * When soft-disabled, the button remains focusable but not clickable.
    *
    * @param element - The button element.
    * @param softDisabled - The soft-disabled state.
    */
-  private setSoftDisabled(element: HTMLElement, softDisabled: boolean) {
-    if (softDisabled) {
-      element.setAttribute('aria-disabled', 'true');
-    } else {
-      element.removeAttribute('aria-disabled');
+    private setSoftDisabled(element: HTMLElement, softDisabled: boolean) {
+      if (softDisabled) {
+        element.setAttribute('aria-disabled', 'true');
+      } else {
+        element.removeAttribute('aria-disabled');
+      }
     }
-  }
 
-  /**
+    /**
    * Sets the disabled attribute for the button.
    * When disabled, the button is not focusable or clickable, and tabindex is set to -1.
    * The previous tabindex is stored and restored when enabled.
@@ -305,113 +337,115 @@ class Button extends Component {
    * @param element - The button element.
    * @param disabled - The disabled state.
    */
-  private setDisabled(element: HTMLElement, disabled: boolean) {
-    if (disabled) {
-      element.setAttribute('aria-disabled', 'true');
-      this.prevTabindex = this.tabIndex;
-      this.tabIndex = -1;
-      element.setAttribute('tabindex', `${this.tabIndex}`);
-    } else {
-      this.tabIndex = this.prevTabindex;
-      element.removeAttribute('aria-disabled');
-      element.setAttribute('tabindex', `${this.tabIndex}`);
+    private setDisabled(element: HTMLElement, disabled: boolean) {
+      if (disabled) {
+        element.setAttribute('aria-disabled', 'true');
+        this.prevTabindex = this.tabIndex;
+        this.tabIndex = -1;
+        element.setAttribute('tabindex', `${this.tabIndex}`);
+      } else {
+        this.tabIndex = this.prevTabindex;
+        element.removeAttribute('aria-disabled');
+        element.setAttribute('tabindex', `${this.tabIndex}`);
+      }
     }
-  }
 
-  /**
+    /**
    * Handles the click event on the button.
    * If the button is not disabled or soft-disabled, the onclick event is triggered.
    * The onclick method is provided by the consumer.
    *
    * @param event - The mouse event.
    */
-  private handleClick(event: MouseEvent) {
-    if (this.disabled || this.softDisabled) {
-      event.stopPropagation();
+    private handleClick(event: MouseEvent) {
+      if (this.disabled || this.softDisabled) {
+        event.stopPropagation();
+      } else {
+        this.executeAction();
+      }
     }
-  }
 
-  private triggerClickEvent() {
-    const clickEvent = new MouseEvent('click', {
-      bubbles: true,
-      cancelable: true,
-      view: window,
-    });
-    this.dispatchEvent(clickEvent);
-  }
+    private triggerClickEvent() {
+      const clickEvent = new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+      });
+      this.dispatchEvent(clickEvent);
+      this.executeAction();
+    }
 
-  /**
+    /**
    * Handles the keydown event on the button.
    * If the key is 'Enter' or 'Space', the button is pressed.
    *
    * @param event - The keyboard event.
    */
-  private handleKeyDown(event: KeyboardEvent) {
-    if (this.disabled || this.softDisabled) {
-      event.stopPropagation();
-    } else if (['Enter', ' '].includes(event.key)) {
-      this.classList.add('pressed');
-      if (event.key === 'Enter') {
-        this.triggerClickEvent();
+    private handleKeyDown(event: KeyboardEvent) {
+      if (this.disabled || this.softDisabled) {
+        event.stopPropagation();
+      } else if (['Enter', ' '].includes(event.key)) {
+        this.classList.add('pressed');
+        if (event.key === 'Enter') {
+          this.triggerClickEvent();
+        }
       }
     }
-  }
 
-  /**
+    /**
    * Handles the keyup event on the button.
    * If the key is 'Enter' or 'Space', the button is clicked.
    *
    * @param event - The keyboard event.
    */
-  private handleKeyUp(event: KeyboardEvent) {
-    if (this.disabled || this.softDisabled) {
-      event.stopPropagation();
-    } else if (['Enter', ' '].includes(event.key)) {
-      this.classList.remove('pressed');
-      if (event.key === ' ') {
-        this.triggerClickEvent();
+    private handleKeyUp(event: KeyboardEvent) {
+      if (this.disabled || this.softDisabled) {
+        event.stopPropagation();
+      } else if (['Enter', ' '].includes(event.key)) {
+        this.classList.remove('pressed');
+        if (event.key === ' ') {
+          this.triggerClickEvent();
+        }
       }
     }
-  }
 
-  /**
+    /**
    * Infers the type of button based on the presence of slot and/or prefix and postfix icons.
    * @param slot - default slot of button
    */
-  private inferButtonType() {
-    const slot = this.shadowRoot?.querySelector('slot')?.assignedNodes().length;
-    if (slot && (this.prefixIcon || this.postfixIcon)) {
-      this.type = BUTTON_TYPE.PILL_WITH_ICON;
-    } else if (!slot && (this.prefixIcon || this.postfixIcon)) {
-      this.type = BUTTON_TYPE.ICON;
-    } else {
-      this.type = BUTTON_TYPE.PILL;
+    private inferButtonType() {
+      const slot = this.shadowRoot?.querySelector('slot')?.assignedNodes().length;
+      if (slot && (this.prefixIcon || this.postfixIcon)) {
+        this.buttonType = BUTTON_TYPE.PILL_WITH_ICON;
+      } else if (!slot && (this.prefixIcon || this.postfixIcon)) {
+        this.buttonType = BUTTON_TYPE.ICON;
+      } else {
+        this.buttonType = BUTTON_TYPE.PILL;
+      }
     }
-  }
 
-  // Note: @click is attached to each of the children of the button.
-  // Adding click listener within the constructor will not work properly when button is disabled.
-  // https://discord.com/channels/1012791295170859069/1047015641225371718/threads/1309446072413720576
-  public override render() {
-    return html`
+    // Note: @click is attached to each of the children of the button.
+    // Adding click listener within the constructor will not work properly when button is disabled.
+    // https://discord.com/channels/1012791295170859069/1047015641225371718/threads/1309446072413720576
+    public override render() {
+      return html`
       ${this.prefixIcon ? html`
-        <mdc-icon @click=${this.handleClick}
+        <mdc-icon
           name="${this.prefixIcon}" 
           part="prefix-icon" 
           size=${this.iconSize} 
           length-unit="rem">
         </mdc-icon>` : ''}
-      <slot @slotchange=${this.inferButtonType} 
-      @click=${this.handleClick}></slot>
+      <slot @slotchange=${this.inferButtonType}></slot>
       ${this.postfixIcon ? html`
-        <mdc-icon @click=${this.handleClick}
+        <mdc-icon
           name="${this.postfixIcon}" 
           part="postfix-icon" 
           size=${this.iconSize} 
           length-unit="rem">
         </mdc-icon>` : ''}
     `;
-  }
+    }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
