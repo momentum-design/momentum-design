@@ -47,8 +47,9 @@ class Presence extends Component {
    * - LARGE
    * - X_LARGE
    * - XX_LARGE
-   * 
-   * Presence icons are minimum 14px in size, meaning XX_Small, X_Small and Small presence icons will be no smaller than 14px.
+   *
+   * Presence icons are minimum 14px in size, meaning XX_Small, X_Small and Small presence
+   * icons will be no smaller than 14px.
    * @default small
    */
   @property({ type: String, reflect: true })
