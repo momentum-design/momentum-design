@@ -56,6 +56,8 @@ class VisualRegression {
    * @param componentTag - The tag name of the component to generate.
    * @param attributes - Attributes to apply to the components, with key-value pairs representing attribute
    *                     names and their possible values. The values are defined as an object of key-value pairs.
+   * @param defaultAttributes - Default attributes that should be applied to every component generated.
+   *                            If `children` is provided, it will be used as the inner content of the component.
    *
    * @returns Locator for the component list containing all generated components.
    */
@@ -63,59 +65,37 @@ class VisualRegression {
     componentsPage: ComponentsPage,
     componentTag: string,
     attributes: Record<string, Record<string, string>>,
-    children = '',
+    defaultAttributes?: Record<string, string>,
   ) {
     const generateComponentMarkup = () => {
-      const attributeEntries = Object.entries(attributes);
-      let markup = '';
+      if (Object.keys(attributes).length === 0) return '';
 
-      if (attributeEntries.length === 0) {
-        return markup;
-      }
+      const [primaryKey, primaryValues] = Object.entries(attributes)[0];
+      const otherAttributes = Object.entries(attributes).slice(1);
 
-      const [primaryAttribute, ...otherAttributes] = attributeEntries;
-      const [primaryKey, primaryValues] = primaryAttribute;
+      const defaultAttrs = defaultAttributes
+        ? Object.entries(defaultAttributes)
+          .filter(([key]) => key !== 'children')
+          .map(([key, value]) => `${key}="${value}"`)
+          .join(' ')
+        : '';
+      const children = defaultAttributes?.children || '';
 
-      // eslint-disable-next-line
-      for (const primaryValue of Object.values(primaryValues)) {
-        let rowMarkup = '';
-
-        if (otherAttributes.length === 0) {
-          rowMarkup = `<div class="componentRowWrapper">
-            <${componentTag} ${primaryKey}="${primaryValue}">${children}</${componentTag}>
-          </div>`;
-        } else {
-          const combinations = otherAttributes.reduce(
-            (acc, [key, values]) => {
-              const valueArray = Object.values(values);
-              if (acc.length === 0) {
-                return valueArray.map((value) => `${key}="${value}"`);
-              }
-              const combined: string[] = [];
-              acc.forEach((prev) => {
-                valueArray.forEach((currVal) => {
-                  combined.push(`${prev} ${key}="${currVal}"`);
-                });
-              });
-              return combined;
-            },
+      return Object.values(primaryValues)
+        .map((primaryValue) => {
+          const combinations = otherAttributes.reduce<string[]>(
+            (acc, [key, values]) =>
+              acc.flatMap((prev) => Object.values(values).map((currVal) => `${prev} ${key}="${currVal}"`)),
             [''],
           );
-
-          rowMarkup = `<div class="componentRowWrapper">
-            ${combinations
-    .map(
-      (combination) =>
-        `<${componentTag} ${primaryKey}="${primaryValue}" ${combination}>${children}</${componentTag}>`,
-    )
-    .join('')}
-          </div>`;
-        }
-
-        markup += rowMarkup;
-      }
-
-      return markup;
+          return `<div class="componentRowWrapper">
+          ${combinations.map((combination) => `
+          <${componentTag} ${defaultAttrs} ${primaryKey}="${primaryValue}" ${combination}>
+            ${children}
+          </${componentTag}>`).join('')}
+        </div>`;
+        })
+        .join('');
     };
 
     await componentsPage.mount({

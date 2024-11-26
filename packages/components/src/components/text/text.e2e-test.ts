@@ -47,7 +47,7 @@ test.describe('mdc-text', () => {
       {
         type: TYPE,
       },
-      textContent,
+      { children: textContent },
     );
     await test.step('matches screenshot of element types', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-text-types', { element: textTypes });
@@ -59,7 +59,7 @@ test.describe('mdc-text', () => {
       {
         tagname: VALID_TEXT_TAGS,
       },
-      textContent,
+      { children: textContent },
     );
     await test.step('matches screenshot of element tagnames', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-text-tagname', { element: textTags });
