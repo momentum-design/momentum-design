@@ -120,7 +120,7 @@ class Badge extends Component {
     'mdc-badge-overlay': this.overlay,
     [`mdc-badge-icon__${backgroundClassPostfix}`]: true,
   })}"
-        name="${ifDefined(iconName)}"
+        name="${ifDefined(iconName as IconNames)}"
         size="${DEFAULTS.ICON_SIZE}"
       ></mdc-icon>
     `;
