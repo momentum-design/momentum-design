@@ -41,7 +41,7 @@ const styles = [hostFitContentStyles, css`
     --mdc-button-line-height-size-40: var(--mds-font-lineheight-body-large);
     --mdc-button-line-height-size-32: var(--mds-font-lineheight-body-large);
     --mdc-button-line-height-size-28: var(--mds-font-lineheight-body-midsize);
-    --mdc-button-line-height-size-24:  var(--mds-font-lineheight-body-small);
+    --mdc-button-line-height-size-24: var(--mds-font-lineheight-body-small);
   }
 
   :host([active]){
