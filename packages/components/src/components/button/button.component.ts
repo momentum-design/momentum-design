@@ -4,7 +4,7 @@ import styles from './button.styles';
 import { Component } from '../../models';
 import {
   BUTTON_COLORS,
-  BUTTON_TYPE,
+  BUTTON_TYPE_INTERNAL,
   BUTTON_VARIANTS,
   DEFAULTS,
   ICON_BUTTON_SIZES,
@@ -16,8 +16,10 @@ import type {
   ButtonVariant,
   PillButtonSize,
   IconButtonSize,
+  ButtonTypeInternal,
 } from './button.types';
 import { getIconNameWithoutStyle, getIconSize } from './button.utils';
+import type { IconNames } from '../icon/icon.types';
 
 /**
  * `mdc-button` is a component that can be configured in various ways to suit different use cases.
@@ -69,7 +71,7 @@ class Button extends Component {
 
   /**
    * Indicates whether the button is soft disabled.
-   * The button is currently disabled for user interaction; however, it remains focusable.
+   * When set to true, the button looks to be disabled but allows focus, click and keyboard actions to still be passed.
    * @default false
    */
   @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled = false;
@@ -118,7 +120,6 @@ class Button extends Component {
   @property({ type: Number }) override tabIndex = 0;
 
   /**
-   * The role of the button.
    * This property defines the ARIA role for the element. By default, it is set to 'button'.
    * Consumers should override this role when:
    * - The element is being used in a context where a different role is more appropriate.
@@ -127,8 +128,21 @@ class Button extends Component {
    */
   @property({ type: String, reflect: true }) override role = 'button';
 
-  @state() private type: ButtonType = DEFAULTS.TYPE;
+  /**
+   * This property defines the type attribute for the button element.
+   * The type attribute specifies the behavior of the button when it is clicked.
+   * - **submit**: The button submits the form data to the server.
+   * - **reset**: The button resets the form data to its initial state.
+   * - **button**: The button does nothing when clicked.
+   * @default button
+   */
+  @property({ reflect: true })
+  type: ButtonType = 'button';
 
+  /** @internal */
+  @state() private buttonType: ButtonTypeInternal = DEFAULTS.TYPE;
+
+  /** @internal */
   @state() private iconSize = 1;
 
   /**
@@ -146,11 +160,24 @@ class Button extends Component {
    */
   private prevPostfixIcon?: string;
 
+  /** @internal */
+  static formAssociated = true;
+
+  /** @internal */
+  private internals: ElementInternals;
+
+  /** @internal */
+  get form(): HTMLFormElement | null {
+    return this.internals.form;
+  }
+
   constructor() {
     super();
-    this.addEventListener('click', this.handleClick);
-    this.addEventListener('keydown', this.handleKeyDown);
-    this.addEventListener('keyup', this.handleKeyUp);
+    this.addEventListener('click', this.executeAction.bind(this));
+    this.addEventListener('keydown', this.handleKeyDown.bind(this));
+    this.addEventListener('keyup', this.handleKeyUp.bind(this));
+    /** @internal */
+    this.internals = this.attachInternals();
   }
 
   public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
@@ -176,12 +203,22 @@ class Button extends Component {
     if (changedProperties.has('color')) {
       this.setColor(this.color);
     }
-    if (changedProperties.has('type')) {
+    if (changedProperties.has('buttonType')) {
       this.setSize(this.size);
-      this.setClassBasedOnType(this.type);
+      this.setClassBasedOnType(this.buttonType);
     }
     if (changedProperties.has('prefixIcon') || changedProperties.has('postfixIcon')) {
       this.inferButtonType();
+    }
+  }
+
+  private executeAction() {
+    if (this.type === 'submit' && this.internals.form) {
+      this.internals.form.requestSubmit();
+    }
+
+    if (this.type === 'reset' && this.internals.form) {
+      this.internals.form.reset();
     }
   }
 
@@ -218,12 +255,10 @@ class Button extends Component {
    * @param type - The type of the button.
    */
   private setClassBasedOnType(type: string) {
-    if (type === BUTTON_TYPE.ICON) {
-      this.classList.add('icon');
-      this.setAttribute('aria-label', this.prefixIcon || this.postfixIcon || 'icon-button');
+    if (type === BUTTON_TYPE_INTERNAL.ICON) {
+      this.classList.add('mdc-icon-button');
     } else {
-      this.classList.remove('icon');
-      this.removeAttribute('aria-label');
+      this.classList.remove('mdc-icon-button');
     }
   }
 
@@ -246,7 +281,7 @@ class Button extends Component {
    * @param size - The size to set.
    */
   private setSize(size: PillButtonSize | IconButtonSize) {
-    const isIconType = this.type === BUTTON_TYPE.ICON;
+    const isIconType = this.buttonType === BUTTON_TYPE_INTERNAL.ICON;
     const isValidSize = isIconType
       ? (Object.values(ICON_BUTTON_SIZES).includes(size)
       && !(size === ICON_BUTTON_SIZES[20] && this.variant !== BUTTON_VARIANTS.TERTIARY))
@@ -286,7 +321,8 @@ class Button extends Component {
 
   /**
    * Sets the soft-disabled attribute for the button.
-   * When soft-disabled, the button remains focusable but not clickable.
+   * When soft-disabled, the button looks to be disabled but remains focusable and clickable.
+   * Also sets/removes aria-disabled attribute.
    *
    * @param element - The button element.
    * @param softDisabled - The soft-disabled state.
@@ -321,48 +357,45 @@ class Button extends Component {
     }
   }
 
-  /**
-   * Handles the click event on the button.
-   * If the button is not disabled or soft-disabled, the onclick event is triggered.
-   * The onclick method is provided by the consumer.
-   *
-   * @param event - The mouse event.
-   */
-  private handleClick(event: MouseEvent) {
-    if (!this.disabled && !this.softDisabled) {
-      if (this.onclick) {
-        this.onclick(event);
-      }
-    }
+  private triggerClickEvent() {
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    });
+    this.dispatchEvent(clickEvent);
+    this.executeAction();
   }
 
   /**
    * Handles the keydown event on the button.
    * If the key is 'Enter' or 'Space', the button is pressed.
+   * If the key is 'Enter', the button is pressed. The native HTML button works in the same way.
    *
    * @param event - The keyboard event.
    */
   private handleKeyDown(event: KeyboardEvent) {
-    if (!this.disabled && (event.key === 'Enter' || event.key === ' ')) {
+    if (['Enter', ' '].includes(event.key)) {
       this.classList.add('pressed');
-    }
-    if (event.key === 'Enter') {
-      this.handleClick(event as unknown as MouseEvent);
+      if (event.key === 'Enter') {
+        this.triggerClickEvent();
+      }
     }
   }
 
   /**
    * Handles the keyup event on the button.
    * If the key is 'Enter' or 'Space', the button is clicked.
+   * If the key is 'Space', the button is pressed. The native HTML button works in the same way.
    *
    * @param event - The keyboard event.
    */
   private handleKeyUp(event: KeyboardEvent) {
-    if (!this.disabled && (event.key === 'Enter' || event.key === ' ')) {
+    if (['Enter', ' '].includes(event.key)) {
       this.classList.remove('pressed');
-    }
-    if (event.key === ' ') {
-      this.handleClick(event as unknown as MouseEvent);
+      if (event.key === ' ') {
+        this.triggerClickEvent();
+      }
     }
   }
 
@@ -373,27 +406,30 @@ class Button extends Component {
   private inferButtonType() {
     const slot = this.shadowRoot?.querySelector('slot')?.assignedNodes().length;
     if (slot && (this.prefixIcon || this.postfixIcon)) {
-      this.type = BUTTON_TYPE.PILL_WITH_ICON;
+      this.buttonType = BUTTON_TYPE_INTERNAL.PILL_WITH_ICON;
     } else if (!slot && (this.prefixIcon || this.postfixIcon)) {
-      this.type = BUTTON_TYPE.ICON;
+      this.buttonType = BUTTON_TYPE_INTERNAL.ICON;
     } else {
-      this.type = BUTTON_TYPE.PILL;
+      this.buttonType = BUTTON_TYPE_INTERNAL.PILL;
     }
   }
 
+  // Note: @click is attached to each of the children of the button.
+  // Adding click listener within the constructor will not work properly when button is disabled.
+  // https://discord.com/channels/1012791295170859069/1047015641225371718/threads/1309446072413720576
   public override render() {
     return html`
       ${this.prefixIcon ? html`
-        <mdc-icon 
-          name="${this.prefixIcon}" 
+        <mdc-icon
+          name="${this.prefixIcon as IconNames}" 
           part="prefix-icon" 
           size=${this.iconSize} 
           length-unit="rem">
         </mdc-icon>` : ''}
       <slot @slotchange=${this.inferButtonType}></slot>
       ${this.postfixIcon ? html`
-        <mdc-icon 
-          name="${this.postfixIcon}" 
+        <mdc-icon
+          name="${this.postfixIcon as IconNames}" 
           part="postfix-icon" 
           size=${this.iconSize} 
           length-unit="rem">

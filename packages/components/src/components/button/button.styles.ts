@@ -7,7 +7,7 @@ const styles = [hostFitContentStyles, css`
     border-radius: 1.25rem;
     font-weight: var(--mds-font-apps-body-large-medium-font-weight);
     outline: none;
-    border: 1px solid transparent;
+    border: 0.0625rem solid transparent;
 
     --mdc-button-primary-color: var(--mds-color-theme-inverted-text-primary-normal);
     --mdc-button-primary-background-color: var(--mds-color-theme-button-primary-normal);
@@ -47,11 +47,7 @@ const styles = [hostFitContentStyles, css`
   :host([active]){
     font-weight: var(--mds-font-apps-body-large-bold-font-weight);
   }
-  :host([variant="primary"]:disabled), :host([variant="primary"][disabled]),
-  :host([variant="secondary"]:disabled), :host([variant="secondary"][disabled]),
-  :host([variant="tertiary"]:disabled), :host([variant="tertiary"][disabled]){
-    box-shadow: none;
-  }
+
 
   :host([variant="primary"]){
     background: var(--mdc-button-primary-background-color);
@@ -63,7 +59,7 @@ const styles = [hostFitContentStyles, css`
   :host([variant="primary"]:active), :host([variant="primary"].pressed){
     background: var(--mdc-button-primary-pressed-background-color);
   }
-  :host([variant="primary"]:disabled), :host([variant="primary"][disabled]), :host([variant="primary"][soft-disabled]){
+  :host([variant="primary"][disabled]), :host([variant="primary"][soft-disabled]){
     background: var(--mdc-button-primary-disabled-background-color);
     color: var(--mdc-button-primary-disabled-color);
     cursor: auto;
@@ -79,7 +75,7 @@ const styles = [hostFitContentStyles, css`
   :host([variant="secondary"]:active), :host([variant="secondary"].pressed){
     background: var(--mdc-button-secondary-pressed-background-color);
   }
-  :host([variant="secondary"]:disabled), :host([variant="secondary"][disabled]),
+  :host([variant="secondary"][disabled]),
    :host([variant="secondary"][soft-disabled]){
     color: var(--mdc-button-primary-disabled-color);
     border-color: var(--mdc-button-secondary-disabled-border-color);
@@ -97,32 +93,35 @@ const styles = [hostFitContentStyles, css`
   :host([variant="tertiary"]:active), :host([variant="tertiary"].pressed){
     background: var(--mdc-button-tertiary-pressed-background-color);
   }
-  :host([variant="tertiary"]:disabled), :host([variant="tertiary"][disabled]), 
+  :host([variant="tertiary"][disabled]), 
   :host([variant="tertiary"][soft-disabled]){
     color: var(--mdc-button-tertiary-disabled-color);
     background: var(--mdc-button-tertiary-disabled-background-color);
     cursor: auto;
   }
-  .icon, :host([size="64"]), :host([size="52"]), :host([size="20"]){
+
+  :host([size="64"].mdc-icon-button), 
+  :host([size="52"].mdc-icon-button), 
+  :host([size="40"].mdc-icon-button), 
+  :host([size="32"].mdc-icon-button),
+  :host([size="28"].mdc-icon-button),
+  :host([size="24"].mdc-icon-button){
     border-radius: 6.25rem;
+    aspect-ratio: 1;
+    padding: unset;
   }
   :host([size="64"]){
     height: var(--mdc-button-height-size-64);
-    padding: calc(1rem - 0.0625rem);
   }
   :host([size="52"]){
     height: var(--mdc-button-height-size-52);
-    padding: calc(0.75rem - 0.0625rem);
   }
   :host([size="40"]){
     height: var(--mdc-button-height-size-40);
     font-size: var(--mds-font-size-body-large);
     line-height: var(--mdc-button-line-height-size-40);
-    padding: 0.5rem 1rem;
+    padding: 0 1rem;
     gap: 0.5rem;
-  }
-  :host([size="40"].icon){
-    padding: calc(0.625rem - 0.0625rem);
   }
   :host([size="32"]){
     height: var(--mdc-button-height-size-32);
@@ -131,18 +130,12 @@ const styles = [hostFitContentStyles, css`
     padding: 0 0.75rem;
     gap: 0.375rem;
   }
-  :host([size="32"].icon){
-    padding: calc(0.5rem - 0.0625rem);
-  }
   :host([size="28"]){
     height: var(--mdc-button-height-size-28);
     font-size: var(--mds-font-size-body-midsize);
     line-height: var(--mdc-button-line-height-size-28);
     padding: 0 0.75rem;
     gap: 0.375rem;
-  }
-  :host([size="28"].icon){
-    padding: calc(0.375rem - 0.0625rem);
   }
   :host([size="24"]){
     height: var(--mdc-button-height-size-24);
@@ -151,12 +144,8 @@ const styles = [hostFitContentStyles, css`
     padding: 0 0.625rem;
     gap: 0.25rem;
   }
-  :host([size="24"].icon){
-    padding: calc(0.25rem - 0.0625rem);
-  }
   :host([size="20"]){
     height: var(--mdc-button-height-size-20);
-    padding: calc(0.125rem - 0.0625rem);
   }
 
   :host([color="accent"]){

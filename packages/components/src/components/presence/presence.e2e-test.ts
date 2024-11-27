@@ -26,41 +26,16 @@ const setup = async (args: SetupOptions) => {
   return presence;
 };
 
-const visualTestingSetup = async (args: SetupOptions) => {
-  const { componentsPage } = args;
-  const presences = (type: string) =>
-    Object.values(SIZE)
-      .map((size) => `<mdc-presence type="${type}" size="${size}"></mdc-presence>`)
-      .join('');
-
-  await componentsPage.mount({
-    html: `
-    <div class="presence-list">
-    ${Object.values(TYPE)
-    .map(
-      (type) => `
-      <div class="presence-row">
-        ${presences(type)}
-      </div>
-    `,
-    )
-    .join('')}
-    </div>
-      `,
-  });
-  const presenceList = componentsPage.page.locator('.presence-list');
-  const presence = componentsPage.page.locator('.mdc-presence').last();
-  await presence.waitFor();
-  return presenceList;
-};
-
 const testToRun = async (componentsPage: ComponentsPage) => {
-  const visualPresence = await visualTestingSetup({ componentsPage });
-
   /**
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
+    const visualPresence = await componentsPage.visualRegression.createStickerSheet(componentsPage, 'mdc-presence', {
+      type: TYPE,
+      size: SIZE,
+    });
+
     await test.step('matches screenshot of default element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-presence', { element: visualPresence });
     });
