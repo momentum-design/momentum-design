@@ -50,9 +50,7 @@ class VisualRegression {
       for (const direction of ['rtl', 'ltr'] as const) {
         await this.setDocumentDirection(direction);
         expect(await elementToTakeScreenShotFrom.screenshot(options)).toMatchSnapshot({
-          name: `${name}-${direction}.${CONSTANTS.VISUAL_REGRESSION.FILE_EXTENSION}`,
-          threshold: CONSTANTS.VISUAL_REGRESSION.THRESHOLD,
-          maxDiffPixelRatio: CONSTANTS.VISUAL_REGRESSION.MAX_DIFF_PIXELS_RATIO,
+          name: `${name}-${direction}.${CONSTANTS.VISUAL_REGRESSION.FILE_EXTENSION}`
         });
       }
 
@@ -61,9 +59,7 @@ class VisualRegression {
         await this.toggleHighContrastMode(true); // Enable high contrast
         await this.setDocumentDirection('ltr');
         expect(await elementToTakeScreenShotFrom.screenshot(options)).toMatchSnapshot({
-          name: `${name}-high-contrast.${CONSTANTS.VISUAL_REGRESSION.FILE_EXTENSION}`,
-          threshold: CONSTANTS.VISUAL_REGRESSION.THRESHOLD,
-          maxDiffPixelRatio: CONSTANTS.VISUAL_REGRESSION.MAX_DIFF_PIXELS_RATIO,
+          name: `${name}-high-contrast.${CONSTANTS.VISUAL_REGRESSION.FILE_EXTENSION}`
         });
         await this.toggleHighContrastMode(false); // Reset high contrast
       }
