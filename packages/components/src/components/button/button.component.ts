@@ -4,7 +4,7 @@ import styles from './button.styles';
 import { Component } from '../../models';
 import {
   BUTTON_COLORS,
-  BUTTON_TYPE,
+  BUTTON_TYPE_INTERNAL,
   BUTTON_VARIANTS,
   DEFAULTS,
   ICON_BUTTON_SIZES,
@@ -16,6 +16,7 @@ import type {
   ButtonVariant,
   PillButtonSize,
   IconButtonSize,
+  ButtonTypeInternal,
 } from './button.types';
 import { getIconNameWithoutStyle, getIconSize } from './button.utils';
 
@@ -135,10 +136,12 @@ class Button extends Component {
    * @default button
    */
   @property({ reflect: true })
-  type: 'submit' | 'reset' | 'button' = 'button';
+  type: ButtonType = 'button';
 
-  @state() private buttonType: ButtonType = DEFAULTS.TYPE;
+  /** @internal */
+  @state() private buttonType: ButtonTypeInternal = DEFAULTS.TYPE;
 
+  /** @internal */
   @state() private iconSize = 1;
 
   /**
@@ -162,6 +165,7 @@ class Button extends Component {
   /** @internal */
   private internals: ElementInternals;
 
+  /** @internal */
   get form(): HTMLFormElement | null {
     return this.internals.form;
   }
@@ -171,6 +175,7 @@ class Button extends Component {
     this.addEventListener('click', this.executeAction.bind(this));
     this.addEventListener('keydown', this.handleKeyDown.bind(this));
     this.addEventListener('keyup', this.handleKeyUp.bind(this));
+    /** @internal */
     this.internals = this.attachInternals();
   }
 
@@ -249,7 +254,7 @@ class Button extends Component {
    * @param type - The type of the button.
    */
   private setClassBasedOnType(type: string) {
-    if (type === BUTTON_TYPE.ICON) {
+    if (type === BUTTON_TYPE_INTERNAL.ICON) {
       this.classList.add('mdc-icon-button');
     } else {
       this.classList.remove('mdc-icon-button');
@@ -275,7 +280,7 @@ class Button extends Component {
    * @param size - The size to set.
    */
   private setSize(size: PillButtonSize | IconButtonSize) {
-    const isIconType = this.buttonType === BUTTON_TYPE.ICON;
+    const isIconType = this.buttonType === BUTTON_TYPE_INTERNAL.ICON;
     const isValidSize = isIconType
       ? (Object.values(ICON_BUTTON_SIZES).includes(size)
       && !(size === ICON_BUTTON_SIZES[20] && this.variant !== BUTTON_VARIANTS.TERTIARY))
@@ -400,11 +405,11 @@ class Button extends Component {
   private inferButtonType() {
     const slot = this.shadowRoot?.querySelector('slot')?.assignedNodes().length;
     if (slot && (this.prefixIcon || this.postfixIcon)) {
-      this.buttonType = BUTTON_TYPE.PILL_WITH_ICON;
+      this.buttonType = BUTTON_TYPE_INTERNAL.PILL_WITH_ICON;
     } else if (!slot && (this.prefixIcon || this.postfixIcon)) {
-      this.buttonType = BUTTON_TYPE.ICON;
+      this.buttonType = BUTTON_TYPE_INTERNAL.ICON;
     } else {
-      this.buttonType = BUTTON_TYPE.PILL;
+      this.buttonType = BUTTON_TYPE_INTERNAL.PILL;
     }
   }
 

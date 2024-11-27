@@ -30,17 +30,23 @@ const BUTTON_COLORS = {
   DEFAULT: 'default',
 } as const;
 
-const BUTTON_TYPE = {
+const BUTTON_TYPE_INTERNAL = {
   PILL: 'pill',
   ICON: 'icon',
   PILL_WITH_ICON: 'pill-with-icon',
+} as const;
+
+const BUTTON_TYPE = {
+  BUTTON: 'button',
+  SUBMIT: 'submit',
+  RESET: 'reset',
 } as const;
 
 const DEFAULTS = {
   VARIANT: BUTTON_VARIANTS.PRIMARY,
   SIZE: PILL_BUTTON_SIZES[32],
   COLOR: BUTTON_COLORS.DEFAULT,
-  TYPE: BUTTON_TYPE.ICON,
+  TYPE: BUTTON_TYPE_INTERNAL.ICON,
 };
 
 export {
@@ -50,5 +56,6 @@ export {
   PILL_BUTTON_SIZES,
   ICON_BUTTON_SIZES,
   BUTTON_COLORS,
+  BUTTON_TYPE_INTERNAL,
   BUTTON_TYPE,
 };

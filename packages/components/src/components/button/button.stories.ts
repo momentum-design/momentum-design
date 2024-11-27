@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { BUTTON_COLORS, PILL_BUTTON_SIZES, BUTTON_VARIANTS, ICON_BUTTON_SIZES } from './button.constants';
+import { BUTTON_COLORS, PILL_BUTTON_SIZES, BUTTON_VARIANTS, ICON_BUTTON_SIZES, BUTTON_TYPE } from './button.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 const render = (args: Args) => html`
@@ -14,6 +14,7 @@ const render = (args: Args) => html`
   color="${args.color}"
   prefix-icon="${args['prefix-icon']}"
   postfix-icon="${args['postfix-icon']}"
+  type="${args.type}"
   >${args.children}</mdc-button>`;
 
 const meta: Meta = {
@@ -56,6 +57,10 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(BUTTON_COLORS),
     },
+    type: {
+      control: 'select',
+      options: Object.values(BUTTON_TYPE),
+    },
     ...classArgType,
     ...styleArgType,
   },
@@ -72,6 +77,7 @@ export const PillButton: StoryObj = {
     variant: BUTTON_VARIANTS.PRIMARY,
     size: PILL_BUTTON_SIZES[32],
     color: BUTTON_COLORS.DEFAULT,
+    type: BUTTON_TYPE.BUTTON,
   },
 };
 
@@ -85,6 +91,7 @@ export const PillWithPrefixIcon: StoryObj = {
     variant: BUTTON_VARIANTS.PRIMARY,
     size: PILL_BUTTON_SIZES[32],
     color: BUTTON_COLORS.DEFAULT,
+    type: BUTTON_TYPE.BUTTON,
   },
 };
 
@@ -98,6 +105,7 @@ export const PillWithPostfixIcon: StoryObj = {
     variant: BUTTON_VARIANTS.PRIMARY,
     size: PILL_BUTTON_SIZES[32],
     color: BUTTON_COLORS.DEFAULT,
+    type: BUTTON_TYPE.BUTTON,
   },
 };
 
@@ -115,5 +123,6 @@ export const IconButton: StoryObj = {
     variant: BUTTON_VARIANTS.PRIMARY,
     size: ICON_BUTTON_SIZES[32],
     color: BUTTON_COLORS.DEFAULT,
+    type: BUTTON_TYPE.BUTTON,
   },
 };
