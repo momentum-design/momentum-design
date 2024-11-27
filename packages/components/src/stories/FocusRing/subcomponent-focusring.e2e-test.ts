@@ -12,7 +12,7 @@ const setup = async (args: SetupOptions) => {
   await componentsPage.mount({
     /* eslint-disable max-len */
     html: `
-    <div class="focus-ring-container">
+    <div class="componentWrapper componentRowWrapper">
       <mdc-subcomponent-focusring shape="${shape}" id='firstComponent' class="focus-ring"></mdc-subcomponent-focusring>
       <mdc-subcomponent-focusring shape="${shape}" id='secondComponent' class="focus-ring"></mdc-subcomponent-focusring>
     <div>`,

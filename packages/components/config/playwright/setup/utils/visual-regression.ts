@@ -1,5 +1,6 @@
 import { Page, expect } from '@playwright/test';
 import type { ScreenShotOptions } from '../types';
+import type { ComponentsPage } from '..';
 import CONSTANTS from '../constants';
 
 interface VisualRegression {
@@ -67,6 +68,70 @@ class VisualRegression {
         await this.toggleHighContrastMode(false); // Reset high contrast
       }
     }
+  }
+
+  /**
+   * Creates a sticker sheet on the page, grouping variants of components for visual regression testing.
+   *
+   * @param componentsPage - The page object used to interact with the components.
+   * @param componentTag - The tag name of the component to generate.
+   * @param attributes - Attributes to apply to the components, with key-value pairs representing attribute
+   *                     names and their possible values. The values are defined as an object of key-value pairs.
+   * @param defaultAttributes - Default attributes that should be applied to every component generated.
+   *                            If `children` is provided, it will be used as the inner content of the component.
+   *
+   * @returns Locator for the component list containing all generated components.
+   */
+  async createStickerSheet(
+    componentsPage: ComponentsPage,
+    componentTag: string,
+    attributes: Record<string, Record<string, string>>,
+    defaultAttributes?: Record<string, string>,
+  ) {
+    const generateComponentMarkup = () => {
+      if (Object.keys(attributes).length === 0) return '';
+
+      const [primaryKey, primaryValues] = Object.entries(attributes)[0];
+      const otherAttributes = Object.entries(attributes).slice(1);
+
+      const defaultAttrs = defaultAttributes
+        ? Object.entries(defaultAttributes)
+          .filter(([key]) => key !== 'children')
+          .map(([key, value]) => `${key}="${value}"`)
+          .join(' ')
+        : '';
+      const children = defaultAttributes?.children || '';
+
+      return Object.values(primaryValues)
+        .map((primaryValue) => {
+          const combinations = otherAttributes.reduce<string[]>(
+            (acc, [key, values]) =>
+              acc.flatMap((prev) => Object.values(values).map((currVal) => `${prev} ${key}="${currVal}"`)),
+            [''],
+          );
+          return `<div class="componentRowWrapper">
+          ${combinations.map((combination) => `
+          <${componentTag} ${defaultAttrs} ${primaryKey}="${primaryValue}" ${combination}>
+            ${children}
+          </${componentTag}>`).join('')}
+        </div>`;
+        })
+        .join('');
+    };
+
+    await componentsPage.mount({
+      html: `
+      <div class="componentWrapper">
+        ${generateComponentMarkup()}
+      </div>
+      `,
+      clearDocument: true,
+    });
+
+    const componentList = componentsPage.page.locator('.componentWrapper');
+    await componentsPage.page.waitForLoadState('networkidle');
+
+    return componentList;
   }
 }
 
