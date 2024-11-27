@@ -10,7 +10,7 @@ import{i as o}from"./lit-element-CPYlYYac.js";const r=o`
   :host {
     --mdc-focus-ring-inner-color: var(--mds-color-theme-focus-default-0);
     --mdc-focus-ring-middle-color: var(--mds-color-theme-focus-default-1);
-    --mdc-focus-ring-outer-color: var(--mds-color-theme-focus-default-2);
+    --mdc-focus-ring-outer-color: var(--mds-color-theme-focus-default-2); 
 
     --mdc-focus-ring-inner-width: 0.125rem;
     --mdc-focus-ring-middle-width: calc(2 * var(--mdc-focus-ring-inner-width));
@@ -26,5 +26,12 @@ import{i as o}from"./lit-element-CPYlYYac.js";const r=o`
         0 0 0 var(--mdc-focus-ring-inner-width) var(--mdc-focus-ring-inner-color),
         0 0 0 var(--mdc-focus-ring-middle-width) var(--mdc-focus-ring-middle-color),
         0 0 0 var(--mdc-focus-ring-outer-width) var(--mdc-focus-ring-outer-color);
+  }
+
+  /* High Contrast Mode */
+  @media (forced-colors: active) {
+    :host(:focus) {
+      outline: 0.125rem solid var(--mds-color-theme-focus-default-0);
+    }
   }
 `;export{i as a,r as h};

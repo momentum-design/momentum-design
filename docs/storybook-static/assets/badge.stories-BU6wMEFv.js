@@ -1,4 +1,4 @@
-import{i as Z,k as l}from"./lit-element-CPYlYYac.js";import{R as T}from"./class-map-CXre9d5K.js";import{u as z,C as f,n}from"./index-BLShQaRP.js";import{t as H}from"./if-defined-4GS2c12S.js";import{T as J,V as K}from"./index-JGLRkhS4.js";import{h as Q}from"./index-DOMSj5Ok.js";import"./index-DkNGXPrD.js";import{c as rr,s as er}from"./commonArgTypes-BluK8w5L.js";import"./state-I_twzcUk.js";import"./index-BGH6lGYG.js";import"./iconprovider.component-DQf4k71i.js";import"./create-context-89xeped_.js";const or=z.constructTagName("badge"),r={DOT:"dot",ICON:"icon",COUNTER:"counter",SUCCESS:"success",WARNING:"warning",ERROR:"error"},C={SUCCESS_ICON_NAME:"check-circle-badge-filled",WARNING_ICON_NAME:"warning-badge-filled",ERROR_ICON_NAME:"error-legacy-badge-filled"},v={PRIMARY:"primary",SECONDARY:"secondary"},E={SUCCESS:"success",WARNING:"warning",ERROR:"error"},c={TYPE:r.DOT,MAX_COUNTER:99,MAX_COUNTER_LIMIT:999,VARIANT:v.PRIMARY,ICON_SIZE:1},ar=[Q,Z`
+import{i as Z,k as l}from"./lit-element-CPYlYYac.js";import{R as T}from"./class-map-CXre9d5K.js";import{u as z,C as _,n}from"./index-BLShQaRP.js";import{t as H}from"./if-defined-4GS2c12S.js";import{T as J,V as K}from"./index-JGLRkhS4.js";import{h as Q}from"./index-pDL_Yvf3.js";import"./index-LpRtH1bZ.js";import{c as rr,s as er}from"./commonArgTypes-BluK8w5L.js";import"./state-I_twzcUk.js";import"./index-BGH6lGYG.js";import"./iconprovider.component-DQf4k71i.js";import"./create-context-89xeped_.js";const or=z.constructTagName("badge"),r={DOT:"dot",ICON:"icon",COUNTER:"counter",SUCCESS:"success",WARNING:"warning",ERROR:"error"},C={SUCCESS_ICON_NAME:"check-circle-badge-filled",WARNING_ICON_NAME:"warning-badge-filled",ERROR_ICON_NAME:"error-legacy-badge-filled"},v={PRIMARY:"primary",SECONDARY:"secondary"},E={SUCCESS:"success",WARNING:"warning",ERROR:"error"},c={TYPE:r.DOT,MAX_COUNTER:99,MAX_COUNTER_LIMIT:999,VARIANT:v.PRIMARY,ICON_SIZE:1},ar=[Q,Z`
     :host {
       --mdc-badge-primary-foreground-color: var(--mds-color-theme-common-text-primary-normal);
       --mdc-badge-primary-background-color: var(--mds-color-theme-background-accent-normal);
@@ -60,7 +60,14 @@ import{i as Z,k as l}from"./lit-element-CPYlYYac.js";import{R as T}from"./class-
       background-color: var(--mdc-badge-secondary-background-color);
       color: var(--mdc-badge-secondary-foreground-color);
     }
-  `];var tr=Object.defineProperty,s=(e,o,a,O)=>{for(var d=void 0,R=e.length-1,_;R>=0;R--)(_=e[R])&&(d=_(o,a,d)||d);return d&&tr(o,a,d),d};const I=class I extends f{constructor(){super(...arguments),this.variant=c.VARIANT,this.maxCounter=c.MAX_COUNTER,this.overlay=!1,this.ariaLabel=null}getCounterText(o,a){return a===void 0||typeof a!="number"||o===0?"":a>o?`${o}+`:o>c.MAX_COUNTER_LIMIT||a>c.MAX_COUNTER_LIMIT?`${c.MAX_COUNTER_LIMIT}+`:a.toString()}getBadgeIcon(o,a){return l`
+
+    /* High Contrast Mode */
+    @media (forced-colors: active) {
+    .mdc-badge-dot, .mdc-badge-icon, .mdc-badge-text {
+      outline: 0.125rem solid;
+    }
+  }
+  `];var tr=Object.defineProperty,s=(e,o,a,O)=>{for(var d=void 0,R=e.length-1,f;R>=0;R--)(f=e[R])&&(d=f(o,a,d)||d);return d&&tr(o,a,d),d};const I=class I extends _{constructor(){super(...arguments),this.variant=c.VARIANT,this.maxCounter=c.MAX_COUNTER,this.overlay=!1,this.ariaLabel=null}getCounterText(o,a){return a===void 0||typeof a!="number"||o===0?"":a>o?`${o}+`:o>c.MAX_COUNTER_LIMIT||a>c.MAX_COUNTER_LIMIT?`${c.MAX_COUNTER_LIMIT}+`:a.toString()}getBadgeIcon(o,a){return l`
       <mdc-icon
         class="mdc-badge-icon ${T({"mdc-badge-overlay":this.overlay,[`mdc-badge-icon__${a}`]:!0})}"
         name="${H(o)}"
@@ -74,7 +81,7 @@ import{i as Z,k as l}from"./lit-element-CPYlYYac.js";import{R as T}from"./class-
       >
         ${this.getCounterText(this.maxCounter,this.counter)}
       </mdc-text>
-    `}setRoleByAriaLabel(){this.ariaLabel?this.role="img":this.role=null}getBadgeContentBasedOnType(){this.variant&&!Object.values(v).includes(this.variant)&&(this.variant=c.VARIANT);const{iconName:o,type:a,variant:O}=this;switch(a){case r.ICON:return this.getBadgeIcon(o||"",O);case r.COUNTER:return this.getBadgeCounterText();case r.SUCCESS:return this.getBadgeIcon(C.SUCCESS_ICON_NAME,E.SUCCESS);case r.WARNING:return this.getBadgeIcon(C.WARNING_ICON_NAME,E.WARNING);case r.ERROR:return this.getBadgeIcon(C.ERROR_ICON_NAME,E.ERROR);case r.DOT:default:return this.type=r.DOT,this.getBadgeDot()}}update(o){super.update(o),o.has("ariaLabel")&&this.setRoleByAriaLabel()}render(){return this.getBadgeContentBasedOnType()}};I.styles=[...f.styles,...ar];let t=I;s([n({type:String,reflect:!0})],t.prototype,"type");s([n({type:String,attribute:"icon-name"})],t.prototype,"iconName");s([n({type:String,reflect:!0})],t.prototype,"variant");s([n({type:Number})],t.prototype,"counter");s([n({type:Number,attribute:"max-counter",reflect:!0})],t.prototype,"maxCounter");s([n({type:Boolean})],t.prototype,"overlay");s([n({type:String,attribute:"aria-label"})],t.prototype,"ariaLabel");t.register(or);const N=[9,99,999],cr=e=>l`
+    `}setRoleByAriaLabel(){this.ariaLabel?this.role="img":this.role=null}getBadgeContentBasedOnType(){this.variant&&!Object.values(v).includes(this.variant)&&(this.variant=c.VARIANT);const{iconName:o,type:a,variant:O}=this;switch(a){case r.ICON:return this.getBadgeIcon(o||"",O);case r.COUNTER:return this.getBadgeCounterText();case r.SUCCESS:return this.getBadgeIcon(C.SUCCESS_ICON_NAME,E.SUCCESS);case r.WARNING:return this.getBadgeIcon(C.WARNING_ICON_NAME,E.WARNING);case r.ERROR:return this.getBadgeIcon(C.ERROR_ICON_NAME,E.ERROR);case r.DOT:default:return this.type=r.DOT,this.getBadgeDot()}}update(o){super.update(o),o.has("ariaLabel")&&this.setRoleByAriaLabel()}render(){return this.getBadgeContentBasedOnType()}};I.styles=[..._.styles,...ar];let t=I;s([n({type:String,reflect:!0})],t.prototype,"type");s([n({type:String,attribute:"icon-name"})],t.prototype,"iconName");s([n({type:String,reflect:!0})],t.prototype,"variant");s([n({type:Number})],t.prototype,"counter");s([n({type:Number,attribute:"max-counter",reflect:!0})],t.prototype,"maxCounter");s([n({type:Boolean})],t.prototype,"overlay");s([n({type:String,attribute:"aria-label"})],t.prototype,"ariaLabel");t.register(or);const N=[9,99,999],cr=e=>l`
 <mdc-badge
   type="${e.type}"
   icon-name="${e["icon-name"]}"
@@ -96,7 +103,7 @@ import{i as Z,k as l}from"./lit-element-CPYlYYac.js";import{R as T}from"./class-
     aria-label="${e["aria-label"]}"
   ></mdc-badge>
 </div>
-`,Rr={title:"Components/badge",tags:["autodocs"],component:"mdc-badge",render:cr,parameters:{badges:["stable"]},argTypes:{type:{control:"select",options:Object.values(r)},overlay:{control:"boolean"},counter:{if:{arg:"type",eq:r.COUNTER},control:"number"},"max-counter":{if:{arg:"type",eq:r.COUNTER},control:"select",options:N},"icon-name":{if:{arg:"type",eq:r.ICON},control:"text"},variant:{if:{arg:"type",eq:r.ICON},control:"select",options:Object.values(v)},"aria-label":{control:"text"},...rr,...er}},m={args:{type:c.TYPE,"icon-name":"placeholder-bold",variant:c.VARIANT,counter:1,"max-counter":N[1],overlay:!1}},i={args:{type:r.ICON,"icon-name":"placeholder-bold",variant:v.PRIMARY,overlay:!1}},g={args:{type:r.COUNTER,counter:10,"max-counter":N[1],overlay:!1}},u={args:{type:r.SUCCESS,overlay:!1}},p={args:{type:r.WARNING,overlay:!1}},b={args:{type:r.ERROR,overlay:!1}},y={render:nr,args:{type:r.COUNTER,counter:1e3,"max-counter":N[2],overlay:!0}};var A,S,h;m.parameters={...m.parameters,docs:{...(A=m.parameters)==null?void 0:A.docs,source:{originalSource:`{
+`,Rr={title:"Components/badge",tags:["autodocs"],component:"mdc-badge",render:cr,parameters:{badges:["stable"]},argTypes:{type:{control:"select",options:Object.values(r)},overlay:{control:"boolean"},counter:{if:{arg:"type",eq:r.COUNTER},control:"number"},"max-counter":{if:{arg:"type",eq:r.COUNTER},control:"select",options:N},"icon-name":{if:{arg:"type",eq:r.ICON},control:"text"},variant:{if:{arg:"type",eq:r.ICON},control:"select",options:Object.values(v)},"aria-label":{control:"text"},...rr,...er}},m={args:{type:c.TYPE,"icon-name":"placeholder-bold",variant:c.VARIANT,counter:1,"max-counter":N[1],overlay:!1}},i={args:{type:r.ICON,"icon-name":"placeholder-bold",variant:v.PRIMARY,overlay:!1}},g={args:{type:r.COUNTER,counter:10,"max-counter":N[1],overlay:!1}},u={args:{type:r.SUCCESS,overlay:!1}},p={args:{type:r.WARNING,overlay:!1}},b={args:{type:r.ERROR,overlay:!1}},y={render:nr,args:{type:r.COUNTER,counter:1e3,"max-counter":N[2],overlay:!0}};var A,h,S;m.parameters={...m.parameters,docs:{...(A=m.parameters)==null?void 0:A.docs,source:{originalSource:`{
   args: {
     type: DEFAULTS.TYPE,
     'icon-name': 'placeholder-bold',
@@ -105,14 +112,14 @@ import{i as Z,k as l}from"./lit-element-CPYlYYac.js";import{R as T}from"./class-
     'max-counter': MAX_COUNTER_LIST[1],
     overlay: false
   }
-}`,...(h=(S=m.parameters)==null?void 0:S.docs)==null?void 0:h.source}}};var x,k,U;i.parameters={...i.parameters,docs:{...(x=i.parameters)==null?void 0:x.docs,source:{originalSource:`{
+}`,...(S=(h=m.parameters)==null?void 0:h.docs)==null?void 0:S.source}}};var x,k,M;i.parameters={...i.parameters,docs:{...(x=i.parameters)==null?void 0:x.docs,source:{originalSource:`{
   args: {
     type: TYPE.ICON,
     'icon-name': 'placeholder-bold',
     variant: ICON_VARIANT.PRIMARY,
     overlay: false
   }
-}`,...(U=(k=i.parameters)==null?void 0:k.docs)==null?void 0:U.source}}};var M,$,L;g.parameters={...g.parameters,docs:{...(M=g.parameters)==null?void 0:M.docs,source:{originalSource:`{
+}`,...(M=(k=i.parameters)==null?void 0:k.docs)==null?void 0:M.source}}};var U,$,L;g.parameters={...g.parameters,docs:{...(U=g.parameters)==null?void 0:U.docs,source:{originalSource:`{
   args: {
     type: TYPE.COUNTER,
     counter: 10,
