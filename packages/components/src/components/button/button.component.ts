@@ -19,6 +19,7 @@ import type {
   ButtonTypeInternal,
 } from './button.types';
 import { getIconNameWithoutStyle, getIconSize } from './button.utils';
+import type { IconNames } from '../icon/icon.types';
 
 /**
  * `mdc-button` is a component that can be configured in various ways to suit different use cases.
@@ -420,7 +421,7 @@ class Button extends Component {
     return html`
       ${this.prefixIcon ? html`
         <mdc-icon
-          name="${this.prefixIcon}" 
+          name="${this.prefixIcon as IconNames}" 
           part="prefix-icon" 
           size=${this.iconSize} 
           length-unit="rem">
@@ -428,7 +429,7 @@ class Button extends Component {
       <slot @slotchange=${this.inferButtonType}></slot>
       ${this.postfixIcon ? html`
         <mdc-icon
-          name="${this.postfixIcon}" 
+          name="${this.postfixIcon as IconNames}" 
           part="postfix-icon" 
           size=${this.iconSize} 
           length-unit="rem">
