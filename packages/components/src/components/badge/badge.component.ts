@@ -6,6 +6,7 @@ import { Component } from '../../models';
 import { TYPE as FONT_TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { TYPE as BADGE_TYPE, ICON_NAMES_LIST, DEFAULTS, ICON_VARIANT, ICON_STATE } from './badge.constants';
 import styles from './badge.styles';
+import type { IconNames } from '../icon/icon.types';
 import type { IconVariant, BadgeType } from './badge.types';
 /**
  * The `mdc-badge` component is a versatile UI element used to
@@ -43,7 +44,7 @@ class Badge extends Component {
    * If no `icon-name` is provided, no icon will be rendered.
    */
   @property({ type: String, attribute: 'icon-name' })
-  iconName?: string;
+  iconName?: IconNames;
 
   /**
    * Type of the variant can be `primary` or `secondary`.
@@ -119,7 +120,7 @@ class Badge extends Component {
     'mdc-badge-overlay': this.overlay,
     [`mdc-badge-icon__${backgroundClassPostfix}`]: true,
   })}"
-        name="${ifDefined(iconName)}"
+        name="${ifDefined(iconName as IconNames)}"
         size="${DEFAULTS.ICON_SIZE}"
       ></mdc-icon>
     `;

@@ -2,11 +2,12 @@ import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import { TYPE, ICON_NAMES_LIST, DEFAULTS, ICON_VARIANT } from './badge.constants';
 import type { BadgeType, IconVariant } from './badge.types';
+import type { IconNames } from '../icon/icon.types';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
   type?: BadgeType;
-  iconName?: string;
+  iconName?: IconNames;
   variant?: IconVariant;
   counter?: number;
   maxCounter?: number;
@@ -39,7 +40,7 @@ const visualTestingSetup = async (args: SetupOptions) => {
 
   await componentsPage.mount({
     html: `
-      <div class="badges-container">
+      <div class="componentWrapper componentRowWrapper">
         <mdc-badge></mdc-badge>
         <mdc-badge type="${TYPE.ICON}" icon-name="${ICON_NAMES_LIST.SUCCESS_ICON_NAME}"></mdc-badge>
         <mdc-badge type="${TYPE.COUNTER}" counter="10000" max-counter="999"></mdc-badge>
@@ -51,7 +52,7 @@ const visualTestingSetup = async (args: SetupOptions) => {
     clearDocument: true,
   });
 
-  const badgesContainer = componentsPage.page.locator('.badges-container');
+  const badgesContainer = componentsPage.page.locator('.componentRowWrapper');
   await badgesContainer.waitFor();
   return badgesContainer;
 };
@@ -75,12 +76,11 @@ const testToRun = async (componentsPage: ComponentsPage) => {
     await componentsPage.accessibility.checkForA11yViolations('badge-aria-passed-in');
   });
 
-  const visualBadge = await visualTestingSetup({ componentsPage });
-
   /**
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
+    const visualBadge = await visualTestingSetup({ componentsPage });
     await test.step('matches screenshot of different types element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-badge', { element: visualBadge });
     });
