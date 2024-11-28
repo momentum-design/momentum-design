@@ -51,7 +51,7 @@ import type { IconNames } from '../icon/icon.types';
  *
  * @tagname mdc-button
  *
- * @slot default slot - Text label of the button.
+ * @slot - Text label of the button.
  */
 class Button extends Component {
   /**
@@ -71,7 +71,12 @@ class Button extends Component {
 
   /**
    * Indicates whether the button is soft disabled.
-   * When set to true, the button looks to be disabled but allows focus, click and keyboard actions to still be passed.
+   * When set to `true`, the button appears visually disabled but still allows
+   * focus, click, and keyboard actions to be passed through.
+   *
+   * **Important:** When using soft disabled, consumers must ensure that
+   * the button behaves like a disabled button, allowing only focus and
+   * preventing any interactions (clicks or keyboard actions) from triggering unintended actions.
    * @default false
    */
   @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled = false;
@@ -114,10 +119,9 @@ class Button extends Component {
 
   /**
    * The tabindex of the button.
-   * @internal
    * @default 0
    */
-  @property({ type: Number }) override tabIndex = 0;
+  @property({ type: Number, reflect: true }) override tabIndex = 0;
 
   /**
    * This property defines the ARIA role for the element. By default, it is set to 'button'.
@@ -137,10 +141,10 @@ class Button extends Component {
    * @default button
    */
   @property({ reflect: true })
-  type: ButtonType = 'button';
+  type: ButtonType = DEFAULTS.TYPE;
 
   /** @internal */
-  @state() private buttonType: ButtonTypeInternal = DEFAULTS.TYPE;
+  @state() private typeInternal: ButtonTypeInternal = DEFAULTS.TYPE_INTERNAL;
 
   /** @internal */
   @state() private iconSize = 1;
@@ -203,9 +207,9 @@ class Button extends Component {
     if (changedProperties.has('color')) {
       this.setColor(this.color);
     }
-    if (changedProperties.has('buttonType')) {
+    if (changedProperties.has('typeInternal')) {
       this.setSize(this.size);
-      this.setClassBasedOnType(this.buttonType);
+      this.setClassBasedOnType(this.typeInternal);
     }
     if (changedProperties.has('prefixIcon') || changedProperties.has('postfixIcon')) {
       this.inferButtonType();
@@ -281,7 +285,7 @@ class Button extends Component {
    * @param size - The size to set.
    */
   private setSize(size: PillButtonSize | IconButtonSize) {
-    const isIconType = this.buttonType === BUTTON_TYPE_INTERNAL.ICON;
+    const isIconType = this.typeInternal === BUTTON_TYPE_INTERNAL.ICON;
     const isValidSize = isIconType
       ? (Object.values(ICON_BUTTON_SIZES).includes(size)
       && !(size === ICON_BUTTON_SIZES[20] && this.variant !== BUTTON_VARIANTS.TERTIARY))
@@ -349,11 +353,9 @@ class Button extends Component {
       element.setAttribute('aria-disabled', 'true');
       this.prevTabindex = this.tabIndex;
       this.tabIndex = -1;
-      element.setAttribute('tabindex', `${this.tabIndex}`);
     } else {
       this.tabIndex = this.prevTabindex;
       element.removeAttribute('aria-disabled');
-      element.setAttribute('tabindex', `${this.tabIndex}`);
     }
   }
 
@@ -406,11 +408,11 @@ class Button extends Component {
   private inferButtonType() {
     const slot = this.shadowRoot?.querySelector('slot')?.assignedNodes().length;
     if (slot && (this.prefixIcon || this.postfixIcon)) {
-      this.buttonType = BUTTON_TYPE_INTERNAL.PILL_WITH_ICON;
+      this.typeInternal = BUTTON_TYPE_INTERNAL.PILL_WITH_ICON;
     } else if (!slot && (this.prefixIcon || this.postfixIcon)) {
-      this.buttonType = BUTTON_TYPE_INTERNAL.ICON;
+      this.typeInternal = BUTTON_TYPE_INTERNAL.ICON;
     } else {
-      this.buttonType = BUTTON_TYPE_INTERNAL.PILL;
+      this.typeInternal = BUTTON_TYPE_INTERNAL.PILL;
     }
   }
 

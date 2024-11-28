@@ -15,6 +15,8 @@ const render = (args: Args) => html`
   prefix-icon="${args['prefix-icon']}"
   postfix-icon="${args['postfix-icon']}"
   type="${args.type}"
+  role="${args.role}"
+  tabIndex="${args.tabIndex}"
   >${args.children}</mdc-button>`;
 
 const meta: Meta = {
@@ -78,6 +80,8 @@ export const PillButton: StoryObj = {
     size: PILL_BUTTON_SIZES[32],
     color: BUTTON_COLORS.DEFAULT,
     type: BUTTON_TYPE.BUTTON,
+    role: 'button',
+    tabIndex: 0,
   },
 };
 
@@ -92,6 +96,8 @@ export const PillWithPrefixIcon: StoryObj = {
     size: PILL_BUTTON_SIZES[32],
     color: BUTTON_COLORS.DEFAULT,
     type: BUTTON_TYPE.BUTTON,
+    role: 'button',
+    tabIndex: 0,
   },
 };
 
@@ -106,6 +112,8 @@ export const PillWithPostfixIcon: StoryObj = {
     size: PILL_BUTTON_SIZES[32],
     color: BUTTON_COLORS.DEFAULT,
     type: BUTTON_TYPE.BUTTON,
+    role: 'button',
+    tabIndex: 0,
   },
 };
 
@@ -124,5 +132,7 @@ export const IconButton: StoryObj = {
     size: ICON_BUTTON_SIZES[32],
     color: BUTTON_COLORS.DEFAULT,
     type: BUTTON_TYPE.BUTTON,
+    role: 'button',
+    tabIndex: 0,
   },
 };
