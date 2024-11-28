@@ -1,18 +1,18 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { PRESENCE_SIZE } from '../presence/presence.constants';
+import { PRESENCE_TYPE, PRESENCE_SIZE } from '../presence/presence.constants';
 
 const render = (args: Args) => html`
   <mdc-avatar
-    src="${args.src}"
-    size="${args.size}"
-    icon-name="${args['icon-name']}"
     alt="${args.alt}"
-    initials="${args.initials}"
-    counter="${args.counter}"
-    presence="${args.presence}"
     aria-label="${args['aria-label']}"
+    counter="${args.counter}"
+    icon-name="${args['icon-name']}"
+    initials="${args.initials}"
+    presence="${args.presence}"
+    size="${args.size}"
+    src="${args.src}"
     ?is-clickable="${args['is-clickable']}"
     ?is-typing="${args['is-typing']}"
   ></mdc-avatar>
@@ -20,12 +20,17 @@ const render = (args: Args) => html`
 
 const meta: Meta = {
   title: 'Work In Progress/avatar',
+  tags: ['autodocs'],
   component: 'mdc-avatar',
   render,
   parameters: {
     badges: ['wip'],
   },
   argTypes: {
+    presence: {
+      control: 'select',
+      options: Object.values(PRESENCE_TYPE),
+    },
     size: {
       control: 'select',
       options: Object.values(PRESENCE_SIZE),
@@ -38,14 +43,11 @@ export default meta;
 export const Primary: StoryObj = {
   args: {
     src: 'https://picsum.photos/256',
-    presence: 'active',
-    initials: 'ma',
-    counter: '1',
-    size: 'xx_large',
-    'is-clickable': false,
-    'is-typing': false,
+    alt: 'Lorem ipsum',
+    initials: 'AK',
+    counter: 100,
     'icon-name': 'placeholder-bold',
-    'aria-label': '',
+    'aria-label': 'An Avatar with Photo',
   },
 };
 
