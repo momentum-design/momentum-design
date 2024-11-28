@@ -11,37 +11,124 @@ import { AVATAR_TYPE, MAX_COUNTER, DEFAULTS } from './avatar.constants';
 import { getAvatarSize, getAvatarIconSize, getAvatarTextFontSize, getAvatarLoadingScaleSize } from './avatar.utils';
 
 /**
+ * The `mdc-avatar` component is used to represent a person or a space.
+ * An avatar can be an icon, initials and photo.
+ *
+ * To set the photo of an avatar,
+ * you need to set "src" and "alt" attributes.
+ *
+ * While the avatar image is loading, as a placeholder,
+ * we can show the initials text.
+ *
+ * By default, if there are no attributes specified,
+ * then the default avatar will be an icon with `user-regular` name.
+ *
+ * If the avatar is clickable, then the avatar can be focusable.
+ * If the avatar is typing, then the loading spinner will be displayed and presence will be hidden.
+ *
+ * @dependency mdc-button
+ * @dependency mdc-icon
+ * @dependency mdc-presence
+ * @dependency mdc-text
+ *
  * @tagname mdc-avatar
  */
 class Avatar extends Component {
+  /**
+   * The src is the url which will be used to display the avatar.
+   * When the src is loading, we will display the initials as a placeholder.
+   */
   @property({ type: String })
   src?: string;
 
+  /**
+   * The alternate text for the image to be displayed for accessibility purpose.
+   * If both `src` and `alt` are provided, then the image will be displayed.
+   */
   @property({ type: String })
   alt?: string;
 
+  /**
+   * The initials to be displayed for the avatar.
+   * The first two characters of the initials will be displayed in the avatar as upper case.
+   */
   @property({ type: String })
   initials?: string;
 
+  /**
+   * The counter is the number which can be displayed for the avatar.
+   * The maximum number is 99 and if the give number is greater than 99,
+   * then the avatar will be displayed as `99+`.
+   */
   @property({ type: Number })
   counter?: number;
 
+  /**
+   * The presence is the status which can be used to display the
+   * activity state of a user or a space within an avatar component.
+   *
+   * Acceptable values include:
+   * - `active`
+   * - `away`
+   * - `away-calling`
+   * - `busy`
+   * - `dnd`
+   * - `meeting`
+   * - `on-call`
+   * - `on-device`
+   * - `on-mobile`
+   * - `pause`
+   * - `pto`
+   * - `presenting`
+   * - `quiet`
+   * - `scheduled`
+   *
+   * @default active
+   */
   // FIXME: Replace "string" with PRESENCE_TYPE const
   @property({ type: String })
   presence?: string;
 
+  /**
+   * Acceptable values include:
+   * - XX_SMALL
+   * - X_SMALL
+   * - SMALL
+   * - MIDSIZE
+   * - LARGE
+   * - X_LARGE
+   * - XX_LARGE
+   *
+   * @default x_small
+   */
   @property({ type: String, reflect: true })
   size: AvatarSize = DEFAULTS.SIZE;
 
+  /**
+   * Name of the icon to be displayed inside the Avatar.
+   * Must be a valid icon name.
+   */
   @property({ type: String, attribute: 'icon-name' })
   iconName?: string;
 
+  /**
+   * Determines whether the user is typing.
+   * When this is set to true, the presence will be disabled.
+   * @default false
+   */
   @property({ type: Boolean, attribute: 'is-typing' })
   isTyping = false;
 
+  /**
+   * Determines whether the avatar is clickable or not.
+   * @default false
+   */
   @property({ type: Boolean, attribute: 'is-clickable' })
   isClickable = false;
 
+  /**
+   * @internal
+   */
   @state() private isPhotoLoaded = false;
 
   /**
@@ -51,6 +138,13 @@ class Avatar extends Component {
   @property({ type: String, attribute: 'aria-label' })
   override ariaLabel: string | null = null;
 
+  /**
+   * The avatar presence will be hidden if the user is typing or if the avatar type is counter.
+   * If the presence is set, it will be rendered as a child of the avatar.
+   *
+   * @param type - The type of the avatar.
+   * @returns The presence template or an empty template.
+   */
   private getPresenceTemplateBasedOnType(type: AvatarType): TemplateResult {
     // while typing the loading spinner will be displayed and presence will be hidden
     if (this.isTyping) {
@@ -68,15 +162,36 @@ class Avatar extends Component {
     return html``;
   }
 
+  /**
+   * @internal
+   * Sets `isPhotoLoaded` to `true` when the avatar photo is loaded.
+   * This is used to hide the avatar photo initially and show it only when it is loaded.
+   */
   private handleOnLoad(): void {
     this.isPhotoLoaded = true;
   }
 
+  /**
+   * @internal
+   * Handles errors that occur during the image loading process.
+   * Sets `isPhotoLoaded` to `false` to indicate the failure and throws an error message.
+   * The error message suggests checking the `src` attribute.
+   */
   private handleOnError(): void {
     this.isPhotoLoaded = false;
     throw new Error('There was a problem while fetching the <img/>. Please check the src attribute and try again.');
   }
 
+  /**
+   * Generates the photo template for the avatar component.
+   * Utilizes the `src` and `alt` attributes to display an image.
+   * The photo is hidden until it is fully loaded, at which point
+   * `isPhotoLoaded` is set to `true` by the `handleOnLoad` method.
+   * If an error occurs during loading, `handleOnError` sets `isPhotoLoaded`
+   * to `false` and throws an error.
+   *
+   * @returns The template result containing the avatar photo.
+   */
   private photoTemplate(): TemplateResult {
     return html`
       <img
@@ -91,6 +206,13 @@ class Avatar extends Component {
     `;
   }
 
+  /**
+   * Generates the icon template for the avatar component.
+   * Utilizes the `mdc-icon` component to display an icon.
+   * If the `iconName` property is not provided, it defaults to the `DEFAULTS.ICON_NAME`.
+   *
+   * @returns The template result containing the avatar icon.
+   */
   private iconTemplate(): TemplateResult {
     const name = this.iconName ? this.iconName : DEFAULTS.ICON_NAME;
     return html`
@@ -103,6 +225,13 @@ class Avatar extends Component {
     `;
   }
 
+  /**
+   * Generates the text template for the avatar component.
+   * Utilizes the `mdc-text` component to display text.
+   *
+   * @param content - the text content to be displayed
+   * @returns The template result containing the avatar text.
+   */
   private textTemplate(content: string): TemplateResult {
     return html`
       <mdc-text
@@ -116,6 +245,14 @@ class Avatar extends Component {
     `;
   }
 
+  /**
+   * Generates the counter text by converting the given number to a string.
+   * If the counter exceeds the maximum limit of 99, it will return the maximum limit as a string
+   * followed by a '+' character.
+   *
+   * @param counter - the number to be converted to a string
+   * @returns the counter text
+   */
   private generateCounterText(counter: number): string {
     if (counter > MAX_COUNTER) {
       return [MAX_COUNTER, '+'].join('');
@@ -123,10 +260,26 @@ class Avatar extends Component {
     return counter.toString();
   }
 
+  /**
+   * Converts the given initials to uppercase and takes the first two characters.
+   * This is used to generate the text content for the text avatar type.
+   *
+   * @param initials - the string containing the initials
+   * @returns the first two uppercase characters of the given initials
+   */
   private generateInitialsText(initials: string): string {
     return initials.toUpperCase().slice(0, 2);
   }
 
+  /**
+   * Generates the text content based on the given type.
+   * If the type is TEXT, it will use the initials property and generate the first two uppercase characters.
+   * If the type is COUNTER, it will use the counter property and generate the string representation of the counter.
+   * The generated content is then passed to the textTemplate method to generate the final template.
+   *
+   * @param type - the type of the avatar
+   * @returns the template result containing the avatar text
+   */
   private generateTextContent(type: AvatarType): TemplateResult {
     let content = '';
     if (type === AVATAR_TYPE.TEXT && this.initials) {
@@ -138,6 +291,12 @@ class Avatar extends Component {
     return this.textTemplate(content);
   }
 
+  /**
+   * @internal
+   * Returns the type of the avatar component based on the user-provided inputs.
+   *
+   * @returns the type of the avatar component
+   */
   private getTypeBasedOnInputs(): AvatarType {
     if (this.src && this.alt) {
       return AVATAR_TYPE.PHOTO;
@@ -154,6 +313,15 @@ class Avatar extends Component {
     return AVATAR_TYPE.ICON;
   }
 
+  /**
+   * @internal
+   * Returns the template result based on the type of the avatar component.
+   * The type is determined by the user-provided inputs and the method will delegate to the
+   * corresponding template method to generate the template result.
+   *
+   * @param type - the type of the avatar component
+   * @returns the template result containing the avatar content
+   */
   private getTemplateBasedOnType(type: AvatarType): TemplateResult {
     switch (type) {
       case AVATAR_TYPE.PHOTO:
@@ -175,6 +343,13 @@ class Avatar extends Component {
     });
   }
 
+  /**
+   * Generates the loading spinner content for the avatar when typing.
+   * If the avatar is in typing state, this method returns a loading spinner
+   * comprising three small filled icons, scaled based on the avatar size.
+   *
+   * @returns The template result containing the loading spinner, or an empty template if not typing.
+   */
   private getLoadingContent(): TemplateResult {
     if (!this.isTyping) {
       return html``;
@@ -197,6 +372,15 @@ class Avatar extends Component {
     `;
   }
 
+  /**
+   * Generates the photo placeholder content for the avatar component.
+   * If the photo is not yet loaded, and the avatar type is PHOTO with initials provided,
+   * it generates and returns the initials as a placeholder text.
+   * If the photo is already loaded, it returns an empty template.
+   *
+   * @param type - The type of the avatar.
+   * @returns The template result containing the placeholder content or an empty template.
+   */
   private getPhotoPlaceHolderContent(type: AvatarType): TemplateResult {
     // if photo is already loaded then no need to show placeholder
     if (this.isPhotoLoaded) {
@@ -210,15 +394,11 @@ class Avatar extends Component {
 
   private renderedContent(): TemplateResult {
     const type = this.getTypeBasedOnInputs();
-    const photoPlaceHolder = this.getPhotoPlaceHolderContent(type);
-    const mainContent = this.getTemplateBasedOnType(type);
-    const presence = this.getPresenceTemplateBasedOnType(type);
-    const loadingContent = this.getLoadingContent();
     return html`
-      ${photoPlaceHolder}
-      ${mainContent}
-      ${presence}
-      ${loadingContent}
+      ${this.getPhotoPlaceHolderContent(type)}
+      ${this.getTemplateBasedOnType(type)}
+      ${this.getPresenceTemplateBasedOnType(type)}
+      ${this.getLoadingContent()}
     `;
   }
 
