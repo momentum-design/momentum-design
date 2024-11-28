@@ -4,7 +4,126 @@ import{s as m}from"./chunk-L4EGOTBX-ars-O5a7.js";import"./entry-preview-BTbO7y0k
  * @summary This is MyElement
  *
  * @tagname mdc-avatar
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Avatar",module:"components/avatar/avatar.component.js"}}]},{kind:"javascript-module",path:"components/badge/badge.component.js",declarations:[{kind:"class",description:"The `mdc-badge` component is a versatile UI element used to\ndisplay dot, icons, counters, success, warning and error type badge.\n\nSupported badge types:\n- `dot`: Displays a dot notification badge with a blue color.\n- `icon`: Displays a badge with a specified icon using the `icon-name` attribute.\n- `counter`: Displays a badge with a counter value. If the counter exceeds the `max-counter`,\nit shows `maxCounter+`. The maximum value of the counter is 999 and anything above that will be set to `999+`.\n- `success`: Displays a success badge with a check circle icon and green color.\n- `warning`: Displays a warning badge with a warning icon and yellow color.\n- `error`: Displays a error badge with a error legacy icon and red color.\n\nFor `icon`, `success`, `warning` and `error` types, the `mdc-icon` component is used to render the icon.\n\nFor the `counter` type, the `mdc-text` component is used to render the counter value.",name:"Badge",members:[{kind:"field",name:"type",type:{text:"BadgeType | undefined"},description:"Type of the badge\nCan be `dot` (notification) , `icon`, `counter`, `success`, `warning` or `error`.",attribute:"type",reflects:!0},{kind:"field",name:"iconName",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename).\n\nIf no `icon-name` is provided, no icon will be rendered.",attribute:"icon-name"},{kind:"field",name:"variant",type:{text:"IconVariant"},description:"Type of the variant can be `primary` or `secondary`.\nIt defines the background and foreground color of the icon.",default:"primary",attribute:"variant",reflects:!0},{kind:"field",name:"counter",type:{text:"number | undefined"},description:"Counter is the number which can be provided in the badge.",attribute:"counter"},{kind:"field",name:"maxCounter",type:{text:"number"},description:"The maximum number can be set up to 999, anything above that will be rendered as _999+_.\nThe max counter can be `9`, `99` or `999`.",default:"99",attribute:"max-counter",reflects:!0},{kind:"field",name:"overlay",type:{text:"boolean"},default:"false",description:`Overlay is to add a thin outline to the badge.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Avatar",module:"components/avatar/avatar.component.js"}}]},{kind:"javascript-module",path:"components/button/button.component.js",declarations:[{kind:"class",description:`\`mdc-button\` is a component that can be configured in various ways to suit different use cases.
+
+Button Variants:
+- **Primary**: Solid background color.
+- **Secondary**: Transparent background with a solid border.
+- **Tertiary**: No background or border, appears as plain text but retains all button functionalities.
+
+Button Colors:
+- **Positive**: Green color.
+- **Negative**: Red color.
+- **Accent**: Blue color.
+- **Promotional**: Purple color.
+- **Default**: White color.
+
+Button Sizes (in REM units):
+- **Pill button**: 40, 32, 28, 24.
+- **Icon button**: 64, 52, 40, 32, 28, 24.
+- **Tertiary icon button**: 20.
+
+Button Types:
+- **Pill button**: A button that contains text value. Commonly used for call to action, tags, or filters.
+- **Pill button with icons**: A button containing an icon either on the left or right side of the button.
+- **Icon button**: A button represented by just an icon without any text.
+The type of button is inferred based on the presence of slot and/or prefix and postfix icons.`,name:"Button",slots:[{description:"Text label of the button.",name:""}],members:[{kind:"field",name:"active",type:{text:"boolean"},default:"false",description:`The button's active state indicates whether it is currently toggled on (active) or off (inactive).
+When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
+Conversely, when the active state is false, the button is in an inactive state, indicating it is toggled off.`,attribute:"active"},{kind:"field",name:"disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the button is disabled.
+The button is currently disabled for user interaction; it is not focusable or clickable.`,attribute:"disabled"},{kind:"field",name:"softDisabled",type:{text:"boolean"},default:"false",description:`Indicates whether the button is soft disabled.
+When set to \`true\`, the button appears visually disabled but still allows
+focus, click, and keyboard actions to be passed through.
+
+**Important:** When using soft disabled, consumers must ensure that
+the button behaves like a disabled button, allowing only focus and
+preventing any interactions (clicks or keyboard actions) from triggering unintended actions.`,attribute:"soft-disabled"},{kind:"field",name:"prefixIcon",type:{text:"string | undefined"},description:`The name of the icon to display as a prefix.
+The icon is displayed on the left side of the button.`,attribute:"prefix-icon"},{kind:"field",name:"postfixIcon",type:{text:"string | undefined"},description:`The name of the icon to display as a postfix.
+The icon is displayed on the right side of the button.`,attribute:"postfix-icon"},{kind:"field",name:"variant",type:{text:"ButtonVariant"},description:`There are 3 variants of button: primary, secondary, tertiary. They are styled differently.
+- **Primary**: Solid background color.
+- **Secondary**: Transparent background with a solid border.
+- **Tertiary**: No background or border, appears as plain text but retains all button functionalities.`,default:"primary",attribute:"variant"},{kind:"field",name:"size",type:{text:"PillButtonSize | IconButtonSize"},description:`Button sizing is based on the button type.
+- **Pill button**: 40, 32, 28, 24.
+- **Icon button**: 64, 52, 40, 32, 28, 24.
+- Tertiary icon button cam also be 20.`,default:"32",attribute:"size"},{kind:"field",name:"color",type:{text:"ButtonColor"},description:"There are 5 colors for button: positive, negative, accent, promotional, default.",default:"default",attribute:"color"},{kind:"field",name:"tabIndex",type:{text:"number"},default:"0",description:"The tabindex of the button.",attribute:"tabIndex",reflects:!0},{kind:"field",name:"role",type:{text:"string"},default:"'button'",description:`This property defines the ARIA role for the element. By default, it is set to 'button'.
+Consumers should override this role when:
+- The element is being used in a context where a different role is more appropriate.
+- Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.`,attribute:"role",reflects:!0},{kind:"field",name:"type",type:{text:"ButtonType"},description:`This property defines the type attribute for the button element.
+The type attribute specifies the behavior of the button when it is clicked.
+- **submit**: The button submits the form data to the server.
+- **reset**: The button resets the form data to its initial state.
+- **button**: The button does nothing when clicked.`,default:"button",attribute:"type",reflects:!0},{kind:"method",name:"executeAction",privacy:"private"},{kind:"method",name:"modifyIconName",privacy:"private",parameters:[{name:"active",type:{text:"boolean"},description:"The active state."}],description:`Modifies the icon name based on the active state.
+If the button is active, the icon name is suffixed with '-filled'.
+If the button is inactive, the icon name is restored to its original value.
+If '-filled' icon is not available, the icon name remains unchanged.`},{kind:"method",name:"setClassBasedOnType",privacy:"private",parameters:[{name:"type",type:{text:"string"},description:"The type of the button."}],description:"Sets the class of 'icon' for icon buttons."},{kind:"method",name:"setVariant",privacy:"private",parameters:[{name:"variant",type:{text:"ButtonVariant"},description:"The variant to set."}],description:`Sets the variant attribute for the button component.
+If the provided variant is not included in the BUTTON_VARIANTS,
+it defaults to the value specified in DEFAULTS.VARIANT.`},{kind:"method",name:"setSize",privacy:"private",parameters:[{name:"size",type:{text:"PillButtonSize | IconButtonSize"},description:"The size to set."}],description:`Sets the size attribute for the button component.
+Validates the size based on the button type (icon, pill, or tertiary).
+Defaults to DEFAULTS.SIZE if invalid.`},{kind:"method",name:"setColor",privacy:"private",parameters:[{name:"color",type:{text:"ButtonColor"},description:"The color to set."}],description:`Sets the color attribute for the button.
+Defaults to DEFAULTS.COLOR if invalid or for tertiary buttons.`},{kind:"method",name:"setAriaPressed",privacy:"private",parameters:[{name:"element",type:{text:"HTMLElement"},description:"The target element."},{name:"active",type:{text:"boolean"},description:"The active state."}],description:"Sets or removes the aria-pressed attribute based on the active state."},{kind:"method",name:"setSoftDisabled",privacy:"private",parameters:[{name:"element",type:{text:"HTMLElement"},description:"The button element."},{name:"softDisabled",type:{text:"boolean"},description:"The soft-disabled state."}],description:`Sets the soft-disabled attribute for the button.
+When soft-disabled, the button looks to be disabled but remains focusable and clickable.
+Also sets/removes aria-disabled attribute.`},{kind:"method",name:"setDisabled",privacy:"private",parameters:[{name:"element",type:{text:"HTMLElement"},description:"The button element."},{name:"disabled",type:{text:"boolean"},description:"The disabled state."}],description:`Sets the disabled attribute for the button.
+When disabled, the button is not focusable or clickable, and tabindex is set to -1.
+The previous tabindex is stored and restored when enabled.
+Also sets/removes aria-disabled attribute.`},{kind:"method",name:"triggerClickEvent",privacy:"private"},{kind:"method",name:"handleKeyDown",privacy:"private",parameters:[{name:"event",type:{text:"KeyboardEvent"},description:"The keyboard event."}],description:`Handles the keydown event on the button.
+If the key is 'Enter' or 'Space', the button is pressed.
+If the key is 'Enter', the button is pressed. The native HTML button works in the same way.`},{kind:"method",name:"handleKeyUp",privacy:"private",parameters:[{name:"event",type:{text:"KeyboardEvent"},description:"The keyboard event."}],description:`Handles the keyup event on the button.
+If the key is 'Enter' or 'Space', the button is clicked.
+If the key is 'Space', the button is pressed. The native HTML button works in the same way.`},{kind:"method",name:"inferButtonType",privacy:"private",description:"Infers the type of button based on the presence of slot and/or prefix and postfix icons.",parameters:[{description:"default slot of button",name:"slot"}]}],attributes:[{name:"active",type:{text:"boolean"},default:"false",description:`The button's active state indicates whether it is currently toggled on (active) or off (inactive).
+When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
+Conversely, when the active state is false, the button is in an inactive state, indicating it is toggled off.`,fieldName:"active"},{name:"disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the button is disabled.
+The button is currently disabled for user interaction; it is not focusable or clickable.`,fieldName:"disabled"},{name:"soft-disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the button is soft disabled.
+When set to \`true\`, the button appears visually disabled but still allows
+focus, click, and keyboard actions to be passed through.
+
+**Important:** When using soft disabled, consumers must ensure that
+the button behaves like a disabled button, allowing only focus and
+preventing any interactions (clicks or keyboard actions) from triggering unintended actions.`,fieldName:"softDisabled"},{name:"prefix-icon",type:{text:"string | undefined"},description:`The name of the icon to display as a prefix.
+The icon is displayed on the left side of the button.`,fieldName:"prefixIcon"},{name:"postfix-icon",type:{text:"string | undefined"},description:`The name of the icon to display as a postfix.
+The icon is displayed on the right side of the button.`,fieldName:"postfixIcon"},{name:"variant",type:{text:"ButtonVariant"},description:`There are 3 variants of button: primary, secondary, tertiary. They are styled differently.
+- **Primary**: Solid background color.
+- **Secondary**: Transparent background with a solid border.
+- **Tertiary**: No background or border, appears as plain text but retains all button functionalities.`,default:"primary",fieldName:"variant"},{name:"size",type:{text:"PillButtonSize | IconButtonSize"},description:`Button sizing is based on the button type.
+- **Pill button**: 40, 32, 28, 24.
+- **Icon button**: 64, 52, 40, 32, 28, 24.
+- Tertiary icon button cam also be 20.`,default:"32",fieldName:"size"},{name:"color",type:{text:"ButtonColor"},description:"There are 5 colors for button: positive, negative, accent, promotional, default.",default:"default",fieldName:"color"},{name:"tabIndex",type:{text:"number"},default:"0",description:"The tabindex of the button.",fieldName:"tabIndex"},{name:"role",type:{text:"string"},default:"'button'",description:`This property defines the ARIA role for the element. By default, it is set to 'button'.
+Consumers should override this role when:
+- The element is being used in a context where a different role is more appropriate.
+- Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.`,fieldName:"role"},{name:"type",type:{text:"ButtonType"},description:`This property defines the type attribute for the button element.
+The type attribute specifies the behavior of the button when it is clicked.
+- **submit**: The button submits the form data to the server.
+- **reset**: The button resets the form data to its initial state.
+- **button**: The button does nothing when clicked.`,default:"button",fieldName:"type"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-button",jsDoc:`/**
+ * \`mdc-button\` is a component that can be configured in various ways to suit different use cases.
+ *
+ * Button Variants:
+ * - **Primary**: Solid background color.
+ * - **Secondary**: Transparent background with a solid border.
+ * - **Tertiary**: No background or border, appears as plain text but retains all button functionalities.
+ *
+ * Button Colors:
+ * - **Positive**: Green color.
+ * - **Negative**: Red color.
+ * - **Accent**: Blue color.
+ * - **Promotional**: Purple color.
+ * - **Default**: White color.
+ *
+ * Button Sizes (in REM units):
+ * - **Pill button**: 40, 32, 28, 24.
+ * - **Icon button**: 64, 52, 40, 32, 28, 24.
+ * - **Tertiary icon button**: 20.
+ *
+ * Button Types:
+ * - **Pill button**: A button that contains text value. Commonly used for call to action, tags, or filters.
+ * - **Pill button with icons**: A button containing an icon either on the left or right side of the button.
+ * - **Icon button**: A button represented by just an icon without any text.
+ * The type of button is inferred based on the presence of slot and/or prefix and postfix icons.
+ *
+ * @dependency mdc-icon
+ *
+ * @tagname mdc-button
+ *
+ * @slot - Text label of the button.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Button",module:"components/button/button.component.js"}}]},{kind:"javascript-module",path:"components/badge/badge.component.js",declarations:[{kind:"class",description:"The `mdc-badge` component is a versatile UI element used to\ndisplay dot, icons, counters, success, warning and error type badge.\n\nSupported badge types:\n- `dot`: Displays a dot notification badge with a blue color.\n- `icon`: Displays a badge with a specified icon using the `icon-name` attribute.\n- `counter`: Displays a badge with a counter value. If the counter exceeds the `max-counter`,\nit shows `maxCounter+`. The maximum value of the counter is 999 and anything above that will be set to `999+`.\n- `success`: Displays a success badge with a check circle icon and green color.\n- `warning`: Displays a warning badge with a warning icon and yellow color.\n- `error`: Displays a error badge with a error legacy icon and red color.\n\nFor `icon`, `success`, `warning` and `error` types, the `mdc-icon` component is used to render the icon.\n\nFor the `counter` type, the `mdc-text` component is used to render the counter value.",name:"Badge",members:[{kind:"field",name:"type",type:{text:"BadgeType | undefined"},description:"Type of the badge\nCan be `dot` (notification) , `icon`, `counter`, `success`, `warning` or `error`.",attribute:"type",reflects:!0},{kind:"field",name:"iconName",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename).\n\nIf no `icon-name` is provided, no icon will be rendered.",attribute:"icon-name"},{kind:"field",name:"variant",type:{text:"IconVariant"},description:"Type of the variant can be `primary` or `secondary`.\nIt defines the background and foreground color of the icon.",default:"primary",attribute:"variant",reflects:!0},{kind:"field",name:"counter",type:{text:"number | undefined"},description:"Counter is the number which can be provided in the badge.",attribute:"counter"},{kind:"field",name:"maxCounter",type:{text:"number"},description:"The maximum number can be set up to 999, anything above that will be rendered as _999+_.\nThe max counter can be `9`, `99` or `999`.",default:"99",attribute:"max-counter",reflects:!0},{kind:"field",name:"overlay",type:{text:"boolean"},default:"false",description:`Overlay is to add a thin outline to the badge.
 This will help distinguish between the badge and the button,
 where the badge will be layered on top of a button.`,attribute:"overlay"},{kind:"field",name:"ariaLabel",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",attribute:"aria-label"},{kind:"method",name:"getCounterText",privacy:"private",return:{type:{text:""}},parameters:[{name:"maxCounter",type:{text:"number"},description:"the maximum limit which can be displayed on the badge"},{name:"counter",optional:!0,type:{text:"number"},description:"the number to be displayed on the badge"}],description:"If `type` is set to `counter` and if `counter` is greater than `maxCounter`,\nthen it will return a string the maxCounter value as string.\nOtherwise, it will return a string representation of `counter`.\nIf `counter` is not a number, it will return an empty string."},{kind:"method",name:"getBadgeIcon",privacy:"private",return:{type:{text:""}},parameters:[{name:"iconName",type:{text:"string"},description:"the name of the icon from the icon set"},{name:"backgroundClassPostfix",type:{text:"string"},description:"postfix for the class to style the badge icon."}],description:"Method to generate the badge icon."},{kind:"method",name:"getBadgeDot",privacy:"private",return:{type:{text:""}},description:"Method to generate the badge dot template."},{kind:"method",name:"getBadgeCounterText",privacy:"private",return:{type:{text:""}},description:"Method to generate the badge text and counter template."},{kind:"method",name:"setRoleByAriaLabel",privacy:"private",return:{type:{text:"void"}},description:`Method to set the role based on the aria-label provided.
 If the aria-label is provided, the role of the element will be 'img'.
@@ -295,6 +414,6 @@ Default: 'mds-theme-stable-darkWebex'`,fieldName:"themeclass"}],superclass:{name
  * @cssproperty --mdc-themeprovider-font-weight - Option to override the font weight, default: \`400\`
  * @cssproperty --mdc-themeprovider-letter-spacing-adjustment - Option to override the default letter-spacing,
  * default: \`-0.25px\` (this is to match the old CiscoSans)
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"ThemeProvider",module:"components/themeprovider/themeprovider.component.js"}}]}],f={schemaVersion:u,readme:p,modules:h},o=[{themeclass:"mds-theme-stable-darkWebex",displayName:"darkWebex",backgroundColor:"#000000",className:"dark"},{themeclass:"mds-theme-stable-lightWebex",displayName:"lightWebex",backgroundColor:"#ffffff",className:"light"}],b=e=>{for(const n of o)e.classList.remove(n.className)},l=(e,n)=>{e.classList.add(n)},g=e=>{const n=document.querySelectorAll("div.docs-story");for(const i of n)i.style.backgroundColor=e},y=(e,n)=>{const i=n.globals.theme,t=o.find(r=>r.displayName===i),a=document.querySelector("body.sb-show-main");return b(a),l(a,t.className),l(a,"mds-typography"),g(t.backgroundColor),c` <mdc-themeprovider id="theme-provider" themeclass="${t.themeclass}">
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"ThemeProvider",module:"components/themeprovider/themeprovider.component.js"}}]}],b={schemaVersion:u,readme:p,modules:h},a=[{themeclass:"mds-theme-stable-darkWebex",displayName:"darkWebex",backgroundColor:"#000000",className:"dark"},{themeclass:"mds-theme-stable-lightWebex",displayName:"lightWebex",backgroundColor:"#ffffff",className:"light"}],f=e=>{for(const n of a)e.classList.remove(n.className)},l=(e,n)=>{e.classList.add(n)},y=e=>{const n=document.querySelectorAll("div.docs-story");for(const i of n)i.style.backgroundColor=e},g=(e,n)=>{const i=n.globals.theme,t=a.find(r=>r.displayName===i),o=document.querySelector("body.sb-show-main");return f(o),l(o,t.className),l(o,"mds-typography"),y(t.backgroundColor),c` <mdc-themeprovider id="theme-provider" themeclass="${t.themeclass}">
     ${e()}
-  </mdc-themeprovider>`},v=e=>c` <mdc-iconprovider url="./icons/svg"> ${e()} </mdc-iconprovider>`;function x(e){const n=i=>i.replace(/-([a-z])/g,t=>t[1].toUpperCase());return e.modules.forEach(i=>{i.declarations.forEach(t=>{var d;const a=new Set((d=t==null?void 0:t.attributes)==null?void 0:d.map(s=>n(s.name))),r=t.members.filter(s=>!a.has(s.name));Object.assign(t,{members:r})})}),e}const w=x(f);m(w);const F={parameters:{a11y:{options:{runOnly:{type:"tag",values:["best-practice","wcag2a","wcag2aa","wcag21aa","wcag22aa"]}}},docs:{source:{excludeDecorators:!0}},actions:{argTypesRegex:"^on[A-Z].*"},backgrounds:{disable:!0,grid:{disable:!0}},badgesConfig:{wip:{styles:{backgroundColor:"#30240D",borderColor:"#D6B220",color:"#FFFFFFF2"},title:"Work In Progress",tooltip:{title:"This Component is Work In Progress",desc:"Keep an eye on the Release history for updates or provide feedback.",links:[{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}},stable:{styles:{backgroundColor:"#416116",borderColor:"#93C437",color:"#FFFFFFF2"},title:"Stable",tooltip:{title:"This Component is Stable",desc:"Ready for use.",links:[{title:"Consumption guide",href:"https://momentum-design.github.io/momentum-design/en/components/"},{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}},deprecated:{styles:{backgroundColor:"#4F0E10",borderColor:"#FC8B98",color:"#FFFFFFF2"},title:"Deprecated",tooltip:{title:"This Component is Deprecated",desc:"Check the Release history for more information about deprecation or provide feedback.",links:[{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}}},controls:{disableSaveFromUI:!0,expanded:!0,matchers:{color:/(background|color)$/i,date:/Date$/}},options:{storySort:{order:["Consumption","Styling","Components","Work In Progress"]}},direction:"ltr"},decorators:[y,v],globalTypes:{theme:{description:"Global theme for components",defaultValue:o[0].displayName,toolbar:{title:"Theme",icon:"globe",items:o.map(e=>e.displayName),dynamicTitle:!0}}}};export{F as default};
+  </mdc-themeprovider>`},v=e=>c` <mdc-iconprovider url="./icons/svg"> ${e()} </mdc-iconprovider>`;function x(e){const n=i=>i.replace(/-([a-z])/g,t=>t[1].toUpperCase());return e.modules.forEach(i=>{i.declarations.forEach(t=>{var d;const o=new Set((d=t==null?void 0:t.attributes)==null?void 0:d.map(s=>n(s.name))),r=t.members.filter(s=>!o.has(s.name));Object.assign(t,{members:r})})}),e}const w=x(b);m(w);const D={parameters:{a11y:{options:{runOnly:{type:"tag",values:["best-practice","wcag2a","wcag2aa","wcag21aa","wcag22aa"]}}},docs:{source:{excludeDecorators:!0}},actions:{argTypesRegex:"^on[A-Z].*"},backgrounds:{disable:!0,grid:{disable:!0}},badgesConfig:{wip:{styles:{backgroundColor:"#30240D",borderColor:"#D6B220",color:"#FFFFFFF2"},title:"Work In Progress",tooltip:{title:"This Component is Work In Progress",desc:"Keep an eye on the Release history for updates or provide feedback.",links:[{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}},stable:{styles:{backgroundColor:"#416116",borderColor:"#93C437",color:"#FFFFFFF2"},title:"Stable",tooltip:{title:"This Component is Stable",desc:"Ready for use.",links:[{title:"Consumption guide",href:"https://momentum-design.github.io/momentum-design/en/components/"},{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}},deprecated:{styles:{backgroundColor:"#4F0E10",borderColor:"#FC8B98",color:"#FFFFFFF2"},title:"Deprecated",tooltip:{title:"This Component is Deprecated",desc:"Check the Release history for more information about deprecation or provide feedback.",links:[{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}}},controls:{disableSaveFromUI:!0,expanded:!0,matchers:{color:/(background|color)$/i,date:/Date$/}},options:{storySort:{order:["Consumption","Styling","Components","Work In Progress"]}},direction:"ltr"},decorators:[g,v],globalTypes:{theme:{description:"Global theme for components",defaultValue:a[0].displayName,toolbar:{title:"Theme",icon:"globe",items:a.map(e=>e.displayName),dynamicTitle:!0}}}};export{D as default};

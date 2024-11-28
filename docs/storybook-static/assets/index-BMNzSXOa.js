@@ -19,7 +19,9 @@ import{i as o}from"./lit-element-CPYlYYac.js";const r=o`
     --mdc-focus-ring-middle-offset: var(--mdc-focus-ring-inner-width);
     --mdc-focus-ring-outer-offset: calc(var(--mdc-focus-ring-inner-width) + var(--mdc-focus-ring-middle-width));
   }
-  
+  :host([disabled]:focus) {
+    box-shadow: none;
+  }
   :host(:focus) {
     position: relative;
     box-shadow: 
