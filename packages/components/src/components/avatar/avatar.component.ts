@@ -1,4 +1,4 @@
-import { CSSResult, html, TemplateResult } from 'lit';
+import { CSSResult, html, TemplateResult, nothing } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -7,6 +7,7 @@ import { DirectiveResult } from 'lit-html/directive';
 import styles from './avatar.styles';
 import { Component } from '../../models';
 import type { AvatarSize, AvatarType } from './avatar.types';
+import type { PresenceType } from '../presence/presence.types';
 import { AVATAR_TYPE, MAX_COUNTER, DEFAULTS } from './avatar.constants';
 import { getAvatarSize, getAvatarIconSize, getAvatarTextFontSize, getAvatarLoadingScaleSize } from './avatar.utils';
 
@@ -85,9 +86,8 @@ class Avatar extends Component {
    *
    * @default active
    */
-  // FIXME: Replace "string" with PRESENCE_TYPE const
   @property({ type: String })
-  presence?: string;
+  presence?: PresenceType;
 
   /**
    * Acceptable values include:
@@ -145,21 +145,21 @@ class Avatar extends Component {
    * @param type - The type of the avatar.
    * @returns The presence template or an empty template.
    */
-  private getPresenceTemplateBasedOnType(type: AvatarType): TemplateResult {
+  private getPresenceTemplateBasedOnType(type: AvatarType): TemplateResult | typeof nothing {
     // while typing the loading spinner will be displayed and presence will be hidden
     if (this.isTyping) {
-      return html``;
+      return nothing;
     }
     // avatar type of counter should not have presence
     if (type === AVATAR_TYPE.COUNTER && this.counter) {
-      return html``;
+      return nothing;
     }
     if (this.presence) {
       return html`
         <mdc-presence class="presence" type="${this.presence}" size="${this.size}"></mdc-presence>
       `;
     }
-    return html``;
+    return nothing;
   }
 
   /**
@@ -350,9 +350,9 @@ class Avatar extends Component {
    *
    * @returns The template result containing the loading spinner, or an empty template if not typing.
    */
-  private getLoadingContent(): TemplateResult {
+  private getLoadingContent(): TemplateResult | typeof nothing {
     if (!this.isTyping) {
-      return html``;
+      return nothing;
     }
     const loadStyle = styleMap({ transform: getAvatarLoadingScaleSize(this.size) });
     return html`
@@ -381,15 +381,15 @@ class Avatar extends Component {
    * @param type - The type of the avatar.
    * @returns The template result containing the placeholder content or an empty template.
    */
-  private getPhotoPlaceHolderContent(type: AvatarType): TemplateResult {
+  private getPhotoPlaceHolderContent(type: AvatarType): TemplateResult | typeof nothing {
     // if photo is already loaded then no need to show placeholder
     if (this.isPhotoLoaded) {
-      return html``;
+      return nothing;
     }
     if (this.initials && type === AVATAR_TYPE.PHOTO) {
       return this.textTemplate(this.generateInitialsText(this.initials));
     }
-    return html``;
+    return nothing;
   }
 
   private renderedContent(): TemplateResult {
