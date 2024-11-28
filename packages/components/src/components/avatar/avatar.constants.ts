@@ -1,5 +1,5 @@
 import utils from '../../utils/tag-name';
-import { PRESENCE_SIZE as AVATAR_SIZE } from '../presence/presence.constants';
+import { SIZE as AVATAR_SIZE } from '../presence/presence.constants';
 
 const TAG_NAME = utils.constructTagName('avatar');
 
