@@ -1,5 +1,6 @@
-import { PRESENCE_SIZE as AVATAR_SIZE } from '../presence/presence.constants';
-import { FONT_TYPE } from '../text/text.constants';
+import { SIZE as AVATAR_SIZE } from '../presence/presence.constants';
+import { TYPE as FONT_TYPE } from '../text/text.constants';
+import type { TextType } from '../text/text.types';
 import type { AvatarSize } from './avatar.types';
 
 const getAvatarSize = (size: AvatarSize): number => {
@@ -30,7 +31,7 @@ const getAvatarIconSize = (size: AvatarSize): number => {
   }
 };
 
-const getAvatarTextFontSize = (size: AvatarSize): string => {
+const getAvatarTextFontSize = (size: AvatarSize): TextType => {
   switch (size) {
     case AVATAR_SIZE.XX_LARGE: return FONT_TYPE.HEADING_XLARGE_MEDIUM;
     case AVATAR_SIZE.X_LARGE: return FONT_TYPE.HEADING_LARGE_MEDIUM;
