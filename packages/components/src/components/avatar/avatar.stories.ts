@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { PRESENCE_TYPE, PRESENCE_SIZE } from '../presence/presence.constants';
+import { TYPE as PRESENCE_TYPE, SIZE as PRESENCE_SIZE } from '../presence/presence.constants';
 
 const render = (args: Args) => html`
   <mdc-avatar
@@ -28,6 +28,10 @@ const meta: Meta = {
   },
   argTypes: {
     presence: {
+      if: {
+        arg: 'counter',
+        exists: false,
+      },
       control: 'select',
       options: Object.values(PRESENCE_TYPE),
     },
@@ -40,12 +44,11 @@ const meta: Meta = {
 
 export default meta;
 
-export const Primary: StoryObj = {
+export const Image: StoryObj = {
   args: {
     src: 'https://picsum.photos/256',
     alt: 'Lorem ipsum',
     initials: 'AK',
-    counter: 100,
     'icon-name': 'placeholder-bold',
     'aria-label': 'An Avatar with Photo',
   },
@@ -55,9 +58,20 @@ export const Default: StoryObj = {
   args: {},
 };
 
-export const Image: StoryObj = {
+export const Initials: StoryObj = {
   args: {
-    src: 'https://picsum.photos/256',
-    alt: 'Lorem ipsum',
+    initials: 'MD',
+  },
+};
+
+export const Counter: StoryObj = {
+  args: {
+    counter: 99,
+  },
+};
+
+export const Icon: StoryObj = {
+  args: {
+    'icon-name': 'placeholder-bold',
   },
 };
