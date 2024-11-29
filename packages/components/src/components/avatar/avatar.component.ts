@@ -57,14 +57,6 @@ class Avatar extends Component {
   initials?: string;
 
   /**
-   * The counter is the number which can be displayed for the avatar.
-   * The maximum number is 99 and if the give number is greater than 99,
-   * then the avatar will be displayed as `99+`.
-   */
-  @property({ type: Number })
-  counter?: number;
-
-  /**
    * The presence is the status which can be used to display the
    * activity state of a user or a space within an avatar component.
    *
@@ -110,6 +102,14 @@ class Avatar extends Component {
    */
   @property({ type: String, attribute: 'icon-name' })
   iconName?: string;
+
+  /**
+   * The counter is the number which can be displayed for the avatar.
+   * The maximum number is 99 and if the give number is greater than 99,
+   * then the avatar will be displayed as `99+`.
+   */
+  @property({ type: Number })
+  counter?: number;
 
   /**
    * Determines whether the user is typing.
@@ -408,7 +408,11 @@ class Avatar extends Component {
 
     if (this.isClickable) {
       return html`
-        <mdc-button class="container" style="${dimensions}" aria-label="${ifDefined(this.ariaLabel || '')}">
+        <mdc-button
+          class="container"
+          style="${dimensions}"
+          aria-label="${ifDefined(this.ariaLabel || '')}"
+        >
           <div class="content" style="${dimensions}">
             ${renderedContent}
           </div>
