@@ -14,7 +14,6 @@ const styles = css`
   .container {
     padding: unset;
     margin: unset;
-    position: absolute;
     border-radius: 10%;
     background-color: unset;
     color: var(--mdc-avatar-default-foreground-color);
