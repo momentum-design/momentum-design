@@ -7,6 +7,7 @@ import { DirectiveResult } from 'lit-html/directive';
 import styles from './avatar.styles';
 import { Component } from '../../models';
 import type { AvatarSize, AvatarType } from './avatar.types';
+import type { IconNames } from '../icon/icon.types';
 import type { PresenceType } from '../presence/presence.types';
 import { AVATAR_TYPE, MAX_COUNTER, DEFAULTS } from './avatar.constants';
 import { getAvatarSize, getAvatarIconSize, getAvatarTextFontSize, getAvatarLoadingScaleSize } from './avatar.utils';
@@ -101,7 +102,7 @@ class Avatar extends Component {
    * Must be a valid icon name.
    */
   @property({ type: String, attribute: 'icon-name' })
-  iconName?: string;
+  iconName?: IconNames;
 
   /**
    * The counter is the number which can be displayed for the avatar.
