@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
-import { expect, Locator } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import {
   BUTTON_COLORS,
@@ -94,6 +94,9 @@ const commonTestCases = async (args: SetupOptions, buttonType: string) => {
   });
 };
 
+/**
+   * ACCESSIBILITY
+   */
 const accessibilityTestCases = async (args: SetupOptions, buttonType: string) => {
   const { componentsPage, ...props } = args;
   const button = await setup({
@@ -149,6 +152,9 @@ const accessibilityTestCases = async (args: SetupOptions, buttonType: string) =>
   });
 };
 
+/**
+   * ATTRIBUTES
+   */
 const attributeTestCases = async (args: SetupOptions, buttonType: string) => {
   const { componentsPage, ...props } = args;
   const button = await setup({
@@ -208,51 +214,6 @@ const attributeTestCases = async (args: SetupOptions, buttonType: string) => {
   });
 };
 
-const visualRegressionTestCases = async (componentsPage: ComponentsPage, button: Locator, buttonType: string) => {
-  await test.step(`visual-regression for disabled ${buttonType} button`, async () => {
-    await componentsPage.visualRegression
-      .takeScreenshot(`mdc-button-${buttonType}`, { element: button });
-  });
-
-  // Disbabled button
-  await test.step(`visual-regression for disabled ${buttonType} button`, async () => {
-    await componentsPage.setAttributes(button, { disabled: 'true' });
-    await componentsPage.visualRegression
-      .takeScreenshot(`mdc-button-${buttonType}-disabled`, { element: button });
-    await componentsPage.removeAttribute(button, 'disabled');
-  });
-
-  await test.step(`visual-regression for soft-disabled ${buttonType} button`, async () => {
-    await componentsPage.setAttributes(button, { 'soft-disabled': 'true' });
-    await componentsPage.visualRegression
-      .takeScreenshot(`mdc-button-${buttonType}-soft-disabled`, { element: button });
-    await componentsPage.removeAttribute(button, 'soft-disabled');
-  });
-
-  await test.step(`visual-regression for active ${buttonType} button`, async () => {
-    await componentsPage.setAttributes(button, { active: 'true' });
-    await componentsPage.visualRegression
-      .takeScreenshot(`mdc-button-${buttonType}-active`, { element: button });
-    await componentsPage.removeAttribute(button, 'active');
-  });
-
-  await test.step(`visual-regression for active and disabled ${buttonType} button`, async () => {
-    await componentsPage.setAttributes(button, { disabled: 'true', active: 'true' });
-    await componentsPage.visualRegression
-      .takeScreenshot(`mdc-button-${buttonType}-active-disabled`, { element: button });
-    await componentsPage.removeAttribute(button, 'disabled');
-    await componentsPage.removeAttribute(button, 'active');
-  });
-
-  await test.step(`visual-regression for active and soft-disabled ${buttonType} button`, async () => {
-    await componentsPage.setAttributes(button, { 'soft-disabled': 'true', active: 'true' });
-    await componentsPage.visualRegression
-      .takeScreenshot(`mdc-button-${buttonType}-active-soft-disabled`, { element: button });
-    await componentsPage.removeAttribute(button, 'soft-disabled');
-    await componentsPage.removeAttribute(button, 'active');
-  });
-};
-
 const testForCombinations = async (args: SetupOptions, buttonType: string) => {
   await commonTestCases(args, buttonType);
   await attributeTestCases(args, buttonType);
@@ -275,10 +236,8 @@ const testForCombinations = async (args: SetupOptions, buttonType: string) => {
             await expect(button).toHaveAttribute('color', color);
             await expect(button).toHaveAttribute('size', `${size}`);
           });
-          await test.step(`visual-regression for
-            variant="${variant}", color="${color}", size="${size}" ${buttonType} button`, async () => {
-            await visualRegressionTestCases(componentsPage, button, `${buttonType}-${variant}-${color}-${size}`);
-          });
+          await componentsPage.accessibility
+            .checkForA11yViolations(`button-${buttonType}-${variant}-${color}-${size}`);
         }
       }
     }
@@ -298,27 +257,76 @@ const testForIconButtonSizes = async (args: SetupOptions, buttonType: string) =>
         await componentsPage.setAttributes(button, { size: `${size}` });
         await expect(button).toHaveAttribute('size', `${size}`);
       });
-
-      await test.step(`accessibility,
-      visual-regression and attributes for size="${size}" ${buttonType} button`, async () => {
-        await visualRegressionTestCases(componentsPage, button, `${buttonType}-${size}`);
-      });
     }
   }
 
   await test.step('attribute size="20" should be present on tertiary prefix-icon button', async () => {
     await componentsPage.setAttributes(button, { size: `${ICON_BUTTON_SIZES[20]}`, variant: BUTTON_VARIANTS.TERTIARY });
     await expect(button).toHaveAttribute('size', `${ICON_BUTTON_SIZES[20]}`);
-    await componentsPage.visualRegression
-      .takeScreenshot(`mdc-button-${buttonType}-${ICON_BUTTON_SIZES[20]}`, { element: button });
   });
 };
 
+const stickerSheetForSnapshot = async (
+  componentsPage: ComponentsPage,
+  attributes: any,
+  props: any,
+) => {
+  const buttonsArr:string[] = [];
+  // primary and secondary button variants with all sizes and colors
+  buttonsArr.push(
+    await componentsPage.visualRegression.generateComponentMarkup(
+      'mdc-button',
+      attributes,
+      { ...props },
+    ),
+  );
+  // active button
+  buttonsArr.push(
+    await componentsPage.visualRegression.generateComponentMarkup(
+      'mdc-button',
+      attributes,
+      { ...props, active: 'true' },
+    ),
+  );
+  // tertiary button sizes
+  buttonsArr.push(
+    await componentsPage.visualRegression.generateComponentMarkup(
+      'mdc-button',
+      {
+        size: PILL_BUTTON_SIZES,
+      },
+      { ...props, variant: BUTTON_VARIANTS.TERTIARY },
+    ),
+  );
+  // disabled button
+  buttonsArr.push(
+    await componentsPage.visualRegression.generateComponentMarkup(
+      'mdc-button',
+      {
+        variant: BUTTON_VARIANTS,
+      },
+      { ...props, disabled: 'true' },
+    ),
+  );
+  // active disabled button
+  buttonsArr.push(
+    await componentsPage.visualRegression.generateComponentMarkup(
+      'mdc-button',
+      {
+        variant: BUTTON_VARIANTS,
+      },
+      { ...props, disabled: 'true', active: 'true' },
+    ),
+  );
+  return buttonsArr.join(' ');
+};
+
 test.describe.parallel('mdc-button', () => {
-  test.use({ viewport: { width: 300, height: 200 } });
+  test.use({ viewport: { width: 2000, height: 4000 } });
+
   test('mdc-button pill button', async ({ componentsPage }) => {
+    const children = 'Pill Button';
     await test.step('mdc-button as pill button', async () => {
-      const children = 'Pill Button';
       await testForCombinations({ children, componentsPage }, 'pill');
     });
   });
@@ -339,19 +347,74 @@ test.describe.parallel('mdc-button', () => {
     });
   });
 
-  test('mdc-button prefix icon button', async ({ componentsPage }) => {
-    await test.step('mdc-button as prefix icon button', async () => {
+  test('mdc-button icon button', async ({ componentsPage }) => {
+    await test.step('mdc-button as icon button', async () => {
       const prefixIcon = 'placeholder-bold';
-      await testForCombinations({ prefixIcon, componentsPage }, 'prefix-icon');
-      await testForIconButtonSizes({ prefixIcon, componentsPage }, 'prefix-icon');
+      await testForCombinations({ prefixIcon, componentsPage }, 'icon');
+      await testForIconButtonSizes({ prefixIcon, componentsPage }, 'icon');
     });
   });
 
-  test('mdc-button postfix icon button', async ({ componentsPage }) => {
-    await test.step('mdc-button as postfix icon button', async () => {
-      const postfixIcon = 'placeholder-light';
-      await testForCombinations({ postfixIcon, componentsPage }, 'postfix-icon');
-      await testForIconButtonSizes({ postfixIcon, componentsPage }, 'prefix-icon');
+  test('mdc-button visual regression', async ({ componentsPage }) => {
+    const buttonsArr:string[] = [];
+    const defaultAttributes = {
+      variant: { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY },
+      size: PILL_BUTTON_SIZES,
+      color: BUTTON_COLORS,
+    };
+    // pill button
+    buttonsArr.push(await stickerSheetForSnapshot(componentsPage, defaultAttributes, { children: 'Pill button' }));
+    // pill with prefix icon
+    buttonsArr.push(await stickerSheetForSnapshot(
+      componentsPage,
+      defaultAttributes,
+      { 'prefix-icon': 'placeholder-light', children: 'Pill with prefix' },
+    ));
+    // pill with postfix icon
+    buttonsArr.push(await stickerSheetForSnapshot(
+      componentsPage,
+      defaultAttributes,
+      { 'postfix-icon': 'placeholder-light', children: 'Pill with postfix' },
+    ));
+    // icon button
+    buttonsArr.push(
+      await stickerSheetForSnapshot(
+        componentsPage,
+        { ...defaultAttributes, size: { ...defaultAttributes.size, 52: 52, 64: 64 } }, // not including size 20
+        { 'prefix-icon': 'placeholder-light', class: 'mdc-icon-button' },
+      ),
+    );
+    // tertiary icon button with size 20
+    buttonsArr.push(
+      await stickerSheetForSnapshot(
+        componentsPage,
+        {},
+        {
+          'prefix-icon': 'placeholder-light',
+          variant: BUTTON_VARIANTS.TERTIARY,
+          size: ICON_BUTTON_SIZES[20],
+          class: 'mdc-icon-button',
+        },
+      ),
+    );
+
+    /**
+   * VISUAL REGRESSION
+   */
+    await componentsPage.mount({
+      html: `
+      <div class="componentWrapper">
+        ${buttonsArr.join(' ')}
+      </div>
+      `,
+      clearDocument: true,
+    });
+
+    const buttonEl = componentsPage.page.locator('.componentWrapper');
+    await componentsPage.page.waitForLoadState('networkidle');
+
+    await test.step('matches screenshot of button element', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-button', { element: buttonEl });
     });
   });
 
