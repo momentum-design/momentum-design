@@ -1,5 +1,5 @@
 const esbuild = require('esbuild');
-const { join } = require('path');
+const path = require('path');
 
 const { PROJECT_PREFIX } = require('./esbuild.constants.js');
 
@@ -8,7 +8,7 @@ const cli = async ({ stage, extension = 'js', external, format = 'esm', banner =
 
   await esbuild.build({
     bundle: true,
-    entryPoints: [`${join(projectPath, 'src', 'main.js')}`],
+    entryPoints: [`${path.posix.join(projectPath, 'src', 'main.js')}`],
     external,
     format,
     minify: true,
@@ -16,7 +16,7 @@ const cli = async ({ stage, extension = 'js', external, format = 'esm', banner =
     banner,
     target: ['node18.12.1'],
     sourcemap: stage !== 'production',
-    outfile: `${join(projectPath, 'dist', 'cli', `index.${extension}`)}`,
+    outfile: `${path.posix.join(projectPath, 'dist', 'cli', `index.${extension}`)}`,
   });
 };
 
@@ -25,17 +25,17 @@ const iife = async ({ name }) => {
 
   await esbuild.build({
     bundle: true,
-    entryPoints: [`${join(projectPath, 'src', 'index.js')}`],
+    entryPoints: [`${path.posix.join(projectPath, 'src', 'index.js')}`],
     format: 'iife',
     globalName: `${PROJECT_PREFIX}${name ? `.${name}` : ''}`,
     minify: true,
     sourcemap: true,
-    outfile: `${join(projectPath, 'dist', 'browser', 'index.js')}`,
+    outfile: `${path.posix.join(projectPath, 'dist', 'browser', 'index.js')}`,
   });
 };
 
 const esm = async (
-  projectPath = `${join(process.cwd())}`,
+  projectPath = `${path.posix.join(process.cwd())}`,
   entryPointPath = 'src/index.ts',
   outfile = 'index.js',
   tsconfig = 'tsconfig.json',
@@ -44,18 +44,18 @@ const esm = async (
 ) => {
   await esbuild.build({
     bundle: true,
-    entryPoints: [`${join(projectPath, entryPointPath)}`],
+    entryPoints: [`${path.posix.join(projectPath, entryPointPath)}`],
     format: 'esm',
     minify: true,
     sourcemap,
-    outfile: `${join(projectPath, 'dist', outfile)}`,
-    tsconfig: `${join(projectPath, tsconfig)}`,
+    outfile: `${path.posix.join(projectPath, 'dist', outfile)}`,
+    tsconfig: `${path.posix.join(projectPath, tsconfig)}`,
     platform,
   });
 };
 
 const cjs = async (
-  projectPath = `${join(process.cwd())}`,
+  projectPath = `${path.posix.join(process.cwd())}`,
   entryPointPath = 'src/index.ts',
   outfile = 'index.js',
   tsconfig = 'tsconfig.json',
@@ -64,11 +64,11 @@ const cjs = async (
 ) => {
   await esbuild.build({
     bundle: true,
-    entryPoints: [`${join(projectPath, entryPointPath)}`],
+    entryPoints: [`${path.posix.join(projectPath, entryPointPath)}`],
     format: 'cjs',
     minify,
-    outfile: `${join(projectPath, 'dist', outfile)}`,
-    tsconfig: `${join(projectPath, tsconfig)}`,
+    outfile: `${path.posix.join(projectPath, 'dist', outfile)}`,
+    tsconfig: `${path.posix.join(projectPath, tsconfig)}`,
     platform,
   });
 };
@@ -76,11 +76,11 @@ const cjs = async (
 const plop = async () => {
   await esbuild.build({
     bundle: true,
-    entryPoints: [join(join(process.cwd(), 'config', 'plop'), 'plopfile.ts')],
+    entryPoints: [path.posix.join(path.posix.join(process.cwd(), 'config', 'plop'), 'plopfile.ts')],
     format: 'esm',
     minify: true,
-    outfile: `${join(join(process.cwd(), 'config', 'plop'), 'dist', 'plopfile.mjs')}`,
-    tsconfig: `${join(join(process.cwd(), 'config', 'plop'), 'tsconfig.plop.json')}`,
+    outfile: `${path.posix.join(path.posix.join(process.cwd(), 'config', 'plop'), 'dist', 'plopfile.mjs')}`,
+    tsconfig: `${path.posix.join(path.posix.join(process.cwd(), 'config', 'plop'), 'tsconfig.plop.json')}`,
     platform: 'node',
   });
 };
