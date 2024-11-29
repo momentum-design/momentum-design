@@ -3,21 +3,20 @@ import { repeat } from 'lit/directives/repeat.js';
 import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
-import { DirectiveResult } from 'lit-html/directive';
 import styles from './avatar.styles';
 import { Component } from '../../models';
 import type { AvatarSize, AvatarType } from './avatar.types';
 import type { IconNames } from '../icon/icon.types';
 import type { PresenceType } from '../presence/presence.types';
 import { AVATAR_TYPE, MAX_COUNTER, DEFAULTS } from './avatar.constants';
-import { getAvatarSize, getAvatarIconSize, getAvatarTextFontSize, getAvatarLoadingScaleSize } from './avatar.utils';
+import { getAvatarIconSize, getAvatarTextFontSize, getAvatarLoadingScaleSize } from './avatar.utils';
 
 /**
  * The `mdc-avatar` component is used to represent a person or a space.
  * An avatar can be an icon, initials and photo.
  *
  * To set the photo of an avatar,
- * you need to set "src" and "alt" attributes.
+ * you need to set "src" attribute.
  *
  * While the avatar image is loading, as a placeholder,
  * we can show the initials text.
@@ -42,13 +41,6 @@ class Avatar extends Component {
    */
   @property({ type: String })
   src?: string;
-
-  /**
-   * The alternate text for the image to be displayed for accessibility purpose.
-   * If both `src` and `alt` are provided, then the image will be displayed.
-   */
-  @property({ type: String })
-  alt?: string;
 
   /**
    * The initials to be displayed for the avatar.
@@ -147,10 +139,6 @@ class Avatar extends Component {
    * @returns The presence template or an empty template.
    */
   private getPresenceTemplateBasedOnType(type: AvatarType): TemplateResult | typeof nothing {
-    // while typing the loading spinner will be displayed and presence will be hidden
-    if (this.isTyping) {
-      return nothing;
-    }
     // avatar type of counter should not have presence
     if (type === AVATAR_TYPE.COUNTER && this.counter) {
       return nothing;
@@ -180,12 +168,13 @@ class Avatar extends Component {
    */
   private handleOnError(): void {
     this.isPhotoLoaded = false;
-    throw new Error('There was a problem while fetching the <img/>. Please check the src attribute and try again.');
+    // eslint-disable-next-line
+    console.error('There was a problem while fetching the <img/>. Please check the src attribute and try again.');
   }
 
   /**
    * Generates the photo template for the avatar component.
-   * Utilizes the `src` and `alt` attributes to display an image.
+   * Utilizes the `src` attribute to display an image.
    * The photo is hidden until it is fully loaded, at which point
    * `isPhotoLoaded` is set to `true` by the `handleOnLoad` method.
    * If an error occurs during loading, `handleOnError` sets `isPhotoLoaded`
@@ -198,7 +187,6 @@ class Avatar extends Component {
       <img
         class="photo"
         src="${ifDefined(this.src)}"
-        alt="${ifDefined(this.alt)}"
         aria-hidden="true"
         ?hidden="${!this.isPhotoLoaded}"
         @load="${this.handleOnLoad}"
@@ -239,7 +227,6 @@ class Avatar extends Component {
         class="place-center"
         type="${getAvatarTextFontSize(this.size)}"
         tagname="span"
-        style="${this.generateAvatarDimensions()}"
       >
         ${content}
       </mdc-text>
@@ -299,7 +286,7 @@ class Avatar extends Component {
    * @returns the type of the avatar component
    */
   private getTypeBasedOnInputs(): AvatarType {
-    if (this.src && this.alt) {
+    if (this.src) {
       return AVATAR_TYPE.PHOTO;
     }
     if (this.initials) {
@@ -334,14 +321,6 @@ class Avatar extends Component {
       default:
         return this.iconTemplate();
     }
-  }
-
-  private generateAvatarDimensions(): DirectiveResult {
-    const rems = [getAvatarSize(this.size), 'rem'].join('');
-    return styleMap({
-      width: rems,
-      height: rems,
-    });
   }
 
   /**
@@ -404,25 +383,20 @@ class Avatar extends Component {
   }
 
   public override render(): TemplateResult {
-    const dimensions = this.generateAvatarDimensions();
     const renderedContent = this.renderedContent();
 
     if (this.isClickable) {
       return html`
-        <mdc-button
-          class="container"
-          style="${dimensions}"
-          aria-label="${ifDefined(this.ariaLabel || '')}"
-        >
-          <div class="content" style="${dimensions}">
+        <mdc-button class="container" aria-label="${ifDefined(this.ariaLabel || '')}">
+          <div class="content">
             ${renderedContent}
           </div>
         </mdc-button>
       `;
     }
     return html`
-      <div class="container place-center" style="${dimensions}" aria-hidden="true">
-        <div class="content" style="${dimensions}">
+      <div class="container place-center" aria-hidden="true">
+        <div class="content">
           ${renderedContent}
         </div>
       </div>
