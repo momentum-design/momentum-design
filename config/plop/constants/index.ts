@@ -1,4 +1,4 @@
-import { join } from 'path';
+import path from 'path';
 
 export enum PROMPT_TYPE {
   INPUT = 'input',
@@ -26,10 +26,10 @@ export enum FILE_TYPE {
 
 export const packageName: string = 'packageName';
 export const destinationFolderName: string = 'destinationFolderName';
-export const root: string = process.cwd();
-export const plop: string = `${join(root, 'config', 'plop')}`;
+export const root: string = process.cwd().replace(/\\/g, '/');
+export const plop: string = `${path.posix.join(root, 'config', 'plop')}`;
 
 export const folders = {
-  workspace: `${join(root, 'packages')}`,
-  templates: `${join(plop, 'templates')}`,
+  workspace: `${path.posix.join(root, 'packages')}`,
+  templates: `${path.posix.join(plop, 'templates')}`,
 };
