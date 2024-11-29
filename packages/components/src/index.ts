@@ -5,6 +5,7 @@ import Avatar from './components/avatar';
 import Badge from './components/badge';
 import Presence from './components/presence';
 import Text from './components/text';
+import Button from './components/button';
 
 import type { TextType } from './components/text/text.types';
 
@@ -16,6 +17,7 @@ export {
   Badge,
   Presence,
   Text,
+  Button,
 };
 
 export type {
