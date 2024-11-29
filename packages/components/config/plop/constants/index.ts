@@ -1,4 +1,4 @@
-import { join } from 'path';
+import path from 'path';
 import CONSTANTS from '../../../src/utils/tag-name/constants';
 
 export enum PROMPT_TYPE {
@@ -21,11 +21,11 @@ export const componentName: string = 'componentName';
 export const componentNamePrefix: string = CONSTANTS.NAMESPACE.PREFIX;
 export const componentNameSeparator: string = CONSTANTS.NAMESPACE.SEPARATOR;
 
-export const root: string = process.cwd();
-export const plop: string = `${join(root, 'config', 'plop')}`;
+export const root: string = process.cwd().replace(/\\/g, '/');
+export const plop: string = `${path.posix.join(root, 'config', 'plop')}`;
 
 export const folders = {
-  src: `${join(root, 'src')}`,
-  components: `${join(root, 'src', 'components')}`,
-  templates: `${join(plop, 'templates')}`,
+  src: `${path.posix.join(root, 'src')}`,
+  components: `${path.posix.join(root, 'src', 'components')}`,
+  templates: `${path.posix.join(plop, 'templates')}`,
 };
