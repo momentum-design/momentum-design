@@ -6,7 +6,7 @@ const STRIPED_CLASS_NAME_BYPASS = unsafeCSS(MARKER_CLASSES.STRIPED);
 
 const styles = css`
   :host {
-    width: 0.25rem; // 4px
+    width: 0.25rem;
     height: 100%;
     display: inline-block;
   }
@@ -19,9 +19,9 @@ const styles = css`
     background: repeating-linear-gradient(
       135deg,
       var(--mds-color-theme-outline-secondary-normal, rgba(0, 0, 0, 0.20)),
-      var(--mds-color-theme-outline-secondary-normal, rgba(0, 0, 0, 0.20)) 0.1875rem, // 3px
-      white 0.1875rem, // 3px
-      white 0.375rem // 6px
+      var(--mds-color-theme-outline-secondary-normal, rgba(0, 0, 0, 0.20)) 0.1875rem,
+      white 0.1875rem, 
+      white 0.375rem
     );
   }
 `;
