@@ -20,7 +20,7 @@ class VisualRegression {
    * @param direction - Either 'rtl' (right-to-left) or 'ltr' (left-to-right).
    */
   private async setDocumentDirection(direction: 'rtl' | 'ltr'): Promise<void> {
-    await this.page.evaluate(dir => {
+    await this.page.evaluate((dir) => {
       document.documentElement.setAttribute('dir', dir);
     }, direction);
   }
@@ -47,10 +47,12 @@ class VisualRegression {
 
     if (isSnapshotRun) {
       // Normal contrast screenshots for both RTL and LTR
+      /* eslint-disable no-await-in-loop */
+      /* eslint-disable no-restricted-syntax */
       for (const direction of ['rtl', 'ltr'] as const) {
         await this.setDocumentDirection(direction);
         expect(await elementToTakeScreenShotFrom.screenshot(options)).toMatchSnapshot({
-          name: `${name}-${direction}.${CONSTANTS.VISUAL_REGRESSION.FILE_EXTENSION}`
+          name: `${name}-${direction}.${CONSTANTS.VISUAL_REGRESSION.FILE_EXTENSION}`,
         });
       }
 
@@ -59,12 +61,47 @@ class VisualRegression {
         await this.toggleHighContrastMode(true); // Enable high contrast
         await this.setDocumentDirection('ltr');
         expect(await elementToTakeScreenShotFrom.screenshot(options)).toMatchSnapshot({
-          name: `${name}-high-contrast.${CONSTANTS.VISUAL_REGRESSION.FILE_EXTENSION}`
+          name: `${name}-high-contrast.${CONSTANTS.VISUAL_REGRESSION.FILE_EXTENSION}`,
         });
         await this.toggleHighContrastMode(false); // Reset high contrast
       }
     }
   }
+
+  generateComponentMarkup = (
+    componentTag: string,
+    attributes: Record<string, Record<string, string | number>>,
+    defaultAttributes?: Record<string, string>,
+  ) => {
+    if (Object.keys(attributes).length === 0) return '';
+
+    const [primaryKey, primaryValues] = Object.entries(attributes)[0];
+    const otherAttributes = Object.entries(attributes).slice(1);
+
+    const defaultAttrs = defaultAttributes
+      ? Object.entries(defaultAttributes)
+        .filter(([key]) => key !== 'children')
+        .map(([key, value]) => `${key}="${value}"`)
+        .join(' ')
+      : '';
+    const children = defaultAttributes?.children || '';
+
+    return Object.values(primaryValues)
+      .map((primaryValue) => {
+        const combinations = otherAttributes.reduce<string[]>(
+          (acc, [key, values]) =>
+            acc.flatMap((prev) => Object.values(values).map((currVal) => `${prev} ${key}="${currVal}"`)),
+          [''],
+        );
+        return `<div class="componentRowWrapper">
+        ${combinations.map((combination) => `
+        <${componentTag} ${defaultAttrs} ${primaryKey}="${primaryValue}" ${combination}>
+          ${children}
+        </${componentTag}>`).join('')}
+      </div>`;
+      })
+      .join('');
+  };
 
   /**
    * Creates a sticker sheet on the page, grouping variants of components for visual regression testing.
@@ -81,44 +118,13 @@ class VisualRegression {
   async createStickerSheet(
     componentsPage: ComponentsPage,
     componentTag: string,
-    attributes: Record<string, Record<string, string>>,
+    attributes: Record<string, Record<string, string | number>>,
     defaultAttributes?: Record<string, string>,
   ) {
-    const generateComponentMarkup = () => {
-      if (Object.keys(attributes).length === 0) return '';
-
-      const [primaryKey, primaryValues] = Object.entries(attributes)[0];
-      const otherAttributes = Object.entries(attributes).slice(1);
-
-      const defaultAttrs = defaultAttributes
-        ? Object.entries(defaultAttributes)
-          .filter(([key]) => key !== 'children')
-          .map(([key, value]) => `${key}="${value}"`)
-          .join(' ')
-        : '';
-      const children = defaultAttributes?.children || '';
-
-      return Object.values(primaryValues)
-        .map((primaryValue) => {
-          const combinations = otherAttributes.reduce<string[]>(
-            (acc, [key, values]) =>
-              acc.flatMap((prev) => Object.values(values).map((currVal) => `${prev} ${key}="${currVal}"`)),
-            [''],
-          );
-          return `<div class="componentRowWrapper">
-          ${combinations.map((combination) => `
-          <${componentTag} ${defaultAttrs} ${primaryKey}="${primaryValue}" ${combination}>
-            ${children}
-          </${componentTag}>`).join('')}
-        </div>`;
-        })
-        .join('');
-    };
-
     await componentsPage.mount({
       html: `
       <div class="componentWrapper">
-        ${generateComponentMarkup()}
+        ${this.generateComponentMarkup(componentTag, attributes, defaultAttributes)}
       </div>
       `,
       clearDocument: true,

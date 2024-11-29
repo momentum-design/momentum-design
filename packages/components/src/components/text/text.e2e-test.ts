@@ -33,7 +33,7 @@ test.describe('mdc-text', () => {
   test.use({
     viewport: {
       width: 1280,
-      height: 2300,
+      height: 2500,
     },
   });
 
