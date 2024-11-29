@@ -6,6 +6,34 @@ const styles = css`
     --mdc-avatar-default-foreground-color: var(--mds-color-theme-common-text-primary-normal);
     --mdc-avatar-loading-background-color: var(--mds-color-theme-common-overlays-secondary-normal);
   }
+  :host([size="xx_large"]) .container, :host([size="xx_large"]) .content {
+    width: 7.75rem;
+    height: 7.75rem;
+  }
+  :host([size="x_large"]) .container, :host([size="x_large"]) .content {
+    width: 5.5rem;
+    height: 5.5rem;
+  }
+  :host([size="large"]) .container, :host([size="large"]) .content {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+  :host([size="midsize"]) .container, :host([size="midsize"]) .content {
+    width: 4rem;
+    height: 4rem;
+  }
+  :host([size="small"]) .container, :host([size="small"]) .content {
+    width: 3rem;
+    height: 3rem;
+  }
+  :host([size="x_small"]) .container, :host([size="x_small"]) .content {
+    width: 2rem;
+    height: 2rem;
+  }
+  :host([size="xx_small"]) .container, :host([size="xx_small"]) .content {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
   .place-center {
     display: flex;
     justify-content: center;
@@ -21,13 +49,13 @@ const styles = css`
   .content {
     cursor: pointer;
     background-color: var(--mdc-avatar-default-background-color);
-    border-radius: 100vh;
+    border-radius: 50%;
     position: relative;
     display: grid;
     place-items: center;
   }
   .photo {
-    border-radius: 100vh;
+    border-radius: 50%;
     height: 100%;
     width: 100%;
     object-fit: cover;

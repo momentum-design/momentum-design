@@ -47,8 +47,8 @@ export default meta;
 
 export const Image: StoryObj = {
   args: {
+    size: 'xx_large',
     src: 'https://picsum.photos/id/63/256',
-    alt: 'Lorem ipsum',
     initials: 'AK',
     'icon-name': 'placeholder-bold',
     'aria-label': 'An Avatar with Photo',
@@ -56,24 +56,30 @@ export const Image: StoryObj = {
 };
 
 export const Default: StoryObj = {
-  args: {},
+  args: {
+    size: 'x_small',
+  },
 };
 
 export const Initials: StoryObj = {
   args: {
     initials: 'MD',
+    size: 'xx_large',
   },
 };
 
 export const Counter: StoryObj = {
   args: {
     counter: 99,
+    'is-clickable': true,
+    size: 'x_large',
   },
 };
 
 export const Icon: StoryObj = {
   args: {
     'icon-name': 'placeholder-bold',
+    size: 'x_small',
   },
 };
 
@@ -91,13 +97,12 @@ export const SizeWithPresence: StoryObj = {
   render: (args: Args) => html`
     <div style="display: flex; justify-content: space-evenly; align-items: center">
       ${repeat(Object.values(PRESENCE_SIZE), (size) => html`
-        <mdc-avatar size="${size}" presence="${args.presence}" src="${args.src}" alt="${args.alt}"></mdc-avatar>
+        <mdc-avatar size="${size}" presence="${args.presence}" src="${args.src}"></mdc-avatar>
       `)}
     </div>
   `,
   args: {
     presence: 'active',
     src: 'https://picsum.photos/id/63/256',
-    alt: 'Lorem Ipsum',
   },
 };

@@ -3,20 +3,6 @@ import { TYPE as FONT_TYPE } from '../text/text.constants';
 import type { TextType } from '../text/text.types';
 import type { AvatarSize } from './avatar.types';
 
-const getAvatarSize = (size: AvatarSize): number => {
-  switch (size) {
-    case AVATAR_SIZE.XX_LARGE: return 7.75;
-    case AVATAR_SIZE.X_LARGE: return 5.5;
-    case AVATAR_SIZE.LARGE: return 4.5;
-    case AVATAR_SIZE.MIDSIZE: return 4;
-    case AVATAR_SIZE.SMALL: return 3;
-    case AVATAR_SIZE.XX_SMALL: return 1.5;
-    case AVATAR_SIZE.X_SMALL:
-    default:
-      return 2;
-  }
-};
-
 const getAvatarIconSize = (size: AvatarSize): number => {
   switch (size) {
     case AVATAR_SIZE.XX_LARGE: return 4.75;
@@ -61,7 +47,6 @@ const getAvatarLoadingScaleSize = (size: AvatarSize): string => {
 };
 
 export {
-  getAvatarSize,
   getAvatarIconSize,
   getAvatarTextFontSize,
   getAvatarLoadingScaleSize,
