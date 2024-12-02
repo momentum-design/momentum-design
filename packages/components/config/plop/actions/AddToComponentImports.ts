@@ -1,12 +1,14 @@
 /* eslint-disable max-len */
-import { join } from 'path';
+import path from 'path';
 import { ActionType } from 'plop';
 import { folders, componentName } from '../constants';
 
 export const AddToComponentImports: ActionType = {
   type: 'modify',
-  path: `${join(`${folders.src}`, 'index.ts')}`,
-  pattern: /(\nexport)/g,
+  path: `${path.posix.join(`${folders.src}`, 'index.ts')}`,
+  // find the first type import block, requires the index.ts file to be formatted
+  // correctly
+  pattern: /(\nimport type)/,
   data: {
     componentName,
   },

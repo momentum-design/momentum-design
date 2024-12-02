@@ -1,14 +1,32 @@
 ---
-import tokens from '@momentum-design/tokens/dist/json/core/complete.json';
+import coreTokens from '@momentum-design/tokens/dist/json/core/complete.json';
+import typographyTokens from '@momentum-design/tokens/dist/json/typography/complete.json';
 import { TokenTable } from '../../../components/Tokens/TokenTable/TokenTable';
 import MainLayout from '../../../layouts/MainLayout.astro';
 import { TokenType } from '../../../types/tokens';
 
 export function getStaticPaths() {
-  return Object.keys(tokens).map((token) => ({ params: { tokenType: token } }));
+  const tokenKeys = [
+    ...Object.keys(coreTokens),
+    ...Object.keys(typographyTokens),
+  ];
+
+  return tokenKeys.map((token) => ({ params: { tokenType: token } }));
 }
 
 const { tokenType } = Astro.params as { tokenType: TokenType };
+const tokenSources = {
+  [Object.keys(coreTokens)[0]]: {
+    tokens: coreTokens,
+    filePath: 'core'
+  },
+  [Object.keys(typographyTokens)[0]]: {
+    tokens: typographyTokens,
+    filePath: 'typography'
+  },
+};
+const tokens = tokenSources[tokenType].tokens;
+const filePath = tokenSources[tokenType].filePath;
 ---
 
 <MainLayout frontmatter={{ description: '', title: `${tokenType} Tokens`, layout: '' }}>
@@ -16,6 +34,6 @@ const { tokenType } = Astro.params as { tokenType: TokenType };
     <h3>Back</h3>
   </a>
 
-  <p style={{ paddingBottom: '16px' }}><b>File:</b> core/complete.json</p>
+  <p style={{ paddingBottom: '16px' }}><b>File:</b> {filePath}/complete.json</p>
   <TokenTable tokens={tokens[tokenType]} tokenType={tokenType}/>
 </MainLayout>

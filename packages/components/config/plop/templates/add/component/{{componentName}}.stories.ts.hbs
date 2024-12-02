@@ -8,14 +8,15 @@ const render = (args: Args) => html`
 
 const meta: Meta = {
   title: 'Work In Progress/{{componentName}}',
+  tags: ['autodocs'],
   component: '{{prefix}}{{separator}}{{componentName}}',
   render,
   parameters: {
     badges: ['wip'],
   },
-  argTypes: { 
+  argTypes: {
     ...classArgType,
-    ...styleArgType
+    ...styleArgType,
   },
 };
 
@@ -24,6 +25,6 @@ export default meta;
 export const Default: StoryObj = {
   args: {
     class: 'custom-classname',
-    style: 'margin-top: 20px;'
+    style: 'margin-top: 20px;',
   },
 };

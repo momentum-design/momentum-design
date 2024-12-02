@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import { DEFAULTS } from './iconprovider.constants';
+import { DEFAULTS, LENGTH_UNIT_SIZE } from './iconprovider.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -95,7 +95,7 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
       await expect(iconprovider).toHaveAttribute('length-unit', DEFAULTS.LENGTH_UNIT);
       await expect(iconprovider).toHaveAttribute(
         'size',
-        DEFAULTS.LENGTH_UNIT_SIZE[DEFAULTS.LENGTH_UNIT].toString(),
+        LENGTH_UNIT_SIZE[DEFAULTS.LENGTH_UNIT as keyof typeof LENGTH_UNIT_SIZE].toString(),
       );
       // SUBCOMPONENT
       await expect(subComponentLocator).toBeVisible();
@@ -107,7 +107,7 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
         await expect(nestedIconProvider).toHaveAttribute('length-unit', DEFAULTS.LENGTH_UNIT);
         await expect(nestedIconProvider).toHaveAttribute(
           'size',
-          DEFAULTS.LENGTH_UNIT_SIZE[DEFAULTS.LENGTH_UNIT].toString(),
+          LENGTH_UNIT_SIZE[DEFAULTS.LENGTH_UNIT as keyof typeof LENGTH_UNIT_SIZE].toString(),
         );
         await expect(nestedSubComponentLocator).toBeVisible();
         await expect(nestedSubComponentLocator).toContainText(`IconProvider Length Unit: ${DEFAULTS.LENGTH_UNIT}`);

@@ -2,7 +2,7 @@ import utils from '../../utils/tag-name';
 
 const TAG_NAME = utils.constructTagName('presence');
 
-const PRESENCE_TYPE = {
+const TYPE = {
   ACTIVE: 'active',
   AWAY: 'away',
   AWAY_CALLING: 'away-calling',
@@ -17,9 +17,9 @@ const PRESENCE_TYPE = {
   PRESENTING: 'presenting',
   QUIET: 'quiet',
   SCHEDULED: 'scheduled',
-};
+} as const;
 
-const PRESENCE_SIZE = {
+const SIZE = {
   XX_SMALL: 'xx_small',
   X_SMALL: 'x_small',
   SMALL: 'small',
@@ -27,11 +27,11 @@ const PRESENCE_SIZE = {
   LARGE: 'large',
   X_LARGE: 'x_large',
   XX_LARGE: 'xx_large',
-};
+} as const;
 
 const DEFAULTS = {
-  TYPE: PRESENCE_TYPE.ACTIVE,
-  SIZE: PRESENCE_SIZE.SMALL,
-};
+  TYPE: TYPE.ACTIVE,
+  SIZE: SIZE.SMALL,
+} as const;
 
-export { TAG_NAME, DEFAULTS, PRESENCE_TYPE, PRESENCE_SIZE };
+export { TAG_NAME, DEFAULTS, TYPE, SIZE };

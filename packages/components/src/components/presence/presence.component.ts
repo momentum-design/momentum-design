@@ -1,8 +1,9 @@
 import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
-import { DEFAULTS } from './presence.constants';
+import { DEFAULTS, SIZE, TYPE } from './presence.constants';
 import styles from './presence.styles';
+import type { PresenceType, PresenceSize } from './presence.types';
 
 /**
  * The `mdc-presence` component is a versatile UI element used to
@@ -32,10 +33,10 @@ class Presence extends Component {
    * - `presenting`
    * - `quiet`
    * - `scheduled`
-   *
+   * @default active
    */
   @property({ type: String, reflect: true })
-  type = DEFAULTS.TYPE;
+  type: PresenceType = DEFAULTS.TYPE;
 
   /**
    * Acceptable values include:
@@ -47,26 +48,29 @@ class Presence extends Component {
    * - X_LARGE
    * - XX_LARGE
    *
+   * Presence icons are minimum 14px in size, meaning XX_Small, X_Small and Small presence
+   * icons will be no smaller than 14px.
+   * @default small
    */
   @property({ type: String, reflect: true })
-  size = DEFAULTS.SIZE;
+  size: PresenceSize = DEFAULTS.SIZE;
 
   /**
    * Get the size of the presence icon based on the given size type
    */
   private get iconSize() {
     switch (this.size) {
-      case 'midsize':
+      case SIZE.MIDSIZE:
         return 1.16125;
-      case 'large':
+      case SIZE.LARGE:
         return 1.30625;
-      case 'x_large':
+      case SIZE.X_LARGE:
         return 1.596875;
-      case 'xx_large':
+      case SIZE.XX_LARGE:
         return 2.25;
-      case 'xx_small':
-      case 'x_small':
-      case 'small':
+      case SIZE.XX_SMALL:
+      case SIZE.X_SMALL:
+      case SIZE.SMALL:
       default:
         this.size = DEFAULTS.SIZE;
         return 0.875;
@@ -78,33 +82,33 @@ class Presence extends Component {
    */
   private get icon() {
     switch (this.type) {
-      case 'away':
+      case TYPE.AWAY:
         return 'recents-presence-badge-filled';
-      case 'away-calling':
+      case TYPE.AWAY_CALLING:
         return 'away-calling-presence-filled';
-      case 'busy':
+      case TYPE.BUSY:
         return 'busy-presence-bold';
-      case 'dnd':
+      case TYPE.DND:
         return 'dnd-presence-badge-filled';
-      case 'meeting':
+      case TYPE.MEETING:
         return 'camera-filled';
-      case 'on-call':
+      case TYPE.ON_CALL:
         return 'handset-filled';
-      case 'on-device':
+      case TYPE.ON_DEVICE:
         return 'generic-device-video-badge-filled';
-      case 'on-mobile':
+      case TYPE.ON_MOBILE:
         return 'phone-badge-filled';
-      case 'pause':
+      case TYPE.PAUSE:
         return 'pause-badge-filled';
-      case 'pto':
+      case TYPE.PTO:
         return 'pto-presence-filled';
-      case 'presenting':
+      case TYPE.PRESENTING:
         return 'share-screen-badge-filled';
-      case 'quiet':
+      case TYPE.QUIET:
         return 'quiet-hours-presence-filled';
-      case 'scheduled':
+      case TYPE.SCHEDULED:
         return 'meetings-presence-badge-filled';
-      case 'active':
+      case TYPE.ACTIVE:
       default:
         this.type = DEFAULTS.TYPE;
         return 'active-presence-small-filled';

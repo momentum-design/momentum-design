@@ -6,6 +6,7 @@ import providerUtils from '../../utils/provider';
 import IconProvider from '../iconprovider/iconprovider.component';
 import { dynamicSVGImport } from './icon.utils';
 import { DEFAULTS } from './icon.constants';
+import type { IconNames } from './icon.types';
 
 /**
  * Icon component that dynamically displays SVG icons based on a valid name.
@@ -58,7 +59,7 @@ class Icon extends Component {
    * Name of the icon (= filename)
    */
   @property({ type: String, reflect: true })
-  name?: string = DEFAULTS.NAME;
+  name?: IconNames = DEFAULTS.NAME;
 
   /**
    * Size of the icon (works in combination with length unit)

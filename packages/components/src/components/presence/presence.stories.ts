@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { PRESENCE_TYPE, PRESENCE_SIZE, DEFAULTS } from './presence.constants';
+import { TYPE, SIZE, DEFAULTS } from './presence.constants';
 import { disableControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
@@ -9,20 +9,20 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/presence',
+  title: 'Components/presence',
   tags: ['autodocs'],
   component: 'mdc-presence',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     type: {
-      options: Object.values(PRESENCE_TYPE),
+      options: Object.values(TYPE),
       control: { type: 'select' },
     },
     size: {
-      options: Object.values(PRESENCE_SIZE),
+      options: Object.values(SIZE),
       control: { type: 'select' },
     },
     ...disableControls(['iconSize', 'icon']),

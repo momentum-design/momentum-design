@@ -1,11 +1,12 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import { DEFAULTS, PRESENCE_TYPE, PRESENCE_SIZE } from './presence.constants';
+import { DEFAULTS, TYPE, SIZE } from './presence.constants';
+import type { PresenceType, PresenceSize } from './presence.types';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
-  type?: string;
-  size?: string;
+  type?: PresenceType;
+  size?: PresenceSize;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -25,41 +26,16 @@ const setup = async (args: SetupOptions) => {
   return presence;
 };
 
-const visualTestingSetup = async (args: SetupOptions) => {
-  const { componentsPage } = args;
-  const presences = (type: string) =>
-    Object.values(PRESENCE_SIZE)
-      .map((size) => `<mdc-presence type="${type}" size="${size}"></mdc-presence>`)
-      .join('');
-
-  await componentsPage.mount({
-    html: `
-    <div class="presence-list">
-    ${Object.values(PRESENCE_TYPE)
-    .map(
-      (type) => `
-      <div class="presence-row">
-        ${presences(type)}
-      </div>
-    `,
-    )
-    .join('')}
-    </div>
-      `,
-  });
-  const presenceList = componentsPage.page.locator('.presence-list');
-  const presence = componentsPage.page.locator('.mdc-presence').last();
-  await presence.waitFor();
-  return presenceList;
-};
-
 const testToRun = async (componentsPage: ComponentsPage) => {
-  const visualPresence = await visualTestingSetup({ componentsPage });
-
   /**
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
+    const visualPresence = await componentsPage.visualRegression.createStickerSheet(componentsPage, 'mdc-presence', {
+      type: TYPE,
+      size: SIZE,
+    });
+
     await test.step('matches screenshot of default element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-presence', { element: visualPresence });
     });
@@ -94,12 +70,12 @@ const testToRun = async (componentsPage: ComponentsPage) => {
 
     await test.step('should only accept allowed type and size', async () => {
       await componentsPage.setAttributes(presence, {
-        type: PRESENCE_TYPE.MEETING,
-        size: PRESENCE_SIZE.XX_LARGE,
+        type: TYPE.MEETING,
+        size: SIZE.XX_LARGE,
       });
 
-      await expect(presence).toHaveAttribute('type', PRESENCE_TYPE.MEETING);
-      await expect(presence).toHaveAttribute('size', PRESENCE_SIZE.XX_LARGE);
+      await expect(presence).toHaveAttribute('type', TYPE.MEETING);
+      await expect(presence).toHaveAttribute('size', SIZE.XX_LARGE);
     });
   });
 };
