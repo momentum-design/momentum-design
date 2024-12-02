@@ -419,4 +419,42 @@ test.describe.parallel('mdc-button', () => {
   });
 
   // TODO: Key pressed, focused events test.
+  test('mdc-button key pressed and focused events', async ({ componentsPage }) => {
+    const children = 'Pill Button';
+    await test.step('mdc-button as pill button', async () => {
+      const button = await setup({ componentsPage, children });
+      // await button.focus();
+      await componentsPage.page.keyboard.press('Tab');
+      await expect(button).toBeFocused();
+      await componentsPage.page.keyboard.down('Space');
+      await expect(button).toHaveClass('pressed');
+      await componentsPage.page.keyboard.up('Space');
+      // trigger should be fired
+      await expect(button).not.toHaveClass('pressed');
+      await componentsPage.page.keyboard.down('Enter');
+      await expect(button).toHaveClass('pressed');
+      // onclick function should be called
+      await componentsPage.page.keyboard.up('Enter');
+      await expect(button).not.toHaveClass('pressed');
+      await componentsPage.page.keyboard.press('Tab');
+      await expect(button).not.toBeFocused();
+    });
+  });
+
+  test('mdc-button click event', async ({ componentsPage }) => {
+    const children = 'Pill Button';
+    await test.step('mdc-button as pill button', async () => {
+      const mdcButton = await setup({ componentsPage, children });
+      await componentsPage.page.evaluate(() => {
+        const button = document.getElementsByTagName('mdc-button')[0];
+        button.addEventListener('click', () => {
+          button.classList.toggle('btn-clicked');
+        });
+      });
+      await mdcButton.click();
+      await expect(mdcButton).toHaveClass('btn-clicked');
+      await mdcButton.click();
+      await expect(mdcButton).not.toHaveClass('btn-clicked');
+    });
+  });
 });
