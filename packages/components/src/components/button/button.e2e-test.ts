@@ -449,8 +449,8 @@ test.describe.parallel('mdc-button', () => {
       await expect(button).not.toHaveClass('pressed');
 
       await componentsPage.page.keyboard.down('Enter');
-      await expect(button).toHaveClass('pressed'); // toggled class to remove
-      await expect(button).not.toHaveClass('btn-clicked');
+      await expect(button).toHaveClass('pressed');
+      await expect(button).not.toHaveClass('btn-clicked'); // toggled class to remove
       await componentsPage.page.keyboard.up('Enter');
       await expect(button).not.toHaveClass('pressed');
 
@@ -473,6 +473,51 @@ test.describe.parallel('mdc-button', () => {
       await expect(mdcButton).toHaveClass('btn-clicked');
       await mdcButton.click();
       await expect(mdcButton).not.toHaveClass('btn-clicked');
+    });
+  });
+
+  test('mdc-button disabled click event', async ({ componentsPage }) => {
+    const children = 'Pill Button';
+    await test.step('mdc-button as pill button', async () => {
+      const mdcButton = await setup({ componentsPage, children });
+      await componentsPage.page.evaluate(() => {
+        const button = document.getElementsByTagName('mdc-button')[0];
+        button.addEventListener('click', () => {
+          button.classList.toggle('btn-clicked');
+        });
+      });
+
+      await componentsPage.setAttributes(mdcButton, { disabled: 'true' });
+      await expect(mdcButton).toBeDisabled();
+      await componentsPage.removeAttribute(mdcButton, 'disabled');
+      await expect(mdcButton).not.toBeDisabled();
+    });
+  });
+
+  test('mdc-button disabled key pressed and focused events', async ({ componentsPage }) => {
+    const children = 'Pill Button';
+    await test.step('mdc-button as pill button', async () => {
+      const button = await setup({ componentsPage, children });
+      await componentsPage.setAttributes(button, { disabled: 'true' });
+
+      await componentsPage.page.evaluate(() => {
+        const btn = document.getElementsByTagName('mdc-button')[0];
+        btn.addEventListener('click', () => {
+          btn.classList.toggle('btn-clicked');
+        });
+      });
+      await componentsPage.page.keyboard.press('Tab');
+      await expect(button).not.toBeFocused();
+
+      await componentsPage.page.keyboard.down('Space');
+      await expect(button).not.toHaveClass('pressed');
+      await componentsPage.page.keyboard.up('Space');
+      await expect(button).not.toHaveClass('btn-clicked');
+
+      await componentsPage.page.keyboard.down('Enter');
+      await expect(button).not.toHaveClass('pressed');
+      await expect(button).not.toHaveClass('btn-clicked');
+      await componentsPage.page.keyboard.up('Enter');
     });
   });
 });
