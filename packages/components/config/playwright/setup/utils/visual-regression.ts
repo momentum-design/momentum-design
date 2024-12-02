@@ -68,6 +68,17 @@ class VisualRegression {
     }
   }
 
+  /**
+   * Generates markup for a component with different attribute combinations.
+   *
+   * @param componentTag - The tag name of the component to generate.
+   * @param attributes - Attributes to apply to the components, with key-value pairs representing attribute
+   *                     names and their possible values. The values are defined as an object of key-value pairs.
+   * @param defaultAttributes - Default attributes that should be applied to every component generated.
+   *                            If `children` is provided, it will be used as the inner content of the component.
+   *
+   * @returns The generated markup for the component with the specified attributes.
+   */
   generateComponentMarkup = (
     componentTag: string,
     attributes: Record<string, Record<string, string | number>>,
@@ -104,27 +115,22 @@ class VisualRegression {
   };
 
   /**
-   * Creates a sticker sheet on the page, grouping variants of components for visual regression testing.
+   * Creates a sticker sheet on the page, grouping variants of components into a markup for visual regression testing.
    *
    * @param componentsPage - The page object used to interact with the components.
-   * @param componentTag - The tag name of the component to generate.
-   * @param attributes - Attributes to apply to the components, with key-value pairs representing attribute
-   *                     names and their possible values. The values are defined as an object of key-value pairs.
-   * @param defaultAttributes - Default attributes that should be applied to every component generated.
-   *                            If `children` is provided, it will be used as the inner content of the component.
+   * @param componentMarkup - The markup grouping variants of components to generate the sticker sheet for.
+   * If markup not available, call `generateComponentMarkup`.
    *
    * @returns Locator for the component list containing all generated components.
    */
   async createStickerSheet(
     componentsPage: ComponentsPage,
-    componentTag: string,
-    attributes: Record<string, Record<string, string | number>>,
-    defaultAttributes?: Record<string, string>,
+    componentMarkup: string,
   ) {
     await componentsPage.mount({
       html: `
       <div class="componentWrapper">
-        ${this.generateComponentMarkup(componentTag, attributes, defaultAttributes)}
+        ${componentMarkup}
       </div>
       `,
       clearDocument: true,
