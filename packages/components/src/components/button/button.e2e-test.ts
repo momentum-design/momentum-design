@@ -272,6 +272,7 @@ const stickerSheetForSnapshot = async (
   props: any,
 ) => {
   const buttonsArr:string[] = [];
+
   // primary and secondary button variants with all sizes and colors
   buttonsArr.push(
     await componentsPage.visualRegression.generateComponentMarkup(
@@ -280,6 +281,7 @@ const stickerSheetForSnapshot = async (
       { ...props },
     ),
   );
+
   // active button
   buttonsArr.push(
     await componentsPage.visualRegression.generateComponentMarkup(
@@ -288,6 +290,7 @@ const stickerSheetForSnapshot = async (
       { ...props, active: 'true' },
     ),
   );
+
   // tertiary button sizes
   buttonsArr.push(
     await componentsPage.visualRegression.generateComponentMarkup(
@@ -298,6 +301,7 @@ const stickerSheetForSnapshot = async (
       { ...props, variant: BUTTON_VARIANTS.TERTIARY },
     ),
   );
+
   // disabled button
   buttonsArr.push(
     await componentsPage.visualRegression.generateComponentMarkup(
@@ -308,6 +312,7 @@ const stickerSheetForSnapshot = async (
       { ...props, disabled: 'true' },
     ),
   );
+
   // active disabled button
   buttonsArr.push(
     await componentsPage.visualRegression.generateComponentMarkup(
@@ -318,6 +323,7 @@ const stickerSheetForSnapshot = async (
       { ...props, disabled: 'true', active: 'true' },
     ),
   );
+
   return buttonsArr.join(' ');
 };
 
@@ -362,20 +368,24 @@ test.describe.parallel('mdc-button', () => {
       size: PILL_BUTTON_SIZES,
       color: BUTTON_COLORS,
     };
+
     // pill button
     buttonsArr.push(await stickerSheetForSnapshot(componentsPage, defaultAttributes, { children: 'Pill button' }));
+
     // pill with prefix icon
     buttonsArr.push(await stickerSheetForSnapshot(
       componentsPage,
       defaultAttributes,
       { 'prefix-icon': 'placeholder-light', children: 'Pill with prefix' },
     ));
+
     // pill with postfix icon
     buttonsArr.push(await stickerSheetForSnapshot(
       componentsPage,
       defaultAttributes,
       { 'postfix-icon': 'placeholder-light', children: 'Pill with postfix' },
     ));
+
     // icon button
     buttonsArr.push(
       await stickerSheetForSnapshot(
@@ -384,6 +394,7 @@ test.describe.parallel('mdc-button', () => {
         { 'prefix-icon': 'placeholder-light', class: 'mdc-icon-button' },
       ),
     );
+
     // tertiary icon button with size 20
     buttonsArr.push(
       await stickerSheetForSnapshot(
@@ -418,24 +429,31 @@ test.describe.parallel('mdc-button', () => {
     });
   });
 
-  // TODO: Key pressed, focused events test.
   test('mdc-button key pressed and focused events', async ({ componentsPage }) => {
     const children = 'Pill Button';
     await test.step('mdc-button as pill button', async () => {
       const button = await setup({ componentsPage, children });
-      // await button.focus();
+      await componentsPage.page.evaluate(() => {
+        const btn = document.getElementsByTagName('mdc-button')[0];
+        btn.addEventListener('click', () => {
+          btn.classList.toggle('btn-clicked');
+        });
+      });
       await componentsPage.page.keyboard.press('Tab');
       await expect(button).toBeFocused();
+
       await componentsPage.page.keyboard.down('Space');
       await expect(button).toHaveClass('pressed');
       await componentsPage.page.keyboard.up('Space');
-      // trigger should be fired
+      await expect(button).toHaveClass('btn-clicked');
       await expect(button).not.toHaveClass('pressed');
+
       await componentsPage.page.keyboard.down('Enter');
-      await expect(button).toHaveClass('pressed');
-      // onclick function should be called
+      await expect(button).toHaveClass('pressed'); // toggled class to remove
+      await expect(button).not.toHaveClass('btn-clicked');
       await componentsPage.page.keyboard.up('Enter');
       await expect(button).not.toHaveClass('pressed');
+
       await componentsPage.page.keyboard.press('Tab');
       await expect(button).not.toBeFocused();
     });
