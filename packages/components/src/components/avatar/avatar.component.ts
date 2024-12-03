@@ -161,8 +161,9 @@ class Avatar extends Component {
    */
   private handleOnError(): void {
     this.isPhotoLoaded = false;
-    // eslint-disable-next-line
-    console.error('There was a problem while fetching the <img/>. Please check the src attribute and try again.');
+    if (this.onerror) {
+      this.onerror('There was a problem while fetching the <img/>. Please check the src attribute and try again.');
+    }
   }
 
   /**
