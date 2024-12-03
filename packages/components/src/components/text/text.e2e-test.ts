@@ -41,7 +41,7 @@ test.describe('mdc-text', () => {
    * VISUAL REGRESSION
    */
   test('visual-regression', async ({ componentsPage }) => {
-    const textTypesMarkup = await componentsPage.visualRegression.generateComponentMarkup(
+    const textTypesMarkup = componentsPage.visualRegression.generateComponentMarkup(
       'mdc-text',
       {
         type: TYPE,
@@ -54,7 +54,7 @@ test.describe('mdc-text', () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-text-types', { element: textTypes });
     });
 
-    const textTagsMarkup = await componentsPage.visualRegression.generateComponentMarkup(
+    const textTagsMarkup = componentsPage.visualRegression.generateComponentMarkup(
       'mdc-text',
       {
         tagname: VALID_TEXT_TAGS,

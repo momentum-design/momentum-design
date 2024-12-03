@@ -31,7 +31,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
-    const visualPresenceMarkup = await componentsPage.visualRegression.generateComponentMarkup('mdc-presence', {
+    const visualPresenceMarkup = componentsPage.visualRegression.generateComponentMarkup('mdc-presence', {
       type: TYPE,
       size: SIZE,
     });
