@@ -1,43 +1,27 @@
 import { CSSResult } from 'lit';
+import { property } from 'lit/decorators.js';
 import styles from './marker.styles';
 import { Component } from '../../models';
-import { property } from 'lit/decorators.js';
-import type { MarkerVariant } from './marker.constants';
-import { MARKER_VARIANTS, MARKER_VARIANTS_CLASS_MAPPING} from './marker.constants';
-
-type MarkerChangedProperties = Map<keyof Marker, Marker[keyof Marker]>;
+import type { MarkerVariants } from './marker.types';
+import { MARKER_VARIANTS } from './marker.constants';
 
 /**
  * `mdc-marker` which renders the default form which is a vertical line (4px wide)
  * Marker Variants:
- * - **Solid**: Solid marker.
- * - **Striped**: Striped marker.
- * 
+ * - **solid**: Solid marker.
+ * - **striped**: Striped marker.
+ *
  * @tagname mdc-marker
  *
- * @slot default - This is a default/unnamed slot
- *
- * @cssprop --custom-property-name - Description of the CSS custom property
  */
 class Marker extends Component {
-  @property({ type: String }) variant: MarkerVariant = MARKER_VARIANTS.SOLID;
-
-  override connectedCallback() {
-    super.connectedCallback();
-    this.classList.add(MARKER_VARIANTS_CLASS_MAPPING[this.variant]);
-  }
-  
-  override updated(changedProperties: MarkerChangedProperties) {
-    super.updated(changedProperties);
-
-    if (changedProperties.has('variant')) {
-      this.updateHostClass();
-    }
-  }
-
-  private updateHostClass() {
-    this.classList.add(MARKER_VARIANTS_CLASS_MAPPING[this.variant]);
-  }
+  /**
+   * There are two variants of marker: solid and striped. They are styled differently.
+   * - **solid**: Solid marker.
+   * - **striped**: Striped marker.
+   * @default solid
+   */
+  @property({ type: String }) variant: MarkerVariants = MARKER_VARIANTS.SOLID;
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }

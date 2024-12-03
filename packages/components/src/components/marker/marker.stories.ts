@@ -20,19 +20,19 @@ const meta: Meta = {
   },
   argTypes: {
     ...classArgType,
-    ...styleArgType
+    ...styleArgType,
   },
 };
 
 export default meta;
 
-export const solid: StoryObj = {
+export const Solid: StoryObj = {
   args: {
     variant: MARKER_VARIANTS.SOLID,
   },
 };
 
-export const striped: StoryObj = {
+export const Striped: StoryObj = {
   args: {
     variant: MARKER_VARIANTS.STRIPED,
   },
