@@ -236,8 +236,6 @@ const testForCombinations = async (args: SetupOptions, buttonType: string) => {
             await expect(button).toHaveAttribute('color', color);
             await expect(button).toHaveAttribute('size', `${size}`);
           });
-          await componentsPage.accessibility
-            .checkForA11yViolations(`button-${buttonType}-${variant}-${color}-${size}`);
         }
       }
     }
@@ -391,7 +389,7 @@ test.describe.parallel('mdc-button', () => {
       await stickerSheetForSnapshot(
         componentsPage,
         { ...defaultAttributes, size: { ...defaultAttributes.size, 52: 52, 64: 64 } }, // not including size 20
-        { 'prefix-icon': 'placeholder-light', class: 'mdc-icon-button' },
+        { 'prefix-icon': 'placeholder-light', class: 'mdc-icon-button', 'aria-label': 'placeholder-light' },
       ),
     );
 
@@ -405,6 +403,7 @@ test.describe.parallel('mdc-button', () => {
           variant: BUTTON_VARIANTS.TERTIARY,
           size: ICON_BUTTON_SIZES[20],
           class: 'mdc-icon-button',
+          'aria-label': 'placeholder-light',
         },
       ),
     );
@@ -422,10 +421,15 @@ test.describe.parallel('mdc-button', () => {
     });
 
     const buttonEl = componentsPage.page.locator('.componentWrapper');
-    await componentsPage.page.waitForLoadState('networkidle');
+    await buttonEl.waitFor();
 
     await test.step('matches screenshot of button element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-button', { element: buttonEl });
+    });
+
+    await test.step('accessibility of button element', async () => {
+      await componentsPage.accessibility
+        .checkForA11yViolations('mdc-button-stickersheet');
     });
   });
 
