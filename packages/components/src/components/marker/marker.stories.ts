@@ -19,6 +19,10 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
+    variant: {
+      control: 'select',
+      options: Object.values(MARKER_VARIANTS),
+    },
     ...classArgType,
     ...styleArgType,
   },
@@ -26,14 +30,8 @@ const meta: Meta = {
 
 export default meta;
 
-export const Solid: StoryObj = {
+export const Example: StoryObj = {
   args: {
     variant: MARKER_VARIANTS.SOLID,
-  },
-};
-
-export const Striped: StoryObj = {
-  args: {
-    variant: MARKER_VARIANTS.STRIPED,
   },
 };
