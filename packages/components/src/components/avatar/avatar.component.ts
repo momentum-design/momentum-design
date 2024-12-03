@@ -1,5 +1,4 @@
 import { CSSResult, html, TemplateResult, nothing } from 'lit';
-import { repeat } from 'lit/directives/repeat.js';
 import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -9,7 +8,7 @@ import type { AvatarSize, AvatarType } from './avatar.types';
 import type { IconNames } from '../icon/icon.types';
 import type { PresenceType } from '../presence/presence.types';
 import { AVATAR_TYPE, MAX_COUNTER, DEFAULTS } from './avatar.constants';
-import { getAvatarIconSize, getAvatarTextFontSize, getAvatarLoadingScaleSize } from './avatar.utils';
+import { getAvatarIconSize, getAvatarTextFontSize } from './avatar.utils';
 
 /**
  * The `mdc-avatar` component is used to represent a person or a space.
@@ -328,22 +327,7 @@ class Avatar extends Component {
     if (!this.isTyping) {
       return nothing;
     }
-    const loadStyle = styleMap({ transform: getAvatarLoadingScaleSize(this.size) });
-    return html`
-      <div class="loading__container" aria-hidden="true" style="${loadStyle}">
-        <div class="loading__wrapper">
-          <!-- Load 3 small filled icons -->
-          ${repeat(Array(3), () => html`
-            <mdc-icon
-              name="active-presence-small-filled"
-              class="loading__icon"
-              length-unit="rem"
-              size="4"
-            ></mdc-icon>
-          `)}
-        </div>
-      </div>
-    `;
+    return html`<div class="loader"></div>`;
   }
 
   /**

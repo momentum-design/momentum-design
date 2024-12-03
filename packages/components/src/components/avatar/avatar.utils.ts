@@ -32,22 +32,7 @@ const getAvatarTextFontSize = (size: AvatarSize): TextType => {
   }
 };
 
-const getAvatarLoadingScaleSize = (size: AvatarSize): string => {
-  switch (size) {
-    case AVATAR_SIZE.XX_LARGE: return 'scale(0.4)';
-    case AVATAR_SIZE.X_LARGE: return 'scale(0.3)';
-    case AVATAR_SIZE.LARGE:
-    case AVATAR_SIZE.MIDSIZE: return 'scale(0.2)';
-    case AVATAR_SIZE.SMALL: return 'scale(0.15)';
-    case AVATAR_SIZE.XX_SMALL:
-    case AVATAR_SIZE.X_SMALL:
-    default:
-      return 'scale(0.1)';
-  }
-};
-
 export {
   getAvatarIconSize,
   getAvatarTextFontSize,
-  getAvatarLoadingScaleSize,
 };
