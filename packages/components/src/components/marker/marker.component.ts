@@ -13,6 +13,14 @@ import { MARKER_VARIANTS } from './marker.constants';
  *
  * @tagname mdc-marker
  *
+ * @cssproperty --mdc-marker-solid-background-color - Allows customization of the default background color
+ * in solid variant.
+ *
+ * @cssproperty --mdc-marker-striped-color - Allows customization of the default stripes in striped variant.
+ *
+ * @cssproperty --mdc-marker-striped-background-color - Allows customization of the default background color
+ * in striped variant.
+ *
  */
 class Marker extends Component {
   /**

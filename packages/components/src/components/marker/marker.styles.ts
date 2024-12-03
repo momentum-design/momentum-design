@@ -20,8 +20,8 @@ const styles = css`
       135deg,
       var(--mdc-marker-striped-color, rgba(0, 0, 0, 0.20)),
       var(--mdc-marker-striped-color, rgba(0, 0, 0, 0.20)) 0.1875rem,
-      var(--mdc-marker-striped-background-color, white) 0.1875rem, 
-      var(--mdc-marker-striped-background-color, white) 0.375rem
+      var(--mdc-marker-striped-background-color, #FFFFFF) 0.1875rem, 
+      var(--mdc-marker-striped-background-color, #FFFFFF) 0.375rem
     );
   }
 `;
