@@ -1029,6 +1029,13 @@
             "value": "{color.highcontrast.white.WindowColor}",
             "description": "Use for skeleton component"
           }
+        },
+        "glass": {
+          "normal": {
+            "value": "{color.highcontrast.white.WindowColor}",
+            "type": "color",
+            "description": "Used for glass effect background for operation pop. "
+          }
         }
       },
       "button": {
