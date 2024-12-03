@@ -1430,8 +1430,8 @@
             "normal": {
               "parent": "theme/stable/light",
               "type": "color",
-              "value": "{color.core.gray.50}",
-              "description": "Core Token: {color.core.gray.50}\nHEX: #8f8f8f\nUsed for progress indicator"
+              "value": "{color.core.gray.60}",
+              "description": "Core Token: {color.core.gray.60}\nHEX: #707070\nUsed for progress bar indicator"
             }
           }
         },
