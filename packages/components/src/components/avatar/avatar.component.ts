@@ -378,11 +378,12 @@ class Avatar extends Component {
 
   public override render(): TemplateResult {
     const renderedContent = this.renderedContent();
+    const typingBackgroundStyle = styleMap({ opacity: this.isTyping ? '.7' : '1' });
 
     if (this.onclick) {
       return html`
         <mdc-button class="container" aria-label="${ifDefined(this.ariaLabel || '')}" onclick="${this.onclick}">
-          <div class="content">
+          <div class="content" style="${typingBackgroundStyle}">
             ${renderedContent}
           </div>
         </mdc-button>
@@ -390,7 +391,7 @@ class Avatar extends Component {
     }
     return html`
       <div class="container place-center" aria-hidden="true">
-        <div class="content">
+        <div class="content" style="${typingBackgroundStyle}">
           ${renderedContent}
         </div>
       </div>
