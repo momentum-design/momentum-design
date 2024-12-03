@@ -34,6 +34,19 @@ const styles = css`
     width: 1.5rem;
     height: 1.5rem;
   }
+  :host([size="large"]) .container > .content > .loader,
+  :host([size="midsize"]) .container > .content > .loader {
+    transform: scale(0.8);
+  }
+  :host([size="small"]) .container > .content > .loader {
+    transform: scale(0.6);
+  }
+  :host([size="x_small"]) .container > .content > .loader {
+    transform: scale(0.4);
+  }
+  :host([size="xx_small"]) .container > .content > .loader {
+    transform: scale(0.3);
+  }
   .place-center {
     display: flex;
     justify-content: center;
@@ -70,44 +83,18 @@ const styles = css`
     bottom: 0;
     right: 0;
   }
-  .loading__container {
+  .loader {
     position: absolute;
-    display: grid;
-    place-items: center;
-    background-color: var(--mdc-avatar-loading-background-color);
+    width: 1rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    animation: loading-key 1s infinite linear alternate;
   }
-  .loading__wrapper {
-    position: absolute;
-    display: flex;
-    justify-content: space-evenly;
-  }
- .loading__icon {
-    vertical-align: middle;
-    animation-duration: 1.4s;
-    animation-iteration-count: infinite;
-    animation-name: loading;
-    animation-fill-mode: both;
-  }
-  .loading__icon:nth-of-type(2) {
-    animation-delay: 0.2s;
-  }
-  .loading__icon:nth-of-type(3) {
-    animation-delay: 0.4s;
-  }
-  .loading__icon:not(:last-child) {
-    margin-right: 0.5rem;
-  }
-  @keyframes loading {
-    0%,
-    100% {
-      opacity: 0.1;
-      transform: scale(0, 0);
-    }
-
-    20% {
-      opacity: 1;
-      transform: scale(1, 1);
-    }
+  @keyframes loading-key {
+    0%  {box-shadow: 1.25rem 0 #000, -1.25rem 0 #0002; background: #000}
+    33% {box-shadow: 1.25rem 0 #000, -1.25rem 0 #0002; background: #0002}
+    66% {box-shadow: 1.25rem 0 #0002,-1.25rem 0 #000; background: #0002}
+    100%{box-shadow: 1.25rem 0 #0002,-1.25rem 0 #000; background: #000}
   }
 `;
 

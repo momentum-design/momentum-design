@@ -97,12 +97,18 @@ export const SizeWithPresence: StoryObj = {
   render: (args: Args) => html`
     <div style="display: flex; justify-content: space-evenly; align-items: center">
       ${repeat(Object.values(PRESENCE_SIZE), (size) => html`
-        <mdc-avatar size="${size}" presence="${args.presence}" src="${args.src}"></mdc-avatar>
+        <mdc-avatar
+          src="${args.src}"
+          presence="${args.presence}"
+          ?is-typing="${args['is-typing']}"
+          size="${size}"
+        ></mdc-avatar>
       `)}
     </div>
   `,
   args: {
-    presence: 'active',
     src: 'https://picsum.photos/id/63/256',
+    presence: 'active',
+    'is-typing': false,
   },
 };
