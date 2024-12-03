@@ -267,58 +267,58 @@ const testForIconButtonSizes = async (args: SetupOptions, buttonType: string) =>
 const stickerSheetForSnapshot = async (
   componentsPage: ComponentsPage,
   attributes: any,
-  props: any,
+  otherAttributes: {children?: string, propsArr?: string[]},
 ) => {
   const buttonsArr:string[] = [];
-
+  const propsArr = otherAttributes?.propsArr || [];
   // primary and secondary button variants with all sizes and colors
   buttonsArr.push(
-    await componentsPage.visualRegression.generateComponentMarkup(
+    componentsPage.visualRegression.generateComponentMarkup(
       'mdc-button',
       attributes,
-      { ...props },
+      { ...otherAttributes },
     ),
   );
 
   // active button
   buttonsArr.push(
-    await componentsPage.visualRegression.generateComponentMarkup(
+    componentsPage.visualRegression.generateComponentMarkup(
       'mdc-button',
       attributes,
-      { ...props, active: 'true' },
+      { ...otherAttributes, propsArr: propsArr?.concat('active') },
     ),
   );
 
   // tertiary button sizes
   buttonsArr.push(
-    await componentsPage.visualRegression.generateComponentMarkup(
+    componentsPage.visualRegression.generateComponentMarkup(
       'mdc-button',
       {
         size: PILL_BUTTON_SIZES,
       },
-      { ...props, variant: BUTTON_VARIANTS.TERTIARY },
+      { ...otherAttributes, propsArr: propsArr?.concat(`variant='${BUTTON_VARIANTS.TERTIARY}'`) },
     ),
   );
 
   // disabled button
   buttonsArr.push(
-    await componentsPage.visualRegression.generateComponentMarkup(
+    componentsPage.visualRegression.generateComponentMarkup(
       'mdc-button',
       {
         variant: BUTTON_VARIANTS,
       },
-      { ...props, disabled: 'true' },
+      { ...otherAttributes, propsArr: propsArr?.concat('disabled') },
     ),
   );
 
   // active disabled button
   buttonsArr.push(
-    await componentsPage.visualRegression.generateComponentMarkup(
+    componentsPage.visualRegression.generateComponentMarkup(
       'mdc-button',
       {
         variant: BUTTON_VARIANTS,
       },
-      { ...props, disabled: 'true', active: 'true' },
+      { ...otherAttributes, propsArr: propsArr?.concat(['active', 'disabled']) },
     ),
   );
 
@@ -366,7 +366,6 @@ test.describe.parallel('mdc-button', () => {
       size: PILL_BUTTON_SIZES,
       color: BUTTON_COLORS,
     };
-
     // pill button
     buttonsArr.push(await stickerSheetForSnapshot(componentsPage, defaultAttributes, { children: 'Pill button' }));
 
@@ -374,14 +373,14 @@ test.describe.parallel('mdc-button', () => {
     buttonsArr.push(await stickerSheetForSnapshot(
       componentsPage,
       defaultAttributes,
-      { 'prefix-icon': 'placeholder-light', children: 'Pill with prefix' },
+      { propsArr: ['prefix-icon=\'placeholder-light\''], children: 'Pill with prefix' },
     ));
 
     // pill with postfix icon
     buttonsArr.push(await stickerSheetForSnapshot(
       componentsPage,
       defaultAttributes,
-      { 'postfix-icon': 'placeholder-light', children: 'Pill with postfix' },
+      { propsArr: ['postfix-icon=\'placeholder-light\''], children: 'Pill with postfix' },
     ));
 
     // icon button
@@ -389,7 +388,11 @@ test.describe.parallel('mdc-button', () => {
       await stickerSheetForSnapshot(
         componentsPage,
         { ...defaultAttributes, size: { ...defaultAttributes.size, 52: 52, 64: 64 } }, // not including size 20
-        { 'prefix-icon': 'placeholder-light', class: 'mdc-icon-button', 'aria-label': 'placeholder-light' },
+        {
+          propsArr: [
+            'prefix-icon=\'placeholder-light\'',
+          ],
+        },
       ),
     );
 
@@ -398,12 +401,10 @@ test.describe.parallel('mdc-button', () => {
       await stickerSheetForSnapshot(
         componentsPage,
         {},
-        {
-          'prefix-icon': 'placeholder-light',
-          variant: BUTTON_VARIANTS.TERTIARY,
-          size: ICON_BUTTON_SIZES[20],
-          class: 'mdc-icon-button',
-          'aria-label': 'placeholder-light',
+        { propsArr: [
+          'prefix-icon=\'placeholder-light\'',
+          `variant='${BUTTON_VARIANTS.TERTIARY}'`,
+          `size='${ICON_BUTTON_SIZES[20]}'`],
         },
       ),
     );
@@ -421,7 +422,9 @@ test.describe.parallel('mdc-button', () => {
     });
 
     const buttonEl = componentsPage.page.locator('.componentWrapper');
+    // await componentsPage.page.waitForTimeout(5000);
     await buttonEl.waitFor();
+    await componentsPage.page.pause();
 
     await test.step('matches screenshot of button element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-button', { element: buttonEl });
