@@ -1,9 +1,9 @@
 import { CSSResult, html, PropertyValueMap } from 'lit';
 import styles from './divider.styles';
-import { property, state } from 'lit/decorators.js';
+import { property} from 'lit/decorators.js';
 import { Component } from '../../models';
-import { DEFAULTS, DIVIDER_ORIENTATION, DIVIDER_TYPE_INTERNAL, DIVIDER_VARIANT } from './divider.constants';
-import { DividerTypeInternal, DividerVariant } from './divider.types';
+import { DEFAULTS, DIVIDER_ORIENTATION, DIVIDER_VARIANT } from './divider.constants';
+import { DividerVariant } from './divider.types';
 
 /**
  * Divider Component
