@@ -137,7 +137,7 @@ class VisualRegression {
     });
 
     const componentList = componentsPage.page.locator('.componentWrapper');
-    await componentsPage.page.waitForLoadState('networkidle');
+    await componentList.waitFor();
 
     return componentList;
   }
