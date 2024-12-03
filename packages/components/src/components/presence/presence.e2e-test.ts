@@ -31,10 +31,12 @@ const testToRun = async (componentsPage: ComponentsPage) => {
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
-    const visualPresence = await componentsPage.visualRegression.createStickerSheet(componentsPage, 'mdc-presence', {
+    const visualPresenceMarkup = await componentsPage.visualRegression.generateComponentMarkup('mdc-presence', {
       type: TYPE,
       size: SIZE,
     });
+    const visualPresence = await componentsPage.visualRegression
+      .createStickerSheet(componentsPage, visualPresenceMarkup);
 
     await test.step('matches screenshot of default element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-presence', { element: visualPresence });
@@ -81,6 +83,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
 };
 
 test.describe.parallel('mdc-Presence', () => {
+  test.use({ viewport: { width: 500, height: 1000 } });
   test('standalone', async ({ componentsPage }) => {
     await testToRun(componentsPage);
   });
