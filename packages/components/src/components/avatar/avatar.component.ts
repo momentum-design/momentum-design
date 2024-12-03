@@ -76,13 +76,13 @@ class Avatar extends Component {
 
   /**
    * Acceptable values include:
-   * - XX_SMALL
-   * - X_SMALL
-   * - SMALL
-   * - MIDSIZE
-   * - LARGE
-   * - X_LARGE
-   * - XX_LARGE
+   * - xx_small
+   * - x_small
+   * - small
+   * - midsize
+   * - large
+   * - x_large
+   * - xx_large
    *
    * @default x_small
    */
@@ -111,13 +111,6 @@ class Avatar extends Component {
    */
   @property({ type: Boolean, attribute: 'is-typing' })
   isTyping = false;
-
-  /**
-   * Determines whether the avatar is clickable or not.
-   * @default false
-   */
-  @property({ type: Boolean, attribute: 'is-clickable' })
-  isClickable = false;
 
   /**
    * @internal
@@ -385,9 +378,9 @@ class Avatar extends Component {
   public override render(): TemplateResult {
     const renderedContent = this.renderedContent();
 
-    if (this.isClickable) {
+    if (this.onclick) {
       return html`
-        <mdc-button class="container" aria-label="${ifDefined(this.ariaLabel || '')}">
+        <mdc-button class="container" aria-label="${ifDefined(this.ariaLabel || '')}" onclick="${this.onclick}">
           <div class="content">
             ${renderedContent}
           </div>
