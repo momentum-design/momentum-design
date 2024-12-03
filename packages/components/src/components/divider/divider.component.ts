@@ -50,8 +50,8 @@ class Divider extends Component {
   arrowDirection = DEFAULTS.ARROW_DIRECTION;
 
   /** @internal */
-  @state() 
-  private _dividerTypeInternal: DividerTypeInternal = DEFAULTS.TYPE_INTERNAL;  // can be removed if not used anywhere
+  // @state() 
+  // private _dividerTypeInternal: DividerTypeInternal = DEFAULTS.TYPE_INTERNAL;  // can be removed if not used anywhere
 
   constructor() {
     super();
@@ -77,12 +77,12 @@ class Divider extends Component {
     const hasButtonChild = this.querySelector('mdc-button') !== null;
 
     if (hasTextChild) {
-      this._dividerTypeInternal = DIVIDER_TYPE_INTERNAL.TEXT;
+      //this._dividerTypeInternal = DIVIDER_TYPE_INTERNAL.TEXT;
     } else if (hasButtonChild) {
-      this._dividerTypeInternal = DIVIDER_TYPE_INTERNAL.GRABBER_BUTTON;
+      //this._dividerTypeInternal = DIVIDER_TYPE_INTERNAL.GRABBER_BUTTON;
       this._setGrabberButton();
     } else {
-      this._dividerTypeInternal = DIVIDER_TYPE_INTERNAL.PRIMARY;
+      //this._dividerTypeInternal = DIVIDER_TYPE_INTERNAL.PRIMARY;
     }
   }
   /**
