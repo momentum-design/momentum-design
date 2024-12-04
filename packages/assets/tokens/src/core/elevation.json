@@ -57,10 +57,5 @@
         "type": "boxShadow"
       }
     }
-  },
-  "backdrop-filter": {
-    "value": "10px",
-    "type": "dimension",
-    "description": "Used for glass effect"
   }
 }

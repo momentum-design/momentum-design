@@ -3,6 +3,7 @@
     "core/value",
     "core/typography",
     "core/elevation",
+    "core/effect",
     "theme/stable/dark",
     "theme/stable/light",
     "theme/stable/highcontrast/hc_dark",
