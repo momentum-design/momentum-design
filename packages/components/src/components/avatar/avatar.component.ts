@@ -126,7 +126,7 @@ class Avatar extends Component {
   override ariaLabel: string | null = null;
 
   /**
-   * The avatar presence will be hidden if the user is typing or if the avatar type is COUNTER.
+   * The avatar presence will be hidden if the avatar type is COUNTER and the when `isTyping` is set to true.
    * If the presence is set, it will be rendered as a child of the avatar.
    *
    * @param type - The type of the avatar.
@@ -238,7 +238,7 @@ class Avatar extends Component {
    */
   private generateCounterText(counter: number): string {
     if (counter > MAX_COUNTER) {
-      return [MAX_COUNTER, '+'].join('');
+      return `${MAX_COUNTER}'+'`;
     }
     return counter.toString();
   }
