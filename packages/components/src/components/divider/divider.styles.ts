@@ -9,8 +9,8 @@ const styles = css`
   justify-content: center;
   width: 100%;
   box-sizing: border-box;
-  background-color: var(--mds-color-theme-outline-secondary-normal, rgba(0, 0, 0, 0.20));
-  --mdc-outline-secondary-normal: var(--mds-color-theme-outline-secondary-normal, rgba(0, 0, 0, 0.20));
+  background-color: var(--mds-color-theme-outline-secondary-normal);
+  --mdc-outline-secondary-normal: var(--mds-color-theme-outline-secondary-normal);
 }
 
 /* For horizontal orientation */
@@ -29,24 +29,20 @@ const styles = css`
 
 /* For gradient variant */
 :host([variant="gradient"]) {
-  background: linear-gradient(to right, 
-    rgba(0, 0, 0, 0) 0%,                 
-    var(--mdc-outline-secondary-normal) 20%,     
-    var(--mdc-outline-secondary-normal) 80%,  
-    rgba(0, 0, 0, 0) 100%);               
+  background: var(--mds-color-theme-gradientdivider-default-normal)             
 }
 
 
 :host([orientation="vertical"]) ::slotted(mdc-button) {
-  width: 20px;
-  height: 40px;
-  border-radius: 0px 8px 8px 0px;
+  width: 1.25;
+  height: 2.5rem;
+  border-radius: 0 0.5rem 0.5rem 0;
 }
 
 :host([orientation="horizontal"]) ::slotted(mdc-button) {
-  height: 20px;
-  width: 40px;
-  border-radius: 0px 0px 8px 8px;
+  height: 1.25;
+  width: 2.5rem;
+  border-radius: 0 0 0.5rem 0.5rem;
 }
 `;
 

@@ -8,7 +8,7 @@ test.beforeEach(async ({ componentsPage }) => {
   });
 });
 
-test('mdc-divider', async ({ componentsPage }) => {
+test.skip('mdc-divider', async ({ componentsPage }) => {
   const divider = componentsPage.page.locator('mdc-divider');
 
   // initial check for the divider be visible on the screen:

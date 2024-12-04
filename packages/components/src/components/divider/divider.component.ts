@@ -1,6 +1,6 @@
 import { CSSResult, html, PropertyValueMap } from 'lit';
+import { property } from 'lit/decorators.js';
 import styles from './divider.styles';
-import { property} from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DEFAULTS, DIVIDER_ORIENTATION, DIVIDER_VARIANT } from './divider.constants';
 import { DividerVariant } from './divider.types';
@@ -25,7 +25,7 @@ class Divider extends Component {
    * - **gradient**: Gradient Line.
    * @default solid
    */
- @property({ type: String, reflect: true }) 
+ @property({ type: String, reflect: true })
  variant: DividerVariant = DEFAULTS.VARIANT;
 
   /**
@@ -50,12 +50,12 @@ class Divider extends Component {
   arrowDirection = DEFAULTS.ARROW_DIRECTION;
 
   /** @internal */
-  // @state() 
-  // private _dividerTypeInternal: DividerTypeInternal = DEFAULTS.TYPE_INTERNAL;  // can be removed if not used anywhere
+  // @state()
+  // private dividerTypeInternal: DividerTypeInternal = DEFAULTS.TYPE_INTERNAL;  // can be removed if not used anywhere
 
   constructor() {
     super();
-    this._determineType();
+    this.determineType();
   }
 
   /**
@@ -72,54 +72,54 @@ class Divider extends Component {
   /**
    * Determines the type of divider based on attributes and children.
    */
-  private _determineType(): void {
+  private determineType(): void {
     const hasTextChild = this.querySelector('mdc-text') !== null;
     const hasButtonChild = this.querySelector('mdc-button') !== null;
 
     if (hasTextChild) {
-      //this._dividerTypeInternal = DIVIDER_TYPE_INTERNAL.TEXT;
+      // this.dividerTypeInternal = DIVIDER_TYPE_INTERNAL.TEXT;
     } else if (hasButtonChild) {
-      //this._dividerTypeInternal = DIVIDER_TYPE_INTERNAL.GRABBER_BUTTON;
-      this._setGrabberButton();
+      // this.dividerTypeInternal = DIVIDER_TYPE_INTERNAL.GRABBER_BUTTON;
+      this.setGrabberButton();
     } else {
-      //this._dividerTypeInternal = DIVIDER_TYPE_INTERNAL.PRIMARY;
+      // this.dividerTypeInternal = DIVIDER_TYPE_INTERNAL.PRIMARY;
     }
   }
+
   /**
    * Sets the `aria-label` attribute for grabber buttons based on `aria-label` of the divider.
    * Sets the `aria-expanded` attribute for grabber buttons based on `aria-expanded` of the divider.
    * Sets the `prefix-icon` attribute for grabber buttons based on `arrow-direction` and `orientation`.
-   * - **Horizontal**: 
+   * - **Horizontal**:
    *   - Positive: `arrow-up`.
    *   - Negative: `arrow-down`.
-   * - **Vertical**: 
+   * - **Vertical**:
    *   - Positive: `arrow-right`.
    *   - Negative: `arrow-left`.
    *
    * @returns {void}
    */
-  private _setGrabberButton(): void {
+  private setGrabberButton(): void {
     const buttonElement = this.querySelector('mdc-button');
-    if (!buttonElement) return; 
+    if (!buttonElement) return;
 
-    
     buttonElement.setAttribute('variant', 'secondary');
-    
+    buttonElement.setAttribute('size', '24');
 
-    // set aria-label of the button 
-    if(this.ariaLabel){
+    // set aria-label of the button
+    if (this.ariaLabel) {
       buttonElement.setAttribute('aria-label', this.ariaLabel);
     }
 
-    // set aria-expanded of the button 
-    if(this.ariaExpanded) {
+    // set aria-expanded of the button
+    if (this.ariaExpanded) {
       buttonElement.setAttribute('aria-expanded', 'true');
     } else {
       buttonElement.setAttribute('aria-expanded', 'false');
     }
 
     // Determine the appropriate icon
-    const iconType = this._getArrowIcon();
+    const iconType = this.getArrowIcon();
     buttonElement.setAttribute('prefix-icon', iconType);
   }
 
@@ -128,19 +128,18 @@ class Divider extends Component {
    *
    * @returns {string} The icon type (e.g., 'arrow-up', 'arrow-down').
    */
-  private _getArrowIcon(): string {
+  private getArrowIcon(): string {
     if (this.orientation === DIVIDER_ORIENTATION.HORIZONTAL) {
       return this.arrowDirection === DEFAULTS.ARROW_DIRECTION ? 'arrow-up-regular' : 'arrow-down-regular';
-    } else {
-      return this.arrowDirection === DEFAULTS.ARROW_DIRECTION ? 'arrow-right-regular' : 'arrow-left-regular';
     }
+    return this.arrowDirection === DEFAULTS.ARROW_DIRECTION ? 'arrow-right-regular' : 'arrow-left-regular';
   }
 
   public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     super.update(changedProperties);
 
     if (changedProperties.has('orientation') || changedProperties.has('arrowDirection')) {
-      this._setGrabberButton();
+      this.setGrabberButton();
     }
 
     if (changedProperties.has('variant')) {

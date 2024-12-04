@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { DIVIDER_ARROW_DIRECTION, DIVIDER_ORIENTATION, DIVIDER_VARIANT } from './divider.constants';
 
 const render = (args: Args) => html`
-    <div style="height: 250px">
+    <div style="height: 85vh">
       <mdc-divider 
         orientation=${args.orientation} 
         variant=${args.variant}
@@ -36,18 +36,15 @@ const meta: Meta = {
     },
     'aria-label': {
       control: 'text',
-      description: 'Accessible label for the divider.',
     },
     'aria-expanded': {
       control: 'boolean',
-      description: 'Accessible expand state for the divider.',
     },
     'arrow-direction': {
       control: 'select',
       options: Object.values(DIVIDER_ARROW_DIRECTION),
-      description: 'Direction of the arrow for grabber dividers.',
     },
-  }
+  },
 };
 
 export default meta;
@@ -62,7 +59,7 @@ export const primary: StoryObj = {
     'aria-label': { table: { disable: true } },
     'aria-expanded': { table: { disable: true } },
     'arrow-direction': { table: { disable: true } },
-  }
+  },
 };
 
 export const textDivider: StoryObj = {
