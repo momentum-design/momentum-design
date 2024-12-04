@@ -3,6 +3,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import '.';
 import { html } from 'lit';
 import { TYPE as PRESENCE_TYPE, SIZE as PRESENCE_SIZE } from '../presence/presence.constants';
+import { DEFAULTS } from './avatar.constants';
 
 const render = (args: Args) => html`
   <mdc-avatar
@@ -28,6 +29,12 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
+    src: {
+      control: 'text',
+    },
+    initials: {
+      control: 'text',
+    },
     presence: {
       if: {
         arg: 'counter',
@@ -39,6 +46,18 @@ const meta: Meta = {
     size: {
       control: 'select',
       options: Object.values(PRESENCE_SIZE),
+    },
+    'icon-name': {
+      control: 'text',
+    },
+    counter: {
+      control: 'number',
+    },
+    'is-typing': {
+      control: 'boolean',
+    },
+    'aria-label': {
+      control: 'text',
     },
   },
 };
@@ -57,7 +76,7 @@ export const Image: StoryObj = {
 
 export const Default: StoryObj = {
   args: {
-    size: 'x_small',
+    size: DEFAULTS.SIZE,
   },
 };
 
