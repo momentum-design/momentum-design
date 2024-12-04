@@ -12,19 +12,21 @@ import { getAvatarIconSize, getAvatarTextFontSize } from './avatar.utils';
 
 /**
  * The `mdc-avatar` component is used to represent a person or a space.
- * An avatar can be an icon, initials and photo.
+ * An avatar can be an icon, initials, counter and photo.
  *
  * To set the photo of an avatar,
  * you need to set "src" attribute.
  *
  * While the avatar image is loading, as a placeholder,
- * we can show the initials text.
+ * we will show the initials text.
+ * If the initials are not specified then,
+ * we will show `user-regular` icon as a placeholder.
  *
  * By default, if there are no attributes specified,
  * then the default avatar will be an icon with `user-regular` name.
  *
  * If the avatar is clickable, then the avatar can be focusable.
- * If the avatar is typing, then the loading spinner will be displayed and presence will be hidden.
+ * If the avatar is typing, then the loading indicator will be displayed and presence will be hidden.
  *
  * @dependency mdc-button
  * @dependency mdc-icon
@@ -124,7 +126,7 @@ class Avatar extends Component {
   override ariaLabel: string | null = null;
 
   /**
-   * The avatar presence will be hidden if the user is typing or if the avatar type is counter.
+   * The avatar presence will be hidden if the user is typing or if the avatar type is COUNTER.
    * If the presence is set, it will be rendered as a child of the avatar.
    *
    * @param type - The type of the avatar.
@@ -196,7 +198,7 @@ class Avatar extends Component {
    * @returns The template result containing the avatar icon.
    */
   private iconTemplate(): TemplateResult {
-    const name = this.iconName ? this.iconName : DEFAULTS.ICON_NAME;
+    const name = this.iconName ?? DEFAULTS.ICON_NAME;
     return html`
       <mdc-icon
         class="icon"
@@ -317,11 +319,11 @@ class Avatar extends Component {
   }
 
   /**
-   * Generates the loading spinner content for the avatar when typing.
-   * If the avatar is in typing state, this method returns a loading spinner
+   * Generates the loading indicator content for the avatar when typing.
+   * If the avatar is in typing state, this method returns a loading indicator
    * comprising three small filled icons, scaled based on the avatar size.
    *
-   * @returns The template result containing the loading spinner, or an empty template if not typing.
+   * @returns The template result containing the loading indicator, or an empty template if not typing.
    */
   private getLoadingContent(): TemplateResult | typeof nothing {
     if (!this.isTyping) {
@@ -344,8 +346,11 @@ class Avatar extends Component {
     if (this.isPhotoLoaded) {
       return nothing;
     }
-    if (this.initials && type === AVATAR_TYPE.PHOTO) {
-      return this.textTemplate(this.generateInitialsText(this.initials));
+    if (type === AVATAR_TYPE.PHOTO) {
+      if (this.initials) {
+        return this.textTemplate(this.generateInitialsText(this.initials));
+      }
+      return this.iconTemplate();
     }
     return nothing;
   }
