@@ -85,13 +85,13 @@ class Button extends Component {
    * The name of the icon to display as a prefix.
    * The icon is displayed on the left side of the button.
    */
-  @property({ type: String, attribute: 'prefix-icon' }) prefixIcon?: string;
+  @property({ type: String, attribute: 'prefix-icon', reflect: true }) prefixIcon?: string;
 
   /**
    * The name of the icon to display as a postfix.
    * The icon is displayed on the right side of the button.
    */
-  @property({ type: String, attribute: 'postfix-icon' }) postfixIcon?: string;
+  @property({ type: String, attribute: 'postfix-icon', reflect: true }) postfixIcon?: string;
 
   /**
    * There are 3 variants of button: primary, secondary, tertiary. They are styled differently.

@@ -422,9 +422,7 @@ test.describe.parallel('mdc-button', () => {
     });
 
     const buttonEl = componentsPage.page.locator('.componentWrapper');
-    // await componentsPage.page.waitForTimeout(5000);
     await buttonEl.waitFor();
-    await componentsPage.page.pause();
 
     await test.step('matches screenshot of button element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-button', { element: buttonEl });
