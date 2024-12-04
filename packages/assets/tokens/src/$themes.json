@@ -323,8 +323,7 @@
       "font.apps.body.small.bold": "S:8c9122aea157f6ef4ca47dfab83eca04a83d07a6,"
     },
     "selectedTokenSets": {
-      "core/value": "enabled",
-      "core/effect": "disabled"
+      "core/value": "enabled"
     },
     "group": "core",
     "$figmaCollectionId": "VariableCollectionId:1393:5179",
@@ -813,8 +812,7 @@
     },
     "selectedTokenSets": {
       "core/value": "source",
-      "theme/stable/dark": "enabled",
-      "core/effect": "disabled"
+      "theme/stable/dark": "enabled"
     },
     "$figmaCollectionId": "VariableCollectionId:17173:7243",
     "$figmaModeId": "17173:1",
@@ -1178,8 +1176,7 @@
     "$figmaStyleReferences": {},
     "selectedTokenSets": {
       "core/value": "source",
-      "theme/stable/light": "enabled",
-      "core/effect": "disabled"
+      "theme/stable/light": "enabled"
     },
     "$figmaCollectionId": "VariableCollectionId:17173:7243",
     "$figmaModeId": "17173:2",
@@ -1547,8 +1544,7 @@
     "$figmaStyleReferences": {},
     "selectedTokenSets": {
       "theme/stable/highcontrast/hc_dark": "enabled",
-      "core/value": "source",
-      "core/effect": "disabled"
+      "core/value": "source"
     },
     "$figmaCollectionId": "VariableCollectionId:18173:24271",
     "$figmaModeId": "18173:0",
@@ -1918,8 +1914,7 @@
     "$figmaStyleReferences": {},
     "selectedTokenSets": {
       "theme/stable/highcontrast/hc_light": "enabled",
-      "core/value": "source",
-      "core/effect": "disabled"
+      "core/value": "source"
     },
     "$figmaCollectionId": "VariableCollectionId:18173:24271",
     "$figmaModeId": "18173:1",
@@ -2289,8 +2284,7 @@
     "$figmaStyleReferences": {},
     "selectedTokenSets": {
       "core/value": "source",
-      "aaos/night": "enabled",
-      "core/effect": "disabled"
+      "aaos/night": "enabled"
     },
     "$figmaCollectionId": "VariableCollectionId:16476:19008",
     "$figmaModeId": "16476:22",
@@ -2347,8 +2341,7 @@
     "$figmaStyleReferences": {},
     "selectedTokenSets": {
       "core/value": "source",
-      "aaos/day": "enabled",
-      "core/effect": "disabled"
+      "aaos/day": "enabled"
     },
     "$figmaCollectionId": "VariableCollectionId:16476:19008",
     "$figmaModeId": "16476:23",

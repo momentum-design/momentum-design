@@ -3,5 +3,13 @@
     "value": "blur(10px)",
     "type": "other",
     "description": "Used for background blur effect glass effect"
+  },
+  "glass": {
+    "value": {
+      "backgroundBlur": "20",
+      "boxShadow": "{elevation.3}"
+    },
+    "type": "composition",
+    "description": "Used for glass effect"
   }
 }
