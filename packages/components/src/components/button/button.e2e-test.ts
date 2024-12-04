@@ -95,64 +95,6 @@ const commonTestCases = async (args: SetupOptions, buttonType: string) => {
 };
 
 /**
-   * ACCESSIBILITY
-   */
-const accessibilityTestCases = async (args: SetupOptions, buttonType: string) => {
-  const { componentsPage, ...props } = args;
-  const button = await setup({
-    componentsPage,
-    ...props,
-  });
-
-  // Default
-  await test.step(`accessibility for ${buttonType} button`, async () => {
-    await componentsPage.accessibility.checkForA11yViolations(`button-${buttonType}-default`);
-  });
-
-  // Disabled
-  await test.step(`accessibility for disabled ${buttonType} button`, async () => {
-    await componentsPage.setAttributes(button, { disabled: 'true' });
-    await componentsPage.accessibility
-      .checkForA11yViolations(`button-${buttonType}-disabled`);
-    await componentsPage.removeAttribute(button, 'disabled');
-  });
-
-  // Soft Disabled
-  await test.step(`accessibility for soft-disabled ${buttonType} button`, async () => {
-    await componentsPage.setAttributes(button, { 'soft-disabled': 'true' });
-    await componentsPage.accessibility
-      .checkForA11yViolations(`button-${buttonType}-soft-disabled`);
-    await componentsPage.removeAttribute(button, 'soft-disabled');
-  });
-
-  // Active
-  await test.step(`accessibility for active ${buttonType} button`, async () => {
-    await componentsPage.setAttributes(button, { active: 'true' });
-    await componentsPage.accessibility
-      .checkForA11yViolations(`button-${buttonType}-active`);
-    await componentsPage.removeAttribute(button, 'active');
-  });
-
-  // Active Disabled
-  await test.step(`accessibility for active and disabled ${buttonType} button`, async () => {
-    await componentsPage.setAttributes(button, { disabled: 'true', active: 'true' });
-    await componentsPage.accessibility
-      .checkForA11yViolations(`button-${buttonType}-active-disabled`);
-    await componentsPage.removeAttribute(button, 'disabled');
-    await componentsPage.removeAttribute(button, 'active');
-  });
-
-  // Active Soft Disabled
-  await test.step(`accessibility for active and soft-disabled ${buttonType} button`, async () => {
-    await componentsPage.setAttributes(button, { 'soft-disabled': 'true', active: 'true' });
-    await componentsPage.accessibility
-      .checkForA11yViolations(`button-${buttonType}-active-soft-disabled`);
-    await componentsPage.removeAttribute(button, 'soft-disabled');
-    await componentsPage.removeAttribute(button, 'active');
-  });
-};
-
-/**
    * ATTRIBUTES
    */
 const attributeTestCases = async (args: SetupOptions, buttonType: string) => {
@@ -217,7 +159,6 @@ const attributeTestCases = async (args: SetupOptions, buttonType: string) => {
 const testForCombinations = async (args: SetupOptions, buttonType: string) => {
   await commonTestCases(args, buttonType);
   await attributeTestCases(args, buttonType);
-  await accessibilityTestCases(args, buttonType);
 
   const { componentsPage, ...props } = args;
   const button = await setup({
@@ -322,6 +263,28 @@ const stickerSheetForSnapshot = async (
     ),
   );
 
+  // soft-disabled button
+  buttonsArr.push(
+    componentsPage.visualRegression.generateComponentMarkup(
+      'mdc-button',
+      {
+        variant: BUTTON_VARIANTS,
+      },
+      { ...otherAttributes, propsArr: propsArr?.concat('soft-disabled') },
+    ),
+  );
+
+  // active soft-disabled button
+  buttonsArr.push(
+    componentsPage.visualRegression.generateComponentMarkup(
+      'mdc-button',
+      {
+        variant: BUTTON_VARIANTS,
+      },
+      { ...otherAttributes, propsArr: propsArr?.concat(['active', 'soft-disabled']) },
+    ),
+  );
+
   return buttonsArr.join(' ');
 };
 
@@ -409,9 +372,6 @@ test.describe.parallel('mdc-button', () => {
       ),
     );
 
-    /**
-   * VISUAL REGRESSION
-   */
     await componentsPage.mount({
       html: `
       <div class="componentWrapper">
@@ -424,10 +384,16 @@ test.describe.parallel('mdc-button', () => {
     const buttonEl = componentsPage.page.locator('.componentWrapper');
     await buttonEl.waitFor();
 
+    /**
+   * VISUAL REGRESSION
+   */
     await test.step('matches screenshot of button element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-button', { element: buttonEl });
     });
 
+    /**
+   * ACCESSIBILITY
+   */
     await test.step('accessibility of button element', async () => {
       await componentsPage.accessibility
         .checkForA11yViolations('mdc-button-stickersheet');
