@@ -1,33 +1,5 @@
-export type FontType =
-  | 'body-small-regular'
-  | 'body-small-medium'
-  | 'body-small-bold'
-  | 'body-midsize-regular'
-  | 'body-midsize-medium'
-  | 'body-midsize-bold'
-  | 'body-large-regular'
-  | 'body-large-medium'
-  | 'body-large-bold'
-  | 'body-small-regular-underline'
-  | 'body-small-medium-underline'
-  | 'body-midsize-regular-underline'
-  | 'body-midsize-medium-underline'
-  | 'body-large-regular-underline'
-  | 'body-large-medium-underline'
-  | 'heading-small-regular'
-  | 'heading-small-medium'
-  | 'heading-small-bold'
-  | 'heading-midsize-regular'
-  | 'heading-midsize-medium'
-  | 'heading-midsize-bold'
-  | 'heading-large-regular'
-  | 'heading-large-medium'
-  | 'heading-large-bold'
-  | 'heading-xlarge-regular'
-  | 'heading-xlarge-medium'
-  | 'heading-xlarge-bold'
-  | 'headline-small-light'
-  | 'headline-small-regular';
+import { TYPE, VALID_TEXT_TAGS } from './text.constants';
+import type { ValueOf } from '../../utils/types';
 
-export type ValidTextTags = 'h1' | 'h2' | 'h3' | 'h4' | 'h5'
-  | 'h6' | 'p' | 'small' | 'span' | 'div';
+export type TextType = ValueOf<typeof TYPE>;
+export type TagName = ValueOf<typeof VALID_TEXT_TAGS>;

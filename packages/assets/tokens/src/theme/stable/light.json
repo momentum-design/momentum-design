@@ -1374,7 +1374,7 @@
         "promotion": {
           "normal": {
             "type": "color",
-            "value": "linear-gradient(46deg, {color.decorative.purple.100} 0%, {color.decorative.pink.70} 100%)",
+            "value": "{color.decorative.purple.60}",
             "description": "Used for border of promotional banner"
           }
         },
@@ -1430,8 +1430,8 @@
             "normal": {
               "parent": "theme/stable/light",
               "type": "color",
-              "value": "{color.core.gray.50}",
-              "description": "Core Token: {color.core.gray.50}\nHEX: #8f8f8f\nUsed for progress indicator"
+              "value": "{color.core.gray.60}",
+              "description": "Core Token: {color.core.gray.60}\nHEX: #707070\nUsed for progress bar indicator"
             }
           }
         },
@@ -2612,29 +2612,31 @@
         }
       },
       "focus": {
-        "0": {
-          "value": "{color.core.white-alpha.100}",
-          "type": "color",
-          "description": "Used for focus ring effect"
-        },
-        "1": {
-          "value": "{color.core.blue.60}",
-          "type": "color",
-          "description": "Used for focus ring effect"
-        },
-        "2": {
-          "value": "{color.core.blue.60}",
-          "type": "color",
-          "$extensions": {
-            "studio.tokens": {
-              "modify": {
-                "type": "alpha",
-                "value": "0.35",
-                "space": "lch"
-              }
-            }
+        "default": {
+          "0": {
+            "value": "{color.core.white-alpha.100}",
+            "type": "color",
+            "description": "Used for focus ring effect"
           },
-          "description": "Used for focus ring effect"
+          "1": {
+            "value": "{color.core.blue.60}",
+            "type": "color",
+            "description": "Used for focus ring effect"
+          },
+          "2": {
+            "value": "{color.core.blue.60}",
+            "type": "color",
+            "$extensions": {
+              "studio.tokens": {
+                "modify": {
+                  "type": "alpha",
+                  "value": "0.35",
+                  "space": "lch"
+                }
+              }
+            },
+            "description": "Used for focus ring effect"
+          }
         }
       }
     }

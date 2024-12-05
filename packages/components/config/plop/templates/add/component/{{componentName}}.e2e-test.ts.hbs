@@ -17,7 +17,7 @@ test('{{prefix}}{{separator}}{{componentName}}', async ({ componentsPage }) => {
   /**
    * ACCESSIBILITY
    */
-  await test.step('accessibility', async () => { 
+  await test.step('accessibility', async () => {
     await componentsPage.accessibility.checkForA11yViolations('{{componentName}}-default');
   });
 

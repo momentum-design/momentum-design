@@ -47,6 +47,7 @@ const styles = [
     }
     .mdc-badge-icon__primary {
       background-color: var(--mdc-badge-primary-background-color);
+      color: var(--mdc-badge-primary-foreground-color);
     }
     .mdc-badge-icon__success {
       background-color: var(--mdc-badge-success-background-color);
@@ -64,6 +65,13 @@ const styles = [
       background-color: var(--mdc-badge-secondary-background-color);
       color: var(--mdc-badge-secondary-foreground-color);
     }
+
+    /* High Contrast Mode */
+    @media (forced-colors: active) {
+    .mdc-badge-dot, .mdc-badge-icon, .mdc-badge-text {
+      outline: 0.125rem solid;
+    }
+  }
   `,
 ];
 

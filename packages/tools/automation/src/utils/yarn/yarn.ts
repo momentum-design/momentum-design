@@ -9,7 +9,7 @@ class Yarn {
   }
 
   public static why(packageName: string): Promise<Array<WhyItem>> {
-    return Execute.run(`yarn why ${packageName} --json`)
+    return Execute.run(`yarn why ${packageName} --peers --json`)
       .then((results) => Execute.resultsToArray(results))
       .then((list) => Yarn.listToJson(list) as Array<WhyItem>);
   }

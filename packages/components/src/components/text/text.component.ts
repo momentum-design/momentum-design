@@ -2,8 +2,8 @@ import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import styles from './text.styles';
 import { Component } from '../../models';
-import type { FontType, ValidTextTags } from './text.types';
-import { DEFAULTS } from './text.constants';
+import { DEFAULTS, VALID_TEXT_TAGS } from './text.constants';
+import type { TextType, TagName } from './text.types';
 
 /**
  * Text component for creating styled text elements.
@@ -58,9 +58,10 @@ class Text extends Component {
    * - 'heading-xlarge-bold'
    * - 'headline-small-light'
    * - 'headline-small-regular'
+   * @default body-large-regular
    */
   @property({ attribute: 'type', reflect: true, type: String })
-  public type: FontType = DEFAULTS.TYPE;
+  public type: TextType = DEFAULTS.TYPE;
 
   /**
    * Specifies the HTML tag name for the text element. The default tag name is `p`.
@@ -83,22 +84,22 @@ class Text extends Component {
    * Note that the styling is determined by the `type` attribute.
    */
   @property({ attribute: 'tagname', reflect: true, type: String })
-  public tagname?: ValidTextTags = DEFAULTS.TEXT_ELEMENT_TAGNAME;
+  public tagname?: TagName = DEFAULTS.TEXT_ELEMENT_TAGNAME;
 
   public override render() {
     // Lit does not support dynamically changing values for the tag name of a custom element.
     // Read more: https://lit.dev/docs/templates/expressions/#invalid-locations
     switch (this.tagname) {
-      case 'h1': return html`<h1 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h1>`;
-      case 'h2': return html`<h2 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h2>`;
-      case 'h3': return html`<h3 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h3>`;
-      case 'h4': return html`<h4 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h4>`;
-      case 'h5': return html`<h5 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h5>`;
-      case 'h6': return html`<h6 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h6>`;
-      case 'div': return html`<div part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></div>`;
-      case 'span': return html`<span part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></span>`;
-      case 'small': return html`<small part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></small>`;
-      case 'p':
+      case VALID_TEXT_TAGS.H1: return html`<h1 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h1>`;
+      case VALID_TEXT_TAGS.H2: return html`<h2 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h2>`;
+      case VALID_TEXT_TAGS.H3: return html`<h3 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h3>`;
+      case VALID_TEXT_TAGS.H4: return html`<h4 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h4>`;
+      case VALID_TEXT_TAGS.H5: return html`<h5 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h5>`;
+      case VALID_TEXT_TAGS.H6: return html`<h6 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h6>`;
+      case VALID_TEXT_TAGS.DIV: return html`<div part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></div>`;
+      case VALID_TEXT_TAGS.SPAN: return html`<span part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></span>`;
+      case VALID_TEXT_TAGS.SMALL: return html`<small part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></small>`;
+      case VALID_TEXT_TAGS.P:
       default: return html`<p part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></p>`;
     }
   }

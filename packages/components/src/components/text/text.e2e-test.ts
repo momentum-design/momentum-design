@@ -1,14 +1,14 @@
 /* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import { DEFAULTS, VALUES } from './text.constants';
-import type { FontType, ValidTextTags } from './text.types';
+import { TYPE, VALID_TEXT_TAGS } from './text.constants';
+import type { TextType, TagName } from './text.types';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
-  type: FontType;
+  type?: TextType;
   children: any;
-  tagname?: ValidTextTags;
+  tagname?: TagName;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -27,18 +27,48 @@ const setup = async (args: SetupOptions) => {
   return text;
 };
 
-const typesToTest: Array<FontType> = VALUES.TYPE;
-const tagnameToTest: Array<ValidTextTags> = VALUES.TAGNAME;
 const textContent = 'abcdefghijklmnopqrstuvwxyz1234567890';
 
 test.describe('mdc-text', () => {
   test.use({
     viewport: {
-      width: 3000,
-      height: 500,
+      width: 1280,
+      height: 2500,
     },
   });
-  for (const textType of typesToTest) {
+
+  /**
+   * VISUAL REGRESSION
+   */
+  test('visual-regression', async ({ componentsPage }) => {
+    const textTypesMarkup = await componentsPage.visualRegression.generateComponentMarkup(
+      'mdc-text',
+      {
+        type: TYPE,
+      },
+      { children: textContent },
+    );
+    const textTypes = await componentsPage.visualRegression.createStickerSheet(componentsPage, textTypesMarkup);
+
+    await test.step('matches screenshot of element types', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-text-types', { element: textTypes });
+    });
+
+    const textTagsMarkup = await componentsPage.visualRegression.generateComponentMarkup(
+      'mdc-text',
+      {
+        tagname: VALID_TEXT_TAGS,
+      },
+      { children: textContent },
+    );
+    const textTags = await componentsPage.visualRegression.createStickerSheet(componentsPage, textTagsMarkup);
+
+    await test.step('matches screenshot of element tagnames', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-text-tagname', { element: textTags });
+    });
+  });
+
+  for (const textType of Object.values(TYPE)) {
     test(textType, async ({ componentsPage }) => {
       const text = await setup({ componentsPage, type: textType, children: textContent });
 
@@ -47,15 +77,6 @@ test.describe('mdc-text', () => {
        */
       await test.step('accessibility', async () => {
         await componentsPage.accessibility.checkForA11yViolations(`text-default-${textType}`);
-      });
-
-      /**
-       * VISUAL REGRESSION
-       */
-      await test.step('visual-regression', async () => {
-        await test.step('matches screenshot of element', async () => {
-          await componentsPage.visualRegression.takeScreenshot(`mdc-text-${textType}`, { element: text });
-        });
       });
 
       /**
@@ -69,11 +90,11 @@ test.describe('mdc-text', () => {
     });
   }
 
-  for (const tagname of tagnameToTest) {
+  for (const tagname of Object.values(VALID_TEXT_TAGS)) {
     test(tagname, async ({ componentsPage }) => {
       const text = await setup({
         componentsPage,
-        type: DEFAULTS.TYPE,
+        type: TYPE.BODY_MIDSIZE_REGULAR,
         tagname,
         children: textContent,
       });
@@ -83,16 +104,6 @@ test.describe('mdc-text', () => {
        */
       await test.step('accessibility', async () => {
         await componentsPage.accessibility.checkForA11yViolations(`text-with-${tagname}-tag`);
-      });
-
-      /**
-       * VISUAL REGRESSION
-       */
-      // skipping visual regression for firefox and webkit due to flakiness
-      await test.step('visual-regression', async () => {
-        await test.step('matches screenshot of element', async () => {
-          await componentsPage.visualRegression.takeScreenshot(`mdc-text-tag-${tagname}`, { element: text });
-        });
       });
 
       /**
