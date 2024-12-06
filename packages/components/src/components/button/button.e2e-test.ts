@@ -242,16 +242,22 @@ test.describe.parallel('mdc-button', () => {
 
   test.only('mdc-button visual regression using stickersheet', async ({ componentsPage }) => {
     const buttonSheet = new StickerSheet(componentsPage, 'mdc-button');
-    const commonMount = async () => {
+    const commonMount = async (iconButton = false) => {
+      const size = iconButton ? { ...PILL_BUTTON_SIZES, 52: 52, 64: 64 } : PILL_BUTTON_SIZES;
       await buttonSheet.mountComponents({
         variant: { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY },
-        size: PILL_BUTTON_SIZES,
+        size,
         color: BUTTON_COLORS,
       });
     };
+
+    // pill button
     buttonSheet.setAttributes({ children: 'Pill button' });
     await commonMount();
-
+    // tertiary pill button
+    buttonSheet.setAttributes({ children: 'Pill button', variant: BUTTON_VARIANTS.TERTIARY });
+    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES });
+    // pill with prefix icon
     buttonSheet.setAttributes({
       children: 'Pill with prefix',
       'prefix-icon': 'placeholder-light',
@@ -260,13 +266,78 @@ test.describe.parallel('mdc-button', () => {
       await component.locator('mdc-icon').waitFor();
     });
     await commonMount();
-
-    buttonSheet.setAttributes({ active: 'true' });
-    buttonSheet.setAssertion(async (component: Locator) => {
-      await component.locator('mdc-icon').waitFor();
-      // TODO: check if the icon is having filled value.
+    // tertiary pill with prefix icon
+    buttonSheet.setAttributes({
+      children: 'Pill button',
+      variant: BUTTON_VARIANTS.TERTIARY,
+      'prefix-icon': 'placeholder-light',
+    });
+    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES });
+    // pill with postfix icon
+    buttonSheet.setAttributes({
+      children: 'Pill with prefix',
+      'postfix-icon': 'placeholder-light',
     });
     await commonMount();
+    // tertiary pill with postfix icon
+    buttonSheet.setAttributes({
+      children: 'Pill button',
+      variant: BUTTON_VARIANTS.TERTIARY,
+      'postfix-icon': 'placeholder-light',
+    });
+    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES });
+    // icon button
+    buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light' });
+    await commonMount(true);
+    // tertiary icon button
+    buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light', variant: BUTTON_VARIANTS.TERTIARY });
+    await buttonSheet.mountComponents({ size: ICON_BUTTON_SIZES });
+
+    // disabled pill button
+    buttonSheet.setAttributes({ children: 'Pill button', disabled: 'true' });
+    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+    // disabled pill with prefix icon button
+    buttonSheet.setAttributes({ children: 'Pill with prefix', disabled: 'true', 'prefix-icon': 'placeholder-light' });
+    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+    // disabled pill with postfix button
+    buttonSheet.setAttributes({ children: 'Pill with postfix', disabled: 'true', 'postfix-icon': 'placeholder-light' });
+    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+    // disabled icon button
+    buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light', disabled: 'true' });
+    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+
+    // 'soft-disabled' pill button
+    buttonSheet.setAttributes({ children: 'Pill button', 'soft-disabled': 'true' });
+    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+    // 'soft-disabled' pill with prefix icon button
+    buttonSheet.setAttributes({
+      children: 'Pill with prefix',
+      'soft-disabled': 'true',
+      'prefix-icon': 'placeholder-light',
+    });
+    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+    // 'soft-disabled' pill with postfix button
+    buttonSheet.setAttributes({
+      children: 'Pill with postfix',
+      'soft-disabled': 'true',
+      'postfix-icon': 'placeholder-light',
+    });
+    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+    // 'soft-disabled' icon button
+    buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light', 'soft-disabled': 'true' });
+    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+
+    // buttonSheet.setAttributes({ children: 'Pill with prefix',
+    //   'prefix-icon': 'placeholder-light',
+    //   active: 'true' });
+    // buttonSheet.setAssertion(async (component: Locator) => {
+    //   await component.locator('mdc-icon').waitFor();
+    // await component.locator('path[d=\'M26.99 16c0 2.57-.9 5.058-2.54 7.035l5.257 5.258a1 1 0 0 1-1.414 1.414l-5.256-5.256a10.99 10.99 0 0 1-14.074 0l-5.256 5.256a1 1 0 1 1-1.414-1.414l5.258-5.258a11.01 11.01 0 0 1 0-14.07L2.293 3.706a1 1 0 0 1 1.414-1.414l5.256 5.256a10.99 10.99 0 0 1 14.074 0l5.256-5.256a1 1 0 1 1 1.414 1.414L24.45 8.965A11 11 0 0 1 26.99 16\']').waitFor();
+    // const icon = await component.locator('mdc-icon');
+    // await expect(component).toHaveAttribute('prefix-icon', 'placeholder-filled');
+    // await expect(icon).toHaveAttribute('name', 'placeholder-filled');
+    // });
+    // await commonMount();
 
     await test.step('matches screenshot of button element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-button');
