@@ -74,28 +74,24 @@ class VisualRegression {
    * @param componentTag - The tag name of the component to generate.
    * @param attributes - Attributes to apply to the components, with key-value pairs representing attribute
    *                     names and their possible values. The values are defined as an object of key-value pairs.
-   * @param defaultAttributes - Default attributes that should be applied to every component generated.
-   *                            If `children` is provided, it will be used as the inner content of the component.
+   * @param defaultAttributes - An optional object that can contain:
+   *   - `propsArr`: An array of strings representing additional attributes to be included in each
+   *     generated component. These strings will be combined into a single string of attributes.
+   *   - `children`: The content to be rendered inside the generated component. This can be
+   *     a string or any valid JSX/HTML content.
    *
    * @returns The generated markup for the component with the specified attributes.
    */
   generateComponentMarkup = (
     componentTag: string,
-    attributes: Record<string, Record<string, string | number>>,
-    defaultAttributes?: Record<string, string>,
+    attributes: Record<string, Record<string, any>>,
+    defaultAttributes?: { propsArr?: string[]; children?: any },
   ) => {
     if (Object.keys(attributes).length === 0) return '';
 
     const [primaryKey, primaryValues] = Object.entries(attributes)[0];
     const otherAttributes = Object.entries(attributes).slice(1);
-
-    const defaultAttrs = defaultAttributes
-      ? Object.entries(defaultAttributes)
-        .filter(([key]) => key !== 'children')
-        .map(([key, value]) => `${key}="${value}"`)
-        .join(' ')
-      : '';
-    const children = defaultAttributes?.children || '';
+    const defaultAttrs = defaultAttributes?.propsArr ? defaultAttributes.propsArr.join(' ') : '';
 
     return Object.values(primaryValues)
       .map((primaryValue) => {
@@ -104,11 +100,19 @@ class VisualRegression {
             acc.flatMap((prev) => Object.values(values).map((currVal) => `${prev} ${key}="${currVal}"`)),
           [''],
         );
-        return `<div class="componentRowWrapper">
+        // we need to maintain this structure for the component to be rendered correctly.
+        // Else an empty string would be considered as a value within the slot. This affects the button component tests.
+        if (defaultAttributes?.children) {
+          return `<div class="componentRowWrapper">
         ${combinations.map((combination) => `
         <${componentTag} ${defaultAttrs} ${primaryKey}="${primaryValue}" ${combination}>
-          ${children}
+          ${defaultAttributes.children}
         </${componentTag}>`).join('')}
+      </div>`;
+        }
+        return `<div class="componentRowWrapper">
+        ${combinations.map((combination) => `
+        <${componentTag} ${defaultAttrs} ${primaryKey}="${primaryValue}" ${combination}></${componentTag}>`).join('')}
       </div>`;
       })
       .join('');
