@@ -4,6 +4,8 @@ import '.';
 import { html } from 'lit';
 import { TYPE as PRESENCE_TYPE, SIZE as PRESENCE_SIZE } from '../presence/presence.constants';
 import { DEFAULTS } from './avatar.constants';
+import { disableControls } from '../../../config/storybook/utils';
+import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 const render = (args: Args) => html`
   <mdc-avatar
@@ -15,7 +17,6 @@ const render = (args: Args) => html`
     presence="${args.presence}"
     size="${args.size}"
     src="${args.src}"
-    ?is-clickable="${args['is-clickable']}"
     ?is-typing="${args['is-typing']}"
   ></mdc-avatar>
 `;
@@ -36,10 +37,6 @@ const meta: Meta = {
       control: 'text',
     },
     presence: {
-      if: {
-        arg: 'counter',
-        exists: false,
-      },
       control: 'select',
       options: Object.values(PRESENCE_TYPE),
     },
@@ -47,30 +44,37 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(PRESENCE_SIZE),
     },
+    'is-typing': {
+      control: 'boolean',
+    },
     'icon-name': {
       control: 'text',
     },
     counter: {
       control: 'number',
     },
-    'is-typing': {
-      control: 'boolean',
-    },
     'aria-label': {
       control: 'text',
     },
+    ...classArgType,
+    ...styleArgType,
   },
 };
 
 export default meta;
 
 export const Image: StoryObj = {
+  argTypes: {
+    ...disableControls([
+      'counter',
+      'icon-name',
+    ]),
+  },
   args: {
-    size: 'xx_large',
+    size: PRESENCE_SIZE.X_LARGE,
     src: 'https://picsum.photos/id/63/256',
     initials: 'AK',
     'icon-name': 'placeholder-bold',
-    'aria-label': 'An Avatar with Photo',
   },
 };
 
@@ -81,24 +85,45 @@ export const Default: StoryObj = {
 };
 
 export const Initials: StoryObj = {
+  argTypes: {
+    ...disableControls([
+      'counter',
+      'icon-name',
+      'src',
+    ]),
+  },
   args: {
     initials: 'MD',
-    size: 'xx_large',
+    size: PRESENCE_SIZE.X_LARGE,
   },
 };
 
 export const Counter: StoryObj = {
+  argTypes: {
+    ...disableControls([
+      'icon-name',
+      'initials',
+      'presence',
+      'src',
+    ]),
+  },
   args: {
     counter: 99,
-    'is-clickable': true,
-    size: 'x_large',
+    size: PRESENCE_SIZE.X_LARGE,
   },
 };
 
 export const Icon: StoryObj = {
+  argTypes: {
+    ...disableControls([
+      'counter',
+      'initials',
+      'src',
+    ]),
+  },
   args: {
     'icon-name': 'placeholder-bold',
-    size: 'x_small',
+    size: PRESENCE_SIZE.X_LARGE,
   },
 };
 
@@ -110,6 +135,16 @@ export const Size: StoryObj = {
       `)}
     </div>
   `,
+  argTypes: {
+    ...disableControls([
+      'counter',
+      'icon-name',
+      'initials',
+      'presence',
+      'size',
+      'src',
+    ]),
+  },
 };
 
 export const SizeWithPresence: StoryObj = {

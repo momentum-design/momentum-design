@@ -126,7 +126,7 @@ class Avatar extends Component {
   override ariaLabel: string | null = null;
 
   /**
-   * The avatar presence will be hidden if the avatar type is COUNTER and the when `isTyping` is set to true.
+   * The avatar presence will be hidden if the avatar type is COUNTER.
    * If the presence is set, it will be rendered as a child of the avatar.
    *
    * @param type - The type of the avatar.
@@ -198,7 +198,7 @@ class Avatar extends Component {
    * @returns The template result containing the avatar icon.
    */
   private iconTemplate(): TemplateResult {
-    const name = this.iconName ?? DEFAULTS.ICON_NAME;
+    const name = this.iconName || DEFAULTS.ICON_NAME;
     return html`
       <mdc-icon
         class="icon"
@@ -321,7 +321,7 @@ class Avatar extends Component {
   /**
    * Generates the loading indicator content for the avatar when typing.
    * If the avatar is in typing state, this method returns a loading indicator
-   * comprising three small filled icons, scaled based on the avatar size.
+   * comprising three small filled dots, scaled based on the avatar size.
    *
    * @returns The template result containing the loading indicator, or an empty template if not typing.
    */
