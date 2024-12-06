@@ -80,6 +80,19 @@ class StickerSheet {
       }
     }
 
+    private generateCombinations(keys: string[], values: any[][], index = 0, current: any = {}): any[] {
+      if (index === keys.length) return current;
+
+      const key = keys[index];
+      const result: any[] = [];
+
+      for (const value of values[index]) {
+        result.push(this.generateCombinations(keys, values, index + 1, { ...current, [key]: value }));
+      }
+
+      return result;
+    }
+
     public async mountComponents(combinations: Record<string, Record<string, any>>) {
       if (!this.tagname) {
         throw new Error('tagname is required');
@@ -110,17 +123,8 @@ class StickerSheet {
       }
     }
 
-    private generateCombinations(keys: string[], values: any[][], index = 0, current: any = {}): any[] {
-      if (index === keys.length) return current;
-
-      const key = keys[index];
-      const result: any[] = [];
-
-      for (const value of values[index]) {
-        result.push(this.generateCombinations(keys, values, index + 1, { ...current, [key]: value }));
-      }
-
-      return result;
+    public getWrapperContainer() {
+      return this.componentPage.page.locator('.componentWrapper');
     }
 }
 
