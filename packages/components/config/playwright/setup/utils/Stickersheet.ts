@@ -55,9 +55,10 @@ class StickerSheet {
         : `${openingTag}</${this.tagname}>`;
 
       await this.componentPage.page.evaluate(({ childrenEl }) => {
-        const wrapper = document.querySelector('.componentWrapper');
-        if (wrapper) {
-          wrapper.insertAdjacentHTML('beforeend', `${childrenEl}`);
+        const allRows = document.querySelectorAll('.componentRowWrapper');
+        const targetRow = allRows[allRows.length - 1];
+        if (targetRow) {
+          targetRow.insertAdjacentHTML('beforeend', `${childrenEl}`);
         }
       }, { childrenEl });
 
@@ -69,6 +70,22 @@ class StickerSheet {
       this.rowId += 1;
     }
 
+    private async createRowWrapper() {
+      await this.componentPage.page.evaluate(() => {
+        const wrapper = document.querySelector('.componentWrapper');
+        if (wrapper) {
+          wrapper.insertAdjacentHTML('beforeend', '<div class="componentRowWrapper"></div>');
+        }
+      });
+    }
+
+    private async createWrapperForCombination(combinationArr: Array<Record<string, any>>) {
+      await this.createRowWrapper();
+      for (const combination of combinationArr) {
+        await this.addComponentToSheet(combination);
+      }
+    }
+
     public async mountComponents(combinations: Record<string, Record<string, any>>) {
       if (!this.tagname) {
         throw new Error('tagname is required');
@@ -76,7 +93,7 @@ class StickerSheet {
 
       await this.componentPage.mount({
         html: `
-        <div class="componentRowWrapper"></div>
+        <div class="componentWrapper"></div>
         `,
         clearDocument: false,
       });
@@ -103,10 +120,15 @@ class StickerSheet {
       };
 
       const allCombinations = generateCombinations(keys, values);
-
-      for (const combination of allCombinations) {
-        console.log('Turbo 🚀  ~ mountComponents ~ combination:', combination);
-        // await this.addComponentToSheet(combination);
+      if (Array.isArray(allCombinations[0])) {
+        for (const combination of allCombinations) {
+          await this.createWrapperForCombination(combination);
+        }
+      } else {
+        for (const combination of allCombinations) {
+          await this.createRowWrapper();
+          await this.addComponentToSheet(combination);
+        }
       }
     }
 }
