@@ -14,16 +14,14 @@ class StickerSheet {
 
     private component?: Locator;
 
-    private attributes: {children?: any, defaultAttributes?: Record<string, string>};
+    private attributes: { children?: any; defaultAttributes?: Record<string, string> } = {};
 
-    private rowId: number;
+    private rowId: number = 1;
 
-    constructor(componentPage: ComponentsPage, tagName: string, assertion?:any) {
+    constructor(componentPage: ComponentsPage, tagName: string, assertion?: (component?: Locator) => Promise<any>) {
       this.componentPage = componentPage;
       this.tagname = tagName;
       this.assertion = assertion;
-      this.rowId = 1;
-      this.attributes = {};
     }
 
     public setAssertion(assertion: any) {
@@ -36,51 +34,47 @@ class StickerSheet {
     }
 
     private async setAttributesOnComponent(otherAttributes: AttributesType) {
-      let combinedAttributes = {};
-      if (this.attributes.defaultAttributes) {
-        combinedAttributes = { ...combinedAttributes, ...this.attributes.defaultAttributes };
-      }
-      if (otherAttributes) {
-        combinedAttributes = { ...combinedAttributes, ...otherAttributes };
-      }
-      if (combinedAttributes && this.component) {
+      const combinedAttributes = {
+        ...this.attributes.defaultAttributes,
+        ...otherAttributes,
+      };
+
+      if (this.component) {
         await this.componentPage.setAttributes(this.component, combinedAttributes);
       }
     }
 
     private async addComponentToSheet(otherAttributes: AttributesType) {
       const openingTag = `<${this.tagname} id='${this.tagname}-${this.rowId}'>`;
-      const childrenEl = this.attributes?.children
+      const childrenEl = this.attributes.children
         ? `${openingTag}${this.attributes.children}</${this.tagname}>`
         : `${openingTag}</${this.tagname}>`;
 
       await this.componentPage.page.evaluate(({ childrenEl }) => {
-        const allRows = document.querySelectorAll('.componentRowWrapper');
-        const targetRow = allRows[allRows.length - 1];
-        if (targetRow) {
-          targetRow.insertAdjacentHTML('beforeend', `${childrenEl}`);
-        }
+        const targetRow = document.querySelector('.componentRowWrapper:last-of-type');
+        targetRow?.insertAdjacentHTML('beforeend', childrenEl);
       }, { childrenEl });
 
       this.component = await this.componentPage.page.locator(`#${this.tagname}-${this.rowId}`);
       await this.setAttributesOnComponent(otherAttributes);
+
       if (this.assertion) {
         await this.assertion(this.component);
       }
+
       this.rowId += 1;
     }
 
     private async createRowWrapper() {
       await this.componentPage.page.evaluate(() => {
         const wrapper = document.querySelector('.componentWrapper');
-        if (wrapper) {
-          wrapper.insertAdjacentHTML('beforeend', '<div class="componentRowWrapper"></div>');
-        }
+        wrapper?.insertAdjacentHTML('beforeend', '<div class="componentRowWrapper"></div>');
       });
     }
 
     private async createWrapperForCombination(combinationArr: Array<Record<string, any>>) {
       await this.createRowWrapper();
+
       for (const combination of combinationArr) {
         await this.addComponentToSheet(combination);
       }
@@ -92,44 +86,41 @@ class StickerSheet {
       }
 
       await this.componentPage.mount({
-        html: `
-        <div class="componentWrapper"></div>
-        `,
+        html: '<div class="componentWrapper"></div>',
         clearDocument: false,
       });
 
       if (Object.keys(combinations).length === 0) {
         await this.addComponentToSheet({});
+        return;
       }
+
       const keys = Object.keys(combinations);
       const values = Object.values(combinations).map(Object.values);
 
-      const generateCombinations = (keys: string[], values: any[][], index = 0, current: any = {}) => {
-        if (index === keys.length) {
-          return current;
-        }
+      const allCombinations = this.generateCombinations(keys, values);
 
-        const key = keys[index];
-        const result: any[] = [];
-
-        for (const value of values[index]) {
-          result.push(generateCombinations(keys, values, index + 1, { ...current, [key]: value }));
-        }
-
-        return result;
-      };
-
-      const allCombinations = generateCombinations(keys, values);
-      if (Array.isArray(allCombinations[0])) {
-        for (const combination of allCombinations) {
+      for (const combination of allCombinations) {
+        if (Array.isArray(combination)) {
           await this.createWrapperForCombination(combination);
-        }
-      } else {
-        for (const combination of allCombinations) {
+        } else {
           await this.createRowWrapper();
           await this.addComponentToSheet(combination);
         }
       }
+    }
+
+    private generateCombinations(keys: string[], values: any[][], index = 0, current: any = {}): any[] {
+      if (index === keys.length) return current;
+
+      const key = keys[index];
+      const result: any[] = [];
+
+      for (const value of values[index]) {
+        result.push(this.generateCombinations(keys, values, index + 1, { ...current, [key]: value }));
+      }
+
+      return result;
     }
 }
 
