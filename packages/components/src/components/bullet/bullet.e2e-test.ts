@@ -25,6 +25,7 @@ const setup = async (args: SetupOptions) => {
 test('mdc-bullet', async ({ componentsPage }) => {
   const bulletStickerSheet = new StickerSheet(componentsPage, 'mdc-bullet');
   await bulletStickerSheet.mountComponents({ size: SIZE });
+  const container = bulletStickerSheet.getWrapperContainer();
 
   /**
    * ACCESSIBILITY
@@ -38,7 +39,7 @@ test('mdc-bullet', async ({ componentsPage }) => {
    */
   await test.step('visual-regression', async () => {
     await test.step('matches screenshot of bullet sizes stickersheet', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-bullet-sizes');
+      await componentsPage.visualRegression.takeScreenshot('mdc-bullet-sizes', { element: container });
     });
   });
 

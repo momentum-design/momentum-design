@@ -79,7 +79,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
 };
 
 test.describe.parallel('mdc-Presence', () => {
-  test.use({ viewport: { width: 500, height: 1000 } });
+  test.use({ viewport: { width: 400, height: 800 } });
   test('standalone', async ({ componentsPage }) => {
     await testToRun(componentsPage);
   });
