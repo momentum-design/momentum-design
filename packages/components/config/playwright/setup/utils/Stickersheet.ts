@@ -50,20 +50,14 @@ class StickerSheet {
 
     private async addComponentToSheet(otherAttributes: AttributesType) {
       const openingTag = `<${this.tagname} id='${this.tagname}-${this.rowId}'>`;
-      // await this.componentPage.mount({
-      //   html: this.attributes?.children
-      //     ? `${openingTag}${this.attributes.children}</${this.tagname}>`
-      //     : `${openingTag}</${this.tagname}>`,
-      //   clearDocument: false,
-      // });
       const childrenEl = this.attributes?.children
         ? `${openingTag}${this.attributes.children}</${this.tagname}>`
         : `${openingTag}</${this.tagname}>`;
 
       await this.componentPage.page.evaluate(({ childrenEl }) => {
-        const wrapper = document.querySelector('.componentRowWrapper');
+        const wrapper = document.querySelector('.componentWrapper');
         if (wrapper) {
-          wrapper.insertAdjacentHTML('beforeend', childrenEl);
+          wrapper.insertAdjacentHTML('beforeend', `${childrenEl}`);
         }
       }, { childrenEl });
 
@@ -95,14 +89,14 @@ class StickerSheet {
 
       const generateCombinations = (keys: string[], values: any[][], index = 0, current: any = {}) => {
         if (index === keys.length) {
-          return [current];
+          return current;
         }
 
         const key = keys[index];
         const result: any[] = [];
 
         for (const value of values[index]) {
-          result.push(...generateCombinations(keys, values, index + 1, { ...current, [key]: value }));
+          result.push(generateCombinations(keys, values, index + 1, { ...current, [key]: value }));
         }
 
         return result;
@@ -111,7 +105,8 @@ class StickerSheet {
       const allCombinations = generateCombinations(keys, values);
 
       for (const combination of allCombinations) {
-        await this.addComponentToSheet(combination);
+        console.log('Turbo 🚀  ~ mountComponents ~ combination:', combination);
+        // await this.addComponentToSheet(combination);
       }
     }
 }
