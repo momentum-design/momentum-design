@@ -2,6 +2,7 @@
 /* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
+import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { SIZE } from './bullet.constants';
 import type { Size } from './bullet.types';
 
@@ -22,13 +23,8 @@ const setup = async (args: SetupOptions) => {
 };
 
 test('mdc-bullet', async ({ componentsPage }) => {
-  const bulletSizesMarkup = componentsPage.visualRegression.generateComponentMarkup(
-    'mdc-bullet',
-    {
-      size: SIZE,
-    },
-  );
-  const container = await componentsPage.visualRegression.createStickerSheet(componentsPage, bulletSizesMarkup);
+  const bulletStickerSheet = new StickerSheet(componentsPage, 'mdc-bullet');
+  await bulletStickerSheet.mountComponents({ size: SIZE });
 
   /**
    * ACCESSIBILITY
@@ -42,7 +38,7 @@ test('mdc-bullet', async ({ componentsPage }) => {
    */
   await test.step('visual-regression', async () => {
     await test.step('matches screenshot of bullet sizes stickersheet', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-bullet-sizes', { element: container });
+      await componentsPage.visualRegression.takeScreenshot('mdc-bullet-sizes');
     });
   });
 

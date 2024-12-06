@@ -1,6 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
+import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { TYPE, VALID_TEXT_TAGS } from './text.constants';
 import type { TextType, TagName } from './text.types';
 
@@ -32,8 +33,8 @@ const textContent = 'abcdefghijklmnopqrstuvwxyz1234567890';
 test.describe('mdc-text', () => {
   test.use({
     viewport: {
-      width: 1280,
-      height: 2500,
+      width: 1200,
+      height: 3200,
     },
   });
 
@@ -41,30 +42,13 @@ test.describe('mdc-text', () => {
    * VISUAL REGRESSION
    */
   test('visual-regression', async ({ componentsPage }) => {
-    const textTypesMarkup = await componentsPage.visualRegression.generateComponentMarkup(
-      'mdc-text',
-      {
-        type: TYPE,
-      },
-      { children: textContent },
-    );
-    const textTypes = await componentsPage.visualRegression.createStickerSheet(componentsPage, textTypesMarkup);
-
-    await test.step('matches screenshot of element types', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-text-types', { element: textTypes });
-    });
-
-    const textTagsMarkup = await componentsPage.visualRegression.generateComponentMarkup(
-      'mdc-text',
-      {
-        tagname: VALID_TEXT_TAGS,
-      },
-      { children: textContent },
-    );
-    const textTags = await componentsPage.visualRegression.createStickerSheet(componentsPage, textTagsMarkup);
+    const textStickerSheet = new StickerSheet(componentsPage, 'mdc-text');
+    textStickerSheet.setAttributes({ children: textContent });
+    await textStickerSheet.mountComponents({ type: TYPE });
+    await textStickerSheet.mountComponents({ tagname: VALID_TEXT_TAGS });
 
     await test.step('matches screenshot of element tagnames', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-text-tagname', { element: textTags });
+      await componentsPage.visualRegression.takeScreenshot('mdc-text');
     });
   });
 
