@@ -24,15 +24,28 @@ class StickerSheet {
       this.assertion = assertion;
     }
 
+    /**
+     * Sets an assertion function to be executed after a component is added to the sheet.
+     * Based on this function, the component is added on to the sticker sheet.
+     * @param assertion - A function that takes an optional Locator and returns a Promise.
+     */
     public setAssertion(assertion: any) {
       this.assertion = assertion;
     }
 
+    /**
+     * Sets the attributes for the component, separating children from default attributes.
+     * @param attributes - An object containing children and defaultAttributes for the component.
+     */
     public setAttributes(attributes: AttributesType) {
       const { children, ...defaultAttributes } = attributes;
       this.attributes = { children, defaultAttributes };
     }
 
+    /**
+     * Sets the combined attributes on the currently selected component.
+     * @param otherAttributes - Additional attributes to be combined with default attributes.
+     */
     private async setAttributesOnComponent(otherAttributes: AttributesType) {
       const combinedAttributes = {
         ...this.attributes.defaultAttributes,
@@ -44,6 +57,10 @@ class StickerSheet {
       }
     }
 
+    /**
+     * Adds a new component to the sheet with specified attributes.
+     * @param otherAttributes - Attributes to be applied to the new component.
+     */
     private async addComponentToSheet(otherAttributes: AttributesType) {
       const openingTag = `<${this.tagname} id='${this.tagname}-${this.rowId}'>`;
       const childrenEl = this.attributes.children
@@ -65,6 +82,9 @@ class StickerSheet {
       this.rowId += 1;
     }
 
+    /**
+     * Creates a new row wrapper in the component sheet.
+     */
     private async createRowWrapper() {
       await this.componentPage.page.evaluate(() => {
         const wrapper = document.querySelector('.componentWrapper');
@@ -72,6 +92,10 @@ class StickerSheet {
       });
     }
 
+    /**
+     * Creates a wrapper for a combination of components and adds them to the sheet.
+     * @param combinationArr - An array of objects representing combinations of attributes for components.
+     */
     private async createWrapperForCombination(combinationArr: Array<Record<string, any>>) {
       await this.createRowWrapper();
 
@@ -80,6 +104,14 @@ class StickerSheet {
       }
     }
 
+    /**
+     * Generates all combinations of attribute values based on provided keys and values.
+     * @param keys - An array of keys representing attribute names.
+     * @param values - A 2D array where each sub-array contains possible values for corresponding keys.
+     * @param index - The current index in the keys array (used for recursion).
+     * @param current - The current combination being built (used for recursion).
+     * @returns An array of objects representing all possible combinations of attributes.
+     */
     private generateCombinations(keys: string[], values: any[][], index = 0, current: any = {}): any[] {
       if (index === keys.length) return current;
 
@@ -92,6 +124,13 @@ class StickerSheet {
 
       return result;
     }
+
+    /**
+     * Mounts components onto the page using specified combinations of attributes.
+     * @param combinations - An object where keys are attribute names and
+     * values are objects containing possible attribute configurations.
+     * @throws Will throw an error if tagname is not defined.
+     */
 
     public async mountComponents(combinations: Record<string, Record<string, any>>) {
       if (!this.tagname) {
@@ -123,6 +162,10 @@ class StickerSheet {
       }
     }
 
+    /**
+     * Retrieves the wrapper container element for components on the page.
+     * @returns A Locator representing the component wrapper container element.
+     */
     public getWrapperContainer() {
       return this.componentPage.page.locator('.componentWrapper');
     }
