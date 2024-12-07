@@ -1,12 +1,26 @@
 import utils from '../../utils/tag-name';
+import { SIZE as AVATAR_SIZE } from '../presence/presence.constants';
 
 const TAG_NAME = utils.constructTagName('avatar');
 
-const LENGTH_UNIT = 'rem';
-
-const DEFAULTS = {
-  TYPE: 'photo' as const,
-  SIZE: 1.5,
+const AVATAR_TYPE = {
+  COUNTER: 'counter',
+  ICON: 'icon',
+  PHOTO: 'photo',
+  TEXT: 'text',
 } as const;
 
-export { TAG_NAME, DEFAULTS, LENGTH_UNIT };
+const MAX_COUNTER = 99;
+
+const DEFAULTS = {
+  TYPE: AVATAR_TYPE.PHOTO,
+  SIZE: AVATAR_SIZE.X_SMALL,
+  ICON_NAME: 'user-regular',
+} as const;
+
+export {
+  TAG_NAME,
+  DEFAULTS,
+  AVATAR_TYPE,
+  MAX_COUNTER,
+};
