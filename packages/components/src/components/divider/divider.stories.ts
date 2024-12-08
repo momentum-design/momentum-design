@@ -1,21 +1,26 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { DIVIDER_ARROW_DIRECTION, DIVIDER_ORIENTATION, DIVIDER_VARIANT } from './divider.constants';
+import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { DIVIDER_ORIENTATION, DIVIDER_VARIANT } from './divider.constants';
+import { disableControls, hideControls } from '../../../config/storybook/utils';
 
-const render = (args: Args) => html`
+const render = (args: Args) => {
+  return html`
     <div style="height: 85vh">
-      <mdc-divider 
-        orientation=${args.orientation} 
+      <mdc-divider
+        orientation=${args.orientation}
         variant=${args.variant}
-        aria-label=${args['aria-label'] || ''} 
-        aria-expanded=${args['aria-expanded'] || ''} 
+        aria-label=${args['aria-label'] || ''}
+        aria-expanded=${args['aria-expanded'] || ''}
         arrow-direction=${args['arrow-direction'] || ''}
+        button-direction=${args['button-direction'] || ''}
       >
-      ${args.slotContent}
+        ${args.slotContent}
       </mdc-divider>
     </div>
-`;
+  `;
+};
 
 const meta: Meta = {
   title: 'Work In Progress/divider',
@@ -34,45 +39,45 @@ const meta: Meta = {
       control: 'radio',
       options: Object.values(DIVIDER_VARIANT),
     },
-    'aria-label': {
-      control: 'text',
-    },
-    'aria-expanded': {
-      control: 'boolean',
-    },
-    'arrow-direction': {
-      control: 'select',
-      options: Object.values(DIVIDER_ARROW_DIRECTION),
-    },
+    ...disableControls([
+      '--mdc-divider-background-color',
+      '--mdc-divider-width',
+      '--mdc-divider-horizontal-gradient',
+      '--mdc-divider-vertical-gradient',
+      '--mdc-divider-text-font-size',
+      '--mdc-divider-text-font-color',
+      '--mdc-divider-text-margin',
+    ]),
+    ...classArgType,
+    ...styleArgType,
   },
 };
 
 export default meta;
 
 export const primary: StoryObj = {
+  argTypes: {
+    ...meta.argTypes,
+    ...hideControls(['aria-label', 'aria-expanded', 'arrow-direction', 'button-direction']),
+  },
   args: {
     orientation: DIVIDER_ORIENTATION.HORIZONTAL,
     variant: DIVIDER_VARIANT.SOLID,
-  },
-  argTypes: {
-    hasButton: { table: { disable: true } },
-    'aria-label': { table: { disable: true } },
-    'aria-expanded': { table: { disable: true } },
-    'arrow-direction': { table: { disable: true } },
   },
 };
 
 export const textDivider: StoryObj = {
   argTypes: {
-    ...primary.argTypes,
+    ...meta.argTypes,
     orientation: {
       control: 'radio',
-      options: ['horizontal'],
+      options: [DIVIDER_ORIENTATION.HORIZONTAL],
+      description: 'Only horizontal orientation with 0.063rem width is allowed',
     },
     'aria-label': {
       control: 'text',
-      description: 'Accessible label for the divider.',
     },
+    ...hideControls(['slotContent', 'aria-expanded', 'arrow-direction', 'button-direction']),
   },
   args: {
     ...primary.args,
@@ -83,26 +88,38 @@ export const textDivider: StoryObj = {
 
 export const grabberButtonDivider: StoryObj = {
   argTypes: {
-    ...primary.argTypes,
+    ...meta.argTypes,
     'aria-label': {
       control: 'text',
-      description: 'Accessible label for the divider.',
     },
     'aria-expanded': {
       control: 'boolean',
-      description: 'Accessible expand for the divider.',
     },
+    // Vertical case is pending
     'arrow-direction': {
-      control: 'radio',
-      options: Object.values(DIVIDER_ARROW_DIRECTION),
-      description: 'Direction of the arrow for grabber dividers.',
+      if: {
+        arg: 'orientation',
+        eq: DIVIDER_ORIENTATION.HORIZONTAL,
+      },
+      control: 'select',
+      options: ['up', 'down'],
     },
+    'button-direction': {
+      if: {
+        arg: 'orientation',
+        eq: DIVIDER_ORIENTATION.HORIZONTAL,
+      },
+      control: 'select',
+      options: ['up', 'down'],
+    },
+    ...hideControls(['slotContent']),
   },
   args: {
     ...primary.args,
     slotContent: html`<mdc-button></mdc-button>`,
     'aria-label': 'Divider with grabber button',
     'aria-expanded': false,
-    'arrow-direction': DIVIDER_ARROW_DIRECTION.POSITIVE,
+    'arrow-direction': 'down',
+    'button-direction': 'down',
   },
 };
