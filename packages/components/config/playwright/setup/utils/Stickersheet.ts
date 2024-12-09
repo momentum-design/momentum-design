@@ -55,9 +55,9 @@ class StickerSheet {
    * Adds a new component to the sheet with specified attributes.
    */
   private async addComponentToSheet() {
-    const childrenEl = this.children ? `<${this.tagname} id='${this.tagname}-${this.rowId}'>
-      ${this.children}
-      </${this.tagname}>` : `<${this.tagname} id='${this.tagname}-${this.rowId}'></${this.tagname}>`;
+    const childrenEl = this.children
+      ? `<${this.tagname} id='${this.tagname}-${this.rowId}'>${this.children}</${this.tagname}>`
+      : `<${this.tagname} id='${this.tagname}-${this.rowId}'></${this.tagname}>`;
 
     await this.componentPage.page.evaluate(
       ({ childrenEl }) => {
@@ -97,8 +97,12 @@ class StickerSheet {
     await this.createRowWrapper();
 
     for (const combination of combinationArr) {
-      this.setAttributes({ ...this.attributes, ...combination });
-      await this.addComponentToSheet();
+      if (Array.isArray(combination)) {
+        await this.createWrapperForCombination(combination);
+      } else {
+        this.setAttributes({ ...this.attributes, ...combination });
+        await this.addComponentToSheet();
+      }
     }
   }
 
