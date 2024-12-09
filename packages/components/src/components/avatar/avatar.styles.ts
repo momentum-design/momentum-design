@@ -1,11 +1,10 @@
 import { css } from 'lit';
-import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
+import { hostFitContentStyles } from '../../utils/styles';
 
 const styles = [hostFitContentStyles, css`
   :host {
     --mdc-avatar-default-background-color: var(--mds-color-theme-avatar-default);
     --mdc-avatar-default-foreground-color: var(--mds-color-theme-common-text-primary-normal);
-    --mdc-avatar-loading-background-color: var(--mds-color-theme-common-overlays-secondary-normal);
   }
   :host([size="xx_large"]) .content {
     width: 7.75rem;
@@ -95,6 +94,6 @@ const styles = [hostFitContentStyles, css`
     66% {box-shadow: 1.25rem 0 #FFF2, -1.25rem 0 #FFF; background: #FFF2;}
     100%{box-shadow: 1.25rem 0 #FFF2, -1.25rem 0 #FFF; background: #FFF;}
   }
-`, hostFocusRingStyles];
+`];
 
 export default styles;

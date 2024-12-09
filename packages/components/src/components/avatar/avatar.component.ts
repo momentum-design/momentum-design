@@ -24,7 +24,6 @@ import { getAvatarIconSize, getAvatarTextFontSize } from './avatar.utils';
  * By default, if there are no attributes specified,
  * then the default avatar will be an icon with `user-regular` name.
  *
- * If the avatar is clickable, then the avatar can be focusable.
  * If the avatar is typing, then the loading indicator will be displayed and presence will be hidden.
  *
  * @dependency mdc-icon
@@ -166,6 +165,7 @@ class Avatar extends Component {
   }
 
   /**
+   * @internal
    * Generates the photo template for the avatar component.
    * Utilizes the `src` attribute to display an image.
    * The photo is hidden until it is fully loaded, at which point
@@ -189,6 +189,7 @@ class Avatar extends Component {
   }
 
   /**
+   * @internal
    * Generates the icon template for the avatar component.
    * Utilizes the `mdc-icon` component to display an icon.
    * If the `iconName` property is not provided, it defaults to the `DEFAULTS.ICON_NAME`.
@@ -208,6 +209,7 @@ class Avatar extends Component {
   }
 
   /**
+   * @internal
    * Generates the text template for the avatar component.
    * Utilizes the `mdc-text` component to display text.
    *
@@ -227,6 +229,7 @@ class Avatar extends Component {
   }
 
   /**
+   * @internal
    * Generates the counter text by converting the given number to a string.
    * If the counter exceeds the maximum limit of 99, it will return the maximum limit as a string
    * followed by a '+' character.
@@ -242,6 +245,7 @@ class Avatar extends Component {
   }
 
   /**
+   * @internal
    * Converts the given initials to uppercase and takes the first two characters.
    * This is used to generate the text content for the text avatar type.
    *
@@ -253,6 +257,7 @@ class Avatar extends Component {
   }
 
   /**
+   * @internal
    * Generates the text content based on the given type.
    * If the type is TEXT, it will use the initials property and generate the first two uppercase characters.
    * If the type is COUNTER, it will use the counter property and generate the string representation of the counter.
@@ -317,6 +322,7 @@ class Avatar extends Component {
   }
 
   /**
+   * @internal
    * Generates the loading indicator content for the avatar when typing.
    * If the avatar is in typing state, this method returns a loading indicator
    * comprising three small filled dots, scaled based on the avatar size.
@@ -331,6 +337,7 @@ class Avatar extends Component {
   }
 
   /**
+   * @internal
    * Generates the photo placeholder content for the avatar component.
    * If the photo is not yet loaded, and the avatar type is PHOTO with initials provided,
    * it generates and returns the initials as a placeholder text.
@@ -353,6 +360,12 @@ class Avatar extends Component {
     return nothing;
   }
 
+  /**
+   * @internal
+   * Assembles and returns the complete content for the avatar component.
+   *
+   * @returns The template result containing the fully assembled avatar content.
+   */
   private renderedContent(): TemplateResult {
     const type = this.getTypeBasedOnInputs();
     return html`
