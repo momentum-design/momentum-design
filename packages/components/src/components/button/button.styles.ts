@@ -48,7 +48,6 @@ const styles = [hostFitContentStyles, css`
     font-weight: var(--mds-font-apps-body-large-bold-font-weight);
   }
 
-
   :host([variant="primary"]){
     background: var(--mdc-button-primary-background-color);
     color: var(--mdc-button-primary-color);
