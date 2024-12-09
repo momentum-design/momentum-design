@@ -7,7 +7,7 @@ const styles = [
     :host {
       --mdc-icon-fill-color: currentColor;
     }
-    svg {
+    :host::part(icon) {
       height: 100%;
       width: 100%;
       fill: var(--mdc-icon-fill-color);
