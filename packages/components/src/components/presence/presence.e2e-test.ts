@@ -1,4 +1,4 @@
-import { expect } from '@playwright/test';
+import { expect, Locator } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { DEFAULTS, TYPE, SIZE } from './presence.constants';
@@ -33,6 +33,9 @@ const testToRun = async (componentsPage: ComponentsPage) => {
    */
   await test.step('visual-regression', async () => {
     const presenceStickerSheet = new StickerSheet(componentsPage, 'mdc-presence');
+    await presenceStickerSheet.setAssertion(async (component: Locator) => {
+      await component.locator('mdc-icon').waitFor();
+    });
     await presenceStickerSheet.mountComponents({ type: TYPE, size: SIZE });
     await test.step('matches screenshot of default element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-presence');
