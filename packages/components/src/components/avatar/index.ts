@@ -1,6 +1,5 @@
 import Avatar from './avatar.component';
 import { TAG_NAME } from './avatar.constants';
-import '../button';
 import '../icon';
 import '../presence';
 import '../text';
