@@ -1,0 +1,13 @@
+{
+    "files": [
+      {
+        "destination": "elevation/complete",
+        "cssSelector": ".mds-elevation",
+        "targets": ["core/elevation.json"]
+      }
+    ],
+    "formats": ["CSS_VARIABLES", "SCSS_VARIABLES", "WEB_JSON", "ANDROID_RESOURCES", "SWIFT_CLASS", "MD_JSON_MINIMAL"],
+    "prefix": "mds",
+    "outputReferences": true,
+    "shadow": false
+  }

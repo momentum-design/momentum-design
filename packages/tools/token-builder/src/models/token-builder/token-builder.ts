@@ -59,7 +59,7 @@ class TokenBuilder {
       .then(() => {
         const configObj = this.config.config as ExternalConfig;
         registerTransforms(StyleDictionary, {
-          expand: { composition: true, typography: true, border: true, shadow: true },
+          expand: { composition: true, typography: true, border: true, shadow: configObj.shadow ?? true },
           excludeParentKeys: false,
           'ts/color/modifiers': {
             format: 'hex',

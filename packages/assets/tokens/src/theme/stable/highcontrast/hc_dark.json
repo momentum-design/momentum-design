@@ -1028,6 +1028,13 @@
             "value": "{color.highcontrast.black.WindowColor}",
             "description": "Use for skeleton component"
           }
+        },
+        "glass": {
+          "normal": {
+            "value": "{color.highcontrast.black.WindowColor}",
+            "type": "color",
+            "description": "Used for glass effect background for operation pop. "
+          }
         }
       },
       "button": {
@@ -1851,6 +1858,18 @@
           }
         },
         "purple": {
+          "normal": {
+            "parent": "theme/stable/highcontrast/hc_dark",
+            "type": "color",
+            "value": "{color.highcontrast.black.WindowTextColor}"
+          },
+          "hover": {
+            "parent": "theme/stable/highcontrast/hc_dark",
+            "type": "color",
+            "value": "{color.highcontrast.black.WindowTextColor}"
+          }
+        },
+        "vertical": {
           "normal": {
             "parent": "theme/stable/highcontrast/hc_dark",
             "type": "color",

@@ -36,6 +36,7 @@ export interface Config {
   strict?: boolean;
   iosWebexPath?: string;
   basePxFontSize?: number;
+  shadow?: boolean;
 }
 
 export type SchemaMap = {fileName: string, jsonSchema: SomeJSONSchema}[]
