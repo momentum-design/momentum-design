@@ -1,7 +1,6 @@
 import { CSSResult, html, TemplateResult, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { styleMap } from 'lit-html/directives/style-map.js';
 import styles from './avatar.styles';
 import { Component } from '../../models';
 import type { AvatarSize, AvatarType } from './avatar.types';
@@ -28,7 +27,6 @@ import { getAvatarIconSize, getAvatarTextFontSize } from './avatar.utils';
  * If the avatar is clickable, then the avatar can be focusable.
  * If the avatar is typing, then the loading indicator will be displayed and presence will be hidden.
  *
- * @dependency mdc-button
  * @dependency mdc-icon
  * @dependency mdc-presence
  * @dependency mdc-text
@@ -367,22 +365,10 @@ class Avatar extends Component {
 
   public override render(): TemplateResult {
     const renderedContent = this.renderedContent();
-    const typingBackgroundStyle = styleMap({ opacity: this.isTyping ? '.7' : '1' });
 
-    if (this.onclick) {
-      return html`
-        <mdc-button class="container" aria-label="${ifDefined(this.ariaLabel || '')}" onclick="${this.onclick}">
-          <div class="content" style="${typingBackgroundStyle}">
-            ${renderedContent}
-          </div>
-        </mdc-button>
-      `;
-    }
     return html`
-      <div class="container place-center" aria-hidden="true">
-        <div class="content" style="${typingBackgroundStyle}">
-          ${renderedContent}
-        </div>
+      <div class="content" aria-hidden="true">
+        ${renderedContent}
       </div>
     `;
   }
