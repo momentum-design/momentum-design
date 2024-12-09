@@ -55,9 +55,9 @@ class StickerSheet {
    * Adds a new component to the sheet with specified attributes.
    */
   private async addComponentToSheet() {
-    const childrenEl = `<${this.tagname} id='${this.tagname}-${this.rowId}'>
-      ${this.children || ''}
-      </${this.tagname}>`;
+    const childrenEl = this.children ? `<${this.tagname} id='${this.tagname}-${this.rowId}'>
+      ${this.children}
+      </${this.tagname}>` : `<${this.tagname} id='${this.tagname}-${this.rowId}'></${this.tagname}>`;
 
     await this.componentPage.page.evaluate(
       ({ childrenEl }) => {
