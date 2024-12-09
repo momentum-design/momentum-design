@@ -1,12 +1,12 @@
-import { CSSResult, html, TemplateResult, nothing } from 'lit';
+import { CSSResult, html, nothing, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import styles from './avatar.styles';
 import { Component } from '../../models';
-import type { AvatarSize, AvatarType } from './avatar.types';
 import type { IconNames } from '../icon/icon.types';
 import type { PresenceType } from '../presence/presence.types';
-import { AVATAR_TYPE, MAX_COUNTER, DEFAULTS } from './avatar.constants';
+import { AVATAR_TYPE, DEFAULTS, MAX_COUNTER } from './avatar.constants';
+import styles from './avatar.styles';
+import type { AvatarSize, AvatarType } from './avatar.types';
 import { getAvatarIconSize, getAvatarTextFontSize } from './avatar.utils';
 
 /**
