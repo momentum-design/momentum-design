@@ -1868,6 +1868,18 @@
             "type": "color",
             "value": "{color.highcontrast.black.WindowTextColor}"
           }
+        },
+        "vertical": {
+          "normal": {
+            "parent": "theme/stable/highcontrast/hc_dark",
+            "type": "color",
+            "value": "{color.highcontrast.black.WindowTextColor}"
+          },
+          "hover": {
+            "parent": "theme/stable/highcontrast/hc_dark",
+            "type": "color",
+            "value": "{color.highcontrast.black.WindowTextColor}"
+          }
         }
       },
       "avatar": {

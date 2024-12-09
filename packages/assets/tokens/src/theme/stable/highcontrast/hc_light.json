@@ -2445,6 +2445,20 @@
             "type": "color",
             "value": "{color.highcontrast.white.WindowTextColor}"
           }
+        },
+        "vertical": {
+          "normal": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "{color.highcontrast.white.WindowTextColor}",
+            "description": "Used for default default on compose area in space"
+          },
+          "hover": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "{color.highcontrast.white.WindowTextColor}",
+            "description": "linear-gradient(90deg, #ffffff00 0%, #ffffff99 22.4%, #ffffff99 72.4%, #ffffff00 100%)\nUsed for hover state of gradient divider for spaces"
+          }
         }
       },
       "focus": {
