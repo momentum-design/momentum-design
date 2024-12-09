@@ -2,7 +2,7 @@ import { CSSResult, html, PropertyValueMap } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import styles from './divider.styles';
 import { Component } from '../../models';
-import { DEFAULTS, DIVIDER_ORIENTATION, DIVIDER_TYPE_INTERNAL, DIVIDER_VARIANT } from './divider.constants';
+import { DEFAULTS, DIRECTIONS, DIVIDER_ORIENTATION, DIVIDER_TYPE_INTERNAL, DIVIDER_VARIANT } from './divider.constants';
 import { DividerOrientation, DividerTypeInternal, DividerVariant } from './divider.types';
 
 /**
@@ -148,9 +148,9 @@ class Divider extends Component {
     let directionClass = this.orientation === DIVIDER_ORIENTATION.HORIZONTAL ? 'btn-down' : 'btn-left';
 
     if (this.orientation === DIVIDER_ORIENTATION.HORIZONTAL) {
-      directionClass = this.buttonDirection === 'up' ? 'btn-up' : 'btn-down';
+      directionClass = this.buttonDirection === DIRECTIONS.horizontal[0] ? 'btn-up' : 'btn-down';
     } else {
-      directionClass = this.buttonDirection === 'left' ? 'btn-left' : 'btn-right';
+      directionClass = this.buttonDirection === DIRECTIONS.vertical[0] ? 'btn-left' : 'btn-right';
     }
     return directionClass;
   }
@@ -165,9 +165,9 @@ class Divider extends Component {
     let arrowIcon = this.orientation === DIVIDER_ORIENTATION.HORIZONTAL ? 'arrow-up-regular' : 'arrow-right-regular';
 
     if (this.orientation === DIVIDER_ORIENTATION.HORIZONTAL) {
-      arrowIcon = this.arrowDirection === 'up' ? 'arrow-up-regular' : 'arrow-down-regular';
+      arrowIcon = this.arrowDirection === DIRECTIONS.horizontal[0] ? 'arrow-up-regular' : 'arrow-down-regular';
     } else {
-      arrowIcon = this.arrowDirection === 'left' ? 'arrow-left-regular' : 'arrow-right-regular';
+      arrowIcon = this.arrowDirection === DIRECTIONS.vertical[0] ? 'arrow-left-regular' : 'arrow-right-regular';
     }
     return arrowIcon;
   }
@@ -181,11 +181,11 @@ class Divider extends Component {
 
     if (this.dividerTypeInternal === DIVIDER_TYPE_INTERNAL.GRABBER_BUTTON) {
       if (
-        changedProperties.has('orientation') ||
-        changedProperties.has('arrowDirection') ||
-        changedProperties.has('buttonDirection') ||
-        changedProperties.has('ariaLabel') ||
-        changedProperties.has('ariaExpanded')
+        changedProperties.has('orientation')
+        || changedProperties.has('arrowDirection')
+        || changedProperties.has('buttonDirection')
+        || changedProperties.has('ariaLabel')
+        || changedProperties.has('ariaExpanded')
       ) {
         this.setGrabberButton();
       }
@@ -224,8 +224,8 @@ class Divider extends Component {
     const assignedElements = slot?.assignedElements({ flatten: true }) || [];
     if (assignedElements.length > 1) return;
 
-    const hasTextChild = assignedElements.some(el => el.tagName === 'MDC-TEXT');
-    const hasButtonChild = assignedElements.some(el => el.tagName === 'MDC-BUTTON');
+    const hasTextChild = assignedElements.some((el) => el.tagName === 'MDC-TEXT');
+    const hasButtonChild = assignedElements.some((el) => el.tagName === 'MDC-BUTTON');
 
     if (hasTextChild && !hasButtonChild) {
       this.dividerTypeInternal = DIVIDER_TYPE_INTERNAL.TEXT;

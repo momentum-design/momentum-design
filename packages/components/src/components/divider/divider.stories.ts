@@ -5,22 +5,20 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { DIVIDER_ORIENTATION, DIVIDER_VARIANT } from './divider.constants';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 
-const render = (args: Args) => {
-  return html`
-    <div style="height: 85vh">
-      <mdc-divider
-        orientation=${args.orientation}
-        variant=${args.variant}
-        aria-label=${args['aria-label'] || ''}
-        aria-expanded=${args['aria-expanded'] || ''}
-        arrow-direction=${args['arrow-direction'] || ''}
-        button-direction=${args['button-direction'] || ''}
-      >
-        ${args.slotContent}
-      </mdc-divider>
-    </div>
-  `;
-};
+const render = (args: Args) => html`
+  <div style="height: 85vh">
+    <mdc-divider
+      orientation=${args.orientation}
+      variant=${args.variant}
+      aria-label=${args['aria-label'] || ''}
+      aria-expanded=${args['aria-expanded'] || ''}
+      arrow-direction=${args['arrow-direction'] || ''}
+      button-direction=${args['button-direction'] || ''}
+    >
+      ${args.slotContent}
+    </mdc-divider>
+  </div>
+`;
 
 const meta: Meta = {
   title: 'Work In Progress/divider',
