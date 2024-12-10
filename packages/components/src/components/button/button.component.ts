@@ -317,7 +317,7 @@ class Button extends Component {
    */
   private setAriaPressed(element: HTMLElement, active: boolean) {
     if (active) {
-      element.setAttribute('aria-pressed', 'true');
+      element.setAttribute('aria-pressed', '');
     } else {
       element.removeAttribute('aria-pressed');
     }
@@ -333,7 +333,7 @@ class Button extends Component {
    */
   private setSoftDisabled(element: HTMLElement, softDisabled: boolean) {
     if (softDisabled) {
-      element.setAttribute('aria-disabled', 'true');
+      element.setAttribute('aria-disabled', '');
     } else {
       element.removeAttribute('aria-disabled');
     }
@@ -350,7 +350,7 @@ class Button extends Component {
    */
   private setDisabled(element: HTMLElement, disabled: boolean) {
     if (disabled) {
-      element.setAttribute('aria-disabled', 'true');
+      element.setAttribute('aria-disabled', '');
       this.prevTabindex = this.tabIndex;
       this.tabIndex = -1;
     } else {

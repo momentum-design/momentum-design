@@ -1,7 +1,9 @@
-import { expect } from '@playwright/test';
+import { expect, Locator } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
+import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { DEFAULTS, TYPE, SIZE } from './presence.constants';
 import type { PresenceType, PresenceSize } from './presence.types';
+import { getIconValue } from './presence.utils';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -31,15 +33,17 @@ const testToRun = async (componentsPage: ComponentsPage) => {
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
-    const visualPresenceMarkup = componentsPage.visualRegression.generateComponentMarkup('mdc-presence', {
-      type: TYPE,
-      size: SIZE,
+    const presenceStickerSheet = new StickerSheet(componentsPage, 'mdc-presence');
+    presenceStickerSheet.setAssertion(async (component: Locator, attributes: Record<string, string>) => {
+      const icon = await component.locator('mdc-icon');
+      await icon.waitFor();
+      const iconName = getIconValue(attributes.type as PresenceType);
+      await expect(component).toHaveAttribute('type', attributes.type);
+      await expect(icon).toHaveAttribute('name', iconName);
     });
-    const visualPresence = await componentsPage.visualRegression
-      .createStickerSheet(componentsPage, visualPresenceMarkup);
-
+    await presenceStickerSheet.mountComponents({ type: TYPE, size: SIZE });
     await test.step('matches screenshot of default element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-presence', { element: visualPresence });
+      await componentsPage.visualRegression.takeScreenshot('mdc-presence');
     });
   });
 
@@ -83,7 +87,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
 };
 
 test.describe.parallel('mdc-Presence', () => {
-  test.use({ viewport: { width: 500, height: 1000 } });
+  test.use({ viewport: { width: 400, height: 800 } });
   test('standalone', async ({ componentsPage }) => {
     await testToRun(componentsPage);
   });

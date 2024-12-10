@@ -1,6 +1,5 @@
 import { Page, expect } from '@playwright/test';
 import type { ScreenShotOptions } from '../types';
-import type { ComponentsPage } from '..';
 import CONSTANTS from '../constants';
 
 interface VisualRegression {
@@ -66,84 +65,6 @@ class VisualRegression {
         await this.toggleHighContrastMode(false); // Reset high contrast
       }
     }
-  }
-
-  /**
-   * Generates markup for a component with different attribute combinations.
-   *
-   * @param componentTag - The tag name of the component to generate.
-   * @param attributes - Attributes to apply to the components, with key-value pairs representing attribute
-   *                     names and their possible values. The values are defined as an object of key-value pairs.
-   * @param defaultAttributes - An optional object that can contain:
-   *   - `propsArr`: An array of strings representing additional attributes to be included in each
-   *     generated component. These strings will be combined into a single string of attributes.
-   *   - `children`: The content to be rendered inside the generated component. This can be
-   *     a string or any valid JSX/HTML content.
-   *
-   * @returns The generated markup for the component with the specified attributes.
-   */
-  generateComponentMarkup = (
-    componentTag: string,
-    attributes: Record<string, Record<string, any>>,
-    defaultAttributes?: { propsArr?: string[]; children?: any },
-  ) => {
-    if (Object.keys(attributes).length === 0) return '';
-
-    const [primaryKey, primaryValues] = Object.entries(attributes)[0];
-    const otherAttributes = Object.entries(attributes).slice(1);
-    const defaultAttrs = defaultAttributes?.propsArr ? defaultAttributes.propsArr.join(' ') : '';
-
-    return Object.values(primaryValues)
-      .map((primaryValue) => {
-        const combinations = otherAttributes.reduce<string[]>(
-          (acc, [key, values]) =>
-            acc.flatMap((prev) => Object.values(values).map((currVal) => `${prev} ${key}="${currVal}"`)),
-          [''],
-        );
-        // we need to maintain this structure for the component to be rendered correctly.
-        // Else an empty string would be considered as a value within the slot. This affects the button component tests.
-        if (defaultAttributes?.children) {
-          return `<div class="componentRowWrapper">
-        ${combinations.map((combination) => `
-        <${componentTag} ${defaultAttrs} ${primaryKey}="${primaryValue}" ${combination}>
-          ${defaultAttributes.children}
-        </${componentTag}>`).join('')}
-      </div>`;
-        }
-        return `<div class="componentRowWrapper">
-        ${combinations.map((combination) => `
-        <${componentTag} ${defaultAttrs} ${primaryKey}="${primaryValue}" ${combination}></${componentTag}>`).join('')}
-      </div>`;
-      })
-      .join('');
-  };
-
-  /**
-   * Creates a sticker sheet on the page, grouping variants of components into a markup for visual regression testing.
-   *
-   * @param componentsPage - The page object used to interact with the components.
-   * @param componentMarkup - The markup grouping variants of components to generate the sticker sheet for.
-   * If markup not available, call `generateComponentMarkup`.
-   *
-   * @returns Locator for the component list containing all generated components.
-   */
-  async createStickerSheet(
-    componentsPage: ComponentsPage,
-    componentMarkup: string,
-  ) {
-    await componentsPage.mount({
-      html: `
-      <div class="componentWrapper">
-        ${componentMarkup}
-      </div>
-      `,
-      clearDocument: true,
-    });
-
-    const componentList = componentsPage.page.locator('.componentWrapper');
-    await componentList.waitFor();
-
-    return componentList;
   }
 }
 
