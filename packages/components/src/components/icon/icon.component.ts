@@ -91,6 +91,10 @@ class Icon extends Component {
   /**
    * Get Icon Data function which will fetch the icon (currently only svg)
    * and sets state and attributes once fetched successfully
+   *
+   * This method uses abortController.signal to cancel the fetch request when the component is disconnected or updated.
+   * If the request is aborted after the fetch() call has been fulfilled but before the response body has been read,
+   * then attempting to read the response body will reject with an AbortError exception.
    */
   private async getIconData() {
     if (this.iconProviderContext.value) {
@@ -150,9 +154,8 @@ class Icon extends Component {
     if (changedProperties.has('name')) {
       // fetch icon data if name changes:
       this.getIconData().catch((err) => {
-        if (err.name !== 'AbortError') {
-        // eslint-disable-next-line no-console
-          console.error('Fetch error:', err);
+        if (err.name !== 'AbortError' && this.onerror) {
+          this.onerror(err);
         }
       });
     }

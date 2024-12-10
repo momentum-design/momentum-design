@@ -7,6 +7,8 @@
  * @param url - The base url of the icon
  * @param name - The name of the icon
  * @param fileExtension - The file extension of the icon
+ * @param signal - The signal to abort the fetch.
+ * It is used to cancel the fetch when the component is disconnected or updated.
  * @returns The valid icon element
  * @throws Error if the response is not ok
  */
