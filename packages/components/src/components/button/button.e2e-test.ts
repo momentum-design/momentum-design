@@ -108,7 +108,7 @@ const attributeTestCases = async (args: SetupOptions, buttonType: string) => {
   // Disabled button
   await test.step(`attribute disabled should be present on ${buttonType} button`, async () => {
     await componentsPage.setAttributes(button, {
-      disabled: 'true',
+      disabled: '',
     });
     await expect(button).toHaveAttribute('disabled');
     await componentsPage.removeAttribute(button, 'disabled');
@@ -117,7 +117,7 @@ const attributeTestCases = async (args: SetupOptions, buttonType: string) => {
   // Soft Disabled button
   await test.step(`attribute soft-disabled should be present on ${buttonType} button`, async () => {
     await componentsPage.setAttributes(button, {
-      'soft-disabled': 'true',
+      'soft-disabled': '',
     });
     await expect(button).toHaveAttribute('soft-disabled');
     await componentsPage.removeAttribute(button, 'soft-disabled');
@@ -126,7 +126,7 @@ const attributeTestCases = async (args: SetupOptions, buttonType: string) => {
   // Active button
   await test.step(`attribute active should be present on ${buttonType} button`, async () => {
     await componentsPage.setAttributes(button, {
-      active: 'true',
+      active: '',
     });
     await expect(button).toHaveAttribute('active');
     await componentsPage.removeAttribute(button, 'active');
@@ -135,8 +135,8 @@ const attributeTestCases = async (args: SetupOptions, buttonType: string) => {
   // Active Disabled button
   await test.step(`attribute active and disabled should be present on ${buttonType} button`, async () => {
     await componentsPage.setAttributes(button, {
-      disabled: 'true',
-      active: 'true',
+      disabled: '',
+      active: '',
     });
     await expect(button).toHaveAttribute('disabled');
     await expect(button).toHaveAttribute('active');
@@ -147,8 +147,8 @@ const attributeTestCases = async (args: SetupOptions, buttonType: string) => {
   // Active Soft Disabled button
   await test.step(`attribute active and soft-disabled should be present on ${buttonType} button`, async () => {
     await componentsPage.setAttributes(button, {
-      'soft-disabled': 'true',
-      active: 'true',
+      'soft-disabled': '',
+      active: '',
     });
     await expect(button).toHaveAttribute('soft-disabled');
     await expect(button).toHaveAttribute('active');
@@ -262,10 +262,10 @@ test.describe.parallel('mdc-button', () => {
     buttonSheet.setAttributes({ variant: BUTTON_VARIANTS.TERTIARY });
     await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES });
     // disabled pill button
-    buttonSheet.setAttributes({ disabled: 'true' });
+    buttonSheet.setAttributes({ disabled: '' });
     await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
     // 'soft-disabled' pill button
-    buttonSheet.setAttributes({ 'soft-disabled': 'true' });
+    buttonSheet.setAttributes({ 'soft-disabled': '' });
     await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
 
     await test.step('matches screenshot of pill-button element', async () => {
@@ -291,11 +291,11 @@ test.describe.parallel('mdc-button', () => {
     });
     await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES });
     // disabled pill with prefix icon button
-    buttonSheet.setAttributes({ disabled: 'true', 'prefix-icon': 'placeholder-light' });
+    buttonSheet.setAttributes({ disabled: '', 'prefix-icon': 'placeholder-light' });
     await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
     // 'soft-disabled' pill with prefix icon button
     buttonSheet.setAttributes({
-      'soft-disabled': 'true',
+      'soft-disabled': '',
       'prefix-icon': 'placeholder-light',
     });
     await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
@@ -322,11 +322,11 @@ test.describe.parallel('mdc-button', () => {
     });
     await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES });
     // disabled pill with postfix icon button
-    buttonSheet.setAttributes({ disabled: 'true', 'postfix-icon': 'placeholder-light' });
+    buttonSheet.setAttributes({ disabled: '', 'postfix-icon': 'placeholder-light' });
     await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
     // 'soft-disabled' pill with postfix icon button
     buttonSheet.setAttributes({
-      'soft-disabled': 'true',
+      'soft-disabled': '',
       'postfix-icon': 'placeholder-light',
     });
     await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
@@ -344,10 +344,10 @@ test.describe.parallel('mdc-button', () => {
     buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light', variant: BUTTON_VARIANTS.TERTIARY });
     await buttonSheet.mountComponents({ size: ICON_BUTTON_SIZES });
     // disabled icon button
-    buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light', disabled: 'true' });
+    buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light', disabled: '' });
     await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
     // 'soft-disabled' icon button
-    buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light', 'soft-disabled': 'true' });
+    buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light', 'soft-disabled': '' });
     await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
     await test.step('matches screenshot of icon-button element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-button-icon');
@@ -359,14 +359,10 @@ test.describe.parallel('mdc-button', () => {
     buttonSheet.setChildren('Pill with prefix');
     buttonSheet.setAttributes({
       'prefix-icon': 'placeholder-light',
-      active: 'true' });
+      active: '' });
     buttonSheet.setAssertion(async (component: Locator) => {
-      await component.locator('mdc-icon').waitFor();
-      const icon = await component.locator('mdc-icon');
-      await icon.locator('svg').waitFor();
-      const svg = await icon.locator('svg');
-      await expect(component).toHaveAttribute('prefix-icon', 'placeholder-filled');
-      await expect(icon).toHaveAttribute('name', 'placeholder-filled');
+      const svg = component.locator('mdc-icon[part=\'prefix-icon\'] svg[part=\'icon\']');
+      await svg.waitFor();
       await expect(svg).toHaveAttribute('data-name', 'placeholder-filled');
     });
     await commonMount();
@@ -433,7 +429,7 @@ test.describe.parallel('mdc-button', () => {
         });
       });
 
-      await componentsPage.setAttributes(mdcButton, { disabled: 'true' });
+      await componentsPage.setAttributes(mdcButton, { disabled: '' });
       await expect(mdcButton).toBeDisabled();
       await componentsPage.removeAttribute(mdcButton, 'disabled');
       await expect(mdcButton).not.toBeDisabled();
@@ -444,7 +440,7 @@ test.describe.parallel('mdc-button', () => {
     const children = 'Pill Button';
     await test.step('mdc-button as pill button', async () => {
       const button = await setup({ componentsPage, children });
-      await componentsPage.setAttributes(button, { disabled: 'true' });
+      await componentsPage.setAttributes(button, { disabled: '' });
 
       await componentsPage.page.evaluate(() => {
         const btn = document.getElementsByTagName('mdc-button')[0];
