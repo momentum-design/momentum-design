@@ -66,7 +66,7 @@ const meta: Meta = {
 
 export default meta;
 
-export const Primary: StoryObj = {
+export const Example: StoryObj = {
   args: {
     themeclass: THEMES[0],
     class: 'custom-classname',

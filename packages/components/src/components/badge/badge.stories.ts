@@ -87,6 +87,17 @@ const meta: Meta = {
 
 export default meta;
 
+export const Example: StoryObj = {
+  args: {
+    type: DEFAULTS.TYPE,
+    'icon-name': 'placeholder-bold',
+    variant: DEFAULTS.VARIANT,
+    counter: 1,
+    'max-counter': MAX_COUNTER_LIST[1],
+    overlay: false,
+  },
+};
+
 export const Dot: StoryObj = {
   args: {
     type: DEFAULTS.TYPE,
