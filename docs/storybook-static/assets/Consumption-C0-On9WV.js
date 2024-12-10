@@ -17,8 +17,14 @@ import{j as e}from"./jsx-runtime-N83kn9-W.js";import{useMDXComponents as t}from"
 `,e.jsx(n.p,{children:"The following stylesheets need to be included:"}),`
 `,e.jsx(n.pre,{children:e.jsx(n.code,{className:"language-javascript",children:`import '@momentum-design/fonts/dist/css/fonts.css';
 import '@momentum-design/tokens/dist/css/typography/complete.css';
+import '@momentum-design/tokens/dist/css/effect/complete.css';
+import '@momentum-design/tokens/dist/css/typography/complete.css';
 import '@momentum-design/tokens/dist/css/theme/webex/dark-stable.css';
 import '@momentum-design/tokens/dist/css/theme/webex/light-stable.css';
+`})}),`
+`,e.jsxs(n.p,{children:["or short (",e.jsx(n.code,{children:"components/complete.css"})," includes all the above files):"]}),`
+`,e.jsx(n.pre,{children:e.jsx(n.code,{className:"language-javascript",children:`import '@momentum-design/fonts/dist/css/fonts.css';
+import '@momentum-design/tokens/dist/css/components/complete.css';
 `})}),`
 `]}),`
 `,e.jsxs(n.li,{children:[`
@@ -35,9 +41,7 @@ import '@momentum-design/tokens/dist/css/theme/webex/light-stable.css';
 `,e.jsx(n.pre,{children:e.jsx(n.code,{className:"language-html",children:`<html>
     <head>
         <link rel="stylesheet" href="@momentum-design/fonts/dist/css/fonts.css">
-        <link rel="stylesheet" href="@momentum-design/tokens/dist/css/typography/complete.css">
-        <link rel="stylesheet" href="@momentum-design/tokens/dist/css/theme/webex/dark-stable.css">
-        <link rel="stylesheet" href="@momentum-design/tokens/dist/css/theme/webex/light-stable.css">
+        <link rel="stylesheet" href="@momentum-design/tokens/dist/css/components/complete.css">
     </head>
     <!-- mds-typography needs to be set on the root for proper Font usage -->
     <body class="mds-typography">
@@ -52,6 +56,10 @@ import '@momentum-design/tokens/dist/css/theme/webex/light-stable.css';
     </body>
 </html>
 `})}),`
+`,e.jsx(n.h2,{id:"performance-recommendations",children:"Performance recommendations"}),`
+`,e.jsxs(n.ul,{children:[`
+`,e.jsx(n.li,{children:"Use a CSS minifier in the build process to reduce the size of the CSS files."}),`
+`]}),`
 `,e.jsx(n.h2,{id:"compatibility",children:"Compatibility"}),`
 `,e.jsxs(n.ul,{children:[`
 `,e.jsxs(n.li,{children:[`
@@ -89,4 +97,4 @@ For detailed information about each component, refer to the `,e.jsx(n.a,{href:"h
 ...
 
 <Avatar />
-`})})]})}function l(s={}){const{wrapper:n}={...t(),...s.components};return n?e.jsx(n,{...s,children:e.jsx(o,{...s})}):o(s)}export{l as default};
+`})})]})}function d(s={}){const{wrapper:n}={...t(),...s.components};return n?e.jsx(n,{...s,children:e.jsx(o,{...s})}):o(s)}export{d as default};
