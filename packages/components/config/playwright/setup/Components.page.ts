@@ -10,6 +10,7 @@ const htmlRootElementSelector = '#root';
 interface MountOptions {
   html: string;
   clearDocument?: boolean;
+  elementSelector?: string;
 }
 
 interface ComponentsPage {
@@ -91,7 +92,7 @@ class ComponentsPage {
    *
    * @param options - a object with options, including the `html` string to mount
    */
-  async mount({ html, clearDocument = false }: MountOptions) {
+  async mount({ html, clearDocument = false, elementSelector }: MountOptions) {
     await test.step('Mounting HTML', async () => {
       await this.page.evaluate(
         (args) => {
@@ -109,7 +110,7 @@ class ComponentsPage {
             rootElement.appendChild(htmlToElement(args.html));
           }
         },
-        { html, htmlRootElementSelector, clearDocument },
+        { html, htmlRootElementSelector: elementSelector || htmlRootElementSelector, clearDocument },
       );
     });
   }

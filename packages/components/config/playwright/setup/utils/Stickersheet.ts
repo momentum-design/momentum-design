@@ -4,13 +4,14 @@ import { Locator } from '@playwright/test';
 import type { ComponentsPage } from '..';
 
 type AttributesType = Record<string, string>;
+type AssertionType = (component?: Locator, attributes?: AttributesType) => Promise<any>;
 
 class StickerSheet {
   private componentPage: ComponentsPage;
 
   private tagname: string;
 
-  private assertion?: (component?: Locator) => Promise<any>;
+  private assertion?: AssertionType;
 
   private component?: Locator;
 
@@ -20,7 +21,7 @@ class StickerSheet {
 
   private rowId: number = 1;
 
-  constructor(componentPage: ComponentsPage, tagName: string, assertion?: (component?: Locator) => Promise<any>) {
+  constructor(componentPage: ComponentsPage, tagName: string, assertion?: AssertionType) {
     this.componentPage = componentPage;
     this.tagname = tagName;
     this.assertion = assertion;
@@ -59,13 +60,11 @@ class StickerSheet {
       ? `<${this.tagname} id='${this.tagname}-${this.rowId}'>${this.children}</${this.tagname}>`
       : `<${this.tagname} id='${this.tagname}-${this.rowId}'></${this.tagname}>`;
 
-    await this.componentPage.page.evaluate(
-      ({ childrenEl }) => {
-        const targetRow = document.querySelector('.componentRowWrapper:last-of-type');
-        targetRow?.insertAdjacentHTML('beforeend', childrenEl);
-      },
-      { childrenEl },
-    );
+    await this.componentPage.mount({
+      html: childrenEl,
+      clearDocument: false,
+      elementSelector: '.componentRowWrapper:last-of-type',
+    });
 
     this.component = this.componentPage.page.locator(`#${this.tagname}-${this.rowId}`);
     if (this.component) {
@@ -73,7 +72,7 @@ class StickerSheet {
     }
 
     if (this.assertion) {
-      await this.assertion(this.component);
+      await this.assertion(this.component, this.attributes);
     }
 
     this.rowId += 1;
@@ -83,9 +82,10 @@ class StickerSheet {
    * Creates a new row wrapper in the component sheet.
    */
   private async createRowWrapper() {
-    await this.componentPage.page.evaluate(() => {
-      const wrapper = document.querySelector('.componentWrapper');
-      wrapper?.insertAdjacentHTML('beforeend', '<div class="componentRowWrapper"></div>');
+    await this.componentPage.mount({
+      html: '<div class="componentRowWrapper"></div>',
+      clearDocument: false,
+      elementSelector: '.componentWrapper',
     });
   }
 
