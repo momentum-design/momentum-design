@@ -6,6 +6,11 @@
       "targets": ["core/value.json"]
     },
     {
+      "destination": "effect/complete",
+      "cssSelector": ".mds-effect",
+      "targets": ["core/effect.json"]
+    },
+    {
       "destination": "theme/webex/dark-complete",
       "filters": {
         "types": ["theme"]

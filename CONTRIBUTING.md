@@ -8,6 +8,9 @@ This package is currently under development. Contributions to this project will 
 - Node.js
 - React
 - Jest
+- Lit
+- Playwright
+- Storybook
 
 Specific tech:
 
