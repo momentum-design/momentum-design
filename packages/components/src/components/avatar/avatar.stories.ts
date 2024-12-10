@@ -116,7 +116,6 @@ export const SizeWithPresence: StoryObj = {
       'icon-name',
       'initials',
       'size',
-      'src',
     ]),
   },
   args: {
