@@ -5,6 +5,8 @@ const styles = [hostFitContentStyles, css`
   :host {
     --mdc-avatar-default-background-color: var(--mds-color-theme-avatar-default);
     --mdc-avatar-default-foreground-color: var(--mds-color-theme-common-text-primary-normal);
+    --mdc-avatar-loading-foreground-color: var(--mds-color-theme-common-text-primary-normal);
+    --mdc-avatar-loading-background-color: var(--mds-color-core-white-alpha-50);
   }
   :host([size="xx_large"]) .content {
     width: 7.75rem;
@@ -34,6 +36,12 @@ const styles = [hostFitContentStyles, css`
     width: 1.5rem;
     height: 1.5rem;
   }
+  :host([size="xx_large"]) .content > .loader {
+    transform: scale(1.5);
+  }
+  :host([size="x_large"]) .content > .loader {
+    transform: scale(1.2);
+  }
   :host([size="large"]) .content > .loader,
   :host([size="midsize"]) .content > .loader {
     transform: scale(0.8);
@@ -58,7 +66,8 @@ const styles = [hostFitContentStyles, css`
     color: var(--mdc-avatar-default-foreground-color);
   }
   .content {
-    cursor: pointer;
+    width: 2rem;
+    height: 2rem;
     background-color: var(--mdc-avatar-default-background-color);
     border-radius: 50%;
     position: relative;
@@ -71,11 +80,6 @@ const styles = [hostFitContentStyles, css`
     width: 100%;
     object-fit: cover;
   }
-  .icon {
-    height: 100%;
-    width: 100%;
-    color: white;
-  }
   .presence {
     position: absolute;
     bottom: 0;
@@ -84,6 +88,7 @@ const styles = [hostFitContentStyles, css`
   .loader {
     position: absolute;
     width: 1rem;
+    transform: scale(0.4);
     aspect-ratio: 1;
     border-radius: 50%;
     animation: loading-key 1s infinite linear alternate;

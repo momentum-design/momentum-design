@@ -10,7 +10,6 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 const render = (args: Args) => html`
   <mdc-avatar
     alt="${args.alt}"
-    aria-label="${args['aria-label']}"
     counter="${args.counter}"
     icon-name="${args['icon-name']}"
     initials="${args.initials}"
@@ -53,9 +52,6 @@ const meta: Meta = {
     counter: {
       control: 'number',
     },
-    'aria-label': {
-      control: 'text',
-    },
     ...classArgType,
     ...styleArgType,
   },
@@ -78,52 +74,19 @@ export const Image: StoryObj = {
   },
 };
 
-export const Default: StoryObj = {
+export const Example: StoryObj = {
+  args: {
+    src: '',
+    initials: 'MD',
+    counter: '',
+    'icon-name': '',
+    'is-typing': '',
+  },
+};
+
+export const Fallback: StoryObj = {
   args: {
     size: DEFAULTS.SIZE,
-  },
-};
-
-export const Initials: StoryObj = {
-  argTypes: {
-    ...disableControls([
-      'counter',
-      'icon-name',
-      'src',
-    ]),
-  },
-  args: {
-    initials: 'MD',
-    size: PRESENCE_SIZE.X_LARGE,
-  },
-};
-
-export const Counter: StoryObj = {
-  argTypes: {
-    ...disableControls([
-      'icon-name',
-      'initials',
-      'presence',
-      'src',
-    ]),
-  },
-  args: {
-    counter: 99,
-    size: PRESENCE_SIZE.X_LARGE,
-  },
-};
-
-export const Icon: StoryObj = {
-  argTypes: {
-    ...disableControls([
-      'counter',
-      'initials',
-      'src',
-    ]),
-  },
-  args: {
-    'icon-name': 'placeholder-bold',
-    size: PRESENCE_SIZE.X_LARGE,
   },
 };
 
