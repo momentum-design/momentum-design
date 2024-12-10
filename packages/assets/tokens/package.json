@@ -8,9 +8,11 @@
     "analyze": "yarn analyze:prebuild && yarn analyze:postbuild",
     "analyze:postbuild": "echo \"script 'analyze:postbuild' has not been implemented\"",
     "analyze:prebuild": "echo \"script 'analyze:prebuild' has not been implemented\"",
-    "build": "yarn build:core && yarn build:typography",
+    "build": "yarn build:core && yarn build:typography && yarn build:elevation && yarn build:components",
     "build:core": "md-token-builder --config ./config/tokens/core.json --input ./src --output ./dist",
     "build:typography": "md-token-builder --config ./config/tokens/typography.json --input ./src --output ./dist",
+    "build:elevation": "md-token-builder --config ./config/tokens/elevation.json --input ./src --output ./dist",
+    "build:components": "node ./scripts/build-components-css.js",
     "clean": "yarn clean:dist",
     "clean:dist": "rimraf ./dist",
     "prepublishOnly": "yarn clean && yarn build",
@@ -18,9 +20,10 @@
     "publish": "yarn publish:npmjs",
     "publish:npmjs": "yarn npm publish --access=public",
     "test": "yarn test:prebuild && yarn test:postbuild",
-    "test:postbuild": "echo \"script 'test:prebuild' has not been implemented\"",
-    "test:prebuild": "yarn test:unit",
-    "test:unit": "jest ./src/**/*.test.ts"
+    "test:prebuild": "yarn test:unit:pre",
+    "test:postbuild": "yarn test:unit:post",
+    "test:unit:pre": "jest ./src/**/*.pre.test.ts",
+    "test:unit:post": "jest ./src/**/*.post.test.ts"
   },
   "devDependencies": {
     "@momentum-design/token-builder": "workspace:^",

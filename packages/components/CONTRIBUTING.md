@@ -27,3 +27,8 @@ To **start storybook and develop components**, run the following command:
 ```sh
 yarn components dev
 ```
+
+## Development
+
+Our [Conventions](https://github.com/momentum-design/momentum-design/tree/main/packages/components/conventions) should be followed whenever any changes to the Components package are made. Those Conventions will also be checked
+during PR reviews - for faster turn around make sure to follow accordingly while development.
