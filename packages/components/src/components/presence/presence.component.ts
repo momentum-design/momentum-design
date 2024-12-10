@@ -1,9 +1,10 @@
 import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
-import { DEFAULTS, SIZE, TYPE } from './presence.constants';
+import { DEFAULTS, SIZE } from './presence.constants';
 import styles from './presence.styles';
 import type { PresenceType, PresenceSize } from './presence.types';
+import { getIconValue } from './presence.utils';
 
 /**
  * The `mdc-presence` component is a versatile UI element used to
@@ -81,38 +82,11 @@ class Presence extends Component {
    * Get the icon name based on the presence type
    */
   private get icon() {
-    switch (this.type) {
-      case TYPE.AWAY:
-        return 'recents-presence-badge-filled';
-      case TYPE.AWAY_CALLING:
-        return 'away-calling-presence-filled';
-      case TYPE.BUSY:
-        return 'busy-presence-bold';
-      case TYPE.DND:
-        return 'dnd-presence-badge-filled';
-      case TYPE.MEETING:
-        return 'camera-filled';
-      case TYPE.ON_CALL:
-        return 'handset-filled';
-      case TYPE.ON_DEVICE:
-        return 'generic-device-video-badge-filled';
-      case TYPE.ON_MOBILE:
-        return 'phone-badge-filled';
-      case TYPE.PAUSE:
-        return 'pause-badge-filled';
-      case TYPE.PTO:
-        return 'pto-presence-filled';
-      case TYPE.PRESENTING:
-        return 'share-screen-badge-filled';
-      case TYPE.QUIET:
-        return 'quiet-hours-presence-filled';
-      case TYPE.SCHEDULED:
-        return 'meetings-presence-badge-filled';
-      case TYPE.ACTIVE:
-      default:
-        this.type = DEFAULTS.TYPE;
-        return 'active-presence-small-filled';
+    const iconName = getIconValue(this.type);
+    if (iconName === 'active-presence-small-filled') {
+      this.type = DEFAULTS.TYPE;
     }
+    return iconName;
   }
 
   public override render() {

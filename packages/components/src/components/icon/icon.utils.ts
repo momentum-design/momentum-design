@@ -18,7 +18,10 @@ const dynamicSVGImport = async (url: string, name: string, fileExtension: string
   }
 
   const iconResponse = await response.text();
-  return new DOMParser().parseFromString(iconResponse, 'text/html').body.children[0];
+  const returnValue = new DOMParser().parseFromString(iconResponse, 'text/html').body.children[0];
+  returnValue.setAttribute('data-name', name);
+  returnValue.setAttribute('part', 'icon');
+  return returnValue;
 };
 
 export { dynamicSVGImport };
