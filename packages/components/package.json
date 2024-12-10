@@ -65,7 +65,6 @@
     "test:prebuild": "echo \"script 'test:prebuild' has not been implemented\"",
     "test:postbuild": "yarn test:e2e:docker",
     "test:e2e:docker": "PW_TEST_CONNECT_WS_ENDPOINT=ws://localhost:3000/ playwright test --config './config/playwright/docker/playwright.docker.config.ts'",
-    "test:e2e:docker:skip-snapshot": "E2E_SKIP_SNAPSHOT=true PW_TEST_CONNECT_WS_ENDPOINT=ws://localhost:3000/ playwright test --config './config/playwright/docker/playwright.docker.config.ts'",
     "test:e2e:docker:build": "docker build --platform linux/amd64 -f ./config/playwright/docker/utils/Dockerfile.test.postbuild -t ghcr.io/momentum-design/momentum-design/docker-playwright:v1.47.2 .",
     "test:e2e:docker:serve": "docker run --platform linux/amd64 -p 3000:3000 --rm --init --add-host=hostmachine:host-gateway ghcr.io/momentum-design/momentum-design/docker-playwright:v1.47.2",
     "test:e2e:docker:update-snapshot": "yarn test:e2e:docker --update-snapshots",
