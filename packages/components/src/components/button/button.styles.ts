@@ -145,6 +145,7 @@ const styles = [hostFitContentStyles, css`
   }
   :host([size="20"]){
     height: var(--mdc-button-height-size-20);
+    padding: 0.0625rem;
   }
 
   :host([color="accent"]){
