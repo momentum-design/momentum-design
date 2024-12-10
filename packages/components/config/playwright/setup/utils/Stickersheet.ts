@@ -67,7 +67,6 @@ class StickerSheet {
       ? `<${this.tagname} id='${this.tagname}-${this.rowId}' ${attributesString}>${this.children}</${this.tagname}>`
       : `<${this.tagname} id='${this.tagname}-${this.rowId}' ${attributesString}></${this.tagname}>`;
 
-    console.log('Turbo 🚀  ~ addComponentToSheet ~ childrenEl:', childrenEl);
     await this.componentPage.mount({
       html: childrenEl,
       clearDocument: false,
