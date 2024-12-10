@@ -230,7 +230,7 @@ class Avatar extends Component {
    */
   private generateCounterText(counter: number): string {
     if (counter > MAX_COUNTER) {
-      return `${MAX_COUNTER}'+'`;
+      return `${MAX_COUNTER}+'`;
     }
     return counter.toString();
   }
@@ -324,7 +324,7 @@ class Avatar extends Component {
     if (!this.isTyping) {
       return nothing;
     }
-    return html`<div class="loader"></div>`;
+    return html`<div class="loading__wrapper"><div class="loader"></div></div>`;
   }
 
   /**
@@ -362,8 +362,8 @@ class Avatar extends Component {
     return html`
       ${this.getPhotoPlaceHolderContent(type)}
       ${this.getTemplateBasedOnType(type)}
-      ${this.getPresenceTemplateBasedOnType(type)}
       ${this.getLoadingContent()}
+      ${this.getPresenceTemplateBasedOnType(type)}
     `;
   }
 

@@ -106,6 +106,7 @@ export const Size: StoryObj = {
       'presence',
       'size',
       'src',
+      'is-typing',
     ]),
   },
 };
@@ -123,6 +124,15 @@ export const SizeWithPresence: StoryObj = {
       `)}
     </div>
   `,
+  argTypes: {
+    ...disableControls([
+      'counter',
+      'icon-name',
+      'initials',
+      'size',
+      'src',
+    ]),
+  },
   args: {
     src: 'https://picsum.photos/id/63/256',
     presence: 'active',
