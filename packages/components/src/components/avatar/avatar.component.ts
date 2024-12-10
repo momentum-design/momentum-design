@@ -24,6 +24,7 @@ import { getAvatarIconSize, getAvatarTextFontSize } from './avatar.utils';
  * By default, if there are no attributes specified,
  * then the default avatar will be an icon with `user-regular` name.
  *
+ * The avatar component is non clickable and non interactive/focusable component.
  * If the avatar is typing, then the loading indicator will be displayed and presence will be hidden.
  *
  * @dependency mdc-icon
@@ -104,7 +105,6 @@ class Avatar extends Component {
 
   /**
    * Determines whether the user is typing.
-   * When this is set to true, the presence will be disabled.
    * @default false
    */
   @property({ type: Boolean, attribute: 'is-typing' })
@@ -114,13 +114,6 @@ class Avatar extends Component {
    * @internal
    */
   @state() private isPhotoLoaded = false;
-
-  /**
-   * Aria-label attribute to be set for accessibility
-   * @default null
-   */
-  @property({ type: String, attribute: 'aria-label' })
-  override ariaLabel: string | null = null;
 
   /**
    * The avatar presence will be hidden if the avatar type is COUNTER.
@@ -287,11 +280,11 @@ class Avatar extends Component {
     if (this.src) {
       return AVATAR_TYPE.PHOTO;
     }
-    if (this.initials) {
-      return AVATAR_TYPE.TEXT;
-    }
     if (this.iconName) {
       return AVATAR_TYPE.ICON;
+    }
+    if (this.initials) {
+      return AVATAR_TYPE.TEXT;
     }
     if (this.counter) {
       return AVATAR_TYPE.COUNTER;
