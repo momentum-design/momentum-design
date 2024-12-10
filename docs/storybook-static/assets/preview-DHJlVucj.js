@@ -61,8 +61,8 @@ focus, click, and keyboard actions to be passed through.
 **Important:** When using soft disabled, consumers must ensure that
 the button behaves like a disabled button, allowing only focus and
 preventing any interactions (clicks or keyboard actions) from triggering unintended actions.`,attribute:"soft-disabled"},{kind:"field",name:"prefixIcon",type:{text:"string | undefined"},description:`The name of the icon to display as a prefix.
-The icon is displayed on the left side of the button.`,attribute:"prefix-icon"},{kind:"field",name:"postfixIcon",type:{text:"string | undefined"},description:`The name of the icon to display as a postfix.
-The icon is displayed on the right side of the button.`,attribute:"postfix-icon"},{kind:"field",name:"variant",type:{text:"ButtonVariant"},description:`There are 3 variants of button: primary, secondary, tertiary. They are styled differently.
+The icon is displayed on the left side of the button.`,attribute:"prefix-icon",reflects:!0},{kind:"field",name:"postfixIcon",type:{text:"string | undefined"},description:`The name of the icon to display as a postfix.
+The icon is displayed on the right side of the button.`,attribute:"postfix-icon",reflects:!0},{kind:"field",name:"variant",type:{text:"ButtonVariant"},description:`There are 3 variants of button: primary, secondary, tertiary. They are styled differently.
 - **Primary**: Solid background color.
 - **Secondary**: Transparent background with a solid border.
 - **Tertiary**: No background or border, appears as plain text but retains all button functionalities.`,default:"primary",attribute:"variant"},{kind:"field",name:"size",type:{text:"PillButtonSize | IconButtonSize"},description:`Button sizing is based on the button type.
