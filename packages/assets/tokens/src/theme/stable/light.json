@@ -1931,6 +1931,12 @@
               "type": "color",
               "value": "{color.core.black-alpha.20}"
             }
+          },
+          "warning": {
+            "normal": {
+              "value": "{color.core.yellow.40}",
+              "type": "color"
+            }
           }
         },
         "control": {

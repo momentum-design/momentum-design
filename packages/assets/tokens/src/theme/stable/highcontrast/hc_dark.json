@@ -2255,6 +2255,12 @@
               "type": "color",
               "value": "{color.highcontrast.black.GrayTextColor}"
             }
+          },
+          "warning": {
+            "normal": {
+              "value": "{color.highcontrast.black.WindowTextColor}",
+              "type": "color"
+            }
           }
         },
         "control": {
