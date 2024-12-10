@@ -193,7 +193,6 @@ class Avatar extends Component {
     const name = this.iconName || DEFAULTS.ICON_NAME;
     return html`
       <mdc-icon
-        class="icon"
         name="${ifDefined(name)}"
         length-unit="rem"
         size="${getAvatarIconSize(this.size)}"
@@ -212,7 +211,6 @@ class Avatar extends Component {
   private textTemplate(content: string): TemplateResult {
     return html`
       <mdc-text
-        class="place-center"
         type="${getAvatarTextFontSize(this.size)}"
         tagname="span"
       >
