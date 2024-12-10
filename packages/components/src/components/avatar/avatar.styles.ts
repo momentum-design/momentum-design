@@ -5,8 +5,7 @@ const styles = [hostFitContentStyles, css`
   :host {
     --mdc-avatar-default-background-color: var(--mds-color-theme-avatar-default);
     --mdc-avatar-default-foreground-color: var(--mds-color-theme-common-text-primary-normal);
-    --mdc-avatar-loading-foreground-color: var(--mds-color-theme-common-text-primary-normal);
-    --mdc-avatar-loading-background-color: var(--mds-color-core-white-alpha-50);
+    
   }
   :host([size="xx_large"]) .content {
     width: 7.75rem;
@@ -58,17 +57,11 @@ const styles = [hostFitContentStyles, css`
   :host([is-typing]) .content {
     opacity: 0.7;
   }
-  .container {
-    padding: unset;
-    margin: unset;
-    border-radius: 10%;
-    background-color: unset;
-    color: var(--mdc-avatar-default-foreground-color);
-  }
   .content {
     width: 2rem;
     height: 2rem;
     background-color: var(--mdc-avatar-default-background-color);
+    color: var(--mdc-avatar-default-foreground-color);
     border-radius: 50%;
     position: relative;
     display: grid;
