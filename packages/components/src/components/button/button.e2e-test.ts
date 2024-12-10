@@ -220,7 +220,7 @@ const getStickerSheetDetails = async (componentsPage: ComponentsPage) => {
 };
 
 test.describe.parallel('mdc-button', () => {
-  test.use({ viewport: { width: 800, height: 1300 } });
+  test.use({ viewport: { width: 800, height: 2700 } });
 
   test('mdc-button pill button', async ({ componentsPage }) => {
     const children = 'Pill Button';
@@ -267,9 +267,25 @@ test.describe.parallel('mdc-button', () => {
     // 'soft-disabled' pill button
     buttonSheet.setAttributes({ 'soft-disabled': '' });
     await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+    // active pill button
+    buttonSheet.setAttributes({ active: '' });
+    const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
+    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: subVariants, color: BUTTON_COLORS });
+    // tertiary active pill button
+    buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY });
+    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES });
+    // active disabled pill button
+    buttonSheet.setAttributes({ active: '', disabled: '' });
+    await buttonSheet.mountComponents({ variant: BUTTON_VARIANTS });
+    // active 'soft-disabled' pill button
+    buttonSheet.setAttributes({ active: '', 'soft-disabled': '' });
+    await buttonSheet.mountComponents({ variant: BUTTON_VARIANTS });
 
     await test.step('matches screenshot of pill-button element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-button-pill');
+      await componentsPage.visualRegression.takeScreenshot(
+        'mdc-button-pill',
+        { element: buttonSheet.getWrapperContainer() },
+      );
     });
   });
 
@@ -299,8 +315,25 @@ test.describe.parallel('mdc-button', () => {
       'prefix-icon': 'placeholder-light',
     });
     await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+    // active pill with prefix icon button
+    buttonSheet.setAttributes({ active: '', 'prefix-icon': 'placeholder-light' });
+    const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
+    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: subVariants, color: BUTTON_COLORS });
+    // tertiary active pill with prefix icon button
+    buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY, 'prefix-icon': 'placeholder-light' });
+    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES });
+    // active disabled pill with prefix icon button
+    buttonSheet.setAttributes({ active: '', disabled: '', 'prefix-icon': 'placeholder-light' });
+    await buttonSheet.mountComponents({ variant: BUTTON_VARIANTS });
+    // active 'soft-disabled' pill with prefix icon button
+    buttonSheet.setAttributes({ active: '', 'soft-disabled': '', 'prefix-icon': 'placeholder-light' });
+    await buttonSheet.mountComponents({ variant: BUTTON_VARIANTS });
+
     await test.step('matches screenshot of pill-with-prefix-icon-button element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-button-pill-with-prefix-icon');
+      await componentsPage.visualRegression.takeScreenshot(
+        'mdc-button-pill-with-prefix-icon',
+        { element: buttonSheet.getWrapperContainer() },
+      );
     });
   });
 
@@ -330,13 +363,31 @@ test.describe.parallel('mdc-button', () => {
       'postfix-icon': 'placeholder-light',
     });
     await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+    // active pill with postfix icon button
+    buttonSheet.setAttributes({ active: '', 'postfix-icon': 'placeholder-light' });
+    const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
+    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: subVariants, color: BUTTON_COLORS });
+    // tertiary active pill with postfix icon button
+    buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY, 'postfix-icon': 'placeholder-light' });
+    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES });
+    // active disabled pill with postfix icon button
+    buttonSheet.setAttributes({ active: '', disabled: '', 'postfix-icon': 'placeholder-light' });
+    await buttonSheet.mountComponents({ variant: BUTTON_VARIANTS });
+    // active 'soft-disabled' pill with postfix icon button
+    buttonSheet.setAttributes({ active: '', 'soft-disabled': '', 'postfix-icon': 'placeholder-light' });
+    await buttonSheet.mountComponents({ variant: BUTTON_VARIANTS });
+
     await test.step('matches screenshot of pill-with-postfix-icon-button element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-button-pill-with-postfix-icon');
+      await componentsPage.visualRegression.takeScreenshot(
+        'mdc-button-pill-with-postfix-icon',
+        { element: buttonSheet.getWrapperContainer() },
+      );
     });
   });
 
   test('mdc-button visual regression icon button', async ({ componentsPage }) => {
     const { buttonSheet, commonMount } = await getStickerSheetDetails(componentsPage);
+    const BUTTON_SIZES = { ...PILL_BUTTON_SIZES, 52: 52, 64: 64 };
     // icon button
     buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light' });
     await commonMount(true);
@@ -345,29 +396,29 @@ test.describe.parallel('mdc-button', () => {
     await buttonSheet.mountComponents({ size: ICON_BUTTON_SIZES });
     // disabled icon button
     buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light', disabled: '' });
-    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+    await buttonSheet.mountComponents({ size: BUTTON_SIZES, variant: BUTTON_VARIANTS });
     // 'soft-disabled' icon button
     buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light', 'soft-disabled': '' });
-    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
-    await test.step('matches screenshot of icon-button element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-button-icon');
-    });
-  });
+    await buttonSheet.mountComponents({ size: BUTTON_SIZES, variant: BUTTON_VARIANTS });
+    // active icon button
+    buttonSheet.setAttributes({ active: '', 'prefix-icon': 'placeholder-light' });
+    const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
+    await buttonSheet.mountComponents({ size: BUTTON_SIZES, variant: subVariants, color: BUTTON_COLORS });
+    // tertiary active icon button
+    buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY, 'prefix-icon': 'placeholder-light' });
+    await buttonSheet.mountComponents({ size: ICON_BUTTON_SIZES });
+    // active disabled icon button
+    buttonSheet.setAttributes({ active: '', disabled: '', 'postfix-icon': 'placeholder-light' });
+    await buttonSheet.mountComponents({ variant: BUTTON_VARIANTS });
+    // active 'soft-disabled' icon button
+    buttonSheet.setAttributes({ active: '', 'soft-disabled': '', 'postfix-icon': 'placeholder-light' });
+    await buttonSheet.mountComponents({ variant: BUTTON_VARIANTS });
 
-  test('mdc-button visual regression active button', async ({ componentsPage }) => {
-    const { buttonSheet, commonMount } = await getStickerSheetDetails(componentsPage);
-    buttonSheet.setChildren('Pill with prefix');
-    buttonSheet.setAttributes({
-      'prefix-icon': 'placeholder-light',
-      active: '' });
-    buttonSheet.setAssertion(async (component: Locator) => {
-      const svg = component.locator('mdc-icon[part=\'prefix-icon\'] svg[part=\'icon\']');
-      await svg.waitFor();
-      await expect(svg).toHaveAttribute('data-name', 'placeholder-filled');
-    });
-    await commonMount();
-    await test.step('matches screenshot of active-button element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-button-active');
+    await test.step('matches screenshot of icon-button element', async () => {
+      await componentsPage.visualRegression.takeScreenshot(
+        'mdc-button-icon',
+        { element: buttonSheet.getWrapperContainer() },
+      );
     });
   });
 

@@ -141,10 +141,13 @@ class StickerSheet {
       throw new Error('tagname is required');
     }
 
-    await this.componentPage.mount({
-      html: '<div class="componentWrapper"></div>',
-      clearDocument: false,
-    });
+    const componentWrapper = await this.getWrapperContainer().isVisible();
+    if (!componentWrapper) {
+      await this.componentPage.mount({
+        html: '<div class="componentWrapper"></div>',
+        clearDocument: false,
+      });
+    }
 
     if (Object.keys(combinations).length === 0) {
       await this.addComponentToSheet();
