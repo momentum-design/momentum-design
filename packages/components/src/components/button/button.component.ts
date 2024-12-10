@@ -85,13 +85,13 @@ class Button extends Component {
    * The name of the icon to display as a prefix.
    * The icon is displayed on the left side of the button.
    */
-  @property({ type: String, attribute: 'prefix-icon' }) prefixIcon?: string;
+  @property({ type: String, attribute: 'prefix-icon', reflect: true }) prefixIcon?: string;
 
   /**
    * The name of the icon to display as a postfix.
    * The icon is displayed on the right side of the button.
    */
-  @property({ type: String, attribute: 'postfix-icon' }) postfixIcon?: string;
+  @property({ type: String, attribute: 'postfix-icon', reflect: true }) postfixIcon?: string;
 
   /**
    * There are 3 variants of button: primary, secondary, tertiary. They are styled differently.
@@ -317,7 +317,7 @@ class Button extends Component {
    */
   private setAriaPressed(element: HTMLElement, active: boolean) {
     if (active) {
-      element.setAttribute('aria-pressed', 'true');
+      element.setAttribute('aria-pressed', '');
     } else {
       element.removeAttribute('aria-pressed');
     }
@@ -333,7 +333,7 @@ class Button extends Component {
    */
   private setSoftDisabled(element: HTMLElement, softDisabled: boolean) {
     if (softDisabled) {
-      element.setAttribute('aria-disabled', 'true');
+      element.setAttribute('aria-disabled', '');
     } else {
       element.removeAttribute('aria-disabled');
     }
@@ -350,7 +350,7 @@ class Button extends Component {
    */
   private setDisabled(element: HTMLElement, disabled: boolean) {
     if (disabled) {
-      element.setAttribute('aria-disabled', 'true');
+      element.setAttribute('aria-disabled', '');
       this.prevTabindex = this.tabIndex;
       this.tabIndex = -1;
     } else {
