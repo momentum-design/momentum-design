@@ -10,6 +10,7 @@ const htmlRootElementSelector = '#root';
 interface MountOptions {
   html: string;
   clearDocument?: boolean;
+  elementSelector?: string;
 }
 
 interface ComponentsPage {
@@ -91,7 +92,7 @@ class ComponentsPage {
    *
    * @param options - a object with options, including the `html` string to mount
    */
-  async mount({ html, clearDocument = false }: MountOptions) {
+  async mount({ html, clearDocument = false, elementSelector }: MountOptions) {
     await test.step('Mounting HTML', async () => {
       await this.page.evaluate(
         (args) => {
@@ -109,7 +110,7 @@ class ComponentsPage {
             rootElement.appendChild(htmlToElement(args.html));
           }
         },
-        { html, htmlRootElementSelector, clearDocument },
+        { html, htmlRootElementSelector: elementSelector || htmlRootElementSelector, clearDocument },
       );
     });
   }
@@ -135,7 +136,8 @@ class ComponentsPage {
   /**
  * Update one or multiple attributes on a HTMLElement, queried by the passed in `locator`.
  * Additionally, you can update attributes of a nested element by passing an optional nested `Locator`.
- *
+ * Boolean attributes are true if present on an element,
+ *  and should be set to an empty string ("") or the attribute's name without leading or trailing whitespace.
  * @param locator - Playwright locator
  * @param attributes - A record object where keys are attribute names, and values are the attribute values to be set.
  */
