@@ -52,14 +52,22 @@ class StickerSheet {
     this.attributes = attributes;
   }
 
+  private getAttributesAsString() {
+    return Object.entries(this.attributes)
+      .map(([key, value]) => value ? `${key}="${value}"` : `${key}`)
+      .join(' ');
+  }
+
   /**
    * Adds a new component to the sheet with specified attributes.
    */
   private async addComponentToSheet() {
+    const attributesString = this.getAttributesAsString();
     const childrenEl = this.children
-      ? `<${this.tagname} id='${this.tagname}-${this.rowId}'>${this.children}</${this.tagname}>`
-      : `<${this.tagname} id='${this.tagname}-${this.rowId}'></${this.tagname}>`;
+      ? `<${this.tagname} id='${this.tagname}-${this.rowId}' ${attributesString}>${this.children}</${this.tagname}>`
+      : `<${this.tagname} id='${this.tagname}-${this.rowId}' ${attributesString}></${this.tagname}>`;
 
+    console.log('Turbo 🚀  ~ addComponentToSheet ~ childrenEl:', childrenEl);
     await this.componentPage.mount({
       html: childrenEl,
       clearDocument: false,
@@ -67,14 +75,9 @@ class StickerSheet {
     });
 
     this.component = this.componentPage.page.locator(`#${this.tagname}-${this.rowId}`);
-    if (this.component) {
-      await this.componentPage.setAttributes(this.component, this.attributes);
-    }
-
     if (this.assertion) {
       await this.assertion(this.component, this.attributes);
     }
-
     this.rowId += 1;
   }
 
