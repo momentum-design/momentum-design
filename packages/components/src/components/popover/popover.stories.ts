@@ -22,6 +22,7 @@ const render = (args: Args) => html`
   triggerID="popover-trigger"
   trigger="${args.trigger}"
   placement="${args.placement}"
+  set-index="${args['set-index']}"
   ?visible="${args.visible}"
   .offset="${args.offset}"
   ?interactive=${args.interactive}
@@ -30,10 +31,10 @@ const render = (args: Args) => html`
   ?inverted-color=${args['inverted-color']}
   ?close-button=${args['close-button']}
   ?prevent-scroll=${args['prevent-scroll']}
+  ?hide-on-blur=${args['hide-on-blur']}
   ?hide-on-escape=${args['hide-on-escape']}
   ?hide-on-outside-click=${args['hide-on-outside-click']}
   ?focus-back-to-trigger=${args['focus-back-to-trigger']}
-  style="height: 200px; width: 200px;"
 >
   <mdc-text>Lorem ipsum dolor site ate aetns ctetuer</mdc-text>
 </mdc-popover>
@@ -63,6 +64,12 @@ const meta: Meta = {
     visible: {
       control: 'boolean',
     },
+    'set-index': {
+      if: {
+        arg: 'set-index',
+      },
+      control: 'number',
+    },
     'show-arrow': {
       control: 'boolean',
     },
@@ -79,6 +86,9 @@ const meta: Meta = {
       control: 'boolean',
     },
     'prevent-scroll': {
+      control: 'boolean',
+    },
+    'hide-on-blur': {
       control: 'boolean',
     },
     'hide-on-escape': {

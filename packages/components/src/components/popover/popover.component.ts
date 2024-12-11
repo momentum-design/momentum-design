@@ -1,4 +1,5 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
 import { computePosition, autoUpdate, offset, flip, shift, arrow } from '@floating-ui/dom';
 import type { Placement } from '@floating-ui/utils';
@@ -95,7 +96,7 @@ class Popover extends FocusTrapMixin(Component) {
   /**
    * The hide on blur of the popover.
    */
-  @property({ type: Boolean, reflect: true })
+  @property({ type: Boolean, reflect: true, attribute: 'hide-on-blur' })
   hideOnBlur = false;
 
   /**
@@ -113,8 +114,8 @@ class Popover extends FocusTrapMixin(Component) {
   /**
    * The hide on click of the popover.
    */
-  @property({ type: Number, reflect: true })
-  setIndex = 0;
+  @property({ type: Number, reflect: true, attribute: 'set-index' })
+  setIndex = 1000;
 
   /**
    * The hide on click of the popover.
@@ -135,9 +136,6 @@ class Popover extends FocusTrapMixin(Component) {
    */
   @property({ type: String, attribute: 'aria-labelledby' })
   ariaLabelledBy: string | null = null;
-
-  @property({ type: String, attribute: 'aria-modal' })
-  override ariaModal: string | null = null;
 
   @property({ type: String })
   override role: string | null = null;
@@ -213,16 +211,29 @@ class Popover extends FocusTrapMixin(Component) {
   }
 
   onOutsidePopoverClick = (event: MouseEvent) => {
-    if (this.trigger?.includes('manual')) {
-      return;
-    }
-
     let insidePopoverClick = false;
     const path = event.composedPath();
     insidePopoverClick = this.contains(event.target as Node) || path.includes(this.triggerElement!);
     if (!insidePopoverClick) {
       this.visible = false;
     }
+  };
+
+  onWindowBlurEvent = () => {
+    if (this.visible) {
+      this.visible = false;
+    }
+  };
+
+  onEscapeKeydown = async (event: KeyboardEvent) => {
+    if (!this.visible || event.code !== 'Escape') {
+      return;
+    }
+
+    event.preventDefault();
+    this.visible = false;
+    await this.updateComplete;
+    this.triggerElement?.focus();
   };
 
   private async isOpenUpdated(oldValue: boolean, newValue: boolean) {
@@ -232,29 +243,41 @@ class Popover extends FocusTrapMixin(Component) {
 
     if (newValue) {
       this.enableFocusTrap = this.focusTrap;
-      this.allowEscapeExit = this.hideOnEscape;
       this.enablePreventScroll = this.preventScroll;
 
       await this.positionPopover();
       await this.handleCreatePopperFirstUpdate();
 
-      // window.addEventListener('blur', this.onWindowBlurEvent);
+      if (this.hideOnBlur) {
+        window.addEventListener('blur', this.onWindowBlurEvent);
+      }
       if (this.hideOnOutsideClick) {
         document.addEventListener('click', this.onOutsidePopoverClick);
       }
-      // document.addEventListener('keydown', this.onOutsidePopoverKeydown);
+      if (this.hideOnEscape) {
+        document.addEventListener('keydown', this.onEscapeKeydown);
+      }
 
       this.triggerElement?.setAttribute('aria-expanded', 'true');
       if (this.interactive) {
         this.triggerElement?.setAttribute('aria-haspopup', 'true');
       }
     } else {
-      // window.removeEventListener('blur', this.onWindowBlurEvent);
-      document.removeEventListener('click', this.onOutsidePopoverClick);
-      // document.removeEventListener('keydown', this.onOutsidePopoverKeydown);
+      if (this.hideOnBlur) {
+        window.removeEventListener('blur', this.onWindowBlurEvent);
+      }
+      if (this.hideOnOutsideClick) {
+        document.removeEventListener('click', this.onOutsidePopoverClick);
+      }
+      if (this.hideOnEscape) {
+        document.removeEventListener('keydown', this.onEscapeKeydown);
+      }
 
       this.deactivateFocusTrap?.();
       this.triggerElement?.removeAttribute('aria-expanded');
+      if (this.interactive) {
+        this.triggerElement?.removeAttribute('aria-haspopup');
+      }
       if (this.focusBackToTrigger) {
         this.triggerElement?.focus();
       }
@@ -357,6 +380,12 @@ class Popover extends FocusTrapMixin(Component) {
         class='popover-container'  
         ?visible="${this.visible}" 
         ?inverted="${this.invertedColor}"
+        aria-label=${ifDefined(this.ariaLabel ?? undefined)}
+        aria-labelledby=${ifDefined(this.ariaLabelledBy ?? undefined)}
+        role=${ifDefined(this.role ?? undefined)}
+        aria-describedby=${ifDefined(this.ariaDecribeBy ?? undefined)}
+        aria-modal=${ifDefined(this.interactive ? 'true' : undefined)}
+        style="z-index: ${this.setIndex};"
         >
           ${this.closeButton
     ? html` <mdc-button 

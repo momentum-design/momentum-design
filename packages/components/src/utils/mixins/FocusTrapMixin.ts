@@ -6,7 +6,6 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 
 export interface FocusTrapClassInterface {
     enableFocusTrap: boolean;
-    allowEscapeExit: boolean;
     enablePreventScroll: boolean;
 }
 
@@ -28,9 +27,6 @@ export const FocusTrapMixin = <T extends Constructor<FocusTrapClass>>(
     enableFocusTrap = false;
 
     @property({ reflect: true, type: Boolean })
-    allowEscapeExit = false;
-
-    @property({ reflect: true, type: Boolean })
     enablePreventScroll = false;
 
     private focusTrapIndex = -1;
@@ -41,7 +37,6 @@ export const FocusTrapMixin = <T extends Constructor<FocusTrapClass>>(
 
     override deactivateFocusTrap() {
       this.enableFocusTrap = false;
-      this.allowEscapeExit = false;
       this.enablePreventScroll = false;
       this.focusTrapIndex = -1;
       document.body.style.overflow = '';
@@ -243,12 +238,6 @@ export const FocusTrapMixin = <T extends Constructor<FocusTrapClass>>(
     }
 
     private handleKeydown(event: KeyboardEvent) {
-      if (event.key === 'Escape' && this.allowEscapeExit) {
-        event.preventDefault();
-        this.dispatchEvent(new CustomEvent('focus-trap-exit', { bubbles: true, composed: true }));
-        return;
-      }
-
       if (!this.enableFocusTrap || !this.focusableElements.length) {
         return;
       }

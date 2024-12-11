@@ -12,7 +12,6 @@ const styles = css`
 
   .popover-container {
     display: none;
-    z-index: 1000;
     position: absolute;
     padding: 0.75rem;
     background-color: var(--mdc-popover-primary-background-color);
