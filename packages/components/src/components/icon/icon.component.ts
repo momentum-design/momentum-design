@@ -81,15 +81,28 @@ class Icon extends Component {
 
   private readonly iconProviderContext = providerUtils.consume({ host: this, context: IconProvider.Context });
 
+  @state() private abortController: AbortController;
+
+  constructor() {
+    super();
+    this.abortController = new AbortController(); // Initialize AbortController
+  }
+
   /**
    * Get Icon Data function which will fetch the icon (currently only svg)
    * and sets state and attributes once fetched successfully
+   *
+   * This method uses abortController.signal to cancel the fetch request when the component is disconnected or updated.
+   * If the request is aborted after the fetch() call has been fulfilled but before the response body has been read,
+   * then attempting to read the response body will reject with an AbortError exception.
    */
   private async getIconData() {
     if (this.iconProviderContext.value) {
       const { fileExtension, url } = this.iconProviderContext.value;
       if (url && fileExtension && this.name) {
-        const iconHtml = await dynamicSVGImport(url, this.name, fileExtension);
+        this.abortController.abort();
+        this.abortController = new AbortController();
+        const iconHtml = await dynamicSVGImport(url, this.name, fileExtension, this.abortController.signal);
 
         // update iconData state once fetched:
         this.iconData = iconHtml as HTMLElement;
@@ -141,8 +154,9 @@ class Icon extends Component {
     if (changedProperties.has('name')) {
       // fetch icon data if name changes:
       this.getIconData().catch((err) => {
-        // eslint-disable-next-line no-console
-        console.error(err);
+        if (err.name !== 'AbortError' && this.onerror) {
+          this.onerror(err);
+        }
       });
     }
 

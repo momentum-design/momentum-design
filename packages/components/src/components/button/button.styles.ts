@@ -48,7 +48,6 @@ const styles = [hostFitContentStyles, css`
     font-weight: var(--mds-font-apps-body-large-bold-font-weight);
   }
 
-
   :host([variant="primary"]){
     background: var(--mdc-button-primary-background-color);
     color: var(--mdc-button-primary-color);
@@ -146,6 +145,7 @@ const styles = [hostFitContentStyles, css`
   }
   :host([size="20"]){
     height: var(--mdc-button-height-size-20);
+    padding: 0.0625rem;
   }
 
   :host([color="accent"]){

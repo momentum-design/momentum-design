@@ -411,6 +411,10 @@ class Button extends Component {
       this.typeInternal = BUTTON_TYPE_INTERNAL.PILL_WITH_ICON;
     } else if (!slot && (this.prefixIcon || this.postfixIcon)) {
       this.typeInternal = BUTTON_TYPE_INTERNAL.ICON;
+      this.setAttribute(
+        'aria-label',
+        this.getAttribute('aria-label') || this.prefixIcon || this.postfixIcon || BUTTON_TYPE_INTERNAL.ICON,
+      );
     } else {
       this.typeInternal = BUTTON_TYPE_INTERNAL.PILL;
     }
