@@ -276,7 +276,9 @@ test.describe.parallel('mdc-button', () => {
         'prefix-icon': 'placeholder-light',
       });
       buttonSheet.setAssertion(async (component: Locator) => {
-        await component.locator('mdc-icon').waitFor();
+        const svg = component.locator('mdc-icon[part=\'prefix-icon\'] svg[part=\'icon\']');
+        await svg.waitFor();
+        await expect(svg).toHaveAttribute('data-name', 'placeholder-light');
       });
       await commonMount();
       // tertiary
@@ -297,6 +299,11 @@ test.describe.parallel('mdc-button', () => {
       // active
       buttonSheet.setAttributes({ active: '', 'prefix-icon': 'placeholder-light' });
       const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
+      buttonSheet.setAssertion(async (component: Locator) => {
+        const svg = component.locator('mdc-icon[part=\'prefix-icon\'] svg[part=\'icon\']');
+        await svg.waitFor();
+        await expect(svg).toHaveAttribute('data-name', 'placeholder-filled');
+      });
       await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: subVariants, color: BUTTON_COLORS });
       // tertiary active
       buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY, 'prefix-icon': 'placeholder-light' });
@@ -330,7 +337,9 @@ test.describe.parallel('mdc-button', () => {
         'postfix-icon': 'placeholder-light',
       });
       buttonSheet.setAssertion(async (component: Locator) => {
-        await component.locator('mdc-icon').waitFor();
+        const svg = component.locator('mdc-icon[part=\'postfix-icon\'] svg[part=\'icon\']');
+        await svg.waitFor();
+        await expect(svg).toHaveAttribute('data-name', 'placeholder-light');
       });
       await commonMount();
       // tertiary
@@ -351,6 +360,11 @@ test.describe.parallel('mdc-button', () => {
       // active
       buttonSheet.setAttributes({ active: '', 'postfix-icon': 'placeholder-light' });
       const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
+      buttonSheet.setAssertion(async (component: Locator) => {
+        const svg = component.locator('mdc-icon[part=\'postfix-icon\'] svg[part=\'icon\']');
+        await svg.waitFor();
+        await expect(svg).toHaveAttribute('data-name', 'placeholder-filled');
+      });
       await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: subVariants, color: BUTTON_COLORS });
       // tertiary active
       buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY, 'postfix-icon': 'placeholder-light' });
@@ -382,6 +396,11 @@ test.describe.parallel('mdc-button', () => {
     const BUTTON_SIZES = { ...PILL_BUTTON_SIZES, 52: 52, 64: 64 };
     // default
     buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light' });
+    buttonSheet.setAssertion(async (component: Locator) => {
+      const svg = component.locator('mdc-icon[part=\'prefix-icon\'] svg[part=\'icon\']');
+      await svg.waitFor();
+      await expect(svg).toHaveAttribute('data-name', 'placeholder-light');
+    });
     await commonMount(true);
     // tertiary
     buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light', variant: BUTTON_VARIANTS.TERTIARY });
@@ -395,15 +414,20 @@ test.describe.parallel('mdc-button', () => {
     // active
     buttonSheet.setAttributes({ active: '', 'prefix-icon': 'placeholder-light' });
     const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
+    buttonSheet.setAssertion(async (component: Locator) => {
+      const svg = component.locator('mdc-icon[part=\'prefix-icon\'] svg[part=\'icon\']');
+      await svg.waitFor();
+      await expect(svg).toHaveAttribute('data-name', 'placeholder-filled');
+    });
     await buttonSheet.mountComponents({ size: BUTTON_SIZES, variant: subVariants, color: BUTTON_COLORS });
     // tertiary active
     buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY, 'prefix-icon': 'placeholder-light' });
     await buttonSheet.mountComponents({ size: ICON_BUTTON_SIZES });
     // active disabled
-    buttonSheet.setAttributes({ active: '', disabled: '', 'postfix-icon': 'placeholder-light' });
+    buttonSheet.setAttributes({ active: '', disabled: '', 'prefix-icon': 'placeholder-light' });
     await buttonSheet.mountComponents({ variant: BUTTON_VARIANTS });
     // active 'soft-disabled'
-    buttonSheet.setAttributes({ active: '', 'soft-disabled': '', 'postfix-icon': 'placeholder-light' });
+    buttonSheet.setAttributes({ active: '', 'soft-disabled': '', 'prefix-icon': 'placeholder-light' });
     await buttonSheet.mountComponents({ variant: BUTTON_VARIANTS });
 
     await test.step('matches screenshot of icon-button element', async () => {
@@ -416,6 +440,7 @@ test.describe.parallel('mdc-button', () => {
 
   test('mdc-button key pressed and focused events', async ({ componentsPage }) => {
     const children = 'Pill Button';
+
     await test.step('mdc-button focus event for pill button', async () => {
       const button = await setup({ componentsPage, children });
       await componentsPage.page.evaluate(() => {
@@ -456,20 +481,6 @@ test.describe.parallel('mdc-button', () => {
       await mdcButton.click();
       await expect(mdcButton).not.toHaveClass('btn-clicked');
     });
-    await test.step('mdc-button click event for disbaled pill button', async () => {
-      const mdcButton = await setup({ componentsPage, children });
-      await componentsPage.page.evaluate(() => {
-        const button = document.getElementsByTagName('mdc-button')[0];
-        button.addEventListener('click', () => {
-          button.classList.toggle('btn-clicked');
-        });
-      });
-
-      await componentsPage.setAttributes(mdcButton, { disabled: '' });
-      await expect(mdcButton).toBeDisabled();
-      await componentsPage.removeAttribute(mdcButton, 'disabled');
-      await expect(mdcButton).not.toBeDisabled();
-    });
 
     await test.step('mdc-button key press event for pill button', async () => {
       const button = await setup({ componentsPage, children });
@@ -493,6 +504,22 @@ test.describe.parallel('mdc-button', () => {
       await expect(button).not.toHaveClass('pressed');
       await expect(button).not.toHaveClass('btn-clicked');
       await componentsPage.page.keyboard.up('Enter');
+    });
+
+    await test.step('mdc-button click event for disbaled pill button', async () => {
+      const mdcButton = await setup({ componentsPage, children });
+      await componentsPage.page.evaluate(() => {
+        const button = document.getElementsByTagName('mdc-button')[0];
+        button.addEventListener('click', () => {
+          button.classList.toggle('btn-clicked');
+        });
+      });
+
+      await componentsPage.setAttributes(mdcButton, { disabled: '' });
+      await expect(mdcButton).toHaveAttribute('disabled');
+      await expect(mdcButton).toBeDisabled();
+      await componentsPage.removeAttribute(mdcButton, 'disabled');
+      await expect(mdcButton).not.toBeDisabled();
     });
   });
 });
