@@ -1029,6 +1029,13 @@
             "value": "{color.highcontrast.white.WindowColor}",
             "description": "Use for skeleton component"
           }
+        },
+        "glass": {
+          "normal": {
+            "value": "{color.highcontrast.white.WindowColor}",
+            "type": "color",
+            "description": "Used for glass effect background for operation pop. "
+          }
         }
       },
       "button": {
@@ -2122,6 +2129,12 @@
               "type": "color",
               "value": "{color.highcontrast.white.GrayTextColor}"
             }
+          },
+          "warning": {
+            "normal": {
+              "value": "{color.highcontrast.white.WindowTextColor}",
+              "type": "color"
+            }
           }
         },
         "control": {
@@ -2437,6 +2450,20 @@
             "parent": "theme/stable/dark",
             "type": "color",
             "value": "{color.highcontrast.white.WindowTextColor}"
+          }
+        },
+        "vertical": {
+          "normal": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "{color.highcontrast.white.WindowTextColor}",
+            "description": "Used for default default on compose area in space"
+          },
+          "hover": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "{color.highcontrast.white.WindowTextColor}",
+            "description": "linear-gradient(90deg, #ffffff00 0%, #ffffff99 22.4%, #ffffff99 72.4%, #ffffff00 100%)\nUsed for hover state of gradient divider for spaces"
           }
         }
       },
