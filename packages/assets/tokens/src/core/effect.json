@@ -1,0 +1,7 @@
+{
+  "backdrop-filter": {
+    "value": "blur(10px)",
+    "type": "other",
+    "description": "Used for background blur effect glass effect"
+  }
+}

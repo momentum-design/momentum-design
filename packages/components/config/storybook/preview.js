@@ -1,7 +1,5 @@
-import '@momentum-design/tokens/dist/css/theme/webex/dark-stable.css';
-import '@momentum-design/tokens/dist/css/theme/webex/light-stable.css';
-import '@momentum-design/tokens/dist/css/typography/complete.css';
 import '@momentum-design/fonts/dist/css/fonts.css';
+import '@momentum-design/tokens/dist/css/components/complete.css';
 
 import { setCustomElementsManifest } from '@storybook/web-components';
 import customElements from '../../dist/custom-elements.json';

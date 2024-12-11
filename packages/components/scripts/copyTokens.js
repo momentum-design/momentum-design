@@ -2,9 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 
-const typography = require.resolve('@momentum-design/tokens/dist/css/typography/complete.css');
-const dark = require.resolve('@momentum-design/tokens/dist/css/theme/webex/dark-stable.css');
-const light = require.resolve('@momentum-design/tokens/dist/css/theme/webex/light-stable.css');
+const complete = require.resolve('@momentum-design/tokens/dist/css/components/complete.css');
 
 const root = process.cwd();
 const playwrightPublicDist = path.join(root, 'config', 'playwright', 'public', 'dist');
@@ -22,8 +20,6 @@ const copyFileToFolder = (src, destFolder) => {
   fs.copyFileSync(src, dest);
 };
 
-copyFileToFolder(typography, playwrightPublicDist);
-copyFileToFolder(dark, playwrightPublicDist);
-copyFileToFolder(light, playwrightPublicDist);
+copyFileToFolder(complete, playwrightPublicDist);
 
 console.log(chalk.gray('Tokens have been copied successfully!'));

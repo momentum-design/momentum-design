@@ -1070,6 +1070,13 @@
             "value": "linear-gradient(123deg, {color.core.black-alpha.20} 0%, {color.core.black-alpha.30} 27.6%, {color.core.black-alpha.40} 58.85%, {color.core.black-alpha.50} 100%)",
             "description": "linear-gradient(123deg, #00000033 0%, #0000004d 27.6%, #00000066 58.85%, #00000080 100%)"
           }
+        },
+        "glass": {
+          "normal": {
+            "value": "{color.core.white-alpha.50}",
+            "type": "color",
+            "description": "Used for glass effect background for operation pop. "
+          }
         }
       },
       "button": {
@@ -1924,6 +1931,12 @@
               "type": "color",
               "value": "{color.core.black-alpha.20}"
             }
+          },
+          "warning": {
+            "normal": {
+              "value": "{color.core.yellow.40}",
+              "type": "color"
+            }
           }
         },
         "control": {
@@ -2608,6 +2621,20 @@
             "type": "color",
             "value": "linear-gradient(90deg, {color.decorative.purple.70}00 0%,{color.decorative.purple.70}E6 22.4%, {color.decorative.purple.70}E6 76.04%, {color.decorative.purple.70}00 100%)",
             "description": "linear-gradient(90deg, #932099 0%, #932099 90%, #932099 90%, #fd884e 0%)\n"
+          }
+        },
+        "vertical": {
+          "normal": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "linear-gradient(0deg, {color.core.black-alpha.0} 0%, {color.core.black-alpha.20} 22.4%, {color.core.black-alpha.20} 72.4%, {color.core.black-alpha.0} 100%)",
+            "description": "linear-gradient(0deg, #00000000 0%, #00000033 22.4%, #00000033 72.4%, #00000000 100%)\nUsed for default default on compose area in space"
+          },
+          "hover": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "linear-gradient(0deg, {color.core.black-alpha.0} 0%, {color.core.black-alpha.60} 22.4%, {color.core.black-alpha.60} 72.4%, {color.core.black-alpha.0} 100%)",
+            "description": "linear-gradient(0deg, #00000000 0%, #00000099 22.4%, #00000099 72.4%, #00000000 100%)\nUsed for hover state of gradient divider for spaces"
           }
         }
       },
