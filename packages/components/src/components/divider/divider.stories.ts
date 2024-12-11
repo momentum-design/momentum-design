@@ -13,7 +13,7 @@ const render = (args: Args) => html`
       aria-label=${args['aria-label'] || ''}
       aria-expanded=${args['aria-expanded'] || ''}
       arrow-direction=${args['arrow-direction'] || ''}
-      button-direction=${args['button-direction'] || ''}
+      button-position=${args['button-position'] || ''}
     >
       ${args.slotContent}
     </mdc-divider>
@@ -56,7 +56,7 @@ export default meta;
 export const primary: StoryObj = {
   argTypes: {
     ...meta.argTypes,
-    ...hideControls(['aria-label', 'aria-expanded', 'arrow-direction', 'button-direction']),
+    ...hideControls(['aria-label', 'aria-expanded', 'arrow-direction', 'button-position']),
   },
   args: {
     orientation: DIVIDER_ORIENTATION.HORIZONTAL,
@@ -75,7 +75,7 @@ export const textDivider: StoryObj = {
     'aria-label': {
       control: 'text',
     },
-    ...hideControls(['slotContent', 'aria-expanded', 'arrow-direction', 'button-direction']),
+    ...hideControls(['slotContent', 'aria-expanded', 'arrow-direction', 'button-position']),
   },
   args: {
     ...primary.args,
@@ -97,7 +97,7 @@ export const grabberButtonDivider: StoryObj = {
       control: 'select',
       options: ['positive', 'negative'],
     },
-    'button-direction': {
+    'button-position': {
       control: 'select',
       options: ['positive', 'negative'],
     },
@@ -109,6 +109,6 @@ export const grabberButtonDivider: StoryObj = {
     'aria-label': 'Divider with grabber button',
     'aria-expanded': false,
     'arrow-direction': 'negative',
-    'button-direction': 'negative',
+    'button-position': 'negative',
   },
 };
