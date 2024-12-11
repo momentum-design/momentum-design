@@ -353,6 +353,16 @@ class Avatar extends Component {
     return nothing;
   }
 
+  public override update(changedProperties: any): void {
+    super.update(changedProperties);
+
+    if (changedProperties.has('src')) {
+      // Reset the state of photo loaded, so that
+      // the avatar photo is displayed only when it is loaded.
+      this.isPhotoLoaded = false;
+    }
+  }
+
   public override render(): TemplateResult {
     const type = this.getTypeBasedOnInputs();
     return html`
