@@ -66,9 +66,15 @@ const styles = css`
     border-radius: 0 0 0.5rem 0.5rem;
   }
 
-  :host([orientation='horizontal'][button-position='positive']),
-  :host([orientation='vertical'][button-position='negative']) {
+  :host([orientation='horizontal'][button-position='positive']:dir(ltr)),
+  :host([orientation='vertical'][button-position='negative']:dir(ltr)),
+  :host([orientation='vertical'][button-position='positive']:dir(rtl)) {
     align-items: end;
+  }
+
+  :host([orientation='vertical'][button-position='positive']:dir(ltr)),
+  :host([orientation='vertical'][button-position='negative']:dir(rtl)) {
+    align-items: start;
   }
 
   :host([orientation='horizontal'][button-position='positive']) ::slotted(mdc-button) {
@@ -91,8 +97,12 @@ const styles = css`
     background-color: var(--mdc-divider-background-color);
   }
 
-  :host([orientation='horizontal'][variant='gradient'].mdc-text-divider) > div {
-    background: var(--mdc-divider-horizontal-gradient);
+  :host([orientation='horizontal'][variant='gradient'].mdc-text-divider) > div:first-of-type {
+    background: linear-gradient(to right, transparent, 30%, var(--mdc-divider-background-color));
+  }
+
+  :host([orientation='horizontal'][variant='gradient'].mdc-text-divider) > div:last-of-type {
+    background: linear-gradient(to left, transparent, 30%, var(--mdc-divider-background-color));
   }
 
   :host(.mdc-text-divider) ::slotted(mdc-text) {
