@@ -2,7 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { DIVIDER_ORIENTATION, DIVIDER_VARIANT } from './divider.constants';
+import { DIVIDER_ORIENTATION, DIVIDER_VARIANT, DIRECTIONS } from './divider.constants';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
@@ -42,8 +42,8 @@ const meta: Meta = {
       '--mdc-divider-width',
       '--mdc-divider-horizontal-gradient',
       '--mdc-divider-vertical-gradient',
-      '--mdc-divider-text-font-size',
-      '--mdc-divider-text-font-color',
+      '--mdc-divider-text-size',
+      '--mdc-divider-text-color',
       '--mdc-divider-text-margin',
     ]),
     ...classArgType,
@@ -95,11 +95,11 @@ export const grabberButtonDivider: StoryObj = {
     },
     'arrow-direction': {
       control: 'select',
-      options: ['positive', 'negative'],
+      options: Object.values(DIRECTIONS),
     },
     'button-position': {
       control: 'select',
-      options: ['positive', 'negative'],
+      options: Object.values(DIRECTIONS),
     },
     ...hideControls(['slotContent']),
   },
@@ -108,7 +108,7 @@ export const grabberButtonDivider: StoryObj = {
     slotContent: html`<mdc-button></mdc-button>`,
     'aria-label': 'Divider with grabber button',
     'aria-expanded': false,
-    'arrow-direction': 'negative',
-    'button-position': 'negative',
+    'arrow-direction': DIRECTIONS.NEGATIVE,
+    'button-position': DIRECTIONS.NEGATIVE,
   },
 };

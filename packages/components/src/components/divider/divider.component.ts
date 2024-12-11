@@ -32,8 +32,8 @@ import { DividerOrientation, DividerTypeInternal, DividerVariant } from './divid
  * @cssproperty --mdc-divider-width - width of the divider
  * @cssproperty --mdc-divider-horizontal-gradient - gradient of the horizontal divider
  * @cssproperty --mdc-divider-vertical-gradient - gradient of the vertical divider
- * @cssproperty --mdc-divider-text-font-size - font size of text divider
- * @cssproperty --mdc-divider-text-font-color - font color of text divider
+ * @cssproperty --mdc-divider-text-size - font size of label in the text divider
+ * @cssproperty --mdc-divider-text-color - font color of label in the text divider
  * @cssproperty --mdc-divider-text-margin - left and right margin of label in the text divider
  */
 class Divider extends Component {
@@ -188,11 +188,13 @@ class Divider extends Component {
    * @param type - The type of the divider.
    */
   private setClassBasedOnType(type: string) {
-    this.classList.remove('mdc-primary-divider', 'mdc-text-divider');
+    this.classList.remove('mdc-primary-divider', 'mdc-text-divider', 'mdc-grabber-divider');
     if (type === DIVIDER_TYPE_INTERNAL.PRIMARY) {
       this.classList.add('mdc-primary-divider');
     } else if (type === DIVIDER_TYPE_INTERNAL.TEXT) {
       this.classList.add('mdc-text-divider');
+    } else if (type === DIVIDER_TYPE_INTERNAL.GRABBER_BUTTON) {
+      this.classList.add('mdc-grabber-divider');
     }
   }
 
