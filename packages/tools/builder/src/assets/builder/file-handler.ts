@@ -1,9 +1,6 @@
 import fs from 'fs-extra';
 import glob from 'glob';
-import {
-  Logger,
-  generateMetadata,
-} from '@momentum-design/telemetry';
+import { Logger, generateMetadata } from '@momentum-design/telemetry';
 import path from 'path';
 import CONSTANTS from './constants';
 import type { Encoding, FileType, ReplacePattern } from './types';
@@ -56,15 +53,14 @@ class FileHandler {
     if (!this.replacePatterns?.length) {
       return filePath;
     }
+
+    // using regexp and g to replace all occurrences of the searchValue with the replaceValue
     const fileName = this.replacePatterns.reduce(
-      (prev, curr) => prev.replace(curr.searchValue, curr.replaceValue),
+      (prev, curr) => prev.replace(new RegExp(curr.searchValue, 'g'), curr.replaceValue),
       path.basename(filePath),
     );
 
-    return path.join(
-      path.dirname(filePath),
-      fileName,
-    );
+    return path.join(path.dirname(filePath), fileName);
   }
 
   /**
@@ -84,9 +80,7 @@ class FileHandler {
       // sanitise the distPath (by running replace on the file name):
       distPath = this.sanitizeFileName(distPath);
 
-      return (
-        { srcPath: filePath, distPath }
-      );
+      return { srcPath: filePath, distPath };
     });
   }
 
@@ -118,7 +112,7 @@ class FileHandler {
    * @param file - File to read data from
    * @returns Promise, which resolves to the file object with data if successful
    */
-  public readFile(file: FileType, encoding: string): Promise<FileType> {
+  public async readFile(file: FileType, encoding: string): Promise<FileType> {
     return new Promise<FileType>((resolve, reject) => {
       fs.readFile(file.srcPath, encoding, (error, data) => {
         if (error) {
@@ -139,7 +133,7 @@ class FileHandler {
    * @param file - File object, including `data` and `distPath`
    * @returns Promise, which resolves to the file object if successful
    */
-  public writeFile(file: FileType, encoding: string): Promise<FileType> {
+  public async writeFile(file: FileType, encoding: string): Promise<FileType> {
     return new Promise<FileType>((resolve, reject) => {
       if (!file.distPath) {
         const errorMessage = `No distPath provided for file: ${file}`;
@@ -161,11 +155,38 @@ class FileHandler {
   }
 
   /**
+   * Copies the file from `srcPath` to `distPath`
+   *
+   * @param file - File object, including `srcPath` and `distPath`
+   * @returns Promise, which resolves to the file object if successful
+   */
+  public async copyFile(file: FileType) {
+    return new Promise<FileType>((resolve, reject) => {
+      if (!file.distPath) {
+        const errorMessage = `No distPath provided for file: ${file}`;
+        logger.error(errorMessage);
+        reject(errorMessage);
+        return;
+      }
+
+      fs.copyFile(file.srcPath, file.distPath, (error) => {
+        if (error) {
+          logger.error(`Error while copying file (${file.distPath}): ${error}`);
+          reject(error);
+        } else {
+          // return file object once written:
+          resolve(file);
+        }
+      });
+    });
+  }
+
+  /**
    * Read multiple files
    * @param files - files to read
    * @returns Promise, which resolves to file array if successful
    */
-  public readFiles(files: Array<FileType>): Promise<FileType[]> {
+  public async readFiles(files: Array<FileType>): Promise<FileType[]> {
     return Promise.all(files.map((file) => this.readFile(file, this.encoding.read)));
   }
 
@@ -174,8 +195,17 @@ class FileHandler {
    * @param files - files to write
    * @returns Promise, which resolves to file array if successful
    */
-  public writeFiles(files: Array<FileType>): Promise<FileType[]> {
+  public async writeFiles(files: Array<FileType>): Promise<FileType[]> {
     return Promise.all(files.map((file) => this.writeFile(file, this.encoding.write)));
+  }
+
+  /**
+   * Copies multiple files
+   * @param files - files to copy
+   * @returns Promise, which resolves to file array if successful
+   */
+  public async copyFiles(files: Array<FileType>): Promise<FileType[]> {
+    return Promise.all(files.map((file) => this.copyFile(file)));
   }
 }
 
