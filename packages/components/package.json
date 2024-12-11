@@ -80,6 +80,7 @@
     "test:e2e:report": "yarn playwright show-report"
   },
   "dependencies": {
+    "@floating-ui/dom": "^1.6.12",
     "@lit/context": "^1.1.2",
     "@lit/react": "^1.0.5",
     "@momentum-design/fonts": "workspace:*",
