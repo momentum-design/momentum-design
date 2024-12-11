@@ -3,13 +3,7 @@
 import { expect, Locator } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
-import {
-  BUTTON_COLORS,
-  BUTTON_VARIANTS,
-  DEFAULTS,
-  ICON_BUTTON_SIZES,
-  PILL_BUTTON_SIZES,
-} from './button.constants';
+import { BUTTON_COLORS, BUTTON_VARIANTS, DEFAULTS, ICON_BUTTON_SIZES, PILL_BUTTON_SIZES } from './button.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -23,48 +17,60 @@ type SetupOptions = {
   color?: string;
   children?: any;
   ariaLabel?: string;
-}
+  secondButtonForFocus?: boolean;
+};
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
   if (restArgs.children) {
     await componentsPage.mount({
-      html: `<mdc-button
-        ${restArgs.active ? 'active' : ''}
-        ${restArgs.disabled ? 'disabled' : ''}
-        ${restArgs.softDisabled ? 'soft-disabled' : ''}
-        ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
-        ${restArgs.size ? `size="${restArgs.size}"` : ''}
-        ${restArgs.color ? `color="${restArgs.color}"` : ''}
-        ${restArgs.prefixIcon ? `prefix-icon="${restArgs.prefixIcon}"` : ''}
-        ${restArgs.postfixIcon ? `postfix-icon="${restArgs.postfixIcon}"` : ''}
-      >
-        ${restArgs.children}
-      </mdc-button>
+      html: `
+      ${restArgs.secondButtonForFocus ? '<div id="wrapper">' : ''}
+        <mdc-button
+          ${restArgs.active ? 'active' : ''}
+          ${restArgs.disabled ? 'disabled' : ''}
+          ${restArgs.softDisabled ? 'soft-disabled' : ''}
+          ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
+          ${restArgs.size ? `size="${restArgs.size}"` : ''}
+          ${restArgs.color ? `color="${restArgs.color}"` : ''}
+          ${restArgs.prefixIcon ? `prefix-icon="${restArgs.prefixIcon}"` : ''}
+          ${restArgs.postfixIcon ? `postfix-icon="${restArgs.postfixIcon}"` : ''}
+        >
+          ${restArgs.children}
+        </mdc-button>
+      ${restArgs.secondButtonForFocus ? '<mdc-button>Second Button</mdc-button></div>' : ''}
         `,
       clearDocument: true,
     });
   } else {
     await componentsPage.mount({
-      html: `<mdc-button
-        ${restArgs.active ? 'active' : ''}
-        ${restArgs.disabled ? 'disabled' : ''}
-        ${restArgs.softDisabled ? 'soft-disabled' : ''}
-        ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
-        ${restArgs.size ? `size="${restArgs.size}"` : ''}
-        ${restArgs.color ? `color="${restArgs.color}"` : ''}
-        ${restArgs.prefixIcon ? `prefix-icon="${restArgs.prefixIcon}"` : ''}
-        ${restArgs.postfixIcon ? `postfix-icon="${restArgs.postfixIcon}"` : ''}
-        ${restArgs.ariaLabel ? `aria-label="${restArgs.ariaLabel}"` : ''}
-      ></mdc-button>
+      html: `
+      ${restArgs.secondButtonForFocus ? '<div id="wrapper">' : ''}
+        <mdc-button
+          ${restArgs.active ? 'active' : ''}
+          ${restArgs.disabled ? 'disabled' : ''}
+          ${restArgs.softDisabled ? 'soft-disabled' : ''}
+          ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
+          ${restArgs.size ? `size="${restArgs.size}"` : ''}
+          ${restArgs.color ? `color="${restArgs.color}"` : ''}
+          ${restArgs.prefixIcon ? `prefix-icon="${restArgs.prefixIcon}"` : ''}
+          ${restArgs.postfixIcon ? `postfix-icon="${restArgs.postfixIcon}"` : ''}
+          ${restArgs.ariaLabel ? `aria-label="${restArgs.ariaLabel}"` : ''}
+        ></mdc-button>
+      ${restArgs.secondButtonForFocus ? '<mdc-button>Second Button</mdc-button></div>' : ''}
         `,
       clearDocument: true,
     });
   }
 
-  const button = componentsPage.page.locator('mdc-button');
-  await button.waitFor();
-  return button;
+  const element = restArgs.secondButtonForFocus
+    ? componentsPage.page.locator('div#wrapper')
+    : componentsPage.page.locator('mdc-button');
+  await element.waitFor();
+
+  // always return the first button:
+  const allButtons = await componentsPage.page.locator('mdc-button').all();
+  return allButtons[0];
 };
 
 const commonTestCases = async (args: SetupOptions, buttonType: string) => {
@@ -96,8 +102,8 @@ const commonTestCases = async (args: SetupOptions, buttonType: string) => {
 };
 
 /**
-   * ATTRIBUTES
-   */
+ * ATTRIBUTES
+ */
 const attributeTestCases = async (args: SetupOptions, buttonType: string) => {
   const { componentsPage, ...props } = args;
   const button = await setup({
@@ -260,10 +266,9 @@ test.describe.parallel('mdc-button', () => {
     await buttonSheet.mountComponents({ variant: BUTTON_VARIANTS });
 
     await test.step('matches screenshot of pill-button element', async () => {
-      await componentsPage.visualRegression.takeScreenshot(
-        'mdc-button-pill',
-        { element: buttonSheet.getWrapperContainer() },
-      );
+      await componentsPage.visualRegression.takeScreenshot('mdc-button-pill', {
+        element: buttonSheet.getWrapperContainer(),
+      });
     });
     await test.step('accessibility for pill button', async () => {
       await componentsPage.accessibility.checkForA11yViolations('mdc-button-pill');
@@ -322,10 +327,9 @@ test.describe.parallel('mdc-button', () => {
     await buttonSheet.mountComponents({ variant: BUTTON_VARIANTS });
 
     await test.step('matches screenshot of pill-with-prefix-icon-button element', async () => {
-      await componentsPage.visualRegression.takeScreenshot(
-        'mdc-button-pill-with-prefix-icon',
-        { element: buttonSheet.getWrapperContainer() },
-      );
+      await componentsPage.visualRegression.takeScreenshot('mdc-button-pill-with-prefix-icon', {
+        element: buttonSheet.getWrapperContainer(),
+      });
     });
     await test.step('accessibility for pill with prefix icon button', async () => {
       await componentsPage.accessibility.checkForA11yViolations('mdc-button-pill-with-prefix-icon');
@@ -384,10 +388,9 @@ test.describe.parallel('mdc-button', () => {
     await buttonSheet.mountComponents({ variant: BUTTON_VARIANTS });
 
     await test.step('matches screenshot of pill-with-postfix-icon-button element', async () => {
-      await componentsPage.visualRegression.takeScreenshot(
-        'mdc-button-pill-with-postfix-icon',
-        { element: buttonSheet.getWrapperContainer() },
-      );
+      await componentsPage.visualRegression.takeScreenshot('mdc-button-pill-with-postfix-icon', {
+        element: buttonSheet.getWrapperContainer(),
+      });
     });
     await test.step('accessibility for pill with postfix icon button', async () => {
       await componentsPage.accessibility.checkForA11yViolations('mdc-button-pill-with-postfix-icon');
@@ -457,10 +460,9 @@ test.describe.parallel('mdc-button', () => {
     await buttonSheet.mountComponents({ variant: BUTTON_VARIANTS });
 
     await test.step('matches screenshot of icon-button element', async () => {
-      await componentsPage.visualRegression.takeScreenshot(
-        'mdc-button-icon',
-        { element: buttonSheet.getWrapperContainer() },
-      );
+      await componentsPage.visualRegression.takeScreenshot('mdc-button-icon', {
+        element: buttonSheet.getWrapperContainer(),
+      });
     });
     await test.step('accessibility for pill with prefix icon button', async () => {
       await componentsPage.accessibility.checkForA11yViolations('mdc-button-icon');
@@ -469,7 +471,7 @@ test.describe.parallel('mdc-button', () => {
 
   test('mdc-button key pressed and focused events', async ({ componentsPage }) => {
     const children = 'Pill Button';
-    const button = await setup({ componentsPage, children });
+    const button = await setup({ componentsPage, children, secondButtonForFocus: true });
 
     await componentsPage.page.evaluate(() => {
       const btn = document.getElementsByTagName('mdc-button')[0];
@@ -517,6 +519,10 @@ test.describe.parallel('mdc-button', () => {
 
       await componentsPage.page.keyboard.press('Tab');
       await expect(button).not.toBeFocused();
+
+      // expect second button to be focused (Tab moves away)
+      const bothButtons = await componentsPage.page.locator('mdc-button').all();
+      await expect(bothButtons[1]).toBeFocused();
     });
 
     await test.step('mdc-button click event for pill button', async () => {
@@ -526,7 +532,7 @@ test.describe.parallel('mdc-button', () => {
       await expect(button).not.toHaveClass('btn-listener btn-onclick');
     });
 
-    await test.step('mdc-button click event for disbaled pill button', async () => {
+    await test.step('mdc-button click event for disabled pill button', async () => {
       await componentsPage.setAttributes(button, { disabled: '' });
       await expect(button).toHaveAttribute('disabled');
       await expect(button).toBeDisabled();
@@ -534,7 +540,7 @@ test.describe.parallel('mdc-button', () => {
       await expect(button).not.toBeDisabled();
     });
 
-    await test.step('mdc-button key press event for pill button', async () => {
+    await test.step('mdc-button key press event for disabled pill button', async () => {
       await componentsPage.setAttributes(button, { disabled: '' });
 
       await componentsPage.page.keyboard.press('Tab');
