@@ -99,12 +99,12 @@ const styles = [hostFitContentStyles, css`
     cursor: auto;
   }
 
-  :host([size="64"].mdc-icon-button), 
-  :host([size="52"].mdc-icon-button), 
-  :host([size="40"].mdc-icon-button), 
-  :host([size="32"].mdc-icon-button),
-  :host([size="28"].mdc-icon-button),
-  :host([size="24"].mdc-icon-button){
+  :host([size="64"][data-btn-type='icon']), 
+  :host([size="52"][data-btn-type='icon']), 
+  :host([size="40"][data-btn-type='icon']), 
+  :host([size="32"][data-btn-type='icon']),
+  :host([size="28"][data-btn-type='icon']),
+  :host([size="24"][data-btn-type='icon']){
     border-radius: 6.25rem;
     aspect-ratio: 1;
     padding: unset;
