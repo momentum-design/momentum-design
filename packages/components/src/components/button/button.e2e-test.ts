@@ -479,6 +479,20 @@ test.describe.parallel('mdc-button', () => {
       (btn as HTMLElement).onclick = () => {
         btn.classList.toggle('btn-onclick');
       };
+
+      (btn as HTMLElement).onkeydown = (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          const value = e.key === 'Enter' ? 'enter' : 'space';
+          btn.textContent = `${value} down`;
+        }
+      };
+
+      (btn as HTMLElement).onkeyup = (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          const value = e.key === 'Enter' ? 'enter' : 'space';
+          btn.textContent = `${value} up`;
+        }
+      };
     });
 
     await test.step('mdc-button focus event for pill button', async () => {
@@ -487,13 +501,17 @@ test.describe.parallel('mdc-button', () => {
 
       await componentsPage.page.keyboard.down('Space');
       await expect(button).toHaveClass('pressed');
+      await expect(button).toHaveText('space down');
       await componentsPage.page.keyboard.up('Space');
+      await expect(button).toHaveText('space up');
       await expect(button).toHaveClass('btn-listener btn-onclick');
       await expect(button).not.toHaveClass('pressed');
 
       await componentsPage.page.keyboard.down('Enter');
+      await expect(button).toHaveText('enter down');
       await expect(button).toHaveClass('pressed');
       await componentsPage.page.keyboard.up('Enter');
+      await expect(button).toHaveText('enter up');
       await expect(button).not.toHaveClass('pressed');
       await expect(button).not.toHaveClass('btn-listener btn-onclick'); // toggled class to remove
 
