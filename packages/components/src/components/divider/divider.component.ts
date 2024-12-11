@@ -164,11 +164,11 @@ class Divider extends Component {
 
     if (this.dividerTypeInternal === DIVIDER_TYPE_INTERNAL.GRABBER_BUTTON) {
       if (
-        changedProperties.has('orientation') ||
-        changedProperties.has('arrowDirection') ||
-        changedProperties.has('buttonPosition') ||
-        changedProperties.has('ariaLabel') ||
-        changedProperties.has('ariaExpanded')
+        changedProperties.has('orientation')
+        || changedProperties.has('arrowDirection')
+        || changedProperties.has('buttonPosition')
+        || changedProperties.has('ariaLabel')
+        || changedProperties.has('ariaExpanded')
       ) {
         this.setGrabberButton();
       }
@@ -207,8 +207,8 @@ class Divider extends Component {
     const assignedElements = slot?.assignedElements({ flatten: true }) || [];
     if (assignedElements.length > 1) return;
 
-    const hasTextChild = assignedElements.some(el => el.tagName === 'MDC-TEXT');
-    const hasButtonChild = assignedElements.some(el => el.tagName === 'MDC-BUTTON');
+    const hasTextChild = assignedElements.some((el) => el.tagName === 'MDC-TEXT');
+    const hasButtonChild = assignedElements.some((el) => el.tagName === 'MDC-BUTTON');
 
     if (hasTextChild && !hasButtonChild) {
       this.dividerTypeInternal = DIVIDER_TYPE_INTERNAL.TEXT;
