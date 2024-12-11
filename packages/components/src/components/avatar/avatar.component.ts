@@ -43,7 +43,6 @@ class Avatar extends Component {
 
   /**
    * The initials to be displayed for the avatar.
-   * The first two characters of the initials will be displayed in the avatar as upper case.
    */
   @property({ type: String })
   initials?: string;
@@ -67,8 +66,6 @@ class Avatar extends Component {
    * - `presenting`
    * - `quiet`
    * - `scheduled`
-   *
-   * @default active
    */
   @property({ type: String })
   presence?: PresenceType;
@@ -116,6 +113,7 @@ class Avatar extends Component {
   @state() private isPhotoLoaded = false;
 
   /**
+   * @internal
    * The avatar presence will be hidden if the avatar type is COUNTER.
    * If the presence is set, it will be rendered as a child of the avatar.
    *
@@ -229,8 +227,12 @@ class Avatar extends Component {
    * @returns the counter text
    */
   private generateCounterText(counter: number): string {
+    // If the consumer provides a negative number, we set it to 0.
+    if (counter <= 0) {
+      return '0';
+    }
     if (counter > MAX_COUNTER) {
-      return `${MAX_COUNTER}+'`;
+      return `${MAX_COUNTER}+`;
     }
     return counter.toString();
   }
@@ -262,7 +264,7 @@ class Avatar extends Component {
     if (type === AVATAR_TYPE.TEXT && this.initials) {
       content = this.generateInitialsText(this.initials);
     }
-    if (type === AVATAR_TYPE.COUNTER && this.counter) {
+    if (type === AVATAR_TYPE.COUNTER && (this.counter || this.counter === 0)) {
       content = this.generateCounterText(this.counter);
     }
     return this.textTemplate(content);
@@ -275,16 +277,16 @@ class Avatar extends Component {
    * @returns the type of the avatar component
    */
   private getTypeBasedOnInputs(): AvatarType {
-    if (this.src) {
+    if (ifDefined(this.src)) {
       return AVATAR_TYPE.PHOTO;
     }
-    if (this.iconName) {
+    if (ifDefined(this.iconName)) {
       return AVATAR_TYPE.ICON;
     }
-    if (this.initials) {
+    if (ifDefined(this.initials)) {
       return AVATAR_TYPE.TEXT;
     }
-    if (this.counter) {
+    if (ifDefined(this.counter) || this.counter === 0) {
       return AVATAR_TYPE.COUNTER;
     }
     return AVATAR_TYPE.ICON;
@@ -351,28 +353,14 @@ class Avatar extends Component {
     return nothing;
   }
 
-  /**
-   * @internal
-   * Assembles and returns the complete content for the avatar component.
-   *
-   * @returns The template result containing the fully assembled avatar content.
-   */
-  private renderedContent(): TemplateResult {
+  public override render(): TemplateResult {
     const type = this.getTypeBasedOnInputs();
     return html`
-      ${this.getPhotoPlaceHolderContent(type)}
-      ${this.getTemplateBasedOnType(type)}
-      ${this.getLoadingContent()}
-      ${this.getPresenceTemplateBasedOnType(type)}
-    `;
-  }
-
-  public override render(): TemplateResult {
-    const renderedContent = this.renderedContent();
-
-    return html`
       <div class="content" aria-hidden="true">
-        ${renderedContent}
+        ${this.getPhotoPlaceHolderContent(type)}
+        ${this.getTemplateBasedOnType(type)}
+        ${this.getLoadingContent()}
+        ${this.getPresenceTemplateBasedOnType(type)}
       </div>
     `;
   }
