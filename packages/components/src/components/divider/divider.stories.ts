@@ -93,22 +93,13 @@ export const grabberButtonDivider: StoryObj = {
     'aria-expanded': {
       control: 'boolean',
     },
-    // Vertical case is pending
     'arrow-direction': {
-      if: {
-        arg: 'orientation',
-        eq: DIVIDER_ORIENTATION.HORIZONTAL,
-      },
       control: 'select',
-      options: ['up', 'down'],
+      options: ['positive', 'negative'],
     },
     'button-direction': {
-      if: {
-        arg: 'orientation',
-        eq: DIVIDER_ORIENTATION.HORIZONTAL,
-      },
       control: 'select',
-      options: ['up', 'down'],
+      options: ['positive', 'negative'],
     },
     ...hideControls(['slotContent']),
   },
@@ -117,7 +108,7 @@ export const grabberButtonDivider: StoryObj = {
     slotContent: html`<mdc-button></mdc-button>`,
     'aria-label': 'Divider with grabber button',
     'aria-expanded': false,
-    'arrow-direction': 'down',
-    'button-direction': 'down',
+    'arrow-direction': 'negative',
+    'button-direction': 'negative',
   },
 };

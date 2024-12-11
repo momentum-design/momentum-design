@@ -21,7 +21,7 @@ const styles = css`
     background-color: var(--mdc-divider-background-color);
   }
 
-  :host(:not(.mdc-text-divider)) {
+  :host {
     display: flex;
     justify-content: center;
     width: 100%;
@@ -66,42 +66,40 @@ const styles = css`
   }
 
   /** Button divider positioning styling is WIP */
-  :host([button-Direction='up'].btn-up) ::slotted(mdc-button) {
-    top: -0.5rem;
+  :host([orientation='horizontal'][button-position='positive']),
+  :host([orientation='vertical'][button-position='negative']) {
+    place-items: end;
+    //transform: rotateX(180deg);
   }
 
-  :host([orientation='horizontal'].btn-down) ::slotted(mdc-button) {
-    bottom: -0.5rem;
+  :host([orientation='horizontal'][button-position='positive']) ::slotted(mdc-button) {
+    border-radius: 0.5rem 0.5rem 0 0;
   }
 
-  :host([orientation='horizontal'].btn-left) ::slotted(mdc-button) {
-    left: -0.5rem;
-  }
-
-  :host([orientation='horizontal'].btn-right) ::slotted(mdc-button) {
-    right: -0.5rem;
+  :host([orientation='vertical'][button-position='negative']) ::slotted(mdc-button) {
+    border-radius: 0.5rem 0 0 0.5rem;
   }
 
   /** Text divider styling is WIP */
-  :host([orientation='horizontal'].mdc-text-divider) {
-    display: flex;
+  :host([orientation='horizontal'][variant='gradient'].mdc-text-divider),
+  :host([orientation='horizontal'][variant='solid'].mdc-text-divider) {
+    background: none;
+    align-items: center;
   }
 
-  :host([orientation='horizontal'].mdc-text-divider)::before,
-  :host([orientation='horizontal'].mdc-text-divider)::after {
-    flex: 1;
-    content: '';
-    padding: 3px;
+  :host(.mdc-text-divider) > div {
+    width: 100%;
+    height: 100%;
     background-color: var(--mdc-divider-background-color);
-    margin: 5px;
   }
 
-  :host([orientation='horizontal'][variant='gradient'].mdc-text-divider)::before {
-    background: linear-gradient(to right, rgba(0, 0, 0, 0), var(--mdc-divider-background-color));
+  :host([orientation='horizontal'][variant='gradient'].mdc-text-divider) > div {
+    background: var(--mdc-divider-horizontal-gradient);
   }
 
-  :host([orientation='horizontal'][variant='gradient'].mdc-text-divider)::after {
-    background: linear-gradient(to left, rgba(0, 0, 0, 0), var(--mdc-divider-background-color));
+  :host(.mdc-text-divider) ::slotted(mdc-text) {
+    margin-left: var(--mdc-divider-text-margin);
+    margin-right: var(--mdc-divider-text-margin);
   }
 `;
 

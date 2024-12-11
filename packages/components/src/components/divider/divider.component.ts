@@ -75,21 +75,25 @@ class Divider extends Component {
 
   /**
    * Directions for the grabber arrow
-   * - **Horizontal**: up, down
-   * - **Vertical**: right, left
-   * @default 'down'
+   * - **positive**
+   * - **negative**
+   *
+   * Note: Positive and Negative directions are defined based on Cartesian plane.
+   * @default 'negative'
    */
   @property({ type: String, attribute: 'arrow-direction', reflect: true })
-  arrowDirection = DEFAULTS.ARROW_DIRECTION;
+  arrowDirection: string = DEFAULTS.ARROW_DIRECTION;
 
   /**
-   * Direction for the grabber button
-   * - **Horizontal**: up, down
-   * - **Vertical**: right, left
-   * @default 'down'
+   * Position for the grabber button
+   * - **positive**
+   * - **negative**
+   *
+   * Note: Positive and Negative directions are defined based on Cartesian plane.
+   * @default 'negative'
    */
-  @property({ type: String, attribute: 'button-direction', reflect: true })
-  buttonDirection = DEFAULTS.BUTTON_DIRECTION;
+  @property({ type: String, attribute: 'button-position', reflect: true })
+  buttonPosition: string = DEFAULTS.BUTTON_DIRECTION;
 
   /** @internal */
   @state()
@@ -121,9 +125,6 @@ class Divider extends Component {
     buttonElement.setAttribute('aria-label', this.ariaLabel || '');
     buttonElement.setAttribute('aria-expanded', this.ariaExpanded || '');
     buttonElement.setAttribute('prefix-icon', iconType);
-    // Apply styles based on the button's position (buttonDirection)
-    const positionClass = this.getButtonDirectionClass();
-    buttonElement.classList.add(positionClass);
   }
 
   /**
@@ -138,36 +139,18 @@ class Divider extends Component {
   }
 
   /**
-   * Determines the class to apply based on the `buttonDirection` and `orientation`.
-   * Positions the button in the correct spot depending on whether the divider is vertical or horizontal.
-   *
-   * @returns {string} The CSS class that positions the button.
-   */
-  private getButtonDirectionClass(): string {
-    // set fallback class
-    let directionClass = this.orientation === DIVIDER_ORIENTATION.HORIZONTAL ? 'btn-down' : 'btn-left';
-
-    if (this.orientation === DIVIDER_ORIENTATION.HORIZONTAL) {
-      directionClass = this.buttonDirection === DIRECTIONS.horizontal[0] ? 'btn-up' : 'btn-down';
-    } else {
-      directionClass = this.buttonDirection === DIRECTIONS.vertical[0] ? 'btn-left' : 'btn-right';
-    }
-    return directionClass;
-  }
-
-  /**
    * Determines the arrow icon based on the consumer-defined `arrowDirection`.
    *
    * @returns {string} The icon that represents the arrow direction.
    */
   private getArrowIcon(): string {
     // set fallback class
-    let arrowIcon = this.orientation === DIVIDER_ORIENTATION.HORIZONTAL ? 'arrow-up-regular' : 'arrow-right-regular';
+    let arrowIcon = this.orientation === DIVIDER_ORIENTATION.HORIZONTAL ? 'arrow-down-regular' : 'arrow-right-regular';
 
     if (this.orientation === DIVIDER_ORIENTATION.HORIZONTAL) {
-      arrowIcon = this.arrowDirection === DIRECTIONS.horizontal[0] ? 'arrow-up-regular' : 'arrow-down-regular';
+      arrowIcon = this.arrowDirection === DIRECTIONS.POSITIVE ? 'arrow-up-regular' : 'arrow-down-regular';
     } else {
-      arrowIcon = this.arrowDirection === DIRECTIONS.vertical[0] ? 'arrow-left-regular' : 'arrow-right-regular';
+      arrowIcon = this.arrowDirection === DIRECTIONS.POSITIVE ? 'arrow-right-regular' : 'arrow-left-regular';
     }
     return arrowIcon;
   }
@@ -181,11 +164,11 @@ class Divider extends Component {
 
     if (this.dividerTypeInternal === DIVIDER_TYPE_INTERNAL.GRABBER_BUTTON) {
       if (
-        changedProperties.has('orientation')
-        || changedProperties.has('arrowDirection')
-        || changedProperties.has('buttonDirection')
-        || changedProperties.has('ariaLabel')
-        || changedProperties.has('ariaExpanded')
+        changedProperties.has('orientation') ||
+        changedProperties.has('arrowDirection') ||
+        changedProperties.has('buttonPosition') ||
+        changedProperties.has('ariaLabel') ||
+        changedProperties.has('ariaExpanded')
       ) {
         this.setGrabberButton();
       }
@@ -224,8 +207,8 @@ class Divider extends Component {
     const assignedElements = slot?.assignedElements({ flatten: true }) || [];
     if (assignedElements.length > 1) return;
 
-    const hasTextChild = assignedElements.some((el) => el.tagName === 'MDC-TEXT');
-    const hasButtonChild = assignedElements.some((el) => el.tagName === 'MDC-BUTTON');
+    const hasTextChild = assignedElements.some(el => el.tagName === 'MDC-TEXT');
+    const hasButtonChild = assignedElements.some(el => el.tagName === 'MDC-BUTTON');
 
     if (hasTextChild && !hasButtonChild) {
       this.dividerTypeInternal = DIVIDER_TYPE_INTERNAL.TEXT;
@@ -237,7 +220,11 @@ class Divider extends Component {
   }
 
   protected override render() {
-    return html` <slot @slotchange=${this.inferDividerType}></slot> `;
+    return html`
+      <div></div>
+      <slot @slotchange=${this.inferDividerType}></slot>
+      <div></div>
+    `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
