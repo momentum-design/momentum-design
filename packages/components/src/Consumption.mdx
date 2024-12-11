@@ -26,9 +26,18 @@ yarn add @momentum-design/components
     ```javascript
     import '@momentum-design/fonts/dist/css/fonts.css';
     import '@momentum-design/tokens/dist/css/typography/complete.css';
+    import '@momentum-design/tokens/dist/css/effect/complete.css';
+    import '@momentum-design/tokens/dist/css/typography/complete.css';
     import '@momentum-design/tokens/dist/css/theme/webex/dark-stable.css';
     import '@momentum-design/tokens/dist/css/theme/webex/light-stable.css';
     ```
+
+    or short (`components/complete.css` includes all the above files):
+    ```javascript
+    import '@momentum-design/fonts/dist/css/fonts.css';
+    import '@momentum-design/tokens/dist/css/components/complete.css';
+    ```
+
 * `mds-typography` class needs to be set on the root element for proper font usage.
 * Providers (like ThemeProvider, IconProvider) need to wrap Momentum Design Components for proper usage.
 * Your build config needs to be able to have file loaders for CSS and WOFF2.
@@ -40,9 +49,7 @@ yarn add @momentum-design/components
 <html>
     <head>
         <link rel="stylesheet" href="@momentum-design/fonts/dist/css/fonts.css">
-        <link rel="stylesheet" href="@momentum-design/tokens/dist/css/typography/complete.css">
-        <link rel="stylesheet" href="@momentum-design/tokens/dist/css/theme/webex/dark-stable.css">
-        <link rel="stylesheet" href="@momentum-design/tokens/dist/css/theme/webex/light-stable.css">
+        <link rel="stylesheet" href="@momentum-design/tokens/dist/css/components/complete.css">
     </head>
     <!-- mds-typography needs to be set on the root for proper Font usage -->
     <body class="mds-typography">
@@ -57,6 +64,10 @@ yarn add @momentum-design/components
     </body>
 </html>
 ```
+
+## Performance recommendations
+
+* Use a CSS minifier in the build process to reduce the size of the CSS files.
 
 ## Compatibility
 
