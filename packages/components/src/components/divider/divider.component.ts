@@ -24,8 +24,11 @@ import { DividerOrientation, DividerTypeInternal, DividerVariant } from './divid
  *
  * The type of divider is inferred based on the kind of slot present.
  *
- * Note: If the slot is replaced by invalid tagname or multiple elements, then the type of divider is set to primary.
- * If you want to override the styles, refer CSS custom properties.
+ * **Note:**
+ * - If the slot is replaced by invalid tagname or multiple elements,
+ *   the type of divider is then set to primary by default.
+ * - If you want to override the styles of the divider, refer CSS custom properties.
+ * - Vertical Text Divider is not a valid divider as of now.
  *
  * @tagname mdc-divider
  *
@@ -36,6 +39,7 @@ import { DividerOrientation, DividerTypeInternal, DividerVariant } from './divid
  * @cssproperty --mdc-divider-text-size - font size of label in the text divider
  * @cssproperty --mdc-divider-text-color - font color of label in the text divider
  * @cssproperty --mdc-divider-text-margin - left and right margin of label in the text divider
+ * @cssproperty --mdc-divider-grabber-button-border-radius - border radius of the grabber button
  */
 class Divider extends Component {
   /**
@@ -65,6 +69,7 @@ class Divider extends Component {
 
   /**
    * Aria expanded to be set for accessibility
+   *
    * Note: Possible values can be:
    * - **'true'**
    * - **'false'**
@@ -75,7 +80,7 @@ class Divider extends Component {
   override ariaExpanded: string = 'false';
 
   /**
-   * Directions for the grabber arrow
+   * Direction of the arrow icon, if applicable.
    * - **positive**
    * - **negative**
    *
@@ -86,7 +91,7 @@ class Divider extends Component {
   arrowDirection: string = DEFAULTS.ARROW_DIRECTION;
 
   /**
-   * Position for the grabber button
+   * Position of the button, if applicable.
    * - **positive**
    * - **negative**
    *
@@ -109,6 +114,20 @@ class Divider extends Component {
    */
   private setVariant(variant: DividerVariant) {
     this.setAttribute('variant', Object.values(DIVIDER_VARIANT).includes(variant) ? variant : DEFAULTS.VARIANT);
+  }
+
+  /**
+   * Sets the orientation attribute for the divider component.
+   * If the provided orientation is not included in the DIVIDER_ORIENTATION,
+   * it defaults to the value specified in DEFAULTS.ORIENTATION.
+   *
+   * @param orientation - The orientation to set.
+   */
+  private setOrientation(orientation: DividerOrientation) {
+    this.setAttribute(
+      'orientation',
+      Object.values(DIVIDER_ORIENTATION).includes(orientation) ? orientation : DEFAULTS.ORIENTATION,
+    );
   }
 
   /**
@@ -163,6 +182,18 @@ class Divider extends Component {
       this.setClassBasedOnType(this.dividerTypeInternal);
     }
 
+    if (changedProperties.has('orientation')) {
+      this.setOrientation(this.orientation);
+    }
+
+    if (changedProperties.has('variant')) {
+      this.setVariant(this.variant);
+    }
+
+    if (this.dividerTypeInternal === DIVIDER_TYPE_INTERNAL.TEXT && changedProperties.has('ariaLabel')) {
+      this.setTextDivider();
+    }
+
     if (this.dividerTypeInternal === DIVIDER_TYPE_INTERNAL.GRABBER_BUTTON) {
       if (
         changedProperties.has('orientation')
@@ -173,14 +204,6 @@ class Divider extends Component {
       ) {
         this.setGrabberButton();
       }
-    }
-
-    if (this.dividerTypeInternal === DIVIDER_TYPE_INTERNAL.TEXT && changedProperties.has('ariaLabel')) {
-      this.setTextDivider();
-    }
-
-    if (changedProperties.has('variant')) {
-      this.setVariant(this.variant);
     }
   }
 
@@ -223,6 +246,9 @@ class Divider extends Component {
   }
 
   protected override render() {
+    this.setOrientation(this.orientation);
+    this.setVariant(this.variant);
+
     return html`
       <div></div>
       <slot @slotchange=${this.inferDividerType}></slot>
