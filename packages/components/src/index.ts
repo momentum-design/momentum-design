@@ -7,6 +7,7 @@ import Presence from './components/presence';
 import Text from './components/text';
 import Button from './components/button';
 import Popover from './components/popover';
+import Bullet from './components/bullet';
 
 import type { TextType } from './components/text/text.types';
 
@@ -20,6 +21,7 @@ export {
   Text,
   Button,
   Popover,
+  Bullet,
 };
 
 export type {
