@@ -24,7 +24,7 @@ import { DividerOrientation, DividerTypeInternal, DividerVariant } from './divid
  *
  * The type of divider is inferred based on the kind of slot present.
  *
- * Note: If the slot is replaced by invalid tagname or multiple elements, then the type of divider is set to primary. 
+ * Note: If the slot is replaced by invalid tagname or multiple elements, then the type of divider is set to primary.
  * If you want to override the styles, refer CSS custom properties.
  *
  * @tagname mdc-divider
