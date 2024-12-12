@@ -44,6 +44,16 @@ const meta: Meta = {
 
 export default meta;
 
+export const Example: StoryObj = {
+  args: {
+    'aria-label': 'This is the accessibility icon',
+    name: 'placeholder-regular',
+    size: 2,
+    class: 'custom-classname',
+    style: 'margin: 0px;',
+  },
+};
+
 export const Decorative: StoryObj = {
   argTypes: {
     'aria-label': {
@@ -53,7 +63,7 @@ export const Decorative: StoryObj = {
     },
   },
   args: {
-    name: 'accessibility-regular',
+    name: 'placeholder-regular',
     size: 2,
     class: 'custom-classname',
     style: 'margin: 0px;',
@@ -64,7 +74,7 @@ export const Informative: StoryObj = {
   render: renderAccessibility,
   args: {
     'aria-label': 'This is the accessibility icon',
-    name: 'accessibility-regular',
+    name: 'placeholder-regular',
     size: 2,
     class: 'custom-classname',
     style: 'margin: 0px;',

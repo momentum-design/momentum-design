@@ -45,6 +45,11 @@ class Flow {
    */
   fileHandler: FileHandler;
 
+  /**
+   * Flag to copy files without transforming
+   */
+  copyOnly?: boolean;
+
   public constructor(flowData: FlowType) {
     this.id = flowData.id;
     this.target = path.join(process.cwd(), flowData.target);
@@ -52,6 +57,7 @@ class Flow {
     this.format = flowData.format;
     this.files = [];
     this.fileHandler = new FileHandler(flowData.fileNameReplacePatterns, flowData?.format?.encoding);
+    this.copyOnly = flowData.copyOnly;
   }
 
   /**
@@ -59,7 +65,7 @@ class Flow {
    *
    * @returns Promise of this
    */
-  public read(): Promise<this> {
+  public async read(): Promise<this> {
     return new Promise((resolve, reject) => {
       logger.debug(`Started read step of flow '${this.id}'.`);
       this.fileHandler.getFilePathsInFolder(this.target, (error, filePaths) => {
@@ -89,7 +95,7 @@ class Flow {
   /**
    * Transforming the files data with the help of `createTransformer` factory
    */
-  public transform(): Promise<void> {
+  public async transform(): Promise<void> {
     const transformer = createTransformer(this.format, this.destination);
 
     logger.debug(`Started transform step of flow '${this.id}'.`);
@@ -107,11 +113,20 @@ class Flow {
    *
    * @returns Promise of array of files
    */
-  public write(): Promise<this> {
+  public async write(): Promise<this> {
     logger.debug(`Started write step of flow '${this.id}'.`);
     this.fileHandler.createFolderIfNotExist(this.destination);
     return this.fileHandler.writeFiles(this.files).then(() => {
       logger.debug(`Finished write step of flow '${this.id}'.`);
+      return this;
+    });
+  }
+
+  public async copy(): Promise<this> {
+    logger.debug(`Started copy step of flow '${this.id}'.`);
+    this.fileHandler.createFolderIfNotExist(this.destination);
+    return this.fileHandler.copyFiles(this.files).then(() => {
+      logger.debug(`Finished copy step of flow '${this.id}'.`);
       return this;
     });
   }
