@@ -96,10 +96,14 @@ class Avatar extends Component {
    * The counter is the number which can be displayed on the avatar.
    * The maximum number is 99 and if the give number is greater than 99,
    * then the avatar will be displayed as `99+`.
-   * If the give number is a negative number, then will display 0.
+   * If the given number is a negative number, then will display 0.
    */
-  @property({ type: String })
-  counter?: string;
+  @property({
+    converter: {
+      fromAttribute: (value: string) => parseInt(value, 10),
+    },
+  })
+  counter?: number;
 
   /**
    * Determines whether the user is typing.
@@ -227,19 +231,15 @@ class Avatar extends Component {
    * @param counter - the number to be converted to a string
    * @returns the counter text
    */
-  private generateCounterText(counter: string): string {
-    const counterNumber = parseInt(counter, 10);
-    if (Number.isNaN(counterNumber)) {
-      return '';
-    }
+  private generateCounterText(counter: number): string {
     // If the consumer provides a negative number, we set it to 0.
-    if (counterNumber < 0) {
+    if (counter < 0) {
       return '0';
     }
-    if (counterNumber > MAX_COUNTER) {
+    if (counter > MAX_COUNTER) {
       return `${MAX_COUNTER}+`;
     }
-    return counterNumber.toString();
+    return counter.toString();
   }
 
   /**
@@ -269,7 +269,7 @@ class Avatar extends Component {
     if (type === AVATAR_TYPE.TEXT && this.initials) {
       content = this.generateInitialsText(this.initials);
     }
-    if (type === AVATAR_TYPE.COUNTER && this.counter) {
+    if (type === AVATAR_TYPE.COUNTER && (this.counter || this.counter === 0)) {
       content = this.generateCounterText(this.counter);
     }
     return this.textTemplate(content);
@@ -291,7 +291,7 @@ class Avatar extends Component {
     if (this.initials) {
       return AVATAR_TYPE.TEXT;
     }
-    if (this.counter) {
+    if (this.counter || this.counter === 0) {
       return AVATAR_TYPE.COUNTER;
     }
     return AVATAR_TYPE.ICON;
