@@ -29,10 +29,10 @@ import{k as l}from"./lit-element-CPYlYYac.js";import{R as r}from"./class-map-CXr
     </div>
   </div>
 </mdc-themeprovider>
-`,E={title:"Components/themeprovider",tags:["autodocs"],component:"mdc-themeprovider",render:u,parameters:{badges:["stable"]},argTypes:{themeclass:{options:c,control:{type:"radio"}},...x(["Context","--mdc-themeprovider-color-default","--mdc-themeprovider-font-family","--mdc-themeprovider-font-weight","--mdc-themeprovider-letter-spacing-adjustment"]),...v,...p}},o={args:{themeclass:c[0],class:"custom-classname",style:"margin-top: 20px;"}};var s,a,m;o.parameters={...o.parameters,docs:{...(s=o.parameters)==null?void 0:s.docs,source:{originalSource:`{
+`,P={title:"Components/themeprovider",tags:["autodocs"],component:"mdc-themeprovider",render:u,parameters:{badges:["stable"]},argTypes:{themeclass:{options:c,control:{type:"radio"}},...x(["Context","--mdc-themeprovider-color-default","--mdc-themeprovider-font-family","--mdc-themeprovider-font-weight","--mdc-themeprovider-letter-spacing-adjustment"]),...v,...p}},o={args:{themeclass:c[0],class:"custom-classname",style:"margin-top: 20px;"}};var s,a,m;o.parameters={...o.parameters,docs:{...(s=o.parameters)==null?void 0:s.docs,source:{originalSource:`{
   args: {
     themeclass: THEMES[0],
     class: 'custom-classname',
     style: 'margin-top: 20px;'
   }
-}`,...(m=(a=o.parameters)==null?void 0:a.docs)==null?void 0:m.source}}};const $=["Primary"];export{o as Primary,$ as __namedExportsOrder,E as default};
+}`,...(m=(a=o.parameters)==null?void 0:a.docs)==null?void 0:m.source}}};const $=["Example"];export{o as Example,$ as __namedExportsOrder,P as default};
