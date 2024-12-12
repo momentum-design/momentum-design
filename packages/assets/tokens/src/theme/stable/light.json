@@ -2561,7 +2561,7 @@
             "description": "Used for Operation pop"
           },
           "active": {
-            "value": "{color.core.black-alpha.80}",
+            "value": "{color.core.white-alpha.80}",
             "type": "color",
             "description": "Used for Operation pop"
           }

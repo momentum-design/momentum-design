@@ -2647,7 +2647,7 @@
         },
         "glass": {
           "normal": {
-            "value": "{color.core.white-alpha.11}",
+            "value": "{color.core.white-alpha.7}",
             "type": "color",
             "description": "Used for Operation pop"
           },
