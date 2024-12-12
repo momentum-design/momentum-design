@@ -99,11 +99,7 @@ class Avatar extends Component {
    * If the given number is a negative number,
    * then the avatar will be displayed as `0`.
    */
-  @property({
-    converter: {
-      fromAttribute: (value: string) => parseInt(value, 10),
-    },
-  })
+  @property({ type: Number })
   counter?: number;
 
   /**

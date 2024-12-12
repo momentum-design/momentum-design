@@ -2,6 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import { repeat } from 'lit/directives/repeat.js';
 import '.';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { TYPE as PRESENCE_TYPE, SIZE as PRESENCE_SIZE } from '../presence/presence.constants';
 import { DEFAULTS } from './avatar.constants';
 import { disableControls } from '../../../config/storybook/utils';
@@ -9,13 +10,12 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 
 const render = (args: Args) => html`
   <mdc-avatar
-    alt="${args.alt}"
-    counter="${args.counter}"
-    icon-name="${args['icon-name']}"
-    initials="${args.initials}"
-    presence="${args.presence}"
-    size="${args.size}"
-    src="${args.src}"
+    counter="${ifDefined(args.counter)}"
+    icon-name="${ifDefined(args['icon-name'])}"
+    initials="${ifDefined(args.initials)}"
+    presence="${ifDefined(args.presence)}"
+    size="${ifDefined(args.size)}"
+    src="${ifDefined(args.src)}"
     ?is-typing="${args['is-typing']}"
   ></mdc-avatar>
 `;
@@ -64,7 +64,6 @@ export const Example: StoryObj = {
     src: 'https://picsum.photos/id/63/256',
     initials: 'MD',
     size: 'x_large',
-    counter: '',
     'icon-name': '',
     'is-typing': '',
   },
@@ -102,8 +101,8 @@ export const SizeWithPresence: StoryObj = {
     <div style="display: flex; justify-content: space-evenly; align-items: center">
       ${repeat(Object.values(PRESENCE_SIZE), (size) => html`
         <mdc-avatar
-          src="${args.src}"
-          presence="${args.presence}"
+          src="${ifDefined(args.src)}"
+          presence="${ifDefined(args.presence)}"
           ?is-typing="${args['is-typing']}"
           size="${size}"
         ></mdc-avatar>
