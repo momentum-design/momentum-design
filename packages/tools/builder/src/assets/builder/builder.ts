@@ -75,10 +75,19 @@ class Builder extends CoreBuilder {
 
   /**
    * Run the flow steps after each other
+   *
+   * If `copyOnly` is true, it will only read and copy the files
+   * Otherwise, it will read, transform and write the files
+   *
    * @param flow - flow to run through
    * @returns Promise of this
    */
-  public runFlowSteps(flow: Flow): Promise<this> {
+  public async runFlowSteps(flow: Flow): Promise<this> {
+    if (flow.copyOnly) {
+      return flow.read()
+        .then(() => flow.copy())
+        .then(() => this);
+    }
     return flow.read()
       .then(() => flow.transform())
       .then(() => flow.write())
