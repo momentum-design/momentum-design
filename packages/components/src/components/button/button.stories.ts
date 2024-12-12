@@ -70,6 +70,21 @@ const meta: Meta = {
 
 export default meta;
 
+export const Example: StoryObj = {
+  args: {
+    children: 'Click Me',
+    active: false,
+    disabled: false,
+    'soft-disabled': false,
+    variant: BUTTON_VARIANTS.PRIMARY,
+    size: PILL_BUTTON_SIZES[32],
+    color: BUTTON_COLORS.DEFAULT,
+    type: BUTTON_TYPE.BUTTON,
+    role: 'button',
+    tabIndex: 0,
+  },
+};
+
 export const PillButton: StoryObj = {
   args: {
     children: 'Click Me',

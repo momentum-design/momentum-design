@@ -180,6 +180,7 @@ export interface FlowType {
   id: string;
   target: string;
   destination: string;
+  copyOnly?: boolean;
   fileNameReplacePatterns?: Array<ReplacePattern>;
   format: Formats;
 }
