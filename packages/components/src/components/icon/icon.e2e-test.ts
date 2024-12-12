@@ -126,5 +126,10 @@ test('mdc-icon', async ({ componentsPage }) => {
       const svgIcon = componentsPage.page.locator('svg');
       await expect(svgIcon).toHaveAttribute('aria-hidden', 'true');
     });
+
+    await test.step('attribute data-name should always be set same as the name attribute for SVG', async () => {
+      const svgIcon = componentsPage.page.locator('svg');
+      await expect(svgIcon).toHaveAttribute('data-name', name);
+    });
   });
 });

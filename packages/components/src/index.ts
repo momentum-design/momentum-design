@@ -6,6 +6,7 @@ import Badge from './components/badge';
 import Presence from './components/presence';
 import Text from './components/text';
 import Button from './components/button';
+import Bullet from './components/bullet';
 import Marker from './components/marker';
 
 import type { TextType } from './components/text/text.types';
@@ -19,6 +20,7 @@ export {
   Presence,
   Text,
   Button,
+  Bullet,
   Marker,
 };
 

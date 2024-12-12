@@ -1028,6 +1028,25 @@
             "value": "{color.highcontrast.black.WindowColor}",
             "description": "Use for skeleton component"
           }
+        },
+        "glass": {
+          "normal": {
+            "value": "{color.highcontrast.black.WindowColor}",
+            "type": "color",
+            "description": "Used for glass effect background for operation pop. "
+          },
+          "overlay": {
+            "normal": {
+              "value": "{color.highcontrast.black.HotlightColor}",
+              "type": "color",
+              "description": "Used for operation pop: knocked-back effect when signle card is selected"
+            },
+            "inactive": {
+              "value": "{color.highcontrast.black.WindowColor}",
+              "type": "color",
+              "description": "Used for operation pop: knocked-back effect when signle card is selected"
+            }
+          }
         }
       },
       "button": {
@@ -1161,6 +1180,25 @@
             "type": "color",
             "value": "{color.highcontrast.black.HighlightColor}",
             "description": ""
+          }
+        },
+        "glass": {
+          "primary": {
+            "normal": {
+              "value": "{color.highcontrast.black.ButtonFaceColor}",
+              "type": "color",
+              "description": "Used for Operation pop button"
+            },
+            "hover": {
+              "value": "{color.highcontrast.black.HighlightColor}",
+              "type": "color",
+              "description": "Used for Operation pop button"
+            },
+            "pressed": {
+              "value": "{color.highcontrast.black.HighlightColor}",
+              "type": "color",
+              "description": "Used for Operation pop button"
+            }
           }
         }
       },
@@ -1861,6 +1899,18 @@
             "type": "color",
             "value": "{color.highcontrast.black.WindowTextColor}"
           }
+        },
+        "vertical": {
+          "normal": {
+            "parent": "theme/stable/highcontrast/hc_dark",
+            "type": "color",
+            "value": "{color.highcontrast.black.WindowTextColor}"
+          },
+          "hover": {
+            "parent": "theme/stable/highcontrast/hc_dark",
+            "type": "color",
+            "value": "{color.highcontrast.black.WindowTextColor}"
+          }
         }
       },
       "avatar": {
@@ -1943,6 +1993,18 @@
         "pressed": {
           "value": "{color.highcontrast.black.WindowTextColor}",
           "type": "color"
+        },
+        "glass": {
+          "normal": {
+            "value": "{color.highcontrast.black.WindowTextColor}",
+            "type": "color",
+            "description": "Used for Operation pop"
+          },
+          "active": {
+            "value": "{color.highcontrast.black.WindowTextColor}",
+            "type": "color",
+            "description": "Used for Operation pop"
+          }
         }
       },
       "common": {
@@ -2235,6 +2297,12 @@
             "disabled": {
               "type": "color",
               "value": "{color.highcontrast.black.GrayTextColor}"
+            }
+          },
+          "warning": {
+            "normal": {
+              "value": "{color.highcontrast.black.WindowTextColor}",
+              "type": "color"
             }
           }
         },

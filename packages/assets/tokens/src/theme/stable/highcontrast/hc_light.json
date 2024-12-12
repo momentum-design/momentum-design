@@ -1029,6 +1029,25 @@
             "value": "{color.highcontrast.white.WindowColor}",
             "description": "Use for skeleton component"
           }
+        },
+        "glass": {
+          "normal": {
+            "value": "{color.highcontrast.white.WindowColor}",
+            "type": "color",
+            "description": "Used for glass effect background for operation pop. "
+          },
+          "overlay": {
+            "normal": {
+              "value": "{color.highcontrast.white.HotlightColor}",
+              "type": "color",
+              "description": "Used for operation pop: knocked-back effect when signle card is selected"
+            },
+            "inactive": {
+              "value": "{color.highcontrast.white.WindowColor}",
+              "type": "color",
+              "description": "Used for operation pop: knocked-back effect when signle card is selected"
+            }
+          }
         }
       },
       "button": {
@@ -1162,6 +1181,25 @@
             "type": "color",
             "value": "{color.highcontrast.white.HighlightColor}",
             "description": ""
+          }
+        },
+        "glass": {
+          "primary": {
+            "normal": {
+              "value": "{color.highcontrast.white.ButtonFaceColor}",
+              "type": "color",
+              "description": "Used for Operation pop button"
+            },
+            "hover": {
+              "value": "{color.highcontrast.white.HighlightColor}",
+              "type": "color",
+              "description": "Used for Operation pop button"
+            },
+            "pressed": {
+              "value": "{color.highcontrast.white.HighlightColor}",
+              "type": "color",
+              "description": "Used for Operation pop button"
+            }
           }
         }
       },
@@ -1858,6 +1896,18 @@
         "pressed": {
           "value": "{color.highcontrast.white.WindowTextColor}",
           "type": "color"
+        },
+        "glass": {
+          "normal": {
+            "value": "{color.highcontrast.white.WindowTextColor}",
+            "type": "color",
+            "description": "Used for Operation pop"
+          },
+          "active": {
+            "value": "{color.highcontrast.white.WindowTextColor}",
+            "type": "color",
+            "description": "Used for Operation pop"
+          }
         }
       },
       "common": {
@@ -2121,6 +2171,12 @@
             "disabled": {
               "type": "color",
               "value": "{color.highcontrast.white.GrayTextColor}"
+            }
+          },
+          "warning": {
+            "normal": {
+              "value": "{color.highcontrast.white.WindowTextColor}",
+              "type": "color"
             }
           }
         },
@@ -2437,6 +2493,20 @@
             "parent": "theme/stable/dark",
             "type": "color",
             "value": "{color.highcontrast.white.WindowTextColor}"
+          }
+        },
+        "vertical": {
+          "normal": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "{color.highcontrast.white.WindowTextColor}",
+            "description": "Used for default default on compose area in space"
+          },
+          "hover": {
+            "parent": "theme/stable/dark",
+            "type": "color",
+            "value": "{color.highcontrast.white.WindowTextColor}",
+            "description": "linear-gradient(90deg, #ffffff00 0%, #ffffff99 22.4%, #ffffff99 72.4%, #ffffff00 100%)\nUsed for hover state of gradient divider for spaces"
           }
         }
       },
