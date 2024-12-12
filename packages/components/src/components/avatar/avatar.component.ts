@@ -93,12 +93,13 @@ class Avatar extends Component {
   iconName?: IconNames;
 
   /**
-   * The counter is the number which can be displayed for the avatar.
+   * The counter is the number which can be displayed on the avatar.
    * The maximum number is 99 and if the give number is greater than 99,
    * then the avatar will be displayed as `99+`.
+   * If the give number is a negative number, then will display 0.
    */
-  @property({ type: Number })
-  counter?: number;
+  @property({ type: String })
+  counter?: string;
 
   /**
    * Determines whether the user is typing.
@@ -226,15 +227,19 @@ class Avatar extends Component {
    * @param counter - the number to be converted to a string
    * @returns the counter text
    */
-  private generateCounterText(counter: number): string {
+  private generateCounterText(counter: string): string {
+    const counterNumber = parseInt(counter, 10);
+    if (Number.isNaN(counterNumber)) {
+      return '';
+    }
     // If the consumer provides a negative number, we set it to 0.
-    if (counter <= 0) {
+    if (counterNumber < 0) {
       return '0';
     }
-    if (counter > MAX_COUNTER) {
+    if (counterNumber > MAX_COUNTER) {
       return `${MAX_COUNTER}+`;
     }
-    return counter.toString();
+    return counterNumber.toString();
   }
 
   /**
@@ -264,7 +269,7 @@ class Avatar extends Component {
     if (type === AVATAR_TYPE.TEXT && this.initials) {
       content = this.generateInitialsText(this.initials);
     }
-    if (type === AVATAR_TYPE.COUNTER && (this.counter || this.counter === 0)) {
+    if (type === AVATAR_TYPE.COUNTER && this.counter) {
       content = this.generateCounterText(this.counter);
     }
     return this.textTemplate(content);
@@ -277,16 +282,16 @@ class Avatar extends Component {
    * @returns the type of the avatar component
    */
   private getTypeBasedOnInputs(): AvatarType {
-    if (ifDefined(this.src)) {
+    if (this.src) {
       return AVATAR_TYPE.PHOTO;
     }
-    if (ifDefined(this.iconName)) {
+    if (this.iconName) {
       return AVATAR_TYPE.ICON;
     }
-    if (ifDefined(this.initials)) {
+    if (this.initials) {
       return AVATAR_TYPE.TEXT;
     }
-    if (ifDefined(this.counter) || this.counter === 0) {
+    if (this.counter) {
       return AVATAR_TYPE.COUNTER;
     }
     return AVATAR_TYPE.ICON;
