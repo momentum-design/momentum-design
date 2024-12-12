@@ -1,4 +1,5 @@
-import { CSSResult, html, nothing, TemplateResult } from 'lit';
+import { CSSResult, html, nothing } from 'lit';
+import type { PropertyValues, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
@@ -124,7 +125,7 @@ class Avatar extends Component {
    */
   private getPresenceTemplateBasedOnType(type: AvatarType): TemplateResult | typeof nothing {
     // avatar type of counter should not have presence
-    if (type === AVATAR_TYPE.COUNTER && this.counter) {
+    if (type === AVATAR_TYPE.COUNTER && (this.counter || this.counter === 0)) {
       return nothing;
     }
     if (this.presence) {
@@ -355,12 +356,11 @@ class Avatar extends Component {
     return nothing;
   }
 
-  public override update(changedProperties: any): void {
+  public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
 
-    if (changedProperties.has('src')) {
-      // Reset the state of photo loaded, so that
-      // the avatar photo is displayed only when it is loaded.
+    if (changedProperties.has('src') && !this.src) {
+      // Reset photo loaded if src is empty
       this.isPhotoLoaded = false;
     }
   }
