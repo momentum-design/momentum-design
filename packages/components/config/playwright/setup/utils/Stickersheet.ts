@@ -138,7 +138,7 @@ class StickerSheet {
    * @throws Will throw an error if tagname is not defined.
    */
 
-  public async mountComponents(combinations: Record<string, Record<string, any>>, createNewRow: boolean = false) {
+  public async mountComponents(combinations: Record<string, Record<string, any>>, createNewRow = false) {
     if (!this.tagname) {
       throw new Error('tagname is required');
     }
