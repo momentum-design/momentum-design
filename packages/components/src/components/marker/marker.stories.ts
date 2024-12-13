@@ -11,12 +11,12 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/marker',
+  title: 'Components/marker',
   tags: ['autodocs'],
   component: 'mdc-marker',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     variant: {
