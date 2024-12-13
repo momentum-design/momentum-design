@@ -81,12 +81,10 @@ const commonTestCases = async (args: SetupOptions, buttonType: string) => {
   });
 
   // Default values for button
-  await test.step(`attributes for ${buttonType} button`, async () => {
-    await test.step('attributes should be present on component by default', async () => {
-      await expect(button).toHaveAttribute('variant', DEFAULTS.VARIANT);
-      await expect(button).toHaveAttribute('size', DEFAULTS.SIZE.toString());
-      await expect(button).toHaveAttribute('color', DEFAULTS.COLOR);
-    });
+  await test.step(`attributes for ${buttonType} should be present on component by default`, async () => {
+    await expect(button).toHaveAttribute('variant', DEFAULTS.VARIANT);
+    await expect(button).toHaveAttribute('size', DEFAULTS.SIZE.toString());
+    await expect(button).toHaveAttribute('color', DEFAULTS.COLOR);
   });
 
   await test.step('should fallback to default values when invalid attributes are passed', async () => {
@@ -233,14 +231,11 @@ test.describe.parallel('mdc-button', () => {
   test.use({ viewport: { width: 800, height: 2700 } });
 
   test('mdc-button pill button', async ({ componentsPage }) => {
-    const children = 'Pill Button';
-    await test.step('mdc-button as pill button', async () => {
-      await testForCombinations({ children, componentsPage }, 'pill');
-    });
+    await testForCombinations({ children: 'Pill Button', componentsPage }, 'pill');
 
     const { buttonSheet, commonMount } = await getStickerSheetDetails(componentsPage);
     // default
-    buttonSheet.setChildren(children);
+    buttonSheet.setChildren('Pill Button');
     await commonMount();
     // tertiary
     buttonSheet.setAttributes({ variant: BUTTON_VARIANTS.TERTIARY });
@@ -276,9 +271,10 @@ test.describe.parallel('mdc-button', () => {
   });
 
   test('mdc-button pill with prefix icon button', async ({ componentsPage }) => {
-    const children = 'Pill with Prefix Icon';
-    const prefixIcon = 'placeholder-bold';
-    await testForCombinations({ prefixIcon, children, componentsPage }, 'pill-with-prefix-icon');
+    await testForCombinations(
+      { prefixIcon: 'placeholder-light', children: 'Pill with prefix', componentsPage },
+      'pill-with-prefix-icon',
+    );
 
     const { buttonSheet, commonMount } = await getStickerSheetDetails(componentsPage);
     // default
@@ -337,9 +333,10 @@ test.describe.parallel('mdc-button', () => {
   });
 
   test('mdc-button pill with postfix icon button', async ({ componentsPage }) => {
-    const children = 'Pill with Postfix Icon';
-    const postfixIcon = 'placeholder-light';
-    await testForCombinations({ postfixIcon, children, componentsPage }, 'pill-with-postfix-icon');
+    await testForCombinations(
+      { postfixIcon: 'placeholder-light', children: 'Pill with postfix', componentsPage },
+      'pill-with-postfix-icon',
+    );
 
     const { buttonSheet, commonMount } = await getStickerSheetDetails(componentsPage);
     // default
@@ -470,8 +467,7 @@ test.describe.parallel('mdc-button', () => {
   });
 
   test('mdc-button key pressed and focused events', async ({ componentsPage }) => {
-    const children = 'Pill Button';
-    const button = await setup({ componentsPage, children, secondButtonForFocus: true });
+    const button = await setup({ componentsPage, children: 'Pill Button', secondButtonForFocus: true });
 
     await componentsPage.page.evaluate(() => {
       const btn = document.getElementsByTagName('mdc-button')[0];
