@@ -1034,6 +1034,18 @@
             "value": "{color.highcontrast.black.WindowColor}",
             "type": "color",
             "description": "Used for glass effect background for operation pop. "
+          },
+          "overlay": {
+            "normal": {
+              "value": "{color.highcontrast.black.HotlightColor}",
+              "type": "color",
+              "description": "Used for operation pop: knocked-back effect when signle card is selected"
+            },
+            "inactive": {
+              "value": "{color.highcontrast.black.WindowColor}",
+              "type": "color",
+              "description": "Used for operation pop: knocked-back effect when signle card is selected"
+            }
           }
         }
       },
@@ -1168,6 +1180,25 @@
             "type": "color",
             "value": "{color.highcontrast.black.HighlightColor}",
             "description": ""
+          }
+        },
+        "glass": {
+          "primary": {
+            "normal": {
+              "value": "{color.highcontrast.black.ButtonFaceColor}",
+              "type": "color",
+              "description": "Used for Operation pop button"
+            },
+            "hover": {
+              "value": "{color.highcontrast.black.HighlightColor}",
+              "type": "color",
+              "description": "Used for Operation pop button"
+            },
+            "pressed": {
+              "value": "{color.highcontrast.black.HighlightColor}",
+              "type": "color",
+              "description": "Used for Operation pop button"
+            }
           }
         }
       },
@@ -1962,6 +1993,18 @@
         "pressed": {
           "value": "{color.highcontrast.black.WindowTextColor}",
           "type": "color"
+        },
+        "glass": {
+          "normal": {
+            "value": "{color.highcontrast.black.WindowTextColor}",
+            "type": "color",
+            "description": "Used for Operation pop"
+          },
+          "active": {
+            "value": "{color.highcontrast.black.WindowTextColor}",
+            "type": "color",
+            "description": "Used for Operation pop"
+          }
         }
       },
       "common": {
