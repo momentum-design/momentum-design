@@ -1073,9 +1073,21 @@
         },
         "glass": {
           "normal": {
-            "value": "{color.core.white-alpha.50}",
+            "value": "{color.core.white-alpha.60}",
             "type": "color",
             "description": "Used for glass effect background for operation pop. "
+          },
+          "overlay": {
+            "normal": {
+              "value": "{color.core.white-alpha.80}",
+              "type": "color",
+              "description": "Used for operation pop: knocked-back effect when signle card is selected"
+            },
+            "inactive": {
+              "value": "{color.core.white-alpha.40}",
+              "type": "color",
+              "description": "Used for operation pop: knocked-back effect when signle card is selected"
+            }
           }
         }
       },
@@ -1215,6 +1227,25 @@
             "type": "color",
             "value": "{color.core.blue.80}",
             "description": ""
+          }
+        },
+        "glass": {
+          "primary": {
+            "normal": {
+              "value": "{color.core.black-alpha.80}",
+              "type": "color",
+              "description": "Used for Operation pop button"
+            },
+            "hover": {
+              "value": "{color.core.black-alpha.70}",
+              "type": "color",
+              "description": "Used for Operation pop button"
+            },
+            "pressed": {
+              "value": "{color.core.black-alpha.60}",
+              "type": "color",
+              "description": "Used for Operation pop button"
+            }
           }
         }
       },
@@ -2522,6 +2553,18 @@
         "pressed": {
           "value": "{color.core.black-alpha.20}",
           "type": "color"
+        },
+        "glass": {
+          "normal": {
+            "value": "{color.core.black-alpha.7}",
+            "type": "color",
+            "description": "Used for Operation pop"
+          },
+          "active": {
+            "value": "{color.core.white-alpha.80}",
+            "type": "color",
+            "description": "Used for Operation pop"
+          }
         }
       },
       "gradientdivider": {
