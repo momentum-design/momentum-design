@@ -7,7 +7,8 @@ import { disableControls, hideControls } from '../../../config/storybook/utils';
 
 const contentMap: Record<string, ReturnType<typeof html>> = {
   text: html`<mdc-text tagname="h1">Label</mdc-text>`,
-  grabber: html`<mdc-button role='button'></mdc-button>`, // button role has been specifically added for managing storybook A11y.
+  // button role has been specifically added for managing storybook A11y.
+  grabber: html`<mdc-button role="button"></mdc-button>`,
   noChildren: html``,
 };
 
