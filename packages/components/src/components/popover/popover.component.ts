@@ -72,8 +72,14 @@ class Popover extends FocusTrapMixin(Component) {
   /**
    * The delay of the show/hide popover.
    */
-  @property({ type: Number, reflect: true })
-  delay: number = 0;
+  @property({ type: String, reflect: true })
+  delay: string = '0,0';
+
+  /**
+   * The boundary of the popover.
+   */
+  @property({ type: String, reflect: true })
+  boundary: string = '';
 
   /**
    * The focus trap of the popover.
@@ -149,14 +155,21 @@ class Popover extends FocusTrapMixin(Component) {
 
   private arrowElement: HTMLElement | null = null;
 
-  override connectedCallback() {
-    super.connectedCallback();
-    this.setupTrigger();
-  }
+  private hoverTimer: number | null = null;
+
+  private openDelay: number = 0;
+
+  private closeDelay: number = 0;
 
   override disconnectedCallback() {
     super.disconnectedCallback();
     this.removeEventListeners();
+  }
+
+  private setupDelay() {
+    const [openDelay, closeDelay] = this.delay.split(',').map((delay) => parseInt(delay, 10));
+    this.openDelay = openDelay;
+    this.closeDelay = closeDelay;
   }
 
   private setupTrigger() {
@@ -170,12 +183,13 @@ class Popover extends FocusTrapMixin(Component) {
     }
     if (this.trigger.includes('hover')) {
       this.triggerElement.addEventListener('mouseenter', this.showPopover.bind(this));
-      this.triggerElement.addEventListener('mouseleave', this.hidePopover.bind(this));
+      this.triggerElement.addEventListener('mouseleave', this.startCloseDelay.bind(this));
+      this.popoverElement?.addEventListener('mouseenter', this.cancelCloseDelay.bind(this));
+      this.popoverElement?.addEventListener('mouseleave', this.startCloseDelay.bind(this));
     }
-    // if (this.trigger.includes('focus')) {
-    //   this.triggerElement.addEventListener('focus', this.showPopover.bind(this));
-    //   this.triggerElement.addEventListener('blur', this.hidePopover.bind(this));
-    // }
+    if (this.trigger.includes('focus')) {
+      this.triggerElement.addEventListener('focusin', this.showPopover.bind(this));
+    }
     this.addEventListener('focus-trap-exit', this.hidePopover.bind(this));
   }
 
@@ -185,8 +199,9 @@ class Popover extends FocusTrapMixin(Component) {
     this.triggerElement.removeEventListener('click', this.togglePopover.bind(this));
     this.triggerElement.removeEventListener('mouseenter', this.showPopover.bind(this));
     this.triggerElement.removeEventListener('mouseleave', this.hidePopover.bind(this));
-    this.triggerElement.removeEventListener('focus', this.showPopover.bind(this));
-    this.triggerElement.removeEventListener('blur', this.hidePopover.bind(this));
+    this.popoverElement?.removeEventListener('mouseenter', this.cancelCloseDelay.bind(this));
+    this.popoverElement?.removeEventListener('mouseleave', this.startCloseDelay.bind(this));
+    this.triggerElement.removeEventListener('focusin', this.showPopover.bind(this));
 
     this.removeEventListener('focus-trap-exit', this.hidePopover.bind(this));
   }
@@ -194,6 +209,8 @@ class Popover extends FocusTrapMixin(Component) {
   protected override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
     this.popoverElement = this.renderRoot.querySelector('#popover-container');
+    this.setupDelay();
+    this.setupTrigger();
 
     if (this.visible) {
       await this.positionPopover();
@@ -210,7 +227,7 @@ class Popover extends FocusTrapMixin(Component) {
     }
   }
 
-  onOutsidePopoverClick = (event: MouseEvent) => {
+  private onOutsidePopoverClick = (event: MouseEvent) => {
     let insidePopoverClick = false;
     const path = event.composedPath();
     insidePopoverClick = this.contains(event.target as Node) || path.includes(this.triggerElement!);
@@ -219,21 +236,19 @@ class Popover extends FocusTrapMixin(Component) {
     }
   };
 
-  onWindowBlurEvent = () => {
+  private onWindowBlurEvent = () => {
     if (this.visible) {
       this.visible = false;
     }
   };
 
-  onEscapeKeydown = async (event: KeyboardEvent) => {
+  private onEscapeKeydown = async (event: KeyboardEvent) => {
     if (!this.visible || event.code !== 'Escape') {
       return;
     }
 
     event.preventDefault();
     this.visible = false;
-    await this.updateComplete;
-    this.triggerElement?.focus();
   };
 
   private async isOpenUpdated(oldValue: boolean, newValue: boolean) {
@@ -258,8 +273,8 @@ class Popover extends FocusTrapMixin(Component) {
         document.addEventListener('keydown', this.onEscapeKeydown);
       }
 
-      this.triggerElement?.setAttribute('aria-expanded', 'true');
       if (this.interactive) {
+        this.triggerElement?.setAttribute('aria-expanded', 'true');
         this.triggerElement?.setAttribute('aria-haspopup', 'true');
       }
     } else {
@@ -274,8 +289,8 @@ class Popover extends FocusTrapMixin(Component) {
       }
 
       this.deactivateFocusTrap?.();
-      this.triggerElement?.removeAttribute('aria-expanded');
       if (this.interactive) {
+        this.triggerElement?.removeAttribute('aria-expanded');
         this.triggerElement?.removeAttribute('aria-haspopup');
       }
       if (this.focusBackToTrigger) {
@@ -284,16 +299,42 @@ class Popover extends FocusTrapMixin(Component) {
     }
   }
 
-  async showPopover() {
-    this.visible = true;
+  private startCloseDelay = async () => {
+    if (!this.interactive) {
+      this.hidePopover();
+    } else {
+      this.hoverTimer = window.setTimeout(() => {
+        this.visible = false;
+      }, this.closeDelay);
+    }
+  };
+
+  private cancelCloseDelay = () => {
+    if (this.hoverTimer) {
+      clearTimeout(this.hoverTimer);
+      this.hoverTimer = null;
+    }
+  };
+
+  public async showPopover() {
+    this.cancelCloseDelay();
+    setTimeout(() => {
+      this.visible = true;
+    }, this.openDelay);
   }
 
-  hidePopover() {
-    this.visible = false;
+  public hidePopover() {
+    setTimeout(() => {
+      this.visible = false;
+    }, this.closeDelay);
   }
 
   async togglePopover() {
-    this.visible = !this.visible;
+    if (this.visible) {
+      this.hidePopover();
+    } else {
+      await this.showPopover();
+    }
   }
 
   private async handleCreatePopperFirstUpdate() {

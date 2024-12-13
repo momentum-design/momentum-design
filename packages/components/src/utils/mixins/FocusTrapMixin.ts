@@ -132,12 +132,13 @@ export const FocusTrapMixin = <T extends Constructor<FocusTrapClass>>(
     }
 
     private findFocusable(root: ShadowRoot | HTMLElement, matches: Set<HTMLElement> = new Set()): HTMLElement[] {
+      if (root instanceof HTMLElement && this.isFocusable(root)) {
+        matches.add(root);
+      }
       const children = Array.from(root.children) as HTMLElement[];
 
       children.forEach((child: Node) => {
         const element = child as HTMLElement;
-
-        if (this.isHidden(element)) return;
 
         if (this.isFocusable(element)) {
           matches.add(element);
