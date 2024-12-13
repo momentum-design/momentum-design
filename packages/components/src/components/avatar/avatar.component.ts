@@ -33,6 +33,15 @@ import { getAvatarIconSize, getAvatarTextFontSize } from './avatar.utils';
  * @dependency mdc-text
  *
  * @tagname mdc-avatar
+ *
+ * @cssproperty --mdc-avatar-default-background-color - Allows customization of the default background color.
+ * @cssproperty --mdc-avatar-default-foreground-color - Allows customization of the default foreground color.
+ * @cssproperty --mdc-avatar-loading-indicator-background-color -
+ *  Allows customization of the loading indicator background color.
+ * @cssproperty --mdc-avatar-loading-indicator-foreground-color -
+ *  Allows customization of the loading indicator foreground color.
+ * @cssproperty --mdc-avatar-loading-overlay-background-color -
+ *  Allows customization of the loading overlay background color.
  */
 class Avatar extends Component {
   /**

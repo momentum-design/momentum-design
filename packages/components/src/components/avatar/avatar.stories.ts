@@ -52,6 +52,13 @@ const meta: Meta = {
     counter: {
       control: 'number',
     },
+    ...disableControls([
+      '--mdc-avatar-default-background-color',
+      '--mdc-avatar-default-foreground-color',
+      '--mdc-avatar-loading-indicator-background-color',
+      '--mdc-avatar-loading-indicator-foreground-color',
+      '--mdc-avatar-loading-overlay-background-color',
+    ]),
     ...classArgType,
     ...styleArgType,
   },
