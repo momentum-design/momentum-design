@@ -1,5 +1,0 @@
-import{s as o}from"./index-BLShQaRP.js";/**
- * @license
- * Copyright 2021 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */class r{constructor(i,t,e,b){if(this.subscribe=!1,this.provided=!1,this.value=void 0,this.t=(s,c)=>{this.unsubscribe&&(this.unsubscribe!==c&&(this.provided=!1,this.unsubscribe()),this.subscribe||this.unsubscribe()),this.value=s,this.host.requestUpdate(),this.provided&&!this.subscribe||(this.provided=!0,this.callback&&this.callback(s,c)),this.unsubscribe=c},this.host=i,t.context!==void 0){const s=t;this.context=s.context,this.callback=s.callback,this.subscribe=s.subscribe??!1}else this.context=t,this.callback=e,this.subscribe=b??!1;this.host.addController(this)}hostConnected(){this.dispatchRequest()}hostDisconnected(){this.unsubscribe&&(this.unsubscribe(),this.unsubscribe=void 0)}dispatchRequest(){this.host.dispatchEvent(new o(this.context,this.t,this.subscribe))}}const u=h=>{const{host:i,context:t,subscribe:e}=h;return new r(i,{context:t,subscribe:e??!0})},a={consume:u};export{a as p};
