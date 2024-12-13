@@ -6,6 +6,7 @@ import type { Placement } from '@floating-ui/utils';
 import styles from './popover.styles';
 import { Component } from '../../models';
 import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
+import { popoverStack } from './popover.stack';
 
 /**
  * popover component, which .
@@ -164,6 +165,7 @@ class Popover extends FocusTrapMixin(Component) {
   override disconnectedCallback() {
     super.disconnectedCallback();
     this.removeEventListeners();
+    popoverStack.remove(this);
   }
 
   private setupDelay() {
@@ -228,17 +230,18 @@ class Popover extends FocusTrapMixin(Component) {
   }
 
   private onOutsidePopoverClick = (event: MouseEvent) => {
+    if (popoverStack.peek() !== this) return;
     let insidePopoverClick = false;
     const path = event.composedPath();
     insidePopoverClick = this.contains(event.target as Node) || path.includes(this.triggerElement!);
     if (!insidePopoverClick) {
-      this.visible = false;
+      this.hidePopover();
     }
   };
 
   private onWindowBlurEvent = () => {
     if (this.visible) {
-      this.visible = false;
+      this.hidePopover();
     }
   };
 
@@ -248,7 +251,7 @@ class Popover extends FocusTrapMixin(Component) {
     }
 
     event.preventDefault();
-    this.visible = false;
+    this.hidePopover();
   };
 
   private async isOpenUpdated(oldValue: boolean, newValue: boolean) {
@@ -321,12 +324,16 @@ class Popover extends FocusTrapMixin(Component) {
     setTimeout(() => {
       this.visible = true;
     }, this.openDelay);
+    popoverStack.push(this);
   }
 
   public hidePopover() {
-    setTimeout(() => {
-      this.visible = false;
-    }, this.closeDelay);
+    if (popoverStack.peek() === this) {
+      setTimeout(() => {
+        this.visible = false;
+      }, this.closeDelay);
+      popoverStack.pop();
+    }
   }
 
   async togglePopover() {

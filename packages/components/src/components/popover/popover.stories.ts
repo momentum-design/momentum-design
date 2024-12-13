@@ -112,9 +112,12 @@ const renderNested = (args: Args) => html`
   trigger="click"
   placement="bottom"
   interactive
-  focus-trap
   set-index="2"
+  focus-back-to-trigger
+  focus-trap
   show-arrow
+  hide-on-escape
+  hide-on-outside-click
 >
   <mdc-text>Popover Level 2</mdc-text>
   <mdc-button id="popover-trigger-3">Hover me!</mdc-button>
@@ -279,6 +282,7 @@ export const nestedPopover: StoryObj = {
     interactive: true,
     'show-arrow': true,
     'inverted-color': false,
+    'hide-on-escape': true,
   },
 };
 export const hideOnBlur: StoryObj = {
