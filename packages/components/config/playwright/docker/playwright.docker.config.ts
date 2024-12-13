@@ -32,7 +32,7 @@ const config: PlaywrightTestConfig = {
   testDir: '../../../src',
   testMatch: /.*\.e2e-test\.ts/,
   /* Maximum time one test can run for. */
-  timeout: 150 * 1000,
+  timeout: 60 * 1000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
