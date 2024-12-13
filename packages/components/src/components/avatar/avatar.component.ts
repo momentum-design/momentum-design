@@ -26,7 +26,7 @@ import { getAvatarIconSize, getAvatarTextFontSize } from './avatar.utils';
  * then the default avatar will be an icon with `user-regular` name.
  *
  * The avatar component is non clickable and non interactive/focusable component.
- * If the avatar is typing, then the loading indicator will be displayed and presence will be hidden.
+ * If the avatar is typing, then the loading indicator will be displayed.
  *
  * @dependency mdc-icon
  * @dependency mdc-presence
