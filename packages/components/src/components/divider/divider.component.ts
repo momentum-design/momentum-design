@@ -85,8 +85,8 @@ class Divider extends Component {
    * - **'false'**
    * @default false
    */
-  @property({ type: String, attribute: 'aria-expanded' })
-  override ariaExpanded: string = 'false';
+  @property({ type: String, attribute: 'divider-aria-expanded' })
+  dividerAriaExpanded: string = 'false';
 
   /**
    * Direction of the arrow icon, if applicable.
@@ -145,7 +145,7 @@ class Divider extends Component {
    * - Sets the `aria-label` attribute for the grabber button based
    * on the `divider-aria-label` attribute of the divider.
    * - Sets the `aria-expanded` attribute for the grabber button based
-   * on the `aria-expanded` state of the divider.
+   * on the `divider-aria-expanded` state of the divider.
    * - Sets the `prefix-icon` attribute for the grabber button based
    * on the `arrow-direction` and `orientation` properties.
    *
@@ -160,7 +160,7 @@ class Divider extends Component {
     if (this.dividerAriaLabel) {
       buttonElement.setAttribute('aria-label', this.dividerAriaLabel);
     }
-    buttonElement.setAttribute('aria-expanded', this.ariaExpanded);
+    buttonElement.setAttribute('aria-expanded', this.dividerAriaExpanded);
     buttonElement.setAttribute('prefix-icon', iconType);
   }
 
@@ -169,7 +169,7 @@ class Divider extends Component {
    */
   private setTextDivider(): void {
     const textElement = this.querySelector('mdc-text');
-    if (!textElement) return;
+    if (!textElement || textElement.textContent?.trim() !== '') return;
 
     if (this.dividerAriaLabel) {
       textElement.setAttribute('aria-label', this.dividerAriaLabel);
@@ -208,7 +208,6 @@ class Divider extends Component {
       this.setVariant(this.variant);
     }
 
-    // if no text is there
     if (this.dividerTypeInternal === DIVIDER_TYPE_INTERNAL.TEXT && changedProperties.has('dividerAriaLabel')) {
       this.setTextDivider();
     }
@@ -219,7 +218,7 @@ class Divider extends Component {
         || changedProperties.has('arrowDirection')
         || changedProperties.has('buttonPosition')
         || changedProperties.has('dividerAriaLabel')
-        || changedProperties.has('ariaExpanded')
+        || changedProperties.has('dividerAriaExpanded')
       ) {
         this.setGrabberButton();
       }
@@ -246,7 +245,6 @@ class Divider extends Component {
    */
   private inferDividerType() {
     this.dividerTypeInternal = DIVIDER_TYPE_INTERNAL.PRIMARY;
-    // remove the extra attributes
 
     const slot = this.shadowRoot?.querySelector('slot');
     const assignedElements = slot?.assignedElements({ flatten: true }) || [];
