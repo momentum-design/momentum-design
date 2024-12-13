@@ -97,4 +97,23 @@ For detailed information about each component, refer to the `,e.jsx(n.a,{href:"h
 ...
 
 <Avatar />
-`})})]})}function d(s={}){const{wrapper:n}={...t(),...s.components};return n?e.jsx(n,{...s,children:e.jsx(o,{...s})}):o(s)}export{d as default};
+`})}),`
+`,e.jsx(n.h2,{id:"styling",children:"Styling"}),`
+`,e.jsx(n.h3,{id:"css-variables",children:"CSS Variables"}),`
+`,e.jsx(n.p,{children:`Each component has a set of CSS variables that can be used to change the appearance of the component.
+Refer to the individual component documentation for a list of available CSS variables.`}),`
+`,e.jsx(n.pre,{children:e.jsx(n.code,{className:"language-css",children:`mdc-component {
+    --mdc-component-variable: value;
+}
+`})}),`
+`,e.jsx(n.h3,{id:"classes-and-styles",children:"Classes and Styles"}),`
+`,e.jsxs(n.p,{children:["For more advanced styling, you can use the ",e.jsx(n.code,{children:"class"})," and ",e.jsx(n.code,{children:"style"})," attributes on the component."]}),`
+`,e.jsx(n.pre,{children:e.jsx(n.code,{className:"language-html",children:`<mdc-component class="custom-class" style="color: red;"></mdc-avatar>
+`})}),`
+`,e.jsx(n.h3,{id:"css-parts",children:"CSS Parts"}),`
+`,e.jsxs(n.p,{children:[`Web Components are encapsulated and cannot be styled directly.
+To style something inside the shadow DOM, use the `,e.jsx(n.code,{children:"::part"})," pseudo-element (if available)."]}),`
+`,e.jsx(n.pre,{children:e.jsx(n.code,{className:"language-css",children:`mdc-component::part(part-name) {
+    color: red;
+}
+`})})]})}function l(s={}){const{wrapper:n}={...t(),...s.components};return n?e.jsx(n,{...s,children:e.jsx(o,{...s})}):o(s)}export{l as default};
