@@ -12,6 +12,7 @@ const styles = css`
     --mdc-divider-vertical-gradient: var(--mds-color-theme-gradientdivider-vertical-normal);
     --mdc-divider-text-size: var(--mds-font-size-body-midsize);
     --mdc-divider-text-color: var(--mds-color-theme-text-secondary-normal);
+    --mdc-divider-text-line-height: var(--mds-font-lineheight-body-midsize);
     --mdc-divider-text-margin: 1.5rem;
     --mdc-divider-grabber-button-border-radius: 0.5rem;
 
@@ -20,8 +21,8 @@ const styles = css`
   }
 
   /* Primary and grabber divider styles */
-  :host(.mdc-primary-divider),
-  :host(.mdc-grabber-divider) {
+  :host([data-type='mdc-primary-divider']),
+  :host([data-type='mdc-grabber-divider']) {
     background-color: var(--mdc-divider-background-color);
   }
 
@@ -32,25 +33,25 @@ const styles = css`
     width: 100%;
   }
 
-  :host([orientation='vertical']:not(.mdc-text-divider)) {
+  :host([orientation='vertical']:not([data-type='mdc-text-divider'])) {
     flex-direction: column;
     height: 100%;
     width: var(--mdc-divider-width);
   }
 
   /* Gradient styles for primary and grabber dividers */
-  :host([orientation='horizontal'][variant='gradient'].mdc-primary-divider),
-  :host([orientation='horizontal'][variant='gradient'].mdc-grabber-divider) {
+  :host([orientation='horizontal'][variant='gradient'][data-type='mdc-primary-divider']),
+  :host([orientation='horizontal'][variant='gradient'][data-type='mdc-grabber-divider']) {
     background: var(--mdc-divider-horizontal-gradient);
   }
 
-  :host([orientation='vertical'][variant='gradient'].mdc-primary-divider),
-  :host([orientation='vertical'][variant='gradient'].mdc-grabber-divider) {
+  :host([orientation='vertical'][variant='gradient'][data-type='mdc-primary-divider']),
+  :host([orientation='vertical'][variant='gradient'][data-type='mdc-grabber-divider']) {
     background: var(--mdc-divider-vertical-gradient);
   }
 
-  /* Slotted content hiding for primary dividers */
-  :host(.mdc-primary-divider) ::slotted(*) {
+  /* Hiding slotted content for primary dividers */
+  :host([data-type='mdc-primary-divider']) ::slotted(*) {
     display: none;
   }
 
@@ -97,29 +98,30 @@ const styles = css`
   }
 
   /** Text divider styles */
-  :host([orientation='horizontal'][variant='gradient'].mdc-text-divider),
-  :host([orientation='horizontal'][variant='solid'].mdc-text-divider) {
+  :host([orientation='horizontal'][variant='gradient'][data-type='mdc-text-divider']),
+  :host([orientation='horizontal'][variant='solid'][data-type='mdc-text-divider']) {
     align-items: center;
   }
 
-  :host(.mdc-text-divider) > div {
+  :host([data-type='mdc-text-divider']) > div {
     width: 100%;
     height: 100%;
     background-color: var(--mdc-divider-background-color);
   }
 
-  :host([orientation='horizontal'][variant='gradient'].mdc-text-divider) > div:first-of-type {
+  :host([orientation='horizontal'][variant='gradient'][data-type='mdc-text-divider']) > div:first-of-type {
     background: linear-gradient(to right, transparent, 30%, var(--mdc-divider-background-color));
   }
 
-  :host([orientation='horizontal'][variant='gradient'].mdc-text-divider) > div:last-of-type {
+  :host([orientation='horizontal'][variant='gradient'][data-type='mdc-text-divider']) > div:last-of-type {
     background: linear-gradient(to left, transparent, 30%, var(--mdc-divider-background-color));
   }
 
-  :host(.mdc-text-divider) ::slotted(mdc-text) {
+  :host([data-type='mdc-text-divider']) ::slotted(mdc-text) {
     margin: 0 var(--mdc-divider-text-margin);
     color: var(--mdc-divider-text-color);
     font-size: var(--mdc-divider-text-size);
+    line-height: var(--mdc-divider-text-line-height);
   }
 `;
 

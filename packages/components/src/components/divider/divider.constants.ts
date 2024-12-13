@@ -1,4 +1,6 @@
 import utils from '../../utils/tag-name';
+import { TAG_NAME as BUTTON_TAG } from '../button/button.constants';
+import { TAG_NAME as TEXT_TAG } from '../text/text.constants';
 
 const TAG_NAME = utils.constructTagName('divider');
 
@@ -35,4 +37,13 @@ const DEFAULTS = {
   BUTTON_DIRECTION: DIRECTIONS.NEGATIVE,
 } as const;
 
-export { TAG_NAME, DEFAULTS, DIVIDER_TYPE_INTERNAL, DIVIDER_VARIANT, DIVIDER_ORIENTATION, DIRECTIONS };
+export {
+  TAG_NAME,
+  DEFAULTS,
+  DIVIDER_TYPE_INTERNAL,
+  DIVIDER_VARIANT,
+  DIVIDER_ORIENTATION,
+  DIRECTIONS,
+  BUTTON_TAG,
+  TEXT_TAG,
+};

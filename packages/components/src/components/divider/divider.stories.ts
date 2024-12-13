@@ -8,21 +8,21 @@ import { disableControls, hideControls } from '../../../config/storybook/utils';
 const contentMap: Record<string, ReturnType<typeof html>> = {
   text: html`<mdc-text tagname="h1">Label</mdc-text>`,
   grabber: html`<mdc-button></mdc-button>`,
-  primary: html``,
+  noChildren: html``,
 };
 
 const render = (args: Args) => {
   const content = contentMap[args.typeOfChildren] || html``;
 
   return html`
-    <div style="height: 85vh">
+    <div style="height: 25rem; margin: 1rem">
       <mdc-divider
         orientation=${args.orientation}
         variant=${args.variant}
-        aria-label=${args['aria-label'] || ''}
-        aria-expanded=${args['aria-expanded'] || ''}
-        arrow-direction=${args['arrow-direction'] || ''}
-        button-position=${args['button-position'] || ''}
+        divider-aria-label=${args['divider-aria-label']}
+        aria-expanded=${args['aria-expanded']}
+        arrow-direction=${args['arrow-direction']}
+        button-position=${args['button-position']}
       >
         ${content}
       </mdc-divider>
@@ -41,7 +41,7 @@ const meta: Meta = {
   argTypes: {
     typeOfChildren: {
       control: 'radio',
-      options: ['primary', 'text', 'grabber'],
+      options: ['noChildren', 'text', 'grabber'],
       description: 'Choose the type of content to render inside the divider',
     },
     orientation: {
@@ -52,7 +52,7 @@ const meta: Meta = {
       control: 'radio',
       options: Object.values(DIVIDER_VARIANT),
     },
-    'aria-label': {
+    'divider-aria-label': {
       control: 'text',
     },
     'aria-expanded': {
@@ -75,6 +75,7 @@ const meta: Meta = {
       '--mdc-divider-text-color',
       '--mdc-divider-text-margin',
       '--mdc-divider-grabber-button-border-radius',
+      '--mdc-divider-text-line-height',
     ]),
     ...classArgType,
     ...styleArgType,
@@ -85,28 +86,37 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    typeOfChildren: 'primary',
+    typeOfChildren: 'noChildren',
     orientation: DIVIDER_ORIENTATION.HORIZONTAL,
     variant: DIVIDER_VARIANT.SOLID,
-    'aria-label': 'Divider label',
+    'divider-aria-label': 'Divider label',
     'aria-expanded': 'false',
     'arrow-direction': DIRECTIONS.NEGATIVE,
     'button-position': DIRECTIONS.NEGATIVE,
   },
+  decorators: [
+    (Story, context) => {
+      // Enforce horizontal orientation when typeOfChildren is 'text'
+      if (context.args.typeOfChildren === 'text' && context.args.orientation === DIVIDER_ORIENTATION.VERTICAL) {
+        context.args.orientation = DIVIDER_ORIENTATION.HORIZONTAL;
+      }
+      return Story();
+    },
+  ],
 };
 
-export const primary: StoryObj = {
+export const noChildrenDivider: StoryObj = {
   argTypes: {
     ...meta.argTypes,
     typeOfChildren: {
       control: 'radio',
-      options: ['primary'],
-      description: 'Primary type is selected',
+      options: ['noChildren'],
+      description: 'NoChildren type is selected',
     },
-    ...hideControls(['aria-label', 'aria-expanded', 'arrow-direction', 'button-position']),
+    ...hideControls(['divider-aria-label', 'aria-expanded', 'arrow-direction', 'button-position']),
   },
   args: {
-    typeOfChildren: 'primary',
+    typeOfChildren: 'noChildren',
     orientation: DIVIDER_ORIENTATION.HORIZONTAL,
     variant: DIVIDER_VARIANT.SOLID,
   },
@@ -123,14 +133,14 @@ export const textDivider: StoryObj = {
     orientation: {
       control: 'radio',
       options: [DIVIDER_ORIENTATION.HORIZONTAL],
-      description: 'Only horizontal orientation with 0.063rem width is allowed',
+      description: 'Only horizontal orientation with 0.0625rem width is allowed',
     },
     ...hideControls(['aria-expanded', 'arrow-direction', 'button-position']),
   },
   args: {
-    ...primary.args,
+    ...noChildrenDivider.args,
     typeOfChildren: 'text',
-    'aria-label': 'Divider with text',
+    'divider-aria-label': 'Divider with text',
   },
 };
 
@@ -144,9 +154,9 @@ export const grabberButtonDivider: StoryObj = {
     },
   },
   args: {
-    ...primary.args,
+    ...noChildrenDivider.args,
     typeOfChildren: 'grabber',
-    'aria-label': 'Divider with grabber button',
+    'divider-aria-label': 'Divider with grabber button',
     'aria-expanded': 'false',
     'arrow-direction': DIRECTIONS.NEGATIVE,
     'button-position': DIRECTIONS.NEGATIVE,
