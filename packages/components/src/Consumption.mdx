@@ -116,3 +116,35 @@ import { Avatar } from '@momentum-design/components/react';
 
 <Avatar />
 ``` 
+
+## Styling
+
+### CSS Variables
+
+Each component has a set of CSS variables that can be used to change the appearance of the component. 
+Refer to the individual component documentation for a list of available CSS variables.
+
+```css
+mdc-component {
+    --mdc-component-variable: value;
+}
+```
+
+### Classes and Styles
+
+For more advanced styling, you can use the `class` and `style` attributes on the component.
+
+```html
+<mdc-component class="custom-class" style="color: red;"></mdc-avatar>
+```
+
+### CSS Parts
+
+Web Components are encapsulated and cannot be styled directly. 
+To style something inside the shadow DOM, use the `::part` pseudo-element (if available).
+
+```css
+mdc-component::part(part-name) {
+    color: red;
+}
+```
