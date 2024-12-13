@@ -8,7 +8,7 @@ import { disableControls, hideControls } from '../../../config/storybook/utils';
 const contentMap: Record<string, ReturnType<typeof html>> = {
   text: html`<mdc-text tagname="h1">Label</mdc-text>`,
   // button role has been specifically added for managing storybook A11y.
-  grabber: html`<mdc-button role="button"></mdc-button>`,
+  grabber: html`<mdc-button role="button" aria-label="divider label" aria-expanded="false"></mdc-button>`,
   noChildren: html``,
 };
 
@@ -20,8 +20,6 @@ const render = (args: Args) => {
       <mdc-divider
         orientation=${args.orientation}
         variant=${args.variant}
-        divider-aria-label=${args['divider-aria-label']}
-        divider-aria-expanded=${args['divider-aria-expanded']}
         arrow-direction=${args['arrow-direction']}
         button-position=${args['button-position']}
       >
@@ -52,12 +50,6 @@ const meta: Meta = {
     variant: {
       control: 'radio',
       options: Object.values(DIVIDER_VARIANT),
-    },
-    'divider-aria-label': {
-      control: 'text',
-    },
-    'divider-aria-expanded': {
-      control: 'boolean',
     },
     'arrow-direction': {
       control: 'select',
@@ -90,8 +82,6 @@ export const Example: StoryObj = {
     typeOfChildren: 'noChildren',
     orientation: DIVIDER_ORIENTATION.HORIZONTAL,
     variant: DIVIDER_VARIANT.SOLID,
-    'divider-aria-label': 'Divider label',
-    'divider-aria-expanded': 'false',
     'arrow-direction': DIRECTIONS.NEGATIVE,
     'button-position': DIRECTIONS.NEGATIVE,
   },
@@ -114,7 +104,7 @@ export const noChildrenDivider: StoryObj = {
       options: ['noChildren'],
       description: 'NoChildren type is selected',
     },
-    ...hideControls(['divider-aria-label', 'divider-aria-expanded', 'arrow-direction', 'button-position']),
+    ...hideControls(['arrow-direction', 'button-position']),
   },
   args: {
     typeOfChildren: 'noChildren',
@@ -136,12 +126,11 @@ export const textDivider: StoryObj = {
       options: [DIVIDER_ORIENTATION.HORIZONTAL],
       description: 'Only horizontal orientation with 0.0625rem width is allowed',
     },
-    ...hideControls(['divider-aria-expanded', 'arrow-direction', 'button-position']),
+    ...hideControls(['arrow-direction', 'button-position']),
   },
   args: {
     ...noChildrenDivider.args,
     typeOfChildren: 'text',
-    'divider-aria-label': 'Divider with text',
   },
 };
 
@@ -157,8 +146,6 @@ export const grabberButtonDivider: StoryObj = {
   args: {
     ...noChildrenDivider.args,
     typeOfChildren: 'grabber',
-    'divider-aria-label': 'Divider with grabber button',
-    'divider-aria-expanded': 'false',
     'arrow-direction': DIRECTIONS.NEGATIVE,
     'button-position': DIRECTIONS.NEGATIVE,
   },

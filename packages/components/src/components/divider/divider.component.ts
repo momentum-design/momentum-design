@@ -14,28 +14,32 @@ import {
 import { DividerOrientation, DividerTypeInternal, DividerVariant } from './divider.types';
 
 /**
- * `mdc-divider` is basically a line that can also have a button/text positioned centrally.
- * It is used to separate and organize the content and allow users to interact with the layout.
+ * `mdc-divider` is a component that provides a line to separate and organize content.
+ * It can also include a button or text positioned centrally, allowing users to interact with the layout.
  *
- * Divider Orientation:
+ * **Divider Orientation:**
  * - **Horizontal**: A thin, horizontal line.
  * - **Vertical**: A thin, vertical line.
  *
- * Divider Variant:
+ * **Divider Variants:**
  * - **solid**: Solid line.
  * - **gradient**: Gradient Line.
  *
- * Divider Types:
- * - **Primary**: Horizontal and Vertical Divider.
- * - **Text**: Horiontal Divider with text label in between.
- * - **Grabber button**: Horizontal and Vertical divider with styled button in between.
+ * **Divider Types:**
+ * - The type of divider is inferred based on the kind of slot present.
+ *  - **Primary**: A simple horizontal or vertical divider.
+ *  - **Text**: A horizontal divider with a text label in the center.
+ *  - **Grabber Button**: A horizontal or vertical divider with a styled button in the center.
  *
- * The type of divider is inferred based on the kind of slot present.
+ * **Accessibility:**
+ * - When the slot is replaced by an `mdc-button`:
+ *   - `aria-label` should be passed to the `mdc-button`.
+ *   - `aria-expanded` should be passed to the `mdc-button`.
  *
- * **Note:**
- * - If the slot is replaced by invalid tagname or multiple elements,
- *   the type of divider is then set to primary by default.
- * - If you want to override the styles of the divider, refer CSS custom properties.
+ * **Notes:**
+ * - If the slot is replaced by an invalid tag name or contains multiple elements,
+ *   the divider defaults to the **Primary** type.
+ * - To override the styles of the divider, use the provided CSS custom properties.
  *
  * @tagname mdc-divider
  *
@@ -69,24 +73,6 @@ class Divider extends Component {
    */
   @property({ type: String, reflect: true })
   variant: DividerVariant = DEFAULTS.VARIANT;
-
-  /**
-   * Aria label to be set for accessibility
-   * @default null
-   */
-  @property({ type: String, attribute: 'divider-aria-label' })
-  dividerAriaLabel: string | null = null;
-
-  /**
-   * Aria expanded to be set for accessibility
-   *
-   * Note: Possible values can be:
-   * - **'true'**
-   * - **'false'**
-   * @default false
-   */
-  @property({ type: String, attribute: 'divider-aria-expanded' })
-  dividerAriaExpanded: string = 'false';
 
   /**
    * Direction of the arrow icon, if applicable.
@@ -142,10 +128,6 @@ class Divider extends Component {
   /**
    * Configures the grabber button within the divider.
    *
-   * - Sets the `aria-label` attribute for the grabber button based
-   * on the `divider-aria-label` attribute of the divider.
-   * - Sets the `aria-expanded` attribute for the grabber button based
-   * on the `divider-aria-expanded` state of the divider.
    * - Sets the `prefix-icon` attribute for the grabber button based
    * on the `arrow-direction` and `orientation` properties.
    *
@@ -157,23 +139,7 @@ class Divider extends Component {
 
     const iconType = this.getArrowIcon();
     buttonElement.setAttribute('variant', 'secondary');
-    if (this.dividerAriaLabel) {
-      buttonElement.setAttribute('aria-label', this.dividerAriaLabel);
-    }
-    buttonElement.setAttribute('aria-expanded', this.dividerAriaExpanded);
     buttonElement.setAttribute('prefix-icon', iconType);
-  }
-
-  /**
-   * Sets the `aria-label` attribute for label based on `divider-aria-label` of the text divider.
-   */
-  private setTextDivider(): void {
-    const textElement = this.querySelector('mdc-text');
-    if (!textElement || textElement.textContent?.trim() !== '') return;
-
-    if (this.dividerAriaLabel) {
-      textElement.setAttribute('aria-label', this.dividerAriaLabel);
-    }
   }
 
   /**
@@ -208,17 +174,11 @@ class Divider extends Component {
       this.setVariant(this.variant);
     }
 
-    if (this.dividerTypeInternal === DIVIDER_TYPE_INTERNAL.TEXT && changedProperties.has('dividerAriaLabel')) {
-      this.setTextDivider();
-    }
-
     if (this.dividerTypeInternal === DIVIDER_TYPE_INTERNAL.GRABBER_BUTTON) {
       if (
         changedProperties.has('orientation')
         || changedProperties.has('arrowDirection')
         || changedProperties.has('buttonPosition')
-        || changedProperties.has('dividerAriaLabel')
-        || changedProperties.has('dividerAriaExpanded')
       ) {
         this.setGrabberButton();
       }
@@ -255,7 +215,6 @@ class Divider extends Component {
 
     if (hasTextChild && !hasButtonChild) {
       this.dividerTypeInternal = DIVIDER_TYPE_INTERNAL.TEXT;
-      this.setTextDivider();
     } else if (!hasTextChild && hasButtonChild) {
       this.dividerTypeInternal = DIVIDER_TYPE_INTERNAL.GRABBER_BUTTON;
       this.setGrabberButton();
