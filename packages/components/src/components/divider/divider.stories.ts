@@ -72,6 +72,7 @@ const meta: Meta = {
     ]),
     ...classArgType,
     ...styleArgType,
+    ...hideControls(['observer']),
   },
 };
 

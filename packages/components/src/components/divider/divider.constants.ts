@@ -27,7 +27,14 @@ const DIVIDER_VARIANT = {
 const DIRECTIONS = {
   POSITIVE: 'positive',
   NEGATIVE: 'negative',
-};
+} as const;
+
+const ARROW_ICONS = {
+  UP: 'arrow-up-regular',
+  DOWN: 'arrow-down-regular',
+  LEFT: 'arrow-left-regular',
+  RIGHT: 'arrow-right-regular',
+} as const;
 
 const DEFAULTS = {
   TYPE_INTERNAL: DIVIDER_TYPE_INTERNAL.PRIMARY,
@@ -46,4 +53,5 @@ export {
   DIRECTIONS,
   BUTTON_TAG,
   TEXT_TAG,
+  ARROW_ICONS,
 };

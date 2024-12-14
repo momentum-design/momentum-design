@@ -78,14 +78,12 @@ const styles = [
     }
 
     :host([orientation='horizontal'][button-position='positive']),
-    :host([orientation='vertical'][button-position='negative']:dir(ltr)),
-    :host([orientation='vertical'][button-position='positive']:dir(rtl)) {
+    :host([orientation='vertical'][button-position='negative']) {
       align-items: end;
     }
 
     :host([orientation='horizontal'][button-position='negative']),
-    :host([orientation='vertical'][button-position='positive']:dir(ltr)),
-    :host([orientation='vertical'][button-position='negative']:dir(rtl)) {
+    :host([orientation='vertical'][button-position='positive']) {
       align-items: start;
     }
 
@@ -97,7 +95,12 @@ const styles = [
       border-bottom-color: transparent;
     }
 
-    :host([orientation='vertical'][button-position='negative']) ::slotted(mdc-button) {
+    :host([orientation='horizontal'][button-position='negative']) ::slotted(mdc-button) {
+      border-top-color: transparent;
+    }
+
+    :host([orientation='vertical'][button-position='negative']:dir(ltr)) ::slotted(mdc-button),
+    :host([orientation='vertical'][button-position='positive']:dir(rtl)) ::slotted(mdc-button) {
       border-radius: var(--mdc-divider-grabber-button-border-radius) 
         0 
         0 
@@ -105,11 +108,8 @@ const styles = [
       border-right-color: transparent;
     }
 
-    :host([orientation='horizontal'][button-position='negative']) ::slotted(mdc-button) {
-      border-top-color: transparent;
-    }
-
-    :host([orientation='vertical'][button-position='positive']) ::slotted(mdc-button) {
+    :host([orientation='vertical'][button-position='negative']:dir(rtl)) ::slotted(mdc-button),
+    :host([orientation='vertical'][button-position='positive']:dir(ltr)) ::slotted(mdc-button) {
       border-left-color: transparent;
     }
 

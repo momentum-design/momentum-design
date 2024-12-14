@@ -3,6 +3,7 @@ import { property, state } from 'lit/decorators.js';
 import styles from './divider.styles';
 import { Component } from '../../models';
 import {
+  ARROW_ICONS,
   BUTTON_TAG,
   DEFAULTS,
   DIRECTIONS,
@@ -11,7 +12,7 @@ import {
   DIVIDER_VARIANT,
   TEXT_TAG,
 } from './divider.constants';
-import { DividerOrientation, DividerTypeInternal, DividerVariant } from './divider.types';
+import { Directions, DividerOrientation, DividerTypeInternal, DividerVariant } from './divider.types';
 
 /**
  * `mdc-divider` is a component that provides a line to separate and organize content.
@@ -100,6 +101,41 @@ class Divider extends Component {
   @state()
   private dividerTypeInternal: DividerTypeInternal = DEFAULTS.TYPE_INTERNAL;
 
+  /** @internal */
+  @state()
+  private observer: MutationObserver;
+
+  /** @internal */
+  @state()
+  private windowDirection: string = 'ltr';
+
+  constructor() {
+    super();
+    this.observer = new MutationObserver(() => this.handleWindowDirectionChange());
+  }
+
+  private handleWindowDirectionChange() {
+    const currentDirection = getComputedStyle(this).direction;
+
+    if (this.windowDirection !== currentDirection) {
+      this.windowDirection = currentDirection;
+    }
+    this.setGrabberButton();
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+    this.observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['dir'],
+    });
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    this.observer.disconnect();
+  }
+
   /**
    * Sets the variant attribute for the divider component.
    * If the provided variant is not included in the DIVIDER_VARIANT,
@@ -126,6 +162,27 @@ class Divider extends Component {
   }
 
   /**
+   * Sets the buttonPosition and arrowDirection attribute for the divider component.
+   * If the provided buttonPosition and arrowDirection are not included in the DIRECTIONS,
+   * it defaults to the value specified in DIRECTIONS based on the ORIENTATION.
+   *
+   * @param buttonPosition - The buttonPosition to set.
+   * @param arrowDirection - The arrowDirection to set.
+   */
+  private ensureValidDirections() {
+    /* eslint-disable max-len */
+    const defaultDirection = this.orientation === DIVIDER_ORIENTATION.HORIZONTAL ? DIRECTIONS.NEGATIVE : DIRECTIONS.POSITIVE;
+
+    if (!Object.values(DIRECTIONS).includes(this.buttonPosition as Directions)) {
+      this.buttonPosition = defaultDirection;
+    }
+
+    if (!Object.values(DIRECTIONS).includes(this.arrowDirection as Directions)) {
+      this.arrowDirection = defaultDirection;
+    }
+  }
+
+  /**
    * Configures the grabber button within the divider.
    *
    * - Sets the `prefix-icon` attribute for the grabber button based
@@ -137,6 +194,7 @@ class Divider extends Component {
     const buttonElement = this.querySelector('mdc-button');
     if (!buttonElement) return;
 
+    this.ensureValidDirections();
     const iconType = this.getArrowIcon();
     buttonElement.setAttribute('variant', 'secondary');
     buttonElement.setAttribute('prefix-icon', iconType);
@@ -148,15 +206,19 @@ class Divider extends Component {
    * @returns The icon that represents the arrow direction.
    */
   private getArrowIcon(): string {
-    // set fallback class
-    let arrowIcon = this.orientation === DIVIDER_ORIENTATION.HORIZONTAL ? 'arrow-down-regular' : 'arrow-right-regular';
+    const isHorizontal = this.orientation === DIVIDER_ORIENTATION.HORIZONTAL;
+    const isPositive = this.arrowDirection === DIRECTIONS.POSITIVE;
+    const isRTL = this.windowDirection === 'rtl';
 
-    if (this.orientation === DIVIDER_ORIENTATION.HORIZONTAL) {
-      arrowIcon = this.arrowDirection === DIRECTIONS.POSITIVE ? 'arrow-up-regular' : 'arrow-down-regular';
-    } else {
-      arrowIcon = this.arrowDirection === DIRECTIONS.POSITIVE ? 'arrow-right-regular' : 'arrow-left-regular';
+    if (isHorizontal) {
+      return isPositive ? ARROW_ICONS.UP : ARROW_ICONS.DOWN;
     }
-    return arrowIcon;
+
+    if (isPositive) {
+      return isRTL ? ARROW_ICONS.LEFT : ARROW_ICONS.RIGHT;
+    }
+
+    return isRTL ? ARROW_ICONS.RIGHT : ARROW_ICONS.LEFT;
   }
 
   public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
