@@ -106,7 +106,8 @@ const testToRun = async (componentsPage: ComponentsPage) => {
     });
 
     await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-avatar');
+      const container = avatarStickerSheet.getWrapperContainer();
+      await componentsPage.visualRegression.takeScreenshot('mdc-avatar', { element: container });
     });
   });
 
@@ -166,6 +167,16 @@ const testToRun = async (componentsPage: ComponentsPage) => {
         presence: PRESENCE_TYPE.ACTIVE,
       });
       await expect(avatar).toHaveAttribute('presence', PRESENCE_TYPE.ACTIVE);
+    });
+
+    await test.step('should display loading indicator when isTyping is set', async () => {
+      await componentsPage.setAttributes(avatar, {
+        'is-typing': 'true',
+      });
+      const loadingIndicator = await componentsPage.page.locator('div.loading__wrapper');
+      await loadingIndicator.waitFor();
+      await expect(loadingIndicator).toBeDefined();
+      await expect(avatar).toHaveAttribute('is-typing', 'true');
     });
 
     await test.step('should only accept allowed size', async () => {

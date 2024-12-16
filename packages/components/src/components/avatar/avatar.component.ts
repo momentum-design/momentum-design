@@ -27,6 +27,8 @@ import { getAvatarIconSize, getAvatarTextFontSize } from './avatar.utils';
  *
  * The avatar component is non clickable and non interactive/focusable component.
  * If the avatar is typing, then the loading indicator will be displayed.
+ * If the counter type avatar is set to a negative number, then we will display 0.
+ * The presence indicator will be hidden when the counter property is set.
  *
  * @dependency mdc-icon
  * @dependency mdc-presence
