@@ -26,7 +26,7 @@ class Marker extends Component {
    * - **striped**: Striped marker.
    * @default solid
    */
-  @property({ type: String }) variant: MarkerVariants = MARKER_VARIANTS.SOLID;
+  @property({ type: String, reflect: true }) variant: MarkerVariants = MARKER_VARIANTS.SOLID;
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
