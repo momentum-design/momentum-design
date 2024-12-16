@@ -4,12 +4,6 @@ import { TAG_NAME as TEXT_TAG } from '../text/text.constants';
 
 const TAG_NAME = utils.constructTagName('divider');
 
-const DIVIDER_TYPE_INTERNAL = {
-  PRIMARY: 'primary',
-  TEXT: 'text',
-  GRABBER_BUTTON: 'grabber-button',
-} as const;
-
 const DIVIDER_ORIENTATION = {
   HORIZONTAL: 'horizontal',
   VERTICAL: 'vertical',
@@ -37,7 +31,6 @@ const ARROW_ICONS = {
 } as const;
 
 const DEFAULTS = {
-  TYPE_INTERNAL: DIVIDER_TYPE_INTERNAL.PRIMARY,
   ORIENTATION: DIVIDER_ORIENTATION.HORIZONTAL,
   VARIANT: DIVIDER_VARIANT.SOLID,
   ARROW_DIRECTION: DIRECTIONS.NEGATIVE,
@@ -47,7 +40,6 @@ const DEFAULTS = {
 export {
   TAG_NAME,
   DEFAULTS,
-  DIVIDER_TYPE_INTERNAL,
   DIVIDER_VARIANT,
   DIVIDER_ORIENTATION,
   DIRECTIONS,

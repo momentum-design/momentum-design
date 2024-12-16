@@ -8,11 +8,10 @@ import {
   DEFAULTS,
   DIRECTIONS,
   DIVIDER_ORIENTATION,
-  DIVIDER_TYPE_INTERNAL,
   DIVIDER_VARIANT,
   TEXT_TAG,
 } from './divider.constants';
-import { Directions, DividerOrientation, DividerTypeInternal, DividerVariant } from './divider.types';
+import { Directions, DividerOrientation, DividerVariant } from './divider.types';
 
 /**
  * `mdc-divider` is a component that provides a line to separate and organize content.
@@ -96,10 +95,6 @@ class Divider extends Component {
    */
   @property({ type: String, attribute: 'button-position', reflect: true })
   buttonPosition: string = DEFAULTS.BUTTON_DIRECTION;
-
-  /** @internal */
-  @state()
-  private dividerTypeInternal: DividerTypeInternal = DEFAULTS.TYPE_INTERNAL;
 
   /** @internal */
   @state()
@@ -225,10 +220,6 @@ class Divider extends Component {
   public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     super.update(changedProperties);
 
-    if (changedProperties.has('dividerTypeInternal')) {
-      this.setDataTypeBasedOnDividerType(this.dividerTypeInternal);
-    }
-
     if (changedProperties.has('orientation')) {
       this.setOrientation(this.orientation);
     }
@@ -237,28 +228,12 @@ class Divider extends Component {
       this.setVariant(this.variant);
     }
 
-    if (this.dividerTypeInternal === DIVIDER_TYPE_INTERNAL.GRABBER_BUTTON) {
-      if (
-        changedProperties.has('orientation')
+    if (
+      changedProperties.has('orientation')
         || changedProperties.has('arrowDirection')
         || changedProperties.has('buttonPosition')
-      ) {
-        this.setGrabberButton();
-      }
-    }
-  }
-
-  /**
-   * Sets the class of the Divider based on type.
-   * @param type - The type of the divider.
-   */
-  private setDataTypeBasedOnDividerType(type: string) {
-    if (type === DIVIDER_TYPE_INTERNAL.PRIMARY) {
-      this.setAttribute('data-type', 'mdc-primary-divider');
-    } else if (type === DIVIDER_TYPE_INTERNAL.TEXT) {
-      this.setAttribute('data-type', 'mdc-text-divider');
-    } else if (type === DIVIDER_TYPE_INTERNAL.GRABBER_BUTTON) {
-      this.setAttribute('data-type', 'mdc-grabber-divider');
+    ) {
+      this.setGrabberButton();
     }
   }
 
@@ -267,7 +242,7 @@ class Divider extends Component {
    * @param slot - default slot of divider
    */
   private inferDividerType() {
-    this.dividerTypeInternal = DIVIDER_TYPE_INTERNAL.PRIMARY;
+    this.setAttribute('data-type', 'mdc-primary-divider');
 
     const slot = this.shadowRoot?.querySelector('slot');
     const assignedElements = slot?.assignedElements({ flatten: true }) || [];
@@ -277,9 +252,9 @@ class Divider extends Component {
     const hasButtonChild = assignedElements.some((el) => el.tagName === BUTTON_TAG.toUpperCase());
 
     if (hasTextChild && !hasButtonChild) {
-      this.dividerTypeInternal = DIVIDER_TYPE_INTERNAL.TEXT;
+      this.setAttribute('data-type', 'mdc-text-divider');
     } else if (!hasTextChild && hasButtonChild) {
-      this.dividerTypeInternal = DIVIDER_TYPE_INTERNAL.GRABBER_BUTTON;
+      this.setAttribute('data-type', 'mdc-grabber-divider');
       this.setGrabberButton();
     }
   }
