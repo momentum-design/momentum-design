@@ -125,7 +125,8 @@ export const textDivider: StoryObj = {
     orientation: {
       control: 'radio',
       options: [DIVIDER_ORIENTATION.HORIZONTAL],
-      description: 'Only horizontal orientation with 0.0625rem width is allowed',
+      description: `Only horizontal orientation with 0.0625rem width is allowed. 
+      We do not support "Vertical Text Divider" as of now.`,
     },
     ...hideControls(['arrow-direction', 'button-position']),
   },

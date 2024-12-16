@@ -170,8 +170,9 @@ class Divider extends Component {
    * @param arrowDirection - The arrowDirection to set.
    */
   private ensureValidDirections() {
-    /* eslint-disable max-len */
-    const defaultDirection = this.orientation === DIVIDER_ORIENTATION.HORIZONTAL ? DIRECTIONS.NEGATIVE : DIRECTIONS.POSITIVE;
+    const defaultDirection = this.orientation === DIVIDER_ORIENTATION.HORIZONTAL
+      ? DIRECTIONS.NEGATIVE
+      : DIRECTIONS.POSITIVE;
 
     if (!Object.values(DIRECTIONS).includes(this.buttonPosition as Directions)) {
       this.buttonPosition = defaultDirection;
