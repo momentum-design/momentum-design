@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
+import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { MARKER_VARIANTS } from './marker.constants';
 import type { MarkerVariants } from './marker.types';
 
@@ -43,13 +44,6 @@ const testToRun = async (componentsPage: ComponentsPage) => {
   const marker = await setup({ componentsPage });
 
   /**
-   * ACCESSIBILITY
-   */
-  await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('marker-default');
-  });
-
-  /**
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
@@ -64,12 +58,21 @@ const testToRun = async (componentsPage: ComponentsPage) => {
   });
 
   /**
+   * ACCESSIBILITY
+   */
+  await test.step('accessibility', async () => {
+    await componentsPage.accessibility.checkForA11yViolations('marker-default');
+  });
+
+  /**
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
-    const visualMarker = await visualTestingSetup({ componentsPage });
+    const stickerSheet = new StickerSheet(componentsPage, 'mdc-marker');
+    await stickerSheet.mountComponents({ variants: MARKER_VARIANTS });
+    const container = stickerSheet.getWrapperContainer();
     await test.step('matches screenshot of different variants', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-marker', { element: visualMarker });
+      await componentsPage.visualRegression.takeScreenshot('mdc-marker-variants', { element: container });
     });
   });
 };
