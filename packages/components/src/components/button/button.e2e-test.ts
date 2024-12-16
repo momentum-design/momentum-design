@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
-import { expect, Locator } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { BUTTON_COLORS, BUTTON_VARIANTS, DEFAULTS, ICON_BUTTON_SIZES, PILL_BUTTON_SIZES } from './button.constants';
@@ -73,152 +73,165 @@ const setup = async (args: SetupOptions) => {
   return allButtons[0];
 };
 
-const commonTestCases = async (args: SetupOptions, buttonType: string) => {
-  const { componentsPage, ...props } = args;
-  const button = await setup({
-    componentsPage,
-    ...props,
-  });
-
-  // Default values for button
-  await test.step(`attributes for ${buttonType} should be present on component by default`, async () => {
-    await expect(button).toHaveAttribute('variant', DEFAULTS.VARIANT);
-    await expect(button).toHaveAttribute('size', DEFAULTS.SIZE.toString());
-    await expect(button).toHaveAttribute('color', DEFAULTS.COLOR);
-  });
-
-  await test.step('should fallback to default values when invalid attributes are passed', async () => {
-    await componentsPage.setAttributes(button, {
-      variant: 'invalid',
-      color: 'invalid',
-      size: 'invalid',
-    });
-    await expect(button).toHaveAttribute('variant', DEFAULTS.VARIANT);
-    await expect(button).toHaveAttribute('size', `${DEFAULTS.SIZE}`);
-    await expect(button).toHaveAttribute('color', DEFAULTS.COLOR);
-  });
-};
-
 /**
  * ATTRIBUTES
  */
 const attributeTestCases = async (args: SetupOptions, buttonType: string) => {
-  const { componentsPage, ...props } = args;
-  const button = await setup({
-    componentsPage,
-    ...props,
+  await test.step('default and invalid attributes for button', async () => {
+    const { componentsPage, ...props } = args;
+    const button = await setup({
+      componentsPage,
+      ...props,
+    });
+
+    // Default values for button
+    await test.step(`attributes for ${buttonType} should be present on component by default`, async () => {
+      await expect(button).toHaveAttribute('variant', DEFAULTS.VARIANT);
+      await expect(button).toHaveAttribute('size', DEFAULTS.SIZE.toString());
+      await expect(button).toHaveAttribute('color', DEFAULTS.COLOR);
+    });
+
+    await test.step('should fallback to default values when invalid attributes are passed', async () => {
+      await componentsPage.setAttributes(button, {
+        variant: 'invalid',
+        color: 'invalid',
+        size: 'invalid',
+      });
+      await expect(button).toHaveAttribute('variant', DEFAULTS.VARIANT);
+      await expect(button).toHaveAttribute('size', `${DEFAULTS.SIZE}`);
+      await expect(button).toHaveAttribute('color', DEFAULTS.COLOR);
+    });
   });
 
-  // Disabled button
-  await test.step(`attribute disabled should be present on ${buttonType} button`, async () => {
-    await componentsPage.setAttributes(button, {
-      disabled: '',
+  await test.step('attributes for button', async () => {
+    const { componentsPage, ...props } = args;
+    const button = await setup({
+      componentsPage,
+      ...props,
     });
-    await expect(button).toHaveAttribute('disabled');
-    await componentsPage.removeAttribute(button, 'disabled');
-  });
 
-  // Soft Disabled button
-  await test.step(`attribute soft-disabled should be present on ${buttonType} button`, async () => {
-    await componentsPage.setAttributes(button, {
-      'soft-disabled': '',
+    // Disabled button
+    await test.step(`attribute disabled should be present on ${buttonType} button`, async () => {
+      await componentsPage.setAttributes(button, {
+        disabled: '',
+      });
+      await expect(button).toHaveAttribute('disabled');
+      await componentsPage.removeAttribute(button, 'disabled');
     });
-    await expect(button).toHaveAttribute('soft-disabled');
-    await componentsPage.removeAttribute(button, 'soft-disabled');
-  });
 
-  // Active button
-  await test.step(`attribute active should be present on ${buttonType} button`, async () => {
-    await componentsPage.setAttributes(button, {
-      active: '',
+    // Soft Disabled button
+    await test.step(`attribute soft-disabled should be present on ${buttonType} button`, async () => {
+      await componentsPage.setAttributes(button, {
+        'soft-disabled': '',
+      });
+      await expect(button).toHaveAttribute('soft-disabled');
+      await componentsPage.removeAttribute(button, 'soft-disabled');
     });
-    await expect(button).toHaveAttribute('active');
-    await componentsPage.removeAttribute(button, 'active');
-  });
 
-  // Active Disabled button
-  await test.step(`attribute active and disabled should be present on ${buttonType} button`, async () => {
-    await componentsPage.setAttributes(button, {
-      disabled: '',
-      active: '',
+    // Active button
+    await test.step(`attribute active should be present on ${buttonType} button`, async () => {
+      await componentsPage.setAttributes(button, {
+        active: '',
+      });
+      await expect(button).toHaveAttribute('active');
+      await componentsPage.removeAttribute(button, 'active');
     });
-    await expect(button).toHaveAttribute('disabled');
-    await expect(button).toHaveAttribute('active');
-    await componentsPage.removeAttribute(button, 'disabled');
-    await componentsPage.removeAttribute(button, 'active');
-  });
 
-  // Active Soft Disabled button
-  await test.step(`attribute active and soft-disabled should be present on ${buttonType} button`, async () => {
-    await componentsPage.setAttributes(button, {
-      'soft-disabled': '',
-      active: '',
+    // Active Disabled button
+    await test.step(`attribute active and disabled should be present on ${buttonType} button`, async () => {
+      await componentsPage.setAttributes(button, {
+        disabled: '',
+        active: '',
+      });
+      await expect(button).toHaveAttribute('disabled');
+      await expect(button).toHaveAttribute('active');
+      await componentsPage.removeAttribute(button, 'disabled');
+      await componentsPage.removeAttribute(button, 'active');
     });
-    await expect(button).toHaveAttribute('soft-disabled');
-    await expect(button).toHaveAttribute('active');
-    await componentsPage.removeAttribute(button, 'soft-disabled');
-    await componentsPage.removeAttribute(button, 'active');
+
+    // Active Soft Disabled button
+    await test.step(`attribute active and soft-disabled should be present on ${buttonType} button`, async () => {
+      await componentsPage.setAttributes(button, {
+        'soft-disabled': '',
+        active: '',
+      });
+      await expect(button).toHaveAttribute('soft-disabled');
+      await expect(button).toHaveAttribute('active');
+      await componentsPage.removeAttribute(button, 'soft-disabled');
+      await componentsPage.removeAttribute(button, 'active');
+    });
   });
 };
 
-const testForCombinations = async (args: SetupOptions, buttonType: string) => {
-  await commonTestCases(args, buttonType);
-  await attributeTestCases(args, buttonType);
+const testForButtonSizes = async (args: SetupOptions, buttonType: string) => {
+  await test.step('attribute size for icon button', async () => {
+    const { componentsPage, ...props } = args;
+    const button = await setup({
+      componentsPage,
+      ...props,
+    });
 
-  const { componentsPage, ...props } = args;
-  const button = await setup({
-    componentsPage,
-    ...props,
-  });
-
-  for (const variant of Object.values(BUTTON_VARIANTS)) {
-    for (const size of Object.values(PILL_BUTTON_SIZES)) {
-      for (const color of Object.values(BUTTON_COLORS)) {
-        if (variant !== BUTTON_VARIANTS.TERTIARY) {
-          await test.step(`attribute variant="${variant}",
-                    color="${color}", size="${size}" should be present on ${buttonType} button`, async () => {
-            await componentsPage.setAttributes(button, { variant, color, size: `${size}` });
-            await expect(button).toHaveAttribute('variant', variant);
-            await expect(button).toHaveAttribute('color', color);
+    if (buttonType === 'icon') {
+      for (const size of Object.values(ICON_BUTTON_SIZES)) {
+        if (size !== ICON_BUTTON_SIZES[20]) {
+          await test.step(`attribute size="${size}" should be present on ${buttonType} button`, async () => {
+            await componentsPage.setAttributes(button, { size: `${size}`, 'aria-label': 'icon-button-20' });
             await expect(button).toHaveAttribute('size', `${size}`);
           });
         }
       }
+
+      await test.step('attribute size="20" should be present on tertiary prefix-icon button', async () => {
+        await componentsPage.setAttributes(button, {
+          size: `${ICON_BUTTON_SIZES[20]}`,
+          variant: BUTTON_VARIANTS.TERTIARY,
+          'aria-label': 'icon-button-20',
+        });
+        await expect(button).toHaveAttribute('size', `${ICON_BUTTON_SIZES[20]}`);
+      });
+    } else {
+      for (const size of Object.values(PILL_BUTTON_SIZES)) {
+        await test.step(`attribute size="${size}" should be present on ${buttonType} button`, async () => {
+          await componentsPage.setAttributes(button, { size: `${size}` });
+          await expect(button).toHaveAttribute('size', `${size}`);
+        });
+      }
     }
-  }
+  });
 };
 
-const testForIconButtonSizes = async (args: SetupOptions, buttonType: string) => {
-  const { componentsPage, ...props } = args;
-  const button = await setup({
-    componentsPage,
-    ...props,
-  });
+const testForCombinations = async (args: SetupOptions, buttonType: string) => {
+  await attributeTestCases(args, buttonType);
 
-  for (const size of Object.values(ICON_BUTTON_SIZES)) {
-    if (size !== ICON_BUTTON_SIZES[20]) {
-      await test.step(`attribute size="${size}" should be present on ${buttonType} button`, async () => {
-        await componentsPage.setAttributes(button, { size: `${size}`, 'aria-label': 'icon-button-20' });
-        await expect(button).toHaveAttribute('size', `${size}`);
+  await test.step('attribute combination for variant and color', async () => {
+    const { componentsPage, ...props } = args;
+    const button = await setup({
+      componentsPage,
+      ...props,
+    });
+
+    for (const color of Object.values(BUTTON_COLORS)) {
+      await test.step(`attribute color="${color}" should be present on ${buttonType} button`, async () => {
+        await componentsPage.setAttributes(button, { color });
+        await expect(button).toHaveAttribute('color', color);
       });
     }
-  }
 
-  await test.step('attribute size="20" should be present on tertiary prefix-icon button', async () => {
-    await componentsPage.setAttributes(button, {
-      size: `${ICON_BUTTON_SIZES[20]}`,
-      variant: BUTTON_VARIANTS.TERTIARY,
-      'aria-label': 'icon-button-20',
-    });
-    await expect(button).toHaveAttribute('size', `${ICON_BUTTON_SIZES[20]}`);
+    for (const variant of Object.values(BUTTON_VARIANTS)) {
+      await test.step(`attribute variant="${variant}" should be present on ${buttonType} button`, async () => {
+        await componentsPage.setAttributes(button, { variant });
+        await expect(button).toHaveAttribute('variant', variant);
+      });
+    }
   });
+  await testForButtonSizes(args, buttonType);
 };
 
 const getStickerSheetDetails = async (componentsPage: ComponentsPage) => {
   const buttonSheet = new StickerSheet(componentsPage, 'mdc-button');
   const commonMount = async (iconButton = false) => {
     const size = iconButton ? { ...PILL_BUTTON_SIZES, 52: 52, 64: 64 } : PILL_BUTTON_SIZES;
-    await buttonSheet.mountComponents({
+    await buttonSheet.createMarkupWithCombination({
       variant: { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY },
       size,
       color: BUTTON_COLORS,
@@ -232,39 +245,43 @@ test.describe.parallel('mdc-button', () => {
 
   test('mdc-button pill button', async ({ componentsPage }) => {
     await testForCombinations({ children: 'Pill Button', componentsPage }, 'pill');
+    await test.step('snapshot of pill button', async () => {
+      const { buttonSheet, commonMount } = await getStickerSheetDetails(componentsPage);
+      // default
+      buttonSheet.setChildren('Pill Button');
+      await commonMount();
+      // tertiary
+      buttonSheet.setAttributes({ variant: BUTTON_VARIANTS.TERTIARY });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES });
+      // disabled
+      buttonSheet.setAttributes({ disabled: '' });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+      // 'soft-disabled'
+      buttonSheet.setAttributes({ 'soft-disabled': '' });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+      // active
+      buttonSheet.setAttributes({ active: '' });
+      const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
+      await buttonSheet
+        .createMarkupWithCombination({ size: PILL_BUTTON_SIZES, variant: subVariants, color: BUTTON_COLORS });
+      // tertiary active
+      buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES });
+      // active disabled
+      buttonSheet.setAttributes({ active: '', disabled: '' });
+      await buttonSheet.createMarkupWithCombination({ variant: BUTTON_VARIANTS });
+      // active 'soft-disabled'
+      buttonSheet.setAttributes({ active: '', 'soft-disabled': '' });
+      await buttonSheet.createMarkupWithCombination({ variant: BUTTON_VARIANTS });
+      await buttonSheet.mountStickerSheet();
 
-    const { buttonSheet, commonMount } = await getStickerSheetDetails(componentsPage);
-    // default
-    buttonSheet.setChildren('Pill Button');
-    await commonMount();
-    // tertiary
-    buttonSheet.setAttributes({ variant: BUTTON_VARIANTS.TERTIARY });
-    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES });
-    // disabled
-    buttonSheet.setAttributes({ disabled: '' });
-    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
-    // 'soft-disabled'
-    buttonSheet.setAttributes({ 'soft-disabled': '' });
-    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
-    // active
-    buttonSheet.setAttributes({ active: '' });
-    const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
-    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: subVariants, color: BUTTON_COLORS });
-    // tertiary active
-    buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY });
-    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES });
-    // active disabled
-    buttonSheet.setAttributes({ active: '', disabled: '' });
-    await buttonSheet.mountComponents({ variant: BUTTON_VARIANTS });
-    // active 'soft-disabled'
-    buttonSheet.setAttributes({ active: '', 'soft-disabled': '' });
-    await buttonSheet.mountComponents({ variant: BUTTON_VARIANTS });
-
-    await test.step('matches screenshot of pill-button element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-button-pill', {
-        element: buttonSheet.getWrapperContainer(),
+      await test.step('matches screenshot of pill-button element', async () => {
+        await componentsPage.visualRegression.takeScreenshot('mdc-button-pill', {
+          element: buttonSheet.getWrapperContainer(),
+        });
       });
     });
+
     await test.step('accessibility for pill button', async () => {
       await componentsPage.accessibility.checkForA11yViolations('mdc-button-pill');
     });
@@ -275,58 +292,52 @@ test.describe.parallel('mdc-button', () => {
       { prefixIcon: 'placeholder-light', children: 'Pill with prefix', componentsPage },
       'pill-with-prefix-icon',
     );
+    await test.step('snapshot of pill with prefix icon button', async () => {
+      const { buttonSheet, commonMount } = await getStickerSheetDetails(componentsPage);
+      // default
+      buttonSheet.setChildren('Pill with prefix');
+      buttonSheet.setAttributes({
+        'prefix-icon': 'placeholder-light',
+      });
+      await commonMount();
+      // tertiary
+      buttonSheet.setAttributes({
+        variant: BUTTON_VARIANTS.TERTIARY,
+        'prefix-icon': 'placeholder-light',
+      });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES });
+      // disabled
+      buttonSheet.setAttributes({ disabled: '', 'prefix-icon': 'placeholder-light' });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+      // 'soft-disabled'
+      buttonSheet.setAttributes({
+        'soft-disabled': '',
+        'prefix-icon': 'placeholder-light',
+      });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+      // active
+      buttonSheet.setAttributes({ active: '', 'prefix-icon': 'placeholder-light' });
+      const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
+      await buttonSheet
+        .createMarkupWithCombination({ size: PILL_BUTTON_SIZES, variant: subVariants, color: BUTTON_COLORS });
+      // tertiary active
+      buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY, 'prefix-icon': 'placeholder-light' });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES });
+      // active disabled
+      buttonSheet.setAttributes({ active: '', disabled: '', 'prefix-icon': 'placeholder-light' });
+      await buttonSheet.createMarkupWithCombination({ variant: BUTTON_VARIANTS });
+      // active 'soft-disabled'
+      buttonSheet.setAttributes({ active: '', 'soft-disabled': '', 'prefix-icon': 'placeholder-light' });
+      await buttonSheet.createMarkupWithCombination({ variant: BUTTON_VARIANTS });
+      await buttonSheet.mountStickerSheet();
 
-    const { buttonSheet, commonMount } = await getStickerSheetDetails(componentsPage);
-    // default
-    buttonSheet.setChildren('Pill with prefix');
-    buttonSheet.setAttributes({
-      'prefix-icon': 'placeholder-light',
-    });
-    buttonSheet.setAssertion(async (component: Locator) => {
-      const svg = component.locator('mdc-icon[part=\'prefix-icon\'] svg[part=\'icon\']');
-      await svg.waitFor();
-      await expect(svg).toHaveAttribute('data-name', 'placeholder-light');
-    });
-    await commonMount();
-    // tertiary
-    buttonSheet.setAttributes({
-      variant: BUTTON_VARIANTS.TERTIARY,
-      'prefix-icon': 'placeholder-light',
-    });
-    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES });
-    // disabled
-    buttonSheet.setAttributes({ disabled: '', 'prefix-icon': 'placeholder-light' });
-    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
-    // 'soft-disabled'
-    buttonSheet.setAttributes({
-      'soft-disabled': '',
-      'prefix-icon': 'placeholder-light',
-    });
-    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
-    // active
-    buttonSheet.setAttributes({ active: '', 'prefix-icon': 'placeholder-light' });
-    const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
-    buttonSheet.setAssertion(async (component: Locator) => {
-      const svg = component.locator('mdc-icon[part=\'prefix-icon\'] svg[part=\'icon\']');
-      await svg.waitFor();
-      await expect(svg).toHaveAttribute('data-name', 'placeholder-filled');
-    });
-    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: subVariants, color: BUTTON_COLORS });
-    // tertiary active
-    buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY, 'prefix-icon': 'placeholder-light' });
-    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES });
-    // active disabled
-    buttonSheet.setAttributes({ active: '', disabled: '', 'prefix-icon': 'placeholder-light' });
-    await buttonSheet.mountComponents({ variant: BUTTON_VARIANTS });
-    // active 'soft-disabled'
-    buttonSheet.setAttributes({ active: '', 'soft-disabled': '', 'prefix-icon': 'placeholder-light' });
-    await buttonSheet.mountComponents({ variant: BUTTON_VARIANTS });
-
-    await test.step('matches screenshot of pill-with-prefix-icon-button element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-button-pill-with-prefix-icon', {
-        element: buttonSheet.getWrapperContainer(),
+      await test.step('matches screenshot of pill-with-prefix-icon-button element', async () => {
+        await componentsPage.visualRegression.takeScreenshot('mdc-button-pill-with-prefix-icon', {
+          element: buttonSheet.getWrapperContainer(),
+        });
       });
     });
+
     await test.step('accessibility for pill with prefix icon button', async () => {
       await componentsPage.accessibility.checkForA11yViolations('mdc-button-pill-with-prefix-icon');
     });
@@ -337,58 +348,52 @@ test.describe.parallel('mdc-button', () => {
       { postfixIcon: 'placeholder-light', children: 'Pill with postfix', componentsPage },
       'pill-with-postfix-icon',
     );
+    await test.step('snapshot of pill with postfix icon button', async () => {
+      const { buttonSheet, commonMount } = await getStickerSheetDetails(componentsPage);
+      // default
+      buttonSheet.setChildren('Pill with postfix');
+      buttonSheet.setAttributes({
+        'postfix-icon': 'placeholder-light',
+      });
+      await commonMount();
+      // tertiary
+      buttonSheet.setAttributes({
+        variant: BUTTON_VARIANTS.TERTIARY,
+        'postfix-icon': 'placeholder-light',
+      });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES });
+      // disabled
+      buttonSheet.setAttributes({ disabled: '', 'postfix-icon': 'placeholder-light' });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+      // 'soft-disabled'
+      buttonSheet.setAttributes({
+        'soft-disabled': '',
+        'postfix-icon': 'placeholder-light',
+      });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+      // active
+      buttonSheet.setAttributes({ active: '', 'postfix-icon': 'placeholder-light' });
+      const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
+      await buttonSheet
+        .createMarkupWithCombination({ size: PILL_BUTTON_SIZES, variant: subVariants, color: BUTTON_COLORS });
+      // tertiary active
+      buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY, 'postfix-icon': 'placeholder-light' });
+      await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES });
+      // active disabled
+      buttonSheet.setAttributes({ active: '', disabled: '', 'postfix-icon': 'placeholder-light' });
+      await buttonSheet.createMarkupWithCombination({ variant: BUTTON_VARIANTS });
+      // active 'soft-disabled'
+      buttonSheet.setAttributes({ active: '', 'soft-disabled': '', 'postfix-icon': 'placeholder-light' });
+      await buttonSheet.createMarkupWithCombination({ variant: BUTTON_VARIANTS });
+      await buttonSheet.mountStickerSheet();
 
-    const { buttonSheet, commonMount } = await getStickerSheetDetails(componentsPage);
-    // default
-    buttonSheet.setChildren('Pill with postfix');
-    buttonSheet.setAttributes({
-      'postfix-icon': 'placeholder-light',
-    });
-    buttonSheet.setAssertion(async (component: Locator) => {
-      const svg = component.locator('mdc-icon[part=\'postfix-icon\'] svg[part=\'icon\']');
-      await svg.waitFor();
-      await expect(svg).toHaveAttribute('data-name', 'placeholder-light');
-    });
-    await commonMount();
-    // tertiary
-    buttonSheet.setAttributes({
-      variant: BUTTON_VARIANTS.TERTIARY,
-      'postfix-icon': 'placeholder-light',
-    });
-    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES });
-    // disabled
-    buttonSheet.setAttributes({ disabled: '', 'postfix-icon': 'placeholder-light' });
-    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
-    // 'soft-disabled'
-    buttonSheet.setAttributes({
-      'soft-disabled': '',
-      'postfix-icon': 'placeholder-light',
-    });
-    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
-    // active
-    buttonSheet.setAttributes({ active: '', 'postfix-icon': 'placeholder-light' });
-    const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
-    buttonSheet.setAssertion(async (component: Locator) => {
-      const svg = component.locator('mdc-icon[part=\'postfix-icon\'] svg[part=\'icon\']');
-      await svg.waitFor();
-      await expect(svg).toHaveAttribute('data-name', 'placeholder-filled');
-    });
-    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES, variant: subVariants, color: BUTTON_COLORS });
-    // tertiary active
-    buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY, 'postfix-icon': 'placeholder-light' });
-    await buttonSheet.mountComponents({ size: PILL_BUTTON_SIZES });
-    // active disabled
-    buttonSheet.setAttributes({ active: '', disabled: '', 'postfix-icon': 'placeholder-light' });
-    await buttonSheet.mountComponents({ variant: BUTTON_VARIANTS });
-    // active 'soft-disabled'
-    buttonSheet.setAttributes({ active: '', 'soft-disabled': '', 'postfix-icon': 'placeholder-light' });
-    await buttonSheet.mountComponents({ variant: BUTTON_VARIANTS });
-
-    await test.step('matches screenshot of pill-with-postfix-icon-button element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-button-pill-with-postfix-icon', {
-        element: buttonSheet.getWrapperContainer(),
+      await test.step('matches screenshot of pill-with-postfix-icon-button element', async () => {
+        await componentsPage.visualRegression.takeScreenshot('mdc-button-pill-with-postfix-icon', {
+          element: buttonSheet.getWrapperContainer(),
+        });
       });
     });
+
     await test.step('accessibility for pill with postfix icon button', async () => {
       await componentsPage.accessibility.checkForA11yViolations('mdc-button-pill-with-postfix-icon');
     });
@@ -397,70 +402,63 @@ test.describe.parallel('mdc-button', () => {
   test('mdc-button icon button', async ({ componentsPage }) => {
     const prefixIcon = 'placeholder-bold';
     await testForCombinations({ prefixIcon, componentsPage }, 'icon');
-    await testForIconButtonSizes({ prefixIcon, componentsPage }, 'icon');
+    await test.step('snapshot of icon button', async () => {
+      const { buttonSheet, commonMount } = await getStickerSheetDetails(componentsPage);
+      const BUTTON_SIZES = { ...PILL_BUTTON_SIZES, 52: 52, 64: 64 };
+      // default
+      buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light', 'aria-label': 'icon-button' });
+      await commonMount(true);
+      // tertiary
+      buttonSheet.setAttributes({
+        'prefix-icon': 'placeholder-light',
+        variant: BUTTON_VARIANTS.TERTIARY,
+        'aria-label': 'icon-button',
+      });
+      await buttonSheet.createMarkupWithCombination({ size: ICON_BUTTON_SIZES });
+      // disabled
+      buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light', disabled: '', 'aria-label': 'icon-button' });
+      await buttonSheet.createMarkupWithCombination({ size: BUTTON_SIZES, variant: BUTTON_VARIANTS });
+      // 'soft-disabled'
+      buttonSheet
+        .setAttributes({ 'prefix-icon': 'placeholder-light', 'soft-disabled': '', 'aria-label': 'icon-button' });
+      await buttonSheet.createMarkupWithCombination({ size: BUTTON_SIZES, variant: BUTTON_VARIANTS });
+      // active
+      buttonSheet.setAttributes({ active: '', 'prefix-icon': 'placeholder-light', 'aria-label': 'icon-button' });
+      const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
+      await buttonSheet.createMarkupWithCombination({ size: BUTTON_SIZES, variant: subVariants, color: BUTTON_COLORS });
+      // tertiary active
+      buttonSheet.setAttributes({
+        active: '',
+        variant: BUTTON_VARIANTS.TERTIARY,
+        'prefix-icon': 'placeholder-light',
+        'aria-label': 'icon-button',
+      });
+      await buttonSheet.createMarkupWithCombination({ size: ICON_BUTTON_SIZES });
+      // active disabled
+      buttonSheet.setAttributes({
+        active: '',
+        disabled: '',
+        'prefix-icon': 'placeholder-light',
+        'aria-label': 'icon-button',
+      });
+      await buttonSheet.createMarkupWithCombination({ variant: BUTTON_VARIANTS });
+      // active 'soft-disabled'
+      buttonSheet.setAttributes({
+        active: '',
+        'soft-disabled': '',
+        'prefix-icon': 'placeholder-light',
+        'aria-label': 'icon-button',
+      });
+      await buttonSheet.createMarkupWithCombination({ variant: BUTTON_VARIANTS });
+      await buttonSheet.mountStickerSheet();
 
-    const { buttonSheet, commonMount } = await getStickerSheetDetails(componentsPage);
-    const BUTTON_SIZES = { ...PILL_BUTTON_SIZES, 52: 52, 64: 64 };
-    // default
-    buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light', 'aria-label': 'icon-button' });
-    buttonSheet.setAssertion(async (component: Locator) => {
-      const svg = component.locator('mdc-icon[part=\'prefix-icon\'] svg[part=\'icon\']');
-      await svg.waitFor();
-      await expect(svg).toHaveAttribute('data-name', 'placeholder-light');
-    });
-    await commonMount(true);
-    // tertiary
-    buttonSheet.setAttributes({
-      'prefix-icon': 'placeholder-light',
-      variant: BUTTON_VARIANTS.TERTIARY,
-      'aria-label': 'icon-button',
-    });
-    await buttonSheet.mountComponents({ size: ICON_BUTTON_SIZES });
-    // disabled
-    buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light', disabled: '', 'aria-label': 'icon-button' });
-    await buttonSheet.mountComponents({ size: BUTTON_SIZES, variant: BUTTON_VARIANTS });
-    // 'soft-disabled'
-    buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light', 'soft-disabled': '', 'aria-label': 'icon-button' });
-    await buttonSheet.mountComponents({ size: BUTTON_SIZES, variant: BUTTON_VARIANTS });
-    // active
-    buttonSheet.setAttributes({ active: '', 'prefix-icon': 'placeholder-light', 'aria-label': 'icon-button' });
-    const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
-    buttonSheet.setAssertion(async (component: Locator) => {
-      const svg = component.locator('mdc-icon[part=\'prefix-icon\'] svg[part=\'icon\']');
-      await svg.waitFor();
-      await expect(svg).toHaveAttribute('data-name', 'placeholder-filled');
-    });
-    await buttonSheet.mountComponents({ size: BUTTON_SIZES, variant: subVariants, color: BUTTON_COLORS });
-    // tertiary active
-    buttonSheet.setAttributes({
-      active: '',
-      variant: BUTTON_VARIANTS.TERTIARY,
-      'prefix-icon': 'placeholder-light',
-      'aria-label': 'icon-button',
-    });
-    await buttonSheet.mountComponents({ size: ICON_BUTTON_SIZES });
-    // active disabled
-    buttonSheet.setAttributes({
-      active: '',
-      disabled: '',
-      'prefix-icon': 'placeholder-light',
-      'aria-label': 'icon-button',
-    });
-    await buttonSheet.mountComponents({ variant: BUTTON_VARIANTS });
-    // active 'soft-disabled'
-    buttonSheet.setAttributes({
-      active: '',
-      'soft-disabled': '',
-      'prefix-icon': 'placeholder-light',
-      'aria-label': 'icon-button',
-    });
-    await buttonSheet.mountComponents({ variant: BUTTON_VARIANTS });
-
-    await test.step('matches screenshot of icon-button element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-button-icon', {
-        element: buttonSheet.getWrapperContainer(),
+      await test.step('matches screenshot of icon-button element', async () => {
+        await componentsPage.visualRegression.takeScreenshot('mdc-button-icon', {
+          element: buttonSheet.getWrapperContainer(),
+        });
       });
     });
+
     await test.step('accessibility for pill with prefix icon button', async () => {
       await componentsPage.accessibility.checkForA11yViolations('mdc-button-icon');
     });
