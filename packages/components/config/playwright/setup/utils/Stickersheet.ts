@@ -188,7 +188,7 @@ class StickerSheet {
   }
 
   /**
-   * Adds a new component to the sheet with specified attributes.
+   * Creates a new row wrapper in the component sheet and appends the children to it.
    */
   private createComponentsMarkupHTML(childrenEl?: string, createNewRow = false) {
     if (createNewRow) {
@@ -199,6 +199,10 @@ class StickerSheet {
     this.rowId += 1;
   }
 
+  /**
+   * Creates a new element with the specified attributes.
+   * @returns A string representing the new element.
+   */
   private addComponentToSheetV2() {
     const attributesString = this.getAttributesAsString();
     const childrenEl = this.children
@@ -258,6 +262,9 @@ class StickerSheet {
     }
   }
 
+  /**
+   * Mounts the sticker sheet markup onto the page.
+   */
   public async mountStickerSheet() {
     await this.componentPage.mount({
       html: `<div class="componentWrapper">${this.markupHTML}</div>`,
