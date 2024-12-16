@@ -3,7 +3,7 @@
 import { Locator } from '@playwright/test';
 import type { ComponentsPage } from '..';
 
-type AttributesType = Record<string, string>;
+type AttributesType = Record<string, any>;
 type AssertionType = (component?: Locator, attributes?: AttributesType) => Promise<any>;
 
 class StickerSheet {
@@ -133,18 +133,23 @@ class StickerSheet {
    * Mounts components onto the page using specified combinations of attributes.
    * @param combinations - An object where keys are attribute names and
    * values are objects containing possible attribute configurations.
+   * @param createNewRow - A boolean (optional) indicating whether to create a new row for each combination.
+   * Its default value is false.
    * @throws Will throw an error if tagname is not defined.
    */
 
-  public async mountComponents(combinations: Record<string, Record<string, any>>) {
+  public async mountComponents(combinations: Record<string, Record<string, any>>, createNewRow = false) {
     if (!this.tagname) {
       throw new Error('tagname is required');
     }
 
-    await this.componentPage.mount({
-      html: '<div class="componentWrapper"></div>',
-      clearDocument: false,
-    });
+    const componentWrapper = await this.getWrapperContainer().isVisible();
+    if (!componentWrapper) {
+      await this.componentPage.mount({
+        html: '<div class="componentWrapper"></div>',
+        clearDocument: false,
+      });
+    }
 
     if (Object.keys(combinations).length === 0) {
       await this.addComponentToSheet();
@@ -156,11 +161,16 @@ class StickerSheet {
 
     const allCombinations = this.generateCombinations(keys, values);
 
+    if (!Array.isArray(allCombinations[0]) && !createNewRow) {
+      await this.createRowWrapper();
+    }
     for (const combination of allCombinations) {
       if (Array.isArray(combination)) {
         await this.createWrapperForCombination(combination);
       } else {
-        await this.createRowWrapper();
+        if (createNewRow) {
+          await this.createRowWrapper();
+        }
         this.setAttributes({ ...this.attributes, ...combination });
         await this.addComponentToSheet();
       }

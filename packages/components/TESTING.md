@@ -125,6 +125,15 @@ To update Visual Regression snapshots, follow the steps below to run E2E testing
      yarn components test:e2e:docker:update-snapshot XXX.e2e-test.ts # update snapshots
    ```
 
+8. To update snapshots for a **single** E2E Test in **specific** browser, run:
+
+   ```bash
+     yarn components test:e2e:docker:update-snapshot:chrome XXX.e2e-test.ts # run only on chrome with update snapshots
+     yarn components test:e2e:docker:update-snapshot:firefox XXX.e2e-test.ts # run only on firefox with update snapshots
+     yarn components test:e2e:docker:update-snapshot:webkit XXX.e2e-test.ts # run only on webkit with update snapshots
+     yarn components test:e2e:docker:update-snapshot:msedge XXX.e2e-test.ts # run only on msedge with update snapshots
+   ```
+
 #### Testing method
 
 ```bash
