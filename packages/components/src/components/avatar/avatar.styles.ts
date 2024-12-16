@@ -117,6 +117,13 @@ const styles = [hostFitContentStyles, css`
       background: var(--mdc-avatar-loading-indicator-foreground-color);
     }
   }
+
+  /* High Contrast Mode */
+  @media (forced-colors: active) {
+    .content:not(.photo) {
+      outline: 0.125rem solid;
+    }
+  }
 `];
 
 export default styles;
