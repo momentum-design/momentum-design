@@ -22,24 +22,6 @@ const setup = async (args: SetupOptions) => {
   return marker;
 };
 
-const visualTestingSetup = async (args: SetupOptions) => {
-  const { componentsPage } = args;
-
-  await componentsPage.mount({
-    html: `
-      <div class="componentWrapper componentRowWrapper">
-        <mdc-marker variant="${MARKER_VARIANTS.SOLID}"></mdc-marker>
-        <mdc-marker variant="${MARKER_VARIANTS.STRIPED}"></mdc-marker>
-      </div>
-    `,
-    clearDocument: true,
-  });
-
-  const markersContainer = componentsPage.page.locator('.componentRowWrapper');
-  await markersContainer.waitFor();
-  return markersContainer;
-};
-
 const testToRun = async (componentsPage: ComponentsPage) => {
   const marker = await setup({ componentsPage });
 
