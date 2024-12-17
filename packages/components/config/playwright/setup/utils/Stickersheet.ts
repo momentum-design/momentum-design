@@ -21,6 +21,8 @@ class StickerSheet {
 
   private rowId: number = 1;
 
+  private markupHTML: string = '';
+
   constructor(componentPage: ComponentsPage, tagName: string, assertion?: AssertionType) {
     this.componentPage = componentPage;
     this.tagname = tagName;
@@ -183,6 +185,92 @@ class StickerSheet {
    */
   public getWrapperContainer() {
     return this.componentPage.page.locator('.componentWrapper');
+  }
+
+  /**
+   * Creates a new row wrapper in the component sheet and appends the children to it.
+   */
+  private createComponentsMarkupHTML(childrenEl?: string, createNewRow = false) {
+    if (createNewRow) {
+      this.markupHTML += `<div class="componentRowWrapper">${childrenEl}</div>`;
+    } else {
+      this.markupHTML += childrenEl;
+    }
+    this.rowId += 1;
+  }
+
+  /**
+   * Creates a new element with the specified attributes.
+   * @returns A string representing the new element.
+   */
+  private addComponentToSheetV2() {
+    const attributesString = this.getAttributesAsString();
+    const childrenEl = this.children
+      ? `<${this.tagname} id='${this.tagname}-${this.rowId}' ${attributesString}>${this.children}</${this.tagname}>`
+      : `<${this.tagname} id='${this.tagname}-${this.rowId}' ${attributesString}></${this.tagname}>`;
+
+    return childrenEl;
+  }
+
+  /**
+   * Creates a wrapper for a combination of components and adds them to the sheet.
+   * @param combinationArr - An array of objects representing combinations of attributes for components.
+   */
+  private createWrapperForCombinationV2(combinationArr: Array<Record<string, any>>) {
+    let childrenEl = '';
+    for (const combination of combinationArr) {
+      if (Array.isArray(combination)) {
+        this.createWrapperForCombinationV2(combination);
+      } else {
+        this.setAttributes({ ...this.attributes, ...combination });
+        childrenEl += this.addComponentToSheetV2();
+      }
+    }
+    this.createComponentsMarkupHTML(childrenEl, true);
+  }
+
+  public async createMarkupWithCombination(combinations: Record<string, Record<string, any>>, createNewRow = false) {
+    if (!this.tagname) {
+      throw new Error('tagname is required');
+    }
+
+    if (Object.keys(combinations).length === 0) {
+      this.createComponentsMarkupHTML(this.addComponentToSheetV2());
+      return;
+    }
+
+    const keys = Object.keys(combinations);
+    const values = Object.values(combinations).map(Object.values);
+
+    const allCombinations = this.generateCombinations(keys, values);
+
+    let childrenEl = '';
+    for (const combination of allCombinations) {
+      if (Array.isArray(combination)) {
+        await this.createWrapperForCombinationV2(combination);
+      } else {
+        if (createNewRow) {
+          this.createComponentsMarkupHTML(this.addComponentToSheetV2(), true);
+        }
+        this.setAttributes({ ...this.attributes, ...combination });
+        childrenEl += this.addComponentToSheetV2();
+      }
+    }
+
+    if (!Array.isArray(allCombinations[0]) && !createNewRow) {
+      this.createComponentsMarkupHTML(childrenEl, true);
+    }
+  }
+
+  /**
+   * Mounts the sticker sheet markup onto the page.
+   */
+  public async mountStickerSheet() {
+    await this.componentPage.mount({
+      html: `<div class="componentWrapper">${this.markupHTML}</div>`,
+      clearDocument: true,
+    });
+    await this.componentPage.page.waitForTimeout(1000);
   }
 }
 

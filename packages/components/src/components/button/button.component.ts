@@ -209,7 +209,6 @@ class Button extends Component {
     }
     if (changedProperties.has('typeInternal')) {
       this.setSize(this.size);
-      this.setClassBasedOnType(this.typeInternal);
     }
     if (changedProperties.has('prefixIcon') || changedProperties.has('postfixIcon')) {
       this.inferButtonType();
@@ -251,18 +250,6 @@ class Button extends Component {
       if (this.prevPostfixIcon) {
         this.postfixIcon = this.prevPostfixIcon;
       }
-    }
-  }
-
-  /**
-   * Sets the class of 'icon' for icon buttons.
-   * @param type - The type of the button.
-   */
-  private setClassBasedOnType(type: string) {
-    if (type === BUTTON_TYPE_INTERNAL.ICON) {
-      this.classList.add('mdc-icon-button');
-    } else {
-      this.classList.remove('mdc-icon-button');
     }
   }
 
@@ -310,16 +297,16 @@ class Button extends Component {
   }
 
   /**
-   * Sets or removes the aria-pressed attribute based on the active state.
+   * Sets the aria-pressed attribute based on the active state.
    *
    * @param element - The target element.
    * @param active - The active state.
    */
   private setAriaPressed(element: HTMLElement, active: boolean) {
     if (active) {
-      element.setAttribute('aria-pressed', '');
+      element.setAttribute('aria-pressed', 'true');
     } else {
-      element.removeAttribute('aria-pressed');
+      element.setAttribute('aria-pressed', 'false');
     }
   }
 
@@ -333,9 +320,9 @@ class Button extends Component {
    */
   private setSoftDisabled(element: HTMLElement, softDisabled: boolean) {
     if (softDisabled) {
-      element.setAttribute('aria-disabled', '');
+      element.setAttribute('aria-disabled', 'true');
     } else {
-      element.removeAttribute('aria-disabled');
+      element.setAttribute('aria-disabled', 'false');
     }
   }
 
@@ -350,7 +337,7 @@ class Button extends Component {
    */
   private setDisabled(element: HTMLElement, disabled: boolean) {
     if (disabled) {
-      element.setAttribute('aria-disabled', '');
+      element.setAttribute('aria-disabled', 'true');
       this.prevTabindex = this.tabIndex;
       this.tabIndex = -1;
     } else {
@@ -409,10 +396,13 @@ class Button extends Component {
     const slot = this.shadowRoot?.querySelector('slot')?.assignedNodes().length;
     if (slot && (this.prefixIcon || this.postfixIcon)) {
       this.typeInternal = BUTTON_TYPE_INTERNAL.PILL_WITH_ICON;
+      this.setAttribute('data-btn-type', 'pill-with-icon');
     } else if (!slot && (this.prefixIcon || this.postfixIcon)) {
       this.typeInternal = BUTTON_TYPE_INTERNAL.ICON;
+      this.setAttribute('data-btn-type', 'icon');
     } else {
       this.typeInternal = BUTTON_TYPE_INTERNAL.PILL;
+      this.setAttribute('data-btn-type', 'pill');
     }
   }
 
