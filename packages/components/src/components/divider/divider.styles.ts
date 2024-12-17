@@ -63,18 +63,18 @@ const styles = [
       width: 1.25rem;
       height: 2.5rem;
       border-radius: 0 
-        var(--mdc-divider-grabber-button-border-radius) 
-        var(--mdc-divider-grabber-button-border-radius) 
-        0;
+          var(--mdc-divider-grabber-button-border-radius) 
+          var(--mdc-divider-grabber-button-border-radius) 
+          0;
     }
 
     :host([orientation='horizontal']) ::slotted(mdc-button) {
       height: 1.25rem;
       width: 2.5rem;
       border-radius: 0 
-        0 
-        var(--mdc-divider-grabber-button-border-radius) 
-        var(--mdc-divider-grabber-button-border-radius);
+          0 
+          var(--mdc-divider-grabber-button-border-radius) 
+          var(--mdc-divider-grabber-button-border-radius);
     }
 
     :host([orientation='horizontal'][button-position='positive']),
@@ -89,9 +89,9 @@ const styles = [
 
     :host([orientation='horizontal'][button-position='positive']) ::slotted(mdc-button) {
       border-radius: var(--mdc-divider-grabber-button-border-radius) 
-        var(--mdc-divider-grabber-button-border-radius) 
-        0 
-        0;
+          var(--mdc-divider-grabber-button-border-radius) 
+          0 
+          0;
       border-bottom-color: transparent;
     }
 
@@ -99,30 +99,29 @@ const styles = [
       border-top-color: transparent;
     }
 
-    :host([orientation='vertical'][button-position='negative']:dir(ltr)) ::slotted(mdc-button){
+    :host([orientation='vertical'][button-position='negative']:dir(ltr)) ::slotted(mdc-button),
+    :host([orientation='vertical'][button-position='negative']:dir(rtl)) ::slotted(mdc-button) {
       border-radius: var(--mdc-divider-grabber-button-border-radius) 
-        0 
-        0 
-        var(--mdc-divider-grabber-button-border-radius);
+          0 
+          0 
+          var(--mdc-divider-grabber-button-border-radius);
       border-right-color: transparent;
     }
-    :host([orientation='vertical'][button-position='positive']:dir(ltr)) ::slotted(mdc-button) {
-    border-left-color: transparent;
+
+    :host([orientation='vertical'][button-position='positive']:dir(ltr)) ::slotted(mdc-button),
+    :host([orientation='vertical'][button-position='positive']:dir(rtl)) ::slotted(mdc-button) {
+      border-left-color: transparent;
     }
+
     :host([orientation='vertical'][button-position='positive']:dir(rtl)) ::slotted(mdc-button) {
       border-radius: 0 
-        var(--mdc-divider-grabber-button-border-radius) 
-        var(--mdc-divider-grabber-button-border-radius)
-        0 ;
-      border-left-color: transparent;
+          var(--mdc-divider-grabber-button-border-radius) 
+          var(--mdc-divider-grabber-button-border-radius) 
+          0;
       transform: rotate(180deg);
     }
-    :host([orientation='vertical'][button-position='negative']:dir(rtl)) ::slotted(mdc-button){
-        border-radius: var(--mdc-divider-grabber-button-border-radius) 
-        0 
-        0 
-        var(--mdc-divider-grabber-button-border-radius);
-      border-right-color: transparent;
+
+    :host([orientation='vertical'][button-position='negative']:dir(rtl)) ::slotted(mdc-button) {
       transform: rotate(180deg);
     }
 
