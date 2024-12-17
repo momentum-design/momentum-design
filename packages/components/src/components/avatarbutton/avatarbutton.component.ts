@@ -6,19 +6,19 @@ import { DEFAULTS as AVATAR_DEFAULTS } from '../avatar/avatar.constants';
 import type { AvatarSize } from '../avatar/avatar.types';
 import Button from '../button/button.component';
 import { DEFAULTS as BUTTON_DEFAULTS } from '../button/button.constants';
-import styles from './buttonavatar.styles';
+import styles from './avatarbutton.styles';
 
 /**
- * The `mdc-buttonavatar` component is an interactable version of the `mdc-avatar` component.
+ * The `mdc-avatarbutton` component is an interactable version of the `mdc-avatar` component.
  *
  * This component is made using the `mdc-button` component.
  * The button component acts as a wrapper for the avatar component.
  *
  * @dependency mdc-avatar
  *
- * @tagname mdc-buttonavatar
+ * @tagname mdc-avatarbutton
  */
-class ButtonAvatar extends AvatarComponentMixin(Button) {
+class AvatarButton extends AvatarComponentMixin(Button) {
   /**
    * Acceptable values include:
    * - xx_small
@@ -65,4 +65,4 @@ class ButtonAvatar extends AvatarComponentMixin(Button) {
   public static override styles: Array<CSSResult> = [...styles];
 }
 
-export default ButtonAvatar;
+export default AvatarButton;

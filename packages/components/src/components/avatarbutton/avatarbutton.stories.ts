@@ -7,7 +7,7 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { hideControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
-  <mdc-buttonavatar
+  <mdc-avatarbutton
     counter="${ifDefined(args.counter)}"
     icon-name="${ifDefined(args['icon-name'])}"
     initials="${ifDefined(args.initials)}"
@@ -15,13 +15,13 @@ const render = (args: Args) => html`
     size="${ifDefined(args.size)}"
     src="${ifDefined(args.src)}"
     ?is-typing="${args['is-typing']}"
-  ></mdc-buttonavatar>
+  ></mdc-avatarbutton>
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/buttonavatar',
+  title: 'Work In Progress/avatarbutton',
   tags: ['autodocs'],
-  component: 'mdc-buttonavatar',
+  component: 'mdc-avatarbutton',
   render,
   parameters: {
     badges: ['wip'],

@@ -3,22 +3,22 @@ import { test } from '../../../config/playwright/setup';
 test.beforeEach(async ({ componentsPage }) => {
   await componentsPage.mount({
     html: `
-        <mdc-buttonavatar />
+        <mdc-avatarbutton />
       `,
   });
 });
 
-test.fixme('mdc-buttonavatar', async ({ componentsPage }) => {
-  const buttonavatar = componentsPage.page.locator('mdc-buttonavatar');
+test.fixme('mdc-avatarbutton', async ({ componentsPage }) => {
+  const avatarbutton = componentsPage.page.locator('mdc-avatarbutton');
 
-  // initial check for the buttonavatar be visible on the screen:
-  await buttonavatar.waitFor();
+  // initial check for the avatarbutton be visible on the screen:
+  await avatarbutton.waitFor();
 
   /**
    * ACCESSIBILITY
    */
   await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('buttonavatar-default');
+    await componentsPage.accessibility.checkForA11yViolations('avatarbutton-default');
   });
 
   /**
@@ -26,7 +26,7 @@ test.fixme('mdc-buttonavatar', async ({ componentsPage }) => {
    */
   await test.step('visual-regression', async () => {
     await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-buttonavatar', { element: buttonavatar });
+      await componentsPage.visualRegression.takeScreenshot('mdc-avatarbutton', { element: avatarbutton });
     });
   });
 
