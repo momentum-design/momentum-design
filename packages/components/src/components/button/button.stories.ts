@@ -21,12 +21,12 @@ const render = (args: Args) => html`
   >${args.children}</mdc-button>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/button',
+  title: 'Components/button',
   tags: ['autodocs'],
   component: 'mdc-button',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     children: {
