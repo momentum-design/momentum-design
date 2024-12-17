@@ -21,7 +21,7 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Complete/avatar',
+  title: 'Components/avatar',
   tags: ['autodocs'],
   component: 'mdc-avatar',
   render,
