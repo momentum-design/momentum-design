@@ -1,11 +1,11 @@
 import { CSSResult, html, nothing } from 'lit';
 import type { PropertyValues, TemplateResult } from 'lit';
-import { state } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
 import { AVATAR_TYPE, DEFAULTS, MAX_COUNTER } from './avatar.constants';
 import styles from './avatar.styles';
-import type { AvatarType } from './avatar.types';
+import type { AvatarSize, AvatarType } from './avatar.types';
 import { getAvatarIconSize, getAvatarTextFontSize } from './avatar.utils';
 import { AvatarComponentMixin } from '../../utils/mixins/AvatarComponentMixin';
 
@@ -45,6 +45,21 @@ import { AvatarComponentMixin } from '../../utils/mixins/AvatarComponentMixin';
  *  Allows customization of the loading overlay background color.
  */
 class Avatar extends AvatarComponentMixin(Component) {
+  /**
+   * Acceptable values include:
+   * - xx_small
+   * - x_small
+   * - small
+   * - midsize
+   * - large
+   * - x_large
+   * - xx_large
+   *
+   * @default x_small
+   */
+  @property({ type: String, reflect: true })
+  override size: AvatarSize = DEFAULTS.SIZE;
+
   /**
    * @internal
    */

@@ -1,7 +1,9 @@
 import { CSSResult, html, PropertyValueMap } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import styles from './button.styles';
 import { Component } from '../../models';
+import type { AvatarSize } from '../avatar/avatar.types';
+import type { IconNames } from '../icon/icon.types';
+import { SIZE as AVATAR_SIZES } from '../presence/presence.constants';
 import {
   BUTTON_COLORS,
   BUTTON_TYPE_INTERNAL,
@@ -10,18 +12,16 @@ import {
   ICON_BUTTON_SIZES,
   PILL_BUTTON_SIZES,
 } from './button.constants';
-import { SIZE as AVATAR_SIZES } from '../presence/presence.constants';
+import styles from './button.styles';
 import type {
   ButtonColor,
   ButtonType,
-  ButtonVariant,
-  PillButtonSize,
-  IconButtonSize,
   ButtonTypeInternal,
+  ButtonVariant,
+  IconButtonSize,
+  PillButtonSize,
 } from './button.types';
 import { getIconNameWithoutStyle, getIconSize } from './button.utils';
-import type { IconNames } from '../icon/icon.types';
-import { AvatarSize } from '../avatar/avatar.types';
 
 /**
  * `mdc-button` is a component that can be configured in various ways to suit different use cases.

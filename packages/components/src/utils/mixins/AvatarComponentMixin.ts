@@ -1,8 +1,6 @@
 import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
 import type { PresenceType } from '../../components/presence/presence.types';
-import type { AvatarSize } from '../../components/avatar/avatar.types';
-import { DEFAULTS } from '../../components/avatar/avatar.constants';
 import type { IconNames } from '../../components/icon/icon.types';
 
 type Constructor<T = {}> = new (...args: any[]) => T;
@@ -56,21 +54,6 @@ export const AvatarComponentMixin = <T extends Constructor<Component>>(
      */
     @property({ type: String })
     presence?: PresenceType;
-
-    /**
-     * Acceptable values include:
-     * - xx_small
-     * - x_small
-     * - small
-     * - midsize
-     * - large
-     * - x_large
-     * - xx_large
-     *
-     * @default x_small
-     */
-    @property({ type: String, reflect: true })
-    size: AvatarSize = DEFAULTS.SIZE;
 
     /**
      * Name of the icon to be displayed inside the Avatar.

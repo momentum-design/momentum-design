@@ -1,11 +1,12 @@
 import { CSSResult, html } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
-import styles from './buttonavatar.styles';
-import Button from '../button/button.component';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { AvatarComponentMixin } from '../../utils/mixins/AvatarComponentMixin';
-import { AvatarSize } from '../avatar/avatar.types';
-import { DEFAULTS } from '../avatar/avatar.constants';
+import { DEFAULTS as AVATAR_DEFAULTS } from '../avatar/avatar.constants';
+import type { AvatarSize } from '../avatar/avatar.types';
+import Button from '../button/button.component';
+import { DEFAULTS as BUTTON_DEFAULTS } from '../button/button.constants';
+import styles from './buttonavatar.styles';
 
 /**
  * The `mdc-buttonavatar` component is an interactable version of the `mdc-avatar` component.
@@ -13,7 +14,7 @@ import { DEFAULTS } from '../avatar/avatar.constants';
  * This component is made using the `mdc-button` component.
  * The button component acts as a wrapper for the avatar component.
  *
- * @dependecy mdc-avatar
+ * @dependency mdc-avatar
  *
  * @tagname mdc-buttonavatar
  */
@@ -31,14 +32,10 @@ class ButtonAvatar extends AvatarComponentMixin(Button) {
    * @default x_small
    */
   @property({ type: String, reflect: true })
-  override size: AvatarSize = DEFAULTS.SIZE;
+  override size: AvatarSize = AVATAR_DEFAULTS.SIZE;
 
   constructor() {
     super();
-    this.unsetButtonUnusedProps();
-  }
-
-  private unsetButtonUnusedProps() {
     this.active = undefined;
     this.color = undefined;
     this.disabled = undefined;
@@ -46,25 +43,26 @@ class ButtonAvatar extends AvatarComponentMixin(Button) {
     this.prefixIcon = undefined;
     this.softDisabled = undefined;
     this.variant = undefined;
+    this.role = 'button';
+    this.type = BUTTON_DEFAULTS.TYPE;
   }
 
   public override render() {
-    const { src, initials, size, presence, iconName, counter, isTyping } = this;
     return html`
       <mdc-avatar
         slot="prefixIcon"
-        src="${ifDefined(src)}"
-        initials="${ifDefined(initials)}"
-        presence="${ifDefined(presence)}"
-        size="${ifDefined(size)}"
-        icon-name="${ifDefined(iconName)}"
-        counter="${ifDefined(counter)}"
-        ?is-typing="${isTyping}"
+        src="${ifDefined(this.src)}"
+        initials="${ifDefined(this.initials)}"
+        presence="${ifDefined(this.presence)}"
+        size="${ifDefined(this.size)}"
+        icon-name="${ifDefined(this.iconName)}"
+        counter="${ifDefined(this.counter)}"
+        ?is-typing="${this.isTyping}"
       ></mdc-avatar>
     `;
   }
 
-  public static override styles: Array<CSSResult> = [...Button.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...styles];
 }
 
 export default ButtonAvatar;

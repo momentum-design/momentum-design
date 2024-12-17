@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { TYPE as PRESENCE_TYPE, SIZE as PRESENCE_SIZE } from '../presence/presence.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
   <mdc-buttonavatar
@@ -50,10 +50,18 @@ const meta: Meta = {
     counter: {
       control: 'number',
     },
-    ...disableControls([
-      'disabled',
+    ...hideControls([
       'active',
+      'color',
+      'disabled',
       'soft-disabled',
+      'postfix-icon',
+      'prefix-icon',
+      'role',
+      'softDisabled',
+      'tabIndex',
+      'type',
+      'variant',
     ]),
     ...classArgType,
     ...styleArgType,
