@@ -88,7 +88,7 @@ class StickerSheet {
    * Creates a new element with the specified attributes.
    * @returns A string representing the new element.
    */
-  private addComponentToSheetV2() {
+  private addComponentToSheet() {
     const attributesString = this.getAttributesAsString();
     const childrenEl = this.children
       ? `<${this.tagname} id='${this.tagname}-${this.rowId}' ${attributesString}>${this.children}</${this.tagname}>`
@@ -101,14 +101,14 @@ class StickerSheet {
    * Creates a wrapper for a combination of components and adds them to the sheet.
    * @param combinationArr - An array of objects representing combinations of attributes for components.
    */
-  private createWrapperForCombinationV2(combinationArr: Array<Record<string, any>>) {
+  private createWrapperForCombination(combinationArr: Array<Record<string, any>>) {
     let childrenEl = '';
     for (const combination of combinationArr) {
       if (Array.isArray(combination)) {
-        this.createWrapperForCombinationV2(combination);
+        this.createWrapperForCombination(combination);
       } else {
         this.setAttributes({ ...this.attributes, ...combination });
-        childrenEl += this.addComponentToSheetV2();
+        childrenEl += this.addComponentToSheet();
       }
     }
     this.createComponentsMarkupHTML(childrenEl, true);
@@ -120,7 +120,7 @@ class StickerSheet {
     }
 
     if (Object.keys(combinations).length === 0) {
-      this.createComponentsMarkupHTML(this.addComponentToSheetV2());
+      this.createComponentsMarkupHTML(this.addComponentToSheet());
       return;
     }
 
@@ -132,13 +132,13 @@ class StickerSheet {
     let childrenEl = '';
     for (const combination of allCombinations) {
       if (Array.isArray(combination)) {
-        this.createWrapperForCombinationV2(combination);
+        this.createWrapperForCombination(combination);
       } else if (createNewRow) {
         this.setAttributes({ ...this.attributes, ...combination });
-        this.createComponentsMarkupHTML(this.addComponentToSheetV2(), true);
+        this.createComponentsMarkupHTML(this.addComponentToSheet(), true);
       } else {
         this.setAttributes({ ...this.attributes, ...combination });
-        childrenEl += this.addComponentToSheetV2();
+        childrenEl += this.addComponentToSheet();
       }
     }
 
