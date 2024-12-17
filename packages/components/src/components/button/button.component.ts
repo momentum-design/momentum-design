@@ -1,9 +1,7 @@
 import { CSSResult, html, PropertyValueMap } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { Component } from '../../models';
-import type { AvatarSize } from '../avatar/avatar.types';
 import type { IconNames } from '../icon/icon.types';
-import { SIZE as AVATAR_SIZES } from '../presence/presence.constants';
 import {
   BUTTON_COLORS,
   BUTTON_TYPE_INTERNAL,
@@ -62,14 +60,14 @@ class Button extends Component {
    * Conversely, when the active state is false, the button is in an inactive state, indicating it is toggled off.
    * @default false
    */
-  @property({ type: Boolean }) active? = false;
+  @property({ type: Boolean }) active = false;
 
   /**
    * Indicates whether the button is disabled.
    * The button is currently disabled for user interaction; it is not focusable or clickable.
    * @default false
    */
-  @property({ type: Boolean }) disabled? = false;
+  @property({ type: Boolean }) disabled = false;
 
   /**
    * Indicates whether the button is soft disabled.
@@ -81,7 +79,7 @@ class Button extends Component {
    * preventing any interactions (clicks or keyboard actions) from triggering unintended actions.
    * @default false
    */
-  @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled? = false;
+  @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled = false;
 
   /**
    * The name of the icon to display as a prefix.
@@ -102,7 +100,7 @@ class Button extends Component {
    * - **Tertiary**: No background or border, appears as plain text but retains all button functionalities.
    * @default primary
    */
-  @property({ type: String }) variant?: ButtonVariant = DEFAULTS.VARIANT;
+  @property({ type: String }) variant: ButtonVariant = DEFAULTS.VARIANT;
 
   /**
    * Button sizing is based on the button type.
@@ -111,13 +109,13 @@ class Button extends Component {
    * - Tertiary icon button cam also be 20.
    * @default 32
    */
-  @property({ type: Number }) size: PillButtonSize | IconButtonSize | AvatarSize = DEFAULTS.SIZE;
+  @property({ type: Number }) size: any = DEFAULTS.SIZE;
 
   /**
    * There are 5 colors for button: positive, negative, accent, promotional, default.
    * @default default
    */
-  @property({ type: String }) color?: ButtonColor = DEFAULTS.COLOR;
+  @property({ type: String }) color: ButtonColor = DEFAULTS.COLOR;
 
   /**
    * The tabindex of the button.
@@ -262,10 +260,8 @@ class Button extends Component {
    *
    * @param variant - The variant to set.
    */
-  private setVariant(variant?: ButtonVariant) {
-    if (variant) {
-      this.setAttribute('variant', Object.values(BUTTON_VARIANTS).includes(variant) ? variant : DEFAULTS.VARIANT);
-    }
+  private setVariant(variant: ButtonVariant) {
+    this.setAttribute('variant', Object.values(BUTTON_VARIANTS).includes(variant) ? variant : DEFAULTS.VARIANT);
   }
 
   /**
@@ -275,10 +271,7 @@ class Button extends Component {
    *
    * @param size - The size to set.
    */
-  private setSize(size: PillButtonSize | IconButtonSize | AvatarSize) {
-    if (Object.values(AVATAR_SIZES).includes(size as AvatarSize)) {
-      return;
-    }
+  protected setSize(size: PillButtonSize | IconButtonSize) {
     const isIconType = this.typeInternal === BUTTON_TYPE_INTERNAL.ICON;
     const isValidSize = isIconType
       ? (Object.values(ICON_BUTTON_SIZES).includes(size as PillButtonSize | IconButtonSize)
@@ -295,13 +288,11 @@ class Button extends Component {
    *
    * @param color - The color to set.
    */
-  private setColor(color?: ButtonColor) {
-    if (color) {
-      if (!Object.values(BUTTON_COLORS).includes(color) || this.variant === BUTTON_VARIANTS.TERTIARY) {
-        this.setAttribute('color', `${DEFAULTS.COLOR}`);
-      } else {
-        this.setAttribute('color', color);
-      }
+  private setColor(color: ButtonColor) {
+    if (!Object.values(BUTTON_COLORS).includes(color) || this.variant === BUTTON_VARIANTS.TERTIARY) {
+      this.setAttribute('color', `${DEFAULTS.COLOR}`);
+    } else {
+      this.setAttribute('color', color);
     }
   }
 
@@ -311,7 +302,7 @@ class Button extends Component {
    * @param element - The target element.
    * @param active - The active state.
    */
-  private setAriaPressed(element: HTMLElement, active?: boolean) {
+  private setAriaPressed(element: HTMLElement, active: boolean) {
     if (active) {
       element.setAttribute('aria-pressed', 'true');
     } else {
@@ -344,7 +335,7 @@ class Button extends Component {
    * @param element - The button element.
    * @param disabled - The disabled state.
    */
-  private setDisabled(element: HTMLElement, disabled?: boolean) {
+  private setDisabled(element: HTMLElement, disabled: boolean) {
     if (disabled) {
       element.setAttribute('aria-disabled', 'true');
       this.prevTabindex = this.tabIndex;
