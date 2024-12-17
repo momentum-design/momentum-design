@@ -210,7 +210,105 @@ The type attribute specifies the behavior of the button when it is clicked.
  * @tagname mdc-button
  *
  * @slot - Text label of the button.
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Button",module:"components/button/button.component.js"}}]},{kind:"javascript-module",path:"components/icon/icon.component.js",declarations:[{kind:"class",description:`Icon component that dynamically displays SVG icons based on a valid name.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Button",module:"components/button/button.component.js"}}]},{kind:"javascript-module",path:"components/divider/divider.component.js",declarations:[{kind:"class",description:`\`mdc-divider\` is a component that provides a line to separate and organize content.
+It can also include a button or text positioned centrally, allowing users to interact with the layout.
+
+**Divider Orientation:**
+- **Horizontal**: A thin, horizontal line.
+- **Vertical**: A thin, vertical line.
+
+**Divider Variants:**
+- **solid**: Solid line.
+- **gradient**: Gradient Line.
+
+**Divider Types:**
+- The type of divider is inferred based on the kind of slot present.
+ - **Primary**: A simple horizontal or vertical divider.
+ - **Text**: A horizontal divider with a text label in the center.
+ - **Grabber Button**: A horizontal or vertical divider with a styled button in the center.
+
+**Accessibility:**
+- When the slot is replaced by an \`mdc-button\`:
+  - \`aria-label\` should be passed to the \`mdc-button\`.
+  - \`aria-expanded\` should be passed to the \`mdc-button\`.
+
+**Notes:**
+- If the slot is replaced by an invalid tag name or contains multiple elements,
+  the divider defaults to the **Primary** type.
+- To override the styles of the divider, use the provided CSS custom properties.`,name:"Divider",cssProperties:[{description:"background color of the divider",name:"--mdc-divider-background-color"},{description:"width of the divider",name:"--mdc-divider-width"},{description:"gradient of the horizontal divider",name:"--mdc-divider-horizontal-gradient"},{description:"gradient of the vertical divider",name:"--mdc-divider-vertical-gradient"},{description:"font size of label in the text divider",name:"--mdc-divider-text-size"},{description:"font color of label in the text divider",name:"--mdc-divider-text-color"},{description:"left and right margin of label in the text divider",name:"--mdc-divider-text-margin"},{description:"line height of label in the text divider",name:"--mdc-divider-text-line-height"},{description:"border radius of the grabber button",name:"--mdc-divider-grabber-button-border-radius"}],members:[{kind:"field",name:"orientation",type:{text:"DividerOrientation"},description:`Two orientations of divider
+- **horizontal**: A thin, horizontal line with 0.0625rem width.
+- **vertical**: A thin, vertical line with 0.0625rem width.
+
+Note: We do not support "Vertical Text Divider" as of now.`,default:"horizontal",attribute:"orientation",reflects:!0},{kind:"field",name:"variant",type:{text:"DividerVariant"},description:`Two variants of divider
+- **solid**: Solid line.
+- **gradient**: Gradient Line that fades on either sides of the divider.`,default:"solid",attribute:"variant",reflects:!0},{kind:"field",name:"arrowDirection",type:{text:"string"},description:`Direction of the arrow icon, if applicable.
+- **positive**
+- **negative**
+
+Note: Positive and Negative directions are defined based on Cartesian plane.`,default:"'negative'",attribute:"arrow-direction",reflects:!0},{kind:"field",name:"buttonPosition",type:{text:"string"},description:`Position of the button, if applicable.
+- **positive**
+- **negative**
+
+Note: Positive and Negative directions are defined based on Cartesian plane.`,default:"'negative'",attribute:"button-position",reflects:!0},{kind:"method",name:"setVariant",privacy:"private",parameters:[{name:"variant",type:{text:"DividerVariant"},description:"The variant to set."}],description:`Sets the variant attribute for the divider component.
+If the provided variant is not included in the DIVIDER_VARIANT,
+it defaults to the value specified in DEFAULTS.VARIANT.`},{kind:"method",name:"setOrientation",privacy:"private",parameters:[{name:"orientation",type:{text:"DividerOrientation"},description:"The orientation to set."}],description:`Sets the orientation attribute for the divider component.
+If the provided orientation is not included in the DIVIDER_ORIENTATION,
+it defaults to the value specified in DEFAULTS.ORIENTATION.`},{kind:"method",name:"ensureValidDirections",privacy:"private",description:`Sets the buttonPosition and arrowDirection attribute for the divider component.
+If the provided buttonPosition and arrowDirection are not included in the DIRECTIONS,
+it defaults to the value specified in DIRECTIONS based on the ORIENTATION.`,parameters:[{description:"The buttonPosition to set.",name:"buttonPosition"},{description:"The arrowDirection to set.",name:"arrowDirection"}]},{kind:"method",name:"setGrabberButton",privacy:"private",return:{type:{text:"void"}},description:"Configures the grabber button within the divider.\n\n- Sets the `prefix-icon` attribute for the grabber button based\non the `arrow-direction` and `orientation` properties.\n\nThis method updates the DOM element dynamically if a grabber button is present."},{kind:"method",name:"getArrowIcon",privacy:"private",return:{type:{text:""}},description:"Determines the arrow icon based on the consumer-defined `arrowDirection`."},{kind:"method",name:"inferDividerType",privacy:"private",description:"Infers the type of divider based on the kind of slot present.",parameters:[{description:"default slot of divider",name:"slot"}]}],attributes:[{name:"orientation",type:{text:"DividerOrientation"},description:`Two orientations of divider
+- **horizontal**: A thin, horizontal line with 0.0625rem width.
+- **vertical**: A thin, vertical line with 0.0625rem width.
+
+Note: We do not support "Vertical Text Divider" as of now.`,default:"horizontal",fieldName:"orientation"},{name:"variant",type:{text:"DividerVariant"},description:`Two variants of divider
+- **solid**: Solid line.
+- **gradient**: Gradient Line that fades on either sides of the divider.`,default:"solid",fieldName:"variant"},{name:"arrow-direction",type:{text:"string"},description:`Direction of the arrow icon, if applicable.
+- **positive**
+- **negative**
+
+Note: Positive and Negative directions are defined based on Cartesian plane.`,default:"'negative'",fieldName:"arrowDirection"},{name:"button-position",type:{text:"string"},description:`Position of the button, if applicable.
+- **positive**
+- **negative**
+
+Note: Positive and Negative directions are defined based on Cartesian plane.`,default:"'negative'",fieldName:"buttonPosition"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-divider",jsDoc:`/**
+ * \`mdc-divider\` is a component that provides a line to separate and organize content.
+ * It can also include a button or text positioned centrally, allowing users to interact with the layout.
+ *
+ * **Divider Orientation:**
+ * - **Horizontal**: A thin, horizontal line.
+ * - **Vertical**: A thin, vertical line.
+ *
+ * **Divider Variants:**
+ * - **solid**: Solid line.
+ * - **gradient**: Gradient Line.
+ *
+ * **Divider Types:**
+ * - The type of divider is inferred based on the kind of slot present.
+ *  - **Primary**: A simple horizontal or vertical divider.
+ *  - **Text**: A horizontal divider with a text label in the center.
+ *  - **Grabber Button**: A horizontal or vertical divider with a styled button in the center.
+ *
+ * **Accessibility:**
+ * - When the slot is replaced by an \`mdc-button\`:
+ *   - \`aria-label\` should be passed to the \`mdc-button\`.
+ *   - \`aria-expanded\` should be passed to the \`mdc-button\`.
+ *
+ * **Notes:**
+ * - If the slot is replaced by an invalid tag name or contains multiple elements,
+ *   the divider defaults to the **Primary** type.
+ * - To override the styles of the divider, use the provided CSS custom properties.
+ *
+ * @tagname mdc-divider
+ *
+ * @cssproperty --mdc-divider-background-color - background color of the divider
+ * @cssproperty --mdc-divider-width - width of the divider
+ * @cssproperty --mdc-divider-horizontal-gradient - gradient of the horizontal divider
+ * @cssproperty --mdc-divider-vertical-gradient - gradient of the vertical divider
+ * @cssproperty --mdc-divider-text-size - font size of label in the text divider
+ * @cssproperty --mdc-divider-text-color - font color of label in the text divider
+ * @cssproperty --mdc-divider-text-margin - left and right margin of label in the text divider
+ * @cssproperty --mdc-divider-text-line-height - line height of label in the text divider
+ * @cssproperty --mdc-divider-grabber-button-border-radius - border radius of the grabber button
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Divider",module:"components/divider/divider.component.js"}}]},{kind:"javascript-module",path:"components/icon/icon.component.js",declarations:[{kind:"class",description:`Icon component that dynamically displays SVG icons based on a valid name.
 
 This component must be mounted within an \`IconProvider\` component.
 
@@ -496,6 +594,6 @@ Default: 'mds-theme-stable-darkWebex'`,fieldName:"themeclass"}],superclass:{name
  * @cssproperty --mdc-themeprovider-font-weight - Option to override the font weight, default: \`400\`
  * @cssproperty --mdc-themeprovider-letter-spacing-adjustment - Option to override the default letter-spacing,
  * default: \`-0.25px\` (this is to match the old CiscoSans)
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"ThemeProvider",module:"components/themeprovider/themeprovider.component.js"}}]}],b={schemaVersion:u,readme:p,modules:h},o=[{themeclass:"mds-theme-stable-darkWebex",displayName:"darkWebex",backgroundColor:"#000000",className:"dark"},{themeclass:"mds-theme-stable-lightWebex",displayName:"lightWebex",backgroundColor:"#ffffff",className:"light"}],f=e=>{for(const n of o)e.classList.remove(n.className)},l=(e,n)=>{e.classList.add(n)},y=e=>{const n=document.querySelectorAll("div.docs-story");for(const i of n)i.style.backgroundColor=e},g=(e,n)=>{const i=n.globals.theme,t=o.find(r=>r.displayName===i),a=document.querySelector("body.sb-show-main");return f(a),l(a,t.className),l(a,"mds-typography"),y(t.backgroundColor),c` <mdc-themeprovider id="theme-provider" themeclass="${t.themeclass}">
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"ThemeProvider",module:"components/themeprovider/themeprovider.component.js"}}]}],b={schemaVersion:u,readme:p,modules:h},a=[{themeclass:"mds-theme-stable-darkWebex",displayName:"darkWebex",backgroundColor:"#000000",className:"dark"},{themeclass:"mds-theme-stable-lightWebex",displayName:"lightWebex",backgroundColor:"#ffffff",className:"light"}],f=e=>{for(const n of a)e.classList.remove(n.className)},l=(e,n)=>{e.classList.add(n)},y=e=>{const n=document.querySelectorAll("div.docs-story");for(const i of n)i.style.backgroundColor=e},g=(e,n)=>{const i=n.globals.theme,t=a.find(r=>r.displayName===i),o=document.querySelector("body.sb-show-main");return f(o),l(o,t.className),l(o,"mds-typography"),y(t.backgroundColor),c` <mdc-themeprovider id="theme-provider" themeclass="${t.themeclass}">
     ${e()}
-  </mdc-themeprovider>`},v=e=>c` <mdc-iconprovider url="./icons/svg"> ${e()} </mdc-iconprovider>`;function x(e){const n=i=>i.replace(/-([a-z])/g,t=>t[1].toUpperCase());return e.modules.forEach(i=>{i.declarations.forEach(t=>{var d;const a=new Set((d=t==null?void 0:t.attributes)==null?void 0:d.map(s=>n(s.name))),r=t.members.filter(s=>!a.has(s.name));Object.assign(t,{members:r})})}),e}const w=x(b);m(w);const j={parameters:{a11y:{options:{runOnly:{type:"tag",values:["best-practice","wcag2a","wcag2aa","wcag21aa","wcag22aa"]}}},docs:{source:{excludeDecorators:!0}},actions:{argTypesRegex:"^on[A-Z].*"},backgrounds:{disable:!0,grid:{disable:!0}},badgesConfig:{wip:{styles:{backgroundColor:"#30240D",borderColor:"#D6B220",color:"#FFFFFFF2"},title:"Work In Progress",tooltip:{title:"This Component is Work In Progress",desc:"Keep an eye on the Release history for updates or provide feedback.",links:[{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}},stable:{styles:{backgroundColor:"#416116",borderColor:"#93C437",color:"#FFFFFFF2"},title:"Stable",tooltip:{title:"This Component is Stable",desc:"Ready for use.",links:[{title:"Consumption guide",href:"https://momentum-design.github.io/momentum-design/en/components/"},{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}},deprecated:{styles:{backgroundColor:"#4F0E10",borderColor:"#FC8B98",color:"#FFFFFFF2"},title:"Deprecated",tooltip:{title:"This Component is Deprecated",desc:"Check the Release history for more information about deprecation or provide feedback.",links:[{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}}},controls:{disableSaveFromUI:!0,expanded:!0,matchers:{color:/(background|color)$/i,date:/Date$/}},options:{storySort:{order:["Consumption","Styling","Components","Work In Progress"]}},direction:"ltr"},decorators:[g,v],globalTypes:{theme:{description:"Global theme for components",defaultValue:o[0].displayName,toolbar:{title:"Theme",icon:"globe",items:o.map(e=>e.displayName),dynamicTitle:!0}}}};export{j as default};
+  </mdc-themeprovider>`},v=e=>c` <mdc-iconprovider url="./icons/svg"> ${e()} </mdc-iconprovider>`;function x(e){const n=i=>i.replace(/-([a-z])/g,t=>t[1].toUpperCase());return e.modules.forEach(i=>{i.declarations.forEach(t=>{var d;const o=new Set((d=t==null?void 0:t.attributes)==null?void 0:d.map(s=>n(s.name))),r=t.members.filter(s=>!o.has(s.name));Object.assign(t,{members:r})})}),e}const w=x(b);m(w);const j={parameters:{a11y:{options:{runOnly:{type:"tag",values:["best-practice","wcag2a","wcag2aa","wcag21aa","wcag22aa"]}}},docs:{source:{excludeDecorators:!0}},actions:{argTypesRegex:"^on[A-Z].*"},backgrounds:{disable:!0,grid:{disable:!0}},badgesConfig:{wip:{styles:{backgroundColor:"#30240D",borderColor:"#D6B220",color:"#FFFFFFF2"},title:"Work In Progress",tooltip:{title:"This Component is Work In Progress",desc:"Keep an eye on the Release history for updates or provide feedback.",links:[{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}},stable:{styles:{backgroundColor:"#416116",borderColor:"#93C437",color:"#FFFFFFF2"},title:"Stable",tooltip:{title:"This Component is Stable",desc:"Ready for use.",links:[{title:"Consumption guide",href:"https://momentum-design.github.io/momentum-design/en/components/"},{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}},deprecated:{styles:{backgroundColor:"#4F0E10",borderColor:"#FC8B98",color:"#FFFFFFF2"},title:"Deprecated",tooltip:{title:"This Component is Deprecated",desc:"Check the Release history for more information about deprecation or provide feedback.",links:[{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}}},controls:{disableSaveFromUI:!0,expanded:!0,matchers:{color:/(background|color)$/i,date:/Date$/}},options:{storySort:{order:["Consumption","Styling","Components","Work In Progress"]}},direction:"ltr"},decorators:[g,v],globalTypes:{theme:{description:"Global theme for components",defaultValue:a[0].displayName,toolbar:{title:"Theme",icon:"globe",items:a.map(e=>e.displayName),dynamicTitle:!0}}}};export{j as default};

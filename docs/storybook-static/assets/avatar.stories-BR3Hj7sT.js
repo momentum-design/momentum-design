@@ -1,4 +1,4 @@
-import{R as K,i as ee,D as z,k as m}from"./lit-element-CHllvULs.js";import{e as te,i as re,t as ae}from"./directive-Ctav8iJK.js";import{u as oe,c as E,a as x,p as $,d as ie}from"./directive-helpers-5SvKRCBg.js";import{u as se,C as N,n as b}from"./index-HW6KrQZO.js";import{r as ne}from"./state-CWckTc1X.js";import{t as v}from"./if-defined-C4tJgJ33.js";import{S as s,T as ce}from"./index-DopGgdkJ.js";import{h as le}from"./index-CcvxQn6k.js";import{T}from"./index-9V9cqCm0.js";import"./index-BnGanu3N.js";import{d as k}from"./utils-DCJ3yZC1.js";import{c as de,s as pe}from"./commonArgTypes-BluK8w5L.js";import"./index-BYMLCX4c.js";import"./iconprovider.component-CWYw8J7d.js";import"./create-context-89xeped_.js";/**
+import{R as K,i as ee,D as z,k as m}from"./lit-element-CHllvULs.js";import{e as te,i as re,t as ae}from"./directive-Ctav8iJK.js";import{u as oe,c as E,a as x,p as $,d as ie}from"./directive-helpers-5SvKRCBg.js";import{u as se,C as N,n as b}from"./index-HW6KrQZO.js";import{r as ne}from"./state-CWckTc1X.js";import{t as v}from"./if-defined-C4tJgJ33.js";import{S as s,T as ce}from"./index-DopGgdkJ.js";import{h as le}from"./index-CcvxQn6k.js";import{T}from"./text.constants-DJu2q-6E.js";import"./index-BnGanu3N.js";import"./index-DcQ7scWP.js";import{d as k}from"./utils-C8za8dl6.js";import{c as de,s as pe}from"./commonArgTypes-BluK8w5L.js";import"./index-BYMLCX4c.js";import"./iconprovider.component-CWYw8J7d.js";import"./create-context-89xeped_.js";/**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
@@ -166,7 +166,7 @@ import{R as K,i as ee,D as z,k as m}from"./lit-element-CHllvULs.js";import{e as 
     src="${v(t.src)}"
     ?is-typing="${t["is-typing"]}"
   ></mdc-avatar>
-`,we={title:"Work In Progress/avatar",tags:["autodocs"],component:"mdc-avatar",render:ye,parameters:{badges:["wip"]},argTypes:{src:{control:"text"},initials:{control:"text"},presence:{control:"select",options:Object.values(ce)},size:{control:"select",options:Object.values(s)},"is-typing":{control:"boolean"},"icon-name":{control:"text"},counter:{control:"number"},...k(["--mdc-avatar-default-background-color","--mdc-avatar-default-foreground-color","--mdc-avatar-loading-indicator-background-color","--mdc-avatar-loading-indicator-foreground-color","--mdc-avatar-loading-overlay-background-color"]),...de,...pe}},I={args:{src:"https://picsum.photos/id/63/256",initials:"MD",size:"x_large","icon-name":"","is-typing":""}},M={args:{size:C.SIZE}},O={render:()=>m`
+`,De={title:"Work In Progress/avatar",tags:["autodocs"],component:"mdc-avatar",render:ye,parameters:{badges:["wip"]},argTypes:{src:{control:"text"},initials:{control:"text"},presence:{control:"select",options:Object.values(ce)},size:{control:"select",options:Object.values(s)},"is-typing":{control:"boolean"},"icon-name":{control:"text"},counter:{control:"number"},...k(["--mdc-avatar-default-background-color","--mdc-avatar-default-foreground-color","--mdc-avatar-loading-indicator-background-color","--mdc-avatar-loading-indicator-foreground-color","--mdc-avatar-loading-overlay-background-color"]),...de,...pe}},I={args:{src:"https://picsum.photos/id/63/256",initials:"MD",size:"x_large","icon-name":"","is-typing":""}},M={args:{size:C.SIZE}},O={render:()=>m`
     <div style="display: flex; justify-content: space-evenly; align-items: center">
     ${q(Object.values(s),t=>m`
         <mdc-avatar size="${t}"></mdc-avatar>
@@ -227,4 +227,4 @@ import{R as K,i as ee,D as z,k as m}from"./lit-element-CHllvULs.js";import{e as 
     presence: 'active',
     'is-typing': false
   }
-}`,...(V=(Q=L.parameters)==null?void 0:Q.docs)==null?void 0:V.source}}};const De=["Example","Fallback","Size","SizeWithPresence"];export{I as Example,M as Fallback,O as Size,L as SizeWithPresence,De as __namedExportsOrder,we as default};
+}`,...(V=(Q=L.parameters)==null?void 0:Q.docs)==null?void 0:V.source}}};const Pe=["Example","Fallback","Size","SizeWithPresence"];export{I as Example,M as Fallback,O as Size,L as SizeWithPresence,Pe as __namedExportsOrder,De as default};
