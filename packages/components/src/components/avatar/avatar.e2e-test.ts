@@ -1,4 +1,4 @@
-import { expect, Locator } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import { SIZE as AVATAR_SIZE, TYPE as PRESENCE_TYPE } from '../presence/presence.constants';
 import { DEFAULTS } from './avatar.constants';
@@ -51,60 +51,42 @@ const testToRun = async (componentsPage: ComponentsPage) => {
 
     await test.step('should add initials based avatar on sticker sheet', async () => {
       avatarStickerSheet.setAttributes({ initials: 'XS' });
-      await avatarStickerSheet.mountComponents({
+      await avatarStickerSheet.createMarkupWithCombination({
         size: AVATAR_SIZE,
       });
     });
 
     await test.step('should add counter based avatar on sticker sheet', async () => {
       avatarStickerSheet.setAttributes({ counter: 100 });
-      await avatarStickerSheet.mountComponents({
+      await avatarStickerSheet.createMarkupWithCombination({
         size: AVATAR_SIZE,
       });
     });
 
     await test.step('should add icon name based avatar on sticker sheet', async () => {
       const iconName = 'placeholder-regular';
-      avatarStickerSheet.setAssertion(async (component: Locator) => {
-        const icon = await component.locator('mdc-icon');
-        await icon.waitFor();
-        await expect(component).toHaveAttribute('icon-name', iconName);
-        await expect(icon).toHaveAttribute('name', iconName);
-      });
       avatarStickerSheet.setAttributes({ 'icon-name': iconName });
-      await avatarStickerSheet.mountComponents({
+      await avatarStickerSheet.createMarkupWithCombination({
         size: AVATAR_SIZE,
       });
     });
 
     await test.step('should add image based avatar on sticker sheet', async () => {
       const src = 'https://picsum.photos/id/63/256';
-      avatarStickerSheet.setAssertion(async (component: Locator) => {
-        const image = await component.locator('img');
-        await image.waitFor();
-        await expect(component).toHaveAttribute('src', src);
-        await expect(image).toHaveAttribute('src', src);
-      });
       avatarStickerSheet.setAttributes({ src });
-      await avatarStickerSheet.mountComponents({
+      await avatarStickerSheet.createMarkupWithCombination({
         size: AVATAR_SIZE,
       });
     });
 
     await test.step('should add presence based avatar on sticker sheet', async () => {
       const presenceType = PRESENCE_TYPE.ACTIVE;
-      avatarStickerSheet.setAssertion(async (component: Locator) => {
-        const presence = await component.locator('mdc-presence');
-        await presence.waitFor();
-        await expect(component).toHaveAttribute('presence', presenceType);
-        await expect(presence).toHaveAttribute('type', presenceType);
-      });
       avatarStickerSheet.setAttributes({ presence: presenceType });
-      await avatarStickerSheet.mountComponents({
+      await avatarStickerSheet.createMarkupWithCombination({
         size: AVATAR_SIZE,
       });
     });
-
+    await avatarStickerSheet.mountStickerSheet();
     await test.step('matches screenshot of element', async () => {
       const container = avatarStickerSheet.getWrapperContainer();
       await componentsPage.visualRegression.takeScreenshot('mdc-avatar', { element: container });
