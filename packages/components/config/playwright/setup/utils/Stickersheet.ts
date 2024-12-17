@@ -147,7 +147,7 @@ class StickerSheet {
     if (!componentWrapper) {
       await this.componentPage.mount({
         html: '<div class="componentWrapper"></div>',
-        clearDocument: false,
+        clearDocument: true,
       });
     }
 

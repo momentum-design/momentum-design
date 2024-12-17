@@ -51,15 +51,20 @@ const testToRun = async (componentsPage: ComponentsPage) => {
    */
   await test.step('visual-regression', async () => {
     const stickerSheet = new StickerSheet(componentsPage, 'mdc-marker');
-    await stickerSheet.mountComponents({ variants: MARKER_VARIANTS });
+    await stickerSheet.mountComponents({ variant: MARKER_VARIANTS });
     const container = stickerSheet.getWrapperContainer();
+    await container.evaluate((el) => {
+      const wrapper = el.querySelector('.componentRowWrapper') as HTMLElement;
+      wrapper.style.height = '100px';
+    });
+
     await test.step('matches screenshot of different variants', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-marker-variants', { element: container });
     });
   });
 };
 
-test.describe.parallel('mdc-Marker', () => {
+test.describe('mdc-Marker', () => {
   test('standalone', async ({ componentsPage }) => {
     await testToRun(componentsPage);
   });

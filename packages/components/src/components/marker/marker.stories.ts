@@ -5,7 +5,7 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { MARKER_VARIANTS } from './marker.constants';
 
 const render = (args: Args) => html`
-  <div style="height: 50px">
+  <div style="height: 100px">
     <mdc-marker variant="${args.variant}" class="${args.class}" style="${args.style}"></mdc-marker>
   </div> 
 `;
