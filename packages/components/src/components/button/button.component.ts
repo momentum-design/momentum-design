@@ -233,7 +233,7 @@ class Button extends Component {
    *
    * @param active - The active state.
    */
-  private modifyIconName(active?: boolean) {
+  private modifyIconName(active: boolean) {
     if (active) {
       if (this.prefixIcon) {
         this.prevPrefixIcon = this.prefixIcon;
@@ -318,7 +318,7 @@ class Button extends Component {
    * @param element - The button element.
    * @param softDisabled - The soft-disabled state.
    */
-  private setSoftDisabled(element: HTMLElement, softDisabled?: boolean) {
+  private setSoftDisabled(element: HTMLElement, softDisabled: boolean) {
     if (softDisabled) {
       element.setAttribute('aria-disabled', 'true');
     } else {
