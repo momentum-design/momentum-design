@@ -1,5 +1,5 @@
 import { CSSResult, html, PropertyValueMap } from 'lit';
-import { property, state } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 import styles from './divider.styles';
 import { Component } from '../../models';
 import {
@@ -96,41 +96,6 @@ class Divider extends Component {
   @property({ type: String, attribute: 'button-position', reflect: true })
   buttonPosition: string = DEFAULTS.BUTTON_DIRECTION;
 
-  /** @internal */
-  @state()
-  private observer: MutationObserver;
-
-  /** @internal */
-  @state()
-  private windowDirection: string = 'ltr';
-
-  constructor() {
-    super();
-    this.observer = new MutationObserver(() => this.handleWindowDirectionChange());
-  }
-
-  private handleWindowDirectionChange() {
-    const currentDirection = getComputedStyle(this).direction;
-
-    if (this.windowDirection !== currentDirection) {
-      this.windowDirection = currentDirection;
-    }
-    this.setGrabberButton();
-  }
-
-  override connectedCallback() {
-    super.connectedCallback();
-    this.observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['dir'],
-    });
-  }
-
-  override disconnectedCallback() {
-    super.disconnectedCallback();
-    this.observer.disconnect();
-  }
-
   /**
    * Sets the variant attribute for the divider component.
    * If the provided variant is not included in the DIVIDER_VARIANT,
@@ -204,17 +169,12 @@ class Divider extends Component {
   private getArrowIcon(): string {
     const isHorizontal = this.orientation === DIVIDER_ORIENTATION.HORIZONTAL;
     const isPositive = this.arrowDirection === DIRECTIONS.POSITIVE;
-    const isRTL = this.windowDirection === 'rtl';
 
     if (isHorizontal) {
       return isPositive ? ARROW_ICONS.UP : ARROW_ICONS.DOWN;
     }
 
-    if (isPositive) {
-      return isRTL ? ARROW_ICONS.LEFT : ARROW_ICONS.RIGHT;
-    }
-
-    return isRTL ? ARROW_ICONS.RIGHT : ARROW_ICONS.LEFT;
+    return isPositive ? ARROW_ICONS.RIGHT : ARROW_ICONS.LEFT;
   }
 
   public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {

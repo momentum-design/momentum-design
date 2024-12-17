@@ -99,18 +99,31 @@ const styles = [
       border-top-color: transparent;
     }
 
-    :host([orientation='vertical'][button-position='negative']:dir(ltr)) ::slotted(mdc-button),
-    :host([orientation='vertical'][button-position='positive']:dir(rtl)) ::slotted(mdc-button) {
+    :host([orientation='vertical'][button-position='negative']:dir(ltr)) ::slotted(mdc-button){
       border-radius: var(--mdc-divider-grabber-button-border-radius) 
         0 
         0 
         var(--mdc-divider-grabber-button-border-radius);
       border-right-color: transparent;
     }
-
-    :host([orientation='vertical'][button-position='negative']:dir(rtl)) ::slotted(mdc-button),
     :host([orientation='vertical'][button-position='positive']:dir(ltr)) ::slotted(mdc-button) {
+    border-left-color: transparent;
+    }
+    :host([orientation='vertical'][button-position='positive']:dir(rtl)) ::slotted(mdc-button) {
+      border-radius: 0 
+        var(--mdc-divider-grabber-button-border-radius) 
+        var(--mdc-divider-grabber-button-border-radius)
+        0 ;
       border-left-color: transparent;
+      transform: rotate(180deg);
+    }
+    :host([orientation='vertical'][button-position='negative']:dir(rtl)) ::slotted(mdc-button){
+        border-radius: var(--mdc-divider-grabber-button-border-radius) 
+        0 
+        0 
+        var(--mdc-divider-grabber-button-border-radius);
+      border-right-color: transparent;
+      transform: rotate(180deg);
     }
 
     /** Text divider styles */
