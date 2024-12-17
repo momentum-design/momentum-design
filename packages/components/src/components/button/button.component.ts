@@ -109,7 +109,7 @@ class Button extends Component {
    * - Tertiary icon button cam also be 20.
    * @default 32
    */
-  @property({ type: Number }) size: any = DEFAULTS.SIZE;
+  @property({ type: Number }) size: PillButtonSize | IconButtonSize = DEFAULTS.SIZE;
 
   /**
    * There are 5 colors for button: positive, negative, accent, promotional, default.
@@ -274,12 +274,12 @@ class Button extends Component {
   protected setSize(size: PillButtonSize | IconButtonSize) {
     const isIconType = this.typeInternal === BUTTON_TYPE_INTERNAL.ICON;
     const isValidSize = isIconType
-      ? (Object.values(ICON_BUTTON_SIZES).includes(size as PillButtonSize | IconButtonSize)
+      ? (Object.values(ICON_BUTTON_SIZES).includes(size)
       && !(size === ICON_BUTTON_SIZES[20] && this.variant !== BUTTON_VARIANTS.TERTIARY))
       : Object.values(PILL_BUTTON_SIZES).includes(size as PillButtonSize);
 
     this.setAttribute('size', isValidSize ? `${size}` : `${DEFAULTS.SIZE}`);
-    this.iconSize = getIconSize(size as IconButtonSize);
+    this.iconSize = getIconSize(size);
   }
 
   /**
