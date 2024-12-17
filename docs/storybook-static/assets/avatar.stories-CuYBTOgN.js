@@ -1,8 +1,8 @@
-import{R as K,i as ee,D as z,k as m}from"./lit-element-CHllvULs.js";import{e as te,i as re,t as ae}from"./directive-Ctav8iJK.js";import{u as oe,c as E,a as x,p as $,d as ie}from"./directive-helpers-5SvKRCBg.js";import{u as se,C as N,n as b}from"./index-HW6KrQZO.js";import{r as ne}from"./state-CWckTc1X.js";import{t as v}from"./if-defined-C4tJgJ33.js";import{S as s,T as ce}from"./index-DopGgdkJ.js";import{h as le}from"./index-CcvxQn6k.js";import{T}from"./text.constants-DJu2q-6E.js";import"./index-BnGanu3N.js";import"./index-DcQ7scWP.js";import{d as k}from"./utils-C8za8dl6.js";import{c as de,s as pe}from"./commonArgTypes-BluK8w5L.js";import"./index-BYMLCX4c.js";import"./iconprovider.component-CWYw8J7d.js";import"./create-context-89xeped_.js";/**
+import{R as K,i as ee,D as z,k as p}from"./lit-element-CHllvULs.js";import{e as te,i as re,t as ae}from"./directive-Ctav8iJK.js";import{u as oe,c as E,a as x,p as $,d as ie}from"./directive-helpers-5SvKRCBg.js";import{u as se,C as N,n as b}from"./index-HW6KrQZO.js";import{r as ne}from"./state-CWckTc1X.js";import{t as v}from"./if-defined-C4tJgJ33.js";import{S as s,T as ce}from"./index-DopGgdkJ.js";import{h as le}from"./index-CcvxQn6k.js";import{T}from"./text.constants-DJu2q-6E.js";import"./index-BnGanu3N.js";import"./index-DcQ7scWP.js";import{d as k}from"./utils-C8za8dl6.js";import{c as de,s as me}from"./commonArgTypes-BluK8w5L.js";import"./index-BYMLCX4c.js";import"./iconprovider.component-CWYw8J7d.js";import"./create-context-89xeped_.js";/**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const X=(t,e,n)=>{const f=new Map;for(let r=e;r<=n;r++)f.set(t[r],r);return f},q=te(class extends re{constructor(t){if(super(t),t.type!==ae.CHILD)throw Error("repeat() can only be used in text expressions")}dt(t,e,n){let f;n===void 0?n=e:e!==void 0&&(f=e);const r=[],c=[];let i=0;for(const h of t)r[i]=f?f(h,i):i,c[i]=n(h,i),i++;return{values:c,keys:r}}render(t,e,n){return this.dt(t,e,n).values}update(t,[e,n,f]){const r=oe(t),{values:c,keys:i}=this.dt(e,n,f);if(!Array.isArray(r))return this.ut=i,c;const h=this.ut??(this.ut=[]),g=[];let S,D,a=0,l=r.length-1,o=0,p=c.length-1;for(;a<=l&&o<=p;)if(r[a]===null)a++;else if(r[l]===null)l--;else if(h[a]===i[o])g[o]=E(r[a],c[o]),a++,o++;else if(h[l]===i[p])g[p]=E(r[l],c[p]),l--,p--;else if(h[a]===i[p])g[p]=E(r[a],c[p]),x(t,g[p+1],r[a]),a++,p--;else if(h[l]===i[o])g[o]=E(r[l],c[o]),x(t,r[a],r[l]),l--,o++;else if(S===void 0&&(S=X(i,o,p),D=X(h,a,l)),S.has(h[a]))if(S.has(h[l])){const y=D.get(i[o]),A=y!==void 0?r[y]:null;if(A===null){const P=x(t,r[a]);E(P,c[o]),g[o]=P}else g[o]=E(A,c[o]),x(t,r[a],A),r[y]=null;o++}else $(r[l]),l--;else $(r[a]),a++;for(;o<=p;){const y=x(t,g[p+1]);E(y,c[o]),g[o++]=y}for(;a<=l;){const y=r[a++];y!==null&&$(y)}return this.ut=i,ie(t,g),K}}),me=se.constructTagName("avatar"),d={COUNTER:"counter",ICON:"icon",PHOTO:"photo",TEXT:"text"},R=99,ue="user-regular",C={TYPE:d.PHOTO,SIZE:s.X_SMALL,ICON_NAME:ue},he=[le,ee`
+ */const X=(t,e,n)=>{const f=new Map;for(let r=e;r<=n;r++)f.set(t[r],r);return f},q=te(class extends re{constructor(t){if(super(t),t.type!==ae.CHILD)throw Error("repeat() can only be used in text expressions")}dt(t,e,n){let f;n===void 0?n=e:e!==void 0&&(f=e);const r=[],c=[];let i=0;for(const h of t)r[i]=f?f(h,i):i,c[i]=n(h,i),i++;return{values:c,keys:r}}render(t,e,n){return this.dt(t,e,n).values}update(t,[e,n,f]){const r=oe(t),{values:c,keys:i}=this.dt(e,n,f);if(!Array.isArray(r))return this.ut=i,c;const h=this.ut??(this.ut=[]),g=[];let S,D,a=0,l=r.length-1,o=0,m=c.length-1;for(;a<=l&&o<=m;)if(r[a]===null)a++;else if(r[l]===null)l--;else if(h[a]===i[o])g[o]=E(r[a],c[o]),a++,o++;else if(h[l]===i[m])g[m]=E(r[l],c[m]),l--,m--;else if(h[a]===i[m])g[m]=E(r[a],c[m]),x(t,g[m+1],r[a]),a++,m--;else if(h[l]===i[o])g[o]=E(r[l],c[o]),x(t,r[a],r[l]),l--,o++;else if(S===void 0&&(S=X(i,o,m),D=X(h,a,l)),S.has(h[a]))if(S.has(h[l])){const y=D.get(i[o]),A=y!==void 0?r[y]:null;if(A===null){const P=x(t,r[a]);E(P,c[o]),g[o]=P}else g[o]=E(A,c[o]),x(t,r[a],A),r[y]=null;o++}else $(r[l]),l--;else $(r[a]),a++;for(;o<=m;){const y=x(t,g[m+1]);E(y,c[o]),g[o++]=y}for(;a<=l;){const y=r[a++];y!==null&&$(y)}return this.ut=i,ie(t,g),K}}),pe=se.constructTagName("avatar"),d={COUNTER:"counter",ICON:"icon",PHOTO:"photo",TEXT:"text"},R=99,ue="user-regular",C={TYPE:d.PHOTO,SIZE:s.X_SMALL,ICON_NAME:ue},he=[le,ee`
   :host {
     --mdc-avatar-default-background-color: var(--mds-color-theme-avatar-default);
     --mdc-avatar-default-foreground-color: var(--mds-color-theme-common-text-primary-normal);
@@ -125,9 +125,9 @@ import{R as K,i as ee,D as z,k as m}from"./lit-element-CHllvULs.js";import{e as 
       outline: 0.125rem solid;
     }
   }
-`],ge=t=>({[s.XX_LARGE]:4.75,[s.X_LARGE]:3,[s.LARGE]:2.5,[s.MIDSIZE]:2.25,[s.SMALL]:1.75,[s.X_SMALL]:1.25,[s.XX_SMALL]:1})[t]||1.25,ve=t=>({[s.XX_LARGE]:T.HEADING_XLARGE_MEDIUM,[s.X_LARGE]:T.HEADING_LARGE_MEDIUM,[s.LARGE]:T.HEADING_MIDSIZE_MEDIUM,[s.MIDSIZE]:T.HEADING_SMALL_MEDIUM,[s.SMALL]:T.HEADING_SMALL_MEDIUM,[s.XX_SMALL]:T.BODY_SMALL_MEDIUM,[s.X_SMALL]:T.BODY_MIDSIZE_MEDIUM})[t]||T.BODY_MIDSIZE_MEDIUM;var fe=Object.defineProperty,_=(t,e,n,f)=>{for(var r=void 0,c=t.length-1,i;c>=0;c--)(i=t[c])&&(r=i(e,n,r)||r);return r&&fe(e,n,r),r};const w=class w extends N{constructor(){super(...arguments),this.size=C.SIZE,this.isTyping=!1,this.isPhotoLoaded=!1}getPresenceTemplateBasedOnType(e){return e===d.COUNTER&&(this.counter||this.counter===0)?z:this.presence?m`
+`],ge=t=>({[s.XX_LARGE]:4.75,[s.X_LARGE]:3,[s.LARGE]:2.5,[s.MIDSIZE]:2.25,[s.SMALL]:1.75,[s.X_SMALL]:1.25,[s.XX_SMALL]:1})[t]||1.25,ve=t=>({[s.XX_LARGE]:T.HEADING_XLARGE_MEDIUM,[s.X_LARGE]:T.HEADING_LARGE_MEDIUM,[s.LARGE]:T.HEADING_MIDSIZE_MEDIUM,[s.MIDSIZE]:T.HEADING_SMALL_MEDIUM,[s.SMALL]:T.HEADING_SMALL_MEDIUM,[s.XX_SMALL]:T.BODY_SMALL_MEDIUM,[s.X_SMALL]:T.BODY_MIDSIZE_MEDIUM})[t]||T.BODY_MIDSIZE_MEDIUM;var fe=Object.defineProperty,_=(t,e,n,f)=>{for(var r=void 0,c=t.length-1,i;c>=0;c--)(i=t[c])&&(r=i(e,n,r)||r);return r&&fe(e,n,r),r};const w=class w extends N{constructor(){super(...arguments),this.size=C.SIZE,this.isTyping=!1,this.isPhotoLoaded=!1}getPresenceTemplateBasedOnType(e){return e===d.COUNTER&&(this.counter||this.counter===0)?z:this.presence?p`
         <mdc-presence class="presence" type="${this.presence}" size="${this.size}"></mdc-presence>
-      `:z}handleOnLoad(){this.isPhotoLoaded=!0}handleOnError(){this.isPhotoLoaded=!1,this.onerror&&this.onerror("There was a problem while fetching the <img/>. Please check the src attribute and try again.")}photoTemplate(){return m`
+      `:z}handleOnLoad(){this.isPhotoLoaded=!0}handleOnError(){this.isPhotoLoaded=!1,this.onerror&&this.onerror("There was a problem while fetching the <img/>. Please check the src attribute and try again.")}photoTemplate(){return p`
       <img
         class="photo"
         src="${v(this.src)}"
@@ -136,27 +136,27 @@ import{R as K,i as ee,D as z,k as m}from"./lit-element-CHllvULs.js";import{e as 
         @load="${this.handleOnLoad}"
         @error="${this.handleOnError}"
       />
-    `}iconTemplate(){const e=this.iconName||C.ICON_NAME;return m`
+    `}iconTemplate(){const e=this.iconName||C.ICON_NAME;return p`
       <mdc-icon
         name="${v(e)}"
         length-unit="rem"
         size="${ge(this.size)}"
       ></mdc-icon>
-    `}textTemplate(e){return m`
+    `}textTemplate(e){return p`
       <mdc-text
         type="${ve(this.size)}"
         tagname="span"
       >
         ${e}
       </mdc-text>
-    `}generateCounterText(e){return e<0?"0":e>R?`${R}+`:e.toString()}generateInitialsText(e){return e.toUpperCase().slice(0,2)}generateTextContent(e){let n="";return e===d.TEXT&&this.initials&&(n=this.generateInitialsText(this.initials)),e===d.COUNTER&&(this.counter||this.counter===0)&&(n=this.generateCounterText(this.counter)),this.textTemplate(n)}getTypeBasedOnInputs(){return this.src?d.PHOTO:this.iconName?d.ICON:this.initials?d.TEXT:this.counter||this.counter===0?d.COUNTER:d.ICON}getTemplateBasedOnType(e){switch(e){case d.PHOTO:return this.photoTemplate();case d.TEXT:case d.COUNTER:return this.generateTextContent(e);case d.ICON:default:return this.iconTemplate()}}getLoadingContent(){return this.isTyping?m`<div class="loading__wrapper"><div class="loader"></div></div>`:z}getPhotoPlaceHolderContent(e){return this.isPhotoLoaded?z:e===d.PHOTO?this.initials?this.textTemplate(this.generateInitialsText(this.initials)):this.iconTemplate():z}update(e){super.update(e),e.has("src")&&!this.src&&(this.isPhotoLoaded=!1)}render(){const e=this.getTypeBasedOnInputs();return m`
+    `}generateCounterText(e){return e<0?"0":e>R?`${R}+`:e.toString()}generateInitialsText(e){return e.toUpperCase().slice(0,2)}generateTextContent(e){let n="";return e===d.TEXT&&this.initials&&(n=this.generateInitialsText(this.initials)),e===d.COUNTER&&(this.counter||this.counter===0)&&(n=this.generateCounterText(this.counter)),this.textTemplate(n)}getTypeBasedOnInputs(){return this.src?d.PHOTO:this.iconName?d.ICON:this.initials?d.TEXT:this.counter||this.counter===0?d.COUNTER:d.ICON}getTemplateBasedOnType(e){switch(e){case d.PHOTO:return this.photoTemplate();case d.TEXT:case d.COUNTER:return this.generateTextContent(e);case d.ICON:default:return this.iconTemplate()}}getLoadingContent(){return this.isTyping?p`<div class="loading__wrapper"><div class="loader"></div></div>`:z}getPhotoPlaceHolderContent(e){return this.isPhotoLoaded?z:e===d.PHOTO?this.initials?this.textTemplate(this.generateInitialsText(this.initials)):this.iconTemplate():z}update(e){super.update(e),e.has("src")&&!this.src&&(this.isPhotoLoaded=!1)}render(){const e=this.getTypeBasedOnInputs();return p`
       <div class="content" aria-hidden="true">
         ${this.getPhotoPlaceHolderContent(e)}
         ${this.getTemplateBasedOnType(e)}
         ${this.getLoadingContent()}
         ${this.getPresenceTemplateBasedOnType(e)}
       </div>
-    `}};w.styles=[...N.styles,...he];let u=w;_([b({type:String})],u.prototype,"src");_([b({type:String})],u.prototype,"initials");_([b({type:String})],u.prototype,"presence");_([b({type:String,reflect:!0})],u.prototype,"size");_([b({type:String,attribute:"icon-name"})],u.prototype,"iconName");_([b({type:Number})],u.prototype,"counter");_([b({type:Boolean,attribute:"is-typing"})],u.prototype,"isTyping");_([ne()],u.prototype,"isPhotoLoaded");u.register(me);const ye=t=>m`
+    `}};w.styles=[...N.styles,...he];let u=w;_([b({type:String})],u.prototype,"src");_([b({type:String})],u.prototype,"initials");_([b({type:String})],u.prototype,"presence");_([b({type:String,reflect:!0})],u.prototype,"size");_([b({type:String,attribute:"icon-name"})],u.prototype,"iconName");_([b({type:Number})],u.prototype,"counter");_([b({type:Boolean,attribute:"is-typing"})],u.prototype,"isTyping");_([ne()],u.prototype,"isPhotoLoaded");u.register(pe);const ye=t=>p`
   <mdc-avatar
     counter="${v(t.counter)}"
     icon-name="${v(t["icon-name"])}"
@@ -166,15 +166,15 @@ import{R as K,i as ee,D as z,k as m}from"./lit-element-CHllvULs.js";import{e as 
     src="${v(t.src)}"
     ?is-typing="${t["is-typing"]}"
   ></mdc-avatar>
-`,De={title:"Work In Progress/avatar",tags:["autodocs"],component:"mdc-avatar",render:ye,parameters:{badges:["wip"]},argTypes:{src:{control:"text"},initials:{control:"text"},presence:{control:"select",options:Object.values(ce)},size:{control:"select",options:Object.values(s)},"is-typing":{control:"boolean"},"icon-name":{control:"text"},counter:{control:"number"},...k(["--mdc-avatar-default-background-color","--mdc-avatar-default-foreground-color","--mdc-avatar-loading-indicator-background-color","--mdc-avatar-loading-indicator-foreground-color","--mdc-avatar-loading-overlay-background-color"]),...de,...pe}},I={args:{src:"https://picsum.photos/id/63/256",initials:"MD",size:"x_large","icon-name":"","is-typing":""}},M={args:{size:C.SIZE}},O={render:()=>m`
+`,De={title:"Complete/avatar",tags:["autodocs"],component:"mdc-avatar",render:ye,parameters:{badges:["stable"]},argTypes:{src:{control:"text"},initials:{control:"text"},presence:{control:"select",options:Object.values(ce)},size:{control:"select",options:Object.values(s)},"is-typing":{control:"boolean"},"icon-name":{control:"text"},counter:{control:"number"},...k(["--mdc-avatar-default-background-color","--mdc-avatar-default-foreground-color","--mdc-avatar-loading-indicator-background-color","--mdc-avatar-loading-indicator-foreground-color","--mdc-avatar-loading-overlay-background-color"]),...de,...me}},I={args:{src:"https://picsum.photos/id/63/256",initials:"MD",size:"x_large","icon-name":"","is-typing":""}},M={args:{size:C.SIZE}},O={render:()=>p`
     <div style="display: flex; justify-content: space-evenly; align-items: center">
-    ${q(Object.values(s),t=>m`
+    ${q(Object.values(s),t=>p`
         <mdc-avatar size="${t}"></mdc-avatar>
       `)}
     </div>
-  `,argTypes:{...k(["counter","icon-name","initials","presence","size","src","is-typing"])}},L={render:t=>m`
+  `,argTypes:{...k(["counter","icon-name","initials","presence","size","src","is-typing"])}},L={render:t=>p`
     <div style="display: flex; justify-content: space-evenly; align-items: center">
-      ${q(Object.values(s),e=>m`
+      ${q(Object.values(s),e=>p`
         <mdc-avatar
           src="${v(t.src)}"
           presence="${v(t.presence)}"
