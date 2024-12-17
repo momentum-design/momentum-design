@@ -69,8 +69,8 @@ const setup = async (args: SetupOptions) => {
   await element.waitFor();
 
   // always return the first button:
-  const allButtons = await componentsPage.page.locator('mdc-button').all();
-  return allButtons[0];
+  const firstButton = await componentsPage.page.locator('mdc-button').first();
+  return firstButton;
 };
 
 /**
@@ -172,15 +172,15 @@ const testForButtonSizes = async (args: SetupOptions, buttonType: string) => {
     });
 
     if (buttonType === 'icon') {
-      for (const size of Object.values(ICON_BUTTON_SIZES)) {
-        if (size !== ICON_BUTTON_SIZES[20]) {
-          await test.step(`attribute size="${size}" should be present on ${buttonType} button`, async () => {
-            await componentsPage.setAttributes(button, { size: `${size}`, 'aria-label': 'icon-button-20' });
-            await expect(button).toHaveAttribute('size', `${size}`);
-          });
-        }
+      const iconSizesToTest = Object.values(ICON_BUTTON_SIZES).filter((size) => size !== ICON_BUTTON_SIZES[20]);
+      for (const size of iconSizesToTest) {
+        await test.step(`attribute size="${size}" should be present on ${buttonType} button`, async () => {
+          await componentsPage.setAttributes(button, { size: `${size}`, 'aria-label': 'icon-button-20' });
+          await expect(button).toHaveAttribute('size', `${size}`);
+        });
       }
 
+      // Tertiary icon button with size 20 - only this is supported
       await test.step('attribute size="20" should be present on tertiary prefix-icon button', async () => {
         await componentsPage.setAttributes(button, {
           size: `${ICON_BUTTON_SIZES[20]}`,
