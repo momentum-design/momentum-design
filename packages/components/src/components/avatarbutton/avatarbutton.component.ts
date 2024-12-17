@@ -17,6 +17,7 @@ import styles from './avatarbutton.styles';
  * The button component acts as a wrapper for the avatar component.
  *
  * @dependency mdc-avatar
+ * @dependency mdc-button
  *
  * @tagname mdc-avatarbutton
  */
