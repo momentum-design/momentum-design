@@ -6,6 +6,8 @@ import { DEFAULTS as AVATAR_DEFAULTS } from '../avatar/avatar.constants';
 import type { AvatarSize } from '../avatar/avatar.types';
 import Button from '../button/button.component';
 import { DEFAULTS as BUTTON_DEFAULTS } from '../button/button.constants';
+import type { ButtonColor, ButtonVariant, IconButtonSize, PillButtonSize } from '../button/button.types';
+import { SIZE as AVATAR_SIZES } from '../presence/presence.constants';
 import styles from './avatarbutton.styles';
 
 /**
@@ -36,28 +38,37 @@ class AvatarButton extends AvatarComponentMixin(Button) {
 
   constructor() {
     super();
-    this.active = undefined;
-    this.color = undefined;
-    this.disabled = undefined;
+
+    this.active = undefined as unknown as boolean;
+    this.color = undefined as unknown as ButtonColor;
+    this.disabled = undefined as unknown as boolean;
     this.postfixIcon = undefined;
     this.prefixIcon = undefined;
-    this.softDisabled = undefined;
-    this.variant = undefined;
+    this.softDisabled = undefined as unknown as boolean;
+    this.variant = undefined as unknown as ButtonVariant;
+
     this.role = 'button';
     this.type = BUTTON_DEFAULTS.TYPE;
+  }
+
+  protected override setSize() {
+    if (Object.values(AVATAR_SIZES).includes(this.size)) {
+      return;
+    }
+    super.setSize(this.size as unknown as PillButtonSize | IconButtonSize);
   }
 
   public override render() {
     return html`
       <mdc-avatar
         slot="prefixIcon"
-        src="${ifDefined(this.src)}"
+        ?is-typing="${this.isTyping}"
+        counter="${ifDefined(this.counter)}"
+        icon-name="${ifDefined(this.iconName)}"
         initials="${ifDefined(this.initials)}"
         presence="${ifDefined(this.presence)}"
         size="${ifDefined(this.size)}"
-        icon-name="${ifDefined(this.iconName)}"
-        counter="${ifDefined(this.counter)}"
-        ?is-typing="${this.isTyping}"
+        src="${ifDefined(this.src)}"
       ></mdc-avatar>
     `;
   }

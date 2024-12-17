@@ -1,5 +1,5 @@
 import { property } from 'lit/decorators.js';
-import { Component } from '../../models';
+import type { Component } from '../../models';
 import type { PresenceType } from '../../components/presence/presence.types';
 import type { IconNames } from '../../components/icon/icon.types';
 
@@ -9,7 +9,6 @@ export interface AvatarComponentMixinInterface {
   src?: string;
   initials?: string;
   presence?: PresenceType;
-  size: any;
   iconName?: IconNames;
   counter?: number;
   isTyping: boolean;
