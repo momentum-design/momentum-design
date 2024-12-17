@@ -1,14 +1,13 @@
 import { CSSResult, html, nothing } from 'lit';
 import type { PropertyValues, TemplateResult } from 'lit';
-import { property, state } from 'lit/decorators.js';
+import { state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
-import type { IconNames } from '../icon/icon.types';
-import type { PresenceType } from '../presence/presence.types';
 import { AVATAR_TYPE, DEFAULTS, MAX_COUNTER } from './avatar.constants';
 import styles from './avatar.styles';
-import type { AvatarSize, AvatarType } from './avatar.types';
+import type { AvatarType } from './avatar.types';
 import { getAvatarIconSize, getAvatarTextFontSize } from './avatar.utils';
+import { AvatarComponentMixin } from '../../utils/mixins/AvatarComponentMixin';
 
 /**
  * The `mdc-avatar` component is used to represent a person or a space.
@@ -45,82 +44,7 @@ import { getAvatarIconSize, getAvatarTextFontSize } from './avatar.utils';
  * @cssproperty --mdc-avatar-loading-overlay-background-color -
  *  Allows customization of the loading overlay background color.
  */
-class Avatar extends Component {
-  /**
-   * The src is the url which will be used to display the avatar.
-   * When the src is loading, we will display the initials as a placeholder.
-   */
-  @property({ type: String })
-  src?: string;
-
-  /**
-   * The initials to be displayed for the avatar.
-   */
-  @property({ type: String })
-  initials?: string;
-
-  /**
-   * The presence is the status which can be used to display the
-   * activity state of a user or a space within an avatar component.
-   *
-   * Acceptable values include:
-   * - `active`
-   * - `away`
-   * - `away-calling`
-   * - `busy`
-   * - `dnd`
-   * - `meeting`
-   * - `on-call`
-   * - `on-device`
-   * - `on-mobile`
-   * - `pause`
-   * - `pto`
-   * - `presenting`
-   * - `quiet`
-   * - `scheduled`
-   */
-  @property({ type: String })
-  presence?: PresenceType;
-
-  /**
-   * Acceptable values include:
-   * - xx_small
-   * - x_small
-   * - small
-   * - midsize
-   * - large
-   * - x_large
-   * - xx_large
-   *
-   * @default x_small
-   */
-  @property({ type: String, reflect: true })
-  size: AvatarSize = DEFAULTS.SIZE;
-
-  /**
-   * Name of the icon to be displayed inside the Avatar.
-   * Must be a valid icon name.
-   */
-  @property({ type: String, attribute: 'icon-name' })
-  iconName?: IconNames;
-
-  /**
-   * The counter is the number which can be displayed on the avatar.
-   * The maximum number is 99 and if the give number is greater than 99,
-   * then the avatar will be displayed as `99+`.
-   * If the given number is a negative number,
-   * then the avatar will be displayed as `0`.
-   */
-  @property({ type: Number })
-  counter?: number;
-
-  /**
-   * Represents the typing indicator when the user is typing.
-   * @default false
-   */
-  @property({ type: Boolean, attribute: 'is-typing' })
-  isTyping = false;
-
+class Avatar extends AvatarComponentMixin(Component) {
   /**
    * @internal
    */
