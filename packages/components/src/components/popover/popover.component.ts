@@ -276,8 +276,8 @@ class Popover extends FocusTrapMixin(Component) {
         document.addEventListener('keydown', this.onEscapeKeydown);
       }
 
-      if (this.interactive) {
-        this.triggerElement?.setAttribute('aria-expanded', 'true');
+      this.triggerElement?.setAttribute('aria-expanded', 'true');
+      if (this.role !== 'tooltip') {
         this.triggerElement?.setAttribute('aria-haspopup', 'true');
       }
     } else {
@@ -292,8 +292,8 @@ class Popover extends FocusTrapMixin(Component) {
       }
 
       this.deactivateFocusTrap?.();
-      if (this.interactive) {
-        this.triggerElement?.removeAttribute('aria-expanded');
+      this.triggerElement?.removeAttribute('aria-expanded');
+      if (this.role !== 'tooltip') {
         this.triggerElement?.removeAttribute('aria-haspopup');
       }
       if (this.focusBackToTrigger) {
@@ -428,10 +428,6 @@ class Popover extends FocusTrapMixin(Component) {
         class='popover-container'  
         ?visible="${this.visible}" 
         ?inverted="${this.invertedColor}"
-        aria-label=${ifDefined(this.ariaLabel ?? undefined)}
-        aria-labelledby=${ifDefined(this.ariaLabelledBy ?? undefined)}
-        role=${ifDefined(this.role ?? undefined)}
-        aria-describedby=${ifDefined(this.ariaDecribeBy ?? undefined)}
         aria-modal=${ifDefined(this.interactive ? 'true' : undefined)}
         style="z-index: ${this.setIndex};"
         >
