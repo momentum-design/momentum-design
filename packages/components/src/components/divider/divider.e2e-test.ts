@@ -2,7 +2,7 @@
 /* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import type { DividerOrientation, DividerVariant } from './divider.types';
+import type { Directions, DividerOrientation, DividerVariant } from './divider.types';
 import { DEFAULTS, DIRECTIONS, DIVIDER_ORIENTATION, DIVIDER_VARIANT } from './divider.constants';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
@@ -10,8 +10,8 @@ type SetupOptions = {
   componentsPage: ComponentsPage;
   orientation?: DividerOrientation;
   variant?: DividerVariant;
-  arrowDirection?: string;
-  buttonPosition?: string;
+  'arrow-direction'?: Directions;
+  'button-position'?: Directions;
   children?: string;
   dataType?: string
 };
@@ -20,27 +20,26 @@ const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
-     <div style="height: 25rem; margin: 1rem">
+      <div style="height: 25rem; margin: 1rem">
        <mdc-divider
         ${restArgs.orientation ? `orientation="${restArgs.orientation}"` : ''}
         ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
-        ${restArgs.arrowDirection ? `arrow-direction="${restArgs.arrowDirection}"` : ''}
-        ${restArgs.buttonPosition ? `button-position="${restArgs.buttonPosition}"` : ''}
-      >${restArgs.children || ''}</mdc-divider>
+        ${restArgs['arrow-direction'] ? `arrow-direction="${restArgs['arrow-direction']}"` : ''}
+        ${restArgs['button-position'] ? `button-position="${restArgs['button-position']}"` : ''}
+      >${restArgs.children}
+      </mdc-divider>
       </div>
     `,
     clearDocument: true,
   });
   const divider = componentsPage.page.locator('mdc-divider');
-  await divider.waitFor();
+  await divider.waitFor({ state: 'attached' });
   return divider;
 };
 
 // Tests Divider attributes based on type of children
-const attributeTestCases = async (componentsPage: ComponentsPage, args: SetupOptions = { componentsPage }) => {
-  const { ...props } = args;
-  const divider = await setup({ ...props });
-  await componentsPage.setAttributes(divider, { 'data-type': 'mdc-primary-divider' });
+const attributeTestCases = async (componentsPage: ComponentsPage, children: string) => {
+  const divider = await setup({ componentsPage, children });
   await test.step('default and invalid attributes for divider', async () => {
     const assertDefaultAttributes = async () => {
       await expect(divider).toHaveAttribute('orientation', DEFAULTS.ORIENTATION);
@@ -79,13 +78,13 @@ const attributeTestCases = async (componentsPage: ComponentsPage, args: SetupOpt
     }
     for (const arrowDirection of Object.values(DIRECTIONS)) {
       await test.step(`attribute arrowDirection ${arrowDirection} should be present as expected`, async () => {
-        await componentsPage.setAttributes(divider, { arrowDirection });
+        await componentsPage.setAttributes(divider, { 'arrow-direction': arrowDirection });
         await expect(divider).toHaveAttribute('arrow-direction', arrowDirection);
       });
     }
     for (const buttonPosition of Object.values(DIRECTIONS)) {
       await test.step(`attribute buttonPosition ${buttonPosition} should be present as expected`, async () => {
-        await componentsPage.setAttributes(divider, { buttonPosition });
+        await componentsPage.setAttributes(divider, { 'button-position': buttonPosition });
         await expect(divider).toHaveAttribute('button-position', buttonPosition);
       });
     }
@@ -93,23 +92,26 @@ const attributeTestCases = async (componentsPage: ComponentsPage, args: SetupOpt
 };
 
 test.describe.parallel('mdc-divider', () => {
-  // test('Attributes for DividerComponent', async ({ componentsPage }) => {
-  //   const NoChildren = '';
-  //   const Text = '<mdc-text tagname="h1">Label</mdc-text>';
-  //   const Grabber = '<mdc-button role="button" aria-label="divider label" aria-expanded="false"></mdc-button>';
-  //   for (const children of [NoChildren, Text, Grabber]) {
-  //     await test.step(`${children} as Divider type`, async () => {
-  //       /**
-  //        * ATTRIBUTES
-  //        */
-  //       await test.step('attributes', async () => {
-  //         await attributeTestCases(componentsPage);
-  //       });
-  //     });
-  //   }
-  // });
+  test.use({ viewport: { width: 800, height: 800 } });
+
+  test('Attributes for DividerComponent', async ({ componentsPage }) => {
+    const NoChildren = '';
+    const Text = '<mdc-text tagname="h1">Label</mdc-text>';
+    const Grabber = '<mdc-button role="button" aria-label="divider label" aria-expanded="false"></mdc-button>';
+    for (const children of [NoChildren, Text, Grabber]) {
+      await test.step(`${children} as Divider type`, async () => {
+        /**
+         * ATTRIBUTES
+         */
+        await test.step('attributes', async () => {
+          await attributeTestCases(componentsPage, children);
+        });
+      });
+    }
+  });
 
   test('VisualRegression and accessibility for DividerComponent', async ({ componentsPage }) => {
+    const NoChildren = '';
     const Text = '<mdc-text tagname="h1">Label</mdc-text>';
     const Grabber = `<mdc-button variant="secondary" role="button" aria-label="divider label" 
     aria-expanded="false" prefix-icon="arrow-down-regular"></mdc-button>`;
@@ -117,21 +119,17 @@ test.describe.parallel('mdc-divider', () => {
     const dividerStickerSheet = new StickerSheet(componentsPage, 'mdc-divider');
     await test.step('Horizontal', async () => {
       // for primary type
-      dividerStickerSheet.setAttributes({ orientation: DIVIDER_ORIENTATION.HORIZONTAL,
-        'data-type': 'mdc-primary-divider' });
+      dividerStickerSheet.setAttributes({ orientation: DIVIDER_ORIENTATION.HORIZONTAL });
+      dividerStickerSheet.setChildren(NoChildren);
       await dividerStickerSheet.createMarkupWithCombination({ variant: DIVIDER_VARIANT });
 
       // for text type
-      dividerStickerSheet.setAttributes({ orientation: DIVIDER_ORIENTATION.HORIZONTAL,
-        'data-type': 'mdc-text-divider',
-      });
+      dividerStickerSheet.setAttributes({ orientation: DIVIDER_ORIENTATION.HORIZONTAL });
       dividerStickerSheet.setChildren(Text);
       await dividerStickerSheet.createMarkupWithCombination({ variant: DIVIDER_VARIANT });
 
       // for grabber type
-      dividerStickerSheet.setAttributes({ orientation: DIVIDER_ORIENTATION.HORIZONTAL,
-        'data-type': 'mdc-grabber-divider',
-      });
+      dividerStickerSheet.setAttributes({ orientation: DIVIDER_ORIENTATION.HORIZONTAL });
       dividerStickerSheet.setChildren(Grabber);
       await dividerStickerSheet.createMarkupWithCombination({ variant: DIVIDER_VARIANT,
         'arrow-direction':
@@ -139,8 +137,20 @@ test.describe.parallel('mdc-divider', () => {
         'button-position': DIRECTIONS });
 
       await dividerStickerSheet.mountStickerSheet();
+      const container = dividerStickerSheet.getWrapperContainer();
+      await container.evaluate((wrapper) => {
+        const modifiedWrapper = wrapper;
+        modifiedWrapper.style.padding = '1.25rem';
+      });
+      await container.evaluate((el) => {
+        const wrappers = el.querySelectorAll('.componentRowWrapper') as NodeListOf<HTMLElement>;
+        Array.from(wrappers).forEach((wrapper: any) => {
+          const modifiedWrapper = wrapper;
+          modifiedWrapper.style.gap = '1.5rem';
+          modifiedWrapper.style.marginBottom = '3.5rem';
+        });
+      });
       await test.step('matches screenshot of element', async () => {
-        const container = dividerStickerSheet.getWrapperContainer();
         await componentsPage.visualRegression.takeScreenshot('mdc-divider-horizontal', { element: container });
       });
 
@@ -154,21 +164,12 @@ test.describe.parallel('mdc-divider', () => {
 
     await test.step('Vertical', async () => {
       // for primary type
-      dividerStickerSheet.setAttributes({ orientation: DIVIDER_ORIENTATION.VERTICAL,
-        'data-type': 'mdc-primary-divider' });
-      await dividerStickerSheet.createMarkupWithCombination({ variant: DIVIDER_VARIANT });
-
-      // for text type
-      dividerStickerSheet.setAttributes({ orientation: DIVIDER_ORIENTATION.VERTICAL,
-        'data-type': 'mdc-text-divider',
-      });
-      dividerStickerSheet.setChildren(Text);
+      dividerStickerSheet.setAttributes({ orientation: DIVIDER_ORIENTATION.VERTICAL });
+      dividerStickerSheet.setChildren(NoChildren);
       await dividerStickerSheet.createMarkupWithCombination({ variant: DIVIDER_VARIANT });
 
       // for grabber type
-      dividerStickerSheet.setAttributes({ orientation: DIVIDER_ORIENTATION.VERTICAL,
-        'data-type': 'mdc-grabber-divider',
-      });
+      dividerStickerSheet.setAttributes({ orientation: DIVIDER_ORIENTATION.VERTICAL });
       dividerStickerSheet.setChildren(Grabber);
       await dividerStickerSheet.createMarkupWithCombination({ variant: DIVIDER_VARIANT,
         'arrow-direction':
@@ -176,8 +177,24 @@ test.describe.parallel('mdc-divider', () => {
         'button-position': DIRECTIONS });
 
       await dividerStickerSheet.mountStickerSheet();
+      const container = dividerStickerSheet.getWrapperContainer();
+      await container.evaluate((wrapper) => {
+        const modifiedWrapper = wrapper;
+        modifiedWrapper.style.display = 'flex';
+        modifiedWrapper.style.gap = '3.5rem';
+        modifiedWrapper.style.height = '90%';
+        modifiedWrapper.style.padding = '1.25rem';
+      });
+
+      await container.evaluate((el) => {
+        const rowWrappers = el.querySelectorAll('.componentRowWrapper') as NodeListOf<HTMLElement>;
+        Array.from(rowWrappers).forEach((rowWrapper: any) => {
+          const modifiedRowWrapper = rowWrapper;
+          modifiedRowWrapper.style.gap = '3.5rem';
+          modifiedRowWrapper.style.marginBottom = '3.5rem';
+        });
+      });
       await test.step('matches screenshot of element', async () => {
-        const container = dividerStickerSheet.getWrapperContainer();
         await componentsPage.visualRegression.takeScreenshot('mdc-divider-vertical', { element: container });
       });
 

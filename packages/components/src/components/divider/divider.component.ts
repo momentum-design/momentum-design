@@ -83,7 +83,7 @@ class Divider extends Component {
    * @default 'negative'
    */
   @property({ type: String, attribute: 'arrow-direction', reflect: true })
-  arrowDirection: string = DEFAULTS.ARROW_DIRECTION;
+  arrowDirection: Directions = DEFAULTS.ARROW_DIRECTION;
 
   /**
    * Position of the button, if applicable.
@@ -94,7 +94,7 @@ class Divider extends Component {
    * @default 'negative'
    */
   @property({ type: String, attribute: 'button-position', reflect: true })
-  buttonPosition: string = DEFAULTS.BUTTON_DIRECTION;
+  buttonPosition: Directions = DEFAULTS.BUTTON_DIRECTION;
 
   /**
    * Sets the variant attribute for the divider component.
@@ -152,13 +152,13 @@ class Divider extends Component {
    * This method updates the DOM element dynamically if a grabber button is present.
    */
   private setGrabberButton(): void {
-    const buttonElement = this.querySelector('mdc-button');
-    if (!buttonElement) return;
-
     this.ensureValidDirections();
-    const iconType = this.getArrowIcon();
-    buttonElement.setAttribute('variant', 'secondary');
-    buttonElement.setAttribute('prefix-icon', iconType);
+    const buttonElement = this.querySelector('mdc-button');
+    if (buttonElement) {
+      const iconType = this.getArrowIcon();
+      buttonElement.setAttribute('variant', 'secondary');
+      buttonElement.setAttribute('prefix-icon', iconType);
+    }
   }
 
   /**
