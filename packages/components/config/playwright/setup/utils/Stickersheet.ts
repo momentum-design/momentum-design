@@ -81,7 +81,6 @@ class StickerSheet {
     } else {
       this.markupHTML += childrenEl;
     }
-    this.rowId += 1;
   }
 
   /**
@@ -93,6 +92,7 @@ class StickerSheet {
     const childrenEl = this.children
       ? `<${this.tagname} id='${this.tagname}-${this.rowId}' ${attributesString}>${this.children}</${this.tagname}>`
       : `<${this.tagname} id='${this.tagname}-${this.rowId}' ${attributesString}></${this.tagname}>`;
+    this.rowId += 1;
 
     return childrenEl;
   }
