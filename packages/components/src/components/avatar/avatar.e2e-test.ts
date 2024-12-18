@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-await-in-loop */
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import { SIZE as AVATAR_SIZE, TYPE as PRESENCE_TYPE } from '../presence/presence.constants';
@@ -87,8 +89,17 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       });
     });
     await avatarStickerSheet.mountStickerSheet();
+    const container = avatarStickerSheet.getWrapperContainer();
+    const avatars = await container.locator('mdc-avatar[src]').all();
+    const src = 'https://picsum.photos/id/63/256';
+    for (const avatarComp of avatars) {
+      const image = avatarComp.locator('img');
+      await image.waitFor();
+      await expect(avatarComp).toHaveAttribute('src', src);
+      await expect(image).toHaveAttribute('src', src);
+    }
+
     await test.step('matches screenshot of element', async () => {
-      const container = avatarStickerSheet.getWrapperContainer();
       await componentsPage.visualRegression.takeScreenshot('mdc-avatar', { element: container });
     });
   });
