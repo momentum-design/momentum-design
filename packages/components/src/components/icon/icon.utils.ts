@@ -7,11 +7,18 @@
  * @param url - The base url of the icon
  * @param name - The name of the icon
  * @param fileExtension - The file extension of the icon
+ * @param signal - The signal to abort the fetch.
+ * It is used to cancel the fetch when the component is disconnected or updated.
  * @returns The valid icon element
  * @throws Error if the response is not ok
  */
-const dynamicSVGImport = async (url: string, name: string, fileExtension: string): Promise<Element> => {
-  const response = await fetch(`${url}/${name}.${fileExtension}`);
+const dynamicSVGImport = async (
+  url: string,
+  name: string,
+  fileExtension: string,
+  signal: AbortSignal,
+): Promise<Element> => {
+  const response = await fetch(`${url}/${name}.${fileExtension}`, { signal });
 
   if (!response.ok) {
     throw new Error('There was a problem while fetching the icon!');
