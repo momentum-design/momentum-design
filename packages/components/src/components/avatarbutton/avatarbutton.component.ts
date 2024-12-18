@@ -4,6 +4,7 @@ import { AvatarComponentMixin } from '../../utils/mixins/AvatarComponentMixin';
 import Button from '../button/button.component';
 import { DEFAULTS as BUTTON_DEFAULTS } from '../button/button.constants';
 import type { ButtonColor, ButtonVariant } from '../button/button.types';
+import { SIZE as AVATAR_SIZE } from '../presence/presence.constants';
 import styles from './avatarbutton.styles';
 
 /**
@@ -32,6 +33,21 @@ class AvatarButton extends AvatarComponentMixin(Button) {
     this.role = 'button';
     this.type = BUTTON_DEFAULTS.TYPE;
   }
+
+  protected override setSize() {
+    // The avatar sizes and the button sizes are different.
+    // If the given size is a valid avatar size, then we will not call the parent setSize() method.
+    if (Object.values(AVATAR_SIZE).includes(this.avatarSize)) {
+      return;
+    }
+    super.setSize(this.size);
+  }
+
+  // An empty setColor method is called to unset the color from the parent button component.
+  protected override setColor() {}
+
+  // An empty setVariant method is called to unset the variant from the parent button component.
+  protected override setVariant() {}
 
   public override render() {
     return html`

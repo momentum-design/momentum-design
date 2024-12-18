@@ -5,6 +5,7 @@ const styles = [hostFitContentStyles, css`
   :host {
     padding: unset;
     margin: unset;
+    outline: none;
     border-radius: 0.25rem;
   }
 `, hostFocusRingStyles];

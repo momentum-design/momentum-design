@@ -62,6 +62,7 @@ const meta: Meta = {
       'tabIndex',
       'type',
       'variant',
+      'avatarSize',
     ]),
     ...classArgType,
     ...styleArgType,

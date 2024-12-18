@@ -260,7 +260,7 @@ class Button extends Component {
    *
    * @param variant - The variant to set.
    */
-  private setVariant(variant: ButtonVariant) {
+  protected setVariant(variant: ButtonVariant) {
     this.setAttribute('variant', Object.values(BUTTON_VARIANTS).includes(variant) ? variant : DEFAULTS.VARIANT);
   }
 
@@ -288,7 +288,7 @@ class Button extends Component {
    *
    * @param color - The color to set.
    */
-  private setColor(color: ButtonColor) {
+  protected setColor(color: ButtonColor) {
     if (!Object.values(BUTTON_COLORS).includes(color) || this.variant === BUTTON_VARIANTS.TERTIARY) {
       this.setAttribute('color', `${DEFAULTS.COLOR}`);
     } else {
