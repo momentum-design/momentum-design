@@ -202,8 +202,6 @@ class Divider extends Component {
    * @param slot - default slot of divider
    */
   private inferDividerType() {
-    this.setAttribute('data-type', 'mdc-primary-divider');
-
     const slot = this.shadowRoot?.querySelector('slot');
     const assignedElements = slot?.assignedElements({ flatten: true }) || [];
     if (assignedElements.length > 1) return;
@@ -217,6 +215,11 @@ class Divider extends Component {
       this.setAttribute('data-type', 'mdc-grabber-divider');
       this.setGrabberButton();
     }
+  }
+
+  constructor() {
+    super();
+    this.setAttribute('data-type', 'mdc-primary-divider');
   }
 
   protected override render() {
