@@ -1,13 +1,9 @@
 import { CSSResult, html } from 'lit';
-import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { AvatarComponentMixin } from '../../utils/mixins/AvatarComponentMixin';
-import { DEFAULTS as AVATAR_DEFAULTS } from '../avatar/avatar.constants';
-import type { AvatarSize } from '../avatar/avatar.types';
 import Button from '../button/button.component';
 import { DEFAULTS as BUTTON_DEFAULTS } from '../button/button.constants';
-import type { ButtonColor, ButtonVariant, IconButtonSize, PillButtonSize } from '../button/button.types';
-import { SIZE as AVATAR_SIZES } from '../presence/presence.constants';
+import type { ButtonColor, ButtonVariant } from '../button/button.types';
 import styles from './avatarbutton.styles';
 
 /**
@@ -22,21 +18,6 @@ import styles from './avatarbutton.styles';
  * @tagname mdc-avatarbutton
  */
 class AvatarButton extends AvatarComponentMixin(Button) {
-  /**
-   * Acceptable values include:
-   * - xx_small
-   * - x_small
-   * - small
-   * - midsize
-   * - large
-   * - x_large
-   * - xx_large
-   *
-   * @default x_small
-   */
-  @property({ type: String, reflect: true })
-  override size: AvatarSize = AVATAR_DEFAULTS.SIZE;
-
   constructor() {
     super();
 
@@ -52,13 +33,6 @@ class AvatarButton extends AvatarComponentMixin(Button) {
     this.type = BUTTON_DEFAULTS.TYPE;
   }
 
-  protected override setSize() {
-    if (Object.values(AVATAR_SIZES).includes(this.size)) {
-      return;
-    }
-    super.setSize(this.size as unknown as PillButtonSize | IconButtonSize);
-  }
-
   public override render() {
     return html`
       <mdc-avatar
@@ -68,7 +42,7 @@ class AvatarButton extends AvatarComponentMixin(Button) {
         icon-name="${ifDefined(this.iconName)}"
         initials="${ifDefined(this.initials)}"
         presence="${ifDefined(this.presence)}"
-        size="${ifDefined(this.size)}"
+        size="${ifDefined(this.avatarSize)}"
         src="${ifDefined(this.src)}"
       ></mdc-avatar>
     `;

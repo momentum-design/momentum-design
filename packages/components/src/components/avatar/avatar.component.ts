@@ -1,13 +1,13 @@
-import { CSSResult, html, nothing } from 'lit';
 import type { PropertyValues, TemplateResult } from 'lit';
-import { property, state } from 'lit/decorators.js';
+import { CSSResult, html, nothing } from 'lit';
+import { state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
+import { AvatarComponentMixin } from '../../utils/mixins/AvatarComponentMixin';
 import { AVATAR_TYPE, DEFAULTS, MAX_COUNTER } from './avatar.constants';
 import styles from './avatar.styles';
-import type { AvatarSize, AvatarType } from './avatar.types';
+import type { AvatarType } from './avatar.types';
 import { getAvatarIconSize, getAvatarTextFontSize } from './avatar.utils';
-import { AvatarComponentMixin } from '../../utils/mixins/AvatarComponentMixin';
 
 /**
  * The `mdc-avatar` component is used to represent a person or a space.
@@ -46,21 +46,6 @@ import { AvatarComponentMixin } from '../../utils/mixins/AvatarComponentMixin';
  */
 class Avatar extends AvatarComponentMixin(Component) {
   /**
-   * Acceptable values include:
-   * - xx_small
-   * - x_small
-   * - small
-   * - midsize
-   * - large
-   * - x_large
-   * - xx_large
-   *
-   * @default x_small
-   */
-  @property({ type: String, reflect: true })
-  override size: AvatarSize = DEFAULTS.SIZE;
-
-  /**
    * @internal
    */
   @state() private isPhotoLoaded = false;
@@ -80,7 +65,7 @@ class Avatar extends AvatarComponentMixin(Component) {
     }
     if (this.presence) {
       return html`
-        <mdc-presence class="presence" type="${this.presence}" size="${this.size}"></mdc-presence>
+        <mdc-presence class="presence" type="${this.presence}" size="${this.avatarSize}"></mdc-presence>
       `;
     }
     return nothing;
@@ -145,7 +130,7 @@ class Avatar extends AvatarComponentMixin(Component) {
       <mdc-icon
         name="${ifDefined(name)}"
         length-unit="rem"
-        size="${getAvatarIconSize(this.size)}"
+        size="${getAvatarIconSize(this.avatarSize)}"
       ></mdc-icon>
     `;
   }
@@ -161,7 +146,7 @@ class Avatar extends AvatarComponentMixin(Component) {
   private textTemplate(content: string): TemplateResult {
     return html`
       <mdc-text
-        type="${getAvatarTextFontSize(this.size)}"
+        type="${getAvatarTextFontSize(this.avatarSize)}"
         tagname="span"
       >
         ${content}
