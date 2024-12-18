@@ -1,7 +1,7 @@
 import { CSSResult, html, PropertyValueMap } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import styles from './button.styles';
 import { Component } from '../../models';
+import type { IconNames } from '../icon/icon.types';
 import {
   BUTTON_COLORS,
   BUTTON_TYPE_INTERNAL,
@@ -10,16 +10,16 @@ import {
   ICON_BUTTON_SIZES,
   PILL_BUTTON_SIZES,
 } from './button.constants';
+import styles from './button.styles';
 import type {
   ButtonColor,
   ButtonType,
-  ButtonVariant,
-  PillButtonSize,
-  IconButtonSize,
   ButtonTypeInternal,
+  ButtonVariant,
+  IconButtonSize,
+  PillButtonSize,
 } from './button.types';
 import { getIconNameWithoutStyle, getIconSize } from './button.utils';
-import type { IconNames } from '../icon/icon.types';
 
 /**
  * `mdc-button` is a component that can be configured in various ways to suit different use cases.
@@ -260,7 +260,7 @@ class Button extends Component {
    *
    * @param variant - The variant to set.
    */
-  private setVariant(variant: ButtonVariant) {
+  protected setVariant(variant: ButtonVariant) {
     this.setAttribute('variant', Object.values(BUTTON_VARIANTS).includes(variant) ? variant : DEFAULTS.VARIANT);
   }
 
@@ -271,7 +271,7 @@ class Button extends Component {
    *
    * @param size - The size to set.
    */
-  private setSize(size: PillButtonSize | IconButtonSize) {
+  protected setSize(size: PillButtonSize | IconButtonSize) {
     const isIconType = this.typeInternal === BUTTON_TYPE_INTERNAL.ICON;
     const isValidSize = isIconType
       ? (Object.values(ICON_BUTTON_SIZES).includes(size)
@@ -288,7 +288,7 @@ class Button extends Component {
    *
    * @param color - The color to set.
    */
-  private setColor(color: ButtonColor) {
+  protected setColor(color: ButtonColor) {
     if (!Object.values(BUTTON_COLORS).includes(color) || this.variant === BUTTON_VARIANTS.TERTIARY) {
       this.setAttribute('color', `${DEFAULTS.COLOR}`);
     } else {
