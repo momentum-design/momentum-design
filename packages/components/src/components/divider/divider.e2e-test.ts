@@ -143,11 +143,11 @@ test.describe.parallel('mdc-divider', () => {
         modifiedWrapper.style.padding = '1.25rem';
       });
       await container.evaluate((el) => {
-        const wrappers = el.querySelectorAll('.componentRowWrapper') as NodeListOf<HTMLElement>;
-        Array.from(wrappers).forEach((wrapper: any) => {
-          const modifiedWrapper = wrapper;
-          modifiedWrapper.style.gap = '1.5rem';
-          modifiedWrapper.style.marginBottom = '3.5rem';
+        const rowWrappers = el.querySelectorAll('.componentRowWrapper') as NodeListOf<HTMLElement>;
+        Array.from(rowWrappers).forEach((rowWrapper) => {
+          const modifiedRowWrapper = rowWrapper;
+          modifiedRowWrapper.style.gap = '1.5rem';
+          modifiedRowWrapper.style.marginBottom = '3.5rem';
         });
       });
       await test.step('matches screenshot of element', async () => {
@@ -188,7 +188,7 @@ test.describe.parallel('mdc-divider', () => {
 
       await container.evaluate((el) => {
         const rowWrappers = el.querySelectorAll('.componentRowWrapper') as NodeListOf<HTMLElement>;
-        Array.from(rowWrappers).forEach((rowWrapper: any) => {
+        Array.from(rowWrappers).forEach((rowWrapper) => {
           const modifiedRowWrapper = rowWrapper;
           modifiedRowWrapper.style.gap = '3.5rem';
           modifiedRowWrapper.style.marginBottom = '3.5rem';
