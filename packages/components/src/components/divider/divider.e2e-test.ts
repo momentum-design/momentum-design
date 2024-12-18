@@ -33,7 +33,7 @@ const setup = async (args: SetupOptions) => {
     clearDocument: true,
   });
   const divider = componentsPage.page.locator('mdc-divider');
-  await divider.waitFor({ state: 'attached' });
+  await divider.waitFor();
   return divider;
 };
 
