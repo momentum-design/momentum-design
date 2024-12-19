@@ -51,7 +51,8 @@ const testToRun = async (componentsPage: ComponentsPage) => {
    */
   await test.step('visual-regression', async () => {
     const stickerSheet = new StickerSheet(componentsPage, 'mdc-marker');
-    await stickerSheet.mountComponents({ variant: MARKER_VARIANTS });
+    await stickerSheet.createMarkupWithCombination({ variant: MARKER_VARIANTS });
+    await stickerSheet.mountStickerSheet();
     const container = stickerSheet.getWrapperContainer();
     await container.evaluate((el) => {
       const wrapper = el.querySelector('.componentRowWrapper') as HTMLElement;
