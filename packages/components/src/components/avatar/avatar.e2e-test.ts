@@ -50,6 +50,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
    */
   await test.step('visual-regression', async () => {
     const avatarStickerSheet = new StickerSheet(componentsPage, 'mdc-avatar');
+    const src = 'https://picsum.photos/id/63/256';
 
     await test.step('should add initials based avatar on sticker sheet', async () => {
       avatarStickerSheet.setAttributes({ initials: 'XS' });
@@ -74,7 +75,6 @@ const testToRun = async (componentsPage: ComponentsPage) => {
     });
 
     await test.step('should add image based avatar on sticker sheet', async () => {
-      const src = 'https://picsum.photos/id/63/256';
       avatarStickerSheet.setAttributes({ src });
       await avatarStickerSheet.createMarkupWithCombination({
         size: AVATAR_SIZE,
@@ -91,7 +91,6 @@ const testToRun = async (componentsPage: ComponentsPage) => {
     await avatarStickerSheet.mountStickerSheet();
     const container = avatarStickerSheet.getWrapperContainer();
     const avatars = await container.locator('mdc-avatar[src]').all();
-    const src = 'https://picsum.photos/id/63/256';
     for (const avatarComp of avatars) {
       const image = avatarComp.locator('img');
       await image.waitFor();
