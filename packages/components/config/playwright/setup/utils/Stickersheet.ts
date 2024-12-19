@@ -29,7 +29,7 @@ class StickerSheet {
    * Sets the children for the component
    * @param children - children for the component.
    */
-  public setChildren(children: any) {
+  public setChildren(children: string) {
     this.children = children;
   }
 
