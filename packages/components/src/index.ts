@@ -7,6 +7,7 @@ import Presence from './components/presence';
 import Text from './components/text';
 import Button from './components/button';
 import Bullet from './components/bullet';
+import Marker from './components/marker';
 import Divider from './components/divider';
 
 import type { TextType } from './components/text/text.types';
@@ -21,6 +22,7 @@ export {
   Text,
   Button,
   Bullet,
+  Marker,
   Divider,
 };
 
