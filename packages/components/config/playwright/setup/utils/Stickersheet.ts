@@ -17,7 +17,7 @@ class StickerSheet {
   private markupHTML: string = '';
 
   constructor(componentPage: ComponentsPage, tagName: string) {
-    if (tagName) {
+    if (!tagName) {
       throw new Error('tagname is required');
     }
 
