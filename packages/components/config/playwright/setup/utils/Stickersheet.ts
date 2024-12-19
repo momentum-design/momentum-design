@@ -15,7 +15,7 @@ class StickerSheet {
 
   private component?: Locator;
 
-  private children?: any;
+  private children?: string;
 
   private attributes: AttributesType = {};
 
@@ -42,7 +42,7 @@ class StickerSheet {
    * Sets the children for the component
    * @param children - children for the component.
    */
-  public setChildren(children: any) {
+  public setChildren(children: string) {
     this.children = children;
   }
 
@@ -271,6 +271,7 @@ class StickerSheet {
       clearDocument: true,
     });
     await this.componentPage.page.waitForTimeout(1000);
+    this.markupHTML = '';
   }
 }
 
