@@ -18,6 +18,7 @@ import { MARKER_VARIANTS } from './marker.constants';
  * @cssproperty --mdc-marker-striped-color - Allows customization of the default stripes in striped variant.
  * @cssproperty --mdc-marker-striped-background-color - Allows customization of the default background color
  * in striped variant.
+ * @cssproperty --mdc-marker-width - Allows customization of the default width.
  */
 class Marker extends Component {
   /**

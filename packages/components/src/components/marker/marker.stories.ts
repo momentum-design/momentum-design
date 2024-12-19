@@ -20,7 +20,7 @@ const meta: Meta = {
   },
   argTypes: {
     variant: {
-      control: 'select',
+      control: 'radio',
       options: Object.values(MARKER_VARIANTS),
     },
     ...classArgType,
