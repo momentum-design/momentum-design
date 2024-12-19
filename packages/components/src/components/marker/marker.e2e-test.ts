@@ -56,7 +56,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
     const container = stickerSheet.getWrapperContainer();
     await container.evaluate((el) => {
       const wrapper = el.querySelector('.componentRowWrapper') as HTMLElement;
-      wrapper.style.height = '100px';
+      wrapper.style.height = '6.25rem';
     });
 
     await test.step('matches screenshot of different variants', async () => {
