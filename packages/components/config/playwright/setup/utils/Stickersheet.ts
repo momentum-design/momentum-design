@@ -17,6 +17,10 @@ class StickerSheet {
   private markupHTML: string = '';
 
   constructor(componentPage: ComponentsPage, tagName: string) {
+    if (tagName) {
+      throw new Error('tagname is required');
+    }
+
     this.componentPage = componentPage;
     this.tagname = tagName;
   }
@@ -37,7 +41,7 @@ class StickerSheet {
     this.attributes = attributes;
   }
 
-  private getAttributesAsString() {
+  private formatAttributesAsString() {
     return Object.entries(this.attributes)
       .map(([key, value]) => value ? `${key}="${value}"` : `${key}`)
       .join(' ');
@@ -88,7 +92,7 @@ class StickerSheet {
    * @returns A string representing the new element.
    */
   private addComponentToSheet() {
-    const attributesString = this.getAttributesAsString();
+    const attributesString = this.formatAttributesAsString();
     const childrenEl = this.children
       ? `<${this.tagname} id='${this.tagname}-${this.rowId}' ${attributesString}>${this.children}</${this.tagname}>`
       : `<${this.tagname} id='${this.tagname}-${this.rowId}' ${attributesString}></${this.tagname}>`;
@@ -115,10 +119,6 @@ class StickerSheet {
   }
 
   public async createMarkupWithCombination(combinations: Record<string, Record<string, any>>, createNewRow = false) {
-    if (!this.tagname) {
-      throw new Error('tagname is required');
-    }
-
     if (Object.keys(combinations).length === 0) {
       this.createComponentsMarkupHTML(this.addComponentToSheet());
       return;
