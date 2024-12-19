@@ -10,11 +10,9 @@ type SetupOptions = {
 };
 
 const setup = async (args: SetupOptions) => {
-  const { componentsPage } = args;
+  const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
-    html: `
-      <mdc-marker></mdc-marker>
-    `,
+    html: `<mdc-marker ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}></mdc-marker>`,
     clearDocument: true,
   });
   const marker = componentsPage.page.locator('mdc-marker');

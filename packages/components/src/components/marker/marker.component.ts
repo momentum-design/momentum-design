@@ -6,8 +6,11 @@ import type { MarkerVariants } from './marker.types';
 import { MARKER_VARIANTS } from './marker.constants';
 
 /**
- * `mdc-marker` which renders the default form which is a vertical line (4px wide)
- * Marker Variants:
+ * `mdc-marker`, which is a vertical line and
+ * used to draw attention to specific parts of
+ * the content or to signify important information.
+ *
+ * **Marker Variants**:
  * - **solid**: Solid marker.
  * - **striped**: Striped marker.
  *
@@ -22,12 +25,13 @@ import { MARKER_VARIANTS } from './marker.constants';
  */
 class Marker extends Component {
   /**
-   * There are two variants of marker: solid and striped. They are styled differently.
+   * There are two variants of markers, each with a width of 0.25rem:
    * - **solid**: Solid marker.
    * - **striped**: Striped marker.
    * @default solid
    */
-  @property({ type: String, reflect: true }) variant: MarkerVariants = MARKER_VARIANTS.SOLID;
+  @property({ type: String, reflect: true })
+  public variant: MarkerVariants = MARKER_VARIANTS.SOLID;
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
