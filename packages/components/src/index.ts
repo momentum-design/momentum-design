@@ -8,6 +8,7 @@ import Text from './components/text';
 import Button from './components/button';
 import Bullet from './components/bullet';
 import Divider from './components/divider';
+import Modalcontainer from './components/modalcontainer';
 
 import type { TextType } from './components/text/text.types';
 
@@ -22,6 +23,7 @@ export {
   Button,
   Bullet,
   Divider,
+  Modalcontainer,
 };
 
 export type {
