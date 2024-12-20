@@ -13,12 +13,12 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/marker',
+  title: 'Components/decorator/marker',
   tags: ['autodocs'],
   component: 'mdc-marker',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     variant: {
