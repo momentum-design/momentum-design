@@ -22,7 +22,7 @@ const hideControls = (keys: Array<string>) => {
   const objectReturnValue: Record<string, any> = {};
   keys.forEach((key) => {
     objectReturnValue[key] = {
-      table: { disable: true }
+      table: { disable: true },
     };
   });
   return objectReturnValue;

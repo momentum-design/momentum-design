@@ -7,6 +7,7 @@ import Presence from './components/presence';
 import Text from './components/text';
 import Button from './components/button';
 import Bullet from './components/bullet';
+import AvatarButton from './components/avatarbutton';
 import Marker from './components/marker';
 import Divider from './components/divider';
 
@@ -22,6 +23,7 @@ export {
   Text,
   Button,
   Bullet,
+  AvatarButton,
   Marker,
   Divider,
 };
