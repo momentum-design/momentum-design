@@ -23,11 +23,11 @@ import{u as g,C as i,n as u}from"./index-HW6KrQZO.js";import{i as v,k as h}from"
       var(--mdc-marker-striped-background-color) 0.375rem
     );
   }
-`,I=[S],T=g.constructTagName("marker"),s={SOLID:"solid",STRIPED:"striped"};var _=Object.defineProperty,E=(e,m,c,R)=>{for(var r=void 0,t=e.length-1,n;t>=0;t--)(n=e[t])&&(r=n(m,c,r)||r);return r&&_(m,c,r),r};const d=class d extends i{constructor(){super(...arguments),this.variant=s.SOLID}};d.styles=[...i.styles,...I];let o=d;E([u({type:String,reflect:!0})],o.prototype,"variant");o.register(T);const O=e=>h`
+`,T=[S],_=g.constructTagName("marker"),s={SOLID:"solid",STRIPED:"striped"};var E=Object.defineProperty,I=(e,m,c,R)=>{for(var r=void 0,t=e.length-1,n;t>=0;t--)(n=e[t])&&(r=n(m,c,r)||r);return r&&E(m,c,r),r};const d=class d extends i{constructor(){super(...arguments),this.variant=s.SOLID}};d.styles=[...i.styles,...T];let o=d;I([u({type:String,reflect:!0})],o.prototype,"variant");o.register(_);const O=e=>h`
   <div style="height: 6.25rem">
     <mdc-marker variant="${b(e.variant)}"></mdc-marker>
   </div> 
-`,N={title:"Work In Progress/marker",tags:["autodocs"],component:"mdc-marker",render:O,parameters:{badges:["wip"]},argTypes:{variant:{control:"radio",options:Object.values(s)},...A(["--mdc-marker-solid-background-color","--mdc-marker-striped-color","--mdc-marker-striped-background-color","--mdc-marker-width"]),...y,...f}},a={args:{variant:s.SOLID}};var l,p,k;a.parameters={...a.parameters,docs:{...(l=a.parameters)==null?void 0:l.docs,source:{originalSource:`{
+`,N={title:"Components/decorator/marker",tags:["autodocs"],component:"mdc-marker",render:O,parameters:{badges:["stable"]},argTypes:{variant:{control:"radio",options:Object.values(s)},...A(["--mdc-marker-solid-background-color","--mdc-marker-striped-color","--mdc-marker-striped-background-color","--mdc-marker-width"]),...y,...f}},a={args:{variant:s.SOLID}};var l,p,k;a.parameters={...a.parameters,docs:{...(l=a.parameters)==null?void 0:l.docs,source:{originalSource:`{
   args: {
     variant: MARKER_VARIANTS.SOLID
   }

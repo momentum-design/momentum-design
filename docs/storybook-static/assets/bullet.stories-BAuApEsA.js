@@ -20,7 +20,7 @@ import{u as b,C as d,n as g}from"./index-HW6KrQZO.js";import{i as z,k as h}from"
     height: var(--mdc-bullet-size-large);
   }
 `,E=[L],S=b.constructTagName("bullet"),o={SMALL:"small",MEDIUM:"medium",LARGE:"large"};var k=Object.defineProperty,M=(s,m,c,x)=>{for(var e=void 0,l=s.length-1,i;l>=0;l--)(i=s[l])&&(e=i(m,c,e)||e);return e&&k(m,c,e),e};const a=class a extends d{constructor(){super(...arguments),this.size=o.SMALL}};a.styles=[...d.styles,...E];let r=a;M([g({type:String,reflect:!0})],r.prototype,"size");r.register(S);const _=s=>h`
-  <mdc-bullet size="${f(s.size)}"></mdc-bullet>`,G={title:"Components/bullet",tags:["autodocs"],component:"mdc-bullet",render:_,parameters:{badges:["stable"]},argTypes:{size:{control:"select",options:Object.values(o)},...A(["--mdc-bullet-background-color","--mdc-bullet-size-small","--mdc-bullet-size-medium","--mdc-bullet-size-large"]),...y,...v}},t={args:{size:o.SMALL}};var n,u,p;t.parameters={...t.parameters,docs:{...(n=t.parameters)==null?void 0:n.docs,source:{originalSource:`{
+  <mdc-bullet size="${f(s.size)}"></mdc-bullet>`,G={title:"Components/decorator/bullet",tags:["autodocs"],component:"mdc-bullet",render:_,parameters:{badges:["stable"]},argTypes:{size:{control:"select",options:Object.values(o)},...A(["--mdc-bullet-background-color","--mdc-bullet-size-small","--mdc-bullet-size-medium","--mdc-bullet-size-large"]),...y,...v}},t={args:{size:o.SMALL}};var n,u,p;t.parameters={...t.parameters,docs:{...(n=t.parameters)==null?void 0:n.docs,source:{originalSource:`{
   args: {
     size: SIZE.SMALL
   }
