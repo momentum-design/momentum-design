@@ -17,15 +17,16 @@ const render = (args: Args) => html`
   type="${args.type}"
   role="${args.role}"
   tabIndex="${args.tabIndex}"
+  aria-label="${args['aria-label']}"
   >${args.children}</mdc-button>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/button',
+  title: 'Components/button',
   tags: ['autodocs'],
   component: 'mdc-button',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     children: {
@@ -149,5 +150,6 @@ export const IconButton: StoryObj = {
     type: BUTTON_TYPE.BUTTON,
     role: 'button',
     tabIndex: 0,
+    'aria-label': 'icon button',
   },
 };

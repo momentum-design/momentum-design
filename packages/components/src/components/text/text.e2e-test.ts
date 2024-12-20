@@ -46,14 +46,15 @@ test.describe('mdc-text', () => {
     const textStickerSheet = new StickerSheet(componentsPage, 'mdc-text');
     await test.step('add text component with different types to sheet', async () => {
       textStickerSheet.setChildren(textContent);
-      await textStickerSheet.mountComponents({ type: TYPE });
+      await textStickerSheet.createMarkupWithCombination({ type: TYPE }, true);
     });
 
     await test.step('add text component with different tagnames to sheet', async () => {
       textStickerSheet.setAttributes({ type: DEFAULTS.TYPE });
-      await textStickerSheet.mountComponents({ tagname: VALID_TEXT_TAGS });
+      await textStickerSheet.createMarkupWithCombination({ tagname: VALID_TEXT_TAGS }, true);
     });
 
+    await textStickerSheet.mountStickerSheet();
     /**
      * VISUAL REGRESSION
      */

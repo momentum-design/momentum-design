@@ -1,20 +1,43 @@
-import { test } from '../../../config/playwright/setup';
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-await-in-loop */
+import { expect } from '@playwright/test';
+import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { SIZE as AVATAR_SIZE, TYPE as PRESENCE_TYPE } from '../presence/presence.constants';
+import { DEFAULTS } from './avatar.constants';
+import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import type { AvatarSize } from './avatar.types';
+import type { IconNames } from '../icon/icon.types';
 
-test.beforeEach(async ({ componentsPage }) => {
+type SetupOptions = {
+  componentsPage: ComponentsPage;
+  counter?: number;
+  iconName?: IconNames;
+  initials?: string;
+  size?: AvatarSize;
+  src?: string;
+}
+
+const setup = async (args: SetupOptions) => {
+  const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
-        <mdc-avatar alt="test"/>
-      `,
+      <mdc-avatar
+        ${restArgs.counter ? `counter="${restArgs.counter}"` : ''}
+        ${restArgs.iconName ? `icon-name="${restArgs.iconName}"` : ''}
+        ${restArgs.initials ? `initials="${restArgs.initials}"` : ''}
+        ${restArgs.size ? `size="${restArgs.size}"` : ''}
+        ${restArgs.src ? `src="${restArgs.src}"` : ''}
+      >
+      </mdc-avatar>
+    `,
+    clearDocument: true,
   });
-});
-
-// TODO: fix e2e test
-test.fixme('mdc-avatar', async ({ componentsPage }) => {
   const avatar = componentsPage.page.locator('mdc-avatar');
-
-  // initial check for the avatar be visible on the screen:
   await avatar.waitFor();
+  return avatar;
+};
 
+const testToRun = async (componentsPage: ComponentsPage) => {
   /**
    * ACCESSIBILITY
    */
@@ -26,8 +49,57 @@ test.fixme('mdc-avatar', async ({ componentsPage }) => {
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
+    const avatarStickerSheet = new StickerSheet(componentsPage, 'mdc-avatar');
+    const src = 'https://picsum.photos/id/63/256';
+
+    await test.step('should add initials based avatar on sticker sheet', async () => {
+      avatarStickerSheet.setAttributes({ initials: 'XS' });
+      await avatarStickerSheet.createMarkupWithCombination({
+        size: AVATAR_SIZE,
+      });
+    });
+
+    await test.step('should add counter based avatar on sticker sheet', async () => {
+      avatarStickerSheet.setAttributes({ counter: 100 });
+      await avatarStickerSheet.createMarkupWithCombination({
+        size: AVATAR_SIZE,
+      });
+    });
+
+    await test.step('should add icon name based avatar on sticker sheet', async () => {
+      const iconName = 'placeholder-regular';
+      avatarStickerSheet.setAttributes({ 'icon-name': iconName });
+      await avatarStickerSheet.createMarkupWithCombination({
+        size: AVATAR_SIZE,
+      });
+    });
+
+    await test.step('should add image based avatar on sticker sheet', async () => {
+      avatarStickerSheet.setAttributes({ src });
+      await avatarStickerSheet.createMarkupWithCombination({
+        size: AVATAR_SIZE,
+      });
+    });
+
+    await test.step('should add presence based avatar on sticker sheet', async () => {
+      const presenceType = PRESENCE_TYPE.ACTIVE;
+      avatarStickerSheet.setAttributes({ presence: presenceType });
+      await avatarStickerSheet.createMarkupWithCombination({
+        size: AVATAR_SIZE,
+      });
+    });
+    await avatarStickerSheet.mountStickerSheet();
+    const container = avatarStickerSheet.getWrapperContainer();
+    const avatars = await container.locator('mdc-avatar[src]').all();
+    for (const avatarComp of avatars) {
+      const image = avatarComp.locator('img');
+      await image.waitFor();
+      await expect(avatarComp).toHaveAttribute('src', src);
+      await expect(image).toHaveAttribute('src', src);
+    }
+
     await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-avatar', { element: avatar });
+      await componentsPage.visualRegression.takeScreenshot('mdc-avatar', { element: container });
     });
   });
 
@@ -35,33 +107,83 @@ test.fixme('mdc-avatar', async ({ componentsPage }) => {
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
-    await test.step('attribute X should be present on component by default', async () => {
-      // TODO: add test here
+    const avatar = await setup({ componentsPage });
+
+    await test.step('should fallback to default icon and size to x_small when no attributes are passed', async () => {
+      await componentsPage.setAttributes(avatar, {});
+      const icon = await componentsPage.page.locator('mdc-icon');
+      await icon.waitFor();
+      await expect(icon).toHaveAttribute('name', DEFAULTS.ICON_NAME);
+      await expect(avatar).toHaveAttribute('size', DEFAULTS.SIZE);
+    });
+
+    await test.step('presence should not be displayed when the avatar type is counter', async () => {
+      await componentsPage.setAttributes(avatar, {
+        counter: '10',
+        presence: PRESENCE_TYPE.ACTIVE,
+      });
+      const presence = await componentsPage.page.locator('mdc-presence');
+      await expect(presence).not.toBeAttached();
+    });
+
+    await test.step('counter should be set to 99+ when more than 99 is passed', async () => {
+      await componentsPage.setAttributes(avatar, {
+        counter: '100',
+      });
+      const mdcTextElement = await componentsPage.page.locator('mdc-text');
+      const textContent = await mdcTextElement.textContent();
+      expect(textContent?.trim()).toBe('99+');
+    });
+
+    await test.step('counter should be set to 0 when a negative value is passed', async () => {
+      await componentsPage.setAttributes(avatar, {
+        counter: '-12',
+      });
+      const mdcTextElement = await componentsPage.page.locator('mdc-text');
+      const textContent = await mdcTextElement.textContent();
+      expect(textContent?.trim()).toBe('0');
+    });
+
+    await test.step('should limit the initials to two characters', async () => {
+      await componentsPage.setAttributes(avatar, {
+        initials: 'abcdef',
+      });
+      const mdcTextElement = await componentsPage.page.locator('mdc-text');
+      const textContent = await mdcTextElement.textContent();
+      expect(textContent?.trim()).toHaveLength(2);
+      expect(textContent?.trim()).toBe('AB');
+    });
+
+    await test.step('presence should be displayed when it is set', async () => {
+      await componentsPage.setAttributes(avatar, {
+        presence: PRESENCE_TYPE.ACTIVE,
+      });
+      await expect(avatar).toHaveAttribute('presence', PRESENCE_TYPE.ACTIVE);
+    });
+
+    await test.step('should display loading indicator when isTyping is set', async () => {
+      await componentsPage.setAttributes(avatar, {
+        'is-typing': 'true',
+      });
+      const loadingIndicator = await componentsPage.page.locator('div.loading__wrapper');
+      await loadingIndicator.waitFor();
+      await expect(loadingIndicator).toBeDefined();
+      await expect(avatar).toHaveAttribute('is-typing', 'true');
+    });
+
+    await test.step('should only accept allowed size', async () => {
+      await componentsPage.setAttributes(avatar, {
+        size: AVATAR_SIZE.XX_LARGE,
+      });
+      await expect(avatar).toHaveAttribute('size', AVATAR_SIZE.XX_LARGE);
     });
   });
+};
 
-  /**
-   * INTERACTIONS
-   */
-  await test.step('interactions', async () => {
-    await test.step('mouse/pointer', async () => {
-      await test.step('component should fire callback x when clicking on it', async () => {
-        // TODO: add test here
-      });
-    });
+test.describe.parallel('mdc-avatar', () => {
+  test.use({ viewport: { width: 600, height: 800 } });
 
-    await test.step('focus', async () => {
-      await test.step('component should be focusable with tab', async () => {
-        // TODO: add test here
-      });
-
-      // add additional tests here, like tabbing through several parts of the component
-    });
-
-    await test.step('keyboard', async () => {
-      await test.step('component should fire callback x when pressing y', async () => {
-        // TODO: add test here
-      });
-    });
+  test('standalone', async ({ componentsPage }) => {
+    await testToRun(componentsPage);
   });
 });
