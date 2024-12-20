@@ -9,6 +9,7 @@ import Button from './components/button';
 import Bullet from './components/bullet';
 import Marker from './components/marker';
 import Divider from './components/divider';
+import Input from './components/input';
 
 import type { TextType } from './components/text/text.types';
 
@@ -24,6 +25,7 @@ export {
   Bullet,
   Marker,
   Divider,
+  Input,
 };
 
 export type {
