@@ -15,6 +15,7 @@ const render = (args: Args) => html`
     size="${ifDefined(args.size)}"
     src="${ifDefined(args.src)}"
     ?is-typing="${args['is-typing']}"
+    aria-label=${args['aria-label']}
   ></mdc-avatarbutton>
 `;
 
@@ -50,6 +51,9 @@ const meta: Meta = {
     counter: {
       control: 'number',
     },
+    'aria-label': {
+      control: 'text',
+    },
     ...hideControls([
       'active',
       'color',
@@ -78,5 +82,6 @@ export const Example: StoryObj = {
     size: 'x_large',
     'icon-name': '',
     'is-typing': '',
+    'aria-label': 'Avatar Button',
   },
 };
