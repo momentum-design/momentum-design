@@ -24,7 +24,8 @@ const setup = async (args: SetupOptions) => {
 
 test('mdc-bullet', async ({ componentsPage }) => {
   const bulletStickerSheet = new StickerSheet(componentsPage, 'mdc-bullet');
-  await bulletStickerSheet.mountComponents({ size: SIZE });
+  await bulletStickerSheet.createMarkupWithCombination({ size: SIZE });
+  await bulletStickerSheet.mountStickerSheet();
   const container = bulletStickerSheet.getWrapperContainer();
 
   /**
