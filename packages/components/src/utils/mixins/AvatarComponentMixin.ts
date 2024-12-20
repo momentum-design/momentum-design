@@ -4,8 +4,7 @@ import type { AvatarSize } from '../../components/avatar/avatar.types';
 import type { IconNames } from '../../components/icon/icon.types';
 import type { PresenceType } from '../../components/presence/presence.types';
 import type { Component } from '../../models';
-
-type Constructor<T = {}> = new (...args: any[]) => T;
+import type { Constructor } from './mixins.types';
 
 export interface AvatarComponentMixinInterface {
   src?: string;
