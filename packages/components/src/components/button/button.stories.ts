@@ -1,7 +1,8 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { BUTTON_COLORS, PILL_BUTTON_SIZES, BUTTON_VARIANTS, ICON_BUTTON_SIZES, BUTTON_TYPE } from './button.constants';
+import { BUTTON_COLORS, PILL_BUTTON_SIZES, BUTTON_VARIANTS, ICON_BUTTON_SIZES } from './button.constants';
+import { BUTTON_TYPE } from '../buttonsimple/buttonsimple.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 const render = (args: Args) => html`
@@ -137,6 +138,9 @@ export const IconButton: StoryObj = {
   argTypes: {
     size: {
       options: Object.values(ICON_BUTTON_SIZES),
+    },
+    'aria-label': {
+      description: 'Aria label for the icon button. Required for accessibility.',
     },
   },
   args: {
