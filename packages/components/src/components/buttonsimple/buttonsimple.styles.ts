@@ -3,11 +3,12 @@ import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 
 const styles = [hostFitContentStyles, css`
   :host {
+    border: 0.0625rem solid transparent;
+    cursor: pointer;
+    
     background-color: var(--mds-color-theme-text-primary-normal); 
     color: var(--mds-color-theme-inverted-text-secondary-normal);
     font-size: var(--mds-font-apps-body-midsize-regular-font-size);
-    border: 0.0625rem solid transparent;
-    cursor: pointer;
     outline: none;
 
     --mdc-button-height-size-124: 7.75rem;
@@ -21,6 +22,7 @@ const styles = [hostFitContentStyles, css`
     --mdc-button-height-size-24: 1.5rem;
     --mdc-button-height-size-20: 1.25rem;
   }
+  
   :host([disabled]), :host([soft-disabled]){
     background-color: var(--mds-color-theme-text-primary-disabled);
   }

@@ -1,5 +1,5 @@
 import { CSSResult, html, PropertyValueMap } from 'lit';
-import { property, state } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 import styles from './buttonsimple.styles';
 import { Component } from '../../models';
 import { ButtonSize, ButtonType } from './buttonsimple.types';
@@ -48,7 +48,7 @@ class Buttonsimple extends Component {
    * - Tertiary icon button cam also be 20.
    * @default 32
    */
-  @property({ type: Number }) size: ButtonSize = DEFAULTS.SIZE;
+  @property({ type: Number, reflect: true }) size: ButtonSize = DEFAULTS.SIZE;
 
   /**
    * The tabindex of the button.
@@ -75,9 +75,6 @@ class Buttonsimple extends Component {
    */
   @property({ reflect: true })
   type: ButtonType = DEFAULTS.TYPE;
-
-  /** @internal */
-  @state() private iconSize = 1;
 
   /**
    * @internal
