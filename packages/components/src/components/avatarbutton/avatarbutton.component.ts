@@ -10,11 +10,10 @@ import styles from './avatarbutton.styles';
 /**
  * The `mdc-avatarbutton` component is an interactable version of the `mdc-avatar` component.
  *
- * This component is made using the `mdc-button` component.
+ * This component is made by extending `buttonsimple` class.
  * The button component acts as a wrapper for the avatar component.
  *
  * @dependency mdc-avatar
- * @dependency mdc-button
  *
  * @tagname mdc-avatarbutton
  */
