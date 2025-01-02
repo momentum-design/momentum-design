@@ -24,7 +24,7 @@ class Buttonsimple extends Component {
 
   /**
    * Indicates whether the button is disabled.
-   * The button is currently disabled for user interaction; it is not focusable or clickable.
+   * When the button is disabled for user interaction; it is not focusable or clickable.
    * @default false
    */
   @property({ type: Boolean }) disabled = false;
@@ -63,7 +63,7 @@ class Buttonsimple extends Component {
    * - Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.
    * @default button
    */
-  @property({ type: String, reflect: true }) override role = 'button';
+  @property({ type: String, reflect: true }) override role = DEFAULTS.ROLE;
 
   /**
    * This property defines the type attribute for the button element.

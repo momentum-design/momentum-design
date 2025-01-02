@@ -2,7 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { BUTTON_SIZES, BUTTON_TYPE } from './buttonsimple.constants';
+import { BUTTON_SIZES, BUTTON_TYPE, DEFAULTS } from './buttonsimple.constants';
 
 const render = (args: Args) => html`
   <mdc-buttonsimple 
@@ -60,7 +60,7 @@ export const Example: StoryObj = {
     'soft-disabled': false,
     size: BUTTON_SIZES[32],
     type: BUTTON_TYPE.BUTTON,
-    role: 'button',
+    role: DEFAULTS.ROLE,
     tabIndex: 0,
   },
 };
