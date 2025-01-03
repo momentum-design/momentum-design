@@ -1,4 +1,5 @@
 import utils from '../../utils/tag-name';
+import { BUTTON_TYPE } from '../buttonsimple/buttonsimple.constants';
 
 const TAG_NAME = utils.constructTagName('button');
 
@@ -34,12 +35,6 @@ const BUTTON_TYPE_INTERNAL = {
   PILL: 'pill',
   ICON: 'icon',
   PILL_WITH_ICON: 'pill-with-icon',
-} as const;
-
-const BUTTON_TYPE = {
-  BUTTON: 'button',
-  SUBMIT: 'submit',
-  RESET: 'reset',
 } as const;
 
 const DEFAULTS = {
