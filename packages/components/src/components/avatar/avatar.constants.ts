@@ -1,6 +1,5 @@
 import utils from '../../utils/tag-name';
 import type { IconNames } from '../icon/icon.types';
-import { SIZE as AVATAR_SIZE } from '../presence/presence.constants';
 
 const TAG_NAME = utils.constructTagName('avatar');
 
@@ -14,9 +13,19 @@ const AVATAR_TYPE = {
 const MAX_COUNTER = 99;
 const ICON_NAME: IconNames = 'user-regular';
 
+const AVATAR_SIZE = {
+  24: 24,
+  32: 32,
+  48: 48,
+  64: 64,
+  72: 72,
+  88: 88,
+  124: 124,
+} as const;
+
 const DEFAULTS = {
   TYPE: AVATAR_TYPE.PHOTO,
-  SIZE: AVATAR_SIZE.X_SMALL,
+  SIZE: AVATAR_SIZE[32],
   ICON_NAME,
 } as const;
 
@@ -25,4 +34,5 @@ export {
   DEFAULTS,
   AVATAR_TYPE,
   MAX_COUNTER,
+  AVATAR_SIZE,
 };

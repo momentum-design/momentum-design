@@ -9,51 +9,51 @@ const styles = [hostFitContentStyles, css`
     --mdc-avatar-loading-indicator-foreground-color: var(--mdc-avatar-default-foreground-color);
     --mdc-avatar-loading-overlay-background-color: var(--mds-color-theme-common-overlays-secondary-normal);
   }
-  :host([size="xx_large"]) .content {
+  :host([size="124"]) .content {
     width: 7.75rem;
     height: 7.75rem;
   }
-  :host([size="x_large"]) .content {
+  :host([size="88"]) .content {
     width: 5.5rem;
     height: 5.5rem;
   }
-  :host([size="large"]) .content {
+  :host([size="72"]) .content {
     width: 4.5rem;
     height: 4.5rem;
   }
-  :host([size="midsize"]) .content {
+  :host([size="64"]) .content {
     width: 4rem;
     height: 4rem;
   }
-  :host([size="small"]) .content {
+  :host([size="48"]) .content {
     width: 3rem;
     height: 3rem;
   }
-  :host([size="x_small"]) .content {
+  :host([size="32"]) .content {
     width: 2rem;
     height: 2rem;
   }
-  :host([size="xx_small"]) .content {
+  :host([size="24"]) .content {
     width: 1.5rem;
     height: 1.5rem;
   }
-  :host([size="xx_large"]) .content > .loading__wrapper > .loader {
+  :host([size="124"]) .content > .loading__wrapper > .loader {
     transform: scale(1.5);
   }
-  :host([size="x_large"]) .content > .loading__wrapper > .loader {
+  :host([size="88"]) .content > .loading__wrapper > .loader {
     transform: scale(1.2);
   }
-  :host([size="large"]) .content > .loading__wrapper > .loader,
-  :host([size="midsize"]) .content > .loading__wrapper > .loader {
+  :host([size="72"]) .content > .loading__wrapper > .loader,
+  :host([size="64"]) .content > .loading__wrapper > .loader {
     transform: scale(0.8);
   }
-  :host([size="small"]) .content > .loading__wrapper > .loader {
+  :host([size="48"]) .content > .loading__wrapper > .loader {
     transform: scale(0.6);
   }
-  :host([size="x_small"]) .content > .loading__wrapper > .loader {
+  :host([size="32"]) .content > .loading__wrapper > .loader {
     transform: scale(0.4);
   }
-  :host([size="xx_small"]) .content > .loading__wrapper > .loader {
+  :host([size="24"]) .content > .loading__wrapper > .loader {
     transform: scale(0.3);
   }
   .content {

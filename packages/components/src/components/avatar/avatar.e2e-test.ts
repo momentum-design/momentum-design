@@ -2,8 +2,8 @@
 /* eslint-disable no-await-in-loop */
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import { SIZE as AVATAR_SIZE, TYPE as PRESENCE_TYPE } from '../presence/presence.constants';
-import { DEFAULTS } from './avatar.constants';
+import { TYPE as PRESENCE_TYPE } from '../presence/presence.constants';
+import { AVATAR_SIZE, DEFAULTS } from './avatar.constants';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import type { AvatarSize } from './avatar.types';
 import type { IconNames } from '../icon/icon.types';
@@ -38,13 +38,6 @@ const setup = async (args: SetupOptions) => {
 };
 
 const testToRun = async (componentsPage: ComponentsPage) => {
-  /**
-   * ACCESSIBILITY
-   */
-  await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('avatar-default');
-  });
-
   /**
    * VISUAL REGRESSION
    */
@@ -104,17 +97,24 @@ const testToRun = async (componentsPage: ComponentsPage) => {
   });
 
   /**
+   * ACCESSIBILITY
+   */
+  await test.step('accessibility', async () => {
+    await componentsPage.accessibility.checkForA11yViolations('avatar-default');
+  });
+
+  /**
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
     const avatar = await setup({ componentsPage });
 
-    await test.step('should fallback to default icon and size to x_small when no attributes are passed', async () => {
+    await test.step('should fallback to default icon and size to 32 when no attributes are passed', async () => {
       await componentsPage.setAttributes(avatar, {});
       const icon = await componentsPage.page.locator('mdc-icon');
       await icon.waitFor();
       await expect(icon).toHaveAttribute('name', DEFAULTS.ICON_NAME);
-      await expect(avatar).toHaveAttribute('size', DEFAULTS.SIZE);
+      await expect(avatar).toHaveAttribute('size', DEFAULTS.SIZE.toString());
     });
 
     await test.step('presence should not be displayed when the avatar type is counter', async () => {
@@ -173,9 +173,9 @@ const testToRun = async (componentsPage: ComponentsPage) => {
 
     await test.step('should only accept allowed size', async () => {
       await componentsPage.setAttributes(avatar, {
-        size: AVATAR_SIZE.XX_LARGE,
+        size: AVATAR_SIZE[88].toString(),
       });
-      await expect(avatar).toHaveAttribute('size', AVATAR_SIZE.XX_LARGE);
+      await expect(avatar).toHaveAttribute('size', AVATAR_SIZE[88].toString());
     });
   });
 };
