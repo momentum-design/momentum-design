@@ -108,7 +108,7 @@ Refer to the individual component documentation for a list of available CSS vari
 `})}),`
 `,e.jsx(n.h3,{id:"classes-and-styles",children:"Classes and Styles"}),`
 `,e.jsxs(n.p,{children:["For more advanced styling, you can use the ",e.jsx(n.code,{children:"class"})," and ",e.jsx(n.code,{children:"style"})," attributes on the component."]}),`
-`,e.jsx(n.pre,{children:e.jsx(n.code,{className:"language-html",children:`<mdc-component class="custom-class" style="color: red;"></mdc-avatar>
+`,e.jsx(n.pre,{children:e.jsx(n.code,{className:"language-html",children:`<mdc-component class="custom-class" style="color: red;"></mdc-component>
 `})}),`
 `,e.jsx(n.h3,{id:"css-parts",children:"CSS Parts"}),`
 `,e.jsxs(n.p,{children:[`Web Components are encapsulated and cannot be styled directly.
