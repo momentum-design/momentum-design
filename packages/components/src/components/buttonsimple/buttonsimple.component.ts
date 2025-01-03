@@ -3,7 +3,7 @@ import { property } from 'lit/decorators.js';
 import styles from './buttonsimple.styles';
 import { Component } from '../../models';
 import { ButtonSize, ButtonType } from './buttonsimple.types';
-import { DEFAULTS } from './buttonsimple.constants';
+import { BUTTON_TYPE, DEFAULTS } from './buttonsimple.constants';
 
 /**
  * `mdc-buttonsimple` is a component that can be configured in various ways to suit different use cases.
@@ -116,11 +116,11 @@ class Buttonsimple extends Component {
   }
 
   private executeAction() {
-    if (this.type === 'submit' && this.internals.form) {
+    if (this.type === BUTTON_TYPE.SUBMIT && this.internals.form) {
       this.internals.form.requestSubmit();
     }
 
-    if (this.type === 'reset' && this.internals.form) {
+    if (this.type === BUTTON_TYPE.RESET && this.internals.form) {
       this.internals.form.reset();
     }
   }
