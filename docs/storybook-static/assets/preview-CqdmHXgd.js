@@ -379,7 +379,25 @@ then attempting to read the response body will reject with an AbortError excepti
  * @tagname mdc-icon
  *
  * @cssproperty --mdc-icon-fill-color - Allows customization of the default fill color.
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Icon",module:"components/icon/icon.component.js"}}]},{kind:"javascript-module",path:"components/marker/marker.component.js",declarations:[{kind:"class",description:`\`mdc-marker\`, which is a vertical line and
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Icon",module:"components/icon/icon.component.js"}}]},{kind:"javascript-module",path:"components/iconprovider/iconprovider.component.js",declarations:[{kind:"class",description:`IconProvider component, which allows to be consumed from sub components
+(see \`providerUtils.consume\` for how to consume)
+
+Bundling icons will be up to the consumer of this component, such
+that only a url has to be passed in from which the icons will be
+fetched.`,name:"IconProvider",slots:[{description:"children",name:""}],members:[{kind:"field",name:"Context",privacy:"public",static:!0,description:"Context object of the IconProvider, to be consumed by child components",readonly:!0},{kind:"field",name:"url",type:{text:"string | undefined"},description:"Url of where icons will be fetched from",attribute:"url"},{kind:"field",name:"fileExtension",type:{text:"string | undefined"},description:"File extension of icons",default:"svg",attribute:"file-extension",reflects:!0},{kind:"field",name:"lengthUnit",type:{text:"string"},description:"Length unit used for sizing of icons",default:"em",attribute:"length-unit",reflects:!0},{kind:"field",name:"size",type:{text:"number | undefined"},description:`The default size of the icon.
+If not set, it falls back to the size defined by the length unit.`,default:"1",attribute:"size",reflects:!0},{kind:"method",name:"updateValuesInContext",privacy:"private"},{kind:"method",name:"updateContext",privacy:"protected",return:{type:{text:"void"}}}],attributes:[{name:"url",type:{text:"string | undefined"},description:"Url of where icons will be fetched from",fieldName:"url"},{name:"file-extension",type:{text:"string | undefined"},description:"File extension of icons",default:"svg",fieldName:"fileExtension"},{name:"length-unit",type:{text:"string"},description:"Length unit used for sizing of icons",default:"em",fieldName:"lengthUnit"},{name:"size",type:{text:"number | undefined"},description:`The default size of the icon.
+If not set, it falls back to the size defined by the length unit.`,default:"1",fieldName:"size"}],superclass:{name:"Provider",module:"/src/models"},tagName:"mdc-iconprovider",jsDoc:`/**
+ * IconProvider component, which allows to be consumed from sub components
+ * (see \`providerUtils.consume\` for how to consume)
+ *
+ * Bundling icons will be up to the consumer of this component, such
+ * that only a url has to be passed in from which the icons will be
+ * fetched.
+ *
+ * @tagname mdc-iconprovider
+ *
+ * @slot - children
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"IconProvider",module:"components/iconprovider/iconprovider.component.js"}}]},{kind:"javascript-module",path:"components/marker/marker.component.js",declarations:[{kind:"class",description:`\`mdc-marker\`, which is a vertical line and
 used to draw attention to specific parts of
 the content or to signify important information.
 
@@ -406,25 +424,7 @@ the content or to signify important information.
  * @cssproperty --mdc-marker-striped-background-color - Allows customization of the default background color
  * in striped variant.
  * @cssproperty --mdc-marker-width - Allows customization of the default width.
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Marker",module:"components/marker/marker.component.js"}}]},{kind:"javascript-module",path:"components/iconprovider/iconprovider.component.js",declarations:[{kind:"class",description:`IconProvider component, which allows to be consumed from sub components
-(see \`providerUtils.consume\` for how to consume)
-
-Bundling icons will be up to the consumer of this component, such
-that only a url has to be passed in from which the icons will be
-fetched.`,name:"IconProvider",slots:[{description:"children",name:""}],members:[{kind:"field",name:"Context",privacy:"public",static:!0,description:"Context object of the IconProvider, to be consumed by child components",readonly:!0},{kind:"field",name:"url",type:{text:"string | undefined"},description:"Url of where icons will be fetched from",attribute:"url"},{kind:"field",name:"fileExtension",type:{text:"string | undefined"},description:"File extension of icons",default:"svg",attribute:"file-extension",reflects:!0},{kind:"field",name:"lengthUnit",type:{text:"string"},description:"Length unit used for sizing of icons",default:"em",attribute:"length-unit",reflects:!0},{kind:"field",name:"size",type:{text:"number | undefined"},description:`The default size of the icon.
-If not set, it falls back to the size defined by the length unit.`,default:"1",attribute:"size",reflects:!0},{kind:"method",name:"updateValuesInContext",privacy:"private"},{kind:"method",name:"updateContext",privacy:"protected",return:{type:{text:"void"}}}],attributes:[{name:"url",type:{text:"string | undefined"},description:"Url of where icons will be fetched from",fieldName:"url"},{name:"file-extension",type:{text:"string | undefined"},description:"File extension of icons",default:"svg",fieldName:"fileExtension"},{name:"length-unit",type:{text:"string"},description:"Length unit used for sizing of icons",default:"em",fieldName:"lengthUnit"},{name:"size",type:{text:"number | undefined"},description:`The default size of the icon.
-If not set, it falls back to the size defined by the length unit.`,default:"1",fieldName:"size"}],superclass:{name:"Provider",module:"/src/models"},tagName:"mdc-iconprovider",jsDoc:`/**
- * IconProvider component, which allows to be consumed from sub components
- * (see \`providerUtils.consume\` for how to consume)
- *
- * Bundling icons will be up to the consumer of this component, such
- * that only a url has to be passed in from which the icons will be
- * fetched.
- *
- * @tagname mdc-iconprovider
- *
- * @slot - children
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"IconProvider",module:"components/iconprovider/iconprovider.component.js"}}]},{kind:"javascript-module",path:"components/presence/presence.component.js",declarations:[{kind:"class",description:`The \`mdc-presence\` component is a versatile UI element used to
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Marker",module:"components/marker/marker.component.js"}}]},{kind:"javascript-module",path:"components/presence/presence.component.js",declarations:[{kind:"class",description:`The \`mdc-presence\` component is a versatile UI element used to
 display the presence status of a user or entity within an avatar component.
 
 This component is ideal for use within avatar UIs where the presence status
