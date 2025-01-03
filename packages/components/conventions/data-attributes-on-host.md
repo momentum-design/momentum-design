@@ -1,4 +1,4 @@
-# Using datrra attributes on host components
+# Using data attributes on host components
 
 This document outlines the updated conventions for utilizing data attributes on the :host element of web components. The goal is to avoid hardcoding class names, which can lead to inconsistencies if consumers modify them. Instead, we will leverage custom data attributes to maintain functionality without relying on class names.
 
