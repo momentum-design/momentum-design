@@ -1,4 +1,4 @@
-import{i as _,k as p}from"./lit-element-CHllvULs.js";import{u as H,C as E,n as g}from"./index-HW6KrQZO.js";import{h as k}from"./index-CcvxQn6k.js";import{a as Z}from"./text.constants-DJu2q-6E.js";import{T as B}from"./button.constants-C9hyZ9Xb.js";import{c as j,s as P}from"./commonArgTypes-BluK8w5L.js";import{d as $,h as O}from"./utils-C8za8dl6.js";const U=[k,_`
+import{i as _,k as p}from"./lit-element-CHllvULs.js";import{u as H,C as E,n as g}from"./index-HW6KrQZO.js";import{h as k}from"./index-CcvxQn6k.js";import{a as Z}from"./text.constants-DJu2q-6E.js";import{T as B}from"./button.constants-CA1KPfWk.js";import{c as j,s as P}from"./commonArgTypes-BluK8w5L.js";import{d as $,h as O}from"./utils-C8za8dl6.js";import"./buttonsimple.constants-5FOanXlE.js";const U=[k,_`
     :host {
       --mdc-divider-background-color: var(--mds-color-theme-outline-secondary-normal);
       --mdc-divider-width: 0.0625rem;
@@ -223,4 +223,4 @@ import{i as _,k as p}from"./lit-element-CHllvULs.js";import{u as H,C as E,n as g
     'arrow-direction': DIRECTIONS.NEGATIVE,
     'button-position': DIRECTIONS.NEGATIVE
   }
-}`,...(G=(L=u.parameters)==null?void 0:L.docs)==null?void 0:G.source}}};const it=["Example","noChildrenDivider","textDivider","grabberButtonDivider"];export{m as Example,it as __namedExportsOrder,T as default,u as grabberButtonDivider,l as noChildrenDivider,h as textDivider};
+}`,...(G=(L=u.parameters)==null?void 0:L.docs)==null?void 0:G.source}}};const et=["Example","noChildrenDivider","textDivider","grabberButtonDivider"];export{m as Example,et as __namedExportsOrder,T as default,u as grabberButtonDivider,l as noChildrenDivider,h as textDivider};
