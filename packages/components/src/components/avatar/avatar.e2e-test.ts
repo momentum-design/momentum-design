@@ -39,13 +39,6 @@ const setup = async (args: SetupOptions) => {
 
 const testToRun = async (componentsPage: ComponentsPage) => {
   /**
-   * ACCESSIBILITY
-   */
-  await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('avatar-default');
-  });
-
-  /**
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
@@ -101,6 +94,13 @@ const testToRun = async (componentsPage: ComponentsPage) => {
     await test.step('matches screenshot of element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-avatar', { element: container });
     });
+  });
+
+  /**
+   * ACCESSIBILITY
+   */
+  await test.step('accessibility', async () => {
+    await componentsPage.accessibility.checkForA11yViolations('avatar-default');
   });
 
   /**
