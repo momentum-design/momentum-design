@@ -3,7 +3,7 @@ import { property } from 'lit/decorators.js';
 import styles from './buttonsimple.styles';
 import { Component } from '../../models';
 import { ButtonSize, ButtonType } from './buttonsimple.types';
-import { DEFAULTS } from './buttonsimple.constants';
+import { BUTTON_TYPE, DEFAULTS } from './buttonsimple.constants';
 
 /**
  * `mdc-buttonsimple` is a component that can be configured in various ways to suit different use cases.
@@ -24,7 +24,7 @@ class Buttonsimple extends Component {
 
   /**
    * Indicates whether the button is disabled.
-   * The button is currently disabled for user interaction; it is not focusable or clickable.
+   * When the button is disabled for user interaction; it is not focusable or clickable.
    * @default false
    */
   @property({ type: Boolean }) disabled = false;
@@ -63,7 +63,7 @@ class Buttonsimple extends Component {
    * - Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.
    * @default button
    */
-  @property({ type: String, reflect: true }) override role = 'button';
+  @property({ type: String, reflect: true }) override role = DEFAULTS.ROLE;
 
   /**
    * This property defines the type attribute for the button element.
@@ -116,11 +116,11 @@ class Buttonsimple extends Component {
   }
 
   private executeAction() {
-    if (this.type === 'submit' && this.internals.form) {
+    if (this.type === BUTTON_TYPE.SUBMIT && this.internals.form) {
       this.internals.form.requestSubmit();
     }
 
-    if (this.type === 'reset' && this.internals.form) {
+    if (this.type === BUTTON_TYPE.RESET && this.internals.form) {
       this.internals.form.reset();
     }
   }

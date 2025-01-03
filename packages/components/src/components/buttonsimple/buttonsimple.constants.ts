@@ -25,6 +25,7 @@ const BUTTON_TYPE = {
 const DEFAULTS = {
   SIZE: BUTTON_SIZES[32],
   TYPE: BUTTON_TYPE.BUTTON,
+  ROLE: 'button',
 };
 
 export {
