@@ -69,6 +69,48 @@ export default Badge;
 
 - **Benefit:** When dependencies are managed through the index file, it becomes easier to update or replace them without modifying multiple files. This reduces the risk of introducing bugs during refactoring.
 
-## Conclusion
+## Importing Tagnames from constants file
 
-Adopting the practice of importing dependent components in the index file rather than within the class itself is essential for maintaining a clean and efficient codebase. By following these guidelines, we can enhance our development process, improve code readability, and ensure better modularity across our projects. Let's commit to this practice for all future component developments!
+This section outlines the conventions for importing tag names from a constants file instead of hardcoding them within components modules. Following these conventions promotes consistency, maintainability, and reduces the risk of errors in your codebase.
+
+- Consistency: Centralizes tag definitions, ensuring that all components use the same tag names.
+- Maintainability: Changes to tag names can be made in one location, reducing the need to update multiple files.
+- Readability: Improves code readability by providing clear references to tag names rather than arbitrary strings.
+
+### Recommended Approach
+
+```
+// divider.constants.ts
+
+import { TAG_NAME as BUTTON_TAG } from '../button/button.constants';
+import { TAG_NAME as TEXT_TAG } from '../text/text.constants';
+
+export {
+  TAG_NAME,
+  DEFAULTS,
+  DIVIDER_VARIANT,
+  DIVIDER_ORIENTATION,
+  DIRECTIONS,
+  BUTTON_TAG,
+  TEXT_TAG,
+};
+```
+
+```
+// divider.components.ts 
+
+import {
+  BUTTON_TAG,
+  DEFAULTS,
+  DIVIDER_VARIANT,
+  TEXT_TAG,
+} from './divider.constants';
+
+... 
+ const hasTextChild = assignedElements.some((el) => el.tagName === TEXT_TAG.toUpperCase());
+const hasButtonChild = assignedElements.some((el) => el.tagName === BUTTON_TAG.toUpperCase());
+// implmentation detials
+```
+
+By following this convention of importing tag names from constants files, developers can ensure a more organized and maintainable codebase. This practice not only enhances collaboration among team members but also simplifies future updates and modifications to tag names across the project.
+
