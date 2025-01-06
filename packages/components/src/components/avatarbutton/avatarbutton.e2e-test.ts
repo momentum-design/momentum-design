@@ -145,15 +145,13 @@ test('mdc-avatarbutton', async ({ componentsPage }) => {
 
       (btn as HTMLElement).onkeydown = (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
-          const value = e.key === 'Enter' ? 'enter' : 'space';
-          btn.textContent = `${value} down`;
+          btn.setAttribute('aria-label', 'avatarButton pressed down');
         }
       };
 
       (btn as HTMLElement).onkeyup = (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
-          const value = e.key === 'Enter' ? 'enter' : 'space';
-          btn.textContent = `${value} up`;
+          btn.setAttribute('aria-label', 'avatarButton pressed up');
         }
       };
     });
@@ -164,17 +162,17 @@ test('mdc-avatarbutton', async ({ componentsPage }) => {
 
       await componentsPage.page.keyboard.down('Space');
       await expect(avatarbutton).toHaveClass('pressed');
-      // await expect(avatarbutton).toHaveText('space down');
+      await expect(avatarbutton).toHaveAttribute('aria-label', 'avatarButton pressed down');
       await componentsPage.page.keyboard.up('Space');
-      // await expect(avatarbutton).toHaveText('space up');
+      await expect(avatarbutton).toHaveAttribute('aria-label', 'avatarButton pressed up');
       await expect(avatarbutton).toHaveClass('btn-listener btn-onclick');
       await expect(avatarbutton).not.toHaveClass('pressed');
 
       await componentsPage.page.keyboard.down('Enter');
-      // await expect(avatarbutton).toHaveText('enter down');
+      await expect(avatarbutton).toHaveAttribute('aria-label', 'avatarButton pressed down');
       await expect(avatarbutton).toHaveClass('pressed');
       await componentsPage.page.keyboard.up('Enter');
-      // await expect(avatarbutton).toHaveText('enter up');
+      await expect(avatarbutton).toHaveAttribute('aria-label', 'avatarButton pressed up');
       await expect(avatarbutton).not.toHaveClass('pressed');
       await expect(avatarbutton).not.toHaveClass('btn-listener btn-onclick'); // toggled class to remove
 
