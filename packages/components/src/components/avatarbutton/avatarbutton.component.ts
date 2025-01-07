@@ -2,7 +2,7 @@ import { CSSResult, html, PropertyValueMap } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { AvatarComponentMixin } from '../../utils/mixins/AvatarComponentMixin';
 import { AVATAR_SIZE, DEFAULTS } from '../avatar/avatar.constants';
-import { AvatarSize } from '../avatar/avatar.types';
+import type { AvatarSize } from '../avatar/avatar.types';
 import { DEFAULTS as BUTTON_DEFAULTS } from '../button/button.constants';
 import Buttonsimple from '../buttonsimple';
 import styles from './avatarbutton.styles';

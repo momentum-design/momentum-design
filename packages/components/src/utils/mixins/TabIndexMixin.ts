@@ -1,6 +1,6 @@
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
-import { Constructor } from './index.types';
+import type { Constructor } from './index.types';
 
 export interface TabIndexMixinInterface {
   tabIndex: number;
