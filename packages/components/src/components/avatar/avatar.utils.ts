@@ -1,5 +1,5 @@
 import { SIZE as PRESENCE_SIZE } from '../presence/presence.constants';
-import { PresenceSize } from '../presence/presence.types';
+import type { PresenceSize } from '../presence/presence.types';
 import { TYPE as FONT_TYPE } from '../text/text.constants';
 import type { TextType } from '../text/text.types';
 import { AVATAR_SIZE } from './avatar.constants';

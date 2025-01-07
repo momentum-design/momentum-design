@@ -80,7 +80,7 @@ export const AvatarComponentMixin = <T extends Constructor<Component>>(
 
     /**
      * The counter is the number which can be displayed on the avatar.
-     * The maximum number is 99 and if the give number is greater than 99,
+     * The maximum number is 99 and if the given number is greater than 99,
      * then the avatar will be displayed as `99+`.
      * If the given number is a negative number,
      * then the avatar will be displayed as `0`.
