@@ -42,10 +42,7 @@ class Buttonsimple extends Component {
   @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled = false;
 
   /**
-   * Button sizing is based on the button type.
-   * - **Pill button**: 40, 32, 28, 24.
-   * - **Icon button**: 64, 52, 40, 32, 28, 24.
-   * - Tertiary icon button cam also be 20.
+   * Simplebutton size is a super set of all the sizes supported by children components.
    * @default 32
    */
   @property({ type: Number, reflect: true }) size: ButtonSize = DEFAULTS.SIZE;
