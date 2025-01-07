@@ -89,6 +89,18 @@ class Icon extends Component {
   }
 
   /**
+   * Dispatches a 'load' event on the component once the icon has been successfully loaded.
+   * This event bubbles and is cancelable.
+   */
+  private triggerIconLoaded(): void {
+    const loadEvent = new Event('load', {
+      bubbles: true,
+      cancelable: true,
+    });
+    this.dispatchEvent(loadEvent);
+  }
+
+  /**
    * Get Icon Data function which will fetch the icon (currently only svg)
    * and sets state and attributes once fetched successfully
    *
@@ -111,6 +123,7 @@ class Icon extends Component {
         this.setRoleOnIcon();
         this.setAriaLabelOnIcon();
         this.setAriaHiddenOnIcon();
+        this.triggerIconLoaded();
       }
     }
   }
