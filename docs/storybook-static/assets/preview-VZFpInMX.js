@@ -122,7 +122,7 @@ The icon is displayed on the right side of the button.`,attribute:"postfix-icon"
 - **Tertiary**: No background or border, appears as plain text but retains all button functionalities.`,default:"primary",attribute:"variant"},{kind:"field",name:"size",type:{text:"ButtonSize"},description:`Button sizing is based on the button type.
 - **Pill button**: 40, 32, 28, 24.
 - **Icon button**: 64, 52, 40, 32, 28, 24.
-- Tertiary icon button cam also be 20.`,default:"32",attribute:"size",reflects:!0,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"color",type:{text:"ButtonColor"},description:"There are 5 colors for button: positive, negative, accent, promotional, default.",default:"default",attribute:"color"},{kind:"field",name:"tabIndex",type:{text:"number"},default:"0",description:"The tabindex of the button.",attribute:"tabIndex",reflects:!0,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"role",description:`This property defines the ARIA role for the element. By default, it is set to 'button'.
+- Tertiary icon button can also be 20.`,default:"32",attribute:"size",reflects:!0,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"color",type:{text:"ButtonColor"},description:"There are 5 colors for button: positive, negative, accent, promotional, default.",default:"default",attribute:"color"},{kind:"field",name:"tabIndex",type:{text:"number"},default:"0",description:"The tabindex of the button.",attribute:"tabIndex",reflects:!0,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"role",description:`This property defines the ARIA role for the element. By default, it is set to 'button'.
 Consumers should override this role when:
 - The element is being used in a context where a different role is more appropriate.
 - Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.`,default:"'button'",attribute:"role",reflects:!0,type:{text:"string"},inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"modifyIconName",privacy:"private",parameters:[{name:"active",type:{text:"boolean"},description:"The active state."}],description:`Modifies the icon name based on the active state.
@@ -163,7 +163,7 @@ The icon is displayed on the right side of the button.`,fieldName:"postfixIcon"}
 - **Tertiary**: No background or border, appears as plain text but retains all button functionalities.`,default:"primary",fieldName:"variant"},{name:"size",type:{text:"ButtonSize"},description:`Button sizing is based on the button type.
 - **Pill button**: 40, 32, 28, 24.
 - **Icon button**: 64, 52, 40, 32, 28, 24.
-- Tertiary icon button cam also be 20.`,default:"32",fieldName:"size",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"color",type:{text:"ButtonColor"},description:"There are 5 colors for button: positive, negative, accent, promotional, default.",default:"default",fieldName:"color"},{name:"tabIndex",type:{text:"number"},default:"0",description:"The tabindex of the button.",fieldName:"tabIndex",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"role",description:`This property defines the ARIA role for the element. By default, it is set to 'button'.
+- Tertiary icon button can also be 20.`,default:"32",fieldName:"size",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"color",type:{text:"ButtonColor"},description:"There are 5 colors for button: positive, negative, accent, promotional, default.",default:"default",fieldName:"color"},{name:"tabIndex",type:{text:"number"},default:"0",description:"The tabindex of the button.",fieldName:"tabIndex",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"role",description:`This property defines the ARIA role for the element. By default, it is set to 'button'.
 Consumers should override this role when:
 - The element is being used in a context where a different role is more appropriate.
 - Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.`,default:"'button'",fieldName:"role",type:{text:"string"},inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"active",type:{text:"boolean"},default:"false",description:`The button's active state indicates whether it is currently toggled on (active) or off (inactive).
@@ -219,10 +219,7 @@ focus, click, and keyboard actions to be passed through.
 
 **Important:** When using soft disabled, consumers must ensure that
 the button behaves like a disabled button, allowing only focus and
-preventing any interactions (clicks or keyboard actions) from triggering unintended actions.`,attribute:"soft-disabled"},{kind:"field",name:"size",type:{text:"ButtonSize"},description:`Button sizing is based on the button type.
-- **Pill button**: 40, 32, 28, 24.
-- **Icon button**: 64, 52, 40, 32, 28, 24.
-- Tertiary icon button cam also be 20.`,default:"32",attribute:"size",reflects:!0},{kind:"field",name:"tabIndex",type:{text:"number"},default:"0",description:"The tabindex of the button.",attribute:"tabIndex",reflects:!0},{kind:"field",name:"role",description:`This property defines the ARIA role for the element. By default, it is set to 'button'.
+preventing any interactions (clicks or keyboard actions) from triggering unintended actions.`,attribute:"soft-disabled"},{kind:"field",name:"size",type:{text:"ButtonSize"},description:"Simplebutton size is a super set of all the sizes supported by children components.",default:"32",attribute:"size",reflects:!0},{kind:"field",name:"tabIndex",type:{text:"number"},default:"0",description:"The tabindex of the button.",attribute:"tabIndex",reflects:!0},{kind:"field",name:"role",description:`This property defines the ARIA role for the element. By default, it is set to 'button'.
 Consumers should override this role when:
 - The element is being used in a context where a different role is more appropriate.
 - Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.`,default:"button",attribute:"role",reflects:!0},{kind:"field",name:"type",type:{text:"ButtonType"},description:`This property defines the type attribute for the button element.
@@ -247,10 +244,7 @@ focus, click, and keyboard actions to be passed through.
 
 **Important:** When using soft disabled, consumers must ensure that
 the button behaves like a disabled button, allowing only focus and
-preventing any interactions (clicks or keyboard actions) from triggering unintended actions.`,fieldName:"softDisabled"},{name:"size",type:{text:"ButtonSize"},description:`Button sizing is based on the button type.
-- **Pill button**: 40, 32, 28, 24.
-- **Icon button**: 64, 52, 40, 32, 28, 24.
-- Tertiary icon button cam also be 20.`,default:"32",fieldName:"size"},{name:"tabIndex",type:{text:"number"},default:"0",description:"The tabindex of the button.",fieldName:"tabIndex"},{name:"role",description:`This property defines the ARIA role for the element. By default, it is set to 'button'.
+preventing any interactions (clicks or keyboard actions) from triggering unintended actions.`,fieldName:"softDisabled"},{name:"size",type:{text:"ButtonSize"},description:"Simplebutton size is a super set of all the sizes supported by children components.",default:"32",fieldName:"size"},{name:"tabIndex",type:{text:"number"},default:"0",description:"The tabindex of the button.",fieldName:"tabIndex"},{name:"role",description:`This property defines the ARIA role for the element. By default, it is set to 'button'.
 Consumers should override this role when:
 - The element is being used in a context where a different role is more appropriate.
 - Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.`,default:"button",fieldName:"role"},{name:"type",type:{text:"ButtonType"},description:`This property defines the type attribute for the button element.
@@ -264,7 +258,78 @@ The type attribute specifies the behavior of the button when it is clicked.
  *
  * @tagname mdc-buttonsimple
  *
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}}]},{kind:"javascript-module",path:"components/divider/divider.component.js",declarations:[{kind:"class",description:`\`mdc-divider\` is a component that provides a line to separate and organize content.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}}]},{kind:"javascript-module",path:"components/icon/icon.component.js",declarations:[{kind:"class",description:`Icon component that dynamically displays SVG icons based on a valid name.
+
+This component must be mounted within an \`IconProvider\` component.
+
+The \`IconProvider\` defines the source URL from which icons are consumed.
+The \`Icon\` component accepts a \`name\` attribute, which corresponds to
+the file name of the icon to be loaded from the specified URL.
+
+Once fetched, the icon will be rendered. If the fetching process is unsuccessful,
+no icon will be displayed.
+
+The \`size\` attribute allows for dynamic sizing of the icon based on the provided
+\`length-unit\` attribute. This unit can either come from the \`IconProvider\`
+or can be overridden for each individual icon. For example:
+if \`size = 1\` and \`length-unit = 'em'\`, the dimensions of the icon will be
+\`width: 1em; height: 1em\`.
+
+Regarding accessibility, there are two types of icons: decorative and informative.
+
+### Decorative Icons
+- Decorative icons do not convey any essential information to the content of a page.
+- They should be hidden from screen readers (SR) to prevent confusion for users.
+- For decorative icons, an \`aria-label\` is not required, and the \`role\` will be set to null.
+
+### Informative Icons
+- Informative icons convey important information that is not adequately represented
+  by surrounding text or components.
+- They provide valuable context and must be announced by assistive technologies.
+- For informative icons, an \`aria-label\` is required, and the \`role\` will be set to "img".
+- If an \`aria-label\` is provided, the role will be set to 'img'; if it is absent,
+  the role will be unset.`,name:"Icon",cssProperties:[{description:"Allows customization of the default fill color.",name:"--mdc-icon-fill-color"}],members:[{kind:"field",name:"iconData",type:{text:"HTMLElement | undefined"},privacy:"private"},{kind:"field",name:"lengthUnitFromContext",type:{text:"string | undefined"},privacy:"private"},{kind:"field",name:"sizeFromContext",type:{text:"number | undefined"},privacy:"private"},{kind:"field",name:"name",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename)",attribute:"name",reflects:!0},{kind:"field",name:"size",type:{text:"number | undefined"},description:"Size of the icon (works in combination with length unit)",attribute:"size"},{kind:"field",name:"lengthUnit",type:{text:"string | undefined"},description:"Length unit attribute for overriding length-unit from `IconProvider`",attribute:"length-unit"},{kind:"field",name:"ariaLabel",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",attribute:"aria-label"},{kind:"field",name:"iconProviderContext",privacy:"private",readonly:!0},{kind:"field",name:"abortController",type:{text:"AbortController"},privacy:"private",default:"new AbortController()"},{kind:"method",name:"getIconData",privacy:"private",description:`Get Icon Data function which will fetch the icon (currently only svg)
+and sets state and attributes once fetched successfully
+
+This method uses abortController.signal to cancel the fetch request when the component is disconnected or updated.
+If the request is aborted after the fetch() call has been fulfilled but before the response body has been read,
+then attempting to read the response body will reject with an AbortError exception.`},{kind:"method",name:"updateSize",privacy:"private",description:"Updates the size by setting the width and height"},{kind:"method",name:"setRoleOnIcon",privacy:"private"},{kind:"method",name:"setAriaHiddenOnIcon",privacy:"private"},{kind:"method",name:"setAriaLabelOnIcon",privacy:"private"},{kind:"field",name:"computedIconSize",privacy:"private",readonly:!0}],attributes:[{name:"name",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename)",fieldName:"name"},{name:"size",type:{text:"number | undefined"},description:"Size of the icon (works in combination with length unit)",fieldName:"size"},{name:"length-unit",type:{text:"string | undefined"},description:"Length unit attribute for overriding length-unit from `IconProvider`",fieldName:"lengthUnit"},{name:"aria-label",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",fieldName:"ariaLabel"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-icon",jsDoc:`/**
+ * Icon component that dynamically displays SVG icons based on a valid name.
+ *
+ * This component must be mounted within an \`IconProvider\` component.
+ *
+ * The \`IconProvider\` defines the source URL from which icons are consumed.
+ * The \`Icon\` component accepts a \`name\` attribute, which corresponds to
+ * the file name of the icon to be loaded from the specified URL.
+ *
+ * Once fetched, the icon will be rendered. If the fetching process is unsuccessful,
+ * no icon will be displayed.
+ *
+ * The \`size\` attribute allows for dynamic sizing of the icon based on the provided
+ * \`length-unit\` attribute. This unit can either come from the \`IconProvider\`
+ * or can be overridden for each individual icon. For example:
+ * if \`size = 1\` and \`length-unit = 'em'\`, the dimensions of the icon will be
+ * \`width: 1em; height: 1em\`.
+ *
+ * Regarding accessibility, there are two types of icons: decorative and informative.
+ *
+ * ### Decorative Icons
+ * - Decorative icons do not convey any essential information to the content of a page.
+ * - They should be hidden from screen readers (SR) to prevent confusion for users.
+ * - For decorative icons, an \`aria-label\` is not required, and the \`role\` will be set to null.
+ *
+ * ### Informative Icons
+ * - Informative icons convey important information that is not adequately represented
+ *   by surrounding text or components.
+ * - They provide valuable context and must be announced by assistive technologies.
+ * - For informative icons, an \`aria-label\` is required, and the \`role\` will be set to "img".
+ * - If an \`aria-label\` is provided, the role will be set to 'img'; if it is absent,
+ *   the role will be unset.
+ *
+ * @tagname mdc-icon
+ *
+ * @cssproperty --mdc-icon-fill-color - Allows customization of the default fill color.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Icon",module:"components/icon/icon.component.js"}}]},{kind:"javascript-module",path:"components/divider/divider.component.js",declarations:[{kind:"class",description:`\`mdc-divider\` is a component that provides a line to separate and organize content.
 It can also include a button or text positioned centrally, allowing users to interact with the layout.
 
 **Divider Orientation:**
@@ -362,78 +427,7 @@ Note: Positive and Negative directions are defined based on Cartesian plane.`,de
  * @cssproperty --mdc-divider-text-margin - left and right margin of label in the text divider
  * @cssproperty --mdc-divider-text-line-height - line height of label in the text divider
  * @cssproperty --mdc-divider-grabber-button-border-radius - border radius of the grabber button
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Divider",module:"components/divider/divider.component.js"}}]},{kind:"javascript-module",path:"components/icon/icon.component.js",declarations:[{kind:"class",description:`Icon component that dynamically displays SVG icons based on a valid name.
-
-This component must be mounted within an \`IconProvider\` component.
-
-The \`IconProvider\` defines the source URL from which icons are consumed.
-The \`Icon\` component accepts a \`name\` attribute, which corresponds to
-the file name of the icon to be loaded from the specified URL.
-
-Once fetched, the icon will be rendered. If the fetching process is unsuccessful,
-no icon will be displayed.
-
-The \`size\` attribute allows for dynamic sizing of the icon based on the provided
-\`length-unit\` attribute. This unit can either come from the \`IconProvider\`
-or can be overridden for each individual icon. For example:
-if \`size = 1\` and \`length-unit = 'em'\`, the dimensions of the icon will be
-\`width: 1em; height: 1em\`.
-
-Regarding accessibility, there are two types of icons: decorative and informative.
-
-### Decorative Icons
-- Decorative icons do not convey any essential information to the content of a page.
-- They should be hidden from screen readers (SR) to prevent confusion for users.
-- For decorative icons, an \`aria-label\` is not required, and the \`role\` will be set to null.
-
-### Informative Icons
-- Informative icons convey important information that is not adequately represented
-  by surrounding text or components.
-- They provide valuable context and must be announced by assistive technologies.
-- For informative icons, an \`aria-label\` is required, and the \`role\` will be set to "img".
-- If an \`aria-label\` is provided, the role will be set to 'img'; if it is absent,
-  the role will be unset.`,name:"Icon",cssProperties:[{description:"Allows customization of the default fill color.",name:"--mdc-icon-fill-color"}],members:[{kind:"field",name:"iconData",type:{text:"HTMLElement | undefined"},privacy:"private"},{kind:"field",name:"lengthUnitFromContext",type:{text:"string | undefined"},privacy:"private"},{kind:"field",name:"sizeFromContext",type:{text:"number | undefined"},privacy:"private"},{kind:"field",name:"name",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename)",attribute:"name",reflects:!0},{kind:"field",name:"size",type:{text:"number | undefined"},description:"Size of the icon (works in combination with length unit)",attribute:"size"},{kind:"field",name:"lengthUnit",type:{text:"string | undefined"},description:"Length unit attribute for overriding length-unit from `IconProvider`",attribute:"length-unit"},{kind:"field",name:"ariaLabel",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",attribute:"aria-label"},{kind:"field",name:"iconProviderContext",privacy:"private",readonly:!0},{kind:"field",name:"abortController",type:{text:"AbortController"},privacy:"private",default:"new AbortController()"},{kind:"method",name:"getIconData",privacy:"private",description:`Get Icon Data function which will fetch the icon (currently only svg)
-and sets state and attributes once fetched successfully
-
-This method uses abortController.signal to cancel the fetch request when the component is disconnected or updated.
-If the request is aborted after the fetch() call has been fulfilled but before the response body has been read,
-then attempting to read the response body will reject with an AbortError exception.`},{kind:"method",name:"updateSize",privacy:"private",description:"Updates the size by setting the width and height"},{kind:"method",name:"setRoleOnIcon",privacy:"private"},{kind:"method",name:"setAriaHiddenOnIcon",privacy:"private"},{kind:"method",name:"setAriaLabelOnIcon",privacy:"private"},{kind:"field",name:"computedIconSize",privacy:"private",readonly:!0}],attributes:[{name:"name",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename)",fieldName:"name"},{name:"size",type:{text:"number | undefined"},description:"Size of the icon (works in combination with length unit)",fieldName:"size"},{name:"length-unit",type:{text:"string | undefined"},description:"Length unit attribute for overriding length-unit from `IconProvider`",fieldName:"lengthUnit"},{name:"aria-label",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",fieldName:"ariaLabel"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-icon",jsDoc:`/**
- * Icon component that dynamically displays SVG icons based on a valid name.
- *
- * This component must be mounted within an \`IconProvider\` component.
- *
- * The \`IconProvider\` defines the source URL from which icons are consumed.
- * The \`Icon\` component accepts a \`name\` attribute, which corresponds to
- * the file name of the icon to be loaded from the specified URL.
- *
- * Once fetched, the icon will be rendered. If the fetching process is unsuccessful,
- * no icon will be displayed.
- *
- * The \`size\` attribute allows for dynamic sizing of the icon based on the provided
- * \`length-unit\` attribute. This unit can either come from the \`IconProvider\`
- * or can be overridden for each individual icon. For example:
- * if \`size = 1\` and \`length-unit = 'em'\`, the dimensions of the icon will be
- * \`width: 1em; height: 1em\`.
- *
- * Regarding accessibility, there are two types of icons: decorative and informative.
- *
- * ### Decorative Icons
- * - Decorative icons do not convey any essential information to the content of a page.
- * - They should be hidden from screen readers (SR) to prevent confusion for users.
- * - For decorative icons, an \`aria-label\` is not required, and the \`role\` will be set to null.
- *
- * ### Informative Icons
- * - Informative icons convey important information that is not adequately represented
- *   by surrounding text or components.
- * - They provide valuable context and must be announced by assistive technologies.
- * - For informative icons, an \`aria-label\` is required, and the \`role\` will be set to "img".
- * - If an \`aria-label\` is provided, the role will be set to 'img'; if it is absent,
- *   the role will be unset.
- *
- * @tagname mdc-icon
- *
- * @cssproperty --mdc-icon-fill-color - Allows customization of the default fill color.
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Icon",module:"components/icon/icon.component.js"}}]},{kind:"javascript-module",path:"components/iconprovider/iconprovider.component.js",declarations:[{kind:"class",description:`IconProvider component, which allows to be consumed from sub components
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Divider",module:"components/divider/divider.component.js"}}]},{kind:"javascript-module",path:"components/iconprovider/iconprovider.component.js",declarations:[{kind:"class",description:`IconProvider component, which allows to be consumed from sub components
 (see \`providerUtils.consume\` for how to consume)
 
 Bundling icons will be up to the consumer of this component, such
