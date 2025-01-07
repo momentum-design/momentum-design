@@ -1,4 +1,5 @@
 import { CSSResult, html, PropertyValueMap } from 'lit';
+import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { AvatarComponentMixin } from '../../utils/mixins/AvatarComponentMixin';
 import { AVATAR_SIZE, DEFAULTS } from '../avatar/avatar.constants';
@@ -18,29 +19,35 @@ import styles from './avatarbutton.styles';
  * @tagname mdc-avatarbutton
  */
 class AvatarButton extends AvatarComponentMixin(Buttonsimple) {
-  constructor() {
-    super();
+    /**
+   * Aria-label attribute to be set for accessibility
+   */
+    @property({ type: String, attribute: 'aria-label' })
+    override ariaLabel: string | null = null;
 
-    this.active = undefined as unknown as boolean;
-    this.disabled = undefined as unknown as boolean;
-    this.softDisabled = undefined as unknown as boolean;
-    this.role = 'button';
-    this.type = BUTTON_DEFAULTS.TYPE;
-  }
+    constructor() {
+      super();
 
-  override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
-    super.update(changedProperties);
-    if (changedProperties.has('size')) {
-      this.setSize(this.size);
+      this.active = undefined as unknown as boolean;
+      this.disabled = undefined as unknown as boolean;
+      this.softDisabled = undefined as unknown as boolean;
+      this.role = 'button';
+      this.type = BUTTON_DEFAULTS.TYPE;
     }
-  }
 
-  private setSize(size: AvatarSize) {
-    this.setAttribute('size', Object.values(AVATAR_SIZE).includes(size) ? `${size}` : DEFAULTS.SIZE.toString());
-  }
+    override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+      super.update(changedProperties);
+      if (changedProperties.has('size')) {
+        this.setSize(this.size);
+      }
+    }
 
-  public override render() {
-    return html`
+    private setSize(size: AvatarSize) {
+      this.setAttribute('size', Object.values(AVATAR_SIZE).includes(size) ? `${size}` : DEFAULTS.SIZE.toString());
+    }
+
+    public override render() {
+      return html`
       <mdc-avatar
         slot="prefixIcon"
         ?is-typing="${this.isTyping}"
@@ -52,7 +59,7 @@ class AvatarButton extends AvatarComponentMixin(Buttonsimple) {
         src="${ifDefined(this.src)}"
       ></mdc-avatar>
     `;
-  }
+    }
 
   public static override styles: Array<CSSResult> = [...styles];
 }
