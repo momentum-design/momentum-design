@@ -78,7 +78,7 @@ class Button extends Buttonsimple {
    * Button sizing is based on the button type.
    * - **Pill button**: 40, 32, 28, 24.
    * - **Icon button**: 64, 52, 40, 32, 28, 24.
-   * - Tertiary icon button cam also be 20.
+   * - Tertiary icon button can also be 20.
    * @default 32
    */
   @property({ type: Number }) override size: PillButtonSize | IconButtonSize = DEFAULTS.SIZE;
