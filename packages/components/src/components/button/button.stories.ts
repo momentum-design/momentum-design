@@ -1,11 +1,16 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { action } from '@storybook/addon-actions';
 import { BUTTON_COLORS, PILL_BUTTON_SIZES, BUTTON_VARIANTS, ICON_BUTTON_SIZES, BUTTON_TYPE } from './button.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 const render = (args: Args) => html`
   <mdc-button 
+  @click="${action('onClick')}"
+  @keydown="${action('onKeyDown')}"
+  @keyup="${action('onKeyUp')}"
+  @focus="${action('onFocus')}"
   ?active="${args.active}"
   ?disabled="${args.disabled}"
   ?soft-disabled="${args['soft-disabled']}"
