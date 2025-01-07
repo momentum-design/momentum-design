@@ -114,18 +114,45 @@ class Icon extends Component {
       if (url && fileExtension && this.name) {
         this.abortController.abort();
         this.abortController = new AbortController();
-        const iconHtml = await dynamicSVGImport(url, this.name, fileExtension, this.abortController.signal);
-
-        // update iconData state once fetched:
-        this.iconData = iconHtml as HTMLElement;
-
-        // when icon got fetched, set role and aria-label:
-        this.setRoleOnIcon();
-        this.setAriaLabelOnIcon();
-        this.setAriaHiddenOnIcon();
-        this.triggerIconLoaded();
+        try {
+          const iconHtml = await dynamicSVGImport(url, this.name, fileExtension, this.abortController.signal);
+          this.handleIconLoadedSuccess(iconHtml as HTMLElement);
+        } catch (error) {
+          this.handleIconLoadedFailure(error);
+        }
       }
     }
+  }
+
+  /**
+   * Sets the iconData state to the fetched icon,
+   * and calls functions to set role, aria-label and aria-hidden attributes on the icon.
+   * Dispatches a 'load' event on the component once the icon has been successfully loaded.
+   * @param iconHtml - The icon html element which has been fetched from the icon provider.
+   */
+  private handleIconLoadedSuccess(iconHtml: HTMLElement) {
+    // update iconData state once fetched:
+    this.iconData = iconHtml;
+
+    // when icon got fetched, set role and aria-label and trigger icon load event:
+    this.setRoleOnIcon();
+    this.setAriaLabelOnIcon();
+    this.setAriaHiddenOnIcon();
+    this.triggerIconLoaded();
+  }
+
+  /**
+   * Dispatches an 'error' event on the component when the icon fetching has failed.
+   * This event bubbles and is cancelable.
+   * The error detail is set to the error object.
+   */
+  private handleIconLoadedFailure(error: unknown) {
+    const errorEvent = new CustomEvent('error', {
+      bubbles: true,
+      cancelable: true,
+      detail: { error },
+    });
+    this.dispatchEvent(errorEvent);
   }
 
   /**
