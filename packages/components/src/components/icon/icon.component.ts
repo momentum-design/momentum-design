@@ -134,7 +134,7 @@ class Icon extends Component {
     // update iconData state once fetched:
     this.iconData = iconHtml;
 
-    // when icon got fetched, set role and aria-label and trigger icon load event:
+    // when icon is fetched successfully, set the role, aria-label and invoke function to trigger icon load event.
     this.setRoleOnIcon();
     this.setAriaLabelOnIcon();
     this.setAriaHiddenOnIcon();
