@@ -33,5 +33,10 @@ export const Example: StoryObj = {
   args: {
     class: 'custom-classname',
     style: 'margin-top: 20px;',
+    label: 'Label (required)',
+    labelInfoText: 'Label info text',
+    helpText: 'Helper text',
+    validationType: 'error',
+
   },
 };

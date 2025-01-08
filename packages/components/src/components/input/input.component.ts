@@ -3,6 +3,10 @@ import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './input.styles';
 import { Component } from '../../models';
+import { DEFAULTS } from './input.constants';
+import { getHelperIcon } from './input.utils';
+import { ValidationType } from './input.type';
+import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 
 /**
  * input component, which ...
@@ -13,27 +17,29 @@ import { Component } from '../../models';
  *
  * @cssprop --custom-property-name - Description of the CSS custom property
  */
-class Input extends Component {
-  @property()
-  label = undefined;
+class Input extends DisabledMixin(Component) {
+  @property({ type: String }) label = '';
+
+  @property({ type: String }) value = '';
+
+  @property({ type: String }) placeholder = '';
+
+  @property({ type: Boolean }) required = false;
+
+  @property({ type: Number }) minLength?: number;
 
   /**
    * @beta this attribute is in beta, and is subject to change (given the toggletip component is not ready yet)
    */
-  @property()
-  labelInfoText = undefined;
+  @property({ type: String }) labelInfoText = '';
 
-  @property()
-  helpText = undefined;
+  @property({ type: String }) helpText = '';
 
-  @property()
-  prefixText = undefined;
+  @property({ type: String }) prefixText = '';
 
-  @property()
-  helpTextType?: 'error' | 'default' = 'default';
+  @property() helpTextType?: ValidationType = DEFAULTS.VALIDATION;
 
-  @property()
-  value = undefined;
+  @property({ type: String }) validationType?: ValidationType = DEFAULTS.VALIDATION;
 
   protected renderLabel() {
     if (!this.label) {
@@ -46,7 +52,7 @@ class Input extends Component {
     if (!this.labelInfoText) {
       return nothing;
     }
-    return html`<mdc-icon name=""></mdc-icon>`;
+    return html`<mdc-icon name=${DEFAULTS.INFO_ICON_NAME}></mdc-icon>`;
   }
 
   protected renderPrefixText() {
@@ -60,13 +66,11 @@ class Input extends Component {
     if (!this.helpText) {
       return nothing;
     }
-    switch (this.helpTextType) {
-      case 'error':
-        return html`<mdc-icon name="error-regular"></mdc-icon>`;
-
-      default:
-        return nothing;
+    const helperIcon = getHelperIcon(this.helpTextType || DEFAULTS.VALIDATION);
+    if (helperIcon) {
+      return html`<mdc-icon name=${helperIcon}></mdc-icon>`;
     }
+    return nothing;
   }
 
   protected renderHelpText() {
@@ -79,7 +83,7 @@ class Input extends Component {
   public override render() {
     return html`
       <div class="input-header">
-        <slot name="label">${this.renderLabel()}</slot>
+        <slot name="label">${this.renderLabel()} ${this.required ? '(required)' : ''}</slot>
         <slot name="label-icon">${this.renderLabelInfoToggleTip()}</slot>
       </div>
       <div class="input-container" part="input-container">
