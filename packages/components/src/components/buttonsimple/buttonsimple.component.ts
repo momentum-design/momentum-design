@@ -5,6 +5,7 @@ import { Component } from '../../models';
 import { ButtonSize, ButtonType } from './buttonsimple.types';
 import { BUTTON_TYPE, DEFAULTS } from './buttonsimple.constants';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
+import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 
 /**
  * `mdc-buttonsimple` is a component that can be configured in various ways to suit different use cases.
@@ -14,7 +15,7 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
  * @tagname mdc-buttonsimple
  *
  */
-class Buttonsimple extends DisabledMixin(Component) {
+class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
   /**
    * The button's active state indicates whether it is currently toggled on (active) or off (inactive).
    * When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
@@ -40,12 +41,6 @@ class Buttonsimple extends DisabledMixin(Component) {
    * @default 32
    */
   @property({ type: Number, reflect: true }) size: ButtonSize = DEFAULTS.SIZE;
-
-  /**
-   * The tabindex of the button.
-   * @default 0
-   */
-  @property({ type: Number, reflect: true }) override tabIndex = 0;
 
   /**
    * This property defines the ARIA role for the element. By default, it is set to 'button'.
