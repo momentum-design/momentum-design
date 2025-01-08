@@ -1,7 +1,6 @@
 import { CSSResult, html, PropertyValueMap } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import styles from './button.styles';
-import { Component } from '../../models';
 import {
   BUTTON_COLORS,
   BUTTON_TYPE_INTERNAL,
@@ -12,7 +11,6 @@ import {
 } from './button.constants';
 import type {
   ButtonColor,
-  ButtonType,
   ButtonVariant,
   PillButtonSize,
   IconButtonSize,
@@ -20,6 +18,7 @@ import type {
 } from './button.types';
 import { getIconNameWithoutStyle, getIconSize } from './button.utils';
 import type { IconNames } from '../icon/icon.types';
+import Buttonsimple from '../buttonsimple';
 
 /**
  * `mdc-button` is a component that can be configured in various ways to suit different use cases.
@@ -53,34 +52,7 @@ import type { IconNames } from '../icon/icon.types';
  *
  * @slot - Text label of the button.
  */
-class Button extends Component {
-  /**
-   * The button's active state indicates whether it is currently toggled on (active) or off (inactive).
-   * When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
-   * Conversely, when the active state is false, the button is in an inactive state, indicating it is toggled off.
-   * @default false
-   */
-  @property({ type: Boolean }) active = false;
-
-  /**
-   * Indicates whether the button is disabled.
-   * The button is currently disabled for user interaction; it is not focusable or clickable.
-   * @default false
-   */
-  @property({ type: Boolean }) disabled = false;
-
-  /**
-   * Indicates whether the button is soft disabled.
-   * When set to `true`, the button appears visually disabled but still allows
-   * focus, click, and keyboard actions to be passed through.
-   *
-   * **Important:** When using soft disabled, consumers must ensure that
-   * the button behaves like a disabled button, allowing only focus and
-   * preventing any interactions (clicks or keyboard actions) from triggering unintended actions.
-   * @default false
-   */
-  @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled = false;
-
+class Button extends Buttonsimple {
   /**
    * The name of the icon to display as a prefix.
    * The icon is displayed on the left side of the button.
@@ -106,10 +78,10 @@ class Button extends Component {
    * Button sizing is based on the button type.
    * - **Pill button**: 40, 32, 28, 24.
    * - **Icon button**: 64, 52, 40, 32, 28, 24.
-   * - Tertiary icon button cam also be 20.
+   * - Tertiary icon button can also be 20.
    * @default 32
    */
-  @property({ type: Number }) size: PillButtonSize | IconButtonSize = DEFAULTS.SIZE;
+  @property({ type: Number }) override size: PillButtonSize | IconButtonSize = DEFAULTS.SIZE;
 
   /**
    * There are 5 colors for button: positive, negative, accent, promotional, default.
@@ -132,27 +104,11 @@ class Button extends Component {
    */
   @property({ type: String, reflect: true }) override role = 'button';
 
-  /**
-   * This property defines the type attribute for the button element.
-   * The type attribute specifies the behavior of the button when it is clicked.
-   * - **submit**: The button submits the form data to the server.
-   * - **reset**: The button resets the form data to its initial state.
-   * - **button**: The button does nothing when clicked.
-   * @default button
-   */
-  @property({ reflect: true })
-  type: ButtonType = DEFAULTS.TYPE;
-
   /** @internal */
   @state() private typeInternal: ButtonTypeInternal = DEFAULTS.TYPE_INTERNAL;
 
   /** @internal */
   @state() private iconSize = 1;
-
-  /**
-   * @internal
-   */
-  private prevTabindex = 0;
 
   /**
    * @internal
@@ -164,37 +120,10 @@ class Button extends Component {
    */
   private prevPostfixIcon?: string;
 
-  /** @internal */
-  static formAssociated = true;
-
-  /** @internal */
-  private internals: ElementInternals;
-
-  /** @internal */
-  get form(): HTMLFormElement | null {
-    return this.internals.form;
-  }
-
-  constructor() {
-    super();
-    this.addEventListener('click', this.executeAction.bind(this));
-    this.addEventListener('keydown', this.handleKeyDown.bind(this));
-    this.addEventListener('keyup', this.handleKeyUp.bind(this));
-    /** @internal */
-    this.internals = this.attachInternals();
-  }
-
   public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     super.update(changedProperties);
 
-    if (changedProperties.has('disabled')) {
-      this.setDisabled(this, this.disabled);
-    }
-    if (changedProperties.has('softDisabled')) {
-      this.setSoftDisabled(this, this.softDisabled);
-    }
     if (changedProperties.has('active')) {
-      this.setAriaPressed(this, this.active);
       this.modifyIconName(this.active);
     }
     if (changedProperties.has('size')) {
@@ -212,16 +141,6 @@ class Button extends Component {
     }
     if (changedProperties.has('prefixIcon') || changedProperties.has('postfixIcon')) {
       this.inferButtonType();
-    }
-  }
-
-  private executeAction() {
-    if (this.type === 'submit' && this.internals.form) {
-      this.internals.form.requestSubmit();
-    }
-
-    if (this.type === 'reset' && this.internals.form) {
-      this.internals.form.reset();
     }
   }
 
@@ -297,98 +216,6 @@ class Button extends Component {
   }
 
   /**
-   * Sets the aria-pressed attribute based on the active state.
-   *
-   * @param element - The target element.
-   * @param active - The active state.
-   */
-  private setAriaPressed(element: HTMLElement, active: boolean) {
-    if (active) {
-      element.setAttribute('aria-pressed', 'true');
-    } else {
-      element.setAttribute('aria-pressed', 'false');
-    }
-  }
-
-  /**
-   * Sets the soft-disabled attribute for the button.
-   * When soft-disabled, the button looks to be disabled but remains focusable and clickable.
-   * Also sets/removes aria-disabled attribute.
-   *
-   * @param element - The button element.
-   * @param softDisabled - The soft-disabled state.
-   */
-  private setSoftDisabled(element: HTMLElement, softDisabled: boolean) {
-    if (softDisabled) {
-      element.setAttribute('aria-disabled', 'true');
-    } else {
-      element.setAttribute('aria-disabled', 'false');
-    }
-  }
-
-  /**
-   * Sets the disabled attribute for the button.
-   * When disabled, the button is not focusable or clickable, and tabindex is set to -1.
-   * The previous tabindex is stored and restored when enabled.
-   * Also sets/removes aria-disabled attribute.
-   *
-   * @param element - The button element.
-   * @param disabled - The disabled state.
-   */
-  private setDisabled(element: HTMLElement, disabled: boolean) {
-    if (disabled) {
-      element.setAttribute('aria-disabled', 'true');
-      this.prevTabindex = this.tabIndex;
-      this.tabIndex = -1;
-    } else {
-      this.tabIndex = this.prevTabindex;
-      element.removeAttribute('aria-disabled');
-    }
-  }
-
-  private triggerClickEvent() {
-    const clickEvent = new MouseEvent('click', {
-      bubbles: true,
-      cancelable: true,
-      view: window,
-    });
-    this.dispatchEvent(clickEvent);
-    this.executeAction();
-  }
-
-  /**
-   * Handles the keydown event on the button.
-   * If the key is 'Enter' or 'Space', the button is pressed.
-   * If the key is 'Enter', the button is pressed. The native HTML button works in the same way.
-   *
-   * @param event - The keyboard event.
-   */
-  private handleKeyDown(event: KeyboardEvent) {
-    if (['Enter', ' '].includes(event.key)) {
-      this.classList.add('pressed');
-      if (event.key === 'Enter') {
-        this.triggerClickEvent();
-      }
-    }
-  }
-
-  /**
-   * Handles the keyup event on the button.
-   * If the key is 'Enter' or 'Space', the button is clicked.
-   * If the key is 'Space', the button is pressed. The native HTML button works in the same way.
-   *
-   * @param event - The keyboard event.
-   */
-  private handleKeyUp(event: KeyboardEvent) {
-    if (['Enter', ' '].includes(event.key)) {
-      this.classList.remove('pressed');
-      if (event.key === ' ') {
-        this.triggerClickEvent();
-      }
-    }
-  }
-
-  /**
    * Infers the type of button based on the presence of slot and/or prefix and postfix icons.
    * @param slot - default slot of button
    */
@@ -406,9 +233,6 @@ class Button extends Component {
     }
   }
 
-  // Note: @click is attached to each of the children of the button.
-  // Adding click listener within the constructor will not work properly when button is disabled.
-  // https://discord.com/channels/1012791295170859069/1047015641225371718/threads/1309446072413720576
   public override render() {
     return html`
       ${this.prefixIcon ? html`
@@ -429,7 +253,7 @@ class Button extends Component {
     `;
   }
 
-  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...Buttonsimple.styles, ...styles];
 }
 
 export default Button;

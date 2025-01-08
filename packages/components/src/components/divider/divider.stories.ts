@@ -30,12 +30,12 @@ const render = (args: Args) => {
 };
 
 const meta: Meta = {
-  title: 'Work In Progress/divider',
+  title: 'Components/decorator/divider',
   tags: ['autodocs'],
   component: 'mdc-divider',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     typeOfChildren: {

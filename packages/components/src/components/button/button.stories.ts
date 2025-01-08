@@ -138,6 +138,9 @@ export const IconButton: StoryObj = {
     size: {
       options: Object.values(ICON_BUTTON_SIZES),
     },
+    'aria-label': {
+      description: 'Aria label for the icon button. Required for accessibility.',
+    },
   },
   args: {
     'prefix-icon': 'placeholder-bold',

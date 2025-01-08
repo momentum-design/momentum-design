@@ -1079,7 +1079,7 @@
           },
           "overlay": {
             "normal": {
-              "value": "{color.core.black-alpha.60}",
+              "value": "{color.core.black-alpha.80}",
               "type": "color",
               "description": "Used for operation pop: knocked-back effect when signle card is selected"
             },
