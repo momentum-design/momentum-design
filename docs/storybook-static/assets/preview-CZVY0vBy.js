@@ -159,7 +159,126 @@ Possible values: 'small', 'medium', 'large'`,default:"small",fieldName:"size"}],
  * @cssproperty --mdc-bullet-size-small - small size value of the bullet
  * @cssproperty --mdc-bullet-size-medium - medium size value of the bullet
  * @cssproperty --mdc-bullet-size-large - large size value of the bullet
-*/`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Bullet",module:"components/bullet/bullet.component.js"}}]},{kind:"javascript-module",path:"components/buttonsimple/buttonsimple.component.js",declarations:[{kind:"class",description:"`mdc-buttonsimple` is a component that can be configured in various ways to suit different use cases.\nIt is used as an internal component and is not intended to be used directly by consumers.\nConsumers should use the `mdc-button` component instead.",name:"Buttonsimple",members:[{kind:"field",name:"active",type:{text:"boolean"},default:"false",description:`The button's active state indicates whether it is currently toggled on (active) or off (inactive).
+*/`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Bullet",module:"components/bullet/bullet.component.js"}}]},{kind:"javascript-module",path:"components/button/button.component.js",declarations:[{kind:"class",description:`\`mdc-button\` is a component that can be configured in various ways to suit different use cases.
+
+Button Variants:
+- **Primary**: Solid background color.
+- **Secondary**: Transparent background with a solid border.
+- **Tertiary**: No background or border, appears as plain text but retains all button functionalities.
+
+Button Colors:
+- **Positive**: Green color.
+- **Negative**: Red color.
+- **Accent**: Blue color.
+- **Promotional**: Purple color.
+- **Default**: White color.
+
+Button Sizes (in REM units):
+- **Pill button**: 40, 32, 28, 24.
+- **Icon button**: 64, 52, 40, 32, 28, 24.
+- **Tertiary icon button**: 20.
+
+Button Types:
+- **Pill button**: A button that contains text value. Commonly used for call to action, tags, or filters.
+- **Pill button with icons**: A button containing an icon either on the left or right side of the button.
+- **Icon button**: A button represented by just an icon without any text.
+The type of button is inferred based on the presence of slot and/or prefix and postfix icons.`,name:"Button",slots:[{description:"Text label of the button.",name:""}],members:[{kind:"field",name:"prefixIcon",type:{text:"string | undefined"},description:`The name of the icon to display as a prefix.
+The icon is displayed on the left side of the button.`,attribute:"prefix-icon",reflects:!0},{kind:"field",name:"postfixIcon",type:{text:"string | undefined"},description:`The name of the icon to display as a postfix.
+The icon is displayed on the right side of the button.`,attribute:"postfix-icon",reflects:!0},{kind:"field",name:"variant",type:{text:"ButtonVariant"},description:`There are 3 variants of button: primary, secondary, tertiary. They are styled differently.
+- **Primary**: Solid background color.
+- **Secondary**: Transparent background with a solid border.
+- **Tertiary**: No background or border, appears as plain text but retains all button functionalities.`,default:"primary",attribute:"variant"},{kind:"field",name:"size",type:{text:"ButtonSize"},description:`Button sizing is based on the button type.
+- **Pill button**: 40, 32, 28, 24.
+- **Icon button**: 64, 52, 40, 32, 28, 24.
+- Tertiary icon button can also be 20.`,default:"32",attribute:"size",reflects:!0,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"color",type:{text:"ButtonColor"},description:"There are 5 colors for button: positive, negative, accent, promotional, default.",default:"default",attribute:"color"},{kind:"field",name:"tabIndex",type:{text:"number"},default:"0",description:"The tabindex of the button.",attribute:"tabIndex",reflects:!0,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"role",description:`This property defines the ARIA role for the element. By default, it is set to 'button'.
+Consumers should override this role when:
+- The element is being used in a context where a different role is more appropriate.
+- Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.`,default:"'button'",attribute:"role",reflects:!0,type:{text:"string"},inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"modifyIconName",privacy:"private",parameters:[{name:"active",type:{text:"boolean"},description:"The active state."}],description:`Modifies the icon name based on the active state.
+If the button is active, the icon name is suffixed with '-filled'.
+If the button is inactive, the icon name is restored to its original value.
+If '-filled' icon is not available, the icon name remains unchanged.`},{kind:"method",name:"setVariant",privacy:"private",parameters:[{name:"variant",type:{text:"ButtonVariant"},description:"The variant to set."}],description:`Sets the variant attribute for the button component.
+If the provided variant is not included in the BUTTON_VARIANTS,
+it defaults to the value specified in DEFAULTS.VARIANT.`},{kind:"method",name:"setSize",privacy:"private",parameters:[{name:"size",type:{text:"PillButtonSize | IconButtonSize"},description:"The size to set."}],description:`Sets the size attribute for the button component.
+Validates the size based on the button type (icon, pill, or tertiary).
+Defaults to DEFAULTS.SIZE if invalid.`},{kind:"method",name:"setColor",privacy:"private",parameters:[{name:"color",type:{text:"ButtonColor"},description:"The color to set."}],description:`Sets the color attribute for the button.
+Defaults to DEFAULTS.COLOR if invalid or for tertiary buttons.`},{kind:"method",name:"inferButtonType",privacy:"private",description:"Infers the type of button based on the presence of slot and/or prefix and postfix icons.",parameters:[{description:"default slot of button",name:"slot"}]},{kind:"field",name:"active",type:{text:"boolean"},default:"false",description:`The button's active state indicates whether it is currently toggled on (active) or off (inactive).
+When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
+Conversely, when the active state is false, the button is in an inactive state, indicating it is toggled off.`,attribute:"active",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the button is disabled.
+When the button is disabled for user interaction; it is not focusable or clickable.`,attribute:"disabled",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"softDisabled",type:{text:"boolean"},default:"false",description:`Indicates whether the button is soft disabled.
+When set to \`true\`, the button appears visually disabled but still allows
+focus, click, and keyboard actions to be passed through.
+
+**Important:** When using soft disabled, consumers must ensure that
+the button behaves like a disabled button, allowing only focus and
+preventing any interactions (clicks or keyboard actions) from triggering unintended actions.`,attribute:"soft-disabled",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"type",type:{text:"ButtonType"},description:`This property defines the type attribute for the button element.
+The type attribute specifies the behavior of the button when it is clicked.
+- **submit**: The button submits the form data to the server.
+- **reset**: The button resets the form data to its initial state.
+- **button**: The button does nothing when clicked.`,default:"button",attribute:"type",reflects:!0,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"executeAction",privacy:"private",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"setAriaPressed",privacy:"private",parameters:[{name:"element",type:{text:"HTMLElement"},description:"The target element."},{name:"active",type:{text:"boolean"},description:"The active state."}],description:"Sets the aria-pressed attribute based on the active state.",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"setSoftDisabled",privacy:"private",parameters:[{name:"element",type:{text:"HTMLElement"},description:"The button element."},{name:"softDisabled",type:{text:"boolean"},description:"The soft-disabled state."}],description:`Sets the soft-disabled attribute for the button.
+When soft-disabled, the button looks to be disabled but remains focusable and clickable.
+Also sets/removes aria-disabled attribute.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"setDisabled",privacy:"private",parameters:[{name:"element",type:{text:"HTMLElement"},description:"The button element."},{name:"disabled",type:{text:"boolean"},description:"The disabled state."}],description:`Sets the disabled attribute for the button.
+When disabled, the button is not focusable or clickable, and tabindex is set to -1.
+The previous tabindex is stored and restored when enabled.
+Also sets/removes aria-disabled attribute.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"triggerClickEvent",privacy:"private",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"handleKeyDown",privacy:"private",parameters:[{name:"event",type:{text:"KeyboardEvent"},description:"The keyboard event."}],description:`Handles the keydown event on the button.
+If the key is 'Enter' or 'Space', the button is pressed.
+If the key is 'Enter', the button is pressed. The native HTML button works in the same way.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"handleKeyUp",privacy:"private",parameters:[{name:"event",type:{text:"KeyboardEvent"},description:"The keyboard event."}],description:`Handles the keyup event on the button.
+If the key is 'Enter' or 'Space', the button is clicked.
+If the key is 'Space', the button is pressed. The native HTML button works in the same way.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}}],attributes:[{name:"prefix-icon",type:{text:"string | undefined"},description:`The name of the icon to display as a prefix.
+The icon is displayed on the left side of the button.`,fieldName:"prefixIcon"},{name:"postfix-icon",type:{text:"string | undefined"},description:`The name of the icon to display as a postfix.
+The icon is displayed on the right side of the button.`,fieldName:"postfixIcon"},{name:"variant",type:{text:"ButtonVariant"},description:`There are 3 variants of button: primary, secondary, tertiary. They are styled differently.
+- **Primary**: Solid background color.
+- **Secondary**: Transparent background with a solid border.
+- **Tertiary**: No background or border, appears as plain text but retains all button functionalities.`,default:"primary",fieldName:"variant"},{name:"size",type:{text:"ButtonSize"},description:`Button sizing is based on the button type.
+- **Pill button**: 40, 32, 28, 24.
+- **Icon button**: 64, 52, 40, 32, 28, 24.
+- Tertiary icon button can also be 20.`,default:"32",fieldName:"size",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"color",type:{text:"ButtonColor"},description:"There are 5 colors for button: positive, negative, accent, promotional, default.",default:"default",fieldName:"color"},{name:"tabIndex",type:{text:"number"},default:"0",description:"The tabindex of the button.",fieldName:"tabIndex",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"role",description:`This property defines the ARIA role for the element. By default, it is set to 'button'.
+Consumers should override this role when:
+- The element is being used in a context where a different role is more appropriate.
+- Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.`,default:"'button'",fieldName:"role",type:{text:"string"},inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"active",type:{text:"boolean"},default:"false",description:`The button's active state indicates whether it is currently toggled on (active) or off (inactive).
+When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
+Conversely, when the active state is false, the button is in an inactive state, indicating it is toggled off.`,fieldName:"active",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the button is disabled.
+When the button is disabled for user interaction; it is not focusable or clickable.`,fieldName:"disabled",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"soft-disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the button is soft disabled.
+When set to \`true\`, the button appears visually disabled but still allows
+focus, click, and keyboard actions to be passed through.
+
+**Important:** When using soft disabled, consumers must ensure that
+the button behaves like a disabled button, allowing only focus and
+preventing any interactions (clicks or keyboard actions) from triggering unintended actions.`,fieldName:"softDisabled",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"type",type:{text:"ButtonType"},description:`This property defines the type attribute for the button element.
+The type attribute specifies the behavior of the button when it is clicked.
+- **submit**: The button submits the form data to the server.
+- **reset**: The button resets the form data to its initial state.
+- **button**: The button does nothing when clicked.`,default:"button",fieldName:"type",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}}],superclass:{name:"Buttonsimple",module:"/src/components/buttonsimple"},tagName:"mdc-button",jsDoc:`/**
+ * \`mdc-button\` is a component that can be configured in various ways to suit different use cases.
+ *
+ * Button Variants:
+ * - **Primary**: Solid background color.
+ * - **Secondary**: Transparent background with a solid border.
+ * - **Tertiary**: No background or border, appears as plain text but retains all button functionalities.
+ *
+ * Button Colors:
+ * - **Positive**: Green color.
+ * - **Negative**: Red color.
+ * - **Accent**: Blue color.
+ * - **Promotional**: Purple color.
+ * - **Default**: White color.
+ *
+ * Button Sizes (in REM units):
+ * - **Pill button**: 40, 32, 28, 24.
+ * - **Icon button**: 64, 52, 40, 32, 28, 24.
+ * - **Tertiary icon button**: 20.
+ *
+ * Button Types:
+ * - **Pill button**: A button that contains text value. Commonly used for call to action, tags, or filters.
+ * - **Pill button with icons**: A button containing an icon either on the left or right side of the button.
+ * - **Icon button**: A button represented by just an icon without any text.
+ * The type of button is inferred based on the presence of slot and/or prefix and postfix icons.
+ *
+ * @dependency mdc-icon
+ *
+ * @tagname mdc-button
+ *
+ * @slot - Text label of the button.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Button",module:"components/button/button.component.js"}}]},{kind:"javascript-module",path:"components/buttonsimple/buttonsimple.component.js",declarations:[{kind:"class",description:"`mdc-buttonsimple` is a component that can be configured in various ways to suit different use cases.\nIt is used as an internal component and is not intended to be used directly by consumers.\nConsumers should use the `mdc-button` component instead.",name:"Buttonsimple",members:[{kind:"field",name:"active",type:{text:"boolean"},default:"false",description:`The button's active state indicates whether it is currently toggled on (active) or off (inactive).
 When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
 Conversely, when the active state is false, the button is in an inactive state, indicating it is toggled off.`,attribute:"active"},{kind:"field",name:"disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the button is disabled.
 When the button is disabled for user interaction; it is not focusable or clickable.`,attribute:"disabled"},{kind:"field",name:"softDisabled",type:{text:"boolean"},default:"false",description:`Indicates whether the button is soft disabled.
@@ -305,126 +424,7 @@ Note: Positive and Negative directions are defined based on Cartesian plane.`,de
  * @cssproperty --mdc-divider-text-margin - left and right margin of label in the text divider
  * @cssproperty --mdc-divider-text-line-height - line height of label in the text divider
  * @cssproperty --mdc-divider-grabber-button-border-radius - border radius of the grabber button
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Divider",module:"components/divider/divider.component.js"}}]},{kind:"javascript-module",path:"components/button/button.component.js",declarations:[{kind:"class",description:`\`mdc-button\` is a component that can be configured in various ways to suit different use cases.
-
-Button Variants:
-- **Primary**: Solid background color.
-- **Secondary**: Transparent background with a solid border.
-- **Tertiary**: No background or border, appears as plain text but retains all button functionalities.
-
-Button Colors:
-- **Positive**: Green color.
-- **Negative**: Red color.
-- **Accent**: Blue color.
-- **Promotional**: Purple color.
-- **Default**: White color.
-
-Button Sizes (in REM units):
-- **Pill button**: 40, 32, 28, 24.
-- **Icon button**: 64, 52, 40, 32, 28, 24.
-- **Tertiary icon button**: 20.
-
-Button Types:
-- **Pill button**: A button that contains text value. Commonly used for call to action, tags, or filters.
-- **Pill button with icons**: A button containing an icon either on the left or right side of the button.
-- **Icon button**: A button represented by just an icon without any text.
-The type of button is inferred based on the presence of slot and/or prefix and postfix icons.`,name:"Button",slots:[{description:"Text label of the button.",name:""}],members:[{kind:"field",name:"prefixIcon",type:{text:"string | undefined"},description:`The name of the icon to display as a prefix.
-The icon is displayed on the left side of the button.`,attribute:"prefix-icon",reflects:!0},{kind:"field",name:"postfixIcon",type:{text:"string | undefined"},description:`The name of the icon to display as a postfix.
-The icon is displayed on the right side of the button.`,attribute:"postfix-icon",reflects:!0},{kind:"field",name:"variant",type:{text:"ButtonVariant"},description:`There are 3 variants of button: primary, secondary, tertiary. They are styled differently.
-- **Primary**: Solid background color.
-- **Secondary**: Transparent background with a solid border.
-- **Tertiary**: No background or border, appears as plain text but retains all button functionalities.`,default:"primary",attribute:"variant"},{kind:"field",name:"size",type:{text:"ButtonSize"},description:`Button sizing is based on the button type.
-- **Pill button**: 40, 32, 28, 24.
-- **Icon button**: 64, 52, 40, 32, 28, 24.
-- Tertiary icon button can also be 20.`,default:"32",attribute:"size",reflects:!0,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"color",type:{text:"ButtonColor"},description:"There are 5 colors for button: positive, negative, accent, promotional, default.",default:"default",attribute:"color"},{kind:"field",name:"tabIndex",type:{text:"number"},default:"0",description:"The tabindex of the button.",attribute:"tabIndex",reflects:!0,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"role",description:`This property defines the ARIA role for the element. By default, it is set to 'button'.
-Consumers should override this role when:
-- The element is being used in a context where a different role is more appropriate.
-- Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.`,default:"'button'",attribute:"role",reflects:!0,type:{text:"string"},inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"modifyIconName",privacy:"private",parameters:[{name:"active",type:{text:"boolean"},description:"The active state."}],description:`Modifies the icon name based on the active state.
-If the button is active, the icon name is suffixed with '-filled'.
-If the button is inactive, the icon name is restored to its original value.
-If '-filled' icon is not available, the icon name remains unchanged.`},{kind:"method",name:"setVariant",privacy:"private",parameters:[{name:"variant",type:{text:"ButtonVariant"},description:"The variant to set."}],description:`Sets the variant attribute for the button component.
-If the provided variant is not included in the BUTTON_VARIANTS,
-it defaults to the value specified in DEFAULTS.VARIANT.`},{kind:"method",name:"setSize",privacy:"private",parameters:[{name:"size",type:{text:"PillButtonSize | IconButtonSize"},description:"The size to set."}],description:`Sets the size attribute for the button component.
-Validates the size based on the button type (icon, pill, or tertiary).
-Defaults to DEFAULTS.SIZE if invalid.`},{kind:"method",name:"setColor",privacy:"private",parameters:[{name:"color",type:{text:"ButtonColor"},description:"The color to set."}],description:`Sets the color attribute for the button.
-Defaults to DEFAULTS.COLOR if invalid or for tertiary buttons.`},{kind:"method",name:"inferButtonType",privacy:"private",description:"Infers the type of button based on the presence of slot and/or prefix and postfix icons.",parameters:[{description:"default slot of button",name:"slot"}]},{kind:"field",name:"active",type:{text:"boolean"},default:"false",description:`The button's active state indicates whether it is currently toggled on (active) or off (inactive).
-When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
-Conversely, when the active state is false, the button is in an inactive state, indicating it is toggled off.`,attribute:"active",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the button is disabled.
-When the button is disabled for user interaction; it is not focusable or clickable.`,attribute:"disabled",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"softDisabled",type:{text:"boolean"},default:"false",description:`Indicates whether the button is soft disabled.
-When set to \`true\`, the button appears visually disabled but still allows
-focus, click, and keyboard actions to be passed through.
-
-**Important:** When using soft disabled, consumers must ensure that
-the button behaves like a disabled button, allowing only focus and
-preventing any interactions (clicks or keyboard actions) from triggering unintended actions.`,attribute:"soft-disabled",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"type",type:{text:"ButtonType"},description:`This property defines the type attribute for the button element.
-The type attribute specifies the behavior of the button when it is clicked.
-- **submit**: The button submits the form data to the server.
-- **reset**: The button resets the form data to its initial state.
-- **button**: The button does nothing when clicked.`,default:"button",attribute:"type",reflects:!0,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"executeAction",privacy:"private",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"setAriaPressed",privacy:"private",parameters:[{name:"element",type:{text:"HTMLElement"},description:"The target element."},{name:"active",type:{text:"boolean"},description:"The active state."}],description:"Sets the aria-pressed attribute based on the active state.",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"setSoftDisabled",privacy:"private",parameters:[{name:"element",type:{text:"HTMLElement"},description:"The button element."},{name:"softDisabled",type:{text:"boolean"},description:"The soft-disabled state."}],description:`Sets the soft-disabled attribute for the button.
-When soft-disabled, the button looks to be disabled but remains focusable and clickable.
-Also sets/removes aria-disabled attribute.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"setDisabled",privacy:"private",parameters:[{name:"element",type:{text:"HTMLElement"},description:"The button element."},{name:"disabled",type:{text:"boolean"},description:"The disabled state."}],description:`Sets the disabled attribute for the button.
-When disabled, the button is not focusable or clickable, and tabindex is set to -1.
-The previous tabindex is stored and restored when enabled.
-Also sets/removes aria-disabled attribute.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"triggerClickEvent",privacy:"private",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"handleKeyDown",privacy:"private",parameters:[{name:"event",type:{text:"KeyboardEvent"},description:"The keyboard event."}],description:`Handles the keydown event on the button.
-If the key is 'Enter' or 'Space', the button is pressed.
-If the key is 'Enter', the button is pressed. The native HTML button works in the same way.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"handleKeyUp",privacy:"private",parameters:[{name:"event",type:{text:"KeyboardEvent"},description:"The keyboard event."}],description:`Handles the keyup event on the button.
-If the key is 'Enter' or 'Space', the button is clicked.
-If the key is 'Space', the button is pressed. The native HTML button works in the same way.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}}],attributes:[{name:"prefix-icon",type:{text:"string | undefined"},description:`The name of the icon to display as a prefix.
-The icon is displayed on the left side of the button.`,fieldName:"prefixIcon"},{name:"postfix-icon",type:{text:"string | undefined"},description:`The name of the icon to display as a postfix.
-The icon is displayed on the right side of the button.`,fieldName:"postfixIcon"},{name:"variant",type:{text:"ButtonVariant"},description:`There are 3 variants of button: primary, secondary, tertiary. They are styled differently.
-- **Primary**: Solid background color.
-- **Secondary**: Transparent background with a solid border.
-- **Tertiary**: No background or border, appears as plain text but retains all button functionalities.`,default:"primary",fieldName:"variant"},{name:"size",type:{text:"ButtonSize"},description:`Button sizing is based on the button type.
-- **Pill button**: 40, 32, 28, 24.
-- **Icon button**: 64, 52, 40, 32, 28, 24.
-- Tertiary icon button can also be 20.`,default:"32",fieldName:"size",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"color",type:{text:"ButtonColor"},description:"There are 5 colors for button: positive, negative, accent, promotional, default.",default:"default",fieldName:"color"},{name:"tabIndex",type:{text:"number"},default:"0",description:"The tabindex of the button.",fieldName:"tabIndex",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"role",description:`This property defines the ARIA role for the element. By default, it is set to 'button'.
-Consumers should override this role when:
-- The element is being used in a context where a different role is more appropriate.
-- Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.`,default:"'button'",fieldName:"role",type:{text:"string"},inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"active",type:{text:"boolean"},default:"false",description:`The button's active state indicates whether it is currently toggled on (active) or off (inactive).
-When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
-Conversely, when the active state is false, the button is in an inactive state, indicating it is toggled off.`,fieldName:"active",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the button is disabled.
-When the button is disabled for user interaction; it is not focusable or clickable.`,fieldName:"disabled",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"soft-disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the button is soft disabled.
-When set to \`true\`, the button appears visually disabled but still allows
-focus, click, and keyboard actions to be passed through.
-
-**Important:** When using soft disabled, consumers must ensure that
-the button behaves like a disabled button, allowing only focus and
-preventing any interactions (clicks or keyboard actions) from triggering unintended actions.`,fieldName:"softDisabled",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"type",type:{text:"ButtonType"},description:`This property defines the type attribute for the button element.
-The type attribute specifies the behavior of the button when it is clicked.
-- **submit**: The button submits the form data to the server.
-- **reset**: The button resets the form data to its initial state.
-- **button**: The button does nothing when clicked.`,default:"button",fieldName:"type",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}}],superclass:{name:"Buttonsimple",module:"/src/components/buttonsimple"},tagName:"mdc-button",jsDoc:`/**
- * \`mdc-button\` is a component that can be configured in various ways to suit different use cases.
- *
- * Button Variants:
- * - **Primary**: Solid background color.
- * - **Secondary**: Transparent background with a solid border.
- * - **Tertiary**: No background or border, appears as plain text but retains all button functionalities.
- *
- * Button Colors:
- * - **Positive**: Green color.
- * - **Negative**: Red color.
- * - **Accent**: Blue color.
- * - **Promotional**: Purple color.
- * - **Default**: White color.
- *
- * Button Sizes (in REM units):
- * - **Pill button**: 40, 32, 28, 24.
- * - **Icon button**: 64, 52, 40, 32, 28, 24.
- * - **Tertiary icon button**: 20.
- *
- * Button Types:
- * - **Pill button**: A button that contains text value. Commonly used for call to action, tags, or filters.
- * - **Pill button with icons**: A button containing an icon either on the left or right side of the button.
- * - **Icon button**: A button represented by just an icon without any text.
- * The type of button is inferred based on the presence of slot and/or prefix and postfix icons.
- *
- * @dependency mdc-icon
- *
- * @tagname mdc-button
- *
- * @slot - Text label of the button.
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Button",module:"components/button/button.component.js"}}]},{kind:"javascript-module",path:"components/icon/icon.component.js",declarations:[{kind:"class",description:`Icon component that dynamically displays SVG icons based on a valid name.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Divider",module:"components/divider/divider.component.js"}}]},{kind:"javascript-module",path:"components/icon/icon.component.js",declarations:[{kind:"class",description:`Icon component that dynamically displays SVG icons based on a valid name.
 
 This component must be mounted within an \`IconProvider\` component.
 
@@ -454,12 +454,17 @@ Regarding accessibility, there are two types of icons: decorative and informativ
 - They provide valuable context and must be announced by assistive technologies.
 - For informative icons, an \`aria-label\` is required, and the \`role\` will be set to "img".
 - If an \`aria-label\` is provided, the role will be set to 'img'; if it is absent,
-  the role will be unset.`,name:"Icon",cssProperties:[{description:"Allows customization of the default fill color.",name:"--mdc-icon-fill-color"}],members:[{kind:"field",name:"iconData",type:{text:"HTMLElement | undefined"},privacy:"private"},{kind:"field",name:"lengthUnitFromContext",type:{text:"string | undefined"},privacy:"private"},{kind:"field",name:"sizeFromContext",type:{text:"number | undefined"},privacy:"private"},{kind:"field",name:"name",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename)",attribute:"name",reflects:!0},{kind:"field",name:"size",type:{text:"number | undefined"},description:"Size of the icon (works in combination with length unit)",attribute:"size"},{kind:"field",name:"lengthUnit",type:{text:"string | undefined"},description:"Length unit attribute for overriding length-unit from `IconProvider`",attribute:"length-unit"},{kind:"field",name:"ariaLabel",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",attribute:"aria-label"},{kind:"field",name:"iconProviderContext",privacy:"private",readonly:!0},{kind:"field",name:"abortController",type:{text:"AbortController"},privacy:"private",default:"new AbortController()"},{kind:"method",name:"getIconData",privacy:"private",description:`Get Icon Data function which will fetch the icon (currently only svg)
+  the role will be unset.`,name:"Icon",cssProperties:[{description:"Allows customization of the default fill color.",name:"--mdc-icon-fill-color"}],members:[{kind:"field",name:"iconData",type:{text:"HTMLElement | undefined"},privacy:"private"},{kind:"field",name:"lengthUnitFromContext",type:{text:"string | undefined"},privacy:"private"},{kind:"field",name:"sizeFromContext",type:{text:"number | undefined"},privacy:"private"},{kind:"field",name:"name",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename)",attribute:"name",reflects:!0},{kind:"field",name:"size",type:{text:"number | undefined"},description:"Size of the icon (works in combination with length unit)",attribute:"size"},{kind:"field",name:"lengthUnit",type:{text:"string | undefined"},description:"Length unit attribute for overriding length-unit from `IconProvider`",attribute:"length-unit"},{kind:"field",name:"ariaLabel",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",attribute:"aria-label"},{kind:"field",name:"iconProviderContext",privacy:"private",readonly:!0},{kind:"field",name:"abortController",type:{text:"AbortController"},privacy:"private",default:"new AbortController()"},{kind:"method",name:"triggerIconLoaded",privacy:"private",return:{type:{text:"void"}},description:`Dispatches a 'load' event on the component once the icon has been successfully loaded.
+This event bubbles and is cancelable.`},{kind:"method",name:"getIconData",privacy:"private",description:`Get Icon Data function which will fetch the icon (currently only svg)
 and sets state and attributes once fetched successfully
 
 This method uses abortController.signal to cancel the fetch request when the component is disconnected or updated.
 If the request is aborted after the fetch() call has been fulfilled but before the response body has been read,
-then attempting to read the response body will reject with an AbortError exception.`},{kind:"method",name:"updateSize",privacy:"private",description:"Updates the size by setting the width and height"},{kind:"method",name:"setRoleOnIcon",privacy:"private"},{kind:"method",name:"setAriaHiddenOnIcon",privacy:"private"},{kind:"method",name:"setAriaLabelOnIcon",privacy:"private"},{kind:"field",name:"computedIconSize",privacy:"private",readonly:!0}],attributes:[{name:"name",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename)",fieldName:"name"},{name:"size",type:{text:"number | undefined"},description:"Size of the icon (works in combination with length unit)",fieldName:"size"},{name:"length-unit",type:{text:"string | undefined"},description:"Length unit attribute for overriding length-unit from `IconProvider`",fieldName:"lengthUnit"},{name:"aria-label",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",fieldName:"ariaLabel"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-icon",jsDoc:`/**
+then attempting to read the response body will reject with an AbortError exception.`},{kind:"method",name:"handleIconLoadedSuccess",privacy:"private",parameters:[{name:"iconHtml",type:{text:"HTMLElement"},description:"The icon html element which has been fetched from the icon provider."}],description:`Sets the iconData state to the fetched icon,
+and calls functions to set role, aria-label and aria-hidden attributes on the icon.
+Dispatches a 'load' event on the component once the icon has been successfully loaded.`},{kind:"method",name:"handleIconLoadedFailure",privacy:"private",parameters:[{name:"error",type:{text:"unknown"}}],description:`Dispatches an 'error' event on the component when the icon fetching has failed.
+This event bubbles and is cancelable.
+The error detail is set to the error object.`},{kind:"method",name:"updateSize",privacy:"private",description:"Updates the size by setting the width and height"},{kind:"method",name:"setRoleOnIcon",privacy:"private"},{kind:"method",name:"setAriaHiddenOnIcon",privacy:"private"},{kind:"method",name:"setAriaLabelOnIcon",privacy:"private"},{kind:"field",name:"computedIconSize",privacy:"private",readonly:!0}],attributes:[{name:"name",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename)",fieldName:"name"},{name:"size",type:{text:"number | undefined"},description:"Size of the icon (works in combination with length unit)",fieldName:"size"},{name:"length-unit",type:{text:"string | undefined"},description:"Length unit attribute for overriding length-unit from `IconProvider`",fieldName:"lengthUnit"},{name:"aria-label",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",fieldName:"ariaLabel"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-icon",jsDoc:`/**
  * Icon component that dynamically displays SVG icons based on a valid name.
  *
  * This component must be mounted within an \`IconProvider\` component.
