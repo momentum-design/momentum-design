@@ -5,7 +5,7 @@ import{i as h,k as d}from"./lit-element-CHllvULs.js";import{n as v,u as f}from".
     outline: none;
     border-radius: 0.25rem;
   }
-`,T];var I=Object.defineProperty,O=(e,s,c,F)=>{for(var i=void 0,a=e.length-1,p;a>=0;a--)(p=e[a])&&(i=p(s,c,i)||i);return i&&I(s,c,i),i};const n=class n extends y(x){constructor(){super(),this.ariaLabel=null,this.active=void 0,this.disabled=void 0,this.softDisabled=void 0,this.role="button",this.type=g.TYPE}update(s){super.update(s),s.has("size")&&this.setSize(this.size)}setSize(s){this.setAttribute("size",Object.values(b).includes(s)?`${s}`:$.SIZE.toString())}render(){return d`
+`,T];var C=Object.defineProperty,O=(e,s,c,I)=>{for(var i=void 0,r=e.length-1,p;r>=0;r--)(p=e[r])&&(i=p(s,c,i)||i);return i&&C(s,c,i),i};const n=class n extends y(x){constructor(){super(),this.ariaLabel=null,this.active=void 0,this.disabled=void 0,this.softDisabled=void 0,this.role="button",this.type=g.TYPE}update(s){super.update(s),s.has("size")&&this.setSize(this.size)}setSize(s){this.setAttribute("size",Object.values(b).includes(s)?`${s}`:$.SIZE.toString())}render(){return d`
       <mdc-avatar
         slot="prefixIcon"
         ?is-typing="${this.isTyping}"
@@ -16,7 +16,7 @@ import{i as h,k as d}from"./lit-element-CHllvULs.js";import{n as v,u as f}from".
         size="${t(this.size)}"
         src="${t(this.src)}"
       ></mdc-avatar>
-    `}};n.styles=[..._];let r=n;O([v({type:String,attribute:"aria-label"})],r.prototype,"ariaLabel");const j=f.constructTagName("avatarbutton");r.register(j);const C=e=>d`
+    `}};n.styles=[..._];let a=n;O([v({type:String,attribute:"aria-label"})],a.prototype,"ariaLabel");const j=f.constructTagName("avatarbutton");a.register(j);const F=e=>d`
   <mdc-avatarbutton
     counter="${t(e.counter)}"
     icon-name="${t(e["icon-name"])}"
@@ -27,7 +27,7 @@ import{i as h,k as d}from"./lit-element-CHllvULs.js";import{n as v,u as f}from".
     ?is-typing="${e["is-typing"]}"
     aria-label=${e["aria-label"]}
   ></mdc-avatarbutton>
-`,Q={title:"Work In Progress/avatarbutton",tags:["autodocs"],component:"mdc-avatarbutton",render:C,parameters:{badges:["wip"]},argTypes:{src:{control:"text"},initials:{control:"text"},presence:{control:"select",options:Object.values(z)},size:{control:"select",options:Object.values(b)},"is-typing":{control:"boolean"},"icon-name":{control:"text"},counter:{control:"number"},"aria-label":{control:"text"},...D(["active","disabled","soft-disabled","tabIndex","role","type"]),...S,...E}},o={args:{src:"https://picsum.photos/id/63/256",initials:"MD",size:88,"icon-name":"","is-typing":"","aria-label":"Avatar Button"}};var l,m,u;o.parameters={...o.parameters,docs:{...(l=o.parameters)==null?void 0:l.docs,source:{originalSource:`{
+`,W={title:"Components/avatarbutton",tags:["autodocs"],component:"mdc-avatarbutton",render:F,parameters:{badges:["stable"]},argTypes:{src:{control:"text"},initials:{control:"text"},presence:{control:"select",options:Object.values(z)},size:{control:"select",options:Object.values(b)},"is-typing":{control:"boolean"},"icon-name":{control:"text"},counter:{control:"number"},"aria-label":{control:"text"},...D(["active","disabled","soft-disabled","tabIndex","role","type"]),...S,...E}},o={args:{src:"https://picsum.photos/id/63/256",initials:"MD",size:88,"icon-name":"","is-typing":"","aria-label":"Avatar Button"}};var l,m,u;o.parameters={...o.parameters,docs:{...(l=o.parameters)==null?void 0:l.docs,source:{originalSource:`{
   args: {
     src: 'https://picsum.photos/id/63/256',
     initials: 'MD',
@@ -36,4 +36,4 @@ import{i as h,k as d}from"./lit-element-CHllvULs.js";import{n as v,u as f}from".
     'is-typing': '',
     'aria-label': 'Avatar Button'
   }
-}`,...(u=(m=o.parameters)==null?void 0:m.docs)==null?void 0:u.source}}};const X=["Example"];export{o as Example,X as __namedExportsOrder,Q as default};
+}`,...(u=(m=o.parameters)==null?void 0:m.docs)==null?void 0:u.source}}};const X=["Example"];export{o as Example,X as __namedExportsOrder,W as default};
