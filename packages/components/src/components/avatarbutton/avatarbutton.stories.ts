@@ -21,12 +21,12 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/avatarbutton',
+  title: 'Components/avatarbutton',
   tags: ['autodocs'],
   component: 'mdc-avatarbutton',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     src: {
