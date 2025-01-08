@@ -4,6 +4,7 @@ import styles from './buttonsimple.styles';
 import { Component } from '../../models';
 import { ButtonSize, ButtonType } from './buttonsimple.types';
 import { BUTTON_TYPE, DEFAULTS } from './buttonsimple.constants';
+import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 
 /**
  * `mdc-buttonsimple` is a component that can be configured in various ways to suit different use cases.
@@ -13,7 +14,7 @@ import { BUTTON_TYPE, DEFAULTS } from './buttonsimple.constants';
  * @tagname mdc-buttonsimple
  *
  */
-class Buttonsimple extends Component {
+class Buttonsimple extends DisabledMixin(Component) {
   /**
    * The button's active state indicates whether it is currently toggled on (active) or off (inactive).
    * When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
@@ -21,13 +22,6 @@ class Buttonsimple extends Component {
    * @default false
    */
   @property({ type: Boolean }) active = false;
-
-  /**
-   * Indicates whether the button is disabled.
-   * When the button is disabled for user interaction; it is not focusable or clickable.
-   * @default false
-   */
-  @property({ type: Boolean }) disabled = false;
 
   /**
    * Indicates whether the button is soft disabled.
