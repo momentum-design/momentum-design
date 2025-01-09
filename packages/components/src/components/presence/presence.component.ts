@@ -1,5 +1,5 @@
 import { CSSResult, html } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DEFAULTS, SIZE } from './presence.constants';
 import styles from './presence.styles';
@@ -57,6 +57,13 @@ class Presence extends Component {
   size: PresenceSize = DEFAULTS.SIZE;
 
   /**
+   * @internal
+   * State to track the current icon type (previous type until the new icon is loaded)
+   */
+  @state()
+  private currentIconType: PresenceType = DEFAULTS.TYPE;
+
+  /**
    * Get the size of the presence icon based on the given size type
    */
   private get iconSize() {
@@ -89,13 +96,32 @@ class Presence extends Component {
     return iconName;
   }
 
+  /**
+    * Handles the successful load of an icon.
+    * Sets the `currentIconType` property to match the `type` property.
+  */
+  private handleOnLoad(): void {
+    this.currentIconType = this.type;
+  }
+
+  /**
+   * Handles an error that occurs when loading an icon.
+  */
+  private handleOnError(): void {
+    if (this.onerror) {
+      this.onerror('There was a problem while fetching the icon. Please check the icon name and try again.');
+    }
+  }
+
   public override render() {
     return html`
       <div class="mdc-presence mdc-presence__${this.size}">
         <mdc-icon
-          class="mdc-presence-icon mdc-presence-icon__${this.type}"
+          class="mdc-presence-icon mdc-presence-icon__${this.currentIconType}"
           name="${this.icon}"
           size="${this.iconSize}"
+          @load="${this.handleOnLoad}"
+          @error="${this.handleOnError}"
         ></mdc-icon>
       </div>
     `;
