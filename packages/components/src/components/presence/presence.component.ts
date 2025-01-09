@@ -58,7 +58,7 @@ class Presence extends Component {
 
   /**
    * @internal
-   * State to track the active type (previous type until the new icon is loaded)
+   * State to track the current icon type (previous type until the new icon is loaded)
    */
   @state()
   private currentIconType: PresenceType = DEFAULTS.TYPE;
