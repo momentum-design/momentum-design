@@ -90,12 +90,6 @@ class Button extends Buttonsimple {
   @property({ type: String }) color: ButtonColor = DEFAULTS.COLOR;
 
   /**
-   * The tabindex of the button.
-   * @default 0
-   */
-  @property({ type: Number, reflect: true }) override tabIndex = 0;
-
-  /**
    * This property defines the ARIA role for the element. By default, it is set to 'button'.
    * Consumers should override this role when:
    * - The element is being used in a context where a different role is more appropriate.
