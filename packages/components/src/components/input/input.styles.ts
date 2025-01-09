@@ -1,5 +1,5 @@
 import { css } from 'lit';
-import { hostFitContentStyles } from '../../utils/styles';
+import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 
 const styles = [hostFitContentStyles, css`
   :host {
@@ -38,8 +38,9 @@ const styles = [hostFitContentStyles, css`
     border-radius: 0.5rem;
     border: 0.0625rem solid var(--mds-color-theme-outline-input-normal);
     background-color: var(--mds-color-theme-background-primary-ghost);
-    width: max-content;
-    padding: 0.34375rem 0.375rem 0.34375rem 0.75rem;
+    width: 100%;
+    padding: 0.34375rem 1.75rem 0.34375rem 0.75rem;
+    outline: none;
   }
 
   .input:hover{
@@ -79,7 +80,14 @@ const styles = [hostFitContentStyles, css`
   :host([helpTextType="priority"]) .input {
     border-color: var(--mds-color-theme-text-accent-normal);
   }
-  
-`];
+  .input-container{
+    position: relative;
+  }
+  .clear-button{
+    position: absolute;
+    right: 0.3rem;
+    top: 0.4rem;
+  }
+`, hostFocusRingStyles(true)];
 
 export default styles;

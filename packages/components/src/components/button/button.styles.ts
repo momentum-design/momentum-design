@@ -192,6 +192,6 @@ const styles = [hostFitContentStyles, css`
     --mdc-button-secondary-hover-background-color: var(--mds-color-theme-button-secondary-hover);
     --mdc-button-secondary-pressed-background-color: var(--mds-color-theme-button-secondary-pressed);
   }
-`, hostFocusRingStyles];
+`, hostFocusRingStyles()];
 
 export default styles;
