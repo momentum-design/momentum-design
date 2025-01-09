@@ -40,12 +40,6 @@ class Presence extends Component {
   type: PresenceType = DEFAULTS.TYPE;
 
   /**
-   * State to track the active type (previous type until the new icon is loaded)
-   */
-  @state()
-  private activeType: PresenceType = DEFAULTS.TYPE;
-
-  /**
    * Acceptable values include:
    * - XX_SMALL
    * - X_SMALL
@@ -61,6 +55,13 @@ class Presence extends Component {
    */
   @property({ type: String, reflect: true })
   size: PresenceSize = DEFAULTS.SIZE;
+
+  /**
+   * @internal
+   * State to track the active type (previous type until the new icon is loaded)
+   */
+  @state()
+  private currentIconType: PresenceType = DEFAULTS.TYPE;
 
   /**
    * Get the size of the presence icon based on the given size type
@@ -97,24 +98,26 @@ class Presence extends Component {
 
   /**
     * Handles the successful load of an icon.
-    * Sets the `activeType` property to match the `type` property.
+    * Sets the `currentIconType` property to match the `type` property.
   */
   private handleOnLoad(): void {
-    this.activeType = this.type;
+    this.currentIconType = this.type;
   }
 
   /**
    * Handles an error that occurs when loading an icon.
   */
-  private handleOnError(error: Event): void {
-    console.error(`Failed to load icon: ${this.icon} - ${error}`);
+  private handleOnError(): void {
+    if (this.onerror) {
+      this.onerror('There was a problem while fetching the icon. Please check the icon name and try again.');
+    }
   }
 
   public override render() {
     return html`
       <div class="mdc-presence mdc-presence__${this.size}">
         <mdc-icon
-          class="mdc-presence-icon mdc-presence-icon__${this.activeType}"
+          class="mdc-presence-icon mdc-presence-icon__${this.currentIconType}"
           name="${this.icon}"
           size="${this.iconSize}"
           @load="${this.handleOnLoad}"
