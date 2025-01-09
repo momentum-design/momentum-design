@@ -8,8 +8,8 @@ const styles = [
       --mdc-icon-fill-color: currentColor;
     }
     :host::part(icon) {
-      height: 100%;
-      width: 100%;
+      height: var(--computed-icon-size, 100%);
+      width: var(--computed-icon-size, 100%);
       fill: var(--mdc-icon-fill-color);
     }
   `,
