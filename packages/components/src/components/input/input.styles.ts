@@ -32,13 +32,16 @@ const styles = [hostFitContentStyles, css`
     color: var(--mds-color-theme-text-primary-normal);
   }
   
+  .input-container, .input{
+    width: 100%;
+  }
+
   .input {
     color: var(--mds-color-theme-text-primary-normal);
     height: 2rem;
     border-radius: 0.5rem;
     border: 0.0625rem solid var(--mds-color-theme-outline-input-normal);
     background-color: var(--mds-color-theme-background-primary-ghost);
-    width: 100%;
     padding: 0.34375rem 1.75rem 0.34375rem 0.75rem;
     outline: none;
   }
