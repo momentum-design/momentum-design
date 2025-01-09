@@ -7,34 +7,36 @@ import type { ModalContainerColor, ModalContainerElevation } from './modalcontai
 
 /**
  * The `mdc-modalcontainer` component is a versatile UI element used to
- * display a modal container that use in popover.
+ * display a modal container that can further be used in popover.
  *  *
  * @tagname mdc-modalcontainer
- *
- * @slot default - This is a default/unnamed slot
  *
  */
 class Modalcontainer extends Component {
   /**
    * Color of the modalcontainer
+   * @default tonal
    */
   @property({ type: String, reflect: true })
   color: ModalContainerColor = DEFAULTS.COLOR;
 
   /**
    * Elevation of the modalcontainer
+   * @default 0
    */
   @property({ type: Number, reflect: true })
   elevation: ModalContainerElevation = DEFAULTS.ELEVATION;
 
   /**
    * Role of the modalcontainer
+   * @default dialog
    */
   @property({ type: String })
   override role: string = DEFAULTS.ROLE;
 
   /**
    * Aria modal of the modalcontainer
+   * @default true
    */
   @property({ type: String, attribute: 'aria-modal' })
   override ariaModal: string = 'true';
