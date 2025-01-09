@@ -89,6 +89,18 @@ class Icon extends Component {
   }
 
   /**
+   * Dispatches a 'load' event on the component once the icon has been successfully loaded.
+   * This event bubbles and is cancelable.
+   */
+  private triggerIconLoaded(): void {
+    const loadEvent = new Event('load', {
+      bubbles: true,
+      cancelable: true,
+    });
+    this.dispatchEvent(loadEvent);
+  }
+
+  /**
    * Get Icon Data function which will fetch the icon (currently only svg)
    * and sets state and attributes once fetched successfully
    *
@@ -102,17 +114,45 @@ class Icon extends Component {
       if (url && fileExtension && this.name) {
         this.abortController.abort();
         this.abortController = new AbortController();
-        const iconHtml = await dynamicSVGImport(url, this.name, fileExtension, this.abortController.signal);
-
-        // update iconData state once fetched:
-        this.iconData = iconHtml as HTMLElement;
-
-        // when icon got fetched, set role and aria-label:
-        this.setRoleOnIcon();
-        this.setAriaLabelOnIcon();
-        this.setAriaHiddenOnIcon();
+        try {
+          const iconHtml = await dynamicSVGImport(url, this.name, fileExtension, this.abortController.signal);
+          this.handleIconLoadedSuccess(iconHtml as HTMLElement);
+        } catch (error) {
+          this.handleIconLoadedFailure(error);
+        }
       }
     }
+  }
+
+  /**
+   * Sets the iconData state to the fetched icon,
+   * and calls functions to set role, aria-label and aria-hidden attributes on the icon.
+   * Dispatches a 'load' event on the component once the icon has been successfully loaded.
+   * @param iconHtml - The icon html element which has been fetched from the icon provider.
+   */
+  private handleIconLoadedSuccess(iconHtml: HTMLElement) {
+    // update iconData state once fetched:
+    this.iconData = iconHtml;
+
+    // when icon is fetched successfully, set the role, aria-label and invoke function to trigger icon load event.
+    this.setRoleOnIcon();
+    this.setAriaLabelOnIcon();
+    this.setAriaHiddenOnIcon();
+    this.triggerIconLoaded();
+  }
+
+  /**
+   * Dispatches an 'error' event on the component when the icon fetching has failed.
+   * This event bubbles and is cancelable.
+   * The error detail is set to the error object.
+   */
+  private handleIconLoadedFailure(error: unknown) {
+    const errorEvent = new CustomEvent('error', {
+      bubbles: true,
+      cancelable: true,
+      detail: { error },
+    });
+    this.dispatchEvent(errorEvent);
   }
 
   /**
