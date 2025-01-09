@@ -111,7 +111,7 @@ class Input extends DisabledMixin(Component) {
             class='input focusringElement' 
             id="${this.id}" 
             type='text'
-            value="${this.value}"
+            .value="${this.value}"
             ?disabled="${this.disabled}"
             ?readonly="${this.readonly}"
             placeholder=${ifDefined(this.placeholder)} 
