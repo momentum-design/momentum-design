@@ -12,6 +12,7 @@ export const TabIndexMixin = <T extends Constructor<LitElement>>(
   class InnerMixinClass extends superClass {
     /**
      * This property specifies the tab order of the element.
+     * @default 0
      */
     @property({ reflect: true, type: Number }) override tabIndex = 0;
   }
