@@ -26,6 +26,10 @@ class Input extends DisabledMixin(Component) {
 
   @property({ type: Boolean }) required = false;
 
+  @property({ type: Boolean }) readonly = false;
+
+  @property({ type: Number }) maxLength?: number;
+
   @property({ type: Number }) minLength?: number;
 
   /**
@@ -39,13 +43,11 @@ class Input extends DisabledMixin(Component) {
 
   @property() helpTextType?: ValidationType = DEFAULTS.VALIDATION;
 
-  @property({ type: String }) validationType?: ValidationType = DEFAULTS.VALIDATION;
-
   protected renderLabel() {
     if (!this.label) {
       return nothing;
     }
-    return html`<label for="${this.id}">${this.label}</label>`;
+    return html`<label for="${this.id}" class='input-label'>${this.label} ${this.required ? '(required)' : ''}</label>`;
   }
 
   protected renderLabelInfoToggleTip() {
@@ -59,7 +61,7 @@ class Input extends DisabledMixin(Component) {
     if (!this.prefixText) {
       return nothing;
     }
-    return html`<mdc-text>${this.prefixText}</mdc-text>`;
+    return html`<mdc-text tagname='span' type='body-midsize-regular'>${this.prefixText}</mdc-text>`;
   }
 
   protected renderHelpTextIcon() {
@@ -68,7 +70,7 @@ class Input extends DisabledMixin(Component) {
     }
     const helperIcon = getHelperIcon(this.helpTextType || DEFAULTS.VALIDATION);
     if (helperIcon) {
-      return html`<mdc-icon name=${helperIcon}></mdc-icon>`;
+      return html`<mdc-icon size="1" length-unit="rem" name=${helperIcon}></mdc-icon>`;
     }
     return nothing;
   }
@@ -77,21 +79,39 @@ class Input extends DisabledMixin(Component) {
     if (!this.helpText) {
       return nothing;
     }
-    return html` <mdc-text>${this.helpText}</mdc-text> `;
+    return html` <mdc-text tagname='span' type='body-midsize-regular'>${this.helpText}</mdc-text> `;
+  }
+
+  protected renderClearButton() {
+    if (!this.value) {
+      return nothing;
+    }
+    return html`
+      <mdc-button
+        prefix-icon='cancel-regular'
+        variant='tertiary'
+        @click=${() => { this.value = ''; }}
+      ></mdc-button>
+    `;
   }
 
   public override render() {
     return html`
       <div class="input-header">
-        <slot name="label">${this.renderLabel()} ${this.required ? '(required)' : ''}</slot>
-        <slot name="label-icon">${this.renderLabelInfoToggleTip()}</slot>
+        <slot name="label">${this.renderLabel()}</slot>
       </div>
       <div class="input-container" part="input-container">
         <slot name="input-prefix-text">${this.renderPrefixText()}</slot>
         <slot name="input">
-          <input id="${this.id}" value="${ifDefined(this.value)}" />
+          <input 
+            class='input' 
+            id="${this.id}" 
+            value="${ifDefined(this.value)}" 
+            ?disabled="${this.disabled}"
+            ?readonly="${this.readonly}"
+            placeholder=${ifDefined(this.placeholder)} 
+          />
         </slot>
-        <slot name="trailing-button"></slot>
       </div>
       <div class="input-footer" part="input-footer">
         <slot name="help-icon">${this.renderHelpTextIcon()}</slot>
