@@ -559,7 +559,7 @@ needs to be visually represented.`,name:"Presence",members:[{kind:"field",name:"
 - XX_LARGE
 
 Presence icons are minimum 14px in size, meaning XX_Small, X_Small and Small presence
-icons will be no smaller than 14px.`,default:"small",attribute:"size",reflects:!0},{kind:"field",name:"iconSize",privacy:"private",description:"Get the size of the presence icon based on the given size type",readonly:!0},{kind:"field",name:"icon",privacy:"private",description:"Get the icon name based on the presence type",readonly:!0}],attributes:[{name:"type",type:{text:"PresenceType"},description:"Supported presence types:\n- `active`\n- `away`\n- `away-calling`\n- `busy`\n- `dnd`\n- `meeting`\n- `on-call`\n- `on-device`\n- `on-mobile`\n- `pause`\n- `pto`\n- `presenting`\n- `quiet`\n- `scheduled`",default:"active",fieldName:"type"},{name:"size",type:{text:"PresenceSize"},description:`Acceptable values include:
+icons will be no smaller than 14px.`,default:"small",attribute:"size",reflects:!0},{kind:"field",name:"iconSize",privacy:"private",description:"Get the size of the presence icon based on the given size type",readonly:!0},{kind:"field",name:"icon",privacy:"private",description:"Get the icon name based on the presence type",readonly:!0},{kind:"method",name:"handleOnLoad",privacy:"private",return:{type:{text:"void"}},description:"Handles the successful load of an icon.\nSets the `currentIconType` property to match the `type` property."},{kind:"method",name:"handleOnError",privacy:"private",return:{type:{text:"void"}},description:"Handles an error that occurs when loading an icon."}],attributes:[{name:"type",type:{text:"PresenceType"},description:"Supported presence types:\n- `active`\n- `away`\n- `away-calling`\n- `busy`\n- `dnd`\n- `meeting`\n- `on-call`\n- `on-device`\n- `on-mobile`\n- `pause`\n- `pto`\n- `presenting`\n- `quiet`\n- `scheduled`",default:"active",fieldName:"type"},{name:"size",type:{text:"PresenceSize"},description:`Acceptable values include:
 - XX_SMALL
 - X_SMALL
 - SMALL
@@ -579,7 +579,55 @@ icons will be no smaller than 14px.`,default:"small",fieldName:"size"}],supercla
  * @dependency mdc-icon
  *
  * @tagname mdc-presence
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Presence",module:"components/presence/presence.component.js"}}]},{kind:"javascript-module",path:"components/text/text.component.js",declarations:[{kind:"class",description:"Text component for creating styled text elements.\nIt has to be mounted within the ThemeProvider to access color and font tokens.\n\nThe `type` attribute allows changing the text style.\nThe `tagname` attribute allows changing the tag name of the text element.\nThe default tag name is `p`.\n\nThe `tagname` attribute should be a valid HTML tag name.\nIf the `tagname` attribute is not a valid HTML tag name, the default tag name will be used.\n\nThe styling is applied based on the `type` attribute.",name:"Text",cssParts:[{description:"The text element",name:"text"}],slots:[{description:"Default slot for text content",name:""}],members:[{kind:"field",name:"type",type:{text:"TextType"},privacy:"public",description:`Specifies the text style to be applied.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Presence",module:"components/presence/presence.component.js"}}]},{kind:"javascript-module",path:"components/themeprovider/themeprovider.component.js",declarations:[{kind:"class",description:`ThemeProvider component, which sets the passed in themeclass as class.
+If the themeclass switches, the existing themeclass will be removed as a class
+and the new themeclass will be added.
+
+CSS variables defined in the themeclass will be used for the styling of child dom nodes.
+
+Themeclass context can be be consumed from Lit child components
+(see providerUtils.consume for how to consume)
+
+ThemeProvider also includes basic font defaults for text.`,name:"ThemeProvider",cssProperties:[{description:"Option to override the default color, default: color-theme-text-primary-normal",name:"--mdc-themeprovider-color-default"},{description:"Option to override the font family, default: `Momentum` (from momentum-design/fonts)",name:"--mdc-themeprovider-font-family"},{description:"Option to override the font weight, default: `400`",name:"--mdc-themeprovider-font-weight"},{description:"Option to override the default letter-spacing, default: `-0.25px` (this is to match the old CiscoSans)",name:"--mdc-themeprovider-letter-spacing-adjustment"}],slots:[{description:"children",name:""}],members:[{kind:"field",name:"Context",privacy:"public",static:!0,description:"Context object of the ThemeProvider, to be consumed by child components",readonly:!0},{kind:"field",name:"themeclass",type:{text:"string"},description:`Current theme class
+
+Has to be fully qualified, such that
+the theme class matches the class of the respective
+theme stylesheet
+
+Default: 'mds-theme-stable-darkWebex'`,attribute:"themeclass"},{kind:"method",name:"updateContext",privacy:"protected",return:{type:{text:"void"}},description:`Update all observing components of this
+provider to update the themeclass
+
+Is called on every re-render, see Provider class`},{kind:"method",name:"setThemeInClassList",privacy:"private",description:`Function to update the active theme classnames to update the theme tokens
+as CSS variables on the web component.`}],attributes:[{name:"themeclass",type:{text:"string"},description:`Current theme class
+
+Has to be fully qualified, such that
+the theme class matches the class of the respective
+theme stylesheet
+
+Default: 'mds-theme-stable-darkWebex'`,fieldName:"themeclass"}],superclass:{name:"Provider",module:"/src/models"},tagName:"mdc-themeprovider",jsDoc:`/**
+ * ThemeProvider component, which sets the passed in themeclass as class.
+ * If the themeclass switches, the existing themeclass will be removed as a class
+ * and the new themeclass will be added.
+ *
+ * CSS variables defined in the themeclass will be used for the styling of child dom nodes.
+ *
+ * Themeclass context can be be consumed from Lit child components
+ * (see providerUtils.consume for how to consume)
+ *
+ * ThemeProvider also includes basic font defaults for text.
+ *
+ * @tagname mdc-themeprovider
+ *
+ * @slot - children
+ *
+ * @cssproperty --mdc-themeprovider-color-default - Option to override the default color,
+ * default: color-theme-text-primary-normal
+ * @cssproperty --mdc-themeprovider-font-family - Option to override the font family,
+ * default: \`Momentum\` (from momentum-design/fonts)
+ * @cssproperty --mdc-themeprovider-font-weight - Option to override the font weight, default: \`400\`
+ * @cssproperty --mdc-themeprovider-letter-spacing-adjustment - Option to override the default letter-spacing,
+ * default: \`-0.25px\` (this is to match the old CiscoSans)
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"ThemeProvider",module:"components/themeprovider/themeprovider.component.js"}}]},{kind:"javascript-module",path:"components/text/text.component.js",declarations:[{kind:"class",description:"Text component for creating styled text elements.\nIt has to be mounted within the ThemeProvider to access color and font tokens.\n\nThe `type` attribute allows changing the text style.\nThe `tagname` attribute allows changing the tag name of the text element.\nThe default tag name is `p`.\n\nThe `tagname` attribute should be a valid HTML tag name.\nIf the `tagname` attribute is not a valid HTML tag name, the default tag name will be used.\n\nThe styling is applied based on the `type` attribute.",name:"Text",cssParts:[{description:"The text element",name:"text"}],slots:[{description:"Default slot for text content",name:""}],members:[{kind:"field",name:"type",type:{text:"TextType"},privacy:"public",description:`Specifies the text style to be applied.
 
 Acceptable values include:
 
@@ -694,55 +742,7 @@ Note that the styling is determined by the \`type\` attribute.`,fieldName:"tagna
  * @slot - Default slot for text content
  *
  * @csspart text - The text element
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Text",module:"components/text/text.component.js"}}]},{kind:"javascript-module",path:"components/themeprovider/themeprovider.component.js",declarations:[{kind:"class",description:`ThemeProvider component, which sets the passed in themeclass as class.
-If the themeclass switches, the existing themeclass will be removed as a class
-and the new themeclass will be added.
-
-CSS variables defined in the themeclass will be used for the styling of child dom nodes.
-
-Themeclass context can be be consumed from Lit child components
-(see providerUtils.consume for how to consume)
-
-ThemeProvider also includes basic font defaults for text.`,name:"ThemeProvider",cssProperties:[{description:"Option to override the default color, default: color-theme-text-primary-normal",name:"--mdc-themeprovider-color-default"},{description:"Option to override the font family, default: `Momentum` (from momentum-design/fonts)",name:"--mdc-themeprovider-font-family"},{description:"Option to override the font weight, default: `400`",name:"--mdc-themeprovider-font-weight"},{description:"Option to override the default letter-spacing, default: `-0.25px` (this is to match the old CiscoSans)",name:"--mdc-themeprovider-letter-spacing-adjustment"}],slots:[{description:"children",name:""}],members:[{kind:"field",name:"Context",privacy:"public",static:!0,description:"Context object of the ThemeProvider, to be consumed by child components",readonly:!0},{kind:"field",name:"themeclass",type:{text:"string"},description:`Current theme class
-
-Has to be fully qualified, such that
-the theme class matches the class of the respective
-theme stylesheet
-
-Default: 'mds-theme-stable-darkWebex'`,attribute:"themeclass"},{kind:"method",name:"updateContext",privacy:"protected",return:{type:{text:"void"}},description:`Update all observing components of this
-provider to update the themeclass
-
-Is called on every re-render, see Provider class`},{kind:"method",name:"setThemeInClassList",privacy:"private",description:`Function to update the active theme classnames to update the theme tokens
-as CSS variables on the web component.`}],attributes:[{name:"themeclass",type:{text:"string"},description:`Current theme class
-
-Has to be fully qualified, such that
-the theme class matches the class of the respective
-theme stylesheet
-
-Default: 'mds-theme-stable-darkWebex'`,fieldName:"themeclass"}],superclass:{name:"Provider",module:"/src/models"},tagName:"mdc-themeprovider",jsDoc:`/**
- * ThemeProvider component, which sets the passed in themeclass as class.
- * If the themeclass switches, the existing themeclass will be removed as a class
- * and the new themeclass will be added.
- *
- * CSS variables defined in the themeclass will be used for the styling of child dom nodes.
- *
- * Themeclass context can be be consumed from Lit child components
- * (see providerUtils.consume for how to consume)
- *
- * ThemeProvider also includes basic font defaults for text.
- *
- * @tagname mdc-themeprovider
- *
- * @slot - children
- *
- * @cssproperty --mdc-themeprovider-color-default - Option to override the default color,
- * default: color-theme-text-primary-normal
- * @cssproperty --mdc-themeprovider-font-family - Option to override the font family,
- * default: \`Momentum\` (from momentum-design/fonts)
- * @cssproperty --mdc-themeprovider-font-weight - Option to override the font weight, default: \`400\`
- * @cssproperty --mdc-themeprovider-letter-spacing-adjustment - Option to override the default letter-spacing,
- * default: \`-0.25px\` (this is to match the old CiscoSans)
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"ThemeProvider",module:"components/themeprovider/themeprovider.component.js"}}]},{kind:"javascript-module",path:"utils/mixins/AvatarComponentMixin.js",declarations:[{kind:"mixin",description:"",name:"AvatarComponentMixin",members:[{kind:"field",name:"src",type:{text:"string | undefined"},description:`The src is the url which will be used to display the avatar.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Text",module:"components/text/text.component.js"}}]},{kind:"javascript-module",path:"utils/mixins/AvatarComponentMixin.js",declarations:[{kind:"mixin",description:"",name:"AvatarComponentMixin",members:[{kind:"field",name:"src",type:{text:"string | undefined"},description:`The src is the url which will be used to display the avatar.
 When the src is loading, we will display the initials as a placeholder.`,attribute:"src"},{kind:"field",name:"initials",type:{text:"string | undefined"},description:"The initials to be displayed for the avatar.",attribute:"initials"},{kind:"field",name:"presence",type:{text:"PresenceType | undefined"},description:"The presence is the status which can be used to display the\nactivity state of a user or a space within an avatar component.\n\nAcceptable values include:\n- `active`\n- `away`\n- `away-calling`\n- `busy`\n- `dnd`\n- `meeting`\n- `on-call`\n- `on-device`\n- `on-mobile`\n- `pause`\n- `pto`\n- `presenting`\n- `quiet`\n- `scheduled`",attribute:"presence"},{kind:"field",name:"size",type:{text:"AvatarSize"},description:`Acceptable values include (size in px unit):
 - 24
 - 32
