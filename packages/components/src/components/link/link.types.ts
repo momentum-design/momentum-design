@@ -1,0 +1,16 @@
+import type { ValueOf } from '../../utils/types';
+import {
+  LINK_SIZES,
+} from './link.constants';
+
+type LinkSize = ValueOf<typeof LINK_SIZES>
+
+type LinkIconSize = {
+  size: string;
+  unit: string;
+};
+
+export {
+  LinkIconSize,
+  LinkSize,
+};
