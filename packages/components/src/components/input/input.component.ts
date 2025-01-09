@@ -20,7 +20,7 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 class Input extends DisabledMixin(Component) {
   @property({ type: String }) label = '';
 
-  @property({ type: String }) value = '';
+  @property({ type: String, reflect: true }) value = '';
 
   @property({ type: String }) placeholder = '';
 
@@ -87,10 +87,13 @@ class Input extends DisabledMixin(Component) {
       return nothing;
     }
     return html`
-      <mdc-button
+      <mdc-button 
+        class='clear-button'
         prefix-icon='cancel-regular'
         variant='tertiary'
+        size="20"
         @click=${() => { this.value = ''; }}
+        ?disabled=${this.disabled}
       ></mdc-button>
     `;
   }
@@ -99,19 +102,23 @@ class Input extends DisabledMixin(Component) {
     return html`
       <div class="input-header">
         <slot name="label">${this.renderLabel()}</slot>
+        <slot name="label-icon">${this.renderLabelInfoToggleTip()}</slot>
       </div>
       <div class="input-container" part="input-container">
         <slot name="input-prefix-text">${this.renderPrefixText()}</slot>
         <slot name="input">
           <input 
-            class='input' 
+            class='input focusringElement' 
             id="${this.id}" 
-            value="${ifDefined(this.value)}" 
+            type='text'
+            value="${this.value}"
             ?disabled="${this.disabled}"
             ?readonly="${this.readonly}"
             placeholder=${ifDefined(this.placeholder)} 
+            @input=${(e: Event) => { this.value = (e.target as HTMLInputElement).value; }}
           />
         </slot>
+        <slot name="trailing-button">${this.renderClearButton()}</slot>
       </div>
       <div class="input-footer" part="input-footer">
         <slot name="help-icon">${this.renderHelpTextIcon()}</slot>

@@ -3,6 +3,7 @@ import '.';
 import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { VALIDATION } from './input.constants';
+import { disableControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) =>
   html` <mdc-input
@@ -15,7 +16,8 @@ const render = (args: Args) =>
     class="${args.class}"
     style="${args.style}"
     ?required="${args.required}"
-    
+    ?disabled="${args.disabled}"
+    ?readonly="${args.readonly}"
     ></mdc-input>`;
 
 const meta: Meta = {
@@ -63,10 +65,15 @@ export const Example: StoryObj = {
     helpText: 'Helper text',
     helpTextType: 'default',
     required: false,
+    placeholder: 'Placeholder',
+    value: '',
   },
 };
 
 export const AllVariants: StoryObj = {
+  argTypes: {
+    ...disableControls(['label', 'labelInfoText', 'helpText', 'required', 'placeholder', 'value', 'helpTextType']),
+  },
   render: () => html`
   <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
   <mdc-input 
@@ -114,7 +121,7 @@ export const AllVariants: StoryObj = {
   labelInfoText="Label info text"
   helpText="Helper text"
   helpTextType="default"
-  required placeholder="Placeholder"
+  required placeholder="Input is required"
   ></mdc-input>
   <mdc-input 
   label="Label"
@@ -130,7 +137,7 @@ export const AllVariants: StoryObj = {
   helpText="Helper text"
   helpTextType="default"
   disabled placeholder="Placeholder"
-  value="disabled input"
+  value="Text disabled"
   ></mdc-input>
   </div>
   `,
