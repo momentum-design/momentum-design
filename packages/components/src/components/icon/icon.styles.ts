@@ -6,10 +6,11 @@ const styles = [
   css`
     :host {
       --mdc-icon-fill-color: currentColor;
+      --mdc-icon-computed-size: var(--computed-icon-size);
     }
     :host::part(icon) {
-      height: var(--computed-icon-size, 100%);
-      width: var(--computed-icon-size, 100%);
+      height: var( --mdc-icon-computed-size, 100%);
+      width: var( --mdc-icon-computed-size, 100%);
       fill: var(--mdc-icon-fill-color);
     }
   `,
