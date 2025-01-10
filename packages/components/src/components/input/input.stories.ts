@@ -7,6 +7,7 @@ import { disableControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) =>
   html` <mdc-input
+    id="${args.id}"
     label="${args.label}"
     labelInfoText="${args.labelInfoText}"
     helpTextType="${args.helpTextType}"
@@ -36,6 +37,9 @@ const meta: Meta = {
     helpTextType: {
       control: 'select',
       options: Object.values(VALIDATION),
+    },
+    id: {
+      control: 'text',
     },
     value: {
       control: 'text',
@@ -74,6 +78,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
+    id: '1',
     label: 'Label (required)',
     labelInfoText: 'Label info text',
     helpText: 'Helper text',
@@ -95,6 +100,7 @@ export const AllVariants: StoryObj = {
   render: () => html`
   <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
   <mdc-input 
+  id="1"
   label="Label"
   labelInfoText="Label info text"
   helpText="Helper text"
@@ -103,6 +109,7 @@ export const AllVariants: StoryObj = {
   value="Value"
   ></mdc-input>
   <mdc-input 
+  id="2"
   label="Label"
   labelInfoText="Label info text"
   helpText="Helper text"
@@ -111,6 +118,7 @@ export const AllVariants: StoryObj = {
   value="Value"
   ></mdc-input>
   <mdc-input 
+  id="3"
   label="Label"
   labelInfoText="Label info text"
   helpText="Helper text"
@@ -119,6 +127,7 @@ export const AllVariants: StoryObj = {
   value="Value"
   ></mdc-input>
   <mdc-input 
+  id="4"
   label="Label"
   labelInfoText="Label info text"
   helpText="Helper text"
@@ -127,6 +136,7 @@ export const AllVariants: StoryObj = {
   value="Value"
   ></mdc-input>
   <mdc-input 
+  id="5"
   label="Label"
   labelInfoText="Label info text"
   helpText="Helper text"
@@ -135,6 +145,7 @@ export const AllVariants: StoryObj = {
   value="Value"
   ></mdc-input>
   <mdc-input 
+  id="6"
   label="Label"
   labelInfoText="Label info text"
   helpText="Helper text"
@@ -142,6 +153,7 @@ export const AllVariants: StoryObj = {
   required placeholder="Input is required"
   ></mdc-input>
   <mdc-input 
+  id="7"
   label="Label"
   labelInfoText="Label info text"
   helpText="Helper text"
@@ -150,6 +162,7 @@ export const AllVariants: StoryObj = {
   value="This is readonly"
   ></mdc-input>
   <mdc-input 
+  id="8"
   label="Label"
   labelInfoText="Label info text"
   helpText="Helper text"
@@ -158,6 +171,7 @@ export const AllVariants: StoryObj = {
   value="Text disabled"
   ></mdc-input>
   <mdc-input 
+  id="9"
   label="Label"
   labelInfoText="Label info text"
   helpText="Help text"
@@ -166,6 +180,7 @@ export const AllVariants: StoryObj = {
   prefixText="https://"
   ></mdc-input>
   <mdc-input 
+  id="10"
   label="Label"
   labelInfoText="Label info text"
   helpText="Help text"
