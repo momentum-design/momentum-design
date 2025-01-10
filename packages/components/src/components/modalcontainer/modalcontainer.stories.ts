@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { COLOR, ELEVATION } from './modalcontainer.constants';
+import { COLOR, DEFAULTS, ELEVATION } from './modalcontainer.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 const render = (args: Args) => html`
@@ -47,5 +47,7 @@ export const Example: StoryObj = {
   args: {
     color: COLOR.CONTRAST,
     elevation: ELEVATION[0],
+    role: DEFAULTS.ROLE,
+    'aria-modal': 'true',
   },
 };

@@ -8,8 +8,14 @@ import type { ModalContainerColor, ModalContainerElevation } from './modalcontai
 /**
  * The `mdc-modalcontainer` component is a versatile UI element used to
  * display a modal container that can further be used in popover.
- *  *
+ *
  * @tagname mdc-modalcontainer
+ *
+ * @cssproperty --mdc-modalcontainer-primary-background-color - primary background color of the modalcontainer
+ * @cssproperty --mdc-modalcontainer-border-color - border color of the modalcontainer
+ * @cssproperty --mdc-modalcontainer-inverted-background-color - inverted background color of the modalcontainer
+ * @cssproperty --mdc-modalcontainer-inverted-border-color - inverted border color of the modalcontainer
+ * @cssproperty --mdc-modalcontainer-inverted-text-color - inverted text color of the modalcontainer
  *
  */
 class Modalcontainer extends Component {
