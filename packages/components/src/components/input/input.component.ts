@@ -11,22 +11,14 @@ import type { IconNames } from '../icon/icon.types';
 
 /**
  * mdc-input is a component that allows users to input text.
- *
  *  It contains:
- *
- * label field - describe the input field.
- *
- * label info icon - displayed next to the label.
- *
- * input field - contains the value
- *
- * help text or validation message - displayed below the input field.
- *
- * clear button - clear the input field.
- *
- * prefix text -displayed before the input field.
- *
- * leading icon - displayed before the input field.
+ * - label field - describe the input field.
+ * - label info icon - displayed next to the label.
+ * - input field - contains the value
+ * - help text or validation message - displayed below the input field.
+ * - clear button - clear the input field.
+ * - prefix text -displayed before the input field.
+ * - leading icon - displayed before the input field.
  *
  * @tagname mdc-input
  *
@@ -37,6 +29,11 @@ import type { IconNames } from '../icon/icon.types';
  * @dependency mdc-button
  */
 class Input extends DisabledMixin(Component) {
+  /**
+   * The unique id of the input field. It is used to link the input field with the label.
+   */
+  @property({ type: String }) override id = '';
+
   /**
    * The label of the input field. It is linked to the input field using the `for` attribute.
    */

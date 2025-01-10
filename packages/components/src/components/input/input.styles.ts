@@ -106,6 +106,6 @@ const styles = [hostFitContentStyles, css`
     opacity: 0;
   }
 
-`, ...hostFocusRingStyles('focus-ring')];
+`, ...hostFocusRingStyles(true)];
 
 export default styles;
