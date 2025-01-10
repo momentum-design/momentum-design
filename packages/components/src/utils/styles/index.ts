@@ -1,4 +1,4 @@
-import { css, unsafeCSS } from 'lit';
+import { css } from 'lit';
 
 const hostFitContentStyles = css`
   :host {
@@ -10,7 +10,7 @@ const hostFitContentStyles = css`
   }
 `;
 
-const hostFocusRingStyles = (className?: string) => {
+const hostFocusRingStyles = (applyFocusRingOnClass = false) => {
   const baseHostStyleVariables = css`
     :host {
       --mdc-focus-ring-inner-color: var(--mds-color-theme-focus-default-0);
@@ -29,23 +29,23 @@ const hostFocusRingStyles = (className?: string) => {
     0 0 0 var(--mdc-focus-ring-middle-width) var(--mdc-focus-ring-middle-color),
     0 0 0 var(--mdc-focus-ring-outer-width) var(--mdc-focus-ring-outer-color)
   `;
-  if (className) {
+  if (applyFocusRingOnClass) {
     return [
       baseHostStyleVariables,
       css`
-        .${unsafeCSS(className)}:focus-visible {
+        .mdc-focus-ring:focus-visible {
           outline: none;
         }
-        :host([disabled]) .${unsafeCSS(className)}:focus {
+        :host([disabled]) .mdc-focus-ring:focus {
           box-shadow: none;
         }
-        .${unsafeCSS(className)}:focus-within {
+        .mdc-focus-ring:focus-within {
           position: relative;
           box-shadow: ${boxShadow};
         }
         /* High Contrast Mode */
         @media (forced-colors: active) {
-          .${unsafeCSS(className)}:focus-within {
+          .mdc-focus-ring:focus-within {
             outline: 0.125rem solid var(--mds-color-theme-focus-default-0);
           }
         }
