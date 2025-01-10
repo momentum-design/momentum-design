@@ -3,8 +3,6 @@ import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 
 const styles = [hostFitContentStyles, css`
   :host {
-    font-size: var(--mds-font-size-body-midsize);
-    line-height: var(--mds-font-lineheight-body-midsize);
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
@@ -22,7 +20,9 @@ const styles = [hostFitContentStyles, css`
     background: var(--mds-color-theme-background-primary-disabled);
   }
 
-  .input-header, .input-footer {
+  .input-header, .input-footer, .input-container {
+    font-size: var(--mds-font-size-body-midsize);
+    line-height: var(--mds-font-lineheight-body-midsize);
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -31,26 +31,44 @@ const styles = [hostFitContentStyles, css`
   .input-label{
     color: var(--mds-color-theme-text-primary-normal);
   }
-  
+
   .input-container, .input{
     width: 100%;
   }
 
-  .input {
-    color: var(--mds-color-theme-text-primary-normal);
+  .leading-icon{
+    aspect-ratio: 1;
+  }
+
+  .input-container{
     height: 2rem;
     border-radius: 0.5rem;
     border: 0.0625rem solid var(--mds-color-theme-outline-input-normal);
+    gap: 0.375rem;
+    padding: 0.34375rem 0.375rem 0.34375rem 0.75rem;
+  }
+  
+  .text-container{
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .input {
+    border: none;
+    color: var(--mds-color-theme-text-primary-normal);
     background-color: var(--mds-color-theme-background-primary-ghost);
-    padding: 0.34375rem 1.75rem 0.34375rem 0.75rem;
     outline: none;
   }
 
-  .input:hover{
+  .prefix-text{
+    color: var(--mds-color-theme-text-secondary-normal);
+  }
+
+  .input-container:hover{
     background-color: var(--mds-color-theme-background-primary-hover);
   }
 
-  .input:active, .input:focus{
+  .input-container:active, .input-container:focus{
     background-color: var(--mds-color-theme-background-primary-active);
   }
 
@@ -83,14 +101,11 @@ const styles = [hostFitContentStyles, css`
   :host([helpTextType="priority"]) .input {
     border-color: var(--mds-color-theme-text-accent-normal);
   }
-  .input-container{
-    position: relative;
+
+  .hidden{
+    opacity: 0;
   }
-  .clear-button{
-    position: absolute;
-    right: 0.3rem;
-    top: 0.4rem;
-  }
-`, hostFocusRingStyles(true)];
+
+`, ...hostFocusRingStyles('focus-ring')];
 
 export default styles;

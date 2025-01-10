@@ -18,6 +18,8 @@ const render = (args: Args) =>
     ?required="${args.required}"
     ?disabled="${args.disabled}"
     ?readonly="${args.readonly}"
+    prefixText="${args.prefixText}"
+    leadingIcon="${args.leadingIcon}"
     ></mdc-input>`;
 
 const meta: Meta = {
@@ -53,6 +55,18 @@ const meta: Meta = {
     helpText: {
       control: 'text',
     },
+    readonly: {
+      control: 'boolean',
+    },
+    disabled: {
+      control: 'boolean',
+    },
+    prefixText: {
+      control: 'text',
+    },
+    leadingIcon: {
+      control: 'text',
+    },
   },
 };
 
@@ -60,13 +74,17 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    label: 'Label',
+    label: 'Label (required)',
     labelInfoText: 'Label info text',
     helpText: 'Helper text',
     helpTextType: 'default',
     required: false,
     placeholder: 'Placeholder',
     value: '',
+    readonly: false,
+    disabled: false,
+    prefixText: '',
+    leadingIcon: '',
   },
 };
 
@@ -138,6 +156,22 @@ export const AllVariants: StoryObj = {
   helpTextType="default"
   disabled placeholder="Placeholder"
   value="Text disabled"
+  ></mdc-input>
+  <mdc-input 
+  label="Label"
+  labelInfoText="Label info text"
+  helpText="Help text"
+  helpTextType="default"
+  placeholder="Placeholder"
+  prefixText="https://"
+  ></mdc-input>
+  <mdc-input 
+  label="Label"
+  labelInfoText="Label info text"
+  helpText="Help text"
+  helpTextType="default"
+  placeholder="Placeholder"
+  leadingIcon="placeholder-bold"
   ></mdc-input>
   </div>
   `,
