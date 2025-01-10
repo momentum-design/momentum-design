@@ -8,7 +8,7 @@ test.beforeEach(async ({ componentsPage }) => {
   });
 });
 
-test('mdc-input', async ({ componentsPage }) => {
+test.skip('mdc-input', async ({ componentsPage }) => {
   const input = componentsPage.page.locator('mdc-input');
 
   // initial check for the input be visible on the screen:

@@ -8,6 +8,7 @@ import { DEFAULTS } from './input.constants';
 import { getHelperIcon } from './input.utils';
 import type { ValidationType } from './input.type';
 import type { IconNames } from '../icon/icon.types';
+import { LabelMixin } from '../../utils/mixins/LabelMixin';
 
 /**
  * mdc-input is a component that allows users to input text.
@@ -28,16 +29,11 @@ import type { IconNames } from '../icon/icon.types';
  * @dependency mdc-text
  * @dependency mdc-button
  */
-class Input extends DisabledMixin(Component) {
+class Input extends LabelMixin(DisabledMixin(Component)) {
   /**
    * The unique id of the input field. It is used to link the input field with the label.
    */
   @property({ type: String }) override id = '';
-
-  /**
-   * The label of the input field. It is linked to the input field using the `for` attribute.
-   */
-  @property({ type: String }) label = '';
 
   /**
  * The value of the input field. It is a two-way binding property.
@@ -94,13 +90,6 @@ class Input extends DisabledMixin(Component) {
    * The leading icon that is displayed before the input field.
    */
   @property({ type: String }) leadingIcon = '';
-
-  protected renderLabel() {
-    if (!this.label) {
-      return nothing;
-    }
-    return html`<label for="${this.id}" class='input-label'>${this.label}</label>`;
-  }
 
   protected renderLabelInfoToggleTip() {
     if (!this.labelInfoText) {
@@ -182,6 +171,8 @@ class Input extends DisabledMixin(Component) {
             placeholder=${ifDefined(this.placeholder)}
             aria-required=${this.required}
             aria-invalid=${this.helpTextType === 'error'}
+            minlength=${ifDefined(this.minLength)}
+            maxlength=${ifDefined(this.maxLength)}
             @input=${(e: Event) => { this.value = (e.target as HTMLInputElement).value; }}
           />
         </slot>

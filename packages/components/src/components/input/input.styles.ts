@@ -8,7 +8,7 @@ const styles = [hostFitContentStyles, css`
     gap: 0.5rem;
   }
 
-  :host([disabled]) .input-label,
+  :host([disabled]) .mdc-label,
   :host([disabled]) .input,
   :host([disabled]) .input::placeholder,
   :host([disabled]) .input-footer {
@@ -28,7 +28,7 @@ const styles = [hostFitContentStyles, css`
     gap: 0.5rem;
   }
 
-  .input-label{
+  .mdc-label{
     color: var(--mds-color-theme-text-primary-normal);
   }
 
