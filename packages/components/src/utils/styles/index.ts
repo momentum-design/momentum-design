@@ -39,9 +39,15 @@ const hostFocusRingStyles = (className?: string) => {
         :host([disabled]) .${unsafeCSS(className)}:focus {
           box-shadow: none;
         }
-        .${unsafeCSS(className)}:focus {
+        .${unsafeCSS(className)}:focus-within {
           position: relative;
           box-shadow: ${boxShadow};
+        }
+        /* High Contrast Mode */
+        @media (forced-colors: active) {
+          .${unsafeCSS(className)}:focus-within {
+            outline: 0.125rem solid var(--mds-color-theme-focus-default-0);
+          }
         }
       `,
     ];
@@ -55,6 +61,12 @@ const hostFocusRingStyles = (className?: string) => {
       :host(:focus) {
         position: relative;
         box-shadow: ${boxShadow};
+      }
+      /* High Contrast Mode */
+      @media (forced-colors: active) {
+        :host(:focus) {
+          outline: 0.125rem solid var(--mds-color-theme-focus-default-0);
+        }
       }
     `,
   ];
