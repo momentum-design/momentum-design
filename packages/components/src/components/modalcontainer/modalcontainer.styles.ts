@@ -23,7 +23,7 @@ const styles = [
       border: 0.0625rem solid var(--mdc-modalcontainer-border-color);
     }
 
-    .modal-container[data-contrast] {
+    .modal-container[contrast] {
       background-color: var(--mdc-modalcontainer-inverted-background-color);
       border: 0.0625rem solid var(--mdc-modalcontainer-inverted-border-color);
       color: var(--mdc-modalcontainer-inverted-text-color);
