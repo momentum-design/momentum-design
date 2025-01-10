@@ -8,7 +8,7 @@ const styles = [
       outline: none;
     }
   `,
-  hostFocusRingStyles,
+  ...hostFocusRingStyles(),
 ];
 
 export default styles;
