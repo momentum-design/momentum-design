@@ -171,7 +171,7 @@ class Input extends DisabledMixin(Component) {
         <slot name="label">${this.renderLabel()}</slot>
         <slot name="label-icon">${this.renderLabelInfoToggleTip()}</slot>
       </div>
-      <div class="input-container focus-ring" part="input-container">
+      <div class="input-container mdc-focus-ring" part="input-container">
         <slot name="input-leading-icon">${this.renderLeadingIcon()}</slot>
        <section class="text-container">
        <slot name="input-prefix-text">${this.renderPrefixText()}</slot>
