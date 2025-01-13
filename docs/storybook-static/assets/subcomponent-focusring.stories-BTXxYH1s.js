@@ -1,8 +1,8 @@
-import{i as h,k as o}from"./lit-element-CHllvULs.js";import{u as f,C as u,n as g}from"./index-HW6KrQZO.js";import{h as x,a as y}from"./index-CcvxQn6k.js";import"./jsx-runtime-N83kn9-W.js";import"./index-DEsQjpqG.js";import"./_commonjsHelpers-Cpj98o6Y.js";import"./iframe-CLK4xP0_.js";import"../sb-preview/runtime.js";import"./index-D-8MO0q_.js";import"./index-Cef7vbu6.js";import"./index-DrFu-skq.js";const S=f.constructTagName("subcomponent-focusring"),b={SHAPE:"button"},E=["button","radio","checkbox"],k=[x,h`
+import{i as h,k as o}from"./lit-element-CHllvULs.js";import{u as f,C as u,n as g}from"./index-HW6KrQZO.js";import{h as x,a as y}from"./index-BW6Y21yA.js";import"./jsx-runtime-N83kn9-W.js";import"./index-B5V0nTCq.js";import"./_commonjsHelpers-Cpj98o6Y.js";import"./iframe-DmcBnuvx.js";import"../sb-preview/runtime.js";import"./index-D-8MO0q_.js";import"./index-Cef7vbu6.js";import"./index-DrFu-skq.js";const S=f.constructTagName("subcomponent-focusring"),b={SHAPE:"button"},E=["button","radio","checkbox"],k=[x,h`
     .button:focus, .radio:focus, .checkbox:focus {
       outline: none;
     }
-  `,y];var A=Object.defineProperty,P=(e,c,i,_)=>{for(var t=void 0,a=e.length-1,p;a>=0;a--)(p=e[a])&&(t=p(c,i,t)||t);return t&&A(c,i,t),t};const n=class n extends u{constructor(){super(...arguments),this.shape=b.SHAPE}render(){switch(this.shape){case"button":return o`<button class="button">ClickMe</button>`;case"radio":return o`<input type="radio" id="radio" name="group" class="radio" /><label for="radio"
+  `,...y()];var A=Object.defineProperty,P=(e,c,i,_)=>{for(var t=void 0,a=e.length-1,p;a>=0;a--)(p=e[a])&&(t=p(c,i,t)||t);return t&&A(c,i,t),t};const n=class n extends u{constructor(){super(...arguments),this.shape=b.SHAPE}render(){switch(this.shape){case"button":return o`<button class="button">ClickMe</button>`;case"radio":return o`<input type="radio" id="radio" name="group" class="radio" /><label for="radio"
             >SelectMe</label
           >`;case"checkbox":return o`
           <input type="checkbox" id="checkbox" name="terms" class="checkbox" />
