@@ -8,6 +8,6 @@ const styles = [hostFitContentStyles, css`
     outline: none;
     border-radius: 0.25rem;
   }
-`, hostFocusRingStyles];
+`, ...hostFocusRingStyles()];
 
 export default styles;

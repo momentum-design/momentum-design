@@ -57,6 +57,6 @@ const styles = [hostFitContentStyles, css`
   :host([size="20"]){
     height: var(--mdc-button-height-size-20);
   }
-`, hostFocusRingStyles];
+`, ...hostFocusRingStyles()];
 
 export default styles;
