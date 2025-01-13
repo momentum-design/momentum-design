@@ -5,12 +5,6 @@ import {
 
 type LinkSize = ValueOf<typeof LINK_SIZES>
 
-type LinkIconSize = {
-  size: string;
-  unit: string;
-};
-
 export {
-  LinkIconSize,
   LinkSize,
 };

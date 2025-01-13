@@ -3,27 +3,39 @@ import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 
 const styles = [hostFitContentStyles, css`
 
+  :host {
+
+    --mdc-link-border-radius: 0.25rem;
+    --mdc-link-color-active: var(--mds-color-theme-text-accent-active);
+    --mdc-link-color-disabled: var(--mds-color-theme-text-primary-disabled);
+    --mdc-link-color-hover: var(--mds-color-theme-text-accent-hover);
+    --mdc-link-color-normal: var(--mds-color-theme-text-accent-normal);
+    --mdc-link-icon-margin-left: 0.25rem;
+    --mdc-link-inverted-color-active: var(--mds-color-theme-inverted-text-accent-active);
+    --mdc-link-inverted-color-disabled: var(--mds-color-theme-inverted-text-primary-disabled);
+    --mdc-link-inverted-color-hover: var(--mds-color-theme-inverted-text-accent-hover);
+    --mdc-link-inverted-color-normal: var(--mds-color-theme-inverted-text-accent-normal);
+
+    border-radius: var(--mdc-link-border-radius);
+    color: var(--mdc-link-color-normal);
+  }
+
   ::slotted(a) {
     align-items: center;
     color: inherit;
     display: flex;
-    gap: 0.25rem;
+    gap: var(--mdc-link-icon-margin-left);
     text-decoration: inherit;
     text-underline-offset: auto;
     text-underline-position: from-font;
   }
 
-  :host {
-    border-radius: 0.25rem;
-    color: var(--mds-color-theme-text-accent-normal);
-  }
-
   :host(:hover) {
-    color: var(--mds-color-theme-text-accent-hover);
+    color: var(--mdc-link-color-hover);
   }
 
   :host(:active) {
-    color: var(--mds-color-theme-text-accent-active);
+    color: var(--mdc-link-color-active);
   }
 
   :host([inline]) {
@@ -31,24 +43,24 @@ const styles = [hostFitContentStyles, css`
   }
 
   :host([inverted]) {
-    color: var(--mds-color-theme-inverted-text-accent-normal);
+    color: var(--mdc-link-inverted-color-normal);
   }
 
   :host([inverted]:hover) {
-    color: var(--mds-color-theme-inverted-text-accent-hover);
+    color: var(--mdc-link-inverted-color-hover);
   }
 
   :host([inverted]:active) {
-    color: var(--mds-color-theme-inverted-text-accent-active);
+    color: var(--mdc-link-inverted-color-active);
   }
 
   :host([disabled]) {
-    color: var(--mds-color-theme-text-primary-disabled);
+    color: var(--mdc-link-color-disabled);
     pointer-events: none;
   }
 
   :host([inverted][disabled]) {
-    color: var(--mds-color-theme-inverted-text-primary-disabled);
+    color: var(--mdc-link-inverted-color-disabled);
   }
 
   :host([size="large"]) {
@@ -98,6 +110,6 @@ const styles = [hostFitContentStyles, css`
     text-decoration: var(--mds-font-apps-body-small-regular-underline-text-decoration);
     text-transform: var(--mds-font-apps-body-small-regular-underline-text-case);
   }
-`, hostFocusRingStyles];
+`, hostFocusRingStyles()];
 
 export default styles;

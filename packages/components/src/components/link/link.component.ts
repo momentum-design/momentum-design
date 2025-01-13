@@ -17,16 +17,20 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
  *
  * For `icon`, the `mdc-icon` component is used to render the icon.
  *
- * Example:
- * ```
- * <mdc-link icon-name="pop-out-regular">
- *  <a href="https://www.webex.com">Link</a>
- * </mdc-link>
- * ```
- *
  * @dependency mdc-icon
  *
  * @tagname mdc-link
+ *
+ * @cssproperty --mdc-link-border-radius - Border radius of the link
+ * @cssproperty --mdc-link-color-active - Text and icon color of the link in active state
+ * @cssproperty --mdc-link-color-disabled - Text and icon color of the link in disabled state
+ * @cssproperty --mdc-link-color-hover - Text and icon color of the link in hover state
+ * @cssproperty --mdc-link-color-normal - Text and icon color of the link in normal state
+ * @cssproperty --mdc-link-icon-margin-left - Gap between the text and icon (only applicable when an icon is set)
+ * @cssproperty --mdc-link-inverted-color-active - Text and icon color of the inverted link in active state
+ * @cssproperty --mdc-link-inverted-color-disabled - Text and icon color of the inverted link in disabled state
+ * @cssproperty --mdc-link-inverted-color-hover - Text and icon color of the inverted link in hover state
+ * @cssproperty --mdc-link-inverted-color-normal - Text and icon color of the inverted link in normal state
  */
 class Link extends DisabledMixin(Component) {
   /**
@@ -41,29 +45,34 @@ class Link extends DisabledMixin(Component) {
    * The link can be inline or standalone.
    * @default false
    */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   inline: boolean = DEFAULTS.INLINE;
 
   /**
-   * The link can be inverted or not.
+   * The link color can be inverted by setting the inverted attribute to true.
    * @default false
    */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   inverted: boolean = DEFAULTS.INVERTED;
 
   /**
    * Size of the link.
-   * Can be `small`, `midsize` or `large`.
+   * Acceptable values include:
+   *
+   * - 'small'
+   * - 'midsize'
+   * - 'large'
+   *
    * @default large
    */
-  @property({ type: String })
+  @property({ type: String, reflect: true })
   size: LinkSize = DEFAULTS.LINK_SIZE;
 
   /**
    * Method to get the size of the trailing icon based on the link size.
    * @returns The icon size value and units.
    */
-  private getIconSize(): LinkIconSize {
+  private getIconSize(): number {
     switch (this.size) {
       case LINK_SIZES.SMALL:
         return LINK_ICON_SIZES.SMALL;
@@ -87,8 +96,8 @@ class Link extends DisabledMixin(Component) {
     if (this.iconName && anchorElement) {
       const trailingIcon = document.createElement('mdc-icon');
       trailingIcon.setAttribute('name', this.iconName);
-      trailingIcon.setAttribute('size', iconSize.size);
-      trailingIcon.setAttribute('length-unit', iconSize.unit);
+      trailingIcon.setAttribute('size', `${iconSize}`);
+      trailingIcon.setAttribute('length-unit', 'rem');
       anchorElement.appendChild(trailingIcon);
     }
   }
