@@ -161,6 +161,12 @@ class Input extends LabelMixin(DisabledMixin(Component)) {
     return html` <mdc-text tagname='span' type='body-midsize-regular'>${this.helpText}</mdc-text> `;
   }
 
+  private clearInputText() {
+    this.value = '';
+    // focus the input field after clearing the text
+    this.shadowRoot?.querySelector('input')?.focus();
+  }
+
   protected renderClearButton() {
     return html`
       <mdc-button 
@@ -169,7 +175,7 @@ class Input extends LabelMixin(DisabledMixin(Component)) {
         variant='tertiary'
         size="20"
         aria-label="Clear"
-        @click=${() => { this.value = ''; }}
+        @click=${this.clearInputText}
         ?disabled=${this.disabled}
       ></mdc-button>
     `;
