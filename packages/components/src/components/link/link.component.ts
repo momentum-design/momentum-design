@@ -2,7 +2,7 @@ import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DEFAULTS, LINK_ICON_SIZES, LINK_SIZES } from './link.constants';
-import { LinkIconSize, LinkSize } from './link.types';
+import { LinkSize } from './link.types';
 import styles from './link.styles';
 import { IconNames } from '../icon/icon.types';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
