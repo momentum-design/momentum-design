@@ -1,8 +1,6 @@
 import utils from '../../utils/tag-name';
 
-const LINK_INLINE = false;
-
-const LINK_INVERTED = false;
+const TAG_NAME = utils.constructTagName('link');
 
 const LINK_SIZES = {
   LARGE: 'large',
@@ -11,16 +9,14 @@ const LINK_SIZES = {
 } as const;
 
 const LINK_ICON_SIZES = {
-  LARGE: { size: '1', unit: 'rem' },
-  MIDSIZE: { size: '0.875', unit: 'rem' },
-  SMALL: { size: '0.75', unit: 'rem' },
+  LARGE: 1,
+  MIDSIZE: 0.875,
+  SMALL: 0.75,
 } as const;
 
-const TAG_NAME = utils.constructTagName('link');
-
 const DEFAULTS = {
-  INLINE: LINK_INLINE,
-  INVERTED: LINK_INVERTED,
+  INLINE: false,
+  INVERTED: false,
   LINK_SIZE: LINK_SIZES.LARGE,
 };
 

@@ -2,6 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { LINK_SIZES } from './link.constants';
+import { disableControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => {
   // To allow the children to be rendered as html anchor tag, we need to parse it first
@@ -50,67 +51,67 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(LINK_SIZES),
     },
+    ...disableControls([
+      '--mdc-link-border-radius',
+      '--mdc-link-color-active',
+      '--mdc-link-color-disabled',
+      '--mdc-link-color-hover',
+      '--mdc-link-color-normal',
+      '--mdc-link-icon-margin-left',
+      '--mdc-link-inverted-color-active',
+      '--mdc-link-inverted-color-disabled',
+      '--mdc-link-inverted-color-hover',
+      '--mdc-link-inverted-color-normal',
+    ]),
   },
 };
 
 export default meta;
 
+const defaultArgs = {
+  children: '<a href="https://www.webex.com">Link</a>',
+  disabled: false,
+  'icon-name': 'pop-out-regular',
+  inline: false,
+  inverted: false,
+  size: 'large',
+};
+
 export const Example: StoryObj = {
   render,
   args: {
-    children: '<a href="https://www.webex.com">Link</a>',
-    disabled: false,
-    'icon-name': 'pop-out-regular',
-    inline: false,
-    inverted: false,
-    size: 'large',
+    ...defaultArgs,
   },
 };
 
 export const StandaloneLink: StoryObj = {
   render,
   args: {
-    children: '<a href="https://www.webex.com">Link</a>',
-    disabled: false,
-    'icon-name': 'pop-out-regular',
-    inline: false,
-    inverted: false,
-    size: 'large',
+    ...defaultArgs,
   },
 };
 
 export const StandaloneLinkInverted: StoryObj = {
   render: renderWithInvertedBackground,
   args: {
-    children: '<a href="https://www.webex.com">Link</a>',
-    disabled: false,
-    'icon-name': 'pop-out-regular',
-    inline: false,
+    ...defaultArgs,
     inverted: true,
-    size: 'large',
   },
 };
 
 export const InlineLink: StoryObj = {
   render,
   args: {
-    children: '<a href="https://www.webex.com">Link</a>',
-    disabled: false,
-    'icon-name': 'pop-out-regular',
+    ...defaultArgs,
     inline: true,
-    inverted: false,
-    size: 'large',
   },
 };
 
 export const InlineLinkInverted: StoryObj = {
   render: renderWithInvertedBackground,
   args: {
-    children: '<a href="https://www.webex.com">Link</a>',
-    disabled: false,
-    'icon-name': 'pop-out-regular',
+    ...defaultArgs,
     inline: true,
     inverted: true,
-    size: 'large',
   },
 };
