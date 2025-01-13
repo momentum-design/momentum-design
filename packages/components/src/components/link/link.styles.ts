@@ -110,6 +110,6 @@ const styles = [hostFitContentStyles, css`
     text-decoration: var(--mds-font-apps-body-small-regular-underline-text-decoration);
     text-transform: var(--mds-font-apps-body-small-regular-underline-text-case);
   }
-`, hostFocusRingStyles()];
+`, ...hostFocusRingStyles()];
 
 export default styles;
