@@ -1,10 +1,10 @@
 import { CSSResult, html, nothing } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './input.styles';
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
-import { DEFAULTS } from './input.constants';
+import { DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
 import { getHelperIcon } from './input.utils';
 import type { ValidationType } from './input.type';
 import type { IconNames } from '../icon/icon.types';
@@ -69,12 +69,12 @@ class Input extends LabelMixin(DisabledMixin(Component)) {
   /**
    * The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.
    */
-  @property() helpTextType: ValidationType = DEFAULTS.VALIDATION;
+  @property({ reflect: true }) helpTextType: ValidationType = DEFAULTS.VALIDATION;
 
   /**
    * The help text that is displayed below the input field.
    */
-  @property({ type: String }) helpText = '';
+  @property({ type: String, reflect: true }) helpText = '';
 
   /**
    * @beta this attribute is in beta, and is subject to change (given the toggletip component is not ready yet)
@@ -82,7 +82,7 @@ class Input extends LabelMixin(DisabledMixin(Component)) {
   @property({ type: String }) labelInfoText = '';
 
   /**
-   * The prefix text that is displayed before the input field.
+   * The prefix text that is displayed before the input field. It has a max length of 10 characters.
    */
   @property({ type: String }) prefixText = '';
 
@@ -90,6 +90,16 @@ class Input extends LabelMixin(DisabledMixin(Component)) {
    * The leading icon that is displayed before the input field.
    */
   @property({ type: String }) leadingIcon = '';
+
+  /**
+   * @internal
+   */
+  @state() prevHelperText = '';
+
+  /**
+   * @internal
+   */
+  @state() prevHelperTextType: ValidationType = 'default';
 
   protected renderLabelInfoToggleTip() {
     if (!this.labelInfoText) {
@@ -101,6 +111,20 @@ class Input extends LabelMixin(DisabledMixin(Component)) {
   protected renderPrefixText() {
     if (!this.prefixText) {
       return nothing;
+    }
+    if (this.prefixText.length > PREFIX_TEXT_OPTIONS.MAX_LENGTH) {
+      if (this.prevHelperText === '') {
+        this.prevHelperText = this.helpText;
+        this.prevHelperTextType = this.helpTextType;
+      }
+      this.helpText = PREFIX_TEXT_OPTIONS.HELPERTEXT;
+      this.helpTextType = PREFIX_TEXT_OPTIONS.VALIDATION;
+      return nothing;
+    }
+    if (this.prevHelperText !== '' && this.helpText === PREFIX_TEXT_OPTIONS.HELPERTEXT) {
+      this.helpText = this.prevHelperText;
+      this.helpTextType = this.prevHelperTextType;
+      this.prevHelperText = '';
     }
     return html`<mdc-text class="prefix-text" tagname='span' type='body-midsize-regular'>${this.prefixText}</mdc-text>`;
   }

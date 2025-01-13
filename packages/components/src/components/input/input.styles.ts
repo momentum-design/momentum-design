@@ -2,6 +2,7 @@ import { css } from 'lit';
 import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 
 const styles = [hostFitContentStyles, css`
+
   :host {
     flex-direction: column;
     align-items: flex-start;
@@ -19,7 +20,7 @@ const styles = [hostFitContentStyles, css`
     border-color: var(--mds-color-theme-outline-primary-disabled);
     background: var(--mds-color-theme-background-primary-disabled);
   }
-
+  
   .input-header, .input-footer, .input-container {
     font-size: var(--mds-font-size-body-midsize);
     line-height: var(--mds-font-lineheight-body-midsize);
@@ -59,6 +60,12 @@ const styles = [hostFitContentStyles, css`
     background-color: var(--mds-color-theme-background-primary-ghost);
     outline: none;
   }
+
+  .input::selection { 
+    background-color: var(--mds-color-theme-background-accent-active);
+    color: var(--mds-color-theme-inverted-text-primary-normal);
+  }
+
 
   .prefix-text{
     color: var(--mds-color-theme-text-secondary-normal);
