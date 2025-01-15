@@ -62,6 +62,7 @@ const meta: Meta = {
       '--mdc-link-inverted-color-disabled',
       '--mdc-link-inverted-color-hover',
       '--mdc-link-inverted-color-normal',
+      '--mdc-link-text-decoration-disabled',
     ]),
   },
 };
@@ -69,9 +70,9 @@ const meta: Meta = {
 export default meta;
 
 const defaultArgs = {
-  children: '<a href="https://www.webex.com">Link</a>',
+  children: '<a href="https://www.webex.com" _target="blank">Link</a>',
   disabled: false,
-  'icon-name': 'pop-out-regular',
+  'icon-name': 'placeholder-regular',
   inline: false,
   inverted: false,
   size: 'large',

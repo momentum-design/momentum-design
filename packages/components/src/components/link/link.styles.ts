@@ -15,6 +15,7 @@ const styles = [hostFitContentStyles, css`
     --mdc-link-inverted-color-disabled: var(--mds-color-theme-inverted-text-primary-disabled);
     --mdc-link-inverted-color-hover: var(--mds-color-theme-inverted-text-accent-hover);
     --mdc-link-inverted-color-normal: var(--mds-color-theme-inverted-text-accent-normal);
+    --mdc-link-text-decoration-disabled: underline;
 
     border-radius: var(--mdc-link-border-radius);
     color: var(--mdc-link-color-normal);
@@ -52,15 +53,6 @@ const styles = [hostFitContentStyles, css`
 
   :host([inverted]:active) {
     color: var(--mdc-link-inverted-color-active);
-  }
-
-  :host([disabled]) {
-    color: var(--mdc-link-color-disabled);
-    pointer-events: none;
-  }
-
-  :host([inverted][disabled]) {
-    color: var(--mdc-link-inverted-color-disabled);
   }
 
   :host([size="large"]) {
@@ -109,6 +101,16 @@ const styles = [hostFitContentStyles, css`
     line-height: var(--mds-font-apps-body-small-regular-underline-line-height);
     text-decoration: var(--mds-font-apps-body-small-regular-underline-text-decoration);
     text-transform: var(--mds-font-apps-body-small-regular-underline-text-case);
+  }
+
+  :host([disabled]) {
+    color: var(--mdc-link-color-disabled);
+    pointer-events: none;
+    text-decoration: var(--mdc-link-text-decoration-disabled);
+  }
+
+  :host([inverted][disabled]) {
+    color: var(--mdc-link-inverted-color-disabled);
   }
 `, ...hostFocusRingStyles()];
 
