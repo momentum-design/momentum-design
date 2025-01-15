@@ -111,6 +111,7 @@ const styles = [hostFitContentStyles, css`
 
   .hidden{
     opacity: 0;
+    pointer-events: none;
   }
 
 `, ...hostFocusRingStyles(true)];

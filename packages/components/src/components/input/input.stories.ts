@@ -1,14 +1,16 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { VALIDATION } from './input.constants';
+import { TYPE, VALIDATION } from './input.constants';
 import { disableControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) =>
   html` <mdc-input
     id="${args.id}"
     label="${args.label}"
+    type="${args.type}"
     labelInfoText="${args.labelInfoText}"
     helpTextType="${args.helpTextType}"
     helpText="${args.helpText}"
@@ -21,6 +23,8 @@ const render = (args: Args) =>
     ?readonly="${args.readonly}"
     prefixText="${args.prefixText}"
     leadingIcon="${args.leadingIcon}"
+    maxlength="${ifDefined(args.maxlength)}"
+    minlength="${ifDefined(args.minlength)}"
     ></mdc-input>`;
 
 const meta: Meta = {
@@ -43,6 +47,10 @@ const meta: Meta = {
     },
     value: {
       control: 'text',
+    },
+    type: {
+      control: 'select',
+      options: Object.values(TYPE),
     },
     placeholder: {
       control: 'text',
@@ -71,6 +79,12 @@ const meta: Meta = {
     leadingIcon: {
       control: 'text',
     },
+    minlength: {
+      control: 'number',
+    },
+    maxlength: {
+      control: 'number',
+    },
   },
 };
 
@@ -80,12 +94,13 @@ export const Example: StoryObj = {
   args: {
     id: '1',
     label: 'Label (required)',
+    type: 'text',
     labelInfoText: 'Label info text',
+    placeholder: 'Placeholder',
+    value: '',
     helpText: 'Helper text',
     helpTextType: 'default',
     required: false,
-    placeholder: 'Placeholder',
-    value: '',
     readonly: false,
     disabled: false,
     prefixText: '',
@@ -174,7 +189,7 @@ export const AllVariants: StoryObj = {
   id="9"
   label="Label"
   labelInfoText="Label info text"
-  helpText="Help text"
+  helpText="Helper text"
   helpTextType="default"
   placeholder="Placeholder"
   prefixText="https://"
@@ -183,7 +198,7 @@ export const AllVariants: StoryObj = {
   id="10"
   label="Label"
   labelInfoText="Label info text"
-  helpText="Help text"
+  helpText="Helper text"
   helpTextType="default"
   placeholder="Placeholder"
   leadingIcon="placeholder-bold"

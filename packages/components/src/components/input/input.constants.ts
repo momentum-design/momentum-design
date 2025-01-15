@@ -10,11 +10,14 @@ const VALIDATION = {
   DEFAULT: 'default',
 } as const;
 
-const DEFAULTS = {
-  NAME: undefined,
-  INFO_ICON_NAME: 'info-circle-filled',
-  SIZE: 1,
-  VALIDATION: VALIDATION.DEFAULT,
+const TYPE = {
+  TEXT: 'text',
+  PASSWORD: 'password',
+  EMAIL: 'email',
+  NUMBER: 'number',
+  TEL: 'tel',
+  URL: 'url',
+  SEARCH: 'search',
 } as const;
 
 const PREFIX_TEXT_OPTIONS = {
@@ -23,4 +26,12 @@ const PREFIX_TEXT_OPTIONS = {
   VALIDATION: VALIDATION.ERROR,
 };
 
-export { TAG_NAME, DEFAULTS, VALIDATION, PREFIX_TEXT_OPTIONS };
+const DEFAULTS = {
+  NAME: undefined,
+  INFO_ICON_NAME: 'info-circle-filled',
+  SIZE: 1,
+  VALIDATION: VALIDATION.DEFAULT,
+  TYPE: TYPE.TEXT,
+} as const;
+
+export { TAG_NAME, DEFAULTS, VALIDATION, PREFIX_TEXT_OPTIONS, TYPE };

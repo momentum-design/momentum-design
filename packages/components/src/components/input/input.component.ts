@@ -1,12 +1,12 @@
 import { CSSResult, html, nothing } from 'lit';
-import { property, state } from 'lit/decorators.js';
+import { property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './input.styles';
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
 import { getHelperIcon } from './input.utils';
-import type { ValidationType } from './input.type';
+import type { InputType, ValidationType } from './input.type';
 import type { IconNames } from '../icon/icon.types';
 import { LabelMixin } from '../../utils/mixins/LabelMixin';
 
@@ -23,7 +23,6 @@ import { LabelMixin } from '../../utils/mixins/LabelMixin';
  *
  * @tagname mdc-input
  *
- * @slot default - This is a default/unnamed slot
  *
  * @dependency mdc-icon
  * @dependency mdc-text
@@ -59,12 +58,26 @@ class Input extends LabelMixin(DisabledMixin(Component)) {
   /**
    * The maximum number of characters that the input field can accept.
    */
-  @property({ type: Number }) maxLength?: number;
+  @property({ type: Number }) maxlength?: number;
 
   /**
    * The minimum number of characters that the input field can accept.
    */
-  @property({ type: Number }) minLength?: number;
+  @property({ type: Number }) minlength?: number;
+
+  /**
+ * The type of the input field. It can be
+ * - text
+ * - password
+ * - email
+ * - number
+ * - tel
+ * - url
+ * - search
+ *
+ * @default text
+ */
+  @property({ type: String }) type: InputType = DEFAULTS.TYPE;
 
   /**
    * The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.
@@ -93,6 +106,12 @@ class Input extends LabelMixin(DisabledMixin(Component)) {
 
   /**
    * @internal
+   * The input element
+   */
+  @query('input') private inputElement!: HTMLInputElement;
+
+  /**
+   * @internal
    */
   @state() prevHelperText = '';
 
@@ -100,6 +119,16 @@ class Input extends LabelMixin(DisabledMixin(Component)) {
    * @internal
    */
   @state() prevHelperTextType: ValidationType = 'default';
+
+  private generateId() {
+    // generating a random id for associating the input and label field
+    return `mdc-input-${Math.random().toString(36).substring(2, 11)}`;
+  }
+
+  constructor() {
+    super();
+    this.id = this.id || this.generateId();
+  }
 
   protected renderLabelInfoToggleTip() {
     if (!this.labelInfoText) {
@@ -164,7 +193,7 @@ class Input extends LabelMixin(DisabledMixin(Component)) {
   private clearInputText() {
     this.value = '';
     // focus the input field after clearing the text
-    this.shadowRoot?.querySelector('input')?.focus();
+    this.inputElement?.focus();
   }
 
   protected renderClearButton() {
@@ -176,7 +205,7 @@ class Input extends LabelMixin(DisabledMixin(Component)) {
         size="20"
         aria-label="Clear"
         @click=${this.clearInputText}
-        ?disabled=${this.disabled}
+        ?disabled=${this.disabled || this.readonly}
       ></mdc-button>
     `;
   }
@@ -198,11 +227,10 @@ class Input extends LabelMixin(DisabledMixin(Component)) {
             .value="${this.value}"
             ?disabled="${this.disabled}"
             ?readonly="${this.readonly}"
+            type="${this.type}"
             placeholder=${ifDefined(this.placeholder)}
-            aria-required=${this.required}
-            aria-invalid=${this.helpTextType === 'error'}
-            minlength=${ifDefined(this.minLength)}
-            maxlength=${ifDefined(this.maxLength)}
+            minlength=${ifDefined(this.minlength)}
+            maxlength=${ifDefined(this.maxlength)}
             @input=${(e: Event) => { this.value = (e.target as HTMLInputElement).value; }}
           />
         </slot>
