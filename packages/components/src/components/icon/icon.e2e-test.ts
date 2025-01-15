@@ -84,20 +84,20 @@ test('mdc-icon', async ({ componentsPage }) => {
     await test.step('attributes should be present on component by default', async () => {
       const icon = await setup({ componentsPage, name });
       await expect(icon).toHaveAttribute('name', name);
-      await expect(icon).toHaveAttribute('style', 'width: 1em; height: 1em;');
+      await expect(icon).toHaveAttribute('style', '--computed-icon-size: 1em;');
     });
 
     await test.step('attributes should be present on component with size passed in', async () => {
       const icon = await setup({ componentsPage, name, size: 2 });
       await expect(icon).toHaveAttribute('name', name);
       await expect(icon).toHaveAttribute('size', '2');
-      await expect(icon).toHaveAttribute('style', 'width: 2em; height: 2em;');
+      await expect(icon).toHaveAttribute('style', '--computed-icon-size: 2em;');
     });
 
     await test.step('attribute length unit can be overridden to rem', async () => {
       const icon = await setup({ componentsPage, name, lengthUnit: 'rem' });
       await expect(icon).toHaveAttribute('name', name);
-      await expect(icon).toHaveAttribute('style', 'width: 1rem; height: 1rem;');
+      await expect(icon).toHaveAttribute('style', '--computed-icon-size: 1rem;');
     });
 
     await test.step('attributes should be present on component with aria-label passed in', async () => {
@@ -107,7 +107,7 @@ test('mdc-icon', async ({ componentsPage }) => {
         ariaLabel,
       });
       await expect(iconWithRole).toHaveAttribute('name', name);
-      await expect(iconWithRole).toHaveAttribute('style', 'width: 1em; height: 1em;');
+      await expect(iconWithRole).toHaveAttribute('style', '--computed-icon-size: 1em;');
       await expect(iconWithRole).toHaveAttribute('aria-label', ariaLabel);
       await expect(iconWithRole).toHaveAttribute('role', 'img');
     });
@@ -118,7 +118,7 @@ test('mdc-icon', async ({ componentsPage }) => {
         name,
       });
       await expect(iconWithoutRole).toHaveAttribute('name', name);
-      await expect(iconWithoutRole).toHaveAttribute('style', 'width: 1em; height: 1em;');
+      await expect(iconWithoutRole).toHaveAttribute('style', '--computed-icon-size: 1em;');
       await expect(iconWithoutRole).not.toHaveAttribute('role');
     });
 
