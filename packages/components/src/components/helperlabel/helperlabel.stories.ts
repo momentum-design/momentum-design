@@ -16,7 +16,7 @@ const render = (args: Args) => html`
     style="${args.style}"
     prefixText="${args.prefixText}"
     leadingIcon="${args.leadingIcon}"
-    ></mdc-helperlabel>`;
+    >${args.children}</mdc-helperlabel>`;
 
 const meta: Meta = {
   title: 'Internal/helperlabel',
@@ -62,6 +62,7 @@ export const Example: StoryObj = {
     labelInfoText: 'Label info text',
     helpText: 'Helper text',
     helpTextType: 'default',
+    children: '[Add your input component here]',
   },
 };
 
@@ -73,7 +74,7 @@ export const HelperTextTypes: StoryObj = {
           helpTextType="${validation}"
           label="Label"
           helpText="Helper text"
-        ></mdc-helperlabel>
+        >[Child component]</mdc-helperlabel>
       `)}
     </div>`,
 };
