@@ -2,6 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { action } from '@storybook/addon-actions';
 import { TYPE as PRESENCE_TYPE } from '../presence/presence.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
@@ -9,6 +10,10 @@ import { AVATAR_SIZE } from '../avatar/avatar.constants';
 
 const render = (args: Args) => html`
   <mdc-avatarbutton
+    @click="${action('onClick')}"
+    @keydown="${action('onKeyDown')}"
+    @keyup="${action('onKeyUp')}"
+    @focus="${action('onFocus')}"
     counter="${ifDefined(args.counter)}"
     icon-name="${ifDefined(args['icon-name'])}"
     initials="${ifDefined(args.initials)}"
