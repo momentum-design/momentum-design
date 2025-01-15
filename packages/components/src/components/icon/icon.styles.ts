@@ -7,10 +7,13 @@ const styles = [
     :host {
       --mdc-icon-fill-color: currentColor;
       --mdc-icon-computed-size: var(--computed-icon-size);
+
+      height: var(--mdc-icon-computed-size);
+      width: var(--mdc-icon-computed-size);
     }
     :host::part(icon) {
-      height: var( --mdc-icon-computed-size, 100%);
-      width: var( --mdc-icon-computed-size, 100%);
+      height: 100%;
+      width: 100%;
       fill: var(--mdc-icon-fill-color);
     }
   `,
