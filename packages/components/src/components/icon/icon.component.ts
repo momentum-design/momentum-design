@@ -161,8 +161,8 @@ class Icon extends Component {
   private updateSize() {
     if (this.computedIconSize && (this.lengthUnit || this.lengthUnitFromContext)) {
       const value = `${this.computedIconSize}${this.lengthUnit ?? this.lengthUnitFromContext}`;
-      this.style.width = value;
-      this.style.height = value;
+      // set the computed icon size as a css variable to be used in the icon styles
+      this.style.setProperty('--computed-icon-size', value);
     }
   }
 
