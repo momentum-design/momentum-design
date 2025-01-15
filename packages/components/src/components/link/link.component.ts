@@ -31,6 +31,7 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
  * @cssproperty --mdc-link-inverted-color-disabled - Text and icon color of the inverted link in disabled state
  * @cssproperty --mdc-link-inverted-color-hover - Text and icon color of the inverted link in hover state
  * @cssproperty --mdc-link-inverted-color-normal - Text and icon color of the inverted link in normal state
+ * @cssproperty --mdc-link-text-decoration-disabled - Text decoration of the link in disabled state for all variants
  */
 class Link extends DisabledMixin(Component) {
   /**
