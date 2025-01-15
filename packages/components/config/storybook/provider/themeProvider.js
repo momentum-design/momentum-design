@@ -31,6 +31,7 @@ export const withThemeProvider = (story, context) => {
   clearStyles(body);
   applyStyle(body, themeObject.className);
   applyStyle(body, 'mds-typography');
+  applyStyle(body, 'mds-elevation');
 
   // This will set the all canvas in "Docs" with the current theme background color
   setCanvasBackgroundOnDocs(themeObject.backgroundColor);
