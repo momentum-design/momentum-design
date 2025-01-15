@@ -9,6 +9,7 @@ import Button from './components/button';
 import Bullet from './components/bullet';
 import Marker from './components/marker';
 import Divider from './components/divider';
+import Input from './components/input';
 import Buttonsimple from './components/buttonsimple';
 import Avatarbutton from './components/avatarbutton';
 
@@ -26,6 +27,7 @@ export {
   Bullet,
   Marker,
   Divider,
+  Input,
   Buttonsimple,
   Avatarbutton,
 };
