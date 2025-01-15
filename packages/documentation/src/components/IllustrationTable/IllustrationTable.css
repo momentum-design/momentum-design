@@ -6,23 +6,27 @@
 }
 
 .grid320 {
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
 }
 
 .grid192 {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(192px, 1fr));
 }
 
 .grid120 {
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
 }
 
 .grid60 {
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
 }
 
 .illustrationWrapper {
   justify-self: center;
+}
+
+.illustration-bg-inverted {
+  filter :var(--illustrations-filter);
 }
 
 .nameAnchor {
