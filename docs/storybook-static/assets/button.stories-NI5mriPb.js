@@ -1,4 +1,4 @@
-import{i as F,k as I}from"./lit-element-CHllvULs.js";import{n as m}from"./index-HW6KrQZO.js";import{r as D}from"./state-CWckTc1X.js";import{I as c,D as i,B as e,a as p,P as b,b as d,T as V}from"./button.constants-CA1KPfWk.js";import{B as N}from"./index-BSBUaOgE.js";import"./index-CsrlL5z4.js";import{c as Z,s as w}from"./commonArgTypes-BluK8w5L.js";import{a as u}from"./buttonsimple.constants-5FOanXlE.js";import"./index-BW6Y21yA.js";import"./index-BYMLCX4c.js";import"./iconprovider.component-CWYw8J7d.js";import"./create-context-89xeped_.js";const W=F`
+import{i as V,k as g}from"./lit-element-CHllvULs.js";import{n as m}from"./index-HW6KrQZO.js";import{r as F}from"./state-CWckTc1X.js";import{I as c,D as i,B as e,a as p,P as b,b as d,T as Z}from"./button.constants-CA1KPfWk.js";import{B as N,a as h}from"./chunk-D5ZWXAHU-CgQFgVhR.js";import"./index-CsrlL5z4.js";import{c as w,s as W}from"./commonArgTypes-BluK8w5L.js";import{a as u}from"./buttonsimple.constants-5FOanXlE.js";import"./index-BW6Y21yA.js";import"./v4-CQkTLCs1.js";import"./index-BYMLCX4c.js";import"./iconprovider.component-CWYw8J7d.js";import"./create-context-89xeped_.js";const q=V`
   :host {
     background-color: transparent;
     border-radius: 1.25rem;
@@ -169,8 +169,8 @@ import{i as F,k as I}from"./lit-element-CHllvULs.js";import{n as m}from"./index-
     --mdc-button-secondary-hover-background-color: var(--mds-color-theme-button-secondary-hover);
     --mdc-button-secondary-pressed-background-color: var(--mds-color-theme-button-secondary-pressed);
   }
-`,q=[W],G=t=>{switch(t){case c[64]:return 2;case c[52]:return 1.75;case c[40]:return 1.25;default:return 1}},z=t=>{const o=t.split("-"),a=["bold","filled","regular","light"];return o.filter(s=>!a.includes(s)).join("-")};var H=Object.defineProperty,n=(t,o,a,s)=>{for(var l=void 0,g=t.length-1,O;g>=0;g--)(O=t[g])&&(l=O(o,a,l)||l);return l&&H(o,a,l),l};const x=class x extends N{constructor(){super(...arguments),this.variant=i.VARIANT,this.size=i.SIZE,this.color=i.COLOR,this.role="button",this.typeInternal=i.TYPE_INTERNAL,this.iconSize=1}update(o){super.update(o),o.has("active")&&this.modifyIconName(this.active),o.has("size")&&this.setSize(this.size),o.has("variant")&&(this.setVariant(this.variant),this.setSize(this.size)),o.has("color")&&this.setColor(this.color),o.has("typeInternal")&&this.setSize(this.size),(o.has("prefixIcon")||o.has("postfixIcon"))&&this.inferButtonType()}modifyIconName(o){o?(this.prefixIcon&&(this.prevPrefixIcon=this.prefixIcon,this.prefixIcon=`${z(this.prefixIcon)}-filled`),this.postfixIcon&&(this.prevPostfixIcon=this.postfixIcon,this.postfixIcon=`${z(this.postfixIcon)}-filled`)):(this.prevPrefixIcon&&(this.prefixIcon=this.prevPrefixIcon),this.prevPostfixIcon&&(this.postfixIcon=this.prevPostfixIcon))}setVariant(o){this.setAttribute("variant",Object.values(e).includes(o)?o:i.VARIANT)}setSize(o){const s=this.typeInternal===p.ICON?Object.values(c).includes(o)&&!(o===c[20]&&this.variant!==e.TERTIARY):Object.values(b).includes(o);this.setAttribute("size",s?`${o}`:`${i.SIZE}`),this.iconSize=G(o)}setColor(o){!Object.values(d).includes(o)||this.variant===e.TERTIARY?this.setAttribute("color",`${i.COLOR}`):this.setAttribute("color",o)}inferButtonType(){var a,s;const o=(s=(a=this.shadowRoot)==null?void 0:a.querySelector("slot"))==null?void 0:s.assignedNodes().length;o&&(this.prefixIcon||this.postfixIcon)?(this.typeInternal=p.PILL_WITH_ICON,this.setAttribute("data-btn-type","pill-with-icon")):!o&&(this.prefixIcon||this.postfixIcon)?(this.typeInternal=p.ICON,this.setAttribute("data-btn-type","icon")):(this.typeInternal=p.PILL,this.setAttribute("data-btn-type","pill"))}render(){return I`
-      ${this.prefixIcon?I`
+`,K=[q],G=t=>{switch(t){case c[64]:return 2;case c[52]:return 1.75;case c[40]:return 1.25;default:return 1}},z=t=>{const o=t.split("-"),a=["bold","filled","regular","light"];return o.filter(s=>!a.includes(s)).join("-")};var H=Object.defineProperty,n=(t,o,a,s)=>{for(var l=void 0,x=t.length-1,k;x>=0;x--)(k=t[x])&&(l=k(o,a,l)||l);return l&&H(o,a,l),l};const O=class O extends N{constructor(){super(...arguments),this.variant=i.VARIANT,this.size=i.SIZE,this.color=i.COLOR,this.role="button",this.typeInternal=i.TYPE_INTERNAL,this.iconSize=1}update(o){super.update(o),o.has("active")&&this.modifyIconName(this.active),o.has("size")&&this.setSize(this.size),o.has("variant")&&(this.setVariant(this.variant),this.setSize(this.size)),o.has("color")&&this.setColor(this.color),o.has("typeInternal")&&this.setSize(this.size),(o.has("prefixIcon")||o.has("postfixIcon"))&&this.inferButtonType()}modifyIconName(o){o?(this.prefixIcon&&(this.prevPrefixIcon=this.prefixIcon,this.prefixIcon=`${z(this.prefixIcon)}-filled`),this.postfixIcon&&(this.prevPostfixIcon=this.postfixIcon,this.postfixIcon=`${z(this.postfixIcon)}-filled`)):(this.prevPrefixIcon&&(this.prefixIcon=this.prevPrefixIcon),this.prevPostfixIcon&&(this.postfixIcon=this.prevPostfixIcon))}setVariant(o){this.setAttribute("variant",Object.values(e).includes(o)?o:i.VARIANT)}setSize(o){const s=this.typeInternal===p.ICON?Object.values(c).includes(o)&&!(o===c[20]&&this.variant!==e.TERTIARY):Object.values(b).includes(o);this.setAttribute("size",s?`${o}`:`${i.SIZE}`),this.iconSize=G(o)}setColor(o){!Object.values(d).includes(o)||this.variant===e.TERTIARY?this.setAttribute("color",`${i.COLOR}`):this.setAttribute("color",o)}inferButtonType(){var a,s;const o=(s=(a=this.shadowRoot)==null?void 0:a.querySelector("slot"))==null?void 0:s.assignedNodes().length;o&&(this.prefixIcon||this.postfixIcon)?(this.typeInternal=p.PILL_WITH_ICON,this.setAttribute("data-btn-type","pill-with-icon")):!o&&(this.prefixIcon||this.postfixIcon)?(this.typeInternal=p.ICON,this.setAttribute("data-btn-type","icon")):(this.typeInternal=p.PILL,this.setAttribute("data-btn-type","pill"))}render(){return g`
+      ${this.prefixIcon?g`
         <mdc-icon
           name="${this.prefixIcon}" 
           part="prefix-icon" 
@@ -178,15 +178,19 @@ import{i as F,k as I}from"./lit-element-CHllvULs.js";import{n as m}from"./index-
           length-unit="rem">
         </mdc-icon>`:""}
       <slot @slotchange=${this.inferButtonType}></slot>
-      ${this.postfixIcon?I`
+      ${this.postfixIcon?g`
         <mdc-icon
           name="${this.postfixIcon}" 
           part="postfix-icon" 
           size=${this.iconSize} 
           length-unit="rem">
         </mdc-icon>`:""}
-    `}};x.styles=[...N.styles,...q];let r=x;n([m({type:String,attribute:"prefix-icon",reflect:!0})],r.prototype,"prefixIcon");n([m({type:String,attribute:"postfix-icon",reflect:!0})],r.prototype,"postfixIcon");n([m({type:String})],r.prototype,"variant");n([m({type:Number})],r.prototype,"size");n([m({type:String})],r.prototype,"color");n([m({type:String,reflect:!0})],r.prototype,"role");n([D()],r.prototype,"typeInternal");n([D()],r.prototype,"iconSize");r.register(V);const J=t=>I`
+    `}};O.styles=[...N.styles,...K];let r=O;n([m({type:String,attribute:"prefix-icon",reflect:!0})],r.prototype,"prefixIcon");n([m({type:String,attribute:"postfix-icon",reflect:!0})],r.prototype,"postfixIcon");n([m({type:String})],r.prototype,"variant");n([m({type:Number})],r.prototype,"size");n([m({type:String})],r.prototype,"color");n([m({type:String,reflect:!0})],r.prototype,"role");n([F()],r.prototype,"typeInternal");n([F()],r.prototype,"iconSize");r.register(Z);const J=t=>g`
   <mdc-button 
+  @click="${h("onClick")}"
+  @keydown="${h("onKeyDown")}"
+  @keyup="${h("onKeyUp")}"
+  @focus="${h("onFocus")}"
   ?active="${t.active}"
   ?disabled="${t.disabled}"
   ?soft-disabled="${t["soft-disabled"]}"
@@ -199,7 +203,7 @@ import{i as F,k as I}from"./lit-element-CHllvULs.js";import{n as m}from"./index-
   role="${t.role}"
   tabIndex="${t.tabIndex}"
   aria-label="${t["aria-label"]}"
-  >${t.children}</mdc-button>`,lo={title:"Components/button",tags:["autodocs"],component:"mdc-button",render:J,parameters:{badges:["stable"]},argTypes:{children:{description:"Text label for the button.",control:"text"},"prefix-icon":{control:"text"},"postfix-icon":{control:"text"},active:{control:"boolean"},disabled:{control:"boolean"},"soft-disabled":{control:"boolean"},variant:{control:"select",options:Object.values(e)},size:{control:"select",options:Object.values(b)},color:{control:"select",options:Object.values(d)},type:{control:"select",options:Object.values(u)},...Z,...w}},h={args:{children:"Click Me",active:!1,disabled:!1,"soft-disabled":!1,variant:e.PRIMARY,size:b[32],color:d.DEFAULT,type:u.BUTTON,role:"button",tabIndex:0}},v={args:{children:"Click Me",active:!1,disabled:!1,"soft-disabled":!1,variant:e.PRIMARY,size:b[32],color:d.DEFAULT,type:u.BUTTON,role:"button",tabIndex:0}},y={args:{children:"Left Icon","prefix-icon":"placeholder-bold",active:!1,disabled:!1,"soft-disabled":!1,variant:e.PRIMARY,size:b[32],color:d.DEFAULT,type:u.BUTTON,role:"button",tabIndex:0}},f={args:{children:"Right Icon","postfix-icon":"placeholder-bold",active:!1,disabled:!1,"soft-disabled":!1,variant:e.PRIMARY,size:b[32],color:d.DEFAULT,type:u.BUTTON,role:"button",tabIndex:0}},T={argTypes:{size:{options:Object.values(c)},"aria-label":{description:"Aria label for the icon button. Required for accessibility."}},args:{"prefix-icon":"placeholder-bold",active:!1,disabled:!1,"soft-disabled":!1,variant:e.PRIMARY,size:c[32],color:d.DEFAULT,type:u.BUTTON,role:"button",tabIndex:0,"aria-label":"icon button"}};var k,A,S;h.parameters={...h.parameters,docs:{...(k=h.parameters)==null?void 0:k.docs,source:{originalSource:`{
+  >${t.children}</mdc-button>`,bo={title:"Components/button",tags:["autodocs"],component:"mdc-button",render:J,parameters:{badges:["stable"]},argTypes:{children:{description:"Text label for the button.",control:"text"},"prefix-icon":{control:"text"},"postfix-icon":{control:"text"},active:{control:"boolean"},disabled:{control:"boolean"},"soft-disabled":{control:"boolean"},variant:{control:"select",options:Object.values(e)},size:{control:"select",options:Object.values(b)},color:{control:"select",options:Object.values(d)},type:{control:"select",options:Object.values(u)},...w,...W}},y={args:{children:"Click Me",active:!1,disabled:!1,"soft-disabled":!1,variant:e.PRIMARY,size:b[32],color:d.DEFAULT,type:u.BUTTON,role:"button",tabIndex:0}},v={args:{children:"Click Me",active:!1,disabled:!1,"soft-disabled":!1,variant:e.PRIMARY,size:b[32],color:d.DEFAULT,type:u.BUTTON,role:"button",tabIndex:0}},f={args:{children:"Left Icon","prefix-icon":"placeholder-bold",active:!1,disabled:!1,"soft-disabled":!1,variant:e.PRIMARY,size:b[32],color:d.DEFAULT,type:u.BUTTON,role:"button",tabIndex:0}},T={args:{children:"Right Icon","postfix-icon":"placeholder-bold",active:!1,disabled:!1,"soft-disabled":!1,variant:e.PRIMARY,size:b[32],color:d.DEFAULT,type:u.BUTTON,role:"button",tabIndex:0}},I={argTypes:{size:{options:Object.values(c)},"aria-label":{description:"Aria label for the icon button. Required for accessibility."}},args:{"prefix-icon":"placeholder-bold",active:!1,disabled:!1,"soft-disabled":!1,variant:e.PRIMARY,size:c[32],color:d.DEFAULT,type:u.BUTTON,role:"button",tabIndex:0,"aria-label":"icon button"}};var A,S,U;y.parameters={...y.parameters,docs:{...(A=y.parameters)==null?void 0:A.docs,source:{originalSource:`{
   args: {
     children: 'Click Me',
     active: false,
@@ -212,7 +216,7 @@ import{i as F,k as I}from"./lit-element-CHllvULs.js";import{n as m}from"./index-
     role: 'button',
     tabIndex: 0
   }
-}`,...(S=(A=h.parameters)==null?void 0:A.docs)==null?void 0:S.source}}};var U,R,B;v.parameters={...v.parameters,docs:{...(U=v.parameters)==null?void 0:U.docs,source:{originalSource:`{
+}`,...(U=(S=y.parameters)==null?void 0:S.docs)==null?void 0:U.source}}};var R,B,_;v.parameters={...v.parameters,docs:{...(R=v.parameters)==null?void 0:R.docs,source:{originalSource:`{
   args: {
     children: 'Click Me',
     active: false,
@@ -225,7 +229,7 @@ import{i as F,k as I}from"./lit-element-CHllvULs.js";import{n as m}from"./index-
     role: 'button',
     tabIndex: 0
   }
-}`,...(B=(R=v.parameters)==null?void 0:R.docs)==null?void 0:B.source}}};var _,P,E;y.parameters={...y.parameters,docs:{...(_=y.parameters)==null?void 0:_.docs,source:{originalSource:`{
+}`,...(_=(B=v.parameters)==null?void 0:B.docs)==null?void 0:_.source}}};var P,E,L;f.parameters={...f.parameters,docs:{...(P=f.parameters)==null?void 0:P.docs,source:{originalSource:`{
   args: {
     children: 'Left Icon',
     'prefix-icon': 'placeholder-bold',
@@ -239,7 +243,7 @@ import{i as F,k as I}from"./lit-element-CHllvULs.js";import{n as m}from"./index-
     role: 'button',
     tabIndex: 0
   }
-}`,...(E=(P=y.parameters)==null?void 0:P.docs)==null?void 0:E.source}}};var L,$,C;f.parameters={...f.parameters,docs:{...(L=f.parameters)==null?void 0:L.docs,source:{originalSource:`{
+}`,...(L=(E=f.parameters)==null?void 0:E.docs)==null?void 0:L.source}}};var $,C,Y;T.parameters={...T.parameters,docs:{...($=T.parameters)==null?void 0:$.docs,source:{originalSource:`{
   args: {
     children: 'Right Icon',
     'postfix-icon': 'placeholder-bold',
@@ -253,7 +257,7 @@ import{i as F,k as I}from"./lit-element-CHllvULs.js";import{n as m}from"./index-
     role: 'button',
     tabIndex: 0
   }
-}`,...(C=($=f.parameters)==null?void 0:$.docs)==null?void 0:C.source}}};var Y,j,M;T.parameters={...T.parameters,docs:{...(Y=T.parameters)==null?void 0:Y.docs,source:{originalSource:`{
+}`,...(Y=(C=T.parameters)==null?void 0:C.docs)==null?void 0:Y.source}}};var j,M,D;I.parameters={...I.parameters,docs:{...(j=I.parameters)==null?void 0:j.docs,source:{originalSource:`{
   argTypes: {
     size: {
       options: Object.values(ICON_BUTTON_SIZES)
@@ -275,4 +279,4 @@ import{i as F,k as I}from"./lit-element-CHllvULs.js";import{n as m}from"./index-
     tabIndex: 0,
     'aria-label': 'icon button'
   }
-}`,...(M=(j=T.parameters)==null?void 0:j.docs)==null?void 0:M.source}}};const mo=["Example","PillButton","PillWithPrefixIcon","PillWithPostfixIcon","IconButton"];export{h as Example,T as IconButton,v as PillButton,f as PillWithPostfixIcon,y as PillWithPrefixIcon,mo as __namedExportsOrder,lo as default};
+}`,...(D=(M=I.parameters)==null?void 0:M.docs)==null?void 0:D.source}}};const uo=["Example","PillButton","PillWithPrefixIcon","PillWithPostfixIcon","IconButton"];export{y as Example,I as IconButton,v as PillButton,T as PillWithPostfixIcon,f as PillWithPrefixIcon,uo as __namedExportsOrder,bo as default};
