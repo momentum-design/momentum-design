@@ -25,11 +25,13 @@ export const IllustrationTable = ({ illustrations, size }: Props) => {
 
   const render = useMemo(
     () => (
-      <div className={`illustrationGrid grid${getSize(size)}`}>
+      <div className={`illustrationGrid grid${size}`}>
         {Object.entries(illustrations).map(([key, path]) => {
           const finalPath = `${path.replace('./svg', '/momentum-design/illustrations')}`;
+          const isInverted = key.includes('default');
           return (
-            <div className="illustrationWrapper">
+            <div className={isInverted
+              ? ['illustrationWrapper', 'illustration-bg-inverted'].join(' ') : 'illustrationWrapper'}>
               <img
                 style={{ maxWidth: `${getSize(key)}px` }}
                 src={finalPath}
