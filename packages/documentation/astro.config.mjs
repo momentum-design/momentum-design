@@ -14,6 +14,7 @@ const getAssetsFolder = (manifestEntryPoint) => path.dirname(fileURLToPath(impor
 
 const iconsDistFolder = getAssetsFolder('@momentum-design/icons/dist/manifest.json');
 const illustrationsDistFolder = getAssetsFolder('@momentum-design/illustrations/dist/manifest.json');
+const brandVisualsDistFolder = getAssetsFolder('@momentum-design/brand-visuals/dist/manifest.json');
 // Using relative path approach for now as we don't keep storybook-static folder inside dist of components
 const storybookFolder = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'components');
 
@@ -41,6 +42,22 @@ export default defineConfig({
               {
                 src: path.join(illustrationsDistFolder, '/svg/*.svg'),
                 dest: 'dist/illustrations',
+              },
+              {
+                src: path.join(brandVisualsDistFolder, '/backgrounds/*.png'),
+                dest: 'dist/brand-visuals',
+              },
+              {
+                src: path.join(brandVisualsDistFolder, '/images/*.png'),
+                dest: 'dist/brand-visuals',
+              },
+              {
+                src: path.join(brandVisualsDistFolder, '/images/*.svg'),
+                dest: 'dist/brand-visuals',
+              },
+              {
+                src: path.join(brandVisualsDistFolder, '/logos/*.svg'),
+                dest: 'dist/brand-visuals',
               },
               {
                 src: path.join(storybookFolder, '/storybook-static/*'),

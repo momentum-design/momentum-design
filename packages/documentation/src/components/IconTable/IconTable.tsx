@@ -23,7 +23,6 @@ export const IconTable = ({ icons }: Props) => {
               <div className="nameAnchor">
                 <div className="nameWrapper">
                   <code>{key}</code>
-                  <a href={finalPath} download={key} className="nameWrapper">Download</a>
                 </div>
               </div>
             </div>

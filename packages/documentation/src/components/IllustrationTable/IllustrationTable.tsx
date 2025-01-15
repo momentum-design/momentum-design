@@ -38,8 +38,7 @@ export const IllustrationTable = ({ illustrations, size }: Props) => {
               />
               <div className="nameAnchor">
                 <div className="nameWrapper">
-                  <code >{key}</code>
-                  <a href={finalPath} download={key} className="nameWrapper">Download</a>
+                  <code>{key}</code>
                 </div>
               </div>
             </div>
