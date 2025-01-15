@@ -1477,26 +1477,22 @@
           "normal": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.0}",
-            "description": ""
+            "value": "{color.core.black-alpha.11}"
           },
           "hover": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.30}",
-            "description": ""
+            "value": "{color.core.black-alpha.20}"
           },
           "pressed": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.40}",
-            "description": ""
+            "value": "{color.core.black-alpha.30}"
           },
           "disabled": {
             "parent": "theme/stable/light",
             "type": "color",
-            "value": "{color.core.black-alpha.20}",
-            "description": "Core: {color.core.white-alpha.20} \nHEX: #ffffff 20%"
+            "value": "{color.core.black-alpha.7}"
           }
         }
       },
