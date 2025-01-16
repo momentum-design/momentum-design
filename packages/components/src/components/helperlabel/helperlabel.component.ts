@@ -8,7 +8,7 @@ import { DEFAULTS, MDC_TEXT_OPTIONS } from './helperlabel.constants';
 import { getHelperIcon } from './helperlabel.utils';
 
 /**
- * helperlabel is an internal component that contains the label and helper/validation text
+ * helperlabel is a component that contains the label and helper/validation text
  *  that can be configured in various ways to suit different use cases (most of the input related components).
  * It is used as an internal component and is not intended to be used directly by consumers.
  *
@@ -19,34 +19,36 @@ class Helperlabel extends Component {
 /**
      * The label of the input field. It is linked to the input field using the `for` attribute.
      */
-@property({ reflect: true, type: String }) label = '';
+@property({ reflect: true, type: String }) label?: string;
 
 /**
    * The unique id of the input field. It is used to link the input field with the label.
+   * @default `mdc-input-${uuidv4()}`
    */
 @property({ type: String }) override id = `mdc-input-${uuidv4()}`;
 
 /**
  * The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.
  */
-@property({ reflect: true }) helpTextType: ValidationType = DEFAULTS.VALIDATION;
+@property({ reflect: true, attribute: 'help-text-type' }) helpTextType: ValidationType = DEFAULTS.VALIDATION;
 
 /**
  * The help text that is displayed below the input field.
  */
-@property({ type: String, reflect: true }) helpText = '';
+@property({ type: String, reflect: true, attribute: 'help-text' }) helpText?: string;
 
 /**
  * @beta this attribute is in beta, and is subject to change (given the toggletip component is not ready yet)
+ * The text that is displayed when the labelInfoToggleTip is hovered over.
  */
-@property({ type: String }) labelInfoText = '';
+@property({ type: String, attribute: 'label-info-text' }) labelInfoText?: string;
 
 /**
  * creates the label element when the label property is set.
  * id is used to link the label with the input field.
  * @returns void
  */
-public renderLabelElement() {
+protected renderLabelElement() {
   if (!this.label) {
     return nothing;
   }
@@ -103,7 +105,7 @@ protected renderHelpText() {
  * @returns void
  */
 protected renderHeaderLabel() {
-  return html`<div class="header">
+  return html`<div class="header" part="header">
   <slot name="label">${this.renderLabelElement()}</slot>
   <slot name="label-icon">${this.renderLabelInfoToggleTip()}</slot>
 </div>`;

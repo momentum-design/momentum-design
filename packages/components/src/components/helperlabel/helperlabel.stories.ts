@@ -9,9 +9,9 @@ import { ValidationType } from './helperlabel.types';
 const render = (args: Args) => html`
    <mdc-helperlabel
     label="${args.label}"
-    labelInfoText="${args.labelInfoText}"
-    helpTextType="${args.helpTextType}"
-    helpText="${args.helpText}"
+    label-info-text="${args['label-info-text']}"
+    help-text-type="${args['help-text-type']}"
+    help-text="${args['help-text']}"
     class="${args.class}"
     style="${args.style}"
     >${args.children}</mdc-helperlabel>`;
@@ -27,7 +27,7 @@ const meta: Meta = {
   argTypes: {
     ...classArgType,
     ...styleArgType,
-    helpTextType: {
+    'help-text-type': {
       control: 'select',
       options: Object.values(VALIDATION),
     },
@@ -37,10 +37,10 @@ const meta: Meta = {
     label: {
       control: 'text',
     },
-    labelInfoText: {
+    'label-info-text': {
       control: 'text',
     },
-    helpText: {
+    'help-text': {
       control: 'text',
     },
   },
@@ -51,9 +51,9 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     label: 'Label (required)',
-    labelInfoText: 'Label info text',
-    helpText: 'Helper text',
-    helpTextType: 'default',
+    'label-info-text': 'Label info text',
+    'help-text': 'Helper text',
+    'help-text-type': 'default',
     children: '[Child Component]',
   },
 };
@@ -63,9 +63,9 @@ export const HelperTextTypes: StoryObj = {
   <div style="display: flex; justify-content: space-evenly; align-items: center">
       ${repeat(Object.values(VALIDATION), (validation: ValidationType) => html`
         <mdc-helperlabel
-          helpTextType="${validation}"
+          help-text-type="${validation}"
           label="Label"
-          helpText="Helper text"
+          help-text="Helper text"
         >[Child component]</mdc-helperlabel>
       `)}
     </div>`,

@@ -26,16 +26,16 @@ const styles = [hostFitContentStyles, css`
     color: var(--mds-color-theme-text-primary-normal);
   }
 
-  :host([helpTextType="error"]) .footer {
+  :host([help-text-type="error"]) .footer {
     color: var(--mds-color-theme-text-error-normal);
   }
-  :host([helpTextType="warning"]) .footer {
+  :host([help-text-type="warning"]) .footer {
     color: var(--mds-color-theme-text-warning-normal);
   }
-  :host([helpTextType="success"]) .footer {
+  :host([help-text-type="success"]) .footer {
     color: var(--mds-color-theme-text-success-normal);
   }
-  :host([helpTextType="priority"]) .footer {
+  :host([help-text-type="priority"]) .footer {
     color: var(--mds-color-theme-text-accent-normal);
   }
 
