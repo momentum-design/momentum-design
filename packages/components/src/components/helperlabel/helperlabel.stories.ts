@@ -6,15 +6,16 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { VALIDATION } from './helperlabel.constants';
 import { ValidationType } from './helperlabel.types';
 
-const render = (args: Args) => html`
-   <mdc-helperlabel
+const render = (args: Args) =>
+  html` <mdc-helperlabel
     label="${args.label}"
     label-info-text="${args['label-info-text']}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
     class="${args.class}"
     style="${args.style}"
-    >${args.children}</mdc-helperlabel>`;
+    >${args.children}</mdc-helperlabel
+  >`;
 
 const meta: Meta = {
   title: 'Internal/helperlabel',
@@ -59,14 +60,15 @@ export const Example: StoryObj = {
 };
 
 export const HelperTextTypes: StoryObj = {
-  render: () => html`
-  <div style="display: flex; justify-content: space-evenly; align-items: center">
-      ${repeat(Object.values(VALIDATION), (validation: ValidationType) => html`
-        <mdc-helperlabel
-          help-text-type="${validation}"
-          label="Label"
-          help-text="Helper text"
-        >[Child component]</mdc-helperlabel>
-      `)}
+  render: () =>
+    html` <div style="display: flex; justify-content: space-evenly; align-items: center">
+      ${repeat(
+        Object.values(VALIDATION),
+        (validation: ValidationType) => html`
+          <mdc-helperlabel help-text-type="${validation}" label="Label" help-text="Helper text"
+            >[Child component]</mdc-helperlabel
+          >
+        `,
+      )}
     </div>`,
 };

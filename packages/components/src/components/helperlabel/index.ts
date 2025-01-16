@@ -6,9 +6,9 @@ import '../text';
 Helperlabel.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-helperlabel']: Helperlabel
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-helperlabel']: Helperlabel;
+  }
 }
 
 export default Helperlabel;
