@@ -36,7 +36,7 @@ function demo() {
  It is recommended to install the `uuid` library as a dependency and use it for this purpose instead of relying on `Math.random()`. This ensures that the IDs are truly unique, which is especially important when dealing with a large number of input fields on a page.
 
 - **Action:** 
-  - Install the `uuid` library by running `npm install uuid`.
+  - The `uuid` library is installed as a dependency within the `components` package.
   - Use the `uuid` library to generate unique IDs in the code. For example:
 
     ```js
