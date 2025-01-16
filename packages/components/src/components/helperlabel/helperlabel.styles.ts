@@ -26,6 +26,10 @@ const styles = [hostFitContentStyles, css`
     color: var(--mds-color-theme-text-primary-normal);
   }
 
+  .footer{
+    color: var(--mds-color-theme-text-secondary-normal);
+  }
+
   :host([help-text-type="error"]) .footer {
     color: var(--mds-color-theme-text-error-normal);
   }
