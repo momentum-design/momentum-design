@@ -14,8 +14,6 @@ const render = (args: Args) => html`
     helpText="${args.helpText}"
     class="${args.class}"
     style="${args.style}"
-    prefixText="${args.prefixText}"
-    leadingIcon="${args.leadingIcon}"
     >${args.children}</mdc-helperlabel>`;
 
 const meta: Meta = {
@@ -45,12 +43,6 @@ const meta: Meta = {
     helpText: {
       control: 'text',
     },
-    prefixText: {
-      control: 'text',
-    },
-    leadingIcon: {
-      control: 'text',
-    },
   },
 };
 
@@ -62,7 +54,7 @@ export const Example: StoryObj = {
     labelInfoText: 'Label info text',
     helpText: 'Helper text',
     helpTextType: 'default',
-    children: '[Add your input component here]',
+    children: '[Child Component]',
   },
 };
 
