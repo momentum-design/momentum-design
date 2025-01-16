@@ -156,7 +156,7 @@ class Input extends DisabledMixin(Helperlabel) {
 
   public override render() {
     return html`
-      ${this.renderHeader()}
+      ${this.renderHeaderLabel()}
       <div class="input-container mdc-focus-ring" part="input-container">
         <slot name="input-leading-icon">${this.renderLeadingIcon()}</slot>
        <section class="text-container">
@@ -178,7 +178,7 @@ class Input extends DisabledMixin(Helperlabel) {
        </section>
         <slot name="trailing-button">${this.renderClearButton()}</slot>
       </div>
-      ${this.renderFooter()}
+      ${this.renderFooterHelperText()}
     `;
   }
 

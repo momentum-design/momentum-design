@@ -11,10 +11,6 @@ const styles = css`
     background: var(--mds-color-theme-background-primary-disabled);
   }
 
-  .input-container, .input{
-    width: 100%;
-  }
-
   .leading-icon{
     aspect-ratio: 1;
   }
