@@ -1,81 +1,4 @@
-import{s as m}from"./chunk-L4EGOTBX-qkkAwraa.js";import"./entry-preview-BbhL-oir.js";import{k as c}from"./lit-element-CHllvULs.js";import"./index-ByQnac1t.js";import"./index-rDA4K2ZD.js";import"./directive-helpers-5SvKRCBg.js";import"./index-DrFu-skq.js";import"./index-HW6KrQZO.js";import"./state-CWckTc1X.js";import"./create-context-89xeped_.js";import"./iconprovider.component-CWYw8J7d.js";const u="1.0.0",p="",h=[{kind:"javascript-module",path:"components/avatarbutton/avatarbutton.component.js",declarations:[{kind:"class",description:"The `mdc-avatarbutton` component is an interactable version of the `mdc-avatar` component.\n\nThis component is made by extending `buttonsimple` class.\nThe button component acts as a wrapper for the avatar component.",name:"AvatarButton",members:[{kind:"field",name:"ariaLabel",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",attribute:"aria-label"},{kind:"method",name:"setSize",privacy:"private",parameters:[{name:"size",type:{text:"AvatarSize"}}]},{kind:"field",name:"active",type:{text:"boolean"},default:"undefined as unknown",description:`The button's active state indicates whether it is currently toggled on (active) or off (inactive).
-When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
-Conversely, when the active state is false, the button is in an inactive state, indicating it is toggled off.`,attribute:"active",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"disabled",type:{text:"boolean"},default:"undefined as unknown",description:`Indicates whether the component is disabled.
-When the component is disabled for user interaction; it is not focusable or clickable.`,attribute:"disabled",reflects:!0,inheritedFrom:{name:"DisabledMixin",module:"utils/mixins/DisabledMixin.js"}},{kind:"field",name:"softDisabled",type:{text:"boolean"},default:"undefined as unknown",description:`Indicates whether the button is soft disabled.
-When set to \`true\`, the button appears visually disabled but still allows
-focus, click, and keyboard actions to be passed through.
-
-**Important:** When using soft disabled, consumers must ensure that
-the button behaves like a disabled button, allowing only focus and
-preventing any interactions (clicks or keyboard actions) from triggering unintended actions.`,attribute:"soft-disabled",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"role",description:`This property defines the ARIA role for the element. By default, it is set to 'button'.
-Consumers should override this role when:
-- The element is being used in a context where a different role is more appropriate.
-- Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.`,default:"'button'",attribute:"role",reflects:!0,type:{text:"string"},inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"type",type:{text:"ButtonType"},description:`This property defines the type attribute for the button element.
-The type attribute specifies the behavior of the button when it is clicked.
-- **submit**: The button submits the form data to the server.
-- **reset**: The button resets the form data to its initial state.
-- **button**: The button does nothing when clicked.`,default:"button",attribute:"type",reflects:!0,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"src",type:{text:"string | undefined"},description:`The src is the url which will be used to display the avatar.
-When the src is loading, we will display the initials as a placeholder.`,attribute:"src",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"initials",type:{text:"string | undefined"},description:"The initials to be displayed for the avatar.",attribute:"initials",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"presence",type:{text:"PresenceType | undefined"},description:"The presence is the status which can be used to display the\nactivity state of a user or a space within an avatar component.\n\nAcceptable values include:\n- `active`\n- `away`\n- `away-calling`\n- `busy`\n- `dnd`\n- `meeting`\n- `on-call`\n- `on-device`\n- `on-mobile`\n- `pause`\n- `pto`\n- `presenting`\n- `quiet`\n- `scheduled`",attribute:"presence",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"size",type:{text:"ButtonSize"},description:`Acceptable values include (size in px unit):
-- 24
-- 32
-- 48
-- 64
-- 72
-- 88
-- 124`,default:"32",attribute:"size",reflects:!0,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"iconName",type:{text:"IconNames | undefined"},description:`Name of the icon to be displayed inside the Avatar.
-Must be a valid icon name.`,attribute:"icon-name",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"counter",type:{text:"number | undefined"},description:"The counter is the number which can be displayed on the avatar.\nThe maximum number is 99 and if the given number is greater than 99,\nthen the avatar will be displayed as `99+`.\nIf the given number is a negative number,\nthen the avatar will be displayed as `0`.",attribute:"counter",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"isTyping",type:{text:"boolean"},default:"false",description:"Represents the typing indicator when the user is typing.",attribute:"is-typing",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"tabIndex",type:{text:"number"},default:"0",description:"This property specifies the tab order of the element.",attribute:"tabIndex",reflects:!0,inheritedFrom:{name:"TabIndexMixin",module:"utils/mixins/TabIndexMixin.js"}},{kind:"method",name:"executeAction",privacy:"private",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"setAriaPressed",privacy:"private",parameters:[{name:"element",type:{text:"HTMLElement"},description:"The target element."},{name:"active",type:{text:"boolean"},description:"The active state."}],description:"Sets the aria-pressed attribute based on the active state.",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"setSoftDisabled",privacy:"private",parameters:[{name:"element",type:{text:"HTMLElement"},description:"The button element."},{name:"softDisabled",type:{text:"boolean"},description:"The soft-disabled state."}],description:`Sets the soft-disabled attribute for the button.
-When soft-disabled, the button looks to be disabled but remains focusable and clickable.
-Also sets/removes aria-disabled attribute.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"setDisabled",privacy:"private",parameters:[{name:"element",type:{text:"HTMLElement"},description:"The button element."},{name:"disabled",type:{text:"boolean"},description:"The disabled state."}],description:`Sets the disabled attribute for the button.
-When disabled, the button is not focusable or clickable, and tabindex is set to -1.
-The previous tabindex is stored and restored when enabled.
-Also sets/removes aria-disabled attribute.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"triggerClickEvent",privacy:"private",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"handleKeyDown",privacy:"private",parameters:[{name:"event",type:{text:"KeyboardEvent"},description:"The keyboard event."}],description:`Handles the keydown event on the button.
-If the key is 'Enter' or 'Space', the button is pressed.
-If the key is 'Enter', the button is pressed. The native HTML button works in the same way.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"handleKeyUp",privacy:"private",parameters:[{name:"event",type:{text:"KeyboardEvent"},description:"The keyboard event."}],description:`Handles the keyup event on the button.
-If the key is 'Enter' or 'Space', the button is clicked.
-If the key is 'Space', the button is pressed. The native HTML button works in the same way.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}}],attributes:[{name:"aria-label",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",fieldName:"ariaLabel"},{name:"src",type:{text:"string | undefined"},description:`The src is the url which will be used to display the avatar.
-When the src is loading, we will display the initials as a placeholder.`,fieldName:"src",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"initials",type:{text:"string | undefined"},description:"The initials to be displayed for the avatar.",fieldName:"initials",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"presence",type:{text:"PresenceType | undefined"},description:"The presence is the status which can be used to display the\nactivity state of a user or a space within an avatar component.\n\nAcceptable values include:\n- `active`\n- `away`\n- `away-calling`\n- `busy`\n- `dnd`\n- `meeting`\n- `on-call`\n- `on-device`\n- `on-mobile`\n- `pause`\n- `pto`\n- `presenting`\n- `quiet`\n- `scheduled`",fieldName:"presence",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"size",type:{text:"ButtonSize"},description:`Acceptable values include (size in px unit):
-- 24
-- 32
-- 48
-- 64
-- 72
-- 88
-- 124`,default:"32",fieldName:"size",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"icon-name",type:{text:"IconNames | undefined"},description:`Name of the icon to be displayed inside the Avatar.
-Must be a valid icon name.`,fieldName:"iconName",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"counter",type:{text:"number | undefined"},description:"The counter is the number which can be displayed on the avatar.\nThe maximum number is 99 and if the given number is greater than 99,\nthen the avatar will be displayed as `99+`.\nIf the given number is a negative number,\nthen the avatar will be displayed as `0`.",fieldName:"counter",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"is-typing",type:{text:"boolean"},default:"false",description:"Represents the typing indicator when the user is typing.",fieldName:"isTyping",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"tabIndex",type:{text:"number"},default:"0",description:"This property specifies the tab order of the element.",fieldName:"tabIndex",inheritedFrom:{name:"TabIndexMixin",module:"src/utils/mixins/TabIndexMixin.ts"}},{name:"disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the component is disabled.
-When the component is disabled for user interaction; it is not focusable or clickable.`,fieldName:"disabled",inheritedFrom:{name:"DisabledMixin",module:"src/utils/mixins/DisabledMixin.ts"}},{name:"active",type:{text:"boolean"},default:"false",description:`The button's active state indicates whether it is currently toggled on (active) or off (inactive).
-When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
-Conversely, when the active state is false, the button is in an inactive state, indicating it is toggled off.`,fieldName:"active",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"soft-disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the button is soft disabled.
-When set to \`true\`, the button appears visually disabled but still allows
-focus, click, and keyboard actions to be passed through.
-
-**Important:** When using soft disabled, consumers must ensure that
-the button behaves like a disabled button, allowing only focus and
-preventing any interactions (clicks or keyboard actions) from triggering unintended actions.`,fieldName:"softDisabled",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"role",description:`This property defines the ARIA role for the element. By default, it is set to 'button'.
-Consumers should override this role when:
-- The element is being used in a context where a different role is more appropriate.
-- Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.`,default:"button",fieldName:"role",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"type",type:{text:"ButtonType"},description:`This property defines the type attribute for the button element.
-The type attribute specifies the behavior of the button when it is clicked.
-- **submit**: The button submits the form data to the server.
-- **reset**: The button resets the form data to its initial state.
-- **button**: The button does nothing when clicked.`,default:"button",fieldName:"type",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}}],mixins:[{name:"AvatarComponentMixin",module:"/src/utils/mixins/AvatarComponentMixin"}],superclass:{name:"Buttonsimple",module:"/src/components/buttonsimple"},tagName:"mdc-avatarbutton",jsDoc:`/**
- * The \`mdc-avatarbutton\` component is an interactable version of the \`mdc-avatar\` component.
- *
- * This component is made by extending \`buttonsimple\` class.
- * The button component acts as a wrapper for the avatar component.
- *
- * @dependency mdc-avatar
- *
- * @tagname mdc-avatarbutton
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"AvatarButton",module:"components/avatarbutton/avatarbutton.component.js"}}]},{kind:"javascript-module",path:"components/badge/badge.component.js",declarations:[{kind:"class",description:"The `mdc-badge` component is a versatile UI element used to\ndisplay dot, icons, counters, success, warning and error type badge.\n\nSupported badge types:\n- `dot`: Displays a dot notification badge with a blue color.\n- `icon`: Displays a badge with a specified icon using the `icon-name` attribute.\n- `counter`: Displays a badge with a counter value. If the counter exceeds the `max-counter`,\nit shows `maxCounter+`. The maximum value of the counter is 999 and anything above that will be set to `999+`.\n- `success`: Displays a success badge with a check circle icon and green color.\n- `warning`: Displays a warning badge with a warning icon and yellow color.\n- `error`: Displays a error badge with a error legacy icon and red color.\n\nFor `icon`, `success`, `warning` and `error` types, the `mdc-icon` component is used to render the icon.\n\nFor the `counter` type, the `mdc-text` component is used to render the counter value.",name:"Badge",members:[{kind:"field",name:"type",type:{text:"BadgeType | undefined"},description:"Type of the badge\nCan be `dot` (notification) , `icon`, `counter`, `success`, `warning` or `error`.",attribute:"type",reflects:!0},{kind:"field",name:"iconName",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename).\n\nIf no `icon-name` is provided, no icon will be rendered.",attribute:"icon-name"},{kind:"field",name:"variant",type:{text:"IconVariant"},description:"Type of the variant can be `primary` or `secondary`.\nIt defines the background and foreground color of the icon.",default:"primary",attribute:"variant",reflects:!0},{kind:"field",name:"counter",type:{text:"number | undefined"},description:"Counter is the number which can be provided in the badge.",attribute:"counter"},{kind:"field",name:"maxCounter",type:{text:"number"},description:"The maximum number can be set up to 999, anything above that will be rendered as _999+_.\nThe max counter can be `9`, `99` or `999`.",default:"99",attribute:"max-counter",reflects:!0},{kind:"field",name:"overlay",type:{text:"boolean"},default:"false",description:`Overlay is to add a thin outline to the badge.
-This will help distinguish between the badge and the button,
-where the badge will be layered on top of a button.`,attribute:"overlay"},{kind:"field",name:"ariaLabel",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",attribute:"aria-label"},{kind:"method",name:"getCounterText",privacy:"private",return:{type:{text:""}},parameters:[{name:"maxCounter",type:{text:"number"},description:"the maximum limit which can be displayed on the badge"},{name:"counter",optional:!0,type:{text:"number"},description:"the number to be displayed on the badge"}],description:"If `type` is set to `counter` and if `counter` is greater than `maxCounter`,\nthen it will return a string the maxCounter value as string.\nOtherwise, it will return a string representation of `counter`.\nIf `counter` is not a number, it will return an empty string."},{kind:"method",name:"getBadgeIcon",privacy:"private",return:{type:{text:""}},parameters:[{name:"iconName",type:{text:"string"},description:"the name of the icon from the icon set"},{name:"backgroundClassPostfix",type:{text:"string"},description:"postfix for the class to style the badge icon."}],description:"Method to generate the badge icon."},{kind:"method",name:"getBadgeDot",privacy:"private",return:{type:{text:""}},description:"Method to generate the badge dot template."},{kind:"method",name:"getBadgeCounterText",privacy:"private",return:{type:{text:""}},description:"Method to generate the badge text and counter template."},{kind:"method",name:"setRoleByAriaLabel",privacy:"private",return:{type:{text:"void"}},description:`Method to set the role based on the aria-label provided.
-If the aria-label is provided, the role of the element will be 'img'.
-Otherwise, the role will be null.`},{kind:"method",name:"getBadgeContentBasedOnType",privacy:"private",return:{type:{text:""}},description:`Generates the badge content based on the badge type.
-Utilizes various helper methods to create the appropriate badge template based on the
-current badge type. Supports 'dot', 'icon', 'counter', 'success', 'warning', and 'error'
-types, returning the corresponding template result for each type.`}],attributes:[{name:"type",type:{text:"BadgeType | undefined"},description:"Type of the badge\nCan be `dot` (notification) , `icon`, `counter`, `success`, `warning` or `error`.",fieldName:"type"},{name:"icon-name",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename).\n\nIf no `icon-name` is provided, no icon will be rendered.",fieldName:"iconName"},{name:"variant",type:{text:"IconVariant"},description:"Type of the variant can be `primary` or `secondary`.\nIt defines the background and foreground color of the icon.",default:"primary",fieldName:"variant"},{name:"counter",type:{text:"number | undefined"},description:"Counter is the number which can be provided in the badge.",fieldName:"counter"},{name:"max-counter",type:{text:"number"},description:"The maximum number can be set up to 999, anything above that will be rendered as _999+_.\nThe max counter can be `9`, `99` or `999`.",default:"99",fieldName:"maxCounter"},{name:"overlay",type:{text:"boolean"},default:"false",description:`Overlay is to add a thin outline to the badge.
-This will help distinguish between the badge and the button,
-where the badge will be layered on top of a button.`,fieldName:"overlay"},{name:"aria-label",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",fieldName:"ariaLabel"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-badge",jsDoc:"/**\n * The `mdc-badge` component is a versatile UI element used to\n * display dot, icons, counters, success, warning and error type badge.\n *\n * Supported badge types:\n * - `dot`: Displays a dot notification badge with a blue color.\n * - `icon`: Displays a badge with a specified icon using the `icon-name` attribute.\n * - `counter`: Displays a badge with a counter value. If the counter exceeds the `max-counter`,\n * it shows `maxCounter+`. The maximum value of the counter is 999 and anything above that will be set to `999+`.\n * - `success`: Displays a success badge with a check circle icon and green color.\n * - `warning`: Displays a warning badge with a warning icon and yellow color.\n * - `error`: Displays a error badge with a error legacy icon and red color.\n *\n * For `icon`, `success`, `warning` and `error` types, the `mdc-icon` component is used to render the icon.\n *\n * For the `counter` type, the `mdc-text` component is used to render the counter value.\n *\n * @dependency mdc-icon\n * @dependency mdc-text\n *\n * @tagname mdc-badge\n */",customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Badge",module:"components/badge/badge.component.js"}}]},{kind:"javascript-module",path:"components/avatar/avatar.component.js",declarations:[{kind:"class",description:`The \`mdc-avatar\` component is used to represent a person or a space.
+import{s as m}from"./chunk-L4EGOTBX-qkkAwraa.js";import"./entry-preview-BbhL-oir.js";import{k as c}from"./lit-element-CHllvULs.js";import"./index-ByQnac1t.js";import"./index-rDA4K2ZD.js";import"./directive-helpers-5SvKRCBg.js";import"./index-DrFu-skq.js";import"./index-HW6KrQZO.js";import"./state-CWckTc1X.js";import"./create-context-89xeped_.js";import"./iconprovider.component-CWYw8J7d.js";const u="1.0.0",p="",h=[{kind:"javascript-module",path:"components/avatar/avatar.component.js",declarations:[{kind:"class",description:`The \`mdc-avatar\` component is used to represent a person or a space.
 An avatar can be an icon, initials, counter and photo.
 
 To set the photo of an avatar,
@@ -144,7 +67,84 @@ When the src is loading, we will display the initials as a placeholder.`,fieldNa
 - 72
 - 88
 - 124`,default:"32",fieldName:"size",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"icon-name",type:{text:"IconNames | undefined"},description:`Name of the icon to be displayed inside the Avatar.
-Must be a valid icon name.`,fieldName:"iconName",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"counter",type:{text:"number | undefined"},description:"The counter is the number which can be displayed on the avatar.\nThe maximum number is 99 and if the given number is greater than 99,\nthen the avatar will be displayed as `99+`.\nIf the given number is a negative number,\nthen the avatar will be displayed as `0`.",fieldName:"counter",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"is-typing",type:{text:"boolean"},default:"false",description:"Represents the typing indicator when the user is typing.",fieldName:"isTyping",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}}]}],exports:[{kind:"js",name:"default",declaration:{name:"Avatar",module:"components/avatar/avatar.component.js"}}]},{kind:"javascript-module",path:"components/bullet/bullet.component.js",declarations:[{kind:"class",description:`Bullet component, which is a visual marker
+Must be a valid icon name.`,fieldName:"iconName",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"counter",type:{text:"number | undefined"},description:"The counter is the number which can be displayed on the avatar.\nThe maximum number is 99 and if the given number is greater than 99,\nthen the avatar will be displayed as `99+`.\nIf the given number is a negative number,\nthen the avatar will be displayed as `0`.",fieldName:"counter",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"is-typing",type:{text:"boolean"},default:"false",description:"Represents the typing indicator when the user is typing.",fieldName:"isTyping",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}}]}],exports:[{kind:"js",name:"default",declaration:{name:"Avatar",module:"components/avatar/avatar.component.js"}}]},{kind:"javascript-module",path:"components/badge/badge.component.js",declarations:[{kind:"class",description:"The `mdc-badge` component is a versatile UI element used to\ndisplay dot, icons, counters, success, warning and error type badge.\n\nSupported badge types:\n- `dot`: Displays a dot notification badge with a blue color.\n- `icon`: Displays a badge with a specified icon using the `icon-name` attribute.\n- `counter`: Displays a badge with a counter value. If the counter exceeds the `max-counter`,\nit shows `maxCounter+`. The maximum value of the counter is 999 and anything above that will be set to `999+`.\n- `success`: Displays a success badge with a check circle icon and green color.\n- `warning`: Displays a warning badge with a warning icon and yellow color.\n- `error`: Displays a error badge with a error legacy icon and red color.\n\nFor `icon`, `success`, `warning` and `error` types, the `mdc-icon` component is used to render the icon.\n\nFor the `counter` type, the `mdc-text` component is used to render the counter value.",name:"Badge",members:[{kind:"field",name:"type",type:{text:"BadgeType | undefined"},description:"Type of the badge\nCan be `dot` (notification) , `icon`, `counter`, `success`, `warning` or `error`.",attribute:"type",reflects:!0},{kind:"field",name:"iconName",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename).\n\nIf no `icon-name` is provided, no icon will be rendered.",attribute:"icon-name"},{kind:"field",name:"variant",type:{text:"IconVariant"},description:"Type of the variant can be `primary` or `secondary`.\nIt defines the background and foreground color of the icon.",default:"primary",attribute:"variant",reflects:!0},{kind:"field",name:"counter",type:{text:"number | undefined"},description:"Counter is the number which can be provided in the badge.",attribute:"counter"},{kind:"field",name:"maxCounter",type:{text:"number"},description:"The maximum number can be set up to 999, anything above that will be rendered as _999+_.\nThe max counter can be `9`, `99` or `999`.",default:"99",attribute:"max-counter",reflects:!0},{kind:"field",name:"overlay",type:{text:"boolean"},default:"false",description:`Overlay is to add a thin outline to the badge.
+This will help distinguish between the badge and the button,
+where the badge will be layered on top of a button.`,attribute:"overlay"},{kind:"field",name:"ariaLabel",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",attribute:"aria-label"},{kind:"method",name:"getCounterText",privacy:"private",return:{type:{text:""}},parameters:[{name:"maxCounter",type:{text:"number"},description:"the maximum limit which can be displayed on the badge"},{name:"counter",optional:!0,type:{text:"number"},description:"the number to be displayed on the badge"}],description:"If `type` is set to `counter` and if `counter` is greater than `maxCounter`,\nthen it will return a string the maxCounter value as string.\nOtherwise, it will return a string representation of `counter`.\nIf `counter` is not a number, it will return an empty string."},{kind:"method",name:"getBadgeIcon",privacy:"private",return:{type:{text:""}},parameters:[{name:"iconName",type:{text:"string"},description:"the name of the icon from the icon set"},{name:"backgroundClassPostfix",type:{text:"string"},description:"postfix for the class to style the badge icon."}],description:"Method to generate the badge icon."},{kind:"method",name:"getBadgeDot",privacy:"private",return:{type:{text:""}},description:"Method to generate the badge dot template."},{kind:"method",name:"getBadgeCounterText",privacy:"private",return:{type:{text:""}},description:"Method to generate the badge text and counter template."},{kind:"method",name:"setRoleByAriaLabel",privacy:"private",return:{type:{text:"void"}},description:`Method to set the role based on the aria-label provided.
+If the aria-label is provided, the role of the element will be 'img'.
+Otherwise, the role will be null.`},{kind:"method",name:"getBadgeContentBasedOnType",privacy:"private",return:{type:{text:""}},description:`Generates the badge content based on the badge type.
+Utilizes various helper methods to create the appropriate badge template based on the
+current badge type. Supports 'dot', 'icon', 'counter', 'success', 'warning', and 'error'
+types, returning the corresponding template result for each type.`}],attributes:[{name:"type",type:{text:"BadgeType | undefined"},description:"Type of the badge\nCan be `dot` (notification) , `icon`, `counter`, `success`, `warning` or `error`.",fieldName:"type"},{name:"icon-name",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename).\n\nIf no `icon-name` is provided, no icon will be rendered.",fieldName:"iconName"},{name:"variant",type:{text:"IconVariant"},description:"Type of the variant can be `primary` or `secondary`.\nIt defines the background and foreground color of the icon.",default:"primary",fieldName:"variant"},{name:"counter",type:{text:"number | undefined"},description:"Counter is the number which can be provided in the badge.",fieldName:"counter"},{name:"max-counter",type:{text:"number"},description:"The maximum number can be set up to 999, anything above that will be rendered as _999+_.\nThe max counter can be `9`, `99` or `999`.",default:"99",fieldName:"maxCounter"},{name:"overlay",type:{text:"boolean"},default:"false",description:`Overlay is to add a thin outline to the badge.
+This will help distinguish between the badge and the button,
+where the badge will be layered on top of a button.`,fieldName:"overlay"},{name:"aria-label",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",fieldName:"ariaLabel"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-badge",jsDoc:"/**\n * The `mdc-badge` component is a versatile UI element used to\n * display dot, icons, counters, success, warning and error type badge.\n *\n * Supported badge types:\n * - `dot`: Displays a dot notification badge with a blue color.\n * - `icon`: Displays a badge with a specified icon using the `icon-name` attribute.\n * - `counter`: Displays a badge with a counter value. If the counter exceeds the `max-counter`,\n * it shows `maxCounter+`. The maximum value of the counter is 999 and anything above that will be set to `999+`.\n * - `success`: Displays a success badge with a check circle icon and green color.\n * - `warning`: Displays a warning badge with a warning icon and yellow color.\n * - `error`: Displays a error badge with a error legacy icon and red color.\n *\n * For `icon`, `success`, `warning` and `error` types, the `mdc-icon` component is used to render the icon.\n *\n * For the `counter` type, the `mdc-text` component is used to render the counter value.\n *\n * @dependency mdc-icon\n * @dependency mdc-text\n *\n * @tagname mdc-badge\n */",customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Badge",module:"components/badge/badge.component.js"}}]},{kind:"javascript-module",path:"components/avatarbutton/avatarbutton.component.js",declarations:[{kind:"class",description:"The `mdc-avatarbutton` component is an interactable version of the `mdc-avatar` component.\n\nThis component is made by extending `buttonsimple` class.\nThe button component acts as a wrapper for the avatar component.",name:"AvatarButton",members:[{kind:"field",name:"ariaLabel",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",attribute:"aria-label"},{kind:"method",name:"setSize",privacy:"private",parameters:[{name:"size",type:{text:"AvatarSize"}}]},{kind:"field",name:"active",type:{text:"boolean"},default:"undefined as unknown",description:`The button's active state indicates whether it is currently toggled on (active) or off (inactive).
+When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
+Conversely, when the active state is false, the button is in an inactive state, indicating it is toggled off.`,attribute:"active",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"disabled",type:{text:"boolean"},default:"undefined as unknown",description:`Indicates whether the component is disabled.
+When the component is disabled for user interaction; it is not focusable or clickable.`,attribute:"disabled",reflects:!0,inheritedFrom:{name:"DisabledMixin",module:"utils/mixins/DisabledMixin.js"}},{kind:"field",name:"softDisabled",type:{text:"boolean"},default:"undefined as unknown",description:`Indicates whether the button is soft disabled.
+When set to \`true\`, the button appears visually disabled but still allows
+focus, click, and keyboard actions to be passed through.
+
+**Important:** When using soft disabled, consumers must ensure that
+the button behaves like a disabled button, allowing only focus and
+preventing any interactions (clicks or keyboard actions) from triggering unintended actions.`,attribute:"soft-disabled",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"role",description:`This property defines the ARIA role for the element. By default, it is set to 'button'.
+Consumers should override this role when:
+- The element is being used in a context where a different role is more appropriate.
+- Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.`,default:"'button'",attribute:"role",reflects:!0,type:{text:"string"},inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"type",type:{text:"ButtonType"},description:`This property defines the type attribute for the button element.
+The type attribute specifies the behavior of the button when it is clicked.
+- **submit**: The button submits the form data to the server.
+- **reset**: The button resets the form data to its initial state.
+- **button**: The button does nothing when clicked.`,default:"button",attribute:"type",reflects:!0,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"src",type:{text:"string | undefined"},description:`The src is the url which will be used to display the avatar.
+When the src is loading, we will display the initials as a placeholder.`,attribute:"src",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"initials",type:{text:"string | undefined"},description:"The initials to be displayed for the avatar.",attribute:"initials",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"presence",type:{text:"PresenceType | undefined"},description:"The presence is the status which can be used to display the\nactivity state of a user or a space within an avatar component.\n\nAcceptable values include:\n- `active`\n- `away`\n- `away-calling`\n- `busy`\n- `dnd`\n- `meeting`\n- `on-call`\n- `on-device`\n- `on-mobile`\n- `pause`\n- `pto`\n- `presenting`\n- `quiet`\n- `scheduled`",attribute:"presence",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"size",type:{text:"ButtonSize"},description:`Acceptable values include (size in px unit):
+- 24
+- 32
+- 48
+- 64
+- 72
+- 88
+- 124`,default:"32",attribute:"size",reflects:!0,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"iconName",type:{text:"IconNames | undefined"},description:`Name of the icon to be displayed inside the Avatar.
+Must be a valid icon name.`,attribute:"icon-name",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"counter",type:{text:"number | undefined"},description:"The counter is the number which can be displayed on the avatar.\nThe maximum number is 99 and if the given number is greater than 99,\nthen the avatar will be displayed as `99+`.\nIf the given number is a negative number,\nthen the avatar will be displayed as `0`.",attribute:"counter",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"isTyping",type:{text:"boolean"},default:"false",description:"Represents the typing indicator when the user is typing.",attribute:"is-typing",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"tabIndex",type:{text:"number"},default:"0",description:"This property specifies the tab order of the element.",attribute:"tabIndex",reflects:!0,inheritedFrom:{name:"TabIndexMixin",module:"utils/mixins/TabIndexMixin.js"}},{kind:"method",name:"executeAction",privacy:"private",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"setAriaPressed",privacy:"private",parameters:[{name:"element",type:{text:"HTMLElement"},description:"The target element."},{name:"active",type:{text:"boolean"},description:"The active state."}],description:"Sets the aria-pressed attribute based on the active state.",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"setSoftDisabled",privacy:"private",parameters:[{name:"element",type:{text:"HTMLElement"},description:"The button element."},{name:"softDisabled",type:{text:"boolean"},description:"The soft-disabled state."}],description:`Sets the soft-disabled attribute for the button.
+When soft-disabled, the button looks to be disabled but remains focusable and clickable.
+Also sets/removes aria-disabled attribute.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"setDisabled",privacy:"private",parameters:[{name:"element",type:{text:"HTMLElement"},description:"The button element."},{name:"disabled",type:{text:"boolean"},description:"The disabled state."}],description:`Sets the disabled attribute for the button.
+When disabled, the button is not focusable or clickable, and tabindex is set to -1.
+The previous tabindex is stored and restored when enabled.
+Also sets/removes aria-disabled attribute.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"triggerClickEvent",privacy:"private",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"handleKeyDown",privacy:"private",parameters:[{name:"event",type:{text:"KeyboardEvent"},description:"The keyboard event."}],description:`Handles the keydown event on the button.
+If the key is 'Enter' or 'Space', the button is pressed.
+If the key is 'Enter', the button is pressed. The native HTML button works in the same way.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"handleKeyUp",privacy:"private",parameters:[{name:"event",type:{text:"KeyboardEvent"},description:"The keyboard event."}],description:`Handles the keyup event on the button.
+If the key is 'Enter' or 'Space', the button is clicked.
+If the key is 'Space', the button is pressed. The native HTML button works in the same way.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}}],attributes:[{name:"aria-label",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",fieldName:"ariaLabel"},{name:"src",type:{text:"string | undefined"},description:`The src is the url which will be used to display the avatar.
+When the src is loading, we will display the initials as a placeholder.`,fieldName:"src",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"initials",type:{text:"string | undefined"},description:"The initials to be displayed for the avatar.",fieldName:"initials",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"presence",type:{text:"PresenceType | undefined"},description:"The presence is the status which can be used to display the\nactivity state of a user or a space within an avatar component.\n\nAcceptable values include:\n- `active`\n- `away`\n- `away-calling`\n- `busy`\n- `dnd`\n- `meeting`\n- `on-call`\n- `on-device`\n- `on-mobile`\n- `pause`\n- `pto`\n- `presenting`\n- `quiet`\n- `scheduled`",fieldName:"presence",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"size",type:{text:"ButtonSize"},description:`Acceptable values include (size in px unit):
+- 24
+- 32
+- 48
+- 64
+- 72
+- 88
+- 124`,default:"32",fieldName:"size",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"icon-name",type:{text:"IconNames | undefined"},description:`Name of the icon to be displayed inside the Avatar.
+Must be a valid icon name.`,fieldName:"iconName",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"counter",type:{text:"number | undefined"},description:"The counter is the number which can be displayed on the avatar.\nThe maximum number is 99 and if the given number is greater than 99,\nthen the avatar will be displayed as `99+`.\nIf the given number is a negative number,\nthen the avatar will be displayed as `0`.",fieldName:"counter",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"is-typing",type:{text:"boolean"},default:"false",description:"Represents the typing indicator when the user is typing.",fieldName:"isTyping",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"tabIndex",type:{text:"number"},default:"0",description:"This property specifies the tab order of the element.",fieldName:"tabIndex",inheritedFrom:{name:"TabIndexMixin",module:"src/utils/mixins/TabIndexMixin.ts"}},{name:"disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the component is disabled.
+When the component is disabled for user interaction; it is not focusable or clickable.`,fieldName:"disabled",inheritedFrom:{name:"DisabledMixin",module:"src/utils/mixins/DisabledMixin.ts"}},{name:"active",type:{text:"boolean"},default:"false",description:`The button's active state indicates whether it is currently toggled on (active) or off (inactive).
+When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
+Conversely, when the active state is false, the button is in an inactive state, indicating it is toggled off.`,fieldName:"active",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"soft-disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the button is soft disabled.
+When set to \`true\`, the button appears visually disabled but still allows
+focus, click, and keyboard actions to be passed through.
+
+**Important:** When using soft disabled, consumers must ensure that
+the button behaves like a disabled button, allowing only focus and
+preventing any interactions (clicks or keyboard actions) from triggering unintended actions.`,fieldName:"softDisabled",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"role",description:`This property defines the ARIA role for the element. By default, it is set to 'button'.
+Consumers should override this role when:
+- The element is being used in a context where a different role is more appropriate.
+- Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.`,default:"button",fieldName:"role",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"type",type:{text:"ButtonType"},description:`This property defines the type attribute for the button element.
+The type attribute specifies the behavior of the button when it is clicked.
+- **submit**: The button submits the form data to the server.
+- **reset**: The button resets the form data to its initial state.
+- **button**: The button does nothing when clicked.`,default:"button",fieldName:"type",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}}],mixins:[{name:"AvatarComponentMixin",module:"/src/utils/mixins/AvatarComponentMixin"}],superclass:{name:"Buttonsimple",module:"/src/components/buttonsimple"},tagName:"mdc-avatarbutton",jsDoc:`/**
+ * The \`mdc-avatarbutton\` component is an interactable version of the \`mdc-avatar\` component.
+ *
+ * This component is made by extending \`buttonsimple\` class.
+ * The button component acts as a wrapper for the avatar component.
+ *
+ * @dependency mdc-avatar
+ *
+ * @tagname mdc-avatarbutton
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"AvatarButton",module:"components/avatarbutton/avatarbutton.component.js"}}]},{kind:"javascript-module",path:"components/bullet/bullet.component.js",declarations:[{kind:"class",description:`Bullet component, which is a visual marker
 and be used to organize and present items in a list format.`,name:"Bullet",cssProperties:[{description:"background color of the bullet",name:"--mdc-bullet-background-color"},{description:"small size value of the bullet",name:"--mdc-bullet-size-small"},{description:"medium size value of the bullet",name:"--mdc-bullet-size-medium"},{description:"large size value of the bullet",name:"--mdc-bullet-size-large"}],members:[{kind:"field",name:"size",type:{text:"Size"},privacy:"public",description:`Size of the bullet
 
 Possible values: 'small', 'medium', 'large'`,default:"small",attribute:"size",reflects:!0}],attributes:[{name:"size",type:{text:"Size"},description:`Size of the bullet
@@ -326,7 +326,105 @@ When the component is disabled for user interaction; it is not focusable or clic
  *
  * @tagname mdc-buttonsimple
  *
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}}]},{kind:"javascript-module",path:"components/icon/icon.component.js",declarations:[{kind:"class",description:`Icon component that dynamically displays SVG icons based on a valid name.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}}]},{kind:"javascript-module",path:"components/divider/divider.component.js",declarations:[{kind:"class",description:`\`mdc-divider\` is a component that provides a line to separate and organize content.
+It can also include a button or text positioned centrally, allowing users to interact with the layout.
+
+**Divider Orientation:**
+- **Horizontal**: A thin, horizontal line.
+- **Vertical**: A thin, vertical line.
+
+**Divider Variants:**
+- **solid**: Solid line.
+- **gradient**: Gradient Line.
+
+**Divider Types:**
+- The type of divider is inferred based on the kind of slot present.
+ - **Primary**: A simple horizontal or vertical divider.
+ - **Text**: A horizontal divider with a text label in the center.
+ - **Grabber Button**: A horizontal or vertical divider with a styled button in the center.
+
+**Accessibility:**
+- When the slot is replaced by an \`mdc-button\`:
+  - \`aria-label\` should be passed to the \`mdc-button\`.
+  - \`aria-expanded\` should be passed to the \`mdc-button\`.
+
+**Notes:**
+- If the slot is replaced by an invalid tag name or contains multiple elements,
+  the divider defaults to the **Primary** type.
+- To override the styles of the divider, use the provided CSS custom properties.`,name:"Divider",cssProperties:[{description:"background color of the divider",name:"--mdc-divider-background-color"},{description:"width of the divider",name:"--mdc-divider-width"},{description:"gradient of the horizontal divider",name:"--mdc-divider-horizontal-gradient"},{description:"gradient of the vertical divider",name:"--mdc-divider-vertical-gradient"},{description:"font size of label in the text divider",name:"--mdc-divider-text-size"},{description:"font color of label in the text divider",name:"--mdc-divider-text-color"},{description:"left and right margin of label in the text divider",name:"--mdc-divider-text-margin"},{description:"line height of label in the text divider",name:"--mdc-divider-text-line-height"},{description:"border radius of the grabber button",name:"--mdc-divider-grabber-button-border-radius"}],members:[{kind:"field",name:"orientation",type:{text:"DividerOrientation"},description:`Two orientations of divider
+- **horizontal**: A thin, horizontal line with 0.0625rem width.
+- **vertical**: A thin, vertical line with 0.0625rem width.
+
+Note: We do not support "Vertical Text Divider" as of now.`,default:"horizontal",attribute:"orientation",reflects:!0},{kind:"field",name:"variant",type:{text:"DividerVariant"},description:`Two variants of divider
+- **solid**: Solid line.
+- **gradient**: Gradient Line that fades on either sides of the divider.`,default:"solid",attribute:"variant",reflects:!0},{kind:"field",name:"arrowDirection",type:{text:"Directions"},description:`Direction of the arrow icon, if applicable.
+- **positive**
+- **negative**
+
+Note: Positive and Negative directions are defined based on Cartesian plane.`,default:"'negative'",attribute:"arrow-direction",reflects:!0},{kind:"field",name:"buttonPosition",type:{text:"Directions"},description:`Position of the button, if applicable.
+- **positive**
+- **negative**
+
+Note: Positive and Negative directions are defined based on Cartesian plane.`,default:"'negative'",attribute:"button-position",reflects:!0},{kind:"method",name:"setVariant",privacy:"private",parameters:[{name:"variant",type:{text:"DividerVariant"},description:"The variant to set."}],description:`Sets the variant attribute for the divider component.
+If the provided variant is not included in the DIVIDER_VARIANT,
+it defaults to the value specified in DEFAULTS.VARIANT.`},{kind:"method",name:"setOrientation",privacy:"private",parameters:[{name:"orientation",type:{text:"DividerOrientation"},description:"The orientation to set."}],description:`Sets the orientation attribute for the divider component.
+If the provided orientation is not included in the DIVIDER_ORIENTATION,
+it defaults to the value specified in DEFAULTS.ORIENTATION.`},{kind:"method",name:"ensureValidDirections",privacy:"private",description:`Sets the buttonPosition and arrowDirection attribute for the divider component.
+If the provided buttonPosition and arrowDirection are not included in the DIRECTIONS,
+it defaults to the value specified in DIRECTIONS based on the ORIENTATION.`,parameters:[{description:"The buttonPosition to set.",name:"buttonPosition"},{description:"The arrowDirection to set.",name:"arrowDirection"}]},{kind:"method",name:"setGrabberButton",privacy:"private",return:{type:{text:"void"}},description:"Configures the grabber button within the divider.\n\n- Sets the `prefix-icon` attribute for the grabber button based\non the `arrow-direction` and `orientation` properties.\n\nThis method updates the DOM element dynamically if a grabber button is present."},{kind:"method",name:"getArrowIcon",privacy:"private",return:{type:{text:""}},description:"Determines the arrow icon based on the consumer-defined `arrowDirection`."},{kind:"method",name:"inferDividerType",privacy:"private",description:"Infers the type of divider based on the kind of slot present.",parameters:[{description:"default slot of divider",name:"slot"}]}],attributes:[{name:"orientation",type:{text:"DividerOrientation"},description:`Two orientations of divider
+- **horizontal**: A thin, horizontal line with 0.0625rem width.
+- **vertical**: A thin, vertical line with 0.0625rem width.
+
+Note: We do not support "Vertical Text Divider" as of now.`,default:"horizontal",fieldName:"orientation"},{name:"variant",type:{text:"DividerVariant"},description:`Two variants of divider
+- **solid**: Solid line.
+- **gradient**: Gradient Line that fades on either sides of the divider.`,default:"solid",fieldName:"variant"},{name:"arrow-direction",type:{text:"Directions"},description:`Direction of the arrow icon, if applicable.
+- **positive**
+- **negative**
+
+Note: Positive and Negative directions are defined based on Cartesian plane.`,default:"'negative'",fieldName:"arrowDirection"},{name:"button-position",type:{text:"Directions"},description:`Position of the button, if applicable.
+- **positive**
+- **negative**
+
+Note: Positive and Negative directions are defined based on Cartesian plane.`,default:"'negative'",fieldName:"buttonPosition"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-divider",jsDoc:`/**
+ * \`mdc-divider\` is a component that provides a line to separate and organize content.
+ * It can also include a button or text positioned centrally, allowing users to interact with the layout.
+ *
+ * **Divider Orientation:**
+ * - **Horizontal**: A thin, horizontal line.
+ * - **Vertical**: A thin, vertical line.
+ *
+ * **Divider Variants:**
+ * - **solid**: Solid line.
+ * - **gradient**: Gradient Line.
+ *
+ * **Divider Types:**
+ * - The type of divider is inferred based on the kind of slot present.
+ *  - **Primary**: A simple horizontal or vertical divider.
+ *  - **Text**: A horizontal divider with a text label in the center.
+ *  - **Grabber Button**: A horizontal or vertical divider with a styled button in the center.
+ *
+ * **Accessibility:**
+ * - When the slot is replaced by an \`mdc-button\`:
+ *   - \`aria-label\` should be passed to the \`mdc-button\`.
+ *   - \`aria-expanded\` should be passed to the \`mdc-button\`.
+ *
+ * **Notes:**
+ * - If the slot is replaced by an invalid tag name or contains multiple elements,
+ *   the divider defaults to the **Primary** type.
+ * - To override the styles of the divider, use the provided CSS custom properties.
+ *
+ * @tagname mdc-divider
+ *
+ * @cssproperty --mdc-divider-background-color - background color of the divider
+ * @cssproperty --mdc-divider-width - width of the divider
+ * @cssproperty --mdc-divider-horizontal-gradient - gradient of the horizontal divider
+ * @cssproperty --mdc-divider-vertical-gradient - gradient of the vertical divider
+ * @cssproperty --mdc-divider-text-size - font size of label in the text divider
+ * @cssproperty --mdc-divider-text-color - font color of label in the text divider
+ * @cssproperty --mdc-divider-text-margin - left and right margin of label in the text divider
+ * @cssproperty --mdc-divider-text-line-height - line height of label in the text divider
+ * @cssproperty --mdc-divider-grabber-button-border-radius - border radius of the grabber button
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Divider",module:"components/divider/divider.component.js"}}]},{kind:"javascript-module",path:"components/icon/icon.component.js",declarations:[{kind:"class",description:`Icon component that dynamically displays SVG icons based on a valid name.
 
 This component must be mounted within an \`IconProvider\` component.
 
@@ -447,105 +545,7 @@ the content or to signify important information.
  * @cssproperty --mdc-marker-striped-background-color - Allows customization of the default background color
  * in striped variant.
  * @cssproperty --mdc-marker-width - Allows customization of the default width.
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Marker",module:"components/marker/marker.component.js"}}]},{kind:"javascript-module",path:"components/divider/divider.component.js",declarations:[{kind:"class",description:`\`mdc-divider\` is a component that provides a line to separate and organize content.
-It can also include a button or text positioned centrally, allowing users to interact with the layout.
-
-**Divider Orientation:**
-- **Horizontal**: A thin, horizontal line.
-- **Vertical**: A thin, vertical line.
-
-**Divider Variants:**
-- **solid**: Solid line.
-- **gradient**: Gradient Line.
-
-**Divider Types:**
-- The type of divider is inferred based on the kind of slot present.
- - **Primary**: A simple horizontal or vertical divider.
- - **Text**: A horizontal divider with a text label in the center.
- - **Grabber Button**: A horizontal or vertical divider with a styled button in the center.
-
-**Accessibility:**
-- When the slot is replaced by an \`mdc-button\`:
-  - \`aria-label\` should be passed to the \`mdc-button\`.
-  - \`aria-expanded\` should be passed to the \`mdc-button\`.
-
-**Notes:**
-- If the slot is replaced by an invalid tag name or contains multiple elements,
-  the divider defaults to the **Primary** type.
-- To override the styles of the divider, use the provided CSS custom properties.`,name:"Divider",cssProperties:[{description:"background color of the divider",name:"--mdc-divider-background-color"},{description:"width of the divider",name:"--mdc-divider-width"},{description:"gradient of the horizontal divider",name:"--mdc-divider-horizontal-gradient"},{description:"gradient of the vertical divider",name:"--mdc-divider-vertical-gradient"},{description:"font size of label in the text divider",name:"--mdc-divider-text-size"},{description:"font color of label in the text divider",name:"--mdc-divider-text-color"},{description:"left and right margin of label in the text divider",name:"--mdc-divider-text-margin"},{description:"line height of label in the text divider",name:"--mdc-divider-text-line-height"},{description:"border radius of the grabber button",name:"--mdc-divider-grabber-button-border-radius"}],members:[{kind:"field",name:"orientation",type:{text:"DividerOrientation"},description:`Two orientations of divider
-- **horizontal**: A thin, horizontal line with 0.0625rem width.
-- **vertical**: A thin, vertical line with 0.0625rem width.
-
-Note: We do not support "Vertical Text Divider" as of now.`,default:"horizontal",attribute:"orientation",reflects:!0},{kind:"field",name:"variant",type:{text:"DividerVariant"},description:`Two variants of divider
-- **solid**: Solid line.
-- **gradient**: Gradient Line that fades on either sides of the divider.`,default:"solid",attribute:"variant",reflects:!0},{kind:"field",name:"arrowDirection",type:{text:"Directions"},description:`Direction of the arrow icon, if applicable.
-- **positive**
-- **negative**
-
-Note: Positive and Negative directions are defined based on Cartesian plane.`,default:"'negative'",attribute:"arrow-direction",reflects:!0},{kind:"field",name:"buttonPosition",type:{text:"Directions"},description:`Position of the button, if applicable.
-- **positive**
-- **negative**
-
-Note: Positive and Negative directions are defined based on Cartesian plane.`,default:"'negative'",attribute:"button-position",reflects:!0},{kind:"method",name:"setVariant",privacy:"private",parameters:[{name:"variant",type:{text:"DividerVariant"},description:"The variant to set."}],description:`Sets the variant attribute for the divider component.
-If the provided variant is not included in the DIVIDER_VARIANT,
-it defaults to the value specified in DEFAULTS.VARIANT.`},{kind:"method",name:"setOrientation",privacy:"private",parameters:[{name:"orientation",type:{text:"DividerOrientation"},description:"The orientation to set."}],description:`Sets the orientation attribute for the divider component.
-If the provided orientation is not included in the DIVIDER_ORIENTATION,
-it defaults to the value specified in DEFAULTS.ORIENTATION.`},{kind:"method",name:"ensureValidDirections",privacy:"private",description:`Sets the buttonPosition and arrowDirection attribute for the divider component.
-If the provided buttonPosition and arrowDirection are not included in the DIRECTIONS,
-it defaults to the value specified in DIRECTIONS based on the ORIENTATION.`,parameters:[{description:"The buttonPosition to set.",name:"buttonPosition"},{description:"The arrowDirection to set.",name:"arrowDirection"}]},{kind:"method",name:"setGrabberButton",privacy:"private",return:{type:{text:"void"}},description:"Configures the grabber button within the divider.\n\n- Sets the `prefix-icon` attribute for the grabber button based\non the `arrow-direction` and `orientation` properties.\n\nThis method updates the DOM element dynamically if a grabber button is present."},{kind:"method",name:"getArrowIcon",privacy:"private",return:{type:{text:""}},description:"Determines the arrow icon based on the consumer-defined `arrowDirection`."},{kind:"method",name:"inferDividerType",privacy:"private",description:"Infers the type of divider based on the kind of slot present.",parameters:[{description:"default slot of divider",name:"slot"}]}],attributes:[{name:"orientation",type:{text:"DividerOrientation"},description:`Two orientations of divider
-- **horizontal**: A thin, horizontal line with 0.0625rem width.
-- **vertical**: A thin, vertical line with 0.0625rem width.
-
-Note: We do not support "Vertical Text Divider" as of now.`,default:"horizontal",fieldName:"orientation"},{name:"variant",type:{text:"DividerVariant"},description:`Two variants of divider
-- **solid**: Solid line.
-- **gradient**: Gradient Line that fades on either sides of the divider.`,default:"solid",fieldName:"variant"},{name:"arrow-direction",type:{text:"Directions"},description:`Direction of the arrow icon, if applicable.
-- **positive**
-- **negative**
-
-Note: Positive and Negative directions are defined based on Cartesian plane.`,default:"'negative'",fieldName:"arrowDirection"},{name:"button-position",type:{text:"Directions"},description:`Position of the button, if applicable.
-- **positive**
-- **negative**
-
-Note: Positive and Negative directions are defined based on Cartesian plane.`,default:"'negative'",fieldName:"buttonPosition"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-divider",jsDoc:`/**
- * \`mdc-divider\` is a component that provides a line to separate and organize content.
- * It can also include a button or text positioned centrally, allowing users to interact with the layout.
- *
- * **Divider Orientation:**
- * - **Horizontal**: A thin, horizontal line.
- * - **Vertical**: A thin, vertical line.
- *
- * **Divider Variants:**
- * - **solid**: Solid line.
- * - **gradient**: Gradient Line.
- *
- * **Divider Types:**
- * - The type of divider is inferred based on the kind of slot present.
- *  - **Primary**: A simple horizontal or vertical divider.
- *  - **Text**: A horizontal divider with a text label in the center.
- *  - **Grabber Button**: A horizontal or vertical divider with a styled button in the center.
- *
- * **Accessibility:**
- * - When the slot is replaced by an \`mdc-button\`:
- *   - \`aria-label\` should be passed to the \`mdc-button\`.
- *   - \`aria-expanded\` should be passed to the \`mdc-button\`.
- *
- * **Notes:**
- * - If the slot is replaced by an invalid tag name or contains multiple elements,
- *   the divider defaults to the **Primary** type.
- * - To override the styles of the divider, use the provided CSS custom properties.
- *
- * @tagname mdc-divider
- *
- * @cssproperty --mdc-divider-background-color - background color of the divider
- * @cssproperty --mdc-divider-width - width of the divider
- * @cssproperty --mdc-divider-horizontal-gradient - gradient of the horizontal divider
- * @cssproperty --mdc-divider-vertical-gradient - gradient of the vertical divider
- * @cssproperty --mdc-divider-text-size - font size of label in the text divider
- * @cssproperty --mdc-divider-text-color - font color of label in the text divider
- * @cssproperty --mdc-divider-text-margin - left and right margin of label in the text divider
- * @cssproperty --mdc-divider-text-line-height - line height of label in the text divider
- * @cssproperty --mdc-divider-grabber-button-border-radius - border radius of the grabber button
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Divider",module:"components/divider/divider.component.js"}}]},{kind:"javascript-module",path:"components/presence/presence.component.js",declarations:[{kind:"class",description:`The \`mdc-presence\` component is a versatile UI element used to
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Marker",module:"components/marker/marker.component.js"}}]},{kind:"javascript-module",path:"components/presence/presence.component.js",declarations:[{kind:"class",description:`The \`mdc-presence\` component is a versatile UI element used to
 display the presence status of a user or entity within an avatar component.
 
 This component is ideal for use within avatar UIs where the presence status
