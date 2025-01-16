@@ -10,7 +10,9 @@ const render = (args: Args) => html`
   elevation="${args.elevation}"
   role="${args.role}"
   aria-modal="${args['aria-modal']}"
-><mdc-text>Lorem ipsum dolor sit amet.</mdc-text></mdc-modalcontainer>
+>
+  <mdc-text>Lorem ipsum dolor sit amet.</mdc-text>
+</mdc-modalcontainer>
 `;
 
 const meta: Meta = {

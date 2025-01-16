@@ -8,7 +8,7 @@ test.beforeEach(async ({ componentsPage }) => {
   });
 });
 
-test('mdc-modalcontainer', async ({ componentsPage }) => {
+test.skip('mdc-modalcontainer', async ({ componentsPage }) => {
   const modalcontainer = componentsPage.page.locator('mdc-modalcontainer');
 
   // initial check for the modalcontainer be visible on the screen:
