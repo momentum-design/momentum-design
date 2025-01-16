@@ -11,7 +11,6 @@ import Marker from './components/marker';
 import Divider from './components/divider';
 import Buttonsimple from './components/buttonsimple';
 import Avatarbutton from './components/avatarbutton';
-import Helperlabel from './components/helperlabel';
 
 import type { TextType } from './components/text/text.types';
 
@@ -29,7 +28,6 @@ export {
   Divider,
   Buttonsimple,
   Avatarbutton,
-  Helperlabel,
 };
 
 export type {

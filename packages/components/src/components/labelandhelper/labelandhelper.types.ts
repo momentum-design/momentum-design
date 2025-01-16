@@ -1,5 +1,5 @@
 import type { ValueOf } from '../../utils/types';
-import { VALIDATION } from './helperlabel.constants';
+import { VALIDATION } from './labelandhelper.constants';
 
 type ValidationType = ValueOf<typeof VALIDATION>;
 

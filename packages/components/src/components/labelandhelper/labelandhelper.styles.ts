@@ -11,12 +11,12 @@ const styles = [
     }
 
     :host([disabled]) .mdc-label,
-    :host([disabled]) .footer {
+    :host([disabled]) .mdc-help-text {
       color: var(--mds-color-theme-text-primary-disabled);
     }
 
-    .header,
-    .footer {
+    .mdc-label-text,
+    .mdc-help-text {
       font-size: var(--mds-font-size-body-midsize);
       line-height: var(--mds-font-lineheight-body-midsize);
       display: flex;
@@ -28,20 +28,20 @@ const styles = [
       color: var(--mds-color-theme-text-primary-normal);
     }
 
-    .footer {
+    .mdc-help-text {
       color: var(--mds-color-theme-text-secondary-normal);
     }
 
-    :host([help-text-type='error']) .footer {
+    :host([help-text-type='error']) .mdc-help-text {
       color: var(--mds-color-theme-text-error-normal);
     }
-    :host([help-text-type='warning']) .footer {
+    :host([help-text-type='warning']) .mdc-help-text {
       color: var(--mds-color-theme-text-warning-normal);
     }
-    :host([help-text-type='success']) .footer {
+    :host([help-text-type='success']) .mdc-help-text {
       color: var(--mds-color-theme-text-success-normal);
     }
-    :host([help-text-type='priority']) .footer {
+    :host([help-text-type='priority']) .mdc-help-text {
       color: var(--mds-color-theme-text-accent-normal);
     }
   `,

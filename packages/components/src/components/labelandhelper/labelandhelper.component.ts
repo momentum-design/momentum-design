@@ -1,21 +1,21 @@
 import { CSSResult, html, nothing } from 'lit';
 import { v4 as uuidv4 } from 'uuid';
 import { property } from 'lit/decorators.js';
-import styles from './helperlabel.styles';
+import styles from './labelandhelper.styles';
 import { Component } from '../../models';
-import type { ValidationType } from './helperlabel.types';
-import { DEFAULTS, MDC_TEXT_OPTIONS } from './helperlabel.constants';
-import { getHelperIcon } from './helperlabel.utils';
+import type { ValidationType } from './labelandhelper.types';
+import { DEFAULTS, MDC_TEXT_OPTIONS } from './labelandhelper.constants';
+import { getHelperIcon } from './labelandhelper.utils';
 
 /**
- * helperlabel is a component that contains the label and helper/validation text
+ * labelandhelper is a component that contains the label and helper/validation text
  *  that can be configured in various ways to suit different use cases (most of the input related components).
  * It is used as an internal component and is not intended to be used directly by consumers.
  *
- * @tagname mdc-helperlabel
+ * @tagname mdc-labelandhelper
  *
  */
-class Helperlabel extends Component {
+class LabelAndHelper extends Component {
   /**
    * The label of the input field. It is linked to the input field using the `for` attribute.
    */
@@ -99,22 +99,22 @@ class Helperlabel extends Component {
   }
 
   /**
-   * renders the header container that contains the label and labelInfoToggleTip.
+   * renders the mdc-label-text container that contains the label and labelInfoToggleTip.
    * @returns void
    */
-  protected renderHeaderLabel() {
-    return html`<div class="header" part="header">
+  protected renderLabel() {
+    return html`<div class="mdc-label-text" part="mdc-label-text">
       <slot name="label">${this.renderLabelElement()}</slot>
       <slot name="label-icon">${this.renderLabelInfoToggleTip()}</slot>
     </div>`;
   }
 
   /**
-   * renders the footer container that contains the helpertext icon and helpertext.
+   * renders the mdc-help-text container that contains the helpertext icon and helpertext.
    * @returns void
    */
-  protected renderFooterHelperText() {
-    return html`<div class="footer" part="footer">
+  protected renderHelperText() {
+    return html`<div class="mdc-help-text" part="mdc-help-text">
       <slot name="help-icon">${this.renderHelpTextIcon()}</slot>
       <slot name="help-text">${this.renderHelpText()}</slot>
     </div>`;
@@ -122,13 +122,13 @@ class Helperlabel extends Component {
 
   public override render() {
     return html`
-      ${this.renderHeaderLabel()}
+      ${this.renderLabel()}
       <slot></slot>
-      ${this.renderFooterHelperText()}
+      ${this.renderHelperText()}
     `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
-export default Helperlabel;
+export default LabelAndHelper;
