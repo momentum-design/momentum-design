@@ -63,12 +63,12 @@ export const HelperTextTypes: StoryObj = {
   render: () =>
     html` <div style="display: flex; justify-content: space-evenly; align-items: center">
       ${repeat(
-        Object.values(VALIDATION),
-        (validation: ValidationType) => html`
+    Object.values(VALIDATION),
+    (validation: ValidationType) => html`
           <mdc-helperlabel help-text-type="${validation}" label="Label" help-text="Helper text"
             >[Child component]</mdc-helperlabel
           >
         `,
-      )}
+  )}
     </div>`,
 };
