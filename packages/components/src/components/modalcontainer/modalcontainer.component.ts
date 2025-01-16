@@ -47,6 +47,12 @@ class Modalcontainer extends Component {
   @property({ type: String, attribute: 'aria-modal' })
   override ariaModal: string = 'true';
 
+  /**
+   * Aria-label attribute to be set for accessibility
+   */
+  @property({ type: String, attribute: 'aria-label' })
+  override ariaLabel: string | null = null;
+
   public override render() {
     return html`
       <div 
@@ -55,6 +61,7 @@ class Modalcontainer extends Component {
         ?contrast="${this.color === 'contrast'}"
         role="${this.role}"
         aria-modal=${this.ariaModal}
+        aria-label=${this.ariaLabel}
         data-elevation="${this.elevation}"
         >
         <slot></slot>

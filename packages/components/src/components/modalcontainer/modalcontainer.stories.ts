@@ -10,6 +10,7 @@ const render = (args: Args) => html`
   elevation="${args.elevation}"
   role="${args.role}"
   aria-modal="${args['aria-modal']}"
+  aria-label="${args['aria-label']}"
 >
   <mdc-text>Lorem ipsum dolor sit amet.</mdc-text>
 </mdc-modalcontainer>
@@ -38,6 +39,10 @@ const meta: Meta = {
     'aria-modal': {
       control: 'text',
     },
+    'aria-label': {
+      control: 'text',
+      description: 'Provides an accessible name for the modal.',
+    },
     ...classArgType,
     ...styleArgType,
   },
@@ -51,5 +56,6 @@ export const Example: StoryObj = {
     elevation: ELEVATION[0],
     role: DEFAULTS.ROLE,
     'aria-modal': 'true',
+    'aria-label': 'Modal container',
   },
 };
