@@ -12,8 +12,6 @@ const render = (args: Args) =>
     label-info-text="${args['label-info-text']}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
-    class="${args.class}"
-    style="${args.style}"
     >${args.children}</mdc-helperlabel
   >`;
 
