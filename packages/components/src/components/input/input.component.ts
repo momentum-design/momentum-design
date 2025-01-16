@@ -140,7 +140,7 @@ class Input extends DisabledMixin(Helperlabel) {
     this.inputElement?.focus();
   }
 
-  protected renderClearButton() {
+  protected renderTrailingButton() {
     return html`
       <mdc-button 
         class='clear-button ${!this.value ? 'hidden' : ''}'
@@ -176,7 +176,7 @@ class Input extends DisabledMixin(Helperlabel) {
           />
         </slot>
        </section>
-        <slot name="trailing-button">${this.renderClearButton()}</slot>
+        <slot name="trailing-button">${this.renderTrailingButton()}</slot>
       </div>
       ${this.renderFooterHelperText()}
     `;
