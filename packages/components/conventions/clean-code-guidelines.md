@@ -30,6 +30,24 @@ function demo() {
   - Comments indicating unfinished work are removed to maintain clarity.
   - "TODO" comments are only retained if they reference an open JIRA ticket and are placed sensibly within the code. Regular audits of the codebase should be conducted to enforce these standards.
 
+  ### 3. Using uuid to generate Unique ID values
+
+- **Rule:**
+ It is recommended to install the `uuid` library as a dependency and use it for this purpose instead of relying on `Math.random()`. This ensures that the IDs are truly unique, which is especially important when dealing with a large number of input fields on a page.
+
+- **Action:** 
+  - Install the `uuid` library by running `npm install uuid`.
+  - Use the `uuid` library to generate unique IDs in the code. For example:
+
+    ```js
+    import { v4 as uuidv4 } from 'uuid';
+
+    const uniqueId = uuidv4();
+    ```
+
+  - Ensure that all new code follows this convention for generating unique IDs.
+  - During code reviews, verify that `uuid` is used for ID generation instead of `Math.random()` or other methods.
+
 ## Benefits of using these Clean Code Practices
 
 - **Streamlined Code Reviews:** With less clutter, reviewers can focus on meaningful changes, improving efficiency.
