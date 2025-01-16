@@ -24,7 +24,7 @@ class Helperlabel extends Component {
 /**
    * The unique id of the input field. It is used to link the input field with the label.
    */
-@property({ type: String }) override id = '';
+@property({ type: String }) override id = `mdc-input-${uuidv4()}`;
 
 /**
  * The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.
@@ -40,11 +40,6 @@ class Helperlabel extends Component {
  * @beta this attribute is in beta, and is subject to change (given the toggletip component is not ready yet)
  */
 @property({ type: String }) labelInfoText = '';
-
-constructor() {
-  super();
-  this.id = this.id || `mdc-input-${uuidv4()}`;
-}
 
 /**
  * creates the label element when the label property is set.
