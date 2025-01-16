@@ -4,17 +4,16 @@ import { property } from 'lit/decorators.js';
 import styles from './helperlabel.styles';
 import { Component } from '../../models';
 import type { ValidationType } from './helperlabel.types';
-import { DEFAULTS } from './helperlabel.constants';
+import { DEFAULTS, MDC_TEXT_OPTIONS } from './helperlabel.constants';
 import { getHelperIcon } from './helperlabel.utils';
 
 /**
- * helperlabel component, which ...
+ * helperlabel is an internal component that contains the label and helper/validation text
+ *  that can be configured in various ways to suit different use cases (most of the input related components).
+ * It is used as an internal component and is not intended to be used directly by consumers.
  *
  * @tagname mdc-helperlabel
  *
- * @slot default - This is a default/unnamed slot
- *
- * @cssprop --custom-property-name - Description of the CSS custom property
  */
 class Helperlabel extends Component {
 /**
@@ -42,14 +41,9 @@ class Helperlabel extends Component {
  */
 @property({ type: String }) labelInfoText = '';
 
-private generateId() {
-  // generating a random id for associating the input and label field
-  return `mdc-input-${uuidv4()}`;
-}
-
 constructor() {
   super();
-  this.id = this.id || this.generateId();
+  this.id = this.id || `mdc-input-${uuidv4()}`;
 }
 
 /**
@@ -57,7 +51,7 @@ constructor() {
  * id is used to link the label with the input field.
  * @returns void
  */
-public renderLabel() {
+public renderLabelElement() {
   if (!this.label) {
     return nothing;
   }
@@ -65,6 +59,11 @@ public renderLabel() {
   return html`<label for="${this.id}" class='mdc-label'>${this.label}</label>`;
 }
 
+/**
+ * displays a info icon, which when hovered over, displays the labelInfoText.
+ * This is in beta and is subject to change once the toggletip component is ready.
+ * @returns void
+ */
 protected renderLabelInfoToggleTip() {
   if (!this.labelInfoText) {
     return nothing;
@@ -72,6 +71,11 @@ protected renderLabelInfoToggleTip() {
   return html`<mdc-icon name=${DEFAULTS.INFO_ICON_NAME} size="1.25" length-unit="rem"></mdc-icon>`;
 }
 
+/**
+ * creates the helpertext icon based on the helpTextType for validation.
+ * If the helpTextType is not set, it defaults to 'default' and it doesn't display any icon.
+ * @returns void
+ */
 protected renderHelpTextIcon() {
   if (!this.helpText) {
     return nothing;
@@ -83,21 +87,38 @@ protected renderHelpTextIcon() {
   return nothing;
 }
 
+/**
+ * creates the helper text component when the helpertext value is set.
+ * It is also used to display the validation message based on the helpTextType.
+ * @returns void
+ */
 protected renderHelpText() {
   if (!this.helpText) {
     return nothing;
   }
-  return html` <mdc-text tagname='span' type='body-midsize-regular'>${this.helpText}</mdc-text> `;
+  return html`
+    <mdc-text tagname=${MDC_TEXT_OPTIONS.TAGNAME} type=${MDC_TEXT_OPTIONS.TYPE}>
+      ${this.helpText}
+    </mdc-text>
+  `;
 }
 
-protected renderHeader() {
+/**
+ * renders the header container that contains the label and labelInfoToggleTip.
+ * @returns void
+ */
+protected renderHeaderLabel() {
   return html`<div class="header">
-  <slot name="label">${this.renderLabel()}</slot>
+  <slot name="label">${this.renderLabelElement()}</slot>
   <slot name="label-icon">${this.renderLabelInfoToggleTip()}</slot>
 </div>`;
 }
 
-protected renderFooter() {
+/**
+ * renders the footer container that contains the helpertext icon and helpertext.
+ * @returns void
+ */
+protected renderFooterHelperText() {
   return html`<div class="footer" part="footer">
   <slot name="help-icon">${this.renderHelpTextIcon()}</slot>
   <slot name="help-text">${this.renderHelpText()}</slot>
@@ -106,9 +127,9 @@ protected renderFooter() {
 
 public override render() {
   return html`
-    ${this.renderHeader()}
+    ${this.renderHeaderLabel()}
     <slot></slot>
-    ${this.renderFooter()}
+    ${this.renderFooterHelperText()}
   `;
 }
 

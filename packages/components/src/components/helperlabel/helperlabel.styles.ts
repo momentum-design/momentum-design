@@ -14,11 +14,6 @@ const styles = [hostFitContentStyles, css`
     color: var(--mds-color-theme-text-primary-disabled);
   }
 
-  :host([disabled]) .input {
-    border-color: var(--mds-color-theme-outline-primary-disabled);
-    background: var(--mds-color-theme-background-primary-disabled);
-  }
-  
   .header, .footer {
     font-size: var(--mds-font-size-body-midsize);
     line-height: var(--mds-font-lineheight-body-midsize);
@@ -29,14 +24,6 @@ const styles = [hostFitContentStyles, css`
 
   .mdc-label{
     color: var(--mds-color-theme-text-primary-normal);
-  }
-
-  .leading-icon{
-    aspect-ratio: 1;
-  }
-  
-  .prefix-text{
-    color: var(--mds-color-theme-text-secondary-normal);
   }
 
   :host([helpTextType="error"]) .footer {
