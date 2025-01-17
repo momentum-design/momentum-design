@@ -1,5 +1,5 @@
 import { css } from 'lit';
-import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
+import { hostFitContentStyles } from '../../utils/styles';
 
 const styles = [
   hostFitContentStyles,
@@ -45,7 +45,6 @@ const styles = [
       color: var(--mds-color-theme-text-accent-normal);
     }
   `,
-  ...hostFocusRingStyles(true),
 ];
 
 export default styles;
