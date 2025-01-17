@@ -1,5 +1,5 @@
-import { CSSResult, html } from 'lit';
-import { property } from 'lit/decorators.js';
+import { CSSResult, html, PropertyValueMap } from 'lit';
+import { property, query } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DEFAULTS, LINK_ICON_SIZES, LINK_SIZES } from './link.constants';
 import { LinkSize } from './link.types';
@@ -70,6 +70,13 @@ class Link extends DisabledMixin(Component) {
   size: LinkSize = DEFAULTS.LINK_SIZE;
 
   /**
+   * Used to store the previous tabindex value of the host element
+   * null value means that the host element did not have a tabindex attribute.
+   * @internal
+   */
+  private prevTabindex : number | null = null;
+
+  /**
    * Method to get the size of the trailing icon based on the link size.
    * @returns The icon size value and units.
    */
@@ -81,6 +88,29 @@ class Link extends DisabledMixin(Component) {
         return LINK_ICON_SIZES.MIDSIZE;
       default:
         return LINK_ICON_SIZES.LARGE;
+    }
+  }
+
+  /**
+   * Updates the tabindex of the host element to disable or enable the link.
+   * When disabled, the link is not focusable or clickable, and tabindex is set to -1
+   * and aria-disabled attribute is set to true
+   * When link is not disabled, the previous tabindex of the host element is restored
+   * and aria-disabled attribute is removed.
+   *
+   * @param disabled - The disabled state of icon
+   */
+  private setDisabled(disabled: boolean) {
+    if (disabled) {
+      this.prevTabindex = this.hasAttribute('tabindex') ? this.tabIndex : null;
+      this.tabIndex = -1;
+      this.setAttribute('aria-disabled', 'true');
+    } else if (this.prevTabindex === null) {
+      this.removeAttribute('tabindex');
+      this.removeAttribute('aria-disabled');
+    } else {
+      this.tabIndex = this.prevTabindex;
+      this.removeAttribute('aria-disabled');
     }
   }
 
@@ -100,6 +130,13 @@ class Link extends DisabledMixin(Component) {
       trailingIcon.setAttribute('size', `${iconSize}`);
       trailingIcon.setAttribute('length-unit', 'rem');
       anchorElement.appendChild(trailingIcon);
+    }
+  }
+
+  public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    super.update(changedProperties);
+    if (changedProperties.has('disabled')) {
+      this.setDisabled(this.disabled);
     }
   }
 

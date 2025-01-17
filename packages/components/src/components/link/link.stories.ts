@@ -70,7 +70,7 @@ const meta: Meta = {
 export default meta;
 
 const defaultArgs = {
-  children: '<a href="https://www.webex.com" _target="blank">Link</a>',
+  children: '<a href="https://www.webex.com" target="_blank" rel="noopener noreferrer">Link</a>',
   disabled: false,
   'icon-name': 'placeholder-regular',
   inline: false,

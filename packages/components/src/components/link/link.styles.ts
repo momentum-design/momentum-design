@@ -73,11 +73,11 @@ const styles = [hostFitContentStyles, css`
   }
 
   :host([size="small"]) {
-    font-size: var(--mds-font-apps-body-small-medium-font-size);
-    font-weight: var(--mds-font-apps-body-small-medium-font-weight);
-    line-height: var(--mds-font-apps-body-small-medium-line-height);
-    text-decoration: var(--mds-font-apps-body-small-medium-text-decoration);
-    text-transform: var(--mds-font-apps-body-small-medium-text-case);
+    font-size: var(--mds-font-apps-body-small-regular-font-size);
+    font-weight: var(--mds-font-apps-body-small-regular-font-weight);
+    line-height: var(--mds-font-apps-body-small-regular-line-height);
+    text-decoration: var(--mds-font-apps-body-small-regular-text-decoration);
+    text-transform: var(--mds-font-apps-body-small-regular-text-case);
   }
 
   :host([size="large"]:hover), :host([size="large"]:active), :host([size="large"][inline]) {
