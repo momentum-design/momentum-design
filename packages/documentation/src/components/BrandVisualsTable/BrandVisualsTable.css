@@ -1,8 +1,16 @@
-.illustrationGrid {
+.brandvisualsGrid {
   display: grid;
   align-items: center;
   gap: 3rem;
   margin: 2rem 0;
+}
+
+.brandvisualsGrid-dark {
+  background-color: hsla(var(--color-base-black), 0%,  1);
+}
+
+.brandvisualsGrid-light {
+  background-color: hsla(var(--color-base-white), 100%,  1);
 }
 
 .grid320 {
@@ -21,22 +29,28 @@
   grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
 }
 
-.illustrationWrapper {
+.brandvisualsWrapper {
   justify-self: center;
+  aspect-ratio: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 10px;
 }
 
-.illustration-bg-inverted {
-  filter :var(--illustrations-filter);
-}
 
+.brandvisualsImg {
+  flex: 1 1 0;
+  max-width: 100%;
+  height: fit-content;
+}
 .nameAnchor {
   position: relative;
 }
 
 .nameWrapper {
   position: absolute;
-  top: 0rem;
-  left: 0;
+  top: 4rem;
   font-size: 1rem;
   display: none;
   background-color: var(--theme-bg-offset);
@@ -45,8 +59,6 @@
   z-index: 999;
   max-width: 15rem;
   min-width: 10rem;
-  transform: translateX(-50%);
-  left: 50%;
   text-align: center;
 }
 
@@ -54,12 +66,8 @@
   position: relative;
 }
 
-.illustrationWrapper:hover .nameWrapper {
+.brandvisualsWrapper:hover .nameWrapper {
   display: block;
-}
-
-.illustration {
-  filter: invert(1);
 }
 
 .paginationButtons {
@@ -73,7 +81,7 @@
   background: var(--theme-accent);
 }
 
-.illustrationFilters {
+.brandvisualsFilters {
   display: grid;
   grid-template-columns: 1fr max-content;
   gap: 1rem;
@@ -88,7 +96,7 @@
   width: 100%;
 }
 
-.sizeSelect {
+.typeSelect {
   padding: 0.5rem;
   font-size: 1rem;
 }
