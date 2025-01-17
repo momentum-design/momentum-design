@@ -1,65 +1,94 @@
-import { test } from '../../../config/playwright/setup';
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
+import { expect } from '@playwright/test';
+import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { ModalContainerColor, ModalContainerElevation } from './modalcontainer.types';
+import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { COLOR, DEFAULTS, ELEVATION } from './modalcontainer.constants';
 
-test.beforeEach(async ({ componentsPage }) => {
+type SetupOptions = {
+  componentsPage: ComponentsPage;
+  color?: ModalContainerColor;
+  elevation?: ModalContainerElevation;
+  children?: string;
+};
+
+const setup = async (args: SetupOptions) => {
+  const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
-        <mdc-modalcontainer />
-      `,
+       <mdc-modalcontainer
+        ${restArgs.color ? `color="${restArgs.color}"` : ''}
+        ${restArgs.elevation ? `elevation="${restArgs.elevation}"` : ''}
+        role="dialog"
+        aria-label="avatar button"
+        aria-model="dialog"
+      >${restArgs.children}
+      </mdc-modalcontainer>
+    `,
+    clearDocument: true,
   });
-});
-
-test.skip('mdc-modalcontainer', async ({ componentsPage }) => {
   const modalcontainer = componentsPage.page.locator('mdc-modalcontainer');
-
-  // initial check for the modalcontainer be visible on the screen:
   await modalcontainer.waitFor();
+  return modalcontainer;
+};
+
+const attributeTestCases = async (componentsPage: ComponentsPage) => {
+  const modalcontainer = await setup({ componentsPage });
+  await test.step('default attributes for modalcontainer', async () => {
+    await expect(modalcontainer).toHaveAttribute('color', DEFAULTS.COLOR);
+    await expect(modalcontainer).toHaveAttribute('elevation', DEFAULTS.ELEVATION.toString());
+  });
+
+  await test.step('ModalContainerAttributes', async () => {
+    for (const color of Object.values(COLOR)) {
+      await test.step(`attribute color ${color} should be present as expected`, async () => {
+        await componentsPage.setAttributes(modalcontainer, { color });
+        await expect(modalcontainer).toHaveAttribute('color', color);
+      });
+    }
+    for (const elevation of Object.values(ELEVATION)) {
+      await test.step(`attribut elevation ${elevation} should be present as expected`, async () => {
+        await componentsPage.setAttributes(modalcontainer, { elevation: elevation.toString() });
+        await expect(modalcontainer).toHaveAttribute('elevation', elevation.toString());
+      });
+    }
+  });
+};
+
+test.describe.parallel('mdc-modalcontainer', () => {
+  test.use({ viewport: { width: 800, height: 800 } });
+
+  /**
+   * ATTRIBUTES
+   */
+  test('Attributes for ModalcontainerComponent', async ({ componentsPage }) => {
+    await test.step('attributes', async () => {
+      await attributeTestCases(componentsPage);
+    });
+  });
 
   /**
    * ACCESSIBILITY
    */
-  await test.step('accessibility', async () => {
+  test('accessibility', async ({ componentsPage }) => {
     await componentsPage.accessibility.checkForA11yViolations('modalcontainer-default');
   });
 
   /**
    * VISUAL REGRESSION
    */
-  await test.step('visual-regression', async () => {
-    await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-modalcontainer', { element: modalcontainer });
-    });
-  });
+  test('visual-regression', async ({ componentsPage }) => {
+    const modalcontainerStickerSheet = new StickerSheet(componentsPage, 'mdc-modalcontainer');
+    const text = '<mdc-text>Lorem ipsum dolor sit amet.</mdc-text>';
+    await test.step('Elevation and Color', async () => {
+      modalcontainerStickerSheet.setChildren(text);
+      await modalcontainerStickerSheet.createMarkupWithCombination({ color: COLOR, elevation: ELEVATION });
+      await modalcontainerStickerSheet.mountStickerSheet();
+      const container = modalcontainerStickerSheet.getWrapperContainer();
 
-  /**
-   * ATTRIBUTES
-   */
-  await test.step('attributes', async () => {
-    await test.step('attribute X should be present on component by default', async () => {
-      // TODO: add test here
-    });
-  });
-
-  /**
-   * INTERACTIONS
-   */
-  await test.step('interactions', async () => {
-    await test.step('mouse/pointer', async () => {
-      await test.step('component should fire callback x when clicking on it', async () => {
-        // TODO: add test here
-      });
-    });
-
-    await test.step('focus', async () => {
-      await test.step('component should be focusable with tab', async () => {
-        // TODO: add test here
-      });
-
-      // add additional tests here, like tabbing through several parts of the component
-    });
-
-    await test.step('keyboard', async () => {
-      await test.step('component should fire callback x when pressing y', async () => {
-        // TODO: add test here
+      await test.step('matches screenshot of element', async () => {
+        await componentsPage.visualRegression.takeScreenshot('mdc-modalcontainer', { element: container });
       });
     });
   });
