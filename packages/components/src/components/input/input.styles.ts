@@ -1,6 +1,7 @@
 import { css } from 'lit';
+import { hostFocusRingStyles } from '../../utils/styles';
 
-const styles = css`
+const styles = [css`
   :host([disabled]) .input,
   :host([disabled]) .input::placeholder{
     color: var(--mds-color-theme-text-primary-disabled);
@@ -76,6 +77,6 @@ const styles = css`
     opacity: 0;
     pointer-events: none;
   }
-`;
+`, ...hostFocusRingStyles(true)];
 
-export default [styles];
+export default styles;

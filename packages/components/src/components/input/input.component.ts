@@ -2,10 +2,10 @@ import { CSSResult, html, nothing } from 'lit';
 import { property, state, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './input.styles';
-import Helperlabel from '../helperlabel';
+import LabelAndHelper from '../labelandhelper';
 import type { InputType } from './input.types';
 import { DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
-import { ValidationType } from '../helperlabel/helperlabel.types';
+import { ValidationType } from '../labelandhelper/labelandhelper.types';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { IconNames } from '../icon/icon.types';
 
@@ -27,7 +27,7 @@ import { IconNames } from '../icon/icon.types';
  * @dependency mdc-text
  * @dependency mdc-button
  */
-class Input extends DisabledMixin(Helperlabel) {
+class Input extends DisabledMixin(LabelAndHelper) {
   /**
  * The value of the input field. It is a two-way binding property.
  */
@@ -118,7 +118,7 @@ class Input extends DisabledMixin(Helperlabel) {
       return nothing;
     }
     if (this.prefixText.length > PREFIX_TEXT_OPTIONS.MAX_LENGTH) {
-      if (this.prevHelperText === '') {
+      if (this.prevHelperText === '' && this.helpText) {
         this.prevHelperText = this.helpText;
         this.prevHelperTextType = this.helpTextType;
       }
@@ -156,7 +156,7 @@ class Input extends DisabledMixin(Helperlabel) {
 
   public override render() {
     return html`
-      ${this.renderHeaderLabel()}
+      ${this.renderLabel()}
       <div class="input-container mdc-focus-ring" part="input-container">
         <slot name="input-leading-icon">${this.renderLeadingIcon()}</slot>
        <section class="text-container">
@@ -178,11 +178,11 @@ class Input extends DisabledMixin(Helperlabel) {
        </section>
         <slot name="trailing-button">${this.renderTrailingButton()}</slot>
       </div>
-      ${this.renderFooterHelperText()}
+      ${this.renderHelperText()}
     `;
   }
 
-  public static override styles: Array<CSSResult> = [...Helperlabel.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...LabelAndHelper.styles, ...styles];
 }
 
 export default Input;

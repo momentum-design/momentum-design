@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { TYPE } from './input.constants';
-import { VALIDATION } from '../helperlabel/helperlabel.constants';
+import { VALIDATION } from '../labelandhelper/labelandhelper.constants';
 import { disableControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) =>
@@ -12,9 +12,9 @@ const render = (args: Args) =>
     id="${args.id}"
     label="${args.label}"
     type="${args.type}"
-    labelInfoText="${args.labelInfoText}"
-    helpTextType="${args.helpTextType}"
-    helpText="${args.helpText}"
+    label-info-text="${args['label-info-text']}"
+    help-text-type="${args['help-text-type']}"
+    help-text="${args['help-text']}"
     placeholder="${args.placeholder}"
     value="${args.value}"
     class="${args.class}"
@@ -39,7 +39,7 @@ const meta: Meta = {
   argTypes: {
     ...classArgType,
     ...styleArgType,
-    helpTextType: {
+    'help-text-type': {
       control: 'select',
       options: Object.values(VALIDATION),
     },
@@ -62,10 +62,10 @@ const meta: Meta = {
     required: {
       control: 'boolean',
     },
-    labelInfoText: {
+    'label-info-text': {
       control: 'text',
     },
-    helpText: {
+    'help-text': {
       control: 'text',
     },
     readonly: {
@@ -96,11 +96,11 @@ export const Example: StoryObj = {
     id: '1',
     label: 'Label (required)',
     type: 'text',
-    labelInfoText: 'Label info text',
+    'label-info-text': 'Label info text',
     placeholder: 'Placeholder',
     value: '',
-    helpText: 'Helper text',
-    helpTextType: 'default',
+    'help-text': 'Helper text',
+    'help-text-type': 'default',
     required: false,
     readonly: false,
     disabled: false,
@@ -111,99 +111,62 @@ export const Example: StoryObj = {
 
 export const AllVariants: StoryObj = {
   argTypes: {
-    ...disableControls(['label', 'labelInfoText', 'helpText', 'required', 'placeholder', 'value', 'helpTextType']),
+    ...disableControls(['label', 'label-info-text', 'help-text', 'required', 'placeholder', 'value', 'help-text-type']),
   },
   render: () => html`
   <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
-  <mdc-input 
-  id="1"
-  label="Label"
-  labelInfoText="Label info text"
-  helpText="Helper text"
-  helpTextType="default"
-  placeholder="Placeholder"
-  value="Value"
-  ></mdc-input>
-  <mdc-input 
-  id="2"
-  label="Label"
-  labelInfoText="Label info text"
-  helpText="Helper text"
-  helpTextType="error"
-  placeholder="Placeholder"
-  value="Value"
-  ></mdc-input>
-  <mdc-input 
-  id="3"
-  label="Label"
-  labelInfoText="Label info text"
-  helpText="Helper text"
-  helpTextType="warning"
-  placeholder="Placeholder"
-  value="Value"
-  ></mdc-input>
-  <mdc-input 
-  id="4"
-  label="Label"
-  labelInfoText="Label info text"
-  helpText="Helper text"
-  helpTextType="success"
-  placeholder="Placeholder"
-  value="Value"
-  ></mdc-input>
-  <mdc-input 
-  id="5"
-  label="Label"
-  labelInfoText="Label info text"
-  helpText="Helper text"
-  helpTextType="priority"
-  placeholder="Placeholder"
-  value="Value"
-  ></mdc-input>
-  <mdc-input 
-  id="6"
-  label="Label"
-  labelInfoText="Label info text"
-  helpText="Helper text"
-  helpTextType="default"
-  required placeholder="Input is required"
-  ></mdc-input>
-  <mdc-input 
-  id="7"
-  label="Label"
-  labelInfoText="Label info text"
-  helpText="Helper text"
-  helpTextType="default"
-  readonly placeholder="Placeholder"
-  value="This is readonly"
-  ></mdc-input>
-  <mdc-input 
-  id="8"
-  label="Label"
-  labelInfoText="Label info text"
-  helpText="Helper text"
-  helpTextType="default"
-  disabled placeholder="Placeholder"
-  value="Text disabled"
-  ></mdc-input>
-  <mdc-input 
-  id="9"
-  label="Label"
-  labelInfoText="Label info text"
-  helpText="Helper text"
-  helpTextType="default"
-  placeholder="Placeholder"
-  prefixText="https://"
-  ></mdc-input>
-  <mdc-input 
-  id="10"
-  label="Label"
-  labelInfoText="Label info text"
-  helpText="Helper text"
-  helpTextType="default"
-  placeholder="Placeholder"
-  leadingIcon="placeholder-bold"
-  ></mdc-input>
-  </div>
-  `,
+    ${Object.values(VALIDATION).map((validation, idx) => html`<mdc-input
+      help-text-type="${validation}"
+      id="${idx}"
+      label="Label"
+      help-text="Helper text"
+      placeholder="Placeholder"
+      value="${validation}_value"
+      label-info-text="Label info text"
+      ></mdc-input>`)}
+      <mdc-input 
+      id="6"
+      label="Label (required)"
+      label-info-text="Label info text"
+      help-text="Helper text"
+      help-text-type="default"
+      required placeholder="Input is required"
+      ></mdc-input>
+      <mdc-input 
+      id="7"
+      label="Label"
+      label-info-text="Label info text"
+      help-text="Helper text"
+      help-text-type="default"
+      readonly placeholder="Placeholder"
+      value="This is readonly"
+      ></mdc-input>
+      <mdc-input 
+      id="8"
+      label="Label"
+      label-info-text="Label info text"
+      help-text="Helper text"
+      help-text-type="default"
+      disabled placeholder="Placeholder"
+      value="Text disabled"
+      ></mdc-input>
+      <mdc-input 
+      id="9"
+      label="Label"
+      label-info-text="Label info text"
+      help-text="Helper text"
+      help-text-type="default"
+      placeholder="Placeholder"
+      prefixText="https://"
+      ></mdc-input>
+      <mdc-input 
+      id="10"
+      label="Label"
+      label-info-text="Label info text"
+      help-text="Helper text"
+      help-text-type="default"
+      placeholder="Placeholder"
+      leadingIcon="placeholder-bold"
+      ></mdc-input>
+      </div>`,
 };
