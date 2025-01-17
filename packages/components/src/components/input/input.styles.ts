@@ -60,16 +60,16 @@ const styles = [css`
     color: var(--mds-color-theme-text-secondary-normal);
   }
 
-  :host([helpTextType="error"]) .input-container {
+  :host([help-text-type="error"]) .input-container {
     border-color: var(--mds-color-theme-text-error-normal);
   }
-  :host([helpTextType="warning"]) .input-container {
+  :host([help-text-type="warning"]) .input-container {
     border-color: var(--mds-color-theme-text-warning-normal);
   }
-  :host([helpTextType="success"]) .input-container {
+  :host([help-text-type="success"]) .input-container {
     border-color: var(--mds-color-theme-text-success-normal);
   }
-  :host([helpTextType="priority"]) .input-container {
+  :host([help-text-type="priority"]) .input-container {
     border-color: var(--mds-color-theme-text-accent-normal);
   }
 
