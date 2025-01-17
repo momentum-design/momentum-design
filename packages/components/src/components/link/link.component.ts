@@ -1,5 +1,5 @@
 import { CSSResult, html, PropertyValueMap } from 'lit';
-import { property, query } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DEFAULTS, LINK_ICON_SIZES, LINK_SIZES } from './link.constants';
 import { LinkSize } from './link.types';

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { action } from '@storybook/addon-actions';
 import { LINK_SIZES } from './link.constants';
 import { disableControls } from '../../../config/storybook/utils';
 
@@ -9,6 +10,10 @@ const render = (args: Args) => {
   const htmlContent = html`${new DOMParser().parseFromString(args.children, 'text/html').body.firstChild}`;
 
   return html`<mdc-link
+    @click="${action('onClick')}"
+    @keydown="${action('onKeyDown')}"
+    @keyup="${action('onKeyUp')}"
+    @focus="${action('onFocus')}"
     ?disabled="${args.disabled}"
     ?inline="${args.inline}"
     ?inverted="${args.inverted}"
