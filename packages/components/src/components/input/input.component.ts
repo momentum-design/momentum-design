@@ -3,11 +3,11 @@ import { property, state, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './input.styles';
 import LabelAndHelper from '../labelandhelper';
-import type { InputType } from './input.types';
-import { DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
-import { ValidationType } from '../labelandhelper/labelandhelper.types';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
-import { IconNames } from '../icon/icon.types';
+import { DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
+import type { InputType } from './input.types';
+import type { ValidationType } from '../labelandhelper/labelandhelper.types';
+import type { IconNames } from '../icon/icon.types';
 
 /**
  * mdc-input is a component that allows users to input text.

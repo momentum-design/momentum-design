@@ -12,8 +12,9 @@ const render = (args: Args) =>
     label-info-text="${args['label-info-text']}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
-    >${args.children}</mdc-labelandhelper
-  >`;
+    >
+    ${args.children}
+    </mdc-labelandhelper>`;
 
 const meta: Meta = {
   title: 'Internal/labelandhelper',
@@ -63,9 +64,9 @@ export const HelperTextTypes: StoryObj = {
       ${repeat(
     Object.values(VALIDATION),
     (validation: ValidationType) => html`
-          <mdc-labelandhelper help-text-type="${validation}" label="Label" help-text="Helper text"
-            >[Child component]</mdc-labelandhelper
-          >
+          <mdc-labelandhelper help-text-type="${validation}" label="Label" help-text="Helper text">
+            [Child component]
+          </mdc-labelandhelper>
         `,
   )}
     </div>`,
