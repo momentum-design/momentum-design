@@ -10,7 +10,7 @@ const render = (args: Args) => html`
   <mdc-bullet size="${ifDefined(args.size)}"></mdc-bullet>`;
 
 const meta: Meta = {
-  title: 'Components/bullet',
+  title: 'Components/decorator/bullet',
   tags: ['autodocs'],
   component: 'mdc-bullet',
   render,

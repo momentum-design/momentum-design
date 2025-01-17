@@ -8,6 +8,10 @@ import Text from './components/text';
 import Button from './components/button';
 import Popover from './components/popover';
 import Bullet from './components/bullet';
+import Marker from './components/marker';
+import Divider from './components/divider';
+import Buttonsimple from './components/buttonsimple';
+import Avatarbutton from './components/avatarbutton';
 
 import type { TextType } from './components/text/text.types';
 
@@ -22,6 +26,10 @@ export {
   Button,
   Popover,
   Bullet,
+  Marker,
+  Divider,
+  Buttonsimple,
+  Avatarbutton,
 };
 
 export type {
