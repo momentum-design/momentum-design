@@ -22,6 +22,7 @@ const styles = [hostFitContentStyles, css`
   }
 
   ::slotted(a) {
+    outline: none;
     align-items: center;
     color: inherit;
     display: flex;
