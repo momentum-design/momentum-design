@@ -2,7 +2,7 @@
 /* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import { ModalContainerColor, ModalContainerElevation } from './modalcontainer.types';
+import type { ModalContainerColor, ModalContainerElevation } from './modalcontainer.types';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { COLOR, DEFAULTS, ELEVATION } from './modalcontainer.constants';
 
