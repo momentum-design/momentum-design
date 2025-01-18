@@ -3,9 +3,11 @@ import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 
 const styles = [hostFitContentStyles, css`
   :host {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    display: block;
+    position: relative;
+    margin: 4px 0;
+    min-height: 18px;
+    user-select: none;
   }
   :host([indeterminate]) {
     cursor: none;
@@ -14,6 +16,9 @@ const styles = [hostFitContentStyles, css`
   :host([disabled]) .mdc-checkbox__label-text,
   :host([disabled]) .mdc-checkbox__help-text {
     color: var(--mds-color-theme-text-primary-disabled);
+  }
+  :host([disabled]) .mdc-checkbox__label-text:hover:before {
+    background-color: unset;
   }
   :host([disabled]) > .mdc-checkbox__container > .mdc-checkbox__label-text:before {
     border: 1px solid var(--mds-color-theme-outline-primary-disabled);
@@ -24,12 +29,42 @@ const styles = [hostFitContentStyles, css`
     background: var(--mds-color-theme-control-active-disabled);
   }
   .mdc-checkbox__container {
-    padding: 0.125rem 0;
+    display: flex;
   }
   .mdc-checkbox__input {
-    padding: 0;
+    position: absolute;
+    height: 1px;
+    left: 9px;
     margin: 0;
-    display: none;
+    top: 17px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+    white-space: nowrap;
+  }
+  .icon {
+    align-items: center;
+    background-color: green;
+    background-size: 16px;
+    border: 1px solid green;
+    color: lightblue;
+    display: flex;
+    height: 18px;
+    justify-content: center;
+    left: 0;
+    margin-left: 0;
+    margin-right: 9px;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    width: 18px;
+    border-radius: 3px;
+  }
+  span {
+    margin-left: 1.5rem;
+  }
+  .icon:focus-within {
+    position: absolute !important;
   }
   .mdc-checkbox__input:checked ~ .mdc-checkbox__label-text > .mdc-checkbox__icon {
     display: block;

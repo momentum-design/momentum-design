@@ -42,7 +42,12 @@ class Checkbox extends DisabledMixin(Component) {
    */
   @property({ type: Boolean, reflect: true }) indeterminate = false;
 
-  private handleChange(): void {
+  constructor() {
+    super();
+    this.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  private triggerClickEvent(): void {
     const changeEvent = new Event('change', {
       bubbles: true,
       cancelable: true,
@@ -50,40 +55,58 @@ class Checkbox extends DisabledMixin(Component) {
     this.dispatchEvent(changeEvent);
   }
 
+  private toggleState(): void {
+    this.checked = !this.checked;
+    this.triggerClickEvent();
+  }
+
+  private handleKeyDown(event: KeyboardEvent): void {
+    if (['Enter', ' '].includes(event.key)) {
+      event.preventDefault();
+      this.toggleState();
+    }
+  }
+
+  private handleClick(event: Event): void {
+    event.preventDefault();
+    this.toggleState();
+  }
+
   public override render() {
+    const checkedIconContent = this.checked ? html`
+      <mdc-icon
+        class="mdc-checkbox__icon"
+        name="${this.indeterminate ? 'minus-regular' : 'check-regular'}"
+        size="1"
+        length-unit="rem"
+      ></mdc-icon>
+    ` : nothing;
+    const helpTextContent = this.helpText ? html`
+      <mdc-text
+        class="mdc-checkbox__help-text"
+        tagname="${VALID_TEXT_TAGS.SPAN}"
+        type="${TYPE.BODY_MIDSIZE_REGULAR}"
+      >${this.helpText}</mdc-text>` : nothing;
+
     return html`
-      <label class="mdc-checkbox__container">
+      <label class="mdc-checkbox__container" @click=${this.handleClick}>
         <input
           id="${this.id}"
-          type="checkbox"
+          type="checkbox" 
           class="mdc-checkbox__input"
-          ?checked="${this.indeterminate ? true : this.checked}"
           ?disabled="${this.disabled}"
           name="${ifDefined(this.name)}"
           value="${ifDefined(this.value)}"
-          @change="${this.handleChange}"
           aria-label="${ifDefined(this.label)}"
           aria-checked="${this.checked}"
           aria-disabled="${this.disabled}"
           role="checkbox"
-          tabindex="0"
+          hidden
         />
-        <span class="mdc-checkbox__label-text">
-          <mdc-icon
-            class="mdc-checkbox__icon"
-            name="${this.indeterminate ? 'minus-regular' : 'check-regular'}"
-            size="1"
-            length-unit="rem"
-          ></mdc-icon>
-          ${this.label}
-        </span>
+        <div tabindex="0" class="icon mdc-focus-ring">${checkedIconContent}</div>
+        <span>${this.label}</span>
       </label>
-      ${this.helpText ? html`
-        <mdc-text
-          class="mdc-checkbox__help-text"
-          tagname="${VALID_TEXT_TAGS.SPAN}"
-          type="${TYPE.BODY_MIDSIZE_REGULAR}"
-        >${this.helpText}</mdc-text>` : nothing}
+      ${helpTextContent}
     `;
   }
 
