@@ -1,5 +1,7 @@
 import Checkbox from './checkbox.component';
 import { TAG_NAME } from './checkbox.constants';
+import '../icon';
+import '../text';
 
 Checkbox.register(TAG_NAME);
 
