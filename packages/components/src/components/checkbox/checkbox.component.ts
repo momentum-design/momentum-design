@@ -56,14 +56,18 @@ class Checkbox extends DisabledMixin(Component) {
   }
 
   private toggleState(): void {
-    this.checked = !this.checked;
-    this.triggerClickEvent();
+    if (!this.disabled) {
+      this.checked = !this.checked;
+      this.triggerClickEvent();
+    }
   }
 
   private handleKeyDown(event: KeyboardEvent): void {
     if (['Enter', ' '].includes(event.key)) {
       event.preventDefault();
-      this.toggleState();
+      if (!this.indeterminate) {
+        this.toggleState();
+      }
     }
   }
 
@@ -73,7 +77,7 @@ class Checkbox extends DisabledMixin(Component) {
   }
 
   public override render() {
-    const checkedIconContent = this.checked ? html`
+    const checkboxIconContent = (this.checked || this.indeterminate) ? html`
       <mdc-icon
         class="mdc-checkbox__icon"
         name="${this.indeterminate ? 'minus-regular' : 'check-regular'}"
@@ -93,18 +97,21 @@ class Checkbox extends DisabledMixin(Component) {
         <input
           id="${this.id}"
           type="checkbox" 
-          class="mdc-checkbox__input"
-          ?disabled="${this.disabled}"
           name="${ifDefined(this.name)}"
           value="${ifDefined(this.value)}"
-          aria-label="${ifDefined(this.label)}"
+          class="mdc-checkbox__input"
+        />
+        <span
           aria-checked="${this.checked}"
           aria-disabled="${this.disabled}"
+          aria-label="${ifDefined(this.label)}"
+          class="mdc-checkbox__icon-container mdc-focus-ring"
           role="checkbox"
-          hidden
-        />
-        <div tabindex="0" class="icon mdc-focus-ring">${checkedIconContent}</div>
-        <span>${this.label}</span>
+          tabindex="${this.disabled ? -1 : 0}"
+        >
+          ${checkboxIconContent}
+        </span>
+        <span class="mdc-checkbox__label-text">${this.label}</span>
       </label>
       ${helpTextContent}
     `;
