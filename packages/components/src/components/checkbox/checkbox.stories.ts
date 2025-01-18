@@ -36,12 +36,22 @@ export const Example: StoryObj = {
   },
 };
 
-export const Disabled: StoryObj = {
+export const Indeterminate: StoryObj = {
   args: {
-    label: 'Checkbox Disabled',
-    disabled: false,
+    label: 'Checkbox Label',
+    'help-text': 'Checkbox Help Text',
+    checked: true,
     indeterminate: true,
   },
+};
+
+export const Disabled: StoryObj = {
+  render: () => html`
+    <div style="display: flex; flex-direction: column;">
+      <mdc-checkbox label="Unselected" disabled></mdc-checkbox>
+      <mdc-checkbox label="Selected" disabled checked></mdc-checkbox>
+      <mdc-checkbox label="Indeterminate" disabled indeterminate></mdc-checkbox>
+    </div>`,
 };
 
 export const HelperText: StoryObj = {
@@ -54,11 +64,11 @@ export const HelperText: StoryObj = {
 export const List: StoryObj = {
   render: () => html`
     <div style="display: flex; flex-direction: column;">
-      <mdc-checkbox label="Black Widow" checked></mdc-checkbox>
-      <mdc-checkbox label="Captain America"></mdc-checkbox>
-      <mdc-checkbox label="Hawkeye" checked></mdc-checkbox>
+      <mdc-checkbox label="Black Widow"></mdc-checkbox>
+      <mdc-checkbox label="Captain America" checked disabled></mdc-checkbox>
+      <mdc-checkbox label="Hawkeye"></mdc-checkbox>
       <mdc-checkbox label="The Hulk" disabled></mdc-checkbox>
-      <mdc-checkbox label="Iron Man" checked></mdc-checkbox>
+      <mdc-checkbox label="Iron Man" indeterminate></mdc-checkbox>
       <mdc-checkbox label="Thor" checked></mdc-checkbox>
     </div>
   `,
