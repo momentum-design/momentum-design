@@ -53,7 +53,7 @@ export const HelperText: StoryObj = {
 
 export const List: StoryObj = {
   render: () => html`
-    <div>
+    <div style="display: flex; flex-direction: column;">
       <mdc-checkbox label="Black Widow" checked></mdc-checkbox>
       <mdc-checkbox label="Captain America"></mdc-checkbox>
       <mdc-checkbox label="Hawkeye" checked></mdc-checkbox>
