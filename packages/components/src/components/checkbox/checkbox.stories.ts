@@ -64,12 +64,12 @@ export const HelperText: StoryObj = {
 export const List: StoryObj = {
   render: () => html`
     <div style="display: flex; flex-direction: column;">
-      <mdc-checkbox label="Black Widow"></mdc-checkbox>
+      <mdc-checkbox label="Black Widow" checked help-text="This is a help text"></mdc-checkbox>
       <mdc-checkbox label="Captain America" checked disabled></mdc-checkbox>
-      <mdc-checkbox label="Hawkeye"></mdc-checkbox>
-      <mdc-checkbox label="The Hulk" disabled></mdc-checkbox>
+      <mdc-checkbox label="Hawkeye" indeterminate disabled></mdc-checkbox>
+      <mdc-checkbox label="The Hulk" help-text="This is a help text"></mdc-checkbox>
       <mdc-checkbox label="Iron Man" indeterminate></mdc-checkbox>
-      <mdc-checkbox label="Thor" checked></mdc-checkbox>
+      <mdc-checkbox label="Thor" disabled help-text="This is a help text"></mdc-checkbox>
     </div>
   `,
 };

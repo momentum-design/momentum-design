@@ -75,7 +75,8 @@ class Checkbox extends DisabledMixin(Component) {
             size="1"
             length-unit="rem"
           ></mdc-icon>
-        ${this.label}</span>
+          ${this.label}
+        </span>
       </label>
       ${this.helpText ? html`
         <mdc-text
