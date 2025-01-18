@@ -73,3 +73,16 @@ export const List: StoryObj = {
     </div>
   `,
 };
+
+export const BasicList: StoryObj = {
+  render: () => html`
+    <div style="display: flex; flex-direction: column;">
+      <mdc-checkbox label="Black Widow"></mdc-checkbox>
+      <mdc-checkbox label="Captain America"></mdc-checkbox>
+      <mdc-checkbox label="Hawkeye"></mdc-checkbox>
+      <mdc-checkbox label="The Hulk"></mdc-checkbox>
+      <mdc-checkbox label="Iron Man"></mdc-checkbox>
+      <mdc-checkbox label="Thor"></mdc-checkbox>
+    </div>
+  `,
+};
