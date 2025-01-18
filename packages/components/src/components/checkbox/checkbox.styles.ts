@@ -1,16 +1,18 @@
 import { css } from 'lit';
+import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 
-const styles = css`
+const styles = [hostFitContentStyles, css`
   :host {
     display: flex;
     flex-direction: column;
-    height: 1.5rem;
+    align-items: flex-start;
   }
   :host([indeterminate]) {
     cursor: none;
     pointer-events: none;
   }
-  :host([disabled]) .mdc-checkbox__label-text {
+  :host([disabled]) .mdc-checkbox__label-text,
+  :host([disabled]) .mdc-checkbox__help-text {
     color: var(--mds-color-theme-text-primary-disabled);
   }
   :host([disabled]) > .mdc-checkbox__container > .mdc-checkbox__label-text:before {
@@ -20,6 +22,9 @@ const styles = css`
     --mdc-icon-fill-color: var(--mds-color-theme-text-primary-disabled);
     border: 1px solid var(--color-theme-outline-primary-disabled);
     background: var(--mds-color-theme-control-active-disabled);
+  }
+  .mdc-checkbox__container {
+    padding: 0.125rem 0;
   }
   .mdc-checkbox__input {
     padding: 0;
@@ -59,7 +64,8 @@ const styles = css`
   .mdc-checkbox__help-text {
     color: var(--mds-color-theme-text-secondary-normal);
     margin-left: 1.5rem;
+    height: 1.25rem;
   }
-`;
+`, ...hostFocusRingStyles(true)];
 
-export default [styles];
+export default styles;
