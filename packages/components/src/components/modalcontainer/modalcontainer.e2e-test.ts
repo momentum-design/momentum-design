@@ -76,20 +76,20 @@ test('mdc-modalcontainer', async ({ componentsPage }) => {
     const text = '<mdc-text>Lorem ipsum dolor sit amet.</mdc-text>';
     await test.step('Elevation and Color', async () => {
       modalcontainerStickerSheet.setChildren(text);
+      modalcontainerStickerSheet.setAttributes({ 'aria-label': 'modal' });
       await modalcontainerStickerSheet.createMarkupWithCombination({ color: COLOR, elevation: ELEVATION });
       await modalcontainerStickerSheet.mountStickerSheet();
-
-      /**
-       * ACCESSIBILITY
-       */
-      await test.step('accessibility', async () => {
-        await componentsPage.accessibility.checkForA11yViolations('modalcontainer-default');
-      });
-
       const container = modalcontainerStickerSheet.getWrapperContainer();
 
       await test.step('matches screenshot of element', async () => {
         await componentsPage.visualRegression.takeScreenshot('mdc-modalcontainer', { element: container });
+      });
+
+      /**
+      * ACCESSIBILITY
+      */
+      await test.step('accessibility', async () => {
+        await componentsPage.accessibility.checkForA11yViolations('modalcontainer-default');
       });
     });
   });
