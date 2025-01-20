@@ -66,9 +66,13 @@ class Checkbox extends DisabledMixin(Component) {
    * This is used to dispatch the change event.
    */
   private triggerChangeEvent(): void {
-    const changeEvent = new Event('change', {
+    const changeEvent = new CustomEvent('change', {
       bubbles: true,
+      composed: true,
       cancelable: true,
+      detail: {
+        checked: this.checked,
+      },
     });
     this.dispatchEvent(changeEvent);
   }
@@ -94,7 +98,7 @@ class Checkbox extends DisabledMixin(Component) {
    * @param event - The keyboard event.
    */
   private handleKeyDown(event: KeyboardEvent): void {
-    if (this.indeterminate || this.disabled) {
+    if (this.disabled) {
       return;
     }
     if (['Enter', ' '].includes(event.key)) {
