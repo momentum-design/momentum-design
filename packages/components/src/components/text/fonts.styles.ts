@@ -7,6 +7,9 @@ export const fontsStyles = css`
     line-height: unset;
     text-decoration: unset;
     text-transform: unset;
+    white-space: inherit;
+    overflow: inherit;
+    text-overflow: inherit;
   }
 
   :host([type="headline-small-regular"]) {
