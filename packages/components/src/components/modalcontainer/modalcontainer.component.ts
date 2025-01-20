@@ -1,12 +1,13 @@
 import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './modalcontainer.styles';
 import { Component } from '../../models';
 import { DEFAULTS } from './modalcontainer.constants';
 import type { ModalContainerColor, ModalContainerElevation } from './modalcontainer.types';
 
 /**
- * The `mdc-modalcontainer` component is a versatile UI element used to
+ * The `mdc-modalcontainer` component is an element used to
  * display a modal container that can further be used in popover.
  *
  * @tagname mdc-modalcontainer
@@ -21,13 +22,20 @@ import type { ModalContainerColor, ModalContainerElevation } from './modalcontai
 class Modalcontainer extends Component {
   /**
    * Color of the modalcontainer
+   * - **tonal**
+   * - **contrast**
    * @default tonal
    */
   @property({ type: String, reflect: true })
   color: ModalContainerColor = DEFAULTS.COLOR;
 
   /**
-   * Elevation of the modalcontainer
+   * Elevation of the modalcontainer where each value corresponds to a different drop shadow.
+   * - **0**
+   * - **1**
+   * - **2**
+   * - **3**
+   * - **4**
    * @default 0
    */
   @property({ type: Number, reflect: true })
@@ -47,21 +55,15 @@ class Modalcontainer extends Component {
   @property({ type: String, attribute: 'aria-modal' })
   override ariaModal: string = 'true';
 
-  /**
-   * Aria-label attribute to be set for accessibility
-   */
-  @property({ type: String, attribute: 'aria-label' })
-  override ariaLabel: string | null = null;
-
   public override render() {
     return html`
       <div 
-        id='modal-container' 
-        class='modal-container'  
+        id='mdc-modal-container' 
+        class='mdc-modal-container'  
         ?contrast="${this.color === 'contrast'}"
         role="${this.role}"
         aria-modal=${this.ariaModal}
-        aria-label=${this.ariaLabel}
+        aria-label=${ifDefined(this.ariaLabel)}
         data-elevation="${this.elevation}"
         >
         <slot></slot>

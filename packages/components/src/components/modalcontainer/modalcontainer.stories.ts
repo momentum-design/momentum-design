@@ -3,6 +3,7 @@ import '.';
 import { html } from 'lit';
 import { COLOR, DEFAULTS, ELEVATION } from './modalcontainer.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { disableControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
 <mdc-modalcontainer
@@ -41,10 +42,17 @@ const meta: Meta = {
     },
     'aria-label': {
       control: 'text',
-      description: 'Provides an accessible name for the modal.',
+      description: 'Aria label for the modal container. Required for accessibility.',
     },
     ...classArgType,
     ...styleArgType,
+    ...disableControls([
+      '--mdc-modalcontainer-primary-background-color',
+      '--mdc-modalcontainer-border-color',
+      '--mdc-modalcontainer-inverted-background-color',
+      '--mdc-modalcontainer-inverted-border-color',
+      '--mdc-modalcontainer-inverted-text-color',
+    ]),
   },
 };
 

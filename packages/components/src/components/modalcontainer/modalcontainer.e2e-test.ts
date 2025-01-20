@@ -21,7 +21,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.color ? `color="${restArgs.color}"` : ''}
         ${restArgs.elevation ? `elevation="${restArgs.elevation}"` : ''}
         role="dialog"
-        aria-label="avatar button"
+        aria-label="modal container"
         aria-model="dialog"
       >${restArgs.children}
       </mdc-modalcontainer>
@@ -56,35 +56,36 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
   });
 };
 
-test.describe.parallel('mdc-modalcontainer', () => {
-  test.use({ viewport: { width: 800, height: 800 } });
+test.use({ viewport: { width: 800, height: 800 } });
 
+test('mdc-modalcontainer', async ({ componentsPage }) => {
   /**
    * ATTRIBUTES
    */
-  test('Attributes for ModalcontainerComponent', async ({ componentsPage }) => {
+  await test.step('Attributes for ModalcontainerComponent', async () => {
     await test.step('attributes', async () => {
       await attributeTestCases(componentsPage);
     });
   });
 
   /**
-   * ACCESSIBILITY
-   */
-  test('accessibility', async ({ componentsPage }) => {
-    await componentsPage.accessibility.checkForA11yViolations('modalcontainer-default');
-  });
-
-  /**
    * VISUAL REGRESSION
    */
-  test('visual-regression', async ({ componentsPage }) => {
+  await test.step('visual-regression', async () => {
     const modalcontainerStickerSheet = new StickerSheet(componentsPage, 'mdc-modalcontainer');
     const text = '<mdc-text>Lorem ipsum dolor sit amet.</mdc-text>';
     await test.step('Elevation and Color', async () => {
       modalcontainerStickerSheet.setChildren(text);
       await modalcontainerStickerSheet.createMarkupWithCombination({ color: COLOR, elevation: ELEVATION });
       await modalcontainerStickerSheet.mountStickerSheet();
+
+      /**
+       * ACCESSIBILITY
+       */
+      await test.step('accessibility', async () => {
+        await componentsPage.accessibility.checkForA11yViolations('modalcontainer-default');
+      });
+
       const container = modalcontainerStickerSheet.getWrapperContainer();
 
       await test.step('matches screenshot of element', async () => {

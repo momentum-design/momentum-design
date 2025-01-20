@@ -16,29 +16,29 @@ const styles = [
       --mdc-modalcontainer-elevation-4: var(--mds-elevation-4);
     }
 
-    .modal-container {
+    .mdc-modal-container {
       padding: 0.75rem;
       background-color: var(--mdc-modalcontainer-primary-background-color);
       border-radius: 0.5rem;
       border: 0.0625rem solid var(--mdc-modalcontainer-border-color);
     }
 
-    .modal-container[contrast] {
+    .mdc-modal-container[contrast] {
       background-color: var(--mdc-modalcontainer-inverted-background-color);
       border: 0.0625rem solid var(--mdc-modalcontainer-inverted-border-color);
       color: var(--mdc-modalcontainer-inverted-text-color);
     }
 
-    .modal-container[data-elevation='1'] {
+    .mdc-modal-container[data-elevation='1'] {
       filter: var(--mdc-modalcontainer-elevation-1);
     }
-    .modal-container[data-elevation='2'] {
+    .mdc-modal-container[data-elevation='2'] {
       filter: var(--mdc-modalcontainer-elevation-2);
     }
-    .modal-container[data-elevation='3'] {
+    .mdc-modal-container[data-elevation='3'] {
       filter: var(--mdc-modalcontainer-elevation-3);
     }
-    .modal-container[data-elevation='4'] {
+    .mdc-modal-container[data-elevation='4'] {
       filter: var(--mdc-modalcontainer-elevation-4);
     }
   `,
