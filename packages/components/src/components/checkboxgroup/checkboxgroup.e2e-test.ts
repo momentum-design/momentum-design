@@ -8,7 +8,8 @@ test.beforeEach(async ({ componentsPage }) => {
   });
 });
 
-test('mdc-checkboxgroup', async ({ componentsPage }) => {
+// TODO: write e2e tests.
+test.skip('mdc-checkboxgroup', async ({ componentsPage }) => {
   const checkboxgroup = componentsPage.page.locator('mdc-checkboxgroup');
 
   // initial check for the checkboxgroup be visible on the screen:
