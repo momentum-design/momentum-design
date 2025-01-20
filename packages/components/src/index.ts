@@ -12,6 +12,7 @@ import Divider from './components/divider';
 import AvatarButton from './components/avatarbutton';
 import Link from './components/link';
 import Checkbox from './components/checkbox';
+import Checkboxgroup from './components/checkboxgroup';
 
 import type { TextType } from './components/text/text.types';
 
@@ -30,6 +31,7 @@ export {
   AvatarButton,
   Link,
   Checkbox,
+  Checkboxgroup,
 };
 
 export type {
