@@ -31,8 +31,11 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    label: 'Checkbox Label',
-    'help-text': 'Checkbox Help Text',
+    label: 'I agree to the terms',
+    'help-text': '',
+    checked: false,
+    indeterminate: false,
+    disabled: false,
   },
 };
 
@@ -56,8 +59,8 @@ export const Disabled: StoryObj = {
 
 export const HelperText: StoryObj = {
   args: {
-    label: 'Checkbox Label',
-    'help-text': 'Iron man proves you don’t need superpowers to save the world.',
+    label: 'Email opt in',
+    'help-text': 'I agree to receiving monthly promotional emails.',
   },
 };
 

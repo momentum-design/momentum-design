@@ -3,6 +3,8 @@ import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
+import { NameMixin } from '../../utils/mixins/NameMixin';
+import { ValueMixin } from '../../utils/mixins/ValueMixin';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import styles from './checkbox.styles';
 
@@ -17,23 +19,13 @@ import styles from './checkbox.styles';
  *
  * @tagname mdc-checkbox
  */
-class Checkbox extends DisabledMixin(Component) {
+class Checkbox extends NameMixin(ValueMixin(DisabledMixin(Component))) {
   /**
    * Determines whether the checkbox is selected or unselected.
    *
    * @default false
    */
   @property({ type: Boolean, reflect: true }) checked = false;
-
-  /**
-   * The name of the checkbox.
-   */
-  @property({ type: String }) name?: string;
-
-  /**
-   * The value of the checkbox.
-   */
-  @property({ type: String }) value?: string;
 
   /**
    * The label of the checkbox.
