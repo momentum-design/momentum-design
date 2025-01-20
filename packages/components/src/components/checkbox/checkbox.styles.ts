@@ -24,6 +24,7 @@ const styles = [hostFitContentStyles, css`
     display: flex;
     align-items: center;
     height: 1.5rem;
+    cursor: pointer;
   }
   .mdc-checkbox__input {
     position: absolute;
