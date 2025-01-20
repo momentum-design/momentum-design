@@ -5,6 +5,9 @@ import{i as g,k as t}from"./lit-element-CHllvULs.js";import{C as p,n as h}from".
     line-height: unset;
     text-decoration: unset;
     text-transform: unset;
+    white-space: inherit;
+    overflow: inherit;
+    text-overflow: inherit;
   }
 
   :host([type="headline-small-regular"]) {
