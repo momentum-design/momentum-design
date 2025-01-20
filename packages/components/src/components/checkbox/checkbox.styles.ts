@@ -6,10 +6,6 @@ const styles = [hostFitContentStyles, css`
     display: block;
     position: relative;
   }
-  :host([indeterminate]) {
-    cursor: none;
-    pointer-events: none;
-  }
   :host([disabled]) .mdc-checkbox__label-text,
   :host([disabled]) .mdc-checkbox__help-text {
     color: var(--mds-color-theme-text-primary-disabled);
