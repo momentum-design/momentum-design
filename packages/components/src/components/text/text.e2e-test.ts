@@ -29,6 +29,23 @@ const setup = async (args: SetupOptions) => {
   return text;
 };
 
+const setupEllipsis = async (args: SetupOptions) => {
+  const { componentsPage, ...restArgs } = args;
+  await componentsPage.mount({
+    html: `
+      <mdc-text
+        type="${restArgs.type}"
+        ${restArgs.tagname ? `tagname="${restArgs.tagname}"` : ''}
+        style="width: 50px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+      >${restArgs.children}</mdc-text>
+    `,
+    clearDocument: true,
+  });
+  const text = componentsPage.page.locator('mdc-text');
+  await text.waitFor();
+  return text;
+};
+
 const textContent = 'abcdefghijklmnopqrstuvwxyz1234567890';
 
 test.describe('mdc-text', () => {
@@ -101,5 +118,27 @@ test.describe('mdc-text', () => {
         });
       });
     }
+  });
+});
+
+test.describe('mdc-text ellipsis', () => {
+  test.use({
+    viewport: {
+      width: 200,
+      height: 200,
+    },
+  });
+  test('visual-regression for ellipsis', async ({ componentsPage }) => {
+    await setupEllipsis({
+      componentsPage,
+      children: textContent,
+    });
+
+    /**
+   * VISUAL REGRESSION
+   */
+    await test.step('matches screenshot of text with elipsis', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-text-ellipsis');
+    });
   });
 });
