@@ -30,15 +30,17 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    headerText: 'Select your Avengers team',
-    label: 'Avengers',
+    headerText: 'Super powers',
+    label: 'Select all super powers',
     type: 'parent',
-    children: html`<mdc-checkbox label="Black Widow"></mdc-checkbox>
-      <mdc-checkbox label="Captain America"></mdc-checkbox>
-      <mdc-checkbox label="Hawkeye"></mdc-checkbox>
-      <mdc-checkbox label="The Hulk"></mdc-checkbox>
-      <mdc-checkbox label="Iron Man"></mdc-checkbox>
-      <mdc-checkbox label="Thor"></mdc-checkbox>`,
+    children: html`
+      <mdc-checkbox label="Flight"></mdc-checkbox>
+      <mdc-checkbox label="Mind Control"></mdc-checkbox>
+      <mdc-checkbox label="Super genius"></mdc-checkbox>
+      <mdc-checkbox label="Super strength"></mdc-checkbox>
+      <mdc-checkbox label="Tactics"></mdc-checkbox>
+      <mdc-checkbox label="Weather control"></mdc-checkbox>
+    `,
   },
 };
 
