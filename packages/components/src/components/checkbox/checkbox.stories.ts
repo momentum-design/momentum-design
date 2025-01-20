@@ -70,6 +70,7 @@ export const List: StoryObj = {
       <mdc-checkbox label="The Hulk" help-text="This is a help text"></mdc-checkbox>
       <mdc-checkbox label="Iron Man" indeterminate></mdc-checkbox>
       <mdc-checkbox label="Thor" disabled help-text="This is a help text"></mdc-checkbox>
+      <mdc-checkbox label="Captain Marvel"></mdc-checkbox>
     </div>
   `,
 };
