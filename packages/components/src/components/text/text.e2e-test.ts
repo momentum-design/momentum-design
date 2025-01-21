@@ -132,6 +132,7 @@ test.describe('mdc-text ellipsis', () => {
     await setupEllipsis({
       componentsPage,
       children: textContent,
+      tagname: 'p',
     });
 
     /**
