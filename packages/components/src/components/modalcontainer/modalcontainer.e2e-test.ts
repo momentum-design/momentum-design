@@ -79,7 +79,7 @@ test('mdc-modalcontainer', async ({ componentsPage }) => {
    */
   await test.step('visual-regression', async () => {
     const modalcontainerStickerSheet = new StickerSheet(componentsPage, 'mdc-modalcontainer');
-    const text = '<mdc-text>Lorem ipsum dolor sit amet.</mdc-text>';
+    const text = 'Lorem ipsum dolor sit amet.';
     await test.step('Elevation and Color', async () => {
       modalcontainerStickerSheet.setChildren(text);
       modalcontainerStickerSheet.setAttributes({ 'aria-label': 'modal' });
