@@ -2,14 +2,15 @@
 /* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import type { ModalContainerColor, ModalContainerElevation } from './modalcontainer.types';
+import type { ModalContainerColor, ModalContainerElevation, ModalContainerRole } from './modalcontainer.types';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
-import { COLOR, DEFAULTS, ELEVATION } from './modalcontainer.constants';
+import { COLOR, DEFAULTS, ELEVATION, ROLE } from './modalcontainer.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
   color?: ModalContainerColor;
   elevation?: ModalContainerElevation;
+  role?: ModalContainerRole
   children?: string;
 };
 
@@ -20,7 +21,7 @@ const setup = async (args: SetupOptions) => {
        <mdc-modalcontainer
         ${restArgs.color ? `color="${restArgs.color}"` : ''}
         ${restArgs.elevation ? `elevation="${restArgs.elevation}"` : ''}
-        role="dialog"
+        ${restArgs.role ? `role="${restArgs.role}"` : ''}
         aria-label="modal container"
       >${restArgs.children}
       </mdc-modalcontainer>
@@ -50,6 +51,12 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
       await test.step(`attribut elevation ${elevation} should be present as expected`, async () => {
         await componentsPage.setAttributes(modalcontainer, { elevation: elevation.toString() });
         await expect(modalcontainer).toHaveAttribute('elevation', elevation.toString());
+      });
+    }
+    for (const role of Object.values(ROLE)) {
+      await test.step(`attribut role ${role} should be present as expected`, async () => {
+        await componentsPage.setAttributes(modalcontainer, { role });
+        await expect(modalcontainer).toHaveAttribute('role', role);
       });
     }
   });
