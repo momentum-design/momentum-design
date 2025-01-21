@@ -1,5 +1,5 @@
 import{i as g,k as t}from"./lit-element-CHllvULs.js";import{C as p,n as h}from"./index-HW6KrQZO.js";import{D as e,V as a,a as u}from"./text.constants-DJu2q-6E.js";const v=g`
-  :host([tagname])::part(text) {
+  :host::part(text) {
     font-size: unset;
     font-weight: unset;
     line-height: unset;
