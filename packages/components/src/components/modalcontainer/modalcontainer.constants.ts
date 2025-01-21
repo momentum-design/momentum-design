@@ -15,10 +15,15 @@ const ELEVATION = {
   4: 4,
 } as const;
 
+const ROLE = {
+  DIALOG: 'dialog',
+  ALERT_DIALOG: 'alertdialog',
+} as const;
+
 const DEFAULTS = {
   COLOR: COLOR.TONAL,
   ELEVATION: ELEVATION[0],
-  ROLE: 'dialog',
+  ROLE: ROLE.DIALOG,
 } as const;
 
-export { TAG_NAME, COLOR, DEFAULTS, ELEVATION };
+export { TAG_NAME, COLOR, DEFAULTS, ELEVATION, ROLE };

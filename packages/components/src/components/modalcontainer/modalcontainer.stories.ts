@@ -10,7 +10,6 @@ const render = (args: Args) => html`
   color="${args.color}"
   elevation="${args.elevation}"
   role="${args.role}"
-  aria-modal="${args['aria-modal']}"
   aria-label="${args['aria-label']}"
 >
   <mdc-text>Lorem ipsum dolor sit amet.</mdc-text>
@@ -63,7 +62,6 @@ export const Example: StoryObj = {
     color: COLOR.CONTRAST,
     elevation: ELEVATION[0],
     role: DEFAULTS.ROLE,
-    'aria-modal': 'true',
     'aria-label': 'Modal container',
   },
 };

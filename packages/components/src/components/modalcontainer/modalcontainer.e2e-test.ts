@@ -22,7 +22,6 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.elevation ? `elevation="${restArgs.elevation}"` : ''}
         role="dialog"
         aria-label="modal container"
-        aria-model="dialog"
       >${restArgs.children}
       </mdc-modalcontainer>
     `,

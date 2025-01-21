@@ -4,7 +4,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './modalcontainer.styles';
 import { Component } from '../../models';
 import { DEFAULTS } from './modalcontainer.constants';
-import type { ModalContainerColor, ModalContainerElevation } from './modalcontainer.types';
+import type { ModalContainerColor, ModalContainerElevation, ModalContainerRole } from './modalcontainer.types';
 
 /**
  * The `mdc-modalcontainer` component is an element used to
@@ -46,14 +46,7 @@ class Modalcontainer extends Component {
    * @default dialog
    */
   @property({ type: String })
-  override role: string = DEFAULTS.ROLE;
-
-  /**
-   * Aria modal of the modalcontainer
-   * @default true
-   */
-  @property({ type: String, attribute: 'aria-modal' })
-  override ariaModal: string = 'true';
+  override role: ModalContainerRole = DEFAULTS.ROLE;
 
   public override render() {
     return html`
@@ -62,8 +55,8 @@ class Modalcontainer extends Component {
         class='mdc-modal-container'  
         ?contrast="${this.color === 'contrast'}"
         role="${this.role}"
-        aria-modal=${this.ariaModal}
-        aria-label=${ifDefined(this.ariaLabel)}
+        aria-modal='true'
+        aria-label=${ifDefined(this.ariaLabel) as string}
         data-elevation="${this.elevation}"
         >
         <slot></slot>
