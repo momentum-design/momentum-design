@@ -77,58 +77,52 @@ class Popover extends FocusTrapMixin(Component) {
   delay: string = '0,0';
 
   /**
-   * The boundary of the popover.
-   */
-  @property({ type: String, reflect: true })
-  boundary: string = '';
-
-  /**
    * The focus trap of the popover.
    */
   @property({ type: Boolean, reflect: true, attribute: 'focus-trap' })
   focusTrap = false;
 
   /**
-   * Prevent scroll when popover show..
+   * Prevent scroll when popover show.
    */
   @property({ type: Boolean, reflect: true, attribute: 'prevent-scroll' })
   preventScroll = false;
 
   /**
-   * The hide on escape of the popover.
+   * Hide popover on escape key press.
    */
   @property({ type: Boolean, reflect: true, attribute: 'hide-on-escape' })
   hideOnEscape = false;
 
   /**
-   * The hide on blur of the popover.
+   * Hide popover on blur.
    */
   @property({ type: Boolean, reflect: true, attribute: 'hide-on-blur' })
   hideOnBlur = false;
 
   /**
-   * The hide on blur of the popover.
+   * Hide on outside click of the popover.
    */
   @property({ type: Boolean, reflect: true, attribute: 'hide-on-outside-click' })
   hideOnOutsideClick = false;
 
   /**
-   * The hide on blur of the popover.
+   * The focus back to trigger after the popover hide.
    */
   @property({ type: Boolean, reflect: true, attribute: 'focus-back-to-trigger' })
   focusBackToTrigger = false;
 
   /**
-   * The hide on click of the popover.
+   * The z-index of the popover.
    */
   @property({ type: Number, reflect: true, attribute: 'set-index' })
   setIndex = 1000;
 
   /**
-   * The hide on click of the popover.
+   * Element ID that the popover append to.
    */
-  @property({ type: Boolean, reflect: true })
-  appendTo = false;
+  @property({ type: String, reflect: true })
+  appendTo = '';
 
   /**
    * Aria-label attribute to be set for popover accessibility
@@ -162,10 +156,32 @@ class Popover extends FocusTrapMixin(Component) {
 
   private closeDelay: number = 0;
 
+  protected override async firstUpdated(changedProperties: PropertyValues) {
+    super.firstUpdated(changedProperties);
+    this.popoverElement = this.renderRoot.querySelector('#popover-container');
+    this.setupAppendTo();
+    this.setupDelay();
+    this.setupTrigger();
+
+    if (this.visible) {
+      await this.positionPopover();
+      await this.handleCreatePopperFirstUpdate();
+    }
+  }
+
   override disconnectedCallback() {
     super.disconnectedCallback();
     this.removeEventListeners();
     popoverStack.remove(this);
+  }
+
+  private setupAppendTo() {
+    if (this.appendTo) {
+      const appendToElement = document.getElementById(this.appendTo);
+      if (appendToElement) {
+        appendToElement.appendChild(this);
+      }
+    }
   }
 
   private setupDelay() {
@@ -206,18 +222,6 @@ class Popover extends FocusTrapMixin(Component) {
     this.triggerElement.removeEventListener('focusin', this.showPopover.bind(this));
 
     this.removeEventListener('focus-trap-exit', this.hidePopover.bind(this));
-  }
-
-  protected override async firstUpdated(changedProperties: PropertyValues) {
-    super.firstUpdated(changedProperties);
-    this.popoverElement = this.renderRoot.querySelector('#popover-container');
-    this.setupDelay();
-    this.setupTrigger();
-
-    if (this.visible) {
-      await this.positionPopover();
-      await this.handleCreatePopperFirstUpdate();
-    }
   }
 
   protected override async updated(changedProperties: PropertyValues) {

@@ -202,11 +202,12 @@ export const FocusTrapMixin = <T extends Constructor<FocusTrapClass>>(
     }
 
     private getDeepActiveElement() {
-      let host = document.activeElement || document.body;
-      while (host && host.shadowRoot && host.shadowRoot.activeElement) {
+      let host: Element | null = document.activeElement || document.body;
+      while (host instanceof HTMLElement && host.shadowRoot?.activeElement) {
         host = host.shadowRoot.activeElement;
       }
-      return host;
+
+      return host as HTMLElement || document.body;
     }
 
     private findElement(activeElement: HTMLElement) {
