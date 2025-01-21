@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 export const fontsStyles = css`
-  :host([tagname])::part(text) {
+  :host::part(text) {
     font-size: unset;
     font-weight: unset;
     line-height: unset;
