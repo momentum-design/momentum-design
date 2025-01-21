@@ -2,7 +2,7 @@ import utils from '../../utils/tag-name';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 
-const TAG_NAME = utils.constructTagName('labelandhelper');
+const TAG_NAME = utils.constructTagName('formfieldwrapper');
 
 const VALIDATION = {
   ERROR: 'error',

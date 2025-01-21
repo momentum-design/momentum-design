@@ -3,22 +3,22 @@ import { test } from '../../../config/playwright/setup';
 test.beforeEach(async ({ componentsPage }) => {
   await componentsPage.mount({
     html: `
-        <mdc-helperlabel />
+        <mdc-formfieldwrapper />
       `,
   });
 });
 
-test.skip('mdc-helperlabel', async ({ componentsPage }) => {
-  const helperlabel = componentsPage.page.locator('mdc-helperlabel');
+test.skip('mdc-formfieldwrapper', async ({ componentsPage }) => {
+  const formfieldwrapper = componentsPage.page.locator('mdc-formfieldwrapper');
 
-  // initial check for the helperlabel be visible on the screen:
-  await helperlabel.waitFor();
+  // initial check for the formfieldwrapper be visible on the screen:
+  await formfieldwrapper.waitFor();
 
   /**
    * ACCESSIBILITY
    */
   await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('helperlabel-default');
+    await componentsPage.accessibility.checkForA11yViolations('formfieldwrapper-default');
   });
 
   /**
@@ -26,7 +26,7 @@ test.skip('mdc-helperlabel', async ({ componentsPage }) => {
    */
   await test.step('visual-regression', async () => {
     await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-helperlabel', { element: helperlabel });
+      await componentsPage.visualRegression.takeScreenshot('mdc-formfieldwrapper', { element: formfieldwrapper });
     });
   });
 
