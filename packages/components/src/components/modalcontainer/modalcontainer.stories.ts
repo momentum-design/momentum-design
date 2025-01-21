@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { COLOR, DEFAULTS, ELEVATION } from './modalcontainer.constants';
+import { COLOR, DEFAULTS, ELEVATION, ROLE } from './modalcontainer.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls } from '../../../config/storybook/utils';
 
@@ -12,7 +12,7 @@ const render = (args: Args) => html`
   role="${args.role}"
   aria-label="${args['aria-label']}"
 >
-  <mdc-text>Lorem ipsum dolor sit amet.</mdc-text>
+  ${args.children}
 </mdc-modalcontainer>
 `;
 
@@ -25,6 +25,10 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
+    children: {
+      control: 'text',
+      description: 'Text for the modal container (passed into "default" slot)',
+    },
     color: {
       control: 'select',
       options: Object.values(COLOR),
@@ -34,7 +38,8 @@ const meta: Meta = {
       options: Object.values(ELEVATION),
     },
     role: {
-      control: 'text',
+      control: 'radio',
+      options: Object.values(ROLE),
     },
     'aria-label': {
       control: 'text',
@@ -60,5 +65,6 @@ export const Example: StoryObj = {
     elevation: ELEVATION[0],
     role: DEFAULTS.ROLE,
     'aria-label': 'Modal container',
+    children: DEFAULTS.CHILDREN,
   },
 };

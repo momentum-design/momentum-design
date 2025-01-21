@@ -18,6 +18,7 @@ import type { ModalContainerColor, ModalContainerElevation, ModalContainerRole }
  * @cssproperty --mdc-modalcontainer-inverted-border-color - inverted border color of the modalcontainer
  * @cssproperty --mdc-modalcontainer-inverted-text-color - inverted text color of the modalcontainer
  *
+ * @slot - Default slot for modal container
  */
 class Modalcontainer extends Component {
   /**

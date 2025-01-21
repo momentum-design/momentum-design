@@ -24,6 +24,7 @@ const DEFAULTS = {
   COLOR: COLOR.TONAL,
   ELEVATION: ELEVATION[0],
   ROLE: ROLE.DIALOG,
+  CHILDREN: 'Lorem ipsum dolor sit amet',
 } as const;
 
 export { TAG_NAME, COLOR, DEFAULTS, ELEVATION, ROLE };
