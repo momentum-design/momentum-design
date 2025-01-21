@@ -201,7 +201,7 @@ export const FocusTrapMixin = <T extends Constructor<FocusTrapClass>>(
     }
 
     /**
-     * Sets the initial focus within the component.
+     * Sets the initial focus within the container.
      */
     override setInitialFocus(prefferableElement: number = 0) {
       if (this.focusableElements.length === 0) return;
@@ -244,11 +244,12 @@ export const FocusTrapMixin = <T extends Constructor<FocusTrapClass>>(
      * Finds the deepest active element within the shadow DOM.
      */
     private getDeepActiveElement() {
-      let host = document.activeElement || document.body;
-      while (host && host.shadowRoot && host.shadowRoot.activeElement) {
+      let host: Element | null = document.activeElement || document.body;
+      while (host instanceof HTMLElement && host.shadowRoot?.activeElement) {
         host = host.shadowRoot.activeElement;
       }
-      return host;
+
+      return host as HTMLElement || document.body;
     }
 
     /**
@@ -269,7 +270,7 @@ export const FocusTrapMixin = <T extends Constructor<FocusTrapClass>>(
     }
 
     /**
-     * Traps focus within the component.
+     * Traps focus within the container.
      */
     private trapFocus(direction: boolean) {
       if (this.focusableElements.length === 0) return;
@@ -290,7 +291,7 @@ export const FocusTrapMixin = <T extends Constructor<FocusTrapClass>>(
     }
 
     /**
-     * Handles the keydown event to trap focus within the component.
+     * Handles the keydown event to trap focus within the container.
      */
     private handleKeydown(event: KeyboardEvent) {
       if (!this.enableFocusTrap || !this.focusableElements.length) {
