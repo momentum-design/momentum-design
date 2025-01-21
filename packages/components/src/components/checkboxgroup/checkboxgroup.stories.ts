@@ -61,11 +61,16 @@ export const Nested: StoryObj = {
     <mdc-checkboxgroup type="parent" label="Lorem ipsum">
       <mdc-checkbox label="Duis faucibus"></mdc-checkbox>
       <mdc-checkboxgroup type="parent" label="Nullam ac lorem">
-        <mdc-checkbox label="Curabitur sit"></mdc-checkbox>
+        <mdc-checkbox disabled label="Curabitur sit"></mdc-checkbox>
         <mdc-checkbox label="Praesent malesuada"></mdc-checkbox>
         <mdc-checkboxgroup type="parent" label="Aliquam sed justo">
           <mdc-checkbox label="Fusce laoreet"></mdc-checkbox>
           <mdc-checkbox label="Mauris tincidunt"></mdc-checkbox>
+          <mdc-checkboxgroup disabled type="parent" label="Vivamus faucibus">
+              <mdc-checkbox label="Praesent viverra"></mdc-checkbox>
+              <mdc-checkbox label="Aliquam sollicitudin"></mdc-checkbox>
+            </mdc-checkboxgroup>
+      <mdc-checkbox label="Morbi quis urna"></mdc-checkbox>
           <mdc-checkboxgroup type="parent" label="Morbi feugiat">
             <mdc-checkbox label="Phasellus vitae"></mdc-checkbox>
             <mdc-checkbox label="Vestibulum feugiat"></mdc-checkbox>
@@ -74,11 +79,6 @@ export const Nested: StoryObj = {
       </mdc-checkboxgroup>
       <mdc-checkbox label="Nam eget erat"></mdc-checkbox>
       <mdc-checkbox label="Pellentesque vitae"></mdc-checkbox>
-      <mdc-checkboxgroup type="parent" label="Vivamus faucibus">
-        <mdc-checkbox label="Praesent viverra"></mdc-checkbox>
-        <mdc-checkbox label="Aliquam sollicitudin"></mdc-checkbox>
-      </mdc-checkboxgroup>
-      <mdc-checkbox label="Morbi quis urna"></mdc-checkbox>
     </mdc-checkboxgroup>
   `,
 };
