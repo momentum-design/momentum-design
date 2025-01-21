@@ -1,6 +1,6 @@
 import type { IconNames } from '../icon/icon.types';
-import { VALIDATION } from './labelandhelper.constants';
-import type { ValidationType } from './labelandhelper.types';
+import { VALIDATION } from './formfieldwrapper.constants';
+import type { ValidationType } from './formfieldwrapper.types';
 
 const getHelperIcon = (type: ValidationType): IconNames | '' => {
   const helperIconSizeMap: Record<ValidationType, IconNames | ''> = {

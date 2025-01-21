@@ -1,5 +1,5 @@
 import utils from '../../utils/tag-name';
-import { VALIDATION } from '../labelandhelper/labelandhelper.constants';
+import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 
 const TAG_NAME = utils.constructTagName('input');
 

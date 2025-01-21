@@ -2,11 +2,11 @@ import { CSSResult, html, nothing } from 'lit';
 import { property, state, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './input.styles';
-import LabelAndHelper from '../labelandhelper';
+import FormfieldWrapper from '../formfieldwrapper';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
 import type { InputType } from './input.types';
-import type { ValidationType } from '../labelandhelper/labelandhelper.types';
+import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import type { IconNames } from '../icon/icon.types';
 
 /**
@@ -27,7 +27,7 @@ import type { IconNames } from '../icon/icon.types';
  * @dependency mdc-text
  * @dependency mdc-button
  */
-class Input extends DisabledMixin(LabelAndHelper) {
+class Input extends DisabledMixin(FormfieldWrapper) {
   /**
  * The value of the input field. It is a two-way binding property.
  */
@@ -182,7 +182,7 @@ class Input extends DisabledMixin(LabelAndHelper) {
     `;
   }
 
-  public static override styles: Array<CSSResult> = [...LabelAndHelper.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...styles];
 }
 
 export default Input;
