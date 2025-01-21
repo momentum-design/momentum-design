@@ -531,7 +531,68 @@ It is also used to display the validation message based on the helpTextType.`,re
  *
  * @tagname mdc-labelandhelper
  *
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"LabelAndHelper",module:"components/labelandhelper/labelandhelper.component.js"}}]},{kind:"javascript-module",path:"components/text/text.component.js",declarations:[{kind:"class",description:"Text component for creating styled text elements.\nIt has to be mounted within the ThemeProvider to access color and font tokens.\n\nThe `type` attribute allows changing the text style.\nThe `tagname` attribute allows changing the tag name of the text element.\nThe default tag name is `p`.\n\nThe `tagname` attribute should be a valid HTML tag name.\nIf the `tagname` attribute is not a valid HTML tag name, the default tag name will be used.\n\nThe styling is applied based on the `type` attribute.",name:"Text",cssParts:[{description:"The text element",name:"text"}],slots:[{description:"Default slot for text content",name:""}],members:[{kind:"field",name:"type",type:{text:"TextType"},privacy:"public",description:`Specifies the text style to be applied.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"LabelAndHelper",module:"components/labelandhelper/labelandhelper.component.js"}}]},{kind:"javascript-module",path:"components/marker/marker.component.js",declarations:[{kind:"class",description:`\`mdc-marker\`, which is a vertical line and
+used to draw attention to specific parts of
+the content or to signify important information.
+
+**Marker Variants**:
+- **solid**: Solid marker.
+- **striped**: Striped marker.`,name:"Marker",cssProperties:[{description:"Allows customization of the default background color in solid variant.",name:"--mdc-marker-solid-background-color"},{description:"Allows customization of the default stripes in striped variant.",name:"--mdc-marker-striped-color"},{description:"Allows customization of the default background color in striped variant.",name:"--mdc-marker-striped-background-color"},{description:"Allows customization of the default width.",name:"--mdc-marker-width"}],members:[{kind:"field",name:"variant",type:{text:"MarkerVariants"},privacy:"public",description:`There are two variants of markers, each with a width of 0.25rem:
+- **solid**: Solid marker.
+- **striped**: Striped marker.`,default:"solid",attribute:"variant",reflects:!0}],attributes:[{name:"variant",type:{text:"MarkerVariants"},description:`There are two variants of markers, each with a width of 0.25rem:
+- **solid**: Solid marker.
+- **striped**: Striped marker.`,default:"solid",fieldName:"variant"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-marker",jsDoc:`/**
+ * \`mdc-marker\`, which is a vertical line and
+ * used to draw attention to specific parts of
+ * the content or to signify important information.
+ *
+ * **Marker Variants**:
+ * - **solid**: Solid marker.
+ * - **striped**: Striped marker.
+ *
+ * @tagname mdc-marker
+ *
+ * @cssproperty --mdc-marker-solid-background-color - Allows customization of the default background color
+ * in solid variant.
+ * @cssproperty --mdc-marker-striped-color - Allows customization of the default stripes in striped variant.
+ * @cssproperty --mdc-marker-striped-background-color - Allows customization of the default background color
+ * in striped variant.
+ * @cssproperty --mdc-marker-width - Allows customization of the default width.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Marker",module:"components/marker/marker.component.js"}}]},{kind:"javascript-module",path:"components/presence/presence.component.js",declarations:[{kind:"class",description:`The \`mdc-presence\` component is a versatile UI element used to
+display the presence status of a user or entity within an avatar component.
+
+This component is ideal for use within avatar UIs where the presence status
+needs to be visually represented.`,name:"Presence",members:[{kind:"field",name:"type",type:{text:"PresenceType"},description:"Supported presence types:\n- `active`\n- `away`\n- `away-calling`\n- `busy`\n- `dnd`\n- `meeting`\n- `on-call`\n- `on-device`\n- `on-mobile`\n- `pause`\n- `pto`\n- `presenting`\n- `quiet`\n- `scheduled`",default:"active",attribute:"type",reflects:!0},{kind:"field",name:"size",type:{text:"PresenceSize"},description:`Acceptable values include:
+- XX_SMALL
+- X_SMALL
+- SMALL
+- MIDSIZE
+- LARGE
+- X_LARGE
+- XX_LARGE
+
+Presence icons are minimum 14px in size, meaning XX_Small, X_Small and Small presence
+icons will be no smaller than 14px.`,default:"small",attribute:"size",reflects:!0},{kind:"field",name:"iconSize",privacy:"private",description:"Get the size of the presence icon based on the given size type",readonly:!0},{kind:"field",name:"icon",privacy:"private",description:"Get the icon name based on the presence type",readonly:!0},{kind:"method",name:"handleOnLoad",privacy:"private",return:{type:{text:"void"}},description:"Handles the successful load of an icon.\nSets the `currentIconType` property to match the `type` property."},{kind:"method",name:"handleOnError",privacy:"private",return:{type:{text:"void"}},description:"Handles an error that occurs when loading an icon."}],attributes:[{name:"type",type:{text:"PresenceType"},description:"Supported presence types:\n- `active`\n- `away`\n- `away-calling`\n- `busy`\n- `dnd`\n- `meeting`\n- `on-call`\n- `on-device`\n- `on-mobile`\n- `pause`\n- `pto`\n- `presenting`\n- `quiet`\n- `scheduled`",default:"active",fieldName:"type"},{name:"size",type:{text:"PresenceSize"},description:`Acceptable values include:
+- XX_SMALL
+- X_SMALL
+- SMALL
+- MIDSIZE
+- LARGE
+- X_LARGE
+- XX_LARGE
+
+Presence icons are minimum 14px in size, meaning XX_Small, X_Small and Small presence
+icons will be no smaller than 14px.`,default:"small",fieldName:"size"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-presence",jsDoc:`/**
+ * The \`mdc-presence\` component is a versatile UI element used to
+ * display the presence status of a user or entity within an avatar component.
+ *
+ * This component is ideal for use within avatar UIs where the presence status
+ * needs to be visually represented.
+ *
+ * @dependency mdc-icon
+ *
+ * @tagname mdc-presence
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Presence",module:"components/presence/presence.component.js"}}]},{kind:"javascript-module",path:"components/text/text.component.js",declarations:[{kind:"class",description:"Text component for creating styled text elements.\nIt has to be mounted within the ThemeProvider to access color and font tokens.\n\nThe `type` attribute allows changing the text style.\nThe `tagname` attribute allows changing the tag name of the text element.\nThe default tag name is `p`.\n\nThe `tagname` attribute should be a valid HTML tag name.\nIf the `tagname` attribute is not a valid HTML tag name, the default tag name will be used.\n\nThe styling is applied based on the `type` attribute.",name:"Text",cssParts:[{description:"The text element",name:"text"}],slots:[{description:"Default slot for text content",name:""}],members:[{kind:"field",name:"type",type:{text:"TextType"},privacy:"public",description:`Specifies the text style to be applied.
 
 Acceptable values include:
 
@@ -646,68 +707,7 @@ Note that the styling is determined by the \`type\` attribute.`,fieldName:"tagna
  * @slot - Default slot for text content
  *
  * @csspart text - The text element
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Text",module:"components/text/text.component.js"}}]},{kind:"javascript-module",path:"components/presence/presence.component.js",declarations:[{kind:"class",description:`The \`mdc-presence\` component is a versatile UI element used to
-display the presence status of a user or entity within an avatar component.
-
-This component is ideal for use within avatar UIs where the presence status
-needs to be visually represented.`,name:"Presence",members:[{kind:"field",name:"type",type:{text:"PresenceType"},description:"Supported presence types:\n- `active`\n- `away`\n- `away-calling`\n- `busy`\n- `dnd`\n- `meeting`\n- `on-call`\n- `on-device`\n- `on-mobile`\n- `pause`\n- `pto`\n- `presenting`\n- `quiet`\n- `scheduled`",default:"active",attribute:"type",reflects:!0},{kind:"field",name:"size",type:{text:"PresenceSize"},description:`Acceptable values include:
-- XX_SMALL
-- X_SMALL
-- SMALL
-- MIDSIZE
-- LARGE
-- X_LARGE
-- XX_LARGE
-
-Presence icons are minimum 14px in size, meaning XX_Small, X_Small and Small presence
-icons will be no smaller than 14px.`,default:"small",attribute:"size",reflects:!0},{kind:"field",name:"iconSize",privacy:"private",description:"Get the size of the presence icon based on the given size type",readonly:!0},{kind:"field",name:"icon",privacy:"private",description:"Get the icon name based on the presence type",readonly:!0},{kind:"method",name:"handleOnLoad",privacy:"private",return:{type:{text:"void"}},description:"Handles the successful load of an icon.\nSets the `currentIconType` property to match the `type` property."},{kind:"method",name:"handleOnError",privacy:"private",return:{type:{text:"void"}},description:"Handles an error that occurs when loading an icon."}],attributes:[{name:"type",type:{text:"PresenceType"},description:"Supported presence types:\n- `active`\n- `away`\n- `away-calling`\n- `busy`\n- `dnd`\n- `meeting`\n- `on-call`\n- `on-device`\n- `on-mobile`\n- `pause`\n- `pto`\n- `presenting`\n- `quiet`\n- `scheduled`",default:"active",fieldName:"type"},{name:"size",type:{text:"PresenceSize"},description:`Acceptable values include:
-- XX_SMALL
-- X_SMALL
-- SMALL
-- MIDSIZE
-- LARGE
-- X_LARGE
-- XX_LARGE
-
-Presence icons are minimum 14px in size, meaning XX_Small, X_Small and Small presence
-icons will be no smaller than 14px.`,default:"small",fieldName:"size"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-presence",jsDoc:`/**
- * The \`mdc-presence\` component is a versatile UI element used to
- * display the presence status of a user or entity within an avatar component.
- *
- * This component is ideal for use within avatar UIs where the presence status
- * needs to be visually represented.
- *
- * @dependency mdc-icon
- *
- * @tagname mdc-presence
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Presence",module:"components/presence/presence.component.js"}}]},{kind:"javascript-module",path:"components/marker/marker.component.js",declarations:[{kind:"class",description:`\`mdc-marker\`, which is a vertical line and
-used to draw attention to specific parts of
-the content or to signify important information.
-
-**Marker Variants**:
-- **solid**: Solid marker.
-- **striped**: Striped marker.`,name:"Marker",cssProperties:[{description:"Allows customization of the default background color in solid variant.",name:"--mdc-marker-solid-background-color"},{description:"Allows customization of the default stripes in striped variant.",name:"--mdc-marker-striped-color"},{description:"Allows customization of the default background color in striped variant.",name:"--mdc-marker-striped-background-color"},{description:"Allows customization of the default width.",name:"--mdc-marker-width"}],members:[{kind:"field",name:"variant",type:{text:"MarkerVariants"},privacy:"public",description:`There are two variants of markers, each with a width of 0.25rem:
-- **solid**: Solid marker.
-- **striped**: Striped marker.`,default:"solid",attribute:"variant",reflects:!0}],attributes:[{name:"variant",type:{text:"MarkerVariants"},description:`There are two variants of markers, each with a width of 0.25rem:
-- **solid**: Solid marker.
-- **striped**: Striped marker.`,default:"solid",fieldName:"variant"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-marker",jsDoc:`/**
- * \`mdc-marker\`, which is a vertical line and
- * used to draw attention to specific parts of
- * the content or to signify important information.
- *
- * **Marker Variants**:
- * - **solid**: Solid marker.
- * - **striped**: Striped marker.
- *
- * @tagname mdc-marker
- *
- * @cssproperty --mdc-marker-solid-background-color - Allows customization of the default background color
- * in solid variant.
- * @cssproperty --mdc-marker-striped-color - Allows customization of the default stripes in striped variant.
- * @cssproperty --mdc-marker-striped-background-color - Allows customization of the default background color
- * in striped variant.
- * @cssproperty --mdc-marker-width - Allows customization of the default width.
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Marker",module:"components/marker/marker.component.js"}}]},{kind:"javascript-module",path:"components/themeprovider/themeprovider.component.js",declarations:[{kind:"class",description:`ThemeProvider component, which sets the passed in themeclass as class.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Text",module:"components/text/text.component.js"}}]},{kind:"javascript-module",path:"components/themeprovider/themeprovider.component.js",declarations:[{kind:"class",description:`ThemeProvider component, which sets the passed in themeclass as class.
 If the themeclass switches, the existing themeclass will be removed as a class
 and the new themeclass will be added.
 
