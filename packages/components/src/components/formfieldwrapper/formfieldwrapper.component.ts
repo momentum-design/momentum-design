@@ -1,21 +1,21 @@
 import { CSSResult, html, nothing } from 'lit';
 import { v4 as uuidv4 } from 'uuid';
 import { property } from 'lit/decorators.js';
-import styles from './labelandhelper.styles';
+import styles from './formfieldwrapper.styles';
 import { Component } from '../../models';
-import type { ValidationType } from './labelandhelper.types';
-import { DEFAULTS, MDC_TEXT_OPTIONS } from './labelandhelper.constants';
-import { getHelperIcon } from './labelandhelper.utils';
+import type { ValidationType } from './formfieldwrapper.types';
+import { DEFAULTS, MDC_TEXT_OPTIONS } from './formfieldwrapper.constants';
+import { getHelperIcon } from './formfieldwrapper.utils';
 
 /**
- * labelandhelper is a component that contains the label and helper/validation text
+ * formfieldwrapper is a component that contains the label and helper/validation text
  *  that can be configured in various ways to suit different use cases (most of the input related components).
  * It is used as an internal component and is not intended to be used directly by consumers.
  *
- * @tagname mdc-labelandhelper
+ * @tagname mdc-formfieldwrapper
  *
  */
-class LabelAndHelper extends Component {
+class FormfieldWrapper extends Component {
   /**
    * The label of the input field. It is linked to the input field using the `for` attribute.
    */
@@ -131,4 +131,4 @@ class LabelAndHelper extends Component {
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
-export default LabelAndHelper;
+export default FormfieldWrapper;

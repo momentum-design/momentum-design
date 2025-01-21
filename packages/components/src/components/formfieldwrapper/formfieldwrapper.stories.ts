@@ -3,22 +3,23 @@ import '.';
 import { html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { VALIDATION } from './labelandhelper.constants';
-import { ValidationType } from './labelandhelper.types';
+import { VALIDATION } from './formfieldwrapper.constants';
+import { ValidationType } from './formfieldwrapper.types';
 
 const render = (args: Args) =>
-  html` <mdc-labelandhelper
+  html` <mdc-formfieldwrapper
     label="${args.label}"
     label-info-text="${args['label-info-text']}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
-    >${args.children}</mdc-labelandhelper
-  >`;
+    >
+    ${args.children}
+    </mdc-formfieldwrapper>`;
 
 const meta: Meta = {
-  title: 'Internal/labelandhelper',
+  title: 'Internal/formfieldwrapper',
   tags: ['autodocs'],
-  component: 'mdc-labelandhelper',
+  component: 'mdc-formfieldwrapper',
   render,
   parameters: {
     badges: ['wip'],
@@ -63,9 +64,9 @@ export const HelperTextTypes: StoryObj = {
       ${repeat(
     Object.values(VALIDATION),
     (validation: ValidationType) => html`
-          <mdc-labelandhelper help-text-type="${validation}" label="Label" help-text="Helper text"
-            >[Child component]</mdc-labelandhelper
-          >
+          <mdc-formfieldwrapper help-text-type="${validation}" label="Label" help-text="Helper text">
+            [Child component]
+          </mdc-formfieldwrapper>
         `,
   )}
     </div>`,
