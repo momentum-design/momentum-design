@@ -36,9 +36,6 @@ const meta: Meta = {
     role: {
       control: 'text',
     },
-    'aria-modal': {
-      control: 'text',
-    },
     'aria-label': {
       control: 'text',
       description: 'Aria label for the modal container. Required for accessibility.',
