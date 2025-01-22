@@ -3,7 +3,7 @@ import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { LINK_SIZES } from './link.constants';
-import { disableControls } from '../../../config/storybook/utils';
+import { disableControls, hideControls, readOnlyControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => {
   // To allow the children to be rendered as html anchor tag, we need to parse it first
@@ -15,10 +15,10 @@ const render = (args: Args) => {
     @keyup="${action('onKeyUp')}"
     @focus="${action('onFocus')}"
     ?disabled="${args.disabled}"
+    icon-name="${args['icon-name']}"
     ?inline="${args.inline}"
     ?inverted="${args.inverted}"
     size="${args.size}"
-    icon-name="${args['icon-name']}"
     >${htmlContent}</mdc-link>`;
 };
 
@@ -95,6 +95,9 @@ export const StandaloneLink: StoryObj = {
   args: {
     ...defaultArgs,
   },
+  argTypes: {
+    ...hideControls(['inline', 'inverted']),
+  },
 };
 
 export const StandaloneLinkInverted: StoryObj = {
@@ -102,6 +105,10 @@ export const StandaloneLinkInverted: StoryObj = {
   args: {
     ...defaultArgs,
     inverted: true,
+  },
+  argTypes: {
+    ...hideControls(['inline']),
+    ...readOnlyControls(['inverted']),
   },
 };
 
@@ -111,6 +118,10 @@ export const InlineLink: StoryObj = {
     ...defaultArgs,
     inline: true,
   },
+  argTypes: {
+    ...hideControls(['inverted']),
+    ...readOnlyControls(['inline']),
+  },
 };
 
 export const InlineLinkInverted: StoryObj = {
@@ -119,5 +130,8 @@ export const InlineLinkInverted: StoryObj = {
     ...defaultArgs,
     inline: true,
     inverted: true,
+  },
+  argTypes: {
+    ...readOnlyControls(['inline', 'inverted']),
   },
 };
