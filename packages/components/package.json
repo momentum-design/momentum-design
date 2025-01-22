@@ -97,7 +97,7 @@
     "@custom-elements-manifest/analyzer": "^0.10.3",
     "@estruyf/github-actions-reporter": "^1.9.2",
     "@geometricpanda/storybook-addon-badges": "^2.0.4",
-    "@playwright/test": "^1.45.3",
+    "@playwright/test": "^1.49.1",
     "@storybook/addon-a11y": "^8.2.5",
     "@storybook/addon-controls": "^8.2.5",
     "@storybook/addon-essentials": "^8.2.5",
