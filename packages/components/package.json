@@ -90,7 +90,8 @@
     "@momentum-design/fonts": "workspace:*",
     "@momentum-design/icons": "workspace:*",
     "@momentum-design/tokens": "workspace:*",
-    "lit": "^3.2.0"
+    "lit": "^3.2.0",
+    "uuid": "^11.0.5"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.9.1",

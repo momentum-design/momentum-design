@@ -10,6 +10,7 @@ import Popover from './components/popover';
 import Bullet from './components/bullet';
 import Marker from './components/marker';
 import Divider from './components/divider';
+import Modalcontainer from './components/modalcontainer';
 import Buttonsimple from './components/buttonsimple';
 import Avatarbutton from './components/avatarbutton';
 
@@ -28,6 +29,7 @@ export {
   Bullet,
   Marker,
   Divider,
+  Modalcontainer,
   Buttonsimple,
   Avatarbutton,
 };

@@ -1,12 +1,15 @@
 import { css } from 'lit';
 
 export const fontsStyles = css`
-  :host([tagname])::part(text) {
+  :host::part(text) {
     font-size: unset;
     font-weight: unset;
     line-height: unset;
     text-decoration: unset;
     text-transform: unset;
+    white-space: inherit;
+    overflow: inherit;
+    text-overflow: inherit;
   }
 
   :host([type="headline-small-regular"]) {

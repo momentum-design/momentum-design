@@ -13,10 +13,10 @@ https://github.com/momentum-design/momentum-design/tree/main/packages/components
 NOTE: Pull Requests from forked repositories will need to be "validated" by a Momentum Team member before any CI builds will run. Once your PR is "validated", it will be allowed to run subsequent builds without manual approval.
 ────────────────────────────────────────-->
 
-# Description
+### Description
 
 _Please replace this line with a description of the changes made in this Pull Request._
 
-## Links
+### Links
 
 _Please replace this line with relevant links to the changes made in this Pull Request._
