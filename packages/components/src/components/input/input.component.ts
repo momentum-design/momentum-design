@@ -4,8 +4,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './input.styles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
-import { DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
-import type { InputType } from './input.types';
+import { PREFIX_TEXT_OPTIONS } from './input.constants';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import type { IconNames } from '../icon/icon.types';
 
@@ -58,20 +57,6 @@ class Input extends DisabledMixin(FormfieldWrapper) {
    * The minimum number of characters that the input field can accept.
    */
   @property({ type: Number }) minlength?: number;
-
-  /**
- * The type of the input field. It can be
- * - text
- * - password
- * - email
- * - number
- * - tel
- * - url
- * - search
- *
- * @default text
- */
-  @property({ type: String }) type: InputType = DEFAULTS.TYPE;
 
 /**
  * The prefix text that is displayed before the input field. It has a max length of 10 characters.
@@ -159,7 +144,7 @@ class Input extends DisabledMixin(FormfieldWrapper) {
       ${this.renderLabel()}
       <div class="input-container mdc-focus-ring" part="input-container">
         <slot name="input-leading-icon">${this.renderLeadingIcon()}</slot>
-       <section class="text-container">
+       <section class="input-section" part="input-section">
        <slot name="input-prefix-text">${this.renderPrefixText()}</slot>
         <slot name="input">
           <input 
@@ -168,7 +153,7 @@ class Input extends DisabledMixin(FormfieldWrapper) {
             .value="${this.value}"
             ?disabled="${this.disabled}"
             ?readonly="${this.readonly}"
-            type="${this.type}"
+            type="text"
             placeholder=${ifDefined(this.placeholder)}
             minlength=${ifDefined(this.minlength)}
             maxlength=${ifDefined(this.maxlength)}

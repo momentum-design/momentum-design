@@ -2,6 +2,9 @@ import { css } from 'lit';
 import { hostFocusRingStyles } from '../../utils/styles';
 
 const styles = [css`
+:host, .input-container, .input-section, .input{
+  width: 100%;
+}
   :host([disabled]) .input,
   :host([disabled]) .input::placeholder{
     color: var(--mds-color-theme-text-primary-disabled);
@@ -26,7 +29,7 @@ const styles = [css`
     padding: 0.34375rem 0.375rem 0.34375rem 0.75rem;
   }
   
-  .text-container{
+  .input-section{
     display: flex;
     gap: 0.25rem;
   }

@@ -3,7 +3,6 @@ import '.';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { TYPE } from './input.constants';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { disableControls } from '../../../config/storybook/utils';
 
@@ -11,7 +10,6 @@ const render = (args: Args) =>
   html` <mdc-input
     id="${args.id}"
     label="${args.label}"
-    type="${args.type}"
     label-info-text="${args['label-info-text']}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
@@ -48,10 +46,6 @@ const meta: Meta = {
     },
     value: {
       control: 'text',
-    },
-    type: {
-      control: 'select',
-      options: Object.values(TYPE),
     },
     placeholder: {
       control: 'text',
@@ -95,7 +89,6 @@ export const Example: StoryObj = {
   args: {
     id: '1',
     label: 'Label (required)',
-    type: 'text',
     'label-info-text': 'Label info text',
     placeholder: 'Placeholder',
     value: '',
