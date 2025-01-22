@@ -149,7 +149,7 @@ class Input extends DisabledMixin(FormfieldWrapper) {
         size="20"
         aria-label="Clear"
         @click=${this.clearInputText}
-        ?disabled=${this.disabled || this.readonly}
+        ?disabled=${this.disabled || this.readonly || !this.value}
       ></mdc-button>
     `;
   }
