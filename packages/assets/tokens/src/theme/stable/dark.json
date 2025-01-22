@@ -1073,13 +1073,13 @@
         },
         "glass": {
           "normal": {
-            "value": "{color.core.black-alpha.60}",
+            "value": "{color.core.black-alpha.40}",
             "type": "color",
             "description": "Used for glass effect background for operation pop. "
           },
           "overlay": {
             "normal": {
-              "value": "{color.core.black-alpha.60}",
+              "value": "{color.core.black-alpha.80}",
               "type": "color",
               "description": "Used for operation pop: knocked-back effect when signle card is selected"
             },
@@ -1478,26 +1478,22 @@
           "normal": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.white-alpha.0}",
-            "description": ""
+            "value": "{color.core.white-alpha.11}"
           },
           "hover": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.white-alpha.30}",
-            "description": ""
+            "value": "{color.core.white-alpha.20}"
           },
           "pressed": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.white-alpha.40}",
-            "description": ""
+            "value": "{color.core.white-alpha.30}"
           },
           "disabled": {
             "parent": "theme/stable/dark",
             "type": "color",
-            "value": "{color.core.white-alpha.20}",
-            "description": "Core: {color.core.white-alpha.20} \nHEX: #ffffff 20%"
+            "value": "{color.core.white-alpha.7}"
           }
         }
       },
