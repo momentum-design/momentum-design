@@ -60,24 +60,23 @@ const pressTab = async (componentsPage: ComponentsPage, browserName: string, sub
 
 test.describe('mdc-link', () => {
   test.use({ viewport: { width: 800, height: 2700 } });
-  test('mdc-link', async ({ componentsPage, browserName }) => {
+  test('attributes and interactions', async ({ componentsPage, browserName }) => {
     const link = await setup({ componentsPage });
-    await test.step('default attributes for link', async () => {
-    // Default values for link
-      await test.step('only attributes size should be present on component by default', async () => {
+
+    /**
+     * ATTRIBUTES
+     */
+    await test.step('attributes', async () => {
+      // Default values for link
+      await test.step('only size attribute should be present on component by default', async () => {
         await expect(link).toHaveAttribute('size', DEFAULTS.LINK_SIZE);
         await expect(link).not.toHaveAttribute('disabled');
         await expect(link).not.toHaveAttribute('icon-name');
         await expect(link).not.toHaveAttribute('inline');
         await expect(link).not.toHaveAttribute('inverted');
       });
-    });
 
-    /**
-    * ATTRIBUTES
-    */
-    await test.step('attributes', async () => {
-    // Disabled
+      // Disabled
       await test.step('attribute disabled should be present on link', async () => {
         await componentsPage.setAttributes(link, {
           disabled: '',
@@ -87,7 +86,7 @@ test.describe('mdc-link', () => {
       });
 
       // Icon name
-      await test.step('attribute inline should be present on link', async () => {
+      await test.step('attribute icon-name should be present on link', async () => {
         await componentsPage.setAttributes(link, {
           'icon-name': 'placeholder-regular',
         });
@@ -131,17 +130,23 @@ test.describe('mdc-link', () => {
     });
 
     /**
-    * ACCESSIBILITY
-    */
-    await test.step('accessibility', async () => {
-      await componentsPage.accessibility.checkForA11yViolations('mdc-link');
-    });
-
-    /**
-   * INTERACTIONS
-   */
-    await test.step('link focus and click events', async () => {
+     * INTERACTIONS
+     */
+    await test.step('interactions', async () => {
       const linkInFooterPage = await setup({ componentsPage, addPageFooter: true });
+
+      await test.step('link focus and click on disabled link', async () => {
+        const linkElement = linkInFooterPage.getByRole('link');
+        await componentsPage.setAttributes(link, {
+          disabled: '',
+        });
+        await pressTab(componentsPage, browserName, linkElement, true);
+        await expect(linkElement).not.toBeFocused();
+
+        await componentsPage.removeAttribute(link, 'disabled');
+        await linkElement.evaluate((el) => el.blur());
+      });
+
       await test.step('link focus and click', async () => {
         const linkElement = linkInFooterPage.getByRole('link');
         await pressTab(componentsPage, browserName, linkElement, true);
@@ -152,22 +157,19 @@ test.describe('mdc-link', () => {
         await pressTab(componentsPage, browserName, linkElement, false);
         await componentsPage.page.goBack();
       });
-      await test.step('link focus and click on disabled link', async () => {
-        const linkElement = linkInFooterPage.getByRole('link');
-        await componentsPage.setAttributes(link, {
-          disabled: '',
-        });
-        await pressTab(componentsPage, browserName, linkElement, true);
-        await expect(linkElement).not.toBeFocused();
-
-        await componentsPage.removeAttribute(link, 'disabled');
-        await pressTab(componentsPage, browserName, linkElement, false);
-      });
     });
   });
+
   /**
-  * VISUAL REGRESSION
-  */
+   * ACCESSIBILITY
+   */
+  test('accessbility', async ({ componentsPage }) => {
+    await componentsPage.accessibility.checkForA11yViolations('mdc-link');
+  });
+
+  /**
+   * VISUAL REGRESSION
+   */
   test('visual-regression', async ({ componentsPage }) => {
     const stickerSheet = new StickerSheet(componentsPage, 'mdc-link');
     stickerSheet.setChildren(
@@ -213,20 +215,20 @@ test.describe('mdc-link', () => {
     stickerSheet.setAttributes({ 'icon-name': 'placeholder-regular', inverted: '' });
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
-    // Inline Link inverted without trailing icon
-    stickerSheet.setAttributes({ inline: '', inverted: '' });
-    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
-
-    // Inline Link inverted with trailing icon
-    stickerSheet.setAttributes({ 'icon-name': 'placeholder-regular', inline: '', inverted: '' });
-    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
-
     // Standalone Link inverted and disabled without trailing icon
     stickerSheet.setAttributes({ disabled: '', inverted: '' });
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
     // Standalone Link inverted and disabled with trailing icon
     stickerSheet.setAttributes({ disabled: '', 'icon-name': 'placeholder-regular', inverted: '' });
+    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
+
+    // Inline Link inverted without trailing icon
+    stickerSheet.setAttributes({ inline: '', inverted: '' });
+    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
+
+    // Inline Link inverted with trailing icon
+    stickerSheet.setAttributes({ 'icon-name': 'placeholder-regular', inline: '', inverted: '' });
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
     // Inline Link inverted and disabled without trailing icon
