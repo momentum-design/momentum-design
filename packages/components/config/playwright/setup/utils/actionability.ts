@@ -17,7 +17,7 @@ class Actionability {
    * @returns The name of the browser being used like 'webkit', 'chromium', 'firefox'.
    * Returns 'unknown' if browser name is not found.
    */
-  private browserName(): string {
+  browserName(): string {
     return this.page.context().browser()?.browserType()?.name() ?? 'unknown';
   }
 

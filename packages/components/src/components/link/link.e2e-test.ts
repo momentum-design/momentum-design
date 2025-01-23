@@ -10,8 +10,6 @@ type SetupOptions = {
   inline?: boolean;
   inverted?: boolean;
   size?: string;
-  linkText?: string;
-  linkUrl?: string;
   addPageFooter?: boolean;
 };
 
