@@ -189,22 +189,6 @@ test.describe('mdc-link', () => {
     stickerSheet.setAttributes({ disabled: '', 'icon-name': 'placeholder-regular' });
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
-    // Standalone Link inverted without trailing icon
-    stickerSheet.setAttributes({ inverted: '' });
-    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
-
-    // Standalone Link inverted with trailing icon
-    stickerSheet.setAttributes({ 'icon-name': 'placeholder-regular', inverted: '' });
-    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
-
-    // Standalone Link inverted and disabled without trailing icon
-    stickerSheet.setAttributes({ disabled: '', inverted: '' });
-    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
-
-    // Standalone Link inverted and disabled with trailing icon
-    stickerSheet.setAttributes({ disabled: '', 'icon-name': 'placeholder-regular', inverted: '' });
-    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
-
     // Inline Link without trailing icon
     stickerSheet.setAttributes({ inline: '' });
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
@@ -221,12 +205,28 @@ test.describe('mdc-link', () => {
     stickerSheet.setAttributes({ disabled: '', 'icon-name': 'placeholder-regular', inline: '' });
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
+    // Standalone Link inverted without trailing icon
+    stickerSheet.setAttributes({ inverted: '' });
+    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
+
+    // Standalone Link inverted with trailing icon
+    stickerSheet.setAttributes({ 'icon-name': 'placeholder-regular', inverted: '' });
+    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
+
     // Inline Link inverted without trailing icon
     stickerSheet.setAttributes({ inline: '', inverted: '' });
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
     // Inline Link inverted with trailing icon
     stickerSheet.setAttributes({ 'icon-name': 'placeholder-regular', inline: '', inverted: '' });
+    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
+
+    // Standalone Link inverted and disabled without trailing icon
+    stickerSheet.setAttributes({ disabled: '', inverted: '' });
+    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
+
+    // Standalone Link inverted and disabled with trailing icon
+    stickerSheet.setAttributes({ disabled: '', 'icon-name': 'placeholder-regular', inverted: '' });
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
     // Inline Link inverted and disabled without trailing icon
@@ -238,10 +238,19 @@ test.describe('mdc-link', () => {
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
     await stickerSheet.mountStickerSheet();
+    const container = await stickerSheet.getWrapperContainer();
+    await container.evaluate((wrapper) => {
+      const rowWrappers = wrapper.querySelectorAll('.componentRowWrapper') as NodeListOf<HTMLElement>;
+      const lastTwoRowWrappers = Array.from(rowWrappers).slice(-8);
+      lastTwoRowWrappers.forEach((rowWrapper) => {
+        const modifiedRowWrapper = rowWrapper;
+        modifiedRowWrapper.style.backgroundColor = 'var(--mds-color-theme-inverted-background-normal)';
+      });
+    });
 
     await test.step('matches screenshot of link element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-link', {
-        element: stickerSheet.getWrapperContainer(),
+        element: container,
       });
     });
   });
