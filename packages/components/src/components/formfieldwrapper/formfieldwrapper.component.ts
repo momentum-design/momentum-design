@@ -95,7 +95,7 @@ class FormfieldWrapper extends Component {
   protected renderLabel() {
     return html`<div class="mdc-label-text" part="mdc-label-text">
       <slot name="label">${this.renderLabelElement()}</slot>
-      <slot name="label-info">info-icon</slot>
+      <slot name="label-info"></slot>
     </div>`;
   }
 
