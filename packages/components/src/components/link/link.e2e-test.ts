@@ -1,4 +1,4 @@
-import { expect, Locator } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { DEFAULTS, LINK_SIZES } from './link.constants';
@@ -44,23 +44,9 @@ const setup = async (args: SetupOptions) => {
   return link;
 };
 
-// Applies focus to the component, handling WebKit-specific focus quirks
-const pressTab = async (componentsPage: ComponentsPage, browserName: string, subComponent: Locator, focus: boolean) => {
-  if (browserName === 'webkit') {
-    if (focus) {
-      await componentsPage.page.keyboard.press('Alt+Tab');
-    } else {
-      // Explicitly blur to remove focus in WebKit
-      await subComponent.evaluate((el: HTMLElement) => el.blur());
-    }
-  } else {
-    await componentsPage.page.keyboard.press('Tab');
-  }
-};
-
 test.describe('mdc-link', () => {
   test.use({ viewport: { width: 800, height: 2700 } });
-  test('attributes and interactions', async ({ componentsPage, browserName }) => {
+  test('attributes and interactions', async ({ componentsPage }) => {
     const link = await setup({ componentsPage });
 
     /**
@@ -140,7 +126,7 @@ test.describe('mdc-link', () => {
         await componentsPage.setAttributes(link, {
           disabled: '',
         });
-        await pressTab(componentsPage, browserName, linkElement, true);
+        await componentsPage.actionability.pressTab();
         await expect(linkElement).not.toBeFocused();
 
         await componentsPage.removeAttribute(link, 'disabled');
@@ -149,12 +135,12 @@ test.describe('mdc-link', () => {
 
       await test.step('link focus and click', async () => {
         const linkElement = linkInFooterPage.getByRole('link');
-        await pressTab(componentsPage, browserName, linkElement, true);
+        await componentsPage.actionability.pressTab();
         await expect(linkElement).toBeFocused();
 
         await componentsPage.page.keyboard.press('Enter');
         await expect(componentsPage.page.url()).toContain('#content');
-        await pressTab(componentsPage, browserName, linkElement, false);
+        await componentsPage.actionability.blurForWebKit(linkElement);
         await componentsPage.page.goBack();
       });
     });
