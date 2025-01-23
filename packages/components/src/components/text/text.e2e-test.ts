@@ -127,27 +127,19 @@ test.describe('mdc-text', () => {
       });
     }
   });
-});
 
-test.describe('mdc-text ellipsis', () => {
-  test.use({
-    viewport: {
-      width: 200,
-      height: 200,
-    },
-  });
   test('visual-regression for ellipsis', async ({ componentsPage }) => {
-    await setupEllipsis({
+    const ellipsisText = await setupEllipsis({
       componentsPage,
       children: textContent,
       tagname: 'p',
     });
 
     /**
-   * VISUAL REGRESSION
-   */
+     * VISUAL REGRESSION
+     */
     await test.step('matches screenshot of text with elipsis', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-text-ellipsis');
+      await componentsPage.visualRegression.takeScreenshot('mdc-text-ellipsis', { element: ellipsisText });
     });
   });
 });
