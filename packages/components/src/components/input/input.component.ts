@@ -61,12 +61,18 @@ class Input extends DisabledMixin(FormfieldWrapper) {
 /**
  * The prefix text that is displayed before the input field. It has a max length of 10 characters.
  */
-@property({ type: String }) prefixText = '';
+@property({ type: String, attribute: 'prefix-text' }) prefixText = '';
 
 /**
  * The leading icon that is displayed before the input field.
  */
-@property({ type: String }) leadingIcon = '';
+@property({ type: String, attribute: 'leading-icon' }) leadingIcon = '';
+
+/**
+ * The trailing button when set to true, shows a clear button that clears the input field.
+ * @default false
+ */
+@property({ type: Boolean, attribute: 'trailing-button' }) trailingButton = false;
 
   /**
    * @internal
@@ -126,6 +132,9 @@ class Input extends DisabledMixin(FormfieldWrapper) {
   }
 
   protected renderTrailingButton() {
+    if (!this.trailingButton) {
+      return nothing;
+    }
     return html`
       <mdc-button 
         class='clear-button ${!this.value ? 'hidden' : ''}'

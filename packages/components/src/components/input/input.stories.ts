@@ -20,8 +20,9 @@ const render = (args: Args) =>
     ?required="${args.required}"
     ?disabled="${args.disabled}"
     ?readonly="${args.readonly}"
-    prefixText="${args.prefixText}"
-    leadingIcon="${args.leadingIcon}"
+    ?trailing-button="${args['trailing-button']}"
+    prefix-text="${args['prefix-text']}"
+    leading-icon="${args['leading-icon']}"
     maxlength="${ifDefined(args.maxlength)}"
     minlength="${ifDefined(args.minlength)}"
     ></mdc-input>`;
@@ -68,11 +69,14 @@ const meta: Meta = {
     disabled: {
       control: 'boolean',
     },
-    prefixText: {
+    'prefix-text': {
       control: 'text',
     },
-    leadingIcon: {
+    'leading-icon': {
       control: 'text',
+    },
+    'trailing-button': {
+      control: 'boolean',
     },
     minlength: {
       control: 'number',
@@ -97,8 +101,9 @@ export const Example: StoryObj = {
     required: false,
     readonly: false,
     disabled: false,
-    prefixText: '',
-    leadingIcon: '',
+    'prefix-text': '',
+    'leading-icon': '',
+    'trailing-button': false,
   },
 };
 
@@ -150,7 +155,7 @@ export const AllVariants: StoryObj = {
       help-text="Helper text"
       help-text-type="default"
       placeholder="Placeholder"
-      prefixText="https://"
+      prefix-text="https://"
       ></mdc-input>
       <mdc-input 
       id="10"
@@ -159,7 +164,7 @@ export const AllVariants: StoryObj = {
       help-text="Helper text"
       help-text-type="default"
       placeholder="Placeholder"
-      leadingIcon="placeholder-bold"
+      leading-icon="placeholder-bold"
       ></mdc-input>
       </div>`,
 };
