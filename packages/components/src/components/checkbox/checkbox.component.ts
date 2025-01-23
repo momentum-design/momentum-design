@@ -1,11 +1,10 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { NameMixin } from '../../utils/mixins/NameMixin';
 import { ValueMixin } from '../../utils/mixins/ValueMixin';
-import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import styles from './checkbox.styles';
 
 /**
@@ -15,28 +14,16 @@ import styles from './checkbox.styles';
  * A checkbox component contains an optional label and an optional helper text.
  *
  * @dependency mdc-icon
- * @dependency mdc-text
  *
  * @tagname mdc-checkbox
  */
-class Checkbox extends NameMixin(ValueMixin(DisabledMixin(Component))) {
+class Checkbox extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
   /**
    * Determines whether the checkbox is selected or unselected.
    *
    * @default false
    */
   @property({ type: Boolean, reflect: true }) checked = false;
-
-  /**
-   * The label of the checkbox.
-   */
-  @property({ type: String }) label?: string;
-
-  /**
-   * The helper text of the checkbox. This text is displayed below the checkbox label.
-   * Using this property, we can display any additional text related to the checkbox.
-   */
-  @property({ type: String, attribute: 'help-text' }) helpText?: string;
 
   /**
    * When the indeterminate state is set, the checkbox cannot be selected or unselected.
@@ -119,39 +106,31 @@ class Checkbox extends NameMixin(ValueMixin(DisabledMixin(Component))) {
         length-unit="rem"
       ></mdc-icon>
     ` : nothing;
-    const helpTextContent = this.helpText ? html`
-      <mdc-text
-        class="mdc-checkbox__help-text"
-        tagname="${VALID_TEXT_TAGS.SPAN}"
-        type="${TYPE.BODY_MIDSIZE_REGULAR}"
-      >${this.helpText}</mdc-text>` : nothing;
 
     return html`
-      <label class="mdc-checkbox__container" @click=${this.handleClick}>
-        <input
-          id="${this.id}"
-          type="checkbox" 
-          name="${ifDefined(this.name)}"
-          value="${ifDefined(this.value)}"
-          class="mdc-checkbox__input"
-        />
-        <span
-          aria-checked="${this.checked}"
-          aria-disabled="${this.disabled}"
-          aria-label="${ifDefined(this.label)}"
-          class="mdc-checkbox__icon-container mdc-focus-ring"
-          role="checkbox"
-          tabindex="${this.disabled ? -1 : 0}"
-        >
-          ${checkboxIconContent}
-        </span>
-        <span class="mdc-checkbox__label-text">${this.label}</span>
-      </label>
-      ${helpTextContent}
+      <input
+        id="${this.id}"
+        type="checkbox" 
+        name="${ifDefined(this.name)}"
+        value="${ifDefined(this.value)}"
+        class="mdc-checkbox__input"
+      />
+      <span
+        aria-checked="${this.checked}"
+        aria-disabled="${this.disabled}"
+        aria-label="${ifDefined(this.label)}"
+        class="mdc-checkbox__icon-container mdc-focus-ring"
+        role="checkbox"
+        tabindex="${this.disabled ? -1 : 0}"
+      >
+        ${checkboxIconContent}
+      </span>
+      ${this.renderLabel()}
+      ${this.renderHelperText()}
     `;
   }
 
-  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...styles];
 }
 
 export default Checkbox;

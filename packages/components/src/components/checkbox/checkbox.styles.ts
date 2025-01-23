@@ -7,9 +7,6 @@ const styles = [hostFitContentStyles, css`
     position: relative;
   }
   :host([disabled]) .mdc-checkbox__label-text,
-  :host([disabled]) .mdc-checkbox__help-text {
-    color: var(--mds-color-theme-text-primary-disabled);
-  }
   :host([disabled]) .mdc-checkbox__icon-container:hover {
     background: unset;
   }
@@ -44,9 +41,6 @@ const styles = [hostFitContentStyles, css`
   .mdc-checkbox__icon-container:focus-within {
     position: absolute !important;
   }
-  .mdc-checkbox__label-text {
-    margin-left: 1.5rem;
-  }
   .mdc-checkbox__icon {
     position: absolute;
     background: var(--mds-color-theme-control-active-normal);
@@ -57,11 +51,6 @@ const styles = [hostFitContentStyles, css`
   }
   .mdc-checkbox__icon-container:hover {
     background: var(--mds-color-theme-control-inactive-hover);
-  }
-  .mdc-checkbox__help-text {
-    color: var(--mds-color-theme-text-secondary-normal);
-    margin-left: 1.5rem;
-    height: 1.25rem;
   }
 `, ...hostFocusRingStyles(true)];
 
