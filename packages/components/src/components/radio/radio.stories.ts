@@ -46,3 +46,11 @@ export const Disabled: StoryObj = {
       <mdc-radio label="Selected" disabled checked></mdc-radio>
     </div>`,
 };
+
+export const ReadOnly: StoryObj = {
+  render: () => html`
+    <div style="display: flex; flex-direction: column;">
+      <mdc-radio label="Unselected" readOnly></mdc-radio>
+      <mdc-radio label="Selected" readOnly checked></mdc-radio>
+    </div>`,
+};

@@ -28,6 +28,13 @@ class Radio extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
   @property({ type: Boolean, reflect: true }) checked = false;
 
   /**
+   * Determines whether the radio is selected or unselected.
+   *
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true }) readOnly = false;
+
+  /**
      * The unique id of the input field. It is used to link the input field with the label.
      * @default `mdc-input-${uuidv4()}`
      */
@@ -56,7 +63,7 @@ class Radio extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
    * and also trigger a change event.
    */
     private toggleState(): void {
-      if (!this.disabled) {
+      if (!this.disabled && !this.readOnly) {
         this.checked = !this.checked;
         this.triggerChangeEvent();
       }
@@ -70,7 +77,7 @@ class Radio extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
    */
     private handleKeyDown(event: KeyboardEvent): void {
       event.preventDefault();
-      if (this.disabled) {
+      if (this.disabled && this.readOnly) {
         return;
       }
       if (['Enter', ' '].includes(event.key)) {
@@ -90,6 +97,7 @@ class Radio extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
             @click=${this.toggleState}
             @keydown=${this.handleKeyDown}
             .checked="${this.checked}"
+            .readOnly="${this.readOnly}"
             class="mdc-radio__input mdc-focus-ring"
             tabindex="${this.disabled ? -1 : 0}"
           />
