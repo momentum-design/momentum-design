@@ -32,6 +32,15 @@ const checkFocusRing = async (subComponent: Locator, expectedBoxShadow: string) 
 /* eslint-disable max-len */
 const focusRingStyle = 'rgb(0, 0, 0) 0px 0px 0px 2px, rgb(100, 180, 250) 0px 0px 0px 4px, rgba(100, 180, 250, 0.35) 0px 0px 0px 5px';
 
+const releaseFocus = async (componentsPage: ComponentsPage, subComponent: Locator) => {
+  if (componentsPage.actionability.browserName() === 'webkit') {
+    // Explicitly blur to remove focus in WebKit
+    await subComponent.evaluate((el) => el.blur());
+  } else {
+    await componentsPage.actionability.pressTab();
+  }
+};
+
 // Tests focus ring interactions such as appearance, disappearance, and rapid focus/blur cycles
 const testFocusRingInteractions = async (
   componentsPage: ComponentsPage,
@@ -46,7 +55,7 @@ const testFocusRingInteractions = async (
     await componentsPage.visualRegression.takeScreenshot(`focus-ring-appearance-${shape}`);
 
     // Test focus ring disappearance
-    await componentsPage.actionability.blurForWebKit(subComponent);
+    await releaseFocus(componentsPage, subComponent);
     await expect(subComponent).not.toBeFocused();
     await checkFocusRing(subComponent, 'none');
     await componentsPage.visualRegression.takeScreenshot(`focus-ring-disappearance-${shape}`, {
@@ -57,7 +66,7 @@ const testFocusRingInteractions = async (
     /* eslint-disable no-await-in-loop */
     for (let i = 0; i <= 5; i += 1) {
       await componentsPage.actionability.pressTab();
-      await componentsPage.actionability.blurForWebKit(subComponent);
+      await releaseFocus(componentsPage, subComponent);
     }
     await checkFocusRing(subComponent, 'none');
     await componentsPage.visualRegression.takeScreenshot(`focus-ring-rapid-interaction-${shape}`, {

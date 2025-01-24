@@ -1,4 +1,4 @@
-import { Locator, Page } from '@playwright/test';
+import { Page } from '@playwright/test';
 
 interface Actionability {
   page: Page;
@@ -30,17 +30,6 @@ class Actionability {
       await this.page.keyboard.press('Alt+Tab');
     } else {
       await this.page.keyboard.press('Tab');
-    }
-  }
-
-  /**
-   * Explicitly blurs the component to remove focus from the component in WebKit only.
-   * @param component - The component to blur
-   */
-  async blurForWebKit(component: Locator) {
-    const browserName = this.browserName();
-    if (browserName === 'webkit') {
-      await component.evaluate((el) => el.blur());
     }
   }
 }
