@@ -3,54 +3,69 @@ import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 
 const styles = [hostFitContentStyles, css`
   :host {
-    display: block;
-    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
   }
-  :host([disabled]) .mdc-checkbox__label-text,
-  :host([disabled]) .mdc-checkbox__icon-container:hover {
+  .mdc-label-text {
+    line-height: unset;
+  }
+  .mdc-label {
+    cursor: pointer;
+  }
+  :host([checked]) .mdc-checkbox__icon-container,
+  :host([indeterminate]) .mdc-checkbox__icon-container {
+    background: var(--mds-color-theme-control-active-normal);
+    border: unset;
+  }
+  :host([disabled]) .mdc-checkbox__container:hover {
     background: unset;
   }
   :host([disabled]) .mdc-checkbox__icon-container {
     border: 1px solid var(--mds-color-theme-outline-primary-disabled);
+    background: var(--mds-color-theme-control-inactive-disabled);
   }
   :host([disabled]) .mdc-checkbox__icon {
     --mdc-icon-fill-color: var(--mds-color-theme-text-primary-disabled);
+  }
+  :host([disabled][checked]) .mdc-checkbox__icon-container,
+  :host([disabled][indeterminate]) .mdc-checkbox__icon-container {
     background: var(--mds-color-theme-control-active-disabled);
   }
-  .mdc-checkbox__container {
-    display: flex;
-    align-items: center;
-    height: 1.5rem;
-    cursor: pointer;
-  }
   .mdc-checkbox__input {
+    margin: 0;
+    padding: 0;
     position: absolute;
-    visibility: hidden;
+    opacity: 0.1%;
+    overflow: visible;
+    z-index: 1;
+    cursor: pointer
   }
   .mdc-checkbox__icon-container {
     display: flex;
-    align-items: center;
     justify-content: center;
-    position: absolute;
-    margin-right: 0.5rem;
-    height: 1rem;
-    width: 1rem;
-    border: 1px solid var(--mds-color-theme-outline-button-normal);
+    align-items: center;
+    position: relative;
+    flex-grow: 0;
+    flex-shrink: 0;
     background: unset;
+    border: 1px solid var(--mds-color-theme-outline-button-normal);
   }
-  .mdc-checkbox__icon-container:focus-within {
-    position: absolute !important;
+  .mdc-checkbox__input, .mdc-checkbox__icon-container {
+    width: 1rem;
+    height: 1rem;
   }
-  .mdc-checkbox__icon {
-    position: absolute;
-    background: var(--mds-color-theme-control-active-normal);
-    --mdc-icon-fill-color: var(--mds-color-theme-inverted-text-primary-normal);
+  .mdc-checkbox__container:hover {
+    background: var(--mds-color-theme-control-inactive-hover);
   }
-  .mdc-checkbox__icon-container, .mdc-checkbox__icon {
+  .mdc-checkbox__input,
+  .mdc-checkbox__icon-container,
+  .mdc-checkbox__container,
+  .mdc-checkbox__container:hover {
     border-radius: 0.125rem;
   }
-  .mdc-checkbox__icon-container:hover {
-    background: var(--mds-color-theme-control-inactive-hover);
+  .mdc-checkbox__icon {
+    --mdc-icon-fill-color: var(--mds-color-theme-inverted-text-primary-normal);
   }
 `, ...hostFocusRingStyles(true)];
 

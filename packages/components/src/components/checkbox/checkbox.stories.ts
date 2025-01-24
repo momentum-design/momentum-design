@@ -59,14 +59,14 @@ export const Disabled: StoryObj = {
 
 export const HelperText: StoryObj = {
   args: {
-    label: 'Email opt in',
+    label: 'Email Opt In',
     'help-text': 'I agree to receiving monthly promotional emails.',
   },
 };
 
 export const List: StoryObj = {
   render: () => html`
-    <div style="display: flex; flex-direction: column;">
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
       <mdc-checkbox label="Black Widow" checked help-text="This is a help text"></mdc-checkbox>
       <mdc-checkbox label="Captain America" checked disabled></mdc-checkbox>
       <mdc-checkbox label="Hawkeye" indeterminate disabled></mdc-checkbox>
@@ -80,7 +80,7 @@ export const List: StoryObj = {
 
 export const BasicList: StoryObj = {
   render: () => html`
-    <div style="display: flex; flex-direction: column;">
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
       <mdc-checkbox label="Black Widow"></mdc-checkbox>
       <mdc-checkbox label="Captain America"></mdc-checkbox>
       <mdc-checkbox label="Hawkeye"></mdc-checkbox>
