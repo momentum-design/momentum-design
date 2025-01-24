@@ -6,6 +6,8 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { NameMixin } from '../../utils/mixins/NameMixin';
 import { ValueMixin } from '../../utils/mixins/ValueMixin';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
+import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
+import { ICON_NAME } from './checkbox.constants';
 import styles from './checkbox.styles';
 
 /**
@@ -27,7 +29,6 @@ class Checkbox extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
   @property({ type: Boolean, reflect: true }) checked = false;
 
   /**
-   * When the indeterminate state is set, the checkbox cannot be selected or unselected.
    * This property is used to determine the parent checkbox in a nested checkbox group.
    * If any one of the children is unselected, then the parent checkbox will be indeterminate.
    * If all children are either selected or unselected, then the parent checkbox will not be indeterminate.
@@ -39,6 +40,9 @@ class Checkbox extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
   constructor() {
     super();
     this.addEventListener('keydown', this.handleKeyDown);
+
+    // Checkbox does not contain helpTextType property.
+    this.helpTextType = undefined as unknown as ValidationType;
   }
 
   /**
@@ -102,7 +106,7 @@ class Checkbox extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
     const checkboxIconContent = (this.checked || this.indeterminate) ? html`
       <mdc-icon
         class="mdc-checkbox__icon"
-        name="${this.indeterminate ? 'minus-regular' : 'check-regular'}"
+        name="${this.indeterminate ? ICON_NAME.INDETERMINATE : ICON_NAME.CHECKED}"
         size="1"
         length-unit="rem"
       ></mdc-icon>
