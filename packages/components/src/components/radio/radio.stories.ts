@@ -36,6 +36,7 @@ export const Example: StoryObj = {
     'help-text': 'Standard plan',
     checked: false,
     disabled: false,
+    readonly: false,
   },
 };
 
@@ -50,7 +51,7 @@ export const Disabled: StoryObj = {
 export const ReadOnly: StoryObj = {
   render: () => html`
     <div style="display: flex; flex-direction: column;">
-      <mdc-radio label="Unselected" readOnly></mdc-radio>
-      <mdc-radio label="Selected" readOnly checked></mdc-radio>
+      <mdc-radio label="Unselected" readonly></mdc-radio>
+      <mdc-radio label="Selected" readonly checked></mdc-radio>
     </div>`,
 };
