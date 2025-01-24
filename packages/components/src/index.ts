@@ -10,6 +10,7 @@ import Bullet from './components/bullet';
 import Marker from './components/marker';
 import Divider from './components/divider';
 import Avatarbutton from './components/avatarbutton';
+import Link from './components/link';
 
 import type { TextType } from './components/text/text.types';
 
@@ -26,6 +27,7 @@ export {
   Marker,
   Divider,
   Avatarbutton,
+  Link,
 };
 
 export type {
