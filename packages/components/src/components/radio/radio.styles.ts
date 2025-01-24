@@ -80,12 +80,12 @@ const styles = [hostFitContentStyles, css`
   /* Not selected radio in hover state */
   .mdc-radio__icon-container:hover .mdc-radio__icon {
     border-color: var(--mds-color-theme-control-inactive-hover);
-    background: var(--mds-color-theme-control-inactive-hover);
+    background-color: var(--mds-color-theme-control-inactive-hover);
   }
 
   /* Not selected radio in active/pressed state */
   .mdc-radio__icon-container:active .mdc-radio__icon {
-    background: var(--mds-color-theme-control-inactive-pressed);
+    background-color: var(--mds-color-theme-control-inactive-pressed);
   }
 
   /* Selected radio in rest state */
@@ -104,6 +104,23 @@ const styles = [hostFitContentStyles, css`
   .mdc-radio__icon-container:active input:checked ~ .mdc-radio__icon {
     border-color: var(--mds-color-theme-control-active-pressed);
     background-color: var(--mds-color-theme-control-active-pressed);
+  }
+
+  /* Not select radio in Read-only state */
+  .mdc-radio__icon-container input:read-only ~ .mdc-radio__icon,
+  .mdc-radio__icon-container input:read-only:hover ~ .mdc-radio__icon {
+    border-color: var(--mds-color-theme-outline-input-normal);
+    background-color: unset;
+  }
+
+  /* Selected radio in read only state outer circle */
+  .mdc-radio__icon-container input:read-only:checked ~ .mdc-radio__icon {
+    background-color: unset;
+  }
+
+  /* Selected radio inner circle in read only state */
+  .mdc-radio__icon-container input:read-only:checked ~ .mdc-radio__icon:after {
+    background-color: var(--mds-color-theme-outline-input-normal);
   }
 
   .mdc-radio__label-container{
