@@ -2,12 +2,15 @@ import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { hideControls } from '../../../config/storybook/utils';
+import { TYPE } from './checkboxgroup.constants';
 
 const render = (args: Args) => html`
   <mdc-checkboxgroup
-    headerText="${args.headerText}"
+    header-text="${args['header-text']}"
     label="${args.label}"
     type="${args.type}"
+    ?disabled="${args.disabled}"
   >
     ${args.children}
   </mdc-checkboxgroup>`;
@@ -21,6 +24,15 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
+    children: {
+      description: 'Children checkbox components.',
+      control: 'text',
+    },
+    type: {
+      control: 'radio',
+      options: [TYPE.PARENT, '-'],
+    },
+    ...hideControls(['disabled']),
     ...classArgType,
     ...styleArgType,
   },
@@ -30,7 +42,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    headerText: 'Super powers',
+    'header-text': 'Super powers',
     label: 'Select all super powers',
     type: 'parent',
     children: html`
@@ -46,7 +58,7 @@ export const Example: StoryObj = {
 
 export const List: StoryObj = {
   args: {
-    headerText: 'Select your Avengers team',
+    'header-text': 'Select your Avengers team',
     children: html`<mdc-checkbox label="Black Widow"></mdc-checkbox>
       <mdc-checkbox label="Captain America"></mdc-checkbox>
       <mdc-checkbox label="Hawkeye"></mdc-checkbox>

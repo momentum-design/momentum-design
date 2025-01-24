@@ -2,6 +2,7 @@ import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { hideControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
   <mdc-checkbox
@@ -22,6 +23,7 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
+    ...hideControls(['help-text-type', 'label-info']),
     ...classArgType,
     ...styleArgType,
   },
@@ -50,7 +52,7 @@ export const Indeterminate: StoryObj = {
 
 export const Disabled: StoryObj = {
   render: () => html`
-    <div style="display: flex; flex-direction: column;">
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
       <mdc-checkbox label="Unselected" disabled></mdc-checkbox>
       <mdc-checkbox label="Selected" disabled checked></mdc-checkbox>
       <mdc-checkbox label="Indeterminate" disabled indeterminate></mdc-checkbox>

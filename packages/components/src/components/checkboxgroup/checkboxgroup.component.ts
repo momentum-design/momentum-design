@@ -33,7 +33,7 @@ class Checkboxgroup extends DisabledMixin(Component) {
    * The header text of the checkboxgroup.
    *
    */
-  @property({ type: String }) headerText?: string;
+  @property({ type: String, attribute: 'header-text' }) headerText?: string;
 
   /**
    * @internal
@@ -162,7 +162,7 @@ class Checkboxgroup extends DisabledMixin(Component) {
   private handleSlotChange(): void {
     if (this.disabled) {
       this.checkboxList.forEach(
-        (checkbox) => this.setCheckboxAttribute(checkbox, ATTRIBUTE.DISABLED, true),
+        (checkbox) => this.setCheckboxAttribute(checkbox, ATTRIBUTE.DISABLED, this.disabled),
       );
     }
     this.toggleParentCheckboxState();
