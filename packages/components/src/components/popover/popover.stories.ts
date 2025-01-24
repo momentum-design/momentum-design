@@ -2,6 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html, TemplateResult } from 'lit';
 import { PLACEMENT } from './popover.constants';
+import { COLOR } from '../modalcontainer/modalcontainer.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 const createPopover = (
@@ -22,7 +23,8 @@ const createPopover = (
     ?interactive=${args.interactive}
     ?focus-trap=${args['focus-trap']}
     ?show-arrow=${args['show-arrow']}
-    ?inverted-color=${args['inverted-color']}
+    color=${args.color}
+    ?flip=${args.flip}
     ?close-button=${args['close-button']}
     ?prevent-scroll=${args['prevent-scroll']}
     ?hide-on-blur=${args['hide-on-blur']}
@@ -88,12 +90,12 @@ const renderMultiple = (args: Args) => html`
 <mdc-popover
   id="popover2"
   triggerID="popover-trigger"
-  trigger="hover"
+  trigger="mouseenter"
   placement="bottom"
   set-index="2"
   show-arrow
 >
-  <mdc-text>Description tooltip on hover</mdc-text>
+  <mdc-text>Description tooltip on mou se enter</mdc-text>
 </mdc-popover>
 `;
 
@@ -125,12 +127,12 @@ const renderNested = (args: Args) => html`
 <mdc-popover
   id="popover3"
   triggerID="popover-trigger-3"
-  trigger="hover"
+  trigger="mouseenter"
   placement="bottom"
   set-index="3"
   show-arrow
 >
-  <mdc-text>Description tooltip on hover</mdc-text>
+  <mdc-text>Description tooltip on mouseenter</mdc-text>
 </mdc-popover>
 `;
 
@@ -161,6 +163,13 @@ const meta: Meta = {
     delay: {
       control: 'text',
     },
+    color: {
+      control: 'select',
+      options: Object.values(COLOR),
+    },
+    flip: {
+      control: 'boolean',
+    },
     'set-index': {
       if: {
         arg: 'set-index',
@@ -168,9 +177,6 @@ const meta: Meta = {
       control: 'number',
     },
     'show-arrow': {
-      control: 'boolean',
-    },
-    'inverted-color': {
       control: 'boolean',
     },
     'close-button': {
@@ -222,7 +228,6 @@ export const Default: StoryObj = {
     offset: 4,
     delay: '0,0',
     'show-arrow': true,
-    'inverted-color': false,
   },
 };
 
@@ -237,7 +242,6 @@ export const interactiveContent: StoryObj = {
     'focus-trap': true,
     interactive: true,
     'show-arrow': true,
-    'inverted-color': false,
   },
 };
 
@@ -245,14 +249,13 @@ export const interactiveHover: StoryObj = {
   render: renderInteractive,
   args: {
     triggerID: 'popover-trigger',
-    trigger: 'hover',
+    trigger: 'mouseenter',
     placement: PLACEMENT.BOTTOM,
     offset: 4,
     delay: '0,100',
     'focus-trap': true,
     interactive: true,
     'show-arrow': true,
-    'inverted-color': false,
   },
 };
 
@@ -267,7 +270,6 @@ export const interactiveMultiple: StoryObj = {
     interactive: true,
     'show-arrow': true,
     'close-button': true,
-    'inverted-color': false,
   },
 };
 export const nestedPopover: StoryObj = {
@@ -281,7 +283,6 @@ export const nestedPopover: StoryObj = {
     'focus-trap': true,
     interactive: true,
     'show-arrow': true,
-    'inverted-color': false,
     'hide-on-escape': true,
   },
 };
@@ -296,6 +297,5 @@ export const hideOnBlur: StoryObj = {
     interactive: true,
     'show-arrow': true,
     'hide-on-blur': true,
-    'inverted-color': false,
   },
 };

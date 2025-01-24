@@ -4,8 +4,6 @@ const TAG_NAME = utils.constructTagName('popover');
 
 const PLACEMENT = {
   AUTO: 'auto',
-  AUTO_START: 'auto-start',
-  AUTO_END: 'auto-end',
   LEFT_START: 'left-start',
   LEFT: 'left',
   LEFT_END: 'left-end',

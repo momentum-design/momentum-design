@@ -1,31 +1,31 @@
-/* eslint-disable max-classes-per-file */
-import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
-
-type Constructor<T = {}> = new (...args: any[]) => T;
+import type { Constructor } from './index.types';
 
 export interface FocusTrapClassInterface {
-    enableFocusTrap: boolean;
-    enablePreventScroll: boolean;
+  enableFocusTrap: boolean;
+  enablePreventScroll: boolean;
+  setFocusableElements(): void;
+  setInitialFocus(prefferableElement?: number): void;
+  deactivateFocusTrap(): void;
 }
 
-export abstract class FocusTrapClass extends LitElement {
-  protected activateFocusTrap?(): void;
-
-  protected deactivateFocusTrap?(): void;
-
-  protected setFocusableElements?(): void;
-
-  protected setInitialFocus?(): void;
-}
-
-export const FocusTrapMixin = <T extends Constructor<FocusTrapClass>>(
-  superClass: T,
-) : T & Constructor<FocusTrapClass & FocusTrapClassInterface> => {
+export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T) => {
   class FocusTrap extends superClass {
+    /**
+     * Determines whether the focus trap is enabled.
+     * If true, focus will be restricted to the content within this component.
+     * @default false
+     *
+     */
     @property({ reflect: true, type: Boolean })
     enableFocusTrap = false;
 
+    /**
+     * Determines whether scrolling is prevented when the focus trap is active.
+     * If true, the document's scroll will be disabled while the focus trap is active.
+     * @default false
+     *
+     */
     @property({ reflect: true, type: Boolean })
     enablePreventScroll = false;
 
@@ -35,17 +35,31 @@ export const FocusTrapMixin = <T extends Constructor<FocusTrapClass>>(
 
     shouldWrapFocus: () => boolean = () => true;
 
-    override deactivateFocusTrap() {
+    constructor(...args: any[]) {
+      super(...args);
+      this.addEventListener('keydown', this.handleKeydown);
+    }
+
+    /**
+     * Deactivate the focus trap.
+     */
+    deactivateFocusTrap() {
       this.enableFocusTrap = false;
       this.enablePreventScroll = false;
       this.focusTrapIndex = -1;
       document.body.style.overflow = '';
     }
 
+    /**
+     * Checks if the element has no client rectangles (not visible in the viewport).
+     */
     private hasNoClientRects(element: HTMLElement) {
       return element.getClientRects().length === 0;
     }
 
+    /**
+     * Checks if the element has zero dimensions (width and height are both 0).
+     */
     private hasZeroDimensions(element: HTMLElement) {
       const { width, height } = element.getBoundingClientRect();
       const { offsetWidth, offsetHeight } = element;
@@ -53,20 +67,32 @@ export const FocusTrapMixin = <T extends Constructor<FocusTrapClass>>(
       return offsetWidth + offsetHeight + height + width === 0;
     }
 
+    /**
+     * Determines if the element is not visible in the DOM.
+     */
     private isNotVisible(element: HTMLElement) {
       return this.hasZeroDimensions(element) || this.hasNoClientRects(element);
     }
 
+    /**
+     * Checks if the element has inline styles that make it hidden.
+     */
     private hasHiddenStyle(element: HTMLElement) {
       const { display, opacity, visibility } = element.style;
       return display === 'none' || opacity === '0' || visibility === 'hidden' || visibility === 'collapse';
     }
 
+    /**
+     * Checks if the element is hidden by a computed style.
+     */
     private hasComputedHidden(element: HTMLElement) {
       const computedStyle = getComputedStyle(element);
       return computedStyle.visibility === 'hidden' || computedStyle.height === '0' || computedStyle.display === 'none';
     }
 
+    /**
+     * Checks if the element is hidden from the user.
+     */
     private isHidden(element: HTMLElement) {
       return (
         element.hasAttribute('hidden')
@@ -77,10 +103,16 @@ export const FocusTrapMixin = <T extends Constructor<FocusTrapClass>>(
       );
     }
 
+    /**
+     * Checks if the element is not tabbable.
+     */
     private isNotTabbable(element: HTMLElement) {
       return element.getAttribute('tabindex') === '-1';
     }
 
+    /**
+     * Checks if the element is interactive.
+     */
     private isInteractiveElement(element: HTMLElement): boolean {
       const interactiveTags = new Set([
         'BUTTON',
@@ -124,6 +156,9 @@ export const FocusTrapMixin = <T extends Constructor<FocusTrapClass>>(
       return false;
     }
 
+    /**
+     * Checks if the element is focusable.
+     */
     private isFocusable(element: HTMLElement) {
       if (this.isHidden(element) || this.isNotTabbable(element)) {
         return false;
@@ -131,6 +166,9 @@ export const FocusTrapMixin = <T extends Constructor<FocusTrapClass>>(
       return this.isInteractiveElement(element);
     }
 
+    /**
+     * Recursively finds all focusable elements within the given root and its descendants.
+     */
     private findFocusable(root: ShadowRoot | HTMLElement, matches: Set<HTMLElement> = new Set()): HTMLElement[] {
       if (root instanceof HTMLElement && this.isFocusable(root)) {
         matches.add(root);
@@ -161,13 +199,19 @@ export const FocusTrapMixin = <T extends Constructor<FocusTrapClass>>(
       return [...matches];
     }
 
-    override setFocusableElements() {
+    /**
+     * Updates the list of focusable elements within the component's shadow root.
+     */
+    setFocusableElements() {
       if (!this.shadowRoot) return;
 
       this.focusableElements = this.findFocusable(this.shadowRoot, new Set());
     }
 
-    override setInitialFocus(prefferableElement: number = 0) {
+    /**
+     * Sets the initial focus within the container.
+     */
+    setInitialFocus(prefferableElement: number = 0) {
       if (this.focusableElements.length === 0) return;
 
       if (this.enablePreventScroll) {
@@ -180,6 +224,9 @@ export const FocusTrapMixin = <T extends Constructor<FocusTrapClass>>(
       }
     }
 
+    /**
+     * Calculates the next index for the focus trap.
+     */
     private calculateNextIndex(currentIndex: number, step: number) {
       const { length } = this.focusableElements;
       const wrapFocus = this.shouldWrapFocus();
@@ -201,6 +248,9 @@ export const FocusTrapMixin = <T extends Constructor<FocusTrapClass>>(
       return nextIndex;
     }
 
+    /**
+     * Returns the deepest active element in the shadow DOM.
+     */
     private getDeepActiveElement() {
       let host: Element | null = document.activeElement || document.body;
       while (host instanceof HTMLElement && host.shadowRoot?.activeElement) {
@@ -210,10 +260,16 @@ export const FocusTrapMixin = <T extends Constructor<FocusTrapClass>>(
       return host as HTMLElement || document.body;
     }
 
+    /**
+     * Finds the index of the active element within the focusable elements.
+     */
     private findElement(activeElement: HTMLElement) {
       return this.focusableElements.findIndex((element) => this.isEqualFocusNode(activeElement, element));
     }
 
+    /**
+     * Checks if the active element is equal to the given element.
+     */
     private isEqualFocusNode(activeElement: HTMLElement, element: HTMLElement) {
       if (activeElement.nodeType >= 0) {
         return element.isEqualNode(activeElement) && element === activeElement;
@@ -221,6 +277,9 @@ export const FocusTrapMixin = <T extends Constructor<FocusTrapClass>>(
       return false;
     }
 
+    /**
+     * Traps focus within the container.
+     */
     private trapFocus(direction: boolean) {
       if (this.focusableElements.length === 0) return;
 
@@ -239,6 +298,9 @@ export const FocusTrapMixin = <T extends Constructor<FocusTrapClass>>(
       }
     }
 
+    /**
+     * Traps focus within the container.
+     */
     private handleKeydown(event: KeyboardEvent) {
       if (!this.enableFocusTrap || !this.focusableElements.length) {
         return;
@@ -249,16 +311,6 @@ export const FocusTrapMixin = <T extends Constructor<FocusTrapClass>>(
         this.trapFocus(event.shiftKey);
       }
     }
-
-    override connectedCallback() {
-      super.connectedCallback();
-      this.addEventListener('keydown', this.handleKeydown);
-    }
-
-    override disconnectedCallback() {
-      super.disconnectedCallback();
-      this.removeEventListener('keydown', this.handleKeydown);
-    }
   }
-  return FocusTrap as Constructor<FocusTrapClassInterface & FocusTrapClass> & T;
+  return FocusTrap as Constructor<HTMLElement & FocusTrapClassInterface> & T;
 };

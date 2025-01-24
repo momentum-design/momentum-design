@@ -13,10 +13,17 @@ const styles = css`
   .popover-container {
     display: none;
     position: absolute;
-    padding: 0.75rem;
-    background-color: var(--mdc-popover-primary-background-color);
-    border-radius: 0.5rem;
-    border: 0.0625rem solid var(--mdc-popover-border-color);
+
+  &[data-color="contrast"] {
+      .popover-arrow {
+        background-color: var(--mdc-popover-inverted-background-color);
+        border-color: var(--mdc-popover-inverted-border-color);
+      }
+      
+      .popover-close {
+        color: var(--mdc-popover-inverted-text-color);
+      }
+    }
   }
 
   .popover-container[visible] {
@@ -32,21 +39,6 @@ const styles = css`
     z-index: -1;
     pointer-events: none;
     border: 0.0625rem solid var(--mdc-popover-border-color);
-  }
-
-  .popover-container[inverted] {
-    background-color: var(--mdc-popover-inverted-background-color);
-    border-color: var(--mdc-popover-inverted-border-color);
-    color: var(--mdc-popover-inverted-text-color);
-
-    .popover-arrow {
-      background-color: var(--mdc-popover-inverted-background-color);
-      border-color: var(--mdc-popover-inverted-border-color);
-    }
-    
-    .popover-close {
-      color: var(--mdc-popover-inverted-text-color);
-    }
   }
 
   .popover-close {
