@@ -82,8 +82,36 @@
       "input": {
         "mapPagesToFolder": [
           {
-            "page": "✅",
-            "folder": "src"
+            "page": "✅ Solid Illustrations",
+            "folder": "src/core"
+          },
+          {
+            "page": "✅ Marketing Illustrations",
+            "folder": "src/colored"
+          },
+          {
+            "page": "✅ Error Resolution",
+            "folder": "src/colored"
+          },
+          {
+            "page": "✅ Technical Illustrations",
+            "folder": "src/colored"
+          },
+          {
+            "page": "✅ Multi-step Flows",
+            "folder": "src/colored"
+          },
+          {
+            "page": "✅ Empty States",
+            "folder": "src/colored"
+          },
+          {
+            "page": "✅ Hero States",
+            "folder": "src/colored"
+          },
+          {
+            "page": "✅ People",
+            "folder": "src/colored"
           }
         ],
         "exclude": {
