@@ -1,4 +1,5 @@
 import { CSSResult, html, nothing } from 'lit';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
@@ -108,25 +109,27 @@ class Checkbox extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
     ` : nothing;
 
     return html`
-      <input
-        id="${this.id}"
-        type="checkbox" 
-        name="${ifDefined(this.name)}"
-        value="${ifDefined(this.value)}"
-        class="mdc-checkbox__input"
-      />
-      <span
-        aria-checked="${this.checked}"
-        aria-disabled="${this.disabled}"
-        aria-label="${ifDefined(this.label)}"
-        class="mdc-checkbox__icon-container mdc-focus-ring"
-        role="checkbox"
-        tabindex="${this.disabled ? -1 : 0}"
-      >
-        ${checkboxIconContent}
-      </span>
-      ${this.renderLabel()}
-      ${this.renderHelperText()}
+      <div class="mdc-checkbox__container ${classMap({ 'mdc-focus-ring': !this.disabled })}">
+        <input
+          id="${this.id}"
+          type="checkbox"
+          class="mdc-checkbox__input"
+          name="${ifDefined(this.name)}"
+          value="${ifDefined(this.value)}"
+          ?checked="${this.checked}"
+          ?disabled="${this.disabled}"
+          aria-checked="${this.checked}"
+          aria-disabled="${this.disabled}"
+          aria-label="${ifDefined(this.label)}"
+          tabindex="${this.disabled ? -1 : 0}"
+          @click="${this.handleClick}"
+        />
+        <div class="mdc-checkbox__icon-container">${checkboxIconContent}</div>
+      </div>
+      <div>
+        ${this.renderLabel()}
+        ${this.renderHelperText()}
+      </div>
     `;
   }
 
