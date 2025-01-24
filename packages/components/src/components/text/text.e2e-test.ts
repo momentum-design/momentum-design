@@ -6,6 +6,13 @@ import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { DEFAULTS, TYPE, VALID_TEXT_TAGS } from './text.constants';
 import type { TextType, TagName } from './text.types';
 
+// Custom timeout for mobile chrome device only on text component test suite
+const setTimeoutForMobileChrome = () => {
+  if (test.info().project.name === 'mobile chrome') {
+    test.setTimeout(45000);
+  }
+};
+
 type SetupOptions = {
   componentsPage: ComponentsPage;
   type?: TextType;
@@ -29,6 +36,23 @@ const setup = async (args: SetupOptions) => {
   return text;
 };
 
+const setupEllipsis = async (args: SetupOptions) => {
+  const { componentsPage, ...restArgs } = args;
+  await componentsPage.mount({
+    html: `
+      <mdc-text
+        type="${restArgs.type}"
+        ${restArgs.tagname ? `tagname="${restArgs.tagname}"` : ''}
+        style="width: 50px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+      >${restArgs.children}</mdc-text>
+    `,
+    clearDocument: true,
+  });
+  const text = componentsPage.page.locator('mdc-text');
+  await text.waitFor();
+  return text;
+};
+
 const textContent = 'abcdefghijklmnopqrstuvwxyz1234567890';
 
 test.describe('mdc-text', () => {
@@ -43,6 +67,7 @@ test.describe('mdc-text', () => {
    * VISUAL REGRESSION
    */
   test('visual-regression & accessibility', async ({ componentsPage }) => {
+    setTimeoutForMobileChrome();
     const textStickerSheet = new StickerSheet(componentsPage, 'mdc-text');
     await test.step('add text component with different types to sheet', async () => {
       textStickerSheet.setChildren(textContent);
@@ -101,5 +126,20 @@ test.describe('mdc-text', () => {
         });
       });
     }
+  });
+
+  test('visual-regression for ellipsis', async ({ componentsPage }) => {
+    const ellipsisText = await setupEllipsis({
+      componentsPage,
+      children: textContent,
+      tagname: 'p',
+    });
+
+    /**
+     * VISUAL REGRESSION
+     */
+    await test.step('matches screenshot of text with elipsis', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-text-ellipsis', { element: ellipsisText });
+    });
   });
 });
