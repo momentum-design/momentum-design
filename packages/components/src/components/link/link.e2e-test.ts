@@ -138,7 +138,7 @@ test.describe('mdc-link', () => {
 
         await componentsPage.page.keyboard.press('Enter');
         await expect(componentsPage.page.url()).toContain('#content');
-        await componentsPage.actionability.blurForWebKit(linkElement);
+        await linkElement.evaluate((el) => el.blur());
         await componentsPage.page.goBack();
       });
     });
