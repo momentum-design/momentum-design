@@ -70,7 +70,7 @@ const testFocusRingInteractions = async (
 
     // Test rapid focus/blur interactions
     /* eslint-disable no-await-in-loop */
-    for (let i = 0; i < 5; i += 1) {
+    for (let i = 0; i <= 5; i += 1) {
       await pressTab(componentsPage, browserName, subComponent, true);
       await pressTab(componentsPage, browserName, subComponent, false);
     }

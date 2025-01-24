@@ -14,6 +14,8 @@ import { getHelperIcon } from './formfieldwrapper.utils';
  *
  * @tagname mdc-formfieldwrapper
  *
+ * @slot label-info - slot to add the label info icon
+ *
  */
 class FormfieldWrapper extends Component {
   /**
@@ -38,12 +40,6 @@ class FormfieldWrapper extends Component {
   @property({ type: String, reflect: true, attribute: 'help-text' }) helpText?: string;
 
   /**
-   * @beta this attribute is in beta, and is subject to change (given the toggletip component is not ready yet)
-   * The text that is displayed when the labelInfoToggleTip is hovered over.
-   */
-  @property({ type: String, attribute: 'label-info-text' }) labelInfoText?: string;
-
-  /**
    * creates the label element when the label property is set.
    * id is used to link the label with the input field.
    * @returns void
@@ -53,19 +49,7 @@ class FormfieldWrapper extends Component {
       return nothing;
     }
 
-    return html`<label for="${this.id}" class="mdc-label">${this.label}</label>`;
-  }
-
-  /**
-   * displays a info icon, which when hovered over, displays the labelInfoText.
-   * This is in beta and is subject to change once the toggletip component is ready.
-   * @returns void
-   */
-  protected renderLabelInfoToggleTip() {
-    if (!this.labelInfoText) {
-      return nothing;
-    }
-    return html`<mdc-icon name=${DEFAULTS.INFO_ICON_NAME} size="1.25" length-unit="rem"></mdc-icon>`;
+    return html`<label for="${this.id}" class="mdc-label" part="mdc-label">${this.label}</label>`;
   }
 
   /**
@@ -79,7 +63,7 @@ class FormfieldWrapper extends Component {
     }
     const helperIcon = getHelperIcon(this.helpTextType || DEFAULTS.VALIDATION);
     if (helperIcon) {
-      return html`<mdc-icon size="1" length-unit="rem" name=${helperIcon}></mdc-icon>`;
+      return html`<mdc-icon part="mdc-helper-icon" size="1" length-unit="rem" name=${helperIcon}></mdc-icon>`;
     }
     return nothing;
   }
@@ -94,7 +78,13 @@ class FormfieldWrapper extends Component {
       return nothing;
     }
     return html`
-      <mdc-text tagname=${MDC_TEXT_OPTIONS.TAGNAME} type=${MDC_TEXT_OPTIONS.TYPE}> ${this.helpText} </mdc-text>
+      <mdc-text
+        part="mdc-help-text"
+        tagname=${MDC_TEXT_OPTIONS.TAGNAME}
+        type=${MDC_TEXT_OPTIONS.TYPE}
+      >
+        ${this.helpText}
+      </mdc-text>
     `;
   }
 
@@ -105,7 +95,7 @@ class FormfieldWrapper extends Component {
   protected renderLabel() {
     return html`<div class="mdc-label-text" part="mdc-label-text">
       <slot name="label">${this.renderLabelElement()}</slot>
-      <slot name="label-icon">${this.renderLabelInfoToggleTip()}</slot>
+      <slot name="label-info"></slot>
     </div>`;
   }
 
