@@ -170,7 +170,13 @@ class Checkboxgroup extends DisabledMixin(Component) {
 
   public override render() {
     const header = this.headerText
-      ? html`<mdc-text tagname="${TEXT_TAGS.SPAN}" type="${TEXT_TYPE.BODY_LARGE_BOLD}"> ${this.headerText} </mdc-text>`
+      ? html`<mdc-text
+        class="mdc-checkboxgroup__header-text"
+        tagname="${TEXT_TAGS.SPAN}"
+        type="${TEXT_TYPE.BODY_LARGE_BOLD}"
+      >
+        ${this.headerText}
+      </mdc-text>`
       : nothing;
     const parentCheckbox = this.type === TYPE.PARENT
       ? html`<mdc-checkbox

@@ -52,7 +52,7 @@ export const Indeterminate: StoryObj = {
 
 export const Disabled: StoryObj = {
   render: () => html`
-    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+    <div style="display: flex; flex-direction: column;">
       <mdc-checkbox label="Unselected" disabled></mdc-checkbox>
       <mdc-checkbox label="Selected" disabled checked></mdc-checkbox>
       <mdc-checkbox label="Indeterminate" disabled indeterminate></mdc-checkbox>
@@ -68,7 +68,7 @@ export const HelperText: StoryObj = {
 
 export const List: StoryObj = {
   render: () => html`
-    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+    <div style="display: flex; flex-direction: column;">
       <mdc-checkbox label="Black Widow" checked help-text="This is a help text"></mdc-checkbox>
       <mdc-checkbox label="Captain America" checked disabled></mdc-checkbox>
       <mdc-checkbox label="Hawkeye" indeterminate disabled></mdc-checkbox>
@@ -82,7 +82,7 @@ export const List: StoryObj = {
 
 export const BasicList: StoryObj = {
   render: () => html`
-    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+    <div style="display: flex; flex-direction: column;">
       <mdc-checkbox label="Black Widow"></mdc-checkbox>
       <mdc-checkbox label="Captain America"></mdc-checkbox>
       <mdc-checkbox label="Hawkeye"></mdc-checkbox>

@@ -6,6 +6,7 @@ const styles = [hostFitContentStyles, css`
     display: flex;
     flex-direction: row;
     align-items: flex-start;
+    margin-bottom: 0.5rem;
   }
   .mdc-label-text {
     line-height: unset;
