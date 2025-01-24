@@ -126,7 +126,7 @@ Consumers should override this role when:
 The type attribute specifies the behavior of the button when it is clicked.
 - **submit**: The button submits the form data to the server.
 - **reset**: The button resets the form data to its initial state.
-- **button**: The button does nothing when clicked.`,default:"button",fieldName:"type",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}}],mixins:[{name:"AvatarComponentMixin",module:"/src/utils/mixins/AvatarComponentMixin"}],superclass:{name:"Buttonsimple",module:"/src/components/buttonsimple"},tagName:"mdc-avatarbutton",jsDoc:`/**
+- **button**: The button does nothing when clicked.`,default:"button",fieldName:"type",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}}],mixins:[{name:"AvatarComponentMixin",module:"/src/utils/mixins/AvatarComponentMixin"}],superclass:{name:"Buttonsimple",module:"/src/components/buttonsimple/buttonsimple.component"},tagName:"mdc-avatarbutton",jsDoc:`/**
  * The \`mdc-avatarbutton\` component is an interactable version of the \`mdc-avatar\` component.
  *
  * This component is made by extending \`buttonsimple\` class.
@@ -247,7 +247,7 @@ preventing any interactions (clicks or keyboard actions) from triggering uninten
 The type attribute specifies the behavior of the button when it is clicked.
 - **submit**: The button submits the form data to the server.
 - **reset**: The button resets the form data to its initial state.
-- **button**: The button does nothing when clicked.`,default:"button",fieldName:"type",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}}],superclass:{name:"Buttonsimple",module:"/src/components/buttonsimple"},tagName:"mdc-button",jsDoc:`/**
+- **button**: The button does nothing when clicked.`,default:"button",fieldName:"type",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}}],superclass:{name:"Buttonsimple",module:"/src/components/buttonsimple/buttonsimple.component"},tagName:"mdc-button",jsDoc:`/**
  * \`mdc-button\` is a component that can be configured in various ways to suit different use cases.
  *
  * Button Variants:
@@ -326,97 +326,7 @@ When the component is disabled for user interaction; it is not focusable or clic
  *
  * @tagname mdc-buttonsimple
  *
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}}]},{kind:"javascript-module",path:"components/formfieldwrapper/formfieldwrapper.component.js",declarations:[{kind:"class",description:`formfieldwrapper is a component that contains the label and helper/validation text
- that can be configured in various ways to suit different use cases (most of the input related components).
-It is used as an internal component and is not intended to be used directly by consumers.`,name:"FormfieldWrapper",slots:[{description:"slot to add the label info icon",name:"label-info"}],members:[{kind:"field",name:"label",type:{text:"string | undefined"},description:"The label of the input field. It is linked to the input field using the `for` attribute.",attribute:"label",reflects:!0},{kind:"field",name:"id",default:"`mdc-input-${uuidv4()}`",description:"The unique id of the input field. It is used to link the input field with the label.",attribute:"id"},{kind:"field",name:"helpTextType",type:{text:"ValidationType"},description:"The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.",attribute:"help-text-type",reflects:!0},{kind:"field",name:"helpText",type:{text:"string | undefined"},description:"The help text that is displayed below the input field.",attribute:"help-text",reflects:!0},{kind:"method",name:"renderLabelElement",privacy:"protected",description:`creates the label element when the label property is set.
-id is used to link the label with the input field.`,return:{type:{text:""}}},{kind:"method",name:"renderHelpTextIcon",privacy:"protected",description:`creates the helpertext icon based on the helpTextType for validation.
-If the helpTextType is not set, it defaults to 'default' and it doesn't display any icon.`,return:{type:{text:""}}},{kind:"method",name:"renderHelpText",privacy:"protected",description:`creates the helper text component when the helpertext value is set.
-It is also used to display the validation message based on the helpTextType.`,return:{type:{text:""}}},{kind:"method",name:"renderLabel",privacy:"protected",description:"renders the mdc-label-text container that contains the label and labelInfoToggleTip.",return:{type:{text:""}}},{kind:"method",name:"renderHelperText",privacy:"protected",description:"renders the mdc-help-text container that contains the helpertext icon and helpertext.",return:{type:{text:""}}}],attributes:[{name:"label",type:{text:"string | undefined"},description:"The label of the input field. It is linked to the input field using the `for` attribute.",fieldName:"label"},{name:"id",default:"`mdc-input-${uuidv4()}`",description:"The unique id of the input field. It is used to link the input field with the label.",fieldName:"id"},{name:"help-text-type",type:{text:"ValidationType"},description:"The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.",fieldName:"helpTextType"},{name:"help-text",type:{text:"string | undefined"},description:"The help text that is displayed below the input field.",fieldName:"helpText"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-formfieldwrapper",jsDoc:`/**
- * formfieldwrapper is a component that contains the label and helper/validation text
- *  that can be configured in various ways to suit different use cases (most of the input related components).
- * It is used as an internal component and is not intended to be used directly by consumers.
- *
- * @tagname mdc-formfieldwrapper
- *
- * @slot label-info - slot to add the label info icon
- *
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"FormfieldWrapper",module:"components/formfieldwrapper/formfieldwrapper.component.js"}}]},{kind:"javascript-module",path:"components/icon/icon.component.js",declarations:[{kind:"class",description:`Icon component that dynamically displays SVG icons based on a valid name.
-
-This component must be mounted within an \`IconProvider\` component.
-
-The \`IconProvider\` defines the source URL from which icons are consumed.
-The \`Icon\` component accepts a \`name\` attribute, which corresponds to
-the file name of the icon to be loaded from the specified URL.
-
-Once fetched, the icon will be rendered. If the fetching process is unsuccessful,
-no icon will be displayed.
-
-The \`size\` attribute allows for dynamic sizing of the icon based on the provided
-\`length-unit\` attribute. This unit can either come from the \`IconProvider\`
-or can be overridden for each individual icon. For example:
-if \`size = 1\` and \`length-unit = 'em'\`, the dimensions of the icon will be
-\`width: 1em; height: 1em\`.
-
-Regarding accessibility, there are two types of icons: decorative and informative.
-
-### Decorative Icons
-- Decorative icons do not convey any essential information to the content of a page.
-- They should be hidden from screen readers (SR) to prevent confusion for users.
-- For decorative icons, an \`aria-label\` is not required, and the \`role\` will be set to null.
-
-### Informative Icons
-- Informative icons convey important information that is not adequately represented
-  by surrounding text or components.
-- They provide valuable context and must be announced by assistive technologies.
-- For informative icons, an \`aria-label\` is required, and the \`role\` will be set to "img".
-- If an \`aria-label\` is provided, the role will be set to 'img'; if it is absent,
-  the role will be unset.`,name:"Icon",cssProperties:[{description:"Allows customization of the default fill color.",name:"--mdc-icon-fill-color"}],members:[{kind:"field",name:"iconData",type:{text:"HTMLElement | undefined"},privacy:"private"},{kind:"field",name:"lengthUnitFromContext",type:{text:"string | undefined"},privacy:"private"},{kind:"field",name:"sizeFromContext",type:{text:"number | undefined"},privacy:"private"},{kind:"field",name:"name",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename)",attribute:"name",reflects:!0},{kind:"field",name:"size",type:{text:"number | undefined"},description:"Size of the icon (works in combination with length unit)",attribute:"size"},{kind:"field",name:"lengthUnit",type:{text:"string | undefined"},description:"Length unit attribute for overriding length-unit from `IconProvider`",attribute:"length-unit"},{kind:"field",name:"ariaLabel",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",attribute:"aria-label"},{kind:"field",name:"iconProviderContext",privacy:"private",readonly:!0},{kind:"field",name:"abortController",type:{text:"AbortController"},privacy:"private",default:"new AbortController()"},{kind:"method",name:"triggerIconLoaded",privacy:"private",return:{type:{text:"void"}},description:`Dispatches a 'load' event on the component once the icon has been successfully loaded.
-This event bubbles and is cancelable.`},{kind:"method",name:"getIconData",privacy:"private",description:`Get Icon Data function which will fetch the icon (currently only svg)
-and sets state and attributes once fetched successfully
-
-This method uses abortController.signal to cancel the fetch request when the component is disconnected or updated.
-If the request is aborted after the fetch() call has been fulfilled but before the response body has been read,
-then attempting to read the response body will reject with an AbortError exception.`},{kind:"method",name:"handleIconLoadedSuccess",privacy:"private",parameters:[{name:"iconHtml",type:{text:"HTMLElement"},description:"The icon html element which has been fetched from the icon provider."}],description:`Sets the iconData state to the fetched icon,
-and calls functions to set role, aria-label and aria-hidden attributes on the icon.
-Dispatches a 'load' event on the component once the icon has been successfully loaded.`},{kind:"method",name:"handleIconLoadedFailure",privacy:"private",parameters:[{name:"error",type:{text:"unknown"}}],description:`Dispatches an 'error' event on the component when the icon fetching has failed.
-This event bubbles and is cancelable.
-The error detail is set to the error object.`},{kind:"method",name:"updateSize",privacy:"private",description:"Updates the size by setting the width and height"},{kind:"method",name:"setRoleOnIcon",privacy:"private"},{kind:"method",name:"setAriaHiddenOnIcon",privacy:"private"},{kind:"method",name:"setAriaLabelOnIcon",privacy:"private"},{kind:"field",name:"computedIconSize",privacy:"private",readonly:!0}],attributes:[{name:"name",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename)",fieldName:"name"},{name:"size",type:{text:"number | undefined"},description:"Size of the icon (works in combination with length unit)",fieldName:"size"},{name:"length-unit",type:{text:"string | undefined"},description:"Length unit attribute for overriding length-unit from `IconProvider`",fieldName:"lengthUnit"},{name:"aria-label",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",fieldName:"ariaLabel"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-icon",jsDoc:`/**
- * Icon component that dynamically displays SVG icons based on a valid name.
- *
- * This component must be mounted within an \`IconProvider\` component.
- *
- * The \`IconProvider\` defines the source URL from which icons are consumed.
- * The \`Icon\` component accepts a \`name\` attribute, which corresponds to
- * the file name of the icon to be loaded from the specified URL.
- *
- * Once fetched, the icon will be rendered. If the fetching process is unsuccessful,
- * no icon will be displayed.
- *
- * The \`size\` attribute allows for dynamic sizing of the icon based on the provided
- * \`length-unit\` attribute. This unit can either come from the \`IconProvider\`
- * or can be overridden for each individual icon. For example:
- * if \`size = 1\` and \`length-unit = 'em'\`, the dimensions of the icon will be
- * \`width: 1em; height: 1em\`.
- *
- * Regarding accessibility, there are two types of icons: decorative and informative.
- *
- * ### Decorative Icons
- * - Decorative icons do not convey any essential information to the content of a page.
- * - They should be hidden from screen readers (SR) to prevent confusion for users.
- * - For decorative icons, an \`aria-label\` is not required, and the \`role\` will be set to null.
- *
- * ### Informative Icons
- * - Informative icons convey important information that is not adequately represented
- *   by surrounding text or components.
- * - They provide valuable context and must be announced by assistive technologies.
- * - For informative icons, an \`aria-label\` is required, and the \`role\` will be set to "img".
- * - If an \`aria-label\` is provided, the role will be set to 'img'; if it is absent,
- *   the role will be unset.
- *
- * @tagname mdc-icon
- *
- * @cssproperty --mdc-icon-fill-color - Allows customization of the default fill color.
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Icon",module:"components/icon/icon.component.js"}}]},{kind:"javascript-module",path:"components/divider/divider.component.js",declarations:[{kind:"class",description:`\`mdc-divider\` is a component that provides a line to separate and organize content.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}}]},{kind:"javascript-module",path:"components/divider/divider.component.js",declarations:[{kind:"class",description:`\`mdc-divider\` is a component that provides a line to separate and organize content.
 It can also include a button or text positioned centrally, allowing users to interact with the layout.
 
 **Divider Orientation:**
@@ -514,7 +424,97 @@ Note: Positive and Negative directions are defined based on Cartesian plane.`,de
  * @cssproperty --mdc-divider-text-margin - left and right margin of label in the text divider
  * @cssproperty --mdc-divider-text-line-height - line height of label in the text divider
  * @cssproperty --mdc-divider-grabber-button-border-radius - border radius of the grabber button
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Divider",module:"components/divider/divider.component.js"}}]},{kind:"javascript-module",path:"components/iconprovider/iconprovider.component.js",declarations:[{kind:"class",description:`IconProvider component, which allows to be consumed from sub components
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Divider",module:"components/divider/divider.component.js"}}]},{kind:"javascript-module",path:"components/formfieldwrapper/formfieldwrapper.component.js",declarations:[{kind:"class",description:`formfieldwrapper is a component that contains the label and helper/validation text
+ that can be configured in various ways to suit different use cases (most of the input related components).
+It is used as an internal component and is not intended to be used directly by consumers.`,name:"FormfieldWrapper",slots:[{description:"slot to add the label info icon",name:"label-info"}],members:[{kind:"field",name:"label",type:{text:"string | undefined"},description:"The label of the input field. It is linked to the input field using the `for` attribute.",attribute:"label",reflects:!0},{kind:"field",name:"id",default:"`mdc-input-${uuidv4()}`",description:"The unique id of the input field. It is used to link the input field with the label.",attribute:"id"},{kind:"field",name:"helpTextType",type:{text:"ValidationType"},description:"The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.",attribute:"help-text-type",reflects:!0},{kind:"field",name:"helpText",type:{text:"string | undefined"},description:"The help text that is displayed below the input field.",attribute:"help-text",reflects:!0},{kind:"method",name:"renderLabelElement",privacy:"protected",description:`creates the label element when the label property is set.
+id is used to link the label with the input field.`,return:{type:{text:""}}},{kind:"method",name:"renderHelpTextIcon",privacy:"protected",description:`creates the helpertext icon based on the helpTextType for validation.
+If the helpTextType is not set, it defaults to 'default' and it doesn't display any icon.`,return:{type:{text:""}}},{kind:"method",name:"renderHelpText",privacy:"protected",description:`creates the helper text component when the helpertext value is set.
+It is also used to display the validation message based on the helpTextType.`,return:{type:{text:""}}},{kind:"method",name:"renderLabel",privacy:"protected",description:"renders the mdc-label-text container that contains the label and labelInfoToggleTip.",return:{type:{text:""}}},{kind:"method",name:"renderHelperText",privacy:"protected",description:"renders the mdc-help-text container that contains the helpertext icon and helpertext.",return:{type:{text:""}}}],attributes:[{name:"label",type:{text:"string | undefined"},description:"The label of the input field. It is linked to the input field using the `for` attribute.",fieldName:"label"},{name:"id",default:"`mdc-input-${uuidv4()}`",description:"The unique id of the input field. It is used to link the input field with the label.",fieldName:"id"},{name:"help-text-type",type:{text:"ValidationType"},description:"The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.",fieldName:"helpTextType"},{name:"help-text",type:{text:"string | undefined"},description:"The help text that is displayed below the input field.",fieldName:"helpText"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-formfieldwrapper",jsDoc:`/**
+ * formfieldwrapper is a component that contains the label and helper/validation text
+ *  that can be configured in various ways to suit different use cases (most of the input related components).
+ * It is used as an internal component and is not intended to be used directly by consumers.
+ *
+ * @tagname mdc-formfieldwrapper
+ *
+ * @slot label-info - slot to add the label info icon
+ *
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"FormfieldWrapper",module:"components/formfieldwrapper/formfieldwrapper.component.js"}}]},{kind:"javascript-module",path:"components/icon/icon.component.js",declarations:[{kind:"class",description:`Icon component that dynamically displays SVG icons based on a valid name.
+
+This component must be mounted within an \`IconProvider\` component.
+
+The \`IconProvider\` defines the source URL from which icons are consumed.
+The \`Icon\` component accepts a \`name\` attribute, which corresponds to
+the file name of the icon to be loaded from the specified URL.
+
+Once fetched, the icon will be rendered. If the fetching process is unsuccessful,
+no icon will be displayed.
+
+The \`size\` attribute allows for dynamic sizing of the icon based on the provided
+\`length-unit\` attribute. This unit can either come from the \`IconProvider\`
+or can be overridden for each individual icon. For example:
+if \`size = 1\` and \`length-unit = 'em'\`, the dimensions of the icon will be
+\`width: 1em; height: 1em\`.
+
+Regarding accessibility, there are two types of icons: decorative and informative.
+
+### Decorative Icons
+- Decorative icons do not convey any essential information to the content of a page.
+- They should be hidden from screen readers (SR) to prevent confusion for users.
+- For decorative icons, an \`aria-label\` is not required, and the \`role\` will be set to null.
+
+### Informative Icons
+- Informative icons convey important information that is not adequately represented
+  by surrounding text or components.
+- They provide valuable context and must be announced by assistive technologies.
+- For informative icons, an \`aria-label\` is required, and the \`role\` will be set to "img".
+- If an \`aria-label\` is provided, the role will be set to 'img'; if it is absent,
+  the role will be unset.`,name:"Icon",cssProperties:[{description:"Allows customization of the default fill color.",name:"--mdc-icon-fill-color"}],members:[{kind:"field",name:"iconData",type:{text:"HTMLElement | undefined"},privacy:"private"},{kind:"field",name:"lengthUnitFromContext",type:{text:"string | undefined"},privacy:"private"},{kind:"field",name:"sizeFromContext",type:{text:"number | undefined"},privacy:"private"},{kind:"field",name:"name",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename)",attribute:"name",reflects:!0},{kind:"field",name:"size",type:{text:"number | undefined"},description:"Size of the icon (works in combination with length unit)",attribute:"size"},{kind:"field",name:"lengthUnit",type:{text:"string | undefined"},description:"Length unit attribute for overriding length-unit from `IconProvider`",attribute:"length-unit"},{kind:"field",name:"ariaLabel",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",attribute:"aria-label"},{kind:"field",name:"iconProviderContext",privacy:"private",readonly:!0},{kind:"field",name:"abortController",type:{text:"AbortController"},privacy:"private",default:"new AbortController()"},{kind:"method",name:"triggerIconLoaded",privacy:"private",return:{type:{text:"void"}},description:`Dispatches a 'load' event on the component once the icon has been successfully loaded.
+This event bubbles and is cancelable.`},{kind:"method",name:"getIconData",privacy:"private",description:`Get Icon Data function which will fetch the icon (currently only svg)
+and sets state and attributes once fetched successfully
+
+This method uses abortController.signal to cancel the fetch request when the component is disconnected or updated.
+If the request is aborted after the fetch() call has been fulfilled but before the response body has been read,
+then attempting to read the response body will reject with an AbortError exception.`},{kind:"method",name:"handleIconLoadedSuccess",privacy:"private",parameters:[{name:"iconHtml",type:{text:"HTMLElement"},description:"The icon html element which has been fetched from the icon provider."}],description:`Sets the iconData state to the fetched icon,
+and calls functions to set role, aria-label and aria-hidden attributes on the icon.
+Dispatches a 'load' event on the component once the icon has been successfully loaded.`},{kind:"method",name:"handleIconLoadedFailure",privacy:"private",parameters:[{name:"error",type:{text:"unknown"}}],description:`Dispatches an 'error' event on the component when the icon fetching has failed.
+This event bubbles and is cancelable.
+The error detail is set to the error object.`},{kind:"method",name:"updateSize",privacy:"private",description:"Updates the size by setting the width and height"},{kind:"method",name:"setRoleOnIcon",privacy:"private"},{kind:"method",name:"setAriaHiddenOnIcon",privacy:"private"},{kind:"method",name:"setAriaLabelOnIcon",privacy:"private"},{kind:"field",name:"computedIconSize",privacy:"private",readonly:!0}],attributes:[{name:"name",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename)",fieldName:"name"},{name:"size",type:{text:"number | undefined"},description:"Size of the icon (works in combination with length unit)",fieldName:"size"},{name:"length-unit",type:{text:"string | undefined"},description:"Length unit attribute for overriding length-unit from `IconProvider`",fieldName:"lengthUnit"},{name:"aria-label",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",fieldName:"ariaLabel"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-icon",jsDoc:`/**
+ * Icon component that dynamically displays SVG icons based on a valid name.
+ *
+ * This component must be mounted within an \`IconProvider\` component.
+ *
+ * The \`IconProvider\` defines the source URL from which icons are consumed.
+ * The \`Icon\` component accepts a \`name\` attribute, which corresponds to
+ * the file name of the icon to be loaded from the specified URL.
+ *
+ * Once fetched, the icon will be rendered. If the fetching process is unsuccessful,
+ * no icon will be displayed.
+ *
+ * The \`size\` attribute allows for dynamic sizing of the icon based on the provided
+ * \`length-unit\` attribute. This unit can either come from the \`IconProvider\`
+ * or can be overridden for each individual icon. For example:
+ * if \`size = 1\` and \`length-unit = 'em'\`, the dimensions of the icon will be
+ * \`width: 1em; height: 1em\`.
+ *
+ * Regarding accessibility, there are two types of icons: decorative and informative.
+ *
+ * ### Decorative Icons
+ * - Decorative icons do not convey any essential information to the content of a page.
+ * - They should be hidden from screen readers (SR) to prevent confusion for users.
+ * - For decorative icons, an \`aria-label\` is not required, and the \`role\` will be set to null.
+ *
+ * ### Informative Icons
+ * - Informative icons convey important information that is not adequately represented
+ *   by surrounding text or components.
+ * - They provide valuable context and must be announced by assistive technologies.
+ * - For informative icons, an \`aria-label\` is required, and the \`role\` will be set to "img".
+ * - If an \`aria-label\` is provided, the role will be set to 'img'; if it is absent,
+ *   the role will be unset.
+ *
+ * @tagname mdc-icon
+ *
+ * @cssproperty --mdc-icon-fill-color - Allows customization of the default fill color.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Icon",module:"components/icon/icon.component.js"}}]},{kind:"javascript-module",path:"components/iconprovider/iconprovider.component.js",declarations:[{kind:"class",description:`IconProvider component, which allows to be consumed from sub components
 (see \`providerUtils.consume\` for how to consume)
 
 Bundling icons will be up to the consumer of this component, such

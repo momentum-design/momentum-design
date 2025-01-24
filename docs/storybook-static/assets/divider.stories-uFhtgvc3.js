@@ -1,4 +1,4 @@
-import{i as _,k as p}from"./lit-element-CHllvULs.js";import{u as H,C as E,n as g}from"./index-HW6KrQZO.js";import{h as k}from"./index-BNZgxKMr.js";import{a as Z}from"./text.constants-DJu2q-6E.js";import{T as B}from"./button.constants-CA1KPfWk.js";import{c as j,s as P}from"./commonArgTypes-BluK8w5L.js";import{d as $,h as O}from"./utils-D1SE5bce.js";import"./buttonsimple.constants-5FOanXlE.js";const U=[k,_`
+import{i as _,k as p}from"./lit-element-CHllvULs.js";import{u as H,C as E,n as g}from"./index-HW6KrQZO.js";import{h as k}from"./index-BNZgxKMr.js";import{a as Z}from"./text.constants-DJu2q-6E.js";import{T as B}from"./button.constants-C4PVPP-B.js";import{c as j,s as P}from"./commonArgTypes-BluK8w5L.js";import{d as $,h as O}from"./utils-D1SE5bce.js";import"./buttonsimple.constants-Biy6Bznc.js";const U=[k,_`
     :host {
       --mdc-divider-background-color: var(--mds-color-theme-outline-secondary-normal);
       --mdc-divider-width: 0.0625rem;
