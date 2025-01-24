@@ -55,7 +55,7 @@ const styles = [css`
     background-color: var(--mds-color-theme-background-primary-hover);
   }
 
-  .input-container:active, .input-container:focus{
+  .input-container:active, .input-container:focus-within{
     background-color: var(--mds-color-theme-background-primary-active);
   }
 
