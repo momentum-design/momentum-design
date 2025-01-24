@@ -43,7 +43,7 @@ const setup = async (args: SetupOptions) => {
 };
 
 test.describe('mdc-link', () => {
-  test.use({ viewport: { width: 800, height: 2700 } });
+  test.use({ viewport: { width: 400, height: 800 } });
   test('attributes and interactions', async ({ componentsPage }) => {
     const link = await setup({ componentsPage });
 
