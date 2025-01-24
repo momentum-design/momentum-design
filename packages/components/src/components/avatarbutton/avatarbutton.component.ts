@@ -5,7 +5,7 @@ import { AvatarComponentMixin } from '../../utils/mixins/AvatarComponentMixin';
 import { AVATAR_SIZE, DEFAULTS } from '../avatar/avatar.constants';
 import type { AvatarSize } from '../avatar/avatar.types';
 import { DEFAULTS as BUTTON_DEFAULTS } from '../button/button.constants';
-import Buttonsimple from '../buttonsimple';
+import Buttonsimple from '../buttonsimple/buttonsimple.component';
 import styles from './avatarbutton.styles';
 
 /**

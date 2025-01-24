@@ -17,7 +17,7 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/modalcontainer',
+  title: 'Internal/modalcontainer',
   tags: ['autodocs'],
   component: 'mdc-modalcontainer',
   render,
