@@ -28,10 +28,6 @@ const styles = [hostFitContentStyles, css`
     align-items: start;
   }
 
-  .mdc-radio__container[disabled] {
-    border-color: var(--mds-color-theme-outline-primary-disabled);
-    background: var(--mds-color-theme-control-inactive-disabled);
-  }
   .mdc-radio__icon-container {
     display: block;
     position: relative;
@@ -49,7 +45,7 @@ const styles = [hostFitContentStyles, css`
     cursor: pointer;
     z-index: 2;
   }
-
+  /* In outer circle in rest state */
   .mdc-radio__icon {
     position: absolute;
     top: 0;
@@ -62,12 +58,14 @@ const styles = [hostFitContentStyles, css`
     z-index: 1;
   }
 
+  /* Inner circle dot */
   .mdc-radio__icon-container .mdc-radio__icon:after {
     content: "";
     position: absolute;
     display: none;
   }
 
+  /* Inner circle in checked state */
   .mdc-radio__icon-container input:checked ~ .mdc-radio__icon:after {
     display: block;
     top: 50%;
@@ -76,33 +74,36 @@ const styles = [hostFitContentStyles, css`
     width: 0.5rem;
     height: 0.5rem;
     border-radius: 50%;
-    background: red;
+    background: var(--mds-color-theme-inverted-text-primary-normal);
   }
 
+  /* Not selected radio in hover state */
   .mdc-radio__icon-container:hover .mdc-radio__icon {
     border-color: var(--mds-color-theme-control-inactive-hover);
     background: var(--mds-color-theme-control-inactive-hover);
   }
 
+  /* Not selected radio in active/pressed state */
   .mdc-radio__icon-container:active .mdc-radio__icon {
     background: var(--mds-color-theme-control-inactive-pressed);
   }
 
+  /* Selected radio in rest state */
   .mdc-radio__icon-container input:checked ~ .mdc-radio__icon {
     border-color: var(--mds-color-theme-control-active-normal);
     background-color: var(--mds-color-theme-control-active-normal);
   }
+  
+  /* Selected radio in hover state */
   .mdc-radio__icon-container:hover input:checked ~ .mdc-radio__icon {
     border-color: var(--mds-color-theme-control-active-hover);
     background-color: var(--mds-color-theme-control-active-hover);
   }
+
+  /* Selected radio in active/pressed state */
   .mdc-radio__icon-container:active input:checked ~ .mdc-radio__icon {
     border-color: var(--mds-color-theme-control-active-pressed);
     background-color: var(--mds-color-theme-control-active-pressed);
-  }
-
-  .mdc-radio__icon-container:focus input:checked .mdc-radio__icon {
-    background: var(--mds-color-theme-control-active-normal);
   }
 
   .mdc-radio__label-container{
