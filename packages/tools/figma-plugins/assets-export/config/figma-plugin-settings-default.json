@@ -83,35 +83,35 @@
         "mapPagesToFolder": [
           {
             "page": "✅ Solid Illustrations",
-            "folder": "src/core"
+            "folder": "core"
           },
           {
             "page": "✅ Marketing Illustrations",
-            "folder": "src/colored"
+            "folder": "colored"
           },
           {
             "page": "✅ Error Resolution",
-            "folder": "src/colored"
+            "folder": "colored"
           },
           {
             "page": "✅ Technical Illustrations",
-            "folder": "src/colored"
+            "folder": "colored"
           },
           {
             "page": "✅ Multi-step Flows",
-            "folder": "src/colored"
+            "folder": "colored"
           },
           {
             "page": "✅ Empty States",
-            "folder": "src/colored"
+            "folder": "colored"
           },
           {
             "page": "✅ Hero States",
-            "folder": "src/colored"
+            "folder": "colored"
           },
           {
             "page": "✅ People",
-            "folder": "src/colored"
+            "folder": "colored"
           }
         ],
         "exclude": {
@@ -148,7 +148,7 @@
           "prTitle": "fix: Automated Illustrations Export 2023-07-07T21:07:54.936Z",
           "prCommitMsg": "feat(assets/illustrations): Export 2023-07-07T21:07:54.936Z",
           "prMessage": "feat(assets/illustrations): Export 2023-07-07T21:07:54.936Z",
-          "gitRepoFilePath": "packages/assets/illustrations"
+          "gitRepoFilePath": "packages/assets/illustrations/src"
         }
       }
     },
