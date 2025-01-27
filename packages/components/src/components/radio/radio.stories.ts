@@ -38,7 +38,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    label: 'Select your plan',
+    label: 'Standard Plan',
     checked: false,
     disabled: false,
     readonly: false,
@@ -72,8 +72,8 @@ export const ReadOnly: StoryObj = {
 
 export const WithHelpText: StoryObj = {
   args: {
-    label: 'Select your plan',
-    'help-text': 'Standard plan',
+    label: 'Standard Plan',
+    'help-text': 'Standard plan provides basic features',
     checked: false,
     disabled: false,
     readonly: false,
@@ -83,7 +83,7 @@ export const WithHelpText: StoryObj = {
 export const WithInfoIcon: StoryObj = {
   render: () => html`
     <mdc-radio
-    label="Select your plan"
+    label="Standard Plan"
     checked
     >
       <mdc-icon slot="label-info" name="info-circle-filled"></mdc-icon>
