@@ -4,8 +4,35 @@
       "buildName": "Illustrations",
       "flows": [
         {
-          "id": "optimise-svgs",
-          "target": "./src/**/*.*",
+          "id": "optimise-core-svgs",
+          "target": "./src/core/**/*.*",
+          "destination": "./dist/svg",
+          "fileNameReplacePatterns": [
+            {
+              "searchValue": "_",
+              "replaceValue": "-"
+            }
+          ],
+          "format": {
+            "type": "OPTIMIZED_SVG",
+            "config": {
+              "mergePaths": true,
+              "plugins": [
+                {
+                  "name": "preset-default",
+                  "params": {
+                    "overrides": {
+                      "removeViewBox": false
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "optimise-colored-svgs",
+          "target": "./src/colored/*.*",
           "destination": "./dist/svg",
           "fileNameReplacePatterns": [
             {
