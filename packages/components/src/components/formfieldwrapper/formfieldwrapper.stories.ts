@@ -20,7 +20,7 @@ const render = (args: Args) =>
 const meta: Meta = {
   title: 'Internal/formfieldwrapper',
   tags: ['autodocs'],
-  component: 'mdc-subcomponent-formfieldwrapper',
+  component: 'mdc-formfieldwrapper',
   render,
   parameters: {
     badges: ['wip'],
