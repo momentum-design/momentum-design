@@ -19,21 +19,21 @@ const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
-      <mdc-formfieldwrapper
+      <mdc-subcomponent-formfieldwrapper
       id="${restArgs.id}"
       ${restArgs.label ? `label="${restArgs.label}"` : ''}
       ${restArgs.helpText ? `help-text="${restArgs.helpText}"` : ''}
       ${restArgs.helpTextType ? `help-text-type="${restArgs.helpTextType}"` : ''}
-      >${restArgs.children}</mdc-formfieldwrapper>
+      >${restArgs.children}</mdc-subcomponent-formfieldwrapper>
     `,
     clearDocument: true,
   });
-  const text = componentsPage.page.locator('mdc-formfieldwrapper');
+  const text = componentsPage.page.locator('mdc-subcomponent-formfieldwrapper');
   await text.waitFor();
   return text;
 };
 
-test('mdc-formfieldwrapper', async ({ componentsPage }) => {
+test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
   const formfieldwrapper = await setup({
     componentsPage,
     id: 'test-formfieldwrapper',
@@ -75,7 +75,7 @@ test('mdc-formfieldwrapper', async ({ componentsPage }) => {
    * VISUAL REGRESSION
    */
   await test.step('visual regression', async () => {
-    const wrapperStickerSheet = new StickerSheet(componentsPage, 'mdc-formfieldwrapper');
+    const wrapperStickerSheet = new StickerSheet(componentsPage, 'mdc-subcomponent-formfieldwrapper');
     await wrapperStickerSheet.setChildren('Form Input Component');
     await wrapperStickerSheet.setAttributes({
       id: 'test-formfieldwrapper',

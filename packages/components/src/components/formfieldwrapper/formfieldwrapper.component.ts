@@ -111,14 +111,6 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     </div>`;
   }
 
-  public override render() {
-    return html`
-      ${this.renderLabel()}
-      <slot></slot>
-      ${this.renderHelperText()}
-    `;
-  }
-
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
