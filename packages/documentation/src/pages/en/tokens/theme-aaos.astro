@@ -2,20 +2,23 @@
 import themeAAOSNight from '@momentum-design/tokens/dist/json/theme/aaos/night-complete.json';
 import themeAAOSDay from '@momentum-design/tokens/dist/json/theme/aaos/day-complete.json';
 
-import { ThemeTokensTwapper } from '../../../components/ThemeTokensWrapper/ThemeTokensWrapper';
-import MainLayout from '../../../layouts/MainLayout.astro';
+import { ThemeTokensWrapper } from '../../../components/ThemeTokensWrapper/ThemeTokensWrapper';
+import AssetsDetailLayout from '../../../layouts/AssetsDetailLayout.astro';
+import './shared-styles.css';
+
 ---
 
-<MainLayout frontmatter={{ description: '', title: 'Theme Tokens', layout: '' }}>
-  <a href="/momentum-design/en/tokens#theme-aaos">
-    <h3>Back</h3>
+<AssetsDetailLayout frontmatter={{ description: '', title: 'Theme Tokens', layout: '' }}>
+  <a class="backLink" href="/momentum-design/en/tokens#theme-aaos">
+    <span>&lt; Tokens</span>
   </a>
-  <h1>Theme AAOS</h1>
-  <ThemeTokensTwapper
+  <h1 class="heading1">Theme AAOS</h1>
+
+  <ThemeTokensWrapper
     client:load
     themeTokens={{
       day: { data: themeAAOSDay, path: 'theme/aaos/day-complete.json' },
       night: { data: themeAAOSNight, path: 'theme/aaos/night-complete.json' },
     }}
   />
-</MainLayout>
+</AssetsDetailLayout>

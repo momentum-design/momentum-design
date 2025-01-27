@@ -4,9 +4,7 @@ import { getLanguageFromURL } from '../../languages';
 
 import MomentumLogo from './MomentumLogo.astro';
 import SkipToContent from './SkipToContent.astro';
-import SidebarToggle from './SidebarToggle';
 import Search from './Search';
-import ThemeToggle from '../RightSidebar/ThemeToggleButton';
 
 const currentPage = Astro.url.pathname;
 
@@ -19,16 +17,9 @@ const menu = CONFIG.MAIN_MENU[langCode];
 <header>
   <SkipToContent />
   <nav class="nav-wrapper" title="Top Navigation">
-    <div class="menu-toggle">
-      <SidebarToggle client:idle />
-    </div>
     <div class="logo flex">
-      <a href="/momentum-design/en">
-        <MomentumLogo size={40} />
-        <h1>{CONFIG.SITE.title ?? 'Momentum Design Docs'}</h1>
-      </a>
+      <MomentumLogo height={40} />
     </div>
-    <div style="flex-grow: 1;"></div>
     <div class="main-menu" style={{ alignItems: 'center' }}>
       {
         Object.entries(menu).map(([name, item]) => {
@@ -43,11 +34,9 @@ const menu = CONFIG.MAIN_MENU[langCode];
         })
       }
     </div>
-    <ThemeToggle client:visible />
     <div class="search-item">
       <Search client:idle />
     </div>
-
   </nav>
 </header>
 
@@ -81,20 +70,16 @@ const menu = CONFIG.MAIN_MENU[langCode];
 
   .logo a {
     display: flex;
-    padding: 0.5em 0.25em;
-    margin: -0.5em -0.25em;
     text-decoration: none;
     font-weight: bold;
   }
 
-  .logo a {
-    transition: color 100ms ease-out;
-    color: var(--theme-text);
+  .logo a:hover {
+    filter: brightness(1.2);
   }
 
-  .logo a:hover,
   .logo a:focus {
-    color: var(--theme-text-accent);
+    outline: none;
   }
 
   .logo h1 {
@@ -106,7 +91,7 @@ const menu = CONFIG.MAIN_MENU[langCode];
 
   .main-menu {
     display: flex;
-    gap: 1rem;
+    gap: 1.25rem;
     margin-right: 1rem;
   }
 
@@ -117,30 +102,23 @@ const menu = CONFIG.MAIN_MENU[langCode];
   .nav-wrapper {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    gap: 1em;
+    justify-content: space-between;
+    gap: 2.5rem;
     width: 100%;
-    max-width: 82em;
     padding: 0 1rem;
   }
 
-  @media (min-width: 50em) {
-    header {
-      position: static;
-      padding: 2rem 0rem;
+  @media (max-width: 580px) {
+    .search-item {
+      display: none !important;
     }
-
     .logo {
-      width: auto;
-      margin: 0;
-      z-index: 0;
+      display: none;
     }
+  }
 
-    .logo h1 {
-      display: initial;
-    }
-
-    .menu-toggle {
+  @media (max-width: 850px) {
+    .logo {
       display: none;
     }
   }
@@ -152,19 +130,11 @@ const menu = CONFIG.MAIN_MENU[langCode];
   }
 
   .search-item {
-    display: none;
     position: relative;
     z-index: 10;
     flex-grow: 1;
-    padding-right: 0.7rem;
     display: flex;
-    max-width: 200px;
-  }
-
-  @media (min-width: 50em) {
-    .search-item {
-      max-width: 250px;
-    }
+    max-width: 28%;
   }
 </style>
 

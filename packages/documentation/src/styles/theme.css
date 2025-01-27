@@ -1,7 +1,7 @@
 :root {
-	--font-fallback: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif,
+	--font-fallback: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif,
 		Apple Color Emoji, Segoe UI Emoji;
-	--font-body: system-ui, var(--font-fallback);
+	--font-body: Inter, var(--font-fallback);
 	--font-mono: 'IBM Plex Mono', Consolas, 'Andale Mono WT', 'Andale Mono', 'Lucida Console',
 		'Lucida Sans Typewriter', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Liberation Mono',
 		'Nimbus Mono L', Monaco, 'Courier New', Courier, monospace;
@@ -62,12 +62,12 @@
 	--theme-text-accent: hsla(var(--color-blue), 1);
 	--theme-accent-opacity: 0.15;
 	--theme-divider: hsla(var(--color-gray-95), 1);
-	--theme-text: hsla(var(--color-gray-10), 1);
+	--theme-text: hsla(var(--color-gray-5), 1);
 	--theme-text-light: hsla(var(--color-gray-40), 1);
 	/* @@@: not used anywhere */
 	--theme-text-lighter: hsla(var(--color-gray-80), 1);
 	--theme-bg: hsla(var(--color-base-white), 100%, 1);
-	--theme-bg-inverted: hsla(var(--color-base-black), 0%,  1);
+	--theme-bg-inverted: hsla(var(--color-base-black), 0%, 1);
 	--theme-bg-hover: hsla(var(--color-gray-95), 1);
 	--theme-bg-offset: hsla(var(--color-gray-90), 1);
 	--theme-bg-accent: hsla(var(--color-blue), var(--theme-accent-opacity));
@@ -76,7 +76,7 @@
 	--theme-code-bg: hsla(217, 19%, 27%, 1);
 	--theme-code-text: hsla(var(--color-gray-95), 1);
 	--theme-navbar-bg: hsla(var(--color-base-white), 100%, 1);
-	--theme-navbar-height: 6rem;
+	--theme-navbar-height: 3.75rem;
 	--theme-selection-color: hsla(var(--color-blue), 1);
 	--theme-selection-bg: hsla(var(--color-blue), var(--theme-accent-opacity));
 	--icons-filter: invert(0);
@@ -96,13 +96,13 @@ body {
 	--theme-accent: hsla(var(--color-blue), 1);
 	--theme-text-accent: hsla(var(--color-blue), 1);
 	--theme-divider: hsla(var(--color-gray-10), 1);
-	--theme-text: hsla(var(--color-gray-90), 1);
+	--theme-text: hsla(var(--color-gray-95), 1);
 	--theme-text-light: hsla(var(--color-gray-80), 1);
 
 	/* @@@: not used anywhere */
 	--theme-text-lighter: hsla(var(--color-gray-40), 1);
-	--theme-bg: hsla(var(--color-base-black), 0%,  1);
-	--theme-bg-inverted: hsla(var(--color-base-white), 100%,  1);
+	--theme-bg: hsla(var(--color-base-black), 0%, 1);
+	--theme-bg-inverted: hsla(var(--color-base-white), 100%, 1);
 	--theme-bg-hover: hsla(var(--color-gray-40), 0.3);
 	--theme-bg-offset: hsla(var(--color-gray-5), 1);
 	--theme-code-inline-bg: hsla(var(--color-gray-10), 1);
@@ -112,6 +112,8 @@ body {
 	--theme-navbar-bg: hsla(var(--color-base-black), 0%, 1);
 	--theme-selection-color: hsla(var(--color-base-white), 100%, 1);
 	--theme-selection-bg: hsla(var(--color-purple), var(--theme-accent-opacity));
+	--theme-text-body-secondary: #FFFFFFB2;
+	--theme-search-input-border: #FFFFFF80;
 
 	/* DocSearch [Algolia] */
 	--docsearch-modal-background: var(--theme-bg);
