@@ -52,3 +52,11 @@
 	box-shadow: none;
 	border: 1px solid var(--theme-accent);
 }
+
+.DocSearch-Logo svg .cls-1 {
+	fill: var(--theme-text);
+}
+
+.DocSearch-Logo svg .cls-2 {
+	fill: var(--theme-text);
+}
