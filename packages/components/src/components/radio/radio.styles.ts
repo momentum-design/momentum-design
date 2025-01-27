@@ -2,22 +2,33 @@ import { css } from 'lit';
 import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 
 const styles = [hostFitContentStyles, css`
+  :host([readonly]) input,
+  :host([disabled]) input{
+    cursor: unset;
+  }
+
   :host([disabled]) .mdc-radio__label-text,
   :host([disabled]) .mdc-radio__help-text {
     color: var(--mds-color-theme-text-primary-disabled);
   }
+
   :host([disabled]) .mdc-radio__icon,
-  :host([disabled]) input:hover .mdc-radio__icon {
-    border: 1px solid var(--mds-color-theme-outline-primary-disabled);
+  :host([disabled]) .mdc-radio__container:hover .mdc-radio__icon,
+  :host([disabled][readonly]) .mdc-radio__container:hover .mdc-radio__icon {
+    border-color: var(--mds-color-theme-outline-primary-disabled);
     background: var(--mds-color-theme-control-inactive-disabled);
   }
   :host([disabled][checked]) .mdc-radio__icon,
-  :host([disabled][checked]) input:hover .mdc-radio__icon {
-    border: 1px solid var(--mds-color-theme-outline-primary-disabled);
+  :host([disabled][checked]) .mdc-radio__container:hover .mdc-radio__icon,
+  :host([disabled][readonly][checked]) .mdc-radio__icon,
+  :host([disabled][readonly][checked]) .mdc-radio__container:hover .mdc-radio__icon {
+    border-color: var(--mds-color-theme-outline-primary-disabled);
     background: var(--mds-color-theme-control-active-disabled);
   }
   :host([disabled][checked]) .mdc-radio__icon:after,
-  :host([disabled][checked]) input:hover  .mdc-radio__icon:after {
+  :host([disabled][checked]) .mdc-radio__container:hover  .mdc-radio__icon:after,
+  :host([disabled][readonly][checked]) .mdc-radio__icon:after,
+  :host([disabled][readonly][checked]) .mdc-radio__container:hover  .mdc-radio__icon:after {
     background: var(--mds-color-theme-inverted-text-primary-disabled);
   }
 
@@ -28,7 +39,7 @@ const styles = [hostFitContentStyles, css`
     width: 1rem;
     height: 1rem;
     border: 1px solid var(--mds-color-theme-outline-input-normal);
-    background: var(--mds-color-theme-control-inactive-normal);
+    background-color: var(--mds-color-theme-control-inactive-normal);
     border-radius: 50%;
     z-index: 1;
   }
@@ -43,8 +54,8 @@ const styles = [hostFitContentStyles, css`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 0.5rem;
-    height: 0.5rem;
+    width: 0.3125rem;
+    height: 0.3125rem;
     border-radius: 50%;
     background: var(--mds-color-theme-inverted-text-primary-normal);
   }
@@ -69,17 +80,25 @@ const styles = [hostFitContentStyles, css`
     background-color: var(--mds-color-theme-control-active-pressed);
   }
 
-  :host([read-only]) .mdc-radio__icon {
+  :host([checked]) input:focus ~ .mdc-radio__icon {
+    border-color: var(--mds-color-theme-control-active-normal);
+    background-color: var(--mds-color-theme-control-active-normal);
+  }
+
+  :host([readonly]) .mdc-radio__icon,
+  :host([readonly]) .mdc-radio__container:hover .mdc-radio__icon {
     border-color: var(--mds-color-theme-outline-input-normal);
     background-color: var(--mds-color-theme-control-inactive-normal);
   }
 
-  :host([read-only][checked]) .mdc-radio__icon {
-    background: unset;
+  :host([readonly][checked]) .mdc-radio__icon {
+    border-color: var(--mds-color-theme-outline-input-normal);
   }
 
-  :host([read-only][checked]) .mdc-radio__icon:after {
-    background-color: var(--mds-color-theme-outline-input-normal);
+  :host([readonly][checked]) .mdc-radio__icon:after,
+  :host([readonly][checked]) .mdc-radio__container:hover .mdc-radio__icon:after,
+  :host([readonly][checked]) .mdc-radio__container:active .mdc-radio__icon:after {
+    background-color: var(--mds-color-theme-text-primary-disabled);
   }
 
   .mdc-radio__container {
@@ -92,6 +111,7 @@ const styles = [hostFitContentStyles, css`
     width: 1rem;
     height: 1rem;
     margin: 0.125rem 0.5rem;
+    border-radius: 50%;
   }
 
   .mdc-radio__icon-container input{
