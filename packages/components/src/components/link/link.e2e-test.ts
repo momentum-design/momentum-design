@@ -13,6 +13,8 @@ type SetupOptions = {
   addPageFooter?: boolean;
 };
 
+const ICON_PLACEHOLDER = 'placeholder-bold';
+
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
@@ -72,7 +74,7 @@ test.describe('mdc-link', () => {
       // Icon name
       await test.step('attribute icon-name should be present on link', async () => {
         await componentsPage.setAttributes(link, {
-          'icon-name': 'placeholder-regular',
+          'icon-name': ICON_PLACEHOLDER,
         });
         await expect(link).toHaveAttribute('icon-name');
         await componentsPage.removeAttribute(link, 'icon-name');
@@ -164,7 +166,7 @@ test.describe('mdc-link', () => {
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
     // Standalone Link with trailing icon
-    stickerSheet.setAttributes({ 'icon-name': 'placeholder-regular' });
+    stickerSheet.setAttributes({ 'icon-name': ICON_PLACEHOLDER });
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
     // Standalone Link disabled without trailing icon
@@ -172,7 +174,7 @@ test.describe('mdc-link', () => {
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
     // Standalone Link disabled with trailing icon
-    stickerSheet.setAttributes({ disabled: '', 'icon-name': 'placeholder-regular' });
+    stickerSheet.setAttributes({ disabled: '', 'icon-name': ICON_PLACEHOLDER });
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
     // Inline Link without trailing icon
@@ -180,7 +182,7 @@ test.describe('mdc-link', () => {
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
     // Inline Link with trailing icon
-    stickerSheet.setAttributes({ 'icon-name': 'placeholder-regular', inline: '' });
+    stickerSheet.setAttributes({ 'icon-name': ICON_PLACEHOLDER, inline: '' });
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
     // Inline Link disabled without trailing icon
@@ -188,7 +190,7 @@ test.describe('mdc-link', () => {
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
     // Inline Link disabled with trailing icon
-    stickerSheet.setAttributes({ disabled: '', 'icon-name': 'placeholder-regular', inline: '' });
+    stickerSheet.setAttributes({ disabled: '', 'icon-name': ICON_PLACEHOLDER, inline: '' });
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
     // Standalone Link inverted without trailing icon
@@ -196,7 +198,7 @@ test.describe('mdc-link', () => {
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
     // Standalone Link inverted with trailing icon
-    stickerSheet.setAttributes({ 'icon-name': 'placeholder-regular', inverted: '' });
+    stickerSheet.setAttributes({ 'icon-name': ICON_PLACEHOLDER, inverted: '' });
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
     // Standalone Link inverted and disabled without trailing icon
@@ -204,7 +206,7 @@ test.describe('mdc-link', () => {
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
     // Standalone Link inverted and disabled with trailing icon
-    stickerSheet.setAttributes({ disabled: '', 'icon-name': 'placeholder-regular', inverted: '' });
+    stickerSheet.setAttributes({ disabled: '', 'icon-name': ICON_PLACEHOLDER, inverted: '' });
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
     // Inline Link inverted without trailing icon
@@ -212,7 +214,7 @@ test.describe('mdc-link', () => {
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
     // Inline Link inverted with trailing icon
-    stickerSheet.setAttributes({ 'icon-name': 'placeholder-regular', inline: '', inverted: '' });
+    stickerSheet.setAttributes({ 'icon-name': ICON_PLACEHOLDER, inline: '', inverted: '' });
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
     // Inline Link inverted and disabled without trailing icon
@@ -220,7 +222,7 @@ test.describe('mdc-link', () => {
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
     // Inline Link inverted and disabled with trailing icon
-    stickerSheet.setAttributes({ disabled: '', inline: '', inverted: '', 'icon-name': 'placeholder-regular' });
+    stickerSheet.setAttributes({ disabled: '', inline: '', inverted: '', 'icon-name': ICON_PLACEHOLDER });
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
 
     await stickerSheet.mountStickerSheet();
