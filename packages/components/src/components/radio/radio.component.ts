@@ -100,6 +100,9 @@ class Radio extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
             ?readonly="${this.readonly}"
             ?disabled="${this.disabled}"
             class="mdc-radio__input"
+            aria-checked="${this.checked}"
+            aria-disabled="${this.disabled}"
+            aria-label="${ifDefined(this.label || this.name)}"
             tabindex="${this.disabled ? -1 : 0}"
           />
           <span class="mdc-radio__icon"></span>
