@@ -9,7 +9,7 @@ const styles = [
       align-items: flex-start;
       gap: 0.5rem;
     }
-
+    :host([disabled]),
     :host([disabled]) .mdc-label,
     :host([disabled]) .mdc-help-text {
       color: var(--mds-color-theme-text-primary-disabled);

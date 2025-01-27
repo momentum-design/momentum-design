@@ -9,6 +9,7 @@ import { ValidationType } from './formfieldwrapper.types';
 const render = (args: Args) =>
   html` <mdc-formfieldwrapper
     label="${args.label}"
+    ?disabled="${args.disabled}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
     >
@@ -39,6 +40,9 @@ const meta: Meta = {
     'help-text': {
       control: 'text',
     },
+    disabled: {
+      control: 'boolean',
+    },
   },
 };
 
@@ -50,6 +54,7 @@ export const Example: StoryObj = {
     'help-text': 'Helper text',
     'help-text-type': 'default',
     children: '[Child Component]',
+    disabled: false,
   },
 };
 

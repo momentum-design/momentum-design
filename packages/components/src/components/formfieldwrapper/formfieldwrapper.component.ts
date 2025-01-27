@@ -6,6 +6,7 @@ import { Component } from '../../models';
 import type { ValidationType } from './formfieldwrapper.types';
 import { DEFAULTS, MDC_TEXT_OPTIONS } from './formfieldwrapper.constants';
 import { getHelperIcon } from './formfieldwrapper.utils';
+import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 
 /**
  * formfieldwrapper is a component that contains the label and helper/validation text
@@ -17,7 +18,7 @@ import { getHelperIcon } from './formfieldwrapper.utils';
  * @slot label-info - slot to add the label info icon
  *
  */
-class FormfieldWrapper extends Component {
+class FormfieldWrapper extends DisabledMixin(Component) {
   /**
    * The label of the input field. It is linked to the input field using the `for` attribute.
    */
