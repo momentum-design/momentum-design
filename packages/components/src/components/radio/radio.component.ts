@@ -81,6 +81,7 @@ class Radio extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
       return;
     }
     if (['Enter', ' '].includes(event.key)) {
+      event.preventDefault();
       this.toggleState();
     }
   }
