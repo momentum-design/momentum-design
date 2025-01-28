@@ -13,7 +13,8 @@ const render = (args: Args) => {
     @click="${action('onclick')}"
     @keydown="${action('onkeydown')}"
     @keyup="${action('onkeyup')}"
-    @focus="${action('onfocus')}"
+    @focusin="${action('onfocusin')}"
+    @focusout="${action('onfocusout')}"
     ?disabled="${args.disabled}"
     icon-name="${args['icon-name']}"
     ?inline="${args.inline}"
@@ -28,12 +29,12 @@ const renderWithInvertedBackground = (args: Args) => html`
     </div>`;
 
 const meta: Meta = {
-  title: 'Components/link',
+  title: 'Work In Progress/link',
   tags: ['autodocs'],
   component: 'mdc-link',
   render,
   parameters: {
-    badges: ['stable'],
+    badges: ['wip'],
   },
   argTypes: {
     children: {
@@ -77,7 +78,7 @@ export default meta;
 const defaultArgs = {
   children: '<a href="https://www.webex.com" target="_blank" rel="noopener noreferrer">Link</a>',
   disabled: false,
-  'icon-name': 'placeholder-bold',
+  'icon-name': 'placeholder-regular',
   inline: false,
   inverted: false,
   size: 'large',
