@@ -28,12 +28,12 @@ const renderWithInvertedBackground = (args: Args) => html`
     </div>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/link',
+  title: 'Components/link',
   tags: ['autodocs'],
   component: 'mdc-link',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     children: {
