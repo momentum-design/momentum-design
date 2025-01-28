@@ -9,7 +9,7 @@ const styles = [hostFitContentStyles, css`
     margin-bottom: 0.5rem;
   }
   .mdc-label-text {
-    line-height: unset;
+    height: 1rem;
   }
   .mdc-label {
     cursor: pointer;

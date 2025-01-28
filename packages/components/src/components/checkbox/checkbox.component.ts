@@ -1,5 +1,4 @@
 import { CSSResult, html, nothing } from 'lit';
-import { classMap } from 'lit-html/directives/class-map.js';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
@@ -26,7 +25,7 @@ class Checkbox extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
    *
    * @default false
    */
-  @property({ type: Boolean, reflect: true }) checked = false;
+  @property({ type: Boolean }) checked = false;
 
   /**
    * This property is used to determine the parent checkbox in a nested checkbox group.
@@ -35,7 +34,14 @@ class Checkbox extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
    *
    * @default false
    */
-  @property({ type: Boolean, reflect: true }) indeterminate = false;
+  @property({ type: Boolean }) indeterminate = false;
+
+  /**
+   * Determines whether the text content should be displayed or not.
+   *
+   * @default false
+   */
+  @property({ type: Boolean, attribute: 'hide-text' }) hideText = false;
 
   constructor() {
     super();
@@ -111,9 +117,14 @@ class Checkbox extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
         length-unit="rem"
       ></mdc-icon>
     ` : nothing;
+    const textContent = this.hideText ? nothing : html`
+      <div>
+        ${this.renderLabel()}
+        ${this.renderHelperText()}
+      </div>`;
 
     return html`
-      <div class="mdc-checkbox__container ${classMap({ 'mdc-focus-ring': !this.disabled })}">
+      <div class="mdc-checkbox__container mdc-focus-ring">
         <input
           id="${this.id}"
           type="checkbox"
@@ -122,7 +133,6 @@ class Checkbox extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
           value="${ifDefined(this.value)}"
           ?checked="${this.checked}"
           ?disabled="${this.disabled}"
-          aria-checked="${this.checked}"
           aria-disabled="${this.disabled}"
           aria-label="${ifDefined(this.label)}"
           tabindex="${this.disabled ? -1 : 0}"
@@ -130,10 +140,7 @@ class Checkbox extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
         />
         <div class="mdc-checkbox__icon-container">${checkboxIconContent}</div>
       </div>
-      <div>
-        ${this.renderLabel()}
-        ${this.renderHelperText()}
-      </div>
+      ${textContent}
     `;
   }
 

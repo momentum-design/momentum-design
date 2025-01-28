@@ -8,6 +8,7 @@ const render = (args: Args) => html`
   <mdc-checkbox
     label="${args.label}"
     help-text="${args['help-text']}"
+    ?hide-text="${args['hide-text']}"
     ?checked="${args.checked}"
     ?disabled="${args.disabled}"
     ?indeterminate="${args.indeterminate}"
@@ -35,6 +36,7 @@ export const Example: StoryObj = {
   args: {
     label: 'I agree to the terms',
     'help-text': '',
+    'hide-text': true,
     checked: false,
     indeterminate: false,
     disabled: false,
@@ -45,17 +47,24 @@ export const Indeterminate: StoryObj = {
   args: {
     label: 'Checkbox Label',
     'help-text': 'Checkbox Help Text',
-    checked: true,
     indeterminate: true,
   },
 };
 
 export const Disabled: StoryObj = {
+  parameters: {
+    a11y: {
+      element: 'mdc-checkbox',
+    },
+  },
   render: () => html`
     <div style="display: flex; flex-direction: column;">
       <mdc-checkbox label="Unselected" disabled></mdc-checkbox>
       <mdc-checkbox label="Selected" disabled checked></mdc-checkbox>
       <mdc-checkbox label="Indeterminate" disabled indeterminate></mdc-checkbox>
+      <mdc-checkbox label="Unselected" disabled help-text="This is a help text"></mdc-checkbox>
+      <mdc-checkbox label="Selected" disabled help-text="This is a help text" checked></mdc-checkbox>
+      <mdc-checkbox label="Indeterminate" disabled help-text="This is a help text" indeterminate></mdc-checkbox>
     </div>`,
 };
 
@@ -74,7 +83,7 @@ export const List: StoryObj = {
       <mdc-checkbox label="Hawkeye" indeterminate disabled></mdc-checkbox>
       <mdc-checkbox label="The Hulk" help-text="This is a help text"></mdc-checkbox>
       <mdc-checkbox label="Iron Man" indeterminate></mdc-checkbox>
-      <mdc-checkbox label="Thor" disabled help-text="This is a help text"></mdc-checkbox>
+      <mdc-checkbox label="Thor" help-text="This is a help text"></mdc-checkbox>
       <mdc-checkbox label="Captain Marvel"></mdc-checkbox>
     </div>
   `,
