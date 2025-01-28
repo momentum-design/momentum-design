@@ -11,7 +11,6 @@ const render = (args: Args) =>
   html` <mdc-input
     id="${args.id}"
     label="${args.label}"
-    label-info-text="${args['label-info-text']}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
     placeholder="${args.placeholder}"
@@ -65,9 +64,6 @@ const meta: Meta = {
     },
     required: {
       control: 'boolean',
-    },
-    'label-info-text': {
-      control: 'text',
     },
     'help-text': {
       control: 'text',
@@ -127,7 +123,6 @@ export const Example: StoryObj = {
   args: {
     id: '1',
     label: 'Label (required)',
-    'label-info-text': 'Label info text',
     placeholder: 'Placeholder',
     value: '',
     'help-text': 'Helper text',
@@ -145,7 +140,7 @@ export const Example: StoryObj = {
 
 export const AllVariants: StoryObj = {
   argTypes: {
-    ...disableControls(['label', 'label-info-text', 'help-text', 'required', 'placeholder', 'value', 'help-text-type']),
+    ...disableControls(['label', 'help-text', 'required', 'placeholder', 'value', 'help-text-type']),
   },
   render: () => html`
   <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
@@ -156,12 +151,10 @@ export const AllVariants: StoryObj = {
       help-text="Helper text"
       placeholder="Placeholder"
       value="${validation}_value"
-      label-info-text="Label info text"
       ></mdc-input>`)}
       <mdc-input 
       id="6"
       label="Label (required)"
-      label-info-text="Label info text"
       help-text="Helper text"
       help-text-type="default"
       required placeholder="Input is required"
@@ -169,7 +162,6 @@ export const AllVariants: StoryObj = {
       <mdc-input 
       id="7"
       label="Label"
-      label-info-text="Label info text"
       help-text="Helper text"
       help-text-type="default"
       readonly placeholder="Placeholder"
@@ -178,7 +170,6 @@ export const AllVariants: StoryObj = {
       <mdc-input 
       id="8"
       label="Label"
-      label-info-text="Label info text"
       help-text="Helper text"
       help-text-type="default"
       disabled placeholder="Placeholder"
@@ -187,7 +178,6 @@ export const AllVariants: StoryObj = {
       <mdc-input 
       id="9"
       label="Label"
-      label-info-text="Label info text"
       help-text="Helper text"
       help-text-type="default"
       placeholder="Placeholder"
@@ -196,7 +186,6 @@ export const AllVariants: StoryObj = {
       <mdc-input 
       id="10"
       label="Label"
-      label-info-text="Label info text"
       help-text="Helper text"
       help-text-type="default"
       placeholder="Placeholder"
