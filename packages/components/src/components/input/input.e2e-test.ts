@@ -67,6 +67,7 @@ const setup = async (args: SetupOptions) => {
   return text;
 };
 
+test.use({ viewport: { width: 800, height: 1500 } });
 test('mdc-input', async ({ componentsPage }) => {
   const input = await setup({
     componentsPage,
@@ -78,13 +79,6 @@ test('mdc-input', async ({ componentsPage }) => {
     leadingIcon: 'placeholder-bold',
     label: 'Label',
     helpText: 'Help Text',
-  });
-
-  /**
-   * ACCESSIBILITY
-   */
-  await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('input-default');
   });
 
   /**
@@ -202,32 +196,59 @@ test('mdc-input', async ({ componentsPage }) => {
       'help-text': 'Help Text',
     };
     const inputStickerSheet = new StickerSheet(componentsPage, 'mdc-input');
+
     await inputStickerSheet.setAttributes(attributes);
     await inputStickerSheet.createMarkupWithCombination({
       'help-text-type': VALIDATION,
     });
+
+    // disabled input field with value
+    await inputStickerSheet.setAttributes({ ...attributes,
+      value: 'Disabled',
+      disabled: true,
+    });
+    await inputStickerSheet.createMarkupWithCombination({});
+
+    // input with value and leading icon
+    await inputStickerSheet.setAttributes({ ...attributes,
+      value: 'Leading Icon',
+      'leading-icon': 'placeholder-bold',
+    });
+    await inputStickerSheet.createMarkupWithCombination({});
+
+    // input with value and prefix text
     await inputStickerSheet.setAttributes({ ...attributes,
       value: 'Text Content',
-      leadingIcon: 'placeholder-bold',
+      'prefix-text': 'Prefix',
     });
-    await inputStickerSheet.createMarkupWithCombination({
-      'help-text-type': VALIDATION,
-    });
+    await inputStickerSheet.createMarkupWithCombination({});
+
+    // input with value and trailing button
     await inputStickerSheet.setAttributes({ ...attributes,
-      value: 'Text Content',
-      prefixText: 'Prefix',
+      value: 'Clear button',
+      'trailing-button': true,
     });
-    await inputStickerSheet.createMarkupWithCombination({
-      'help-text-type': VALIDATION,
+    await inputStickerSheet.createMarkupWithCombination({});
+
+    // readonly input field with value
+    await inputStickerSheet.setAttributes({ ...attributes,
+      value: 'Readonly value',
+      readonly: true,
     });
+    await inputStickerSheet.createMarkupWithCombination({});
     await inputStickerSheet.mountStickerSheet();
     const container = await inputStickerSheet.getWrapperContainer();
-    // container.evaluate(() => {
 
-    // });
     await test.step('matches screenshot of element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-input', { element: container });
     });
+  });
+
+  /**
+   * ACCESSIBILITY
+   */
+  await test.step('accessibility', async () => {
+    await componentsPage.accessibility.checkForA11yViolations('input-default');
   });
 
   /**
