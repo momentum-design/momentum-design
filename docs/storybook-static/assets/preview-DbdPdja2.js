@@ -1,4 +1,73 @@
-import{s as m}from"./chunk-L4EGOTBX-qkkAwraa.js";import"./entry-preview-BbhL-oir.js";import{k as c}from"./lit-element-CHllvULs.js";import"./index-ByQnac1t.js";import"./index-rDA4K2ZD.js";import"./directive-helpers-5SvKRCBg.js";import"./index-DrFu-skq.js";import"./index-HW6KrQZO.js";import"./state-CWckTc1X.js";import"./create-context-89xeped_.js";import"./iconprovider.component-CWYw8J7d.js";const p="1.0.0",u="",h=[{kind:"javascript-module",path:"components/badge/badge.component.js",declarations:[{kind:"class",description:"The `mdc-badge` component is a versatile UI element used to\ndisplay dot, icons, counters, success, warning and error type badge.\n\nSupported badge types:\n- `dot`: Displays a dot notification badge with a blue color.\n- `icon`: Displays a badge with a specified icon using the `icon-name` attribute.\n- `counter`: Displays a badge with a counter value. If the counter exceeds the `max-counter`,\nit shows `maxCounter+`. The maximum value of the counter is 999 and anything above that will be set to `999+`.\n- `success`: Displays a success badge with a check circle icon and green color.\n- `warning`: Displays a warning badge with a warning icon and yellow color.\n- `error`: Displays a error badge with a error legacy icon and red color.\n\nFor `icon`, `success`, `warning` and `error` types, the `mdc-icon` component is used to render the icon.\n\nFor the `counter` type, the `mdc-text` component is used to render the counter value.",name:"Badge",members:[{kind:"field",name:"type",type:{text:"BadgeType | undefined"},description:"Type of the badge\nCan be `dot` (notification) , `icon`, `counter`, `success`, `warning` or `error`.",attribute:"type",reflects:!0},{kind:"field",name:"iconName",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename).\n\nIf no `icon-name` is provided, no icon will be rendered.",attribute:"icon-name"},{kind:"field",name:"variant",type:{text:"IconVariant"},description:"Type of the variant can be `primary` or `secondary`.\nIt defines the background and foreground color of the icon.",default:"primary",attribute:"variant",reflects:!0},{kind:"field",name:"counter",type:{text:"number | undefined"},description:"Counter is the number which can be provided in the badge.",attribute:"counter"},{kind:"field",name:"maxCounter",type:{text:"number"},description:"The maximum number can be set up to 999, anything above that will be rendered as _999+_.\nThe max counter can be `9`, `99` or `999`.",default:"99",attribute:"max-counter",reflects:!0},{kind:"field",name:"overlay",type:{text:"boolean"},default:"false",description:`Overlay is to add a thin outline to the badge.
+import{s as m}from"./chunk-L4EGOTBX-qkkAwraa.js";import"./entry-preview-BbhL-oir.js";import{k as c}from"./lit-element-CHllvULs.js";import"./index-ByQnac1t.js";import"./index-rDA4K2ZD.js";import"./directive-helpers-5SvKRCBg.js";import"./index-DrFu-skq.js";import"./index-HW6KrQZO.js";import"./state-CWckTc1X.js";import"./create-context-89xeped_.js";import"./iconprovider.component-CWYw8J7d.js";const p="1.0.0",u="",h=[{kind:"javascript-module",path:"components/avatar/avatar.component.js",declarations:[{kind:"class",description:`The \`mdc-avatar\` component is used to represent a person or a space.
+An avatar can be an icon, initials, counter and photo.
+
+To set the photo of an avatar,
+you need to set "src" attribute.
+
+While the avatar image is loading, as a placeholder,
+we will show the initials text.
+If the initials are not specified then,
+we will show \`user-regular\` icon as a placeholder.
+
+By default, if there are no attributes specified,
+then the default avatar will be an icon with \`user-regular\` name.
+
+The avatar component is non clickable and non interactive/focusable component.
+If the avatar is typing, then the loading indicator will be displayed.
+If the counter type avatar is set to a negative number, then we will display 0.
+The presence indicator will be hidden when the counter property is set.`,name:"Avatar",cssProperties:[{description:"Allows customization of the default background color.",name:"--mdc-avatar-default-background-color"},{description:"Allows customization of the default foreground color.",name:"--mdc-avatar-default-foreground-color"},{description:"Allows customization of the loading indicator background color.",name:"--mdc-avatar-loading-indicator-background-color"},{description:"Allows customization of the loading indicator foreground color.",name:"--mdc-avatar-loading-indicator-foreground-color"},{description:"Allows customization of the loading overlay background color.",name:"--mdc-avatar-loading-overlay-background-color"}],members:[{kind:"field",name:"src",type:{text:"string | undefined"},description:`The src is the url which will be used to display the avatar.
+When the src is loading, we will display the initials as a placeholder.`,attribute:"src",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"initials",type:{text:"string | undefined"},description:"The initials to be displayed for the avatar.",attribute:"initials",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"presence",type:{text:"PresenceType | undefined"},description:"The presence is the status which can be used to display the\nactivity state of a user or a space within an avatar component.\n\nAcceptable values include:\n- `active`\n- `away`\n- `away-calling`\n- `busy`\n- `dnd`\n- `meeting`\n- `on-call`\n- `on-device`\n- `on-mobile`\n- `pause`\n- `pto`\n- `presenting`\n- `quiet`\n- `scheduled`",attribute:"presence",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"size",type:{text:"AvatarSize"},description:`Acceptable values include (size in px unit):
+- 24
+- 32
+- 48
+- 64
+- 72
+- 88
+- 124`,default:"32",attribute:"size",reflects:!0,inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"iconName",type:{text:"IconNames | undefined"},description:`Name of the icon to be displayed inside the Avatar.
+Must be a valid icon name.`,attribute:"icon-name",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"counter",type:{text:"number | undefined"},description:"The counter is the number which can be displayed on the avatar.\nThe maximum number is 99 and if the given number is greater than 99,\nthen the avatar will be displayed as `99+`.\nIf the given number is a negative number,\nthen the avatar will be displayed as `0`.",attribute:"counter",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"isTyping",type:{text:"boolean"},default:"false",description:"Represents the typing indicator when the user is typing.",attribute:"is-typing",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}}],mixins:[{name:"AvatarComponentMixin",module:"/src/utils/mixins/AvatarComponentMixin"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-avatar",jsDoc:`/**
+ * The \`mdc-avatar\` component is used to represent a person or a space.
+ * An avatar can be an icon, initials, counter and photo.
+ *
+ * To set the photo of an avatar,
+ * you need to set "src" attribute.
+ *
+ * While the avatar image is loading, as a placeholder,
+ * we will show the initials text.
+ * If the initials are not specified then,
+ * we will show \`user-regular\` icon as a placeholder.
+ *
+ * By default, if there are no attributes specified,
+ * then the default avatar will be an icon with \`user-regular\` name.
+ *
+ * The avatar component is non clickable and non interactive/focusable component.
+ * If the avatar is typing, then the loading indicator will be displayed.
+ * If the counter type avatar is set to a negative number, then we will display 0.
+ * The presence indicator will be hidden when the counter property is set.
+ *
+ * @dependency mdc-icon
+ * @dependency mdc-presence
+ * @dependency mdc-text
+ *
+ * @tagname mdc-avatar
+ *
+ * @cssproperty --mdc-avatar-default-background-color - Allows customization of the default background color.
+ * @cssproperty --mdc-avatar-default-foreground-color - Allows customization of the default foreground color.
+ * @cssproperty --mdc-avatar-loading-indicator-background-color -
+ *  Allows customization of the loading indicator background color.
+ * @cssproperty --mdc-avatar-loading-indicator-foreground-color -
+ *  Allows customization of the loading indicator foreground color.
+ * @cssproperty --mdc-avatar-loading-overlay-background-color -
+ *  Allows customization of the loading overlay background color.
+ */`,customElement:!0,attributes:[{name:"src",type:{text:"string | undefined"},description:`The src is the url which will be used to display the avatar.
+When the src is loading, we will display the initials as a placeholder.`,fieldName:"src",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"initials",type:{text:"string | undefined"},description:"The initials to be displayed for the avatar.",fieldName:"initials",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"presence",type:{text:"PresenceType | undefined"},description:"The presence is the status which can be used to display the\nactivity state of a user or a space within an avatar component.\n\nAcceptable values include:\n- `active`\n- `away`\n- `away-calling`\n- `busy`\n- `dnd`\n- `meeting`\n- `on-call`\n- `on-device`\n- `on-mobile`\n- `pause`\n- `pto`\n- `presenting`\n- `quiet`\n- `scheduled`",fieldName:"presence",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"size",type:{text:"AvatarSize"},description:`Acceptable values include (size in px unit):
+- 24
+- 32
+- 48
+- 64
+- 72
+- 88
+- 124`,default:"32",fieldName:"size",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"icon-name",type:{text:"IconNames | undefined"},description:`Name of the icon to be displayed inside the Avatar.
+Must be a valid icon name.`,fieldName:"iconName",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"counter",type:{text:"number | undefined"},description:"The counter is the number which can be displayed on the avatar.\nThe maximum number is 99 and if the given number is greater than 99,\nthen the avatar will be displayed as `99+`.\nIf the given number is a negative number,\nthen the avatar will be displayed as `0`.",fieldName:"counter",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"is-typing",type:{text:"boolean"},default:"false",description:"Represents the typing indicator when the user is typing.",fieldName:"isTyping",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}}]}],exports:[{kind:"js",name:"default",declaration:{name:"Avatar",module:"components/avatar/avatar.component.js"}}]},{kind:"javascript-module",path:"components/badge/badge.component.js",declarations:[{kind:"class",description:"The `mdc-badge` component is a versatile UI element used to\ndisplay dot, icons, counters, success, warning and error type badge.\n\nSupported badge types:\n- `dot`: Displays a dot notification badge with a blue color.\n- `icon`: Displays a badge with a specified icon using the `icon-name` attribute.\n- `counter`: Displays a badge with a counter value. If the counter exceeds the `max-counter`,\nit shows `maxCounter+`. The maximum value of the counter is 999 and anything above that will be set to `999+`.\n- `success`: Displays a success badge with a check circle icon and green color.\n- `warning`: Displays a warning badge with a warning icon and yellow color.\n- `error`: Displays a error badge with a error legacy icon and red color.\n\nFor `icon`, `success`, `warning` and `error` types, the `mdc-icon` component is used to render the icon.\n\nFor the `counter` type, the `mdc-text` component is used to render the counter value.",name:"Badge",members:[{kind:"field",name:"type",type:{text:"BadgeType | undefined"},description:"Type of the badge\nCan be `dot` (notification) , `icon`, `counter`, `success`, `warning` or `error`.",attribute:"type",reflects:!0},{kind:"field",name:"iconName",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename).\n\nIf no `icon-name` is provided, no icon will be rendered.",attribute:"icon-name"},{kind:"field",name:"variant",type:{text:"IconVariant"},description:"Type of the variant can be `primary` or `secondary`.\nIt defines the background and foreground color of the icon.",default:"primary",attribute:"variant",reflects:!0},{kind:"field",name:"counter",type:{text:"number | undefined"},description:"Counter is the number which can be provided in the badge.",attribute:"counter"},{kind:"field",name:"maxCounter",type:{text:"number"},description:"The maximum number can be set up to 999, anything above that will be rendered as _999+_.\nThe max counter can be `9`, `99` or `999`.",default:"99",attribute:"max-counter",reflects:!0},{kind:"field",name:"overlay",type:{text:"boolean"},default:"false",description:`Overlay is to add a thin outline to the badge.
 This will help distinguish between the badge and the button,
 where the badge will be layered on top of a button.`,attribute:"overlay"},{kind:"field",name:"ariaLabel",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",attribute:"aria-label"},{kind:"method",name:"getCounterText",privacy:"private",return:{type:{text:""}},parameters:[{name:"maxCounter",type:{text:"number"},description:"the maximum limit which can be displayed on the badge"},{name:"counter",optional:!0,type:{text:"number"},description:"the number to be displayed on the badge"}],description:"If `type` is set to `counter` and if `counter` is greater than `maxCounter`,\nthen it will return a string the maxCounter value as string.\nOtherwise, it will return a string representation of `counter`.\nIf `counter` is not a number, it will return an empty string."},{kind:"method",name:"getBadgeIcon",privacy:"private",return:{type:{text:""}},parameters:[{name:"iconName",type:{text:"string"},description:"the name of the icon from the icon set"},{name:"backgroundClassPostfix",type:{text:"string"},description:"postfix for the class to style the badge icon."}],description:"Method to generate the badge icon."},{kind:"method",name:"getBadgeDot",privacy:"private",return:{type:{text:""}},description:"Method to generate the badge dot template."},{kind:"method",name:"getBadgeCounterText",privacy:"private",return:{type:{text:""}},description:"Method to generate the badge text and counter template."},{kind:"method",name:"setRoleByAriaLabel",privacy:"private",return:{type:{text:"void"}},description:`Method to set the role based on the aria-label provided.
 If the aria-label is provided, the role of the element will be 'img'.
@@ -75,76 +144,7 @@ The type attribute specifies the behavior of the button when it is clicked.
  * @dependency mdc-avatar
  *
  * @tagname mdc-avatarbutton
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"AvatarButton",module:"components/avatarbutton/avatarbutton.component.js"}}]},{kind:"javascript-module",path:"components/avatar/avatar.component.js",declarations:[{kind:"class",description:`The \`mdc-avatar\` component is used to represent a person or a space.
-An avatar can be an icon, initials, counter and photo.
-
-To set the photo of an avatar,
-you need to set "src" attribute.
-
-While the avatar image is loading, as a placeholder,
-we will show the initials text.
-If the initials are not specified then,
-we will show \`user-regular\` icon as a placeholder.
-
-By default, if there are no attributes specified,
-then the default avatar will be an icon with \`user-regular\` name.
-
-The avatar component is non clickable and non interactive/focusable component.
-If the avatar is typing, then the loading indicator will be displayed.
-If the counter type avatar is set to a negative number, then we will display 0.
-The presence indicator will be hidden when the counter property is set.`,name:"Avatar",cssProperties:[{description:"Allows customization of the default background color.",name:"--mdc-avatar-default-background-color"},{description:"Allows customization of the default foreground color.",name:"--mdc-avatar-default-foreground-color"},{description:"Allows customization of the loading indicator background color.",name:"--mdc-avatar-loading-indicator-background-color"},{description:"Allows customization of the loading indicator foreground color.",name:"--mdc-avatar-loading-indicator-foreground-color"},{description:"Allows customization of the loading overlay background color.",name:"--mdc-avatar-loading-overlay-background-color"}],members:[{kind:"field",name:"src",type:{text:"string | undefined"},description:`The src is the url which will be used to display the avatar.
-When the src is loading, we will display the initials as a placeholder.`,attribute:"src",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"initials",type:{text:"string | undefined"},description:"The initials to be displayed for the avatar.",attribute:"initials",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"presence",type:{text:"PresenceType | undefined"},description:"The presence is the status which can be used to display the\nactivity state of a user or a space within an avatar component.\n\nAcceptable values include:\n- `active`\n- `away`\n- `away-calling`\n- `busy`\n- `dnd`\n- `meeting`\n- `on-call`\n- `on-device`\n- `on-mobile`\n- `pause`\n- `pto`\n- `presenting`\n- `quiet`\n- `scheduled`",attribute:"presence",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"size",type:{text:"AvatarSize"},description:`Acceptable values include (size in px unit):
-- 24
-- 32
-- 48
-- 64
-- 72
-- 88
-- 124`,default:"32",attribute:"size",reflects:!0,inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"iconName",type:{text:"IconNames | undefined"},description:`Name of the icon to be displayed inside the Avatar.
-Must be a valid icon name.`,attribute:"icon-name",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"counter",type:{text:"number | undefined"},description:"The counter is the number which can be displayed on the avatar.\nThe maximum number is 99 and if the given number is greater than 99,\nthen the avatar will be displayed as `99+`.\nIf the given number is a negative number,\nthen the avatar will be displayed as `0`.",attribute:"counter",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}},{kind:"field",name:"isTyping",type:{text:"boolean"},default:"false",description:"Represents the typing indicator when the user is typing.",attribute:"is-typing",inheritedFrom:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}}],mixins:[{name:"AvatarComponentMixin",module:"/src/utils/mixins/AvatarComponentMixin"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-avatar",jsDoc:`/**
- * The \`mdc-avatar\` component is used to represent a person or a space.
- * An avatar can be an icon, initials, counter and photo.
- *
- * To set the photo of an avatar,
- * you need to set "src" attribute.
- *
- * While the avatar image is loading, as a placeholder,
- * we will show the initials text.
- * If the initials are not specified then,
- * we will show \`user-regular\` icon as a placeholder.
- *
- * By default, if there are no attributes specified,
- * then the default avatar will be an icon with \`user-regular\` name.
- *
- * The avatar component is non clickable and non interactive/focusable component.
- * If the avatar is typing, then the loading indicator will be displayed.
- * If the counter type avatar is set to a negative number, then we will display 0.
- * The presence indicator will be hidden when the counter property is set.
- *
- * @dependency mdc-icon
- * @dependency mdc-presence
- * @dependency mdc-text
- *
- * @tagname mdc-avatar
- *
- * @cssproperty --mdc-avatar-default-background-color - Allows customization of the default background color.
- * @cssproperty --mdc-avatar-default-foreground-color - Allows customization of the default foreground color.
- * @cssproperty --mdc-avatar-loading-indicator-background-color -
- *  Allows customization of the loading indicator background color.
- * @cssproperty --mdc-avatar-loading-indicator-foreground-color -
- *  Allows customization of the loading indicator foreground color.
- * @cssproperty --mdc-avatar-loading-overlay-background-color -
- *  Allows customization of the loading overlay background color.
- */`,customElement:!0,attributes:[{name:"src",type:{text:"string | undefined"},description:`The src is the url which will be used to display the avatar.
-When the src is loading, we will display the initials as a placeholder.`,fieldName:"src",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"initials",type:{text:"string | undefined"},description:"The initials to be displayed for the avatar.",fieldName:"initials",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"presence",type:{text:"PresenceType | undefined"},description:"The presence is the status which can be used to display the\nactivity state of a user or a space within an avatar component.\n\nAcceptable values include:\n- `active`\n- `away`\n- `away-calling`\n- `busy`\n- `dnd`\n- `meeting`\n- `on-call`\n- `on-device`\n- `on-mobile`\n- `pause`\n- `pto`\n- `presenting`\n- `quiet`\n- `scheduled`",fieldName:"presence",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"size",type:{text:"AvatarSize"},description:`Acceptable values include (size in px unit):
-- 24
-- 32
-- 48
-- 64
-- 72
-- 88
-- 124`,default:"32",fieldName:"size",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"icon-name",type:{text:"IconNames | undefined"},description:`Name of the icon to be displayed inside the Avatar.
-Must be a valid icon name.`,fieldName:"iconName",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"counter",type:{text:"number | undefined"},description:"The counter is the number which can be displayed on the avatar.\nThe maximum number is 99 and if the given number is greater than 99,\nthen the avatar will be displayed as `99+`.\nIf the given number is a negative number,\nthen the avatar will be displayed as `0`.",fieldName:"counter",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}},{name:"is-typing",type:{text:"boolean"},default:"false",description:"Represents the typing indicator when the user is typing.",fieldName:"isTyping",inheritedFrom:{name:"AvatarComponentMixin",module:"src/utils/mixins/AvatarComponentMixin.ts"}}]}],exports:[{kind:"js",name:"default",declaration:{name:"Avatar",module:"components/avatar/avatar.component.js"}}]},{kind:"javascript-module",path:"components/bullet/bullet.component.js",declarations:[{kind:"class",description:`Bullet component, which is a visual marker
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"AvatarButton",module:"components/avatarbutton/avatarbutton.component.js"}}]},{kind:"javascript-module",path:"components/bullet/bullet.component.js",declarations:[{kind:"class",description:`Bullet component, which is a visual marker
 and be used to organize and present items in a list format.`,name:"Bullet",cssProperties:[{description:"background color of the bullet",name:"--mdc-bullet-background-color"},{description:"small size value of the bullet",name:"--mdc-bullet-size-small"},{description:"medium size value of the bullet",name:"--mdc-bullet-size-medium"},{description:"large size value of the bullet",name:"--mdc-bullet-size-large"}],members:[{kind:"field",name:"size",type:{text:"Size"},privacy:"public",description:`Size of the bullet
 
 Possible values: 'small', 'medium', 'large'`,default:"small",attribute:"size",reflects:!0}],attributes:[{name:"size",type:{text:"Size"},description:`Size of the bullet
@@ -601,34 +601,7 @@ the content or to signify important information.
  * @cssproperty --mdc-marker-striped-background-color - Allows customization of the default background color
  * in striped variant.
  * @cssproperty --mdc-marker-width - Allows customization of the default width.
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Marker",module:"components/marker/marker.component.js"}}]},{kind:"javascript-module",path:"components/modalcontainer/modalcontainer.component.js",declarations:[{kind:"class",description:"The `mdc-modalcontainer` component is an element used to\ndisplay a modal container that can further be used in popover.",name:"Modalcontainer",cssProperties:[{description:"primary background color of the modalcontainer",name:"--mdc-modalcontainer-primary-background-color"},{description:"border color of the modalcontainer",name:"--mdc-modalcontainer-border-color"},{description:"inverted background color of the modalcontainer",name:"--mdc-modalcontainer-inverted-background-color"},{description:"inverted border color of the modalcontainer",name:"--mdc-modalcontainer-inverted-border-color"},{description:"inverted text color of the modalcontainer",name:"--mdc-modalcontainer-inverted-text-color"}],slots:[{description:"Default slot for modal container",name:""}],members:[{kind:"field",name:"color",type:{text:"ModalContainerColor"},description:`Color of the modalcontainer
-- **tonal**
-- **contrast**`,default:"tonal",attribute:"color",reflects:!0},{kind:"field",name:"elevation",type:{text:"ModalContainerElevation"},description:`Elevation of the modalcontainer where each value corresponds to a different drop shadow.
-- **0**
-- **1**
-- **2**
-- **3**
-- **4**`,default:"0",attribute:"elevation",reflects:!0},{kind:"field",name:"role",type:{text:"ModalContainerRole"},description:"Role of the modalcontainer",default:"dialog",attribute:"role"}],attributes:[{name:"color",type:{text:"ModalContainerColor"},description:`Color of the modalcontainer
-- **tonal**
-- **contrast**`,default:"tonal",fieldName:"color"},{name:"elevation",type:{text:"ModalContainerElevation"},description:`Elevation of the modalcontainer where each value corresponds to a different drop shadow.
-- **0**
-- **1**
-- **2**
-- **3**
-- **4**`,default:"0",fieldName:"elevation"},{name:"role",type:{text:"ModalContainerRole"},description:"Role of the modalcontainer",default:"dialog",fieldName:"role"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-modalcontainer",jsDoc:`/**
- * The \`mdc-modalcontainer\` component is an element used to
- * display a modal container that can further be used in popover.
- *
- * @tagname mdc-modalcontainer
- *
- * @cssproperty --mdc-modalcontainer-primary-background-color - primary background color of the modalcontainer
- * @cssproperty --mdc-modalcontainer-border-color - border color of the modalcontainer
- * @cssproperty --mdc-modalcontainer-inverted-background-color - inverted background color of the modalcontainer
- * @cssproperty --mdc-modalcontainer-inverted-border-color - inverted border color of the modalcontainer
- * @cssproperty --mdc-modalcontainer-inverted-text-color - inverted text color of the modalcontainer
- *
- * @slot - Default slot for modal container
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Modalcontainer",module:"components/modalcontainer/modalcontainer.component.js"}}]},{kind:"javascript-module",path:"components/presence/presence.component.js",declarations:[{kind:"class",description:`The \`mdc-presence\` component is a versatile UI element used to
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Marker",module:"components/marker/marker.component.js"}}]},{kind:"javascript-module",path:"components/presence/presence.component.js",declarations:[{kind:"class",description:`The \`mdc-presence\` component is a versatile UI element used to
 display the presence status of a user or entity within an avatar component.
 
 This component is ideal for use within avatar UIs where the presence status
@@ -825,7 +798,34 @@ Default: 'mds-theme-stable-darkWebex'`,fieldName:"themeclass"}],superclass:{name
  * @cssproperty --mdc-themeprovider-font-weight - Option to override the font weight, default: \`400\`
  * @cssproperty --mdc-themeprovider-letter-spacing-adjustment - Option to override the default letter-spacing,
  * default: \`-0.25px\` (this is to match the old CiscoSans)
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"ThemeProvider",module:"components/themeprovider/themeprovider.component.js"}}]},{kind:"javascript-module",path:"utils/mixins/AvatarComponentMixin.js",declarations:[{kind:"mixin",description:"",name:"AvatarComponentMixin",members:[{kind:"field",name:"src",type:{text:"string | undefined"},description:`The src is the url which will be used to display the avatar.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"ThemeProvider",module:"components/themeprovider/themeprovider.component.js"}}]},{kind:"javascript-module",path:"components/modalcontainer/modalcontainer.component.js",declarations:[{kind:"class",description:"The `mdc-modalcontainer` component is an element used to\ndisplay a modal container that can further be used in popover.",name:"Modalcontainer",cssProperties:[{description:"primary background color of the modalcontainer",name:"--mdc-modalcontainer-primary-background-color"},{description:"border color of the modalcontainer",name:"--mdc-modalcontainer-border-color"},{description:"inverted background color of the modalcontainer",name:"--mdc-modalcontainer-inverted-background-color"},{description:"inverted border color of the modalcontainer",name:"--mdc-modalcontainer-inverted-border-color"},{description:"inverted text color of the modalcontainer",name:"--mdc-modalcontainer-inverted-text-color"}],slots:[{description:"Default slot for modal container",name:""}],members:[{kind:"field",name:"color",type:{text:"ModalContainerColor"},description:`Color of the modalcontainer
+- **tonal**
+- **contrast**`,default:"tonal",attribute:"color",reflects:!0},{kind:"field",name:"elevation",type:{text:"ModalContainerElevation"},description:`Elevation of the modalcontainer where each value corresponds to a different drop shadow.
+- **0**
+- **1**
+- **2**
+- **3**
+- **4**`,default:"0",attribute:"elevation",reflects:!0},{kind:"field",name:"role",type:{text:"ModalContainerRole"},description:"Role of the modalcontainer",default:"dialog",attribute:"role"}],attributes:[{name:"color",type:{text:"ModalContainerColor"},description:`Color of the modalcontainer
+- **tonal**
+- **contrast**`,default:"tonal",fieldName:"color"},{name:"elevation",type:{text:"ModalContainerElevation"},description:`Elevation of the modalcontainer where each value corresponds to a different drop shadow.
+- **0**
+- **1**
+- **2**
+- **3**
+- **4**`,default:"0",fieldName:"elevation"},{name:"role",type:{text:"ModalContainerRole"},description:"Role of the modalcontainer",default:"dialog",fieldName:"role"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-modalcontainer",jsDoc:`/**
+ * The \`mdc-modalcontainer\` component is an element used to
+ * display a modal container that can further be used in popover.
+ *
+ * @tagname mdc-modalcontainer
+ *
+ * @cssproperty --mdc-modalcontainer-primary-background-color - primary background color of the modalcontainer
+ * @cssproperty --mdc-modalcontainer-border-color - border color of the modalcontainer
+ * @cssproperty --mdc-modalcontainer-inverted-background-color - inverted background color of the modalcontainer
+ * @cssproperty --mdc-modalcontainer-inverted-border-color - inverted border color of the modalcontainer
+ * @cssproperty --mdc-modalcontainer-inverted-text-color - inverted text color of the modalcontainer
+ *
+ * @slot - Default slot for modal container
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Modalcontainer",module:"components/modalcontainer/modalcontainer.component.js"}}]},{kind:"javascript-module",path:"utils/mixins/AvatarComponentMixin.js",declarations:[{kind:"mixin",description:"",name:"AvatarComponentMixin",members:[{kind:"field",name:"src",type:{text:"string | undefined"},description:`The src is the url which will be used to display the avatar.
 When the src is loading, we will display the initials as a placeholder.`,attribute:"src"},{kind:"field",name:"initials",type:{text:"string | undefined"},description:"The initials to be displayed for the avatar.",attribute:"initials"},{kind:"field",name:"presence",type:{text:"PresenceType | undefined"},description:"The presence is the status which can be used to display the\nactivity state of a user or a space within an avatar component.\n\nAcceptable values include:\n- `active`\n- `away`\n- `away-calling`\n- `busy`\n- `dnd`\n- `meeting`\n- `on-call`\n- `on-device`\n- `on-mobile`\n- `pause`\n- `pto`\n- `presenting`\n- `quiet`\n- `scheduled`",attribute:"presence"},{kind:"field",name:"size",type:{text:"AvatarSize"},description:`Acceptable values include (size in px unit):
 - 24
 - 32

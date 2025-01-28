@@ -1,4 +1,4 @@
-import{i as A,k as h}from"./lit-element-CHllvULs.js";import{u as W,C as E,n as g}from"./index-HW6KrQZO.js";import{h as P,a as j}from"./index-BNZgxKMr.js";import{D as U,a as l}from"./chunk-D5ZWXAHU-Cy56BkwE.js";import"./index-BOBIh5Rr.js";import{d as V,h as k,r as z}from"./utils-D1SE5bce.js";import"./v4-CQkTLCs1.js";import"./state-CWckTc1X.js";import"./index-BYMLCX4c.js";import"./iconprovider.component-CWYw8J7d.js";import"./create-context-89xeped_.js";const q=W.constructTagName("link"),u={LARGE:"large",MIDSIZE:"midsize",SMALL:"small"},y={LARGE:1,MIDSIZE:.875,SMALL:.75},x={INLINE:!1,INVERTED:!1,LINK_SIZE:u.LARGE},H=[P,A`
+import{i as A,k as h}from"./lit-element-CHllvULs.js";import{u as W,C as E,n as g}from"./index-HW6KrQZO.js";import{h as j,a as P}from"./index-BNZgxKMr.js";import{D as U,a as l}from"./chunk-D5ZWXAHU-Cy56BkwE.js";import"./index-BOBIh5Rr.js";import{d as V,h as k,r as z}from"./utils-D1SE5bce.js";import"./v4-CQkTLCs1.js";import"./state-CWckTc1X.js";import"./index-BYMLCX4c.js";import"./iconprovider.component-CWYw8J7d.js";import"./create-context-89xeped_.js";const q=W.constructTagName("link"),u={LARGE:"large",MIDSIZE:"midsize",SMALL:"small"},y={LARGE:1,MIDSIZE:.875,SMALL:.75},x={INLINE:!1,INVERTED:!1,LINK_SIZE:u.LARGE},H=[j,A`
 
   :host {
 
@@ -109,7 +109,7 @@ import{i as A,k as h}from"./lit-element-CHllvULs.js";import{u as W,C as E,n as g
   :host([inverted][disabled]) {
     color: var(--mdc-link-inverted-color-disabled);
   }
-`,...j(),A`
+`,...P(),A`
   :host(:active) {
     box-shadow: none;
   }
@@ -126,7 +126,7 @@ import{i as A,k as h}from"./lit-element-CHllvULs.js";import{u as W,C as E,n as g
     >${e}</mdc-link>`},G=r=>h`
     <div style="background-color: var(--mds-color-theme-inverted-background-normal); padding: 8px;">
       ${i(r)}
-    </div>`,le={title:"Work In Progress/link",tags:["autodocs"],component:"mdc-link",render:i,parameters:{badges:["wip"]},argTypes:{children:{description:"Anchor tag to be displayed as link.",control:"text"},disabled:{control:"boolean"},"icon-name":{control:"text"},inline:{control:"boolean"},inverted:{control:"boolean"},size:{control:"select",options:Object.values(u)},...V(["--mdc-link-border-radius","--mdc-link-color-active","--mdc-link-color-disabled","--mdc-link-color-hover","--mdc-link-color-normal","--mdc-link-icon-margin-left","--mdc-link-inverted-color-active","--mdc-link-inverted-color-disabled","--mdc-link-inverted-color-hover","--mdc-link-inverted-color-normal","--mdc-link-text-decoration-disabled"])}},a={children:'<a href="https://www.webex.com" target="_blank" rel="noopener noreferrer">Link</a>',disabled:!1,"icon-name":"placeholder-bold",inline:!1,inverted:!1,size:"large"},d={render:i,args:{...a}},c={render:i,args:{...a},argTypes:{...k(["inline","inverted"])}},m={render:G,args:{...a,inverted:!0},argTypes:{...k(["inline"]),...z(["inverted"])}},p={render:i,args:{...a,inline:!0},argTypes:{...k(["inverted"]),...z(["inline"])}},v={render:G,args:{...a,inline:!0,inverted:!0},argTypes:{...z(["inline","inverted"])}};var L,w,T;d.parameters={...d.parameters,docs:{...(L=d.parameters)==null?void 0:L.docs,source:{originalSource:`{
+    </div>`,le={title:"Components/link",tags:["autodocs"],component:"mdc-link",render:i,parameters:{badges:["stable"]},argTypes:{children:{description:"Anchor tag to be displayed as link.",control:"text"},disabled:{control:"boolean"},"icon-name":{control:"text"},inline:{control:"boolean"},inverted:{control:"boolean"},size:{control:"select",options:Object.values(u)},...V(["--mdc-link-border-radius","--mdc-link-color-active","--mdc-link-color-disabled","--mdc-link-color-hover","--mdc-link-color-normal","--mdc-link-icon-margin-left","--mdc-link-inverted-color-active","--mdc-link-inverted-color-disabled","--mdc-link-inverted-color-hover","--mdc-link-inverted-color-normal","--mdc-link-text-decoration-disabled"])}},a={children:'<a href="https://www.webex.com" target="_blank" rel="noopener noreferrer">Link</a>',disabled:!1,"icon-name":"placeholder-bold",inline:!1,inverted:!1,size:"large"},d={render:i,args:{...a}},c={render:i,args:{...a},argTypes:{...k(["inline","inverted"])}},m={render:G,args:{...a,inverted:!0},argTypes:{...k(["inline"]),...z(["inverted"])}},p={render:i,args:{...a,inline:!0},argTypes:{...k(["inverted"]),...z(["inline"])}},v={render:G,args:{...a,inline:!0,inverted:!0},argTypes:{...z(["inline","inverted"])}};var L,w,T;d.parameters={...d.parameters,docs:{...(L=d.parameters)==null?void 0:L.docs,source:{originalSource:`{
   render,
   args: {
     ...defaultArgs
