@@ -77,7 +77,7 @@ export default meta;
 const defaultArgs = {
   children: '<a href="https://www.webex.com" target="_blank" rel="noopener noreferrer">Link</a>',
   disabled: false,
-  'icon-name': 'placeholder-regular',
+  'icon-name': 'placeholder-bold',
   inline: false,
   inverted: false,
   size: 'large',

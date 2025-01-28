@@ -3,6 +3,7 @@ import { Page, expect, Locator, TestInfo, test } from '@playwright/test';
 import Accessibility from './utils/accessibility';
 import VisualRegression from './utils/visual-regression';
 import type { ThemeClass } from './types';
+import Actionability from './utils/actionability';
 
 const componentsDevPageTitle = 'Momentum Components Dev Page';
 const htmlRootElementSelector = '#root';
@@ -15,6 +16,7 @@ interface MountOptions {
 
 interface ComponentsPage {
   accessibility: Accessibility;
+  actionability: Actionability;
   visualRegression: VisualRegression;
   page: Page;
   testInfo: TestInfo;
@@ -33,6 +35,7 @@ class ComponentsPage {
 
     // creates utility objects on components page and inject dependencies:
     this.accessibility = new Accessibility(this.page, this.testInfo);
+    this.actionability = new Actionability(this.page);
     this.visualRegression = new VisualRegression(this.page);
   }
 
