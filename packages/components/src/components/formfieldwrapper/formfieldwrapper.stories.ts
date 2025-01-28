@@ -9,7 +9,6 @@ import { ValidationType } from './formfieldwrapper.types';
 const render = (args: Args) =>
   html` <mdc-formfieldwrapper
     label="${args.label}"
-    label-info-text="${args['label-info-text']}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
     >
@@ -37,9 +36,6 @@ const meta: Meta = {
     label: {
       control: 'text',
     },
-    'label-info-text': {
-      control: 'text',
-    },
     'help-text': {
       control: 'text',
     },
@@ -51,7 +47,6 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     label: 'Label (required)',
-    'label-info-text': 'Label info text',
     'help-text': 'Helper text',
     'help-text-type': 'default',
     children: '[Child Component]',

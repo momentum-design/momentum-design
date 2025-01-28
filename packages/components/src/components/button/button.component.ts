@@ -18,7 +18,7 @@ import type {
 } from './button.types';
 import { getIconNameWithoutStyle, getIconSize } from './button.utils';
 import type { IconNames } from '../icon/icon.types';
-import Buttonsimple from '../buttonsimple';
+import Buttonsimple from '../buttonsimple/buttonsimple.component';
 
 /**
  * `mdc-button` is a component that can be configured in various ways to suit different use cases.
