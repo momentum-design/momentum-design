@@ -31,6 +31,8 @@ function generateJSXTable(jsonData: any, tokenType: TokenType) {
   function generateTables(data: any, path: any) {
     const rows: any = [];
 
+    console.log(data);
+
     const keys = Object.keys(data);
 
     // Loop through the keys and create a table row for each subgroup or token
@@ -68,7 +70,7 @@ function generateJSXTable(jsonData: any, tokenType: TokenType) {
       const table = { section: path[0] || tokenType || 'unknown',
         jsx: (
           <div>
-            <a href={`#${path.join('-')}`}><h4 id={path.join('-')}>{path.join('-')}</h4></a>
+            <a href={`#${path.join('-')}`}><h3 class="heading3" id={path.join('-')}>{path.join('-')}</h3></a>
             <table>
               <thead>
                 <tr>
@@ -97,7 +99,7 @@ export const TokenTable: FunctionalComponent<{ tokens: any, tokenType: TokenType
     <div>
       {Object.entries(data).map(([section, value]) => (
         <>
-          <h2>{section}</h2>
+          <h2 class="heading2 marginTop">{section}</h2>
           <div className="tableWrapper">
             { value.map((table) => table.jsx) }
           </div>
