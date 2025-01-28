@@ -10,10 +10,10 @@ const render = (args: Args) => {
   const htmlContent = html`${new DOMParser().parseFromString(args.children, 'text/html').body.firstChild}`;
 
   return html`<mdc-link
-    @click="${action('onClick')}"
-    @keydown="${action('onKeyDown')}"
-    @keyup="${action('onKeyUp')}"
-    @focus="${action('onFocus')}"
+    @click="${action('onclick')}"
+    @keydown="${action('onkeydown')}"
+    @keyup="${action('onkeyup')}"
+    @focus="${action('onfocus')}"
     ?disabled="${args.disabled}"
     icon-name="${args['icon-name']}"
     ?inline="${args.inline}"
