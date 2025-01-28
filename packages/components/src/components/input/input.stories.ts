@@ -5,6 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { disableControls } from '../../../config/storybook/utils';
+import { AUTO_CAPITALIZE } from './input.constants';
 
 const render = (args: Args) =>
   html` <mdc-input
@@ -25,6 +26,14 @@ const render = (args: Args) =>
     leading-icon="${args['leading-icon']}"
     maxlength="${ifDefined(args.maxlength)}"
     minlength="${ifDefined(args.minlength)}"
+    autocapitalize="${args.autocapitalize}"
+    ?autofocus="${args.autofocus}"
+    autocomplete="${args.autocomplete}"
+    dirname="${ifDefined(args.dirname)}"
+    pattern="${ifDefined(args.pattern)}"
+    form="${ifDefined(args.form)}"
+    list="${ifDefined(args.list)}"
+    size="${ifDefined(args.size)}"
     ></mdc-input>`;
 
 const meta: Meta = {
@@ -84,6 +93,31 @@ const meta: Meta = {
     maxlength: {
       control: 'number',
     },
+    autocapitalize: {
+      control: 'select',
+      options: Object.values(AUTO_CAPITALIZE),
+    },
+    autofocus: {
+      control: 'boolean',
+    },
+    autocomplete: {
+      control: 'text',
+    },
+    dirname: {
+      control: 'text',
+    },
+    pattern: {
+      control: 'text',
+    },
+    form: {
+      control: 'text',
+    },
+    list: {
+      control: 'text',
+    },
+    size: {
+      control: 'number',
+    },
   },
 };
 
@@ -104,6 +138,8 @@ export const Example: StoryObj = {
     'prefix-text': '',
     'leading-icon': '',
     'trailing-button': false,
+    autocapitalize: 'off',
+    autofocus: false,
   },
 };
 

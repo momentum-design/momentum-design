@@ -4,10 +4,12 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './input.styles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
+import { ValueMixin } from '../../utils/mixins/ValueMixin';
+import { NameMixin } from '../../utils/mixins/NameMixin';
 import { PREFIX_TEXT_OPTIONS } from './input.constants';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import type { IconNames } from '../icon/icon.types';
-
+import type { AutoCapitalizeType } from './input.types';
 /**
  * mdc-input is a component that allows users to input text.
  *  It contains:
@@ -26,12 +28,7 @@ import type { IconNames } from '../icon/icon.types';
  * @dependency mdc-text
  * @dependency mdc-button
  */
-class Input extends DisabledMixin(FormfieldWrapper) {
-  /**
- * The value of the input field. It is a two-way binding property.
- */
-  @property({ type: String, reflect: true }) value = '';
-
+class Input extends ValueMixin(NameMixin(DisabledMixin(FormfieldWrapper))) {
   /**
    * The placeholder text that is displayed when the input field is empty.
    */
@@ -49,6 +46,22 @@ class Input extends DisabledMixin(FormfieldWrapper) {
   @property({ type: Boolean }) readonly = false;
 
   /**
+   * The prefix text that is displayed before the input field. It has a max length of 10 characters.
+   */
+  @property({ type: String, attribute: 'prefix-text' }) prefixText = '';
+
+  /**
+   * The leading icon that is displayed before the input field.
+   */
+  @property({ type: String, attribute: 'leading-icon' }) leadingIcon = '';
+
+  /**
+   * The trailing button when set to true, shows a clear button that clears the input field.
+   * @default false
+   */
+  @property({ type: Boolean, attribute: 'trailing-button' }) trailingButton = false;
+
+  /**
    * The maximum number of characters that the input field can accept.
    */
   @property({ type: Number }) maxlength?: number;
@@ -58,21 +71,57 @@ class Input extends DisabledMixin(FormfieldWrapper) {
    */
   @property({ type: Number }) minlength?: number;
 
-/**
- * The prefix text that is displayed before the input field. It has a max length of 10 characters.
- */
-@property({ type: String, attribute: 'prefix-text' }) prefixText = '';
+  /**
+   * The autocapitalize attribute of the input field.
+   * @default 'off'
+   */
+  @property({ type: String }) override autocapitalize: AutoCapitalizeType = 'off';
 
-/**
- * The leading icon that is displayed before the input field.
- */
-@property({ type: String, attribute: 'leading-icon' }) leadingIcon = '';
+  /**
+   * The autocomplete attribute of the input field.
+   * @default 'off'
+   */
+  @property({ type: String }) autocomplete = 'off';
 
-/**
- * The trailing button when set to true, shows a clear button that clears the input field.
- * @default false
- */
-@property({ type: Boolean, attribute: 'trailing-button' }) trailingButton = false;
+  /**
+   * If true, the input field is focused when the component is rendered.
+   * @default false
+   */
+  @property({ type: Boolean }) override autofocus = false;
+
+  /**
+   * Specifies the name of the directionality of text for submission purposes (e.g., "rtl" for right-to-left).
+   * @default ''
+   */
+  @property({ type: String }) dirname = '';
+
+  /**
+   * The pattern attribute of the input field.
+   * Specifies a regular expression that the input value must match for validation purposes.
+   * @default ''
+   */
+  @property({ type: String }) pattern = '';
+
+  /**
+   * The form attribute of the input field.
+   * Identifies the form to which the input field belongs.
+   * @default ''
+   */
+  @property({ type: String }) form = '';
+
+  /**
+   * The list attribute of the input field.
+   * Identifies a list of pre-defined options to suggest to the user.
+   * @default ''
+   */
+  @property({ type: String }) list = '';
+
+  /**
+   * The size attribute of the input field.
+   * Specifies the width of the input field.
+   * @default undefined
+   */
+  @property({ type: Number }) size?: number | undefined;
 
   /**
    * @internal
@@ -162,10 +211,19 @@ class Input extends DisabledMixin(FormfieldWrapper) {
             .value="${this.value}"
             ?disabled="${this.disabled}"
             ?readonly="${this.readonly}"
+            ?required="${this.required}"
             type="text"
             placeholder=${ifDefined(this.placeholder)}
             minlength=${ifDefined(this.minlength)}
             maxlength=${ifDefined(this.maxlength)}
+            autocapitalize=${this.autocapitalize}
+            autocomplete=${this.autocomplete}
+            ?autofocus="${this.autofocus}"
+            dirname=${ifDefined(this.dirname)}
+            pattern=${ifDefined(this.pattern)}
+            form=${ifDefined(this.form)}
+            list=${ifDefined(this.list)}
+            size=${ifDefined(this.size)}
             @input=${(e: Event) => { this.value = (e.target as HTMLInputElement).value; }}
           />
         </slot>
