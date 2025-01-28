@@ -1,4 +1,4 @@
-import{i as A,k as h}from"./lit-element-CHllvULs.js";import{u as W,C as E,n as g}from"./index-HW6KrQZO.js";import{h as j,a as P}from"./index-BNZgxKMr.js";import{D as U,a as l}from"./chunk-D5ZWXAHU-Cy56BkwE.js";import"./index-BOBIh5Rr.js";import{d as V,h as k,r as z}from"./utils-D1SE5bce.js";import"./v4-CQkTLCs1.js";import"./state-CWckTc1X.js";import"./index-BYMLCX4c.js";import"./iconprovider.component-CWYw8J7d.js";import"./create-context-89xeped_.js";const q=W.constructTagName("link"),u={LARGE:"large",MIDSIZE:"midsize",SMALL:"small"},y={LARGE:1,MIDSIZE:.875,SMALL:.75},x={INLINE:!1,INVERTED:!1,LINK_SIZE:u.LARGE},H=[j,A`
+import{i as A,k as v}from"./lit-element-CHllvULs.js";import{u as W,C as E,n as g}from"./index-HW6KrQZO.js";import{h as j,a as P}from"./index-BNZgxKMr.js";import{D as V,a as i}from"./chunk-D5ZWXAHU-Cy56BkwE.js";import"./index-BOBIh5Rr.js";import{d as q,h as k,r as z}from"./utils-D1SE5bce.js";import"./v4-CQkTLCs1.js";import"./state-CWckTc1X.js";import"./index-BYMLCX4c.js";import"./iconprovider.component-CWYw8J7d.js";import"./create-context-89xeped_.js";const U=W.constructTagName("link"),h={LARGE:"large",MIDSIZE:"midsize",SMALL:"small"},y={LARGE:1,MIDSIZE:.875,SMALL:.75},x={INLINE:!1,INVERTED:!1,LINK_SIZE:h.LARGE},H=[j,A`
 
   :host {
 
@@ -113,20 +113,21 @@ import{i as A,k as h}from"./lit-element-CHllvULs.js";import{u as W,C as E,n as g
   :host(:active) {
     box-shadow: none;
   }
-`];var J=Object.defineProperty,f=(r,e,s,b)=>{for(var n=void 0,t=r.length-1,S;t>=0;t--)(S=r[t])&&(n=S(e,s,n)||n);return n&&J(e,s,n),n};const I=class I extends U(E){constructor(){super(...arguments),this.inline=x.INLINE,this.inverted=x.INVERTED,this.size=x.LINK_SIZE,this.prevTabindex=null}getIconSize(){switch(this.size){case u.SMALL:return y.SMALL;case u.MIDSIZE:return y.MIDSIZE;default:return y.LARGE}}setDisabled(e){e?(this.prevTabindex=this.hasAttribute("tabindex")?this.tabIndex:null,this.tabIndex=-1,this.setAttribute("aria-disabled","true")):this.prevTabindex===null?(this.removeAttribute("tabindex"),this.removeAttribute("aria-disabled")):(this.tabIndex=this.prevTabindex,this.removeAttribute("aria-disabled"))}updateTrailingIcon(){var b,n;const e=(n=(b=this.shadowRoot)==null?void 0:b.querySelector("slot"))==null?void 0:n.assignedElements({flatten:!0}).find(t=>t.tagName==="A"),s=this.getIconSize();if(this.iconName&&e){const t=document.createElement("mdc-icon");t.setAttribute("name",this.iconName),t.setAttribute("size",`${s}`),t.setAttribute("length-unit","rem"),e.appendChild(t)}}update(e){super.update(e),e.has("disabled")&&this.setDisabled(this.disabled)}render(){return h`<slot @slotchange=${this.updateTrailingIcon}></slot>`}};I.styles=[...E.styles,...H];let o=I;f([g({type:String,attribute:"icon-name"})],o.prototype,"iconName");f([g({type:Boolean,reflect:!0})],o.prototype,"inline");f([g({type:Boolean,reflect:!0})],o.prototype,"inverted");f([g({type:String,reflect:!0})],o.prototype,"size");o.register(q);const i=r=>{const e=h`${new DOMParser().parseFromString(r.children,"text/html").body.firstChild}`;return h`<mdc-link
-    @click="${l("onClick")}"
-    @keydown="${l("onKeyDown")}"
-    @keyup="${l("onKeyUp")}"
-    @focus="${l("onFocus")}"
+`];var J=Object.defineProperty,f=(r,e,l,b)=>{for(var n=void 0,t=r.length-1,S;t>=0;t--)(S=r[t])&&(n=S(e,l,n)||n);return n&&J(e,l,n),n};const I=class I extends V(E){constructor(){super(...arguments),this.inline=x.INLINE,this.inverted=x.INVERTED,this.size=x.LINK_SIZE,this.prevTabindex=null}getIconSize(){switch(this.size){case h.SMALL:return y.SMALL;case h.MIDSIZE:return y.MIDSIZE;default:return y.LARGE}}setDisabled(e){e?(this.prevTabindex=this.hasAttribute("tabindex")?this.tabIndex:null,this.tabIndex=-1,this.setAttribute("aria-disabled","true")):this.prevTabindex===null?(this.removeAttribute("tabindex"),this.removeAttribute("aria-disabled")):(this.tabIndex=this.prevTabindex,this.removeAttribute("aria-disabled"))}updateTrailingIcon(){var b,n;const e=(n=(b=this.shadowRoot)==null?void 0:b.querySelector("slot"))==null?void 0:n.assignedElements({flatten:!0}).find(t=>t.tagName==="A"),l=this.getIconSize();if(this.iconName&&e){const t=document.createElement("mdc-icon");t.setAttribute("name",this.iconName),t.setAttribute("size",`${l}`),t.setAttribute("length-unit","rem"),e.appendChild(t)}}update(e){super.update(e),e.has("disabled")&&this.setDisabled(this.disabled)}render(){return v`<slot @slotchange=${this.updateTrailingIcon}></slot>`}};I.styles=[...E.styles,...H];let o=I;f([g({type:String,attribute:"icon-name"})],o.prototype,"iconName");f([g({type:Boolean,reflect:!0})],o.prototype,"inline");f([g({type:Boolean,reflect:!0})],o.prototype,"inverted");f([g({type:String,reflect:!0})],o.prototype,"size");o.register(U);const a=r=>{const e=v`${new DOMParser().parseFromString(r.children,"text/html").body.firstChild}`;return v`<mdc-link
+    @click="${i("onclick")}"
+    @keydown="${i("onkeydown")}"
+    @keyup="${i("onkeyup")}"
+    @focusin="${i("onfocusin")}"
+    @focusout="${i("onfocusout")}"
     ?disabled="${r.disabled}"
     icon-name="${r["icon-name"]}"
     ?inline="${r.inline}"
     ?inverted="${r.inverted}"
     size="${r.size}"
-    >${e}</mdc-link>`},G=r=>h`
+    >${e}</mdc-link>`},K=r=>v`
     <div style="background-color: var(--mds-color-theme-inverted-background-normal); padding: 8px;">
-      ${i(r)}
-    </div>`,le={title:"Components/link",tags:["autodocs"],component:"mdc-link",render:i,parameters:{badges:["stable"]},argTypes:{children:{description:"Anchor tag to be displayed as link.",control:"text"},disabled:{control:"boolean"},"icon-name":{control:"text"},inline:{control:"boolean"},inverted:{control:"boolean"},size:{control:"select",options:Object.values(u)},...V(["--mdc-link-border-radius","--mdc-link-color-active","--mdc-link-color-disabled","--mdc-link-color-hover","--mdc-link-color-normal","--mdc-link-icon-margin-left","--mdc-link-inverted-color-active","--mdc-link-inverted-color-disabled","--mdc-link-inverted-color-hover","--mdc-link-inverted-color-normal","--mdc-link-text-decoration-disabled"])}},a={children:'<a href="https://www.webex.com" target="_blank" rel="noopener noreferrer">Link</a>',disabled:!1,"icon-name":"placeholder-bold",inline:!1,inverted:!1,size:"large"},d={render:i,args:{...a}},c={render:i,args:{...a},argTypes:{...k(["inline","inverted"])}},m={render:G,args:{...a,inverted:!0},argTypes:{...k(["inline"]),...z(["inverted"])}},p={render:i,args:{...a,inline:!0},argTypes:{...k(["inverted"]),...z(["inline"])}},v={render:G,args:{...a,inline:!0,inverted:!0},argTypes:{...z(["inline","inverted"])}};var L,w,T;d.parameters={...d.parameters,docs:{...(L=d.parameters)==null?void 0:L.docs,source:{originalSource:`{
+      ${a(r)}
+    </div>`,le={title:"Components/link",tags:["autodocs"],component:"mdc-link",render:a,parameters:{badges:["stable"]},argTypes:{children:{description:"Anchor tag to be displayed as link.",control:"text"},disabled:{control:"boolean"},"icon-name":{control:"text"},inline:{control:"boolean"},inverted:{control:"boolean"},size:{control:"select",options:Object.values(h)},...q(["--mdc-link-border-radius","--mdc-link-color-active","--mdc-link-color-disabled","--mdc-link-color-hover","--mdc-link-color-normal","--mdc-link-icon-margin-left","--mdc-link-inverted-color-active","--mdc-link-inverted-color-disabled","--mdc-link-inverted-color-hover","--mdc-link-inverted-color-normal","--mdc-link-text-decoration-disabled"])}},s={children:'<a href="https://www.webex.com" target="_blank" rel="noopener noreferrer">Link</a>',disabled:!1,"icon-name":"placeholder-bold",inline:!1,inverted:!1,size:"large"},d={render:a,args:{...s}},c={render:a,args:{...s},argTypes:{...k(["inline","inverted"])}},m={render:K,args:{...s,inverted:!0},argTypes:{...k(["inline"]),...z(["inverted"])}},p={render:a,args:{...s,inline:!0},argTypes:{...k(["inverted"]),...z(["inline"])}},u={render:K,args:{...s,inline:!0,inverted:!0},argTypes:{...z(["inline","inverted"])}};var L,w,T;d.parameters={...d.parameters,docs:{...(L=d.parameters)==null?void 0:L.docs,source:{originalSource:`{
   render,
   args: {
     ...defaultArgs
@@ -159,7 +160,7 @@ import{i as A,k as h}from"./lit-element-CHllvULs.js";import{u as W,C as E,n as g
     ...hideControls(['inverted']),
     ...readOnlyControls(['inline'])
   }
-}`,...(Z=(R=p.parameters)==null?void 0:R.docs)==null?void 0:Z.source}}};var K,B,F;v.parameters={...v.parameters,docs:{...(K=v.parameters)==null?void 0:K.docs,source:{originalSource:`{
+}`,...(Z=(R=p.parameters)==null?void 0:R.docs)==null?void 0:Z.source}}};var B,G,F;u.parameters={...u.parameters,docs:{...(B=u.parameters)==null?void 0:B.docs,source:{originalSource:`{
   render: renderWithInvertedBackground,
   args: {
     ...defaultArgs,
@@ -169,4 +170,4 @@ import{i as A,k as h}from"./lit-element-CHllvULs.js";import{u as W,C as E,n as g
   argTypes: {
     ...readOnlyControls(['inline', 'inverted'])
   }
-}`,...(F=(B=v.parameters)==null?void 0:B.docs)==null?void 0:F.source}}};const de=["Example","StandaloneLink","StandaloneLinkInverted","InlineLink","InlineLinkInverted"];export{d as Example,p as InlineLink,v as InlineLinkInverted,c as StandaloneLink,m as StandaloneLinkInverted,de as __namedExportsOrder,le as default};
+}`,...(F=(G=u.parameters)==null?void 0:G.docs)==null?void 0:F.source}}};const de=["Example","StandaloneLink","StandaloneLinkInverted","InlineLink","InlineLinkInverted"];export{d as Example,p as InlineLink,u as InlineLinkInverted,c as StandaloneLink,m as StandaloneLinkInverted,de as __namedExportsOrder,le as default};
