@@ -149,8 +149,8 @@ test('mdc-input', async ({ componentsPage }) => {
     });
 
     await test.step('attribute autocapitalize should be present on component', async () => {
-      await componentsPage.setAttributes(input, { autocapitalize: 'on' });
-      await expect(input).toHaveAttribute('autocapitalize', 'on');
+      await componentsPage.setAttributes(input, { autocapitalize: 'sentences' });
+      await expect(input).toHaveAttribute('autocapitalize', 'sentences');
       await componentsPage.removeAttribute(input, 'autocapitalize');
     });
 
@@ -160,11 +160,35 @@ test('mdc-input', async ({ componentsPage }) => {
       await componentsPage.removeAttribute(input, 'autocomplete');
     });
 
-    ${restArgs.dirname ? `dirname="${restArgs.dirname}"` : ''}
-    ${restArgs.pattern ? `pattern="${restArgs.pattern}"` : ''}
-    ${restArgs.form ? `form="${restArgs.form}"` : ''}
-    ${restArgs.list ? `list="${restArgs.list}"` : ''}
-   
+    await test.step('attribute direname should be present on component', async () => {
+      await componentsPage.setAttributes(input, { direname: 'ltr' });
+      await expect(input).toHaveAttribute('direname', 'ltr');
+      await componentsPage.removeAttribute(input, 'direname');
+    });
+
+    await test.step('attribute direname should be present on component', async () => {
+      await componentsPage.setAttributes(input, { direname: 'ltr' });
+      await expect(input).toHaveAttribute('direname', 'ltr');
+      await componentsPage.removeAttribute(input, 'direname');
+    });
+
+    await test.step('attribute pattern should be present on component', async () => {
+      await componentsPage.setAttributes(input, { pattern: '[A-Za-z]{3}' });
+      await expect(input).toHaveAttribute('pattern', '[A-Za-z]{3}');
+      await componentsPage.removeAttribute(input, 'pattern');
+    });
+
+    await test.step('attribute list should be present on component', async () => {
+      await componentsPage.setAttributes(input, { list: 'browsers' });
+      await expect(input).toHaveAttribute('list', 'browsers');
+      await componentsPage.removeAttribute(input, 'list');
+    });
+
+    await test.step('attribute form should be present on component', async () => {
+      await componentsPage.setAttributes(input, { form: 'form1' });
+      await expect(input).toHaveAttribute('form', 'form1');
+      await componentsPage.removeAttribute(input, 'form');
+    });
   });
 
   /**
