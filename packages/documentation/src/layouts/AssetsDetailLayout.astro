@@ -24,31 +24,73 @@ const currentFile = `src/pages${currentPage.replace(/\/$/, '')}.md`;
     </title>
     <style>
       body {
+        position: fixed;
+        height: 100%;
         width: 100%;
         display: grid;
         grid-template-rows: var(--theme-navbar-height) 1fr;
         --gutter: 0.5rem;
-        --doc-padding: 0;
+        --doc-padding: 2rem;
+        background-image: url('/momentum-design/hero-gradient.svg');
+        background-position: 50% 15%;
+        background-repeat: no-repeat;
       }
 
       .layout {
-        padding: 0;
-        display: grid;
-        max-width: none;
-        margin: 0;
+        padding: 0 1rem;
+        display: flex;
+        margin: 0 auto;
         width: 100%;
+        overflow-y: auto;
+        justify-content: center;
+        padding-top: 10vh;
       }
 
-      #grid-main {
-        width: 100%;
-        height: 100%;
+      @media (max-width: 800px) {
+        .layout {
+          padding-top: 5vh;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .layout {
+          padding-top: 0;
+        }
+      }
+
+      .grid-main {
+        width: 65%;
+      }
+
+      @media (max-width: 1600px) {
+        .grid-main {
+          width: 75%;
+        }
+      }
+
+      @media (max-width: 1400px) {
+        .grid-main {
+          width: 85%;
+        }
+      }
+
+      @media (max-width: 1200px) {
+        .grid-main {
+          width: 90%;
+        }
+      }
+
+      @media (max-width: 800px) {
+        .grid-main {
+          width: 99.5%;
+        }
       }
     </style>
   </head>
   <body>
     <Header />
     <main class="layout">
-      <div id="grid-main">
+      <div class="grid-main">
         <slot />
       </div>
     </main>

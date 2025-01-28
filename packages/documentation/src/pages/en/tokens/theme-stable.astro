@@ -4,16 +4,19 @@ import themeStableLight from '@momentum-design/tokens/dist/json/theme/webex/ligh
 import themeHCStableDark from '@momentum-design/tokens/dist/json/theme/webex/hc-dark-stable.json';
 import themeHCStableLight from '@momentum-design/tokens/dist/json/theme/webex/hc-light-stable.json';
 
-import { ThemeTokensTwapper } from '../../../components/ThemeTokensWrapper/ThemeTokensWrapper';
-import MainLayout from '../../../layouts/MainLayout.astro';
+import { ThemeTokensWrapper } from '../../../components/ThemeTokensWrapper/ThemeTokensWrapper';
+import AssetsDetailLayout from '../../../layouts/AssetsDetailLayout.astro';
+import './shared-styles.css';
+
 ---
 
-<MainLayout frontmatter={{ description: '', title: 'Theme Tokens', layout: '' }}>
-  <a href="/momentum-design/en/tokens#theme-stable">
-    <h3>Back</h3>
+<AssetsDetailLayout frontmatter={{ description: '', title: 'Theme Tokens', layout: '' }}>
+  <a class="backLink" href="/momentum-design/en/tokens#theme-stable">
+    <span>&lt; Tokens</span>
   </a>
-  <h1>Theme Tokens Stable</h1>
-  <ThemeTokensTwapper
+  <h1 class="heading1">Theme Tokens Stable</h1>
+
+  <ThemeTokensWrapper
     client:load
     themeTokens={{
       dark: { data: themeStableDark, path: 'theme/webex/dark-stable.json' },
@@ -22,4 +25,4 @@ import MainLayout from '../../../layouts/MainLayout.astro';
       hcLight: { data: themeHCStableLight, path: 'theme/webex/hc-light-stable.json' },
     }}
   />
-</MainLayout>
+</AssetsDetailLayout>

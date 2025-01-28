@@ -108,9 +108,10 @@ small,
 }
 
 a {
-	color: var(--theme-text-accent);
-	font-weight: 400;
+	color: var(--theme-text-body-secondary);
+	font-weight: 500;
 	text-underline-offset: 0.08em;
+	text-decoration: none;
 	align-items: center;
 	gap: 0.5rem;
 }
@@ -193,8 +194,8 @@ code {
 	--padding-block: 0.2rem;
 	--padding-inline: 0.33rem;
 
-	font-family: var(--font-mono);
-	font-size: 0.85em;
+	font-family: var(--font-body);
+	font-size: 0.875rem;
 	color: inherit;
 	background-color: var(--theme-code-inline-bg);
 	padding: var(--padding-block) var(--padding-inline);
@@ -220,10 +221,10 @@ pre {
 	padding-right: calc(var(--padding-inline) * 2);
 	margin-left: calc(var(--padding-inline) * -1);
 	margin-right: calc(var(--padding-inline) * -1);
-	font-family: var(--font-mono);
+	font-family: var(--font-body);
 
-	line-height: 1.5;
-	font-size: 0.85em;
+	line-height: 142%;
+	font-size: 0.875rem;
 	overflow-y: hidden;
 	overflow-x: auto;
 }

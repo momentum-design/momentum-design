@@ -30,7 +30,7 @@ export const BrandvisualsTable = ({ brandvisuals, type }: Props) => {
                   <code >{key}</code>
                 </div>
               </div>
-              <img src={finalPath} className="brandvisualsImg"/>
+              <img src={finalPath} className="brandvisualsImg" />
             </div>
           );
         })}
@@ -51,6 +51,7 @@ export const Pagination = () => {
   const onQueryChange = useCallback(
     (e: any) => {
       setQuery(e?.target?.value);
+      setCurrentPage(1);
     },
     [setQuery],
   );
@@ -61,11 +62,12 @@ export const Pagination = () => {
 
   const onClickPrev = useCallback(() => {
     setCurrentPage((page) => (currentPage === 1 ? 1 : page - 1));
-  }, [setCurrentPage]);
+  }, [setCurrentPage, currentPage]);
 
   const onTypeChange = useCallback(
     (event: any) => {
       setType(event?.target?.value);
+      setCurrentPage(1);
     },
     [setType],
   );
@@ -78,11 +80,14 @@ export const Pagination = () => {
     return key.includes(type);
   }, [type]);
 
+  const filteredItems = useMemo(
+    () => Object.entries(brandvisualsManifest).filter(([key]) => (
+      query ? key.includes(query) && filterByType(key) : filterByType(key))),
+    [brandvisualsManifest, filterByType, query],
+  );
+
   const paginatedItems = useMemo(
-    () => Object.entries(brandvisualsManifest)
-      // eslint-disable-next-line max-len
-      .filter(([key]) => (query ? key.includes(query) && filterByType(key) : filterByType(key)))
-      .slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
+    () => filteredItems.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
       .reduce(
         (output, [key, value]) => ({
           ...output,
@@ -90,13 +95,19 @@ export const Pagination = () => {
         }),
         {},
       ),
-    [currentPage, brandvisualsManifest, type, query, filterByType],
+    [currentPage, filteredItems],
   );
+
+  const filteredItemsLength = Object.keys(filteredItems).length;
+  const totalPages = Math.ceil(filteredItemsLength / PAGE_SIZE);
+  const isNextButtonDisabled = currentPage === totalPages;
 
   return (
     <div>
-      <p>Total Brand Visuals in the library - {Object.keys(brandvisualsManifest).length}</p>
-      <p>Current Page: {currentPage}</p>
+      <div class="headerTextWrapper">
+        <p>Total Brand Visuals in the library - {Object.keys(brandvisualsManifest).length}</p>
+        <p>Current Page: {currentPage}</p>
+      </div>
       <div className="brandvisualsFilters">
         <input placeholder="Search by Brand Visual name" className="queryInput" type="text" onInput={onQueryChange} />
         <select placeholder="Type" className="typeSelect" value={type} onChange={onTypeChange}>
@@ -106,12 +117,12 @@ export const Pagination = () => {
         </select>
       </div>
       {!!query && <div className="query">Searching for: {query}</div>}
-      <BrandvisualsTable brandvisuals={paginatedItems} type={type}/>
+      <BrandvisualsTable brandvisuals={paginatedItems} type={type} />
       <div className="paginationButtons">
         <button disabled={currentPage === 1} onClick={onClickPrev}>
           Prev
         </button>
-        <button onClick={onClickNext}>Next</button>
+        <button disabled={isNextButtonDisabled} onClick={onClickNext}>Next</button>
       </div>
     </div>
   );

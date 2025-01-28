@@ -2,7 +2,6 @@
   display: grid;
   align-items: center;
   gap: 3rem;
-  margin: 2rem 0;
 }
 
 .grid320 {
@@ -26,7 +25,7 @@
 }
 
 .illustration-bg-inverted {
-  filter :var(--illustrations-filter);
+  filter: var(--illustrations-filter);
 }
 
 .nameAnchor {
@@ -63,6 +62,8 @@
 }
 
 .paginationButtons {
+  margin-top: 3.5rem;
+  padding-bottom: 0.5rem;
   display: grid;
   grid-template-columns: max-content max-content;
   justify-content: space-between;
@@ -70,7 +71,43 @@
 }
 
 .paginationButtons button {
-  background: var(--theme-accent);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.50);
+  border-radius: 1.25rem;
+  height: 2.5rem;
+  width: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.paginationButtons button:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.paginationButtons button:active {
+  background: rgba(255, 255, 255, 0.20);
+}
+
+.paginationButtons button:focus {
+  outline: 0.125rem solid #64b4fa;
+  outline-offset: 0.125rem;
+  text-decoration: none;
+}
+
+.paginationButtons button:disabled {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.20);
+  color: rgba(255, 255, 255, 0.40);
+  cursor: unset;
+}
+
+.headerTextWrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .illustrationFilters {
@@ -78,22 +115,45 @@
   grid-template-columns: 1fr max-content;
   gap: 1rem;
   align-items: center;
-  margin-top: 0.75rem;
-  margin-bottom: 1rem;
+  height: 2rem;
+  margin-bottom: 3.5rem;
 }
 
 .queryInput {
   padding: 0.5rem;
   font-size: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.50);
+  background-color: rgba(255, 255, 255, 0.00);
+  padding: 5.5px 6px 5.5px 12px;
   width: 100%;
+}
+
+.queryInput:focus {
+  outline: 0.125rem solid #64b4fa;
+  outline-offset: 0.125rem;
+  text-decoration: none;
 }
 
 .sizeSelect {
   padding: 0.5rem;
   font-size: 1rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.50);
+  background-color: rgba(255, 255, 255, 0.00);
+  padding: 5.5px 6px 5.5px 12px;
+}
+
+.sizeSelect:focus {
+  outline: 0.125rem solid #64b4fa;
+  outline-offset: 0.125rem;
+  text-decoration: none;
 }
 
 .query {
   display: block;
-  margin: 1rem 0;
+  margin-top: -40px;
+  margin-bottom: 60px;
 }
