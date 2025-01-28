@@ -10,10 +10,10 @@ import { AVATAR_SIZE } from '../avatar/avatar.constants';
 
 const render = (args: Args) => html`
   <mdc-avatarbutton
-    @click="${action('onClick')}"
-    @keydown="${action('onKeyDown')}"
-    @keyup="${action('onKeyUp')}"
-    @focus="${action('onFocus')}"
+    @click="${action('onclick')}"
+    @keydown="${action('onkeydown')}"
+    @keyup="${action('onkeyup')}"
+    @focus="${action('onfocus')}"
     counter="${ifDefined(args.counter)}"
     icon-name="${ifDefined(args['icon-name'])}"
     initials="${ifDefined(args.initials)}"
