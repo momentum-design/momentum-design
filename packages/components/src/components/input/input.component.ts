@@ -18,7 +18,7 @@ import type { AutoCapitalizeType } from './input.types';
  * - input field - contains the value
  * - help text or validation message - displayed below the input field.
  * - clear button - clear the input field.
- * - prefix text -displayed before the input field.
+ * - prefix text - displayed before the input field.
  * - leading icon - displayed before the input field.
  *
  * @tagname mdc-input
@@ -81,7 +81,7 @@ class Input extends ValueMixin(NameMixin(DisabledMixin(FormfieldWrapper))) {
    * The autocomplete attribute of the input field.
    * @default 'off'
    */
-  @property({ type: String }) autocomplete = 'off';
+  @property({ type: String }) autocomplete: any = 'off';
 
   /**
    * If true, the input field is focused when the component is rendered.
