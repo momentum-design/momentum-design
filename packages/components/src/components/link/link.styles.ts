@@ -107,12 +107,16 @@ const styles = [hostFitContentStyles, css`
   :host([disabled]) {
     color: var(--mdc-link-color-disabled);
     pointer-events: none;
-    text-decoration: var(--mdc-link-text-decoration-disabled);
   }
 
   :host([inverted][disabled]) {
     color: var(--mdc-link-inverted-color-disabled);
   }
-`, ...hostFocusRingStyles()];
+`, ...hostFocusRingStyles(),
+css`
+  :host(:active) {
+    box-shadow: none;
+  }
+`];
 
 export default styles;
