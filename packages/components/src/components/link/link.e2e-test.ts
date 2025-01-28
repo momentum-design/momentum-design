@@ -44,9 +44,9 @@ const setup = async (args: SetupOptions) => {
   return link;
 };
 
-test.describe('mdc-link', () => {
-  test.use({ viewport: { width: 400, height: 800 } });
-  test('attributes and interactions', async ({ componentsPage }) => {
+test.use({ viewport: { width: 400, height: 800 } });
+test('mdc-link', async ({ componentsPage }) => {
+  await test.step('attributes and interactions', async () => {
     const link = await setup({ componentsPage });
 
     /**
@@ -147,16 +147,9 @@ test.describe('mdc-link', () => {
   });
 
   /**
-   * ACCESSIBILITY
-   */
-  test('accessbility', async ({ componentsPage }) => {
-    await componentsPage.accessibility.checkForA11yViolations('mdc-link');
-  });
-
-  /**
    * VISUAL REGRESSION
    */
-  test('visual-regression', async ({ componentsPage }) => {
+  await test.step('visual-regression', async () => {
     const stickerSheet = new StickerSheet(componentsPage, 'mdc-link');
     stickerSheet.setChildren(
       '<a href="http://localhost:4000/" target="_blank" rel="noopener noreferrer">Label</a>',
@@ -241,5 +234,12 @@ test.describe('mdc-link', () => {
         element: container,
       });
     });
+  });
+
+  /**
+   * ACCESSIBILITY
+   */
+  await test.step('accessbility', async () => {
+    await componentsPage.accessibility.checkForA11yViolations('mdc-link');
   });
 });
