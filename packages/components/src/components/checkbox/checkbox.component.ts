@@ -25,7 +25,7 @@ class Checkbox extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
    *
    * @default false
    */
-  @property({ type: Boolean }) checked = false;
+  @property({ type: Boolean, reflect: true }) checked = false;
 
   /**
    * This property is used to determine the parent checkbox in a nested checkbox group.
@@ -34,78 +34,45 @@ class Checkbox extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
    *
    * @default false
    */
-  @property({ type: Boolean }) indeterminate = false;
+  @property({ type: Boolean, reflect: true }) indeterminate = false;
 
   /**
    * Determines whether the text content should be displayed or not.
    *
    * @default false
    */
-  @property({ type: Boolean, attribute: 'hide-text' }) hideText = false;
+  @property({ type: Boolean, reflect: true, attribute: 'hide-text' }) hideText = false;
 
   constructor() {
     super();
-    this.addEventListener('keydown', this.handleKeyDown);
 
     // Checkbox does not contain helpTextType property.
     this.helpTextType = undefined as unknown as ValidationType;
   }
 
   /**
-   * Triggers a change event on the checkbox element.
-   * This is used to dispatch the change event.
-   */
-  private triggerChangeEvent(): void {
-    const changeEvent = new CustomEvent('change', {
-      bubbles: true,
-      composed: true,
-      cancelable: true,
-      detail: {
-        checked: this.checked,
-      },
-    });
-    this.dispatchEvent(changeEvent);
-  }
-
-  /**
    * Toggles the state of the checkbox element.
    * If the checkbox element is not disabled,
-   * then we will toggle its checked state
-   * and also trigger a change event.
+   * then we will toggle its checked state.
    */
   private toggleState(): void {
     if (!this.disabled) {
       this.checked = !this.checked;
-      this.triggerChangeEvent();
     }
   }
 
-  /**
-   * Handles the keydown event on the checkbox.
-   * If the checkbox is indeterminate or disabled, then the event is ignored.
-   * If the key is 'Enter' or 'Space', the checkbox is toggled.
-   *
-   * @param event - The keyboard event.
-   */
-  private handleKeyDown(event: KeyboardEvent): void {
-    if (this.disabled) {
-      return;
-    }
-    if (['Enter', ' '].includes(event.key)) {
-      this.handleClick(event);
-    }
-  }
 
   /**
-   * Handles the click event on the checkbox.
-   * Prevents the default action on the event,
-   * and toggles the state of the checkbox.
-   *
-   * @param event - The click event.
+   * Toggles the state of the checkbox element.
+   * and dispatch the new change event.
    */
-  private handleClick(event: Event): void {
-    event.preventDefault();
+  public handleChange(event: Event): void {
     this.toggleState();
+
+    // Change event doesn't bubble out of shadow dom,
+    // Workaround to fix this: https://github.com/lit/lit-element/issues/922#issuecomment-611139629
+    const newEvent = new (event.constructor as typeof Event)(event.type, event);
+    this.dispatchEvent(newEvent);
   }
 
   public override render() {
@@ -135,8 +102,7 @@ class Checkbox extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
           ?disabled="${this.disabled}"
           aria-disabled="${this.disabled}"
           aria-label="${ifDefined(this.label)}"
-          tabindex="${this.disabled ? -1 : 0}"
-          @click="${this.handleClick}"
+          @change=${this.handleChange}
         />
         <div class="mdc-checkbox__icon-container">${checkboxIconContent}</div>
       </div>
