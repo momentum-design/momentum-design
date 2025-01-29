@@ -56,6 +56,7 @@ const INITIAL_SETTINGS: Settings = {
           prCommitMsg: `feat(assets): Export ${new Date().toISOString()}`,
           prMessage: `feat(assets): Export ${new Date().toISOString()}`,
           gitRepoFilePath: '<path where assets should be exported to>',
+          prLabels: '<space separated list of labels>',
         },
       },
     },
