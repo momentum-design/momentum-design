@@ -3,10 +3,8 @@ import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 
 const styles = [hostFitContentStyles, css`
   :host {
-    display: flex;
     flex-direction: row;
     align-items: flex-start;
-    margin-bottom: 0.5rem;
   }
   .mdc-label-text {
     height: 1rem;
@@ -23,7 +21,7 @@ const styles = [hostFitContentStyles, css`
     background: unset;
   }
   :host([disabled]) .mdc-checkbox__icon-container {
-    border: 1px solid var(--mds-color-theme-outline-primary-disabled);
+    border: 0.0625rem solid var(--mds-color-theme-outline-primary-disabled);
     background: var(--mds-color-theme-control-inactive-disabled);
   }
   :host([disabled]) .mdc-checkbox__icon {
@@ -44,13 +42,8 @@ const styles = [hostFitContentStyles, css`
   }
   .mdc-checkbox__icon-container {
     display: flex;
-    justify-content: center;
     align-items: center;
-    position: relative;
-    flex-grow: 0;
-    flex-shrink: 0;
-    background: unset;
-    border: 1px solid var(--mds-color-theme-outline-button-normal);
+    border: 0.0625rem solid var(--mds-color-theme-outline-button-normal);
   }
   .mdc-checkbox__input, .mdc-checkbox__icon-container {
     width: 1rem;
@@ -73,7 +66,7 @@ const styles = [hostFitContentStyles, css`
   @media (forced-colors: active) {
     :host([checked]) .mdc-checkbox__icon-container,
     :host([indeterminate]) .mdc-checkbox__icon-container {
-      border: 1px solid var(--mds-color-theme-outline-button-normal);
+      border: 0.0625rem solid var(--mds-color-theme-outline-button-normal);
     }
   }
 }

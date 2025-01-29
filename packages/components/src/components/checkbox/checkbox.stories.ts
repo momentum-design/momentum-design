@@ -45,6 +45,13 @@ export const Example: StoryObj = {
   },
 };
 
+export const HelperText: StoryObj = {
+  args: {
+    label: 'Email Opt In',
+    'help-text': 'I agree to receiving monthly promotional emails.',
+  },
+};
+
 export const Indeterminate: StoryObj = {
   args: {
     label: 'Checkbox Label',
@@ -60,7 +67,7 @@ export const Disabled: StoryObj = {
     },
   },
   render: () => html`
-    <div style="display: flex; flex-direction: column;">
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
       <mdc-checkbox label="Unselected" disabled></mdc-checkbox>
       <mdc-checkbox label="Selected" disabled checked></mdc-checkbox>
       <mdc-checkbox label="Indeterminate" disabled indeterminate></mdc-checkbox>
@@ -70,16 +77,9 @@ export const Disabled: StoryObj = {
     </div>`,
 };
 
-export const HelperText: StoryObj = {
-  args: {
-    label: 'Email Opt In',
-    'help-text': 'I agree to receiving monthly promotional emails.',
-  },
-};
-
 export const List: StoryObj = {
   render: () => html`
-    <div style="display: flex; flex-direction: column;">
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
       <mdc-checkbox
         @change="${action('onchange')}"
         label="Black Widow"
