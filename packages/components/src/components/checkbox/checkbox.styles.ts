@@ -68,6 +68,15 @@ const styles = [hostFitContentStyles, css`
   .mdc-checkbox__icon {
     --mdc-icon-fill-color: var(--mds-color-theme-inverted-text-primary-normal);
   }
+  
+  /* High Contrast Mode */
+  @media (forced-colors: active) {
+    :host([checked]) .mdc-checkbox__icon-container,
+    :host([indeterminate]) .mdc-checkbox__icon-container {
+      border: 1px solid var(--mds-color-theme-outline-button-normal);
+    }
+  }
+}
 `, ...hostFocusRingStyles(true)];
 
 export default styles;
