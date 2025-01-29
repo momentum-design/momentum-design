@@ -35,6 +35,7 @@ class Github {
       prCommitMsg: `feat(assets): Asset Automation ${new Date().toISOString()}`,
       prMessage: `feat(assets): Asset Automation ${new Date().toISOString()}`,
       gitRepoFilePath: '',
+      prLabels: '',
     },
     mode: 'ADD',
   };
@@ -300,6 +301,7 @@ class Github {
       createWhenEmpty: false,
       head: this.config.git.gitBranch,
       changes: changes || [],
+      labels: this.config.git.prLabels.split(' '),
     });
   }
 }

@@ -67,7 +67,8 @@
           "prTitle": "fix: Automated Icons Export 2023-07-07T21:07:54.936Z",
           "prCommitMsg": "feat(assets/icons): Export 2023-07-07T21:07:54.936Z",
           "prMessage": "feat(assets/icons): Export 2023-07-07T21:07:54.936Z",
-          "gitRepoFilePath": "packages/assets/icons/src"
+          "gitRepoFilePath": "packages/assets/icons/src",
+          "prLabels": "validated"
         }
       }
     },
@@ -82,35 +83,35 @@
       "input": {
         "mapPagesToFolder": [
           {
-            "page": "✅ Solid Illustrations",
+            "page": "✅  Solid Illustrations",
             "folder": "core"
           },
           {
-            "page": "✅ Marketing Illustrations",
+            "page": "✅  Marketing Illustrations",
             "folder": "colored"
           },
           {
-            "page": "✅ Error Resolution",
+            "page": "✅  Error Resolution",
             "folder": "colored"
           },
           {
-            "page": "✅ Technical Illustrations",
+            "page": "✅  Technical Illustrations",
             "folder": "colored"
           },
           {
-            "page": "✅ Multi-step Flows",
+            "page": "✅  Multi-step Flows",
             "folder": "colored"
           },
           {
-            "page": "✅ Empty States",
+            "page": "✅  Empty States",
             "folder": "colored"
           },
           {
-            "page": "✅ Hero States",
+            "page": "✅  Hero States",
             "folder": "colored"
           },
           {
-            "page": "✅ People",
+            "page": "✅  People",
             "folder": "colored"
           }
         ],
@@ -148,7 +149,8 @@
           "prTitle": "fix: Automated Illustrations Export 2023-07-07T21:07:54.936Z",
           "prCommitMsg": "feat(assets/illustrations): Export 2023-07-07T21:07:54.936Z",
           "prMessage": "feat(assets/illustrations): Export 2023-07-07T21:07:54.936Z",
-          "gitRepoFilePath": "packages/assets/illustrations/src"
+          "gitRepoFilePath": "packages/assets/illustrations/src",
+          "prLabels": "validated"
         }
       }
     },
@@ -218,7 +220,8 @@
           "prTitle": "fix: Automated Brand Visuals Export 2023-07-07T21:07:54.936Z",
           "prCommitMsg": "feat(assets/brand-visuals): Export 2023-07-07T21:07:54.936Z",
           "prMessage": "feat(assets/brand-visuals): Export 2023-07-07T21:07:54.936Z",
-          "gitRepoFilePath": "packages/assets/brand-visuals/src"
+          "gitRepoFilePath": "packages/assets/brand-visuals/src",
+          "prLabels": "validated"
         }
       }
     }
