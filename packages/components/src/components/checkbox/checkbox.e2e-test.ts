@@ -23,7 +23,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.value ? `value="${restArgs.value}"` : ''}
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
         ${restArgs['help-text'] ? `help-text="${restArgs['help-text']}"` : ''}
-        ${restArgs['hide-text'] ? `hide-text="${restArgs['hide-text']}"` : ''}
+        ${restArgs['hide-text'] ? 'hide-text' : ''}
         ${restArgs.disabled ? 'disabled' : ''}
         ${restArgs.checked ? 'checked' : ''}
         ${restArgs.indeterminate ? 'indeterminate' : ''}
