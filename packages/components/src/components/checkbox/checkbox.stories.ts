@@ -1,6 +1,7 @@
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
 
@@ -12,6 +13,7 @@ const render = (args: Args) => html`
     ?checked="${args.checked}"
     ?disabled="${args.disabled}"
     ?indeterminate="${args.indeterminate}"
+    @change="${action('onchange')}"
   ></mdc-checkbox>
 `;
 
@@ -78,13 +80,13 @@ export const HelperText: StoryObj = {
 export const List: StoryObj = {
   render: () => html`
     <div style="display: flex; flex-direction: column;">
-      <mdc-checkbox label="Black Widow" checked help-text="This is a help text"></mdc-checkbox>
-      <mdc-checkbox label="Captain America" checked disabled></mdc-checkbox>
-      <mdc-checkbox label="Hawkeye" indeterminate disabled></mdc-checkbox>
-      <mdc-checkbox label="The Hulk" help-text="This is a help text"></mdc-checkbox>
-      <mdc-checkbox label="Iron Man" indeterminate></mdc-checkbox>
-      <mdc-checkbox label="Thor" help-text="This is a help text"></mdc-checkbox>
-      <mdc-checkbox label="Captain Marvel"></mdc-checkbox>
+      <mdc-checkbox @change="${action('onchange')}" label="Black Widow" checked help-text="This is a help text"></mdc-checkbox>
+      <mdc-checkbox @change="${action('onchange')}" label="Captain America" checked disabled></mdc-checkbox>
+      <mdc-checkbox @change="${action('onchange')}" label="Hawkeye" indeterminate disabled></mdc-checkbox>
+      <mdc-checkbox @change="${action('onchange')}" label="The Hulk" help-text="This is a help text"></mdc-checkbox>
+      <mdc-checkbox @change="${action('onchange')}" label="Iron Man" indeterminate></mdc-checkbox>
+      <mdc-checkbox @change="${action('onchange')}" label="Thor" help-text="This is a help text"></mdc-checkbox>
+      <mdc-checkbox @change="${action('onchange')}" label="Captain Marvel"></mdc-checkbox>
     </div>
   `,
 };
