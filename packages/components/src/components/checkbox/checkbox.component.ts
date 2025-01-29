@@ -61,7 +61,6 @@ class Checkbox extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
     }
   }
 
-
   /**
    * Toggles the state of the checkbox element.
    * and dispatch the new change event.

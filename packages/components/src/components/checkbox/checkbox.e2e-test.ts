@@ -1,7 +1,6 @@
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-await-in-loop */
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
+import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -9,6 +8,7 @@ type SetupOptions = {
   value?: string;
   label?: string;
   'help-text'?: string;
+  'hide-text'?: boolean;
   disabled?: boolean;
   checked?: boolean;
   indeterminate?: boolean;
@@ -23,6 +23,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.value ? `value="${restArgs.value}"` : ''}
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
         ${restArgs['help-text'] ? `help-text="${restArgs['help-text']}"` : ''}
+        ${restArgs['hide-text'] ? `hide-text="${restArgs['hide-text']}"` : ''}
         ${restArgs.disabled ? 'disabled' : ''}
         ${restArgs.checked ? 'checked' : ''}
         ${restArgs.indeterminate ? 'indeterminate' : ''}
@@ -38,11 +39,76 @@ const setup = async (args: SetupOptions) => {
 
 const testToRun = async (componentsPage: ComponentsPage) => {
   /**
+   * VISUAL REGRESSION
+   */
+  await test.step('visual-regression', async () => {
+    const checkboxStickerSheet = new StickerSheet(componentsPage, 'mdc-checkbox');
+    await checkboxStickerSheet.setAttributes({
+      label: 'This is a label',
+      'hide-text': true,
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, true);
+    await checkboxStickerSheet.setAttributes({
+      label: 'I agree to the terms',
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, true);
+    await checkboxStickerSheet.setAttributes({
+      label: 'Selected Checkbox Label',
+      checked: true,
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, true);
+    await checkboxStickerSheet.setAttributes({
+      label: 'Indeterminate Checkbox Label',
+      indeterminate: true,
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, true);
+    await checkboxStickerSheet.setAttributes({
+      label: 'Selected Checkbox Label',
+      'help-text': 'This is a help text',
+      checked: true,
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, true);
+    await checkboxStickerSheet.setAttributes({
+      label: 'Indeterminate Checkbox Label',
+      'help-text': 'This is a help text',
+      indeterminate: true,
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, true);
+    await checkboxStickerSheet.setAttributes({
+      label: 'Disabled Checkbox Label',
+      'help-text': 'This is a help text',
+      disabled: true,
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, true);
+    await checkboxStickerSheet.setAttributes({
+      label: 'Disabled Selected Checkbox Label',
+      'help-text': 'This is a help text',
+      disabled: true,
+      checked: true,
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, true);
+    await checkboxStickerSheet.setAttributes({
+      label: 'Disabled Indeterminate Checkbox Label',
+      'help-text': 'This is a help text',
+      disabled: true,
+      indeterminate: true,
+    });
+    await checkboxStickerSheet.createMarkupWithCombination({}, true);
+    await checkboxStickerSheet.mountStickerSheet();
+
+    await test.step('matches screenshot of checkbox sizes stickersheet', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-checkbox', {
+        element: checkboxStickerSheet.getWrapperContainer(),
+      });
+    });
+  });
+
+  /**
    * ACCESSIBILITY
    */
-  // await test.step('accessibility', async () => {
-  //   await componentsPage.accessibility.checkForA11yViolations('checkbox-default');
-  // });
+  await test.step('accessibility', async () => {
+    await componentsPage.accessibility.checkForA11yViolations('checkbox-default');
+  });
 
   /**
    * ATTRIBUTES
@@ -95,8 +161,6 @@ const testToRun = async (componentsPage: ComponentsPage) => {
 };
 
 test.describe.parallel('mdc-checkbox', () => {
-  test.use({ viewport: { width: 600, height: 800 } });
-
   test('standalone', async ({ componentsPage }) => {
     await testToRun(componentsPage);
   });
