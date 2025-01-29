@@ -25,7 +25,6 @@ export type Frontmatter = {
 
 export const KNOWN_LANGUAGES = {
   English: 'en',
-  Spanish: 'es',
 } as const;
 export const KNOWN_LANGUAGE_CODES = Object.values(KNOWN_LANGUAGES);
 
@@ -65,7 +64,6 @@ export const SIDEBAR: Sidebar = {
       { text: 'Builder', link: 'momentum-design/en/docs/api-reference/builder' },
     ],
   },
-  es: {},
 };
 
 export type Menu = Record<
@@ -79,7 +77,7 @@ export const MAIN_MENU: Menu = {
       index: 'momentum-design/en',
       submenu: [],
     },
-    'Design Tokens': {
+    Tokens: {
       index: 'momentum-design/en/tokens',
       submenu: [],
     },
@@ -87,14 +85,9 @@ export const MAIN_MENU: Menu = {
       index: 'momentum-design/en/assets',
       submenu: [],
     },
-    Docs: {
-      index: 'momentum-design/en/docs',
-      submenu: [],
-    },
     Components: {
       index: 'momentum-design/en/components',
       submenu: [],
     },
   },
-  es: {},
 };

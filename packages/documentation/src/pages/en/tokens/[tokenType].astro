@@ -1,39 +1,48 @@
 ---
-import coreTokens from '@momentum-design/tokens/dist/json/core/complete.json';
 import typographyTokens from '@momentum-design/tokens/dist/json/typography/complete.json';
+import elevationTokens from '@momentum-design/tokens/dist/json/elevation/complete.json';
+import effectTokens from '@momentum-design/tokens/dist/json/effect/complete.json';
 import { TokenTable } from '../../../components/Tokens/TokenTable/TokenTable';
-import MainLayout from '../../../layouts/MainLayout.astro';
-import { TokenType } from '../../../types/tokens';
+import AssetsDetailLayout from '../../../layouts/AssetsDetailLayout.astro';
+import { TokenType as ETokenType } from '../../../types/tokens';
+import './shared-styles.css';
 
 export function getStaticPaths() {
-  const tokenKeys = [
-    ...Object.keys(coreTokens),
-    ...Object.keys(typographyTokens),
-  ];
+  const tokenKeys = [...Object.keys(typographyTokens), 'elevation', 'effect'];
 
   return tokenKeys.map((token) => ({ params: { tokenType: token } }));
 }
 
-const { tokenType } = Astro.params as { tokenType: TokenType };
+const { tokenType } = Astro.params as { tokenType: ETokenType };
 const tokenSources = {
-  [Object.keys(coreTokens)[0]]: {
-    tokens: coreTokens,
-    filePath: 'core'
-  },
   [Object.keys(typographyTokens)[0]]: {
     tokens: typographyTokens,
-    filePath: 'typography'
+    title: 'Typography',
+    filePath: 'typography',
   },
-};
-const tokens = tokenSources[tokenType].tokens;
-const filePath = tokenSources[tokenType].filePath;
+  elevation: {
+    tokens: elevationTokens,
+    title: 'Elevation',
+    filePath: 'elevation',
+  },
+  effect: {
+    tokens: effectTokens,
+    title: 'Effect',
+    filePath: 'effect',
+  },
+} as const;
+const { tokens } = tokenSources[tokenType];
+const { filePath } = tokenSources[tokenType];
+const { title } = tokenSources[tokenType];
 ---
 
-<MainLayout frontmatter={{ description: '', title: `${tokenType} Tokens`, layout: '' }}>
-  <a href={`/momentum-design/en/tokens/#${tokenType}`}>
-    <h3>Back</h3>
+<AssetsDetailLayout frontmatter={{ description: '', title: `${title} Tokens`, layout: '' }}>
+  <a class="backLink" href={`/momentum-design/en/tokens/#${tokenType}`}>
+    <span>&lt; Tokens</span>
   </a>
 
-  <p style={{ paddingBottom: '16px' }}><b>File:</b> {filePath}/complete.json</p>
-  <TokenTable tokens={tokens[tokenType]} tokenType={tokenType}/>
-</MainLayout>
+  <h1 class="heading1">{title}</h1>
+
+  <p class="subheading" style="margin-bottom: 1rem"><b>File:</b> {filePath}/complete.json</p>
+  <TokenTable tokens={tokens[tokenType]} tokenType={tokenType} />
+</AssetsDetailLayout>
