@@ -2,34 +2,51 @@ import { css } from 'lit';
 import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 
 const styles = [hostFitContentStyles, css`
-  :host([readonly]) input,
-  :host([disabled]) input{
+  :host{
+    --mdc-inner-circle-size: 0.375rem;
+    --mdc-radio-color-theme-text-primary-disabled: var(--mds-color-theme-text-primary-disabled);
+    --mdc-radio-color-theme-outline-primary-disabled: var(--mds-color-theme-outline-primary-disabled);
+    --mdc-radio-color-theme-control-inactive-disabled: var(--mds-color-theme-control-inactive-disabled);
+    --mdc-radio-color-theme-control-active-disabled: var(--mds-color-theme-control-active-disabled);
+    --mdc-radio-color-theme-inverted-text-primary-disabled: var(--mds-color-theme-inverted-text-primary-disabled);
+    --mdc-radio-color-theme-outline-input-normal: var(--mds-color-theme-outline-input-normal);
+    --mdc-radio-color-theme-control-inactive-normal: var(--mds-color-theme-control-inactive-normal);
+    --mdc-radio-color-theme-control-active-normal: var(--mds-color-theme-control-active-normal);
+    --mdc-radio-color-theme-inverted-text-primary-normal: var(--mds-color-theme-inverted-text-primary-normal);
+    --mdc-radio-color-theme-control-inactive-hover: var(--mds-color-theme-control-inactive-hover);
+    --mdc-radio-color-theme-control-active-hover: var(--mds-color-theme-control-active-hover);
+    --mdc-radio-color-theme-control-inactive-pressed: var(--mds-color-theme-control-inactive-pressed);
+    --mdc-radio-color-theme-control-active-pressed: var(--mds-color-theme-control-active-pressed);
+
+  }
+  :host([readonly]) .mdc-radio__input,
+  :host([disabled]) .mdc-radio__input{
     cursor: unset;
   }
 
   :host([disabled]) .mdc-radio__label-text,
   :host([disabled]) .mdc-radio__help-text {
-    color: var(--mds-color-theme-text-primary-disabled);
+    color: var(--mdc-radio-color-theme-text-primary-disabled);
   }
 
   :host([disabled]) .mdc-radio__icon,
   :host([disabled]) .mdc-radio__container:hover .mdc-radio__icon,
   :host([disabled][readonly]) .mdc-radio__container:hover .mdc-radio__icon {
-    border-color: var(--mds-color-theme-outline-primary-disabled);
-    background: var(--mds-color-theme-control-inactive-disabled);
+    border-color: var(--mdc-radio-color-theme-outline-primary-disabled);
+    background: var(--mdc-radio-color-theme-control-inactive-disabled);
   }
   :host([disabled][checked]) .mdc-radio__icon,
   :host([disabled][checked]) .mdc-radio__container:hover .mdc-radio__icon,
   :host([disabled][readonly][checked]) .mdc-radio__icon,
   :host([disabled][readonly][checked]) .mdc-radio__container:hover .mdc-radio__icon {
-    border-color: var(--mds-color-theme-outline-primary-disabled);
-    background: var(--mds-color-theme-control-active-disabled);
+    border-color: var(--mdc-radio-color-theme-outline-primary-disabled);
+    background: var(--mdc-radio-color-theme-control-active-disabled);
   }
   :host([disabled][checked]) .mdc-radio__icon:after,
   :host([disabled][checked]) .mdc-radio__container:hover  .mdc-radio__icon:after,
   :host([disabled][readonly][checked]) .mdc-radio__icon:after,
   :host([disabled][readonly][checked]) .mdc-radio__container:hover  .mdc-radio__icon:after {
-    background: var(--mds-color-theme-inverted-text-primary-disabled);
+    background: var(--mdc-radio-color-theme-inverted-text-primary-disabled);
   }
 
   :host .mdc-radio__icon {
@@ -38,15 +55,14 @@ const styles = [hostFitContentStyles, css`
     left: 0;
     width: 1rem;
     height: 1rem;
-    border: 1px solid var(--mds-color-theme-outline-input-normal);
-    background-color: var(--mds-color-theme-control-inactive-normal);
+    border: 0.0625rem solid var(--mdc-radio-color-theme-outline-input-normal);
+    background-color: var(--mdc-radio-color-theme-control-inactive-normal);
     border-radius: 50%;
-    z-index: 1;
   }
 
   :host([checked]) .mdc-radio__icon {
-    border-color: var(--mds-color-theme-control-active-normal);
-    background-color: var(--mds-color-theme-control-active-normal);
+    border-color: var(--mdc-radio-color-theme-control-active-normal);
+    background-color: var(--mdc-radio-color-theme-control-active-normal);
   }
 
   :host([checked]) .mdc-radio__icon:after {
@@ -54,51 +70,46 @@ const styles = [hostFitContentStyles, css`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 0.3125rem;
-    height: 0.3125rem;
+    width: var(--mdc-inner-circle-size);
+    height: var(--mdc-inner-circle-size);
     border-radius: 50%;
-    background: var(--mds-color-theme-inverted-text-primary-normal);
+    background: var(--mdc-radio-color-theme-inverted-text-primary-normal);
   }
 
-  :host input:hover ~ .mdc-radio__icon {
-    border-color: var(--mds-color-theme-outline-input-normal);
-    background-color: var(--mds-color-theme-control-inactive-hover);
+  :host .mdc-radio__input:hover ~ .mdc-radio__icon {
+    border-color: var(--mdc-radio-color-theme-outline-input-normal);
+    background-color: var(--mdc-radio-color-theme-control-inactive-hover);
   }
 
-  :host([checked]) input:hover ~ .mdc-radio__icon {
-    border-color: var(--mds-color-theme-control-active-hover);
-    background-color: var(--mds-color-theme-control-active-hover);
+  :host([checked]) .mdc-radio__input:hover ~ .mdc-radio__icon {
+    border-color: var(--mdc-radio-color-theme-control-active-hover);
+    background-color: var(--mdc-radio-color-theme-control-active-hover);
   }
 
-  :host input:active ~ .mdc-radio__icon {
-    border-color: var(--mds-color-theme-outline-input-normal);
-    background-color: var(--mds-color-theme-control-inactive-pressed);
+  :host .mdc-radio__input:active ~ .mdc-radio__icon {
+    border-color: var(--mdc-radio-color-theme-outline-input-normal);
+    background-color: var(--mdc-radio-color-theme-control-inactive-pressed);
   }
 
-  :host([checked]) input:active ~ .mdc-radio__icon {
-    border-color: var(--mds-color-theme-control-active-pressed);
-    background-color: var(--mds-color-theme-control-active-pressed);
-  }
-
-  :host([checked]) input:focus ~ .mdc-radio__icon {
-    border-color: var(--mds-color-theme-control-active-normal);
-    background-color: var(--mds-color-theme-control-active-normal);
+  :host([checked]) .mdc-radio__input:active ~ .mdc-radio__icon {
+    border-color: var(--mdc-radio-color-theme-control-active-pressed);
+    background-color: var(--mdc-radio-color-theme-control-active-pressed);
   }
 
   :host([readonly]) .mdc-radio__icon,
   :host([readonly]) .mdc-radio__container:hover .mdc-radio__icon {
-    border-color: var(--mds-color-theme-outline-input-normal);
-    background-color: var(--mds-color-theme-control-inactive-normal);
+    border-color: var(--mdc-radio-color-theme-outline-input-normal);
+    background-color: var(--mdc-radio-color-theme-control-inactive-normal);
   }
 
   :host([readonly][checked]) .mdc-radio__icon {
-    border-color: var(--mds-color-theme-outline-input-normal);
+    border-color: var(--mdc-radio-color-theme-outline-input-normal);
   }
 
   :host([readonly][checked]) .mdc-radio__icon:after,
   :host([readonly][checked]) .mdc-radio__container:hover .mdc-radio__icon:after,
   :host([readonly][checked]) .mdc-radio__container:active .mdc-radio__icon:after {
-    background-color: var(--mds-color-theme-text-primary-disabled);
+    background-color: var(--mdc-radio-color-theme-text-primary-disabled);
   }
 
   .mdc-radio__container {
@@ -134,7 +145,7 @@ const styles = [hostFitContentStyles, css`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 4px;
+    gap: 0.25rem;
   }
 `, ...hostFocusRingStyles(true)];
 

@@ -6,12 +6,11 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 
 const render = (args: Args) => html`
   <mdc-radio
-    @click="${action('onClick')}"
-    @keydown="${action('onKeyDown')}"
-    @keyup="${action('onKeyUp')}"
-    @focus="${action('onFocus')}"
+    @change="${action('onchange')}"
+    @keydown="${action('onkeydown')}"
+    @focus="${action('onfocus')}"
     label="${args.label}"
-    name="option1"
+    name="radio"
     value="option1"
     help-text="${args['help-text']}"
     ?checked="${args.checked}"
@@ -31,6 +30,16 @@ const meta: Meta = {
   argTypes: {
     ...classArgType,
     ...styleArgType,
+    readonly: {
+      control: { type: 'boolean' },
+      description: 'Determine that the radio button is read-only and cannot be changed.',
+      defaultValue: { summary: false },
+    },
+    'help-text-type': {
+      table: {
+        disable: true,
+      },
+    },
   },
 };
 
@@ -40,26 +49,63 @@ export const Example: StoryObj = {
   args: {
     label: 'Standard Plan',
     checked: false,
-    disabled: false,
     readonly: false,
+    disabled: false,
+  },
+};
+
+export const withNameGroup: StoryObj = {
+  render: () => html`
+    <div style="display: flex; flex-direction: column;">
+      <mdc-radio name="plan" value="option1" label="Standard Plan" ></mdc-radio>
+      <mdc-radio name="plan" value="option2" label="Disabled Premium Plan" disabled></mdc-radio>
+      <mdc-radio name="plan" value="option2" label="Readonly Premium Plan" readonly></mdc-radio>
+      <mdc-radio name="plan" value="option3" label="Premium Plan"></mdc-radio>
+      <mdc-radio name="plan" value="option4" label="Premium Plan for family"></mdc-radio>
+      <mdc-radio name="plan" value="option5" label="Business Plan"></mdc-radio>
+      <mdc-radio name="plan" value="option5" label="Enterprise Plan"></mdc-radio>
+    </div>`,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Radio buttons with the same `name` attribute are grouped together. '
+          + 'When radio buttons share the same `name`, selecting one will automatically deselect the others in the '
+          + 'group. The example includes various states of radio buttons such as disabled, readonly, '
+          + 'and different labels. We can use flex layout to display radio buttons in a column.',
+      },
+    },
   },
 };
 
 export const WithoutLabel: StoryObj = {
   args: {
-    label: '',
     checked: false,
     disabled: false,
     readonly: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'If we don\'t want to display a label, we can omit the \'label\' attribute, '
+         + 'but it is recommended to pass a aria label for accessibility. ',
+      },
+    },
   },
 };
 
 export const Disabled: StoryObj = {
   render: () => html`
     <div style="display: flex; flex-direction: column;">
-      <mdc-radio label="Unselected" disabled></mdc-radio>
-      <mdc-radio label="Selected" disabled checked></mdc-radio>
+      <mdc-radio label="Disabled Standard Plan" disabled></mdc-radio>
+      <mdc-radio label="Selected But Disabled Standard Plan" disabled checked></mdc-radio>
     </div>`,
+  parameters: {
+    docs: {
+      description: {
+        story: 'To disable the radio button, use the `disabled` attribute. ',
+      },
+    },
+  },
 };
 
 export const ReadOnly: StoryObj = {
@@ -68,6 +114,13 @@ export const ReadOnly: StoryObj = {
       <mdc-radio name="read" value="option1" label="Unselected" readonly></mdc-radio>
       <mdc-radio name="read" value="option2" label="Selected" readonly checked></mdc-radio>
     </div>`,
+  parameters: {
+    docs: {
+      description: {
+        story: 'To make the radio button read-only, use the `readonly` attribute. ',
+      },
+    },
+  },
 };
 
 export const WithHelpText: StoryObj = {
@@ -78,14 +131,27 @@ export const WithHelpText: StoryObj = {
     disabled: false,
     readonly: false,
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'To add help text to the radio button, use the `help-text` attribute. ',
+      },
+    },
+  },
 };
 
 export const WithInfoIcon: StoryObj = {
   render: () => html`
     <mdc-radio
     label="Standard Plan"
-    checked
     >
-      <mdc-icon slot="label-info" name="info-circle-filled"></mdc-icon>
+      For adding a custom icon, use the slot 'label-info'
     </mdc-radio>`,
+  parameters: {
+    docs: {
+      description: {
+        story: 'To add an icon to the radio button, use the slot `label-info`. ',
+      },
+    },
+  },
 };
