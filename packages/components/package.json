@@ -89,6 +89,7 @@
     "@momentum-design/fonts": "workspace:*",
     "@momentum-design/icons": "workspace:*",
     "@momentum-design/tokens": "workspace:*",
+    "@tanstack/lit-virtual": "^3.11.3",
     "lit": "^3.2.0",
     "uuid": "^11.0.5"
   },
