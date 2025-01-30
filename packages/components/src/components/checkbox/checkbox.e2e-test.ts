@@ -8,10 +8,10 @@ type SetupOptions = {
   value?: string;
   label?: string;
   'help-text'?: string;
-  'hide-text'?: boolean;
   disabled?: boolean;
   checked?: boolean;
   indeterminate?: boolean;
+  'data-aria-label'?: string;
 }
 
 const setup = async (args: SetupOptions) => {
@@ -23,7 +23,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.value ? `value="${restArgs.value}"` : ''}
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
         ${restArgs['help-text'] ? `help-text="${restArgs['help-text']}"` : ''}
-        ${restArgs['hide-text'] ? 'hide-text' : ''}
+        ${restArgs['data-aria-label'] ? `data-aria-label="${restArgs['data-aria-label']}"` : ''}
         ${restArgs.disabled ? 'disabled' : ''}
         ${restArgs.checked ? 'checked' : ''}
         ${restArgs.indeterminate ? 'indeterminate' : ''}
@@ -44,8 +44,7 @@ const testToRun = async (componentsPage: ComponentsPage, browserName: string) =>
   await test.step('visual-regression', async () => {
     const checkboxStickerSheet = new StickerSheet(componentsPage, 'mdc-checkbox');
     await checkboxStickerSheet.setAttributes({
-      label: 'This is a label',
-      'hide-text': true,
+      'data-aria-label': 'This is aria label text',
     });
     await checkboxStickerSheet.createMarkupWithCombination({}, true);
     await checkboxStickerSheet.setAttributes({
