@@ -5,6 +5,8 @@ import { RefOrCallback, ref } from 'lit/directives/ref.js';
 import { Component } from '../../models';
 import styles from './virtualizedwrapper.styles';
 import '../virtualizedlist';
+import VirtualizedList from '../virtualizedlist/virtualizedlist.component';
+import { VirtualItemsUpdatedEvent } from '../virtualizedlist/virtualizedlist.types';
 /**
  * virtualizedwrapper component, which ...
  *
@@ -17,10 +19,10 @@ const sentences = new Array(1000)
   .map((_, index) => index);
 
 class VirtualizedWrapper extends Component {
-  @property({ type: Number, reflect: true })
+  @property({ type: Number })
   count: number = 0;
 
-  @property({ type: Function, reflect: true })
+  @property({ type: Function })
   onScroll: (() => void) | undefined;
 
   @state()
@@ -28,7 +30,7 @@ class VirtualizedWrapper extends Component {
 
   private items: TemplateResult<1>[] = [];
 
-  @query('mdc-virtualizedlist') virtualizedList;
+  @query('mdc-virtualizedlist') virtualizedList!: VirtualizedList;
 
   public override connectedCallback() {
     super.connectedCallback();
@@ -40,8 +42,10 @@ class VirtualizedWrapper extends Component {
     this.removeEventListener('virtual-items-updated', this.handleVirtualItemsUpdated);
   }
 
-  handleVirtualItemsUpdated(event) {
-    this.virtualItems = event.detail.items;
+  handleVirtualItemsUpdated(event: Event) {
+    const customEvent = event as VirtualItemsUpdatedEvent;
+    const { items } = customEvent.detail;
+    this.virtualItems = items;
   }
 
   override render() {

@@ -11,7 +11,7 @@ import Marker from './components/marker';
 import Divider from './components/divider';
 import Avatarbutton from './components/avatarbutton';
 import Link from './components/link';
-import Virtualizedlist from './components/virtualizedlist';
+import VirtualizedList from './components/virtualizedlist';
 import VirtualizedWrapper from './components/virtualizedwrapper';
 
 import type { TextType } from './components/text/text.types';
@@ -30,7 +30,7 @@ export {
   Divider,
   Avatarbutton,
   Link,
-  Virtualizedlist,
+  VirtualizedList,
   VirtualizedWrapper,
 };
 
