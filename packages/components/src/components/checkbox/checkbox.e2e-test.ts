@@ -107,7 +107,9 @@ const testToRun = async (componentsPage: ComponentsPage) => {
    * ACCESSIBILITY
    */
   await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('checkbox-default');
+    await componentsPage.accessibility.checkForA11yViolations('checkbox-default', true, {
+      rules: ['target-size'],
+    });
   });
 
   /**

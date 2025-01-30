@@ -6,16 +6,20 @@ const styles = [hostFitContentStyles, css`
     flex-direction: row;
     align-items: flex-start;
   }
-  .mdc-label-text {
-    height: 1rem;
-  }
-  .mdc-label {
+  .mdc-label, .mdc-checkbox__input {
     cursor: pointer;
+  }
+  :host, .mdc-checkbox__container {
+    margin: 0.125rem 0;
   }
   :host([checked]) .mdc-checkbox__icon-container,
   :host([indeterminate]) .mdc-checkbox__icon-container {
     background: var(--mds-color-theme-control-active-normal);
     border: unset;
+  }
+  :host([disabled]) .mdc-label,
+  :host([disabled]) .mdc-checkbox__input {
+    cursor: unset;
   }
   :host([disabled]) .mdc-checkbox__container:hover {
     background: unset;
@@ -38,7 +42,6 @@ const styles = [hostFitContentStyles, css`
     opacity: 0.1%;
     overflow: visible;
     z-index: 1;
-    cursor: pointer
   }
   .mdc-checkbox__icon-container {
     display: flex;
@@ -69,7 +72,6 @@ const styles = [hostFitContentStyles, css`
       border: 0.0625rem solid var(--mds-color-theme-outline-button-normal);
     }
   }
-}
 `, ...hostFocusRingStyles(true)];
 
 export default styles;
