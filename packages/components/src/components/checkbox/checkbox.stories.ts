@@ -67,7 +67,7 @@ export const Disabled: StoryObj = {
     },
   },
   render: () => html`
-    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+    <div style="display: flex; flex-direction: column;">
       <mdc-checkbox label="Unselected" disabled></mdc-checkbox>
       <mdc-checkbox label="Selected" disabled checked></mdc-checkbox>
       <mdc-checkbox label="Indeterminate" disabled indeterminate></mdc-checkbox>
@@ -79,7 +79,7 @@ export const Disabled: StoryObj = {
 
 export const List: StoryObj = {
   render: () => html`
-    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+    <div style="display: flex; flex-direction: column;">
       <mdc-checkbox
         @change="${action('onchange')}"
         label="Black Widow"
