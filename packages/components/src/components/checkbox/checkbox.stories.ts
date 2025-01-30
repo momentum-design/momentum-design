@@ -9,10 +9,10 @@ const render = (args: Args) => html`
   <mdc-checkbox
     label="${args.label}"
     help-text="${args['help-text']}"
-    ?hide-text="${args['hide-text']}"
     ?checked="${args.checked}"
     ?disabled="${args.disabled}"
     ?indeterminate="${args.indeterminate}"
+    data-aria-label="${args['data-aria-label']}"
     @change="${action('onchange')}"
   ></mdc-checkbox>
 `;
@@ -38,10 +38,16 @@ export const Example: StoryObj = {
   args: {
     label: 'I agree to the terms',
     'help-text': '',
-    'hide-text': false,
     checked: false,
     indeterminate: false,
     disabled: false,
+    'data-aria-label': 'Agree to all terms and conditions',
+  },
+};
+
+export const WithoutLabel: StoryObj = {
+  args: {
+    'data-aria-label': 'This is a checkbox with no label',
   },
 };
 

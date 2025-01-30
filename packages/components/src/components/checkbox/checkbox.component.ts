@@ -1,6 +1,8 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { live } from 'lit/directives/live.js';
+import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { NameMixin } from '../../utils/mixins/NameMixin';
 import { ValueMixin } from '../../utils/mixins/ValueMixin';
@@ -19,7 +21,7 @@ import styles from './checkbox.styles';
  *
  * @tagname mdc-checkbox
  */
-class Checkbox extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
+class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(DisabledMixin(FormfieldWrapper)))) {
   /**
    * Determines whether the checkbox is selected or unselected.
    *
@@ -35,13 +37,6 @@ class Checkbox extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
    * @default false
    */
   @property({ type: Boolean, reflect: true }) indeterminate = false;
-
-  /**
-   * Determines whether the text content should be displayed or not.
-   *
-   * @default false
-   */
-  @property({ type: Boolean, reflect: true, attribute: 'hide-text' }) hideText = false;
 
   constructor() {
     super();
@@ -83,11 +78,6 @@ class Checkbox extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
         length-unit="rem"
       ></mdc-icon>
     ` : nothing;
-    const textContent = this.hideText ? nothing : html`
-      <div>
-        ${this.renderLabel()}
-        ${this.renderHelperText()}
-      </div>`;
 
     return html`
       <div class="mdc-checkbox__container mdc-focus-ring">
@@ -97,15 +87,19 @@ class Checkbox extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
           class="mdc-checkbox__input"
           name="${ifDefined(this.name)}"
           value="${ifDefined(this.value)}"
-          ?checked="${this.checked}"
-          ?disabled="${this.disabled}"
+          .checked="${live(this.checked)}"
+          .indeterminate="${live(this.indeterminate)}"
+          .disabled="${this.disabled}"
           aria-disabled="${this.disabled}"
-          aria-label="${ifDefined(this.label)}"
+          aria-label="${ifDefined(this.dataAriaLabel ?? '')}"
           @change=${this.handleChange}
         />
         <div class="mdc-checkbox__icon-container">${checkboxIconContent}</div>
       </div>
-      ${textContent}
+      <div>
+        ${this.renderLabel()}
+        ${this.renderHelperText()}
+      </div>
     `;
   }
 
