@@ -26,7 +26,7 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
-    ...hideControls(['help-text-type', 'label-info']),
+    ...hideControls(['help-text-type', 'label-info', 'id']),
     ...classArgType,
     ...styleArgType,
   },
