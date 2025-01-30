@@ -112,6 +112,28 @@ class Accessibility {
       await expect(elementToBeFocused).toBeFocused();
     }
   }
+
+  /**
+   * Safari browser doesn't use the 'Tab' keyword to focus on the element,
+   * This method act as a workaround for `webkit` based browsers to switch focus.
+   * It applies focus to the component, handling WebKit-specific focus quirks
+   *
+   * @param browserName - browser name
+   * @param component - which element to get out of the focus
+   * @param focus - should focus the element or get out of the focus
+   */
+  async pressTab(browserName: string, component: Locator, focus: boolean) {
+    if (browserName === 'webkit') {
+      if (focus) {
+        await this.page.keyboard.press('Alt+Tab');
+      } else {
+        // Explicitly blur to remove focus in WebKit
+        await component.evaluate((el) => el.blur());
+      }
+    } else {
+      await this.page.keyboard.press('Tab');
+    }
+  }
 }
 
 export default Accessibility;
