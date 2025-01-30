@@ -37,7 +37,7 @@ const setup = async (args: SetupOptions) => {
   return checkbox;
 };
 
-const testToRun = async (componentsPage: ComponentsPage) => {
+const testToRun = async (componentsPage: ComponentsPage, browserName: string) => {
   /**
    * VISUAL REGRESSION
    */
@@ -160,10 +160,57 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       await expect(checkbox).toHaveAttribute('disabled');
     });
   });
+
+  /**
+   * INTERACTIONS
+   */
+  await test.step('interactions', async () => {
+    await test.step('checkbox should be focused when tab key is pressed with keyboard', async () => {
+      const checkbox = await setup({ componentsPage, label: 'Checkbox label' });
+      // By default, it should not be focusable.
+      await expect(checkbox).not.toBeFocused();
+
+      await componentsPage.accessibility.pressTab(browserName, checkbox, true);
+      await expect(checkbox).toBeFocused();
+    });
+
+    await test.step('checkbox should be checked when space key is pressed with keyboard', async () => {
+      const checkbox = await setup({ componentsPage, label: 'Checkbox label' });
+
+      await componentsPage.accessibility.pressTab(browserName, checkbox, true);
+      await expect(checkbox).toBeFocused();
+
+      await componentsPage.page.keyboard.press('Space');
+      await expect(checkbox).toHaveAttribute('checked');
+
+      await componentsPage.page.keyboard.press('Space');
+      await expect(checkbox).not.toHaveAttribute('checked');
+    });
+
+    await test.step('checkbox should be checked when clicked', async () => {
+      const checkbox = await setup({ componentsPage });
+
+      await checkbox.click();
+      await expect(checkbox).toHaveAttribute('checked');
+
+      await checkbox.click();
+      await expect(checkbox).not.toHaveAttribute('checked');
+    });
+
+    await test.step('checkbox should not be Focused or checked when its disabled', async () => {
+      const checkbox = await setup({ componentsPage, label: 'Checkbox label', disabled: true });
+
+      await componentsPage.page.keyboard.press('Tab');
+      await expect(checkbox).not.toBeFocused();
+
+      await checkbox.click();
+      await expect(checkbox).not.toHaveAttribute('checked');
+    });
+  });
 };
 
 test.describe.parallel('mdc-checkbox', () => {
-  test('standalone', async ({ componentsPage }) => {
-    await testToRun(componentsPage);
+  test('standalone', async ({ componentsPage, browserName }) => {
+    await testToRun(componentsPage, browserName);
   });
 });
