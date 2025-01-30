@@ -53,6 +53,7 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(DisabledMixin(For
   private toggleState(): void {
     if (!this.disabled) {
       this.checked = !this.checked;
+      this.indeterminate = false;
     }
   }
 
@@ -90,8 +91,7 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(DisabledMixin(For
           .checked="${live(this.checked)}"
           .indeterminate="${live(this.indeterminate)}"
           .disabled="${this.disabled}"
-          aria-disabled="${this.disabled}"
-          aria-label="${ifDefined(this.dataAriaLabel ?? '')}"
+          aria-label="${ifDefined(this.dataAriaLabel ?? this.label)}"
           @change=${this.handleChange}
         />
         <div class="mdc-checkbox__icon-container">${checkboxIconContent}</div>
