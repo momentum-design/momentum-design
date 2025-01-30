@@ -31,6 +31,9 @@ const styles = [hostFitContentStyles, css`
     --mdc-toggle-label-fontweight: 400;
     --mdc-toggle-label-color-disabled: var(--mds-color-theme-text-primary-disabled);
 
+    --mdc-toggle-icon-container-size: 1.25rem;
+    --mdc-toggle-icon-container-size-compact: 0.75rem;
+
     display: flex;
     gap: 0.75rem;
   }
@@ -51,7 +54,6 @@ const styles = [hostFitContentStyles, css`
   .toggle-slider {
     width: var(--mdc-toggle-width);
     height: var(--mdc-toggle-height);
-    padding: 0.125rem;
     background: var(--mdc-toggle-inactive-rest-color);
     border-radius: var(--mdc-toggle-border-radius);
     border: var(--mdc-toggle-border);
@@ -60,12 +62,7 @@ const styles = [hostFitContentStyles, css`
     justify-content: flex-start;
     transition: background-color 0.3s ease;
     outline: none;
-  }
-  
-  .toggle-icon {
-    padding: 0.125rem;
-    background-color: var(--mdc-toggle-icon-background-color-normal);
-    border-radius: 50%;
+    box-sizing: content-box;
   }
 
   :host([size='compact']) .toggle-slider {
@@ -74,9 +71,31 @@ const styles = [hostFitContentStyles, css`
     border-radius: var(--mdc-toggle-border-radius-compact);
   }
 
+  .toggle-icon-container {
+    width: var(--mdc-toggle-icon-container-size);
+    height: var(--mdc-toggle-icon-container-size);
+    margin-left: 0.125rem;
+    background-color: var(--mdc-toggle-icon-background-color-normal);
+    border-radius: 50%;
+    box-sizing: border-box;
+  }
+
+  :host([checked]) .toggle-icon-container {
+    margin-right: 0.125rem;
+    margin-left: 0;
+  }
+
+  :host([size='compact']) .toggle-icon-container {
+    width: var(--mdc-toggle-icon-container-size-compact);
+    height: var(--mdc-toggle-icon-container-size-compact);
+  }
+  
+  .toggle-icon {
+    padding: 0.25rem;
+  }
+
   :host([size='compact']) .toggle-icon {
-    width: var(--mdc-toggle-icon-size-compact);
-    height: var(--mdc-toggle-icon-size-compact);
+    padding: 0.125rem;
   }
 
   :host([checked]) .toggle-slider {

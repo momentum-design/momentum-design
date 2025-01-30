@@ -18,7 +18,7 @@ import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
  *
  * @tagname mdc-toggle
  *
- * @cssprop --custom-property-name - Description of the CSS custom property
+ * @cssproperty  --mdc-toggle-width - width of the toggle switch
  */
 class Toggle extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
   /**
@@ -42,6 +42,9 @@ class Toggle extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
 
     // Toggle does not contain helpTextType property.
     this.helpTextType = undefined as unknown as ValidationType;
+
+    // The toggle can have only one role: "switch."
+    this.role = 'switch';
   }
 
   private handleChange(event: KeyboardEvent) {
@@ -55,18 +58,6 @@ class Toggle extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
     // Change event doesn't bubble out of shadow dom, we need to explicitly dispatch that.
     this.dispatchEvent(new CustomEvent('toggle-change', { detail: { checked: this.checked } }));
   }
-
-  /**
-   * Get the size of the toggle icon based on the toggle container size
-   */
-  // private get toggleIconSize() {
-  //   switch (this.size) {
-  //     case TOGGLE_SIZE.COMPACT:
-  //       return 0.75;
-  //     default:
-  //       return 1;
-  //   }
-  // }
 
   /**
    * Sets the size attribute for the toggle component.
@@ -96,7 +87,6 @@ class Toggle extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
             class="toggle-input"
             name="${ifDefined(this.name)}"
             value="${ifDefined(this.value)}"
-            role="switch"
             ?checked="${this.checked}"
             ?disabled="${this.disabled}"
             aria-checked="${this.checked}"
@@ -106,7 +96,14 @@ class Toggle extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
             @change="${this.handleChange}"
           />
           <div class="toggle-slider">
-              <mdc-icon name="${this.checked ? 'check-regular' : 'cancel-regular'}" class="toggle-icon"></mdc-icon>
+              <div class="toggle-icon-container">
+                  <mdc-icon
+                    name="${this.checked ? 'check-regular' : 'cancel-regular'}"
+                    class="toggle-icon"
+                    length-unit="%"
+                    size=100
+                  ></mdc-icon>
+              </div>
           </div>
         </div>
         <div class="toggle-container-label">

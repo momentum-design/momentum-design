@@ -10,7 +10,6 @@ const render = (args: Args) => html`
   <mdc-toggle
       name="toggleName"
       value="toggleValue"
-      @change="${(event) => action('onChange')(event.target.checked)}"
       @keydown="${action('onKeyDown')}"
       @keyup="${action('onKeyUp')}"
       @focus="${action('onFocus')}"
