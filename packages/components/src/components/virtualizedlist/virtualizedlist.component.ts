@@ -12,14 +12,14 @@ import { Component } from '../../models';
  * @tagname mdc-virtualizedlist
  *
  */
-class Virtualizedlist extends Component {
+class VirtualizedList extends Component {
   /**
    * Lenght of the array being virtualized
    */
   @property({ type: Number })
   count: number = 0;
 
-  @property({ type: Function, reflect: true })
+  @property({ type: Function })
   onScroll: (() => void) | undefined;
 
   private scrollElementRef: Ref<HTMLDivElement> = createRef();
@@ -113,4 +113,4 @@ class Virtualizedlist extends Component {
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
-export default Virtualizedlist;
+export default VirtualizedList;
