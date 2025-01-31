@@ -38,11 +38,38 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(DisabledMixin(For
    */
   @property({ type: Boolean, reflect: true }) indeterminate = false;
 
+  /** @internal */
+  private internals: ElementInternals;
+
+  /** @internal */
+  static formAssociated = true;
+
+  /** @internal */
+  get form(): HTMLFormElement | null {
+    return this.internals.form;
+  }
+
   constructor() {
     super();
 
+    this.internals = this.attachInternals();
     // Checkbox does not contain helpTextType property.
     this.helpTextType = undefined as unknown as ValidationType;
+  }
+
+  /**
+   * Updates the form value to reflect the current state of the checkbox.
+   * If checked, the value is set to either the user-provided value or 'on' if no value is provided.
+   * If unchecked, the value is set to null.
+   */
+  private setFormValue() {
+    let actualValue: string | null = null;
+
+    if (this.checked) {
+      actualValue = !this.value ? 'on' : this.value;
+    }
+
+    this.internals.setFormValue(actualValue);
   }
 
   /**
@@ -63,6 +90,7 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(DisabledMixin(For
    */
   public handleChange(event: Event): void {
     this.toggleState();
+    this.setFormValue();
 
     // Change event doesn't bubble out of shadow dom,
     // Workaround to fix this: https://github.com/lit/lit-element/issues/922#issuecomment-611139629
