@@ -13,8 +13,10 @@ const render = (args: Args) => html`
       @keydown="${action('onKeyDown')}"
       @keyup="${action('onKeyUp')}"
       @focus="${action('onFocus')}"
+      @change="${action('onToggleChange')}"
       size="${args.size}"
       label="${args.label}"
+      help-text="${args['help-text']}"
       data-aria-label="${args['data-aria-label']}"
       ?checked="${args.checked}"
       ?disabled="${args.disabled}">
@@ -52,6 +54,7 @@ export const Example: StoryObj = {
     checked: false,
     disabled: false,
     size: DEFAULTS.SIZE,
+    'help-text': '',
     'data-aria-label': 'Toggle component',
   },
 };

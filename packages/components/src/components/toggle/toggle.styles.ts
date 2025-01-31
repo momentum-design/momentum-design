@@ -9,8 +9,10 @@ const styles = [hostFitContentStyles, css`
     --mdc-toggle-height-compact: 1rem;
     --mdc-toggle-border-radius: 0.75rem;
     --mdc-toggle-border-radius-compact: 0.5rem;
-    --mdc-toggle-border: 1px solid var(--mds-color-theme-outline-input-normal);
+    --mdc-toggle-border: 0.063rem solid var(--mds-color-theme-outline-input-normal);
 
+    --mdc-toggle-icon-container-size: 1.25rem;
+    --mdc-toggle-icon-container-size-compact: 0.75rem;
     --mdc-toggle-icon-size: 0.75rem;
     --mdc-toggle-icon-size-compact: 0.5rem;
 
@@ -31,26 +33,25 @@ const styles = [hostFitContentStyles, css`
     --mdc-toggle-label-fontweight: 400;
     --mdc-toggle-label-color-disabled: var(--mds-color-theme-text-primary-disabled);
 
-    --mdc-toggle-icon-container-size: 1.25rem;
-    --mdc-toggle-icon-container-size-compact: 0.75rem;
+    --mdc-toggle-help-text-color: var(--mds-color-theme-text-secondary-normal);
 
     display: flex;
     gap: 0.75rem;
   }
 
-  .toggle-container {
+  .mdc-toggle__container {
     position: relative;
     border-radius: var(--mdc-toggle-border-radius);
   }
 
-  .toggle-input {
+  .mdc-toggle__input {
     opacity: 0;
     position: absolute;
     width: var(--mdc-toggle-width);
     height: var(--mdc-toggle-height);
   }
 
-  .toggle-slider {
+  .mdc-toggle__slider {
     width: var(--mdc-toggle-width);
     height: var(--mdc-toggle-height);
     background: var(--mdc-toggle-inactive-rest-color);
@@ -64,21 +65,27 @@ const styles = [hostFitContentStyles, css`
     box-sizing: content-box;
   }
 
-  :host(:dir(rtl)) .toggle-slider {
+  :host([checked]) .mdc-toggle__slider {
+    background-color: var(--mdc-toggle-active-rest-color);
     justify-content: flex-end;
+    border: none;
   }
 
-  :host([checked]:dir(rtl)) .toggle-slider {
-    justify-content: flex-start;
-  }
-
-  :host([size='compact']) .toggle-slider {
+  :host([size='compact']) .mdc-toggle__slider {
     width: var(--mdc-toggle-width-compact);
     height: var(--mdc-toggle-height-compact);
     border-radius: var(--mdc-toggle-border-radius-compact);
   }
 
-  .toggle-icon-container {
+  :host(:dir(rtl)) .mdc-toggle__slider {
+    justify-content: flex-end;
+  }
+
+  :host([checked]:dir(rtl)) .mdc-toggle__slider {
+    justify-content: flex-start;
+  }
+
+  .mdc-toggle__icon-container {
     width: var(--mdc-toggle-icon-container-size);
     height: var(--mdc-toggle-icon-container-size);
     margin-left: 0.125rem;
@@ -87,67 +94,75 @@ const styles = [hostFitContentStyles, css`
     box-sizing: border-box;
   }
 
-  :host([checked]) .toggle-icon-container {
+  :host([checked]) .mdc-toggle__icon-container {
     margin-right: 0.125rem;
     margin-left: 0;
   }
 
-  :host([size='compact']) .toggle-icon-container {
+  :host([size='compact']) .mdc-toggle__icon-container {
     width: var(--mdc-toggle-icon-container-size-compact);
     height: var(--mdc-toggle-icon-container-size-compact);
   }
   
-  .toggle-icon {
+  .mdc-toggle__icon {
     padding: 0.25rem;
+   // --mdc-icon-fill-color: var(--mds-color-theme-text-primary-normal);
   }
 
-  :host([size='compact']) .toggle-icon {
+  :host([disabled]) .mdc-toggle__icon {
+    --mdc-icon-fill-color: var(--mds-color-theme-text-primary-disabled);
+  }
+
+  :host([size='compact']) .mdc-toggle__icon {
     padding: 0.125rem;
   }
 
-  :host([checked]) .toggle-slider {
-    background-color: var(--mdc-toggle-active-rest-color);
-    justify-content: flex-end;
-    border: none;
-  }
-
-  :host([disabled]), :host([disabled]) .toggle-container{
+  :host([disabled]), :host([disabled]) .mdc-toggle__container {
     cursor: not-allowed;
   }
 
-  :host([disabled]) .toggle-slider {
-    background-color: var(--mdc-toggle-inactive-disabled-color);
-  }
-
-  :host([disabled]) .toggle-icon-container {
-    background-color: var(--mdc-toggle-icon-background-color-disabled);
-    cursor: not-allowed;
-  }
-
-  :host([disabled][checked]) .toggle-slider {
-    background-color: var(--mdc-toggle-active-disabled-color);
-  }
-
-  :host(:not([disabled])) .toggle-container:hover .toggle-slider {
+  :host(:not([disabled])) .mdc-toggle__container:hover .mdc-toggle__slider {
     background-color: var(--mdc-toggle-inactive-hover-color);
   }
 
-  :host(:not([disabled])) .toggle-container:active .toggle-slider {
+  :host(:not([disabled])) .mdc-toggle__container:active .mdc-toggle__slider {
     background-color: var(--mdc-toggle-inactive-pressed-color);
   }
 
-  :host(:not([disabled])[checked]) .toggle-container:hover .toggle-slider {
+  :host(:not([disabled])[checked]) .mdc-toggle__container:hover .mdc-toggle__slider {
     background-color: var(--mdc-toggle-active-hover-color);
   }
 
-  :host(:not([disabled])[checked]) .toggle-container:active .toggle-slider {
+  :host(:not([disabled])[checked]) .mdc-toggle__container:active .mdc-toggle__slider {
     background-color: var(--mdc-toggle-active-pressed-color);
   }
 
-  .mdc-label-text {
+  :host([disabled]) .mdc-toggle__slider {
+    background-color: var(--mdc-toggle-inactive-disabled-color);
+  }
+
+  :host([disabled][checked]) .mdc-toggle__slider {
+    background-color: var(--mdc-toggle-active-disabled-color);
+  }
+
+  :host([disabled]) .mdc-toggle__icon-container {
+    background-color: var(--mdc-toggle-icon-background-color-disabled);
+  }
+
+  .mdc-label-text, .mdc-help-text {
     font-size: var(--mdc-toggle-label-fontsize);
     font-weight: var(--mdc-toggle-label-fontweight);
     line-height: var(--mdc-toggle-label-lineheight);
+  }
+
+  .mdc-label-text {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .mdc-help-text {
+    color: var(--mdc-toggle-help-text-color);
   }
 
   :host([disabled]) .mdc-label-text {

@@ -7,18 +7,21 @@ import FormfieldWrapper from '../formfieldwrapper';
 import { ValueMixin } from '../../utils/mixins/ValueMixin';
 import { NameMixin } from '../../utils/mixins/NameMixin';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
-import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
+import { DEFAULTS, ICON_NAME, TOGGLE_SIZE } from './toggle.constants';
 import { ToggleSize } from './toggle.types';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 
 /**
  * Toggle Component is an interactive control used to switch between two mutually exclusive options,
- * such as On/Off, Active/Inactive,
- * It internally renders a checkbox styled as a toggle switch.
+ * such as On/Off, Active/Inactive. These are commonly used in settings panels, forms, and preference selections
+ * where users need to enable or disable a feature.
+ * It contains an optional label and an optional helper text.
+ *
+ * Note: It internally renders a checkbox styled as a toggle switch.
+ *
+ * @dependency mdc-icon
  *
  * @tagname mdc-toggle
- *
- * @cssproperty  --mdc-toggle-width - width of the toggle switch
  */
 class Toggle extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
   /**
@@ -29,9 +32,9 @@ class Toggle extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
   checked = false;
 
   /**
-   * Determines toggle size.
+   * Determines toggle size in rem (height is specified here).
    * - **Default**: 1.5
-   * - **Compact**: 1.25
+   * - **Compact**: 1
    * @default default
    */
   @property({ type: String, reflect: true })
@@ -58,8 +61,8 @@ class Toggle extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
     }
 
     this.checked = !this.checked;
-    // Change event doesn't bubble out of shadow dom, we need to explicitly dispatch that.
-    this.dispatchEvent(new CustomEvent('toggle-change', { detail: { checked: this.checked } }));
+    // Since change event doesn't bubble out of shadow dom, we need to explicitly dispatch it.
+    this.dispatchEvent(new CustomEvent('onToggleChange', { detail: { checked: this.checked } }));
   }
 
   /**
@@ -83,33 +86,32 @@ class Toggle extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
 
   public override render() {
     return html`
-        <div class="toggle-container mdc-focus-ring">
+        <div class="mdc-toggle__container mdc-focus-ring">
           <input
             id="${this.id}"
             type="checkbox"
-            class="toggle-input"
+            class="mdc-toggle__input"
             role="switch"
             name="${ifDefined(this.name)}"
             value="${ifDefined(this.value)}"
-            ?checked="${this.checked}"
-            ?disabled="${this.disabled}"
-            aria-disabled="${this.disabled}"
+            .checked="${this.checked}"
+            .disabled="${this.disabled}"
             aria-label=${ifDefined(this.dataAriaLabel)}
             tabindex="${this.disabled ? -1 : 0}"
             @change="${this.handleChange}"
           />
-          <div class="toggle-slider">
-              <div class="toggle-icon-container">
-                  <mdc-icon
-                    name="${this.checked ? 'check-regular' : 'cancel-regular'}"
-                    class="toggle-icon"
-                    length-unit="%"
-                    size=100
-                  ></mdc-icon>
-              </div>
+          <div class="mdc-toggle__slider">
+                <div class="mdc-toggle__icon-container">
+                    <mdc-icon
+                      name="${this.checked ? ICON_NAME.CHECKED : ICON_NAME.UNCHECKED}"
+                      class="mdc-toggle__icon"
+                      length-unit="%"
+                      size="100"
+                    ></mdc-icon>
+                </div>
           </div>
         </div>
-        <div class="toggle-container-label">
+        <div class="mdc-toggle__label-container">
           ${this.renderLabel()}
           ${this.renderHelperText()}
         </div>
