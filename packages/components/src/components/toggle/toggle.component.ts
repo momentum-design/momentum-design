@@ -53,6 +53,10 @@ class Toggle extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
     this.helpTextType = undefined as unknown as ValidationType;
   }
 
+  /**
+   * Toggles the state of the toggle element.
+   * and dispatch the new change event.
+   */
   private handleChange(event: KeyboardEvent) {
     if (this.disabled) return;
 

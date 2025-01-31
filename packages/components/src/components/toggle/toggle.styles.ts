@@ -25,15 +25,16 @@ const styles = [hostFitContentStyles, css`
     --mdc-toggle-active-pressed-color: var(--mds-color-theme-control-active-pressed);
     --mdc-toggle-active-disabled-color: var(--mds-color-theme-control-active-disabled);
 
-    --mdc-toggle-icon-background-color-normal: var(--mds-color-theme-common-text-primary-normal);
-    --mdc-toggle-icon-background-color-disabled: var(--mds-color-theme-common-text-primary-disabled);
-
     --mdc-toggle-label-lineheight: var(--mds-font-lineheight-body-midsize);
     --mdc-toggle-label-fontsize: var(--mds-font-size-body-midsize);
     --mdc-toggle-label-fontweight: 400;
     --mdc-toggle-label-color-disabled: var(--mds-color-theme-text-primary-disabled);
-
     --mdc-toggle-help-text-color: var(--mds-color-theme-text-secondary-normal);
+
+    --mdc-toggle-icon-color-normal: var(--mds-color-theme-common-inverted-text-primary-normal);
+    --mdc-toggle-icon-color-disabled: var(--mdc-toggle-label-color-disabled);
+    --mdc-toggle-icon-background-color-normal: var(--mds-color-theme-common-text-primary-normal);
+    --mdc-toggle-icon-background-color-disabled: var(--mds-color-theme-common-text-primary-disabled);
 
     display: flex;
     gap: 0.75rem;
@@ -42,6 +43,7 @@ const styles = [hostFitContentStyles, css`
   .mdc-toggle__container {
     position: relative;
     border-radius: var(--mdc-toggle-border-radius);
+    align-self: flex-start;
   }
 
   .mdc-toggle__input {
@@ -49,6 +51,7 @@ const styles = [hostFitContentStyles, css`
     position: absolute;
     width: var(--mdc-toggle-width);
     height: var(--mdc-toggle-height);
+    cursor: pointer;
   }
 
   .mdc-toggle__slider {
@@ -106,18 +109,18 @@ const styles = [hostFitContentStyles, css`
   
   .mdc-toggle__icon {
     padding: 0.25rem;
-   // --mdc-icon-fill-color: var(--mds-color-theme-text-primary-normal);
+   --mdc-icon-fill-color: var(--mdc-toggle-icon-color-normal);
   }
 
   :host([disabled]) .mdc-toggle__icon {
-    --mdc-icon-fill-color: var(--mds-color-theme-text-primary-disabled);
+    --mdc-icon-fill-color: var(--mdc-toggle-icon-color-disabled);
   }
 
   :host([size='compact']) .mdc-toggle__icon {
     padding: 0.125rem;
   }
 
-  :host([disabled]), :host([disabled]) .mdc-toggle__container {
+  :host([disabled]) .mdc-toggle__input {
     cursor: not-allowed;
   }
 
@@ -149,6 +152,12 @@ const styles = [hostFitContentStyles, css`
     background-color: var(--mdc-toggle-icon-background-color-disabled);
   }
 
+  .mdc-toggle__label-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
   .mdc-label-text, .mdc-help-text {
     font-size: var(--mdc-toggle-label-fontsize);
     font-weight: var(--mdc-toggle-label-fontweight);
@@ -167,6 +176,13 @@ const styles = [hostFitContentStyles, css`
 
   :host([disabled]) .mdc-label-text {
     color: var(--mdc-toggle-label-color-disabled);
+  }
+
+   /* High Contrast Mode */
+   @media (forced-colors: active) {
+    :host([checked]) .mdc-toggle__slider, .mdc-toggle__icon-container {
+      border: var(--mdc-toggle-border);
+    }
   }
 `, ...hostFocusRingStyles(true)];
 
