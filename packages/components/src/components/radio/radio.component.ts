@@ -16,6 +16,7 @@ import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
  *
  * @tagname mdc-radio
  */
+
 class Radio extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
   /**
   * Determines whether the radio is selected or unselected.
@@ -25,11 +26,16 @@ class Radio extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
   @property({ type: Boolean, reflect: true }) checked = false;
 
   /**
-  * Determines whether the radio is selected or unselected.
+  * Determines whether the radio is read-only.
   *
   * @default false
   */
   @property({ type: Boolean, reflect: true }) readonly = false;
+
+  /**
+   * Specifies the aria-label attribute for accessibility purposes.
+   */
+  @property({ type: String, reflect: true, attribute: 'data-aria-label' }) dataAriaLabel: string = '';
 
   override firstUpdated() {
     this.updateTabIndex();
@@ -42,6 +48,11 @@ class Radio extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
     return Array.from(document.querySelectorAll(`mdc-radio[name="${this.name}"]`));
   }
 
+  /**
+   * The 'change' event does not bubble up through the shadow DOM as it was not composed.
+   * Therefore, we need to re-dispatch the same event to ensure it is propagated correctly.
+   * Read more: https://developer.mozilla.org/en-US/docs/Web/API/Event/composed
+   */
   private dispatchChangeEvent(event: Event): void {
     const EventConstructor = event.constructor as typeof Event;
     this.dispatchEvent(new EventConstructor(event.type, event));
@@ -72,29 +83,40 @@ class Radio extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
   }
 
   /**
-   * Handles the keydown event(Arrow Up/Down/Left/Right) on the radio element.
-   * This will move focus to the next or previous radio element in the group.
+   * Updates the state of the radio button at the specified index within the enabled radios.
+   * Focuses the radio button and triggers the change event if the radio button is not read-only.
+   *
+   * @param enabledRadios - An array of enabled radio buttons within the same group.
+   * @param index - The index of the radio button to be updated within the enabled radios array.
+   * @param event - The event that triggered the update.
+   */
+  private updateRadio(enabledRadios: Radio[], index: number, event: Event) {
+    enabledRadios[index].shadowRoot?.querySelector('input')?.focus();
+    if (!enabledRadios[index].readonly) {
+      enabledRadios[index].handleChange(event);
+    }
+  }
+
+  /**
+   * Handles the keydown event (Arrow Up/Down/Left/Right) on the radio element.
    */
   private handleKeyDown(event: KeyboardEvent): void {
-    if (this.disabled || this.readonly) return;
+    if (this.disabled) return;
 
     const radios = this.getAllRadiosWithinSameGroup();
-    const enabledRadios = radios.filter((radio) => !radio.disabled && !radio.readonly);
+    const enabledRadios = radios.filter((radio) => !radio.disabled);
     const currentIndex = enabledRadios.indexOf(this);
 
     if (['ArrowDown', 'ArrowRight'].includes(event.key)) {
       // Move focus to the next radio
       const nextIndex = (currentIndex + 1) % enabledRadios.length;
-      enabledRadios[nextIndex].shadowRoot?.querySelector('input')?.focus();
-      enabledRadios[nextIndex].handleChange(event);
+      this.updateRadio(enabledRadios, nextIndex, event);
     } else if (['ArrowUp', 'ArrowLeft'].includes(event.key)) {
       // Move focus to the previous radio
       const prevIndex = (currentIndex - 1 + enabledRadios.length) % enabledRadios.length;
-      enabledRadios[prevIndex].shadowRoot?.querySelector('input')?.focus();
-      enabledRadios[prevIndex].handleChange(event);
+      this.updateRadio(enabledRadios, prevIndex, event);
     }
     this.updateTabIndex();
-    this.dispatchChangeEvent(event);
   }
 
   /**
@@ -136,7 +158,7 @@ class Radio extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
             class="mdc-radio__input"
             aria-checked="${this.checked}"
             aria-disabled="${this.disabled}"
-            aria-label="${ifDefined(this.label || this.name)}"
+            aria-label="${ifDefined(this.dataAriaLabel)}"
           />
           <span class="mdc-radio__icon"></span>
         </div>

@@ -4,49 +4,57 @@ import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 const styles = [hostFitContentStyles, css`
   :host{
     --mdc-inner-circle-size: 0.375rem;
-    --mdc-radio-color-theme-text-primary-disabled: var(--mds-color-theme-text-primary-disabled);
-    --mdc-radio-color-theme-outline-primary-disabled: var(--mds-color-theme-outline-primary-disabled);
-    --mdc-radio-color-theme-control-inactive-disabled: var(--mds-color-theme-control-inactive-disabled);
-    --mdc-radio-color-theme-control-active-disabled: var(--mds-color-theme-control-active-disabled);
-    --mdc-radio-color-theme-inverted-text-primary-disabled: var(--mds-color-theme-inverted-text-primary-disabled);
-    --mdc-radio-color-theme-outline-input-normal: var(--mds-color-theme-outline-input-normal);
-    --mdc-radio-color-theme-control-inactive-normal: var(--mds-color-theme-control-inactive-normal);
-    --mdc-radio-color-theme-control-active-normal: var(--mds-color-theme-control-active-normal);
-    --mdc-radio-color-theme-inverted-text-primary-normal: var(--mds-color-theme-inverted-text-primary-normal);
-    --mdc-radio-color-theme-control-inactive-hover: var(--mds-color-theme-control-inactive-hover);
-    --mdc-radio-color-theme-control-active-hover: var(--mds-color-theme-control-active-hover);
-    --mdc-radio-color-theme-control-inactive-pressed: var(--mds-color-theme-control-inactive-pressed);
-    --mdc-radio-color-theme-control-active-pressed: var(--mds-color-theme-control-active-pressed);
+    --mdc-radio-text-disabled-color: var(--mds-color-theme-text-primary-disabled);
+    --mdc-radio-outline-primary-disabled-color: var(--mds-color-theme-outline-primary-disabled);
+    --mdc-radio-normal-border-color: var(--mds-color-theme-outline-input-normal);
+    --mdc-radio-inner-circle-primary-normal-background: var(--mds-color-theme-inverted-text-primary-normal);
+    --mdc-radio-inner-circle-disabled-background: var(--mds-color-theme-inverted-text-primary-disabled);
+
+    --mdc-radio-control-inactive-color: var(--mds-color-theme-control-inactive-normal);
+    --mdc-radio-control-inactive-hover: var(--mds-color-theme-control-inactive-hover);
+    --mdc-radio-control-inactive-pressed-color: var(--mds-color-theme-control-inactive-pressed);
+    --mdc-radio-control-inactive-disabled-background: var(--mds-color-theme-control-inactive-disabled);
+
+    --mdc-radio-control-active-color: var(--mds-color-theme-control-active-normal);
+    --mdc-radio-control-active-hover-color: var(--mds-color-theme-control-active-hover);
+    --mdc-radio-control-active-pressed-color: var(--mds-color-theme-control-active-pressed);
+    --mdc-radio-control-active-disabled-background: var(--mds-color-theme-control-active-disabled);
 
   }
   :host([readonly]) .mdc-radio__input,
-  :host([disabled]) .mdc-radio__input{
+  :host([disabled]) .mdc-radio__input,
+  :host([disabled]) .mdc-label,
+  :host([readonly]) .mdc-label{
     cursor: unset;
+  }
+
+  .mdc-label {
+    cursor: pointer;
   }
 
   :host([disabled]) .mdc-radio__label-text,
   :host([disabled]) .mdc-radio__help-text {
-    color: var(--mdc-radio-color-theme-text-primary-disabled);
+    color: var(--mdc-radio-text-disabled-color);
   }
 
   :host([disabled]) .mdc-radio__icon,
   :host([disabled]) .mdc-radio__container:hover .mdc-radio__icon,
   :host([disabled][readonly]) .mdc-radio__container:hover .mdc-radio__icon {
-    border-color: var(--mdc-radio-color-theme-outline-primary-disabled);
-    background: var(--mdc-radio-color-theme-control-inactive-disabled);
+    border-color: var(--mdc-radio-outline-primary-disabled-color);
+    background: var(--mdc-radio-control-inactive-disabled-background);
   }
   :host([disabled][checked]) .mdc-radio__icon,
   :host([disabled][checked]) .mdc-radio__container:hover .mdc-radio__icon,
   :host([disabled][readonly][checked]) .mdc-radio__icon,
   :host([disabled][readonly][checked]) .mdc-radio__container:hover .mdc-radio__icon {
-    border-color: var(--mdc-radio-color-theme-outline-primary-disabled);
-    background: var(--mdc-radio-color-theme-control-active-disabled);
+    border-color: var(--mdc-radio-outline-primary-disabled-color);
+    background: var(--mdc-radio-control-active-disabled-background);
   }
   :host([disabled][checked]) .mdc-radio__icon:after,
   :host([disabled][checked]) .mdc-radio__container:hover  .mdc-radio__icon:after,
   :host([disabled][readonly][checked]) .mdc-radio__icon:after,
   :host([disabled][readonly][checked]) .mdc-radio__container:hover  .mdc-radio__icon:after {
-    background: var(--mdc-radio-color-theme-inverted-text-primary-disabled);
+    background: var(--mdc-radio-inner-circle-disabled-background);
   }
 
   :host .mdc-radio__icon {
@@ -55,14 +63,14 @@ const styles = [hostFitContentStyles, css`
     left: 0;
     width: 1rem;
     height: 1rem;
-    border: 0.0625rem solid var(--mdc-radio-color-theme-outline-input-normal);
-    background-color: var(--mdc-radio-color-theme-control-inactive-normal);
+    border: 0.0625rem solid var(--mdc-radio-normal-border-color);
+    background-color: var(--mdc-radio-control-inactive-color);
     border-radius: 50%;
   }
 
   :host([checked]) .mdc-radio__icon {
-    border-color: var(--mdc-radio-color-theme-control-active-normal);
-    background-color: var(--mdc-radio-color-theme-control-active-normal);
+    border-color: var(--mdc-radio-control-active-color);
+    background-color: var(--mdc-radio-control-active-color);
   }
 
   :host([checked]) .mdc-radio__icon:after {
@@ -73,43 +81,43 @@ const styles = [hostFitContentStyles, css`
     width: var(--mdc-inner-circle-size);
     height: var(--mdc-inner-circle-size);
     border-radius: 50%;
-    background: var(--mdc-radio-color-theme-inverted-text-primary-normal);
+    background: var(--mdc-radio-inner-circle-primary-normal-background);
   }
 
   :host .mdc-radio__input:hover ~ .mdc-radio__icon {
-    border-color: var(--mdc-radio-color-theme-outline-input-normal);
-    background-color: var(--mdc-radio-color-theme-control-inactive-hover);
+    border-color: var(--mdc-radio-normal-border-color);
+    background-color: var(--mdc-radio-control-inactive-hover);
   }
 
   :host([checked]) .mdc-radio__input:hover ~ .mdc-radio__icon {
-    border-color: var(--mdc-radio-color-theme-control-active-hover);
-    background-color: var(--mdc-radio-color-theme-control-active-hover);
+    border-color: var(--mdc-radio-control-active-hover-color);
+    background-color: var(--mdc-radio-control-active-hover-color);
   }
 
   :host .mdc-radio__input:active ~ .mdc-radio__icon {
-    border-color: var(--mdc-radio-color-theme-outline-input-normal);
-    background-color: var(--mdc-radio-color-theme-control-inactive-pressed);
+    border-color: var(--mdc-radio-normal-border-color);
+    background-color: var(--mdc-radio-control-inactive-pressed-color);
   }
 
   :host([checked]) .mdc-radio__input:active ~ .mdc-radio__icon {
-    border-color: var(--mdc-radio-color-theme-control-active-pressed);
-    background-color: var(--mdc-radio-color-theme-control-active-pressed);
+    border-color: var(--mdc-radio-control-active-pressed-color);
+    background-color: var(--mdc-radio-control-active-pressed-color);
   }
 
   :host([readonly]) .mdc-radio__icon,
   :host([readonly]) .mdc-radio__container:hover .mdc-radio__icon {
-    border-color: var(--mdc-radio-color-theme-outline-input-normal);
-    background-color: var(--mdc-radio-color-theme-control-inactive-normal);
+    border-color: var(--mdc-radio-normal-border-color);
+    background-color: var(--mdc-radio-control-inactive-color);
   }
 
   :host([readonly][checked]) .mdc-radio__icon {
-    border-color: var(--mdc-radio-color-theme-outline-input-normal);
+    border-color: var(--mdc-radio-normal-border-color);
   }
 
   :host([readonly][checked]) .mdc-radio__icon:after,
   :host([readonly][checked]) .mdc-radio__container:hover .mdc-radio__icon:after,
   :host([readonly][checked]) .mdc-radio__container:active .mdc-radio__icon:after {
-    background-color: var(--mdc-radio-color-theme-text-primary-disabled);
+    background-color: var(--mdc-radio-text-disabled-color);
   }
 
   .mdc-radio__container {

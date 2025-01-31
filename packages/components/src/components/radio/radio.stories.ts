@@ -16,6 +16,7 @@ const render = (args: Args) => html`
     ?checked="${args.checked}"
     ?disabled="${args.disabled}"
     ?readonly="${args.readonly}"
+    data-aria-label="${args['data-aria-label']}"
   ></mdc-radio>
 `;
 
@@ -57,6 +58,7 @@ export const Example: StoryObj = {
 export const withNameGroup: StoryObj = {
   render: () => html`
     <div style="display: flex; flex-direction: column;">
+      Radio Group for selecting plans
       <mdc-radio name="plan" value="option1" label="Standard Plan" ></mdc-radio>
       <mdc-radio name="plan" value="option2" label="Disabled Premium Plan" disabled></mdc-radio>
       <mdc-radio name="plan" value="option2" label="Readonly Premium Plan" readonly></mdc-radio>
@@ -64,7 +66,15 @@ export const withNameGroup: StoryObj = {
       <mdc-radio name="plan" value="option4" label="Premium Plan for family"></mdc-radio>
       <mdc-radio name="plan" value="option5" label="Business Plan"></mdc-radio>
       <mdc-radio name="plan" value="option5" label="Enterprise Plan"></mdc-radio>
-    </div>`,
+    </div>
+    <div style="display: flex; flex-direction: column; margin-top: 10px">
+      Radio Group for selecting billing cycle
+      <mdc-radio name="billing-cycle" value="option1" label="Weekly" disabled></mdc-radio>
+      <mdc-radio name="billing-cycle" value="option1" label="Monthly" checked></mdc-radio>
+      <mdc-radio name="billing-cycle" value="option2" label="Quaterly"></mdc-radio>
+      <mdc-radio name="billing-cycle" value="option2" label="Yearly"></mdc-radio>
+    </div>
+    `,
   parameters: {
     docs: {
       description: {
@@ -79,15 +89,13 @@ export const withNameGroup: StoryObj = {
 
 export const WithoutLabel: StoryObj = {
   args: {
-    checked: false,
-    disabled: false,
-    readonly: false,
+    'data-aria-label': 'Radio button without label',
   },
   parameters: {
     docs: {
       description: {
         story: 'If we don\'t want to display a label, we can omit the \'label\' attribute, '
-         + 'but it is recommended to pass a aria label for accessibility. ',
+         + 'but it is recommended to pass an aria label through data-aria-label for accessibility. ',
       },
     },
   },
