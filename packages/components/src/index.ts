@@ -9,7 +9,7 @@ import Button from './components/button';
 import Bullet from './components/bullet';
 import Marker from './components/marker';
 import Divider from './components/divider';
-import Avatarbutton from './components/avatarbutton';
+import AvatarButton from './components/avatarbutton';
 import Link from './components/link';
 
 import type { TextType } from './components/text/text.types';
@@ -26,7 +26,7 @@ export {
   Bullet,
   Marker,
   Divider,
-  Avatarbutton,
+  AvatarButton,
   Link,
 };
 
