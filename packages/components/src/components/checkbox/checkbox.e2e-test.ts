@@ -37,7 +37,7 @@ const setup = async (args: SetupOptions) => {
   return checkbox;
 };
 
-const testToRun = async (componentsPage: ComponentsPage, browserName: string) => {
+const testToRun = async (componentsPage: ComponentsPage) => {
   /**
    * VISUAL REGRESSION
    */
@@ -169,14 +169,14 @@ const testToRun = async (componentsPage: ComponentsPage, browserName: string) =>
       // By default, it should not be focusable.
       await expect(checkbox).not.toBeFocused();
 
-      await componentsPage.accessibility.pressTab(browserName, checkbox, true);
+      await componentsPage.actionability.pressTab();
       await expect(checkbox).toBeFocused();
     });
 
     await test.step('checkbox should be checked when space key is pressed with keyboard', async () => {
       const checkbox = await setup({ componentsPage, label: 'Checkbox label' });
 
-      await componentsPage.accessibility.pressTab(browserName, checkbox, true);
+      await componentsPage.actionability.pressTab();
       await expect(checkbox).toBeFocused();
 
       await componentsPage.page.keyboard.press('Space');
@@ -199,7 +199,7 @@ const testToRun = async (componentsPage: ComponentsPage, browserName: string) =>
     await test.step('checkbox should not be Focused or checked when its disabled', async () => {
       const checkbox = await setup({ componentsPage, label: 'Checkbox label', disabled: true });
 
-      await componentsPage.page.keyboard.press('Tab');
+      await componentsPage.actionability.pressTab();
       await expect(checkbox).not.toBeFocused();
 
       await checkbox.click();
@@ -209,7 +209,7 @@ const testToRun = async (componentsPage: ComponentsPage, browserName: string) =>
 };
 
 test.describe.parallel('mdc-checkbox', () => {
-  test('standalone', async ({ componentsPage, browserName }) => {
-    await testToRun(componentsPage, browserName);
+  test('standalone', async ({ componentsPage }) => {
+    await testToRun(componentsPage);
   });
 });
