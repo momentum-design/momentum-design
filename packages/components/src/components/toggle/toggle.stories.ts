@@ -15,7 +15,7 @@ const render = (args: Args) => html`
       @focus="${action('onFocus')}"
       size="${args.size}"
       label="${args.label}"
-      aria-label="${args['aria-label']}"
+      data-aria-label="${args['data-aria-label']}"
       ?checked="${args.checked}"
       ?disabled="${args.disabled}">
     </mdc-toggle>
@@ -34,11 +34,11 @@ const meta: Meta = {
       control: { type: 'inline-radio' },
       options: Object.values(TOGGLE_SIZE),
     },
-    'aria-label': {
+    'data-aria-label': {
       control: 'text',
       description: 'Aria label for the toggle component. Required for accessibility.',
     },
-    ...hideControls(['help-text-type']),
+    ...hideControls(['help-text-type', 'label-info', 'id']),
     ...classArgType,
     ...styleArgType,
   },
@@ -52,6 +52,7 @@ export const Example: StoryObj = {
     checked: false,
     disabled: false,
     size: DEFAULTS.SIZE,
+    'data-aria-label': 'Toggle component',
   },
 };
 
@@ -98,6 +99,5 @@ export const WithoutLabel: StoryObj = {
   args: {
     ...Example.args,
     label: '',
-    'aria-label': 'Toggle component',
   },
 };

@@ -37,14 +37,17 @@ class Toggle extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
   @property({ type: String, reflect: true })
   size: ToggleSize = DEFAULTS.SIZE;
 
+  /**
+   * Determines aria label on mdc-toggle.
+   */
+  @property({ type: String, reflect: true, attribute: 'data-aria-label' })
+  dataAriaLabel = '';
+
   constructor() {
     super();
 
     // Toggle does not contain helpTextType property.
     this.helpTextType = undefined as unknown as ValidationType;
-
-    // The toggle can have only one role: "switch."
-    this.role = 'switch';
   }
 
   private handleChange(event: KeyboardEvent) {
@@ -85,13 +88,13 @@ class Toggle extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
             id="${this.id}"
             type="checkbox"
             class="toggle-input"
+            role="switch"
             name="${ifDefined(this.name)}"
             value="${ifDefined(this.value)}"
             ?checked="${this.checked}"
             ?disabled="${this.disabled}"
-            aria-checked="${this.checked}"
             aria-disabled="${this.disabled}"
-            aria-label=${ifDefined(this.ariaLabel) as string}
+            aria-label=${ifDefined(this.dataAriaLabel)}
             tabindex="${this.disabled ? -1 : 0}"
             @change="${this.handleChange}"
           />

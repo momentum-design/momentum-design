@@ -41,7 +41,6 @@ const styles = [hostFitContentStyles, css`
   .toggle-container {
     position: relative;
     border-radius: var(--mdc-toggle-border-radius);
-    cursor: pointer;
   }
 
   .toggle-input {
@@ -63,6 +62,14 @@ const styles = [hostFitContentStyles, css`
     transition: background-color 0.3s ease;
     outline: none;
     box-sizing: content-box;
+  }
+
+  :host(:dir(rtl)) .toggle-slider {
+    justify-content: flex-end;
+  }
+
+  :host([checked]:dir(rtl)) .toggle-slider {
+    justify-content: flex-start;
   }
 
   :host([size='compact']) .toggle-slider {
@@ -112,8 +119,9 @@ const styles = [hostFitContentStyles, css`
     background-color: var(--mdc-toggle-inactive-disabled-color);
   }
 
-  :host([disabled]) .toggle-icon {
+  :host([disabled]) .toggle-icon-container {
     background-color: var(--mdc-toggle-icon-background-color-disabled);
+    cursor: not-allowed;
   }
 
   :host([disabled][checked]) .toggle-slider {
