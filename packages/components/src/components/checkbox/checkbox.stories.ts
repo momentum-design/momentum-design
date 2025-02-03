@@ -26,7 +26,7 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
-    ...hideControls(['help-text-type', 'label-info', 'id']),
+    ...hideControls(['help-text-type', 'label-info', 'id', 'internals']),
     ...classArgType,
     ...styleArgType,
   },
@@ -66,7 +66,7 @@ export const Indeterminate: StoryObj = {
   },
 };
 
-export const Disabled: StoryObj = {
+export const DisabledVariants: StoryObj = {
   parameters: {
     a11y: {
       element: 'mdc-checkbox',
@@ -81,23 +81,4 @@ export const Disabled: StoryObj = {
       <mdc-checkbox label="Selected" disabled help-text="This is a help text" checked></mdc-checkbox>
       <mdc-checkbox label="Indeterminate" disabled help-text="This is a help text" indeterminate></mdc-checkbox>
     </div>`,
-};
-
-export const List: StoryObj = {
-  render: () => html`
-    <div style="display: flex; flex-direction: column;">
-      <mdc-checkbox
-        @change="${action('onchange')}"
-        label="Black Widow"
-        checked
-        help-text="This is a help text"
-      ></mdc-checkbox>
-      <mdc-checkbox @change="${action('onchange')}" label="Captain America" checked disabled></mdc-checkbox>
-      <mdc-checkbox @change="${action('onchange')}" label="Hawkeye" indeterminate disabled></mdc-checkbox>
-      <mdc-checkbox @change="${action('onchange')}" label="The Hulk" help-text="This is a help text"></mdc-checkbox>
-      <mdc-checkbox @change="${action('onchange')}" label="Iron Man" indeterminate></mdc-checkbox>
-      <mdc-checkbox @change="${action('onchange')}" label="Thor" help-text="This is a help text"></mdc-checkbox>
-      <mdc-checkbox @change="${action('onchange')}" label="Captain Marvel"></mdc-checkbox>
-    </div>
-  `,
 };
