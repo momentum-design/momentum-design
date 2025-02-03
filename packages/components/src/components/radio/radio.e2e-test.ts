@@ -102,12 +102,13 @@ test('mdc-radio', async ({ componentsPage }) => {
       await test.step('select radio by pressing space', async () => {
         await radio.focus();
         await componentsPage.page.keyboard.press('Space');
-        await expect(radio).toHaveAttribute('checked');
+        await expect(radio).toBeChecked();
+        await componentsPage.removeAttribute(radio, 'checked');
         await radio.evaluate((el) => el.blur());
       });
       await test.step('radio clicked', async () => {
         await radio.click();
-        await expect(radio).toHaveAttribute('checked');
+        await expect(radio).toBeChecked();
         await componentsPage.removeAttribute(radio, 'checked');
         await radio.evaluate((el) => el.blur());
       });
