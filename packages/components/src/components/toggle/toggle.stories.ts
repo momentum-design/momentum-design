@@ -80,21 +80,11 @@ export const WithHelperText: StoryObj = {
   },
 };
 
-export const WithInfoIcon: StoryObj = {
-  render: () => html`
-    <mdc-toggle
-    label="Toggle label"
-    checked
-    >
-      <mdc-icon slot="label-info" name="info-circle-filled"></mdc-icon>
-    </mdc-toggle>`,
-};
-
 export const Disabled: StoryObj = {
-  render: () => html`
+  render: (args) => html`
     <div style="display: flex; flex-direction: column; gap: 5px">
-      <mdc-toggle label="inactive toggle" disabled></mdc-toggle>
-      <mdc-toggle label="active toggle" disabled checked></mdc-toggle>
+      <mdc-toggle label="inactive toggle" disabled size="${args.size}"></mdc-toggle>
+      <mdc-toggle label="active toggle" disabled checked size="${args.size}"></mdc-toggle>
     </div>`,
 };
 
@@ -103,4 +93,30 @@ export const WithoutLabel: StoryObj = {
     ...Example.args,
     label: '',
   },
+};
+
+export const IsActivatedInsideForm: StoryObj = {
+  render: (args) => html`
+    <form onsubmit="event.preventDefault(); alert(new FormData(event.target).get('toggleName'));">
+      <fieldset>
+        <legend>Form Example</legend>
+        <mdc-toggle name="toggleName" value="toggleValueActivated" checked label="Agree to Terms"
+          size="${args.size}"></mdc-toggle>
+        <mdc-button type="submit">Submit</mdc-button>
+      </fieldset>
+    </form>
+  `,
+};
+
+export const IsDeactivatedInsideForm: StoryObj = {
+  render: (args) => html`
+    <form onsubmit="event.preventDefault(); alert(new FormData(event.target).get('toggleName'));">
+      <fieldset>
+        <legend>Form Example</legend>
+        <mdc-toggle name="toggleName" value="toggleValueDeactivated" label="Agree to Terms"
+          size="${args.size}"></mdc-toggle>
+        <mdc-button type="submit">Submit</mdc-button>
+      </fieldset>
+    </form>
+  `,
 };

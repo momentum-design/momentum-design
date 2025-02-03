@@ -36,9 +36,11 @@ const styles = [hostFitContentStyles, css`
     --mdc-toggle-icon-background-color-normal: var(--mds-color-theme-common-text-primary-normal);
     --mdc-toggle-icon-background-color-disabled: var(--mds-color-theme-common-text-primary-disabled);
 
-    display: flex;
-    flex-direction: row;
-    gap: 0.75rem;
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: auto auto;
+    column-gap: 0.75rem;
+    row-gap: 0.25rem;
   }
 
   .mdc-toggle__container {
@@ -71,7 +73,7 @@ const styles = [hostFitContentStyles, css`
   :host([checked]) .mdc-toggle__slider {
     background-color: var(--mdc-toggle-active-rest-color);
     justify-content: flex-end;
-    border: transparent;
+    border-color: transparent;
   }
 
   :host([size='compact']) .mdc-toggle__slider {
@@ -80,15 +82,7 @@ const styles = [hostFitContentStyles, css`
     border-radius: var(--mdc-toggle-border-radius-compact);
   }
 
-  :host(:dir(rtl)) .mdc-toggle__slider {
-    justify-content: flex-end;
-  }
-
-  :host([checked]:dir(rtl)) .mdc-toggle__slider {
-    justify-content: flex-start;
-  }
-
-  .mdc-toggle__icon-container {
+  .mdc-toggle__icon-container, :host([checked]:dir(rtl)) .mdc-toggle__icon-container {
     width: var(--mdc-toggle-icon-container-size);
     height: var(--mdc-toggle-icon-container-size);
     margin-left: 0.125rem;
@@ -97,7 +91,7 @@ const styles = [hostFitContentStyles, css`
     box-sizing: border-box;
   }
 
-  :host([checked]) .mdc-toggle__icon-container {
+  :host([checked]) .mdc-toggle__icon-container, :host(:dir(rtl)) .mdc-toggle__icon-container {
     margin-right: 0.125rem;
     margin-left: 0;
   }
@@ -148,22 +142,11 @@ const styles = [hostFitContentStyles, css`
     background-color: var(--mdc-toggle-icon-background-color-disabled);
   }
 
-  .mdc-toggle__label-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
   .mdc-label-text, .mdc-help-text {
     font-size: var(--mdc-toggle-label-fontsize);
     font-weight: var(--mdc-toggle-label-fontweight);
     line-height: var(--mdc-toggle-label-lineheight);
-  }
-
-  .mdc-label-text {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
+    grid-column: 2;
   }
 
   .mdc-help-text {

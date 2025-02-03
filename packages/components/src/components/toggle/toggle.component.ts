@@ -44,11 +44,37 @@ class Toggle extends NameMixin(ValueMixin(FormfieldWrapper)) {
   @property({ type: String, reflect: true, attribute: 'data-aria-label' })
   dataAriaLabel = '';
 
+  /** @internal */
+  private internals: ElementInternals;
+
+  /** @internal */
+  static formAssociated = true;
+
+  /** @internal */
+  get form(): HTMLFormElement | null {
+    return this.internals.form;
+  }
+
   constructor() {
     super();
-
+    this.internals = this.attachInternals();
     // Toggle does not contain helpTextType property.
     this.helpTextType = undefined as unknown as ValidationType;
+  }
+
+  /**
+   * Updates the form value to reflect the current state of the toggle.
+   * If toggle is switched on, the value is set to either the user-provided value or 'isActive' if no value is provided.
+   * If toggle is switched off, the value is set to null.
+   */
+  private setFormValue() {
+    let actualValue: string | null = null;
+
+    if (this.checked) {
+      actualValue = !this.value ? 'isActive' : this.value;
+    }
+
+    this.internals.setFormValue(actualValue);
   }
 
   /**
@@ -67,7 +93,6 @@ class Toggle extends NameMixin(ValueMixin(FormfieldWrapper)) {
    */
   private handleChange(event: Event) {
     this.toggleState();
-
     // Change event doesn't bubble out of shadow dom,
     // Workaround to fix this: https://github.com/lit/lit-element/issues/922#issuecomment-611139629
     const newEvent = new (event.constructor as typeof Event)(event.type, event);
@@ -87,6 +112,10 @@ class Toggle extends NameMixin(ValueMixin(FormfieldWrapper)) {
 
   public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     super.update(changedProperties);
+
+    if (changedProperties.has('checked')) {
+      this.setFormValue();
+    }
 
     if (changedProperties.has('size')) {
       this.setToggleSize(this.size);
@@ -120,10 +149,8 @@ class Toggle extends NameMixin(ValueMixin(FormfieldWrapper)) {
                 </div>
           </div>
         </div>
-        <div class="mdc-toggle__label-wrapper">
-          ${this.renderLabel()}
-          ${this.renderHelpText()}
-        </div>
+        ${this.renderLabel()}
+        ${this.renderHelperText()}
     `;
   }
 
