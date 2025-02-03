@@ -3,7 +3,6 @@ import { property, state, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './input.styles';
 import FormfieldWrapper from '../formfieldwrapper';
-import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { NameMixin } from '../../utils/mixins/NameMixin';
 import { PREFIX_TEXT_OPTIONS } from './input.constants';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
@@ -27,7 +26,7 @@ import type { AutoCapitalizeType } from './input.types';
  * @dependency mdc-text
  * @dependency mdc-button
  */
-class Input extends NameMixin(DisabledMixin(FormfieldWrapper)) {
+class Input extends NameMixin(FormfieldWrapper) {
   /**
    * The placeholder text that is displayed when the input field is empty.
    */
