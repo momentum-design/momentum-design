@@ -89,18 +89,6 @@ class Icon extends Component {
   }
 
   /**
-   * Dispatches a 'load' event on the component once the icon has been successfully loaded.
-   * This event bubbles and is cancelable.
-   */
-  private triggerIconLoaded(): void {
-    const loadEvent = new Event('load', {
-      bubbles: true,
-      cancelable: true,
-    });
-    this.dispatchEvent(loadEvent);
-  }
-
-  /**
    * Get Icon Data function which will fetch the icon (currently only svg)
    * and sets state and attributes once fetched successfully
    *
@@ -125,8 +113,7 @@ class Icon extends Component {
   }
 
   /**
-   * Sets the iconData state to the fetched icon,
-   * and calls functions to set role, aria-label and aria-hidden attributes on the icon.
+   * Sets the iconData state to the fetched icon.
    * Dispatches a 'load' event on the component once the icon has been successfully loaded.
    * @param iconHtml - The icon html element which has been fetched from the icon provider.
    */
@@ -134,11 +121,12 @@ class Icon extends Component {
     // update iconData state once fetched:
     this.iconData = iconHtml;
 
-    // when icon is fetched successfully, set the role, aria-label and invoke function to trigger icon load event.
-    this.setRoleOnIcon();
-    this.setAriaLabelOnIcon();
-    this.setAriaHiddenOnIcon();
-    this.triggerIconLoaded();
+    // when icon is fetched successfully, trigger icon load event.
+    const loadEvent = new Event('load', {
+      bubbles: true,
+      cancelable: true,
+    });
+    this.dispatchEvent(loadEvent);
   }
 
   /**
@@ -166,24 +154,6 @@ class Icon extends Component {
     }
   }
 
-  private setRoleOnIcon() {
-    this.role = this.ariaLabel ? 'img' : null;
-  }
-
-  private setAriaHiddenOnIcon() {
-    // set aria-hidden=true for SVG to avoid screen readers
-    this.iconData?.setAttribute('aria-hidden', 'true');
-  }
-
-  private setAriaLabelOnIcon() {
-    if (this.ariaLabel) {
-      // pass through aria-label attribute to svg if set on mdc-icon
-      this.iconData?.setAttribute('aria-label', this.ariaLabel);
-    } else {
-      this.iconData?.removeAttribute('aria-label');
-    }
-  }
-
   private get computedIconSize() {
     return this.size ?? this.sizeFromContext ?? DEFAULTS.SIZE;
   }
@@ -201,8 +171,7 @@ class Icon extends Component {
     }
 
     if (changedProperties.has('ariaLabel')) {
-      this.setRoleOnIcon();
-      this.setAriaLabelOnIcon();
+      this.role = this.ariaLabel ? 'img' : null;
     }
 
     if (changedProperties.has('size') || changedProperties.has('lengthUnit')) {
