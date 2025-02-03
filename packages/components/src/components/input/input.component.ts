@@ -3,8 +3,6 @@ import { property, state, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './input.styles';
 import FormfieldWrapper from '../formfieldwrapper';
-import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
-import { ValueMixin } from '../../utils/mixins/ValueMixin';
 import { NameMixin } from '../../utils/mixins/NameMixin';
 import { PREFIX_TEXT_OPTIONS } from './input.constants';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
@@ -18,7 +16,7 @@ import type { AutoCapitalizeType } from './input.types';
  * - input field - contains the value
  * - help text or validation message - displayed below the input field.
  * - clear button - clear the input field.
- * - prefix text -displayed before the input field.
+ * - prefix text - displayed before the input field.
  * - leading icon - displayed before the input field.
  *
  * @tagname mdc-input
@@ -28,7 +26,7 @@ import type { AutoCapitalizeType } from './input.types';
  * @dependency mdc-text
  * @dependency mdc-button
  */
-class Input extends ValueMixin(NameMixin(DisabledMixin(FormfieldWrapper))) {
+class Input extends NameMixin(FormfieldWrapper) {
   /**
    * The placeholder text that is displayed when the input field is empty.
    */
@@ -81,7 +79,7 @@ class Input extends ValueMixin(NameMixin(DisabledMixin(FormfieldWrapper))) {
    * The autocomplete attribute of the input field.
    * @default 'off'
    */
-  @property({ type: String }) autocomplete = 'off';
+  @property({ type: String }) autocomplete: any = 'off';
 
   /**
    * If true, the input field is focused when the component is rendered.
@@ -93,21 +91,14 @@ class Input extends ValueMixin(NameMixin(DisabledMixin(FormfieldWrapper))) {
    * Specifies the name of the directionality of text for submission purposes (e.g., "rtl" for right-to-left).
    * @default ''
    */
-  @property({ type: String }) dirname = '';
+  @property({ type: String }) dirname?: string;
 
   /**
    * The pattern attribute of the input field.
    * Specifies a regular expression that the input value must match for validation purposes.
    * @default ''
    */
-  @property({ type: String }) pattern = '';
-
-  /**
-   * The form attribute of the input field.
-   * Identifies the form to which the input field belongs.
-   * @default ''
-   */
-  @property({ type: String }) form = '';
+  @property({ type: String }) pattern?: string;
 
   /**
    * The list attribute of the input field.
@@ -123,11 +114,71 @@ class Input extends ValueMixin(NameMixin(DisabledMixin(FormfieldWrapper))) {
    */
   @property({ type: Number }) size?: number | undefined;
 
-  /**
+  @state() internalValue = '';
+
+  @property()
+  set value(val: string) {
+    this.internalValue = val;
+    this.internals.setFormValue(val);
+
+    this.updateComplete.then(() => {
+      this.setValidityFromInput();
+    }).catch((error) => {
+      if (this.onerror) {
+        this.onerror(error);
+      }
+    });
+  }
+
+  get value(): string {
+    return this.internalValue;
+  }
+
+  checkValidity(): boolean {
+    this.setValidityFromInput();
+    return this.internals.checkValidity();
+  }
+
+  reportValidity() {
+    this.setValidityFromInput();
+    return this.internals.reportValidity();
+  }
+
+  /** @internal */
+  private internals: ElementInternals;
+
+  /** @internal */
+  static formAssociated = true;
+
+  /** @internal */
+  get form(): HTMLFormElement | null {
+    return this.internals.form;
+  }
+
+  constructor() {
+    super();
+    this.internals = this.attachInternals();
+  }
+
+    /**
    * @internal
    * The input element
    */
-  @query('input') private inputElement!: HTMLInputElement;
+    @query('input') private inputElement!: HTMLInputElement;
+
+    override connectedCallback(): void {
+      super.connectedCallback();
+
+      this.updateComplete.then(() => {
+        this.inputElement.checkValidity();
+        this.setValidityFromInput();
+        this.internals.setFormValue(this.inputElement.value);
+      }).catch((error) => {
+        if (this.onerror) {
+          this.onerror(error);
+        }
+      });
+    }
 
   /**
    * @internal
@@ -138,6 +189,57 @@ class Input extends ValueMixin(NameMixin(DisabledMixin(FormfieldWrapper))) {
    * @internal
    */
   @state() prevHelperTextType: ValidationType = 'default';
+
+  override attributeChangedCallback(
+    name: string,
+    old: string | null,
+    value: string | null,
+  ): void {
+    super.attributeChangedCallback(name, old, value);
+
+    const validationRelatedAttributes = [
+      'maxlength',
+      'minlength',
+      'pattern',
+      'required',
+    ];
+
+    if (validationRelatedAttributes.includes(name)) {
+      this.updateComplete.then(() => {
+        this.setValidityFromInput();
+      }).catch((error) => {
+        if (this.onerror) {
+          this.onerror(error);
+        }
+      });
+    }
+  }
+
+  private setValidityFromInput() {
+    if (this.inputElement) {
+      this.internals.setValidity(
+        this.inputElement.validity,
+        this.inputElement.validationMessage,
+        this.inputElement,
+      );
+    }
+  }
+
+  private updateValue() {
+    this.internalValue = this.inputElement.value;
+    this.internals.setFormValue(this.inputElement.value);
+  }
+
+  private onInput() {
+    this.updateValue();
+    this.setValidityFromInput();
+  }
+
+  private onChange(event: Event) {
+    this.updateValue();
+    this.setValidityFromInput();
+    this.dispatchEvent(new Event('change', event));
+  }
 
   protected renderLeadingIcon() {
     if (!this.leadingIcon) {
@@ -208,7 +310,7 @@ class Input extends ValueMixin(NameMixin(DisabledMixin(FormfieldWrapper))) {
           <input 
             class='input' 
             id="${this.id}"
-            .value="${this.value}"
+            .value="${this.internalValue}"
             ?disabled="${this.disabled}"
             ?readonly="${this.readonly}"
             ?required="${this.required}"
@@ -221,10 +323,10 @@ class Input extends ValueMixin(NameMixin(DisabledMixin(FormfieldWrapper))) {
             ?autofocus="${this.autofocus}"
             dirname=${ifDefined(this.dirname)}
             pattern=${ifDefined(this.pattern)}
-            form=${ifDefined(this.form)}
             list=${ifDefined(this.list)}
             size=${ifDefined(this.size)}
-            @input=${(e: Event) => { this.value = (e.target as HTMLInputElement).value; }}
+            @input=${this.onInput}
+            @change=${this.onChange}
           />
         </slot>
        </section>

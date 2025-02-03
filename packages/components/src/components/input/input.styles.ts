@@ -10,9 +10,17 @@ const styles = [css`
     color: var(--mds-color-theme-text-primary-disabled);
   }
 
-  :host([disabled]) .input {
+  :host([disabled]) .input{
     border-color: var(--mds-color-theme-outline-primary-disabled);
     background: var(--mds-color-theme-background-primary-disabled);
+  }
+
+  :host([disabled][help-text-type="default"]) .input-container,
+  :host([disabled][help-text-type="success"]) .input-container,
+  :host([disabled][help-text-type="warning"]) .input-container,
+  :host([disabled][help-text-type="error"]) .input-container,
+  :host([disabled][help-text-type="priority"]) .input-container{
+    border-color: var(--mds-color-theme-text-accent-disabled);
   }
 
   .leading-icon{

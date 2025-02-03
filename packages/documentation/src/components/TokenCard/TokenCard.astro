@@ -4,11 +4,12 @@ import './TokenCard.css';
 type Props = {
   name: string;
   link: string;
+  disabled?: boolean;
 };
 
-const { name, link } = Astro.props as Props;
+const { name, link, disabled } = Astro.props as Props;
 ---
 
-<a id={name} class="card" href={link}>
+<a id={name} class="card" href={link} aria-disabled={disabled}>
   {name.replace('-', ' ')}
 </a>
