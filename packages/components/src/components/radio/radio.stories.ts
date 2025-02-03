@@ -164,9 +164,9 @@ export const WithInfoIcon: StoryObj = {
 };
 
 export const RadioInForm = () => {
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: Event) => {
     event.preventDefault();
-    const formData = new FormData(event.target);
+    const formData = new FormData(event.target as HTMLFormElement);
     const selectedValue = formData.get('course-plan');
     action('Form Submitted')({ value: selectedValue });
   };
