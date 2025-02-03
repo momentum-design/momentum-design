@@ -13,9 +13,9 @@ const render = (args: Args) => html`
     name="radio"
     value="option1"
     help-text="${args['help-text']}"
-    ?checked="${args.checked}"
-    ?disabled="${args.disabled}"
-    ?readonly="${args.readonly}"
+    ?checked=${args.checked}
+    ?disabled=${args.disabled}
+    ?readonly=${args.readonly}
     data-aria-label="${args['data-aria-label']}"
   ></mdc-radio>
 `;
@@ -61,7 +61,6 @@ export const withNameGroup: StoryObj = {
       Radio Group for selecting plans
       <mdc-radio name="plan" value="option1" label="Standard Plan" ></mdc-radio>
       <mdc-radio name="plan" value="option2" label="Disabled Premium Plan" disabled></mdc-radio>
-      <mdc-radio name="plan" value="option2" label="Readonly Premium Plan" readonly></mdc-radio>
       <mdc-radio name="plan" value="option3" label="Premium Plan"></mdc-radio>
       <mdc-radio name="plan" value="option4" label="Premium Plan for family"></mdc-radio>
       <mdc-radio name="plan" value="option5" label="Business Plan"></mdc-radio>
@@ -162,4 +161,31 @@ export const WithInfoIcon: StoryObj = {
       },
     },
   },
+};
+
+export const RadioInForm = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const selectedValue = formData.get('course-plan');
+    action('Form Submitted')({ value: selectedValue });
+  };
+
+  return html`
+    <form @submit=${handleSubmit}>
+      <mdc-radio name="course-plan" value="standard" data-aria-label="Standard Plan" label="Standard Plan">
+      </mdc-radio>
+      <mdc-radio name="course-plan" value="premium" data-aria-label="Premium Plan" label="Premium Plan">
+      </mdc-radio>
+      <mdc-radio
+        name="course-plan"
+        value="enterprise"
+        checked
+        data-aria-label="Enterprise Plan"
+        label="Enterprise Plan">
+      </mdc-radio>
+      <br />
+      <button type="submit">Submit</button>
+    </form>
+  `;
 };
