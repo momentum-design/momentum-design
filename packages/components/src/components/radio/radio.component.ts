@@ -1,7 +1,6 @@
 import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { NameMixin } from '../../utils/mixins/NameMixin';
 import { ValueMixin } from '../../utils/mixins/ValueMixin';
 import styles from './radio.styles';
@@ -17,7 +16,7 @@ import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
  * @tagname mdc-radio
  */
 
-class Radio extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
+class Radio extends NameMixin(ValueMixin(FormfieldWrapper)) {
   /**
   * Determines whether the radio is selected or unselected.
   *
