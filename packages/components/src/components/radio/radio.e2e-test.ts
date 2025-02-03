@@ -95,7 +95,7 @@ test('mdc-radio', async ({ componentsPage }) => {
     await test.step('interactions', async () => {
       const radio = componentsPage.page.locator('mdc-radio').locator('input[type="radio"]');
       await test.step('radio focus using tab', async () => {
-        await componentsPage.page.keyboard.press('Tab');
+        await componentsPage.actionability.pressTab();
         await expect(radio).toBeFocused();
         await radio.evaluate((el) => el.blur());
       });
@@ -116,7 +116,7 @@ test('mdc-radio', async ({ componentsPage }) => {
         await componentsPage.setAttributes(radio, {
           disabled: '',
         });
-        await componentsPage.page.keyboard.press('Tab');
+        await componentsPage.actionability.pressTab();
         await expect(radio).not.toBeFocused();
 
         await componentsPage.removeAttribute(radio, 'disabled');
@@ -127,12 +127,12 @@ test('mdc-radio', async ({ componentsPage }) => {
         await componentsPage.setAttributes(radio, {
           readonly: '',
         });
-        await componentsPage.page.keyboard.press('Tab');
+        await componentsPage.actionability.pressTab();
         await expect(radio).toBeFocused();
 
-        await radio.click();
+        await componentsPage.page.keyboard.press('Space');
         await expect(radio).not.toHaveAttribute('checked');
-        await componentsPage.removeAttribute(radio, 'disabled');
+        await componentsPage.removeAttribute(radio, 'readonly');
         await radio.evaluate((el) => el.blur());
       });
     });
@@ -145,6 +145,7 @@ test('mdc-radio', async ({ componentsPage }) => {
       //   Radio btn without label
       await radioStickerSheet.setAttributes({
         'data-aria-label': 'Standard Plan',
+        readonly: false,
       });
 
       // Radio btn with label
@@ -204,7 +205,7 @@ test('mdc-radio', async ({ componentsPage }) => {
       await radioStickerSheet.createMarkupWithCombination({}, true);
       await radioStickerSheet.mountStickerSheet();
 
-      await test.step('matches screenshot of checkbox sizes stickersheet', async () => {
+      await test.step('matches screenshot of radio stickersheet', async () => {
         await componentsPage.visualRegression.takeScreenshot('mdc-radio', {
           element: radioStickerSheet.getWrapperContainer(),
         });
