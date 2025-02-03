@@ -92,14 +92,14 @@ class Input extends NameMixin(DisabledMixin(FormfieldWrapper)) {
    * Specifies the name of the directionality of text for submission purposes (e.g., "rtl" for right-to-left).
    * @default ''
    */
-  @property({ type: String }) dirname = '';
+  @property({ type: String }) dirname?: string;
 
   /**
    * The pattern attribute of the input field.
    * Specifies a regular expression that the input value must match for validation purposes.
    * @default ''
    */
-  @property({ type: String }) pattern = '';
+  @property({ type: String }) pattern?: string;
 
   /**
    * The list attribute of the input field.
@@ -209,7 +209,9 @@ class Input extends NameMixin(DisabledMixin(FormfieldWrapper)) {
       this.updateComplete.then(() => {
         this.setValidityFromInput();
       }).catch((error) => {
-        console.error('Error setting validity from input:', error);
+        if (this.onerror) {
+          this.onerror(error);
+        }
       });
     }
   }

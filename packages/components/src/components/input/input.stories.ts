@@ -30,7 +30,6 @@ const render = (args: Args) =>
     autocomplete="${args.autocomplete}"
     dirname="${ifDefined(args.dirname)}"
     pattern="${ifDefined(args.pattern)}"
-    form="${ifDefined(args.form)}"
     list="${ifDefined(args.list)}"
     size="${ifDefined(args.size)}"
     ></mdc-input>`;
@@ -103,9 +102,6 @@ const meta: Meta = {
       control: 'text',
     },
     pattern: {
-      control: 'text',
-    },
-    form: {
       control: 'text',
     },
     list: {
@@ -192,4 +188,18 @@ export const AllVariants: StoryObj = {
       leading-icon="placeholder-bold"
       ></mdc-input>
       </div>`,
+};
+
+export const FormFieldInput: StoryObj = {
+  render: () => html`
+  <form>
+    <mdc-input
+      id="1"
+      label="Label (required)"
+      placeholder="enter some text"
+      required
+    ></mdc-input>
+    <mdc-button type="submit" size='24' >Submit</mdc-button>
+  </form>
+  `,
 };
