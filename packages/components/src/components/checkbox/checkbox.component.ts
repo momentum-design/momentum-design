@@ -74,8 +74,8 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(DisabledMixin(For
 
   /**
    * Toggles the state of the checkbox element.
-   * If the checkbox element is not disabled,
-   * then we will toggle its checked state.
+   * If the element is not disabled, then
+   * the checked property is toggled and the indeterminate property is set to false.
    */
   private toggleState(): void {
     if (!this.disabled) {
@@ -124,7 +124,7 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(DisabledMixin(For
         />
         <div class="mdc-checkbox__icon-container">${checkboxIconContent}</div>
       </div>
-      <div>
+      <div class="mdc-checkbox__text-container">
         ${this.renderLabel()}
         ${this.renderHelperText()}
       </div>

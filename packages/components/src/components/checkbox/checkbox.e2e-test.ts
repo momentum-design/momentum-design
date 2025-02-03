@@ -37,7 +37,7 @@ const setup = async (args: SetupOptions) => {
   return checkbox;
 };
 
-const testToRun = async (componentsPage: ComponentsPage) => {
+test('mdc-checkbox', async ({ componentsPage }) => {
   /**
    * VISUAL REGRESSION
    */
@@ -136,22 +136,22 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       expect(textContent?.trim()).toBe('This is a help text');
     });
 
-    await test.step(`should have icon element with minus-regular icon name,
+    await test.step(`should have icon element with minus-bold icon name,
       when the indeterminate attribute is passed`, async () => {
       await componentsPage.removeAttribute(checkbox, 'checked');
       await componentsPage.setAttributes(checkbox, { indeterminate: '' });
       const icon = await componentsPage.page.locator('mdc-icon');
       await icon.waitFor();
-      await expect(icon).toHaveAttribute('name', 'minus-regular');
+      await expect(icon).toHaveAttribute('name', 'minus-bold');
     });
 
-    await test.step(`should have icon element with check-regular icon name,
+    await test.step(`should have icon element with check-bold icon name,
       when the checked attribute is passed`, async () => {
       await componentsPage.removeAttribute(checkbox, 'indeterminate');
       await componentsPage.setAttributes(checkbox, { checked: '' });
       const icon = await componentsPage.page.locator('mdc-icon');
       await icon.waitFor();
-      await expect(icon).toHaveAttribute('name', 'check-regular');
+      await expect(icon).toHaveAttribute('name', 'check-bold');
     });
 
     await test.step('should have disabled attribute when the disabled attribute is passed', async () => {
@@ -205,11 +205,5 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       await checkbox.click();
       await expect(checkbox).not.toHaveAttribute('checked');
     });
-  });
-};
-
-test.describe.parallel('mdc-checkbox', () => {
-  test('standalone', async ({ componentsPage }) => {
-    await testToRun(componentsPage);
   });
 });
