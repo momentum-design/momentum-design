@@ -3,7 +3,6 @@ import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { live } from 'lit/directives/live.js';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
-import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { NameMixin } from '../../utils/mixins/NameMixin';
 import { ValueMixin } from '../../utils/mixins/ValueMixin';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
@@ -21,7 +20,7 @@ import styles from './checkbox.styles';
  *
  * @tagname mdc-checkbox
  */
-class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(DisabledMixin(FormfieldWrapper)))) {
+class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) {
   /**
    * Determines whether the checkbox is selected or unselected.
    *
