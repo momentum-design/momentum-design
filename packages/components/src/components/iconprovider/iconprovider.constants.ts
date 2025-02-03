@@ -3,11 +3,12 @@ import utils from '../../utils/tag-name';
 const TAG_NAME = utils.constructTagName('iconprovider');
 
 const ALLOWED_FILE_EXTENSIONS = ['svg'];
-const ALLOWED_LENGTH_UNITS = ['em', 'rem', 'px'];
+const ALLOWED_LENGTH_UNITS = ['em', 'rem', 'px', '%'];
 const LENGTH_UNIT_SIZE = {
   px: 16,
   em: 1,
   rem: 1,
+  '%': 100,
 } as Record<string, number>;
 
 const DEFAULTS = {
