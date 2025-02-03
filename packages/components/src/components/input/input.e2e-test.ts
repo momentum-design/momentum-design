@@ -30,10 +30,11 @@ type SetupOptions = {
   size?: number;
 };
 
-const setup = async (args: SetupOptions) => {
+const setup = async (args: SetupOptions, isForm = false) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
+    ${isForm ? '<form>' : ''}
       <mdc-input
       id="${restArgs.id}"
       ${restArgs.value ? `value="${restArgs.value}"` : ''}
@@ -57,9 +58,15 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.list ? `list="${restArgs.list}"` : ''}
       ${restArgs.size ? `size="${restArgs.size}"` : ''}
       ></mdc-input>
+    ${isForm ? '<mdc-button type="submit" size="24">Submit</mdc-button></form>' : ''}
     `,
     clearDocument: true,
   });
+  if (isForm) {
+    const form = componentsPage.page.locator('form');
+    await form.waitFor();
+    return form;
+  }
   const text = componentsPage.page.locator('mdc-input');
   await text.waitFor();
   return text;
@@ -178,6 +185,82 @@ test('mdc-input', async ({ componentsPage }) => {
   });
 
   /**
+   * INTERACTIONS
+   */
+  // test form submission with input field marked as required
+  await test.step('interactions', async () => {
+    const inputEl = await input.locator('input');
+    await test.step('component should be focusable with tab', async () => {
+      await componentsPage.actionability.pressTab();
+      await expect(input).toBeFocused();
+      await inputEl.fill('test');
+      await expect(inputEl).toHaveValue('test');
+      await componentsPage.actionability.pressTab();
+      await expect(input).not.toBeFocused();
+    });
+
+    await test.step('readonly component should be focusable with tab', async () => {
+      await componentsPage.setAttributes(input, { readonly: '', value: 'Readonly', 'trailing-button': '' });
+      const trailingButton = input.locator('mdc-button').first();
+      await componentsPage.actionability.pressTab();
+      await expect(input).toBeFocused();
+      await expect(inputEl).toHaveValue('Readonly');
+      await componentsPage.actionability.pressTab();
+      await expect(input).not.toBeFocused();
+      await expect(trailingButton).not.toBeFocused();
+      await componentsPage.removeAttribute(input, 'readonly');
+    });
+
+    await test.step('focus on input and trailing button interactions', async () => {
+      await componentsPage.setAttributes(input, { 'trailing-button': '', value: '' });
+      const trailingButton = input.locator('mdc-button').first();
+      await componentsPage.actionability.pressTab();
+      await expect(input).toBeFocused();
+      await expect(trailingButton).toHaveClass('clear-button hidden');
+      await inputEl.fill('test');
+      await expect(inputEl).toHaveValue('test');
+      await expect(trailingButton).toHaveClass('clear-button ');
+      await componentsPage.actionability.pressTab();
+      await expect(inputEl).not.toBeFocused();
+      await expect(trailingButton).toBeFocused();
+      await trailingButton.click();
+      await expect(input).toBeFocused();
+      await expect(inputEl).toHaveValue('');
+    });
+
+    await test.step('component should not be focusable when disabled', async () => {
+      await componentsPage.setAttributes(input, { disabled: '', value: 'Disabled' });
+      await componentsPage.actionability.pressTab();
+      await expect(input).not.toBeFocused();
+      await componentsPage.removeAttribute(input, 'disabled');
+    });
+
+    await test.step('component in form should be validated when submitted', async () => {
+      const form = await setup({
+        componentsPage,
+        id: 'test-mdc-input',
+        placeholder: 'Placeholder',
+        required: true,
+      }, true);
+      const mdcInput = await form.locator('mdc-input');
+      const submitButton = await form.locator('mdc-button');
+      const inputEl = mdcInput.locator('input');
+      await componentsPage.actionability.pressTab();
+      await expect(mdcInput).toBeFocused();
+      await componentsPage.actionability.pressTab();
+      await expect(submitButton).toBeFocused();
+      await submitButton.click();
+      const validationMessage = await inputEl.evaluate((element) => {
+        const input = element as HTMLInputElement;
+        return input.validationMessage;
+      });
+      expect(validationMessage).toContain('Please fill out this field.');
+      await inputEl.fill('test');
+      await submitButton.click();
+    });
+  });
+
+  /**
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
@@ -241,35 +324,5 @@ test('mdc-input', async ({ componentsPage }) => {
    */
   await test.step('accessibility', async () => {
     await componentsPage.accessibility.checkForA11yViolations('input-default');
-  });
-
-  /**
-   * INTERACTIONS
-   */
-  // focusable on normal and readonly mode
-  // not focusable on disabled mode
-  // set trailing-button to true, click on it and check if value is cleared and focus is back on input
-  // tab should move focus from input to trailing button when value is present and trailing-button is true
-  // test form submission with input field marked as required
-  await test.step('interactions', async () => {
-    await test.step('mouse/pointer', async () => {
-      await test.step('component should fire callback x when clicking on it', async () => {
-        // TODO: add test here
-      });
-    });
-
-    await test.step('focus', async () => {
-      await test.step('component should be focusable with tab', async () => {
-        // TODO: add test here
-      });
-
-      // add additional tests here, like tabbing through several parts of the component
-    });
-
-    await test.step('keyboard', async () => {
-      await test.step('component should fire callback x when pressing y', async () => {
-        // TODO: add test here
-      });
-    });
   });
 });
