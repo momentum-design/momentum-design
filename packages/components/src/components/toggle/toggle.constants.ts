@@ -9,8 +9,8 @@ const TOGGLE_SIZE = {
 } as const;
 
 const ICON_NAME = {
-  CHECKED: 'check-regular' as IconNames,
-  UNCHECKED: 'cancel-regular' as IconNames,
+  CHECKED: 'check-bold' as IconNames,
+  UNCHECKED: 'cancel-bold' as IconNames,
 } as const;
 
 const DEFAULTS = {

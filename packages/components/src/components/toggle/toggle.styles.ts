@@ -43,6 +43,10 @@ const styles = [hostFitContentStyles, css`
     row-gap: 0.25rem;
   }
 
+  :host([help-text='']) {
+    row-gap: 0rem;
+  }
+
   .mdc-toggle__container {
     position: relative;
     border-radius: var(--mdc-toggle-border-radius);
@@ -73,7 +77,7 @@ const styles = [hostFitContentStyles, css`
   :host([checked]) .mdc-toggle__slider {
     background-color: var(--mdc-toggle-active-rest-color);
     justify-content: flex-end;
-    border-color: transparent;
+    border:none;
   }
 
   :host([size='compact']) .mdc-toggle__slider {
@@ -82,13 +86,16 @@ const styles = [hostFitContentStyles, css`
     border-radius: var(--mdc-toggle-border-radius-compact);
   }
 
-  .mdc-toggle__icon-container, :host([checked]:dir(rtl)) .mdc-toggle__icon-container {
+  .mdc-toggle__icon-container {
     width: var(--mdc-toggle-icon-container-size);
     height: var(--mdc-toggle-icon-container-size);
-    margin-left: 0.125rem;
     background-color: var(--mdc-toggle-icon-background-color-normal);
     border-radius: 50%;
     box-sizing: border-box;
+  }
+
+  .mdc-toggle__icon-container, :host([checked]:dir(rtl)) .mdc-toggle__icon-container {
+    margin-left: 0.125rem;
   }
 
   :host([checked]) .mdc-toggle__icon-container, :host(:dir(rtl)) .mdc-toggle__icon-container {
