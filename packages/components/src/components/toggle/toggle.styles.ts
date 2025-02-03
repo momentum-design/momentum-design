@@ -37,6 +37,7 @@ const styles = [hostFitContentStyles, css`
     --mdc-toggle-icon-background-color-disabled: var(--mds-color-theme-common-text-primary-disabled);
 
     display: flex;
+    flex-direction: row;
     gap: 0.75rem;
   }
 
@@ -71,7 +72,7 @@ const styles = [hostFitContentStyles, css`
   :host([checked]) .mdc-toggle__slider {
     background-color: var(--mdc-toggle-active-rest-color);
     justify-content: flex-end;
-    border: none;
+    border: transparent;
   }
 
   :host([size='compact']) .mdc-toggle__slider {
@@ -120,10 +121,6 @@ const styles = [hostFitContentStyles, css`
     padding: 0.125rem;
   }
 
-  :host([disabled]) .mdc-toggle__input {
-    cursor: not-allowed;
-  }
-
   :host(:not([disabled])) .mdc-toggle__container:hover .mdc-toggle__slider {
     background-color: var(--mdc-toggle-inactive-hover-color);
   }
@@ -152,7 +149,7 @@ const styles = [hostFitContentStyles, css`
     background-color: var(--mdc-toggle-icon-background-color-disabled);
   }
 
-  .mdc-toggle__label-container {
+  .mdc-toggle__label-wrapper {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
@@ -174,7 +171,7 @@ const styles = [hostFitContentStyles, css`
     color: var(--mdc-toggle-help-text-color);
   }
 
-  :host([disabled]) .mdc-label-text {
+  :host([disabled]) .mdc-label-text, :host([disabled]) .mdc-help-text {
     color: var(--mdc-toggle-label-color-disabled);
   }
 

@@ -2,14 +2,12 @@ import { CSSResult, html, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './toggle.styles';
-import { Component } from '../../models';
 import FormfieldWrapper from '../formfieldwrapper';
 import { ValueMixin } from '../../utils/mixins/ValueMixin';
 import { NameMixin } from '../../utils/mixins/NameMixin';
-import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { DEFAULTS, ICON_NAME, TOGGLE_SIZE } from './toggle.constants';
 import { ToggleSize } from './toggle.types';
-import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
+import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 
 /**
  * Toggle Component is an interactive control used to switch between two mutually exclusive options,
@@ -23,7 +21,7 @@ import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
  *
  * @tagname mdc-toggle
  */
-class Toggle extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
+class Toggle extends NameMixin(ValueMixin(FormfieldWrapper)) {
   /**
   * Determines whether the toggle is active or inactive.
   * @default false
@@ -55,18 +53,25 @@ class Toggle extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
 
   /**
    * Toggles the state of the toggle element.
+   * If the element is not disabled, then the checked property is toggled.
+   */
+  private toggleState(): void {
+    if (!this.disabled) {
+      this.checked = !this.checked;
+    }
+  }
+
+  /**
+   * Toggles the state of the toggle element.
    * and dispatch the new change event.
    */
-  private handleChange(event: KeyboardEvent) {
-    if (this.disabled) return;
+  private handleChange(event: Event) {
+    this.toggleState();
 
-    if (['Enter', ' '].includes(event.key)) {
-      event.preventDefault();
-    }
-
-    this.checked = !this.checked;
-    // Since change event doesn't bubble out of shadow dom, we need to explicitly dispatch it.
-    this.dispatchEvent(new CustomEvent('onToggleChange', { detail: { checked: this.checked } }));
+    // Change event doesn't bubble out of shadow dom,
+    // Workaround to fix this: https://github.com/lit/lit-element/issues/922#issuecomment-611139629
+    const newEvent = new (event.constructor as typeof Event)(event.type, event);
+    this.dispatchEvent(newEvent);
   }
 
   /**
@@ -115,14 +120,14 @@ class Toggle extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
                 </div>
           </div>
         </div>
-        <div class="mdc-toggle__label-container">
+        <div class="mdc-toggle__label-wrapper">
           ${this.renderLabel()}
-          ${this.renderHelperText()}
+          ${this.renderHelpText()}
         </div>
     `;
   }
 
-  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...styles];
 }
 
 export default Toggle;
