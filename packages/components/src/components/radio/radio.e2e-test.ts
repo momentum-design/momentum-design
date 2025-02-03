@@ -90,58 +90,11 @@ test('mdc-radio', async ({ componentsPage }) => {
     });
 
     /**
-     * INTERACTIONS
-     */
-    await test.step('interactions', async () => {
-      const radio = componentsPage.page.locator('mdc-radio').locator('input[type="radio"]');
-      await test.step('radio focus using tab', async () => {
-        await componentsPage.actionability.pressTab();
-        await expect(radio).toBeFocused();
-        await radio.evaluate((el) => el.blur());
-      });
-      await test.step('select radio by pressing space', async () => {
-        await radio.focus();
-        await componentsPage.page.keyboard.press('Space');
-        await expect(radio).toBeChecked();
-        await componentsPage.removeAttribute(radio, 'checked');
-        await radio.evaluate((el) => el.blur());
-      });
-      await test.step('radio clicked', async () => {
-        await radio.click();
-        await expect(radio).toBeChecked();
-        await componentsPage.removeAttribute(radio, 'checked');
-        await radio.evaluate((el) => el.blur());
-      });
-      await test.step('radio focus and click on disabled radio', async () => {
-        await componentsPage.setAttributes(radio, {
-          disabled: '',
-        });
-        await componentsPage.actionability.pressTab();
-        await expect(radio).not.toBeFocused();
-
-        await componentsPage.removeAttribute(radio, 'disabled');
-        await radio.evaluate((el) => el.blur());
-      });
-
-      await test.step('radio focus but should not be checked if have readonly', async () => {
-        await componentsPage.setAttributes(radio, {
-          readonly: '',
-        });
-        await componentsPage.actionability.pressTab();
-        await expect(radio).toBeFocused();
-
-        await componentsPage.page.keyboard.press('Space');
-        await expect(radio).not.toHaveAttribute('checked');
-        await componentsPage.removeAttribute(radio, 'readonly');
-        await radio.evaluate((el) => el.blur());
-      });
-    });
-
-    /**
    * VISUAL REGRESSION
    */
     await test.step('visual-regression', async () => {
       const radioStickerSheet = new StickerSheet(componentsPage, 'mdc-radio');
+
       //   Radio btn without label
       await radioStickerSheet.setAttributes({
         'data-aria-label': 'Standard Plan',
@@ -209,6 +162,61 @@ test('mdc-radio', async ({ componentsPage }) => {
         await componentsPage.visualRegression.takeScreenshot('mdc-radio', {
           element: radioStickerSheet.getWrapperContainer(),
         });
+      });
+    });
+
+    /**
+     * INTERACTIONS
+     */
+    await test.step('interactions', async () => {
+      await test.step('radio focus using tab', async () => {
+        const radio = await setup({ componentsPage, label: 'Standard Plan for student' });
+
+        await componentsPage.actionability.pressTab();
+        await expect(radio).toBeFocused();
+        // await radio.evaluate((el) => el.blur());
+      });
+      await test.step('select radio by pressing space', async () => {
+        await setup({ componentsPage, label: 'Standard Plan for student' });
+        const radio = await componentsPage.page.locator('mdc-radio').locator('input[type="radio"]');
+
+        await componentsPage.actionability.pressTab();
+        await componentsPage.page.keyboard.press('Space');
+        await expect(radio).toBeChecked();
+      });
+
+      await test.step('radio clicked', async () => {
+        await setup({ componentsPage, label: 'Standard Plan for student' });
+        const radio = await componentsPage.page.locator('mdc-radio').locator('input[type="radio"]');
+
+        await radio.click();
+        await expect(radio).toBeChecked();
+      });
+
+      await test.step('radio focus and click on disabled radio', async () => {
+        await setup({ componentsPage, label: 'Standard Plan for student', disabled: true });
+        const radio = await componentsPage.page.locator('mdc-radio').locator('input[type="radio"]');
+
+        await componentsPage.actionability.pressTab();
+        await expect(radio).not.toBeFocused();
+        await expect(radio).toHaveAttribute('disabled');
+      });
+
+      await test.step('radio focus but should not be checked if have readonly', async () => {
+        await setup({
+          componentsPage,
+          label: 'Standard Plan for student',
+          name: 'student-plan',
+          value: 'standard',
+          readonly: true,
+        });
+        const radio = await componentsPage.page.locator('mdc-radio').locator('input[name="student-plan"]');
+        await componentsPage.actionability.pressTab();
+        await expect(radio).toBeFocused();
+        await expect(radio).not.toBeChecked();
+
+        await radio.click();
+        await expect(radio).not.toHaveAttribute('checked');
       });
     });
 
