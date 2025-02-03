@@ -1,22 +1,18 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls } from '../../../config/storybook/utils';
+import { disableControls, readOnlyControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
   <mdc-icon
+    aria-label="${ifDefined(args['aria-label'])}"
     class="${args.class}"
     name="${args.name}"
     size="${args.size}"
     style="${args.style}"
-  ></mdc-icon> `;
-const renderAccessibility = (args: Args) => html`
-  <mdc-icon
-    aria-label="${args['aria-label']}"
-    class="${args.class}"
-    name="${args.name}"
-    size="${args.size}"
+    tabindex="${ifDefined(args.tabindex)}"
   ></mdc-icon>
 `;
 
@@ -37,6 +33,7 @@ const meta: Meta = {
       'computedIconSize',
       '--mdc-icon-fill-color',
     ]),
+    ...readOnlyControls(['tabindex']),
     ...classArgType,
     ...styleArgType,
   },
@@ -45,6 +42,11 @@ const meta: Meta = {
 export default meta;
 
 export const Example: StoryObj = {
+  argTypes: {
+    tabindex: {
+      table: { disable: true },
+    },
+  },
   args: {
     'aria-label': 'This is the accessibility icon',
     name: 'placeholder-regular',
@@ -61,7 +63,11 @@ export const Decorative: StoryObj = {
         disable: true,
       },
     },
+    tabindex: {
+      table: { disable: true },
+    },
   },
+
   args: {
     name: 'placeholder-regular',
     size: 2,
@@ -71,12 +77,36 @@ export const Decorative: StoryObj = {
 };
 
 export const Informative: StoryObj = {
-  render: renderAccessibility,
+  argTypes: {
+    tabindex: {
+      table: { disable: true },
+    },
+  },
   args: {
     'aria-label': 'This is the accessibility icon',
     name: 'placeholder-regular',
     size: 2,
     class: 'custom-classname',
     style: 'margin: 0px;',
+  },
+};
+
+export const InformativeStandalone: StoryObj = {
+  argTypes: {
+    tabindex: {
+      description: 'The tabindex of the icon, set to 0 to make it focusable',
+      table: {
+        category: 'Storybook only',
+        readonly: true,
+      },
+    },
+  },
+  args: {
+    'aria-label': 'This is the accessibility icon',
+    name: 'placeholder-regular',
+    size: 2,
+    class: 'custom-classname',
+    style: 'margin: 0px;',
+    tabindex: 0,
   },
 };

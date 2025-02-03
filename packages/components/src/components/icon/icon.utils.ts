@@ -28,6 +28,8 @@ const dynamicSVGImport = async (
   const returnValue = new DOMParser().parseFromString(iconResponse, 'text/html').body.children[0];
   returnValue.setAttribute('data-name', name);
   returnValue.setAttribute('part', 'icon');
+  // set aria-hidden=true for SVG to avoid screen readers
+  returnValue.setAttribute('aria-hidden', 'true');
   return returnValue;
 };
 

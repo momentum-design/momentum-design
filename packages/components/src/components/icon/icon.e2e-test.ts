@@ -8,6 +8,7 @@ type SetupOptions = {
   size?: number;
   ariaLabel?: string;
   lengthUnit?: string;
+  tabindex?: number;
 };
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
@@ -36,6 +37,13 @@ const visualTestingSetup = async (args: SetupOptions) => {
       <mdc-icon name="${restArgs.name}"></mdc-icon>
       <mdc-icon name="${restArgs.name}" size="2"></mdc-icon>
       <mdc-icon name="${restArgs.name}" size="2" style="--mdc-icon-fill-color: red;"></mdc-icon>
+      <mdc-icon 
+        data-test="focusable-icon" 
+        name="${restArgs.name}" 
+        size="2" 
+        style="--mdc-icon-fill-color: blue;" 
+        tabindex="0">
+      </mdc-icon>
     </div>
       `,
     clearDocument: true,
@@ -72,7 +80,10 @@ test('mdc-icon', async ({ componentsPage }) => {
    */
   await test.step('visual-regression', async () => {
     const visualIcons = await visualTestingSetup({ componentsPage, name });
-    await test.step('matches screenshot of elements with default, size equal 2 and color set to red', async () => {
+    await componentsPage.actionability.pressTab();
+    await expect(componentsPage.page.locator('[data-test="focusable-icon"]')).toBeFocused();
+
+    await test.step('matches screenshot of elements with default, size equal 2, color red, focused', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-icon', { element: visualIcons });
     });
   });
