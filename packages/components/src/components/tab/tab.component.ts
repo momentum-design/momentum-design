@@ -61,7 +61,7 @@ class Tab extends DisabledMixin(Component) {
 
   constructor() {
     super();
-    this.role = 'button';
+    this.role = 'tab';
   }
   /**
    * Modifies the icon name based on the active state.
@@ -107,7 +107,7 @@ class Tab extends DisabledMixin(Component) {
    */
 
   private setAriaSelected(element: HTMLElement, active: boolean) {
-    if (this.role === 'tab') {
+    if (this.active === true) {
       element.setAttribute('aria-selected', active ? 'true' : 'false');
     }
   }
