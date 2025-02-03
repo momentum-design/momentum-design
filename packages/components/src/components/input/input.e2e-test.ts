@@ -26,7 +26,6 @@ type SetupOptions = {
   autocomplete?: string;
   dirname?: string;
   pattern?: string;
-  form?: string;
   list?: string;
   size?: number;
 };
@@ -55,7 +54,6 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.autocomplete ? `autocomplete="${restArgs.autocomplete}"` : ''}
       ${restArgs.dirname ? `dirname="${restArgs.dirname}"` : ''}
       ${restArgs.pattern ? `pattern="${restArgs.pattern}"` : ''}
-      ${restArgs.form ? `form="${restArgs.form}"` : ''}
       ${restArgs.list ? `list="${restArgs.list}"` : ''}
       ${restArgs.size ? `size="${restArgs.size}"` : ''}
       ></mdc-input>
@@ -177,12 +175,6 @@ test('mdc-input', async ({ componentsPage }) => {
       await expect(input).toHaveAttribute('list', 'browsers');
       await componentsPage.removeAttribute(input, 'list');
     });
-
-    await test.step('attribute form should be present on component', async () => {
-      await componentsPage.setAttributes(input, { form: 'form1' });
-      await expect(input).toHaveAttribute('form', 'form1');
-      await componentsPage.removeAttribute(input, 'form');
-    });
   });
 
   /**
@@ -254,6 +246,11 @@ test('mdc-input', async ({ componentsPage }) => {
   /**
    * INTERACTIONS
    */
+  // focusable on normal and readonly mode
+  // not focusable on disabled mode
+  // set trailing-button to true, click on it and check if value is cleared and focus is back on input
+  // tab should move focus from input to trailing button when value is present and trailing-button is true
+  // test form submission with input field marked as required
   await test.step('interactions', async () => {
     await test.step('mouse/pointer', async () => {
       await test.step('component should fire callback x when clicking on it', async () => {
