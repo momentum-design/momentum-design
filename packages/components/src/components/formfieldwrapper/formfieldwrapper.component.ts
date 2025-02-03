@@ -50,7 +50,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
       return nothing;
     }
 
-    return html`<label for="${this.id}" class="mdc-label" part="mdc-label">${this.label}</label>`;
+    return html`<label for="${this.id}" class="mdc-label" part="label">${this.label}</label>`;
   }
 
   /**
@@ -63,8 +63,8 @@ class FormfieldWrapper extends DisabledMixin(Component) {
       return nothing;
     }
     const helperIcon = getHelperIcon(this.helpTextType || DEFAULTS.VALIDATION);
-    if (helperIcon) {
-      return html`<mdc-icon part="mdc-helper-icon" size="1" length-unit="rem" name=${helperIcon}></mdc-icon>`;
+    if (helperIcon && !this.disabled) {
+      return html`<mdc-icon part="helper-icon" size="1" length-unit="rem" name=${helperIcon}></mdc-icon>`;
     }
     return nothing;
   }
@@ -80,7 +80,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     }
     return html`
       <mdc-text
-        part="mdc-help-text"
+        part="help-text"
         tagname=${MDC_TEXT_OPTIONS.TAGNAME}
         type=${MDC_TEXT_OPTIONS.TYPE}
       >
@@ -94,7 +94,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
    * @returns void
    */
   protected renderLabel() {
-    return html`<div class="mdc-label-text" part="mdc-label-text">
+    return html`<div class="mdc-label-text" part="label-text">
       <slot name="label">${this.renderLabelElement()}</slot>
       <slot name="label-info"></slot>
     </div>`;
