@@ -11,6 +11,7 @@ import Marker from './components/marker';
 import Divider from './components/divider';
 import AvatarButton from './components/avatarbutton';
 import Link from './components/link';
+import Checkbox from './components/checkbox';
 
 import type { TextType } from './components/text/text.types';
 
@@ -28,6 +29,7 @@ export {
   Divider,
   AvatarButton,
   Link,
+  Checkbox,
 };
 
 export type {
