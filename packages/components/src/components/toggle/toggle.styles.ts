@@ -44,7 +44,6 @@ const styles = [hostFitContentStyles, css`
   .mdc-toggle__container {
     position: relative;
     border-radius: var(--mdc-toggle-border-radius);
-    align-self: flex-start;
   }
 
   .mdc-toggle__input {
