@@ -1,13 +1,13 @@
-import Avatarbutton from './avatarbutton.component';
+import AvatarButton from './avatarbutton.component';
 import { TAG_NAME } from './avatarbutton.constants';
 import '../avatar';
 
-Avatarbutton.register(TAG_NAME);
+AvatarButton.register(TAG_NAME);
 
 declare global {
     interface HTMLElementTagNameMap {
-        ['mdc-avatarbutton']: Avatarbutton
+        ['mdc-avatarbutton']: AvatarButton
     }
 }
 
-export default Avatarbutton;
+export default AvatarButton;

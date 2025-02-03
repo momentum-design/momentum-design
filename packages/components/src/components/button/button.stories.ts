@@ -7,10 +7,10 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 
 const render = (args: Args) => html`
   <mdc-button 
-  @click="${action('onClick')}"
-  @keydown="${action('onKeyDown')}"
-  @keyup="${action('onKeyUp')}"
-  @focus="${action('onFocus')}"
+  @click="${action('onclick')}"
+  @keydown="${action('onkeydown')}"
+  @keyup="${action('onkeyup')}"
+  @focus="${action('onfocus')}"
   ?active="${args.active}"
   ?disabled="${args.disabled}"
   ?soft-disabled="${args['soft-disabled']}"

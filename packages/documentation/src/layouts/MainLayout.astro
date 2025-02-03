@@ -24,6 +24,8 @@ const currentFile = `src/pages${currentPage.replace(/\/$/, '')}.md`;
     </title>
     <style>
 			body {
+        position: fixed;
+        height: 100%;
 				width: 100%;
 				display: grid;
 				grid-template-rows: var(--theme-navbar-height) 1fr;
@@ -34,9 +36,9 @@ const currentFile = `src/pages${currentPage.replace(/\/$/, '')}.md`;
 			.layout {
 				padding: 0 1rem;
 				display: grid;
-				max-width: 82em;
 				margin: 0 auto;
 				width: 100%;
+        overflow-y: auto;
 			}
 
     </style>
