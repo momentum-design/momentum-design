@@ -37,7 +37,35 @@ class Radio extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
    */
   @property({ type: String, reflect: true, attribute: 'data-aria-label' }) dataAriaLabel: string = '';
 
+  /** @internal */
+  private internals: ElementInternals;
+
+  /** @internal */
+  static formAssociated = true;
+
+  /** @internal */
+  get form(): HTMLFormElement | null {
+    return this.internals.form;
+  }
+
+  constructor() {
+    super();
+    this.internals = this.attachInternals();
+  }
+
+  /**
+   * Updates the form value to reflect the current state of the radio.
+   * If checked, the value is set to the user-provided value.
+   * If unchecked, the value is set to null.
+   */
+  private setFormValue() {
+    if (this.checked) {
+      this.internals.setFormValue(this.value);
+    }
+  }
+
   override firstUpdated() {
+    this.setFormValue();
     this.updateTabIndex();
   }
 
@@ -79,6 +107,11 @@ class Radio extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
       }
     });
     this.checked = true;
+    const inputElement = this.shadowRoot?.querySelector('input');
+    if (inputElement) {
+      inputElement.checked = true;
+    }
+    this.setFormValue();
     this.dispatchChangeEvent(event);
   }
 
@@ -92,9 +125,7 @@ class Radio extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
    */
   private updateRadio(enabledRadios: Radio[], index: number, event: Event) {
     enabledRadios[index].shadowRoot?.querySelector('input')?.focus();
-    if (!enabledRadios[index].readonly) {
-      enabledRadios[index].handleChange(event);
-    }
+    enabledRadios[index].handleChange(event);
   }
 
   /**
@@ -148,13 +179,14 @@ class Radio extends NameMixin(ValueMixin(DisabledMixin(FormfieldWrapper))) {
           <input
             id="${this.id}"
             type="radio"
+            role="radio"
             name="${ifDefined(this.name)}"
             value="${ifDefined(this.value)}"
             @change=${this.handleChange}
             @keydown=${this.handleKeyDown}
-            ?checked="${this.checked}"
-            ?readonly="${this.readonly}"
-            ?disabled="${this.disabled}"
+            ?checked=${this.checked}
+            ?readonly=${this.readonly}
+            ?disabled=${this.disabled}
             class="mdc-radio__input"
             aria-checked="${this.checked}"
             aria-disabled="${this.disabled}"
