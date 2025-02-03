@@ -1,5 +1,5 @@
 import { css } from 'lit';
-import { hostFitContentStyles } from '../../utils/styles';
+import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 
 const styles = [
   hostFitContentStyles,
@@ -19,6 +19,7 @@ const styles = [
       fill: var(--mdc-icon-fill-color);
     }
   `,
+  ...hostFocusRingStyles(),
 ];
 
 export default styles;
