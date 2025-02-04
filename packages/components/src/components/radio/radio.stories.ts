@@ -9,6 +9,7 @@ const render = (args: Args) => html`
     @change="${action('onchange')}"
     @keydown="${action('onkeydown')}"
     @focus="${action('onfocus')}"
+    @click="${action('onclick')}"
     label="${args.label}"
     name="radio"
     value="option1"

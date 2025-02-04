@@ -25,7 +25,7 @@ const styles = [hostFitContentStyles, css`
   :host([disabled]) .mdc-radio__input,
   :host([disabled]) .mdc-label,
   :host([readonly]) .mdc-label{
-    cursor: unset;
+    cursor: default;
   }
 
   .mdc-label {
