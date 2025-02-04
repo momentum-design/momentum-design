@@ -110,6 +110,24 @@ const meta: Meta = {
     size: {
       control: 'number',
     },
+    ...disableControls([
+      '--mdc-input-disabled-border-color',
+      '--mdc-input-disabled-text-color',
+      '--mdc-input-disabled-background-color',
+      '--mdc-input-border-color',
+      '--mdc-input-text-color',
+      '--mdc-input-background-color',
+      '--mdc-input-selection-background-color',
+      '--mdc-input-selection-text-color',
+      '--mdc-input-support-text-color',
+      '--mdc-input-hover-background-color',
+      '--mdc-input-focused-background-color',
+      '--mdc-input-focused-border-color',
+      '--mdc-input-error-border-color',
+      '--mdc-input-warning-border-color',
+      '--mdc-input-success-border-color',
+      '--mdc-input-primary-border-color',
+    ]),
   },
 };
 

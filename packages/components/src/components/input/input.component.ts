@@ -28,9 +28,9 @@ import type { AutoCapitalizeType } from './input.types';
  * @cssproperty --mdc-input-disabled-border-color - Border color for the input container when disabled
  * @cssproperty --mdc-input-disabled-text-color - Text color for the input field when disabled
  * @cssproperty --mdc-input-disabled-background-color - Background color for the input field when disabled
- * @cssproperty --mdc-input-border-color: - Border color for the input container
- * @cssproperty --mdc-input-text-color: - Text color for the input field
- * @cssproperty --mdc-input-background-color: - Background color for the input field
+ * @cssproperty --mdc-input-border-color - Border color for the input container
+ * @cssproperty --mdc-input-text-color - Text color for the input field
+ * @cssproperty --mdc-input-background-color - Background color for the input field
  * @cssproperty --mdc-input-selection-background-color - Background color for the selected text
  * @cssproperty --mdc-input-selection-text-color - Text color for the selected text
  * @cssproperty --mdc-input-support-text-color - Text color for the help text
