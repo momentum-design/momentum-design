@@ -46,7 +46,7 @@ import type { IconNames } from './icon.types';
  * have a Tooltip that describes what it means.
  * - For informative standalone icons, an `aria-label` & `tabindex="0"` is required,
  * and the `role` will be set to "img" automatically.
- * - Only use this when a Icon is standalone and is not part of a button or other interactive elements.
+ * - **Only use this when a Icon is standalone and is not part of a button or other interactive elements.**
  *
  * @tagname mdc-icon
  *
