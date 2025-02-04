@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { CSSResult, PropertyValues, TemplateResult, html } from 'lit';
 import { VirtualizerController } from '@tanstack/lit-virtual';
-import { Ref, createRef, ref } from 'lit/directives/ref.js';
 import { property } from 'lit/decorators.js';
-import { Virtualizer, VirtualItem } from '@tanstack/virtual-core';
+import { Virtualizer, VirtualItem, VirtualizerOptions } from '@tanstack/virtual-core';
+import { StyleInfo } from 'lit/directives/style-map';
+import { Ref, createRef, ref } from 'lit/directives/ref.js';
 import styles from './virtualizedlist.styles';
 import { Component } from '../../models';
-
+import { DEFAULT_COUNT, DEFAULT_MEASURE_ELEMENT } from './virtualizedlist.constants';
 /**
  * virtualizedlist component, which ...
  *
@@ -13,96 +15,90 @@ import { Component } from '../../models';
  *
  */
 class VirtualizedList extends Component {
-  /**
-   * Lenght of the array being virtualized
-   */
-  @property({ type: Number })
-  count: number = 0;
+  @property({ type: String })
+  test?: string;
+
+  @property({ type: Function, attribute: 'on-scroll' })
+  onScroll?: (e: Event) => void;
 
   @property({ type: Function })
-  onScroll: (() => void) | undefined;
+  list = (
+    _virtualItems: Array<VirtualItem>,
+    _measureElement: (node: Element | null | undefined) => void,
+    _style: any,
+  ) => Element;
 
-  private scrollElementRef: Ref<HTMLDivElement> = createRef();
+  @property({ type: Object, attribute: 'virtualizer-props' })
+  virtualizerProps: Partial<VirtualizerOptions<Element, Element>> = {};
 
-  private virtualizerController: VirtualizerController<HTMLDivElement, Element> | null;
+  public scrollElementRef: Ref<HTMLDivElement> = createRef();
 
-  private virtualizer: Virtualizer<HTMLDivElement, Element> | null;
+  private virtualizerController: VirtualizerController<Element, Element> | null;
 
-  private virtualItems: Array<VirtualItem>;
+  public virtualizer: Virtualizer<Element, Element> | null;
 
   constructor() {
     super();
     this.virtualizerController = null;
     this.virtualizer = null;
-    this.virtualItems = [];
-  }
-
-  public override connectedCallback(): void {
-    super.connectedCallback();
-    this.initializeVirtualizer();
   }
 
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
-    if (changedProperties.has('count')) {
-      this.initializeVirtualizer();
-    }
-
-    this.virtualItems = this.virtualizer?.getVirtualItems() || [];
-    this.dispatchVirtualItemsUpdated();
-  }
-
-  private initializeVirtualizer() {
-    if (this.scrollElementRef.value) {
-      this.virtualizerController = new VirtualizerController(this, {
-        getScrollElement: () => this.scrollElementRef.value || null,
-        count: this.count,
-        estimateSize: () => 45,
-      });
-
-      this.virtualizer = this.virtualizerController.getVirtualizer();
-      this.virtualItems = this.virtualizer?.getVirtualItems();
+    if (changedProperties.get('virtualizerProps')) {
+      this.virtualizer?.setOptions({ ...this.virtualizer.options, ...this.virtualizerProps });
+      this.requestUpdate();
     }
   }
 
-  get measureElement() {
-    return this.virtualizer ? this.virtualizer.measureElement : null;
+  public override connectedCallback(): void {
+    this.virtualizerController = new VirtualizerController(this, {
+      count: this.virtualizerProps?.count || DEFAULT_COUNT,
+      estimateSize: this.virtualizerProps?.estimateSize || DEFAULT_MEASURE_ELEMENT,
+      getScrollElement: () => this.scrollElementRef.value || null,
+      ...this.virtualizerProps,
+    });
+
+    super.connectedCallback();
   }
 
-  private dispatchVirtualItemsUpdated() {
-    this.dispatchEvent(new CustomEvent('virtual-items-updated', {
-      detail: { items: this.virtualItems },
-      bubbles: true,
-      composed: true,
-    }));
+  private getVirtualizedListElement(): TemplateResult {
+    this.virtualizer = this.virtualizerController?.getVirtualizer() || null;
+
+    if (this.virtualizer) {
+      const { getVirtualItems, measureElement, getTotalSize } = this.virtualizer;
+      const virtualItems = getVirtualItems();
+      const style: Readonly<StyleInfo> = {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        transform: `translateY(${virtualItems[0]?.start ?? 0}px)`,
+      };
+
+      return html`<div
+          class="mdc-virtualizedlist-wrapper"
+          style="height: ${getTotalSize()}px;"
+        >
+          ${this.list(
+    virtualItems,
+    measureElement,
+    style,
+  )}
+        </div>`;
+    }
+
+    return html``;
   }
 
   private getVirtualizedListContainer(): TemplateResult {
-    const height = this.virtualizer?.getTotalSize();
-
     return html`<div
-        class="list scroll-container"
         ${ref(this.scrollElementRef)}
-        @scroll=${this.onScroll && this.onScroll}
+        class="mdc-virtualizedlist-scroll-container"
+        @scroll="${this.onScroll && this.onScroll}"
       >
-        <div
-          class="listWrapper"
-          style="position: relative; height: ${height}px; width: 100%;"
-        >
-          <slot></slot>
-        </div>
+        ${this.getVirtualizedListElement()}
       </div>
-      <style>
-        .list {
-          border: 1px solid #e6e4dc;
-          max-width: 100%;
-        }
-        .scroll-container {
-          height: 400px;
-          width: 400px;
-          overflow-y: auto;
-        }
-      </style>
     `;
   }
 

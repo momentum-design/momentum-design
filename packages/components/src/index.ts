@@ -16,7 +16,6 @@ import Toggle from './components/toggle';
 import Checkbox from './components/checkbox';
 import Radio from './components/radio';
 import VirtualizedList from './components/virtualizedlist';
-import VirtualizedWrapper from './components/virtualizedwrapper';
 
 import type { TextType } from './components/text/text.types';
 
@@ -39,7 +38,6 @@ export {
   Checkbox,
   Radio,
   VirtualizedList,
-  VirtualizedWrapper,
 };
 
 export type {
