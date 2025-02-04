@@ -98,10 +98,10 @@ class Radio extends NameMixin(ValueMixin(FormfieldWrapper)) {
       /**
         *  Uncheck all radios in the same group (name)
       */
-      const radioHostElement = radio;
       const radioElement = radio.shadowRoot?.querySelector('input');
       if (radioElement) {
-        radioHostElement.checked = false;
+        // eslint-disable-next-line no-param-reassign
+        radio.checked = false;
         radioElement.checked = false;
       }
     });
