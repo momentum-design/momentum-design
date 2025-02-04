@@ -2,18 +2,37 @@ import { css } from 'lit';
 import { hostFocusRingStyles } from '../../utils/styles';
 
 const styles = [css`
+:host{
+  --mdc-input-disabled-border-color: var(--mds-color-theme-outline-primary-disabled);
+  --mdc-input-disabled-text-color: var(--mds-color-theme-text-primary-disabled);
+  --mdc-input-disabled-background-color: var(--mds-color-theme-background-primary-disabled);
+  --mdc-input-border-color: var(--mds-color-theme-outline-input-normal);
+  --mdc-input-text-color: var(--mds-color-theme-text-primary-normal);
+  --mdc-input-background-color: var(--mds-color-theme-background-primary-ghost);
+  --mdc-input-selection-background-color: var(--mds-color-theme-background-accent-active);
+  --mdc-input-selection-text-color: var(--mds-color-theme-inverted-text-primary-normal);
+  --mdc-input-support-text-color: var(--mds-color-theme-text-secondary-normal);
+  --mdc-input-hover-background-color: var(--mds-color-theme-background-primary-hover);
+  --mdc-input-focused-background-color: var(--mds-color-theme-background-primary-active);
+  --mdc-input-focused-border-color: var(--mds-color-theme-outline-input-active);
+  --mdc-input-error-border-color: var(--mds-color-theme-text-error-normal);
+  --mdc-input-warning-border-color: var(--mds-color-theme-text-warning-normal);
+  --mdc-input-success-border-color: var(--mds-color-theme-text-success-normal);
+  --mdc-input-primary-border-color: var(--mds-color-theme-text-accent-normal);
+}
+
 :host, .input-container, .input-section, .input{
   width: 100%;
 }
   :host([disabled]) .input,
   :host([disabled]) .input::placeholder,
   :host([readonly]) .leading-icon{
-    color: var(--mds-color-theme-text-primary-disabled);
+    color: var(--mdc-input-disabled-text-color);
   }
 
   :host([disabled]) .input{
-    border-color: var(--mds-color-theme-outline-primary-disabled);
-    background: var(--mds-color-theme-background-primary-disabled);
+    border-color: var(--mdc-input-disabled-border-color);
+    background: var(--mdc-input-disabled-background-color);
   }
 
   :host([disabled][help-text-type="default"]) .input-container,
@@ -21,7 +40,7 @@ const styles = [css`
   :host([disabled][help-text-type="warning"]) .input-container,
   :host([disabled][help-text-type="error"]) .input-container,
   :host([disabled][help-text-type="priority"]) .input-container{
-    border-color: var(--mds-color-theme-text-accent-disabled);
+    border-color: var(--mdc-input-disabled-border-color);
   }
 
   .leading-icon{
@@ -31,7 +50,7 @@ const styles = [css`
   .input-container{
     height: 2rem;
     border-radius: 0.5rem;
-    border: 0.0625rem solid var(--mds-color-theme-outline-input-normal);
+    border: 0.0625rem solid var(--mdc-input-border-color);
     display: flex;
     align-items: center;
     gap: 0.375rem;
@@ -45,45 +64,44 @@ const styles = [css`
 
   .input {
     border: none;
-    color: var(--mds-color-theme-text-primary-normal);
-    background-color: var(--mds-color-theme-background-primary-ghost);
+    color: var(--mdc-input-text-color);
+    background-color: var(--mdc-input-background-color);
     outline: none;
   }
 
   .input::selection { 
-    background-color: var(--mds-color-theme-background-accent-active);
-    color: var(--mds-color-theme-inverted-text-primary-normal);
+    background-color: var(--mdc-input-selection-background-color);
+    color: var(--mdc-input-selection-text-color);
   }
 
-
   .prefix-text{
-    color: var(--mds-color-theme-text-secondary-normal);
+    color: var(--mdc-input-support-text-color);
   }
 
   .input-container:hover{
-    background-color: var(--mds-color-theme-background-primary-hover);
+    background-color: var(--mdc-input-hover-background-color);
   }
 
   .input-container:active, .input-container:focus-within{
-    background-color: var(--mds-color-theme-background-primary-active);
-    border-color:  var(--mds-color-theme-outline-input-active);
+    background-color: var(--mdc-input-focused-background-color);
+    border-color:  var(--mdc-input-focused-border-color);
   }
 
   .input::placeholder{
-    color: var(--mds-color-theme-text-secondary-normal);
+    color: var(--mdc-input-support-text-color);
   }
 
   :host([help-text-type="error"]) .input-container {
-    border-color: var(--mds-color-theme-text-error-normal);
+    border-color: var(--mdc-input-error-border-color);
   }
   :host([help-text-type="warning"]) .input-container {
-    border-color: var(--mds-color-theme-text-warning-normal);
+    border-color: var(--mdc-input-warning-border-color);
   }
   :host([help-text-type="success"]) .input-container {
-    border-color: var(--mds-color-theme-text-success-normal);
+    border-color: var(--mdc-input-success-border-color);
   }
   :host([help-text-type="priority"]) .input-container {
-    border-color: var(--mds-color-theme-text-accent-normal);
+    border-color: var(--mdc-input-primary-border-color);
   }
 
   .hidden{

@@ -21,10 +21,27 @@ import type { AutoCapitalizeType } from './input.types';
  *
  * @tagname mdc-input
  *
- *
  * @dependency mdc-icon
  * @dependency mdc-text
  * @dependency mdc-button
+ *
+ * @cssproperty --mdc-input-disabled-border-color - Border color for the input container when disabled
+ * @cssproperty --mdc-input-disabled-text-color - Text color for the input field when disabled
+ * @cssproperty --mdc-input-disabled-background-color - Background color for the input field when disabled
+ * @cssproperty --mdc-input-border-color: - Border color for the input container
+ * @cssproperty --mdc-input-text-color: - Text color for the input field
+ * @cssproperty --mdc-input-background-color: - Background color for the input field
+ * @cssproperty --mdc-input-selection-background-color - Background color for the selected text
+ * @cssproperty --mdc-input-selection-text-color - Text color for the selected text
+ * @cssproperty --mdc-input-support-text-color - Text color for the help text
+ * @cssproperty --mdc-input-hover-background-color - Background color for the input field when hovered
+ * @cssproperty --mdc-input-focused-background-color - Background color for the input field when focused
+ * @cssproperty --mdc-input-focused-border-color - Border color for the input container when focused
+ * @cssproperty --mdc-input-error-border-color - Border color for the input container when error
+ * @cssproperty --mdc-input-warning-border-color - Border color for the input container when warning
+ * @cssproperty --mdc-input-success-border-color - Border color for the input container when success
+ * @cssproperty --mdc-input-primary-border-color - Border color for the input container when primary
+ *
  */
 class Input extends NameMixin(FormfieldWrapper) {
   /**
