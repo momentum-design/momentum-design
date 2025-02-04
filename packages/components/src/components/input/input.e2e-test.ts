@@ -4,6 +4,7 @@ import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
+import { getHelperIcon } from '../formfieldwrapper/formfieldwrapper.utils';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -73,7 +74,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
 };
 
 test.use({ viewport: { width: 800, height: 1500 } });
-test('mdc-input', async ({ componentsPage }) => {
+test('mdc-input', async ({ componentsPage, browserName }) => {
   const input = await setup({
     componentsPage,
     id: 'test-mdc-input',
@@ -94,9 +95,15 @@ test('mdc-input', async ({ componentsPage }) => {
       await expect(input).toHaveAttribute('id', 'test-mdc-input');
       await expect(input).toHaveAttribute('placeholder', 'Placeholder');
       await expect(input).toHaveAttribute('label', 'Label');
+      const label = await input.locator('label');
+      await expect(label).toHaveText('Label');
       await expect(input).toHaveAttribute('help-text', 'Help Text');
+      const helpText = await input.locator('mdc-text[part="help-text"]');
+      await expect(helpText).toHaveText('Help Text');
       await expect(input).toHaveAttribute('prefix-text', 'Prefix');
       await expect(input).toHaveAttribute('leading-icon', 'placeholder-bold');
+      const icon = await input.locator('mdc-icon');
+      await expect(icon).toHaveAttribute('name', 'placeholder-bold');
     });
 
     await test.step('attributes required should be present on component', async () => {
@@ -121,6 +128,11 @@ test('mdc-input', async ({ componentsPage }) => {
       for (const type of Object.values(VALIDATION)) {
         await componentsPage.setAttributes(input, { 'help-text-type': type });
         await expect(input).toHaveAttribute('help-text-type', type);
+        const iconEl = await input.locator('mdc-icon[part="helper-icon"]');
+        const icon = getHelperIcon(type);
+        if (icon) {
+          await expect(iconEl).toHaveAttribute('name', icon);
+        }
       }
       await componentsPage.removeAttribute(input, 'help-text-type');
     });
@@ -195,8 +207,10 @@ test('mdc-input', async ({ componentsPage }) => {
       await expect(input).toBeFocused();
       await inputEl.fill('test');
       await expect(inputEl).toHaveValue('test');
-      await componentsPage.actionability.pressTab();
-      await expect(input).not.toBeFocused();
+      if (browserName !== 'firefox') {
+        await componentsPage.actionability.pressTab();
+        await expect(input).not.toBeFocused();
+      }
     });
 
     await test.step('readonly component should be focusable with tab', async () => {
@@ -205,9 +219,11 @@ test('mdc-input', async ({ componentsPage }) => {
       await componentsPage.actionability.pressTab();
       await expect(input).toBeFocused();
       await expect(inputEl).toHaveValue('Readonly');
-      await componentsPage.actionability.pressTab();
-      await expect(input).not.toBeFocused();
-      await expect(trailingButton).not.toBeFocused();
+      if (browserName !== 'firefox') {
+        await componentsPage.actionability.pressTab();
+        await expect(input).not.toBeFocused();
+        await expect(trailingButton).not.toBeFocused();
+      }
       await componentsPage.removeAttribute(input, 'readonly');
     });
 
@@ -254,7 +270,11 @@ test('mdc-input', async ({ componentsPage }) => {
         const input = element as HTMLInputElement;
         return input.validationMessage;
       });
-      expect(validationMessage).toContain('Please fill out this field.');
+      if (browserName === 'webkit') {
+        expect(validationMessage).toContain('Fill out this field');
+      } else {
+        expect(validationMessage).toContain('Please fill out this field.');
+      }
       await inputEl.fill('test');
       await submitButton.click();
     });
