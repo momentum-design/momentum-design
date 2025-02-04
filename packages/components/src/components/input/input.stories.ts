@@ -160,7 +160,9 @@ export const AllVariants: StoryObj = {
       label="Label"
       help-text="Helper text"
       help-text-type="default"
-      readonly placeholder="Placeholder"
+      readonly 
+      placeholder="Placeholder"
+      leading-icon="placeholder-bold"
       value="This is readonly"
       ></mdc-input>
       <mdc-input 

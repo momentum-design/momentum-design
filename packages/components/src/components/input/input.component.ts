@@ -248,6 +248,7 @@ class Input extends NameMixin(FormfieldWrapper) {
     return html`
       <mdc-icon 
         class="leading-icon" 
+        part="leading-icon"
         name=${this.leadingIcon as IconNames} 
         size="1" 
         length-unit="rem">

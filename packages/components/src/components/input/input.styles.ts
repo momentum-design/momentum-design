@@ -6,7 +6,8 @@ const styles = [css`
   width: 100%;
 }
   :host([disabled]) .input,
-  :host([disabled]) .input::placeholder{
+  :host([disabled]) .input::placeholder,
+  :host([readonly]) .leading-icon{
     color: var(--mds-color-theme-text-primary-disabled);
   }
 
@@ -65,6 +66,7 @@ const styles = [css`
 
   .input-container:active, .input-container:focus-within{
     background-color: var(--mds-color-theme-background-primary-active);
+    border-color:  var(--mds-color-theme-outline-input-active);
   }
 
   .input::placeholder{
