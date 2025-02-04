@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { CSSResult, PropertyValues, TemplateResult, html } from 'lit';
+import { ReactElement } from 'react';
 import { VirtualizerController } from '@tanstack/lit-virtual';
 import { property } from 'lit/decorators.js';
 import { Virtualizer, VirtualItem, VirtualizerOptions } from '@tanstack/virtual-core';
@@ -15,21 +16,18 @@ import { DEFAULT_COUNT, DEFAULT_MEASURE_ELEMENT } from './virtualizedlist.consta
  *
  */
 class VirtualizedList extends Component {
-  @property({ type: String })
-  test?: string;
-
-  @property({ type: Function, attribute: 'on-scroll' })
+  @property({ type: Function, attribute: 'onscroll' })
   onScroll?: (e: Event) => void;
 
-  @property({ type: Function })
-  list = (
-    _virtualItems: Array<VirtualItem>,
-    _measureElement: (node: Element | null | undefined) => void,
-    _style: any,
-  ) => Element;
+  @property({ type: Function, attribute: 'renderlist' })
+  renderlist: ((
+    virtualItems: Array<VirtualItem>,
+    measureElement: (node: Element | null | undefined) => void,
+    style: Readonly<StyleInfo>,
+  ) => ReactElement) | null;
 
-  @property({ type: Object, attribute: 'virtualizer-props' })
-  virtualizerProps: Partial<VirtualizerOptions<Element, Element>> = {};
+  @property({ type: Object, attribute: 'virtualizerprops' })
+  virtualizerprops: Partial<VirtualizerOptions<Element, Element>> = {};
 
   public scrollElementRef: Ref<HTMLDivElement> = createRef();
 
@@ -41,22 +39,23 @@ class VirtualizedList extends Component {
     super();
     this.virtualizerController = null;
     this.virtualizer = null;
+    this.renderlist = null;
   }
 
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
-    if (changedProperties.get('virtualizerProps')) {
-      this.virtualizer?.setOptions({ ...this.virtualizer.options, ...this.virtualizerProps });
+    if (changedProperties.get('virtualizerprops')) {
+      this.virtualizer?.setOptions({ ...this.virtualizer.options, ...this.virtualizerprops });
       this.requestUpdate();
     }
   }
 
   public override connectedCallback(): void {
     this.virtualizerController = new VirtualizerController(this, {
-      count: this.virtualizerProps?.count || DEFAULT_COUNT,
-      estimateSize: this.virtualizerProps?.estimateSize || DEFAULT_MEASURE_ELEMENT,
+      count: this.virtualizerprops?.count || DEFAULT_COUNT,
+      estimateSize: this.virtualizerprops?.estimateSize || DEFAULT_MEASURE_ELEMENT,
       getScrollElement: () => this.scrollElementRef.value || null,
-      ...this.virtualizerProps,
+      ...this.virtualizerprops,
     });
 
     super.connectedCallback();
@@ -80,7 +79,7 @@ class VirtualizedList extends Component {
           class="mdc-virtualizedlist-wrapper"
           style="height: ${getTotalSize()}px;"
         >
-          ${this.list(
+          ${this.renderlist && this.renderlist(
     virtualItems,
     measureElement,
     style,
