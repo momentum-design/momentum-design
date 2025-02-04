@@ -12,7 +12,6 @@ import Divider from './components/divider';
 import Avatarbutton from './components/avatarbutton';
 import Link from './components/link';
 import VirtualizedList from './components/virtualizedlist';
-import VirtualizedWrapper from './components/virtualizedwrapper';
 
 import type { TextType } from './components/text/text.types';
 
@@ -31,7 +30,6 @@ export {
   Avatarbutton,
   Link,
   VirtualizedList,
-  VirtualizedWrapper,
 };
 
 export type {

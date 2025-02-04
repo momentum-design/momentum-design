@@ -1,7 +1,10 @@
 import { VirtualItem } from '@tanstack/virtual-core';
 
-interface VirtualItemsUpdatedDetail {
-  items: Array<VirtualItem>; // Replace `any` with the specific type of items if known
+export type ScrollDirection = 'forward' | 'backward' | null
+
+interface VirtualizerUpdatedDetail {
+  virtualItems: Array<VirtualItem>;
+  scrollDirection: ScrollDirection;
 }
 
-export type VirtualItemsUpdatedEvent = CustomEvent<VirtualItemsUpdatedDetail>;
+export type VirtualizerUpdatedEvent = CustomEvent<VirtualizerUpdatedDetail>;
