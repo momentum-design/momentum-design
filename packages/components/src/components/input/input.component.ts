@@ -307,7 +307,7 @@ class Input extends NameMixin(FormfieldWrapper) {
     return html`
       <mdc-button 
         class='clear-button ${!this.value ? 'hidden' : ''}'
-        prefix-icon='cancel-regular'
+        prefix-icon='cancel-bold'
         variant='tertiary'
         size="20"
         aria-label="Clear"
