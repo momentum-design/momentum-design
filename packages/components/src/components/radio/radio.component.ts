@@ -1,4 +1,4 @@
-import { CSSResult, html } from 'lit';
+import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { NameMixin } from '../../utils/mixins/NameMixin';
@@ -172,6 +172,7 @@ class Radio extends NameMixin(ValueMixin(FormfieldWrapper)) {
   }
 
   public override render() {
+    const helpTextContent = this.helpText ? this.renderHelperText() : nothing;
     return html`
       <div class="mdc-radio__container">
         <div class="mdc-radio__icon-container mdc-focus-ring">
@@ -195,7 +196,7 @@ class Radio extends NameMixin(ValueMixin(FormfieldWrapper)) {
         </div>
         <div class="mdc-radio__label-container">
           ${this.renderLabel()}
-          ${this.renderHelperText()}
+          ${helpTextContent}
         </div>
       </div>
     `;
