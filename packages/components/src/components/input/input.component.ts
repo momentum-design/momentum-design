@@ -4,7 +4,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './input.styles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { NameMixin } from '../../utils/mixins/NameMixin';
-import { PREFIX_TEXT_OPTIONS } from './input.constants';
+import { AUTO_CAPITALIZE, PREFIX_TEXT_OPTIONS } from './input.constants';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import type { IconNames } from '../icon/icon.types';
 import type { AutoCapitalizeType } from './input.types';
@@ -90,7 +90,7 @@ class Input extends NameMixin(FormfieldWrapper) {
    * The autocapitalize attribute of the input field.
    * @default 'off'
    */
-  @property({ type: String }) override autocapitalize: AutoCapitalizeType = 'off';
+  @property({ type: String }) override autocapitalize: AutoCapitalizeType = AUTO_CAPITALIZE.OFF;
 
   /**
    * The autocomplete attribute of the input field.
@@ -106,14 +106,12 @@ class Input extends NameMixin(FormfieldWrapper) {
 
   /**
    * Specifies the name of the directionality of text for submission purposes (e.g., "rtl" for right-to-left).
-   * @default ''
    */
   @property({ type: String }) dirname?: string;
 
   /**
    * The pattern attribute of the input field.
    * Specifies a regular expression that the input value must match for validation purposes.
-   * @default ''
    */
   @property({ type: String }) pattern?: string;
 

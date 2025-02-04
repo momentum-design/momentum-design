@@ -1,6 +1,8 @@
 import Input from './input.component';
 import { TAG_NAME } from './input.constants';
 import '../button';
+import '../icon';
+import '../text';
 
 Input.register(TAG_NAME);
 
