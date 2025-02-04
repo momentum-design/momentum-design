@@ -1,4 +1,4 @@
-import { CSSResult, html, nothing } from 'lit';
+import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { live } from 'lit/directives/live.js';
@@ -95,6 +95,14 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
     // Workaround to fix this: https://github.com/lit/lit-element/issues/922#issuecomment-611139629
     const newEvent = new (event.constructor as typeof Event)(event.type, event);
     this.dispatchEvent(newEvent);
+  }
+
+  public override update(changedProperties: PropertyValues): void {
+    super.update(changedProperties);
+
+    if (changedProperties.has('checked')) {
+      this.setFormValue();
+    }
   }
 
   public override render() {

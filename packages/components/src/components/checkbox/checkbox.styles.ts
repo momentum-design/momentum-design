@@ -32,8 +32,8 @@ const styles = [css`
   :host([indeterminate]) .mdc-checkbox__container:hover .mdc-checkbox__icon-container {
     background: var(--mdc-checkbox-checked-background-color-hover);
   }
-  :host([checked]) .mdc-checkbox__container:active > .mdc-checkbox__icon-container,
-  :host([indeterminate]) .mdc-checkbox__container:active > .mdc-checkbox__icon-container {
+  :host([checked]) .mdc-checkbox__container:active .mdc-checkbox__icon-container,
+  :host([indeterminate]) .mdc-checkbox__container:active .mdc-checkbox__icon-container {
     background: var(--mdc-checkbox-checked-pressed-icon-color);
   }
   :host([disabled]) .mdc-label,
