@@ -106,6 +106,7 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
         length-unit="rem"
       ></mdc-icon>
     ` : nothing;
+    const helpTextContent = this.helpText ? this.renderHelperText() : nothing;
 
     return html`
       <div class="mdc-checkbox__container mdc-focus-ring">
@@ -118,14 +119,14 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
           .checked="${live(this.checked)}"
           .indeterminate="${live(this.indeterminate)}"
           .disabled="${this.disabled}"
-          aria-label="${ifDefined(this.dataAriaLabel ?? this.label)}"
+          aria-label="${this.dataAriaLabel ?? ''}"
           @change=${this.handleChange}
         />
         <div class="mdc-checkbox__icon-container">${checkboxIconContent}</div>
       </div>
       <div class="mdc-checkbox__text-container">
         ${this.renderLabel()}
-        ${this.renderHelperText()}
+        ${helpTextContent}
       </div>
     `;
   }
