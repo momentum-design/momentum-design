@@ -4,7 +4,7 @@ import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 const styles = [hostFitContentStyles, css`
   :host {
     --mdc-toggle-width: 3rem;
-    --mdc-toggle-height: 1.5rem;
+    --mdc-toggle-height: 1.375rem;
     --mdc-toggle-width-compact: 2rem;
     --mdc-toggle-height-compact: 1rem;
     --mdc-toggle-border-radius: 0.75rem;
@@ -77,7 +77,7 @@ const styles = [hostFitContentStyles, css`
   :host([checked]) .mdc-toggle__slider {
     background-color: var(--mdc-toggle-active-rest-color);
     justify-content: flex-end;
-    border:none;
+    border-color: transparent;
   }
 
   :host([size='compact']) .mdc-toggle__slider {

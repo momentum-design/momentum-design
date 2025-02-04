@@ -10,10 +10,8 @@ const render = (args: Args) => html`
   <mdc-toggle
       name="toggleName"
       value="toggleValue"
-      @keydown="${action('onKeyDown')}"
-      @keyup="${action('onKeyUp')}"
-      @focus="${action('onFocus')}"
-      @change="${action('onToggleChange')}"
+      @focus="${action('onfocus')}"
+      @change="${action('onchange')}"
       size="${args.size}"
       label="${args.label}"
       help-text="${args['help-text']}"
