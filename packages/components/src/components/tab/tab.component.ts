@@ -2,11 +2,11 @@ import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 import styles from './tab.styles';
 import { IconNames } from '../icon/icon.types';
-import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { DEFAULTS } from './tab.constants';
-import { TabVariant } from './tab.types';
+import { Variant } from './tab.types';
 import { getIconNameWithoutStyle } from '../button/button.utils';
-import { Component } from '../../models';
+import Buttonsimple from '../buttonsimple/buttonsimple.component';
+import { ButtonSize, ButtonType } from '../buttonsimple/buttonsimple.types';
 
 /**
  * `mdc-tab` is Tab component to be used within the Tabgroup.
@@ -22,15 +22,7 @@ import { Component } from '../../models';
  * @tagname mdc-tab
  *
  */
-class Tab extends DisabledMixin(Component) {
-  /**
-   * The tab's active state indicates whether it is currently toggled on (active) or off (inactive).
-   * When the active state is true, the tab is considered to be in an active state.
-   * Conversely, when the active state is false, the tab is in an inactive state and tabIndex will be -1.
-   * @default false
-   */
-  @property({ type: Boolean }) active = false;
-
+class Tab extends Buttonsimple {
   /**
    * Name of the icon (= filename) to be used as icon for the tab.
    *
@@ -46,23 +38,22 @@ class Tab extends DisabledMixin(Component) {
    * It defines the background and foreground color of the tab.
    * @default pill
    */
-  @property({ type: String, attribute: 'tab-variant', reflect: true })
-  tabVariant: TabVariant = DEFAULTS.TAB_VARIANT;
+  @property({ type: String, reflect: true })
+  variant: Variant = DEFAULTS.TAB_VARIANT;
 
   /**
    * @internal
    */
   private prevIconName?: string;
 
-  /**
-   * @internal
-   */
-  private prevTabindex : number | null = null;
-
   constructor() {
     super();
     this.role = 'tab';
+    this.softDisabled = undefined as unknown as boolean;
+    this.size = undefined as unknown as ButtonSize;
+    this.type = undefined as unknown as ButtonType;
   }
+
   /**
    * Modifies the icon name based on the active state.
    * If the tab is active, the icon name is suffixed with '-filled'.
@@ -84,22 +75,6 @@ class Tab extends DisabledMixin(Component) {
   }
 
   /**
-   * Sets the disabled aria attribute for the Tab.
-   *
-   * @param element - The Tab element.
-   * @param disabled - The disabled state.
-   */
-
-  private setDisabled(element: HTMLElement, disabled: boolean) {
-    if (disabled) {
-      element.setAttribute('aria-disabled', 'true');
-    } else {
-      element.removeAttribute('aria-disabled');
-    }
-    this.updateTabIndex(disabled);
-  }
-
-  /**
    * Sets the aria-selected attribute based on the active state of the Tab.
    *
    * @param element - The Tab element.
@@ -107,35 +82,21 @@ class Tab extends DisabledMixin(Component) {
    */
 
   private setAriaSelected(element: HTMLElement, active: boolean) {
-    if (this.active === true) {
-      element.setAttribute('aria-selected', active ? 'true' : 'false');
-    }
-  }
-
-  /**
-   * Updates the tabindex based on the disabled state of the Tab.
-   * @param isDisabled - is Tab disabled
-   */
-  private updateTabIndex(isDisabled: boolean): void {
-    if (isDisabled) {
-      this.prevTabindex = this.tabIndex;
-      this.tabIndex = -1;
-    } else if (this.prevTabindex) {
-      this.tabIndex = this.prevTabindex;
-    } else {
-      this.tabIndex = 0;
-    }
+    element.setAttribute('aria-selected', active ? 'true' : 'false');
   }
 
   public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     super.update(changedProperties);
+
     if (changedProperties.has('active')) {
       this.modifyIconName(this.active);
       this.setAriaSelected(this, this.active);
     }
-    if (changedProperties.has('disabled')) {
-      this.setDisabled(this, this.disabled);
-    }
+  }
+
+  protected override executeAction() {
+    // Toggle the active state of the Tab.
+    this.active = !this.active;
   }
 
   public override render() {
@@ -143,10 +104,13 @@ class Tab extends DisabledMixin(Component) {
       <slot name="badge"></slot>
       ${this.iconName ? html`<mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem">
         </mdc-icon>` : nothing}
-      <slot></slot>`;
+        <mdc-text type=${this.active ? 'body-midsize-bold' : 'body-midsize-medium'} tagname="span">
+          <slot></slot>
+        </mdc-text>
+      `;
   }
 
-  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...Buttonsimple.styles, ...styles];
 }
 
 export default Tab;

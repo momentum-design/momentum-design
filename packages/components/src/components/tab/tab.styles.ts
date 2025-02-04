@@ -53,42 +53,17 @@ const styles = [hostFitContentStyles, css`
     --mdc-tab-pill-inactive-color: var(--mds-color-theme-text-secondary-normal);
     --mdc-tab-pill-inactive-color-disabled: var(--mds-color-theme-text-primary-disabled);
 
-    --mdc-tab-active-font-size-: var(--mds-font-apps-body-midsize-bold-font-size);
-    --mdc-tab-active-font-weight: var(--mds-font-apps-body-midsize-bold-font-weight);
-    --mdc-tab-active-line-height: var(--mds-font-apps-body-midsize-bold-line-height);
-    --mdc-tab-active-text-decoration: var(--mds-font-apps-body-midsize-bold-text-decoration);
-    --mdc-tab-active-text-transform: var(--mds-font-apps-body-midsize-bold-text-case);
-
-    --mdc-tab-inactive-font-size: var(--mds-font-apps-body-midsize-medium-font-size);
-    --mdc-tab-inactive-font-weight: var(--mds-font-apps-body-midsize-medium-font-weight);
-    --mdc-tab-inactive-line-height: var(--mds-font-apps-body-midsize-medium-line-height);
-    --mdc-tab-inactive-text-decoration: var(--mds-font-apps-body-midsize-medium-text-decoration);
-    --mdc-tab-inactive-text-transform: var(--mds-font-apps-body-midsize-medium-text-case);
-
-    font-size: var(--mdc-tab-inactive-font-size);
-    font-weight: var(--mdc-tab-inactive-font-weight);
-    line-height: var(--mdc-tab-inactive-line-height);
-    text-decoration: var(--mdc-tab-inactive-text-decoration);
-    text-transform: var(--mdc-tab-inactive-text-transform);
-
-    border: 0.0625rem solid transparent;
-    cursor: pointer;
     gap: var(--mdc-tab-content-gap);
     height: var(--mdc-tab-height);
-    outline: none;
     padding-left: var(--mdc-tab-padding-left);
     padding-right: var(--mdc-tab-padding-right);
   }
 
-  :host([active]) {
-    font-size: var(--mdc-tab-active-font-size-);
-    font-weight: var(--mdc-tab-active-font-weight);
-    line-height: var(--mdc-tab-active-line-height);
-    text-decoration: var(--mdc-tab-active-text-decoration);
-    text-transform: var(--mdc-tab-active-text-transform);
+  :host([disabled]) {
+    cursor: default;
   }
 
-  :host([tab-variant="line"]) {
+  :host([variant="line"]) {
     background-color: var(--mdc-tab-line-inactive-background-color-normal);
     border-top-left-radius: var(--mdc-tab-line-border-top-left-radius);
     border-top-right-radius: var(--mdc-tab-line-border-top-right-radius);
@@ -97,92 +72,92 @@ const styles = [hostFitContentStyles, css`
     color: var(--mdc-tab-line-inactive-color);
   }
 
-  :host([tab-variant="line"]:hover) {
+  :host([variant="line"]:hover) {
     background-color: var(--mdc-tab-line-inactive-background-color-hover);
   }
 
-  :host([tab-variant="line"]:active) {
+  :host([variant="line"]:active) {
     background-color: var(--mdc-tab-line-inactive-background-color-active);
   }
 
-  :host([tab-variant="line"]:focus) {
+  :host([variant="line"]:focus) {
     background-color: var(--mdc-tab-line-inactive-background-color-focus);
   }
 
-  :host([tab-variant="line"][disabled]) {
+  :host([variant="line"][disabled]) {
     background-color: var(--mdc-tab-line-inactive-background-color-disabled);
     border: none;
     color: var(--mdc-tab-line-inactive-color-disabled);
   }
 
-  :host([tab-variant="line"][active]) {
+  :host([variant="line"][active]) {
     background-color: var(--mdc-tab-line-active-background-color-normal);
     border: none;
     border-bottom: 0.125rem solid var(--mdc-tab-line-active-bottom-border-color);
     color: var(--mdc-tab-line-active-color);
   }
 
-  :host([tab-variant="line"][active]:hover) {
+  :host([variant="line"][active]:hover) {
     background-color: var(--mdc-tab-line-active-background-color-hover);
   }
 
-  :host([tab-variant="line"][active]:active) {
+  :host([variant="line"][active]:active) {
     background-color: var(--mdc-tab-line-active-background-color-active);
   }
 
-  :host([tab-variant="line"][active]:focus) {
+  :host([variant="line"][active]:focus) {
     background-color: var(--mdc-tab-line-active-background-color-focus);
   }
 
-  :host([tab-variant="line"][active][disabled]) {
+  :host([variant="line"][active][disabled]) {
     color: var(--mdc-tab-line-active-color-disabled);
     background-color: var(--mdc-tab-line-active-background-color-disabled);
     border-bottom-color: var(--mdc-tab-line-active-bottom-border-color-disabled);
 
   }
 
-  :host([tab-variant="pill"]) {
+  :host([variant="pill"]) {
     background-color: var(--mdc-tab-pill-inactive-background-color-normal);
     border-radius: var(--mdc-tab-pill-border-radius);
     color: var(--mdc-tab-pill-inactive-color);
   }
 
-  :host([tab-variant="pill"]:hover) {
+  :host([variant="pill"]:hover) {
     background-color: var(--mdc-tab-pill-inactive-background-color-hover);
   }
 
-  :host([tab-variant="pill"]:active) {
+  :host([variant="pill"]:active) {
     background-color: var(--mdc-tab-pill-inactive-background-color-active);
   }
 
-  :host([tab-variant="pill"]:focus) {
+  :host([variant="pill"]:focus) {
     background-color: var(--mdc-tab-pill-inactive-background-color-focus);
   }
 
-  :host([tab-variant="pill"][disabled]) {
+  :host([variant="pill"][disabled]) {
     background-color: var(--mdc-tab-pill-inactive-background-color-disabled);
     color: var(--mdc-tab-pill-inactive-color-disabled);
   }
 
-  :host([tab-variant="pill"][active]) {
+  :host([variant="pill"][active]) {
     background-color: var(--mdc-tab-pill-active-background-color-normal);
     border: none;
     color: var(--mdc-tab-pill-active-color);
   }
 
-  :host([tab-variant="pill"][active]:hover) {
+  :host([variant="pill"][active]:hover) {
     background-color: var(--mdc-tab-pill-active-background-color-hover);
   }
 
-  :host([tab-variant="pill"][active]:active) {
+  :host([variant="pill"][active]:active) {
     background-color: var(--mdc-tab-pill-active-background-color-active);
   }
 
-  :host([tab-variant="pill"][active]:focus) {
+  :host([variant="pill"][active]:focus) {
     background-color: var(--mdc-tab-pill-active-background-color-focus);
   }
 
-  :host([tab-variant="pill"][active][disabled]) {
+  :host([variant="pill"][active][disabled]) {
     background-color: var(--mdc-tab-pill-active-background-color-disabled);
     color: var(--mdc-tab-pill-active-color-disabled);
   }

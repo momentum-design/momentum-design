@@ -1,15 +1,24 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { action } from '@storybook/addon-actions';
 import { TAB_VARIANTS } from './tab.constants';
-import { readOnlyControls } from '../../../config/storybook/utils';
+import { hideControls, readOnlyControls } from '../../../config/storybook/utils';
 
-const render = (args: Args) => html`<mdc-tab
+const render = (args: Args) => html`<div role="tablist">
+  <mdc-tab
+    @click="${action('onclick')}"
+    @keydown="${action('onkeydown')}"
+    @keyup="${action('onkeyup')}"
+    @focus="${action('onfocus')}"
     ?active="${args.active}"
     ?disabled="${args.disabled}"
     icon-name="${args['icon-name']}"
-    tab-variant="${args['tab-variant']}"
-    >${args.showBadge ? html`<mdc-badge slot="badge" type="dot"></mdc-badge>` : ''}${args.children}</mdc-tab>`;
+    role="${args.role}"
+    tabindex="${args.tabIndex}"
+    variant="${args.variant}"
+    >${args.showBadge ? html`<mdc-badge slot="badge" type="dot"></mdc-badge>` : ''}${args.children}</mdc-tab>
+</div>`;
 
 const meta: Meta = {
   title: 'Work In Progress/tab',
@@ -26,6 +35,7 @@ const meta: Meta = {
     },
     active: {
       control: 'boolean',
+      description: 'Tab can be active or inactive. Active tab means the tab is selected.',
     },
     disabled: {
       control: 'boolean',
@@ -33,15 +43,26 @@ const meta: Meta = {
     'icon-name': {
       control: 'text',
     },
+    role: {
+      control: 'text',
+    },
     showBadge: {
       control: 'boolean',
       description: 'This is an internal argument to show the badge in the story',
       table: { disable: true },
     },
-    'tab-variant': {
+    tabIndex: {
+      control: 'number',
+    },
+    variant: {
       control: 'select',
       options: Object.values(TAB_VARIANTS),
     },
+    ...hideControls([
+      'size',
+      'soft-disabled',
+      'type',
+    ]),
   },
 };
 
@@ -52,8 +73,10 @@ const defaultArgs = {
   active: false,
   disabled: false,
   'icon-name': 'placeholder-bold',
+  role: 'tab',
   showBadge: false,
-  'tab-variant': 'pill',
+  tabIndex: 0,
+  variant: 'pill',
 };
 
 export const Example: StoryObj = {
@@ -68,10 +91,10 @@ export const LineTab: StoryObj = {
   render,
   args: {
     ...defaultArgs,
-    'tab-variant': 'line',
+    variant: 'line',
   },
   argTypes: {
-    ...readOnlyControls(['tab-variant']),
+    ...readOnlyControls(['variant']),
   },
 };
 
@@ -79,9 +102,9 @@ export const PillTab: StoryObj = {
   render,
   args: {
     ...defaultArgs,
-    'tab-variant': 'pill',
+    variant: 'pill',
   },
   argTypes: {
-    ...readOnlyControls(['tab-variant']),
+    ...readOnlyControls(['variant']),
   },
 };

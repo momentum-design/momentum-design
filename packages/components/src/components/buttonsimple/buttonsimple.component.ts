@@ -101,7 +101,7 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
     }
   }
 
-  private executeAction() {
+  protected executeAction() {
     if (this.type === BUTTON_TYPE.SUBMIT && this.internals.form) {
       this.internals.form.requestSubmit();
     }
@@ -156,7 +156,9 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
       this.prevTabindex = this.tabIndex;
       this.tabIndex = -1;
     } else {
-      this.tabIndex = this.prevTabindex;
+      if (this.tabIndex === -1) {
+        this.tabIndex = this.prevTabindex;
+      }
       element.removeAttribute('aria-disabled');
     }
   }

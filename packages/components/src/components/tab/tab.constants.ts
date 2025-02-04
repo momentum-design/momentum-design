@@ -9,7 +9,6 @@ const TAB_VARIANTS = {
 
 const DEFAULTS = {
   TAB_VARIANT: TAB_VARIANTS.PILL,
-  SIZE: 32,
 } as const;
 
 export { DEFAULTS, TAG_NAME, TAB_VARIANTS };
