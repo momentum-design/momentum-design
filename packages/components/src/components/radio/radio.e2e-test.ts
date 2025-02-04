@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
+import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
 type SetupOptions = {
     componentsPage: ComponentsPage;
@@ -36,9 +37,83 @@ const setup = async (args: SetupOptions) => {
   return radio;
 };
 
-test.use({ viewport: { width: 400, height: 800 } });
 test('mdc-radio', async ({ componentsPage }) => {
   await test.step('attributes and interactions', async () => {
+    /**
+   * VISUAL REGRESSION
+   */
+    await test.step('visual-regression', async () => {
+      const radioStickerSheet = new StickerSheet(componentsPage, 'mdc-radio');
+
+      //   Radio btn without label
+      await radioStickerSheet.setAttributes({
+        'data-aria-label': 'Standard Plan',
+      });
+
+      // Radio btn with label
+      await radioStickerSheet.createMarkupWithCombination({}, true);
+      await radioStickerSheet.setAttributes({
+        label: 'Standard Plan',
+      });
+
+      // Checked radio btn
+      await radioStickerSheet.createMarkupWithCombination({}, true);
+      await radioStickerSheet.setAttributes({
+        label: 'Selected Radio Label',
+        checked: true,
+      });
+
+      // Checked radio btn with help text
+      await radioStickerSheet.createMarkupWithCombination({}, true);
+      await radioStickerSheet.setAttributes({
+        label: 'Selected Radio Label',
+        'help-text': 'This is a help text',
+        checked: true,
+      });
+
+      // Readonly radio btn
+      await radioStickerSheet.createMarkupWithCombination({}, true);
+      await radioStickerSheet.setAttributes({
+        label: 'Read Only Radio Label',
+        'help-text': 'This is a help text',
+        readonly: true,
+      });
+
+      // Readonly but checked radio btn
+      await radioStickerSheet.createMarkupWithCombination({}, true);
+      await radioStickerSheet.setAttributes({
+        label: 'Read Only Radio Label',
+        'help-text': 'This is a help text',
+        readonly: true,
+        checked: true,
+      });
+
+      // Disabled radio btn
+      await radioStickerSheet.createMarkupWithCombination({}, true);
+      await radioStickerSheet.setAttributes({
+        label: 'Disabled Radio Label',
+        'help-text': 'This is a help text',
+        disabled: true,
+      });
+
+      // Disabled but checked radio btn
+      await radioStickerSheet.createMarkupWithCombination({}, true);
+      await radioStickerSheet.setAttributes({
+        label: 'Disabled Selected Radio Label',
+        'help-text': 'This is a help text',
+        disabled: true,
+        checked: true,
+      });
+      await radioStickerSheet.createMarkupWithCombination({}, true);
+      await radioStickerSheet.mountStickerSheet();
+
+      await test.step('matches screenshot of radio stickersheet', async () => {
+        await componentsPage.visualRegression.takeScreenshot('mdc-radio', {
+          element: radioStickerSheet.getWrapperContainer(),
+        });
+      });
+    });
+
     /**
      * INTERACTIONS
      */
