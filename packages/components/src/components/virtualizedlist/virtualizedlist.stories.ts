@@ -14,8 +14,8 @@ const sentences = new Array(1000)
 const render = (args: Args) => html`
 <div style="height: 500px; width: 500px;">
   <mdc-virtualizedlist
-    .virtualizerProps=${args.virtualizerProps}
-    .list=${args.list}
+    .virtualizerprops="${args.virtualizerprops}"
+    .renderlist=${args.renderlist}
     .onScroll=${args.onScroll}
   ></mdc-virtualizedlist></div>`;
 
@@ -38,8 +38,8 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     onScroll: () => console.log('hello'),
-    virtualizerProps: { count: 200, estimateSize: () => 100 },
-    list: (
+    virtualizerprops: { count: 200, estimateSize: () => 100 },
+    renderlist: (
       virtualItems: Array<VirtualItem>,
       measureElement: (node: Element | null | undefined) => void,
       style: Readonly<StyleInfo>,
