@@ -2,35 +2,40 @@ import { css } from 'lit';
 import { hostFocusRingStyles } from '../../utils/styles';
 
 const styles = [css`
-:host{
-  --mdc-input-disabled-border-color: var(--mds-color-theme-outline-primary-disabled);
-  --mdc-input-disabled-text-color: var(--mds-color-theme-text-primary-disabled);
-  --mdc-input-disabled-background-color: var(--mds-color-theme-background-primary-disabled);
-  --mdc-input-border-color: var(--mds-color-theme-outline-input-normal);
-  --mdc-input-text-color: var(--mds-color-theme-text-primary-normal);
-  --mdc-input-background-color: var(--mds-color-theme-background-primary-ghost);
-  --mdc-input-selection-background-color: var(--mds-color-theme-background-accent-active);
-  --mdc-input-selection-text-color: var(--mds-color-theme-inverted-text-primary-normal);
-  --mdc-input-support-text-color: var(--mds-color-theme-text-secondary-normal);
-  --mdc-input-hover-background-color: var(--mds-color-theme-background-primary-hover);
-  --mdc-input-focused-background-color: var(--mds-color-theme-background-primary-active);
-  --mdc-input-focused-border-color: var(--mds-color-theme-outline-input-active);
-  --mdc-input-error-border-color: var(--mds-color-theme-text-error-normal);
-  --mdc-input-warning-border-color: var(--mds-color-theme-text-warning-normal);
-  --mdc-input-success-border-color: var(--mds-color-theme-text-success-normal);
-  --mdc-input-primary-border-color: var(--mds-color-theme-text-accent-normal);
-}
+  :host{
+    --mdc-input-disabled-border-color: var(--mds-color-theme-outline-primary-disabled);
+    --mdc-input-disabled-text-color: var(--mds-color-theme-text-primary-disabled);
+    --mdc-input-disabled-background-color: var(--mds-color-theme-background-primary-disabled);
+    --mdc-input-border-color: var(--mds-color-theme-outline-input-normal);
+    --mdc-input-text-color: var(--mds-color-theme-text-primary-normal);
+    --mdc-input-background-color: var(--mds-color-theme-background-primary-ghost);
+    --mdc-input-selection-background-color: var(--mds-color-theme-background-accent-active);
+    --mdc-input-selection-text-color: var(--mds-color-theme-inverted-text-primary-normal);
+    --mdc-input-support-text-color: var(--mds-color-theme-text-secondary-normal);
+    --mdc-input-hover-background-color: var(--mds-color-theme-background-primary-hover);
+    --mdc-input-focused-background-color: var(--mds-color-theme-background-primary-active);
+    --mdc-input-focused-border-color: var(--mds-color-theme-outline-input-active);
+    --mdc-input-error-border-color: var(--mds-color-theme-text-error-normal);
+    --mdc-input-warning-border-color: var(--mds-color-theme-text-warning-normal);
+    --mdc-input-success-border-color: var(--mds-color-theme-text-success-normal);
+    --mdc-input-primary-border-color: var(--mds-color-theme-text-accent-normal);
+  }
 
-:host, .input-container, .input-section, .input{
-  width: 100%;
-}
+  :host, .input-container, .input-section, .input{
+    width: 100%;
+  }
+
+  :host([readonly]) .leading-icon {
+    color: var(--mdc-input-support-text-color);
+  }
+
   :host([disabled]) .input,
-  :host([disabled]) .input::placeholder,
-  :host([readonly]) .leading-icon{
+  :host([disabled]) .input::placeholder{
     color: var(--mdc-input-disabled-text-color);
   }
 
-  :host([disabled]) .input{
+  :host([disabled]) .input,
+  :host([readonly]) .input{
     border-color: var(--mdc-input-disabled-border-color);
     background: var(--mdc-input-disabled-background-color);
   }
@@ -56,7 +61,7 @@ const styles = [css`
     gap: 0.375rem;
     padding: 0.34375rem 0.375rem 0.34375rem 0.75rem;
   }
-  
+
   .input-section{
     display: flex;
     gap: 0.25rem;
@@ -108,6 +113,6 @@ const styles = [css`
     opacity: 0;
     pointer-events: none;
   }
-`, ...hostFocusRingStyles(true)];
+  `, ...hostFocusRingStyles(true)];
 
 export default styles;

@@ -4,11 +4,11 @@ import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 const TAG_NAME = utils.constructTagName('formfieldwrapper');
 
 const VALIDATION = {
-  ERROR: 'error',
-  WARNING: 'warning',
-  SUCCESS: 'success',
-  PRIORITY: 'priority',
   DEFAULT: 'default',
+  ERROR: 'error',
+  PRIORITY: 'priority',
+  SUCCESS: 'success',
+  WARNING: 'warning',
 } as const;
 
 const DEFAULTS = {
