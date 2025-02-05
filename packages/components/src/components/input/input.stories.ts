@@ -217,15 +217,25 @@ export const AllVariants: StoryObj = {
 };
 
 export const FormFieldInput: StoryObj = {
-  render: () => html`
-  <form>
-    <mdc-input
-      id="1"
-      label="Label (required)"
-      placeholder="enter some text"
-      required
-    ></mdc-input>
-    <mdc-button type="submit" size='24' >Submit</mdc-button>
-  </form>
-  `,
+  render: () => {
+    const handleSubmit = (event: Event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target as HTMLFormElement);
+      const selectedValue = formData.get('user-name');
+      action('Form Submitted')({ value: selectedValue });
+    };
+
+    return html`
+    <form @submit=${handleSubmit}>
+      <mdc-input
+       name='user-name'
+        id="1"
+        label="First Name (required)"
+        placeholder="Enter your name"
+        required
+      ></mdc-input>
+      <mdc-button type="submit" size='24' >Submit</mdc-button>
+    </form>
+    `;
+  },
 };
