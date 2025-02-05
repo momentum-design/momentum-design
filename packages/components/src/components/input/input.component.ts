@@ -129,6 +129,12 @@ class Input extends NameMixin(FormfieldWrapper) {
    */
   @property({ type: Number }) size?: number | undefined;
 
+  /**
+   * Aria label for the trailing button. If trailing button is set to true, this label is used for the clear button.
+   * @default ''
+   */
+  @property({ type: String, attribute: 'data-aria-label' }) dataAriaLabel = '';
+
   @state() internalValue = '';
 
   @property()
@@ -308,7 +314,7 @@ class Input extends NameMixin(FormfieldWrapper) {
         prefix-icon='cancel-bold'
         variant='tertiary'
         size="20"
-        aria-label="Clear"
+        aria-label="${this.dataAriaLabel}"
         @click=${this.clearInputText}
         ?disabled=${this.disabled || this.readonly || !this.value}
       ></mdc-button>

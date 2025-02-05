@@ -32,6 +32,7 @@ const render = (args: Args) =>
     pattern="${ifDefined(args.pattern)}"
     list="${ifDefined(args.list)}"
     size="${ifDefined(args.size)}"
+    data-aria-label="${ifDefined(args['data-aria-label'])}"
     ></mdc-input>`;
 
 const meta: Meta = {
@@ -141,7 +142,7 @@ export const Example: StoryObj = {
     value: '',
     'help-text': 'Helper text',
     'help-text-type': 'default',
-    required: false,
+    required: true,
     readonly: false,
     disabled: false,
     'prefix-text': '',
@@ -149,6 +150,7 @@ export const Example: StoryObj = {
     'trailing-button': false,
     autocapitalize: 'off',
     autofocus: false,
+    'data-aria-label': 'clear input',
   },
 };
 
