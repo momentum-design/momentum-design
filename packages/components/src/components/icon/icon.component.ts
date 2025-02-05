@@ -26,7 +26,7 @@ import type { IconNames } from './icon.types';
  * if `size = 1` and `length-unit = 'em'`, the dimensions of the icon will be
  * `width: 1em; height: 1em`.
  *
- * Regarding accessibility, there are two types of icons: decorative and informative.
+ * Regarding accessibility, there are three types of icons: decorative, informative and informative standalone.
  *
  * ### Decorative Icons
  * - Decorative icons do not convey any essential information to the content of a page.
@@ -37,9 +37,16 @@ import type { IconNames } from './icon.types';
  * - Informative icons convey important information that is not adequately represented
  *   by surrounding text or components.
  * - They provide valuable context and must be announced by assistive technologies.
- * - For informative icons, an `aria-label` is required, and the `role` will be set to "img".
+ * - For informative icons, an `aria-label` is required, and the `role` will be set to "img" automatically.
  * - If an `aria-label` is provided, the role will be set to 'img'; if it is absent,
  *   the role will be unset.
+ *
+ * ### Informative Standalone Icons
+ * - If an icon is informative (as mentioned above) and does not belong to a button (=standalone), it must
+ * have a Tooltip that describes what it means.
+ * - For informative standalone icons, an `aria-label` & `tabindex="0"` is required,
+ * and the `role` will be set to "img" automatically.
+ * - **Only use this when a Icon is standalone and is not part of a button or other interactive elements.**
  *
  * @tagname mdc-icon
  *
@@ -89,18 +96,6 @@ class Icon extends Component {
   }
 
   /**
-   * Dispatches a 'load' event on the component once the icon has been successfully loaded.
-   * This event bubbles and is cancelable.
-   */
-  private triggerIconLoaded(): void {
-    const loadEvent = new Event('load', {
-      bubbles: true,
-      cancelable: true,
-    });
-    this.dispatchEvent(loadEvent);
-  }
-
-  /**
    * Get Icon Data function which will fetch the icon (currently only svg)
    * and sets state and attributes once fetched successfully
    *
@@ -125,8 +120,7 @@ class Icon extends Component {
   }
 
   /**
-   * Sets the iconData state to the fetched icon,
-   * and calls functions to set role, aria-label and aria-hidden attributes on the icon.
+   * Sets the iconData state to the fetched icon.
    * Dispatches a 'load' event on the component once the icon has been successfully loaded.
    * @param iconHtml - The icon html element which has been fetched from the icon provider.
    */
@@ -134,11 +128,12 @@ class Icon extends Component {
     // update iconData state once fetched:
     this.iconData = iconHtml;
 
-    // when icon is fetched successfully, set the role, aria-label and invoke function to trigger icon load event.
-    this.setRoleOnIcon();
-    this.setAriaLabelOnIcon();
-    this.setAriaHiddenOnIcon();
-    this.triggerIconLoaded();
+    // when icon is fetched successfully, trigger icon load event.
+    const loadEvent = new Event('load', {
+      bubbles: true,
+      cancelable: true,
+    });
+    this.dispatchEvent(loadEvent);
   }
 
   /**
@@ -166,24 +161,6 @@ class Icon extends Component {
     }
   }
 
-  private setRoleOnIcon() {
-    this.role = this.ariaLabel ? 'img' : null;
-  }
-
-  private setAriaHiddenOnIcon() {
-    // set aria-hidden=true for SVG to avoid screen readers
-    this.iconData?.setAttribute('aria-hidden', 'true');
-  }
-
-  private setAriaLabelOnIcon() {
-    if (this.ariaLabel) {
-      // pass through aria-label attribute to svg if set on mdc-icon
-      this.iconData?.setAttribute('aria-label', this.ariaLabel);
-    } else {
-      this.iconData?.removeAttribute('aria-label');
-    }
-  }
-
   private get computedIconSize() {
     return this.size ?? this.sizeFromContext ?? DEFAULTS.SIZE;
   }
@@ -201,8 +178,7 @@ class Icon extends Component {
     }
 
     if (changedProperties.has('ariaLabel')) {
-      this.setRoleOnIcon();
-      this.setAriaLabelOnIcon();
+      this.role = this.ariaLabel ? 'img' : null;
     }
 
     if (changedProperties.has('size') || changedProperties.has('lengthUnit')) {

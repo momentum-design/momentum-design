@@ -6,6 +6,7 @@ import { Component } from '../../models';
 import type { ValidationType } from './formfieldwrapper.types';
 import { DEFAULTS, MDC_TEXT_OPTIONS } from './formfieldwrapper.constants';
 import { getHelperIcon } from './formfieldwrapper.utils';
+import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 
 /**
  * formfieldwrapper is a component that contains the label and helper/validation text
@@ -17,7 +18,7 @@ import { getHelperIcon } from './formfieldwrapper.utils';
  * @slot label-info - slot to add the label info icon
  *
  */
-class FormfieldWrapper extends Component {
+class FormfieldWrapper extends DisabledMixin(Component) {
   /**
    * The label of the input field. It is linked to the input field using the `for` attribute.
    */
@@ -49,7 +50,7 @@ class FormfieldWrapper extends Component {
       return nothing;
     }
 
-    return html`<label for="${this.id}" class="mdc-label" part="mdc-label">${this.label}</label>`;
+    return html`<label for="${this.id}" class="mdc-label" part="label">${this.label}</label>`;
   }
 
   /**
@@ -62,8 +63,8 @@ class FormfieldWrapper extends Component {
       return nothing;
     }
     const helperIcon = getHelperIcon(this.helpTextType || DEFAULTS.VALIDATION);
-    if (helperIcon) {
-      return html`<mdc-icon part="mdc-helper-icon" size="1" length-unit="rem" name=${helperIcon}></mdc-icon>`;
+    if (helperIcon && !this.disabled) {
+      return html`<mdc-icon part="helper-icon" size="1" length-unit="rem" name=${helperIcon}></mdc-icon>`;
     }
     return nothing;
   }
@@ -79,7 +80,7 @@ class FormfieldWrapper extends Component {
     }
     return html`
       <mdc-text
-        part="mdc-help-text"
+        part="help-text"
         tagname=${MDC_TEXT_OPTIONS.TAGNAME}
         type=${MDC_TEXT_OPTIONS.TYPE}
       >
@@ -93,7 +94,7 @@ class FormfieldWrapper extends Component {
    * @returns void
    */
   protected renderLabel() {
-    return html`<div class="mdc-label-text" part="mdc-label-text">
+    return html`<div class="mdc-label-text" part="label-text">
       <slot name="label">${this.renderLabelElement()}</slot>
       <slot name="label-info"></slot>
     </div>`;
@@ -108,14 +109,6 @@ class FormfieldWrapper extends Component {
       <slot name="help-icon">${this.renderHelpTextIcon()}</slot>
       <slot name="help-text">${this.renderHelpText()}</slot>
     </div>`;
-  }
-
-  public override render() {
-    return html`
-      ${this.renderLabel()}
-      <slot></slot>
-      ${this.renderHelperText()}
-    `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
