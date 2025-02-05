@@ -2364,7 +2364,6 @@ __metadata:
     "@storybook/web-components": ^8.2.5
     "@storybook/web-components-vite": ^8.2.5
     "@tanstack/lit-virtual": ^3.11.3
-    "@types/react": ^19.0.8
     axe-html-reporter: ^2.2.11
     chalk: ^4.1.2
     concurrently: ^8.2.2
@@ -3948,15 +3947,6 @@ __metadata:
     "@types/prop-types": "*"
     csstype: ^3.0.2
   checksum: 6cbf36673b64e758dd61b16c24139d015f58530e0d476777de26ba83f24b55e142fbf64e3b8f6b3c7b05ed9ba548551b2a62d9ffb0f95743d0a368646a619163
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:^19.0.8":
-  version: 19.0.8
-  resolution: "@types/react@npm:19.0.8"
-  dependencies:
-    csstype: ^3.0.2
-  checksum: 80dd2e7fa4b3e0ea2d883c21317563f4af1c4d90a6250c8bcbc052079304dc3335369267026004ed5d7cac09c7b0026e02e71ae5cca3150643507e353219fe47
   languageName: node
   linkType: hard
 

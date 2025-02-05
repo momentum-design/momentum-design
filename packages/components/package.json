@@ -90,7 +90,6 @@
     "@momentum-design/icons": "workspace:*",
     "@momentum-design/tokens": "workspace:*",
     "@tanstack/lit-virtual": "^3.11.3",
-    "@types/react": "^19.0.8",
     "lit": "^3.2.0",
     "uuid": "^11.0.5"
   },
