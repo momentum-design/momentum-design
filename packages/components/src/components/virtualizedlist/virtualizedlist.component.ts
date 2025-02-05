@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { CSSResult, PropertyValues, TemplateResult, html } from 'lit';
-import { ReactElement } from 'react';
 import { VirtualizerController } from '@tanstack/lit-virtual';
 import { property } from 'lit/decorators.js';
-import { Virtualizer, VirtualItem, VirtualizerOptions } from '@tanstack/virtual-core';
-import { StyleInfo } from 'lit/directives/style-map';
+import { Virtualizer, VirtualizerOptions } from '@tanstack/virtual-core';
+import { StyleInfo } from 'lit/directives/style-map.js';
 import { Ref, createRef, ref } from 'lit/directives/ref.js';
 import styles from './virtualizedlist.styles';
 import { Component } from '../../models';
@@ -19,13 +18,6 @@ class VirtualizedList extends Component {
   @property({ type: Function, attribute: 'onscroll' })
   onScroll?: (e: Event) => void;
 
-  @property({ type: Function, attribute: 'renderlist' })
-  renderlist: ((
-    virtualItems: Array<VirtualItem>,
-    measureElement: (node: Element | null | undefined) => void,
-    style: Readonly<StyleInfo>,
-  ) => ReactElement) | null;
-
   @property({ type: Object, attribute: 'virtualizerprops' })
   virtualizerprops: Partial<VirtualizerOptions<Element, Element>> = {};
 
@@ -39,7 +31,6 @@ class VirtualizedList extends Component {
     super();
     this.virtualizerController = null;
     this.virtualizer = null;
-    this.renderlist = null;
   }
 
   public override update(changedProperties: PropertyValues): void {
@@ -67,7 +58,7 @@ class VirtualizedList extends Component {
     if (this.virtualizer) {
       const { getVirtualItems, measureElement, getTotalSize } = this.virtualizer;
       const virtualItems = getVirtualItems();
-      const style: Readonly<StyleInfo> = {
+      const listStyle: Readonly<StyleInfo> = {
         position: 'absolute',
         top: 0,
         left: 0,
@@ -75,15 +66,18 @@ class VirtualizedList extends Component {
         transform: `translateY(${virtualItems[0]?.start ?? 0}px)`,
       };
 
+      const event = new CustomEvent('render-list', {
+        detail: { virtualItems, measureElement, listStyle },
+        bubbles: true,
+        composed: true,
+      });
+      this.dispatchEvent(event);
+
       return html`<div
           class="mdc-virtualizedlist-wrapper"
           style="height: ${getTotalSize()}px;"
         >
-          ${this.renderlist && this.renderlist(
-    virtualItems,
-    measureElement,
-    style,
-  )}
+          <slot></slot>
         </div>`;
     }
 
