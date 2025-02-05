@@ -9,7 +9,7 @@ const styles = [hostFitContentStyles, css`
     --mdc-toggle-height-compact: 0.75rem;
     --mdc-toggle-border-radius: 0.75rem;
     --mdc-toggle-border-radius-compact: 0.5rem;
-    --mdc-toggle-border: 0.063rem solid var(--mds-color-theme-outline-input-normal);
+    --mdc-toggle-border: 0.0625rem solid var(--mds-color-theme-outline-input-normal);
 
     --mdc-toggle-inactive-rest-color: var(--mds-color-theme-control-inactive-normal);
     --mdc-toggle-inactive-hover-color: var(--mds-color-theme-control-inactive-hover);
