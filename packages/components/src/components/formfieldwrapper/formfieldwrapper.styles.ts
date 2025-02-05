@@ -9,9 +9,13 @@ const styles = [
       align-items: flex-start;
       gap: 0.5rem;
     }
-
+    :host([disabled]),
     :host([disabled]) .mdc-label,
-    :host([disabled]) .mdc-help-text {
+    :host([disabled]) .mdc-help-text,
+    :host([disabled][help-text-type='error']) .mdc-help-text,
+    :host([disabled][help-text-type='success']) .mdc-help-text,
+    :host([disabled][help-text-type='warning']) .mdc-help-text,
+    :host([disabled][help-text-type='priority']) .mdc-help-text {
       color: var(--mds-color-theme-text-primary-disabled);
     }
 

@@ -121,7 +121,7 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
     if (active) {
       element.setAttribute('aria-pressed', 'true');
     } else {
-      element.setAttribute('aria-pressed', 'false');
+      element.removeAttribute('aria-pressed');
     }
   }
 
@@ -137,7 +137,7 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
     if (softDisabled) {
       element.setAttribute('aria-disabled', 'true');
     } else {
-      element.setAttribute('aria-disabled', 'false');
+      element.removeAttribute('aria-disabled');
     }
   }
 
