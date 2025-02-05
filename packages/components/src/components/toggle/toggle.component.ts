@@ -5,7 +5,7 @@ import styles from './toggle.styles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { ValueMixin } from '../../utils/mixins/ValueMixin';
 import { NameMixin } from '../../utils/mixins/NameMixin';
-import { DEFAULTS, ICON_NAME, TOGGLE_SIZE } from './toggle.constants';
+import { DEFAULTS, ICON_NAME, ICON_SIZE_IN_REM, TOGGLE_SIZE } from './toggle.constants';
 import { ToggleSize } from './toggle.types';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 
@@ -76,6 +76,7 @@ class Toggle extends NameMixin(ValueMixin(FormfieldWrapper)) {
 
   constructor() {
     super();
+    /** @internal */
     this.internals = this.attachInternals();
     // Toggle does not contain helpTextType property.
     this.helpTextType = undefined as unknown as ValidationType;
@@ -158,14 +159,12 @@ class Toggle extends NameMixin(ValueMixin(FormfieldWrapper)) {
             @change="${this.handleChange}"
           />
           <div class="mdc-toggle__slider">
-                <div class="mdc-toggle__icon-container">
                     <mdc-icon
                       name="${this.checked ? ICON_NAME.CHECKED : ICON_NAME.UNCHECKED}"
                       class="mdc-toggle__icon"
-                      length-unit="%"
-                      size="100"
+                      length-unit="rem"
+                      size="${ICON_SIZE_IN_REM[this.size]}"
                     ></mdc-icon>
-                </div>
           </div>
         </div>
         ${this.renderLabel()}
