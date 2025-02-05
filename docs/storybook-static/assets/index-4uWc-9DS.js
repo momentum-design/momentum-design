@@ -1,33 +1,19 @@
 import{i as g,k as _}from"./lit-element-CHllvULs.js";import{u as h,C as p,n as u}from"./index-HW6KrQZO.js";import{r as b}from"./state-CWckTc1X.js";import{h as v}from"./index-MYSkQ1zX.js";import"./index-BRJNDW9c.js";const E=h.constructTagName("presence"),e={ACTIVE:"active",AWAY:"away",AWAY_CALLING:"away-calling",BUSY:"busy",DND:"dnd",MEETING:"meeting",ON_CALL:"on-call",ON_DEVICE:"on-device",ON_MOBILE:"on-mobile",PAUSE:"pause",PTO:"pto",PRESENTING:"presenting",QUIET:"quiet",SCHEDULED:"scheduled"},c={XX_SMALL:"xx_small",X_SMALL:"x_small",SMALL:"small",MIDSIZE:"midsize",LARGE:"large",X_LARGE:"x_large",XX_LARGE:"xx_large"},s={TYPE:e.ACTIVE,SIZE:c.SMALL},k=[v,g`
     :host {
       --mdc-presence-active-background-color: var(--mds-color-theme-indicator-stable);
-      
       --mdc-presence-away-background-color: var(--mds-color-theme-indicator-locked);
-      
       --mdc-presence-away-calling-background-color: var(--mds-color-theme-indicator-locked);
-
       --mdc-presence-busy-background-color: var(--mds-color-theme-indicator-unstable);
-      
       --mdc-presence-dnd-background-color: var(--mds-color-theme-indicator-attention);
-      
       --mdc-presence-meeting-background-color: var(--mds-color-theme-indicator-unstable);
-
       --mdc-presence-on-call-background-color: var(--mds-color-theme-indicator-unstable);
-      
       --mdc-presence-on-device-background-color: var(--mds-color-theme-indicator-locked);
-      
       --mdc-presence-on-mobile-background-color: var(--mds-color-theme-indicator-locked);
-
       --mdc-presence-pause-background-color: var(--mds-color-theme-indicator-locked);
-
       --mdc-presence-pto-background-color: var(--mds-color-theme-indicator-locked);
-      
       --mdc-presence-presenting-background-color: var(--mds-color-theme-indicator-attention);
-
       --mdc-presence-quiet-background-color: var(--mds-color-theme-indicator-locked);
-
       --mdc-presence-scheduled-background-color: var(--mds-color-theme-indicator-unstable);
-
       --mdc-presence-overlay-background-color: var(--mds-color-theme-background-solid-primary-normal);
     }
 
