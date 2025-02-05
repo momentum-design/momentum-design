@@ -2,6 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { disableControls } from '../../../config/storybook/utils';
@@ -9,6 +10,9 @@ import { AUTO_CAPITALIZE } from './input.constants';
 
 const render = (args: Args) =>
   html` <mdc-input
+    @change="${action('onchange')}"
+    @focus="${action('onfocus')}"
+    @blur="${action('onblur')}"
     id="${args.id}"
     label="${args.label}"
     help-text-type="${args['help-text-type']}"
@@ -32,6 +36,7 @@ const render = (args: Args) =>
     pattern="${ifDefined(args.pattern)}"
     list="${ifDefined(args.list)}"
     size="${ifDefined(args.size)}"
+    data-aria-label="${ifDefined(args['data-aria-label'])}"
     ></mdc-input>`;
 
 const meta: Meta = {
@@ -141,7 +146,7 @@ export const Example: StoryObj = {
     value: '',
     'help-text': 'Helper text',
     'help-text-type': 'default',
-    required: false,
+    required: true,
     readonly: false,
     disabled: false,
     'prefix-text': '',
@@ -149,6 +154,7 @@ export const Example: StoryObj = {
     'trailing-button': false,
     autocapitalize: 'off',
     autofocus: false,
+    'data-aria-label': 'clear input',
   },
 };
 
@@ -211,15 +217,25 @@ export const AllVariants: StoryObj = {
 };
 
 export const FormFieldInput: StoryObj = {
-  render: () => html`
-  <form>
-    <mdc-input
-      id="1"
-      label="Label (required)"
-      placeholder="enter some text"
-      required
-    ></mdc-input>
-    <mdc-button type="submit" size='24' >Submit</mdc-button>
-  </form>
-  `,
+  render: () => {
+    const handleSubmit = (event: Event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target as HTMLFormElement);
+      const selectedValue = formData.get('user-name');
+      action('Form Submitted')({ value: selectedValue });
+    };
+
+    return html`
+    <form @submit=${handleSubmit}>
+      <mdc-input
+       name='user-name'
+        id="1"
+        label="First Name (required)"
+        placeholder="Enter your name"
+        required
+      ></mdc-input>
+      <mdc-button type="submit" size='24' >Submit</mdc-button>
+    </form>
+    `;
+  },
 };

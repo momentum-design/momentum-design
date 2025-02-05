@@ -30,7 +30,8 @@ const styles = [css`
   }
 
   :host([disabled]) .input,
-  :host([disabled]) .input::placeholder{
+  :host([disabled]) .input::placeholder,
+  :host([disabled]) .prefix-text{
     color: var(--mdc-input-disabled-text-color);
   }
 
