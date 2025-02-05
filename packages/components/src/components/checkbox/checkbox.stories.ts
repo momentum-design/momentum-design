@@ -4,6 +4,7 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
+import '../button';
 
 const render = (args: Args) => html`
   <mdc-checkbox
@@ -120,4 +121,28 @@ export const DisabledVariants: StoryObj = {
       <mdc-checkbox label="Selected" disabled help-text="This is a help text" checked></mdc-checkbox>
       <mdc-checkbox label="Indeterminate" disabled help-text="This is a help text" indeterminate></mdc-checkbox>
     </div>`,
+};
+
+export const FormField: StoryObj = {
+  render: () => {
+    const handleSubmit = (event: Event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target as HTMLFormElement);
+      const selectedValues = formData.getAll('super-power');
+      action('Form Submitted')({ value: selectedValues });
+    };
+
+    return html`
+      <form @submit=${handleSubmit}>
+        <fieldset style="display: flex; flex-direction: column; gap: 1rem;">
+          <legend>Select your super hero power</legend>
+          <mdc-checkbox label="Flight" value="flight" name="super-power"></mdc-checkbox>
+          <mdc-checkbox label="Mind Control" value="mind-control" name="super-power"></mdc-checkbox>
+          <mdc-checkbox label="Super strength" value="super-strength" name="super-power"></mdc-checkbox>
+          <mdc-checkbox label="Tactics" value="tactics" name="super-power"></mdc-checkbox>
+          <mdc-button type="submit">Submit</mdc-button>
+        </fieldset>
+      </form>
+    `;
+  },
 };
