@@ -55,6 +55,9 @@ const hostFocusRingStyles = (applyFocusRingOnClass = false) => {
   return [
     baseHostStyleVariables,
     css`
+      :host(:focus-visible) {
+        outline: none;
+      }
       :host([disabled]:focus) {
         box-shadow: none;
       }
