@@ -26,6 +26,30 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
+    label: {
+      control: 'text',
+    },
+    'help-text': {
+      control: 'text',
+    },
+    checked: {
+      control: 'boolean',
+    },
+    indeterminate: {
+      control: 'boolean',
+    },
+    disabled: {
+      control: 'boolean',
+    },
+    'data-aria-label': {
+      control: 'text',
+    },
+    name: {
+      control: 'text',
+    },
+    value: {
+      control: 'text',
+    },
     ...hideControls(['help-text-type', 'label-info', 'id', 'internals']),
     ...disableControls([
       '--mdc-checkbox-background-color-hover',
