@@ -121,7 +121,7 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
   public override render() {
     const checkboxIconContent = (this.checked || this.indeterminate) ? html`
       <mdc-icon
-        class="mdc-checkbox__icon"
+        class="icon"
         name="${this.indeterminate ? ICON_NAME.INDETERMINATE : ICON_NAME.CHECKED}"
         size="1"
         length-unit="rem"
@@ -130,11 +130,11 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
     const helpTextContent = this.helpText ? this.renderHelperText() : nothing;
 
     return html`
-      <div class="mdc-checkbox__container mdc-focus-ring">
+      <div class="container mdc-focus-ring">
         <input
           id="${this.id}"
           type="checkbox"
-          class="mdc-checkbox__input"
+          class="input"
           name="${ifDefined(this.name)}"
           value="${ifDefined(this.value)}"
           .checked="${live(this.checked)}"
@@ -143,9 +143,9 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
           aria-label="${this.dataAriaLabel ?? ''}"
           @change=${this.handleChange}
         />
-        <div class="mdc-checkbox__icon-container">${checkboxIconContent}</div>
+        <div class="icon-container">${checkboxIconContent}</div>
       </div>
-      <div class="mdc-checkbox__text-container">
+      <div class="text-container">
         ${this.renderLabel()}
         ${helpTextContent}
       </div>

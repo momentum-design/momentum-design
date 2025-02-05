@@ -20,41 +20,41 @@ const styles = [css`
     flex-direction: row;
     align-items: flex-start;
   }
-  .mdc-label, .mdc-checkbox__input {
+  .mdc-label, .input {
     cursor: pointer;
   }
-  :host([checked]) .mdc-checkbox__icon-container,
-  :host([indeterminate]) .mdc-checkbox__icon-container {
+  :host([checked]) .icon-container,
+  :host([indeterminate]) .icon-container {
     background: var(--mdc-checkbox-checked-background-color);
     border: unset;
   }
-  :host([checked]) .mdc-checkbox__container:hover .mdc-checkbox__icon-container,
-  :host([indeterminate]) .mdc-checkbox__container:hover .mdc-checkbox__icon-container {
+  :host([checked]) .container:hover .icon-container,
+  :host([indeterminate]) .container:hover .icon-container {
     background: var(--mdc-checkbox-checked-background-color-hover);
   }
-  :host([checked]) .mdc-checkbox__container:active .mdc-checkbox__icon-container,
-  :host([indeterminate]) .mdc-checkbox__container:active .mdc-checkbox__icon-container {
+  :host([checked]) .container:active .icon-container,
+  :host([indeterminate]) .container:active .icon-container {
     background: var(--mdc-checkbox-checked-pressed-icon-color);
   }
   :host([disabled]) .mdc-label,
-  :host([disabled]) .mdc-checkbox__input {
+  :host([disabled]) .input {
     cursor: default;
   }
-  :host([disabled]) .mdc-checkbox__container:hover .mdc-checkbox__icon-container {
+  :host([disabled]) .container:hover {
     background: unset;
   }
-  :host([disabled]) .mdc-checkbox__icon-container {
+  :host([disabled]) .icon-container {
     background: var(--mdc-checkbox-disabled-background-color);
   }
-  :host([disabled]) .mdc-checkbox__icon {
+  :host([disabled]) .icon {
     --mdc-icon-fill-color: var(--mdc-checkbox-disabled-icon-color);
   }
-  :host([disabled][checked]) .mdc-checkbox__icon-container,
-  :host([disabled][indeterminate]) .mdc-checkbox__icon-container {
+  :host([disabled][checked]) .icon-container,
+  :host([disabled][indeterminate]) .icon-container {
     background: var(--mdc-checkbox-disabled-checked-icon-color);
     border: 0.0625rem solid var(--mdc-checkbox-disabled-border-color);
   }
-  .mdc-checkbox__input {
+  .input {
     margin: 0;
     padding: 0;
     position: absolute;
@@ -62,34 +62,34 @@ const styles = [css`
     overflow: visible;
     z-index: 1;
   }
-  .mdc-checkbox__icon-container {
+  .icon-container {
     display: flex;
     align-items: center;
     border: 0.0625rem solid var(--mdc-checkbox-icon-border-color);
     background: var(--mdc-checkbox-icon-background-color);
   }
-  .mdc-checkbox__container:hover {
+  .container:hover {
     background: var(--mdc-checkbox-background-color-hover);
   }
-  .mdc-checkbox__container:active {
+  .container:active {
     background: var(--mdc-checkbox-pressed-icon-color);
   }
-  .mdc-checkbox__input, .mdc-checkbox__icon-container {
+  .input, .icon-container {
     width: 1rem;
     height: 1rem;
   }
-  .mdc-checkbox__input,
-  .mdc-checkbox__icon-container,
-  .mdc-checkbox__container {
+  .input,
+  .icon-container,
+  .container {
     border-radius: 0.125rem;
   }
-  .mdc-checkbox__icon {
+  .icon {
     --mdc-icon-fill-color: var(--mdc-checkbox-icon-color);
   }
-  .mdc-checkbox__container {
+  .container {
     margin: 0.125rem 0;
   }
-  .mdc-checkbox__text-container {
+  .text-container {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
@@ -97,8 +97,8 @@ const styles = [css`
   
   /* High Contrast Mode */
   @media (forced-colors: active) {
-    :host([checked]) .mdc-checkbox__icon-container,
-    :host([indeterminate]) .mdc-checkbox__icon-container {
+    :host([checked]) .icon-container,
+    :host([indeterminate]) .icon-container {
       border: 0.0625rem solid var(--mdc-checkbox-border-color);
     }
   }
