@@ -51,6 +51,8 @@ import type { IconNames } from './icon.types';
  * @tagname mdc-icon
  *
  * @cssproperty --mdc-icon-fill-color - Allows customization of the default fill color.
+ * @cssproperty --mdc-icon-size - Allows customization of the icon size.
+ * @cssproperty --mdc-icon-border-radius - Allows customization of the icon border radius.
  */
 class Icon extends Component {
   @state()

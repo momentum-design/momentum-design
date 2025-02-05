@@ -6,33 +6,19 @@ const styles = [
   css`
     :host {
       --mdc-presence-active-background-color: var(--mds-color-theme-indicator-stable);
-      
       --mdc-presence-away-background-color: var(--mds-color-theme-indicator-locked);
-      
       --mdc-presence-away-calling-background-color: var(--mds-color-theme-indicator-locked);
-
       --mdc-presence-busy-background-color: var(--mds-color-theme-indicator-unstable);
-      
       --mdc-presence-dnd-background-color: var(--mds-color-theme-indicator-attention);
-      
       --mdc-presence-meeting-background-color: var(--mds-color-theme-indicator-unstable);
-
       --mdc-presence-on-call-background-color: var(--mds-color-theme-indicator-unstable);
-      
       --mdc-presence-on-device-background-color: var(--mds-color-theme-indicator-locked);
-      
       --mdc-presence-on-mobile-background-color: var(--mds-color-theme-indicator-locked);
-
       --mdc-presence-pause-background-color: var(--mds-color-theme-indicator-locked);
-
       --mdc-presence-pto-background-color: var(--mds-color-theme-indicator-locked);
-      
       --mdc-presence-presenting-background-color: var(--mds-color-theme-indicator-attention);
-
       --mdc-presence-quiet-background-color: var(--mds-color-theme-indicator-locked);
-
       --mdc-presence-scheduled-background-color: var(--mds-color-theme-indicator-unstable);
-
       --mdc-presence-overlay-background-color: var(--mds-color-theme-background-solid-primary-normal);
     }
 
