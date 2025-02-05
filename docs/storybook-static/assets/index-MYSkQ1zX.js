@@ -1,4 +1,4 @@
-import{i as o}from"./lit-element-CHllvULs.js";const t=o`
+import{i as o}from"./lit-element-CHllvULs.js";const e=o`
   :host {
     align-items: center;
     display: flex;
@@ -6,7 +6,7 @@ import{i as o}from"./lit-element-CHllvULs.js";const t=o`
     justify-content: center;
     width: fit-content;
   }
-`,e=(s=!1)=>{const c=o`
+`,r=(s=!1)=>{const c=o`
     :host {
       --mdc-focus-ring-inner-color: var(--mds-color-theme-focus-default-0);
       --mdc-focus-ring-middle-color: var(--mds-color-theme-focus-default-1);
@@ -40,6 +40,9 @@ import{i as o}from"./lit-element-CHllvULs.js";const t=o`
           }
         }
       `]:[c,o`
+      :host(:focus-visible) {
+        outline: none;
+      }
       :host([disabled]:focus) {
         box-shadow: none;
       }
@@ -53,4 +56,4 @@ import{i as o}from"./lit-element-CHllvULs.js";const t=o`
           outline: 0.125rem solid var(--mds-color-theme-focus-default-0);
         }
       }
-    `]};export{e as a,t as h};
+    `]};export{r as a,e as h};

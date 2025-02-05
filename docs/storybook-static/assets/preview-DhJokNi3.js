@@ -457,7 +457,7 @@ or can be overridden for each individual icon. For example:
 if \`size = 1\` and \`length-unit = 'em'\`, the dimensions of the icon will be
 \`width: 1em; height: 1em\`.
 
-Regarding accessibility, there are two types of icons: decorative and informative.
+Regarding accessibility, there are three types of icons: decorative, informative and informative standalone.
 
 ### Decorative Icons
 - Decorative icons do not convey any essential information to the content of a page.
@@ -468,19 +468,24 @@ Regarding accessibility, there are two types of icons: decorative and informativ
 - Informative icons convey important information that is not adequately represented
   by surrounding text or components.
 - They provide valuable context and must be announced by assistive technologies.
-- For informative icons, an \`aria-label\` is required, and the \`role\` will be set to "img".
+- For informative icons, an \`aria-label\` is required, and the \`role\` will be set to "img" automatically.
 - If an \`aria-label\` is provided, the role will be set to 'img'; if it is absent,
-  the role will be unset.`,name:"Icon",cssProperties:[{description:"Allows customization of the default fill color.",name:"--mdc-icon-fill-color"}],members:[{kind:"field",name:"iconData",type:{text:"HTMLElement | undefined"},privacy:"private"},{kind:"field",name:"lengthUnitFromContext",type:{text:"string | undefined"},privacy:"private"},{kind:"field",name:"sizeFromContext",type:{text:"number | undefined"},privacy:"private"},{kind:"field",name:"name",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename)",attribute:"name",reflects:!0},{kind:"field",name:"size",type:{text:"number | undefined"},description:"Size of the icon (works in combination with length unit)",attribute:"size"},{kind:"field",name:"lengthUnit",type:{text:"string | undefined"},description:"Length unit attribute for overriding length-unit from `IconProvider`",attribute:"length-unit"},{kind:"field",name:"ariaLabel",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",attribute:"aria-label"},{kind:"field",name:"iconProviderContext",privacy:"private",readonly:!0},{kind:"field",name:"abortController",type:{text:"AbortController"},privacy:"private",default:"new AbortController()"},{kind:"method",name:"triggerIconLoaded",privacy:"private",return:{type:{text:"void"}},description:`Dispatches a 'load' event on the component once the icon has been successfully loaded.
-This event bubbles and is cancelable.`},{kind:"method",name:"getIconData",privacy:"private",description:`Get Icon Data function which will fetch the icon (currently only svg)
+  the role will be unset.
+
+### Informative Standalone Icons
+- If an icon is informative (as mentioned above) and does not belong to a button (=standalone), it must
+have a Tooltip that describes what it means.
+- For informative standalone icons, an \`aria-label\` & \`tabindex="0"\` is required,
+and the \`role\` will be set to "img" automatically.
+- **Only use this when a Icon is standalone and is not part of a button or other interactive elements.**`,name:"Icon",cssProperties:[{description:"Allows customization of the default fill color.",name:"--mdc-icon-fill-color"}],members:[{kind:"field",name:"iconData",type:{text:"HTMLElement | undefined"},privacy:"private"},{kind:"field",name:"lengthUnitFromContext",type:{text:"string | undefined"},privacy:"private"},{kind:"field",name:"sizeFromContext",type:{text:"number | undefined"},privacy:"private"},{kind:"field",name:"name",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename)",attribute:"name",reflects:!0},{kind:"field",name:"size",type:{text:"number | undefined"},description:"Size of the icon (works in combination with length unit)",attribute:"size"},{kind:"field",name:"lengthUnit",type:{text:"string | undefined"},description:"Length unit attribute for overriding length-unit from `IconProvider`",attribute:"length-unit"},{kind:"field",name:"ariaLabel",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",attribute:"aria-label"},{kind:"field",name:"iconProviderContext",privacy:"private",readonly:!0},{kind:"field",name:"abortController",type:{text:"AbortController"},privacy:"private",default:"new AbortController()"},{kind:"method",name:"getIconData",privacy:"private",description:`Get Icon Data function which will fetch the icon (currently only svg)
 and sets state and attributes once fetched successfully
 
 This method uses abortController.signal to cancel the fetch request when the component is disconnected or updated.
 If the request is aborted after the fetch() call has been fulfilled but before the response body has been read,
-then attempting to read the response body will reject with an AbortError exception.`},{kind:"method",name:"handleIconLoadedSuccess",privacy:"private",parameters:[{name:"iconHtml",type:{text:"HTMLElement"},description:"The icon html element which has been fetched from the icon provider."}],description:`Sets the iconData state to the fetched icon,
-and calls functions to set role, aria-label and aria-hidden attributes on the icon.
+then attempting to read the response body will reject with an AbortError exception.`},{kind:"method",name:"handleIconLoadedSuccess",privacy:"private",parameters:[{name:"iconHtml",type:{text:"HTMLElement"},description:"The icon html element which has been fetched from the icon provider."}],description:`Sets the iconData state to the fetched icon.
 Dispatches a 'load' event on the component once the icon has been successfully loaded.`},{kind:"method",name:"handleIconLoadedFailure",privacy:"private",parameters:[{name:"error",type:{text:"unknown"}}],description:`Dispatches an 'error' event on the component when the icon fetching has failed.
 This event bubbles and is cancelable.
-The error detail is set to the error object.`},{kind:"method",name:"updateSize",privacy:"private",description:"Updates the size by setting the width and height"},{kind:"method",name:"setRoleOnIcon",privacy:"private"},{kind:"method",name:"setAriaHiddenOnIcon",privacy:"private"},{kind:"method",name:"setAriaLabelOnIcon",privacy:"private"},{kind:"field",name:"computedIconSize",privacy:"private",readonly:!0}],attributes:[{name:"name",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename)",fieldName:"name"},{name:"size",type:{text:"number | undefined"},description:"Size of the icon (works in combination with length unit)",fieldName:"size"},{name:"length-unit",type:{text:"string | undefined"},description:"Length unit attribute for overriding length-unit from `IconProvider`",fieldName:"lengthUnit"},{name:"aria-label",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",fieldName:"ariaLabel"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-icon",jsDoc:`/**
+The error detail is set to the error object.`},{kind:"method",name:"updateSize",privacy:"private",description:"Updates the size by setting the width and height"},{kind:"field",name:"computedIconSize",privacy:"private",readonly:!0}],attributes:[{name:"name",type:{text:"IconNames | undefined"},description:"Name of the icon (= filename)",fieldName:"name"},{name:"size",type:{text:"number | undefined"},description:"Size of the icon (works in combination with length unit)",fieldName:"size"},{name:"length-unit",type:{text:"string | undefined"},description:"Length unit attribute for overriding length-unit from `IconProvider`",fieldName:"lengthUnit"},{name:"aria-label",type:{text:"string | null"},default:"null",description:"Aria-label attribute to be set for accessibility",fieldName:"ariaLabel"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-icon",jsDoc:`/**
  * Icon component that dynamically displays SVG icons based on a valid name.
  *
  * This component must be mounted within an \`IconProvider\` component.
@@ -498,7 +503,7 @@ The error detail is set to the error object.`},{kind:"method",name:"updateSize",
  * if \`size = 1\` and \`length-unit = 'em'\`, the dimensions of the icon will be
  * \`width: 1em; height: 1em\`.
  *
- * Regarding accessibility, there are two types of icons: decorative and informative.
+ * Regarding accessibility, there are three types of icons: decorative, informative and informative standalone.
  *
  * ### Decorative Icons
  * - Decorative icons do not convey any essential information to the content of a page.
@@ -509,9 +514,16 @@ The error detail is set to the error object.`},{kind:"method",name:"updateSize",
  * - Informative icons convey important information that is not adequately represented
  *   by surrounding text or components.
  * - They provide valuable context and must be announced by assistive technologies.
- * - For informative icons, an \`aria-label\` is required, and the \`role\` will be set to "img".
+ * - For informative icons, an \`aria-label\` is required, and the \`role\` will be set to "img" automatically.
  * - If an \`aria-label\` is provided, the role will be set to 'img'; if it is absent,
  *   the role will be unset.
+ *
+ * ### Informative Standalone Icons
+ * - If an icon is informative (as mentioned above) and does not belong to a button (=standalone), it must
+ * have a Tooltip that describes what it means.
+ * - For informative standalone icons, an \`aria-label\` & \`tabindex="0"\` is required,
+ * and the \`role\` will be set to "img" automatically.
+ * - **Only use this when a Icon is standalone and is not part of a button or other interactive elements.**
  *
  * @tagname mdc-icon
  *

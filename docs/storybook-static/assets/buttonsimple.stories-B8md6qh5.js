@@ -1,4 +1,4 @@
-import{B as r}from"./buttonsimple.component-DITj0SI7.js";import{T as c,a as n,B as i,D as d}from"./buttonsimple.constants-Biy6Bznc.js";import{k as p}from"./lit-element-CHllvULs.js";import{a as o}from"./chunk-D5ZWXAHU-CGElDDNX.js";import{c as m,s as b}from"./commonArgTypes-BluK8w5L.js";import"./index-HW6KrQZO.js";import"./index-BNZgxKMr.js";import"./DisabledMixin-DBt9didn.js";import"./v4-CQkTLCs1.js";r.register(c);const T=e=>p`
+import{B as r}from"./buttonsimple.component-C2NzybLk.js";import{T as c,a as n,B as i,D as d}from"./buttonsimple.constants-Biy6Bznc.js";import{k as p}from"./lit-element-CHllvULs.js";import{a as o}from"./chunk-D5ZWXAHU-CGElDDNX.js";import{c as m,s as b}from"./commonArgTypes-BluK8w5L.js";import"./index-HW6KrQZO.js";import"./index-MYSkQ1zX.js";import"./DisabledMixin-DBt9didn.js";import"./v4-CQkTLCs1.js";r.register(c);const T=e=>p`
   <mdc-buttonsimple 
   @click="${o("onclick")}"
   @keydown="${o("onkeydown")}"
