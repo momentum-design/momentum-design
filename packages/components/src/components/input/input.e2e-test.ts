@@ -29,6 +29,7 @@ type SetupOptions = {
   pattern?: string;
   list?: string;
   size?: number;
+  dataAriaLabel?: string;
 };
 
 const setup = async (args: SetupOptions, isForm = false) => {
@@ -58,6 +59,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.pattern ? `pattern="${restArgs.pattern}"` : ''}
       ${restArgs.list ? `list="${restArgs.list}"` : ''}
       ${restArgs.size ? `size="${restArgs.size}"` : ''}
+      ${restArgs.dataAriaLabel ? `data-aria-label="${restArgs.dataAriaLabel}"` : ''}
       ></mdc-input>
     ${isForm ? '<mdc-button type="submit" size="24">Submit</mdc-button></form>' : ''}
     `,
@@ -148,7 +150,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('attribute trailing-button should be present on component', async () => {
-      await componentsPage.setAttributes(input, { 'trailing-button': '' });
+      await componentsPage.setAttributes(input, { 'trailing-button': '', 'data-aria-label': 'clear' });
       await expect(input).toHaveAttribute('trailing-button');
       await componentsPage.removeAttribute(input, 'trailing-button');
     });
@@ -214,7 +216,12 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('readonly component should be focusable with tab', async () => {
-      await componentsPage.setAttributes(input, { readonly: '', value: 'Readonly', 'trailing-button': '' });
+      await componentsPage.setAttributes(input, {
+        readonly: '',
+        value: 'Readonly',
+        'trailing-button': '',
+        'data-aria-label': 'clear',
+      });
       const trailingButton = input.locator('mdc-button').first();
       await componentsPage.actionability.pressTab();
       await expect(input).toBeFocused();
@@ -228,7 +235,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('focus on input and trailing button interactions', async () => {
-      await componentsPage.setAttributes(input, { 'trailing-button': '', value: '' });
+      await componentsPage.setAttributes(input, { 'trailing-button': '', value: '', 'data-aria-label': 'clear' });
       const trailingButton = input.locator('mdc-button').first();
       await componentsPage.actionability.pressTab();
       await expect(input).toBeFocused();
@@ -322,6 +329,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     await inputStickerSheet.setAttributes({ ...attributes,
       value: 'Clear button',
       'trailing-button': true,
+      'data-aria-label': 'clear',
     });
     await inputStickerSheet.createMarkupWithCombination({});
 

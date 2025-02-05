@@ -93,11 +93,10 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
     await wrapperStickerSheet.mountStickerSheet();
     await wrapperStickerSheet.getWrapperContainer();
 
-    // FIXME: Snapshots will be updated on the E2E test PR. This is done to keep the current PR not cluttered.
-    // await test.step('matches screenshot of pill-button element', async () => {
-    //   await componentsPage.visualRegression.takeScreenshot('mdc-formfieldwrapper', {
-    //     element: wrapperStickerSheet.getWrapperContainer(),
-    //   });
-    // });
+    await test.step('matches screenshot of pill-button element', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-formfieldwrapper', {
+        element: wrapperStickerSheet.getWrapperContainer(),
+      });
+    });
   });
 });
