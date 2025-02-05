@@ -3,7 +3,7 @@ import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls } from '../../../config/storybook/utils';
+import { disableControls, hideControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
   <mdc-checkbox
@@ -27,6 +27,21 @@ const meta: Meta = {
   },
   argTypes: {
     ...hideControls(['help-text-type', 'label-info', 'id', 'internals']),
+    ...disableControls([
+      '--mdc-checkbox-background-color-hover',
+      '--mdc-checkbox-border-color',
+      '--mdc-checkbox-checked-background-color',
+      '--mdc-checkbox-checked-background-color-hover',
+      '--mdc-checkbox-checked-pressed-icon-color',
+      '--mdc-checkbox-disabled-background-color',
+      '--mdc-checkbox-disabled-border-color',
+      '--mdc-checkbox-disabled-checked-icon-color',
+      '--mdc-checkbox-disabled-icon-color',
+      '--mdc-checkbox-icon-background-color',
+      '--mdc-checkbox-icon-border-color',
+      '--mdc-checkbox-icon-color',
+      '--mdc-checkbox-pressed-icon-color',
+    ]),
     ...classArgType,
     ...styleArgType,
   },

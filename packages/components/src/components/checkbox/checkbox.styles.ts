@@ -49,11 +49,10 @@ const styles = [css`
   :host([disabled]) .mdc-checkbox__icon {
     --mdc-icon-fill-color: var(--mdc-checkbox-disabled-icon-color);
   }
-  :host([disabled]) .mdc-checkbox__icon-container,
   :host([disabled][checked]) .mdc-checkbox__icon-container,
   :host([disabled][indeterminate]) .mdc-checkbox__icon-container {
-    border: 0.0625rem solid var(--mdc-checkbox-disabled-border-color);
     background: var(--mdc-checkbox-disabled-checked-icon-color);
+    border: 0.0625rem solid var(--mdc-checkbox-disabled-border-color);
   }
   .mdc-checkbox__input {
     margin: 0;
@@ -70,11 +69,9 @@ const styles = [css`
     background: var(--mdc-checkbox-icon-background-color);
   }
   .mdc-checkbox__container:hover {
-    border-color: var(--mdc-checkbox-background-color-hover);
     background: var(--mdc-checkbox-background-color-hover);
   }
   .mdc-checkbox__container:active {
-    border-color: var(--mdc-checkbox-pressed-icon-color);
     background: var(--mdc-checkbox-pressed-icon-color);
   }
   .mdc-checkbox__input, .mdc-checkbox__icon-container {
