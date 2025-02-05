@@ -1,13 +1,14 @@
-import { CSSResult, html, nothing } from 'lit';
+import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { property, state, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './input.styles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { NameMixin } from '../../utils/mixins/NameMixin';
-import { AUTO_CAPITALIZE, PREFIX_TEXT_OPTIONS } from './input.constants';
+import { AUTO_CAPITALIZE, DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import type { IconNames } from '../icon/icon.types';
 import type { AutoCapitalizeType } from './input.types';
+import { ValueMixin } from '../../utils/mixins/ValueMixin';
 /**
  * mdc-input is a component that allows users to input text.
  *  It contains:
@@ -43,7 +44,7 @@ import type { AutoCapitalizeType } from './input.types';
  * @cssproperty --mdc-input-primary-border-color - Border color for the input container when primary
  *
  */
-class Input extends NameMixin(FormfieldWrapper) {
+class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
   /**
    * The placeholder text that is displayed when the input field is empty.
    */
@@ -63,12 +64,12 @@ class Input extends NameMixin(FormfieldWrapper) {
   /**
    * The prefix text that is displayed before the input field. It has a max length of 10 characters.
    */
-  @property({ type: String, attribute: 'prefix-text' }) prefixText = '';
+  @property({ type: String, attribute: 'prefix-text' }) prefixText?: string;
 
   /**
    * The leading icon that is displayed before the input field.
    */
-  @property({ type: String, attribute: 'leading-icon' }) leadingIcon = '';
+  @property({ type: String, attribute: 'leading-icon' }) leadingIcon?: IconNames;
 
   /**
    * The trailing button when set to true, shows a clear button that clears the input field.
@@ -118,9 +119,8 @@ class Input extends NameMixin(FormfieldWrapper) {
   /**
    * The list attribute of the input field.
    * Identifies a list of pre-defined options to suggest to the user.
-   * @default ''
    */
-  @property({ type: String }) list = '';
+  @property({ type: String }) list?: string;
 
   /**
    * The size attribute of the input field.
@@ -135,25 +135,8 @@ class Input extends NameMixin(FormfieldWrapper) {
    */
   @property({ type: String, attribute: 'data-aria-label' }) dataAriaLabel = '';
 
+  /** @internal */
   @state() internalValue = '';
-
-  @property()
-  set value(val: string) {
-    this.internalValue = val;
-    this.internals.setFormValue(val);
-
-    this.updateComplete.then(() => {
-      this.setValidityFromInput();
-    }).catch((error) => {
-      if (this.onerror) {
-        this.onerror(error);
-      }
-    });
-  }
-
-  get value(): string {
-    return this.internalValue;
-  }
 
   checkValidity(): boolean {
     this.setValidityFromInput();
@@ -178,6 +161,7 @@ class Input extends NameMixin(FormfieldWrapper) {
 
   constructor() {
     super();
+    /** @internal */
     this.internals = this.attachInternals();
   }
 
@@ -191,9 +175,11 @@ class Input extends NameMixin(FormfieldWrapper) {
       super.connectedCallback();
 
       this.updateComplete.then(() => {
-        this.inputElement.checkValidity();
-        this.setValidityFromInput();
-        this.internals.setFormValue(this.inputElement.value);
+        if (this.inputElement) {
+          this.inputElement.checkValidity();
+          this.setValidityFromInput();
+          this.internals.setFormValue(this.inputElement.value);
+        }
       }).catch((error) => {
         if (this.onerror) {
           this.onerror(error);
@@ -209,8 +195,39 @@ class Input extends NameMixin(FormfieldWrapper) {
   /**
    * @internal
    */
-  @state() prevHelperTextType: ValidationType = 'default';
+  @state() prevHelperTextType: ValidationType = DEFAULTS.VALIDATION;
 
+  protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    super.updated(changedProperties);
+    if (changedProperties.has('value')) {
+      this.handleValueChange();
+    }
+  }
+
+  /**
+   * Handles the value change of the input field.
+   * Sets the form value and updates the validity of the input field.
+   * @returns void
+   */
+  handleValueChange() {
+    this.internals.setFormValue(this.value);
+    this.updateComplete.then(() => {
+      this.setValidityFromInput();
+    }).catch((error) => {
+      if (this.onerror) {
+        this.onerror(error);
+      }
+    });
+  }
+
+  /**
+   * This function is called when the attribute changes.
+   * It updates the validity of the input field based on the input field's validity.
+   *
+   * @param name - attribute name
+   * @param old - old value
+   * @param value - new value
+   */
   override attributeChangedCallback(
     name: string,
     old: string | null,
@@ -236,6 +253,10 @@ class Input extends NameMixin(FormfieldWrapper) {
     }
   }
 
+  /**
+   * Sets the validity of the input field based on the input field's validity.
+   * @returns void
+   */
   private setValidityFromInput() {
     if (this.inputElement) {
       this.internals.setValidity(
@@ -246,22 +267,45 @@ class Input extends NameMixin(FormfieldWrapper) {
     }
   }
 
+  /**
+   * Updates the value of the input field.
+   * Sets the form value.
+   * @returns void
+   */
   private updateValue() {
-    this.internalValue = this.inputElement.value;
+    this.value = this.inputElement.value;
     this.internals.setFormValue(this.inputElement.value);
   }
 
+  /**
+   * Handles the input event of the input field.
+   * Updates the value and sets the validity of the input field.
+   *
+   */
   private onInput() {
     this.updateValue();
     this.setValidityFromInput();
   }
 
+  /**
+   * Handles the change event of the input field.
+   * Updates the value and sets the validity of the input field.
+   * Dispatches the change event.
+   *
+   * @param event
+   */
   private onChange(event: Event) {
     this.updateValue();
     this.setValidityFromInput();
     this.dispatchEvent(new Event('change', event));
   }
 
+  /**
+   * Renders the leading icon before the input field.
+   * If the leading icon is not set, it will not be displayed.
+   *
+   * @returns void
+   */
   protected renderLeadingIcon() {
     if (!this.leadingIcon) {
       return nothing;
@@ -270,14 +314,25 @@ class Input extends NameMixin(FormfieldWrapper) {
       <mdc-icon 
         class="leading-icon" 
         part="leading-icon"
-        name=${this.leadingIcon as IconNames} 
+        name=${this.leadingIcon} 
         size="1" 
         length-unit="rem">
       </mdc-icon>
     `;
   }
 
+  /**
+   * Renders the prefix text before the input field.
+   * If the prefix text is more than 10 characters, it will not be displayed.
+   * If the prefix text is more than 10 characters, the validation messsage will be displayed.
+   * @returns void
+   */
   protected renderPrefixText() {
+    if (this.prevHelperText !== '' && this.helpText === PREFIX_TEXT_OPTIONS.HELPERTEXT) {
+      this.helpText = this.prevHelperText;
+      this.helpTextType = this.prevHelperTextType;
+      this.prevHelperText = '';
+    }
     if (!this.prefixText) {
       return nothing;
     }
@@ -290,27 +345,29 @@ class Input extends NameMixin(FormfieldWrapper) {
       this.helpTextType = PREFIX_TEXT_OPTIONS.VALIDATION;
       return nothing;
     }
-    if (this.prevHelperText !== '' && this.helpText === PREFIX_TEXT_OPTIONS.HELPERTEXT) {
-      this.helpText = this.prevHelperText;
-      this.helpTextType = this.prevHelperTextType;
-      this.prevHelperText = '';
-    }
     return html`<mdc-text class="prefix-text" tagname='span' type='body-midsize-regular'>${this.prefixText}</mdc-text>`;
   }
 
+  /**
+   * Clears the input field.
+   */
   private clearInputText() {
     this.value = '';
     // focus the input field after clearing the text
     this.inputElement?.focus();
   }
 
+  /**
+   * Renders the trailing button to clear the input field if the trailingButton is set to true.
+   * @returns void
+   */
   protected renderTrailingButton() {
     if (!this.trailingButton) {
       return nothing;
     }
     return html`
       <mdc-button 
-        class='clear-button ${!this.value ? 'hidden' : ''}'
+        class='${!this.value ? 'hidden' : ''}'
         prefix-icon='cancel-bold'
         variant='tertiary'
         size="20"
@@ -330,9 +387,10 @@ class Input extends NameMixin(FormfieldWrapper) {
        <slot name="input-prefix-text">${this.renderPrefixText()}</slot>
         <slot name="input">
           <input 
-            class='input' 
+            class='input'
+            part='input'
             id="${this.id}"
-            .value="${this.internalValue}"
+            .value="${this.value}"
             ?disabled="${this.disabled}"
             ?readonly="${this.readonly}"
             ?required="${this.required}"

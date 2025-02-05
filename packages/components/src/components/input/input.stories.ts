@@ -13,7 +13,6 @@ const render = (args: Args) =>
     @change="${action('onchange')}"
     @focus="${action('onfocus')}"
     @blur="${action('onblur')}"
-    id="${args.id}"
     label="${args.label}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
@@ -53,9 +52,6 @@ const meta: Meta = {
     'help-text-type': {
       control: 'select',
       options: Object.values(VALIDATION),
-    },
-    id: {
-      control: 'text',
     },
     value: {
       control: 'text',
@@ -140,7 +136,6 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    id: '1',
     label: 'Label (required)',
     placeholder: 'Placeholder',
     value: '',
@@ -164,23 +159,20 @@ export const AllVariants: StoryObj = {
   },
   render: () => html`
   <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
-    ${Object.values(VALIDATION).map((validation, idx) => html`<mdc-input
+    ${Object.values(VALIDATION).map((validation) => html`<mdc-input
       help-text-type="${validation}"
-      id="${idx}"
       label="Label"
       help-text="Helper text"
       placeholder="Placeholder"
       value="${validation}_value"
       ></mdc-input>`)}
       <mdc-input 
-      id="6"
       label="Label (required)"
       help-text="Helper text"
       help-text-type="default"
       required placeholder="Input is required"
       ></mdc-input>
       <mdc-input 
-      id="7"
       label="Label"
       help-text="Helper text"
       help-text-type="default"
@@ -190,7 +182,6 @@ export const AllVariants: StoryObj = {
       value="This is readonly"
       ></mdc-input>
       <mdc-input 
-      id="8"
       label="Label"
       help-text="Helper text"
       help-text-type="default"
@@ -198,7 +189,6 @@ export const AllVariants: StoryObj = {
       value="Text disabled"
       ></mdc-input>
       <mdc-input 
-      id="9"
       label="Label"
       help-text="Helper text"
       help-text-type="default"
@@ -206,7 +196,6 @@ export const AllVariants: StoryObj = {
       prefix-text="https://"
       ></mdc-input>
       <mdc-input 
-      id="10"
       label="Label"
       help-text="Helper text"
       help-text-type="default"
@@ -229,7 +218,6 @@ export const FormFieldInput: StoryObj = {
     <form @submit=${handleSubmit}>
       <mdc-input
        name='user-name'
-        id="1"
         label="First Name (required)"
         placeholder="Enter your name"
         required
