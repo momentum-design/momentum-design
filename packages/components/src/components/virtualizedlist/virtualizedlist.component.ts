@@ -8,18 +8,22 @@ import { Ref, createRef, ref } from 'lit/directives/ref.js';
 import styles from './virtualizedlist.styles';
 import { Component } from '../../models';
 import { DEFAULT_COUNT, DEFAULT_MEASURE_ELEMENT } from './virtualizedlist.constants';
+import { SetListDataProps } from './virtualizedlist.types';
 /**
- * virtualizedlist component, which ...
+ * Virtualizedlist component for virtualizing lists
  *
  * @tagname mdc-virtualizedlist
  *
  */
 class VirtualizedList extends Component {
-  @property({ type: Function, attribute: 'onscroll' })
-  onScroll?: (e: Event) => void;
+  @property({ type: Function, attribute: 'handlescroll' })
+  handlescroll?: (e: Event) => void;
 
   @property({ type: Object, attribute: 'virtualizerprops' })
   virtualizerprops: Partial<VirtualizerOptions<Element, Element>> = {};
+
+  @property({ type: Function, attribute: 'setlistdata' })
+  setlistdata: (({ virtualItems, measureElement, listStyle }: SetListDataProps) => void) | null;
 
   public scrollElementRef: Ref<HTMLDivElement> = createRef();
 
@@ -31,6 +35,7 @@ class VirtualizedList extends Component {
     super();
     this.virtualizerController = null;
     this.virtualizer = null;
+    this.setlistdata = null;
   }
 
   public override update(changedProperties: PropertyValues): void {
@@ -66,12 +71,9 @@ class VirtualizedList extends Component {
         transform: `translateY(${virtualItems[0]?.start ?? 0}px)`,
       };
 
-      const event = new CustomEvent('render-list', {
-        detail: { virtualItems, measureElement, listStyle },
-        bubbles: true,
-        composed: true,
-      });
-      this.dispatchEvent(event);
+      if (this.setlistdata) {
+        this.setlistdata({ virtualItems, measureElement, listStyle });
+      }
 
       return html`<div
           class="mdc-virtualizedlist-wrapper"
@@ -88,7 +90,7 @@ class VirtualizedList extends Component {
     return html`<div
         ${ref(this.scrollElementRef)}
         class="mdc-virtualizedlist-scroll-container"
-        @scroll="${this.onScroll && this.onScroll}"
+        @scroll=${this.handlescroll && this.handlescroll}
       >
         ${this.getVirtualizedListElement()}
       </div>
