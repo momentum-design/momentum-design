@@ -2,6 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { disableControls } from '../../../config/storybook/utils';
@@ -9,6 +10,9 @@ import { AUTO_CAPITALIZE } from './input.constants';
 
 const render = (args: Args) =>
   html` <mdc-input
+    @change="${action('onchange')}"
+    @focus="${action('onfocus')}"
+    @blur="${action('onblur')}"
     id="${args.id}"
     label="${args.label}"
     help-text-type="${args['help-text-type']}"
