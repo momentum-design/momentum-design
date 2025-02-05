@@ -20,6 +20,25 @@ import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types'
  * @dependency mdc-icon
  *
  * @tagname mdc-toggle
+ *
+ * @cssproperty --mdc-toggle-width - width of the toggle
+ * @cssproperty --mdc-toggle-height - height of the toggle
+ * @cssproperty --mdc-toggle-width-compact - width of the toggle when it's size is compact
+ * @cssproperty --mdc-toggle-height-compact - height of the toggle when it's size is compact
+ * @cssproperty --mdc-toggle-border-radius - border radius of the toggle
+ * @cssproperty --mdc-toggle-border-radius-compact - border radius of the toggle when it's size is compact
+ * @cssproperty --mdc-toggle-border - border of the toggle
+ * @cssproperty --mdc-toggle-inactive-rest-color - background color of the inactive toggle in rest state
+ * @cssproperty --mdc-toggle-inactive-hover-color - background color of the inactive toggle in hover state
+ * @cssproperty --mdc-toggle-inactive-pressed-color - background color of the inactive toggle in pressed state
+ * @cssproperty --mdc-toggle-inactive-disabled-color - background color of the inactive toggle in disabled state
+ * @cssproperty --mdc-toggle-active-rest-color - background color of the active toggle in rest state
+ * @cssproperty --mdc-toggle-active-hover-color - background color of the active toggle in hover state
+ * @cssproperty --mdc-toggle-active-pressed-color - background color of the active toggle in pressed state
+ * @cssproperty --mdc-toggle-active-disabled-color - background color of the active toggle in disabled state
+ * @cssproperty --mdc-toggle-help-text-color -  color of the help text label
+ * @cssproperty --mdc-toggle-label-color-disabled - color of the toggle label and help text in disabled state
+ *
  */
 class Toggle extends NameMixin(ValueMixin(FormfieldWrapper)) {
   /**

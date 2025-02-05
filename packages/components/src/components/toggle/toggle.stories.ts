@@ -3,7 +3,7 @@ import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls } from '../../../config/storybook/utils';
+import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
 
 const render = (args: Args) => html`
@@ -39,6 +39,25 @@ const meta: Meta = {
       description: 'Aria label for the toggle component. Required for accessibility.',
     },
     ...hideControls(['help-text-type', 'label-info', 'id']),
+    ...disableControls([
+      '--mdc-toggle-width',
+      '--mdc-toggle-height',
+      '--mdc-toggle-width-compact',
+      '--mdc-toggle-height-compact',
+      '--mdc-toggle-border-radius',
+      '--mdc-toggle-border-radius-compact',
+      '--mdc-toggle-border',
+      '--mdc-toggle-inactive-rest-color',
+      '--mdc-toggle-inactive-hover-color',
+      '--mdc-toggle-inactive-pressed-color',
+      '--mdc-toggle-inactive-disabled-color',
+      '--mdc-toggle-active-rest-color',
+      '--mdc-toggle-active-hover-color',
+      '--mdc-toggle-active-pressed-color',
+      '--mdc-toggle-active-disabled-color',
+      '--mdc-toggle-help-text-color',
+      '--mdc-toggle-label-color-disabled',
+    ]),
     ...classArgType,
     ...styleArgType,
   },
