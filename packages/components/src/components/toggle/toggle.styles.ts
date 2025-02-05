@@ -11,7 +11,7 @@ const styles = [hostFitContentStyles, css`
     --mdc-toggle-border-radius-compact: 0.5rem;
     --mdc-toggle-border: 0.063rem solid var(--mds-color-theme-outline-input-normal);
 
-    --mdc-toggle-icon-container-size: 1.25rem;
+    --mdc-toggle-icon-container-size: 1.125rem;
     --mdc-toggle-icon-container-size-compact: 0.75rem;
     --mdc-toggle-icon-size: 0.75rem;
     --mdc-toggle-icon-size-compact: 0.5rem;

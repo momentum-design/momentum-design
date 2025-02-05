@@ -5,6 +5,7 @@ import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
+import '../button';
 
 const render = (args: Args) => html`
   <mdc-toggle
