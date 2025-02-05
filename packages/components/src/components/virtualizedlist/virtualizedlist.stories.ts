@@ -82,7 +82,7 @@ const render = (args: Args) => html`
 const meta: Meta = {
   title: 'Work In Progress/virtualizedlist',
   tags: ['autodocs'],
-  component: 'mdc-virtualizedwrapper',
+  component: 'mdc-virtualizedlist',
   render,
   parameters: {
     badges: ['wip'],
@@ -90,7 +90,7 @@ const meta: Meta = {
   argTypes: {
     virtualizerprops: {
       description: `Props to send to Tanstack virtual. Please reference 
-      [@tanstack/lit-virtual](https://tanstack.com/virtual/latest/docs/api/virtualizer) docs for more 
+      [Tanstack Virtualizer API](https://tanstack.com/virtual/latest/docs/api/virtualizer) docs for more 
       about all possible props`,
       control: 'object',
     },
