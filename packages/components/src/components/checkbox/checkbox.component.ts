@@ -103,7 +103,6 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
    */
   public handleChange(event: Event): void {
     this.toggleState();
-    this.setFormValue();
 
     // Change event doesn't bubble out of shadow dom,
     // Workaround to fix this: https://github.com/lit/lit-element/issues/922#issuecomment-611139629
