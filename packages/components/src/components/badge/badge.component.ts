@@ -29,6 +29,18 @@ import type { IconVariant, BadgeType } from './badge.types';
  * @dependency mdc-text
  *
  * @tagname mdc-badge
+ *
+ * @cssproperty --mdc-badge-primary-foreground-color - The foreground color of the primary badge.
+ * @cssproperty --mdc-badge-primary-background-color - The background color of the primary badge.
+ * @cssproperty --mdc-badge-secondary-foreground-color - The foreground color of the secondary badge.
+ * @cssproperty --mdc-badge-secondary-background-color - The background color of the secondary badge.
+ * @cssproperty --mdc-badge-success-foreground-color - The foreground color of the success badge.
+ * @cssproperty --mdc-badge-success-background-color - The background color of the success badge.
+ * @cssproperty --mdc-badge-warning-foreground-color - The foreground color of the warning badge.
+ * @cssproperty --mdc-badge-warning-background-color - The background color of the warning badge.
+ * @cssproperty --mdc-badge-error-foreground-color - The foreground color of the error badge.
+ * @cssproperty --mdc-badge-error-background-color - The background color of the error badge.
+ * @cssproperty --mdc-badge-overlay-background-color - The background color of the badge overlay.
  */
 class Badge extends Component {
   /**

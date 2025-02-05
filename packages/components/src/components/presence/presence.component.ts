@@ -16,6 +16,22 @@ import { getIconValue } from './presence.utils';
  * @dependency mdc-icon
  *
  * @tagname mdc-presence
+ *
+ * @cssproperty --mdc-presence-active-background-color - The background color of the presence type active.
+ * @cssproperty --mdc-presence-away-background-color - The background color of the presence type away.
+ * @cssproperty --mdc-presence-away-calling-background-color - The background color of the presence type away-calling.
+ * @cssproperty --mdc-presence-busy-background-color - The background color of the presence type busy.
+ * @cssproperty --mdc-presence-dnd-background-color - The background color of the presence type dnd.
+ * @cssproperty --mdc-presence-meeting-background-color - The background color of the presence type meeting.
+ * @cssproperty --mdc-presence-on-call-background-color - The background color of the presence type on-call.
+ * @cssproperty --mdc-presence-on-device-background-color - The background color of the presence type on-device.
+ * @cssproperty --mdc-presence-on-mobile-background-color - The background color of the presence type on-mobile.
+ * @cssproperty --mdc-presence-pause-background-color - The background color of the presence type pause.
+ * @cssproperty --mdc-presence-pto-background-color - The background color of the presence type pto.
+ * @cssproperty --mdc-presence-presenting-background-color - The background color of the presence type presenting.
+ * @cssproperty --mdc-presence-quiet-background-color - The background color of the presence type quiet.
+ * @cssproperty --mdc-presence-scheduled-background-color - The background color of the presence type scheduled.
+ * @cssproperty --mdc-presence-overlay-background-color - The background color of the presence type overlay.
  */
 class Presence extends Component {
   /**
