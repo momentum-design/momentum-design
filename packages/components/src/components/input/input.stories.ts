@@ -8,8 +8,9 @@ import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { disableControls } from '../../../config/storybook/utils';
 import { AUTO_CAPITALIZE } from './input.constants';
 
-const render = (args: Args) =>
-  html` <mdc-input
+const render = (args: Args) => {
+  const value = args.maxlength && args.value ? args.value.substring(0, args.maxlength) : args.value;
+  return html` <mdc-input
     @change="${action('onchange')}"
     @focus="${action('onfocus')}"
     @blur="${action('onblur')}"
@@ -18,7 +19,7 @@ const render = (args: Args) =>
     help-text="${args['help-text']}"
     placeholder="${args.placeholder}"
     name="${args.name}"
-    value="${args.value}"
+    value="${value}"
     class="${args.class}"
     style="${args.style}"
     ?required="${args.required}"
@@ -38,6 +39,7 @@ const render = (args: Args) =>
     size="${ifDefined(args.size)}"
     clear-aria-label="${ifDefined(args['clear-aria-label'])}"
     ></mdc-input>`;
+};
 
 const meta: Meta = {
   title: 'Work In Progress/input',
@@ -114,6 +116,9 @@ const meta: Meta = {
     },
     size: {
       control: 'number',
+    },
+    'clear-aria-label': {
+      control: 'text',
     },
     ...disableControls([
       '--mdc-input-disabled-border-color',

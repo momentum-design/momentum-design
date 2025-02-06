@@ -292,7 +292,7 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
    * Updates the value and sets the validity of the input field.
    * Dispatches the change event.
    *
-   * @param event
+   * @param event - Event which contains information about the value change.
    */
   private onChange(event: Event) {
     this.updateValue();
@@ -323,8 +323,9 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
 
   /**
    * Renders the prefix text before the input field.
-   * If the prefix text is more than 10 characters, it will not be displayed.
-   * If the prefix text is more than 10 characters, the validation messsage will be displayed.
+   * If the prefix text is more than 10 characters,
+   * - it will not be displayed.
+   * - the validation messsage will be displayed.
    * @returns void
    */
   protected renderPrefixText() {
@@ -413,7 +414,7 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
        </section>
         <slot name="trailing-button">${this.renderTrailingButton()}</slot>
       </div>
-      ${this.renderHelperText()}
+      ${this.helpText ? this.renderHelpText() : nothing}
     `;
   }
 
