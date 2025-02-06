@@ -1,7 +1,6 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { live } from 'lit/directives/live.js';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { NameMixin } from '../../utils/mixins/NameMixin';
 import { ValueMixin } from '../../utils/mixins/ValueMixin';
@@ -137,8 +136,8 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
           class="input"
           name="${ifDefined(this.name)}"
           value="${ifDefined(this.value)}"
-          .checked="${live(this.checked)}"
-          .indeterminate="${live(this.indeterminate)}"
+          .checked="${this.checked}"
+          .indeterminate="${this.indeterminate}"
           .disabled="${this.disabled}"
           aria-label="${this.dataAriaLabel ?? ''}"
           @change=${this.handleChange}
