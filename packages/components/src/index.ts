@@ -18,6 +18,7 @@ import CheckboxGroup from './components/checkboxgroup';
 import Radio from './components/radio';
 import VirtualizedList from './components/virtualizedlist';
 import Tab from './components/tab';
+import RadioGroup from './components/radio-group';
 
 import type { TextType } from './components/text/text.types';
 
@@ -42,6 +43,7 @@ export {
   Radio,
   VirtualizedList,
   Tab,
+  RadioGroup,
 };
 
 export type {
