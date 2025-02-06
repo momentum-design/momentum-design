@@ -9,8 +9,8 @@ const TOGGLE_SIZE = {
 } as const;
 
 const ICON_NAME = {
-  CHECKED: 'check-bold' as IconNames,
-  UNCHECKED: 'cancel-bold' as IconNames,
+  CHECKED: 'check-bold' as Extract<IconNames, 'check-bold'>,
+  UNCHECKED: 'cancel-bold' as Extract<IconNames, 'cancel-bold'>,
 } as const;
 
 const ICON_SIZE_IN_REM = {
