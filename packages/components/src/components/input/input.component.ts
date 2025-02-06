@@ -136,9 +136,6 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
    */
   @property({ type: String, attribute: 'clear-aria-label' }) clearAriaLabel = '';
 
-  /** @internal */
-  @state() internalValue = '';
-
   checkValidity(): boolean {
     this.setValidityFromInput();
     return this.internals.checkValidity();
