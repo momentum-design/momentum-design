@@ -44,6 +44,7 @@ const styles = [css`
     background: unset;
   }
   :host([disabled]) .icon-container {
+    border-color: var(--mdc-checkbox-disabled-border-color);
     background: var(--mdc-checkbox-disabled-background-color);
   }
   :host([disabled]) .icon {
