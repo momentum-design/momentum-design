@@ -133,7 +133,7 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
    * Aria label for the trailing button. If trailing button is set to true, this label is used for the clear button.
    * @default ''
    */
-  @property({ type: String, attribute: 'data-aria-label' }) dataAriaLabel = '';
+  @property({ type: String, attribute: 'clear-aria-label' }) clearArialLabel = '';
 
   /** @internal */
   @state() internalValue = '';
@@ -371,7 +371,7 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
         prefix-icon='cancel-bold'
         variant='tertiary'
         size="20"
-        aria-label="${this.dataAriaLabel}"
+        aria-label="${this.clearArialLabel}"
         @click=${this.clearInputText}
         ?disabled=${this.disabled || this.readonly || !this.value}
       ></mdc-button>

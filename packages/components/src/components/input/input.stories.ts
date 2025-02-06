@@ -35,7 +35,7 @@ const render = (args: Args) =>
     pattern="${ifDefined(args.pattern)}"
     list="${ifDefined(args.list)}"
     size="${ifDefined(args.size)}"
-    data-aria-label="${ifDefined(args['data-aria-label'])}"
+    clear-aria-label="${ifDefined(args['clear-aria-label'])}"
     ></mdc-input>`;
 
 const meta: Meta = {
@@ -149,7 +149,7 @@ export const Example: StoryObj = {
     'trailing-button': false,
     autocapitalize: 'off',
     autofocus: false,
-    'data-aria-label': 'clear input',
+    'clear-aria-label': 'clear input',
   },
 };
 
