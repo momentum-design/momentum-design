@@ -17,6 +17,7 @@ const render = (args: Args) =>
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
     placeholder="${args.placeholder}"
+    name="${args.name}"
     value="${args.value}"
     class="${args.class}"
     style="${args.style}"
@@ -52,6 +53,9 @@ const meta: Meta = {
     'help-text-type': {
       control: 'select',
       options: Object.values(VALIDATION),
+    },
+    name: {
+      control: 'text',
     },
     value: {
       control: 'text',
@@ -136,6 +140,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
+    name: 'input',
     label: 'Label (required)',
     placeholder: 'Placeholder',
     value: '',

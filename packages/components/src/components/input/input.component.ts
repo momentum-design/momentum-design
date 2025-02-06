@@ -390,6 +390,7 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
             class='input'
             part='input'
             id="${this.id}"
+            name="${this.name}"
             .value="${this.value}"
             ?disabled="${this.disabled}"
             ?readonly="${this.readonly}"
