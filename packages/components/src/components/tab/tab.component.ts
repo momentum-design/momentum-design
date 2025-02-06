@@ -135,12 +135,14 @@ class Tab extends Buttonsimple {
   }
 
   public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
-    super.update(changedProperties);
-
     if (changedProperties.has('active')) {
       this.modifyIconName(this.active);
       this.setAriaSelected(this, this.active);
+      // Remove the active property from the changedProperties
+      // to prevent the base class from using to add aria-pressed attribute.
+      changedProperties.delete('active');
     }
+    super.update(changedProperties);
   }
 
   protected override executeAction() {
