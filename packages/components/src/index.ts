@@ -18,6 +18,7 @@ import Radio from './components/radio';
 import VirtualizedList from './components/virtualizedlist';
 import Tab from './components/tab';
 import FormfieldGroup from './components/formfieldgroup';
+import RadioGroup from './components/radio-group';
 
 import type { TextType } from './components/text/text.types';
 
@@ -41,7 +42,11 @@ export {
   Radio,
   VirtualizedList,
   Tab,
+<<<<<<< HEAD
   FormfieldGroup,
+=======
+  RadioGroup,
+>>>>>>> 673a3c0d (chore: init commit of radio group component)
 };
 
 export type {
