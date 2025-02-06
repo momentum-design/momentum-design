@@ -59,7 +59,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.pattern ? `pattern="${restArgs.pattern}"` : ''}
       ${restArgs.list ? `list="${restArgs.list}"` : ''}
       ${restArgs.size ? `size="${restArgs.size}"` : ''}
-      ${restArgs.dataAriaLabel ? `data-aria-label="${restArgs.dataAriaLabel}"` : ''}
+      ${restArgs.dataAriaLabel ? `clear-aria-label="${restArgs.dataAriaLabel}"` : ''}
       ></mdc-input>
     ${isForm ? '<mdc-button type="submit" size="24">Submit</mdc-button></form>' : ''}
     `,
@@ -150,7 +150,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('attribute trailing-button should be present on component', async () => {
-      await componentsPage.setAttributes(input, { 'trailing-button': '', 'data-aria-label': 'clear' });
+      await componentsPage.setAttributes(input, { 'trailing-button': '', 'clear-aria-label': 'clear' });
       await expect(input).toHaveAttribute('trailing-button');
       await componentsPage.removeAttribute(input, 'trailing-button');
     });
@@ -220,7 +220,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
         readonly: '',
         value: 'Readonly',
         'trailing-button': '',
-        'data-aria-label': 'clear',
+        'clear-aria-label': 'clear',
       });
       const trailingButton = input.locator('mdc-button').first();
       await componentsPage.actionability.pressTab();
@@ -235,14 +235,14 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('focus on input and trailing button interactions', async () => {
-      await componentsPage.setAttributes(input, { 'trailing-button': '', value: '', 'data-aria-label': 'clear' });
+      await componentsPage.setAttributes(input, { 'trailing-button': '', value: '', 'clear-aria-label': 'clear' });
       const trailingButton = input.locator('mdc-button').first();
       await componentsPage.actionability.pressTab();
       await expect(input).toBeFocused();
-      await expect(trailingButton).toHaveClass('clear-button hidden');
+      await expect(trailingButton).toHaveClass('hidden');
       await inputEl.fill('test');
       await expect(inputEl).toHaveValue('test');
-      await expect(trailingButton).toHaveClass('clear-button ');
+      await expect(trailingButton).not.toHaveClass('hidden');
       await componentsPage.actionability.pressTab();
       await expect(inputEl).not.toBeFocused();
       await expect(trailingButton).toBeFocused();
@@ -329,7 +329,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     await inputStickerSheet.setAttributes({ ...attributes,
       value: 'Clear button',
       'trailing-button': true,
-      'data-aria-label': 'clear',
+      'clear-aria-label': 'clear',
     });
     await inputStickerSheet.createMarkupWithCombination({});
 
