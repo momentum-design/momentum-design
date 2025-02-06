@@ -348,7 +348,15 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
       this.helpTextType = PREFIX_TEXT_OPTIONS.VALIDATION;
       return nothing;
     }
-    return html`<mdc-text class="prefix-text" type="${DEFAULTS.PREFIX_TEXT_TYPE}">${this.prefixText}</mdc-text>`;
+    return html`
+      <mdc-text 
+        class="prefix-text" 
+        tagname="${DEFAULTS.PREFIX_TEXT_TAG}" 
+        type="${DEFAULTS.PREFIX_TEXT_TYPE}"
+      >
+        ${this.prefixText}
+      </mdc-text>
+    `;
   }
 
   /**
@@ -390,6 +398,7 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
        <slot name="input-prefix-text">${this.renderPrefixText()}</slot>
         <slot name="input">
           <input 
+            aria-label=${ifDefined(this.prefixText)}
             class='input'
             part='input'
             id="${this.id}"
