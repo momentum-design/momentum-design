@@ -13,12 +13,13 @@ import { ValueMixin } from '../../utils/mixins/ValueMixin';
  * mdc-input is a component that allows users to input text.
  *  It contains:
  * - label field - describe the input field.
- * - label info icon - displayed next to the label.
  * - input field - contains the value
  * - help text or validation message - displayed below the input field.
- * - clear button - clear the input field.
+ * - trailing button - it displays a clear the input field.
  * - prefix text - displayed before the input field.
  * - leading icon - displayed before the input field.
+ * - clear-aria-label - aria label for the trailing button.
+ * - all the attributes of the input field.
  *
  * @tagname mdc-input
  *
@@ -133,7 +134,7 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
    * Aria label for the trailing button. If trailing button is set to true, this label is used for the clear button.
    * @default ''
    */
-  @property({ type: String, attribute: 'clear-aria-label' }) clearArialLabel = '';
+  @property({ type: String, attribute: 'clear-aria-label' }) clearAriaLabel = '';
 
   /** @internal */
   @state() internalValue = '';
@@ -372,7 +373,7 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
         prefix-icon='${DEFAULTS.CLEAR_BUTTON_ICON}'
         variant='${DEFAULTS.CLEAR_BUTTON_VARIANT}'
         size="${DEFAULTS.CLEAR_BUTTON_SIZE}"
-        aria-label="${this.clearArialLabel}"
+        aria-label="${this.clearAriaLabel}"
         @click=${this.clearInputText}
         ?disabled=${this.disabled || this.readonly || !this.value}
       ></mdc-button>
