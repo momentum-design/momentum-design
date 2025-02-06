@@ -8,17 +8,18 @@ import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { disableControls } from '../../../config/storybook/utils';
 import { AUTO_CAPITALIZE } from './input.constants';
 
-const render = (args: Args) =>
-  html` <mdc-input
+const render = (args: Args) => {
+  const value = args.maxlength && args.value ? args.value.substring(0, args.maxlength) : args.value;
+  return html` <mdc-input
     @change="${action('onchange')}"
     @focus="${action('onfocus')}"
     @blur="${action('onblur')}"
-    id="${args.id}"
     label="${args.label}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
     placeholder="${args.placeholder}"
-    value="${args.value}"
+    name="${args.name}"
+    value="${value}"
     class="${args.class}"
     style="${args.style}"
     ?required="${args.required}"
@@ -36,8 +37,9 @@ const render = (args: Args) =>
     pattern="${ifDefined(args.pattern)}"
     list="${ifDefined(args.list)}"
     size="${ifDefined(args.size)}"
-    data-aria-label="${ifDefined(args['data-aria-label'])}"
+    clear-aria-label="${ifDefined(args['clear-aria-label'])}"
     ></mdc-input>`;
+};
 
 const meta: Meta = {
   title: 'Work In Progress/input',
@@ -54,7 +56,7 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(VALIDATION),
     },
-    id: {
+    name: {
       control: 'text',
     },
     value: {
@@ -115,6 +117,9 @@ const meta: Meta = {
     size: {
       control: 'number',
     },
+    'clear-aria-label': {
+      control: 'text',
+    },
     ...disableControls([
       '--mdc-input-disabled-border-color',
       '--mdc-input-disabled-text-color',
@@ -140,7 +145,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    id: '1',
+    name: 'input',
     label: 'Label (required)',
     placeholder: 'Placeholder',
     value: '',
@@ -154,7 +159,7 @@ export const Example: StoryObj = {
     'trailing-button': false,
     autocapitalize: 'off',
     autofocus: false,
-    'data-aria-label': 'clear input',
+    'clear-aria-label': 'clear input',
   },
 };
 
@@ -164,23 +169,20 @@ export const AllVariants: StoryObj = {
   },
   render: () => html`
   <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
-    ${Object.values(VALIDATION).map((validation, idx) => html`<mdc-input
+    ${Object.values(VALIDATION).map((validation) => html`<mdc-input
       help-text-type="${validation}"
-      id="${idx}"
       label="Label"
       help-text="Helper text"
       placeholder="Placeholder"
       value="${validation}_value"
       ></mdc-input>`)}
       <mdc-input 
-      id="6"
       label="Label (required)"
       help-text="Helper text"
       help-text-type="default"
       required placeholder="Input is required"
       ></mdc-input>
       <mdc-input 
-      id="7"
       label="Label"
       help-text="Helper text"
       help-text-type="default"
@@ -190,7 +192,6 @@ export const AllVariants: StoryObj = {
       value="This is readonly"
       ></mdc-input>
       <mdc-input 
-      id="8"
       label="Label"
       help-text="Helper text"
       help-text-type="default"
@@ -198,7 +199,6 @@ export const AllVariants: StoryObj = {
       value="Text disabled"
       ></mdc-input>
       <mdc-input 
-      id="9"
       label="Label"
       help-text="Helper text"
       help-text-type="default"
@@ -206,7 +206,6 @@ export const AllVariants: StoryObj = {
       prefix-text="https://"
       ></mdc-input>
       <mdc-input 
-      id="10"
       label="Label"
       help-text="Helper text"
       help-text-type="default"
@@ -229,12 +228,11 @@ export const FormFieldInput: StoryObj = {
     <form @submit=${handleSubmit}>
       <mdc-input
        name='user-name'
-        id="1"
         label="First Name (required)"
         placeholder="Enter your name"
         required
       ></mdc-input>
-      <mdc-button type="submit" size='24' >Submit</mdc-button>
+      <mdc-button type="submit" size='24' style='margin-top: 0.5rem'>Submit</mdc-button>
     </form>
     `;
   },
