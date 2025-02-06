@@ -124,7 +124,7 @@ test('mdc-checkbox', async ({ componentsPage }) => {
   await test.step('attributes', async () => {
     const checkbox = await setup({ componentsPage });
 
-    await test.step('should fallback to default icon and size to 32 when no attributes are passed', async () => {
+    await test.step('should have name and value attributes as default no attributes are passed', async () => {
       await expect(checkbox).toHaveAttribute('name');
       await expect(checkbox).toHaveAttribute('value');
     });
