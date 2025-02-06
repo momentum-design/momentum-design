@@ -39,6 +39,7 @@ const styles = [hostFitContentStyles, css`
 
   :host([disabled]) .mdc-radio__icon,
   :host([disabled]) .mdc-radio__container:hover .mdc-radio__icon,
+  :host([disabled][readonly]) .mdc-radio__icon,
   :host([disabled][readonly]) .mdc-radio__container:hover .mdc-radio__icon {
     border-color: var(--mdc-radio-disabled-border-color);
     background: var(--mdc-radio-control-inactive-disabled-background);
