@@ -32,6 +32,8 @@ const meta: Meta = {
       'iconProviderContext',
       'computedIconSize',
       '--mdc-icon-fill-color',
+      '--mdc-icon-size',
+      '--mdc-icon-border-radius',
     ]),
     ...readOnlyControls(['tabindex']),
     ...classArgType,
