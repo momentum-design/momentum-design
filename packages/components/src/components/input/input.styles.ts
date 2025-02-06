@@ -84,11 +84,11 @@ const styles = [css`
     color: var(--mdc-input-support-text-color);
   }
 
-  .input-container:hover{
+  :host(:not([disabled])) .input-container:hover{
     background-color: var(--mdc-input-hover-background-color);
   }
 
-  .input-container:active, .input-container:focus-within{
+  :host(:not([disabled])) .input-container:active, :host(:not([disabled])) .input-container:focus-within{
     background-color: var(--mdc-input-focused-background-color);
     border-color:  var(--mdc-input-focused-border-color);
   }
