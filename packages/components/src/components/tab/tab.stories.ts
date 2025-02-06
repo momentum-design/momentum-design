@@ -1,7 +1,9 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
+import '../badge';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { TAB_VARIANTS } from './tab.constants';
 import { hideControls, readOnlyControls } from '../../../config/storybook/utils';
 
@@ -13,10 +15,10 @@ const render = (args: Args) => html`<div role="tablist">
     @focus="${action('onfocus')}"
     ?active="${args.active}"
     ?disabled="${args.disabled}"
-    icon-name="${args['icon-name']}"
-    role="${args.role}"
-    tabindex="${args.tabIndex}"
-    variant="${args.variant}"
+    icon-name="${ifDefined(args['icon-name'])}"
+    role="${ifDefined(args.role)}"
+    tabIndex="${ifDefined(args.tabIndex)}"
+    variant="${ifDefined(args.variant)}"
     >${args.showBadge ? html`<mdc-badge slot="badge" type="dot"></mdc-badge>` : ''}${args.children}</mdc-tab>
 </div>`;
 
