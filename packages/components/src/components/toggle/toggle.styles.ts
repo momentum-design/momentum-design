@@ -3,10 +3,10 @@ import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 
 const styles = [hostFitContentStyles, css`
   :host {
-    --mdc-toggle-width: 2.75rem;
-    --mdc-toggle-height: 1.25rem;
-    --mdc-toggle-width-compact: 1.75rem;
-    --mdc-toggle-height-compact: 0.75rem;
+    --mdc-toggle-width: 3rem;
+    --mdc-toggle-height: 1.5rem;
+    --mdc-toggle-width-compact: 2rem;
+    --mdc-toggle-height-compact: 1rem;
     --mdc-toggle-border-radius: 0.75rem;
     --mdc-toggle-border-radius-compact: 0.5rem;
     --mdc-toggle-border: 0.0625rem solid var(--mds-color-theme-outline-input-normal);
@@ -66,7 +66,6 @@ const styles = [hostFitContentStyles, css`
     justify-content: flex-start;
     transition: background-color 0.3s ease;
     outline: none;
-    box-sizing: content-box;
     padding: 0.0625rem;
   }
 
