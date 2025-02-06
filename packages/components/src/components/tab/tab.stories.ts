@@ -5,7 +5,7 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { TAB_VARIANTS } from './tab.constants';
-import { hideControls, readOnlyControls } from '../../../config/storybook/utils';
+import { disableControls, hideControls, readOnlyControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`<div role="tablist">
   <mdc-tab
@@ -60,6 +60,47 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(TAB_VARIANTS),
     },
+    ...disableControls([
+      '--mdc-tab-content-gap',
+      '--mdc-tab-height',
+      '--mdc-tab-line-active-background-color-active',
+      '--mdc-tab-line-active-background-color-disabled',
+      '--mdc-tab-line-active-background-color-focus',
+      '--mdc-tab-line-active-background-color-hover',
+      '--mdc-tab-line-active-background-color-normal',
+      '--mdc-tab-line-active-bottom-border-color',
+      '--mdc-tab-line-active-bottom-border-color-disabled',
+      '--mdc-tab-line-active-color',
+      '--mdc-tab-line-active-color-disabled',
+      '--mdc-tab-line-border-bottom-left-radius',
+      '--mdc-tab-line-border-bottom-right-radius',
+      '--mdc-tab-line-border-top-left-radius',
+      '--mdc-tab-line-border-top-right-radius',
+      '--mdc-tab-line-inactive-background-color-active',
+      '--mdc-tab-line-inactive-background-color-disabled',
+      '--mdc-tab-line-inactive-background-color-focus',
+      '--mdc-tab-line-inactive-background-color-hover',
+      '--mdc-tab-line-inactive-background-color-normal',
+      '--mdc-tab-line-inactive-color',
+      '--mdc-tab-line-inactive-color-disabled',
+      '--mdc-tab-padding-left',
+      '--mdc-tab-padding-right',
+      '--mdc-tab-pill-active-background-color-active',
+      '--mdc-tab-pill-active-background-color-disabled',
+      '--mdc-tab-pill-active-background-color-focus',
+      '--mdc-tab-pill-active-background-color-hover',
+      '--mdc-tab-pill-active-background-color-normal',
+      '--mdc-tab-pill-active-color',
+      '--mdc-tab-pill-active-color-disabled',
+      '--mdc-tab-pill-border-radius',
+      '--mdc-tab-pill-inactive-background-color-active',
+      '--mdc-tab-pill-inactive-background-color-disabled',
+      '--mdc-tab-pill-inactive-background-color-focus',
+      '--mdc-tab-pill-inactive-background-color-hover',
+      '--mdc-tab-pill-inactive-background-color-normal',
+      '--mdc-tab-pill-inactive-color',
+      '--mdc-tab-pill-inactive-color-disabled',
+    ]),
     ...hideControls([
       'size',
       'soft-disabled',

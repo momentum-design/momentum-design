@@ -22,6 +22,54 @@ import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
  *
  * @tagname mdc-tab
  *
+ * @cssproperty --mdc-tab-content-gap - Gap between the badge(if provided), icon and text.
+ * @cssproperty --mdc-tab-height - Height of the tab.
+ * @cssproperty --mdc-tab-line-active-background-color-active - Background color for active line tab in pressed state.
+ * @cssproperty --mdc-tab-line-active-background-color-disabled - Background color for active line tab
+ *  in disabled state.
+ * @cssproperty --mdc-tab-line-active-background-color-focus - Background color for active line tab in focus state.
+ * @cssproperty --mdc-tab-line-active-background-color-hover - Background color for active line tab in hover state.
+ * @cssproperty --mdc-tab-line-active-background-color-normal - Background color for active line tab in rest state.
+ * @cssproperty --mdc-tab-line-active-bottom-border-color - Bottom border color for active line tab.
+ * @cssproperty --mdc-tab-line-active-bottom-border-color-disabled - Bottom border color for active line tab
+ *  in disabled state.
+ * @cssproperty --mdc-tab-line-active-color - Text and icon color for active line tab.
+ * @cssproperty --mdc-tab-line-active-color-disabled - Text and icon color for active line tab in disabled state.
+ * @cssproperty --mdc-tab-line-border-bottom-left-radius - Bottom left border radius for line tab.
+ * @cssproperty --mdc-tab-line-border-bottom-right-radius - Bottom right border radius for line tab.
+ * @cssproperty --mdc-tab-line-border-top-left-radius - Top left border radius for line tab.
+ * @cssproperty --mdc-tab-line-border-top-right-radius - Top right border radius for line tab.
+ * @cssproperty --mdc-tab-line-inactive-background-color-active - Background color for inactive line tab
+ *  in pressed state.
+ * @cssproperty --mdc-tab-line-inactive-background-color-disabled - Background color for inactive line tab
+ *  in disabled state
+ * @cssproperty --mdc-tab-line-inactive-background-color-focus - Background color for inactive line tab in focus state.
+ * @cssproperty --mdc-tab-line-inactive-background-color-hover - Background color for inactive line tab in hover state.
+ * @cssproperty --mdc-tab-line-inactive-background-color-normal - Background color for inactive line tab
+ *  in rest state.
+ * @cssproperty --mdc-tab-line-inactive-color - Text and icon color for inactive line tab.
+ * @cssproperty --mdc-tab-line-inactive-color-disabled - Text and icon color for inactive line tab in disabled state.
+ * @cssproperty --mdc-tab-padding-left - Padding left for the tab.
+ * @cssproperty --mdc-tab-padding-right - Padding right for the tab.
+ * @cssproperty --mdc-tab-pill-active-background-color-active - Background color for active pill tab in pressed state.
+ * @cssproperty --mdc-tab-pill-active-background-color-disabled - Background color for active pill tab
+ *  in disabled state.
+ * @cssproperty --mdc-tab-pill-active-background-color-focus - Background color for active pill tab in focus state.
+ * @cssproperty --mdc-tab-pill-active-background-color-hover - Background color for active pill tab in hover state.
+ * @cssproperty --mdc-tab-pill-active-background-color-normal - Background color for active pill tab in rest state.
+ * @cssproperty --mdc-tab-pill-active-color - Text and icon color for active pill tab.
+ * @cssproperty --mdc-tab-pill-active-color-disabled - Text and icon color for active pill tab in disabled state.
+ * @cssproperty --mdc-tab-pill-border-radius - Border radius for pill tab.
+ * @cssproperty --mdc-tab-pill-inactive-background-color-active - Background color for inactive pill tab
+ *  in pressed state.
+ * @cssproperty --mdc-tab-pill-inactive-background-color-disabled - Background color for inactive pill tab
+ *  in disabled state.
+ * @cssproperty --mdc-tab-pill-inactive-background-color-focus - Background color for inactive pill tab in focus state.
+ * @cssproperty --mdc-tab-pill-inactive-background-color-hover - Background color for inactive pill tab in hover state.
+ * @cssproperty --mdc-tab-pill-inactive-background-color-normal - Background color for inactive pill tab in rest state.
+ * @cssproperty --mdc-tab-pill-inactive-color - Text and icon color for inactive pill tab.
+ * @cssproperty --mdc-tab-pill-inactive-color-disabled - Text and icon color for inactive pill tab in disabled state.
+ *
  */
 class Tab extends Buttonsimple {
   /**

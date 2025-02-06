@@ -6,50 +6,41 @@ const styles = [hostFitContentStyles, css`
   :host {
     --mdc-tab-content-gap: 0.5rem;
     --mdc-tab-height: 2rem;
-    --mdc-tab-padding-left: 0.75rem;
-    --mdc-tab-padding-right: 0.75rem;
-
-    --mdc-tab-pill-border-radius: 0.5rem;
-
-    --mdc-tab-line-border-top-left-radius: 0.25rem;
-    --mdc-tab-line-border-top-right-radius: 0.25rem;
-    --mdc-tab-line-border-bottom-left-radius: 0;
-    --mdc-tab-line-border-bottom-right-radius: 0;
-
+    --mdc-tab-line-active-background-color-active: var(--mds-color-theme-button-secondary-hover);
+    --mdc-tab-line-active-background-color-disabled: var(--mds-color-theme-button-secondary-disabled);
+    --mdc-tab-line-active-background-color-focus: var(--mds-color-theme-button-secondary-normal);
+    --mdc-tab-line-active-background-color-hover: var(--mds-color-theme-button-secondary-hover);
+    --mdc-tab-line-active-background-color-normal: var(--mds-color-theme-button-secondary-normal);
     --mdc-tab-line-active-bottom-border-color: var(--mds-color-theme-outline-input-active);
     --mdc-tab-line-active-bottom-border-color-disabled: var(--mds-color-theme-outline-primary-disabled);
-
-    --mdc-tab-line-active-background-color-normal: var(--mds-color-theme-button-secondary-normal);
-    --mdc-tab-line-active-background-color-hover: var(--mds-color-theme-button-secondary-hover);
-    --mdc-tab-line-active-background-color-active: var(--mds-color-theme-button-secondary-hover);
-    --mdc-tab-line-active-background-color-focus: var(--mds-color-theme-button-secondary-normal);
-    --mdc-tab-line-active-background-color-disabled: var(--mds-color-theme-button-secondary-disabled);
-
-    --mdc-tab-line-inactive-background-color-normal: var(--mds-color-theme-button-secondary-normal);
-    --mdc-tab-line-inactive-background-color-hover: var(--mds-color-theme-button-secondary-hover);
-    --mdc-tab-line-inactive-background-color-active: var(--mds-color-theme-button-secondary-hover);
-    --mdc-tab-line-inactive-background-color-focus: var(--mds-color-theme-button-secondary-normal);
-    --mdc-tab-line-inactive-background-color-disabled: var(--mds-color-theme-button-secondary-disabled);
-
     --mdc-tab-line-active-color: var(--mds-color-theme-text-primary-normal);
     --mdc-tab-line-active-color-disabled: var(--mds-color-theme-text-primary-disabled);
+    --mdc-tab-line-border-bottom-left-radius: 0;
+    --mdc-tab-line-border-bottom-right-radius: 0;
+    --mdc-tab-line-border-top-left-radius: 0.25rem;
+    --mdc-tab-line-border-top-right-radius: 0.25rem;
+    --mdc-tab-line-inactive-background-color-active: var(--mds-color-theme-button-secondary-hover);
+    --mdc-tab-line-inactive-background-color-disabled: var(--mds-color-theme-button-secondary-disabled);
+    --mdc-tab-line-inactive-background-color-focus: var(--mds-color-theme-button-secondary-normal);
+    --mdc-tab-line-inactive-background-color-hover: var(--mds-color-theme-button-secondary-hover);
+    --mdc-tab-line-inactive-background-color-normal: var(--mds-color-theme-button-secondary-normal);
     --mdc-tab-line-inactive-color: var(--mds-color-theme-text-secondary-normal);
     --mdc-tab-line-inactive-color-disabled: var(--mds-color-theme-text-primary-disabled);
-
-    --mdc-tab-pill-active-background-color-normal: var(--mds-color-theme-button-secondary-active-normal);
-    --mdc-tab-pill-active-background-color-hover: var(--mds-color-theme-button-secondary-active-hover);
+    --mdc-tab-padding-left: 0.75rem;
+    --mdc-tab-padding-right: 0.75rem;
     --mdc-tab-pill-active-background-color-active: var(--mds-color-theme-button-secondary-active-hover);
-    --mdc-tab-pill-active-background-color-focus: var(--mds-color-theme-button-secondary-active-normal);
     --mdc-tab-pill-active-background-color-disabled: var(--mds-color-theme-button-secondary-active-disabled);
-
-    --mdc-tab-pill-inactive-background-color-normal: var(--mds-color-theme-button-secondary-normal);
-    --mdc-tab-pill-inactive-background-color-hover: var(--mds-color-theme-button-secondary-hover);
-    --mdc-tab-pill-inactive-background-color-active: var(--mds-color-theme-button-secondary-hover);
-    --mdc-tab-pill-inactive-background-color-focus: var(--mds-color-theme-button-secondary-normal);
-    --mdc-tab-pill-inactive-background-color-disabled: var(--mds-color-theme-button-secondary-disabled);
-
+    --mdc-tab-pill-active-background-color-focus: var(--mds-color-theme-button-secondary-active-normal);
+    --mdc-tab-pill-active-background-color-hover: var(--mds-color-theme-button-secondary-active-hover);
+    --mdc-tab-pill-active-background-color-normal: var(--mds-color-theme-button-secondary-active-normal);
     --mdc-tab-pill-active-color: var(--mds-color-theme-text-primary-normal);
     --mdc-tab-pill-active-color-disabled: var(--mds-color-theme-text-primary-disabled);
+    --mdc-tab-pill-border-radius: 0.5rem;
+    --mdc-tab-pill-inactive-background-color-active: var(--mds-color-theme-button-secondary-hover);
+    --mdc-tab-pill-inactive-background-color-disabled: var(--mds-color-theme-button-secondary-disabled);
+    --mdc-tab-pill-inactive-background-color-focus: var(--mds-color-theme-button-secondary-normal);
+    --mdc-tab-pill-inactive-background-color-hover: var(--mds-color-theme-button-secondary-hover);
+    --mdc-tab-pill-inactive-background-color-normal: var(--mds-color-theme-button-secondary-normal);
     --mdc-tab-pill-inactive-color: var(--mds-color-theme-text-secondary-normal);
     --mdc-tab-pill-inactive-color-disabled: var(--mds-color-theme-text-primary-disabled);
 
