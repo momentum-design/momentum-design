@@ -232,7 +232,7 @@ export const FormFieldInput: StoryObj = {
         placeholder="Enter your name"
         required
       ></mdc-input>
-      <mdc-button type="submit" size='24' >Submit</mdc-button>
+      <mdc-button type="submit" size='24' style='margin-top: 0.5rem'>Submit</mdc-button>
     </form>
     `;
   },

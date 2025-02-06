@@ -291,14 +291,18 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
   /**
    * Handles the change event of the input field.
    * Updates the value and sets the validity of the input field.
-   * Dispatches the change event.
+   *
+   * The 'change' event does not bubble up through the shadow DOM as it was not composed.
+   * Therefore, we need to re-dispatch the same event to ensure it is propagated correctly.
+   * Read more: https://developer.mozilla.org/en-US/docs/Web/API/Event/composed
    *
    * @param event - Event which contains information about the value change.
    */
   private onChange(event: Event) {
     this.updateValue();
     this.setValidityFromInput();
-    this.dispatchEvent(new Event('change', event));
+    const EventConstructor = event.constructor as typeof Event;
+    this.dispatchEvent(new EventConstructor(event.type, event));
   }
 
   /**
