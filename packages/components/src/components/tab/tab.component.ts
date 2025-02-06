@@ -7,6 +7,7 @@ import { Variant } from './tab.types';
 import { getIconNameWithoutStyle } from '../button/button.utils';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
 import { ButtonSize, ButtonType } from '../buttonsimple/buttonsimple.types';
+import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 
 /**
  * `mdc-tab` is Tab component to be used within the Tabgroup.
@@ -104,7 +105,9 @@ class Tab extends Buttonsimple {
       <slot name="badge"></slot>
       ${this.iconName ? html`<mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem">
         </mdc-icon>` : nothing}
-        <mdc-text type=${this.active ? 'body-midsize-bold' : 'body-midsize-medium'} tagname="span">
+        <mdc-text
+          type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}
+          tagname=${VALID_TEXT_TAGS.SPAN}>
           <slot></slot>
         </mdc-text>
       `;
