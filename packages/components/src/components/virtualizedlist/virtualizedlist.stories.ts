@@ -85,7 +85,7 @@ const meta: Meta = {
   component: 'mdc-virtualizedlist',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     virtualizerprops: {
