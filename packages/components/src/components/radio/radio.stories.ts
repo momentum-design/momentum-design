@@ -3,6 +3,7 @@ import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { disableControls, hideControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
   <mdc-radio
@@ -34,14 +35,45 @@ const meta: Meta = {
     ...styleArgType,
     readonly: {
       control: { type: 'boolean' },
-      description: 'Determine that the radio button is read-only and cannot be changed.',
-      defaultValue: { summary: false },
     },
-    'help-text-type': {
-      table: {
-        disable: true,
-      },
+    disabled: {
+      control: { type: 'boolean' },
     },
+    checked: {
+      control: { type: 'boolean' },
+    },
+    label: {
+      control: { type: 'text' },
+    },
+    name: {
+      control: { type: 'text' },
+    },
+    value: {
+      control: { type: 'text' },
+    },
+    'help-text': {
+      control: { type: 'text' },
+    },
+    'data-aria-label': {
+      control: { type: 'text' },
+    },
+    ...hideControls(['help-text-type']),
+    ...disableControls([
+      '--mdc-radio-inner-circle-size',
+      '--mdc-radio-text-disabled-color',
+      '--mdc-radio-disabled-border-color',
+      '--mdc-radio-normal-border-color',
+      '--mdc-radio-inner-circle-normal-background',
+      '--mdc-radio-inner-circle-disabled-background',
+      '--mdc-radio-control-inactive-color',
+      '--mdc-radio-control-inactive-hover',
+      '--mdc-radio-control-inactive-pressed-color',
+      '--mdc-radio-control-inactive-disabled-background',
+      '--mdc-radio-control-active-color',
+      '--mdc-radio-control-active-hover-color',
+      '--mdc-radio-control-active-pressed-color',
+      '--mdc-radio-control-active-disabled-background',
+    ]),
   },
 };
 
@@ -143,22 +175,6 @@ export const WithHelpText: StoryObj = {
     docs: {
       description: {
         story: 'To add help text to the radio button, use the `help-text` attribute. ',
-      },
-    },
-  },
-};
-
-export const WithInfoIcon: StoryObj = {
-  render: () => html`
-    <mdc-radio
-    label="Standard Plan"
-    >
-      For adding a custom icon, use the slot 'label-info'
-    </mdc-radio>`,
-  parameters: {
-    docs: {
-      description: {
-        story: 'To add an icon to the radio button, use the slot `label-info`. ',
       },
     },
   },

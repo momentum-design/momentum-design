@@ -3,11 +3,11 @@ import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 
 const styles = [hostFitContentStyles, css`
   :host{
-    --mdc-inner-circle-size: 0.375rem;
+    --mdc-radio-inner-circle-size: 0.375rem;
     --mdc-radio-text-disabled-color: var(--mds-color-theme-text-primary-disabled);
-    --mdc-radio-outline-primary-disabled-color: var(--mds-color-theme-outline-primary-disabled);
+    --mdc-radio-disabled-border-color: var(--mds-color-theme-outline-primary-disabled);
     --mdc-radio-normal-border-color: var(--mds-color-theme-outline-input-normal);
-    --mdc-radio-inner-circle-primary-normal-background: var(--mds-color-theme-inverted-text-primary-normal);
+    --mdc-radio-inner-circle-normal-background: var(--mds-color-theme-inverted-text-primary-normal);
     --mdc-radio-inner-circle-disabled-background: var(--mds-color-theme-inverted-text-primary-disabled);
 
     --mdc-radio-control-inactive-color: var(--mds-color-theme-control-inactive-normal);
@@ -40,14 +40,14 @@ const styles = [hostFitContentStyles, css`
   :host([disabled]) .mdc-radio__icon,
   :host([disabled]) .mdc-radio__container:hover .mdc-radio__icon,
   :host([disabled][readonly]) .mdc-radio__container:hover .mdc-radio__icon {
-    border-color: var(--mdc-radio-outline-primary-disabled-color);
+    border-color: var(--mdc-radio-disabled-border-color);
     background: var(--mdc-radio-control-inactive-disabled-background);
   }
   :host([disabled][checked]) .mdc-radio__icon,
   :host([disabled][checked]) .mdc-radio__container:hover .mdc-radio__icon,
   :host([disabled][readonly][checked]) .mdc-radio__icon,
   :host([disabled][readonly][checked]) .mdc-radio__container:hover .mdc-radio__icon {
-    border-color: var(--mdc-radio-outline-primary-disabled-color);
+    border-color: var(--mdc-radio-disabled-border-color);
     background: var(--mdc-radio-control-active-disabled-background);
   }
   :host([disabled][checked]) .mdc-radio__icon:after,
@@ -78,10 +78,10 @@ const styles = [hostFitContentStyles, css`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: var(--mdc-inner-circle-size);
-    height: var(--mdc-inner-circle-size);
+    width: var(--mdc-radio-inner-circle-size);
+    height: var(--mdc-radio-inner-circle-size);
     border-radius: 50%;
-    background: var(--mdc-radio-inner-circle-primary-normal-background);
+    background: var(--mdc-radio-inner-circle-normal-background);
   }
 
   :host .mdc-radio__input:hover ~ .mdc-radio__icon {
