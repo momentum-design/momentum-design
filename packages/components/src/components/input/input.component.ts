@@ -315,8 +315,8 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
         class="leading-icon" 
         part="leading-icon"
         name=${this.leadingIcon} 
-        size="1" 
-        length-unit="rem">
+        size="${DEFAULTS.ICON_SIZE_VALUE}" 
+        length-unit="${DEFAULTS.ICON_SIZE_UNIT}">
       </mdc-icon>
     `;
   }
@@ -346,7 +346,7 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
       this.helpTextType = PREFIX_TEXT_OPTIONS.VALIDATION;
       return nothing;
     }
-    return html`<mdc-text class="prefix-text" tagname='span' type='body-midsize-regular'>${this.prefixText}</mdc-text>`;
+    return html`<mdc-text class="prefix-text" type="${DEFAULTS.PREFIX_TEXT_TYPE}">${this.prefixText}</mdc-text>`;
   }
 
   /**
@@ -369,9 +369,9 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
     return html`
       <mdc-button 
         class='${!this.value ? 'hidden' : ''}'
-        prefix-icon='cancel-bold'
-        variant='tertiary'
-        size="20"
+        prefix-icon='${DEFAULTS.CLEAR_BUTTON_ICON}'
+        variant='${DEFAULTS.CLEAR_BUTTON_VARIANT}'
+        size="${DEFAULTS.CLEAR_BUTTON_SIZE}"
         aria-label="${this.clearArialLabel}"
         @click=${this.clearInputText}
         ?disabled=${this.disabled || this.readonly || !this.value}
@@ -414,7 +414,7 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
        </section>
         <slot name="trailing-button">${this.renderTrailingButton()}</slot>
       </div>
-      ${this.helpText ? this.renderHelpText() : nothing}
+      ${this.helpText ? this.renderHelperText() : nothing}
     `;
   }
 
