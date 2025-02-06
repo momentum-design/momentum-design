@@ -6,11 +6,14 @@ import { StyleInfo } from 'lit/directives/style-map.js';
 import { Ref, createRef, ref } from 'lit/directives/ref.js';
 import styles from './virtualizedlist.styles';
 import { Component } from '../../models';
-import { DEFAULT_COUNT, DEFAULT_ESTIMATE_SIZE } from './virtualizedlist.constants';
+import { VIRTUALIZED_LIST_DEFAULTS } from './virtualizedlist.constants';
 import { SetListDataProps } from './virtualizedlist.types';
 
 /**
  * `mdc-virtualizedlist` component for creating custom virtualized lists.
+ * IMPORTANT: This component does not create it's own list/list items.
+ * Use the setlistdata callback prop to update client state in order to
+ * Pass list/listitems as a child of this component, which this will virtuailze
  * This implementation handles dynamic lists as well as fixed sized lists.
  * Please refer to [Tanstack Virtual Docs](https://tanstack.com/virtual/latest) for more in depth documentation.
  *
@@ -43,7 +46,7 @@ class VirtualizedList extends Component {
    */
   @property({ type: Object, attribute: 'virtualizerprops' })
   virtualizerprops: Partial<VirtualizerOptions<Element, Element>> = {
-    count: DEFAULT_COUNT, estimateSize: DEFAULT_ESTIMATE_SIZE,
+    count: VIRTUALIZED_LIST_DEFAULTS.COUNT, estimateSize: VIRTUALIZED_LIST_DEFAULTS.ESTIMATE_SIZE,
   };
 
   /**
@@ -75,8 +78,15 @@ class VirtualizedList extends Component {
     this.setlistdata = null;
   }
 
+  /**
+   * This override is necessary to update the virtualizer with relevant props
+   * if the client updates any props (most commonly, count). Updating the options
+   * this way ensures we don't initialize a new virtualizer upon very prop change.
+   */
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
+    // if the virtuailzer props change at all,
+    // update virtuailzer with the union of the two virtualizer options (current, passed in).
     if (changedProperties.get('virtualizerprops')) {
       this.virtualizer?.setOptions({ ...this.virtualizer.options, ...this.virtualizerprops });
       this.requestUpdate();
@@ -108,6 +118,7 @@ class VirtualizedList extends Component {
 
     const { getVirtualItems, measureElement, getTotalSize } = this.virtualizer;
     const virtualItems = getVirtualItems();
+    // this style is required to be rendered by the client side list in order to handle scrolling properly
     const listStyle: Readonly<StyleInfo> = {
       position: 'absolute',
       top: 0,
@@ -116,6 +127,7 @@ class VirtualizedList extends Component {
       transform: `translateY(${virtualItems[0]?.start ?? 0}px)`,
     };
 
+    // pass back data to client for rendering
     if (this.setlistdata) {
       this.setlistdata({ virtualItems, measureElement, listStyle });
     }
