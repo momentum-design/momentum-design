@@ -326,7 +326,51 @@ When the component is disabled for user interaction; it is not focusable or clic
  *
  * @tagname mdc-buttonsimple
  *
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}}]},{kind:"javascript-module",path:"components/divider/divider.component.js",declarations:[{kind:"class",description:`\`mdc-divider\` is a component that provides a line to separate and organize content.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}}]},{kind:"javascript-module",path:"components/checkbox/checkbox.component.js",declarations:[{kind:"class",description:`Checkboxes allow users to select multiple options from a list or turn an item/feature on or off.
+These are often used in forms, settings, and selections in lists.
+
+A checkbox component contains an optional label and an optional helper text.`,name:"Checkbox",cssProperties:[{description:"Allows customization of the background color on hover.",name:"--mdc-checkbox-background-color-hover"},{description:"Border color in high contrast.",name:"--mdc-checkbox-border-color"},{description:"Background color for a selected checkbox.",name:"--mdc-checkbox-checked-background-color"},{description:"Background color for a selected checkbox when hovered.",name:"--mdc-checkbox-checked-background-color-hover"},{description:"Background color for a selected checkbox when pressed.",name:"--mdc-checkbox-checked-pressed-icon-color"},{description:"Background color for a disabled checkbox.",name:"--mdc-checkbox-disabled-background-color"},{description:"Border color for a disabled checkbox.",name:"--mdc-checkbox-disabled-border-color"},{description:"Background color for a disabled, selected checkbox.",name:"--mdc-checkbox-disabled-checked-icon-color"},{description:"Icon color for a disabled checkbox.",name:"--mdc-checkbox-disabled-icon-color"},{description:"Background color for an unselected checkbox.",name:"--mdc-checkbox-icon-background-color"},{description:"Default background color for an unselected checkbox.",name:"--mdc-checkbox-icon-border-color"},{description:"Icon color for an unselected checkbox.",name:"--mdc-checkbox-icon-color"},{description:"Background color for a selected checkbox when pressed.",name:"--mdc-checkbox-pressed-icon-color"}],members:[{kind:"field",name:"checked",type:{text:"boolean"},default:"false",description:"Determines whether the checkbox is selected or unselected.",attribute:"checked",reflects:!0},{kind:"field",name:"indeterminate",type:{text:"boolean"},default:"false",description:`This property is used to determine the parent checkbox in a nested checkbox group.
+If any one of the children is unselected, then the parent checkbox will be indeterminate.
+If all children are either selected or unselected, then the parent checkbox will not be indeterminate.`,attribute:"indeterminate",reflects:!0},{kind:"method",name:"setFormValue",privacy:"private",description:`Updates the form value to reflect the current state of the checkbox.
+If checked, the value is set to either the user-provided value or 'on' if no value is provided.
+If unchecked, the value is set to null.`},{kind:"method",name:"toggleState",privacy:"private",return:{type:{text:"void"}},description:`Toggles the state of the checkbox element.
+If the element is not disabled, then
+the checked property is toggled and the indeterminate property is set to false.`},{kind:"method",name:"handleChange",privacy:"public",return:{type:{text:"void"}},parameters:[{name:"event",type:{text:"Event"}}],description:`Toggles the state of the checkbox element.
+and dispatch the new event.`},{kind:"field",name:"internals"},{kind:"field",name:"helpTextType",type:{text:"ValidationType"},description:"The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.",attribute:"help-text-type",reflects:!0,default:"undefined as unknown",inheritedFrom:{name:"FormfieldWrapper",module:"components/formfieldwrapper/formfieldwrapper.component.js"}},{kind:"field",name:"name",type:{text:"string"},default:"''",description:`Indicates the name of the component group (ex: checkbox, radio group).
+They are used to group elements in a form together.`,attribute:"name",reflects:!0,inheritedFrom:{name:"NameMixin",module:"utils/mixins/NameMixin.js"}},{kind:"field",name:"value",type:{text:"string"},default:"''",description:"Indicates the value of the component group (ex: input, checkbox, radio, select etc...)",attribute:"value",reflects:!0,inheritedFrom:{name:"ValueMixin",module:"utils/mixins/ValueMixin.js"}},{kind:"field",name:"dataAriaLabel",type:{text:"string | null"},default:"null",description:`Defines a string value that labels the current element.
+The Aria-Label attribute to be set for accessibility.`,attribute:"data-aria-label",reflects:!0,inheritedFrom:{name:"DataAriaLabelMixin",module:"utils/mixins/DataAriaLabelMixin.js"}},{kind:"field",name:"disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the component is disabled.
+When the component is disabled for user interaction; it is not focusable or clickable.`,attribute:"disabled",reflects:!0,inheritedFrom:{name:"DisabledMixin",module:"utils/mixins/DisabledMixin.js"}},{kind:"field",name:"label",type:{text:"string | undefined"},description:"The label of the input field. It is linked to the input field using the `for` attribute.",attribute:"label",reflects:!0,inheritedFrom:{name:"FormfieldWrapper",module:"components/formfieldwrapper/formfieldwrapper.component.js"}},{kind:"field",name:"id",default:"`mdc-input-${uuidv4()}`",description:"The unique id of the input field. It is used to link the input field with the label.",attribute:"id",inheritedFrom:{name:"FormfieldWrapper",module:"components/formfieldwrapper/formfieldwrapper.component.js"}},{kind:"field",name:"helpText",type:{text:"string | undefined"},description:"The help text that is displayed below the input field.",attribute:"help-text",reflects:!0,inheritedFrom:{name:"FormfieldWrapper",module:"components/formfieldwrapper/formfieldwrapper.component.js"}},{kind:"method",name:"renderLabelElement",privacy:"protected",description:`creates the label element when the label property is set.
+id is used to link the label with the input field.`,return:{type:{text:""}},inheritedFrom:{name:"FormfieldWrapper",module:"components/formfieldwrapper/formfieldwrapper.component.js"}},{kind:"method",name:"renderHelpTextIcon",privacy:"protected",description:`creates the helpertext icon based on the helpTextType for validation.
+If the helpTextType is not set, it defaults to 'default' and it doesn't display any icon.`,return:{type:{text:""}},inheritedFrom:{name:"FormfieldWrapper",module:"components/formfieldwrapper/formfieldwrapper.component.js"}},{kind:"method",name:"renderHelpText",privacy:"protected",description:`creates the helper text component when the helpertext value is set.
+It is also used to display the validation message based on the helpTextType.`,return:{type:{text:""}},inheritedFrom:{name:"FormfieldWrapper",module:"components/formfieldwrapper/formfieldwrapper.component.js"}},{kind:"method",name:"renderLabel",privacy:"protected",description:"renders the mdc-label-text container that contains the label and labelInfoToggleTip.",return:{type:{text:""}},inheritedFrom:{name:"FormfieldWrapper",module:"components/formfieldwrapper/formfieldwrapper.component.js"}},{kind:"method",name:"renderHelperText",privacy:"protected",description:"renders the mdc-help-text container that contains the helpertext icon and helpertext.",return:{type:{text:""}},inheritedFrom:{name:"FormfieldWrapper",module:"components/formfieldwrapper/formfieldwrapper.component.js"}}],events:[{type:{text:"Event"}}],attributes:[{name:"checked",type:{text:"boolean"},default:"false",description:"Determines whether the checkbox is selected or unselected.",fieldName:"checked"},{name:"indeterminate",type:{text:"boolean"},default:"false",description:`This property is used to determine the parent checkbox in a nested checkbox group.
+If any one of the children is unselected, then the parent checkbox will be indeterminate.
+If all children are either selected or unselected, then the parent checkbox will not be indeterminate.`,fieldName:"indeterminate"},{name:"name",type:{text:"string"},default:"''",description:`Indicates the name of the component group (ex: checkbox, radio group).
+They are used to group elements in a form together.`,fieldName:"name",inheritedFrom:{name:"NameMixin",module:"src/utils/mixins/NameMixin.ts"}},{name:"value",type:{text:"string"},default:"''",description:"Indicates the value of the component group (ex: input, checkbox, radio, select etc...)",fieldName:"value",inheritedFrom:{name:"ValueMixin",module:"src/utils/mixins/ValueMixin.ts"}},{name:"data-aria-label",type:{text:"string | null"},default:"null",description:`Defines a string value that labels the current element.
+The Aria-Label attribute to be set for accessibility.`,fieldName:"dataAriaLabel",inheritedFrom:{name:"DataAriaLabelMixin",module:"src/utils/mixins/DataAriaLabelMixin.ts"}},{name:"disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the component is disabled.
+When the component is disabled for user interaction; it is not focusable or clickable.`,fieldName:"disabled",inheritedFrom:{name:"DisabledMixin",module:"src/utils/mixins/DisabledMixin.ts"}},{name:"label",type:{text:"string | undefined"},description:"The label of the input field. It is linked to the input field using the `for` attribute.",fieldName:"label",inheritedFrom:{name:"FormfieldWrapper",module:"src/components/formfieldwrapper/formfieldwrapper.component.ts"}},{name:"id",default:"`mdc-input-${uuidv4()}`",description:"The unique id of the input field. It is used to link the input field with the label.",fieldName:"id",inheritedFrom:{name:"FormfieldWrapper",module:"src/components/formfieldwrapper/formfieldwrapper.component.ts"}},{name:"help-text-type",type:{text:"ValidationType"},description:"The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.",fieldName:"helpTextType",inheritedFrom:{name:"FormfieldWrapper",module:"src/components/formfieldwrapper/formfieldwrapper.component.ts"}},{name:"help-text",type:{text:"string | undefined"},description:"The help text that is displayed below the input field.",fieldName:"helpText",inheritedFrom:{name:"FormfieldWrapper",module:"src/components/formfieldwrapper/formfieldwrapper.component.ts"}}],mixins:[{name:"NameMixin",module:"/src/utils/mixins/NameMixin"},{name:"ValueMixin",module:"/src/utils/mixins/ValueMixin"},{name:"DataAriaLabelMixin",module:"/src/utils/mixins/DataAriaLabelMixin"}],superclass:{name:"FormfieldWrapper",module:"/src/components/formfieldwrapper/formfieldwrapper.component"},tagName:"mdc-checkbox",jsDoc:`/**
+ * Checkboxes allow users to select multiple options from a list or turn an item/feature on or off.
+ * These are often used in forms, settings, and selections in lists.
+ *
+ * A checkbox component contains an optional label and an optional helper text.
+ *
+ * @dependency mdc-icon
+ *
+ * @tagname mdc-checkbox
+ *
+ * @cssproperty --mdc-checkbox-background-color-hover - Allows customization of the background color on hover.
+ * @cssproperty --mdc-checkbox-border-color - Border color in high contrast.
+ * @cssproperty --mdc-checkbox-checked-background-color - Background color for a selected checkbox.
+ * @cssproperty --mdc-checkbox-checked-background-color-hover - Background color for a selected checkbox when hovered.
+ * @cssproperty --mdc-checkbox-checked-pressed-icon-color - Background color for a selected checkbox when pressed.
+ * @cssproperty --mdc-checkbox-disabled-background-color - Background color for a disabled checkbox.
+ * @cssproperty --mdc-checkbox-disabled-border-color - Border color for a disabled checkbox.
+ * @cssproperty --mdc-checkbox-disabled-checked-icon-color - Background color for a disabled, selected checkbox.
+ * @cssproperty --mdc-checkbox-disabled-icon-color - Icon color for a disabled checkbox.
+ * @cssproperty --mdc-checkbox-icon-background-color - Background color for an unselected checkbox.
+ * @cssproperty --mdc-checkbox-icon-border-color - Default background color for an unselected checkbox.
+ * @cssproperty --mdc-checkbox-icon-color - Icon color for an unselected checkbox.
+ * @cssproperty --mdc-checkbox-pressed-icon-color - Background color for a selected checkbox when pressed.
+ */`,customElement:!0,slots:[{description:"slot to add the label info icon",name:"label-info",inheritedFrom:{name:"FormfieldWrapper",module:"src/components/formfieldwrapper/formfieldwrapper.component.ts"}}]}],exports:[{kind:"js",name:"default",declaration:{name:"Checkbox",module:"components/checkbox/checkbox.component.js"}}]},{kind:"javascript-module",path:"components/divider/divider.component.js",declarations:[{kind:"class",description:`\`mdc-divider\` is a component that provides a line to separate and organize content.
 It can also include a button or text positioned centrally, allowing users to interact with the layout.
 
 **Divider Orientation:**
@@ -530,7 +574,61 @@ The error detail is set to the error object.`},{kind:"method",name:"updateSize",
  * @cssproperty --mdc-icon-fill-color - Allows customization of the default fill color.
  * @cssproperty --mdc-icon-size - Allows customization of the icon size.
  * @cssproperty --mdc-icon-border-radius - Allows customization of the icon border radius.
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Icon",module:"components/icon/icon.component.js"}}]},{kind:"javascript-module",path:"components/iconprovider/iconprovider.component.js",declarations:[{kind:"class",description:`IconProvider component, which allows to be consumed from sub components
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Icon",module:"components/icon/icon.component.js"}}]},{kind:"javascript-module",path:"components/marker/marker.component.js",declarations:[{kind:"class",description:`\`mdc-marker\`, which is a vertical line and
+used to draw attention to specific parts of
+the content or to signify important information.
+
+**Marker Variants**:
+- **solid**: Solid marker.
+- **striped**: Striped marker.`,name:"Marker",cssProperties:[{description:"Allows customization of the default background color in solid variant.",name:"--mdc-marker-solid-background-color"},{description:"Allows customization of the default stripes in striped variant.",name:"--mdc-marker-striped-color"},{description:"Allows customization of the default background color in striped variant.",name:"--mdc-marker-striped-background-color"},{description:"Allows customization of the default width.",name:"--mdc-marker-width"}],members:[{kind:"field",name:"variant",type:{text:"MarkerVariants"},privacy:"public",description:`There are two variants of markers, each with a width of 0.25rem:
+- **solid**: Solid marker.
+- **striped**: Striped marker.`,default:"solid",attribute:"variant",reflects:!0}],attributes:[{name:"variant",type:{text:"MarkerVariants"},description:`There are two variants of markers, each with a width of 0.25rem:
+- **solid**: Solid marker.
+- **striped**: Striped marker.`,default:"solid",fieldName:"variant"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-marker",jsDoc:`/**
+ * \`mdc-marker\`, which is a vertical line and
+ * used to draw attention to specific parts of
+ * the content or to signify important information.
+ *
+ * **Marker Variants**:
+ * - **solid**: Solid marker.
+ * - **striped**: Striped marker.
+ *
+ * @tagname mdc-marker
+ *
+ * @cssproperty --mdc-marker-solid-background-color - Allows customization of the default background color
+ * in solid variant.
+ * @cssproperty --mdc-marker-striped-color - Allows customization of the default stripes in striped variant.
+ * @cssproperty --mdc-marker-striped-background-color - Allows customization of the default background color
+ * in striped variant.
+ * @cssproperty --mdc-marker-width - Allows customization of the default width.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Marker",module:"components/marker/marker.component.js"}}]},{kind:"javascript-module",path:"components/modalcontainer/modalcontainer.component.js",declarations:[{kind:"class",description:"The `mdc-modalcontainer` component is an element used to\ndisplay a modal container that can further be used in popover.",name:"Modalcontainer",cssProperties:[{description:"primary background color of the modalcontainer",name:"--mdc-modalcontainer-primary-background-color"},{description:"border color of the modalcontainer",name:"--mdc-modalcontainer-border-color"},{description:"inverted background color of the modalcontainer",name:"--mdc-modalcontainer-inverted-background-color"},{description:"inverted border color of the modalcontainer",name:"--mdc-modalcontainer-inverted-border-color"},{description:"inverted text color of the modalcontainer",name:"--mdc-modalcontainer-inverted-text-color"}],slots:[{description:"Default slot for modal container",name:""}],members:[{kind:"field",name:"color",type:{text:"ModalContainerColor"},description:`Color of the modalcontainer
+- **tonal**
+- **contrast**`,default:"tonal",attribute:"color",reflects:!0},{kind:"field",name:"elevation",type:{text:"ModalContainerElevation"},description:`Elevation of the modalcontainer where each value corresponds to a different drop shadow.
+- **0**
+- **1**
+- **2**
+- **3**
+- **4**`,default:"0",attribute:"elevation",reflects:!0},{kind:"field",name:"role",type:{text:"ModalContainerRole"},description:"Role of the modalcontainer",default:"dialog",attribute:"role"}],attributes:[{name:"color",type:{text:"ModalContainerColor"},description:`Color of the modalcontainer
+- **tonal**
+- **contrast**`,default:"tonal",fieldName:"color"},{name:"elevation",type:{text:"ModalContainerElevation"},description:`Elevation of the modalcontainer where each value corresponds to a different drop shadow.
+- **0**
+- **1**
+- **2**
+- **3**
+- **4**`,default:"0",fieldName:"elevation"},{name:"role",type:{text:"ModalContainerRole"},description:"Role of the modalcontainer",default:"dialog",fieldName:"role"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-modalcontainer",jsDoc:`/**
+ * The \`mdc-modalcontainer\` component is an element used to
+ * display a modal container that can further be used in popover.
+ *
+ * @tagname mdc-modalcontainer
+ *
+ * @cssproperty --mdc-modalcontainer-primary-background-color - primary background color of the modalcontainer
+ * @cssproperty --mdc-modalcontainer-border-color - border color of the modalcontainer
+ * @cssproperty --mdc-modalcontainer-inverted-background-color - inverted background color of the modalcontainer
+ * @cssproperty --mdc-modalcontainer-inverted-border-color - inverted border color of the modalcontainer
+ * @cssproperty --mdc-modalcontainer-inverted-text-color - inverted text color of the modalcontainer
+ *
+ * @slot - Default slot for modal container
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Modalcontainer",module:"components/modalcontainer/modalcontainer.component.js"}}]},{kind:"javascript-module",path:"components/iconprovider/iconprovider.component.js",declarations:[{kind:"class",description:`IconProvider component, which allows to be consumed from sub components
 (see \`providerUtils.consume\` for how to consume)
 
 Bundling icons will be up to the consumer of this component, such
@@ -590,61 +688,7 @@ When the component is disabled for user interaction; it is not focusable or clic
  * @cssproperty --mdc-link-inverted-color-hover - Text and icon color of the inverted link in hover state
  * @cssproperty --mdc-link-inverted-color-normal - Text and icon color of the inverted link in normal state
  * @cssproperty --mdc-link-text-decoration-disabled - Text decoration of the link in disabled state for all variants
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Link",module:"components/link/link.component.js"}}]},{kind:"javascript-module",path:"components/marker/marker.component.js",declarations:[{kind:"class",description:`\`mdc-marker\`, which is a vertical line and
-used to draw attention to specific parts of
-the content or to signify important information.
-
-**Marker Variants**:
-- **solid**: Solid marker.
-- **striped**: Striped marker.`,name:"Marker",cssProperties:[{description:"Allows customization of the default background color in solid variant.",name:"--mdc-marker-solid-background-color"},{description:"Allows customization of the default stripes in striped variant.",name:"--mdc-marker-striped-color"},{description:"Allows customization of the default background color in striped variant.",name:"--mdc-marker-striped-background-color"},{description:"Allows customization of the default width.",name:"--mdc-marker-width"}],members:[{kind:"field",name:"variant",type:{text:"MarkerVariants"},privacy:"public",description:`There are two variants of markers, each with a width of 0.25rem:
-- **solid**: Solid marker.
-- **striped**: Striped marker.`,default:"solid",attribute:"variant",reflects:!0}],attributes:[{name:"variant",type:{text:"MarkerVariants"},description:`There are two variants of markers, each with a width of 0.25rem:
-- **solid**: Solid marker.
-- **striped**: Striped marker.`,default:"solid",fieldName:"variant"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-marker",jsDoc:`/**
- * \`mdc-marker\`, which is a vertical line and
- * used to draw attention to specific parts of
- * the content or to signify important information.
- *
- * **Marker Variants**:
- * - **solid**: Solid marker.
- * - **striped**: Striped marker.
- *
- * @tagname mdc-marker
- *
- * @cssproperty --mdc-marker-solid-background-color - Allows customization of the default background color
- * in solid variant.
- * @cssproperty --mdc-marker-striped-color - Allows customization of the default stripes in striped variant.
- * @cssproperty --mdc-marker-striped-background-color - Allows customization of the default background color
- * in striped variant.
- * @cssproperty --mdc-marker-width - Allows customization of the default width.
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Marker",module:"components/marker/marker.component.js"}}]},{kind:"javascript-module",path:"components/modalcontainer/modalcontainer.component.js",declarations:[{kind:"class",description:"The `mdc-modalcontainer` component is an element used to\ndisplay a modal container that can further be used in popover.",name:"Modalcontainer",cssProperties:[{description:"primary background color of the modalcontainer",name:"--mdc-modalcontainer-primary-background-color"},{description:"border color of the modalcontainer",name:"--mdc-modalcontainer-border-color"},{description:"inverted background color of the modalcontainer",name:"--mdc-modalcontainer-inverted-background-color"},{description:"inverted border color of the modalcontainer",name:"--mdc-modalcontainer-inverted-border-color"},{description:"inverted text color of the modalcontainer",name:"--mdc-modalcontainer-inverted-text-color"}],slots:[{description:"Default slot for modal container",name:""}],members:[{kind:"field",name:"color",type:{text:"ModalContainerColor"},description:`Color of the modalcontainer
-- **tonal**
-- **contrast**`,default:"tonal",attribute:"color",reflects:!0},{kind:"field",name:"elevation",type:{text:"ModalContainerElevation"},description:`Elevation of the modalcontainer where each value corresponds to a different drop shadow.
-- **0**
-- **1**
-- **2**
-- **3**
-- **4**`,default:"0",attribute:"elevation",reflects:!0},{kind:"field",name:"role",type:{text:"ModalContainerRole"},description:"Role of the modalcontainer",default:"dialog",attribute:"role"}],attributes:[{name:"color",type:{text:"ModalContainerColor"},description:`Color of the modalcontainer
-- **tonal**
-- **contrast**`,default:"tonal",fieldName:"color"},{name:"elevation",type:{text:"ModalContainerElevation"},description:`Elevation of the modalcontainer where each value corresponds to a different drop shadow.
-- **0**
-- **1**
-- **2**
-- **3**
-- **4**`,default:"0",fieldName:"elevation"},{name:"role",type:{text:"ModalContainerRole"},description:"Role of the modalcontainer",default:"dialog",fieldName:"role"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-modalcontainer",jsDoc:`/**
- * The \`mdc-modalcontainer\` component is an element used to
- * display a modal container that can further be used in popover.
- *
- * @tagname mdc-modalcontainer
- *
- * @cssproperty --mdc-modalcontainer-primary-background-color - primary background color of the modalcontainer
- * @cssproperty --mdc-modalcontainer-border-color - border color of the modalcontainer
- * @cssproperty --mdc-modalcontainer-inverted-background-color - inverted background color of the modalcontainer
- * @cssproperty --mdc-modalcontainer-inverted-border-color - inverted border color of the modalcontainer
- * @cssproperty --mdc-modalcontainer-inverted-text-color - inverted text color of the modalcontainer
- *
- * @slot - Default slot for modal container
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Modalcontainer",module:"components/modalcontainer/modalcontainer.component.js"}}]},{kind:"javascript-module",path:"components/presence/presence.component.js",declarations:[{kind:"class",description:`The \`mdc-presence\` component is a versatile UI element used to
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Link",module:"components/link/link.component.js"}}]},{kind:"javascript-module",path:"components/presence/presence.component.js",declarations:[{kind:"class",description:`The \`mdc-presence\` component is a versatile UI element used to
 display the presence status of a user or entity within an avatar component.
 
 This component is ideal for use within avatar UIs where the presence status
@@ -875,7 +919,9 @@ When the src is loading, we will display the initials as a placeholder.`,fieldNa
 - 72
 - 88
 - 124`,default:"32",fieldName:"size"},{name:"icon-name",type:{text:"IconNames | undefined"},description:`Name of the icon to be displayed inside the Avatar.
-Must be a valid icon name.`,fieldName:"iconName"},{name:"counter",type:{text:"number | undefined"},description:"The counter is the number which can be displayed on the avatar.\nThe maximum number is 99 and if the given number is greater than 99,\nthen the avatar will be displayed as `99+`.\nIf the given number is a negative number,\nthen the avatar will be displayed as `0`.",fieldName:"counter"},{name:"is-typing",type:{text:"boolean"},default:"false",description:"Represents the typing indicator when the user is typing.",fieldName:"isTyping"}],parameters:[{name:"superClass",type:{text:"T"}}]}],exports:[{kind:"js",name:"AvatarComponentMixin",declaration:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}}]},{kind:"javascript-module",path:"utils/mixins/DisabledMixin.js",declarations:[{kind:"mixin",description:"",name:"DisabledMixin",members:[{kind:"field",name:"disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the component is disabled.
+Must be a valid icon name.`,fieldName:"iconName"},{name:"counter",type:{text:"number | undefined"},description:"The counter is the number which can be displayed on the avatar.\nThe maximum number is 99 and if the given number is greater than 99,\nthen the avatar will be displayed as `99+`.\nIf the given number is a negative number,\nthen the avatar will be displayed as `0`.",fieldName:"counter"},{name:"is-typing",type:{text:"boolean"},default:"false",description:"Represents the typing indicator when the user is typing.",fieldName:"isTyping"}],parameters:[{name:"superClass",type:{text:"T"}}]}],exports:[{kind:"js",name:"AvatarComponentMixin",declaration:{name:"AvatarComponentMixin",module:"utils/mixins/AvatarComponentMixin.js"}}]},{kind:"javascript-module",path:"utils/mixins/DataAriaLabelMixin.js",declarations:[{kind:"mixin",description:"",name:"DataAriaLabelMixin",members:[{kind:"field",name:"dataAriaLabel",type:{text:"string | null"},default:"null",description:`Defines a string value that labels the current element.
+The Aria-Label attribute to be set for accessibility.`,attribute:"data-aria-label",reflects:!0}],attributes:[{name:"data-aria-label",type:{text:"string | null"},default:"null",description:`Defines a string value that labels the current element.
+The Aria-Label attribute to be set for accessibility.`,fieldName:"dataAriaLabel"}],parameters:[{name:"superClass",type:{text:"T"}}]}],exports:[{kind:"js",name:"DataAriaLabelMixin",declaration:{name:"DataAriaLabelMixin",module:"utils/mixins/DataAriaLabelMixin.js"}}]},{kind:"javascript-module",path:"utils/mixins/DisabledMixin.js",declarations:[{kind:"mixin",description:"",name:"DisabledMixin",members:[{kind:"field",name:"disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the component is disabled.
 When the component is disabled for user interaction; it is not focusable or clickable.`,attribute:"disabled",reflects:!0}],attributes:[{name:"disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the component is disabled.
 When the component is disabled for user interaction; it is not focusable or clickable.`,fieldName:"disabled"}],parameters:[{name:"superClass",type:{text:"T"}}]}],exports:[{kind:"js",name:"DisabledMixin",declaration:{name:"DisabledMixin",module:"utils/mixins/DisabledMixin.js"}}]},{kind:"javascript-module",path:"utils/mixins/NameMixin.js",declarations:[{kind:"mixin",description:"",name:"NameMixin",members:[{kind:"field",name:"name",type:{text:"string"},default:"''",description:`Indicates the name of the component group (ex: checkbox, radio group).
 They are used to group elements in a form together.`,attribute:"name",reflects:!0}],attributes:[{name:"name",type:{text:"string"},default:"''",description:`Indicates the name of the component group (ex: checkbox, radio group).
@@ -885,4 +931,4 @@ When the component is readonly, it is not editable.`,fieldName:"readonly"}],para
 When the component is required, it is a mandatory field.`,attribute:"required",reflects:!0}],attributes:[{name:"required",type:{text:"boolean"},default:"false",description:`Indicates whether the component is required.
 When the component is required, it is a mandatory field.`,fieldName:"required"}],parameters:[{name:"superClass",type:{text:"T"}}]}],exports:[{kind:"js",name:"RequiredMixin",declaration:{name:"RequiredMixin",module:"utils/mixins/RequiredMixin.js"}}]},{kind:"javascript-module",path:"utils/mixins/TabIndexMixin.js",declarations:[{kind:"mixin",description:"",name:"TabIndexMixin",members:[{kind:"field",name:"tabIndex",type:{text:"number"},default:"0",description:"This property specifies the tab order of the element.",attribute:"tabIndex",reflects:!0}],attributes:[{name:"tabIndex",type:{text:"number"},default:"0",description:"This property specifies the tab order of the element.",fieldName:"tabIndex"}],parameters:[{name:"superClass",type:{text:"T"}}]}],exports:[{kind:"js",name:"TabIndexMixin",declaration:{name:"TabIndexMixin",module:"utils/mixins/TabIndexMixin.js"}}]},{kind:"javascript-module",path:"utils/mixins/ValueMixin.js",declarations:[{kind:"mixin",description:"",name:"ValueMixin",members:[{kind:"field",name:"value",type:{text:"string"},default:"''",description:"Indicates the value of the component group (ex: input, checkbox, radio, select etc...)",attribute:"value",reflects:!0}],attributes:[{name:"value",type:{text:"string"},default:"''",description:"Indicates the value of the component group (ex: input, checkbox, radio, select etc...)",fieldName:"value"}],parameters:[{name:"superClass",type:{text:"T"}}]}],exports:[{kind:"js",name:"ValueMixin",declaration:{name:"ValueMixin",module:"utils/mixins/ValueMixin.js"}}]},{kind:"javascript-module",path:"utils/mixins/index.types.js",declarations:[],exports:[]}],b={schemaVersion:p,readme:u,modules:h},a=[{themeclass:"mds-theme-stable-darkWebex",displayName:"darkWebex",backgroundColor:"#000000",className:"dark"},{themeclass:"mds-theme-stable-lightWebex",displayName:"lightWebex",backgroundColor:"#ffffff",className:"light"}],f=e=>{for(const n of a)e.classList.remove(n.className)},d=(e,n)=>{e.classList.add(n)},y=e=>{const n=document.querySelectorAll("div.docs-story");for(const i of n)i.style.backgroundColor=e},v=(e,n)=>{const i=n.globals.theme,t=a.find(r=>r.displayName===i),o=document.querySelector("body.sb-show-main");return f(o),d(o,t.className),d(o,"mds-typography"),d(o,"mds-elevation"),y(t.backgroundColor),c` <mdc-themeprovider id="theme-provider" themeclass="${t.themeclass}">
     ${e()}
-  </mdc-themeprovider>`},g=e=>c` <mdc-iconprovider url="./icons/svg"> ${e()} </mdc-iconprovider>`;function x(e){const n=i=>i.replace(/-([a-z])/g,t=>t[1].toUpperCase());return e.modules.forEach(i=>{i.declarations.forEach(t=>{var l;const o=new Set((l=t==null?void 0:t.attributes)==null?void 0:l.map(s=>n(s.name))),r=t.members.filter(s=>!o.has(s.name));Object.assign(t,{members:r})})}),e}const k=x(b);m(k);const F={parameters:{a11y:{options:{runOnly:{type:"tag",values:["best-practice","wcag2a","wcag2aa","wcag21aa","wcag22aa"]}}},docs:{source:{excludeDecorators:!0}},actions:{argTypesRegex:"^on[A-Z].*"},backgrounds:{disable:!0,grid:{disable:!0}},badgesConfig:{wip:{styles:{backgroundColor:"#30240D",borderColor:"#D6B220",color:"#FFFFFFF2"},title:"Work In Progress",tooltip:{title:"This Component is Work In Progress",desc:"Keep an eye on the Release history for updates or provide feedback.",links:[{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}},stable:{styles:{backgroundColor:"#416116",borderColor:"#93C437",color:"#FFFFFFF2"},title:"Stable",tooltip:{title:"This Component is Stable",desc:"Ready for use.",links:[{title:"Consumption guide",href:"https://momentum-design.github.io/momentum-design/en/components/"},{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}},deprecated:{styles:{backgroundColor:"#4F0E10",borderColor:"#FC8B98",color:"#FFFFFFF2"},title:"Deprecated",tooltip:{title:"This Component is Deprecated",desc:"Check the Release history for more information about deprecation or provide feedback.",links:[{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}}},controls:{disableSaveFromUI:!0,expanded:!0,matchers:{color:/(background|color)$/i,date:/Date$/}},options:{storySort:{order:["Consumption","Styling","Components","Work In Progress"]}},direction:"ltr"},decorators:[v,g],globalTypes:{theme:{description:"Global theme for components",defaultValue:a[0].displayName,toolbar:{title:"Theme",icon:"globe",items:a.map(e=>e.displayName),dynamicTitle:!0}}}};export{F as default};
+  </mdc-themeprovider>`},g=e=>c` <mdc-iconprovider url="./icons/svg"> ${e()} </mdc-iconprovider>`;function x(e){const n=i=>i.replace(/-([a-z])/g,t=>t[1].toUpperCase());return e.modules.forEach(i=>{i.declarations.forEach(t=>{var l;const o=new Set((l=t==null?void 0:t.attributes)==null?void 0:l.map(s=>n(s.name))),r=t.members.filter(s=>!o.has(s.name));Object.assign(t,{members:r})})}),e}const k=x(b);m(k);const S={parameters:{a11y:{options:{runOnly:{type:"tag",values:["best-practice","wcag2a","wcag2aa","wcag21aa","wcag22aa"]}}},docs:{source:{excludeDecorators:!0}},actions:{argTypesRegex:"^on[A-Z].*"},backgrounds:{disable:!0,grid:{disable:!0}},badgesConfig:{wip:{styles:{backgroundColor:"#30240D",borderColor:"#D6B220",color:"#FFFFFFF2"},title:"Work In Progress",tooltip:{title:"This Component is Work In Progress",desc:"Keep an eye on the Release history for updates or provide feedback.",links:[{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}},stable:{styles:{backgroundColor:"#416116",borderColor:"#93C437",color:"#FFFFFFF2"},title:"Stable",tooltip:{title:"This Component is Stable",desc:"Ready for use.",links:[{title:"Consumption guide",href:"https://momentum-design.github.io/momentum-design/en/components/"},{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}},deprecated:{styles:{backgroundColor:"#4F0E10",borderColor:"#FC8B98",color:"#FFFFFFF2"},title:"Deprecated",tooltip:{title:"This Component is Deprecated",desc:"Check the Release history for more information about deprecation or provide feedback.",links:[{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}}},controls:{disableSaveFromUI:!0,expanded:!0,matchers:{color:/(background|color)$/i,date:/Date$/}},options:{storySort:{order:["Consumption","Styling","Components","Work In Progress"]}},direction:"ltr"},decorators:[v,g],globalTypes:{theme:{description:"Global theme for components",defaultValue:a[0].displayName,toolbar:{title:"Theme",icon:"globe",items:a.map(e=>e.displayName),dynamicTitle:!0}}}};export{S as default};
