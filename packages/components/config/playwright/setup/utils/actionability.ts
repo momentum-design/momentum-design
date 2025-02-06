@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
 
 interface Actionability {
   page: Page;
@@ -28,6 +28,20 @@ class Actionability {
     const browserName = this.browserName();
     if (browserName === 'webkit') {
       await this.page.keyboard.press('Alt+Tab');
+    } else {
+      await this.page.keyboard.press('Tab');
+    }
+  }
+
+  /**
+   * Release focus for the specified subcomponent locator
+   * @param subComponent: Locator
+   */
+  async releaseFocus(subComponent: Locator) {
+    const browserName = this.browserName();
+    if (browserName === 'webkit') {
+      // Explicitly blur to remove focus in WebKit
+      await subComponent.evaluate((el) => el.blur());
     } else {
       await this.page.keyboard.press('Tab');
     }
