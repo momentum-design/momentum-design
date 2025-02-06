@@ -82,6 +82,7 @@ const styles = [css`
 
   .prefix-text{
     color: var(--mdc-input-support-text-color);
+    white-space: nowrap; // restirct prefix text to be in one line
   }
 
   :host(:not([disabled])) .input-container:hover{
