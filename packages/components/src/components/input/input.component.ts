@@ -394,7 +394,7 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
       ${this.renderLabel()}
       <div class="input-container mdc-focus-ring" part="input-container">
         <slot name="input-leading-icon">${this.renderLeadingIcon()}</slot>
-       <section class="input-section" part="input-section">
+       <div class="input-section" part="input-section">
        <slot name="input-prefix-text">${this.renderPrefixText()}</slot>
         <slot name="input">
           <input 
@@ -422,7 +422,7 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
             @change=${this.onChange}
           />
         </slot>
-       </section>
+       </div>
         <slot name="trailing-button">${this.renderTrailingButton()}</slot>
       </div>
       ${this.helpText ? this.renderHelperText() : nothing}
