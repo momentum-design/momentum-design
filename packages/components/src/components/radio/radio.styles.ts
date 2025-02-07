@@ -44,13 +44,15 @@ const styles = [hostFitContentStyles, css`
     border-color: var(--mdc-radio-disabled-border-color);
     background: var(--mdc-radio-control-inactive-disabled-background);
   }
+
   :host([disabled][checked]) .mdc-radio__icon,
   :host([disabled][checked]) .mdc-radio__container:hover .mdc-radio__icon,
   :host([disabled][readonly][checked]) .mdc-radio__icon,
   :host([disabled][readonly][checked]) .mdc-radio__container:hover .mdc-radio__icon {
-    border-color: var(--mdc-radio-disabled-border-color);
+    border: var(--mdc-radio-control-active-disabled-background);
     background: var(--mdc-radio-control-active-disabled-background);
   }
+
   :host([disabled][checked]) .mdc-radio__icon:after,
   :host([disabled][checked]) .mdc-radio__container:hover  .mdc-radio__icon:after,
   :host([disabled][readonly][checked]) .mdc-radio__icon:after,
@@ -124,13 +126,14 @@ const styles = [hostFitContentStyles, css`
   .mdc-radio__container {
     display: flex;
     align-items: start;
+    gap: 0.5rem;
   }
   .mdc-radio__icon-container {
     display: block;
     position: relative;
     width: 1rem;
     height: 1rem;
-    margin: 0.125rem 0.5rem;
+    margin: 0.125rem 0;
     border-radius: 50%;
   }
 
