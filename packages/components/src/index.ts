@@ -12,6 +12,7 @@ import Divider from './components/divider';
 import AvatarButton from './components/avatarbutton';
 import Link from './components/link';
 import Toggle from './components/toggle';
+import Checkbox from './components/checkbox';
 
 import type { TextType } from './components/text/text.types';
 
@@ -30,6 +31,7 @@ export {
   AvatarButton,
   Link,
   Toggle,
+  Checkbox,
 };
 
 export type {

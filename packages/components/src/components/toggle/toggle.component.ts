@@ -8,6 +8,7 @@ import { NameMixin } from '../../utils/mixins/NameMixin';
 import { DEFAULTS, ICON_NAME, ICON_SIZE_IN_REM, TOGGLE_SIZE } from './toggle.constants';
 import { ToggleSize } from './toggle.types';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
+import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 
 /**
  * Toggle Component is an interactive control used to switch between two mutually exclusive options,
@@ -40,7 +41,7 @@ import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types'
  * @cssproperty --mdc-toggle-label-color-disabled - color of the toggle label and help text in disabled state
  *
  */
-class Toggle extends NameMixin(ValueMixin(FormfieldWrapper)) {
+class Toggle extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) {
   /**
   * Determines whether the toggle is active or inactive.
   * @default false
@@ -56,12 +57,6 @@ class Toggle extends NameMixin(ValueMixin(FormfieldWrapper)) {
    */
   @property({ type: String, reflect: true })
   size: ToggleSize = DEFAULTS.SIZE;
-
-  /**
-   * Determines aria label on mdc-toggle.
-   */
-  @property({ type: String, reflect: true, attribute: 'data-aria-label' })
-  dataAriaLabel = '';
 
   /** @internal */
   private internals: ElementInternals;
@@ -113,10 +108,8 @@ class Toggle extends NameMixin(ValueMixin(FormfieldWrapper)) {
    */
   private handleChange(event: Event) {
     this.toggleState();
-    // Change event doesn't bubble out of shadow dom,
-    // Workaround to fix this: https://github.com/lit/lit-element/issues/922#issuecomment-611139629
-    const newEvent = new (event.constructor as typeof Event)(event.type, event);
-    this.dispatchEvent(newEvent);
+    // Change event doesn't bubble out of shadow dom, so it has to be dispatached explicitely
+    this.dispatchEvent(new Event(event.type, event));
   }
 
   /**
@@ -154,7 +147,7 @@ class Toggle extends NameMixin(ValueMixin(FormfieldWrapper)) {
             value="${ifDefined(this.value)}"
             .checked="${this.checked}"
             .disabled="${this.disabled}"
-            aria-label=${ifDefined(this.dataAriaLabel)}
+            aria-label="${this.dataAriaLabel ?? ''}"
             tabindex="${this.disabled ? -1 : 0}"
             @change="${this.handleChange}"
           />

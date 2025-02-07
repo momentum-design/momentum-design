@@ -73,7 +73,6 @@ export const Example: StoryObj = {
     disabled: false,
     size: DEFAULTS.SIZE,
     'help-text': '',
-    'data-aria-label': 'Toggle component',
   },
 };
 
@@ -110,6 +109,7 @@ export const WithoutLabel: StoryObj = {
   args: {
     ...Example.args,
     label: '',
+    'data-aria-label': 'This is a toggle with no label',
   },
 };
 
