@@ -27,7 +27,7 @@ const styles = [hostFitContentStyles, css`
     --mdc-toggle-help-text-color: var(--mds-color-theme-text-secondary-normal);
 
     --mdc-toggle-icon-color-normal: var(--mds-color-theme-common-inverted-text-primary-normal);
-    --mdc-toggle-icon-color-disabled: var(--mdc-toggle-label-color-disabled);
+    --mdc-toggle-icon-color-disabled: var(--mds-color-theme-common-inverted-text-primary-disabled);
     --mdc-toggle-icon-background-color-normal: var(--mds-color-theme-common-text-primary-normal);
     --mdc-toggle-icon-background-color-disabled: var(--mds-color-theme-common-text-primary-disabled);
 
