@@ -21,7 +21,7 @@ const render = (args: Args) => html`
   postfix-icon="${args['postfix-icon']}"
   type="${args.type}"
   role="${args.role}"
-  tabIndex="${args.tabIndex}"
+  tabindex="${args.tabIndex}"
   aria-label="${args['aria-label']}"
   >${args.children}</mdc-button>`;
 

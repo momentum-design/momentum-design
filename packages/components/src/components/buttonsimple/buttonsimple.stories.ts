@@ -17,7 +17,7 @@ const render = (args: Args) => html`
   size="${args.size}"
   type="${args.type}"
   role="${args.role}"
-  tabIndex="${args.tabIndex}"
+  tabindex="${args.tabIndex}"
   >${args.children}</mdc-buttonsimple>`;
 
 const meta: Meta = {

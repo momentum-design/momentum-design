@@ -17,7 +17,7 @@ const render = (args: Args) => html`<div role="tablist">
     ?disabled="${args.disabled}"
     icon-name="${ifDefined(args['icon-name'])}"
     role="${ifDefined(args.role)}"
-    tabIndex="${ifDefined(args.tabIndex)}"
+    tabindex="${ifDefined(args.tabIndex)}"
     variant="${ifDefined(args.variant)}"
     >${args.showBadge ? html`<mdc-badge slot="badge" type="dot"></mdc-badge>` : ''}${args.children}</mdc-tab>
 </div>`;
@@ -53,7 +53,7 @@ const meta: Meta = {
       description: 'This is an internal argument to show the badge in the story',
       table: { disable: true },
     },
-    tabIndex: {
+    tabindex: {
       control: 'number',
     },
     variant: {
