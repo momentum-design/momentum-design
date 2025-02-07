@@ -1,0 +1,87 @@
+---
+import HeadCommon from '../components/HeadCommon.astro';
+import HeadSEO from '../components/HeadSEO.astro';
+import Header from '../components/Header/Header.astro';
+import * as CONFIG from '../config';
+import Footer from '../components/Footer/Footer.astro';
+
+type Props = {
+  frontmatter: CONFIG.Frontmatter;
+};
+
+const { frontmatter } = Astro.props as Props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const currentPage = Astro.url.pathname;
+const currentFile = `src/pages${currentPage.replace(/\/$/, '')}.md`;
+---
+
+<html dir={frontmatter.dir ?? 'ltr'} lang={frontmatter.lang ?? 'en-us'} class="initial">
+  <head>
+    <HeadCommon />
+    <HeadSEO frontmatter={frontmatter} canonicalUrl={canonicalURL} />
+    <title>
+      {frontmatter.title ? `${frontmatter.title} 🚀 ${CONFIG.SITE.title}` : CONFIG.SITE.title}
+    </title>
+    <style>
+      body {
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        display: grid;
+        grid-template-rows: var(--theme-navbar-height) 1fr;
+        --gutter: 0.5rem;
+        --doc-padding: 2rem;
+        background-image: url('/momentum-design/hero-gradient.svg');
+        background-position: 50% 15%;
+        background-repeat: no-repeat;
+      }
+
+      .layout {
+        padding: 0 1rem;
+        display: flex;
+        margin: 0 auto;
+        width: 100%;
+        overflow-y: auto;
+        justify-content: center;
+        padding-top: 10vh;
+      }
+
+      @media (max-width: 800px) {
+        .layout {
+          padding-top: 5vh;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .layout {
+          padding-top: 0;
+        }
+      }
+
+      .grid-main {
+        width: 50%;
+      }
+
+      @media (max-width: 1200px) {
+        .grid-main {
+          width: 65%;
+        }
+      }
+
+      @media (max-width: 800px) {
+        .grid-main {
+          width: 95%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main class="layout">
+      <div class="grid-main">
+        <slot />
+      </div>
+    </main>
+    <Footer path={currentFile} />
+  </body>
+</html>

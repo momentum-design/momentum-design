@@ -10,9 +10,9 @@ import Popover from './components/popover';
 import Bullet from './components/bullet';
 import Marker from './components/marker';
 import Divider from './components/divider';
-import Modalcontainer from './components/modalcontainer';
-import Buttonsimple from './components/buttonsimple';
-import Avatarbutton from './components/avatarbutton';
+import AvatarButton from './components/avatarbutton';
+import Link from './components/link';
+import Checkbox from './components/checkbox';
 
 import type { TextType } from './components/text/text.types';
 
@@ -29,9 +29,9 @@ export {
   Bullet,
   Marker,
   Divider,
-  Modalcontainer,
-  Buttonsimple,
-  Avatarbutton,
+  AvatarButton,
+  Link,
+  Checkbox,
 };
 
 export type {

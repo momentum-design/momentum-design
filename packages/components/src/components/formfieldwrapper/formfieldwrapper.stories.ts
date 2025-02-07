@@ -5,16 +5,17 @@ import { repeat } from 'lit/directives/repeat.js';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { VALIDATION } from './formfieldwrapper.constants';
 import { ValidationType } from './formfieldwrapper.types';
+import './formfieldwrapper.subcomponent';
 
 const render = (args: Args) =>
-  html` <mdc-formfieldwrapper
+  html` <mdc-subcomponent-formfieldwrapper
     label="${args.label}"
-    label-info-text="${args['label-info-text']}"
+    ?disabled="${args.disabled}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
     >
     ${args.children}
-    </mdc-formfieldwrapper>`;
+    </mdc-subcomponent-formfieldwrapper>`;
 
 const meta: Meta = {
   title: 'Internal/formfieldwrapper',
@@ -37,11 +38,11 @@ const meta: Meta = {
     label: {
       control: 'text',
     },
-    'label-info-text': {
-      control: 'text',
-    },
     'help-text': {
       control: 'text',
+    },
+    disabled: {
+      control: 'boolean',
     },
   },
 };
@@ -51,10 +52,10 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     label: 'Label (required)',
-    'label-info-text': 'Label info text',
     'help-text': 'Helper text',
     'help-text-type': 'default',
     children: '[Child Component]',
+    disabled: false,
   },
 };
 
@@ -64,9 +65,9 @@ export const HelperTextTypes: StoryObj = {
       ${repeat(
     Object.values(VALIDATION),
     (validation: ValidationType) => html`
-          <mdc-formfieldwrapper help-text-type="${validation}" label="Label" help-text="Helper text">
+          <mdc-subcomponent-formfieldwrapper help-text-type="${validation}" label="Label" help-text="Helper text">
             [Child component]
-          </mdc-formfieldwrapper>
+          </mdc-subcomponent-formfieldwrapper>
         `,
   )}
     </div>`,

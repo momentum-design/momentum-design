@@ -55,16 +55,19 @@ const hostFocusRingStyles = (applyFocusRingOnClass = false) => {
   return [
     baseHostStyleVariables,
     css`
+      :host(:focus-visible) {
+        outline: none;
+      }
       :host([disabled]:focus) {
         box-shadow: none;
       }
-      :host(:focus) {
+      :host(:focus), :host(:focus-within) {
         position: relative;
         box-shadow: ${boxShadow};
       }
       /* High Contrast Mode */
       @media (forced-colors: active) {
-        :host(:focus) {
+        :host(:focus), :host(:focus-within) {
           outline: 0.125rem solid var(--mds-color-theme-focus-default-0);
         }
       }

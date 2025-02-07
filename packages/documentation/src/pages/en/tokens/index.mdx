@@ -1,19 +1,25 @@
 ---
 title: Design Tokens
 description: This is the main page.
-layout: ../../../layouts/MainLayout.astro
+layout: ../../../layouts/AssetsLayout.astro
 ---
 
+import './shared-styles.css';
 import TokenCardWrapper from '../../../components/TokenCard/TokenCardWrapper.astro';
 import TokenCard from '../../../components/TokenCard/TokenCard.astro';
 
-# Core Tokens
+<h1 class="heading1">Tokens</h1>
+<p class="subheading">Design Tokens are variables that represent hard coded values for various types of design decisions; spacing, color, typography, font, elevation, border radius, etc. They can represent anything defined by a designer; a RGBa value for a semi-transparent color, or the pixel width of a border. We use design tokens in the place of hard coded values in order to create flexibility and consistency across all our products within Webex. </p>
+<p class="subheading">In Momentum, we have integrated design tokens into our components, assets, and UI toolkits. </p>
+<h2 class="heading2">Core</h2>
+<p class="subheading">These tokens represent the base values in Momentum. They can be directly used, but are also inherited by all other token types.</p>
+
 <TokenCardWrapper/>
 
-# Theme Tokens
-
-### Stable
-<TokenCard name="theme-stable" link="/momentum-design/en/tokens/theme-stable"/>
-
-### AAOS
-<TokenCard name="theme-aaos" link="/momentum-design/en/tokens/theme-aaos"/>
+<h2 class="heading2 marginTop">Theme</h2>
+<p class="subheading">These tokens are dependent of the selected Theme, thus only be used in conjuction with a ThemeProvider component (see Components).</p>
+<p class="subheading-secondline"><b>Color</b> is the standard Momentum Theme, <b>AAOS</b> for Android Automative System.</p>
+<div class="tokenCardWrapper">
+    <TokenCard name="Color" link="/momentum-design/en/tokens/theme-stable"/>
+    <TokenCard name="AAOS" link="/momentum-design/en/tokens/theme-aaos"/>
+</div>
