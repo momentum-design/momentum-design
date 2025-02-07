@@ -1,12 +1,14 @@
-import Checkboxgroup from './checkboxgroup.component';
+import CheckboxGroup from './checkboxgroup.component';
 import { TAG_NAME } from './checkboxgroup.constants';
+import '../checkbox';
+import '../text';
 
-Checkboxgroup.register(TAG_NAME);
+CheckboxGroup.register(TAG_NAME);
 
 declare global {
     interface HTMLElementTagNameMap {
-        ['mdc-checkboxgroup']: Checkboxgroup
+        ['mdc-checkboxgroup']: CheckboxGroup
     }
 }
 
-export default Checkboxgroup;
+export default CheckboxGroup;
