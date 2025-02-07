@@ -28,8 +28,8 @@ class VirtualizedList extends Component {
    * handling logic related when the user scrolls to the top or bottom of a list.
    * @default undefined
    */
-  @property({ type: Function, attribute: 'handlescroll' })
-  handlescroll?: (e: Event) => void;
+  @property({ type: Function, attribute: 'onscroll' })
+  override onscroll: ((this: GlobalEventHandlers, ev: Event) => any) | null;
 
   /**
    * Object that sets and updates the virtualizer with any relevant props.
@@ -75,6 +75,7 @@ class VirtualizedList extends Component {
     this.virtualizerController = null;
     this.virtualizer = null;
     this.setlistdata = null;
+    this.onscroll = null;
   }
 
   /**
@@ -141,7 +142,7 @@ class VirtualizedList extends Component {
 
   /**
    * @internal
-   * Renders scroll element with ref and handlescroll callback if defined.
+   * Renders scroll element with ref and onscroll function if defined.
    * If virtualizerController is not defined (possible during initial rendering),
    * don't render virtualizedlist-container until it is.
    *
@@ -151,7 +152,7 @@ class VirtualizedList extends Component {
     return html`<div
         ${ref(this.scrollElementRef)}
         class="mdc-virtualizedlist-scroll"
-        @scroll=${this.handlescroll && this.handlescroll}
+        @scroll=${this.onscroll && this.onscroll}
       >
         ${this.virtualizerController ? this.getVirtualizedListWrapper(this.virtualizerController) : html``}
       </div>

@@ -7,8 +7,8 @@ import { SetListDataProps, VirtualizerProps } from './virtualizedlist.types';
 import { Component } from '../../models';
 
 class VirtualizedWrapper extends Component {
-  @property({ type: Function, attribute: 'handlescroll' })
-  handlescroll?: (e: Event) => void;
+  @property({ type: Function, attribute: 'onscroll' })
+  override onscroll: ((this: GlobalEventHandlers, ev: Event) => any) | null;
 
   @property({ type: Object, attribute: 'virtualizerprops' })
   virtualizerprops: VirtualizerProps = { count: 100, estimateSize: () => 100 };
@@ -23,6 +23,7 @@ class VirtualizedWrapper extends Component {
 
   constructor() {
     super();
+    this.onscroll = null;
     this.setListData = this.setListData.bind(this);
   }
 
@@ -58,7 +59,7 @@ class VirtualizedWrapper extends Component {
     return html`
     <div style="height: 500px; width: 500px;">
       <mdc-virtualizedlist
-        .handlescroll=${this.handlescroll}
+        .onscroll=${this.onscroll}
         .virtualizerprops=${this.virtualizerprops}
         .setlistdata=${this.setListData}
       >${this.list}</mdc-virtualizedlist></div>
