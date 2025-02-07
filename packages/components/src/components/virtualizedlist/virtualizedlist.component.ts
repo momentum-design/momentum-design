@@ -1,13 +1,13 @@
 import { CSSResult, PropertyValues, TemplateResult, html } from 'lit';
 import { VirtualizerController } from '@tanstack/lit-virtual';
 import { property } from 'lit/decorators.js';
-import { Virtualizer, VirtualizerOptions } from '@tanstack/virtual-core';
+import { Virtualizer } from '@tanstack/virtual-core';
 import { StyleInfo } from 'lit/directives/style-map.js';
 import { Ref, createRef, ref } from 'lit/directives/ref.js';
 import styles from './virtualizedlist.styles';
 import { Component } from '../../models';
-import { VIRTUALIZED_LIST_DEFAULTS } from './virtualizedlist.constants';
-import { SetListDataProps } from './virtualizedlist.types';
+import { DEFAULTS } from './virtualizedlist.constants';
+import { SetListDataProps, VirtualizerProps } from './virtualizedlist.types';
 
 /**
  * `mdc-virtualizedlist` component for creating custom virtualized lists.
@@ -19,6 +19,7 @@ import { SetListDataProps } from './virtualizedlist.types';
  *
  * @tagname mdc-virtualizedlist
  *
+ * @slot - Client side List with nested list items.
  */
 class VirtualizedList extends Component {
   /**
@@ -33,21 +34,19 @@ class VirtualizedList extends Component {
   /**
    * Object that sets and updates the virtualizer with any relevant props.
    * There are two required object props in order to get virtualization to work properly.
-   * count - The length of your list that you are virtualizing
+   * count - The length of your list that you are virtualizing.
    * As your list grows/shrinks, this component must be updated with the appropriate value
-   * (Same with any other updated prop)
-   * estimateSize - A function that returns the estimated size of your items
-   * If your list is fixed, this will just be the size of your items
-   * If your list is dynamic, try to return approximate the size of each item
+   * (Same with any other updated prop).
+   * estimateSize - A function that returns the estimated size of your items.
+   * If your list is fixed, this will just be the size of your items.
+   * If your list is dynamic, try to return approximate the size of each item.
    *
    * A full list of possible props can be in
    * [Tanstack Virtualizer API Docs](https://tanstack.com/virtual/latest/docs/api/virtualizer)
    *
    */
   @property({ type: Object, attribute: 'virtualizerprops' })
-  virtualizerprops: Partial<VirtualizerOptions<Element, Element>> = {
-    count: VIRTUALIZED_LIST_DEFAULTS.COUNT, estimateSize: VIRTUALIZED_LIST_DEFAULTS.ESTIMATE_SIZE,
-  };
+  virtualizerprops: VirtualizerProps = DEFAULTS.VIRTUALIZER_PROPS;
 
   /**
    * Callback that gets envoked when updates to the virtualizer interally occur.
@@ -56,8 +55,8 @@ class VirtualizedList extends Component {
    * virtualItems - Array that will be what the client displays on screen. Use this to render
    * a List of your choosing with these items nested inside as your ListItems.
    * measureElement - Ref to pass to each ListItem rendered client side.
-   * Each ListItem should also be be passed key and a data-index (which can be found on the virtualItem)
-   * listStyle - This should be passed as the style attribute to your List
+   * Each ListItem should also be be passed key and a data-index (which can be found on the virtualItem).
+   * listStyle - This should be passed as the style attribute to your List.
    */
   @property({ type: Function, attribute: 'setlistdata' })
   setlistdata: (({ virtualItems, measureElement, listStyle }: SetListDataProps) => void) | null;
