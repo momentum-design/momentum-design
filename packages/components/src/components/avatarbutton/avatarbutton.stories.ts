@@ -64,7 +64,7 @@ const meta: Meta = {
       'active',
       'disabled',
       'soft-disabled',
-      'tabindex',
+      'tabIndex',
       'role',
       'type',
     ]),
