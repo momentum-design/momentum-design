@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 const render = (args: Args) => html`
-  <mdc-radio-group args.property="${args.property}"></mdc-radio-group>`;
+  <mdc-radio-group label="${args.label}"></mdc-radio-group>`;
 
 const meta: Meta = {
   title: 'Work In Progress/radio-group',
@@ -24,7 +24,13 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    class: 'custom-classname',
-    style: 'margin-top: 20px;',
+    label: 'Select your team captain',
+  },
+};
+
+export const RadioGroupWithDescription: StoryObj = {
+  args: {
+    label: 'Select your team captain',
+    description: 'The team captain should have previous experience leading the team through challenging situations.',
   },
 };
