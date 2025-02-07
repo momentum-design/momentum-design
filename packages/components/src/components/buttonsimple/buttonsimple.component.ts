@@ -97,7 +97,7 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
       this.setSoftDisabled(this, this.softDisabled);
     }
     if (changedProperties.has('active')) {
-      this.setAriaPressed(this, this.active);
+      this.setActive(this, this.active);
     }
   }
 
@@ -112,12 +112,11 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
   }
 
   /**
-   * Sets the aria-pressed attribute based on the active state.
-   *
-   * @param element - The target element.
-   * @param active - The active state.
+   * Sets the aria-pressed attribute based on the active state of the button.
+   * @param element - The button element
+   * @param active - The active state of the element
    */
-  private setAriaPressed(element: HTMLElement, active: boolean) {
+  protected setActive(element: HTMLElement, active: boolean) {
     if (active) {
       element.setAttribute('aria-pressed', 'true');
     } else {

@@ -1,4 +1,4 @@
-import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
+import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import styles from './tab.styles';
 import { IconNames } from '../icon/icon.types';
@@ -125,28 +125,19 @@ class Tab extends Buttonsimple {
 
   /**
    * Sets the aria-selected attribute based on the active state of the Tab.
+   * If the tab is active, the filled version of the icon is displayed,
+   * else the icon is restored to its original value.
    *
-   * @param element - The Tab element.
-   * @param active - The active state.
+   * @param element - The tab element.
+   * @param active - The active state of the tab.
    */
-
-  private setAriaSelected(element: HTMLElement, active: boolean) {
+  protected override setActive(element: HTMLElement, active: boolean) {
     element.setAttribute('aria-selected', active ? 'true' : 'false');
-  }
-
-  public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
-    if (changedProperties.has('active')) {
-      this.modifyIconName(this.active);
-      this.setAriaSelected(this, this.active);
-      // Remove the active property from the changedProperties
-      // to prevent the base class from using to add aria-pressed attribute.
-      changedProperties.delete('active');
-    }
-    super.update(changedProperties);
+    this.modifyIconName(active);
   }
 
   protected override executeAction() {
-    // Toggle the active state of the Tab.
+    // Toggle the active state of the tab.
     this.active = !this.active;
   }
 
