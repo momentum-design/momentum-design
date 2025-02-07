@@ -5,6 +5,7 @@ import { NameMixin } from '../../utils/mixins/NameMixin';
 import { ValueMixin } from '../../utils/mixins/ValueMixin';
 import styles from './radio.styles';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
+import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 
 /**
  * Radio allow users to select single options from a list or turn an item/feature on or off.
@@ -34,7 +35,7 @@ import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
  *
  */
 
-class Radio extends NameMixin(ValueMixin(FormfieldWrapper)) {
+class Radio extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) {
   /**
   * Determines whether the radio is selected or unselected.
   *
@@ -48,11 +49,6 @@ class Radio extends NameMixin(ValueMixin(FormfieldWrapper)) {
   * @default false
   */
   @property({ type: Boolean, reflect: true }) readonly = false;
-
-  /**
-   * Specifies the aria-label attribute for accessibility purposes.
-   */
-  @property({ type: String, reflect: true, attribute: 'data-aria-label' }) dataAriaLabel: string = '';
 
   /** @internal */
   private internals: ElementInternals;
@@ -215,7 +211,7 @@ class Radio extends NameMixin(ValueMixin(FormfieldWrapper)) {
             class="mdc-radio__input"
             aria-checked="${this.checked}"
             aria-disabled="${this.disabled}"
-            aria-label="${ifDefined(this.dataAriaLabel)}"
+            aria-label="${this.dataAriaLabel ?? ''}"
           />
           <span class="mdc-radio__icon"></span>
         </div>
