@@ -14,6 +14,7 @@ import Input from './components/input';
 import Link from './components/link';
 import Toggle from './components/toggle';
 import Checkbox from './components/checkbox';
+import Checkboxgroup from './components/checkboxgroup';
 import Radio from './components/radio';
 import Tab from './components/tab';
 
@@ -36,6 +37,7 @@ export {
   Link,
   Toggle,
   Checkbox,
+  Checkboxgroup,
   Radio,
   Tab,
 };
