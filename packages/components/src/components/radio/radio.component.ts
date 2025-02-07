@@ -79,7 +79,6 @@ class Radio extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) 
   }
 
   override firstUpdated() {
-    this.setFormValue();
     this.updateTabIndex();
   }
 
@@ -211,7 +210,6 @@ class Radio extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) 
             ?disabled=${this.disabled}
             class="mdc-radio__input"
             aria-checked="${this.checked}"
-            aria-disabled="${this.disabled}"
             aria-label="${this.dataAriaLabel ?? ''}"
           />
           <span class="mdc-radio__icon"></span>
