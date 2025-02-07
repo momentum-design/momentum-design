@@ -2,11 +2,12 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { disableControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
   <mdc-virtualizedwrapper
     .virtualizerprops=${args.virtualizerprops}
-    .handlescroll=${args.handlescroll}
+    .onscroll=${args.onscroll}
   ></mdc-virtualizedwrapper>`;
 
 const meta: Meta = {
@@ -18,14 +19,19 @@ const meta: Meta = {
     badges: ['stable'],
   },
   argTypes: {
+    ...disableControls([
+      'scrollElementRef',
+      'virtualizer',
+      'virtualizerController',
+    ]),
     virtualizerprops: {
       description: `Props to send to Tanstack virtual. Please reference 
       [Tanstack Virtualizer API](https://tanstack.com/virtual/latest/docs/api/virtualizer) docs for more 
       about all possible props.`,
       control: 'object',
     },
-    handlescroll: {
-      description: `Callback that gets called when user scrolls in list. 
+    onscroll: {
+      description: `Function that gets called when user scrolls in list. 
       Can be used to access the scroll container in order to 
       handle scrolling logic such as user scrolls to top or bottom.`,
       type: 'function',
