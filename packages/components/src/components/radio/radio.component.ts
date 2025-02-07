@@ -63,6 +63,7 @@ class Radio extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) 
 
   constructor() {
     super();
+    /** @internal */
     this.internals = this.attachInternals();
   }
 
