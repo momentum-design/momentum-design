@@ -152,12 +152,12 @@ class Toggle extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)))
             @change="${this.handleChange}"
           />
           <div class="mdc-toggle__slider">
-                    <mdc-icon
-                      name="${this.checked ? ICON_NAME.CHECKED : ICON_NAME.UNCHECKED}"
-                      class="mdc-toggle__icon"
-                      length-unit="rem"
-                      size="${ICON_SIZE_IN_REM[this.size]}"
-                    ></mdc-icon>
+            <mdc-icon
+              name="${this.checked ? ICON_NAME.CHECKED : ICON_NAME.UNCHECKED}"
+              class="mdc-toggle__icon"
+              length-unit="rem"
+              size="${ICON_SIZE_IN_REM[this.size]}"
+            ></mdc-icon>
           </div>
         </div>
         ${this.renderLabel()}

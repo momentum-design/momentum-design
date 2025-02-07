@@ -114,8 +114,15 @@ export const WithoutLabel: StoryObj = {
 };
 
 export const IsActivatedInsideForm: StoryObj = {
-  render: (args) => html`
-    <form onsubmit="event.preventDefault(); alert(new FormData(event.target).get('toggleName'));">
+  render: (args) => {
+    const onSubmit = (event: Event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target as HTMLFormElement);
+      const selectedValues = formData.get('toggleName');
+      action('Form Submitted')({ value: selectedValues });
+    };
+    return html`
+    <form @submit="${onSubmit}">
       <fieldset>
         <legend>Form Example</legend>
         <mdc-toggle name="toggleName" value="toggleValueActivated" checked label="Agree to Terms"
@@ -123,12 +130,20 @@ export const IsActivatedInsideForm: StoryObj = {
         <mdc-button type="submit">Submit</mdc-button>
       </fieldset>
     </form>
-  `,
+  `;
+  },
 };
 
 export const IsDeactivatedInsideForm: StoryObj = {
-  render: (args) => html`
-    <form onsubmit="event.preventDefault(); alert(new FormData(event.target).get('toggleName'));">
+  render: (args) => {
+    const onSubmit = (event: Event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target as HTMLFormElement);
+      const selectedValues = formData.get('toggleName');
+      action('Form Submitted')({ value: selectedValues });
+    };
+    return html`
+    <form @submit="${onSubmit}">
       <fieldset>
         <legend>Form Example</legend>
         <mdc-toggle name="toggleName" value="toggleValueDeactivated" label="Agree to Terms"
@@ -136,5 +151,6 @@ export const IsDeactivatedInsideForm: StoryObj = {
         <mdc-button type="submit">Submit</mdc-button>
       </fieldset>
     </form>
-  `,
+  `;
+  },
 };
