@@ -8,6 +8,7 @@ import { AUTO_CAPITALIZE, DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constant
 import type { IconNames } from '../icon/icon.types';
 import type { AutoCapitalizeType } from './input.types';
 import { ValueMixin } from '../../utils/mixins/ValueMixin';
+import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 /**
  * mdc-input is a component that allows users to input text.
  *  It contains:
@@ -44,7 +45,7 @@ import { ValueMixin } from '../../utils/mixins/ValueMixin';
  * @cssproperty --mdc-input-primary-border-color - Border color for the input container when primary
  *
  */
-class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
+class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) {
   /**
    * The placeholder text that is displayed when the input field is empty.
    */
@@ -63,6 +64,8 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
 
   /**
    * The prefix text that is displayed before the input field. It has a max length of 10 characters.
+   * When the prefix text is set, make sure to set the 'data-aria-label'
+   * attribute with the appropriate value for accessibility.
    */
   @property({ type: String, attribute: 'prefix-text' }) prefixText?: string;
 
@@ -317,6 +320,9 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
    * If the prefix text is more than 10 characters,
    * - it will not be displayed.
    * - the validation messsage will be displayed.
+   *
+   *  Note: We are setting aria-hidden so that the screen reader does not read the prefix text.
+   *  The consumers should set the appropriate aria-label for the input field using 'data-aria-label' attribute.
    * @returns void
    */
     protected renderPrefixText() {
@@ -328,6 +334,7 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
         class="prefix-text" 
         tagname="${DEFAULTS.PREFIX_TEXT_TAG}" 
         type="${DEFAULTS.PREFIX_TEXT_TYPE}"
+        aria-hidden="true"
       >
         ${this.prefixText.slice(0, PREFIX_TEXT_OPTIONS.MAX_LENGTH)}
       </mdc-text>
@@ -373,7 +380,7 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
        <slot name="input-prefix-text">${this.renderPrefixText()}</slot>
         <slot name="input">
           <input 
-            aria-label=${ifDefined(this.prefixText)}
+            aria-label="${this.dataAriaLabel ?? ''}"
             class='input'
             part='input'
             id="${this.id}"

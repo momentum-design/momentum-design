@@ -27,6 +27,7 @@ const render = (args: Args) => {
     ?readonly="${args.readonly}"
     ?trailing-button="${args['trailing-button']}"
     prefix-text="${args['prefix-text']}"
+    data-aria-label="${ifDefined(args['data-aria-label'])}"
     leading-icon="${args['leading-icon']}"
     maxlength="${ifDefined(args.maxlength)}"
     minlength="${ifDefined(args.minlength)}"
@@ -120,6 +121,9 @@ const meta: Meta = {
     'clear-aria-label': {
       control: 'text',
     },
+    'data-aria-label': {
+      control: 'text',
+    },
     ...disableControls([
       '--mdc-input-disabled-border-color',
       '--mdc-input-disabled-text-color',
@@ -160,6 +164,7 @@ export const Example: StoryObj = {
     autocapitalize: 'off',
     autofocus: false,
     'clear-aria-label': 'clear input',
+    'data-aria-label': '',
   },
 };
 
