@@ -10,6 +10,7 @@ import Bullet from './components/bullet';
 import Marker from './components/marker';
 import Divider from './components/divider';
 import AvatarButton from './components/avatarbutton';
+import Input from './components/input';
 import Link from './components/link';
 import Toggle from './components/toggle';
 import Checkbox from './components/checkbox';
@@ -29,6 +30,7 @@ export {
   Marker,
   Divider,
   AvatarButton,
+  Input,
   Link,
   Toggle,
   Checkbox,
