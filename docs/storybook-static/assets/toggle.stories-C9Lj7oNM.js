@@ -181,7 +181,7 @@ import{i as J,k as c}from"./lit-element-CHllvULs.js";import{u as Q,n as q}from".
       ?checked="${t.checked}"
       ?disabled="${t.disabled}">
     </mdc-toggle>
-`,Ve={title:"Work In Progress/toggle",tags:["autodocs"],component:"mdc-toggle",render:ge,parameters:{badges:["wip"]},argTypes:{size:{control:{type:"inline-radio"},options:Object.values(s)},"data-aria-label":{control:"text",description:"Aria label for the toggle component. Required for accessibility."},...le(["help-text-type","label-info","id"]),...ce(["--mdc-toggle-width","--mdc-toggle-height","--mdc-toggle-width-compact","--mdc-toggle-height-compact","--mdc-toggle-border-radius","--mdc-toggle-border-radius-compact","--mdc-toggle-border","--mdc-toggle-inactive-rest-color","--mdc-toggle-inactive-hover-color","--mdc-toggle-inactive-pressed-color","--mdc-toggle-inactive-disabled-color","--mdc-toggle-active-rest-color","--mdc-toggle-active-hover-color","--mdc-toggle-active-pressed-color","--mdc-toggle-active-disabled-color","--mdc-toggle-help-text-color","--mdc-toggle-label-color-disabled"]),...re,...ae}},a={args:{label:"Toggle label",checked:!1,disabled:!1,size:f.SIZE,"help-text":""}},d={args:{...a.args,size:s.DEFAULT}},i={args:{...a.args,size:s.COMPACT}},m={args:{...a.args,"help-text":"helper text"}},g={render:t=>c`
+`,Ve={title:"Components/toggle",tags:["autodocs"],component:"mdc-toggle",render:ge,parameters:{badges:["stable"]},argTypes:{size:{control:{type:"inline-radio"},options:Object.values(s)},"data-aria-label":{control:"text",description:"Aria label for the toggle component. Required for accessibility."},...le(["help-text-type","label-info","id"]),...ce(["--mdc-toggle-width","--mdc-toggle-height","--mdc-toggle-width-compact","--mdc-toggle-height-compact","--mdc-toggle-border-radius","--mdc-toggle-border-radius-compact","--mdc-toggle-border","--mdc-toggle-inactive-rest-color","--mdc-toggle-inactive-hover-color","--mdc-toggle-inactive-pressed-color","--mdc-toggle-inactive-disabled-color","--mdc-toggle-active-rest-color","--mdc-toggle-active-hover-color","--mdc-toggle-active-pressed-color","--mdc-toggle-active-disabled-color","--mdc-toggle-help-text-color","--mdc-toggle-label-color-disabled"]),...re,...ae}},a={args:{label:"Toggle label",checked:!1,disabled:!1,size:f.SIZE,"help-text":""}},d={args:{...a.args,size:s.DEFAULT}},i={args:{...a.args,size:s.COMPACT}},m={args:{...a.args,"help-text":"helper text"}},g={render:t=>c`
     <div style="display: flex; flex-direction: column; gap: 5px">
       <mdc-toggle label="inactive toggle" disabled size="${t.size}"></mdc-toggle>
       <mdc-toggle label="active toggle" disabled checked size="${t.size}"></mdc-toggle>
@@ -238,7 +238,7 @@ import{i as J,k as c}from"./lit-element-CHllvULs.js";import{u as Q,n as q}from".
     label: '',
     'data-aria-label': 'This is a toggle with no label'
   }
-}`,...(U=(Z=n.parameters)==null?void 0:Z.docs)==null?void 0:U.source}}};var G,W,j;h.parameters={...h.parameters,docs:{...(G=h.parameters)==null?void 0:G.docs,source:{originalSource:`{
+}`,...(U=(Z=n.parameters)==null?void 0:Z.docs)==null?void 0:U.source}}};var G,j,W;h.parameters={...h.parameters,docs:{...(G=h.parameters)==null?void 0:G.docs,source:{originalSource:`{
   render: args => {
     const onSubmit = (event: Event) => {
       event.preventDefault();
@@ -259,7 +259,7 @@ import{i as J,k as c}from"./lit-element-CHllvULs.js";import{u as Q,n as q}from".
     </form>
   \`;
   }
-}`,...(j=(W=h.parameters)==null?void 0:W.docs)==null?void 0:j.source}}};var K,P,R;u.parameters={...u.parameters,docs:{...(K=u.parameters)==null?void 0:K.docs,source:{originalSource:`{
+}`,...(W=(j=h.parameters)==null?void 0:j.docs)==null?void 0:W.source}}};var K,P,R;u.parameters={...u.parameters,docs:{...(K=u.parameters)==null?void 0:K.docs,source:{originalSource:`{
   render: args => {
     const onSubmit = (event: Event) => {
       event.preventDefault();
