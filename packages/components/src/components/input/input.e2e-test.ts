@@ -30,6 +30,7 @@ type SetupOptions = {
   list?: string;
   size?: number;
   dataAriaLabel?: string;
+  clearAriaLabel?: string;
 };
 
 const setup = async (args: SetupOptions, isForm = false) => {
@@ -59,7 +60,8 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.pattern ? `pattern="${restArgs.pattern}"` : ''}
       ${restArgs.list ? `list="${restArgs.list}"` : ''}
       ${restArgs.size ? `size="${restArgs.size}"` : ''}
-      ${restArgs.dataAriaLabel ? `clear-aria-label="${restArgs.dataAriaLabel}"` : ''}
+      ${restArgs.dataAriaLabel ? `data-aria-label="${restArgs.dataAriaLabel}"` : ''}
+      ${restArgs.clearAriaLabel ? `data-aria-label="${restArgs.clearAriaLabel}"` : ''}
       ></mdc-input>
     ${isForm ? '<mdc-button type="submit" size="24">Submit</mdc-button></form>' : ''}
     `,
@@ -84,6 +86,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     maxlength: 10,
     minlength: 5,
     prefixText: 'Prefix',
+    dataAriaLabel: 'prefix', // aria-label for prefix text to be read by screen reader
     leadingIcon: 'placeholder-bold',
     label: 'Label',
     helpText: 'Help Text',
@@ -103,6 +106,9 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       const helpText = await input.locator('mdc-text[part="help-text"]');
       await expect(helpText).toHaveText('Help Text');
       await expect(input).toHaveAttribute('prefix-text', 'Prefix');
+      await expect(input).toHaveAttribute('data-aria-label', 'prefix');
+      const inputEl = await input.locator('input');
+      await expect(inputEl).toHaveAttribute('aria-label', 'prefix');
       await expect(input).toHaveAttribute('leading-icon', 'placeholder-bold');
       const icon = await input.locator('mdc-icon');
       await expect(icon).toHaveAttribute('name', 'placeholder-bold');
@@ -152,6 +158,8 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     await test.step('attribute trailing-button should be present on component', async () => {
       await componentsPage.setAttributes(input, { 'trailing-button': '', 'clear-aria-label': 'clear' });
       await expect(input).toHaveAttribute('trailing-button');
+      const trailingButton = input.locator('mdc-button[part="trailing-button"]');
+      await expect(trailingButton).toHaveAttribute('aria-label', 'clear');
       await componentsPage.removeAttribute(input, 'trailing-button');
     });
 
@@ -236,7 +244,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
 
     await test.step('focus on input and trailing button interactions', async () => {
       await componentsPage.setAttributes(input, { 'trailing-button': '', value: '', 'clear-aria-label': 'clear' });
-      const trailingButton = input.locator('mdc-button').first();
+      const trailingButton = input.locator('mdc-button[part="trailing-button"]');
       await componentsPage.actionability.pressTab();
       await expect(input).toBeFocused();
       await expect(trailingButton).toHaveClass('hidden');
