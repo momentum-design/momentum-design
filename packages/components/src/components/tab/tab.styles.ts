@@ -44,6 +44,8 @@ const styles = [hostFitContentStyles, css`
     --mdc-tab-line-border-top-left-radius: 0.25rem;
     --mdc-tab-line-border-top-right-radius: 0.25rem;
 
+    --mdc-tab-line-active-indicator-width: calc(100% + 24px);
+
     --mdc-tab-line-inactive-background-color-disabled: var(--mds-color-theme-button-secondary-disabled);
     --mdc-tab-line-inactive-background-color-focus: var(--mds-color-theme-button-secondary-normal);
     --mdc-tab-line-inactive-background-color-hover: var(--mds-color-theme-button-secondary-hover);
@@ -84,6 +86,22 @@ const styles = [hostFitContentStyles, css`
 
   :host([disabled]) {
     cursor: default;
+  }
+
+  :host #container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  :host #container #badge-icon-text-container {
+    display: flex;
+    align-items: center;
+    gap: var(--mdc-tab-content-gap);
+  }
+
+  :host #line-variant-active-tab-indicator {
+    visibility: hidden;
   }
 
   :host([variant="glass"]) {
@@ -163,7 +181,19 @@ const styles = [hostFitContentStyles, css`
     background-color: var(--mdc-tab-line-active-background-color-normal);
     border: none;
     color: var(--mdc-tab-line-active-color);
-    box-shadow: inset 0em -0.125rem 0em 0px var(--mdc-tab-line-active-color);
+  }
+
+  :host([variant="line"]) #line-variant-active-tab-indicator {
+    height: 2px;
+    width: var(--mdc-tab-line-active-indicator-width);
+    margin-top: -2px;
+  }
+
+  :host([variant="line"][active]) #line-variant-active-tab-indicator {
+    position: relative;
+    top: 6px;
+    border: 1px solid var(--mdc-tab-line-active-color);
+    visibility: visible;
   }
 
   :host([variant="line"][active]:hover) {
@@ -182,6 +212,10 @@ const styles = [hostFitContentStyles, css`
     background-color: var(--mdc-tab-line-active-background-color-disabled);
     border-bottom-color: var(--mdc-tab-line-active-bottom-border-color-disabled);
     color: var(--mdc-tab-line-active-color-disabled);
+  }
+
+  :host([variant="line"][active][disabled]) #line-variant-active-tab-indicator {
+    border: 1px solid var(--mdc-tab-line-active-color-disabled);
   }
 
   :host([variant="pill"]) {

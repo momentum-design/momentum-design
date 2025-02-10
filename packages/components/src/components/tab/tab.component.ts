@@ -166,14 +166,19 @@ class Tab extends Buttonsimple {
 
   public override render() {
     return html`
-      <slot name="badge"></slot>
-      ${this.iconName ? html`<mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem">
-        </mdc-icon>` : nothing}
-        <mdc-text
-          type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}
-          tagname=${VALID_TEXT_TAGS.SPAN}>
-          <slot></slot>
-        </mdc-text>
+      <div id="container">
+        <div id="badge-icon-text-container">
+          <slot name="badge"></slot>
+          ${this.iconName ? html`<mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem">
+            </mdc-icon>` : nothing}
+            <mdc-text
+              type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}
+              tagname=${VALID_TEXT_TAGS.SPAN}>
+              <slot></slot>
+            </mdc-text>
+          </div>
+        <div id="line-variant-active-tab-indicator"></div>
+      </div>
       `;
   }
 
