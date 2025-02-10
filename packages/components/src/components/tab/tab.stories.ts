@@ -16,7 +16,6 @@ const render = (args: Args) => html`<div role="tablist">
     ?active="${args.active}"
     ?disabled="${args.disabled}"
     icon-name="${ifDefined(args['icon-name'])}"
-    role="${ifDefined(args.role)}"
     tabIndex="${ifDefined(args.tabIndex)}"
     variant="${ifDefined(args.variant)}"
     >${args.showBadge ? html`<mdc-badge slot="badge" type="dot"></mdc-badge>` : ''}${args.children}</mdc-tab>
@@ -43,9 +42,6 @@ const meta: Meta = {
       control: 'boolean',
     },
     'icon-name': {
-      control: 'text',
-    },
-    role: {
       control: 'text',
     },
     showBadge: {
@@ -117,6 +113,7 @@ const meta: Meta = {
       '--mdc-tab-pill-inactive-color-disabled',
     ]),
     ...hideControls([
+      'role',
       'size',
       'soft-disabled',
       'type',

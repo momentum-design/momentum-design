@@ -106,6 +106,7 @@ class Tab extends Buttonsimple {
    * - `glass`
    * - `line`
    * - `pill`
+   *
    * It defines the background and foreground color of the tab.
    * @default pill
    */
