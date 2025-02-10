@@ -162,8 +162,8 @@ const styles = [hostFitContentStyles, css`
   :host([variant="line"][active]) {
     background-color: var(--mdc-tab-line-active-background-color-normal);
     border: none;
-    border-bottom: 0.125rem solid var(--mdc-tab-line-active-bottom-border-color);
     color: var(--mdc-tab-line-active-color);
+    box-shadow: inset 0em -0.125rem 0em 0px var(--mdc-tab-line-active-color);
   }
 
   :host([variant="line"][active]:hover) {
