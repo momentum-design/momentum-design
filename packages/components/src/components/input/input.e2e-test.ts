@@ -242,7 +242,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       await componentsPage.removeAttribute(input, 'readonly');
     });
 
-    await test.step('focus on input and trailing button interactions', async () => {
+    await test.step('focus on input and trailing button when value is present during interactions', async () => {
       await componentsPage.setAttributes(input, { 'trailing-button': '', value: '', 'clear-aria-label': 'clear' });
       const trailingButton = input.locator('mdc-button[part="trailing-button"]');
       await componentsPage.actionability.pressTab();
@@ -259,19 +259,39 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       await expect(inputEl).toHaveValue('');
     });
 
+    await test.step('trailing button will not be focusable in readonly state', async () => {
+      await componentsPage.setAttributes(input, {
+        value: 'this is readonly data',
+        readonly: '',
+      });
+      await componentsPage.actionability.releaseFocus(input);
+      const trailingButton = input.locator('mdc-button[part="trailing-button"]');
+      await expect(inputEl).toHaveValue('this is readonly data');
+      await expect(trailingButton).not.toHaveClass('hidden');
+      await componentsPage.actionability.pressTab();
+      await expect(input).toBeFocused();
+      await componentsPage.actionability.pressTab();
+      // disabled when input is in readonly state
+      await expect(trailingButton).not.toBeFocused();
+      await componentsPage.removeAttribute(input, 'readonly');
+      await componentsPage.removeAttribute(input, 'trailing-buton');
+    });
+
     await test.step('component should not be focusable when disabled', async () => {
       await componentsPage.setAttributes(input, { disabled: '', value: 'Disabled' });
       await componentsPage.actionability.pressTab();
       await expect(input).not.toBeFocused();
+      await expect(inputEl).toHaveValue('Disabled');
       await componentsPage.removeAttribute(input, 'disabled');
     });
 
-    await test.step('component in form should be validated when submitted', async () => {
+    await test.step('component in form should be validated for required and maxlength when submitted', async () => {
       const form = await setup({
         componentsPage,
         id: 'test-mdc-input',
         placeholder: 'Placeholder',
         required: true,
+        maxlength: 10,
       }, true);
       const mdcInput = await form.locator('mdc-input');
       const submitButton = await form.locator('mdc-button');
@@ -290,7 +310,8 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       } else {
         expect(validationMessage).toContain('Please fill out this field.');
       }
-      await inputEl.fill('test');
+      await inputEl.fill('This is a long text');
+      await expect(inputEl).toHaveValue('This is a '); // maxlength is 10; truncates rest of the value.
       await submitButton.click();
     });
   });
