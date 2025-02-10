@@ -10,11 +10,21 @@ import { ATTRIBUTE, TYPE as CHECKBOXGROUP_TYPE } from './checkboxgroup.constants
 import styles from './checkboxgroup.styles';
 
 /**
- * checkboxgroup component, which ...
+ * `mdc-checkboxgroup` component allows you to select multiple options from a predefined list.
+ * It is commonly used in forms where multiple selections are required, such as preferences, filters, or categories.
+ *
+ * A checkbox group typically consists of multiple checkboxes grouped together,
+ * each representing a selectable option. You can check or uncheck options based on their preferences.
+ *
+ * If the `type` is set to "none", then a header text will be shown. <br/>
+ * If the `type` is set to "parent", then the parent checkbox will visible.
+ *
+ * @dependency mdc-text
+ * @dependency mdc-checkbox
  *
  * @tagname mdc-checkboxgroup
  *
- * @slot default - This is a default/unnamed slot
+ * @slot default - This is a default slot
  */
 class Checkboxgroup extends DataAriaLabelMixin(DisabledMixin(Component)) {
   /**
@@ -84,7 +94,6 @@ class Checkboxgroup extends DataAriaLabelMixin(DisabledMixin(Component)) {
    * It calls the handleEntireChange method to update the state of the parent checkbox.
    */
   private handleSlotChange(): void {
-    this.checkboxList.forEach((checkbox) => this.setCheckboxAttribute(checkbox, ATTRIBUTE.DISABLED, this.disabled));
     this.handleEntireChange();
   }
 
@@ -100,11 +109,7 @@ class Checkboxgroup extends DataAriaLabelMixin(DisabledMixin(Component)) {
   private handleEntireChange(): void {
     const internalParentCheckbox = this.shadowRoot?.querySelector(CHECKBOX_NAME) ?? null;
     const selectedCheckboxCount = this.checkboxList.filter((checkbox) => (checkbox as HTMLInputElement).checked).length;
-    this.touchParentCheckbox(
-      internalParentCheckbox,
-      selectedCheckboxCount,
-      this.checkboxList.length,
-    );
+    this.touchParentCheckbox(internalParentCheckbox, selectedCheckboxCount, this.checkboxList.length);
   }
 
   /**
@@ -142,25 +147,19 @@ class Checkboxgroup extends DataAriaLabelMixin(DisabledMixin(Component)) {
 
   protected override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
-
-    if (changedProperties.has('disabled')) {
-      this.handleSlotChange();
+    if (changedProperties.get('disabled') !== undefined) {
+      this.checkboxList.forEach((checkbox) => this.setCheckboxAttribute(checkbox, ATTRIBUTE.DISABLED, this.disabled));
     }
   }
 
   public override render() {
     const header = this.headerText
-      ? html`<mdc-text
-        class="header-text"
-        tagname="${TEXT_TAGS.SPAN}"
-        type="${TEXT_TYPE.BODY_LARGE_BOLD}"
-      >
-        ${this.headerText}
-      </mdc-text>`
+      ? html`<mdc-text class="header-text" tagname="${TEXT_TAGS.SPAN}" type="${TEXT_TYPE.BODY_LARGE_BOLD}">
+          ${this.headerText}
+        </mdc-text>`
       : nothing;
     const parentCheckbox = this.type === CHECKBOXGROUP_TYPE.PARENT
-      ? html`
-        <mdc-checkbox
+      ? html`<mdc-checkbox
           .disabled="${this.disabled}"
           @change="${this.handleParentCheckboxChange}"
           data-aria-label="${this.dataAriaLabel ?? ''}"
