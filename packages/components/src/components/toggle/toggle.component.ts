@@ -109,7 +109,8 @@ class Toggle extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)))
   private handleChange(event: Event) {
     this.toggleState();
     // Re-dispatch the existing event instead of creating a new one since change event doesn't bubble out of shadow dom
-    this.dispatchEvent(event);
+    const EventConstructor = event.constructor as typeof Event;
+    this.dispatchEvent(new EventConstructor(event.type, event));
   }
 
   /**
