@@ -25,6 +25,8 @@ const createPopover = (
     ?show-arrow=${args['show-arrow']}
     color=${args.color}
     ?flip=${args.flip}
+    ?size=${args.size}
+    ?backdrop=${args.backdrop}
     ?close-button=${args['close-button']}
     ?prevent-scroll=${args['prevent-scroll']}
     ?hide-on-blur=${args['hide-on-blur']}
@@ -70,6 +72,16 @@ const renderInteractive = (args: Args) => html`
     'popover-trigger',
     args,
     html`
+      <mdc-button>Button 1</mdc-button>
+      <mdc-button>Button 2</mdc-button>
+      <mdc-button>Button 3</mdc-button>
+      <mdc-button>Button 4</mdc-button>
+      <mdc-button>Button 5</mdc-button>
+      <mdc-button>Button 1</mdc-button>
+      <mdc-button>Button 2</mdc-button>
+      <mdc-button>Button 3</mdc-button>
+      <mdc-button>Button 4</mdc-button>
+      <mdc-button>Button 5</mdc-button>
       <mdc-button>Button 1</mdc-button>
       <mdc-button>Button 2</mdc-button>
       <mdc-button>Button 3</mdc-button>
@@ -168,6 +180,12 @@ const meta: Meta = {
       options: Object.values(COLOR),
     },
     flip: {
+      control: 'boolean',
+    },
+    size: {
+      control: 'boolean',
+    },
+    backdrop: {
       control: 'boolean',
     },
     'set-index': {
