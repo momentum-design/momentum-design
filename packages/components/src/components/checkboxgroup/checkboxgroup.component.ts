@@ -19,8 +19,8 @@ import styles from './checkboxgroup.styles';
  * If the `type` is set to "none", then a header text will be shown. <br/>
  * If the `type` is set to "parent", then the parent checkbox will visible.
  *
- * @dependency mdc-text
  * @dependency mdc-checkbox
+ * @dependency mdc-text
  *
  * @tagname mdc-checkboxgroup
  *
@@ -54,6 +54,34 @@ class Checkboxgroup extends DataAriaLabelMixin(DisabledMixin(Component)) {
   constructor() {
     super();
     this.addEventListener('change', this.handleEntireChange);
+    this.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  /**
+   * Handles the keydown event on the parent checkbox in the checkboxgroup.
+   * When the user presses the down arrow key, the focus is moved to the next checkbox in the checkboxgroup.
+   * When the user presses the up arrow key, the focus is moved to the previous checkbox in the checkboxgroup.
+   * @param event - The KeyboardEvent
+   */
+  private handleKeyDown(event: KeyboardEvent): void {
+    if (event.key === 'ArrowDown') {
+      this.navigate(event.target, 1);
+    }
+    if (event.key === 'ArrowUp') {
+      this.navigate(event.target, -1);
+    }
+  }
+
+  /**
+   * Navigate to the next or previous checkbox in the checkboxgroup based on the given origin and direction.
+   * @param origin - The element that triggered the event.
+   * @param direction - The direction of navigation, either -1 or 1.
+   */
+  private navigate(origin: EventTarget | null, direction: number): void {
+    const getAllCheckboxIds = this.checkboxList.map((checkbox) => checkbox.id);
+    const currentIdIndex = getAllCheckboxIds.indexOf((origin as HTMLInputElement).id);
+    const nextIndex = (currentIdIndex + direction) % getAllCheckboxIds.length;
+    (this.children[nextIndex] as HTMLInputElement).focus();
   }
 
   /**
@@ -90,7 +118,6 @@ class Checkboxgroup extends DataAriaLabelMixin(DisabledMixin(Component)) {
   /**
    * Handles the slot change event of the checkboxgroup.
    * This method is called when the elements in the checkboxgroup are changed.
-   * It disables/enables all the checkboxes in the checkboxgroup if the parent checkboxgroup is disabled or not.
    * It calls the handleEntireChange method to update the state of the parent checkbox.
    */
   private handleSlotChange(): void {
