@@ -3,8 +3,9 @@ import utils from '../../utils/tag-name';
 const TAG_NAME = utils.constructTagName('tab');
 
 const TAB_VARIANTS = {
-  PILL: 'pill',
+  GLASS: 'glass',
   LINE: 'line',
+  PILL: 'pill',
 } as const;
 
 const DEFAULTS = {

@@ -22,7 +22,7 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
    * Conversely, when the active state is false, the button is in an inactive state, indicating it is toggled off.
    * @default false
    */
-  @property({ type: Boolean }) active = false;
+  @property({ type: Boolean, reflect: true }) active = false;
 
   /**
    * Indicates whether the button is soft disabled.
