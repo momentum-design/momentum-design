@@ -123,7 +123,7 @@ For each component we develop, we will define CSS variables within the `:host` s
 }
 ```
 
-### Naming Conventions
+### Naming Conventions for CSS variables
 
 To maintain clarity and consistency, all component CSS variables should adhere to the following naming convention:
 
@@ -155,3 +155,74 @@ animations are loaded as part of the CSS.
 
 If there is a case for building a animation (like spinners, etc.), use tools like <https://css-loaders.com/> or similar which help to create animations
 just by using CSS. As a last resort we should fall back to Animations like the Lottie files which are stored in [@momentum-design/animations](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/animations)
+
+## Naming Conventions
+
+### Naming convention for components
+
+To ensure consistency in component naming, all components should follow PascalCase (UpperCamelCase). This means that each word should start with an uppercase letter, and there should be no underscores or hyphens.
+
+#### Examples:
+- ✅ `IconProvider`, `ThemeProvider`, `ModalContainer`, `FormFieldWrapper`
+- ❌ `modalcontainer`, `formfieldwrapper`
+
+### Naming convention for class names within the component
+
+All class names within components should follow the kebab-case naming convention. This means words should be lowercase and separated by hyphens.
+
+#### Examples:
+- ✅ `.button-primary`, `.input-field-wrapper`
+- ❌ `.button_primary`, `.inputFieldWrapper`
+
+### Naming convention for CSS part names
+
+CSS part names should not use the `mdc` prefix. Instead, they should be named in a straightforward, descriptive manner that aligns with the element’s function.
+
+#### Examples:
+- ✅ `label`, `button`, `input`
+- ❌ `mdc-label`, `mdc-button`, `mdc-input`
+
+## Prioritizing CSS parts over unnecessary classes
+
+Whenever applicable, prioritize using CSS parts instead of unnecessary class names.
+
+### Why use CSS parts? 
+
+CSS parts allow styling of internal elements without excessive classes, ensuring better encapsulation and flexible theming.
+
+### Example:
+
+#### ❌ Without CSS parts (using unnecessary classes)
+```html
+<button class="custom-button">
+  <span class="custom-button-label">Click me</span>
+</button>
+```
+
+```css
+.custom-button {
+  background-color: blue;
+  color: white;
+}
+
+.custom-button-label {
+  font-weight: bold;
+}
+```
+#### ✅ With CSS parts (preferred approach)
+```html
+<button part="button">
+  <span part="label">Click me</span>
+</button>
+```
+
+```css
+::part(button) {
+  background-color: blue;
+  color: white;
+}
+
+::part(label) {
+  font-weight: bold;
+}
+```
