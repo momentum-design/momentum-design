@@ -98,11 +98,12 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
 
   /**
    * Toggles the state of the checkbox element.
-   * and dispatch the new event.
+   * and dispatch the new change event.
    */
   public handleChange(event: Event): void {
     this.toggleState();
-    this.dispatchEvent(new Event(event.type, event));
+    const EventConstructor = event.constructor as typeof Event;
+    this.dispatchEvent(new EventConstructor(event.type, event));
   }
 
   public override update(changedProperties: PropertyValues): void {
