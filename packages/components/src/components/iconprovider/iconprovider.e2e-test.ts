@@ -113,62 +113,74 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
         await expect(nestedSubComponentLocator).toContainText(`IconProvider Length Unit: ${DEFAULTS.LENGTH_UNIT}`);
       }
     });
-  });
 
-  await test.step('should fallback to default values when invalid attributes are passed', async () => {
-    await componentsPage.setAttributes(iconprovider, {
-      'file-extension': 'exe',
-      'length-unit': 'mm',
-      size: '9999',
-    });
-
-    await expect(iconprovider).toHaveAttribute('file-extension', DEFAULTS.FILE_EXTENSION);
-    await expect(iconprovider).toHaveAttribute('length-unit', DEFAULTS.LENGTH_UNIT);
-    await expect(iconprovider).toHaveAttribute(
-      'size',
-      '9999',
-    );
-    // SUBCOMPONENT
-    await expect(subComponentLocator).toContainText(`IconProvider Length Unit: ${DEFAULTS.LENGTH_UNIT}`);
-
-    if (type === 'nested') {
-      await componentsPage.setAttributes(nestedIconProvider, {
+    await test.step('should fallback to default values when invalid attributes are passed', async () => {
+      await componentsPage.setAttributes(iconprovider, {
         'file-extension': 'exe',
         'length-unit': 'mm',
         size: '9999',
       });
 
-      await expect(nestedIconProvider).toHaveAttribute('file-extension', DEFAULTS.FILE_EXTENSION);
-      await expect(nestedIconProvider).toHaveAttribute('length-unit', DEFAULTS.LENGTH_UNIT);
-      await expect(nestedIconProvider).toHaveAttribute(
+      await expect(iconprovider).toHaveAttribute('file-extension', DEFAULTS.FILE_EXTENSION);
+      await expect(iconprovider).toHaveAttribute('length-unit', DEFAULTS.LENGTH_UNIT);
+      await expect(iconprovider).toHaveAttribute(
         'size',
         '9999',
       );
-      await expect(nestedSubComponentLocator).toContainText(`IconProvider Length Unit: ${DEFAULTS.LENGTH_UNIT}`);
-    }
-  });
+      // SUBCOMPONENT
+      await expect(subComponentLocator).toContainText(`IconProvider Length Unit: ${DEFAULTS.LENGTH_UNIT}`);
 
-  await test.step('should only accept allowed file extensions and length units', async () => {
-    await componentsPage.setAttributes(iconprovider, {
-      'file-extension': 'svg',
-      'length-unit': 'rem',
+      if (type === 'nested') {
+        await componentsPage.setAttributes(nestedIconProvider, {
+          'file-extension': 'exe',
+          'length-unit': 'mm',
+          size: '9999',
+        });
+
+        await expect(nestedIconProvider).toHaveAttribute('file-extension', DEFAULTS.FILE_EXTENSION);
+        await expect(nestedIconProvider).toHaveAttribute('length-unit', DEFAULTS.LENGTH_UNIT);
+        await expect(nestedIconProvider).toHaveAttribute(
+          'size',
+          '9999',
+        );
+        await expect(nestedSubComponentLocator).toContainText(`IconProvider Length Unit: ${DEFAULTS.LENGTH_UNIT}`);
+      }
     });
 
-    await expect(iconprovider).toHaveAttribute('file-extension', 'svg');
-    await expect(iconprovider).toHaveAttribute('length-unit', 'rem');
-    // SUBCOMPONENT
-    await expect(subComponentLocator).toContainText('IconProvider Length Unit: rem');
-
-    if (type === 'nested') {
-      await componentsPage.setAttributes(nestedIconProvider, {
+    await test.step('should only accept allowed file extensions and length units', async () => {
+      await componentsPage.setAttributes(iconprovider, {
         'file-extension': 'svg',
         'length-unit': 'rem',
       });
 
-      await expect(nestedIconProvider).toHaveAttribute('file-extension', 'svg');
-      await expect(nestedIconProvider).toHaveAttribute('length-unit', 'rem');
-      await expect(nestedSubComponentLocator).toContainText('IconProvider Length Unit: rem');
-    }
+      await expect(iconprovider).toHaveAttribute('file-extension', 'svg');
+      await expect(iconprovider).toHaveAttribute('length-unit', 'rem');
+      // SUBCOMPONENT
+      await expect(subComponentLocator).toContainText('IconProvider Length Unit: rem');
+
+      if (type === 'nested') {
+        await componentsPage.setAttributes(nestedIconProvider, {
+          'file-extension': 'svg',
+          'length-unit': 'rem',
+        });
+
+        await expect(nestedIconProvider).toHaveAttribute('file-extension', 'svg');
+        await expect(nestedIconProvider).toHaveAttribute('length-unit', 'rem');
+        await expect(nestedSubComponentLocator).toContainText('IconProvider Length Unit: rem');
+      }
+    });
+  });
+
+  await test.step('caching', async () => {
+    await componentsPage.setAttributes(iconprovider, {
+      'file-extension': 'svg',
+      'length-unit': 'rem',
+      'should-cache': 'true',
+    });
+    const iconLocator = componentsPage.page.locator('mdc-icon[name="accessibility-regular"]');
+    await componentsPage.setAttributes(iconLocator, {
+      name: 'placeholder-regular',
+    });
   });
 };
 

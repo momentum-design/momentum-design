@@ -98,8 +98,27 @@ class Icon extends Component {
   }
 
   /**
-   * Get Icon Data function which will fetch the icon (currently only svg)
-   * and sets state and attributes once fetched successfully
+   * Parse the icon string to an html element, set the attributes and
+   * return the icon element
+   *
+   * @param iconData - The icon string to be parsed
+   * @returns iconElement
+   */
+  private prepareIconElement(iconData: string) {
+    const iconElement = new DOMParser().parseFromString(iconData, 'text/html').body.children[0];
+
+    if (this.name) {
+      iconElement.setAttribute('data-name', this.name);
+    }
+    iconElement.setAttribute('part', 'icon');
+    // set aria-hidden=true for SVG to avoid screen readers
+    iconElement.setAttribute('aria-hidden', 'true');
+
+    return iconElement;
+  }
+
+  /**
+   * Fetches the icon (currently only svg) and sets state and attributes once fetched successfully
    *
    * This method uses abortController.signal to cancel the fetch request when the component is disconnected or updated.
    * If the request is aborted after the fetch() call has been fulfilled but before the response body has been read,
@@ -107,13 +126,30 @@ class Icon extends Component {
    */
   private async getIconData() {
     if (this.iconProviderContext.value) {
-      const { fileExtension, url } = this.iconProviderContext.value;
+      const { fileExtension, url, iconsCache, shouldCache } = this.iconProviderContext.value;
       if (url && fileExtension && this.name) {
+        // check if icon is already fetched and stored in the iconsCache map
+        if (iconsCache.has(this.name)) {
+          const iconElement = this.prepareIconElement(iconsCache.get(this.name)!);
+
+          this.handleIconLoadedSuccess(iconElement as HTMLElement);
+          return;
+        }
+
         this.abortController.abort();
         this.abortController = new AbortController();
         try {
-          const iconHtml = await dynamicSVGImport(url, this.name, fileExtension, this.abortController.signal);
-          this.handleIconLoadedSuccess(iconHtml as HTMLElement);
+          // fetch icon from backend
+          const iconData = await dynamicSVGImport(url, this.name, fileExtension, this.abortController.signal);
+
+          // parse the fetched icon string to an html element and set the attributes
+          const iconElement = this.prepareIconElement(iconData);
+
+          this.handleIconLoadedSuccess(iconElement as HTMLElement);
+          if (shouldCache) {
+            // store the fetched icon string in the iconsCache map
+            iconsCache.set(this.name, iconData);
+          }
         } catch (error) {
           this.handleIconLoadedFailure(error);
         }
