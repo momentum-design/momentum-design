@@ -1,14 +1,14 @@
 import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
-import { property, state, query } from 'lit/decorators.js';
+import { property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './input.styles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { NameMixin } from '../../utils/mixins/NameMixin';
 import { AUTO_CAPITALIZE, DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
-import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import type { IconNames } from '../icon/icon.types';
 import type { AutoCapitalizeType } from './input.types';
 import { ValueMixin } from '../../utils/mixins/ValueMixin';
+import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 /**
  * mdc-input is a component that allows users to input text.
  *  It contains:
@@ -45,7 +45,7 @@ import { ValueMixin } from '../../utils/mixins/ValueMixin';
  * @cssproperty --mdc-input-primary-border-color - Border color for the input container when primary
  *
  */
-class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
+class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) {
   /**
    * The placeholder text that is displayed when the input field is empty.
    */
@@ -64,6 +64,8 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
 
   /**
    * The prefix text that is displayed before the input field. It has a max length of 10 characters.
+   * When the prefix text is set, make sure to set the 'data-aria-label'
+   * attribute with the appropriate value for accessibility.
    */
   @property({ type: String, attribute: 'prefix-text' }) prefixText?: string;
 
@@ -185,62 +187,20 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
       });
     }
 
-  /**
-   * @internal
-   */
-  @state() prevHelperText = '';
-
-  /**
-   * @internal
-   */
-  @state() prevHelperTextType: ValidationType = DEFAULTS.VALIDATION;
-
-  protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
-    super.updated(changedProperties);
-    if (changedProperties.has('value')) {
-      this.handleValueChange();
+    protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+      super.updated(changedProperties);
+      if (changedProperties.has('value')) {
+        this.handleValueChange();
+      }
     }
-  }
 
-  /**
+    /**
    * Handles the value change of the input field.
    * Sets the form value and updates the validity of the input field.
    * @returns void
    */
-  handleValueChange() {
-    this.internals.setFormValue(this.value);
-    this.updateComplete.then(() => {
-      this.setValidityFromInput();
-    }).catch((error) => {
-      if (this.onerror) {
-        this.onerror(error);
-      }
-    });
-  }
-
-  /**
-   * This function is called when the attribute changes.
-   * It updates the validity of the input field based on the input field's validity.
-   *
-   * @param name - attribute name
-   * @param old - old value
-   * @param value - new value
-   */
-  override attributeChangedCallback(
-    name: string,
-    old: string | null,
-    value: string | null,
-  ): void {
-    super.attributeChangedCallback(name, old, value);
-
-    const validationRelatedAttributes = [
-      'maxlength',
-      'minlength',
-      'pattern',
-      'required',
-    ];
-
-    if (validationRelatedAttributes.includes(name)) {
+    handleValueChange() {
+      this.internals.setFormValue(this.value);
       this.updateComplete.then(() => {
         this.setValidityFromInput();
       }).catch((error) => {
@@ -249,43 +209,75 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
         }
       });
     }
-  }
 
-  /**
+    /**
+   * This function is called when the attribute changes.
+   * It updates the validity of the input field based on the input field's validity.
+   *
+   * @param name - attribute name
+   * @param old - old value
+   * @param value - new value
+   */
+    override attributeChangedCallback(
+      name: string,
+      old: string | null,
+      value: string | null,
+    ): void {
+      super.attributeChangedCallback(name, old, value);
+
+      const validationRelatedAttributes = [
+        'maxlength',
+        'minlength',
+        'pattern',
+        'required',
+      ];
+
+      if (validationRelatedAttributes.includes(name)) {
+        this.updateComplete.then(() => {
+          this.setValidityFromInput();
+        }).catch((error) => {
+          if (this.onerror) {
+            this.onerror(error);
+          }
+        });
+      }
+    }
+
+    /**
    * Sets the validity of the input field based on the input field's validity.
    * @returns void
    */
-  private setValidityFromInput() {
-    if (this.inputElement) {
-      this.internals.setValidity(
-        this.inputElement.validity,
-        this.inputElement.validationMessage,
-        this.inputElement,
-      );
+    private setValidityFromInput() {
+      if (this.inputElement) {
+        this.internals.setValidity(
+          this.inputElement.validity,
+          this.inputElement.validationMessage,
+          this.inputElement,
+        );
+      }
     }
-  }
 
-  /**
+    /**
    * Updates the value of the input field.
    * Sets the form value.
    * @returns void
    */
-  private updateValue() {
-    this.value = this.inputElement.value;
-    this.internals.setFormValue(this.inputElement.value);
-  }
+    private updateValue() {
+      this.value = this.inputElement.value;
+      this.internals.setFormValue(this.inputElement.value);
+    }
 
-  /**
+    /**
    * Handles the input event of the input field.
    * Updates the value and sets the validity of the input field.
    *
    */
-  private onInput() {
-    this.updateValue();
-    this.setValidityFromInput();
-  }
+    private onInput() {
+      this.updateValue();
+      this.setValidityFromInput();
+    }
 
-  /**
+    /**
    * Handles the change event of the input field.
    * Updates the value and sets the validity of the input field.
    *
@@ -295,24 +287,24 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
    *
    * @param event - Event which contains information about the value change.
    */
-  private onChange(event: Event) {
-    this.updateValue();
-    this.setValidityFromInput();
-    const EventConstructor = event.constructor as typeof Event;
-    this.dispatchEvent(new EventConstructor(event.type, event));
-  }
+    private onChange(event: Event) {
+      this.updateValue();
+      this.setValidityFromInput();
+      const EventConstructor = event.constructor as typeof Event;
+      this.dispatchEvent(new EventConstructor(event.type, event));
+    }
 
-  /**
+    /**
    * Renders the leading icon before the input field.
    * If the leading icon is not set, it will not be displayed.
    *
    * @returns void
    */
-  protected renderLeadingIcon() {
-    if (!this.leadingIcon) {
-      return nothing;
-    }
-    return html`
+    protected renderLeadingIcon() {
+      if (!this.leadingIcon) {
+        return nothing;
+      }
+      return html`
       <mdc-icon 
         class="leading-icon" 
         part="leading-icon"
@@ -321,62 +313,52 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
         length-unit="${DEFAULTS.ICON_SIZE_UNIT}">
       </mdc-icon>
     `;
-  }
+    }
 
-  /**
+    /**
    * Renders the prefix text before the input field.
    * If the prefix text is more than 10 characters,
    * - it will not be displayed.
    * - the validation messsage will be displayed.
+   *
+   *  Note: We are setting aria-hidden so that the screen reader does not read the prefix text.
+   *  The consumers should set the appropriate aria-label for the input field using 'data-aria-label' attribute.
    * @returns void
    */
-  protected renderPrefixText() {
-    if (this.prevHelperText !== '' && this.helpText === PREFIX_TEXT_OPTIONS.HELPERTEXT) {
-      this.helpText = this.prevHelperText;
-      this.helpTextType = this.prevHelperTextType;
-      this.prevHelperText = '';
-    }
-    if (!this.prefixText) {
-      return nothing;
-    }
-    if (this.prefixText.length > PREFIX_TEXT_OPTIONS.MAX_LENGTH) {
-      if (this.prevHelperText === '' && this.helpText) {
-        this.prevHelperText = this.helpText;
-        this.prevHelperTextType = this.helpTextType;
+    protected renderPrefixText() {
+      if (!this.prefixText) {
+        return nothing;
       }
-      this.helpText = PREFIX_TEXT_OPTIONS.HELPERTEXT;
-      this.helpTextType = PREFIX_TEXT_OPTIONS.VALIDATION;
-      return nothing;
-    }
-    return html`
+      return html`
       <mdc-text 
         class="prefix-text" 
         tagname="${DEFAULTS.PREFIX_TEXT_TAG}" 
         type="${DEFAULTS.PREFIX_TEXT_TYPE}"
+        aria-hidden="true"
       >
-        ${this.prefixText}
+        ${this.prefixText.slice(0, PREFIX_TEXT_OPTIONS.MAX_LENGTH)}
       </mdc-text>
     `;
-  }
+    }
 
-  /**
+    /**
    * Clears the input field.
    */
-  private clearInputText() {
-    this.value = '';
-    // focus the input field after clearing the text
-    this.inputElement?.focus();
-  }
+    private clearInputText() {
+      this.value = '';
+      // focus the input field after clearing the text
+      this.inputElement?.focus();
+    }
 
-  /**
+    /**
    * Renders the trailing button to clear the input field if the trailingButton is set to true.
    * @returns void
    */
-  protected renderTrailingButton() {
-    if (!this.trailingButton) {
-      return nothing;
-    }
-    return html`
+    protected renderTrailingButton() {
+      if (!this.trailingButton) {
+        return nothing;
+      }
+      return html`
       <mdc-button 
         class='${!this.value ? 'hidden' : ''}'
         prefix-icon='${DEFAULTS.CLEAR_BUTTON_ICON}'
@@ -387,10 +369,10 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
         ?disabled=${this.disabled || this.readonly || !this.value}
       ></mdc-button>
     `;
-  }
+    }
 
-  public override render() {
-    return html`
+    public override render() {
+      return html`
       ${this.renderLabel()}
       <div class="input-container mdc-focus-ring" part="input-container">
         <slot name="input-leading-icon">${this.renderLeadingIcon()}</slot>
@@ -398,7 +380,7 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
        <slot name="input-prefix-text">${this.renderPrefixText()}</slot>
         <slot name="input">
           <input 
-            aria-label=${ifDefined(this.prefixText)}
+            aria-label="${this.dataAriaLabel ?? ''}"
             class='input'
             part='input'
             id="${this.id}"
@@ -427,7 +409,7 @@ class Input extends ValueMixin(NameMixin(FormfieldWrapper)) {
       </div>
       ${this.helpText ? this.renderHelperText() : nothing}
     `;
-  }
+    }
 
   public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...styles];
 }
