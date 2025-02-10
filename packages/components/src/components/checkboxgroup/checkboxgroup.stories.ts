@@ -131,7 +131,7 @@ export const FormField: StoryObj = {
             type="parent"
           >
             <mdc-checkbox label="Flight" value="flight" name="super-power"></mdc-checkbox>
-            <mdc-checkbox label="Mind Control" value="mind-control" name="super-power"></mdc-checkbox>
+            <mdc-checkbox label="Mind control" value="mind-control" name="super-power"></mdc-checkbox>
             <mdc-checkbox label="Super genius" value="super-genius" name="super-power"></mdc-checkbox>
             <mdc-checkbox label="Super strength" value="super-strength" name="super-power"></mdc-checkbox>
             <mdc-checkbox label="Tactics" value="tactics" name="super-power"></mdc-checkbox>

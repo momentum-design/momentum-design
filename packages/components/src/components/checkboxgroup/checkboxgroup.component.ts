@@ -174,7 +174,7 @@ class Checkboxgroup extends DataAriaLabelMixin(DisabledMixin(Component)) {
 
   protected override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
-    if (changedProperties.get('disabled') !== undefined) {
+    if (changedProperties.get(ATTRIBUTE.DISABLED) !== undefined) {
       this.checkboxList.forEach((checkbox) => this.setCheckboxAttribute(checkbox, ATTRIBUTE.DISABLED, this.disabled));
     }
   }
