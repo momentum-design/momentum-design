@@ -4,6 +4,13 @@ const TAG_NAME = utils.constructTagName('checkboxgroup');
 
 const TYPE = {
   PARENT: 'parent',
+  NONE: '',
 } as const;
 
-export { TAG_NAME, TYPE };
+const ATTRIBUTE = {
+  DISABLED: 'disabled',
+  CHECKED: 'checked',
+  INDETERMINATE: 'indeterminate',
+} as const;
+
+export { TAG_NAME, TYPE, ATTRIBUTE };
