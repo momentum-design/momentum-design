@@ -3,7 +3,7 @@ import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls } from '../../../config/storybook/utils';
+import { disableControls, hideControls } from '../../../config/storybook/utils';
 import '../button';
 import { TYPE } from './checkboxgroup.constants';
 
@@ -61,6 +61,7 @@ const meta: Meta = {
       control: 'radio',
       options: Object.values(TYPE),
     },
+    ...hideControls(['default']),
     ...classArgType,
     ...styleArgType,
   },
@@ -131,10 +132,10 @@ export const FormField: StoryObj = {
           >
             <mdc-checkbox label="Flight" value="flight" name="super-power"></mdc-checkbox>
             <mdc-checkbox label="Mind Control" value="mind-control" name="super-power"></mdc-checkbox>
-            <mdc-checkbox label="Super genius" disabled value="super-genius" name="super-power"></mdc-checkbox>
+            <mdc-checkbox label="Super genius" value="super-genius" name="super-power"></mdc-checkbox>
             <mdc-checkbox label="Super strength" value="super-strength" name="super-power"></mdc-checkbox>
             <mdc-checkbox label="Tactics" value="tactics" name="super-power"></mdc-checkbox>
-            <mdc-checkbox label="Weather control" disabled value="weather-control" name="super-power"></mdc-checkbox>
+            <mdc-checkbox label="Weather control" value="weather-control" name="super-power"></mdc-checkbox>
           </mdc-checkboxgroup>
           <mdc-button type="submit">Submit</mdc-button>
         </div>
