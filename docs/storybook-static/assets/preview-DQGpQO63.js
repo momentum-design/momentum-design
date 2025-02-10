@@ -1,4 +1,4 @@
-import{s as m}from"./chunk-L4EGOTBX-qkkAwraa.js";import"./entry-preview-BbhL-oir.js";import{k as c}from"./lit-element-CHllvULs.js";import"./index-CuTxblA2.js";import"./index-rDA4K2ZD.js";import"./directive-helpers-5SvKRCBg.js";import"./index-DrFu-skq.js";import"./index-HW6KrQZO.js";import"./state-CWckTc1X.js";import"./create-context-89xeped_.js";import"./iconprovider.component-CWYw8J7d.js";const p="1.0.0",u="",h=[{kind:"javascript-module",path:"components/avatar/avatar.component.js",declarations:[{kind:"class",description:`The \`mdc-avatar\` component is used to represent a person or a space.
+import{s as m}from"./chunk-L4EGOTBX-qkkAwraa.js";import"./entry-preview-BbhL-oir.js";import{k as c}from"./lit-element-CHllvULs.js";import"./index-CuTxblA2.js";import"./index-Bmi4RbhY.js";import"./directive-helpers-5SvKRCBg.js";import"./index-DrFu-skq.js";import"./index-HW6KrQZO.js";import"./state-CWckTc1X.js";import"./create-context-89xeped_.js";import"./iconprovider.component-CvArfi6w.js";const p="1.0.0",u="",h=[{kind:"javascript-module",path:"components/avatar/avatar.component.js",declarations:[{kind:"class",description:`The \`mdc-avatar\` component is used to represent a person or a space.
 An avatar can be an icon, initials, counter and photo.
 
 To set the photo of an avatar,
@@ -159,126 +159,7 @@ Possible values: 'small', 'medium', 'large'`,default:"small",fieldName:"size"}],
  * @cssproperty --mdc-bullet-size-small - small size value of the bullet
  * @cssproperty --mdc-bullet-size-medium - medium size value of the bullet
  * @cssproperty --mdc-bullet-size-large - large size value of the bullet
-*/`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Bullet",module:"components/bullet/bullet.component.js"}}]},{kind:"javascript-module",path:"components/button/button.component.js",declarations:[{kind:"class",description:`\`mdc-button\` is a component that can be configured in various ways to suit different use cases.
-
-Button Variants:
-- **Primary**: Solid background color.
-- **Secondary**: Transparent background with a solid border.
-- **Tertiary**: No background or border, appears as plain text but retains all button functionalities.
-
-Button Colors:
-- **Positive**: Green color.
-- **Negative**: Red color.
-- **Accent**: Blue color.
-- **Promotional**: Purple color.
-- **Default**: White color.
-
-Button Sizes (in REM units):
-- **Pill button**: 40, 32, 28, 24.
-- **Icon button**: 64, 52, 40, 32, 28, 24.
-- **Tertiary icon button**: 20.
-
-Button Types:
-- **Pill button**: A button that contains text value. Commonly used for call to action, tags, or filters.
-- **Pill button with icons**: A button containing an icon either on the left or right side of the button.
-- **Icon button**: A button represented by just an icon without any text.
-The type of button is inferred based on the presence of slot and/or prefix and postfix icons.`,name:"Button",slots:[{description:"Text label of the button.",name:""}],members:[{kind:"field",name:"prefixIcon",type:{text:"string | undefined"},description:`The name of the icon to display as a prefix.
-The icon is displayed on the left side of the button.`,attribute:"prefix-icon",reflects:!0},{kind:"field",name:"postfixIcon",type:{text:"string | undefined"},description:`The name of the icon to display as a postfix.
-The icon is displayed on the right side of the button.`,attribute:"postfix-icon",reflects:!0},{kind:"field",name:"variant",type:{text:"ButtonVariant"},description:`There are 3 variants of button: primary, secondary, tertiary. They are styled differently.
-- **Primary**: Solid background color.
-- **Secondary**: Transparent background with a solid border.
-- **Tertiary**: No background or border, appears as plain text but retains all button functionalities.`,default:"primary",attribute:"variant"},{kind:"field",name:"size",type:{text:"ButtonSize"},description:`Button sizing is based on the button type.
-- **Pill button**: 40, 32, 28, 24.
-- **Icon button**: 64, 52, 40, 32, 28, 24.
-- Tertiary icon button can also be 20.`,default:"32",attribute:"size",reflects:!0,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"color",type:{text:"ButtonColor"},description:"There are 5 colors for button: positive, negative, accent, promotional, default.",default:"default",attribute:"color"},{kind:"field",name:"role",description:`This property defines the ARIA role for the element. By default, it is set to 'button'.
-Consumers should override this role when:
-- The element is being used in a context where a different role is more appropriate.
-- Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.`,default:"'button'",attribute:"role",reflects:!0,type:{text:"string"},inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"modifyIconName",privacy:"private",parameters:[{name:"active",type:{text:"boolean"},description:"The active state."}],description:`Modifies the icon name based on the active state.
-If the button is active, the icon name is suffixed with '-filled'.
-If the button is inactive, the icon name is restored to its original value.
-If '-filled' icon is not available, the icon name remains unchanged.`},{kind:"method",name:"setVariant",privacy:"private",parameters:[{name:"variant",type:{text:"ButtonVariant"},description:"The variant to set."}],description:`Sets the variant attribute for the button component.
-If the provided variant is not included in the BUTTON_VARIANTS,
-it defaults to the value specified in DEFAULTS.VARIANT.`},{kind:"method",name:"setSize",privacy:"private",parameters:[{name:"size",type:{text:"PillButtonSize | IconButtonSize"},description:"The size to set."}],description:`Sets the size attribute for the button component.
-Validates the size based on the button type (icon, pill, or tertiary).
-Defaults to DEFAULTS.SIZE if invalid.`},{kind:"method",name:"setColor",privacy:"private",parameters:[{name:"color",type:{text:"ButtonColor"},description:"The color to set."}],description:`Sets the color attribute for the button.
-Defaults to DEFAULTS.COLOR if invalid or for tertiary buttons.`},{kind:"method",name:"inferButtonType",privacy:"private",description:"Infers the type of button based on the presence of slot and/or prefix and postfix icons.",parameters:[{description:"default slot of button",name:"slot"}]},{kind:"field",name:"tabIndex",type:{text:"number"},default:"0",description:"This property specifies the tab order of the element.",attribute:"tabIndex",reflects:!0,inheritedFrom:{name:"TabIndexMixin",module:"utils/mixins/TabIndexMixin.js"}},{kind:"field",name:"disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the component is disabled.
-When the component is disabled for user interaction; it is not focusable or clickable.`,attribute:"disabled",reflects:!0,inheritedFrom:{name:"DisabledMixin",module:"utils/mixins/DisabledMixin.js"}},{kind:"field",name:"active",type:{text:"boolean"},default:"false",description:`The button's active state indicates whether it is currently toggled on (active) or off (inactive).
-When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
-Conversely, when the active state is false, the button is in an inactive state, indicating it is toggled off.`,attribute:"active",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"softDisabled",type:{text:"boolean"},default:"false",description:`Indicates whether the button is soft disabled.
-When set to \`true\`, the button appears visually disabled but still allows
-focus, click, and keyboard actions to be passed through.
-
-**Important:** When using soft disabled, consumers must ensure that
-the button behaves like a disabled button, allowing only focus and
-preventing any interactions (clicks or keyboard actions) from triggering unintended actions.`,attribute:"soft-disabled",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"type",type:{text:"ButtonType"},description:`This property defines the type attribute for the button element.
-The type attribute specifies the behavior of the button when it is clicked.
-- **submit**: The button submits the form data to the server.
-- **reset**: The button resets the form data to its initial state.
-- **button**: The button does nothing when clicked.`,default:"button",attribute:"type",reflects:!0,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"executeAction",privacy:"private",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"setAriaPressed",privacy:"private",parameters:[{name:"element",type:{text:"HTMLElement"},description:"The target element."},{name:"active",type:{text:"boolean"},description:"The active state."}],description:"Sets the aria-pressed attribute based on the active state.",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"setSoftDisabled",privacy:"private",parameters:[{name:"element",type:{text:"HTMLElement"},description:"The button element."},{name:"softDisabled",type:{text:"boolean"},description:"The soft-disabled state."}],description:`Sets the soft-disabled attribute for the button.
-When soft-disabled, the button looks to be disabled but remains focusable and clickable.
-Also sets/removes aria-disabled attribute.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"setDisabled",privacy:"private",parameters:[{name:"element",type:{text:"HTMLElement"},description:"The button element."},{name:"disabled",type:{text:"boolean"},description:"The disabled state."}],description:`Sets the disabled attribute for the button.
-When disabled, the button is not focusable or clickable, and tabindex is set to -1.
-The previous tabindex is stored and restored when enabled.
-Also sets/removes aria-disabled attribute.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"triggerClickEvent",privacy:"private",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"handleKeyDown",privacy:"private",parameters:[{name:"event",type:{text:"KeyboardEvent"},description:"The keyboard event."}],description:`Handles the keydown event on the button.
-If the key is 'Enter' or 'Space', the button is pressed.
-If the key is 'Enter', the button is pressed. The native HTML button works in the same way.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"handleKeyUp",privacy:"private",parameters:[{name:"event",type:{text:"KeyboardEvent"},description:"The keyboard event."}],description:`Handles the keyup event on the button.
-If the key is 'Enter' or 'Space', the button is clicked.
-If the key is 'Space', the button is pressed. The native HTML button works in the same way.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}}],attributes:[{name:"prefix-icon",type:{text:"string | undefined"},description:`The name of the icon to display as a prefix.
-The icon is displayed on the left side of the button.`,fieldName:"prefixIcon"},{name:"postfix-icon",type:{text:"string | undefined"},description:`The name of the icon to display as a postfix.
-The icon is displayed on the right side of the button.`,fieldName:"postfixIcon"},{name:"variant",type:{text:"ButtonVariant"},description:`There are 3 variants of button: primary, secondary, tertiary. They are styled differently.
-- **Primary**: Solid background color.
-- **Secondary**: Transparent background with a solid border.
-- **Tertiary**: No background or border, appears as plain text but retains all button functionalities.`,default:"primary",fieldName:"variant"},{name:"size",type:{text:"ButtonSize"},description:`Button sizing is based on the button type.
-- **Pill button**: 40, 32, 28, 24.
-- **Icon button**: 64, 52, 40, 32, 28, 24.
-- Tertiary icon button can also be 20.`,default:"32",fieldName:"size",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"color",type:{text:"ButtonColor"},description:"There are 5 colors for button: positive, negative, accent, promotional, default.",default:"default",fieldName:"color"},{name:"role",description:`This property defines the ARIA role for the element. By default, it is set to 'button'.
-Consumers should override this role when:
-- The element is being used in a context where a different role is more appropriate.
-- Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.`,default:"'button'",fieldName:"role",type:{text:"string"},inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"tabIndex",type:{text:"number"},default:"0",description:"This property specifies the tab order of the element.",fieldName:"tabIndex",inheritedFrom:{name:"TabIndexMixin",module:"src/utils/mixins/TabIndexMixin.ts"}},{name:"disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the component is disabled.
-When the component is disabled for user interaction; it is not focusable or clickable.`,fieldName:"disabled",inheritedFrom:{name:"DisabledMixin",module:"src/utils/mixins/DisabledMixin.ts"}},{name:"active",type:{text:"boolean"},default:"false",description:`The button's active state indicates whether it is currently toggled on (active) or off (inactive).
-When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
-Conversely, when the active state is false, the button is in an inactive state, indicating it is toggled off.`,fieldName:"active",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"soft-disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the button is soft disabled.
-When set to \`true\`, the button appears visually disabled but still allows
-focus, click, and keyboard actions to be passed through.
-
-**Important:** When using soft disabled, consumers must ensure that
-the button behaves like a disabled button, allowing only focus and
-preventing any interactions (clicks or keyboard actions) from triggering unintended actions.`,fieldName:"softDisabled",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"type",type:{text:"ButtonType"},description:`This property defines the type attribute for the button element.
-The type attribute specifies the behavior of the button when it is clicked.
-- **submit**: The button submits the form data to the server.
-- **reset**: The button resets the form data to its initial state.
-- **button**: The button does nothing when clicked.`,default:"button",fieldName:"type",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}}],superclass:{name:"Buttonsimple",module:"/src/components/buttonsimple/buttonsimple.component"},tagName:"mdc-button",jsDoc:`/**
- * \`mdc-button\` is a component that can be configured in various ways to suit different use cases.
- *
- * Button Variants:
- * - **Primary**: Solid background color.
- * - **Secondary**: Transparent background with a solid border.
- * - **Tertiary**: No background or border, appears as plain text but retains all button functionalities.
- *
- * Button Colors:
- * - **Positive**: Green color.
- * - **Negative**: Red color.
- * - **Accent**: Blue color.
- * - **Promotional**: Purple color.
- * - **Default**: White color.
- *
- * Button Sizes (in REM units):
- * - **Pill button**: 40, 32, 28, 24.
- * - **Icon button**: 64, 52, 40, 32, 28, 24.
- * - **Tertiary icon button**: 20.
- *
- * Button Types:
- * - **Pill button**: A button that contains text value. Commonly used for call to action, tags, or filters.
- * - **Pill button with icons**: A button containing an icon either on the left or right side of the button.
- * - **Icon button**: A button represented by just an icon without any text.
- * The type of button is inferred based on the presence of slot and/or prefix and postfix icons.
- *
- * @dependency mdc-icon
- *
- * @tagname mdc-button
- *
- * @slot - Text label of the button.
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Button",module:"components/button/button.component.js"}}]},{kind:"javascript-module",path:"components/buttonsimple/buttonsimple.component.js",declarations:[{kind:"class",description:"`mdc-buttonsimple` is a component that can be configured in various ways to suit different use cases.\nIt is used as an internal component and is not intended to be used directly by consumers.\nConsumers should use the `mdc-button` component instead.",name:"Buttonsimple",members:[{kind:"field",name:"active",type:{text:"boolean"},default:"false",description:`The button's active state indicates whether it is currently toggled on (active) or off (inactive).
+*/`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Bullet",module:"components/bullet/bullet.component.js"}}]},{kind:"javascript-module",path:"components/buttonsimple/buttonsimple.component.js",declarations:[{kind:"class",description:"`mdc-buttonsimple` is a component that can be configured in various ways to suit different use cases.\nIt is used as an internal component and is not intended to be used directly by consumers.\nConsumers should use the `mdc-button` component instead.",name:"Buttonsimple",members:[{kind:"field",name:"active",type:{text:"boolean"},default:"false",description:`The button's active state indicates whether it is currently toggled on (active) or off (inactive).
 When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
 Conversely, when the active state is false, the button is in an inactive state, indicating it is toggled off.`,attribute:"active"},{kind:"field",name:"softDisabled",type:{text:"boolean"},default:"false",description:`Indicates whether the button is soft disabled.
 When set to \`true\`, the button appears visually disabled but still allows
@@ -326,7 +207,126 @@ When the component is disabled for user interaction; it is not focusable or clic
  *
  * @tagname mdc-buttonsimple
  *
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}}]},{kind:"javascript-module",path:"components/checkbox/checkbox.component.js",declarations:[{kind:"class",description:`Checkboxes allow users to select multiple options from a list or turn an item/feature on or off.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}}]},{kind:"javascript-module",path:"components/button/button.component.js",declarations:[{kind:"class",description:`\`mdc-button\` is a component that can be configured in various ways to suit different use cases.
+
+Button Variants:
+- **Primary**: Solid background color.
+- **Secondary**: Transparent background with a solid border.
+- **Tertiary**: No background or border, appears as plain text but retains all button functionalities.
+
+Button Colors:
+- **Positive**: Green color.
+- **Negative**: Red color.
+- **Accent**: Blue color.
+- **Promotional**: Purple color.
+- **Default**: White color.
+
+Button Sizes (in REM units):
+- **Pill button**: 40, 32, 28, 24.
+- **Icon button**: 64, 52, 40, 32, 28, 24.
+- **Tertiary icon button**: 20.
+
+Button Types:
+- **Pill button**: A button that contains text value. Commonly used for call to action, tags, or filters.
+- **Pill button with icons**: A button containing an icon either on the left or right side of the button.
+- **Icon button**: A button represented by just an icon without any text.
+The type of button is inferred based on the presence of slot and/or prefix and postfix icons.`,name:"Button",slots:[{description:"Text label of the button.",name:""}],members:[{kind:"field",name:"prefixIcon",type:{text:"string | undefined"},description:`The name of the icon to display as a prefix.
+The icon is displayed on the left side of the button.`,attribute:"prefix-icon",reflects:!0},{kind:"field",name:"postfixIcon",type:{text:"string | undefined"},description:`The name of the icon to display as a postfix.
+The icon is displayed on the right side of the button.`,attribute:"postfix-icon",reflects:!0},{kind:"field",name:"variant",type:{text:"ButtonVariant"},description:`There are 3 variants of button: primary, secondary, tertiary. They are styled differently.
+- **Primary**: Solid background color.
+- **Secondary**: Transparent background with a solid border.
+- **Tertiary**: No background or border, appears as plain text but retains all button functionalities.`,default:"primary",attribute:"variant"},{kind:"field",name:"size",type:{text:"ButtonSize"},description:`Button sizing is based on the button type.
+- **Pill button**: 40, 32, 28, 24.
+- **Icon button**: 64, 52, 40, 32, 28, 24.
+- Tertiary icon button can also be 20.`,default:"32",attribute:"size",reflects:!0,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"color",type:{text:"ButtonColor"},description:"There are 5 colors for button: positive, negative, accent, promotional, default.",default:"default",attribute:"color"},{kind:"field",name:"role",description:`This property defines the ARIA role for the element. By default, it is set to 'button'.
+Consumers should override this role when:
+- The element is being used in a context where a different role is more appropriate.
+- Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.`,default:"'button'",attribute:"role",reflects:!0,type:{text:"string"},inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"modifyIconName",privacy:"private",parameters:[{name:"active",type:{text:"boolean"},description:"The active state."}],description:`Modifies the icon name based on the active state.
+If the button is active, the icon name is suffixed with '-filled'.
+If the button is inactive, the icon name is restored to its original value.
+If '-filled' icon is not available, the icon name remains unchanged.`},{kind:"method",name:"setVariant",privacy:"private",parameters:[{name:"variant",type:{text:"ButtonVariant"},description:"The variant to set."}],description:`Sets the variant attribute for the button component.
+If the provided variant is not included in the BUTTON_VARIANTS,
+it defaults to the value specified in DEFAULTS.VARIANT.`},{kind:"method",name:"setSize",privacy:"private",parameters:[{name:"size",type:{text:"PillButtonSize | IconButtonSize"},description:"The size to set."}],description:`Sets the size attribute for the button component.
+Validates the size based on the button type (icon, pill, or tertiary).
+Defaults to DEFAULTS.SIZE if invalid.`},{kind:"method",name:"setColor",privacy:"private",parameters:[{name:"color",type:{text:"ButtonColor"},description:"The color to set."}],description:`Sets the color attribute for the button.
+Defaults to DEFAULTS.COLOR if invalid or for tertiary buttons.`},{kind:"method",name:"inferButtonType",privacy:"private",description:"Infers the type of button based on the presence of slot and/or prefix and postfix icons.",parameters:[{description:"default slot of button",name:"slot"}]},{kind:"field",name:"tabIndex",type:{text:"number"},default:"0",description:"This property specifies the tab order of the element.",attribute:"tabIndex",reflects:!0,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the component is disabled.
+When the component is disabled for user interaction; it is not focusable or clickable.`,attribute:"disabled",reflects:!0,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"active",type:{text:"boolean"},default:"false",description:`The button's active state indicates whether it is currently toggled on (active) or off (inactive).
+When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
+Conversely, when the active state is false, the button is in an inactive state, indicating it is toggled off.`,attribute:"active",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"softDisabled",type:{text:"boolean"},default:"false",description:`Indicates whether the button is soft disabled.
+When set to \`true\`, the button appears visually disabled but still allows
+focus, click, and keyboard actions to be passed through.
+
+**Important:** When using soft disabled, consumers must ensure that
+the button behaves like a disabled button, allowing only focus and
+preventing any interactions (clicks or keyboard actions) from triggering unintended actions.`,attribute:"soft-disabled",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"field",name:"type",type:{text:"ButtonType"},description:`This property defines the type attribute for the button element.
+The type attribute specifies the behavior of the button when it is clicked.
+- **submit**: The button submits the form data to the server.
+- **reset**: The button resets the form data to its initial state.
+- **button**: The button does nothing when clicked.`,default:"button",attribute:"type",reflects:!0,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"executeAction",privacy:"private",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"setAriaPressed",privacy:"private",parameters:[{name:"element",type:{text:"HTMLElement"},description:"The target element."},{name:"active",type:{text:"boolean"},description:"The active state."}],description:"Sets the aria-pressed attribute based on the active state.",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"setSoftDisabled",privacy:"private",parameters:[{name:"element",type:{text:"HTMLElement"},description:"The button element."},{name:"softDisabled",type:{text:"boolean"},description:"The soft-disabled state."}],description:`Sets the soft-disabled attribute for the button.
+When soft-disabled, the button looks to be disabled but remains focusable and clickable.
+Also sets/removes aria-disabled attribute.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"setDisabled",privacy:"private",parameters:[{name:"element",type:{text:"HTMLElement"},description:"The button element."},{name:"disabled",type:{text:"boolean"},description:"The disabled state."}],description:`Sets the disabled attribute for the button.
+When disabled, the button is not focusable or clickable, and tabindex is set to -1.
+The previous tabindex is stored and restored when enabled.
+Also sets/removes aria-disabled attribute.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"triggerClickEvent",privacy:"private",inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"handleKeyDown",privacy:"private",parameters:[{name:"event",type:{text:"KeyboardEvent"},description:"The keyboard event."}],description:`Handles the keydown event on the button.
+If the key is 'Enter' or 'Space', the button is pressed.
+If the key is 'Enter', the button is pressed. The native HTML button works in the same way.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}},{kind:"method",name:"handleKeyUp",privacy:"private",parameters:[{name:"event",type:{text:"KeyboardEvent"},description:"The keyboard event."}],description:`Handles the keyup event on the button.
+If the key is 'Enter' or 'Space', the button is clicked.
+If the key is 'Space', the button is pressed. The native HTML button works in the same way.`,inheritedFrom:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}}],attributes:[{name:"prefix-icon",type:{text:"string | undefined"},description:`The name of the icon to display as a prefix.
+The icon is displayed on the left side of the button.`,fieldName:"prefixIcon"},{name:"postfix-icon",type:{text:"string | undefined"},description:`The name of the icon to display as a postfix.
+The icon is displayed on the right side of the button.`,fieldName:"postfixIcon"},{name:"variant",type:{text:"ButtonVariant"},description:`There are 3 variants of button: primary, secondary, tertiary. They are styled differently.
+- **Primary**: Solid background color.
+- **Secondary**: Transparent background with a solid border.
+- **Tertiary**: No background or border, appears as plain text but retains all button functionalities.`,default:"primary",fieldName:"variant"},{name:"size",type:{text:"ButtonSize"},description:`Button sizing is based on the button type.
+- **Pill button**: 40, 32, 28, 24.
+- **Icon button**: 64, 52, 40, 32, 28, 24.
+- Tertiary icon button can also be 20.`,default:"32",fieldName:"size",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"color",type:{text:"ButtonColor"},description:"There are 5 colors for button: positive, negative, accent, promotional, default.",default:"default",fieldName:"color"},{name:"role",description:`This property defines the ARIA role for the element. By default, it is set to 'button'.
+Consumers should override this role when:
+- The element is being used in a context where a different role is more appropriate.
+- Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.`,default:"'button'",fieldName:"role",type:{text:"string"},inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"tabIndex",type:{text:"number"},default:"0",description:"This property specifies the tab order of the element.",fieldName:"tabIndex",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the component is disabled.
+When the component is disabled for user interaction; it is not focusable or clickable.`,fieldName:"disabled",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"active",type:{text:"boolean"},default:"false",description:`The button's active state indicates whether it is currently toggled on (active) or off (inactive).
+When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
+Conversely, when the active state is false, the button is in an inactive state, indicating it is toggled off.`,fieldName:"active",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"soft-disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the button is soft disabled.
+When set to \`true\`, the button appears visually disabled but still allows
+focus, click, and keyboard actions to be passed through.
+
+**Important:** When using soft disabled, consumers must ensure that
+the button behaves like a disabled button, allowing only focus and
+preventing any interactions (clicks or keyboard actions) from triggering unintended actions.`,fieldName:"softDisabled",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}},{name:"type",type:{text:"ButtonType"},description:`This property defines the type attribute for the button element.
+The type attribute specifies the behavior of the button when it is clicked.
+- **submit**: The button submits the form data to the server.
+- **reset**: The button resets the form data to its initial state.
+- **button**: The button does nothing when clicked.`,default:"button",fieldName:"type",inheritedFrom:{name:"Buttonsimple",module:"src/components/buttonsimple/buttonsimple.component.ts"}}],superclass:{name:"Buttonsimple",module:"/src/components/buttonsimple/buttonsimple.component"},tagName:"mdc-button",jsDoc:`/**
+ * \`mdc-button\` is a component that can be configured in various ways to suit different use cases.
+ *
+ * Button Variants:
+ * - **Primary**: Solid background color.
+ * - **Secondary**: Transparent background with a solid border.
+ * - **Tertiary**: No background or border, appears as plain text but retains all button functionalities.
+ *
+ * Button Colors:
+ * - **Positive**: Green color.
+ * - **Negative**: Red color.
+ * - **Accent**: Blue color.
+ * - **Promotional**: Purple color.
+ * - **Default**: White color.
+ *
+ * Button Sizes (in REM units):
+ * - **Pill button**: 40, 32, 28, 24.
+ * - **Icon button**: 64, 52, 40, 32, 28, 24.
+ * - **Tertiary icon button**: 20.
+ *
+ * Button Types:
+ * - **Pill button**: A button that contains text value. Commonly used for call to action, tags, or filters.
+ * - **Pill button with icons**: A button containing an icon either on the left or right side of the button.
+ * - **Icon button**: A button represented by just an icon without any text.
+ * The type of button is inferred based on the presence of slot and/or prefix and postfix icons.
+ *
+ * @dependency mdc-icon
+ *
+ * @tagname mdc-button
+ *
+ * @slot - Text label of the button.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Button",module:"components/button/button.component.js"}}]},{kind:"javascript-module",path:"components/checkbox/checkbox.component.js",declarations:[{kind:"class",description:`Checkboxes allow users to select multiple options from a list or turn an item/feature on or off.
 These are often used in forms, settings, and selections in lists.
 
 A checkbox component contains an optional label and an optional helper text.`,name:"Checkbox",cssProperties:[{description:"Allows customization of the background color on hover.",name:"--mdc-checkbox-background-color-hover"},{description:"Border color in high contrast.",name:"--mdc-checkbox-border-color"},{description:"Background color for a selected checkbox.",name:"--mdc-checkbox-checked-background-color"},{description:"Background color for a selected checkbox when hovered.",name:"--mdc-checkbox-checked-background-color-hover"},{description:"Background color for a selected checkbox when pressed.",name:"--mdc-checkbox-checked-pressed-icon-color"},{description:"Background color for a disabled checkbox.",name:"--mdc-checkbox-disabled-background-color"},{description:"Border color for a disabled checkbox.",name:"--mdc-checkbox-disabled-border-color"},{description:"Background color for a disabled, selected checkbox.",name:"--mdc-checkbox-disabled-checked-icon-color"},{description:"Icon color for a disabled checkbox.",name:"--mdc-checkbox-disabled-icon-color"},{description:"Background color for an unselected checkbox.",name:"--mdc-checkbox-icon-background-color"},{description:"Default background color for an unselected checkbox.",name:"--mdc-checkbox-icon-border-color"},{description:"Icon color for an unselected checkbox.",name:"--mdc-checkbox-icon-color"},{description:"Background color for a selected checkbox when pressed.",name:"--mdc-checkbox-pressed-icon-color"}],members:[{kind:"field",name:"checked",type:{text:"boolean"},default:"false",description:"Determines whether the checkbox is selected or unselected.",attribute:"checked",reflects:!0},{kind:"field",name:"indeterminate",type:{text:"boolean"},default:"false",description:`This property is used to determine the parent checkbox in a nested checkbox group.
@@ -981,7 +981,61 @@ Default: 'mds-theme-stable-darkWebex'`,fieldName:"themeclass"}],superclass:{name
  * @cssproperty --mdc-themeprovider-font-weight - Option to override the font weight, default: \`400\`
  * @cssproperty --mdc-themeprovider-letter-spacing-adjustment - Option to override the default letter-spacing,
  * default: \`-0.25px\` (this is to match the old CiscoSans)
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"ThemeProvider",module:"components/themeprovider/themeprovider.component.js"}}]},{kind:"javascript-module",path:"utils/mixins/AvatarComponentMixin.js",declarations:[{kind:"mixin",description:"",name:"AvatarComponentMixin",members:[{kind:"field",name:"src",type:{text:"string | undefined"},description:`The src is the url which will be used to display the avatar.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"ThemeProvider",module:"components/themeprovider/themeprovider.component.js"}}]},{kind:"javascript-module",path:"components/toggle/toggle.component.js",declarations:[{kind:"class",description:`Toggle Component is an interactive control used to switch between two mutually exclusive options,
+such as On/Off, Active/Inactive. These are commonly used in settings panels, forms, and preference selections
+where users need to enable or disable a feature.
+It contains an optional label and an optional helper text.
+
+Note: It internally renders a checkbox styled as a toggle switch.`,name:"Toggle",cssProperties:[{description:"width of the toggle",name:"--mdc-toggle-width"},{description:"height of the toggle",name:"--mdc-toggle-height"},{description:"width of the toggle when it's size is compact",name:"--mdc-toggle-width-compact"},{description:"height of the toggle when it's size is compact",name:"--mdc-toggle-height-compact"},{description:"border radius of the toggle",name:"--mdc-toggle-border-radius"},{description:"border radius of the toggle when it's size is compact",name:"--mdc-toggle-border-radius-compact"},{description:"border of the toggle",name:"--mdc-toggle-border"},{description:"background color of the inactive toggle in rest state",name:"--mdc-toggle-inactive-rest-color"},{description:"background color of the inactive toggle in hover state",name:"--mdc-toggle-inactive-hover-color"},{description:"background color of the inactive toggle in pressed state",name:"--mdc-toggle-inactive-pressed-color"},{description:"background color of the inactive toggle in disabled state",name:"--mdc-toggle-inactive-disabled-color"},{description:"background color of the active toggle in rest state",name:"--mdc-toggle-active-rest-color"},{description:"background color of the active toggle in hover state",name:"--mdc-toggle-active-hover-color"},{description:"background color of the active toggle in pressed state",name:"--mdc-toggle-active-pressed-color"},{description:"background color of the active toggle in disabled state",name:"--mdc-toggle-active-disabled-color"},{description:" color of the help text label",name:"--mdc-toggle-help-text-color"},{description:"color of the toggle label and help text in disabled state",name:"--mdc-toggle-label-color-disabled"}],members:[{kind:"field",name:"checked",type:{text:"boolean"},default:"false",description:"Determines whether the toggle is active or inactive.",attribute:"checked",reflects:!0},{kind:"field",name:"size",type:{text:"ToggleSize"},description:`Determines toggle size in rem (height is specified here).
+- **Default**: 1.5
+- **Compact**: 1`,default:"default",attribute:"size",reflects:!0},{kind:"method",name:"setFormValue",privacy:"private",description:`Updates the form value to reflect the current state of the toggle.
+If toggle is switched on, the value is set to either the user-provided value or 'isActive' if no value is provided.
+If toggle is switched off, the value is set to null.`},{kind:"method",name:"toggleState",privacy:"private",return:{type:{text:"void"}},description:`Toggles the state of the toggle element.
+If the element is not disabled, then the checked property is toggled.`},{kind:"method",name:"handleChange",privacy:"private",parameters:[{name:"event",type:{text:"Event"}}],description:`Toggles the state of the toggle element.
+and dispatch the new change event.`},{kind:"method",name:"setToggleSize",privacy:"private",parameters:[{name:"size",type:{text:"ToggleSize"},description:"The size to set."}],description:`Sets the size attribute for the toggle component.
+If the provided size is not included in the TOGGLE_SIZE,
+it defaults to the value specified in DEFAULTS.SIZE.`},{kind:"field",name:"helpTextType",type:{text:"ValidationType"},description:"The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.",attribute:"help-text-type",reflects:!0,default:"undefined as unknown",inheritedFrom:{name:"FormfieldWrapper",module:"components/formfieldwrapper/formfieldwrapper.component.js"}},{kind:"field",name:"name",type:{text:"string"},default:"''",description:`Indicates the name of the component group (ex: checkbox, radio group).
+They are used to group elements in a form together.`,attribute:"name",reflects:!0,inheritedFrom:{name:"NameMixin",module:"utils/mixins/NameMixin.js"}},{kind:"field",name:"value",type:{text:"string"},default:"''",description:"Indicates the value of the component group (ex: input, checkbox, radio, select etc...)",attribute:"value",reflects:!0,inheritedFrom:{name:"ValueMixin",module:"utils/mixins/ValueMixin.js"}},{kind:"field",name:"dataAriaLabel",type:{text:"string | null"},default:"null",description:`Defines a string value that labels the current element.
+The Aria-Label attribute to be set for accessibility.`,attribute:"data-aria-label",reflects:!0,inheritedFrom:{name:"DataAriaLabelMixin",module:"utils/mixins/DataAriaLabelMixin.js"}},{kind:"field",name:"disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the component is disabled.
+When the component is disabled for user interaction; it is not focusable or clickable.`,attribute:"disabled",reflects:!0,inheritedFrom:{name:"FormfieldWrapper",module:"components/formfieldwrapper/formfieldwrapper.component.js"}},{kind:"field",name:"label",type:{text:"string | undefined"},description:"The label of the input field. It is linked to the input field using the `for` attribute.",attribute:"label",reflects:!0,inheritedFrom:{name:"FormfieldWrapper",module:"components/formfieldwrapper/formfieldwrapper.component.js"}},{kind:"field",name:"id",default:"`mdc-input-${uuidv4()}`",description:"The unique id of the input field. It is used to link the input field with the label.",attribute:"id",inheritedFrom:{name:"FormfieldWrapper",module:"components/formfieldwrapper/formfieldwrapper.component.js"}},{kind:"field",name:"helpText",type:{text:"string | undefined"},description:"The help text that is displayed below the input field.",attribute:"help-text",reflects:!0,inheritedFrom:{name:"FormfieldWrapper",module:"components/formfieldwrapper/formfieldwrapper.component.js"}},{kind:"method",name:"renderLabelElement",privacy:"protected",description:`creates the label element when the label property is set.
+id is used to link the label with the input field.`,return:{type:{text:""}},inheritedFrom:{name:"FormfieldWrapper",module:"components/formfieldwrapper/formfieldwrapper.component.js"}},{kind:"method",name:"renderHelpTextIcon",privacy:"protected",description:`creates the helpertext icon based on the helpTextType for validation.
+If the helpTextType is not set, it defaults to 'default' and it doesn't display any icon.`,return:{type:{text:""}},inheritedFrom:{name:"FormfieldWrapper",module:"components/formfieldwrapper/formfieldwrapper.component.js"}},{kind:"method",name:"renderHelpText",privacy:"protected",description:`creates the helper text component when the helpertext value is set.
+It is also used to display the validation message based on the helpTextType.`,return:{type:{text:""}},inheritedFrom:{name:"FormfieldWrapper",module:"components/formfieldwrapper/formfieldwrapper.component.js"}},{kind:"method",name:"renderLabel",privacy:"protected",description:"renders the mdc-label-text container that contains the label and labelInfoToggleTip.",return:{type:{text:""}},inheritedFrom:{name:"FormfieldWrapper",module:"components/formfieldwrapper/formfieldwrapper.component.js"}},{kind:"method",name:"renderHelperText",privacy:"protected",description:"renders the mdc-help-text container that contains the helpertext icon and helpertext.",return:{type:{text:""}},inheritedFrom:{name:"FormfieldWrapper",module:"components/formfieldwrapper/formfieldwrapper.component.js"}}],events:[{type:{text:"EventConstructor"}}],attributes:[{name:"checked",type:{text:"boolean"},default:"false",description:"Determines whether the toggle is active or inactive.",fieldName:"checked"},{name:"size",type:{text:"ToggleSize"},description:`Determines toggle size in rem (height is specified here).
+- **Default**: 1.5
+- **Compact**: 1`,default:"default",fieldName:"size"},{name:"name",type:{text:"string"},default:"''",description:`Indicates the name of the component group (ex: checkbox, radio group).
+They are used to group elements in a form together.`,fieldName:"name",inheritedFrom:{name:"NameMixin",module:"src/utils/mixins/NameMixin.ts"}},{name:"value",type:{text:"string"},default:"''",description:"Indicates the value of the component group (ex: input, checkbox, radio, select etc...)",fieldName:"value",inheritedFrom:{name:"ValueMixin",module:"src/utils/mixins/ValueMixin.ts"}},{name:"data-aria-label",type:{text:"string | null"},default:"null",description:`Defines a string value that labels the current element.
+The Aria-Label attribute to be set for accessibility.`,fieldName:"dataAriaLabel",inheritedFrom:{name:"DataAriaLabelMixin",module:"src/utils/mixins/DataAriaLabelMixin.ts"}},{name:"disabled",type:{text:"boolean"},default:"false",description:`Indicates whether the component is disabled.
+When the component is disabled for user interaction; it is not focusable or clickable.`,fieldName:"disabled",inheritedFrom:{name:"FormfieldWrapper",module:"src/components/formfieldwrapper/formfieldwrapper.component.ts"}},{name:"label",type:{text:"string | undefined"},description:"The label of the input field. It is linked to the input field using the `for` attribute.",fieldName:"label",inheritedFrom:{name:"FormfieldWrapper",module:"src/components/formfieldwrapper/formfieldwrapper.component.ts"}},{name:"id",default:"`mdc-input-${uuidv4()}`",description:"The unique id of the input field. It is used to link the input field with the label.",fieldName:"id",inheritedFrom:{name:"FormfieldWrapper",module:"src/components/formfieldwrapper/formfieldwrapper.component.ts"}},{name:"help-text-type",type:{text:"ValidationType"},description:"The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.",fieldName:"helpTextType",inheritedFrom:{name:"FormfieldWrapper",module:"src/components/formfieldwrapper/formfieldwrapper.component.ts"}},{name:"help-text",type:{text:"string | undefined"},description:"The help text that is displayed below the input field.",fieldName:"helpText",inheritedFrom:{name:"FormfieldWrapper",module:"src/components/formfieldwrapper/formfieldwrapper.component.ts"}}],mixins:[{name:"NameMixin",module:"/src/utils/mixins/NameMixin"},{name:"ValueMixin",module:"/src/utils/mixins/ValueMixin"},{name:"DataAriaLabelMixin",module:"/src/utils/mixins/DataAriaLabelMixin"}],superclass:{name:"FormfieldWrapper",module:"/src/components/formfieldwrapper"},tagName:"mdc-toggle",jsDoc:`/**
+ * Toggle Component is an interactive control used to switch between two mutually exclusive options,
+ * such as On/Off, Active/Inactive. These are commonly used in settings panels, forms, and preference selections
+ * where users need to enable or disable a feature.
+ * It contains an optional label and an optional helper text.
+ *
+ * Note: It internally renders a checkbox styled as a toggle switch.
+ *
+ * @dependency mdc-icon
+ *
+ * @tagname mdc-toggle
+ *
+ * @cssproperty --mdc-toggle-width - width of the toggle
+ * @cssproperty --mdc-toggle-height - height of the toggle
+ * @cssproperty --mdc-toggle-width-compact - width of the toggle when it's size is compact
+ * @cssproperty --mdc-toggle-height-compact - height of the toggle when it's size is compact
+ * @cssproperty --mdc-toggle-border-radius - border radius of the toggle
+ * @cssproperty --mdc-toggle-border-radius-compact - border radius of the toggle when it's size is compact
+ * @cssproperty --mdc-toggle-border - border of the toggle
+ * @cssproperty --mdc-toggle-inactive-rest-color - background color of the inactive toggle in rest state
+ * @cssproperty --mdc-toggle-inactive-hover-color - background color of the inactive toggle in hover state
+ * @cssproperty --mdc-toggle-inactive-pressed-color - background color of the inactive toggle in pressed state
+ * @cssproperty --mdc-toggle-inactive-disabled-color - background color of the inactive toggle in disabled state
+ * @cssproperty --mdc-toggle-active-rest-color - background color of the active toggle in rest state
+ * @cssproperty --mdc-toggle-active-hover-color - background color of the active toggle in hover state
+ * @cssproperty --mdc-toggle-active-pressed-color - background color of the active toggle in pressed state
+ * @cssproperty --mdc-toggle-active-disabled-color - background color of the active toggle in disabled state
+ * @cssproperty --mdc-toggle-help-text-color -  color of the help text label
+ * @cssproperty --mdc-toggle-label-color-disabled - color of the toggle label and help text in disabled state
+ *
+ */`,customElement:!0,slots:[{description:"slot to add the label info icon",name:"label-info",inheritedFrom:{name:"FormfieldWrapper",module:"src/components/formfieldwrapper/formfieldwrapper.component.ts"}}]}],exports:[{kind:"js",name:"default",declaration:{name:"Toggle",module:"components/toggle/toggle.component.js"}}]},{kind:"javascript-module",path:"utils/mixins/AvatarComponentMixin.js",declarations:[{kind:"mixin",description:"",name:"AvatarComponentMixin",members:[{kind:"field",name:"src",type:{text:"string | undefined"},description:`The src is the url which will be used to display the avatar.
 When the src is loading, we will display the initials as a placeholder.`,attribute:"src"},{kind:"field",name:"initials",type:{text:"string | undefined"},description:"The initials to be displayed for the avatar.",attribute:"initials"},{kind:"field",name:"presence",type:{text:"PresenceType | undefined"},description:"The presence is the status which can be used to display the\nactivity state of a user or a space within an avatar component.\n\nAcceptable values include:\n- `active`\n- `away`\n- `away-calling`\n- `busy`\n- `dnd`\n- `meeting`\n- `on-call`\n- `on-device`\n- `on-mobile`\n- `pause`\n- `pto`\n- `presenting`\n- `quiet`\n- `scheduled`",attribute:"presence"},{kind:"field",name:"size",type:{text:"AvatarSize"},description:`Acceptable values include (size in px unit):
 - 24
 - 32
@@ -1009,6 +1063,6 @@ They are used to group elements in a form together.`,fieldName:"name"}],paramete
 When the component is readonly, it is not editable.`,attribute:"readonly",reflects:!0}],attributes:[{name:"readonly",type:{text:"boolean"},default:"false",description:`Indicates whether the component is readonly.
 When the component is readonly, it is not editable.`,fieldName:"readonly"}],parameters:[{name:"superClass",type:{text:"T"}}]}],exports:[{kind:"js",name:"ReadonlyMixin",declaration:{name:"ReadonlyMixin",module:"utils/mixins/ReadonlyMixin.js"}}]},{kind:"javascript-module",path:"utils/mixins/RequiredMixin.js",declarations:[{kind:"mixin",description:"",name:"RequiredMixin",members:[{kind:"field",name:"required",type:{text:"boolean"},default:"false",description:`Indicates whether the component is required.
 When the component is required, it is a mandatory field.`,attribute:"required",reflects:!0}],attributes:[{name:"required",type:{text:"boolean"},default:"false",description:`Indicates whether the component is required.
-When the component is required, it is a mandatory field.`,fieldName:"required"}],parameters:[{name:"superClass",type:{text:"T"}}]}],exports:[{kind:"js",name:"RequiredMixin",declaration:{name:"RequiredMixin",module:"utils/mixins/RequiredMixin.js"}}]},{kind:"javascript-module",path:"utils/mixins/TabIndexMixin.js",declarations:[{kind:"mixin",description:"",name:"TabIndexMixin",members:[{kind:"field",name:"tabIndex",type:{text:"number"},default:"0",description:"This property specifies the tab order of the element.",attribute:"tabIndex",reflects:!0}],attributes:[{name:"tabIndex",type:{text:"number"},default:"0",description:"This property specifies the tab order of the element.",fieldName:"tabIndex"}],parameters:[{name:"superClass",type:{text:"T"}}]}],exports:[{kind:"js",name:"TabIndexMixin",declaration:{name:"TabIndexMixin",module:"utils/mixins/TabIndexMixin.js"}}]},{kind:"javascript-module",path:"utils/mixins/ValueMixin.js",declarations:[{kind:"mixin",description:"",name:"ValueMixin",members:[{kind:"field",name:"value",type:{text:"string"},default:"''",description:"Indicates the value of the component group (ex: input, checkbox, radio, select etc...)",attribute:"value",reflects:!0}],attributes:[{name:"value",type:{text:"string"},default:"''",description:"Indicates the value of the component group (ex: input, checkbox, radio, select etc...)",fieldName:"value"}],parameters:[{name:"superClass",type:{text:"T"}}]}],exports:[{kind:"js",name:"ValueMixin",declaration:{name:"ValueMixin",module:"utils/mixins/ValueMixin.js"}}]},{kind:"javascript-module",path:"utils/mixins/index.types.js",declarations:[],exports:[]}],b={schemaVersion:p,readme:u,modules:h},a=[{themeclass:"mds-theme-stable-darkWebex",displayName:"darkWebex",backgroundColor:"#000000",className:"dark"},{themeclass:"mds-theme-stable-lightWebex",displayName:"lightWebex",backgroundColor:"#ffffff",className:"light"}],f=e=>{for(const n of a)e.classList.remove(n.className)},d=(e,n)=>{e.classList.add(n)},y=e=>{const n=document.querySelectorAll("div.docs-story");for(const i of n)i.style.backgroundColor=e},g=(e,n)=>{const i=n.globals.theme,t=a.find(r=>r.displayName===i),o=document.querySelector("body.sb-show-main");return f(o),d(o,t.className),d(o,"mds-typography"),d(o,"mds-elevation"),y(t.backgroundColor),c` <mdc-themeprovider id="theme-provider" themeclass="${t.themeclass}">
+When the component is required, it is a mandatory field.`,fieldName:"required"}],parameters:[{name:"superClass",type:{text:"T"}}]}],exports:[{kind:"js",name:"RequiredMixin",declaration:{name:"RequiredMixin",module:"utils/mixins/RequiredMixin.js"}}]},{kind:"javascript-module",path:"utils/mixins/TabIndexMixin.js",declarations:[{kind:"mixin",description:"",name:"TabIndexMixin",members:[{kind:"field",name:"tabIndex",type:{text:"number"},default:"0",description:"This property specifies the tab order of the element.",attribute:"tabIndex",reflects:!0}],attributes:[{name:"tabIndex",type:{text:"number"},default:"0",description:"This property specifies the tab order of the element.",fieldName:"tabIndex"}],parameters:[{name:"superClass",type:{text:"T"}}]}],exports:[{kind:"js",name:"TabIndexMixin",declaration:{name:"TabIndexMixin",module:"utils/mixins/TabIndexMixin.js"}}]},{kind:"javascript-module",path:"utils/mixins/ValueMixin.js",declarations:[{kind:"mixin",description:"",name:"ValueMixin",members:[{kind:"field",name:"value",type:{text:"string"},default:"''",description:"Indicates the value of the component group (ex: input, checkbox, radio, select etc...)",attribute:"value",reflects:!0}],attributes:[{name:"value",type:{text:"string"},default:"''",description:"Indicates the value of the component group (ex: input, checkbox, radio, select etc...)",fieldName:"value"}],parameters:[{name:"superClass",type:{text:"T"}}]}],exports:[{kind:"js",name:"ValueMixin",declaration:{name:"ValueMixin",module:"utils/mixins/ValueMixin.js"}}]},{kind:"javascript-module",path:"utils/mixins/index.types.js",declarations:[],exports:[]}],f={schemaVersion:p,readme:u,modules:h},a=[{themeclass:"mds-theme-stable-darkWebex",displayName:"darkWebex",backgroundColor:"#000000",className:"dark"},{themeclass:"mds-theme-stable-lightWebex",displayName:"lightWebex",backgroundColor:"#ffffff",className:"light"}],b=e=>{for(const n of a)e.classList.remove(n.className)},d=(e,n)=>{e.classList.add(n)},y=e=>{const n=document.querySelectorAll("div.docs-story");for(const i of n)i.style.backgroundColor=e},g=(e,n)=>{const i=n.globals.theme,t=a.find(r=>r.displayName===i),o=document.querySelector("body.sb-show-main");return b(o),d(o,t.className),d(o,"mds-typography"),d(o,"mds-elevation"),y(t.backgroundColor),c` <mdc-themeprovider id="theme-provider" themeclass="${t.themeclass}">
     ${e()}
-  </mdc-themeprovider>`},v=e=>c` <mdc-iconprovider url="./icons/svg"> ${e()} </mdc-iconprovider>`;function x(e){const n=i=>i.replace(/-([a-z])/g,t=>t[1].toUpperCase());return e.modules.forEach(i=>{i.declarations.forEach(t=>{var l;const o=new Set((l=t==null?void 0:t.attributes)==null?void 0:l.map(s=>n(s.name))),r=t.members.filter(s=>!o.has(s.name));Object.assign(t,{members:r})})}),e}const k=x(b);m(k);const S={parameters:{a11y:{options:{runOnly:{type:"tag",values:["best-practice","wcag2a","wcag2aa","wcag21aa","wcag22aa"]}}},docs:{source:{excludeDecorators:!0}},actions:{argTypesRegex:"^on[A-Z].*"},backgrounds:{disable:!0,grid:{disable:!0}},badgesConfig:{wip:{styles:{backgroundColor:"#30240D",borderColor:"#D6B220",color:"#FFFFFFF2"},title:"Work In Progress",tooltip:{title:"This Component is Work In Progress",desc:"Keep an eye on the Release history for updates or provide feedback.",links:[{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}},stable:{styles:{backgroundColor:"#416116",borderColor:"#93C437",color:"#FFFFFFF2"},title:"Stable",tooltip:{title:"This Component is Stable",desc:"Ready for use.",links:[{title:"Consumption guide",href:"https://momentum-design.github.io/momentum-design/en/components/"},{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}},deprecated:{styles:{backgroundColor:"#4F0E10",borderColor:"#FC8B98",color:"#FFFFFFF2"},title:"Deprecated",tooltip:{title:"This Component is Deprecated",desc:"Check the Release history for more information about deprecation or provide feedback.",links:[{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}}},controls:{disableSaveFromUI:!0,expanded:!0,matchers:{color:/(background|color)$/i,date:/Date$/}},options:{storySort:{order:["Consumption","Styling","Components","Work In Progress"]}},direction:"ltr"},decorators:[g,v],globalTypes:{theme:{description:"Global theme for components",defaultValue:a[0].displayName,toolbar:{title:"Theme",icon:"globe",items:a.map(e=>e.displayName),dynamicTitle:!0}}}};export{S as default};
+  </mdc-themeprovider>`},v=e=>c` <mdc-iconprovider url="./icons/svg"> ${e()} </mdc-iconprovider>`;function x(e){const n=i=>i.replace(/-([a-z])/g,t=>t[1].toUpperCase());return e.modules.forEach(i=>{i.declarations.forEach(t=>{var l;const o=new Set((l=t==null?void 0:t.attributes)==null?void 0:l.map(s=>n(s.name))),r=t.members.filter(s=>!o.has(s.name));Object.assign(t,{members:r})})}),e}const k=x(f);m(k);const S={parameters:{a11y:{options:{runOnly:{type:"tag",values:["best-practice","wcag2a","wcag2aa","wcag21aa","wcag22aa"]}}},docs:{source:{excludeDecorators:!0}},actions:{argTypesRegex:"^on[A-Z].*"},backgrounds:{disable:!0,grid:{disable:!0}},badgesConfig:{wip:{styles:{backgroundColor:"#30240D",borderColor:"#D6B220",color:"#FFFFFFF2"},title:"Work In Progress",tooltip:{title:"This Component is Work In Progress",desc:"Keep an eye on the Release history for updates or provide feedback.",links:[{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}},stable:{styles:{backgroundColor:"#416116",borderColor:"#93C437",color:"#FFFFFFF2"},title:"Stable",tooltip:{title:"This Component is Stable",desc:"Ready for use.",links:[{title:"Consumption guide",href:"https://momentum-design.github.io/momentum-design/en/components/"},{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}},deprecated:{styles:{backgroundColor:"#4F0E10",borderColor:"#FC8B98",color:"#FFFFFFF2"},title:"Deprecated",tooltip:{title:"This Component is Deprecated",desc:"Check the Release history for more information about deprecation or provide feedback.",links:[{title:"Release history",href:"https://github.com/momentum-design/momentum-design/releases"},{title:"Leave feedback",href:"https://github.com/momentum-design/momentum-design/issues"}]}}},controls:{disableSaveFromUI:!0,expanded:!0,matchers:{color:/(background|color)$/i,date:/Date$/}},options:{storySort:{order:["Consumption","Styling","Components","Work In Progress"]}},direction:"ltr"},decorators:[g,v],globalTypes:{theme:{description:"Global theme for components",defaultValue:a[0].displayName,toolbar:{title:"Theme",icon:"globe",items:a.map(e=>e.displayName),dynamicTitle:!0}}}};export{S as default};

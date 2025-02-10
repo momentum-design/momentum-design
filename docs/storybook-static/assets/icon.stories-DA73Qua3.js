@@ -1,4 +1,4 @@
-import"./index-BRJNDW9c.js";import{k as h}from"./lit-element-CHllvULs.js";import{t}from"./if-defined-C4tJgJ33.js";import{c as T,s as f}from"./commonArgTypes-BluK8w5L.js";import{d as z,r as S}from"./utils-D1SE5bce.js";import"./index-HW6KrQZO.js";import"./state-CWckTc1X.js";import"./index-MYSkQ1zX.js";import"./index-BYMLCX4c.js";import"./iconprovider.component-CWYw8J7d.js";import"./create-context-89xeped_.js";const v=e=>h`
+import"./index-BUvIMixM.js";import{k as h}from"./lit-element-CHllvULs.js";import{t}from"./if-defined-C4tJgJ33.js";import{c as T,s as f}from"./commonArgTypes-BluK8w5L.js";import{d as z,r as S}from"./utils-D1SE5bce.js";import"./index-HW6KrQZO.js";import"./state-CWckTc1X.js";import"./index-MYSkQ1zX.js";import"./index-BYMLCX4c.js";import"./iconprovider.component-CvArfi6w.js";import"./create-context-89xeped_.js";const v=e=>h`
   <mdc-icon
     aria-label="${t(e["aria-label"])}"
     class="${e.class}"

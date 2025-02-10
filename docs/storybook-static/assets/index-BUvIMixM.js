@@ -1,4 +1,4 @@
-import{i as p,k as b}from"./lit-element-CHllvULs.js";import{u as v,C as u,n as c}from"./index-HW6KrQZO.js";import{r as h}from"./state-CWckTc1X.js";import{h as C,a as f}from"./index-MYSkQ1zX.js";import{p as y}from"./index-BYMLCX4c.js";import{I as g}from"./iconprovider.component-CWYw8J7d.js";const x=[C,p`
+import{i as p,k as b}from"./lit-element-CHllvULs.js";import{u as v,C as u,n as c}from"./index-HW6KrQZO.js";import{r as h}from"./state-CWckTc1X.js";import{h as C,a as f}from"./index-MYSkQ1zX.js";import{p as y}from"./index-BYMLCX4c.js";import{I as g}from"./iconprovider.component-CvArfi6w.js";const x=[C,p`
     :host {
       --mdc-icon-fill-color: currentColor;
       --mdc-icon-size: var(--computed-icon-size);
