@@ -23,12 +23,12 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/toggle',
+  title: 'Components/toggle',
   tags: ['autodocs'],
   component: 'mdc-toggle',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     size: {
