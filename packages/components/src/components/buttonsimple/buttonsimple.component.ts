@@ -169,7 +169,6 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
       view: window,
     });
     this.dispatchEvent(clickEvent);
-    this.executeAction();
   }
 
   /**
