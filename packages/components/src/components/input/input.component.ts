@@ -360,6 +360,7 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
       }
       return html`
       <mdc-button 
+        part='trailing-button'
         class='${!this.value ? 'hidden' : ''}'
         prefix-icon='${DEFAULTS.CLEAR_BUTTON_ICON}'
         variant='${DEFAULTS.CLEAR_BUTTON_VARIANT}'
