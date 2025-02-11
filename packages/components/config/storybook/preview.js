@@ -59,13 +59,6 @@ const preview = {
         tooltip: {
           title: 'This Component is Work In Progress',
           desc: 'Keep an eye on the Release history for updates or provide feedback.',
-          links: [
-            { title: 'Release history', href: 'https://github.com/momentum-design/momentum-design/releases' },
-            {
-              title: 'Leave feedback',
-              href: 'https://github.com/momentum-design/momentum-design/issues',
-            },
-          ],
         },
       },
       stable: {
@@ -78,14 +71,6 @@ const preview = {
         tooltip: {
           title: 'This Component is Stable',
           desc: 'Ready for use.',
-          links: [
-            { title: 'Consumption guide', href: 'https://momentum-design.github.io/momentum-design/en/components/' },
-            { title: 'Release history', href: 'https://github.com/momentum-design/momentum-design/releases' },
-            {
-              title: 'Leave feedback',
-              href: 'https://github.com/momentum-design/momentum-design/issues',
-            },
-          ],
         },
       },
       deprecated: {
@@ -98,13 +83,6 @@ const preview = {
         tooltip: {
           title: 'This Component is Deprecated',
           desc: 'Check the Release history for more information about deprecation or provide feedback.',
-          links: [
-            { title: 'Release history', href: 'https://github.com/momentum-design/momentum-design/releases' },
-            {
-              title: 'Leave feedback',
-              href: 'https://github.com/momentum-design/momentum-design/issues',
-            },
-          ],
         },
       },
     },
