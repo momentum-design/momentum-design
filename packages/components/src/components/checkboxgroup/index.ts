@@ -1,6 +1,5 @@
 import CheckboxGroup from './checkboxgroup.component';
 import { TAG_NAME } from './checkboxgroup.constants';
-import '../checkbox';
 import '../text';
 
 CheckboxGroup.register(TAG_NAME);
