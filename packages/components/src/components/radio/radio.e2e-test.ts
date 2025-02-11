@@ -66,20 +66,20 @@ test('mdc-radio', async ({ componentsPage }) => {
       });
 
       // Radio btn with label
-      await radioStickerSheet.createMarkupWithCombination({}, true);
+      await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
       await radioStickerSheet.setAttributes({
         label: 'Standard Plan',
       });
 
       // Checked radio btn
-      await radioStickerSheet.createMarkupWithCombination({}, true);
+      await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
       await radioStickerSheet.setAttributes({
         label: 'Selected Radio Label',
         checked: true,
       });
 
       // Checked radio btn with help text
-      await radioStickerSheet.createMarkupWithCombination({}, true);
+      await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
       await radioStickerSheet.setAttributes({
         label: 'Selected Radio Label',
         'help-text': 'This is a help text',
@@ -87,7 +87,7 @@ test('mdc-radio', async ({ componentsPage }) => {
       });
 
       // Readonly radio btn
-      await radioStickerSheet.createMarkupWithCombination({}, true);
+      await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
       await radioStickerSheet.setAttributes({
         label: 'Read Only Radio Label',
         'help-text': 'This is a help text',
@@ -95,7 +95,7 @@ test('mdc-radio', async ({ componentsPage }) => {
       });
 
       // Readonly but checked radio btn
-      await radioStickerSheet.createMarkupWithCombination({}, true);
+      await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
       await radioStickerSheet.setAttributes({
         label: 'Read Only Radio Label',
         'help-text': 'This is a help text',
@@ -104,7 +104,7 @@ test('mdc-radio', async ({ componentsPage }) => {
       });
 
       // Disabled radio btn
-      await radioStickerSheet.createMarkupWithCombination({}, true);
+      await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
       await radioStickerSheet.setAttributes({
         label: 'Disabled Radio Label',
         'help-text': 'This is a help text',
@@ -112,14 +112,14 @@ test('mdc-radio', async ({ componentsPage }) => {
       });
 
       // Disabled but checked radio btn
-      await radioStickerSheet.createMarkupWithCombination({}, true);
+      await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
       await radioStickerSheet.setAttributes({
         label: 'Disabled Selected Radio Label',
         'help-text': 'This is a help text',
         disabled: true,
         checked: true,
       });
-      await radioStickerSheet.createMarkupWithCombination({}, true);
+      await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
       await radioStickerSheet.mountStickerSheet();
 
       await test.step('matches screenshot of radio stickersheet', async () => {

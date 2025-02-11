@@ -2,6 +2,10 @@
 import type { ComponentsPage } from '..';
 
 type AttributesType = Record<string, any>;
+type OptionsType = {
+  createNewRow?: boolean;
+  style?: string;
+}
 
 class StickerSheet {
   private componentPage: ComponentsPage;
@@ -79,9 +83,9 @@ class StickerSheet {
   /**
    * Creates a new row wrapper in the component sheet and appends the children to it.
    */
-  private createComponentsMarkupHTML(childrenEl?: string, createNewRow = false) {
-    if (createNewRow) {
-      this.markupHTML += `<div class="componentRowWrapper">${childrenEl}</div>`;
+  private createComponentsMarkupHTML(childrenEl: string, options: OptionsType) {
+    if (options.createNewRow) {
+      this.markupHTML += `<div class="componentRowWrapper" style='${options.style}'>${childrenEl}</div>`;
     } else {
       this.markupHTML += childrenEl;
     }
@@ -105,22 +109,32 @@ class StickerSheet {
    * Creates a wrapper for a combination of components and adds them to the sheet.
    * @param combinationArr - An array of objects representing combinations of attributes for components.
    */
-  private createWrapperForCombination(combinationArr: Array<Record<string, any>>) {
+  private createWrapperForCombination(combinationArr: Array<Record<string, any>>, wrapperStyles = '') {
     let childrenEl = '';
     for (const combination of combinationArr) {
       if (Array.isArray(combination)) {
-        this.createWrapperForCombination(combination);
+        this.createWrapperForCombination(combination, wrapperStyles);
       } else {
         this.setAttributes({ ...this.attributes, ...combination });
         childrenEl += this.addComponentToSheet();
       }
     }
-    this.createComponentsMarkupHTML(childrenEl, true);
+    this.createComponentsMarkupHTML(childrenEl, { createNewRow: true, style: wrapperStyles });
   }
 
-  public async createMarkupWithCombination(combinations: Record<string, Record<string, any>>, createNewRow = false) {
+  /**
+   *
+   * @param combinations - An object containing combinations of attributes for creating sticker sheet combination.
+   * @param options - An object containing options for creating the wrapper.
+   * - createNewRow - A boolean indicating whether to create a new row for the combination. Default is false.
+   * - style - A string representing the style to apply to the wrapper. Default is an empty string.
+   */
+  public async createMarkupWithCombination(combinations: Record<string, Record<string, any>>, options: OptionsType = {
+    createNewRow: false,
+    style: '',
+  }) {
     if (Object.keys(combinations).length === 0) {
-      this.createComponentsMarkupHTML(this.addComponentToSheet());
+      this.createComponentsMarkupHTML(this.addComponentToSheet(), options);
       return;
     }
 
@@ -132,18 +146,18 @@ class StickerSheet {
     let childrenEl = '';
     for (const combination of allCombinations) {
       if (Array.isArray(combination)) {
-        this.createWrapperForCombination(combination);
-      } else if (createNewRow) {
+        this.createWrapperForCombination(combination, options.style);
+      } else if (options.createNewRow) {
         this.setAttributes({ ...this.attributes, ...combination });
-        this.createComponentsMarkupHTML(this.addComponentToSheet(), true);
+        this.createComponentsMarkupHTML(this.addComponentToSheet(), options);
       } else {
         this.setAttributes({ ...this.attributes, ...combination });
         childrenEl += this.addComponentToSheet();
       }
     }
 
-    if (!Array.isArray(allCombinations[0]) && !createNewRow) {
-      this.createComponentsMarkupHTML(childrenEl, true);
+    if (!Array.isArray(allCombinations[0]) && !options.createNewRow) {
+      this.createComponentsMarkupHTML(childrenEl, { createNewRow: true, style: options.style });
     }
   }
 
