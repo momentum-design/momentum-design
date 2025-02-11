@@ -196,7 +196,7 @@ import{i as O,D as H,k as l}from"./lit-element-CHllvULs.js";import{n as q,u as U
     ?readonly=${t.readonly}
     data-aria-label="${t["data-aria-label"]}"
   ></mdc-radio>
-`,fe={title:"Work In Progress/radio",tags:["autodocs"],component:"mdc-radio",render:te,parameters:{badges:["wip"]},argTypes:{...X,...Z,readonly:{control:{type:"boolean"}},disabled:{control:{type:"boolean"}},checked:{control:{type:"boolean"}},label:{control:{type:"text"}},name:{control:{type:"text"}},value:{control:{type:"text"}},"help-text":{control:{type:"text"}},"data-aria-label":{control:{type:"text"}},...ee(["help-text-type"]),...ae(["--mdc-radio-inner-circle-size","--mdc-radio-text-disabled-color","--mdc-radio-disabled-border-color","--mdc-radio-normal-border-color","--mdc-radio-inner-circle-normal-background","--mdc-radio-inner-circle-disabled-background","--mdc-radio-control-inactive-color","--mdc-radio-control-inactive-hover","--mdc-radio-control-inactive-pressed-color","--mdc-radio-control-inactive-disabled-background","--mdc-radio-control-active-color","--mdc-radio-control-active-hover-color","--mdc-radio-control-active-pressed-color","--mdc-radio-control-active-disabled-background"])}},s={args:{label:"Standard Plan",checked:!1,readonly:!1,disabled:!1}},m={render:()=>l`
+`,fe={title:"Components/radio",tags:["autodocs"],component:"mdc-radio",render:te,parameters:{badges:["stable"]},argTypes:{...X,...Z,readonly:{control:{type:"boolean"}},disabled:{control:{type:"boolean"}},checked:{control:{type:"boolean"}},label:{control:{type:"text"}},name:{control:{type:"text"}},value:{control:{type:"text"}},"help-text":{control:{type:"text"}},"data-aria-label":{control:{type:"text"}},...ee(["help-text-type"]),...ae(["--mdc-radio-inner-circle-size","--mdc-radio-text-disabled-color","--mdc-radio-disabled-border-color","--mdc-radio-normal-border-color","--mdc-radio-inner-circle-normal-background","--mdc-radio-inner-circle-disabled-background","--mdc-radio-control-inactive-color","--mdc-radio-control-inactive-hover","--mdc-radio-control-inactive-pressed-color","--mdc-radio-control-inactive-disabled-background","--mdc-radio-control-active-color","--mdc-radio-control-active-hover-color","--mdc-radio-control-active-pressed-color","--mdc-radio-control-active-disabled-background"])}},s={args:{label:"Standard Plan",checked:!1,readonly:!1,disabled:!1}},m={render:()=>l`
     <div style="display: flex; flex-direction: column;">
       Radio Group for selecting plans
       <mdc-radio name="plan" value="option1" label="Standard Plan" ></mdc-radio>
@@ -294,7 +294,7 @@ import{i as O,D as H,k as l}from"./lit-element-CHllvULs.js";import{n as q,u as U
       }
     }
   }
-}`,...(W=(A=b.parameters)==null?void 0:A.docs)==null?void 0:W.source}}};var I,F,C;h.parameters={...h.parameters,docs:{...(I=h.parameters)==null?void 0:I.docs,source:{originalSource:`{
+}`,...(W=(A=b.parameters)==null?void 0:A.docs)==null?void 0:W.source}}};var F,I,C;h.parameters={...h.parameters,docs:{...(F=h.parameters)==null?void 0:F.docs,source:{originalSource:`{
   render: () => html\`
     <div style="display: flex; flex-direction: column;">
       <mdc-radio name="read" value="option1" label="Unselected" readonly></mdc-radio>
@@ -307,7 +307,7 @@ import{i as O,D as H,k as l}from"./lit-element-CHllvULs.js";import{n as q,u as U
       }
     }
   }
-}`,...(C=(F=h.parameters)==null?void 0:F.docs)==null?void 0:C.source}}};var G,V,L;p.parameters={...p.parameters,docs:{...(G=p.parameters)==null?void 0:G.docs,source:{originalSource:`{
+}`,...(C=(I=h.parameters)==null?void 0:I.docs)==null?void 0:C.source}}};var G,V,L;p.parameters={...p.parameters,docs:{...(G=p.parameters)==null?void 0:G.docs,source:{originalSource:`{
   args: {
     label: 'Standard Plan',
     'help-text': 'Standard plan provides basic features',
