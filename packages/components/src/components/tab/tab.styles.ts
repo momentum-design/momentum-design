@@ -33,18 +33,18 @@ const styles = [hostFitContentStyles, css`
     --mdc-tab-line-active-background-color-normal: var(--mds-color-theme-button-secondary-normal);
     --mdc-tab-line-active-background-color-pressed: var(--mds-color-theme-button-secondary-pressed);
 
-    --mdc-tab-line-active-bottom-border-color: var(--mds-color-theme-outline-input-active);
-    --mdc-tab-line-active-bottom-border-color-disabled: var(--mds-color-theme-outline-primary-disabled);
-
     --mdc-tab-line-active-color: var(--mds-color-theme-text-primary-normal);
     --mdc-tab-line-active-color-disabled: var(--mds-color-theme-text-primary-disabled);
+
+    --mdc-tab-line-active-indicator-color: var(--mds-color-theme-outline-input-active);
+    --mdc-tab-line-active-indicator-color-disabled: var(--mds-color-theme-outline-primary-disabled);
+    --mdc-tab-line-active-indicator-height: 0.125rem;
+    --mdc-tab-line-active-indicator-width: 100%;
 
     --mdc-tab-line-border-bottom-left-radius: 0;
     --mdc-tab-line-border-bottom-right-radius: 0;
     --mdc-tab-line-border-top-left-radius: 0.25rem;
     --mdc-tab-line-border-top-right-radius: 0.25rem;
-
-    --mdc-tab-line-active-indicator-width: calc(100% + 24px);
 
     --mdc-tab-line-inactive-background-color-disabled: var(--mds-color-theme-button-secondary-disabled);
     --mdc-tab-line-inactive-background-color-focus: var(--mds-color-theme-button-secondary-normal);
@@ -78,30 +78,33 @@ const styles = [hostFitContentStyles, css`
     --mdc-tab-pill-inactive-color: var(--mds-color-theme-text-secondary-normal);
     --mdc-tab-pill-inactive-color-disabled: var(--mds-color-theme-text-primary-disabled);
 
-    gap: var(--mdc-tab-content-gap);
+    flex-direction: column;
     height: var(--mdc-tab-height);
     padding-left: var(--mdc-tab-padding-left);
     padding-right: var(--mdc-tab-padding-right);
+    position: relative;
+    border: none;
+  }
+
+  .mdc-tab__content {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: var(--mdc-tab-content-gap);
+    justify-content: center;
+    width: fit-content;
+  }
+
+  .mdc-tab__line_tab_indicator {
+    width: var(--mdc-tab-line-active-indicator-width);
+    height: var(--mdc-tab-line-active-indicator-height);
+    bottom: 0;
+    position: absolute;
+    visibility: hidden;
   }
 
   :host([disabled]) {
     cursor: default;
-  }
-
-  :host #container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  :host #container #badge-icon-text-container {
-    display: flex;
-    align-items: center;
-    gap: var(--mdc-tab-content-gap);
-  }
-
-  :host #line-variant-active-tab-indicator {
-    visibility: hidden;
   }
 
   :host([variant="glass"]) {
@@ -129,7 +132,6 @@ const styles = [hostFitContentStyles, css`
 
   :host([variant="glass"][active]) {
     background-color: var(--mdc-tab-glass-active-background-color-normal);
-    border: none;
     color: var(--mdc-tab-glass-active-color);
   }
 
@@ -173,26 +175,16 @@ const styles = [hostFitContentStyles, css`
 
   :host([variant="line"][disabled]) {
     background-color: var(--mdc-tab-line-inactive-background-color-disabled);
-    border: none;
     color: var(--mdc-tab-line-inactive-color-disabled);
   }
 
   :host([variant="line"][active]) {
     background-color: var(--mdc-tab-line-active-background-color-normal);
-    border: none;
     color: var(--mdc-tab-line-active-color);
   }
 
-  :host([variant="line"]) #line-variant-active-tab-indicator {
-    height: 2px;
-    width: var(--mdc-tab-line-active-indicator-width);
-    margin-top: -2px;
-  }
-
-  :host([variant="line"][active]) #line-variant-active-tab-indicator {
-    position: relative;
-    top: 6px;
-    border: 1px solid var(--mdc-tab-line-active-color);
+  :host([variant="line"][active]) .mdc-tab__line_tab_indicator {
+    background-color:var(--mdc-tab-line-active-indicator-color);
     visibility: visible;
   }
 
@@ -210,12 +202,11 @@ const styles = [hostFitContentStyles, css`
 
   :host([variant="line"][active][disabled]) {
     background-color: var(--mdc-tab-line-active-background-color-disabled);
-    border-bottom-color: var(--mdc-tab-line-active-bottom-border-color-disabled);
     color: var(--mdc-tab-line-active-color-disabled);
   }
 
-  :host([variant="line"][active][disabled]) #line-variant-active-tab-indicator {
-    border: 1px solid var(--mdc-tab-line-active-color-disabled);
+  :host([variant="line"][active][disabled]) .mdc-tab__line_tab_indicator {
+    background-color:var(--mdc-tab-line-active-indicator-color-disabled);
   }
 
   :host([variant="pill"]) {
@@ -243,7 +234,6 @@ const styles = [hostFitContentStyles, css`
 
   :host([variant="pill"][active]) {
     background-color: var(--mdc-tab-pill-active-background-color-normal);
-    border: none;
     color: var(--mdc-tab-pill-active-color);
   }
 

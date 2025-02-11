@@ -52,11 +52,13 @@ import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
  * @cssproperty --mdc-tab-line-active-background-color-focus - Background color for active line tab in focus state.
  * @cssproperty --mdc-tab-line-active-background-color-hover - Background color for active line tab in hover state.
  * @cssproperty --mdc-tab-line-active-background-color-normal - Background color for active line tab in rest state.
- * @cssproperty --mdc-tab-line-active-bottom-border-color - Bottom border color for active line tab.
- * @cssproperty --mdc-tab-line-active-bottom-border-color-disabled - Bottom border color for active line tab
- *  in disabled state.
  * @cssproperty --mdc-tab-line-active-color - Text and icon color for active line tab.
  * @cssproperty --mdc-tab-line-active-color-disabled - Text and icon color for active line tab in disabled state.
+ * @cssproperty --mdc-tab-line-active-indicator-color - color for indicator in active line tab.
+ * @cssproperty --mdc-tab-line-active-indicator-color-disabled - Color for indicator in active line tab
+ *  in disabled state.
+ * @cssproperty --mdc-tab-line-active-indicator-height - Height for indicator in active line tab.
+ * @cssproperty --mdc-tab-line-active-indicator-width - Width for indicator in active line tab.
  * @cssproperty --mdc-tab-line-border-bottom-left-radius - Bottom left border radius for line tab.
  * @cssproperty --mdc-tab-line-border-bottom-right-radius - Bottom right border radius for line tab.
  * @cssproperty --mdc-tab-line-border-top-left-radius - Top left border radius for line tab.
@@ -166,20 +168,18 @@ class Tab extends Buttonsimple {
 
   public override render() {
     return html`
-      <div id="container">
-        <div id="badge-icon-text-container">
-          <slot name="badge"></slot>
-          ${this.iconName ? html`<mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem">
-            </mdc-icon>` : nothing}
-            <mdc-text
-              type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}
-              tagname=${VALID_TEXT_TAGS.SPAN}>
-              <slot></slot>
-            </mdc-text>
-          </div>
-        <div id="line-variant-active-tab-indicator"></div>
+      <div class="mdc-tab__content">
+        <slot name="badge"></slot>
+        ${this.iconName ? html`<mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem">
+          </mdc-icon>` : nothing}
+        <mdc-text
+          type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}
+          tagname=${VALID_TEXT_TAGS.SPAN}>
+          <slot></slot>
+        </mdc-text>
       </div>
-      `;
+      <div class="mdc-tab__line_tab_indicator"></div>
+    `;
   }
 
   public static override styles: Array<CSSResult> = [...Buttonsimple.styles, ...styles];
