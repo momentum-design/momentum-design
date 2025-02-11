@@ -1,4 +1,5 @@
-import { CSSResult, html, PropertyValues, TemplateResult } from 'lit';
+import type { PropertyValues, TemplateResult } from 'lit';
+import { CSSResult, html } from 'lit';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';

@@ -1,4 +1,5 @@
-import { CSSResult, html, PropertyValueMap } from 'lit';
+import type { PropertyValues } from 'lit';
+import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { AvatarComponentMixin } from '../../utils/mixins/AvatarComponentMixin';
@@ -36,7 +37,7 @@ class AvatarButton extends AvatarComponentMixin(IconNameMixin(Buttonsimple)) {
       this.type = BUTTON_DEFAULTS.TYPE;
     }
 
-    override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    override update(changedProperties: PropertyValues): void {
       super.update(changedProperties);
       if (changedProperties.has('size')) {
         this.setSize(this.size);

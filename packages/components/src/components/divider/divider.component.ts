@@ -1,6 +1,6 @@
-import { CSSResult, html, PropertyValueMap } from 'lit';
+import type { PropertyValues } from 'lit';
+import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
-import styles from './divider.styles';
 import { Component } from '../../models';
 import {
   ARROW_ICONS,
@@ -11,6 +11,7 @@ import {
   DIVIDER_VARIANT,
   TEXT_TAG,
 } from './divider.constants';
+import styles from './divider.styles';
 import { Directions, DividerOrientation, DividerVariant } from './divider.types';
 
 /**
@@ -177,7 +178,7 @@ class Divider extends Component {
     return isPositive ? ARROW_ICONS.RIGHT : ARROW_ICONS.LEFT;
   }
 
-  public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+  public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
 
     if (changedProperties.has('orientation')) {

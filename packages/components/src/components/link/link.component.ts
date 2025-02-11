@@ -1,4 +1,5 @@
-import { CSSResult, html, PropertyValueMap } from 'lit';
+import type { PropertyValues } from 'lit';
+import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
@@ -125,7 +126,7 @@ class Link extends DisabledMixin(IconNameMixin(Component)) {
     }
   }
 
-  public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+  public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
     if (changedProperties.has('disabled')) {
       this.setDisabled(this.disabled);
