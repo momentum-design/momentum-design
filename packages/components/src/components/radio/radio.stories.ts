@@ -23,12 +23,12 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/radio',
+  title: 'Components/radio',
   tags: ['autodocs'],
   component: 'mdc-radio',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     ...classArgType,
