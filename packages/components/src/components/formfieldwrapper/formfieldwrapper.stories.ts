@@ -23,7 +23,7 @@ const meta: Meta = {
   component: 'mdc-formfieldwrapper',
   render,
   parameters: {
-    badges: ['stable'],
+    badges: ['internal'],
   },
   argTypes: {
     ...classArgType,

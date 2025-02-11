@@ -73,6 +73,18 @@ const preview = {
           desc: 'Ready for use.',
         },
       },
+      internal: {
+        styles: {
+          backgroundColor: '#0D2C3D',
+          borderColor: '#1D9BF0',
+          color: '#FFFFFFF2',
+        },
+        title: 'Internal',
+        tooltip: {
+          title: 'This Component is Internal',
+          desc: 'This component is not intended for direct consumption.',
+        },
+      },
       deprecated: {
         styles: {
           backgroundColor: '#4F0E10',
