@@ -71,7 +71,7 @@ class IconProvider extends Provider<IconProviderContext> {
    *
    * @default false
    */
-  @property({ type: Boolean, reflect: true })
+  @property({ type: Boolean, attribute: 'should-cache', reflect: true })
   shouldCache?: boolean = DEFAULTS.SHOULD_CACHE;
 
   private updateValuesInContext() {

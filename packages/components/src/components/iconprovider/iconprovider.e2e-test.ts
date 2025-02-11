@@ -22,7 +22,7 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.size ? `size="${restArgs.size}"` : ''}
     >
       <mdc-subcomponent-icon id="sub-local" icon-label-prefix="IconProvider Length Unit: "></mdc-subcomponent-icon>
-      <mdc-icon name="accessibility-regular" size="2"></mdc-icon>
+      <mdc-icon id="icon-local" name="accessibility-regular" size="2"></mdc-icon>
       ${children}
     </mdc-iconprovider>
   `;
@@ -39,7 +39,7 @@ const setup = async (args: SetupOptions) => {
       >
         <mdc-subcomponent-icon id="sub-nested" icon-label-prefix="Nested IconProvider Length Unit: ">
         </mdc-subcomponent-icon>
-        <mdc-icon name="accessibility-regular" size="2"></mdc-icon>
+        <mdc-icon id="icon-local" name="accessibility-regular" size="2"></mdc-icon>
       </mdc-iconprovider>
         `),
     });
@@ -123,10 +123,7 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
 
       await expect(iconprovider).toHaveAttribute('file-extension', DEFAULTS.FILE_EXTENSION);
       await expect(iconprovider).toHaveAttribute('length-unit', DEFAULTS.LENGTH_UNIT);
-      await expect(iconprovider).toHaveAttribute(
-        'size',
-        '9999',
-      );
+      await expect(iconprovider).toHaveAttribute('size', '9999');
       // SUBCOMPONENT
       await expect(subComponentLocator).toContainText(`IconProvider Length Unit: ${DEFAULTS.LENGTH_UNIT}`);
 
@@ -139,10 +136,7 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
 
         await expect(nestedIconProvider).toHaveAttribute('file-extension', DEFAULTS.FILE_EXTENSION);
         await expect(nestedIconProvider).toHaveAttribute('length-unit', DEFAULTS.LENGTH_UNIT);
-        await expect(nestedIconProvider).toHaveAttribute(
-          'size',
-          '9999',
-        );
+        await expect(nestedIconProvider).toHaveAttribute('size', '9999');
         await expect(nestedSubComponentLocator).toContainText(`IconProvider Length Unit: ${DEFAULTS.LENGTH_UNIT}`);
       }
     });
@@ -172,14 +166,62 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
   });
 
   await test.step('caching', async () => {
-    await componentsPage.setAttributes(iconprovider, {
-      'file-extension': 'svg',
-      'length-unit': 'rem',
-      'should-cache': 'true',
+    await test.step('caching turned off', async () => {
+      if (type === 'standalone') {
+        await componentsPage.setAttributes(iconprovider, {
+          'file-extension': 'svg',
+          'length-unit': 'rem',
+        });
+        const iconLocator = componentsPage.page.locator('mdc-icon#icon-local');
+
+        const responseAccessibilityBoldFirstTime = componentsPage.page.waitForResponse('**/accessibility-bold.svg');
+        await componentsPage.setAttributes(iconLocator, {
+          name: 'accessibility-bold',
+        });
+        await componentsPage.expectPromiseTimesOut(responseAccessibilityBoldFirstTime, false, 4000);
+
+        const responsePlaceholderRegular = componentsPage.page.waitForResponse('**/placeholder-regular.svg');
+        await componentsPage.setAttributes(iconLocator, {
+          name: 'placeholder-regular',
+        });
+        await componentsPage.expectPromiseTimesOut(responsePlaceholderRegular, false, 4000);
+
+        const responseAccessibilityBoldSecondTime = componentsPage.page.waitForResponse('**/accessibility-bold.svg');
+        await componentsPage.setAttributes(iconLocator, {
+          name: 'accessibility-bold',
+        });
+        // this should not timeout, so the network request is still made, cause caching is not turned on:
+        await componentsPage.expectPromiseTimesOut(responseAccessibilityBoldSecondTime, false, 4000);
+      }
     });
-    const iconLocator = componentsPage.page.locator('mdc-icon[name="accessibility-regular"]');
-    await componentsPage.setAttributes(iconLocator, {
-      name: 'placeholder-regular',
+    await test.step('caching turned on', async () => {
+      if (type === 'standalone') {
+        await componentsPage.setAttributes(iconprovider, {
+          'file-extension': 'svg',
+          'length-unit': 'rem',
+          'should-cache': '',
+        });
+        const iconLocator = componentsPage.page.locator('mdc-icon#icon-local');
+
+        const responseAccessoriesBoldFirstTime = componentsPage.page.waitForResponse('**/accessories-bold.svg');
+        await componentsPage.setAttributes(iconLocator, {
+          name: 'accessories-bold',
+        });
+        await componentsPage.expectPromiseTimesOut(responseAccessoriesBoldFirstTime, false, 4000);
+
+        const responseAccessoriesRegular = componentsPage.page.waitForResponse('**/accessories-regular.svg');
+        await componentsPage.setAttributes(iconLocator, {
+          name: 'accessories-regular',
+        });
+        await componentsPage.expectPromiseTimesOut(responseAccessoriesRegular, false, 4000);
+
+        const responseAccessoriesBoldSecondTime = componentsPage.page.waitForResponse('**/accessories-bold.svg');
+        await componentsPage.setAttributes(iconLocator, {
+          name: 'accessories-bold',
+        });
+        // this should timeout, so the network request is not made, cause caching is turned on:
+        await componentsPage.expectPromiseTimesOut(responseAccessoriesBoldSecondTime, true, 4000);
+      }
     });
   });
 };
