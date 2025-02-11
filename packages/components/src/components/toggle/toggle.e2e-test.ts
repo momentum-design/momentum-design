@@ -153,35 +153,35 @@ const testToRun = async (componentsPage: ComponentsPage) => {
     await toggleStickerSheet.setAttributes({
       'data-aria-label': 'This is aria label text',
     });
-    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { style: 'gap: 1.25rem' });
+    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { rowWrapperStyle: 'gap: 1.25rem' });
     await toggleStickerSheet.setAttributes({
       label: 'I agree to the terms',
     });
-    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { style: 'gap: 1.25rem' });
+    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { rowWrapperStyle: 'gap: 1.25rem' });
     await toggleStickerSheet.setAttributes({
       label: 'Selected toggle Label',
       checked: true,
     });
-    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { style: 'gap: 1.25rem' });
+    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { rowWrapperStyle: 'gap: 1.25rem' });
     await toggleStickerSheet.setAttributes({
       label: 'Selected toggle Label',
       'help-text': 'This is a help text',
       checked: true,
     });
-    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { style: 'gap: 1.25rem' });
+    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { rowWrapperStyle: 'gap: 1.25rem' });
     await toggleStickerSheet.setAttributes({
       label: 'Disabled toggle Label',
       'help-text': 'This is a help text',
       disabled: true,
     });
-    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { style: 'gap: 1.25rem' });
+    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { rowWrapperStyle: 'gap: 1.25rem' });
     await toggleStickerSheet.setAttributes({
       label: 'Disabled Selected toggle Label',
       'help-text': 'This is a help text',
       disabled: true,
       checked: true,
     });
-    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { style: 'gap: 1.25rem' });
+    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { rowWrapperStyle: 'gap: 1.25rem' });
 
     await toggleStickerSheet.mountStickerSheet();
     const container = toggleStickerSheet.getWrapperContainer();

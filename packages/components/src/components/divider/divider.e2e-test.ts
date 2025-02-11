@@ -122,14 +122,14 @@ test.describe.parallel('mdc-divider', () => {
       dividerStickerSheet.setChildren(NoChildren);
       await dividerStickerSheet.createMarkupWithCombination(
         { variant: DIVIDER_VARIANT },
-        { style: 'margin-bottom: 3.5rem; gap: 1.5rem' },
+        { rowWrapperStyle: 'margin-bottom: 3.5rem; gap: 1.5rem' },
       );
 
       // for text type
       dividerStickerSheet.setChildren(Text);
       await dividerStickerSheet.createMarkupWithCombination(
         { variant: DIVIDER_VARIANT },
-        { style: 'margin-bottom: 3.5rem; gap: 1.5rem' },
+        { rowWrapperStyle: 'margin-bottom: 3.5rem; gap: 1.5rem' },
       );
 
       // for grabber type
@@ -139,7 +139,7 @@ test.describe.parallel('mdc-divider', () => {
           'arrow-direction':
       DIRECTIONS,
           'button-position': DIRECTIONS },
-        { style: 'margin-bottom: 3.5rem; gap: 1.5rem' },
+        { rowWrapperStyle: 'margin-bottom: 3.5rem; gap: 1.5rem' },
       );
 
       await dividerStickerSheet.mountStickerSheet('padding: 1.25rem');
@@ -163,7 +163,7 @@ test.describe.parallel('mdc-divider', () => {
       dividerStickerSheet.setChildren(NoChildren);
       await dividerStickerSheet.createMarkupWithCombination(
         { variant: DIVIDER_VARIANT },
-        { style: 'gap:3.5rem; margin-bottom: 3.5rem' },
+        { rowWrapperStyle: 'gap:3.5rem; margin-bottom: 3.5rem' },
       );
 
       // for grabber type
@@ -171,7 +171,7 @@ test.describe.parallel('mdc-divider', () => {
       await dividerStickerSheet.createMarkupWithCombination({ variant: DIVIDER_VARIANT,
         'arrow-direction':
       DIRECTIONS,
-        'button-position': DIRECTIONS }, { style: 'gap:3.5rem; margin-bottom: 3.5rem' });
+        'button-position': DIRECTIONS }, { rowWrapperStyle: 'gap:3.5rem; margin-bottom: 3.5rem' });
 
       await dividerStickerSheet.mountStickerSheet('display: flex; gap: 3.5rem; height: 90%; padding: 1.25rem');
       const container = dividerStickerSheet.getWrapperContainer();

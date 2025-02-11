@@ -190,56 +190,56 @@ test('mdc-link', async ({ componentsPage }) => {
     stickerSheet.setAttributes({ inverted: '' });
     await stickerSheet.createMarkupWithCombination(
       { size: Object.values(LINK_SIZES) },
-      { style: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
+      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
     );
 
     // Standalone Link inverted with trailing icon
     stickerSheet.setAttributes({ 'icon-name': ICON_PLACEHOLDER, inverted: '' });
     await stickerSheet.createMarkupWithCombination(
       { size: Object.values(LINK_SIZES) },
-      { style: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
+      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
     );
 
     // Standalone Link inverted and disabled without trailing icon
     stickerSheet.setAttributes({ disabled: '', inverted: '' });
     await stickerSheet.createMarkupWithCombination(
       { size: Object.values(LINK_SIZES) },
-      { style: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
+      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
     );
 
     // Standalone Link inverted and disabled with trailing icon
     stickerSheet.setAttributes({ disabled: '', 'icon-name': ICON_PLACEHOLDER, inverted: '' });
     await stickerSheet.createMarkupWithCombination(
       { size: Object.values(LINK_SIZES) },
-      { style: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
+      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
     );
 
     // Inline Link inverted without trailing icon
     stickerSheet.setAttributes({ inline: '', inverted: '' });
     await stickerSheet.createMarkupWithCombination(
       { size: Object.values(LINK_SIZES) },
-      { style: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
+      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
     );
 
     // Inline Link inverted with trailing icon
     stickerSheet.setAttributes({ 'icon-name': ICON_PLACEHOLDER, inline: '', inverted: '' });
     await stickerSheet.createMarkupWithCombination(
       { size: Object.values(LINK_SIZES) },
-      { style: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
+      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
     );
 
     // Inline Link inverted and disabled without trailing icon
     stickerSheet.setAttributes({ disabled: '', inline: '', inverted: '' });
     await stickerSheet.createMarkupWithCombination(
       { size: Object.values(LINK_SIZES) },
-      { style: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
+      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
     );
 
     // Inline Link inverted and disabled with trailing icon
     stickerSheet.setAttributes({ disabled: '', inline: '', inverted: '', 'icon-name': ICON_PLACEHOLDER });
     await stickerSheet.createMarkupWithCombination(
       { size: Object.values(LINK_SIZES) },
-      { style: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
+      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
     );
 
     await stickerSheet.mountStickerSheet();

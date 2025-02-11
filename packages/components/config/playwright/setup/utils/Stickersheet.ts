@@ -4,7 +4,7 @@ import type { ComponentsPage } from '..';
 type AttributesType = Record<string, any>;
 type OptionsType = {
   createNewRow?: boolean;
-  style?: string;
+  rowWrapperStyle?: string;
 }
 
 class StickerSheet {
@@ -16,17 +16,20 @@ class StickerSheet {
 
   private attributes: AttributesType = {};
 
-  private rowId: number = 1;
+  private rowId = 1;
 
-  private markupHTML: string = '';
+  private markupHTML = '';
 
-  constructor(componentPage: ComponentsPage, tagName: string) {
+  private componentStyle = '';
+
+  constructor(componentPage: ComponentsPage, tagName: string, componentStyle = '') {
     if (!tagName) {
       throw new Error('tagname is required');
     }
 
     this.componentPage = componentPage;
     this.tagname = tagName;
+    this.componentStyle = componentStyle;
   }
 
   /**
@@ -46,9 +49,14 @@ class StickerSheet {
   }
 
   private formatAttributesAsString() {
-    return Object.entries(this.attributes)
+    const attributeString = Object.entries(this.attributes)
       .map(([key, value]) => value ? `${key}="${value}"` : `${key}`)
       .join(' ');
+
+    if (this.componentStyle && !this.attributes.style) {
+      return `${attributeString} style="${this.componentStyle}"`;
+    }
+    return attributeString;
   }
 
   /**
@@ -85,7 +93,7 @@ class StickerSheet {
    */
   private createComponentsMarkupHTML(childrenEl: string, options: OptionsType) {
     if (options.createNewRow) {
-      this.markupHTML += `<div class="componentRowWrapper" style='${options.style}'>${childrenEl}</div>`;
+      this.markupHTML += `<div class="componentRowWrapper" style='${options.rowWrapperStyle}'>${childrenEl}</div>`;
     } else {
       this.markupHTML += childrenEl;
     }
@@ -109,17 +117,17 @@ class StickerSheet {
    * Creates a wrapper for a combination of components and adds them to the sheet.
    * @param combinationArr - An array of objects representing combinations of attributes for components.
    */
-  private createWrapperForCombination(combinationArr: Array<Record<string, any>>, wrapperStyles = '') {
+  private createWrapperForCombination(combinationArr: Array<Record<string, any>>, rowWrapperStyle = '') {
     let childrenEl = '';
     for (const combination of combinationArr) {
       if (Array.isArray(combination)) {
-        this.createWrapperForCombination(combination, wrapperStyles);
+        this.createWrapperForCombination(combination, rowWrapperStyle);
       } else {
         this.setAttributes({ ...this.attributes, ...combination });
         childrenEl += this.addComponentToSheet();
       }
     }
-    this.createComponentsMarkupHTML(childrenEl, { createNewRow: true, style: wrapperStyles });
+    this.createComponentsMarkupHTML(childrenEl, { createNewRow: true, rowWrapperStyle });
   }
 
   /**
@@ -131,11 +139,14 @@ class StickerSheet {
    */
   public async createMarkupWithCombination(combinations: Record<string, Record<string, any>>, options: OptionsType = {
     createNewRow: false,
-    style: '',
+    rowWrapperStyle: '',
   }) {
     if (Object.keys(combinations).length === 0) {
       // not creating componentRowWrapper to wrap a single component
-      this.createComponentsMarkupHTML(this.addComponentToSheet(), { createNewRow: false, style: options.style });
+      this.createComponentsMarkupHTML(
+        this.addComponentToSheet(),
+        { createNewRow: false, rowWrapperStyle: options.rowWrapperStyle },
+      );
       return;
     }
 
@@ -147,7 +158,7 @@ class StickerSheet {
     let childrenEl = '';
     for (const combination of allCombinations) {
       if (Array.isArray(combination)) {
-        this.createWrapperForCombination(combination, options.style);
+        this.createWrapperForCombination(combination, options.rowWrapperStyle);
       } else if (options.createNewRow) {
         this.setAttributes({ ...this.attributes, ...combination });
         this.createComponentsMarkupHTML(this.addComponentToSheet(), options);
@@ -158,7 +169,7 @@ class StickerSheet {
     }
 
     if (!Array.isArray(allCombinations[0]) && !options.createNewRow) {
-      this.createComponentsMarkupHTML(childrenEl, { createNewRow: true, style: options.style });
+      this.createComponentsMarkupHTML(childrenEl, { createNewRow: true, rowWrapperStyle: options.rowWrapperStyle });
     }
   }
 
@@ -166,9 +177,9 @@ class StickerSheet {
    * Mounts the sticker sheet markup onto the page.
    * @param style - A string representing the style to apply to the wrapper. Default is an empty string.
    */
-  public async mountStickerSheet(style = '') {
+  public async mountStickerSheet(wrapperStyle = '') {
     await this.componentPage.mount({
-      html: `<div class="componentWrapper" style='${style}'>${this.markupHTML}</div>`,
+      html: `<div class="componentWrapper" style='${wrapperStyle}'>${this.markupHTML}</div>`,
       clearDocument: true,
     });
     await this.componentPage.page.waitForTimeout(1000);

@@ -49,7 +49,10 @@ const testToRun = async (componentsPage: ComponentsPage) => {
    */
   await test.step('visual-regression', async () => {
     const stickerSheet = new StickerSheet(componentsPage, 'mdc-marker');
-    await stickerSheet.createMarkupWithCombination({ variant: MARKER_VARIANTS }, { style: 'height: 6.25rem' });
+    await stickerSheet.createMarkupWithCombination(
+      { variant: MARKER_VARIANTS },
+      { rowWrapperStyle: 'height: 6.25rem' },
+    );
     await stickerSheet.mountStickerSheet();
     const container = stickerSheet.getWrapperContainer();
 

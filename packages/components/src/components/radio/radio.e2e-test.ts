@@ -60,7 +60,7 @@ test('mdc-radio', async ({ componentsPage }) => {
     await test.step('visual-regression', async () => {
       const radioStickerSheet = new StickerSheet(componentsPage, 'mdc-radio');
 
-      //   Radio btn without label
+      // Radio btn without label
       await radioStickerSheet.setAttributes({
         'data-aria-label': 'Standard Plan',
       });
