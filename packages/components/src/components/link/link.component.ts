@@ -4,7 +4,7 @@ import { Component } from '../../models';
 import { DEFAULTS, LINK_ICON_SIZES, LINK_SIZES } from './link.constants';
 import { LinkSize } from './link.types';
 import styles from './link.styles';
-import { IconNames } from '../icon/icon.types';
+import type { IconNames } from '../icon/icon.types';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 
 /**

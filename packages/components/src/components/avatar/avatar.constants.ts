@@ -11,7 +11,7 @@ const AVATAR_TYPE = {
 } as const;
 
 const MAX_COUNTER = 99;
-const ICON_NAME: IconNames = 'user-regular';
+const ICON_NAME: Extract<IconNames, 'user-regular'> = 'user-regular';
 
 const AVATAR_SIZE = {
   24: 24,
