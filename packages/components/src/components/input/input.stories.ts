@@ -43,12 +43,12 @@ const render = (args: Args) => {
 };
 
 const meta: Meta = {
-  title: 'Work In Progress/input',
+  title: 'Components/input',
   tags: ['autodocs'],
   component: 'mdc-input',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     ...classArgType,
