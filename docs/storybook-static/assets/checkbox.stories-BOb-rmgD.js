@@ -1,4 +1,4 @@
-import{i as R,k as r,D as u}from"./lit-element-CHllvULs.js";import{u as z,n as O}from"./index-HW6KrQZO.js";import{t as x}from"./if-defined-C4tJgJ33.js";import{N as B,V as K,D as P}from"./ValueMixin-DFWGhyGn.js";import{F as v}from"./formfieldwrapper.component-Dae6IeB3.js";import{a as j}from"./index-MYSkQ1zX.js";import"./index-BUvIMixM.js";import{a as U}from"./chunk-D5ZWXAHU-CGElDDNX.js";import{c as G,s as q}from"./commonArgTypes-BluK8w5L.js";import{h as J,d as Q}from"./utils-D1SE5bce.js";import"./index-CgIMCVCL.js";import"./text.constants-DJu2q-6E.js";import"./DisabledMixin-DBt9didn.js";import"./state-CWckTc1X.js";import"./index-BYMLCX4c.js";import"./iconprovider.component-CvArfi6w.js";import"./create-context-89xeped_.js";import"./v4-CQkTLCs1.js";import"./button.constants-CjxsrM-Y.js";import"./buttonsimple.constants-Biy6Bznc.js";import"./buttonsimple.component-C2NzybLk.js";const X=z.constructTagName("checkbox"),g={CHECKED:"check-bold",INDETERMINATE:"minus-bold"},Y=[R`
+import{i as W,k as r,D as k}from"./lit-element-CHllvULs.js";import{u as z,n as O}from"./index-HW6KrQZO.js";import{t as x}from"./if-defined-C4tJgJ33.js";import{N as B,V as K,D as j}from"./ValueMixin-DFWGhyGn.js";import{F as v}from"./formfieldwrapper.component-Dae6IeB3.js";import{a as G}from"./index-MYSkQ1zX.js";import"./index-BUvIMixM.js";import{a as U}from"./chunk-D5ZWXAHU-CGElDDNX.js";import{c as P,s as q}from"./commonArgTypes-BluK8w5L.js";import{h as J,d as Q}from"./utils-D1SE5bce.js";import"./index-CgIMCVCL.js";import"./text.constants-DJu2q-6E.js";import"./DisabledMixin-DBt9didn.js";import"./state-CWckTc1X.js";import"./index-BYMLCX4c.js";import"./iconprovider.component-CvArfi6w.js";import"./create-context-89xeped_.js";import"./v4-CQkTLCs1.js";import"./button.constants-CjxsrM-Y.js";import"./buttonsimple.constants-Biy6Bznc.js";import"./buttonsimple.component-C2NzybLk.js";const X=z.constructTagName("checkbox"),g={CHECKED:"check-bold",INDETERMINATE:"minus-bold"},Y=[W`
   :host {
     --mdc-checkbox-background-color-hover: var(--mds-color-theme-control-inactive-hover);
     --mdc-checkbox-border-color: var(--mds-color-theme-outline-button-normal);
@@ -100,14 +100,14 @@ import{i as R,k as r,D as u}from"./lit-element-CHllvULs.js";import{u as z,n as O
       border: 0.0625rem solid var(--mdc-checkbox-border-color);
     }
   }
-`,...j(!0)];var Z=Object.defineProperty,W=(c,e,t,p)=>{for(var o=void 0,b=c.length-1,k;b>=0;b--)(k=c[b])&&(o=k(e,t,o)||o);return o&&Z(e,t,o),o};const h=class h extends B(K(P(v))){constructor(){super(),this.checked=!1,this.indeterminate=!1,this.internals=this.attachInternals(),this.helpTextType=void 0}get form(){return this.internals.form}setFormValue(){let e=null;this.checked&&(e=this.value?this.value:"on"),this.internals.setFormValue(e)}toggleState(){this.disabled||(this.checked=!this.checked,this.indeterminate=!1)}handleChange(e){this.toggleState(),this.dispatchEvent(new Event(e.type,e))}update(e){super.update(e),e.has("checked")&&this.setFormValue()}render(){const e=this.checked||this.indeterminate?r`
+`,...G(!0)];var Z=Object.defineProperty,R=(c,e,t,p)=>{for(var o=void 0,b=c.length-1,u;b>=0;b--)(u=c[b])&&(o=u(e,t,o)||o);return o&&Z(e,t,o),o};const h=class h extends B(K(j(v))){constructor(){super(),this.checked=!1,this.indeterminate=!1,this.internals=this.attachInternals(),this.helpTextType=void 0}get form(){return this.internals.form}setFormValue(){let e=null;this.checked&&(e=this.value?this.value:"on"),this.internals.setFormValue(e)}toggleState(){this.disabled||(this.checked=!this.checked,this.indeterminate=!1)}handleChange(e){this.toggleState(),this.dispatchEvent(new Event(e.type,e))}update(e){super.update(e),e.has("checked")&&this.setFormValue()}render(){const e=this.checked||this.indeterminate?r`
       <mdc-icon
         class="icon"
         name="${this.indeterminate?g.INDETERMINATE:g.CHECKED}"
         size="1"
         length-unit="rem"
       ></mdc-icon>
-    `:u,t=this.helpText?this.renderHelperText():u;return r`
+    `:k,t=this.helpText?this.renderHelperText():k;return r`
       <div class="container mdc-focus-ring">
         <input
           id="${this.id}"
@@ -127,7 +127,7 @@ import{i as R,k as r,D as u}from"./lit-element-CHllvULs.js";import{u as z,n as O
         ${this.renderLabel()}
         ${t}
       </div>
-    `}};h.formAssociated=!0,h.styles=[...v.styles,...Y];let a=h;W([O({type:Boolean,reflect:!0})],a.prototype,"checked");W([O({type:Boolean,reflect:!0})],a.prototype,"indeterminate");a.register(X);const ee=c=>r`
+    `}};h.formAssociated=!0,h.styles=[...v.styles,...Y];let a=h;R([O({type:Boolean,reflect:!0})],a.prototype,"checked");R([O({type:Boolean,reflect:!0})],a.prototype,"indeterminate");a.register(X);const ee=c=>r`
   <mdc-checkbox
     label="${c.label}"
     help-text="${c["help-text"]}"
@@ -137,7 +137,7 @@ import{i as R,k as r,D as u}from"./lit-element-CHllvULs.js";import{u as z,n as O
     data-aria-label="${c["data-aria-label"]}"
     @change="${U("onchange")}"
   ></mdc-checkbox>
-`,Te={title:"Work In Progress/checkbox",tags:["autodocs"],component:"mdc-checkbox",render:ee,parameters:{badges:["wip"]},argTypes:{label:{control:"text"},"help-text":{control:"text"},checked:{control:"boolean"},indeterminate:{control:"boolean"},disabled:{control:"boolean"},"data-aria-label":{control:"text"},name:{control:"text"},value:{control:"text"},...J(["help-text-type","label-info","id","internals"]),...Q(["--mdc-checkbox-background-color-hover","--mdc-checkbox-border-color","--mdc-checkbox-checked-background-color","--mdc-checkbox-checked-background-color-hover","--mdc-checkbox-checked-pressed-icon-color","--mdc-checkbox-disabled-background-color","--mdc-checkbox-disabled-border-color","--mdc-checkbox-disabled-checked-icon-color","--mdc-checkbox-disabled-icon-color","--mdc-checkbox-icon-background-color","--mdc-checkbox-icon-border-color","--mdc-checkbox-icon-color","--mdc-checkbox-pressed-icon-color"]),...G,...q}},n={args:{label:"I agree to the terms","help-text":"",checked:!1,indeterminate:!1,disabled:!1,"data-aria-label":"Agree to all terms and conditions"}},d={args:{"data-aria-label":"This is a checkbox with no label"}},i={args:{label:"Email Opt In","help-text":"I agree to receiving monthly promotional emails."}},l={args:{label:"Checkbox Label","help-text":"Checkbox Help Text",indeterminate:!0}},s={parameters:{a11y:{element:"mdc-checkbox"}},render:()=>r`
+`,Te={title:"Components/checkbox",tags:["autodocs"],component:"mdc-checkbox",render:ee,parameters:{badges:["stable"]},argTypes:{label:{control:"text"},"help-text":{control:"text"},checked:{control:"boolean"},indeterminate:{control:"boolean"},disabled:{control:"boolean"},"data-aria-label":{control:"text"},name:{control:"text"},value:{control:"text"},...J(["help-text-type","label-info","id","internals"]),...Q(["--mdc-checkbox-background-color-hover","--mdc-checkbox-border-color","--mdc-checkbox-checked-background-color","--mdc-checkbox-checked-background-color-hover","--mdc-checkbox-checked-pressed-icon-color","--mdc-checkbox-disabled-background-color","--mdc-checkbox-disabled-border-color","--mdc-checkbox-disabled-checked-icon-color","--mdc-checkbox-disabled-icon-color","--mdc-checkbox-icon-background-color","--mdc-checkbox-icon-border-color","--mdc-checkbox-icon-color","--mdc-checkbox-pressed-icon-color"]),...P,...q}},n={args:{label:"I agree to the terms","help-text":"",checked:!1,indeterminate:!1,disabled:!1,"data-aria-label":"Agree to all terms and conditions"}},d={args:{"data-aria-label":"This is a checkbox with no label"}},l={args:{label:"Email Opt In","help-text":"I agree to receiving monthly promotional emails."}},i={args:{label:"Checkbox Label","help-text":"Checkbox Help Text",indeterminate:!0}},s={parameters:{a11y:{element:"mdc-checkbox"}},render:()=>r`
     <div style="display: flex; flex-direction: column;">
       <mdc-checkbox label="Unselected" disabled></mdc-checkbox>
       <mdc-checkbox label="Selected" disabled checked></mdc-checkbox>
@@ -165,22 +165,22 @@ import{i as R,k as r,D as u}from"./lit-element-CHllvULs.js";import{u as z,n as O
     disabled: false,
     'data-aria-label': 'Agree to all terms and conditions'
   }
-}`,...(T=(y=n.parameters)==null?void 0:y.docs)==null?void 0:T.source}}};var S,w,E;d.parameters={...d.parameters,docs:{...(S=d.parameters)==null?void 0:S.docs,source:{originalSource:`{
+}`,...(T=(y=n.parameters)==null?void 0:y.docs)==null?void 0:T.source}}};var S,E,$;d.parameters={...d.parameters,docs:{...(S=d.parameters)==null?void 0:S.docs,source:{originalSource:`{
   args: {
     'data-aria-label': 'This is a checkbox with no label'
   }
-}`,...(E=(w=d.parameters)==null?void 0:w.docs)==null?void 0:E.source}}};var $,I,D;i.parameters={...i.parameters,docs:{...($=i.parameters)==null?void 0:$.docs,source:{originalSource:`{
+}`,...($=(E=d.parameters)==null?void 0:E.docs)==null?void 0:$.source}}};var w,I,C;l.parameters={...l.parameters,docs:{...(w=l.parameters)==null?void 0:w.docs,source:{originalSource:`{
   args: {
     label: 'Email Opt In',
     'help-text': 'I agree to receiving monthly promotional emails.'
   }
-}`,...(D=(I=i.parameters)==null?void 0:I.docs)==null?void 0:D.source}}};var F,C,A;l.parameters={...l.parameters,docs:{...(F=l.parameters)==null?void 0:F.docs,source:{originalSource:`{
+}`,...(C=(I=l.parameters)==null?void 0:I.docs)==null?void 0:C.source}}};var D,F,A;i.parameters={...i.parameters,docs:{...(D=i.parameters)==null?void 0:D.docs,source:{originalSource:`{
   args: {
     label: 'Checkbox Label',
     'help-text': 'Checkbox Help Text',
     indeterminate: true
   }
-}`,...(A=(C=l.parameters)==null?void 0:C.docs)==null?void 0:A.source}}};var M,V,N;s.parameters={...s.parameters,docs:{...(M=s.parameters)==null?void 0:M.docs,source:{originalSource:`{
+}`,...(A=(F=i.parameters)==null?void 0:F.docs)==null?void 0:A.source}}};var M,V,N;s.parameters={...s.parameters,docs:{...(M=s.parameters)==null?void 0:M.docs,source:{originalSource:`{
   parameters: {
     a11y: {
       element: 'mdc-checkbox'
@@ -218,4 +218,4 @@ import{i as R,k as r,D as u}from"./lit-element-CHllvULs.js";import{u as z,n as O
       </form>
     \`;
   }
-}`,...(_=(L=m.parameters)==null?void 0:L.docs)==null?void 0:_.source}}};const Se=["Example","WithoutLabel","HelperText","Indeterminate","DisabledVariants","FormField"];export{s as DisabledVariants,n as Example,m as FormField,i as HelperText,l as Indeterminate,d as WithoutLabel,Se as __namedExportsOrder,Te as default};
+}`,...(_=(L=m.parameters)==null?void 0:L.docs)==null?void 0:_.source}}};const Se=["Example","WithoutLabel","HelperText","Indeterminate","DisabledVariants","FormField"];export{s as DisabledVariants,n as Example,m as FormField,l as HelperText,i as Indeterminate,d as WithoutLabel,Se as __namedExportsOrder,Te as default};
