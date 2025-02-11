@@ -134,7 +134,8 @@ class StickerSheet {
     style: '',
   }) {
     if (Object.keys(combinations).length === 0) {
-      this.createComponentsMarkupHTML(this.addComponentToSheet(), options);
+      // not creating componentRowWrapper to wrap a single component
+      this.createComponentsMarkupHTML(this.addComponentToSheet(), { createNewRow: false, style: options.style });
       return;
     }
 
