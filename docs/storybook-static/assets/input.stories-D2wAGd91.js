@@ -139,6 +139,7 @@ import{i as O,D as m,k as c}from"./lit-element-CHllvULs.js";import{u as C,n as l
       </mdc-text>
     `:m}clearInputText(){var t;this.value="",(t=this.inputElement)==null||t.focus()}renderTrailingButton(){return this.trailingButton?c`
       <mdc-button 
+        part='trailing-button'
         class='${this.value?"":"hidden"}'
         prefix-icon='${p.CLEAR_BUTTON_ICON}'
         variant='${p.CLEAR_BUTTON_VARIANT}'
