@@ -164,10 +164,11 @@ class StickerSheet {
 
   /**
    * Mounts the sticker sheet markup onto the page.
+   * @param style - A string representing the style to apply to the wrapper. Default is an empty string.
    */
-  public async mountStickerSheet() {
+  public async mountStickerSheet(style = '') {
     await this.componentPage.mount({
-      html: `<div class="componentWrapper">${this.markupHTML}</div>`,
+      html: `<div class="componentWrapper" style='${style}'>${this.markupHTML}</div>`,
       clearDocument: true,
     });
     await this.componentPage.page.waitForTimeout(1000);

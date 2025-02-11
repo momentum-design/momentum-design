@@ -153,45 +153,38 @@ const testToRun = async (componentsPage: ComponentsPage) => {
     await toggleStickerSheet.setAttributes({
       'data-aria-label': 'This is aria label text',
     });
-    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE });
+    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { style: 'gap: 1.25rem' });
     await toggleStickerSheet.setAttributes({
       label: 'I agree to the terms',
     });
-    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE });
+    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { style: 'gap: 1.25rem' });
     await toggleStickerSheet.setAttributes({
       label: 'Selected toggle Label',
       checked: true,
     });
-    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE });
+    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { style: 'gap: 1.25rem' });
     await toggleStickerSheet.setAttributes({
       label: 'Selected toggle Label',
       'help-text': 'This is a help text',
       checked: true,
     });
-    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE });
+    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { style: 'gap: 1.25rem' });
     await toggleStickerSheet.setAttributes({
       label: 'Disabled toggle Label',
       'help-text': 'This is a help text',
       disabled: true,
     });
-    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE });
+    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { style: 'gap: 1.25rem' });
     await toggleStickerSheet.setAttributes({
       label: 'Disabled Selected toggle Label',
       'help-text': 'This is a help text',
       disabled: true,
       checked: true,
     });
-    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE });
+    await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { style: 'gap: 1.25rem' });
 
     await toggleStickerSheet.mountStickerSheet();
     const container = toggleStickerSheet.getWrapperContainer();
-    await container.evaluate((wrapper) => {
-      const rowWrappers = wrapper.querySelectorAll('.componentRowWrapper') as NodeListOf<HTMLElement>;
-      Array.from(rowWrappers).forEach((rowWrapper) => {
-        const modifiedRowWrapper = rowWrapper;
-        modifiedRowWrapper.style.gap = '1.25rem';
-      });
-    });
 
     await test.step('matches screenshot of toggle element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-toggle', {

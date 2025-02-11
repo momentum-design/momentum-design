@@ -120,32 +120,30 @@ test.describe.parallel('mdc-divider', () => {
       dividerStickerSheet.setAttributes({ orientation: DIVIDER_ORIENTATION.HORIZONTAL });
       // for primary type
       dividerStickerSheet.setChildren(NoChildren);
-      await dividerStickerSheet.createMarkupWithCombination({ variant: DIVIDER_VARIANT });
+      await dividerStickerSheet.createMarkupWithCombination(
+        { variant: DIVIDER_VARIANT },
+        { style: 'margin-bottom: 3.5rem; gap: 1.5rem' },
+      );
 
       // for text type
       dividerStickerSheet.setChildren(Text);
-      await dividerStickerSheet.createMarkupWithCombination({ variant: DIVIDER_VARIANT });
+      await dividerStickerSheet.createMarkupWithCombination(
+        { variant: DIVIDER_VARIANT },
+        { style: 'margin-bottom: 3.5rem; gap: 1.5rem' },
+      );
 
       // for grabber type
       dividerStickerSheet.setChildren(Grabber);
-      await dividerStickerSheet.createMarkupWithCombination({ variant: DIVIDER_VARIANT,
-        'arrow-direction':
+      await dividerStickerSheet.createMarkupWithCombination(
+        { variant: DIVIDER_VARIANT,
+          'arrow-direction':
       DIRECTIONS,
-        'button-position': DIRECTIONS });
+          'button-position': DIRECTIONS },
+        { style: 'margin-bottom: 3.5rem; gap: 1.5rem' },
+      );
 
-      await dividerStickerSheet.mountStickerSheet();
+      await dividerStickerSheet.mountStickerSheet('padding: 1.25rem');
       const container = dividerStickerSheet.getWrapperContainer();
-      await container.evaluate((wrapper) => {
-        const modifiedWrapper = wrapper;
-        modifiedWrapper.style.padding = '1.25rem';
-
-        const rowWrappers = wrapper.querySelectorAll('.componentRowWrapper') as NodeListOf<HTMLElement>;
-        Array.from(rowWrappers).forEach((rowWrapper) => {
-          const modifiedRowWrapper = rowWrapper;
-          modifiedRowWrapper.style.gap = '1.5rem';
-          modifiedRowWrapper.style.marginBottom = '3.5rem';
-        });
-      });
 
       await test.step('matches screenshot of element', async () => {
         await componentsPage.visualRegression.takeScreenshot('mdc-divider-horizontal', { element: container });
@@ -163,31 +161,20 @@ test.describe.parallel('mdc-divider', () => {
       dividerStickerSheet.setAttributes({ orientation: DIVIDER_ORIENTATION.VERTICAL });
       // for primary type
       dividerStickerSheet.setChildren(NoChildren);
-      await dividerStickerSheet.createMarkupWithCombination({ variant: DIVIDER_VARIANT });
+      await dividerStickerSheet.createMarkupWithCombination(
+        { variant: DIVIDER_VARIANT },
+        { style: 'gap:3.5rem; margin-bottom: 3.5rem' },
+      );
 
       // for grabber type
       dividerStickerSheet.setChildren(Grabber);
       await dividerStickerSheet.createMarkupWithCombination({ variant: DIVIDER_VARIANT,
         'arrow-direction':
       DIRECTIONS,
-        'button-position': DIRECTIONS });
+        'button-position': DIRECTIONS }, { style: 'gap:3.5rem; margin-bottom: 3.5rem' });
 
-      await dividerStickerSheet.mountStickerSheet();
+      await dividerStickerSheet.mountStickerSheet('display: flex; gap: 3.5rem; height: 90%; padding: 1.25rem');
       const container = dividerStickerSheet.getWrapperContainer();
-      await container.evaluate((wrapper) => {
-        const modifiedWrapper = wrapper;
-        modifiedWrapper.style.display = 'flex';
-        modifiedWrapper.style.gap = '3.5rem';
-        modifiedWrapper.style.height = '90%';
-        modifiedWrapper.style.padding = '1.25rem';
-
-        const rowWrappers = wrapper.querySelectorAll('.componentRowWrapper') as NodeListOf<HTMLElement>;
-        Array.from(rowWrappers).forEach((rowWrapper) => {
-          const modifiedRowWrapper = rowWrapper;
-          modifiedRowWrapper.style.gap = '3.5rem';
-          modifiedRowWrapper.style.marginBottom = '3.5rem';
-        });
-      });
 
       await test.step('matches screenshot of element', async () => {
         await componentsPage.visualRegression.takeScreenshot('mdc-divider-vertical', { element: container });

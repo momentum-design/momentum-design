@@ -49,13 +49,9 @@ const testToRun = async (componentsPage: ComponentsPage) => {
    */
   await test.step('visual-regression', async () => {
     const stickerSheet = new StickerSheet(componentsPage, 'mdc-marker');
-    await stickerSheet.createMarkupWithCombination({ variant: MARKER_VARIANTS });
+    await stickerSheet.createMarkupWithCombination({ variant: MARKER_VARIANTS }, { style: 'height: 6.25rem' });
     await stickerSheet.mountStickerSheet();
     const container = stickerSheet.getWrapperContainer();
-    await container.evaluate((el) => {
-      const wrapper = el.querySelector('.componentRowWrapper') as HTMLElement;
-      wrapper.style.height = '6.25rem';
-    });
 
     await test.step('matches screenshot of different variants', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-marker-variants', { element: container });
