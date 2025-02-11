@@ -24,9 +24,10 @@ class Checkboxgroup extends Component {
    */
   @property({ type: String, attribute: 'header-text' }) headerText?: string;
 
-  /**
-   * @internal
-   */
+  /** @internal */
+  @property({ type: String, reflect: true }) override role = 'group';
+
+  /** @internal */
   private get checkboxList() {
     const slot = this.shadowRoot?.querySelector('slot');
     const assignedElements = slot?.assignedElements() || [];
