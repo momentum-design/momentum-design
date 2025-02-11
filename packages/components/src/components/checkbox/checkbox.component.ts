@@ -51,9 +51,6 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
   @property({ type: Boolean, reflect: true }) indeterminate = false;
 
   /** @internal */
-  @property({ type: String, reflect: true }) override role = 'checkbox';
-
-  /** @internal */
   private internals: ElementInternals;
 
   /** @internal */
