@@ -16,7 +16,8 @@ import styles from './checkboxgroup.styles';
  *
  * @tagname mdc-checkboxgroup
  *
- * @slot default - This is a default slot
+ * @slot help-text - This is a help text slot.
+ * @slot children - This is a default slot for children.
  */
 class Checkboxgroup extends Component {
   /**
@@ -62,8 +63,11 @@ class Checkboxgroup extends Component {
   private navigate(origin: EventTarget | null, direction: number): void {
     const getAllCheckboxIds = this.checkboxList.map((checkbox) => checkbox.id);
     const currentIdIndex = getAllCheckboxIds.indexOf((origin as HTMLInputElement).id);
-    const nextIndex = (currentIdIndex + direction) % getAllCheckboxIds.length;
-    (this.children[nextIndex] as HTMLInputElement).focus();
+    // Negative modulo doesn't work directly with JS.
+    // https://stackoverflow.com/a/71167019/4745480
+    const futureIndex = (((currentIdIndex + direction) % getAllCheckboxIds.length)
+      + getAllCheckboxIds.length) % getAllCheckboxIds.length;
+    (this.children[futureIndex] as HTMLInputElement).focus();
   }
 
   public override render() {
@@ -74,7 +78,8 @@ class Checkboxgroup extends Component {
       : nothing;
     return html`
       ${header}
-      <slot></slot>
+      <slot name="help-text"></slot>
+      <slot name="checkboxes-list"></slot>
     `;
   }
 
