@@ -128,6 +128,10 @@ class Icon extends Component {
     if (this.iconProviderContext.value) {
       const { fileExtension, url, iconsCache, shouldCache } = this.iconProviderContext.value;
       if (url && fileExtension && this.name) {
+        // abort the previous fetch request if it is still pending
+        // before retreiving from cache
+        this.abortController.abort();
+
         // check if icon is already fetched and stored in the iconsCache map
         if (iconsCache.has(this.name)) {
           const iconElement = this.prepareIconElement(iconsCache.get(this.name)!);
@@ -136,7 +140,6 @@ class Icon extends Component {
           return;
         }
 
-        this.abortController.abort();
         this.abortController = new AbortController();
         try {
           // fetch icon from backend
