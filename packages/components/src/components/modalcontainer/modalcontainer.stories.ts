@@ -22,7 +22,7 @@ const meta: Meta = {
   component: 'mdc-modalcontainer',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['internal'],
   },
   argTypes: {
     children: {
