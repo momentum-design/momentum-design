@@ -1,5 +1,7 @@
 import{j as e}from"./jsx-runtime-N83kn9-W.js";import{useMDXComponents as t}from"./index-g1djAheZ.js";import"./_commonjsHelpers-Cpj98o6Y.js";function o(s){const n={a:"a",code:"code",h1:"h1",h2:"h2",h3:"h3",h4:"h4",li:"li",p:"p",pre:"pre",strong:"strong",ul:"ul",...t(),...s.components};return e.jsxs(e.Fragment,{children:[e.jsx(n.h1,{id:"consumption",children:"Consumption"}),`
 `,e.jsxs(n.p,{children:["This consumption guide for the Global Web Library, ",e.jsx(n.code,{children:"@momentum-design/components"})," provides detailed instructions on how to effectively access and utilize these components in your web applications, specifically focusing on Web Components and React."]}),`
+`,e.jsxs(n.p,{children:["For all the details regarding the release, please visit: ",e.jsx(n.a,{href:"https://github.com/momentum-design/momentum-design/releases",rel:"nofollow",children:e.jsx(n.strong,{children:"release history"})}),"."]}),`
+`,e.jsxs(n.p,{children:["If you would like to provide any feedback, please raise an ",e.jsx(n.a,{href:"https://github.com/momentum-design/momentum-design/issues",rel:"nofollow",children:e.jsx(n.strong,{children:"issue"})}),"."]}),`
 `,e.jsx(n.h2,{id:"installation",children:"Installation"}),`
 `,e.jsxs(n.p,{children:["To install the library, add the following NPM dependency to your ",e.jsx(n.code,{children:"package.json"})," with the required version number:"]}),`
 `,e.jsxs(n.ul,{children:[`
@@ -7,9 +9,10 @@ import{j as e}from"./jsx-runtime-N83kn9-W.js";import{useMDXComponents as t}from"
 `]}),`
 `,e.jsx(n.p,{children:"In order to install, run the following command:"}),`
 `,e.jsx(n.pre,{children:e.jsx(n.code,{className:"language-bash",children:`npm install @momentum-design/components
-`})}),`
-`,e.jsx(n.p,{children:"or"}),`
-`,e.jsx(n.pre,{children:e.jsx(n.code,{className:"language-bash",children:`yarn add @momentum-design/components
+
+or
+
+yarn add @momentum-design/components
 `})}),`
 `,e.jsx(n.h2,{id:"prerequisites",children:"PreRequisites"}),`
 `,e.jsxs(n.ul,{children:[`

@@ -1,12 +1,12 @@
-import{i as k,D as m,k as c}from"./lit-element-CHllvULs.js";import{u as C,n as l}from"./index-HW6KrQZO.js";import{t as a}from"./if-defined-C4tJgJ33.js";import{a as R}from"./index-MYSkQ1zX.js";import"./index-DqrRE3eA.js";import{D as P,V as q,N as D}from"./ValueMixin-DFWGhyGn.js";import{B as H,I as z}from"./button.constants-CjxsrM-Y.js";import{V as g,F as T}from"./formfieldwrapper.component-Dae6IeB3.js";import{T as B,V as U}from"./text.constants-DJu2q-6E.js";import"./index-CgIMCVCL.js";import"./index-BUvIMixM.js";import"./index-BGkqZMsC.js";import{a as y}from"./chunk-D5ZWXAHU-CGElDDNX.js";import{c as w,s as X}from"./commonArgTypes-BluK8w5L.js";import{d as F}from"./utils-D1SE5bce.js";import"./buttonsimple.constants-Biy6Bznc.js";import"./DisabledMixin-DBt9didn.js";import"./state-CWckTc1X.js";import"./buttonsimple.component-C2NzybLk.js";import"./index-BYMLCX4c.js";import"./iconprovider.component-CvArfi6w.js";import"./create-context-89xeped_.js";import"./v4-CQkTLCs1.js";/**
+import{i as O,D as h,k as c}from"./lit-element-CHllvULs.js";import{u as C,n as a}from"./index-HW6KrQZO.js";import{t as i}from"./if-defined-C4tJgJ33.js";import{a as R}from"./index-MYSkQ1zX.js";import"./index-DqrRE3eA.js";import{D as P,V as q,N as D}from"./ValueMixin-DFWGhyGn.js";import{B as H,I as z}from"./button.constants-CjxsrM-Y.js";import{V as g,F as T}from"./formfieldwrapper.component-Dae6IeB3.js";import{T as B,V as w}from"./text.constants-DJu2q-6E.js";import"./index-CgIMCVCL.js";import"./index-BUvIMixM.js";import"./index-BGkqZMsC.js";import{a as u}from"./chunk-D5ZWXAHU-CGElDDNX.js";import{c as U,s as X}from"./commonArgTypes-BluK8w5L.js";import{d as k}from"./utils-D1SE5bce.js";import"./buttonsimple.constants-Biy6Bznc.js";import"./DisabledMixin-DBt9didn.js";import"./state-CWckTc1X.js";import"./buttonsimple.component-C2NzybLk.js";import"./index-BYMLCX4c.js";import"./iconprovider.component-CvArfi6w.js";import"./create-context-89xeped_.js";import"./v4-CQkTLCs1.js";/**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const M=(e,t,i)=>(i.configurable=!0,i.enumerable=!0,Reflect.decorate&&typeof t!="object"&&Object.defineProperty(e,t,i),i);/**
+ */const M=(e,t,o)=>(o.configurable=!0,o.enumerable=!0,Reflect.decorate&&typeof t!="object"&&Object.defineProperty(e,t,o),o);/**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */function Z(e,t){return(i,s,n)=>{const d=u=>{var v;return((v=u.renderRoot)==null?void 0:v.querySelector(e))??null};return M(i,s,{get(){return d(this)}})}}const j=[k`
+ */function Z(e,t){return(o,s,n)=>{const d=m=>{var v;return((v=m.renderRoot)==null?void 0:v.querySelector(e))??null};return M(o,s,{get(){return d(this)}})}}const j=[O`
   :host{
     --mdc-input-disabled-border-color: var(--mds-color-theme-outline-primary-disabled);
     --mdc-input-disabled-text-color: var(--mds-color-theme-text-primary-disabled);
@@ -120,7 +120,7 @@ import{i as k,D as m,k as c}from"./lit-element-CHllvULs.js";import{u as C,n as l
     opacity: 0;
     pointer-events: none;
   }
-  `,...R(!0)],G=C.constructTagName("input"),O={OFF:"off",NONE:"none",ON:"on",SENTENCES:"sentences",WORDS:"words",CHARACTERS:"characters"},Y={MAX_LENGTH:10,HELPERTEXT:"Prefix text should not exceed 10 characters",VALIDATION:g.ERROR},p={VALIDATION:g.DEFAULT,ICON_SIZE_VALUE:1,ICON_SIZE_UNIT:"rem",CLEAR_BUTTON_ICON:"cancel-bold",CLEAR_BUTTON_VARIANT:H.TERTIARY,CLEAR_BUTTON_SIZE:z[20],PREFIX_TEXT_TYPE:B.BODY_MIDSIZE_REGULAR,PREFIX_TEXT_TAG:U.SPAN};var W=Object.defineProperty,o=(e,t,i,s)=>{for(var n=void 0,d=e.length-1,u;d>=0;d--)(u=e[d])&&(n=u(t,i,n)||n);return n&&W(t,i,n),n};const f=class f extends P(q(D(T))){constructor(){super(),this.placeholder="",this.required=!1,this.readonly=!1,this.trailingButton=!1,this.autocapitalize=O.OFF,this.autocomplete="off",this.autofocus=!1,this.clearAriaLabel="",this.internals=this.attachInternals()}checkValidity(){return this.setValidityFromInput(),this.internals.checkValidity()}reportValidity(){return this.setValidityFromInput(),this.internals.reportValidity()}get form(){return this.internals.form}connectedCallback(){super.connectedCallback(),this.updateComplete.then(()=>{this.inputElement&&(this.inputElement.checkValidity(),this.setValidityFromInput(),this.internals.setFormValue(this.inputElement.value))}).catch(t=>{this.onerror&&this.onerror(t)})}updated(t){super.updated(t),t.has("value")&&this.handleValueChange()}handleValueChange(){this.internals.setFormValue(this.value),this.updateComplete.then(()=>{this.setValidityFromInput()}).catch(t=>{this.onerror&&this.onerror(t)})}attributeChangedCallback(t,i,s){super.attributeChangedCallback(t,i,s),["maxlength","minlength","pattern","required"].includes(t)&&this.updateComplete.then(()=>{this.setValidityFromInput()}).catch(d=>{this.onerror&&this.onerror(d)})}setValidityFromInput(){this.inputElement&&this.internals.setValidity(this.inputElement.validity,this.inputElement.validationMessage,this.inputElement)}updateValue(){this.value=this.inputElement.value,this.internals.setFormValue(this.inputElement.value)}onInput(){this.updateValue(),this.setValidityFromInput()}onChange(t){this.updateValue(),this.setValidityFromInput();const i=t.constructor;this.dispatchEvent(new i(t.type,t))}renderLeadingIcon(){return this.leadingIcon?c`
+  `,...R(!0)],G=C.constructTagName("input"),F={OFF:"off",NONE:"none",ON:"on",SENTENCES:"sentences",WORDS:"words",CHARACTERS:"characters"},Y={MAX_LENGTH:10,HELPERTEXT:"Prefix text should not exceed 10 characters",VALIDATION:g.ERROR},p={VALIDATION:g.DEFAULT,ICON_SIZE_VALUE:1,ICON_SIZE_UNIT:"rem",CLEAR_BUTTON_ICON:"cancel-bold",CLEAR_BUTTON_VARIANT:H.TERTIARY,CLEAR_BUTTON_SIZE:z[20],PREFIX_TEXT_TYPE:B.BODY_MIDSIZE_REGULAR,PREFIX_TEXT_TAG:w.SPAN};var K=Object.defineProperty,l=(e,t,o,s)=>{for(var n=void 0,d=e.length-1,m;d>=0;d--)(m=e[d])&&(n=m(t,o,n)||n);return n&&K(t,o,n),n};const f=class f extends P(q(D(T))){constructor(){super(),this.placeholder="",this.required=!1,this.readonly=!1,this.trailingButton=!1,this.autocapitalize=F.OFF,this.autocomplete="off",this.autofocus=!1,this.clearAriaLabel="",this.internals=this.attachInternals()}checkValidity(){return this.setValidityFromInput(),this.internals.checkValidity()}reportValidity(){return this.setValidityFromInput(),this.internals.reportValidity()}get form(){return this.internals.form}connectedCallback(){super.connectedCallback(),this.updateComplete.then(()=>{this.inputElement&&(this.inputElement.checkValidity(),this.setValidityFromInput(),this.internals.setFormValue(this.inputElement.value))}).catch(t=>{this.onerror&&this.onerror(t)})}updated(t){super.updated(t),t.has("value")&&this.handleValueChange()}handleValueChange(){this.internals.setFormValue(this.value),this.updateComplete.then(()=>{this.setValidityFromInput()}).catch(t=>{this.onerror&&this.onerror(t)})}attributeChangedCallback(t,o,s){super.attributeChangedCallback(t,o,s),["maxlength","minlength","pattern","required"].includes(t)&&this.updateComplete.then(()=>{this.setValidityFromInput()}).catch(d=>{this.onerror&&this.onerror(d)})}setValidityFromInput(){this.inputElement&&this.internals.setValidity(this.inputElement.validity,this.inputElement.validationMessage,this.inputElement)}updateValue(){this.value=this.inputElement.value,this.internals.setFormValue(this.inputElement.value)}onInput(){this.updateValue(),this.setValidityFromInput()}onChange(t){this.updateValue(),this.setValidityFromInput();const o=t.constructor;this.dispatchEvent(new o(t.type,t))}handleKeyDown(t){var o;t.key==="Enter"&&((o=this.internals.form)==null||o.requestSubmit())}renderLeadingIcon(){return this.leadingIcon?c`
       <mdc-icon 
         class="leading-icon" 
         part="leading-icon"
@@ -128,7 +128,7 @@ import{i as k,D as m,k as c}from"./lit-element-CHllvULs.js";import{u as C,n as l
         size="${p.ICON_SIZE_VALUE}" 
         length-unit="${p.ICON_SIZE_UNIT}">
       </mdc-icon>
-    `:m}renderPrefixText(){return this.prefixText?c`
+    `:h}renderPrefixText(){return this.prefixText?c`
       <mdc-text 
         class="prefix-text" 
         tagname="${p.PREFIX_TEXT_TAG}" 
@@ -137,7 +137,7 @@ import{i as k,D as m,k as c}from"./lit-element-CHllvULs.js";import{u as C,n as l
       >
         ${this.prefixText.slice(0,Y.MAX_LENGTH)}
       </mdc-text>
-    `:m}clearInputText(){var t;this.value="",(t=this.inputElement)==null||t.focus()}renderTrailingButton(){return this.trailingButton?c`
+    `:h}clearInputText(){var t;this.value="",(t=this.inputElement)==null||t.focus()}renderTrailingButton(){return this.trailingButton?c`
       <mdc-button 
         part='trailing-button'
         class='${this.value?"":"hidden"}'
@@ -148,7 +148,7 @@ import{i as k,D as m,k as c}from"./lit-element-CHllvULs.js";import{u as C,n as l
         @click=${this.clearInputText}
         ?disabled=${this.disabled||this.readonly||!this.value}
       ></mdc-button>
-    `:m}render(){return c`
+    `:h}render(){return c`
       ${this.renderLabel()}
       <div class="input-container mdc-focus-ring" part="input-container">
         <slot name="input-leading-icon">${this.renderLeadingIcon()}</slot>
@@ -166,28 +166,30 @@ import{i as k,D as m,k as c}from"./lit-element-CHllvULs.js";import{u as C,n as l
             ?readonly="${this.readonly}"
             ?required="${this.required}"
             type="text"
-            placeholder=${a(this.placeholder)}
-            minlength=${a(this.minlength)}
-            maxlength=${a(this.maxlength)}
+            placeholder=${i(this.placeholder)}
+            minlength=${i(this.minlength)}
+            maxlength=${i(this.maxlength)}
             autocapitalize=${this.autocapitalize}
             autocomplete=${this.autocomplete}
             ?autofocus="${this.autofocus}"
-            dirname=${a(this.dirname)}
-            pattern=${a(this.pattern)}
-            list=${a(this.list)}
-            size=${a(this.size)}
+            dirname=${i(this.dirname)}
+            pattern=${i(this.pattern)}
+            list=${i(this.list)}
+            size=${i(this.size)}
             @input=${this.onInput}
             @change=${this.onChange}
+            @keydown=${this.handleKeyDown}
           />
         </slot>
        </div>
         <slot name="trailing-button">${this.renderTrailingButton()}</slot>
       </div>
-      ${this.helpText?this.renderHelperText():m}
-    `}};f.formAssociated=!0,f.styles=[...T.styles,...j];let r=f;o([l({type:String})],r.prototype,"placeholder");o([l({type:Boolean})],r.prototype,"required");o([l({type:Boolean})],r.prototype,"readonly");o([l({type:String,attribute:"prefix-text"})],r.prototype,"prefixText");o([l({type:String,attribute:"leading-icon"})],r.prototype,"leadingIcon");o([l({type:Boolean,attribute:"trailing-button"})],r.prototype,"trailingButton");o([l({type:Number})],r.prototype,"maxlength");o([l({type:Number})],r.prototype,"minlength");o([l({type:String})],r.prototype,"autocapitalize");o([l({type:String})],r.prototype,"autocomplete");o([l({type:Boolean})],r.prototype,"autofocus");o([l({type:String})],r.prototype,"dirname");o([l({type:String})],r.prototype,"pattern");o([l({type:String})],r.prototype,"list");o([l({type:Number})],r.prototype,"size");o([l({type:String,attribute:"clear-aria-label"})],r.prototype,"clearAriaLabel");o([Z("input")],r.prototype,"inputElement");r.register(G);const J=e=>{const t=e.maxlength&&e.value?e.value.substring(0,e.maxlength):e.value;return c` <mdc-input
-    @change="${y("onchange")}"
-    @focus="${y("onfocus")}"
-    @blur="${y("onblur")}"
+      ${this.helpText?this.renderHelperText():h}
+    `}};f.formAssociated=!0,f.styles=[...T.styles,...j];let r=f;l([a({type:String})],r.prototype,"placeholder");l([a({type:Boolean})],r.prototype,"required");l([a({type:Boolean})],r.prototype,"readonly");l([a({type:String,attribute:"prefix-text"})],r.prototype,"prefixText");l([a({type:String,attribute:"leading-icon"})],r.prototype,"leadingIcon");l([a({type:Boolean,attribute:"trailing-button"})],r.prototype,"trailingButton");l([a({type:Number})],r.prototype,"maxlength");l([a({type:Number})],r.prototype,"minlength");l([a({type:String})],r.prototype,"autocapitalize");l([a({type:String})],r.prototype,"autocomplete");l([a({type:Boolean})],r.prototype,"autofocus");l([a({type:String})],r.prototype,"dirname");l([a({type:String})],r.prototype,"pattern");l([a({type:String})],r.prototype,"list");l([a({type:Number})],r.prototype,"size");l([a({type:String,attribute:"clear-aria-label"})],r.prototype,"clearAriaLabel");l([Z("input")],r.prototype,"inputElement");r.register(G);const W=e=>{const t=e.maxlength&&e.value?e.value.substring(0,e.maxlength):e.value;return c` <mdc-input
+    @input="${u("oninput")}"
+    @change="${u("onchange")}"
+    @focus="${u("onfocus")}"
+    @blur="${u("onblur")}"
     label="${e.label}"
     help-text-type="${e["help-text-type"]}"
     help-text="${e["help-text"]}"
@@ -201,19 +203,19 @@ import{i as k,D as m,k as c}from"./lit-element-CHllvULs.js";import{u as C,n as l
     ?readonly="${e.readonly}"
     ?trailing-button="${e["trailing-button"]}"
     prefix-text="${e["prefix-text"]}"
-    data-aria-label="${a(e["data-aria-label"])}"
+    data-aria-label="${i(e["data-aria-label"])}"
     leading-icon="${e["leading-icon"]}"
-    maxlength="${a(e.maxlength)}"
-    minlength="${a(e.minlength)}"
+    maxlength="${i(e.maxlength)}"
+    minlength="${i(e.minlength)}"
     autocapitalize="${e.autocapitalize}"
     ?autofocus="${e.autofocus}"
     autocomplete="${e.autocomplete}"
-    dirname="${a(e.dirname)}"
-    pattern="${a(e.pattern)}"
-    list="${a(e.list)}"
-    size="${a(e.size)}"
-    clear-aria-label="${a(e["clear-aria-label"])}"
-    ></mdc-input>`},Te={title:"Components/input",tags:["autodocs"],component:"mdc-input",render:J,parameters:{badges:["stable"]},argTypes:{...w,...X,"help-text-type":{control:"select",options:Object.values(g)},name:{control:"text"},value:{control:"text"},placeholder:{control:"text"},label:{control:"text"},required:{control:"boolean"},"help-text":{control:"text"},readonly:{control:"boolean"},disabled:{control:"boolean"},"prefix-text":{control:"text"},"leading-icon":{control:"text"},"trailing-button":{control:"boolean"},minlength:{control:"number"},maxlength:{control:"number"},autocapitalize:{control:"select",options:Object.values(O)},autofocus:{control:"boolean"},autocomplete:{control:"text"},dirname:{control:"text"},pattern:{control:"text"},list:{control:"text"},size:{control:"number"},"clear-aria-label":{control:"text"},"data-aria-label":{control:"text"},...F(["--mdc-input-disabled-border-color","--mdc-input-disabled-text-color","--mdc-input-disabled-background-color","--mdc-input-border-color","--mdc-input-text-color","--mdc-input-background-color","--mdc-input-selection-background-color","--mdc-input-selection-text-color","--mdc-input-support-text-color","--mdc-input-hover-background-color","--mdc-input-focused-background-color","--mdc-input-focused-border-color","--mdc-input-error-border-color","--mdc-input-warning-border-color","--mdc-input-success-border-color","--mdc-input-primary-border-color"])}},h={args:{name:"input",label:"Label (required)",placeholder:"Placeholder",value:"","help-text":"Helper text","help-text-type":"default",required:!0,readonly:!1,disabled:!1,"prefix-text":"","leading-icon":"","trailing-button":!1,autocapitalize:"off",autofocus:!1,"clear-aria-label":"clear input","data-aria-label":""}},b={argTypes:{...F(["label","help-text","required","placeholder","value","help-text-type"])},render:()=>c`
+    dirname="${i(e.dirname)}"
+    pattern="${i(e.pattern)}"
+    list="${i(e.list)}"
+    size="${i(e.size)}"
+    clear-aria-label="${i(e["clear-aria-label"])}"
+    ></mdc-input>`},Te={title:"Components/input",tags:["autodocs"],component:"mdc-input",render:W,parameters:{badges:["stable"]},argTypes:{...U,...X,"help-text-type":{control:"select",options:Object.values(g)},name:{control:"text"},value:{control:"text"},placeholder:{control:"text"},label:{control:"text"},required:{control:"boolean"},"help-text":{control:"text"},readonly:{control:"boolean"},disabled:{control:"boolean"},"prefix-text":{control:"text"},"leading-icon":{control:"text"},"trailing-button":{control:"boolean"},minlength:{control:"number"},maxlength:{control:"number"},autocapitalize:{control:"select",options:Object.values(F)},autofocus:{control:"boolean"},autocomplete:{control:"text"},dirname:{control:"text"},pattern:{control:"text"},list:{control:"text"},size:{control:"number"},"clear-aria-label":{control:"text"},"data-aria-label":{control:"text"},...k(["--mdc-input-disabled-border-color","--mdc-input-disabled-text-color","--mdc-input-disabled-background-color","--mdc-input-border-color","--mdc-input-text-color","--mdc-input-background-color","--mdc-input-selection-background-color","--mdc-input-selection-text-color","--mdc-input-support-text-color","--mdc-input-hover-background-color","--mdc-input-focused-background-color","--mdc-input-focused-border-color","--mdc-input-error-border-color","--mdc-input-warning-border-color","--mdc-input-success-border-color","--mdc-input-primary-border-color"])}},b={args:{name:"input",label:"Label (required)",placeholder:"Placeholder",value:"","help-text":"Helper text","help-text-type":"default",required:!0,readonly:!1,disabled:!1,"prefix-text":"","leading-icon":"","trailing-button":!1,autocapitalize:"off",autofocus:!1,"clear-aria-label":"clear input","data-aria-label":""}},x={argTypes:{...k(["label","help-text","required","placeholder","value","help-text-type"])},render:()=>c`
   <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
     ${Object.values(g).map(e=>c`<mdc-input
       help-text-type="${e}"
@@ -258,8 +260,8 @@ import{i as k,D as m,k as c}from"./lit-element-CHllvULs.js";import{u as C,n as l
       placeholder="Placeholder"
       leading-icon="placeholder-bold"
       ></mdc-input>
-      </div>`},x={render:()=>c`
-    <form @submit=${t=>{t.preventDefault();const s=new FormData(t.target).get("user-name");y("Form Submitted")({value:s})}}>
+      </div>`},y={render:()=>c`
+    <form @submit=${t=>{t.preventDefault();const s=new FormData(t.target).get("user-name");u("Form Submitted")({value:s})}}>
       <mdc-input
        name='user-name'
         label="First Name (required)"
@@ -268,7 +270,7 @@ import{i as k,D as m,k as c}from"./lit-element-CHllvULs.js";import{u as C,n as l
       ></mdc-input>
       <mdc-button type="submit" size='24' style='margin-top: 0.5rem'>Submit</mdc-button>
     </form>
-    `};var $,E,I;h.parameters={...h.parameters,docs:{...($=h.parameters)==null?void 0:$.docs,source:{originalSource:`{
+    `};var $,E,I;b.parameters={...b.parameters,docs:{...($=b.parameters)==null?void 0:$.docs,source:{originalSource:`{
   args: {
     name: 'input',
     label: 'Label (required)',
@@ -287,7 +289,7 @@ import{i as k,D as m,k as c}from"./lit-element-CHllvULs.js";import{u as C,n as l
     'clear-aria-label': 'clear input',
     'data-aria-label': ''
   }
-}`,...(I=(E=h.parameters)==null?void 0:E.docs)==null?void 0:I.source}}};var A,_,L;b.parameters={...b.parameters,docs:{...(A=b.parameters)==null?void 0:A.docs,source:{originalSource:`{
+}`,...(I=(E=b.parameters)==null?void 0:E.docs)==null?void 0:I.source}}};var A,_,L;x.parameters={...x.parameters,docs:{...(A=x.parameters)==null?void 0:A.docs,source:{originalSource:`{
   argTypes: {
     ...disableControls(['label', 'help-text', 'required', 'placeholder', 'value', 'help-text-type'])
   },
@@ -337,7 +339,7 @@ import{i as k,D as m,k as c}from"./lit-element-CHllvULs.js";import{u as C,n as l
       leading-icon="placeholder-bold"
       ></mdc-input>
       </div>\`
-}`,...(L=(_=b.parameters)==null?void 0:_.docs)==null?void 0:L.source}}};var N,V,S;x.parameters={...x.parameters,docs:{...(N=x.parameters)==null?void 0:N.docs,source:{originalSource:`{
+}`,...(L=(_=x.parameters)==null?void 0:_.docs)==null?void 0:L.source}}};var N,S,V;y.parameters={...y.parameters,docs:{...(N=y.parameters)==null?void 0:N.docs,source:{originalSource:`{
   render: () => {
     const handleSubmit = (event: Event) => {
       event.preventDefault();
@@ -359,4 +361,4 @@ import{i as k,D as m,k as c}from"./lit-element-CHllvULs.js";import{u as C,n as l
     </form>
     \`;
   }
-}`,...(S=(V=x.parameters)==null?void 0:V.docs)==null?void 0:S.source}}};const $e=["Example","AllVariants","FormFieldInput"];export{b as AllVariants,h as Example,x as FormFieldInput,$e as __namedExportsOrder,Te as default};
+}`,...(V=(S=y.parameters)==null?void 0:S.docs)==null?void 0:V.source}}};const $e=["Example","AllVariants","FormFieldInput"];export{x as AllVariants,b as Example,y as FormFieldInput,$e as __namedExportsOrder,Te as default};
