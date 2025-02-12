@@ -1,6 +1,8 @@
-import { CSSResult, html, PropertyValueMap } from 'lit';
+import type { PropertyValues } from 'lit';
+import { CSSResult, html } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import styles from './button.styles';
+import Buttonsimple from '../buttonsimple/buttonsimple.component';
+import type { IconNames } from '../icon/icon.types';
 import {
   BUTTON_COLORS,
   BUTTON_TYPE_INTERNAL,
@@ -9,16 +11,11 @@ import {
   ICON_BUTTON_SIZES,
   PILL_BUTTON_SIZES,
 } from './button.constants';
+import styles from './button.styles';
 import type {
-  ButtonColor,
-  ButtonVariant,
-  PillButtonSize,
-  IconButtonSize,
-  ButtonTypeInternal,
+  ButtonColor, ButtonTypeInternal, ButtonVariant, IconButtonSize, PillButtonSize,
 } from './button.types';
 import { getIconNameWithoutStyle, getIconSize } from './button.utils';
-import type { IconNames } from '../icon/icon.types';
-import Buttonsimple from '../buttonsimple/buttonsimple.component';
 
 /**
  * `mdc-button` is a component that can be configured in various ways to suit different use cases.
@@ -114,7 +111,7 @@ class Button extends Buttonsimple {
    */
   private prevPostfixIcon?: string;
 
-  public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+  public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
 
     if (changedProperties.has('active')) {
