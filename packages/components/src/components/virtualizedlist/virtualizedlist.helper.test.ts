@@ -11,7 +11,7 @@ class VirtualizedWrapper extends Component {
   override onscroll: ((this: GlobalEventHandlers, ev: Event) => any) | null;
 
   @property({ type: Object, attribute: 'virtualizerprops' })
-  virtualizerprops: VirtualizerProps = { count: 100, estimateSize: () => 100 };
+  virtualizerprops: VirtualizerProps = { count: 100, estimateSize: () => 100, overscan: 60 };
 
   @state()
   list: TemplateResult<1> = html``;

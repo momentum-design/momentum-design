@@ -53,6 +53,6 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    virtualizerprops: { count: 200, estimateSize: () => 100 },
+    virtualizerprops: { count: 200, estimateSize: () => 100, overscan: 30 },
   },
 };
