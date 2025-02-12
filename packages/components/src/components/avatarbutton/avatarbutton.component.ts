@@ -1,7 +1,9 @@
-import { CSSResult, html, PropertyValueMap } from 'lit';
+import type { PropertyValues } from 'lit';
+import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { AvatarComponentMixin } from '../../utils/mixins/AvatarComponentMixin';
+import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import { AVATAR_SIZE, DEFAULTS } from '../avatar/avatar.constants';
 import type { AvatarSize } from '../avatar/avatar.types';
 import { DEFAULTS as BUTTON_DEFAULTS } from '../button/button.constants';
@@ -18,7 +20,7 @@ import styles from './avatarbutton.styles';
  *
  * @tagname mdc-avatarbutton
  */
-class AvatarButton extends AvatarComponentMixin(Buttonsimple) {
+class AvatarButton extends AvatarComponentMixin(IconNameMixin(Buttonsimple)) {
     /**
    * Aria-label attribute to be set for accessibility
    */
@@ -35,7 +37,7 @@ class AvatarButton extends AvatarComponentMixin(Buttonsimple) {
       this.type = BUTTON_DEFAULTS.TYPE;
     }
 
-    override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    override update(changedProperties: PropertyValues): void {
       super.update(changedProperties);
       if (changedProperties.has('size')) {
         this.setSize(this.size);

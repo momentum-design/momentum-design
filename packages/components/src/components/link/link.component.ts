@@ -1,11 +1,12 @@
-import { CSSResult, html, PropertyValueMap } from 'lit';
+import type { PropertyValues } from 'lit';
+import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
-import { DEFAULTS, LINK_ICON_SIZES, LINK_SIZES } from './link.constants';
-import { LinkSize } from './link.types';
-import styles from './link.styles';
-import { IconNames } from '../icon/icon.types';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
+import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
+import { DEFAULTS, LINK_ICON_SIZES, LINK_SIZES } from './link.constants';
+import styles from './link.styles';
+import type { LinkSize } from './link.types';
 
 /**
  * `mdc-link` component can be used to navigate to a different page
@@ -33,15 +34,7 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
  * @cssproperty --mdc-link-inverted-color-normal - Text and icon color of the inverted link in normal state
  * @cssproperty --mdc-link-text-decoration-disabled - Text decoration of the link in disabled state for all variants
  */
-class Link extends DisabledMixin(Component) {
-  /**
-   * Name of the icon (= filename) to be used as trailing icon for link.
-   *
-   * If no `icon` is provided, no icon will be rendered.
-   */
-  @property({ type: String, attribute: 'icon-name' })
-  iconName?: IconNames;
-
+class Link extends DisabledMixin(IconNameMixin(Component)) {
   /**
    * The link can be inline or standalone.
    * @default false
@@ -133,7 +126,7 @@ class Link extends DisabledMixin(Component) {
     }
   }
 
-  public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+  public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
     if (changedProperties.has('disabled')) {
       this.setDisabled(this.disabled);

@@ -1,11 +1,12 @@
-import { CSSResult, html, PropertyValueMap } from 'lit';
+import type { PropertyValues } from 'lit';
+import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
-import styles from './buttonsimple.styles';
 import { Component } from '../../models';
-import { ButtonSize, ButtonType } from './buttonsimple.types';
-import { BUTTON_TYPE, DEFAULTS } from './buttonsimple.constants';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
+import { BUTTON_TYPE, DEFAULTS } from './buttonsimple.constants';
+import styles from './buttonsimple.styles';
+import type { ButtonSize, ButtonType } from './buttonsimple.types';
 
 /**
  * `mdc-buttonsimple` is a component that can be configured in various ways to suit different use cases.
@@ -13,7 +14,6 @@ import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
  * Consumers should use the `mdc-button` component instead.
  *
  * @tagname mdc-buttonsimple
- *
  */
 class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
   /**
@@ -87,7 +87,7 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
     this.internals = this.attachInternals();
   }
 
-  public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+  public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
 
     if (changedProperties.has('disabled')) {
