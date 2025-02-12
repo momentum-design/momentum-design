@@ -10,8 +10,12 @@ import Bullet from './components/bullet';
 import Marker from './components/marker';
 import Divider from './components/divider';
 import AvatarButton from './components/avatarbutton';
+import Input from './components/input';
 import Link from './components/link';
 import VirtualizedList from './components/virtualizedlist';
+import Toggle from './components/toggle';
+import Checkbox from './components/checkbox';
+import Radio from './components/radio';
 
 import type { TextType } from './components/text/text.types';
 
@@ -28,8 +32,12 @@ export {
   Marker,
   Divider,
   AvatarButton,
+  Input,
   Link,
   VirtualizedList,
+  Toggle,
+  Checkbox,
+  Radio,
 };
 
 export type {

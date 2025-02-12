@@ -140,27 +140,15 @@ class VirtualizedList extends Component {
         </div>`;
   }
 
-  /**
-   * @internal
-   * Renders scroll element with ref and onscroll function if defined.
-   * If virtualizerController is not defined (possible during initial rendering),
-   * don't render virtualizedlist-container until it is.
-   *
-   * @returns The template result containing the scroll element or an empty template.
-   */
-  private getVirtualizedScrollElement(): TemplateResult {
-    return html`<div
-        ${ref(this.scrollElementRef)}
-        class="mdc-virtualizedlist-scroll"
-        @scroll=${this.onscroll && this.onscroll}
-      >
-        ${this.virtualizerController ? this.getVirtualizedListWrapper(this.virtualizerController) : html``}
-      </div>
-    `;
-  }
-
   public override render() {
-    return this.getVirtualizedScrollElement();
+    return html`<div
+      ${ref(this.scrollElementRef)}
+      class="mdc-virtualizedlist-scroll"
+      @scroll=${this.onscroll && this.onscroll}
+    >
+      ${this.virtualizerController ? this.getVirtualizedListWrapper(this.virtualizerController) : html``}
+    </div>
+  `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];

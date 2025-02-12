@@ -69,4 +69,10 @@ class VirtualizedWrapper extends Component {
   public static override styles: Array<CSSResult> = Component.styles;
 }
 
-export default VirtualizedWrapper;
+VirtualizedWrapper.register('mdc-virtualizedwrapper');
+
+declare global {
+  interface HTMLElementTagNameMap {
+    ['mdc-virtualizedwrapper']: VirtualizedWrapper;
+  }
+}

@@ -2,6 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import './virtualizedlist.stories.utils';
 import { disableControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
@@ -11,7 +12,7 @@ const render = (args: Args) => html`
   ></mdc-virtualizedwrapper>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/virtualizedlist',
+  title: 'Components/virtualizedlist',
   tags: ['autodocs'],
   component: 'mdc-virtualizedlist',
   render,

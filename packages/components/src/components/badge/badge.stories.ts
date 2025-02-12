@@ -3,6 +3,7 @@ import '.';
 import { html } from 'lit';
 import { TYPE, ICON_VARIANT, DEFAULTS } from './badge.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { disableControls } from '../../../config/storybook/utils';
 
 const MAX_COUNTER_LIST = [9, 99, 999];
 
@@ -80,6 +81,19 @@ const meta: Meta = {
     'aria-label': {
       control: 'text',
     },
+    ...disableControls([
+      '--mdc-badge-primary-foreground-color',
+      '--mdc-badge-primary-background-color',
+      '--mdc-badge-secondary-foreground-color',
+      '--mdc-badge-secondary-background-color',
+      '--mdc-badge-success-foreground-color',
+      '--mdc-badge-success-background-color',
+      '--mdc-badge-warning-foreground-color',
+      '--mdc-badge-warning-background-color',
+      '--mdc-badge-error-foreground-color',
+      '--mdc-badge-error-background-color',
+      '--mdc-badge-overlay-background-color',
+    ]),
     ...classArgType,
     ...styleArgType,
   },
