@@ -1,10 +1,7 @@
 import { property } from 'lit/decorators.js';
 import { Provider } from '../../models';
 import IconProviderContext from './iconprovider.context';
-import {
-  ALLOWED_FILE_EXTENSIONS,
-  DEFAULTS,
-  ALLOWED_LENGTH_UNITS } from './iconprovider.constants';
+import { ALLOWED_FILE_EXTENSIONS, DEFAULTS, ALLOWED_LENGTH_UNITS } from './iconprovider.constants';
 
 /**
  * IconProvider component, which allows to be consumed from sub components
@@ -13,6 +10,12 @@ import {
  * Bundling icons will be up to the consumer of this component, such
  * that only a url has to be passed in from which the icons will be
  * fetched.
+ *
+ * If `shouldCache` is set to true, the IconProvider will cache the icons
+ * in a Map to avoid fetching the same icon multiple times over the network.
+ * This is useful when the same icon is used multiple times in the application.
+ * Keep in mind that this cache is not persisted and will be lost when the
+ * IconProvider is removed from the DOM.
  *
  * @tagname mdc-iconprovider
  *
@@ -62,22 +65,32 @@ class IconProvider extends Provider<IconProviderContext> {
   @property({ type: Number, reflect: true })
   size?: number = DEFAULTS.SIZE;
 
+  /**
+   * If the IconProvider should cache the icons
+   * in a Map to avoid fetching the same icon multiple times
+   *
+   * @default false
+   */
+  @property({ type: Boolean, attribute: 'should-cache', reflect: true })
+  shouldCache?: boolean = DEFAULTS.SHOULD_CACHE;
+
   private updateValuesInContext() {
     // only update fileExtension on context if its an allowed fileExtension
     if (this.fileExtension && ALLOWED_FILE_EXTENSIONS.includes(this.fileExtension)) {
       this.context.value.fileExtension = this.fileExtension;
     } else {
-    // Ensure both fileExtension and context are updated to the default if its not an allowed fileExtension
+      // Ensure both fileExtension and context are updated to the default if its not an allowed fileExtension
       this.fileExtension = DEFAULTS.FILE_EXTENSION;
       this.context.value.fileExtension = DEFAULTS.FILE_EXTENSION;
     }
     this.context.value.url = this.url;
     this.context.value.size = this.size;
+    this.context.value.shouldCache = this.shouldCache;
 
     if (this.lengthUnit && ALLOWED_LENGTH_UNITS.includes(this.lengthUnit)) {
       this.context.value.lengthUnit = this.lengthUnit;
     } else {
-    // Ensure both lengthUnit and context are updated to the default if its not an allowed lengthUnit
+      // Ensure both lengthUnit and context are updated to the default if its not an allowed lengthUnit
       this.lengthUnit = DEFAULTS.LENGTH_UNIT;
       this.context.value.lengthUnit = DEFAULTS.LENGTH_UNIT;
     }
@@ -89,6 +102,7 @@ class IconProvider extends Provider<IconProviderContext> {
       || this.context.value.url !== this.url
       || this.context.value.lengthUnit !== this.lengthUnit
       || this.context.value.size !== this.size
+      || this.context.value.shouldCache !== this.shouldCache
     ) {
       this.updateValuesInContext();
       this.context.updateObservers();
