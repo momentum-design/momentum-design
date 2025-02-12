@@ -112,6 +112,17 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
     this.dispatchEvent(new EventConstructor(event.type, event));
   }
 
+  /**
+   * Handles the keydown event on the checkbox.
+   * When the user presses Enter, the form is submitted.
+   * @param event - The keyboard event.
+   */
+  private handleKeyDown(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      this.form?.requestSubmit();
+    }
+  }
+
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
 
@@ -144,6 +155,7 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
           .disabled="${this.disabled}"
           aria-label="${this.dataAriaLabel ?? ''}"
           @change=${this.handleChange}
+          @keydown=${this.handleKeyDown}
         />
         <div class="icon-container">${checkboxIconContent}</div>
       </div>

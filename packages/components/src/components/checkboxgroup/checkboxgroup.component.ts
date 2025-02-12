@@ -1,7 +1,7 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
-import { TAG_NAME as CHECKBOX_NAME } from '../checkbox/checkbox.constants';
+import { TAG_NAME as CHECKBOX_TAGNAME } from '../checkbox/checkbox.constants';
 import { TYPE as TEXT_TYPE, VALID_TEXT_TAGS as TEXT_TAGS } from '../text/text.constants';
 import styles from './checkboxgroup.styles';
 
@@ -31,7 +31,7 @@ class Checkboxgroup extends Component {
   private get checkboxList() {
     const slot = this.shadowRoot?.querySelector('slot');
     const assignedElements = slot?.assignedElements() || [];
-    return assignedElements.filter((element) => element.tagName.toLowerCase() === CHECKBOX_NAME);
+    return assignedElements.filter((element) => element.tagName.toLowerCase() === CHECKBOX_TAGNAME);
   }
 
   constructor() {
