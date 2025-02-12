@@ -20,7 +20,7 @@ const setup = async (args: SetupOptions) => {
 
 test.describe('mdc-virtualizedlist', () => {
   test('default virtualized list behavior', async ({ componentsPage }) => {
-    const virtualizedList = await setup({
+    await setup({
       componentsPage,
     });
 
@@ -31,8 +31,10 @@ test.describe('mdc-virtualizedlist', () => {
     let currentLastElement = await componentsPage.page.getByRole('listitem').last();
     expect(await currentLastElement.getAttribute('data-index')).not.toBe('99');
 
-    await virtualizedList.hover();
-    await componentsPage.page.mouse.wheel(0, 10000);
+    await componentsPage.page.locator('.mdc-virtualizedlist-scroll').evaluate((element) => {
+      const scrollElement = element;
+      scrollElement.scrollTop += 10000;
+    });
     await componentsPage.page.getByText('list item number 99').waitFor();
 
     // check if last element is in the list and that the first element is not
