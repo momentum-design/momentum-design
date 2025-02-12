@@ -8,6 +8,7 @@ import { getIconNameWithoutStyle } from '../button/button.utils';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
 import { ButtonSize, ButtonType } from '../buttonsimple/buttonsimple.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 
 /**
  * `mdc-tab` is Tab component to be used within the Tabgroup.
@@ -94,15 +95,7 @@ import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
  * @cssproperty --mdc-tab-pill-inactive-color - Text and icon color for inactive pill tab.
  * @cssproperty --mdc-tab-pill-inactive-color-disabled - Text and icon color for inactive pill tab in disabled state.
  */
-class Tab extends Buttonsimple {
-  /**
-   * Name of the icon (= filename) to be used as icon for the tab.
-   *
-   * If no `icon` is provided, no icon will be rendered.
-   */
-  @property({ type: String, attribute: 'icon-name' })
-  iconName?: string;
-
+class Tab extends IconNameMixin(Buttonsimple) {
   /**
    * Text to be displayed in the tab.
    * If no `text` is provided, no text will be rendered,
@@ -149,9 +142,9 @@ class Tab extends Buttonsimple {
     if (this.iconName) {
       if (active) {
         this.prevIconName = this.iconName;
-        this.iconName = `${getIconNameWithoutStyle(this.iconName)}-filled`;
+        this.iconName = `${getIconNameWithoutStyle(this.iconName)}-filled` as IconNames;
       } else if (this.prevIconName) {
-        this.iconName = this.prevIconName;
+        this.iconName = this.prevIconName as IconNames;
       }
     }
   }
