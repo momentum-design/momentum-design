@@ -13,13 +13,14 @@ import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 /**
  * `mdc-tab` is Tab component to be used within the Tabgroup.
  *
- * The `children` of the link component is expected to be text.
+ * Passing in the attribute `text` to the tab component is changing the text displayed in the tab.
  *
  * The `slot="badge"` can be used to add a badge to the tab.
  *
  * For `icon`, the `mdc-icon` component is used to render the icon.
  *
  * @dependency mdc-icon
+ * @dependency mdc-text
  *
  * @tagname mdc-tab
  *
@@ -27,7 +28,6 @@ import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
  * @cssproperty --mdc-tab-height - Height of the tab.
  * @cssproperty --mdc-tab-glass-active-background-color-disabled - Background color for active glass tab
  *  in disabled state.
- * @cssproperty --mdc-tab-glass-active-background-color-focus - Background color for active glass tab in focus state.
  * @cssproperty --mdc-tab-glass-active-background-color-hover - Background color for active glass tab in hover state.
  * @cssproperty --mdc-tab-glass-active-background-color-normal - Background color for active glass tab in rest state.
  * @cssproperty --mdc-tab-glass-active-background-color-pressed - Background color for active glass tab
@@ -37,8 +37,6 @@ import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
  * @cssproperty --mdc-tab-glass-border-radius - Border radius for glass tab.
  * @cssproperty --mdc-tab-glass-inactive-background-color-disabled - Background color for inactive glass tab
  *  in disabled state.
- * @cssproperty --mdc-tab-glass-inactive-background-color-focus - Background color for inactive glass tab
- *  in focus state.
  * @cssproperty --mdc-tab-glass-inactive-background-color-hover - Background color for inactive glass tab
  *  in hover state.
  * @cssproperty --mdc-tab-glass-inactive-background-color-normal - Background color for inactive glass tab
@@ -50,7 +48,6 @@ import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
  * @cssproperty --mdc-tab-line-active-background-color-pressed - Background color for active line tab in pressed state.
  * @cssproperty --mdc-tab-line-active-background-color-disabled - Background color for active line tab
  *  in disabled state.
- * @cssproperty --mdc-tab-line-active-background-color-focus - Background color for active line tab in focus state.
  * @cssproperty --mdc-tab-line-active-background-color-hover - Background color for active line tab in hover state.
  * @cssproperty --mdc-tab-line-active-background-color-normal - Background color for active line tab in rest state.
  * @cssproperty --mdc-tab-line-active-color - Text and icon color for active line tab.
@@ -68,7 +65,6 @@ import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
  *  in pressed state.
  * @cssproperty --mdc-tab-line-inactive-background-color-disabled - Background color for inactive line tab
  *  in disabled state
- * @cssproperty --mdc-tab-line-inactive-background-color-focus - Background color for inactive line tab in focus state.
  * @cssproperty --mdc-tab-line-inactive-background-color-hover - Background color for inactive line tab in hover state.
  * @cssproperty --mdc-tab-line-inactive-background-color-normal - Background color for inactive line tab
  *  in rest state.
@@ -79,7 +75,6 @@ import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
  * @cssproperty --mdc-tab-pill-active-background-color-pressed - Background color for active pill tab in pressed state.
  * @cssproperty --mdc-tab-pill-active-background-color-disabled - Background color for active pill tab
  *  in disabled state.
- * @cssproperty --mdc-tab-pill-active-background-color-focus - Background color for active pill tab in focus state.
  * @cssproperty --mdc-tab-pill-active-background-color-hover - Background color for active pill tab in hover state.
  * @cssproperty --mdc-tab-pill-active-background-color-normal - Background color for active pill tab in rest state.
  * @cssproperty --mdc-tab-pill-active-color - Text and icon color for active pill tab.
@@ -89,7 +84,6 @@ import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
  *  in pressed state.
  * @cssproperty --mdc-tab-pill-inactive-background-color-disabled - Background color for inactive pill tab
  *  in disabled state.
- * @cssproperty --mdc-tab-pill-inactive-background-color-focus - Background color for inactive pill tab in focus state.
  * @cssproperty --mdc-tab-pill-inactive-background-color-hover - Background color for inactive pill tab in hover state.
  * @cssproperty --mdc-tab-pill-inactive-background-color-normal - Background color for inactive pill tab in rest state.
  * @cssproperty --mdc-tab-pill-inactive-color - Text and icon color for inactive pill tab.
@@ -169,16 +163,22 @@ class Tab extends IconNameMixin(Buttonsimple) {
 
   public override render() {
     return html`
-      <div class="mdc-tab__content">
-        <slot name="badge"></slot>
-        ${this.iconName ? html`
-          <mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem"> </mdc-icon>` : nothing}
-        ${this.text ? html`
-          <mdc-text type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}
-            tagname=${VALID_TEXT_TAGS.SPAN}
-            data-text=${this.text}>${this.text}</mdc-text>` : nothing}
+      <div part="container">
+        <slot name="badge" part="badge"></slot>
+        ${this.iconName
+    ? html` <mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem" part="icon"></mdc-icon>`
+    : nothing}
+        ${this.text
+    ? html` <mdc-text
+              type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}
+              tagname=${VALID_TEXT_TAGS.SPAN}
+              data-text=${this.text}
+              part="text"
+              >${this.text}</mdc-text
+            >`
+    : nothing}
       </div>
-      <div class="mdc-tab__line_tab_indicator"></div>
+      <div part="indicator"></div>
     `;
   }
 

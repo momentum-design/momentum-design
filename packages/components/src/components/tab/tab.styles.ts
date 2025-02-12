@@ -8,7 +8,6 @@ const styles = [hostFitContentStyles, css`
     --mdc-tab-height: 2rem;
 
     --mdc-tab-glass-active-background-color-disabled: var(--mds-color-theme-button-primary-disabled);
-    --mdc-tab-glass-active-background-color-focus: var(--mds-color-theme-button-primary-normal);
     --mdc-tab-glass-active-background-color-hover: var(--mds-color-theme-button-primary-hover);
     --mdc-tab-glass-active-background-color-normal: var(--mds-color-theme-button-primary-normal);
     --mdc-tab-glass-active-background-color-pressed: var(--mds-color-theme-button-primary-pressed);
@@ -19,7 +18,6 @@ const styles = [hostFitContentStyles, css`
     --mdc-tab-glass-border-radius: 0.5rem;
 
     --mdc-tab-glass-inactive-background-color-disabled: var(--mds-color-theme-button-secondary-disabled);
-    --mdc-tab-glass-inactive-background-color-focus: var(--mds-color-theme-button-secondary-normal);
     --mdc-tab-glass-inactive-background-color-hover: var(--mds-color-theme-button-secondary-hover);
     --mdc-tab-glass-inactive-background-color-normal: var(--mds-color-theme-button-secondary-normal);
     --mdc-tab-glass-inactive-background-color-pressed: var(--mds-color-theme-button-secondary-pressed);
@@ -28,7 +26,6 @@ const styles = [hostFitContentStyles, css`
     --mdc-tab-glass-inactive-color-disabled: var(--mds-color-theme-text-primary-disabled);
 
     --mdc-tab-line-active-background-color-disabled: var(--mds-color-theme-button-secondary-disabled);
-    --mdc-tab-line-active-background-color-focus: var(--mds-color-theme-button-secondary-normal);
     --mdc-tab-line-active-background-color-hover: var(--mds-color-theme-button-secondary-hover);
     --mdc-tab-line-active-background-color-normal: var(--mds-color-theme-button-secondary-normal);
     --mdc-tab-line-active-background-color-pressed: var(--mds-color-theme-button-secondary-pressed);
@@ -47,7 +44,6 @@ const styles = [hostFitContentStyles, css`
     --mdc-tab-line-border-top-right-radius: 0.25rem;
 
     --mdc-tab-line-inactive-background-color-disabled: var(--mds-color-theme-button-secondary-disabled);
-    --mdc-tab-line-inactive-background-color-focus: var(--mds-color-theme-button-secondary-normal);
     --mdc-tab-line-inactive-background-color-hover: var(--mds-color-theme-button-secondary-hover);
     --mdc-tab-line-inactive-background-color-normal: var(--mds-color-theme-button-secondary-normal);
     --mdc-tab-line-inactive-background-color-pressed: var(--mds-color-theme-button-secondary-pressed);
@@ -59,7 +55,6 @@ const styles = [hostFitContentStyles, css`
     --mdc-tab-padding-right: 0.75rem;
 
     --mdc-tab-pill-active-background-color-disabled: var(--mds-color-theme-button-secondary-active-normal);
-    --mdc-tab-pill-active-background-color-focus: var(--mds-color-theme-button-secondary-active-normal);
     --mdc-tab-pill-active-background-color-hover: var(--mds-color-theme-button-secondary-active-hover);
     --mdc-tab-pill-active-background-color-normal: var(--mds-color-theme-button-secondary-active-normal);
     --mdc-tab-pill-active-background-color-pressed: var(--mds-color-theme-button-secondary-active-pressed);
@@ -70,7 +65,6 @@ const styles = [hostFitContentStyles, css`
     --mdc-tab-pill-border-radius: 0.5rem;
 
     --mdc-tab-pill-inactive-background-color-disabled: var(--mds-color-theme-button-secondary-disabled);
-    --mdc-tab-pill-inactive-background-color-focus: var(--mds-color-theme-button-secondary-normal);
     --mdc-tab-pill-inactive-background-color-hover: var(--mds-color-theme-button-secondary-hover);
     --mdc-tab-pill-inactive-background-color-normal: var(--mds-color-theme-button-secondary-normal);
     --mdc-tab-pill-inactive-background-color-pressed: var(--mds-color-theme-button-secondary-pressed);
@@ -86,7 +80,7 @@ const styles = [hostFitContentStyles, css`
     border: none;
   }
 
-  .mdc-tab__content {
+  :host::part(container) {
     align-items: center;
     display: flex;
     flex-direction: row;
@@ -95,12 +89,12 @@ const styles = [hostFitContentStyles, css`
     width: fit-content;
   }
 
-  mdc-text {
+  :host::part(text) {
     display: flex;
     flex-direction: column;
   }
 
-  mdc-text::after{
+  :host::part(text)::after{
     content: attr(data-text);
     height: 0;
     visibility: hidden;
@@ -115,7 +109,7 @@ const styles = [hostFitContentStyles, css`
     text-transform: var(--mds-font-apps-body-midsize-bold-text-case);
   }
 
-  .mdc-tab__line_tab_indicator {
+  :host::part(indicator) {
     width: var(--mdc-tab-line-active-indicator-width);
     height: var(--mdc-tab-line-active-indicator-height);
     bottom: 0;
@@ -137,10 +131,6 @@ const styles = [hostFitContentStyles, css`
     background-color: var(--mdc-tab-glass-inactive-background-color-hover);
   }
 
-  :host([variant="glass"]:focus) {
-    background-color: var(--mdc-tab-glass-inactive-background-color-focus);
-  }
-
   :host([variant="glass"]:active) {
     background-color: var(--mdc-tab-glass-inactive-background-color-pressed);
   }
@@ -157,10 +147,6 @@ const styles = [hostFitContentStyles, css`
 
   :host([variant="glass"][active]:hover) {
     background-color: var(--mdc-tab-glass-active-background-color-hover);
-  }
-
-  :host([variant="glass"][active]:focus) {
-    background-color: var(--mdc-tab-glass-active-background-color-focus);
   }
 
   :host([variant="glass"][active]:active) {
@@ -185,10 +171,6 @@ const styles = [hostFitContentStyles, css`
     background-color: var(--mdc-tab-line-inactive-background-color-hover);
   }
 
-  :host([variant="line"]:focus) {
-    background-color: var(--mdc-tab-line-inactive-background-color-focus);
-  }
-
   :host([variant="line"]:active) {
     background-color: var(--mdc-tab-line-inactive-background-color-pressed);
   }
@@ -203,17 +185,13 @@ const styles = [hostFitContentStyles, css`
     color: var(--mdc-tab-line-active-color);
   }
 
-  :host([variant="line"][active]) .mdc-tab__line_tab_indicator {
+  :host([variant="line"][active])::part(indicator) {
     background-color:var(--mdc-tab-line-active-indicator-color);
     visibility: visible;
   }
 
   :host([variant="line"][active]:hover) {
     background-color: var(--mdc-tab-line-active-background-color-hover);
-  }
-
-  :host([variant="line"][active]:focus) {
-    background-color: var(--mdc-tab-line-active-background-color-focus);
   }
 
   :host([variant="line"][active]:active) {
@@ -225,7 +203,7 @@ const styles = [hostFitContentStyles, css`
     color: var(--mdc-tab-line-active-color-disabled);
   }
 
-  :host([variant="line"][active][disabled]) .mdc-tab__line_tab_indicator {
+  :host([variant="line"][active][disabled])::part(indicator) {
     background-color:var(--mdc-tab-line-active-indicator-color-disabled);
   }
 
@@ -237,10 +215,6 @@ const styles = [hostFitContentStyles, css`
 
   :host([variant="pill"]:hover) {
     background-color: var(--mdc-tab-pill-inactive-background-color-hover);
-  }
-
-  :host([variant="pill"]:focus) {
-    background-color: var(--mdc-tab-pill-inactive-background-color-focus);
   }
 
   :host([variant="pill"]:active) {
@@ -259,10 +233,6 @@ const styles = [hostFitContentStyles, css`
 
   :host([variant="pill"][active]:hover) {
     background-color: var(--mdc-tab-pill-active-background-color-hover);
-  }
-
-  :host([variant="pill"][active]:focus) {
-    background-color: var(--mdc-tab-pill-active-background-color-focus);
   }
 
   :host([variant="pill"][active]:active) {

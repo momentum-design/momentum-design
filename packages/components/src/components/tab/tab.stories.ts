@@ -20,7 +20,7 @@ const render = (args: Args) => html`<div role="tablist">
     tabIndex="${ifDefined(args.tabIndex)}"
     text="${ifDefined(args.text)}"
     variant="${ifDefined(args.variant)}"
-    >${args.showBadge ? html`<mdc-badge slot="badge" type="dot"></mdc-badge>` : nothing}</mdc-tab>
+    >${args.showBadge ? html`<mdc-badge slot="badge" type="counter" counter="1"></mdc-badge>` : nothing}</mdc-tab>
 </div>`;
 
 const meta: Meta = {
@@ -61,7 +61,6 @@ const meta: Meta = {
       '--mdc-tab-content-gap',
       '--mdc-tab-height',
       '--mdc-tab-glass-active-background-color-disabled',
-      '--mdc-tab-glass-active-background-color-focus',
       '--mdc-tab-glass-active-background-color-hover',
       '--mdc-tab-glass-active-background-color-normal',
       '--mdc-tab-glass-active-background-color-pressed',
@@ -69,14 +68,12 @@ const meta: Meta = {
       '--mdc-tab-glass-active-color-disabled',
       '--mdc-tab-glass-border-radius',
       '--mdc-tab-glass-inactive-background-color-disabled',
-      '--mdc-tab-glass-inactive-background-color-focus',
       '--mdc-tab-glass-inactive-background-color-hover',
       '--mdc-tab-glass-inactive-background-color-normal',
       '--mdc-tab-glass-inactive-background-color-pressed',
       '--mdc-tab-glass-inactive-color',
       '--mdc-tab-glass-inactive-color-disabled',
       '--mdc-tab-line-active-background-color-disabled',
-      '--mdc-tab-line-active-background-color-focus',
       '--mdc-tab-line-active-background-color-hover',
       '--mdc-tab-line-active-background-color-normal',
       '--mdc-tab-line-active-background-color-pressed',
@@ -91,7 +88,6 @@ const meta: Meta = {
       '--mdc-tab-line-border-top-left-radius',
       '--mdc-tab-line-border-top-right-radius',
       '--mdc-tab-line-inactive-background-color-disabled',
-      '--mdc-tab-line-inactive-background-color-focus',
       '--mdc-tab-line-inactive-background-color-hover',
       '--mdc-tab-line-inactive-background-color-normal',
       '--mdc-tab-line-inactive-background-color-pressed',
@@ -100,7 +96,6 @@ const meta: Meta = {
       '--mdc-tab-padding-left',
       '--mdc-tab-padding-right',
       '--mdc-tab-pill-active-background-color-disabled',
-      '--mdc-tab-pill-active-background-color-focus',
       '--mdc-tab-pill-active-background-color-hover',
       '--mdc-tab-pill-active-background-color-normal',
       '--mdc-tab-pill-active-background-color-pressed',
@@ -108,7 +103,6 @@ const meta: Meta = {
       '--mdc-tab-pill-active-color-disabled',
       '--mdc-tab-pill-border-radius',
       '--mdc-tab-pill-inactive-background-color-disabled',
-      '--mdc-tab-pill-inactive-background-color-focus',
       '--mdc-tab-pill-inactive-background-color-hover',
       '--mdc-tab-pill-inactive-background-color-normal',
       '--mdc-tab-pill-inactive-background-color-pressed',
