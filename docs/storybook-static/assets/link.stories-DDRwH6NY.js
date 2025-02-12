@@ -1,4 +1,4 @@
-import{i as A,k as v}from"./lit-element-CHllvULs.js";import{u as W,C as E,n as g}from"./index-HW6KrQZO.js";import{h as j,a as P}from"./index-MYSkQ1zX.js";import{D as V}from"./DisabledMixin-DBt9didn.js";import"./index-BUvIMixM.js";import{a as i}from"./chunk-D5ZWXAHU-CGElDDNX.js";import{d as q,h as k,r as z}from"./utils-D1SE5bce.js";import"./state-CWckTc1X.js";import"./index-BYMLCX4c.js";import"./iconprovider.component-CvArfi6w.js";import"./create-context-89xeped_.js";import"./v4-CQkTLCs1.js";const U=W.constructTagName("link"),h={LARGE:"large",MIDSIZE:"midsize",SMALL:"small"},y={LARGE:1,MIDSIZE:.875,SMALL:.75},x={INLINE:!1,INVERTED:!1,LINK_SIZE:h.LARGE},H=[j,A`
+import{i as A,k as v}from"./lit-element-CHllvULs.js";import{u as W,C as E,n as y}from"./index-HW6KrQZO.js";import{D as j}from"./DisabledMixin-DBt9didn.js";import{I as P}from"./IconNameMixin-DXlfdGtk.js";import{h as V,a as q}from"./index-MYSkQ1zX.js";import"./index-BUvIMixM.js";import{a as i}from"./chunk-D5ZWXAHU-CGElDDNX.js";import{d as U,h as x,r as k}from"./utils-D1SE5bce.js";import"./state-CWckTc1X.js";import"./index-BYMLCX4c.js";import"./iconprovider.component-CvArfi6w.js";import"./create-context-89xeped_.js";import"./v4-CQkTLCs1.js";const H=W.constructTagName("link"),h={LARGE:"large",MIDSIZE:"midsize",SMALL:"small"},f={LARGE:1,MIDSIZE:.875,SMALL:.75},b={INLINE:!1,INVERTED:!1,LINK_SIZE:h.LARGE},J=[V,A`
 
   :host {
 
@@ -109,11 +109,11 @@ import{i as A,k as v}from"./lit-element-CHllvULs.js";import{u as W,C as E,n as g
   :host([inverted][disabled]) {
     color: var(--mdc-link-inverted-color-disabled);
   }
-`,...P(),A`
+`,...q(),A`
   :host(:active) {
     box-shadow: none;
   }
-`];var J=Object.defineProperty,f=(r,e,l,b)=>{for(var n=void 0,t=r.length-1,S;t>=0;t--)(S=r[t])&&(n=S(e,l,n)||n);return n&&J(e,l,n),n};const I=class I extends V(E){constructor(){super(...arguments),this.inline=x.INLINE,this.inverted=x.INVERTED,this.size=x.LINK_SIZE,this.prevTabindex=null}getIconSize(){switch(this.size){case h.SMALL:return y.SMALL;case h.MIDSIZE:return y.MIDSIZE;default:return y.LARGE}}setDisabled(e){e?(this.prevTabindex=this.hasAttribute("tabindex")?this.tabIndex:null,this.tabIndex=-1,this.setAttribute("aria-disabled","true")):this.prevTabindex===null?(this.removeAttribute("tabindex"),this.removeAttribute("aria-disabled")):(this.tabIndex=this.prevTabindex,this.removeAttribute("aria-disabled"))}updateTrailingIcon(){var b,n;const e=(n=(b=this.shadowRoot)==null?void 0:b.querySelector("slot"))==null?void 0:n.assignedElements({flatten:!0}).find(t=>t.tagName==="A"),l=this.getIconSize();if(this.iconName&&e){const t=document.createElement("mdc-icon");t.setAttribute("name",this.iconName),t.setAttribute("size",`${l}`),t.setAttribute("length-unit","rem"),e.appendChild(t)}}update(e){super.update(e),e.has("disabled")&&this.setDisabled(this.disabled)}render(){return v`<slot @slotchange=${this.updateTrailingIcon}></slot>`}};I.styles=[...E.styles,...H];let o=I;f([g({type:String,attribute:"icon-name"})],o.prototype,"iconName");f([g({type:Boolean,reflect:!0})],o.prototype,"inline");f([g({type:Boolean,reflect:!0})],o.prototype,"inverted");f([g({type:String,reflect:!0})],o.prototype,"size");o.register(U);const a=r=>{const e=v`${new DOMParser().parseFromString(r.children,"text/html").body.firstChild}`;return v`<mdc-link
+`];var Q=Object.defineProperty,z=(r,e,l,g)=>{for(var n=void 0,t=r.length-1,S;t>=0;t--)(S=r[t])&&(n=S(e,l,n)||n);return n&&Q(e,l,n),n};const I=class I extends j(P(E)){constructor(){super(...arguments),this.inline=b.INLINE,this.inverted=b.INVERTED,this.size=b.LINK_SIZE,this.prevTabindex=null}getIconSize(){switch(this.size){case h.SMALL:return f.SMALL;case h.MIDSIZE:return f.MIDSIZE;default:return f.LARGE}}setDisabled(e){e?(this.prevTabindex=this.hasAttribute("tabindex")?this.tabIndex:null,this.tabIndex=-1,this.setAttribute("aria-disabled","true")):this.prevTabindex===null?(this.removeAttribute("tabindex"),this.removeAttribute("aria-disabled")):(this.tabIndex=this.prevTabindex,this.removeAttribute("aria-disabled"))}updateTrailingIcon(){var g,n;const e=(n=(g=this.shadowRoot)==null?void 0:g.querySelector("slot"))==null?void 0:n.assignedElements({flatten:!0}).find(t=>t.tagName==="A"),l=this.getIconSize();if(this.iconName&&e){const t=document.createElement("mdc-icon");t.setAttribute("name",this.iconName),t.setAttribute("size",`${l}`),t.setAttribute("length-unit","rem"),e.appendChild(t)}}update(e){super.update(e),e.has("disabled")&&this.setDisabled(this.disabled)}render(){return v`<slot @slotchange=${this.updateTrailingIcon}></slot>`}};I.styles=[...E.styles,...J];let o=I;z([y({type:Boolean,reflect:!0})],o.prototype,"inline");z([y({type:Boolean,reflect:!0})],o.prototype,"inverted");z([y({type:String,reflect:!0})],o.prototype,"size");o.register(H);const a=r=>{const e=v`${new DOMParser().parseFromString(r.children,"text/html").body.firstChild}`;return v`<mdc-link
     @click="${i("onclick")}"
     @keydown="${i("onkeydown")}"
     @keyup="${i("onkeyup")}"
@@ -127,7 +127,7 @@ import{i as A,k as v}from"./lit-element-CHllvULs.js";import{u as W,C as E,n as g
     >${e}</mdc-link>`},K=r=>v`
     <div style="background-color: var(--mds-color-theme-inverted-background-normal); padding: 8px;">
       ${a(r)}
-    </div>`,de={title:"Components/link",tags:["autodocs"],component:"mdc-link",render:a,parameters:{badges:["stable"]},argTypes:{children:{description:"Anchor tag to be displayed as link.",control:"text"},disabled:{control:"boolean"},"icon-name":{control:"text"},inline:{control:"boolean"},inverted:{control:"boolean"},size:{control:"select",options:Object.values(h)},...q(["--mdc-link-border-radius","--mdc-link-color-active","--mdc-link-color-disabled","--mdc-link-color-hover","--mdc-link-color-normal","--mdc-link-icon-margin-left","--mdc-link-inverted-color-active","--mdc-link-inverted-color-disabled","--mdc-link-inverted-color-hover","--mdc-link-inverted-color-normal","--mdc-link-text-decoration-disabled"])}},s={children:'<a href="https://www.webex.com" target="_blank" rel="noopener noreferrer">Link</a>',disabled:!1,"icon-name":"placeholder-bold",inline:!1,inverted:!1,size:"large"},d={render:a,args:{...s}},c={render:a,args:{...s},argTypes:{...k(["inline","inverted"])}},m={render:K,args:{...s,inverted:!0},argTypes:{...k(["inline"]),...z(["inverted"])}},p={render:a,args:{...s,inline:!0},argTypes:{...k(["inverted"]),...z(["inline"])}},u={render:K,args:{...s,inline:!0,inverted:!0},argTypes:{...z(["inline","inverted"])}};var L,w,T;d.parameters={...d.parameters,docs:{...(L=d.parameters)==null?void 0:L.docs,source:{originalSource:`{
+    </div>`,me={title:"Components/link",tags:["autodocs"],component:"mdc-link",render:a,parameters:{badges:["stable"]},argTypes:{children:{description:"Anchor tag to be displayed as link.",control:"text"},disabled:{control:"boolean"},"icon-name":{control:"text"},inline:{control:"boolean"},inverted:{control:"boolean"},size:{control:"select",options:Object.values(h)},...U(["--mdc-link-border-radius","--mdc-link-color-active","--mdc-link-color-disabled","--mdc-link-color-hover","--mdc-link-color-normal","--mdc-link-icon-margin-left","--mdc-link-inverted-color-active","--mdc-link-inverted-color-disabled","--mdc-link-inverted-color-hover","--mdc-link-inverted-color-normal","--mdc-link-text-decoration-disabled"])}},s={children:'<a href="https://www.webex.com" target="_blank" rel="noopener noreferrer">Link</a>',disabled:!1,"icon-name":"placeholder-bold",inline:!1,inverted:!1,size:"large"},d={render:a,args:{...s}},c={render:a,args:{...s},argTypes:{...x(["inline","inverted"])}},m={render:K,args:{...s,inverted:!0},argTypes:{...x(["inline"]),...k(["inverted"])}},p={render:a,args:{...s,inline:!0},argTypes:{...x(["inverted"]),...k(["inline"])}},u={render:K,args:{...s,inline:!0,inverted:!0},argTypes:{...k(["inline","inverted"])}};var L,w,T;d.parameters={...d.parameters,docs:{...(L=d.parameters)==null?void 0:L.docs,source:{originalSource:`{
   render,
   args: {
     ...defaultArgs
@@ -140,7 +140,7 @@ import{i as A,k as v}from"./lit-element-CHllvULs.js";import{u as W,C as E,n as g
   argTypes: {
     ...hideControls(['inline', 'inverted'])
   }
-}`,...($=(N=c.parameters)==null?void 0:N.docs)==null?void 0:$.source}}};var D,_,M;m.parameters={...m.parameters,docs:{...(D=m.parameters)==null?void 0:D.docs,source:{originalSource:`{
+}`,...($=(N=c.parameters)==null?void 0:N.docs)==null?void 0:$.source}}};var D,M,_;m.parameters={...m.parameters,docs:{...(D=m.parameters)==null?void 0:D.docs,source:{originalSource:`{
   render: renderWithInvertedBackground,
   args: {
     ...defaultArgs,
@@ -150,7 +150,7 @@ import{i as A,k as v}from"./lit-element-CHllvULs.js";import{u as W,C as E,n as g
     ...hideControls(['inline']),
     ...readOnlyControls(['inverted'])
   }
-}`,...(M=(_=m.parameters)==null?void 0:_.docs)==null?void 0:M.source}}};var O,R,Z;p.parameters={...p.parameters,docs:{...(O=p.parameters)==null?void 0:O.docs,source:{originalSource:`{
+}`,...(_=(M=m.parameters)==null?void 0:M.docs)==null?void 0:_.source}}};var O,R,Z;p.parameters={...p.parameters,docs:{...(O=p.parameters)==null?void 0:O.docs,source:{originalSource:`{
   render,
   args: {
     ...defaultArgs,
@@ -170,4 +170,4 @@ import{i as A,k as v}from"./lit-element-CHllvULs.js";import{u as W,C as E,n as g
   argTypes: {
     ...readOnlyControls(['inline', 'inverted'])
   }
-}`,...(F=(G=u.parameters)==null?void 0:G.docs)==null?void 0:F.source}}};const ce=["Example","StandaloneLink","StandaloneLinkInverted","InlineLink","InlineLinkInverted"];export{d as Example,p as InlineLink,u as InlineLinkInverted,c as StandaloneLink,m as StandaloneLinkInverted,ce as __namedExportsOrder,de as default};
+}`,...(F=(G=u.parameters)==null?void 0:G.docs)==null?void 0:F.source}}};const pe=["Example","StandaloneLink","StandaloneLinkInverted","InlineLink","InlineLinkInverted"];export{d as Example,p as InlineLink,u as InlineLinkInverted,c as StandaloneLink,m as StandaloneLinkInverted,pe as __namedExportsOrder,me as default};

@@ -1,4 +1,4 @@
-import{i as y,D as p,k as h}from"./lit-element-CHllvULs.js";import{r as b}from"./state-CWckTc1X.js";import{t as v}from"./if-defined-C4tJgJ33.js";import{u as I,n as d,C as f}from"./index-HW6KrQZO.js";import{h as M}from"./index-MYSkQ1zX.js";import{S as i}from"./index-DUXHwqDG.js";import{T as s}from"./text.constants-DJu2q-6E.js";import"./index-BUvIMixM.js";import"./index-BGkqZMsC.js";const O=I.constructTagName("avatar"),r={COUNTER:"counter",ICON:"icon",PHOTO:"photo",TEXT:"text"},T=99,S="user-regular",e={24:24,32:32,48:48,64:64,72:72,88:88,124:124},_={TYPE:r.PHOTO,SIZE:e[32],ICON_NAME:S};var z=Object.defineProperty,l=(o,t,n,E)=>{for(var a=void 0,c=o.length-1,m;c>=0;c--)(m=o[c])&&(a=m(t,n,a)||a);return a&&z(t,n,a),a};const A=o=>{class t extends o{constructor(){super(...arguments),this.size=_.SIZE,this.isTyping=!1}}return l([d({type:String})],t.prototype,"src"),l([d({type:String})],t.prototype,"initials"),l([d({type:String})],t.prototype,"presence"),l([d({type:Number,reflect:!0,attribute:"size"})],t.prototype,"size"),l([d({type:String,attribute:"icon-name"})],t.prototype,"iconName"),l([d({type:Number})],t.prototype,"counter"),l([d({type:Boolean,attribute:"is-typing"})],t.prototype,"isTyping"),t},L=[M,y`
+import{i as I,D as p,k as c}from"./lit-element-CHllvULs.js";import{r as M}from"./state-CWckTc1X.js";import{t as v}from"./if-defined-C4tJgJ33.js";import{u as y,n as l,C as f}from"./index-HW6KrQZO.js";import{I as b}from"./IconNameMixin-DXlfdGtk.js";import{h as O}from"./index-MYSkQ1zX.js";import{S as n}from"./index-DUXHwqDG.js";import{T as s}from"./text.constants-DJu2q-6E.js";import"./index-BUvIMixM.js";import"./index-BGkqZMsC.js";const z=y.constructTagName("avatar"),r={COUNTER:"counter",ICON:"icon",PHOTO:"photo",TEXT:"text"},T=99,A="user-regular",e={24:24,32:32,48:48,64:64,72:72,88:88,124:124},_={TYPE:r.PHOTO,SIZE:e[32],ICON_NAME:A};var L=Object.defineProperty,h=(o,t,i,E)=>{for(var a=void 0,d=o.length-1,m;d>=0;d--)(m=o[d])&&(a=m(t,i,a)||a);return a&&L(t,i,a),a};const S=o=>{class t extends o{constructor(){super(...arguments),this.size=_.SIZE,this.isTyping=!1}}return h([l({type:String})],t.prototype,"src"),h([l({type:String})],t.prototype,"initials"),h([l({type:String})],t.prototype,"presence"),h([l({type:Number,reflect:!0,attribute:"size"})],t.prototype,"size"),h([l({type:Number})],t.prototype,"counter"),h([l({type:Boolean,attribute:"is-typing"})],t.prototype,"isTyping"),t},C=[O,I`
   :host {
     --mdc-avatar-default-background-color: var(--mds-color-theme-avatar-default);
     --mdc-avatar-default-foreground-color: var(--mds-color-theme-common-text-primary-normal);
@@ -121,9 +121,9 @@ import{i as y,D as p,k as h}from"./lit-element-CHllvULs.js";import{r as b}from".
       outline: 0.125rem solid;
     }
   }
-`],C=o=>({[e[124]]:i.XX_LARGE,[e[88]]:i.X_LARGE,[e[72]]:i.LARGE,[e[64]]:i.MIDSIZE,[e[48]]:i.SMALL,[e[32]]:i.X_SMALL,[e[24]]:i.XX_SMALL})[o]||i.X_SMALL,w=o=>({[e[124]]:4.75,[e[88]]:3,[e[72]]:2.5,[e[64]]:2.25,[e[48]]:1.75,[e[32]]:1.25,[e[24]]:1})[o]||1.25,P=o=>({[e[124]]:s.HEADING_XLARGE_MEDIUM,[e[88]]:s.HEADING_LARGE_MEDIUM,[e[72]]:s.HEADING_MIDSIZE_MEDIUM,[e[64]]:s.HEADING_SMALL_MEDIUM,[e[48]]:s.HEADING_SMALL_MEDIUM,[e[32]]:s.BODY_MIDSIZE_MEDIUM,[e[24]]:s.BODY_SMALL_MEDIUM})[o]||s.BODY_MIDSIZE_MEDIUM;var x=Object.defineProperty,N=(o,t,n,E)=>{for(var a=void 0,c=o.length-1,m;c>=0;c--)(m=o[c])&&(a=m(t,n,a)||a);return a&&x(t,n,a),a};const g=class g extends A(f){constructor(){super(...arguments),this.isPhotoLoaded=!1}getPresenceTemplateBasedOnType(t){return t===r.COUNTER&&(this.counter||this.counter===0)?p:this.presence?h`
-        <mdc-presence class="presence" type="${this.presence}" size="${C(this.size)}"></mdc-presence>
-      `:p}handleOnLoad(){this.isPhotoLoaded=!0}handleOnError(){this.isPhotoLoaded=!1,this.onerror&&this.onerror("There was a problem while fetching the <img/>. Please check the src attribute and try again.")}photoTemplate(){return h`
+`],w=o=>({[e[124]]:n.XX_LARGE,[e[88]]:n.X_LARGE,[e[72]]:n.LARGE,[e[64]]:n.MIDSIZE,[e[48]]:n.SMALL,[e[32]]:n.X_SMALL,[e[24]]:n.XX_SMALL})[o]||n.X_SMALL,x=o=>({[e[124]]:4.75,[e[88]]:3,[e[72]]:2.5,[e[64]]:2.25,[e[48]]:1.75,[e[32]]:1.25,[e[24]]:1})[o]||1.25,P=o=>({[e[124]]:s.HEADING_XLARGE_MEDIUM,[e[88]]:s.HEADING_LARGE_MEDIUM,[e[72]]:s.HEADING_MIDSIZE_MEDIUM,[e[64]]:s.HEADING_SMALL_MEDIUM,[e[48]]:s.HEADING_SMALL_MEDIUM,[e[32]]:s.BODY_MIDSIZE_MEDIUM,[e[24]]:s.BODY_SMALL_MEDIUM})[o]||s.BODY_MIDSIZE_MEDIUM;var N=Object.defineProperty,k=(o,t,i,E)=>{for(var a=void 0,d=o.length-1,m;d>=0;d--)(m=o[d])&&(a=m(t,i,a)||a);return a&&N(t,i,a),a};const g=class g extends S(b(f)){constructor(){super(...arguments),this.isPhotoLoaded=!1}getPresenceTemplateBasedOnType(t){return t===r.COUNTER&&(this.counter||this.counter===0)?p:this.presence?c`
+        <mdc-presence class="presence" type="${this.presence}" size="${w(this.size)}"></mdc-presence>
+      `:p}handleOnLoad(){this.isPhotoLoaded=!0}handleOnError(){this.isPhotoLoaded=!1,this.onerror&&this.onerror("There was a problem while fetching the <img/>. Please check the src attribute and try again.")}photoTemplate(){return c`
       <img
         class="photo"
         src="${v(this.src)}"
@@ -132,24 +132,24 @@ import{i as y,D as p,k as h}from"./lit-element-CHllvULs.js";import{r as b}from".
         @load="${this.handleOnLoad}"
         @error="${this.handleOnError}"
       />
-    `}iconTemplate(){const t=this.iconName||_.ICON_NAME;return h`
+    `}iconTemplate(){const t=this.iconName||_.ICON_NAME;return c`
       <mdc-icon
         name="${v(t)}"
         length-unit="rem"
-        size="${w(this.size)}"
+        size="${x(this.size)}"
       ></mdc-icon>
-    `}textTemplate(t){return h`
+    `}textTemplate(t){return c`
       <mdc-text
         type="${P(this.size)}"
         tagname="span"
       >
         ${t}
       </mdc-text>
-    `}generateCounterText(t){return t<0?"0":t>T?`${T}+`:t.toString()}generateInitialsText(t){return t.toUpperCase().slice(0,2)}generateTextContent(t){let n="";return t===r.TEXT&&this.initials&&(n=this.generateInitialsText(this.initials)),t===r.COUNTER&&(this.counter||this.counter===0)&&(n=this.generateCounterText(this.counter)),this.textTemplate(n)}getTypeBasedOnInputs(){return this.src?r.PHOTO:this.iconName?r.ICON:this.initials?r.TEXT:this.counter||this.counter===0?r.COUNTER:r.ICON}getTemplateBasedOnType(t){switch(t){case r.PHOTO:return this.photoTemplate();case r.TEXT:case r.COUNTER:return this.generateTextContent(t);case r.ICON:default:return this.iconTemplate()}}getLoadingContent(){return this.isTyping?h`<div class="loading__wrapper"><div class="loader"></div></div>`:p}getPhotoPlaceHolderContent(t){return this.isPhotoLoaded?p:t===r.PHOTO?this.initials?this.textTemplate(this.generateInitialsText(this.initials)):this.iconTemplate():p}update(t){super.update(t),t.has("src")&&!this.src&&(this.isPhotoLoaded=!1)}render(){const t=this.getTypeBasedOnInputs();return h`
+    `}generateCounterText(t){return t<0?"0":t>T?`${T}+`:t.toString()}generateInitialsText(t){return t.toUpperCase().slice(0,2)}generateTextContent(t){let i="";return t===r.TEXT&&this.initials&&(i=this.generateInitialsText(this.initials)),t===r.COUNTER&&(this.counter||this.counter===0)&&(i=this.generateCounterText(this.counter)),this.textTemplate(i)}getTypeBasedOnInputs(){return this.src?r.PHOTO:this.iconName?r.ICON:this.initials?r.TEXT:this.counter||this.counter===0?r.COUNTER:r.ICON}getTemplateBasedOnType(t){switch(t){case r.PHOTO:return this.photoTemplate();case r.TEXT:case r.COUNTER:return this.generateTextContent(t);case r.ICON:default:return this.iconTemplate()}}getLoadingContent(){return this.isTyping?c`<div class="loading__wrapper"><div class="loader"></div></div>`:p}getPhotoPlaceHolderContent(t){return this.isPhotoLoaded?p:t===r.PHOTO?this.initials?this.textTemplate(this.generateInitialsText(this.initials)):this.iconTemplate():p}update(t){super.update(t),t.has("src")&&!this.src&&(this.isPhotoLoaded=!1)}render(){const t=this.getTypeBasedOnInputs();return c`
       <div class="content" aria-hidden="true">
         ${this.getPhotoPlaceHolderContent(t)}
         ${this.getTemplateBasedOnType(t)}
         ${this.getLoadingContent()}
         ${this.getPresenceTemplateBasedOnType(t)}
       </div>
-    `}};g.styles=[...f.styles,...L];let u=g;N([b()],u.prototype,"isPhotoLoaded");u.register(O);export{e as A,_ as D,A as a};
+    `}};g.styles=[...f.styles,...C];let u=g;k([M()],u.prototype,"isPhotoLoaded");u.register(z);export{e as A,_ as D,S as a};
