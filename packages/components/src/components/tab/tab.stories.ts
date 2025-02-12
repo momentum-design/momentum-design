@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import '../badge';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { TAB_VARIANTS } from './tab.constants';
@@ -14,11 +14,13 @@ const render = (args: Args) => html`<div role="tablist">
     @keyup="${action('onkeyup')}"
     @focus="${action('onfocus')}"
     ?active="${args.active}"
+    aria-label="${ifDefined(args.text ? nothing : 'Label')}"
     ?disabled="${args.disabled}"
     icon-name="${ifDefined(args['icon-name'])}"
     tabIndex="${ifDefined(args.tabIndex)}"
+    text="${ifDefined(args.text)}"
     variant="${ifDefined(args.variant)}"
-    >${args.showBadge ? html`<mdc-badge slot="badge" type="dot"></mdc-badge>` : ''}${args.children}</mdc-tab>
+    >${args.showBadge ? html`<mdc-badge slot="badge" type="dot"></mdc-badge>` : nothing}</mdc-tab>
 </div>`;
 
 const meta: Meta = {
@@ -30,10 +32,6 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
-    children: {
-      description: 'Tab label',
-      control: 'text',
-    },
     active: {
       control: 'boolean',
       description: 'Tab can be active or inactive. Active tab means the tab is selected.',
@@ -51,6 +49,9 @@ const meta: Meta = {
     },
     tabIndex: {
       control: 'number',
+    },
+    text: {
+      control: 'text',
     },
     variant: {
       control: 'select',
@@ -126,13 +127,13 @@ const meta: Meta = {
 export default meta;
 
 const defaultArgs = {
-  children: 'Label',
   active: false,
   disabled: false,
   'icon-name': 'placeholder-bold',
   role: 'tab',
   showBadge: false,
   tabIndex: 0,
+  text: 'Label',
   variant: 'pill',
 };
 
@@ -174,5 +175,16 @@ export const PillTab: StoryObj = {
   },
   argTypes: {
     ...readOnlyControls(['variant']),
+  },
+};
+
+export const IconOnlyTab: StoryObj = {
+  render,
+  args: {
+    ...defaultArgs,
+    text: '',
+  },
+  argTypes: {
+    ...hideControls(['text']),
   },
 };

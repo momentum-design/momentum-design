@@ -104,6 +104,14 @@ class Tab extends Buttonsimple {
   iconName?: string;
 
   /**
+   * Text to be displayed in the tab.
+   * If no `text` is provided, no text will be rendered,
+   * `aria-label` should be set on the tab.
+   */
+  @property({ type: String, reflect: true })
+  text?: string;
+
+  /**
    * Tab can have two variants:
    * - `glass`
    * - `line`
@@ -170,16 +178,12 @@ class Tab extends Buttonsimple {
     return html`
       <div class="mdc-tab__content">
         <slot name="badge"></slot>
-        ${this.iconName
-    ? html`<mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem"> </mdc-icon>`
-    : nothing}
-        <mdc-text
-          type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}
-          tagname=${VALID_TEXT_TAGS.SPAN}
-          data-text="Label"
-        >
-          <slot></slot>
-        </mdc-text>
+        ${this.iconName ? html`
+          <mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem"> </mdc-icon>` : nothing}
+        ${this.text ? html`
+          <mdc-text type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}
+            tagname=${VALID_TEXT_TAGS.SPAN}
+            data-text=${this.text}>${this.text}</mdc-text>` : nothing}
       </div>
       <div class="mdc-tab__line_tab_indicator"></div>
     `;
