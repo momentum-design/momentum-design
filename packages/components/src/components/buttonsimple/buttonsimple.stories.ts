@@ -26,7 +26,7 @@ const meta: Meta = {
   component: 'mdc-buttonsimple',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['internal'],
   },
   argTypes: {
     children: {
