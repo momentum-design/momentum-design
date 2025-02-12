@@ -17,7 +17,7 @@ import styles from './checkboxgroup.styles';
  * @tagname mdc-checkboxgroup
  *
  * @slot help-text - This is a help text slot.
- * @slot children - This is a default slot for children.
+ * @slot default - This is a default slot for children.
  */
 class Checkboxgroup extends Component {
   /**
@@ -79,7 +79,7 @@ class Checkboxgroup extends Component {
     return html`
       ${header}
       <slot name="help-text"></slot>
-      <slot name="checkboxes-list"></slot>
+      <slot></slot>
     `;
   }
 
