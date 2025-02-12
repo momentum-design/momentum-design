@@ -1,7 +1,6 @@
 import { property } from 'lit/decorators.js';
 import { DEFAULTS as AVATAR_DEFAULTS } from '../../components/avatar/avatar.constants';
 import type { AvatarSize } from '../../components/avatar/avatar.types';
-import type { IconNames } from '../../components/icon/icon.types';
 import type { PresenceType } from '../../components/presence/presence.types';
 import type { Component } from '../../models';
 import type { Constructor } from './index.types';
@@ -11,7 +10,6 @@ export interface AvatarComponentMixinInterface {
   initials?: string;
   presence?: PresenceType;
   size: AvatarSize;
-  iconName?: IconNames;
   counter?: number;
   isTyping: boolean;
 }
@@ -70,13 +68,6 @@ export const AvatarComponentMixin = <T extends Constructor<Component>>(
      */
     @property({ type: Number, reflect: true, attribute: 'size' })
     size: AvatarSize = AVATAR_DEFAULTS.SIZE;
-
-    /**
-     * Name of the icon to be displayed inside the Avatar.
-     * Must be a valid icon name.
-     */
-    @property({ type: String, attribute: 'icon-name' })
-    iconName?: IconNames;
 
     /**
      * The counter is the number which can be displayed on the avatar.

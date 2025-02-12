@@ -14,6 +14,8 @@ import Input from './components/input';
 import Link from './components/link';
 import Toggle from './components/toggle';
 import Checkbox from './components/checkbox';
+import Radio from './components/radio';
+import Tab from './components/tab';
 
 import type { TextType } from './components/text/text.types';
 
@@ -34,6 +36,8 @@ export {
   Link,
   Toggle,
   Checkbox,
+  Radio,
+  Tab,
 };
 
 export type {
