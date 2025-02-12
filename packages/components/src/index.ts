@@ -12,7 +12,6 @@ import Divider from './components/divider';
 import AvatarButton from './components/avatarbutton';
 import Input from './components/input';
 import Link from './components/link';
-import VirtualizedList from './components/virtualizedlist';
 import Toggle from './components/toggle';
 import Checkbox from './components/checkbox';
 import Radio from './components/radio';
@@ -35,7 +34,6 @@ export {
   AvatarButton,
   Input,
   Link,
-  VirtualizedList,
   Toggle,
   Checkbox,
   Radio,

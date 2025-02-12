@@ -2,7 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import './virtualizedlist.stories.utils';
+import './virtualizedlist.helper.test';
 import { disableControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
