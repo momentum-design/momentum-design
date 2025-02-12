@@ -3,7 +3,7 @@ import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { AvatarComponentMixin } from '../../utils/mixins/AvatarComponentMixin';
-import { IconNameMixin } from '../../utils/mixins/IconMixin';
+import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import { AVATAR_SIZE, DEFAULTS } from '../avatar/avatar.constants';
 import type { AvatarSize } from '../avatar/avatar.types';
 import { DEFAULTS as BUTTON_DEFAULTS } from '../button/button.constants';

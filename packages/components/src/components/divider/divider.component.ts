@@ -12,7 +12,7 @@ import {
   TEXT_TAG,
 } from './divider.constants';
 import styles from './divider.styles';
-import { Directions, DividerOrientation, DividerVariant } from './divider.types';
+import type { Directions, DividerOrientation, DividerVariant } from './divider.types';
 
 /**
  * `mdc-divider` is a component that provides a line to separate and organize content.

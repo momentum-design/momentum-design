@@ -6,7 +6,7 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { BUTTON_TYPE, DEFAULTS } from './buttonsimple.constants';
 import styles from './buttonsimple.styles';
-import { ButtonSize, ButtonType } from './buttonsimple.types';
+import type { ButtonSize, ButtonType } from './buttonsimple.types';
 
 /**
  * `mdc-buttonsimple` is a component that can be configured in various ways to suit different use cases.
@@ -14,7 +14,6 @@ import { ButtonSize, ButtonType } from './buttonsimple.types';
  * Consumers should use the `mdc-button` component instead.
  *
  * @tagname mdc-buttonsimple
- *
  */
 class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
   /**

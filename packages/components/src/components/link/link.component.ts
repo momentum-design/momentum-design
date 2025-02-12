@@ -3,10 +3,10 @@ import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
-import { IconNameMixin } from '../../utils/mixins/IconMixin';
+import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import { DEFAULTS, LINK_ICON_SIZES, LINK_SIZES } from './link.constants';
 import styles from './link.styles';
-import { LinkSize } from './link.types';
+import type { LinkSize } from './link.types';
 
 /**
  * `mdc-link` component can be used to navigate to a different page
