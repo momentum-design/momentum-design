@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html, TemplateResult } from 'lit';
-import { PLACEMENT } from './popover.constants';
+import { POPOVER_PLACEMENT } from './popover.constants';
 import { COLOR } from '../modalcontainer/modalcontainer.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
@@ -161,7 +161,7 @@ const meta: Meta = {
     ...styleArgType,
     placement: {
       control: 'select',
-      options: Object.values(PLACEMENT),
+      options: Object.values(POPOVER_PLACEMENT),
     },
     offset: {
       if: {
@@ -242,7 +242,7 @@ export const Default: StoryObj = {
   args: {
     triggerID: 'popover-trigger',
     trigger: 'click',
-    placement: PLACEMENT.BOTTOM,
+    placement: POPOVER_PLACEMENT.BOTTOM,
     offset: 4,
     delay: '0,0',
     'show-arrow': true,
@@ -254,7 +254,7 @@ export const interactiveContent: StoryObj = {
   args: {
     triggerID: 'popover-trigger',
     trigger: 'click',
-    placement: PLACEMENT.BOTTOM,
+    placement: POPOVER_PLACEMENT.BOTTOM,
     offset: 4,
     delay: '0,0',
     'focus-trap': true,
@@ -268,7 +268,7 @@ export const interactiveHover: StoryObj = {
   args: {
     triggerID: 'popover-trigger',
     trigger: 'mouseenter',
-    placement: PLACEMENT.BOTTOM,
+    placement: POPOVER_PLACEMENT.BOTTOM,
     offset: 4,
     delay: '0,100',
     'focus-trap': true,
@@ -282,7 +282,7 @@ export const interactiveMultiple: StoryObj = {
   args: {
     triggerID: 'popover-trigger',
     trigger: 'click',
-    placement: PLACEMENT.TOP,
+    placement: POPOVER_PLACEMENT.TOP,
     offset: 4,
     'focus-trap': true,
     interactive: true,
@@ -295,7 +295,7 @@ export const nestedPopover: StoryObj = {
   args: {
     triggerID: 'popover-trigger',
     trigger: 'click',
-    placement: PLACEMENT.TOP,
+    placement: POPOVER_PLACEMENT.TOP,
     offset: 4,
     'set-index': 1,
     'focus-trap': true,
@@ -309,7 +309,7 @@ export const hideOnBlur: StoryObj = {
   args: {
     triggerID: 'popover-trigger',
     trigger: 'click',
-    placement: PLACEMENT.RIGHT,
+    placement: POPOVER_PLACEMENT.RIGHT,
     offset: 4,
     delay: '0,0',
     interactive: true,

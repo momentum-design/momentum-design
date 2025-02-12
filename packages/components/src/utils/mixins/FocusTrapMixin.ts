@@ -15,7 +15,6 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
      * Determines whether the focus trap is enabled.
      * If true, focus will be restricted to the content within this component.
      * @default false
-     *
      */
     @property({ reflect: true, type: Boolean })
     enableFocusTrap = false;
@@ -24,7 +23,6 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
      * Determines whether scrolling is prevented when the focus trap is active.
      * If true, the document's scroll will be disabled while the focus trap is active.
      * @default false
-     *
      */
     @property({ reflect: true, type: Boolean })
     enablePreventScroll = false;

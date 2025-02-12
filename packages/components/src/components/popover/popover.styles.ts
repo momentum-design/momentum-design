@@ -3,8 +3,10 @@ import { css } from 'lit';
 const styles = css`
 
   :host {
+    --mdc-popover-arrow-border-radius: 0.1875rem; 
+    --mdc-popover-arrow-border: 0.0625rem solid var(--mds-color-theme-outline-secondary-normal);
+
     --mdc-popover-primary-background-color: var(--mds-color-theme-background-solid-primary-normal);
-    --mdc-popover-border-color: var(--mds-color-theme-outline-secondary-normal);
     --mdc-popover-inverted-background-color: var(--mds-color-theme-inverted-background-normal);
     --mdc-popover-inverted-border-color: var(--mds-color-theme-inverted-outline-primary-normal);
     --mdc-popover-inverted-text-color: var(--mds-color-theme-inverted-text-primary-normal);
@@ -30,9 +32,15 @@ const styles = css`
     display: block;
   }
 
+  .popover-container::part(modal-container) {
+    padding: 0;
+  }
+
   .popover-content {
-    // max-height: 5rem;
+    position: relative;
+    padding: 0.75rem;
     overflow-y: auto;
+    z-index: 9999;
   }
 
   .popover-backdrop {
@@ -51,9 +59,8 @@ const styles = css`
     height: 1rem;
     background-color: var(--mdc-popover-primary-background-color);
     transform: rotate(45deg);
-    z-index: -1;
     pointer-events: none;
-    border: 0.0625rem solid var(--mdc-popover-border-color);
+    border: var(--mdc-popover-arrow-border);
   }
 
   .popover-close {
@@ -66,28 +73,29 @@ const styles = css`
   .popover-arrow[data-side="top"] {
     border-top: none;
     border-left: none;
-    border-bottom-right-radius: 0.1875rem;
+    border-bottom-right-radius: var(--mdc-popover-arrow-border-radius);
     border-top-left-radius: 100%;
+
   }
 
   .popover-arrow[data-side="bottom"] {
     border-bottom: none;
     border-right: none;
-    border-top-left-radius: 0.1875rem;
+    border-top-left-radius: var(--mdc-popover-arrow-border-radius);
     border-bottom-right-radius: 100%;
   }
 
   .popover-arrow[data-side="right"] {
     border-top: none;
     border-right: none;
-    border-bottom-left-radius: 0.1875rem;
+    border-bottom-left-radius: var(--mdc-popover-arrow-border-radius);
     border-top-right-radius: 100%;
   }
 
   .popover-arrow[data-side="left"] {
     border-bottom: none;
     border-left: none;
-    border-top-right-radius: 0.1875rem;
+    border-top-right-radius: var(--mdc-popover-arrow-border-radius);
     border-bottom-left-radius: 100%;
   }
 `;

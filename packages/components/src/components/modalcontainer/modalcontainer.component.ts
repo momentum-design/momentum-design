@@ -59,6 +59,7 @@ class Modalcontainer extends Component {
         aria-modal='true'
         aria-label=${ifDefined(this.ariaLabel) as string}
         data-elevation="${this.elevation}"
+        part="modal-container"
         >
         <slot></slot>
       </div>

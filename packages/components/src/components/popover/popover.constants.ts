@@ -1,9 +1,9 @@
 import utils from '../../utils/tag-name';
+import { COLOR, ROLE } from '../modalcontainer/modalcontainer.constants';
 
 const TAG_NAME = utils.constructTagName('popover');
 
-const PLACEMENT = {
-  AUTO: 'auto',
+const POPOVER_PLACEMENT = {
   LEFT_START: 'left-start',
   LEFT: 'left',
   LEFT_END: 'left-end',
@@ -18,4 +18,20 @@ const PLACEMENT = {
   BOTTOM_END: 'bottom-end',
 } as const;
 
-export { TAG_NAME, PLACEMENT };
+const TRIGGER = {
+  CLICK: 'click',
+  MOUSEENTER: 'mouseenter',
+  FOCUSIN: 'focusin',
+  MANUAL: 'manual',
+} as const;
+
+const DEFAULTS = {
+  PLACEMENT: POPOVER_PLACEMENT.BOTTOM,
+  TRIGGER: TRIGGER.CLICK,
+  COLOR: COLOR.TONAL,
+  OFFSET: 4,
+  DELAY: '0,0',
+  ROLE: ROLE.DIALOG,
+} as const;
+
+export { TAG_NAME, POPOVER_PLACEMENT, TRIGGER, DEFAULTS };

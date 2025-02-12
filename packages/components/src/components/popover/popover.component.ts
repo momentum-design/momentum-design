@@ -2,20 +2,34 @@ import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
 import { computePosition, autoUpdate, offset, flip, shift, arrow, size } from '@floating-ui/dom';
-import type { Placement } from '@floating-ui/utils';
 import styles from './popover.styles';
 import { Component } from '../../models';
 import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
 import { popoverStack } from './popover.stack';
-import type { ModalContainerColor } from '../modalcontainer/modalcontainer.types';
+import type { PopoverPlacement, PopoverTrigger } from './popover.types';
+import type { ModalContainerColor, ModalContainerRole } from '../modalcontainer/modalcontainer.types';
+import { DEFAULTS } from './popover.constants';
 
 /**
- * popover component, which .
+ * Popover component is a lightweight floating UI element that displays additional content when triggered.
+ * It can be used for tooltips, dropdowns, or contextual menus.
+ * The popover automatically positions itself based on available space and
+ * supports dynamic height adjustments with scrollable content when needed。
  *
  * @dependency mdc-button
  * @dependency mdc-modalcontainer
  *
  * @tagname mdc-popover
+ *
+ * @cssproperty --mdc-popover-arrow-border-radius - radius of the arrow border
+ * @cssproperty --mdc-popover-arrow-border - border of the arrow
+ * @cssproperty --mdc-popover-primary-background-color - primary background color of the popover
+ * @cssproperty --mdc-popover-inverted-background-color - inverted background color of the popover
+ * @cssproperty --mdc-popover-inverted-border-color - inverted border color of the popover
+ * @cssproperty --mdc-popover-inverted-text-color - inverted text color of the popover
+ *
+ * @slot - Default slot for modal container
+ *
  */
 class Popover extends FocusTrapMixin(Component) {
   /**
@@ -32,15 +46,33 @@ class Popover extends FocusTrapMixin(Component) {
 
   /**
    * The event that triggers the popover.
+   * - **click**
+   * - **mouseenter**
+   * - **focusin**
+   * - **manual**
+   * @default click
    */
   @property({ type: String, reflect: true })
-  trigger: string = 'click';
+  trigger: PopoverTrigger = DEFAULTS.TRIGGER;
 
   /**
    * The placement of the popover.
+   * - **top**
+   * - **top-start**
+   * - **top-end**
+   * - **bottom**
+   * - **bottom-start**
+   * - **bottom-end**
+   * - **left**
+   * - **left-start**
+   * - **left-end**
+   * - **right**
+   * - **right-start**
+   * - **right-end**
+   * @default bottom
    */
   @property({ type: String, reflect: true })
-  placement: Placement = 'bottom';
+  placement: PopoverPlacement = DEFAULTS.PLACEMENT;
 
   /**
    * Color of the popover
@@ -49,106 +81,123 @@ class Popover extends FocusTrapMixin(Component) {
    * @default tonal
    */
   @property({ type: String, reflect: true })
-  color: ModalContainerColor = 'tonal';
+  color: ModalContainerColor = DEFAULTS.COLOR;
 
   /**
    * The visibility of the popover.
+   * @default false
    */
   @property({ type: Boolean, reflect: true })
   visible = false;
 
   /**
    * The offset of the popover.
+   * @default 4
    */
   @property({ type: Number, reflect: true })
-  offset: number = 4;
+  offset: number = DEFAULTS.OFFSET;
 
   /**
-   * The arrow visibility of the popover.
+   * The show arrow visibility of the popover.
+   * @default false
    */
   @property({ type: Boolean, attribute: 'show-arrow' })
   showArrow = false;
 
   /**
    * The close button visibility of the popover.
+   * @default false
    */
   @property({ type: Boolean, attribute: 'close-button', reflect: true })
   closeButton = false;
 
   /**
-   * The interactive visibility of the popover.
+   * Determines whether the popover is interactive。
+   * @default false
    */
   @property({ type: Boolean, reflect: true })
   interactive = false;
 
   /**
    * The delay of the show/hide popover.
+   * @default 0,0
    */
   @property({ type: String, reflect: true })
-  delay: string = '0,0';
+  delay: string = DEFAULTS.DELAY;
 
   /**
-   * The focus trap of the popover.
+   * Determines whether the popover is focus trap.
+   * @default false
    */
   @property({ type: Boolean, reflect: true, attribute: 'focus-trap' })
   focusTrap = false;
 
   /**
-   * Prevent scroll when popover show.
+   * Prevent outside scrolling when popover show.
+   * @default false
    */
   @property({ type: Boolean, reflect: true, attribute: 'prevent-scroll' })
   preventScroll = false;
 
   /**
    * Hide popover on escape key press.
+   * @default false
    */
   @property({ type: Boolean, reflect: true, attribute: 'hide-on-escape' })
   hideOnEscape = false;
 
   /**
    * Hide popover on blur.
+   * @default false
    */
   @property({ type: Boolean, reflect: true, attribute: 'hide-on-blur' })
   hideOnBlur = false;
 
   /**
    * Hide on outside click of the popover.
+   * @default false
    */
   @property({ type: Boolean, reflect: true, attribute: 'hide-on-outside-click' })
   hideOnOutsideClick = false;
 
   /**
    * The focus back to trigger after the popover hide.
+   * @default false
    */
   @property({ type: Boolean, reflect: true, attribute: 'focus-back-to-trigger' })
   focusBackToTrigger = false;
 
   /**
-   * The backdrop visibility of the popover.
+   * Determines whether the backdrop is .
+   * @default false
    */
   @property({ type: Boolean, reflect: true })
   backdrop = false;
 
   /**
-   * The focus back to trigger after the popover hide.
+   * Changes the placement of popover to keep it in view.
+   * @default false
    */
   @property({ type: Boolean, reflect: true })
   flip = false;
 
   /**
-   * The focus back to trigger after the popover hide.
+   * Changes the size of popover to keep it in view.
+   * @default false
    */
-    @property({ type: Boolean, reflect: true })
-    size = false;
+  @property({ type: Boolean, reflect: true })
+  size = false;
 
   /**
    * The z-index of the popover.
+   * @default 1000
    */
   @property({ type: Number, reflect: true, attribute: 'set-index' })
   setIndex = 1000;
 
   /**
    * Element ID that the popover append to.
+   * @default ''
    */
   @property({ type: String, reflect: true })
   appendTo = '';
@@ -174,22 +223,36 @@ class Popover extends FocusTrapMixin(Component) {
   @property({ type: String, attribute: 'aria-labelledby' })
   ariaLabelledBy: string | null = null;
 
+  /**
+   * Role attribute to be set for popover accessibility
+   * @default dialog
+   */
   @property({ type: String })
-  override role: string | null = null;
+  override role: ModalContainerRole = DEFAULTS.ROLE;
 
+  /**
+   * Aria-describedby attribute to be set for popover accessibility
+   * @default null
+   */
   @property({ type: String, attribute: 'aria-describeby' })
   ariaDecribeBy: string | null = null;
 
+  /** @internal */
   private triggerElement: HTMLElement | null = null;
 
+  /** @internal */
   private popoverElement: HTMLElement | null = null;
 
+  /** @internal */
   private arrowElement: HTMLElement | null = null;
 
+  /** @internal */
   private hoverTimer: number | null = null;
 
+  /** @internal */
   private openDelay: number = 0;
 
+  /** @internal */
   private closeDelay: number = 0;
 
   protected override async firstUpdated(changedProperties: PropertyValues) {
@@ -213,7 +276,10 @@ class Popover extends FocusTrapMixin(Component) {
     popoverStack.remove(this);
   }
 
-  private setupAppendTo() {
+  /**
+  * This method checks if the `appendTo` property is set, finds the corresponding
+  * DOM element by its ID, and appends the component (`this`) as a child of that element.
+  */  private setupAppendTo() {
     if (this.appendTo) {
       const appendToElement = document.getElementById(this.appendTo);
       if (appendToElement) {
@@ -301,6 +367,7 @@ class Popover extends FocusTrapMixin(Component) {
 
   private onOutsidePopoverClick = (event: MouseEvent) => {
     if (popoverStack.peek() !== this) return;
+
     let insidePopoverClick = false;
     const path = event.composedPath();
     insidePopoverClick = this.contains(event.target as Node) || path.includes(this.triggerElement!);
@@ -446,7 +513,7 @@ class Popover extends FocusTrapMixin(Component) {
             maxHeight: `${availableHeight}px`,
           });
         },
-        padding: 50,
+        padding: 25,
       }));
     }
 
@@ -509,7 +576,7 @@ class Popover extends FocusTrapMixin(Component) {
     Object.assign(this.arrowElement.style, {
       left: arrowX != null ? `${arrowX}px` : '',
       top: arrowY != null ? `${arrowY}px` : '',
-      [staticSide]: `${-this.arrowElement.offsetHeight / 2}px`,
+      [staticSide]: `${-this.arrowElement.offsetHeight / 1.95}px`,
     });
   }
 
@@ -563,6 +630,7 @@ class Popover extends FocusTrapMixin(Component) {
           color=${this.color}
           aria-modal=${ifDefined(this.interactive ? 'true' : undefined)}
           ?visible=${this.visible}
+          rolse=${this.role}
           style='z-index: ${this.setIndex};'
           data-color=${this.color}
         >
@@ -577,7 +645,7 @@ class Popover extends FocusTrapMixin(Component) {
     : nothing}
           ${this.showArrow ? html`<div id="popover-arrow" class="popover-arrow" 
             style="z-index: ${this.setIndex};"></div>` : nothing}
-          <div class="popover-content">
+          <div class="popover-content" part="popover-content">
             <slot></slot>
           </div>
         </mdc-modalcontainer>
