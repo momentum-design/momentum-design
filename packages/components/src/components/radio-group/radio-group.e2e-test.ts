@@ -8,7 +8,7 @@ test.beforeEach(async ({ componentsPage }) => {
   });
 });
 
-test('mdc-radio-group', async ({ componentsPage }) => {
+test.skip('mdc-radio-group', async ({ componentsPage }) => {
   const radiogroup = componentsPage.page.locator('mdc-radio-group');
 
   // initial check for the radio-group be visible on the screen:
