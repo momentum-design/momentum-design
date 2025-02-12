@@ -30,8 +30,8 @@ class Checkboxgroup extends Component {
 
   /** @internal */
   private get checkboxList() {
-    const slot = this.shadowRoot?.querySelector('slot');
-    const assignedElements = slot?.assignedElements() || [];
+    const allSlots = Array.from(this.shadowRoot?.querySelectorAll('slot') ?? []);
+    const assignedElements = allSlots?.filter((eachSlot) => eachSlot.name !== 'help-text')[0]?.assignedElements() || [];
     return assignedElements.filter((element) => element.tagName.toLowerCase() === CHECKBOX_TAGNAME);
   }
 
