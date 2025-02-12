@@ -170,11 +170,14 @@ class Tab extends Buttonsimple {
     return html`
       <div class="mdc-tab__content">
         <slot name="badge"></slot>
-        ${this.iconName ? html`<mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem">
-          </mdc-icon>` : nothing}
+        ${this.iconName
+    ? html`<mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem"> </mdc-icon>`
+    : nothing}
         <mdc-text
           type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}
-          tagname=${VALID_TEXT_TAGS.SPAN}>
+          tagname=${VALID_TEXT_TAGS.SPAN}
+          data-text="Label"
+        >
           <slot></slot>
         </mdc-text>
       </div>

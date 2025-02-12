@@ -95,6 +95,26 @@ const styles = [hostFitContentStyles, css`
     width: fit-content;
   }
 
+  mdc-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  mdc-text::after{
+    content: attr(data-text);
+    height: 0;
+    visibility: hidden;
+    overflow: hidden;
+    user-select: none;
+    pointer-events: none;
+    /* body-midsize-bold font styling */
+    font-size: var(--mds-font-apps-body-midsize-bold-font-size);
+    font-weight: var(--mds-font-apps-body-midsize-bold-font-weight);
+    line-height: var(--mds-font-apps-body-midsize-bold-line-height);
+    text-decoration: var(--mds-font-apps-body-midsize-bold-text-decoration);
+    text-transform: var(--mds-font-apps-body-midsize-bold-text-case);
+  }
+
   .mdc-tab__line_tab_indicator {
     width: var(--mdc-tab-line-active-indicator-width);
     height: var(--mdc-tab-line-active-indicator-height);
