@@ -11,6 +11,7 @@ import { AUTO_CAPITALIZE } from './input.constants';
 const render = (args: Args) => {
   const value = args.maxlength && args.value ? args.value.substring(0, args.maxlength) : args.value;
   return html` <mdc-input
+    @input="${action('oninput')}"
     @change="${action('onchange')}"
     @focus="${action('onfocus')}"
     @blur="${action('onblur')}"
