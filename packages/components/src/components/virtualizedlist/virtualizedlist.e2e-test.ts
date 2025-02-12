@@ -1,4 +1,4 @@
-import { defineConfig, expect } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 
 type SetupOptions = {
