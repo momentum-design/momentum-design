@@ -2,22 +2,24 @@ import { css } from 'lit';
 
 const styles = css`
   :host {
-    --mdc-font-size-body-large: var(--mds-font-size-body-large);
-    --mdc-font-lineheight-body-large: var(--mds-font-lineheight-body-large);
-    --mdc-color-theme-text-primary-normal: var(--mds-color-theme-text-primary-normal);
-    --mdc-font-weight-bold: var(--mds-font-weight-bold);
+    --mdc-label-text-normal: var(--mds-color-theme-text-primary-normal);
+    --mdc-description-text-normal: var(--mds-color-theme-text-secondary-normal);
   }
 
   .mdc-radio-group{
     display: flex;
     flex-direction: column;
+    gap: 8px;
   }
 
   .mdc-radio-group__label {
-    font-size: var(--mdc-font-size-body-large);
-    line-height: var(--mdc-font-lineheight-body-large);
-    color: var(--mdc-color-theme-text-primary-normal);
-    font-weight: var(--mdc-font-weight-bold);
+    color: var(--mdc-label-text-normal);
+    margin-bottom: 0.5rem;
+  }
+
+  .mdc-radio-group__description {
+    color: var(--mdc-description-text-normal);
+    margin-bottom: 1rem;
   }
 `;
 
