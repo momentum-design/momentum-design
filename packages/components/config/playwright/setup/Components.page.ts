@@ -173,7 +173,7 @@ class ComponentsPage {
    * @param shouldTimeout - Boolean to check if the promise should time out
    * @param timeout - Timeout in milliseconds
    */
-  async expectPromiseTimesOut(promise: Promise<unknown>, shouldTimeout: boolean, timeout: number) {
+  async expectPromiseTimesOut(promise: Promise<unknown>, shouldTimeout: boolean, timeout: number = 2000) {
     const TIMED_OUT = 'TIMED_OUT';
     const timeoutPromise = new Promise((resolve) => {
       setTimeout(resolve, timeout);

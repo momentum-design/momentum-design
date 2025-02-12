@@ -178,20 +178,20 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
         await componentsPage.setAttributes(iconLocator, {
           name: 'accessibility-bold',
         });
-        await componentsPage.expectPromiseTimesOut(responseAccessibilityBoldFirstTime, false, 4000);
+        await componentsPage.expectPromiseTimesOut(responseAccessibilityBoldFirstTime, false);
 
         const responsePlaceholderRegular = componentsPage.page.waitForResponse('**/placeholder-regular.svg');
         await componentsPage.setAttributes(iconLocator, {
           name: 'placeholder-regular',
         });
-        await componentsPage.expectPromiseTimesOut(responsePlaceholderRegular, false, 4000);
+        await componentsPage.expectPromiseTimesOut(responsePlaceholderRegular, false);
 
         const responseAccessibilityBoldSecondTime = componentsPage.page.waitForResponse('**/accessibility-bold.svg');
         await componentsPage.setAttributes(iconLocator, {
           name: 'accessibility-bold',
         });
         // this should not timeout, so the network request is still made, cause caching is not turned on:
-        await componentsPage.expectPromiseTimesOut(responseAccessibilityBoldSecondTime, false, 4000);
+        await componentsPage.expectPromiseTimesOut(responseAccessibilityBoldSecondTime, false);
       }
     });
     await test.step('caching turned on', async () => {
@@ -207,20 +207,20 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
         await componentsPage.setAttributes(iconLocator, {
           name: 'accessories-bold',
         });
-        await componentsPage.expectPromiseTimesOut(responseAccessoriesBoldFirstTime, false, 4000);
+        await componentsPage.expectPromiseTimesOut(responseAccessoriesBoldFirstTime, false);
 
         const responseAccessoriesRegular = componentsPage.page.waitForResponse('**/accessories-regular.svg');
         await componentsPage.setAttributes(iconLocator, {
           name: 'accessories-regular',
         });
-        await componentsPage.expectPromiseTimesOut(responseAccessoriesRegular, false, 4000);
+        await componentsPage.expectPromiseTimesOut(responseAccessoriesRegular, false);
 
         const responseAccessoriesBoldSecondTime = componentsPage.page.waitForResponse('**/accessories-bold.svg');
         await componentsPage.setAttributes(iconLocator, {
           name: 'accessories-bold',
         });
         // this should timeout, so the network request is not made, cause caching is turned on:
-        await componentsPage.expectPromiseTimesOut(responseAccessoriesBoldSecondTime, true, 4000);
+        await componentsPage.expectPromiseTimesOut(responseAccessoriesBoldSecondTime, true);
       }
     });
   });
