@@ -2,8 +2,8 @@ import { css } from 'lit';
 
 const styles = css`
   :host {
-    --mdc-label-text-normal: var(--mds-color-theme-text-primary-normal);
-    --mdc-description-text-normal: var(--mds-color-theme-text-secondary-normal);
+    --mdc-radio-group-label-text-normal: var(--mds-color-theme-text-primary-normal);
+    --mdc-radio-group-description-text-normal: var(--mds-color-theme-text-secondary-normal);
   }
 
   .mdc-radio-group{
@@ -13,12 +13,12 @@ const styles = css`
   }
 
   .mdc-radio-group__label {
-    color: var(--mdc-label-text-normal);
+    color: var(--mdc-radio-group-label-text-normal);
     margin-bottom: 0.5rem;
   }
 
   .mdc-radio-group__description {
-    color: var(--mdc-description-text-normal);
+    color: var(--mdc-radio-group-description-text-normal);
     margin-bottom: 1rem;
   }
 `;

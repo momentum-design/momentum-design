@@ -7,10 +7,18 @@ import styles from './radio-group.styles';
 
 /**
  * Radio Group Component - This is the wrapper component for radio buttons which are grouped together.
+ * It can have a header text and a description. It enables users to select a single option from a set of options.
+ * It is often used in forms, settings, and selection in lists. It automatically group the radio buttons inside it.
  *
  * @tagname mdc-radio-group
  *
  * @slot default - This is a default/unnamed slot
+ *
+ * @dependency mdc-text
+ *
+ *
+ * @cssproperty --mdc-radio-group-label-text-normal - color of the label text
+ * @cssproperty --mdc-radio-group-description-text-normal - color of the description text
  *
  */
 class RadioGroup extends NameMixin(Component) {

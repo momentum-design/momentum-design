@@ -3,6 +3,7 @@ import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { disableControls } from '../../../config/storybook/utils';
 import '../radio';
 
 const render = (args: Args) => html`
@@ -26,6 +27,17 @@ const meta: Meta = {
   argTypes: {
     ...classArgType,
     ...styleArgType,
+    name: {
+      control: { type: 'text' },
+    },
+    'header-text': {
+      control: { type: 'text' },
+    },
+    description: {
+      control: { type: 'text' },
+    },
+    ...disableControls([
+      '--mdc-radio-group-label-color']),
   },
 };
 
