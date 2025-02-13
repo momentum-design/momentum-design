@@ -1,18 +1,73 @@
-import { test } from '../../../config/playwright/setup';
+import { expect } from '@playwright/test';
+import { ComponentsPage, test } from '../../../config/playwright/setup';
+import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
-test.beforeEach(async ({ componentsPage }) => {
+type SetupOptions = {
+  componentsPage: ComponentsPage;
+  name?: string;
+  'header-text'?: string;
+  description?: string;
+}
+
+const setup = async (args: SetupOptions) => {
+  const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
-        <mdc-radio-group />
+      <form id="radio-form">
+        <mdc-radio-group
+          ${restArgs.name ? `name="${restArgs.name}"` : ''}
+          ${restArgs['header-text'] ? `header-text="${restArgs['header-text']}"` : ''}
+          ${restArgs.description ? `description="${restArgs.description}"` : ''}
+        >
+          <mdc-radio label="Standard Plan" value="standard-plan"></mdc-radio>
+          <mdc-radio label="Premium Plan" value="premium-plan"></mdc-radio>
+        </mdc-radio-group>
+      </form>
       `,
+    clearDocument: true,
   });
-});
 
-test.skip('mdc-radio-group', async ({ componentsPage }) => {
-  const radiogroup = componentsPage.page.locator('mdc-radio-group');
+  const radio = componentsPage.page.locator('mdc-radio-group').first();
+  await radio.waitFor();
+  return radio;
+};
 
-  // initial check for the radio-group be visible on the screen:
-  await radiogroup.waitFor();
+test('mdc-radio-group', async ({ componentsPage }) => {
+  /**
+   * VISUAL REGRESSION
+   */
+  await test.step('visual-regression', async () => {
+    const radioGroupStickerSheet = new StickerSheet(componentsPage, 'mdc-radio-group');
+    radioGroupStickerSheet.setChildren(
+      `<mdc-radio label="Standard Plan" value="standard-plan"></mdc-radio>
+      <mdc-radio label="Premium Plan" value="premium-plan" checked></mdc-radio>
+      <mdc-radio label="Business Plan" value="business-plan" disabled></mdc-radio>`,
+    );
+
+    // Radio Group with header text only
+    await radioGroupStickerSheet.createMarkupWithCombination({}, true);
+    await radioGroupStickerSheet.setAttributes({
+      'header-text': 'Select your plan',
+      style: 'margin: 0.25rem',
+    });
+
+    // Radio Group with header text and description
+    await radioGroupStickerSheet.createMarkupWithCombination({}, true);
+    await radioGroupStickerSheet.setAttributes({
+      'header-text': 'Select your plan',
+      description: 'The plan you select will be the plan you are billed for',
+      style: 'margin: 0.25rem',
+    });
+
+    await radioGroupStickerSheet.createMarkupWithCombination({}, true);
+    await radioGroupStickerSheet.mountStickerSheet();
+
+    await test.step('matches screenshot of radio group stickersheet', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-radio-group', {
+        element: radioGroupStickerSheet.getWrapperContainer(),
+      });
+    });
+  });
 
   /**
    * ACCESSIBILITY
@@ -22,45 +77,55 @@ test.skip('mdc-radio-group', async ({ componentsPage }) => {
   });
 
   /**
-   * VISUAL REGRESSION
-   */
-  await test.step('visual-regression', async () => {
-    await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-radio-group', { element: radiogroup });
-    });
-  });
-
-  /**
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
-    await test.step('attribute X should be present on component by default', async () => {
-      // TODO: add test here
+    const radioGroup = await setup({ componentsPage });
+    // For Header Text
+    await test.step('should have header text when the header text attribute is passed', async () => {
+      await componentsPage.setAttributes(radioGroup, { 'header-text': 'Header Text' });
+      const mdcText = await componentsPage.page.locator('mdc-text');
+      const textContent = await mdcText.textContent();
+      expect(textContent?.trim()).toBe('Header Text');
+      await componentsPage.removeAttribute(radioGroup, 'header-text');
+    });
+
+    // For description
+    await test.step('should have description when the description attribute is passed', async () => {
+      await componentsPage.setAttributes(radioGroup, { description: 'Description' });
+      const mdcText = await componentsPage.page.locator('mdc-text');
+      const textContent = await mdcText.textContent();
+      expect(textContent?.trim()).toBe('Description');
+      await componentsPage.removeAttribute(radioGroup, 'description');
+    });
+
+    // For radio count
+    await test.step('should have two radio buttons', async () => {
+      const radios = await componentsPage.page.locator('mdc-radio');
+      const radioCount = await radios.count();
+      expect(radioCount).toBe(2);
     });
   });
 
   /**
-   * INTERACTIONS
-   */
+     * INTERACTIONS
+    */
   await test.step('interactions', async () => {
-    await test.step('mouse/pointer', async () => {
-      await test.step('component should fire callback x when clicking on it', async () => {
-        // TODO: add test here
+    await test.step('navigate and select between radio buttons using arrow keys.', async () => {
+      await setup({
+        componentsPage,
+        'header-text': 'Select your plan',
+        name: 'student-plan',
       });
-    });
-
-    await test.step('focus', async () => {
-      await test.step('component should be focusable with tab', async () => {
-        // TODO: add test here
-      });
-
-      // add additional tests here, like tabbing through several parts of the component
-    });
-
-    await test.step('keyboard', async () => {
-      await test.step('component should fire callback x when pressing y', async () => {
-        // TODO: add test here
-      });
+      const radios = await componentsPage.page.locator('mdc-radio').locator('input[name="student-plan"]');
+      await componentsPage.actionability.pressTab();
+      await expect(radios.nth(0)).toBeFocused();
+      await componentsPage.page.keyboard.press('ArrowDown');
+      await expect(radios.nth(1)).toBeFocused();
+      await expect(radios.nth(1)).toBeChecked();
+      await componentsPage.page.keyboard.press('ArrowUp');
+      await expect(radios.nth(0)).toBeFocused();
+      await expect(radios.nth(0)).toBeChecked();
     });
   });
 });
