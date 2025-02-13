@@ -24,8 +24,10 @@ class Checkboxgroup extends Component {
    */
   @property({ type: String, attribute: 'header-text' }) headerText?: string;
 
-  /** @internal */
-  @property({ type: String, reflect: true }) override role = 'group';
+  constructor() {
+    super();
+    this.role = 'group';
+  }
 
   public override render() {
     const header = this.headerText
