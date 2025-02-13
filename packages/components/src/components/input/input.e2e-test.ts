@@ -33,20 +33,11 @@ type SetupOptions = {
   clearAriaLabel?: string;
 };
 
-const handleFormSubmit = (event: Event) => {
-  event.preventDefault();
-  const submitButton = document.querySelector('mdc-button[type="submit"]');
-  if (submitButton) {
-    submitButton.setAttribute('disabled', 'true');
-    submitButton.textContent = 'Submitted';
-  }
-};
-
 const setup = async (args: SetupOptions, isForm = false) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
-    ${isForm ? `<form @submit=${handleFormSubmit}>` : ''}
+    ${isForm ? '<form>' : ''}
       <mdc-input
       id="${restArgs.id}"
       ${restArgs.value ? `value="${restArgs.value}"` : ''}
@@ -308,9 +299,6 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       await componentsPage.actionability.pressTab();
       await expect(mdcInput).toBeFocused();
       await componentsPage.page.keyboard.down('Enter');
-      // await componentsPage.actionability.pressTab();
-      // await expect(submitButton).toBeFocused();
-      // await submitButton.click();
       const validationMessage = await inputEl.evaluate((element) => {
         const input = element as HTMLInputElement;
         return input.validationMessage;
@@ -378,6 +366,23 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       readonly: true,
     });
     await inputStickerSheet.createMarkupWithCombination({});
+
+    // input that is marked required
+    await inputStickerSheet.setAttributes({ ...attributes,
+      'required-label': 'required',
+      placeholder: 'Input is required',
+    });
+    await inputStickerSheet.createMarkupWithCombination({});
+
+    // Long text label that is truncated in a small container
+    await inputStickerSheet.setAttributes({
+      label: 'This is a large label text',
+      'required-label': 'required',
+      placeholder: 'placeholder',
+      style: 'width: 200px',
+    });
+    await inputStickerSheet.createMarkupWithCombination({});
+
     await inputStickerSheet.mountStickerSheet();
     const container = await inputStickerSheet.getWrapperContainer();
 
