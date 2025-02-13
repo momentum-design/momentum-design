@@ -45,21 +45,21 @@ test('mdc-radio-group', async ({ componentsPage }) => {
     );
 
     // Radio Group with header text only
-    await radioGroupStickerSheet.createMarkupWithCombination({}, true);
+    await radioGroupStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
     await radioGroupStickerSheet.setAttributes({
       'header-text': 'Select your plan',
       style: 'margin: 0.25rem',
     });
 
     // Radio Group with header text and description
-    await radioGroupStickerSheet.createMarkupWithCombination({}, true);
+    await radioGroupStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
     await radioGroupStickerSheet.setAttributes({
       'header-text': 'Select your plan',
       description: 'The plan you select will be the plan you are billed for',
       style: 'margin: 0.25rem',
     });
 
-    await radioGroupStickerSheet.createMarkupWithCombination({}, true);
+    await radioGroupStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
     await radioGroupStickerSheet.mountStickerSheet();
 
     await test.step('matches screenshot of radio group stickersheet', async () => {
