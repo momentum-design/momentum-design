@@ -1,4 +1,4 @@
-import { CSSResult, html, nothing, PropertyValues } from 'lit';
+import { CSSResult, html, LitElement, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
@@ -57,6 +57,12 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
   static formAssociated = true;
 
   /** @internal */
+  static override shadowRootOptions: ShadowRootInit = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  };
+
+  /** @internal */
   get form(): HTMLFormElement | null {
     return this.internals.form;
   }
@@ -98,11 +104,23 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
 
   /**
    * Toggles the state of the checkbox element.
-   * and dispatch the new event.
+   * and dispatch the new change event.
    */
   public handleChange(event: Event): void {
     this.toggleState();
-    this.dispatchEvent(new Event(event.type, event));
+    const EventConstructor = event.constructor as typeof Event;
+    this.dispatchEvent(new EventConstructor(event.type, event));
+  }
+
+  /**
+   * Handles the keydown event on the checkbox.
+   * When the user presses Enter, the form is submitted.
+   * @param event - The keyboard event.
+   */
+  private handleKeyDown(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      this.form?.requestSubmit();
+    }
   }
 
   public override update(changedProperties: PropertyValues): void {
@@ -137,6 +155,7 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
           .disabled="${this.disabled}"
           aria-label="${this.dataAriaLabel ?? ''}"
           @change=${this.handleChange}
+          @keydown=${this.handleKeyDown}
         />
         <div class="icon-container">${checkboxIconContent}</div>
       </div>
