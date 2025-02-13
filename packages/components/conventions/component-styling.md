@@ -123,7 +123,7 @@ For each component we develop, we will define CSS variables within the `:host` s
 }
 ```
 
-### Naming Conventions
+### Naming Conventions for CSS variables
 
 To maintain clarity and consistency, all component CSS variables should adhere to the following naming convention:
 
@@ -155,3 +155,48 @@ animations are loaded as part of the CSS.
 
 If there is a case for building a animation (like spinners, etc.), use tools like <https://css-loaders.com/> or similar which help to create animations
 just by using CSS. As a last resort we should fall back to Animations like the Lottie files which are stored in [@momentum-design/animations](https://github.com/momentum-design/momentum-design/tree/main/packages/assets/animations)
+
+## Prioritizing CSS parts over unnecessary classes
+
+Whenever applicable, prioritize using CSS parts instead of unnecessary class names.
+
+### Why use CSS parts? 
+
+CSS parts allow styling of internal elements without excessive classes, ensuring better encapsulation and flexible theming.
+
+### Example:
+
+#### ❌ Without CSS parts (using unnecessary classes)
+```html
+<button class="custom-button">
+  <span class="custom-button-label">Click me</span>
+</button>
+```
+
+```css
+.custom-button {
+  background-color: blue;
+  color: white;
+}
+
+.custom-button-label {
+  font-weight: bold;
+}
+```
+#### ✅ With CSS parts (preferred approach)
+```html
+<button part="button">
+  <span part="label">Click me</span>
+</button>
+```
+
+```css
+::part(button) {
+  background-color: blue;
+  color: white;
+}
+
+::part(label) {
+  font-weight: bold;
+}
+```
