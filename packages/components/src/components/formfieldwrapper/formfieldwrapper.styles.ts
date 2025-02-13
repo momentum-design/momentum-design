@@ -26,10 +26,14 @@ const styles = [
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      width: 100%;
     }
 
     .mdc-label {
       color: var(--mds-color-theme-text-primary-normal);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .mdc-help-text {
