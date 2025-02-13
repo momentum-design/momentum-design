@@ -42,66 +42,57 @@ test('mdc-checkbox', async ({ componentsPage }) => {
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
-    const checkboxStickerSheet = new StickerSheet(componentsPage, 'mdc-checkbox');
+    const checkboxStickerSheet = new StickerSheet(componentsPage, 'mdc-checkbox', 'margin: 0.25rem');
     checkboxStickerSheet.setAttributes({
       'data-aria-label': 'This is aria label text',
-      style: 'margin: 0.25rem',
     });
-    await checkboxStickerSheet.createMarkupWithCombination({}, true);
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
     checkboxStickerSheet.setAttributes({
       label: 'I agree to the terms',
-      style: 'margin: 0.25rem',
     });
-    await checkboxStickerSheet.createMarkupWithCombination({}, true);
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
     checkboxStickerSheet.setAttributes({
       label: 'Selected Checkbox Label',
       checked: true,
-      style: 'margin: 0.25rem',
     });
-    await checkboxStickerSheet.createMarkupWithCombination({}, true);
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
     checkboxStickerSheet.setAttributes({
       label: 'Indeterminate Checkbox Label',
       indeterminate: true,
-      style: 'margin: 0.25rem',
     });
-    await checkboxStickerSheet.createMarkupWithCombination({}, true);
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
     checkboxStickerSheet.setAttributes({
       label: 'Selected Checkbox Label',
       'help-text': 'This is a help text',
       checked: true,
-      style: 'margin: 0.25rem',
     });
-    await checkboxStickerSheet.createMarkupWithCombination({}, true);
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
     checkboxStickerSheet.setAttributes({
       label: 'Indeterminate Checkbox Label',
       'help-text': 'This is a help text',
       indeterminate: true,
-      style: 'margin: 0.25rem',
     });
-    await checkboxStickerSheet.createMarkupWithCombination({}, true);
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
     checkboxStickerSheet.setAttributes({
       label: 'Disabled Checkbox Label',
       'help-text': 'This is a help text',
       disabled: true,
-      style: 'margin: 0.25rem',
     });
-    await checkboxStickerSheet.createMarkupWithCombination({}, true);
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
     checkboxStickerSheet.setAttributes({
       label: 'Disabled Selected Checkbox Label',
       'help-text': 'This is a help text',
       disabled: true,
       checked: true,
-      style: 'margin: 0.25rem',
     });
-    await checkboxStickerSheet.createMarkupWithCombination({}, true);
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
     checkboxStickerSheet.setAttributes({
       label: 'Disabled Indeterminate Checkbox Label',
       'help-text': 'This is a help text',
       disabled: true,
       indeterminate: true,
-      style: 'margin: 0.25rem',
     });
-    await checkboxStickerSheet.createMarkupWithCombination({}, true);
+    await checkboxStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
     await checkboxStickerSheet.mountStickerSheet();
 
     await test.step('matches screenshot of checkbox sizes stickersheet', async () => {
