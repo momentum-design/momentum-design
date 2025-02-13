@@ -116,6 +116,7 @@ class StickerSheet {
   /**
    * Creates a wrapper for a combination of components and adds them to the sheet.
    * @param combinationArr - An array of objects representing combinations of attributes for components.
+   * @param rowWrapperStyle - A string representing the style to apply to the wrapper. Default is an empty string.
    */
   private createWrapperForCombination(combinationArr: Array<Record<string, any>>, rowWrapperStyle = '') {
     let childrenEl = '';
@@ -131,7 +132,7 @@ class StickerSheet {
   }
 
   /**
-   *
+   * Creates the markup for the sticker sheet based on the provided object combinations.
    * @param combinations - An object containing combinations of attributes for creating sticker sheet combination.
    * @param options - An object containing options for creating the wrapper.
    * - createNewRow - A boolean indicating whether to create a new row for the combination. Default is false.
@@ -175,7 +176,7 @@ class StickerSheet {
 
   /**
    * Mounts the sticker sheet markup onto the page.
-   * @param style - A string representing the style to apply to the wrapper. Default is an empty string.
+   * @param wrapperStyle - A string representing the style to apply to the wrapper. Default is an empty string.
    */
   public async mountStickerSheet(wrapperStyle = '') {
     await this.componentPage.mount({
