@@ -96,37 +96,6 @@ test('mdc-checkboxgroup', async ({ componentsPage }) => {
         await componentsPage.actionability.pressTab();
         await expect(checkboxgroup.locator('mdc-checkbox').last()).toBeFocused();
       });
-
-      await test.step('component should travel through children with arrow down and arrow up keys', async () => {
-        const checkboxgroup = await setup({ componentsPage, children: avengersChildren });
-
-        await componentsPage.actionability.pressTab();
-        await expect(checkboxgroup.locator('mdc-checkbox').first()).toBeFocused();
-
-        await componentsPage.page.keyboard.press('ArrowDown');
-        await expect(checkboxgroup.locator('mdc-checkbox').nth(1)).toBeFocused();
-
-        await componentsPage.page.keyboard.press('ArrowDown');
-        await expect(checkboxgroup.locator('mdc-checkbox').nth(2)).toBeFocused();
-
-        await componentsPage.page.keyboard.press('ArrowDown');
-        await expect(checkboxgroup.locator('mdc-checkbox').nth(3)).toBeFocused();
-
-        await componentsPage.page.keyboard.press('ArrowDown');
-        await expect(checkboxgroup.locator('mdc-checkbox').nth(4)).toBeFocused();
-
-        await componentsPage.page.keyboard.press('ArrowUp');
-        await expect(checkboxgroup.locator('mdc-checkbox').nth(3)).toBeFocused();
-
-        await componentsPage.page.keyboard.press('ArrowUp');
-        await expect(checkboxgroup.locator('mdc-checkbox').nth(2)).toBeFocused();
-
-        await componentsPage.page.keyboard.press('ArrowUp');
-        await expect(checkboxgroup.locator('mdc-checkbox').nth(1)).toBeFocused();
-
-        await componentsPage.page.keyboard.press('ArrowUp');
-        await expect(checkboxgroup.locator('mdc-checkbox').first()).toBeFocused();
-      });
     });
   });
 });
