@@ -19,6 +19,7 @@ const iife = async () => {
       `${join(process.cwd(), 'src/components/formfieldwrapper/formfieldwrapper.subcomponent.ts')}`,
       `${join(process.cwd(), 'src/components/iconprovider/iconprovider.e2e-test.utils.ts')}`,
       `${join(process.cwd(), 'src/stories/FocusRing/subcomponent-focusring.e2e-test.utils.ts')}`,
+      `${join(process.cwd(), 'src/components/virtualizedlist/virtualizedlist.helper.test.ts')}`,
     ],
     outfile: undefined,
     outdir: `${join(publicPath, 'dist')}`,
