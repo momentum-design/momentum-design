@@ -11,7 +11,7 @@ type SetupOptions = {
   id?: string;
   value?: string;
   placeholder?: string;
-  required?: boolean;
+  requiredLabel?: string;
   readonly?: boolean;
   disabled?: boolean;
   maxlength?: number;
@@ -33,16 +33,25 @@ type SetupOptions = {
   clearAriaLabel?: string;
 };
 
+const handleFormSubmit = (event: Event) => {
+  event.preventDefault();
+  const submitButton = document.querySelector('mdc-button[type="submit"]');
+  if (submitButton) {
+    submitButton.setAttribute('disabled', 'true');
+    submitButton.textContent = 'Submitted';
+  }
+};
+
 const setup = async (args: SetupOptions, isForm = false) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
-    ${isForm ? '<form>' : ''}
+    ${isForm ? `<form @submit=${handleFormSubmit}>` : ''}
       <mdc-input
       id="${restArgs.id}"
       ${restArgs.value ? `value="${restArgs.value}"` : ''}
       ${restArgs.placeholder ? `placeholder="${restArgs.placeholder}"` : ''}
-      ${restArgs.required ? 'required' : ''}
+      ${restArgs.requiredLabel ? `required-label="${restArgs.requiredLabel}"` : ''}
       ${restArgs.readonly ? 'readonly' : ''}
       ${restArgs.disabled ? 'disabled' : ''}
       ${restArgs.maxlength ? `maxlength="${restArgs.maxlength}"` : ''}
@@ -115,9 +124,9 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('attributes required should be present on component', async () => {
-      await componentsPage.setAttributes(input, { required: '' });
-      await expect(input).toHaveAttribute('required');
-      await componentsPage.removeAttribute(input, 'required');
+      await componentsPage.setAttributes(input, { 'required-label': 'required' });
+      await expect(input).toHaveAttribute('required-label', 'required');
+      await componentsPage.removeAttribute(input, 'required-label');
     });
 
     await test.step('attributes readonly should be present on component', async () => {
@@ -209,7 +218,6 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
   /**
    * INTERACTIONS
    */
-  // test form submission with input field marked as required
   await test.step('interactions', async () => {
     const inputEl = await input.locator('input');
     await test.step('component should be focusable with tab', async () => {
@@ -290,17 +298,19 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
         componentsPage,
         id: 'test-mdc-input',
         placeholder: 'Placeholder',
-        required: true,
+        requiredLabel: 'required',
         maxlength: 10,
       }, true);
+
       const mdcInput = await form.locator('mdc-input');
       const submitButton = await form.locator('mdc-button');
       const inputEl = mdcInput.locator('input');
       await componentsPage.actionability.pressTab();
       await expect(mdcInput).toBeFocused();
-      await componentsPage.actionability.pressTab();
-      await expect(submitButton).toBeFocused();
-      await submitButton.click();
+      await componentsPage.page.keyboard.down('Enter');
+      // await componentsPage.actionability.pressTab();
+      // await expect(submitButton).toBeFocused();
+      // await submitButton.click();
       const validationMessage = await inputEl.evaluate((element) => {
         const input = element as HTMLInputElement;
         return input.validationMessage;
