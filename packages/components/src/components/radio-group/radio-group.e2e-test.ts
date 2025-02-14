@@ -20,7 +20,8 @@ const setup = async (args: SetupOptions) => {
           ${restArgs.description ? `description="${restArgs.description}"` : ''}
         >
           <mdc-radio label="Standard Plan" value="standard-plan"></mdc-radio>
-          <mdc-radio label="Premium Plan" value="premium-plan"></mdc-radio>
+          <mdc-radio label="Premium Plan" value="premium-plan" disabled></mdc-radio>
+          <mdc-radio label="Business Plan" value="business-plan"></mdc-radio>
         </mdc-radio-group>
       </form>
       `,
@@ -37,7 +38,7 @@ test('mdc-radio-group', async ({ componentsPage }) => {
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
-    const radioGroupStickerSheet = new StickerSheet(componentsPage, 'mdc-radio-group');
+    const radioGroupStickerSheet = new StickerSheet(componentsPage, 'mdc-radio-group', 'margin: 0.25rem');
     radioGroupStickerSheet.setChildren(
       `<mdc-radio label="Standard Plan" value="standard-plan"></mdc-radio>
       <mdc-radio label="Premium Plan" value="premium-plan" checked></mdc-radio>
@@ -48,7 +49,6 @@ test('mdc-radio-group', async ({ componentsPage }) => {
     await radioGroupStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
     await radioGroupStickerSheet.setAttributes({
       'header-text': 'Select your plan',
-      style: 'margin: 0.25rem',
     });
 
     // Radio Group with header text and description
@@ -56,7 +56,6 @@ test('mdc-radio-group', async ({ componentsPage }) => {
     await radioGroupStickerSheet.setAttributes({
       'header-text': 'Select your plan',
       description: 'The plan you select will be the plan you are billed for',
-      style: 'margin: 0.25rem',
     });
 
     await radioGroupStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
@@ -103,7 +102,7 @@ test('mdc-radio-group', async ({ componentsPage }) => {
     await test.step('should have two radio buttons', async () => {
       const radios = await componentsPage.page.locator('mdc-radio');
       const radioCount = await radios.count();
-      expect(radioCount).toBe(2);
+      expect(radioCount).toBe(3);
     });
   });
 
@@ -121,9 +120,11 @@ test('mdc-radio-group', async ({ componentsPage }) => {
       await componentsPage.actionability.pressTab();
       await expect(radios.nth(0)).toBeFocused();
       await componentsPage.page.keyboard.press('ArrowDown');
-      await expect(radios.nth(1)).toBeFocused();
-      await expect(radios.nth(1)).toBeChecked();
+      // As the second radio is disabled, it should skip to the third radio directly
+      await expect(radios.nth(2)).toBeFocused();
+      await expect(radios.nth(2)).toBeChecked();
       await componentsPage.page.keyboard.press('ArrowUp');
+      // As the second radio is checked, it should skip to the first radio directly
       await expect(radios.nth(0)).toBeFocused();
       await expect(radios.nth(0)).toBeChecked();
     });
