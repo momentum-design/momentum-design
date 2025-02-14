@@ -69,6 +69,7 @@ export const LongLabelText: StoryObj = {
   render: () => html`
   <div style="width: 170px;">
     <mdc-subcomponent-formfieldwrapper
+      style="width: 100%"
       label="This is a long label text"
       help-text="Helper text"
       help-text-type="default"
