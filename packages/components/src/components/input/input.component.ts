@@ -295,6 +295,17 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
     }
 
     /**
+     * Handles the keydown event of the input field.
+     * If the key pressed is 'Enter', it submits the form.
+     * @param event - Keyboard event
+     */
+    private handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Enter') {
+        this.internals.form?.requestSubmit();
+      }
+    }
+
+    /**
    * Renders the leading icon before the input field.
    * If the leading icon is not set, it will not be displayed.
    *
@@ -360,6 +371,7 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
       }
       return html`
       <mdc-button 
+        part='trailing-button'
         class='${!this.value ? 'hidden' : ''}'
         prefix-icon='${DEFAULTS.CLEAR_BUTTON_ICON}'
         variant='${DEFAULTS.CLEAR_BUTTON_VARIANT}'
@@ -402,6 +414,7 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
             size=${ifDefined(this.size)}
             @input=${this.onInput}
             @change=${this.onChange}
+            @keydown=${this.handleKeyDown}
           />
         </slot>
        </div>

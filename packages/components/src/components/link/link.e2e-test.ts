@@ -188,46 +188,62 @@ test('mdc-link', async ({ componentsPage }) => {
 
     // Standalone Link inverted without trailing icon
     stickerSheet.setAttributes({ inverted: '' });
-    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
+    await stickerSheet.createMarkupWithCombination(
+      { size: Object.values(LINK_SIZES) },
+      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
+    );
 
     // Standalone Link inverted with trailing icon
     stickerSheet.setAttributes({ 'icon-name': ICON_PLACEHOLDER, inverted: '' });
-    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
+    await stickerSheet.createMarkupWithCombination(
+      { size: Object.values(LINK_SIZES) },
+      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
+    );
 
     // Standalone Link inverted and disabled without trailing icon
     stickerSheet.setAttributes({ disabled: '', inverted: '' });
-    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
+    await stickerSheet.createMarkupWithCombination(
+      { size: Object.values(LINK_SIZES) },
+      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
+    );
 
     // Standalone Link inverted and disabled with trailing icon
     stickerSheet.setAttributes({ disabled: '', 'icon-name': ICON_PLACEHOLDER, inverted: '' });
-    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
+    await stickerSheet.createMarkupWithCombination(
+      { size: Object.values(LINK_SIZES) },
+      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
+    );
 
     // Inline Link inverted without trailing icon
     stickerSheet.setAttributes({ inline: '', inverted: '' });
-    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
+    await stickerSheet.createMarkupWithCombination(
+      { size: Object.values(LINK_SIZES) },
+      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
+    );
 
     // Inline Link inverted with trailing icon
     stickerSheet.setAttributes({ 'icon-name': ICON_PLACEHOLDER, inline: '', inverted: '' });
-    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
+    await stickerSheet.createMarkupWithCombination(
+      { size: Object.values(LINK_SIZES) },
+      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
+    );
 
     // Inline Link inverted and disabled without trailing icon
     stickerSheet.setAttributes({ disabled: '', inline: '', inverted: '' });
-    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
+    await stickerSheet.createMarkupWithCombination(
+      { size: Object.values(LINK_SIZES) },
+      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
+    );
 
     // Inline Link inverted and disabled with trailing icon
     stickerSheet.setAttributes({ disabled: '', inline: '', inverted: '', 'icon-name': ICON_PLACEHOLDER });
-    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
+    await stickerSheet.createMarkupWithCombination(
+      { size: Object.values(LINK_SIZES) },
+      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
+    );
 
     await stickerSheet.mountStickerSheet();
     const container = await stickerSheet.getWrapperContainer();
-    await container.evaluate((wrapper) => {
-      const rowWrappers = wrapper.querySelectorAll('.componentRowWrapper') as NodeListOf<HTMLElement>;
-      const lastTwoRowWrappers = Array.from(rowWrappers).slice(-8);
-      lastTwoRowWrappers.forEach((rowWrapper) => {
-        const modifiedRowWrapper = rowWrapper;
-        modifiedRowWrapper.style.backgroundColor = 'var(--mds-color-theme-inverted-background-normal)';
-      });
-    });
 
     await test.step('matches screenshot of link element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-link', {

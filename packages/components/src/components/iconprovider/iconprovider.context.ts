@@ -11,6 +11,10 @@ class IconProviderContext {
 
   public size?: number;
 
+  public iconsCache: Map<string, string> = new Map();
+
+  public shouldCache?: boolean;
+
   // create typed lit context as part of the IconProviderContext
   public static readonly context = createContext<IconProviderContext>(TAG_NAME);
 }

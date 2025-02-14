@@ -19,12 +19,12 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/checkbox',
+  title: 'Components/checkbox',
   tags: ['autodocs'],
   component: 'mdc-checkbox',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     label: {
