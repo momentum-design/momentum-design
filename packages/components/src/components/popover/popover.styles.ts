@@ -1,9 +1,8 @@
 import { css } from 'lit';
 
 const styles = css`
-
   :host {
-    --mdc-popover-arrow-border-radius: 0.1875rem; 
+    --mdc-popover-arrow-border-radius: 0.1875rem;
     --mdc-popover-arrow-border: 0.0625rem solid var(--mds-color-theme-outline-secondary-normal);
 
     --mdc-popover-primary-background-color: var(--mds-color-theme-background-solid-primary-normal);
@@ -16,12 +15,12 @@ const styles = css`
     display: none;
     position: absolute;
 
-    &[data-color="contrast"] {
+    &[data-color='contrast'] {
       .popover-arrow {
         background-color: var(--mdc-popover-inverted-background-color);
         border-color: var(--mdc-popover-inverted-border-color);
       }
-      
+
       .popover-close {
         color: var(--mdc-popover-inverted-text-color);
       }
@@ -40,7 +39,7 @@ const styles = css`
     position: relative;
     padding: 0.75rem;
     overflow-y: auto;
-    z-index: 9999;
+    z-index: 9998;
   }
 
   .popover-backdrop {
@@ -51,6 +50,13 @@ const styles = css`
     width: 100%;
     height: 100%;
     background: transparent;
+  }
+
+  .popover-hover-bridge {
+    position: absolute;
+    transform: translateX(-50%);
+    background: transparent;
+    pointer-events: auto;
   }
 
   .popover-arrow {
@@ -68,31 +74,31 @@ const styles = css`
     right: 0.75rem;
     top: 0.75rem;
     cursor: pointer;
+    z-index: 9999;
   }
 
-  .popover-arrow[data-side="top"] {
+  .popover-arrow[data-side='top'] {
     border-top: none;
     border-left: none;
     border-bottom-right-radius: var(--mdc-popover-arrow-border-radius);
     border-top-left-radius: 100%;
-
   }
 
-  .popover-arrow[data-side="bottom"] {
+  .popover-arrow[data-side='bottom'] {
     border-bottom: none;
     border-right: none;
     border-top-left-radius: var(--mdc-popover-arrow-border-radius);
     border-bottom-right-radius: 100%;
   }
 
-  .popover-arrow[data-side="right"] {
+  .popover-arrow[data-side='right'] {
     border-top: none;
     border-right: none;
     border-bottom-left-radius: var(--mdc-popover-arrow-border-radius);
     border-top-right-radius: 100%;
   }
 
-  .popover-arrow[data-side="left"] {
+  .popover-arrow[data-side='left'] {
     border-bottom: none;
     border-left: none;
     border-top-right-radius: var(--mdc-popover-arrow-border-radius);

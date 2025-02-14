@@ -36,13 +36,13 @@ class Popover extends FocusTrapMixin(Component) {
    * The unique ID of the popover.
    */
   @property({ type: String })
-  override id = '';
+  override id: string = '';
 
   /**
    * The ID of the element that triggers the popover.
    */
   @property({ type: String })
-  triggerID?: string;
+  triggerID: string = '';
 
   /**
    * The event that triggers the popover.
@@ -88,7 +88,7 @@ class Popover extends FocusTrapMixin(Component) {
    * @default false
    */
   @property({ type: Boolean, reflect: true })
-  visible = false;
+  visible: boolean = DEFAULTS.VISIBLE;
 
   /**
    * The offset of the popover.
@@ -102,21 +102,21 @@ class Popover extends FocusTrapMixin(Component) {
    * @default false
    */
   @property({ type: Boolean, attribute: 'show-arrow' })
-  showArrow = false;
+  showArrow: boolean = DEFAULTS.ARROW;
 
   /**
    * The close button visibility of the popover.
    * @default false
    */
   @property({ type: Boolean, attribute: 'close-button', reflect: true })
-  closeButton = false;
+  closeButton: boolean = DEFAULTS.CLOSE_BUTTON;
 
   /**
    * Determines whether the popover is interactive。
    * @default false
    */
   @property({ type: Boolean, reflect: true })
-  interactive = false;
+  interactive: boolean = DEFAULTS.INTERACTIVE;
 
   /**
    * The delay of the show/hide popover.
@@ -126,81 +126,67 @@ class Popover extends FocusTrapMixin(Component) {
   delay: string = DEFAULTS.DELAY;
 
   /**
-   * Determines whether the popover is focus trap.
-   * @default false
-   */
-  @property({ type: Boolean, reflect: true, attribute: 'focus-trap' })
-  focusTrap = false;
-
-  /**
-   * Prevent outside scrolling when popover show.
-   * @default false
-   */
-  @property({ type: Boolean, reflect: true, attribute: 'prevent-scroll' })
-  preventScroll = false;
-
-  /**
    * Hide popover on escape key press.
    * @default false
    */
   @property({ type: Boolean, reflect: true, attribute: 'hide-on-escape' })
-  hideOnEscape = false;
+  hideOnEscape: boolean = DEFAULTS.HIDE_ON_ESCAPE;
 
   /**
    * Hide popover on blur.
    * @default false
    */
   @property({ type: Boolean, reflect: true, attribute: 'hide-on-blur' })
-  hideOnBlur = false;
+  hideOnBlur: boolean = DEFAULTS.HIDE_ON_BLUR;
 
   /**
    * Hide on outside click of the popover.
    * @default false
    */
   @property({ type: Boolean, reflect: true, attribute: 'hide-on-outside-click' })
-  hideOnOutsideClick = false;
+  hideOnOutsideClick: boolean = DEFAULTS.HIDE_ON_CLICK_OUTSIDE;
 
   /**
    * The focus back to trigger after the popover hide.
    * @default false
    */
   @property({ type: Boolean, reflect: true, attribute: 'focus-back-to-trigger' })
-  focusBackToTrigger = false;
+  focusBackToTrigger: boolean = DEFAULTS.FOCUS_BACK;
 
   /**
    * Determines whether the backdrop is .
    * @default false
    */
   @property({ type: Boolean, reflect: true })
-  backdrop = false;
+  backdrop: boolean = DEFAULTS.BACKDROP;
 
   /**
    * Changes the placement of popover to keep it in view.
    * @default false
    */
   @property({ type: Boolean, reflect: true })
-  flip = false;
+  flip: boolean = DEFAULTS.FLIP;
 
   /**
    * Changes the size of popover to keep it in view.
    * @default false
    */
   @property({ type: Boolean, reflect: true })
-  size = false;
+  size: boolean = DEFAULTS.SIZE;
 
   /**
    * The z-index of the popover.
    * @default 1000
    */
   @property({ type: Number, reflect: true, attribute: 'set-index' })
-  setIndex = 1000;
+  setIndex: number = 1000;
 
   /**
    * Element ID that the popover append to.
    * @default ''
    */
   @property({ type: String, reflect: true })
-  appendTo = '';
+  appendTo: string = '';
 
   /**
    * Aria-label attribute to be set for close button accessibility
@@ -277,9 +263,10 @@ class Popover extends FocusTrapMixin(Component) {
   }
 
   /**
-  * This method checks if the `appendTo` property is set, finds the corresponding
-  * DOM element by its ID, and appends the component (`this`) as a child of that element.
-  */  private setupAppendTo() {
+   * If the `appendTo` property is set, finds the corresponding
+   * DOM element by its ID, and appends this popover as a child of that element.
+   */
+  private setupAppendTo() {
     if (this.appendTo) {
       const appendToElement = document.getElementById(this.appendTo);
       if (appendToElement) {
@@ -288,17 +275,64 @@ class Popover extends FocusTrapMixin(Component) {
     }
   }
 
+  /**
+   * Sets up the hover bridge for the popover.
+   * The hover bridge is used to prevent the popover from closing when the mouse is over the popover.
+   */
+  private setupHoverBridge() {
+    const hoverBridge = this.renderRoot.querySelector('.popover-hover-bridge') as HTMLElement;
+    Object.assign(hoverBridge.style, {
+      top: '',
+      left: '',
+      right: '',
+      bottom: '',
+    });
+    const bridgeSize = `calc(${this.showArrow ? '0.75rem + ' : ''}${this.offset}px)`;
+    const popoverHeight = this.shadowRoot?.querySelector('mdc-modalcontainer')?.offsetHeight || 0;
+    const popoverWidth = this.shadowRoot?.querySelector('mdc-modalcontainer')?.offsetWidth || 0;
+
+    if (hoverBridge) {
+      const side = this.placement.split('-')[0];
+      switch (side) {
+        case 'top':
+          hoverBridge.style.height = bridgeSize;
+          hoverBridge.style.bottom = `calc(-1 * (${bridgeSize}))`;
+          hoverBridge.style.left = '50%';
+          hoverBridge.style.width = `${popoverWidth}px`;
+          break;
+        case 'left':
+          hoverBridge.style.height = `${popoverHeight}px`;
+          hoverBridge.style.width = bridgeSize;
+          hoverBridge.style.right = `calc(-1.5 * (${bridgeSize}))`;
+          break;
+        case 'right':
+          hoverBridge.style.height = `${popoverHeight}px`;
+          hoverBridge.style.width = bridgeSize;
+          hoverBridge.style.left = `calc(-0.5 * (${bridgeSize}))`;
+          break;
+        case 'bottom':
+        default:
+          hoverBridge.style.height = bridgeSize;
+          hoverBridge.style.top = `calc(-1 * (${bridgeSize}))`;
+          hoverBridge.style.left = '50%';
+          hoverBridge.style.width = `${popoverWidth}px`;
+          break;
+      }
+    }
+  }
+
+  /**
+   * Parses the delay string and sets the open and close delay values.
+   */
   private setupDelay() {
     try {
-      const [openDelay, closeDelay] = this.delay
-        .split(',')
-        .map((delay) => {
-          const parsed = parseInt(delay, 10);
-          if (Number.isNaN(parsed) || parsed < 0) {
-            throw new Error(`Invalid delay value: ${delay}`);
-          }
-          return parsed;
-        });
+      const [openDelay, closeDelay] = this.delay.split(',').map((delay) => {
+        const parsed = parseInt(delay, 10);
+        if (Number.isNaN(parsed) || parsed < 0) {
+          throw new Error(`Invalid delay value: ${delay}`);
+        }
+        return parsed;
+      });
 
       this.openDelay = openDelay;
       this.closeDelay = closeDelay;
@@ -309,6 +343,9 @@ class Popover extends FocusTrapMixin(Component) {
     }
   }
 
+  /**
+   * Sets up the trigger event listeners based on the trigger type.
+   */
   private setupTrigger() {
     if (!this.triggerID) return;
 
@@ -332,10 +369,12 @@ class Popover extends FocusTrapMixin(Component) {
       this.triggerElement.addEventListener('click', this.togglePopover.bind(this));
     }
     if (this.trigger.includes('mouseenter')) {
+      const hoverBridge = this.renderRoot.querySelector('.popover-hover-bridge');
       this.triggerElement.addEventListener('mouseenter', this.showPopover.bind(this));
       this.triggerElement.addEventListener('mouseleave', this.startCloseDelay.bind(this));
       this.popoverElement?.addEventListener('mouseenter', this.cancelCloseDelay.bind(this));
       this.popoverElement?.addEventListener('mouseleave', this.startCloseDelay.bind(this));
+      hoverBridge?.addEventListener('mouseenter', this.cancelCloseDelay.bind(this));
     }
     if (this.trigger.includes('focusin')) {
       this.triggerElement.addEventListener('focusin', this.showPopover.bind(this));
@@ -343,6 +382,9 @@ class Popover extends FocusTrapMixin(Component) {
     this.addEventListener('focus-trap-exit', this.hidePopover.bind(this));
   }
 
+  /**
+   * Removes the trigger event listeners.
+   */
   removeEventListeners() {
     if (!this.triggerElement) return;
 
@@ -365,6 +407,11 @@ class Popover extends FocusTrapMixin(Component) {
     }
   }
 
+  /**
+   * Handles the outside click event to close the popover.
+   *
+   * @param event - The mouse event.
+   */
   private onOutsidePopoverClick = (event: MouseEvent) => {
     if (popoverStack.peek() !== this) return;
 
@@ -376,12 +423,20 @@ class Popover extends FocusTrapMixin(Component) {
     }
   };
 
+  /**
+   * Handles the window blur event to close the popover.
+   */
   private onWindowBlurEvent = () => {
     if (this.visible) {
       this.hidePopover();
     }
   };
 
+  /**
+   * Handles the escape keydown event to close the popover.
+   *
+   * @param event - The keyboard event.
+   */
   private onEscapeKeydown = async (event: KeyboardEvent) => {
     if (!this.visible || event.code !== 'Escape') {
       return;
@@ -391,17 +446,22 @@ class Popover extends FocusTrapMixin(Component) {
     this.hidePopover();
   };
 
+  /**
+   * Handles the popover visibility change and position the popover.
+   * Handles the exit event to close the popover.
+   *
+   * @param oldValue - The old value of the visible property.
+   * @param newValue - The new value of the visible property.
+   */
   private async isOpenUpdated(oldValue: boolean, newValue: boolean) {
     if (oldValue === newValue) {
       return;
     }
 
     if (newValue) {
-      this.enableFocusTrap = this.focusTrap;
-      this.enablePreventScroll = this.preventScroll;
-
       await this.positionPopover();
       await this.handleCreatePopperFirstUpdate();
+      this.setupHoverBridge();
 
       if (this.hideOnBlur) {
         window.addEventListener('blur', this.onWindowBlurEvent);
@@ -442,6 +502,10 @@ class Popover extends FocusTrapMixin(Component) {
     }
   }
 
+  /**
+   * Starts the close delay timer.
+   * If the popover is not interactive, it will close the popover after the delay.
+   */
   private startCloseDelay = async () => {
     if (!this.interactive) {
       this.hidePopover();
@@ -452,6 +516,9 @@ class Popover extends FocusTrapMixin(Component) {
     }
   };
 
+  /**
+   * Cancels the close delay timer.
+   */
   private cancelCloseDelay = () => {
     if (this.hoverTimer) {
       clearTimeout(this.hoverTimer);
@@ -459,6 +526,9 @@ class Popover extends FocusTrapMixin(Component) {
     }
   };
 
+  /**
+   * Shows the popover.
+   */
   public async showPopover() {
     this.cancelCloseDelay();
     setTimeout(() => {
@@ -468,6 +538,9 @@ class Popover extends FocusTrapMixin(Component) {
     popoverStack.push(this);
   }
 
+  /**
+   * Hides the popover.
+   */
   public hidePopover() {
     if (popoverStack.peek() === this) {
       setTimeout(() => {
@@ -478,6 +551,9 @@ class Popover extends FocusTrapMixin(Component) {
     }
   }
 
+  /**
+   * Toggles the popover visibility.
+   */
   async togglePopover() {
     if (this.visible) {
       this.hidePopover();
@@ -486,6 +562,9 @@ class Popover extends FocusTrapMixin(Component) {
     }
   }
 
+  /**
+   * Sets the focusable elements inside the popover.
+   */
   private async handleCreatePopperFirstUpdate() {
     if (this.visible && this.interactive) {
       this.setFocusableElements?.();
@@ -494,6 +573,11 @@ class Popover extends FocusTrapMixin(Component) {
     }
   }
 
+  /**
+   * Positions the popover based on the trigger element.
+   * It also handles the flip, size and arrow placement.
+   * It uses the floating-ui/dom library to calculate the position.
+   */
   private async positionPopover() {
     if (!this.triggerElement || !this.popoverElement) return;
 
@@ -506,15 +590,17 @@ class Popover extends FocusTrapMixin(Component) {
 
     if (this.size) {
       const popoverContent = this.popoverElement.querySelector('.popover-content') as HTMLElement;
-      middleware.push(size({
-        apply({ availableHeight }) {
-          if (!popoverContent) return;
-          Object.assign(popoverContent.style, {
-            maxHeight: `${availableHeight}px`,
-          });
-        },
-        padding: 25,
-      }));
+      middleware.push(
+        size({
+          apply({ availableHeight }) {
+            if (!popoverContent) return;
+            Object.assign(popoverContent.style, {
+              maxHeight: `${availableHeight}px`,
+            });
+          },
+          padding: 25,
+        }),
+      );
     }
 
     if (this.showArrow) {
@@ -522,7 +608,7 @@ class Popover extends FocusTrapMixin(Component) {
       if (this.arrowElement) {
         const arrowLen = 16;
         const arrowOffset = Math.sqrt(2 * arrowLen ** 2) / 2;
-        popoverOffset = this.offset + arrowOffset;
+        popoverOffset = arrowOffset + this.offset;
         middleware.push(arrow({ element: this.arrowElement }));
       }
     }
@@ -532,14 +618,10 @@ class Popover extends FocusTrapMixin(Component) {
     autoUpdate(this.triggerElement, this.popoverElement, async () => {
       if (!this.triggerElement || !this.popoverElement) return;
 
-      const { x, y, middlewareData, placement } = await computePosition(
-        this.triggerElement,
-        this.popoverElement,
-        {
-          placement: this.placement,
-          middleware,
-        },
-      );
+      const { x, y, middlewareData, placement } = await computePosition(this.triggerElement, this.popoverElement, {
+        placement: this.placement,
+        middleware,
+      });
 
       this.updatePopoverStyle(x, y);
       if (middlewareData.arrow && this.arrowElement) {
@@ -548,6 +630,12 @@ class Popover extends FocusTrapMixin(Component) {
     });
   }
 
+  /**
+   * Updates the popover style based on the x and y position.
+   *
+   * @param x - The x position.
+   * @param y - The y position.
+   */
   private updatePopoverStyle(x: number, y: number): void {
     if (!this.popoverElement) return;
 
@@ -558,6 +646,12 @@ class Popover extends FocusTrapMixin(Component) {
     });
   }
 
+  /**
+   * Updates the arrow style based on the arrow data and placement.
+   *
+   * @param arrowData - The arrow data x and y.
+   * @param placement - The placement of the popover.
+   */
   private updateArrowStyle(arrowData: { x?: number; y?: number }, placement: string): void {
     if (!this.arrowElement) return;
 
@@ -576,10 +670,13 @@ class Popover extends FocusTrapMixin(Component) {
     Object.assign(this.arrowElement.style, {
       left: arrowX != null ? `${arrowX}px` : '',
       top: arrowY != null ? `${arrowY}px` : '',
-      [staticSide]: `${-this.arrowElement.offsetHeight / 1.95}px`,
+      [staticSide]: `${-this.arrowElement.offsetHeight / 2}px`,
     });
   }
 
+  /**
+   * Custom event that is fired when the popover is shown.
+   */
   private onShowPopover = () => {
     this.dispatchEvent(
       new CustomEvent('popover-on-show', {
@@ -590,6 +687,9 @@ class Popover extends FocusTrapMixin(Component) {
     );
   };
 
+  /**
+   * Custom event that is fired when the popover is hidden.
+   */
   private onHidePopover = () => {
     this.dispatchEvent(
       new CustomEvent('popover-on-hide', {
@@ -600,6 +700,9 @@ class Popover extends FocusTrapMixin(Component) {
     );
   };
 
+  /**
+   * Custom event that is fired when the popover is created.
+   */
   private onCreatedPopper = () => {
     this.dispatchEvent(
       new CustomEvent('popover-on-created', {
@@ -610,6 +713,9 @@ class Popover extends FocusTrapMixin(Component) {
     );
   };
 
+  /**
+   * Custom event that is fired when the popover is destroyed.
+   */
   private onDestroyedPopper = () => {
     this.dispatchEvent(
       new CustomEvent('popover-on-destroyed', {
@@ -622,34 +728,37 @@ class Popover extends FocusTrapMixin(Component) {
 
   public override render() {
     return html`
-        ${this.backdrop && this.visible ? html`<div class="popover-backdrop"></div>` : nothing}
-        <mdc-modalcontainer
-          id=${this.id} 
-          class='popover-container'
-          elevation='3'
-          color=${this.color}
-          aria-modal=${ifDefined(this.interactive ? 'true' : undefined)}
-          ?visible=${this.visible}
-          rolse=${this.role}
-          style='z-index: ${this.setIndex};'
-          data-color=${this.color}
-        >
-          ${this.closeButton
-    ? html` <mdc-button 
-              class="popover-close" 
-              prefix-icon="cancel-bold" 
-              variant="tertiary" 
-              size="20" 
+      ${this.backdrop && this.visible ? html`<div class="popover-backdrop"></div>` : nothing}
+      <mdc-modalcontainer
+        id=${this.id}
+        class="popover-container"
+        elevation="3"
+        color=${this.color}
+        aria-modal=${ifDefined(this.interactive ? 'true' : undefined)}
+        ?visible=${this.visible}
+        rolse=${this.role}
+        style="z-index: ${this.setIndex};"
+        data-color=${this.color}
+      >
+        <div class="popover-hover-bridge"></div>
+        ${this.closeButton
+    ? html` <mdc-button
+              class="popover-close"
+              prefix-icon="cancel-bold"
+              variant="tertiary"
+              size="20"
               aria-label=${ifDefined(this.closeButtonAriaLabel)}
-              @click="${this.hidePopover}"></mdc-button>`
+              @click="${this.hidePopover}"
+            ></mdc-button>`
     : nothing}
-          ${this.showArrow ? html`<div id="popover-arrow" class="popover-arrow" 
-            style="z-index: ${this.setIndex};"></div>` : nothing}
-          <div class="popover-content" part="popover-content">
-            <slot></slot>
-          </div>
-        </mdc-modalcontainer>
-      `;
+        ${this.showArrow
+    ? html`<div id="popover-arrow" class="popover-arrow" style="z-index: ${this.setIndex};"></div>`
+    : nothing}
+        <div class="popover-content" part="popover-content">
+          <slot></slot>
+        </div>
+      </mdc-modalcontainer>
+    `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];

@@ -1,9 +1,10 @@
 import { property } from 'lit/decorators.js';
 import type { Constructor } from './index.types';
+import { DEFAULTS as POPOVER_DEFAULTS } from '../../components/popover/popover.constants';
 
 export interface FocusTrapClassInterface {
-  enableFocusTrap: boolean;
-  enablePreventScroll: boolean;
+  focusTrap: boolean;
+  preventScroll: boolean;
   setFocusableElements(): void;
   setInitialFocus(prefferableElement?: number): void;
   deactivateFocusTrap(): void;
@@ -16,19 +17,20 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
      * If true, focus will be restricted to the content within this component.
      * @default false
      */
-    @property({ reflect: true, type: Boolean })
-    enableFocusTrap = false;
+    @property({ type: Boolean, reflect: true, attribute: 'focus-trap' })
+    focusTrap: boolean = POPOVER_DEFAULTS.FOCUS_TRAP;
 
     /**
-     * Determines whether scrolling is prevented when the focus trap is active.
-     * If true, the document's scroll will be disabled while the focus trap is active.
+     * Prevent outside scrolling when popover show.
      * @default false
      */
-    @property({ reflect: true, type: Boolean })
-    enablePreventScroll = false;
+    @property({ type: Boolean, reflect: true, attribute: 'prevent-scroll' })
+    preventScroll: boolean = POPOVER_DEFAULTS.PREVENT_SCROLL;
 
+    /** @internal */
     private focusTrapIndex = -1;
 
+    /** @internal */
     private focusableElements: HTMLElement[] = [];
 
     shouldWrapFocus: () => boolean = () => true;
@@ -42,8 +44,8 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
      * Deactivate the focus trap.
      */
     deactivateFocusTrap() {
-      this.enableFocusTrap = false;
-      this.enablePreventScroll = false;
+      this.focusTrap = false;
+      this.preventScroll = false;
       this.focusTrapIndex = -1;
       document.body.style.overflow = '';
     }
@@ -94,7 +96,7 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
     private isHidden(element: HTMLElement) {
       return (
         element.hasAttribute('hidden')
-        || (element.getAttribute('aria-hidden') === 'true')
+        || element.getAttribute('aria-hidden') === 'true'
         || this.hasHiddenStyle(element)
         || this.isNotVisible(element)
         || this.hasComputedHidden(element)
@@ -112,14 +114,7 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
      * Checks if the element is interactive.
      */
     private isInteractiveElement(element: HTMLElement): boolean {
-      const interactiveTags = new Set([
-        'BUTTON',
-        'DETAILS',
-        'EMBED',
-        'IFRAME',
-        'SELECT',
-        'TEXTAREA',
-      ]);
+      const interactiveTags = new Set(['BUTTON', 'DETAILS', 'EMBED', 'IFRAME', 'SELECT', 'TEXTAREA']);
 
       if (interactiveTags.has(element.tagName)) {
         return true;
@@ -212,7 +207,7 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
     setInitialFocus(prefferableElement: number = 0) {
       if (this.focusableElements.length === 0) return;
 
-      if (this.enablePreventScroll) {
+      if (this.preventScroll) {
         document.body.style.overflow = 'hidden';
       }
 
@@ -255,7 +250,7 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
         host = host.shadowRoot.activeElement;
       }
 
-      return host as HTMLElement || document.body;
+      return (host as HTMLElement) || document.body;
     }
 
     /**
@@ -300,7 +295,7 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
      * Traps focus within the container.
      */
     private handleKeydown(event: KeyboardEvent) {
-      if (!this.enableFocusTrap || !this.focusableElements.length) {
+      if (!this.focusTrap || !this.focusableElements.length) {
         return;
       }
 

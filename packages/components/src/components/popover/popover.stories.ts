@@ -1,75 +1,65 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html, TemplateResult } from 'lit';
-import { POPOVER_PLACEMENT } from './popover.constants';
-import { COLOR } from '../modalcontainer/modalcontainer.constants';
+import { POPOVER_PLACEMENT, DEFAULTS } from './popover.constants';
+import { COLOR, ROLE } from '../modalcontainer/modalcontainer.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
-const createPopover = (
-  id: string,
-  triggerID: string,
-  args: Args,
-  content: TemplateResult,
-) => html`
-  <mdc-popover
-    id="${id}"
-    triggerID="${triggerID}"
-    trigger="${args.trigger}"
-    placement="${args.placement}"
-    delay="${args.delay}"
-    ?set-index="${args['set-index']}"
-    ?visible="${args.visible}"
-    .offset="${args.offset}"
-    ?interactive=${args.interactive}
-    ?focus-trap=${args['focus-trap']}
-    ?show-arrow=${args['show-arrow']}
-    color=${args.color}
-    ?flip=${args.flip}
-    ?size=${args.size}
-    ?backdrop=${args.backdrop}
-    ?close-button=${args['close-button']}
-    ?prevent-scroll=${args['prevent-scroll']}
-    ?hide-on-blur=${args['hide-on-blur']}
-    ?hide-on-escape=${args['hide-on-escape']}
-    ?hide-on-outside-click=${args['hide-on-outside-click']}
-    ?focus-back-to-trigger=${args['focus-back-to-trigger']}
-    aria-label="${args['aria-label']}"
-    aria-labelledby="${args['aria-labelledby']}"
-    aria-describeby="${args['aria-describeby']}"
-    role="${args.role}"
-  >
-    ${content}
-  </mdc-popover>
+const createPopover = (id: string, triggerID: string, args: Args, content: TemplateResult) => html`
+<mdc-popover
+  id="${id}"
+  triggerID="${triggerID}"
+  trigger="${args.trigger}"
+  placement="${args.placement}"
+  delay="${args.delay}"
+  ?set-index="${args['set-index']}"
+  ?visible="${args.visible}"
+  .offset="${args.offset ?? 0}"
+  ?interactive=${args.interactive}
+  ?focus-trap=${args['focus-trap']}
+  ?show-arrow=${args['show-arrow']}
+  color=${args.color}
+  ?flip=${args.flip}
+  ?size=${args.size}
+  ?backdrop=${args.backdrop}
+  ?close-button=${args['close-button']}
+  ?prevent-scroll=${args['prevent-scroll']}
+  ?hide-on-blur=${args['hide-on-blur']}
+  ?hide-on-escape=${args['hide-on-escape']}
+  ?hide-on-outside-click=${args['hide-on-outside-click']}
+  ?focus-back-to-trigger=${args['focus-back-to-trigger']}
+  aria-label="${args['aria-label']}"
+  aria-labelledby="${args['aria-labelledby']}"
+  aria-describeby="${args['aria-describeby']}"
+  role="${args.role}"
+>
+  ${content}
+</mdc-popover>
 `;
 
-const createTrigger = () => html`
-  <div
-    style="
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 150vh;
-    "
-  >
-    <mdc-button id="popover-trigger">Click me!</mdc-button>
-  </div>
+const createTrigger = (triggerID: string, text: String) => html`
+<div
+  style="
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+"
+>
+  <mdc-button id="${triggerID}">${text}</mdc-button>
+</div>
 `;
 
 const render = (args: Args) => html`
-  ${createTrigger()}
-  ${createPopover(
-    'popover',
-    'popover-trigger',
-    args,
-    html`<mdc-text>Lorem ipsum dolor sit amet.</mdc-text>`,
-  )}
+  ${createTrigger('popover-trigger', 'Click me!')}
+  ${createPopover('popover', 'popover-trigger', args, html`<mdc-text>Lorem ipsum dolor sit amet.</mdc-text>`)}
 `;
 
 const renderInteractive = (args: Args) => html`
-  ${createTrigger()}
+  ${createTrigger('popover-trigger-interactive', 'Click me!')}
   ${createPopover(
-    'popover',
-    'popover-trigger',
+    'popover-interactive',
+    'popover-trigger-interactive',
     args,
     html`
       <mdc-button>Button 1</mdc-button>
@@ -91,34 +81,65 @@ const renderInteractive = (args: Args) => html`
   )}
 `;
 
-const renderMultiple = (args: Args) => html`
-  ${createTrigger()}
+const renderInteractiveHover = (args: Args) => html`
+  ${createTrigger('popover-trigger-interactive-hover', 'Hover me!')}
   ${createPopover(
-    'popover',
-    'popover-trigger',
+    'popover-interactive-hover',
+    'popover-trigger-interactive-hover',
+    args,
+    html`
+      <mdc-button>Button 1</mdc-button>
+      <mdc-button>Button 2</mdc-button>
+      <mdc-button>Button 3</mdc-button>
+      <mdc-button>Button 4</mdc-button>
+      <mdc-button>Button 5</mdc-button>
+    `,
+  )}
+`;
+
+const renderHideOnBlur = (args: Args) => html`
+  ${createTrigger('popover-trigger-hide-on-blur', 'Click me!')}
+  ${createPopover(
+    'popover-hide-on-blur',
+    'popover-trigger-hide-on-blur',
+    args,
+    html`
+      <mdc-button>Button 1</mdc-button>
+      <mdc-button>Button 2</mdc-button>
+      <mdc-button>Button 3</mdc-button>
+      <mdc-button>Button 4</mdc-button>
+      <mdc-button>Button 5</mdc-button>
+    `,
+  )}
+`;
+
+const renderMultiple = (args: Args) => html`
+  ${createTrigger('popover-trigger-multiple', 'Click/ Hover me!')}
+  ${createPopover(
+    'popover-multiple',
+    'popover-trigger-multiple',
     args,
     html`<mdc-text>Interactive content on click</mdc-text>`,
   )}
-<mdc-popover
-  id="popover2"
-  triggerID="popover-trigger"
-  trigger="mouseenter"
-  placement="bottom"
-  set-index="2"
-  show-arrow
->
-  <mdc-text>Description tooltip on mou se enter</mdc-text>
-</mdc-popover>
+  <mdc-popover
+    id="popover2"
+    triggerID="popover-trigger-multiple"
+    trigger="mouseenter"
+    placement="bottom"
+    set-index="2"
+    show-arrow
+  >
+    <mdc-text>Description tooltip on mou se enter</mdc-text>
+  </mdc-popover>
 `;
 
 const renderNested = (args: Args) => html`
-  ${createTrigger()}
+  ${createTrigger('popover-trigger-nested', 'Click me!')}
   ${createPopover(
-    'popover',
-    'popover-trigger',
+    'popover-nested',
+    'popover-trigger-nested',
     args,
-    html`<mdc-text>Popover Level 1</mdc-text>
-      <mdc-button id="popover-trigger-2">Click me!</mdc-button>`,
+    html`<mdc-text>Popover Level 1</mdc-text> <mdc-button id="popover-trigger-2">Click me!</mdc-button>`,
   )}
 <mdc-popover
   id="popover2"
@@ -143,6 +164,8 @@ const renderNested = (args: Args) => html`
   placement="bottom"
   set-index="3"
   show-arrow
+  hide-on-escape
+  hide-on-outside-click
 >
   <mdc-text>Description tooltip on mouseenter</mdc-text>
 </mdc-popover>
@@ -231,7 +254,8 @@ const meta: Meta = {
       control: 'text',
     },
     role: {
-      control: 'text',
+      control: 'radio',
+      options: Object.values(ROLE),
     },
   },
 };
@@ -240,19 +264,23 @@ export default meta;
 
 export const Default: StoryObj = {
   args: {
+    id: 'popover',
     triggerID: 'popover-trigger',
     trigger: 'click',
     placement: POPOVER_PLACEMENT.BOTTOM,
     offset: 4,
     delay: '0,0',
     'show-arrow': true,
+    role: DEFAULTS.ROLE,
+    color: DEFAULTS.COLOR,
   },
 };
 
 export const interactiveContent: StoryObj = {
   render: renderInteractive,
   args: {
-    triggerID: 'popover-trigger',
+    id: 'popover-interactive',
+    triggerID: 'popover-trigger-interactive',
     trigger: 'click',
     placement: POPOVER_PLACEMENT.BOTTOM,
     offset: 4,
@@ -260,27 +288,36 @@ export const interactiveContent: StoryObj = {
     'focus-trap': true,
     interactive: true,
     'show-arrow': true,
+    flip: true,
+    size: true,
+    role: DEFAULTS.ROLE,
+    color: DEFAULTS.COLOR,
   },
 };
 
 export const interactiveHover: StoryObj = {
-  render: renderInteractive,
+  render: renderInteractiveHover,
   args: {
-    triggerID: 'popover-trigger',
+    id: 'popover-interactive-hover',
+    triggerID: 'popover-trigger-interactive-hover',
     trigger: 'mouseenter',
     placement: POPOVER_PLACEMENT.BOTTOM,
     offset: 4,
-    delay: '0,100',
+    delay: '0,0',
     'focus-trap': true,
     interactive: true,
     'show-arrow': true,
+    'hide-on-escape': true,
+    role: DEFAULTS.ROLE,
+    color: DEFAULTS.COLOR,
   },
 };
 
 export const interactiveMultiple: StoryObj = {
   render: renderMultiple,
   args: {
-    triggerID: 'popover-trigger',
+    id: 'popover-multiple',
+    triggerID: 'popover-trigger-multiple',
     trigger: 'click',
     placement: POPOVER_PLACEMENT.TOP,
     offset: 4,
@@ -288,12 +325,15 @@ export const interactiveMultiple: StoryObj = {
     interactive: true,
     'show-arrow': true,
     'close-button': true,
+    role: DEFAULTS.ROLE,
+    color: DEFAULTS.COLOR,
   },
 };
 export const nestedPopover: StoryObj = {
   render: renderNested,
   args: {
-    triggerID: 'popover-trigger',
+    id: 'popover-nested',
+    triggerID: 'popover-trigger-nested',
     trigger: 'click',
     placement: POPOVER_PLACEMENT.TOP,
     offset: 4,
@@ -302,12 +342,15 @@ export const nestedPopover: StoryObj = {
     interactive: true,
     'show-arrow': true,
     'hide-on-escape': true,
+    role: DEFAULTS.ROLE,
+    color: DEFAULTS.COLOR,
   },
 };
 export const hideOnBlur: StoryObj = {
-  render: renderInteractive,
+  render: renderHideOnBlur,
   args: {
-    triggerID: 'popover-trigger',
+    id: 'popover-hide-on-blur',
+    triggerID: 'popover-trigger-hide-on-blur',
     trigger: 'click',
     placement: POPOVER_PLACEMENT.RIGHT,
     offset: 4,
@@ -315,5 +358,7 @@ export const hideOnBlur: StoryObj = {
     interactive: true,
     'show-arrow': true,
     'hide-on-blur': true,
+    role: DEFAULTS.ROLE,
+    color: DEFAULTS.COLOR,
   },
 };
