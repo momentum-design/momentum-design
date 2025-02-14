@@ -5,6 +5,7 @@ import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls } from '../../../config/storybook/utils';
 import '../radio';
+import '../button';
 
 const render = (args: Args) => html`
   <mdc-radio-group name="${args.name}"  header-text="${args['header-text']}" description="${args.description}">
@@ -80,8 +81,8 @@ export const RadioGroupInForm = () => {
         label="Enterprise Plan">
       </mdc-radio>
       </mdc-radio-group>
-      <br />
-      <button type="submit">Submit</button>
+      <br/>
+      <mdc-button type="submit">Submit</mdc-button>
     </form>
   `;
 };
