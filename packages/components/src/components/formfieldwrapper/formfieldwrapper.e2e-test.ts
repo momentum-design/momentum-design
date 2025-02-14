@@ -86,7 +86,7 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       label: 'Label',
       'help-text': 'Help Text',
     });
-    await wrapperStickerSheet.createMarkupWithCombination({ 'help-text-type': VALIDATION });
+    await wrapperStickerSheet.createMarkupWithCombination({ 'help-text-type': VALIDATION }, { createNewRow: true });
     // disabled
     await wrapperStickerSheet.setAttributes({
       id: 'test-formfieldwrapper',
