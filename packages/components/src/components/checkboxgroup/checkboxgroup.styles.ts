@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 const styles = css`
-  :host {
+  .container {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;

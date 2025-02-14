@@ -10,6 +10,7 @@ import '../checkbox';
 const render = (args: Args) => html`
   <mdc-checkboxgroup
     header-text="${args['header-text']}"
+    data-aria-label="${args['data-aria-label']}"
   >
     <mdc-checkbox label="Black Widow"></mdc-checkbox>
     <mdc-checkbox label="Captain America"></mdc-checkbox>
@@ -32,6 +33,9 @@ const meta: Meta = {
     'header-text': {
       control: 'text',
     },
+    'data-aria-label': {
+      control: 'text',
+    },
     ...hideControls(['default']),
     ...classArgType,
     ...styleArgType,
@@ -43,6 +47,12 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     'header-text': 'Select your Avengers team',
+  },
+};
+
+export const List: StoryObj = {
+  args: {
+    'data-aria-label': 'Select a member from the list',
   },
 };
 
