@@ -8,6 +8,7 @@ const styles = [
       flex-direction: column;
       align-items: flex-start;
       gap: 0.5rem;
+      width: 100%;
     }
     :host([disabled]),
     :host([disabled]) .mdc-label,
