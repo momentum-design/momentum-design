@@ -99,7 +99,7 @@ class Tab extends IconNameMixin(Buttonsimple) {
   text?: string;
 
   /**
-   * Tab can have two variants:
+   * Tab can have three variants:
    * - `glass`
    * - `line`
    * - `pill`
