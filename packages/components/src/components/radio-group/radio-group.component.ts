@@ -2,7 +2,9 @@ import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { NameMixin } from '../../utils/mixins/NameMixin';
+import { TAG_NAME as RADIO_TAGNAME } from '../radio/radio.constants';
 import { TYPE as TEXT_TYPE, VALID_TEXT_TAGS as TEXT_TAGS } from '../text/text.constants';
+import { TextType } from '../text/text.types';
 import styles from './radio-group.styles';
 
 /**
@@ -42,7 +44,7 @@ class RadioGroup extends NameMixin(Component) {
     const slot = this.shadowRoot?.querySelector('slot');
     if (slot) {
       const radios = slot.assignedElements({ flatten: true })
-        .filter((el) => el.tagName === 'MDC-RADIO');
+        .filter((el) => el.tagName.toLowerCase() === RADIO_TAGNAME);
       radios.forEach((radio) => {
         if (!radio.hasAttribute('name')) {
           radio.setAttribute('name', this.name);
@@ -51,26 +53,21 @@ class RadioGroup extends NameMixin(Component) {
     }
   }
 
-  public override render() {
-    const header = this.headerText ? html`
-      <mdc-text
-        class="mdc-radio-group__label"
-        tagname="${TEXT_TAGS.SPAN}"
-        type="${TEXT_TYPE.BODY_LARGE_BOLD}">
-          ${this.headerText}
-      </mdc-text>` : nothing;
-
-    const description = this.description ? html`
-      <mdc-text
-        class="mdc-radio-group__description"
-        tagname="${TEXT_TAGS.SPAN}"
-        type="${TEXT_TYPE.BODY_LARGE_REGULAR}">
-          ${this.description}
-      </mdc-text>` : nothing;
-
+  private renderText(type: TextType, value: string, cssPart: string) {
+    if (!value) return nothing;
     return html`
-        ${header}
-        ${description}
+      <mdc-text
+       part='${cssPart}'
+       tagname="${TEXT_TAGS.SPAN}"
+       type="${type}">
+         ${value}
+      </mdc-text>`;
+  }
+
+  public override render() {
+    return html`
+        ${this.renderText(TEXT_TYPE.BODY_LARGE_BOLD, this.headerText, 'header')}
+        ${this.renderText(TEXT_TYPE.BODY_LARGE_REGULAR, this.description, 'description')}
         <div class="mdc-radio-group" role="radiogroup">
           <slot></slot>
         </div>`;
