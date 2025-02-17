@@ -14,11 +14,9 @@ import Input from './components/input';
 import Link from './components/link';
 import Toggle from './components/toggle';
 import Checkbox from './components/checkbox';
-import CheckboxGroup from './components/checkboxgroup';
 import Radio from './components/radio';
 import VirtualizedList from './components/virtualizedlist';
 import Tab from './components/tab';
-import ToggleGroup from './components/togglegroup';
 
 import type { TextType } from './components/text/text.types';
 
@@ -39,11 +37,9 @@ export {
   Link,
   Toggle,
   Checkbox,
-  CheckboxGroup,
   Radio,
   VirtualizedList,
   Tab,
-  ToggleGroup,
 };
 
 export type {
