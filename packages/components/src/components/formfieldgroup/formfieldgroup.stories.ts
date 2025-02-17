@@ -4,7 +4,17 @@ import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 const render = (args: Args) => html`
-  <mdc-formfieldgroup args.property="${args.property}"></mdc-formfieldgroup>`;
+  <mdc-formfieldgroup
+    header-text="${args['header-text']}"
+    description-text="${args['description-text']}"
+    data-aria-label="${args['data-aria-label']}"
+  >
+    <li>Loreim impusum</li>
+    <li>Donec a lectus</li>
+    <li>Praesent maximus</li>
+    <li>Aenean id</li>
+    <li>Integer non</li>
+  </mdc-formfieldgroup>`;
 
 const meta: Meta = {
   title: 'Work In Progress/formfieldgroup',
@@ -12,7 +22,7 @@ const meta: Meta = {
   component: 'mdc-formfieldgroup',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['internal'],
   },
   argTypes: {
     ...classArgType,
@@ -24,7 +34,8 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    class: 'custom-classname',
-    style: 'margin-top: 20px;',
+    'header-text': 'Header text',
+    'description-text': 'This is an example description text.',
+    'data-aria-label': 'Header text aria label',
   },
 };
