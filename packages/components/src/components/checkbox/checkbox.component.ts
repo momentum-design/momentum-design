@@ -15,6 +15,8 @@ import styles from './checkbox.styles';
  *
  * A checkbox component contains an optional label and an optional helper text.
  *
+ * To create a group of checkboxes, use the FormFieldGroup component.
+ *
  * @dependency mdc-icon
  *
  * @tagname mdc-checkbox

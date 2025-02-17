@@ -16,6 +16,8 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
  * where users need to enable or disable a feature.
  * It contains an optional label and an optional helper text.
  *
+ * To create a group of toggles, use the FormFieldGroup component.
+ *
  * Note: It internally renders a checkbox styled as a toggle switch.
  *
  * @dependency mdc-icon

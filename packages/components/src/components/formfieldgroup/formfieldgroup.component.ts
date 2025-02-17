@@ -9,14 +9,21 @@ import { ROLE } from './formfieldgroup.constants';
 import styles from './formfieldgroup.styles';
 
 /**
- * `mdc-formfieldgroup` component, groups any list of components together.
+ * `mdc-formfieldgroup` component, groups the form field components together.
+ * All passed in children will have a gap of 12px (0.75rem) each applied.
  *
- * The header and description text are displayed above the items with accessible labels.
- * All items in this form field group have a gap of 12px (0.75rem) each.
+ * This component is specifically for creating a `checkbox` group and a `toggle` group component.
+ * For the radiogroup use the RadioGroup component instead.
+ *
+ * The header text and description text are displayed above the items with accessible labels.
+ * The role will be set to `group`.
+ * The aria-label will be set with the data-aria-label property.
+ * The aria-labelledby will be set with the header id which contains the header text information.
+ * The aria-describedby will be set with the description id which contains the description text information.
  *
  * @tagname mdc-formfieldgroup
  *
- * @slot default - This is a default/unnamed slot
+ * @slot default - This is a default slot for checkbox or toggle components.
  */
 class FormfieldGroup extends DataAriaLabelMixin(Component) {
   /**
