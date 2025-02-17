@@ -57,12 +57,6 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
   static formAssociated = true;
 
   /** @internal */
-  static override shadowRootOptions: ShadowRootInit = {
-    ...LitElement.shadowRootOptions,
-    delegatesFocus: true,
-  };
-
-  /** @internal */
   get form(): HTMLFormElement | null {
     return this.internals.form;
   }
@@ -154,6 +148,7 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
           .indeterminate="${this.indeterminate}"
           .disabled="${this.disabled}"
           aria-label="${this.dataAriaLabel ?? ''}"
+          aria-describedby="help-text"
           @change=${this.handleChange}
           @keydown=${this.handleKeyDown}
         />

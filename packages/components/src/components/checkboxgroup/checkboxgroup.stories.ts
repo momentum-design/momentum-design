@@ -10,6 +10,8 @@ import '../checkbox';
 const render = (args: Args) => html`
   <mdc-checkboxgroup
     header-text="${args['header-text']}"
+    description-text="${args['description-text']}"
+    data-aria-label="${args['data-aria-label']}"
   >
     <mdc-checkbox label="Black Widow"></mdc-checkbox>
     <mdc-checkbox label="Captain America"></mdc-checkbox>
@@ -43,6 +45,8 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     'header-text': 'Select your Avengers team',
+    'description-text': 'The team captain should have previous challenging situations.',
+    'data-aria-label': 'Select one of the Avengers',
   },
 };
 

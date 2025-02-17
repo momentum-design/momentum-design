@@ -1,9 +1,5 @@
-import { CSSResult, html, nothing } from 'lit';
-import { property } from 'lit/decorators.js';
-import { Component } from '../../models';
-import { TAG_NAME as CHECKBOX_TAGNAME } from '../checkbox/checkbox.constants';
-import { TYPE as TEXT_TYPE, VALID_TEXT_TAGS as TEXT_TAGS } from '../text/text.constants';
-import styles from './checkboxgroup.styles';
+import { CSSResult } from 'lit';
+import FormFieldGroup from '../formfieldgroup/formfieldgroup.component';
 
 /**
  * `mdc-checkboxgroup` component allows you to select multiple options from a predefined list.
@@ -12,78 +8,12 @@ import styles from './checkboxgroup.styles';
  * A checkbox group typically consists of multiple checkboxes grouped together,
  * each representing a selectable option. You can check or uncheck options based on their preferences.
  *
- * @dependency mdc-text
- *
  * @tagname mdc-checkboxgroup
  *
- * @slot help-text - This is a help text slot.
  * @slot default - This is a default slot for children.
  */
-class Checkboxgroup extends Component {
-  /**
-   * The header text of the checkboxgroup.
-   */
-  @property({ type: String, attribute: 'header-text' }) headerText?: string;
-
-  /** @internal */
-  @property({ type: String, reflect: true }) override role = 'group';
-
-  /** @internal */
-  private get checkboxList() {
-    const allSlots = Array.from(this.shadowRoot?.querySelectorAll('slot') ?? []);
-    const assignedElements = allSlots?.filter((eachSlot) => eachSlot.name !== 'help-text')[0]?.assignedElements() || [];
-    return assignedElements.filter((element) => element.tagName.toLowerCase() === CHECKBOX_TAGNAME);
-  }
-
-  constructor() {
-    super();
-    this.addEventListener('keydown', this.handleKeyDown);
-  }
-
-  /**
-   * Handles the keydown event on the parent checkbox in the checkboxgroup.
-   * When the user presses the down arrow key, the focus is moved to the next checkbox in the checkboxgroup.
-   * When the user presses the up arrow key, the focus is moved to the previous checkbox in the checkboxgroup.
-   * @param event - The KeyboardEvent
-   */
-  private handleKeyDown(event: KeyboardEvent): void {
-    if (event.key === 'ArrowDown') {
-      this.navigate(event.target, 1);
-    }
-    if (event.key === 'ArrowUp') {
-      this.navigate(event.target, -1);
-    }
-  }
-
-  /**
-   * Navigate to the next or previous checkbox in the checkboxgroup based on the given origin and direction.
-   * @param origin - The element that triggered the event.
-   * @param direction - The direction of navigation, either -1 or 1.
-   */
-  private navigate(origin: EventTarget | null, direction: number): void {
-    const getAllCheckboxIds = this.checkboxList.map((checkbox) => checkbox.id);
-    const currentIdIndex = getAllCheckboxIds.indexOf((origin as HTMLInputElement).id);
-    // Negative modulo doesn't work directly with JS.
-    // https://stackoverflow.com/a/71167019/4745480
-    const futureIndex = (((currentIdIndex + direction) % getAllCheckboxIds.length)
-      + getAllCheckboxIds.length) % getAllCheckboxIds.length;
-    (this.children[futureIndex] as HTMLInputElement).focus();
-  }
-
-  public override render() {
-    const header = this.headerText
-      ? html`<mdc-text class="header-text" tagname="${TEXT_TAGS.SPAN}" type="${TEXT_TYPE.BODY_LARGE_BOLD}">
-          ${this.headerText}
-        </mdc-text>`
-      : nothing;
-    return html`
-      ${header}
-      <slot name="help-text"></slot>
-      <slot></slot>
-    `;
-  }
-
-  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+class Checkboxgroup extends FormFieldGroup {
+  public static override styles: Array<CSSResult> = [...FormFieldGroup.styles];
 }
 
 export default Checkboxgroup;
