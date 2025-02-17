@@ -1,19 +1,52 @@
-import { test } from '../../../config/playwright/setup';
+import { expect } from '@playwright/test';
+import { ComponentsPage, test } from '../../../config/playwright/setup';
+import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { ROLE } from './formfieldgroup.constants';
 
-test.beforeEach(async ({ componentsPage }) => {
+type SetupOptions = {
+  componentsPage: ComponentsPage;
+  'header-text'?: string;
+  'description-text'?: string;
+  children: string;
+}
+
+const headerText = 'Select all powers';
+const descriptionText = 'check all that apply';
+const ariaLabel = 'header text aria label';
+const children = `
+  <mdc-checkbox label="Flight"></mdc-checkbox>
+  <mdc-checkbox label="Mind control"></mdc-checkbox>
+  <mdc-checkbox label="Super genius"></mdc-checkbox>
+  <mdc-checkbox label="Super strength"></mdc-checkbox>
+  <mdc-checkbox label="Tactics"></mdc-checkbox>
+  <mdc-checkbox label="Weather control"></mdc-checkbox>
+`;
+const toggleChildren = `
+  <mdc-toggle label="Left Thruster 1"></mdc-toggle>
+  <mdc-toggle label="Left Thruster 2"></mdc-toggle>
+  <mdc-toggle label="Left Thruster 3"></mdc-toggle>
+  <mdc-toggle label="Right Thruster 1"></mdc-toggle>
+  <mdc-toggle label="Right Thruster 2"></mdc-toggle>
+  <mdc-toggle label="Right Thruster 3"></mdc-toggle>
+`;
+
+const setup = async (args: SetupOptions) => {
+  const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
-        <mdc-formfieldgroup />
-      `,
+      <mdc-formfieldgroup
+        ${restArgs['header-text'] ? `header-text="${restArgs['header-text']}"` : ''}
+        ${restArgs['description-text'] ? `description-text="${restArgs['description-text']}"` : ''}
+      >${restArgs.children}</mdc-formfieldgroup>
+    `,
+    clearDocument: true,
   });
-});
-
-test.skip('mdc-formfieldgroup', async ({ componentsPage }) => {
   const formfieldgroup = componentsPage.page.locator('mdc-formfieldgroup');
-
-  // initial check for the formfieldgroup be visible on the screen:
   await formfieldgroup.waitFor();
+  return formfieldgroup;
+};
 
+test('mdc-formfieldgroup', async ({ componentsPage }) => {
   /**
    * ACCESSIBILITY
    */
@@ -25,8 +58,27 @@ test.skip('mdc-formfieldgroup', async ({ componentsPage }) => {
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
-    await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-formfieldgroup', { element: formfieldgroup });
+    const createNewRow = true;
+    const formfieldgroupStickerSheet = new StickerSheet(componentsPage, 'mdc-formfieldgroup');
+    formfieldgroupStickerSheet.setAttributes({
+      'header-text': headerText,
+      'description-text': descriptionText,
+    });
+    formfieldgroupStickerSheet.setChildren(children);
+    await formfieldgroupStickerSheet.createMarkupWithCombination({}, { createNewRow });
+
+    formfieldgroupStickerSheet.setAttributes({
+      'header-text': 'Engine thrusters',
+      'description-text': 'Select all the thrusters you would like to turn on',
+    });
+    formfieldgroupStickerSheet.setChildren(toggleChildren);
+    await formfieldgroupStickerSheet.createMarkupWithCombination({}, { createNewRow });
+    await formfieldgroupStickerSheet.mountStickerSheet();
+
+    await test.step('matches screenshot of default element', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-formfieldgroup', {
+        element: formfieldgroupStickerSheet.getWrapperContainer(),
+      });
     });
   });
 
@@ -34,33 +86,26 @@ test.skip('mdc-formfieldgroup', async ({ componentsPage }) => {
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
-    await test.step('attribute X should be present on component by default', async () => {
-      // TODO: add test here
-    });
-  });
+    const formfieldgroup = await setup({ componentsPage, children });
 
-  /**
-   * INTERACTIONS
-   */
-  await test.step('interactions', async () => {
-    await test.step('mouse/pointer', async () => {
-      await test.step('component should fire callback x when clicking on it', async () => {
-        // TODO: add test here
-      });
+    await test.step('attribute `header-text` should be present on component when set', async () => {
+      await componentsPage.setAttributes(formfieldgroup, { 'header-text': headerText });
+      const mdcText = componentsPage.page.locator('mdc-text[id=\'header-id\']');
+      const textContent = await mdcText.textContent();
+      expect(textContent?.trim()).toBe(headerText);
     });
 
-    await test.step('focus', async () => {
-      await test.step('component should be focusable with tab', async () => {
-        // TODO: add test here
-      });
-
-      // add additional tests here, like tabbing through several parts of the component
+    await test.step('attribute `description-text` should be present on component when set', async () => {
+      await componentsPage.setAttributes(formfieldgroup, { 'description-text': descriptionText });
+      const mdcText = componentsPage.page.locator('mdc-text[id=\'description-id\']');
+      const textContent = await mdcText.textContent();
+      expect(textContent?.trim()).toBe(descriptionText);
     });
 
-    await test.step('keyboard', async () => {
-      await test.step('component should fire callback x when pressing y', async () => {
-        // TODO: add test here
-      });
+    await test.step('attribute `data-aria-label` should be present on component when set', async () => {
+      await componentsPage.setAttributes(formfieldgroup, { 'data-aria-label': ariaLabel });
+      const divContent = await componentsPage.page.getByRole(ROLE.GROUP).getAttribute('aria-label');
+      expect(divContent).toBe(ariaLabel);
     });
   });
 });

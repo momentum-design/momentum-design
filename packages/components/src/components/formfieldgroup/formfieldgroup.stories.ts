@@ -20,7 +20,7 @@ const meta: Meta = {
   component: 'mdc-formfieldgroup',
   render,
   parameters: {
-    badges: ['internal'],
+    badges: ['wip'],
   },
   argTypes: {
     children: {
@@ -79,4 +79,10 @@ export const ToggleGroup: StoryObj = {
       <mdc-toggle label="Right Thruster 3"></mdc-toggle>
     `,
   },
+};
+
+export const Test: StoryObj = {
+  render: () => html`
+    <mdc-formfieldgroup header-text="tomato"></mdc-formfieldgroup>
+  `,
 };
