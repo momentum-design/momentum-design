@@ -23,7 +23,7 @@ const render = (args: Args) => {
     value="${value}"
     class="${args.class}"
     style="${args.style}"
-    ?required="${args.required}"
+    required-label="${args['required-label']}"
     ?disabled="${args.disabled}"
     ?readonly="${args.readonly}"
     ?trailing-button="${args['trailing-button']}"
@@ -70,8 +70,8 @@ const meta: Meta = {
     label: {
       control: 'text',
     },
-    required: {
-      control: 'boolean',
+    'required-label': {
+      control: 'text',
     },
     'help-text': {
       control: 'text',
@@ -151,12 +151,12 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     name: 'input',
-    label: 'Label (required)',
+    label: 'Label',
+    'required-label': 'required',
     placeholder: 'Placeholder',
     value: '',
     'help-text': 'Helper text',
     'help-text-type': 'default',
-    required: true,
     readonly: false,
     disabled: false,
     'prefix-text': '',
@@ -169,9 +169,20 @@ export const Example: StoryObj = {
   },
 };
 
+export const InputInSmallContainer: StoryObj = {
+  render: () => html`
+  <div style='width: 200px;'>
+    <mdc-input label='This is a large label text'
+    required-label='required' 
+    placeholder='placeholder'>
+    </mdc-input>
+  </div>
+  `,
+};
+
 export const AllVariants: StoryObj = {
   argTypes: {
-    ...disableControls(['label', 'help-text', 'required', 'placeholder', 'value', 'help-text-type']),
+    ...disableControls(['label', 'help-text', 'required-label', 'placeholder', 'value', 'help-text-type']),
   },
   render: () => html`
   <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
@@ -183,10 +194,11 @@ export const AllVariants: StoryObj = {
       value="${validation}_value"
       ></mdc-input>`)}
       <mdc-input 
-      label="Label (required)"
+      label="Label"
       help-text="Helper text"
       help-text-type="default"
-      required placeholder="Input is required"
+      required-label='required' 
+      placeholder="Input is required"
       ></mdc-input>
       <mdc-input 
       label="Label"
@@ -234,9 +246,9 @@ export const FormFieldInput: StoryObj = {
     <form @submit=${handleSubmit}>
       <mdc-input
        name='user-name'
-        label="First Name (required)"
+        label="First Name"
+        required-label="required"
         placeholder="Enter your name"
-        required
       ></mdc-input>
       <mdc-button type="submit" size='24' style='margin-top: 0.5rem'>Submit</mdc-button>
     </form>
