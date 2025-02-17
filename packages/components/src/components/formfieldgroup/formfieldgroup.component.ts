@@ -1,10 +1,11 @@
-import { CSSResult, html, nothing, TemplateResult } from 'lit';
-import { property, state } from 'lit/decorators.js';
+import type { CSSResult } from 'lit';
+import { html, nothing, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
-import styles from './formfieldgroup.styles';
+import { VALID_TEXT_TAGS as TEXT_TAGS, TYPE as TEXT_TYPE } from '../text/text.constants';
 import type { TextType } from '../text/text.types';
-import { TYPE as TEXT_TYPE, VALID_TEXT_TAGS as TEXT_TAGS } from '../text/text.constants';
+import styles from './formfieldgroup.styles';
 
 /**
  * `mdc-formfieldgroup` component, groups any list of components together.
@@ -27,14 +28,17 @@ class FormfieldGroup extends DataAriaLabelMixin(Component) {
    */
   @property({ type: String, attribute: 'description-text', reflect: true }) descriptionText?: string;
 
-  /** @internal */
-  @state() protected isRadio = false;
+  /**
+  * @internal
+  * This is used to set the role of the compoonent as `radiogroup` if this is true and to 'group' if it is false.
+  */
+  protected isRadio = false;
 
   private renderText(type: TextType, id: string, cssPart: string, value?: string): TemplateResult | typeof nothing {
     if (!value) {
       return nothing;
     }
-    return html`<mdc-text id=${id} type="${type}" tagname="${TEXT_TAGS.SPAN}" part="${cssPart}">${value}</mdc-text>`;
+    return html`<mdc-text id="${id}" type="${type}" tagname="${TEXT_TAGS.SPAN}" part="${cssPart}">${value}</mdc-text>`;
   }
 
   public override render() {
