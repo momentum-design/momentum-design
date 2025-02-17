@@ -1,5 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
+import '../button';
+import '../text';
 import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { DIVIDER_ORIENTATION, DIVIDER_VARIANT, DIRECTIONS } from './divider.constants';
@@ -67,6 +69,10 @@ const meta: Meta = {
       '--mdc-divider-text-size',
       '--mdc-divider-text-color',
       '--mdc-divider-text-margin',
+      '--mdc-divider-grabber-button-background-color-normal',
+      '--mdc-divider-grabber-button-background-color-hover',
+      '--mdc-divider-grabber-button-background-color-pressed',
+      '--mdc-divider-grabber-button-border-color',
       '--mdc-divider-grabber-button-border-radius',
       '--mdc-divider-text-line-height',
     ]),
