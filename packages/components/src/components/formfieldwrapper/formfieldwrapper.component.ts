@@ -80,6 +80,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     }
     return html`
       <mdc-text
+        id="help-text"
         part="help-text"
         tagname=${MDC_TEXT_OPTIONS.TAGNAME}
         type=${MDC_TEXT_OPTIONS.TYPE}
