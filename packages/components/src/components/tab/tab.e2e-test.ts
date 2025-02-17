@@ -1,13 +1,14 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { IconNames } from '../icon/icon.types';
 import { DEFAULTS, TAB_VARIANTS } from './tab.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
   active?: boolean;
   disabled?: boolean;
-  iconName?: string;
+  iconName?: IconNames;
   role?: string;
   tabIndex?: number;
   text?: string;
@@ -27,7 +28,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.iconName ? `icon-name="${restArgs.iconName}"` : ''}
         ${restArgs.tabIndex ? `tabindex="${restArgs.tabIndex}"` : ''}
         ${restArgs.text ? `text="${restArgs.text}"` : ''}
-        ${restArgs.variant ? `variant="${restArgs.variant}"` : DEFAULTS.TAB_VARIANT}>
+        ${restArgs.variant ? `variant="${restArgs.variant}"` : DEFAULTS.VARIANT}>
         <mdc-badge slot="badge" type="counter" counter="1"></mdc-badge>
       </mdc-tab>
       <mdc-tab text="Dummy Tab"></mdc-tab>
@@ -60,7 +61,7 @@ test('mdc-tab', async ({ componentsPage }) => {
         await expect(tab).toHaveRole('tab');
         await expect(tab).toHaveAttribute('tabindex', '0');
         await expect(tab).toHaveAttribute('text', 'Label');
-        await expect(tab).toHaveAttribute('variant', DEFAULTS.TAB_VARIANT);
+        await expect(tab).toHaveAttribute('variant', DEFAULTS.VARIANT);
         await expect(tab).not.toHaveAttribute('active');
         await expect(tab).not.toHaveAttribute('disabled');
         await expect(tab).not.toHaveAttribute('icon-name');
@@ -101,12 +102,19 @@ test('mdc-tab', async ({ componentsPage }) => {
       // variant
       // eslint-disable-next-line no-restricted-syntax
       for (const tabVariant of Object.values(TAB_VARIANTS)) {
-      // eslint-disable-next-line no-await-in-loop
+        // eslint-disable-next-line no-await-in-loop
         await test.step(`attribute variant ${tabVariant} should be present as expected`, async () => {
           await componentsPage.setAttributes(tab, { variant: tabVariant });
           await expect(tab).toHaveAttribute('variant', tabVariant);
         });
       }
+
+      // invalid tab variant
+      const tabVariant = 'invalid-variant';
+      await test.step(`attribute variant with invalid value ${tabVariant}, it should update to default`, async () => {
+        await componentsPage.setAttributes(tab, { variant: tabVariant });
+        await expect(tab).toHaveAttribute('variant', DEFAULTS.VARIANT);
+      });
     });
   });
 
