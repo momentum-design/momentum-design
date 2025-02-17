@@ -402,6 +402,7 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
             ?readonly="${this.readonly}"
             ?required="${this.required}"
             type="text"
+            aria-describedby="${this.helperTextId}"
             placeholder=${ifDefined(this.placeholder)}
             minlength=${ifDefined(this.minlength)}
             maxlength=${ifDefined(this.maxlength)}

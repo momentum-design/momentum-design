@@ -148,7 +148,7 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
           .indeterminate="${this.indeterminate}"
           .disabled="${this.disabled}"
           aria-label="${this.dataAriaLabel ?? ''}"
-          aria-describedby="help-text"
+          aria-describedby="${this.helperTextId}"
           @change=${this.handleChange}
           @keydown=${this.handleKeyDown}
         />
