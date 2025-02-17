@@ -61,6 +61,7 @@ const styles = [css`
     align-items: center;
     gap: 0.375rem;
     padding: 0.34375rem 0.375rem 0.34375rem 0.75rem;
+    min-width: 3.25rem;
   }
 
   .input-section{
