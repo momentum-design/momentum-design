@@ -27,6 +27,7 @@ class FormfieldGroup extends DataAriaLabelMixin(Component) {
    */
   @property({ type: String, attribute: 'description-text', reflect: true }) descriptionText?: string;
 
+  /** @internal */
   @state() protected isRadio = false;
 
   private renderText(type: TextType, id: string, cssPart: string, value?: string): TemplateResult | typeof nothing {
