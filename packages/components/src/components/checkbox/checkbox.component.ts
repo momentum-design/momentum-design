@@ -1,4 +1,4 @@
-import { CSSResult, html, LitElement, nothing, PropertyValues } from 'lit';
+import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
