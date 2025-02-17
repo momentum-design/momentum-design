@@ -11,7 +11,7 @@ type SetupOptions = {
   id?: string;
   value?: string;
   placeholder?: string;
-  required?: boolean;
+  requiredLabel?: string;
   readonly?: boolean;
   disabled?: boolean;
   maxlength?: number;
@@ -42,7 +42,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
       id="${restArgs.id}"
       ${restArgs.value ? `value="${restArgs.value}"` : ''}
       ${restArgs.placeholder ? `placeholder="${restArgs.placeholder}"` : ''}
-      ${restArgs.required ? 'required' : ''}
+      ${restArgs.requiredLabel ? `required-label="${restArgs.requiredLabel}"` : ''}
       ${restArgs.readonly ? 'readonly' : ''}
       ${restArgs.disabled ? 'disabled' : ''}
       ${restArgs.maxlength ? `maxlength="${restArgs.maxlength}"` : ''}
@@ -115,9 +115,9 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('attributes required should be present on component', async () => {
-      await componentsPage.setAttributes(input, { required: '' });
-      await expect(input).toHaveAttribute('required');
-      await componentsPage.removeAttribute(input, 'required');
+      await componentsPage.setAttributes(input, { 'required-label': 'required' });
+      await expect(input).toHaveAttribute('required-label', 'required');
+      await componentsPage.removeAttribute(input, 'required-label');
     });
 
     await test.step('attributes readonly should be present on component', async () => {
@@ -209,7 +209,6 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
   /**
    * INTERACTIONS
    */
-  // test form submission with input field marked as required
   await test.step('interactions', async () => {
     const inputEl = await input.locator('input');
     await test.step('component should be focusable with tab', async () => {
@@ -290,17 +289,16 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
         componentsPage,
         id: 'test-mdc-input',
         placeholder: 'Placeholder',
-        required: true,
+        requiredLabel: 'required',
         maxlength: 10,
       }, true);
+
       const mdcInput = await form.locator('mdc-input');
       const submitButton = await form.locator('mdc-button');
       const inputEl = mdcInput.locator('input');
       await componentsPage.actionability.pressTab();
       await expect(mdcInput).toBeFocused();
-      await componentsPage.actionability.pressTab();
-      await expect(submitButton).toBeFocused();
-      await submitButton.click();
+      await componentsPage.page.keyboard.down('Enter');
       const validationMessage = await inputEl.evaluate((element) => {
         const input = element as HTMLInputElement;
         return input.validationMessage;
@@ -368,6 +366,23 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       readonly: true,
     });
     await inputStickerSheet.createMarkupWithCombination({});
+
+    // input that is marked required
+    await inputStickerSheet.setAttributes({ ...attributes,
+      'required-label': 'required',
+      placeholder: 'Input is required',
+    });
+    await inputStickerSheet.createMarkupWithCombination({});
+
+    // Long text label that is truncated in a small container
+    await inputStickerSheet.setAttributes({
+      label: 'This is a large label text',
+      'required-label': 'required',
+      placeholder: 'placeholder',
+      style: 'width: 200px',
+    });
+    await inputStickerSheet.createMarkupWithCombination({});
+
     await inputStickerSheet.mountStickerSheet();
     const container = await inputStickerSheet.getWrapperContainer();
 
