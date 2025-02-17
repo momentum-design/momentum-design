@@ -6,18 +6,18 @@ const styles = css`
     --mdc-radio-group-description-text-normal: var(--mds-color-theme-text-secondary-normal);
   }
 
-  .mdc-radio-group{
+  .mdc-radio-group {
     display: flex;
     flex-direction: column;
     gap: 8px;
   }
 
-  .mdc-radio-group__label {
+  :host::part(header) {
     color: var(--mdc-radio-group-label-text-normal);
     margin-bottom: 0.5rem;
   }
 
-  .mdc-radio-group__description {
+  :host::part(description) {
     color: var(--mdc-radio-group-description-text-normal);
     margin-bottom: 1rem;
   }
