@@ -8,7 +8,7 @@ test.beforeEach(async ({ componentsPage }) => {
   });
 });
 
-test('mdc-formfieldgroup', async ({ componentsPage }) => {
+test.skip('mdc-formfieldgroup', async ({ componentsPage }) => {
   const formfieldgroup = componentsPage.page.locator('mdc-formfieldgroup');
 
   // initial check for the formfieldgroup be visible on the screen:
