@@ -1,12 +1,12 @@
 import { CSSResult, html, nothing } from 'lit';
-import { v4 as uuidv4 } from 'uuid';
 import { property } from 'lit/decorators.js';
-import styles from './formfieldwrapper.styles';
+import { v4 as uuidv4 } from 'uuid';
 import { Component } from '../../models';
-import type { ValidationType } from './formfieldwrapper.types';
-import { DEFAULTS, MDC_TEXT_OPTIONS } from './formfieldwrapper.constants';
-import { getHelperIcon } from './formfieldwrapper.utils';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
+import { DEFAULTS, MDC_TEXT_OPTIONS } from './formfieldwrapper.constants';
+import styles from './formfieldwrapper.styles';
+import type { ValidationType } from './formfieldwrapper.types';
+import { getHelperIcon } from './formfieldwrapper.utils';
 
 /**
  * formfieldwrapper is a component that contains the label and helper/validation text
@@ -41,10 +41,11 @@ class FormfieldWrapper extends DisabledMixin(Component) {
   @property({ type: String, reflect: true, attribute: 'help-text' }) helpText?: string;
 
   /**
+   * @internal
    * The unique id of the helper text field. It is used to link the helper text field with the input.
    * @default `helper-text-id-${uuidv4()}`
    */
-  @property({ type: String }) helperTextId = `helper-text-id-${uuidv4()}`;
+  protected helperTextId = `helper-text-id-${uuidv4()}`;
 
   /**
    * creates the label element when the label property is set.
