@@ -23,6 +23,15 @@ const meta: Meta = {
     badges: ['stable'],
   },
   argTypes: {
+    'header-text': {
+      control: 'text',
+    },
+    'description-text': {
+      control: 'text',
+    },
+    'data-aria-label': {
+      control: 'text',
+    },
     children: {
       description: 'The html content which can be placed inside the formfieldgroup component.',
       control: 'object',
@@ -79,10 +88,4 @@ export const ToggleGroup: StoryObj = {
       <mdc-toggle label="Right Thruster 3"></mdc-toggle>
     `,
   },
-};
-
-export const Test: StoryObj = {
-  render: () => html`
-    <mdc-formfieldgroup header-text="tomato"></mdc-formfieldgroup>
-  `,
 };

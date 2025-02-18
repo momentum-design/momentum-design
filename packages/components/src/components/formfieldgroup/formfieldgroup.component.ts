@@ -15,7 +15,10 @@ import styles from './formfieldgroup.styles';
  * This component is specifically for creating a `checkbox` group and a `toggle` group component.
  * For the radiogroup use the RadioGroup component instead.
  *
- * The header text and description text are displayed above the items with accessible labels.
+ * The header text and description text are displayed above the items with accessible labels.<br/>
+ * The consumer has to provide atleast the header-text or the aria-label,
+ * like one of them <b>has</b> to be passed in always, otherwise its not accessible.
+ *
  * The role will be set to `group`.
  * The aria-label will be set with the data-aria-label property.
  * The aria-labelledby will be set with the header id which contains the header text information.
@@ -37,9 +40,9 @@ class FormfieldGroup extends DataAriaLabelMixin(Component) {
   @property({ type: String, attribute: 'description-text', reflect: true }) descriptionText?: string;
 
   /**
-  * @internal
-  * This is used to set the role of the compoonent as `radiogroup` if this is true and to 'group' if it is false.
-  */
+   * @internal
+   * This is used to set the role of the component as `radiogroup` if this is true and to 'group' if it is false.
+   */
   protected isRadio = false;
 
   private renderText(type: TextType, id: string, cssPart: string, value?: string): TemplateResult | typeof nothing {
