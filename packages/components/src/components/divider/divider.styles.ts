@@ -18,6 +18,10 @@ const styles = [
       --mdc-divider-text-line-height: var(--mds-font-lineheight-body-midsize);
       --mdc-divider-text-margin: 1.5rem;
       --mdc-divider-grabber-button-border-radius: 0.5rem;
+      --mdc-divider-grabber-button-border-color: var(--mds-color-theme-outline-secondary-normal);
+      --mdc-divider-grabber-button-background-color-normal: var(--mds-color-theme-overlay-button-secondary-normal);
+      --mdc-divider-grabber-button-background-color-hover: var(--mds-color-theme-overlay-button-secondary-hover);
+      --mdc-divider-grabber-button-background-color-pressed: var(--mds-color-theme-overlay-button-secondary-pressed);
 
       display: flex;
       justify-content: center;
@@ -59,6 +63,20 @@ const styles = [
     }
 
     /** Button divider styles */
+
+    ::slotted(mdc-button) {
+      background-color: var(--mdc-divider-grabber-button-background-color-normal);
+      border-color: var(--mdc-divider-grabber-button-border-color);
+    }
+
+    ::slotted(mdc-button:hover) {
+      background-color: var(--mdc-divider-grabber-button-background-color-hover);
+    }
+
+    ::slotted(mdc-button:active) {
+      background-color: var(--mdc-divider-grabber-button-background-color-pressed);
+    }
+
     :host([orientation='vertical']) ::slotted(mdc-button) {
       width: 1.25rem;
       height: 2.5rem;
@@ -92,11 +110,15 @@ const styles = [
           var(--mdc-divider-grabber-button-border-radius) 
           0 
           0;
-      border-bottom-color: transparent;
+      margin: 0;
+      margin-bottom: var(--mdc-divider-width);
+      border-bottom: 0;
     }
 
     :host([orientation='horizontal'][button-position='negative']) ::slotted(mdc-button) {
-      border-top-color: transparent;
+      margin: 0;
+      margin-top: var(--mdc-divider-width);
+      border-top: 0;
     }
 
     :host([orientation='vertical'][button-position='negative']:dir(ltr)) ::slotted(mdc-button),
@@ -105,12 +127,16 @@ const styles = [
           0 
           0 
           var(--mdc-divider-grabber-button-border-radius);
-      border-right-color: transparent;
+      margin: 0;
+      margin-right: var(--mdc-divider-width);
+      border-right: 0;
     }
 
     :host([orientation='vertical'][button-position='positive']:dir(ltr)) ::slotted(mdc-button),
     :host([orientation='vertical'][button-position='positive']:dir(rtl)) ::slotted(mdc-button) {
-      border-left-color: transparent;
+      margin: 0;
+      margin-left: var(--mdc-divider-width);
+      border-left: 0;
     }
 
     :host([orientation='vertical'][button-position='positive']:dir(rtl)) ::slotted(mdc-button) {
@@ -119,10 +145,14 @@ const styles = [
           var(--mdc-divider-grabber-button-border-radius) 
           0;
       transform: rotate(180deg);
+      margin: 0;
+      margin-right: var(--mdc-divider-width);
     }
 
     :host([orientation='vertical'][button-position='negative']:dir(rtl)) ::slotted(mdc-button) {
       transform: rotate(180deg);
+      margin: 0;
+      margin-left: var(--mdc-divider-width);
     }
 
     /** Text divider styles */
