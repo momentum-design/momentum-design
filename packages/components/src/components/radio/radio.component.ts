@@ -1,11 +1,11 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { NameMixin } from '../../utils/mixins/NameMixin';
-import { ValueMixin } from '../../utils/mixins/ValueMixin';
 import styles from './radio.styles';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
+import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
+import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 
 /**
  * Radio allow users to select single options from a list or turn an item/feature on or off.
@@ -35,7 +35,7 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
  *
  */
 
-class Radio extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) {
+class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
   /**
   * Determines whether the radio is selected or unselected.
   *
@@ -50,84 +50,107 @@ class Radio extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) 
   */
   @property({ type: Boolean, reflect: true }) readonly = false;
 
-  /** @internal */
-  private internals: ElementInternals;
+    /**
+   * Automatically focus on the element when the page loads.
+   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/autofocus)
+   * @default false
+   */
+    @property({ type: Boolean, reflect: true }) override autofocus = false;
 
-  /** @internal */
-  static formAssociated = true;
+    constructor() {
+      super();
+      // Radio does not contain helpTextType property.
+      this.helpTextType = undefined as unknown as ValidationType;
+    }
 
-  /** @internal */
-  get form(): HTMLFormElement | null {
-    return this.internals.form;
-  }
-
-  constructor() {
-    super();
-    /** @internal */
-    this.internals = this.attachInternals();
-  }
-
-  /**
+    /**
    * Updates the form value to reflect the current state of the radio.
    * If checked, the value is set to the user-provided value.
    * If unchecked, the value is set to null.
    */
-  private setFormValue() {
-    if (this.checked) {
-      this.internals.setFormValue(this.value);
+    private setFormValue() {
+      if (this.checked) {
+        this.internals.setFormValue(this.value);
+      }
     }
-  }
 
-  override firstUpdated() {
-    this.updateTabIndex();
-  }
+    override firstUpdated() {
+      this.updateTabIndex();
+    }
 
-  /**
+    /**
    * Returns all radios within the same group (name).
    */
-  private getAllRadiosWithinSameGroup(): Radio[] {
-    return Array.from(document.querySelectorAll(`mdc-radio[name="${this.name}"]`));
-  }
+    private getAllRadiosWithinSameGroup(): Radio[] {
+      return Array.from(document.querySelectorAll(`mdc-radio[name="${this.name}"]`));
+    }
 
-  /**
+    /**
    * The 'change' event does not bubble up through the shadow DOM as it was not composed.
    * Therefore, we need to re-dispatch the same event to ensure it is propagated correctly.
    * Read more: https://developer.mozilla.org/en-US/docs/Web/API/Event/composed
    */
-  private dispatchChangeEvent(event: Event): void {
-    const EventConstructor = event.constructor as typeof Event;
-    this.dispatchEvent(new EventConstructor(event.type, event));
-  }
+    private dispatchChangeEvent(event: Event): void {
+      const EventConstructor = event.constructor as typeof Event;
+      this.dispatchEvent(new EventConstructor(event.type, event));
+    }
 
-  /**
+    /** @internal */
+    formResetCallback(): void {
+      const radios = this.getAllRadiosWithinSameGroup();
+
+      radios.forEach((r) => {
+        // eslint-disable-next-line no-param-reassign
+        r.checked = false;
+      });
+
+      this.updateComplete.then(() => {
+        // this._handleValueChange();
+      }).catch((error) => {
+        if (this.onerror) {
+          this.onerror(error);
+        }
+      });
+    }
+
+    /** @internal */
+    formStateRestoreCallback(
+      state: string,
+    ): void {
+      if (this.value === state && state !== '') {
+        this.checked = true;
+      }
+    }
+
+    /**
    * Handles the change event on the radio element.
    * This will toggle the state of the radio element.
    * Dispatches the change event.
    */
-  private handleChange(event: Event): void {
-    if (this.disabled || this.readonly) return;
+    private handleChange(event: Event): void {
+      if (this.disabled || this.readonly) return;
 
-    const radios = this.getAllRadiosWithinSameGroup();
-    radios.forEach((radio) => {
+      const radios = this.getAllRadiosWithinSameGroup();
+      radios.forEach((radio) => {
       /**
         *  Uncheck all radios in the same group (name)
       */
-      const radioElement = radio.shadowRoot?.querySelector('input');
-      if (radioElement) {
+        const radioElement = radio.shadowRoot?.querySelector('input');
+        if (radioElement) {
         // eslint-disable-next-line no-param-reassign
-        radio.checked = false;
-        radioElement.checked = false;
+          radio.checked = false;
+          radioElement.checked = false;
+        }
+      });
+      this.checked = true;
+      const inputElement = this.shadowRoot?.querySelector('input');
+      if (inputElement) {
+        inputElement.checked = true;
       }
-    });
-    this.checked = true;
-    const inputElement = this.shadowRoot?.querySelector('input');
-    if (inputElement) {
-      inputElement.checked = true;
+      this.dispatchChangeEvent(event);
     }
-    this.dispatchChangeEvent(event);
-  }
 
-  /**
+    /**
    * Updates the state of the radio button at the specified index within the enabled radios.
    * Focuses the radio button and triggers the change event if the radio button is not read-only.
    *
@@ -135,74 +158,76 @@ class Radio extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) 
    * @param index - The index of the radio button to be updated within the enabled radios array.
    * @param event - The event that triggered the update.
    */
-  private updateRadio(enabledRadios: Radio[], index: number, event: Event) {
-    enabledRadios[index].shadowRoot?.querySelector('input')?.focus();
-    enabledRadios[index].handleChange(event);
-  }
+    private updateRadio(enabledRadios: Radio[], index: number, event: Event) {
+      enabledRadios[index].shadowRoot?.querySelector('input')?.focus();
+      enabledRadios[index].handleChange(event);
+    }
 
-  /**
+    /**
    * Handles the keydown event (Arrow Up/Down/Left/Right) on the radio element.
    */
-  private handleKeyDown(event: KeyboardEvent): void {
-    if (this.disabled) return;
+    private handleKeyDown(event: KeyboardEvent): void {
+      if (this.disabled) return;
 
-    const radios = this.getAllRadiosWithinSameGroup();
-    const enabledRadios = radios.filter((radio) => !radio.disabled);
-    const currentIndex = enabledRadios.indexOf(this);
+      const radios = this.getAllRadiosWithinSameGroup();
+      const enabledRadios = radios.filter((radio) => !radio.disabled);
+      const currentIndex = enabledRadios.indexOf(this);
 
-    if (['ArrowDown', 'ArrowRight'].includes(event.key)) {
+      if (['ArrowDown', 'ArrowRight'].includes(event.key)) {
       // Move focus to the next radio
-      const nextIndex = (currentIndex + 1) % enabledRadios.length;
-      this.updateRadio(enabledRadios, nextIndex, event);
-    } else if (['ArrowUp', 'ArrowLeft'].includes(event.key)) {
+        const nextIndex = (currentIndex + 1) % enabledRadios.length;
+        this.updateRadio(enabledRadios, nextIndex, event);
+      } else if (['ArrowUp', 'ArrowLeft'].includes(event.key)) {
       // Move focus to the previous radio
-      const prevIndex = (currentIndex - 1 + enabledRadios.length) % enabledRadios.length;
-      this.updateRadio(enabledRadios, prevIndex, event);
+        const prevIndex = (currentIndex - 1 + enabledRadios.length) % enabledRadios.length;
+        this.updateRadio(enabledRadios, prevIndex, event);
+      }
+      this.updateTabIndex();
     }
-    this.updateTabIndex();
-  }
 
-  /**
+    /**
    * Update tab index for all radios in the same group (name)
    * If any radio group is checked, it will have a tab index of 0
    * If no radio group is checked, the first enabled radio will have a tab index of 0
    */
-  private updateTabIndex(): void {
-    const radios = this.getAllRadiosWithinSameGroup();
-    const checked = radios.find((radio) => radio.checked);
-    const firstEnabledRadio = radios.find((radio) => !radio.disabled);
-    radios.forEach((radio) => {
-      const inputElement = radio.shadowRoot?.querySelector('input');
-      if (inputElement) {
-        inputElement.tabIndex = -1;
-        if (radio === checked) {
-          inputElement.tabIndex = 0;
-        } else if (!checked && radio === firstEnabledRadio) {
-          inputElement.tabIndex = 0;
+    private updateTabIndex(): void {
+      const radios = this.getAllRadiosWithinSameGroup();
+      const checked = radios.find((radio) => radio.checked);
+      const firstEnabledRadio = radios.find((radio) => !radio.disabled);
+      radios.forEach((radio) => {
+        const inputElement = radio.shadowRoot?.querySelector('input');
+        if (inputElement) {
+          inputElement.tabIndex = -1;
+          if (radio === checked) {
+            inputElement.tabIndex = 0;
+          } else if (!checked && radio === firstEnabledRadio) {
+            inputElement.tabIndex = 0;
+          }
         }
-      }
-    });
-  }
-
-  public override update(changedProperties: PropertyValues): void {
-    super.update(changedProperties);
-
-    if (changedProperties.has('checked')) {
-      this.setFormValue();
+      });
     }
-  }
 
-  public override render() {
-    const helpTextContent = this.helpText ? this.renderHelperText() : nothing;
-    return html`
+    public override update(changedProperties: PropertyValues): void {
+      super.update(changedProperties);
+
+      if (changedProperties.has('checked')) {
+        this.setFormValue();
+      }
+    }
+
+    public override render() {
+      const helpTextContent = this.helpText ? this.renderHelperText() : nothing;
+      return html`
       <div class="mdc-radio__container">
         <div class="mdc-radio__icon-container mdc-focus-ring">
           <input
             id="${this.id}"
             type="radio"
             role="radio"
+            ?autofocus="${this.autofocus}"
             name="${ifDefined(this.name)}"
             value="${ifDefined(this.value)}"
+            ?required="${!!this.requiredLabel}"
             @change=${this.handleChange}
             @keydown=${this.handleKeyDown}
             ?checked=${this.checked}
@@ -220,7 +245,7 @@ class Radio extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) 
         </div>
       </div>
     `;
-  }
+    }
 
   public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...styles];
 }
