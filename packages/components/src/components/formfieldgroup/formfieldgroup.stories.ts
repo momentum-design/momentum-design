@@ -15,12 +15,12 @@ const render = (args: Args) => html`
   </mdc-formfieldgroup>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/formfieldgroup',
+  title: 'Components/formfieldgroup',
   tags: ['autodocs'],
   component: 'mdc-formfieldgroup',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     children: {
