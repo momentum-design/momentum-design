@@ -273,7 +273,7 @@ class Popover extends FocusTrapMixin(Component) {
   override async disconnectedCallback() {
     super.disconnectedCallback();
     await this.removeEventListeners();
-    this.onDestroyedPopper();
+    this.onDestroyedPopover();
     popoverStack.remove(this);
   }
 
@@ -485,6 +485,12 @@ class Popover extends FocusTrapMixin(Component) {
     if (newValue) {
       this.enabledFocusTrap = this.focusTrap;
       this.enabledPreventScroll = this.preventScroll;
+
+      if (this.backdrop && this.triggerElement) {
+        const popoverBackdrop = this.renderRoot.querySelector('.popover-backdrop') as HTMLElement;
+        popoverBackdrop.style.zIndex = `${this.setIndex - 1}`;
+        this.triggerElement.style.zIndex = `${this.setIndex}`;
+      }
 
       await this.positionPopover();
       await this.handleCreatePopoverFirstUpdate();
@@ -743,7 +749,7 @@ class Popover extends FocusTrapMixin(Component) {
   /**
    * Custom event that is fired when the popover is destroyed.
    */
-  private onDestroyedPopper = () => {
+  private onDestroyedPopover = () => {
     this.dispatchEvent(
       new CustomEvent('popover-on-destroyed', {
         detail: { show: this.visible },

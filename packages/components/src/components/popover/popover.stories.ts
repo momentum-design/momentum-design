@@ -3,7 +3,7 @@ import '.';
 import { html, TemplateResult } from 'lit';
 import { POPOVER_PLACEMENT, DEFAULTS } from './popover.constants';
 import { COLOR, ROLE } from '../modalcontainer/modalcontainer.constants';
-import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { disableControls, hideControls } from '../../../config/storybook/utils';
 
 const createPopover = (id: string, triggerID: string, args: Args, content: TemplateResult) => html`
 <mdc-popover
@@ -12,7 +12,7 @@ const createPopover = (id: string, triggerID: string, args: Args, content: Templ
   trigger="${args.trigger}"
   placement="${args.placement}"
   delay="${args.delay}"
-  ?set-index="${args['set-index']}"
+  set-index="${args['set-index']}"
   ?visible="${args.visible}"
   .offset="${args.offset ?? 0}"
   ?interactive=${args.interactive}
@@ -126,7 +126,7 @@ const renderMultiple = (args: Args) => html`
     triggerID="popover-trigger-multiple"
     trigger="mouseenter"
     placement="bottom"
-    set-index="2"
+    set-index="20"
     show-arrow
   >
     <mdc-text>Description tooltip on mou se enter</mdc-text>
@@ -147,7 +147,7 @@ const renderNested = (args: Args) => html`
   trigger="click"
   placement="bottom"
   interactive
-  set-index="2"
+  set-index="20"
   focus-back-to-trigger
   focus-trap
   show-arrow
@@ -162,7 +162,7 @@ const renderNested = (args: Args) => html`
   triggerID="popover-trigger-3"
   trigger="mouseenter"
   placement="bottom"
-  set-index="3"
+  set-index="30"
   show-arrow
   hide-on-escape
   hide-on-outside-click
@@ -180,8 +180,6 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
-    ...classArgType,
-    ...styleArgType,
     placement: {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
@@ -257,6 +255,19 @@ const meta: Meta = {
       control: 'radio',
       options: Object.values(ROLE),
     },
+    ...disableControls([
+      '--mdc-popover-arrow-border-radius',
+      '--mdc-popover-arrow-border',
+      '--mdc-popover-primary-background-color',
+      '--mdc-popover-inverted-background-color',
+      '--mdc-popover-inverted-border-color',
+      '--mdc-popover-inverted-text-color',
+    ]),
+    ...hideControls([
+      'enabledPreventScroll',
+      'enabledFocusTrap',
+      'shouldWrapFocus',
+    ]),
   },
 };
 
@@ -337,7 +348,7 @@ export const nestedPopover: StoryObj = {
     trigger: 'click',
     placement: POPOVER_PLACEMENT.TOP,
     offset: 4,
-    'set-index': 1,
+    'set-index': 10,
     'focus-trap': true,
     interactive: true,
     'show-arrow': true,
