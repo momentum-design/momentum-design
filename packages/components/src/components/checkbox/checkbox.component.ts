@@ -2,11 +2,10 @@ import { CSSResult, html, LitElement, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
-import { NameMixin } from '../../utils/mixins/NameMixin';
-import { ValueMixin } from '../../utils/mixins/ValueMixin';
+import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
-import { ICON_NAME } from './checkbox.constants';
+import { ICON_NAME, VALIDATION_MESSAGE } from './checkbox.constants';
 import styles from './checkbox.styles';
 
 /**
@@ -33,7 +32,7 @@ import styles from './checkbox.styles';
  * @cssproperty --mdc-checkbox-icon-color - Icon color for an unselected checkbox.
  * @cssproperty --mdc-checkbox-pressed-icon-color - Background color for a selected checkbox when pressed.
  */
-class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) {
+class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
   /**
    * Determines whether the checkbox is selected or unselected.
    *
@@ -50,11 +49,12 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
    */
   @property({ type: Boolean, reflect: true }) indeterminate = false;
 
-  /** @internal */
-  private internals: ElementInternals;
-
-  /** @internal */
-  static formAssociated = true;
+  /**
+   * Automatically focus on the element when the page loads.
+   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/autofocus)
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true }) override autofocus = false;
 
   /** @internal */
   static override shadowRootOptions: ShadowRootInit = {
@@ -62,15 +62,8 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
     delegatesFocus: true,
   };
 
-  /** @internal */
-  get form(): HTMLFormElement | null {
-    return this.internals.form;
-  }
-
   constructor() {
     super();
-
-    this.internals = this.attachInternals();
     // Checkbox does not contain helpTextType property.
     this.helpTextType = undefined as unknown as ValidationType;
   }
@@ -85,9 +78,48 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
 
     if (this.checked) {
       actualValue = !this.value ? 'on' : this.value;
+      this.ariaChecked = 'true';
+    } else {
+      actualValue = null;
+      this.ariaChecked = 'false';
     }
 
+    this.manageRequired();
     this.internals.setFormValue(actualValue);
+  }
+
+  /**
+   * Manages the required state of the checkbox.
+   * If the checkbox is not checked and the requiredLabel property is set, then the checkbox is invalid.
+   */
+  private manageRequired() {
+    if (!this.checked && this.requiredLabel) {
+      this.internals.setValidity(
+        { valueMissing: true },
+        VALIDATION_MESSAGE,
+        this.inputElement ?? undefined,
+      );
+    } else {
+      this.internals.setValidity({});
+    }
+  }
+
+  /** @internal
+   * Resets the checkbox to its initial state.
+   * The checked property is set to false.
+   */
+  formResetCallback(): void {
+    this.checked = false;
+    this.indeterminate = false;
+  }
+
+  /** @internal */
+  formStateRestoreCallback(
+    state: string,
+  ): void {
+    if (state) {
+      this.checked = true;
+    }
   }
 
   /**
@@ -99,17 +131,8 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
     if (!this.disabled) {
       this.checked = !this.checked;
       this.indeterminate = false;
+      this.setFormValue();
     }
-  }
-
-  /**
-   * Toggles the state of the checkbox element.
-   * and dispatch the new change event.
-   */
-  public handleChange(event: Event): void {
-    this.toggleState();
-    const EventConstructor = event.constructor as typeof Event;
-    this.dispatchEvent(new EventConstructor(event.type, event));
   }
 
   /**
@@ -121,6 +144,16 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
     if (event.key === 'Enter') {
       this.form?.requestSubmit();
     }
+  }
+
+  /**
+   * Toggles the state of the checkbox element.
+   * and dispatch the new change event.
+   */
+  public handleChange(event: Event): void {
+    this.toggleState();
+    const EventConstructor = event.constructor as typeof Event;
+    this.dispatchEvent(new EventConstructor(event.type, event));
   }
 
   public override update(changedProperties: PropertyValues): void {
@@ -148,12 +181,15 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
           id="${this.id}"
           type="checkbox"
           class="input"
+          ?autofocus="${this.autofocus}"
           name="${ifDefined(this.name)}"
           value="${ifDefined(this.value)}"
+          ?required="${!!this.requiredLabel}"
           .checked="${this.checked}"
           .indeterminate="${this.indeterminate}"
           .disabled="${this.disabled}"
           aria-label="${this.dataAriaLabel ?? ''}"
+          tabindex="${this.disabled ? -1 : 0}"
           @change=${this.handleChange}
           @keydown=${this.handleKeyDown}
         />
