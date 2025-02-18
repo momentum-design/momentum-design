@@ -5,7 +5,7 @@ import { Component } from '../../models';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { VALID_TEXT_TAGS as TEXT_TAGS, TYPE as TEXT_TYPE } from '../text/text.constants';
 import type { TextType } from '../text/text.types';
-import { ROLE } from './formfieldgroup.constants';
+import { DEFAULTS, ROLE } from './formfieldgroup.constants';
 import styles from './formfieldgroup.styles';
 
 /**
@@ -42,12 +42,6 @@ class FormfieldGroup extends DataAriaLabelMixin(Component) {
   */
   protected isRadio = false;
 
-  /** @internal */
-  private headerId = 'header-id';
-
-  /** @internal */
-  private descriptionId = 'description-id';
-
   private renderText(type: TextType, id: string, cssPart: string, value?: string): TemplateResult | typeof nothing {
     if (!value) {
       return nothing;
@@ -60,12 +54,12 @@ class FormfieldGroup extends DataAriaLabelMixin(Component) {
       <div
         part="container"
         role="${this.isRadio ? ROLE.RADIOGROUP : ROLE.GROUP}"
-        aria-labelledby="${this.headerId}"
-        aria-describedby="${this.descriptionId}"
+        aria-labelledby="${DEFAULTS.HEADER_ID}"
+        aria-describedby="${DEFAULTS.DESCRIPTION_ID}"
         aria-label="${this.dataAriaLabel ?? ''}"
       >
-        ${this.renderText(TEXT_TYPE.BODY_LARGE_BOLD, this.headerId, 'header', this.headerText)}
-        ${this.renderText(TEXT_TYPE.BODY_LARGE_REGULAR, this.descriptionId, 'description', this.descriptionText)}
+        ${this.renderText(TEXT_TYPE.BODY_LARGE_BOLD, DEFAULTS.HEADER_ID, 'header', this.headerText)}
+        ${this.renderText(TEXT_TYPE.BODY_LARGE_REGULAR, DEFAULTS.DESCRIPTION_ID, 'description', this.descriptionText)}
         <slot></slot>
       </div>
     `;

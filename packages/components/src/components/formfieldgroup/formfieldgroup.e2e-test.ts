@@ -48,13 +48,6 @@ const setup = async (args: SetupOptions) => {
 
 test('mdc-formfieldgroup', async ({ componentsPage }) => {
   /**
-   * ACCESSIBILITY
-   */
-  await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('formfieldgroup-default');
-  });
-
-  /**
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
@@ -83,6 +76,13 @@ test('mdc-formfieldgroup', async ({ componentsPage }) => {
   });
 
   /**
+   * ACCESSIBILITY
+   */
+  await test.step('accessibility', async () => {
+    await componentsPage.accessibility.checkForA11yViolations('formfieldgroup-default');
+  });
+
+  /**
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
@@ -104,8 +104,8 @@ test('mdc-formfieldgroup', async ({ componentsPage }) => {
 
     await test.step('attribute `data-aria-label` should be present on component when set', async () => {
       await componentsPage.setAttributes(formfieldgroup, { 'data-aria-label': ariaLabel });
-      const divContent = await componentsPage.page.getByRole(ROLE.GROUP).getAttribute('aria-label');
-      expect(divContent).toBe(ariaLabel);
+      const ariaLabelContent = await componentsPage.page.getByRole(ROLE.GROUP).getAttribute('aria-label');
+      expect(ariaLabelContent).toBe(ariaLabel);
     });
   });
 

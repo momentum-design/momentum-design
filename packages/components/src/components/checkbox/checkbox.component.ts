@@ -5,6 +5,7 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { NameMixin } from '../../utils/mixins/NameMixin';
 import { ValueMixin } from '../../utils/mixins/ValueMixin';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
+import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import { ICON_NAME } from './checkbox.constants';
 import styles from './checkbox.styles';
@@ -150,7 +151,7 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
           .indeterminate="${this.indeterminate}"
           .disabled="${this.disabled}"
           aria-label="${this.dataAriaLabel ?? ''}"
-          aria-describedby="${this.helperTextId}"
+          aria-describedby="${FORMFIELD_DEFAULTS.HELPER_TEXT_ID}"
           @change=${this.handleChange}
           @keydown=${this.handleKeyDown}
         />

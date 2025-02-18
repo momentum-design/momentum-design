@@ -41,13 +41,6 @@ class FormfieldWrapper extends DisabledMixin(Component) {
   @property({ type: String, reflect: true, attribute: 'help-text' }) helpText?: string;
 
   /**
-   * @internal
-   * The unique id of the helper text field. It is used to link the helper text field with the input.
-   * @default `helper-text-id-${uuidv4()}`
-   */
-  protected helperTextId = `helper-text-id-${uuidv4()}`;
-
-  /**
    * creates the label element when the label property is set.
    * id is used to link the label with the input field.
    * @returns void
@@ -87,7 +80,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     }
     return html`
       <mdc-text
-        id="${this.helperTextId}"
+        id="${DEFAULTS.HELPER_TEXT_ID}"
         part="help-text"
         tagname=${MDC_TEXT_OPTIONS.TAGNAME}
         type=${MDC_TEXT_OPTIONS.TYPE}
