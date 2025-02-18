@@ -41,7 +41,7 @@ const DEFAULTS = {
   HIDE_ON_CLICK_OUTSIDE: false,
   FOCUS_BACK: false,
   BACKDROP: false,
-  FLIP: false,
+  FLIP: true,
   SIZE: false,
   DELAY: '0,0',
   ROLE: ROLE.DIALOG,

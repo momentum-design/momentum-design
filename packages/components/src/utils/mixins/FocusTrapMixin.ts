@@ -3,8 +3,8 @@ import type { Constructor } from './index.types';
 import { DEFAULTS as POPOVER_DEFAULTS } from '../../components/popover/popover.constants';
 
 export interface FocusTrapClassInterface {
-  focusTrap: boolean;
-  preventScroll: boolean;
+  enabledFocusTrap: boolean;
+  enabledPreventScroll: boolean;
   setFocusableElements(): void;
   setInitialFocus(prefferableElement?: number): void;
   deactivateFocusTrap(): void;
@@ -17,15 +17,15 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
      * If true, focus will be restricted to the content within this component.
      * @default false
      */
-    @property({ type: Boolean, reflect: true, attribute: 'focus-trap' })
-    focusTrap: boolean = POPOVER_DEFAULTS.FOCUS_TRAP;
+    @property({ type: Boolean })
+    enabledFocusTrap: boolean = POPOVER_DEFAULTS.FOCUS_TRAP;
 
     /**
      * Prevent outside scrolling when popover show.
      * @default false
      */
-    @property({ type: Boolean, reflect: true, attribute: 'prevent-scroll' })
-    preventScroll: boolean = POPOVER_DEFAULTS.PREVENT_SCROLL;
+    @property({ type: Boolean })
+    enabledPreventScroll: boolean = POPOVER_DEFAULTS.PREVENT_SCROLL;
 
     /** @internal */
     private focusTrapIndex = -1;
@@ -44,8 +44,8 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
      * Deactivate the focus trap.
      */
     deactivateFocusTrap() {
-      this.focusTrap = false;
-      this.preventScroll = false;
+      this.enabledFocusTrap = false;
+      this.enabledPreventScroll = false;
       this.focusTrapIndex = -1;
       document.body.style.overflow = '';
     }
@@ -207,7 +207,7 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
     setInitialFocus(prefferableElement: number = 0) {
       if (this.focusableElements.length === 0) return;
 
-      if (this.preventScroll) {
+      if (this.enabledPreventScroll) {
         document.body.style.overflow = 'hidden';
       }
 
@@ -295,7 +295,7 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
      * Traps focus within the container.
      */
     private handleKeydown(event: KeyboardEvent) {
-      if (!this.focusTrap || !this.focusableElements.length) {
+      if (!this.enabledFocusTrap || !this.focusableElements.length) {
         return;
       }
 

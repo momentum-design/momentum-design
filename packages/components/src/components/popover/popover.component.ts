@@ -98,6 +98,21 @@ class Popover extends FocusTrapMixin(Component) {
   offset: number = DEFAULTS.OFFSET;
 
   /**
+   * Determines whether the focus trap is enabled.
+   * If true, focus will be restricted to the content within this component.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'focus-trap' })
+  focusTrap: boolean = DEFAULTS.FOCUS_TRAP;
+
+  /**
+   * Prevent outside scrolling when popover show.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'prevent-scroll' })
+  preventScroll: boolean = DEFAULTS.PREVENT_SCROLL;
+
+  /**
    * The show arrow visibility of the popover.
    * @default false
    */
@@ -162,7 +177,7 @@ class Popover extends FocusTrapMixin(Component) {
 
   /**
    * Changes the placement of popover to keep it in view.
-   * @default false
+   * @default true
    */
   @property({ type: Boolean, reflect: true })
   flip: boolean = DEFAULTS.FLIP;
@@ -221,7 +236,7 @@ class Popover extends FocusTrapMixin(Component) {
    * @default null
    */
   @property({ type: String, attribute: 'aria-describeby' })
-  ariaDecribeBy: string | null = null;
+  ariaDecribedBy: string | null = null;
 
   /** @internal */
   private triggerElement: HTMLElement | null = null;
@@ -244,20 +259,20 @@ class Popover extends FocusTrapMixin(Component) {
   protected override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
     this.popoverElement = this.renderRoot.querySelector('.popover-container');
-    this.setupAppendTo();
-    this.setupDelay();
-    this.setupTrigger();
-    this.onCreatedPopper();
+    await this.setupAppendTo();
+    await this.setupDelay();
+    await this.setupTrigger();
+    this.onCreatedPopover();
 
     if (this.visible) {
       await this.positionPopover();
-      await this.handleCreatePopperFirstUpdate();
+      await this.handleCreatePopoverFirstUpdate();
     }
   }
 
-  override disconnectedCallback() {
+  override async disconnectedCallback() {
     super.disconnectedCallback();
-    this.removeEventListeners();
+    await this.removeEventListeners();
     this.onDestroyedPopper();
     popoverStack.remove(this);
   }
@@ -266,7 +281,7 @@ class Popover extends FocusTrapMixin(Component) {
    * If the `appendTo` property is set, finds the corresponding
    * DOM element by its ID, and appends this popover as a child of that element.
    */
-  private setupAppendTo() {
+  private async setupAppendTo() {
     if (this.appendTo) {
       const appendToElement = document.getElementById(this.appendTo);
       if (appendToElement) {
@@ -279,7 +294,7 @@ class Popover extends FocusTrapMixin(Component) {
    * Sets up the hover bridge for the popover.
    * The hover bridge is used to prevent the popover from closing when the mouse is over the popover.
    */
-  private setupHoverBridge() {
+  private async setupHoverBridge() {
     const hoverBridge = this.renderRoot.querySelector('.popover-hover-bridge') as HTMLElement;
     Object.assign(hoverBridge.style, {
       top: '',
@@ -324,7 +339,7 @@ class Popover extends FocusTrapMixin(Component) {
   /**
    * Parses the delay string and sets the open and close delay values.
    */
-  private setupDelay() {
+  private async setupDelay() {
     try {
       const [openDelay, closeDelay] = this.delay.split(',').map((delay) => {
         const parsed = parseInt(delay, 10);
@@ -346,7 +361,7 @@ class Popover extends FocusTrapMixin(Component) {
   /**
    * Sets up the trigger event listeners based on the trigger type.
    */
-  private setupTrigger() {
+  private async setupTrigger() {
     if (!this.triggerID) return;
 
     this.triggerElement = document.getElementById(this.triggerID);
@@ -366,36 +381,38 @@ class Popover extends FocusTrapMixin(Component) {
     }
 
     if (this.trigger.includes('click')) {
-      this.triggerElement.addEventListener('click', this.togglePopover.bind(this));
+      this.triggerElement.addEventListener('click', this.togglePopover);
     }
     if (this.trigger.includes('mouseenter')) {
       const hoverBridge = this.renderRoot.querySelector('.popover-hover-bridge');
-      this.triggerElement.addEventListener('mouseenter', this.showPopover.bind(this));
-      this.triggerElement.addEventListener('mouseleave', this.startCloseDelay.bind(this));
-      this.popoverElement?.addEventListener('mouseenter', this.cancelCloseDelay.bind(this));
-      this.popoverElement?.addEventListener('mouseleave', this.startCloseDelay.bind(this));
-      hoverBridge?.addEventListener('mouseenter', this.cancelCloseDelay.bind(this));
+      this.triggerElement.addEventListener('mouseenter', this.showPopover);
+      this.triggerElement.addEventListener('mouseleave', this.startCloseDelay);
+      this.popoverElement?.addEventListener('mouseenter', this.cancelCloseDelay);
+      this.popoverElement?.addEventListener('mouseleave', this.startCloseDelay);
+      hoverBridge?.addEventListener('mouseenter', this.cancelCloseDelay);
     }
     if (this.trigger.includes('focusin')) {
-      this.triggerElement.addEventListener('focusin', this.showPopover.bind(this));
+      this.triggerElement.addEventListener('focusin', this.showPopover);
     }
-    this.addEventListener('focus-trap-exit', this.hidePopover.bind(this));
+    this.addEventListener('focus-trap-exit', this.hidePopover);
   }
 
   /**
    * Removes the trigger event listeners.
    */
-  removeEventListeners() {
+  private async removeEventListeners() {
     if (!this.triggerElement) return;
+    const hoverBridge = this.renderRoot.querySelector('.popover-hover-bridge');
 
-    this.triggerElement.removeEventListener('click', this.togglePopover.bind(this));
-    this.triggerElement.removeEventListener('mouseenter', this.showPopover.bind(this));
-    this.triggerElement.removeEventListener('mouseleave', this.hidePopover.bind(this));
-    this.popoverElement?.removeEventListener('mouseenter', this.cancelCloseDelay.bind(this));
-    this.popoverElement?.removeEventListener('mouseleave', this.startCloseDelay.bind(this));
-    this.triggerElement.removeEventListener('focusin', this.showPopover.bind(this));
+    this.triggerElement.removeEventListener('click', this.togglePopover);
+    this.triggerElement.removeEventListener('mouseenter', this.showPopover);
+    this.triggerElement.removeEventListener('mouseleave', this.hidePopover);
+    this.popoverElement?.removeEventListener('mouseenter', this.cancelCloseDelay);
+    this.popoverElement?.removeEventListener('mouseleave', this.startCloseDelay);
+    this.triggerElement.removeEventListener('focusin', this.showPopover);
+    hoverBridge?.removeEventListener('mouseenter', this.cancelCloseDelay);
 
-    this.removeEventListener('focus-trap-exit', this.hidePopover.bind(this));
+    this.removeEventListener('focus-trap-exit', this.hidePopover);
   }
 
   protected override async updated(changedProperties: PropertyValues) {
@@ -404,6 +421,13 @@ class Popover extends FocusTrapMixin(Component) {
     if (changedProperties.has('visible')) {
       const oldValue = changedProperties.get('visible') as boolean;
       await this.isOpenUpdated(oldValue, this.visible);
+    }
+    if (changedProperties.has('delay')) {
+      await this.setupDelay();
+    }
+    if (changedProperties.has('trigger')) {
+      await this.removeEventListeners();
+      await this.setupTrigger();
     }
   }
 
@@ -459,14 +483,17 @@ class Popover extends FocusTrapMixin(Component) {
     }
 
     if (newValue) {
+      this.enabledFocusTrap = this.focusTrap;
+      this.enabledPreventScroll = this.preventScroll;
+
       await this.positionPopover();
-      await this.handleCreatePopperFirstUpdate();
-      this.setupHoverBridge();
+      await this.handleCreatePopoverFirstUpdate();
+      await this.setupHoverBridge();
 
       if (this.hideOnBlur) {
         window.addEventListener('blur', this.onWindowBlurEvent);
       }
-      if (this.hideOnOutsideClick) {
+      if (this.hideOnOutsideClick && !this.backdrop) {
         document.addEventListener('click', this.onOutsidePopoverClick);
       }
       if (this.hideOnEscape) {
@@ -529,19 +556,19 @@ class Popover extends FocusTrapMixin(Component) {
   /**
    * Shows the popover.
    */
-  public async showPopover() {
+  public showPopover = async () => {
     this.cancelCloseDelay();
     setTimeout(() => {
       this.visible = true;
       this.onShowPopover();
     }, this.openDelay);
     popoverStack.push(this);
-  }
+  };
 
   /**
    * Hides the popover.
    */
-  public hidePopover() {
+  public hidePopover = () => {
     if (popoverStack.peek() === this) {
       setTimeout(() => {
         this.visible = false;
@@ -549,23 +576,23 @@ class Popover extends FocusTrapMixin(Component) {
       }, this.closeDelay);
       popoverStack.pop();
     }
-  }
+  };
 
   /**
    * Toggles the popover visibility.
    */
-  async togglePopover() {
+  public togglePopover = async () => {
     if (this.visible) {
       this.hidePopover();
     } else {
       await this.showPopover();
     }
-  }
+  };
 
   /**
    * Sets the focusable elements inside the popover.
    */
-  private async handleCreatePopperFirstUpdate() {
+  private async handleCreatePopoverFirstUpdate() {
     if (this.visible && this.interactive) {
       this.setFocusableElements?.();
       await this.updateComplete;
@@ -670,7 +697,7 @@ class Popover extends FocusTrapMixin(Component) {
     Object.assign(this.arrowElement.style, {
       left: arrowX != null ? `${arrowX}px` : '',
       top: arrowY != null ? `${arrowY}px` : '',
-      [staticSide]: `${-this.arrowElement.offsetHeight / 2}px`,
+      [staticSide]: `${-this.arrowElement.offsetHeight / 1.95}px`,
     });
   }
 
@@ -703,7 +730,7 @@ class Popover extends FocusTrapMixin(Component) {
   /**
    * Custom event that is fired when the popover is created.
    */
-  private onCreatedPopper = () => {
+  private onCreatedPopover = () => {
     this.dispatchEvent(
       new CustomEvent('popover-on-created', {
         detail: { show: this.visible },
