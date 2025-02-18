@@ -108,4 +108,37 @@ test('mdc-formfieldgroup', async ({ componentsPage }) => {
       expect(divContent).toBe(ariaLabel);
     });
   });
+
+  /**
+   * INTERACTIONS
+   */
+  await test.step('interactions', async () => {
+    await test.step('keyboard', async () => {
+      await test.step('component should travel through checkbox children with tab', async () => {
+        const formfieldgroup = await setup({ componentsPage, children });
+
+        await componentsPage.actionability.pressTab();
+        await expect(formfieldgroup.locator('mdc-checkbox').first()).toBeFocused();
+
+        await componentsPage.actionability.pressTab();
+        await expect(formfieldgroup.locator('mdc-checkbox').nth(1)).toBeFocused();
+
+        await componentsPage.actionability.pressTab();
+        await expect(formfieldgroup.locator('mdc-checkbox').nth(2)).toBeFocused();
+      });
+    });
+
+    await test.step('component should travel through toggle children with tab', async () => {
+      const formfieldgroup = await setup({ componentsPage, children: toggleChildren });
+
+      await componentsPage.actionability.pressTab();
+      await expect(formfieldgroup.locator('mdc-toggle').first()).toBeFocused();
+
+      await componentsPage.actionability.pressTab();
+      await expect(formfieldgroup.locator('mdc-toggle').nth(1)).toBeFocused();
+
+      await componentsPage.actionability.pressTab();
+      await expect(formfieldgroup.locator('mdc-toggle').nth(2)).toBeFocused();
+    });
+  });
 });
