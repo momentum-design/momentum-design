@@ -53,12 +53,6 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
   @property({ type: String }) placeholder = '';
 
   /**
-   * required attribute of the input field.
-   * If true, the consumer should indicate it on the label that the input field is required.
-   */
-  @property({ type: Boolean }) required = false;
-
-  /**
    * readonly attribute of the input field. If true, the input field is read-only.
    */
   @property({ type: Boolean }) readonly = false;
@@ -401,7 +395,7 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
             .value="${this.value}"
             ?disabled="${this.disabled}"
             ?readonly="${this.readonly}"
-            ?required="${this.required}"
+            ?required="${!!this.requiredLabel}"
             type="text"
             aria-describedby="${FORMFIELD_DEFAULTS.HELPER_TEXT_ID}"
             placeholder=${ifDefined(this.placeholder)}
