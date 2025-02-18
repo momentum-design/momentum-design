@@ -24,12 +24,12 @@ const render = (args: Args) => html`<div role="tablist">
 </div>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/tab',
+  title: 'Components/tab',
   tags: ['autodocs'],
   component: 'mdc-tab',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     active: {
