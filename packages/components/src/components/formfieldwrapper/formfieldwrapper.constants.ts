@@ -13,6 +13,7 @@ const VALIDATION = {
 
 const DEFAULTS = {
   VALIDATION: VALIDATION.DEFAULT,
+  HELPER_TEXT_ID: 'helper-text-id',
 } as const;
 
 const MDC_TEXT_OPTIONS = {

@@ -1,10 +1,11 @@
-import { CSSResult, html, LitElement, nothing, PropertyValues } from 'lit';
+import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { NameMixin } from '../../utils/mixins/NameMixin';
 import { ValueMixin } from '../../utils/mixins/ValueMixin';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
+import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import { ICON_NAME } from './checkbox.constants';
 import styles from './checkbox.styles';
@@ -14,6 +15,8 @@ import styles from './checkbox.styles';
  * These are often used in forms, settings, and selections in lists.
  *
  * A checkbox component contains an optional label and an optional helper text.
+ *
+ * To create a group of checkboxes, use the FormFieldGroup component.
  *
  * @dependency mdc-icon
  *
@@ -55,12 +58,6 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
 
   /** @internal */
   static formAssociated = true;
-
-  /** @internal */
-  static override shadowRootOptions: ShadowRootInit = {
-    ...LitElement.shadowRootOptions,
-    delegatesFocus: true,
-  };
 
   /** @internal */
   get form(): HTMLFormElement | null {
@@ -154,6 +151,7 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
           .indeterminate="${this.indeterminate}"
           .disabled="${this.disabled}"
           aria-label="${this.dataAriaLabel ?? ''}"
+          aria-describedby="${FORMFIELD_DEFAULTS.HELPER_TEXT_ID}"
           @change=${this.handleChange}
           @keydown=${this.handleKeyDown}
         />

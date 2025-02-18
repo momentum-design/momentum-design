@@ -5,6 +5,7 @@ import styles from './input.styles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { NameMixin } from '../../utils/mixins/NameMixin';
 import { AUTO_CAPITALIZE, DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
+import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { IconNames } from '../icon/icon.types';
 import type { AutoCapitalizeType } from './input.types';
 import { ValueMixin } from '../../utils/mixins/ValueMixin';
@@ -396,6 +397,7 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
             ?readonly="${this.readonly}"
             ?required="${!!this.requiredLabel}"
             type="text"
+            aria-describedby="${FORMFIELD_DEFAULTS.HELPER_TEXT_ID}"
             placeholder=${ifDefined(this.placeholder)}
             minlength=${ifDefined(this.minlength)}
             maxlength=${ifDefined(this.maxlength)}

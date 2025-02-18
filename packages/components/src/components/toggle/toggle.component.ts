@@ -5,6 +5,7 @@ import styles from './toggle.styles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { ValueMixin } from '../../utils/mixins/ValueMixin';
 import { NameMixin } from '../../utils/mixins/NameMixin';
+import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import { DEFAULTS, ICON_NAME, ICON_SIZE_IN_REM, TOGGLE_SIZE } from './toggle.constants';
 import { ToggleSize } from './toggle.types';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
@@ -15,6 +16,8 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
  * such as On/Off, Active/Inactive. These are commonly used in settings panels, forms, and preference selections
  * where users need to enable or disable a feature.
  * It contains an optional label and an optional helper text.
+ *
+ * To create a group of toggles, use the FormFieldGroup component.
  *
  * Note: It internally renders a checkbox styled as a toggle switch.
  *
@@ -148,6 +151,7 @@ class Toggle extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)))
             value="${ifDefined(this.value)}"
             .checked="${this.checked}"
             .disabled="${this.disabled}"
+            aria-describedby="${FORMFIELD_DEFAULTS.HELPER_TEXT_ID}"
             aria-label="${this.dataAriaLabel ?? ''}"
             tabindex="${this.disabled ? -1 : 0}"
             @change="${this.handleChange}"
