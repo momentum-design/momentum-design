@@ -25,6 +25,13 @@ class FormfieldWrapper extends DisabledMixin(Component) {
   @property({ reflect: true, type: String }) label?: string;
 
   /**
+   * The required label of the input field.
+   * When an appropriate string value is set,
+   * the input field is marked as required and the label is appended with this text.
+   */
+  @property({ type: String, reflect: true, attribute: 'required-label' }) requiredLabel?: string;
+
+  /**
    * The unique id of the input field. It is used to link the input field with the label.
    * @default `mdc-input-${uuidv4()}`
    */
@@ -51,6 +58,22 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     }
 
     return html`<label for="${this.id}" class="mdc-label" part="label">${this.label}</label>`;
+  }
+
+  protected renderRequiredLabel() {
+    if (!this.requiredLabel) {
+      return nothing;
+    }
+
+    return html`
+      <mdc-text
+        part="required-label"
+        tagname=${MDC_TEXT_OPTIONS.TAGNAME}
+        type=${MDC_TEXT_OPTIONS.TYPE}
+      >
+        (${this.requiredLabel})
+      </mdc-text>
+    `;
   }
 
   /**
@@ -96,6 +119,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
   protected renderLabel() {
     return html`<div class="mdc-label-text" part="label-text">
       <slot name="label">${this.renderLabelElement()}</slot>
+      <slot name="required-label">${this.renderRequiredLabel()}</slot>
       <slot name="label-info"></slot>
     </div>`;
   }
