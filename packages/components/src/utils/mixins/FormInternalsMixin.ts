@@ -41,7 +41,7 @@ export interface FormInternalsMixinInterface {
     willValidate: boolean;
     internals: ElementInternals;
     inputElement: HTMLInputElement;
-    setValidityFromInput(): void;
+    setValidity(): void;
     checkValidity(): boolean;
     reportValidity(): boolean;
 
@@ -64,6 +64,11 @@ export const FormInternalsMixin = <T extends Constructor<LitElement>>(
    */
     @property({ reflect: true, type: String }) value = '';
 
+    /**
+     * Custom validation message that will override the default message and displayed when the input is invalid.
+     */
+    @property({ reflect: true, type: String, attribute: 'validation-message' }) validationMessage?: string;
+
     /** @internal */
     static formAssociated = true;
 
@@ -77,10 +82,6 @@ export const FormInternalsMixin = <T extends Constructor<LitElement>>(
 
     get validity(): ValidityState {
       return this.internals.validity;
-    }
-
-    get validationMessage() {
-      return this.internals.validationMessage;
     }
 
     get willValidate() {
@@ -98,23 +99,26 @@ export const FormInternalsMixin = <T extends Constructor<LitElement>>(
    * Sets the validity of the input field based on the input field's validity.
    * @returns void
    */
-    setValidityFromInput() {
+    setValidity() {
       if (this.inputElement) {
         this.internals.setValidity(
           this.inputElement.validity,
           this.inputElement.validationMessage,
           this.inputElement,
         );
+        if (this.validationMessage) {
+          this.inputElement.setCustomValidity(this.validationMessage);
+        }
       }
     }
 
     checkValidity(): boolean {
-      this.setValidityFromInput();
+      this.setValidity();
       return this.internals.checkValidity();
     }
 
     reportValidity() {
-      this.setValidityFromInput();
+      this.setValidity();
       return this.internals.reportValidity();
     }
 

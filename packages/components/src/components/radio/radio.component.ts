@@ -7,7 +7,6 @@ import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
-import { VALIDATION_MESSAGE } from './radio.constants';
 
 /**
  * Radio allow users to select single options from a list or turn an item/feature on or off.
@@ -95,7 +94,7 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
       });
 
       this.updateComplete.then(() => {
-        // this._handleValueChange();
+        this.setActualFormValue();
       }).catch((error) => {
         if (this.onerror) {
           this.onerror(error);
@@ -119,13 +118,7 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
       if (isValid) {
         this.internals.setValidity({});
       } else {
-        this.internals.setValidity(
-          {
-            valueMissing: true,
-          },
-          VALIDATION_MESSAGE,
-          this.inputElement,
-        );
+        this.setValidity();
       }
     }
 

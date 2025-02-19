@@ -5,7 +5,7 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
-import { ICON_NAME, VALIDATION_MESSAGE } from './checkbox.constants';
+import { ICON_NAME } from './checkbox.constants';
 import styles from './checkbox.styles';
 
 /**
@@ -94,11 +94,7 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
    */
   private manageRequired() {
     if (!this.checked && this.requiredLabel) {
-      this.internals.setValidity(
-        { valueMissing: true },
-        VALIDATION_MESSAGE,
-        this.inputElement ?? undefined,
-      );
+      this.setValidity();
     } else {
       this.internals.setValidity({});
     }

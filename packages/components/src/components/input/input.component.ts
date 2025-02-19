@@ -138,7 +138,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
     this.updateComplete.then(() => {
       if (this.inputElement) {
         this.inputElement.checkValidity();
-        this.setValidityFromInput();
+        this.setValidity();
         this.internals.setFormValue(this.inputElement.value);
       }
     }).catch((error) => {
@@ -169,7 +169,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
   handleValueChange() {
     this.internals.setFormValue(this.value);
     this.updateComplete.then(() => {
-      this.setValidityFromInput();
+      this.setValidity();
     }).catch((error) => {
       if (this.onerror) {
         this.onerror(error);
@@ -208,7 +208,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
 
     if (validationRelatedAttributes.includes(name)) {
       this.updateComplete.then(() => {
-        this.setValidityFromInput();
+        this.setValidity();
       }).catch((error) => {
         if (this.onerror) {
           this.onerror(error);
@@ -234,7 +234,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
    */
   private onInput() {
     this.updateValue();
-    this.setValidityFromInput();
+    this.setValidity();
   }
 
   /**
@@ -249,7 +249,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
    */
   private onChange(event: Event) {
     this.updateValue();
-    this.setValidityFromInput();
+    this.setValidity();
     const EventConstructor = event.constructor as typeof Event;
     this.dispatchEvent(new EventConstructor(event.type, event));
   }
