@@ -125,7 +125,7 @@ export const ToggleInsideForm: StoryObj = {
     <form @submit="${onSubmit}">
       <fieldset>
         <legend>Form Example</legend>
-        <mdc-toggle name="toggleName" value="toggleValueDeactivated" label="Agree to Terms"
+        <mdc-toggle name="toggleName" value="toggleValue" label="Agree to Terms"
           size="${args.size}" required-label='required'></mdc-toggle>
           <div style='display: flex; gap: 0.25rem;'>
             <mdc-button type="submit" size='24' style='margin-top: 0.5rem'>Submit</mdc-button>

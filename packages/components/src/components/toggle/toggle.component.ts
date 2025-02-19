@@ -96,11 +96,7 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    */
     private manageRequired() {
       if (!this.checked && this.requiredLabel) {
-        this.internals.setValidity(
-          { valueMissing: true },
-          DEFAULTS.VALIDATION_MESSAGE,
-          this.inputElement ?? undefined,
-        );
+        this.setValidity();
       } else {
         this.internals.setValidity({});
       }
