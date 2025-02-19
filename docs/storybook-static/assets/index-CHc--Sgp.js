@@ -1,4 +1,4 @@
-import{i as k,h as v,k as d,D as s}from"./lit-element-CHllvULs.js";import{u as p,n as b}from"./index-HW6KrQZO.js";import{t as l}from"./if-defined-C4tJgJ33.js";import{N as x,V as g,D as f}from"./ValueMixin-DFWGhyGn.js";import{F as h}from"./formfieldwrapper.component-YWp2LE49.js";import{a as y}from"./index-MYSkQ1zX.js";import"./index-BnIP7Wfy.js";const E=p.constructTagName("checkbox"),m={CHECKED:"check-bold",INDETERMINATE:"minus-bold"},$=[k`
+import{i as k,k as d,D as s}from"./lit-element-CHllvULs.js";import{u as v,n as b}from"./index-HW6KrQZO.js";import{t as l}from"./if-defined-C4tJgJ33.js";import{N as p,V as x,D as g}from"./ValueMixin-DFWGhyGn.js";import{D as f,F as h}from"./formfieldwrapper.component-DYhI3Mut.js";import{a as y}from"./index-MYSkQ1zX.js";import"./index-BnIP7Wfy.js";const E=v.constructTagName("checkbox"),m={CHECKED:"check-bold",INDETERMINATE:"minus-bold"},T=[k`
   :host {
     --mdc-checkbox-background-color-hover: var(--mds-color-theme-control-inactive-hover);
     --mdc-checkbox-border-color: var(--mds-color-theme-outline-button-normal);
@@ -100,7 +100,7 @@ import{i as k,h as v,k as d,D as s}from"./lit-element-CHllvULs.js";import{u as p
       border: 0.0625rem solid var(--mdc-checkbox-border-color);
     }
   }
-`,...y(!0)];var T=Object.defineProperty,u=(n,e,o,N)=>{for(var c=void 0,i=n.length-1,a;i>=0;i--)(a=n[i])&&(c=a(e,o,c)||c);return c&&T(e,o,c),c};const r=class r extends x(g(f(h))){constructor(){super(),this.checked=!1,this.indeterminate=!1,this.internals=this.attachInternals(),this.helpTextType=void 0}get form(){return this.internals.form}setFormValue(){let e=null;this.checked&&(e=this.value?this.value:"on"),this.internals.setFormValue(e)}toggleState(){this.disabled||(this.checked=!this.checked,this.indeterminate=!1)}handleChange(e){this.toggleState();const o=e.constructor;this.dispatchEvent(new o(e.type,e))}handleKeyDown(e){var o;e.key==="Enter"&&((o=this.form)==null||o.requestSubmit())}update(e){super.update(e),e.has("checked")&&this.setFormValue()}render(){const e=this.checked||this.indeterminate?d`
+`,...y(!0)];var $=Object.defineProperty,u=(n,e,o,D)=>{for(var c=void 0,i=n.length-1,a;i>=0;i--)(a=n[i])&&(c=a(e,o,c)||c);return c&&$(e,o,c),c};const t=class t extends p(x(g(h))){constructor(){super(),this.checked=!1,this.indeterminate=!1,this.internals=this.attachInternals(),this.helpTextType=void 0}get form(){return this.internals.form}setFormValue(){let e=null;this.checked&&(e=this.value?this.value:"on"),this.internals.setFormValue(e)}toggleState(){this.disabled||(this.checked=!this.checked,this.indeterminate=!1)}handleChange(e){this.toggleState();const o=e.constructor;this.dispatchEvent(new o(e.type,e))}handleKeyDown(e){var o;e.key==="Enter"&&((o=this.form)==null||o.requestSubmit())}update(e){super.update(e),e.has("checked")&&this.setFormValue()}render(){const e=this.checked||this.indeterminate?d`
       <mdc-icon
         class="icon"
         name="${this.indeterminate?m.INDETERMINATE:m.CHECKED}"
@@ -119,6 +119,7 @@ import{i as k,h as v,k as d,D as s}from"./lit-element-CHllvULs.js";import{u as p
           .indeterminate="${this.indeterminate}"
           .disabled="${this.disabled}"
           aria-label="${this.dataAriaLabel??""}"
+          aria-describedby="${f.HELPER_TEXT_ID}"
           @change=${this.handleChange}
           @keydown=${this.handleKeyDown}
         />
@@ -128,4 +129,4 @@ import{i as k,h as v,k as d,D as s}from"./lit-element-CHllvULs.js";import{u as p
         ${this.renderLabel()}
         ${o}
       </div>
-    `}};r.formAssociated=!0,r.shadowRootOptions={...v.shadowRootOptions,delegatesFocus:!0},r.styles=[...h.styles,...$];let t=r;u([b({type:Boolean,reflect:!0})],t.prototype,"checked");u([b({type:Boolean,reflect:!0})],t.prototype,"indeterminate");t.register(E);export{E as T};
+    `}};t.formAssociated=!0,t.styles=[...h.styles,...T];let r=t;u([b({type:Boolean,reflect:!0})],r.prototype,"checked");u([b({type:Boolean,reflect:!0})],r.prototype,"indeterminate");r.register(E);

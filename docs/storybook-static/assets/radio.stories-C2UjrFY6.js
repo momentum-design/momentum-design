@@ -1,4 +1,4 @@
-import{i as O,D as H,k as l}from"./lit-element-CHllvULs.js";import{n as q,u as U}from"./index-HW6KrQZO.js";import{t as _}from"./if-defined-C4tJgJ33.js";import{N as j,V as K,D as Q}from"./ValueMixin-DFWGhyGn.js";import{h as Y,a as J}from"./index-MYSkQ1zX.js";import{F as g}from"./formfieldwrapper.component-YWp2LE49.js";import{a as c}from"./chunk-D5ZWXAHU-CGElDDNX.js";import{c as X,s as Z}from"./commonArgTypes-BluK8w5L.js";import{h as ee,d as ae}from"./utils-D1SE5bce.js";import"./text.constants-DJu2q-6E.js";import"./DisabledMixin-DBt9didn.js";import"./v4-CQkTLCs1.js";const oe=[Y,O`
+import{i as H,D as O,k as l}from"./lit-element-CHllvULs.js";import{n as q,u as U}from"./index-HW6KrQZO.js";import{t as _}from"./if-defined-C4tJgJ33.js";import{N as j,V as K,D as Q}from"./ValueMixin-DFWGhyGn.js";import{h as Y,a as X}from"./index-MYSkQ1zX.js";import{D as J,F as g}from"./formfieldwrapper.component-DYhI3Mut.js";import{a as c}from"./chunk-D5ZWXAHU-CGElDDNX.js";import{c as Z,s as ee}from"./commonArgTypes-BluK8w5L.js";import{h as ae,d as oe}from"./utils-D1SE5bce.js";import"./DisabledMixin-DBt9didn.js";import"./text.constants-DJu2q-6E.js";import"./v4-CQkTLCs1.js";const re=[Y,H`
   :host{
     --mdc-radio-inner-circle-size: 0.375rem;
     --mdc-radio-text-disabled-color: var(--mds-color-theme-text-primary-disabled);
@@ -156,7 +156,7 @@ import{i as O,D as H,k as l}from"./lit-element-CHllvULs.js";import{n as q,u as U
     justify-content: center;
     gap: 0.25rem;
   }
-`,...J(!0)];var re=Object.defineProperty,z=(t,e,d,r)=>{for(var a=void 0,o=t.length-1,i;o>=0;o--)(i=t[o])&&(a=i(e,d,a)||a);return a&&re(e,d,a),a};const y=class y extends j(K(Q(g))){constructor(){super(),this.checked=!1,this.readonly=!1,this.internals=this.attachInternals()}get form(){return this.internals.form}setFormValue(){this.checked&&this.internals.setFormValue(this.value)}firstUpdated(){this.updateTabIndex()}getAllRadiosWithinSameGroup(){return Array.from(document.querySelectorAll(`mdc-radio[name="${this.name}"]`))}dispatchChangeEvent(e){const d=e.constructor;this.dispatchEvent(new d(e.type,e))}handleChange(e){var a;if(this.disabled||this.readonly)return;this.getAllRadiosWithinSameGroup().forEach(o=>{var f;const i=(f=o.shadowRoot)==null?void 0:f.querySelector("input");i&&(o.checked=!1,i.checked=!1)}),this.checked=!0;const r=(a=this.shadowRoot)==null?void 0:a.querySelector("input");r&&(r.checked=!0),this.dispatchChangeEvent(e)}updateRadio(e,d,r){var a,o;(o=(a=e[d].shadowRoot)==null?void 0:a.querySelector("input"))==null||o.focus(),e[d].handleChange(r)}handleKeyDown(e){if(this.disabled)return;const r=this.getAllRadiosWithinSameGroup().filter(o=>!o.disabled),a=r.indexOf(this);if(["ArrowDown","ArrowRight"].includes(e.key)){const o=(a+1)%r.length;this.updateRadio(r,o,e)}else if(["ArrowUp","ArrowLeft"].includes(e.key)){const o=(a-1+r.length)%r.length;this.updateRadio(r,o,e)}this.updateTabIndex()}updateTabIndex(){const e=this.getAllRadiosWithinSameGroup(),d=e.find(a=>a.checked),r=e.find(a=>!a.disabled);e.forEach(a=>{var i;const o=(i=a.shadowRoot)==null?void 0:i.querySelector("input");o&&(o.tabIndex=-1,(a===d||!d&&a===r)&&(o.tabIndex=0))})}update(e){super.update(e),e.has("checked")&&this.setFormValue()}render(){const e=this.helpText?this.renderHelperText():H;return l`
+`,...X(!0)];var de=Object.defineProperty,z=(t,e,d,r)=>{for(var a=void 0,o=t.length-1,i;o>=0;o--)(i=t[o])&&(a=i(e,d,a)||a);return a&&de(e,d,a),a};const y=class y extends j(K(Q(g))){constructor(){super(),this.checked=!1,this.readonly=!1,this.internals=this.attachInternals()}get form(){return this.internals.form}setFormValue(){this.checked&&this.internals.setFormValue(this.value)}firstUpdated(){this.updateTabIndex()}getAllRadiosWithinSameGroup(){return Array.from(document.querySelectorAll(`mdc-radio[name="${this.name}"]`))}dispatchChangeEvent(e){const d=e.constructor;this.dispatchEvent(new d(e.type,e))}handleChange(e){var a;if(this.disabled||this.readonly)return;this.getAllRadiosWithinSameGroup().forEach(o=>{var f;const i=(f=o.shadowRoot)==null?void 0:f.querySelector("input");i&&(o.checked=!1,i.checked=!1)}),this.checked=!0;const r=(a=this.shadowRoot)==null?void 0:a.querySelector("input");r&&(r.checked=!0),this.dispatchChangeEvent(e)}updateRadio(e,d,r){var a,o;(o=(a=e[d].shadowRoot)==null?void 0:a.querySelector("input"))==null||o.focus(),e[d].handleChange(r)}handleKeyDown(e){if(this.disabled)return;const r=this.getAllRadiosWithinSameGroup().filter(o=>!o.disabled),a=r.indexOf(this);if(["ArrowDown","ArrowRight"].includes(e.key)){const o=(a+1)%r.length;this.updateRadio(r,o,e)}else if(["ArrowUp","ArrowLeft"].includes(e.key)){const o=(a-1+r.length)%r.length;this.updateRadio(r,o,e)}this.updateTabIndex()}updateTabIndex(){const e=this.getAllRadiosWithinSameGroup(),d=e.find(a=>a.checked),r=e.find(a=>!a.disabled);e.forEach(a=>{var i;const o=(i=a.shadowRoot)==null?void 0:i.querySelector("input");o&&(o.tabIndex=-1,(a===d||!d&&a===r)&&(o.tabIndex=0))})}update(e){super.update(e),e.has("checked")&&this.setFormValue()}render(){const e=this.helpText?this.renderHelperText():O;return l`
       <div class="mdc-radio__container">
         <div class="mdc-radio__icon-container mdc-focus-ring">
           <input
@@ -172,6 +172,7 @@ import{i as O,D as H,k as l}from"./lit-element-CHllvULs.js";import{n as q,u as U
             ?disabled=${this.disabled}
             class="mdc-radio__input"
             aria-checked="${this.checked}"
+            aria-describedby="${J.HELPER_TEXT_ID}"
             aria-label="${this.dataAriaLabel??""}"
           />
           <span class="mdc-radio__icon"></span>
@@ -181,7 +182,7 @@ import{i as O,D as H,k as l}from"./lit-element-CHllvULs.js";import{n as q,u as U
           ${e}
         </div>
       </div>
-    `}};y.formAssociated=!0,y.styles=[...g.styles,...oe];let n=y;z([q({type:Boolean,reflect:!0})],n.prototype,"checked");z([q({type:Boolean,reflect:!0})],n.prototype,"readonly");const de=U.constructTagName("radio");n.register(de);const te=t=>l`
+    `}};y.formAssociated=!0,y.styles=[...g.styles,...re];let n=y;z([q({type:Boolean,reflect:!0})],n.prototype,"checked");z([q({type:Boolean,reflect:!0})],n.prototype,"readonly");const te=U.constructTagName("radio");n.register(te);const ie=t=>l`
   <mdc-radio
     @change="${c("onchange")}"
     @keydown="${c("onkeydown")}"
@@ -196,7 +197,7 @@ import{i as O,D as H,k as l}from"./lit-element-CHllvULs.js";import{n as q,u as U
     ?readonly=${t.readonly}
     data-aria-label="${t["data-aria-label"]}"
   ></mdc-radio>
-`,fe={title:"Components/radio",tags:["autodocs"],component:"mdc-radio",render:te,parameters:{badges:["stable"]},argTypes:{...X,...Z,readonly:{control:{type:"boolean"}},disabled:{control:{type:"boolean"}},checked:{control:{type:"boolean"}},label:{control:{type:"text"}},name:{control:{type:"text"}},value:{control:{type:"text"}},"help-text":{control:{type:"text"}},"data-aria-label":{control:{type:"text"}},...ee(["help-text-type"]),...ae(["--mdc-radio-inner-circle-size","--mdc-radio-text-disabled-color","--mdc-radio-disabled-border-color","--mdc-radio-normal-border-color","--mdc-radio-inner-circle-normal-background","--mdc-radio-inner-circle-disabled-background","--mdc-radio-control-inactive-color","--mdc-radio-control-inactive-hover","--mdc-radio-control-inactive-pressed-color","--mdc-radio-control-inactive-disabled-background","--mdc-radio-control-active-color","--mdc-radio-control-active-hover-color","--mdc-radio-control-active-pressed-color","--mdc-radio-control-active-disabled-background"])}},s={args:{label:"Standard Plan",checked:!1,readonly:!1,disabled:!1}},m={render:()=>l`
+`,_e={title:"Components/radio",tags:["autodocs"],component:"mdc-radio",render:ie,parameters:{badges:["stable"]},argTypes:{...Z,...ee,readonly:{control:{type:"boolean"}},disabled:{control:{type:"boolean"}},checked:{control:{type:"boolean"}},label:{control:{type:"text"}},name:{control:{type:"text"}},value:{control:{type:"text"}},"help-text":{control:{type:"text"}},"data-aria-label":{control:{type:"text"}},...ae(["help-text-type"]),...oe(["--mdc-radio-inner-circle-size","--mdc-radio-text-disabled-color","--mdc-radio-disabled-border-color","--mdc-radio-normal-border-color","--mdc-radio-inner-circle-normal-background","--mdc-radio-inner-circle-disabled-background","--mdc-radio-control-inactive-color","--mdc-radio-control-inactive-hover","--mdc-radio-control-inactive-pressed-color","--mdc-radio-control-inactive-disabled-background","--mdc-radio-control-active-color","--mdc-radio-control-active-hover-color","--mdc-radio-control-active-pressed-color","--mdc-radio-control-active-disabled-background"])}},s={args:{label:"Standard Plan",checked:!1,readonly:!1,disabled:!1}},m={render:()=>l`
     <div style="display: flex; flex-direction: column;">
       Radio Group for selecting plans
       <mdc-radio name="plan" value="option1" label="Standard Plan" ></mdc-radio>
@@ -244,7 +245,7 @@ import{i as O,D as H,k as l}from"./lit-element-CHllvULs.js";import{n as q,u as U
     readonly: false,
     disabled: false
   }
-}`,...(S=(x=s.parameters)==null?void 0:x.docs)==null?void 0:S.source}}};var P,w,$;m.parameters={...m.parameters,docs:{...(P=m.parameters)==null?void 0:P.docs,source:{originalSource:`{
+}`,...(S=(x=s.parameters)==null?void 0:x.docs)==null?void 0:S.source}}};var P,w,E;m.parameters={...m.parameters,docs:{...(P=m.parameters)==null?void 0:P.docs,source:{originalSource:`{
   render: () => html\`
     <div style="display: flex; flex-direction: column;">
       Radio Group for selecting plans
@@ -270,7 +271,7 @@ import{i as O,D as H,k as l}from"./lit-element-CHllvULs.js";import{n as q,u as U
       }
     }
   }
-}`,...($=(w=m.parameters)==null?void 0:w.docs)==null?void 0:$.source}}};var R,D,E;u.parameters={...u.parameters,docs:{...(R=u.parameters)==null?void 0:R.docs,source:{originalSource:`{
+}`,...(E=(w=m.parameters)==null?void 0:w.docs)==null?void 0:E.source}}};var $,D,T;u.parameters={...u.parameters,docs:{...($=u.parameters)==null?void 0:$.docs,source:{originalSource:`{
   args: {
     'data-aria-label': 'Radio button without label'
   },
@@ -281,7 +282,7 @@ import{i as O,D as H,k as l}from"./lit-element-CHllvULs.js";import{n as q,u as U
       }
     }
   }
-}`,...(E=(D=u.parameters)==null?void 0:D.docs)==null?void 0:E.source}}};var T,A,W;b.parameters={...b.parameters,docs:{...(T=b.parameters)==null?void 0:T.docs,source:{originalSource:`{
+}`,...(T=(D=u.parameters)==null?void 0:D.docs)==null?void 0:T.source}}};var R,A,F;b.parameters={...b.parameters,docs:{...(R=b.parameters)==null?void 0:R.docs,source:{originalSource:`{
   render: () => html\`
     <div style="display: flex; flex-direction: column;">
       <mdc-radio label="Disabled Standard Plan" disabled></mdc-radio>
@@ -294,7 +295,7 @@ import{i as O,D as H,k as l}from"./lit-element-CHllvULs.js";import{n as q,u as U
       }
     }
   }
-}`,...(W=(A=b.parameters)==null?void 0:A.docs)==null?void 0:W.source}}};var F,I,C;h.parameters={...h.parameters,docs:{...(F=h.parameters)==null?void 0:F.docs,source:{originalSource:`{
+}`,...(F=(A=b.parameters)==null?void 0:A.docs)==null?void 0:F.source}}};var I,W,C;h.parameters={...h.parameters,docs:{...(I=h.parameters)==null?void 0:I.docs,source:{originalSource:`{
   render: () => html\`
     <div style="display: flex; flex-direction: column;">
       <mdc-radio name="read" value="option1" label="Unselected" readonly></mdc-radio>
@@ -307,7 +308,7 @@ import{i as O,D as H,k as l}from"./lit-element-CHllvULs.js";import{n as q,u as U
       }
     }
   }
-}`,...(C=(I=h.parameters)==null?void 0:I.docs)==null?void 0:C.source}}};var G,V,L;p.parameters={...p.parameters,docs:{...(G=p.parameters)==null?void 0:G.docs,source:{originalSource:`{
+}`,...(C=(W=h.parameters)==null?void 0:W.docs)==null?void 0:C.source}}};var G,L,V;p.parameters={...p.parameters,docs:{...(G=p.parameters)==null?void 0:G.docs,source:{originalSource:`{
   args: {
     label: 'Standard Plan',
     'help-text': 'Standard plan provides basic features',
@@ -322,7 +323,7 @@ import{i as O,D as H,k as l}from"./lit-element-CHllvULs.js";import{n as q,u as U
       }
     }
   }
-}`,...(L=(V=p.parameters)==null?void 0:V.docs)==null?void 0:L.source}}};var M,B,N;v.parameters={...v.parameters,docs:{...(M=v.parameters)==null?void 0:M.docs,source:{originalSource:`() => {
+}`,...(V=(L=p.parameters)==null?void 0:L.docs)==null?void 0:V.source}}};var M,B,N;v.parameters={...v.parameters,docs:{...(M=v.parameters)==null?void 0:M.docs,source:{originalSource:`() => {
   const handleSubmit = (event: Event) => {
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
@@ -348,4 +349,4 @@ import{i as O,D as H,k as l}from"./lit-element-CHllvULs.js";import{n as q,u as U
       <button type="submit">Submit</button>
     </form>
   \`;
-}`,...(N=(B=v.parameters)==null?void 0:B.docs)==null?void 0:N.source}}};const _e=["Example","withNameGroup","WithoutLabel","Disabled","ReadOnly","WithHelpText","RadioInForm"];export{b as Disabled,s as Example,v as RadioInForm,h as ReadOnly,p as WithHelpText,u as WithoutLabel,_e as __namedExportsOrder,fe as default,m as withNameGroup};
+}`,...(N=(B=v.parameters)==null?void 0:B.docs)==null?void 0:N.source}}};const ge=["Example","withNameGroup","WithoutLabel","Disabled","ReadOnly","WithHelpText","RadioInForm"];export{b as Disabled,s as Example,v as RadioInForm,h as ReadOnly,p as WithHelpText,u as WithoutLabel,ge as __namedExportsOrder,_e as default,m as withNameGroup};

@@ -324,7 +324,9 @@ When the component is disabled for user interaction; it is not focusable or clic
  */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Buttonsimple",module:"components/buttonsimple/buttonsimple.component.js"}}]},{kind:"javascript-module",path:"components/checkbox/checkbox.component.js",declarations:[{kind:"class",description:`Checkboxes allow users to select multiple options from a list or turn an item/feature on or off.
 These are often used in forms, settings, and selections in lists.
 
-A checkbox component contains an optional label and an optional helper text.`,name:"Checkbox",cssProperties:[{description:"Allows customization of the background color on hover.",name:"--mdc-checkbox-background-color-hover"},{description:"Border color in high contrast.",name:"--mdc-checkbox-border-color"},{description:"Background color for a selected checkbox.",name:"--mdc-checkbox-checked-background-color"},{description:"Background color for a selected checkbox when hovered.",name:"--mdc-checkbox-checked-background-color-hover"},{description:"Background color for a selected checkbox when pressed.",name:"--mdc-checkbox-checked-pressed-icon-color"},{description:"Background color for a disabled checkbox.",name:"--mdc-checkbox-disabled-background-color"},{description:"Border color for a disabled checkbox.",name:"--mdc-checkbox-disabled-border-color"},{description:"Background color for a disabled, selected checkbox.",name:"--mdc-checkbox-disabled-checked-icon-color"},{description:"Icon color for a disabled checkbox.",name:"--mdc-checkbox-disabled-icon-color"},{description:"Background color for an unselected checkbox.",name:"--mdc-checkbox-icon-background-color"},{description:"Default background color for an unselected checkbox.",name:"--mdc-checkbox-icon-border-color"},{description:"Icon color for an unselected checkbox.",name:"--mdc-checkbox-icon-color"},{description:"Background color for a selected checkbox when pressed.",name:"--mdc-checkbox-pressed-icon-color"}],members:[{kind:"field",name:"checked",type:{text:"boolean"},default:"false",description:"Determines whether the checkbox is selected or unselected.",attribute:"checked",reflects:!0},{kind:"field",name:"indeterminate",type:{text:"boolean"},default:"false",description:`This property is used to determine the parent checkbox in a nested checkbox group.
+A checkbox component contains an optional label and an optional helper text.
+
+To create a group of checkboxes, use the FormFieldGroup component.`,name:"Checkbox",cssProperties:[{description:"Allows customization of the background color on hover.",name:"--mdc-checkbox-background-color-hover"},{description:"Border color in high contrast.",name:"--mdc-checkbox-border-color"},{description:"Background color for a selected checkbox.",name:"--mdc-checkbox-checked-background-color"},{description:"Background color for a selected checkbox when hovered.",name:"--mdc-checkbox-checked-background-color-hover"},{description:"Background color for a selected checkbox when pressed.",name:"--mdc-checkbox-checked-pressed-icon-color"},{description:"Background color for a disabled checkbox.",name:"--mdc-checkbox-disabled-background-color"},{description:"Border color for a disabled checkbox.",name:"--mdc-checkbox-disabled-border-color"},{description:"Background color for a disabled, selected checkbox.",name:"--mdc-checkbox-disabled-checked-icon-color"},{description:"Icon color for a disabled checkbox.",name:"--mdc-checkbox-disabled-icon-color"},{description:"Background color for an unselected checkbox.",name:"--mdc-checkbox-icon-background-color"},{description:"Default background color for an unselected checkbox.",name:"--mdc-checkbox-icon-border-color"},{description:"Icon color for an unselected checkbox.",name:"--mdc-checkbox-icon-color"},{description:"Background color for a selected checkbox when pressed.",name:"--mdc-checkbox-pressed-icon-color"}],members:[{kind:"field",name:"checked",type:{text:"boolean"},default:"false",description:"Determines whether the checkbox is selected or unselected.",attribute:"checked",reflects:!0},{kind:"field",name:"indeterminate",type:{text:"boolean"},default:"false",description:`This property is used to determine the parent checkbox in a nested checkbox group.
 If any one of the children is unselected, then the parent checkbox will be indeterminate.
 If all children are either selected or unselected, then the parent checkbox will not be indeterminate.`,attribute:"indeterminate",reflects:!0},{kind:"method",name:"setFormValue",privacy:"private",description:`Updates the form value to reflect the current state of the checkbox.
 If checked, the value is set to either the user-provided value or 'on' if no value is provided.
@@ -353,6 +355,8 @@ the input field is marked as required and the label is appended with this text.`
  *
  * A checkbox component contains an optional label and an optional helper text.
  *
+ * To create a group of checkboxes, use the FormFieldGroup component.
+ *
  * @dependency mdc-icon
  *
  * @tagname mdc-checkbox
@@ -370,26 +374,7 @@ the input field is marked as required and the label is appended with this text.`
  * @cssproperty --mdc-checkbox-icon-border-color - Default background color for an unselected checkbox.
  * @cssproperty --mdc-checkbox-icon-color - Icon color for an unselected checkbox.
  * @cssproperty --mdc-checkbox-pressed-icon-color - Background color for a selected checkbox when pressed.
- */`,customElement:!0,slots:[{description:"slot to add the label info icon",name:"label-info",inheritedFrom:{name:"FormfieldWrapper",module:"src/components/formfieldwrapper/formfieldwrapper.component.ts"}}]}],exports:[{kind:"js",name:"default",declaration:{name:"Checkbox",module:"components/checkbox/checkbox.component.js"}}]},{kind:"javascript-module",path:"components/checkboxgroup/checkboxgroup.component.js",declarations:[{kind:"class",description:`\`mdc-checkboxgroup\` component allows you to select multiple options from a predefined list.
-It is commonly used in forms where multiple selections are required, such as preferences, filters, or categories.
-
-A checkbox group typically consists of multiple checkboxes grouped together,
-each representing a selectable option. You can check or uncheck options based on their preferences.`,name:"Checkboxgroup",slots:[{description:"This is a help text slot.",name:"help-text"},{description:"This is a default slot for children.",name:"default"}],members:[{kind:"field",name:"headerText",type:{text:"string | undefined"},description:"The header text of the checkboxgroup.",attribute:"header-text"},{kind:"method",name:"handleKeyDown",privacy:"private",return:{type:{text:"void"}},parameters:[{name:"event",type:{text:"KeyboardEvent"},description:"The KeyboardEvent"}],description:`Handles the keydown event on the parent checkbox in the checkboxgroup.
-When the user presses the down arrow key, the focus is moved to the next checkbox in the checkboxgroup.
-When the user presses the up arrow key, the focus is moved to the previous checkbox in the checkboxgroup.`},{kind:"method",name:"navigate",privacy:"private",return:{type:{text:"void"}},parameters:[{name:"origin",type:{text:"EventTarget | null"},description:"The element that triggered the event."},{name:"direction",type:{text:"number"},description:"The direction of navigation, either -1 or 1."}],description:"Navigate to the next or previous checkbox in the checkboxgroup based on the given origin and direction."}],attributes:[{name:"header-text",type:{text:"string | undefined"},description:"The header text of the checkboxgroup.",fieldName:"headerText"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-checkboxgroup",jsDoc:`/**
- * \`mdc-checkboxgroup\` component allows you to select multiple options from a predefined list.
- * It is commonly used in forms where multiple selections are required, such as preferences, filters, or categories.
- *
- * A checkbox group typically consists of multiple checkboxes grouped together,
- * each representing a selectable option. You can check or uncheck options based on their preferences.
- *
- * @dependency mdc-text
- *
- * @tagname mdc-checkboxgroup
- *
- * @slot help-text - This is a help text slot.
- * @slot default - This is a default slot for children.
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Checkboxgroup",module:"components/checkboxgroup/checkboxgroup.component.js"}}]},{kind:"javascript-module",path:"components/divider/divider.component.js",declarations:[{kind:"class",description:`\`mdc-divider\` is a component that provides a line to separate and organize content.
+ */`,customElement:!0,slots:[{description:"slot to add the label info icon",name:"label-info",inheritedFrom:{name:"FormfieldWrapper",module:"src/components/formfieldwrapper/formfieldwrapper.component.ts"}}]}],exports:[{kind:"js",name:"default",declaration:{name:"Checkbox",module:"components/checkbox/checkbox.component.js"}}]},{kind:"javascript-module",path:"components/divider/divider.component.js",declarations:[{kind:"class",description:`\`mdc-divider\` is a component that provides a line to separate and organize content.
 It can also include a button or text positioned centrally, allowing users to interact with the layout.
 
 **Divider Orientation:**
@@ -487,7 +472,41 @@ Note: Positive and Negative directions are defined based on Cartesian plane.`,de
  * @cssproperty --mdc-divider-text-margin - left and right margin of label in the text divider
  * @cssproperty --mdc-divider-text-line-height - line height of label in the text divider
  * @cssproperty --mdc-divider-grabber-button-border-radius - border radius of the grabber button
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Divider",module:"components/divider/divider.component.js"}}]},{kind:"javascript-module",path:"components/formfieldwrapper/formfieldwrapper.component.js",declarations:[{kind:"class",description:`formfieldwrapper is a component that contains the label and helper/validation text
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Divider",module:"components/divider/divider.component.js"}}]},{kind:"javascript-module",path:"components/formfieldgroup/formfieldgroup.component.js",declarations:[{kind:"class",description:`\`mdc-formfieldgroup\` component, groups the form field components together.
+All passed in children will have a gap of 12px (0.75rem) each applied.
+
+This component is specifically for creating a \`checkbox\` group and a \`toggle\` group component.
+For the radiogroup use the RadioGroup component instead.
+
+The header text and description text are displayed above the items with accessible labels.<br/>
+The consumer has to provide atleast the header-text or the aria-label,
+like one of them <b>has</b> to be passed in always, otherwise its not accessible.
+
+The role will be set to \`group\`.
+The aria-label will be set with the data-aria-label property.
+The aria-labelledby will be set with the header id which contains the header text information.
+The aria-describedby will be set with the description id which contains the description text information.`,name:"FormfieldGroup",slots:[{description:"This is a default slot for checkbox or toggle components.",name:"default"}],members:[{kind:"field",name:"headerText",type:{text:"string | undefined"},description:"The header text of the group.",attribute:"header-text",reflects:!0},{kind:"field",name:"descriptionText",type:{text:"string | undefined"},description:"The description of the group.",attribute:"description-text",reflects:!0},{kind:"method",name:"renderText",privacy:"private",return:{type:{text:"TemplateResult | typeof nothing"}},parameters:[{name:"type",type:{text:"TextType"}},{name:"id",type:{text:"string"}},{name:"cssPart",type:{text:"string"}},{name:"value",optional:!0,type:{text:"string"}}]},{kind:"field",name:"dataAriaLabel",type:{text:"string | null"},default:"null",description:`Defines a string value that labels the current element.
+The Aria-Label attribute to be set for accessibility.`,attribute:"data-aria-label",reflects:!0,inheritedFrom:{name:"DataAriaLabelMixin",module:"utils/mixins/DataAriaLabelMixin.js"}}],attributes:[{name:"header-text",type:{text:"string | undefined"},description:"The header text of the group.",fieldName:"headerText"},{name:"description-text",type:{text:"string | undefined"},description:"The description of the group.",fieldName:"descriptionText"},{name:"data-aria-label",type:{text:"string | null"},default:"null",description:`Defines a string value that labels the current element.
+The Aria-Label attribute to be set for accessibility.`,fieldName:"dataAriaLabel",inheritedFrom:{name:"DataAriaLabelMixin",module:"src/utils/mixins/DataAriaLabelMixin.ts"}}],mixins:[{name:"DataAriaLabelMixin",module:"/src/utils/mixins/DataAriaLabelMixin"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-formfieldgroup",jsDoc:`/**
+ * \`mdc-formfieldgroup\` component, groups the form field components together.
+ * All passed in children will have a gap of 12px (0.75rem) each applied.
+ *
+ * This component is specifically for creating a \`checkbox\` group and a \`toggle\` group component.
+ * For the radiogroup use the RadioGroup component instead.
+ *
+ * The header text and description text are displayed above the items with accessible labels.<br/>
+ * The consumer has to provide atleast the header-text or the aria-label,
+ * like one of them <b>has</b> to be passed in always, otherwise its not accessible.
+ *
+ * The role will be set to \`group\`.
+ * The aria-label will be set with the data-aria-label property.
+ * The aria-labelledby will be set with the header id which contains the header text information.
+ * The aria-describedby will be set with the description id which contains the description text information.
+ *
+ * @tagname mdc-formfieldgroup
+ *
+ * @slot default - This is a default slot for checkbox or toggle components.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"FormfieldGroup",module:"components/formfieldgroup/formfieldgroup.component.js"}}]},{kind:"javascript-module",path:"components/formfieldwrapper/formfieldwrapper.component.js",declarations:[{kind:"class",description:`formfieldwrapper is a component that contains the label and helper/validation text
  that can be configured in various ways to suit different use cases (most of the input related components).
 It is used as an internal component and is not intended to be used directly by consumers.`,name:"FormfieldWrapper",slots:[{description:"slot to add the label info icon",name:"label-info"}],members:[{kind:"field",name:"label",type:{text:"string | undefined"},description:"The label of the input field. It is linked to the input field using the `for` attribute.",attribute:"label",reflects:!0},{kind:"field",name:"requiredLabel",type:{text:"string | undefined"},description:`The required label of the input field.
 When an appropriate string value is set,
@@ -1203,6 +1222,8 @@ such as On/Off, Active/Inactive. These are commonly used in settings panels, for
 where users need to enable or disable a feature.
 It contains an optional label and an optional helper text.
 
+To create a group of toggles, use the FormFieldGroup component.
+
 Note: It internally renders a checkbox styled as a toggle switch.`,name:"Toggle",cssProperties:[{description:"width of the toggle",name:"--mdc-toggle-width"},{description:"height of the toggle",name:"--mdc-toggle-height"},{description:"width of the toggle when it's size is compact",name:"--mdc-toggle-width-compact"},{description:"height of the toggle when it's size is compact",name:"--mdc-toggle-height-compact"},{description:"border radius of the toggle",name:"--mdc-toggle-border-radius"},{description:"border radius of the toggle when it's size is compact",name:"--mdc-toggle-border-radius-compact"},{description:"border of the toggle",name:"--mdc-toggle-border"},{description:"background color of the inactive toggle in rest state",name:"--mdc-toggle-inactive-rest-color"},{description:"background color of the inactive toggle in hover state",name:"--mdc-toggle-inactive-hover-color"},{description:"background color of the inactive toggle in pressed state",name:"--mdc-toggle-inactive-pressed-color"},{description:"background color of the inactive toggle in disabled state",name:"--mdc-toggle-inactive-disabled-color"},{description:"background color of the active toggle in rest state",name:"--mdc-toggle-active-rest-color"},{description:"background color of the active toggle in hover state",name:"--mdc-toggle-active-hover-color"},{description:"background color of the active toggle in pressed state",name:"--mdc-toggle-active-pressed-color"},{description:"background color of the active toggle in disabled state",name:"--mdc-toggle-active-disabled-color"},{description:" color of the help text label",name:"--mdc-toggle-help-text-color"},{description:"color of the toggle label and help text in disabled state",name:"--mdc-toggle-label-color-disabled"}],members:[{kind:"field",name:"checked",type:{text:"boolean"},default:"false",description:"Determines whether the toggle is active or inactive.",attribute:"checked",reflects:!0},{kind:"field",name:"size",type:{text:"ToggleSize"},description:`Determines toggle size in rem (height is specified here).
 - **Default**: 1.5
 - **Compact**: 1`,default:"default",attribute:"size",reflects:!0},{kind:"method",name:"setFormValue",privacy:"private",description:`Updates the form value to reflect the current state of the toggle.
@@ -1231,6 +1252,8 @@ the input field is marked as required and the label is appended with this text.`
  * such as On/Off, Active/Inactive. These are commonly used in settings panels, forms, and preference selections
  * where users need to enable or disable a feature.
  * It contains an optional label and an optional helper text.
+ *
+ * To create a group of toggles, use the FormFieldGroup component.
  *
  * Note: It internally renders a checkbox styled as a toggle switch.
  *
