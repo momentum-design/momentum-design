@@ -3,12 +3,14 @@ import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls } from '../../../config/storybook/utils';
 import '../radio';
 import '../button';
 
 const render = (args: Args) => html`
-  <mdc-radio-group name="${args.name}"  header-text="${args['header-text']}" description="${args.description}">
+  <mdc-radio-group 
+  name="${args.name}"
+  header-text="${args['header-text']}"
+  description-text="${args['description-text']}">
     <mdc-radio label="Black Widow" value="black-widow"></mdc-radio>
     <mdc-radio label="Captain America" value="captain-america"></mdc-radio>
     <mdc-radio label="Hawkeye" value="hawkeye"></mdc-radio>
@@ -34,11 +36,9 @@ const meta: Meta = {
     'header-text': {
       control: { type: 'text' },
     },
-    description: {
+    'description-text': {
       control: { type: 'text' },
     },
-    ...disableControls([
-      '--mdc-radio-group-label-color']),
   },
 };
 
@@ -54,7 +54,8 @@ export const Example: StoryObj = {
 export const RadioGroupWithDescription: StoryObj = {
   args: {
     'header-text': 'Select your team captain',
-    description: 'The team captain should have previous experience leading the team through challenging situations.',
+    'description-text': 'The team captain should have previous experience leading the team through '
+     + 'challenging situations.',
     name: 'team-captain-with-experience',
   },
 };
