@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -6,6 +7,7 @@ import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
+import { VALIDATION_MESSAGE } from './radio.constants';
 
 /**
  * Radio allow users to select single options from a list or turn an item/feature on or off.
@@ -63,17 +65,6 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
       this.helpTextType = undefined as unknown as ValidationType;
     }
 
-    /**
-   * Updates the form value to reflect the current state of the radio.
-   * If checked, the value is set to the user-provided value.
-   * If unchecked, the value is set to null.
-   */
-    private setFormValue() {
-      if (this.checked) {
-        this.internals.setFormValue(this.value);
-      }
-    }
-
     override firstUpdated() {
       this.updateTabIndex();
     }
@@ -99,9 +90,8 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
     formResetCallback(): void {
       const radios = this.getAllRadiosWithinSameGroup();
 
-      radios.forEach((r) => {
-        // eslint-disable-next-line no-param-reassign
-        r.checked = false;
+      radios.forEach((radio) => {
+        radio.checked = false;
       });
 
       this.updateComplete.then(() => {
@@ -123,6 +113,67 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
     }
 
     /**
+   * @internal
+   */
+    setComponentValidity(isValid: boolean) {
+      if (isValid) {
+        this.internals.setValidity({});
+      } else {
+        this.internals.setValidity(
+          {
+            valueMissing: true,
+          },
+          VALIDATION_MESSAGE,
+          this.inputElement,
+        );
+      }
+    }
+
+    /**
+     * Sets the validity of the group of radios.
+     * @param radios - Array of radios of the same group
+     * @param isValid - Boolean value to set the validity of the group
+     */
+    private setGroupValidity(radios: Radio[], isValid: boolean) {
+      this.updateComplete.then(() => {
+        radios.forEach((radio) => {
+          radio.setComponentValidity(isValid);
+        });
+      }).catch((error) => {
+        if (this.onerror) {
+          this.onerror(error);
+        }
+      });
+    }
+
+    /**
+   * Updates the form value to reflect the current state of the radio.
+   * If checked, the value is set to the user-provided value.
+   * If unchecked, the value is set to null.
+   */
+    private setActualFormValue() {
+      let actualValue: string | null = '';
+
+      if (this.checked) {
+        actualValue = !this.value ? 'on' : this.value;
+      } else {
+        actualValue = null;
+      }
+
+      const radios = this.getAllRadiosWithinSameGroup();
+      if (this.checked) {
+        this.setGroupValidity(radios, true);
+      } else {
+        const anyRequired = radios.some((r) => r.requiredLabel);
+        const anyChecked = !!radios.find((r) => r.checked);
+        const isInvalid = anyRequired && !anyChecked;
+        this.setGroupValidity(radios, !isInvalid);
+      }
+
+      this.internals.setFormValue(actualValue);
+    }
+
+    /**
    * Handles the change event on the radio element.
    * This will toggle the state of the radio element.
    * Dispatches the change event.
@@ -137,7 +188,6 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
       */
         const radioElement = radio.shadowRoot?.querySelector('input');
         if (radioElement) {
-        // eslint-disable-next-line no-param-reassign
           radio.checked = false;
           radioElement.checked = false;
         }
@@ -147,6 +197,7 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
       if (inputElement) {
         inputElement.checked = true;
       }
+      this.setActualFormValue();
       this.dispatchChangeEvent(event);
     }
 
@@ -181,8 +232,14 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
       // Move focus to the previous radio
         const prevIndex = (currentIndex - 1 + enabledRadios.length) % enabledRadios.length;
         this.updateRadio(enabledRadios, prevIndex, event);
+      } else if (event.key === ' ') {
+        this.updateRadio(enabledRadios, currentIndex, event);
       }
       this.updateTabIndex();
+
+      if (event.key === 'Enter') {
+        this.form?.requestSubmit();
+      }
     }
 
     /**
@@ -211,7 +268,7 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
       super.update(changedProperties);
 
       if (changedProperties.has('checked')) {
-        this.setFormValue();
+        this.setActualFormValue();
       }
     }
 
