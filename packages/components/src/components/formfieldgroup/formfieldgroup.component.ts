@@ -1,6 +1,5 @@
 import type { CSSResult } from 'lit';
 import { html } from 'lit';
-import { Component } from '../../models';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import FormfieldWrapper from '../formfieldwrapper';
 import { ROLE } from './formfieldgroup.constants';
