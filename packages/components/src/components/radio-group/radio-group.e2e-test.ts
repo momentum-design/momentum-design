@@ -6,7 +6,7 @@ type SetupOptions = {
   componentsPage: ComponentsPage;
   name?: string;
   'header-text'?: string;
-  description?: string;
+  'description-text'?: string;
 }
 
 const setup = async (args: SetupOptions) => {
@@ -17,7 +17,7 @@ const setup = async (args: SetupOptions) => {
         <mdc-radio-group
           ${restArgs.name ? `name="${restArgs.name}"` : ''}
           ${restArgs['header-text'] ? `header-text="${restArgs['header-text']}"` : ''}
-          ${restArgs.description ? `description="${restArgs.description}"` : ''}
+          ${restArgs['description-text'] ? `description="${restArgs['description-text']}"` : ''}
         >
           <mdc-radio label="Standard Plan" value="standard-plan"></mdc-radio>
           <mdc-radio label="Premium Plan" value="premium-plan" disabled></mdc-radio>
@@ -55,7 +55,7 @@ test('mdc-radio-group', async ({ componentsPage }) => {
     await radioGroupStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
     await radioGroupStickerSheet.setAttributes({
       'header-text': 'Select your plan',
-      description: 'The plan you select will be the plan you are billed for',
+      'description-text': 'The plan you select will be the plan you are billed for',
     });
 
     await radioGroupStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
@@ -91,7 +91,7 @@ test('mdc-radio-group', async ({ componentsPage }) => {
 
     // For description
     await test.step('should have description when the description attribute is passed', async () => {
-      await componentsPage.setAttributes(radioGroup, { description: 'Description' });
+      await componentsPage.setAttributes(radioGroup, { 'description-text': 'Description' });
       const mdcText = await componentsPage.page.locator('mdc-text');
       const textContent = await mdcText.textContent();
       expect(textContent?.trim()).toBe('Description');
