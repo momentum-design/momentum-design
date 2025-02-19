@@ -42,11 +42,8 @@ export {
   Radio,
   VirtualizedList,
   Tab,
-<<<<<<< HEAD
   FormfieldGroup,
-=======
   RadioGroup,
->>>>>>> 673a3c0d (chore: init commit of radio group component)
 };
 
 export type {
