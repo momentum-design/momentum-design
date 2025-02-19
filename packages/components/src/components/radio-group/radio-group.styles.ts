@@ -5,20 +5,20 @@ const styles = css`
     --mdc-radio-group-description-text-normal: var(--mds-color-theme-text-secondary-normal);
   }
 
-  :host::part(container) {
+  [part="container"]:has([part="description"]) {
     gap: 0;
   }
 
-  :host ::slotted(mdc-radio) {
+  [part="container"]:has([part="description"]) > [part="header"] {
+    margin-bottom: 4px;
+  }
+
+  [part="container"]:has([part="description"]) > [part="description"] {
+    color: var(--mdc-radio-group-description-text-normal);
     margin-bottom: 0.75rem;
   }
 
-  :host::part(header) {
-    margin-bottom: 0.25rem;
-  }
-
-  :host::part(description) {
-    color: var(--mdc-radio-group-description-text-normal);
+  [part="container"]:has([part="description"]) > ::slotted(mdc-radio) {
     margin-bottom: 0.75rem;
   }
 `;
