@@ -3,6 +3,7 @@ import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './toggle.styles';
 import FormfieldWrapper from '../formfieldwrapper';
+import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import { DEFAULTS, ICON_NAME, ICON_SIZE_IN_REM, TOGGLE_SIZE } from './toggle.constants';
 import { ToggleSize } from './toggle.types';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
@@ -14,6 +15,8 @@ import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/Fo
  * such as On/Off, Active/Inactive. These are commonly used in settings panels, forms, and preference selections
  * where users need to enable or disable a feature.
  * It contains an optional label and an optional helper text.
+ *
+ * To create a group of toggles, use the FormFieldGroup component.
  *
  * Note: It internally renders a checkbox styled as a toggle switch.
  *
@@ -192,6 +195,7 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
             value="${ifDefined(this.value)}"
             .checked="${this.checked}"
             .disabled="${this.disabled}"
+            aria-describedby="${FORMFIELD_DEFAULTS.HELPER_TEXT_ID}"
             aria-label="${this.dataAriaLabel ?? ''}"
             tabindex="${this.disabled ? -1 : 0}"
             @change="${this.handleChange}"

@@ -7,6 +7,7 @@ import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
+import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 
 /**
  * Radio allow users to select single options from a list or turn an item/feature on or off.
@@ -285,6 +286,7 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
             ?disabled=${this.disabled}
             class="mdc-radio__input"
             aria-checked="${this.checked}"
+            aria-describedby="${FORMFIELD_DEFAULTS.HELPER_TEXT_ID}"
             aria-label="${this.dataAriaLabel ?? ''}"
           />
           <span class="mdc-radio__icon"></span>
