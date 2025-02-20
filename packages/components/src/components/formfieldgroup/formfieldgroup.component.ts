@@ -1,10 +1,11 @@
 import type { CSSResult } from 'lit';
 import { html } from 'lit';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
-import FormfieldWrapper from '../formfieldwrapper';
+import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { ROLE } from './formfieldgroup.constants';
-import { DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
+import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import styles from './formfieldgroup.styles';
+import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 
 /**
  * `mdc-formfieldgroup` component, groups the form field components together.
@@ -33,13 +34,18 @@ class FormfieldGroup extends DataAriaLabelMixin(FormfieldWrapper) {
    */
   protected isRadio = false;
 
+  constructor() {
+    super();
+    this.helpTextType = undefined as unknown as ValidationType;
+  }
+
   public override render() {
     return html`
       <div
         part="container"
         role="${this.isRadio ? ROLE.RADIOGROUP : ROLE.GROUP}"
-        aria-labelledby="${DEFAULTS.LABEL_ID}"
-        aria-describedby="${DEFAULTS.HELPER_TEXT_ID}"
+        aria-labelledby="${FORMFIELD_DEFAULTS.LABEL_ID}"
+        aria-describedby="${FORMFIELD_DEFAULTS.HELPER_TEXT_ID}"
         aria-label="${this.dataAriaLabel ?? ''}"
       >
         ${this.renderLabel()}
