@@ -48,8 +48,10 @@ class FormfieldGroup extends DataAriaLabelMixin(FormfieldWrapper) {
         aria-describedby="${FORMFIELD_DEFAULTS.HELPER_TEXT_ID}"
         aria-label="${this.dataAriaLabel ?? ''}"
       >
-        ${this.renderLabel()}
-        ${this.renderHelpText()}
+        <div part="group-header">
+          ${this.renderLabel()}
+          ${this.renderHelperText()}
+        </div>
         <slot></slot>
       </div>
     `;
