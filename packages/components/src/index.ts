@@ -59,7 +59,6 @@ export {
   Toggle,
   VirtualizedList,
   Textarea,
-  Tooltip,
 };
 export type {
   TextType,
