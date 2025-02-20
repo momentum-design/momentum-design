@@ -210,7 +210,7 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
    *
    * @param event - The keyboard event.
    */
-  private handleKeyUp(event: KeyboardEvent) {
+  protected handleKeyUp(event: KeyboardEvent) {
     if (['Enter', ' '].includes(event.key)) {
       this.classList.remove('pressed');
       if (event.key === ' ') {
