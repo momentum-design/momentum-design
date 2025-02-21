@@ -2,7 +2,6 @@ import { CSSResult } from 'lit';
 import { NameMixin } from '../../utils/mixins/NameMixin';
 import FormfieldGroup from '../formfieldgroup';
 import { TAG_NAME as RADIO_TAGNAME } from '../radio/radio.constants';
-import styles from './radio-group.styles';
 
 /**
  * Radio Group Component - This is the wrapper component for radio buttons which are grouped together.
@@ -26,10 +25,11 @@ class RadioGroup extends NameMixin(FormfieldGroup) {
    * If the name is not set, it will be set to the name of the radio group.
    */
   override firstUpdated() {
-    const slot = this.shadowRoot?.querySelector('slot');
-    if (slot) {
-      const radios = slot.assignedElements({ flatten: true })
-        .filter((el) => el.tagName.toLowerCase() === RADIO_TAGNAME);
+    const slots = Array.from(this.shadowRoot?.querySelectorAll('slot') || []);
+    const radios = slots
+      .flatMap((slot) => slot.assignedElements({ flatten: true }))
+      .filter((el) => el.tagName.toLowerCase() === RADIO_TAGNAME);
+    if (radios) {
       radios.forEach((radio) => {
         if (!radio.hasAttribute('name')) {
           radio.setAttribute('name', this.name);
@@ -38,7 +38,7 @@ class RadioGroup extends NameMixin(FormfieldGroup) {
     }
   }
 
-  public static override styles: Array<CSSResult> = [...FormfieldGroup.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...FormfieldGroup.styles];
 }
 
 export default RadioGroup;
