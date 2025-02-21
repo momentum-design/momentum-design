@@ -34,7 +34,9 @@ import '@momentum-design/tokens/dist/css/components/complete.css';
 `,e.jsxs(n.p,{children:[e.jsx(n.code,{children:"mds-typography"})," class needs to be set on the root element for proper font usage."]}),`
 `]}),`
 `,e.jsxs(n.li,{children:[`
-`,e.jsx(n.p,{children:"Providers (like ThemeProvider, IconProvider) need to wrap Momentum Design Components for proper usage."}),`
+`,e.jsxs(n.p,{children:[`Providers allow configuration for all the Momentum Design Components contained within the provider.
+`,e.jsx("br",{}),"1. IconProvider sets the icon source and icons configuration. (refer to ",e.jsx(n.a,{href:"https://momentum-design.github.io/momentum-design/storybook-static/index.html?path=/docs/components-iconprovider--docs",rel:"nofollow",children:e.jsx(n.strong,{children:"Icon Provider"})}),`).
+`,e.jsx("br",{}),"2. ThemeProvider sets the theme class. (refer to ",e.jsx(n.a,{href:"https://momentum-design.github.io/momentum-design/storybook-static/index.html?path=/docs/components-themeprovider--docs",rel:"nofollow",children:e.jsx(n.strong,{children:"Theme Provider"})}),")."]}),`
 `]}),`
 `,e.jsxs(n.li,{children:[`
 `,e.jsx(n.p,{children:"Your build config needs to be able to have file loaders for CSS and WOFF2."}),`
