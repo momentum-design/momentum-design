@@ -206,39 +206,43 @@ class Popover extends FocusTrapMixin(Component) {
   appendTo: string = '';
 
   /**
-   * Aria-label attribute to be set for close button accessibility
+   * aria-label attribute to be set for close button accessibility.
    * @default null
    */
   @property({ type: String, attribute: 'close-button-aria-label' })
   closeButtonAriaLabel: string | null = null;
 
   /**
-   * Aria-label attribute to be set for popover accessibility
+   * aria-label for an interactive popover only. By default, it will be labelled by the triggerComponent.
+   * Only required in the unusual circumstance where the popover label cannot match the trigger.
    * @default null
    */
-  @property({ type: String, attribute: 'aria-label' })
+  @property({ type: String, attribute: 'data-aria-label', reflect: true })
   override ariaLabel: string | null = null;
 
   /**
-   * Aria-labelledby attribute to be set for popover accessibility
+   * aria-labelledby for an interactive popover only, defaults to the trigger component id.
+   * Used in nested cases where the triggerComponent isn't the actual button.
    * @default null
    */
-  @property({ type: String, attribute: 'aria-labelledby' })
-  ariaLabelledBy: string | null = null;
+  @property({ type: String, attribute: 'data-aria-labelledby', reflect: true })
+  ariaLabelledby: string | null = null;
 
   /**
-   * Role attribute to be set for popover accessibility
+   * role attribute to be set for popover accessibility.
    * @default dialog
    */
-  @property({ type: String, reflect: true })
+  @property({ type: String, attribute: 'data-role', reflect: true })
   override role: ModalContainerRole = DEFAULTS.ROLE;
 
   /**
-   * Aria-describedby attribute to be set for popover accessibility
+   * `aria-describedby` for an interactive popover. It should reference an element inside the popover
+   * that provides additional descriptive information. This is useful when the popover contains
+   * explanatory content, such as help text or tooltips.
    * @default null
    */
-  @property({ type: String, attribute: 'aria-describedby' })
-  ariaDecribedBy: string | null = null;
+  @property({ type: String, attribute: 'data-aria-describedby', reflect: true })
+  ariaDescribedby: string | null = null;
 
   /** @internal */
   private triggerElement: HTMLElement | null = null;
@@ -267,6 +271,7 @@ class Popover extends FocusTrapMixin(Component) {
     await this.setupAppendTo();
     await this.setupDelay();
     await this.setupTrigger();
+    await this.setupAccessibility();
     this.onCreatedPopover();
 
     if (this.visible) {
@@ -360,6 +365,23 @@ class Popover extends FocusTrapMixin(Component) {
       this.delay = '0,0';
       this.openDelay = 0;
       this.closeDelay = 0;
+    }
+  }
+
+  private async setupAccessibility() {
+    if (this.interactive) {
+      if (!this.ariaLabel) {
+        this.ariaLabel = this.triggerElement?.ariaLabel || this.triggerElement?.textContent || '';
+        this.popoverElement?.setAttribute('aria-label', this.ariaLabel);
+      } else {
+        this.popoverElement?.setAttribute('aria-label', this.ariaLabel);
+      }
+      if (!this.ariaLabelledby) {
+        this.ariaLabelledby = this.triggerElement?.id || '';
+        this.popoverElement?.setAttribute('aria-labelledby', this.ariaLabelledby);
+      } else {
+        this.popoverElement?.setAttribute('aria-labelledby', this.ariaLabelledby);
+      }
     }
   }
 
@@ -457,6 +479,19 @@ class Popover extends FocusTrapMixin(Component) {
         'role',
         Object.values(ROLE).includes(this.role) ? this.role : DEFAULTS.ROLE,
       );
+    }
+    if (changedProperties.has('zIndex')) {
+      this.setAttribute('z-index', `${this.zIndex}`);
+    }
+    if (changedProperties.has('appendTo')) {
+      await this.setupAppendTo();
+    }
+    if (
+      changedProperties.has('interactive')
+    || changedProperties.has('ariaLabel')
+    || changedProperties.has('ariaLabelledBy')
+    ) {
+      await this.setupAccessibility();
     }
   }
 
@@ -802,6 +837,9 @@ class Popover extends FocusTrapMixin(Component) {
         aria-modal=${ifDefined(this.interactive ? 'true' : undefined)}
         ?visible=${this.visible}
         role=${this.role}
+      ${this.interactive ? html`
+        aria-describedby=${ifDefined(this.ariaDescribedby)}
+      ` : nothing}
         style="z-index: ${this.zIndex};"
         data-color=${this.color}
       >

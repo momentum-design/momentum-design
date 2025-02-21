@@ -28,10 +28,10 @@ const createPopover = (id: string, triggerID: string, args: Args, content: Templ
   ?hide-on-escape=${args['hide-on-escape']}
   ?hide-on-outside-click=${args['hide-on-outside-click']}
   ?focus-back-to-trigger=${args['focus-back-to-trigger']}
-  aria-label="${args['aria-label']}"
-  aria-labelledby="${args['aria-labelledby']}"
-  aria-describedby="${args['aria-describedby']}"
-  role="${args.role}"
+  data-aria-label="${args['data-aria-label']}"
+  data-aria-labelledby="${args['data-aria-labelledby']}"
+  data-aria-describedby="${args['data-aria-describedby']}"
+  data-role="${args['data-role']}"
 >
   ${content}
 </mdc-popover>
@@ -242,16 +242,16 @@ const meta: Meta = {
     'focus-back-to-trigger': {
       control: 'boolean',
     },
-    'aria-label': {
+    'data-aria-label': {
       control: 'text',
     },
-    'aria-labelledby': {
+    'data-aria-labelledby': {
       control: 'text',
     },
-    'aria-describedby': {
+    'data-aria-describedby': {
       control: 'text',
     },
-    role: {
+    'data-role': {
       control: 'radio',
       options: Object.values(ROLE),
     },
@@ -279,10 +279,11 @@ export const Default: StoryObj = {
     triggerID: 'popover-trigger',
     trigger: 'click',
     placement: POPOVER_PLACEMENT.BOTTOM,
-    offset: 4,
-    delay: '0,0',
+    offset: DEFAULTS.OFFSET,
+    'z-index': DEFAULTS.Z_INDEX,
+    delay: DEFAULTS.DELAY,
     'show-arrow': true,
-    role: DEFAULTS.ROLE,
+    'data-role': DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
   },
 };
@@ -294,14 +295,15 @@ export const interactiveContent: StoryObj = {
     triggerID: 'popover-trigger-interactive',
     trigger: 'click',
     placement: POPOVER_PLACEMENT.BOTTOM,
-    offset: 4,
-    delay: '0,0',
+    offset: DEFAULTS.OFFSET,
+    'z-index': DEFAULTS.Z_INDEX,
+    delay: DEFAULTS.DELAY,
     'focus-trap': true,
     interactive: true,
     'show-arrow': true,
     flip: true,
     size: true,
-    role: DEFAULTS.ROLE,
+    'data-role': DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
   },
 };
@@ -313,13 +315,14 @@ export const interactiveHover: StoryObj = {
     triggerID: 'popover-trigger-interactive-hover',
     trigger: 'mouseenter',
     placement: POPOVER_PLACEMENT.BOTTOM,
-    offset: 4,
-    delay: '0,0',
+    offset: DEFAULTS.OFFSET,
+    'z-index': DEFAULTS.Z_INDEX,
+    delay: DEFAULTS.DELAY,
     'focus-trap': true,
     interactive: true,
     'show-arrow': true,
     'hide-on-escape': true,
-    role: DEFAULTS.ROLE,
+    'data-role': DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
   },
 };
@@ -331,12 +334,14 @@ export const interactiveMultiple: StoryObj = {
     triggerID: 'popover-trigger-multiple',
     trigger: 'click',
     placement: POPOVER_PLACEMENT.TOP,
-    offset: 4,
+    offset: DEFAULTS.OFFSET,
+    'z-index': DEFAULTS.Z_INDEX,
+    delay: DEFAULTS.DELAY,
     'focus-trap': true,
     interactive: true,
     'show-arrow': true,
     'close-button': true,
-    role: DEFAULTS.ROLE,
+    'data-role': DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
   },
 };
@@ -347,13 +352,14 @@ export const nestedPopover: StoryObj = {
     triggerID: 'popover-trigger-nested',
     trigger: 'click',
     placement: POPOVER_PLACEMENT.TOP,
-    offset: 4,
+    offset: DEFAULTS.OFFSET,
     'z-index': 10,
+    delay: DEFAULTS.DELAY,
     'focus-trap': true,
     interactive: true,
     'show-arrow': true,
     'hide-on-escape': true,
-    role: DEFAULTS.ROLE,
+    'data-role': DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
   },
 };
@@ -364,12 +370,13 @@ export const hideOnBlur: StoryObj = {
     triggerID: 'popover-trigger-hide-on-blur',
     trigger: 'click',
     placement: POPOVER_PLACEMENT.RIGHT,
-    offset: 4,
-    delay: '0,0',
+    offset: DEFAULTS.OFFSET,
+    'z-index': DEFAULTS.Z_INDEX,
+    delay: DEFAULTS.DELAY,
     interactive: true,
     'show-arrow': true,
     'hide-on-blur': true,
-    role: DEFAULTS.ROLE,
+    'data-role': DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
   },
 };
