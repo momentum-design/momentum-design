@@ -15,10 +15,10 @@ import Input from './components/input';
 import Link from './components/link';
 import Toggle from './components/toggle';
 import Checkbox from './components/checkbox';
-import CheckboxGroup from './components/checkboxgroup';
 import Radio from './components/radio';
 import VirtualizedList from './components/virtualizedlist';
 import Tab from './components/tab';
+import FormfieldGroup from './components/formfieldgroup';
 
 import type { TextType } from './components/text/text.types';
 
@@ -40,10 +40,10 @@ export {
   Link,
   Toggle,
   Checkbox,
-  CheckboxGroup,
   Radio,
   VirtualizedList,
   Tab,
+  FormfieldGroup,
 };
 
 export type {

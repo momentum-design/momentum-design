@@ -6,6 +6,7 @@ import { ValueMixin } from '../../utils/mixins/ValueMixin';
 import styles from './radio.styles';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
+import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 
 /**
  * Radio allow users to select single options from a list or turn an item/feature on or off.
@@ -210,6 +211,7 @@ class Radio extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) 
             ?disabled=${this.disabled}
             class="mdc-radio__input"
             aria-checked="${this.checked}"
+            aria-describedby="${FORMFIELD_DEFAULTS.HELPER_TEXT_ID}"
             aria-label="${this.dataAriaLabel ?? ''}"
           />
           <span class="mdc-radio__icon"></span>
