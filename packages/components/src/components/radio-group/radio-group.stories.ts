@@ -9,8 +9,8 @@ import '../button';
 const render = (args: Args) => html`
   <mdc-radio-group 
   name="${args.name}"
-  header-text="${args['header-text']}"
-  description-text="${args['description-text']}">
+  label="${args['label']}"
+  help-text="${args['help-text']}">
     <mdc-radio label="Black Widow" value="black-widow"></mdc-radio>
     <mdc-radio label="Captain America" value="captain-america"></mdc-radio>
     <mdc-radio label="Hawkeye" value="hawkeye"></mdc-radio>
@@ -33,10 +33,10 @@ const meta: Meta = {
     name: {
       control: { type: 'text' },
     },
-    'header-text': {
+    'label': {
       control: { type: 'text' },
     },
-    'description-text': {
+    'help-text': {
       control: { type: 'text' },
     },
   },
@@ -46,15 +46,15 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    'header-text': 'Select your team captain',
+    'label': 'Select your team captain',
     name: 'team-captain',
   },
 };
 
 export const RadioGroupWithDescription: StoryObj = {
   args: {
-    'header-text': 'Select your team captain',
-    'description-text': 'The team captain should have previous experience leading the team through '
+    'label': 'Select your team captain',
+    'help-text': 'The team captain should have previous experience leading the team through '
      + 'challenging situations.',
     name: 'team-captain-with-experience',
   },
@@ -70,7 +70,7 @@ export const RadioGroupInForm = () => {
 
   return html`
     <form @submit=${handleSubmit}>
-      <mdc-radio-group name="course-plan" header-text="Select your course plan">
+      <mdc-radio-group name="course-plan" label="Select your course plan" help-text="Choose a plan that best suits your needs">
       <mdc-radio value="standard" data-aria-label="Standard Plan" label="Standard Plan">
       </mdc-radio>
       <mdc-radio value="premium" data-aria-label="Premium Plan" label="Premium Plan">
