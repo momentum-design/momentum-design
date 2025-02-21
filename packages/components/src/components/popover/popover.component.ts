@@ -368,6 +368,9 @@ class Popover extends FocusTrapMixin(Component) {
     }
   }
 
+  /**
+   * Sets up the accessibility attributes for the popover.
+   */
   private async setupAccessibility() {
     if (this.interactive) {
       if (!this.ariaLabel) {
@@ -767,11 +770,15 @@ class Popover extends FocusTrapMixin(Component) {
     const { x: arrowX, y: arrowY } = arrowData;
 
     this.arrowElement.setAttribute('data-side', side);
+    const arrowBorder = parseFloat(
+      window.getComputedStyle(this.arrowElement).getPropertyValue(`border-${staticSide}-width`),
+    );
+    const arrowOffset = 1 - arrowBorder;
 
     Object.assign(this.arrowElement.style, {
       left: arrowX != null ? `${arrowX}px` : '',
       top: arrowY != null ? `${arrowY}px` : '',
-      [staticSide]: `${-this.arrowElement.offsetHeight / 1.95}px`,
+      [staticSide]: `${-this.arrowElement.offsetHeight / 2 - arrowOffset}px`,
     });
   }
 
@@ -855,7 +862,7 @@ class Popover extends FocusTrapMixin(Component) {
             ></mdc-button>`
     : nothing}
         ${this.showArrow
-    ? html`<div class="popover-arrow" style="z-index: ${this.zIndex};"></div>`
+    ? html`<div class="popover-arrow"></div>`
     : nothing}
         <div class="popover-content" part="popover-content">
           <slot></slot>

@@ -67,7 +67,6 @@ const styles = css`
     transform: rotate(45deg);
     pointer-events: none;
     border: var(--mdc-popover-arrow-border);
-    box-sizing: content-box;
   }
 
   .popover-close {
