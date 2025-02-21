@@ -8,7 +8,9 @@ import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
 import { popoverStack } from './popover.stack';
 import type { PopoverPlacement, PopoverTrigger } from './popover.types';
 import type { ModalContainerColor, ModalContainerRole } from '../modalcontainer/modalcontainer.types';
-import { DEFAULTS } from './popover.constants';
+import { COLOR, ROLE } from '../modalcontainer/modalcontainer.constants';
+import { DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants';
+import { ValueOf } from '../../utils/types';
 
 /**
  * Popover component is a lightweight floating UI element that displays additional content when triggered.
@@ -193,8 +195,8 @@ class Popover extends FocusTrapMixin(Component) {
    * The z-index of the popover.
    * @default 1000
    */
-  @property({ type: Number, reflect: true, attribute: 'set-index' })
-  setIndex: number = 1000;
+  @property({ type: Number, reflect: true, attribute: 'z-index' })
+  zIndex: number = DEFAULTS.Z_INDEX;
 
   /**
    * Element ID that the popover append to.
@@ -228,14 +230,14 @@ class Popover extends FocusTrapMixin(Component) {
    * Role attribute to be set for popover accessibility
    * @default dialog
    */
-  @property({ type: String })
+  @property({ type: String, reflect: true })
   override role: ModalContainerRole = DEFAULTS.ROLE;
 
   /**
    * Aria-describedby attribute to be set for popover accessibility
    * @default null
    */
-  @property({ type: String, attribute: 'aria-describeby' })
+  @property({ type: String, attribute: 'aria-describedby' })
   ariaDecribedBy: string | null = null;
 
   /** @internal */
@@ -249,6 +251,9 @@ class Popover extends FocusTrapMixin(Component) {
 
   /** @internal */
   private hoverTimer: number | null = null;
+
+  /** @internal */
+  private isTriggerClicked: boolean = false;
 
   /** @internal */
   private openDelay: number = 0;
@@ -422,12 +427,36 @@ class Popover extends FocusTrapMixin(Component) {
       const oldValue = changedProperties.get('visible') as boolean;
       await this.isOpenUpdated(oldValue, this.visible);
     }
+    if (changedProperties.has('placement')) {
+      this.setAttribute(
+        'placemenet',
+        Object.values(POPOVER_PLACEMENT).includes(this.placement) ? this.placement : DEFAULTS.PLACEMENT,
+      );
+    }
     if (changedProperties.has('delay')) {
       await this.setupDelay();
     }
     if (changedProperties.has('trigger')) {
+      const triggers = this.trigger.split(' ');
+      const validTriggers = triggers.filter(
+        (trigger) => Object.values(TRIGGER).includes(trigger as ValueOf<typeof TRIGGER>),
+      );
+
+      this.setAttribute('trigger', validTriggers.length > 0 ? this.trigger : DEFAULTS.TRIGGER);
       await this.removeEventListeners();
       await this.setupTrigger();
+    }
+    if (changedProperties.has('color')) {
+      this.setAttribute(
+        'color',
+        Object.values(COLOR).includes(this.color) ? this.color : DEFAULTS.COLOR,
+      );
+    }
+    if (changedProperties.has('role')) {
+      this.setAttribute(
+        'role',
+        Object.values(ROLE).includes(this.role) ? this.role : DEFAULTS.ROLE,
+      );
     }
   }
 
@@ -488,8 +517,8 @@ class Popover extends FocusTrapMixin(Component) {
 
       if (this.backdrop && this.triggerElement) {
         const popoverBackdrop = this.renderRoot.querySelector('.popover-backdrop') as HTMLElement;
-        popoverBackdrop.style.zIndex = `${this.setIndex - 1}`;
-        this.triggerElement.style.zIndex = `${this.setIndex}`;
+        popoverBackdrop.style.zIndex = `${this.zIndex - 1}`;
+        this.triggerElement.style.zIndex = `${this.zIndex}`;
       }
 
       await this.positionPopover();
@@ -543,6 +572,7 @@ class Popover extends FocusTrapMixin(Component) {
     if (!this.interactive) {
       this.hidePopover();
     } else {
+      if (this.isTriggerClicked) return;
       this.hoverTimer = window.setTimeout(() => {
         this.visible = false;
       }, this.closeDelay);
@@ -568,7 +598,9 @@ class Popover extends FocusTrapMixin(Component) {
       this.visible = true;
       this.onShowPopover();
     }, this.openDelay);
-    popoverStack.push(this);
+    if (popoverStack.peek() !== this) {
+      popoverStack.push(this);
+    }
   };
 
   /**
@@ -579,6 +611,7 @@ class Popover extends FocusTrapMixin(Component) {
       setTimeout(() => {
         this.visible = false;
         this.onHidePopover();
+        this.isTriggerClicked = false;
       }, this.closeDelay);
       popoverStack.pop();
     }
@@ -588,10 +621,11 @@ class Popover extends FocusTrapMixin(Component) {
    * Toggles the popover visibility.
    */
   public togglePopover = async () => {
-    if (this.visible) {
+    if (this.isTriggerClicked) {
       this.hidePopover();
     } else {
       await this.showPopover();
+      this.isTriggerClicked = true;
     }
   };
 
@@ -637,12 +671,12 @@ class Popover extends FocusTrapMixin(Component) {
     }
 
     if (this.showArrow) {
-      this.arrowElement = this.renderRoot.querySelector('#popover-arrow');
+      this.arrowElement = this.renderRoot.querySelector('.popover-arrow');
       if (this.arrowElement) {
-        const arrowLen = 16;
+        const arrowLen = this.arrowElement.offsetHeight;
         const arrowOffset = Math.sqrt(2 * arrowLen ** 2) / 2;
         popoverOffset = arrowOffset + this.offset;
-        middleware.push(arrow({ element: this.arrowElement }));
+        middleware.push(arrow({ element: this.arrowElement, padding: 12 }));
       }
     }
 
@@ -675,7 +709,6 @@ class Popover extends FocusTrapMixin(Component) {
     Object.assign(this.popoverElement.style, {
       left: `${x}px`,
       top: `${y}px`,
-      position: 'absolute',
     });
   }
 
@@ -763,14 +796,13 @@ class Popover extends FocusTrapMixin(Component) {
     return html`
       ${this.backdrop && this.visible ? html`<div class="popover-backdrop"></div>` : nothing}
       <mdc-modalcontainer
-        id=${this.id}
         class="popover-container"
         elevation="3"
         color=${this.color}
         aria-modal=${ifDefined(this.interactive ? 'true' : undefined)}
         ?visible=${this.visible}
-        rolse=${this.role}
-        style="z-index: ${this.setIndex};"
+        role=${this.role}
+        style="z-index: ${this.zIndex};"
         data-color=${this.color}
       >
         <div class="popover-hover-bridge"></div>
@@ -785,7 +817,7 @@ class Popover extends FocusTrapMixin(Component) {
             ></mdc-button>`
     : nothing}
         ${this.showArrow
-    ? html`<div id="popover-arrow" class="popover-arrow" style="z-index: ${this.setIndex};"></div>`
+    ? html`<div class="popover-arrow" style="z-index: ${this.zIndex};"></div>`
     : nothing}
         <div class="popover-content" part="popover-content">
           <slot></slot>

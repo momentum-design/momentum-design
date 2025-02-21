@@ -45,6 +45,7 @@ const DEFAULTS = {
   SIZE: false,
   DELAY: '0,0',
   ROLE: ROLE.DIALOG,
+  Z_INDEX: 1000,
 } as const;
 
 export { TAG_NAME, POPOVER_PLACEMENT, TRIGGER, DEFAULTS };

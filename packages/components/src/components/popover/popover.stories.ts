@@ -12,7 +12,7 @@ const createPopover = (id: string, triggerID: string, args: Args, content: Templ
   trigger="${args.trigger}"
   placement="${args.placement}"
   delay="${args.delay}"
-  set-index="${args['set-index']}"
+  z-index="${args['z-index']}"
   ?visible="${args.visible}"
   .offset="${args.offset ?? 0}"
   ?interactive=${args.interactive}
@@ -30,7 +30,7 @@ const createPopover = (id: string, triggerID: string, args: Args, content: Templ
   ?focus-back-to-trigger=${args['focus-back-to-trigger']}
   aria-label="${args['aria-label']}"
   aria-labelledby="${args['aria-labelledby']}"
-  aria-describeby="${args['aria-describeby']}"
+  aria-describedby="${args['aria-describedby']}"
   role="${args.role}"
 >
   ${content}
@@ -126,7 +126,7 @@ const renderMultiple = (args: Args) => html`
     triggerID="popover-trigger-multiple"
     trigger="mouseenter"
     placement="bottom"
-    set-index="20"
+    z-index="20"
     show-arrow
   >
     <mdc-text>Description tooltip on mou se enter</mdc-text>
@@ -147,7 +147,7 @@ const renderNested = (args: Args) => html`
   trigger="click"
   placement="bottom"
   interactive
-  set-index="20"
+  z-index="20"
   focus-back-to-trigger
   focus-trap
   show-arrow
@@ -162,7 +162,7 @@ const renderNested = (args: Args) => html`
   triggerID="popover-trigger-3"
   trigger="mouseenter"
   placement="bottom"
-  set-index="30"
+  z-index="30"
   show-arrow
   hide-on-escape
   hide-on-outside-click
@@ -209,9 +209,9 @@ const meta: Meta = {
     backdrop: {
       control: 'boolean',
     },
-    'set-index': {
+    'z-index': {
       if: {
-        arg: 'set-index',
+        arg: 'z-index',
       },
       control: 'number',
     },
@@ -248,7 +248,7 @@ const meta: Meta = {
     'aria-labelledby': {
       control: 'text',
     },
-    'aria-describeby': {
+    'aria-describedby': {
       control: 'text',
     },
     role: {
@@ -348,7 +348,7 @@ export const nestedPopover: StoryObj = {
     trigger: 'click',
     placement: POPOVER_PLACEMENT.TOP,
     offset: 4,
-    'set-index': 10,
+    'z-index': 10,
     'focus-trap': true,
     interactive: true,
     'show-arrow': true,
