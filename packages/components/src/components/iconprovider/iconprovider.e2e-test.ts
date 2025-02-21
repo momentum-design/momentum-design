@@ -194,12 +194,44 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
         await componentsPage.expectPromiseTimesOut(responseAccessibilityBoldSecondTime, false);
       }
     });
-    await test.step('caching turned on', async () => {
+    await test.step('caching (js-cache) turned on', async () => {
       if (type === 'standalone') {
         await componentsPage.setAttributes(iconprovider, {
           'file-extension': 'svg',
           'length-unit': 'rem',
-          'should-cache': '',
+          'cache-strategy': 'js-cache',
+          'cache-name': 'momentum',
+        });
+        const iconLocator = componentsPage.page.locator('mdc-icon#icon-local');
+
+        const responseAccessoriesBoldFirstTime = componentsPage.page.waitForResponse('**/accessories-bold.svg');
+        await componentsPage.setAttributes(iconLocator, {
+          name: 'accessories-bold',
+        });
+        await componentsPage.expectPromiseTimesOut(responseAccessoriesBoldFirstTime, false);
+
+        const responseAccessoriesRegular = componentsPage.page.waitForResponse('**/accessories-regular.svg');
+        await componentsPage.setAttributes(iconLocator, {
+          name: 'accessories-regular',
+        });
+        await componentsPage.expectPromiseTimesOut(responseAccessoriesRegular, false);
+
+        const responseAccessoriesBoldSecondTime = componentsPage.page.waitForResponse('**/accessories-bold.svg');
+        await componentsPage.setAttributes(iconLocator, {
+          name: 'accessories-bold',
+        });
+        // this should timeout, so the network request is not made, cause caching is turned on:
+        await componentsPage.expectPromiseTimesOut(responseAccessoriesBoldSecondTime, true);
+      }
+    });
+
+    await test.step('caching (web-api-cache) turned on', async () => {
+      if (type === 'standalone') {
+        await componentsPage.setAttributes(iconprovider, {
+          'file-extension': 'svg',
+          'length-unit': 'rem',
+          'cache-strategy': 'web-api-cache',
+          'cache-name': 'momentum',
         });
         const iconLocator = componentsPage.page.locator('mdc-icon#icon-local');
 

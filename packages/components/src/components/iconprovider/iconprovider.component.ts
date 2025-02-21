@@ -11,11 +11,15 @@ import { ALLOWED_FILE_EXTENSIONS, DEFAULTS, ALLOWED_LENGTH_UNITS } from './iconp
  * that only a url has to be passed in from which the icons will be
  * fetched.
  *
- * If `shouldCache` is set to true, the IconProvider will cache the icons
- * in a Map to avoid fetching the same icon multiple times over the network.
+ * If `cacheStrategy` is provided, the IconProvider will cache the icons
+ * in the selected cache (either web-api-cache or js-cache),
+ * to avoid fetching the same icon multiple times over the network.
  * This is useful when the same icon is used multiple times in the application.
- * Keep in mind that this cache is not persisted and will be lost when the
+ * To consider:
+ * - The `js-cache` is not persisted and will be lost when the
  * IconProvider is removed from the DOM.
+ * - The `web-api-cache` is persisted, but only works in https environments
+ * (https://developer.mozilla.org/en-US/docs/Web/API/Cache).
  *
  * @tagname mdc-iconprovider
  *
@@ -66,13 +70,32 @@ class IconProvider extends Provider<IconProviderContext> {
   size?: number = DEFAULTS.SIZE;
 
   /**
-   * If the IconProvider should cache the icons
-   * in a Map to avoid fetching the same icon multiple times
+   * Icons Cache Strategy to use
    *
-   * @default false
+   * Choose `js-cache` to cache icons in a JS cache (in-memory cache).
+   * Choose `web-cache-api` to cache icons using the Web Cache API.
+   *
+   * NOTE: `cache-name` must be provided if `cache-strategy` is provided.
+   *
+   * If not provided or invalid value provided, the icons will not be cached.
+   * @default undefined
    */
-  @property({ type: Boolean, attribute: 'should-cache', reflect: true })
-  shouldCache?: boolean = DEFAULTS.SHOULD_CACHE;
+  @property({ type: String, attribute: 'cache-strategy' })
+  cacheStrategy?: 'js-cache' | 'web-cache-api';
+
+  /**
+   * Icons Cache Name to use
+   *
+   * If provided, Icons inside the provider will be cached in the
+   * cache (determined by `cache-strategy`) with the provided name.
+   *
+   * NOTE: `cache-name` requires `cache-strategy` to be set.
+   *
+   * If not provided, the icons will not be cached.
+   * @default undefined
+   */
+  @property({ type: String, attribute: 'cache-name' })
+  cacheName?: string;
 
   private updateValuesInContext() {
     // only update fileExtension on context if its an allowed fileExtension
@@ -85,7 +108,8 @@ class IconProvider extends Provider<IconProviderContext> {
     }
     this.context.value.url = this.url;
     this.context.value.size = this.size;
-    this.context.value.shouldCache = this.shouldCache;
+    this.context.value.cacheName = this.cacheName;
+    this.context.value.cacheStrategy = this.cacheStrategy;
 
     if (this.lengthUnit && ALLOWED_LENGTH_UNITS.includes(this.lengthUnit)) {
       this.context.value.lengthUnit = this.lengthUnit;
@@ -102,7 +126,8 @@ class IconProvider extends Provider<IconProviderContext> {
       || this.context.value.url !== this.url
       || this.context.value.lengthUnit !== this.lengthUnit
       || this.context.value.size !== this.size
-      || this.context.value.shouldCache !== this.shouldCache
+      || this.context.value.cacheName !== this.cacheName
+      || this.context.value.cacheStrategy !== this.cacheStrategy
     ) {
       this.updateValuesInContext();
       this.context.updateObservers();

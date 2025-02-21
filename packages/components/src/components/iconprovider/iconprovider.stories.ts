@@ -9,10 +9,11 @@ const render = (args: Args) => html`
 <mdc-iconprovider 
   url=${args.url}
   file-extension=${args['file-extension']}
-  .shouldCache=${args['should-cache']}
+  cache-strategy=${args['cache-strategy']}
+  cache-name=${args['cache-name']}
   length-unit=${args['length-unit']}
   size=${args.size}>
-  <mdc-subcomponent-icon></mdc-subcomponent-icon>
+  <mdc-subcomponent-icon icon-name=${args['icon-name']}></mdc-subcomponent-icon>
 </mdc-iconprovider>
 `;
 
@@ -33,8 +34,16 @@ const meta: Meta = {
       options: ALLOWED_LENGTH_UNITS,
       control: { type: 'inline-radio' },
     },
-    'should-cache': {
-      control: { type: 'boolean' },
+    'cache-strategy': {
+      control: 'select',
+      options: ['js-cache', 'web-cache-api'],
+    },
+    'cache-name': {
+      control: { type: 'text' },
+    },
+    'icon-name': {
+      control: { type: 'text' },
+      description: 'Name of the icon to be rendered underneath IconProvider (not part of IconProvider component)',
     },
     ...hideControls(['Context']),
   },
@@ -47,7 +56,9 @@ export const Example: StoryObj = {
     url: './icons/svg',
     'file-extension': 'svg',
     'length-unit': 'em',
-    'should-cache': false,
+    'cache-strategy': undefined,
+    'cache-name': 'my-icon-cache',
     size: 1,
+    'icon-name': 'accessibility-regular',
   },
 };
