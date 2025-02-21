@@ -5,8 +5,8 @@ import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 type SetupOptions = {
   componentsPage: ComponentsPage;
   name?: string;
-  'header-text'?: string;
-  'description-text'?: string;
+  'label'?: string;
+  'help-text'?: string;
 }
 
 const setup = async (args: SetupOptions) => {
@@ -16,8 +16,8 @@ const setup = async (args: SetupOptions) => {
       <form id="radio-form">
         <mdc-radio-group
           ${restArgs.name ? `name="${restArgs.name}"` : ''}
-          ${restArgs['header-text'] ? `header-text="${restArgs['header-text']}"` : ''}
-          ${restArgs['description-text'] ? `description="${restArgs['description-text']}"` : ''}
+          ${restArgs.label ? `label="${restArgs.label}"` : ''}
+          ${restArgs['help-text'] ? `help-text="${restArgs['help-text']}"` : ''}
         >
           <mdc-radio label="Standard Plan" value="standard-plan"></mdc-radio>
           <mdc-radio label="Premium Plan" value="premium-plan" disabled></mdc-radio>
@@ -45,17 +45,17 @@ test('mdc-radio-group', async ({ componentsPage }) => {
       <mdc-radio label="Business Plan" value="business-plan" disabled></mdc-radio>`,
     );
 
-    // Radio Group with header text only
+    // Radio Group with label only
     await radioGroupStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
     await radioGroupStickerSheet.setAttributes({
-      'header-text': 'Select your plan',
+      label: 'Select your plan',
     });
 
-    // Radio Group with header text and description
+    // Radio Group with label and help text
     await radioGroupStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
     await radioGroupStickerSheet.setAttributes({
-      'header-text': 'Select your plan',
-      'description-text': 'The plan you select will be the plan you are billed for',
+      label: 'Select your plan',
+      'help-text': 'The plan you select will be the plan you are billed for',
     });
 
     await radioGroupStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
@@ -80,22 +80,22 @@ test('mdc-radio-group', async ({ componentsPage }) => {
    */
   await test.step('attributes', async () => {
     const radioGroup = await setup({ componentsPage });
-    // For Header Text
-    await test.step('should have header text when the header text attribute is passed', async () => {
-      await componentsPage.setAttributes(radioGroup, { 'header-text': 'Header Text' });
-      const mdcText = await componentsPage.page.locator('mdc-text');
-      const textContent = await mdcText.textContent();
-      expect(textContent?.trim()).toBe('Header Text');
-      await componentsPage.removeAttribute(radioGroup, 'header-text');
+    // For label
+    await test.step('should have label text when the label text attribute is passed', async () => {
+      await componentsPage.setAttributes(radioGroup, { label: 'Label Text' });
+      const labelElement = componentsPage.page.locator('label[id="label-id"]');
+      const groupLabelText = await labelElement.nth(0).textContent();
+      expect(groupLabelText?.trim()).toBe('Label Text');
+      await componentsPage.removeAttribute(radioGroup, 'label');
     });
 
-    // For description
-    await test.step('should have description when the description attribute is passed', async () => {
-      await componentsPage.setAttributes(radioGroup, { 'description-text': 'Description' });
+    // For help text
+    await test.step('should have help text when the help text attribute is passed', async () => {
+      await componentsPage.setAttributes(radioGroup, { 'help-text': 'Help Text' });
       const mdcText = await componentsPage.page.locator('mdc-text');
       const textContent = await mdcText.textContent();
-      expect(textContent?.trim()).toBe('Description');
-      await componentsPage.removeAttribute(radioGroup, 'description');
+      expect(textContent?.trim()).toBe('Help Text');
+      await componentsPage.removeAttribute(radioGroup, 'help-text');
     });
 
     // For radio count
@@ -113,7 +113,7 @@ test('mdc-radio-group', async ({ componentsPage }) => {
     await test.step('navigate and select between radio buttons using arrow keys.', async () => {
       await setup({
         componentsPage,
-        'header-text': 'Select your plan',
+        label: 'Select your plan',
         name: 'student-plan',
       });
       const radios = await componentsPage.page.locator('mdc-radio').locator('input[name="student-plan"]');
