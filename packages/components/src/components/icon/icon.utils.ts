@@ -11,6 +11,12 @@ interface Args {
 
 /**
  * Fetches a dynamic SVG icon based on the provided `url`, `name` and `fileExtension`.
+ * The fetch is aborted if the signal is aborted.
+ *
+ * This function also includes the logic to cache the fetched icon using the Web Cache API.
+ * If the `cacheStrategy` is set to `web-cache-api` and `cacheName` is provided,
+ * the fetched icon will be cached using the Web Cache API.
+ *
  * It will throw an error if the response is not ok.
  *
  * @param url - The base url of the icon
@@ -74,7 +80,7 @@ const dynamicSVGImport = async ({
             // response object which we will return its text back to the
             // controlled page.
             // https://developer.mozilla.org/en-US/docs/Web/API/Request/clone
-            return iconsCache.set(request, response.clone()).then(() => response.text());
+            return iconsCache.set?.(request, response.clone()).then(() => response.text());
           }
 
           // Return the original response object, which will be used to
