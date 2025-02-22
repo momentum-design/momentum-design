@@ -20,6 +20,7 @@ const ICON_SIZE_IN_REM = {
 
 const DEFAULTS = {
   SIZE: TOGGLE_SIZE.DEFAULT,
+  VALIDATION_MESSAGE: 'Please toggle this switch if you want to proceed.',
 } as const;
 
 export { TAG_NAME, DEFAULTS, TOGGLE_SIZE, ICON_NAME, ICON_SIZE_IN_REM };

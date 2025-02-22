@@ -4,6 +4,7 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
+import '../button';
 
 const render = (args: Args) => html`
   <mdc-radio
@@ -190,6 +191,8 @@ export const RadioInForm = () => {
 
   return html`
     <form @submit=${handleSubmit}>
+      <fieldset>
+        <legend>Form Example</legend>
       <mdc-radio name="course-plan" value="standard" data-aria-label="Standard Plan" label="Standard Plan">
       </mdc-radio>
       <mdc-radio name="course-plan" value="premium" data-aria-label="Premium Plan" label="Premium Plan">
@@ -197,12 +200,16 @@ export const RadioInForm = () => {
       <mdc-radio
         name="course-plan"
         value="enterprise"
-        checked
+        required-label="required"
         data-aria-label="Enterprise Plan"
         label="Enterprise Plan">
       </mdc-radio>
       <br />
-      <button type="submit">Submit</button>
+      <div style='display: flex; gap: 0.25rem;'>
+        <mdc-button type="submit" size='24' style='margin-top: 0.5rem'>Submit</mdc-button>
+        <mdc-button type="reset" size='24' style='margin-top: 0.5rem' variant='secondary'>Reset</mdc-button>
+      </div>
+      </fieldset>
     </form>
   `;
 };
