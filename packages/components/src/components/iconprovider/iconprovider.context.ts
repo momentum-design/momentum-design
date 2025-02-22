@@ -13,7 +13,7 @@ class IconProviderContext {
 
   public cacheName?: string;
 
-  public cacheStrategy?: 'js-cache' | 'web-cache-api';
+  public cacheStrategy?: 'in-memory-cache' | 'web-cache-api';
 
   // create typed lit context as part of the IconProviderContext
   public static readonly context = createContext<IconProviderContext>(TAG_NAME);

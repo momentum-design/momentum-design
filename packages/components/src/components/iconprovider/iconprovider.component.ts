@@ -12,11 +12,11 @@ import { ALLOWED_FILE_EXTENSIONS, DEFAULTS, ALLOWED_LENGTH_UNITS } from './iconp
  * fetched.
  *
  * If `cacheStrategy` is provided, the IconProvider will cache the icons
- * in the selected cache (either web-api-cache or js-cache),
+ * in the selected cache (either web-api-cache or in-memory-cache),
  * to avoid fetching the same icon multiple times over the network.
  * This is useful when the same icon is used multiple times in the application.
  * To consider:
- * - The `js-cache` is not persisted and will be lost when the
+ * - The `in-memory-cache` is not persisted and will be lost when the
  * IconProvider is removed from the DOM.
  * - The `web-api-cache` is persisted, but only works in https environments
  * (https://developer.mozilla.org/en-US/docs/Web/API/Cache).
@@ -72,7 +72,7 @@ class IconProvider extends Provider<IconProviderContext> {
   /**
    * Icons Cache Strategy to use
    *
-   * Choose `js-cache` to cache icons in a JS cache (in-memory cache).
+   * Choose `in-memory-cache` to cache icons in a JS cache (in-memory cache).
    * Choose `web-cache-api` to cache icons using the Web Cache API.
    *
    * NOTE: `cache-name` must be provided if `cache-strategy` is provided.
@@ -81,7 +81,7 @@ class IconProvider extends Provider<IconProviderContext> {
    * @default undefined
    */
   @property({ type: String, attribute: 'cache-strategy' })
-  cacheStrategy?: 'js-cache' | 'web-cache-api';
+  cacheStrategy?: 'in-memory-cache' | 'web-cache-api';
 
   /**
    * Icons Cache Name to use

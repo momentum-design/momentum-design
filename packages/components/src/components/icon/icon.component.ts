@@ -133,9 +133,9 @@ class Icon extends Component {
         // before retreiving from cache
         this.abortController.abort();
 
-        const iconsCache = cacheName && cacheStrategy === 'js-cache' ? jsIconsCache(cacheName) : undefined;
+        const iconsCache = cacheName && cacheStrategy === 'in-memory-cache' ? jsIconsCache(cacheName) : undefined;
 
-        const iconData = iconsCache?.get(this.name);
+        const iconData = iconsCache?.get?.(this.name);
         // check if icon is already fetched and stored in the iconsCache map
         if (iconData) {
           const iconElement = this.prepareIconElement(iconData);
@@ -162,7 +162,7 @@ class Icon extends Component {
           this.handleIconLoadedSuccess(iconElement as HTMLElement);
 
           // store the fetched icon string in the iconsCache map
-          iconsCache?.set(this.name, iconData);
+          iconsCache?.set?.(this.name, iconData);
         } catch (error) {
           this.handleIconLoadedFailure(error);
         }

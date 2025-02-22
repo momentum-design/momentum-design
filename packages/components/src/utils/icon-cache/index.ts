@@ -19,7 +19,7 @@ export const webAPIIconsCache = async (name: string) => {
   const cache = await caches.open(name);
 
   return {
-    put: async (request: Request, response: Response) => {
+    set: async (request: Request, response: Response) => {
       await cache.put(request, response);
     },
     get: async (request: Request) => {

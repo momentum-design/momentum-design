@@ -36,7 +36,7 @@ const meta: Meta = {
     },
     'cache-strategy': {
       control: 'select',
-      options: ['js-cache', 'web-cache-api'],
+      options: ['in-memory-cache', 'web-cache-api'],
     },
     'cache-name': {
       control: { type: 'text' },

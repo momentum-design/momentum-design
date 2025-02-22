@@ -47,11 +47,11 @@ const dynamicSVGImport = async ({
   return webAPIIconsCache(cacheName).then((iconsCache) =>
     iconsCache
       .get(request)
-      .then(async (responseText) => {
+      .then((responseFromCache) => {
         // If there is an entry in the cache for the request,
         // then response will be defined and we can just return it.
-        if (responseText) {
-          return responseText;
+        if (responseFromCache) {
+          return responseFromCache;
         }
 
         // Otherwise, if there is no entry in the cache for the request,
@@ -62,7 +62,10 @@ const dynamicSVGImport = async ({
         // Both fetch() and cache.put() "consume" the request,
         // so we need to make a copy.
         // (see https://developer.mozilla.org/en-US/docs/Web/API/Request/clone)
-        return fetch(request.clone(), { signal }).then(async (response) => {
+        return fetch(request.clone(), { signal }).then((response) => {
+          if (!response.ok) {
+            throw new Error('There was a problem while fetching the icon!');
+          }
           // This avoids caching responses that we know are errors
           // (i.e. HTTP status code of 4xx or 5xx).
           if (response.status < 400 && response.headers.has('content-type')) {
@@ -71,11 +74,7 @@ const dynamicSVGImport = async ({
             // response object which we will return its text back to the
             // controlled page.
             // https://developer.mozilla.org/en-US/docs/Web/API/Request/clone
-            await iconsCache.put(request, response.clone());
-          }
-
-          if (!response.ok) {
-            throw new Error('There was a problem while fetching the icon!');
+            return iconsCache.set(request, response.clone()).then(() => response.text());
           }
 
           // Return the original response object, which will be used to

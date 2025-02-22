@@ -194,12 +194,12 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
         await componentsPage.expectPromiseTimesOut(responseAccessibilityBoldSecondTime, false);
       }
     });
-    await test.step('caching (js-cache) turned on', async () => {
+    await test.step('caching (in-memory-cache) turned on', async () => {
       if (type === 'standalone') {
         await componentsPage.setAttributes(iconprovider, {
           'file-extension': 'svg',
           'length-unit': 'rem',
-          'cache-strategy': 'js-cache',
+          'cache-strategy': 'in-memory-cache',
           'cache-name': 'momentum',
         });
         const iconLocator = componentsPage.page.locator('mdc-icon#icon-local');
