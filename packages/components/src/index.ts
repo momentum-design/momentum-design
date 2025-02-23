@@ -18,7 +18,7 @@ import Radio from './components/radio';
 import VirtualizedList from './components/virtualizedlist';
 import Tab from './components/tab';
 import FormfieldGroup from './components/formfieldgroup';
-import { jsIconsCache, webAPIIconsCache } from './utils/icon-cache';
+import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
 
 import type { TextType } from './components/text/text.types';
 
@@ -49,4 +49,4 @@ export type {
   TextType,
 };
 
-export { jsIconsCache, webAPIIconsCache };
+export { inMemoryCache, webAPIIconsCache };
