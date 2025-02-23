@@ -11,9 +11,9 @@ class IconProviderContext {
 
   public size?: number;
 
-  public iconsCache: Map<string, string> = new Map();
+  public cacheName?: string;
 
-  public shouldCache?: boolean;
+  public cacheStrategy?: 'in-memory-cache' | 'web-cache-api';
 
   // create typed lit context as part of the IconProviderContext
   public static readonly context = createContext<IconProviderContext>(TAG_NAME);
