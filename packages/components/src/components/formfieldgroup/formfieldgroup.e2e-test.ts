@@ -5,13 +5,13 @@ import { ROLE } from './formfieldgroup.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
-  'header-text'?: string;
-  'description-text'?: string;
+  label?: string;
+  'help-text'?: string;
   children: string;
 }
 
-const headerText = 'Select all powers';
-const descriptionText = 'check all that apply';
+const label = 'Select all powers';
+const helpText = 'check all that apply';
 const ariaLabel = 'header text aria label';
 const children = `
   <mdc-checkbox label="Flight"></mdc-checkbox>
@@ -35,8 +35,8 @@ const setup = async (args: SetupOptions) => {
   await componentsPage.mount({
     html: `
       <mdc-formfieldgroup
-        ${restArgs['header-text'] ? `header-text="${restArgs['header-text']}"` : ''}
-        ${restArgs['description-text'] ? `description-text="${restArgs['description-text']}"` : ''}
+        ${restArgs.label ? `label="${restArgs.label}"` : ''}
+        ${restArgs['help-text'] ? `help-text="${restArgs['help-text']}"` : ''}
       >${restArgs.children}</mdc-formfieldgroup>
     `,
     clearDocument: true,
@@ -54,15 +54,15 @@ test('mdc-formfieldgroup', async ({ componentsPage }) => {
     const createNewRow = true;
     const formfieldgroupStickerSheet = new StickerSheet(componentsPage, 'mdc-formfieldgroup');
     formfieldgroupStickerSheet.setAttributes({
-      'header-text': headerText,
-      'description-text': descriptionText,
+      label,
+      'help-text': helpText,
     });
     formfieldgroupStickerSheet.setChildren(children);
     await formfieldgroupStickerSheet.createMarkupWithCombination({}, { createNewRow });
 
     formfieldgroupStickerSheet.setAttributes({
-      'header-text': 'Engine thrusters',
-      'description-text': 'Select all the thrusters you would like to turn on',
+      label: 'Engine thrusters',
+      'help-text': 'Select all the thrusters you would like to turn on',
     });
     formfieldgroupStickerSheet.setChildren(toggleChildren);
     await formfieldgroupStickerSheet.createMarkupWithCombination({}, { createNewRow });
@@ -88,18 +88,18 @@ test('mdc-formfieldgroup', async ({ componentsPage }) => {
   await test.step('attributes', async () => {
     const formfieldgroup = await setup({ componentsPage, children });
 
-    await test.step('attribute `header-text` should be present on component when set', async () => {
-      await componentsPage.setAttributes(formfieldgroup, { 'header-text': headerText });
-      const mdcText = componentsPage.page.locator('mdc-text[id=\'header-id\']');
-      const textContent = await mdcText.textContent();
-      expect(textContent?.trim()).toBe(headerText);
+    await test.step('attribute `label` should be present on component when set', async () => {
+      await componentsPage.setAttributes(formfieldgroup, { label });
+      const labelElement = componentsPage.page.locator('label[id="label-id"]');
+      const groupLabelText = await labelElement.nth(0).textContent();
+      expect(groupLabelText).toBe(label);
     });
 
-    await test.step('attribute `description-text` should be present on component when set', async () => {
-      await componentsPage.setAttributes(formfieldgroup, { 'description-text': descriptionText });
-      const mdcText = componentsPage.page.locator('mdc-text[id=\'description-id\']');
+    await test.step('attribute `help-text` should be present on component when set', async () => {
+      await componentsPage.setAttributes(formfieldgroup, { 'help-text': helpText });
+      const mdcText = componentsPage.page.locator('mdc-text[id="helper-text-id"]');
       const textContent = await mdcText.textContent();
-      expect(textContent?.trim()).toBe(descriptionText);
+      expect(textContent?.trim()).toBe(helpText);
     });
 
     await test.step('attribute `data-aria-label` should be present on component when set', async () => {

@@ -57,7 +57,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
       return nothing;
     }
 
-    return html`<label for="${this.id}" class="mdc-label" part="label">${this.label}</label>`;
+    return html`<label id="${DEFAULTS.LABEL_ID}" for="${this.id}" class="mdc-label" part="label">${this.label}</label>`;
   }
 
   protected renderRequiredLabel() {
@@ -130,6 +130,9 @@ class FormfieldWrapper extends DisabledMixin(Component) {
    * @returns void
    */
   protected renderHelperText() {
+    if (!this.helpText) {
+      return nothing;
+    }
     return html`<div class="mdc-help-text" part="mdc-help-text">
       <slot name="help-icon">${this.renderHelpTextIcon()}</slot>
       <slot name="help-text">${this.renderHelpText()}</slot>
