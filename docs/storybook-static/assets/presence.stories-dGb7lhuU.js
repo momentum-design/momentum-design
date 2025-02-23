@@ -1,8 +1,0 @@
-import{T as a,S as p,D as c}from"./index-D5OaWXvT.js";import{k as t}from"./lit-element-CHllvULs.js";import{d}from"./utils-D1SE5bce.js";import"./index-HW6KrQZO.js";import"./state-CWckTc1X.js";import"./index-MYSkQ1zX.js";import"./index-BnIP7Wfy.js";import"./index-BYMLCX4c.js";import"./iconprovider.component-BFc9mT2k.js";import"./create-context-89xeped_.js";const m=o=>t`
-  <mdc-presence type="${o.type}" size="${o.size}"></mdc-presence>
-`,z={title:"Components/presence",tags:["autodocs"],component:"mdc-presence",render:m,parameters:{badges:["stable"]},argTypes:{type:{options:Object.values(a),control:{type:"select"}},size:{options:Object.values(p),control:{type:"select"}},...d(["icon","iconSize","--mdc-presence-active-background-color","--mdc-presence-away-background-color","--mdc-presence-away-calling-background-color","--mdc-presence-busy-background-color","--mdc-presence-dnd-background-color","--mdc-presence-meeting-background-color","--mdc-presence-on-call-background-color","--mdc-presence-on-device-background-color","--mdc-presence-on-mobile-background-color","--mdc-presence-pause-background-color","--mdc-presence-pto-background-color","--mdc-presence-presenting-background-color","--mdc-presence-quiet-background-color","--mdc-presence-scheduled-background-color","--mdc-presence-overlay-background-color"])}},e={args:{type:c.TYPE,size:c.SIZE}};var r,n,s;e.parameters={...e.parameters,docs:{...(r=e.parameters)==null?void 0:r.docs,source:{originalSource:`{
-  args: {
-    type: DEFAULTS.TYPE,
-    size: DEFAULTS.SIZE
-  }
-}`,...(s=(n=e.parameters)==null?void 0:n.docs)==null?void 0:s.source}}};const v=["Example"];export{e as Example,v as __namedExportsOrder,z as default};
