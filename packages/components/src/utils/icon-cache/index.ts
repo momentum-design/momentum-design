@@ -1,20 +1,37 @@
 type IconCache = Map<string, string>;
 type Registry = Record<string, IconCache>;
+export type CacheStrategy = 'in-memory-cache' | 'web-cache-api';
 
 const registry: Registry = {};
 
-export const jsIconsCache = (name: string) => {
+/**
+ * Cache, using In-Memory Cache (Map)
+ * @param name - name of the cache (used as an identifier)
+ * @returns Object with set, get and delete methods
+ */
+export const inMemoryCache = async (name: string) => {
   if (registry[name] === undefined) {
     registry[name] = new Map();
   }
 
   return {
-    set: (key: string, value: string) => registry[name].set(key, value),
-    get: (key: string) => registry[name].get(key),
-    delete: (key: string) => registry[name].delete(key),
+    async set(request: Request, response: Response) {
+      registry[name].set(request.url, await response.text());
+    },
+    async get(request: Request) {
+      return registry[name].get(request.url);
+    },
+    async delete(request: Request) {
+      registry[name].delete(request.url);
+    },
   };
 };
 
+/**
+ * Cache, using Web API Cache
+ * @param name - name of the cache (used as an identifier)
+ * @returns Object with set, get and delete methods
+ */
 export const webAPIIconsCache = async (name: string) => {
   const cache = await caches.open(name);
 
@@ -30,4 +47,18 @@ export const webAPIIconsCache = async (name: string) => {
       await cache.delete(request);
     },
   };
+};
+
+/**
+ * Function to return the cache based on the cache strategy
+ * @param cacheName - name of the cache to be used
+ * @param cacheStrategy - strategy to be used for caching
+ * @returns the cache based on the strategy
+ */
+export const iconsCache = async (cacheName: string, cacheStrategy: CacheStrategy) => {
+  if (cacheStrategy === 'in-memory-cache') {
+    return inMemoryCache(cacheName);
+  }
+
+  return webAPIIconsCache(cacheName);
 };

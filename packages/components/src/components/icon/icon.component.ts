@@ -7,7 +7,6 @@ import IconProvider from '../iconprovider/iconprovider.component';
 import { dynamicSVGImport } from './icon.utils';
 import { DEFAULTS } from './icon.constants';
 import type { IconNames } from './icon.types';
-import { jsIconsCache } from '../../utils/icon-cache';
 
 /**
  * Icon component that dynamically displays SVG icons based on a valid name.
@@ -129,40 +128,28 @@ class Icon extends Component {
     if (this.iconProviderContext.value) {
       const { fileExtension, url, cacheName, cacheStrategy } = this.iconProviderContext.value;
       if (url && fileExtension && this.name) {
-        // abort the previous fetch request if it is still pending
-        // before retreiving from cache
-        this.abortController.abort();
+        // function to abort the fetch request and create a new signal
+        // (directly passing the abortcontroller to the fetch request per reference
+        // will not work due to JS call-by-sharing behavior)
+        const renewSignal = () => {
+          this.abortController.abort();
+          this.abortController = new AbortController();
+          return this.abortController.signal;
+        };
 
-        const iconsCache = cacheName && cacheStrategy === 'in-memory-cache' ? jsIconsCache(cacheName) : undefined;
-
-        const iconData = iconsCache?.get?.(this.name);
-        // check if icon is already fetched and stored in the iconsCache map
-        if (iconData) {
-          const iconElement = this.prepareIconElement(iconData);
-
-          this.handleIconLoadedSuccess(iconElement as HTMLElement);
-          return;
-        }
-
-        this.abortController = new AbortController();
         try {
-          // fetch icon from backend
+          // fetch icon data (including caching logic)
           const iconData = await dynamicSVGImport({
             url,
             name: this.name,
             fileExtension,
-            signal: this.abortController.signal,
             cacheName,
             cacheStrategy,
+            renewSignal,
           });
-
           // parse the fetched icon string to an html element and set the attributes
           const iconElement = this.prepareIconElement(iconData);
-
           this.handleIconLoadedSuccess(iconElement as HTMLElement);
-
-          // store the fetched icon string in the iconsCache map
-          iconsCache?.set?.(this.name, iconData);
         } catch (error) {
           this.handleIconLoadedFailure(error);
         }
