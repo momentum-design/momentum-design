@@ -160,6 +160,8 @@ just by using CSS. As a last resort we should fall back to Animations like the L
 
 Whenever applicable, prioritize using CSS parts instead of unnecessary class names.
 
+Exception: Do not use parts in slots e.g. ```<slot part="label"></slot>```.
+
 ### Why use CSS parts? 
 
 CSS parts allow styling of internal elements without excessive classes, ensuring better encapsulation and flexible theming.
