@@ -17,7 +17,12 @@ import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
  *
  * The `slot="badge"` can be used to add a badge to the tab.
  *
+ * The `slot="chip"` can be used to add a chip to the tab.
+ *
  * For `icon`, the `mdc-icon` component is used to render the icon.
+ *
+ * Note: Icons can be used in conjunction with badges or chips.
+ * Badges and chips should not be used at the same time.
  *
  * @dependency mdc-icon
  * @dependency mdc-text
@@ -182,7 +187,6 @@ class Tab extends IconNameMixin(Buttonsimple) {
   public override render() {
     return html`
       <div part="container">
-        <slot name="badge" part="badge"></slot>
         ${this.iconName
     ? html` <mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem" part="icon"></mdc-icon>`
     : nothing}
@@ -195,6 +199,8 @@ class Tab extends IconNameMixin(Buttonsimple) {
               >${this.text}</mdc-text
             >`
     : nothing}
+        <slot name="badge"></slot>
+        <slot name="chip"></slot>
       </div>
       <div part="indicator"></div>
     `;
