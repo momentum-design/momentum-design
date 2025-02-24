@@ -199,8 +199,8 @@ class Tab extends IconNameMixin(Buttonsimple) {
               >${this.text}</mdc-text
             >`
     : nothing}
-        <slot name="chip" part="chip"></slot>
-        <slot name="badge" part="badge"></slot>
+        <slot name="badge"></slot>
+        <slot name="chip"></slot>
       </div>
       <div part="indicator"></div>
     `;
