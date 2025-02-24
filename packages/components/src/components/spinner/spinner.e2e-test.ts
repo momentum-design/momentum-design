@@ -78,6 +78,8 @@ test('mdc-spinner', async ({ componentsPage }) => {
     await test.step('matches screenshot of spinner element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-spinner', {
         element: spinnerSheet.getWrapperContainer(),
+        // As the spinner is animated, we need to disable animations to avoid flakiness in the snapshots, else
+        // the snapshots will be taken at a different point in the animation every time.
         animations: 'disabled',
       });
     });

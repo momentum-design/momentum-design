@@ -13,7 +13,7 @@ import { DEFAULTS } from './spinner.constants';
  * Spinner Variants:
  * - **Standalone (Default)**: Track has a blue color.
  * - **Button**: To be used when placed in a button to show that the button’s action is currently in progress.
- * To ensure a minimum 3:1 contrast ratio, change the active indicator color to be the same color as the button’s
+ * To ensure a minimum 3:1 contrast ratio, the color is changed internally to be the same color as the button’s
  * icon or label text.
  *
  * Spinner Sizes:
@@ -47,7 +47,8 @@ class Spinner extends Component {
    * The spinner color can be inverted by setting the inverted attribute to true.
    * @default false
    */
-  @property({ type: Boolean, reflect: true }) inverted = DEFAULTS.INVERTED;
+  @property({ type: Boolean, reflect: true })
+  inverted = DEFAULTS.INVERTED;
 
   /**
    * Size of the spinner.
@@ -60,12 +61,14 @@ class Spinner extends Component {
    *
    * @default midsize
    */
-  @property({ type: String, reflect: true }) size?: SpinnerSize = DEFAULTS.SIZE;
+  @property({ type: String, reflect: true })
+  size?: SpinnerSize = DEFAULTS.SIZE;
 
   /**
    * Aria-label attribute to be set for accessibility
    */
-  @property({ type: String, attribute: 'aria-label' }) override ariaLabel: string | null = null;
+  @property({ type: String, attribute: 'aria-label' })
+  override ariaLabel: string | null = null;
 
   /**
   * There are 2 variants of spinner: default and button. Their coloring is different.
@@ -75,7 +78,8 @@ class Spinner extends Component {
   * icon or label text.
   * @default standalone
   */
-  @property({ type: String }) variant: SpinnerVariant = DEFAULTS.VARIANT;
+  @property({ type: String })
+  variant: SpinnerVariant = DEFAULTS.VARIANT;
 
   override updated(changedProperties: Map<string, any>) {
     super.updated(changedProperties);

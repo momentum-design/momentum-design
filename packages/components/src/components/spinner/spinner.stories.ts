@@ -6,22 +6,20 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { SPINNER_SIZES, SPINNER_VARIANT } from './spinner.constants';
 
 const render = (args: Args) => html`
-  <div style="display: flex; justify-content: center; width: 128px; height: 128px;">
     <mdc-spinner     
       aria-label="${ifDefined(args['aria-label'])}"
       ?inverted="${args.inverted}"
       size="${args.size}"
       variant="${args.variant}"
-    ></mdc-spinner>
-  </div>`;
+    ></mdc-spinner>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/spinner',
+  title: 'Components/spinner',
   tags: ['autodocs'],
   component: 'mdc-spinner',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     ...classArgType,
@@ -46,5 +44,8 @@ export const Example: StoryObj = {
   args: {
     class: 'custom-classname',
     style: 'margin-top: 20px;',
+    inverted: false,
+    size: 'midsize',
+    variant: 'standalone',
   },
 };

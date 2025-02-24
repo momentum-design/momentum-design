@@ -1,6 +1,7 @@
 import { css } from 'lit';
+import { hostFitContentStyles } from '../../utils/styles';
 
-const styles = css`
+const styles = [hostFitContentStyles, css`
   :host {
     --mdc-spinner-default-color: var(--mds-color-theme-control-active-normal);
     --mdc-spinner-inverted-color: var(--mds-color-theme-inverted-control-active-normal);
@@ -31,6 +32,7 @@ const styles = css`
 
   :host::part(container) {
     width: var(--mdc-spinner-size);
+    height: var(--mdc-spinner-size);
     animation: rotate 1.5s linear infinite;
   }
 
@@ -61,6 +63,6 @@ const styles = css`
       stroke-dashoffset: -292;
     }
   }
-`;
+`];
 
-export default [styles];
+export default styles;
