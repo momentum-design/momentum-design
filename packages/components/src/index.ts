@@ -18,6 +18,8 @@ import Radio from './components/radio';
 import VirtualizedList from './components/virtualizedlist';
 import Tab from './components/tab';
 import FormfieldGroup from './components/formfieldgroup';
+import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
+import Spinner from './components/spinner';
 
 import type { TextType } from './components/text/text.types';
 
@@ -42,8 +44,11 @@ export {
   VirtualizedList,
   Tab,
   FormfieldGroup,
+  Spinner,
 };
 
 export type {
   TextType,
 };
+
+export { inMemoryCache, webAPIIconsCache };

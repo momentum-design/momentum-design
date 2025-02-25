@@ -194,12 +194,13 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
         await componentsPage.expectPromiseTimesOut(responseAccessibilityBoldSecondTime, false);
       }
     });
-    await test.step('caching turned on', async () => {
+    await test.step('caching (in-memory-cache) turned on', async () => {
       if (type === 'standalone') {
         await componentsPage.setAttributes(iconprovider, {
           'file-extension': 'svg',
           'length-unit': 'rem',
-          'should-cache': '',
+          'cache-strategy': 'in-memory-cache',
+          'cache-name': 'momentum',
         });
         const iconLocator = componentsPage.page.locator('mdc-icon#icon-local');
 
@@ -223,6 +224,38 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
         await componentsPage.expectPromiseTimesOut(responseAccessoriesBoldSecondTime, true);
       }
     });
+
+    // TODO: currently Playwright does disable the cache, so this test will fail - investigate how to test Web API Cache
+    // await test.step('caching (web-api-cache) turned on', async () => {
+    //   if (type === 'standalone') {
+    //     await componentsPage.setAttributes(iconprovider, {
+    //       'file-extension': 'svg',
+    //       'length-unit': 'rem',
+    //       'cache-strategy': 'web-api-cache',
+    //       'cache-name': 'momentum',
+    //     });
+    //     const iconLocator = componentsPage.page.locator('mdc-icon#icon-local');
+
+    //     const responseAccordianBoldFirstTime = componentsPage.page.waitForResponse('**/accordian-bold.svg');
+    //     await componentsPage.setAttributes(iconLocator, {
+    //       name: 'accordian-bold',
+    //     });
+    //     await componentsPage.expectPromiseTimesOut(responseAccordianBoldFirstTime, false);
+
+    //     const responseAccordianRegular = componentsPage.page.waitForResponse('**/accordian-regular.svg');
+    //     await componentsPage.setAttributes(iconLocator, {
+    //       name: 'accordian-regular',
+    //     });
+    //     await componentsPage.expectPromiseTimesOut(responseAccordianRegular, false);
+
+    //     const responseAccordianBoldSecondTime = componentsPage.page.waitForResponse('**/accordian-bold.svg');
+    //     await componentsPage.setAttributes(iconLocator, {
+    //       name: 'accordian-bold',
+    //     });
+    //     // this should timeout, so the network request is not made, cause caching is turned on:
+    //     await componentsPage.expectPromiseTimesOut(responseAccordianBoldSecondTime, true);
+    //   }
+    // });
   });
 };
 
