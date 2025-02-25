@@ -95,7 +95,7 @@ export interface SwiftFormat {
  */
 export interface TypesFormat {
   type: typeof CONSTANTS.FORMATS.TYPES;
-  config: { fileName: string; hbsPath: string, name: string, manifestPath: string };
+  config: { fileName: string; hbsPath: string; name: string; manifestPath: string };
 }
 
 /**
@@ -106,6 +106,11 @@ export interface TypesFormat {
 export interface SvgGlyphsFormat {
   type: typeof CONSTANTS.FORMATS.SVG_GLYPHS;
   config: { fileName: string };
+}
+
+export interface LitFormat {
+  type: typeof CONSTANTS.FORMATS.LIT;
+  config: { hbsPath: string };
 }
 
 /**
@@ -163,6 +168,7 @@ export type Formats = (
   | SwiftFormat
   | SvgGlyphsFormat
   | TypesFormat
+  | LitFormat
 ) & {
   encoding?: Encoding;
 };
