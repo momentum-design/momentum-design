@@ -2,17 +2,15 @@ import { css } from 'lit';
 
 const styles = [
   css`
-    :host {
-      .mdc-virtualizedlist-scroll {  
+  :host::part(mdc-virtualizedlist-scroll) {
         height: 100%;
         width: 100%;
         overflow-y: auto;
-      }
-      .mdc-virtualizedlist-container {
+  }
+  :host::part(mdc-virtualizedlist-container) {
         position: relative;
         width: 100%;
-      }
-    }
+  }
   `,
 ];
 
