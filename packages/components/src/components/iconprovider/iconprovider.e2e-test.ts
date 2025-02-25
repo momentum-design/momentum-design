@@ -15,6 +15,7 @@ const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
   const renderIconProvider = (children: string = '') => `
     <mdc-iconprovider 
+      icon-set="custom-icons"
       url="${restArgs.url}" 
       id="local" 
       ${restArgs.fileExtension ? `file-extension="${restArgs.fileExtension}"` : ''}
@@ -31,6 +32,7 @@ const setup = async (args: SetupOptions) => {
     await componentsPage.mount({
       html: renderIconProvider(`
       <mdc-iconprovider 
+        icon-set="custom-icons"
         url="${restArgs.url}" 
         id="nested" 
         ${restArgs.fileExtension ? `file-extension="${restArgs.fileExtension}"` : ''}
@@ -90,6 +92,7 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
    */
   await test.step('attributes', async () => {
     await test.step('should have default attributes when no attributes are passed', async () => {
+      await expect(iconprovider).toHaveAttribute('icon-set', 'custom-icons');
       await expect(iconprovider).toHaveAttribute('url', url);
       await expect(iconprovider).toHaveAttribute('file-extension', DEFAULTS.FILE_EXTENSION);
       await expect(iconprovider).toHaveAttribute('length-unit', DEFAULTS.LENGTH_UNIT);
@@ -165,8 +168,10 @@ const testToRun = async (componentsPage: ComponentsPage, type: string) => {
     });
   });
 
+  // note: we are only able to test the caching feature with the custom icons,
+  // as the momentum-icons are not available in the test environment (would need separate build tooling for that)
   await test.step('caching', async () => {
-    await test.step('caching turned off', async () => {
+    await test.step('caching turned off (custom icons fetch)', async () => {
       if (type === 'standalone') {
         await componentsPage.setAttributes(iconprovider, {
           'file-extension': 'svg',
