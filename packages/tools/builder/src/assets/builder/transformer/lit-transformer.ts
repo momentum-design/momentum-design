@@ -50,7 +50,7 @@ class LitTransformer extends Transformer {
       }))
       .catch((error) => {
         this.logger.error(`Failed converting file (${file.srcPath}) to lit template: ${error}`);
-        return file;
+        throw error;
       });
   }
 
