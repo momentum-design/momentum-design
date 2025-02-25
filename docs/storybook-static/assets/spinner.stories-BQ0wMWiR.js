@@ -64,7 +64,7 @@ import{i as z,k as h}from"./lit-element-CHllvULs.js";import{u as b,C as p,n}from
       <svg part="container" viewBox="0 0 100 100">
         <circle part="circle" cx="50" cy="50" r="46"></circle>
       </svg>
-    `}};c.styles=[...p.styles,...T];let r=c;o([n({type:Boolean,reflect:!0})],r.prototype,"inverted");o([n({type:String,reflect:!0})],r.prototype,"size");o([n({type:String,attribute:"aria-label"})],r.prototype,"ariaLabel");o([n({type:String})],r.prototype,"variant");r.register(I);const L=e=>h`
+    `}};c.styles=[...p.styles,...T];let r=c;o([n({type:Boolean,reflect:!0})],r.prototype,"inverted");o([n({type:String,reflect:!0})],r.prototype,"size");o([n({type:String,attribute:"aria-label"})],r.prototype,"ariaLabel");o([n({type:String,reflect:!0})],r.prototype,"variant");r.register(I);const L=e=>h`
     <mdc-spinner     
       aria-label="${A(e["aria-label"])}"
       ?inverted="${e.inverted}"

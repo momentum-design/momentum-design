@@ -997,7 +997,7 @@ Acceptable values include:
 - **Standalone (Default)**: Track has a blue color.
 - **Button**: To be used when placed in a button to show that the button’s action is currently in progress.
 To ensure a minimum 3:1 contrast ratio, change the active indicator color to be the same color as the button’s
-icon or label text.`,default:"standalone",attribute:"variant"}],attributes:[{name:"inverted",description:"The spinner color can be inverted by setting the inverted attribute to true.",default:"false",fieldName:"inverted"},{name:"size",type:{text:"SpinnerSize | undefined"},description:`Size of the spinner.
+icon or label text.`,default:"standalone",attribute:"variant",reflects:!0}],attributes:[{name:"inverted",description:"The spinner color can be inverted by setting the inverted attribute to true.",default:"false",fieldName:"inverted"},{name:"size",type:{text:"SpinnerSize | undefined"},description:`Size of the spinner.
 Acceptable values include:
 
 - 'small'
@@ -1042,7 +1042,122 @@ icon or label text.`,default:"standalone",fieldName:"variant"}],superclass:{name
  *
  * @csspart container - The svg which contains the circle spinner.
  * @csspart circle - The circle of the spinner.
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Spinner",module:"components/spinner/spinner.component.js"}}]},{kind:"javascript-module",path:"components/tab/tab.component.js",declarations:[{kind:"class",description:'`mdc-tab` is Tab component to be used within the Tabgroup.\n\nPassing in the attribute `text` to the tab component is changing the text displayed in the tab.\n\nThe `slot="badge"` can be used to add a badge to the tab.\n\nThe `slot="chip"` can be used to add a chip to the tab.\n\nFor `icon`, the `mdc-icon` component is used to render the icon.\n\nNote: Icons can be used in conjunction with badges or chips.\nBadges and chips should not be used at the same time.',name:"Tab",cssProperties:[{description:"Gap between the badge(if provided), icon and text.",name:"--mdc-tab-content-gap"},{description:"Height of the tab.",name:"--mdc-tab-height"},{description:"Background color for active glass tab in disabled state.",name:"--mdc-tab-glass-active-background-color-disabled"},{description:"Background color for active glass tab in hover state.",name:"--mdc-tab-glass-active-background-color-hover"},{description:"Background color for active glass tab in rest state.",name:"--mdc-tab-glass-active-background-color-normal"},{description:"Background color for active glass tab in pressed state.",name:"--mdc-tab-glass-active-background-color-pressed"},{description:"Text and icon color for active glass tab.",name:"--mdc-tab-glass-active-color"},{description:"Text and icon color for active glass tab in disabled state.",name:"--mdc-tab-glass-active-color-disabled"},{description:"Border radius for glass tab.",name:"--mdc-tab-glass-border-radius"},{description:"Background color for inactive glass tab in disabled state.",name:"--mdc-tab-glass-inactive-background-color-disabled"},{description:"Background color for inactive glass tab in hover state.",name:"--mdc-tab-glass-inactive-background-color-hover"},{description:"Background color for inactive glass tab in rest state.",name:"--mdc-tab-glass-inactive-background-color-normal"},{description:"Background color for inactive glass tab in pressed state.",name:"--mdc-tab-glass-inactive-background-color-pressed"},{description:"Text and icon color for inactive glass tab.",name:"--mdc-tab-glass-inactive-color"},{description:"Text and icon color for inactive glass tab in disabled state.",name:"--mdc-tab-glass-inactive-color-disabled"},{description:"Background color for active line tab in pressed state.",name:"--mdc-tab-line-active-background-color-pressed"},{description:"Background color for active line tab in disabled state.",name:"--mdc-tab-line-active-background-color-disabled"},{description:"Background color for active line tab in hover state.",name:"--mdc-tab-line-active-background-color-hover"},{description:"Background color for active line tab in rest state.",name:"--mdc-tab-line-active-background-color-normal"},{description:"Text and icon color for active line tab.",name:"--mdc-tab-line-active-color"},{description:"Text and icon color for active line tab in disabled state.",name:"--mdc-tab-line-active-color-disabled"},{description:"color for indicator in active line tab.",name:"--mdc-tab-line-active-indicator-color"},{description:"Color for indicator in active line tab in disabled state.",name:"--mdc-tab-line-active-indicator-color-disabled"},{description:"Height for indicator in active line tab.",name:"--mdc-tab-line-active-indicator-height"},{description:"Width for indicator in active line tab.",name:"--mdc-tab-line-active-indicator-width"},{description:"Bottom left border radius for line tab.",name:"--mdc-tab-line-border-bottom-left-radius"},{description:"Bottom right border radius for line tab.",name:"--mdc-tab-line-border-bottom-right-radius"},{description:"Top left border radius for line tab.",name:"--mdc-tab-line-border-top-left-radius"},{description:"Top right border radius for line tab.",name:"--mdc-tab-line-border-top-right-radius"},{description:"Background color for inactive line tab in pressed state.",name:"--mdc-tab-line-inactive-background-color-pressed"},{description:"Background color for inactive line tab in disabled state",name:"--mdc-tab-line-inactive-background-color-disabled"},{description:"Background color for inactive line tab in hover state.",name:"--mdc-tab-line-inactive-background-color-hover"},{description:"Background color for inactive line tab in rest state.",name:"--mdc-tab-line-inactive-background-color-normal"},{description:"Text and icon color for inactive line tab.",name:"--mdc-tab-line-inactive-color"},{description:"Text and icon color for inactive line tab in disabled state.",name:"--mdc-tab-line-inactive-color-disabled"},{description:"Padding left for the tab.",name:"--mdc-tab-padding-left"},{description:"Padding right for the tab.",name:"--mdc-tab-padding-right"},{description:"Background color for active pill tab in pressed state.",name:"--mdc-tab-pill-active-background-color-pressed"},{description:"Background color for active pill tab in disabled state.",name:"--mdc-tab-pill-active-background-color-disabled"},{description:"Background color for active pill tab in hover state.",name:"--mdc-tab-pill-active-background-color-hover"},{description:"Background color for active pill tab in rest state.",name:"--mdc-tab-pill-active-background-color-normal"},{description:"Text and icon color for active pill tab.",name:"--mdc-tab-pill-active-color"},{description:"Text and icon color for active pill tab in disabled state.",name:"--mdc-tab-pill-active-color-disabled"},{description:"Border radius for pill tab.",name:"--mdc-tab-pill-border-radius"},{description:"Background color for inactive pill tab in pressed state.",name:"--mdc-tab-pill-inactive-background-color-pressed"},{description:"Background color for inactive pill tab in disabled state.",name:"--mdc-tab-pill-inactive-background-color-disabled"},{description:"Background color for inactive pill tab in hover state.",name:"--mdc-tab-pill-inactive-background-color-hover"},{description:"Background color for inactive pill tab in rest state.",name:"--mdc-tab-pill-inactive-background-color-normal"},{description:"Text and icon color for inactive pill tab.",name:"--mdc-tab-pill-inactive-color"},{description:"Text and icon color for inactive pill tab in disabled state.",name:"--mdc-tab-pill-inactive-color-disabled"}],members:[{kind:"field",name:"text",type:{text:"string | undefined"},description:"Text to be displayed in the tab.\nIf no `text` is provided, no text will be rendered,\n`aria-label` should be set on the tab.",attribute:"text",reflects:!0},{kind:"field",name:"variant",type:{text:"Variant"},description:"Tab can have three variants:\n- `glass`\n- `line`\n- `pill`\n\nIt defines the background and foreground color of the tab.",default:"pill",attribute:"variant",reflects:!0},{kind:"method",name:"modifyIconName",privacy:"private",return:{type:{text:"void"}},parameters:[{name:"active",type:{text:"boolean"},description:"The active state."}],description:`Modifies the icon name based on the active state.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Spinner",module:"components/spinner/spinner.component.js"}}]},{kind:"javascript-module",path:"components/text/text.component.js",declarations:[{kind:"class",description:"Text component for creating styled text elements.\nIt has to be mounted within the ThemeProvider to access color and font tokens.\n\nThe `type` attribute allows changing the text style.\nThe `tagname` attribute allows changing the tag name of the text element.\nThe default tag name is `p`.\n\nThe `tagname` attribute should be a valid HTML tag name.\nIf the `tagname` attribute is not a valid HTML tag name, the default tag name will be used.\n\nThe styling is applied based on the `type` attribute.",name:"Text",cssParts:[{description:"The text element",name:"text"}],slots:[{description:"Default slot for text content",name:""}],members:[{kind:"field",name:"type",type:{text:"TextType"},privacy:"public",description:`Specifies the text style to be applied.
+
+Acceptable values include:
+
+- 'body-small-regular'
+- 'body-small-medium'
+- 'body-small-bold'
+- 'body-midsize-regular'
+- 'body-midsize-medium'
+- 'body-midsize-bold'
+- 'body-large-regular'
+- 'body-large-medium'
+- 'body-large-bold'
+- 'body-small-regular-underline'
+- 'body-small-medium-underline'
+- 'body-midsize-regular-underline'
+- 'body-midsize-medium-underline'
+- 'body-large-regular-underline'
+- 'body-large-medium-underline'
+- 'heading-small-regular'
+- 'heading-small-medium'
+- 'heading-small-bold'
+- 'heading-midsize-regular'
+- 'heading-midsize-medium'
+- 'heading-midsize-bold'
+- 'heading-large-regular'
+- 'heading-large-medium'
+- 'heading-large-bold'
+- 'heading-xlarge-regular'
+- 'heading-xlarge-medium'
+- 'heading-xlarge-bold'
+- 'headline-small-light'
+- 'headline-small-regular'`,default:"body-large-regular",attribute:"type",reflects:!0},{kind:"field",name:"tagname",type:{text:"TagName | undefined"},privacy:"public",description:`Specifies the HTML tag name for the text element. The default tag name is \`p\`.
+This attribute is optional. When set, it changes the tag name of the text element.
+
+Acceptable values include:
+
+- 'h1'
+- 'h2'
+- 'h3'
+- 'h4'
+- 'h5'
+- 'h6'
+- 'p'
+- 'small'
+- 'span'
+- 'div'
+
+For instance, setting this attribute to \`h2\` will render the text element as an \`h2\` element.
+Note that the styling is determined by the \`type\` attribute.`,attribute:"tagname",reflects:!0}],attributes:[{name:"type",type:{text:"TextType"},description:`Specifies the text style to be applied.
+
+Acceptable values include:
+
+- 'body-small-regular'
+- 'body-small-medium'
+- 'body-small-bold'
+- 'body-midsize-regular'
+- 'body-midsize-medium'
+- 'body-midsize-bold'
+- 'body-large-regular'
+- 'body-large-medium'
+- 'body-large-bold'
+- 'body-small-regular-underline'
+- 'body-small-medium-underline'
+- 'body-midsize-regular-underline'
+- 'body-midsize-medium-underline'
+- 'body-large-regular-underline'
+- 'body-large-medium-underline'
+- 'heading-small-regular'
+- 'heading-small-medium'
+- 'heading-small-bold'
+- 'heading-midsize-regular'
+- 'heading-midsize-medium'
+- 'heading-midsize-bold'
+- 'heading-large-regular'
+- 'heading-large-medium'
+- 'heading-large-bold'
+- 'heading-xlarge-regular'
+- 'heading-xlarge-medium'
+- 'heading-xlarge-bold'
+- 'headline-small-light'
+- 'headline-small-regular'`,default:"body-large-regular",fieldName:"type"},{name:"tagname",type:{text:"TagName | undefined"},description:`Specifies the HTML tag name for the text element. The default tag name is \`p\`.
+This attribute is optional. When set, it changes the tag name of the text element.
+
+Acceptable values include:
+
+- 'h1'
+- 'h2'
+- 'h3'
+- 'h4'
+- 'h5'
+- 'h6'
+- 'p'
+- 'small'
+- 'span'
+- 'div'
+
+For instance, setting this attribute to \`h2\` will render the text element as an \`h2\` element.
+Note that the styling is determined by the \`type\` attribute.`,fieldName:"tagname"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-text",jsDoc:`/**
+ * Text component for creating styled text elements.
+ * It has to be mounted within the ThemeProvider to access color and font tokens.
+ *
+ * The \`type\` attribute allows changing the text style.
+ * The \`tagname\` attribute allows changing the tag name of the text element.
+ * The default tag name is \`p\`.
+ *
+ * The \`tagname\` attribute should be a valid HTML tag name.
+ * If the \`tagname\` attribute is not a valid HTML tag name, the default tag name will be used.
+ *
+ * The styling is applied based on the \`type\` attribute.
+ *
+ * @tagname mdc-text
+ * @slot - Default slot for text content
+ *
+ * @csspart text - The text element
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Text",module:"components/text/text.component.js"}}]},{kind:"javascript-module",path:"components/tab/tab.component.js",declarations:[{kind:"class",description:'`mdc-tab` is Tab component to be used within the Tabgroup.\n\nPassing in the attribute `text` to the tab component is changing the text displayed in the tab.\n\nThe `slot="badge"` can be used to add a badge to the tab.\n\nThe `slot="chip"` can be used to add a chip to the tab.\n\nFor `icon`, the `mdc-icon` component is used to render the icon.\n\nNote: Icons can be used in conjunction with badges or chips.\nBadges and chips should not be used at the same time.',name:"Tab",cssProperties:[{description:"Gap between the badge(if provided), icon and text.",name:"--mdc-tab-content-gap"},{description:"Height of the tab.",name:"--mdc-tab-height"},{description:"Background color for active glass tab in disabled state.",name:"--mdc-tab-glass-active-background-color-disabled"},{description:"Background color for active glass tab in hover state.",name:"--mdc-tab-glass-active-background-color-hover"},{description:"Background color for active glass tab in rest state.",name:"--mdc-tab-glass-active-background-color-normal"},{description:"Background color for active glass tab in pressed state.",name:"--mdc-tab-glass-active-background-color-pressed"},{description:"Text and icon color for active glass tab.",name:"--mdc-tab-glass-active-color"},{description:"Text and icon color for active glass tab in disabled state.",name:"--mdc-tab-glass-active-color-disabled"},{description:"Border radius for glass tab.",name:"--mdc-tab-glass-border-radius"},{description:"Background color for inactive glass tab in disabled state.",name:"--mdc-tab-glass-inactive-background-color-disabled"},{description:"Background color for inactive glass tab in hover state.",name:"--mdc-tab-glass-inactive-background-color-hover"},{description:"Background color for inactive glass tab in rest state.",name:"--mdc-tab-glass-inactive-background-color-normal"},{description:"Background color for inactive glass tab in pressed state.",name:"--mdc-tab-glass-inactive-background-color-pressed"},{description:"Text and icon color for inactive glass tab.",name:"--mdc-tab-glass-inactive-color"},{description:"Text and icon color for inactive glass tab in disabled state.",name:"--mdc-tab-glass-inactive-color-disabled"},{description:"Background color for active line tab in pressed state.",name:"--mdc-tab-line-active-background-color-pressed"},{description:"Background color for active line tab in disabled state.",name:"--mdc-tab-line-active-background-color-disabled"},{description:"Background color for active line tab in hover state.",name:"--mdc-tab-line-active-background-color-hover"},{description:"Background color for active line tab in rest state.",name:"--mdc-tab-line-active-background-color-normal"},{description:"Text and icon color for active line tab.",name:"--mdc-tab-line-active-color"},{description:"Text and icon color for active line tab in disabled state.",name:"--mdc-tab-line-active-color-disabled"},{description:"color for indicator in active line tab.",name:"--mdc-tab-line-active-indicator-color"},{description:"Color for indicator in active line tab in disabled state.",name:"--mdc-tab-line-active-indicator-color-disabled"},{description:"Height for indicator in active line tab.",name:"--mdc-tab-line-active-indicator-height"},{description:"Width for indicator in active line tab.",name:"--mdc-tab-line-active-indicator-width"},{description:"Bottom left border radius for line tab.",name:"--mdc-tab-line-border-bottom-left-radius"},{description:"Bottom right border radius for line tab.",name:"--mdc-tab-line-border-bottom-right-radius"},{description:"Top left border radius for line tab.",name:"--mdc-tab-line-border-top-left-radius"},{description:"Top right border radius for line tab.",name:"--mdc-tab-line-border-top-right-radius"},{description:"Background color for inactive line tab in pressed state.",name:"--mdc-tab-line-inactive-background-color-pressed"},{description:"Background color for inactive line tab in disabled state",name:"--mdc-tab-line-inactive-background-color-disabled"},{description:"Background color for inactive line tab in hover state.",name:"--mdc-tab-line-inactive-background-color-hover"},{description:"Background color for inactive line tab in rest state.",name:"--mdc-tab-line-inactive-background-color-normal"},{description:"Text and icon color for inactive line tab.",name:"--mdc-tab-line-inactive-color"},{description:"Text and icon color for inactive line tab in disabled state.",name:"--mdc-tab-line-inactive-color-disabled"},{description:"Padding left for the tab.",name:"--mdc-tab-padding-left"},{description:"Padding right for the tab.",name:"--mdc-tab-padding-right"},{description:"Background color for active pill tab in pressed state.",name:"--mdc-tab-pill-active-background-color-pressed"},{description:"Background color for active pill tab in disabled state.",name:"--mdc-tab-pill-active-background-color-disabled"},{description:"Background color for active pill tab in hover state.",name:"--mdc-tab-pill-active-background-color-hover"},{description:"Background color for active pill tab in rest state.",name:"--mdc-tab-pill-active-background-color-normal"},{description:"Text and icon color for active pill tab.",name:"--mdc-tab-pill-active-color"},{description:"Text and icon color for active pill tab in disabled state.",name:"--mdc-tab-pill-active-color-disabled"},{description:"Border radius for pill tab.",name:"--mdc-tab-pill-border-radius"},{description:"Background color for inactive pill tab in pressed state.",name:"--mdc-tab-pill-inactive-background-color-pressed"},{description:"Background color for inactive pill tab in disabled state.",name:"--mdc-tab-pill-inactive-background-color-disabled"},{description:"Background color for inactive pill tab in hover state.",name:"--mdc-tab-pill-inactive-background-color-hover"},{description:"Background color for inactive pill tab in rest state.",name:"--mdc-tab-pill-inactive-background-color-normal"},{description:"Text and icon color for inactive pill tab.",name:"--mdc-tab-pill-inactive-color"},{description:"Text and icon color for inactive pill tab in disabled state.",name:"--mdc-tab-pill-inactive-color-disabled"}],members:[{kind:"field",name:"text",type:{text:"string | undefined"},description:"Text to be displayed in the tab.\nIf no `text` is provided, no text will be rendered,\n`aria-label` should be set on the tab.",attribute:"text",reflects:!0},{kind:"field",name:"variant",type:{text:"Variant"},description:"Tab can have three variants:\n- `glass`\n- `line`\n- `pill`\n\nIt defines the background and foreground color of the tab.",default:"pill",attribute:"variant",reflects:!0},{kind:"method",name:"modifyIconName",privacy:"private",return:{type:{text:"void"}},parameters:[{name:"active",type:{text:"boolean"},description:"The active state."}],description:`Modifies the icon name based on the active state.
 If the tab is active, the icon name is suffixed with '-filled'.
 If the tab is inactive, the icon name is restored to its original value.
 If '-filled' icon is not available, the icon name remains unchanged.`},{kind:"method",name:"setVariant",privacy:"private",return:{type:{text:"void"}},parameters:[{name:"variant",type:{text:"Variant"},description:"The variant to set."}],description:`Sets the variant attribute for the tab component.
@@ -1173,122 +1288,7 @@ The type attribute specifies the behavior of the button when it is clicked.
  * @cssproperty --mdc-tab-pill-inactive-background-color-normal - Background color for inactive pill tab in rest state.
  * @cssproperty --mdc-tab-pill-inactive-color - Text and icon color for inactive pill tab.
  * @cssproperty --mdc-tab-pill-inactive-color-disabled - Text and icon color for inactive pill tab in disabled state.
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Tab",module:"components/tab/tab.component.js"}}]},{kind:"javascript-module",path:"components/text/text.component.js",declarations:[{kind:"class",description:"Text component for creating styled text elements.\nIt has to be mounted within the ThemeProvider to access color and font tokens.\n\nThe `type` attribute allows changing the text style.\nThe `tagname` attribute allows changing the tag name of the text element.\nThe default tag name is `p`.\n\nThe `tagname` attribute should be a valid HTML tag name.\nIf the `tagname` attribute is not a valid HTML tag name, the default tag name will be used.\n\nThe styling is applied based on the `type` attribute.",name:"Text",cssParts:[{description:"The text element",name:"text"}],slots:[{description:"Default slot for text content",name:""}],members:[{kind:"field",name:"type",type:{text:"TextType"},privacy:"public",description:`Specifies the text style to be applied.
-
-Acceptable values include:
-
-- 'body-small-regular'
-- 'body-small-medium'
-- 'body-small-bold'
-- 'body-midsize-regular'
-- 'body-midsize-medium'
-- 'body-midsize-bold'
-- 'body-large-regular'
-- 'body-large-medium'
-- 'body-large-bold'
-- 'body-small-regular-underline'
-- 'body-small-medium-underline'
-- 'body-midsize-regular-underline'
-- 'body-midsize-medium-underline'
-- 'body-large-regular-underline'
-- 'body-large-medium-underline'
-- 'heading-small-regular'
-- 'heading-small-medium'
-- 'heading-small-bold'
-- 'heading-midsize-regular'
-- 'heading-midsize-medium'
-- 'heading-midsize-bold'
-- 'heading-large-regular'
-- 'heading-large-medium'
-- 'heading-large-bold'
-- 'heading-xlarge-regular'
-- 'heading-xlarge-medium'
-- 'heading-xlarge-bold'
-- 'headline-small-light'
-- 'headline-small-regular'`,default:"body-large-regular",attribute:"type",reflects:!0},{kind:"field",name:"tagname",type:{text:"TagName | undefined"},privacy:"public",description:`Specifies the HTML tag name for the text element. The default tag name is \`p\`.
-This attribute is optional. When set, it changes the tag name of the text element.
-
-Acceptable values include:
-
-- 'h1'
-- 'h2'
-- 'h3'
-- 'h4'
-- 'h5'
-- 'h6'
-- 'p'
-- 'small'
-- 'span'
-- 'div'
-
-For instance, setting this attribute to \`h2\` will render the text element as an \`h2\` element.
-Note that the styling is determined by the \`type\` attribute.`,attribute:"tagname",reflects:!0}],attributes:[{name:"type",type:{text:"TextType"},description:`Specifies the text style to be applied.
-
-Acceptable values include:
-
-- 'body-small-regular'
-- 'body-small-medium'
-- 'body-small-bold'
-- 'body-midsize-regular'
-- 'body-midsize-medium'
-- 'body-midsize-bold'
-- 'body-large-regular'
-- 'body-large-medium'
-- 'body-large-bold'
-- 'body-small-regular-underline'
-- 'body-small-medium-underline'
-- 'body-midsize-regular-underline'
-- 'body-midsize-medium-underline'
-- 'body-large-regular-underline'
-- 'body-large-medium-underline'
-- 'heading-small-regular'
-- 'heading-small-medium'
-- 'heading-small-bold'
-- 'heading-midsize-regular'
-- 'heading-midsize-medium'
-- 'heading-midsize-bold'
-- 'heading-large-regular'
-- 'heading-large-medium'
-- 'heading-large-bold'
-- 'heading-xlarge-regular'
-- 'heading-xlarge-medium'
-- 'heading-xlarge-bold'
-- 'headline-small-light'
-- 'headline-small-regular'`,default:"body-large-regular",fieldName:"type"},{name:"tagname",type:{text:"TagName | undefined"},description:`Specifies the HTML tag name for the text element. The default tag name is \`p\`.
-This attribute is optional. When set, it changes the tag name of the text element.
-
-Acceptable values include:
-
-- 'h1'
-- 'h2'
-- 'h3'
-- 'h4'
-- 'h5'
-- 'h6'
-- 'p'
-- 'small'
-- 'span'
-- 'div'
-
-For instance, setting this attribute to \`h2\` will render the text element as an \`h2\` element.
-Note that the styling is determined by the \`type\` attribute.`,fieldName:"tagname"}],superclass:{name:"Component",module:"/src/models"},tagName:"mdc-text",jsDoc:`/**
- * Text component for creating styled text elements.
- * It has to be mounted within the ThemeProvider to access color and font tokens.
- *
- * The \`type\` attribute allows changing the text style.
- * The \`tagname\` attribute allows changing the tag name of the text element.
- * The default tag name is \`p\`.
- *
- * The \`tagname\` attribute should be a valid HTML tag name.
- * If the \`tagname\` attribute is not a valid HTML tag name, the default tag name will be used.
- *
- * The styling is applied based on the \`type\` attribute.
- *
- * @tagname mdc-text
- * @slot - Default slot for text content
- *
- * @csspart text - The text element
- */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Text",module:"components/text/text.component.js"}}]},{kind:"javascript-module",path:"components/themeprovider/themeprovider.component.js",declarations:[{kind:"class",description:`ThemeProvider component, which sets the passed in themeclass as class.
+ */`,customElement:!0}],exports:[{kind:"js",name:"default",declaration:{name:"Tab",module:"components/tab/tab.component.js"}}]},{kind:"javascript-module",path:"components/themeprovider/themeprovider.component.js",declarations:[{kind:"class",description:`ThemeProvider component, which sets the passed in themeclass as class.
 If the themeclass switches, the existing themeclass will be removed as a class
 and the new themeclass will be added.
 
