@@ -7,8 +7,8 @@ import { Component } from '../../models';
 import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
 import { popoverStack } from './popover.stack';
 import type { PopoverPlacement, PopoverTrigger } from './popover.types';
-import type { ModalContainerColor, ModalContainerRole } from '../modalcontainer/modalcontainer.types';
-import { COLOR, ROLE } from '../modalcontainer/modalcontainer.constants';
+import type { ModalContainerColor } from '../modalcontainer/modalcontainer.types';
+import { COLOR } from '../modalcontainer/modalcontainer.constants';
 import { DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants';
 import { ValueOf } from '../../utils/types';
 
@@ -234,7 +234,7 @@ class Popover extends FocusTrapMixin(Component) {
    * @default dialog
    */
   @property({ type: String, attribute: 'data-role', reflect: true })
-  override role: ModalContainerRole = DEFAULTS.ROLE;
+  override role: string = DEFAULTS.ROLE;
 
   /**
    * `aria-describedby` for an interactive popover. It should reference an element inside the popover
@@ -471,9 +471,6 @@ class Popover extends FocusTrapMixin(Component) {
     }
     if (changedProperties.has('color')) {
       this.setAttribute('color', Object.values(COLOR).includes(this.color) ? this.color : DEFAULTS.COLOR);
-    }
-    if (changedProperties.has('role')) {
-      this.setAttribute('role', Object.values(ROLE).includes(this.role) ? this.role : DEFAULTS.ROLE);
     }
     if (changedProperties.has('zIndex')) {
       this.setAttribute('z-index', `${this.zIndex}`);
