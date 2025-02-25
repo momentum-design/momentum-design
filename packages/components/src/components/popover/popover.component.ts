@@ -769,7 +769,7 @@ class Popover extends FocusTrapMixin(Component) {
     const parent = this.arrowElement.offsetParent?.getBoundingClientRect();
 
     if (!this.arrowPixelChange) {
-      const pixelDiff = parent?.[staticSide] ? 12 + (rect[staticSide] - parent[staticSide]) : 0;
+      const pixelDiff = parent?.[staticSide] ? 12 - Math.abs(rect[staticSide] - parent[staticSide]) : 0;
       if (Math.round(pixelDiff) === 1) {
         this.arrowPixelChange = true;
       } else {
