@@ -211,7 +211,11 @@ class Button extends Buttonsimple {
    * @param slot - default slot of button
    */
   private inferButtonType() {
-    const slot = this.shadowRoot?.querySelector('slot')?.assignedNodes().length;
+    const slot = this.shadowRoot
+      ?.querySelector('slot')
+      ?.assignedNodes()
+      .filter((node) => node.nodeType !== Node.TEXT_NODE || node.textContent?.trim())
+      .length;
     if (slot && (this.prefixIcon || this.postfixIcon)) {
       this.typeInternal = BUTTON_TYPE_INTERNAL.PILL_WITH_ICON;
       this.setAttribute('data-btn-type', 'pill-with-icon');
