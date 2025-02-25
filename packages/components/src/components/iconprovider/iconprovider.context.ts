@@ -1,8 +1,11 @@
 import { createContext } from '@lit/context';
 
 import { TAG_NAME } from './iconprovider.constants';
+import type { IconSet, CacheStrategy } from './iconprovider.types';
 
 class IconProviderContext {
+  public iconSet?: IconSet;
+
   public fileExtension?: string;
 
   public url?: string;
@@ -13,7 +16,7 @@ class IconProviderContext {
 
   public cacheName?: string;
 
-  public cacheStrategy?: 'in-memory-cache' | 'web-cache-api';
+  public cacheStrategy?: CacheStrategy;
 
   // create typed lit context as part of the IconProviderContext
   public static readonly context = createContext<IconProviderContext>(TAG_NAME);

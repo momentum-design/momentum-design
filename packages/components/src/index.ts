@@ -23,6 +23,7 @@ import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
 import Spinner from './components/spinner';
 
 import type { TextType } from './components/text/text.types';
+import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
 
 export {
   ThemeProvider,
@@ -51,6 +52,8 @@ export {
 
 export type {
   TextType,
+  SpinnerSize,
+  SpinnerVariant,
 };
 
 export { inMemoryCache, webAPIIconsCache };
