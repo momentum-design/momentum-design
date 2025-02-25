@@ -136,8 +136,9 @@ export const FormField: StoryObj = {
       <form @submit=${handleSubmit}>
         <fieldset style="display: flex; flex-direction: column; gap: 1rem;">
           <legend>Select your super hero power</legend>
-          <mdc-checkbox label="Flight" value="flight" name="super-power" required-label='required'></mdc-checkbox>
-          <mdc-checkbox label="Mind Control" value="mind-control" name="super-power"></mdc-checkbox>
+          <mdc-checkbox label="Flight" value="flight" name="super-power"></mdc-checkbox>
+          <mdc-checkbox label="Mind Control" value="mind-control" name="super-power"
+          required-label='required' validation-message='This selection is necessary'></mdc-checkbox>
           <mdc-checkbox label="Super strength" value="super-strength" name="super-power"></mdc-checkbox>
           <mdc-checkbox label="Tactics" value="tactics" name="super-power"></mdc-checkbox>
           <div style='display: flex; gap: 0.25rem;'>

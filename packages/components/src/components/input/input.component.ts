@@ -139,7 +139,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
     this.updateComplete.then(() => {
       if (this.inputElement) {
         this.inputElement.checkValidity();
-        this.setValidity();
+        this.setInputValidity();
         this.internals.setFormValue(this.inputElement.value);
       }
     }).catch((error) => {
@@ -170,7 +170,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
   handleValueChange() {
     this.internals.setFormValue(this.value);
     this.updateComplete.then(() => {
-      this.setValidity();
+      this.setInputValidity();
     }).catch((error) => {
       if (this.onerror) {
         this.onerror(error);
@@ -183,6 +183,15 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
     if (changedProperties.has('value')) {
       this.handleValueChange();
     }
+  }
+
+  private setInputValidity() {
+    if (this.validationMessage && this.value === '') {
+      this.inputElement.setCustomValidity(this.validationMessage);
+    } else {
+      this.inputElement.setCustomValidity('');
+    }
+    this.setValidity();
   }
 
   /**
@@ -209,7 +218,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
 
     if (validationRelatedAttributes.includes(name)) {
       this.updateComplete.then(() => {
-        this.setValidity();
+        this.setInputValidity();
       }).catch((error) => {
         if (this.onerror) {
           this.onerror(error);
@@ -235,7 +244,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
    */
   private onInput() {
     this.updateValue();
-    this.setValidity();
+    this.setInputValidity();
   }
 
   /**
@@ -250,7 +259,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
    */
   private onChange(event: Event) {
     this.updateValue();
-    this.setValidity();
+    this.setInputValidity();
     const EventConstructor = event.constructor as typeof Event;
     this.dispatchEvent(new EventConstructor(event.type, event));
   }

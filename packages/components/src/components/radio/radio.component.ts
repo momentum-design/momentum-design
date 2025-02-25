@@ -118,7 +118,12 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
     setComponentValidity(isValid: boolean) {
       if (isValid) {
         this.internals.setValidity({});
-      } else {
+      } else if (this.requiredLabel && !this.checked) {
+        if (this.validationMessage) {
+          this.inputElement.setCustomValidity(this.validationMessage);
+        } else {
+          this.inputElement.setCustomValidity('');
+        }
         this.setValidity();
       }
     }

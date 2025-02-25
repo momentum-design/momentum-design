@@ -202,7 +202,8 @@ export const RadioInForm = () => {
         value="enterprise"
         required-label="required"
         data-aria-label="Enterprise Plan"
-        label="Enterprise Plan">
+        label="Enterprise Plan"
+        validation-message="Select a plan to continue">
       </mdc-radio>
       <br />
       <div style='display: flex; gap: 0.25rem;'>

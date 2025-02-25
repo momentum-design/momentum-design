@@ -91,6 +91,11 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
    */
   private manageRequired() {
     if (!this.checked && this.requiredLabel) {
+      if (this.validationMessage) {
+        this.inputElement.setCustomValidity(this.validationMessage);
+      } else {
+        this.inputElement.setCustomValidity('');
+      }
       this.setValidity();
     } else {
       this.internals.setValidity({});

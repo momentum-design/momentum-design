@@ -15,8 +15,8 @@ export interface AssociatedFormControl {
     required?: boolean;
     minLength?: number;
     maxLength?: number;
+    validationMessage: string;
 
-    readonly validationMessage: string;
     readonly form: HTMLFormElement | null;
     readonly validity: ValidityState;
     readonly willValidate: boolean;
@@ -64,6 +64,11 @@ export const FormInternalsMixin = <T extends Constructor<LitElement>>(
    */
     @property({ reflect: true, type: String }) value = '';
 
+     /**
+     * Custom validation message that will override the default message and displayed when the input is invalid.
+     */
+     @property({ reflect: true, type: String, attribute: 'validation-message' }) validationMessage?: string;
+
     /** @internal */
     static formAssociated = true;
 
@@ -77,10 +82,6 @@ export const FormInternalsMixin = <T extends Constructor<LitElement>>(
 
     get validity(): ValidityState {
       return this.internals.validity;
-    }
-
-    get validationMessage(): string {
-      return this.internals.validationMessage;
     }
 
     get willValidate() {
