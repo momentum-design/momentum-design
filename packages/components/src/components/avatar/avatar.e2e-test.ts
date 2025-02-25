@@ -165,7 +165,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       await componentsPage.setAttributes(avatar, {
         'is-typing': 'true',
       });
-      const loadingIndicator = await componentsPage.page.locator('div.loading__wrapper');
+      const loadingIndicator = await componentsPage.page.locator('div[part=loading__wrapper]');
       await loadingIndicator.waitFor();
       await expect(loadingIndicator).toBeDefined();
       await expect(avatar).toHaveAttribute('is-typing', 'true');
