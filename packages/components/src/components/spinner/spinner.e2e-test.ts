@@ -104,7 +104,7 @@ test('mdc-spinner', async ({ componentsPage }) => {
       size: 'midsize',
       'aria-label': undefined,
       inverted: undefined,
-      variant: undefined,
+      variant: 'standalone',
     };
 
     const checkAttributes = async (spinner: any, expectedAttributes: Attributes = defaultAttributes) => {

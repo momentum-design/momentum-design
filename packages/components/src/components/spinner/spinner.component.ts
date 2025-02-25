@@ -78,7 +78,7 @@ class Spinner extends Component {
   * icon or label text.
   * @default standalone
   */
-  @property({ type: String })
+  @property({ type: String, reflect: true })
   variant: SpinnerVariant = DEFAULTS.VARIANT;
 
   override updated(changedProperties: Map<string, any>) {
