@@ -13,6 +13,7 @@ import { VARIANT } from './listitem.constants';
 
 const render = (args: Args) => html`
   <mdc-listitem
+    ?disabled="${args.disabled}"
     variant="${args.variant}"
     label="${args.label}"
     secondary-label="${args['secondary-label']}"
@@ -60,6 +61,9 @@ const meta: Meta = {
     },
     'subline-text': {
       control: 'text',
+    },
+    disabled: {
+      control: 'boolean',
     },
     ...hideControls([
       '--mdc-listitem-background-color-active',

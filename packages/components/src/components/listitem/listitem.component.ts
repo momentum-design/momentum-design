@@ -3,6 +3,7 @@ import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
+import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { DEFAULTS } from './listitem.constants';
 import styles from './listitem.styles';
@@ -35,7 +36,7 @@ import styles from './listitem.styles';
  * @cssproperty --mdc-listitem-secondary-label-color
  *  - Allows customization of the secondary and teritary label text slot color.
  */
-class ListItem extends DataAriaLabelMixin(DisabledMixin(Component)) {
+class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component))) {
   /**
    * The variant of the list item. It can be a pill, rectangle or a full-width.
    * @default 'full-width'
@@ -110,7 +111,7 @@ class ListItem extends DataAriaLabelMixin(DisabledMixin(Component)) {
       ? this.getSmallRegularText('trailing-text-subline', this.sublineText) : nothing;
 
     return html`
-      <li part="container">
+      <li>
         <div part="leading">
           <slot name="leading-controls"></slot>
           <div part="leading-text">
