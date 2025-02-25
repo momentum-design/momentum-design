@@ -40,6 +40,7 @@ const styles = css`
     position: relative;
     padding: 0.75rem;
     overflow-y: auto;
+    min-width: max-content;
     z-index: 9998;
   }
 

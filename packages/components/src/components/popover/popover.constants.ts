@@ -1,5 +1,5 @@
 import utils from '../../utils/tag-name';
-import { COLOR, ROLE } from '../modalcontainer/modalcontainer.constants';
+import { COLOR } from '../modalcontainer/modalcontainer.constants';
 
 const TAG_NAME = utils.constructTagName('popover');
 
@@ -44,7 +44,7 @@ const DEFAULTS = {
   FLIP: true,
   SIZE: false,
   DELAY: '0,0',
-  ROLE: ROLE.DIALOG,
+  ROLE: 'dialog',
   Z_INDEX: 1000,
 } as const;
 

@@ -50,8 +50,6 @@ class Modalcontainer extends DataAriaLabelMixin(
 
   /**
    * Role of the modalcontainer
-   * - **dialog**
-   * - **alertdialog**
    * @default dialog
    */
   @property({ type: String, reflect: true, attribute: 'data-role' })
@@ -59,9 +57,9 @@ class Modalcontainer extends DataAriaLabelMixin(
 
   /**
    * Aria modal of the modalcontainer
-   * @default true
+   * @default false
    */
-  @property({ type: String, reflect: true, attribute: 'data-aria-modal' })
+  @property({ type: Boolean, reflect: true, attribute: 'data-aria-modal' })
   dataAriaModal: boolean = DEFAULTS.ARIA_MODAL;
 
   public override render() {
@@ -71,7 +69,7 @@ class Modalcontainer extends DataAriaLabelMixin(
         class="mdc-modal-container"
         ?contrast="${this.color === 'contrast'}"
         role="${this.dataRole}"
-        aria-modal="${this.dataAriaModal}"
+        aria-modal=${ifDefined(this.dataAriaModal === true ? 'true' : undefined)}
         aria-label=${ifDefined(this.dataAriaLabel)}
         aria-labelledby=${ifDefined(this.dataAriaLabelledby)}
         aria-describedby=${ifDefined(this.dataAriaDescribedby)}

@@ -19,7 +19,7 @@ const DEFAULTS = {
   COLOR: COLOR.TONAL,
   ELEVATION: ELEVATION[0],
   ROLE: 'dialog',
-  ARIA_MODAL: true,
+  ARIA_MODAL: false,
   CHILDREN: 'Lorem ipsum dolor sit amet',
 } as const;
 

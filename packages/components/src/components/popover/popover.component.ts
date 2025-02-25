@@ -11,6 +11,10 @@ import type { ModalContainerColor } from '../modalcontainer/modalcontainer.types
 import { COLOR } from '../modalcontainer/modalcontainer.constants';
 import { DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants';
 import { ValueOf } from '../../utils/types';
+import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
+import { DataRoleMixin } from '../../utils/mixins/DataRoleMixin';
+import { DataAriaDescribedbyMixin } from '../../utils/mixins/DataAriaDescribedbyMixin';
+import { DataAriaLabelledbyMixin } from '../../utils/mixins/DataAriaLabelledbyMixin';
 
 /**
  * Popover component is a lightweight floating UI element that displays additional content when triggered.
@@ -33,7 +37,9 @@ import { ValueOf } from '../../utils/types';
  * @slot - Default slot for modal container
  *
  */
-class Popover extends FocusTrapMixin(Component) {
+class Popover extends DataAriaLabelMixin(
+  DataAriaLabelledbyMixin(DataAriaDescribedbyMixin(DataRoleMixin(FocusTrapMixin(Component)))),
+) {
   /**
    * The unique ID of the popover.
    */
@@ -214,42 +220,17 @@ class Popover extends FocusTrapMixin(Component) {
   closeButtonAriaLabel: string | null = null;
 
   /**
-   * aria-label for an interactive popover only. By default, it will be labelled by the triggerComponent.
-   * Only required in the unusual circumstance where the popover label cannot match the trigger.
-   * @default null
-   */
-  @property({ type: String, attribute: 'data-aria-label', reflect: true })
-  override ariaLabel: string | null = null;
-
-  /**
-   * aria-labelledby for an interactive popover only, defaults to the trigger component id.
-   * Used in nested cases where the triggerComponent isn't the actual button.
-   * @default null
-   */
-  @property({ type: String, attribute: 'data-aria-labelledby', reflect: true })
-  ariaLabelledby: string | null = null;
-
-  /**
-   * role attribute to be set for popover accessibility.
+   * Role of the popover
    * @default dialog
    */
-  @property({ type: String, attribute: 'data-role', reflect: true })
-  override role: string = DEFAULTS.ROLE;
-
-  /**
-   * `aria-describedby` for an interactive popover. It should reference an element inside the popover
-   * that provides additional descriptive information. This is useful when the popover contains
-   * explanatory content, such as help text or tooltips.
-   * @default null
-   */
-  @property({ type: String, attribute: 'data-aria-describedby', reflect: true })
-  ariaDescribedby: string | null = null;
+  @property({ type: String, reflect: true, attribute: 'data-role' })
+  override dataRole: string = DEFAULTS.ROLE;
 
   /** @internal */
   private triggerElement: HTMLElement | null = null;
 
   /** @internal */
-  private popoverElement: HTMLElement | null = null;
+  private containerElement: HTMLElement | null = null;
 
   /** @internal */
   private arrowElement: HTMLElement | null = null;
@@ -271,7 +252,7 @@ class Popover extends FocusTrapMixin(Component) {
 
   protected override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
-    this.popoverElement = this.renderRoot.querySelector('.popover-container');
+    this.containerElement = this.renderRoot.querySelector('.popover-container');
     await this.setupAppendTo();
     await this.setupDelay();
     await this.setupTrigger();
@@ -377,14 +358,12 @@ class Popover extends FocusTrapMixin(Component) {
    */
   private async setupAccessibility() {
     if (this.interactive) {
-      if (!this.ariaLabel) {
-        this.ariaLabel = this.triggerElement?.ariaLabel || this.triggerElement?.textContent || '';
+      if (!this.dataAriaLabel) {
+        this.dataAriaLabel = this.triggerElement?.ariaLabel || this.triggerElement?.textContent || '';
       }
-      this.popoverElement?.setAttribute('aria-label', this.ariaLabel);
-      if (!this.ariaLabelledby) {
-        this.ariaLabelledby = this.triggerElement?.id || '';
+      if (!this.dataAriaLabelledby) {
+        this.dataAriaLabelledby = this.triggerElement?.id || '';
       }
-      this.popoverElement?.setAttribute('aria-labelledby', this.ariaLabelledby);
     }
   }
 
@@ -417,8 +396,8 @@ class Popover extends FocusTrapMixin(Component) {
       const hoverBridge = this.renderRoot.querySelector('.popover-hover-bridge');
       this.triggerElement.addEventListener('mouseenter', this.showPopover);
       this.triggerElement.addEventListener('mouseleave', this.startCloseDelay);
-      this.popoverElement?.addEventListener('mouseenter', this.cancelCloseDelay);
-      this.popoverElement?.addEventListener('mouseleave', this.startCloseDelay);
+      this.containerElement?.addEventListener('mouseenter', this.cancelCloseDelay);
+      this.containerElement?.addEventListener('mouseleave', this.startCloseDelay);
       hoverBridge?.addEventListener('mouseenter', this.cancelCloseDelay);
     }
     if (this.trigger.includes('focusin')) {
@@ -436,8 +415,8 @@ class Popover extends FocusTrapMixin(Component) {
     this.triggerElement.removeEventListener('click', this.togglePopover);
     this.triggerElement.removeEventListener('mouseenter', this.showPopover);
     this.triggerElement.removeEventListener('mouseleave', this.hidePopover);
-    this.popoverElement?.removeEventListener('mouseenter', this.cancelCloseDelay);
-    this.popoverElement?.removeEventListener('mouseleave', this.startCloseDelay);
+    this.containerElement?.removeEventListener('mouseenter', this.cancelCloseDelay);
+    this.containerElement?.removeEventListener('mouseleave', this.startCloseDelay);
     this.triggerElement.removeEventListener('focusin', this.showPopover);
     hoverBridge?.removeEventListener('mouseenter', this.cancelCloseDelay);
 
@@ -480,8 +459,8 @@ class Popover extends FocusTrapMixin(Component) {
     }
     if (
       changedProperties.has('interactive')
-      || changedProperties.has('ariaLabel')
-      || changedProperties.has('ariaLabelledby')
+      || changedProperties.has('dataAriaLabel')
+      || changedProperties.has('dataAriaLabelledby')
     ) {
       await this.setupAccessibility();
     }
@@ -558,7 +537,7 @@ class Popover extends FocusTrapMixin(Component) {
       await this.setupHoverBridge();
 
       if (this.hideOnBlur) {
-        this.popoverElement?.addEventListener('focusout', this.onPopoverFocusOut);
+        this.containerElement?.addEventListener('focusout', this.onPopoverFocusOut);
       }
       if (this.hideOnOutsideClick) {
         document.addEventListener('click', this.onOutsidePopoverClick);
@@ -576,7 +555,7 @@ class Popover extends FocusTrapMixin(Component) {
       }
     } else {
       if (this.hideOnBlur) {
-        this.popoverElement?.removeEventListener('blur', this.onPopoverFocusOut);
+        this.containerElement?.removeEventListener('blur', this.onPopoverFocusOut);
       }
       if (this.hideOnOutsideClick) {
         document.removeEventListener('click', this.onOutsidePopoverClick);
@@ -678,7 +657,7 @@ class Popover extends FocusTrapMixin(Component) {
    * It uses the floating-ui/dom library to calculate the position.
    */
   private async positionPopover() {
-    if (!this.triggerElement || !this.popoverElement) return;
+    if (!this.triggerElement || !this.containerElement) return;
 
     const middleware = [shift()];
     let popoverOffset = this.offset;
@@ -688,7 +667,7 @@ class Popover extends FocusTrapMixin(Component) {
     }
 
     if (this.size) {
-      const popoverContent = this.popoverElement.querySelector('.popover-content') as HTMLElement;
+      const popoverContent = this.containerElement.querySelector('.popover-content') as HTMLElement;
       middleware.push(
         size({
           apply({ availableHeight }) {
@@ -697,7 +676,7 @@ class Popover extends FocusTrapMixin(Component) {
               maxHeight: `${availableHeight}px`,
             });
           },
-          padding: 25,
+          padding: 50,
         }),
       );
     }
@@ -714,10 +693,10 @@ class Popover extends FocusTrapMixin(Component) {
 
     middleware.push(offset(popoverOffset));
 
-    autoUpdate(this.triggerElement, this.popoverElement, async () => {
-      if (!this.triggerElement || !this.popoverElement) return;
+    autoUpdate(this.triggerElement, this.containerElement, async () => {
+      if (!this.triggerElement || !this.containerElement) return;
 
-      const { x, y, middlewareData, placement } = await computePosition(this.triggerElement, this.popoverElement, {
+      const { x, y, middlewareData, placement } = await computePosition(this.triggerElement, this.containerElement, {
         placement: this.placement,
         middleware,
       });
@@ -736,9 +715,9 @@ class Popover extends FocusTrapMixin(Component) {
    * @param y - The y position.
    */
   private updatePopoverStyle(x: number, y: number): void {
-    if (!this.popoverElement) return;
+    if (!this.containerElement) return;
 
-    Object.assign(this.popoverElement.style, {
+    Object.assign(this.containerElement.style, {
       left: `${x}px`,
       top: `${y}px`,
     });
@@ -843,10 +822,12 @@ class Popover extends FocusTrapMixin(Component) {
         class="popover-container"
         elevation="3"
         color=${this.color}
-        aria-modal=${ifDefined(this.interactive ? 'true' : undefined)}
         ?visible=${this.visible}
-        role=${this.role}
-        ${this.interactive ? html` aria-describedby=${ifDefined(this.ariaDescribedby)} ` : nothing}
+        ?data-aria-modal=${this.interactive}
+        data-role=${this.dataRole}
+        data-aria-label=${ifDefined(this.interactive ? this.dataAriaLabel : undefined)}
+        data-aria-labelledby=${ifDefined(this.interactive ? this.dataAriaLabelledby : undefined)}
+        data-aria-describedby=${ifDefined(this.interactive ? this.dataAriaDescribedby : undefined)}
         style="z-index: ${this.zIndex};"
         data-color=${this.color}
       >

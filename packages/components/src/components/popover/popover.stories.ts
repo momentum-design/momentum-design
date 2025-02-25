@@ -2,7 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html, TemplateResult } from 'lit';
 import { POPOVER_PLACEMENT, DEFAULTS } from './popover.constants';
-import { COLOR, ROLE } from '../modalcontainer/modalcontainer.constants';
+import { COLOR } from '../modalcontainer/modalcontainer.constants';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 
 const createPopover = (args: Args, content: TemplateResult) => html`
@@ -270,8 +270,7 @@ const meta: Meta = {
       control: 'text',
     },
     'data-role': {
-      control: 'radio',
-      options: Object.values(ROLE),
+      control: 'text',
     },
     ...disableControls([
       '--mdc-popover-arrow-border-radius',
