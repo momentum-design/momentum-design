@@ -243,7 +243,6 @@ import{i as j,k as i,D as p}from"./lit-element-CHllvULs.js";import{u as F,n as M
 
 `,...U()],J=F.constructTagName("tab"),k={GLASS:"glass",LINE:"line",PILL:"pill"},A={VARIANT:k.PILL};var K=Object.defineProperty,R=(o,a,e,Q)=>{for(var t=void 0,u=o.length-1,f;u>=0;u--)(f=o[u])&&(t=f(a,e,t)||t);return t&&K(a,e,t),t};const y=class y extends X(x){constructor(){super(),this.variant=A.VARIANT,this.role="tab",this.softDisabled=void 0,this.size=void 0,this.type=void 0}modifyIconName(a){this.iconName&&(a?(this.prevIconName=this.iconName,this.iconName=`${Z(this.iconName)}-filled`):this.prevIconName&&(this.iconName=this.prevIconName))}setVariant(a){this.setAttribute("variant",Object.values(k).includes(a)?a:A.VARIANT)}setActive(a,e){a.setAttribute("aria-selected",e?"true":"false"),this.modifyIconName(e)}executeAction(){this.active=!this.active}update(a){super.update(a),a.has("variant")&&this.setVariant(this.variant)}render(){return i`
       <div part="container">
-        <slot name="badge" part="badge"></slot>
         ${this.iconName?i` <mdc-icon name="${this.iconName}" size="1" length-unit="rem" part="icon"></mdc-icon>`:p}
         ${this.text?i` <mdc-text
               type=${this.active?T.BODY_MIDSIZE_BOLD:T.BODY_MIDSIZE_MEDIUM}
@@ -252,6 +251,8 @@ import{i as j,k as i,D as p}from"./lit-element-CHllvULs.js";import{u as F,n as M
               part="text"
               >${this.text}</mdc-text
             >`:p}
+        <slot name="badge"></slot>
+        <slot name="chip"></slot>
       </div>
       <div part="indicator"></div>
     `}};y.styles=[...x.styles,...H];let d=y;R([M({type:String,reflect:!0})],d.prototype,"text");R([M({type:String,reflect:!0})],d.prototype,"variant");d.register(J);const r=o=>i`<div role="tablist">
