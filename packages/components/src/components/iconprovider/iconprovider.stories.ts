@@ -8,6 +8,7 @@ import { hideControls } from '../../../config/storybook/utils';
 const render = (args: Args) => html`
 <mdc-iconprovider 
   url=${args.url}
+  icon-set=${args['icon-set']}
   file-extension=${args['file-extension']}
   cache-strategy=${args['cache-strategy']}
   cache-name=${args['cache-name']}
@@ -26,6 +27,10 @@ const meta: Meta = {
     badges: ['stable'],
   },
   argTypes: {
+    'icon-set': {
+      control: 'select',
+      options: ['momentum-icons', 'custom-icons'],
+    },
     'file-extension': {
       options: ALLOWED_FILE_EXTENSIONS,
       control: { type: 'radio' },
@@ -53,6 +58,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
+    'icon-set': 'momentum-icons',
     url: './icons/svg',
     'file-extension': 'svg',
     'length-unit': 'em',

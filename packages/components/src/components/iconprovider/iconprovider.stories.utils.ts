@@ -16,6 +16,7 @@ class SubComponentIconProvider extends Component {
 
   override render() {
     return html`
+      <p>Icon Set: ${this.iconProviderContext.value?.iconSet}</p>
       <p>URL: ${this.iconProviderContext.value?.url}</p>
       <p>File Extension: ${this.iconProviderContext.value?.fileExtension}</p>
       <p>Length Unit: ${this.iconProviderContext.value?.lengthUnit}</p>
