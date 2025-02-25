@@ -74,18 +74,34 @@ export const CheckboxGroup: StoryObj = {
   },
 };
 
-export const ToggleGroup: StoryObj = {
+export const ToggleGroupActive: StoryObj = {
   args: {
     'header-text': 'Engine thrusters',
     'description-text': 'Select all the thrusters you would like to turn on.',
     'data-aria-label': 'Select one of the engine thrusters',
     children: html`
-      <mdc-toggle label="Left Thruster 1"></mdc-toggle>
-      <mdc-toggle label="Left Thruster 2"></mdc-toggle>
-      <mdc-toggle label="Left Thruster 3"></mdc-toggle>
-      <mdc-toggle label="Right Thruster 1"></mdc-toggle>
-      <mdc-toggle label="Right Thruster 2"></mdc-toggle>
-      <mdc-toggle label="Right Thruster 3"></mdc-toggle>
+      <mdc-toggle label="Left Thruster 1" checked></mdc-toggle>
+      <mdc-toggle label="Left Thruster 2" checked></mdc-toggle>
+      <mdc-toggle label="Left Thruster 3" checked></mdc-toggle>
+      <mdc-toggle label="Right Thruster 1" checked></mdc-toggle>
+      <mdc-toggle label="Right Thruster 2" checked></mdc-toggle>
+      <mdc-toggle label="Right Thruster 3" checked></mdc-toggle>
+    `,
+  },
+};
+
+export const ToggleGroupCompact: StoryObj = {
+  args: {
+    'header-text': 'Engine thrusters',
+    'description-text': 'Select all the thrusters you would like to turn on.',
+    'data-aria-label': 'Select one of the engine thrusters',
+    children: html`
+      <mdc-toggle label="Left Thruster 1" size='compact'></mdc-toggle>
+      <mdc-toggle label="Left Thruster 2" size='compact'></mdc-toggle>
+      <mdc-toggle label="Left Thruster 3" size='compact'></mdc-toggle>
+      <mdc-toggle label="Right Thruster 1" size='compact'></mdc-toggle>
+      <mdc-toggle label="Right Thruster 2" size='compact'></mdc-toggle>
+      <mdc-toggle label="Right Thruster 3" size='compact'></mdc-toggle>
     `,
   },
 };

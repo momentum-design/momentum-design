@@ -54,16 +54,18 @@ class FormfieldGroup extends DataAriaLabelMixin(Component) {
 
   public override render() {
     return html`
+      <div part="container">
+      ${this.renderText(TEXT_TYPE.BODY_MIDSIZE_BOLD, DEFAULTS.HEADER_ID, 'header', this.headerText)}
       <div
-        part="container"
+        part="list"
         role="${this.isRadio ? ROLE.RADIOGROUP : ROLE.GROUP}"
         aria-labelledby="${DEFAULTS.HEADER_ID}"
         aria-describedby="${DEFAULTS.DESCRIPTION_ID}"
         aria-label="${this.dataAriaLabel ?? ''}"
       >
-        ${this.renderText(TEXT_TYPE.BODY_MIDSIZE_BOLD, DEFAULTS.HEADER_ID, 'header', this.headerText)}
         ${this.renderText(TEXT_TYPE.BODY_MIDSIZE_REGULAR, DEFAULTS.DESCRIPTION_ID, 'description', this.descriptionText)}
         <slot></slot>
+      </div>
       </div>
     `;
   }
