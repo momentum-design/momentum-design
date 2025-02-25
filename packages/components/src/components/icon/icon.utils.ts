@@ -46,7 +46,7 @@ const fetchIcon = async (request: Request): Promise<Response> =>
  * @returns Response string from the fetch
  * @throws Error if the response is not ok
  */
-const dynamicSVGImport = async ({
+const svgFetch = async ({
   url,
   name,
   fileExtension,
@@ -100,4 +100,4 @@ const dynamicSVGImport = async ({
       }));
 };
 
-export { dynamicSVGImport };
+export { svgFetch };
