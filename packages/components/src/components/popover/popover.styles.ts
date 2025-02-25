@@ -14,6 +14,7 @@ const styles = css`
   .popover-container {
     display: none;
     position: absolute;
+    box-sizing: content-box;
 
     &[data-color='contrast'] {
       .popover-arrow {

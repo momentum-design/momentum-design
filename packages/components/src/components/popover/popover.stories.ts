@@ -5,10 +5,10 @@ import { POPOVER_PLACEMENT, DEFAULTS } from './popover.constants';
 import { COLOR, ROLE } from '../modalcontainer/modalcontainer.constants';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 
-const createPopover = (id: string, triggerID: string, args: Args, content: TemplateResult) => html`
+const createPopover = (args: Args, content: TemplateResult) => html`
 <mdc-popover
-  id="${id}"
-  triggerID="${triggerID}"
+  id="${args.id}"
+  triggerID="${args.triggerID}"
   trigger="${args.trigger}"
   placement="${args.placement}"
   delay="${args.delay}"
@@ -28,6 +28,7 @@ const createPopover = (id: string, triggerID: string, args: Args, content: Templ
   ?hide-on-escape=${args['hide-on-escape']}
   ?hide-on-outside-click=${args['hide-on-outside-click']}
   ?focus-back-to-trigger=${args['focus-back-to-trigger']}
+  close-button-aria-label="${args['close-button-aria-label']}"
   data-aria-label="${args['data-aria-label']}"
   data-aria-labelledby="${args['data-aria-labelledby']}"
   data-aria-describedby="${args['data-aria-describedby']}"
@@ -44,7 +45,7 @@ const createTrigger = (triggerID: string, text: String) => html`
   justify-content: center;
   align-items: center;
   height: 50vh;
-"
+  "
 >
   <mdc-button id="${triggerID}">${text}</mdc-button>
 </div>
@@ -52,14 +53,12 @@ const createTrigger = (triggerID: string, text: String) => html`
 
 const render = (args: Args) => html`
   ${createTrigger('popover-trigger', 'Click me!')}
-  ${createPopover('popover', 'popover-trigger', args, html`<mdc-text>Lorem ipsum dolor sit amet.</mdc-text>`)}
+  ${createPopover(args, html`<mdc-text>Lorem ipsum dolor sit amet.</mdc-text>`)}
 `;
 
 const renderInteractive = (args: Args) => html`
   ${createTrigger('popover-trigger-interactive', 'Click me!')}
   ${createPopover(
-    'popover-interactive',
-    'popover-trigger-interactive',
     args,
     html`
       <mdc-button>Button 1</mdc-button>
@@ -84,8 +83,6 @@ const renderInteractive = (args: Args) => html`
 const renderInteractiveHover = (args: Args) => html`
   ${createTrigger('popover-trigger-interactive-hover', 'Hover me!')}
   ${createPopover(
-    'popover-interactive-hover',
-    'popover-trigger-interactive-hover',
     args,
     html`
       <mdc-button>Button 1</mdc-button>
@@ -100,8 +97,6 @@ const renderInteractiveHover = (args: Args) => html`
 const renderHideOnBlur = (args: Args) => html`
   ${createTrigger('popover-trigger-hide-on-blur', 'Click me!')}
   ${createPopover(
-    'popover-hide-on-blur',
-    'popover-trigger-hide-on-blur',
     args,
     html`
       <mdc-button>Button 1</mdc-button>
@@ -111,33 +106,27 @@ const renderHideOnBlur = (args: Args) => html`
       <mdc-button>Button 5</mdc-button>
     `,
   )}
+  <mdc-button>Button 1</mdc-button>
 `;
 
 const renderMultiple = (args: Args) => html`
   ${createTrigger('popover-trigger-multiple', 'Click/ Hover me!')}
-  ${createPopover(
-    'popover-multiple',
-    'popover-trigger-multiple',
-    args,
-    html`<mdc-text>Interactive content on click</mdc-text>`,
-  )}
-  <mdc-popover
-    id="popover2"
-    triggerID="popover-trigger-multiple"
-    trigger="mouseenter"
-    placement="bottom"
-    z-index="20"
-    show-arrow
-  >
-    <mdc-text>Description tooltip on mou se enter</mdc-text>
-  </mdc-popover>
+  ${createPopover(args, html`<mdc-text>Interactive content on click</mdc-text>`)}
+<mdc-popover
+  id="popover2"
+  triggerID="popover-trigger-multiple"
+  trigger="mouseenter"
+  placement="bottom"
+  z-index="20"
+  show-arrow
+>
+  <mdc-text>Description tooltip on mou se enter</mdc-text>
+</mdc-popover>
 `;
 
 const renderNested = (args: Args) => html`
   ${createTrigger('popover-trigger-nested', 'Click me!')}
   ${createPopover(
-    'popover-nested',
-    'popover-trigger-nested',
     args,
     html`<mdc-text>Popover Level 1</mdc-text> <mdc-button id="popover-trigger-2">Click me!</mdc-button>`,
   )}
@@ -157,6 +146,7 @@ const renderNested = (args: Args) => html`
   <mdc-text>Popover Level 2</mdc-text>
   <mdc-button id="popover-trigger-3">Hover me!</mdc-button>
 </mdc-popover>
+
 <mdc-popover
   id="popover3"
   triggerID="popover-trigger-3"
@@ -171,6 +161,22 @@ const renderNested = (args: Args) => html`
 </mdc-popover>
 `;
 
+const renderBackdrop = (args: Args) => html`
+  ${createTrigger('popover-trigger-backdrop', 'Click me!')}
+  ${createPopover(
+    args,
+    html`
+      <mdc-button>Button 1</mdc-button>
+      <mdc-button>Button 2</mdc-button>
+      <mdc-button>Button 3</mdc-button>
+      <mdc-button>Button 4</mdc-button>
+      <mdc-button>Button 5</mdc-button>
+    `,
+  )}
+  <mdc-button>Button 1</mdc-button>
+  <mdc-button>Button 2</mdc-button>
+`;
+
 const meta: Meta = {
   title: 'Work In Progress/popover',
   tags: ['autodocs'],
@@ -180,6 +186,15 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
+    id: {
+      control: 'text',
+    },
+    triggerID: {
+      control: 'text',
+    },
+    trigger: {
+      control: 'text',
+    },
     placement: {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
@@ -242,6 +257,9 @@ const meta: Meta = {
     'focus-back-to-trigger': {
       control: 'boolean',
     },
+    'close-button-aria-label': {
+      control: 'text',
+    },
     'data-aria-label': {
       control: 'text',
     },
@@ -263,11 +281,7 @@ const meta: Meta = {
       '--mdc-popover-inverted-border-color',
       '--mdc-popover-inverted-text-color',
     ]),
-    ...hideControls([
-      'enabledPreventScroll',
-      'enabledFocusTrap',
-      'shouldWrapFocus',
-    ]),
+    ...hideControls(['enabledPreventScroll', 'enabledFocusTrap', 'shouldWrapFocus']),
   },
 };
 
@@ -376,6 +390,25 @@ export const hideOnBlur: StoryObj = {
     interactive: true,
     'show-arrow': true,
     'hide-on-blur': true,
+    'data-role': DEFAULTS.ROLE,
+    color: DEFAULTS.COLOR,
+  },
+};
+
+export const popoverWithBackdrop: StoryObj = {
+  render: renderBackdrop,
+  args: {
+    id: 'popover-backdrop',
+    triggerID: 'popover-trigger-backdrop',
+    trigger: 'click',
+    placement: POPOVER_PLACEMENT.TOP,
+    offset: DEFAULTS.OFFSET,
+    'z-index': DEFAULTS.Z_INDEX,
+    delay: DEFAULTS.DELAY,
+    interactive: true,
+    'show-arrow': true,
+    'hide-on-blur': true,
+    backdrop: true,
     'data-role': DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
   },

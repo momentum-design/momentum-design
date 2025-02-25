@@ -115,7 +115,7 @@ class Popover extends FocusTrapMixin(Component) {
   preventScroll: boolean = DEFAULTS.PREVENT_SCROLL;
 
   /**
-   * The show arrow visibility of the popover.
+   * The arrow visibility of the popover.
    * @default false
    */
   @property({ type: Boolean, attribute: 'show-arrow' })
@@ -125,7 +125,7 @@ class Popover extends FocusTrapMixin(Component) {
    * The close button visibility of the popover.
    * @default false
    */
-  @property({ type: Boolean, attribute: 'close-button', reflect: true })
+  @property({ type: Boolean, reflect: true, attribute: 'close-button' })
   closeButton: boolean = DEFAULTS.CLOSE_BUTTON;
 
   /**
@@ -171,21 +171,22 @@ class Popover extends FocusTrapMixin(Component) {
   focusBackToTrigger: boolean = DEFAULTS.FOCUS_BACK;
 
   /**
-   * Determines whether the backdrop is .
+   * Determines whether the popover with backdrop.
+   * Other than popover and trigger element, the rest of the screen will be covered with a backdrop.
    * @default false
    */
   @property({ type: Boolean, reflect: true })
   backdrop: boolean = DEFAULTS.BACKDROP;
 
   /**
-   * Changes the placement of popover to keep it in view.
+   * Changes the placement of popover to keep it in view when scrolling.
    * @default true
    */
   @property({ type: Boolean, reflect: true })
   flip: boolean = DEFAULTS.FLIP;
 
   /**
-   * Changes the size of popover to keep it in view.
+   * Changes the size of popover to keep it in view when scrolling.
    * @default false
    */
   @property({ type: Boolean, reflect: true })
@@ -265,6 +266,9 @@ class Popover extends FocusTrapMixin(Component) {
   /** @internal */
   private closeDelay: number = 0;
 
+  /** @internal */
+  private arrowPixelChange: boolean = false;
+
   protected override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
     this.popoverElement = this.renderRoot.querySelector('.popover-container');
@@ -313,8 +317,9 @@ class Popover extends FocusTrapMixin(Component) {
       bottom: '',
     });
     const bridgeSize = `calc(${this.showArrow ? '0.75rem + ' : ''}${this.offset}px)`;
-    const popoverHeight = this.shadowRoot?.querySelector('mdc-modalcontainer')?.offsetHeight || 0;
-    const popoverWidth = this.shadowRoot?.querySelector('mdc-modalcontainer')?.offsetWidth || 0;
+    const modalContainer = this.shadowRoot?.querySelector('mdc-modalcontainer') as HTMLElement;
+    const popoverHeight = modalContainer.offsetHeight || 0;
+    const popoverWidth = modalContainer.offsetWidth || 0;
 
     if (hoverBridge) {
       const side = this.placement.split('-')[0];
@@ -358,7 +363,6 @@ class Popover extends FocusTrapMixin(Component) {
         }
         return parsed;
       });
-
       this.openDelay = openDelay;
       this.closeDelay = closeDelay;
     } catch (error) {
@@ -375,16 +379,12 @@ class Popover extends FocusTrapMixin(Component) {
     if (this.interactive) {
       if (!this.ariaLabel) {
         this.ariaLabel = this.triggerElement?.ariaLabel || this.triggerElement?.textContent || '';
-        this.popoverElement?.setAttribute('aria-label', this.ariaLabel);
-      } else {
-        this.popoverElement?.setAttribute('aria-label', this.ariaLabel);
       }
+      this.popoverElement?.setAttribute('aria-label', this.ariaLabel);
       if (!this.ariaLabelledby) {
         this.ariaLabelledby = this.triggerElement?.id || '';
-        this.popoverElement?.setAttribute('aria-labelledby', this.ariaLabelledby);
-      } else {
-        this.popoverElement?.setAttribute('aria-labelledby', this.ariaLabelledby);
       }
+      this.popoverElement?.setAttribute('aria-labelledby', this.ariaLabelledby);
     }
   }
 
@@ -433,7 +433,6 @@ class Popover extends FocusTrapMixin(Component) {
   private async removeEventListeners() {
     if (!this.triggerElement) return;
     const hoverBridge = this.renderRoot.querySelector('.popover-hover-bridge');
-
     this.triggerElement.removeEventListener('click', this.togglePopover);
     this.triggerElement.removeEventListener('mouseenter', this.showPopover);
     this.triggerElement.removeEventListener('mouseleave', this.hidePopover);
@@ -454,7 +453,7 @@ class Popover extends FocusTrapMixin(Component) {
     }
     if (changedProperties.has('placement')) {
       this.setAttribute(
-        'placemenet',
+        'placement',
         Object.values(POPOVER_PLACEMENT).includes(this.placement) ? this.placement : DEFAULTS.PLACEMENT,
       );
     }
@@ -463,25 +462,18 @@ class Popover extends FocusTrapMixin(Component) {
     }
     if (changedProperties.has('trigger')) {
       const triggers = this.trigger.split(' ');
-      const validTriggers = triggers.filter(
-        (trigger) => Object.values(TRIGGER).includes(trigger as ValueOf<typeof TRIGGER>),
-      );
+      const validTriggers = triggers.filter((trigger) =>
+        Object.values(TRIGGER).includes(trigger as ValueOf<typeof TRIGGER>));
 
       this.setAttribute('trigger', validTriggers.length > 0 ? this.trigger : DEFAULTS.TRIGGER);
       await this.removeEventListeners();
       await this.setupTrigger();
     }
     if (changedProperties.has('color')) {
-      this.setAttribute(
-        'color',
-        Object.values(COLOR).includes(this.color) ? this.color : DEFAULTS.COLOR,
-      );
+      this.setAttribute('color', Object.values(COLOR).includes(this.color) ? this.color : DEFAULTS.COLOR);
     }
     if (changedProperties.has('role')) {
-      this.setAttribute(
-        'role',
-        Object.values(ROLE).includes(this.role) ? this.role : DEFAULTS.ROLE,
-      );
+      this.setAttribute('role', Object.values(ROLE).includes(this.role) ? this.role : DEFAULTS.ROLE);
     }
     if (changedProperties.has('zIndex')) {
       this.setAttribute('z-index', `${this.zIndex}`);
@@ -491,8 +483,8 @@ class Popover extends FocusTrapMixin(Component) {
     }
     if (
       changedProperties.has('interactive')
-    || changedProperties.has('ariaLabel')
-    || changedProperties.has('ariaLabelledBy')
+      || changedProperties.has('ariaLabel')
+      || changedProperties.has('ariaLabelledby')
     ) {
       await this.setupAccessibility();
     }
@@ -509,16 +501,10 @@ class Popover extends FocusTrapMixin(Component) {
     let insidePopoverClick = false;
     const path = event.composedPath();
     insidePopoverClick = this.contains(event.target as Node) || path.includes(this.triggerElement!);
-    if (!insidePopoverClick) {
-      this.hidePopover();
-    }
-  };
+    const backdropElement = this.renderRoot.querySelector('.popover-backdrop');
+    const clickedOnBackdrop = backdropElement ? path.includes(backdropElement) : false;
 
-  /**
-   * Handles the window blur event to close the popover.
-   */
-  private onWindowBlurEvent = () => {
-    if (this.visible) {
+    if (!insidePopoverClick || clickedOnBackdrop) {
       this.hidePopover();
     }
   };
@@ -535,6 +521,17 @@ class Popover extends FocusTrapMixin(Component) {
 
     event.preventDefault();
     this.hidePopover();
+  };
+
+  /**
+   * Handles the popover focus out event.
+   *
+   * @param event - The focus event.
+   */
+  private onPopoverFocusOut = async (event: FocusEvent) => {
+    if (!this.contains(event.relatedTarget as Node)) {
+      this.hidePopover();
+    }
   };
 
   /**
@@ -564,9 +561,9 @@ class Popover extends FocusTrapMixin(Component) {
       await this.setupHoverBridge();
 
       if (this.hideOnBlur) {
-        window.addEventListener('blur', this.onWindowBlurEvent);
+        this.popoverElement?.addEventListener('focusout', this.onPopoverFocusOut);
       }
-      if (this.hideOnOutsideClick && !this.backdrop) {
+      if (this.hideOnOutsideClick) {
         document.addEventListener('click', this.onOutsidePopoverClick);
       }
       if (this.hideOnEscape) {
@@ -582,7 +579,7 @@ class Popover extends FocusTrapMixin(Component) {
       }
     } else {
       if (this.hideOnBlur) {
-        window.removeEventListener('blur', this.onWindowBlurEvent);
+        this.popoverElement?.removeEventListener('blur', this.onPopoverFocusOut);
       }
       if (this.hideOnOutsideClick) {
         document.removeEventListener('click', this.onOutsidePopoverClick);
@@ -768,17 +765,25 @@ class Popover extends FocusTrapMixin(Component) {
     }[side] as 'top' | 'bottom' | 'left' | 'right';
 
     const { x: arrowX, y: arrowY } = arrowData;
+    const rect = this.arrowElement.getBoundingClientRect();
+    const parent = this.arrowElement.offsetParent?.getBoundingClientRect();
 
+    if (!this.arrowPixelChange) {
+      const pixelDiff = parent?.[staticSide] ? 12 + (rect[staticSide] - parent[staticSide]) : 0;
+      if (Math.round(pixelDiff) === 1) {
+        this.arrowPixelChange = true;
+      } else {
+        this.arrowPixelChange = false;
+      }
+    }
+
+    const arrowPixelDiff = this.arrowPixelChange ? 0.5 : 0;
     this.arrowElement.setAttribute('data-side', side);
-    const arrowBorder = parseFloat(
-      window.getComputedStyle(this.arrowElement).getPropertyValue(`border-${staticSide}-width`),
-    );
-    const arrowOffset = 1 - arrowBorder;
 
     Object.assign(this.arrowElement.style, {
       left: arrowX != null ? `${arrowX}px` : '',
       top: arrowY != null ? `${arrowY}px` : '',
-      [staticSide]: `${-this.arrowElement.offsetHeight / 2 - arrowOffset}px`,
+      [staticSide]: `${-this.arrowElement.offsetHeight / 2 - arrowPixelDiff}px`,
     });
   }
 
@@ -844,9 +849,7 @@ class Popover extends FocusTrapMixin(Component) {
         aria-modal=${ifDefined(this.interactive ? 'true' : undefined)}
         ?visible=${this.visible}
         role=${this.role}
-      ${this.interactive ? html`
-        aria-describedby=${ifDefined(this.ariaDescribedby)}
-      ` : nothing}
+        ${this.interactive ? html` aria-describedby=${ifDefined(this.ariaDescribedby)} ` : nothing}
         style="z-index: ${this.zIndex};"
         data-color=${this.color}
       >
@@ -861,9 +864,7 @@ class Popover extends FocusTrapMixin(Component) {
               @click="${this.hidePopover}"
             ></mdc-button>`
     : nothing}
-        ${this.showArrow
-    ? html`<div class="popover-arrow"></div>`
-    : nothing}
+        ${this.showArrow ? html`<div class="popover-arrow"></div>` : nothing}
         <div class="popover-content" part="popover-content">
           <slot></slot>
         </div>
