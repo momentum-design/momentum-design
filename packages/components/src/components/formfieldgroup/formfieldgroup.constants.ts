@@ -7,4 +7,9 @@ const ROLE = {
   GROUP: 'group',
 } as const;
 
-export { ROLE, TAG_NAME };
+const DEFAULTS = {
+  HEADER_ID: 'header-id',
+  DESCRIPTION_ID: 'description-id',
+} as const;
+
+export { DEFAULTS, ROLE, TAG_NAME };

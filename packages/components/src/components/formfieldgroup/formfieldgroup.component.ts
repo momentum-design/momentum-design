@@ -1,11 +1,12 @@
 import type { CSSResult } from 'lit';
-import { html } from 'lit';
+import { html, nothing, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
+import { Component } from '../../models';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
-import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
-import { ROLE } from './formfieldgroup.constants';
-import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
+import { VALID_TEXT_TAGS as TEXT_TAGS, TYPE as TEXT_TYPE } from '../text/text.constants';
+import type { TextType } from '../text/text.types';
+import { DEFAULTS, ROLE } from './formfieldgroup.constants';
 import styles from './formfieldgroup.styles';
-import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 
 /**
  * `mdc-formfieldgroup` component, groups the form field components together.
@@ -27,16 +28,28 @@ import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types'
  *
  * @slot default - This is a default slot for checkbox or toggle components.
  */
-class FormfieldGroup extends DataAriaLabelMixin(FormfieldWrapper) {
+class FormfieldGroup extends DataAriaLabelMixin(Component) {
+  /**
+   * The header text of the group.
+   */
+  @property({ type: String, attribute: 'header-text', reflect: true }) headerText?: string;
+
+  /**
+   * The description of the group.
+   */
+  @property({ type: String, attribute: 'description-text', reflect: true }) descriptionText?: string;
+
   /**
    * @internal
    * This is used to set the role of the component as `radiogroup` if this is true and to 'group' if it is false.
    */
   protected isRadio = false;
 
-  constructor() {
-    super();
-    this.helpTextType = undefined as unknown as ValidationType;
+  private renderText(type: TextType, id: string, cssPart: string, value?: string): TemplateResult | typeof nothing {
+    if (!value) {
+      return nothing;
+    }
+    return html`<mdc-text id="${id}" type="${type}" tagname="${TEXT_TAGS.SPAN}" part="${cssPart}">${value}</mdc-text>`;
   }
 
   public override render() {
@@ -44,20 +57,18 @@ class FormfieldGroup extends DataAriaLabelMixin(FormfieldWrapper) {
       <div
         part="container"
         role="${this.isRadio ? ROLE.RADIOGROUP : ROLE.GROUP}"
-        aria-labelledby="${FORMFIELD_DEFAULTS.LABEL_ID}"
-        aria-describedby="${FORMFIELD_DEFAULTS.HELPER_TEXT_ID}"
+        aria-labelledby="${DEFAULTS.HEADER_ID}"
+        aria-describedby="${DEFAULTS.DESCRIPTION_ID}"
         aria-label="${this.dataAriaLabel ?? ''}"
       >
-        <div part="group-header">
-          ${this.renderLabel()}
-          ${this.renderHelperText()}
-        </div>
+        ${this.renderText(TEXT_TYPE.BODY_MIDSIZE_BOLD, DEFAULTS.HEADER_ID, 'header', this.headerText)}
+        ${this.renderText(TEXT_TYPE.BODY_MIDSIZE_REGULAR, DEFAULTS.DESCRIPTION_ID, 'description', this.descriptionText)}
         <slot></slot>
       </div>
     `;
   }
 
-  public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
 export default FormfieldGroup;
