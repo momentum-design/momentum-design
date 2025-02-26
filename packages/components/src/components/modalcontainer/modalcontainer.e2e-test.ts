@@ -11,7 +11,6 @@ type SetupOptions = {
   color?: ModalContainerColor;
   elevation?: ModalContainerElevation;
   'data-role'?: string;
-  'data-aria-modal'?: boolean;
   children?: string;
 };
 
@@ -23,7 +22,6 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.color ? `color="${restArgs.color}"` : ''}
         ${restArgs.elevation ? `elevation="${restArgs.elevation}"` : ''}
         ${restArgs['data-role'] ? `data-role="${restArgs['data-role']}"` : ''}
-        ${restArgs['data-aria-modal'] ? `data-aria-modal="${restArgs['data-aria-modal']}"` : ''}
         data-aria-label="modal container"
         data-aria-labelledby="This is aria labelledby text"
         data-aria-describedby="This is aria describedby text"
@@ -44,7 +42,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
     await expect(modalcontainer).toHaveAttribute('color', DEFAULTS.COLOR);
     await expect(modalcontainer).toHaveAttribute('elevation', DEFAULTS.ELEVATION.toString());
     await expect(modalcontainer).toHaveAttribute('data-role', DEFAULTS.ROLE);
-    await expect(modalcontainer).toHaveAttribute('data-aria-modal', DEFAULTS.ARIA_MODAL.toString());
+    await expect(modalcontainer).not.toHaveAttribute('data-aria-modal');
   });
 
   await test.step('ModalContainerAttributes', async () => {

@@ -15,6 +15,8 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { DataRoleMixin } from '../../utils/mixins/DataRoleMixin';
 import { DataAriaDescribedbyMixin } from '../../utils/mixins/DataAriaDescribedbyMixin';
 import { DataAriaLabelledbyMixin } from '../../utils/mixins/DataAriaLabelledbyMixin';
+import { PopoverEventManager } from './popover.events';
+import { PopoverUtils } from './popover.utils';
 
 /**
  * Popover component is a lightweight floating UI element that displays additional content when triggered.
@@ -226,14 +228,13 @@ class Popover extends DataAriaLabelMixin(
   @property({ type: String, reflect: true, attribute: 'data-role' })
   override dataRole: string = DEFAULTS.ROLE;
 
-  /** @internal */
-  private triggerElement: HTMLElement | null = null;
+  public arrowElement: HTMLElement | null = null;
 
   /** @internal */
-  private containerElement: HTMLElement | null = null;
+  public triggerElement: HTMLElement | null = null;
 
   /** @internal */
-  private arrowElement: HTMLElement | null = null;
+  public containerElement: HTMLElement | null = null;
 
   /** @internal */
   private hoverTimer: number | null = null;
@@ -248,16 +249,21 @@ class Popover extends DataAriaLabelMixin(
   private closeDelay: number = 0;
 
   /** @internal */
-  private arrowPixelChange: boolean = false;
+  private utils: PopoverUtils;
+
+  constructor() {
+    super();
+    this.utils = new PopoverUtils(this);
+  }
 
   protected override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
     this.containerElement = this.renderRoot.querySelector('.popover-container');
-    await this.setupAppendTo();
-    await this.setupDelay();
-    await this.setupTrigger();
-    await this.setupAccessibility();
-    this.onCreatedPopover();
+    await this.utils.setupAppendTo();
+    [this.openDelay, this.closeDelay] = await this.utils.setupDelay();
+    await this.setupTriggerListener();
+    await this.utils.setupAccessibility();
+    PopoverEventManager.onCreatedPopover(this);
 
     if (this.visible) {
       await this.positionPopover();
@@ -268,109 +274,14 @@ class Popover extends DataAriaLabelMixin(
   override async disconnectedCallback() {
     super.disconnectedCallback();
     await this.removeEventListeners();
-    this.onDestroyedPopover();
+    PopoverEventManager.onDestroyedPopover(this);
     popoverStack.remove(this);
-  }
-
-  /**
-   * If the `appendTo` property is set, finds the corresponding
-   * DOM element by its ID, and appends this popover as a child of that element.
-   */
-  private async setupAppendTo() {
-    if (this.appendTo) {
-      const appendToElement = document.getElementById(this.appendTo);
-      if (appendToElement) {
-        appendToElement.appendChild(this);
-      }
-    }
-  }
-
-  /**
-   * Sets up the hover bridge for the popover.
-   * The hover bridge is used to prevent the popover from closing when the mouse is over the popover.
-   */
-  private async setupHoverBridge() {
-    const hoverBridge = this.renderRoot.querySelector('.popover-hover-bridge') as HTMLElement;
-    Object.assign(hoverBridge.style, {
-      top: '',
-      left: '',
-      right: '',
-      bottom: '',
-    });
-    const bridgeSize = `calc(${this.showArrow ? '0.75rem + ' : ''}${this.offset}px)`;
-    const modalContainer = this.shadowRoot?.querySelector('mdc-modalcontainer') as HTMLElement;
-    const popoverHeight = modalContainer.offsetHeight || 0;
-    const popoverWidth = modalContainer.offsetWidth || 0;
-
-    if (hoverBridge) {
-      const side = this.placement.split('-')[0];
-      switch (side) {
-        case 'top':
-          hoverBridge.style.height = bridgeSize;
-          hoverBridge.style.bottom = `calc(-1 * (${bridgeSize}))`;
-          hoverBridge.style.left = '50%';
-          hoverBridge.style.width = `${popoverWidth}px`;
-          break;
-        case 'left':
-          hoverBridge.style.height = `${popoverHeight}px`;
-          hoverBridge.style.width = bridgeSize;
-          hoverBridge.style.right = `calc(-1.5 * (${bridgeSize}))`;
-          break;
-        case 'right':
-          hoverBridge.style.height = `${popoverHeight}px`;
-          hoverBridge.style.width = bridgeSize;
-          hoverBridge.style.left = `calc(-0.5 * (${bridgeSize}))`;
-          break;
-        case 'bottom':
-        default:
-          hoverBridge.style.height = bridgeSize;
-          hoverBridge.style.top = `calc(-1 * (${bridgeSize}))`;
-          hoverBridge.style.left = '50%';
-          hoverBridge.style.width = `${popoverWidth}px`;
-          break;
-      }
-    }
-  }
-
-  /**
-   * Parses the delay string and sets the open and close delay values.
-   */
-  private async setupDelay() {
-    try {
-      const [openDelay, closeDelay] = this.delay.split(',').map((delay) => {
-        const parsed = parseInt(delay, 10);
-        if (Number.isNaN(parsed) || parsed < 0) {
-          throw new Error(`Invalid delay value: ${delay}`);
-        }
-        return parsed;
-      });
-      this.openDelay = openDelay;
-      this.closeDelay = closeDelay;
-    } catch (error) {
-      this.delay = '0,0';
-      this.openDelay = 0;
-      this.closeDelay = 0;
-    }
-  }
-
-  /**
-   * Sets up the accessibility attributes for the popover.
-   */
-  private async setupAccessibility() {
-    if (this.interactive) {
-      if (!this.dataAriaLabel) {
-        this.dataAriaLabel = this.triggerElement?.ariaLabel || this.triggerElement?.textContent || '';
-      }
-      if (!this.dataAriaLabelledby) {
-        this.dataAriaLabelledby = this.triggerElement?.id || '';
-      }
-    }
   }
 
   /**
    * Sets up the trigger event listeners based on the trigger type.
    */
-  private async setupTrigger() {
+  private async setupTriggerListener() {
     if (!this.triggerID) return;
 
     this.triggerElement = document.getElementById(this.triggerID);
@@ -437,7 +348,7 @@ class Popover extends DataAriaLabelMixin(
       );
     }
     if (changedProperties.has('delay')) {
-      await this.setupDelay();
+      [this.openDelay, this.closeDelay] = await this.utils.setupDelay();
     }
     if (changedProperties.has('trigger')) {
       const triggers = this.trigger.split(' ');
@@ -446,7 +357,7 @@ class Popover extends DataAriaLabelMixin(
 
       this.setAttribute('trigger', validTriggers.length > 0 ? this.trigger : DEFAULTS.TRIGGER);
       await this.removeEventListeners();
-      await this.setupTrigger();
+      await this.setupTriggerListener();
     }
     if (changedProperties.has('color')) {
       this.setAttribute('color', Object.values(COLOR).includes(this.color) ? this.color : DEFAULTS.COLOR);
@@ -455,14 +366,14 @@ class Popover extends DataAriaLabelMixin(
       this.setAttribute('z-index', `${this.zIndex}`);
     }
     if (changedProperties.has('appendTo')) {
-      await this.setupAppendTo();
+      await this.setupTriggerListener();
     }
     if (
       changedProperties.has('interactive')
       || changedProperties.has('dataAriaLabel')
       || changedProperties.has('dataAriaLabelledby')
     ) {
-      await this.setupAccessibility();
+      await this.utils.setupAccessibility();
     }
   }
 
@@ -483,20 +394,6 @@ class Popover extends DataAriaLabelMixin(
     if (!insidePopoverClick || clickedOnBackdrop) {
       this.hidePopover();
     }
-  };
-
-  /**
-   * Handles the escape keydown event to close the popover.
-   *
-   * @param event - The keyboard event.
-   */
-  private onEscapeKeydown = async (event: KeyboardEvent) => {
-    if (!this.visible || event.code !== 'Escape') {
-      return;
-    }
-
-    event.preventDefault();
-    this.hidePopover();
   };
 
   /**
@@ -534,7 +431,7 @@ class Popover extends DataAriaLabelMixin(
 
       await this.positionPopover();
       await this.handleCreatePopoverFirstUpdate();
-      await this.setupHoverBridge();
+      await this.utils.setupHoverBridge();
 
       if (this.hideOnBlur) {
         this.containerElement?.addEventListener('focusout', this.onPopoverFocusOut);
@@ -543,7 +440,7 @@ class Popover extends DataAriaLabelMixin(
         document.addEventListener('click', this.onOutsidePopoverClick);
       }
       if (this.hideOnEscape) {
-        document.addEventListener('keydown', this.onEscapeKeydown);
+        document.addEventListener('keydown', (event) => PopoverEventManager.onEscapeKeydown(this, event));
       }
 
       this.triggerElement?.setAttribute('aria-expanded', 'true');
@@ -561,7 +458,7 @@ class Popover extends DataAriaLabelMixin(
         document.removeEventListener('click', this.onOutsidePopoverClick);
       }
       if (this.hideOnEscape) {
-        document.removeEventListener('keydown', this.onEscapeKeydown);
+        document.removeEventListener('keydown', (event) => PopoverEventManager.onEscapeKeydown(this, event));
       }
 
       this.deactivateFocusTrap?.();
@@ -607,7 +504,7 @@ class Popover extends DataAriaLabelMixin(
     this.cancelCloseDelay();
     setTimeout(() => {
       this.visible = true;
-      this.onShowPopover();
+      PopoverEventManager.onShowPopover(this);
     }, this.openDelay);
     if (popoverStack.peek() !== this) {
       popoverStack.push(this);
@@ -621,7 +518,7 @@ class Popover extends DataAriaLabelMixin(
     if (popoverStack.peek() === this) {
       setTimeout(() => {
         this.visible = false;
-        this.onHidePopover();
+        PopoverEventManager.onHidePopover(this);
         this.isTriggerClicked = false;
       }, this.closeDelay);
       popoverStack.pop();
@@ -701,119 +598,12 @@ class Popover extends DataAriaLabelMixin(
         middleware,
       });
 
-      this.updatePopoverStyle(x, y);
+      this.utils.updatePopoverStyle(x, y);
       if (middlewareData.arrow && this.arrowElement) {
-        this.updateArrowStyle(middlewareData.arrow, placement);
+        this.utils.updateArrowStyle(middlewareData.arrow, placement);
       }
     });
   }
-
-  /**
-   * Updates the popover style based on the x and y position.
-   *
-   * @param x - The x position.
-   * @param y - The y position.
-   */
-  private updatePopoverStyle(x: number, y: number): void {
-    if (!this.containerElement) return;
-
-    Object.assign(this.containerElement.style, {
-      left: `${x}px`,
-      top: `${y}px`,
-    });
-  }
-
-  /**
-   * Updates the arrow style based on the arrow data and placement.
-   *
-   * @param arrowData - The arrow data x and y.
-   * @param placement - The placement of the popover.
-   */
-  private updateArrowStyle(arrowData: { x?: number; y?: number }, placement: string): void {
-    if (!this.arrowElement) return;
-
-    const side = placement.split('-')[0];
-    const staticSide = {
-      top: 'bottom',
-      right: 'left',
-      bottom: 'top',
-      left: 'right',
-    }[side] as 'top' | 'bottom' | 'left' | 'right';
-
-    const { x: arrowX, y: arrowY } = arrowData;
-    const rect = this.arrowElement.getBoundingClientRect();
-    const parent = this.arrowElement.offsetParent?.getBoundingClientRect();
-
-    if (!this.arrowPixelChange) {
-      const pixelDiff = parent?.[staticSide] ? 12 - Math.abs(rect[staticSide] - parent[staticSide]) : 0;
-      if (Math.round(pixelDiff) === 1) {
-        this.arrowPixelChange = true;
-      } else {
-        this.arrowPixelChange = false;
-      }
-    }
-
-    const arrowPixelDiff = this.arrowPixelChange ? 0.5 : 0;
-    this.arrowElement.setAttribute('data-side', side);
-
-    Object.assign(this.arrowElement.style, {
-      left: arrowX != null ? `${arrowX}px` : '',
-      top: arrowY != null ? `${arrowY}px` : '',
-      [staticSide]: `${-this.arrowElement.offsetHeight / 2 - arrowPixelDiff}px`,
-    });
-  }
-
-  /**
-   * Custom event that is fired when the popover is shown.
-   */
-  private onShowPopover = () => {
-    this.dispatchEvent(
-      new CustomEvent('popover-on-show', {
-        detail: { show: this.visible },
-        composed: true,
-        bubbles: true,
-      }),
-    );
-  };
-
-  /**
-   * Custom event that is fired when the popover is hidden.
-   */
-  private onHidePopover = () => {
-    this.dispatchEvent(
-      new CustomEvent('popover-on-hide', {
-        detail: { show: this.visible },
-        composed: true,
-        bubbles: true,
-      }),
-    );
-  };
-
-  /**
-   * Custom event that is fired when the popover is created.
-   */
-  private onCreatedPopover = () => {
-    this.dispatchEvent(
-      new CustomEvent('popover-on-created', {
-        detail: { show: this.visible },
-        composed: true,
-        bubbles: true,
-      }),
-    );
-  };
-
-  /**
-   * Custom event that is fired when the popover is destroyed.
-   */
-  private onDestroyedPopover = () => {
-    this.dispatchEvent(
-      new CustomEvent('popover-on-destroyed', {
-        detail: { show: this.visible },
-        composed: true,
-        bubbles: true,
-      }),
-    );
-  };
 
   public override render() {
     return html`
