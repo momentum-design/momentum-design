@@ -28,7 +28,7 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
     enabledPreventScroll: boolean = POPOVER_DEFAULTS.PREVENT_SCROLL;
 
     /** @internal */
-    private focusTrapIndex = -1;
+    private focusTrapIndex: number = -1;
 
     /** @internal */
     private focusableElements: HTMLElement[] = [];
@@ -52,6 +52,9 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
 
     /**
      * Checks if the element has no client rectangles (not visible in the viewport).
+     *
+     * @param element - The element to check.
+     * @returns True if the element has no client rectangles.
      */
     private hasNoClientRects(element: HTMLElement) {
       return element.getClientRects().length === 0;
@@ -59,6 +62,9 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
 
     /**
      * Checks if the element has zero dimensions (width and height are both 0).
+     *
+     * @param element - The element to check.
+     * @returns True if the element has zero dimensions.
      */
     private hasZeroDimensions(element: HTMLElement) {
       const { width, height } = element.getBoundingClientRect();
@@ -69,6 +75,9 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
 
     /**
      * Determines if the element is not visible in the DOM.
+     *
+     * @param element - The element to check.
+     * @returns True if the element is not visible.
      */
     private isNotVisible(element: HTMLElement) {
       return this.hasZeroDimensions(element) || this.hasNoClientRects(element);
@@ -76,6 +85,9 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
 
     /**
      * Checks if the element has inline styles that make it hidden.
+     *
+     * @param element - The element to check.
+     * @returns True if the element has inline styles that make it hidden.
      */
     private hasHiddenStyle(element: HTMLElement) {
       const { display, opacity, visibility } = element.style;
@@ -84,6 +96,9 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
 
     /**
      * Checks if the element is hidden by a computed style.
+     *
+     * @param element - The element to check.
+     * @returns True if the element is hidden by a computed style.
      */
     private hasComputedHidden(element: HTMLElement) {
       const computedStyle = getComputedStyle(element);
@@ -92,6 +107,9 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
 
     /**
      * Checks if the element is hidden from the user.
+     *
+     * @param element - The element to check.
+     * @returns True if the element is hidden.
      */
     private isHidden(element: HTMLElement) {
       return (
@@ -105,6 +123,9 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
 
     /**
      * Checks if the element is not tabbable.
+     *
+     * @param element - The element to check.
+     * @returns True if the element is not tabbable.
      */
     private isNotTabbable(element: HTMLElement) {
       return element.getAttribute('tabindex') === '-1';
@@ -112,6 +133,9 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
 
     /**
      * Checks if the element is interactive.
+     *
+     * @param element - The element to check.
+     * @returns True if the element is interactive.
      */
     private isInteractiveElement(element: HTMLElement): boolean {
       const interactiveTags = new Set(['BUTTON', 'DETAILS', 'EMBED', 'IFRAME', 'SELECT', 'TEXTAREA']);
@@ -119,29 +143,24 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
       if (interactiveTags.has(element.tagName)) {
         return true;
       }
-
       if (element instanceof HTMLAnchorElement && element.hasAttribute('href')) {
         return true;
       }
-
       if (element instanceof HTMLInputElement && element.type !== 'hidden') {
         return true;
       }
-
       if (
         (element instanceof HTMLAudioElement || element instanceof HTMLVideoElement)
         && element.hasAttribute('controls')
       ) {
         return true;
       }
-
       if (
         (element instanceof HTMLImageElement || element instanceof HTMLObjectElement)
         && element.hasAttribute('usemap')
       ) {
         return true;
       }
-
       if (element.hasAttribute('tabindex') && element.tabIndex > -1) {
         return true;
       }
@@ -151,6 +170,9 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
 
     /**
      * Checks if the element is focusable.
+     *
+     * @param element - The element to check.
+     * @returns True if the element is focusable.
      */
     private isFocusable(element: HTMLElement) {
       if (this.isHidden(element) || this.isNotTabbable(element)) {
@@ -161,6 +183,10 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
 
     /**
      * Recursively finds all focusable elements within the given root and its descendants.
+     *
+     * @param root - The root element to search for focusable elements.
+     * @param matches - The set of focusable elements.
+     * @returns The list of focusable elements.
      */
     private findFocusable(root: ShadowRoot | HTMLElement, matches: Set<HTMLElement> = new Set()): HTMLElement[] {
       if (root instanceof HTMLElement && this.isFocusable(root)) {
@@ -195,7 +221,7 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
     /**
      * Updates the list of focusable elements within the component's shadow root.
      */
-    setFocusableElements() {
+    public setFocusableElements() {
       if (!this.shadowRoot) return;
 
       this.focusableElements = this.findFocusable(this.shadowRoot, new Set());
@@ -203,8 +229,10 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
 
     /**
      * Sets the initial focus within the container.
+     *
+     * @param prefferableElement - The index of the prefferable element to focus.
      */
-    setInitialFocus(prefferableElement: number = 0) {
+    public setInitialFocus(prefferableElement: number = 0) {
       if (this.focusableElements.length === 0) return;
 
       if (this.enabledPreventScroll) {
@@ -219,6 +247,10 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
 
     /**
      * Calculates the next index for the focus trap.
+     *
+     * @param currentIndex - The current index.
+     * @param step - The step to calculate the next index.
+     * @returns The next index.
      */
     private calculateNextIndex(currentIndex: number, step: number) {
       const { length } = this.focusableElements;
@@ -243,6 +275,8 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
 
     /**
      * Returns the deepest active element in the shadow DOM.
+     *
+     * @returns The deepest active element.
      */
     private getDeepActiveElement() {
       let host: Element | null = document.activeElement || document.body;
@@ -255,6 +289,9 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
 
     /**
      * Finds the index of the active element within the focusable elements.
+     *
+     * @param activeElement - The active element.
+     * @returns The index of the active element.
      */
     private findElement(activeElement: HTMLElement) {
       return this.focusableElements.findIndex((element) => this.isEqualFocusNode(activeElement, element));
@@ -262,6 +299,10 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
 
     /**
      * Checks if the active element is equal to the given element.
+     *
+     * @param activeElement - The active element.
+     * @param element - The element to compare.
+     * @returns True if the active element is equal to the given element.
      */
     private isEqualFocusNode(activeElement: HTMLElement, element: HTMLElement) {
       if (activeElement.nodeType >= 0) {
@@ -272,6 +313,9 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
 
     /**
      * Traps focus within the container.
+     *
+     * @param direction - The direction of the focus trap.
+     * If true, the focus will be trapped in the previous element.
      */
     private trapFocus(direction: boolean) {
       if (this.focusableElements.length === 0) return;
@@ -293,6 +337,8 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
 
     /**
      * Traps focus within the container.
+     *
+     * @param event - The keyboard event.
      */
     private handleKeydown(event: KeyboardEvent) {
       if (!this.enabledFocusTrap || !this.focusableElements.length) {
@@ -305,5 +351,6 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
       }
     }
   }
+
   return FocusTrap as Constructor<HTMLElement & FocusTrapClassInterface> & T;
 };

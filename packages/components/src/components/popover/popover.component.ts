@@ -47,6 +47,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
 
   /**
    * The ID of the element that triggers the popover.
+   * This attribute is required for the popover to work.
    */
   @property({ type: String })
   triggerID: string = '';
@@ -519,7 +520,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
   /**
    * Shows the popover.
    */
-  public override showPopover = async () => {
+  public showPopover = async () => {
     this.cancelCloseDelay();
     setTimeout(() => {
       this.visible = true;
@@ -533,7 +534,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
   /**
    * Hides the popover.
    */
-  public override hidePopover = () => {
+  public hidePopover = () => {
     if (popoverStack.peek() === this) {
       setTimeout(() => {
         this.visible = false;

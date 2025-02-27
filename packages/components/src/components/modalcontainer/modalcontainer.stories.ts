@@ -74,7 +74,6 @@ export const Example: StoryObj = {
   args: {
     color: COLOR.CONTRAST,
     elevation: ELEVATION[0],
-    role: DEFAULTS.ROLE,
     'data-aria-label': 'Modal container',
     'data-role': DEFAULTS.ROLE,
     'data-aria-modal': DEFAULTS.ARIA_MODAL,
