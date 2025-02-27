@@ -367,7 +367,7 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
       return html`
       <mdc-button 
         part='trailing-button'
-        class='${!this.value ? 'hidden' : ''}'
+        class='not-focusable ${!this.value ? 'hidden' : ''}'
         prefix-icon='${DEFAULTS.CLEAR_BUTTON_ICON}'
         variant='${DEFAULTS.CLEAR_BUTTON_VARIANT}'
         size="${DEFAULTS.CLEAR_BUTTON_SIZE}"
@@ -388,7 +388,7 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
         <slot name="input">
           <input 
             aria-label="${this.dataAriaLabel ?? ''}"
-            class='input'
+            class='input focusable'
             part='input'
             id="${this.id}"
             name="${this.name}"
