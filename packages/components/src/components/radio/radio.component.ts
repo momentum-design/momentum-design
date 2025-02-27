@@ -17,6 +17,9 @@ import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwra
  *
  * @tagname mdc-radio
  *
+ * @event change - (React: onChange) Event that gets dispatched when the radio state changes.
+ * @event focus - (React: onFocus) Event that gets dispatched when the radio receives focus.
+ *
  * @cssproperty --mdc-radio-inner-circle-size - size of the inner circle
  * @cssproperty --mdc-radio-text-disabled-color - color of the label when disabled
  * @cssproperty --mdc-radio-disabled-border-color - color of the radio button border when disabled
