@@ -3,6 +3,7 @@ import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { hideControls } from '../../../config/storybook/utils';
 import '../radio';
 import '../button';
 
@@ -10,7 +11,10 @@ const render = (args: Args) => html`
   <mdc-radio-group 
   name="${args.name}"
   label="${args.label}"
-  help-text="${args['help-text']}">
+  help-text="${args['help-text']}"
+  data-aria-label="${args['data-aria-label']}"
+  required-label="${args['required-label']}"
+  >
     <mdc-radio label="Black Widow" value="black-widow"></mdc-radio>
     <mdc-radio label="Captain America" value="captain-america"></mdc-radio>
     <mdc-radio label="Hawkeye" value="hawkeye"></mdc-radio>
@@ -39,6 +43,13 @@ const meta: Meta = {
     'help-text': {
       control: { type: 'text' },
     },
+    'data-aria-label': {
+      control: 'text',
+    },
+    'required-label': {
+      control: 'text',
+    },
+    ...hideControls(['help-text-type']),
   },
 };
 
@@ -47,7 +58,11 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     label: 'Select your team captain',
-    name: 'team-captain',
+    'help-text': 'The team captain should have previous experience leading the team through '
+     + 'challenging situations.',
+    name: 'team-captain-with-experience',
+    'required-label': 'required',
+    'data-aria-label': 'Team Captain',
   },
 };
 
@@ -57,6 +72,13 @@ export const RadioGroupWithDescription: StoryObj = {
     'help-text': 'The team captain should have previous experience leading the team through '
      + 'challenging situations.',
     name: 'team-captain-with-experience',
+  },
+};
+
+export const RadioGroupWithoutDescription: StoryObj = {
+  args: {
+    label: 'Select your team captain',
+    name: 'team-captain',
   },
 };
 
