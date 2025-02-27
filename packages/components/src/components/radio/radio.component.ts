@@ -74,9 +74,7 @@ class Radio extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) 
    * If unchecked, the value is set to null.
    */
   private setFormValue() {
-    if (this.checked) {
-      this.internals.setFormValue(this.value);
-    }
+    this.internals.setFormValue(this.checked ? this.value : null);
   }
 
   override firstUpdated() {
@@ -125,6 +123,7 @@ class Radio extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) 
     if (inputElement) {
       inputElement.checked = true;
     }
+    this.updateTabIndex();
     this.dispatchChangeEvent(event);
   }
 
@@ -211,7 +210,7 @@ class Radio extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) 
             ?disabled=${this.disabled}
             class="mdc-radio__input"
             aria-checked="${this.checked}"
-            aria-describedby="${FORMFIELD_DEFAULTS.HELPER_TEXT_ID}"
+            aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
             aria-label="${this.dataAriaLabel ?? ''}"
           />
           <span class="mdc-radio__icon"></span>
