@@ -36,20 +36,20 @@ const hostFocusRingStyles = (applyFocusRingOnClass = false) => {
         .mdc-focus-ring:focus-visible {
           outline: none;
         }
-
-        /* Only show focus ring on container when child element is focused */
-        .mdc-focus-ring:has(.focusable:focus-visible) {
-          box-shadow: ${boxShadow};
-        }
-
-        /* Remove focus ring from container when other focusable elements are focused */
-        .mdc-focus-ring:has(.not-focusable:focus-visible) {
-          box-shadow: none;
-        }
-
         :host([disabled]) .mdc-focus-ring:focus {
           box-shadow: none;
         }
+        /* Add focus ring to parent when child is focused. The parent element must have class name mdc-focus-ring */
+        .mdc-focus-ring:focus-within {
+          position: relative;
+          box-shadow: ${boxShadow};
+        }
+        /* Remove focus ring from parent when children has its own focus ring.
+            The child element must have class name own-focus-ring */
+        .mdc-focus-ring:has(.own-focus-ring:focus-visible){
+          box-shadow: none;
+        }
+
         /* High Contrast Mode */
         @media (forced-colors: active) {
           .mdc-focus-ring:focus-within {
