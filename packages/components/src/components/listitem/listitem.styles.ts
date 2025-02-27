@@ -10,11 +10,6 @@ const styles = css`
     --mdc-listitem-secondary-label-color: var(--mds-color-theme-text-secondary-normal);
     --mdc-listitem-disabled-color: var(--mds-color-theme-text-primary-disabled);
   }
-  :host > li {
-    list-style: none;
-    display: flex;
-    width: 100%;
-  }
   :host {
     background-color: var(--mdc-listitem-default-background-color);
     column-gap: 0.75rem;

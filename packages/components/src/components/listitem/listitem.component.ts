@@ -7,6 +7,7 @@ import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { DEFAULTS } from './listitem.constants';
 import styles from './listitem.styles';
+import type { ListItemVariants } from './listitem.types';
 
 /**
  * listitem component is used to display a label with different types of controls.
@@ -41,7 +42,7 @@ class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component)
    * The variant of the list item. It can be a pill, rectangle or a full-width.
    * @default 'full-width'
    */
-  @property({ type: String, reflect: true }) variant = DEFAULTS.VARIANT;
+  @property({ type: String, reflect: true }) variant: ListItemVariants = DEFAULTS.VARIANT;
 
   /**
    * The primary label of the list item.
@@ -72,11 +73,6 @@ class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component)
    * This appears on the trailing side of the list item.
    */
   @property({ type: String, reflect: true, attribute: 'subline-text' }) sublineText?: string;
-
-  constructor() {
-    super();
-    this.role = 'listitem';
-  }
 
   /**
    * Generates a midsize regular text slot with the specified content.
@@ -116,23 +112,21 @@ class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component)
       ? this.getSmallRegularText('trailing-text-subline', this.sublineText) : nothing;
 
     return html`
-      <li>
-        <div part="leading">
-          <slot name="leading-controls"></slot>
-          <div part="leading-text">
-            ${labelText}
-            ${secondaryLabelText}
-            ${tertiaryLabelText}
-          </div>
+      <div part="leading">
+        <slot name="leading-controls"></slot>
+        <div part="leading-text">
+          ${labelText}
+          ${secondaryLabelText}
+          ${tertiaryLabelText}
         </div>
-        <div part="trailing">
-          <div part="trailing-text">
-            ${sideHeaderText}
-            ${sublineText}
-          </div>
-          <slot name="trailing-controls"></slot>
+      </div>
+      <div part="trailing">
+        <div part="trailing-text">
+          ${sideHeaderText}
+          ${sublineText}
         </div>
-      </li>
+        <slot name="trailing-controls"></slot>
+      </div>
     `;
   }
 
