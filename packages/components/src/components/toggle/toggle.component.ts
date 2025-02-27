@@ -196,7 +196,7 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
             value="${ifDefined(this.value)}"
             .checked="${this.checked}"
             .disabled="${this.disabled}"
-            aria-describedby="${FORMFIELD_DEFAULTS.HELPER_TEXT_ID}"
+            aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
             aria-label="${this.dataAriaLabel ?? ''}"
             tabindex="${this.disabled ? -1 : 0}"
             @change="${this.handleChange}"

@@ -291,7 +291,7 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
             ?disabled=${this.disabled}
             class="mdc-radio__input"
             aria-checked="${this.checked}"
-            aria-describedby="${FORMFIELD_DEFAULTS.HELPER_TEXT_ID}"
+            aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
             aria-label="${this.dataAriaLabel ?? ''}"
           />
           <span class="mdc-radio__icon"></span>

@@ -188,7 +188,7 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
           .disabled="${this.disabled}"
           aria-label="${this.dataAriaLabel ?? ''}"
           tabindex="${this.disabled ? -1 : 0}"
-          aria-describedby="${FORMFIELD_DEFAULTS.HELPER_TEXT_ID}"
+          aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
           @change=${this.handleChange}
           @keydown=${this.handleKeyDown}
         />

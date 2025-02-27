@@ -372,7 +372,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
             ?readonly="${this.readonly}"
             ?required="${!!this.requiredLabel}"
             type="text"
-            aria-describedby="${FORMFIELD_DEFAULTS.HELPER_TEXT_ID}"
+            aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
             placeholder=${ifDefined(this.placeholder)}
             minlength=${ifDefined(this.minlength)}
             maxlength=${ifDefined(this.maxlength)}
