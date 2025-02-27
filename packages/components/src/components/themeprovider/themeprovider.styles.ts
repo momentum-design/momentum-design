@@ -28,18 +28,18 @@ const styles = css`
 /* Scrollbar Theme */
 
   /* width */
-  ::-webkit-scrollbar {
+  :host::-webkit-scrollbar {
     width: var(--mdc-themeprovider-scrollbar-width);
   }
 
   /* Track */
-  ::-webkit-scrollbar-track {
+  :host::-webkit-scrollbar-track {
     border-radius: 100vh;
     background: var(--mdc-themeprovider-scrollbar-track-color);
   }
 
   /* Handle */
-  ::-webkit-scrollbar-thumb {
+  :host::-webkit-scrollbar-thumb {
     background-color: var(--mdc-themeprovider-scrollbar-thumb-color);
     border: 0.25rem solid transparent;
     border-radius: 0.5rem;
@@ -47,7 +47,7 @@ const styles = css`
   }
 
   /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
+  :host::-webkit-scrollbar-thumb:hover {
     background: var(--mdc-themeprovider-scrollbar-thumb-hover-color);
     border: 0.25rem solid transparent;
     border-radius: 0.5rem;
@@ -55,7 +55,7 @@ const styles = css`
   }
 
   /* Handle on press */
-  ::-webkit-scrollbar-thumb:active {
+  :host::-webkit-scrollbar-thumb:active {
     background: var(--mdc-themeprovider-scrollbar-thumb-active-color);
     border: 0.25rem solid transparent;
     border-radius: 0.5rem;
@@ -64,7 +64,7 @@ const styles = css`
   }
 
   /* Corner */
-  ::-webkit-scrollbar-corner {
+  :host::-webkit-scrollbar-corner {
     background: inherit;
   }
 
