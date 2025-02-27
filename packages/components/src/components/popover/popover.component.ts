@@ -587,7 +587,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
     }
 
     if (this.size) {
-      const popoverContent = this.containerElement.querySelector('.popover-content') as HTMLElement;
+      const popoverContent = this.containerElement.querySelector('[part="popover-content"]') as HTMLElement;
       middleware.push(
         size({
           apply({ availableHeight }) {
@@ -657,7 +657,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
             ></mdc-button>`
     : nothing}
         ${this.showArrow ? html`<div class="popover-arrow"></div>` : nothing}
-        <div class="popover-content" part="popover-content">
+        <div part="popover-content">
           <slot></slot>
         </div>
       </mdc-modalcontainer>

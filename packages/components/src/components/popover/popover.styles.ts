@@ -36,7 +36,7 @@ const styles = css`
     padding: 0;
   }
 
-  .popover-content {
+  :host::part(popover-content) {
     position: relative;
     padding: 0.75rem;
     overflow-y: auto;
