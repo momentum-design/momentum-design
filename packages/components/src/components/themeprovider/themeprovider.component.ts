@@ -30,13 +30,12 @@ import styles from './themeprovider.styles';
  * default: `-0.25px` (this is to match the old CiscoSans)
  * @cssproperty --mdc-themeprovider-font-feature-settings - Option to override the font feature settings,
  * default: `normal`
- * @cssproperty --mdc-themeprovider-scrollbar-width - Option to override the width of the scrollbar, default: `1rem`
  * @cssproperty --mdc-themeprovider-scrollbar-track-color - Option to override the color of the scrollbar track.
  * @cssproperty --mdc-themeprovider-scrollbar-thumb-color - Option to override the color of the scrollbar thumb.
  * @cssproperty --mdc-themeprovider-scrollbar-thumb-hover-color - Option to override the color of the
- * scrollbar thumb on hover.
+ * scrollbar thumb on hover. Applicable only on webkit browsers.
  * @cssproperty --mdc-themeprovider-scrollbar-thumb-active-color - Option to override the color of the
- * scrollbar thumb on press.
+ * scrollbar thumb on press. Applicable only on webkit browsers.
  */
 class ThemeProvider extends Provider<ThemeProviderContext> {
   constructor() {

@@ -11,12 +11,11 @@ const styles = css`
     --mdc-themeprovider-font-feature-settings: "ss02" on;
 
     /* Custom scrollbar variables */
-    --mdc-themeprovider-scrollbar-width: 1rem;
     --mdc-themeprovider-scrollbar-track-color: var(--mds-color-theme-background-secondary-normal);
-    --mdc-themeprovider-scrollbar-thumb-color: var(--mds-color-theme-background-tertiary-normal);
-    --mdc-themeprovider-scrollbar-thumb-hover-color: var(--mds-color-theme-background-tertiary-hover);
-    --mdc-themeprovider-scrollbar-thumb-active-color: var(--mds-color-theme-background-tertiary-pressed);
-
+    --mdc-themeprovider-scrollbar-thumb-color: var(--mds-color-theme-scrollbar-button-normal);
+    --mdc-themeprovider-scrollbar-thumb-hover-color: var(--mds-color-theme-scrollbar-button-hover);
+    --mdc-themeprovider-scrollbar-thumb-active-color: var(--mds-color-theme-scrollbar-button-pressed);
+    
     color: var(--mdc-themeprovider-color-default);
     font-family: var(--mdc-themeprovider-font-family);
     font-weight: var(--mdc-themeprovider-font-weight);
@@ -27,9 +26,17 @@ const styles = css`
    
 /* Scrollbar Theme */
 
+@supports (scrollbar-color: auto){
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--mdc-themeprovider-scrollbar-thumb-color) var(--mdc-themeprovider-scrollbar-track-color);
+  }
+}
+
+@supports selector(::-webkit-scrollbar) {
   /* width */
   :host::-webkit-scrollbar {
-    width: var(--mdc-themeprovider-scrollbar-width);
+    width: 1rem;
   }
 
   /* Track */
@@ -67,12 +74,7 @@ const styles = css`
   :host::-webkit-scrollbar-corner {
     background: inherit;
   }
-
-  /* For Firefox */
-  * {
-    scrollbar-width: thin;
-    scrollbar-color: var(--mdc-themeprovider-scrollbar-thumb-color) var(--mdc-themeprovider-scrollbar-track-color);
-  }
+}
 `;
 
 export default [styles];
