@@ -9,4 +9,6 @@ const KEYS = {
   END: 'End',
 } as const;
 
-export { TAG_NAME, KEYS };
+const HEADER_ID = 'header-id';
+
+export { TAG_NAME, KEYS, HEADER_ID };
