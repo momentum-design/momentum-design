@@ -7,54 +7,54 @@ import { COLOR } from '../modalcontainer/modalcontainer.constants';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 
 const createPopover = (args: Args, content: TemplateResult) => html`
-<mdc-popover
-  id="${args.id}"
-  triggerID="${args.triggerID}"
-  trigger="${args.trigger}"
-  placement="${args.placement}"
-  delay="${args.delay}"
-  z-index="${args['z-index']}"
-  ?visible="${args.visible}"
-  .offset="${args.offset ?? 0}"
-  ?interactive=${args.interactive}
-  ?focus-trap=${args['focus-trap']}
-  ?show-arrow=${args['show-arrow']}
-  color=${args.color}
-  ?flip=${args.flip}
-  ?size=${args.size}
-  ?backdrop=${args.backdrop}
-  ?close-button=${args['close-button']}
-  ?prevent-scroll=${args['prevent-scroll']}
-  ?hide-on-blur=${args['hide-on-blur']}
-  ?hide-on-escape=${args['hide-on-escape']}
-  ?hide-on-outside-click=${args['hide-on-outside-click']}
-  ?focus-back-to-trigger=${args['focus-back-to-trigger']}
-  append-to=${args['append-to']}
-  close-button-aria-label="${args['close-button-aria-label']}"
-  data-aria-label="${args['data-aria-label']}"
-  data-aria-labelledby="${args['data-aria-labelledby']}"
-  data-aria-describedby="${args['data-aria-describedby']}"
-  data-role="${args['data-role']}"
-  @popover-on-show="${action('onshow')}"
-  @popover-on-hide="${action('onhide')}"
-  @popover-on-created="${action('oncreated')}"
-  @popover-on-destroyed="${action('ondestroyed')}"
->
-  ${content}
-</mdc-popover>
+  <mdc-popover
+    id="${args.id}"
+    triggerID="${args.triggerID}"
+    trigger="${args.trigger}"
+    placement="${args.placement}"
+    delay="${args.delay}"
+    z-index="${args['z-index']}"
+    ?visible="${args.visible}"
+    .offset="${args.offset ?? 0}"
+    ?interactive=${args.interactive}
+    ?focus-trap=${args['focus-trap']}
+    ?show-arrow=${args['show-arrow']}
+    color=${args.color}
+    ?flip=${args.flip}
+    ?size=${args.size}
+    ?backdrop=${args.backdrop}
+    ?close-button=${args['close-button']}
+    ?prevent-scroll=${args['prevent-scroll']}
+    ?hide-on-blur=${args['hide-on-blur']}
+    ?hide-on-escape=${args['hide-on-escape']}
+    ?hide-on-outside-click=${args['hide-on-outside-click']}
+    ?focus-back-to-trigger=${args['focus-back-to-trigger']}
+    append-to=${args['append-to']}
+    close-button-aria-label="${args['close-button-aria-label']}"
+    data-aria-label="${args['data-aria-label']}"
+    data-aria-labelledby="${args['data-aria-labelledby']}"
+    data-aria-describedby="${args['data-aria-describedby']}"
+    data-role="${args['data-role']}"
+    @popover-on-show="${action('onshow')}"
+    @popover-on-hide="${action('onhide')}"
+    @popover-on-created="${action('oncreated')}"
+    @popover-on-destroyed="${action('ondestroyed')}"
+  >
+    ${content}
+  </mdc-popover>
 `;
 
 const createTrigger = (triggerID: string, text: String) => html`
-<div
-  style="
+  <div
+    style="
     display: flex;
     justify-content: center;
     align-items: center;
     height: 50vh;
   "
->
-  <mdc-button id="${triggerID}">${text}</mdc-button>
-</div>
+  >
+    <mdc-button id="${triggerID}">${text}</mdc-button>
+  </div>
 `;
 
 const render = (args: Args) => html`
@@ -118,16 +118,16 @@ const renderHideOnBlur = (args: Args) => html`
 const renderMultiple = (args: Args) => html`
   ${createTrigger('popover-trigger-multiple', 'Click/ Hover me!')}
   ${createPopover(args, html`<mdc-text>Interactive content on click</mdc-text>`)}
-<mdc-popover
-  id="popover2"
-  triggerID="popover-trigger-multiple"
-  trigger="mouseenter"
-  placement="bottom"
-  z-index="20"
-  show-arrow
->
-  <mdc-text>Description tooltip on mou se enter</mdc-text>
-</mdc-popover>
+  <mdc-popover
+    id="popover2"
+    triggerID="popover-trigger-multiple"
+    trigger="mouseenter"
+    placement="bottom"
+    z-index="20"
+    show-arrow
+  >
+    <mdc-text>Description tooltip on mou se enter</mdc-text>
+  </mdc-popover>
 `;
 
 const renderNested = (args: Args) => html`
@@ -136,35 +136,35 @@ const renderNested = (args: Args) => html`
     args,
     html`<mdc-text>Popover Level 1</mdc-text> <mdc-button id="popover-trigger-2">Click me!</mdc-button>`,
   )}
-<mdc-popover
-  id="popover2"
-  triggerID="popover-trigger-2"
-  trigger="click"
-  placement="bottom"
-  interactive
-  z-index="20"
-  focus-back-to-trigger
-  focus-trap
-  show-arrow
-  hide-on-escape
-  hide-on-outside-click
->
-  <mdc-text>Popover Level 2</mdc-text>
-  <mdc-button id="popover-trigger-3">Hover me!</mdc-button>
-</mdc-popover>
+  <mdc-popover
+    id="popover2"
+    triggerID="popover-trigger-2"
+    trigger="click"
+    placement="bottom"
+    interactive
+    z-index="20"
+    focus-back-to-trigger
+    focus-trap
+    show-arrow
+    hide-on-escape
+    hide-on-outside-click
+  >
+    <mdc-text>Popover Level 2</mdc-text>
+    <mdc-button id="popover-trigger-3">Hover me!</mdc-button>
+  </mdc-popover>
 
-<mdc-popover
-  id="popover3"
-  triggerID="popover-trigger-3"
-  trigger="mouseenter"
-  placement="bottom"
-  z-index="30"
-  show-arrow
-  hide-on-escape
-  hide-on-outside-click
->
-  <mdc-text>Description tooltip on mouseenter</mdc-text>
-</mdc-popover>
+  <mdc-popover
+    id="popover3"
+    triggerID="popover-trigger-3"
+    trigger="mouseenter"
+    placement="bottom"
+    z-index="30"
+    show-arrow
+    hide-on-escape
+    hide-on-outside-click
+  >
+    <mdc-text>Description tooltip on mouseenter</mdc-text>
+  </mdc-popover>
 `;
 
 const renderBackdrop = (args: Args) => html`
@@ -289,7 +289,18 @@ const meta: Meta = {
       '--mdc-popover-inverted-border-color',
       '--mdc-popover-inverted-text-color',
     ]),
-    ...hideControls(['enabledPreventScroll', 'enabledFocusTrap', 'shouldWrapFocus']),
+    ...hideControls([
+      'arrowElement',
+      'onOutsidePopoverClick',
+      'onEscapeKeydown',
+      'onPopoverFocusOut',
+      'startCloseDelay',
+      'cancelCloseDelay',
+      'enabledPreventScroll',
+      'enabledFocusTrap',
+      'shouldWrapFocus',
+      'utils',
+    ]),
   },
 };
 

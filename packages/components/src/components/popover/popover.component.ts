@@ -259,10 +259,10 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
   protected override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
     this.containerElement = this.renderRoot.querySelector('.popover-container');
-    await this.utils.setupAppendTo();
-    [this.openDelay, this.closeDelay] = await this.utils.setupDelay();
-    await this.setupTriggerListener();
-    await this.utils.setupAccessibility();
+    this.utils.setupAppendTo();
+    [this.openDelay, this.closeDelay] = this.utils.setupDelay();
+    this.setupTriggerListener();
+    this.utils.setupAccessibility();
     PopoverEventManager.onCreatedPopover(this);
 
     if (this.visible) {
@@ -281,7 +281,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
   /**
    * Sets up the trigger event listeners based on the trigger type.
    */
-  private async setupTriggerListener() {
+  private setupTriggerListener() {
     if (!this.triggerID) return;
 
     this.triggerElement = document.getElementById(this.triggerID);
@@ -323,7 +323,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
   /**
    * Removes the trigger event listeners.
    */
-  private async removeEventListeners() {
+  private removeEventListeners() {
     if (!this.triggerElement) return;
     const hoverBridge = this.renderRoot.querySelector('.popover-hover-bridge');
     this.triggerElement.removeEventListener('click', this.togglePopoverVisible);
@@ -352,7 +352,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
       );
     }
     if (changedProperties.has('delay')) {
-      [this.openDelay, this.closeDelay] = await this.utils.setupDelay();
+      [this.openDelay, this.closeDelay] = this.utils.setupDelay();
     }
     if (changedProperties.has('trigger')) {
       const triggers = this.trigger.split(' ');
@@ -360,8 +360,8 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
         Object.values(TRIGGER).includes(trigger as ValueOf<typeof TRIGGER>));
 
       this.setAttribute('trigger', validTriggers.length > 0 ? this.trigger : DEFAULTS.TRIGGER);
-      await this.removeEventListeners();
-      await this.setupTriggerListener();
+      this.removeEventListeners();
+      this.setupTriggerListener();
     }
     if (changedProperties.has('color')) {
       this.setAttribute('color', Object.values(COLOR).includes(this.color) ? this.color : DEFAULTS.COLOR);
@@ -370,14 +370,14 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
       this.setAttribute('z-index', `${this.zIndex}`);
     }
     if (changedProperties.has('append-to')) {
-      await this.utils.setupAppendTo();
+      this.utils.setupAppendTo();
     }
     if (
       changedProperties.has('interactive')
       || changedProperties.has('data-aria-label')
       || changedProperties.has('data-aria-labelledby')
     ) {
-      await this.utils.setupAccessibility();
+      this.utils.setupAccessibility();
     }
   }
 
@@ -405,7 +405,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
    *
    * @param event - The keyboard event.
    */
-  private onEscapeKeydown = async (event: KeyboardEvent) => {
+  private onEscapeKeydown = (event: KeyboardEvent) => {
     if (!this.visible || event.code !== 'Escape') {
       return;
     }
@@ -419,7 +419,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
    *
    * @param event - The focus event.
    */
-  private onPopoverFocusOut = async (event: FocusEvent) => {
+  private onPopoverFocusOut = (event: FocusEvent) => {
     if (!this.contains(event.relatedTarget as Node)) {
       this.hidePopover();
     }
@@ -447,7 +447,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
         this.triggerElement.style.zIndex = `${this.zIndex}`;
       }
 
-      await this.positionPopover();
+      this.positionPopover();
       await this.handleCreatePopoverFirstUpdate();
 
       if (this.hideOnBlur) {
@@ -499,7 +499,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
    * Starts the close delay timer.
    * If the popover is not interactive, it will close the popover after the delay.
    */
-  private startCloseDelay = async () => {
+  private startCloseDelay = () => {
     if (!this.interactive) {
       this.hidePopover();
     } else {
@@ -523,7 +523,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
   /**
    * Shows the popover.
    */
-  public showPopover = async () => {
+  public override showPopover = () => {
     this.cancelCloseDelay();
     setTimeout(() => {
       this.visible = true;
@@ -537,7 +537,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
   /**
    * Hides the popover.
    */
-  public hidePopover = () => {
+  public override hidePopover = () => {
     if (popoverStack.peek() === this) {
       setTimeout(() => {
         this.visible = false;
@@ -551,11 +551,11 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
   /**
    * Toggles the popover visibility.
    */
-  public togglePopoverVisible = async () => {
+  public togglePopoverVisible = () => {
     if (this.isTriggerClicked) {
       this.hidePopover();
     } else {
-      await this.showPopover();
+      this.showPopover();
       this.isTriggerClicked = true;
     }
   };
@@ -576,7 +576,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
    * It also handles the flip, size and arrow placement.
    * It uses the floating-ui/dom library to calculate the position.
    */
-  private async positionPopover() {
+  private positionPopover() {
     if (!this.triggerElement || !this.containerElement) return;
 
     const middleware = [shift()];
@@ -626,7 +626,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
         this.utils.updateArrowStyle(middlewareData.arrow, placement);
       }
       if (this.trigger.includes('mouseenter')) {
-        await this.utils.setupHoverBridge(placement);
+        this.utils.setupHoverBridge(placement);
       }
     });
   }

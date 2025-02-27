@@ -17,7 +17,7 @@ export class PopoverUtils {
    * @returns An array containing the open and close delay values.
    * @throws An error if the delay value is invalid.
    */
-  setupDelay = async () => {
+  setupDelay() {
     try {
       const [openDelay, closeDelay] = this.popover.delay.split(',').map((delay) => {
         const parsed = parseInt(delay, 10);
@@ -32,7 +32,7 @@ export class PopoverUtils {
       this.popover.delay = '0,0';
       return [0, 0];
     }
-  };
+  }
 
   /**
    * Sets up the hover bridge for the popover.
@@ -40,7 +40,7 @@ export class PopoverUtils {
    *
    * @param placement - The placement of the popover.
    */
-  setupHoverBridge = async (placement: string) => {
+  setupHoverBridge(placement: string) {
     const hoverBridge = this.popover.renderRoot.querySelector('.popover-hover-bridge') as HTMLElement;
     Object.assign(hoverBridge.style, {
       top: '',
@@ -81,25 +81,25 @@ export class PopoverUtils {
           break;
       }
     }
-  };
+  }
 
   /**
    * If the `appendTo` property is set, finds the corresponding
    * DOM element by its ID, and appends this popover as a child of that element.
    */
-  setupAppendTo = async () => {
+  setupAppendTo() {
     if (this.popover.appendTo) {
       const appendToElement = document.getElementById(this.popover.appendTo);
       if (appendToElement) {
         appendToElement.appendChild(this.popover);
       }
     }
-  };
+  }
 
   /**
    * Sets up the accessibility attributes for the popover.
    */
-  setupAccessibility = async () => {
+  setupAccessibility() {
     if (this.popover.interactive) {
       if (!this.popover.dataAriaLabel) {
         this.popover.dataAriaLabel = this.popover.triggerElement?.ariaLabel
@@ -110,7 +110,7 @@ export class PopoverUtils {
         this.popover.dataAriaLabelledby = this.popover.triggerElement?.id || '';
       }
     }
-  };
+  }
 
   /**
    * Updates the arrow style based on the arrow data and placement.
