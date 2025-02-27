@@ -38,9 +38,7 @@ import { PopoverUtils } from './popover.utils';
  * @slot - Default slot for modal container
  *
  */
-class Popover extends DataAriaLabelMixin(
-  DataAriaLabelledbyMixin(DataAriaDescribedbyMixin(FocusTrapMixin(Component))),
-) {
+class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescribedbyMixin(FocusTrapMixin(Component)))) {
   /**
    * The unique ID of the popover.
    */
@@ -54,7 +52,9 @@ class Popover extends DataAriaLabelMixin(
   triggerID: string = '';
 
   /**
-   * The event that triggers the popover.
+   * Determines the events that cause the Popover to show.
+   * Multiple event names should be separated by spaces.
+   * For example to allow both click and hover, use 'click mouseenter' as the trigger.
    * - **click**
    * - **mouseenter**
    * - **focusin**
@@ -210,7 +210,7 @@ class Popover extends DataAriaLabelMixin(
    * Element ID that the popover append to.
    * @default ''
    */
-  @property({ type: String, reflect: true })
+  @property({ type: String, reflect: true, attribute: 'append-to' })
   appendTo: string = '';
 
   /**
@@ -312,6 +312,9 @@ class Popover extends DataAriaLabelMixin(
     }
     if (this.trigger.includes('focusin')) {
       this.triggerElement.addEventListener('focusin', this.showPopover);
+      if (!this.interactive) {
+        this.triggerElement.addEventListener('focusout', this.hidePopover);
+      }
     }
     this.addEventListener('focus-trap-exit', this.hidePopover);
   }
@@ -328,6 +331,7 @@ class Popover extends DataAriaLabelMixin(
     this.containerElement?.removeEventListener('mouseenter', this.cancelCloseDelay);
     this.containerElement?.removeEventListener('mouseleave', this.startCloseDelay);
     this.triggerElement.removeEventListener('focusin', this.showPopover);
+    this.triggerElement.removeEventListener('focusout', this.hidePopover);
     hoverBridge?.removeEventListener('mouseenter', this.cancelCloseDelay);
 
     this.removeEventListener('focus-trap-exit', this.hidePopover);
@@ -364,8 +368,8 @@ class Popover extends DataAriaLabelMixin(
     if (changedProperties.has('zIndex')) {
       this.setAttribute('z-index', `${this.zIndex}`);
     }
-    if (changedProperties.has('appendTo')) {
-      await this.setupTriggerListener();
+    if (changedProperties.has('append-to')) {
+      await this.utils.setupAppendTo();
     }
     if (
       changedProperties.has('interactive')
@@ -428,7 +432,7 @@ class Popover extends DataAriaLabelMixin(
    * @param newValue - The new value of the visible property.
    */
   private async isOpenUpdated(oldValue: boolean, newValue: boolean) {
-    if (oldValue === newValue) {
+    if (oldValue === newValue || !this.triggerElement) {
       return;
     }
 
@@ -436,7 +440,7 @@ class Popover extends DataAriaLabelMixin(
       this.enabledFocusTrap = this.focusTrap;
       this.enabledPreventScroll = this.preventScroll;
 
-      if (this.backdrop && this.triggerElement) {
+      if (this.backdrop) {
         const popoverBackdrop = this.renderRoot.querySelector('.popover-backdrop') as HTMLElement;
         popoverBackdrop.style.zIndex = `${this.zIndex - 1}`;
         this.triggerElement.style.zIndex = `${this.zIndex}`;
@@ -448,6 +452,7 @@ class Popover extends DataAriaLabelMixin(
 
       if (this.hideOnBlur) {
         this.containerElement?.addEventListener('focusout', this.onPopoverFocusOut);
+        this.triggerElement.style.pointerEvents = 'none';
       }
       if (this.hideOnOutsideClick) {
         document.addEventListener('click', this.onOutsidePopoverClick);
@@ -456,9 +461,9 @@ class Popover extends DataAriaLabelMixin(
         document.addEventListener('keydown', this.onEscapeKeydown);
       }
 
-      this.triggerElement?.setAttribute('aria-expanded', 'true');
+      this.triggerElement.setAttribute('aria-expanded', 'true');
       if (this.interactive) {
-        this.triggerElement?.setAttribute(
+        this.triggerElement.setAttribute(
           'aria-haspopup',
           this.triggerElement.getAttribute('aria-haspopup') || 'dialog',
         );
@@ -466,6 +471,7 @@ class Popover extends DataAriaLabelMixin(
     } else {
       if (this.hideOnBlur) {
         this.containerElement?.removeEventListener('focusout', this.onPopoverFocusOut);
+        this.triggerElement.style.pointerEvents = '';
       }
       if (this.hideOnOutsideClick) {
         document.removeEventListener('click', this.onOutsidePopoverClick);
@@ -475,9 +481,9 @@ class Popover extends DataAriaLabelMixin(
       }
 
       this.deactivateFocusTrap?.();
-      this.triggerElement?.removeAttribute('aria-expanded');
+      this.triggerElement.removeAttribute('aria-expanded');
       if (this.interactive) {
-        this.triggerElement?.removeAttribute('aria-haspopup');
+        this.triggerElement.removeAttribute('aria-haspopup');
       }
       if (this.focusBackToTrigger) {
         this.triggerElement?.focus();

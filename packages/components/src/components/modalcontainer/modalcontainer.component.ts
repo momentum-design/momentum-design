@@ -23,9 +23,7 @@ import { DataAriaLabelledbyMixin } from '../../utils/mixins/DataAriaLabelledbyMi
  *
  * @slot - Default slot for modal container
  */
-class Modalcontainer extends DataAriaLabelMixin(
-  DataAriaLabelledbyMixin(DataAriaDescribedbyMixin(Component)),
-) {
+class Modalcontainer extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescribedbyMixin(Component))) {
   /**
    * Color of the modalcontainer
    * - **tonal**

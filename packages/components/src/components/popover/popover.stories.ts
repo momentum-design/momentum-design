@@ -1,6 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html, TemplateResult } from 'lit';
+import { action } from '@storybook/addon-actions';
 import { POPOVER_PLACEMENT, DEFAULTS } from './popover.constants';
 import { COLOR } from '../modalcontainer/modalcontainer.constants';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
@@ -28,11 +29,16 @@ const createPopover = (args: Args, content: TemplateResult) => html`
   ?hide-on-escape=${args['hide-on-escape']}
   ?hide-on-outside-click=${args['hide-on-outside-click']}
   ?focus-back-to-trigger=${args['focus-back-to-trigger']}
+  append-to=${args['append-to']}
   close-button-aria-label="${args['close-button-aria-label']}"
   data-aria-label="${args['data-aria-label']}"
   data-aria-labelledby="${args['data-aria-labelledby']}"
   data-aria-describedby="${args['data-aria-describedby']}"
   data-role="${args['data-role']}"
+  @popover-on-show="${action('onshow')}"
+  @popover-on-hide="${action('onhide')}"
+  @popover-on-created="${action('oncreated')}"
+  @popover-on-destroyed="${action('ondestroyed')}"
 >
   ${content}
 </mdc-popover>
@@ -41,10 +47,10 @@ const createPopover = (args: Args, content: TemplateResult) => html`
 const createTrigger = (triggerID: string, text: String) => html`
 <div
   style="
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
   "
 >
   <mdc-button id="${triggerID}">${text}</mdc-button>
@@ -257,6 +263,9 @@ const meta: Meta = {
     'focus-back-to-trigger': {
       control: 'boolean',
     },
+    'append-to': {
+      control: 'text',
+    },
     'close-button-aria-label': {
       control: 'text',
     },
@@ -295,6 +304,7 @@ export const Default: StoryObj = {
     offset: DEFAULTS.OFFSET,
     'z-index': DEFAULTS.Z_INDEX,
     delay: DEFAULTS.DELAY,
+    flip: DEFAULTS.FLIP,
     'show-arrow': true,
     'data-role': DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
@@ -314,7 +324,7 @@ export const interactiveContent: StoryObj = {
     'focus-trap': true,
     interactive: true,
     'show-arrow': true,
-    flip: true,
+    flip: DEFAULTS.FLIP,
     size: true,
     'data-role': DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
@@ -331,6 +341,7 @@ export const interactiveHover: StoryObj = {
     offset: DEFAULTS.OFFSET,
     'z-index': DEFAULTS.Z_INDEX,
     delay: DEFAULTS.DELAY,
+    flip: DEFAULTS.FLIP,
     'focus-trap': true,
     interactive: true,
     'show-arrow': true,
@@ -350,6 +361,7 @@ export const interactiveMultiple: StoryObj = {
     offset: DEFAULTS.OFFSET,
     'z-index': DEFAULTS.Z_INDEX,
     delay: DEFAULTS.DELAY,
+    flip: DEFAULTS.FLIP,
     'focus-trap': true,
     interactive: true,
     'show-arrow': true,
@@ -368,6 +380,7 @@ export const nestedPopover: StoryObj = {
     offset: DEFAULTS.OFFSET,
     'z-index': 10,
     delay: DEFAULTS.DELAY,
+    flip: DEFAULTS.FLIP,
     'focus-trap': true,
     interactive: true,
     'show-arrow': true,
@@ -386,6 +399,7 @@ export const hideOnBlur: StoryObj = {
     offset: DEFAULTS.OFFSET,
     'z-index': DEFAULTS.Z_INDEX,
     delay: DEFAULTS.DELAY,
+    flip: DEFAULTS.FLIP,
     interactive: true,
     'show-arrow': true,
     'hide-on-blur': true,
@@ -404,6 +418,7 @@ export const popoverWithBackdrop: StoryObj = {
     offset: DEFAULTS.OFFSET,
     'z-index': DEFAULTS.Z_INDEX,
     delay: DEFAULTS.DELAY,
+    flip: DEFAULTS.FLIP,
     interactive: true,
     'show-arrow': true,
     backdrop: true,
