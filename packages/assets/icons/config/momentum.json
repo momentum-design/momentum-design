@@ -289,6 +289,17 @@
               "woff2Path": "../fonts/MomentumFontIcon.woff2"
             }
           }
+        },
+        { 
+          "id": "lit-icons",
+          "target": "./dist/svg/**/*.*",
+          "destination": "./dist/ts",
+          "format": {
+            "type": "LIT",
+            "config": {
+              "hbsPath": "./config/templates/lit.ts.hbs"
+            }
+          }
         }
       ],
       "type": "assets"

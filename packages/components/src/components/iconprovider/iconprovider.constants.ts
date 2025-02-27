@@ -16,6 +16,7 @@ const DEFAULTS = {
   LENGTH_UNIT: 'em',
   SIZE: LENGTH_UNIT_SIZE.em,
   SHOULD_CACHE: false,
+  ICON_SET: 'momentum-icons',
 } as const;
 
 export { TAG_NAME, DEFAULTS, ALLOWED_FILE_EXTENSIONS, ALLOWED_LENGTH_UNITS, LENGTH_UNIT_SIZE };

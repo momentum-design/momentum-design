@@ -4,10 +4,9 @@ import styles from './icon.styles';
 import { Component } from '../../models';
 import providerUtils from '../../utils/provider';
 import IconProvider from '../iconprovider/iconprovider.component';
-import { dynamicSVGImport } from './icon.utils';
+import { svgFetch } from './icon.utils';
 import { DEFAULTS } from './icon.constants';
 import type { IconNames } from './icon.types';
-
 /**
  * Icon component that dynamically displays SVG icons based on a valid name.
  *
@@ -126,38 +125,51 @@ class Icon extends Component {
    */
   private async getIconData() {
     if (this.iconProviderContext.value) {
-      const { fileExtension, url, iconsCache, shouldCache } = this.iconProviderContext.value;
-      if (url && fileExtension && this.name) {
-        // abort the previous fetch request if it is still pending
-        // before retreiving from cache
-        this.abortController.abort();
+      const { fileExtension, url, cacheName, iconSet, cacheStrategy } = this.iconProviderContext.value;
+      if (iconSet === 'custom-icons' && url && fileExtension && this.name) {
+        // function to abort the fetch request and create a new signal
+        // (directly passing the abortcontroller to the fetch request per reference
+        // will not work due to JS call-by-sharing behavior)
+        const renewSignal = () => {
+          this.abortController.abort();
+          this.abortController = new AbortController();
+          return this.abortController.signal;
+        };
 
-        // check if icon is already fetched and stored in the iconsCache map
-        if (iconsCache.has(this.name)) {
-          const iconElement = this.prepareIconElement(iconsCache.get(this.name)!);
+        // fetch icon data (including caching logic)
+        return svgFetch({
+          url,
+          name: this.name,
+          fileExtension,
+          cacheName,
+          cacheStrategy,
+          renewSignal,
+        })
+          .then((iconData) => {
+            // parse the fetched icon string to an html element and set the attributes
+            const iconElement = this.prepareIconElement(iconData);
+            this.handleIconLoadedSuccess(iconElement as HTMLElement);
+          })
+          .catch((error) => {
+            this.handleIconLoadedFailure(error);
+          });
+      }
 
-          this.handleIconLoadedSuccess(iconElement as HTMLElement);
-          return;
-        }
-
-        this.abortController = new AbortController();
-        try {
-          // fetch icon from backend
-          const iconData = await dynamicSVGImport(url, this.name, fileExtension, this.abortController.signal);
-
-          // parse the fetched icon string to an html element and set the attributes
-          const iconElement = this.prepareIconElement(iconData);
-
-          this.handleIconLoadedSuccess(iconElement as HTMLElement);
-          if (shouldCache) {
-            // store the fetched icon string in the iconsCache map
-            iconsCache.set(this.name, iconData);
-          }
-        } catch (error) {
-          this.handleIconLoadedFailure(error);
-        }
+      if (iconSet === 'momentum-icons' && this.name) {
+        // dynamic import of the lit template from the momentum icons package
+        return import(`@momentum-design/icons/dist/ts/${this.name}.ts`)
+          .then((module) => {
+            this.handleIconLoadedSuccess(module.default());
+          })
+          .catch((error) => {
+            this.handleIconLoadedFailure(error);
+          });
       }
     }
+
+    const noIconProviderError = new Error('IconProvider not found or not properly set up.');
+    this.handleIconLoadedFailure(noIconProviderError);
+    return Promise.reject(noIconProviderError);
   }
 
   /**

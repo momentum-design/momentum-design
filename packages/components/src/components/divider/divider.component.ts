@@ -52,6 +52,13 @@ import type { Directions, DividerOrientation, DividerVariant } from './divider.t
  * @cssproperty --mdc-divider-text-color - font color of label in the text divider
  * @cssproperty --mdc-divider-text-margin - left and right margin of label in the text divider
  * @cssproperty --mdc-divider-text-line-height - line height of label in the text divider
+ * @cssproperty --mdc-divider-grabber-button-background-color-normal - background color of the grabber button
+ *  in rest state
+ * @cssproperty --mdc-divider-grabber-button-background-color-hover - background color of the grabber button
+ *  in hover state
+ * @cssproperty --mdc-divider-grabber-button-background-color-pressed - background color of the grabber button
+ *  in pressed state
+ * @cssproperty --mdc-divider-grabber-button-border-color - border color of the grabber button
  * @cssproperty --mdc-divider-grabber-button-border-radius - border radius of the grabber button
  */
 class Divider extends Component {

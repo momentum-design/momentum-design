@@ -54,8 +54,8 @@ describe('@momentum-design/builder - css Transformer', () => {
       );
       jest.spyOn(Utils, 'generateSCSSFile').mockImplementation();
       await transformer.transformFilesAsync();
-      expect(transformFilesAsyncSpy).toBeCalledTimes(1);
-      expect(transformHbsSpy).toBeCalledTimes(1);
+      expect(transformFilesAsyncSpy).toHaveBeenCalledTimes(1);
+      expect(transformHbsSpy).toHaveBeenCalledTimes(1);
       expect(transformer.outputFiles).toStrictEqual([
         {
           data: Object.values(inputFilesData),

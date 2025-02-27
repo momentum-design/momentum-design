@@ -24,6 +24,7 @@ const FORMATS = {
   SWIFT: 'SWIFT' as const,
   SVG_GLYPHS: 'SVG_GLYPHS' as const,
   TYPES: 'TYPES' as const,
+  LIT: 'LIT' as const,
 };
 
 // http://en.wikipedia.org/wiki/Private_Use_(Unicode)

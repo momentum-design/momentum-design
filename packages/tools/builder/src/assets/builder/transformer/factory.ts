@@ -11,6 +11,7 @@ import SwiftTransformer from './swift-transformer';
 import CssTransformer from './css-transformer';
 import SvgGlyphsTransformer from './svg-glyphs-transformer';
 import TypesTransformer from './types-transformer';
+import LitTransformer from './lit-transformer';
 
 type Transformers =
   | Transformer
@@ -23,7 +24,8 @@ type Transformers =
   | SwiftTransformer
   | CssTransformer
   | SvgGlyphsTransformer
-  | TypesTransformer;
+  | TypesTransformer
+  | LitTransformer;
 
 /**
  * Factory Pattern
@@ -52,6 +54,8 @@ function createTransformer(format: Formats, destination: string): Transformers {
       return new CssTransformer(format, destination);
     case CONSTANTS.FORMATS.TYPES:
       return new TypesTransformer(format, destination);
+    case CONSTANTS.FORMATS.LIT:
+      return new LitTransformer(format, destination);
     default:
       return new Transformer(format, destination);
   }
