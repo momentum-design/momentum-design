@@ -523,7 +523,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
   /**
    * Shows the popover.
    */
-  public override showPopover = () => {
+  public showPopover = () => {
     this.cancelCloseDelay();
     setTimeout(() => {
       this.visible = true;
@@ -537,7 +537,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
   /**
    * Hides the popover.
    */
-  public override hidePopover = () => {
+  public hidePopover = () => {
     if (popoverStack.peek() === this) {
       setTimeout(() => {
         this.visible = false;
