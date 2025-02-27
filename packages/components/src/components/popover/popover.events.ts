@@ -52,19 +52,4 @@ export class PopoverEventManager {
   static onDestroyedPopover(instance: Popover) {
     this.dispatchPopoverEvent('popover-on-destroyed', instance);
   }
-
-  /**
-   * Handles the escape keydown event to close the popover.
-   *
-   * @param instance - The popover instance.
-   * @param event - The keyboard event.
-   */
-  static onEscapeKeydown(instance: Popover, event: KeyboardEvent) {
-    if (!instance.visible || event.code !== 'Escape') {
-      return;
-    }
-
-    event.preventDefault();
-    instance.hidePopover();
-  }
 }

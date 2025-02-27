@@ -6,7 +6,6 @@ import { Component } from '../../models';
 import { DEFAULTS } from './modalcontainer.constants';
 import type { ModalContainerColor, ModalContainerElevation } from './modalcontainer.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
-import { DataRoleMixin } from '../../utils/mixins/DataRoleMixin';
 import { DataAriaDescribedbyMixin } from '../../utils/mixins/DataAriaDescribedbyMixin';
 import { DataAriaLabelledbyMixin } from '../../utils/mixins/DataAriaLabelledbyMixin';
 
@@ -25,7 +24,7 @@ import { DataAriaLabelledbyMixin } from '../../utils/mixins/DataAriaLabelledbyMi
  * @slot - Default slot for modal container
  */
 class Modalcontainer extends DataAriaLabelMixin(
-  DataAriaLabelledbyMixin(DataAriaDescribedbyMixin(DataRoleMixin(Component))),
+  DataAriaLabelledbyMixin(DataAriaDescribedbyMixin(Component)),
 ) {
   /**
    * Color of the modalcontainer
@@ -53,7 +52,7 @@ class Modalcontainer extends DataAriaLabelMixin(
    * @default dialog
    */
   @property({ type: String, reflect: true, attribute: 'data-role' })
-  override dataRole: string = DEFAULTS.ROLE;
+  dataRole: HTMLElement['role'] = DEFAULTS.ROLE;
 
   /**
    * Aria modal of the modalcontainer
@@ -65,16 +64,12 @@ class Modalcontainer extends DataAriaLabelMixin(
   public override render() {
     return html`
       <div
-        id="mdc-modal-container"
-        class="mdc-modal-container"
-        ?contrast="${this.color === 'contrast'}"
-        role="${this.dataRole}"
+        role="${ifDefined(this.dataRole)}"
         aria-modal=${ifDefined(this.dataAriaModal === true ? 'true' : undefined)}
-        aria-label=${ifDefined(this.dataAriaLabel)}
-        aria-labelledby=${ifDefined(this.dataAriaLabelledby)}
-        aria-describedby=${ifDefined(this.dataAriaDescribedby)}
-        data-elevation="${this.elevation}"
-        part="modal-container"
+        aria-label="${ifDefined(this.dataAriaLabel)}"
+        aria-labelledby="${ifDefined(this.dataAriaLabelledby)}"
+        aria-describedby="${ifDefined(this.dataAriaDescribedby)}"
+        part="container"
       >
         <slot></slot>
       </div>

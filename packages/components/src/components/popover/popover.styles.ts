@@ -11,28 +11,28 @@ const styles = css`
     --mdc-popover-inverted-text-color: var(--mds-color-theme-inverted-text-primary-normal);
   }
 
+  :host([color='contrast']) .popover-container {
+    .popover-arrow {
+      background-color: var(--mdc-popover-inverted-background-color);
+      border-color: var(--mdc-popover-inverted-border-color);
+    }
+
+    .popover-close {
+      color: var(--mdc-popover-inverted-text-color);
+    }
+  }
+
   .popover-container {
     display: none;
     position: absolute;
     box-sizing: content-box;
-
-    &[data-color='contrast'] {
-      .popover-arrow {
-        background-color: var(--mdc-popover-inverted-background-color);
-        border-color: var(--mdc-popover-inverted-border-color);
-      }
-
-      .popover-close {
-        color: var(--mdc-popover-inverted-text-color);
-      }
-    }
   }
 
-  .popover-container[visible] {
+  :host([visible]) .popover-container {
     display: block;
   }
 
-  .popover-container::part(modal-container) {
+  .popover-container::part(container) {
     padding: 0;
   }
 

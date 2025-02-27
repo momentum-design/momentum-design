@@ -406,7 +406,6 @@ export const popoverWithBackdrop: StoryObj = {
     delay: DEFAULTS.DELAY,
     interactive: true,
     'show-arrow': true,
-    'hide-on-blur': true,
     backdrop: true,
     'data-role': DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,

@@ -12,7 +12,6 @@ import { COLOR } from '../modalcontainer/modalcontainer.constants';
 import { DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants';
 import { ValueOf } from '../../utils/types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
-import { DataRoleMixin } from '../../utils/mixins/DataRoleMixin';
 import { DataAriaDescribedbyMixin } from '../../utils/mixins/DataAriaDescribedbyMixin';
 import { DataAriaLabelledbyMixin } from '../../utils/mixins/DataAriaLabelledbyMixin';
 import { PopoverEventManager } from './popover.events';
@@ -40,7 +39,7 @@ import { PopoverUtils } from './popover.utils';
  *
  */
 class Popover extends DataAriaLabelMixin(
-  DataAriaLabelledbyMixin(DataAriaDescribedbyMixin(DataRoleMixin(FocusTrapMixin(Component)))),
+  DataAriaLabelledbyMixin(DataAriaDescribedbyMixin(FocusTrapMixin(Component))),
 ) {
   /**
    * The unique ID of the popover.
@@ -226,7 +225,7 @@ class Popover extends DataAriaLabelMixin(
    * @default dialog
    */
   @property({ type: String, reflect: true, attribute: 'data-role' })
-  override dataRole: string = DEFAULTS.ROLE;
+  dataRole: HTMLElement['role'] = DEFAULTS.ROLE;
 
   public arrowElement: HTMLElement | null = null;
 
@@ -301,7 +300,7 @@ class Popover extends DataAriaLabelMixin(
     }
 
     if (this.trigger.includes('click')) {
-      this.triggerElement.addEventListener('click', this.togglePopover);
+      this.triggerElement.addEventListener('click', this.togglePopoverVisible);
     }
     if (this.trigger.includes('mouseenter')) {
       const hoverBridge = this.renderRoot.querySelector('.popover-hover-bridge');
@@ -323,7 +322,7 @@ class Popover extends DataAriaLabelMixin(
   private async removeEventListeners() {
     if (!this.triggerElement) return;
     const hoverBridge = this.renderRoot.querySelector('.popover-hover-bridge');
-    this.triggerElement.removeEventListener('click', this.togglePopover);
+    this.triggerElement.removeEventListener('click', this.togglePopoverVisible);
     this.triggerElement.removeEventListener('mouseenter', this.showPopover);
     this.triggerElement.removeEventListener('mouseleave', this.hidePopover);
     this.containerElement?.removeEventListener('mouseenter', this.cancelCloseDelay);
@@ -370,8 +369,8 @@ class Popover extends DataAriaLabelMixin(
     }
     if (
       changedProperties.has('interactive')
-      || changedProperties.has('dataAriaLabel')
-      || changedProperties.has('dataAriaLabelledby')
+      || changedProperties.has('data-aria-label')
+      || changedProperties.has('data-aria-labelledby')
     ) {
       await this.utils.setupAccessibility();
     }
@@ -394,6 +393,20 @@ class Popover extends DataAriaLabelMixin(
     if (!insidePopoverClick || clickedOnBackdrop) {
       this.hidePopover();
     }
+  };
+
+  /**
+   * Handles the escape keydown event to close the popover.
+   *
+   * @param event - The keyboard event.
+   */
+  private onEscapeKeydown = async (event: KeyboardEvent) => {
+    if (!this.visible || event.code !== 'Escape') {
+      return;
+    }
+
+    event.preventDefault();
+    this.hidePopover();
   };
 
   /**
@@ -440,7 +453,7 @@ class Popover extends DataAriaLabelMixin(
         document.addEventListener('click', this.onOutsidePopoverClick);
       }
       if (this.hideOnEscape) {
-        document.addEventListener('keydown', (event) => PopoverEventManager.onEscapeKeydown(this, event));
+        document.addEventListener('keydown', this.onEscapeKeydown);
       }
 
       this.triggerElement?.setAttribute('aria-expanded', 'true');
@@ -452,13 +465,13 @@ class Popover extends DataAriaLabelMixin(
       }
     } else {
       if (this.hideOnBlur) {
-        this.containerElement?.removeEventListener('blur', this.onPopoverFocusOut);
+        this.containerElement?.removeEventListener('focusout', this.onPopoverFocusOut);
       }
       if (this.hideOnOutsideClick) {
         document.removeEventListener('click', this.onOutsidePopoverClick);
       }
       if (this.hideOnEscape) {
-        document.removeEventListener('keydown', (event) => PopoverEventManager.onEscapeKeydown(this, event));
+        document.removeEventListener('keydown', this.onEscapeKeydown);
       }
 
       this.deactivateFocusTrap?.();
@@ -500,7 +513,7 @@ class Popover extends DataAriaLabelMixin(
   /**
    * Shows the popover.
    */
-  public showPopover = async () => {
+  public override showPopover = async () => {
     this.cancelCloseDelay();
     setTimeout(() => {
       this.visible = true;
@@ -514,7 +527,7 @@ class Popover extends DataAriaLabelMixin(
   /**
    * Hides the popover.
    */
-  public hidePopover = () => {
+  public override hidePopover = () => {
     if (popoverStack.peek() === this) {
       setTimeout(() => {
         this.visible = false;
@@ -528,7 +541,7 @@ class Popover extends DataAriaLabelMixin(
   /**
    * Toggles the popover visibility.
    */
-  public togglePopover = async () => {
+  public togglePopoverVisible = async () => {
     if (this.isTriggerClicked) {
       this.hidePopover();
     } else {
@@ -612,14 +625,12 @@ class Popover extends DataAriaLabelMixin(
         class="popover-container"
         elevation="3"
         color=${this.color}
-        ?visible=${this.visible}
         ?data-aria-modal=${this.interactive}
-        data-role=${this.dataRole}
-        data-aria-label=${ifDefined(this.interactive ? this.dataAriaLabel : undefined)}
-        data-aria-labelledby=${ifDefined(this.interactive ? this.dataAriaLabelledby : undefined)}
-        data-aria-describedby=${ifDefined(this.interactive ? this.dataAriaDescribedby : undefined)}
+        data-role="${ifDefined(this.dataRole)}"
+        data-aria-label="${ifDefined(this.interactive ? this.dataAriaLabel : undefined)}"
+        data-aria-labelledby="${ifDefined(this.interactive ? this.dataAriaLabelledby : undefined)}"
+        data-aria-describedby="${ifDefined(this.interactive ? this.dataAriaDescribedby : undefined)}"
         style="z-index: ${this.zIndex};"
-        data-color=${this.color}
       >
         <div class="popover-hover-bridge"></div>
         ${this.closeButton
