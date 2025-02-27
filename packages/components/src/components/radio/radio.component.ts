@@ -1,6 +1,7 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { v4 as uuidv4 } from 'uuid';
 import { NameMixin } from '../../utils/mixins/NameMixin';
 import { ValueMixin } from '../../utils/mixins/ValueMixin';
 import styles from './radio.styles';
@@ -66,6 +67,7 @@ class Radio extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) 
     super();
     /** @internal */
     this.internals = this.attachInternals();
+    this.id = `mdc-input-${uuidv4()}`;
   }
 
   /**
@@ -74,9 +76,7 @@ class Radio extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) 
    * If unchecked, the value is set to null.
    */
   private setFormValue() {
-    if (this.checked) {
-      this.internals.setFormValue(this.value);
-    }
+    this.internals.setFormValue(this.checked ? this.value : null);
   }
 
   override firstUpdated() {
@@ -125,6 +125,7 @@ class Radio extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) 
     if (inputElement) {
       inputElement.checked = true;
     }
+    this.updateTabIndex();
     this.dispatchChangeEvent(event);
   }
 
@@ -211,7 +212,7 @@ class Radio extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) 
             ?disabled=${this.disabled}
             class="mdc-radio__input"
             aria-checked="${this.checked}"
-            aria-describedby="${FORMFIELD_DEFAULTS.HELPER_TEXT_ID}"
+            aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
             aria-label="${this.dataAriaLabel ?? ''}"
           />
           <span class="mdc-radio__icon"></span>

@@ -1,6 +1,5 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
-import { v4 as uuidv4 } from 'uuid';
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { DEFAULTS, MDC_TEXT_OPTIONS } from './formfieldwrapper.constants';
@@ -32,10 +31,11 @@ class FormfieldWrapper extends DisabledMixin(Component) {
   @property({ type: String, reflect: true, attribute: 'required-label' }) requiredLabel?: string;
 
   /**
-   * The unique id of the input field. It is used to link the input field with the label.
-   * @default `mdc-input-${uuidv4()}`
+   * The unique id of the input field which will be passed from the input field component.
+   * It is used to link the input field with the label.
+   * @default ''
    */
-  @property({ type: String }) override id = `mdc-input-${uuidv4()}`;
+  @property({ type: String }) override id = '';
 
   /**
    * The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.
@@ -64,7 +64,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
       : html` <mdc-text
           id="${DEFAULTS.HEADING_ID}"
           tagname="${MDC_TEXT_OPTIONS.TAGNAME}"
-          type="body-midsize-bold"
+          type="${MDC_TEXT_OPTIONS.HEADER_TYPE}"
           part="label"
           >${this.label}</mdc-text
         >`;

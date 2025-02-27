@@ -1,6 +1,7 @@
 import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { v4 as uuidv4 } from 'uuid';
 import styles from './input.styles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { NameMixin } from '../../utils/mixins/NameMixin';
@@ -158,6 +159,7 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
     super();
     /** @internal */
     this.internals = this.attachInternals();
+    this.id = `mdc-input-${uuidv4()}`;
   }
 
     /**
