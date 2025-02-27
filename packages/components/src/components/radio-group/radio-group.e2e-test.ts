@@ -83,7 +83,7 @@ test('mdc-radio-group', async ({ componentsPage }) => {
     // For label
     await test.step('should have label text when the label text attribute is passed', async () => {
       await componentsPage.setAttributes(radioGroup, { label: 'Label Text' });
-      const labelElement = componentsPage.page.locator('label[id="label-id"]');
+      const labelElement = componentsPage.page.locator('mdc-text[id="heading-id"]');
       const groupLabelText = await labelElement.nth(0).textContent();
       expect(groupLabelText?.trim()).toBe('Label Text');
       await componentsPage.removeAttribute(radioGroup, 'label');
