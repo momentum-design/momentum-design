@@ -2,9 +2,9 @@ import { CSSResult, html, nothing } from 'lit';
 import { property, queryAssignedNodes } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
-import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
-import { KEYS } from './list.constants';
 import { TAG_NAME as LISTITEM_TAGNAME } from '../listitem/listitem.constants';
+import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import { HEADER_ID, KEYS } from './list.constants';
 import styles from './list.styles';
 
 /**
@@ -25,6 +25,10 @@ class List extends DataAriaLabelMixin(Component) {
 
   constructor() {
     super();
+    this.role = 'list';
+    this.setAttribute('aria-labelledby', HEADER_ID);
+    this.setAttribute('aria-label', this.dataAriaLabel ?? '');
+
     this.addEventListener('keydown', this.handleKeyDown);
   }
 
@@ -92,31 +96,10 @@ class List extends DataAriaLabelMixin(Component) {
       });
   }
 
-  private wrapListItemsForAccesibility(): void {
-    this.defaultSlot
-      .filter((node) => node.nodeType === Node.ELEMENT_NODE)
-      .filter((node) => !(node as HTMLElement).hasAttribute('data-wrapped'))
-      .filter((node) => node.tagName?.toLowerCase() === LISTITEM_TAGNAME)
-      .forEach((node, index) => {
-        node?.setAttribute('tabindex', index === 0 ? '0' : '-1'); // set first item to active (for keyboard)
-        const wrapper = document.createElement('li');
-        wrapper.classList.add('list-wrapper');
-        wrapper.setAttribute('data-wrapped', ''); // To prevent re-wrapping
-        node?.parentNode?.insertBefore(wrapper, node);
-        if (node) {
-          wrapper.appendChild(node);
-        }
-      });
-  }
-
-  public override updated() {
-    this.wrapListItemsForAccesibility();
-  }
-
   public override render() {
     const headerText = this.headerText ? html`
       <mdc-text
-        id="header-id"
+        id="${HEADER_ID}"
         part="header-text"
         type="${TYPE.BODY_MIDSIZE_BOLD}"
         tagname="${VALID_TEXT_TAGS.SPAN}"
@@ -124,9 +107,7 @@ class List extends DataAriaLabelMixin(Component) {
     ` : nothing;
     return html`
       ${headerText}
-      <ul aria-labelledby="header-id" aria-label="${this.dataAriaLabel ?? ''}" part="list-container">
-        <slot @click="${this.handleMouseClick}"></slot>
-      </ul>
+      <slot role="presentation" @click="${this.handleMouseClick}"></slot>
     `;
   }
 

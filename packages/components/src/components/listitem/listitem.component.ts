@@ -74,6 +74,11 @@ class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component)
    */
   @property({ type: String, reflect: true, attribute: 'subline-text' }) sublineText?: string;
 
+  constructor() {
+    super();
+    this.role = 'listitem';
+  }
+
   /**
    * Generates a midsize regular text slot with the specified content.
    *
