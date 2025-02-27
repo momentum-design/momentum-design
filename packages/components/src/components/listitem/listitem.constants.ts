@@ -2,14 +2,14 @@ import utils from '../../utils/tag-name';
 
 const TAG_NAME = utils.constructTagName('listitem');
 
-const VARIANT = {
+const LISTITEM_VARIANTS = {
   FULL_WIDTH: 'full-width',
   INSET_PILL: 'inset-pill',
   INSET_RECTANGLE: 'inset-rectangle',
 } as const;
 
 const DEFAULTS = {
-  VARIANT: VARIANT.FULL_WIDTH,
+  VARIANT: LISTITEM_VARIANTS.FULL_WIDTH,
 } as const;
 
-export { DEFAULTS, TAG_NAME, VARIANT };
+export { DEFAULTS, TAG_NAME, LISTITEM_VARIANTS };
