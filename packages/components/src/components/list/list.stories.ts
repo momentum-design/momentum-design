@@ -12,6 +12,7 @@ import '../checkbox';
 import '../divider';
 import '../icon';
 import '../listitem';
+import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
 import '../toggle';
 
 const fakeUserNamesList = [
@@ -29,7 +30,8 @@ const fakeUserNamesList = [
 
 const render = (args: Args) => html`
   <mdc-list header-text="${args['header-text']}" data-aria-label="${args['data-aria-label']}">
-    ${repeat(fakeUserNamesList, (name) => html`<mdc-listitem label="${name}">
+    ${repeat(fakeUserNamesList, (name) => html`<mdc-listitem label="${name}" variant="${LISTITEM_VARIANTS.INSET_PILL}">
+      <mdc-checkbox slot="leading-controls"></mdc-checkbox>
       <mdc-avatar slot="leading-controls"
         initials="${[name.split(' ')[0][0], name.split(' ')[1][0]].join('')}"
       ></mdc-avatar>

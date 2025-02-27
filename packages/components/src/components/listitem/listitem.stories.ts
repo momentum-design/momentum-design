@@ -9,7 +9,7 @@ import '../button';
 import '../checkbox';
 import '../icon';
 import '../toggle';
-import { VARIANT } from './listitem.constants';
+import { LISTITEM_VARIANTS } from './listitem.constants';
 
 const render = (args: Args) => html`
   <mdc-listitem
@@ -45,7 +45,7 @@ const meta: Meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: Object.values(VARIANT),
+      options: Object.values(LISTITEM_VARIANTS),
     },
     label: {
       control: 'text',
@@ -81,7 +81,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    variant: 'inset-rectangle',
+    variant: LISTITEM_VARIANTS.INSET_RECTANGLE,
     label: 'Label Text',
     'secondary-label': 'Secondary Label',
     'tertiary-label': 'Teritary Label',

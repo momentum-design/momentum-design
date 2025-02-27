@@ -1,10 +1,10 @@
 import { CSSResult, html, nothing } from 'lit';
-import { property, queryAssignedElements } from 'lit/decorators.js';
+import { property, queryAssignedNodes } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
-import { TAG_NAME as LISTITEM_TAGNAME } from '../listitem/listitem.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { KEYS } from './list.constants';
+import { TAG_NAME as LISTITEM_TAGNAME } from '../listitem/listitem.constants';
 import styles from './list.styles';
 
 /**
@@ -15,8 +15,8 @@ import styles from './list.styles';
  * @slot default - This is a default/unnamed slot
  */
 class List extends DataAriaLabelMixin(Component) {
-  @queryAssignedElements({ selector: LISTITEM_TAGNAME })
-  listItems!: Array<HTMLElement>;
+  @queryAssignedNodes({ flatten: true })
+  defaultSlot!: Array<HTMLElement>;
 
   /**
    * The header text of the list.
@@ -26,7 +26,6 @@ class List extends DataAriaLabelMixin(Component) {
   constructor() {
     super();
     this.addEventListener('keydown', this.handleKeyDown);
-    this.role = 'group';
   }
 
   /**
@@ -37,19 +36,26 @@ class List extends DataAriaLabelMixin(Component) {
    * @param event - The keyboard event.
    */
   private handleKeyDown(event: KeyboardEvent): void {
-    const items = this.listItems;
-    if (!items.length) return;
-    const index = items.findIndex((item) => item === document.activeElement);
-    if (event.key === KEYS.ARROW_DOWN) {
-      event.preventDefault();
-      const nextIndex = (index + 1) % items.length;
-      items[nextIndex].focus();
-      this.resetTabIndexAndSetActiveTabIndex(nextIndex);
-    } else if (event.key === KEYS.ARROW_UP) {
-      event.preventDefault();
-      const prevIndex = (index - 1 + items.length) % items.length;
-      items[prevIndex].focus();
-      this.resetTabIndexAndSetActiveTabIndex(prevIndex);
+    const wrappedDivs = this.getListItemsFromDefaultSlot();
+    const currentIndex = wrappedDivs.findIndex((node) => node === event.target);
+    const newIndex = this.getNewIndexBasedOnKey(event.key, currentIndex, wrappedDivs.length);
+    console.log(currentIndex, newIndex, wrappedDivs);
+    wrappedDivs[newIndex]?.focus();
+    this.resetTabIndexAndSetActiveTabIndex(newIndex);
+  }
+
+  private getNewIndexBasedOnKey(key: string, currentIndex: number, wrappedDivsCount: number): number {
+    switch (key) {
+      case KEYS.ARROW_DOWN:
+        return (currentIndex + 1) % wrappedDivsCount;
+      case KEYS.ARROW_UP:
+        return (currentIndex - 1 + wrappedDivsCount) % wrappedDivsCount;
+      case KEYS.HOME:
+        return 0;
+      case KEYS.END:
+        return wrappedDivsCount - 1;
+      default:
+        return 0;
     }
   }
 
@@ -60,10 +66,15 @@ class List extends DataAriaLabelMixin(Component) {
    * @param event - The mouse event.
    */
   private handleMouseClick(event: MouseEvent): void {
-    const items = this.listItems;
-    const index = items.findIndex((item) => item === event.target);
+    const newIndex = this.getListItemsFromDefaultSlot().findIndex((node) => node === event.target);
+    this.resetTabIndexAndSetActiveTabIndex(newIndex);
+  }
 
-    this.resetTabIndexAndSetActiveTabIndex(index);
+  private getListItemsFromDefaultSlot() {
+    return this.defaultSlot
+      .filter((node) => node.nodeType === Node.ELEMENT_NODE)
+      .map((node) => node.querySelector(LISTITEM_TAGNAME))
+      .filter((node) => node !== null);
   }
 
   /**
@@ -74,23 +85,32 @@ class List extends DataAriaLabelMixin(Component) {
    * @param newIndex - The index of the new active element in the list.
    */
   private resetTabIndexAndSetActiveTabIndex(newIndex: number) {
-    this.listItems.forEach((item) => item.setAttribute('tabindex', '-1'));
-    this.listItems[newIndex].setAttribute('tabindex', '0');
+    this.getListItemsFromDefaultSlot()
+      .forEach((node, index) => {
+        const newTabindex = newIndex === index ? '0' : '-1';
+        node?.setAttribute('tabindex', newTabindex);
+      });
   }
 
-  /**
-   * Sets the tabindex of the first list item to 0, effectively setting it as
-   * the active element. This happens only when the list is first rendered.
-   */
-  private setFirstTabIndex() {
-    const firstItem = this.listItems[0];
-    if (!firstItem) return;
-
-    firstItem.setAttribute('tabindex', '0');
+  private wrapListItemsForAccesibility(): void {
+    this.defaultSlot
+      .filter((node) => node.nodeType === Node.ELEMENT_NODE)
+      .filter((node) => !(node as HTMLElement).hasAttribute('data-wrapped'))
+      .filter((node) => node.tagName?.toLowerCase() === LISTITEM_TAGNAME)
+      .forEach((node, index) => {
+        node?.setAttribute('tabindex', index === 0 ? '0' : '-1'); // set first item to active (for keyboard)
+        const wrapper = document.createElement('li');
+        wrapper.classList.add('list-wrapper');
+        wrapper.setAttribute('data-wrapped', ''); // To prevent re-wrapping
+        node?.parentNode?.insertBefore(wrapper, node);
+        if (node) {
+          wrapper.appendChild(node);
+        }
+      });
   }
 
-  public override firstUpdated() {
-    this.setFirstTabIndex();
+  public override updated() {
+    this.wrapListItemsForAccesibility();
   }
 
   public override render() {
@@ -104,7 +124,7 @@ class List extends DataAriaLabelMixin(Component) {
     ` : nothing;
     return html`
       ${headerText}
-      <ul aria-labelledby="header-id" aria-label="${this.dataAriaLabel ?? ''}">
+      <ul aria-labelledby="header-id" aria-label="${this.dataAriaLabel ?? ''}" part="list-container">
         <slot @click="${this.handleMouseClick}"></slot>
       </ul>
     `;
