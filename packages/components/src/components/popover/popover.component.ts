@@ -449,11 +449,12 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
 
       await this.positionPopover();
       await this.handleCreatePopoverFirstUpdate();
-      await this.utils.setupHoverBridge();
 
       if (this.hideOnBlur) {
         this.containerElement?.addEventListener('focusout', this.onPopoverFocusOut);
-        this.triggerElement.style.pointerEvents = 'none';
+        if (this.trigger === 'click') {
+          this.triggerElement.style.pointerEvents = 'none';
+        }
       }
       if (this.hideOnOutsideClick) {
         document.addEventListener('click', this.onOutsidePopoverClick);
@@ -472,7 +473,9 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
     } else {
       if (this.hideOnBlur) {
         this.containerElement?.removeEventListener('focusout', this.onPopoverFocusOut);
-        this.triggerElement.style.pointerEvents = '';
+        if (this.trigger === 'click') {
+          this.triggerElement.style.pointerEvents = '';
+        }
       }
       if (this.hideOnOutsideClick) {
         document.removeEventListener('click', this.onOutsidePopoverClick);
@@ -621,6 +624,9 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
       this.utils.updatePopoverStyle(x, y);
       if (middlewareData.arrow && this.arrowElement) {
         this.utils.updateArrowStyle(middlewareData.arrow, placement);
+      }
+      if (this.trigger.includes('mouseenter')) {
+        await this.utils.setupHoverBridge(placement);
       }
     });
   }

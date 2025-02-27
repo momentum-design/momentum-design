@@ -37,8 +37,10 @@ export class PopoverUtils {
   /**
    * Sets up the hover bridge for the popover.
    * The hover bridge is used to prevent the popover from closing when the mouse is over the popover.
+   *
+   * @param placement - The placement of the popover.
    */
-  setupHoverBridge = async () => {
+  setupHoverBridge = async (placement: string) => {
     const hoverBridge = this.popover.renderRoot.querySelector('.popover-hover-bridge') as HTMLElement;
     Object.assign(hoverBridge.style, {
       top: '',
@@ -52,7 +54,7 @@ export class PopoverUtils {
     const popoverWidth = modalContainer.offsetWidth || 0;
 
     if (hoverBridge) {
-      const side = this.popover.placement.split('-')[0];
+      const side = placement.split('-')[0];
       switch (side) {
         case 'top':
           hoverBridge.style.height = bridgeSize;
