@@ -10,6 +10,13 @@ const styles = css`
     /* Adjusting font feature settings for accessibility reasons */
     --mdc-themeprovider-font-feature-settings: "ss02" on;
 
+    /* Custom scrollbar variables */
+    --mdc-themeprovider-scrollbar-width: 1rem;
+    --mdc-themeprovider-scrollbar-track-color: var(--mds-color-theme-background-secondary-normal);
+    --mdc-themeprovider-scrollbar-thumb-color: var(--mds-color-theme-background-tertiary-normal);
+    --mdc-themeprovider-scrollbar-thumb-hover-color: var(--mds-color-theme-background-tertiary-hover);
+    --mdc-themeprovider-scrollbar-thumb-active-color: var(--mds-color-theme-background-tertiary-pressed);
+
     color: var(--mdc-themeprovider-color-default);
     font-family: var(--mdc-themeprovider-font-family);
     font-weight: var(--mdc-themeprovider-font-weight);
@@ -22,18 +29,18 @@ const styles = css`
 
   /* width */
   ::-webkit-scrollbar {
-    width: 1rem;
+    width: var(--mdc-themeprovider-scrollbar-width);
   }
 
   /* Track */
   ::-webkit-scrollbar-track {
     border-radius: 100vh;
-    background: var(--mds-color-theme-scrollbar-background-secondary-normal);
+    background: var(--mdc-themeprovider-scrollbar-track-color);
   }
 
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background-color: var(--mds-color-theme-scrollbar-button-normal);
+    background-color: var(--mdc-themeprovider-scrollbar-thumb-color);
     border: 0.25rem solid transparent;
     border-radius: 0.5rem;
     background-clip: content-box;
@@ -41,7 +48,7 @@ const styles = css`
 
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--mds-color-theme-scrollbar-button-hover);
+    background: var(--mdc-themeprovider-scrollbar-thumb-hover-color);
     border: 0.25rem solid transparent;
     border-radius: 0.5rem;
     background-clip: content-box;
@@ -49,7 +56,7 @@ const styles = css`
 
   /* Handle on press */
   ::-webkit-scrollbar-thumb:active {
-    background: var(--mds-color-theme-scrollbar-button-pressed);
+    background: var(--mdc-themeprovider-scrollbar-thumb-active-color);
     border: 0.25rem solid transparent;
     border-radius: 0.5rem;
     height: 6.25rem;
@@ -59,6 +66,12 @@ const styles = css`
   /* Corner */
   ::-webkit-scrollbar-corner {
     background: inherit;
+  }
+
+  /* For Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--mdc-themeprovider-scrollbar-thumb-color) var(--mdc-themeprovider-scrollbar-track-color);
   }
 `;
 
