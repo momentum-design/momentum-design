@@ -36,6 +36,8 @@ class FormfieldGroup extends DataAriaLabelMixin(FormfieldWrapper) {
 
   constructor() {
     super();
+    this.id = '';
+    this.shouldRenderLabel = false;
     this.helpTextType = undefined as unknown as ValidationType;
   }
 
@@ -44,7 +46,7 @@ class FormfieldGroup extends DataAriaLabelMixin(FormfieldWrapper) {
       <div
         part="container"
         role="${this.isRadio ? ROLE.RADIOGROUP : ROLE.GROUP}"
-        aria-labelledby="${FORMFIELD_DEFAULTS.LABEL_ID}"
+        aria-labelledby="${FORMFIELD_DEFAULTS.HEADING_ID}"
         aria-describedby="${FORMFIELD_DEFAULTS.HELPER_TEXT_ID}"
         aria-label="${this.dataAriaLabel ?? ''}"
       >

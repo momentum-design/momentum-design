@@ -47,6 +47,8 @@ class FormfieldWrapper extends DisabledMixin(Component) {
    */
   @property({ type: String, reflect: true, attribute: 'help-text' }) helpText?: string;
 
+  protected shouldRenderLabel: Boolean = true;
+
   /**
    * creates the label element when the label property is set.
    * id is used to link the label with the input field.
@@ -57,7 +59,15 @@ class FormfieldWrapper extends DisabledMixin(Component) {
       return nothing;
     }
 
-    return html`<label id="${DEFAULTS.LABEL_ID}" for="${this.id}" class="mdc-label" part="label">${this.label}</label>`;
+    return this.shouldRenderLabel
+      ? html`<label for="${this.id}" class="mdc-label" part="label">${this.label}</label>`
+      : html` <mdc-text
+          id="${DEFAULTS.HEADING_ID}"
+          tagname="${MDC_TEXT_OPTIONS.TAGNAME}"
+          type="body-midsize-bold"
+          part="label"
+          >${this.label}</mdc-text
+        >`;
   }
 
   protected renderRequiredLabel() {
@@ -66,11 +76,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     }
 
     return html`
-      <mdc-text
-        part="required-label"
-        tagname=${MDC_TEXT_OPTIONS.TAGNAME}
-        type=${MDC_TEXT_OPTIONS.TYPE}
-      >
+      <mdc-text part="required-label" tagname=${MDC_TEXT_OPTIONS.TAGNAME} type=${MDC_TEXT_OPTIONS.TYPE}>
         (${this.requiredLabel})
       </mdc-text>
     `;

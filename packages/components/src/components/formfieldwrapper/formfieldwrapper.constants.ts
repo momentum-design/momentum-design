@@ -14,7 +14,7 @@ const VALIDATION = {
 const DEFAULTS = {
   VALIDATION: VALIDATION.DEFAULT,
   HELPER_TEXT_ID: 'helper-text-id',
-  LABEL_ID: 'label-id',
+  HEADING_ID: 'heading-id',
 } as const;
 
 const MDC_TEXT_OPTIONS = {
