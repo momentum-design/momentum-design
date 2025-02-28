@@ -24,57 +24,11 @@ const styles = css`
     font-feature-settings: var(--mdc-themeprovider-font-feature-settings);
   }
    
-/* Scrollbar Theme */
-
-@supports (scrollbar-color: auto){
+/** Scrollbar Theme for Chrome, Edge, and Firefox. This has limited support on other browsers.
+    https://developer.mozilla.org/en-US/docs/Web/CSS/scrollbar-color for more details */
   * {
-    scrollbar-width: thin;
     scrollbar-color: var(--mdc-themeprovider-scrollbar-thumb-color) var(--mdc-themeprovider-scrollbar-track-color);
   }
-}
-
-@supports selector(::-webkit-scrollbar) {
-  /* width */
-  :host::-webkit-scrollbar {
-    width: 1rem;
-  }
-
-  /* Track */
-  :host::-webkit-scrollbar-track {
-    border-radius: 100vh;
-    background: var(--mdc-themeprovider-scrollbar-track-color);
-  }
-
-  /* Handle */
-  :host::-webkit-scrollbar-thumb {
-    background-color: var(--mdc-themeprovider-scrollbar-thumb-color);
-    border: 0.25rem solid transparent;
-    border-radius: 0.5rem;
-    background-clip: content-box;
-  }
-
-  /* Handle on hover */
-  :host::-webkit-scrollbar-thumb:hover {
-    background: var(--mdc-themeprovider-scrollbar-thumb-hover-color);
-    border: 0.25rem solid transparent;
-    border-radius: 0.5rem;
-    background-clip: content-box;
-  }
-
-  /* Handle on press */
-  :host::-webkit-scrollbar-thumb:active {
-    background: var(--mdc-themeprovider-scrollbar-thumb-active-color);
-    border: 0.25rem solid transparent;
-    border-radius: 0.5rem;
-    height: 6.25rem;
-    background-clip: content-box;
-  }
-
-  /* Corner */
-  :host::-webkit-scrollbar-corner {
-    background: inherit;
-  }
-}
 `;
 
 export default [styles];
