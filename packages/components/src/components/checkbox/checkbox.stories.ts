@@ -142,8 +142,8 @@ export const FormField: StoryObj = {
           <mdc-checkbox label="Super strength" value="super-strength" name="super-power"></mdc-checkbox>
           <mdc-checkbox label="Tactics" value="tactics" name="super-power"></mdc-checkbox>
           <div style='display: flex; gap: 0.25rem;'>
-            <mdc-button type="submit" size='24' style='margin-top: 0.5rem'>Submit</mdc-button>
-            <mdc-button type="reset" size='24' style='margin-top: 0.5rem' variant='secondary'>Reset</mdc-button>
+            <mdc-button type="submit" size='24'>Submit</mdc-button>
+            <mdc-button type="reset" size='24' variant='secondary'>Reset</mdc-button>
           </div>
         </fieldset>
       </form>

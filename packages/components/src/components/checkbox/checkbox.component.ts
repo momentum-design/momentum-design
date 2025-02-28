@@ -78,10 +78,8 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
 
     if (this.checked) {
       actualValue = !this.value ? 'on' : this.value;
-      this.ariaChecked = 'true';
     } else {
       actualValue = null;
-      this.ariaChecked = 'false';
     }
 
     this.manageRequired();
@@ -187,6 +185,7 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
           value="${ifDefined(this.value)}"
           ?required="${!!this.requiredLabel}"
           .checked="${this.checked}"
+          aria-checked="${this.checked}"
           .indeterminate="${this.indeterminate}"
           .disabled="${this.disabled}"
           aria-label="${this.dataAriaLabel ?? ''}"

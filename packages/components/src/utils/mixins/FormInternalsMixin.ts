@@ -5,7 +5,7 @@ import type { Constructor } from './index.types';
 export interface AssociatedFormControl {
     autofocus: boolean;
     disabled: boolean;
-    name: string | undefined;
+    name: string;
     value: string | string[];
 
     pattern?: string;
