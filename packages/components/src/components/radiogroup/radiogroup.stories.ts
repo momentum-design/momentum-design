@@ -24,12 +24,12 @@ const render = (args: Args) => html`
   </mdc-radiogroup>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/radio-group',
+  title: 'Components/radiogroup',
   tags: ['autodocs'],
   component: 'mdc-radiogroup',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     ...classArgType,
