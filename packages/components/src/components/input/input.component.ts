@@ -173,7 +173,6 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
    * @returns void
    */
   handleValueChange() {
-    this.internals.setFormValue(this.value);
     this.updateComplete.then(() => {
       this.setInputValidity();
     }).catch((error) => {

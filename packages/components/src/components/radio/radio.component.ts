@@ -199,7 +199,6 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
       if (inputElement) {
         inputElement.checked = true;
       }
-      this.setActualFormValue();
       this.dispatchChangeEvent(event);
     }
 

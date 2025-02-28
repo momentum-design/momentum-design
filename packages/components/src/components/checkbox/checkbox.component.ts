@@ -130,7 +130,6 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     if (!this.disabled) {
       this.checked = !this.checked;
       this.indeterminate = false;
-      this.setFormValue();
     }
   }
 

@@ -253,7 +253,7 @@ export const FormFieldInput: StoryObj = {
         placeholder="Enter your name"
         validation-message="Name is required"
       ></mdc-input>
-      <div style='display: flex; gap: 0.25rem;'>
+      <div style='display: flex; gap: 0.25rem;; margin-top: 0.25rem'>
         <mdc-button type="submit" size='24'>Submit</mdc-button>
         <mdc-button type="reset" size='24' variant='secondary'>Reset</mdc-button>
       </div>

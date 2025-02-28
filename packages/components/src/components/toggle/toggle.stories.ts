@@ -127,9 +127,9 @@ export const ToggleInsideForm: StoryObj = {
         <legend>Form Example</legend>
         <mdc-toggle name="toggleName" value="toggleValue" label="Agree to Terms" size="${args.size}" 
           required-label='required' validation-message='Toggle this switch to continue'></mdc-toggle>
-          <div style='display: flex; gap: 0.25rem;'>
-            <mdc-button type="submit" size='24' style='margin-top: 0.5rem'>Submit</mdc-button>
-            <mdc-button type="reset" size='24' style='margin-top: 0.5rem' variant='secondary'>Reset</mdc-button>
+          <div style='display: flex; gap: 0.25rem'>
+            <mdc-button type="submit" size='24'>Submit</mdc-button>
+            <mdc-button type="reset" size='24' variant='secondary'>Reset</mdc-button>
           </div>
       </fieldset>
     </form>

@@ -19,6 +19,7 @@ const render = (args: Args) => html`
     ?checked=${args.checked}
     ?disabled=${args.disabled}
     ?readonly=${args.readonly}
+    required-label="${args['required-label']}"
     data-aria-label="${args['data-aria-label']}"
   ></mdc-radio>
 `;
@@ -56,6 +57,9 @@ const meta: Meta = {
       control: { type: 'text' },
     },
     'data-aria-label': {
+      control: { type: 'text' },
+    },
+    'required-label': {
       control: { type: 'text' },
     },
     ...hideControls(['help-text-type']),
