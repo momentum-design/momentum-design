@@ -27,6 +27,11 @@ import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
  * @dependency mdc-icon
  * @dependency mdc-text
  *
+ * @event click - (React: onClick) This event is dispatched when the tab is clicked.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the tab.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the tab.
+ * @event focus - (React: onFocus) This event is dispatched when the tab receives focus.
+ *
  * @tagname mdc-tab
  *
  * @cssproperty --mdc-tab-content-gap - Gap between the badge(if provided), icon and text.

@@ -1,6 +1,7 @@
 import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { v4 as uuidv4 } from 'uuid';
 import styles from './input.styles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { NameMixin } from '../../utils/mixins/NameMixin';
@@ -23,6 +24,11 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
  * - all the attributes of the input field.
  *
  * @tagname mdc-input
+ *
+ * @event input - (React: onInput) This event is dispatched when the value of the input field changes (every press).
+ * @event change - (React: onChange) This event is dispatched when the value of the input field changes (on blur).
+ * @event focus - (React: onFocus) This event is dispatched when the input receives focus.
+ * @event blur - (React: onBlur) This event is dispatched when the input loses focus.
  *
  * @dependency mdc-icon
  * @dependency mdc-text
@@ -158,6 +164,7 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
     super();
     /** @internal */
     this.internals = this.attachInternals();
+    this.id = `mdc-input-${uuidv4()}`;
   }
 
     /**

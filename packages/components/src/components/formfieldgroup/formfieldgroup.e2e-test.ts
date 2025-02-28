@@ -90,7 +90,7 @@ test('mdc-formfieldgroup', async ({ componentsPage }) => {
 
     await test.step('attribute `label` should be present on component when set', async () => {
       await componentsPage.setAttributes(formfieldgroup, { label });
-      const labelElement = componentsPage.page.locator('label[id="label-id"]');
+      const labelElement = componentsPage.page.locator('mdc-text[id="heading-id"]');
       const groupLabelText = await labelElement.nth(0).textContent();
       expect(groupLabelText).toBe(label);
     });

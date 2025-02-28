@@ -1,6 +1,7 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { v4 as uuidv4 } from 'uuid';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { NameMixin } from '../../utils/mixins/NameMixin';
 import { ValueMixin } from '../../utils/mixins/ValueMixin';
@@ -21,6 +22,9 @@ import styles from './checkbox.styles';
  * @dependency mdc-icon
  *
  * @tagname mdc-checkbox
+ *
+ * @event change - (React: onChange) Event that gets dispatched when the checkbox state changes.
+ * @event focus - (React: onFocus) Event that gets dispatched when the checkbox receives focus.
  *
  * @cssproperty --mdc-checkbox-background-color-hover - Allows customization of the background color on hover.
  * @cssproperty --mdc-checkbox-border-color - Border color in high contrast.
@@ -70,6 +74,7 @@ class Checkbox extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)
     this.internals = this.attachInternals();
     // Checkbox does not contain helpTextType property.
     this.helpTextType = undefined as unknown as ValidationType;
+    this.id = `mdc-input-${uuidv4()}`;
   }
 
   /**
