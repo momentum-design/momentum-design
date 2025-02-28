@@ -1,7 +1,8 @@
 import { CSSResult, PropertyValues, TemplateResult, html } from 'lit';
+import deepEqual from 'deep-equal';
 import { VirtualizerController } from '@tanstack/lit-virtual';
 import { property } from 'lit/decorators.js';
-import { Virtualizer } from '@tanstack/virtual-core';
+import { Virtualizer, VirtualItem } from '@tanstack/virtual-core';
 import { StyleInfo } from 'lit/directives/style-map.js';
 import { Ref, createRef, ref } from 'lit/directives/ref.js';
 import styles from './virtualizedlist.styles';
@@ -31,7 +32,7 @@ class VirtualizedList extends Component {
    * @default undefined
    */
   @property({ type: Function, attribute: 'onscroll' })
-  override onscroll: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+  override onscroll: ((this: GlobalEventHandlers, ev: Event) => void) | null;
 
   /**
    * Object that sets and updates the virtualizer with any relevant props.
@@ -47,8 +48,16 @@ class VirtualizedList extends Component {
    * [Tanstack Virtualizer API Docs](https://tanstack.com/virtual/latest/docs/api/virtualizer)
    *
    */
-  @property({ type: Object, attribute: 'virtualizerprops' })
-  virtualizerprops: VirtualizerProps = DEFAULTS.VIRTUALIZER_PROPS;
+  @property({ type: Object,
+    attribute: 'virtualizerprops',
+    hasChanged(value, oldValue) {
+      if (deepEqual(oldValue, value)) {
+        return false;
+      }
+
+      return true;
+    } })
+  virtualizerProps: VirtualizerProps = DEFAULTS.VIRTUALIZER_PROPS;
 
   /**
    * Callback that gets envoked when updates to the virtualizer interally occur.
@@ -72,6 +81,8 @@ class VirtualizedList extends Component {
 
   public virtualizer: Virtualizer<Element, Element> | null;
 
+  public virtualItems: Array<VirtualItem> = [];
+
   constructor() {
     super();
     this.virtualizerController = null;
@@ -87,20 +98,35 @@ class VirtualizedList extends Component {
    */
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
-    // if the virtuailzer props change at all,
-    // update virtuailzer with the union of the two virtualizer options (current, passed in).
-    if (changedProperties.get('virtualizerprops')) {
-      this.virtualizer?.setOptions({ ...this.virtualizer.options, ...this.virtualizerprops });
-      this.requestUpdate();
+
+    if (changedProperties.get('virtualizerProps')) {
+      this.setVirtualizerOptions();
     }
+  }
+
+  /**
+   * This is needed in order to ensure the initial render happens
+   */
+  public override firstUpdated(changedProperties: PropertyValues): void {
+    super.firstUpdated(changedProperties);
+    this.setVirtualizerOptions();
+  }
+
+  /**
+   * @internal
+   * Update virtuailzer with the union of the two virtualizer options (current, passed in).
+   */
+  private setVirtualizerOptions(): void {
+    this.virtualizer?.setOptions({ ...this.virtualizer.options, ...this.virtualizerProps });
+    this.requestUpdate();
   }
 
   public override connectedCallback(): void {
     this.virtualizerController = new VirtualizerController(this, {
-      count: this.virtualizerprops.count!,
-      estimateSize: this.virtualizerprops?.estimateSize!,
+      count: this.virtualizerProps.count!,
+      estimateSize: this.virtualizerProps?.estimateSize!,
       getScrollElement: () => this.scrollElementRef.value || null,
-      ...this.virtualizerprops,
+      ...this.virtualizerProps,
     });
 
     super.connectedCallback();
@@ -118,20 +144,28 @@ class VirtualizedList extends Component {
   private getVirtualizedListWrapper(virtualizerController: VirtualizerController<Element, Element>): TemplateResult {
     this.virtualizer = virtualizerController.getVirtualizer();
 
-    const { getVirtualItems, measureElement, getTotalSize } = this.virtualizer;
-    const virtualItems = getVirtualItems();
-    // this style is required to be rendered by the client side list in order to handle scrolling properly
-    const listStyle: Readonly<StyleInfo> = {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      transform: `translateY(${virtualItems[0]?.start ?? 0}px)`,
-    };
+    const { getTotalSize, getVirtualItems, measureElement } = this.virtualizer;
 
-    // pass back data to client for rendering
-    if (this.setlistdata) {
-      this.setlistdata({ virtualItems, measureElement, listStyle });
+    const newVirtualItems = getVirtualItems();
+
+    // Only update client if there's a difference in virtual items
+    if (newVirtualItems !== this.virtualItems) {
+      this.virtualItems = newVirtualItems;
+
+      const virtualItems = getVirtualItems();
+      // this style is required to be rendered by the client side list in order to handle scrolling properly
+      const listStyle: Readonly<StyleInfo> = {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        transform: `translateY(${virtualItems[0]?.start ?? 0}px)`,
+      };
+
+      // pass back data to client for rendering
+      if (this.setlistdata) {
+        this.setlistdata({ virtualItems, measureElement, listStyle });
+      }
     }
 
     return html`<div
@@ -146,7 +180,7 @@ class VirtualizedList extends Component {
     return html`<div
       ${ref(this.scrollElementRef)}
       class="mdc-virtualizedlist-scroll"
-      @scroll=${this.onscroll && this.onscroll}
+      @scroll=${this.onscroll}
     >
       ${this.virtualizerController ? this.getVirtualizedListWrapper(this.virtualizerController) : html``}
     </div>

@@ -7,7 +7,7 @@ import { disableControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
   <mdc-virtualizedwrapper
-    .virtualizerprops=${args.virtualizerprops}
+    .virtualizerProps=${args.virtualizerProps}
     .onscroll=${args.onscroll}
   ></mdc-virtualizedwrapper>`;
 
@@ -25,7 +25,7 @@ const meta: Meta = {
       'virtualizer',
       'virtualizerController',
     ]),
-    virtualizerprops: {
+    virtualizerProps: {
       description: `Props to send to Tanstack virtual. Please reference 
       [Tanstack Virtualizer API](https://tanstack.com/virtual/latest/docs/api/virtualizer) docs for more 
       about all possible props.`,
@@ -53,6 +53,6 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    virtualizerprops: { count: 200, estimateSize: () => 100, overscan: 30 },
+    virtualizerProps: { count: 200, estimateSize: () => 100, overscan: 30 },
   },
 };
