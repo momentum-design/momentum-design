@@ -1,11 +1,13 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { v4 as uuidv4 } from 'uuid';
 import { NameMixin } from '../../utils/mixins/NameMixin';
 import { ValueMixin } from '../../utils/mixins/ValueMixin';
 import styles from './radio.styles';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
+import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 
 /**
  * Radio allow users to select single options from a list or turn an item/feature on or off.
@@ -15,6 +17,9 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
  * @dependency mdc-formfieldwrapper
  *
  * @tagname mdc-radio
+ *
+ * @event change - (React: onChange) Event that gets dispatched when the radio state changes.
+ * @event focus - (React: onFocus) Event that gets dispatched when the radio receives focus.
  *
  * @cssproperty --mdc-radio-inner-circle-size - size of the inner circle
  * @cssproperty --mdc-radio-text-disabled-color - color of the label when disabled
@@ -65,6 +70,7 @@ class Radio extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) 
     super();
     /** @internal */
     this.internals = this.attachInternals();
+    this.id = `mdc-input-${uuidv4()}`;
   }
 
   /**
@@ -73,9 +79,7 @@ class Radio extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) 
    * If unchecked, the value is set to null.
    */
   private setFormValue() {
-    if (this.checked) {
-      this.internals.setFormValue(this.value);
-    }
+    this.internals.setFormValue(this.checked ? this.value : null);
   }
 
   override firstUpdated() {
@@ -124,6 +128,7 @@ class Radio extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) 
     if (inputElement) {
       inputElement.checked = true;
     }
+    this.updateTabIndex();
     this.dispatchChangeEvent(event);
   }
 
@@ -210,6 +215,7 @@ class Radio extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) 
             ?disabled=${this.disabled}
             class="mdc-radio__input"
             aria-checked="${this.checked}"
+            aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
             aria-label="${this.dataAriaLabel ?? ''}"
           />
           <span class="mdc-radio__icon"></span>

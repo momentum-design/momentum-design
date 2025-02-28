@@ -12,6 +12,7 @@ type SetupOptions = {
   label?: string;
   helpText?: string;
   helpTextType?: string;
+  requiredLabel?: string;
   children?: string;
 };
 
@@ -24,6 +25,7 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.label ? `label="${restArgs.label}"` : ''}
       ${restArgs.helpText ? `help-text="${restArgs.helpText}"` : ''}
       ${restArgs.helpTextType ? `help-text-type="${restArgs.helpTextType}"` : ''}
+      ${restArgs.requiredLabel ? `required-label="${restArgs.requiredLabel}"` : ''}
       >${restArgs.children}</mdc-subcomponent-formfieldwrapper>
     `,
     clearDocument: true,
@@ -40,6 +42,7 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
     label: 'Label',
     helpText: 'Help Text',
     children: 'Form Input Component',
+    requiredLabel: 'required',
   });
 
   /**
@@ -57,6 +60,7 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       await expect(formfieldwrapper).toHaveAttribute('id', 'test-formfieldwrapper');
       await expect(formfieldwrapper).toHaveAttribute('label', 'Label');
       await expect(formfieldwrapper).toHaveAttribute('help-text', 'Help Text');
+      await expect(formfieldwrapper).toHaveAttribute('required-label', 'required');
     });
 
     await test.step('help-text-type attribute with appropriate icons', async () => {
@@ -82,22 +86,39 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       label: 'Label',
       'help-text': 'Help Text',
     });
-    await wrapperStickerSheet.createMarkupWithCombination({ 'help-text-type': VALIDATION }, true);
+    await wrapperStickerSheet.createMarkupWithCombination({ 'help-text-type': VALIDATION }, { createNewRow: true });
+    // disabled
+    await wrapperStickerSheet.setAttributes({
+      id: 'test-formfieldwrapper',
+      label: 'Disabled Label',
+      'help-text': 'Help Text',
+      disabled: true,
+    });
+    await wrapperStickerSheet.createMarkupWithCombination({});
+    // required label
     await wrapperStickerSheet.setAttributes({
       id: 'test-formfieldwrapper',
       label: 'Label',
       'help-text': 'Help Text',
-      disabled: true,
+      'required-label': 'required',
+    });
+    await wrapperStickerSheet.createMarkupWithCombination({});
+    // With long text that gets truncated into an ellipsis
+    await wrapperStickerSheet.setAttributes({
+      id: 'test-formfieldwrapper',
+      label: 'This is a long label text',
+      'help-text': 'Help Text',
+      'required-label': 'required',
+      style: 'width: 200px',
     });
     await wrapperStickerSheet.createMarkupWithCombination({});
     await wrapperStickerSheet.mountStickerSheet();
     await wrapperStickerSheet.getWrapperContainer();
 
-    // FIXME: Snapshots will be updated on the E2E test PR. This is done to keep the current PR not cluttered.
-    // await test.step('matches screenshot of pill-button element', async () => {
-    //   await componentsPage.visualRegression.takeScreenshot('mdc-formfieldwrapper', {
-    //     element: wrapperStickerSheet.getWrapperContainer(),
-    //   });
-    // });
+    await test.step('matches screenshot of pill-button element', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-formfieldwrapper', {
+        element: wrapperStickerSheet.getWrapperContainer(),
+      });
+    });
   });
 });

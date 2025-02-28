@@ -1,10 +1,12 @@
 import { CSSResult, html, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { v4 as uuidv4 } from 'uuid';
 import styles from './toggle.styles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { ValueMixin } from '../../utils/mixins/ValueMixin';
 import { NameMixin } from '../../utils/mixins/NameMixin';
+import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import { DEFAULTS, ICON_NAME, ICON_SIZE_IN_REM, TOGGLE_SIZE } from './toggle.constants';
 import { ToggleSize } from './toggle.types';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
@@ -16,11 +18,16 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
  * where users need to enable or disable a feature.
  * It contains an optional label and an optional helper text.
  *
+ * To create a group of toggles, use the FormFieldGroup component.
+ *
  * Note: It internally renders a checkbox styled as a toggle switch.
  *
  * @dependency mdc-icon
  *
  * @tagname mdc-toggle
+ *
+ * @event change - (React: onChange) Event that gets dispatched when the toggle state changes.
+ * @event focus - (React: onFocus) Event that gets dispatched when the toggle receives focus.
  *
  * @cssproperty --mdc-toggle-width - width of the toggle
  * @cssproperty --mdc-toggle-height - height of the toggle
@@ -75,6 +82,7 @@ class Toggle extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)))
     this.internals = this.attachInternals();
     // Toggle does not contain helpTextType property.
     this.helpTextType = undefined as unknown as ValidationType;
+    this.id = `mdc-input-${uuidv4()}`;
   }
 
   /**
@@ -148,6 +156,7 @@ class Toggle extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)))
             value="${ifDefined(this.value)}"
             .checked="${this.checked}"
             .disabled="${this.disabled}"
+            aria-describedby="${FORMFIELD_DEFAULTS.HELPER_TEXT_ID}"
             aria-label="${this.dataAriaLabel ?? ''}"
             tabindex="${this.disabled ? -1 : 0}"
             @change="${this.handleChange}"

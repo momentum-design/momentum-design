@@ -1,9 +1,9 @@
-import { CSSResult, html, nothing } from 'lit';
+import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import styles from './tab.styles';
-import { IconNames } from '../icon/icon.types';
-import { DEFAULTS } from './tab.constants';
-import { Variant } from './tab.types';
+import type { IconNames } from '../icon/icon.types';
+import { DEFAULTS, TAB_VARIANTS } from './tab.constants';
+import type { Variant } from './tab.types';
 import { getIconNameWithoutStyle } from '../button/button.utils';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
 import { ButtonSize, ButtonType } from '../buttonsimple/buttonsimple.types';
@@ -17,10 +17,20 @@ import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
  *
  * The `slot="badge"` can be used to add a badge to the tab.
  *
+ * The `slot="chip"` can be used to add a chip to the tab.
+ *
  * For `icon`, the `mdc-icon` component is used to render the icon.
+ *
+ * Note: Icons can be used in conjunction with badges or chips.
+ * Badges and chips should not be used at the same time.
  *
  * @dependency mdc-icon
  * @dependency mdc-text
+ *
+ * @event click - (React: onClick) This event is dispatched when the tab is clicked.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the tab.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the tab.
+ * @event focus - (React: onFocus) This event is dispatched when the tab receives focus.
  *
  * @tagname mdc-tab
  *
@@ -99,7 +109,7 @@ class Tab extends IconNameMixin(Buttonsimple) {
   text?: string;
 
   /**
-   * Tab can have two variants:
+   * Tab can have three variants:
    * - `glass`
    * - `line`
    * - `pill`
@@ -108,7 +118,7 @@ class Tab extends IconNameMixin(Buttonsimple) {
    * @default pill
    */
   @property({ type: String, reflect: true })
-  variant: Variant = DEFAULTS.TAB_VARIANT;
+  variant: Variant = DEFAULTS.VARIANT;
 
   /**
    * @internal
@@ -144,6 +154,17 @@ class Tab extends IconNameMixin(Buttonsimple) {
   }
 
   /**
+   * Sets the variant attribute for the tab component.
+   * If the provided variant is not included in the TAB_VARIANTS,
+   * it defaults to the value specified in DEFAULTS.VARIANT.
+   *
+   * @param variant - The variant to set.
+   */
+  private setVariant(variant: Variant): void {
+    this.setAttribute('variant', Object.values(TAB_VARIANTS).includes(variant) ? variant : DEFAULTS.VARIANT);
+  }
+
+  /**
    * Sets the aria-selected attribute based on the active state of the Tab.
    * If the tab is active, the filled version of the icon is displayed,
    * else the icon is restored to its original value.
@@ -161,10 +182,16 @@ class Tab extends IconNameMixin(Buttonsimple) {
     this.active = !this.active;
   }
 
+  public override update(changedProperties: PropertyValues): void {
+    super.update(changedProperties);
+    if (changedProperties.has('variant')) {
+      this.setVariant(this.variant);
+    }
+  }
+
   public override render() {
     return html`
       <div part="container">
-        <slot name="badge" part="badge"></slot>
         ${this.iconName
     ? html` <mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem" part="icon"></mdc-icon>`
     : nothing}
@@ -177,6 +204,8 @@ class Tab extends IconNameMixin(Buttonsimple) {
               >${this.text}</mdc-text
             >`
     : nothing}
+        <slot name="badge"></slot>
+        <slot name="chip"></slot>
       </div>
       <div part="indicator"></div>
     `;

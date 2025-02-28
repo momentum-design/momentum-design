@@ -4,10 +4,9 @@ import styles from './icon.styles';
 import { Component } from '../../models';
 import providerUtils from '../../utils/provider';
 import IconProvider from '../iconprovider/iconprovider.component';
-import { dynamicSVGImport } from './icon.utils';
+import { svgFetch } from './icon.utils';
 import { DEFAULTS } from './icon.constants';
 import type { IconNames } from './icon.types';
-
 /**
  * Icon component that dynamically displays SVG icons based on a valid name.
  *
@@ -98,8 +97,27 @@ class Icon extends Component {
   }
 
   /**
-   * Get Icon Data function which will fetch the icon (currently only svg)
-   * and sets state and attributes once fetched successfully
+   * Parse the icon string to an html element, set the attributes and
+   * return the icon element
+   *
+   * @param iconData - The icon string to be parsed
+   * @returns iconElement
+   */
+  private prepareIconElement(iconData: string) {
+    const iconElement = new DOMParser().parseFromString(iconData, 'text/html').body.children[0];
+
+    if (this.name) {
+      iconElement.setAttribute('data-name', this.name);
+    }
+    iconElement.setAttribute('part', 'icon');
+    // set aria-hidden=true for SVG to avoid screen readers
+    iconElement.setAttribute('aria-hidden', 'true');
+
+    return iconElement;
+  }
+
+  /**
+   * Fetches the icon (currently only svg) and sets state and attributes once fetched successfully
    *
    * This method uses abortController.signal to cancel the fetch request when the component is disconnected or updated.
    * If the request is aborted after the fetch() call has been fulfilled but before the response body has been read,
@@ -107,18 +125,51 @@ class Icon extends Component {
    */
   private async getIconData() {
     if (this.iconProviderContext.value) {
-      const { fileExtension, url } = this.iconProviderContext.value;
-      if (url && fileExtension && this.name) {
-        this.abortController.abort();
-        this.abortController = new AbortController();
-        try {
-          const iconHtml = await dynamicSVGImport(url, this.name, fileExtension, this.abortController.signal);
-          this.handleIconLoadedSuccess(iconHtml as HTMLElement);
-        } catch (error) {
-          this.handleIconLoadedFailure(error);
-        }
+      const { fileExtension, url, cacheName, iconSet, cacheStrategy } = this.iconProviderContext.value;
+      if (iconSet === 'custom-icons' && url && fileExtension && this.name) {
+        // function to abort the fetch request and create a new signal
+        // (directly passing the abortcontroller to the fetch request per reference
+        // will not work due to JS call-by-sharing behavior)
+        const renewSignal = () => {
+          this.abortController.abort();
+          this.abortController = new AbortController();
+          return this.abortController.signal;
+        };
+
+        // fetch icon data (including caching logic)
+        return svgFetch({
+          url,
+          name: this.name,
+          fileExtension,
+          cacheName,
+          cacheStrategy,
+          renewSignal,
+        })
+          .then((iconData) => {
+            // parse the fetched icon string to an html element and set the attributes
+            const iconElement = this.prepareIconElement(iconData);
+            this.handleIconLoadedSuccess(iconElement as HTMLElement);
+          })
+          .catch((error) => {
+            this.handleIconLoadedFailure(error);
+          });
+      }
+
+      if (iconSet === 'momentum-icons' && this.name) {
+        // dynamic import of the lit template from the momentum icons package
+        return import(`@momentum-design/icons/dist/ts/${this.name}.ts`)
+          .then((module) => {
+            this.handleIconLoadedSuccess(module.default());
+          })
+          .catch((error) => {
+            this.handleIconLoadedFailure(error);
+          });
       }
     }
+
+    const noIconProviderError = new Error('IconProvider not found or not properly set up.');
+    this.handleIconLoadedFailure(noIconProviderError);
+    return Promise.reject(noIconProviderError);
   }
 
   /**

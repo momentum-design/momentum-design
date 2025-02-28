@@ -1,12 +1,11 @@
 import { CSSResult, html, nothing } from 'lit';
-import { v4 as uuidv4 } from 'uuid';
 import { property } from 'lit/decorators.js';
-import styles from './formfieldwrapper.styles';
 import { Component } from '../../models';
-import type { ValidationType } from './formfieldwrapper.types';
-import { DEFAULTS, MDC_TEXT_OPTIONS } from './formfieldwrapper.constants';
-import { getHelperIcon } from './formfieldwrapper.utils';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
+import { DEFAULTS, MDC_TEXT_OPTIONS } from './formfieldwrapper.constants';
+import styles from './formfieldwrapper.styles';
+import type { ValidationType } from './formfieldwrapper.types';
+import { getHelperIcon } from './formfieldwrapper.utils';
 
 /**
  * formfieldwrapper is a component that contains the label and helper/validation text
@@ -25,10 +24,17 @@ class FormfieldWrapper extends DisabledMixin(Component) {
   @property({ reflect: true, type: String }) label?: string;
 
   /**
+   * The required label of the input field.
+   * When an appropriate string value is set,
+   * the input field is marked as required and the label is appended with this text.
+   */
+  @property({ type: String, reflect: true, attribute: 'required-label' }) requiredLabel?: string;
+
+  /**
    * The unique id of the input field. It is used to link the input field with the label.
    * @default `mdc-input-${uuidv4()}`
    */
-  @property({ type: String }) override id = `mdc-input-${uuidv4()}`;
+  @property({ type: String }) override id = '';
 
   /**
    * The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.
@@ -40,6 +46,9 @@ class FormfieldWrapper extends DisabledMixin(Component) {
    */
   @property({ type: String, reflect: true, attribute: 'help-text' }) helpText?: string;
 
+  /** @internal */
+  protected shouldRenderLabel: Boolean = true;
+
   /**
    * creates the label element when the label property is set.
    * id is used to link the label with the input field.
@@ -50,7 +59,27 @@ class FormfieldWrapper extends DisabledMixin(Component) {
       return nothing;
     }
 
-    return html`<label for="${this.id}" class="mdc-label" part="label">${this.label}</label>`;
+    return this.shouldRenderLabel
+      ? html`<label for="${this.id}" class="mdc-label" part="label">${this.label}</label>`
+      : html` <mdc-text
+          id="${DEFAULTS.HEADING_ID}"
+          tagname="${MDC_TEXT_OPTIONS.TAGNAME}"
+          type="${MDC_TEXT_OPTIONS.HEADER_TYPE}"
+          part="label"
+          >${this.label}</mdc-text
+        >`;
+  }
+
+  protected renderRequiredLabel() {
+    if (!this.requiredLabel) {
+      return nothing;
+    }
+
+    return html`
+      <mdc-text part="required-label" tagname=${MDC_TEXT_OPTIONS.TAGNAME} type=${MDC_TEXT_OPTIONS.TYPE}>
+        (${this.requiredLabel})
+      </mdc-text>
+    `;
   }
 
   /**
@@ -80,6 +109,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     }
     return html`
       <mdc-text
+        id="${DEFAULTS.HELPER_TEXT_ID}"
         part="help-text"
         tagname=${MDC_TEXT_OPTIONS.TAGNAME}
         type=${MDC_TEXT_OPTIONS.TYPE}
@@ -96,6 +126,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
   protected renderLabel() {
     return html`<div class="mdc-label-text" part="label-text">
       <slot name="label">${this.renderLabelElement()}</slot>
+      <slot name="required-label">${this.renderRequiredLabel()}</slot>
       <slot name="label-info"></slot>
     </div>`;
   }
@@ -105,6 +136,9 @@ class FormfieldWrapper extends DisabledMixin(Component) {
    * @returns void
    */
   protected renderHelperText() {
+    if (!this.helpText) {
+      return nothing;
+    }
     return html`<div class="mdc-help-text" part="mdc-help-text">
       <slot name="help-icon">${this.renderHelpTextIcon()}</slot>
       <slot name="help-text">${this.renderHelpText()}</slot>

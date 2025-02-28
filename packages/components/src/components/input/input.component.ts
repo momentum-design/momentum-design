@@ -1,10 +1,12 @@
 import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { v4 as uuidv4 } from 'uuid';
 import styles from './input.styles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { NameMixin } from '../../utils/mixins/NameMixin';
 import { AUTO_CAPITALIZE, DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
+import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { IconNames } from '../icon/icon.types';
 import type { AutoCapitalizeType } from './input.types';
 import { ValueMixin } from '../../utils/mixins/ValueMixin';
@@ -22,6 +24,11 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
  * - all the attributes of the input field.
  *
  * @tagname mdc-input
+ *
+ * @event input - (React: onInput) This event is dispatched when the value of the input field changes (every press).
+ * @event change - (React: onChange) This event is dispatched when the value of the input field changes (on blur).
+ * @event focus - (React: onFocus) This event is dispatched when the input receives focus.
+ * @event blur - (React: onBlur) This event is dispatched when the input loses focus.
  *
  * @dependency mdc-icon
  * @dependency mdc-text
@@ -50,12 +57,6 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
    * The placeholder text that is displayed when the input field is empty.
    */
   @property({ type: String }) placeholder = '';
-
-  /**
-   * required attribute of the input field.
-   * If true, the consumer should indicate it on the label that the input field is required.
-   */
-  @property({ type: Boolean }) required = false;
 
   /**
    * readonly attribute of the input field. If true, the input field is read-only.
@@ -163,6 +164,7 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
     super();
     /** @internal */
     this.internals = this.attachInternals();
+    this.id = `mdc-input-${uuidv4()}`;
   }
 
     /**
@@ -400,8 +402,9 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
             .value="${this.value}"
             ?disabled="${this.disabled}"
             ?readonly="${this.readonly}"
-            ?required="${this.required}"
+            ?required="${!!this.requiredLabel}"
             type="text"
+            aria-describedby="${FORMFIELD_DEFAULTS.HELPER_TEXT_ID}"
             placeholder=${ifDefined(this.placeholder)}
             minlength=${ifDefined(this.minlength)}
             maxlength=${ifDefined(this.maxlength)}

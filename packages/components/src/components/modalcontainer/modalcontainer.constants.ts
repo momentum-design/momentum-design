@@ -15,16 +15,12 @@ const ELEVATION = {
   4: 4,
 } as const;
 
-const ROLE = {
-  DIALOG: 'dialog',
-  ALERT_DIALOG: 'alertdialog',
-} as const;
-
 const DEFAULTS = {
   COLOR: COLOR.TONAL,
   ELEVATION: ELEVATION[0],
-  ROLE: ROLE.DIALOG,
+  ROLE: 'dialog',
+  ARIA_MODAL: false,
   CHILDREN: 'Lorem ipsum dolor sit amet',
 } as const;
 
-export { TAG_NAME, COLOR, DEFAULTS, ELEVATION, ROLE };
+export { TAG_NAME, COLOR, DEFAULTS, ELEVATION };

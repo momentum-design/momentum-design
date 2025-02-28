@@ -6,6 +6,7 @@ import Badge from './components/badge';
 import Presence from './components/presence';
 import Text from './components/text';
 import Button from './components/button';
+import Popover from './components/popover';
 import Bullet from './components/bullet';
 import Marker from './components/marker';
 import Divider from './components/divider';
@@ -17,8 +18,13 @@ import Checkbox from './components/checkbox';
 import Radio from './components/radio';
 import VirtualizedList from './components/virtualizedlist';
 import Tab from './components/tab';
+import FormfieldGroup from './components/formfieldgroup';
+import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
+import Spinner from './components/spinner';
+import RadioGroup from './components/radiogroup';
 
 import type { TextType } from './components/text/text.types';
+import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
 
 export {
   ThemeProvider,
@@ -29,6 +35,7 @@ export {
   Presence,
   Text,
   Button,
+  Popover,
   Bullet,
   Marker,
   Divider,
@@ -40,8 +47,15 @@ export {
   Radio,
   VirtualizedList,
   Tab,
+  FormfieldGroup,
+  Spinner,
+  RadioGroup,
 };
 
 export type {
   TextType,
+  SpinnerSize,
+  SpinnerVariant,
 };
+
+export { inMemoryCache, webAPIIconsCache };

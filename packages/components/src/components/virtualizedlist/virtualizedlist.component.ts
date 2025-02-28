@@ -20,6 +20,8 @@ import { SetListDataProps, VirtualizerProps } from './virtualizedlist.types';
  *
  * @tagname mdc-virtualizedlist
  *
+ * @event onscroll - (React: onScroll) Event that gets called when user scrolls inside of list.
+ *
  * @slot - Client side List with nested list items.
  */
 class VirtualizedList extends Component {

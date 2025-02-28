@@ -13,6 +13,11 @@ import type { ButtonSize, ButtonType } from './buttonsimple.types';
  * It is used as an internal component and is not intended to be used directly by consumers.
  * Consumers should use the `mdc-button` component instead.
  *
+ * @event click - (React: onClick) This event is dispatched when the button is clicked.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the button.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the button.
+ * @event focus - (React: onFocus) This event is dispatched when the button receives focus.
+ *
  * @tagname mdc-buttonsimple
  */
 class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
@@ -83,6 +88,7 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
     this.addEventListener('click', this.executeAction.bind(this));
     this.addEventListener('keydown', this.handleKeyDown.bind(this));
     this.addEventListener('keyup', this.handleKeyUp.bind(this));
+    this.addEventListener('blur', this.handleBlur.bind(this));
     /** @internal */
     this.internals = this.attachInternals();
   }
@@ -169,6 +175,16 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
       view: window,
     });
     this.dispatchEvent(clickEvent);
+  }
+
+  /**
+   * In case the button is pressed and the focus is lost while pressing,
+   * the pressed class is removed.
+   */
+  private handleBlur() {
+    if (this.classList.contains('pressed')) {
+      this.classList.remove('pressed');
+    }
   }
 
   /**
