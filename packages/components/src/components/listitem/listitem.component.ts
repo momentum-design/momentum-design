@@ -10,7 +10,7 @@ import styles from './listitem.styles';
 import type { ListItemVariants } from './listitem.types';
 
 /**
- * listitem component is used to display a label with different types of controls.
+ * mdc-listitem component is used to display a label with different types of controls.
  * There can be three types of controls, a radio button, a checkbox and/or a toggle.
  * The list item can contain an avatar on the leading side and a badge on the trailing side.
  * Additionally, the list item can contain a side header and a subline text.
@@ -20,6 +20,8 @@ import type { ListItemVariants } from './listitem.types';
  * Based on the leading/trailing slot, the position of the controls and text can be adjusted.
  *
  * @tagname mdc-listitem
+ *
+ * @dependency mdc-text
  *
  * @slot leading-controls - slot for list item controls to appear of leading end.
  * @slot leading-text-primary-label - slot for list item primary label.
@@ -86,10 +88,11 @@ class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component)
    * @param content - The text content to be displayed within the slot.
    * @returns A TemplateResult containing a slot with an `mdc-text` element of type BODY_MIDSIZE_REGULAR.
    */
-  private getMidsizeRegularText(slotName: string, content: string): TemplateResult {
+  private getMidsizeRegularText(slotName: string, content?: string): TemplateResult | typeof nothing {
+    if (!content) return nothing;
     return html`<slot name="${slotName}">
-      <mdc-text type="${TYPE.BODY_MIDSIZE_REGULAR}" tagname="${VALID_TEXT_TAGS.SPAN}">${content}</mdc-text>
-    </slot>`;
+   <mdc-text type="${TYPE.BODY_MIDSIZE_REGULAR}" tagname="${VALID_TEXT_TAGS.SPAN}">${content}</mdc-text>
+ </slot>`;
   }
 
   /**
@@ -99,36 +102,27 @@ class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component)
    * @param content - The text content to be displayed within the slot.
    * @returns A TemplateResult containing a slot with an `mdc-text` element of type BODY_SMALL_REGULAR.
    */
-  private getSmallRegularText(slotName: string, content: string): TemplateResult {
+  private getSmallRegularText(slotName: string, content?: string): TemplateResult | typeof nothing {
+    if (!content) return nothing;
     return html`<slot name="${slotName}">
       <mdc-text type="${TYPE.BODY_SMALL_REGULAR}" tagname="${VALID_TEXT_TAGS.SPAN}">${content}</mdc-text>
     </slot>`;
   }
 
   public override render() {
-    const labelText = this.label ? this.getMidsizeRegularText('leading-text-primary-label', this.label) : nothing;
-    const secondaryLabelText = this.secondaryLabel
-      ? this.getSmallRegularText('leading-text-secondary-label', this.secondaryLabel) : nothing;
-    const tertiaryLabelText = this.tertiaryLabel
-      ? this.getSmallRegularText('leading-text-tertiary-label', this.tertiaryLabel) : nothing;
-    const sideHeaderText = this.sideHeaderText
-      ? this.getMidsizeRegularText('trailing-text-side-header', this.sideHeaderText) : nothing;
-    const sublineText = this.sublineText
-      ? this.getSmallRegularText('trailing-text-subline', this.sublineText) : nothing;
-
     return html`
       <div part="leading">
         <slot name="leading-controls"></slot>
         <div part="leading-text">
-          ${labelText}
-          ${secondaryLabelText}
-          ${tertiaryLabelText}
+          ${this.getMidsizeRegularText('leading-text-primary-label', this.label)}
+          ${this.getSmallRegularText('leading-text-secondary-label', this.secondaryLabel)}
+          ${this.getSmallRegularText('leading-text-tertiary-label', this.tertiaryLabel)}
         </div>
       </div>
       <div part="trailing">
         <div part="trailing-text">
-          ${sideHeaderText}
-          ${sublineText}
+          ${this.getMidsizeRegularText('trailing-text-side-header', this.sideHeaderText)}
+          ${this.getSmallRegularText('trailing-text-subline', this.sublineText)}
         </div>
         <slot name="trailing-controls"></slot>
       </div>

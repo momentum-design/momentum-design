@@ -13,6 +13,8 @@ import styles from './list.styles';
  *
  * @tagname mdc-list
  *
+ * @dependency mdc-text
+ *
  * @slot default - This is a default/unnamed slot
  */
 class List extends DataAriaLabelMixin(Component) {

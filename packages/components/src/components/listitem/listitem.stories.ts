@@ -23,12 +23,13 @@ const render = (args: Args) => html`
   >
     <div slot="leading-controls">
       <mdc-checkbox checked></mdc-checkbox>
-      <mdc-icon name="placeholder-bold"></mdc-icon>
       <mdc-avatar src="https://picsum.photos/id/63/256" presence="active"></mdc-avatar>
+      <mdc-icon name="placeholder-bold"></mdc-icon>
     </div>
     <div slot="trailing-controls">
-      <mdc-button variant="secondary">Label</mdc-button>
       <mdc-icon name="placeholder-bold"></mdc-icon>
+      <mdc-button variant="secondary">Label</mdc-button>
+      <mdc-toggle size="compact"></mdc-toggle>
       <mdc-badge type="dot"></mdc-badge>
     </div>
   </mdc-listitem>
@@ -81,7 +82,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    variant: LISTITEM_VARIANTS.INSET_RECTANGLE,
+    variant: LISTITEM_VARIANTS.FULL_WIDTH,
     label: 'Label Text',
     'secondary-label': 'Secondary Label',
     'tertiary-label': 'Teritary Label',
@@ -116,6 +117,17 @@ export const ListWithLabelAndTrailingBadge: StoryObj = {
     <mdc-listitem label="Primary Label">
       <div slot="trailing-controls">
         <mdc-badge type="dot"></mdc-badge>
+      </div>
+    </mdc-listitem>`,
+};
+
+export const ListWithIconAndLabels: StoryObj = {
+  render: () => html`
+    <mdc-listitem label="Primary Label" 
+    secondary-label="This is a long Secondary Label" 
+    tertiary-label="Teritary Label">
+      <div slot="leading-controls">
+        <mdc-icon name="placeholder-bold"></mdc-icon>
       </div>
     </mdc-listitem>`,
 };
