@@ -91,7 +91,6 @@
     "@momentum-design/icons": "workspace:*",
     "@momentum-design/tokens": "workspace:*",
     "@tanstack/lit-virtual": "^3.11.3",
-    "deep-equal": "^2.2.3",
     "lit": "^3.2.0",
     "uuid": "^11.0.5"
   },
@@ -110,7 +109,6 @@
     "@storybook/theming": "^8.2.5",
     "@storybook/web-components": "^8.2.5",
     "@storybook/web-components-vite": "^8.2.5",
-    "@types/deep-equal": "^1.0.4",
     "axe-html-reporter": "^2.2.11",
     "chalk": "^4.1.2",
     "concurrently": "^8.2.2",

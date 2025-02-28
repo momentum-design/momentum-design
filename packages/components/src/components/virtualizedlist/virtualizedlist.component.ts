@@ -1,5 +1,4 @@
 import { CSSResult, PropertyValues, TemplateResult, html } from 'lit';
-import deepEqual from 'deep-equal';
 import { VirtualizerController } from '@tanstack/lit-virtual';
 import { property } from 'lit/decorators.js';
 import { Virtualizer, VirtualItem } from '@tanstack/virtual-core';
@@ -48,15 +47,7 @@ class VirtualizedList extends Component {
    * [Tanstack Virtualizer API Docs](https://tanstack.com/virtual/latest/docs/api/virtualizer)
    *
    */
-  @property({ type: Object,
-    attribute: 'virtualizerprops',
-    hasChanged(value, oldValue) {
-      if (deepEqual(oldValue, value)) {
-        return false;
-      }
-
-      return true;
-    } })
+  @property({ type: Object, attribute: 'virtualizerprops' })
   virtualizerProps: VirtualizerProps = DEFAULTS.VIRTUALIZER_PROPS;
 
   /**
