@@ -88,6 +88,7 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
     this.addEventListener('click', this.executeAction.bind(this));
     this.addEventListener('keydown', this.handleKeyDown.bind(this));
     this.addEventListener('keyup', this.handleKeyUp.bind(this));
+    this.addEventListener('blur', this.handleBlur.bind(this));
     /** @internal */
     this.internals = this.attachInternals();
   }
@@ -174,6 +175,16 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
       view: window,
     });
     this.dispatchEvent(clickEvent);
+  }
+
+  /**
+   * In case the button is pressed and the focus is lost while pressing,
+   * the pressed class is removed.
+   */
+  private handleBlur() {
+    if (this.classList.contains('pressed')) {
+      this.classList.remove('pressed');
+    }
   }
 
   /**
