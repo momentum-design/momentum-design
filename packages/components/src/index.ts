@@ -20,8 +20,10 @@ import Tab from './components/tab';
 import FormfieldGroup from './components/formfieldgroup';
 import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
 import Spinner from './components/spinner';
+import RadioGroup from './components/radiogroup';
 
 import type { TextType } from './components/text/text.types';
+import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
 
 export {
   ThemeProvider,
@@ -45,10 +47,13 @@ export {
   Tab,
   FormfieldGroup,
   Spinner,
+  RadioGroup,
 };
 
 export type {
   TextType,
+  SpinnerSize,
+  SpinnerVariant,
 };
 
 export { inMemoryCache, webAPIIconsCache };

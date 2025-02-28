@@ -1,6 +1,7 @@
 import { CSSResult, html, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { v4 as uuidv4 } from 'uuid';
 import styles from './toggle.styles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { ValueMixin } from '../../utils/mixins/ValueMixin';
@@ -24,6 +25,9 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
  * @dependency mdc-icon
  *
  * @tagname mdc-toggle
+ *
+ * @event change - (React: onChange) Event that gets dispatched when the toggle state changes.
+ * @event focus - (React: onFocus) Event that gets dispatched when the toggle receives focus.
  *
  * @cssproperty --mdc-toggle-width - width of the toggle
  * @cssproperty --mdc-toggle-height - height of the toggle
@@ -78,6 +82,7 @@ class Toggle extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)))
     this.internals = this.attachInternals();
     // Toggle does not contain helpTextType property.
     this.helpTextType = undefined as unknown as ValidationType;
+    this.id = `mdc-input-${uuidv4()}`;
   }
 
   /**

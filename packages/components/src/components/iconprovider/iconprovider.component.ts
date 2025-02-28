@@ -2,17 +2,24 @@ import { property } from 'lit/decorators.js';
 import { Provider } from '../../models';
 import IconProviderContext from './iconprovider.context';
 import { ALLOWED_FILE_EXTENSIONS, DEFAULTS, ALLOWED_LENGTH_UNITS } from './iconprovider.constants';
+import type { CacheStrategy, IconSet } from './iconprovider.types';
 
 /**
  * IconProvider component, which allows to be consumed from sub components
  * (see `providerUtils.consume` for how to consume)
  *
- * Bundling icons will be up to the consumer of this component, such
- * that only a url has to be passed in from which the icons will be
- * fetched.
+ * Attribute `iconSet` can be set to either `momentum-icons` or `custom-icons`.
+ * If `momentum-icons` is selected, the icons will be fetched from the
+ * Momentum Design System icon set per a dynamic JS Import (no need to provide a URL).
+ * This requires the consumer to have the `@momentum-designs` package installed and the
+ * build tooling needs to support dynamic imports.
  *
- * If `cacheStrategy` is provided, the IconProvider will cache the icons
- * in the selected cache (either web-api-cache or in-memory-cache),
+ * If `custom-icons` is selected, the icons will be fetched from the provided URL.
+ * This requires the consumer to provide a URL from which the icons will be fetched and
+ * the consumer needs to make sure to bundle the icons in the application.
+ *
+ * If `cacheStrategy` is provided (only works with iconSet = `custom-icons`), the
+ * IconProvider will cache the icons in the selected cache (either web-api-cache or in-memory-cache),
  * to avoid fetching the same icon multiple times over the network.
  * This is useful when the same icon is used multiple times in the application.
  * To consider:
@@ -42,13 +49,32 @@ class IconProvider extends Provider<IconProviderContext> {
   }
 
   /**
+   * Icon set to be used
+   *
+   * If `momentum-icons` is selected, the icons will be fetched from the
+   * Momentum Design System icon set per a dynamic JS Import (no need to provide a URL).
+   * This requires the consumer to have the `@momentum-designs` package installed and the
+   * build tooling needs to support dynamic imports.
+   *
+   * If `custom-icons` is selected, the icons will be fetched from the provided URL.
+   * This requires the consumer to provide a URL from which the icons will be fetched and
+   * the consumer needs to make sure to bundle the icons in the application.
+   *
+   * @default momentum-icons
+   */
+  @property({ type: String, attribute: 'icon-set', reflect: true })
+  iconSet?: IconSet = DEFAULTS.ICON_SET;
+
+  /**
    * Url of where icons will be fetched from
+   * (if Icon set is `custom-icons`, this will be the base url)
    */
   @property({ type: String })
   url?: string;
 
   /**
    * File extension of icons
+   * (if Icon set is `custom-icons`, this will be the file extension for icons)
    * @default svg
    */
   @property({ type: String, attribute: 'file-extension', reflect: true })
@@ -72,6 +98,8 @@ class IconProvider extends Provider<IconProviderContext> {
   /**
    * Icons Cache Strategy to use
    *
+   * **Can only be used if Icon set is `custom-icons`**
+   *
    * Choose `in-memory-cache` to cache icons in a JS cache (in-memory cache).
    * Choose `web-cache-api` to cache icons using the Web Cache API.
    *
@@ -81,10 +109,10 @@ class IconProvider extends Provider<IconProviderContext> {
    * @default undefined
    */
   @property({ type: String, attribute: 'cache-strategy' })
-  cacheStrategy?: 'in-memory-cache' | 'web-cache-api';
+  cacheStrategy?: CacheStrategy;
 
   /**
-   * Icons Cache Name to use
+   * Icons Cache Name to use (cache strategy must be provided)
    *
    * If provided, Icons inside the provider will be cached in the
    * cache (determined by `cache-strategy`) with the provided name.
@@ -106,6 +134,7 @@ class IconProvider extends Provider<IconProviderContext> {
       this.fileExtension = DEFAULTS.FILE_EXTENSION;
       this.context.value.fileExtension = DEFAULTS.FILE_EXTENSION;
     }
+    this.context.value.iconSet = this.iconSet;
     this.context.value.url = this.url;
     this.context.value.size = this.size;
     this.context.value.cacheName = this.cacheName;
@@ -123,6 +152,7 @@ class IconProvider extends Provider<IconProviderContext> {
   protected updateContext(): void {
     if (
       this.context.value.fileExtension !== this.fileExtension
+      || this.context.value.iconSet !== this.iconSet
       || this.context.value.url !== this.url
       || this.context.value.lengthUnit !== this.lengthUnit
       || this.context.value.size !== this.size

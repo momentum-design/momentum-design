@@ -38,6 +38,7 @@ Usage: can be multiple
 ### @event
 
 Describes an event that can be emitted by the component, detailing the specific actions or occurrences that can trigger it.
+Make sure to specify how the event is passed in React - see existing components for the format.
 Usage: can be multiple
 
 ### @default

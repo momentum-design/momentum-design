@@ -161,3 +161,11 @@ export const IconButton: StoryObj = {
     'aria-label': 'icon button',
   },
 };
+
+export const Test: StoryObj = {
+  render: () => html`
+    <mdc-button variant='tertiary' size='20' prefix-icon='cancel-bold' color='default'>
+      test
+    </mdc-button>
+  `,
+};
