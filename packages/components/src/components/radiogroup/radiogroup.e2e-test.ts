@@ -14,7 +14,7 @@ const setup = async (args: SetupOptions) => {
   await componentsPage.mount({
     html: `
       <form id="radio-form">
-        <mdc-radio-group
+        <mdc-radiogroup
           ${restArgs.name ? `name="${restArgs.name}"` : ''}
           ${restArgs.label ? `label="${restArgs.label}"` : ''}
           ${restArgs['help-text'] ? `help-text="${restArgs['help-text']}"` : ''}
@@ -22,23 +22,23 @@ const setup = async (args: SetupOptions) => {
           <mdc-radio label="Standard Plan" value="standard-plan"></mdc-radio>
           <mdc-radio label="Premium Plan" value="premium-plan" disabled></mdc-radio>
           <mdc-radio label="Business Plan" value="business-plan"></mdc-radio>
-        </mdc-radio-group>
+        </mdc-radiogroup>
       </form>
       `,
     clearDocument: true,
   });
 
-  const radioGroup = componentsPage.page.locator('mdc-radio-group').first();
+  const radioGroup = componentsPage.page.locator('mdc-radiogroup').first();
   await radioGroup.waitFor();
   return radioGroup;
 };
 
-test('mdc-radio-group', async ({ componentsPage }) => {
+test('mdc-radiogroup', async ({ componentsPage }) => {
   /**
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
-    const radioGroupStickerSheet = new StickerSheet(componentsPage, 'mdc-radio-group', 'margin: 0.25rem');
+    const radioGroupStickerSheet = new StickerSheet(componentsPage, 'mdc-radiogroup', 'margin: 0.25rem');
     radioGroupStickerSheet.setChildren(
       `<mdc-radio label="Standard Plan" value="standard-plan"></mdc-radio>
       <mdc-radio label="Premium Plan" value="premium-plan" checked></mdc-radio>
@@ -62,7 +62,7 @@ test('mdc-radio-group', async ({ componentsPage }) => {
     await radioGroupStickerSheet.mountStickerSheet();
 
     await test.step('matches screenshot of radio group stickersheet', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-radio-group', {
+      await componentsPage.visualRegression.takeScreenshot('mdc-radiogroup', {
         element: radioGroupStickerSheet.getWrapperContainer(),
       });
     });

@@ -4,13 +4,13 @@ import FormfieldGroup from '../formfieldgroup';
 import { TAG_NAME as RADIO_TAGNAME } from '../radio/radio.constants';
 
 /**
- * `mdc-radio-group` - This is the wrapper component for radio buttons which are grouped together.
+ * `mdc-radiogroup` - This is the wrapper component for radio buttons which are grouped together.
  * It can have a header text and a description. It enables users to select a single option from a set of options.
  * It is often used in forms, settings, and selection in lists. It automatically group the radio buttons inside it.
  *
- * @tagname mdc-radio-group
+ * @tagname mdc-radiogroup
  *
- * @cssproperty --mdc-radio-group-description-text-normal - color of the description text
+ * @cssproperty --mdc-radiogroup-description-text-normal - color of the description text
  *
  */
 class RadioGroup extends NameMixin(FormfieldGroup) {

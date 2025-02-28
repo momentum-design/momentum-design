@@ -8,7 +8,7 @@ import '../radio';
 import '../button';
 
 const render = (args: Args) => html`
-  <mdc-radio-group 
+  <mdc-radiogroup 
   name="${args.name}"
   label="${args.label}"
   help-text="${args['help-text']}"
@@ -21,12 +21,12 @@ const render = (args: Args) => html`
     <mdc-radio label="The hulk" value="the-hulk"></mdc-radio>
     <mdc-radio label="Iron Man" value="iron-man"></mdc-radio>
     <mdc-radio label="Thor" value="Thor"></mdc-radio>
-  </mdc-radio-group>`;
+  </mdc-radiogroup>`;
 
 const meta: Meta = {
   title: 'Work In Progress/radio-group',
   tags: ['autodocs'],
-  component: 'mdc-radio-group',
+  component: 'mdc-radiogroup',
   render,
   parameters: {
     badges: ['wip'],
@@ -92,7 +92,7 @@ export const RadioGroupInForm = () => {
 
   return html`
     <form @submit=${handleSubmit}>
-      <mdc-radio-group
+      <mdc-radiogroup
         name="course-plan"
         label="Select your course plan"
         help-text="Choose a plan that best suits your needs"
@@ -107,7 +107,7 @@ export const RadioGroupInForm = () => {
           data-aria-label="Enterprise Plan"
           label="Enterprise Plan">
         </mdc-radio>
-      </mdc-radio-group>
+      </mdc-radiogroup>
       <br/>
       <mdc-button type="submit">Submit</mdc-button>
     </form>

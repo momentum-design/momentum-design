@@ -5,7 +5,7 @@ RadioGroup.register(TAG_NAME);
 
 declare global {
     interface HTMLElementTagNameMap {
-        ['mdc-radio-group']: RadioGroup
+        ['mdc-radiogroup']: RadioGroup
     }
 }
 
