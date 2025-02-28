@@ -116,11 +116,13 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-lit": "^1.14.0",
     "fs-extra": "^11.2.0",
+    "pascalcase": "^2.0.0",
     "plop": "^4.0.1",
     "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
     "storybook": "^8.2.5",
     "storybook-addon-rtl": "^1.0.1",
-    "typescript": "^4.8.4"
+    "typescript": "^4.8.4",
+    "vite-plugin-dynamic-import": "^1.6.0"
   }
 }

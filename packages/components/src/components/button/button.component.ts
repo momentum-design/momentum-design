@@ -12,9 +12,7 @@ import {
   PILL_BUTTON_SIZES,
 } from './button.constants';
 import styles from './button.styles';
-import type {
-  ButtonColor, ButtonTypeInternal, ButtonVariant, IconButtonSize, PillButtonSize,
-} from './button.types';
+import type { ButtonColor, ButtonTypeInternal, ButtonVariant, IconButtonSize, PillButtonSize } from './button.types';
 import { getIconNameWithoutStyle, getIconSize } from './button.utils';
 
 /**
@@ -44,6 +42,11 @@ import { getIconNameWithoutStyle, getIconSize } from './button.utils';
  * The type of button is inferred based on the presence of slot and/or prefix and postfix icons.
  *
  * @dependency mdc-icon
+ *
+ * @event click - (React: onClick) This event is dispatched when the button is clicked.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the button.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the button.
+ * @event focus - (React: onFocus) This event is dispatched when the button receives focus.
  *
  * @tagname mdc-button
  *
@@ -184,8 +187,8 @@ class Button extends Buttonsimple {
   private setSize(size: PillButtonSize | IconButtonSize) {
     const isIconType = this.typeInternal === BUTTON_TYPE_INTERNAL.ICON;
     const isValidSize = isIconType
-      ? (Object.values(ICON_BUTTON_SIZES).includes(size)
-      && !(size === ICON_BUTTON_SIZES[20] && this.variant !== BUTTON_VARIANTS.TERTIARY))
+      ? Object.values(ICON_BUTTON_SIZES).includes(size)
+        && !(size === ICON_BUTTON_SIZES[20] && this.variant !== BUTTON_VARIANTS.TERTIARY)
       : Object.values(PILL_BUTTON_SIZES).includes(size as PillButtonSize);
 
     this.setAttribute('size', isValidSize ? `${size}` : `${DEFAULTS.SIZE}`);
@@ -211,7 +214,11 @@ class Button extends Buttonsimple {
    * @param slot - default slot of button
    */
   private inferButtonType() {
-    const slot = this.shadowRoot?.querySelector('slot')?.assignedNodes().length;
+    const slot = this.shadowRoot
+      ?.querySelector('slot')
+      ?.assignedNodes()
+      .filter((node) => node.nodeType !== Node.TEXT_NODE || node.textContent?.trim())
+      .length;
     if (slot && (this.prefixIcon || this.postfixIcon)) {
       this.typeInternal = BUTTON_TYPE_INTERNAL.PILL_WITH_ICON;
       this.setAttribute('data-btn-type', 'pill-with-icon');
@@ -226,21 +233,25 @@ class Button extends Buttonsimple {
 
   public override render() {
     return html`
-      ${this.prefixIcon ? html`
-        <mdc-icon
-          name="${this.prefixIcon as IconNames}" 
-          part="prefix-icon" 
-          size=${this.iconSize} 
-          length-unit="rem">
-        </mdc-icon>` : ''}
+      ${this.prefixIcon
+    ? html` <mdc-icon
+            name="${this.prefixIcon as IconNames}"
+            part="prefix-icon"
+            size=${this.iconSize}
+            length-unit="rem"
+          >
+          </mdc-icon>`
+    : ''}
       <slot @slotchange=${this.inferButtonType}></slot>
-      ${this.postfixIcon ? html`
-        <mdc-icon
-          name="${this.postfixIcon as IconNames}" 
-          part="postfix-icon" 
-          size=${this.iconSize} 
-          length-unit="rem">
-        </mdc-icon>` : ''}
+      ${this.postfixIcon
+    ? html` <mdc-icon
+            name="${this.postfixIcon as IconNames}"
+            part="postfix-icon"
+            size=${this.iconSize}
+            length-unit="rem"
+          >
+          </mdc-icon>`
+    : ''}
     `;
   }
 

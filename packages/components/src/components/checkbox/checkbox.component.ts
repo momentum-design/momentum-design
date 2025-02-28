@@ -21,6 +21,9 @@ import styles from './checkbox.styles';
  *
  * @tagname mdc-checkbox
  *
+ * @event change - (React: onChange) Event that gets dispatched when the checkbox state changes.
+ * @event focus - (React: onFocus) Event that gets dispatched when the checkbox receives focus.
+ *
  * @cssproperty --mdc-checkbox-background-color-hover - Allows customization of the background color on hover.
  * @cssproperty --mdc-checkbox-border-color - Border color in high contrast.
  * @cssproperty --mdc-checkbox-checked-background-color - Background color for a selected checkbox.

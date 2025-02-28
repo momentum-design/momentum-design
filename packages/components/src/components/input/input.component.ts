@@ -23,6 +23,11 @@ import { FormInternalsMixin, AssociatedFormControl } from '../../utils/mixins/Fo
  *
  * @tagname mdc-input
  *
+ * @event input - (React: onInput) This event is dispatched when the value of the input field changes (every press).
+ * @event change - (React: onChange) This event is dispatched when the value of the input field changes (on blur).
+ * @event focus - (React: onFocus) This event is dispatched when the input receives focus.
+ * @event blur - (React: onBlur) This event is dispatched when the input loses focus.
+ *
  * @dependency mdc-icon
  * @dependency mdc-text
  * @dependency mdc-button

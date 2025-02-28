@@ -24,6 +24,9 @@ import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/Fo
  *
  * @tagname mdc-toggle
  *
+ * @event change - (React: onChange) Event that gets dispatched when the toggle state changes.
+ * @event focus - (React: onFocus) Event that gets dispatched when the toggle receives focus.
+ *
  * @cssproperty --mdc-toggle-width - width of the toggle
  * @cssproperty --mdc-toggle-height - height of the toggle
  * @cssproperty --mdc-toggle-width-compact - width of the toggle when it's size is compact
