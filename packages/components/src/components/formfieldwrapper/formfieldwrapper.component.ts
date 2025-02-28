@@ -31,13 +31,6 @@ class FormfieldWrapper extends DisabledMixin(Component) {
   @property({ type: String, reflect: true, attribute: 'required-label' }) requiredLabel?: string;
 
   /**
-   * The unique id of the input field which will be passed from the input field component.
-   * It is used to link the input field with the label.
-   * @default ''
-   */
-  @property({ type: String }) override id = '';
-
-  /**
    * The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.
    */
   @property({ reflect: true, attribute: 'help-text-type' }) helpTextType: ValidationType = DEFAULTS.VALIDATION;
@@ -47,6 +40,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
    */
   @property({ type: String, reflect: true, attribute: 'help-text' }) helpText?: string;
 
+  /** @internal */
   protected shouldRenderLabel: Boolean = true;
 
   /**
