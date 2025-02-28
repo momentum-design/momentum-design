@@ -18,6 +18,11 @@ import styles from './avatarbutton.styles';
  *
  * @dependency mdc-avatar
  *
+ * @event click - (React: onClick) This event is dispatched when the avatarbutton is clicked.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the avatarbutton.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the avatarbutton.
+ * @event focus - (React: onFocus) This event is dispatched when the avatarbutton receives focus.
+ *
  * @tagname mdc-avatarbutton
  */
 class AvatarButton extends AvatarComponentMixin(IconNameMixin(Buttonsimple)) {
