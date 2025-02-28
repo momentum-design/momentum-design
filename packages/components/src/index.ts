@@ -6,6 +6,7 @@ import Badge from './components/badge';
 import Presence from './components/presence';
 import Text from './components/text';
 import Button from './components/button';
+import Popover from './components/popover';
 import Bullet from './components/bullet';
 import Marker from './components/marker';
 import Divider from './components/divider';
@@ -34,6 +35,7 @@ export {
   Presence,
   Text,
   Button,
+  Popover,
   Bullet,
   Marker,
   Divider,
