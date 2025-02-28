@@ -45,21 +45,14 @@ const styles = css`
     column-gap: 0.75rem;
     display: flex;
   }
-  ::slotted([slot="leading-text-secondary-label"]), ::slotted([slot="leading-text-tertiary-label"]) {
+  :host::part(leading-text-secondary-label), :host::part(leading-text-tertiary-label) {
     color: var(--mdc-listitem-secondary-label-color);
   }
-  ::slotted([slot="leading-text-primary-label"]),
-  ::slotted([slot="trailing-text-side-header"]),
-  ::slotted([slot="trailing-text-subline"]) {
+  :host::part(leading-text-primary-label), :host::part(trailing-text-side-header), :host::part(trailing-text-subline) {
     color: var(--mdc-listitem-primary-label-color);
   }
   ::slotted([slot="leading-controls"]), ::slotted([slot="trailing-controls"]) {
     align-items: center;
-    column-gap: 0.75rem;
-    display: flex;
-    flex-direction: row;
-  }
-  ::slotted([slot="leading-text"]), ::slotted([slot="trailing-text"]) {
     column-gap: 0.75rem;
     display: flex;
     flex-direction: row;
