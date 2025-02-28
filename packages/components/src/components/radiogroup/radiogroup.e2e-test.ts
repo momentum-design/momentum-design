@@ -28,9 +28,9 @@ const setup = async (args: SetupOptions) => {
     clearDocument: true,
   });
 
-  const radio = componentsPage.page.locator('mdc-radio-group').first();
-  await radio.waitFor();
-  return radio;
+  const radioGroup = componentsPage.page.locator('mdc-radio-group').first();
+  await radioGroup.waitFor();
+  return radioGroup;
 };
 
 test('mdc-radio-group', async ({ componentsPage }) => {

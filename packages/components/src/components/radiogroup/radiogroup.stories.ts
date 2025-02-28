@@ -49,7 +49,7 @@ const meta: Meta = {
     'required-label': {
       control: 'text',
     },
-    ...hideControls(['help-text-type']),
+    ...hideControls(['help-text-type', 'disabled']),
   },
 };
 

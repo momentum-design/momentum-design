@@ -1,5 +1,5 @@
-import RadioGroup from './radio-group.component';
-import { TAG_NAME } from './radio-group.constants';
+import RadioGroup from './radiogroup.component';
+import { TAG_NAME } from './radiogroup.constants';
 
 RadioGroup.register(TAG_NAME);
 
