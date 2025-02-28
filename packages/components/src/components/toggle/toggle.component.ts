@@ -1,4 +1,4 @@
-import { CSSResult, html, PropertyValueMap } from 'lit';
+import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { v4 as uuidv4 } from 'uuid';
@@ -170,8 +170,8 @@ class Toggle extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)))
             ></mdc-icon>
           </div>
         </div>
-        ${this.renderLabel()}
-        ${this.renderHelperText()}
+        ${this.label ? this.renderLabel() : nothing}
+        ${this.helpText ? this.renderHelperText() : nothing}
     `;
   }
 

@@ -30,7 +30,9 @@ const styles = [hostFitContentStyles, css`
     --mdc-toggle-icon-color-disabled: var(--mds-color-theme-common-inverted-text-primary-disabled);
     --mdc-toggle-icon-background-color-normal: var(--mds-color-theme-common-text-primary-normal);
     --mdc-toggle-icon-background-color-disabled: var(--mds-color-theme-common-text-primary-disabled);
+  }
 
+  :host([label]), :host([help-text]){
     display: grid;
     grid-template-rows: auto auto;
     grid-template-columns: auto auto;
@@ -39,6 +41,7 @@ const styles = [hostFitContentStyles, css`
   }
 
   :host([help-text='']) {
+    grid-template-rows: auto;
     row-gap: 0rem;
   }
 
@@ -50,8 +53,6 @@ const styles = [hostFitContentStyles, css`
   .mdc-toggle__input {
     opacity: 0;
     position: absolute;
-    width: var(--mdc-toggle-width);
-    height: var(--mdc-toggle-height);
     cursor: pointer;
   }
 
