@@ -91,10 +91,19 @@ class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component)
   private getMidsizeRegularText(slotName: string, content?: string): TemplateResult | typeof nothing {
     if (!content) return nothing;
     return html`<slot name="${slotName}">
-   <mdc-text type="${TYPE.BODY_MIDSIZE_REGULAR}" tagname="${VALID_TEXT_TAGS.SPAN}">${content}</mdc-text>
- </slot>`;
+      <mdc-text 
+      part="${slotName}" 
+      type="${TYPE.BODY_MIDSIZE_REGULAR}" 
+      tagname="${VALID_TEXT_TAGS.SPAN}">
+      ${content}
+    </mdc-text>
+    </slot>`;
   }
 
+  /**
+   * Generates a small regular text slot with the specified content.
+   *
+   * @param slotName - The name of the slot to be used.
   /**
    * Generates a small regular text slot with the specified content.
    *
@@ -105,7 +114,12 @@ class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component)
   private getSmallRegularText(slotName: string, content?: string): TemplateResult | typeof nothing {
     if (!content) return nothing;
     return html`<slot name="${slotName}">
-      <mdc-text type="${TYPE.BODY_SMALL_REGULAR}" tagname="${VALID_TEXT_TAGS.SPAN}">${content}</mdc-text>
+      <mdc-text 
+      part="${slotName}" 
+      type="${TYPE.BODY_SMALL_REGULAR}" 
+      tagname="${VALID_TEXT_TAGS.SPAN}">
+      ${content}
+    </mdc-text>
     </slot>`;
   }
 
