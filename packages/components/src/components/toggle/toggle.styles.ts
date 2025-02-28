@@ -54,6 +54,9 @@ const styles = [hostFitContentStyles, css`
     opacity: 0;
     position: absolute;
     cursor: pointer;
+    margin: 0;
+    width: var(--mdc-toggle-width);
+    height: var(--mdc-toggle-height);
   }
 
   .mdc-toggle__slider {
@@ -81,7 +84,11 @@ const styles = [hostFitContentStyles, css`
     height: var(--mdc-toggle-height-compact);
     border-radius: var(--mdc-toggle-border-radius-compact);
   }
-  
+  :host([size='compact']) .mdc-toggle__input {
+    width: var(--mdc-toggle-width-compact);
+    height: var(--mdc-toggle-height-compact);
+  }
+
   .mdc-toggle__icon {
     padding: 0.25rem;
    --mdc-icon-fill-color: var(--mdc-toggle-icon-color-normal);
