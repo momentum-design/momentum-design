@@ -125,6 +125,7 @@ const styles = css`
   }
   :host([size="20"]){
     padding: 0.0625rem;
+    aspect-ratio: 1;
   }
 
   :host([color="accent"]){
