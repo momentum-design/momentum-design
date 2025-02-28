@@ -38,6 +38,7 @@ class FormfieldGroup extends DataAriaLabelMixin(FormfieldWrapper) {
     super();
     /** @internal */
     this.shouldRenderLabel = false;
+    this.id = '';
     this.helpTextType = undefined as unknown as ValidationType;
     this.disabled = undefined as unknown as boolean;
   }

@@ -31,6 +31,12 @@ class FormfieldWrapper extends DisabledMixin(Component) {
   @property({ type: String, reflect: true, attribute: 'required-label' }) requiredLabel?: string;
 
   /**
+   * The unique id of the input field. It is used to link the input field with the label.
+   * @default `mdc-input-${uuidv4()}`
+   */
+  @property({ type: String }) override id = '';
+
+  /**
    * The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.
    */
   @property({ reflect: true, attribute: 'help-text-type' }) helpTextType: ValidationType = DEFAULTS.VALIDATION;
