@@ -184,7 +184,7 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
           value="${ifDefined(this.value)}"
           ?required="${!!this.requiredLabel}"
           .checked="${this.checked}"
-          aria-checked="${this.checked}"
+          aria-checked="${this.indeterminate ? 'mixed' : this.checked}"
           .indeterminate="${this.indeterminate}"
           .disabled="${this.disabled}"
           aria-label="${this.dataAriaLabel ?? ''}"
