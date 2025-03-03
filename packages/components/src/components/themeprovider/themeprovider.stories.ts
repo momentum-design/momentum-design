@@ -18,7 +18,7 @@ const render = (args: Args) => html`
   <div class="${classMap({ themeWrapper: true })}">
     <mdc-subcomponent></mdc-subcomponent>
     <p>Color examples:</p>
-    <div>
+    <div style="height: 250px; overflow: scroll">
       <div class="colorBox" style="background: var(--mds-color-theme-text-primary-normal);"></div>
       <div class="colorBox" style="background: var(--mds-color-theme-text-error-normal);"></div>
       <div class="colorBox" style="background: var(--mds-color-theme-text-warning-normal);"></div>
