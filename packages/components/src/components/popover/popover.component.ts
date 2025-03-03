@@ -234,8 +234,6 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
 
   public containerElement: HTMLElement | null = null;
 
-  public utils: PopoverUtils;
-
   /** @internal */
   private hoverTimer: number | null = null;
 
@@ -247,6 +245,9 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
 
   /** @internal */
   private closeDelay: number = 0;
+
+  /** @internal */
+  private utils: PopoverUtils;
 
   constructor() {
     super();
