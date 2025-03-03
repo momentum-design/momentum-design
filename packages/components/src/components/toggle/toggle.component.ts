@@ -1,7 +1,6 @@
 import { CSSResult, html, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { v4 as uuidv4 } from 'uuid';
 import styles from './toggle.styles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
@@ -75,7 +74,6 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       super();
       // Toggle does not contain helpTextType property.
       this.helpTextType = undefined as unknown as ValidationType;
-      this.id = `mdc-toggle-${uuidv4()}`;
     }
 
     /** @internal

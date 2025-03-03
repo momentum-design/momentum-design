@@ -2,7 +2,6 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { v4 as uuidv4 } from 'uuid';
 import styles from './radio.styles';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
@@ -67,7 +66,6 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
       super();
       // Radio does not contain helpTextType property.
       this.helpTextType = undefined as unknown as ValidationType;
-      this.id = `mdc-radio-${uuidv4()}`;
     }
 
     override firstUpdated() {

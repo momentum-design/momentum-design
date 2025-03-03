@@ -1,5 +1,6 @@
 import { LitElement } from 'lit';
 import { property, query } from 'lit/decorators.js';
+import { v4 as uuidv4 } from 'uuid';
 import type { Constructor } from './index.types';
 
 export interface AssociatedFormControl {
@@ -52,7 +53,7 @@ export const FormInternalsMixin = <T extends Constructor<LitElement>>(
 ) => {
   class InnerMixinClass extends superClass {
       /**
-   * Indicates the name of the component group (ex: checkbox, radio group).
+   * Indicates the name of the component group.
    * They are used to group elements in a form together.
    * @default ''
    */
@@ -93,6 +94,7 @@ export const FormInternalsMixin = <T extends Constructor<LitElement>>(
 
       /** @internal */
       this.internals = this.attachInternals();
+      this.id = `mdc-input-${uuidv4()}`;
     }
 
     /**

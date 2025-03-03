@@ -159,6 +159,10 @@ const styles = [hostFitContentStyles, css`
     justify-content: center;
     gap: 0.25rem;
   }
+  :host::part(required-label){
+    display: none;
+  }
+
 `, ...hostFocusRingStyles(true)];
 
 export default styles;

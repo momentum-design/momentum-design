@@ -199,7 +199,7 @@ export const RadioInForm = () => {
         <legend>Form Example</legend>
       <mdc-radio name="course-plan" value="standard" data-aria-label="Standard Plan" label="Standard Plan">
       </mdc-radio>
-      <mdc-radio name="course-plan" value="premium" data-aria-label="Premium Plan" label="Premium Plan">
+      <mdc-radio name="course-plan" value="premium" data-aria-label="Premium Plan" label="Premium Plan" >
       </mdc-radio>
       <mdc-radio
         name="course-plan"

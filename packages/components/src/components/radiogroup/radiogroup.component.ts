@@ -1,5 +1,5 @@
 import { CSSResult } from 'lit';
-import { NameMixin } from '../../utils/mixins/NameMixin';
+import { property } from 'lit/decorators.js';
 import FormfieldGroup from '../formfieldgroup';
 import { TAG_NAME as RADIO_TAGNAME } from '../radio/radio.constants';
 
@@ -13,7 +13,14 @@ import { TAG_NAME as RADIO_TAGNAME } from '../radio/radio.constants';
  * @cssproperty --mdc-radiogroup-description-text-normal - color of the description text
  *
  */
-class RadioGroup extends NameMixin(FormfieldGroup) {
+class RadioGroup extends FormfieldGroup {
+  /**
+   * Name of the radio group.
+   * They are used to group elements in a form together.
+   * @default ''
+   */
+  @property({ type: String }) name = '';
+
   constructor() {
     super();
     // This is used to set the role of the component as `radiogroup`.
@@ -30,7 +37,10 @@ class RadioGroup extends NameMixin(FormfieldGroup) {
       ?.flatMap((slot) => slot.assignedElements({ flatten: true }))
       ?.filter((el) => el.tagName.toLowerCase() === RADIO_TAGNAME)
       ?.filter((radio) => !radio.hasAttribute('name'))
-      ?.forEach((radio) => radio.setAttribute('name', this.name));
+      ?.forEach((radio) => {
+        radio.setAttribute('name', this.name);
+        if (this.requiredLabel) radio.setAttribute('required-label', this.requiredLabel);
+      });
   }
 
   public static override styles: Array<CSSResult> = [...FormfieldGroup.styles];
