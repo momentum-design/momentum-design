@@ -124,7 +124,6 @@ class FormfieldWrapper extends DisabledMixin(Component) {
    * @returns void
    */
   protected renderLabel() {
-    if (!this.label) return nothing;
     return html`<div class="mdc-label-text" part="label-text">
       <slot name="label">${this.renderLabelElement()}</slot>
       <slot name="required-label">${this.renderRequiredLabel()}</slot>

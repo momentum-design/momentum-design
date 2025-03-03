@@ -170,7 +170,7 @@ class Toggle extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper)))
             ></mdc-icon>
           </div>
         </div>
-        ${this.renderLabel()}
+        ${this.label ? this.renderLabel() : nothing}
         ${this.helpText ? this.renderHelperText() : nothing}
     `;
   }
