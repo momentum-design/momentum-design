@@ -475,7 +475,7 @@
           },
           "input": {
             "normal": {
-              "value": "{color.highcontrast.black.WindowTextColor}",
+              "value": "{color.highcontrast.white.WindowTextColor}",
               "type": "color",
               "description": "Used for inverted control components outline (checkbox, toggles)"
             }
