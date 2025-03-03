@@ -1,18 +1,49 @@
-import { test } from '../../../config/playwright/setup';
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-await-in-loop */
+import { expect } from '@playwright/test';
+import { ComponentsPage, test } from '../../../config/playwright/setup';
+import { VALIDATION } from './formfieldwrapper.constants';
+import { getHelperIcon } from './formfieldwrapper.utils';
+import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
-test.beforeEach(async ({ componentsPage }) => {
+type SetupOptions = {
+  componentsPage: ComponentsPage;
+  id?: string;
+  label?: string;
+  helpText?: string;
+  helpTextType?: string;
+  requiredLabel?: string;
+  children?: string;
+};
+
+const setup = async (args: SetupOptions) => {
+  const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
-        <mdc-formfieldwrapper />
-      `,
+      <mdc-subcomponent-formfieldwrapper
+      id="${restArgs.id}"
+      ${restArgs.label ? `label="${restArgs.label}"` : ''}
+      ${restArgs.helpText ? `help-text="${restArgs.helpText}"` : ''}
+      ${restArgs.helpTextType ? `help-text-type="${restArgs.helpTextType}"` : ''}
+      ${restArgs.requiredLabel ? `required-label="${restArgs.requiredLabel}"` : ''}
+      >${restArgs.children}</mdc-subcomponent-formfieldwrapper>
+    `,
+    clearDocument: true,
   });
-});
+  const text = componentsPage.page.locator('mdc-subcomponent-formfieldwrapper');
+  await text.waitFor();
+  return text;
+};
 
-test.skip('mdc-formfieldwrapper', async ({ componentsPage }) => {
-  const formfieldwrapper = componentsPage.page.locator('mdc-formfieldwrapper');
-
-  // initial check for the formfieldwrapper be visible on the screen:
-  await formfieldwrapper.waitFor();
+test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
+  const formfieldwrapper = await setup({
+    componentsPage,
+    id: 'test-formfieldwrapper',
+    label: 'Label',
+    helpText: 'Help Text',
+    children: 'Form Input Component',
+    requiredLabel: 'required',
+  });
 
   /**
    * ACCESSIBILITY
@@ -22,44 +53,71 @@ test.skip('mdc-formfieldwrapper', async ({ componentsPage }) => {
   });
 
   /**
-   * VISUAL REGRESSION
-   */
-  await test.step('visual-regression', async () => {
-    await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-formfieldwrapper', { element: formfieldwrapper });
-    });
-  });
-
-  /**
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
-    await test.step('attribute X should be present on component by default', async () => {
-      // TODO: add test here
+    await test.step('attributes should be present on component', async () => {
+      await expect(formfieldwrapper).toHaveAttribute('id', 'test-formfieldwrapper');
+      await expect(formfieldwrapper).toHaveAttribute('label', 'Label');
+      await expect(formfieldwrapper).toHaveAttribute('help-text', 'Help Text');
+      await expect(formfieldwrapper).toHaveAttribute('required-label', 'required');
+    });
+
+    await test.step('help-text-type attribute with appropriate icons', async () => {
+      for (const type of Object.values(VALIDATION)) {
+        await componentsPage.setAttributes(formfieldwrapper, { 'help-text-type': type });
+        await expect(formfieldwrapper).toHaveAttribute('help-text-type', type);
+        const icon = getHelperIcon(type);
+        if (icon) {
+          await expect(formfieldwrapper.locator(`mdc-icon[name="${icon}"]`)).toBeVisible();
+        }
+      }
     });
   });
 
   /**
-   * INTERACTIONS
+   * VISUAL REGRESSION
    */
-  await test.step('interactions', async () => {
-    await test.step('mouse/pointer', async () => {
-      await test.step('component should fire callback x when clicking on it', async () => {
-        // TODO: add test here
-      });
+  await test.step('visual regression', async () => {
+    const wrapperStickerSheet = new StickerSheet(componentsPage, 'mdc-subcomponent-formfieldwrapper');
+    await wrapperStickerSheet.setChildren('Form Input Component');
+    await wrapperStickerSheet.setAttributes({
+      id: 'test-formfieldwrapper',
+      label: 'Label',
+      'help-text': 'Help Text',
     });
-
-    await test.step('focus', async () => {
-      await test.step('component should be focusable with tab', async () => {
-        // TODO: add test here
-      });
-
-      // add additional tests here, like tabbing through several parts of the component
+    await wrapperStickerSheet.createMarkupWithCombination({ 'help-text-type': VALIDATION }, { createNewRow: true });
+    // disabled
+    await wrapperStickerSheet.setAttributes({
+      id: 'test-formfieldwrapper',
+      label: 'Disabled Label',
+      'help-text': 'Help Text',
+      disabled: true,
     });
+    await wrapperStickerSheet.createMarkupWithCombination({});
+    // required label
+    await wrapperStickerSheet.setAttributes({
+      id: 'test-formfieldwrapper',
+      label: 'Label',
+      'help-text': 'Help Text',
+      'required-label': 'required',
+    });
+    await wrapperStickerSheet.createMarkupWithCombination({});
+    // With long text that gets truncated into an ellipsis
+    await wrapperStickerSheet.setAttributes({
+      id: 'test-formfieldwrapper',
+      label: 'This is a long label text',
+      'help-text': 'Help Text',
+      'required-label': 'required',
+      style: 'width: 200px',
+    });
+    await wrapperStickerSheet.createMarkupWithCombination({});
+    await wrapperStickerSheet.mountStickerSheet();
+    await wrapperStickerSheet.getWrapperContainer();
 
-    await test.step('keyboard', async () => {
-      await test.step('component should fire callback x when pressing y', async () => {
-        // TODO: add test here
+    await test.step('matches screenshot of pill-button element', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-formfieldwrapper', {
+        element: wrapperStickerSheet.getWrapperContainer(),
       });
     });
   });

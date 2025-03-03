@@ -7,10 +7,10 @@ import { BUTTON_SIZES, BUTTON_TYPE, DEFAULTS } from './buttonsimple.constants';
 
 const render = (args: Args) => html`
   <mdc-buttonsimple 
-  @click="${action('onClick')}"
-  @keydown="${action('onKeyDown')}"
-  @keyup="${action('onKeyUp')}"
-  @focus="${action('onFocus')}"
+  @click="${action('onclick')}"
+  @keydown="${action('onkeydown')}"
+  @keyup="${action('onkeyup')}"
+  @focus="${action('onfocus')}"
   ?active="${args.active}"
   ?disabled="${args.disabled}"
   ?soft-disabled="${args['soft-disabled']}"
@@ -26,7 +26,7 @@ const meta: Meta = {
   component: 'mdc-buttonsimple',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['internal'],
   },
   argTypes: {
     children: {

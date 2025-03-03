@@ -2,6 +2,10 @@
 
 This consumption guide for the Global Web Library, `@momentum-design/components` provides detailed instructions on how to effectively access and utilize these components in your web applications, specifically focusing on Web Components and React.
 
+For all the details regarding the release, please visit: [**release history**](https://github.com/momentum-design/momentum-design/releases).
+
+If you would like to provide any feedback, please raise an [**issue**](https://github.com/momentum-design/momentum-design/issues).
+
 ## Installation
 
 To install the library, add the following NPM dependency to your `package.json` with the required version number:
@@ -12,10 +16,9 @@ In order to install, run the following command:
 
 ```bash
 npm install @momentum-design/components
-``` 
+
 or
 
-```bash
 yarn add @momentum-design/components
 ``` 
 
@@ -39,7 +42,9 @@ yarn add @momentum-design/components
     ```
 
 * `mds-typography` class needs to be set on the root element for proper font usage.
-* Providers (like ThemeProvider, IconProvider) need to wrap Momentum Design Components for proper usage.
+* Providers allow configuration for all the Momentum Design Components contained within the provider.
+  <br/>1. IconProvider sets the icon source and icons configuration. (refer to [**Icon Provider**](https://momentum-design.github.io/momentum-design/storybook-static/index.html?path=/docs/components-iconprovider--docs)).
+  <br/>2. ThemeProvider sets the theme class. (refer to [**Theme Provider**](https://momentum-design.github.io/momentum-design/storybook-static/index.html?path=/docs/components-themeprovider--docs)).
 * Your build config needs to be able to have file loaders for CSS and WOFF2.
 
 

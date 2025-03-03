@@ -3,6 +3,7 @@ import { Page, expect, Locator, TestInfo, test } from '@playwright/test';
 import Accessibility from './utils/accessibility';
 import VisualRegression from './utils/visual-regression';
 import type { ThemeClass } from './types';
+import Actionability from './utils/actionability';
 
 const componentsDevPageTitle = 'Momentum Components Dev Page';
 const htmlRootElementSelector = '#root';
@@ -15,6 +16,7 @@ interface MountOptions {
 
 interface ComponentsPage {
   accessibility: Accessibility;
+  actionability: Actionability;
   visualRegression: VisualRegression;
   page: Page;
   testInfo: TestInfo;
@@ -33,6 +35,7 @@ class ComponentsPage {
 
     // creates utility objects on components page and inject dependencies:
     this.accessibility = new Accessibility(this.page, this.testInfo);
+    this.actionability = new Actionability(this.page);
     this.visualRegression = new VisualRegression(this.page);
   }
 
@@ -134,13 +137,13 @@ class ComponentsPage {
   }
 
   /**
- * Update one or multiple attributes on a HTMLElement, queried by the passed in `locator`.
- * Additionally, you can update attributes of a nested element by passing an optional nested `Locator`.
- * Boolean attributes are true if present on an element,
- *  and should be set to an empty string ("") or the attribute's name without leading or trailing whitespace.
- * @param locator - Playwright locator
- * @param attributes - A record object where keys are attribute names, and values are the attribute values to be set.
- */
+   * Update one or multiple attributes on a HTMLElement, queried by the passed in `locator`.
+   * Additionally, you can update attributes of a nested element by passing an optional nested `Locator`.
+   * Boolean attributes are true if present on an element,
+   *  and should be set to an empty string ("") or the attribute's name without leading or trailing whitespace.
+   * @param locator - Playwright locator
+   * @param attributes - A record object where keys are attribute names, and values are the attribute values to be set.
+   */
   async setAttributes(locator: Locator, attributes: Record<string, string>) {
     await locator.evaluate((element, attrs) => {
       Object.keys(attrs).forEach((key) => {
@@ -161,6 +164,29 @@ class ComponentsPage {
       },
       { qualifiedName },
     );
+  }
+
+  /**
+   * Check if a promise times out after a certain amount of time
+   *
+   * @param promise - Promise to check if it times out
+   * @param shouldTimeout - Boolean to check if the promise should time out
+   * @param timeout - Timeout in milliseconds
+   */
+  async expectPromiseTimesOut(promise: Promise<unknown>, shouldTimeout: boolean, timeout: number = 2000) {
+    const TIMED_OUT = 'TIMED_OUT';
+    const timeoutPromise = new Promise((resolve) => {
+      setTimeout(resolve, timeout);
+    }).then(() => TIMED_OUT);
+
+    const [resolved, error] = await Promise.race([promise, timeoutPromise])
+      .then((x) => [x])
+      .catch((err) => [undefined, err]);
+
+    const pass = resolved === TIMED_OUT;
+
+    expect(pass, `Promise timedout after ${timeout}ms should be "${shouldTimeout}"`).toBe(shouldTimeout);
+    expect(error).toBe(undefined);
   }
 }
 export default ComponentsPage;

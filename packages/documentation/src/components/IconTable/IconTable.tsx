@@ -45,6 +45,7 @@ export const Pagination = () => {
   const onQueryChange = useCallback(
     (e: any) => {
       setQuery(e?.target?.value);
+      setCurrentPage(1);
     },
     [setQuery],
   );
@@ -55,19 +56,24 @@ export const Pagination = () => {
 
   const onClickPrev = useCallback(() => {
     setCurrentPage((page) => (currentPage === 1 ? 1 : page - 1));
-  }, [setCurrentPage]);
+  }, [setCurrentPage, currentPage]);
 
   const onWeightChange = useCallback(
     (event: any) => {
       setWeight(event?.target?.value);
+      setCurrentPage(1);
     },
     [setWeight],
   );
 
+  const filteredIcons = useMemo(
+    () => Object.entries(iconsManifest).filter(([key]) => (
+      query ? key.includes(query) && key.includes(weight) : key.includes(weight))),
+    [iconsManifest, weight, query],
+  );
+
   const paginatedItems = useMemo(
-    () => Object.entries(iconsManifest)
-      .filter(([key]) => (query ? key.includes(query) && key.includes(weight) : key.includes(weight)))
-      .slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
+    () => filteredIcons.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
       .reduce(
         (output, [key, value]) => ({
           ...output,
@@ -75,13 +81,19 @@ export const Pagination = () => {
         }),
         {},
       ),
-    [currentPage, weight, iconsManifest, query],
+    [currentPage, filteredIcons],
   );
+
+  const filteredIconsLength = Object.keys(filteredIcons).length;
+  const totalPages = Math.ceil(filteredIconsLength / PAGE_SIZE);
+  const isNextButtonDisabled = currentPage === totalPages;
 
   return (
     <div>
-      <p>Total Icons in the library - {Object.keys(iconsManifest).length}</p>
-      <p>Current Page: {currentPage}</p>
+      <div class="headerTextWrapper">
+        <p>Total Icons in the library - {Object.keys(iconsManifest).length}</p>
+        <p>Current Page: {currentPage}</p>
+      </div>
       <div className="iconFilters">
         <input placeholder="Search by icon name" className="queryInput" type="text" onInput={onQueryChange} />
         <select className="weightSelect" value={weight} onChange={onWeightChange}>
@@ -96,9 +108,9 @@ export const Pagination = () => {
       <IconTable icons={paginatedItems} />
       <div className="paginationButtons">
         <button disabled={currentPage === 1} onClick={onClickPrev}>
-          Prev
+          Previous
         </button>
-        <button onClick={onClickNext}>Next</button>
+        <button onClick={onClickNext} disabled={isNextButtonDisabled}>Next</button>
       </div>
     </div>
   );

@@ -4,10 +4,9 @@ import styles from './icon.styles';
 import { Component } from '../../models';
 import providerUtils from '../../utils/provider';
 import IconProvider from '../iconprovider/iconprovider.component';
-import { dynamicSVGImport } from './icon.utils';
+import { svgFetch } from './icon.utils';
 import { DEFAULTS } from './icon.constants';
 import type { IconNames } from './icon.types';
-
 /**
  * Icon component that dynamically displays SVG icons based on a valid name.
  *
@@ -26,7 +25,7 @@ import type { IconNames } from './icon.types';
  * if `size = 1` and `length-unit = 'em'`, the dimensions of the icon will be
  * `width: 1em; height: 1em`.
  *
- * Regarding accessibility, there are two types of icons: decorative and informative.
+ * Regarding accessibility, there are three types of icons: decorative, informative and informative standalone.
  *
  * ### Decorative Icons
  * - Decorative icons do not convey any essential information to the content of a page.
@@ -37,13 +36,22 @@ import type { IconNames } from './icon.types';
  * - Informative icons convey important information that is not adequately represented
  *   by surrounding text or components.
  * - They provide valuable context and must be announced by assistive technologies.
- * - For informative icons, an `aria-label` is required, and the `role` will be set to "img".
+ * - For informative icons, an `aria-label` is required, and the `role` will be set to "img" automatically.
  * - If an `aria-label` is provided, the role will be set to 'img'; if it is absent,
  *   the role will be unset.
+ *
+ * ### Informative Standalone Icons
+ * - If an icon is informative (as mentioned above) and does not belong to a button (=standalone), it must
+ * have a Tooltip that describes what it means.
+ * - For informative standalone icons, an `aria-label` & `tabindex="0"` is required,
+ * and the `role` will be set to "img" automatically.
+ * - **Only use this when a Icon is standalone and is not part of a button or other interactive elements.**
  *
  * @tagname mdc-icon
  *
  * @cssproperty --mdc-icon-fill-color - Allows customization of the default fill color.
+ * @cssproperty --mdc-icon-size - Allows customization of the icon size.
+ * @cssproperty --mdc-icon-border-radius - Allows customization of the icon border radius.
  */
 class Icon extends Component {
   @state()
@@ -89,20 +97,27 @@ class Icon extends Component {
   }
 
   /**
-   * Dispatches a 'load' event on the component once the icon has been successfully loaded.
-   * This event bubbles and is cancelable.
+   * Parse the icon string to an html element, set the attributes and
+   * return the icon element
+   *
+   * @param iconData - The icon string to be parsed
+   * @returns iconElement
    */
-  private triggerIconLoaded(): void {
-    const loadEvent = new Event('load', {
-      bubbles: true,
-      cancelable: true,
-    });
-    this.dispatchEvent(loadEvent);
+  private prepareIconElement(iconData: string) {
+    const iconElement = new DOMParser().parseFromString(iconData, 'text/html').body.children[0];
+
+    if (this.name) {
+      iconElement.setAttribute('data-name', this.name);
+    }
+    iconElement.setAttribute('part', 'icon');
+    // set aria-hidden=true for SVG to avoid screen readers
+    iconElement.setAttribute('aria-hidden', 'true');
+
+    return iconElement;
   }
 
   /**
-   * Get Icon Data function which will fetch the icon (currently only svg)
-   * and sets state and attributes once fetched successfully
+   * Fetches the icon (currently only svg) and sets state and attributes once fetched successfully
    *
    * This method uses abortController.signal to cancel the fetch request when the component is disconnected or updated.
    * If the request is aborted after the fetch() call has been fulfilled but before the response body has been read,
@@ -110,23 +125,55 @@ class Icon extends Component {
    */
   private async getIconData() {
     if (this.iconProviderContext.value) {
-      const { fileExtension, url } = this.iconProviderContext.value;
-      if (url && fileExtension && this.name) {
-        this.abortController.abort();
-        this.abortController = new AbortController();
-        try {
-          const iconHtml = await dynamicSVGImport(url, this.name, fileExtension, this.abortController.signal);
-          this.handleIconLoadedSuccess(iconHtml as HTMLElement);
-        } catch (error) {
-          this.handleIconLoadedFailure(error);
-        }
+      const { fileExtension, url, cacheName, iconSet, cacheStrategy } = this.iconProviderContext.value;
+      if (iconSet === 'custom-icons' && url && fileExtension && this.name) {
+        // function to abort the fetch request and create a new signal
+        // (directly passing the abortcontroller to the fetch request per reference
+        // will not work due to JS call-by-sharing behavior)
+        const renewSignal = () => {
+          this.abortController.abort();
+          this.abortController = new AbortController();
+          return this.abortController.signal;
+        };
+
+        // fetch icon data (including caching logic)
+        return svgFetch({
+          url,
+          name: this.name,
+          fileExtension,
+          cacheName,
+          cacheStrategy,
+          renewSignal,
+        })
+          .then((iconData) => {
+            // parse the fetched icon string to an html element and set the attributes
+            const iconElement = this.prepareIconElement(iconData);
+            this.handleIconLoadedSuccess(iconElement as HTMLElement);
+          })
+          .catch((error) => {
+            this.handleIconLoadedFailure(error);
+          });
+      }
+
+      if (iconSet === 'momentum-icons' && this.name) {
+        // dynamic import of the lit template from the momentum icons package
+        return import(`@momentum-design/icons/dist/ts/${this.name}.ts`)
+          .then((module) => {
+            this.handleIconLoadedSuccess(module.default());
+          })
+          .catch((error) => {
+            this.handleIconLoadedFailure(error);
+          });
       }
     }
+
+    const noIconProviderError = new Error('IconProvider not found or not properly set up.');
+    this.handleIconLoadedFailure(noIconProviderError);
+    return Promise.reject(noIconProviderError);
   }
 
   /**
-   * Sets the iconData state to the fetched icon,
-   * and calls functions to set role, aria-label and aria-hidden attributes on the icon.
+   * Sets the iconData state to the fetched icon.
    * Dispatches a 'load' event on the component once the icon has been successfully loaded.
    * @param iconHtml - The icon html element which has been fetched from the icon provider.
    */
@@ -134,11 +181,12 @@ class Icon extends Component {
     // update iconData state once fetched:
     this.iconData = iconHtml;
 
-    // when icon is fetched successfully, set the role, aria-label and invoke function to trigger icon load event.
-    this.setRoleOnIcon();
-    this.setAriaLabelOnIcon();
-    this.setAriaHiddenOnIcon();
-    this.triggerIconLoaded();
+    // when icon is fetched successfully, trigger icon load event.
+    const loadEvent = new Event('load', {
+      bubbles: true,
+      cancelable: true,
+    });
+    this.dispatchEvent(loadEvent);
   }
 
   /**
@@ -166,24 +214,6 @@ class Icon extends Component {
     }
   }
 
-  private setRoleOnIcon() {
-    this.role = this.ariaLabel ? 'img' : null;
-  }
-
-  private setAriaHiddenOnIcon() {
-    // set aria-hidden=true for SVG to avoid screen readers
-    this.iconData?.setAttribute('aria-hidden', 'true');
-  }
-
-  private setAriaLabelOnIcon() {
-    if (this.ariaLabel) {
-      // pass through aria-label attribute to svg if set on mdc-icon
-      this.iconData?.setAttribute('aria-label', this.ariaLabel);
-    } else {
-      this.iconData?.removeAttribute('aria-label');
-    }
-  }
-
   private get computedIconSize() {
     return this.size ?? this.sizeFromContext ?? DEFAULTS.SIZE;
   }
@@ -201,8 +231,7 @@ class Icon extends Component {
     }
 
     if (changedProperties.has('ariaLabel')) {
-      this.setRoleOnIcon();
-      this.setAriaLabelOnIcon();
+      this.role = this.ariaLabel ? 'img' : null;
     }
 
     if (changedProperties.has('size') || changedProperties.has('lengthUnit')) {

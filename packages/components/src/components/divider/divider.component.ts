@@ -1,6 +1,6 @@
-import { CSSResult, html, PropertyValueMap } from 'lit';
+import type { PropertyValues } from 'lit';
+import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
-import styles from './divider.styles';
 import { Component } from '../../models';
 import {
   ARROW_ICONS,
@@ -11,7 +11,8 @@ import {
   DIVIDER_VARIANT,
   TEXT_TAG,
 } from './divider.constants';
-import { Directions, DividerOrientation, DividerVariant } from './divider.types';
+import styles from './divider.styles';
+import type { Directions, DividerOrientation, DividerVariant } from './divider.types';
 
 /**
  * `mdc-divider` is a component that provides a line to separate and organize content.
@@ -51,6 +52,13 @@ import { Directions, DividerOrientation, DividerVariant } from './divider.types'
  * @cssproperty --mdc-divider-text-color - font color of label in the text divider
  * @cssproperty --mdc-divider-text-margin - left and right margin of label in the text divider
  * @cssproperty --mdc-divider-text-line-height - line height of label in the text divider
+ * @cssproperty --mdc-divider-grabber-button-background-color-normal - background color of the grabber button
+ *  in rest state
+ * @cssproperty --mdc-divider-grabber-button-background-color-hover - background color of the grabber button
+ *  in hover state
+ * @cssproperty --mdc-divider-grabber-button-background-color-pressed - background color of the grabber button
+ *  in pressed state
+ * @cssproperty --mdc-divider-grabber-button-border-color - border color of the grabber button
  * @cssproperty --mdc-divider-grabber-button-border-radius - border radius of the grabber button
  */
 class Divider extends Component {
@@ -177,7 +185,7 @@ class Divider extends Component {
     return isPositive ? ARROW_ICONS.RIGHT : ARROW_ICONS.LEFT;
   }
 
-  public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+  public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
 
     if (changedProperties.has('orientation')) {

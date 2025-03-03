@@ -2,15 +2,15 @@
 /* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-import type { ModalContainerColor, ModalContainerElevation, ModalContainerRole } from './modalcontainer.types';
+import type { ModalContainerColor, ModalContainerElevation } from './modalcontainer.types';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
-import { COLOR, DEFAULTS, ELEVATION, ROLE } from './modalcontainer.constants';
+import { COLOR, DEFAULTS, ELEVATION } from './modalcontainer.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
   color?: ModalContainerColor;
   elevation?: ModalContainerElevation;
-  role?: ModalContainerRole
+  'data-role'?: string;
   children?: string;
 };
 
@@ -21,9 +21,12 @@ const setup = async (args: SetupOptions) => {
        <mdc-modalcontainer
         ${restArgs.color ? `color="${restArgs.color}"` : ''}
         ${restArgs.elevation ? `elevation="${restArgs.elevation}"` : ''}
-        ${restArgs.role ? `role="${restArgs.role}"` : ''}
-        aria-label="modal container"
-      >${restArgs.children}
+        ${restArgs['data-role'] ? `data-role="${restArgs['data-role']}"` : ''}
+        data-aria-label="modal container"
+        data-aria-labelledby="This is aria labelledby text"
+        data-aria-describedby="This is aria describedby text"
+      >
+        ${restArgs.children}
       </mdc-modalcontainer>
     `,
     clearDocument: true,
@@ -38,6 +41,8 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
   await test.step('default attributes for modalcontainer', async () => {
     await expect(modalcontainer).toHaveAttribute('color', DEFAULTS.COLOR);
     await expect(modalcontainer).toHaveAttribute('elevation', DEFAULTS.ELEVATION.toString());
+    await expect(modalcontainer).toHaveAttribute('data-role', DEFAULTS.ROLE);
+    await expect(modalcontainer).not.toHaveAttribute('data-aria-modal');
   });
 
   await test.step('ModalContainerAttributes', async () => {
@@ -51,12 +56,6 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
       await test.step(`attribut elevation ${elevation} should be present as expected`, async () => {
         await componentsPage.setAttributes(modalcontainer, { elevation: elevation.toString() });
         await expect(modalcontainer).toHaveAttribute('elevation', elevation.toString());
-      });
-    }
-    for (const role of Object.values(ROLE)) {
-      await test.step(`attribut role ${role} should be present as expected`, async () => {
-        await componentsPage.setAttributes(modalcontainer, { role });
-        await expect(modalcontainer).toHaveAttribute('role', role);
       });
     }
   });
@@ -82,7 +81,7 @@ test('mdc-modalcontainer', async ({ componentsPage }) => {
     const text = 'Lorem ipsum dolor sit amet.';
     await test.step('Elevation and Color', async () => {
       modalcontainerStickerSheet.setChildren(text);
-      modalcontainerStickerSheet.setAttributes({ 'aria-label': 'modal' });
+      modalcontainerStickerSheet.setAttributes({ 'data-aria-label': 'modal' });
       await modalcontainerStickerSheet.createMarkupWithCombination({ color: COLOR, elevation: ELEVATION });
       await modalcontainerStickerSheet.mountStickerSheet();
       const container = modalcontainerStickerSheet.getWrapperContainer();

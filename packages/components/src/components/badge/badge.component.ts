@@ -1,13 +1,16 @@
-import { CSSResult, html, PropertyValues, TemplateResult } from 'lit';
+import type { PropertyValues, TemplateResult } from 'lit';
+import { CSSResult, html } from 'lit';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
-import { TYPE as FONT_TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
-import { TYPE as BADGE_TYPE, ICON_NAMES_LIST, DEFAULTS, ICON_VARIANT, ICON_STATE } from './badge.constants';
-import styles from './badge.styles';
+import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import type { IconNames } from '../icon/icon.types';
-import type { IconVariant, BadgeType } from './badge.types';
+import { TYPE as FONT_TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import { DEFAULTS, ICON_NAMES_LIST, ICON_STATE, ICON_VARIANT, TYPE as BADGE_TYPE } from './badge.constants';
+import styles from './badge.styles';
+import type { BadgeType, IconVariant } from './badge.types';
+
 /**
  * The `mdc-badge` component is a versatile UI element used to
  * display dot, icons, counters, success, warning and error type badge.
@@ -29,22 +32,26 @@ import type { IconVariant, BadgeType } from './badge.types';
  * @dependency mdc-text
  *
  * @tagname mdc-badge
+ *
+ * @cssproperty --mdc-badge-primary-foreground-color - The foreground color of the primary badge.
+ * @cssproperty --mdc-badge-primary-background-color - The background color of the primary badge.
+ * @cssproperty --mdc-badge-secondary-foreground-color - The foreground color of the secondary badge.
+ * @cssproperty --mdc-badge-secondary-background-color - The background color of the secondary badge.
+ * @cssproperty --mdc-badge-success-foreground-color - The foreground color of the success badge.
+ * @cssproperty --mdc-badge-success-background-color - The background color of the success badge.
+ * @cssproperty --mdc-badge-warning-foreground-color - The foreground color of the warning badge.
+ * @cssproperty --mdc-badge-warning-background-color - The background color of the warning badge.
+ * @cssproperty --mdc-badge-error-foreground-color - The foreground color of the error badge.
+ * @cssproperty --mdc-badge-error-background-color - The background color of the error badge.
+ * @cssproperty --mdc-badge-overlay-background-color - The background color of the badge overlay.
  */
-class Badge extends Component {
+class Badge extends IconNameMixin(Component) {
   /**
    * Type of the badge
    * Can be `dot` (notification) , `icon`, `counter`, `success`, `warning` or `error`.
    */
   @property({ type: String, reflect: true })
   type?: BadgeType;
-
-  /**
-   * Name of the icon (= filename).
-   *
-   * If no `icon-name` is provided, no icon will be rendered.
-   */
-  @property({ type: String, attribute: 'icon-name' })
-  iconName?: IconNames;
 
   /**
    * Type of the variant can be `primary` or `secondary`.

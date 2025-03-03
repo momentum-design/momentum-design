@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { COLOR, DEFAULTS, ELEVATION, ROLE } from './modalcontainer.constants';
+import { COLOR, DEFAULTS, ELEVATION } from './modalcontainer.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls } from '../../../config/storybook/utils';
 
@@ -9,8 +9,11 @@ const render = (args: Args) => html`
 <mdc-modalcontainer
   color="${args.color}"
   elevation="${args.elevation}"
-  role="${args.role}"
-  aria-label="${args['aria-label']}"
+  data-role="${args['data-role']}"
+  data-aria-label="${args['data-aria-label']}"
+  data-aria-labelledby="${args['data-aria-labelledby']}"
+  data-aria-describedby="${args['data-aria-describedby']}"
+  data-arial-modal="${args['data-aria-modal']}"
 >
   ${args.children}
 </mdc-modalcontainer>
@@ -22,7 +25,7 @@ const meta: Meta = {
   component: 'mdc-modalcontainer',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['internal'],
   },
   argTypes: {
     children: {
@@ -37,13 +40,21 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(ELEVATION),
     },
-    role: {
-      control: 'radio',
-      options: Object.values(ROLE),
+    'data-role': {
+      control: 'text',
     },
-    'aria-label': {
+    'data-aria-label': {
       control: 'text',
       description: 'Aria label for the modal container. Required for accessibility.',
+    },
+    'data-aria-labelledby': {
+      control: 'text',
+    },
+    'data-aria-describedby': {
+      control: 'text',
+    },
+    'data-aria-modal': {
+      control: 'boolean',
     },
     ...classArgType,
     ...styleArgType,
@@ -63,8 +74,9 @@ export const Example: StoryObj = {
   args: {
     color: COLOR.CONTRAST,
     elevation: ELEVATION[0],
-    role: DEFAULTS.ROLE,
-    'aria-label': 'Modal container',
+    'data-aria-label': 'Modal container',
+    'data-role': DEFAULTS.ROLE,
+    'data-aria-modal': DEFAULTS.ARIA_MODAL,
     children: DEFAULTS.CHILDREN,
   },
 };

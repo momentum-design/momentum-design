@@ -8,7 +8,7 @@ type Props = {
   themeTokens: Record<string, {data: Object, path: string}>;
 };
 
-export const ThemeTokensTwapper = ({ themeTokens }: Props) => {
+export const ThemeTokensWrapper = ({ themeTokens }: Props) => {
   const [theme, setTheme] = useState(Object.keys(themeTokens)[0]);
 
   const onChangeTheme = useCallback((event: any) => {
@@ -17,13 +17,13 @@ export const ThemeTokensTwapper = ({ themeTokens }: Props) => {
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', paddingBottom: '16px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '-20px' }}>
+        <p><b>File:</b> {themeTokens[theme].path}</p>
         <select placeholder="Select Theme" className="themeSelect" onChange={onChangeTheme}>
           {Object.keys(themeTokens).map((theme) => (
             <option value={theme}>{theme}</option>
           ))}
         </select>
-        <p style={{ marginLeft: '16px' }}><b>File:</b> {themeTokens[theme].path}</p>
       </div>
 
       <TokenTable tokens={themeTokens[theme].data} tokenType={TokenType.Color} />

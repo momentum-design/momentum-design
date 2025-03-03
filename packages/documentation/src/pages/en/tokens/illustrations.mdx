@@ -1,12 +1,13 @@
 ---
 title: Illustrations
 description: This is the main page.
-layout: ../../../layouts/MainLayout.astro
+layout: ../../../layouts/AssetsDetailLayout.astro
 ---
 import {Pagination} from '../../../components/IllustrationTable/IllustrationTable.tsx';
+import './shared-styles.css';
 
-<a href="/momentum-design/en/assets#illustrations">
-  <h3>Back</h3>
+<a class="backLink" href="/momentum-design/en/assets#illustrations">
+  <span>&lt; Assets</span>
 </a>
-<h1>Illustrations</h1>
+<h1 class="heading1">Illustrations</h1>
 <Pagination client:visible />

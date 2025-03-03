@@ -1,3 +1,5 @@
+const { pascalCase } = require('pascal-case');
+
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-param-reassign */
 function replace(string, terms) {
@@ -6,6 +8,20 @@ function replace(string, terms) {
   });
 
   return string;
+}
+
+/**
+ * Parses the React event name from the event description.
+ * @param description - The event description string.
+ * @returns The parsed event name or null if not found.
+ */
+function parseReactEventName(description) {
+  const regex = /\((React:\s*on\w+)\)/i;
+  const match = description.match(regex);
+  if (match && match[1]) {
+    return match[1].replace('React:', '').trim();
+  }
+  return null;
 }
 
 module.exports = {
@@ -82,6 +98,24 @@ module.exports = {
           // This is what allows us to map JSDOC comments to ReactWrappers.
           // this will only parse the full JSDoc comment (including web component tags)
           classDoc.jsDoc = node.jsDoc?.map((jsDoc) => jsDoc.getFullText()).join('\n');
+        }
+      },
+    },
+    {
+      name: 'momentum-react-event-names',
+      analyzePhase({ ts, node, moduleDoc }) {
+        if (node.kind === ts.SyntaxKind.ClassDeclaration) {
+          const className = node.name.getText();
+          const classDoc = moduleDoc?.declarations?.find((declaration) => declaration.name === className);
+
+          if (classDoc?.events) {
+            classDoc.events.forEach((event) => {
+              if (event.name) {
+                event.reactName = parseReactEventName(event.description) || `on${pascalCase(event.name)}`;
+                event.eventName = `${pascalCase(event.name)}Event`;
+              }
+            });
+          }
         }
       },
     },

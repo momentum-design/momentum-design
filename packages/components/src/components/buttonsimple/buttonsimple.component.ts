@@ -1,19 +1,24 @@
-import { CSSResult, html, PropertyValueMap } from 'lit';
+import type { PropertyValues } from 'lit';
+import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
-import styles from './buttonsimple.styles';
 import { Component } from '../../models';
-import { ButtonSize, ButtonType } from './buttonsimple.types';
-import { BUTTON_TYPE, DEFAULTS } from './buttonsimple.constants';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
+import { BUTTON_TYPE, DEFAULTS } from './buttonsimple.constants';
+import styles from './buttonsimple.styles';
+import type { ButtonSize, ButtonType } from './buttonsimple.types';
 
 /**
  * `mdc-buttonsimple` is a component that can be configured in various ways to suit different use cases.
  * It is used as an internal component and is not intended to be used directly by consumers.
  * Consumers should use the `mdc-button` component instead.
  *
- * @tagname mdc-buttonsimple
+ * @event click - (React: onClick) This event is dispatched when the button is clicked.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the button.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the button.
+ * @event focus - (React: onFocus) This event is dispatched when the button receives focus.
  *
+ * @tagname mdc-buttonsimple
  */
 class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
   /**
@@ -22,7 +27,7 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
    * Conversely, when the active state is false, the button is in an inactive state, indicating it is toggled off.
    * @default false
    */
-  @property({ type: Boolean }) active = false;
+  @property({ type: Boolean, reflect: true }) active = false;
 
   /**
    * Indicates whether the button is soft disabled.
@@ -83,11 +88,12 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
     this.addEventListener('click', this.executeAction.bind(this));
     this.addEventListener('keydown', this.handleKeyDown.bind(this));
     this.addEventListener('keyup', this.handleKeyUp.bind(this));
+    this.addEventListener('blur', this.handleBlur.bind(this));
     /** @internal */
     this.internals = this.attachInternals();
   }
 
-  public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+  public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
 
     if (changedProperties.has('disabled')) {
@@ -97,11 +103,11 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
       this.setSoftDisabled(this, this.softDisabled);
     }
     if (changedProperties.has('active')) {
-      this.setAriaPressed(this, this.active);
+      this.setActive(this, this.active);
     }
   }
 
-  private executeAction() {
+  protected executeAction() {
     if (this.type === BUTTON_TYPE.SUBMIT && this.internals.form) {
       this.internals.form.requestSubmit();
     }
@@ -112,16 +118,15 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
   }
 
   /**
-   * Sets the aria-pressed attribute based on the active state.
-   *
-   * @param element - The target element.
-   * @param active - The active state.
+   * Sets the aria-pressed attribute based on the active state of the button.
+   * @param element - The button element
+   * @param active - The active state of the element
    */
-  private setAriaPressed(element: HTMLElement, active: boolean) {
+  protected setActive(element: HTMLElement, active: boolean) {
     if (active) {
       element.setAttribute('aria-pressed', 'true');
     } else {
-      element.setAttribute('aria-pressed', 'false');
+      element.removeAttribute('aria-pressed');
     }
   }
 
@@ -137,7 +142,7 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
     if (softDisabled) {
       element.setAttribute('aria-disabled', 'true');
     } else {
-      element.setAttribute('aria-disabled', 'false');
+      element.removeAttribute('aria-disabled');
     }
   }
 
@@ -156,7 +161,9 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
       this.prevTabindex = this.tabIndex;
       this.tabIndex = -1;
     } else {
-      this.tabIndex = this.prevTabindex;
+      if (this.tabIndex === -1) {
+        this.tabIndex = this.prevTabindex;
+      }
       element.removeAttribute('aria-disabled');
     }
   }
@@ -168,7 +175,16 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
       view: window,
     });
     this.dispatchEvent(clickEvent);
-    this.executeAction();
+  }
+
+  /**
+   * In case the button is pressed and the focus is lost while pressing,
+   * the pressed class is removed.
+   */
+  private handleBlur() {
+    if (this.classList.contains('pressed')) {
+      this.classList.remove('pressed');
+    }
   }
 
   /**
