@@ -9,7 +9,7 @@ import { HEADER_ID, KEYS } from './list.constants';
 import styles from './list.styles';
 
 /**
- * list component, combines a group of listitems.
+ * mdc-list component is used to display a group of list items. It is used as a container to wrap other list items.
  *
  * @tagname mdc-list
  *
