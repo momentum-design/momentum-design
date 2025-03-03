@@ -1,6 +1,5 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
-import { v4 as uuidv4 } from 'uuid';
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { DEFAULTS, MDC_TEXT_OPTIONS } from './formfieldwrapper.constants';
@@ -35,7 +34,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
    * The unique id of the input field. It is used to link the input field with the label.
    * @default `mdc-input-${uuidv4()}`
    */
-  @property({ type: String }) override id = `mdc-input-${uuidv4()}`;
+  @property({ type: String }) override id = '';
 
   /**
    * The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.
@@ -47,6 +46,9 @@ class FormfieldWrapper extends DisabledMixin(Component) {
    */
   @property({ type: String, reflect: true, attribute: 'help-text' }) helpText?: string;
 
+  /** @internal */
+  protected shouldRenderLabel: Boolean = true;
+
   /**
    * creates the label element when the label property is set.
    * id is used to link the label with the input field.
@@ -57,7 +59,15 @@ class FormfieldWrapper extends DisabledMixin(Component) {
       return nothing;
     }
 
-    return html`<label id="${DEFAULTS.LABEL_ID}" for="${this.id}" class="mdc-label" part="label">${this.label}</label>`;
+    return this.shouldRenderLabel
+      ? html`<label for="${this.id}" class="mdc-label" part="label">${this.label}</label>`
+      : html` <mdc-text
+          id="${DEFAULTS.HEADING_ID}"
+          tagname="${MDC_TEXT_OPTIONS.TAGNAME}"
+          type="${MDC_TEXT_OPTIONS.HEADER_TYPE}"
+          part="label"
+          >${this.label}</mdc-text
+        >`;
   }
 
   protected renderRequiredLabel() {
@@ -66,11 +76,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     }
 
     return html`
-      <mdc-text
-        part="required-label"
-        tagname=${MDC_TEXT_OPTIONS.TAGNAME}
-        type=${MDC_TEXT_OPTIONS.TYPE}
-      >
+      <mdc-text part="required-label" tagname=${MDC_TEXT_OPTIONS.TAGNAME} type=${MDC_TEXT_OPTIONS.TYPE}>
         (${this.requiredLabel})
       </mdc-text>
     `;

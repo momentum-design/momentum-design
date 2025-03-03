@@ -6,6 +6,7 @@ import Badge from './components/badge';
 import Presence from './components/presence';
 import Text from './components/text';
 import Button from './components/button';
+import Popover from './components/popover';
 import Bullet from './components/bullet';
 import Marker from './components/marker';
 import Divider from './components/divider';
@@ -20,6 +21,7 @@ import Tab from './components/tab';
 import FormfieldGroup from './components/formfieldgroup';
 import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
 import Spinner from './components/spinner';
+import RadioGroup from './components/radiogroup';
 
 import type { TextType } from './components/text/text.types';
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
@@ -33,6 +35,7 @@ export {
   Presence,
   Text,
   Button,
+  Popover,
   Bullet,
   Marker,
   Divider,
@@ -46,6 +49,7 @@ export {
   Tab,
   FormfieldGroup,
   Spinner,
+  RadioGroup,
 };
 
 export type {

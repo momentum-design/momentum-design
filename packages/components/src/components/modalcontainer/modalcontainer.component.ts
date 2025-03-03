@@ -4,7 +4,10 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './modalcontainer.styles';
 import { Component } from '../../models';
 import { DEFAULTS } from './modalcontainer.constants';
-import type { ModalContainerColor, ModalContainerElevation, ModalContainerRole } from './modalcontainer.types';
+import type { ModalContainerColor, ModalContainerElevation } from './modalcontainer.types';
+import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
+import { DataAriaDescribedbyMixin } from '../../utils/mixins/DataAriaDescribedbyMixin';
+import { DataAriaLabelledbyMixin } from '../../utils/mixins/DataAriaLabelledbyMixin';
 
 /**
  * The `mdc-modalcontainer` component is an element used to
@@ -20,7 +23,7 @@ import type { ModalContainerColor, ModalContainerElevation, ModalContainerRole }
  *
  * @slot - Default slot for modal container
  */
-class Modalcontainer extends Component {
+class Modalcontainer extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescribedbyMixin(Component))) {
   /**
    * Color of the modalcontainer
    * - **tonal**
@@ -46,23 +49,29 @@ class Modalcontainer extends Component {
    * Role of the modalcontainer
    * @default dialog
    */
-  @property({ type: String })
-  override role: ModalContainerRole = DEFAULTS.ROLE;
+  @property({ type: String, reflect: true, attribute: 'data-role' })
+  dataRole: HTMLElement['role'] = DEFAULTS.ROLE;
+
+  /**
+   * Aria modal of the modalcontainer
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'data-aria-modal' })
+  dataAriaModal: boolean = DEFAULTS.ARIA_MODAL;
 
   public override render() {
     return html`
-      <div 
-        id='mdc-modal-container' 
-        class='mdc-modal-container'  
-        ?contrast="${this.color === 'contrast'}"
-        role="${this.role}"
-        aria-modal='true'
-        aria-label=${ifDefined(this.ariaLabel) as string}
-        data-elevation="${this.elevation}"
-        >
+      <div
+        role="${ifDefined(this.dataRole)}"
+        aria-modal=${ifDefined(this.dataAriaModal === true ? 'true' : undefined)}
+        aria-label="${ifDefined(this.dataAriaLabel)}"
+        aria-labelledby="${ifDefined(this.dataAriaLabelledby)}"
+        aria-describedby="${ifDefined(this.dataAriaDescribedby)}"
+        part="container"
+      >
         <slot></slot>
       </div>
-      `;
+    `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];

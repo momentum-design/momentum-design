@@ -41,7 +41,7 @@ const meta: Meta = {
       description: 'The html content which can be placed inside the formfieldgroup component.',
       control: 'object',
     },
-    ...hideControls(['help-text-type']),
+    ...hideControls(['help-text-type', 'disabled']),
     ...classArgType,
     ...styleArgType,
   },
