@@ -8,7 +8,7 @@ import { Component } from '../../models';
 
 class VirtualizedWrapper extends Component {
   @property({ type: Function, attribute: 'onscroll' })
-  override onscroll: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+  override onscroll: ((this: GlobalEventHandlers, ev: Event) => void) | null;
 
   @property({ type: Object, attribute: 'virtualizerprops' })
   virtualizerProps: VirtualizerProps = { count: 100, estimateSize: () => 100, overscan: 60 };
