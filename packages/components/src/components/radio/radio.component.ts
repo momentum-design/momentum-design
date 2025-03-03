@@ -197,8 +197,15 @@ class Radio extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) 
     }
   }
 
+  private renderLabelAndHelperText = () => {
+    if (!this.label) return nothing;
+    return html`<div class="mdc-radio__label-container">
+      ${this.renderLabel()}
+      ${this.helpText ? this.renderHelperText() : nothing}
+    </div>`;
+  };
+
   public override render() {
-    const helpTextContent = this.helpText ? this.renderHelperText() : nothing;
     return html`
       <div class="mdc-radio__container">
         <div class="mdc-radio__icon-container mdc-focus-ring">
@@ -220,10 +227,7 @@ class Radio extends NameMixin(ValueMixin(DataAriaLabelMixin(FormfieldWrapper))) 
           />
           <span class="mdc-radio__icon"></span>
         </div>
-        <div class="mdc-radio__label-container">
-          ${this.renderLabel()}
-          ${helpTextContent}
-        </div>
+        ${this.renderLabelAndHelperText()}
       </div>
     `;
   }
