@@ -16,7 +16,7 @@ export interface AssociatedFormControl {
     required?: boolean;
     minLength?: number;
     maxLength?: number;
-    validationMessage: string;
+    validationMessage?: string;
 
     readonly form: HTMLFormElement | null;
     readonly validity: ValidityState;
