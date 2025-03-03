@@ -36,7 +36,7 @@ const render = (args: Args) => html`
         initials="${[name.split(' ')[0][0], name.split(' ')[1][0]].join('')}"
       ></mdc-avatar>
       <mdc-button slot="trailing-controls" color="positive" prefix-icon="data-range-selection-bold"></mdc-button>
-      <mdc-button slot="trailing-controls" color="positive" variant="tertiary">Learn More</mdc-button>
+      <mdc-button slot="trailing-controls" variant="tertiary">Learn More</mdc-button>
       <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
     </mdc-listitem>`)}
   </mdc-list>`;
