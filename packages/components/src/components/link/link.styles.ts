@@ -16,7 +16,9 @@ const styles = [hostFitContentStyles, css`
     --mdc-link-inverted-color-hover: var(--mds-color-theme-inverted-text-accent-hover);
     --mdc-link-inverted-color-normal: var(--mds-color-theme-inverted-text-accent-normal);
     --mdc-link-text-decoration-disabled: underline;
+  }
 
+  :host::part(link-container){
     border-radius: var(--mdc-link-border-radius);
     color: var(--mdc-link-color-normal);
   }
@@ -32,11 +34,11 @@ const styles = [hostFitContentStyles, css`
     text-underline-position: from-font;
   }
 
-  :host(:hover) {
+  :host(:hover)::part(link-container) {
     color: var(--mdc-link-color-hover);
   }
 
-  :host(:active) {
+  :host(:active)::part(link-container) {
     color: var(--mdc-link-color-active);
   }
 
@@ -44,19 +46,19 @@ const styles = [hostFitContentStyles, css`
     display: inline-flex;
   }
 
-  :host([inverted]) {
+  :host([inverted])::part(link-container) {
     color: var(--mdc-link-inverted-color-normal);
   }
 
-  :host([inverted]:hover) {
+  :host([inverted]:hover)::part(link-container) {
     color: var(--mdc-link-inverted-color-hover);
   }
 
-  :host([inverted]:active) {
+  :host([inverted]:active)::part(link-container) {
     color: var(--mdc-link-inverted-color-active);
   }
 
-  :host([size="large"]) {
+  :host([size="large"])::part(link-container) {
     font-size: var(--mds-font-apps-body-large-regular-font-size);
     font-weight: var(--mds-font-apps-body-large-regular-font-weight);
     line-height: var(--mds-font-apps-body-large-regular-line-height);
@@ -64,7 +66,7 @@ const styles = [hostFitContentStyles, css`
     text-transform: var(--mds-font-apps-body-large-regular-text-case);
   }
 
-  :host([size="midsize"]) {
+  :host([size="midsize"])::part(link-container) {
     font-size: var(--mds-font-apps-body-midsize-regular-font-size);
     font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
     line-height: var(--mds-font-apps-body-midsize-regular-line-height);
@@ -72,7 +74,7 @@ const styles = [hostFitContentStyles, css`
     text-transform: var(--mds-font-apps-body-midsize-regular-text-case);
   }
 
-  :host([size="small"]) {
+  :host([size="small"])::part(link-container) {
     font-size: var(--mds-font-apps-body-small-regular-font-size);
     font-weight: var(--mds-font-apps-body-small-regular-font-weight);
     line-height: var(--mds-font-apps-body-small-regular-line-height);
@@ -80,7 +82,9 @@ const styles = [hostFitContentStyles, css`
     text-transform: var(--mds-font-apps-body-small-regular-text-case);
   }
 
-  :host([size="large"]:hover), :host([size="large"]:active), :host([size="large"][inline]) {
+  :host([size="large"]:hover)::part(link-container),
+  :host([size="large"]:active)::part(link-container),
+  :host([size="large"][inline])::part(link-container) {
     font-size: var(--mds-font-apps-body-large-regular-underline-font-size);
     font-weight: var(--mds-font-apps-body-large-regular-underline-font-weight);
     line-height: var(--mds-font-apps-body-large-regular-underline-line-height);
@@ -88,7 +92,9 @@ const styles = [hostFitContentStyles, css`
     text-transform: var(--mds-font-apps-body-large-regular-underline-text-case);
   }
 
-  :host([size="midsize"]:hover), :host([size="midsize"]:active), :host([size="midsize"][inline]) {
+  :host([size="midsize"]:hover)::part(link-container),
+  :host([size="midsize"]:active)::part(link-container),
+  :host([size="midsize"][inline])::part(link-container) {
     font-size: var(--mds-font-apps-body-midsize-regular-underline-font-size);
     font-weight: var(--mds-font-apps-body-midsize-regular-underline-font-weight);
     line-height: var(--mds-font-apps-body-midsize-regular-underline-line-height);
@@ -96,7 +102,9 @@ const styles = [hostFitContentStyles, css`
     text-transform: var(--mds-font-apps-body-midsize-regular-underline-text-case);
   }
 
-  :host([size="small"]:hover), :host([size="small"]:active), :host([size="small"][inline]) {
+  :host([size="small"]:hover)::part(link-container),
+  :host([size="small"]:active)::part(link-container),
+  :host([size="small"][inline])::part(link-container) {
     font-size: var(--mds-font-apps-body-small-regular-underline-font-size);
     font-weight: var(--mds-font-apps-body-small-regular-underline-font-weight);
     line-height: var(--mds-font-apps-body-small-regular-underline-line-height);
@@ -104,17 +112,17 @@ const styles = [hostFitContentStyles, css`
     text-transform: var(--mds-font-apps-body-small-regular-underline-text-case);
   }
 
-  :host([disabled]) {
+  :host([disabled])::part(link-container) {
     color: var(--mdc-link-color-disabled);
     pointer-events: none;
   }
 
-  :host([inverted][disabled]) {
+  :host([inverted][disabled])::part(link-container) {
     color: var(--mdc-link-inverted-color-disabled);
   }
-`, ...hostFocusRingStyles(),
+`, ...hostFocusRingStyles(true),
 css`
-  :host(:active) {
+  :host(:active)::part(link-container) {
     box-shadow: none;
   }
 `];
