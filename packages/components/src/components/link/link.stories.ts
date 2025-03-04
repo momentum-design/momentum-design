@@ -136,11 +136,3 @@ export const InlineLinkInverted: StoryObj = {
     ...readOnlyControls(['inline', 'inverted']),
   },
 };
-
-export const Test: StoryObj = {
-  render: () => html`
- <p>This is a paragraph with inline <mdc-link inline icon-name='placeholder-bold'>
-    <a href="#">link</a>
-  </mdc-link></p>
-  `,
-};
