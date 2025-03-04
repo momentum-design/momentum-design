@@ -96,14 +96,15 @@ export const RadioGroupInForm = () => {
         name="course-plan"
         label="Select your course plan"
         help-text="Choose a plan that best suits your needs"
+        required-label="required"
       >
-        <mdc-radio value="standard" data-aria-label="Standard Plan" label="Standard Plan">
+        <mdc-radio value="standard" data-aria-label="Standard Plan" label="Standard Plan"
+        validation-message="Select a plan to continue">
         </mdc-radio>
         <mdc-radio value="premium" data-aria-label="Premium Plan" label="Premium Plan">
         </mdc-radio>
         <mdc-radio
           value="enterprise"
-          checked
           data-aria-label="Enterprise Plan"
           label="Enterprise Plan">
         </mdc-radio>
