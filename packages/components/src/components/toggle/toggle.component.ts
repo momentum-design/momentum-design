@@ -120,10 +120,8 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
 
       if (this.checked) {
         actualValue = !this.value ? 'isActive' : this.value;
-        this.ariaChecked = 'true';
       } else {
         actualValue = null;
-        this.ariaChecked = 'false';
       }
 
       this.manageRequired();
@@ -198,6 +196,7 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
             name="${ifDefined(this.name)}"
             value="${ifDefined(this.value)}"
             .checked="${this.checked}"
+            aria-checked="${this.checked}"
             .disabled="${this.disabled}"
             aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
             aria-label="${this.dataAriaLabel ?? ''}"

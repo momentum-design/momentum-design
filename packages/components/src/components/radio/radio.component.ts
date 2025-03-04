@@ -129,6 +129,7 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
         }
         this.setValidity();
       }
+      this.updateTabIndex();
     }
 
     /**
