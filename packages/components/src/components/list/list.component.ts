@@ -43,7 +43,7 @@ class List extends DataAriaLabelMixin(Component) {
    * @param event - The keyboard event.
    */
   private handleKeyDown(event: KeyboardEvent): void {
-    const currentIndex = this.listItems.findIndex((node) => node === event.target);
+    const currentIndex = this.getCurrentIndex(event.target);
     const newIndex = this.getNewIndexBasedOnKey(event.key, currentIndex, this.listItems.length);
     if (newIndex !== undefined) {
       this.listItems[newIndex]?.focus();
@@ -51,6 +51,25 @@ class List extends DataAriaLabelMixin(Component) {
     }
   }
 
+  /**
+   * Returns the index of the given target in the listItems array.
+   * If the target is not a list item, but a child element of a list item,
+   * it returns the index of the parent list item.
+   * @param target - The target element to find the index of.
+   * @returns The index of the target element in the listItems array.
+   */
+  private getCurrentIndex(target: EventTarget | null): number {
+    return this.listItems.findIndex((node) => node === target || node === (target as HTMLElement).parentElement);
+  }
+
+  /**
+   * Calculates a new index based on the pressed keyboard key.
+   * Supports navigation keys for moving focus within a list.
+   * @param key - The key that was pressed.
+   * @param currentIndex - The current index of the focused list item.
+   * @param wrappedDivsCount - The total number of list items.
+   * @returns The new index to focus on, or undefined if the key is not supported.
+   */
   private getNewIndexBasedOnKey(key: string, currentIndex: number, wrappedDivsCount: number): number | undefined {
     switch (key) {
       case KEYS.ARROW_DOWN:
@@ -73,7 +92,7 @@ class List extends DataAriaLabelMixin(Component) {
    * @param event - The mouse event.
    */
   private handleMouseClick(event: MouseEvent): void {
-    const newIndex = this.listItems.findIndex((node) => node === event.target);
+    const newIndex = this.getCurrentIndex(event.target);
     this.resetTabIndexAndSetActiveTabIndex(newIndex);
   }
 

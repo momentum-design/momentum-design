@@ -38,7 +38,8 @@ const render = (args: Args) => html`
       <mdc-button slot="trailing-controls" color="positive" prefix-icon="data-range-selection-bold"></mdc-button>
       <mdc-button slot="trailing-controls" variant="tertiary">Learn More</mdc-button>
       <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
-    </mdc-listitem>`)}
+    </mdc-listitem>
+    `)}
   </mdc-list>`;
 
 const meta: Meta = {
