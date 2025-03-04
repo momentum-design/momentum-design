@@ -3,9 +3,15 @@ import { property } from 'lit/decorators.js';
 
 import styles from './tablist.styles';
 import { Component } from '../../models';
-import { KEYCODES } from './tablist.constants';
+import {
+  KEYCODES,
+  SCROLL_BUTTON_OFFSET,
+  SCROLL_LEFT_DISTANCE,
+  SCROLL_RIGHT_DISTANCE,
+} from './tablist.constants';
 
 import type Tab from '../tab/tab.component';
+import type Button from '../button';
 
 /**
  * tablist component, which ...
@@ -17,105 +23,125 @@ import type Tab from '../tab/tab.component';
  * @cssprop --custom-property-name - Description of the CSS custom property
  */
 class Tablist extends Component {
-  @property({ type: Array<Tab> })
-    tabs: Array<Tab> = [];
-
   @property({ type: String })
-    activeTabId: string = '';
+  activeTabId: string = '';
+
+  @property()
+  private tabs: Array<Tab> = [];
+
+  @property()
+  private direction: String | null = '';
 
   constructor() {
     super();
     this.role = 'tablist';
     this.attachShadow({ mode: 'open' });
 
-    this.tabs = this.allTabs();
+    this.tabs = this.allTabs;
     this.activeTabId = this.getAttribute('activetabid') || this.tabs[0].getAttribute('tabid') || '';
 
     this.selectTab(this.tabs.find((tab) => tab.getAttribute('tabid') === this.activeTabId) || this.tabs[0]);
 
     this.addEventListener('keydown', this.handleKeydown.bind(this));
     this.addEventListener('click', this.handleClick.bind(this));
+    this.addEventListener('scroll', this.handleScroll.bind(this));
   }
 
-  override connectedCallback() {
+  override async connectedCallback() {
     super.connectedCallback();
+    await customElements.whenDefined('mdc-tablist');
 
-    const resizeObserver = new ResizeObserver((entries) => {
-      const parentWidth = entries[0].target.clientWidth;
-      const tablistWidth = entries[1].target.scrollWidth;
+    this.direction = (document.querySelector('html')?.getAttribute('dir')) || window.getComputedStyle(this).direction;
 
-      const rightButton = this?.shadowRoot?.querySelectorAll('mdc-button')[1];
-      (rightButton as HTMLElement).style.position = 'absolute';
-      (rightButton as HTMLElement).style.left = `${parentWidth - 32}px`;
+    const resizeObserver = new ResizeObserver((entries): void => {
+      const tablistWidth: number = this.tabList.scrollWidth || 0;
+      const tablistContainerWidth: number = entries[0].borderBoxSize[0].inlineSize;
 
-      if (tablistWidth > parentWidth) {
-        this.shadowRoot?.querySelectorAll('mdc-button').forEach((button) => {
-          (button as HTMLElement).classList.remove('hide-button');
-        });
+      if (this.direction === 'rtl') {
+        this.leftArrowButton.style.right = `${tablistContainerWidth - SCROLL_BUTTON_OFFSET}px`;
       } else {
-        this.shadowRoot?.querySelectorAll('mdc-button').forEach((button) => {
-          // (button as HTMLElement).classList.add('hide-button');
-        });
+        this.rightArrowButton.style.left = `${tablistContainerWidth - SCROLL_BUTTON_OFFSET}px`;
+      }
+
+      if (tablistContainerWidth >= tablistWidth) {
+        this.hideLeftArrow();
+        this.hideRightArrow();
+      } else if (this.direction === 'rtl') {
+        this.showLeftArrow();
+      } else {
+        this.showRightArrow();
       }
     });
 
-    resizeObserver.observe(this.parentElement as Element);
     resizeObserver.observe(this);
+
+    this.tabList.addEventListener('scroll', this.handleScroll);
   }
 
-  override attributeChangedCallback(_activetabid: string, _oldTabId: string, newTabId: string) {
+  override attributeChangedCallback = (_activetabid: string, _oldTabId: string, newTabId: string) => {
     this.selectTab(this.tabs.find((tab) => tab.getAttribute('tabid') === newTabId) || this.tabs[0]);
-  }
+  };
 
-  allTabs() {
+  private get allTabs(): Tab[] {
     return Array.from(this.querySelectorAll('mdc-tab'));
   }
 
-  previousTab() {
+  private get previousTab(): Tab {
     const newIndex = this.tabs.findIndex((tab) => document.activeElement === tab) - 1;
     return this.tabs[(newIndex + this.tabs.length) % this.tabs.length];
   }
 
-  firstTab() {
-    return this.tabs[0];
-  }
+  private get firstTab(): Tab { return this.tabs[0]; }
 
-  lastTab() {
-    return this.tabs[this.tabs.length - 1];
-  }
+  private get lastTab(): Tab { return this.tabs[this.tabs.length - 1]; }
 
-  nextTab() {
+  private get nextTab(): Tab {
     const newIndex = this.tabs.findIndex((tab) => document.activeElement === tab) + 1;
     return this.tabs[newIndex % this.tabs.length];
   }
 
-  resetSelection() {
+  private get tabListContainer(): HTMLElement {
+    return this.shadowRoot?.querySelector('.tab_list__container') as HTMLElement;
+  }
+
+  private get tabList(): HTMLElement {
+    return this.shadowRoot?.querySelector('.tab_list') as HTMLElement;
+  }
+
+  private get leftArrowButton(): Button {
+    return this.shadowRoot?.querySelector('mdc-button[prefix-icon="arrow-left-regular"]') as Button;
+  }
+
+  private get rightArrowButton(): Button {
+    return this.shadowRoot?.querySelector('mdc-button[prefix-icon="arrow-right-regular"]') as Button;
+  }
+
+  private resetSelection = (): void => {
     this.tabs.forEach((tab) => { tab.removeAttribute('active'); });
-  }
+  };
 
-  focusTab(newTab: Tab) {
+  private focusTab = (newTab: Tab): void => {
     newTab.focus();
-  }
+  };
 
-  selectTab(newTab: Tab) {
+  private selectTab = (newTab: Tab): void => {
     this.resetSelection();
     newTab.setAttribute('active', '');
     this.handleTabChange(newTab);
-  }
+  };
 
-  handleTabChange(tab: Tab) {
+  private handleTabChange = (tab: Tab): void => {
     const event = new CustomEvent('change', {
       detail: { tabId: tab.getAttribute('tabid') },
     });
     this.dispatchEvent(event);
-  }
+  };
 
-  handleKeydown(event: KeyboardEvent): void {
+  private handleKeydown = (event: KeyboardEvent): void => {
     const tab = event.target as Tab;
 
     if (tab.getAttribute('role') !== 'tab') { return; }
 
-    // Don’t handle modifier shortcuts typically used by assistive technology.
     if (event.altKey) { return; }
 
     let newTab;
@@ -132,35 +158,39 @@ class Tablist extends Component {
         break;
 
       case KEYCODES.LEFT:
-        newTab = this.previousTab();
+        if (this.direction === 'rtl') {
+          newTab = this.nextTab;
+        } else newTab = this.previousTab;
         break;
 
       case KEYCODES.RIGHT:
-        newTab = this.nextTab();
+
+        if (this.direction === 'rtl') {
+          newTab = this.previousTab;
+        } else newTab = this.nextTab;
         break;
 
       case KEYCODES.HOME:
-        newTab = this.firstTab();
+        newTab = this.firstTab;
         break;
 
       case KEYCODES.END:
-        newTab = this.lastTab();
+        newTab = this.lastTab;
         break;
 
       case KEYCODES.TAB:
         event.preventDefault();
 
         if (event.shiftKey) {
-          const leftArrowButton = this?.shadowRoot?.querySelectorAll('mdc-button[prefix-icon="arrow-left-regular"]')[0];
-          if (leftArrowButton && window.getComputedStyle(leftArrowButton).display !== 'none') {
-            (leftArrowButton as HTMLElement).focus();
-          } else (this.previousElementSibling as HTMLElement)?.focus();
+          if (this.isArrrowHidden(this.leftArrowButton)) {
+            (this?.previousElementSibling as HTMLElement)?.focus();
+          } else {
+            this.leftArrowButton.focus();
+          }
+        } else if (this.isArrrowHidden(this.rightArrowButton)) {
+          (this?.nextElementSibling as HTMLElement)?.focus();
         } else {
-          // eslint-disable-next-line max-len
-          const rightArrowButton = this?.shadowRoot?.querySelectorAll('mdc-button[prefix-icon="arrow-right-regular"]')[0];
-          if (rightArrowButton && window.getComputedStyle(rightArrowButton).display !== 'none') {
-            (rightArrowButton as HTMLElement).focus();
-          } else (this.previousElementSibling as HTMLElement)?.focus();
+          this.rightArrowButton.focus();
         }
         break;
 
@@ -170,52 +200,117 @@ class Tablist extends Component {
     if (newTab) {
       this.focusTab(newTab);
     }
-  }
+  };
 
-  handleClick(event: MouseEvent): void {
+  private handleClick = (event: MouseEvent): void => {
     const tab = event.target as Tab;
     if (tab.getAttribute('role') !== 'tab') { return; }
 
     this.selectTab(tab);
     this.focusTab(tab);
-  }
+  };
 
-  scrollTabsLeft() {
-    console.log('scrollTabsLeft');
-  }
+  private handleScroll = (): void => {
+    this.handleArrowVisibility();
+  };
 
-  scrollTabsRight() {
-    console.log('scrollTabsRight');
-  }
+  private isArrrowHidden = (arrowButton: Button): boolean => arrowButton.classList.contains('hide-button');
+
+  private showLeftArrow = (): void => {
+    this.leftArrowButton.classList.remove('hide-button');
+    this.tabListContainer.classList.add('show-left-button-padding');
+  };
+
+  private hideLeftArrow = (): void => {
+    this.leftArrowButton.classList.add('hide-button');
+    this.tabListContainer.classList.remove('show-left-button-padding');
+  };
+
+  private showRightArrow = (): void => {
+    this.rightArrowButton.classList.remove('hide-button');
+    this.tabListContainer.classList.add('show-right-button-padding');
+  };
+
+  private hideRightArrow = (): void => {
+    this.tabListContainer.classList.remove('show-right-button-padding');
+    this.rightArrowButton.classList.add('hide-button');
+  };
+
+  private handleArrowVisibility = () => {
+    let leftMostTab;
+    let rightMostTab;
+
+    if (this.direction === 'rtl') {
+      leftMostTab = this.lastTab;
+      rightMostTab = this.firstTab;
+    } else {
+      leftMostTab = this.firstTab;
+      rightMostTab = this.lastTab;
+    }
+
+    const leftMostTabPosition = Math.round(leftMostTab.getBoundingClientRect().left);
+    const rightMostTabPosition = Math.round(rightMostTab.getBoundingClientRect().right);
+    const tabListContainerPositionLeft = Math.round(this.getBoundingClientRect().left);
+    const tabListContainerPositionRight = Math.round(this.getBoundingClientRect().right);
+
+    if (leftMostTabPosition < tabListContainerPositionLeft) {
+      this.showLeftArrow();
+    } else {
+      this.hideLeftArrow();
+    }
+
+    if (rightMostTabPosition > tabListContainerPositionRight) {
+      this.showRightArrow();
+    } else {
+      this.hideRightArrow();
+    }
+  };
+
+  private scrollTabsLeft = (): void => {
+    this.tabList?.scrollBy({
+      left: SCROLL_LEFT_DISTANCE,
+      behavior: 'smooth',
+    });
+  };
+
+  private scrollTabsRight = (): void => {
+    this.tabList?.scrollBy({
+      left: SCROLL_RIGHT_DISTANCE,
+      behavior: 'smooth',
+    });
+  };
 
   public override render() {
     return html`
-    <mdc-button 
-      variant="tertiary"
-      size="32"
-      color="default" 
-      prefix-icon="arrow-left-regular" 
-      postfix-icon="" 
-      type="button" 
-      role="button" 
-      tabindex="0" 
-      aria-label="Scroll Tabs Left"
-      @click="${() => this.scrollTabsLeft()}"
-      class="hide-button">
-    </mdc-button>
-    <slot></slot>
-    <mdc-button 
-      variant="tertiary"
-      size="32"
-      color="default" 
-      prefix-icon="arrow-right-regular" 
-      postfix-icon="" 
-      type="button" 
-      role="button" 
-      tabindex="0" 
-      aria-label="Scroll Tabs Right"
-      @click="${() => this.scrollTabsRight()}">
-    </mdc-button>
+      <mdc-button 
+        variant="tertiary"
+        size="32"
+        color="default" 
+        prefix-icon="arrow-left-regular" 
+        postfix-icon="" 
+        type="button" 
+        role="button" 
+        tabindex="0" 
+        aria-label="Scroll Tabs Left"
+        @click="${() => this.scrollTabsLeft()}"
+        class="hide-button"></mdc-button>
+      <div class="tab_list__container">
+        <div class="tab_list">
+          <slot></slot>
+        </div>
+      </div>
+      <mdc-button 
+        variant="tertiary"
+        size="32"
+        color="default" 
+        prefix-icon="arrow-right-regular" 
+        postfix-icon="" 
+        type="button" 
+        role="button" 
+        tabindex="0" 
+        aria-label="Scroll Tabs Right"
+        @click="${() => this.scrollTabsRight()}"
+        class="hide-button"></mdc-button>
     `;
   }
 
