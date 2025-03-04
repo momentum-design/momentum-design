@@ -246,10 +246,10 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       const trailingButton = input.locator('mdc-button[part="trailing-button"]');
       await componentsPage.actionability.pressTab();
       await expect(input).toBeFocused();
-      await expect(trailingButton).toHaveClass('hidden');
+      await expect(trailingButton).toHaveClass('own-focus-ring hidden');
       await inputEl.fill('test');
       await expect(inputEl).toHaveValue('test');
-      await expect(trailingButton).not.toHaveClass('hidden');
+      await expect(trailingButton).toHaveClass('own-focus-ring ');
       await componentsPage.actionability.pressTab();
       await expect(inputEl).not.toBeFocused();
       await expect(trailingButton).toBeFocused();
