@@ -3,6 +3,7 @@ import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
+import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { BUTTON_TYPE, DEFAULTS } from './buttonsimple.constants';
 import styles from './buttonsimple.styles';
@@ -13,9 +14,14 @@ import type { ButtonSize, ButtonType } from './buttonsimple.types';
  * It is used as an internal component and is not intended to be used directly by consumers.
  * Consumers should use the `mdc-button` component instead.
  *
+ * @event click - (React: onClick) This event is dispatched when the button is clicked.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the button.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the button.
+ * @event focus - (React: onFocus) This event is dispatched when the button receives focus.
+ *
  * @tagname mdc-buttonsimple
  */
-class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
+class Buttonsimple extends FormInternalsMixin(TabIndexMixin(DisabledMixin(Component))) {
   /**
    * The button's active state indicates whether it is currently toggled on (active) or off (inactive).
    * When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
@@ -67,24 +73,12 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
    */
   private prevTabindex = 0;
 
-  /** @internal */
-  static formAssociated = true;
-
-  /** @internal */
-  private internals: ElementInternals;
-
-  /** @internal */
-  get form(): HTMLFormElement | null {
-    return this.internals.form;
-  }
-
   constructor() {
     super();
     this.addEventListener('click', this.executeAction.bind(this));
     this.addEventListener('keydown', this.handleKeyDown.bind(this));
     this.addEventListener('keyup', this.handleKeyUp.bind(this));
-    /** @internal */
-    this.internals = this.attachInternals();
+    this.addEventListener('blur', this.handleBlur.bind(this));
   }
 
   public override update(changedProperties: PropertyValues): void {
@@ -102,12 +96,12 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
   }
 
   protected executeAction() {
-    if (this.type === BUTTON_TYPE.SUBMIT && this.internals.form) {
-      this.internals.form.requestSubmit();
+    if (this.type === BUTTON_TYPE.SUBMIT && this.form) {
+      this.form.requestSubmit();
     }
 
-    if (this.type === BUTTON_TYPE.RESET && this.internals.form) {
-      this.internals.form.reset();
+    if (this.type === BUTTON_TYPE.RESET && this.form) {
+      this.form.reset();
     }
   }
 
@@ -169,6 +163,16 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
       view: window,
     });
     this.dispatchEvent(clickEvent);
+  }
+
+  /**
+   * In case the button is pressed and the focus is lost while pressing,
+   * the pressed class is removed.
+   */
+  private handleBlur() {
+    if (this.classList.contains('pressed')) {
+      this.classList.remove('pressed');
+    }
   }
 
   /**

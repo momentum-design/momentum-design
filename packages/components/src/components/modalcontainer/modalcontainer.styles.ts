@@ -16,29 +16,29 @@ const styles = [
       --mdc-modalcontainer-elevation-4: var(--mds-elevation-4);
     }
 
-    .mdc-modal-container {
+    :host::part(container) {
       padding: 0.75rem;
       background-color: var(--mdc-modalcontainer-primary-background-color);
       border-radius: 0.5rem;
       border: 0.0625rem solid var(--mdc-modalcontainer-border-color);
     }
 
-    .mdc-modal-container[contrast] {
+    :host([color='contrast'])::part(container) {
       background-color: var(--mdc-modalcontainer-inverted-background-color);
       border: 0.0625rem solid var(--mdc-modalcontainer-inverted-border-color);
       color: var(--mdc-modalcontainer-inverted-text-color);
     }
 
-    .mdc-modal-container[data-elevation='1'] {
+    :host([elevation='1'])::part(container) {
       filter: var(--mdc-modalcontainer-elevation-1);
     }
-    .mdc-modal-container[data-elevation='2'] {
+    :host([elevation='2'])::part(container) {
       filter: var(--mdc-modalcontainer-elevation-2);
     }
-    .mdc-modal-container[data-elevation='3'] {
+    :host([elevation='3'])::part(container) {
       filter: var(--mdc-modalcontainer-elevation-3);
     }
-    .mdc-modal-container[data-elevation='4'] {
+    :host([elevation='4'])::part(container) {
       filter: var(--mdc-modalcontainer-elevation-4);
     }
   `,

@@ -1,15 +1,14 @@
 import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
-import { property, query } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './input.styles';
 import FormfieldWrapper from '../formfieldwrapper';
-import { NameMixin } from '../../utils/mixins/NameMixin';
 import { AUTO_CAPITALIZE, DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { IconNames } from '../icon/icon.types';
 import type { AutoCapitalizeType } from './input.types';
-import { ValueMixin } from '../../utils/mixins/ValueMixin';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
+import { FormInternalsMixin, AssociatedFormControl } from '../../utils/mixins/FormInternalsMixin';
 /**
  * mdc-input is a component that allows users to input text.
  *  It contains:
@@ -23,6 +22,11 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
  * - all the attributes of the input field.
  *
  * @tagname mdc-input
+ *
+ * @event input - (React: onInput) This event is dispatched when the value of the input field changes (every press).
+ * @event change - (React: onChange) This event is dispatched when the value of the input field changes (on blur).
+ * @event focus - (React: onFocus) This event is dispatched when the input receives focus.
+ * @event blur - (React: onBlur) This event is dispatched when the input loses focus.
  *
  * @dependency mdc-icon
  * @dependency mdc-text
@@ -46,7 +50,8 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
  * @cssproperty --mdc-input-primary-border-color - Border color for the input container when primary
  *
  */
-class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) {
+
+class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
   /**
    * The placeholder text that is displayed when the input field is empty.
    */
@@ -133,79 +138,67 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
    */
   @property({ type: String, attribute: 'clear-aria-label' }) clearAriaLabel = '';
 
-  checkValidity(): boolean {
-    this.setValidityFromInput();
-    return this.internals.checkValidity();
-  }
+  override connectedCallback(): void {
+    super.connectedCallback();
 
-  reportValidity() {
-    this.setValidityFromInput();
-    return this.internals.reportValidity();
-  }
-
-  /** @internal */
-  private internals: ElementInternals;
-
-  /** @internal */
-  static formAssociated = true;
-
-  /** @internal */
-  get form(): HTMLFormElement | null {
-    return this.internals.form;
-  }
-
-  constructor() {
-    super();
-    /** @internal */
-    this.internals = this.attachInternals();
-  }
-
-    /**
-   * @internal
-   * The input element
-   */
-    @query('input') private inputElement!: HTMLInputElement;
-
-    override connectedCallback(): void {
-      super.connectedCallback();
-
-      this.updateComplete.then(() => {
-        if (this.inputElement) {
-          this.inputElement.checkValidity();
-          this.setValidityFromInput();
-          this.internals.setFormValue(this.inputElement.value);
-        }
-      }).catch((error) => {
-        if (this.onerror) {
-          this.onerror(error);
-        }
-      });
-    }
-
-    protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
-      super.updated(changedProperties);
-      if (changedProperties.has('value')) {
-        this.handleValueChange();
+    this.updateComplete.then(() => {
+      if (this.inputElement) {
+        this.inputElement.checkValidity();
+        this.setInputValidity();
+        this.internals.setFormValue(this.inputElement.value);
       }
-    }
+    }).catch((error) => {
+      if (this.onerror) {
+        this.onerror(error);
+      }
+    });
+  }
 
-    /**
+  /** @internal */
+  formResetCallback(): void {
+    this.value = '';
+    this.requestUpdate();
+  }
+
+  /** @internal */
+  formStateRestoreCallback(
+    state: string,
+  ): void {
+    this.value = state;
+  }
+
+  /**
    * Handles the value change of the input field.
    * Sets the form value and updates the validity of the input field.
    * @returns void
    */
-    handleValueChange() {
-      this.internals.setFormValue(this.value);
-      this.updateComplete.then(() => {
-        this.setValidityFromInput();
-      }).catch((error) => {
-        if (this.onerror) {
-          this.onerror(error);
-        }
-      });
-    }
+  handleValueChange() {
+    this.updateComplete.then(() => {
+      this.setInputValidity();
+    }).catch((error) => {
+      if (this.onerror) {
+        this.onerror(error);
+      }
+    });
+  }
 
-    /**
+  protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    super.updated(changedProperties);
+    if (changedProperties.has('value')) {
+      this.handleValueChange();
+    }
+  }
+
+  private setInputValidity() {
+    if (this.validationMessage && this.value === '') {
+      this.inputElement.setCustomValidity(this.validationMessage);
+    } else {
+      this.inputElement.setCustomValidity('');
+    }
+    this.setValidity();
+  }
+
+  /**
    * This function is called when the attribute changes.
    * It updates the validity of the input field based on the input field's validity.
    *
@@ -213,66 +206,52 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
    * @param old - old value
    * @param value - new value
    */
-    override attributeChangedCallback(
-      name: string,
-      old: string | null,
-      value: string | null,
-    ): void {
-      super.attributeChangedCallback(name, old, value);
+  override attributeChangedCallback(
+    name: string,
+    old: string | null,
+    value: string | null,
+  ): void {
+    super.attributeChangedCallback(name, old, value);
 
-      const validationRelatedAttributes = [
-        'maxlength',
-        'minlength',
-        'pattern',
-        'required',
-      ];
+    const validationRelatedAttributes = [
+      'maxlength',
+      'minlength',
+      'pattern',
+      'required',
+    ];
 
-      if (validationRelatedAttributes.includes(name)) {
-        this.updateComplete.then(() => {
-          this.setValidityFromInput();
-        }).catch((error) => {
-          if (this.onerror) {
-            this.onerror(error);
-          }
-        });
-      }
+    if (validationRelatedAttributes.includes(name)) {
+      this.updateComplete.then(() => {
+        this.setInputValidity();
+      }).catch((error) => {
+        if (this.onerror) {
+          this.onerror(error);
+        }
+      });
     }
+  }
 
-    /**
-   * Sets the validity of the input field based on the input field's validity.
-   * @returns void
-   */
-    private setValidityFromInput() {
-      if (this.inputElement) {
-        this.internals.setValidity(
-          this.inputElement.validity,
-          this.inputElement.validationMessage,
-          this.inputElement,
-        );
-      }
-    }
-
-    /**
+  /**
    * Updates the value of the input field.
    * Sets the form value.
    * @returns void
    */
-    private updateValue() {
-      this.value = this.inputElement.value;
-      this.internals.setFormValue(this.inputElement.value);
-    }
+  private updateValue() {
+    this.value = this.inputElement.value;
+    this.internals.setFormValue(this.inputElement.value);
+  }
 
-    /**
+  /**
    * Handles the input event of the input field.
    * Updates the value and sets the validity of the input field.
    *
    */
-    private onInput() {
-      this.updateValue();
-      this.setValidityFromInput();
-    }
+  private onInput() {
+    this.updateValue();
+    this.setInputValidity();
+  }
 
-    /**
+  /**
    * Handles the change event of the input field.
    * Updates the value and sets the validity of the input field.
    *
@@ -282,35 +261,35 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
    *
    * @param event - Event which contains information about the value change.
    */
-    private onChange(event: Event) {
-      this.updateValue();
-      this.setValidityFromInput();
-      const EventConstructor = event.constructor as typeof Event;
-      this.dispatchEvent(new EventConstructor(event.type, event));
-    }
+  private onChange(event: Event) {
+    this.updateValue();
+    this.setInputValidity();
+    const EventConstructor = event.constructor as typeof Event;
+    this.dispatchEvent(new EventConstructor(event.type, event));
+  }
 
-    /**
+  /**
      * Handles the keydown event of the input field.
      * If the key pressed is 'Enter', it submits the form.
      * @param event - Keyboard event
      */
-    private handleKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Enter') {
-        this.internals.form?.requestSubmit();
-      }
+  private handleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.form?.requestSubmit();
     }
+  }
 
-    /**
+  /**
    * Renders the leading icon before the input field.
    * If the leading icon is not set, it will not be displayed.
    *
    * @returns void
    */
-    protected renderLeadingIcon() {
-      if (!this.leadingIcon) {
-        return nothing;
-      }
-      return html`
+  protected renderLeadingIcon() {
+    if (!this.leadingIcon) {
+      return nothing;
+    }
+    return html`
       <mdc-icon 
         class="leading-icon" 
         part="leading-icon"
@@ -319,9 +298,9 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
         length-unit="${DEFAULTS.ICON_SIZE_UNIT}">
       </mdc-icon>
     `;
-    }
+  }
 
-    /**
+  /**
    * Renders the prefix text before the input field.
    * If the prefix text is more than 10 characters,
    * - it will not be displayed.
@@ -331,11 +310,11 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
    *  The consumers should set the appropriate aria-label for the input field using 'data-aria-label' attribute.
    * @returns void
    */
-    protected renderPrefixText() {
-      if (!this.prefixText) {
-        return nothing;
-      }
-      return html`
+  protected renderPrefixText() {
+    if (!this.prefixText) {
+      return nothing;
+    }
+    return html`
       <mdc-text 
         class="prefix-text" 
         tagname="${DEFAULTS.PREFIX_TEXT_TAG}" 
@@ -345,26 +324,26 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
         ${this.prefixText.slice(0, PREFIX_TEXT_OPTIONS.MAX_LENGTH)}
       </mdc-text>
     `;
-    }
+  }
 
-    /**
+  /**
    * Clears the input field.
    */
-    private clearInputText() {
-      this.value = '';
-      // focus the input field after clearing the text
-      this.inputElement?.focus();
-    }
+  private clearInputText() {
+    this.value = '';
+    // focus the input field after clearing the text
+    this.inputElement?.focus();
+  }
 
-    /**
+  /**
    * Renders the trailing button to clear the input field if the trailingButton is set to true.
    * @returns void
    */
-    protected renderTrailingButton() {
-      if (!this.trailingButton) {
-        return nothing;
-      }
-      return html`
+  protected renderTrailingButton() {
+    if (!this.trailingButton) {
+      return nothing;
+    }
+    return html`
       <mdc-button 
         part='trailing-button'
         class='${!this.value ? 'hidden' : ''}'
@@ -376,10 +355,10 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
         ?disabled=${this.disabled || this.readonly || !this.value}
       ></mdc-button>
     `;
-    }
+  }
 
-    public override render() {
-      return html`
+  public override render() {
+    return html`
       ${this.renderLabel()}
       <div class="input-container mdc-focus-ring" part="input-container">
         <slot name="input-leading-icon">${this.renderLeadingIcon()}</slot>
@@ -397,7 +376,7 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
             ?readonly="${this.readonly}"
             ?required="${!!this.requiredLabel}"
             type="text"
-            aria-describedby="${FORMFIELD_DEFAULTS.HELPER_TEXT_ID}"
+            aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
             placeholder=${ifDefined(this.placeholder)}
             minlength=${ifDefined(this.minlength)}
             maxlength=${ifDefined(this.maxlength)}
@@ -418,7 +397,7 @@ class Input extends DataAriaLabelMixin(ValueMixin(NameMixin(FormfieldWrapper))) 
       </div>
       ${this.helpText ? this.renderHelperText() : nothing}
     `;
-    }
+  }
 
   public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...styles];
 }
