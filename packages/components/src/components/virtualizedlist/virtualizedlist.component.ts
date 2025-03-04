@@ -160,7 +160,7 @@ class VirtualizedList extends Component {
     }
 
     return html`<div
-          class="mdc-virtualizedlist-container"
+          part="container"
           style="height: ${getTotalSize()}px;"
         >
           <slot></slot>
@@ -170,8 +170,8 @@ class VirtualizedList extends Component {
   public override render() {
     return html`<div
       ${ref(this.scrollElementRef)}
-      class="mdc-virtualizedlist-scroll"
-      @scroll=${this.onscroll}
+      part="scroll"
+      @scroll=${this.onscroll && this.onscroll}
     >
       ${this.virtualizerController ? this.getVirtualizedListWrapper(this.virtualizerController) : html``}
     </div>

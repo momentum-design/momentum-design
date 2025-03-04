@@ -66,7 +66,7 @@ class Avatar extends AvatarComponentMixin(IconNameMixin(Component)) {
     }
     if (this.presence) {
       return html`
-        <mdc-presence class="presence" type="${this.presence}" size="${getPresenceSize(this.size)}"></mdc-presence>
+        <mdc-presence part="presence" type="${this.presence}" size="${getPresenceSize(this.size)}"></mdc-presence>
       `;
     }
     return nothing;
@@ -107,7 +107,7 @@ class Avatar extends AvatarComponentMixin(IconNameMixin(Component)) {
   private photoTemplate(): TemplateResult {
     return html`
       <img
-        class="photo"
+        part="photo"
         src="${ifDefined(this.src)}"
         aria-hidden="true"
         ?hidden="${!this.isPhotoLoaded}"
@@ -265,7 +265,7 @@ class Avatar extends AvatarComponentMixin(IconNameMixin(Component)) {
     if (!this.isTyping) {
       return nothing;
     }
-    return html`<div class="loading__wrapper"><div class="loader"></div></div>`;
+    return html`<div part="loading-wrapper"><div part="loader"></div></div>`;
   }
 
   /**
@@ -304,7 +304,7 @@ class Avatar extends AvatarComponentMixin(IconNameMixin(Component)) {
   public override render(): TemplateResult {
     const type = this.getTypeBasedOnInputs();
     return html`
-      <div class="content" aria-hidden="true">
+      <div part="content" aria-hidden="true">
         ${this.getPhotoPlaceHolderContent(type)}
         ${this.getTemplateBasedOnType(type)}
         ${this.getLoadingContent()}
