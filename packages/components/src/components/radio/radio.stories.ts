@@ -4,6 +4,7 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
+import '../button';
 
 const render = (args: Args) => html`
   <mdc-radio
@@ -18,6 +19,7 @@ const render = (args: Args) => html`
     ?checked=${args.checked}
     ?disabled=${args.disabled}
     ?readonly=${args.readonly}
+    required-label="${args['required-label']}"
     data-aria-label="${args['data-aria-label']}"
   ></mdc-radio>
 `;
@@ -55,6 +57,9 @@ const meta: Meta = {
       control: { type: 'text' },
     },
     'data-aria-label': {
+      control: { type: 'text' },
+    },
+    'required-label': {
       control: { type: 'text' },
     },
     ...hideControls(['help-text-type']),
@@ -190,19 +195,26 @@ export const RadioInForm = () => {
 
   return html`
     <form @submit=${handleSubmit}>
+      <fieldset>
+        <legend>Form Example</legend>
       <mdc-radio name="course-plan" value="standard" data-aria-label="Standard Plan" label="Standard Plan">
       </mdc-radio>
-      <mdc-radio name="course-plan" value="premium" data-aria-label="Premium Plan" label="Premium Plan">
+      <mdc-radio name="course-plan" value="premium" data-aria-label="Premium Plan" label="Premium Plan" >
       </mdc-radio>
       <mdc-radio
         name="course-plan"
         value="enterprise"
-        checked
+        required-label="required"
         data-aria-label="Enterprise Plan"
-        label="Enterprise Plan">
+        label="Enterprise Plan"
+        validation-message="Select a plan to continue">
       </mdc-radio>
       <br />
-      <button type="submit">Submit</button>
+      <div style='display: flex; gap: 0.25rem;'>
+        <mdc-button type="submit" size='24'>Submit</mdc-button>
+        <mdc-button type="reset" size='24' variant='secondary'>Reset</mdc-button>
+      </div>
+      </fieldset>
     </form>
   `;
 };
