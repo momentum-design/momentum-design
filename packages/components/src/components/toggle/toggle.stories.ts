@@ -2,6 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
@@ -14,9 +15,9 @@ const render = (args: Args) => html`
       @focus="${action('onfocus')}"
       @change="${action('onchange')}"
       size="${args.size}"
-      label="${args.label}"
-      help-text="${args['help-text']}"
-      data-aria-label="${args['data-aria-label']}"
+      label="${ifDefined(args.label)}"
+      help-text="${ifDefined(args['help-text'])}"
+      data-aria-label="${ifDefined(args['data-aria-label'])}"
       ?checked="${args.checked}"
       ?disabled="${args.disabled}">
     </mdc-toggle>
@@ -107,8 +108,6 @@ export const Disabled: StoryObj = {
 
 export const WithoutLabel: StoryObj = {
   args: {
-    ...Example.args,
-    label: '',
     'data-aria-label': 'This is a toggle with no label',
   },
 };
