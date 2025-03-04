@@ -112,7 +112,7 @@ export const WithoutLabel: StoryObj = {
   },
 };
 
-export const IsActivatedInsideForm: StoryObj = {
+export const ToggleInsideForm: StoryObj = {
   render: (args) => {
     const onSubmit = (event: Event) => {
       event.preventDefault();
@@ -124,30 +124,12 @@ export const IsActivatedInsideForm: StoryObj = {
     <form @submit="${onSubmit}">
       <fieldset>
         <legend>Form Example</legend>
-        <mdc-toggle name="toggleName" value="toggleValueActivated" checked label="Agree to Terms"
-          size="${args.size}"></mdc-toggle>
-        <mdc-button type="submit">Submit</mdc-button>
-      </fieldset>
-    </form>
-  `;
-  },
-};
-
-export const IsDeactivatedInsideForm: StoryObj = {
-  render: (args) => {
-    const onSubmit = (event: Event) => {
-      event.preventDefault();
-      const formData = new FormData(event.target as HTMLFormElement);
-      const selectedValues = formData.get('toggleName');
-      action('Form Submitted')({ value: selectedValues });
-    };
-    return html`
-    <form @submit="${onSubmit}">
-      <fieldset>
-        <legend>Form Example</legend>
-        <mdc-toggle name="toggleName" value="toggleValueDeactivated" label="Agree to Terms"
-          size="${args.size}"></mdc-toggle>
-        <mdc-button type="submit">Submit</mdc-button>
+        <mdc-toggle name="toggleName" value="toggleValue" label="Agree to Terms" size="${args.size}" 
+          required-label='required' validation-message='Toggle this switch to continue'></mdc-toggle>
+          <div style='display: flex; gap: 0.25rem'>
+            <mdc-button type="submit" size='24'>Submit</mdc-button>
+            <mdc-button type="reset" size='24' variant='secondary'>Reset</mdc-button>
+          </div>
       </fieldset>
     </form>
   `;
