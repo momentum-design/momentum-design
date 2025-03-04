@@ -390,25 +390,25 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
       await expect(popover).not.toHaveAttribute('visible');
     });
 
-    await test.step('focusing trigger button, focus should go in interactive popover', async () => {
-      const { popover, triggerButton } = await setup({
-        componentsPage,
-        id: 'popover',
-        triggerID: 'trigger-button',
-        trigger: TRIGGER.FOCUSIN,
-        children: '<mdc-button>Interactive Popover</mdc-button>',
-        interactive: true,
-        hideOnBlur: true,
-      });
+    const { popover: popoverInteractive, triggerButton: triggerButtonInteractive } = await setup({
+      componentsPage,
+      id: 'popover',
+      triggerID: 'trigger-button',
+      trigger: TRIGGER.FOCUSIN,
+      children: '<mdc-button>Interactive Popover</mdc-button>',
+      interactive: true,
+      hideOnBlur: true,
+    });
 
+    await test.step('focusing trigger button, focus should go in interactive popover', async () => {
       await triggerButton.focus();
-      await expect(popover).toHaveAttribute('visible');
-      await expect(triggerButton).not.toBeFocused();
+      await expect(popoverInteractive).toHaveAttribute('visible');
+      await expect(triggerButtonInteractive).not.toBeFocused();
     });
 
     await test.step('if hide-on-blur set, focusing out the interactive popover should close the popover', async () => {
       await componentsPage.page.keyboard.press('Tab');
-      await expect(popover).not.toHaveAttribute('visible');
+      await expect(popoverInteractive).not.toHaveAttribute('visible');
     });
   });
 
