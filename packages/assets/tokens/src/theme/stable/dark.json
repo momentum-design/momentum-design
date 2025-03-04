@@ -513,6 +513,13 @@
               "value": "{color.core.blue.60}",
               "description": ""
             }
+          },
+          "input": {
+            "normal": {
+              "value": "{color.core.black-alpha.50}",
+              "type": "color",
+              "description": "Used for inverted control components outline (checkbox, toggles)"
+            }
           }
         },
         "control": {
@@ -552,8 +559,8 @@
             "normal": {
               "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.gray.50}",
-              "description": ""
+              "value": "{color.core.black-alpha.11}",
+              "description": "Used for inverted control component (checkbox, radio, toggle)"
             },
             "hover": {
               "parent": "theme/stable/dark",
@@ -572,6 +579,15 @@
               "type": "color",
               "value": "{color.core.black-alpha.20}",
               "description": "Core: {color.core.black-alpha.20} \nHEX: #000000 20%"
+            }
+          },
+          "indicator": {
+            "inactive": {
+              "normal": {
+                "value": "{color.core.gray.50}",
+                "type": "color",
+                "description": "Used for inverted controls (checkbox, toggle, radio, progress bar, spinner)"
+              }
             }
           }
         }

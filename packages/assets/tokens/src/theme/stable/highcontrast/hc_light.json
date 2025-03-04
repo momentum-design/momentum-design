@@ -472,6 +472,13 @@
             "type": "color",
             "value": "{color.highcontrast.white.WindowTextColor}",
             "description": ""
+          },
+          "input": {
+            "normal": {
+              "value": "{color.highcontrast.white.WindowTextColor}",
+              "type": "color",
+              "description": "Used for inverted control components outline (checkbox, toggles)"
+            }
           }
         },
         "control": {
@@ -531,6 +538,15 @@
               "type": "color",
               "value": "{color.highcontrast.white.GrayTextColor}",
               "description": "Core: {color.core.black-alpha.20} \nHEX: #000000 20%"
+            }
+          },
+          "indicator": {
+            "inactive": {
+              "normal": {
+                "value": "{color.highcontrast.white.ButtonFaceColor}",
+                "type": "color",
+                "description": "Used for inverted controls (checkbox, toggle, radio, progress bar, spinner)"
+              }
             }
           }
         }
