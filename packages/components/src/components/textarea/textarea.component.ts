@@ -37,7 +37,7 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   /**
    * The cols attribute specifies the visible number of lines in a text area.
    */
-  @property({ type: Number }) cols = 40;
+  @property({ type: Number }) cols = 20;
 
   /**
    * The wrap attribute specifies how the text in a text area is to be wrapped when submitted in a form.
@@ -90,10 +90,9 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   @property({ type: String, attribute: 'clear-aria-label' }) clearAriaLabel = '';
 
   /**
-   * If true, the character counter is shown.
-   * @default false
+   * maximum character limit for the textarea field for character counter.
    */
-  @property({ type: Boolean, attribute: 'character-counter' }) characterCounter = false;
+  @property({ type: Number, attribute: 'max-character-limit' }) maxCharacterLimit?: number;
 
     /**
    * @internal
@@ -231,8 +230,8 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     }
 
     /**
-   * Clears the input field.
-   */
+      * Clears the input field.
+    */
     private clearInputText(event: Event) {
       event.preventDefault();
       this.textarea.value = '';
@@ -251,27 +250,29 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
       }
       return html`
     <mdc-button 
-      part='trailing-button'
+      part='cancel-button'
+      class='${!this.value ? 'hidden' : ''}'
       prefix-icon='${DEFAULTS.CLEAR_BUTTON_ICON}'
       variant='${DEFAULTS.CLEAR_BUTTON_VARIANT}'
       size="${DEFAULTS.CLEAR_BUTTON_SIZE}"
       aria-label="${this.clearAriaLabel}"
+      ?disabled=${this.disabled || this.readonly || !this.value}
       @click=${this.clearInputText}
     ></mdc-button>
   `;
     }
 
     protected renderCharacterCounter() {
-      if (!this.maxlength && !this.characterCounter) {
+      if (!this.maxCharacterLimit) {
         return nothing;
       }
       return html`
       <mdc-text
         part="character-counter"
-        tagname="div"
+        tagname="span"
         type=${DEFAULTS.CHARACTER_COUNTER_TYPE}
       >
-        ${this.value.length}/${this.maxlength}
+      ${this.value.length < 10 ? `0${this.value.length}` : this.value.length}/${this.maxCharacterLimit}
       </mdc-text>
     `;
     }
@@ -279,8 +280,7 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     public override render() {
       return html`
       ${this.renderLabel()}
-      <div class="mdc-focus-ring" part="textarea-container">
-      <slot name="textarea">
+      <div class="textarea-container mdc-focus-ring" part="textarea-container">
           <textarea 
             aria-label="${this.dataAriaLabel ?? ''}"
             part='textarea'
@@ -298,11 +298,11 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
             autocomplete=${this.autocomplete}
             minlength=${ifDefined(this.minlength)}
             maxlength=${ifDefined(this.maxlength)}
+            dirname=${ifDefined(this.dirname)}
             @input=${this.onInput}
             @change=${this.onChange}
             aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
           ></textarea>
-        </slot>
         ${this.renderCancelButton()}
         </div>
         <div part="textarea-footer">

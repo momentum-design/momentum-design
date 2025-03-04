@@ -22,7 +22,7 @@ const render = (args: Args) => html`<mdc-textarea
     required-label="${args['required-label']}"
     ?disabled="${args.disabled}"
     ?readonly="${args.readonly}"
-    ?trailing-button="${args['trailing-button']}"
+    ?cancel-button="${args['cancel-button']}"
     ?resize-button="${args['resize-button']}"
     data-aria-label="${ifDefined(args['data-aria-label'])}"
     maxlength="${ifDefined(args.maxlength)}"
@@ -32,7 +32,7 @@ const render = (args: Args) => html`<mdc-textarea
     autocomplete="${args.autocomplete}"
     dirname="${ifDefined(args.dirname)}"
     clear-aria-label="${ifDefined(args['clear-aria-label'])}" 
-    character-counter="${args.characterCounter}"
+    max-character-limit="${ifDefined(args['max-character-limit'])}"
   ></mdc-textarea>`;
 
 const meta: Meta = {
@@ -53,11 +53,10 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    'trailing-button': true,
-    'resize-button': true,
-    label: 'Textarea',
-    'help-text': 'This is a help text',
-    maxlength: 11175,
-    characterCounter: true,
+    'cancel-button': true,
+    label: 'Label',
+    'help-text': 'Help text',
+    'max-character-limit': 75,
+    placeholder: 'Placeholder',
   },
 };
