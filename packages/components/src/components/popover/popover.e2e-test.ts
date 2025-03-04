@@ -401,7 +401,7 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
     });
 
     await test.step('focusing trigger button, focus should go in interactive popover', async () => {
-      await triggerButton.focus();
+      await triggerButtonInteractive.focus();
       await expect(popoverInteractive).toHaveAttribute('visible');
       await expect(triggerButtonInteractive).not.toBeFocused();
     });
