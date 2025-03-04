@@ -244,13 +244,20 @@ export const FormFieldInput: StoryObj = {
 
     return html`
     <form @submit=${handleSubmit}>
+      <fieldset>
+      <legend>Form Example</legend>
       <mdc-input
        name='user-name'
         label="First Name"
         required-label="required"
         placeholder="Enter your name"
+        validation-message="Name is required"
       ></mdc-input>
-      <mdc-button type="submit" size='24' style='margin-top: 0.5rem'>Submit</mdc-button>
+      <div style='display: flex; gap: 0.25rem;; margin-top: 0.25rem'>
+        <mdc-button type="submit" size='24'>Submit</mdc-button>
+        <mdc-button type="reset" size='24' variant='secondary'>Reset</mdc-button>
+      </div>
+      </fieldset>
     </form>
     `;
   },

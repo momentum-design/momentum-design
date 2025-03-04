@@ -9,54 +9,54 @@ const styles = [hostFitContentStyles, css`
     --mdc-avatar-loading-indicator-foreground-color: var(--mdc-avatar-default-foreground-color);
     --mdc-avatar-loading-overlay-background-color: var(--mds-color-theme-common-overlays-secondary-normal);
   }
-  :host([size="124"]) .content {
+  :host([size="124"])::part(content) {
     width: 7.75rem;
     height: 7.75rem;
   }
-  :host([size="88"]) .content {
+  :host([size="88"])::part(content) {
     width: 5.5rem;
     height: 5.5rem;
   }
-  :host([size="72"]) .content {
+  :host([size="72"])::part(content) {
     width: 4.5rem;
     height: 4.5rem;
   }
-  :host([size="64"]) .content {
+  :host([size="64"])::part(content) {
     width: 4rem;
     height: 4rem;
   }
-  :host([size="48"]) .content {
+  :host([size="48"])::part(content) {
     width: 3rem;
     height: 3rem;
   }
-  :host([size="32"]) .content {
+  :host([size="32"])::part(content) {
     width: 2rem;
     height: 2rem;
   }
-  :host([size="24"]) .content {
+  :host([size="24"])::part(content) {
     width: 1.5rem;
     height: 1.5rem;
   }
-  :host([size="124"]) .content > .loading__wrapper > .loader {
+  :host([size="124"])::part(loader) {
     transform: scale(1.5);
   }
-  :host([size="88"]) .content > .loading__wrapper > .loader {
+  :host([size="88"])::part(loader) {
     transform: scale(1.2);
   }
-  :host([size="72"]) .content > .loading__wrapper > .loader,
-  :host([size="64"]) .content > .loading__wrapper > .loader {
+  :host([size="72"])::part(loader),
+  :host([size="64"])::part(loader) {
     transform: scale(0.8);
   }
-  :host([size="48"]) .content > .loading__wrapper > .loader {
+  :host([size="48"])::part(loader) {
     transform: scale(0.6);
   }
-  :host([size="32"]) .content > .loading__wrapper > .loader {
+  :host([size="32"])::part(loader) {
     transform: scale(0.4);
   }
-  :host([size="24"]) .content > .loading__wrapper > .loader {
+  :host([size="24"])::part(loader) {
     transform: scale(0.3);
   }
-  .content {
+  :host::part(content) {
     width: 2rem;
     height: 2rem;
     background-color: var(--mdc-avatar-default-background-color);
@@ -66,19 +66,19 @@ const styles = [hostFitContentStyles, css`
     display: grid;
     place-items: center;
   }
-  .photo {
+  :host::part(photo) {
     border-radius: 100vh;
     height: 100%;
     width: 100%;
     object-fit: cover;
     overflow: hidden;
   }
-  .presence {
+  :host::part(presence) {
     position: absolute;
     bottom: 0;
     right: 0;
   }
-  .loading__wrapper {
+  :host::part(loading-wrapper) {
     position: absolute;
     border-radius: 100vh;
     width: 100%;
@@ -87,7 +87,7 @@ const styles = [hostFitContentStyles, css`
     display: grid;
     place-items: center;
   }
-  .loader {
+  :host::part(loader) {
     position: absolute;
     width: 1rem;
     transform: scale(0.4);
@@ -120,7 +120,7 @@ const styles = [hostFitContentStyles, css`
 
   /* High Contrast Mode */
   @media (forced-colors: active) {
-    .content:not(.photo) {
+    :host::part(content) {
       outline: 0.125rem solid;
     }
   }
