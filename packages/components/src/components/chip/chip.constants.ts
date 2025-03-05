@@ -13,7 +13,7 @@ const COLOR = {
   PURPLE: 'purple',
   SLATE: 'slate',
   VIOLET: 'violet',
-};
+} as const;
 
 const DEFAULTS = {
   COLOR: COLOR.DEFAULT,

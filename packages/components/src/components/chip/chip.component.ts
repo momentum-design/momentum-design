@@ -3,11 +3,11 @@ import { property } from 'lit/decorators.js';
 import styles from './chip.styles';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
-import { Component } from '../../models';
-import { IconNames } from '../icon/icon.types';
-import { DEFAULTS } from './chip.constants';
-import { ColorType } from './chip.types';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
+import { Component } from '../../models';
+import { DEFAULTS } from './chip.constants';
+import type { IconNames } from '../icon/icon.types';
+import type { ColorType } from './chip.types';
 
 /**
  * chip component, which ...

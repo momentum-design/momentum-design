@@ -2,34 +2,29 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { COLOR } from './chip.constants';
+import { VARIANTS } from './alertchip.constants';
 
 const render = (args: Args) => html`
-  <mdc-chip color="${args.color}" label="${args.label}"
-  icon-name="${args['icon-name']}"
-  ?disabled="${args.disabled}"></mdc-chip>`;
+  <mdc-alertchip 
+    variant="${args.variant}"
+    label="${args.label}"
+  ></mdc-alertchip>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/chip/label',
+  title: 'Work In Progress/chip/alert',
   tags: ['autodocs'],
-  component: 'mdc-chip',
+  component: 'mdc-alertchip',
   render,
   parameters: {
     badges: ['wip'],
   },
   argTypes: {
-    color: {
+    variant: {
       control: 'select',
-      options: Object.values(COLOR),
+      options: Object.values(VARIANTS),
     },
     label: {
       control: 'text',
-    },
-    'icon-name': {
-      control: 'text',
-    },
-    disabled: {
-      control: 'boolean',
     },
     ...classArgType,
     ...styleArgType,
@@ -40,10 +35,8 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    color: COLOR.DEFAULT,
-    label: 'Label',
-    'icon-name': 'placeholder-bold',
-    disabled: false,
+    variant: VARIANTS.NEUTRAL,
+    label: 'Alert',
     class: 'custom-classname',
     style: 'margin-top: 20px;',
   },
