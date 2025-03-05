@@ -6,7 +6,7 @@ import { Component } from '../../models';
 import { KEYCODES } from './tablist.constants';
 import { remToPx } from './tablist.utils';
 
-import type Tab from '../tab/tab.component';
+import Tab from '../tab/tab.component';
 import type Button from '../button';
 
 /**
@@ -22,14 +22,14 @@ class Tablist extends Component {
   @property({ type: String })
   activeTabId: string = '';
 
-  @property()
+  @property({ type: Array<Tab> })
   private tabs: Array<Tab> = [];
 
-  @property()
-  private direction: String | null = '';
+  @property({ type: String })
+  private direction: String = '';
 
-  @property()
-  scrollDistance: number = 100;
+  @property({ type: Number })
+  private scrollDistance: number = 100;
 
   constructor() {
     super();
@@ -54,31 +54,33 @@ class Tablist extends Component {
     this.direction = (document.querySelector('html')?.getAttribute('dir')) || window.getComputedStyle(this).direction;
 
     const resizeObserver = new ResizeObserver((entries): void => {
-      const tablistWidth: number = this.tabList.scrollWidth || 0;
-      const tablistContainerWidth: number = entries[0].borderBoxSize[0].inlineSize;
+      const tabListWidth: number = entries[0].borderBoxSize[0].inlineSize;
+      const tabsContainerWidth: number = this.tabsContainer.scrollWidth || 0;
 
-      if (this.direction === 'rtl') {
-        this.leftArrowButton.style.right = `${tablistContainerWidth - remToPx(1)}px`;
+      if (this.isRtl) {
+        this.leftArrowButton.style.right = `${tabListWidth - remToPx(1)}px`;
+        this.rightArrowButton.style.right = `${remToPx(1)}px`;
       } else {
-        this.rightArrowButton.style.left = `${tablistContainerWidth - remToPx(1)}px`;
+        this.leftArrowButton.style.left = `${remToPx(1)}px`;
+        this.rightArrowButton.style.left = `${tabListWidth - remToPx(1)}px`;
       }
 
-      if (tablistContainerWidth >= tablistWidth) {
-        this.hideLeftArrow();
-        this.hideRightArrow();
-      } else if (this.direction === 'rtl') {
-        this.showLeftArrow();
+      if (tabListWidth >= tabsContainerWidth) {
+        this.hideLeftArrowButton();
+        this.hideRightArrowButton();
+      } else if (this.isRtl) {
+        this.showLeftArrowButton();
       } else {
-        this.showRightArrow();
+        this.showRightArrowButton();
       }
     });
 
     resizeObserver.observe(this);
 
-    this.tabList.addEventListener('scroll', this.handleScroll);
+    this.tabsContainer.addEventListener('scroll', this.handleScroll);
   }
 
-  override attributeChangedCallback = (_activetabid: string, _oldTabId: string, newTabId: string) => {
+  override attributeChangedCallback = (_activeTabId: string, _oldTabId: string, newTabId: string) => {
     this.selectTab(this.tabs.find((tab) => tab.getAttribute('tabid') === newTabId) || this.tabs[0]);
   };
 
@@ -100,12 +102,8 @@ class Tablist extends Component {
     return this.tabs[newIndex % this.tabs.length];
   }
 
-  private get tabListContainer(): HTMLElement {
-    return this.shadowRoot?.querySelector('.tab_list__container') as HTMLElement;
-  }
-
-  private get tabList(): HTMLElement {
-    return this.shadowRoot?.querySelector('.tab_list') as HTMLElement;
+  private get tabsContainer(): HTMLDivElement {
+    return this.shadowRoot?.querySelector('.tabs_container') as HTMLDivElement;
   }
 
   private get leftArrowButton(): Button {
@@ -114,6 +112,10 @@ class Tablist extends Component {
 
   private get rightArrowButton(): Button {
     return this.shadowRoot?.querySelector('mdc-button[prefix-icon="arrow-right-regular"]') as Button;
+  }
+
+  private get isRtl(): boolean {
+    return this.direction === 'rtl';
   }
 
   private resetSelection = (): void => {
@@ -140,13 +142,14 @@ class Tablist extends Component {
   };
 
   private handleKeydown = (event: KeyboardEvent): void => {
-    const tab = event.target as Tab;
+    const tab = event.target;
 
-    if (tab.getAttribute('role') !== 'tab') { return; }
+    if (!(tab instanceof Tab)) { return; }
 
     if (event.altKey) { return; }
 
-    let newTab;
+    let newTab: Tab | undefined;
+
     switch (event.code) {
       case KEYCODES.ENTER:
         this.selectTab(tab);
@@ -160,14 +163,14 @@ class Tablist extends Component {
         break;
 
       case KEYCODES.LEFT:
-        if (this.direction === 'rtl') {
+        if (this.isRtl) {
           newTab = this.nextTab;
         } else newTab = this.previousTab;
         break;
 
       case KEYCODES.RIGHT:
 
-        if (this.direction === 'rtl') {
+        if (this.isRtl) {
           newTab = this.previousTab;
         } else newTab = this.nextTab;
         break;
@@ -184,13 +187,17 @@ class Tablist extends Component {
         event.preventDefault();
 
         if (event.shiftKey) {
-          if (this.isArrrowHidden(this.leftArrowButton)) {
-            (this?.previousElementSibling as HTMLElement)?.focus();
+          if (this.isArrowButtonHidden(this.leftArrowButton)) {
+            if (!(this.previousElementSibling instanceof HTMLElement)) { return; }
+
+            this.previousElementSibling.focus();
           } else {
             this.leftArrowButton.focus();
           }
-        } else if (this.isArrrowHidden(this.rightArrowButton)) {
-          (this?.nextElementSibling as HTMLElement)?.focus();
+        } else if (this.isArrowButtonHidden(this.rightArrowButton)) {
+          if (!(this.nextElementSibling instanceof HTMLElement)) { return; }
+
+          this.nextElementSibling.focus();
         } else {
           this.rightArrowButton.focus();
         }
@@ -205,71 +212,72 @@ class Tablist extends Component {
   };
 
   private handleClick = (event: MouseEvent): void => {
-    const tab = event.target as Tab;
-    if (tab.getAttribute('role') !== 'tab') { return; }
+    const tab = event.target;
+
+    if (!(tab instanceof Tab)) { return; }
 
     this.selectTab(tab);
     this.focusTab(tab);
   };
 
   private handleScroll = (): void => {
-    this.handleArrowVisibility();
+    this.handleArrowButtonVisibility();
   };
 
-  private isArrrowHidden = (arrowButton: Button): boolean => arrowButton.classList.contains('hide-button');
+  private isArrowButtonHidden = (arrowButton: Button): boolean => arrowButton.classList.contains('hide-button');
 
-  private showLeftArrow = (): void => {
+  private showLeftArrowButton = (): void => {
     this.leftArrowButton.classList.remove('hide-button');
-    this.tabListContainer.classList.add('show-left-button-padding');
+    this.classList.add('show-left-arrow-button-padding');
   };
 
-  private hideLeftArrow = (): void => {
+  private hideLeftArrowButton = (): void => {
     this.leftArrowButton.classList.add('hide-button');
-    this.tabListContainer.classList.remove('show-left-button-padding');
+    this.classList.remove('show-left-arrow-button-padding');
   };
 
-  private showRightArrow = (): void => {
+  private showRightArrowButton = (): void => {
     this.rightArrowButton.classList.remove('hide-button');
-    this.tabListContainer.classList.add('show-right-button-padding');
+    this.classList.add('show-right-arrow-button-padding');
   };
 
-  private hideRightArrow = (): void => {
-    this.tabListContainer.classList.remove('show-right-button-padding');
+  private hideRightArrowButton = (): void => {
+    this.classList.remove('show-right-arrow-button-padding');
     this.rightArrowButton.classList.add('hide-button');
   };
 
-  private handleArrowVisibility = () => {
-    let leftMostTab;
-    let rightMostTab;
+  private handleArrowButtonVisibility = () => {
+    let leftEndTab;
+    let rightEndTab;
 
-    if (this.direction === 'rtl') {
-      leftMostTab = this.lastTab;
-      rightMostTab = this.firstTab;
+    if (this.isRtl) {
+      leftEndTab = this.lastTab;
+      rightEndTab = this.firstTab;
     } else {
-      leftMostTab = this.firstTab;
-      rightMostTab = this.lastTab;
+      leftEndTab = this.firstTab;
+      rightEndTab = this.lastTab;
     }
 
-    const leftMostTabPosition = Math.round(leftMostTab.getBoundingClientRect().left);
-    const rightMostTabPosition = Math.round(rightMostTab.getBoundingClientRect().right);
-    const tabListContainerPositionLeft = Math.round(this.getBoundingClientRect().left);
-    const tabListContainerPositionRight = Math.round(this.getBoundingClientRect().right);
+    const leftEndTabLeftEdgePosition = Math.round(leftEndTab.getBoundingClientRect().left);
+    const rightEndTabRightEdgePosition = Math.round(rightEndTab.getBoundingClientRect().right);
+    const tabListLeftEdgePosition = Math.round(this.getBoundingClientRect().left);
+    const tabListRightEdgePosition = Math.round(this.getBoundingClientRect().right);
 
-    if (leftMostTabPosition < tabListContainerPositionLeft) {
-      this.showLeftArrow();
+    if (leftEndTabLeftEdgePosition < tabListLeftEdgePosition) {
+      this.showLeftArrowButton();
     } else {
-      this.hideLeftArrow();
+      this.hideLeftArrowButton();
     }
 
-    if (rightMostTabPosition > tabListContainerPositionRight) {
-      this.showRightArrow();
+    if (rightEndTabRightEdgePosition > tabListRightEdgePosition) {
+      this.showRightArrowButton();
     } else {
-      this.hideRightArrow();
+      this.hideRightArrowButton();
     }
   };
 
   private scrollTabsLeft = (): void => {
-    this.tabList?.scrollBy({
+    this.tabsContainer?.scrollBy({
       left: this.scrollDistance * -1,
       // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
       behavior: 'instant',
@@ -277,7 +285,7 @@ class Tablist extends Component {
   };
 
   private scrollTabsRight = (): void => {
-    this.tabList?.scrollBy({
+    this.tabsContainer?.scrollBy({
       left: this.scrollDistance,
       // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
       behavior: 'instant',
@@ -298,10 +306,8 @@ class Tablist extends Component {
         aria-label="Scroll Tabs Left"
         @click="${() => this.scrollTabsLeft()}"
         class="hide-button"></mdc-button>
-      <div class="tab_list__container">
-        <div class="tab_list">
-          <slot></slot>
-        </div>
+      <div class="tabs_container">
+        <slot></slot>
       </div>
       <mdc-button 
         variant="tertiary"
