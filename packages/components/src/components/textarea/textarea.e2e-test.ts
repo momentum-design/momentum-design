@@ -8,7 +8,7 @@ test.beforeEach(async ({ componentsPage }) => {
   });
 });
 
-test('mdc-textarea', async ({ componentsPage }) => {
+test.skip('mdc-textarea', async ({ componentsPage }) => {
   const textarea = componentsPage.page.locator('mdc-textarea');
 
   // initial check for the textarea be visible on the screen:

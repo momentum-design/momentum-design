@@ -57,7 +57,7 @@ const styles = [css`
     padding: 2px;
   }
 
-  :host::part(cancel-button) {
+  :host::part(clear-button) {
     position: absolute;
     right: 6px;
     top: 6px;
@@ -85,7 +85,12 @@ const styles = [css`
   }
 
   :host::part(character-counter){
+    margin-left: auto;
     color: var(--mdc-textarea-text-secondary-normal);
+  }
+
+  :host([help-text-type="error"])::part(character-counter) {
+    color: var(--mdc-textarea-error-border-color);
   }
 
   :host([disabled])::part(character-counter){

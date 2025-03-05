@@ -10,13 +10,28 @@ import { AUTO_COMPLETE, WRAP, DEFAULTS } from './textarea.constants';
 import type { WrapType, AutoCompleteType } from './textarea.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
+import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 
 /**
  * textarea component, which ...
  *
  * @tagname mdc-textarea
+
  *
- * @slot default - This is a default/unnamed slot
+ * @cssproperty --mdc-textarea-disabled-border-color - Border color for the textarea container when disabled
+ * @cssproperty --mdc-textarea-disabled-text-color - Text color for the textarea field when disabled
+ * @cssproperty --mdc-textarea-disabled-background-color - Background color for the textarea field when disabled
+ * @cssproperty --mdc-textarea-text-color - Text color for the textarea field
+ * @cssproperty --mdc-textarea-background-color - Background color for the textarea field
+ * @cssproperty --mdc-textarea-border-color - Border color for the textarea field
+ * @cssproperty --mdc-textarea-text-secondary-normal - Text color for the character counter
+ * @cssproperty --mdc-textarea-error-border-color - Border color for the error related help text
+ * @cssproperty --mdc-textarea-warning-border-color - Border color for the warning related help text
+ * @cssproperty --mdc-textarea-success-border-color - Border color for the success related help text
+ * @cssproperty --mdc-textarea-primary-border-color - Border color for the priority related help text
+ * @cssproperty --mdc-textarea-hover-background-color - Background color for the textarea container when hover
+ * @cssproperty --mdc-textarea-focused-background-color - Background color for the textarea container when focused
+ * @cssproperty --mdc-textarea-focused-border-color - Border color for the textarea container when focused
  */
 class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
   /**
@@ -81,7 +96,7 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
    * The trailing button when set to true, shows a clear button that clears the textarea field.
    * @default false
    */
-  @property({ type: Boolean, attribute: 'cancel-button' }) cancelButton = false;
+  @property({ type: Boolean, attribute: 'clear-button' }) clearButton = false;
 
   /**
    * Aria label for the trailing button. If trailing button is set to true, this label is used for the clear button.
@@ -102,6 +117,7 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
 
     override connectedCallback(): void {
       super.connectedCallback();
+      this.value = this.textContent?.trim() || '';
 
       this.updateComplete.then(() => {
         if (this.textarea) {
@@ -244,13 +260,13 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
    * Renders the trailing button to clear the input field if the trailingButton is set to true.
    * @returns void
    */
-    protected renderCancelButton() {
-      if (!this.cancelButton) {
+    protected renderClearButton() {
+      if (!this.clearButton) {
         return nothing;
       }
       return html`
     <mdc-button 
-      part='cancel-button'
+      part='clear-button'
       class='${!this.value ? 'hidden' : ''}'
       prefix-icon='${DEFAULTS.CLEAR_BUTTON_ICON}'
       variant='${DEFAULTS.CLEAR_BUTTON_VARIANT}'
@@ -277,7 +293,18 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     `;
     }
 
+    protected handleMaxCharacterLimitValidity() {
+      if (this.maxCharacterLimit && this.value.length > this.maxCharacterLimit) {
+        this.helpText = `Input must not exceed ${this.maxCharacterLimit} characters.`;
+        this.helpTextType = 'error';
+      }
+      this.setValidity();
+    }
+
     public override render() {
+      if (this.maxCharacterLimit) {
+        this.handleMaxCharacterLimitValidity();
+      }
       return html`
       ${this.renderLabel()}
       <div class="textarea-container mdc-focus-ring" part="textarea-container">
@@ -302,8 +329,8 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
             @input=${this.onInput}
             @change=${this.onChange}
             aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
-          ></textarea>
-        ${this.renderCancelButton()}
+          >${this.value}</textarea>
+        ${this.renderClearButton()}
         </div>
         <div part="textarea-footer">
           ${this.helpText ? this.renderHelperText() : nothing}
