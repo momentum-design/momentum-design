@@ -28,8 +28,14 @@ const styles = css`
   :host([variant="inset-pill"]) {
     border-radius: 3.125rem;
   }
-  :host([disabled]) {
+  :host([disabled]),
+  :host([disabled])::part(leading-text-secondary-label),
+  :host([disabled])::part(leading-text-tertiary-label),
+  :host([disabled])::part(leading-text-primary-label),
+  :host([disabled])::part(trailing-text-side-header),
+  :host([disabled])::part(trailing-text-subline) {
     color: var(--mdc-listitem-disabled-color);
+    cursor: default;
   }
   :host(:hover) {
     background-color: var(--mdc-listitem-background-color-hover);
@@ -39,6 +45,10 @@ const styles = css`
   }
   :host::part(trailing) {
     margin-left: auto;
+  }
+  :host::part(trailing):dir(rtl) {
+    margin-left: unset;
+    margin-right: auto;
   }
   :host::part(leading), :host::part(trailing) {
     align-items: center;
@@ -50,6 +60,9 @@ const styles = css`
   }
   :host::part(leading-text-primary-label), :host::part(trailing-text-side-header), :host::part(trailing-text-subline) {
     color: var(--mdc-listitem-primary-label-color);
+  }
+  :host::part(trailing-text) {
+    text-align: right;
   }
   ::slotted([slot="leading-controls"]), ::slotted([slot="trailing-controls"]) {
     align-items: center;

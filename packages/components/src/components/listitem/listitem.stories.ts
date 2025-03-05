@@ -1,6 +1,6 @@
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
-import { hideControls } from '../../../config/storybook/utils';
+import { disableControls, hideControls } from '../../../config/storybook/utils';
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import '../avatar';
@@ -21,17 +21,13 @@ const render = (args: Args) => html`
     side-header-text="${args['side-header-text']}"
     subline-text="${args['subline-text']}"
   >
-    <div slot="leading-controls">
-      <mdc-checkbox checked></mdc-checkbox>
-      <mdc-avatar src="https://picsum.photos/id/63/256" presence="active"></mdc-avatar>
-      <mdc-icon name="placeholder-bold"></mdc-icon>
-    </div>
-    <div slot="trailing-controls">
-      <mdc-icon name="placeholder-bold"></mdc-icon>
-      <mdc-button variant="secondary">Label</mdc-button>
-      <mdc-toggle size="compact"></mdc-toggle>
-      <mdc-badge type="dot"></mdc-badge>
-    </div>
+    <mdc-checkbox slot="leading-controls" checked></mdc-checkbox>
+    <mdc-avatar slot="leading-controls" src="https://picsum.photos/id/63/256" presence="active"></mdc-avatar>
+    <mdc-icon slot="leading-controls" name="placeholder-bold"></mdc-icon>
+    <mdc-icon slot="trailing-controls" name="placeholder-bold"></mdc-icon>
+    <mdc-button slot="trailing-controls" variant="secondary">Label</mdc-button>
+    <mdc-toggle slot="trailing-controls" size="compact"></mdc-toggle>
+    <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
   </mdc-listitem>
 `;
 
@@ -67,6 +63,7 @@ const meta: Meta = {
       control: 'boolean',
     },
     ...hideControls([
+      'role',
       '--mdc-listitem-background-color-active',
       '--mdc-listitem-background-color-hover',
       '--mdc-listitem-default-background-color',
@@ -88,6 +85,7 @@ export const Example: StoryObj = {
     'tertiary-label': 'Teritary Label',
     'side-header-text': 'Header',
     'subline-text': 'Subline',
+    disabled: false,
   },
 };
 
@@ -106,19 +104,40 @@ export const LabelOnly: StoryObj = {
 export const ListWithLabelAndLeadingAvatar: StoryObj = {
   render: () => html`
     <mdc-listitem label="Primary Label">
-      <div slot="leading-controls">
-        <mdc-avatar src="https://picsum.photos/id/237/256" presence="busy"></mdc-avatar>
-      </div>
+      <mdc-avatar slot="leading-controls" src="https://picsum.photos/id/237/256" presence="busy"></mdc-avatar>
     </mdc-listitem>`,
 };
 
 export const ListWithLabelAndTrailingBadge: StoryObj = {
   render: () => html`
     <mdc-listitem label="Primary Label">
-      <div slot="trailing-controls">
-        <mdc-badge type="dot"></mdc-badge>
-      </div>
+      <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
     </mdc-listitem>`,
+};
+
+export const ListWithDisableState: StoryObj = {
+  render: (args: Args) => html`
+    <mdc-listitem
+      ?disabled="${args.disabled}"
+      label="${args.label}"
+      side-header-text="${args['side-header-text']}"
+    >
+      <mdc-checkbox slot="leading-controls" checked></mdc-checkbox>
+      <mdc-icon slot="leading-controls" name="placeholder-bold"></mdc-icon>
+      <mdc-icon slot="trailing-controls" name="placeholder-bold"></mdc-icon>
+      <mdc-button slot="trailing-controls" variant="secondary">Label</mdc-button>
+      <mdc-toggle slot="trailing-controls" size="compact"></mdc-toggle>
+      <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
+    </mdc-listitem>
+  `,
+  args: {
+    disabled: true,
+    label: 'Primary Label',
+    'side-header-text': 'Header',
+  },
+  argTypes: {
+    ...hideControls(['variant', 'secondary-label', 'tertiary-label', 'subline-text', 'data-aria-label', 'tabIndex']),
+  },
 };
 
 export const ListWithIconAndLabels: StoryObj = {

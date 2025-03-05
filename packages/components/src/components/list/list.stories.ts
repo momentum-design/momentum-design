@@ -58,6 +58,7 @@ const meta: Meta = {
       control: 'text',
     },
     ...hideControls([
+      'role',
       'listItems',
       'default',
     ]),

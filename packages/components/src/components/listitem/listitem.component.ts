@@ -1,10 +1,12 @@
-import { CSSResult, html, nothing, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import type { CSSResult, PropertyValues } from 'lit';
+import { html, nothing, TemplateResult } from 'lit';
+import { property, queryAssignedElements } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import { TextType } from '../text/text.types';
 import { DEFAULTS } from './listitem.constants';
 import styles from './listitem.styles';
 import type { ListItemVariants } from './listitem.types';
@@ -40,6 +42,12 @@ import type { ListItemVariants } from './listitem.types';
  *  - Allows customization of the secondary and teritary label text slot color.
  */
 class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component))) {
+  @queryAssignedElements({ slot: 'leading-controls' })
+  leadingControlsSlot!: Array<HTMLElement>;
+
+  @queryAssignedElements({ slot: 'trailing-controls' })
+  trailingControlsSlot!: Array<HTMLElement>;
+
   /**
    * The variant of the list item. It can be a pill, rectangle or a full-width.
    * @default 'full-width'
@@ -82,45 +90,46 @@ class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component)
   }
 
   /**
-   * Generates a midsize regular text slot with the specified content.
+   * Generates a template for a text slot with the specified content.
    *
    * @param slotName - The name of the slot to be used.
-   * @param content - The text content to be displayed within the slot.
-   * @returns A TemplateResult containing a slot with an `mdc-text` element of type BODY_MIDSIZE_REGULAR.
-   */
-  private getMidsizeRegularText(slotName: string, content?: string): TemplateResult | typeof nothing {
-    if (!content) return nothing;
-    return html`<slot name="${slotName}">
-      <mdc-text 
-      part="${slotName}" 
-      type="${TYPE.BODY_MIDSIZE_REGULAR}" 
-      tagname="${VALID_TEXT_TAGS.SPAN}">
-      ${content}
-    </mdc-text>
-    </slot>`;
-  }
-
-  /**
-   * Generates a small regular text slot with the specified content.
-   *
-   * @param slotName - The name of the slot to be used.
-  /**
-   * Generates a small regular text slot with the specified content.
-   *
-   * @param slotName - The name of the slot to be used.
+   * @param type - The type of the text element.
    * @param content - The text content to be displayed within the slot.
    * @returns A TemplateResult containing a slot with an `mdc-text` element of type BODY_SMALL_REGULAR.
    */
-  private getSmallRegularText(slotName: string, content?: string): TemplateResult | typeof nothing {
-    if (!content) return nothing;
-    return html`<slot name="${slotName}">
-      <mdc-text 
-      part="${slotName}" 
-      type="${TYPE.BODY_SMALL_REGULAR}" 
-      tagname="${VALID_TEXT_TAGS.SPAN}">
-      ${content}
-    </mdc-text>
-    </slot>`;
+  private getText(slotName: string, type: TextType, content?: string): TemplateResult | typeof nothing {
+    if (!content) {
+      return nothing;
+    }
+    return html`
+      <slot name="${slotName}">
+        <mdc-text part="${slotName}" type="${type}" tagname="${VALID_TEXT_TAGS.SPAN}">${content}</mdc-text>
+      </slot>
+    `;
+  }
+
+  /**
+   * Disable or enable all slotted elements in the leading and trailing slots.
+   * This is useful when the list item is disabled, to prevent the user from interacting with the controls.
+   * @param disabled - Whether to disable or enable the controls.
+   */
+  private disableSlottedChildren(disabled: boolean): void {
+    [...this.leadingControlsSlot, ...this.trailingControlsSlot].forEach((element) => {
+      if (disabled) {
+        element.setAttribute('disabled', '');
+      } else {
+        element.removeAttribute('disabled');
+      }
+    });
+  }
+
+  public override update(changedProperties: PropertyValues): void {
+    super.update(changedProperties);
+
+    if (changedProperties.has('disabled')) {
+      this.tabIndex = this.disabled ? -1 : 0;
+      this.disableSlottedChildren(this.disabled);
+    }
   }
 
   public override render() {
@@ -128,15 +137,15 @@ class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component)
       <div part="leading">
         <slot name="leading-controls"></slot>
         <div part="leading-text">
-          ${this.getMidsizeRegularText('leading-text-primary-label', this.label)}
-          ${this.getSmallRegularText('leading-text-secondary-label', this.secondaryLabel)}
-          ${this.getSmallRegularText('leading-text-tertiary-label', this.tertiaryLabel)}
+          ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
+          ${this.getText('leading-text-secondary-label', TYPE.BODY_SMALL_REGULAR, this.secondaryLabel)}
+          ${this.getText('leading-text-tertiary-label', TYPE.BODY_SMALL_REGULAR, this.tertiaryLabel)}
         </div>
       </div>
       <div part="trailing">
         <div part="trailing-text">
-          ${this.getMidsizeRegularText('trailing-text-side-header', this.sideHeaderText)}
-          ${this.getSmallRegularText('trailing-text-subline', this.sublineText)}
+          ${this.getText('trailing-text-side-header', TYPE.BODY_MIDSIZE_REGULAR, this.sideHeaderText)}
+          ${this.getText('trailing-text-subline', TYPE.BODY_SMALL_REGULAR, this.sublineText)}
         </div>
         <slot name="trailing-controls"></slot>
       </div>
