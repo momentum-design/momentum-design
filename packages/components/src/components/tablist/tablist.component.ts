@@ -3,24 +3,20 @@ import { property } from 'lit/decorators.js';
 
 import styles from './tablist.styles';
 import { Component } from '../../models';
-import {
-  KEYCODES,
-  SCROLL_BUTTON_OFFSET,
-  SCROLL_LEFT_DISTANCE,
-  SCROLL_RIGHT_DISTANCE,
-} from './tablist.constants';
+import { KEYCODES } from './tablist.constants';
+import { remToPx } from './tablist.utils';
 
 import type Tab from '../tab/tab.component';
 import type Button from '../button';
 
 /**
- * tablist component, which ...
+ * Tab list organizes tabs into a container.
  *
  * @tagname mdc-tablist
  *
- * @slot default - This is a default/unnamed slot
+ * @slot Default slot for mdc-tab elements.
  *
- * @cssprop --custom-property-name - Description of the CSS custom property
+ * @cssproperty --custom-property-name - Description of the CSS custom property
  */
 class Tablist extends Component {
   @property({ type: String })
@@ -31,6 +27,9 @@ class Tablist extends Component {
 
   @property()
   private direction: String | null = '';
+
+  @property()
+  scrollDistance: number = 100;
 
   constructor() {
     super();
@@ -51,6 +50,7 @@ class Tablist extends Component {
     super.connectedCallback();
     await customElements.whenDefined('mdc-tablist');
 
+    this.scrollDistance = remToPx(6.25);
     this.direction = (document.querySelector('html')?.getAttribute('dir')) || window.getComputedStyle(this).direction;
 
     const resizeObserver = new ResizeObserver((entries): void => {
@@ -58,9 +58,9 @@ class Tablist extends Component {
       const tablistContainerWidth: number = entries[0].borderBoxSize[0].inlineSize;
 
       if (this.direction === 'rtl') {
-        this.leftArrowButton.style.right = `${tablistContainerWidth - SCROLL_BUTTON_OFFSET}px`;
+        this.leftArrowButton.style.right = `${tablistContainerWidth - remToPx(1)}px`;
       } else {
-        this.rightArrowButton.style.left = `${tablistContainerWidth - SCROLL_BUTTON_OFFSET}px`;
+        this.rightArrowButton.style.left = `${tablistContainerWidth - remToPx(1)}px`;
       }
 
       if (tablistContainerWidth >= tablistWidth) {
@@ -122,6 +122,8 @@ class Tablist extends Component {
 
   private focusTab = (newTab: Tab): void => {
     newTab.focus();
+    // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
+    newTab.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'center' });
   };
 
   private selectTab = (newTab: Tab): void => {
@@ -268,15 +270,17 @@ class Tablist extends Component {
 
   private scrollTabsLeft = (): void => {
     this.tabList?.scrollBy({
-      left: SCROLL_LEFT_DISTANCE,
-      behavior: 'smooth',
+      left: this.scrollDistance * -1,
+      // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
+      behavior: 'instant',
     });
   };
 
   private scrollTabsRight = (): void => {
     this.tabList?.scrollBy({
-      left: SCROLL_RIGHT_DISTANCE,
-      behavior: 'smooth',
+      left: this.scrollDistance,
+      // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
+      behavior: 'instant',
     });
   };
 
