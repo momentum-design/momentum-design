@@ -1,6 +1,6 @@
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import '../avatar';
