@@ -30,7 +30,9 @@ const styles = [hostFitContentStyles, css`
     --mdc-toggle-icon-color-disabled: var(--mds-color-theme-common-inverted-text-primary-disabled);
     --mdc-toggle-icon-background-color-normal: var(--mds-color-theme-common-text-primary-normal);
     --mdc-toggle-icon-background-color-disabled: var(--mds-color-theme-common-text-primary-disabled);
+  }
 
+  :host([label]), :host([help-text]){
     display: grid;
     grid-template-rows: auto auto;
     grid-template-columns: auto auto;
@@ -39,6 +41,7 @@ const styles = [hostFitContentStyles, css`
   }
 
   :host([help-text='']) {
+    grid-template-rows: auto;
     row-gap: 0rem;
   }
 
@@ -50,9 +53,10 @@ const styles = [hostFitContentStyles, css`
   .mdc-toggle__input {
     opacity: 0;
     position: absolute;
+    cursor: pointer;
+    margin: 0;
     width: var(--mdc-toggle-width);
     height: var(--mdc-toggle-height);
-    cursor: pointer;
   }
 
   .mdc-toggle__slider {
@@ -80,7 +84,11 @@ const styles = [hostFitContentStyles, css`
     height: var(--mdc-toggle-height-compact);
     border-radius: var(--mdc-toggle-border-radius-compact);
   }
-  
+  :host([size='compact']) .mdc-toggle__input {
+    width: var(--mdc-toggle-width-compact);
+    height: var(--mdc-toggle-height-compact);
+  }
+
   .mdc-toggle__icon {
     padding: 0.25rem;
    --mdc-icon-fill-color: var(--mdc-toggle-icon-color-normal);
