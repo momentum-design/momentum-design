@@ -1,7 +1,13 @@
-import { CSSResult, html } from 'lit';
+import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import styles from './chip.styles';
+import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
+import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import { Component } from '../../models';
+import { IconNames } from '../icon/icon.types';
+import { DEFAULTS } from './chip.constants';
+import { ColorType } from './chip.types';
+import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 
 /**
  * chip component, which ...
@@ -14,14 +20,26 @@ import { Component } from '../../models';
  *
  * @cssprop --custom-property-name - Description of the CSS custom property
  */
-class Chip extends Component {
-  @property({ type: String }) color = 'primary';
+class Chip extends TabIndexMixin(DisabledMixin(IconNameMixin(Component))) {
+  @property({ type: String }) color: ColorType = DEFAULTS.COLOR;
+
+  @property({ type: String }) label = '';
 
   public override render() {
-    return html`<p>This is a dummy chip component!</p><slot></slot>`;
+    return html`
+      ${this.iconName ? html`<mdc-icon 
+        name="${this.iconName as IconNames}" 
+        length-unit="rem" 
+        size="1"></mdc-icon>` : nothing}
+        <slot name="avatar"></slot>
+        <mdc-text type="${DEFAULTS.TEXT_TYPE}" tagname="${DEFAULTS.TAG_NAME}">${this.label.substring(0, 20)}</mdc-text>
+      `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
 export default Chip;
+
+// support avatar or icon. Not both
+// support tooltip
