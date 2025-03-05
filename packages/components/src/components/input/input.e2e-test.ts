@@ -385,7 +385,8 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
 
     await inputStickerSheet.mountStickerSheet();
     const container = await inputStickerSheet.getWrapperContainer();
-
+    // Fix for not capturing snapshot while hovering on the input container.
+    await componentsPage.page.mouse.move(0, 0);
     await test.step('matches screenshot of element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-input', { element: container });
     });

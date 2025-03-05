@@ -274,9 +274,16 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
       }
     }
 
-    public override render() {
-      const helpTextContent = this.helpText ? this.renderHelperText() : nothing;
-      return html`
+  private renderLabelAndHelperText = () => {
+    if (!this.label) return nothing;
+    return html`<div class="mdc-radio__label-container">
+      ${this.renderLabel()}
+      ${this.renderHelperText()}
+    </div>`;
+  };
+
+  public override render() {
+    return html`
       <div class="mdc-radio__container">
         <div class="mdc-radio__icon-container mdc-focus-ring">
           <input
@@ -299,13 +306,10 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
           />
           <span class="mdc-radio__icon"></span>
         </div>
-        <div class="mdc-radio__label-container">
-          ${this.renderLabel()}
-          ${helpTextContent}
-        </div>
+        ${this.renderLabelAndHelperText()}
       </div>
     `;
-    }
+  }
 
   public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...styles];
 }
