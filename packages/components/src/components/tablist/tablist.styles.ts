@@ -7,10 +7,10 @@ const styles = css`
     --mdc-focus-ring-outer-width: calc(0.0625rem + var(--mdc-focus-ring-middle-width));
 
     --mdc-tablist-gap: 0.5rem;
-    --mdc-tablist-container-width: 100%;
+    --mdc-tablist-width: 100%;
     --mdc-container-button-padding: 2.75rem;
 
-
+    width: var(--mdc-tablist-width);
     display: flex;
     align-items: center;
 
@@ -18,25 +18,21 @@ const styles = css`
       width: initial;
     }
   }
-  
-  :host .tab_list__container {
-    width: var(--mdc-tablist-container-width);
-  }
 
-  :host .show-left-button-padding {
+  :host(.show-left-arrow-button-padding) {
     padding-left: var(--mdc-container-button-padding);
   }
 
-  :host .show-right-button-padding {
+  :host(.show-right-arrow-button-padding) {
     padding-right: var(--mdc-container-button-padding);
   }
 
-  :host .tab_list {
+  :host .tabs_container {
     display: flex;
-    position: relative;
     overflow-x: hidden;
     gap: var(--mdc-tablist-gap);
     padding: var(--mdc-focus-ring-outer-width);
+    margin: calc(var(--mdc-focus-ring-outer-width) * -1);
   }
 
   :host .hide-button {
