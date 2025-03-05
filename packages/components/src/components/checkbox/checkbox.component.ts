@@ -166,7 +166,7 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     if (!this.label) return nothing;
     return html`<div class="text-container">
       ${this.renderLabel()}
-      ${this.helpText ? this.renderHelperText() : nothing}
+      ${this.renderHelperText()}
     </div>`;
   };
 

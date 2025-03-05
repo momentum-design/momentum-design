@@ -278,7 +278,7 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
     if (!this.label) return nothing;
     return html`<div class="mdc-radio__label-container">
       ${this.renderLabel()}
-      ${this.helpText ? this.renderHelperText() : nothing}
+      ${this.renderHelperText()}
     </div>`;
   };
 
