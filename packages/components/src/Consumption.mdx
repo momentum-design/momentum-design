@@ -22,6 +22,14 @@ or
 yarn add @momentum-design/components
 ``` 
 
+## Supporting packages for Momentum Design System
+
+The **ThemeProvider** component will switch themes based on the Momentum Tokens defined in:
+[Theme Tokens Stable](https://momentum-design.github.io/momentum-design/en/tokens/theme-stable/)
+
+The **IconsProvider** component will use the Icons defined in:
+[Icons Asset Browser](https://momentum-design.github.io/momentum-design/en/tokens/icons/)
+
 ## PreRequisites 
 
 * The following stylesheets need to be included:
@@ -33,6 +41,19 @@ yarn add @momentum-design/components
     import '@momentum-design/tokens/dist/css/typography/complete.css';
     import '@momentum-design/tokens/dist/css/theme/webex/dark-stable.css';
     import '@momentum-design/tokens/dist/css/theme/webex/light-stable.css';
+
+    // in case you would like to use additional themes, use the following:
+    import '@momentum-design/tokens/dist/css/theme/webex/dark-bronze-stable.css';
+    import '@momentum-design/tokens/dist/css/theme/webex/dark-indigo-stable.css';
+    import '@momentum-design/tokens/dist/css/theme/webex/dark-jade-stable.css';
+    import '@momentum-design/tokens/dist/css/theme/webex/dark-lavender-stable.css';
+    import '@momentum-design/tokens/dist/css/theme/webex/dark-rose-stable.css';
+
+    import '@momentum-design/tokens/dist/css/theme/webex/light-bronze-stable.css';
+    import '@momentum-design/tokens/dist/css/theme/webex/light-indigo-stable.css';
+    import '@momentum-design/tokens/dist/css/theme/webex/light-jade-stable.css';
+    import '@momentum-design/tokens/dist/css/theme/webex/light-lavender-stable.css';
+    import '@momentum-design/tokens/dist/css/theme/webex/light-rose-stable.css';
     ```
 
     or short (`components/complete.css` includes all the above files):
@@ -59,7 +80,7 @@ yarn add @momentum-design/components
     <!-- mds-typography needs to be set on the root for proper Font usage -->
     <body class="mds-typography">
         <!-- Providers need to be used to use the Components -->
-        <mdc-themeprovider ...>
+        <mdc-themeprovider themeclass="mds-theme-stable-darkWebex">
             <mdc-iconprovider ...>
                 <!-- Momentum Design Components -->
                 <mdc-component-name .../>

@@ -1,0 +1,156 @@
+{
+  "files": [
+    {
+      "destination": "theme/webex/dark-indigo-stable",
+      "filters": {
+        "types": [
+          "theme"
+        ]
+      },
+      "cssSelector": ".mds-theme-stable-darkIndigoWebex",
+      "targets": [
+        "core/value.json",
+        "theme/stable/dark.json",
+        "additionaltheme/dark/indigo.json"
+      ]
+    },
+    {
+      "destination": "theme/webex/dark-jade-stable",
+      "filters": {
+        "types": [
+          "theme"
+        ]
+      },
+      "cssSelector": ".mds-theme-stable-darkJadeWebex",
+      "targets": [
+        "core/value.json",
+        "theme/stable/dark.json",
+        "additionaltheme/dark/jade.json"
+      ]
+    },
+    {
+      "destination": "theme/webex/dark-bronze-stable",
+      "filters": {
+        "types": [
+          "theme"
+        ]
+      },
+      "cssSelector": ".mds-theme-stable-darkBronzeWebex",
+      "targets": [
+        "core/value.json",
+        "theme/stable/dark.json",
+        "additionaltheme/dark/bronze.json"
+      ]
+    },
+    {
+      "destination": "theme/webex/dark-rose-stable",
+      "filters": {
+        "types": [
+          "theme"
+        ]
+      },
+      "cssSelector": ".mds-theme-stable-darkRoseWebex",
+      "targets": [
+        "core/value.json",
+        "theme/stable/dark.json",
+        "additionaltheme/dark/rose.json"
+      ]
+    },
+    {
+      "destination": "theme/webex/dark-lavender-stable",
+      "filters": {
+        "types": [
+          "theme"
+        ]
+      },
+      "cssSelector": ".mds-theme-stable-darkLavenderWebex",
+      "targets": [
+        "core/value.json",
+        "theme/stable/dark.json",
+        "additionaltheme/dark/lavender.json"
+      ]
+    },
+    {
+      "destination": "theme/webex/light-indigo-stable",
+      "filters": {
+        "types": [
+          "theme"
+        ]
+      },
+      "cssSelector": ".mds-theme-stable-lightIndigoWebex",
+      "targets": [
+        "core/value.json",
+        "theme/stable/light.json",
+        "additionaltheme/light/indigo.json"
+      ]
+    },
+    {
+      "destination": "theme/webex/light-jade-stable",
+      "filters": {
+        "types": [
+          "theme"
+        ]
+      },
+      "cssSelector": ".mds-theme-stable-lightJadeWebex",
+      "targets": [
+        "core/value.json",
+        "theme/stable/light.json",
+        "additionaltheme/light/jade.json"
+      ]
+    },
+    {
+      "destination": "theme/webex/light-bronze-stable",
+      "filters": {
+        "types": [
+          "theme"
+        ]
+      },
+      "cssSelector": ".mds-theme-stable-lightBronzeWebex",
+      "targets": [
+        "core/value.json",
+        "theme/stable/light.json",
+        "additionaltheme/light/bronze.json"
+      ]
+    },
+    {
+      "destination": "theme/webex/light-rose-stable",
+      "filters": {
+        "types": [
+          "theme"
+        ]
+      },
+      "cssSelector": ".mds-theme-stable-lightRoseWebex",
+      "targets": [
+        "core/value.json",
+        "theme/stable/light.json",
+        "additionaltheme/light/rose.json"
+      ]
+    },
+    {
+      "destination": "theme/webex/light-lavender-stable",
+      "filters": {
+        "types": [
+          "theme"
+        ]
+      },
+      "cssSelector": ".mds-theme-stable-lightLavenderWebex",
+      "targets": [
+        "core/value.json",
+        "theme/stable/light.json",
+        "additionaltheme/light/lavender.json"
+      ]
+    }
+  ],
+  "formats": [
+    "CSS_VARIABLES",
+    "SCSS_VARIABLES",
+    "WEB_JSON",
+    "ANDROID_RESOURCES",
+    "SWIFT_CLASS",
+    "MD_JSON_MINIMAL",
+    "IOS_WEBEX"
+  ],
+  "prefix": "mds",
+  "iosWebexPath": "@momentum-design/tokens/config/tokens/ios-swift.hbs",
+  "outputReferences": true
+}
