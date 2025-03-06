@@ -246,10 +246,10 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       const trailingButton = input.locator('mdc-button[part="trailing-button"]');
       await componentsPage.actionability.pressTab();
       await expect(input).toBeFocused();
-      await expect(trailingButton).toHaveClass('hidden');
+      await expect(trailingButton).toHaveClass('own-focus-ring hidden');
       await inputEl.fill('test');
       await expect(inputEl).toHaveValue('test');
-      await expect(trailingButton).not.toHaveClass('hidden');
+      await expect(trailingButton).toHaveClass('own-focus-ring ');
       await componentsPage.actionability.pressTab();
       await expect(inputEl).not.toBeFocused();
       await expect(trailingButton).toBeFocused();
@@ -385,7 +385,8 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
 
     await inputStickerSheet.mountStickerSheet();
     const container = await inputStickerSheet.getWrapperContainer();
-
+    // Fix for not capturing snapshot while hovering on the input container.
+    await componentsPage.page.mouse.move(0, 0);
     await test.step('matches screenshot of element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-input', { element: container });
     });

@@ -39,10 +39,17 @@ const hostFocusRingStyles = (applyFocusRingOnClass = false) => {
         :host([disabled]) .mdc-focus-ring:focus {
           box-shadow: none;
         }
+        /* Add focus ring to parent when child is focused. The parent element must have class name mdc-focus-ring */
         .mdc-focus-ring:focus-within {
           position: relative;
           box-shadow: ${boxShadow};
         }
+        /* Remove focus ring from parent when children has its own focus ring.
+            The child element must have class name own-focus-ring */
+        .mdc-focus-ring:has(.own-focus-ring:focus-visible){
+          box-shadow: none;
+        }
+
         /* High Contrast Mode */
         @media (forced-colors: active) {
           .mdc-focus-ring:focus-within {
@@ -61,13 +68,13 @@ const hostFocusRingStyles = (applyFocusRingOnClass = false) => {
       :host([disabled]:focus) {
         box-shadow: none;
       }
-      :host(:focus), :host(:focus-within) {
+      :host(:focus) {
         position: relative;
         box-shadow: ${boxShadow};
       }
       /* High Contrast Mode */
       @media (forced-colors: active) {
-        :host(:focus), :host(:focus-within) {
+        :host(:focus) {
           outline: 0.125rem solid var(--mds-color-theme-focus-default-0);
         }
       }

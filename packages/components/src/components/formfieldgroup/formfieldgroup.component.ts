@@ -1,5 +1,6 @@
 import type { CSSResult } from 'lit';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { ROLE } from './formfieldgroup.constants';
@@ -49,7 +50,7 @@ class FormfieldGroup extends DataAriaLabelMixin(FormfieldWrapper) {
         part="container"
         role="${this.isRadio ? ROLE.RADIOGROUP : ROLE.GROUP}"
         aria-labelledby="${FORMFIELD_DEFAULTS.HEADING_ID}"
-        aria-describedby="${FORMFIELD_DEFAULTS.HELPER_TEXT_ID}"
+        aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
         aria-label="${this.dataAriaLabel ?? ''}"
       >
         <div part="group-header">

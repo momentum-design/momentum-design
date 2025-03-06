@@ -2,6 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
@@ -14,9 +15,9 @@ const render = (args: Args) => html`
       @focus="${action('onfocus')}"
       @change="${action('onchange')}"
       size="${args.size}"
-      label="${args.label}"
-      help-text="${args['help-text']}"
-      data-aria-label="${args['data-aria-label']}"
+      label="${ifDefined(args.label)}"
+      help-text="${ifDefined(args['help-text'])}"
+      data-aria-label="${ifDefined(args['data-aria-label'])}"
       ?checked="${args.checked}"
       ?disabled="${args.disabled}">
     </mdc-toggle>
@@ -107,13 +108,11 @@ export const Disabled: StoryObj = {
 
 export const WithoutLabel: StoryObj = {
   args: {
-    ...Example.args,
-    label: '',
     'data-aria-label': 'This is a toggle with no label',
   },
 };
 
-export const IsActivatedInsideForm: StoryObj = {
+export const ToggleInsideForm: StoryObj = {
   render: (args) => {
     const onSubmit = (event: Event) => {
       event.preventDefault();
@@ -125,30 +124,12 @@ export const IsActivatedInsideForm: StoryObj = {
     <form @submit="${onSubmit}">
       <fieldset>
         <legend>Form Example</legend>
-        <mdc-toggle name="toggleName" value="toggleValueActivated" checked label="Agree to Terms"
-          size="${args.size}"></mdc-toggle>
-        <mdc-button type="submit">Submit</mdc-button>
-      </fieldset>
-    </form>
-  `;
-  },
-};
-
-export const IsDeactivatedInsideForm: StoryObj = {
-  render: (args) => {
-    const onSubmit = (event: Event) => {
-      event.preventDefault();
-      const formData = new FormData(event.target as HTMLFormElement);
-      const selectedValues = formData.get('toggleName');
-      action('Form Submitted')({ value: selectedValues });
-    };
-    return html`
-    <form @submit="${onSubmit}">
-      <fieldset>
-        <legend>Form Example</legend>
-        <mdc-toggle name="toggleName" value="toggleValueDeactivated" label="Agree to Terms"
-          size="${args.size}"></mdc-toggle>
-        <mdc-button type="submit">Submit</mdc-button>
+        <mdc-toggle name="toggleName" value="toggleValue" label="Agree to Terms" size="${args.size}" 
+          required-label='required' validation-message='Toggle this switch to continue'></mdc-toggle>
+          <div style='display: flex; gap: 0.25rem'>
+            <mdc-button type="submit" size='24'>Submit</mdc-button>
+            <mdc-button type="reset" size='24' variant='secondary'>Reset</mdc-button>
+          </div>
       </fieldset>
     </form>
   `;

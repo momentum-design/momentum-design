@@ -134,7 +134,11 @@ class Link extends DisabledMixin(IconNameMixin(Component)) {
   }
 
   public override render() {
-    return html`<slot @slotchange=${this.updateTrailingIcon}></slot>`;
+    return html`
+      <div part='link-container' class='mdc-focus-ring'>
+        <slot @slotchange=${this.updateTrailingIcon}></slot>
+      </div>
+    `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];

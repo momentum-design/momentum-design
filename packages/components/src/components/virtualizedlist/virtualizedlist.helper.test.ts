@@ -8,16 +8,16 @@ import { Component } from '../../models';
 
 class VirtualizedWrapper extends Component {
   @property({ type: Function, attribute: 'onscroll' })
-  override onscroll: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+  override onscroll: ((this: GlobalEventHandlers, ev: Event) => void) | null;
 
   @property({ type: Object, attribute: 'virtualizerprops' })
-  virtualizerprops: VirtualizerProps = { count: 100, estimateSize: () => 100, overscan: 60 };
+  virtualizerProps: VirtualizerProps = { count: 100, estimateSize: () => 100, overscan: 60 };
 
   @state()
   list: TemplateResult<1> = html``;
 
   @state()
-  listItemTexts = new Array(this.virtualizerprops.count)
+  listItemTexts = new Array(this.virtualizerProps.count)
     .fill(true)
     .map((_, index) => `list item number ${index}`);
 
@@ -29,20 +29,20 @@ class VirtualizedWrapper extends Component {
 
   public override update(changedProperties: PropertyValues) {
     super.update(changedProperties);
-    if (changedProperties.get('virtualizerprops')) {
+    if (changedProperties.get('virtualizerProps')) {
       this.updateListItemTextArray();
     }
   }
 
   public override connectedCallback() {
     super.connectedCallback();
-    if (this.virtualizerprops?.count) {
+    if (this.virtualizerProps?.count) {
       this.updateListItemTextArray();
     }
   }
 
   private updateListItemTextArray() {
-    this.listItemTexts = new Array(this.virtualizerprops?.count)
+    this.listItemTexts = new Array(this.virtualizerProps?.count)
       .fill(true)
       .map((_, index) => `list item number ${index}`);
   }
@@ -60,7 +60,7 @@ class VirtualizedWrapper extends Component {
     <div style="height: 500px; width: 500px;">
       <mdc-virtualizedlist
         .onscroll=${this.onscroll}
-        .virtualizerprops=${this.virtualizerprops}
+        .virtualizerProps=${this.virtualizerProps}
         .setlistdata=${this.setListData}
       >${this.list}</mdc-virtualizedlist></div>
     `;

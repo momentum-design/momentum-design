@@ -83,7 +83,7 @@ const styles = [css`
 
   .prefix-text{
     color: var(--mdc-input-support-text-color);
-    white-space: nowrap; // restirct prefix text to be in one line
+    white-space: nowrap; // restrict prefix text to be in one line
   }
 
   :host(:not([disabled])) .input-container:hover{
@@ -92,23 +92,23 @@ const styles = [css`
 
   :host(:not([disabled])) .input-container:active, :host(:not([disabled])) .input-container:focus-within{
     background-color: var(--mdc-input-focused-background-color);
-    border-color:  var(--mdc-input-focused-border-color);
+    border-color: var(--mdc-input-focused-border-color);
   }
 
   .input::placeholder{
     color: var(--mdc-input-support-text-color);
   }
 
-  :host([help-text-type="error"]) .input-container {
+  :host([help-text-type="error"]) .input-container, :host([help-text-type="error"]) .input-container:focus-within {
     border-color: var(--mdc-input-error-border-color);
   }
-  :host([help-text-type="warning"]) .input-container {
+  :host([help-text-type="warning"]) .input-container, :host([help-text-type="warning"]) .input-container:focus-within {
     border-color: var(--mdc-input-warning-border-color);
   }
-  :host([help-text-type="success"]) .input-container {
+  :host([help-text-type="success"]) .input-container, :host([help-text-type="success"]) .input-container:focus-within {
     border-color: var(--mdc-input-success-border-color);
   }
-  :host([help-text-type="priority"]) .input-container {
+  :host([help-text-type="priority"]) .input-container, :host([help-text-type="priority"]) input-container:focus-within {
     border-color: var(--mdc-input-primary-border-color);
   }
 
@@ -116,6 +116,6 @@ const styles = [css`
     opacity: 0;
     pointer-events: none;
   }
-  `, ...hostFocusRingStyles(true)];
+`, ...hostFocusRingStyles(true)];
 
 export default styles;
