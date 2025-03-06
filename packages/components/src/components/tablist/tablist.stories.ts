@@ -2,21 +2,44 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import { action } from '@storybook/addon-actions';
 import '.';
 import { html } from 'lit';
-import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { TAB_VARIANTS } from '../tab/tab.constants';
 
 const render = (args: Args) => html`
-  <mdc-tablist @change="${action('onchange')}" activetabid="${args.activetabid}">
-    <mdc-tab variant="line" text="Tab 1" icon-name="info-circle-bold" tabid="photos-tab" aria-controls="photos-panel">
-      Tab 1
+  <mdc-tablist @change="${action('onchange')}" activetabid="${args.activetabid}" aria-label="Media types">
+    <mdc-tab
+      variant=${args.tabvariant}
+      text="Photos"
+      icon-name="add-photo-bold"
+      tabid="photos-tab"
+      aria-controls="photos-panel">
     </mdc-tab>
-    <mdc-tab variant="line" text="Tab 2" tabid="videos-tab" aria-controls="videos-panel">
-      <slot name="badge">5</badge>
+    <mdc-tab variant=${args.tabvariant}
+      text="Videos"
+      icon-name="video-bold-regular"
+      tabid="videos-tab"
+      aria-controls="videos-panel">
+      <mdc-badge slot="badge" type="counter" counter="5"></mdc-badge>
     </mdc-tab>
-    <mdc-tab variant="line" text="Tab 3" tabid="music-tab" aria-controls="music-panel">
+    <mdc-tab variant=${args.tabvariant}
+      text="Music"
+      icon-name="file-music-bold"
+      tabid="music-tab"
+      aria-controls="music-panel">
     </mdc-tab>
-    <mdc-tab variant="line" text="Tab 4 - the long named tab" tabid="documents-tab" aria-controls="documents-panel">
+    <mdc-tab
+      variant=${args.tabvariant}
+      text="Documents"
+      icon-name="document-bold"
+      tabid="documents-tab"
+      aria-controls="documents-panel">
     </mdc-tab>
-    <mdc-tab variant="line" text="Tab 5" tabid="downloads-tab" aria-controls="downloads-panel">
+    <mdc-tab
+      variant=${args.tabvariant}
+      text="Downloads"
+      icon-name="cloud-download-bold"
+      tabid="downloads-tab"
+      aria-controls="downloads-panel">
     </mdc-tab>
   </mdc-tablist>
   `;
@@ -30,8 +53,64 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
-    ...classArgType,
-    ...styleArgType,
+    activetabid: {
+      control: 'text',
+      description: 'ID of the active tab, defaults to the first tab if not provided',
+    },
+    onchange: {
+      description: `Function that gets called when user changes the active tab.
+      The function will receive the fired event and the new tab id can be fetched from event.detail.tabId.
+
+    (event: CustomEvent) => handleTabChange(event.detail.tabId);`,
+      type: 'function',
+      table: {
+        category: 'attributes',
+      },
+    },
+    tabvariant: {
+      control: 'select',
+      description: 'Set the variant of tab inside the tablist',
+      options: Object.values(TAB_VARIANTS),
+    },
+    ...hideControls([
+      'allTabs',
+      'previousTab',
+      'firstTab',
+      'lastTab',
+      'nextTab',
+      'tabsContainer',
+      'leftArrowButton',
+      'rightArrowButton',
+      'isRtl',
+      'resetSelection',
+      'focusTab',
+      'selectTab',
+      'handleTabChange',
+      'handleKeydown',
+      'handleClick',
+      'handleScroll',
+      'isArrowButtonHidden',
+      'showLeftArrowButton',
+      'hideLeftArrowButton',
+      'showRightArrowButton',
+      'hideRightArrowButton',
+      'handleArrowButtonVisibility',
+      'scrollTabsLeft',
+      'scrollTabsRight',
+      'role',
+      'tabs',
+      'direction',
+      'scrollDistance',
+      'activeTabId',
+      'tabvariant',
+    ]),
+    ...disableControls([
+      '--mdc-tablist-gap',
+      '--mdc-tablist-width',
+      '--mdc-container-button-padding',
+      'change',
+      'Default',
+    ]),
   },
 };
 
@@ -39,6 +118,13 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
+    tabvariant: 'line',
+  },
+};
 
+export const ActiveTabAttributeSet: StoryObj = {
+  args: {
+    tabvariant: 'glass',
+    activetabid: 'documents-tab',
   },
 };
