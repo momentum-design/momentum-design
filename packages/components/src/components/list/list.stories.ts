@@ -31,11 +31,16 @@ const fakeUserNamesList = [
 const render = (args: Args) => html`
   <mdc-list header-text="${args['header-text']}" data-aria-label="${args['data-aria-label']}">
     ${repeat(fakeUserNamesList, (name) => html`<mdc-listitem label="${name}" variant="${LISTITEM_VARIANTS.INSET_PILL}">
-      <mdc-checkbox slot="leading-controls"></mdc-checkbox>
+      <mdc-checkbox slot="leading-controls" data-aria-label="mock label"></mdc-checkbox>
       <mdc-avatar slot="leading-controls"
         initials="${[name.split(' ')[0][0], name.split(' ')[1][0]].join('')}"
       ></mdc-avatar>
-      <mdc-button slot="trailing-controls" color="positive" prefix-icon="data-range-selection-bold"></mdc-button>
+      <mdc-button
+        slot="trailing-controls"
+        color="positive"
+        prefix-icon="data-range-selection-bold"
+        aria-label="mock label"
+      ></mdc-button>
       <mdc-button slot="trailing-controls" variant="tertiary">Learn More</mdc-button>
       <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
     </mdc-listitem>

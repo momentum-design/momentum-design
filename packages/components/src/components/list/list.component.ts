@@ -28,10 +28,6 @@ class List extends DataAriaLabelMixin(Component) {
 
   constructor() {
     super();
-    this.role = 'list';
-    this.setAttribute('aria-labelledby', HEADER_ID);
-    this.setAttribute('aria-label', this.dataAriaLabel ?? '');
-
     this.addEventListener('keydown', this.handleKeyDown);
   }
 
@@ -125,8 +121,14 @@ class List extends DataAriaLabelMixin(Component) {
       >${this.headerText}</mdc-text>
     ` : nothing;
     return html`
-      ${headerText}
-      <slot role="presentation" @click="${this.handleMouseClick}"></slot>
+      <div
+        role="list"
+        aria-labelledby="${this.headerText ? HEADER_ID : ''}"
+        aria-label="${this.dataAriaLabel ?? ''}"
+      >
+        ${headerText}
+        <slot role="presentation" @click="${this.handleMouseClick}"></slot>
+      </div>
     `;
   }
 

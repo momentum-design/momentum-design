@@ -4,6 +4,7 @@ import { hideControls } from '../../../config/storybook/utils';
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import '../avatar';
+import '../list';
 import '../badge';
 import '../button';
 import '../checkbox';
@@ -12,23 +13,25 @@ import '../toggle';
 import { LISTITEM_VARIANTS } from './listitem.constants';
 
 const render = (args: Args) => html`
-  <mdc-listitem
-    ?disabled="${args.disabled}"
-    variant="${args.variant}"
-    label="${args.label}"
-    secondary-label="${args['secondary-label']}"
-    tertiary-label="${args['tertiary-label']}"
-    side-header-text="${args['side-header-text']}"
-    subline-text="${args['subline-text']}"
-  >
-    <mdc-checkbox slot="leading-controls" checked></mdc-checkbox>
-    <mdc-avatar slot="leading-controls" src="https://picsum.photos/id/63/256" presence="active"></mdc-avatar>
-    <mdc-icon slot="leading-controls" name="placeholder-bold"></mdc-icon>
-    <mdc-icon slot="trailing-controls" name="placeholder-bold"></mdc-icon>
-    <mdc-button slot="trailing-controls" variant="secondary">Label</mdc-button>
-    <mdc-toggle slot="trailing-controls" size="compact"></mdc-toggle>
-    <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
-  </mdc-listitem>
+  <mdc-list>
+    <mdc-listitem
+      ?disabled="${args.disabled}"
+      variant="${args.variant}"
+      label="${args.label}"
+      secondary-label="${args['secondary-label']}"
+      tertiary-label="${args['tertiary-label']}"
+      side-header-text="${args['side-header-text']}"
+      subline-text="${args['subline-text']}"
+    >
+      <mdc-checkbox slot="leading-controls" data-aria-label="mock label" checked></mdc-checkbox>
+      <mdc-avatar slot="leading-controls" src="https://picsum.photos/id/63/256" presence="active"></mdc-avatar>
+      <mdc-icon slot="leading-controls" name="placeholder-bold"></mdc-icon>
+      <mdc-icon slot="trailing-controls" name="placeholder-bold"></mdc-icon>
+      <mdc-button slot="trailing-controls" variant="secondary">Label</mdc-button>
+      <mdc-toggle slot="trailing-controls" data-aria-label="mock label" size="compact"></mdc-toggle>
+      <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
+    </mdc-listitem>
+  </mdc-list>
 `;
 
 const meta: Meta = {
@@ -122,11 +125,11 @@ export const ListWithDisableState: StoryObj = {
       label="${args.label}"
       side-header-text="${args['side-header-text']}"
     >
-      <mdc-checkbox slot="leading-controls" checked></mdc-checkbox>
+      <mdc-checkbox slot="leading-controls" data-aria-label="mock label" checked></mdc-checkbox>
       <mdc-icon slot="leading-controls" name="placeholder-bold"></mdc-icon>
       <mdc-icon slot="trailing-controls" name="placeholder-bold"></mdc-icon>
       <mdc-button slot="trailing-controls" variant="secondary">Label</mdc-button>
-      <mdc-toggle slot="trailing-controls" size="compact"></mdc-toggle>
+      <mdc-toggle slot="trailing-controls" data-aria-label="mock label" size="compact"></mdc-toggle>
       <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
     </mdc-listitem>
   `,
