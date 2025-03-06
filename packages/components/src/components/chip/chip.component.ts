@@ -26,7 +26,7 @@ import Buttonsimple from '../buttonsimple/buttonsimple.component';
  * @event focus - (React: onFocus) This event is dispatched when the button receives focus.
  */
 class Chip extends IconNameMixin(Buttonsimple) {
-  @property({ type: String }) color: ColorType = DEFAULTS.COLOR;
+  @property({ type: String, reflect: true }) color: ColorType = DEFAULTS.COLOR;
 
   @property({ type: String }) label = '';
 
@@ -74,6 +74,3 @@ class Chip extends IconNameMixin(Buttonsimple) {
 }
 
 export default Chip;
-
-// support avatar or icon. Not both
-// support tooltip

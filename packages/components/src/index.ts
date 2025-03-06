@@ -24,6 +24,7 @@ import Spinner from './components/spinner';
 import RadioGroup from './components/radiogroup';
 import Chip from './components/chip';
 import Alertchip from './components/alertchip';
+import Filterchip from './components/filterchip';
 
 import type { TextType } from './components/text/text.types';
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
@@ -54,6 +55,7 @@ export {
   RadioGroup,
   Chip,
   Alertchip,
+  Filterchip,
 };
 
 export type {
