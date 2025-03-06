@@ -3,13 +3,6 @@ import { themes } from '../themes';
 import '../../../src/components/themeprovider';
 import './overrides.css';
 
-// const clearStyles = (element) => {
-//   // eslint-disable-next-line no-restricted-syntax
-//   for (const theme of themes) {
-//     element.classList.remove(theme.className);
-//   }
-// };
-
 const applyStyle = (element, className) => {
   element.classList.add(className);
 };
