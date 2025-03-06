@@ -1,4 +1,5 @@
 import { CSSResult, html } from 'lit';
+import type { PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import styles from './tablist.styles';
@@ -132,14 +133,14 @@ class Tablist extends Component {
   /**
    * Observe the tablist element for changes in the activetabid attribute.
    *
-   * @param selectedTabId - The name of the attribute that changed.
-   * @param oldTabId - The name of the previous attribute.
-   * @param newTabId - The name of the new attribute.
+   * @param changedProperties - Map of changed properties with old values.
    */
-  override attributeChangedCallback = (selectedTabId: string, oldTabId: string, newTabId: string) => {
-    super.attributeChangedCallback(selectedTabId, oldTabId, newTabId);
-    this.selectTab(this.tabs.find((tab) => tab.getAttribute('tabid') === newTabId) || this.tabs[0]);
-  };
+  public override update(changedProperties: PropertyValues): void {
+    super.update(changedProperties);
+    if (changedProperties.has('activeTabId')) {
+      this.selectTab(this.tabs.find((tab) => tab.getAttribute('tabid') === this.activeTabId) || this.tabs[0]);
+    }
+  }
 
   private get allTabs(): Tab[] {
     return Array.from(this.querySelectorAll('mdc-tab'));
