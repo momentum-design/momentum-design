@@ -2,6 +2,7 @@ import Chip from './chip.component';
 import { TAG_NAME } from './chip.constants';
 import '../text';
 import '../icon';
+import '../avatar';
 
 Chip.register(TAG_NAME);
 
