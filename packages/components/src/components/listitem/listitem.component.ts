@@ -6,20 +6,21 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
-import { TextType } from '../text/text.types';
+import type { TextType } from '../text/text.types';
 import { DEFAULTS } from './listitem.constants';
 import styles from './listitem.styles';
 import type { ListItemVariants } from './listitem.types';
 
 /**
  * mdc-listitem component is used to display a label with different types of controls.
- * There can be three types of controls, a radio button, a checkbox and/or a toggle.
+ * There can be three types of controls, a radio button, a checkbox on the
+ * leading side and a toggle on the trailing side.
  * The list item can contain an avatar on the leading side and a badge on the trailing side.
  * Additionally, the list item can contain a side header and a subline text.
  *
- * It is meant for a flexible use.
  * The leading and trailing slots can be used to display controls and text. <br/>
- * Based on the leading/trailing slot, the position of the controls and text can be adjusted.
+ * Based on the leading/trailing slot, the position of the controls and text can be adjusted. <br/>
+ * Please use mdc-list as a parent element even when there is only listitem for a11y purpose.
  *
  * @tagname mdc-listitem
  *

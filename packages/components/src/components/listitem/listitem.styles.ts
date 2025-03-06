@@ -19,9 +19,6 @@ const styles = css`
     padding: 0.5rem 0.75rem;
     width: 100%;
   }
-  :host([variant="full-width"]) {
-    border-radius: unset;
-  }
   :host([variant="inset-rectangle"]) {
     border-radius: 0.5rem;
   }
