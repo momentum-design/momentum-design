@@ -29,6 +29,8 @@ import ThemeProvider from './components/themeprovider';
 import Toggle from './components/toggle';
 import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
+import Tablist from './components/tablist';
+
 import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
 import Option from './components/option';
 import OptGroup from './components/optgroup';
@@ -74,6 +76,7 @@ export {
   OptGroup,
   Textarea,
   Tooltip,
+  Tablist,
 };
 export type {
   TextType,
