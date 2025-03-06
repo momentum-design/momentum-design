@@ -2,6 +2,7 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { v4 as uuidv4 } from 'uuid';
 import styles from './radio.styles';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
@@ -66,6 +67,7 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
       super();
       // Radio does not contain helpTextType property.
       this.helpTextType = undefined as unknown as ValidationType;
+      this.id = `mdc-radio-${uuidv4()}`;
     }
 
     override firstUpdated() {
@@ -274,9 +276,16 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
       }
     }
 
-    public override render() {
-      const helpTextContent = this.helpText ? this.renderHelperText() : nothing;
-      return html`
+  private renderLabelAndHelperText = () => {
+    if (!this.label) return nothing;
+    return html`<div class="mdc-radio__label-container">
+      ${this.renderLabel()}
+      ${this.renderHelperText()}
+    </div>`;
+  };
+
+  public override render() {
+    return html`
       <div class="mdc-radio__container">
         <div class="mdc-radio__icon-container mdc-focus-ring">
           <input
@@ -299,13 +308,10 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
           />
           <span class="mdc-radio__icon"></span>
         </div>
-        <div class="mdc-radio__label-container">
-          ${this.renderLabel()}
-          ${helpTextContent}
-        </div>
+        ${this.renderLabelAndHelperText()}
       </div>
     `;
-    }
+  }
 
   public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...styles];
 }

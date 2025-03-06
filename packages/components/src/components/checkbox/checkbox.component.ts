@@ -1,6 +1,7 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { v4 as uuidv4 } from 'uuid';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
@@ -66,6 +67,7 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     super();
     // Checkbox does not contain helpTextType property.
     this.helpTextType = undefined as unknown as ValidationType;
+    this.id = `mdc-input-${uuidv4()}`;
   }
 
   /**
@@ -162,6 +164,14 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     }
   }
 
+  private renderLabelAndHelperText = () => {
+    if (!this.label) return nothing;
+    return html`<div class="text-container">
+      ${this.renderLabel()}
+      ${this.renderHelperText()}
+    </div>`;
+  };
+
   public override render() {
     const checkboxIconContent = (this.checked || this.indeterminate) ? html`
       <mdc-icon
@@ -171,7 +181,6 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
         length-unit="rem"
       ></mdc-icon>
     ` : nothing;
-    const helpTextContent = this.helpText ? this.renderHelperText() : nothing;
 
     return html`
       <div class="container mdc-focus-ring">
@@ -195,10 +204,7 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
         />
         <div class="icon-container">${checkboxIconContent}</div>
       </div>
-      <div class="text-container">
-        ${this.renderLabel()}
-        ${helpTextContent}
-      </div>
+      ${this.renderLabelAndHelperText()}
     `;
   }
 

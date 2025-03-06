@@ -1,6 +1,7 @@
 import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { v4 as uuidv4 } from 'uuid';
 import styles from './input.styles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { AUTO_CAPITALIZE, DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
@@ -137,6 +138,11 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
    * @default ''
    */
   @property({ type: String, attribute: 'clear-aria-label' }) clearAriaLabel = '';
+
+  constructor() {
+    super();
+    this.id = `mdc-input-${uuidv4()}`;
+  }
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -377,6 +383,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
             ?required="${!!this.requiredLabel}"
             type="text"
             aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
+            aria-invalid="${this.helpTextType === 'error' ? 'true' : 'false'}"
             placeholder=${ifDefined(this.placeholder)}
             minlength=${ifDefined(this.minlength)}
             maxlength=${ifDefined(this.maxlength)}
