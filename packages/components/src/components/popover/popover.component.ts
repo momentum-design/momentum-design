@@ -386,8 +386,8 @@ class Popover extends FocusTrapMixin(Component) {
     }
     if (
       changedProperties.has('interactive')
-      || changedProperties.has('data-aria-label')
-      || changedProperties.has('data-aria-labelledby')
+      || changedProperties.has('aria-label')
+      || changedProperties.has('aria-labelledby')
     ) {
       this.utils.setupAccessibility();
     }

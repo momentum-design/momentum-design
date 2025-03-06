@@ -99,7 +99,7 @@ export class PopoverUtils {
    * Sets up the accessibility attributes for the popover.
    */
   setupAccessibility() {
-    this.popover.toggleAttribute('aria-modal', !this.popover.interactive);
+    this.popover.toggleAttribute('aria-modal', this.popover.interactive);
     if (this.popover.interactive) {
       if (!this.popover.ariaLabel) {
         this.popover.ariaLabel = this.popover.triggerElement?.ariaLabel
