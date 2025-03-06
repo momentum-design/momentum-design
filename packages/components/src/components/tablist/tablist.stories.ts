@@ -4,6 +4,7 @@ import '.';
 import { html } from 'lit';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { TAB_VARIANTS } from '../tab/tab.constants';
+import '../badge';
 
 const render = (args: Args) => html`
   <mdc-tablist @change="${action('onchange')}" activetabid="${args.activetabid}" aria-label="Media types">
@@ -16,7 +17,7 @@ const render = (args: Args) => html`
     </mdc-tab>
     <mdc-tab variant=${args.tabvariant}
       text="Videos"
-      icon-name="video-bold-regular"
+      icon-name="video-bold"
       tabid="videos-tab"
       aria-controls="videos-panel">
       <mdc-badge slot="badge" type="counter" counter="5"></mdc-badge>
