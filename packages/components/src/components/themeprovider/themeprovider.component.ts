@@ -12,6 +12,20 @@ import styles from './themeprovider.styles';
  *
  * CSS variables defined in the themeclass will be used for the styling of child dom nodes.
  *
+ * Available Momentum theme classes:
+ *
+ * `mds-theme-stable-darkWebex`, `mds-theme-stable-lightWebex`
+ *
+ * `mds-theme-stable-darkBronzeWebex`, `mds-theme-stable-lightBronzeWebex`
+ *
+ * `mds-theme-stable-darkIndigoWebex`, `mds-theme-stable-lightIndigoWebex`
+ *
+ * `mds-theme-stable-darkJadeWebex`, `mds-theme-stable-lightJadeWebex`
+ *
+ * `mds-theme-stable-darkLavenderWebex`, `mds-theme-stable-lightLavenderWebex`
+ *
+ * `mds-theme-stable-darkRoseWebex`, `mds-theme-stable-lightRoseWebex`
+ *
  * Themeclass context can be be consumed from Lit child components
  * (see providerUtils.consume for how to consume)
  *
