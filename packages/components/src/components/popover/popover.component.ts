@@ -351,9 +351,6 @@ class Popover extends FocusTrapMixin(Component) {
     super.updated(changedProperties);
 
     if (changedProperties.has('visible')) {
-      if (this.visible && popoverStack.peek() !== this) {
-        popoverStack.push(this);
-      }
       const oldValue = changedProperties.get('visible') as boolean;
       await this.isOpenUpdated(oldValue, this.visible);
     }
@@ -449,6 +446,9 @@ class Popover extends FocusTrapMixin(Component) {
     }
 
     if (newValue) {
+      if (popoverStack.peek() !== this) {
+        popoverStack.push(this);
+      }
       this.enabledFocusTrap = this.focusTrap;
       this.enabledPreventScroll = this.preventScroll;
 
@@ -480,7 +480,10 @@ class Popover extends FocusTrapMixin(Component) {
           this.triggerElement.getAttribute('aria-haspopup') || 'dialog',
         );
       }
+      PopoverEventManager.onShowPopover(this);
     } else {
+      popoverStack.pop();
+
       if (this.backdropElement) {
         this.backdropElement?.remove();
         this.backdropElement = null;
@@ -506,6 +509,7 @@ class Popover extends FocusTrapMixin(Component) {
       if (this.focusBackToTrigger) {
         this.triggerElement?.focus();
       }
+      PopoverEventManager.onHidePopover(this);
     }
   }
 
@@ -541,11 +545,7 @@ class Popover extends FocusTrapMixin(Component) {
     this.cancelCloseDelay();
     setTimeout(() => {
       this.visible = true;
-      PopoverEventManager.onShowPopover(this);
     }, this.openDelay);
-    if (popoverStack.peek() !== this) {
-      popoverStack.push(this);
-    }
   };
 
   /**
@@ -555,10 +555,8 @@ class Popover extends FocusTrapMixin(Component) {
     if (popoverStack.peek() === this) {
       setTimeout(() => {
         this.visible = false;
-        PopoverEventManager.onHidePopover(this);
         this.isTriggerClicked = false;
       }, this.closeDelay);
-      popoverStack.pop();
     }
   };
 
