@@ -1,14 +1,13 @@
-import { CSSResult, html, nothing, PropertyValues } from 'lit';
+import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './chip.styles';
-import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
-import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { Component } from '../../models';
 import { DEFAULTS } from './chip.constants';
 import type { IconNames } from '../icon/icon.types';
 import type { ColorType } from './chip.types';
+import Buttonsimple from '../buttonsimple/buttonsimple.component';
 
 /**
  * chip component, which ...
@@ -19,9 +18,14 @@ import type { ColorType } from './chip.types';
  *
  * @event click - (React: onClick) This event is a Click Event, update the description
  *
- * @cssprop --custom-property-name - Description of the CSS custom property
+ * @cssprop --custom-property-name - Description of the CSS custom property\
+ *
+ * @event click - (React: onClick) This event is dispatched when the button is clicked.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the button.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the button.
+ * @event focus - (React: onFocus) This event is dispatched when the button receives focus.
  */
-class Chip extends TabIndexMixin(DisabledMixin(IconNameMixin(Component))) {
+class Chip extends IconNameMixin(Buttonsimple) {
   @property({ type: String }) color: ColorType = DEFAULTS.COLOR;
 
   @property({ type: String }) label = '';
@@ -30,35 +34,12 @@ class Chip extends TabIndexMixin(DisabledMixin(IconNameMixin(Component))) {
 
   @property({ type: String, attribute: 'avatar-initials' }) avatarInitials?: string;
 
-  private prevTabindex = 0;
-
-  /**
-   * Sets the disabled attribute for the button.
-   * When disabled, the button is not focusable or clickable, and tabindex is set to -1.
-   * The previous tabindex is stored and restored when enabled.
-   * Also sets/removes aria-disabled attribute.
-   *
-   * @param element - The button element.
-   * @param disabled - The disabled state.
-   */
-  private setDisabled(element: HTMLElement, disabled: boolean) {
-    if (disabled) {
-      element.setAttribute('aria-disabled', 'true');
-      this.prevTabindex = this.tabIndex;
-      this.tabIndex = -1;
-    } else {
-      if (this.tabIndex === -1) {
-        this.tabIndex = this.prevTabindex;
-      }
-      element.removeAttribute('aria-disabled');
-    }
-  }
-
-  public override update(changedProperties: PropertyValues): void {
-    super.update(changedProperties);
-    if (changedProperties.has('disabled')) {
-      this.setDisabled(this, this.disabled);
-    }
+  constructor() {
+    super();
+    this.role = DEFAULTS.ROLE;
+    this.size = DEFAULTS.SIZE;
+    this.active = undefined as unknown as boolean;
+    this.softDisabled = undefined as unknown as boolean;
   }
 
   private renderLeadingData() {

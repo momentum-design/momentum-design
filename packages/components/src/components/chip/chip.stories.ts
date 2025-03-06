@@ -1,11 +1,18 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { COLOR } from './chip.constants';
 
 const render = (args: Args) => html`
-  <mdc-chip color="${args.color}" label="${args.label}"
+  <mdc-chip 
+  @click="${action('onclick')}"
+  @keydown="${action('onkeydown')}"
+  @keyup="${action('onkeyup')}"
+  @focus="${action('onfocus')}"
+  color="${args.color}" 
+  label="${args.label}"
   icon-name="${args['icon-name']}"
   ?disabled="${args.disabled}"
   avatar-initials="${args['avatar-initials']}"
