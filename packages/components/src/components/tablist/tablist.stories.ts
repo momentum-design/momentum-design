@@ -45,12 +45,12 @@ const render = (args: Args) => html`
   `;
 
 const meta: Meta = {
-  title: 'Components/tablist',
+  title: 'Work in Progress/tablist',
   tags: ['autodocs'],
   component: 'mdc-tablist',
   render,
   parameters: {
-    badges: ['stable'],
+    badges: ['wip'],
   },
   argTypes: {
     activetabid: {
