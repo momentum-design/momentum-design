@@ -1,5 +1,4 @@
 import utils from '../../utils/tag-name';
-import { COLOR } from '../modalcontainer/modalcontainer.constants';
 
 const TAG_NAME = utils.constructTagName('popover');
 
@@ -25,6 +24,11 @@ const TRIGGER = {
   MANUAL: 'manual',
 } as const;
 
+const COLOR = {
+  TONAL: 'tonal',
+  CONTRAST: 'contrast',
+} as const;
+
 const DEFAULTS = {
   PLACEMENT: POPOVER_PLACEMENT.BOTTOM,
   TRIGGER: TRIGGER.CLICK,
@@ -48,4 +52,4 @@ const DEFAULTS = {
   Z_INDEX: 1000,
 } as const;
 
-export { TAG_NAME, POPOVER_PLACEMENT, TRIGGER, DEFAULTS };
+export { TAG_NAME, POPOVER_PLACEMENT, COLOR, TRIGGER, DEFAULTS };

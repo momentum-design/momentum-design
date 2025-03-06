@@ -6,14 +6,9 @@ import styles from './popover.styles';
 import { Component } from '../../models';
 import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
 import { popoverStack } from './popover.stack';
-import type { PopoverPlacement, PopoverTrigger } from './popover.types';
-import type { ModalContainerColor } from '../modalcontainer/modalcontainer.types';
-import { COLOR } from '../modalcontainer/modalcontainer.constants';
-import { DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants';
+import type { PopoverPlacement, PopoverTrigger, PopoverColor } from './popover.types';
+import { DEFAULTS, POPOVER_PLACEMENT, TRIGGER, COLOR } from './popover.constants';
 import { ValueOf } from '../../utils/types';
-import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
-import { DataAriaDescribedbyMixin } from '../../utils/mixins/DataAriaDescribedbyMixin';
-import { DataAriaLabelledbyMixin } from '../../utils/mixins/DataAriaLabelledbyMixin';
 import { PopoverEventManager } from './popover.events';
 import { PopoverUtils } from './popover.utils';
 
@@ -24,21 +19,22 @@ import { PopoverUtils } from './popover.utils';
  * supports dynamic height adjustments with scrollable content when needed。
  *
  * @dependency mdc-button
- * @dependency mdc-modalcontainer
  *
  * @tagname mdc-popover
  *
  * @cssproperty --mdc-popover-arrow-border-radius - radius of the arrow border
  * @cssproperty --mdc-popover-arrow-border - border of the arrow
  * @cssproperty --mdc-popover-primary-background-color - primary background color of the popover
+ * @cssproperty --mdc-popover-border-color - border color of the popover
  * @cssproperty --mdc-popover-inverted-background-color - inverted background color of the popover
  * @cssproperty --mdc-popover-inverted-border-color - inverted border color of the popover
  * @cssproperty --mdc-popover-inverted-text-color - inverted text color of the popover
+ * @cssproperty --mdc-popover-elevation-3 - elevation of the popover
  *
- * @slot - Default slot for modal container
+ * @slot - Default slot for the popover content
  *
  */
-class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescribedbyMixin(FocusTrapMixin(Component)))) {
+class Popover extends FocusTrapMixin(Component) {
   /**
    * The unique ID of the popover.
    */
@@ -91,7 +87,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
    * @default tonal
    */
   @property({ type: String, reflect: true })
-  color: ModalContainerColor = DEFAULTS.COLOR;
+  color: PopoverColor = DEFAULTS.COLOR;
 
   /**
    * The visibility of the popover.
@@ -225,16 +221,26 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
    * Role of the popover
    * @default dialog
    */
-  @property({ type: String, reflect: true, attribute: 'data-role' })
-  dataRole: HTMLElement['role'] = DEFAULTS.ROLE;
+  @property({ type: String, reflect: true })
+  override role: HTMLElement['role'] = DEFAULTS.ROLE;
+
+  /**
+   * aria-labelledby for an interactive popover only, defaults to the trigger component id.
+   * Used in nested cases where the triggerComponent isn't the actual button.
+   */
+  @property({ type: String, reflect: true, attribute: 'aria-labelledby' })
+  ariaLabelledby: string | null = null;
+
+  /**
+   * aria-describedby of the popover.
+   */
+  @property({ type: String, reflect: true, attribute: 'aria-describedby' })
+  ariaDescribedby: string | null = null;
 
   public arrowElement: HTMLElement | null = null;
 
   /** @internal */
   public triggerElement: HTMLElement | null = null;
-
-  /** @internal */
-  public containerElement: HTMLElement | null = null;
 
   /** @internal */
   private hoverTimer: number | null = null;
@@ -251,6 +257,9 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
   /** @internal */
   private utils: PopoverUtils;
 
+  /** @internal */
+  public backdropElement: HTMLElement | null = null;
+
   constructor() {
     super();
     this.utils = new PopoverUtils(this);
@@ -258,22 +267,22 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
 
   protected override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
-    this.containerElement = this.renderRoot.querySelector('.popover-container');
     this.utils.setupAppendTo();
     [this.openDelay, this.closeDelay] = this.utils.setupDelay();
     this.setupTriggerListener();
     this.utils.setupAccessibility();
+    this.style.zIndex = `${this.zIndex}`;
     PopoverEventManager.onCreatedPopover(this);
 
     if (this.visible) {
-      await this.positionPopover();
+      this.positionPopover();
       await this.handleCreatePopoverFirstUpdate();
     }
   }
 
   override async disconnectedCallback() {
     super.disconnectedCallback();
-    await this.removeEventListeners();
+    this.removeEventListeners();
     PopoverEventManager.onDestroyedPopover(this);
     popoverStack.remove(this);
   }
@@ -307,8 +316,8 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
       const hoverBridge = this.renderRoot.querySelector('.popover-hover-bridge');
       this.triggerElement.addEventListener('mouseenter', this.showPopover);
       this.triggerElement.addEventListener('mouseleave', this.startCloseDelay);
-      this.containerElement?.addEventListener('mouseenter', this.cancelCloseDelay);
-      this.containerElement?.addEventListener('mouseleave', this.startCloseDelay);
+      this.addEventListener('mouseenter', this.cancelCloseDelay);
+      this.addEventListener('mouseleave', this.startCloseDelay);
       hoverBridge?.addEventListener('mouseenter', this.cancelCloseDelay);
     }
     if (this.trigger.includes('focusin')) {
@@ -329,8 +338,8 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
     this.triggerElement.removeEventListener('click', this.togglePopoverVisible);
     this.triggerElement.removeEventListener('mouseenter', this.showPopover);
     this.triggerElement.removeEventListener('mouseleave', this.hidePopover);
-    this.containerElement?.removeEventListener('mouseenter', this.cancelCloseDelay);
-    this.containerElement?.removeEventListener('mouseleave', this.startCloseDelay);
+    this.removeEventListener('mouseenter', this.cancelCloseDelay);
+    this.removeEventListener('mouseleave', this.startCloseDelay);
     this.triggerElement.removeEventListener('focusin', this.showPopover);
     this.triggerElement.removeEventListener('focusout', this.hidePopover);
     hoverBridge?.removeEventListener('mouseenter', this.cancelCloseDelay);
@@ -342,6 +351,9 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
     super.updated(changedProperties);
 
     if (changedProperties.has('visible')) {
+      if (this.visible && popoverStack.peek() !== this) {
+        popoverStack.push(this);
+      }
       const oldValue = changedProperties.get('visible') as boolean;
       await this.isOpenUpdated(oldValue, this.visible);
     }
@@ -392,8 +404,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
     let insidePopoverClick = false;
     const path = event.composedPath();
     insidePopoverClick = this.contains(event.target as Node) || path.includes(this.triggerElement!);
-    const backdropElement = this.renderRoot.querySelector('.popover-backdrop');
-    const clickedOnBackdrop = backdropElement ? path.includes(backdropElement) : false;
+    const clickedOnBackdrop = this.backdropElement ? path.includes(this.backdropElement) : false;
 
     if (!insidePopoverClick || clickedOnBackdrop) {
       this.hidePopover();
@@ -442,8 +453,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
       this.enabledPreventScroll = this.preventScroll;
 
       if (this.backdrop) {
-        const popoverBackdrop = this.renderRoot.querySelector('.popover-backdrop') as HTMLElement;
-        popoverBackdrop.style.zIndex = `${this.zIndex - 1}`;
+        this.utils.createBackdrop();
         this.triggerElement.style.zIndex = `${this.zIndex}`;
       }
 
@@ -451,7 +461,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
       await this.handleCreatePopoverFirstUpdate();
 
       if (this.hideOnBlur) {
-        this.containerElement?.addEventListener('focusout', this.onPopoverFocusOut);
+        this.addEventListener('focusout', this.onPopoverFocusOut);
         if (this.trigger === 'click') {
           this.triggerElement.style.pointerEvents = 'none';
         }
@@ -471,8 +481,12 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
         );
       }
     } else {
+      if (this.backdropElement) {
+        this.backdropElement?.remove();
+        this.backdropElement = null;
+      }
       if (this.hideOnBlur) {
-        this.containerElement?.removeEventListener('focusout', this.onPopoverFocusOut);
+        this.removeEventListener('focusout', this.onPopoverFocusOut);
         if (this.trigger === 'click') {
           this.triggerElement.style.pointerEvents = '';
         }
@@ -577,7 +591,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
    * It uses the floating-ui/dom library to calculate the position.
    */
   private positionPopover() {
-    if (!this.triggerElement || !this.containerElement) return;
+    if (!this.triggerElement) return;
 
     const middleware = [shift()];
     let popoverOffset = this.offset;
@@ -587,7 +601,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
     }
 
     if (this.size) {
-      const popoverContent = this.containerElement.querySelector('[part="popover-content"]') as HTMLElement;
+      const popoverContent = this.renderRoot.querySelector('[part="popover-content"]') as HTMLElement;
       middleware.push(
         size({
           apply({ availableHeight }) {
@@ -613,10 +627,10 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
 
     middleware.push(offset(popoverOffset));
 
-    autoUpdate(this.triggerElement, this.containerElement, async () => {
-      if (!this.triggerElement || !this.containerElement) return;
+    autoUpdate(this.triggerElement, this, async () => {
+      if (!this.triggerElement) return;
 
-      const { x, y, middlewareData, placement } = await computePosition(this.triggerElement, this.containerElement, {
+      const { x, y, middlewareData, placement } = await computePosition(this.triggerElement, this, {
         placement: this.placement,
         middleware,
       });
@@ -633,34 +647,21 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
 
   public override render() {
     return html`
-      ${this.backdrop && this.visible ? html`<div class="popover-backdrop"></div>` : nothing}
-      <mdc-modalcontainer
-        class="popover-container"
-        elevation="3"
-        color=${this.color}
-        ?data-aria-modal=${this.interactive}
-        data-role="${ifDefined(this.dataRole)}"
-        data-aria-label="${ifDefined(this.interactive ? this.dataAriaLabel : undefined)}"
-        data-aria-labelledby="${ifDefined(this.interactive ? this.dataAriaLabelledby : undefined)}"
-        data-aria-describedby="${ifDefined(this.interactive ? this.dataAriaDescribedby : undefined)}"
-        style="z-index: ${this.zIndex};"
-      >
-        <div class="popover-hover-bridge"></div>
-        ${this.closeButton
+      <div class="popover-hover-bridge"></div>
+      ${this.closeButton
     ? html` <mdc-button
-              class="popover-close"
-              prefix-icon="cancel-bold"
-              variant="tertiary"
-              size="20"
-              aria-label=${ifDefined(this.closeButtonAriaLabel)}
-              @click="${this.hidePopover}"
-            ></mdc-button>`
+            class="popover-close"
+            prefix-icon="cancel-bold"
+            variant="tertiary"
+            size="20"
+            aria-label=${ifDefined(this.closeButtonAriaLabel)}
+            @click="${this.hidePopover}"
+          ></mdc-button>`
     : nothing}
-        ${this.showArrow ? html`<div class="popover-arrow"></div>` : nothing}
-        <div part="popover-content">
-          <slot></slot>
-        </div>
-      </mdc-modalcontainer>
+      ${this.showArrow ? html`<div class="popover-arrow"></div>` : nothing}
+      <div part="popover-content">
+        <slot></slot>
+      </div>
     `;
   }
 
