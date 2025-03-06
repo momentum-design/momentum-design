@@ -1,6 +1,5 @@
 import { LitElement } from 'lit';
 import { property, query } from 'lit/decorators.js';
-import { v4 as uuidv4 } from 'uuid';
 import type { Constructor } from './index.types';
 
 export interface AssociatedFormControl {
@@ -45,7 +44,6 @@ export interface FormInternalsMixinInterface {
     setValidity(): void;
     checkValidity(): boolean;
     reportValidity(): boolean;
-
 }
 
 export const FormInternalsMixin = <T extends Constructor<LitElement>>(
@@ -94,7 +92,6 @@ export const FormInternalsMixin = <T extends Constructor<LitElement>>(
 
       /** @internal */
       this.internals = this.attachInternals();
-      this.id = `mdc-input-${uuidv4()}`;
     }
 
     /**

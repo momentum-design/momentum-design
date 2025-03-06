@@ -1,6 +1,7 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { v4 as uuidv4 } from 'uuid';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
@@ -66,6 +67,7 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     super();
     // Checkbox does not contain helpTextType property.
     this.helpTextType = undefined as unknown as ValidationType;
+    this.id = `mdc-input-${uuidv4()}`;
   }
 
   /**
