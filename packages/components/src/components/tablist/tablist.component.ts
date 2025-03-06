@@ -12,23 +12,57 @@ import type Button from '../button';
 /**
  * Tab list organizes tabs into a container.
  *
+ * Children of the tab list are mdc-tab elements, sent to the default slot.
+ *
+ * The tabs can be navigated using the arrow keys, and selected by clicking, or pressing the Enter and Space keys.
+ *
+ * **Accessibility notes for consuming**
+ *
+ * - The element that serves as the container for the set of tabs has role `tablist`.
+ * - Each element that serves as a tab has role `tab` and is contained within the element with role `tablist`.
+ * - Each element that contains the `content panel` for a `tab` has role `tabpanel`.
+ * - If the tab list has a visible label,
+ *   the element with role `tablist` has `aria-labelledby` set to a value that refers to the labelling element.
+ *   Otherwise, the `tablist` element has a label provided by `aria-label`.
+ * - Each element with role `tab` has the property `aria-controls` referring to its associated `tabpanel` element.
+ * - The active tab element has the state `aria-selected` set to `true`
+ *   and all other tab elements have it set to `false`.
+ * - Each element with role `tabpanel` has the property `aria-labelledby` referring to its associated `tab` element.
+ * - If a `tab` element has a popup menu, it has the property `aria-haspopup` set to either `menu` or `true`.
+ *
  * @tagname mdc-tablist
+ *
+ * @dependency mdc-tab
+ * @dependency mdc-button
+ *
+ * @event change - (React: onChange) This event is dispatched when the tab is selected.
  *
  * @slot Default slot for mdc-tab elements.
  *
- * @cssproperty --custom-property-name - Description of the CSS custom property
+ * @cssproperty --mdc-tablist-gap - Gap between tabs
+ * @cssproperty --mdc-tablist-width - Width of the tablist
+ * @cssproperty --mdc-container-button-padding - Padding for when an arrow button is visible
  */
 class Tablist extends Component {
-  @property({ type: String })
-  activeTabId: string = '';
+  /**
+   * ID of the active tab, defaults to the first tab if not provided
+   */
+  @property({ type: String, attribute: 'activetabid', reflect: true })
+  activeTabId?: string;
 
-  @property({ type: Array<Tab> })
+  /**
+   * @internal
+   */
   private tabs: Array<Tab> = [];
 
-  @property({ type: String })
+  /**
+   * @internal
+   */
   private direction: String = '';
 
-  @property({ type: Number })
+  /**
+   * @internal
+   */
   private scrollDistance: number = 100;
 
   constructor() {
@@ -37,9 +71,6 @@ class Tablist extends Component {
     this.attachShadow({ mode: 'open' });
 
     this.tabs = this.allTabs;
-    this.activeTabId = this.getAttribute('activetabid') || this.tabs[0].getAttribute('tabid') || '';
-
-    this.selectTab(this.tabs.find((tab) => tab.getAttribute('tabid') === this.activeTabId) || this.tabs[0]);
 
     this.addEventListener('keydown', this.handleKeydown.bind(this));
     this.addEventListener('click', this.handleClick.bind(this));
@@ -48,11 +79,26 @@ class Tablist extends Component {
 
   override async connectedCallback() {
     super.connectedCallback();
+
     await customElements.whenDefined('mdc-tablist');
+
+    /**
+     * Sets the initial active tab.
+     */
+    if (typeof this.activeTabId === 'string' && this.activeTabId.length === 0) {
+      this.activeTabId = this.tabs[0].getAttribute('tabid') || '';
+    }
+    this.selectTab(this.tabs.find((tab) => tab.getAttribute('tabid') === this.activeTabId) || this.tabs[0]);
 
     this.scrollDistance = remToPx(6.25);
     this.direction = (document.querySelector('html')?.getAttribute('dir')) || window.getComputedStyle(this).direction;
 
+    /**
+     * Observe the tablist element for changes in its size.
+     * Then show or hide the arrow buttons accordingly.
+     *
+     * @param entries - ResizeObserverEntry[].
+     */
     const resizeObserver = new ResizeObserver((entries): void => {
       const tabListWidth: number = entries[0].borderBoxSize[0].inlineSize;
       const tabsContainerWidth: number = this.tabsContainer.scrollWidth || 0;
@@ -77,10 +123,21 @@ class Tablist extends Component {
 
     resizeObserver.observe(this);
 
+    /**
+     * Observe the tablist element for scroll events.
+     */
     this.tabsContainer.addEventListener('scroll', this.handleScroll);
   }
 
-  override attributeChangedCallback = (_activeTabId: string, _oldTabId: string, newTabId: string) => {
+  /**
+   * Observe the tablist element for changes in the activetabid attribute.
+   *
+   * @param selectedTabId - The name of the attribute that changed.
+   * @param oldTabId - The name of the previous attribute.
+   * @param newTabId - The name of the new attribute.
+   */
+  override attributeChangedCallback = (selectedTabId: string, oldTabId: string, newTabId: string) => {
+    super.attributeChangedCallback(selectedTabId, oldTabId, newTabId);
     this.selectTab(this.tabs.find((tab) => tab.getAttribute('tabid') === newTabId) || this.tabs[0]);
   };
 
@@ -118,29 +175,52 @@ class Tablist extends Component {
     return this.direction === 'rtl';
   }
 
+  /**
+   * Remove the active attribute from all tabs.
+   */
   private resetSelection = (): void => {
     this.tabs.forEach((tab) => { tab.removeAttribute('active'); });
   };
 
+  /**
+   * Set the focus on the new tab and scroll it into view.
+   *
+   * @param newTab - New Tab.
+   */
   private focusTab = (newTab: Tab): void => {
     newTab.focus();
     // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
     newTab.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'center' });
   };
 
+  /**
+   * Set the new tab as active and dispatch the change event.
+   *
+   * @param newTab - New Tab.
+   */
   private selectTab = (newTab: Tab): void => {
     this.resetSelection();
     newTab.setAttribute('active', '');
     this.handleTabChange(newTab);
   };
 
-  private handleTabChange = (tab: Tab): void => {
+  /**
+   * Dispatch the change event.
+   *
+   * @param newTab - New Tab.
+   */
+  private handleTabChange = (newTab: Tab): void => {
     const event = new CustomEvent('change', {
-      detail: { tabId: tab.getAttribute('tabid') },
+      detail: { tabId: newTab.getAttribute('tabid') },
     });
     this.dispatchEvent(event);
   };
 
+  /**
+   * Handle the keydown event. The arrow keys, Home, End, Enter, and Space keys are supported.
+   *
+   * @param event - HTML Keyboard Event.
+   */
   private handleKeydown = (event: KeyboardEvent): void => {
     const tab = event.target;
 
@@ -211,6 +291,11 @@ class Tablist extends Component {
     }
   };
 
+  /**
+   * Handle the click event. Select the new tab and set the focus on it.
+   *
+   * @param event - HTML Mouse Event.
+   */
   private handleClick = (event: MouseEvent): void => {
     const tab = event.target;
 
@@ -220,32 +305,56 @@ class Tablist extends Component {
     this.focusTab(tab);
   };
 
+  /**
+   * Show or hide the arrow buttons based on the scroll position.
+   */
   private handleScroll = (): void => {
     this.handleArrowButtonVisibility();
   };
 
+  /**
+   * Check if the arrow button is hidden.
+   *
+   * @param arrowButton - The arrow button to check.
+   */
   private isArrowButtonHidden = (arrowButton: Button): boolean => arrowButton.classList.contains('hide-button');
 
+  /**
+   * Show the left arrow button.
+   */
   private showLeftArrowButton = (): void => {
     this.leftArrowButton.classList.remove('hide-button');
     this.classList.add('show-left-arrow-button-padding');
   };
 
+  /**
+   * Hide the left arrow button.
+   */
   private hideLeftArrowButton = (): void => {
     this.leftArrowButton.classList.add('hide-button');
     this.classList.remove('show-left-arrow-button-padding');
   };
 
+  /**
+   * Show the right arrow button.
+   */
   private showRightArrowButton = (): void => {
     this.rightArrowButton.classList.remove('hide-button');
     this.classList.add('show-right-arrow-button-padding');
   };
 
+  /**
+   * Hide the left arrow button.
+   */
   private hideRightArrowButton = (): void => {
     this.classList.remove('show-right-arrow-button-padding');
     this.rightArrowButton.classList.add('hide-button');
   };
 
+  /**
+   * Show or hide the arrow buttons based on the position of the tabs
+   * corresponding to the tab list.
+   */
   private handleArrowButtonVisibility = () => {
     let leftEndTab;
     let rightEndTab;
@@ -276,6 +385,9 @@ class Tablist extends Component {
     }
   };
 
+  /**
+   * Scroll the tabs to the left.
+   */
   private scrollTabsLeft = (): void => {
     this.tabsContainer?.scrollBy({
       left: this.scrollDistance * -1,
@@ -284,6 +396,9 @@ class Tablist extends Component {
     });
   };
 
+  /**
+   * Scroll the tabs to the right.
+   */
   private scrollTabsRight = (): void => {
     this.tabsContainer?.scrollBy({
       left: this.scrollDistance,
