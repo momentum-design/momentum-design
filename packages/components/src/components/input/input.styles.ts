@@ -99,16 +99,16 @@ const styles = [css`
     color: var(--mdc-input-support-text-color);
   }
 
-  :host([help-text-type="error"]) .input-container {
+  :host([help-text-type="error"]) .input-container, :host([help-text-type="error"]) .input-container:focus-within {
     border-color: var(--mdc-input-error-border-color);
   }
-  :host([help-text-type="warning"]) .input-container {
+  :host([help-text-type="warning"]) .input-container, :host([help-text-type="warning"]) .input-container:focus-within {
     border-color: var(--mdc-input-warning-border-color);
   }
-  :host([help-text-type="success"]) .input-container {
+  :host([help-text-type="success"]) .input-container, :host([help-text-type="success"]) .input-container:focus-within {
     border-color: var(--mdc-input-success-border-color);
   }
-  :host([help-text-type="priority"]) .input-container {
+  :host([help-text-type="priority"]) .input-container, :host([help-text-type="priority"]) input-container:focus-within {
     border-color: var(--mdc-input-primary-border-color);
   }
 
