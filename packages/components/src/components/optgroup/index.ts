@@ -1,5 +1,6 @@
 import Optgroup from './optgroup.component';
 import { TAG_NAME } from './optgroup.constants';
+import '../text';
 
 Optgroup.register(TAG_NAME);
 

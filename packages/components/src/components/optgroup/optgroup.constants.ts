@@ -2,4 +2,6 @@ import utils from '../../utils/tag-name';
 
 const TAG_NAME = utils.constructTagName('optgroup');
 
-export { TAG_NAME };
+const HEADER_ID = 'header-id';
+
+export { TAG_NAME, HEADER_ID };
