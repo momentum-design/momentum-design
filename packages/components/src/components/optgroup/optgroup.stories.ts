@@ -1,8 +1,9 @@
-import type { Meta, StoryObj, Args } from '@storybook/web-components';
-import '.';
-import { html } from 'lit';
+import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import type { TemplateResult } from 'lit';
+import { html } from 'lit';
+import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { hideControls } from '../../../config/storybook/utils';
 import '../option';
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`
@@ -41,6 +42,9 @@ const meta: Meta = {
     'data-aria-label': {
       control: 'text',
     },
+    ...hideControls([
+      '--mdc-optgroup-disabled-color',
+    ]),
     ...classArgType,
     ...styleArgType,
   },

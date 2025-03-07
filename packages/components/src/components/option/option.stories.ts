@@ -50,6 +50,7 @@ const meta: Meta = {
       control: 'text',
     },
     ...hideControls([
+      'id',
       'name',
       'validation-message',
       'validity',
