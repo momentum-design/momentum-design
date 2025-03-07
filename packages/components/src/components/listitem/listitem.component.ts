@@ -95,7 +95,7 @@ class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component)
 
   constructor() {
     super();
-    this.role = 'listitem';
+    this.role = this.role || 'listitem';
   }
 
   /**
