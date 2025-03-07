@@ -51,7 +51,9 @@ const styles = [css`
     --mdc-icon-fill-color: var(--mdc-checkbox-disabled-icon-color);
   }
   :host([disabled][checked]) .icon-container,
-  :host([disabled][indeterminate]) .icon-container {
+  :host([disabled][indeterminate]) .icon-container,
+  :host([disabled][checked]) .container:hover .icon-container,
+  :host([disabled][indeterminate]) .container:hover .icon-container {
     background: var(--mdc-checkbox-disabled-checked-icon-color);
     border: 0.0625rem solid var(--mdc-checkbox-disabled-border-color);
   }

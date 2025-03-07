@@ -41,11 +41,19 @@ import type { ListItemVariants } from './listitem.types';
  *  - Allows customization of the primary label, side header and subline text slot color.
  * @cssproperty --mdc-listitem-secondary-label-color
  *  - Allows customization of the secondary and teritary label text slot color.
+ * @cssproperty --mdc-listitem-disabled-color - Allows customization of the disabled color.
+ *
+ * @event click - (React: onClick) This event is dispatched when the listitem is clicked.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the listitem.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the listitem.
+ * @event focus - (React: onFocus) This event is dispatched when the listitem receives focus.
  */
 class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component))) {
+  /** @internal */
   @queryAssignedElements({ slot: 'leading-controls' })
   leadingControlsSlot!: Array<HTMLElement>;
 
+  /** @internal */
   @queryAssignedElements({ slot: 'trailing-controls' })
   trailingControlsSlot!: Array<HTMLElement>;
 
