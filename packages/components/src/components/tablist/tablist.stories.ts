@@ -43,7 +43,23 @@ const render = (args: Args) => html`
       aria-controls="downloads-panel">
     </mdc-tab>
   </mdc-tablist>
-  `;
+
+  <div id="photos-panel" role="tabpanel" aria-labelledby="photos-tab" hidden>
+    <p>Photos panel</p>
+  </div>
+  <div id="videos-panel" role="tabpanel" aria-labelledby="videos-tab" hidden>
+    <p>Videos panel</p>
+  </div>
+  <div id="music-panel" role="tabpanel" aria-labelledby="music-tab" hidden>
+    <p>Music panel</p>
+  </div>
+  <div id="documents-panel" role="tabpanel" aria-labelledby="documents-tab" hidden>
+    <p>Documents panel</p>
+  </div>
+  <div id="downloads-panel" role="tabpanel" aria-labelledby="downloads-tab" hidden>
+    <p>Downloads panel</p>
+  </div>
+`;
 
 const meta: Meta = {
   title: 'Work in Progress/tablist',
