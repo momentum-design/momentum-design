@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import '.';
@@ -17,6 +18,10 @@ const wrapWithList = (content: TemplateResult) => html`<mdc-list>${content}</mdc
 const render = (args: Args) => wrapWithList(
   html`
     <mdc-listitem
+      @click="${action('onclick')}"
+      @keydown="${action('onkeydown')}"
+      @keyup="${action('onkeyup')}"
+      @focus="${action('onfocus')}"
       ?disabled="${args.disabled}"
       variant="${args.variant}"
       label="${args.label}"
@@ -74,6 +79,7 @@ const meta: Meta = {
       '--mdc-listitem-default-background-color',
       '--mdc-listitem-primary-label-color',
       '--mdc-listitem-secondary-label-color',
+      '--mdc-listitem-disabled-color',
     ]),
     ...classArgType,
     ...styleArgType,
