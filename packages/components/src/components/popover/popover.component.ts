@@ -230,10 +230,8 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
 
   public arrowElement: HTMLElement | null = null;
 
-  /** @internal */
   public triggerElement: HTMLElement | null = null;
 
-  /** @internal */
   public containerElement: HTMLElement | null = null;
 
   /** @internal */
@@ -273,7 +271,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
 
   override async disconnectedCallback() {
     super.disconnectedCallback();
-    await this.removeEventListeners();
+    this.removeEventListeners();
     PopoverEventManager.onDestroyedPopover(this);
     popoverStack.remove(this);
   }
@@ -604,7 +602,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
     if (this.showArrow) {
       this.arrowElement = this.renderRoot.querySelector('.popover-arrow');
       if (this.arrowElement) {
-        const arrowLen = this.arrowElement.offsetHeight;
+        const arrowLen = 18;
         const arrowOffset = Math.sqrt(2 * arrowLen ** 2) / 2;
         popoverOffset = arrowOffset + this.offset;
         middleware.push(arrow({ element: this.arrowElement, padding: 12 }));
@@ -622,7 +620,7 @@ class Popover extends DataAriaLabelMixin(DataAriaLabelledbyMixin(DataAriaDescrib
       });
 
       this.utils.updatePopoverStyle(x, y);
-      if (middlewareData.arrow && this.arrowElement) {
+      if (middlewareData.arrow && this.showArrow) {
         this.utils.updateArrowStyle(middlewareData.arrow, placement);
       }
       if (this.trigger.includes('mouseenter')) {
