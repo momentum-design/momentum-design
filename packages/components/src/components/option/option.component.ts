@@ -20,6 +20,9 @@ import styles from './option.styles';
  * @slot default - This is a default/unnamed slot
  *
  * @event click - (React: onClick) This event is dispatched when the option is clicked.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the option.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the option.
+ * @event focus - (React: onFocus) This event is dispatched when the option receives focus.
  */
 class Option extends FormInternalsMixin(DisabledMixin(Component)) {
   /**
