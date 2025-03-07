@@ -6,7 +6,9 @@ import '.';
 import { hideControls } from '../../../config/storybook/utils';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
-const wrapWithDiv = (htmlString: TemplateResult) => html`<div style="width: 20rem;" role="listbox">${htmlString}</div>`;
+const wrapWithDiv = (htmlString: TemplateResult) => html`
+  <div style="width: 20rem;" aria-label="List box" role="listbox">${htmlString}</div>
+`;
 
 const render = (args: Args) => wrapWithDiv(html`
   <mdc-option
