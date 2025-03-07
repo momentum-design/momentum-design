@@ -56,10 +56,6 @@ const meta: Meta = {
   argTypes: {
     ...classArgType,
     ...styleArgType,
-    'help-text-type': {
-      control: 'select',
-      options: Object.values(VALIDATION),
-    },
     name: {
       control: 'text',
     },
@@ -129,6 +125,10 @@ const meta: Meta = {
     },
     'data-aria-label': {
       control: 'text',
+    },
+    'help-text-type': {
+      control: 'select',
+      options: Object.values(VALIDATION),
     },
     ...disableControls([
       '--mdc-textarea-disabled-border-color',

@@ -13,7 +13,7 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 
 /**
- * textarea component, which is used to get the multi-line text input from the user.
+ * mdc-textarea component, which is used to get the multi-line text input from the user.
  * It contains:
  * - Label: It is the title of the textarea field.
  * - Textarea: It is the multi-line text input field.
@@ -24,7 +24,16 @@ import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/Fo
  *   about the textarea field based on the validation state.
  *
  * @tagname mdc-textarea
-
+ *
+ * @event input - (React: onInput) This event is dispatched when the value of the input field changes (every press).
+ * @event change - (React: onChange) This event is dispatched when the value of the input field changes (on blur).
+ * @event focus - (React: onFocus) This event is dispatched when the input receives focus.
+ * @event blur - (React: onBlur) This event is dispatched when the input loses focus.
+ *
+ *
+ * @dependency mdc-icon
+ * @dependency mdc-text
+ * @dependency mdc-button
  *
  * @cssproperty --mdc-textarea-disabled-border-color - Border color for the textarea container when disabled
  * @cssproperty --mdc-textarea-disabled-text-color - Text color for the textarea field when disabled
