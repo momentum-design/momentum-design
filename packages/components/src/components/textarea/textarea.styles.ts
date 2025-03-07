@@ -39,13 +39,14 @@ const styles = [css`
   }
 
   :host::part(textarea){
-    min-height: 100px;
-    padding: 6px 32px 4px 12px;
+    min-height: 6.25rem;
+    padding: 0.375rem 2rem 0.25rem 0.75rem;
     color: var(--mdc-textarea-text-color);
     background-color: var(--mdc-textarea-background-color);
     resize: none;
     border: none;
     outline: none;
+    box-sizing: border-box;
   }
 
 
@@ -54,7 +55,6 @@ const styles = [css`
     border-radius: 0.5rem;
     border: 0.0625rem solid var(--mdc-textarea-border-color);
     overflow: hidden;
-    padding: 2px;
   }
 
   :host::part(clear-button) {
