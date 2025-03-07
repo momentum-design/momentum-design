@@ -70,23 +70,15 @@ class Option extends FormInternalsMixin(DisabledMixin(Component)) {
     this.setAttribute(attributeName, value);
   }
 
-  /**
-   * Handles the click event for the option.
-   * Toggles the selected state of the option if it is not disabled and not already selected.
-   * Updates the 'aria-selected' attribute to reflect the new selected state.
-   */
-  private handleClick() {
-    if (!this.disabled && !this.selected) {
-      this.selected = !this.selected;
-      this.updateAttribute('aria-selected', `${this.selected}`);
-    }
-  }
-
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
 
     if (changedProperties.has('disabled')) {
       this.updateAttribute('aria-disabled', `${this.disabled}`);
+    }
+
+    if (changedProperties.has('selected')) {
+      this.updateAttribute('aria-selected', `${this.selected}`);
     }
   }
 
@@ -101,7 +93,7 @@ class Option extends FormInternalsMixin(DisabledMixin(Component)) {
     return html`
       <mdc-listitem
         ?disabled="${this.disabled}"
-        @click="${this.handleClick}"
+        role="presentation"
         label="${ifDefined(this.label)}"
         part="list-item"
         variant="${LISTITEM_VARIANTS.INSET_RECTANGLE}"
