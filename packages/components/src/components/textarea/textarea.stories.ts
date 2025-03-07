@@ -10,6 +10,7 @@ import { AUTO_CAPITALIZE } from '../input/input.constants';
 import '../button';
 import '../icon';
 import { AUTO_COMPLETE } from './textarea.constants';
+import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 
 const render = (args: Args) => html`<mdc-textarea
     @input="${action('oninput')}"
@@ -21,6 +22,10 @@ const render = (args: Args) => html`<mdc-textarea
     help-text="${args['help-text']}"
     placeholder="${args.placeholder}"
     name="${args.name}"
+    value="${args.value}"
+    rows="${args.rows}"
+    cols="${args.cols}"
+    wrap="${args.wrap}"
     class="${args.class}"
     style="${args.style}"
     required-label="${args['required-label']}"
@@ -35,6 +40,7 @@ const render = (args: Args) => html`<mdc-textarea
     ?autofocus="${args.autofocus}"
     autocomplete="${args.autocomplete}"
     dirname="${ifDefined(args.dirname)}"
+    validation-message="${args['validation-message']}"
     clear-aria-label="${ifDefined(args['clear-aria-label'])}" 
     max-character-limit="${ifDefined(args['max-character-limit'])}"
   ></mdc-textarea>`;
@@ -155,18 +161,53 @@ export const Example: StoryObj = {
     placeholder: 'Placeholder',
     value: '',
     'help-text': 'Help text',
-    'help-text-type': VALIDATION.ERROR,
+    'help-text-type': VALIDATION.DEFAULT,
     readonly: false,
     disabled: false,
     'clear-button': true,
     autocapitalize: AUTO_CAPITALIZE.OFF,
     autocomplete: AUTO_COMPLETE.OFF,
-    maxlength: 1000,
-    minlength: 0,
     autofocus: false,
     'clear-aria-label': 'Clear',
     'data-aria-label': '',
-    'max-character-limit': 75,
+  },
+};
+
+export const TextareaWithClearButton: StoryObj = {
+  args: {
+    name: 'textarea',
+    label: 'Label',
+    rows: 5,
+    cols: 40,
+    wrap: 'soft',
+    placeholder: 'Placeholder',
+    'clear-button': true,
+    value: 'Textarea with clear button, click on the clear button to clear the textarea',
+  },
+};
+
+export const DisabledTextarea: StoryObj = {
+  args: {
+    name: 'textarea',
+    label: 'Label',
+    rows: 5,
+    cols: 40,
+    wrap: 'soft',
+    value: 'Disabled & typed textarea',
+    'clear-button': true,
+    disabled: true,
+  },
+};
+
+export const ReadonlyTextarea: StoryObj = {
+  args: {
+    name: 'textarea',
+    label: 'Label',
+    rows: 5,
+    cols: 40,
+    readonly: true,
+    value: 'Readonly textarea',
+    'clear-button': true,
   },
 };
 
@@ -185,7 +226,7 @@ export const AllVariants: StoryObj = {
       value="${validation}_value"
       ></mdc-textarea>`)}
       <mdc-textarea 
-      label="Label"
+      label="Required Textarea"
       cols="40"
       help-text="Helper text"
       help-text-type="default"
@@ -193,47 +234,96 @@ export const AllVariants: StoryObj = {
       placeholder="Textarea is required"
       ></mdc-textarea>
       <mdc-textarea 
-      label="Label"
+      label="Textarea within character limit"
       cols="40"
       help-text="Helper text"
       help-text-type="default"
-      readonly 
-      placeholder="Placeholder"
-      leading-icon="placeholder-bold"
-      value="This is readonly"
-      ></mdc-textarea>
-      <mdc-textarea 
-      label="Label"
-      cols="40"
-      help-text="Helper text"
-      help-text-type="default"
-      disabled placeholder="Placeholder"
-      value="Textarea disabled"
-      ></mdc-textarea>
-      <mdc-textarea 
-      label="Label"
-      cols="40"
-      help-text="Helper text"
-      help-text-type="default"
-      placeholder="Placeholder"
-      ></mdc-textarea>
-      <mdc-textarea 
-      label="Label"
-      cols="40"
-      help-text="Helper text"
-      help-text-type="default"
+      value="Momentum is how webex design the future of work."
+      readonly
       placeholder="Placeholder"
       max-character-limit="75"
       ></mdc-textarea>
       <mdc-textarea 
-      label="Label"
+      label="Textarea exceeding character limit"
       cols="40"
-      help-text="Helper text"
-      help-text-type="default"
+      readonly
+      help-text="Input must not exceed 100 characters."
+      help-text-type="error"
       placeholder="Placeholder"
-      max-character-limit="100"
-      >Momentum is how webex design the future of work. This design system exist to create a shared design language
-      and set of building blocks for all Webex products.
+      max-character-limit="75"
+      >Momentum is how webex design the future of work. This design system exist to create a shared design language.
       </mdc-textarea>
       </div>`,
+};
+
+export const TextareaWithCharacterCounter: StoryObj = {
+  render: () => {
+    let helpText = '';
+    let helpTextType: ValidationType = VALIDATION.DEFAULT;
+
+    const handleCharacterLimitCheck = (event: CustomEvent) => {
+      action('character-limit-check')(event);
+      const { detail } = event;
+
+      if (detail.currentCharacterCount > detail.maxCharacterLimit) {
+        helpText = `Input must not exceed ${detail.maxCharacterLimit} characters.`;
+        helpTextType = VALIDATION.ERROR;
+      } else {
+        helpText = '';
+        helpTextType = VALIDATION.DEFAULT;
+      }
+
+      // Update the storybook UI dynamically
+      document.getElementById('textarea')?.setAttribute('help-text', helpText);
+      document.getElementById('textarea')?.setAttribute('help-text-type', helpTextType);
+    };
+
+    return html`
+      <div style="width: 400px">
+      <mdc-textarea
+        id="textarea"
+        name="tweet"
+        label="Tweet"
+        @character-limit-check=${handleCharacterLimitCheck}
+        help-text="${helpText}"
+        help-text-type="${helpTextType}"
+        required-label="required"
+        max-character-limit="75"
+        placeholder="Write what's on your mind"
+      ></mdc-textarea>
+      </div>
+    `;
+  },
+};
+
+export const TextareaInsideForm: StoryObj = {
+  render: () => {
+    const handleSubmit = (event: Event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target as HTMLFormElement);
+      const selectedValue = formData.get('tweet');
+      action('Form Submitted')({ value: selectedValue });
+    };
+
+    return html`
+    <form @submit=${handleSubmit}>
+      <fieldset>
+      <legend>Form Example</legend>
+      <mdc-textarea
+        id="textarea"
+        name='tweet'
+        label="Tweet"
+        required-label="required"
+        placeholder="Write what's on your mind"
+        validation-message="Tweet is required"
+        max-character-limit="75"
+      ></mdc-textarea>
+      <div style='display: flex; gap: 0.25rem;; margin-top: 0.25rem'>
+        <mdc-button type="submit" size='24'>Submit</mdc-button>
+        <mdc-button type="reset" size='24' variant='secondary'>Reset</mdc-button>
+      </div>
+      </fieldset>
+    </form>
+    `;
+  },
 };
