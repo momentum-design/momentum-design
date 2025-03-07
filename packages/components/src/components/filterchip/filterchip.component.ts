@@ -12,7 +12,7 @@ import { DEFAULTS } from './filterchip.constants';
  * @cssprop --custom-property-name - Description of the CSS custom property
  */
 class Filterchip extends Chip {
-  @property({ type: Boolean }) selected = false;
+  @property({ type: Boolean, reflect: true }) selected = false;
 
   constructor() {
     super();
@@ -25,9 +25,15 @@ class Filterchip extends Chip {
   private setSelected(selected: boolean) {
     if (selected) {
       this.iconName = DEFAULTS.ICON_NAME;
+      this.setAttribute('aria-pressed', 'true');
     } else {
       this.iconName = undefined as unknown as IconNames;
+      this.setAttribute('aria-pressed', 'false');
     }
+  }
+
+  protected override executeAction(): void {
+    this.selected = !this.selected;
   }
 
   public override update(changedProperties: PropertyValues) {
