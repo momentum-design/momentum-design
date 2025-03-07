@@ -12,13 +12,16 @@ const wrapWithDiv = (htmlString: TemplateResult) => html`
 
 const render = (args: Args) => wrapWithDiv(html`
   <mdc-option
+    @click="${action('onclick')}"
+    @keydown="${action('onkeydown')}"
+    @keyup="${action('onkeyup')}"
+    @focus="${action('onfocus')}"
     ?disabled="${args.disabled}"
     ?selected="${args.selected}"
     label="${args.label}"
     value="${args.value}"
     prefix-icon="${args['prefix-icon']}"
     aria-label="${args['aria-label']}"
-    @click="${action('onclick')}"
   ></mdc-option>
 `);
 
