@@ -16,15 +16,18 @@ import styles from './optgroup.styles';
  * @tagname mdc-optgroup
  *
  * @slot default - This is a default slot for mdc-option elements.
+ *
+ * @cssproperty --mdc-optgroup-disabled-color - Allows customization of the disabled option color.
  */
 class Optgroup extends DataAriaLabelMixin(DisabledMixin(Component)) {
-  @queryAssignedElements({ selector: 'mdc-option' })
-  options!: Array<HTMLElement>;
-
   /**
    * The header text to be displayed on the top of the options list.
    */
   @property({ type: String, reflect: true }) label?: string;
+
+  /** @internal */
+  @queryAssignedElements({ selector: 'mdc-option' })
+  options!: Array<HTMLElement>;
 
   private setDisabledForAllOptions(): void {
     this.options.forEach((element) => {
