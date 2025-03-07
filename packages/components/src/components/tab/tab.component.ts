@@ -189,10 +189,6 @@ class Tab extends IconNameMixin(Buttonsimple) {
     }
   }
 
-  protected override handleKeyUp(): null {
-    return null;
-  }
-
   public override render() {
     return html`
       <div part="container">
