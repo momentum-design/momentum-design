@@ -1,3 +1,5 @@
+import '../icon';
+import '../listitem';
 import Option from './option.component';
 import { TAG_NAME } from './option.constants';
 

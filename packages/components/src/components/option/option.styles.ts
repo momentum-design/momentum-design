@@ -1,7 +1,11 @@
 import { css } from 'lit';
 
 const styles = css`
-  :host {
+  :host::part(list-item) {
+    height: 2.25rem;
+  }
+  :host::part(default-slot) {
+    display: none; 
   }
 `;
 
