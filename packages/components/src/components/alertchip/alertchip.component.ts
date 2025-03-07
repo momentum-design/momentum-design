@@ -23,6 +23,15 @@ class Alertchip extends Buttonsimple {
 
   @property({ type: String }) label = '';
 
+  constructor() {
+    super();
+    this.disabled = undefined as unknown as boolean;
+    this.softDisabled = undefined as unknown as boolean;
+    this.active = undefined as unknown as boolean;
+    this.size = DEFAULTS.SIZE;
+    this.role = DEFAULTS.ROLE;
+  }
+
   public override render() {
     return html`
       <mdc-icon name="${getAlertIcon(this.variant)}" length-unit="rem" size="1"></mdc-icon>

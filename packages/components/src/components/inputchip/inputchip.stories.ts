@@ -6,11 +6,12 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 const render = (args: Args) => html`
 <mdc-inputchip 
   label="${args.label}"
-  avatar-src="${args.avatarSrc}"
-  avatar-initials="${args.avatarInitials}"
-  icon-name="${args.iconName}"
+  avatar-src="${args['avatar-src']}"
+  avatar-initials="${args['avatar-initials']}"
+  icon-name="${args['icon-name']}"
   ?error="${args.error}"
   ?disabled="${args.disabled}"
+  clear-aria-label="${args['clear-aria-label']}"
 ></mdc-inputchip>`;
 
 const meta: Meta = {
@@ -25,13 +26,13 @@ const meta: Meta = {
     label: {
       control: 'text',
     },
-    avatarSrc: {
+    'avatar-src': {
       control: 'text',
     },
-    avatarInitials: {
+    'avatar-initials': {
       control: 'text',
     },
-    iconName: {
+    'icon-name': {
       control: 'text',
     },
     error: {
@@ -39,6 +40,9 @@ const meta: Meta = {
     },
     disabled: {
       control: 'boolean',
+    },
+    'clear-aria-label': {
+      control: 'text',
     },
     ...classArgType,
     ...styleArgType,
@@ -50,10 +54,10 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     label: 'Input Chip',
-    iconName: 'placeholder-bold',
-    clearAriaLabel: 'Clear',
-    avatarSrc: 'https://picsum.photos/id/63/200',
-    avatarInitials: 'AV',
+    'icon-name': 'placeholder-bold',
+    'clear-aria-label': 'Clear',
+    'avatar-src': 'https://picsum.photos/id/63/200',
+    'avatar-initials': 'AV',
     error: false,
     disabled: false,
     class: 'custom-classname',

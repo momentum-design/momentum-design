@@ -3,6 +3,7 @@ import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { hideControls } from '../../../config/storybook/utils';
 import { COLOR } from './chip.constants';
 
 const render = (args: Args) => html`
@@ -48,6 +49,7 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
+    ...hideControls(['soft-disabled', 'size', 'role', 'type', 'active']),
   },
 };
 
