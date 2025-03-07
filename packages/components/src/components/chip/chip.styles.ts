@@ -128,7 +128,7 @@ const styles = css`
     background: var(--mds-color-theme-background-label-violet-active);
   }
 
-  :host([disabled]) {
+  :host([disabled]){
     border-color: var(--mds-color-theme-outline-primary-disabled);
     background: var(--mds-color-theme-background-primary-disabled);
     color: var(--mds-color-theme-text-primary-disabled);

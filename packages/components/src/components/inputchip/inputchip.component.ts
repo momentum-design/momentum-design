@@ -28,6 +28,8 @@ class Inputchip extends IconNameMixin(DisabledMixin(Component)) {
 
   @property({ type: String, attribute: 'avatar-initials' }) avatarInitials?: string;
 
+  @property({ type: String, attribute: 'clear-aria-label' }) clearAriaLabel?: string;
+
   private renderLeadingData() {
     if (this.avatarSrc || this.avatarInitials) {
       return html`
@@ -49,10 +51,23 @@ class Inputchip extends IconNameMixin(DisabledMixin(Component)) {
     return nothing;
   }
 
+  private handleClose() {
+    this.dispatchEvent(new CustomEvent('click'));
+  }
+
   public override render() {
     return html`
         ${this.renderLeadingData()}
         <mdc-text type="${DEFAULTS.TEXT_TYPE}" tagname="${DEFAULTS.TAG_NAME}">${this.label.substring(0, 20)}</mdc-text>
+        <mdc-button 
+          ?disabled="${this.disabled}"
+          variant="tertiary"
+          part="close-icon"
+          aria-label="${ifDefined(this.clearAriaLabel)}"
+          prefix-icon="${DEFAULTS.CLOSE_ICON}"
+          size="20"
+          @click="${this.handleClose}"
+        ></mdc-button>
       `;
   }
 

@@ -3,6 +3,7 @@ import { TAG_NAME } from './inputchip.constants';
 import '../text';
 import '../avatar';
 import '../icon';
+import '../button';
 
 Inputchip.register(TAG_NAME);
 
