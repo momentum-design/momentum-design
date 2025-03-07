@@ -9,10 +9,6 @@ import { DEFAULTS } from './filterchip.constants';
  *
  * @tagname mdc-filterchip
  *
- * @slot default - This is a default/unnamed slot
- *
- * @event click - (React: onClick) This event is a Click Event, update the description
- *
  * @cssprop --custom-property-name - Description of the CSS custom property
  */
 class Filterchip extends Chip {

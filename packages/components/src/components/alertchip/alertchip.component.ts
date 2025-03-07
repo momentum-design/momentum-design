@@ -12,10 +12,6 @@ import Buttonsimple from '../buttonsimple/buttonsimple.component';
  *
  * @tagname mdc-alertchip
  *
- * @slot default - This is a default/unnamed slot
- *
- * @event click - (React: onClick) This event is a Click Event, update the description
- *
  * @cssprop --custom-property-name - Description of the CSS custom property
  */
 class Alertchip extends Buttonsimple {
