@@ -15,7 +15,6 @@ const iife = async () => {
       `${join(process.cwd(), 'src/components/themeprovider/themeprovider.e2e-test.utils.ts')}`,
       `${join(process.cwd(), 'src/components/iconprovider/iconprovider.e2e-test.utils.ts')}`,
       `${join(process.cwd(), 'src/components/buttonsimple/index.ts')}`,
-      `${join(process.cwd(), 'src/components/modalcontainer/index.ts')}`,
       `${join(process.cwd(), 'src/components/formfieldwrapper/formfieldwrapper.subcomponent.ts')}`,
       `${join(process.cwd(), 'src/components/iconprovider/iconprovider.e2e-test.utils.ts')}`,
       `${join(process.cwd(), 'src/stories/FocusRing/subcomponent-focusring.e2e-test.utils.ts')}`,

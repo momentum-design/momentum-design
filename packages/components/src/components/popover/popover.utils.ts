@@ -49,9 +49,8 @@ export class PopoverUtils {
       bottom: '',
     });
     const bridgeSize = `calc(${this.popover.showArrow ? '0.75rem + ' : ''}${this.popover.offset}px)`;
-    const modalContainer = this.popover.shadowRoot?.querySelector('mdc-modalcontainer') as HTMLElement;
-    const popoverHeight = modalContainer.offsetHeight || 0;
-    const popoverWidth = modalContainer.offsetWidth || 0;
+    const popoverHeight = this.popover.offsetHeight || 0;
+    const popoverWidth = this.popover.offsetWidth || 0;
 
     if (hoverBridge) {
       const side = placement.split('-')[0];
@@ -100,14 +99,15 @@ export class PopoverUtils {
    * Sets up the accessibility attributes for the popover.
    */
   setupAccessibility() {
+    this.popover.toggleAttribute('aria-modal', this.popover.interactive);
     if (this.popover.interactive) {
-      if (!this.popover.dataAriaLabel) {
-        this.popover.dataAriaLabel = this.popover.triggerElement?.ariaLabel
+      if (!this.popover.ariaLabel) {
+        this.popover.ariaLabel = this.popover.triggerElement?.ariaLabel
         || this.popover.triggerElement?.textContent
         || '';
       }
-      if (!this.popover.dataAriaLabelledby) {
-        this.popover.dataAriaLabelledby = this.popover.triggerElement?.id || '';
+      if (!this.popover.ariaLabelledby) {
+        this.popover.ariaLabelledby = this.popover.triggerElement?.id || '';
       }
     }
   }
@@ -159,11 +159,32 @@ export class PopoverUtils {
    * @param y - The y position.
    */
   updatePopoverStyle(x: number, y: number): void {
-    if (!this.popover.containerElement) return;
-
-    Object.assign(this.popover.containerElement.style, {
+    Object.assign(this.popover.style, {
       left: `${x}px`,
       top: `${y}px`,
     });
+  }
+
+  createBackdrop() {
+    if (!this.popover.backdropElement) {
+      const backdrop = document.createElement('div');
+      backdrop.classList.add('popover-backdrop');
+      this.popover.parentElement?.appendChild(backdrop);
+
+      const styleElement = document.createElement('style');
+      styleElement.textContent = `
+        .popover-backdrop {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: transparent;
+          z-index: ${this.popover.zIndex - 1};
+        }
+      `;
+      backdrop.appendChild(styleElement);
+      this.popover.backdropElement = backdrop;
+    }
   }
 }
