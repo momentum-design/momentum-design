@@ -182,6 +182,7 @@ export const TextareaWithClearButton: StoryObj = {
     wrap: 'soft',
     placeholder: 'Placeholder',
     'clear-button': true,
+    'clear-aria-label': 'Clear',
     value: 'Textarea with clear button, click on the clear button to clear the textarea',
   },
 };
