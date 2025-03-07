@@ -4,8 +4,8 @@ import styles from './alertchip.styles';
 import { Component } from '../../models';
 import { DEFAULTS } from './alertchip.constants';
 import { getAlertIcon } from './alertchip.utils';
-import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import type { VariantType } from './alertchip.types';
+import Buttonsimple from '../buttonsimple/buttonsimple.component';
 
 /**
  * alertchip component, which ...
@@ -18,7 +18,7 @@ import type { VariantType } from './alertchip.types';
  *
  * @cssprop --custom-property-name - Description of the CSS custom property
  */
-class Alertchip extends TabIndexMixin(Component) {
+class Alertchip extends Buttonsimple {
   @property({ type: String }) variant: VariantType = DEFAULTS.VARIANT;
 
   @property({ type: String }) label = '';
