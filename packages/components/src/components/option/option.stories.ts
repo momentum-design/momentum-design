@@ -6,7 +6,7 @@ import '.';
 import { hideControls } from '../../../config/storybook/utils';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
-const wrapWithDiv = (htmlString: TemplateResult) => html`<div style="width: 20rem;">${htmlString}</div>`;
+const wrapWithDiv = (htmlString: TemplateResult) => html`<div style="width: 20rem;" role="listbox">${htmlString}</div>`;
 
 const render = (args: Args) => wrapWithDiv(html`
   <mdc-option
@@ -15,6 +15,7 @@ const render = (args: Args) => wrapWithDiv(html`
     label="${args.label}"
     value="${args.value}"
     prefix-icon="${args['prefix-icon']}"
+    aria-label="${args['aria-label']}"
     @click="${action('onclick')}"
   ></mdc-option>
 `);
@@ -40,6 +41,9 @@ const meta: Meta = {
     value: {
       control: 'text',
     },
+    'aria-label': {
+      control: 'text',
+    },
     'prefix-icon': {
       control: 'text',
     },
@@ -63,6 +67,7 @@ export const Example: StoryObj = {
     selected: false,
     value: '',
     'prefix-icon': '',
+    'aria-label': 'Select an option label',
   },
 };
 
