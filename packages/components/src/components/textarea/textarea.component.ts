@@ -1,6 +1,7 @@
 import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, query } from 'lit/decorators.js';
+import { v4 as uuidv4 } from 'uuid';
 import styles from './textarea.styles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
@@ -10,10 +11,17 @@ import { AUTO_COMPLETE, WRAP, DEFAULTS } from './textarea.constants';
 import type { WrapType, AutoCompleteType } from './textarea.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
-import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 
 /**
- * textarea component, which ...
+ * textarea component, which is used to get the multi-line text input from the user.
+ * It contains:
+ * - Label: It is the title of the textarea field.
+ * - Textarea: It is the multi-line text input field.
+ * - Helper Text: It is the text that provides additional information about the textarea field.
+ * - Character Counter: It is the text that shows the character count of the textarea field.
+ * - Clear Button: It is the button that clears the text in the textarea field.
+ * - Error, Warning, Success, Priority Help Text type: It is the text that provides additional information
+ *   about the textarea field based on the validation state.
  *
  * @tagname mdc-textarea
 
@@ -40,7 +48,7 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   @property({ type: String }) placeholder = '';
 
   /**
-   * readonly attribute of the input field. If true, the input field is read-only.
+   * readonly attribute of the textarea field. If true, the textarea field is read-only.
    */
   @property({ type: Boolean }) readonly = false;
 
@@ -52,7 +60,7 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   /**
    * The cols attribute specifies the visible number of lines in a text area.
    */
-  @property({ type: Number }) cols = 20;
+  @property({ type: Number }) cols: number = 40;
 
   /**
    * The wrap attribute specifies how the text in a text area is to be wrapped when submitted in a form.
@@ -60,19 +68,19 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   @property({ type: String }) wrap: WrapType = WRAP.SOFT;
 
   /**
-   * The autocapitalize attribute of the input field.
+   * The autocapitalize attribute of the textarea field.
    * @default 'off'
    */
   @property({ type: String }) override autocapitalize: AutoCapitalizeType = AUTO_CAPITALIZE.OFF;
 
   /**
-   * The autocomplete attribute of the input field.
+   * The autocomplete attribute of the textarea field.
    * @default 'off'
    */
   @property({ type: String }) autocomplete: AutoCompleteType = AUTO_COMPLETE.OFF;
 
   /**
-   * If true, the input field is focused when the component is rendered.
+   * If true, the textarea field is focused when the component is rendered.
    * @default false
    */
   @property({ type: Boolean }) override autofocus: boolean = false;
@@ -83,23 +91,23 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   @property({ type: String }) dirname?: string;
 
   /**
-   * The maximum number of characters that the input field can accept.
+   * The maximum number of characters that the textarea field can accept.
    */
   @property({ type: Number }) maxlength?: number;
 
   /**
-   * The minimum number of characters that the input field can accept.
+   * The minimum number of characters that the textarea field can accept.
    */
   @property({ type: Number }) minlength?: number;
 
   /**
-   * The trailing button when set to true, shows a clear button that clears the textarea field.
+   * The clear button when set to true, shows a clear button that clears the textarea field.
    * @default false
    */
   @property({ type: Boolean, attribute: 'clear-button' }) clearButton = false;
 
   /**
-   * Aria label for the trailing button. If trailing button is set to true, this label is used for the clear button.
+   * Aria label for the clear button. If clear button is set to true, this label is used for the clear button.
    * @default ''
    */
   @property({ type: String, attribute: 'clear-aria-label' }) clearAriaLabel = '';
@@ -111,13 +119,23 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
 
     /**
    * @internal
-   * The input element
+   * The textarea element
    */
-    @query('textarea') private textarea!: HTMLTextAreaElement;
+    @query('textarea') override inputElement!: HTMLTextAreaElement;
+
+    protected get textarea(): HTMLTextAreaElement {
+      return this.inputElement;
+    }
+
+    constructor() {
+      super();
+      this.id = `mdc-textarea-${uuidv4()}`;
+      // Set the default value to the textarea field if the value is set through the text content directly
+      this.value = this.textContent?.trim() || this.value;
+    }
 
     override connectedCallback(): void {
       super.connectedCallback();
-      this.value = this.textContent?.trim() || '';
 
       this.updateComplete.then(() => {
         if (this.textarea) {
@@ -135,6 +153,10 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     private setTextareaValidity() {
       if (this.validationMessage && this.value === '') {
         this.textarea.setCustomValidity(this.validationMessage);
+      }
+      if (this.maxCharacterLimit && this.value.length > this.maxCharacterLimit) {
+        // Set custom validity if the character limit is exceeded to stop form submission
+        this.textarea.setCustomValidity(' ');
       } else {
         this.textarea.setCustomValidity('');
       }
@@ -155,8 +177,8 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     }
 
     /**
-   * Handles the value change of the input field.
-   * Sets the form value and updates the validity of the input field.
+   * Handles the value change of the textarea field.
+   * Sets the form value and updates the validity of the textarea field.
    * @returns void
    */
     handleValueChange() {
@@ -178,7 +200,7 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
 
     /**
    * This function is called when the attribute changes.
-   * It updates the validity of the input field based on the input field's validity.
+   * It updates the validity of the textarea field based on the textarea field's validity.
    *
    * @param name - attribute name
    * @param old - old value
@@ -195,6 +217,7 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
         'maxlength',
         'minlength',
         'required',
+        'max-character-limit',
       ];
 
       if (validationRelatedAttributes.includes(name)) {
@@ -209,28 +232,32 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     }
 
     /**
-   * Updates the value of the input field.
+   * Updates the value of the textarea field.
    * Sets the form value.
    * @returns void
    */
     private updateValue() {
       this.value = this.textarea.value;
       this.internals.setFormValue(this.textarea.value);
+      if (this.maxCharacterLimit) {
+      // Dispatch an event with current value
+        this.dispatchEvent(
+          new CustomEvent('character-limit-check', {
+            detail: {
+              currentCharacterCount: this.value.length,
+              maxCharacterLimit: this.maxCharacterLimit,
+              value: this.value,
+            },
+            bubbles: true,
+            composed: true,
+          }),
+        );
+      }
     }
 
     /**
-   * Handles the input event of the input field.
-   * Updates the value and sets the validity of the input field.
-   *
-   */
-    private onInput() {
-      this.updateValue();
-      this.setTextareaValidity();
-    }
-
-    /**
-   * Handles the change event of the input field.
-   * Updates the value and sets the validity of the input field.
+   * Handles the change event of the textarea field.
+   * Updates the value and sets the validity of the textarea field.
    *
    * The 'change' event does not bubble up through the shadow DOM as it was not composed.
    * Therefore, we need to re-dispatch the same event to ensure it is propagated correctly.
@@ -240,24 +267,21 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
    */
     private onChange(event: Event) {
       this.updateValue();
-      this.setTextareaValidity();
       const EventConstructor = event.constructor as typeof Event;
       this.dispatchEvent(new EventConstructor(event.type, event));
     }
 
     /**
-      * Clears the input field.
+      * Clears the textarea field.
     */
     private clearInputText(event: Event) {
       event.preventDefault();
-      this.textarea.value = '';
-      this.updateValue();
-      // focus the input field after clearing the text
-      this.textarea?.focus();
+      this.value = '';
+      this.textarea.focus();
     }
 
     /**
-   * Renders the trailing button to clear the input field if the trailingButton is set to true.
+   * Renders the clear button to clear the textarea field if the clearButton is set to true.
    * @returns void
    */
     protected renderClearButton() {
@@ -265,17 +289,18 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
         return nothing;
       }
       return html`
-    <mdc-button 
-      part='clear-button'
-      class='${!this.value ? 'hidden' : ''}'
-      prefix-icon='${DEFAULTS.CLEAR_BUTTON_ICON}'
-      variant='${DEFAULTS.CLEAR_BUTTON_VARIANT}'
-      size="${DEFAULTS.CLEAR_BUTTON_SIZE}"
-      aria-label="${this.clearAriaLabel}"
-      ?disabled=${this.disabled || this.readonly || !this.value}
-      @click=${this.clearInputText}
-    ></mdc-button>
-  `;
+        <mdc-button
+          part='clear-button'
+          class='own-focus-ring ${!this.value ? 'hidden' : ''}'
+          prefix-icon='${DEFAULTS.CLEAR_BUTTON_ICON}'
+          variant='${DEFAULTS.CLEAR_BUTTON_VARIANT}'
+          size="${DEFAULTS.CLEAR_BUTTON_SIZE}"
+          aria-label="${this.clearAriaLabel}"
+          ?disabled=${this.disabled || this.readonly || !this.value}
+          @click=${this.clearInputText}
+          @keydown=${this.clearInputText}
+        ></mdc-button>
+      `;
     }
 
     protected renderCharacterCounter() {
@@ -293,43 +318,34 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     `;
     }
 
-    protected handleMaxCharacterLimitValidity() {
-      if (this.maxCharacterLimit && this.value.length > this.maxCharacterLimit) {
-        this.helpText = `Input must not exceed ${this.maxCharacterLimit} characters.`;
-        this.helpTextType = 'error';
-      }
-      this.setValidity();
-    }
-
     public override render() {
-      if (this.maxCharacterLimit) {
-        this.handleMaxCharacterLimitValidity();
-      }
       return html`
       ${this.renderLabel()}
       <div class="textarea-container mdc-focus-ring" part="textarea-container">
-          <textarea 
-            aria-label="${this.dataAriaLabel ?? ''}"
-            part='textarea'
-            id="${this.id}"
-            name="${this.name}"
-            ?disabled="${this.disabled}"
-            ?readonly="${this.readonly}"
-            ?required="${!!this.requiredLabel}"
-            placeholder=${ifDefined(this.placeholder)}
-            rows=${ifDefined(this.rows)}
-            cols=${ifDefined(this.cols)}
-            wrap=${ifDefined(this.wrap)}
-            ?autofocus="${this.autofocus}"
-            autocapitalize=${this.autocapitalize}
-            autocomplete=${this.autocomplete}
-            minlength=${ifDefined(this.minlength)}
-            maxlength=${ifDefined(this.maxlength)}
-            dirname=${ifDefined(this.dirname)}
-            @input=${this.onInput}
-            @change=${this.onChange}
-            aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
-          >${this.value}</textarea>
+        <textarea
+          aria-label="${this.dataAriaLabel ?? ''}"
+          part='textarea'
+          id="${this.id}"
+          name="${this.name}"
+          .value="${this.value}"
+          ?disabled="${this.disabled}"
+          ?readonly="${this.readonly}"
+          ?required="${!!this.requiredLabel}"
+          placeholder=${ifDefined(this.placeholder)}
+          rows=${ifDefined(this.rows)}
+          cols=${ifDefined(this.cols)}
+          wrap=${ifDefined(this.wrap)}
+          ?autofocus="${this.autofocus}"
+          autocapitalize=${this.autocapitalize}
+          autocomplete=${this.autocomplete}
+          minlength=${ifDefined(this.minlength)}
+          maxlength=${ifDefined(this.maxlength)}
+          dirname=${ifDefined(this.dirname)}
+          @input=${this.updateValue}
+          @change=${this.onChange}
+          aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
+          aria-invalid="${this.helpTextType === 'error' ? 'true' : 'false'}"
+        ></textarea>
         ${this.renderClearButton()}
         </div>
         <div part="textarea-footer">
