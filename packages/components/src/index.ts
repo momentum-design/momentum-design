@@ -24,6 +24,8 @@ import ThemeProvider from './components/themeprovider';
 import Toggle from './components/toggle';
 import VirtualizedList from './components/virtualizedlist';
 import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
+import Option from './components/option';
+import Optgroup from './components/optgroup';
 
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
 import type { TextType } from './components/text/text.types';
@@ -54,6 +56,8 @@ export {
   ThemeProvider,
   Toggle,
   VirtualizedList,
+  Option,
+  Optgroup,
 };
 export type {
   TextType,
