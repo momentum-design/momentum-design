@@ -8,15 +8,37 @@ import type { VariantType } from './alertchip.types';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
 
 /**
- * alertchip component, which ...
+ * mdc-alertchip component is an interactive chip that consumers can use to represent an alert.
+ *
+ * - It supports a leading icon along with label.
+ * - It supports 5 variants of alerts - neutral, warning, error, success, and informational
+ *
+ * This component is built by extending Buttonsimple.
  *
  * @tagname mdc-alertchip
  *
- * @cssprop --custom-property-name - Description of the CSS custom property
+ * @dependency mdc-icon
+ * @dependency mdc-text
  */
 class Alertchip extends Buttonsimple {
+  /**
+   * The variant of the alertchip. It supports 5 variants
+   * - neutral
+   * - warning
+   * - error
+   * - success
+   * - informational
+   *
+   * @default neutral
+   */
   @property({ type: String }) variant: VariantType = DEFAULTS.VARIANT;
 
+  /**
+   * The visible label text of the alertchip.
+   *
+   * We recommend limiting the <b>maximum length of the label text to 20 characters</b>,
+   * including empty spaces to split words.
+   */
   @property({ type: String }) label = '';
 
   constructor() {

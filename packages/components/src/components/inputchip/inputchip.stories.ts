@@ -6,8 +6,6 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 const render = (args: Args) => html`
 <mdc-inputchip 
   label="${args.label}"
-  avatar-src="${args['avatar-src']}"
-  avatar-initials="${args['avatar-initials']}"
   icon-name="${args['icon-name']}"
   ?error="${args.error}"
   ?disabled="${args.disabled}"
@@ -24,12 +22,6 @@ const meta: Meta = {
   },
   argTypes: {
     label: {
-      control: 'text',
-    },
-    'avatar-src': {
-      control: 'text',
-    },
-    'avatar-initials': {
       control: 'text',
     },
     'icon-name': {
@@ -56,11 +48,18 @@ export const Example: StoryObj = {
     label: 'Input Chip',
     'icon-name': 'placeholder-bold',
     'clear-aria-label': 'Clear',
-    'avatar-src': 'https://picsum.photos/id/63/200',
-    'avatar-initials': 'AV',
     error: false,
     disabled: false,
     class: 'custom-classname',
     style: 'margin-top: 20px;',
   },
+};
+
+export const StatesAndVariants: StoryObj = {
+  render: () => html`
+  <div style="display: flex; gap: 0.5rem;">
+    <mdc-inputchip label="Input" icon-name="placeholder-bold" clear-aria-label="Clear"></mdc-inputchip>
+    <mdc-inputchip label="Error" icon-name="placeholder-bold" clear-aria-label="Clear" error></mdc-inputchip>
+    <mdc-inputchip label="Disabled" icon-name="placeholder-bold" clear-aria-label="Clear" disabled></mdc-inputchip>
+  </div>`,
 };

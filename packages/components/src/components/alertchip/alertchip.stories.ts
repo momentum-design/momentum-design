@@ -43,3 +43,12 @@ export const Example: StoryObj = {
     style: 'margin-top: 20px;',
   },
 };
+
+export const AllVariants: StoryObj = {
+  render: () => html`
+  <div style="display: flex; gap: 0.5rem;">
+    ${Object.values(VARIANTS).map((variant) => html`
+      <mdc-alertchip variant="${variant}" label="${variant}"></mdc-alertchip>
+    `)}
+  </div>`,
+};

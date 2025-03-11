@@ -47,3 +47,12 @@ export const Example: StoryObj = {
     disabled: false,
   },
 };
+
+export const StatesAndVariants: StoryObj = {
+  render: () => html`
+  <div style="display: flex; gap: 0.5rem;">
+    <mdc-filterchip label="Filterchip"></mdc-filterchip>
+    <mdc-filterchip label="Selected" selected></mdc-filterchip>
+    <mdc-filterchip label="Disabled" disabled></mdc-filterchip>
+  </div>`,
+};

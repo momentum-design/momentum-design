@@ -9,11 +9,13 @@ import { IconNames } from '../icon/icon.types';
 import { DEFAULTS } from './inputchip.constants';
 
 /**
- * inputchip component, which ...
+ * mdc-inputchip component is an interactive chip that consumers can use to represent an input.
+ *
+ * - It supports a leading icon along with label.
+ * - It supports an error state for validation.
+ * - It supports a close icon to remove the chip.
  *
  * @tagname mdc-inputchip
- *
- * @cssprop --custom-property-name - Description of the CSS custom property
  *
  * @event click - (React: onClick) This event is dispatched when the button is clicked.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the button.
@@ -25,40 +27,25 @@ class Inputchip extends IconNameMixin(DisabledMixin(Component)) {
 
   @property({ type: Boolean }) error = false;
 
-  @property({ type: String, attribute: 'avatar-src' }) avatarSrc?: string;
-
-  @property({ type: String, attribute: 'avatar-initials' }) avatarInitials?: string;
-
   @property({ type: String, attribute: 'clear-aria-label' }) clearAriaLabel?: string;
 
-  private renderLeadingData() {
-    if (this.avatarSrc || this.avatarInitials) {
-      return html`
-      <mdc-avatar
-        size="24"
-        initials="${ifDefined(this.avatarInitials)}"
-        src="${ifDefined(this.avatarSrc)}"
-      ></mdc-avatar>
-    `;
-    }
-    if (this.iconName) {
-      return html`
-      <mdc-icon 
-        name="${this.iconName as IconNames}" 
-        length-unit="rem" 
-        size="1"></mdc-icon>
-    `;
-    }
-    return nothing;
-  }
-
-  private handleClose() {
-    this.dispatchEvent(new CustomEvent('click'));
+  /**
+   * Renders the icon element if available.
+   * @returns The icon element if available, otherwise nothing.
+   */
+  private renderIcon() {
+    if (!this.iconName) return nothing;
+    return html`
+    <mdc-icon 
+      name="${this.iconName as IconNames}" 
+      length-unit="rem" 
+      size="1"></mdc-icon>
+  `;
   }
 
   public override render() {
     return html`
-        ${this.renderLeadingData()}
+        ${this.renderIcon()}
         <mdc-text type="${DEFAULTS.TEXT_TYPE}" tagname="${DEFAULTS.TAG_NAME}">${this.label}</mdc-text>
         <mdc-button 
           ?disabled="${this.disabled}"
@@ -67,7 +54,7 @@ class Inputchip extends IconNameMixin(DisabledMixin(Component)) {
           aria-label="${ifDefined(this.clearAriaLabel)}"
           prefix-icon="${DEFAULTS.CLOSE_ICON}"
           size="20"
-          @click="${this.handleClose}"
+          @click="${this.remove}"
         ></mdc-button>
       `;
   }

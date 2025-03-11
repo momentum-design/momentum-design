@@ -57,3 +57,12 @@ export const Example: StoryObj = {
     style: 'margin-top: 20px;',
   },
 };
+
+export const AllColors: StoryObj = {
+  render: () => html`
+  <div style="display: flex; gap: 0.5rem;">
+    ${Object.values(COLOR).map((color) => html`
+      <mdc-chip color="${color}" label="${color}"></mdc-chip>
+    `)}
+  </div>`,
+};

@@ -5,21 +5,32 @@ import { IconNames } from '../icon/icon.types';
 import { DEFAULTS } from './filterchip.constants';
 
 /**
- * filterchip component, which ...
+ * mdc-filterchip component is an interactive chip that consumers can use to select or deselect.
+ * They can be found with lists or tables as quick filters.
+ *
+ * This component is built on top of the mdc-chip component.
  *
  * @tagname mdc-filterchip
  *
- * @cssprop --custom-property-name - Description of the CSS custom property
  */
 class Filterchip extends Chip {
+  /**
+   * The selected state of the filterchip.
+   *
+   * @default false
+   */
   @property({ type: Boolean, reflect: true }) selected = false;
 
   constructor() {
     super();
-
     this.color = DEFAULTS.COLOR;
   }
 
+  /**
+   * Sets the selected state of the filterchip along with the icon.
+   * aria-pressed attribute is also set to true or false.
+   * @param selected - The selected state of the filterchip.
+   */
   private setSelected(selected: boolean) {
     if (selected) {
       this.iconName = DEFAULTS.ICON_NAME;
