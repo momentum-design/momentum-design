@@ -7,42 +7,45 @@ import { TAB_VARIANTS } from '../tab/tab.constants';
 import '../badge';
 
 const render = (args: Args) => html`
-  <mdc-tablist @change="${action('onchange')}" activetabid="${args.activetabid}" aria-label="Media types">
-    <mdc-tab
-      variant=${args.tabvariant}
-      text="Photos"
-      icon-name="add-photo-bold"
-      tabid="photos-tab"
-      aria-controls="photos-panel">
-    </mdc-tab>
-    <mdc-tab variant=${args.tabvariant}
-      text="Videos"
-      icon-name="video-bold"
-      tabid="videos-tab"
-      aria-controls="videos-panel">
-      <mdc-badge slot="badge" type="counter" counter="5"></mdc-badge>
-    </mdc-tab>
-    <mdc-tab variant=${args.tabvariant}
-      text="Music"
-      icon-name="file-music-bold"
-      tabid="music-tab"
-      aria-controls="music-panel">
-    </mdc-tab>
-    <mdc-tab
-      variant=${args.tabvariant}
-      text="Documents"
-      icon-name="document-bold"
-      tabid="documents-tab"
-      aria-controls="documents-panel">
-    </mdc-tab>
-    <mdc-tab
-      variant=${args.tabvariant}
-      text="Downloads"
-      icon-name="cloud-download-bold"
-      tabid="downloads-tab"
-      aria-controls="downloads-panel">
-    </mdc-tab>
-  </mdc-tablist>
+<mdc-tablist @change="${action('onchange')}" activetabid="${args.activetabid}" aria-label="Media types">
+  <mdc-tab
+    variant=${args.tabvariant}
+    text="Photos"
+    icon-name="add-photo-bold"
+    tabid="photos-tab"
+    aria-controls="photos-panel">
+  </mdc-tab>
+  <mdc-tab variant=${args.tabvariant}
+    text="Videos"
+    icon-name="video-bold"
+    tabid="videos-tab"
+    aria-controls="videos-panel">
+    <mdc-badge slot="badge" type="counter" counter="5"></mdc-badge>
+  </mdc-tab>
+  <mdc-tab variant=${args.tabvariant}
+    text="Music"
+    icon-name="file-music-bold"
+    tabid="music-tab"
+    aria-controls="music-panel">
+  </mdc-tab>
+  <mdc-tab
+    variant=${args.tabvariant}
+    text="Documents"
+    icon-name="document-bold"
+    tabid="documents-tab"
+    aria-controls="documents-panel">
+  </mdc-tab>
+  <mdc-tab
+    variant=${args.tabvariant}
+    text="Downloads"
+    icon-name="cloud-download-bold"
+    tabid="downloads-tab"
+    aria-controls="downloads-panel">
+  </mdc-tab>
+</mdc-tablist>
+
+<!-- The following is an example of the markup for the tab panels.
+This markup is not part of the component and is only provided for context. -->
 
   <div id="photos-panel" role="tabpanel" aria-labelledby="photos-tab" hidden>
     <p>Photos panel</p>
@@ -59,6 +62,8 @@ const render = (args: Args) => html`
   <div id="downloads-panel" role="tabpanel" aria-labelledby="downloads-tab" hidden>
     <p>Downloads panel</p>
   </div>
+
+<!-- End of example markup for the tab panels -->
 `;
 
 const meta: Meta = {
