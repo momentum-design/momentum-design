@@ -31,8 +31,7 @@ class Alertchip extends Buttonsimple {
   public override render() {
     return html`
       <mdc-icon name="${getAlertIcon(this.variant)}" length-unit="rem" size="1"></mdc-icon>
-      <slot></slot>
-      <mdc-text type="${DEFAULTS.TEXT_TYPE}" tagname="${DEFAULTS.TAG_NAME}">${this.label.substring(0, 20)}</mdc-text>
+      <mdc-text type="${DEFAULTS.TEXT_TYPE}" tagname="${DEFAULTS.TAG_NAME}">${this.label}</mdc-text>
     `;
   }
 

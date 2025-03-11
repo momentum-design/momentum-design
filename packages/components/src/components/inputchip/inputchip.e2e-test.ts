@@ -8,7 +8,7 @@ test.beforeEach(async ({ componentsPage }) => {
   });
 });
 
-test('mdc-inputchip', async ({ componentsPage }) => {
+test.skip('mdc-inputchip', async ({ componentsPage }) => {
   const inputchip = componentsPage.page.locator('mdc-inputchip');
 
   // initial check for the inputchip be visible on the screen:

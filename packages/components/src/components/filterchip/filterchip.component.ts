@@ -18,8 +18,6 @@ class Filterchip extends Chip {
     super();
 
     this.color = DEFAULTS.COLOR;
-    this.avatarInitials = undefined as unknown as string;
-    this.avatarSrc = undefined as unknown as string;
   }
 
   private setSelected(selected: boolean) {

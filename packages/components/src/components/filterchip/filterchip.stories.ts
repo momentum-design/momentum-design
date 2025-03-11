@@ -32,7 +32,7 @@ const meta: Meta = {
     ...classArgType,
     ...styleArgType,
     ...hideControls(['soft-disabled', 'size', 'role', 'type', 'active',
-      'icon-name', 'color', 'avatar-src', 'avatar-initials']),
+      'icon-name', 'color']),
   },
 };
 

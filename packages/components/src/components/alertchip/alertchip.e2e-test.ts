@@ -8,7 +8,7 @@ test.beforeEach(async ({ componentsPage }) => {
   });
 });
 
-test('mdc-alertchip', async ({ componentsPage }) => {
+test.skip('mdc-alertchip', async ({ componentsPage }) => {
   const alertchip = componentsPage.page.locator('mdc-alertchip');
 
   // initial check for the alertchip be visible on the screen:

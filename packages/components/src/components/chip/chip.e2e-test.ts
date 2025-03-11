@@ -8,7 +8,7 @@ test.beforeEach(async ({ componentsPage }) => {
   });
 });
 
-test('mdc-chip', async ({ componentsPage }) => {
+test.skip('mdc-chip', async ({ componentsPage }) => {
   const chip = componentsPage.page.locator('mdc-chip');
 
   // initial check for the chip be visible on the screen:

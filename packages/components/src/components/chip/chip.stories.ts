@@ -15,9 +15,7 @@ const render = (args: Args) => html`
   color="${args.color}" 
   label="${args.label}"
   icon-name="${args['icon-name']}"
-  ?disabled="${args.disabled}"
-  avatar-initials="${args['avatar-initials']}"
-  avatar-src="${args['avatar-src']}"></mdc-chip>`;
+  ?disabled="${args.disabled}"></mdc-chip>`;
 
 const meta: Meta = {
   title: 'Work In Progress/chip/label',
@@ -41,12 +39,6 @@ const meta: Meta = {
     disabled: {
       control: 'boolean',
     },
-    'avatar-initials': {
-      control: 'text',
-    },
-    'avatar-src': {
-      control: 'text',
-    },
     ...classArgType,
     ...styleArgType,
     ...hideControls(['soft-disabled', 'size', 'role', 'type', 'active']),
@@ -60,8 +52,6 @@ export const Example: StoryObj = {
     color: COLOR.DEFAULT,
     label: 'Label',
     'icon-name': 'placeholder-bold',
-    'avatar-initials': 'AV',
-    'avatar-src': 'https://picsum.photos/id/63/200',
     disabled: false,
     class: 'custom-classname',
     style: 'margin-top: 20px;',
