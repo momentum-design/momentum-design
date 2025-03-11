@@ -117,4 +117,4 @@ const styles = [css`
 
 `, ...hostFocusRingStyles(true)];
 
-export default [styles];
+export default styles;

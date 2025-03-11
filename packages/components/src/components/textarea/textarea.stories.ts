@@ -17,6 +17,7 @@ const render = (args: Args) => html`<mdc-textarea
     @change="${action('onchange')}"
     @focus="${action('onfocus')}"
     @blur="${action('onblur')}"
+    @character-overflow-state-change="${action('character-overflow-state-change')}"
     label="${args.label}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
@@ -185,6 +186,15 @@ export const TextareaWithClearButton: StoryObj = {
     'clear-aria-label': 'Clear',
     value: 'Textarea with clear button, click on the clear button to clear the textarea',
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'This story displays a textarea component with a clear button. The clear button will be displayed'
+            + 'when the `clear-button` attribute is set to true. The user can click on the clear button'
+            + ' to clear the textarea.',
+      },
+    },
+  },
 };
 
 export const DisabledTextarea: StoryObj = {
@@ -198,6 +208,14 @@ export const DisabledTextarea: StoryObj = {
     'clear-button': true,
     disabled: true,
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'This story displays a disabled textarea component. The textarea will be displayed as disabled'
+            + 'when the `disabled` attribute is set to true. The user will not be able to interact with the textarea.',
+      },
+    },
+  },
 };
 
 export const ReadonlyTextarea: StoryObj = {
@@ -209,6 +227,15 @@ export const ReadonlyTextarea: StoryObj = {
     readonly: true,
     value: 'Readonly textarea',
     'clear-button': true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'This story displays a readonly textarea component. The textarea will be displayed as readonly'
+            + 'when the `readonly` attribute is set to true. The user will not be able to edit the content'
+            + ' of the textarea.',
+      },
+    },
   },
 };
 
@@ -255,6 +282,19 @@ export const AllVariants: StoryObj = {
       >Momentum is how webex design the future of work. This design system exist to create a shared design language.
       </mdc-textarea>
       </div>`,
+  parameters: {
+    docs: {
+      description: {
+        story: 'This story displays all the variants of the textarea component.'
+            + 'The textarea component supports all the validation types. '
+            + 'User can set the `help-text-type` attribute to any of the validation types to display'
+            + 'the help text in that style.'
+            + 'The textarea can also be set as required by passing the `required-label` attribute.'
+            + 'User can also set the `max-character-limit` attribute to display a character counter below the textarea.'
+            + 'The textarea can also be set as readonly by passing the `readonly` attribute.',
+      },
+    },
+  },
 };
 
 export const TextareaWithCharacterCounter: StoryObj = {
@@ -263,7 +303,7 @@ export const TextareaWithCharacterCounter: StoryObj = {
     let helpTextType: ValidationType = VALIDATION.DEFAULT;
 
     const handleCharacterLimitCheck = (event: CustomEvent) => {
-      action('character-limit-check')(event);
+      action('character-overflow-state-change')(event);
       const { detail } = event;
 
       if (detail.currentCharacterCount > detail.maxCharacterLimit) {
@@ -285,7 +325,7 @@ export const TextareaWithCharacterCounter: StoryObj = {
         id="textarea"
         name="tweet"
         label="Tweet"
-        @character-limit-check=${handleCharacterLimitCheck}
+        @character-overflow-state-change=${handleCharacterLimitCheck}
         help-text="${helpText}"
         help-text-type="${helpTextType}"
         required-label="required"
@@ -294,6 +334,17 @@ export const TextareaWithCharacterCounter: StoryObj = {
       ></mdc-textarea>
       </div>
     `;
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'To add a character counter to the textarea, use the `max-character-limit` attribute. '
+        + 'The character counter will be displayed below the textarea with the max character limit.'
+        + 'User needs to listen to the `character-overflow-state-change` event to handle the character limit check.'
+        + 'The event will contain the current character count, the max character limit & current value of the textarea.'
+        + 'Based on which the user can update the help text and help text type dynamically.',
+      },
+    },
   },
 };
 
@@ -317,7 +368,6 @@ export const TextareaInsideForm: StoryObj = {
         required-label="required"
         placeholder="Write what's on your mind"
         validation-message="Tweet is required"
-        max-character-limit="75"
       ></mdc-textarea>
       <div style='display: flex; gap: 0.25rem;; margin-top: 0.25rem'>
         <mdc-button type="submit" size='24'>Submit</mdc-button>
