@@ -5,7 +5,7 @@ const styles = css`
   :host {
     height: 1.5rem;
     gap: 0.25rem;
-    padding: 0 0.5rem;
+    padding: 0 0.25rem 0 0.5rem;
     border-radius: 0.25rem;
     border: 1px solid;
     cursor: pointer;

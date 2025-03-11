@@ -1,10 +1,12 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 const render = (args: Args) => html`
-<mdc-inputchip 
+<mdc-inputchip
+  @remove="${action('remove')}"
   label="${args.label}"
   icon-name="${args['icon-name']}"
   ?error="${args.error}"
@@ -58,8 +60,25 @@ export const Example: StoryObj = {
 export const StatesAndVariants: StoryObj = {
   render: () => html`
   <div style="display: flex; gap: 0.5rem;">
-    <mdc-inputchip label="Input" icon-name="placeholder-bold" clear-aria-label="Clear"></mdc-inputchip>
-    <mdc-inputchip label="Error" icon-name="placeholder-bold" clear-aria-label="Clear" error></mdc-inputchip>
-    <mdc-inputchip label="Disabled" icon-name="placeholder-bold" clear-aria-label="Clear" disabled></mdc-inputchip>
+    <mdc-inputchip 
+      label="Input" 
+      icon-name="placeholder-bold" 
+      clear-aria-label="Clear"
+      @remove="${action('remove')}"
+    ></mdc-inputchip>
+    <mdc-inputchip 
+      label="Error" 
+      icon-name="placeholder-bold" 
+      clear-aria-label="Clear" 
+      error
+      @remove="${action('remove')}"
+    ></mdc-inputchip>
+    <mdc-inputchip 
+      label="Disabled" 
+      icon-name="placeholder-bold" 
+      clear-aria-label="Clear" 
+      disabled
+      @remove="${action('remove')}"
+    ></mdc-inputchip>
   </div>`,
 };

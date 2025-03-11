@@ -17,10 +17,7 @@ import { DEFAULTS } from './inputchip.constants';
  *
  * @tagname mdc-inputchip
  *
- * @event click - (React: onClick) This event is dispatched when the button is clicked.
- * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the button.
- * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the button.
- * @event focus - (React: onFocus) This event is dispatched when the button receives focus.
+ * @event remove - This event is dispatched when the close button is activated. It bubbles and is composed.
  */
 class Inputchip extends IconNameMixin(DisabledMixin(Component)) {
   @property({ type: String }) label = '';
@@ -43,6 +40,10 @@ class Inputchip extends IconNameMixin(DisabledMixin(Component)) {
   `;
   }
 
+  private handleClose() {
+    this.dispatchEvent(new CustomEvent('remove', { bubbles: true, composed: true }));
+  }
+
   public override render() {
     return html`
         ${this.renderIcon()}
@@ -54,7 +55,7 @@ class Inputchip extends IconNameMixin(DisabledMixin(Component)) {
           aria-label="${ifDefined(this.clearAriaLabel)}"
           prefix-icon="${DEFAULTS.CLOSE_ICON}"
           size="20"
-          @click="${this.remove}"
+          @click="${this.handleClose}"
         ></mdc-button>
       `;
   }
