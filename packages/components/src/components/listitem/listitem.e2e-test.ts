@@ -98,7 +98,6 @@ test('mdc-listitem', async ({ componentsPage }) => {
     listitemSheet.setChildren(`
       <div slot="leading-controls">
         <mdc-checkbox data-aria-label="${primaryLabel}" checked></mdc-checkbox>
-        <mdc-avatar src="https://picsum.photos/id/63/256" presence="active"></mdc-avatar>
         <mdc-icon name="placeholder-bold"></mdc-icon>
       </div>
       <div slot="trailing-controls">

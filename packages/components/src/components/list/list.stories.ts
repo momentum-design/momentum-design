@@ -51,12 +51,12 @@ const render = (args: Args) => html`
   </mdc-list>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/list',
+  title: 'Components/list',
   tags: ['autodocs'],
   component: 'mdc-list',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     'header-text': {
