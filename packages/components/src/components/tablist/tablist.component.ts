@@ -74,7 +74,6 @@ class Tablist extends Component {
   constructor() {
     super();
     this.role = 'tablist';
-    this.attachShadow({ mode: 'open' });
 
     this.tabs = this.allTabs;
 
