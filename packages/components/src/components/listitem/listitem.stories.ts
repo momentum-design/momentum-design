@@ -42,12 +42,12 @@ const render = (args: Args) => wrapWithList(
 );
 
 const meta: Meta = {
-  title: 'Work In Progress/listitem',
+  title: 'Components/listitem',
   tags: ['autodocs'],
   component: 'mdc-listitem',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     variant: {
