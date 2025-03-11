@@ -58,10 +58,6 @@ test('mdc-listitem', async ({ componentsPage }) => {
     `);
     await listitemSheet.createMarkupWithCombination({}, options);
     listitemSheet.setChildren(`
-      <mdc-toggle checked slot="leading-controls" data-aria-label="${primaryLabel}"></mdc-toggle>
-    `);
-    await listitemSheet.createMarkupWithCombination({}, options);
-    listitemSheet.setChildren(`
       <mdc-radio checked slot="leading-controls" data-aria-label="${primaryLabel}"></mdc-radio>
     `);
     await listitemSheet.createMarkupWithCombination({}, options);
@@ -114,7 +110,7 @@ test('mdc-listitem', async ({ componentsPage }) => {
     `);
     await listitemSheet.createMarkupWithCombination({}, options);
 
-    await listitemSheet.mountStickerSheet();
+    await listitemSheet.mountStickerSheet({ role: 'list' });
     await test.step('matches screenshot of element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-listitem', {
         element: listitemSheet.getWrapperContainer(),
@@ -126,9 +122,7 @@ test('mdc-listitem', async ({ componentsPage }) => {
    * ACCESSIBILITY
    */
   await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('listitem-default', true, {
-      rules: ['aria-required-parent'],
-    });
+    await componentsPage.accessibility.checkForA11yViolations('listitem-default');
   });
 
   /**
