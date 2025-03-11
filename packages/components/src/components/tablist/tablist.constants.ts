@@ -12,6 +12,4 @@ const KEYCODES = {
   TAB: 'Tab',
 };
 
-const SCROLL_BUTTON_OFFSET = 15;
-
-export { TAG_NAME, KEYCODES, SCROLL_BUTTON_OFFSET };
+export { TAG_NAME, KEYCODES };

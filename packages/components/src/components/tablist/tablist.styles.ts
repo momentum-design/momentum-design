@@ -8,7 +8,7 @@ const styles = css`
 
     --mdc-tablist-gap: 0.5rem;
     --mdc-tablist-width: 100%;
-    --mdc-container-button-padding: 2.75rem;
+    --mdc-tablist-arrow-button-padding: 2.75rem;
 
     width: var(--mdc-tablist-width);
     display: flex;
@@ -20,11 +20,11 @@ const styles = css`
   }
 
   :host(.show-left-arrow-button-padding) {
-    padding-left: var(--mdc-container-button-padding);
+    padding-left: var(--mdc-tablist-arrow-button-padding);
   }
 
   :host(.show-right-arrow-button-padding) {
-    padding-right: var(--mdc-container-button-padding);
+    padding-right: var(--mdc-tablist-arrow-button-padding);
   }
 
   :host .tabs_container {
@@ -35,11 +35,11 @@ const styles = css`
     margin: calc(var(--mdc-focus-ring-outer-width) * -1);
   }
 
-  :host .hide-button {
+  :host .hide-arrow-button {
     display: none;
   }
 
-  :host mdc-button {
+  :host mdc-button[prefix-icon|="arrow"] {
     background-color: var(--mds-color-theme-background-solid-primary-normal);
     position: absolute;
     z-index: 1;

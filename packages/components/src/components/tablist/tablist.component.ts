@@ -318,13 +318,13 @@ class Tablist extends Component {
    *
    * @param arrowButton - The arrow button to check.
    */
-  private isArrowButtonHidden = (arrowButton: Button): boolean => arrowButton.classList.contains('hide-button');
+  private isArrowButtonHidden = (arrowButton: Button): boolean => arrowButton.classList.contains('hide-arrow-button');
 
   /**
    * Show the left arrow button.
    */
   private showLeftArrowButton = (): void => {
-    this.leftArrowButton.classList.remove('hide-button');
+    this.leftArrowButton.classList.remove('hide-arrow-button');
     this.classList.add('show-left-arrow-button-padding');
   };
 
@@ -332,7 +332,7 @@ class Tablist extends Component {
    * Hide the left arrow button.
    */
   private hideLeftArrowButton = (): void => {
-    this.leftArrowButton.classList.add('hide-button');
+    this.leftArrowButton.classList.add('hide-arrow-button');
     this.classList.remove('show-left-arrow-button-padding');
   };
 
@@ -340,7 +340,7 @@ class Tablist extends Component {
    * Show the right arrow button.
    */
   private showRightArrowButton = (): void => {
-    this.rightArrowButton.classList.remove('hide-button');
+    this.rightArrowButton.classList.remove('hide-arrow-button');
     this.classList.add('show-right-arrow-button-padding');
   };
 
@@ -348,8 +348,8 @@ class Tablist extends Component {
    * Hide the left arrow button.
    */
   private hideRightArrowButton = (): void => {
+    this.rightArrowButton.classList.add('hide-arrow-button');
     this.classList.remove('show-right-arrow-button-padding');
-    this.rightArrowButton.classList.add('hide-button');
   };
 
   /**
@@ -421,7 +421,7 @@ class Tablist extends Component {
         tabindex="0" 
         aria-label="Scroll Tabs Left"
         @click="${() => this.scrollTabsLeft()}"
-        class="hide-button"></mdc-button>
+        class="hide-arrow-button"></mdc-button>
       <div class="tabs_container">
         <slot></slot>
       </div>
@@ -436,7 +436,7 @@ class Tablist extends Component {
         tabindex="0" 
         aria-label="Scroll Tabs Right"
         @click="${() => this.scrollTabsRight()}"
-        class="hide-button"></mdc-button>
+        class="hide-arrow-button"></mdc-button>
     `;
   }
 
