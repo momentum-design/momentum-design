@@ -183,9 +183,9 @@ class StickerSheet {
   public async mountStickerSheet(options: {
     wrapperStyle?: string,
     role?: string,
-  }) {
+  } = {}) {
     await this.componentPage.mount({
-      html: `<div class="componentWrapper" style='${options.wrapperStyle}' role='${options.role}'>
+      html: `<div class="componentWrapper" style='${options.wrapperStyle ?? ''}' role='${options.role ?? ''}'>
         ${this.markupHTML}
       </div>`,
       clearDocument: true,
