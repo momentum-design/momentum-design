@@ -185,7 +185,12 @@ class StickerSheet {
     role?: string,
   } = {}) {
     await this.componentPage.mount({
-      html: `<div class="componentWrapper" style='${options.wrapperStyle ?? ''}' role='${options.role ?? ''}'>
+      html: `<div
+        class="componentWrapper"
+        style='${options.wrapperStyle ?? ''}'
+        role='${options.role ?? ''}'
+        aria-label='test aria label'
+      >
         ${this.markupHTML}
       </div>`,
       clearDocument: true,

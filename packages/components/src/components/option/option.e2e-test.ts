@@ -1,66 +1,101 @@
-// import { test } from '../../../config/playwright/setup';
+import { expect } from '@playwright/test';
+import { ComponentsPage, test } from '../../../config/playwright/setup';
+import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
-// test.beforeEach(async ({ componentsPage }) => {
-//   await componentsPage.mount({
-//     html: `
-//         <mdc-option />
-//       `,
-//   });
-// });
+type SetupOptions = {
+  componentsPage: ComponentsPage;
+  'prefix-icon'?: string;
+  disabled?: boolean;
+  label?: string;
+  selected?: boolean;
+}
 
-// test('mdc-option', async ({ componentsPage }) => {
-//   const option = componentsPage.page.locator('mdc-option');
+const label = 'Primary Label';
+const icon = 'placeholder-bold';
 
-//   // initial check for the option be visible on the screen:
-//   await option.waitFor();
+const setup = async (args: SetupOptions) => {
+  const { componentsPage, ...restArgs } = args;
+  await componentsPage.mount({
+    html: `
+      <mdc-option
+        ${restArgs['prefix-icon'] ? `prefix-icon="${restArgs['prefix-icon']}"` : ''}
+        ${restArgs.disabled ? `disabled="${restArgs.disabled}"` : ''}
+        ${restArgs.label ? `label="${restArgs.label}"` : ''}
+        ${restArgs.selected ? `selected="${restArgs.selected}"` : ''}
+      ></mdc-option>
+    `,
+    clearDocument: true,
+  });
+  const option = componentsPage.page.locator('mdc-option');
+  await option.waitFor();
+  return option;
+};
 
-//   /**
-//    * ACCESSIBILITY
-//    */
-//   await test.step('accessibility', async () => {
-//     await componentsPage.accessibility.checkForA11yViolations('option-default');
-//   });
+test('mdc-option', async ({ componentsPage }) => {
+  /**
+   * VISUAL REGRESSION
+   */
+  await test.step('visual-regression', async () => {
+    const markUpOptions = { createNewRow: true };
+    const optionSheet = new StickerSheet(componentsPage, 'mdc-option', 'margin: 0.25rem');
+    optionSheet.setAttributes({ label });
+    await optionSheet.createMarkupWithCombination({}, markUpOptions);
+    optionSheet.setChildren('Option with children');
+    await optionSheet.createMarkupWithCombination({}, markUpOptions);
+    optionSheet.setAttributes({ label, 'prefix-icon': icon });
+    await optionSheet.createMarkupWithCombination({}, markUpOptions);
+    optionSheet.setAttributes({ label, 'prefix-icon': icon, selected: 'true' });
+    await optionSheet.createMarkupWithCombination({}, markUpOptions);
+    optionSheet.setAttributes({ label, 'prefix-icon': icon, selected: 'true', disabled: 'true' });
+    await optionSheet.createMarkupWithCombination({}, markUpOptions);
 
-//   /**
-//    * VISUAL REGRESSION
-//    */
-//   await test.step('visual-regression', async () => {
-//     await test.step('matches screenshot of element', async () => {
-//       await componentsPage.visualRegression.takeScreenshot('mdc-option', { element: option });
-//     });
-//   });
+    await optionSheet.mountStickerSheet({ role: 'listbox' });
+    await test.step('matches screenshot of element', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-option', {
+        element: optionSheet.getWrapperContainer(),
+      });
+    });
+  });
 
-//   /**
-//    * ATTRIBUTES
-//    */
-//   await test.step('attributes', async () => {
-//     await test.step('attribute X should be present on component by default', async () => {
-//       // TODO: add test here
-//     });
-//   });
+  /**
+   * ACCESSIBILITY
+   */
+  await test.step('accessibility', async () => {
+    await componentsPage.accessibility.checkForA11yViolations('option-default');
+  });
 
-//   /**
-//    * INTERACTIONS
-//    */
-//   await test.step('interactions', async () => {
-//     await test.step('mouse/pointer', async () => {
-//       await test.step('component should fire callback x when clicking on it', async () => {
-//         // TODO: add test here
-//       });
-//     });
+  /**
+   * ATTRIBUTES
+   */
+  await test.step('attributes', async () => {
+    const option = await setup({ componentsPage });
 
-//     await test.step('focus', async () => {
-//       await test.step('component should be focusable with tab', async () => {
-//         // TODO: add test here
-//       });
+    await test.step('attribute role, tabindex and variant should be present on component by default', async () => {
+      await expect(option).toHaveAttribute('role', 'option');
+      await expect(option).toHaveAttribute('aria-selected', 'false');
+      await expect(option).toHaveAttribute('aria-disabled', 'false');
+    });
 
-//       // add additional tests here, like tabbing through several parts of the component
-//     });
+    await test.step('should have label text when the attribute is passed', async () => {
+      await componentsPage.setAttributes(option, { label });
+      const mdcTextElement = option.locator('mdc-text');
+      const textContent = await mdcTextElement.textContent();
+      expect(textContent?.trim()).toBe(label);
+    });
 
-//     await test.step('keyboard', async () => {
-//       await test.step('component should fire callback x when pressing y', async () => {
-//         // TODO: add test here
-//       });
-//     });
-//   });
-// });
+    await test.step('should have icon on the left when the prefix-icon attribute is passed', async () => {
+      await componentsPage.setAttributes(option, { 'prefix-icon': 'placeholder-bold' });
+      await expect(option.locator('mdc-icon[slot=\'leading-controls\']')).toHaveAttribute('name', 'placeholder-bold');
+    });
+
+    await test.step('should have icon on the right when the selected attribute is passed', async () => {
+      await componentsPage.setAttributes(option, { selected: 'true' });
+      await expect(option.locator('mdc-icon[slot=\'trailing-controls\']')).toHaveAttribute('name', 'check-bold');
+    });
+
+    await test.step('should be disabled when the disabled attribute is passed', async () => {
+      await componentsPage.setAttributes(option, { disabled: 'true' });
+      await expect(option).toHaveAttribute('disabled');
+    });
+  });
+});
