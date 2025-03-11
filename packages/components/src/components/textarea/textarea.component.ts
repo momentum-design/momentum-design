@@ -10,7 +10,7 @@ import type { AutoCapitalizeType } from '../input/input.types';
 import { AUTO_COMPLETE, WRAP, DEFAULTS } from './textarea.constants';
 import type { WrapType, AutoCompleteType } from './textarea.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
-import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
+import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 
 /**
  * mdc-textarea component, which is used to get the multi-line text input from the user.
@@ -25,10 +25,11 @@ import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/Fo
  *
  * @tagname mdc-textarea
  *
- * @event input - (React: onInput) This event is dispatched when the value of the input field changes (every press).
- * @event change - (React: onChange) This event is dispatched when the value of the input field changes (on blur).
- * @event focus - (React: onFocus) This event is dispatched when the input receives focus.
- * @event blur - (React: onBlur) This event is dispatched when the input loses focus.
+ * @event input - (React: onInput) This event is dispatched when the value of the textarea field changes (every press).
+ * @event change - (React: onChange) This event is dispatched when the value of the textarea field changes (on blur).
+ * @event focus - (React: onFocus) This event is dispatched when the textarea receives focus.
+ * @event blur - (React: onBlur) This event is dispatched when the textarea loses focus.
+ * @event character-overflow-state-change - This event is dispatched once when the character limit exceeds or restored.
  *
  *
  * @dependency mdc-icon
@@ -50,7 +51,8 @@ import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/Fo
  * @cssproperty --mdc-textarea-focused-background-color - Background color for the textarea container when focused
  * @cssproperty --mdc-textarea-focused-border-color - Border color for the textarea container when focused
  */
-class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
+
+class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) {
   /**
    * The placeholder text that is displayed when the textarea field is empty.
    */
@@ -131,6 +133,8 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
    * The textarea element
    */
     @query('textarea') override inputElement!: HTMLTextAreaElement;
+
+    private characterLimitExceedingFired: boolean = false;
 
     protected get textarea(): HTMLTextAreaElement {
       return this.inputElement;
@@ -241,26 +245,40 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     }
 
     /**
+   * Dispatches the character overflow state change event.
+   * @returns void
+   */
+    private dispatchCharacterOverflowStateChangeEvent() {
+      this.dispatchEvent(
+        new CustomEvent('character-overflow-state-change', {
+          detail: {
+            currentCharacterCount: this.value.length,
+            maxCharacterLimit: this.maxCharacterLimit,
+            value: this.value,
+          },
+          bubbles: true,
+          composed: true,
+        }),
+      );
+    }
+
+    /**
    * Updates the value of the textarea field.
    * Sets the form value.
+   * Dispatches the character overflow state change event if the character limit is exceeded or restored.
    * @returns void
    */
     private updateValue() {
       this.value = this.textarea.value;
       this.internals.setFormValue(this.textarea.value);
       if (this.maxCharacterLimit) {
-      // Dispatch an event with current value
-        this.dispatchEvent(
-          new CustomEvent('character-limit-check', {
-            detail: {
-              currentCharacterCount: this.value.length,
-              maxCharacterLimit: this.maxCharacterLimit,
-              value: this.value,
-            },
-            bubbles: true,
-            composed: true,
-          }),
-        );
+        if (this.value.length > this.maxCharacterLimit && !this.characterLimitExceedingFired) {
+          this.dispatchCharacterOverflowStateChangeEvent();
+          this.characterLimitExceedingFired = true;
+        } else if (this.value.length <= this.maxCharacterLimit && this.characterLimitExceedingFired) {
+          this.dispatchCharacterOverflowStateChangeEvent();
+          this.characterLimitExceedingFired = false;
+        }
       }
     }
 
