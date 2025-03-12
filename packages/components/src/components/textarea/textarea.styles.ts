@@ -59,8 +59,8 @@ const styles = [css`
 
   :host::part(clear-button) {
     position: absolute;
-    right: 6px;
-    top: 6px;
+    right: 0.25rem;
+    top: 0.375rem;
   }
 
   :host(:not([disabled]))::part(textarea-container):hover{
@@ -97,16 +97,20 @@ const styles = [css`
     color: var(--mds-color-theme-text-primary-disabled);
   }
 
-  :host([help-text-type="error"])::part(textarea-container) {
+  :host([help-text-type="error"])::part(textarea-container),
+  :host([help-text-type="error"])::part(textarea-container):focus-within {
     border-color: var(--mdc-textarea-error-border-color);
   }
-  :host([help-text-type="warning"])::part(textarea-container) {
+  :host([help-text-type="warning"])::part(textarea-container),
+  :host([help-text-type="warning"])::part(textarea-container):focus-within {
     border-color: var(--mdc-textarea-warning-border-color);
   }
-  :host([help-text-type="success"])::part(textarea-container) {
+  :host([help-text-type="success"])::part(textarea-container),
+  :host([help-text-type="success"])::part(textarea-container):focus-within {
     border-color: var(--mdc-textarea-success-border-color);
   }
-  :host([help-text-type="priority"])::part(textarea-container) {
+  :host([help-text-type="priority"])::part(textarea-container),
+  :host([help-text-type="priority"])::part(textarea-container):focus-within {
     border-color: var(--mdc-textarea-primary-border-color);
   }
 
