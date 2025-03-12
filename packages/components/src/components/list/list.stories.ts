@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
@@ -30,7 +31,9 @@ const fakeUserNamesList = [
 
 const render = (args: Args) => html`
   <mdc-list header-text="${args['header-text']}" data-aria-label="${args['data-aria-label']}">
-    ${repeat(fakeUserNamesList, (name) => html`<mdc-listitem label="${name}" variant="${LISTITEM_VARIANTS.INSET_PILL}">
+    ${repeat(fakeUserNamesList, (name) => html`<mdc-listitem
+      @click="${action('onclick')}" label="${name}" variant="${LISTITEM_VARIANTS.INSET_PILL}"
+    >
       <mdc-checkbox slot="leading-controls" data-aria-label="mock label"></mdc-checkbox>
       <mdc-avatar slot="leading-controls"
         initials="${[name.split(' ')[0][0], name.split(' ')[1][0]].join('')}"
@@ -48,12 +51,12 @@ const render = (args: Args) => html`
   </mdc-list>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/list',
+  title: 'Components/list',
   tags: ['autodocs'],
   component: 'mdc-list',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     'header-text': {
@@ -84,13 +87,13 @@ export const Example: StoryObj = {
 export const ListWithDivider: StoryObj = {
   render: () => html`
     <mdc-list>
-      <mdc-listitem label="List Item 1"></mdc-listitem>
-      <mdc-listitem label="List Item 2"></mdc-listitem>
-      <mdc-listitem label="List Item 3"></mdc-listitem>
+      <mdc-listitem @click=${action('onclick')} label="List Item 1"></mdc-listitem>
+      <mdc-listitem @click=${action('onclick')} label="List Item 2"></mdc-listitem>
+      <mdc-listitem @click=${action('onclick')} label="List Item 3"></mdc-listitem>
       <mdc-divider></mdc-divider>
-      <mdc-listitem label="List Item 4"></mdc-listitem>
-      <mdc-listitem label="List Item 5"></mdc-listitem>
-      <mdc-listitem label="List Item 6"></mdc-listitem>
+      <mdc-listitem @click=${action('onclick')} label="List Item 4"></mdc-listitem>
+      <mdc-listitem @click=${action('onclick')} label="List Item 5"></mdc-listitem>
+      <mdc-listitem @click=${action('onclick')} label="List Item 6"></mdc-listitem>
     </mdc-list>
   `,
 };
