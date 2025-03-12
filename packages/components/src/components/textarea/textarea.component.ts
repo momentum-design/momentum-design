@@ -311,10 +311,23 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     }
 
     /**
-      * Clears the textarea field.
+     *  Handles the keydown event of the textarea field.
+     * Clears the textarea field when the 'Enter' key is pressed.
+     * @param event - Keyboard event
+     * @returns void
     */
-    private clearInputText(event: Event) {
-      event.preventDefault();
+    private handleKeyDown(event: KeyboardEvent) {
+      if (['Enter'].includes(event.key)) {
+        event.preventDefault();
+        this.clearInputText();
+      }
+    }
+
+    /**
+      * Clears the textarea field.
+      * @returns void
+    */
+    private clearInputText() {
       this.value = '';
       this.textarea.focus();
     }
@@ -337,7 +350,7 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
           aria-label="${this.clearAriaLabel}"
           ?disabled=${this.disabled || this.readonly || !this.value}
           @click=${this.clearInputText}
-          @keydown=${this.clearInputText}
+          @keydown=${this.handleKeyDown}
         ></mdc-button>
       `;
     }
