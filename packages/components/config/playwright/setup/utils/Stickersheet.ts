@@ -188,8 +188,7 @@ class StickerSheet {
       html: `<div
         class="componentWrapper"
         ${options.wrapperStyle ? `style="${options.wrapperStyle}"` : ''}
-        ${options.role ? `role="${options.role}"` : ''}
-        aria-label='test aria label'
+        ${options.role ? `role="${options.role}" aria-label='test aria label'` : ''}
       >
         ${this.markupHTML}
       </div>`,
