@@ -26,6 +26,13 @@ const styles = css`
   }
 
   :host([color='contrast']) {
+    background-color: var(--mdc-popover-inverted-background-color);
+    border-color: var(--mdc-popover-inverted-border-color);
+    color: var(--mds-color-theme-inverted-text-primary-normal);
+  }
+
+  :host([color='contrast']) {
+
     .popover-arrow {
       background-color: var(--mdc-popover-inverted-background-color);
       border-color: var(--mdc-popover-inverted-border-color);
@@ -42,16 +49,6 @@ const styles = css`
     overflow-y: auto;
     min-width: max-content;
     z-index: 9998;
-  }
-
-  .popover-backdrop {
-    z-index: 999;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: transparent;
   }
 
   .popover-hover-bridge {

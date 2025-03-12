@@ -125,7 +125,7 @@ const renderMultiple = (args: Args) => html`
     z-index="20"
     show-arrow
   >
-    <mdc-text>Description tooltip on mou se enter</mdc-text>
+    <mdc-text>Description tooltip on mouseenter</mdc-text>
   </mdc-popover>
 `;
 
