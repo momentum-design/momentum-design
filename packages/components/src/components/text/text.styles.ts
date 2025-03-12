@@ -5,6 +5,7 @@ const styles = [
   css`
     :host {
       --mdc-text-font-family: var(--mdc-themeprovider-font-family);
+      --mdc-text-multiline-truncation-line-clamp: unset;
 
       display: block;
       font-family: var(--mdc-text-font-family);
