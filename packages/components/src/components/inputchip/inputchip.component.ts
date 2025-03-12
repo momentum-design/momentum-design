@@ -1,6 +1,5 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './inputchip.styles';
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
@@ -13,9 +12,13 @@ import { DEFAULTS } from './inputchip.constants';
  *
  * - It supports a leading icon along with label.
  * - It supports an error state for validation.
- * - It supports a close icon to remove the chip.
+ * - It supports a close button to remove the chip.
  *
  * @tagname mdc-inputchip
+ *
+ * @dependency mdc-button
+ * @dependency mdc-icon
+ * @dependency mdc-text
  *
  * @event remove - This event is dispatched when the close button is activated. It bubbles and is composed.
  */
@@ -24,7 +27,7 @@ class Inputchip extends IconNameMixin(DisabledMixin(Component)) {
 
   @property({ type: Boolean }) error = false;
 
-  @property({ type: String, attribute: 'clear-aria-label' }) clearAriaLabel?: string;
+  @property({ type: String, attribute: 'clear-aria-label' }) clearAriaLabel = '';
 
   /**
    * Renders the icon element if available.
@@ -40,6 +43,10 @@ class Inputchip extends IconNameMixin(DisabledMixin(Component)) {
   `;
   }
 
+  /**
+   * Dispatches a 'remove' event on the component.
+   * This event bubbles and is composed.
+   */
   private handleClose() {
     this.dispatchEvent(new CustomEvent('remove', { bubbles: true, composed: true }));
   }
@@ -52,7 +59,7 @@ class Inputchip extends IconNameMixin(DisabledMixin(Component)) {
           ?disabled="${this.disabled}"
           variant="tertiary"
           part="close-icon"
-          aria-label="${ifDefined(this.clearAriaLabel)}"
+          aria-label="${this.clearAriaLabel}"
           prefix-icon="${DEFAULTS.CLOSE_ICON}"
           size="20"
           @click="${this.handleClose}"
