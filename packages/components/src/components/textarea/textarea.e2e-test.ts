@@ -1,0 +1,432 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
+import { expect } from '@playwright/test';
+import { ComponentsPage, test } from '../../../config/playwright/setup';
+import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
+import { getHelperIcon } from '../formfieldwrapper/formfieldwrapper.utils';
+import type { AutoCapitalizeType } from '../input/input.types';
+import type { AutoCompleteType, WrapType } from './textarea.types';
+
+type SetupOptions = {
+  componentsPage: ComponentsPage;
+  id?: string;
+  value?: string;
+  name?: string;
+  rows?: number;
+  cols?: number;
+  wrap?: WrapType;
+  placeholder?: string;
+  requiredLabel?: string;
+  readonly?: boolean;
+  disabled?: boolean;
+  maxlength?: number;
+  minlength?: number;
+  maxCharacterLimit?: number;
+  clearButton?: boolean;
+  label?: string;
+  helpText?: string;
+  helpTextType?: string;
+  autocapitalize?: AutoCapitalizeType;
+  autofocus?: boolean;
+  autocomplete?: AutoCompleteType;
+  dirname?: string;
+  dataAriaLabel?: string;
+  clearAriaLabel?: string;
+};
+
+const setup = async (args: SetupOptions, isForm = false) => {
+  const { componentsPage, ...restArgs } = args;
+  await componentsPage.mount({
+    html: `
+    ${isForm ? '<form>' : ''}
+      <mdc-textarea
+      id="${restArgs.id}"
+      ${restArgs.value ? `value="${restArgs.value}"` : ''}
+      ${restArgs.placeholder ? `placeholder="${restArgs.placeholder}"` : ''}
+      ${restArgs.requiredLabel ? `required-label="${restArgs.requiredLabel}"` : ''}
+      ${restArgs.readonly ? 'readonly' : ''}
+      ${restArgs.disabled ? 'disabled' : ''}
+      ${restArgs.maxlength ? `maxlength="${restArgs.maxlength}"` : ''}
+      ${restArgs.minlength ? `minlength="${restArgs.minlength}"` : ''}
+      ${restArgs.rows ? `rows="${restArgs.rows}"` : ''}
+      ${restArgs.cols ? `cols="${restArgs.cols}"` : ''}
+      ${restArgs.wrap ? `wrap="${restArgs.wrap}"` : ''}
+      ${restArgs.name ? `name="${restArgs.name}"` : ''}
+      ${restArgs.maxCharacterLimit ? `max-character-limit="${restArgs.maxCharacterLimit}"` : ''}
+      ${restArgs.label ? `label="${restArgs.label}"` : ''}
+      ${restArgs.helpText ? `help-text="${restArgs.helpText}"` : ''}
+      ${restArgs.helpTextType ? `help-text-type="${restArgs.helpTextType}"` : ''}
+      ${restArgs.clearButton ? 'clear-button' : ''}
+      ${restArgs.autocapitalize ? `autocapitalize="${restArgs.autocapitalize}"` : ''}
+      ${restArgs.autofocus ? 'autofocus' : ''}
+      ${restArgs.autocomplete ? `autocomplete="${restArgs.autocomplete}"` : ''}
+      ${restArgs.dirname ? `dirname="${restArgs.dirname}"` : ''}
+      ${restArgs.dataAriaLabel ? `data-aria-label="${restArgs.dataAriaLabel}"` : ''}
+      ${restArgs.clearAriaLabel ? `data-aria-label="${restArgs.clearAriaLabel}"` : ''}
+      ></mdc-textarea>
+    ${isForm ? '<mdc-button type="submit" size="24">Submit</mdc-button></form>' : ''}
+    `,
+    clearDocument: true,
+  });
+  if (isForm) {
+    const form = componentsPage.page.locator('form');
+    await form.waitFor();
+    return form;
+  }
+  const textarea = componentsPage.page.locator('mdc-textarea');
+  await textarea.waitFor();
+  return textarea;
+};
+
+test.use({ viewport: { width: 800, height: 2250 } });
+test('mdc-textarea', async ({ componentsPage, browserName }) => {
+  const mdcTextarea = await setup({
+    componentsPage,
+    id: 'test-mdc-textarea',
+    placeholder: 'Placeholder',
+    label: 'Label',
+    helpText: 'Help Text',
+  });
+
+  /**
+   * INTERACTIONS
+   */
+  await test.step('interactions', async () => {
+    const textareaElement = await mdcTextarea.locator('textarea');
+    await test.step('component should be focusable with tab', async () => {
+      await componentsPage.actionability.pressTab();
+      await expect(mdcTextarea).toBeFocused();
+      await textareaElement.fill('test');
+      await expect(textareaElement).toHaveValue('test');
+      if (browserName !== 'firefox') {
+        await componentsPage.actionability.pressTab();
+        await expect(mdcTextarea).not.toBeFocused();
+      }
+    });
+
+    await test.step('readonly component should be focusable with tab but not editable', async () => {
+      await componentsPage.setAttributes(mdcTextarea, {
+        readonly: '',
+        value: 'Readonly',
+        'clear-button': '',
+        'clear-aria-label': 'clear',
+      });
+      const trailingButton = mdcTextarea.locator('mdc-button').first();
+      await componentsPage.actionability.pressTab();
+      await expect(mdcTextarea).toBeFocused();
+      await expect(textareaElement).toHaveValue('Readonly');
+      await textareaElement.press('A');
+      await expect(textareaElement).toHaveValue('Readonly');
+      if (browserName !== 'firefox') {
+        await componentsPage.actionability.pressTab();
+        await expect(mdcTextarea).not.toBeFocused();
+        await expect(trailingButton).not.toBeFocused();
+      }
+      await componentsPage.removeAttribute(mdcTextarea, 'readonly');
+    });
+
+    await test.step('focus on textarea and clear button when value is present during interactions', async () => {
+      await componentsPage.setAttributes(mdcTextarea, {
+        'clear-button': '',
+        value: 'test',
+        'clear-aria-label': 'clear' });
+      const clearButton = mdcTextarea.locator('mdc-button[part="clear-button"]');
+      await componentsPage.actionability.pressTab();
+      await expect(clearButton).toHaveClass('own-focus-ring ');
+      await componentsPage.actionability.pressTab();
+      await expect(textareaElement).not.toBeFocused();
+      await expect(clearButton).toBeFocused();
+      await clearButton.click();
+      await expect(mdcTextarea).toBeFocused();
+      await expect(textareaElement).toHaveValue('');
+    });
+
+    await test.step('clear button will not be focusable in readonly state', async () => {
+      await componentsPage.setAttributes(mdcTextarea, {
+        value: 'this is readonly data',
+        readonly: '',
+        'clear-button': '',
+        'clear-aria-label': 'clear',
+      });
+      await componentsPage.actionability.releaseFocus(mdcTextarea);
+      const clearButton = mdcTextarea.locator('mdc-button[part="clear-button"]');
+      await expect(textareaElement).toHaveValue('this is readonly data');
+      await expect(clearButton).toHaveClass('own-focus-ring ');
+      await componentsPage.actionability.pressTab();
+      await expect(mdcTextarea).toBeFocused();
+      await componentsPage.actionability.pressTab();
+      // tabbing should not focus on clear button
+      await componentsPage.actionability.pressTab();
+      // disabled when textarea is in readonly state
+      await expect(clearButton).not.toBeFocused();
+      await componentsPage.removeAttribute(mdcTextarea, 'readonly');
+      await componentsPage.removeAttribute(mdcTextarea, 'clear-buton');
+    });
+
+    await test.step('component should not be focusable when disabled', async () => {
+      await componentsPage.setAttributes(mdcTextarea, { disabled: '', value: 'Disabled' });
+      await componentsPage.actionability.pressTab();
+      await expect(mdcTextarea).not.toBeFocused();
+      await expect(textareaElement).toHaveValue('Disabled');
+      await componentsPage.removeAttribute(mdcTextarea, 'disabled');
+    });
+
+    await test.step('component should be focusable when autofocus is set', async () => {
+      await componentsPage.setAttributes(mdcTextarea, { autofocus: '' });
+      await componentsPage.actionability.pressTab();
+      await expect(mdcTextarea).toBeFocused();
+      await componentsPage.removeAttribute(mdcTextarea, 'autofocus');
+    });
+
+    await test.step('component should have character counter when max-character-limit is set', async () => {
+      await componentsPage.setAttributes(mdcTextarea, { 'max-character-limit': '10', value: '' });
+      const characterCounter = mdcTextarea.locator('mdc-text[part="character-counter"]');
+      await expect(characterCounter).toHaveText('00/10');
+      await textareaElement.fill('This is a long text');
+      await expect(textareaElement).toHaveValue('This is a long text');
+      await expect(characterCounter).toHaveText('19/10');
+      await componentsPage.removeAttribute(mdcTextarea, 'max-character-limit');
+    });
+
+    await test.step(
+      'component in form should be validated for required and maxlength when submitted',
+      async () => {
+        const form = await setup({
+          componentsPage,
+          id: 'test-mdc-textarea',
+          placeholder: 'Placeholder',
+          requiredLabel: 'required',
+          maxlength: 10,
+        }, true);
+
+        const submitButton = await form.locator('mdc-button');
+
+        await submitButton.click();
+        const validationMessage = await textareaElement.evaluate((element) => {
+          const textarea = element as HTMLTextAreaElement;
+          return textarea.validationMessage;
+        });
+        if (browserName === 'webkit') {
+          expect(validationMessage).toContain('Fill out this field');
+        } else {
+          expect(validationMessage).toContain('Please fill out this field.');
+        }
+        await textareaElement.fill('This is a long text');
+        await expect(textareaElement).toHaveValue('This is a ');
+        await submitButton.click();
+      },
+    );
+
+    await test.step('component in form should be validated for character limit', async () => {
+      await setup({
+        componentsPage,
+        id: 'test-mdc-textarea',
+        placeholder: 'Placeholder',
+        requiredLabel: 'required',
+        maxCharacterLimit: 10,
+      }, true);
+
+      const characterCounter = await mdcTextarea.locator('mdc-text[part="character-counter"]');
+      await textareaElement.fill('This is a long text');
+      await expect(characterCounter).toHaveText('19/10');
+
+      const validationMessage = await textareaElement.evaluate((element) => {
+        const textarea = element as HTMLTextAreaElement;
+        return textarea.validationMessage;
+      });
+      expect(validationMessage).toContain(' ');
+
+      // update character limit to pass validation
+      await textareaElement.fill('short text');
+      await expect(characterCounter).toHaveText('10/10');
+      expect(validationMessage).toContain('');
+    });
+  });
+
+  /**
+   * ATTRIBUTES
+   */
+  await test.step('attributes', async () => {
+    const mdcTextarea = await setup({
+      componentsPage,
+      id: 'test-mdc-textarea',
+      placeholder: 'Placeholder',
+      label: 'Label',
+      helpText: 'Help Text',
+    });
+
+    await test.step('attributes should be present on component', async () => {
+      await expect(mdcTextarea).toHaveAttribute('placeholder', 'Placeholder');
+      await expect(mdcTextarea).toHaveAttribute('label', 'Label');
+      const label = await mdcTextarea.locator('label');
+      await expect(label).toHaveText('Label');
+      await expect(mdcTextarea).toHaveAttribute('help-text', 'Help Text');
+      const helpText = await mdcTextarea.locator('mdc-text[part="help-text"]');
+      await expect(helpText).toHaveText('Help Text');
+    });
+
+    await test.step('attributes rows should be present on component', async () => {
+      await componentsPage.setAttributes(mdcTextarea, { rows: '5' });
+      await expect(mdcTextarea).toHaveAttribute('rows', '5');
+      await componentsPage.removeAttribute(mdcTextarea, 'rows');
+    });
+
+    await test.step('attributes cols should be present on component', async () => {
+      await componentsPage.setAttributes(mdcTextarea, { cols: '5' });
+      await expect(mdcTextarea).toHaveAttribute('cols', '5');
+      await componentsPage.removeAttribute(mdcTextarea, 'cols');
+    });
+
+    await test.step('attributes max-character-limit should be present on component', async () => {
+      await componentsPage.setAttributes(mdcTextarea, { 'max-character-limit': '100' });
+      await expect(mdcTextarea).toHaveAttribute('max-character-limit', '100');
+      const characterCounter = mdcTextarea.locator('mdc-text[part="character-counter"]');
+      await expect(characterCounter).toHaveText('00/100');
+      await componentsPage.removeAttribute(mdcTextarea, 'max-character-counter');
+    });
+
+    await test.step('attributes wrap should be present on component', async () => {
+      await componentsPage.setAttributes(mdcTextarea, { wrap: 'hard' });
+      await expect(mdcTextarea).toHaveAttribute('wrap', 'hard');
+      await componentsPage.removeAttribute(mdcTextarea, 'wrap');
+    });
+
+    await test.step('attributes required should be present on component', async () => {
+      await componentsPage.setAttributes(mdcTextarea, { 'required-label': 'required' });
+      await expect(mdcTextarea).toHaveAttribute('required-label', 'required');
+      await componentsPage.removeAttribute(mdcTextarea, 'required-label');
+    });
+
+    await test.step('attributes readonly should be present on component', async () => {
+      await componentsPage.setAttributes(mdcTextarea, { readonly: '' });
+      await expect(mdcTextarea).toHaveAttribute('readonly');
+      await componentsPage.removeAttribute(mdcTextarea, 'readonly');
+    });
+
+    await test.step('attributes disabled should be present on component', async () => {
+      await componentsPage.setAttributes(mdcTextarea, { disabled: '' });
+      await expect(mdcTextarea).toHaveAttribute('disabled');
+      await componentsPage.removeAttribute(mdcTextarea, 'disabled');
+    });
+
+    await test.step('attributes help-text-type should be present on component', async () => {
+      for (const type of Object.values(VALIDATION)) {
+        await componentsPage.setAttributes(mdcTextarea, { 'help-text-type': type });
+        await expect(mdcTextarea).toHaveAttribute('help-text-type', type);
+        const iconEl = await mdcTextarea.locator('mdc-icon[part="helper-icon"]');
+        const icon = getHelperIcon(type);
+        if (icon) {
+          await expect(iconEl).toHaveAttribute('name', icon);
+        }
+      }
+      await componentsPage.removeAttribute(mdcTextarea, 'help-text-type');
+    });
+
+    await test.step('minlength and maxlength should be present on component', async () => {
+      await componentsPage.setAttributes(mdcTextarea, { maxlength: '10', minlength: '5' });
+      await expect(mdcTextarea).toHaveAttribute('maxlength', '10');
+      await expect(mdcTextarea).toHaveAttribute('minlength', '5');
+      await componentsPage.removeAttribute(mdcTextarea, 'maxlength');
+      await componentsPage.removeAttribute(mdcTextarea, 'minlength');
+    });
+
+    await test.step('attribute autofocus should be present on component', async () => {
+      await componentsPage.setAttributes(mdcTextarea, { autofocus: '' });
+      await expect(mdcTextarea).toHaveAttribute('autofocus');
+      await componentsPage.removeAttribute(mdcTextarea, 'autofocus');
+    });
+
+    await test.step('attribute autocapitalize should be present on component', async () => {
+      await componentsPage.setAttributes(mdcTextarea, { autocapitalize: 'sentences' });
+      await expect(mdcTextarea).toHaveAttribute('autocapitalize', 'sentences');
+      await componentsPage.removeAttribute(mdcTextarea, 'autocapitalize');
+    });
+
+    await test.step('attribute autocomplete should be present on component', async () => {
+      await componentsPage.setAttributes(mdcTextarea, { autocomplete: 'on' });
+      await expect(mdcTextarea).toHaveAttribute('autocomplete', 'on');
+      await componentsPage.removeAttribute(mdcTextarea, 'autocomplete');
+    });
+
+    await test.step('attribute dirname should be present on component', async () => {
+      await componentsPage.setAttributes(mdcTextarea, { dirname: 'ltr' });
+      await expect(mdcTextarea).toHaveAttribute('dirname', 'ltr');
+      await componentsPage.removeAttribute(mdcTextarea, 'dirname');
+    });
+  });
+
+  /**
+   * VISUAL REGRESSION
+   */
+  await test.step('visual-regression', async () => {
+    const attributes = {
+      id: 'test-mdc-textarea',
+      placeholder: 'Placeholder',
+      label: 'Label',
+      'help-text': 'Help Text',
+    };
+    const textareaStickerSheet = new StickerSheet(componentsPage, 'mdc-textarea');
+
+    await textareaStickerSheet.setAttributes(attributes);
+    await textareaStickerSheet.createMarkupWithCombination({
+      'help-text-type': VALIDATION,
+    });
+
+    // textarea with value and clear button
+    await textareaStickerSheet.setAttributes({ ...attributes,
+      value: 'Clear button',
+      'clear-button': true,
+      'clear-aria-label': 'clear',
+    });
+    await textareaStickerSheet.createMarkupWithCombination({});
+
+    // textarea field with rows set to 7 & cols to 50
+    await textareaStickerSheet.setAttributes({ ...attributes,
+      rows: 7,
+      cols: 50,
+    });
+    await textareaStickerSheet.createMarkupWithCombination({});
+
+    // textarea field with max-character-limit set to 100
+    await textareaStickerSheet.setAttributes({ ...attributes,
+      maxCharacterLimit: 100,
+    });
+    await textareaStickerSheet.createMarkupWithCombination({});
+
+    // disabled textarea field with value
+    await textareaStickerSheet.setAttributes({ ...attributes,
+      value: 'Disabled',
+      disabled: true,
+    });
+    await textareaStickerSheet.createMarkupWithCombination({});
+
+    // readonly textarea field with value
+    await textareaStickerSheet.setAttributes({ ...attributes,
+      value: 'Readonly value',
+      readonly: true,
+    });
+    await textareaStickerSheet.createMarkupWithCombination({});
+
+    // textarea that is marked required
+    await textareaStickerSheet.setAttributes({ ...attributes,
+      'required-label': 'required',
+      placeholder: 'Textarea is required',
+    });
+    await textareaStickerSheet.createMarkupWithCombination({});
+
+    await textareaStickerSheet.mountStickerSheet();
+    const container = await textareaStickerSheet.getWrapperContainer();
+
+    await test.step('matches screenshot of element', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-textarea', { element: container });
+    });
+  });
+
+  /**
+   * ACCESSIBILITY
+   */
+  await test.step('accessibility', async () => {
+    await componentsPage.accessibility.checkForA11yViolations('textarea-default');
+  });
+});
