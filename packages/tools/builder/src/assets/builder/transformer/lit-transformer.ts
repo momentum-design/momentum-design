@@ -20,13 +20,13 @@ class LitTransformer extends Transformer {
    * @param name - name of the svg
    * @returns modified svg string
    */
-  public addAttributesToSvg(svg: string, name: string): string {
+  public addAttributesToSvg(svg: string, name: string, partName: string = 'element'): string {
     // Important: all the added attributes are important and cause issues if modified.
     // part="icon" is required for the icon to be styled
     // (if modified icon component will not be styled correctly)
     // aria-hidden="true" is required for accessibility
     // data-name is used to identify the svg in tests etc
-    return svg.replace('<svg', `<svg aria-hidden="true" part="icon" data-name="${name}"`);
+    return svg.replace('<svg', `<svg aria-hidden="true" part="${partName}" data-name="${name}"`);
   }
 
   /**
@@ -45,7 +45,7 @@ class LitTransformer extends Transformer {
         ...file,
         distPath: path.join(this.destination, `${fileName}.ts`),
         data: template({
-          svgData: this.addAttributesToSvg(file.data, fileName),
+          svgData: this.addAttributesToSvg(file.data, fileName, this.format.config.partName),
         }),
       }))
       .catch((error) => {
