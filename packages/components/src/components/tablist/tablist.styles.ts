@@ -2,13 +2,10 @@ import { css } from 'lit';
 
 const styles = css`
   :host {
-    --mdc-focus-ring-inner-width: 0.125rem;
-    --mdc-focus-ring-middle-width: calc(2 * var(--mdc-focus-ring-inner-width));
-    --mdc-focus-ring-outer-width: calc(0.0625rem + var(--mdc-focus-ring-middle-width));
-
+    --mdc-tablist-focus-ring-outer-width: calc(0.0625rem + calc(2 * 0.125rem));
     --mdc-tablist-gap: 0.5rem;
     --mdc-tablist-width: 100%;
-    --mdc-tablist-arrow-button-padding: 2.75rem;
+    --mdc-tablist-arrow-button-margin: 0.75rem;
 
     width: var(--mdc-tablist-width);
     display: flex;
@@ -19,20 +16,11 @@ const styles = css`
     }
   }
 
-  :host(.show-left-arrow-button-padding) {
-    padding-left: var(--mdc-tablist-arrow-button-padding);
-  }
-
-  :host(.show-right-arrow-button-padding) {
-    padding-right: var(--mdc-tablist-arrow-button-padding);
-  }
-
   :host .tabs_container {
     display: flex;
     overflow-x: hidden;
     gap: var(--mdc-tablist-gap);
-    padding: var(--mdc-focus-ring-outer-width);
-    margin: calc(var(--mdc-focus-ring-outer-width) * -1);
+    padding: var(--mdc-tablist-focus-ring-outer-width);
   }
 
   :host .hide-arrow-button {
@@ -41,8 +29,15 @@ const styles = css`
 
   :host mdc-button[prefix-icon|="arrow"] {
     background-color: var(--mds-color-theme-background-solid-primary-normal);
-    position: absolute;
     z-index: 1;
+  }
+
+  :host mdc-button[prefix-icon="arrow-left-regular"] {
+    margin-right: var(--mdc-tablist-arrow-button-margin);
+  }
+
+  :host mdc-button[prefix-icon="arrow-right-regular"] {
+    margin-left: var(--mdc-tablist-arrow-button-margin);
   }
 `;
 

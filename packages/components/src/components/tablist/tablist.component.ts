@@ -1,14 +1,14 @@
-import { CSSResult, html } from 'lit';
+import { CSSResult, html, nothing } from 'lit';
 import type { PropertyValues } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, query } from 'lit/decorators.js';
 
 import styles from './tablist.styles';
 import { Component } from '../../models';
 import { KEYCODES } from './tablist.constants';
-import { remToPx } from './tablist.utils';
 
 import Tab from '../tab/tab.component';
-import type Button from '../button';
+import Button from '../button';
+import type { ArrowButtonDirection } from './tablist.types';
 
 /**
  * Tab list organizes tabs into a container.
@@ -49,7 +49,7 @@ import type Button from '../button';
  * @cssproperty --mdc-tablist-width - Width of the tablist
  * @cssproperty --mdc-container-button-padding - Padding for when an arrow button is visible
  */
-class Tablist extends Component {
+class TabList extends Component {
   /**
    * ID of the active tab, defaults to the first tab if not provided
    */
@@ -57,29 +57,23 @@ class Tablist extends Component {
   activeTabId?: string;
 
   /**
-   * @internal
+   * Instead of using 'left' and 'right' for notation of the arrow buttons, we use 'forward' and 'backward'.
+   * Since the elements of the tablist gets flipped in RTL layouts, the arrow buttons also flip.
    */
-  private tabs: Array<Tab> = [];
+  @property({ type: Boolean })
+  private showForwardArrowButton: boolean = false;
 
-  /**
-   * @internal
-   */
-  private direction: String = '';
-
-  /**
-   * @internal
-   */
-  private scrollDistance: number = 100;
+  @property({ type: Boolean })
+  private showBackwardArrowButton: boolean = false;
 
   constructor() {
     super();
     this.role = 'tablist';
 
-    this.tabs = this.allTabs;
-
     this.addEventListener('keydown', this.handleKeydown.bind(this));
     this.addEventListener('click', this.handleClick.bind(this));
-    this.addEventListener('scroll', this.handleScroll.bind(this));
+
+    console.log(this.tabs);
   }
 
   override async connectedCallback() {
@@ -91,12 +85,16 @@ class Tablist extends Component {
      * Sets the initial active tab.
      */
     if (typeof this.activeTabId === 'string' && this.activeTabId.length === 0) {
-      this.activeTabId = this.tabs[0].getAttribute('tabid') || '';
+      this.activeTabId = this.firstTab.getAttribute('tabid') || '';
     }
-    this.selectTab(this.tabs.find((tab) => tab.getAttribute('tabid') === this.activeTabId) || this.tabs[0]);
+    this.selectTab(this.tabs.find((tab) => tab.getAttribute('tabid') === this.activeTabId) || this.firstTab);
 
-    this.scrollDistance = remToPx(6.25);
-    this.direction = (document.querySelector('html')?.getAttribute('dir')) || window.getComputedStyle(this).direction;
+    /**
+     * Wait a while after rendering and scroll active tab into view.
+     */
+    setTimeout(() => {
+      this.focusTab(this.currentTab);
+    }, 10);
 
     /**
      * Observe the tablist element for changes in its size.
@@ -108,30 +106,25 @@ class Tablist extends Component {
       const tabListWidth: number = entries[0].borderBoxSize[0].inlineSize;
       const tabsContainerWidth: number = this.tabsContainer.scrollWidth || 0;
 
-      if (this.isRtl) {
-        this.leftArrowButton.style.right = `${tabListWidth - remToPx(1)}px`;
-        this.rightArrowButton.style.right = `${remToPx(1)}px`;
-      } else {
-        this.leftArrowButton.style.left = `${remToPx(1)}px`;
-        this.rightArrowButton.style.left = `${tabListWidth - remToPx(1)}px`;
-      }
-
       if (tabListWidth >= tabsContainerWidth) {
-        this.hideLeftArrowButton();
-        this.hideRightArrowButton();
-      } else if (this.isRtl) {
-        this.showLeftArrowButton();
+        this.showArrowButtons = { forward: false, backward: false };
       } else {
-        this.showRightArrowButton();
+        this.showArrowButtons = { forward: true, backward: false };
       }
     });
 
     resizeObserver.observe(this);
 
     /**
-     * Observe the tablist element for scroll events.
+     * Observe the tablist element for scroll events and handle visibility of the arrow buttons
      */
-    this.tabsContainer.addEventListener('scroll', this.handleScroll);
+    this.tabsContainer.addEventListener('scroll', this.handleArrowButtonVisibility);
+
+    /**
+     * When the tablist gets focus from an outside element, focus on the currently active tab.
+     */
+    this.firstTab.addEventListener('focus', this.handleFocus);
+    this.lastTab.addEventListener('focus', this.handleFocus);
   }
 
   /**
@@ -142,12 +135,24 @@ class Tablist extends Component {
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
     if (changedProperties.has('activeTabId')) {
-      this.selectTab(this.tabs.find((tab) => tab.getAttribute('tabid') === this.activeTabId) || this.tabs[0]);
+      this.selectTab(this.tabs.find((tab) => tab.getAttribute('tabid') === this.activeTabId) || this.firstTab);
+      this.focusTab(this.currentTab);
     }
   }
 
-  private get allTabs(): Tab[] {
+  @query('.tabs_container')
+  private tabsContainer!: HTMLDivElement;
+
+  private get tabs(): Tab[] {
     return Array.from(this.querySelectorAll('mdc-tab'));
+  }
+
+  private get firstTab(): Tab { return this.tabs[0]; }
+
+  private get lastTab(): Tab { return this.tabs[this.tabs.length - 1]; }
+
+  private get currentTab(): Tab {
+    return this.tabs.find((tab) => tab.hasAttribute('active')) || this.firstTab;
   }
 
   private get previousTab(): Tab {
@@ -155,29 +160,32 @@ class Tablist extends Component {
     return this.tabs[(newIndex + this.tabs.length) % this.tabs.length];
   }
 
-  private get firstTab(): Tab { return this.tabs[0]; }
-
-  private get lastTab(): Tab { return this.tabs[this.tabs.length - 1]; }
-
   private get nextTab(): Tab {
     const newIndex = this.tabs.findIndex((tab) => document.activeElement === tab) + 1;
     return this.tabs[newIndex % this.tabs.length];
   }
 
-  private get tabsContainer(): HTMLDivElement {
-    return this.shadowRoot?.querySelector('.tabs_container') as HTMLDivElement;
-  }
-
-  private get leftArrowButton(): Button {
-    return this.shadowRoot?.querySelector('mdc-button[prefix-icon="arrow-left-regular"]') as Button;
-  }
-
-  private get rightArrowButton(): Button {
-    return this.shadowRoot?.querySelector('mdc-button[prefix-icon="arrow-right-regular"]') as Button;
-  }
-
   private get isRtl(): boolean {
-    return this.direction === 'rtl';
+    return document.querySelector('html')?.getAttribute('dir') === 'rtl'
+      || window.getComputedStyle(this).direction === 'rtl';
+  }
+
+  private get showArrowButtons(): {forward: boolean, backward: boolean} {
+    return {
+      forward: this.showForwardArrowButton,
+      backward: this.showBackwardArrowButton,
+    };
+  }
+
+  private set showArrowButtons(newVisibility: { forward?: boolean, backward?: boolean }) {
+    const newArrowButtonVisibility = Object.assign(this.showArrowButtons, newVisibility);
+
+    this.showForwardArrowButton = newArrowButtonVisibility.forward;
+    this.showBackwardArrowButton = newArrowButtonVisibility.backward;
+  }
+
+  private shouldShowArrowButton(direction: ArrowButtonDirection): boolean {
+    return direction === 'forward' ? this.showArrowButtons.forward : this.showArrowButtons.backward;
   }
 
   /**
@@ -188,14 +196,16 @@ class Tablist extends Component {
   };
 
   /**
-   * Set the focus on the new tab and scroll it into view.
+   * Set the focus on the new tab.
    *
-   * @param newTab - New Tab.
+   * @param tab - Tab to set focus on.
    */
-  private focusTab = (newTab: Tab): void => {
-    newTab.focus();
+  private focusTab = (tab: Tab): void => {
+    if (tab !== document.activeElement) {
+      tab.focus();
+    }
     // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
-    newTab.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'center' });
+    tab.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'center' });
   };
 
   /**
@@ -231,68 +241,67 @@ class Tablist extends Component {
 
     if (!(tab instanceof Tab)) { return; }
 
-    if (event.altKey) { return; }
-
-    let newTab: Tab | undefined;
-
     switch (event.code) {
       case KEYCODES.ENTER:
+      case KEYCODES.SPACE:
+        /**
+         * Prevent the scrolling of the page when the space key is pressed.
+         */
+        event.preventDefault();
         this.selectTab(tab);
         break;
 
-      case KEYCODES.SPACE:
-        if (event.target !== document.body) {
-          event.preventDefault();
-          this.selectTab(tab);
-        }
-        break;
-
       case KEYCODES.LEFT:
-        if (this.isRtl) {
-          newTab = this.nextTab;
-        } else newTab = this.previousTab;
+        this.focusTab(!this.isRtl ? this.previousTab : this.nextTab);
         break;
 
       case KEYCODES.RIGHT:
-
-        if (this.isRtl) {
-          newTab = this.previousTab;
-        } else newTab = this.nextTab;
+        this.focusTab(!this.isRtl ? this.nextTab : this.previousTab);
         break;
 
       case KEYCODES.HOME:
-        newTab = this.firstTab;
+        this.focusTab(this.firstTab);
         break;
 
       case KEYCODES.END:
-        newTab = this.lastTab;
+        this.focusTab(this.lastTab);
         break;
 
       case KEYCODES.TAB:
+        /**
+         * Prevent the tab focus change on pressing the Tab key.
+         */
         event.preventDefault();
-
+        /**
+         * When shift key + tab key is pressed
+         */
         if (event.shiftKey) {
-          if (this.isArrowButtonHidden(this.leftArrowButton)) {
-            if (!(this.previousElementSibling instanceof HTMLElement)) { return; }
-
+          /**
+           * If the backward arrow button exists, focus on it.
+           * Otherwise focus on the element previous to the tablist, if it exists.
+           */
+          if ((this.shadowRoot?.firstElementChild instanceof Button)
+            && this.shadowRoot?.firstElementChild.getAttribute('direction') === 'backward') {
+            this.shadowRoot?.firstElementChild.focus();
+          } else if ((this.previousElementSibling instanceof HTMLElement)) {
             this.previousElementSibling.focus();
-          } else {
-            this.leftArrowButton.focus();
           }
-        } else if (this.isArrowButtonHidden(this.rightArrowButton)) {
-          if (!(this.nextElementSibling instanceof HTMLElement)) { return; }
+          return;
+        }
 
+        /**
+         * If the forward arrow button exists, focus on it.
+         * Otherwise focus on the element next to the tablist, if it exists.
+         */
+        if ((this.shadowRoot?.lastElementChild instanceof Button)
+          && this.shadowRoot?.lastElementChild.getAttribute('direction') === 'forward') {
+          this.shadowRoot?.lastElementChild.focus();
+        } else if ((this.nextElementSibling instanceof HTMLElement)) {
           this.nextElementSibling.focus();
-        } else {
-          this.rightArrowButton.focus();
         }
         break;
 
       default:
-    }
-
-    if (newTab) {
-      this.focusTab(newTab);
     }
   };
 
@@ -302,7 +311,17 @@ class Tablist extends Component {
    * @param event - HTML Mouse Event.
    */
   private handleClick = (event: MouseEvent): void => {
-    const tab = event.target;
+    const eventTarget = event.target;
+    let tab;
+
+    if ((eventTarget instanceof Tab)) {
+      tab = eventTarget;
+    } else if ((eventTarget as HTMLElement).parentElement instanceof Tab) {
+      /**
+       * If the event target is a child of tab.
+       */
+      tab = (eventTarget as HTMLElement).parentElement;
+    }
 
     if (!(tab instanceof Tab)) { return; }
 
@@ -311,49 +330,17 @@ class Tablist extends Component {
   };
 
   /**
-   * Show or hide the arrow buttons based on the scroll position.
+   * When the tablist container receives focus, the first or last tab gets focused based on the direction of focus.
+   * Check if the previosly focused element is a tab, if so, do nothing.
+   * Otherwise focus on the currently active tab.
    */
-  private handleScroll = (): void => {
-    this.handleArrowButtonVisibility();
-  };
+  private handleFocus = (event: FocusEvent): void => {
+    if (!event.relatedTarget) { return; }
 
-  /**
-   * Check if the arrow button is hidden.
-   *
-   * @param arrowButton - The arrow button to check.
-   */
-  private isArrowButtonHidden = (arrowButton: Button): boolean => arrowButton.classList.contains('hide-arrow-button');
-
-  /**
-   * Show the left arrow button.
-   */
-  private showLeftArrowButton = (): void => {
-    this.leftArrowButton.classList.remove('hide-arrow-button');
-    this.classList.add('show-left-arrow-button-padding');
-  };
-
-  /**
-   * Hide the left arrow button.
-   */
-  private hideLeftArrowButton = (): void => {
-    this.leftArrowButton.classList.add('hide-arrow-button');
-    this.classList.remove('show-left-arrow-button-padding');
-  };
-
-  /**
-   * Show the right arrow button.
-   */
-  private showRightArrowButton = (): void => {
-    this.rightArrowButton.classList.remove('hide-arrow-button');
-    this.classList.add('show-right-arrow-button-padding');
-  };
-
-  /**
-   * Hide the left arrow button.
-   */
-  private hideRightArrowButton = (): void => {
-    this.rightArrowButton.classList.add('hide-arrow-button');
-    this.classList.remove('show-right-arrow-button-padding');
+    if (event.relatedTarget instanceof Tab) {
+      return;
+    }
+    this.focusTab(this.currentTab);
   };
 
   /**
@@ -361,90 +348,87 @@ class Tablist extends Component {
    * corresponding to the tab list.
    */
   private handleArrowButtonVisibility = () => {
-    let leftEndTab;
-    let rightEndTab;
-
-    if (this.isRtl) {
-      leftEndTab = this.lastTab;
-      rightEndTab = this.firstTab;
-    } else {
-      leftEndTab = this.firstTab;
-      rightEndTab = this.lastTab;
-    }
-
-    const leftEndTabLeftEdgePosition = Math.round(leftEndTab.getBoundingClientRect().left);
-    const rightEndTabRightEdgePosition = Math.round(rightEndTab.getBoundingClientRect().right);
+    const firstTabLeftEdgePosition = Math.round(this.firstTab.getBoundingClientRect().left);
     const tabListLeftEdgePosition = Math.round(this.getBoundingClientRect().left);
+    const lastTabRightEdgePosition = Math.round(this.lastTab.getBoundingClientRect().right);
     const tabListRightEdgePosition = Math.round(this.getBoundingClientRect().right);
 
-    if (leftEndTabLeftEdgePosition < tabListLeftEdgePosition) {
-      this.showLeftArrowButton();
-    } else {
-      this.hideLeftArrowButton();
+    // when RTL, the edges are reversed
+    const firstTabRightEdgePosition = Math.round(this.firstTab.getBoundingClientRect().right);
+    const lastTabLeftEdgePosition = Math.round(this.lastTab.getBoundingClientRect().left);
+
+    if (!this.isRtl) {
+      if (firstTabLeftEdgePosition < tabListLeftEdgePosition) {
+        this.showArrowButtons = { backward: true };
+      } else {
+        this.showArrowButtons = { backward: false };
+      }
+
+      if (lastTabRightEdgePosition > tabListRightEdgePosition) {
+        this.showArrowButtons = { forward: true };
+      } else {
+        this.showArrowButtons = { forward: false };
+      }
+      return;
     }
 
-    if (rightEndTabRightEdgePosition > tabListRightEdgePosition) {
-      this.showRightArrowButton();
+    if (firstTabRightEdgePosition > tabListRightEdgePosition) {
+      this.showArrowButtons = { backward: true };
     } else {
-      this.hideRightArrowButton();
+      this.showArrowButtons = { backward: false };
+    }
+
+    if (lastTabLeftEdgePosition < tabListLeftEdgePosition) {
+      this.showArrowButtons = { forward: true };
+    } else {
+      this.showArrowButtons = { forward: false };
     }
   };
 
   /**
-   * Scroll the tabs to the left.
+   * Scroll tabs forward or backward.
    */
-  private scrollTabsLeft = (): void => {
-    this.tabsContainer?.scrollBy({
-      left: this.scrollDistance * -1,
-      // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
-      behavior: 'instant',
-    });
-  };
+  private scrollTabs = (direction: ArrowButtonDirection): void => {
+    const forwardMultiplier = !this.isRtl ? 1 : -1;
+    const backwardMultiplier = !this.isRtl ? -1 : 1;
 
-  /**
-   * Scroll the tabs to the right.
-   */
-  private scrollTabsRight = (): void => {
     this.tabsContainer?.scrollBy({
-      left: this.scrollDistance,
+      left: this.tabsContainer.clientWidth * (direction === 'forward' ? forwardMultiplier : backwardMultiplier),
       // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
       behavior: 'instant',
     });
   };
 
   public override render() {
+    const forwardArrowDirection = !this.isRtl ? 'right' : 'left';
+    const backwardArrowDirection = !this.isRtl ? 'left' : 'right';
+
+    const arrowButton = (direction: ArrowButtonDirection) => html`
+    ${this.shouldShowArrowButton(direction)
+    ? html`<mdc-button
+      direction="${direction}"
+      variant="tertiary"
+      prefix-icon="arrow-${direction === 'forward' ? forwardArrowDirection : backwardArrowDirection}-regular"
+      aria-label="Scroll tabs ${direction === 'forward' ? forwardArrowDirection : backwardArrowDirection}"
+      @click="${() => this.scrollTabs(direction)}"></mdc-button>`
+    : nothing}`;
+
+    /**
+     * Instead of using 'left' and 'right' for notation of the arrow buttons, we use 'forward' and 'backward'.
+     * This is to make the component RTL compatible.
+     * Since the elements of the tablist gets flipped in RTL layouts, the arrow buttons also flip.
+     */
     return html`
-      <mdc-button 
-        variant="tertiary"
-        size="32"
-        color="default" 
-        prefix-icon="arrow-left-regular" 
-        postfix-icon="" 
-        type="button" 
-        role="button" 
-        tabindex="0" 
-        aria-label="Scroll Tabs Left"
-        @click="${() => this.scrollTabsLeft()}"
-        class="hide-arrow-button"></mdc-button>
+      ${arrowButton('backward')}
+
       <div class="tabs_container">
         <slot></slot>
       </div>
-      <mdc-button 
-        variant="tertiary"
-        size="32"
-        color="default" 
-        prefix-icon="arrow-right-regular" 
-        postfix-icon="" 
-        type="button" 
-        role="button" 
-        tabindex="0" 
-        aria-label="Scroll Tabs Right"
-        @click="${() => this.scrollTabsRight()}"
-        class="hide-arrow-button"></mdc-button>
-    `;
+
+      ${arrowButton('forward')}`;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
-export default Tablist;
+export default TabList;

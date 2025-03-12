@@ -46,7 +46,6 @@ const render = (args: Args) => html`
 
 <!-- The following is an example of the markup for the tab panels.
 This markup is not part of the component and is only provided for context. -->
-
   <div id="photos-panel" role="tabpanel" aria-labelledby="photos-tab" hidden>
     <p>Photos panel</p>
   </div>
@@ -62,9 +61,7 @@ This markup is not part of the component and is only provided for context. -->
   <div id="downloads-panel" role="tabpanel" aria-labelledby="downloads-tab" hidden>
     <p>Downloads panel</p>
   </div>
-
-<!-- End of example markup for the tab panels -->
-`;
+<!-- End of example markup for the tab panels -->`;
 
 const meta: Meta = {
   title: 'Work in Progress/tablist',
@@ -125,6 +122,12 @@ const meta: Meta = {
       'scrollDistance',
       'activeTabId',
       'tabvariant',
+      'currentTab',
+      'showArrowButtons',
+      'handleFocus',
+      'scrollTabs',
+      'showForwardArrowButton',
+      'showBackwardArrowButton',
     ]),
     ...disableControls([
       '--mdc-tablist-gap',
