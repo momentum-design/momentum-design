@@ -16,7 +16,8 @@ const render = (args: Args) => html`
       close
     </mdc-button>
     <mdc-text id="${args.triggerID}">Anchor</mdc-text>
-    <mdc-coachmark id="${args.id}"
+    <mdc-coachmark
+      id="${args.id}"
       triggerID="${args.triggerID}"
       trigger="${args.trigger}"
       placement="${args.placement}"
@@ -38,10 +39,10 @@ const render = (args: Args) => html`
       ?focus-back-to-trigger=${args['focus-back-to-trigger']}
       append-to=${args['append-to']}
       close-button-aria-label="${args['close-button-aria-label']}"
-      data-aria-label="${args['data-aria-label']}"
-      data-aria-labelledby="${args['data-aria-labelledby']}"
-      data-aria-describedby="${args['data-aria-describedby']}"
-      data-role="${args['data-role']}"
+      aria-label="${args['aria-label']}"
+      aria-labelledby="${args['aria-labelledby']}"
+      aria-describedby="${args['aria-describedby']}"
+      role="${args.role}"
       @popover-on-show="${action('onshow')}"
       @popover-on-hide="${action('onhide')}"
       @popover-on-created="${action('oncreated')}"
@@ -95,6 +96,6 @@ export const Example: StoryObj = {
     flip: POPOVER_DEFAULTS.FLIP,
     size: POPOVER_DEFAULTS.SIZE,
     'z-index': POPOVER_DEFAULTS.Z_INDEX,
-    'data-role': POPOVER_DEFAULTS.ROLE,
+    role: POPOVER_DEFAULTS.ROLE,
   },
 };
