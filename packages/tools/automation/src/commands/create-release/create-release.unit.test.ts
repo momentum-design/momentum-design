@@ -92,4 +92,42 @@ describe('Create Release', () => {
     expect(gitReleaseSpy).toHaveBeenCalledWith('package-name@0.0.2', 'package', mockNotes, 'compress complete');
     expect(results).toEqual('Released: release complete');
   });
+
+  it('should release the valid package if body has " in it', async () => {
+    gitPRDescriptionSpy = jest.spyOn(Git, 'getPullRequestDetails').mockImplementation(() => Promise.resolve([
+      {
+        title: 'fake-pr-title',
+        body: 'fake-pr-body including <img alt="test ..."/>',
+      },
+    ]));
+    compressSpy = jest.spyOn(Util, 'compress').mockImplementation(() => Promise.resolve('compress complete'));
+    gitReleaseSpy = jest.spyOn(Git, 'release').mockImplementation(() => Promise.resolve('release complete'));
+    getPackageSpy = jest.spyOn(GetPackages, 'process')
+      .mockImplementation(
+        () => Promise.resolve({ collection: [
+          {
+            package: 'package-name',
+            readDefinition: () => Promise.resolve({
+              package: 'package-name',
+              path: 'package-path',
+              name: 'package',
+              definition: {
+                version: '0.0.2',
+              },
+            }),
+          },
+        ] } as any),
+      );
+    const mockNotes = [
+      '## fake-pr-title\r\n',
+      'fake-pr-body including <img alt=\\"test ...\\"/>\r\n',
+      ' ### Package:\n',
+      'https://www.npmjs.com/package/package-name/v/0.0.2',
+    ].join('');
+    const results = await CreateRelease.execute();
+    expect(compressSpy).toHaveBeenCalled();
+    expect(gitPRDescriptionSpy).toHaveBeenCalled();
+    expect(gitReleaseSpy).toHaveBeenCalledWith('package-name@0.0.2', 'package', mockNotes, 'compress complete');
+    expect(results).toEqual('Released: release complete');
+  });
 });
