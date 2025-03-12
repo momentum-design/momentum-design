@@ -9,6 +9,7 @@ const styles = css`
     border-radius: 0.25rem;
     border: 1px solid;
     cursor: pointer;
+    color: var(--mds-color-theme-text-primary-normal);
   }
 
   :host([color='default']) {

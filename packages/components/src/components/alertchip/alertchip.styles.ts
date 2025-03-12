@@ -11,6 +11,14 @@ const styles = css`
     cursor: pointer;
   }
 
+  :host::part(label){
+    color: var(--mds-color-theme-text-primary-normal);
+  }
+
+  :host([variant="neutral"])::part(icon){
+    color: var(--mds-color-theme-text-secondary-normal);
+  }
+  
   :host([variant="neutral"]){
     border-color: var(--mds-color-theme-outline-secondary-normal);
     background: var(--mds-color-theme-background-alert-default-normal);
@@ -24,6 +32,10 @@ const styles = css`
     background: var(--mds-color-theme-background-alert-default-active);
   }
 
+  :host([variant="error"])::part(icon){
+    color: var(--mds-color-theme-text-error-normal);
+  }
+  
   :host([variant="error"]){
     border-color: var(--mds-color-theme-outline-cancel-normal);
     background: var(--mds-color-theme-background-alert-error-normal);
@@ -35,6 +47,10 @@ const styles = css`
 
   :host([variant="error"]:active){
     background: var(--mds-color-theme-background-alert-error-active);
+  }
+
+  :host([variant="warning"])::part(icon){
+    color: var(--mds-color-theme-text-warning-normal);
   }
 
   :host([variant="warning"]){
@@ -50,6 +66,10 @@ const styles = css`
     background: var(--mds-color-theme-background-alert-warning-active);
   }
 
+  :host([variant="success"])::part(icon){
+    color: var(--mds-color-theme-text-success-normal);
+  }
+
   :host([variant="success"]){
     border-color: var(--mds-color-theme-outline-join-normal);
     background: var(--mds-color-theme-background-alert-success-normal);
@@ -61,6 +81,10 @@ const styles = css`
 
   :host([variant="success"]:active){
     background: var(--mds-color-theme-background-alert-success-active);
+  }
+
+  :host([variant="informational"])::part(icon){
+    color: var(--mds-color-theme-text-accent-normal);
   }
 
   :host([variant="informational"]){

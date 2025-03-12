@@ -52,8 +52,8 @@ class Alertchip extends Buttonsimple {
 
   public override render() {
     return html`
-      <mdc-icon name="${getAlertIcon(this.variant)}" length-unit="rem" size="1"></mdc-icon>
-      <mdc-text type="${DEFAULTS.TEXT_TYPE}" tagname="${DEFAULTS.TAG_NAME}">${this.label}</mdc-text>
+      <mdc-icon part="icon" name="${getAlertIcon(this.variant)}" length-unit="rem" size="1"></mdc-icon>
+      <mdc-text part="label" type="${DEFAULTS.TEXT_TYPE}" tagname="${DEFAULTS.TAG_NAME}">${this.label}</mdc-text>
     `;
   }
 
