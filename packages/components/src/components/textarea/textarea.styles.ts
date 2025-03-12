@@ -17,6 +17,8 @@ const styles = [css`
     --mdc-textarea-hover-background-color: var(--mds-color-theme-background-primary-hover);
     --mdc-textarea-focused-background-color: var(--mds-color-theme-background-primary-active);
     --mdc-textarea-focused-border-color: var(--mds-color-theme-outline-input-active);
+    --mdc-textarea-text-font-size: var(--mds-font-size-body-midsize);
+    --mdc-textarea-text-line-height: var(--mds-font-lineheight-body-midsize);
   }
 
   :host([disabled])::part(textarea),
@@ -42,6 +44,8 @@ const styles = [css`
     min-height: 6.25rem;
     padding: 0.375rem 2rem 0.25rem 0.75rem;
     color: var(--mdc-textarea-text-color);
+    font-size: var(--mdc-textarea-text-font-size);
+    line-height: var(--mdc-textarea-text-line-height);
     background-color: var(--mdc-textarea-background-color);
     resize: none;
     border: none;
