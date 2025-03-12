@@ -10,12 +10,12 @@ const setup = async (args: SetupOptions) => {
   const { componentsPage, open } = args;
   await componentsPage.mount({
     html: `
-      <div style="height: 50vh; display: inline-block">
+      <div id="wrapper" style="height: 50vh; width: 300px; display: inline-block">
         <mdc-text id="trigger">Anchor</mdc-text>
         <mdc-coachmark
           id="coachmark"
           triggerID="trigger"
-          data-aria-label="Coachmark label"
+          aria-label="Coachmark label"
           close-button-aria-label="Close button label"
         >
           <mdc-text>Lorem ipsum dolor sit amet.</mdc-text>
@@ -38,9 +38,8 @@ test('mdc-coachmark', async ({ componentsPage }) => {
    * ACCESSIBILITY
    */
   await test.step('accessibility', async () => {
-    // bug in popover, can't set aira-label without it being interactive
-    // const coachmark = await setup({ componentsPage, open: true });
-    // await componentsPage.accessibility.checkForA11yViolations('coachmark-default');
+    await setup({ componentsPage, open: true });
+    await componentsPage.accessibility.checkForA11yViolations('coachmark-default');
   });
 
   /**
@@ -48,8 +47,9 @@ test('mdc-coachmark', async ({ componentsPage }) => {
    */
   await test.step('visual-regression', async () => {
     await test.step('matches screenshot of element', async () => {
-      const coachmark = await setup({ componentsPage, open: true });
-      // await componentsPage.visualRegression.takeScreenshot('mdc-coachmark', { element: coachmark });
+      await setup({ componentsPage, open: true });
+      const wrapper = componentsPage.page.locator('#wrapper');
+      await componentsPage.visualRegression.takeScreenshot('mdc-coachmark', { element: wrapper });
     });
   });
 
@@ -84,18 +84,18 @@ test('mdc-coachmark', async ({ componentsPage }) => {
     await test.step('programmatic', async () => {
       await test.step('coachmark should open when the showPopover function is called', async () => {
         await setup({ componentsPage, open: false });
-        await expect(componentsPage.page.locator('mdc-modalcontainer')).not.toBeVisible();
+        await expect(componentsPage.page.locator('[part="popover-content"]')).not.toBeVisible();
         await componentsPage.page.evaluate(() => document.getElementById('coachmark')?.showPopover());
-        await expect(componentsPage.page.locator('mdc-modalcontainer')).toBeVisible();
+        await expect(componentsPage.page.locator('[part="popover-content"]')).toBeVisible();
       });
     });
 
     await test.step('mouse/pointer', async () => {
       await test.step('coachmark should close when clicking on close button', async () => {
         await setup({ componentsPage, open: true });
-        await expect(componentsPage.page.locator('mdc-modalcontainer')).toBeVisible();
+        await expect(componentsPage.page.locator('[part="popover-content"]')).toBeVisible();
         await componentsPage.page.locator('.popover-close').click();
-        await expect(componentsPage.page.locator('mdc-modalcontainer')).not.toBeVisible();
+        await expect(componentsPage.page.locator('[part="popover-content"]')).not.toBeVisible();
       });
     });
 
@@ -107,7 +107,7 @@ test('mdc-coachmark', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press('Tab');
         await expect(closeButton).toBeFocused();
         await componentsPage.page.keyboard.press('Enter');
-        await expect(componentsPage.page.locator('mdc-modalcontainer')).not.toBeVisible();
+        await expect(componentsPage.page.locator('[part="popover-content"]')).not.toBeVisible();
       });
     });
   });

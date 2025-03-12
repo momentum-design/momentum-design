@@ -6,7 +6,8 @@ import { DEFAULTS } from './coachmark.constants';
 import { PopoverTrigger } from '../popover/popover.types';
 
 /**
- * Coachmark component is identical to the popover component, with the default value of certain properties changed.
+ * Coachmark component is identical to the popover component,
+ * with the default value of certain properties changed.
  *
  * @dependency mdc-popover
  *
@@ -15,9 +16,11 @@ import { PopoverTrigger } from '../popover/popover.types';
  * @cssproperty --mdc-popover-arrow-border-radius - radius of the arrow border
  * @cssproperty --mdc-popover-arrow-border - border of the arrow
  * @cssproperty --mdc-popover-primary-background-color - primary background color of the popover
+ * @cssproperty --mdc-popover-border-color - border color of the popover
  * @cssproperty --mdc-popover-inverted-background-color - inverted background color of the popover
  * @cssproperty --mdc-popover-inverted-border-color - inverted border color of the popover
  * @cssproperty --mdc-popover-inverted-text-color - inverted text color of the popover
+ * @cssproperty --mdc-popover-elevation-3 - elevation of the popover
  *
  * @slot - Default slot for modal container
  *
