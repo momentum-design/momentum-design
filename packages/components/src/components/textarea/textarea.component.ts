@@ -15,11 +15,13 @@ import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 /**
  * mdc-textarea component, which is used to get the multi-line text input from the user.
  * It contains:
- * - Label: It is the title of the textarea field.
+ * - label: It is the title of the textarea field.
+ * - required-label: A string depicting that the textarea field is required.
  * - Textarea: It is the multi-line text input field.
- * - Helper Text: It is the text that provides additional information about the textarea field.
- * - Character Counter: It is the text that shows the character count of the textarea field.
- * - Clear Button: It is the button that clears the text in the textarea field.
+ * - helper-text: It is the text that provides additional information about the textarea field.
+ * - max-character-limit: It is the text that shows the character count of the textarea field.
+ * - clear-button: A boolean value when marked to true represents a button that can
+ *   clear the text value within the textarea field.
  * - Error, Warning, Success, Priority Help Text type: It is the text that provides additional information
  *   about the textarea field based on the validation state.
  *
@@ -56,25 +58,29 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   /**
    * The placeholder text that is displayed when the textarea field is empty.
    */
-  @property({ type: String }) placeholder = '';
+  @property({ type: String }) placeholder?: string;
 
   /**
    * readonly attribute of the textarea field. If true, the textarea field is read-only.
+   * @default false
    */
   @property({ type: Boolean }) readonly = false;
 
   /**
    * The rows attribute specifies the visible number of lines in a text area.
+   * @default 5
    */
-  @property({ type: Number }) rows = 5;
+  @property({ type: Number }) rows = DEFAULTS.ROWS;
 
   /**
    * The cols attribute specifies the visible number of lines in a text area.
+   * @default 40
    */
-  @property({ type: Number }) cols: number = 40;
+  @property({ type: Number }) cols = DEFAULTS.COLS;
 
   /**
    * The wrap attribute specifies how the text in a text area is to be wrapped when submitted in a form.
+   * @default 'soft'
    */
   @property({ type: String }) wrap: WrapType = WRAP.SOFT;
 
@@ -142,7 +148,6 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
 
     constructor() {
       super();
-      this.id = `mdc-textarea-${uuidv4()}`;
       // Set the default value to the textarea field if the value is set through the text content directly
       this.value = this.textContent?.trim() || this.value;
     }
@@ -208,6 +213,7 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
       super.updated(changedProperties);
       if (changedProperties.has('value')) {
         this.handleValueChange();
+        this.handleCharacterOverflowStateChange();
       }
     }
 
@@ -263,14 +269,11 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     }
 
     /**
-   * Updates the value of the textarea field.
-   * Sets the form value.
-   * Dispatches the character overflow state change event if the character limit is exceeded or restored.
-   * @returns void
-   */
-    private updateValue() {
-      this.value = this.textarea.value;
-      this.internals.setFormValue(this.textarea.value);
+     * Handles the character overflow state change.
+     * Dispatches the character overflow state change event if the character limit is exceeded or restored.
+     * @returns void
+    */
+    private handleCharacterOverflowStateChange() {
       if (this.maxCharacterLimit) {
         if (this.value.length > this.maxCharacterLimit && !this.characterLimitExceedingFired) {
           this.dispatchCharacterOverflowStateChangeEvent();
@@ -280,6 +283,16 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
           this.characterLimitExceedingFired = false;
         }
       }
+    }
+
+    /**
+   * Updates the value of the textarea field.
+   * Sets the form value.
+   * @returns void
+   */
+    private updateValue() {
+      this.value = this.textarea.value;
+      this.internals.setFormValue(this.textarea.value);
     }
 
     /**
@@ -345,6 +358,18 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     `;
     }
 
+    protected renderTextareaFooter() {
+      if (!this.helpText && !this.maxCharacterLimit) {
+        return nothing;
+      }
+      return html`
+        <div part="textarea-footer">
+          ${this.renderHelperText()}
+          ${this.renderCharacterCounter()}
+        </div>
+      `;
+    }
+
     public override render() {
       return html`
       ${this.renderLabel()}
@@ -375,10 +400,8 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
         ></textarea>
         ${this.renderClearButton()}
         </div>
-        <div part="textarea-footer">
-          ${this.helpText ? this.renderHelperText() : nothing}
-          ${this.renderCharacterCounter()}
-        </div>`;
+        ${this.renderTextareaFooter()}
+        `;
     }
 
   public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...styles];
