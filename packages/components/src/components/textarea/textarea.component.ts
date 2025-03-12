@@ -171,8 +171,7 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     private setTextareaValidity() {
       if (this.validationMessage && this.value === '') {
         this.textarea.setCustomValidity(this.validationMessage);
-      }
-      if (this.maxCharacterLimit && this.value.length > this.maxCharacterLimit) {
+      } else if (this.maxCharacterLimit && this.value.length > this.maxCharacterLimit) {
         // Set custom validity if the character limit is exceeded to stop form submission
         this.textarea.setCustomValidity(' ');
       } else {
