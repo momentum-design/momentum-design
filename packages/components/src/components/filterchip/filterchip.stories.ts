@@ -1,11 +1,16 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
   <mdc-filterchip 
+    @click="${action('onclick')}"
+    @keydown="${action('onkeydown')}"
+    @keyup="${action('onkeyup')}"
+    @focus="${action('onfocus')}"
     label="${args.label}"
     ?selected="${args.selected}"
     ?disabled="${args.disabled}"
