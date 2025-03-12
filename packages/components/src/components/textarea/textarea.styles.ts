@@ -42,8 +42,10 @@ const styles = [css`
 
   :host::part(textarea){
     min-height: 6.25rem;
-    padding: 0.375rem 2rem 0.25rem 0.75rem;
+    padding: 0.375rem 0rem 0.25rem 0.75rem;
+    margin-right: 2rem;
     color: var(--mdc-textarea-text-color);
+    font-family: inherit;
     font-size: var(--mdc-textarea-text-font-size);
     line-height: var(--mdc-textarea-text-line-height);
     background-color: var(--mdc-textarea-background-color);

@@ -203,6 +203,7 @@ export const DisabledTextarea: StoryObj = {
     ...commonArgs,
     value: 'Disabled & typed textarea',
     'clear-button': true,
+    'clear-aria-label': 'Clear',
     disabled: true,
   },
   parameters: {
@@ -221,6 +222,7 @@ export const ReadonlyTextarea: StoryObj = {
     readonly: true,
     value: 'Readonly textarea',
     'clear-button': true,
+    'clear-aria-label': 'Clear',
   },
   parameters: {
     docs: {
