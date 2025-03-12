@@ -1,7 +1,6 @@
 import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, query } from 'lit/decorators.js';
-import { v4 as uuidv4 } from 'uuid';
 import styles from './textarea.styles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
