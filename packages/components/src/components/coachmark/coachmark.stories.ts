@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
-import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
+import Coachmark from '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import popoverMeta from '../popover/popover.stories';
 import { DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
@@ -9,8 +9,12 @@ import { DEFAULTS } from './coachmark.constants';
 
 const render = (args: Args) => html`
   <div style="height: 50vh; display: inline-block">
-    <mdc-button @click="${() => document.getElementById(args.id)?.showPopover()}">open</mdc-button>
-    <mdc-button @click="${() => document.getElementById(args.id)?.hidePopover()}">close</mdc-button>
+    <mdc-button @click="${() => (document.getElementById(args.id) as Coachmark | undefined)?.showPopover()}">
+      open
+    </mdc-button>
+    <mdc-button @click="${() => (document.getElementById(args.id) as Coachmark | undefined)?.hidePopover()}">
+      close
+    </mdc-button>
     <mdc-text id="${args.triggerID}">Anchor</mdc-text>
     <mdc-coachmark id="${args.id}"
       triggerID="${args.triggerID}"

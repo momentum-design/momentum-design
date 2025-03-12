@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
+import Coachmark from './coachmark.component';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -27,7 +28,9 @@ const setup = async (args: SetupOptions) => {
 
   const element = componentsPage.page.locator('mdc-coachmark');
   if (open) {
-    await componentsPage.page.evaluate(() => document.getElementById('coachmark')?.showPopover());
+    await componentsPage.page.evaluate(
+      () => (document.getElementById('coachmark') as Coachmark | undefined)?.showPopover(),
+    );
   }
 
   return element;
@@ -50,6 +53,8 @@ test('mdc-coachmark', async ({ componentsPage }) => {
       await setup({ componentsPage, open: true });
       const wrapper = componentsPage.page.locator('#wrapper');
       await componentsPage.visualRegression.takeScreenshot('mdc-coachmark', { element: wrapper });
+      // screenshot on the wrapper instead of just coachmark
+      // to capture the position of the coachmark relative to the anchor element as well
     });
   });
 
@@ -85,7 +90,9 @@ test('mdc-coachmark', async ({ componentsPage }) => {
       await test.step('coachmark should open when the showPopover function is called', async () => {
         await setup({ componentsPage, open: false });
         await expect(componentsPage.page.locator('[part="popover-content"]')).not.toBeVisible();
-        await componentsPage.page.evaluate(() => document.getElementById('coachmark')?.showPopover());
+        await componentsPage.page.evaluate(
+          () => (document.getElementById('coachmark') as Coachmark | undefined)?.showPopover(),
+        );
         await expect(componentsPage.page.locator('[part="popover-content"]')).toBeVisible();
       });
     });
