@@ -1,4 +1,4 @@
-import Alertchip from './components/alertchip';
+import AlertChip from './components/alertchip';
 import Avatar from './components/avatar';
 import AvatarButton from './components/avatarbutton';
 import Badge from './components/badge';
@@ -7,12 +7,12 @@ import Button from './components/button';
 import Checkbox from './components/checkbox';
 import Chip from './components/chip';
 import Divider from './components/divider';
-import Filterchip from './components/filterchip';
+import FilterChip from './components/filterchip';
 import FormfieldGroup from './components/formfieldgroup';
 import Icon from './components/icon';
 import IconProvider from './components/iconprovider';
 import Input from './components/input';
-import Inputchip from './components/inputchip';
+import InputChip from './components/inputchip';
 import Link from './components/link';
 import List from './components/list';
 import ListItem from './components/listitem';
@@ -33,7 +33,7 @@ import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.t
 import type { TextType } from './components/text/text.types';
 
 export {
-  Alertchip,
+  AlertChip,
   Avatar,
   AvatarButton,
   Badge,
@@ -42,12 +42,12 @@ export {
   Checkbox,
   Chip,
   Divider,
-  Filterchip,
+  FilterChip,
   FormfieldGroup,
   Icon,
   IconProvider,
   Input,
-  Inputchip,
+  InputChip,
   Link,
   List,
   ListItem,
