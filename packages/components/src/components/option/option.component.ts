@@ -1,19 +1,17 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { Component } from '../../models';
-import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import type { IconNames } from '../icon/icon.types';
+import ListItem from '../listitem/listitem.component';
 import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
+import { TYPE } from '../text/text.constants';
 import { SELECTED_ICON_NAME } from './option.constants';
 import styles from './option.styles';
 
 /**
  * option component, which is used as a list item in a select component.<br/>
  * We can pass an icon which will be displayed in leading position of the option label text.
- *
- * @dependency mdc-listitem
  *
  * @tagname mdc-option
  *
@@ -24,16 +22,11 @@ import styles from './option.styles';
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the option.
  * @event focus - (React: onFocus) This event is dispatched when the option receives focus.
  */
-class Option extends FormInternalsMixin(DisabledMixin(Component)) {
+class Option extends FormInternalsMixin(ListItem) {
   /**
    * The selected attribute is used to indicate that the option is selected.
    */
   @property({ type: Boolean, reflect: true }) selected = false;
-
-  /**
-   * The label for the option.
-   */
-  @property({ type: String, reflect: true }) label?: string;
 
   /**
    * The prefix icon attribute is used to display the icon name on the left of the option label.
@@ -47,11 +40,17 @@ class Option extends FormInternalsMixin(DisabledMixin(Component)) {
 
   constructor() {
     super();
-    this.updateAttribute('role', 'option');
+    this.role = 'option';
+    this.variant = LISTITEM_VARIANTS.INSET_RECTANGLE;
     this.updateAttribute('aria-selected', `${this.selected}`);
     this.updateAttribute('aria-disabled', `${this.disabled}`);
-    // Option will not contain form control name
+
+    // Option will not contain below fields
     this.name = undefined as unknown as string;
+    this.secondaryLabel = undefined as unknown as string;
+    this.sideHeaderText = undefined as unknown as string;
+    this.sublineText = undefined as unknown as string;
+    this.dataAriaLabel = undefined as unknown as string;
   }
 
   /**
@@ -61,8 +60,9 @@ class Option extends FormInternalsMixin(DisabledMixin(Component)) {
    */
   private handleDefaultSlotChange() {
     const slot = this.shadowRoot?.querySelector('slot');
-    if (slot) {
-      this.label = slot.assignedNodes()[0]?.textContent?.trim() || this.label;
+    console.log(slot);
+    if (slot && !this.label) {
+      this.label = slot.assignedNodes()[0]?.textContent?.trim();
     }
   }
 
@@ -94,21 +94,20 @@ class Option extends FormInternalsMixin(DisabledMixin(Component)) {
     ` : nothing;
 
     return html`
-      <mdc-listitem
-        ?disabled="${this.disabled}"
-        role="presentation"
-        label="${ifDefined(this.label)}"
-        part="list-item"
-        variant="${LISTITEM_VARIANTS.INSET_RECTANGLE}"
-      >
+      <div part="leading">
         ${prefixIcon}
+        <div part="leading-text">
+          ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
+        </div>
+      </div>
+      <div part="trailing">
         ${selectedIcon}
-      </mdc-listitem>
+      </div>
       <slot part="default-slot" @slotchange="${this.handleDefaultSlotChange}"></slot>
     `;
   }
 
-  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...ListItem.styles, ...styles];
 }
 
 export default Option;
