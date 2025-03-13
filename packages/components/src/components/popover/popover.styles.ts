@@ -6,12 +6,33 @@ const styles = css`
     --mdc-popover-arrow-border: 0.0625rem solid var(--mds-color-theme-outline-secondary-normal);
 
     --mdc-popover-primary-background-color: var(--mds-color-theme-background-solid-primary-normal);
+    --mdc-popover-border-color: var(--mds-color-theme-outline-secondary-normal);
     --mdc-popover-inverted-background-color: var(--mds-color-theme-inverted-background-normal);
     --mdc-popover-inverted-border-color: var(--mds-color-theme-inverted-outline-primary-normal);
     --mdc-popover-inverted-text-color: var(--mds-color-theme-inverted-text-primary-normal);
+    --mdc-popover-elevation-3: var(--mds-elevation-3);
+
+    display: none;
+    position: absolute;
+    box-sizing: content-box;
+    background-color: var(--mdc-popover-primary-background-color);
+    border-radius: 0.5rem;
+    border: 0.0625rem solid var(--mdc-popover-border-color);
+    filter: var(--mdc-popover-elevation-3);
   }
 
-  :host([color='contrast']) .popover-container {
+  :host([visible]) {
+    display: block;
+  }
+
+  :host([color='contrast']) {
+    background-color: var(--mdc-popover-inverted-background-color);
+    border-color: var(--mdc-popover-inverted-border-color);
+    color: var(--mds-color-theme-inverted-text-primary-normal);
+  }
+
+  :host([color='contrast']) {
+
     .popover-arrow {
       background-color: var(--mdc-popover-inverted-background-color);
       border-color: var(--mdc-popover-inverted-border-color);
@@ -22,36 +43,12 @@ const styles = css`
     }
   }
 
-  .popover-container {
-    display: none;
-    position: absolute;
-    box-sizing: content-box;
-  }
-
-  :host([visible]) .popover-container {
-    display: block;
-  }
-
-  .popover-container::part(container) {
-    padding: 0;
-  }
-
   :host::part(popover-content) {
     position: relative;
     padding: 0.75rem;
     overflow-y: auto;
     min-width: max-content;
     z-index: 9998;
-  }
-
-  .popover-backdrop {
-    z-index: 999;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: transparent;
   }
 
   .popover-hover-bridge {
