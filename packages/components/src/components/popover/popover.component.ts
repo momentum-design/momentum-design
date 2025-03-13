@@ -122,7 +122,7 @@ class Popover extends FocusTrapMixin(Component) {
    * The arrow visibility of the popover.
    * @default false
    */
-  @property({ type: Boolean, attribute: 'show-arrow' })
+  @property({ type: Boolean, reflect: true, attribute: 'show-arrow' })
   showArrow: boolean = DEFAULTS.ARROW;
 
   /**
