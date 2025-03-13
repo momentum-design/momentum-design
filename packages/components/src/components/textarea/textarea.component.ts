@@ -23,14 +23,14 @@ import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
  *   clear the text value within the textarea field.
  * - Error, Warning, Success, Priority Help Text type: It is the text that provides additional information
  *   about the textarea field based on the validation state.
- * - character-overflow-state-change: It is the event that is dispatched when the character limit exceeds or restored.
+ * - limitexceeded: It is the event that is dispatched when the character limit exceeds or restored.
  *   This event exposes 3 properties:
  *   - currentCharacterCount - the current number of characters in the textarea field,
  *   - maxCharacterLimit - the maximum number of characters allowed in the textarea field,
  *   - value - the current value of the textarea field,
  *
  * **Note**: Consumers must set the help-text-type with 'error' and
- * help-text attribute with the error message using character-overflow-state-change event.
+ * help-text attribute with the error message using limitexceeded event.
  * The same help-text value will be used for the validation message to be displayed.
  *
  * @tagname mdc-textarea
@@ -39,8 +39,8 @@ import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
  * @event change - (React: onChange) This event is dispatched when the value of the textarea field changes (on blur).
  * @event focus - (React: onFocus) This event is dispatched when the textarea receives focus.
  * @event blur - (React: onBlur) This event is dispatched when the textarea loses focus.
- * @event character-overflow-state-change -
- * (React: onCharacterOverflowStateChange) This event is dispatched once when the character limit exceeds or restored.
+ * @event limitexceeded - (React: onlimitexceeded) This event is dispatched once when the character limit
+ * exceeds or restored.
  *
  *
  * @dependency mdc-icon
@@ -267,7 +267,7 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
    */
     private dispatchCharacterOverflowStateChangeEvent() {
       this.dispatchEvent(
-        new CustomEvent('character-overflow-state-change', {
+        new CustomEvent('limitexceeded', {
           detail: {
             currentCharacterCount: this.value.length,
             maxCharacterLimit: this.maxCharacterLimit,

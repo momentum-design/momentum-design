@@ -15,7 +15,7 @@ const render = (args: Args) => html`<mdc-textarea
     @change="${action('onchange')}"
     @focus="${action('onfocus')}"
     @blur="${action('onblur')}"
-    @character-overflow-state-change="${action('character-overflow-state-change')}"
+    @limitexceeded="${action('limitexceeded')}"
     label="${args.label}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
@@ -109,7 +109,8 @@ const meta: Meta = {
       control: 'boolean',
     },
     autocomplete: {
-      control: Object.values(AUTO_COMPLETE),
+      control: 'select',
+      options: Object.values(AUTO_COMPLETE),
     },
     dirname: {
       control: 'text',
@@ -127,6 +128,8 @@ const meta: Meta = {
     ...hideControls([
       'characterLimitExceedingFired',
       'textarea',
+      'validity',
+      'willValidate',
     ]),
     ...disableControls([
       '--mdc-textarea-disabled-border-color',
@@ -142,6 +145,7 @@ const meta: Meta = {
       '--mdc-textarea-warning-border-color',
       '--mdc-textarea-success-border-color',
       '--mdc-textarea-primary-border-color',
+      '--mdc-textarea-text-secondary-normal',
     ]),
   },
 };
@@ -295,7 +299,7 @@ export const TextareaWithCharacterCounter: StoryObj = {
     let helpTextType: ValidationType = VALIDATION.DEFAULT;
 
     const handleCharacterLimitCheck = (event: CustomEvent) => {
-      action('character-overflow-state-change')(event);
+      action('limitexceeded')(event);
       const { detail } = event;
 
       if (detail.currentCharacterCount > detail.maxCharacterLimit) {
@@ -326,7 +330,7 @@ export const TextareaWithCharacterCounter: StoryObj = {
           id="textarea"
           name="tweet"
           label="Tweet"
-          @character-overflow-state-change=${handleCharacterLimitCheck}
+          @limitexceeded=${handleCharacterLimitCheck}
           help-text="${helpText}"
           help-text-type="${helpTextType}"
           clear-button
@@ -348,7 +352,7 @@ export const TextareaWithCharacterCounter: StoryObj = {
       description: {
         story: 'To add a character counter to the textarea, use the `max-character-limit` attribute. '
         + 'The character counter will be displayed below the textarea with the max character limit.'
-        + 'User needs to listen to the `character-overflow-state-change` event to handle the character limit check.'
+        + 'User needs to listen to the `limitexceeded` event to handle the character limit check.'
         + 'The event will contain the current character count, the max character limit & current value of the textarea.'
         + 'Based on which the user can update the help text and help text type dynamically.',
       },
