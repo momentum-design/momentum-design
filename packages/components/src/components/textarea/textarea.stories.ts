@@ -335,7 +335,7 @@ export const TextareaWithCharacterCounter: StoryObj = {
           max-character-limit="75"
           placeholder="Write what's on your mind"
         ></mdc-textarea>
-        <div style='display: flex; gap: 0.25rem;; margin-top: 0.25rem'>
+        <div style='display: flex; gap: 0.25rem; margin-top: 0.25rem'>
           <mdc-button type="submit" size='24'>Submit</mdc-button>
           <mdc-button type="reset" size='24' variant='secondary'>Reset</mdc-button>
         </div>
@@ -377,7 +377,7 @@ export const TextareaInsideForm: StoryObj = {
         placeholder="Write what's on your mind"
         validation-message="Tweet is required"
       ></mdc-textarea>
-      <div style='display: flex; gap: 0.25rem;; margin-top: 0.25rem'>
+      <div style='display: flex; gap: 0.25rem; margin-top: 0.25rem'>
         <mdc-button type="submit" size='24'>Submit</mdc-button>
         <mdc-button type="reset" size='24' variant='secondary'>Reset</mdc-button>
       </div>

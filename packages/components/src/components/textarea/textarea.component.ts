@@ -3,7 +3,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, query } from 'lit/decorators.js';
 import styles from './textarea.styles';
 import FormfieldWrapper from '../formfieldwrapper';
-import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
+import { DEFAULTS as FORMFIELD_DEFAULTS, VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { AUTO_CAPITALIZE } from '../input/input.constants';
 import type { AutoCapitalizeType } from '../input/input.types';
 import { AUTO_COMPLETE, WRAP, DEFAULTS } from './textarea.constants';
@@ -23,6 +23,15 @@ import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
  *   clear the text value within the textarea field.
  * - Error, Warning, Success, Priority Help Text type: It is the text that provides additional information
  *   about the textarea field based on the validation state.
+ * - character-overflow-state-change: It is the event that is dispatched when the character limit exceeds or restored.
+ *   This event exposes 3 properties:
+ *   - currentCharacterCount - the current number of characters in the textarea field,
+ *   - maxCharacterLimit - the maximum number of characters allowed in the textarea field,
+ *   - value - the current value of the textarea field,
+ *
+ * **Note**: Consumers must set the help-text-type with 'error' and
+ * help-text attribute with the error message using character-overflow-state-change event.
+ * The same help-text value will be used for the validation message to be displayed.
  *
  * @tagname mdc-textarea
  *
@@ -169,11 +178,15 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     }
 
     private setTextareaValidity() {
-      if (this.validationMessage && this.value === '') {
+      if (this.requiredLabel && this.validationMessage && this.value === '') {
         this.textarea.setCustomValidity(this.validationMessage);
-      } else if (this.maxCharacterLimit && this.value.length > this.maxCharacterLimit) {
+      } else if (this.maxCharacterLimit
+        && this.value.length > this.maxCharacterLimit
+        && this.helpTextType === VALIDATION.ERROR
+        && this.helpText) {
         // Set custom validity if the character limit is exceeded to stop form submission
-        this.textarea.setCustomValidity(' ');
+        // helptext and helptexttype will be set by the consumers.
+        this.textarea.setCustomValidity(this.helpText);
       } else {
         this.textarea.setCustomValidity('');
       }
@@ -235,7 +248,6 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
         'maxlength',
         'minlength',
         'required',
-        'max-character-limit',
       ];
 
       if (validationRelatedAttributes.includes(name)) {
