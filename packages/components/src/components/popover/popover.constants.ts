@@ -50,6 +50,7 @@ const DEFAULTS = {
   DELAY: '0,0',
   ROLE: 'dialog',
   Z_INDEX: 1000,
+  DISABLE_ARIA_EXPANDED: false,
 } as const;
 
 export { TAG_NAME, POPOVER_PLACEMENT, COLOR, TRIGGER, DEFAULTS };
