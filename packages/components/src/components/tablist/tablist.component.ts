@@ -72,8 +72,6 @@ class TabList extends Component {
 
     this.addEventListener('keydown', this.handleKeydown.bind(this));
     this.addEventListener('click', this.handleClick.bind(this));
-
-    console.log(this.tabs);
   }
 
   override async connectedCallback() {
