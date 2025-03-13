@@ -626,7 +626,7 @@ class Popover extends FocusTrapMixin(Component) {
     if (this.showArrow) {
       this.arrowElement = this.renderRoot.querySelector('.popover-arrow');
       if (this.arrowElement) {
-        const arrowLen = 18;
+        const arrowLen = this.arrowElement.offsetHeight;
         const arrowOffset = Math.sqrt(2 * arrowLen ** 2) / 2;
         popoverOffset = arrowOffset + this.offset;
         middleware.push(arrow({ element: this.arrowElement, padding: 12 }));
@@ -644,7 +644,7 @@ class Popover extends FocusTrapMixin(Component) {
       });
 
       this.utils.updatePopoverStyle(x, y);
-      if (middlewareData.arrow && this.showArrow) {
+      if (middlewareData.arrow && this.arrowElement) {
         this.utils.updateArrowStyle(middlewareData.arrow, placement);
       }
       if (this.trigger.includes('mouseenter')) {
