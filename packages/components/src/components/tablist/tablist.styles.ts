@@ -27,11 +27,6 @@ const styles = css`
     display: none;
   }
 
-  :host mdc-button[prefix-icon|="arrow"] {
-    background-color: var(--mds-color-theme-background-solid-primary-normal);
-    z-index: 1;
-  }
-
   :host mdc-button[prefix-icon="arrow-left-regular"] {
     margin-right: var(--mdc-tablist-arrow-button-margin);
   }
