@@ -9,6 +9,7 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import popoverMeta from '../popover/popover.stories';
 import { DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
 import { DEFAULTS } from './coachmark.constants';
+import { hideControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
   <div style="height: 50vh; display: inline-block">
@@ -56,9 +57,6 @@ const render = (args: Args) => html`
   </div>
 `;
 
-const popoverArgTypes = { ...popoverMeta.argTypes };
-delete popoverArgTypes.color;
-
 const meta: Meta = {
   title: 'Work In Progress/coachmark',
   tags: ['autodocs'],
@@ -70,7 +68,8 @@ const meta: Meta = {
   argTypes: {
     ...classArgType,
     ...styleArgType,
-    ...popoverArgTypes,
+    ...popoverMeta.argTypes,
+    ...hideControls(['color']),
   },
 };
 
@@ -87,7 +86,7 @@ export const Example: StoryObj = {
     offset: POPOVER_DEFAULTS.OFFSET,
     'focus-trap': POPOVER_DEFAULTS.FOCUS_TRAP,
     'prevent-scroll': POPOVER_DEFAULTS.PREVENT_SCROLL,
-    showArrow: DEFAULTS.ARROW,
+    'show-arrow': DEFAULTS.ARROW,
     'close-button': DEFAULTS.CLOSE_BUTTON,
     interactive: POPOVER_DEFAULTS.INTERACTIVE,
     delay: POPOVER_DEFAULTS.DELAY,
