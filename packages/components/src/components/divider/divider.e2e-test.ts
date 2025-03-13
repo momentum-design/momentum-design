@@ -142,7 +142,7 @@ test.describe.parallel('mdc-divider', () => {
         { rowWrapperStyle: 'margin-bottom: 3.5rem; gap: 1.5rem' },
       );
 
-      await dividerStickerSheet.mountStickerSheet('padding: 1.25rem');
+      await dividerStickerSheet.mountStickerSheet({ wrapperStyle: 'padding: 1.25rem' });
       const container = dividerStickerSheet.getWrapperContainer();
 
       await test.step('matches screenshot of element', async () => {
@@ -173,7 +173,9 @@ test.describe.parallel('mdc-divider', () => {
       DIRECTIONS,
         'button-position': DIRECTIONS }, { rowWrapperStyle: 'gap:3.5rem; margin-bottom: 3.5rem' });
 
-      await dividerStickerSheet.mountStickerSheet('display: flex; gap: 3.5rem; height: 90%; padding: 1.25rem');
+      await dividerStickerSheet.mountStickerSheet({
+        wrapperStyle: 'display: flex; gap: 3.5rem; height: 90%; padding: 1.25rem',
+      });
       const container = dividerStickerSheet.getWrapperContainer();
 
       await test.step('matches screenshot of element', async () => {

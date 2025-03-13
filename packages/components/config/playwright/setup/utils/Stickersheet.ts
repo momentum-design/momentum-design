@@ -176,11 +176,18 @@ class StickerSheet {
 
   /**
    * Mounts the sticker sheet markup onto the page.
-   * @param wrapperStyle - A string representing the style to apply to the wrapper. Default is an empty string.
+   * @param options -
+   * - wrapperStyle - A string representing the style to apply to the wrapper. Default is an empty string.
+   * - role - Role of the wrapper for accessibility purpose.
    */
-  public async mountStickerSheet(wrapperStyle = '') {
+  public async mountStickerSheet(options: {
+    wrapperStyle?: string,
+    role?: string,
+  } = {}) {
     await this.componentPage.mount({
-      html: `<div class="componentWrapper" style='${wrapperStyle}'>${this.markupHTML}</div>`,
+      html: `<div class="componentWrapper" style='${options.wrapperStyle ?? ''}' role='${options.role ?? ''}'>
+        ${this.markupHTML}
+      </div>`,
       clearDocument: true,
     });
     await this.componentPage.page.waitForTimeout(1000);

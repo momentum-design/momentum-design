@@ -3,7 +3,6 @@ import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
-import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { BUTTON_TYPE, DEFAULTS } from './buttonsimple.constants';
 import styles from './buttonsimple.styles';
@@ -21,7 +20,7 @@ import type { ButtonSize, ButtonType } from './buttonsimple.types';
  *
  * @tagname mdc-buttonsimple
  */
-class Buttonsimple extends FormInternalsMixin(TabIndexMixin(DisabledMixin(Component))) {
+class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
   /**
    * The button's active state indicates whether it is currently toggled on (active) or off (inactive).
    * When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
@@ -73,8 +72,21 @@ class Buttonsimple extends FormInternalsMixin(TabIndexMixin(DisabledMixin(Compon
    */
   private prevTabindex = 0;
 
+  /** @internal */
+  static formAssociated = true;
+
+  /** @internal */
+  private internals: ElementInternals;
+
+  /** @internal */
+  get form(): HTMLFormElement | null {
+    return this.internals.form;
+  }
+
   constructor() {
     super();
+    /** @internal */
+    this.internals = this.attachInternals();
     this.addEventListener('click', this.executeAction.bind(this));
     this.addEventListener('keydown', this.handleKeyDown.bind(this));
     this.addEventListener('keyup', this.handleKeyUp.bind(this));
