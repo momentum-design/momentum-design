@@ -1,15 +1,33 @@
-import { test } from '../../../config/playwright/setup';
+import { expect } from '@playwright/test';
+import { ComponentsPage, test } from '../../../config/playwright/setup';
+import type { VariantType } from './alertchip.types';
 
-test.beforeEach(async ({ componentsPage }) => {
+type SetupOptions = {
+  componentsPage: ComponentsPage;
+  label: string;
+  variant?: VariantType;
+}
+
+const setup = async (args: SetupOptions) => {
+  const { componentsPage, label, variant } = args;
+
   await componentsPage.mount({
     html: `
-        <mdc-alertchip />
-      `,
+      <mdc-alertchip
+        label="${label}"
+        variant="${variant}"
+      />
+    `,
+    clearDocument: true,
   });
-});
 
-test.skip('mdc-alertchip', async ({ componentsPage }) => {
   const alertchip = componentsPage.page.locator('mdc-alertchip');
+  await alertchip.waitFor();
+  return alertchip;
+};
+
+test('mdc-alertchip', async ({ componentsPage }) => {
+  const alertchip = await setup({ componentsPage, label: 'Alertchip' });
 
   // initial check for the alertchip be visible on the screen:
   await alertchip.waitFor();
@@ -34,8 +52,12 @@ test.skip('mdc-alertchip', async ({ componentsPage }) => {
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
-    await test.step('attribute X should be present on component by default', async () => {
-      // TODO: add test here
+    await test.step('attribute label should be present on component by default', async () => {
+      await expect(alertchip).toHaveAttribute('label', 'Alertchip');
+    });
+
+    await test.step('attribute variant should be present on component by default', async () => {
+      await expect(alertchip).toHaveAttribute('variant', 'info');
     });
   });
 
