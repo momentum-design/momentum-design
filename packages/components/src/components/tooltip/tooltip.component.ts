@@ -62,6 +62,7 @@ class Tooltip extends Popover {
     this.hideOnOutsideClick = false;
     this.focusBackToTrigger = false;
     this.size = false;
+    this.disableAriaExpanded = true;
   }
 
   /**

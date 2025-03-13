@@ -86,13 +86,13 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
     await expect(tooltip).not.toHaveAttribute('enabledFocusTrap');
     await expect(tooltip).not.toHaveAttribute('enabledPreventScroll');
     await expect(tooltip).toHaveAttribute('flip');
-    await expect(tooltip).not.toHaveAttribute('focusTrap');
-    await expect(tooltip).not.toHaveAttribute('preventScroll');
-    await expect(tooltip).not.toHaveAttribute('closeButton');
-    await expect(tooltip).not.toHaveAttribute('hideOnOutsideClick');
-    await expect(tooltip).not.toHaveAttribute('focusBackToTrigger');
+    await expect(tooltip).not.toHaveAttribute('focus-trap');
+    await expect(tooltip).not.toHaveAttribute('prevent-scroll');
+    await expect(tooltip).not.toHaveAttribute('close-button');
+    await expect(tooltip).not.toHaveAttribute('hide-on-outside-click');
+    await expect(tooltip).not.toHaveAttribute('focus-back-to-trigger');
     await expect(tooltip).not.toHaveAttribute('size');
-
+    await expect(tooltip).toHaveAttribute('disable-aria-expanded');
     await expect(triggerButton).toHaveAttribute('aria-describedby', 'tooltip');
   });
 
@@ -167,7 +167,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
         color: 'invalid',
         delay: 'invalid',
         placement: 'invalid',
-        tooltipType: 'invalid',
+        'tooltip-type': 'invalid',
       });
       await expect(tooltip).toHaveAttribute('color', DEFAULTS.COLOR);
       await expect(tooltip).toHaveAttribute('delay', DEFAULTS.DELAY);
