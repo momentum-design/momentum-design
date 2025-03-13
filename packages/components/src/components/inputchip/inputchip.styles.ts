@@ -10,35 +10,40 @@ const styles = css`
     border: 1px solid;
     cursor: pointer;
 
-    border-color: var(--mds-color-theme-outline-button-normal);
-    background-color: var(--mds-color-theme-background-label-default-normal);
+    --mdc-chip-color: var(--mds-color-theme-text-primary-normal);
+    --mdc-chip-border-color: var(--mds-color-theme-outline-button-normal);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-default-normal);
+
+    color: var(--mdc-chip-color);
+    border-color: var(--mdc-chip-border-color);
+    background-color: var(--mdc-chip-background-color);
   }
 
   :host(:hover) {
-    background-color: var(--mds-color-theme-background-label-default-hover);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-default-hover);
   }
-
+  
   :host(:active) {
-    background-color: var(--mds-color-theme-background-label-default-active);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-default-active);
   }
   
   :host([error]){
-    border-color: var(--mds-color-theme-outline-cancel-normal);
-    background: var(--mds-color-theme-background-label-error-normal);
+    --mdc-chip-border-color: var(--mds-color-theme-outline-cancel-normal);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-error-normal);
   }
 
   :host([error]:hover) {
-    background: var(--mds-color-theme-background-label-error-hover);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-error-hover);
   }
 
   :host([error]:active) {
-    background: var(--mds-color-theme-background-label-error-active);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-error-active);
   }
 
   :host([disabled]), :host([disabled]:hover), :host([disabled]:active) {
-    border-color: var(--mds-color-theme-common-outline-primary-disabled);
-    background: var(--mds-color-theme-background-primary-disabled);
-    color: var(--mds-color-theme-text-primary-disabled);
+    --mdc-chip-border-color: var(--mds-color-theme-common-outline-primary-disabled);
+    --mdc-chip-background-color: var(--mds-color-theme-background-primary-disabled);
+    --mdc-chip-color: var(--mds-color-theme-text-primary-disabled);
     cursor: auto;
   }
 

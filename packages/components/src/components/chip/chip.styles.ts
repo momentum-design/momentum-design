@@ -9,130 +9,132 @@ const styles = css`
     border-radius: 0.25rem;
     border: 1px solid;
     cursor: pointer;
-    color: var(--mds-color-theme-text-primary-normal);
-  }
+    
+    --mdc-chip-color: var(--mds-color-theme-text-primary-normal);
+    --mdc-chip-border-color: var(--mds-color-theme-outline-button-normal);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-default-normal);
 
-  :host([color='default']) {
-    border-color: var(--mds-color-theme-outline-button-normal);
-    background-color: var(--mds-color-theme-background-label-default-normal);
+    color: var(--mdc-chip-color);
+    border-color: var(--mdc-chip-border-color);
+    background-color: var(--mdc-chip-background-color);
   }
 
   :host([color='default']:hover) {
-    background-color: var(--mds-color-theme-background-label-default-hover);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-default-hover);
   }
 
   :host([color='default']:active) {
-    background-color: var(--mds-color-theme-background-label-default-active);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-default-active);
   }
 
   :host([color='cobalt']) {
-    border-color: var(--mds-color-theme-outline-theme-normal);
-    background: var(--mds-color-theme-background-label-cobalt-normal);
+    --mdc-chip-border-color: var(--mds-color-theme-outline-theme-normal);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-cobalt-normal);
   }
 
   :host([color='cobalt']:hover) {
-    background: var(--mds-color-theme-background-label-cobalt-hover);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-cobalt-hover);
   }
 
   :host([color='cobalt']:active) {
-    background: var(--mds-color-theme-background-label-cobalt-active);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-cobalt-active);
   }
 
   :host([color='gold']) {
-    border-color: var(--mds-color-theme-outline-label-gold);
-    background: var(--mds-color-theme-background-label-gold-normal);
+    --mdc-chip-border-color: var(--mds-color-theme-outline-label-gold);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-gold-normal);
   }
 
   :host([color='gold']:hover) {
-    background: var(--mds-color-theme-background-label-gold-hover);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-gold-hover);
   }
 
   :host([color='gold']:active) {
-    background: var(--mds-color-theme-background-label-gold-active);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-gold-active);
   }
 
   :host([color='lime']) {
-    border-color: var(--mds-color-theme-outline-label-lime);
-    background: var(--mds-color-theme-background-label-lime-normal);
+    --mdc-chip-border-color: var(--mds-color-theme-outline-label-lime);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-lime-normal);
   }
 
   :host([color='lime']:hover) {
-    background: var(--mds-color-theme-background-label-lime-hover);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-lime-hover);
   }
 
   :host([color='lime']:active) {
-    background: var(--mds-color-theme-background-label-lime-active);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-lime-active);
   }
 
   :host([color='mint']) {
-    border-color: var(--mds-color-theme-outline-label-mint);
-    background: var(--mds-color-theme-background-label-mint-normal);
+    --mdc-chip-border-color: var(--mds-color-theme-outline-label-mint);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-mint-normal);
   }
 
   :host([color='mint']:hover) {
-    background: var(--mds-color-theme-background-label-mint-hover);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-mint-hover);
   }
 
   :host([color='mint']:active) {
-    background: var(--mds-color-theme-background-label-mint-active);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-mint-active);
   }
 
   :host([color='pink']) {
-    border-color: var(--mds-color-theme-outline-label-pink);
-    background: var(--mds-color-theme-background-label-pink-normal);
+    --mdc-chip-border-color: var(--mds-color-theme-outline-label-pink);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-pink-normal);
   }
 
   :host([color='pink']:hover) {
-    background: var(--mds-color-theme-background-label-pink-hover);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-pink-hover);
   }
 
   :host([color='pink']:active) {
-    background: var(--mds-color-theme-background-label-pink-active);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-pink-active);
   }
 
   :host([color='purple']) {
-    border-color: var(--mds-color-theme-outline-label-purple);
-    background: var(--mds-color-theme-background-label-purple-normal);
+    --mdc-chip-border-color: var(--mds-color-theme-outline-label-purple);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-purple-normal);
   }
 
   :host([color='purple']:hover) {
-    background: var(--mds-color-theme-background-label-purple-hover);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-purple-hover);
   }
 
   :host([color='purple']:active) {
-    background: var(--mds-color-theme-background-label-purple-active);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-purple-active);
   }
 
   :host([color='slate']) {
-    border-color: var(--mds-color-theme-outline-label-slate);
-    background: var(--mds-color-theme-background-label-slate-normal);
+    --mdc-chip-border-color: var(--mds-color-theme-outline-label-slate);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-slate-normal);
   }
 
   :host([color='slate']:hover) {
-    background: var(--mds-color-theme-background-label-slate-hover);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-slate-hover);
   }
 
   :host([color='slate']:active) {
-    background: var(--mds-color-theme-background-label-slate-active);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-slate-active);
   }
 
   :host([color='violet']) {
-    border-color: var(--mds-color-theme-outline-label-violet);
-    background: var(--mds-color-theme-background-label-violet-normal);
+    --mdc-chip-border-color: var(--mds-color-theme-outline-label-violet);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-violet-normal);
   }
 
   :host([color='violet']:hover) {
-    background: var(--mds-color-theme-background-label-violet-hover);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-violet-hover);
   }
 
   :host([color='violet']:active) {
-    background: var(--mds-color-theme-background-label-violet-active);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-violet-active);
   }
 
   :host([disabled]), :host([disabled]:hover), :host([disabled]:active) {
-    border-color: var(--mds-color-theme-outline-primary-disabled);
-    background: var(--mds-color-theme-background-primary-disabled);
-    color: var(--mds-color-theme-text-primary-disabled);
+    --mdc-chip-border-color: var(--mds-color-theme-outline-primary-disabled);
+    --mdc-chip-background-color: var(--mds-color-theme-background-primary-disabled);
+    --mdc-chip-color: var(--mds-color-theme-text-primary-disabled);
     cursor: auto;
   }
 `;

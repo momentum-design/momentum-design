@@ -9,95 +9,99 @@ const styles = css`
     border-radius: 0.25rem;
     border: 1px solid;
     cursor: pointer;
+    
+    --mdc-chip-color: var(--mds-color-theme-text-primary-normal);
+    --mdc-chip-border-color: var(--mds-color-theme-outline-button-normal);
+    --mdc-chip-background-color: var(--mds-color-theme-background-alert-default-normal);
+    --mdc-chip-icon-color: var(--mds-color-theme-text-secondary-normal);
+
+    border-color: var(--mdc-chip-border-color);
+    background: var(--mdc-chip-background-color);
   }
 
   :host::part(label){
-    color: var(--mds-color-theme-text-primary-normal);
+    color: var(--mdc-chip-color);
   }
 
   :host([variant="neutral"])::part(icon){
-    color: var(--mds-color-theme-text-secondary-normal);
+    color: var(--mdc-chip-icon-color);
   }
   
-  :host([variant="neutral"]){
-    border-color: var(--mds-color-theme-outline-secondary-normal);
-    background: var(--mds-color-theme-background-alert-default-normal);
-  }
 
   :host([variant="neutral"]:hover){
-    background: var(--mds-color-theme-background-alert-default-hover);
+    --mdc-chip-background-color: var(--mds-color-theme-background-alert-default-hover);
   }
 
   :host([variant="neutral"]:active){
-    background: var(--mds-color-theme-background-alert-default-active);
+    --mdc-chip-background-color: var(--mds-color-theme-background-alert-default-active);
   }
 
   :host([variant="error"])::part(icon){
-    color: var(--mds-color-theme-text-error-normal);
+    --mdc-chip-icon-color: var(--mds-color-theme-text-error-normal);
   }
   
   :host([variant="error"]){
-    border-color: var(--mds-color-theme-outline-cancel-normal);
-    background: var(--mds-color-theme-background-alert-error-normal);
+    --mdc-chip-border-color: var(--mds-color-theme-outline-cancel-normal);
+    --mdc-chip-background-color: var(--mds-color-theme-background-alert-error-normal);
   }
 
   :host([variant="error"]:hover){
-    background: var(--mds-color-theme-background-alert-error-hover);
+    --mdc-chip-background-color: var(--mds-color-theme-background-alert-error-hover);
   }
 
   :host([variant="error"]:active){
-    background: var(--mds-color-theme-background-alert-error-active);
+    --mdc-chip-background-color: var(--mds-color-theme-background-alert-error-active);
   }
 
   :host([variant="warning"])::part(icon){
-    color: var(--mds-color-theme-text-warning-normal);
+    --mdc-chip-icon-color: var(--mds-color-theme-text-warning-normal);
   }
 
   :host([variant="warning"]){
-    border-color: var(--mds-color-theme-outline-warning-normal);
-    background: var(--mds-color-theme-background-alert-warning-normal);
+    --mdc-chip-border-color: var(--mds-color-theme-outline-warning-normal);
+    --mdc-chip-background-color: var(--mds-color-theme-background-alert-warning-normal);
   }
 
   :host([variant="warning"]:hover){
-    background: var(--mds-color-theme-background-alert-warning-hover);
+    --mdc-chip-background-color: var(--mds-color-theme-background-alert-warning-hover);
   }
 
   :host([variant="warning"]:active){
-    background: var(--mds-color-theme-background-alert-warning-active);
+    --mdc-chip-background-color: var(--mds-color-theme-background-alert-warning-active);
   }
 
   :host([variant="success"])::part(icon){
-    color: var(--mds-color-theme-text-success-normal);
+    --mdc-chip-icon-color: var(--mds-color-theme-text-success-normal);
   }
 
   :host([variant="success"]){
-    border-color: var(--mds-color-theme-outline-join-normal);
-    background: var(--mds-color-theme-background-alert-success-normal);
+    --mdc-chip-border-color: var(--mds-color-theme-outline-join-normal);
+    --mdc-chip-background-color: var(--mds-color-theme-background-alert-success-normal);
   }
 
   :host([variant="success"]:hover){
-    background: var(--mds-color-theme-background-alert-success-hover);
+    --mdc-chip-background-color: var(--mds-color-theme-background-alert-success-hover);
   }
 
   :host([variant="success"]:active){
-    background: var(--mds-color-theme-background-alert-success-active);
+    --mdc-chip-background-color: var(--mds-color-theme-background-alert-success-active);
   }
 
   :host([variant="informational"])::part(icon){
-    color: var(--mds-color-theme-text-accent-normal);
+    --mdc-chip-icon-color: var(--mds-color-theme-text-accent-normal);
   }
 
   :host([variant="informational"]){
-    border-color: var(--mds-color-theme-outline-theme-normal);
-    background: var(--mds-color-theme-background-alert-theme-normal);
+    --mdc-chip-border-color: var(--mds-color-theme-outline-theme-normal);
+    --mdc-chip-background-color: var(--mds-color-theme-background-alert-theme-normal);
   }
 
   :host([variant="informational"]:hover){
-    background: var(--mds-color-theme-background-alert-theme-hover);
+    --mdc-chip-background-color: var(--mds-color-theme-background-alert-theme-hover);
   }
 
   :host([variant="informational"]:active){
-    background: var(--mds-color-theme-background-alert-theme-active);
+    --mdc-chip-background-color: var(--mds-color-theme-background-alert-theme-active);
   }
 `;
 
