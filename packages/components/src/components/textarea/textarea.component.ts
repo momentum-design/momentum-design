@@ -39,7 +39,7 @@ import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
  * @event change - (React: onChange) This event is dispatched when the value of the textarea field changes (on blur).
  * @event focus - (React: onFocus) This event is dispatched when the textarea receives focus.
  * @event blur - (React: onBlur) This event is dispatched when the textarea loses focus.
- * @event limitexceeded - (React: onlimitexceeded) This event is dispatched once when the character limit
+ * @event limitexceeded - (React: onLimitExceeded) This event is dispatched once when the character limit
  * exceeds or restored.
  *
  *
