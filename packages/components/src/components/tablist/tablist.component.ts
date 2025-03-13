@@ -88,14 +88,6 @@ class TabList extends Component {
     this.setActiveTab();
 
     /**
-     * Wait and bring the active tab into view.
-     * Timeout is put into place as the update lifecycle method returns undefined on first call.
-     */
-    setTimeout(() => {
-      this.scrollTabIntoview(this.currentActiveTab);
-    });
-
-    /**
      * Observe the tablist element for changes in its size.
      * Then show or hide the arrow buttons accordingly.
      *
