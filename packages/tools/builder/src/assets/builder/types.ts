@@ -110,7 +110,7 @@ export interface SvgGlyphsFormat {
 
 export interface LitFormat {
   type: typeof CONSTANTS.FORMATS.LIT;
-  config: { hbsPath: string };
+  config: { hbsPath: string, partName: string };
 }
 
 /**

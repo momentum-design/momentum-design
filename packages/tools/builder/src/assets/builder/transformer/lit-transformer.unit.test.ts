@@ -5,7 +5,7 @@ import * as Utils from '../utils';
 
 describe('@momentum-design/builder - Lit Transformer', () => {
   let transformer: LitTransformer;
-  const FORMAT: Formats = { config: { hbsPath: '' }, type: 'LIT' } as LitFormat;
+  const FORMAT: Formats = { config: { hbsPath: '', partName: 'icon' }, type: 'LIT' } as LitFormat;
 
   beforeEach(() => {
     transformer = new LitTransformer(FORMAT, '/dist');
@@ -28,8 +28,8 @@ describe('@momentum-design/builder - Lit Transformer', () => {
     it('should add attributes to the svg string', () => {
       const svg = '<svg></svg>';
       const name = 'test';
-      const result = transformer.addAttributesToSvg(svg, name);
-      expect(result).toBe('<svg aria-hidden="true" part="icon" data-name="test"></svg>');
+      const result = transformer.addAttributesToSvg(svg, name, 'test-part-name');
+      expect(result).toBe('<svg aria-hidden="true" part="test-part-name" data-name="test"></svg>');
     });
   });
 
