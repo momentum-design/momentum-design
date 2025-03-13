@@ -1,4 +1,4 @@
-import { property, queryAssignedElements, queryAssignedNodes } from 'lit/decorators.js';
+import { property, queryAssignedNodes } from 'lit/decorators.js';
 import { CSSResult } from 'lit';
 import { v4 as uuidv4 } from 'uuid';
 import { PropertyValues } from '@lit/reactive-element';

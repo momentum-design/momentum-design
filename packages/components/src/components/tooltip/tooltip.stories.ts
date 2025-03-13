@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { COLOR, POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
 import '../button';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
@@ -35,12 +35,14 @@ const meta: Meta = {
       control: 'text',
     },
     color: {
-      control: 'text',
+      control: 'select',
+      options: Object.values(COLOR),
     },
     delay: {
       control: 'text',
     },
     id: {
+      description: 'The id of the tooltip(optional, if not set, a random id will be generated)',
       control: 'text',
     },
     offset: {
