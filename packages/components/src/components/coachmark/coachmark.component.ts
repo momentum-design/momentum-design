@@ -1,6 +1,4 @@
-import { CSSResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import styles from './coachmark.styles';
 import Popover from '../popover/popover.component';
 import { DEFAULTS } from './coachmark.constants';
 import { PopoverTrigger } from '../popover/popover.types';
@@ -53,12 +51,17 @@ class Coachmark extends Popover {
   @property({ type: Boolean, reflect: true, attribute: 'close-button' })
   override closeButton: boolean = DEFAULTS.CLOSE_BUTTON;
 
+  /**
+   * Disable aria-expanded attribute on trigger element.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'disable-aria-expanded' })
+  override disableAriaExpanded: boolean = DEFAULTS.DISABLE_ARIA_EXPANDED;
+
   constructor() {
     super();
     this.color = DEFAULTS.COLOR;
   }
-
-  public static override styles: Array<CSSResult> = [...Popover.styles, ...styles];
 }
 
 export default Coachmark;

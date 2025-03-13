@@ -58,12 +58,12 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/coachmark',
+  title: 'Components/coachmark',
   tags: ['autodocs'],
   component: 'mdc-coachmark',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     ...classArgType,

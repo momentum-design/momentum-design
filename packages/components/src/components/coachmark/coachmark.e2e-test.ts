@@ -72,8 +72,8 @@ test('mdc-coachmark', async ({ componentsPage }) => {
 
     await test.step('accessibility attributes', async () => {
       const dialog = componentsPage.page.locator('[role="dialog"]');
-      // reenable once the popover component is updated
-      // await expect(dialog).toHaveAttribute('aria-label', 'Coachmark label');
+      await expect(dialog).toHaveAttribute('aria-label', 'Coachmark label');
+      await expect(dialog).not.toHaveAttribute('aria-expanded');
       await expect(dialog).not.toHaveAttribute('aria-labelledby');
       await expect(dialog).not.toHaveAttribute('aria-describedby');
 

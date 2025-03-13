@@ -8,6 +8,7 @@ const DEFAULTS = {
   TRIGGER: TRIGGER.MANUAL,
   ARROW: true,
   CLOSE_BUTTON: true,
+  DISABLE_ARIA_EXPANDED: true,
 };
 
 export { TAG_NAME, DEFAULTS };
