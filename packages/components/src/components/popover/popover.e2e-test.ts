@@ -2,10 +2,8 @@
 /* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
 import { test, ComponentsPage } from '../../../config/playwright/setup';
-import type { PopoverPlacement, PopoverTrigger } from './popover.types';
-import type { ModalContainerColor } from '../modalcontainer/modalcontainer.types';
-import { DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants';
-import { COLOR } from '../modalcontainer/modalcontainer.constants';
+import type { PopoverPlacement, PopoverTrigger, PopoverColor } from './popover.types';
+import { DEFAULTS, POPOVER_PLACEMENT, TRIGGER, COLOR } from './popover.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -20,7 +18,7 @@ type SetupOptions = {
   interactive?: boolean;
   focusTrap?: boolean;
   showArrow?: boolean;
-  color?: ModalContainerColor;
+  color?: PopoverColor;
   flip?: boolean;
   size?: boolean;
   backdrop?: boolean;
@@ -31,10 +29,11 @@ type SetupOptions = {
   hideOnOutsideClick?: boolean;
   focusBackToTrigger?: boolean;
   closeButtonAriaLabel?: string;
-  dataAriaLabel?: string;
-  dataAriaLabelledby?: string;
-  dataAriaDescribedby?: string;
-  dataRole?: HTMLElement['role'];
+  ariaLabel?: string;
+  ariaLabelledby?: string;
+  ariaDescribedby?: string;
+  disableAriaExpanded?: boolean;
+  role?: HTMLElement['role'];
   children?: any;
 };
 
@@ -69,10 +68,11 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.hideOnOutsideClick ? `hide-on-outside-click="${restArgs.hideOnOutsideClick}"` : ''}
         ${restArgs.focusBackToTrigger ? `focus-back-to-trigger="${restArgs.focusBackToTrigger}"` : ''}
         ${restArgs.closeButtonAriaLabel ? `close-button-aria-label="${restArgs.closeButtonAriaLabel}"` : ''}
-        ${restArgs.dataAriaLabel ? `data-aria-label="${restArgs.dataAriaLabel}"` : ''}
-        ${restArgs.dataAriaLabelledby ? `data-aria-labelledby="${restArgs.dataAriaLabelledby}"` : ''}
-        ${restArgs.dataAriaDescribedby ? `data-aria-describedby="${restArgs.dataAriaDescribedby}"` : ''}
-        ${restArgs.dataRole ? `data-role="${restArgs.dataRole}"` : ''}
+        ${restArgs.disableAriaExpanded ? 'disable-aria-expanded' : ''}
+        ${restArgs.ariaLabel ? `aria-label="${restArgs.ariaLabel}"` : ''}
+        ${restArgs.ariaLabelledby ? `aria-labelledby="${restArgs.ariaLabelledby}"` : ''}
+        ${restArgs.ariaDescribedby ? `aria-describedby="${restArgs.ariaDescribedby}"` : ''}
+        ${restArgs.role ? `role="${restArgs.role}"` : ''}
       >
         ${restArgs.children}
       </mdc-popover>
@@ -171,10 +171,11 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
     await expect(popover).not.toHaveAttribute('hide-on-outside-click');
     await expect(popover).not.toHaveAttribute('focus-back-to-trigger');
     await expect(popover).not.toHaveAttribute('close-button-aria-label');
-    await expect(popover).not.toHaveAttribute('data-aria-label');
-    await expect(popover).not.toHaveAttribute('data-aria-labelledby');
-    await expect(popover).not.toHaveAttribute('data-aria-describedby');
-    await expect(popover).toHaveAttribute('data-role', DEFAULTS.ROLE);
+    await expect(popover).not.toHaveAttribute('disable-aria-expanded');
+    await expect(popover).not.toHaveAttribute('aria-label');
+    await expect(popover).not.toHaveAttribute('aria-labelledby');
+    await expect(popover).not.toHaveAttribute('aria-describedby');
+    await expect(popover).toHaveAttribute('role', DEFAULTS.ROLE);
   });
 
   /**
@@ -183,8 +184,8 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
   await test.step('Defaults accessibility attributes with interactive popover', async () => {
     await componentsPage.setAttributes(popover, { interactive: '' });
     await expect(popover).toHaveAttribute('interactive');
-    await expect(popover).toHaveAttribute('data-aria-label', 'Trigger Button of Popover');
-    await expect(popover).toHaveAttribute('data-aria-labelledby', 'trigger-button');
+    await expect(popover).toHaveAttribute('aria-label', 'Trigger Button of Popover');
+    await expect(popover).toHaveAttribute('aria-labelledby', 'trigger-button');
   });
 
   /**
@@ -212,10 +213,11 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
       'hide-on-outside-click': '',
       'focus-back-to-trigger': '',
       'close-button-aria-label': 'close button',
-      'data-aria-label': 'popover',
-      'data-aria-labelledby': 'popover-label',
-      'data-aria-describedby': 'popover-description',
-      'data-role': DEFAULTS.ROLE,
+      'disable-aria-expanded': '',
+      'aria-label': 'popover',
+      'aria-labelledby': 'popover-label',
+      'aria-describedby': 'popover-description',
+      role: DEFAULTS.ROLE,
     });
     await expect(popover).toHaveAttribute('placement', POPOVER_PLACEMENT.TOP);
     await expect(popover).toHaveAttribute('delay', '100,100');
@@ -236,11 +238,12 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
     await expect(popover).toHaveAttribute('hide-on-outside-click');
     await expect(popover).toHaveAttribute('focus-back-to-trigger');
     await expect(popover).toHaveAttribute('close-button-aria-label', 'close button');
-    await expect(popover).toHaveAttribute('data-aria-label', 'popover');
-    await expect(popover).toHaveAttribute('data-aria-labelledby', 'popover-label');
-    await expect(popover).toHaveAttribute('data-aria-describedby', 'popover-description');
-    await expect(popover).toHaveAttribute('data-role', DEFAULTS.ROLE);
-    await expect(triggerButton).toHaveAttribute('aria-expanded', 'true');
+    await expect(popover).toHaveAttribute('disable-aria-expanded');
+    await expect(popover).toHaveAttribute('aria-label', 'popover');
+    await expect(popover).toHaveAttribute('aria-labelledby', 'popover-label');
+    await expect(popover).toHaveAttribute('aria-describedby', 'popover-description');
+    await expect(popover).toHaveAttribute('role', DEFAULTS.ROLE);
+    await expect(triggerButton).not.toHaveAttribute('aria-expanded');
     await expect(triggerButton).toHaveAttribute('aria-haspopup', 'dialog');
   });
 
@@ -325,7 +328,10 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
     backdrop: true,
   });
 
-  await test.step('mouse/pointer', async () => {
+  /**
+   * CLICK INTERACTIONS
+   */
+  await test.step('click', async () => {
     await test.step('clicking button should open popover', async () => {
       await triggerButton.click();
       await expect(popover).toHaveAttribute('visible');
@@ -373,6 +379,9 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
     });
   });
 
+  /**
+   * FOCUS INTERACTIONS
+   */
   await test.step('focus', async () => {
     const { popover, triggerButton } = await setup({
       componentsPage,
@@ -412,6 +421,9 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
     });
   });
 
+  /**
+   * KEYBOARD INTERACTIONS
+   */
   await test.step('keyboard', async () => {
     await test.step('if hide-on-escapse set, pressing escape should close popover', async () => {
       await componentsPage.setAttributes(popover, { 'hide-on-escape': '' });
@@ -427,6 +439,22 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
       await expect(popover).toHaveAttribute('visible');
       await componentsPage.page.keyboard.press('Tab');
       await expect(popover).toHaveAttribute('visible');
+      await componentsPage.page.keyboard.press('Escape');
+    });
+  });
+
+  /**
+   * HOVER INTERACTIONS
+   */
+  await test.step('hover', async () => {
+    await test.step('if trigger is mouseenter, hovering over trigger should open popover', async () => {
+      await componentsPage.setAttributes(popover, { trigger: TRIGGER.MOUSEENTER });
+      await triggerButton.hover();
+      await expect(popover).toHaveAttribute('visible');
+    });
+    await test.step('hovering out the trigger should close popover', async () => {
+      await componentsPage.page.mouse.move(1000, 1000);
+      await expect(popover).not.toHaveAttribute('visible');
     });
   });
 };
