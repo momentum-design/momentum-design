@@ -106,7 +106,7 @@ class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component)
    * @param content - The text content to be displayed within the slot.
    * @returns A TemplateResult containing a slot with an `mdc-text` element of type BODY_SMALL_REGULAR.
    */
-  private getText(slotName: string, type: TextType, content?: string): TemplateResult | typeof nothing {
+  protected getText(slotName: string, type: TextType, content?: string): TemplateResult | typeof nothing {
     if (!content) {
       return nothing;
     }
