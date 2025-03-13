@@ -53,12 +53,14 @@ class TabList extends Component {
   /**
    * ID of the active tab, defaults to the first tab if not provided
    */
-  @property({ type: String, attribute: 'activetabid', reflect: true })
+  @property({ type: String, attribute: 'activetabid' })
   activeTabId?: string;
 
   /**
    * Instead of using 'left' and 'right' for notation of the arrow buttons, we use 'forward' and 'backward'.
    * Since the elements of the tablist gets flipped in RTL layouts, the arrow buttons also flip.
+   * For both RTL and LTR layouts, the forward arrow button moved the tabs in the forward direction.
+   * i.e. the forward arrow button moves the tabs to the right in LTR layouts and to the left in RTL layouts.
    */
   @property({ type: Boolean })
   private showForwardArrowButton: boolean = false;
@@ -76,23 +78,22 @@ class TabList extends Component {
 
   override async connectedCallback() {
     super.connectedCallback();
+    let timeout: ReturnType<typeof setTimeout>;
 
     await customElements.whenDefined('mdc-tablist');
 
     /**
-     * Sets the initial active tab.
+     * Sets the initially active tab.
      */
-    if (typeof this.activeTabId === 'string' && this.activeTabId.length === 0) {
-      this.activeTabId = this.firstTab.getAttribute('tabid') || '';
-    }
-    this.selectTab(this.tabs.find((tab) => tab.getAttribute('tabid') === this.activeTabId) || this.firstTab);
+    this.setActiveTab();
 
     /**
-     * Wait a while after rendering and scroll active tab into view.
+     * Wait and bring the active tab into view.
+     * Timeout is put into place as the update lifecycle method returns undefined on first call.
      */
     setTimeout(() => {
-      this.focusTab(this.currentTab);
-    }, 10);
+      this.scrollTabIntoview(this.currentActiveTab);
+    });
 
     /**
      * Observe the tablist element for changes in its size.
@@ -100,7 +101,7 @@ class TabList extends Component {
      *
      * @param entries - ResizeObserverEntry[].
      */
-    const resizeObserver = new ResizeObserver((entries): void => {
+    const resizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]): void => {
       const tabListWidth: number = entries[0].borderBoxSize[0].inlineSize;
       const tabsContainerWidth: number = this.tabsContainer.scrollWidth || 0;
 
@@ -108,6 +109,15 @@ class TabList extends Component {
         this.showArrowButtons = { forward: false, backward: false };
       } else {
         this.showArrowButtons = { forward: true, backward: false };
+
+        /**
+         * Clear the timeout for the previous resize event
+         */
+        clearTimeout(timeout);
+        /**
+         * Wait after resizing is done and bring the active tab into view.
+         */
+        timeout = setTimeout(() => this.scrollTabIntoview(this.currentActiveTab), 250);
       }
     });
 
@@ -119,7 +129,8 @@ class TabList extends Component {
     this.tabsContainer.addEventListener('scroll', this.handleArrowButtonVisibility);
 
     /**
-     * When the tablist gets focus from an outside element, focus on the currently active tab.
+     * When the tablist gets focus from an outside element,
+     * focus on the currently active tab instead of the first or last tab
      */
     this.firstTab.addEventListener('focus', this.handleFocus);
     this.lastTab.addEventListener('focus', this.handleFocus);
@@ -133,13 +144,22 @@ class TabList extends Component {
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
     if (changedProperties.has('activeTabId')) {
-      this.selectTab(this.tabs.find((tab) => tab.getAttribute('tabid') === this.activeTabId) || this.firstTab);
-      this.focusTab(this.currentTab);
+      this.setActiveTab();
     }
   }
 
   @query('.tabs_container')
   private tabsContainer!: HTMLDivElement;
+
+  /**
+   * Sets the active tab.
+   * If the activeTabId is not provided or does not match any tab's ID, set the first tab as the active tab.
+   */
+  private setActiveTab = (): void => {
+    this.selectTab(this.tabs.find((tab) => tab.getAttribute('tabid') === this.activeTabId)
+                    || this.currentActiveTab
+                    || this.firstTab);
+  };
 
   private get tabs(): Tab[] {
     return Array.from(this.querySelectorAll('mdc-tab'));
@@ -149,8 +169,8 @@ class TabList extends Component {
 
   private get lastTab(): Tab { return this.tabs[this.tabs.length - 1]; }
 
-  private get currentTab(): Tab {
-    return this.tabs.find((tab) => tab.hasAttribute('active')) || this.firstTab;
+  private get currentActiveTab(): Tab | undefined {
+    return this.tabs.find((tab) => tab.hasAttribute('active'));
   }
 
   private get previousTab(): Tab {
@@ -194,14 +214,25 @@ class TabList extends Component {
   };
 
   /**
-   * Set the focus on the new tab.
+   * Set the focus on the new tab, then scroll it into view.
    *
    * @param tab - Tab to set focus on.
    */
-  private focusTab = (tab: Tab): void => {
-    if (tab !== document.activeElement) {
-      tab.focus();
-    }
+  private focusTab = (tab?: Tab): void => {
+    if (!(tab instanceof Tab)) { return; }
+
+    tab.focus();
+    this.scrollTabIntoview(tab);
+  };
+
+  /**
+   * Scroll a tab into view.
+   *
+   * @param tab - Tab to set focus on.
+   */
+  private scrollTabIntoview = (tab?: Tab): void => {
+    if (!(tab instanceof Tab)) { return; }
+
     // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
     tab.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'center' });
   };
@@ -270,33 +301,43 @@ class TabList extends Component {
          * Prevent the tab focus change on pressing the Tab key.
          */
         event.preventDefault();
+
         /**
          * When shift key + tab key is pressed
          */
         if (event.shiftKey) {
+          const backwardArrowButton = this.shadowRoot?.firstElementChild;
           /**
            * If the backward arrow button exists, focus on it.
-           * Otherwise focus on the element previous to the tablist, if it exists.
            */
-          if ((this.shadowRoot?.firstElementChild instanceof Button)
-            && this.shadowRoot?.firstElementChild.getAttribute('direction') === 'backward') {
-            this.shadowRoot?.firstElementChild.focus();
-          } else if ((this.previousElementSibling instanceof HTMLElement)) {
+          if ((backwardArrowButton instanceof Button) && backwardArrowButton.getAttribute('direction') === 'backward') {
+            backwardArrowButton.focus();
+            return;
+          }
+
+          /**
+          * Otherwise if the element previous to the tablist exists, focus on it.
+          */
+          if ((this.previousElementSibling instanceof HTMLElement)) {
             this.previousElementSibling.focus();
           }
-          return;
+        } else {
+          const forwardArrowButton = this.shadowRoot?.lastElementChild;
+          /**
+           * If the forward arrow button exists, focus on it.
+           */
+          if ((forwardArrowButton instanceof Button) && forwardArrowButton.getAttribute('direction') === 'forward') {
+            forwardArrowButton.focus();
+            return;
+          }
+          /**
+           * Otherwise if the element next to the tablist exists, focus on it.
+           */
+          if ((this.nextElementSibling instanceof HTMLElement)) {
+            this.nextElementSibling.focus();
+          }
         }
 
-        /**
-         * If the forward arrow button exists, focus on it.
-         * Otherwise focus on the element next to the tablist, if it exists.
-         */
-        if ((this.shadowRoot?.lastElementChild instanceof Button)
-          && this.shadowRoot?.lastElementChild.getAttribute('direction') === 'forward') {
-          this.shadowRoot?.lastElementChild.focus();
-        } else if ((this.nextElementSibling instanceof HTMLElement)) {
-          this.nextElementSibling.focus();
-        }
         break;
 
       default:
@@ -324,7 +365,7 @@ class TabList extends Component {
     if (!(tab instanceof Tab)) { return; }
 
     this.selectTab(tab);
-    this.focusTab(tab);
+    this.scrollTabIntoview(tab);
   };
 
   /**
@@ -338,7 +379,7 @@ class TabList extends Component {
     if (event.relatedTarget instanceof Tab) {
       return;
     }
-    this.focusTab(this.currentTab);
+    this.focusTab(this.currentActiveTab);
   };
 
   /**
@@ -390,7 +431,7 @@ class TabList extends Component {
     const forwardMultiplier = !this.isRtl ? 1 : -1;
     const backwardMultiplier = !this.isRtl ? -1 : 1;
 
-    this.tabsContainer?.scrollBy({
+    this.tabsContainer.scrollBy({
       left: this.tabsContainer.clientWidth * (direction === 'forward' ? forwardMultiplier : backwardMultiplier),
       // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
       behavior: 'instant',

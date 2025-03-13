@@ -128,6 +128,9 @@ const meta: Meta = {
       'scrollTabs',
       'showForwardArrowButton',
       'showBackwardArrowButton',
+      'setActiveTab',
+      'currentActiveTab',
+      'scrollTabIntoview',
     ]),
     ...disableControls([
       '--mdc-tablist-gap',
