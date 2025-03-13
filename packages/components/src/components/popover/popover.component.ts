@@ -237,6 +237,13 @@ class Popover extends FocusTrapMixin(Component) {
   @property({ type: String, reflect: true, attribute: 'aria-describedby' })
   ariaDescribedby: string | null = null;
 
+  /**
+   * Disable aria-expanded attribute on trigger element.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'disable-aria-expanded' })
+  disableAriaExpanded: boolean = DEFAULTS.DISABLE_ARIA_EXPANDED;
+
   public arrowElement: HTMLElement | null = null;
 
   public triggerElement: HTMLElement | null = null;
@@ -472,7 +479,9 @@ class Popover extends FocusTrapMixin(Component) {
         document.addEventListener('keydown', this.onEscapeKeydown);
       }
 
-      this.triggerElement.setAttribute('aria-expanded', 'true');
+      if (!this.disableAriaExpanded) {
+        this.triggerElement.setAttribute('aria-expanded', 'true');
+      }
       if (this.interactive) {
         this.triggerElement.setAttribute(
           'aria-haspopup',
@@ -501,7 +510,9 @@ class Popover extends FocusTrapMixin(Component) {
       }
 
       this.deactivateFocusTrap?.();
-      this.triggerElement.removeAttribute('aria-expanded');
+      if (!this.disableAriaExpanded) {
+        this.triggerElement.removeAttribute('aria-expanded');
+      }
       if (this.interactive) {
         this.triggerElement.removeAttribute('aria-haspopup');
       }
