@@ -36,7 +36,7 @@ const styles = css`
   }
 
   :host([disabled]), :host([disabled]:hover), :host([disabled]:active) {
-    border-color: var(--mds-color-theme-outline-primary-disabled);
+    border-color: var(--mds-color-theme-common-outline-primary-disabled);
     background: var(--mds-color-theme-background-primary-disabled);
     color: var(--mds-color-theme-text-primary-disabled);
     cursor: auto;
