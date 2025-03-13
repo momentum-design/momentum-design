@@ -60,7 +60,6 @@ class Option extends FormInternalsMixin(ListItem) {
    */
   private handleDefaultSlotChange() {
     const slot = this.shadowRoot?.querySelector('slot');
-    console.log(slot);
     if (slot && !this.label) {
       this.label = slot.assignedNodes()[0]?.textContent?.trim();
     }

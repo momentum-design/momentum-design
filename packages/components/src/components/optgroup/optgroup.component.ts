@@ -9,7 +9,7 @@ import { HEADER_ID } from './optgroup.constants';
 import styles from './optgroup.styles';
 
 /**
- * optgroup component, which creates a grouping of options within a listbox element.
+ * optgroup component, which creates a grouping of mdc-option within a listbox element.
  *
  * @dependency mdc-text
  *
@@ -19,7 +19,7 @@ import styles from './optgroup.styles';
  *
  * @cssproperty --mdc-optgroup-disabled-color - Allows customization of the disabled option color.
  */
-class Optgroup extends DataAriaLabelMixin(DisabledMixin(Component)) {
+class OptGroup extends DataAriaLabelMixin(DisabledMixin(Component)) {
   /**
    * The header text to be displayed on the top of the options list.
    */
@@ -32,7 +32,7 @@ class Optgroup extends DataAriaLabelMixin(DisabledMixin(Component)) {
   private setDisabledForAllOptions(): void {
     this.options.forEach((element) => {
       if (this.disabled) {
-        element.setAttribute('disabled', 'true');
+        element.setAttribute('disabled', '');
       } else {
         element.removeAttribute('disabled');
       }
@@ -71,4 +71,4 @@ class Optgroup extends DataAriaLabelMixin(DisabledMixin(Component)) {
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
-export default Optgroup;
+export default OptGroup;
