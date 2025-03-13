@@ -1,12 +1,12 @@
-import Filterchip from './filterchip.component';
+import FilterChip from './filterchip.component';
 import { TAG_NAME } from './filterchip.constants';
 
-Filterchip.register(TAG_NAME);
+FilterChip.register(TAG_NAME);
 
 declare global {
     interface HTMLElementTagNameMap {
-        ['mdc-filterchip']: Filterchip
+        ['mdc-filterchip']: FilterChip
     }
 }
 
-export default Filterchip;
+export default FilterChip;

@@ -4,7 +4,7 @@ import styles from './inputchip.styles';
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
-import { IconNames } from '../icon/icon.types';
+import type { IconNames } from '../icon/icon.types';
 import { DEFAULTS } from './inputchip.constants';
 
 /**
@@ -25,11 +25,25 @@ import { DEFAULTS } from './inputchip.constants';
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the close button.
  * @event focus - (React: onFocus) This event is dispatched when the close button receives focus.
  */
-class Inputchip extends IconNameMixin(DisabledMixin(Component)) {
+class InputChip extends IconNameMixin(DisabledMixin(Component)) {
+  /**
+   * The label of the inputchip.
+   *
+   * We recommend limiting the <b>maximum length of the label text to 20 characters</b>,
+   * including empty spaces to split words.
+   */
   @property({ type: String }) label = '';
 
+  /**
+   * The error state of the inputchip.
+   *
+   * @default false
+   */
   @property({ type: Boolean }) error = false;
 
+  /**
+   * The aria-label of the close button.
+   */
   @property({ type: String, attribute: 'clear-aria-label' }) clearAriaLabel = '';
 
   /**
@@ -46,6 +60,10 @@ class Inputchip extends IconNameMixin(DisabledMixin(Component)) {
   `;
   }
 
+  /**
+   * Handles the behavior of the close button on click event.
+   * @param event The event object.
+   */
   private handleClose(event: Event) {
     event.stopPropagation(); // Prevents triggering click event twice
     const EventConstructor = event.constructor as typeof Event;
@@ -71,4 +89,4 @@ class Inputchip extends IconNameMixin(DisabledMixin(Component)) {
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
-export default Inputchip;
+export default InputChip;

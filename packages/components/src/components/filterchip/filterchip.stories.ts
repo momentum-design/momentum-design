@@ -45,11 +45,33 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    class: 'custom-classname',
-    style: 'margin-top: 20px;',
     label: 'Filterchip',
     selected: false,
     disabled: false,
+  },
+};
+
+export const Selected: StoryObj = {
+  args: {
+    label: 'Filterchip',
+    selected: true,
+    disabled: false,
+  },
+};
+
+export const Disabled: StoryObj = {
+  args: {
+    label: 'Filterchip',
+    selected: false,
+    disabled: true,
+  },
+};
+
+export const SelectedAndDisabled: StoryObj = {
+  args: {
+    label: 'Filterchip',
+    selected: true,
+    disabled: true,
   },
 };
 

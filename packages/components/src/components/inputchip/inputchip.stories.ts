@@ -51,12 +51,37 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     label: 'Input Chip',
+    'clear-aria-label': 'Clear',
+    error: false,
+    disabled: false,
+  },
+};
+
+export const WithIcon: StoryObj = {
+  args: {
+    label: 'Input Chip',
     'icon-name': 'placeholder-bold',
     'clear-aria-label': 'Clear',
     error: false,
     disabled: false,
-    class: 'custom-classname',
-    style: 'margin-top: 20px;',
+  },
+};
+
+export const Error: StoryObj = {
+  args: {
+    label: 'Input Chip',
+    'clear-aria-label': 'Clear',
+    error: true,
+    disabled: false,
+  },
+};
+
+export const Disabled: StoryObj = {
+  args: {
+    label: 'Input Chip',
+    'clear-aria-label': 'Clear',
+    error: false,
+    disabled: true,
   },
 };
 

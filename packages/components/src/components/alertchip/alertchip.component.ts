@@ -20,7 +20,7 @@ import Buttonsimple from '../buttonsimple/buttonsimple.component';
  * @dependency mdc-icon
  * @dependency mdc-text
  */
-class Alertchip extends Buttonsimple {
+class AlertChip extends Buttonsimple {
   /**
    * The variant of the alertchip. It supports 5 variants
    * - neutral
@@ -60,4 +60,4 @@ class Alertchip extends Buttonsimple {
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
-export default Alertchip;
+export default AlertChip;

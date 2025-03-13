@@ -17,7 +17,7 @@ import Buttonsimple from '../buttonsimple/buttonsimple.component';
  * including empty spaces to split words.
  *
  * This component is built by extending Buttonsimple.
- *-
+ *
  * @tagname mdc-chip
  *
  * @dependency mdc-icon

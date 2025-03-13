@@ -1,15 +1,15 @@
-import Inputchip from './inputchip.component';
+import InputChip from './inputchip.component';
 import { TAG_NAME } from './inputchip.constants';
 import '../text';
 import '../icon';
 import '../button';
 
-Inputchip.register(TAG_NAME);
+InputChip.register(TAG_NAME);
 
 declare global {
     interface HTMLElementTagNameMap {
-        ['mdc-inputchip']: Inputchip
+        ['mdc-inputchip']: InputChip
     }
 }
 
-export default Inputchip;
+export default InputChip;

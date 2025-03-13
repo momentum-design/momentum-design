@@ -1,14 +1,14 @@
-import Alertchip from './alertchip.component';
+import AlertChip from './alertchip.component';
 import { TAG_NAME } from './alertchip.constants';
 import '../text';
 import '../icon';
 
-Alertchip.register(TAG_NAME);
+AlertChip.register(TAG_NAME);
 
 declare global {
     interface HTMLElementTagNameMap {
-        ['mdc-alertchip']: Alertchip
+        ['mdc-alertchip']: AlertChip
     }
 }
 
-export default Alertchip;
+export default AlertChip;

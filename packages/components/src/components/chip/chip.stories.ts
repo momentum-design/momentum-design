@@ -51,10 +51,25 @@ export const Example: StoryObj = {
   args: {
     color: COLOR.DEFAULT,
     label: 'Label',
+    disabled: false,
+  },
+};
+
+export const WithIcon: StoryObj = {
+  args: {
+    color: COLOR.DEFAULT,
+    label: 'Label',
     'icon-name': 'placeholder-bold',
     disabled: false,
-    class: 'custom-classname',
-    style: 'margin-top: 20px;',
+  },
+};
+
+export const Disabled: StoryObj = {
+  args: {
+    color: COLOR.DEFAULT,
+    label: 'Label',
+    'icon-name': 'placeholder-bold',
+    disabled: true,
   },
 };
 

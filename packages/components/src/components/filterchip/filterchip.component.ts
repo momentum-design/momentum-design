@@ -2,7 +2,7 @@ import { CSSResult, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import Chip from '../chip/chip.component';
 import styles from './filterchip.styles';
-import { IconNames } from '../icon/icon.types';
+import type { IconNames } from '../icon/icon.types';
 import { DEFAULTS } from './filterchip.constants';
 
 /**
@@ -14,7 +14,7 @@ import { DEFAULTS } from './filterchip.constants';
  * @tagname mdc-filterchip
  *
  */
-class Filterchip extends Chip {
+class FilterChip extends Chip {
   /**
    * The selected state of the filterchip.
    *
@@ -56,4 +56,4 @@ class Filterchip extends Chip {
   public static override styles: Array<CSSResult> = [...Chip.styles, ...styles];
 }
 
-export default Filterchip;
+export default FilterChip;

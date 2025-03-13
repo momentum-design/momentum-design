@@ -44,8 +44,6 @@ export const Example: StoryObj = {
   args: {
     variant: VARIANTS.NEUTRAL,
     label: 'Alert',
-    class: 'custom-classname',
-    style: 'margin-top: 20px;',
   },
 };
 
