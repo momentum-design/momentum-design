@@ -25,6 +25,7 @@ import Toggle from './components/toggle';
 import VirtualizedList from './components/virtualizedlist';
 import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
 import Menu from './components/menu';
+import Textarea from './components/textarea';
 
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
 import type { TextType } from './components/text/text.types';
@@ -56,6 +57,7 @@ export {
   Toggle,
   VirtualizedList,
   Menu,
+  Textarea,
 };
 export type {
   TextType,

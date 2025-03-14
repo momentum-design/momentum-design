@@ -1,20 +1,27 @@
+import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
-import { html } from 'lit';
-import { hideControls } from '../../../config/storybook/utils';
+import { html, TemplateResult } from 'lit';
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { hideControls } from '../../../config/storybook/utils';
 import '../avatar';
-import '../list';
 import '../badge';
 import '../button';
 import '../checkbox';
 import '../icon';
+import '../list';
 import '../toggle';
 import { LISTITEM_VARIANTS } from './listitem.constants';
 
-const render = (args: Args) => html`
-  <mdc-list>
+const wrapWithList = (content: TemplateResult) => html`<mdc-list>${content}</mdc-list>`;
+
+const render = (args: Args) => wrapWithList(
+  html`
     <mdc-listitem
+      @click="${action('onclick')}"
+      @keydown="${action('onkeydown')}"
+      @keyup="${action('onkeyup')}"
+      @focus="${action('onfocus')}"
       ?disabled="${args.disabled}"
       variant="${args.variant}"
       label="${args.label}"
@@ -31,16 +38,16 @@ const render = (args: Args) => html`
       <mdc-toggle slot="trailing-controls" data-aria-label="mock label" size="compact"></mdc-toggle>
       <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
     </mdc-listitem>
-  </mdc-list>
-`;
+  `,
+);
 
 const meta: Meta = {
-  title: 'Work In Progress/listitem',
+  title: 'Components/listitem',
   tags: ['autodocs'],
   component: 'mdc-listitem',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     variant: {
@@ -72,6 +79,7 @@ const meta: Meta = {
       '--mdc-listitem-default-background-color',
       '--mdc-listitem-primary-label-color',
       '--mdc-listitem-secondary-label-color',
+      '--mdc-listitem-disabled-color',
     ]),
     ...classArgType,
     ...styleArgType,
@@ -92,34 +100,36 @@ export const Example: StoryObj = {
   },
 };
 
+export const LabelOnly: StoryObj = {
+  render: () => wrapWithList(html`<mdc-listitem label="Primary Label"></mdc-listitem>`),
+};
+
 export const TrailingIcon: StoryObj = {
-  render: () => html`
+  render: () => wrapWithList(html`
     <mdc-listitem>
       <mdc-icon slot="trailing-controls" name="placeholder-bold"></mdc-icon>
     </mdc-listitem>
-  `,
-};
-
-export const LabelOnly: StoryObj = {
-  render: () => html`<mdc-listitem label="Primary Label"></mdc-listitem>`,
+  `),
 };
 
 export const ListWithLabelAndLeadingAvatar: StoryObj = {
-  render: () => html`
+  render: () => wrapWithList(html`
     <mdc-listitem label="Primary Label">
       <mdc-avatar slot="leading-controls" src="https://picsum.photos/id/237/256" presence="busy"></mdc-avatar>
-    </mdc-listitem>`,
+    </mdc-listitem>
+  `),
 };
 
 export const ListWithLabelAndTrailingBadge: StoryObj = {
-  render: () => html`
+  render: () => wrapWithList(html`
     <mdc-listitem label="Primary Label">
       <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
-    </mdc-listitem>`,
+    </mdc-listitem>
+  `),
 };
 
 export const ListWithDisableState: StoryObj = {
-  render: (args: Args) => html`
+  render: (args: Args) => wrapWithList(html`
     <mdc-listitem
       ?disabled="${args.disabled}"
       label="${args.label}"
@@ -132,7 +142,7 @@ export const ListWithDisableState: StoryObj = {
       <mdc-toggle slot="trailing-controls" data-aria-label="mock label" size="compact"></mdc-toggle>
       <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
     </mdc-listitem>
-  `,
+  `),
   args: {
     disabled: true,
     label: 'Primary Label',
@@ -144,12 +154,13 @@ export const ListWithDisableState: StoryObj = {
 };
 
 export const ListWithIconAndLabels: StoryObj = {
-  render: () => html`
+  render: () => wrapWithList(html`
     <mdc-listitem label="Primary Label" 
     secondary-label="This is a long Secondary Label" 
     tertiary-label="Teritary Label">
       <div slot="leading-controls">
         <mdc-icon name="placeholder-bold"></mdc-icon>
       </div>
-    </mdc-listitem>`,
+    </mdc-listitem>
+  `),
 };

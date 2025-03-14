@@ -34,6 +34,7 @@ const createPopover = (args: Args, content: TemplateResult) => html`
     aria-labelledby="${args['aria-labelledby']}"
     aria-describedby="${args['aria-describedby']}"
     role="${args.role}"
+    ?disable-aria-expanded="${args['disable-aria-expanded']}"
     @popover-on-show="${action('onshow')}"
     @popover-on-hide="${action('onhide')}"
     @popover-on-created="${action('oncreated')}"
@@ -125,7 +126,7 @@ const renderMultiple = (args: Args) => html`
     z-index="20"
     show-arrow
   >
-    <mdc-text>Description tooltip on mou se enter</mdc-text>
+    <mdc-text>Description tooltip on mouseenter</mdc-text>
   </mdc-popover>
 `;
 
@@ -279,6 +280,9 @@ const meta: Meta = {
     },
     role: {
       control: 'text',
+    },
+    'disable-aria-expanded': {
+      control: 'boolean',
     },
     ...disableControls([
       '--mdc-popover-arrow-border-radius',
