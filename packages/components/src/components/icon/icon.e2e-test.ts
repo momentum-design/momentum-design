@@ -7,6 +7,7 @@ type SetupOptions = {
   name: IconNames;
   size?: number;
   ariaLabel?: string;
+  ariaLabelledBy?: string;
   lengthUnit?: string;
   tabindex?: number;
 };
@@ -18,6 +19,7 @@ const setup = async (args: SetupOptions) => {
       name="${restArgs.name}" 
       ${restArgs.size ? `size="${restArgs.size}"` : ''}
       ${restArgs.ariaLabel ? `aria-label="${restArgs.ariaLabel}"` : ''}
+      ${restArgs.ariaLabelledBy ? `aria-labelledby="${restArgs.ariaLabelledBy}"` : ''}
       ${restArgs.lengthUnit ? `length-unit="${restArgs.lengthUnit}"` : ''}
     >
     </mdc-icon>
@@ -56,6 +58,7 @@ const visualTestingSetup = async (args: SetupOptions) => {
 test('mdc-icon', async ({ componentsPage }) => {
   const name = 'accessibility-regular';
   const ariaLabel = 'test aria label';
+  const ariaLabelledBy = 'testId';
   await setup({ componentsPage, name });
 
   /**
@@ -120,6 +123,19 @@ test('mdc-icon', async ({ componentsPage }) => {
       await expect(iconWithRole).toHaveAttribute('name', name);
       await expect(iconWithRole).toHaveAttribute('style', '--computed-icon-size: 1em;');
       await expect(iconWithRole).toHaveAttribute('aria-label', ariaLabel);
+      await expect(iconWithRole).toHaveAttribute('role', 'img');
+    });
+
+    await test.step('attributes should be present on component with aria-labelledby passed in', async () => {
+      const iconWithRole = await setup({
+        componentsPage,
+        name,
+        ariaLabel,
+        ariaLabelledBy,
+      });
+      await expect(iconWithRole).toHaveAttribute('name', name);
+      await expect(iconWithRole).toHaveAttribute('style', '--computed-icon-size: 1em;');
+      await expect(iconWithRole).toHaveAttribute('aria-labelledby', ariaLabelledBy);
       await expect(iconWithRole).toHaveAttribute('role', 'img');
     });
 
