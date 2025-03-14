@@ -26,14 +26,14 @@ const setup = async (args: SetupOptions) => {
     clearDocument: true,
   });
 
-  const element = componentsPage.page.locator('mdc-coachmark');
+  await componentsPage.page.locator('#wrapper').waitFor();
   if (open) {
     await componentsPage.page.evaluate(
       () => (document.getElementById('coachmark') as Coachmark | undefined)?.showPopover(),
     );
   }
 
-  return element;
+  return componentsPage.page.locator('mdc-coachmark');
 };
 
 test('mdc-coachmark', async ({ componentsPage }) => {
