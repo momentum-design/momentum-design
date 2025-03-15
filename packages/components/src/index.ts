@@ -4,6 +4,7 @@ import Badge from './components/badge';
 import Bullet from './components/bullet';
 import Button from './components/button';
 import Checkbox from './components/checkbox';
+import Coachmark from './components/coachmark';
 import Divider from './components/divider';
 import FormfieldGroup from './components/formfieldgroup';
 import Icon from './components/icon';
@@ -37,6 +38,7 @@ export {
   Bullet,
   Button,
   Checkbox,
+  Coachmark,
   Divider,
   FormfieldGroup,
   Icon,
