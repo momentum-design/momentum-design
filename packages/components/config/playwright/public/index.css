@@ -62,3 +62,11 @@ main {
     gap: 0.25rem;
     margin-bottom: 0.5rem;
 }
+
+.popoverWrapper {
+    display: grid;
+    gap: 7rem;
+    justify-content: center;
+    padding-top: 1rem;
+    padding-bottom: 6.5rem;
+}
