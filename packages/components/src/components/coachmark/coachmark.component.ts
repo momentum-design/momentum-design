@@ -1,10 +1,10 @@
 import { property } from 'lit/decorators.js';
 import Popover from '../popover/popover.component';
 import { DEFAULTS } from './coachmark.constants';
-import { PopoverTrigger } from '../popover/popover.types';
+import type { PopoverTrigger } from '../popover/popover.types';
 
 /**
- * Coachmark component is identical to the popover component,
+ * Coachmark component based on top of the popover component,
  * with the default value of certain properties changed.
  *
  * @dependency mdc-popover
@@ -25,7 +25,7 @@ import { PopoverTrigger } from '../popover/popover.types';
  */
 class Coachmark extends Popover {
   /**
-   * Determines the events that cause the Popover to show.
+   * Determines the events that cause the Coachmark to show.
    * Multiple event names should be separated by spaces.
    * For example to allow both click and hover, use 'click mouseenter' as the trigger.
    * - **click**
@@ -38,14 +38,14 @@ class Coachmark extends Popover {
   override trigger: PopoverTrigger = DEFAULTS.TRIGGER;
 
   /**
-   * The arrow visibility of the popover.
+   * The arrow visibility of the Coachmark.
    * @default true
    */
   @property({ type: Boolean, attribute: 'show-arrow' })
   override showArrow: boolean = DEFAULTS.ARROW;
 
   /**
-   * The close button visibility of the popover.
+   * The close button visibility of the Coachmark.
    * @default true
    */
   @property({ type: Boolean, reflect: true, attribute: 'close-button' })
@@ -53,7 +53,7 @@ class Coachmark extends Popover {
 
   /**
    * Disable aria-expanded attribute on trigger element.
-   * @default false
+   * @default true
    */
   @property({ type: Boolean, reflect: true, attribute: 'disable-aria-expanded' })
   override disableAriaExpanded: boolean = DEFAULTS.DISABLE_ARIA_EXPANDED;
@@ -61,6 +61,7 @@ class Coachmark extends Popover {
   constructor() {
     super();
     this.color = DEFAULTS.COLOR;
+    this.showArrow = DEFAULTS.ARROW;
   }
 }
 

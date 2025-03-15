@@ -1,15 +1,13 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
-// eslint-disable-next-line import/no-duplicates
-import Coachmark from '.';
-// eslint-disable-next-line import/no-duplicates
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import popoverMeta from '../popover/popover.stories';
 import { DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
 import { DEFAULTS } from './coachmark.constants';
 import { hideControls } from '../../../config/storybook/utils';
+import type Coachmark from './coachmark.component';
 
 const render = (args: Args) => html`
   <div style="height: 50vh; display: inline-block">
