@@ -28,7 +28,7 @@ const styles = css`
   :host([color='contrast']) {
     background-color: var(--mdc-popover-inverted-background-color);
     border-color: var(--mdc-popover-inverted-border-color);
-    color: var(--mds-color-theme-inverted-text-primary-normal);
+    color: var(--mdc-popover-inverted-text-color);
   }
 
   :host([color='contrast']) {
