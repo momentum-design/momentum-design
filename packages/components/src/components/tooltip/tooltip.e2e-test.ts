@@ -216,16 +216,16 @@ test('mdc-tooltip', async ({ componentsPage }) => {
    */
   await test.step('attributes for tooltip component', async () => {
     await attributeTestCases(componentsPage);
+  });
 
-    /**
+  /**
    * VISUAL REGRESSION
    */
-    await test.step('visual-regression', async () => {
-      await visualTestingSetup(componentsPage);
+  await test.step('visual-regression', async () => {
+    await visualTestingSetup(componentsPage);
 
-      await test.step('matches screenshot of elements', async () => {
-        await componentsPage.visualRegression.takeScreenshot('mdc-tooltip');
-      });
+    await test.step('matches screenshot of elements', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-tooltip');
     });
   });
 
