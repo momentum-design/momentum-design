@@ -246,7 +246,6 @@ class Popover extends FocusTrapMixin(Component) {
 
   public arrowElement: HTMLElement | null = null;
 
-  /** @internal */
   public triggerElement: HTMLElement | null = null;
 
   /** @internal */
