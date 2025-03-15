@@ -1,6 +1,5 @@
 import Tooltip from './tooltip.component';
 import { TAG_NAME } from './tooltip.constants';
-import '../popover';
 
 Tooltip.register(TAG_NAME);
 

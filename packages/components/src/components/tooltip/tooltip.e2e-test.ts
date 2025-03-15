@@ -221,10 +221,10 @@ test('mdc-tooltip', async ({ componentsPage }) => {
    * VISUAL REGRESSION
    */
     await test.step('visual-regression', async () => {
-      const visualIcons = await visualTestingSetup(componentsPage);
+      await visualTestingSetup(componentsPage);
 
       await test.step('matches screenshot of elements', async () => {
-        await componentsPage.visualRegression.takeScreenshot('mdc-tooltip', { element: visualIcons });
+        await componentsPage.visualRegression.takeScreenshot('mdc-tooltip');
       });
     });
   });
