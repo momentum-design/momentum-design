@@ -1,13 +1,12 @@
 import { property, queryAssignedNodes } from 'lit/decorators.js';
-import { CSSResult } from 'lit';
 import { v4 as uuidv4 } from 'uuid';
-import { PropertyValues } from '@lit/reactive-element';
+import type { CSSResult } from 'lit';
+import type { PropertyValues } from '@lit/reactive-element';
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
-import Popover from '../popover';
-import '../text';
-import { TooltipType } from './tooltip.types';
+import Popover from '../popover/popover.component';
 import styles from './tooltip.styles';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import type { TooltipType } from './tooltip.types';
 
 /**
  * A tooltip is triggered by mouse hover or by keyboard focus
@@ -69,7 +68,12 @@ class Tooltip extends Popover {
    * @returns The tooltip text.
    */
   private getTooltipText(): string {
-    return this.defaultSlotNodes?.map((node) => node.textContent).join(' ')?.trim() || '';
+    return (
+      this.defaultSlotNodes
+        ?.map((node) => node.textContent)
+        .join(' ')
+        ?.trim() || ''
+    );
   }
 
   /**
@@ -80,10 +84,7 @@ class Tooltip extends Popover {
    * @param type - The type to set.
    */
   private setTooltipType(type: TooltipType): void {
-    this.setAttribute(
-      'tooltip-type',
-      Object.values(TOOLTIP_TYPES).includes(type) ? type : DEFAULTS.TOOLTIP_TYPE,
-    );
+    this.setAttribute('tooltip-type', Object.values(TOOLTIP_TYPES).includes(type) ? type : DEFAULTS.TOOLTIP_TYPE);
   }
 
   /**
@@ -112,6 +113,7 @@ class Tooltip extends Popover {
 
   /**
    * Updates the placement attribute if it is not a valid placement.
+   * Overriding the default from Popover
    */
   private onPlacementUpdated(): void {
     if (!Object.values(POPOVER_PLACEMENT).includes(this.placement)) {
@@ -153,9 +155,7 @@ class Tooltip extends Popover {
           }
           break;
       }
-      if (tooltipText.length > 0
-            && this.tooltipType !== TOOLTIP_TYPES.NONE
-            && !this.ariaLabel) {
+      if (tooltipText.length > 0 && this.tooltipType !== TOOLTIP_TYPES.NONE && !this.ariaLabel) {
         this.ariaLabel = tooltipText;
       }
     }

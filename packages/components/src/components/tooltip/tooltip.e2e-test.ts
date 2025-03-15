@@ -243,23 +243,23 @@ test('mdc-tooltip', async ({ componentsPage }) => {
       await test.step('focusing on trigger button should show tooltip', async () => {
         await componentsPage.actionability.pressTab();
         await expect(triggerButton).toBeFocused();
-        await expect(tooltip).toHaveAttribute('visible');
+        await expect(tooltip).toBeVisible();
       });
       await test.step('focusing out the trigger button should hide the tooltip', async () => {
         await componentsPage.actionability.pressTab();
         await expect(triggerButton).not.toBeFocused();
-        await expect(tooltip).not.toHaveAttribute('visible');
+        await expect(tooltip).not.toBeVisible();
       });
     });
     await test.step('hover', async () => {
       await test.step('mouseover in on trigger button should show tooltip', async () => {
         await triggerButton.hover();
-        await expect(tooltip).toHaveAttribute('visible');
+        await expect(tooltip).toBeVisible();
       });
       await test.step('mouseover out the trigger button should hide the tooltip', async () => {
         await componentsPage.page.mouse.move(1000, 1000);
         await expect(triggerButton).not.toBeFocused();
-        await expect(tooltip).not.toHaveAttribute('visible');
+        await expect(tooltip).not.toBeVisible();
       });
     });
   });

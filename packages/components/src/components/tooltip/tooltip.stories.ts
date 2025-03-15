@@ -23,12 +23,12 @@ const render = (args: Args) => html`
   `;
 
 const meta: Meta = {
-  title: 'Work In Progress/tooltip',
+  title: 'Components/tooltip',
   tags: ['autodocs'],
   component: 'mdc-tooltip',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     children: {
