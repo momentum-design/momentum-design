@@ -184,12 +184,12 @@ const renderBackdrop = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/popover',
+  title: 'Components/popover',
   tags: ['autodocs'],
   component: 'mdc-popover',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     id: {
