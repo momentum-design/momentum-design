@@ -31,6 +31,7 @@ const setup = async (args: SetupOptions) => {
     await componentsPage.page.evaluate(
       () => (document.getElementById('coachmark') as Coachmark | undefined)?.showPopover(),
     );
+    await expect(componentsPage.page.locator('[part="popover-content"]')).toBeVisible();
   }
 
   return componentsPage.page.locator('mdc-coachmark');
@@ -51,10 +52,11 @@ test('mdc-coachmark', async ({ componentsPage }) => {
   await test.step('visual-regression', async () => {
     await test.step('matches screenshot of element', async () => {
       await setup({ componentsPage, open: true });
-      const wrapper = componentsPage.page.locator('#wrapper');
-      await componentsPage.visualRegression.takeScreenshot('mdc-coachmark', { element: wrapper });
+
       // screenshot on the wrapper instead of just coachmark
       // to capture the position of the coachmark relative to the anchor element as well
+      const wrapper = componentsPage.page.locator('#wrapper');
+      await componentsPage.visualRegression.takeScreenshot('mdc-coachmark', { element: wrapper });
     });
   });
 
@@ -100,7 +102,7 @@ test('mdc-coachmark', async ({ componentsPage }) => {
     await test.step('mouse/pointer', async () => {
       await test.step('coachmark should close when clicking on close button', async () => {
         await setup({ componentsPage, open: true });
-        await expect(componentsPage.page.locator('[part="popover-content"]')).toBeVisible();
+
         await componentsPage.page.locator('.popover-close').click();
         await expect(componentsPage.page.locator('[part="popover-content"]')).not.toBeVisible();
       });
@@ -109,6 +111,7 @@ test('mdc-coachmark', async ({ componentsPage }) => {
     await test.step('focus and keyboard', async () => {
       await test.step('close button should be focusable with tab and actionable with enter', async () => {
         await setup({ componentsPage, open: true });
+
         const closeButton = componentsPage.page.locator('.popover-close');
         await expect(closeButton).not.toBeFocused();
         await componentsPage.page.keyboard.press('Tab');
