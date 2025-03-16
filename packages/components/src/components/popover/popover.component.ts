@@ -38,14 +38,14 @@ class Popover extends FocusTrapMixin(Component) {
   /**
    * The unique ID of the popover.
    */
-  @property({ type: String })
+  @property({ type: String, reflect: true })
   override id: string = '';
 
   /**
    * The ID of the element that triggers the popover.
    * This attribute is required for the popover to work.
    */
-  @property({ type: String })
+  @property({ type: String, reflect: true })
   triggerID: string = '';
 
   /**
