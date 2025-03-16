@@ -1,14 +1,15 @@
 import { CSSResult, html, nothing } from 'lit';
 import type { PropertyValues } from 'lit';
-import { property, query } from 'lit/decorators.js';
+import { property, query, queryAssignedElements, state } from 'lit/decorators.js';
 
 import styles from './tablist.styles';
 import { Component } from '../../models';
 import { KEYCODES } from './tablist.constants';
 
 import Tab from '../tab/tab.component';
-import Button from '../button';
 import type { ArrowButtonDirection } from './tablist.types';
+import { getFirstTab, getLastTab, getNextTab, getPreviousTab, getTabById } from './tablist.utils';
+import { TAG_NAME } from '../tab/tab.constants';
 
 /**
  * Tab list organizes tabs into a container.
@@ -56,76 +57,73 @@ class TabList extends Component {
   @property({ type: String, attribute: 'activetabid' })
   activeTabId?: string;
 
+  @query('.container')
+  private tabsContainer?: HTMLDivElement;
+
+  @queryAssignedElements({ selector: 'mdc-tab' })
+  private tabs?: Tab[];
+
   /**
    * Instead of using 'left' and 'right' for notation of the arrow buttons, we use 'forward' and 'backward'.
    * Since the elements of the tablist gets flipped in RTL layouts, the arrow buttons also flip.
    * For both RTL and LTR layouts, the forward arrow button moved the tabs in the forward direction.
    * i.e. the forward arrow button moves the tabs to the right in LTR layouts and to the left in RTL layouts.
    */
-  @property({ type: Boolean })
-  private showForwardArrowButton: boolean = false;
 
-  @property({ type: Boolean })
-  private showBackwardArrowButton: boolean = false;
+  /**
+   * @internal
+   */
+  @state() private showForwardArrowButton: boolean = false;
+
+  /**
+   * @internal
+   */
+  @state() private showBackwardArrowButton: boolean = false;
+
+  private get isRtl(): boolean {
+    return (
+      document.querySelector('html')?.getAttribute('dir') === 'rtl' || window.getComputedStyle(this).direction === 'rtl'
+    );
+  }
 
   constructor() {
     super();
     this.role = 'tablist';
 
     this.addEventListener('keydown', this.handleKeydown.bind(this));
-    this.addEventListener('click', this.handleClick.bind(this));
+    this.addEventListener('activechange', this.handleNestedTabActiveChange.bind(this));
+  }
+
+  /**
+   * Set the initial tabActive after firstUpdated,
+   * since this.tabs (=slot) are only available after
+   * the first update
+   */
+  protected override firstUpdated(): void {
+    if (this.tabs) {
+      this.setTabActive(this.activeTabId || getFirstTab(this.tabs).tabId);
+    }
   }
 
   override async connectedCallback() {
     super.connectedCallback();
-    let timeout: ReturnType<typeof setTimeout>;
 
-    await customElements.whenDefined('mdc-tablist');
-
-    /**
-     * Sets the initially active tab.
-     */
-    this.setActiveTab();
-
-    /**
-     * Observe the tablist element for changes in its size.
-     * Then show or hide the arrow buttons accordingly.
-     *
-     * @param entries - ResizeObserverEntry[].
-     */
     const resizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]): void => {
       const tabListWidth: number = entries[0].borderBoxSize[0].inlineSize;
-      const tabsContainerWidth: number = this.tabsContainer.scrollWidth || 0;
+      const tabsContainerWidth: number = this.tabsContainer?.scrollWidth || 0;
 
       if (tabListWidth >= tabsContainerWidth) {
-        this.showArrowButtons = { forward: false, backward: false };
+        this.showForwardArrowButton = false;
+        this.showBackwardArrowButton = false;
       } else {
-        this.showArrowButtons = { forward: true, backward: false };
+        this.showForwardArrowButton = true;
+        this.showBackwardArrowButton = false;
 
-        /**
-         * Clear the timeout for the previous resize event
-         */
-        clearTimeout(timeout);
-        /**
-         * Wait after resizing is done and bring the active tab into view.
-         */
-        timeout = setTimeout(() => this.scrollTabIntoview(this.currentActiveTab), 250);
+        this.scrollTabIntoView(this.activeTabId);
       }
     });
 
     resizeObserver.observe(this);
-
-    /**
-     * Observe the tablist element for scroll events and handle visibility of the arrow buttons
-     */
-    this.tabsContainer.addEventListener('scroll', this.handleArrowButtonVisibility);
-
-    /**
-     * When the tablist gets focus from an outside element,
-     * focus on the currently active tab instead of the first or last tab
-     */
-    this.firstTab.addEventListener('focus', this.handleFocus);
-    this.lastTab.addEventListener('focus', this.handleFocus);
   }
 
   /**
@@ -136,73 +134,65 @@ class TabList extends Component {
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
     if (changedProperties.has('activeTabId')) {
-      this.setActiveTab();
+      this.setTabActive(this.activeTabId);
     }
   }
 
-  @query('.tabs_container')
-  private tabsContainer!: HTMLDivElement;
+  /**
+   * Removes all tabs active attribute and sets active on the
+   * given element, effectively setting the active
+   * element. This is used when selecting a tab.
+   *
+   * @param tabId - The id of the new active tab in the tabs.
+   */
+  private removesActiveAndSetNewActive(tabId?: string) {
+    this.tabs?.forEach((tab) => {
+      if (tab.tabId === tabId) {
+        tab.setAttribute('active', '');
+      } else {
+        tab.removeAttribute('active');
+      }
+    });
+  }
 
   /**
-   * Sets the active tab.
-   * If the activeTabId is not provided or does not match any tab's ID, set the first tab as the active tab.
+   * Resets all tabs tabindex to -1 and sets the tabindex of the
+   * given element to 0, effectively setting the active
+   * element. This is used when navigating the tabs via keyboard.
+   *
+   * @param tabId - The id of the new active tab in the tabs.
    */
-  private setActiveTab = (): void => {
-    this.selectTab(this.tabs.find((tab) => tab.getAttribute('tabid') === this.activeTabId)
-                    || this.currentActiveTab
-                    || this.firstTab);
+  private resetTabIndexAndSetActiveTabIndex(tabId?: string) {
+    this.tabs?.forEach((tab) => {
+      tab.setAttribute('tabindex', tab.tabId === tabId ? '0' : '-1');
+    });
+  }
+
+  /**
+   * Dispatch the change event.
+   *
+   * @param tabId - tabId of the new active tab
+   */
+  private handleTabChange = (tabId?: string): void => {
+    const event = new CustomEvent('change', {
+      detail: { tabId },
+    });
+    this.dispatchEvent(event);
   };
 
-  private get tabs(): Tab[] {
-    return Array.from(this.querySelectorAll('mdc-tab'));
-  }
-
-  private get firstTab(): Tab { return this.tabs[0]; }
-
-  private get lastTab(): Tab { return this.tabs[this.tabs.length - 1]; }
-
-  private get currentActiveTab(): Tab | undefined {
-    return this.tabs.find((tab) => tab.hasAttribute('active'));
-  }
-
-  private get previousTab(): Tab {
-    const newIndex = this.tabs.findIndex((tab) => document.activeElement === tab) - 1;
-    return this.tabs[(newIndex + this.tabs.length) % this.tabs.length];
-  }
-
-  private get nextTab(): Tab {
-    const newIndex = this.tabs.findIndex((tab) => document.activeElement === tab) + 1;
-    return this.tabs[newIndex % this.tabs.length];
-  }
-
-  private get isRtl(): boolean {
-    return document.querySelector('html')?.getAttribute('dir') === 'rtl'
-      || window.getComputedStyle(this).direction === 'rtl';
-  }
-
-  private get showArrowButtons(): {forward: boolean, backward: boolean} {
-    return {
-      forward: this.showForwardArrowButton,
-      backward: this.showBackwardArrowButton,
-    };
-  }
-
-  private set showArrowButtons(newVisibility: { forward?: boolean, backward?: boolean }) {
-    const newArrowButtonVisibility = Object.assign(this.showArrowButtons, newVisibility);
-
-    this.showForwardArrowButton = newArrowButtonVisibility.forward;
-    this.showBackwardArrowButton = newArrowButtonVisibility.backward;
-  }
-
-  private shouldShowArrowButton(direction: ArrowButtonDirection): boolean {
-    return direction === 'forward' ? this.showArrowButtons.forward : this.showArrowButtons.backward;
-  }
-
   /**
-   * Remove the active attribute from all tabs.
+   * Set the new tab as active and dispatch the change event.
+   *
+   * @param tabId - tabId of new Tab.
    */
-  private resetSelection = (): void => {
-    this.tabs.forEach((tab) => { tab.removeAttribute('active'); });
+  private setTabActive = (tabId?: string): void => {
+    if (!this.tabs?.length) {
+      return;
+    }
+    this.removesActiveAndSetNewActive(tabId);
+    this.resetTabIndexAndSetActiveTabIndex(tabId);
+
+    this.handleTabChange(tabId);
   };
 
   /**
@@ -211,46 +201,30 @@ class TabList extends Component {
    * @param tab - Tab to set focus on.
    */
   private focusTab = (tab?: Tab): void => {
-    if (!(tab instanceof Tab)) { return; }
-
-    tab.focus();
-    this.scrollTabIntoview(tab);
+    if (tab) {
+      this.resetTabIndexAndSetActiveTabIndex(tab.tabId);
+      tab.focus();
+    }
   };
 
-  /**
-   * Scroll a tab into view.
-   *
-   * @param tab - Tab to set focus on.
-   */
-  private scrollTabIntoview = (tab?: Tab): void => {
-    if (!(tab instanceof Tab)) { return; }
+  private focusForward() {
+    const focusedTab = document.activeElement as Tab;
+    if (focusedTab && this.tabs) {
+      this.focusTab(!this.isRtl ? getNextTab(this.tabs, focusedTab) : getPreviousTab(this.tabs, focusedTab));
+    }
+    // if last tab, scroll into view
 
-    // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
-    tab.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'center' });
-  };
+    this.handleArrowButtonVisibility();
+  }
 
-  /**
-   * Set the new tab as active and dispatch the change event.
-   *
-   * @param newTab - New Tab.
-   */
-  private selectTab = (newTab: Tab): void => {
-    this.resetSelection();
-    newTab.setAttribute('active', '');
-    this.handleTabChange(newTab);
-  };
+  private focusBackward() {
+    const focusedTab = document.activeElement as Tab;
+    if (focusedTab && this.tabs) {
+      this.focusTab(!this.isRtl ? getPreviousTab(this.tabs, focusedTab) : getNextTab(this.tabs, focusedTab));
+    }
 
-  /**
-   * Dispatch the change event.
-   *
-   * @param newTab - New Tab.
-   */
-  private handleTabChange = (newTab: Tab): void => {
-    const event = new CustomEvent('change', {
-      detail: { tabId: newTab.getAttribute('tabid') },
-    });
-    this.dispatchEvent(event);
-  };
+    this.handleArrowButtonVisibility();
+  }
 
   /**
    * Handle the keydown event. The arrow keys, Home, End, Enter, and Space keys are supported.
@@ -258,82 +232,45 @@ class TabList extends Component {
    * @param event - HTML Keyboard Event.
    */
   private handleKeydown = (event: KeyboardEvent): void => {
-    const tab = event.target;
+    const { tabId } = event.target as Tab;
 
-    if (!(tab instanceof Tab)) { return; }
+    if (!this.tabs || !tabId) {
+      return;
+    }
 
     switch (event.code) {
-      case KEYCODES.ENTER:
-      case KEYCODES.SPACE:
-        /**
-         * Prevent the scrolling of the page when the space key is pressed.
-         */
-        event.preventDefault();
-        this.selectTab(tab);
-        break;
-
       case KEYCODES.LEFT:
-        this.focusTab(!this.isRtl ? this.previousTab : this.nextTab);
+        this.focusBackward();
         break;
 
       case KEYCODES.RIGHT:
-        this.focusTab(!this.isRtl ? this.nextTab : this.previousTab);
+        this.focusForward();
         break;
 
       case KEYCODES.HOME:
-        this.focusTab(this.firstTab);
+        this.focusTab(getFirstTab(this.tabs));
         break;
 
       case KEYCODES.END:
-        this.focusTab(this.lastTab);
-        break;
-
-      case KEYCODES.TAB:
-        /**
-         * Prevent the tab focus change on pressing the Tab key.
-         */
-        event.preventDefault();
-
-        /**
-         * When shift key + tab key is pressed
-         */
-        if (event.shiftKey) {
-          const backwardArrowButton = this.shadowRoot?.firstElementChild;
-          /**
-           * If the backward arrow button exists, focus on it.
-           */
-          if ((backwardArrowButton instanceof Button) && backwardArrowButton.getAttribute('direction') === 'backward') {
-            backwardArrowButton.focus();
-            return;
-          }
-
-          /**
-          * Otherwise if the element previous to the tablist exists, focus on it.
-          */
-          if ((this.previousElementSibling instanceof HTMLElement)) {
-            this.previousElementSibling.focus();
-          }
-        } else {
-          const forwardArrowButton = this.shadowRoot?.lastElementChild;
-          /**
-           * If the forward arrow button exists, focus on it.
-           */
-          if ((forwardArrowButton instanceof Button) && forwardArrowButton.getAttribute('direction') === 'forward') {
-            forwardArrowButton.focus();
-            return;
-          }
-          /**
-           * Otherwise if the element next to the tablist exists, focus on it.
-           */
-          if ((this.nextElementSibling instanceof HTMLElement)) {
-            this.nextElementSibling.focus();
-          }
-        }
-
+        this.focusTab(getLastTab(this.tabs));
         break;
 
       default:
     }
+  };
+
+  private shouldShowArrowButton(direction: ArrowButtonDirection): boolean {
+    return direction === 'forward' ? this.showForwardArrowButton : this.showBackwardArrowButton;
+  }
+
+  /**
+   * Scroll a tab into view.
+   *
+   * @param tabId - tabId of Tab to move into view
+   */
+  private scrollTabIntoView = (tabId: string): void => {
+    const tab = this.tabs && getTabById(this.tabs, tabId);
+    tab?.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'center' });
   };
 
   /**
@@ -341,37 +278,15 @@ class TabList extends Component {
    *
    * @param event - HTML Mouse Event.
    */
-  private handleClick = (event: MouseEvent): void => {
-    const eventTarget = event.target;
-    let tab;
+  private handleNestedTabActiveChange = (event: Event): void => {
+    const tab = event.target as Tab;
 
-    if ((eventTarget instanceof Tab)) {
-      tab = eventTarget;
-    } else if ((eventTarget as HTMLElement).parentElement instanceof Tab) {
-      /**
-       * If the event target is a child of tab.
-       */
-      tab = (eventTarget as HTMLElement).parentElement;
-    }
-
-    if (!(tab instanceof Tab)) { return; }
-
-    this.selectTab(tab);
-    this.scrollTabIntoview(tab);
-  };
-
-  /**
-   * When the tablist container receives focus, the first or last tab gets focused based on the direction of focus.
-   * Check if the previosly focused element is a tab, if so, do nothing.
-   * Otherwise focus on the currently active tab.
-   */
-  private handleFocus = (event: FocusEvent): void => {
-    if (!event.relatedTarget) { return; }
-
-    if (event.relatedTarget instanceof Tab) {
+    const tagName = (tab as HTMLElement).tagName.toLowerCase();
+    if (tagName !== TAG_NAME) {
       return;
     }
-    this.focusTab(this.currentActiveTab);
+
+    this.setTabActive(tab.tabId);
   };
 
   /**
@@ -379,85 +294,83 @@ class TabList extends Component {
    * corresponding to the tab list.
    */
   private handleArrowButtonVisibility = () => {
-    const firstTabLeftEdgePosition = Math.round(this.firstTab.getBoundingClientRect().left);
+    if (!this.tabs) {
+      return;
+    }
+    const firstTab = getFirstTab(this.tabs)!;
+    const lastTab = getLastTab(this.tabs)!;
+    const firstTabLeftEdgePosition = Math.round(firstTab.getBoundingClientRect().left);
     const tabListLeftEdgePosition = Math.round(this.getBoundingClientRect().left);
-    const lastTabRightEdgePosition = Math.round(this.lastTab.getBoundingClientRect().right);
+    const lastTabRightEdgePosition = Math.round(lastTab.getBoundingClientRect().right);
     const tabListRightEdgePosition = Math.round(this.getBoundingClientRect().right);
 
     // when RTL, the edges are reversed
-    const firstTabRightEdgePosition = Math.round(this.firstTab.getBoundingClientRect().right);
-    const lastTabLeftEdgePosition = Math.round(this.lastTab.getBoundingClientRect().left);
+    const firstTabRightEdgePosition = Math.round(firstTab.getBoundingClientRect().right);
+    const lastTabLeftEdgePosition = Math.round(lastTab.getBoundingClientRect().left);
 
     if (!this.isRtl) {
       if (firstTabLeftEdgePosition < tabListLeftEdgePosition) {
-        this.showArrowButtons = { backward: true };
+        this.showBackwardArrowButton = true;
       } else {
-        this.showArrowButtons = { backward: false };
+        this.showBackwardArrowButton = false;
       }
 
       if (lastTabRightEdgePosition > tabListRightEdgePosition) {
-        this.showArrowButtons = { forward: true };
+        this.showForwardArrowButton = true;
       } else {
-        this.showArrowButtons = { forward: false };
+        this.showForwardArrowButton = false;
       }
       return;
     }
 
     if (firstTabRightEdgePosition > tabListRightEdgePosition) {
-      this.showArrowButtons = { backward: true };
+      this.showBackwardArrowButton = true;
     } else {
-      this.showArrowButtons = { backward: false };
+      this.showBackwardArrowButton = false;
     }
 
     if (lastTabLeftEdgePosition < tabListLeftEdgePosition) {
-      this.showArrowButtons = { forward: true };
+      this.showForwardArrowButton = true;
     } else {
-      this.showArrowButtons = { forward: false };
+      this.showForwardArrowButton = false;
     }
   };
 
-  /**
+   /**
    * Scroll tabs forward or backward.
    */
-  private scrollTabs = (direction: ArrowButtonDirection): void => {
-    const forwardMultiplier = !this.isRtl ? 1 : -1;
-    const backwardMultiplier = !this.isRtl ? -1 : 1;
+   private scrollTabs = (direction: ArrowButtonDirection): void => {
+     const forwardMultiplier = !this.isRtl ? 1 : -1;
+     const backwardMultiplier = !this.isRtl ? -1 : 1;
 
-    this.tabsContainer.scrollBy({
-      left: this.tabsContainer.clientWidth * (direction === 'forward' ? forwardMultiplier : backwardMultiplier),
-      // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
-      behavior: 'instant',
-    });
-  };
+     this.tabsContainer?.scrollBy({
+       left: this.tabsContainer.clientWidth * (direction === 'forward' ? forwardMultiplier : backwardMultiplier),
+       behavior: 'instant',
+     });
 
-  public override render() {
-    const forwardArrowDirection = !this.isRtl ? 'right' : 'left';
-    const backwardArrowDirection = !this.isRtl ? 'left' : 'right';
+     this.handleArrowButtonVisibility();
+   };
 
-    const arrowButton = (direction: ArrowButtonDirection) => html`
-    ${this.shouldShowArrowButton(direction)
-    ? html`<mdc-button
-      direction="${direction}"
-      variant="tertiary"
-      prefix-icon="arrow-${direction === 'forward' ? forwardArrowDirection : backwardArrowDirection}-regular"
-      aria-label="Scroll tabs ${direction === 'forward' ? forwardArrowDirection : backwardArrowDirection}"
-      @click="${() => this.scrollTabs(direction)}"></mdc-button>`
-    : nothing}`;
+   public override render() {
+     const forwardArrowDirection = !this.isRtl ? 'right' : 'left';
+     const backwardArrowDirection = !this.isRtl ? 'left' : 'right';
 
-    /**
-     * Instead of using 'left' and 'right' for notation of the arrow buttons, we use 'forward' and 'backward'.
-     * This is to make the component RTL compatible.
-     * Since the elements of the tablist gets flipped in RTL layouts, the arrow buttons also flip.
-     */
-    return html`
-      ${arrowButton('backward')}
+     const arrowButton = (direction: ArrowButtonDirection) =>
+       html` ${this.shouldShowArrowButton(direction)
+         ? html`<mdc-button
+            variant="tertiary"
+            prefix-icon="arrow-${direction === 'forward' ? forwardArrowDirection : backwardArrowDirection}-regular"
+            aria-label="Scroll tabs ${direction === 'forward' ? forwardArrowDirection : backwardArrowDirection}"
+            @click="${() => this.scrollTabs(direction)}"
+          ></mdc-button>`
+         : nothing}`;
 
-      <div class="tabs_container">
+     return html` ${arrowButton('backward')}
+      <div class="container">
         <slot></slot>
       </div>
-
       ${arrowButton('forward')}`;
-  }
+   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }

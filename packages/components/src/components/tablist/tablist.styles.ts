@@ -16,7 +16,7 @@ const styles = css`
     }
   }
 
-  :host .tabs_container {
+  :host .container {
     display: flex;
     overflow-x: hidden;
     gap: var(--mdc-tablist-gap);
