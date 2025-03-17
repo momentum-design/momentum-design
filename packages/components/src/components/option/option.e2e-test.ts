@@ -44,9 +44,9 @@ test('mdc-option', async ({ componentsPage }) => {
     await optionSheet.createMarkupWithCombination({}, markUpOptions);
     optionSheet.setAttributes({ label, 'prefix-icon': icon });
     await optionSheet.createMarkupWithCombination({}, markUpOptions);
-    optionSheet.setAttributes({ label, 'prefix-icon': icon, selected: 'true' });
+    optionSheet.setAttributes({ label, 'prefix-icon': icon, selected: '' });
     await optionSheet.createMarkupWithCombination({}, markUpOptions);
-    optionSheet.setAttributes({ label, 'prefix-icon': icon, selected: 'true', disabled: 'true' });
+    optionSheet.setAttributes({ label, 'prefix-icon': icon, selected: '', disabled: '' });
     await optionSheet.createMarkupWithCombination({}, markUpOptions);
 
     await optionSheet.mountStickerSheet({ role: 'listbox' });
@@ -89,12 +89,12 @@ test('mdc-option', async ({ componentsPage }) => {
     });
 
     await test.step('should have icon on the right when the selected attribute is passed', async () => {
-      await componentsPage.setAttributes(option, { selected: 'true' });
+      await componentsPage.setAttributes(option, { selected: '' });
       await expect(option.locator('mdc-icon[slot=\'trailing-controls\']')).toHaveAttribute('name', 'check-bold');
     });
 
     await test.step('should be disabled when the disabled attribute is passed', async () => {
-      await componentsPage.setAttributes(option, { disabled: 'true' });
+      await componentsPage.setAttributes(option, { disabled: '' });
       await expect(option).toHaveAttribute('disabled');
     });
   });
