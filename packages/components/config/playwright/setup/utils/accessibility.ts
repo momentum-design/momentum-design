@@ -29,11 +29,14 @@ class Accessibility {
    * @param fileName - name of the file to attach
    */
   async attachToReport(fileName: string) {
+    const reportPath = `./${fileName}`;
     await this.testInfo.attach(fileName, {
-      path: `./${fileName}`,
+      path: reportPath,
     });
 
-    fs.unlinkSync(`./${fileName}`);
+    if (fs.existsSync(reportPath)) {
+      fs.unlinkSync(reportPath);
+    }
   }
 
   /**
