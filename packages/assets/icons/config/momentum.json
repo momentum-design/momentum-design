@@ -297,6 +297,7 @@
           "format": {
             "type": "LIT",
             "config": {
+              "partName": "icon",
               "hbsPath": "./config/templates/lit.ts.hbs"
             }
           }

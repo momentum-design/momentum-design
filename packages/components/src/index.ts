@@ -4,6 +4,7 @@ import Badge from './components/badge';
 import Bullet from './components/bullet';
 import Button from './components/button';
 import Checkbox from './components/checkbox';
+import Coachmark from './components/coachmark';
 import Divider from './components/divider';
 import FormfieldGroup from './components/formfieldgroup';
 import Icon from './components/icon';
@@ -22,10 +23,12 @@ import Tab from './components/tab';
 import Text from './components/text';
 import ThemeProvider from './components/themeprovider';
 import Toggle from './components/toggle';
+import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
 import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
 import Option from './components/option';
 import OptGroup from './components/optgroup';
+import Textarea from './components/textarea';
 
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
 import type { TextType } from './components/text/text.types';
@@ -37,6 +40,7 @@ export {
   Bullet,
   Button,
   Checkbox,
+  Coachmark,
   Divider,
   FormfieldGroup,
   Icon,
@@ -58,6 +62,8 @@ export {
   VirtualizedList,
   Option,
   OptGroup,
+  Textarea,
+  Tooltip,
 };
 export type {
   TextType,
