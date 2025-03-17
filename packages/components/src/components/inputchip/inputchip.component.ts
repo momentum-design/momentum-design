@@ -67,7 +67,7 @@ class InputChip extends IconNameMixin(DisabledMixin(Component)) {
 
   /**
    * Handles the behavior of the close button on click event.
-   * @param event The event object.
+   * @param event - The event object.
    */
   private handleClose(event: Event) {
     event.stopPropagation(); // Prevents triggering click event twice
