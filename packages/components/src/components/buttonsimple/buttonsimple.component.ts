@@ -97,7 +97,6 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
     super.update(changedProperties);
 
     if (changedProperties.has('disabled')) {
-      console.log('disabled');
       this.setDisabled(this, this.disabled);
     }
     if (changedProperties.has('softDisabled')) {
@@ -200,6 +199,9 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
       this.classList.add('pressed');
       if (event.key === 'Enter') {
         this.triggerClickEvent();
+      }
+      if (event.key === ' ') {
+        event.preventDefault();
       }
     }
   }
