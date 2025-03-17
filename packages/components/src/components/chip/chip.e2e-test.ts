@@ -13,26 +13,33 @@ type SetupOptions = {
   iconName?: IconNames;
   color?: ColorType;
   disabled?: boolean;
+  secondChipForFocus?: boolean;
 }
 
 const setup = async (args: SetupOptions) => {
-  const { componentsPage, label, iconName, color, disabled } = args;
+  const { componentsPage, ...restArgs } = args;
 
   await componentsPage.mount({
     html: `
+    ${restArgs.secondChipForFocus ? '<div id="wrapper">' : ''}
       <mdc-chip
-        label="${label}"
-        icon-name="${iconName}"
-        color="${color}"
-        ?disabled="${disabled}"
+        label="${restArgs.label}"
+        ${restArgs.iconName ? `icon-name="${restArgs.iconName}"` : ''}
+        ${restArgs.color ? `color="${restArgs.color}"` : ''}
+        ${restArgs.disabled ? 'disabled' : ''}
       />
+      ${restArgs.secondChipForFocus ? '<mdc-chip label="Chip"></mdc-chip></div>' : ''}
     `,
     clearDocument: true,
   });
 
-  const chip = componentsPage.page.locator('mdc-chip');
-  await chip.waitFor();
-  return chip;
+  const element = restArgs.secondChipForFocus
+    ? componentsPage.page.locator('div#wrapper')
+    : componentsPage.page.locator('mdc-chip');
+  await element.waitFor();
+
+  const firstChip = await componentsPage.page.locator('mdc-chip').first();
+  return firstChip;
 };
 
 test('mdc-chip', async ({ componentsPage }) => {
@@ -104,23 +111,32 @@ test('mdc-chip', async ({ componentsPage }) => {
    * INTERACTIONS
    */
   await test.step('interactions', async () => {
-    await test.step('mouse/pointer', async () => {
-      await test.step('component should fire callback x when clicking on it', async () => {
-        // TODO: add test here
+    const chip = await setup({ componentsPage, label: 'Label', secondChipForFocus: true });
+
+    await componentsPage.page.evaluate(() => {
+      const chip = document.getElementsByTagName('mdc-chip')[0];
+      chip.addEventListener('click', () => {
+        chip.classList.toggle('chip-listener');
       });
+      (chip as HTMLElement).onclick = () => {
+        chip.classList.toggle('chip-onclick');
+      };
     });
 
     await test.step('focus', async () => {
       await test.step('component should be focusable with tab', async () => {
-        // TODO: add test here
+        await componentsPage.actionability.pressTab();
+        await expect(chip).toBeFocused();
+        await componentsPage.actionability.pressTab();
+        await expect(chip).not.toBeFocused();
       });
-
-      // add additional tests here, like tabbing through several parts of the component
     });
 
     await test.step('keyboard', async () => {
       await test.step('component should fire callback x when pressing y', async () => {
-        // TODO: add test here
+        await componentsPage.actionability.pressTab();
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(chip).toHaveClass('chip-listener chip-onclick');
       });
     });
   });
