@@ -18,12 +18,12 @@ const render = (args: Args) => html`
   ?disabled="${args.disabled}"></mdc-chip>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/chip/label',
+  title: 'Components/chip/label',
   tags: ['autodocs'],
   component: 'mdc-chip',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     color: {

@@ -17,12 +17,12 @@ const render = (args: Args) => html`
   ></mdc-filterchip>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/chip/filter',
+  title: 'Components/chip/filter',
   tags: ['autodocs'],
   component: 'mdc-filterchip',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     label: {
