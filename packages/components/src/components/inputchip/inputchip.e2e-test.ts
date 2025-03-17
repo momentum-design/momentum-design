@@ -83,7 +83,10 @@ test('mdc-inputchip', async ({ componentsPage }) => {
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
-    const inputchip = await setup({ componentsPage, label: 'Label', clearAriaLabel: 'Clear' });
+    const inputchip = await setup({ componentsPage,
+      label: 'Label',
+      clearAriaLabel: 'Clear',
+      iconName: 'placeholder-bold' });
     await test.step('attribute label should be present on component by default', async () => {
       await expect(inputchip).toHaveAttribute('label', 'Label');
     });
@@ -98,6 +101,10 @@ test('mdc-inputchip', async ({ componentsPage }) => {
       await componentsPage.setAttributes(inputchip, { disabled: '' });
       await expect(inputchip).toHaveAttribute('disabled');
       await componentsPage.removeAttribute(inputchip, 'disabled');
+    });
+
+    await test.step('attribute icon-name should be present on component by default', async () => {
+      await expect(inputchip).toHaveAttribute('icon-name', 'placeholder-bold');
     });
   });
 
