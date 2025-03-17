@@ -399,6 +399,15 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
     });
     await textareaStickerSheet.createMarkupWithCombination({});
 
+    // textarea field with max-character-limit set to 10 & value exceeding the limit
+    await textareaStickerSheet.setAttributes({ ...attributes,
+      maxCharacterLimit: 10,
+      value: 'This is a long text',
+      helpText: 'Input must not exceed 10 characters',
+      'help-text-type': 'error',
+    });
+    await textareaStickerSheet.createMarkupWithCombination({});
+
     // disabled textarea field with value
     await textareaStickerSheet.setAttributes({ ...attributes,
       value: 'Disabled',
