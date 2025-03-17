@@ -3,8 +3,8 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
-import type { IconNames } from '../icon/icon.types';
 import { COLOR } from './chip.constants';
+import type { IconNames } from '../icon/icon.types';
 import type { ColorType } from './chip.types';
 
 type SetupOptions = {

@@ -1,10 +1,12 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import type { IconNames } from '../icon/icon.types';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
   label: string;
+  iconName?: IconNames;
   error?: boolean;
   disabled?: boolean;
   clearAriaLabel: string;
@@ -47,6 +49,19 @@ test('mdc-inputchip', async ({ componentsPage }) => {
     inputchipStickerSheet.setAttributes({ label: 'Label', error: '', 'clear-aria-label': 'Clear' });
     await inputchipStickerSheet.createMarkupWithCombination({});
     inputchipStickerSheet.setAttributes({ label: 'Label', disabled: '', 'clear-aria-label': 'Clear' });
+    inputchipStickerSheet.setAttributes({ label: 'Label',
+      'clear-aria-label': 'Clear',
+      'icon-name': 'placeholder-bold' });
+    await inputchipStickerSheet.createMarkupWithCombination({});
+    inputchipStickerSheet.setAttributes({ label: 'Label',
+      error: '',
+      'clear-aria-label': 'Clear',
+      'icon-name': 'placeholder-bold' });
+    await inputchipStickerSheet.createMarkupWithCombination({});
+    inputchipStickerSheet.setAttributes({ label: 'Label',
+      disabled: '',
+      'clear-aria-label': 'Clear',
+      'icon-name': 'placeholder-bold' });
     await inputchipStickerSheet.createMarkupWithCombination({});
     await inputchipStickerSheet.mountStickerSheet({
       wrapperStyle: 'display: flex; flex-direction: column; gap: 0.5rem',
@@ -95,6 +110,7 @@ test('mdc-inputchip', async ({ componentsPage }) => {
       label: 'Label',
       clearAriaLabel: 'Clear',
       secondChipForFocus: true });
+    const btn = inputchip.locator('mdc-button');
 
     await componentsPage.page.evaluate(() => {
       const chip = document.getElementsByTagName('mdc-inputchip')[0];
@@ -109,16 +125,15 @@ test('mdc-inputchip', async ({ componentsPage }) => {
     await test.step('focus', async () => {
       await test.step('component should be focusable with tab', async () => {
         await componentsPage.actionability.pressTab();
-        await expect(inputchip).toBeFocused();
+        await expect(btn).toBeFocused();
         await componentsPage.actionability.pressTab();
-        await expect(inputchip).not.toBeFocused();
+        await expect(btn).not.toBeFocused();
       });
     });
 
     await test.step('mouse/pointer', async () => {
       await test.step('component should fire onclick when clicking chip', async () => {
-        await componentsPage.actionability.pressTab();
-        await componentsPage.page.click('mdc-inputchip');
+        await btn.click();
         await expect(inputchip).toHaveClass('chip-listener chip-onclick');
       });
     });
