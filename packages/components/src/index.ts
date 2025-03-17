@@ -20,6 +20,7 @@ import Popover from './components/popover';
 import Presence from './components/presence';
 import Radio from './components/radio';
 import RadioGroup from './components/radiogroup';
+import Select from './components/select';
 import Spinner from './components/spinner';
 import Tab from './components/tab';
 import Text from './components/text';
@@ -64,6 +65,7 @@ export {
   OptGroup,
   Textarea,
   Tooltip,
+  Select,
 };
 export type {
   TextType,
