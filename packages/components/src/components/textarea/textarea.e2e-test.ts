@@ -201,7 +201,6 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
         }, true);
 
         const submitButton = await form.locator('mdc-button');
-
         await submitButton.click();
         const validationMessage = await textareaElement.evaluate((element) => {
           const textarea = element as HTMLTextAreaElement;
@@ -218,30 +217,36 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
       },
     );
 
-    await test.step('component in form should be validated for character limit', async () => {
-      await setup({
-        componentsPage,
-        id: 'test-mdc-textarea',
-        placeholder: 'Placeholder',
-        requiredLabel: 'required',
-        maxCharacterLimit: 10,
-      }, true);
+    await test.step(
+      'component in form should be validated for max character limit',
+      async () => {
+        const form = await setup({
+          componentsPage,
+          id: 'test-mdc-textarea',
+          placeholder: 'Placeholder',
+          requiredLabel: 'required',
+          maxCharacterLimit: 11,
+          helpText: 'Input must not exceed 11 characters',
+          helpTextType: 'error',
+          value: 'This is a long text',
+        }, true);
 
-      const characterCounter = await mdcTextarea.locator('mdc-text[part="character-counter"]');
-      await textareaElement.fill('This is a long text');
-      await expect(characterCounter).toHaveText('19/10');
+        const submitButton = await form.locator('mdc-button');
+        await submitButton.click();
+        const validationMessage = await textareaElement.evaluate((element) => {
+          const textarea = element as HTMLTextAreaElement;
+          return textarea.validationMessage;
+        });
 
-      const validationMessage = await textareaElement.evaluate((element) => {
-        const textarea = element as HTMLTextAreaElement;
-        return textarea.validationMessage;
-      });
-      expect(validationMessage).toContain(' ');
+        expect(validationMessage).toContain('Input must not exceed 11 characters');
 
-      // update character limit to pass validation
-      await textareaElement.fill('short text');
-      await expect(characterCounter).toHaveText('10/10');
-      expect(validationMessage).toContain('');
-    });
+        await textareaElement.fill('short text');
+        await componentsPage.removeAttribute(mdcTextarea, 'help-text-type');
+        await componentsPage.removeAttribute(mdcTextarea, 'help-text');
+        await expect(textareaElement).toHaveValue('short text');
+        expect(validationMessage).toContain('');
+      },
+    );
   });
 
   /**
