@@ -5,6 +5,7 @@ import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { VARIANTS } from './alertchip.constants';
 import type { VariantType } from './alertchip.types';
+import { getAlertIcon } from './alertchip.utils';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -73,6 +74,11 @@ test('mdc-alertchip', async ({ componentsPage }) => {
       await test.step(`attribute variant should be set to ${variant}`, async () => {
         await componentsPage.setAttributes(alertchip, { variant });
         await expect(alertchip).toHaveAttribute('variant', variant);
+        const iconEl = alertchip.locator('mdc-icon[part="icon"]');
+        const icon = getAlertIcon(variant);
+        if (icon) {
+          await expect(iconEl).toHaveAttribute('name', icon);
+        }
         await componentsPage.removeAttribute(alertchip, 'variant');
       });
     }
