@@ -36,6 +36,7 @@ import Textarea from './components/textarea';
 
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
 import type { TextType } from './components/text/text.types';
+import type { PopoverPlacement } from './components/popover/popover.types';
 
 export {
   AlertChip,
@@ -77,5 +78,6 @@ export type {
   TextType,
   SpinnerSize,
   SpinnerVariant,
+  PopoverPlacement,
 };
 export { inMemoryCache, webAPIIconsCache };
