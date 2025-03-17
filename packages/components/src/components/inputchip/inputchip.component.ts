@@ -25,9 +25,9 @@ import { DEFAULTS } from './inputchip.constants';
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the close button.
  * @event focus - (React: onFocus) This event is dispatched when the close button receives focus.
  *
- * @cssprop --mdc-chip-color - The color of the chip.
- * @cssprop --mdc-chip-border-color - The border color of the chip.
- * @cssprop --mdc-chip-background-color - The background color of the chip.
+ * @cssproperty --mdc-chip-color - The color of the chip.
+ * @cssproperty --mdc-chip-border-color - The border color of the chip.
+ * @cssproperty --mdc-chip-background-color - The background color of the chip.
  *
  */
 class InputChip extends IconNameMixin(DisabledMixin(Component)) {

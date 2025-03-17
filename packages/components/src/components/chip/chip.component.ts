@@ -23,9 +23,9 @@ import Buttonsimple from '../buttonsimple/buttonsimple.component';
  * @dependency mdc-icon
  * @dependency mdc-text
  *
- * @cssprop --mdc-chip-color - The color of the chip.
- * @cssprop --mdc-chip-border-color - The border color of the chip.
- * @cssprop --mdc-chip-background-color - The background color of the chip.
+ * @cssproperty --mdc-chip-color - The color of the chip.
+ * @cssproperty --mdc-chip-border-color - The border color of the chip.
+ * @cssproperty --mdc-chip-background-color - The background color of the chip.
  *
  */
 class Chip extends IconNameMixin(Buttonsimple) {

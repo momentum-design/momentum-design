@@ -20,10 +20,10 @@ import Buttonsimple from '../buttonsimple/buttonsimple.component';
  * @dependency mdc-icon
  * @dependency mdc-text
  *
- * @cssprop --mdc-chip-color - The color of the label text
- * @cssprop --mdc-chip-icon-color - The color of the icon
- * @cssprop --mdc-chip-border-color - The border color of the alertchip
- * @cssprop --mdc-chip-background-color - The background color of the alertchip
+ * @cssproperty --mdc-chip-color - The color of the label text
+ * @cssproperty --mdc-chip-icon-color - The color of the icon
+ * @cssproperty --mdc-chip-border-color - The border color of the alertchip
+ * @cssproperty --mdc-chip-background-color - The background color of the alertchip
  *
  */
 class AlertChip extends Buttonsimple {
