@@ -103,8 +103,7 @@ test('mdc-filterchip', async ({ componentsPage }) => {
 
     await test.step('mouse/pointer', async () => {
       await test.step('component should fire onclick when clicking chip', async () => {
-        await componentsPage.actionability.pressTab();
-        await componentsPage.page.click('mdc-filterchip');
+        await filterchip.click();
         await expect(filterchip).toHaveAttribute('selected');
       });
     });

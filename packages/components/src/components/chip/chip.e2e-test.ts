@@ -136,8 +136,7 @@ test('mdc-chip', async ({ componentsPage }) => {
 
     await test.step('mouse/pointer', async () => {
       await test.step('component should fire onclick when clicking chip', async () => {
-        await componentsPage.actionability.pressTab();
-        await componentsPage.page.click('mdc-chip');
+        await chip.click();
         await expect(chip).toHaveClass('chip-listener chip-onclick');
       });
     });
