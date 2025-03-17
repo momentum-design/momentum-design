@@ -1,36 +1,56 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
+import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { VARIANTS } from './alertchip.constants';
 import type { VariantType } from './alertchip.types';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
   label: string;
   variant?: VariantType;
+  secondChipForFocus?: boolean;
 }
 
 const setup = async (args: SetupOptions) => {
-  const { componentsPage, label, variant } = args;
+  const { componentsPage, ...restArgs } = args;
 
   await componentsPage.mount({
     html: `
+      ${restArgs.secondChipForFocus ? '<div id="wrapper">' : ''}
       <mdc-alertchip
-        label="${label}"
-        variant="${variant}"
-      />
+        label="${restArgs.label}"
+        ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
+      ></mdc-alertchip>
+      ${restArgs.secondChipForFocus ? '<mdc-alertchip label="Chip"></mdc-alertchip></div>' : ''}
     `,
     clearDocument: true,
   });
 
-  const alertchip = componentsPage.page.locator('mdc-alertchip');
-  await alertchip.waitFor();
-  return alertchip;
+  const element = restArgs.secondChipForFocus
+    ? componentsPage.page.locator('div#wrapper')
+    : componentsPage.page.locator('mdc-alertchip');
+  await element.waitFor();
+
+  const firstChip = await componentsPage.page.locator('mdc-alertchip').first();
+  return firstChip;
 };
 
 test('mdc-alertchip', async ({ componentsPage }) => {
-  const alertchip = await setup({ componentsPage, label: 'Alertchip' });
-
-  // initial check for the alertchip be visible on the screen:
-  await alertchip.waitFor();
+  /**
+   * VISUAL REGRESSION
+   */
+  await test.step('visual-regression', async () => {
+    const alertchipStickerSheet = new StickerSheet(componentsPage, 'mdc-alertchip');
+    alertchipStickerSheet.setAttributes({ label: 'Alert' });
+    await alertchipStickerSheet.createMarkupWithCombination({ variant: VARIANTS });
+    await alertchipStickerSheet.mountStickerSheet();
+    const container = alertchipStickerSheet.getWrapperContainer();
+    await test.step('matches screenshot of element', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-alertchip', { element: container });
+    });
+  });
 
   /**
    * ACCESSIBILITY
@@ -40,48 +60,62 @@ test('mdc-alertchip', async ({ componentsPage }) => {
   });
 
   /**
-   * VISUAL REGRESSION
-   */
-  await test.step('visual-regression', async () => {
-    await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-alertchip', { element: alertchip });
-    });
-  });
-
-  /**
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
+    const alertchip = await setup({ componentsPage, label: 'Alertchip' });
+
     await test.step('attribute label should be present on component by default', async () => {
       await expect(alertchip).toHaveAttribute('label', 'Alertchip');
     });
 
-    await test.step('attribute variant should be present on component by default', async () => {
-      await expect(alertchip).toHaveAttribute('variant', 'info');
-    });
+    for (const variant of Object.values(VARIANTS)) {
+      await test.step(`attribute variant should be set to ${variant}`, async () => {
+        await componentsPage.setAttributes(alertchip, { variant });
+        await expect(alertchip).toHaveAttribute('variant', variant);
+        await componentsPage.removeAttribute(alertchip, 'variant');
+      });
+    }
   });
 
   /**
    * INTERACTIONS
    */
   await test.step('interactions', async () => {
-    await test.step('mouse/pointer', async () => {
-      await test.step('component should fire callback x when clicking on it', async () => {
-        // TODO: add test here
+    const alertchip = await setup({ componentsPage, label: 'Label', secondChipForFocus: true });
+
+    await componentsPage.page.evaluate(() => {
+      const alertchip = document.getElementsByTagName('mdc-alertchip')[0];
+      alertchip.addEventListener('click', () => {
+        alertchip.classList.toggle('alertchip-listener');
       });
+      (alertchip as HTMLElement).onclick = () => {
+        alertchip.classList.toggle('alertchip-onclick');
+      };
     });
 
     await test.step('focus', async () => {
       await test.step('component should be focusable with tab', async () => {
-        // TODO: add test here
+        await componentsPage.actionability.pressTab();
+        await expect(alertchip).toBeFocused();
+        await componentsPage.actionability.pressTab();
+        await expect(alertchip).not.toBeFocused();
       });
+    });
 
-      // add additional tests here, like tabbing through several parts of the component
+    await test.step('mouse/pointer', async () => {
+      await test.step('component should fire onclick when clicking chip', async () => {
+        await componentsPage.actionability.pressTab();
+        await componentsPage.page.click('mdc-alertchip');
+        await expect(alertchip).toHaveClass('alertchip-listener alertchip-onclick');
+      });
     });
 
     await test.step('keyboard', async () => {
-      await test.step('component should fire callback x when pressing y', async () => {
-        // TODO: add test here
+      await test.step('component should fire onclick when pressing enter', async () => {
+        await componentsPage.actionability.pressTab();
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(alertchip).toHaveClass('alertchip-listener alertchip-onclick');
       });
     });
   });

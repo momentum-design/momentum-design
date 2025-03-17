@@ -1,18 +1,60 @@
-import { test } from '../../../config/playwright/setup';
+import { expect } from '@playwright/test';
+import { ComponentsPage, test } from '../../../config/playwright/setup';
+import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
-test.beforeEach(async ({ componentsPage }) => {
+type SetupOptions = {
+  componentsPage: ComponentsPage;
+  label: string;
+  selected?: boolean;
+  disabled?: boolean;
+  secondChipForFocus?: boolean;
+}
+
+const setup = async (args: SetupOptions) => {
+  const { componentsPage, ...restArgs } = args;
+
   await componentsPage.mount({
     html: `
-        <mdc-filterchip />
-      `,
+    ${restArgs.secondChipForFocus ? '<div id="wrapper">' : ''}
+      <mdc-filterchip
+        label="${restArgs.label}"
+        ${restArgs.selected ? 'selected' : ''}
+        ${restArgs.disabled ? 'disabled' : ''}
+      ></mdc-filterchip>
+      ${restArgs.secondChipForFocus ? '<mdc-filterchip label="Chip"></mdc-filterchip></div>' : ''}
+    `,
+    clearDocument: true,
   });
-});
 
-test.skip('mdc-filterchip', async ({ componentsPage }) => {
-  const filterchip = componentsPage.page.locator('mdc-filterchip');
+  const element = restArgs.secondChipForFocus
+    ? componentsPage.page.locator('div#wrapper')
+    : componentsPage.page.locator('mdc-filterchip');
+  await element.waitFor();
 
-  // initial check for the filterchip be visible on the screen:
-  await filterchip.waitFor();
+  const firstChip = await componentsPage.page.locator('mdc-filterchip').first();
+  return firstChip;
+};
+
+test('mdc-filterchip', async ({ componentsPage }) => {
+  /**
+   * VISUAL REGRESSION
+   */
+  await test.step('visual-regression', async () => {
+    const filterChipStickerSheet = new StickerSheet(componentsPage, 'mdc-filterchip');
+    filterChipStickerSheet.setAttributes({ label: 'Label' });
+    await filterChipStickerSheet.createMarkupWithCombination({});
+    filterChipStickerSheet.setAttributes({ label: 'Label', selected: '' });
+    await filterChipStickerSheet.createMarkupWithCombination({});
+    filterChipStickerSheet.setAttributes({ label: 'Label', disabled: '' });
+    await filterChipStickerSheet.createMarkupWithCombination({});
+    await filterChipStickerSheet.mountStickerSheet({
+      wrapperStyle: 'display: flex; flex-direction: column; gap: 0.5rem',
+    });
+    const container = filterChipStickerSheet.getWrapperContainer();
+    await test.step('matches screenshot of element', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-filterchip', { element: container });
+    });
+  });
 
   /**
    * ACCESSIBILITY
@@ -22,20 +64,25 @@ test.skip('mdc-filterchip', async ({ componentsPage }) => {
   });
 
   /**
-   * VISUAL REGRESSION
-   */
-  await test.step('visual-regression', async () => {
-    await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-filterchip', { element: filterchip });
-    });
-  });
-
-  /**
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
-    await test.step('attribute X should be present on component by default', async () => {
-      // TODO: add test here
+    const filterchip = await setup({ componentsPage, label: 'Label' });
+
+    await test.step('attribute label should be present on component by default', async () => {
+      await expect(filterchip).toHaveAttribute('label', 'Label');
+    });
+
+    await test.step('attribute selected should be set on component', async () => {
+      await componentsPage.setAttributes(filterchip, { selected: '' });
+      await expect(filterchip).toHaveAttribute('selected');
+      await componentsPage.removeAttribute(filterchip, 'selected');
+    });
+
+    await test.step('attribute disabled should be set on component', async () => {
+      await componentsPage.setAttributes(filterchip, { disabled: '' });
+      await expect(filterchip).toHaveAttribute('disabled');
+      await componentsPage.removeAttribute(filterchip, 'disabled');
     });
   });
 
@@ -43,23 +90,30 @@ test.skip('mdc-filterchip', async ({ componentsPage }) => {
    * INTERACTIONS
    */
   await test.step('interactions', async () => {
-    await test.step('mouse/pointer', async () => {
-      await test.step('component should fire callback x when clicking on it', async () => {
-        // TODO: add test here
-      });
-    });
+    const filterchip = await setup({ componentsPage, label: 'Label', secondChipForFocus: true });
 
     await test.step('focus', async () => {
       await test.step('component should be focusable with tab', async () => {
-        // TODO: add test here
+        await componentsPage.actionability.pressTab();
+        await expect(filterchip).toBeFocused();
+        await componentsPage.actionability.pressTab();
+        await expect(filterchip).not.toBeFocused();
       });
+    });
 
-      // add additional tests here, like tabbing through several parts of the component
+    await test.step('mouse/pointer', async () => {
+      await test.step('component should fire onclick when clicking chip', async () => {
+        await componentsPage.actionability.pressTab();
+        await componentsPage.page.click('mdc-filterchip');
+        await expect(filterchip).toHaveAttribute('selected');
+      });
     });
 
     await test.step('keyboard', async () => {
-      await test.step('component should fire callback x when pressing y', async () => {
-        // TODO: add test here
+      await test.step('component should fire onclick when pressing enter', async () => {
+        await componentsPage.actionability.pressTab();
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(filterchip).toHaveAttribute('selected');
       });
     });
   });

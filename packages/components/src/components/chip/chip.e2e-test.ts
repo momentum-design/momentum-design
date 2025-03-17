@@ -27,7 +27,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.iconName ? `icon-name="${restArgs.iconName}"` : ''}
         ${restArgs.color ? `color="${restArgs.color}"` : ''}
         ${restArgs.disabled ? 'disabled' : ''}
-      />
+      ></mdc-chip>
       ${restArgs.secondChipForFocus ? '<mdc-chip label="Chip"></mdc-chip></div>' : ''}
     `,
     clearDocument: true,
@@ -61,7 +61,9 @@ test('mdc-chip', async ({ componentsPage }) => {
     chipStickerSheet.setAttributes({ label: 'Disabled', 'icon-name': 'placeholder-bold', disabled: '' });
     await chipStickerSheet.createMarkupWithCombination({});
 
-    await chipStickerSheet.mountStickerSheet();
+    await chipStickerSheet.mountStickerSheet({
+      wrapperStyle: 'display: flex; flex-direction: column; gap: 0.5rem',
+    });
     const container = await chipStickerSheet.getWrapperContainer();
     await test.step('matches screenshot of element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-chip', { element: container });
@@ -132,8 +134,16 @@ test('mdc-chip', async ({ componentsPage }) => {
       });
     });
 
+    await test.step('mouse/pointer', async () => {
+      await test.step('component should fire onclick when clicking chip', async () => {
+        await componentsPage.actionability.pressTab();
+        await componentsPage.page.click('mdc-chip');
+        await expect(chip).toHaveClass('chip-listener chip-onclick');
+      });
+    });
+
     await test.step('keyboard', async () => {
-      await test.step('component should fire callback x when pressing y', async () => {
+      await test.step('component should fire onclick when pressing enter', async () => {
         await componentsPage.actionability.pressTab();
         await componentsPage.page.keyboard.press('Enter');
         await expect(chip).toHaveClass('chip-listener chip-onclick');
