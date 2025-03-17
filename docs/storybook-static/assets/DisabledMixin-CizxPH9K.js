@@ -1,0 +1,1 @@
+import{n as i}from"./index-C9z9WAEj.js";var l=Object.defineProperty,o=(s,r,t,d)=>{for(var e=void 0,n=s.length-1,a;n>=0;n--)(a=s[n])&&(e=a(r,t,e)||e);return e&&l(r,t,e),e};const p=s=>{class r extends s{constructor(){super(...arguments),this.disabled=!1}}return o([i({reflect:!0,type:Boolean})],r.prototype,"disabled"),r};export{p as D};
