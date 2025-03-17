@@ -30,6 +30,7 @@ import Radio from './components/radio';
 import RadioGroup from './components/radiogroup';
 import ScreenreaderAnnouncer from './components/screenreaderannouncer';
 import Searchfield from './components/searchfield';
+import Select from './components/select';
 import Spinner from './components/spinner';
 import Tab from './components/tab';
 import Text from './components/text';
@@ -96,6 +97,7 @@ export {
   Searchfield,
   Brandvisual,
   Appheader,
+  Select,
 };
 // Types Exports
 export type {
