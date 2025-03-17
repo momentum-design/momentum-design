@@ -21,6 +21,7 @@ const setup = async (args: SetupOptions) => {
     <mdc-inputchip
       label="${restArgs.label}"
       clear-aria-label="${restArgs.clearAriaLabel}"
+      ${restArgs.iconName ? `icon-name="${restArgs.iconName}"` : ''}
       ${restArgs.error ? 'error' : ''}
       ${restArgs.disabled ? 'disabled' : ''}
     ></mdc-inputchip>
