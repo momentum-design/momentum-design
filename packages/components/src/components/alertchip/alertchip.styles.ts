@@ -23,7 +23,7 @@ const styles = css`
     color: var(--mdc-chip-color);
   }
 
-  :host([variant="neutral"])::part(icon){
+  :host::part(icon){
     color: var(--mdc-chip-icon-color);
   }
   
