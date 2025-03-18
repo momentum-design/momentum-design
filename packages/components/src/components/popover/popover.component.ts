@@ -299,7 +299,7 @@ class Popover extends FocusTrapMixin(Component) {
   private setupTriggerListener() {
     if (!this.triggerID) return;
 
-    this.triggerElement = (this.getRootNode() as Document | ShadowRoot).querySelector(`#${this.triggerID}`);
+    this.triggerElement = (this.getRootNode() as Document | ShadowRoot).querySelector(`[id="${this.triggerID}"]`);
     if (!this.triggerElement) return;
 
     if (this.trigger === 'mouseenter') {
@@ -357,7 +357,7 @@ class Popover extends FocusTrapMixin(Component) {
     super.updated(changedProperties);
 
     if (changedProperties.has('visible')) {
-      const oldValue = changedProperties.get('visible') as boolean;
+      const oldValue = (changedProperties.get('visible') as boolean | undefined) || false;
       await this.isOpenUpdated(oldValue, this.visible);
     }
     if (changedProperties.has('placement')) {
