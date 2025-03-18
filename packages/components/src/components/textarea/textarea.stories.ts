@@ -45,12 +45,12 @@ const render = (args: Args) => html`<mdc-textarea
   ></mdc-textarea>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/textarea',
+  title: 'Components/textarea',
   tags: ['autodocs'],
   component: 'mdc-textarea',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     ...classArgType,
