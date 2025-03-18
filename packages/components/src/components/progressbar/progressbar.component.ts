@@ -1,0 +1,145 @@
+import { CSSResult, html, nothing } from 'lit';
+import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import styles from './progressbar.styles';
+import FormfieldWrapper from '../formfieldwrapper';
+import { DEFAULTS, VARIANT } from './progressbar.constants';
+import { Variant } from './progressbar.types';
+import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
+import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
+
+/**
+ * mdc-progressbar component visually represents a progress indicator, typically used to show
+ * the completion state of an ongoing process (e.g., loading, file upload, etc.).
+ * It contains an optional label and an optional helper text.
+ *
+ * - It supports mainly two types: Default and Inline
+ * - It supports three validation variants: Default, Success and Error.
+ *
+ * This component is created by extending FormfieldWrapper.
+ *
+ * @tagname mdc-progressbar
+ *
+ * @dependency mdc-icon
+ * @dependency mdc-text
+ *
+ * @cssproperty --mdc-progressbar-default-background-color - Background color of the progressbar when inactive.
+ * @cssproperty --mdc-progressbar-default-active-background-color - Background color of the progressbar when active.
+ * @cssproperty --mdc-progressbar-success-background-color - Background color of the progressbar when in success state.
+ * @cssproperty --mdc-progressbar-error-background-color - Background color of the progressbar when in error state.
+ * @cssproperty --mdc-progressbar-height - The height of the progressbar.
+ * @cssproperty --mdc-progressbar-border-radius - The border radius of the progressbar.
+ * @cssproperty --mdc-progressbar-label-color - Color of the progressbar label text.
+ * @cssproperty --mdc-progressbar-label-lineheight - Line height of the label text.
+ * @cssproperty --mdc-progressbar-label-fontsize - Font size of the label text.
+ * @cssproperty --mdc-progressbar-label-fontweight - Font weight of the label text.
+ * @cssproperty --mdc-progressbar-help-text-color - Color of the help text.
+ */
+class Progressbar extends DataAriaLabelMixin(FormfieldWrapper) {
+  /**
+   * Types of the progressbar
+   * - **Default**
+   * - **Inline**
+   *
+   * @default default
+   */
+  @property({ type: String, reflect: true })
+  variant: Variant = DEFAULTS.VARIANT;
+
+  /**
+   * The current progress as a percentage, 0 to 100.
+   * The value will be clamped between 0 and 100.
+   * @default 0
+   */
+  @property({ type: String, reflect: true })
+  value: string = '0';
+
+  /**
+   * Define error state of the progressbar
+   * - **true**
+   * - **false**
+   * @default false
+   */
+  @property({ type: Boolean, attribute: 'error' }) error = false;
+
+  constructor() {
+    super();
+    this.id = '';
+    this.disabled = undefined as unknown as boolean;
+  }
+
+  /**
+   * Ensures that the value is clamped between 0 and 100
+   * @returns The clamped value
+   */
+  private get clampedValue() {
+    const value = Number(this.value);
+    const clampedValue = Number.isNaN(value) ? 0 : Math.max(0, Math.min(100, value));
+    return clampedValue;
+  }
+
+  /**
+   * Determines the validation state (success, error, or default) based on progress value and error state.
+   * @returns The appropriate validation state for the progressbar.
+   */
+  private getValidationVariant() {
+    if (this.error) {
+      this.helpTextType = VALIDATION.ERROR;
+    } else if (this.clampedValue === 100) {
+      this.helpTextType = VALIDATION.SUCCESS;
+    } else {
+      this.helpTextType = VALIDATION.DEFAULT;
+    }
+    return this.helpTextType;
+  }
+
+  /**
+   * Renders the progress bar with dynamic width and variant styles.
+   * @returns The rendered HTML for the progress bar.
+   */
+  private renderProgressbar = () => {
+    const variant = this.getValidationVariant();
+    const isGap = this.clampedValue > 0 && this.clampedValue < 100;
+    const progressWidth = this.error ? '100' : `${this.clampedValue}`;
+    return html`
+      <div
+        part="progress-container ${isGap ? 'gap' : ''}"
+        role="progressbar"
+        aria-valuenow="${this.clampedValue}"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-label="${this.dataAriaLabel ?? ''}"
+        title="${ifDefined(this.dataAriaLabel || this.label)}"
+      >
+        <div part="progress-bar ${variant}" style="width: ${progressWidth}%"></div>
+        <div part="remaining"></div>
+      </div>
+    `;
+  };
+
+  /**
+   * Renders the component based on the variant (inline or default).
+   * @returns The rendered HTML for the component.
+   */
+  public override render() {
+    const isInline = this.variant === VARIANT.INLINE;
+    return html`
+      ${isInline
+    ? html`<div part="inline-label-container">${this.renderLabel()} ${this.renderProgressbar()}</div>`
+    : html`
+            <div part="label-container">
+              ${this.renderLabel()}
+              ${this.variant === VARIANT.DEFAULT && this.label
+    ? html`<span part="percentage">${this.clampedValue}%</span>`
+    : ''}
+            </div>
+            ${this.renderProgressbar()}
+            ${this.helpText ? this.renderHelperText() : nothing}
+          `}
+    `;
+  }
+
+  public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...styles];
+}
+
+export default Progressbar;

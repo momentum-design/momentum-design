@@ -30,6 +30,7 @@ import Toggle from './components/toggle';
 import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
 import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
+import Progressbar from './components/progressbar';
 import Option from './components/option';
 import OptGroup from './components/optgroup';
 import Textarea from './components/textarea';
@@ -71,6 +72,7 @@ export {
   VirtualizedList,
   Option,
   OptGroup,
+  Progressbar,
   Textarea,
   Tooltip,
 };
