@@ -58,7 +58,7 @@ const createTrigger = (triggerID: string, text: String) => html`
 `;
 
 const render = (args: Args) => html`
-  ${createTrigger('popover-trigger', 'Click me!')}
+  ${createTrigger(args.triggerID, 'Click me!')}
   ${createPopover(args, html`<mdc-text>Lorem ipsum dolor sit amet.</mdc-text>`)}
 `;
 
