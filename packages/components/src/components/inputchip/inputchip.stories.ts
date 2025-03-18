@@ -18,12 +18,12 @@ const render = (args: Args) => html`
 ></mdc-inputchip>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/chip/input',
+  title: 'Components/chip/input',
   tags: ['autodocs'],
   component: 'mdc-inputchip',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     label: {
