@@ -25,12 +25,12 @@ const render = (args: Args) => wrapWithDiv(html`
 `);
 
 const meta: Meta = {
-  title: 'Work In Progress/optgroup',
+  title: 'Components/optgroup',
   tags: ['autodocs'],
   component: 'mdc-optgroup',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     label: {
