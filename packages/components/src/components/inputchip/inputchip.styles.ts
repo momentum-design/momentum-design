@@ -18,26 +18,10 @@ const styles = css`
     border-color: var(--mdc-chip-border-color);
     background-color: var(--mdc-chip-background-color);
   }
-
-  :host(:hover) {
-    --mdc-chip-background-color: var(--mds-color-theme-background-label-default-hover);
-  }
-  
-  :host(:active) {
-    --mdc-chip-background-color: var(--mds-color-theme-background-label-default-active);
-  }
   
   :host([error]){
     --mdc-chip-border-color: var(--mds-color-theme-outline-cancel-normal);
     --mdc-chip-background-color: var(--mds-color-theme-background-label-error-normal);
-  }
-
-  :host([error]:hover) {
-    --mdc-chip-background-color: var(--mds-color-theme-background-label-error-hover);
-  }
-
-  :host([error]:active) {
-    --mdc-chip-background-color: var(--mds-color-theme-background-label-error-active);
   }
 
   :host([disabled]), :host([disabled]:hover), :host([disabled]:active) {
