@@ -26,7 +26,7 @@ const render = (args: Args) => wrapWithDiv(html`
 `);
 
 const meta: Meta = {
-  title: 'Components/avatar',
+  title: 'Components/option',
   tags: ['autodocs'],
   component: 'mdc-option',
   render,
