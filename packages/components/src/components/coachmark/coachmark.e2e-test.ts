@@ -1,4 +1,4 @@
-import { expect, Page } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import Coachmark from './coachmark.component';
 
@@ -57,8 +57,8 @@ test('mdc-coachmark', async ({ componentsPage }) => {
       // to capture the position of the coachmark relative to the anchor element as well
       const wrapper = componentsPage.page.locator('#wrapper');
       // wait 200ms before switching from RTL to LTR to make sure tooltip repaints as well
-      const assertionAfterSwitchingDirection = async (page: Page) => {
-        await page.waitForTimeout(200);
+      const assertionAfterSwitchingDirection = async () => {
+        await setup({ componentsPage, open: true });
       };
       await componentsPage.visualRegression.takeScreenshot('mdc-coachmark', {
         element: wrapper,
