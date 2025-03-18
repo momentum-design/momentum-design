@@ -58,7 +58,10 @@ test('mdc-coachmark', async ({ componentsPage }) => {
       const wrapper = componentsPage.page.locator('#wrapper');
       // wait 200ms before switching from RTL to LTR to make sure tooltip repaints as well
       const assertionAfterSwitchingDirection = async (page: Page) => {
-        await page.waitForTimeout(200);
+        await page.evaluate(() => {
+          (document.getElementById('coachmark') as Coachmark | undefined)?.showPopover();
+        });
+        await expect(page.locator('[part="popover-content"]')).toBeVisible();
       };
       await componentsPage.visualRegression.takeScreenshot('mdc-coachmark', {
         element: wrapper,
