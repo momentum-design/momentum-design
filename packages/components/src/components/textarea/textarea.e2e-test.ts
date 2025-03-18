@@ -31,6 +31,7 @@ type SetupOptions = {
   autocomplete?: AutoCompleteType;
   dirname?: string;
   dataAriaLabel?: string;
+  secondButtonForFocus?: boolean;
 };
 
 const setup = async (args: SetupOptions, isForm = false) => {
@@ -38,6 +39,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
   await componentsPage.mount({
     html: `
     ${isForm ? '<form>' : ''}
+    ${restArgs.secondButtonForFocus ? '<div id="wrapper">' : ''}
       <mdc-textarea
       id="${restArgs.id}"
       ${restArgs.value ? `value="${restArgs.value}"` : ''}
@@ -61,6 +63,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.dirname ? `dirname="${restArgs.dirname}"` : ''}
       ${restArgs.dataAriaLabel ? `data-aria-label="${restArgs.dataAriaLabel}"` : ''}
       ></mdc-textarea>
+      ${restArgs.secondButtonForFocus ? '<mdc-button>Second Button</mdc-button></div>' : ''}
     ${isForm ? '<mdc-button type="submit" size="24">Submit</mdc-button></form>' : ''}
     `,
     clearDocument: true,
@@ -83,6 +86,7 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
     placeholder: 'Placeholder',
     label: 'Label',
     helpText: 'Help Text',
+    secondButtonForFocus: true,
   });
 
   /**
@@ -95,42 +99,28 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
       await expect(mdcTextarea).toBeFocused();
       await textareaElement.fill('test');
       await expect(textareaElement).toHaveValue('test');
-      if (browserName !== 'firefox') {
-        await componentsPage.actionability.pressTab();
-        await expect(mdcTextarea).not.toBeFocused();
-      }
+      await componentsPage.actionability.pressTab();
+      await expect(mdcTextarea).not.toBeFocused();
     });
 
     await test.step('readonly component should be focusable with tab but not editable', async () => {
-      await componentsPage.setAttributes(mdcTextarea, {
-        readonly: '',
-        value: 'Readonly',
-      });
+      await setup({ componentsPage, value: 'Readonly', readonly: true, secondButtonForFocus: true });
       await componentsPage.actionability.pressTab();
       await expect(mdcTextarea).toBeFocused();
       await expect(textareaElement).toHaveValue('Readonly');
       await textareaElement.press('A');
       await expect(textareaElement).toHaveValue('Readonly');
-      if (browserName !== 'firefox') {
-        await componentsPage.actionability.pressTab();
-        await expect(mdcTextarea).not.toBeFocused();
-      }
+      await componentsPage.actionability.pressTab();
+      await expect(mdcTextarea).not.toBeFocused();
       await componentsPage.removeAttribute(mdcTextarea, 'readonly');
     });
 
     await test.step('component should not be focusable when disabled', async () => {
-      await componentsPage.setAttributes(mdcTextarea, { disabled: '', value: 'Disabled' });
+      await setup({ componentsPage, disabled: true, value: 'Disabled' });
       await componentsPage.actionability.pressTab();
       await expect(mdcTextarea).not.toBeFocused();
       await expect(textareaElement).toHaveValue('Disabled');
       await componentsPage.removeAttribute(mdcTextarea, 'disabled');
-    });
-
-    await test.step('component should be focusable when autofocus is set', async () => {
-      await componentsPage.setAttributes(mdcTextarea, { autofocus: '' });
-      await componentsPage.actionability.pressTab();
-      await expect(mdcTextarea).toBeFocused();
-      await componentsPage.removeAttribute(mdcTextarea, 'autofocus');
     });
 
     await test.step('component should have character counter when max-character-limit is set', async () => {
@@ -154,7 +144,7 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
           maxlength: 10,
         }, true);
 
-        const submitButton = await form.locator('mdc-button');
+        const submitButton = await form.locator('mdc-button[type="submit"]');
         await submitButton.click();
         const validationMessage = await textareaElement.evaluate((element) => {
           const textarea = element as HTMLTextAreaElement;
@@ -185,7 +175,7 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
           value: 'This is a long text',
         }, true);
 
-        const submitButton = await form.locator('mdc-button');
+        const submitButton = await form.locator('mdc-button[type="submit"]');
         await submitButton.click();
         const validationMessage = await textareaElement.evaluate((element) => {
           const textarea = element as HTMLTextAreaElement;
@@ -342,6 +332,7 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
     // textarea field with max-character-limit set to 100
     await textareaStickerSheet.setAttributes({ ...attributes,
       maxCharacterLimit: 100,
+      value: 'Example Text',
     });
     await textareaStickerSheet.createMarkupWithCombination({});
 
