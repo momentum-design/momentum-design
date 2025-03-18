@@ -16,7 +16,6 @@ const AUTO_CAPITALIZE = {
 
 const PREFIX_TEXT_OPTIONS = {
   MAX_LENGTH: 10,
-  HELPERTEXT: 'Prefix text should not exceed 10 characters',
   VALIDATION: VALIDATION.ERROR,
 };
 
