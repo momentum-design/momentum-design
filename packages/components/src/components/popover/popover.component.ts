@@ -22,6 +22,12 @@ import { PopoverUtils } from './popover.utils';
  *
  * @tagname mdc-popover
  *
+ *
+ * @event shown - (React: onShown) This event is dispatched when the popover is shown
+ * @event hidden - (React: onHidden) This event is dispatched when the popover is hidden
+ * @event created - (React: onCreated) This event is dispatched when the popover is created (added to the DOM)
+ * @event destroyed - (React: onDestroyed) This event is dispatched when the popover is destroyed (removed from the DOM)
+ *
  * @cssproperty --mdc-popover-arrow-border-radius - radius of the arrow border
  * @cssproperty --mdc-popover-arrow-border - border of the arrow
  * @cssproperty --mdc-popover-primary-background-color - primary background color of the popover

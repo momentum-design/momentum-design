@@ -1,6 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { action } from '@storybook/addon-actions';
 import { COLOR, POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
 import '../button';
@@ -18,9 +19,14 @@ const render = (args: Args) => html`
       ?show-arrow="${args['show-arrow']}"
       tooltip-type="${args['tooltip-type']}"
       triggerid="${args.triggerID}"
-      >${args.children}</mdc-tooltip>
+      @shown="${action('onshown')}"
+      @hidden="${action('onhidden')}"
+      @created="${action('oncreated')}"
+      @destroyed="${action('ondestroyed')}"
+      >${args.children}</mdc-tooltip
+    >
   </div>
-  `;
+`;
 
 const meta: Meta = {
   title: 'Components/tooltip',
