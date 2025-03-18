@@ -17,12 +17,12 @@ const render = (args: Args) => html`
   ></mdc-alertchip>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/chip/alert',
+  title: 'Components/chip/alert',
   tags: ['autodocs'],
   component: 'mdc-alertchip',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     variant: {
