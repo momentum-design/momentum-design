@@ -19,8 +19,6 @@ import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
  * - Textarea: It is the multi-line text input field.
  * - helper-text: It is the text that provides additional information about the textarea field.
  * - max-character-limit: It is the text that shows the character count of the textarea field.
- * - clear-button: A boolean value when marked to true represents a button that can
- *   clear the text value within the textarea field.
  * - Error, Warning, Success, Priority Help Text type: It is the text that provides additional information
  *   about the textarea field based on the validation state.
  * - limitexceeded: It is the event that is dispatched when the character limit exceeds or restored.
@@ -125,18 +123,6 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
    * The minimum number of characters that the textarea field can accept.
    */
   @property({ type: Number }) minlength?: number;
-
-  /**
-   * The clear button when set to true, shows a clear button that clears the textarea field.
-   * @default false
-   */
-  @property({ type: Boolean, attribute: 'clear-button' }) clearButton = false;
-
-  /**
-   * Aria label for the clear button. If clear button is set to true, this label is used for the clear button.
-   * @default ''
-   */
-  @property({ type: String, attribute: 'clear-aria-label' }) clearAriaLabel = '';
 
   /**
    * maximum character limit for the textarea field for character counter.
@@ -322,51 +308,6 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
       this.dispatchEvent(new EventConstructor(event.type, event));
     }
 
-    /**
-     *  Handles the keydown event of the textarea field.
-     * Clears the textarea field when the 'Enter' key is pressed.
-     * @param event - Keyboard event
-     * @returns void
-    */
-    private handleKeyDown(event: KeyboardEvent) {
-      if (['Enter'].includes(event.key)) {
-        event.preventDefault();
-        this.clearInputText();
-      }
-    }
-
-    /**
-      * Clears the textarea field.
-      * @returns void
-    */
-    private clearInputText() {
-      this.value = '';
-      this.textarea.focus();
-    }
-
-    /**
-   * Renders the clear button to clear the textarea field if the clearButton is set to true.
-   * @returns void
-   */
-    protected renderClearButton() {
-      if (!this.clearButton) {
-        return nothing;
-      }
-      return html`
-        <mdc-button
-          part='clear-button'
-          class='own-focus-ring ${!this.value ? 'hidden' : ''}'
-          prefix-icon='${DEFAULTS.CLEAR_BUTTON_ICON}'
-          variant='${DEFAULTS.CLEAR_BUTTON_VARIANT}'
-          size="${DEFAULTS.CLEAR_BUTTON_SIZE}"
-          aria-label="${this.clearAriaLabel}"
-          ?disabled=${this.disabled || this.readonly || !this.value}
-          @click=${this.clearInputText}
-          @keydown=${this.handleKeyDown}
-        ></mdc-button>
-      `;
-    }
-
     protected renderCharacterCounter() {
       if (!this.maxCharacterLimit) {
         return nothing;
@@ -422,7 +363,6 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
           aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
           aria-invalid="${this.helpTextType === 'error' ? 'true' : 'false'}"
         ></textarea>
-        ${this.renderClearButton()}
         </div>
         ${this.renderTextareaFooter()}
         `;
