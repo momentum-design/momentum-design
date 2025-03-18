@@ -56,11 +56,14 @@ const styles = [css`
 
   :host::part(textarea-container) {
     display: flex;
-    gap: 0.5rem;
     border-radius: 0.5rem;
     border: 0.0625rem solid var(--mdc-textarea-border-color);
     overflow: hidden;
     padding: 0.375rem 0.25rem 0.25rem 0.75rem;
+  }
+
+  :host(:dir(rtl))::part(textarea-container){
+    padding: 0.375rem 0.75rem 0.25rem 0.25rem;
   }
 
   :host(:not([disabled]))::part(textarea-container):hover{
