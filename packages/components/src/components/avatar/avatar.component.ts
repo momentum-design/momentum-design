@@ -61,7 +61,7 @@ class Avatar extends AvatarComponentMixin(IconNameMixin(Component)) {
    */
   private getPresenceTemplateBasedOnType(type: AvatarType): TemplateResult | typeof nothing {
     // avatar type of counter should not have presence
-    if (type === AVATAR_TYPE.COUNTER && (this.counter || this.counter === 0)) {
+    if ((type === AVATAR_TYPE.COUNTER && (this.counter || this.counter === 0)) || this.isTyping) {
       return nothing;
     }
     if (this.presence) {
