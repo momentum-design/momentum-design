@@ -23,7 +23,6 @@ type SetupOptions = {
   maxlength?: number;
   minlength?: number;
   maxCharacterLimit?: number;
-  clearButton?: boolean;
   label?: string;
   helpText?: string;
   helpTextType?: string;
@@ -32,7 +31,6 @@ type SetupOptions = {
   autocomplete?: AutoCompleteType;
   dirname?: string;
   dataAriaLabel?: string;
-  clearAriaLabel?: string;
 };
 
 const setup = async (args: SetupOptions, isForm = false) => {
@@ -57,13 +55,11 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.label ? `label="${restArgs.label}"` : ''}
       ${restArgs.helpText ? `help-text="${restArgs.helpText}"` : ''}
       ${restArgs.helpTextType ? `help-text-type="${restArgs.helpTextType}"` : ''}
-      ${restArgs.clearButton ? 'clear-button' : ''}
       ${restArgs.autocapitalize ? `autocapitalize="${restArgs.autocapitalize}"` : ''}
       ${restArgs.autofocus ? 'autofocus' : ''}
       ${restArgs.autocomplete ? `autocomplete="${restArgs.autocomplete}"` : ''}
       ${restArgs.dirname ? `dirname="${restArgs.dirname}"` : ''}
       ${restArgs.dataAriaLabel ? `data-aria-label="${restArgs.dataAriaLabel}"` : ''}
-      ${restArgs.clearAriaLabel ? `data-aria-label="${restArgs.clearAriaLabel}"` : ''}
       ></mdc-textarea>
     ${isForm ? '<mdc-button type="submit" size="24">Submit</mdc-button></form>' : ''}
     `,
@@ -109,10 +105,7 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
       await componentsPage.setAttributes(mdcTextarea, {
         readonly: '',
         value: 'Readonly',
-        'clear-button': '',
-        'clear-aria-label': 'clear',
       });
-      const trailingButton = mdcTextarea.locator('mdc-button').first();
       await componentsPage.actionability.pressTab();
       await expect(mdcTextarea).toBeFocused();
       await expect(textareaElement).toHaveValue('Readonly');
@@ -121,47 +114,8 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
       if (browserName !== 'firefox') {
         await componentsPage.actionability.pressTab();
         await expect(mdcTextarea).not.toBeFocused();
-        await expect(trailingButton).not.toBeFocused();
       }
       await componentsPage.removeAttribute(mdcTextarea, 'readonly');
-    });
-
-    await test.step('focus on textarea and clear button when value is present during interactions', async () => {
-      await componentsPage.setAttributes(mdcTextarea, {
-        'clear-button': '',
-        value: 'test',
-        'clear-aria-label': 'clear' });
-      const clearButton = mdcTextarea.locator('mdc-button[part="clear-button"]');
-      await componentsPage.actionability.pressTab();
-      await expect(clearButton).toHaveClass('own-focus-ring ');
-      await componentsPage.actionability.pressTab();
-      await expect(textareaElement).not.toBeFocused();
-      await expect(clearButton).toBeFocused();
-      await clearButton.click();
-      await expect(mdcTextarea).toBeFocused();
-      await expect(textareaElement).toHaveValue('');
-    });
-
-    await test.step('clear button will not be focusable in readonly state', async () => {
-      await componentsPage.setAttributes(mdcTextarea, {
-        value: 'this is readonly data',
-        readonly: '',
-        'clear-button': '',
-        'clear-aria-label': 'clear',
-      });
-      await componentsPage.actionability.releaseFocus(mdcTextarea);
-      const clearButton = mdcTextarea.locator('mdc-button[part="clear-button"]');
-      await expect(textareaElement).toHaveValue('this is readonly data');
-      await expect(clearButton).toHaveClass('own-focus-ring ');
-      await componentsPage.actionability.pressTab();
-      await expect(mdcTextarea).toBeFocused();
-      await componentsPage.actionability.pressTab();
-      // tabbing should not focus on clear button
-      await componentsPage.actionability.pressTab();
-      // disabled when textarea is in readonly state
-      await expect(clearButton).not.toBeFocused();
-      await componentsPage.removeAttribute(mdcTextarea, 'readonly');
-      await componentsPage.removeAttribute(mdcTextarea, 'clear-buton');
     });
 
     await test.step('component should not be focusable when disabled', async () => {
@@ -378,14 +332,6 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
       'help-text-type': VALIDATION,
     });
 
-    // textarea with value and clear button
-    await textareaStickerSheet.setAttributes({ ...attributes,
-      value: 'Clear button',
-      'clear-button': true,
-      'clear-aria-label': 'clear',
-    });
-    await textareaStickerSheet.createMarkupWithCombination({});
-
     // textarea field with rows set to 7 & cols to 50
     await textareaStickerSheet.setAttributes({ ...attributes,
       rows: 7,
@@ -411,14 +357,14 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
     // disabled textarea field with value
     await textareaStickerSheet.setAttributes({ ...attributes,
       value: 'Disabled',
-      disabled: true,
+      disabled: '',
     });
     await textareaStickerSheet.createMarkupWithCombination({});
 
     // readonly textarea field with value
     await textareaStickerSheet.setAttributes({ ...attributes,
       value: 'Readonly value',
-      readonly: true,
+      readonly: '',
     });
     await textareaStickerSheet.createMarkupWithCombination({});
 
