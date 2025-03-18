@@ -1,6 +1,5 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './progressbar.styles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { DEFAULTS, VARIANT } from './progressbar.constants';

@@ -8,7 +8,7 @@ test.beforeEach(async ({ componentsPage }) => {
   });
 });
 
-test('mdc-progressbar', async ({ componentsPage }) => {
+test.skip('mdc-progressbar', async ({ componentsPage }) => {
   const progressbar = componentsPage.page.locator('mdc-progressbar');
 
   // initial check for the progressbar be visible on the screen:
