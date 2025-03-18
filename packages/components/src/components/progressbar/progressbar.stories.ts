@@ -90,6 +90,7 @@ export const AllVariants: StoryObj = {
                 label="Label"
                 ?error="${error}"
                 help-text="Helper text"
+                data-aria-label='This is a progressbar'
                 style="margin-bottom: 1rem"
               ></mdc-progressbar>
             `,
@@ -106,6 +107,7 @@ export const AllVariants: StoryObj = {
                 label="Label"
                 ?error="${error}"
                 help-text="Helper text"
+                data-aria-label='This is a progressbar'
                 style="margin-bottom: 1rem"
               ></mdc-progressbar>
             `,

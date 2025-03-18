@@ -109,7 +109,6 @@ class Progressbar extends DataAriaLabelMixin(FormfieldWrapper) {
         aria-valuemin="0"
         aria-valuemax="100"
         aria-label="${this.dataAriaLabel ?? ''}"
-        title="${ifDefined(this.dataAriaLabel || this.label)}"
       >
         <div part="progress-bar ${variant}" style="width: ${progressWidth}%"></div>
         <div part="remaining"></div>
