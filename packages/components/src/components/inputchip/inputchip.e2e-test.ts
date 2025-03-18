@@ -47,20 +47,32 @@ test('mdc-inputchip', async ({ componentsPage }) => {
     const inputchipStickerSheet = new StickerSheet(componentsPage, 'mdc-inputchip');
     inputchipStickerSheet.setAttributes({ label: 'Label', 'clear-aria-label': 'Clear' });
     await inputchipStickerSheet.createMarkupWithCombination({});
-    inputchipStickerSheet.setAttributes({ label: 'Label', error: '', 'clear-aria-label': 'Clear' });
+    inputchipStickerSheet.setAttributes({ label: 'Error', error: '', 'clear-aria-label': 'Clear' });
     await inputchipStickerSheet.createMarkupWithCombination({});
-    inputchipStickerSheet.setAttributes({ label: 'Label', disabled: '', 'clear-aria-label': 'Clear' });
+    inputchipStickerSheet.setAttributes({ label: 'Disabled', disabled: '', 'clear-aria-label': 'Clear' });
+    await inputchipStickerSheet.createMarkupWithCombination({});
+    inputchipStickerSheet.setAttributes({ label: 'Error Disabled',
+      error: '',
+      disabled: '',
+      'clear-aria-label': 'Clear' });
+    await inputchipStickerSheet.createMarkupWithCombination({});
     inputchipStickerSheet.setAttributes({ label: 'Label',
       'clear-aria-label': 'Clear',
       'icon-name': 'placeholder-bold' });
     await inputchipStickerSheet.createMarkupWithCombination({});
-    inputchipStickerSheet.setAttributes({ label: 'Label',
+    inputchipStickerSheet.setAttributes({ label: 'Error',
       error: '',
       'clear-aria-label': 'Clear',
       'icon-name': 'placeholder-bold' });
     await inputchipStickerSheet.createMarkupWithCombination({});
-    inputchipStickerSheet.setAttributes({ label: 'Label',
+    inputchipStickerSheet.setAttributes({ label: 'Disabled',
       disabled: '',
+      'clear-aria-label': 'Clear',
+      'icon-name': 'placeholder-bold' });
+    await inputchipStickerSheet.createMarkupWithCombination({});
+    inputchipStickerSheet.setAttributes({ label: 'Error Disabled',
+      disabled: '',
+      error: '',
       'clear-aria-label': 'Clear',
       'icon-name': 'placeholder-bold' });
     await inputchipStickerSheet.createMarkupWithCombination({});

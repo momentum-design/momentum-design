@@ -47,6 +47,8 @@ test('mdc-filterchip', async ({ componentsPage }) => {
     await filterChipStickerSheet.createMarkupWithCombination({});
     filterChipStickerSheet.setAttributes({ label: 'Label', disabled: '' });
     await filterChipStickerSheet.createMarkupWithCombination({});
+    filterChipStickerSheet.setAttributes({ label: 'Label', disabled: '', selected: '' });
+    await filterChipStickerSheet.createMarkupWithCombination({});
     await filterChipStickerSheet.mountStickerSheet({
       wrapperStyle: 'display: flex; flex-direction: column; gap: 0.5rem',
     });
@@ -105,14 +107,17 @@ test('mdc-filterchip', async ({ componentsPage }) => {
       await test.step('component should fire onclick when clicking chip', async () => {
         await filterchip.click();
         await expect(filterchip).toHaveAttribute('selected');
+        await filterchip.click();
+        await expect(filterchip).not.toHaveAttribute('selected');
       });
     });
 
     await test.step('keyboard', async () => {
       await test.step('component should fire onclick when pressing enter', async () => {
-        await componentsPage.actionability.pressTab();
         await componentsPage.page.keyboard.press('Enter');
         await expect(filterchip).toHaveAttribute('selected');
+        await componentsPage.page.keyboard.press('Space');
+        await expect(filterchip).not.toHaveAttribute('selected');
       });
     });
   });

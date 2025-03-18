@@ -77,11 +77,11 @@ test('mdc-chip', async ({ componentsPage }) => {
     await componentsPage.accessibility.checkForA11yViolations('chip-default');
   });
 
-  const chip = await setup({ componentsPage, label: 'Chip', iconName: 'placeholder-bold' });
   /**
    * ATTRIBUTES
-   */
+  */
   await test.step('attributes', async () => {
+    const chip = await setup({ componentsPage, label: 'Chip', iconName: 'placeholder-bold' });
     await test.step('attribute color should be present on component by default', async () => {
       await expect(chip).toHaveAttribute('color', COLOR.DEFAULT);
     });
