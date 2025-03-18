@@ -31,8 +31,6 @@ function generateJSXTable(jsonData: any, tokenType: TokenType) {
   function generateTables(data: any, path: any) {
     const rows: any = [];
 
-    console.log(data);
-
     const keys = Object.keys(data);
 
     // Loop through the keys and create a table row for each subgroup or token
@@ -67,7 +65,8 @@ function generateJSXTable(jsonData: any, tokenType: TokenType) {
 
     // If there are any rows, create a table for them
     if (rows.length > 0) {
-      const table = { section: path[0] || tokenType || 'unknown',
+      const table = {
+        section: path[0] || tokenType || 'unknown',
         jsx: (
           <div>
             <a href={`#${path.join('-')}`}><h3 class="heading3" id={path.join('-')}>{path.join('-')}</h3></a>
@@ -83,7 +82,8 @@ function generateJSXTable(jsonData: any, tokenType: TokenType) {
               <tbody>{rows}</tbody>
             </table>
           </div>
-        ) };
+        ),
+      };
       tables.push(table);
     }
   }
@@ -93,7 +93,7 @@ function generateJSXTable(jsonData: any, tokenType: TokenType) {
 }
 
 // eslint-disable-next-line max-len
-export const TokenTable: FunctionalComponent<{ tokens: any, tokenType: TokenType }> = ({ tokens, tokenType }: { tokens: any, tokenType:TokenType }) => {
+export const TokenTable: FunctionalComponent<{ tokens: any, tokenType: TokenType }> = ({ tokens, tokenType }: { tokens: any, tokenType: TokenType }) => {
   const data = useMemo(() => generateJSXTable(tokens, tokenType), [tokens, tokenType]);
   return (
     <div>
@@ -101,7 +101,7 @@ export const TokenTable: FunctionalComponent<{ tokens: any, tokenType: TokenType
         <>
           <h2 class="heading2 marginTop">{section}</h2>
           <div className="tableWrapper">
-            { value.map((table) => table.jsx) }
+            {value.map((table) => table.jsx)}
           </div>
         </>
       ))}
