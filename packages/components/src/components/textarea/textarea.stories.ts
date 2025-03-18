@@ -30,7 +30,6 @@ const render = (args: Args) => html`<mdc-textarea
     required-label="${args['required-label']}"
     ?disabled="${args.disabled}"
     ?readonly="${args.readonly}"
-    ?clear-button="${args['clear-button']}"
     ?resize-button="${args['resize-button']}"
     data-aria-label="${ifDefined(args['data-aria-label'])}"
     maxlength="${ifDefined(args.maxlength)}"
@@ -40,7 +39,6 @@ const render = (args: Args) => html`<mdc-textarea
     autocomplete="${args.autocomplete}"
     dirname="${ifDefined(args.dirname)}"
     validation-message="${args['validation-message']}"
-    clear-aria-label="${ifDefined(args['clear-aria-label'])}" 
     max-character-limit="${ifDefined(args['max-character-limit'])}"
   ></mdc-textarea>`;
 
@@ -79,9 +77,6 @@ const meta: Meta = {
     disabled: {
       control: 'boolean',
     },
-    'clear-button': {
-      control: 'boolean',
-    },
     rows: {
       control: 'number',
     },
@@ -113,9 +108,6 @@ const meta: Meta = {
       options: Object.values(AUTO_COMPLETE),
     },
     dirname: {
-      control: 'text',
-    },
-    'clear-aria-label': {
       control: 'text',
     },
     'data-aria-label': {
@@ -166,11 +158,9 @@ export const Example: StoryObj = {
     'help-text-type': VALIDATION.DEFAULT,
     readonly: false,
     disabled: false,
-    'clear-button': true,
     autocapitalize: AUTO_CAPITALIZE.OFF,
     autocomplete: AUTO_COMPLETE.OFF,
     autofocus: false,
-    'clear-aria-label': 'Clear',
     'data-aria-label': '',
   },
 };
@@ -183,31 +173,10 @@ const commonArgs = {
   wrap: DEFAULTS.WRAP,
 };
 
-export const TextareaWithClearButton: StoryObj = {
-  args: {
-    ...commonArgs,
-    placeholder: 'Placeholder',
-    'clear-button': true,
-    'clear-aria-label': 'Clear',
-    value: 'Textarea with clear button, click on the clear button to clear the textarea',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'This story displays a textarea component with a clear button. The clear button will be displayed'
-            + 'when the `clear-button` attribute is set to true. The user can click on the clear button'
-            + ' to clear the textarea.',
-      },
-    },
-  },
-};
-
 export const DisabledTextarea: StoryObj = {
   args: {
     ...commonArgs,
     value: 'Disabled & typed textarea',
-    'clear-button': true,
-    'clear-aria-label': 'Clear',
     disabled: true,
   },
   parameters: {
@@ -225,8 +194,6 @@ export const ReadonlyTextarea: StoryObj = {
     ...commonArgs,
     readonly: true,
     value: 'Readonly textarea',
-    'clear-button': true,
-    'clear-aria-label': 'Clear',
   },
   parameters: {
     docs: {
@@ -333,8 +300,6 @@ export const TextareaWithCharacterCounter: StoryObj = {
           @limitexceeded=${handleCharacterLimitCheck}
           help-text="${helpText}"
           help-text-type="${helpTextType}"
-          clear-button
-          clear-aria-label="Clear button"
           required-label="required"
           max-character-limit="75"
           placeholder="Write what's on your mind"
