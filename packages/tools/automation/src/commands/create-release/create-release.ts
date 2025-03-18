@@ -55,9 +55,11 @@ class CreateRelease extends Command {
       const pullRequestDescription = await Git.getPullRequestDetails(latestCommit.commit);
       const releaseNotes = '## $title\r\n$body';
 
+      // escaping double quotes in the body to avoid breakages in the pipeline
+      const escapedBody = pullRequestDescription[0].body.replace(/"/g, '\\"');
       const notes = releaseNotes
         .replace('$title', pullRequestDescription[0].title)
-        .replace('$body', pullRequestDescription[0].body)
+        .replace('$body', escapedBody)
         .concat(`\r\n ### Package:\nhttps://www.npmjs.com/package/${pkg}/v/${version}`);
 
       return {

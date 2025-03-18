@@ -6,7 +6,7 @@
         {
           "id": "optimise-svgs-logos",
           "target": "./src/logos/*.svg",
-          "destination": "./dist/logos",
+          "destination": "./dist/logos/svg",
           "fileNameReplacePatterns": [
             {
               "searchValue": "_",
@@ -131,6 +131,18 @@
               "hbsPath": "./config/templates/types.d.ts.hbs",
               "name": "BrandVisualNames",
               "manifestPath": "../manifest.json"
+            }
+          }
+        },
+        { 
+          "id": "lit-brand-visuals",
+          "target": "./dist/logos/svg/**/*.*",
+          "destination": "./dist/logos/ts",
+          "format": {
+            "type": "LIT",
+            "config": {
+              "partName": "brandvisual",
+              "hbsPath": "./config/templates/lit.ts.hbs"
             }
           }
         }

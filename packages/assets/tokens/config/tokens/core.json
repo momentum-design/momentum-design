@@ -3,17 +3,23 @@
     {
       "destination": "core/complete",
       "cssSelector": ".mds-core",
-      "targets": ["core/value.json"]
+      "targets": [
+        "core/value.json"
+      ]
     },
     {
       "destination": "effect/complete",
       "cssSelector": ".mds-effect",
-      "targets": ["core/effect.json"]
+      "targets": [
+        "core/effect.json"
+      ]
     },
     {
       "destination": "theme/webex/dark-complete",
       "filters": {
-        "types": ["theme"]
+        "types": [
+          "theme"
+        ]
       },
       "cssSelector": ".mds-theme-webex-dark",
       "targets": [
@@ -24,7 +30,9 @@
     {
       "destination": "theme/webex/light-complete",
       "filters": {
-        "types": ["theme"]
+        "types": [
+          "theme"
+        ]
       },
       "cssSelector": ".mds-theme-webex-light",
       "targets": [
@@ -35,7 +43,9 @@
     {
       "destination": "theme/webex/dark-stable",
       "filters": {
-        "types": ["theme"]
+        "types": [
+          "theme"
+        ]
       },
       "cssSelector": ".mds-theme-stable-darkWebex",
       "targets": [
@@ -46,7 +56,9 @@
     {
       "destination": "theme/webex/light-stable",
       "filters": {
-        "types": ["theme"]
+        "types": [
+          "theme"
+        ]
       },
       "cssSelector": ".mds-theme-stable-lightWebex",
       "targets": [
@@ -57,7 +69,9 @@
     {
       "destination": "theme/webex/hc-dark-stable",
       "filters": {
-        "types": ["theme"]
+        "types": [
+          "theme"
+        ]
       },
       "cssSelector": ".mds-theme-stable-hcDarkWebex",
       "targets": [
@@ -69,7 +83,9 @@
     {
       "destination": "theme/webex/hc-light-stable",
       "filters": {
-        "types": ["theme"]
+        "types": [
+          "theme"
+        ]
       },
       "cssSelector": ".mds-theme-stable-hcLightWebex",
       "targets": [
@@ -81,7 +97,9 @@
     {
       "destination": "theme/aaos/day-complete",
       "filters": {
-        "types": ["theme"]
+        "types": [
+          "theme"
+        ]
       },
       "cssSelector": ".mds-theme-aaos-day",
       "targets": [
@@ -93,7 +111,9 @@
     {
       "destination": "theme/aaos/night-complete",
       "filters": {
-        "types": ["theme"]
+        "types": [
+          "theme"
+        ]
       },
       "cssSelector": ".mds-theme-aaos-night",
       "targets": [
@@ -103,7 +123,15 @@
       ]
     }
   ],
-  "formats": ["CSS_VARIABLES", "SCSS_VARIABLES", "WEB_JSON", "ANDROID_RESOURCES", "SWIFT_CLASS", "MD_JSON_MINIMAL", "IOS_WEBEX"],
+  "formats": [
+    "CSS_VARIABLES",
+    "SCSS_VARIABLES",
+    "WEB_JSON",
+    "ANDROID_RESOURCES",
+    "SWIFT_CLASS",
+    "MD_JSON_MINIMAL",
+    "IOS_WEBEX"
+  ],
   "prefix": "mds",
   "iosWebexPath": "@momentum-design/tokens/config/tokens/ios-swift.hbs",
   "outputReferences": true

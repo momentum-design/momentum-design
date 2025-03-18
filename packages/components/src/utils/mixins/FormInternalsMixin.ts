@@ -1,10 +1,11 @@
 import { LitElement } from 'lit';
 import { property, query } from 'lit/decorators.js';
+import { v4 as uuidv4 } from 'uuid';
 import type { Constructor } from './index.types';
 
 export interface AssociatedFormControl {
     autofocus: boolean;
-    disabled: boolean;
+    disabled?: boolean;
     name: string;
     value: string | string[];
 
@@ -40,10 +41,11 @@ export interface FormInternalsMixinInterface {
     validationMessage: string;
     willValidate: boolean;
     internals: ElementInternals;
-    inputElement: HTMLInputElement;
+    inputElement: HTMLInputElement | HTMLTextAreaElement;
     setValidity(): void;
     checkValidity(): boolean;
     reportValidity(): boolean;
+
 }
 
 export const FormInternalsMixin = <T extends Constructor<LitElement>>(
@@ -92,6 +94,7 @@ export const FormInternalsMixin = <T extends Constructor<LitElement>>(
 
       /** @internal */
       this.internals = this.attachInternals();
+      this.id = `mdc-input-${uuidv4()}`;
     }
 
     /**
@@ -122,7 +125,7 @@ export const FormInternalsMixin = <T extends Constructor<LitElement>>(
    * @internal
    * The input element
    */
-    @query('input') inputElement!: HTMLInputElement;
+    @query('input') inputElement!: HTMLInputElement | HTMLTextAreaElement;
   }
   // Cast return type to your mixin's interface intersected with the superClass type
   return InnerMixinClass as Constructor<FormInternalsMixinInterface> & T;

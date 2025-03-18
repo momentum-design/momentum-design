@@ -41,11 +41,19 @@ import type { ListItemVariants } from './listitem.types';
  *  - Allows customization of the primary label, side header and subline text slot color.
  * @cssproperty --mdc-listitem-secondary-label-color
  *  - Allows customization of the secondary and teritary label text slot color.
+ * @cssproperty --mdc-listitem-disabled-color - Allows customization of the disabled color.
+ *
+ * @event click - (React: onClick) This event is dispatched when the listitem is clicked.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the listitem.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the listitem.
+ * @event focus - (React: onFocus) This event is dispatched when the listitem receives focus.
  */
 class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component))) {
+  /** @internal */
   @queryAssignedElements({ slot: 'leading-controls' })
   leadingControlsSlot!: Array<HTMLElement>;
 
+  /** @internal */
   @queryAssignedElements({ slot: 'trailing-controls' })
   trailingControlsSlot!: Array<HTMLElement>;
 
@@ -87,7 +95,7 @@ class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component)
 
   constructor() {
     super();
-    this.role = 'listitem';
+    this.role = this.role || 'listitem';
   }
 
   /**
@@ -98,7 +106,7 @@ class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component)
    * @param content - The text content to be displayed within the slot.
    * @returns A TemplateResult containing a slot with an `mdc-text` element of type BODY_SMALL_REGULAR.
    */
-  private getText(slotName: string, type: TextType, content?: string): TemplateResult | typeof nothing {
+  protected getText(slotName: string, type: TextType, content?: string): TemplateResult | typeof nothing {
     if (!content) {
       return nothing;
     }

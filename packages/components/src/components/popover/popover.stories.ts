@@ -2,8 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html, TemplateResult } from 'lit';
 import { action } from '@storybook/addon-actions';
-import { POPOVER_PLACEMENT, DEFAULTS } from './popover.constants';
-import { COLOR } from '../modalcontainer/modalcontainer.constants';
+import { POPOVER_PLACEMENT, DEFAULTS, COLOR } from './popover.constants';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 
 const createPopover = (args: Args, content: TemplateResult) => html`
@@ -31,10 +30,11 @@ const createPopover = (args: Args, content: TemplateResult) => html`
     ?focus-back-to-trigger=${args['focus-back-to-trigger']}
     append-to=${args['append-to']}
     close-button-aria-label="${args['close-button-aria-label']}"
-    data-aria-label="${args['data-aria-label']}"
-    data-aria-labelledby="${args['data-aria-labelledby']}"
-    data-aria-describedby="${args['data-aria-describedby']}"
-    data-role="${args['data-role']}"
+    aria-label="${args['aria-label']}"
+    aria-labelledby="${args['aria-labelledby']}"
+    aria-describedby="${args['aria-describedby']}"
+    role="${args.role}"
+    ?disable-aria-expanded="${args['disable-aria-expanded']}"
     @popover-on-show="${action('onshow')}"
     @popover-on-hide="${action('onhide')}"
     @popover-on-created="${action('oncreated')}"
@@ -58,7 +58,7 @@ const createTrigger = (triggerID: string, text: String) => html`
 `;
 
 const render = (args: Args) => html`
-  ${createTrigger('popover-trigger', 'Click me!')}
+  ${createTrigger(args.triggerID, 'Click me!')}
   ${createPopover(args, html`<mdc-text>Lorem ipsum dolor sit amet.</mdc-text>`)}
 `;
 
@@ -126,7 +126,7 @@ const renderMultiple = (args: Args) => html`
     z-index="20"
     show-arrow
   >
-    <mdc-text>Description tooltip on mou se enter</mdc-text>
+    <mdc-text>Description tooltip on mouseenter</mdc-text>
   </mdc-popover>
 `;
 
@@ -184,12 +184,12 @@ const renderBackdrop = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/popover',
+  title: 'Components/popover',
   tags: ['autodocs'],
   component: 'mdc-popover',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     id: {
@@ -269,25 +269,30 @@ const meta: Meta = {
     'close-button-aria-label': {
       control: 'text',
     },
-    'data-aria-label': {
+    'aria-label': {
       control: 'text',
     },
-    'data-aria-labelledby': {
+    'aria-labelledby': {
       control: 'text',
     },
-    'data-aria-describedby': {
+    'aria-describedby': {
       control: 'text',
     },
-    'data-role': {
+    role: {
       control: 'text',
+    },
+    'disable-aria-expanded': {
+      control: 'boolean',
     },
     ...disableControls([
       '--mdc-popover-arrow-border-radius',
       '--mdc-popover-arrow-border',
       '--mdc-popover-primary-background-color',
+      '--mdc-popover-border-color',
       '--mdc-popover-inverted-background-color',
       '--mdc-popover-inverted-border-color',
       '--mdc-popover-inverted-text-color',
+      '--mdc-popover-elevation-3',
     ]),
     ...hideControls([
       'arrowElement',
@@ -317,7 +322,7 @@ export const Default: StoryObj = {
     delay: DEFAULTS.DELAY,
     flip: DEFAULTS.FLIP,
     'show-arrow': true,
-    'data-role': DEFAULTS.ROLE,
+    role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
   },
 };
@@ -337,7 +342,7 @@ export const interactiveContent: StoryObj = {
     'show-arrow': true,
     flip: DEFAULTS.FLIP,
     size: true,
-    'data-role': DEFAULTS.ROLE,
+    role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
   },
 };
@@ -357,7 +362,7 @@ export const interactiveHover: StoryObj = {
     interactive: true,
     'show-arrow': true,
     'hide-on-escape': true,
-    'data-role': DEFAULTS.ROLE,
+    role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
   },
 };
@@ -377,7 +382,7 @@ export const interactiveMultiple: StoryObj = {
     interactive: true,
     'show-arrow': true,
     'close-button': true,
-    'data-role': DEFAULTS.ROLE,
+    role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
   },
 };
@@ -396,7 +401,7 @@ export const nestedPopover: StoryObj = {
     interactive: true,
     'show-arrow': true,
     'hide-on-escape': true,
-    'data-role': DEFAULTS.ROLE,
+    role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
   },
 };
@@ -414,7 +419,7 @@ export const hideOnBlur: StoryObj = {
     interactive: true,
     'show-arrow': true,
     'hide-on-blur': true,
-    'data-role': DEFAULTS.ROLE,
+    role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
   },
 };
@@ -433,7 +438,7 @@ export const popoverWithBackdrop: StoryObj = {
     interactive: true,
     'show-arrow': true,
     backdrop: true,
-    'data-role': DEFAULTS.ROLE,
+    role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
   },
 };

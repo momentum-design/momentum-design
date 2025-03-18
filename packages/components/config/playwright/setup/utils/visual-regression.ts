@@ -50,6 +50,7 @@ class VisualRegression {
       /* eslint-disable no-restricted-syntax */
       for (const direction of ['rtl', 'ltr'] as const) {
         await this.setDocumentDirection(direction);
+        await options?.assertionAfterSwitchingDirection?.(this.page);
         expect(await elementToTakeScreenShotFrom.screenshot(options)).toMatchSnapshot({
           name: `${name}-${direction}.${CONSTANTS.VISUAL_REGRESSION.FILE_EXTENSION}`,
         });

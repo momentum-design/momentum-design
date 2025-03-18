@@ -89,7 +89,7 @@ For the best local development experience, the following E2E setup testing is re
 
 To update Visual Regression snapshots, follow the steps below to run E2E testing on Docker:
 
-1. You need to have docker installed on local.
+1. You need to have docker or [podman](https://podman.io/) installed on local. (if you are using podman, it's adviced to add `alias docker=podman` to your shell config file, e.g. ~/.zshrc)
 
 2. **Docker engine / daemon needs to run before executing.**
 
@@ -110,6 +110,7 @@ To update Visual Regression snapshots, follow the steps below to run E2E testing
    ```bash
      yarn components test:e2e:docker:serve # run docker image on localhost:3000
    ```
+   or if you're using podman: `yarn components test:e2e:podman:serve`
 
 6. Open another terminal to start run the test:
 
