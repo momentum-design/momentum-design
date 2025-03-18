@@ -447,7 +447,7 @@ class Popover extends FocusTrapMixin(Component) {
    * @param newValue - The new value of the visible property.
    */
   private async isOpenUpdated(oldValue: boolean, newValue: boolean) {
-    if (oldValue === newValue || !this.triggerElement) {
+    if ((oldValue || false) === newValue || !this.triggerElement) {
       return;
     }
 
