@@ -39,7 +39,7 @@ test('mdc-optgroup', async ({ componentsPage }) => {
       <mdc-option>Boston</mdc-option>
       <mdc-option selected>Mexico</mdc-option>
       <mdc-option>Toronto</mdc-option>
-      <mdc-option disabled="true">Canada</mdc-option>
+      <mdc-option disabled>Canada</mdc-option>
     `;
     const optionSheet = new StickerSheet(componentsPage, 'mdc-optgroup', 'margin: 0.25rem');
     optionSheet.setAttributes({ label: 'List options' });
