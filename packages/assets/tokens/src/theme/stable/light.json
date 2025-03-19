@@ -1737,7 +1737,7 @@
                 "description": ""
               },
               "disabled": {
-                "value": "{color.core.white-alpha.40}",
+                "value": "{color.core.black-alpha.40}",
                 "type": "color"
               }
             },
