@@ -56,7 +56,7 @@ export default defineConfig({
                 dest: 'dist/brand-visuals',
               },
               {
-                src: path.join(brandVisualsDistFolder, '/logos/*.svg'),
+                src: path.join(brandVisualsDistFolder, '/logos/svg/*.svg'),
                 dest: 'dist/brand-visuals',
               },
               {
