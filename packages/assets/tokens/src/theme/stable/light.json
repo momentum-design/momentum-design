@@ -1735,6 +1735,10 @@
                 "type": "color",
                 "value": "{color.core.black-alpha.95}",
                 "description": ""
+              },
+              "disabled": {
+                "value": "{color.core.white-alpha.40}",
+                "type": "color"
               }
             },
             "secondary": {

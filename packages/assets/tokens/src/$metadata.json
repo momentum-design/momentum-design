@@ -9,6 +9,16 @@
     "theme/stable/highcontrast/hc_dark",
     "theme/stable/highcontrast/hc_light",
     "aaos/night",
-    "aaos/day"
+    "aaos/day",
+    "additionaltheme/dark/bronze",
+    "additionaltheme/dark/indigo",
+    "additionaltheme/dark/jade",
+    "additionaltheme/dark/lavender",
+    "additionaltheme/dark/rose",
+    "additionaltheme/light/bronze",
+    "additionaltheme/light/indigo",
+    "additionaltheme/light/jade",
+    "additionaltheme/light/lavender",
+    "additionaltheme/light/rose"
   ]
 }
