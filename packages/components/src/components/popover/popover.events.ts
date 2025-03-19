@@ -23,7 +23,7 @@ export class PopoverEventManager {
    * @param instance - The popover instance.
    */
   static onShowPopover(instance: Popover) {
-    this.dispatchPopoverEvent('popover-on-show', instance);
+    this.dispatchPopoverEvent('shown', instance);
   }
 
   /**
@@ -32,7 +32,7 @@ export class PopoverEventManager {
    * @param instance - The popover instance.
    */
   static onHidePopover(instance: Popover) {
-    this.dispatchPopoverEvent('popover-on-hide', instance);
+    this.dispatchPopoverEvent('hidden', instance);
   }
 
   /**
@@ -41,7 +41,7 @@ export class PopoverEventManager {
    * @param instance - The popover instance.
    */
   static onCreatedPopover(instance: Popover) {
-    this.dispatchPopoverEvent('popover-on-created', instance);
+    this.dispatchPopoverEvent('created', instance);
   }
 
   /**
@@ -50,6 +50,6 @@ export class PopoverEventManager {
    * @param instance - The popover instance.
    */
   static onDestroyedPopover(instance: Popover) {
-    this.dispatchPopoverEvent('popover-on-destroyed', instance);
+    this.dispatchPopoverEvent('destroyed', instance);
   }
 }
