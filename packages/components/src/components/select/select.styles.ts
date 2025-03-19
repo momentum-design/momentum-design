@@ -11,6 +11,12 @@ const styles = css`
     display: flex;
     flex-direction: column;
     row-gap: 0.5rem;
+    align-items: unset;
+    width: unset;
+  }
+  :host::part(container) {
+    width: 100%;
+    position: relative;
   }
   :host::part(base-container) {
     border-radius: 0.5rem;
@@ -33,7 +39,6 @@ const styles = css`
     border-color: var(--mdc-select-disabled-color);
   }
   :host::part(popover-content) {
-    background-color: orange;
     width: calc(100% + 2px);
   }
 `;
