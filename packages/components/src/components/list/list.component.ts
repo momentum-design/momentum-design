@@ -5,8 +5,9 @@ import { Component } from '../../models';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { TAG_NAME as LISTITEM_TAGNAME } from '../listitem/listitem.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
-import { HEADER_ID, KEYS } from './list.constants';
+import { HEADER_ID } from './list.constants';
 import styles from './list.styles';
+import { KEYS } from '../../utils/keys';
 
 /**
  * mdc-list component is used to display a group of list items. It is used as a container to wrap other list items.
