@@ -30,10 +30,6 @@ const styles = css`
     --mdc-chip-color: var(--mds-color-theme-text-primary-disabled);
     cursor: auto;
   }
-
-  :host::part(close-icon){
-    border-radius: 0.25rem;
-  }
 `;
 
 export default [hostFitContentStyles, styles];
