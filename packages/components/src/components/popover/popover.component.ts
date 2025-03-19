@@ -363,7 +363,7 @@ class Popover extends FocusTrapMixin(Component) {
     super.updated(changedProperties);
 
     if (changedProperties.has('visible')) {
-      const oldValue = changedProperties.get('visible') as boolean;
+      const oldValue = (changedProperties.get('visible') as boolean | undefined) || false;
       await this.isOpenUpdated(oldValue, this.visible);
     }
     if (changedProperties.has('placement')) {
