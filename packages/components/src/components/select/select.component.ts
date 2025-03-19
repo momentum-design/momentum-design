@@ -1,12 +1,16 @@
 import type { TemplateResult } from 'lit';
 import { CSSResult, html, nothing } from 'lit';
 import { property, queryAssignedElements, state } from 'lit/decorators.js';
+import { KEYS } from '../../utils/keys';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import FormfieldWrapper from '../formfieldwrapper';
 import type { IconNames } from '../icon/icon.types';
+import { TAG_NAME as OPTION_GROUP_TAG_NAME } from '../optgroup/optgroup.constants';
+import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import { ARROW_ICON } from './select.constants';
 import styles from './select.styles';
 
 /**
@@ -19,22 +23,27 @@ import styles from './select.styles';
  * @event click - (React: onClick) This event is a Click Event, update the description
  */
 class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
-  /** @internal */
-  @state() private baseIconName: IconNames = 'arrow-down-bold';
+  /**
+   * The placeholder text which will be shown on the text if provided.
+   */
+  @property({ type: String }) placeholder?: string;
+
+  /**
+   * readonly attribute of the select field. If true, the select is read-only.
+   */
+  @property({ type: Boolean }) readonly = false;
 
   /** @internal */
-  @queryAssignedElements({ selector: 'mdc-option' })
-  options!: Array<HTMLElement>;
+  @queryAssignedElements() optionsBaby!: Array<HTMLElement>;
 
   /** @internal */
-  @queryAssignedElements({ selector: 'mdc-optgroup' })
-  optionGroups!: Array<Element>;
+  @state() private baseIconName: IconNames = ARROW_ICON.ARROW_UP;
 
   /** @internal */
   @state() selectedValue?: string;
 
-  @property({ type: String })
-  placeholder?: string;
+  /** @internal */
+  @state() showPopover = false;
 
   constructor() {
     super();
@@ -43,27 +52,54 @@ class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
     this.addEventListener('keydown', this.handleKeydown);
   }
 
+  private getAllValidOptions() {
+    return this.optionsBaby
+      ?.map((option) => {
+        if (option.tagName.toLowerCase() === OPTION_TAG_NAME) {
+          return option;
+        }
+        if (option.tagName.toLowerCase() === OPTION_GROUP_TAG_NAME) {
+          return Array.from(option.children).filter((optgroup) => optgroup.tagName.toLowerCase() === OPTION_TAG_NAME);
+        }
+        return [];
+      }).flat() || [];
+  }
+
   private handlePopoverOpen(): void {
-    this.baseIconName = 'arrow-up-bold';
+    this.baseIconName = ARROW_ICON.ARROW_UP;
   }
 
   private handlePopoverClose(): void {
-    this.baseIconName = 'arrow-down-bold';
+    this.baseIconName = ARROW_ICON.ARROW_DOWN;
   }
 
   private handleOptionsClick(event: MouseEvent): void {
-    [...this.options, ...this.optionGroups.map((optGroup) => [...optGroup.children])]
-      .flat()
-      .filter((option) => option.tagName.toLowerCase() === 'mdc-option')
-      .forEach((option) => {
-        if (option === event.target) {
-          this.setSelectedValue(option);
-          option.setAttribute('selected', '');
-        } else {
-          option.removeAttribute('selected');
-        }
-      });
-    this.updateTabIndexOnOptions();
+    this.updateTabIndexAndSetSelectedOnOptions(event.target);
+  }
+
+  private handleSlotChange(): void {
+    this.updateTabIndexAndSetSelectedOnOptions();
+  }
+
+  private updateTabIndexAndSetSelectedOnOptions(selectedOption?: EventTarget | null): void {
+    let isTabIndexSet = false;
+    this.getAllValidOptions().forEach((option) => {
+      if (option === selectedOption) {
+        this.setSelectedValue(option);
+        isTabIndexSet = true;
+        option.setAttribute('selected', '');
+        option.setAttribute('tabindex', '0');
+      } else {
+        option?.setAttribute('tabindex', '-1');
+        option?.removeAttribute('selected');
+      }
+    });
+
+    if (isTabIndexSet) {
+      return;
+    }
+    // if no option is selected, set the first option as focused
+    this.getAllValidOptions()[0]?.setAttribute('tabindex', '0');
   }
 
   private setSelectedValue(option: Element): void {
@@ -74,6 +110,61 @@ class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
     this.selectedValue = placeholder;
   }
 
+  private handleKeydown(event: KeyboardEvent): void {
+    switch (event.key) {
+      case KEYS.SPACE:
+        this.showPopover = true;
+        break;
+      case KEYS.ESCAPE:
+        this.showPopover = false;
+        break;
+      case KEYS.ENTER: {
+        this.updateTabIndexAndSetSelectedOnOptions(event.target);
+        break;
+      }
+      case KEYS.ARROW_DOWN:
+      case KEYS.ARROW_UP: {
+        const currentIndex = this.getAllValidOptions().findIndex((option) => option === event.target);
+        const optionsLength = this.getAllValidOptions().length;
+        let newIndex: number | undefined;
+        if (event.key === KEYS.ARROW_DOWN) {
+          newIndex = (currentIndex + 1) % optionsLength;
+        } else if (event.key === KEYS.ARROW_UP) {
+          newIndex = (currentIndex - 1 + optionsLength) % optionsLength;
+        }
+        if (newIndex !== undefined) {
+          (this.getAllValidOptions()[newIndex] as HTMLElement)?.focus();
+          this.getAllValidOptions().forEach((node, index) => {
+            const newTabindex = newIndex === index ? '0' : '-1';
+            node?.setAttribute('tabindex', newTabindex);
+          });
+        }
+        break;
+      }
+      default:
+        break;
+    }
+  }
+
+  public override firstUpdated() {
+    const selectedOptionIndex = this.getAllValidOptions().findIndex((option) => option?.hasAttribute('selected'));
+    if (selectedOptionIndex !== -1) {
+      this.setSelectedValue(this.getAllValidOptions()[selectedOptionIndex]);
+    } else if (this.placeholder) {
+      this.setPlaceholderValue(this.placeholder);
+    } else {
+      // We will set the first option as selected.
+      this.setSelectedValue(this.getAllValidOptions()[0]);
+    }
+  }
+
+  private getTabIndexForSelect() {
+    if (this.disabled || this.readonly) {
+      return '-1';
+    }
+    return '0';
+  }
+
   private getPopoverContent(): TemplateResult | typeof nothing {
     if (this.disabled) {
       return nothing;
@@ -82,87 +173,40 @@ class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
       <mdc-popover
         triggerid="select-base-triggerid"
         interactive
+        ?visible="${this.showPopover}"
         hide-on-outside-click
         focus-back-to-trigger
+        role="listbox"
         placement="${POPOVER_PLACEMENT.BOTTOM_START}"
         @popover-on-show="${this.handlePopoverOpen}"
-        @popover-on-hide="${this.handlePopoverClose}"        
+        @popover-on-hide="${this.handlePopoverClose}"   
+        style="--mdc-popover-max-width: 100%;"     
       >
         <slot @click="${this.handleOptionsClick}" @slotchange="${this.handleSlotChange}"></slot>
       </mdc-popover>
     `;
   }
 
-  private handleSlotChange(): void {
-    this.updateTabIndexOnOptions();
-  }
-
-  private updateTabIndexOnOptions(): void {
-    let isTabIndexSet = false;
-    this.options.forEach((option) => {
-      if (option.hasAttribute('selected')) {
-        isTabIndexSet = true;
-        option.setAttribute('tabindex', '0');
-      } else {
-        option.setAttribute('tabindex', '-1');
-      }
-    });
-    if (isTabIndexSet) {
-      return;
-    }
-    // if no option is selected, set the first option as focused
-    this.options[0].setAttribute('tabindex', '0');
-  }
-
-  /**
-  private handleKeydown(event: KeyboardEvent): void {
-    // TODO: add key down handler for select options.
-    switch (event.key) {
-      case 'Space': {
-        return;
-      }
-      case 'ArrowDown':
-        this.options[0].setAttribute('tabindex', '0');
-        break;
-      case 'ArrowUp':
-        this.options[0].setAttribute('tabindex', '-1');
-        break;
-      default:
-        break;
-    }
-  }
-  */
-
-  public override firstUpdated() {
-    const selectedOptionIndex = this.options.findIndex((option) => option.hasAttribute('selected'));
-    if (selectedOptionIndex !== -1) {
-      this.setSelectedValue(this.options[selectedOptionIndex]);
-    } else if (this.placeholder) {
-      this.setPlaceholderValue(this.placeholder);
-    } else {
-      // We will set the first option as selected.
-      this.setSelectedValue(this.options[0]);
-    }
-  }
-
   public override render() {
     return html`
-      ${this.renderLabel()}
-      <div
-        id="select-base-triggerid"
-        part="base-container"
-        class="mdc-focus-ring"
-        tabindex="${!this.disabled ? '0' : '-1'}"
-      >
-        <mdc-text part="placeholder-text" type="${TYPE.BODY_MIDSIZE_REGULAR}" tagname="${VALID_TEXT_TAGS.SPAN}">
-          ${this.selectedValue}
-        </mdc-text>
-        <div part="icon-container">
-          <mdc-icon size="1" length-unit="rem" name="${this.baseIconName}"></mdc-icon>
+      <div part="container">
+        ${this.renderLabel()}
+        <div
+          id="select-base-triggerid"
+          part="base-container"
+          class="mdc-focus-ring"
+          tabindex="${this.getTabIndexForSelect()}"
+        >
+          <mdc-text part="placeholder-text" type="${TYPE.BODY_MIDSIZE_REGULAR}" tagname="${VALID_TEXT_TAGS.SPAN}">
+            ${this.selectedValue}
+          </mdc-text>
+          <div part="icon-container">
+            <mdc-icon size="1" length-unit="rem" name="${this.baseIconName}"></mdc-icon>
+          </div>
         </div>
+        ${this.renderHelperText()}
+        ${this.getPopoverContent()}
       </div>
-      ${this.renderHelperText()}
-      ${this.getPopoverContent()}
     `;
   }
 
