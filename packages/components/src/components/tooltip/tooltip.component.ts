@@ -36,10 +36,9 @@ class Tooltip extends Popover {
   @queryAssignedNodes()
   private defaultSlotNodes!: Array<Node>;
 
-  constructor() {
-    super();
+  override connectedCallback(): void {
+    super.connectedCallback();
     this.backdrop = false;
-    this.color = DEFAULTS.COLOR;
     this.delay = DEFAULTS.DELAY;
     this.focusTrap = false;
     this.hideOnBlur = true;
@@ -51,7 +50,6 @@ class Tooltip extends Popover {
     this.showArrow = true;
     this.trigger = 'mouseenter focusin';
 
-    this.visible = false;
     this.enabledFocusTrap = false;
     this.enabledPreventScroll = false;
     this.flip = true;

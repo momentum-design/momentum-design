@@ -1,5 +1,5 @@
 import utils from '../../utils/tag-name';
-import { COLOR, POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 const TAG_NAME = utils.constructTagName('tooltip');
 
@@ -11,7 +11,6 @@ const TOOLTIP_TYPES = {
 
 const DEFAULTS = {
   BACKDROP: false,
-  COLOR: COLOR.TONAL,
   DELAY: '0,0',
   OFFSET: 4,
   PLACEMENT: POPOVER_PLACEMENT.TOP,

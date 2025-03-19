@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { COLOR, POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { COLOR, POPOVER_PLACEMENT, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
 import '../button';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
@@ -18,6 +18,7 @@ const render = (args: Args) => html`
       ?show-arrow="${args['show-arrow']}"
       tooltip-type="${args['tooltip-type']}"
       triggerid="${args.triggerID}"
+      ?visible="${args.visible}"
       >${args.children}</mdc-tooltip>
   </div>
   `;
@@ -81,7 +82,6 @@ const meta: Meta = {
       'z-index',
       'flip',
       'role',
-      'visible',
       'focus-trap',
       'prevent-scroll',
       'close-button',
@@ -120,7 +120,7 @@ export const Example: StoryObj = {
   render,
   args: {
     children: 'This is a tooltip',
-    color: DEFAULTS.COLOR,
+    color: POPOVER_DEFAULTS.COLOR,
     delay: DEFAULTS.DELAY,
     id: 'tooltip',
     offset: DEFAULTS.OFFSET,
@@ -128,5 +128,6 @@ export const Example: StoryObj = {
     'show-arrow': DEFAULTS.SHOW_ARROW,
     triggerID: 'tooltip-trigger',
     'tooltip-type': DEFAULTS.TOOLTIP_TYPE,
+    visible: false,
   },
 };

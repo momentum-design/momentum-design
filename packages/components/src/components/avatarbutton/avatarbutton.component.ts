@@ -32,8 +32,8 @@ class AvatarButton extends AvatarComponentMixin(IconNameMixin(Buttonsimple)) {
     @property({ type: String, attribute: 'aria-label' })
     override ariaLabel: string | null = null;
 
-    constructor() {
-      super();
+    override connectedCallback(): void {
+      super.connectedCallback();
 
       this.active = undefined as unknown as boolean;
       this.disabled = undefined as unknown as boolean;
