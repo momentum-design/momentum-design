@@ -33,6 +33,7 @@ import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
 import Option from './components/option';
 import OptGroup from './components/optgroup';
 import Textarea from './components/textarea';
+import Searchfield from './components/searchfield';
 
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
 import type { TextType } from './components/text/text.types';
@@ -74,6 +75,7 @@ export {
   OptGroup,
   Textarea,
   Tooltip,
+  Searchfield,
 };
 export type {
   TextType,

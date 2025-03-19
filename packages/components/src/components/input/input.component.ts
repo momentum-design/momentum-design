@@ -3,10 +3,10 @@ import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './input.styles';
 import FormfieldWrapper from '../formfieldwrapper';
-import { AUTO_CAPITALIZE, DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
+import { AUTO_CAPITALIZE, AUTO_COMPLETE, DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { IconNames } from '../icon/icon.types';
-import type { AutoCapitalizeType } from './input.types';
+import type { AutoCapitalizeType, AutoCompleteType, InputType } from './input.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { FormInternalsMixin, AssociatedFormControl } from '../../utils/mixins/FormInternalsMixin';
 /**
@@ -100,7 +100,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
    * The autocomplete attribute of the input field.
    * @default 'off'
    */
-  @property({ type: String }) autocomplete: any = 'off';
+  @property({ type: String }) autocomplete: AutoCompleteType = AUTO_COMPLETE.OFF;
 
   /**
    * If true, the input field is focused when the component is rendered.
@@ -357,6 +357,36 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
     `;
   }
 
+  protected renderInputElement(type: InputType) {
+    return html`<input 
+                  aria-label="${this.dataAriaLabel ?? ''}"
+                  class='input'
+                  part='input'
+                  id="${this.id}"
+                  name="${this.name}"
+                  .value="${this.value}"
+                  ?disabled="${this.disabled}"
+                  ?readonly="${this.readonly}"
+                  ?required="${!!this.requiredLabel}"
+                  type="${type}"
+                  aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
+                  aria-invalid="${this.helpTextType === 'error' ? 'true' : 'false'}"
+                  placeholder=${ifDefined(this.placeholder)}
+                  minlength=${ifDefined(this.minlength)}
+                  maxlength=${ifDefined(this.maxlength)}
+                  autocapitalize=${this.autocapitalize}
+                  autocomplete=${this.autocomplete}
+                  ?autofocus="${this.autofocus}"
+                  dirname=${ifDefined(this.dirname)}
+                  pattern=${ifDefined(this.pattern)}
+                  list=${ifDefined(this.list)}
+                  size=${ifDefined(this.size)}
+                  @input=${this.onInput}
+                  @change=${this.onChange}
+                  @keydown=${this.handleKeyDown}
+                />`;
+  }
+
   public override render() {
     return html`
       ${this.renderLabel()}
@@ -364,35 +394,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
         <slot name="input-leading-icon">${this.renderLeadingIcon()}</slot>
        <div class="input-section" part="input-section">
        <slot name="input-prefix-text">${this.renderPrefixText()}</slot>
-        <slot name="input">
-          <input 
-            aria-label="${this.dataAriaLabel ?? ''}"
-            class='input'
-            part='input'
-            id="${this.id}"
-            name="${this.name}"
-            .value="${this.value}"
-            ?disabled="${this.disabled}"
-            ?readonly="${this.readonly}"
-            ?required="${!!this.requiredLabel}"
-            type="text"
-            aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
-            aria-invalid="${this.helpTextType === 'error' ? 'true' : 'false'}"
-            placeholder=${ifDefined(this.placeholder)}
-            minlength=${ifDefined(this.minlength)}
-            maxlength=${ifDefined(this.maxlength)}
-            autocapitalize=${this.autocapitalize}
-            autocomplete=${this.autocomplete}
-            ?autofocus="${this.autofocus}"
-            dirname=${ifDefined(this.dirname)}
-            pattern=${ifDefined(this.pattern)}
-            list=${ifDefined(this.list)}
-            size=${ifDefined(this.size)}
-            @input=${this.onInput}
-            @change=${this.onChange}
-            @keydown=${this.handleKeyDown}
-          />
-        </slot>
+        <slot name="input">${this.renderInputElement(DEFAULTS.INPUT_TYPE)}</slot>
        </div>
         <slot name="trailing-button">${this.renderTrailingButton()}</slot>
       </div>
