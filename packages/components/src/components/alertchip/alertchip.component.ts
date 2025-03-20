@@ -47,8 +47,8 @@ class AlertChip extends Buttonsimple {
    */
   @property({ type: String }) label = '';
 
-  constructor() {
-    super();
+  override connectedCallback(): void {
+    super.connectedCallback();
     this.disabled = undefined as unknown as boolean;
     this.softDisabled = undefined as unknown as boolean;
     this.active = undefined as unknown as boolean;

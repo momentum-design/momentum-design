@@ -6,7 +6,8 @@ Consistency in naming conventions ensures clarity, maintainability, and ease of 
 
 To ensure consistency in component naming, all components should follow PascalCase (UpperCamelCase). This means that each word should start with an uppercase letter, and there should be no underscores or hyphens.
 
-#### Examples:
+#### Examples
+
 - ✅ `IconProvider`, `ThemeProvider`, `ModalContainer`, `FormFieldWrapper`
 - ❌ `modalcontainer`, `formfieldwrapper`
 
@@ -14,7 +15,8 @@ To ensure consistency in component naming, all components should follow PascalCa
 
 All class names within components should follow the kebab-case naming convention. This means words should be lowercase and separated by hyphens.
 
-#### Examples:
+#### Examples
+
 - ✅ `.button-primary`, `.input-field-wrapper`
 - ❌ `.button_primary`, `.inputFieldWrapper`
 
@@ -22,6 +24,7 @@ All class names within components should follow the kebab-case naming convention
 
 CSS part names should not use the `mdc` prefix. Instead, they should be named in a straightforward, descriptive manner that aligns with the element’s function.
 
-#### Examples:
+#### Examples
+
 - ✅ `label`, `button`, `input`
 - ❌ `mdc-label`, `mdc-button`, `mdc-input`

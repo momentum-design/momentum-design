@@ -35,8 +35,8 @@ class FormfieldGroup extends DataAriaLabelMixin(FormfieldWrapper) {
    */
   protected isRadio = false;
 
-  constructor() {
-    super();
+  override connectedCallback(): void {
+    super.connectedCallback();
     /** @internal */
     this.shouldRenderLabel = false;
     this.id = '';

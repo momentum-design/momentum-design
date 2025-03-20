@@ -64,8 +64,8 @@ class Coachmark extends Popover {
   @property({ type: Boolean, reflect: true, attribute: 'disable-aria-expanded' })
   override disableAriaExpanded: boolean = DEFAULTS.DISABLE_ARIA_EXPANDED;
 
-  constructor() {
-    super();
+  override connectedCallback(): void {
+    super.connectedCallback();
     this.color = DEFAULTS.COLOR;
     this.showArrow = DEFAULTS.ARROW;
   }
