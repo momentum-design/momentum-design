@@ -1,37 +1,30 @@
-import type { Meta, StoryObj, Args } from '@storybook/web-components';
-import '.';
-import '../option';
-import '../optgroup';
-import '../divider';
+import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { disableControls, hideControls } from '../../../config/storybook/utils';
+import '../divider';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
+import '../optgroup';
+import '../option';
 
 const render = (args: Args) => html`
   <div style="height: 15rem; width: 20rem;">
     <mdc-select
       label="${args.label}"
+      required-label="${args['required-label']}"
       help-text-type="${args['help-text-type']}"
       help-text="${args['help-text']}"
       name="${args.name}"
-      placeholder="${args.placeholder}"
+      placeholder="${args.placeholder}" 
       ?disabled="${args.disabled}"
       ?readonly="${args.readonly}"
     >
-      <mdc-option>Option Label 1</mdc-option>
-      <mdc-option>Option Label 2</mdc-option>
-      <mdc-option>Option Label 3</mdc-option>
-      <mdc-optgroup label="group">
-        <mdc-option>Option Label 4</mdc-option>
-        <mdc-option>Option Label 5</mdc-option>
-      </mdc-optgroup>
-      <mdc-option>Option Label 6</mdc-option>
-      <mdc-optgroup>
-        <mdc-option>Option Label 7</mdc-option>
-        <mdc-option>Option Label 8</mdc-option>
-        <mdc-option>Option Label 9</mdc-option>
-      </mdc-optgroup>
-      <mdc-option>Option Label 10</mdc-option>
+      <mdc-option>London, UK</mdc-option>
+      <mdc-option>Los Angeles, CA</mdc-option>
+      <mdc-option>Phoenix, AZ</mdc-option>
+      <mdc-option>New York, NY</mdc-option>
+      <mdc-option>Seattle, WA</mdc-option>
     </mdc-select>
   </div>
 `;
@@ -45,12 +38,13 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
-    ...classArgType,
-    ...styleArgType,
     name: {
       control: 'text',
     },
     label: {
+      control: 'text',
+    },
+    'required-label': {
       control: 'text',
     },
     placeholder: {
@@ -69,6 +63,10 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(VALIDATION),
     },
+    ...hideControls(['validity', 'willValidate', 'default', 'label-info']),
+    ...disableControls(['validation-message']),
+    ...classArgType,
+    ...styleArgType,
   },
 };
 
@@ -76,12 +74,13 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    label: 'Select Label',
-    placeholder: 'Select an option',
+    label: 'Headquarters location',
+    'required-label': 'required',
+    placeholder: 'Select your headquarters location',
     disabled: false,
     readonly: false,
     'help-text': 'Select Help Text',
-    'help-text-type': 'error',
+    'help-text-type': '',
   },
 };
 
@@ -108,5 +107,37 @@ export const SelectWithGroups: StoryObj = {
         </mdc-optgroup>
       </mdc-select>
     </div>
+  `,
+};
+
+export const SelectWithStates: StoryObj = {
+  render: () => html`
+  <div style="display: grid; grid-template-rows: repeat(3, 1fr);  gap: 2rem;">
+    <mdc-select
+      help-text-type="${VALIDATION.SUCCESS}"
+      help-text="The correct number of Infinity Stones has been selected."
+      label="How many Infinity Stones exist?"
+      required-label="required"
+    >
+      <mdc-option value="six" selected>Six</mdc-option>
+    </mdc-select>
+    <mdc-select
+      help-text="Selecting this number may cause a security risk because it is not properly setup."
+      help-text-type="${VALIDATION.WARNING}"
+      label="Select phone number"
+      required-label="required"
+    >
+      <mdc-option selected value="456-198-0253">456-198-0253</mdc-option>
+    </mdc-select>
+    <mdc-select
+      help-text-type="${VALIDATION.ERROR}"
+      help-text="You must select the total number of Infinity Stones."
+      label="How many Infinity Stones exist?"
+      placeholder="Select the total number of Infinity Stones"
+      required-label="required"
+    ></mdc-select>
+    <mdc-select help-text="This is a disabled text." label="Label" placeholder="Selected text" disabled></mdc-select>
+    <mdc-select help-text="This is a readonly text." label="Label" placeholder="Selected text" readonly></mdc-select>
+  </div>
   `,
 };
