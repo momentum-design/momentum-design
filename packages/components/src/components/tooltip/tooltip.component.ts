@@ -16,6 +16,11 @@ import type { TooltipType } from './tooltip.types';
  *
  * @tagname mdc-tooltip
  *
+ * @event shown - (React: onShown) This event is dispatched when the tooltip is shown
+ * @event hidden - (React: onHidden) This event is dispatched when the tooltip is hidden
+ * @event created - (React: onCreated) This event is dispatched when the tooltip is created (added to the DOM)
+ * @event destroyed - (React: onDestroyed) This event is dispatched when the tooltip is destroyed (removed from the DOM)
+ *
  * @cssproperty --mdc-tooltip-max-width - The maximum width of the tooltip.
  * @cssproperty --mdc-tooltip-padding - The padding of the tooltip.
  * @cssproperty --mdc-tooltip-text-color - The text color of the tooltip.

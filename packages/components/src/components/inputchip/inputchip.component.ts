@@ -78,7 +78,7 @@ class InputChip extends IconNameMixin(DisabledMixin(Component)) {
   public override render() {
     return html`
         ${this.renderIcon()}
-        <mdc-text type="${DEFAULTS.TEXT_TYPE}" tagname="${DEFAULTS.TAG_NAME}">${this.label}</mdc-text>
+        <mdc-text part="label" type="${DEFAULTS.TEXT_TYPE}" tagname="${DEFAULTS.TAG_NAME}">${this.label}</mdc-text>
         <mdc-button 
           ?disabled="${this.disabled}"
           variant="tertiary"
