@@ -2095,6 +2095,10 @@
                 "parent": "theme/stable/highcontrast/hc_dark",
                 "type": "color",
                 "value": "{color.highcontrast.black.HighlightTextColor}"
+              },
+              "disabled": {
+                "value": "{color.highcontrast.black.GrayTextColor}",
+                "type": "color"
               }
             },
             "secondary": {
