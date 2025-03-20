@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
@@ -47,6 +48,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
 };
 
 const runVisualRegressionTest = async (componentsPage: ComponentsPage, progressbarStickerSheet: any) => {
+  // eslint-disable-next-line max-len
   progressbarStickerSheet.setAttributes({ label: 'Label', 'help-text': 'Helper text', 'data-aria-label': 'This is a progress bar' });
 
   // Default progressbar
@@ -68,7 +70,6 @@ const runVisualRegressionTest = async (componentsPage: ComponentsPage, progressb
   );
 
   // Error state (default variant) - only set error if `error: true`
-  // eslint-disable-next-line max-len
   await progressbarStickerSheet.setAttributes({ error: true, label: 'Label', 'help-text': 'Helper text', 'data-aria-label': 'This is a progress bar' });
   await progressbarStickerSheet.createMarkupWithCombination(
     {
@@ -80,7 +81,6 @@ const runVisualRegressionTest = async (componentsPage: ComponentsPage, progressb
 
   // Inline progressbar
   // Reset error to false for inline progressbars, and include label for inline
-  // eslint-disable-next-line max-len
   progressbarStickerSheet.setAttributes({ label: 'Label', 'help-text': 'Helper text', 'data-aria-label': 'This is a progress bar' });
   await progressbarStickerSheet.createMarkupWithCombination(
     {
