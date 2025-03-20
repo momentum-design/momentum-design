@@ -1,8 +1,8 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { COLOR, POPOVER_PLACEMENT, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
 import { action } from '@storybook/addon-actions';
+import { COLOR, POPOVER_PLACEMENT, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
 import '../button';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
