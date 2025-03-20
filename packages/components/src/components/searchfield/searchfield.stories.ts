@@ -4,6 +4,7 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
+import '../inputchip';
 
 const render = (args: Args) => html`
   <mdc-searchfield 
@@ -77,4 +78,13 @@ export const DisabledSearch: StoryObj = {
     'clear-aria-label': 'Clear',
     'data-aria-label': 'Search',
   },
+};
+
+export const WithInputChip: StoryObj = {
+  render: () => html`
+  <mdc-searchfield label="Label" placeholder="Placeholder" clear-aria-label="Clear">
+    <mdc-inputchip label="Fill" slot="inputchip"></mdc-inputchip>
+    <mdc-inputchip label="Done" slot="inputchip"></mdc-inputchip>
+  </mdc-searchfield>
+  `,
 };

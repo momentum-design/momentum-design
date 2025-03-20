@@ -28,6 +28,7 @@ class Searchfield extends Input {
     ${this.renderLabelElement()}
     <div class="input-container mdc-focus-ring" part="input-container">
       <slot name="input-leading-icon">${this.renderLeadingIcon()}</slot>
+      <slot name="inputchip"></slot>
       <slot name="input">${this.renderInputElement(DEFAULTS.TYPE)}</slot>
       <slot name="trailing-button">${this.renderTrailingButton()}</slot>
     </div>
