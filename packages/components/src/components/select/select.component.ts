@@ -15,13 +15,20 @@ import { ARROW_ICON } from './select.constants';
 import styles from './select.styles';
 
 /**
- * select component, which ...
+ * select component, represents a control that provides a menu of options.
+ *
+ * @dependency mdc-icon
+ * @dependency mdc-popover
+ * @dependency mdc-text
  *
  * @tagname mdc-select
  *
- * @slot default - This is a default/unnamed slot
+ * @slot default - This is a default/unnamed slot for options and/or option group.
  *
- * @event click - (React: onClick) This event is a Click Event, update the description
+ * @event click - (React: onClick) This event is dispatched when the select is clicked.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the select.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the select.
+ * @event focus - (React: onFocus) This event is dispatched when the select receives focus.
  */
 class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
   /**
@@ -56,6 +63,11 @@ class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
     this.addEventListener('keydown', this.handleKeydown);
   }
 
+  /**
+   * A helper function which returns a flattened array of all valid options from the assigned slot.
+   * It takes care of the edge cases where the option is either a direct child or a
+   * child of an option group.
+   */
   private getAllValidOptions() {
     return this.optionsList
       ?.map((option) => {
@@ -77,14 +89,30 @@ class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
     this.baseIconName = ARROW_ICON.ARROW_DOWN;
   }
 
+  /**
+   * A private method which is called when an option is clicked.
+   * It is used to update the tabindex and selected attribute of the options.
+   * @param event The event which triggered this function.
+   */
   private handleOptionsClick(event: MouseEvent): void {
     this.updateTabIndexAndSetSelectedOnOptions(event.target);
   }
 
+  /**
+   * Listens to changes in the default slot and updates the tabindex and selected attribute of the options accordingly.
+   * This is used to set the tabindex and selected attribute of the options when they are slotted.
+   * It is called internally when the slot is changed.
+   */
   private handleSlotChange(): void {
     this.updateTabIndexAndSetSelectedOnOptions();
   }
 
+  /**
+   * Updates the tabindex and selected attribute of the options.
+   * If selectedOption is provided, it will be set as the selected option.
+   * Otherwise, it will set the first option as the selected option.
+   * @param selectedOption - The option which should be selected.
+   */
   private updateTabIndexAndSetSelectedOnOptions(selectedOption?: EventTarget | null): void {
     let isTabIndexSet = false;
     this.getAllValidOptions().forEach((option) => {
@@ -106,6 +134,12 @@ class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
     this.getAllValidOptions()[0]?.setAttribute('tabindex', '0');
   }
 
+  /**
+   * Sets the selected value based on the provided option element.
+   * It retrieves the 'label' attribute of the option, if present,
+   * otherwise it falls back to the option's text content.
+   * @param option - The option element from which to set the selected value.
+   */
   private setSelectedValue(option: Element): void {
     this.selectedValue = option?.getAttribute('label') ?? option?.textContent ?? '';
   }
@@ -114,6 +148,13 @@ class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
     this.selectedValue = placeholder;
   }
 
+  /**
+   * Handles keyboard navigation for the options list using arrow keys.
+   * It calculates the new index based on the current target index and the key pressed.
+   * Updates the focus and tabindex of the options accordingly.
+   * @param key - The key pressed, expected to be either 'ArrowDown' or 'ArrowUp'.
+   * @param target - The current target element in focus.
+   */
   private handleArrowUpDownEvent(key: string, target: EventTarget | null): void {
     const currentIndex = this.getAllValidOptions().findIndex((option) => option === target);
     const optionsLength = this.getAllValidOptions().length;
@@ -134,13 +175,23 @@ class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
 
   private updateActivedescendant(target: EventTarget | null): void {
     const currentIndex = this.getAllValidOptions().findIndex((option) => option === target);
-    this.activeDescendant = this.getAllValidOptions()[currentIndex]?.id;
+    this.activeDescendant = this.getAllValidOptions()[currentIndex]?.id ?? '';
   }
 
   private resetActivedescendant(): void {
     this.activeDescendant = '';
   }
 
+  /**
+   * Handles the keydown event for the select component.
+   * Toggles the popover on SPACE or ESCAPE key press, selecting options
+   * and updating the active descendant and tabindex accordingly.
+   * - SPACE: Opens the popover and resets the active descendant.
+   * - ESCAPE: Closes the popover and resets the active descendant.
+   * - ENTER: Updates tabindex and selected option based on the event target.
+   * - ARROW_DOWN/ARROW_UP: Navigates through options and updates focus.
+   * @param event - The keyboard event that triggered the handler.
+   */
   private handleKeydown(event: KeyboardEvent): void {
     switch (event.key) {
       case KEYS.SPACE:
@@ -164,6 +215,11 @@ class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
     }
   }
 
+  /**
+   * Handles the first updated lifecycle event.
+   * If an option is selected, use that as the value.
+   * If not, use the placeholder if it exists, otherwise use the first option.
+   */
   public override firstUpdated() {
     const selectedOptionIndex = this.getAllValidOptions().findIndex((option) => option?.hasAttribute('selected'));
     if (selectedOptionIndex !== -1) {
@@ -183,6 +239,13 @@ class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
     return true;
   }
 
+  /**
+   * Generates the content for the popover associated with the select component.
+   * If the component is disabled or readonly, returns `nothing`.
+   * Otherwise, returns a `TemplateResult` that renders a popover with various configurations
+   * such as visibility, interaction, and event handlers.
+   * The popover acts as a dropdown list with options, allowing user interaction.
+   */
   private getPopoverContent(): TemplateResult | typeof nothing {
     if (this.disabled || this.readonly) {
       return nothing;

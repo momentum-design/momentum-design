@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import '.';
@@ -9,8 +10,12 @@ import '../optgroup';
 import '../option';
 
 const render = (args: Args) => html`
-  <div style="height: 15rem; width: 20rem;">
+  <div style="height: 15rem;">
     <mdc-select
+      @click="${action('onclick')}"
+      @keydown="${action('onkeydown')}"
+      @keyup="${action('onkeyup')}"
+      @focus="${action('onfocus')}"
       label="${args.label}"
       required-label="${args['required-label']}"
       help-text-type="${args['help-text-type']}"
