@@ -20,6 +20,7 @@ const iife = async () => {
       `${join(process.cwd(), 'src/stories/FocusRing/subcomponent-focusring.e2e-test.utils.ts')}`,
       `${join(process.cwd(), 'src/components/virtualizedlist/virtualizedlist.helper.test.ts')}`,
     ],
+    tsconfig: `${join(process.cwd(), 'tsconfig-e2e.json')}`,
     outfile: undefined,
     outdir: `${join(publicPath, 'dist')}`,
   });
