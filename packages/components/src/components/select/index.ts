@@ -1,7 +1,6 @@
 import Select from './select.component';
 import { TAG_NAME } from './select.constants';
 import '../popover';
-import '../option';
 import '../text';
 import '../icon';
 
