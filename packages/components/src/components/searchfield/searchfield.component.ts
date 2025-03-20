@@ -5,15 +5,11 @@ import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import { DEFAULTS } from './searchfield.constants';
 
 /**
- * searchfield component, which ...
+ * searchfield component is used as an input field for search functionality.
+ * This component is built by extending the mdc-input component.
  *
  * @tagname mdc-searchfield
  *
- * @slot default - This is a default/unnamed slot
- *
- * @event click - (React: onClick) This event is a Click Event, update the description
- *
- * @cssproperty --custom-property-name - Description of the CSS custom property
  */
 class Searchfield extends Input {
   override connectedCallback() {
@@ -24,6 +20,7 @@ class Searchfield extends Input {
     this.helpTextType = undefined as unknown as ValidationType;
     this.requiredLabel = undefined as unknown as string;
     this.validationMessage = undefined as unknown as string;
+    this.prefixText = undefined as unknown as string;
   }
 
   public override render() {
