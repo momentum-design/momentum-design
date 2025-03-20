@@ -35,10 +35,10 @@ const createPopover = (args: Args, content: TemplateResult) => html`
     aria-describedby="${args['aria-describedby']}"
     role="${args.role}"
     ?disable-aria-expanded="${args['disable-aria-expanded']}"
-    @popover-on-show="${action('onshow')}"
-    @popover-on-hide="${action('onhide')}"
-    @popover-on-created="${action('oncreated')}"
-    @popover-on-destroyed="${action('ondestroyed')}"
+    @shown="${action('onshown')}"
+    @hidden="${action('onhidden')}"
+    @created="${action('oncreated')}"
+    @destroyed="${action('ondestroyed')}"
   >
     ${content}
   </mdc-popover>

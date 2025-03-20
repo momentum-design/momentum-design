@@ -45,10 +45,10 @@ const render = (args: Args) => html`
       aria-labelledby="${args['aria-labelledby']}"
       aria-describedby="${args['aria-describedby']}"
       role="${args.role}"
-      @popover-on-show="${action('onshow')}"
-      @popover-on-hide="${action('onhide')}"
-      @popover-on-created="${action('oncreated')}"
-      @popover-on-destroyed="${action('ondestroyed')}"
+      @shown="${action('onshown')}"
+      @hidden="${action('onhidden')}"
+      @created="${action('oncreated')}"
+      @destroyed="${action('ondestroyed')}"
     >
       <mdc-text>Lorem ipsum dolor sit amet.</mdc-text>
     </mdc-coachmark>
