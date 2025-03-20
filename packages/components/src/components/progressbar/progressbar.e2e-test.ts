@@ -47,7 +47,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
 };
 
 const runVisualRegressionTest = async (componentsPage: ComponentsPage, progressbarStickerSheet: any) => {
-  progressbarStickerSheet.setAttributes({ label: 'Label', 'help-text': 'Helper text' });
+  progressbarStickerSheet.setAttributes({ label: 'Label', 'help-text': 'Helper text', 'data-aria-label': 'This is a progress bar' });
 
   // Default progressbar
   await progressbarStickerSheet.createMarkupWithCombination(
@@ -68,7 +68,8 @@ const runVisualRegressionTest = async (componentsPage: ComponentsPage, progressb
   );
 
   // Error state (default variant) - only set error if `error: true`
-  await progressbarStickerSheet.setAttributes({ error: true, label: 'Label', 'help-text': 'Helper text' });
+  // eslint-disable-next-line max-len
+  await progressbarStickerSheet.setAttributes({ error: true, label: 'Label', 'help-text': 'Helper text', 'data-aria-label': 'This is a progress bar' });
   await progressbarStickerSheet.createMarkupWithCombination(
     {
       variant: [VARIANT.DEFAULT],
@@ -79,7 +80,8 @@ const runVisualRegressionTest = async (componentsPage: ComponentsPage, progressb
 
   // Inline progressbar
   // Reset error to false for inline progressbars, and include label for inline
-  progressbarStickerSheet.setAttributes({ label: 'Label', 'help-text': 'Helper text' });
+  // eslint-disable-next-line max-len
+  progressbarStickerSheet.setAttributes({ label: 'Label', 'help-text': 'Helper text', 'data-aria-label': 'This is a progress bar' });
   await progressbarStickerSheet.createMarkupWithCombination(
     {
       variant: [VARIANT.INLINE],
@@ -98,7 +100,8 @@ const runVisualRegressionTest = async (componentsPage: ComponentsPage, progressb
   );
 
   // Error state (inline variant)
-  await progressbarStickerSheet.setAttributes({ error: true, label: 'Label', 'help-text': 'Helper text' });
+  // eslint-disable-next-line max-len
+  await progressbarStickerSheet.setAttributes({ error: true, label: 'Label', 'help-text': 'Helper text', 'data-aria-label': 'This is a progress bar' });
   await progressbarStickerSheet.createMarkupWithCombination(
     {
       variant: [VARIANT.INLINE],
