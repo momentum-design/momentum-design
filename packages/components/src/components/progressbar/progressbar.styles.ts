@@ -12,7 +12,7 @@ const styles = [css`
   --mdc-progressbar-label-color: var(--mds-color-theme-text-primary-normal);
   --mdc-progressbar-label-line-height: var(--mds-font-lineheight-body-midsize);
   --mdc-progressbar-label-font-size: var(--mds-font-size-body-midsize);
-  --mdc-progressbar-label-font-weight: 400;
+  --mdc-progressbar-label-font-weight: var(--mds-font-weight-regular);
   --mdc-progressbar-help-text-color: var(--mds-color-theme-text-secondary-normal);
 
   display: block;
@@ -42,8 +42,8 @@ const styles = [css`
   gap: 0.25rem;
 }
 
-:host([variant="inline"])::part(label-text) {
-  width: unset;
+:host([variant="inline"])::part(label) {
+  overflow: unset;
 }
 
 :host::part(progress-bar) {

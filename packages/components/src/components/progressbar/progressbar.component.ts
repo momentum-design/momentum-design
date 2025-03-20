@@ -1,9 +1,10 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
+import { v4 as uuidv4 } from 'uuid';
 import styles from './progressbar.styles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { DEFAULTS, VARIANT } from './progressbar.constants';
-import { Variant } from './progressbar.types';
+import type { Variant } from './progressbar.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 
@@ -63,13 +64,14 @@ class Progressbar extends DataAriaLabelMixin(FormfieldWrapper) {
 
   constructor() {
     super();
-    this.id = '';
+    this.id = `mdc-progressbar-${uuidv4()}`;
     this.disabled = undefined as unknown as boolean;
   }
 
   /**
    * Ensures that the value is clamped between 0 and 100
    * @returns The clamped value
+   * @internal
    */
   private get clampedValue() {
     const value = Number(this.value);
@@ -95,6 +97,7 @@ class Progressbar extends DataAriaLabelMixin(FormfieldWrapper) {
   /**
    * Renders the progress bar with dynamic width and variant styles.
    * @returns The rendered HTML for the progress bar.
+   * @internal
    */
   private renderProgressbar = () => {
     const variant = this.getValidationVariant();
@@ -123,10 +126,10 @@ class Progressbar extends DataAriaLabelMixin(FormfieldWrapper) {
     const isInline = this.variant === VARIANT.INLINE;
     return html`
       ${isInline
-    ? html`<div part="inline-label-container">${this.renderLabel()} ${this.renderProgressbar()}</div>`
+    ? html`<div part="inline-label-container">${this.renderLabelElement()} ${this.renderProgressbar()}</div>`
     : html`
             <div part="label-container">
-              ${this.renderLabel()}
+              ${this.renderLabelElement()}
               ${this.variant === VARIANT.DEFAULT && this.label
     ? html`<span part="percentage">${this.clampedValue}%</span>`
     : ''}
