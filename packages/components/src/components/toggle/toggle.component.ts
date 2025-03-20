@@ -70,8 +70,8 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    */
     @property({ type: Boolean, reflect: true }) override autofocus = false;
 
-    constructor() {
-      super();
+    override connectedCallback(): void {
+      super.connectedCallback();
       // Toggle does not contain helpTextType property.
       this.helpTextType = undefined as unknown as ValidationType;
     }

@@ -4,7 +4,7 @@
 import { expect, Page } from '@playwright/test';
 import { test, ComponentsPage } from '../../../config/playwright/setup';
 import { PopoverColor, PopoverPlacement, PopoverTrigger } from '../popover/popover.types';
-import { COLOR, POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { COLOR, POPOVER_PLACEMENT, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
 
 type SetupOptions = {
@@ -169,7 +169,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
         placement: 'invalid',
         'tooltip-type': 'invalid',
       });
-      await expect(tooltip).toHaveAttribute('color', DEFAULTS.COLOR);
+      await expect(tooltip).toHaveAttribute('color', POPOVER_DEFAULTS.COLOR);
       await expect(tooltip).toHaveAttribute('delay', DEFAULTS.DELAY);
       await expect(tooltip).toHaveAttribute('placement', DEFAULTS.PLACEMENT);
       await expect(tooltip).toHaveAttribute('tooltip-type', DEFAULTS.TOOLTIP_TYPE);
