@@ -20,7 +20,7 @@ const render = (args: Args) => html`
     icon-name="video-bold"
     tabid="videos-tab"
     aria-controls="videos-panel">
-    <mdc-badge slot="badge" type="counter" counter="5"></mdc-badge>
+    <mdc-badge slot="badge" type="counter" counter="5" aria-label="5 New videos"></mdc-badge>
   </mdc-tab>
   <mdc-tab variant=${args.tabvariant}
     text="Music"

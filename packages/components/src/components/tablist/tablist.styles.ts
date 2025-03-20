@@ -23,10 +23,6 @@ const styles = css`
     padding: var(--mdc-tablist-focus-ring-outer-width);
   }
 
-  :host .hide-arrow-button {
-    display: none;
-  }
-
   :host mdc-button[prefix-icon="arrow-left-regular"] {
     margin-right: var(--mdc-tablist-arrow-button-margin);
   }
