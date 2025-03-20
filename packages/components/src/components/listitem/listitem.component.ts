@@ -93,8 +93,8 @@ class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component)
    */
   @property({ type: String, reflect: true, attribute: 'subline-text' }) sublineText?: string;
 
-  constructor() {
-    super();
+  override connectedCallback(): void {
+    super.connectedCallback();
     this.role = this.role || 'listitem';
   }
 

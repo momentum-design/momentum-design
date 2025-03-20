@@ -225,8 +225,8 @@ class Divider extends Component {
     }
   }
 
-  constructor() {
-    super();
+  override connectedCallback(): void {
+    super.connectedCallback();
     this.setAttribute('data-type', 'mdc-primary-divider');
   }
 

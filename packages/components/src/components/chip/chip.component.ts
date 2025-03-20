@@ -53,8 +53,8 @@ class Chip extends IconNameMixin(Buttonsimple) {
    */
   @property({ type: String }) label = '';
 
-  constructor() {
-    super();
+  override connectedCallback(): void {
+    super.connectedCallback();
     this.role = DEFAULTS.ROLE;
     this.size = DEFAULTS.SIZE;
     this.active = undefined as unknown as boolean;

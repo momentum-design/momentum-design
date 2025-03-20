@@ -38,8 +38,8 @@ class Option extends FormInternalsMixin(ListItem) {
    */
   @property({ type: String, reflect: true, attribute: 'aria-label' }) override ariaLabel: string | null = null;
 
-  constructor() {
-    super();
+  override connectedCallback(): void {
+    super.connectedCallback();
     this.role = 'option';
     this.variant = LISTITEM_VARIANTS.INSET_RECTANGLE;
     this.updateAttribute('aria-selected', `${this.selected}`);
