@@ -46,7 +46,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
   });
 };
 
-const runVisualRegressionTest = async (componentsPage: ComponentsPage, progressbarStickerSheet) => {
+const runVisualRegressionTest = async (componentsPage: ComponentsPage, progressbarStickerSheet: any) => {
   progressbarStickerSheet.setAttributes({ label: 'Label', 'help-text': 'Helper text' });
 
   // Default progressbar
