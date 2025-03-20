@@ -41,14 +41,17 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
     await expect(progressbar).toHaveAttribute('value', '0');
   });
   await test.step('attributes are set properly', async () => {
-    await progressbar.evaluate((el) => el.setAttribute('value', '30'));
+    await componentsPage.setAttributes(progressbar, { value: '30' });
     await expect(progressbar).toHaveAttribute('value', '30');
   });
 };
 
 const runVisualRegressionTest = async (componentsPage: ComponentsPage, progressbarStickerSheet: any) => {
-  // eslint-disable-next-line max-len
-  progressbarStickerSheet.setAttributes({ label: 'Label', 'help-text': 'Helper text', 'data-aria-label': 'This is a progress bar' });
+  progressbarStickerSheet.setAttributes({
+    label: 'Label',
+    'help-text': 'Helper text',
+    'data-aria-label': 'This is a progress bar',
+  });
 
   // Default progressbar
   await progressbarStickerSheet.createMarkupWithCombination(
@@ -104,8 +107,12 @@ const runVisualRegressionTest = async (componentsPage: ComponentsPage, progressb
   );
 
   // Error state (inline variant)
-  // eslint-disable-next-line max-len
-  await progressbarStickerSheet.setAttributes({ error: true, label: 'Label', 'help-text': 'Helper text', 'data-aria-label': 'This is a progress bar' });
+  await progressbarStickerSheet.setAttributes({
+    error: true,
+    label: 'Label',
+    'help-text': 'Helper text',
+    'data-aria-label': 'This is a progress bar',
+  });
   await progressbarStickerSheet.createMarkupWithCombination(
     {
       variant: [VARIANT.INLINE],

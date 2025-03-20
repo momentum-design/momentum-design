@@ -1,4 +1,4 @@
-import { CSSResult, html, nothing } from 'lit';
+import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './progressbar.styles';
@@ -62,8 +62,8 @@ class Progressbar extends DataAriaLabelMixin(FormfieldWrapper) {
    */
   @property({ type: Boolean, attribute: 'error' }) error = false;
 
-  constructor() {
-    super();
+  override connectedCallback() {
+    super.connectedCallback();
     this.id = `mdc-progressbar-${uuidv4()}`;
     this.disabled = undefined as unknown as boolean;
   }
@@ -135,7 +135,7 @@ class Progressbar extends DataAriaLabelMixin(FormfieldWrapper) {
     : ''}
             </div>
             ${this.renderProgressbar()}
-            ${this.helpText ? this.renderHelperText() : nothing}
+            ${this.renderHelperText()}
           `}
     `;
   }
