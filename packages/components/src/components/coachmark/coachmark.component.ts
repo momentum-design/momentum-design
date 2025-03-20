@@ -11,6 +11,12 @@ import type { PopoverTrigger } from '../popover/popover.types';
  *
  * @tagname mdc-coachmark
  *
+ * @event shown - (React: onShown) This event is dispatched when the coachmark is shown
+ * @event hidden - (React: onHidden) This event is dispatched when the coachmark is hidden
+ * @event created - (React: onCreated) This event is dispatched when the coachmark is created (added to the DOM)
+ * @event destroyed - (React: onDestroyed) This event is dispatched when the coachmark is
+ * destroyed (removed from the DOM)
+ *
  * @cssproperty --mdc-popover-arrow-border-radius - radius of the arrow border
  * @cssproperty --mdc-popover-arrow-border - border of the arrow
  * @cssproperty --mdc-popover-primary-background-color - primary background color of the popover
@@ -58,8 +64,8 @@ class Coachmark extends Popover {
   @property({ type: Boolean, reflect: true, attribute: 'disable-aria-expanded' })
   override disableAriaExpanded: boolean = DEFAULTS.DISABLE_ARIA_EXPANDED;
 
-  constructor() {
-    super();
+  override connectedCallback(): void {
+    super.connectedCallback();
     this.color = DEFAULTS.COLOR;
     this.showArrow = DEFAULTS.ARROW;
   }

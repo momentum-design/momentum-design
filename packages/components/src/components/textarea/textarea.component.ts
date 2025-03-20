@@ -141,14 +141,11 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
       return this.inputElement;
     }
 
-    constructor() {
-      super();
-      // Set the default value to the textarea field if the value is set through the text content directly
-      this.value = this.textContent?.trim() || this.value;
-    }
-
     override connectedCallback(): void {
       super.connectedCallback();
+
+      // Set the default value to the textarea field if the value is set through the text content directly
+      this.value = this.textContent?.trim() || this.value;
 
       this.updateComplete.then(() => {
         if (this.textarea) {

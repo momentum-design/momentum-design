@@ -22,8 +22,8 @@ class FilterChip extends Chip {
    */
   @property({ type: Boolean, reflect: true }) selected = false;
 
-  constructor() {
-    super();
+  override connectedCallback(): void {
+    super.connectedCallback();
     this.color = DEFAULTS.COLOR;
   }
 

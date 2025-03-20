@@ -6,6 +6,7 @@ The conventions in this folder should be followed and considered during developm
 
 | Convention |
 | -------- |
+| [Component naming](https://github.com/momentum-design/momentum-design/blob/main/packages/components/conventions/component-naming-guidelines.md)  |
 | [Clean Code Guidelines](https://github.com/momentum-design/momentum-design/blob/main/packages/components/conventions/clean-code-guidelines.md)  |
 | [Component Folder Structure](https://github.com/momentum-design/momentum-design/blob/main/packages/components/conventions/component-code-structure.md)  |
 | [Component Error Handling](https://github.com/momentum-design/momentum-design/blob/main/packages/components/conventions/component-error-handling.md)  |
@@ -13,6 +14,7 @@ The conventions in this folder should be followed and considered during developm
 | [Typescript Type Only Imports](https://github.com/momentum-design/momentum-design/blob/main/packages/components/conventions/typescript-type-only-imports.md)  |
 | [Using Enums and Alternatives in TypeScript](https://github.com/momentum-design/momentum-design/blob/main/packages/components/conventions/constants-and-enums.md)  |
 | [No relative workspace imports](https://github.com/momentum-design/momentum-design/blob/main/packages/components/conventions/no-relative-imports-workspace.md)  |
+| [Component attribute initialisation](https://github.com/momentum-design/momentum-design/blob/main/packages/components/conventions/component-initialisation.md)  |
 
 ## Accessibility
 
@@ -25,6 +27,7 @@ The conventions in this folder should be followed and considered during developm
 | Convention |
 | -------- |
 | [Component Styling](https://github.com/momentum-design/momentum-design/blob/main/packages/components/conventions/component-styling.md)  |
+| [Using data attributes](https://github.com/momentum-design/momentum-design/blob/main/packages/components/conventions/data-attributes-on-host.md)  |
 
 ## Documentation
 

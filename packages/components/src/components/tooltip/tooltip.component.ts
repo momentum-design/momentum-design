@@ -16,6 +16,11 @@ import type { TooltipType } from './tooltip.types';
  *
  * @tagname mdc-tooltip
  *
+ * @event shown - (React: onShown) This event is dispatched when the tooltip is shown
+ * @event hidden - (React: onHidden) This event is dispatched when the tooltip is hidden
+ * @event created - (React: onCreated) This event is dispatched when the tooltip is created (added to the DOM)
+ * @event destroyed - (React: onDestroyed) This event is dispatched when the tooltip is destroyed (removed from the DOM)
+ *
  * @cssproperty --mdc-tooltip-max-width - The maximum width of the tooltip.
  * @cssproperty --mdc-tooltip-padding - The padding of the tooltip.
  * @cssproperty --mdc-tooltip-text-color - The text color of the tooltip.
@@ -36,10 +41,9 @@ class Tooltip extends Popover {
   @queryAssignedNodes()
   private defaultSlotNodes!: Array<Node>;
 
-  constructor() {
-    super();
+  override connectedCallback(): void {
+    super.connectedCallback();
     this.backdrop = false;
-    this.color = DEFAULTS.COLOR;
     this.delay = DEFAULTS.DELAY;
     this.focusTrap = false;
     this.hideOnBlur = true;
@@ -51,7 +55,6 @@ class Tooltip extends Popover {
     this.showArrow = true;
     this.trigger = 'mouseenter focusin';
 
-    this.visible = false;
     this.enabledFocusTrap = false;
     this.enabledPreventScroll = false;
     this.flip = true;

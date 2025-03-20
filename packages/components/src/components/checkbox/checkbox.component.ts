@@ -62,8 +62,8 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
    */
   @property({ type: Boolean, reflect: true }) override autofocus = false;
 
-  constructor() {
-    super();
+  override connectedCallback(): void {
+    super.connectedCallback();
     // Checkbox does not contain helpTextType property.
     this.helpTextType = undefined as unknown as ValidationType;
   }
