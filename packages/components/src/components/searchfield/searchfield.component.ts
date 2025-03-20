@@ -16,8 +16,8 @@ import { DEFAULTS } from './searchfield.constants';
  * @cssproperty --custom-property-name - Description of the CSS custom property
  */
 class Searchfield extends Input {
-  constructor() {
-    super();
+  override connectedCallback() {
+    super.connectedCallback();
     this.leadingIcon = DEFAULTS.ICON;
     this.trailingButton = DEFAULTS.CLOSE_BTN;
     this.helpText = undefined as unknown as string;

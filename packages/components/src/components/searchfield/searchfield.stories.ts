@@ -8,6 +8,7 @@ const render = (args: Args) => html`
   label="${args.label}"
   placeholder="${args.placeholder}"
   value="${args.value}"
+  ?disabled="${args.disabled}"
   ></mdc-searchfield>`;
 
 const meta: Meta = {
@@ -28,6 +29,9 @@ const meta: Meta = {
     value: {
       control: 'text',
     },
+    disabled: {
+      control: 'boolean',
+    },
     ...classArgType,
     ...styleArgType,
   },
@@ -40,5 +44,6 @@ export const Example: StoryObj = {
     label: 'Label',
     placeholder: 'Placeholder',
     value: 'Value',
+    disabled: false,
   },
 };
