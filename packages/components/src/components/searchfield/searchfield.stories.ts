@@ -80,11 +80,16 @@ export const DisabledSearch: StoryObj = {
   },
 };
 
-export const WithInputChip: StoryObj = {
-  render: () => html`
-  <mdc-searchfield label="Label" placeholder="Placeholder" clear-aria-label="Clear">
-    <mdc-inputchip label="Query: value" slot="filters"></mdc-inputchip>
-    <mdc-inputchip label="In: Marketing" slot="filters"></mdc-inputchip>
-  </mdc-searchfield>
-  `,
+export const WithInputChipFilters: StoryObj = {
+  render: () => {
+    const clearFilter = (e: Event) => {
+      (e.target as HTMLElement).remove();
+    };
+    return html`
+    <mdc-searchfield label="Label" placeholder="Placeholder" clear-aria-label="Clear">
+      <mdc-inputchip label="Query: value" slot="filters" @click="${clearFilter}"></mdc-inputchip>
+      <mdc-inputchip label="In: Marketing" slot="filters" @click="${clearFilter}"></mdc-inputchip>
+    </mdc-searchfield>
+    `;
+  },
 };

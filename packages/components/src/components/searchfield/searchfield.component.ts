@@ -21,6 +21,7 @@ class Searchfield extends Input {
     this.requiredLabel = undefined as unknown as string;
     this.validationMessage = undefined as unknown as string;
     this.prefixText = undefined as unknown as string;
+    this.requiredLabel = undefined as unknown as string;
   }
 
   public override render() {
