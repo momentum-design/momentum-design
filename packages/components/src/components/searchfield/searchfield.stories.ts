@@ -89,6 +89,7 @@ export const WithInputChipFilters: StoryObj = {
     <mdc-searchfield label="Label" placeholder="Placeholder" clear-aria-label="Clear">
       <mdc-inputchip label="Query: value" slot="filters" @click="${clearFilter}"></mdc-inputchip>
       <mdc-inputchip label="In: Marketing" slot="filters" @click="${clearFilter}"></mdc-inputchip>
+      <mdc-chip label="This does not render" slot="filters" ></mdc-chip>
     </mdc-searchfield>
     `;
   },

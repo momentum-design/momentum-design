@@ -1,5 +1,5 @@
 import { CSSResult, html } from 'lit';
-import { queryAssignedElements } from 'lit/decorators';
+import { queryAssignedElements } from 'lit/decorators.js';
 import styles from './searchfield.styles';
 import Input from '../input/input.component';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
@@ -13,7 +13,7 @@ import { DEFAULTS } from './searchfield.constants';
  *
  */
 class Searchfield extends Input {
-  @queryAssignedElements({ slot: 'filters', selector: 'mdc-inputchip' })
+  @queryAssignedElements({ slot: 'filters' })
   inputChips?: Array<HTMLElement>;
 
   override connectedCallback() {
@@ -28,12 +28,26 @@ class Searchfield extends Input {
     this.requiredLabel = undefined as unknown as string;
   }
 
+  /**
+   * This method is used to render the input chips inside filters slot.
+   * It will remove any elements that are not input chips.
+   */
+  private renderInputChips() {
+    if (this.inputChips) {
+      Array.from(this.inputChips).forEach((element) => {
+        if (!element.matches('mdc-inputchip')) {
+          element.remove();
+        }
+      });
+    }
+  }
+
   public override render() {
     return html`
     ${this.renderLabelElement()}
     <div class="input-container mdc-focus-ring" part="input-container">
       <slot name="input-leading-icon">${this.renderLeadingIcon()}</slot>
-      <div part="filters-container"><slot name="filters"></slot></div>
+      <div part="filters-container"><slot name="filters" @slotchange=${this.renderInputChips}></slot></div>
       <slot name="input">${this.renderInputElement(DEFAULTS.TYPE)}</slot>
       <slot name="trailing-button">${this.renderTrailingButton()}</slot>
     </div>
