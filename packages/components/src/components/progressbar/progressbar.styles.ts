@@ -7,6 +7,7 @@ const styles = [css`
   --mdc-progressbar-success-color: var(--mds-color-theme-indicator-stable);
   --mdc-progressbar-error-color: var(--mds-color-theme-indicator-attention);
   --mdc-progressbar-height: 0.25rem;
+  --mdc-progressbar-border: 0.5px solid transparent;
   --mdc-progressbar-border-radius: var(--mdc-progressbar-height);
 
   --mdc-progressbar-label-color: var(--mds-color-theme-text-primary-normal);
@@ -77,6 +78,11 @@ const styles = [css`
 :host([help-text-type="default"])::part(help-text) {
   color: var(--mdc-progressbar-help-text-color);
 }
+
+@media (forced-colors: active) {
+  :host::part(progress-container), :host::part(progress-bar) {
+    border: var(--mdc-progressbar-border);
+  }
 `];
 
 export default styles;
