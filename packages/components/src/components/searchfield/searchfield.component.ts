@@ -1,4 +1,5 @@
 import { CSSResult, html } from 'lit';
+import { queryAssignedElements } from 'lit/decorators';
 import styles from './searchfield.styles';
 import Input from '../input/input.component';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
@@ -12,6 +13,9 @@ import { DEFAULTS } from './searchfield.constants';
  *
  */
 class Searchfield extends Input {
+  @queryAssignedElements({ slot: 'filters', selector: 'mdc-inputchip' })
+  inputChips?: Array<HTMLElement>;
+
   override connectedCallback() {
     super.connectedCallback();
     this.leadingIcon = DEFAULTS.ICON;
