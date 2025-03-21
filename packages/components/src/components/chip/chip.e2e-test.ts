@@ -38,7 +38,7 @@ const setup = async (args: SetupOptions) => {
     : componentsPage.page.locator('mdc-chip');
   await element.waitFor();
 
-  const firstChip = await componentsPage.page.locator('mdc-chip').first();
+  const firstChip = componentsPage.page.locator('mdc-chip').first();
   return firstChip;
 };
 

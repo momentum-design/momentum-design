@@ -41,7 +41,7 @@ const setup = async (args: SetupOptions) => {
   await element.waitFor();
 
   // always return the first avatarbutton:
-  const firstButton = await componentsPage.page.locator('mdc-avatarbutton').first();
+  const firstButton = componentsPage.page.locator('mdc-avatarbutton').first();
   return firstButton;
 };
 

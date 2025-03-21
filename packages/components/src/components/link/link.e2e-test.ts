@@ -40,7 +40,7 @@ const setup = async (args: SetupOptions) => {
   await element.waitFor();
 
   // always return the first button:
-  const link = await componentsPage.page.locator('mdc-link').first();
+  const link = componentsPage.page.locator('mdc-link').first();
   return link;
 };
 

@@ -93,7 +93,7 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
    * INTERACTIONS
    */
   await test.step('interactions', async () => {
-    const textareaElement = await mdcTextarea.locator('textarea');
+    const textareaElement = mdcTextarea.locator('textarea');
     await test.step('component should be focusable with tab', async () => {
       await componentsPage.actionability.pressTab();
       await expect(mdcTextarea).toBeFocused();
@@ -208,10 +208,10 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
     await test.step('attributes should be present on component', async () => {
       await expect(mdcTextarea).toHaveAttribute('placeholder', 'Placeholder');
       await expect(mdcTextarea).toHaveAttribute('label', 'Label');
-      const label = await mdcTextarea.locator('label');
+      const label = mdcTextarea.locator('label');
       await expect(label).toHaveText('Label');
       await expect(mdcTextarea).toHaveAttribute('help-text', 'Help Text');
-      const helpText = await mdcTextarea.locator('mdc-text[part="help-text"]');
+      const helpText = mdcTextarea.locator('mdc-text[part="help-text"]');
       await expect(helpText).toHaveText('Help Text');
     });
 
@@ -263,7 +263,7 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
       for (const type of Object.values(VALIDATION)) {
         await componentsPage.setAttributes(mdcTextarea, { 'help-text-type': type });
         await expect(mdcTextarea).toHaveAttribute('help-text-type', type);
-        const iconEl = await mdcTextarea.locator('mdc-icon[part="helper-icon"]');
+        const iconEl = mdcTextarea.locator('mdc-icon[part="helper-icon"]');
         const icon = getHelperIcon(type);
         if (icon) {
           await expect(iconEl).toHaveAttribute('name', icon);
@@ -317,27 +317,27 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
     };
     const textareaStickerSheet = new StickerSheet(componentsPage, 'mdc-textarea');
 
-    await textareaStickerSheet.setAttributes(attributes);
+    textareaStickerSheet.setAttributes(attributes);
     await textareaStickerSheet.createMarkupWithCombination({
       'help-text-type': VALIDATION,
     });
 
     // textarea field with rows set to 7 & cols to 50
-    await textareaStickerSheet.setAttributes({ ...attributes,
+    textareaStickerSheet.setAttributes({ ...attributes,
       rows: 7,
       cols: 50,
     });
     await textareaStickerSheet.createMarkupWithCombination({});
 
     // textarea field with max-character-limit set to 100
-    await textareaStickerSheet.setAttributes({ ...attributes,
+    textareaStickerSheet.setAttributes({ ...attributes,
       'max-character-limit': 100,
       value: 'Example Text',
     });
     await textareaStickerSheet.createMarkupWithCombination({});
 
     // textarea field with max-character-limit set to 10 & value exceeding the limit
-    await textareaStickerSheet.setAttributes({ ...attributes,
+    textareaStickerSheet.setAttributes({ ...attributes,
       'max-character-limit': 10,
       value: 'This is a long text',
       'help-text': 'Input must not exceed 10 characters',
@@ -346,28 +346,28 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
     await textareaStickerSheet.createMarkupWithCombination({});
 
     // disabled textarea field with value
-    await textareaStickerSheet.setAttributes({ ...attributes,
+    textareaStickerSheet.setAttributes({ ...attributes,
       value: 'Disabled',
       disabled: '',
     });
     await textareaStickerSheet.createMarkupWithCombination({});
 
     // readonly textarea field with value
-    await textareaStickerSheet.setAttributes({ ...attributes,
+    textareaStickerSheet.setAttributes({ ...attributes,
       value: 'Readonly value',
       readonly: '',
     });
     await textareaStickerSheet.createMarkupWithCombination({});
 
     // textarea that is marked required
-    await textareaStickerSheet.setAttributes({ ...attributes,
+    textareaStickerSheet.setAttributes({ ...attributes,
       'required-label': 'required',
       placeholder: 'Textarea is required',
     });
     await textareaStickerSheet.createMarkupWithCombination({});
 
     await textareaStickerSheet.mountStickerSheet();
-    const container = await textareaStickerSheet.getWrapperContainer();
+    const container = textareaStickerSheet.getWrapperContainer();
 
     await test.step('matches screenshot of element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-textarea', { element: container });

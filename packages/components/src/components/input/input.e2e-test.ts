@@ -100,17 +100,17 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       await expect(input).toHaveAttribute('id', 'test-mdc-input');
       await expect(input).toHaveAttribute('placeholder', 'Placeholder');
       await expect(input).toHaveAttribute('label', 'Label');
-      const label = await input.locator('label');
+      const label = input.locator('label');
       await expect(label).toHaveText('Label');
       await expect(input).toHaveAttribute('help-text', 'Help Text');
-      const helpText = await input.locator('mdc-text[part="help-text"]');
+      const helpText = input.locator('mdc-text[part="help-text"]');
       await expect(helpText).toHaveText('Help Text');
       await expect(input).toHaveAttribute('prefix-text', 'Prefix');
       await expect(input).toHaveAttribute('data-aria-label', 'prefix');
-      const inputEl = await input.locator('input');
+      const inputEl = input.locator('input');
       await expect(inputEl).toHaveAttribute('aria-label', 'prefix');
       await expect(input).toHaveAttribute('leading-icon', 'placeholder-bold');
-      const icon = await input.locator('mdc-icon');
+      const icon = input.locator('mdc-icon');
       await expect(icon).toHaveAttribute('name', 'placeholder-bold');
     });
 
@@ -136,7 +136,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       for (const type of Object.values(VALIDATION)) {
         await componentsPage.setAttributes(input, { 'help-text-type': type });
         await expect(input).toHaveAttribute('help-text-type', type);
-        const iconEl = await input.locator('mdc-icon[part="helper-icon"]');
+        const iconEl = input.locator('mdc-icon[part="helper-icon"]');
         const icon = getHelperIcon(type);
         if (icon) {
           await expect(iconEl).toHaveAttribute('name', icon);
@@ -210,7 +210,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
    * INTERACTIONS
    */
   await test.step('interactions', async () => {
-    const inputEl = await input.locator('input');
+    const inputEl = input.locator('input');
     await test.step('component should be focusable with tab', async () => {
       await componentsPage.actionability.pressTab();
       await expect(input).toBeFocused();
@@ -293,8 +293,8 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
         maxlength: 10,
       }, true);
 
-      const mdcInput = await form.locator('mdc-input');
-      const submitButton = await form.locator('mdc-button');
+      const mdcInput = form.locator('mdc-input');
+      const submitButton = form.locator('mdc-button');
       const inputEl = mdcInput.locator('input');
       await componentsPage.actionability.pressTab();
       await expect(mdcInput).toBeFocused();
@@ -326,34 +326,34 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     };
     const inputStickerSheet = new StickerSheet(componentsPage, 'mdc-input');
 
-    await inputStickerSheet.setAttributes(attributes);
+    inputStickerSheet.setAttributes(attributes);
     await inputStickerSheet.createMarkupWithCombination({
       'help-text-type': VALIDATION,
     });
 
     // disabled input field with value
-    await inputStickerSheet.setAttributes({ ...attributes,
+    inputStickerSheet.setAttributes({ ...attributes,
       value: 'Disabled',
       disabled: true,
     });
     await inputStickerSheet.createMarkupWithCombination({});
 
     // input with value and leading icon
-    await inputStickerSheet.setAttributes({ ...attributes,
+    inputStickerSheet.setAttributes({ ...attributes,
       value: 'Leading Icon',
       'leading-icon': 'placeholder-bold',
     });
     await inputStickerSheet.createMarkupWithCombination({});
 
     // input with value and prefix text
-    await inputStickerSheet.setAttributes({ ...attributes,
+    inputStickerSheet.setAttributes({ ...attributes,
       value: 'Text Content',
       'prefix-text': 'Prefix',
     });
     await inputStickerSheet.createMarkupWithCombination({});
 
     // input with value and trailing button
-    await inputStickerSheet.setAttributes({ ...attributes,
+    inputStickerSheet.setAttributes({ ...attributes,
       value: 'Clear button',
       'trailing-button': true,
       'clear-aria-label': 'clear',
@@ -361,21 +361,21 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     await inputStickerSheet.createMarkupWithCombination({});
 
     // readonly input field with value
-    await inputStickerSheet.setAttributes({ ...attributes,
+    inputStickerSheet.setAttributes({ ...attributes,
       value: 'Readonly value',
       readonly: true,
     });
     await inputStickerSheet.createMarkupWithCombination({});
 
     // input that is marked required
-    await inputStickerSheet.setAttributes({ ...attributes,
+    inputStickerSheet.setAttributes({ ...attributes,
       'required-label': 'required',
       placeholder: 'Input is required',
     });
     await inputStickerSheet.createMarkupWithCombination({});
 
     // Long text label that is truncated in a small container
-    await inputStickerSheet.setAttributes({
+    inputStickerSheet.setAttributes({
       label: 'This is a large label text',
       'required-label': 'required',
       placeholder: 'placeholder',
@@ -384,7 +384,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     await inputStickerSheet.createMarkupWithCombination({});
 
     await inputStickerSheet.mountStickerSheet();
-    const container = await inputStickerSheet.getWrapperContainer();
+    const container = inputStickerSheet.getWrapperContainer();
     // Fix for not capturing snapshot while hovering on the input container.
     await componentsPage.page.mouse.move(0, 0);
     await test.step('matches screenshot of element', async () => {
