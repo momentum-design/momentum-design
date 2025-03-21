@@ -31,6 +31,7 @@ type SetupOptions = {
   size?: number;
   dataAriaLabel?: string;
   clearAriaLabel?: string;
+  secondButtonForFocus?: boolean;
 };
 
 const setup = async (args: SetupOptions, isForm = false) => {
@@ -38,6 +39,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
   await componentsPage.mount({
     html: `
     ${isForm ? '<form>' : ''}
+    ${restArgs.secondButtonForFocus ? '<div id="wrapper">' : ''}
       <mdc-input
       id="${restArgs.id}"
       ${restArgs.value ? `value="${restArgs.value}"` : ''}
@@ -63,6 +65,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.dataAriaLabel ? `data-aria-label="${restArgs.dataAriaLabel}"` : ''}
       ${restArgs.clearAriaLabel ? `data-aria-label="${restArgs.clearAriaLabel}"` : ''}
       ></mdc-input>
+      ${restArgs.secondButtonForFocus ? '<mdc-button>Second Button</mdc-button></div>' : ''}
     ${isForm ? '<mdc-button type="submit" size="24">Submit</mdc-button></form>' : ''}
     `,
     clearDocument: true,
@@ -90,6 +93,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     leadingIcon: 'placeholder-bold',
     label: 'Label',
     helpText: 'Help Text',
+    secondButtonForFocus: true,
   });
 
   /**
@@ -216,33 +220,32 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       await expect(input).toBeFocused();
       await inputEl.fill('test');
       await expect(inputEl).toHaveValue('test');
-      if (browserName !== 'firefox') {
-        await componentsPage.actionability.pressTab();
-        await expect(input).not.toBeFocused();
-      }
+      await componentsPage.actionability.pressTab();
+      await expect(input).not.toBeFocused();
     });
 
     await test.step('readonly component should be focusable with tab', async () => {
-      await componentsPage.setAttributes(input, {
-        readonly: '',
+      await setup({ componentsPage,
+        readonly: true,
         value: 'Readonly',
-        'trailing-button': '',
-        'clear-aria-label': 'clear',
-      });
+        trailingButton: true,
+        clearAriaLabel: 'clear',
+        secondButtonForFocus: true });
       const trailingButton = input.locator('mdc-button').first();
       await componentsPage.actionability.pressTab();
       await expect(input).toBeFocused();
       await expect(inputEl).toHaveValue('Readonly');
-      if (browserName !== 'firefox') {
-        await componentsPage.actionability.pressTab();
-        await expect(input).not.toBeFocused();
-        await expect(trailingButton).not.toBeFocused();
-      }
+      await componentsPage.actionability.pressTab();
+      await expect(input).not.toBeFocused();
+      await expect(trailingButton).not.toBeFocused();
       await componentsPage.removeAttribute(input, 'readonly');
     });
 
     await test.step('focus on input and trailing button when value is present during interactions', async () => {
-      await componentsPage.setAttributes(input, { 'trailing-button': '', value: '', 'clear-aria-label': 'clear' });
+      await setup({ componentsPage,
+        trailingButton: true,
+        clearAriaLabel: 'clear',
+        secondButtonForFocus: true });
       const trailingButton = input.locator('mdc-button[part="trailing-button"]');
       await componentsPage.actionability.pressTab();
       await expect(input).toBeFocused();
@@ -259,11 +262,12 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('trailing button will not be focusable in readonly state', async () => {
-      await componentsPage.setAttributes(input, {
+      await setup({ componentsPage,
         value: 'this is readonly data',
-        readonly: '',
-      });
-      await componentsPage.actionability.releaseFocus(input);
+        readonly: true,
+        trailingButton: true,
+        clearAriaLabel: 'clear',
+        secondButtonForFocus: true });
       const trailingButton = input.locator('mdc-button[part="trailing-button"]');
       await expect(inputEl).toHaveValue('this is readonly data');
       await expect(trailingButton).not.toHaveClass('hidden');
