@@ -10,6 +10,11 @@ const styles = css`
 .input {
   flex: 1;
 }
+
+.input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    pointer-events: none;
+  }
 `;
 
 export default [styles];
