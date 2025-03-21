@@ -29,7 +29,6 @@ class Brandvisual extends Component {
       // dynamic import of the lit template from the momentum brand-visuals package
       return import(`@momentum-design/brand-visuals/dist/logos/ts/${this.name}.ts`)
         .then((module) => {
-          console.log('ggg');
           this.handleIconLoadedSuccess(module.default());
         })
         .catch((error) => {
@@ -59,7 +58,6 @@ class Brandvisual extends Component {
    * @param iconHtml - The icon html element which has been fetched from the icon provider.
    */
   private handleIconLoadedSuccess(iconHtml: HTMLElement) {
-    console.log('icon loaded ', iconHtml);
     // update iconData state once fetched:
     this.iconData = iconHtml;
 
@@ -77,7 +75,6 @@ class Brandvisual extends Component {
    * The error detail is set to the error object.
    */
   private handleIconLoadedFailure(error: unknown) {
-    console.log('error icon ', error);
     this.style.setProperty('width', '1rem');
     this.style.setProperty('height', '1rem');
     const errorEvent = new CustomEvent('error', {
@@ -89,7 +86,6 @@ class Brandvisual extends Component {
   }
 
   override render() {
-    console.log('icon loaded ', this.iconData);
     return html` ${this.iconData} `;
   }
 

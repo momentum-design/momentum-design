@@ -2,13 +2,6 @@ import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import type { BrandVisualNames } from './brandvisual.types';
 
-// declare global {
-//   interface Window {
-//     iconLoaded?: boolean;
-//     iconLoadError?: boolean;
-//   }
-// }
-
 type SetupOptions = {
   componentsPage: ComponentsPage;
   name: BrandVisualNames;
