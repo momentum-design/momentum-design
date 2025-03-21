@@ -265,21 +265,30 @@ test('mdc-searchfield', async ({ componentsPage, browserName }) => {
     };
     const serachfieldStickerSheet = new StickerSheet(componentsPage, 'mdc-searchfield');
 
-    await serachfieldStickerSheet.setAttributes(attributes);
+    serachfieldStickerSheet.setAttributes(attributes);
     await serachfieldStickerSheet.createMarkupWithCombination({});
 
     // disabled serachfield field with value
-    await serachfieldStickerSheet.setAttributes({ ...attributes,
+    serachfieldStickerSheet.setAttributes({ ...attributes,
       value: 'Disabled',
       disabled: true,
     });
     await serachfieldStickerSheet.createMarkupWithCombination({});
 
     // serachfield without label
-    await serachfieldStickerSheet.setAttributes({ 'data-aria-label': 'Search',
+    serachfieldStickerSheet.setAttributes({ 'data-aria-label': 'Search',
       value: 'Clear button',
       'clear-aria-label': 'clear',
     });
+    await serachfieldStickerSheet.createMarkupWithCombination({});
+
+    serachfieldStickerSheet
+      .setChildren(`<mdc-inputchip 
+        slot='filters' 
+        label='Query: value' 
+        clear-aria-label='clear'
+      ></mdc-inputchip>`);
+    serachfieldStickerSheet.setAttributes({ value: '', placeholder: 'Search for value', 'clear-aria-label': 'clear' });
     await serachfieldStickerSheet.createMarkupWithCombination({});
 
     await serachfieldStickerSheet.mountStickerSheet({
