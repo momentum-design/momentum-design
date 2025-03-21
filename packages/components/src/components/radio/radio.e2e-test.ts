@@ -221,7 +221,7 @@ test('mdc-radio', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press('ArrowDown');
         await expect(radios.nth(1)).toBeChecked();
 
-        const submittedValue = componentsPage.page.evaluate(() => {
+        const submittedValue = await componentsPage.page.evaluate(() => {
           const form = document.getElementById('radio-form') as HTMLFormElement;
           const formData = new FormData(form);
           return formData.get('student-plan');
