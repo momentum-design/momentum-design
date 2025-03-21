@@ -83,8 +83,8 @@ export const DisabledSearch: StoryObj = {
 export const WithInputChip: StoryObj = {
   render: () => html`
   <mdc-searchfield label="Label" placeholder="Placeholder" clear-aria-label="Clear">
-    <mdc-inputchip label="Fill" slot="inputchip"></mdc-inputchip>
-    <mdc-inputchip label="Done" slot="inputchip"></mdc-inputchip>
+    <mdc-inputchip label="Query: value" slot="filters"></mdc-inputchip>
+    <mdc-inputchip label="In: Marketing" slot="filters"></mdc-inputchip>
   </mdc-searchfield>
   `,
 };

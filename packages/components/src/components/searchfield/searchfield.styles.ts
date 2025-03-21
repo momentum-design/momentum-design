@@ -1,12 +1,14 @@
 import { css } from 'lit';
 
 const styles = css`
-  :host {
-  }
 
-  // Remove the default search clear button
-  input[type="search"]::-webkit-search-cancel-button {
-  display: none;
+:host::part(filters-container){
+  display: flex;
+  gap: 0.25rem;
+}
+
+.input {
+  flex: 1;
 }
 `;
 
