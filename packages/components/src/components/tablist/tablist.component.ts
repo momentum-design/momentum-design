@@ -85,10 +85,6 @@ class TabList extends Component {
     );
   }
 
-  private get scrollEndSupported(): boolean {
-    return 'onscrollend' in window;
-  }
-
   constructor() {
     super();
 
