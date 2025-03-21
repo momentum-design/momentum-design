@@ -17,12 +17,12 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/progressbar',
+  title: 'Components/progressbar',
   tags: ['autodocs'],
   component: 'mdc-progressbar',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     value: {
