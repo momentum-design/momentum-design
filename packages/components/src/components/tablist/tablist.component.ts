@@ -85,12 +85,16 @@ class TabList extends Component {
     );
   }
 
+  private get scrollEndSupported(): boolean {
+    return 'onscrollend' in window;
+  }
+
   constructor() {
     super();
 
-    this.addEventListener('keydown', this.handleKeydown.bind(this));
+    this.addEventListener('keydown', this.handleKeydown);
     // Reason for assertion below: https://github.com/microsoft/TypeScript/issues/28357
-    this.addEventListener('activechange', this.handleNestedTabActiveChange.bind(this) as EventListener);
+    this.addEventListener('activechange', this.handleNestedTabActiveChange as EventListener);
   }
 
   override connectedCallback() {
@@ -132,7 +136,7 @@ class TabList extends Component {
 
   /**
    * Observe the tablist element for changes in the activetabid attribute.
-   * Otherwise, find the new tab with the new activeTabId.
+   * Find the new tab with the new activeTabId.
    * If the new tab is not found, then do nothing.
    *
    * If the new tab exists:
@@ -154,11 +158,15 @@ class TabList extends Component {
       this.setActiveTab(newTab);
 
       /**
-       * If the previous activeTabId was not defined, do not fire the change event.
+       * If the previous activeTabId was not undefined, fire the change event.
+       *
+       * Otherwise, reset the tabindex of all tabs and set the new tabindex.
        */
-      if (!changedProperties.get('activeTabId')) { return; }
-
-      this.fireTabChangeEvent(newTab);
+      if (changedProperties.get('activeTabId')) {
+        this.fireTabChangeEvent(newTab);
+      } else {
+        this.resetTabIndexAndSetNewTabIndex(newTab);
+      }
     }
   }
 
@@ -267,7 +275,7 @@ class TabList extends Component {
    * @param tab - Tab to set focus on.
    */
   private focusTab = (tab?: Tab): void => {
-    if (!tab) { return; }
+    if (!(tab instanceof Tab)) { return; }
 
     this.resetTabIndexAndSetNewTabIndex(tab);
     tab.focus();
