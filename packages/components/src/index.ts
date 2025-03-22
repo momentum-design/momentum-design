@@ -29,6 +29,8 @@ import ThemeProvider from './components/themeprovider';
 import Toggle from './components/toggle';
 import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
+import TabList from './components/tablist';
+
 import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
 import Progressbar from './components/progressbar';
 import Option from './components/option';
@@ -76,6 +78,7 @@ export {
   Progressbar,
   Textarea,
   Tooltip,
+  TabList,
 };
 export type {
   TextType,

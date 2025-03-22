@@ -15,6 +15,8 @@ import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
  *
  * Passing in the attribute `text` to the tab component is changing the text displayed in the tab.
  *
+ * Pass attribute `tabid` when using inside of `tablist` component.
+ *
  * The `slot="badge"` can be used to add a badge to the tab.
  *
  * The `slot="chip"` can be used to add a chip to the tab.
@@ -31,7 +33,7 @@ import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the tab.
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the tab.
  * @event focus - (React: onFocus) This event is dispatched when the tab receives focus.
- *
+ * @event activechange - (React: onActiveChange) This event is dispatched when the active state of the tab changes
  * @tagname mdc-tab
  *
  * @cssproperty --mdc-tab-content-gap - Gap between the badge(if provided), icon and text.
@@ -121,6 +123,15 @@ class Tab extends IconNameMixin(Buttonsimple) {
   variant: Variant = DEFAULTS.VARIANT;
 
   /**
+   * Id of the tab (used as a identificator when used in the tablist)
+   * Note: has to be unique!
+   *
+   * @default undefined
+   */
+  @property({ type: String, reflect: true, attribute: 'tabid' })
+  tabId?: string;
+
+  /**
    * @internal
    */
   private prevIconName?: string;
@@ -165,6 +176,19 @@ class Tab extends IconNameMixin(Buttonsimple) {
   }
 
   /**
+   * Dispatch the activechange event.
+   *
+   * @param active - The active state of the tab.
+   */
+  private handleTabActiveChange = (active: boolean): void => {
+    const event = new CustomEvent('activechange', {
+      detail: { tabId: this.tabId, active },
+      bubbles: true,
+    });
+    this.dispatchEvent(event);
+  };
+
+  /**
    * Sets the aria-selected attribute based on the active state of the Tab.
    * If the tab is active, the filled version of the icon is displayed,
    * else the icon is restored to its original value.
@@ -180,6 +204,7 @@ class Tab extends IconNameMixin(Buttonsimple) {
   protected override executeAction() {
     // Toggle the active state of the tab.
     this.active = !this.active;
+    this.handleTabActiveChange(this.active);
   }
 
   public override update(changedProperties: PropertyValues): void {

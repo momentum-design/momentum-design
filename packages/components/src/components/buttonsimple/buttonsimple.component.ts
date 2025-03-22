@@ -200,6 +200,9 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
       if (event.key === 'Enter') {
         this.triggerClickEvent();
       }
+      if (event.key === ' ') {
+        event.preventDefault();
+      }
     }
   }
 
