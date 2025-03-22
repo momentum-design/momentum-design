@@ -111,7 +111,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
 
     await test.step('should fallback to default icon and size to 32 when no attributes are passed', async () => {
       await componentsPage.setAttributes(avatar, {});
-      const icon = await componentsPage.page.locator('mdc-icon');
+      const icon = componentsPage.page.locator('mdc-icon');
       await icon.waitFor();
       await expect(icon).toHaveAttribute('name', DEFAULTS.ICON_NAME);
       await expect(avatar).toHaveAttribute('size', DEFAULTS.SIZE.toString());
@@ -122,7 +122,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
         counter: '10',
         presence: PRESENCE_TYPE.ACTIVE,
       });
-      const presence = await componentsPage.page.locator('mdc-presence');
+      const presence = componentsPage.page.locator('mdc-presence');
       await expect(presence).not.toBeAttached();
     });
 
@@ -130,7 +130,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       await componentsPage.setAttributes(avatar, {
         counter: '100',
       });
-      const mdcTextElement = await componentsPage.page.locator('mdc-text');
+      const mdcTextElement = componentsPage.page.locator('mdc-text');
       const textContent = await mdcTextElement.textContent();
       expect(textContent?.trim()).toBe('99+');
     });
@@ -139,7 +139,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       await componentsPage.setAttributes(avatar, {
         counter: '-12',
       });
-      const mdcTextElement = await componentsPage.page.locator('mdc-text');
+      const mdcTextElement = componentsPage.page.locator('mdc-text');
       const textContent = await mdcTextElement.textContent();
       expect(textContent?.trim()).toBe('0');
     });
@@ -148,7 +148,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       await componentsPage.setAttributes(avatar, {
         initials: 'abcdef',
       });
-      const mdcTextElement = await componentsPage.page.locator('mdc-text');
+      const mdcTextElement = componentsPage.page.locator('mdc-text');
       const textContent = await mdcTextElement.textContent();
       expect(textContent?.trim()).toHaveLength(2);
       expect(textContent?.trim()).toBe('AB');
@@ -165,7 +165,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       await componentsPage.setAttributes(avatar, {
         'is-typing': 'true',
       });
-      const loadingIndicator = await componentsPage.page.locator('div[part=loading-wrapper]');
+      const loadingIndicator = componentsPage.page.locator('div[part=loading-wrapper]');
       await loadingIndicator.waitFor();
       expect(loadingIndicator).toBeDefined();
       await expect(avatar).toHaveAttribute('is-typing', 'true');

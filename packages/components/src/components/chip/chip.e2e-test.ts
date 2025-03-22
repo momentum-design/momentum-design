@@ -64,7 +64,7 @@ test('mdc-chip', async ({ componentsPage }) => {
     await chipStickerSheet.mountStickerSheet({
       wrapperStyle: 'display: flex; flex-direction: column; gap: 0.5rem',
     });
-    const container = await chipStickerSheet.getWrapperContainer();
+    const container = chipStickerSheet.getWrapperContainer();
     await test.step('matches screenshot of element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-chip', { element: container });
     });

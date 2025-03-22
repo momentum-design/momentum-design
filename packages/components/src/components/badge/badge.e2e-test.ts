@@ -166,7 +166,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
       });
 
       await expect(badge).toHaveAttribute('type', TYPE.COUNTER);
-      const mdcTextElement = await componentsPage.page.locator('mdc-text');
+      const mdcTextElement = componentsPage.page.locator('mdc-text');
       const textContent = await mdcTextElement.textContent();
 
       expect(textContent?.trim()).toBe('9+');

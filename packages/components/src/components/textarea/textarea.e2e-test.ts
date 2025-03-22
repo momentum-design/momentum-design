@@ -144,7 +144,7 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
           maxlength: 10,
         }, true);
 
-        const submitButton = await form.locator('mdc-button[type="submit"]');
+        const submitButton = form.locator('mdc-button[type="submit"]');
         await submitButton.click();
         const validationMessage = await textareaElement.evaluate((element) => {
           const textarea = element as HTMLTextAreaElement;
@@ -175,7 +175,7 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
           value: 'This is a long text',
         }, true);
 
-        const submitButton = await form.locator('mdc-button[type="submit"]');
+        const submitButton = form.locator('mdc-button[type="submit"]');
         await submitButton.click();
         const validationMessage = await textareaElement.evaluate((element) => {
           const textarea = element as HTMLTextAreaElement;
