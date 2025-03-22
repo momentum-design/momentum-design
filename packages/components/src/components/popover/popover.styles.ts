@@ -12,6 +12,7 @@ const styles = css`
     --mdc-popover-inverted-text-color: var(--mds-color-theme-inverted-text-primary-normal);
     --mdc-popover-elevation-3: var(--mds-elevation-3);
     --mdc-popover-max-width: unset;
+    --mdc-popover-max-height: auto;
 
     display: none;
     position: absolute;
@@ -51,6 +52,7 @@ const styles = css`
     overflow-y: auto;
     min-width: max-content;
     z-index: 9998;
+    max-height: var(--mdc-popover-max-height);
   }
 
   .popover-hover-bridge {

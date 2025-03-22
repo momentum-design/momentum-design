@@ -1,5 +1,6 @@
 import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
+import { repeat } from 'lit/directives/repeat.js';
 import { html } from 'lit';
 import type { TemplateResult } from 'lit';
 import '.';
@@ -24,6 +25,7 @@ const render = (args: Args) => wrapWithDiv(html`
     required-label="${args['required-label']}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
+    height="${args.height}"
     name="${args.name}"
     placeholder="${args.placeholder}" 
     ?disabled="${args.disabled}"
@@ -70,6 +72,9 @@ const meta: Meta = {
     'help-text-type': {
       control: 'select',
       options: Object.values(VALIDATION),
+    },
+    height: {
+      control: 'text',
     },
     ...hideControls(['validity', 'willValidate', 'default', 'label-info']),
     ...disableControls(['validation-message']),
@@ -148,6 +153,18 @@ export const SelectWithStates: StoryObj = {
     <mdc-select help-text="This is a readonly text." label="Label" placeholder="Selected text" readonly></mdc-select>
   </div>
   `,
+};
+
+export const SelectWithFixedHeight = {
+  args: {
+    height: '18rem',
+    placeholder: 'Select an option',
+  },
+  render: (args: Args) => wrapWithDiv(html`
+    <mdc-select height="${args.height}" placeholder="${args.placeholder}">
+      ${repeat(new Array(1000).fill(true), () => html`<mdc-option>Option Label</mdc-option>`)}
+    </mdc-select>
+  `),
 };
 
 export const SelectWithForm: StoryObj = {
