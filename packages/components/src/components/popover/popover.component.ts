@@ -668,7 +668,7 @@ class Popover extends FocusTrapMixin(Component) {
             prefix-icon="cancel-bold"
             variant="tertiary"
             size="20"
-            aria-label=${ifDefined(this.closeButtonAriaLabel)}
+            aria-label=${ifDefined(this.closeButtonAriaLabel) || ''}
             @click="${this.hidePopover}"
           ></mdc-button>`
     : nothing}

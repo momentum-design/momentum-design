@@ -45,27 +45,27 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
     await expect(toggle).toHaveAttribute('name');
     await expect(toggle).toHaveAttribute('value');
     // test mdc-icon which is present inside mdc-toggle
-    const icon = await componentsPage.page.locator('mdc-icon');
+    const icon = componentsPage.page.locator('mdc-icon');
     await icon.waitFor();
     await expect(icon).toHaveAttribute('name', 'cancel-bold');
   });
 
   await test.step('should have label element when the label attribute is passed', async () => {
     await componentsPage.setAttributes(toggle, { label: 'Toggle label' });
-    const label = await componentsPage.page.locator('label');
+    const label = componentsPage.page.locator('label');
     await expect(label).toHaveText('Toggle label');
   });
 
   await test.step('should have icon element with check-bold icon name when checked attribute is true', async () => {
     await componentsPage.setAttributes(toggle, { checked: 'true' });
-    const icon = await componentsPage.page.locator('mdc-icon');
+    const icon = componentsPage.page.locator('mdc-icon');
     await icon.waitFor();
     await expect(icon).toHaveAttribute('name', 'check-bold');
   });
 
   await test.step('should have mdc-text element when the help-text attribute is passed', async () => {
     await componentsPage.setAttributes(toggle, { 'help-text': 'This is a help text' });
-    const mdcText = await componentsPage.page.locator('mdc-text');
+    const mdcText = componentsPage.page.locator('mdc-text');
     const textContent = await mdcText.textContent();
     expect(textContent?.trim()).toBe('This is a help text');
   });
@@ -150,32 +150,32 @@ const testToRun = async (componentsPage: ComponentsPage) => {
    */
   const toggleStickerSheet = new StickerSheet(componentsPage, 'mdc-toggle');
   await test.step('visual-regression', async () => {
-    await toggleStickerSheet.setAttributes({
+    toggleStickerSheet.setAttributes({
       'data-aria-label': 'This is aria label text',
     });
     await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { rowWrapperStyle: 'gap: 1.25rem' });
-    await toggleStickerSheet.setAttributes({
+    toggleStickerSheet.setAttributes({
       label: 'I agree to the terms',
     });
     await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { rowWrapperStyle: 'gap: 1.25rem' });
-    await toggleStickerSheet.setAttributes({
+    toggleStickerSheet.setAttributes({
       label: 'Selected toggle Label',
       checked: true,
     });
     await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { rowWrapperStyle: 'gap: 1.25rem' });
-    await toggleStickerSheet.setAttributes({
+    toggleStickerSheet.setAttributes({
       label: 'Selected toggle Label',
       'help-text': 'This is a help text',
       checked: true,
     });
     await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { rowWrapperStyle: 'gap: 1.25rem' });
-    await toggleStickerSheet.setAttributes({
+    toggleStickerSheet.setAttributes({
       label: 'Disabled toggle Label',
       'help-text': 'This is a help text',
       disabled: true,
     });
     await toggleStickerSheet.createMarkupWithCombination({ size: TOGGLE_SIZE }, { rowWrapperStyle: 'gap: 1.25rem' });
-    await toggleStickerSheet.setAttributes({
+    toggleStickerSheet.setAttributes({
       label: 'Disabled Selected toggle Label',
       'help-text': 'This is a help text',
       disabled: true,

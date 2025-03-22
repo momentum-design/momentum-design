@@ -47,13 +47,13 @@ test('mdc-radiogroup', async ({ componentsPage }) => {
 
     // Radio Group with label only
     await radioGroupStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
-    await radioGroupStickerSheet.setAttributes({
+    radioGroupStickerSheet.setAttributes({
       label: 'Select your plan',
     });
 
     // Radio Group with label and help text
     await radioGroupStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
-    await radioGroupStickerSheet.setAttributes({
+    radioGroupStickerSheet.setAttributes({
       label: 'Select your plan',
       'help-text': 'The plan you select will be the plan you are billed for',
     });
@@ -92,7 +92,7 @@ test('mdc-radiogroup', async ({ componentsPage }) => {
     // For help text
     await test.step('should have help text when the help text attribute is passed', async () => {
       await componentsPage.setAttributes(radioGroup, { 'help-text': 'Help Text' });
-      const mdcText = await componentsPage.page.locator('mdc-text');
+      const mdcText = componentsPage.page.locator('mdc-text');
       const textContent = await mdcText.textContent();
       expect(textContent?.trim()).toBe('Help Text');
       await componentsPage.removeAttribute(radioGroup, 'help-text');
@@ -100,7 +100,7 @@ test('mdc-radiogroup', async ({ componentsPage }) => {
 
     // For radio count
     await test.step('should have two radio buttons', async () => {
-      const radios = await componentsPage.page.locator('mdc-radio');
+      const radios = componentsPage.page.locator('mdc-radio');
       const radioCount = await radios.count();
       expect(radioCount).toBe(3);
     });
@@ -116,7 +116,7 @@ test('mdc-radiogroup', async ({ componentsPage }) => {
         label: 'Select your plan',
         name: 'student-plan',
       });
-      const radios = await componentsPage.page.locator('mdc-radio').locator('input[name="student-plan"]');
+      const radios = componentsPage.page.locator('mdc-radio').locator('input[name="student-plan"]');
       await componentsPage.actionability.pressTab();
       await expect(radios.nth(0)).toBeFocused();
       await componentsPage.page.keyboard.press('ArrowDown');

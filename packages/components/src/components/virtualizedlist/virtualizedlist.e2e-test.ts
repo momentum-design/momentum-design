@@ -26,23 +26,23 @@ test.describe('mdc-virtualizedlist', () => {
     });
 
     // check to see if first element is in the list and last element is not
-    let currentFirstElement = await componentsPage.page.getByRole('listitem').first();
+    let currentFirstElement = componentsPage.page.getByRole('listitem').first();
     expect(await currentFirstElement.getAttribute('data-index')).toBe('0');
 
-    let currentLastElement = await componentsPage.page.getByRole('listitem').last();
+    let currentLastElement = componentsPage.page.getByRole('listitem').last();
     expect(await currentLastElement.getAttribute('data-index')).not.toBe('99');
 
-    currentLastElement = await componentsPage.page.getByRole('listitem').last();
+    currentLastElement = componentsPage.page.getByRole('listitem').last();
     await currentLastElement.waitFor();
     await currentLastElement.scrollIntoViewIfNeeded();
 
     await componentsPage.page.getByText('list item number 99').waitFor();
 
     // check if last element is in the list and that the first element is not
-    currentFirstElement = await componentsPage.page.getByRole('listitem').first();
+    currentFirstElement = componentsPage.page.getByRole('listitem').first();
     expect(await currentFirstElement.getAttribute('data-index')).not.toBe('0');
 
-    currentLastElement = await componentsPage.page.getByRole('listitem').last();
+    currentLastElement = componentsPage.page.getByRole('listitem').last();
     expect(await currentLastElement.getAttribute('data-index')).toBe('99');
   });
 });

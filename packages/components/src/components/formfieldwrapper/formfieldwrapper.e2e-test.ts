@@ -80,15 +80,15 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
    */
   await test.step('visual regression', async () => {
     const wrapperStickerSheet = new StickerSheet(componentsPage, 'mdc-subcomponent-formfieldwrapper');
-    await wrapperStickerSheet.setChildren('Form Input Component');
-    await wrapperStickerSheet.setAttributes({
+    wrapperStickerSheet.setChildren('Form Input Component');
+    wrapperStickerSheet.setAttributes({
       id: 'test-formfieldwrapper',
       label: 'Label',
       'help-text': 'Help Text',
     });
     await wrapperStickerSheet.createMarkupWithCombination({ 'help-text-type': VALIDATION }, { createNewRow: true });
     // disabled
-    await wrapperStickerSheet.setAttributes({
+    wrapperStickerSheet.setAttributes({
       id: 'test-formfieldwrapper',
       label: 'Disabled Label',
       'help-text': 'Help Text',
@@ -96,7 +96,7 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
     });
     await wrapperStickerSheet.createMarkupWithCombination({});
     // required label
-    await wrapperStickerSheet.setAttributes({
+    wrapperStickerSheet.setAttributes({
       id: 'test-formfieldwrapper',
       label: 'Label',
       'help-text': 'Help Text',
@@ -104,7 +104,7 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
     });
     await wrapperStickerSheet.createMarkupWithCombination({});
     // With long text that gets truncated into an ellipsis
-    await wrapperStickerSheet.setAttributes({
+    wrapperStickerSheet.setAttributes({
       id: 'test-formfieldwrapper',
       label: 'This is a long label text',
       'help-text': 'Help Text',
@@ -113,7 +113,7 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
     });
     await wrapperStickerSheet.createMarkupWithCombination({});
     await wrapperStickerSheet.mountStickerSheet();
-    await wrapperStickerSheet.getWrapperContainer();
+    wrapperStickerSheet.getWrapperContainer();
 
     await test.step('matches screenshot of pill-button element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-formfieldwrapper', {

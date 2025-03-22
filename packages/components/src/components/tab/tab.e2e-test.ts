@@ -42,7 +42,7 @@ const setup = async (args: SetupOptions) => {
   await tabs.waitFor();
 
   // return the first tab only, the second tab is a dummy tab
-  const tab = await componentsPage.page.locator('mdc-tab').first();
+  const tab = componentsPage.page.locator('mdc-tab').first();
   return tab;
 };
 
@@ -265,7 +265,7 @@ test('mdc-tab', async ({ componentsPage }) => {
     await stickerSheet.createMarkupWithCombination({ variant: Object.values(TAB_VARIANTS) });
 
     await stickerSheet.mountStickerSheet();
-    const container = await stickerSheet.getWrapperContainer();
+    const container = stickerSheet.getWrapperContainer();
 
     // Add role tablist to the row wrapper. A tab with role tab requires parent to have role tablist.
     await container.evaluate((wrapper) => {

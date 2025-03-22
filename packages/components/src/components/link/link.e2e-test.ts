@@ -40,7 +40,7 @@ const setup = async (args: SetupOptions) => {
   await element.waitFor();
 
   // always return the first button:
-  const link = await componentsPage.page.locator('mdc-link').first();
+  const link = componentsPage.page.locator('mdc-link').first();
   return link;
 };
 
@@ -139,7 +139,7 @@ test('mdc-link', async ({ componentsPage }) => {
         await expect(linkElement).toBeFocused();
 
         await componentsPage.page.keyboard.press('Enter');
-        await expect(componentsPage.page.url()).toContain('#content');
+        expect(componentsPage.page.url()).toContain('#content');
         await linkElement.evaluate((el) => el.blur());
         await componentsPage.page.goBack();
       });
@@ -243,7 +243,7 @@ test('mdc-link', async ({ componentsPage }) => {
     );
 
     await stickerSheet.mountStickerSheet();
-    const container = await stickerSheet.getWrapperContainer();
+    const container = stickerSheet.getWrapperContainer();
 
     await test.step('matches screenshot of link element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-link', {

@@ -37,7 +37,7 @@ const setup = async (args: SetupOptions) => {
   await element.waitFor();
 
   // always return the first button:
-  const firstButton = await componentsPage.page.locator('mdc-buttonsimple').first();
+  const firstButton = componentsPage.page.locator('mdc-buttonsimple').first();
   return firstButton;
 };
 
