@@ -107,9 +107,8 @@ const preview = {
       },
     },
     options: {
-      storySort: {
-        order: ['Consumption', 'Styling', 'Components', 'Work In Progress'],
-      },
+      storySort: (story1, story2) =>
+        globalThis['storybook-multilevel-sort:storySort'](story1, story2),
     },
     direction: 'ltr',
   },
