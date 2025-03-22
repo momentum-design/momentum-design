@@ -150,17 +150,37 @@ export const SelectWithStates: StoryObj = {
   `,
 };
 
-export const SelectWithALongText: StoryObj = {
-  render: () => wrapWithDiv(html`
-      <mdc-select>
-        <mdc-option>Normal Text</mdc-option>
-        <mdc-option>This is a long text which will break in to more than one line</mdc-option>
-        <mdc-option>Normal Text</mdc-option>
-        <mdc-optgroup>
-          <mdc-option>In group</mdc-option>
-          <mdc-option>This is a long text which will break in to more than one line</mdc-option>
-          <mdc-option>In group</mdc-option>
-        </mdc-optgroup>
-        <mdc-option>Normal Text</mdc-option>
-      </mdc-select>`),
+export const SelectWithForm: StoryObj = {
+  render: () => {
+    const handleSubmit = (event: Event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target as HTMLFormElement);
+      const selectedValues = formData.getAll('stone-count');
+      action('Form Submitted')({ value: selectedValues });
+    };
+
+    return html`
+      <form @submit=${handleSubmit}>
+        <fieldset style="display: flex; flex-direction: column; gap: 1rem; height: 20rem;">
+          <div style="width: 20rem;">
+            <mdc-select
+              name="stone-count"
+              placeholder="Select the count"
+              label="How many Infinity Stones exist?"
+            >
+              <mdc-option value="two">Two</mdc-option>
+              <mdc-option value="three">Three</mdc-option>
+              <mdc-option value="four">Four</mdc-option>
+              <mdc-option value="five">Five</mdc-option>
+              <mdc-option value="six">Six</mdc-option>
+            </mdc-select>
+            <div style="display: flex; gap: 3rem; margin-top: 1rem;">
+              <mdc-button type="submit" size="24">Submit</mdc-button>
+              <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    `;
+  },
 };

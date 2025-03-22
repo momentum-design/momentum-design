@@ -26,6 +26,7 @@ import styles from './select.styles';
  * @slot default - This is a default/unnamed slot for options and/or option group.
  *
  * @event click - (React: onClick) This event is dispatched when the select is clicked.
+ * @event change - (React: onChange) This event is dispatched when the select is changed.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the select.
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the select.
  * @event focus - (React: onFocus) This event is dispatched when the select receives focus.
@@ -92,7 +93,7 @@ class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
   /**
    * A private method which is called when an option is clicked.
    * It is used to update the tabindex and selected attribute of the options.
-   * @param event The event which triggered this function.
+   * @param event - The event which triggered this function.
    */
   private handleOptionsClick(event: MouseEvent): void {
     this.updateTabIndexAndSetSelectedOnOptions(event.target);
@@ -142,6 +143,57 @@ class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
    */
   private setSelectedValue(option: Element): void {
     this.selectedValue = option?.getAttribute('label') ?? option?.textContent ?? '';
+    this.value = option?.getAttribute('value') ?? option?.textContent ?? '';
+
+    // Set form value
+    this.internals.setFormValue(this.value);
+    this.manageRequired();
+
+    // dispatch a change event when a value is selected
+    this.dispatchChange(this.value);
+  }
+
+  /**
+   * Manages the required state of the select.
+   * If the value is not set and the requiredLabel property is set,
+   * then the select is invalid.
+   */
+  private manageRequired() {
+    if (!this.value && this.requiredLabel) {
+      if (this.validationMessage) {
+        this.inputElement.setCustomValidity(this.validationMessage);
+      } else {
+        this.inputElement.setCustomValidity('');
+      }
+      this.setValidity();
+    } else {
+      this.internals.setValidity({});
+    }
+  }
+
+  /**
+   * @internal
+   * Resets the select to its initial state.
+   */
+  formResetCallback(): void {
+    this.value = '';
+    this.selectedValue = this.placeholder ?? '';
+  }
+
+  /** @internal */
+  formStateRestoreCallback(state: string): void {
+    this.value = state;
+    this.selectedValue = state;
+  }
+
+  private dispatchChange(value: string): void {
+    this.dispatchEvent(
+      new CustomEvent('change', {
+        detail: { value },
+        composed: true,
+        bubbles: true,
+      }),
+    );
   }
 
   private setPlaceholderValue(placeholder: string): void {
@@ -204,6 +256,8 @@ class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
         break;
       case KEYS.ENTER:
         this.updateTabIndexAndSetSelectedOnOptions(event.target);
+        // if the popover is close, then we submit the form.
+        if (!this.showPopover) this.form?.requestSubmit();
         break;
       case KEYS.ARROW_DOWN:
       case KEYS.ARROW_UP:
@@ -258,6 +312,7 @@ class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
         ?visible="${this.showPopover}"
         hide-on-outside-click
         focus-back-to-trigger
+        focus-trap
         role="listbox"
         placement="${POPOVER_PLACEMENT.BOTTOM_START}"
         @popover-on-show="${this.handlePopoverOpen}"
