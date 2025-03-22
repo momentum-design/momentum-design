@@ -51,6 +51,9 @@ const styles = css`
     display: flex;
     padding: 2px;
   }
+  :host::part(popover-content) {
+    min-width: auto;
+  }
   :host([disabled])::part(base-container),
   :host([readonly])::part(base-container),
   :host([help-text-type="success"][disabled])::part(base-container),
