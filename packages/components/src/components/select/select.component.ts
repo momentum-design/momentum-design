@@ -42,6 +42,11 @@ class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
    */
   @property({ type: Boolean }) readonly = false;
 
+  /**
+   * readonly attribute of the select field. If true, the select is read-only.
+   */
+  @property({ type: String, attribute: 'height' }) height = 'auto';
+
   /** @internal */
   @queryAssignedElements() optionsList!: Array<HTMLElement>;
 
@@ -317,7 +322,7 @@ class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
         placement="${POPOVER_PLACEMENT.BOTTOM_START}"
         @popover-on-show="${this.handlePopoverOpen}"
         @popover-on-hide="${this.handlePopoverClose}"   
-        style="--mdc-popover-max-width: 100%;"
+        style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
       >
         <slot @click="${this.handleOptionsClick}" @slotchange="${this.handleSlotChange}"></slot>
       </mdc-popover>
