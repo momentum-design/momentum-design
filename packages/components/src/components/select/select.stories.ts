@@ -1,6 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+import type { TemplateResult } from 'lit';
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
@@ -9,30 +10,32 @@ import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import '../optgroup';
 import '../option';
 
-const render = (args: Args) => html`
-  <div style="height: 15rem;">
-    <mdc-select
-      @click="${action('onclick')}"
-      @keydown="${action('onkeydown')}"
-      @keyup="${action('onkeyup')}"
-      @focus="${action('onfocus')}"
-      label="${args.label}"
-      required-label="${args['required-label']}"
-      help-text-type="${args['help-text-type']}"
-      help-text="${args['help-text']}"
-      name="${args.name}"
-      placeholder="${args.placeholder}" 
-      ?disabled="${args.disabled}"
-      ?readonly="${args.readonly}"
-    >
-      <mdc-option>London, UK</mdc-option>
-      <mdc-option>Los Angeles, CA</mdc-option>
-      <mdc-option>Phoenix, AZ</mdc-option>
-      <mdc-option>New York, NY</mdc-option>
-      <mdc-option>Seattle, WA</mdc-option>
-    </mdc-select>
-  </div>
+const wrapWithDiv = (htmlString: TemplateResult) => html`
+  <div style="height: 20rem; width: 20rem;">${htmlString}</div>
 `;
+
+const render = (args: Args) => wrapWithDiv(html`
+  <mdc-select
+    @click="${action('onclick')}"
+    @keydown="${action('onkeydown')}"
+    @keyup="${action('onkeyup')}"
+    @focus="${action('onfocus')}"
+    label="${args.label}"
+    required-label="${args['required-label']}"
+    help-text-type="${args['help-text-type']}"
+    help-text="${args['help-text']}"
+    name="${args.name}"
+    placeholder="${args.placeholder}" 
+    ?disabled="${args.disabled}"
+    ?readonly="${args.readonly}"
+  >
+    <mdc-option>London, UK</mdc-option>
+    <mdc-option>Los Angeles, CA</mdc-option>
+    <mdc-option>Phoenix, AZ</mdc-option>
+    <mdc-option>New York, NY</mdc-option>
+    <mdc-option>Seattle, WA</mdc-option>
+  </mdc-select>
+`);
 
 const meta: Meta = {
   title: 'Work In Progress/select',
@@ -91,7 +94,7 @@ export const Example: StoryObj = {
 
 export const SelectWithGroups: StoryObj = {
   render: () => html`
-    <div style="height: 15rem;">
+    <div style="height: 35rem;">
       <mdc-select>
         <mdc-optgroup label="Fruit">
           <mdc-option value="apple">Apples</mdc-option>
@@ -145,4 +148,19 @@ export const SelectWithStates: StoryObj = {
     <mdc-select help-text="This is a readonly text." label="Label" placeholder="Selected text" readonly></mdc-select>
   </div>
   `,
+};
+
+export const SelectWithALongText: StoryObj = {
+  render: () => wrapWithDiv(html`
+      <mdc-select>
+        <mdc-option>Normal Text</mdc-option>
+        <mdc-option>This is a long text which will break in to more than one line</mdc-option>
+        <mdc-option>Normal Text</mdc-option>
+        <mdc-optgroup>
+          <mdc-option>In group</mdc-option>
+          <mdc-option>This is a long text which will break in to more than one line</mdc-option>
+          <mdc-option>In group</mdc-option>
+        </mdc-optgroup>
+        <mdc-option>Normal Text</mdc-option>
+      </mdc-select>`),
 };
