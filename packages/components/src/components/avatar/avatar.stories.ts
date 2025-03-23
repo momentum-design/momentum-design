@@ -13,7 +13,7 @@ const render = (args: Args) => html`
     counter="${ifDefined(args.counter)}"
     icon-name="${ifDefined(args['icon-name'])}"
     initials="${ifDefined(args.initials)}"
-    presence="${ifDefined(args.presence)}"
+    presence="${args.presence === 'none' ? undefined : ifDefined(args.presence)}"
     size="${ifDefined(args.size)}"
     src="${ifDefined(args.src)}"
     ?is-typing="${args['is-typing']}"
@@ -37,7 +37,7 @@ const meta: Meta = {
     },
     presence: {
       control: 'select',
-      options: Object.values(PRESENCE_TYPE),
+      options: ['none', ...Object.values(PRESENCE_TYPE)],
     },
     size: {
       control: 'select',
