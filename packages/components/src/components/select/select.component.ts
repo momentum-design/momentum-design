@@ -3,7 +3,6 @@ import { CSSResult, html, nothing } from 'lit';
 import { property, queryAssignedElements, state } from 'lit/decorators.js';
 import { KEYS } from '../../utils/keys';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
-import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import FormfieldWrapper from '../formfieldwrapper';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
@@ -32,7 +31,7 @@ import styles from './select.styles';
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the select.
  * @event focus - (React: onFocus) This event is dispatched when the select receives focus.
  */
-class Select extends FormInternalsMixin(DisabledMixin(DataAriaLabelMixin(FormfieldWrapper))) {
+class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) {
   /**
    * The placeholder text which will be shown on the text if provided.
    */
@@ -40,11 +39,14 @@ class Select extends FormInternalsMixin(DisabledMixin(DataAriaLabelMixin(Formfie
 
   /**
    * readonly attribute of the select field. If true, the select is read-only.
+   * @default false
    */
   @property({ type: Boolean }) readonly = false;
 
   /**
-   * readonly attribute of the select field. If true, the select is read-only.
+   * height attribute of the select field. If set,
+   * then a scroll bar will be visible when there more options than the adjusted height.
+   * @default 'auto'
    */
   @property({ type: String, attribute: 'height' }) height = 'auto';
 
@@ -63,8 +65,9 @@ class Select extends FormInternalsMixin(DisabledMixin(DataAriaLabelMixin(Formfie
   /** @internal */
   @state() activeDescendant = '';
 
-  constructor() {
-    super();
+  override connectedCallback(): void {
+    super.connectedCallback();
+    // select will only contain name and value will be defined in the options.
     this.value = undefined as unknown as string;
 
     this.addEventListener('keydown', this.handleKeydown);
@@ -97,24 +100,6 @@ class Select extends FormInternalsMixin(DisabledMixin(DataAriaLabelMixin(Formfie
   }
 
   /**
-   * A private method which is called when an option is clicked.
-   * It is used to update the tabindex and selected attribute of the options.
-   * @param event - The event which triggered this function.
-   */
-  private handleOptionsClick(event: MouseEvent): void {
-    this.updateTabIndexAndSetSelectedOnOptions(event.target);
-  }
-
-  /**
-   * Listens to changes in the default slot and updates the tabindex and selected attribute of the options accordingly.
-   * This is used to set the tabindex and selected attribute of the options when they are slotted.
-   * It is called internally when the slot is changed.
-   */
-  private handleSlotChange(): void {
-    this.updateTabIndexAndSetSelectedOnOptions();
-  }
-
-  /**
    * Updates the tabindex and selected attribute of the options.
    * If selectedOption is provided, it will be set as the selected option.
    * Otherwise, it will set the first option as the selected option.
@@ -139,6 +124,24 @@ class Select extends FormInternalsMixin(DisabledMixin(DataAriaLabelMixin(Formfie
     }
     // if no option is selected, set the first option as focused
     this.getAllValidOptions()[0]?.setAttribute('tabindex', '0');
+  }
+
+  /**
+   * A private method which is called when an option is clicked.
+   * It is used to update the tabindex and selected attribute of the options.
+   * @param event - The event which triggered this function.
+   */
+  private handleOptionsClick(event: MouseEvent): void {
+    this.updateTabIndexAndSetSelectedOnOptions(event.target);
+  }
+
+  /**
+   * Listens to changes in the default slot and updates the tabindex and selected attribute of the options accordingly.
+   * This is used to set the tabindex and selected attribute of the options when they are slotted.
+   * It is called internally when the slot is changed.
+   */
+  private handleSlotChange(): void {
+    this.updateTabIndexAndSetSelectedOnOptions();
   }
 
   /**
@@ -258,7 +261,7 @@ class Select extends FormInternalsMixin(DisabledMixin(DataAriaLabelMixin(Formfie
         break;
       case KEYS.ENTER:
         this.updateTabIndexAndSetSelectedOnOptions(event.target);
-        // if the popover is close, then we submit the form.
+        // if the popover is closed, then we submit the form.
         if (!this.showPopover) this.form?.requestSubmit();
         break;
       case KEYS.ARROW_DOWN:
@@ -315,8 +318,8 @@ class Select extends FormInternalsMixin(DisabledMixin(DataAriaLabelMixin(Formfie
         focus-trap
         role="listbox"
         placement="${POPOVER_PLACEMENT.BOTTOM_START}"
-        @popover-on-show="${this.handlePopoverOpen}"
-        @popover-on-hide="${this.handlePopoverClose}"
+        @shown="${this.handlePopoverOpen}"
+        @hidden="${this.handlePopoverClose}"
         style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
       >
         <slot @click="${this.handleOptionsClick}" @slotchange="${this.handleSlotChange}"></slot>
