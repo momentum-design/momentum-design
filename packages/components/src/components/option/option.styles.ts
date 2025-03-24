@@ -14,8 +14,10 @@ const styles = css`
     min-width: var(--mdc-option-trailing-min-width);
   }
   :host::part(leading) {
-    display: block;
     width: calc(100% - var(--mdc-option-trailing-min-width) - var(--mdc-listitem-column-gap));
+  }
+  :host::part(leading-text) {
+    display: block;
   }
   :host::part(leading-text-primary-label) {
     white-space: nowrap;
