@@ -5,7 +5,8 @@ const styles = css`
   :host {
     --mdc-select-background-color: var(--mds-color-theme-background-primary-ghost);
     --mdc-select-icon-border-color: var(--mds-color-theme-outline-input-normal);
-    --mdc-select-placeholder-color: var(--mds-color-theme-text-secondary-normal);
+    --mdc-select-base-text-color: var(--mds-color-theme-text-secondary-normal);
+    --mdc-select-selected-text-color: var(--mds-color-theme-text-primary-normal);
     --mdc-select-disabled-color: var(--mds-color-theme-outline-primary-disabled);
     --mdc-select-disabled-text-color: var(--mds-color-theme-text-primary-disabled);
     --mdc-select-error-border-color: var(--mds-color-theme-text-error-normal);
@@ -38,13 +39,16 @@ const styles = css`
   :host::part(base-container):active {
     background-color: var(--mdc-select-background-active);
   }
-  :host::part(placeholder-text) {
+  :host::part(base-text) {
     height: 1.3125rem;
     width: 100%;
-    color: var(--mdc-select-placeholder-color);
+    color: var(--mdc-select-base-text-color);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  :host::part(selected) {
+    color: var(--mdc-select-selected-text-color);
   }
   :host::part(icon-container) {
     margin-left: auto;
@@ -68,10 +72,10 @@ const styles = css`
   :host([readonly]:hover)::part(base-container) {
     background-color: unset;
   }
-  :host([readonly])::part(placeholder-text) {
-    color: unset;
+  :host([readonly])::part(base-text) {
+    color: var(--mdc-select-selected-text-color);
   }
-  :host([disabled])::part(placeholder-text) {
+  :host([disabled])::part(base-text) {
     color: var(--mdc-select-disabled-text-color);
   }
   :host([help-text-type="success"])::part(base-container) {

@@ -2,6 +2,7 @@ import type { TemplateResult } from 'lit';
 import { CSSResult, html, nothing } from 'lit';
 import { property, queryAssignedElements, state } from 'lit/decorators.js';
 import { KEYS } from '../../utils/keys';
+import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import FormfieldWrapper from '../formfieldwrapper';
@@ -31,7 +32,7 @@ import styles from './select.styles';
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the select.
  * @event focus - (React: onFocus) This event is dispatched when the select receives focus.
  */
-class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
+class Select extends FormInternalsMixin(DisabledMixin(DataAriaLabelMixin(FormfieldWrapper))) {
   /**
    * The placeholder text which will be shown on the text if provided.
    */
@@ -182,7 +183,7 @@ class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
    */
   formResetCallback(): void {
     this.value = '';
-    this.selectedValue = this.placeholder ?? '';
+    this.selectedValue = undefined;
   }
 
   /** @internal */
@@ -199,10 +200,6 @@ class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
         bubbles: true,
       }),
     );
-  }
-
-  private setPlaceholderValue(placeholder: string): void {
-    this.selectedValue = placeholder;
   }
 
   /**
@@ -283,9 +280,7 @@ class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
     const selectedOptionIndex = this.getAllValidOptions().findIndex((option) => option?.hasAttribute('selected'));
     if (selectedOptionIndex !== -1) {
       this.setSelectedValue(this.getAllValidOptions()[selectedOptionIndex]);
-    } else if (this.placeholder) {
-      this.setPlaceholderValue(this.placeholder);
-    } else {
+    } else if (!this.placeholder) {
       // We will set the first option as selected.
       this.setSelectedValue(this.getAllValidOptions()[0]);
     }
@@ -321,7 +316,7 @@ class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
         role="listbox"
         placement="${POPOVER_PLACEMENT.BOTTOM_START}"
         @popover-on-show="${this.handlePopoverOpen}"
-        @popover-on-hide="${this.handlePopoverClose}"   
+        @popover-on-hide="${this.handlePopoverClose}"
         style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
       >
         <slot @click="${this.handleOptionsClick}" @slotchange="${this.handleSlotChange}"></slot>
@@ -338,15 +333,19 @@ class Select extends FormInternalsMixin(DisabledMixin(FormfieldWrapper)) {
           part="base-container"
           class="${this.shouldFocusSelect() ? 'mdc-focus-ring' : ''}"
           tabindex="${this.shouldFocusSelect() ? '0' : '-1'}"
-          aria-labelledby="${FORMFIELD_DEFAULTS.HEADING_ID}"
+          aria-label="${this.dataAriaLabel ?? ''}"
+          aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
           role="combobox"
           aria-haspopup="listbox"
           aria-expanded="${this.showPopover}"
-          aria-controls="options-popover"
           aria-activedescendant="${this.activeDescendant}"
         >
-          <mdc-text part="placeholder-text" type="${TYPE.BODY_MIDSIZE_REGULAR}" tagname="${VALID_TEXT_TAGS.SPAN}">
-            ${this.selectedValue}
+          <mdc-text
+            part="base-text ${this.selectedValue ? 'selected' : ''}"
+            type="${TYPE.BODY_MIDSIZE_REGULAR}"
+            tagname="${VALID_TEXT_TAGS.SPAN}"
+          >
+            ${this.selectedValue ?? this.placeholder}
           </mdc-text>
           <div part="icon-container">
             <mdc-icon size="1" length-unit="rem" name="${this.baseIconName}"></mdc-icon>

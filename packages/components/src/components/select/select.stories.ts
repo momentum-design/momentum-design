@@ -17,6 +17,7 @@ const wrapWithDiv = (htmlString: TemplateResult) => html`
 
 const render = (args: Args) => wrapWithDiv(html`
   <mdc-select
+    @change="${action('onchange')}"
     @click="${action('onclick')}"
     @keydown="${action('onkeydown')}"
     @keyup="${action('onkeyup')}"
@@ -26,6 +27,7 @@ const render = (args: Args) => wrapWithDiv(html`
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
     height="${args.height}"
+    data-aria-label="${args['data-aria-label']}"
     name="${args.name}"
     placeholder="${args.placeholder}" 
     ?disabled="${args.disabled}"
@@ -73,6 +75,9 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(VALIDATION),
     },
+    'data-aria-label': {
+      control: 'text',
+    },
     height: {
       control: 'text',
     },
@@ -94,13 +99,14 @@ export const Example: StoryObj = {
     readonly: false,
     'help-text': 'Select Help Text',
     'help-text-type': '',
+    'data-aria-label': 'Select label',
   },
 };
 
 export const SelectWithGroups: StoryObj = {
   render: () => html`
     <div style="height: 35rem;">
-      <mdc-select>
+      <mdc-select data-aria-label="Select an option from the list of groups">
         <mdc-optgroup label="Fruit">
           <mdc-option value="apple">Apples</mdc-option>
           <mdc-option value="banana">Bananas</mdc-option>
@@ -120,6 +126,18 @@ export const SelectWithGroups: StoryObj = {
         </mdc-optgroup>
       </mdc-select>
     </div>
+  `,
+};
+
+export const SelectWithIconOptions: StoryObj = {
+  render: () => html`
+    <mdc-select placeholder="Select an option" label="You are in a meeting">
+      <mdc-option prefix-icon="alert-bold">Mute notifications</mdc-option>
+      <mdc-option prefix-icon="apps-bold">Add apps</mdc-option>
+      <mdc-option prefix-icon="stored-info-bold">View direct message policy</mdc-option>
+      <mdc-option prefix-icon="calendar-day-bold">Meeting capabilities</mdc-option>
+      <mdc-option prefix-icon="exit-room-bold">Leave</mdc-option>
+    </mdc-select>
   `,
 };
 
@@ -159,9 +177,10 @@ export const SelectWithFixedHeight = {
   args: {
     height: '18rem',
     placeholder: 'Select an option',
+    label: 'Select option',
   },
   render: (args: Args) => wrapWithDiv(html`
-    <mdc-select height="${args.height}" placeholder="${args.placeholder}">
+    <mdc-select height="${args.height}" placeholder="${args.placeholder}" label="${args.label}">
       ${repeat(new Array(1000).fill(true), () => html`<mdc-option>Option Label</mdc-option>`)}
     </mdc-select>
   `),
