@@ -1,10 +1,12 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
 import '../inputchip';
+import { AUTO_CAPITALIZE, AUTO_COMPLETE } from '../input/input.constants';
 
 const render = (args: Args) => html`
   <mdc-searchfield 
@@ -12,12 +14,25 @@ const render = (args: Args) => html`
     @change="${action('onchange')}"
     @focus="${action('onfocus')}"
     @blur="${action('onblur')}"
-  label="${args.label}"
-  placeholder="${args.placeholder}"
-  value="${args.value}"
-  ?disabled="${args.disabled}"
-  data-aria-label="${args['aria-label']}"
-  clear-aria-label="${args['clear-aria-label']}"
+    label="${args.label}"
+    placeholder="${args.placeholder}"
+    name="${args.name}"
+    value="${args.value}"
+    ?disabled="${args.disabled}"
+    data-aria-label="${args['aria-label']}"
+    clear-aria-label="${args['clear-aria-label']}"
+    class="${args.class}"
+    style="${args.style}"
+    ?readonly="${args.readonly}"
+    maxlength="${ifDefined(args.maxlength)}"
+    minlength="${ifDefined(args.minlength)}"
+    autocapitalize="${args.autocapitalize}"
+    ?autofocus="${args.autofocus}"
+    autocomplete="${args.autocomplete}"
+    dirname="${ifDefined(args.dirname)}"
+    pattern="${ifDefined(args.pattern)}"
+    list="${ifDefined(args.list)}"
+    size="${ifDefined(args.size)}"
   ></mdc-searchfield>`;
 
 const meta: Meta = {
@@ -40,6 +55,44 @@ const meta: Meta = {
     },
     disabled: {
       control: 'boolean',
+    },
+    readonly: {
+      control: 'boolean',
+    },
+    maxlength: {
+      control: 'number',
+    },
+    minlength: {
+      control: 'number',
+    },
+    autocapitalize: {
+      control: 'select',
+      options: Object.values(AUTO_CAPITALIZE),
+    },
+    autofocus: {
+      control: 'boolean',
+    },
+    autocomplete: {
+      control: 'text',
+      options: Object.values(AUTO_COMPLETE),
+    },
+    dirname: {
+      control: 'text',
+    },
+    pattern: {
+      control: 'text',
+    },
+    list: {
+      control: 'text',
+    },
+    size: {
+      control: 'number',
+    },
+    'clear-aria-label': {
+      control: 'text',
+    },
+    'data-aria-label': {
+      control: 'text',
     },
     ...hideControls(['prefix-text', 'help-text', 'help-text-type', 'required-label', 'validation-message']),
     ...classArgType,

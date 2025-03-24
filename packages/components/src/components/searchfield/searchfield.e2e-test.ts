@@ -9,17 +9,13 @@ type SetupOptions = {
   id?: string;
   value?: string;
   placeholder?: string;
-  requiredLabel?: string;
   readonly?: boolean;
   disabled?: boolean;
   maxlength?: number;
   minlength?: number;
   prefixText?: string;
   leadingIcon?: string;
-  trailingButton?: boolean;
   label?: string;
-  helpText?: string;
-  helpTextType?: string;
   autocapitalize?: string;
   autofocus?: boolean;
   autocomplete?: string;
@@ -31,16 +27,14 @@ type SetupOptions = {
   clearAriaLabel?: string;
 };
 
-const setup = async (args: SetupOptions, isForm = false) => {
+const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
-    ${isForm ? '<form>' : ''}
       <mdc-searchfield
       id="${restArgs.id}"
       ${restArgs.value ? `value="${restArgs.value}"` : ''}
       ${restArgs.placeholder ? `placeholder="${restArgs.placeholder}"` : ''}
-      ${restArgs.requiredLabel ? `required-label="${restArgs.requiredLabel}"` : ''}
       ${restArgs.readonly ? 'readonly' : ''}
       ${restArgs.disabled ? 'disabled' : ''}
       ${restArgs.maxlength ? `maxlength="${restArgs.maxlength}"` : ''}
@@ -48,10 +42,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.prefixText ? `prefix-text="${restArgs.prefixText}"` : ''}
       ${restArgs.leadingIcon ? `leading-icon="${restArgs.leadingIcon}"` : ''}
       ${restArgs.label ? `label="${restArgs.label}"` : ''}
-      ${restArgs.helpText ? `help-text="${restArgs.helpText}"` : ''}
-      ${restArgs.helpTextType ? `help-text-type="${restArgs.helpTextType}"` : ''}
-      ${restArgs.trailingButton ? 'trailing-button' : ''}
-      ${restArgs.autocapitalize ? `autocapitalize="${restArgs.autocapitalize}"` : ''}
+    ${restArgs.autocapitalize ? `autocapitalize="${restArgs.autocapitalize}"` : ''}
       ${restArgs.autofocus ? 'autofocus' : ''}
       ${restArgs.autocomplete ? `autocomplete="${restArgs.autocomplete}"` : ''}
       ${restArgs.dirname ? `dirname="${restArgs.dirname}"` : ''}
@@ -59,200 +50,18 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.list ? `list="${restArgs.list}"` : ''}
       ${restArgs.size ? `size="${restArgs.size}"` : ''}
       ${restArgs.dataAriaLabel ? `data-aria-label="${restArgs.dataAriaLabel}"` : ''}
-      ${restArgs.clearAriaLabel ? `data-aria-label="${restArgs.clearAriaLabel}"` : ''}
+      ${restArgs.clearAriaLabel ? `clear-aria-label="${restArgs.clearAriaLabel}"` : ''}
       ></mdc-searchfield>
-    ${isForm ? '<mdc-button type="submit" size="24">Submit</mdc-button></form>' : ''}
     `,
     clearDocument: true,
   });
-  if (isForm) {
-    const form = componentsPage.page.locator('form');
-    await form.waitFor();
-    return form;
-  }
-  const text = componentsPage.page.locator('mdc-searchfield');
-  await text.waitFor();
-  return text;
+  const element = componentsPage.page.locator('mdc-searchfield');
+  await element.waitFor();
+  return element;
 };
 
 test.use({ viewport: { width: 800, height: 1500 } });
-test('mdc-searchfield', async ({ componentsPage, browserName }) => {
-  const serachfield = await setup({
-    componentsPage,
-    id: 'test-mdc-searchfield',
-    placeholder: 'Placeholder',
-    label: 'Label',
-    clearAriaLabel: 'clear',
-  });
-
-  /**
-   * ATTRIBUTES
-   */
-  await test.step('attributes', async () => {
-    await test.step('attributes should be present on component', async () => {
-      await expect(serachfield).toHaveAttribute('id', 'test-mdc-searchfield');
-      await expect(serachfield).toHaveAttribute('placeholder', 'Placeholder');
-      await expect(serachfield).toHaveAttribute('label', 'Label');
-      const label = await serachfield.locator('label');
-      await expect(label).toHaveText('Label');
-    });
-
-    await test.step('attributes readonly should be present on component', async () => {
-      await componentsPage.setAttributes(serachfield, { readonly: '' });
-      await expect(serachfield).toHaveAttribute('readonly');
-      await componentsPage.removeAttribute(serachfield, 'readonly');
-    });
-
-    await test.step('attributes disabled should be present on component', async () => {
-      await componentsPage.setAttributes(serachfield, { disabled: '' });
-      await expect(serachfield).toHaveAttribute('disabled');
-      await componentsPage.removeAttribute(serachfield, 'disabled');
-    });
-
-    await test.step('attributes size, minlength and maxlength should be present on component', async () => {
-      await componentsPage.setAttributes(serachfield, { maxlength: '10', minlength: '5', size: '10' });
-      await expect(serachfield).toHaveAttribute('maxlength', '10');
-      await expect(serachfield).toHaveAttribute('minlength', '5');
-      await expect(serachfield).toHaveAttribute('size', '10');
-      await componentsPage.removeAttribute(serachfield, 'maxlength');
-      await componentsPage.removeAttribute(serachfield, 'minlength');
-      await componentsPage.removeAttribute(serachfield, 'size');
-    });
-
-    // await test.step('attribute trailing-button should be present on component', async () => {
-    //   await componentsPage.setAttributes(serachfield, { value: 'text' });
-    //   const trailingButton = serachfield.locator('mdc-button[part="trailing-button"]');
-    //   await expect(trailingButton).toHaveAttribute('aria-label', 'clear');
-    // });
-
-    await test.step('attribute autofocus should be present on component', async () => {
-      await componentsPage.setAttributes(serachfield, { autofocus: '' });
-      await expect(serachfield).toHaveAttribute('autofocus');
-      await componentsPage.removeAttribute(serachfield, 'autofocus');
-    });
-
-    await test.step('attribute autocapitalize should be present on component', async () => {
-      await componentsPage.setAttributes(serachfield, { autocapitalize: 'sentences' });
-      await expect(serachfield).toHaveAttribute('autocapitalize', 'sentences');
-      await componentsPage.removeAttribute(serachfield, 'autocapitalize');
-    });
-
-    await test.step('attribute autocomplete should be present on component', async () => {
-      await componentsPage.setAttributes(serachfield, { autocomplete: 'on' });
-      await expect(serachfield).toHaveAttribute('autocomplete', 'on');
-      await componentsPage.removeAttribute(serachfield, 'autocomplete');
-    });
-
-    await test.step('attribute direname should be present on component', async () => {
-      await componentsPage.setAttributes(serachfield, { direname: 'ltr' });
-      await expect(serachfield).toHaveAttribute('direname', 'ltr');
-      await componentsPage.removeAttribute(serachfield, 'direname');
-    });
-
-    await test.step('attribute direname should be present on component', async () => {
-      await componentsPage.setAttributes(serachfield, { direname: 'ltr' });
-      await expect(serachfield).toHaveAttribute('direname', 'ltr');
-      await componentsPage.removeAttribute(serachfield, 'direname');
-    });
-
-    await test.step('attribute pattern should be present on component', async () => {
-      await componentsPage.setAttributes(serachfield, { pattern: '[A-Za-z]{3}' });
-      await expect(serachfield).toHaveAttribute('pattern', '[A-Za-z]{3}');
-      await componentsPage.removeAttribute(serachfield, 'pattern');
-    });
-
-    await test.step('attribute list should be present on component', async () => {
-      await componentsPage.setAttributes(serachfield, { list: 'browsers' });
-      await expect(serachfield).toHaveAttribute('list', 'browsers');
-      await componentsPage.removeAttribute(serachfield, 'list');
-    });
-  });
-
-  /**
-   * INTERACTIONS
-   */
-  await test.step('interactions', async () => {
-    const inputEl = await serachfield.locator('input');
-    await test.step('component should be focusable with tab', async () => {
-      await componentsPage.actionability.pressTab();
-      await expect(inputEl).toBeFocused();
-      await inputEl.fill('test');
-      await expect(inputEl).toHaveValue('test');
-      await componentsPage.actionability.pressTab();
-      await expect(inputEl).not.toBeFocused();
-    });
-
-    // await test.step('readonly component should be focusable with tab', async () => {
-    //   await componentsPage.setAttributes(serachfield, {
-    //     readonly: '',
-    //     value: 'Readonly',
-    //     'clear-aria-label': 'clear',
-    //   });
-    //   const trailingButton = serachfield.locator('mdc-button[part="trailing-button"]');
-    //   await componentsPage.actionability.pressTab();
-    //   await expect(inputEl).toBeFocused();
-    //   await expect(inputEl).toHaveValue('Readonly');
-    //   await componentsPage.actionability.pressTab();
-    //   await expect(inputEl).not.toBeFocused();
-    //   await expect(trailingButton).not.toBeFocused();
-    //   await componentsPage.removeAttribute(serachfield, 'readonly');
-    // });
-
-    // await test.step('focus on serachfield and clear button when value is present during interactions', async () => {
-    //   await componentsPage.setAttributes(serachfield, { value: '', 'clear-aria-label': 'clear' });
-    //   const trailingButton = serachfield.locator('mdc-button[part="trailing-button"]');
-    //   await componentsPage.actionability.pressTab();
-    //   await expect(inputEl).toBeFocused();
-    //   await expect(trailingButton).toHaveClass('own-focus-ring hidden');
-    //   await inputEl.fill('test');
-    //   await expect(inputEl).toHaveValue('test');
-    //   await expect(trailingButton).toHaveClass('own-focus-ring ');
-    //   await componentsPage.actionability.pressTab();
-    //   await expect(inputEl).not.toBeFocused();
-    //   await expect(trailingButton).toBeFocused();
-    //   await trailingButton.click();
-    //   await expect(inputEl).toBeFocused();
-    //   await expect(inputEl).toHaveValue('');
-    // });
-
-    await test.step('component should not be focusable when disabled', async () => {
-      await componentsPage.setAttributes(serachfield, { disabled: '', value: 'Disabled' });
-      await componentsPage.actionability.pressTab();
-      await expect(serachfield).not.toBeFocused();
-      await expect(inputEl).toHaveValue('Disabled');
-      await componentsPage.removeAttribute(serachfield, 'disabled');
-    });
-
-    // await test.step('component in form should be validated for required and maxlength when submitted', async () => {
-    //   const form = await setup({
-    //     componentsPage,
-    //     id: 'test-mdc-searchfield',
-    //     placeholder: 'Placeholder',
-    //     requiredLabel: 'required',
-    //     maxlength: 10,
-    //   }, true);
-
-    //   const mdcserachfield = await form.locator('mdc-searchfield');
-    //   const submitButton = await form.locator('mdc-button');
-    //   const searchField = mdcserachfield.locator('serachfield');
-    //   await componentsPage.actionability.pressTab();
-    //   await expect(mdcserachfield).toBeFocused();
-    //   await componentsPage.page.keyboard.down('Enter');
-    //   const validationMessage = await searchField.evaluate((element) => {
-    //     const serachfield = element as HTMLInputElement;
-    //     return serachfield.validationMessage;
-    //   });
-    //   if (browserName === 'webkit') {
-    //     expect(validationMessage).toContain('Fill out this field');
-    //   } else {
-    //     expect(validationMessage).toContain('Please fill out this field.');
-    //   }
-    //   await searchField.fill('This is a long text');
-    //   await expect(searchField).toHaveValue('This is a '); // maxlength is 10; truncates rest of the value.
-    //   await submitButton.click();
-    // });
-  });
-
+test('mdc-searchfield', async ({ componentsPage }) => {
   /**
    * VISUAL REGRESSION
    */
@@ -268,14 +77,14 @@ test('mdc-searchfield', async ({ componentsPage, browserName }) => {
     serachfieldStickerSheet.setAttributes(attributes);
     await serachfieldStickerSheet.createMarkupWithCombination({});
 
-    // disabled serachfield field with value
+    // disabled searchField field with value
     serachfieldStickerSheet.setAttributes({ ...attributes,
       value: 'Disabled',
       disabled: true,
     });
     await serachfieldStickerSheet.createMarkupWithCombination({});
 
-    // serachfield without label
+    // searchField without label
     serachfieldStickerSheet.setAttributes({ 'data-aria-label': 'Search',
       value: 'Clear button',
       'clear-aria-label': 'clear',
@@ -296,8 +105,6 @@ test('mdc-searchfield', async ({ componentsPage, browserName }) => {
     });
     const container = await serachfieldStickerSheet.getWrapperContainer();
 
-    // Fix for not capturing snapshot while hovering on the serachfield container.
-    // await componentsPage.page.mouse.move(0, 0);
     await test.step('matches screenshot of element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-searchfield', { element: container });
     });
@@ -307,6 +114,150 @@ test('mdc-searchfield', async ({ componentsPage, browserName }) => {
    * ACCESSIBILITY
    */
   await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('serachfield-default');
+    await componentsPage.accessibility.checkForA11yViolations('searchField-default');
+  });
+
+  const searchField = await setup({
+    componentsPage,
+    placeholder: 'Placeholder',
+    label: 'Label',
+    clearAriaLabel: 'clear',
+  });
+
+  /**
+   * ATTRIBUTES
+   */
+  await test.step('attributes', async () => {
+    await test.step('attributes should be present on component', async () => {
+      await expect(searchField).toHaveAttribute('placeholder', 'Placeholder');
+      await expect(searchField).toHaveAttribute('label', 'Label');
+      const label = searchField.locator('label');
+      await expect(label).toHaveText('Label');
+      await componentsPage.setAttributes(searchField, { value: 'text' });
+      const clearBtn = searchField.locator('mdc-button[part="trailing-button"]');
+      await expect(clearBtn).toHaveAttribute('aria-label', 'clear');
+    });
+
+    await test.step('attributes readonly should be present on component', async () => {
+      await componentsPage.setAttributes(searchField, { readonly: '' });
+      await expect(searchField).toHaveAttribute('readonly');
+      await componentsPage.removeAttribute(searchField, 'readonly');
+    });
+
+    await test.step('attributes disabled should be present on component', async () => {
+      await componentsPage.setAttributes(searchField, { disabled: '' });
+      await expect(searchField).toHaveAttribute('disabled');
+      await componentsPage.removeAttribute(searchField, 'disabled');
+    });
+
+    await test.step('attributes size, minlength and maxlength should be present on component', async () => {
+      await componentsPage.setAttributes(searchField, { maxlength: '10', minlength: '5', size: '10' });
+      await expect(searchField).toHaveAttribute('maxlength', '10');
+      await expect(searchField).toHaveAttribute('minlength', '5');
+      await expect(searchField).toHaveAttribute('size', '10');
+      await componentsPage.removeAttribute(searchField, 'maxlength');
+      await componentsPage.removeAttribute(searchField, 'minlength');
+      await componentsPage.removeAttribute(searchField, 'size');
+    });
+
+    await test.step('attribute clear-aria-label should be present on component', async () => {
+      await componentsPage.setAttributes(searchField, { value: 'text' });
+      const trailingButton = searchField.locator('mdc-button[part="trailing-button"]');
+      await expect(trailingButton).toHaveAttribute('aria-label', 'clear');
+    });
+
+    await test.step('attribute autofocus should be present on component', async () => {
+      await componentsPage.setAttributes(searchField, { autofocus: '' });
+      await expect(searchField).toHaveAttribute('autofocus');
+      await componentsPage.removeAttribute(searchField, 'autofocus');
+    });
+
+    await test.step('attribute autocapitalize should be present on component', async () => {
+      await componentsPage.setAttributes(searchField, { autocapitalize: 'sentences' });
+      await expect(searchField).toHaveAttribute('autocapitalize', 'sentences');
+      await componentsPage.removeAttribute(searchField, 'autocapitalize');
+    });
+
+    await test.step('attribute autocomplete should be present on component', async () => {
+      await componentsPage.setAttributes(searchField, { autocomplete: 'on' });
+      await expect(searchField).toHaveAttribute('autocomplete', 'on');
+      await componentsPage.removeAttribute(searchField, 'autocomplete');
+    });
+
+    await test.step('attribute direname should be present on component', async () => {
+      await componentsPage.setAttributes(searchField, { direname: 'ltr' });
+      await expect(searchField).toHaveAttribute('direname', 'ltr');
+      await componentsPage.removeAttribute(searchField, 'direname');
+    });
+
+    await test.step('attribute direname should be present on component', async () => {
+      await componentsPage.setAttributes(searchField, { direname: 'ltr' });
+      await expect(searchField).toHaveAttribute('direname', 'ltr');
+      await componentsPage.removeAttribute(searchField, 'direname');
+    });
+
+    await test.step('attribute pattern should be present on component', async () => {
+      await componentsPage.setAttributes(searchField, { pattern: '[A-Za-z]{3}' });
+      await expect(searchField).toHaveAttribute('pattern', '[A-Za-z]{3}');
+      await componentsPage.removeAttribute(searchField, 'pattern');
+    });
+
+    await test.step('attribute list should be present on component', async () => {
+      await componentsPage.setAttributes(searchField, { list: 'browsers' });
+      await expect(searchField).toHaveAttribute('list', 'browsers');
+      await componentsPage.removeAttribute(searchField, 'list');
+    });
+  });
+
+  /**
+   * INTERACTIONS
+   */
+  await test.step('interactions', async () => {
+    const inputEl = searchField.locator('input');
+    await test.step('component should be focusable with tab', async () => {
+      await componentsPage.actionability.pressTab();
+      await expect(inputEl).toBeFocused();
+      await inputEl.fill('test');
+      await expect(inputEl).toHaveValue('test');
+      await componentsPage.actionability.pressTab();
+      await expect(inputEl).not.toBeFocused();
+    });
+
+    await test.step('readonly component should be focusable with tab', async () => {
+      await setup({ componentsPage, readonly: true, value: 'Readonly', clearAriaLabel: 'clear' });
+      const trailingButton = searchField.locator('mdc-button[part="trailing-button"]');
+      await componentsPage.actionability.pressTab();
+      await expect(searchField).toBeFocused();
+      await expect(inputEl).toHaveValue('Readonly');
+      await componentsPage.actionability.pressTab();
+      await expect(searchField).not.toBeFocused();
+      await expect(trailingButton).not.toBeFocused();
+      await componentsPage.removeAttribute(searchField, 'readonly');
+    });
+
+    await test.step('focus on searchField and clear button when value is present during interactions', async () => {
+      await setup({ componentsPage, value: '', clearAriaLabel: 'clear' });
+      const trailingButton = searchField.locator('mdc-button[part="trailing-button"]');
+      await componentsPage.actionability.pressTab();
+      await expect(inputEl).toBeFocused();
+      await expect(trailingButton).toHaveClass('own-focus-ring hidden');
+      await inputEl.fill('test');
+      await expect(inputEl).toHaveValue('test');
+      await expect(trailingButton).toHaveClass('own-focus-ring ');
+      await componentsPage.actionability.pressTab();
+      await expect(inputEl).not.toBeFocused();
+      await expect(trailingButton).toBeFocused();
+      await trailingButton.click();
+      await expect(inputEl).toBeFocused();
+      await expect(inputEl).toHaveValue('');
+    });
+
+    await test.step('component should not be focusable when disabled', async () => {
+      await setup({ componentsPage, disabled: true, value: 'Disabled' });
+      await componentsPage.actionability.pressTab();
+      await expect(searchField).not.toBeFocused();
+      await expect(inputEl).toHaveValue('Disabled');
+      await componentsPage.removeAttribute(searchField, 'disabled');
+    });
   });
 });
