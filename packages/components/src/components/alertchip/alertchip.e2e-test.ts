@@ -34,7 +34,7 @@ const setup = async (args: SetupOptions) => {
     : componentsPage.page.locator('mdc-alertchip');
   await element.waitFor();
 
-  const firstChip = await componentsPage.page.locator('mdc-alertchip').first();
+  const firstChip = componentsPage.page.locator('mdc-alertchip').first();
   return firstChip;
 };
 
