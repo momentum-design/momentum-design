@@ -41,7 +41,7 @@ const setup = async (args: SetupOptions) => {
   await element.waitFor();
 
   // always return the first avatarbutton:
-  const firstButton = await componentsPage.page.locator('mdc-avatarbutton').first();
+  const firstButton = componentsPage.page.locator('mdc-avatarbutton').first();
   return firstButton;
 };
 
@@ -60,7 +60,7 @@ test('mdc-avatarbutton', async ({ componentsPage }) => {
   await test.step('attributes', async () => {
     await test.step('should fallback to default icon and size to 32 when no attributes are passed', async () => {
       await componentsPage.setAttributes(avatarButton, {});
-      const icon = await componentsPage.page.locator('mdc-icon');
+      const icon = componentsPage.page.locator('mdc-icon');
       await icon.waitFor();
       await expect(icon).toHaveAttribute('name', DEFAULTS.ICON_NAME);
       await expect(avatarButton).toHaveAttribute('size', DEFAULTS.SIZE.toString());
