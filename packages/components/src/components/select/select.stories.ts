@@ -1,15 +1,17 @@
 import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
-import { repeat } from 'lit/directives/repeat.js';
-import { html } from 'lit';
 import type { TemplateResult } from 'lit';
+import { html } from 'lit';
+import { repeat } from 'lit/directives/repeat.js';
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 import '../divider';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import '../optgroup';
 import '../option';
+
+const helpTextTypes = Object.values(VALIDATION).filter((type: string) => type !== 'priority');
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`
   <div style="height: 20rem; width: 20rem;">${htmlString}</div>
@@ -34,7 +36,7 @@ const render = (args: Args) => wrapWithDiv(html`
     ?readonly="${args.readonly}"
   >
     <mdc-option>London, UK</mdc-option>
-    <mdc-option>Los Angeles, CA</mdc-option>
+    <mdc-option>Los Angeles, CA, This is a long text bro, lets have fun</mdc-option>
     <mdc-option>Phoenix, AZ</mdc-option>
     <mdc-option>New York, NY</mdc-option>
     <mdc-option>Seattle, WA</mdc-option>
@@ -73,7 +75,8 @@ const meta: Meta = {
     },
     'help-text-type': {
       control: 'select',
-      options: Object.values(VALIDATION),
+      description: `The type of help text. It can be ${helpTextTypes.map((type: string) => `'${type}'`).join(', ')}.`,
+      options: helpTextTypes,
     },
     'data-aria-label': {
       control: 'text',
@@ -81,8 +84,7 @@ const meta: Meta = {
     height: {
       control: 'text',
     },
-    ...hideControls(['validity', 'willValidate', 'default', 'label-info']),
-    ...disableControls(['validation-message']),
+    ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default', 'label-info']),
     ...classArgType,
     ...styleArgType,
   },
@@ -106,7 +108,7 @@ export const Example: StoryObj = {
 export const SelectWithGroups: StoryObj = {
   render: () => html`
     <div style="height: 35rem;">
-      <mdc-select data-aria-label="Select an option from the list of groups">
+      <mdc-select label="Select an option from the list of groups" data-aria-label="Select an option">
         <mdc-optgroup label="Fruit">
           <mdc-option value="apple">Apples</mdc-option>
           <mdc-option value="banana">Bananas</mdc-option>
@@ -130,7 +132,7 @@ export const SelectWithGroups: StoryObj = {
 };
 
 export const SelectWithIconOptions: StoryObj = {
-  render: () => html`
+  render: () => wrapWithDiv(html`
     <mdc-select placeholder="Select an option" label="You are in a meeting">
       <mdc-option prefix-icon="alert-bold">Mute notifications</mdc-option>
       <mdc-option prefix-icon="apps-bold">Add apps</mdc-option>
@@ -138,7 +140,7 @@ export const SelectWithIconOptions: StoryObj = {
       <mdc-option prefix-icon="calendar-day-bold">Meeting capabilities</mdc-option>
       <mdc-option prefix-icon="exit-room-bold">Leave</mdc-option>
     </mdc-select>
-  `,
+  `),
 };
 
 export const SelectWithStates: StoryObj = {
