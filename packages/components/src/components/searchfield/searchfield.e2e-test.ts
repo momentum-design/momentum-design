@@ -25,6 +25,7 @@ type SetupOptions = {
   size?: number;
   dataAriaLabel?: string;
   clearAriaLabel?: string;
+  filters?: boolean
 };
 
 const setup = async (args: SetupOptions) => {
@@ -51,7 +52,10 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.size ? `size="${restArgs.size}"` : ''}
       ${restArgs.dataAriaLabel ? `data-aria-label="${restArgs.dataAriaLabel}"` : ''}
       ${restArgs.clearAriaLabel ? `clear-aria-label="${restArgs.clearAriaLabel}"` : ''}
-      ></mdc-searchfield>
+      ${restArgs.filters ? `><mdc-inputchip 
+        label="Selected" 
+        slot="filters" 
+        ></mdc-inputchip>` : '>'}</mdc-searchfield>
     `,
     clearDocument: true,
   });
@@ -258,6 +262,23 @@ test('mdc-searchfield', async ({ componentsPage }) => {
       await expect(searchField).not.toBeFocused();
       await expect(inputEl).toHaveValue('Disabled');
       await componentsPage.removeAttribute(searchField, 'disabled');
+    });
+
+    await test.step('filter chip should be focusable and interactable when present', async () => {
+      await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true });
+      const inputChipBtn = searchField.locator('mdc-button[part="close-icon"]');
+      await inputChipBtn.evaluate((btn) => {
+        btn.addEventListener('click', () => {
+          btn.classList.toggle('remove-filter');
+        });
+      });
+      const filterChip = searchField.locator('mdc-inputchip');
+      await expect(filterChip).toBeVisible();
+      await expect(inputChipBtn).toHaveClass('');
+      await componentsPage.actionability.pressTab();
+      await expect(inputChipBtn).toBeFocused();
+      await inputChipBtn.click();
+      await expect(inputChipBtn).toHaveClass('remove-filter');
     });
   });
 });
