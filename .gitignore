@@ -133,3 +133,4 @@ packages/assets/utils/src/staticSite/public
 **/.DS_Store
 
 playwright-temp
+packages/components/playwright-temp

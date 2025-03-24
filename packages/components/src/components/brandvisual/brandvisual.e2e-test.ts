@@ -16,29 +16,25 @@ const setup = async (args: SetupOptions) => {
   });
   await componentsPage.page.pause();
   const brandVisualLogo = componentsPage.page.locator('mdc-brandvisual');
-  // console.log('brand Visual', await brandVisualLogo.count());
-  // console.log('Page content before waiting for locator:', await componentsPage.page.content());
-  // console.log('Is component hidden:', await brandVisualLogo.isHidden());
-  // console.log('Is component visible:', await brandVisualLogo.isVisible());
   await brandVisualLogo.waitFor();
 
   return brandVisualLogo;
 };
 
-// const visualTestingSetup = async (args: SetupOptions) => {
-//   const { componentsPage, name } = args;
-//   await componentsPage.mount({
-//     html: `
-//     <div class="componentWrapper componentRowWrapper">
-//       <mdc-brandvisual name="${name}"></mdc-brandvisual>
-//     </div>
-//       `,
-//     clearDocument: true,
-//   });
-//   const icon = componentsPage.page.locator('.componentRowWrapper');
-//   await icon.waitFor();
-//   return icon;
-// };
+const visualTestingSetup = async (args: SetupOptions) => {
+  const { componentsPage, name } = args;
+  await componentsPage.mount({
+    html: `
+    <div class="componentWrapper componentRowWrapper">
+      <mdc-brandvisual name="${name}"></mdc-brandvisual>
+    </div>
+      `,
+    clearDocument: true,
+  });
+  const icon = componentsPage.page.locator('.componentRowWrapper');
+  await icon.waitFor();
+  return icon;
+};
 
 test('mdc-brandvisual', async ({ componentsPage }) => {
   const name = 'zoom-color';
@@ -57,25 +53,21 @@ test('mdc-brandvisual', async ({ componentsPage }) => {
   /**
    * VISUAL REGRESSION
    */
-  // await test.step('visual-regression', async () => {
-  //   const visualIcons = await visualTestingSetup({ componentsPage, name });
+  await test.step('visual-regression', async () => {
+    const visualIcons = await visualTestingSetup({ componentsPage, name });
 
-  //   await test.step('matches screenshot of element', async () => {
-  //     await componentsPage.visualRegression.takeScreenshot(
-  //       'mdc-brandvisual',
-  //       { element: visualIcons },
-  //     );
-  //   });
-  // });
+    await test.step('matches screenshot of element', async () => {
+      await componentsPage.visualRegression.takeScreenshot(
+        'mdc-brandvisual',
+        { element: visualIcons },
+      );
+    });
+  });
 
   /**
    * ACCESSIBILITY
    */
-  // await test.step('accessibility', async () => {
-  //   await componentsPage.accessibility.checkForA11yViolations('brandvisual-default');
-  // });
-
-  /**
-   * INTERACTIONS
-   */
+  await test.step('accessibility', async () => {
+    await componentsPage.accessibility.checkForA11yViolations('brandvisual-default');
+  });
 });
