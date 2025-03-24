@@ -65,5 +65,11 @@ const styles = css`
   :host::part(trailing-text) {
     text-align: right;
   }
+  ::slotted([slot="leading-controls"]), ::slotted([slot="trailing-controls"]) {
+    align-items: center;
+    column-gap: var(--mdc-listitem-column-gap);
+    display: flex;
+    flex-direction: row;
+  }
 `;
 export default [styles, ...hostFocusRingStyles()];
