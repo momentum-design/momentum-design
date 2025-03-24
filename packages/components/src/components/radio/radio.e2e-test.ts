@@ -61,26 +61,26 @@ test('mdc-radio', async ({ componentsPage }) => {
       const radioStickerSheet = new StickerSheet(componentsPage, 'mdc-radio');
 
       // Radio btn without label
-      await radioStickerSheet.setAttributes({
+      radioStickerSheet.setAttributes({
         'data-aria-label': 'Standard Plan',
       });
 
       // Radio btn with label
       await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
-      await radioStickerSheet.setAttributes({
+      radioStickerSheet.setAttributes({
         label: 'Standard Plan',
       });
 
       // Checked radio btn
       await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
-      await radioStickerSheet.setAttributes({
+      radioStickerSheet.setAttributes({
         label: 'Selected Radio Label',
         checked: true,
       });
 
       // Checked radio btn with help text
       await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
-      await radioStickerSheet.setAttributes({
+      radioStickerSheet.setAttributes({
         label: 'Selected Radio Label',
         'help-text': 'This is a help text',
         checked: true,
@@ -88,7 +88,7 @@ test('mdc-radio', async ({ componentsPage }) => {
 
       // Readonly radio btn
       await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
-      await radioStickerSheet.setAttributes({
+      radioStickerSheet.setAttributes({
         label: 'Read Only Radio Label',
         'help-text': 'This is a help text',
         readonly: true,
@@ -96,7 +96,7 @@ test('mdc-radio', async ({ componentsPage }) => {
 
       // Readonly but checked radio btn
       await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
-      await radioStickerSheet.setAttributes({
+      radioStickerSheet.setAttributes({
         label: 'Read Only Radio Label',
         'help-text': 'This is a help text',
         readonly: true,
@@ -105,7 +105,7 @@ test('mdc-radio', async ({ componentsPage }) => {
 
       // Disabled radio btn
       await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
-      await radioStickerSheet.setAttributes({
+      radioStickerSheet.setAttributes({
         label: 'Disabled Radio Label',
         'help-text': 'This is a help text',
         disabled: true,
@@ -113,7 +113,7 @@ test('mdc-radio', async ({ componentsPage }) => {
 
       // Disabled but checked radio btn
       await radioStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
-      await radioStickerSheet.setAttributes({
+      radioStickerSheet.setAttributes({
         label: 'Disabled Selected Radio Label',
         'help-text': 'This is a help text',
         disabled: true,
@@ -148,7 +148,7 @@ test('mdc-radio', async ({ componentsPage }) => {
       });
       await test.step('select radio by pressing space', async () => {
         await setup({ componentsPage, label: 'Standard Plan for student' });
-        const radio = await componentsPage.page.locator('mdc-radio').locator('input[type="radio"]');
+        const radio = componentsPage.page.locator('mdc-radio').locator('input[type="radio"]');
 
         await componentsPage.actionability.pressTab();
         await componentsPage.page.keyboard.press('Space');
@@ -157,7 +157,7 @@ test('mdc-radio', async ({ componentsPage }) => {
 
       await test.step('radio clicked', async () => {
         await setup({ componentsPage, label: 'Standard Plan for student' });
-        const radio = await componentsPage.page.locator('mdc-radio').locator('input[type="radio"]');
+        const radio = componentsPage.page.locator('mdc-radio').locator('input[type="radio"]');
 
         await radio.click();
         await expect(radio).toBeChecked();
@@ -165,7 +165,7 @@ test('mdc-radio', async ({ componentsPage }) => {
 
       await test.step('radio focus and click on disabled radio', async () => {
         await setup({ componentsPage, label: 'Standard Plan for student', disabled: true });
-        const radio = await componentsPage.page.locator('mdc-radio').locator('input[type="radio"]');
+        const radio = componentsPage.page.locator('mdc-radio').locator('input[type="radio"]');
 
         await componentsPage.actionability.pressTab();
         await expect(radio).not.toBeFocused();
@@ -180,7 +180,7 @@ test('mdc-radio', async ({ componentsPage }) => {
           value: 'standard',
           readonly: true,
         });
-        const radio = await componentsPage.page.locator('mdc-radio').locator('input[name="student-plan"]');
+        const radio = componentsPage.page.locator('mdc-radio').locator('input[name="student-plan"]');
         await componentsPage.actionability.pressTab();
         await expect(radio).toBeFocused();
         await expect(radio).not.toBeChecked();
@@ -197,7 +197,7 @@ test('mdc-radio', async ({ componentsPage }) => {
           value: 'standard',
           secondRadioBtn: true,
         });
-        const radios = await componentsPage.page.locator('mdc-radio').locator('input[name="student-plan"]');
+        const radios = componentsPage.page.locator('mdc-radio').locator('input[name="student-plan"]');
         await componentsPage.actionability.pressTab();
         await expect(radios.nth(0)).toBeFocused();
         await componentsPage.page.keyboard.press('ArrowDown');
@@ -216,7 +216,7 @@ test('mdc-radio', async ({ componentsPage }) => {
           value: 'standard',
           secondRadioBtn: true,
         });
-        const radios = await componentsPage.page.locator('mdc-radio').locator('input[name="student-plan"]');
+        const radios = componentsPage.page.locator('mdc-radio').locator('input[name="student-plan"]');
         await componentsPage.actionability.pressTab();
         await componentsPage.page.keyboard.press('ArrowDown');
         await expect(radios.nth(1)).toBeChecked();
@@ -238,14 +238,14 @@ test('mdc-radio', async ({ componentsPage }) => {
       // For label
       await test.step('should have label element when the label attribute is passed', async () => {
         await componentsPage.setAttributes(radio, { label: 'Radio label' });
-        const label = await componentsPage.page.locator('label');
+        const label = componentsPage.page.locator('label');
         await expect(label).toHaveText('Radio label');
       });
 
       // For help text
       await test.step('should have mdc-text element when the help-text attribute is passed', async () => {
         await componentsPage.setAttributes(radio, { 'help-text': 'Help text for additional info' });
-        const mdcText = await componentsPage.page.locator('mdc-text');
+        const mdcText = componentsPage.page.locator('mdc-text');
         const textContent = await mdcText.textContent();
         expect(textContent?.trim()).toBe('Help text for additional info');
       });
