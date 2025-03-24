@@ -25,13 +25,14 @@ type SetupOptions = {
   size?: number;
   dataAriaLabel?: string;
   clearAriaLabel?: string;
-  filters?: boolean
+  filters?: boolean;
 };
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
+<div id="wrapper">
       <mdc-searchfield
       id="${restArgs.id}"
       ${restArgs.value ? `value="${restArgs.value}"` : ''}
@@ -56,6 +57,7 @@ const setup = async (args: SetupOptions) => {
         label="Selected" 
         slot="filters" 
         ></mdc-inputchip>` : '>'}</mdc-searchfield>
+      <mdc-button>Second Button</mdc-button></div>
     `,
     clearDocument: true,
   });
