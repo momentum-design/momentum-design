@@ -8,16 +8,16 @@ const styles = css`
     height: 2.25rem;
   }
   :host::part(default-slot) {
-    display: none; 
-  }
-  :host::part(trailing) {
-    min-width: var(--mdc-option-trailing-min-width);
+    display: none;
   }
   :host::part(leading) {
     width: calc(100% - var(--mdc-option-trailing-min-width) - var(--mdc-listitem-column-gap));
   }
   :host::part(leading-text) {
-    display: block;
+    overflow: hidden;
+  }
+  :host::part(trailing) {
+    min-width: var(--mdc-option-trailing-min-width);
   }
   :host::part(leading-text-primary-label) {
     white-space: nowrap;

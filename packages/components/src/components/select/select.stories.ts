@@ -131,12 +131,23 @@ export const SelectWithGroups: StoryObj = {
   `,
 };
 
+export const SelectWithLongOptionText: StoryObj = {
+  render: () => wrapWithDiv(html`
+    <mdc-select placeholder="Select a color" label="Select one color">
+      <mdc-option>Red</mdc-option>
+      <mdc-option>Yellow</mdc-option>
+      <mdc-option>White and Black are the biggest colors on the spectrum</mdc-option>
+      <mdc-option>Green</mdc-option>
+    </mdc-select>
+  `),
+};
+
 export const SelectWithIconOptions: StoryObj = {
   render: () => wrapWithDiv(html`
     <mdc-select placeholder="Select an option" label="You are in a meeting">
       <mdc-option prefix-icon="alert-bold">Mute notifications</mdc-option>
       <mdc-option prefix-icon="apps-bold">Add apps</mdc-option>
-      <mdc-option prefix-icon="stored-info-bold">View direct message policy</mdc-option>
+      <mdc-option prefix-icon="stored-info-bold">View direct message policy View direct message policy</mdc-option>
       <mdc-option prefix-icon="calendar-day-bold">Meeting capabilities</mdc-option>
       <mdc-option prefix-icon="exit-room-bold">Leave</mdc-option>
     </mdc-select>
