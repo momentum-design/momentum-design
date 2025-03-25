@@ -5,13 +5,13 @@ const styles = css`
 :host::part(filters-container){
   display: flex;
   gap: 0.25rem;
+  margin: 0.25rem;
 }
 
 .input {
   white-space: nowrap;
   width: auto;
   min-width: 90%;
-  overflow: hidden;
 }
 
 .input::-webkit-search-cancel-button {
