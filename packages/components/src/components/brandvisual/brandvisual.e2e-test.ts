@@ -14,7 +14,6 @@ const setup = async (args: SetupOptions) => {
     html: `<mdc-brandvisual name="${name}"></mdc-brandvisual>`,
     clearDocument: true,
   });
-  await componentsPage.page.pause();
   const brandVisualLogo = componentsPage.page.locator('mdc-brandvisual');
   await brandVisualLogo.waitFor();
 
@@ -31,9 +30,9 @@ const visualTestingSetup = async (args: SetupOptions) => {
       `,
     clearDocument: true,
   });
-  const icon = componentsPage.page.locator('.componentRowWrapper');
-  await icon.waitFor();
-  return icon;
+  const brandvisual = componentsPage.page.locator('.componentRowWrapper');
+  await brandvisual.waitFor();
+  return brandvisual;
 };
 
 test('mdc-brandvisual', async ({ componentsPage }) => {
@@ -54,12 +53,12 @@ test('mdc-brandvisual', async ({ componentsPage }) => {
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
-    const visualIcons = await visualTestingSetup({ componentsPage, name });
+    const brandVisual = await visualTestingSetup({ componentsPage, name });
 
     await test.step('matches screenshot of element', async () => {
       await componentsPage.visualRegression.takeScreenshot(
         'mdc-brandvisual',
-        { element: visualIcons },
+        { element: brandVisual },
       );
     });
   });

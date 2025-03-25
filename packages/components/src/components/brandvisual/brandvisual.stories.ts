@@ -12,12 +12,12 @@ const render = (args: Args) => html`
   ></mdc-brandvisual>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/brandvisual',
+  title: 'Components/brandvisual',
   tags: ['autodocs'],
   component: 'mdc-brandvisual',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     name: {
@@ -35,7 +35,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    name: 'cisco-logo-dark-bw',
+    name: 'momentum-design-logo-dark-color-vertical',
     style: 'display: block; height: 100px; width: 100px;',
   },
 };

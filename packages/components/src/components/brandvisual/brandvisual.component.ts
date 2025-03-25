@@ -6,54 +6,53 @@ import type { BrandVisualNames } from './brandvisual.types';
 import { DEFAULTS } from './brandvisual.constants';
 
 /**
- * The `mdc-brandvisual` component is responsible for rendering brand logos
- * dynamically. It supports various predefined brand visuals and ensures they are
+ * The `mdc-brandvisual` component is responsible for rendering logos dynamically & ensures they are
  * displayed correctly within applications.
  *
  * Features:
- * - Dynamically loads SVG icons based on the `name` attribute.
- * - Emits a `load` event when the icon is successfully fetched.
- * - Emits an `error` event when the icon import fails.
+ * - Dynamically loads brandvisuals based on the `name` attribute.
+ * - Emits a `load` event when the brandvisual is successfully fetched.
+ * - Emits an `error` event when the brandvisual import fails.
  * - Supports accessibility best practices.
  * - Used for brand representation within the design system.
  *
  * @tagname mdc-brandvisual
  *
- * @event load - (React: onLoad) This event is dispatched when the icon has been successfully loaded.
- * @event error - (React: onError) This event is dispatched when the icon fetching has failed.
+ * @event load - (React: onLoad) This event is dispatched when the brandvisual has been successfully loaded.
+ * @event error - (React: onError) This event is dispatched when the brandvisual fetching has failed.
  *
  */
 class Brandvisual extends Component {
   @state()
-  private iconData?: HTMLElement;
+  private brandVisualData?: HTMLElement;
 
   /**
-   * Name of the icon (= filename)
+   * Name of the brandVisual (= filename)
    */
   @property({ type: String, reflect: true })
   name?: BrandVisualNames = DEFAULTS.NAME;
 
-  private async getIconData() {
+  private async getBrandVisualData() {
     if (this.name) {
       // dynamic import of the lit template from the momentum brand-visuals package
       return import(`@momentum-design/brand-visuals/dist/logos/ts/${this.name}.ts`)
         .then((module) => {
-          this.handleIconLoadedSuccess(module.default());
+          this.handleBrandVisualLoadedSuccess(module.default());
         })
         .catch((error) => {
-          this.handleIconLoadedFailure(error);
+          this.handleBrandVisualLoadedFailure(error);
         });
     }
-    this.handleIconLoadedFailure(new Error('No icon name provided.'));
-    return Promise.reject(new Error('No icon name provided.'));
+    this.handleBrandVisualLoadedFailure(new Error('No brandvisual name provided.'));
+    return Promise.reject(new Error('No brandvisual name provided.'));
   }
 
   override updated(changedProperties: Map<string, any>) {
     super.updated(changedProperties);
 
     if (changedProperties.has('name')) {
-      // import icon data if name changes:
-      this.getIconData().catch((err) => {
+      // import brandVisual data if name changes:
+      this.getBrandVisualData().catch((err) => {
         if (this.onerror) {
           this.onerror(err);
         }
@@ -62,15 +61,15 @@ class Brandvisual extends Component {
   }
 
   /**
-   * Sets the iconData state to the fetched icon.
-   * Dispatches a 'load' event on the component once the icon has been successfully loaded.
-   * @param iconHtml - The icon html element which has been fetched from the icon provider.
+   * Sets the brandVisualData state to the fetched brandvisual.
+   * Dispatches a 'load' event on the component once the brandvisual has been successfully loaded.
+   * @param brandVisualHtml - The brandvisual html element which has been fetched from the brandvisual provider.
    */
-  private handleIconLoadedSuccess(iconHtml: HTMLElement) {
-    // update iconData state once fetched:
-    this.iconData = iconHtml;
+  private handleBrandVisualLoadedSuccess(brandVisualHtml: HTMLElement) {
+    // update brandVisualData state once fetched:
+    this.brandVisualData = brandVisualHtml;
 
-    // when icon is imported successfully, trigger icon load event.
+    // when brandvisual is imported successfully, trigger brandvisual load event.
     const loadEvent = new Event('load', {
       bubbles: true,
       cancelable: true,
@@ -79,13 +78,11 @@ class Brandvisual extends Component {
   }
 
   /**
-   * Dispatches an 'error' event on the component when the icon import has failed.
+   * Dispatches an 'error' event on the component when the brandvisual import has failed.
    * This event bubbles and is cancelable.
    * The error detail is set to the error object.
    */
-  private handleIconLoadedFailure(error: unknown) {
-    this.style.setProperty('width', '1rem');
-    this.style.setProperty('height', '1rem');
+  private handleBrandVisualLoadedFailure(error: unknown) {
     const errorEvent = new CustomEvent('error', {
       bubbles: true,
       cancelable: true,
@@ -95,7 +92,7 @@ class Brandvisual extends Component {
   }
 
   override render() {
-    return html` ${this.iconData} `;
+    return html` ${this.brandVisualData} `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
