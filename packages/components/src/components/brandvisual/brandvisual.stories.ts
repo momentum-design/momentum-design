@@ -24,7 +24,7 @@ const meta: Meta = {
       control: 'text',
     },
     ...hideControls([
-      'iconData',
+      'brandVisualData',
     ]),
     ...classArgType,
     ...styleArgType,
