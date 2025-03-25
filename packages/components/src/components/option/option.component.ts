@@ -83,16 +83,18 @@ class Option extends ListItem {
   }
 
   public override render() {
+    const prefixIconContent = this.prefixIcon ? html`
+      <div part="leading-icon">
+        <mdc-icon slot="leading-controls" name="${ifDefined(this.prefixIcon)}"></mdc-icon>
+      </div>
+    ` : nothing;
     const selectedIcon = this.selected ? html`
       <mdc-icon slot="trailing-controls" name="${SELECTED_ICON_NAME}"></mdc-icon>
-    ` : nothing;
-    const prefixIcon = this.prefixIcon ? html`
-      <mdc-icon slot="leading-controls" name="${ifDefined(this.prefixIcon)}"></mdc-icon>
     ` : nothing;
 
     return html`
       <div part="leading">
-        ${prefixIcon}
+        ${prefixIconContent}
         <div part="leading-text">
           ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
         </div>

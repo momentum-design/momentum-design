@@ -1,8 +1,8 @@
-import Select from './select.component';
-import { TAG_NAME } from './select.constants';
+import '../icon';
 import '../popover';
 import '../text';
-import '../icon';
+import Select from './select.component';
+import { TAG_NAME } from './select.constants';
 
 Select.register(TAG_NAME);
 
