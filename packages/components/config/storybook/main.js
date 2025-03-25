@@ -5,7 +5,11 @@ configureSort({
   storyOrder: {
     consumption: null,
     styling: null,
-    components: null,
+    components: {
+      '**': {
+        example: null,
+      },
+    },
     'work in progress': null,
     '**': { default: null },
   },
