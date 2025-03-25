@@ -1,26 +1,26 @@
 {
   "color": {
-      "theme": {
-          "background": {
-              "gradient": {
-                  "primary": {
-                      "normal": {
-                          "parent": "theme/stable/dark",
-                          "type": "color",
-                          "value": "linear-gradient(180deg, {color.gradient.bronze.dark.primary.0} 0%, {color.gradient.bronze.dark.primary.1} 100%)",
-                          "description": "linear-gradient(180deg, {color.gradient.bronze.dark.primary.0} 0%, {color.gradient.bronze.dark.primary.1} 100%)"
-                      }
-                  },
-                  "secondary": {
-                      "normal": {
-                          "parent": "theme/stable/dark",
-                          "type": "color",
-                          "value": "linear-gradient(180deg, {color.gradient.bronze.dark.secondary.0} 0%, {color.gradient.bronze.dark.secondary.1} 100%)",
-                          "description": "linear-gradient(180deg, {color.gradient.bronze.dark.secondary.0} 0%, {color.gradient.bronze.dark.secondary.1} 100%)"
-                      }
-                  }
-              }
+    "theme": {
+      "background": {
+        "gradient": {
+          "primary": {
+            "normal": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "linear-gradient(180deg, {color.gradient.bronze.dark.primary.0} 0%, {color.gradient.bronze.dark.primary.1} 100%)",
+              "description": "linear-gradient(180deg, {color.gradient.bronze.dark.primary.0} 0%, {color.gradient.bronze.dark.primary.1} 100%)"
+            }
+          },
+          "secondary": {
+            "normal": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "linear-gradient(180deg, {color.gradient.bronze.dark.secondary.0} 0%, {color.gradient.bronze.dark.secondary.1} 100%)",
+              "description": "linear-gradient(180deg, {color.gradient.bronze.dark.secondary.0} 0%, {color.gradient.bronze.dark.secondary.1} 100%)"
+            }
           }
+        }
       }
+    }
   }
 }

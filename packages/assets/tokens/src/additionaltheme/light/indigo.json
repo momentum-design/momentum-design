@@ -1,26 +1,26 @@
 {
-    "color": {
-        "theme": {
-            "background": {
-                "gradient": {
-                    "primary": {
-                        "normal": {
-                            "parent": "theme/stable/light",
-                            "type": "color",
-                            "value": "linear-gradient(180deg, {color.gradient.indigo.light.primary.0} 0%, {color.gradient.indigo.light.primary.1} 100%)",
-                            "description": "linear-gradient(180deg, {color.gradient.indigo.light.primary.0} 0%, {color.gradient.indigo.light.primary.1} 100%)"
-                        }
-                    },
-                    "secondary": {
-                        "normal": {
-                            "parent": "theme/stable/light",
-                            "type": "color",
-                            "value": "linear-gradient(180deg, {color.gradient.indigo.light.secondary.0} 0%, {color.gradient.indigo.light.secondary.1} 100%)",
-                            "description": "linear-gradient(180deg, {color.gradient.indigo.light.secondary.0} 0%, {color.gradient.indigo.light.secondary.1} 100%)"
-                        }
-                    }
-                }
+  "color": {
+    "theme": {
+      "background": {
+        "gradient": {
+          "primary": {
+            "normal": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "linear-gradient(180deg, {color.gradient.indigo.light.primary.0} 0%, {color.gradient.indigo.light.primary.1} 100%)",
+              "description": "linear-gradient(180deg, {color.gradient.indigo.light.primary.0} 0%, {color.gradient.indigo.light.primary.1} 100%)"
             }
+          },
+          "secondary": {
+            "normal": {
+              "parent": "theme/stable/light",
+              "type": "color",
+              "value": "linear-gradient(180deg, {color.gradient.indigo.light.secondary.0} 0%, {color.gradient.indigo.light.secondary.1} 100%)",
+              "description": "linear-gradient(180deg, {color.gradient.indigo.light.secondary.0} 0%, {color.gradient.indigo.light.secondary.1} 100%)"
+            }
+          }
         }
+      }
     }
+  }
 }

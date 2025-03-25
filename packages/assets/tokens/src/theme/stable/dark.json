@@ -387,8 +387,7 @@
             "disabled": {
               "parent": "theme/stable/dark",
               "type": "color",
-              "value": "{color.core.black-alpha.40}",
-              "description": ""
+              "value": "{color.core.black-alpha.40}"
             }
           },
           "secondary": {
@@ -1743,6 +1742,11 @@
                 "type": "color",
                 "value": "{color.core.black-alpha.95}",
                 "description": ""
+              },
+              "disabled": {
+                "parent": "theme/stable/dark",
+                "type": "color",
+                "value": "{color.core.black-alpha.40}"
               }
             }
           },
