@@ -36,9 +36,9 @@ const render = (args: Args) => wrapWithDiv(html`
     ?readonly="${args.readonly}"
   >
     <mdc-option>London, UK</mdc-option>
-    <mdc-option>Los Angeles, CA, This is a long text bro, lets have fun</mdc-option>
-    <mdc-option>Phoenix, AZ</mdc-option>
+    <mdc-option>Los Angeles, CA</mdc-option>
     <mdc-option>New York, NY</mdc-option>
+    <mdc-option>Phoenix, AZ</mdc-option>
     <mdc-option>Seattle, WA</mdc-option>
   </mdc-select>
 `);
@@ -117,7 +117,7 @@ export const SelectWithGroups: StoryObj = {
         </mdc-optgroup>
         <mdc-divider></mdc-divider>
         <mdc-optgroup label="Vegetables">
-          <mdc-option value="artichoke">Artichokes</mdc-option>
+          <mdc-option value="artichoke">Artichokes ArtichokesArtichokesArtichokesArtichokes Artichokes</mdc-option>
           <mdc-option value="broccoli">Broccoli</mdc-option>
           <mdc-option value="cabbage">Cabbages</mdc-option>
         </mdc-optgroup>
@@ -147,7 +147,7 @@ export const SelectWithIconOptions: StoryObj = {
     <mdc-select placeholder="Select an option" label="You are in a meeting">
       <mdc-option prefix-icon="alert-bold">Mute notifications</mdc-option>
       <mdc-option prefix-icon="apps-bold">Add apps</mdc-option>
-      <mdc-option prefix-icon="stored-info-bold">View direct message policy View direct message policy</mdc-option>
+      <mdc-option prefix-icon="stored-info-bold">View direct message policy</mdc-option>
       <mdc-option prefix-icon="calendar-day-bold">Meeting capabilities</mdc-option>
       <mdc-option prefix-icon="exit-room-bold">Leave</mdc-option>
     </mdc-select>
