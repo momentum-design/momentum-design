@@ -10,7 +10,11 @@ configureSort({
         example: null,
       },
     },
-    'work in progress': null,
+    'work in progress': {
+      '**': {
+        example: null,
+      },
+    },
     '**': { default: null },
   },
 });
