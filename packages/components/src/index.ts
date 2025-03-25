@@ -34,6 +34,7 @@ import Progressbar from './components/progressbar';
 import Option from './components/option';
 import OptGroup from './components/optgroup';
 import Textarea from './components/textarea';
+import Brandvisual from './components/brandvisual';
 
 // Types Imports
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
@@ -88,6 +89,7 @@ export {
   Progressbar,
   Textarea,
   Tooltip,
+  Brandvisual,
 };
 
 // Types Exports
