@@ -46,10 +46,12 @@ class Searchfield extends Input {
     return html`
     ${this.renderLabelElement()}
     <div class="input-container mdc-focus-ring" part="input-container">
-      <slot name="input-leading-icon">${this.renderLeadingIcon()}</slot>
+    ${this.renderLeadingIcon()}
+      <div part='scrollable-container'>
       <div part="filters-container"><slot name="filters" @slotchange=${this.renderInputChips}></slot></div>
-      <slot name="input">${this.renderInputElement(DEFAULTS.TYPE)}</slot>
-      <slot name="trailing-button">${this.renderTrailingButton()}</slot>
+      ${this.renderInputElement(DEFAULTS.TYPE)}
+      </div>
+      ${this.renderTrailingButton()}
     </div>
   `;
   }

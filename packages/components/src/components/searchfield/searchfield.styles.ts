@@ -8,13 +8,26 @@ const styles = css`
 }
 
 .input {
-  flex: 1;
+  white-space: nowrap;
+  width: auto;
+  min-width: 100%;
+  overflow: hidden;
 }
 
 .input::-webkit-search-cancel-button {
     -webkit-appearance: none;
     pointer-events: none;
   }
+
+  :host::part(scrollable-container){
+    display: flex;
+    flex-grow: 1;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    position: relative;
+    scrollbar-width: none;
+  }
+
 `;
 
 export default [styles];
