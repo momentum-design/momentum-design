@@ -35,6 +35,7 @@ import Option from './components/option';
 import OptGroup from './components/optgroup';
 import Textarea from './components/textarea';
 import Brandvisual from './components/brandvisual';
+import ScreenreaderAnnouncer from './components/screenreaderannouncer';
 
 // Types Imports
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
@@ -87,6 +88,7 @@ export {
   Option,
   OptGroup,
   Progressbar,
+  ScreenreaderAnnouncer,
   Textarea,
   Tooltip,
   Brandvisual,
