@@ -6,7 +6,16 @@ import type { BrandVisualNames } from './brandvisual.types';
 import { DEFAULTS } from './brandvisual.constants';
 
 /**
- * brandvisual component, which dynamically displays SVG icons based on a valid name.
+ * The `mdc-brandvisual` component is responsible for rendering brand logos
+ * dynamically. It supports various predefined brand visuals and ensures they are
+ * displayed correctly within applications.
+ *
+ * Features:
+ * - Dynamically loads SVG icons based on the `name` attribute.
+ * - Emits a `load` event when the icon is successfully fetched.
+ * - Emits an `error` event when the icon import fails.
+ * - Supports accessibility best practices.
+ * - Used for brand representation within the design system.
  *
  * @tagname mdc-brandvisual
  *
