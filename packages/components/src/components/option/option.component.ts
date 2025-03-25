@@ -43,7 +43,7 @@ class Option extends FormInternalsMixin(ListItem) {
     this.role = 'option';
     this.variant = LISTITEM_VARIANTS.INSET_RECTANGLE;
     this.updateAttribute('aria-selected', `${this.selected}`);
-    this.updateAttribute('aria-disabled', `${this.disabled}`);
+    this.updateAttribute('aria-disabled', `${!!this.disabled}`);
 
     // Option will not contain below fields
     this.name = undefined as unknown as string;
