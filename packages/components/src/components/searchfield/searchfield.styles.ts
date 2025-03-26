@@ -11,7 +11,7 @@ const styles = css`
 .input {
   white-space: nowrap;
   width: auto;
-  min-width: 90%;
+  min-width: 50%;
 }
 
 .input::-webkit-search-cancel-button {
