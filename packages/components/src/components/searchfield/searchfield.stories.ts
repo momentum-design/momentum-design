@@ -19,16 +19,16 @@ const render = (args: Args) => html`
     name="${args.name}"
     value="${args.value}"
     ?disabled="${args.disabled}"
-    data-aria-label="${args['aria-label']}"
-    clear-aria-label="${args['clear-aria-label']}"
+    data-aria-label="${ifDefined(args['data-aria-label'])}"
+    clear-aria-label="${ifDefined(args['clear-aria-label'])}"
     class="${args.class}"
     style="${args.style}"
     ?readonly="${args.readonly}"
     maxlength="${ifDefined(args.maxlength)}"
     minlength="${ifDefined(args.minlength)}"
-    autocapitalize="${args.autocapitalize}"
-    ?autofocus="${args.autofocus}"
-    autocomplete="${args.autocomplete}"
+    autocapitalize="${ifDefined(args.autocapitalize)}"
+    ?autofocus="${(args.autofocus)}"
+    autocomplete="${ifDefined(args.autocomplete)}"
     dirname="${ifDefined(args.dirname)}"
     pattern="${ifDefined(args.pattern)}"
     list="${ifDefined(args.list)}"
@@ -109,7 +109,6 @@ export const Example: StoryObj = {
     value: 'Value',
     disabled: false,
     'clear-aria-label': 'Clear',
-    'data-aria-label': '',
   },
 };
 
