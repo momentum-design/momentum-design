@@ -10,7 +10,6 @@ const styles = css`
 
 .input {
   white-space: nowrap;
-  width: auto;
   min-width: 50%;
 }
 
