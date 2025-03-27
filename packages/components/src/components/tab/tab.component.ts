@@ -142,6 +142,11 @@ class Tab extends IconNameMixin(Buttonsimple) {
     this.softDisabled = undefined as unknown as boolean;
     this.size = undefined as unknown as ButtonSize;
     this.type = undefined as unknown as ButtonType;
+
+    if (!this.tabId) {
+      // eslint-disable-next-line no-console
+      console.warn('mdc-tab: tabid is required');
+    }
   }
 
   /**
