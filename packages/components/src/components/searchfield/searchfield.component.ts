@@ -25,7 +25,6 @@ class Searchfield extends Input {
     this.requiredLabel = undefined as unknown as string;
     this.validationMessage = undefined as unknown as string;
     this.prefixText = undefined as unknown as string;
-    this.requiredLabel = undefined as unknown as string;
   }
 
   /**
@@ -34,7 +33,7 @@ class Searchfield extends Input {
    */
   private renderInputChips() {
     if (this.inputChips) {
-      Array.from(this.inputChips).forEach((element) => {
+      this.inputChips.forEach((element) => {
         if (!element.matches('mdc-inputchip')) {
           element.remove();
         }
