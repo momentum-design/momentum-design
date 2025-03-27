@@ -43,6 +43,13 @@ import { getFirstTab, getLastTab, getNextTab, getPreviousTab, findTab, getActive
  *
  * @event change - (React: onChange) This event is dispatched when the tab is selected.
  *
+ *
+ * Event that fires when user changes the active tab.
+ *     The function sent as the argument will receive the fired event
+ *      and the new tab id can be fetched from event.detail.tabId.
+ *
+ *    `(event: CustomEvent) => handleTabChange(event.detail.tabId);`
+ *
  * @slot Default slot for mdc-tab elements.
  *
  * @cssproperty --mdc-tablist-gap - Gap between tabs
@@ -53,7 +60,7 @@ class TabList extends Component {
   /**
    * ID of the active tab, defaults to the first tab if not provided
    */
-  @property({ type: String, attribute: 'activetabid', reflect: true })
+  @property({ type: String, attribute: 'active-tabid', reflect: true })
   activeTabId?: string;
 
   @query('.container')
@@ -113,6 +120,10 @@ class TabList extends Component {
     if (!this.tabs) { return; }
     if (Array.isArray(this.tabs) && this.tabs.length === 0) {
       throw new Error('The tablist component must have at least one child tab');
+    }
+    if (new Set(this.tabs).size !== this.tabs.length) {
+      // eslint-disable-next-line no-console
+      console.error('The tabs inside the tab list must have unique tab ids');
     }
 
     const resizeObserver = new ResizeObserver((): void => {

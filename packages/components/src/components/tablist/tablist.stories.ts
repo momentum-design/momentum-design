@@ -7,7 +7,12 @@ import { TAB_VARIANTS } from '../tab/tab.constants';
 import '../badge';
 
 const render = (args: Args) => html`
-<mdc-tablist @change="${action('onchange')}" activetabid="${args.activetabid}" aria-label="Media types">
+<mdc-tablist
+  @change="${action('onchange')}"
+  @keyup="${action('onkeyup')}"
+  @keydown="${action('onkeydown')}"
+  active-tabid="${args['active-tabid']}"
+  aria-label="Media types">
   <mdc-tab
     variant=${args.tabvariant}
     text="Photos"
@@ -72,19 +77,9 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
-    activetabid: {
+    'active-tabid': {
       control: 'text',
       description: 'ID of the active tab, defaults to the first tab if not provided',
-    },
-    onchange: {
-      description: `Function that gets called when user changes the active tab.
-      The function will receive the fired event and the new tab id can be fetched from event.detail.tabId.
-
-    (event: CustomEvent) => handleTabChange(event.detail.tabId);`,
-      type: 'function',
-      table: {
-        category: 'attributes',
-      },
     },
     tabvariant: {
       control: 'select',
@@ -92,45 +87,17 @@ const meta: Meta = {
       options: Object.values(TAB_VARIANTS),
     },
     ...hideControls([
-      'allTabs',
-      'previousTab',
-      'firstTab',
-      'lastTab',
-      'nextTab',
-      'tabsContainer',
-      'leftArrowButton',
-      'rightArrowButton',
-      'isRtl',
-      'resetSelection',
-      'focusTab',
-      'selectTab',
-      'handleTabChange',
-      'handleKeydown',
-      'handleClick',
-      'handleScroll',
-      'isArrowButtonHidden',
-      'showLeftArrowButton',
-      'hideLeftArrowButton',
-      'showRightArrowButton',
-      'hideRightArrowButton',
-      'handleArrowButtonVisibility',
-      'scrollTabsLeft',
-      'scrollTabsRight',
-      'role',
-      'tabs',
-      'direction',
-      'scrollDistance',
-      'activeTabId',
       'tabvariant',
-      'currentTab',
-      'showArrowButtons',
+      'activeTabId',
+      'tabsContainer',
+      'tabs',
+      'isRtl',
       'handleFocus',
-      'scrollTabs',
-      'showForwardArrowButton',
-      'showBackwardArrowButton',
       'setActiveTab',
-      'currentActiveTab',
-      'scrollTabIntoView',
+      'focusTab',
+      'handleKeydown',
+      'handleArrowButtonVisibility',
+      'scrollTabs',
     ]),
     ...disableControls([
       '--mdc-tablist-gap',
@@ -153,6 +120,6 @@ export const Example: StoryObj = {
 export const ActiveTabAttributeSet: StoryObj = {
   args: {
     tabvariant: 'glass',
-    activetabid: 'documents-tab',
+    'active-tabid': 'documents-tab',
   },
 };
