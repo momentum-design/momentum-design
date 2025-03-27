@@ -340,7 +340,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
    * @returns void
    */
   protected renderTrailingButton() {
-    if (!this.trailingButton) {
+    if (!this.trailingButton || !this.value) {
       return nothing;
     }
     return html`

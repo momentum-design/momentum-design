@@ -160,7 +160,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('attribute trailing-button should be present on component', async () => {
-      await componentsPage.setAttributes(input, { 'trailing-button': '', 'clear-aria-label': 'clear' });
+      await componentsPage.setAttributes(input, { 'trailing-button': '', 'clear-aria-label': 'clear', value: 'test' });
       await expect(input).toHaveAttribute('trailing-button');
       const trailingButton = input.locator('mdc-button[part="trailing-button"]');
       await expect(trailingButton).toHaveAttribute('aria-label', 'clear');
@@ -249,10 +249,10 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       const trailingButton = input.locator('mdc-button[part="trailing-button"]');
       await componentsPage.actionability.pressTab();
       await expect(input).toBeFocused();
-      await expect(trailingButton).toHaveClass('own-focus-ring hidden');
+      await expect(trailingButton).not.toBeVisible();
       await inputEl.fill('test');
       await expect(inputEl).toHaveValue('test');
-      await expect(trailingButton).toHaveClass('own-focus-ring ');
+      await expect(trailingButton).toBeVisible();
       await componentsPage.actionability.pressTab();
       await expect(inputEl).not.toBeFocused();
       await expect(trailingButton).toBeFocused();

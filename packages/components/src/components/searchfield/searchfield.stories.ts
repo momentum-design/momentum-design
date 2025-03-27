@@ -10,7 +10,7 @@ import { AUTO_CAPITALIZE, AUTO_COMPLETE } from '../input/input.constants';
 
 const render = (args: Args) => html`
   <mdc-searchfield 
-  @input="${action('oninput')}"
+    @input="${action('oninput')}"
     @change="${action('onchange')}"
     @focus="${action('onfocus')}"
     @blur="${action('onblur')}"
@@ -19,6 +19,7 @@ const render = (args: Args) => html`
     name="${args.name}"
     value="${args.value}"
     ?disabled="${args.disabled}"
+    id="${args.id}"
     data-aria-label="${ifDefined(args['data-aria-label'])}"
     clear-aria-label="${ifDefined(args['clear-aria-label'])}"
     class="${args.class}"
@@ -48,6 +49,12 @@ const meta: Meta = {
       control: 'text',
     },
     placeholder: {
+      control: 'text',
+    },
+    id: {
+      control: 'text',
+    },
+    name: {
       control: 'text',
     },
     value: {
@@ -146,12 +153,18 @@ export const WithInputChipFilters: StoryObj = {
     };
     return html`
     <mdc-searchfield label="Label" placeholder="Placeholder" clear-aria-label="Clear">
-      <mdc-inputchip label="Query: value" slot="filters" @click="${clearFilter}"></mdc-inputchip>
-      <mdc-inputchip label="In: Marketing" slot="filters" @click="${clearFilter}"></mdc-inputchip>
-      <mdc-inputchip label="Filter-Value 1" slot="filters" @click="${clearFilter}"></mdc-inputchip>
-      <mdc-inputchip label="Filter-Value 2" slot="filters" @click="${clearFilter}"></mdc-inputchip>
-      <mdc-inputchip label="Filter-Value 3" slot="filters" @click="${clearFilter}"></mdc-inputchip>
-      <mdc-inputchip label="Filter-Value 4" slot="filters" @click="${clearFilter}"></mdc-inputchip>
+      <mdc-inputchip clear-aria-label="Clear"
+       label="Query: value" slot="filters" @click="${clearFilter}"></mdc-inputchip>
+      <mdc-inputchip clear-aria-label="Clear"
+       label="In: Marketing" slot="filters" @click="${clearFilter}"></mdc-inputchip>
+      <mdc-inputchip clear-aria-label="Clear"
+       label="Filter-Value 1" slot="filters" @click="${clearFilter}"></mdc-inputchip>
+      <mdc-inputchip clear-aria-label="Clear"
+       label="Filter-Value 2" slot="filters" @click="${clearFilter}"></mdc-inputchip>
+      <mdc-inputchip clear-aria-label="Clear"
+       label="Filter-Value 3" slot="filters" @click="${clearFilter}"></mdc-inputchip>
+      <mdc-inputchip clear-aria-label="Clear"
+       label="Filter-Value 4" slot="filters" @click="${clearFilter}"></mdc-inputchip>
       <mdc-chip label="This does not render" slot="filters" ></mdc-chip>
     </mdc-searchfield>
     `;
