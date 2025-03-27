@@ -1,9 +1,9 @@
 import type { TemplateResult } from 'lit';
 import { CSSResult, html, nothing } from 'lit';
-import { property, queryAssignedElements, state } from 'lit/decorators.js';
+import { property, query, queryAssignedElements, state } from 'lit/decorators.js';
 import { KEYS } from '../../utils/keys';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
-import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
+import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import FormfieldWrapper from '../formfieldwrapper';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { IconNames } from '../icon/icon.types';
@@ -33,7 +33,7 @@ import styles from './select.styles';
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the select.
  * @event focus - (React: onFocus) This event is dispatched when the select receives focus.
  */
-class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) {
+class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
   /**
    * The placeholder text which will be shown on the text if provided.
    */
@@ -66,6 +66,12 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) {
 
   /** @internal */
   @state() activeDescendant = '';
+
+  /**
+   * @internal
+   * The native select element
+   */
+  @query('select') override inputElement!: HTMLInputElement;
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -288,6 +294,10 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) {
     } else if (!this.placeholder) {
       // We will set the first option as selected.
       this.setSelectedValue(this.getAllValidOptions()[0]);
+    } else if (this.placeholder) {
+      // If there is no default selected option
+      // then we set the placeholder and call the native validity
+      this.manageRequired();
     }
   }
 
@@ -296,6 +306,28 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) {
       return false;
     }
     return true;
+  }
+
+  /**
+   * This method maps over all valid options and constructs their corresponding
+   * HTML `<option>` elements. The attributes such as `value`, `label`, `disabled`,
+   * and `selected` are extracted from the respective option elements.
+   * If the attribute is not present, a default value or fallback is used.
+   * The content of each `<option>` is set to the text content of the option element.
+   * @returns An array of `TemplateResult` representing the option elements.
+   */
+  private getOptionsContentFromSlot(): TemplateResult[] {
+    return this.getAllValidOptions()
+      .map((option) => html`
+        <option
+          value="${option.getAttribute('value') ?? ''}"
+          label="${option.getAttribute('label') ?? ''}"
+          ?disabled="${!!option.hasAttribute('disabled')}"
+          ?selected="${!!option.hasAttribute('selected')}"
+        >
+          ${option.textContent}
+        </option>
+    `);
   }
 
   /**
@@ -388,14 +420,8 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) {
         <div
           id="select-base-triggerid"
           part="base-container"
-          class="${this.shouldFocusSelect() ? 'mdc-focus-ring' : ''}"
           tabindex="${this.shouldFocusSelect() ? '0' : '-1'}"
-          aria-label="${this.dataAriaLabel ?? ''}"
-          aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
-          role="combobox"
-          aria-haspopup="listbox"
-          aria-expanded="${this.showPopover}"
-          aria-activedescendant="${this.activeDescendant}"
+          class="${this.shouldFocusSelect() ? 'mdc-focus-ring' : ''}"
         >
           <mdc-text
             part="base-text ${this.selectedValue ? 'selected' : ''}"
@@ -408,6 +434,24 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) {
             <mdc-icon size="1" length-unit="rem" name="${this.baseIconName}"></mdc-icon>
           </div>
         </div>
+        <select
+          part="native-select"
+          id="${this.id}"
+          tabindex="-1"
+          name="${this.name}"
+          .value="${this.value}"
+          ?autofocus="${this.autofocus}"
+          ?disabled="${this.disabled}"
+          ?required="${!!this.requiredLabel}"
+          aria-activedescendant="${this.activeDescendant}"
+          aria-expanded="${this.showPopover}"
+          aria-haspopup="listbox"
+          aria-label="${this.dataAriaLabel ?? ''}"
+          aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
+          @click="${(e: Event) => e.stopPropagation()}"
+        >
+          ${this.getOptionsContentFromSlot()}
+        </select>
         ${this.getPopoverContent()}
       </div>
       ${this.renderHelperText()}

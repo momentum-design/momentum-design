@@ -21,6 +21,16 @@ const styles = css`
     align-items: unset;
     width: unset;
   }
+  :host::part(native-select) {
+    margin: 0;
+    opacity: 0.1%;
+    overflow: visible;
+    padding: 0;
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    z-index: 1;
+  }
   :host::part(container) {
     width: 100%;
     position: relative;
