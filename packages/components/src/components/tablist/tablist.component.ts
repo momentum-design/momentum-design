@@ -121,7 +121,9 @@ class TabList extends Component {
     if (Array.isArray(this.tabs) && this.tabs.length === 0) {
       throw new Error('The tablist component must have at least one child tab');
     }
-    if (new Set(this.tabs).size !== this.tabs.length) {
+
+    const tabIds = this.tabs.map((tab) => tab.tabId);
+    if (new Set(tabIds).size !== this.tabs.length) {
       // eslint-disable-next-line no-console
       console.error('The tabs inside the tab list must have unique tab ids');
     }
