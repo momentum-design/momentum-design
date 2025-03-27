@@ -1,4 +1,23 @@
 import dynamicImport from 'vite-plugin-dynamic-import';
+import { configureSort } from 'storybook-multilevel-sort';
+
+configureSort({
+  storyOrder: {
+    consumption: null,
+    styling: null,
+    components: {
+      '**': {
+        example: null,
+      },
+    },
+    'work in progress': {
+      '**': {
+        example: null,
+      },
+    },
+    '**': { default: null },
+  },
+});
 
 const config = {
   stories: ['../../src/**/*.mdx', '../../src/**/*.stories.@(js|jsx|ts|tsx|mdx)'],

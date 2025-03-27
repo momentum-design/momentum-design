@@ -2406,6 +2406,7 @@ __metadata:
     rimraf: ^6.0.1
     storybook: ^8.2.5
     storybook-addon-rtl: ^1.0.1
+    storybook-multilevel-sort: ^2.0.1
     typescript: ^4.8.4
     uuid: ^11.0.5
     vite-plugin-dynamic-import: ^1.6.0
@@ -14856,6 +14857,13 @@ __metadata:
   dependencies:
     "@storybook/test": ^8.0.6
   checksum: 6e48f02f53bf8577e8b37c46713109dee25af2ddfbe586d97e3013ba66a8adcccf1dc45678b85aa41846c27f398462ba82aa2002a5c5eec85e1d2dd715c6d144
+  languageName: node
+  linkType: hard
+
+"storybook-multilevel-sort@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "storybook-multilevel-sort@npm:2.0.1"
+  checksum: ea1cac49ce35caaec4f627805d95dc5fe57ceafdd5576d905d7b87ee21946c3971882a13418ceeb1707e4d2b7707da256b7c2571d7b2c7356bc378233b921f14
   languageName: node
   linkType: hard
 

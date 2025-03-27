@@ -8,7 +8,7 @@ export const AddToComponentImports: ActionType = {
   path: `${path.posix.join(`${folders.src}`, 'index.ts')}`,
   // find the first type import block, requires the index.ts file to be formatted
   // correctly
-  pattern: /(\nimport type)/,
+  pattern: /(\n\/\/ Types Imports)/,
   data: {
     componentName,
   },

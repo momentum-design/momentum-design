@@ -131,3 +131,6 @@ packages/assets/utils/src/staticSite/public
 
 # MAC system File
 **/.DS_Store
+
+playwright-temp
+packages/components/playwright-temp
