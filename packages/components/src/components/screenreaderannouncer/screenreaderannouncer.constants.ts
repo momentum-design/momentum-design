@@ -10,6 +10,7 @@ const ARIA_LIVE_VALUES = {
 
 const DEFAULTS = {
   DELAY: 150,
+  IDENTITY: 'mdc-screenreaderannouncer-identity',
   TIMEOUT: 20_000,
 } as const;
 

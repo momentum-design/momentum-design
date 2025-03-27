@@ -6,6 +6,7 @@ type SetupOptions = {
   announcement?: string;
   dataAriaLive?: string;
   delay?: number;
+  identity?: string;
   timeout?: number;
 }
 
@@ -19,8 +20,19 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.announcement ? `announcement="${restArgs.announcement}"` : ''}
         ${restArgs.dataAriaLive ? `data-aria-live="${restArgs.dataAriaLive}"` : ''}
         ${restArgs.delay ? `delay="${restArgs.delay}"` : ''}
+        ${restArgs.identity ? `identity="${restArgs.identity}"` : ''}
         ${restArgs.timeout ? `timeout="${restArgs.timeout}"` : ''}>
       </mdc-screenreaderannouncer>
+      <div id="test-identity" style="
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+      ">
+      </div>
     </div>
     `,
     clearDocument: true,
@@ -30,15 +42,11 @@ const setup = async (args: SetupOptions) => {
   await wrapper.waitFor();
 
   const screenReaderAnnouncer = await componentsPage.page.locator('mdc-screenreaderannouncer').first();
-
-  const ariaLiveRegion = await componentsPage.page
-    .getByTestId('mdc-screenreaderannouncer-aria-live-region-data-test-id').first();
-  return { screenReaderAnnouncer, ariaLiveRegion };
+  return { screenReaderAnnouncer };
 };
 
 test('mdc-screenreaderannouncer', async ({ componentsPage }) => {
-  const { screenReaderAnnouncer, ariaLiveRegion } = await setup({ componentsPage });
-  await componentsPage.setAttributes(screenReaderAnnouncer, { text: 'Label' });
+  const { screenReaderAnnouncer } = await setup({ componentsPage });
 
   await test.step('attributes and announcements', async () => {
     /**
@@ -46,24 +54,64 @@ test('mdc-screenreaderannouncer', async ({ componentsPage }) => {
      */
     await test.step('attributes', async () => {
       // Default values for screenreader announcer
-      await test.step('default attributes on tab', async () => {
+      await test.step('default attributes', async () => {
         await expect(screenReaderAnnouncer).toHaveAttribute('announcement', '');
         await expect(screenReaderAnnouncer).toHaveAttribute('data-aria-live', 'polite');
         await expect(screenReaderAnnouncer).toHaveAttribute('delay', '150');
+        await expect(screenReaderAnnouncer).toHaveAttribute('identity', 'mdc-screenreaderannouncer-identity');
         await expect(screenReaderAnnouncer).toHaveAttribute('timeout', '20000');
       });
 
-      await test.step('set aria live on announcement', async () => {
+      await test.step('attribute announcement should create annoucement element and reset', async () => {
         await componentsPage.setAttributes(screenReaderAnnouncer, {
-          announcement: 'Test announcement',
+          announcement: 'Test Announcement 1',
+          delay: '10',
+          timeout: '1000',
+        });
+
+        await expect(screenReaderAnnouncer).toHaveAttribute('announcement', '');
+
+        const ariaLiveRegion = await componentsPage.page
+          .locator('[id="mdc-screenreaderannouncer-identity"]').first().locator('div');
+        await expect(ariaLiveRegion.first().locator('p').first()).toHaveText('Test Announcement 1');
+        await expect(ariaLiveRegion.first()).toHaveAttribute('aria-live', 'polite');
+        await expect(ariaLiveRegion).toHaveCount(0);
+      });
+
+      await test.step(`creating an assertive announcement shall create announcement element
+         with aria live as assertive`, async () => {
+        await componentsPage.setAttributes(screenReaderAnnouncer, {
+          announcement: 'Test Announcement 2',
           'data-aria-live': 'assertive',
           delay: '10',
+          timeout: '1000',
         });
-        await expect(screenReaderAnnouncer).toHaveAttribute('data-aria-live', 'assertive');
+        await expect(screenReaderAnnouncer).toHaveAttribute('announcement', '');
 
-        await expect(ariaLiveRegion.locator('div').first()).toHaveAttribute('aria-live', 'assertive');
-        await expect(ariaLiveRegion.locator('div').first().locator('p').first())
-          .toHaveText('Test announcement');
+        const ariaLiveRegion = await componentsPage.page
+          .locator('[id="mdc-screenreaderannouncer-identity"]').first().locator('div');
+        await expect(ariaLiveRegion.first().locator('p').first()).toHaveText('Test Announcement 2');
+        await expect(ariaLiveRegion.first()).toHaveAttribute('aria-live', 'assertive');
+        await expect(ariaLiveRegion).toHaveCount(0);
+      });
+
+      await test.step('attribute identity should create annoucement element in identity element', async () => {
+        await componentsPage.setAttributes(screenReaderAnnouncer, {
+          announcement: 'Test Announcement 3',
+          'data-aria-live': 'polite',
+          delay: '10',
+          timeout: '1000',
+          identity: 'test-identity',
+        });
+
+        await expect(screenReaderAnnouncer).toHaveAttribute('identity', 'test-identity');
+        const identityAriaLiveRegion = await componentsPage.page
+          .locator('[id="test-identity"]').first().locator('div');
+        await expect(screenReaderAnnouncer).toHaveAttribute('announcement', '');
+        await expect(identityAriaLiveRegion.first().locator('p').first())
+          .toHaveText('Test Announcement 3');
+        await expect(identityAriaLiveRegion.first()).toHaveAttribute('aria-live', 'polite');
+        await expect(identityAriaLiveRegion).toHaveCount(0);
       });
     });
     /**
@@ -75,6 +123,9 @@ test('mdc-screenreaderannouncer', async ({ componentsPage }) => {
         await expect(screenReaderAnnouncer).toHaveCSS('visibility', 'hidden');
       });
       await test.step('screen reader announcer aria live region is visually hidden', async () => {
+        const ariaLiveRegion = await componentsPage.page
+          .locator('[id="mdc-screenreaderannouncer-identity"]').first();
+
         await expect(ariaLiveRegion).toHaveCSS('clip', 'rect(0px, 0px, 0px, 0px)');
         await expect(ariaLiveRegion).toHaveCSS('clip-path', 'inset(50%)');
         await expect(ariaLiveRegion).toHaveCSS('height', '1px');
@@ -88,31 +139,35 @@ test('mdc-screenreaderannouncer', async ({ componentsPage }) => {
      * ANNOUNCEMENTS
      */
     await test.step('announcements', async () => {
-      await test.step('make an announcement with delay', async () => {
-        const { screenReaderAnnouncer, ariaLiveRegion } = await setup({ componentsPage });
+      await test.step('make an announcement', async () => {
+        const { screenReaderAnnouncer } = await setup({ componentsPage });
         await expect(screenReaderAnnouncer).toHaveAttribute('announcement', '');
         await componentsPage.setAttributes(screenReaderAnnouncer, {
-          announcement: 'Test announcement 1',
+          announcement: 'Test Announcement 4',
           delay: '10',
-          timeout: '100',
+          timeout: '1000',
         });
 
-        const announcement = ariaLiveRegion.locator('div').locator('p').first();
-        await expect(announcement).toHaveText('Test announcement 1');
-        await expect(componentsPage.page.getByText('Test announcement 1')).not.toBeVisible();
+        const ariaLiveRegion = await componentsPage.page
+          .locator('[id="mdc-screenreaderannouncer-identity"]').first();
+        const announcement = ariaLiveRegion.locator('div').first().locator('p').first();
+        await expect(announcement).toHaveText('Test Announcement 4');
+        await expect(componentsPage.page.getByText('Test Announcement 4')).not.toBeVisible();
       });
 
       await test.step('make multiple announcements', async () => {
-        const { screenReaderAnnouncer, ariaLiveRegion } = await setup({ componentsPage });
-        const announcements = ['Test announcement 2', 'Test announcement 3'];
+        const { screenReaderAnnouncer } = await setup({ componentsPage });
+        const announcements = ['Test Announcement 5', 'Test Announcement 6'];
 
         await componentsPage.setAttributes(screenReaderAnnouncer, { announcement: announcements[0], delay: '10' });
-        await componentsPage.setAttributes(screenReaderAnnouncer, { announcement: announcements[1], delay: '100' });
+        await componentsPage.setAttributes(screenReaderAnnouncer, { announcement: announcements[1], delay: '1000' });
+
+        const ariaLiveRegion = await componentsPage.page
+          .locator('[id="mdc-screenreaderannouncer-identity"]').first();
 
         const announcementElements = ariaLiveRegion.locator('div').locator('p');
-        await expect(announcementElements.nth(0)).toHaveText('Test announcement 2');
-
-        await expect(announcementElements.nth(1)).toHaveText('Test announcement 3');
+        await expect(announcementElements.nth(0)).toHaveText('Test Announcement 5');
+        await expect(announcementElements.nth(1)).toHaveText('Test Announcement 6');
       });
     });
   });

@@ -7,18 +7,21 @@ import styles from './screenreaderannouncer.styles';
 import { AriaLive } from './screenreaderannouncer.types';
 
 /**
- * `mdc-screenreaderannouncer` is ScreenreaderAnnouncer component,
- * which can be used to announce messages with the screen reader.
+ * `mdc-screenreaderannouncer` can be used to announce messages with the screen reader.
  *
- * We can make an announcement by setting the announcement attribute.
+ * To make an announcement set `announcement` attribute on the `mdc-screenreaderannouncer` element.
+ *
+ * An announcement is made by creating a div element with `aria-live` attribute set to `data-aria-live`
+ * attribute having a child paragraph element with the text as `announcement` attribute. The announcement
+ * div element is appended to either the element in DOM identified with id as `identity` attribute or a
+ * new div element is created in the DOM with id `mdc-screenreaderannouncer-identity`.
  *
  * @tagname mdc-screenreaderannouncer
  */
 class ScreenreaderAnnouncer extends Component {
   /**
-   * The announcement attribute is a string that is used to announce
-   * messages to the screen reader. The announcement is made when the
-   * announcement attribute is set to a non-empty string.
+   * The announcement attribute is a string that is used to announce messages to the screen reader.
+   * The announcement is made when the announcement attribute is set to a non-empty string.
    *
    * @default ''
    */
@@ -26,7 +29,16 @@ class ScreenreaderAnnouncer extends Component {
   announcement: string = '';
 
   /**
-   * Aria live value for announcement
+   * The id of the element in the light dom, to which announcement elements will be appended.
+   *
+   * If an id is provided, the announcement elements will be appended to this element.
+   * If id is not provided, it will be created in the light dom.
+   */
+  @property({ type: String, reflect: true })
+  identity: string = '';
+
+  /**
+   * Aria live value for announcement.
    *
    * @default 'polite'
    */
@@ -34,30 +46,22 @@ class ScreenreaderAnnouncer extends Component {
   dataAriaLive: AriaLive = 'polite';
 
   /**
-   * Milliseconds to wait before announcing the message to the screen reader.
+   * Milliseconds to wait before adding the announcement to the identiy region in
+   * DOM, which will announce the message to the screen reader.
+   *
+   *
    * @default 150
    */
   @property({ type: Number, reflect: true })
   delay: number = DEFAULTS.DELAY;
 
   /**
-   * Milliseconds to wait before removing the announcement from the screen reader.
+   * Milliseconds to wait after which the announcement element will be removed from
+   * identity region in DOM, causing the screen reader to not announcing the message.
    * @default 20_000
    */
   @property({ type: Number, reflect: true })
   timeout: number = DEFAULTS.TIMEOUT;
-
-  /**
-   * The id of the aria live region element in the light dom.
-   * @internal
-   */
-  private ariaLiveRegionId = 'mdc-screenreaderannouncer-aria-live-region-id';
-
-  /**
-   * The data test id of the aria live region element in the light dom.
-   * @internal
-   */
-  private ariaLiveRegionDataTestId = 'mdc-screenreaderannouncer-aria-live-region-data-test-id';
 
   /**
    * Array to store timeOutIds for clearing timeouts later.
@@ -73,7 +77,13 @@ class ScreenreaderAnnouncer extends Component {
 
   /**
    * Announces the given announcement to the screen reader.
-   * An announcement is appended to aria live region in light dom
+   *
+   * A div element with aria-live attribute set to the given ariaLive value is created
+   * and a p element with the announcement text is appended to it.
+   *
+   * The div element is appended to the element in the DOM identified with id as
+   * identity attribute.
+   *
    * @param announcement - The announcement to be made.
    * @param delay - The delay in milliseconds before announcing the message.
    * @param timeout - The timeout in milliseconds before removing the announcement.
@@ -85,7 +95,7 @@ class ScreenreaderAnnouncer extends Component {
       const announcementContainer = document.createElement('div');
       announcementContainer.id = announcementId;
       announcementContainer.ariaLive = ariaLive;
-      document.getElementById(this.ariaLiveRegionId)?.appendChild(announcementContainer);
+      document.getElementById(this.identity)?.appendChild(announcementContainer);
       const timeOutId = window.setTimeout(
         () => {
           const announcementElement = document.createElement('p');
@@ -111,7 +121,6 @@ class ScreenreaderAnnouncer extends Component {
    * Clears all timeouts and removes all announcements from the screen reader.
    */
   private clearTimeOutsAndAnnouncements() {
-    // Clear timeouts and remove aria live region announcements
     this.timeOutIds.forEach((timeOutId) => {
       window.clearTimeout(timeOutId);
     });
@@ -121,14 +130,16 @@ class ScreenreaderAnnouncer extends Component {
   }
 
   /**
-   * Creates an aria live region for mdc screen reader in the light dom.
+   * Creates a div element with id as identity attribute in the DOM.
+   *
+   * If the identity attribute is not provided, it is set internally to
+   * `mdc-screenreaderannouncer-identity`.
    */
   private createAnnouncementAriaLiveRegion() {
-    let liveRegionLightDom = document.getElementById(this.ariaLiveRegionId);
+    let liveRegionLightDom = document.getElementById(this.identity);
     if (!liveRegionLightDom) {
       liveRegionLightDom = document.createElement('div');
-      liveRegionLightDom.id = this.ariaLiveRegionId;
-      liveRegionLightDom.setAttribute('data-testid', this.ariaLiveRegionDataTestId);
+      liveRegionLightDom.id = this.identity;
 
       const styleElement = document.createElement('style');
       styleElement.textContent = `
@@ -150,6 +161,9 @@ class ScreenreaderAnnouncer extends Component {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    if (this.identity.length === 0) {
+      this.identity = DEFAULTS.IDENTITY;
+    }
     this.createAnnouncementAriaLiveRegion();
   }
 
@@ -159,6 +173,10 @@ class ScreenreaderAnnouncer extends Component {
   }
 
   protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    if (changedProperties.has('identity') && this.identity.length === 0) {
+      this.identity = DEFAULTS.IDENTITY;
+      this.createAnnouncementAriaLiveRegion();
+    }
     if (changedProperties.has('announcement') && this.announcement.length > 0) {
       this.announce(this.announcement, this.delay, this.timeout, this.dataAriaLive);
       this.announcement = '';

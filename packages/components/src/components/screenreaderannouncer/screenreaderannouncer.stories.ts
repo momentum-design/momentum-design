@@ -5,19 +5,38 @@ import '../button';
 import { ARIA_LIVE_VALUES } from './screenreaderannouncer.constants';
 
 const render = (args: Args) => html`
+  <div style="display: flex; flex-direction: column; gap: 12px;">
+    <mdc-text
+      type="body-midsize-regular">
+      Click following button for Screen Reader to announce '${args.announcement}'
+  </mdc-text>
   <mdc-button @click="${() => {
     const screenreaderannouncer = document.querySelector('mdc-screenreaderannouncer');
     if (screenreaderannouncer) {
-      screenreaderannouncer.announcement = args.announcement;
+      screenreaderannouncer.setAttribute('announcement', args.announcement);
     }
-  }}">Announce ${args.announcement}
-  </mdc-button>
+  }}">Announce</mdc-button>
+  </div>
   <mdc-screenreaderannouncer
     data-aria-live="${args['data-aria-live']}"
     delay="${args.delay}"
+    identity="${args.identity}"
     timeout="${args.timeout}">
   </mdc-screenreaderannouncer>
 `;
+
+const renderWithIdentity = (args: Args) => html`
+  <div id="announcements-container" style="
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  "></div>
+  ${render(args)}
+  `;
 
 const meta: Meta = {
   title: 'Components/screenreaderannouncer',
@@ -31,15 +50,18 @@ const meta: Meta = {
     announcement: {
       control: 'text',
     },
-    delay: {
-      control: 'number',
-    },
-    timeout: {
-      control: 'number',
-    },
     'data-aria-live': {
       control: 'select',
       options: Object.values(ARIA_LIVE_VALUES),
+    },
+    delay: {
+      control: 'number',
+    },
+    identity: {
+      control: 'text',
+    },
+    timeout: {
+      control: 'number',
     },
   },
 };
@@ -50,6 +72,7 @@ const defaultArgs = {
   announcement: 'Momentum Design Components',
   'data-aria-live': ARIA_LIVE_VALUES.POLITE,
   delay: 150,
+  identity: '',
   timeout: 20_000,
 };
 
@@ -57,5 +80,13 @@ export const Example: StoryObj = {
   render,
   args: {
     ...defaultArgs,
+  },
+};
+
+export const WithIdentity: StoryObj = {
+  render: renderWithIdentity,
+  args: {
+    ...defaultArgs,
+    identity: 'announcements-container',
   },
 };
