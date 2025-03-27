@@ -6,10 +6,7 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 
 const render = (args: Args) => html`
 <mdc-inputchip
-  @click="${action('onclick')}"
-  @keydown="${action('onkeydown')}"
-  @keyup="${action('onkeyup')}"
-  @focus="${action('onfocus')}"
+@remove="${action('remove')}"
   label="${args.label}"
   icon-name="${args['icon-name']}"
   ?error="${args.error}"
@@ -109,4 +106,19 @@ export const StatesAndVariants: StoryObj = {
       @click="${action('click')}"
     ></mdc-inputchip>
   </div>`,
+};
+
+export const WithRemove: StoryObj = {
+  render: () => {
+    const removeChip = (e: Event) => {
+      (e.target as HTMLElement)?.remove();
+    };
+    return html`
+    <mdc-inputchip
+      @remove="${removeChip}"
+      label="Value"
+      icon-name="placeholder-bold"
+      clear-aria-label="Clear"
+    ></mdc-inputchip>`;
+  },
 };
