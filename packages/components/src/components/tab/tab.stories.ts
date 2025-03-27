@@ -115,6 +115,7 @@ const meta: Meta = {
       'size',
       'soft-disabled',
       'type',
+      'tabId',
     ]),
   },
 };
