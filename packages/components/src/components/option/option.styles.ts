@@ -11,6 +11,7 @@ const styles = css`
     display: none;
   }
   :host::part(leading) {
+    // The leading text should take up the remaining space before the trailing text.
     width: calc(100% - var(--mdc-option-trailing-min-width) - var(--mdc-listitem-column-gap));
   }
   :host::part(leading-text) {

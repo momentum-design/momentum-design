@@ -117,7 +117,7 @@ export const SelectWithGroups: StoryObj = {
         </mdc-optgroup>
         <mdc-divider></mdc-divider>
         <mdc-optgroup label="Vegetables">
-          <mdc-option value="artichoke">Artichokes ArtichokesArtichokesArtichokesArtichokes Artichokes</mdc-option>
+          <mdc-option value="artichoke">Artichokes</mdc-option>
           <mdc-option value="broccoli">Broccoli</mdc-option>
           <mdc-option value="cabbage">Cabbages</mdc-option>
         </mdc-optgroup>
@@ -216,6 +216,7 @@ export const SelectWithForm: StoryObj = {
               name="stone-count"
               placeholder="Select the count"
               label="How many Infinity Stones exist?"
+              required-label="required"
             >
               <mdc-option value="two">Two</mdc-option>
               <mdc-option value="three">Three</mdc-option>
