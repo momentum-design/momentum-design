@@ -22,7 +22,6 @@ const render = (args: Args) => wrapWithDiv(html`
     @change="${action('onchange')}"
     @click="${action('onclick')}"
     @keydown="${action('onkeydown')}"
-    @keyup="${action('onkeyup')}"
     @focus="${action('onfocus')}"
     label="${args.label}"
     required-label="${args['required-label']}"
@@ -194,7 +193,7 @@ export const SelectWithFixedHeight = {
   },
   render: (args: Args) => wrapWithDiv(html`
     <mdc-select height="${args.height}" placeholder="${args.placeholder}" label="${args.label}">
-      ${repeat(new Array(1000).fill(true), () => html`<mdc-option>Option Label</mdc-option>`)}
+      ${Array.from({ length: 1000 }, (_, i) => html`<mdc-option label="Option Label ${i + 1}"></mdc-option>`)}
     </mdc-select>
   `),
 };
