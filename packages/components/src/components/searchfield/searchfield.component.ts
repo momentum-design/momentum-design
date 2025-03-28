@@ -1,5 +1,6 @@
 import { CSSResult, html } from 'lit';
-import { queryAssignedElements } from 'lit/decorators.js';
+import { queryAssignedElements, state } from 'lit/decorators.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import styles from './searchfield.styles';
 import Input from '../input/input.component';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
@@ -15,6 +16,11 @@ import { DEFAULTS } from './searchfield.constants';
 class Searchfield extends Input {
   @queryAssignedElements({ slot: 'filters' })
   inputChips?: Array<HTMLElement>;
+
+  /**
+   * @internal
+   */
+  @state() isInputFocused = false;
 
   override connectedCallback() {
     super.connectedCallback();
@@ -41,10 +47,27 @@ class Searchfield extends Input {
     }
   }
 
+  /**
+   * This sets the focus ring state based on the input focus state.
+   * Eventually, this logic has to be omitted and achieved using CSS instead.
+   * @override
+   */
+  override firstUpdated() {
+    this.inputElement.onfocus = () => {
+      this.isInputFocused = true;
+    };
+    this.inputElement.onblur = () => {
+      this.isInputFocused = false;
+    };
+  }
+
   public override render() {
     return html`
     ${this.renderLabelElement()}
-    <div class="input-container mdc-focus-ring" part="input-container">
+    <div class="${classMap({
+    'input-container': true,
+    'mdc-focus-ring': this.isInputFocused,
+  })}" part="input-container">
     ${this.renderLeadingIcon()}
       <div part='scrollable-container'>
       <div part="filters-container"><slot name="filters" @slotchange=${this.renderInputChips}></slot></div>
