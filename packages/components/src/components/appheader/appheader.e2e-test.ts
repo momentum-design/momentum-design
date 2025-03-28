@@ -30,10 +30,16 @@ const setup = async (args: SetupOptions) => {
 };
 
 const mockElement = {
-  CENTER: '<mdc-text>center element</mdc-text>',
+  CENTER: '<mdc-text>center</mdc-text>',
   LEADING: '<mdc-brandvisual name="momentum-design-logo-dark-color-horizontal"></mdc-brandvisual>',
-  TRAILING: '<mdc-avatar size="32" name="avatar" src="https://picsum.photos/id/8/5000/3333"></mdc-avatar>',
+  TRAILING: '<mdc-avatar size="32" name="avatar" initials="MD"></mdc-avatar>',
 };
+
+const generateChildren = ({ leading, center, trailing }: {leading?: string, center?: string, trailing?: string}) => `
+    ${leading ? `<div slot="leading">${leading}</div>` : ''}
+    ${center ? `<div slot="center">${center}</div>` : ''}
+    ${trailing ? `<div slot="trailing">${trailing}</div>` : ''}
+  `;
 
 test('mdc-appheader', async ({ componentsPage }) => {
   /**
@@ -42,42 +48,43 @@ test('mdc-appheader', async ({ componentsPage }) => {
   await test.step('visual-regression', async () => {
     const appheaderStickerSheet = new StickerSheet(componentsPage, 'mdc-appheader');
 
-    await test.step('should render default header layout', async () => {
-      await setup({ componentsPage,
-        slots: {
-          leading: mockElement.LEADING,
-          center: mockElement.CENTER,
-          trailing: mockElement.TRAILING,
-        } });
-    });
+    appheaderStickerSheet.setChildren(generateChildren(
+      {
+        leading: mockElement.LEADING,
+        center: mockElement.CENTER,
+        trailing: mockElement.TRAILING,
+      },
+    ));
+    await appheaderStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
 
-    await test.step('should render properly without leading elements', async () => {
-      await setup({ componentsPage,
-        slots: {
-          center: mockElement.CENTER,
-          trailing: mockElement.TRAILING,
-        } });
-    });
+    appheaderStickerSheet.setChildren(generateChildren(
+      {
+        center: mockElement.CENTER,
+        trailing: mockElement.TRAILING,
+      },
+    ));
+    await appheaderStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
 
-    await test.step('should render properly without center elements', async () => {
-      await setup({ componentsPage,
-        slots: {
-          leading: mockElement.LEADING,
-          trailing: mockElement.TRAILING,
-        } });
-    });
+    appheaderStickerSheet.setChildren(generateChildren(
+      {
+        leading: mockElement.LEADING,
+        trailing: mockElement.TRAILING,
+      },
+    ));
+    await appheaderStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
 
-    await test.step('should render properly without trailing elements', async () => {
-      await setup({ componentsPage,
-        slots: {
-          leading: mockElement.LEADING,
-          center: mockElement.CENTER,
-        } });
-    });
+    appheaderStickerSheet.setChildren(generateChildren(
+      {
+        leading: mockElement.LEADING,
+        center: mockElement.CENTER,
+      },
+    ));
+    await appheaderStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
 
     await appheaderStickerSheet.mountStickerSheet();
     const container = appheaderStickerSheet.getWrapperContainer();
     await test.step('matches screenshot of header', async () => {
+      await expect(container).toBeVisible();
       await componentsPage.visualRegression.takeScreenshot('mdc-appheader', { element: container });
     });
   });
@@ -104,7 +111,7 @@ test('mdc-appheader', async ({ componentsPage }) => {
 
     await test.step('should render content when slots passed', async () => {
       await expect(appheader.locator('mdc-brandvisual')).toBeVisible();
-      await expect(appheader.locator('mdc-text')).toBeVisible();
+      await expect(appheader.locator('mdc-text[tagname="p"]')).toBeVisible();
       await expect(appheader.locator('mdc-avatar')).toBeVisible();
     });
 
@@ -118,7 +125,7 @@ test('mdc-appheader', async ({ componentsPage }) => {
       });
 
       await expect(appheader.locator('mdc-brandvisual')).toBeVisible();
-      await expect(appheader.locator('mdc-text')).toBeVisible();
+      await expect(appheader.locator('mdc-text[tagname="p"]')).toBeVisible();
 
       // Ensure the trailing section is present
       const trailingSection = appheaderWithoutTrailing.locator('[part="trailing-section"]');
