@@ -40,8 +40,9 @@ import type { ListItemVariants } from './listitem.types';
  * @cssproperty --mdc-listitem-primary-label-color
  *  - Allows customization of the primary label, side header and subline text slot color.
  * @cssproperty --mdc-listitem-secondary-label-color
- *  - Allows customization of the secondary and teritary label text slot color.
+ *  - Allows customization of the secondary and tertiary label text slot color.
  * @cssproperty --mdc-listitem-disabled-color - Allows customization of the disabled color.
+ * @cssproperty --mdc-listitem-column-gap - Allows customization of column gap.
  *
  * @event click - (React: onClick) This event is dispatched when the listitem is clicked.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the listitem.
