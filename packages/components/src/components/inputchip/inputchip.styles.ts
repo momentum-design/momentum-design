@@ -8,7 +8,7 @@ const styles = css`
     padding: 0 0.25rem 0 0.5rem;
     border-radius: 0.25rem;
     border: 1px solid;
-    cursor: pointer;
+    white-space: nowrap;
 
     --mdc-chip-color: var(--mds-color-theme-text-primary-normal);
     --mdc-chip-border-color: var(--mds-color-theme-outline-button-normal);

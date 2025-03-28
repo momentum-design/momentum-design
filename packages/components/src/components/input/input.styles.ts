@@ -41,6 +41,7 @@ const styles = [css`
     background: var(--mdc-input-disabled-background-color);
   }
 
+  :host([disabled]) .input-container,
   :host([disabled][help-text-type="default"]) .input-container,
   :host([disabled][help-text-type="success"]) .input-container,
   :host([disabled][help-text-type="warning"]) .input-container,
