@@ -8,9 +8,14 @@ import { DEFAULTS } from './searchfield.constants';
 
 /**
  * searchfield component is used as an input field for search functionality.
- * This component is built by extending the mdc-input component.
+ *
+ * It supports `mdc-inputchip` as filters.
+ *
+ * This component is built by extending the `mdc-input` component.
  *
  * @tagname mdc-searchfield
+ *
+ * @slot filters - Slot for input chips
  *
  */
 class Searchfield extends Input {
