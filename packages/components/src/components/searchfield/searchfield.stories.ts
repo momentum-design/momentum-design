@@ -37,12 +37,12 @@ const render = (args: Args) => html`
   ></mdc-searchfield>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/searchfield',
+  title: 'Components/searchfield',
   tags: ['autodocs'],
   component: 'mdc-searchfield',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     label: {
