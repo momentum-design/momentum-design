@@ -157,10 +157,6 @@ export const WithInputChipFilters: StoryObj = {
        label="Query: value" slot="filters" @remove="${clearFilter}"></mdc-inputchip>
       <mdc-inputchip clear-aria-label="Clear"
        label="In: Marketing" slot="filters" @remove="${clearFilter}"></mdc-inputchip>
-      <mdc-inputchip clear-aria-label="Clear"
-       label="Filter-Value 1" slot="filters" @remove="${clearFilter}"></mdc-inputchip>
-      <mdc-inputchip clear-aria-label="Clear"
-       label="Filter-Value 2" slot="filters" @remove="${clearFilter}"></mdc-inputchip>
       <mdc-chip label="This does not render" slot="filters" ></mdc-chip>
     </mdc-searchfield>
     `;
