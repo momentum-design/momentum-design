@@ -13,6 +13,7 @@ const render = (args: Args) => html`<div role="tablist">
     @keydown="${action('onkeydown')}"
     @keyup="${action('onkeyup')}"
     @focus="${action('onfocus')}"
+    @activechange="${action('onactivechange')}"
     ?active="${args.active}"
     aria-label="${ifDefined(args.text ? nothing : 'Label')}"
     ?disabled="${args.disabled}"
@@ -114,6 +115,7 @@ const meta: Meta = {
       'size',
       'soft-disabled',
       'type',
+      'tabId',
     ]),
   },
 };
