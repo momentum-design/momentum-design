@@ -34,6 +34,7 @@ import Progressbar from './components/progressbar';
 import Option from './components/option';
 import OptGroup from './components/optgroup';
 import Textarea from './components/textarea';
+import Searchfield from './components/searchfield';
 import Brandvisual from './components/brandvisual';
 
 // Types Imports
@@ -89,6 +90,7 @@ export {
   Progressbar,
   Textarea,
   Tooltip,
+  Searchfield,
   Brandvisual,
 };
 
