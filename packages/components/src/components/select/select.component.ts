@@ -214,28 +214,122 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   }
 
   /**
-   * Handles keyboard navigation for the options list using arrow keys.
-   * It calculates the new index based on the current target index and the key pressed.
-   * Updates the focus and tabindex of the options accordingly.
-   * @param key - The key pressed, expected to be either 'ArrowDown' or 'ArrowUp'.
-   * @param target - The current target element in focus.
+   * Handles the keydown event on the select element.
+   * If the popover is open, then it calls `handlePopoverOnOpen` with the event.
+   * If the popover is closed, then it calls `handlePopoverOnClose` with the event.
+   * @param event - The keyboard event.
    */
-  private handleArrowUpDownEvent(key: string, target: EventTarget | null): void {
-    const currentIndex = this.getAllValidOptions().findIndex((option) => option === target);
-    const optionsLength = this.getAllValidOptions().length;
-    let newIndex: number | undefined;
-    if (key === KEYS.ARROW_DOWN) {
-      newIndex = (currentIndex + 1) % optionsLength;
-    } else if (key === KEYS.ARROW_UP) {
-      newIndex = (currentIndex - 1 + optionsLength) % optionsLength;
+  private handleKeydown(event: KeyboardEvent): void {
+    if (this.showPopover) {
+      this.handlePopoverOnOpen(event);
+    } else {
+      this.handlePopoverOnClose(event);
     }
-    if (newIndex !== undefined) {
-      (this.getAllValidOptions()[newIndex] as HTMLElement)?.focus();
-      this.getAllValidOptions().forEach((node, index) => {
-        const newTabindex = newIndex === index ? '0' : '-1';
-        node?.setAttribute('tabindex', newTabindex);
-      });
+  }
+
+  private handlePopoverOnOpen(event: KeyboardEvent): void {
+    switch (event.key) {
+      case KEYS.SPACE:
+      case KEYS.ENTER:
+        this.updateTabIndexAndSetSelectedOnOptions(event.target);
+        this.closePopover();
+        break;
+      case KEYS.ESCAPE:
+        this.closePopover();
+        break;
+      case KEYS.HOME:
+        this.setFocusAndTabIndex(0);
+        break;
+      case KEYS.END:
+        this.setFocusAndTabIndex(this.getAllValidOptions().length - 1);
+        break;
+      case KEYS.ARROW_DOWN:
+      case KEYS.ARROW_UP:
+      case KEYS.PAGE_DOWN:
+      case KEYS.PAGE_UP:
+        this.handleOptionsNavigation(event);
+        this.updateActivedescendant(event.target);
+        break;
+      default:
+        break;
     }
+  }
+
+  private handlePopoverOnClose(event: KeyboardEvent): void {
+    switch (event.key) {
+      case KEYS.ARROW_DOWN:
+      case KEYS.ARROW_UP:
+      case KEYS.SPACE:
+        this.openPopover();
+        // Prevent the default browser behavior of scrolling down
+        event.stopPropagation();
+        break;
+      case KEYS.ENTER:
+        this.openPopover();
+        // Prevent the default browser behavior of scrolling down
+        event.stopPropagation();
+        // if the popover is closed, then we submit the form.
+        this.form?.requestSubmit();
+        break;
+      case KEYS.HOME:
+        this.openPopover();
+        this.setFocusAndTabIndex(0);
+        break;
+      case KEYS.END:
+        this.openPopover();
+        this.setFocusAndTabIndex(this.getAllValidOptions().length - 1);
+        break;
+      default:
+        break;
+    }
+  }
+
+  /**
+   * Handles the navigation of options when the user presses
+   * ArrowUp, ArrowDown, PageUp, or PageDown keys.
+   * @param event - The keyboard event that triggered the navigation.
+   */
+  private handleOptionsNavigation(event: KeyboardEvent): void {
+    const options = this.getAllValidOptions();
+    const currentIndex = options.findIndex((option) => option === event.target);
+    const newIndex = this.getNewIndexBasedOnKey(event.key, currentIndex, options.length);
+    if (newIndex !== -1) {
+      this.setFocusAndTabIndex(newIndex);
+      // Prevent the default browser behavior of scrolling down
+      // when pressing ArrowUp, ArrowDown, PageUp, or PageDown keys
+      event.stopPropagation();
+    }
+  }
+
+  /**
+   * Calculates the new index based on the pressed navigation key.
+   * Supports ArrowUp, ArrowDown, PageUp, and PageDown keys for navigating options.
+   * - ArrowDown: Moves focus to the next option, if available.
+   * - ArrowUp: Moves focus to the previous option, if available.
+   * - PageDown: Moves focus 10 options down or to the last option.
+   * - PageUp: Moves focus 10 options up or to the first option.
+   *
+   * @param key - The navigation key that was pressed.
+   * @param currentIndex - The current index of the focused option.
+   * @param optionsLength - The total number of options.
+   * @returns The new index to focus on, or -1 if no movement is possible.
+   */
+  private getNewIndexBasedOnKey(key: string, currentIndex: number, optionsLength: number): number {
+    if (key === KEYS.ARROW_DOWN && currentIndex !== optionsLength - 1) {
+      return currentIndex + 1;
+    }
+    if (key === KEYS.ARROW_UP && currentIndex > 0) {
+      return currentIndex - 1;
+    }
+    if (key === KEYS.PAGE_DOWN) {
+      // Jumps visual focus down 10 options (or to last option).
+      return (currentIndex + 10) > optionsLength ? optionsLength - 1 : currentIndex + 10;
+    }
+    if (key === KEYS.PAGE_UP) {
+      // Jumps visual focus up 10 options (or to first option).
+      return (currentIndex - 10) < 0 ? 0 : currentIndex - 10;
+    }
+    return -1;
   }
 
   private updateActivedescendant(target: EventTarget | null): void {
@@ -247,39 +341,22 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     this.activeDescendant = '';
   }
 
-  /**
-   * Handles the keydown event for the select component.
-   * Toggles the popover on SPACE or ESCAPE key press, selecting options
-   * and updating the active descendant and tabindex accordingly.
-   * - SPACE: Opens the popover and resets the active descendant.
-   * - ESCAPE: Closes the popover and resets the active descendant.
-   * - ENTER: Updates tabindex and selected option based on the event target.
-   * - ARROW_DOWN/ARROW_UP: Navigates through options and updates focus.
-   * @param event - The keyboard event that triggered the handler.
-   */
-  private handleKeydown(event: KeyboardEvent): void {
-    switch (event.key) {
-      case KEYS.SPACE:
-        this.showPopover = true;
-        this.resetActivedescendant();
-        break;
-      case KEYS.ESCAPE:
-        this.showPopover = false;
-        this.resetActivedescendant();
-        break;
-      case KEYS.ENTER:
-        this.updateTabIndexAndSetSelectedOnOptions(event.target);
-        // if the popover is closed, then we submit the form.
-        if (!this.showPopover) this.form?.requestSubmit();
-        break;
-      case KEYS.ARROW_DOWN:
-      case KEYS.ARROW_UP:
-        this.handleArrowUpDownEvent(event.key, event.target);
-        this.updateActivedescendant(event.target);
-        break;
-      default:
-        break;
-    }
+  private setFocusAndTabIndex(newIndex: number): void {
+    (this.getAllValidOptions()[newIndex] as HTMLElement)?.focus();
+    this.getAllValidOptions().forEach((node, index) => {
+      const newTabindex = newIndex === index ? '0' : '-1';
+      node?.setAttribute('tabindex', newTabindex);
+    });
+  }
+
+  private openPopover(): void {
+    this.showPopover = true;
+    this.resetActivedescendant();
+  }
+
+  private closePopover(): void {
+    this.showPopover = false;
+    this.resetActivedescendant();
   }
 
   /**
@@ -288,12 +365,13 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    * If not, use the placeholder if it exists, otherwise use the first option.
    */
   public override firstUpdated() {
-    const selectedOptionIndex = this.getAllValidOptions().findIndex((option) => option?.hasAttribute('selected'));
+    const options = this.getAllValidOptions();
+    const selectedOptionIndex = options.findIndex((option) => option?.hasAttribute('selected'));
     if (selectedOptionIndex !== -1) {
-      this.setSelectedValue(this.getAllValidOptions()[selectedOptionIndex]);
+      this.setSelectedValue(options[selectedOptionIndex]);
     } else if (!this.placeholder) {
       // We will set the first option as selected.
-      this.setSelectedValue(this.getAllValidOptions()[0]);
+      this.setSelectedValue(options[0]);
     } else if (this.placeholder) {
       // If there is no default selected option
       // then we set the placeholder and call the native validity
@@ -301,11 +379,27 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     }
   }
 
-  private shouldFocusSelect(): boolean {
-    if (this.disabled || this.readonly) {
-      return false;
-    }
-    return true;
+  private getNativeSelect(): TemplateResult {
+    return html`
+      <select
+        part="native-select"
+        id="${this.id}"
+        tabindex="-1"
+        name="${this.name}"
+        size="1"
+        .value="${this.value}"
+        ?autofocus="${this.autofocus}"
+        ?disabled="${this.disabled}"
+        ?required="${!!this.requiredLabel}"
+        aria-activedescendant="${this.activeDescendant}"
+        aria-expanded="${this.showPopover}"
+        aria-haspopup="listbox"
+        aria-label="${this.dataAriaLabel ?? ''}"
+        aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
+      >
+        ${this.getOptionsContentFromSlot()}
+      </select>
+    `;
   }
 
   /**
@@ -320,6 +414,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     return this.getAllValidOptions()
       .map((option) => html`
         <option
+          part="native-select"
           value="${option.getAttribute('value') ?? ''}"
           label="${option.getAttribute('label') ?? ''}"
           ?disabled="${!!option.hasAttribute('disabled')}"
@@ -328,6 +423,52 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           ${option.textContent}
         </option>
     `);
+  }
+
+  /**
+   * Shows a tooltip for the option when the mouse is over it.
+   * The tooltip is created dynamically and appended to the parent element of the select component.
+   * The tooltip is only shown when the option label text is too long to fit the given width.
+   * @param event - The event that triggered this function.
+   */
+  private showTooltipPopoverMouseOver(event: Event): void {
+    const htmlElement = event.target as HTMLElement;
+    if (htmlElement.tagName?.toLowerCase() !== OPTION_TAG_NAME) {
+      return;
+    }
+
+    const dimensions = htmlElement.shadowRoot
+      ?.querySelector('[part="leading-text-primary-label"]');
+    // If the scroll width is less than the client width,
+    // it means that the option label text is fully visible and we do not need to show the tooltip.
+    if (
+      dimensions && dimensions.scrollWidth && dimensions.clientWidth
+      && dimensions.scrollWidth <= dimensions?.clientWidth
+    ) {
+      return;
+    }
+
+    // Create tooltip for long text label which has an ellipse at the end.
+    const tooltip = document.createElement(TOOLTIP_TAG_NAME);
+    tooltip.id = 'dynamic-tooltip-popover';
+    tooltip.textContent = htmlElement.textContent ?? '';
+    tooltip.setAttribute('triggerid', htmlElement.id);
+    tooltip.setAttribute('placement', POPOVER_PLACEMENT.TOP);
+    tooltip.setAttribute('visible', '');
+
+    // Add tooltip programmatically at the outside of the select component.
+    const parent = this.parentElement || document.body;
+    parent.appendChild(tooltip);
+  }
+
+  /**
+   * Hides the dynamic tooltip popover when the user moves the mouse out of the option element.
+   * This method is called when the user moves the mouse out of the options slot.
+   * It finds the existing dynamic tooltip popover by its id and removes it.
+   */
+  private hideTooltipPopoverMouseOut(): void {
+    const existingTooltip = document.querySelector('#dynamic-tooltip-popover');
+    existingTooltip?.remove();
   }
 
   /**
@@ -367,50 +508,11 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     `;
   }
 
-  /**
-   * Shows a tooltip for the option when the mouse is over it.
-   * The tooltip is created dynamically and appended to the parent element of the select component.
-   * The tooltip is only shown when the option label text is too long to fit the given width.
-   * @param event - The event that triggered this function.
-   */
-  private showTooltipPopoverMouseOver(event: Event): void {
-    const htmlElement = event.target as HTMLElement;
-    if (htmlElement.tagName?.toLowerCase() !== OPTION_TAG_NAME) {
-      return;
+  private shouldFocusSelect(): boolean {
+    if (this.disabled || this.readonly) {
+      return false;
     }
-
-    const dimensions = htmlElement.shadowRoot
-      ?.querySelector('[part="leading-text-primary-label"]');
-    // If the scroll width is less than the client width,
-    // it means that the option label text is fully visible and we do not need to show the tooltip.
-    if (
-      dimensions && dimensions.scrollWidth && dimensions.clientWidth
-      && dimensions.scrollWidth <= dimensions?.clientWidth
-    ) {
-      return;
-    }
-
-    // Create tooltip for long text label which has an ellipse at the end.
-    const tooltip = document.createElement(TOOLTIP_TAG_NAME);
-    tooltip.id = 'dynamic-tooltip-popover';
-    tooltip.textContent = htmlElement.textContent ?? '';
-    tooltip.setAttribute('triggerid', htmlElement.id);
-    tooltip.setAttribute('placement', POPOVER_PLACEMENT.TOP);
-    tooltip.setAttribute('visible', 'true');
-
-    // Add tooltip programmatically at the outside of the select component.
-    const parent = this.parentElement || document.body;
-    parent.appendChild(tooltip);
-  }
-
-  /**
-   * Hides the dynamic tooltip popover when the user moves the mouse out of the option element.
-   * This method is called when the user moves the mouse out of the options slot.
-   * It finds the existing dynamic tooltip popover by its id and removes it.
-   */
-  private hideTooltipPopoverMouseOut(): void {
-    const existingTooltip = document.querySelector('#dynamic-tooltip-popover');
-    existingTooltip?.remove();
+    return true;
   }
 
   public override render() {
@@ -434,24 +536,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
             <mdc-icon size="1" length-unit="rem" name="${this.baseIconName}"></mdc-icon>
           </div>
         </div>
-        <select
-          part="native-select"
-          id="${this.id}"
-          tabindex="-1"
-          name="${this.name}"
-          .value="${this.value}"
-          ?autofocus="${this.autofocus}"
-          ?disabled="${this.disabled}"
-          ?required="${!!this.requiredLabel}"
-          aria-activedescendant="${this.activeDescendant}"
-          aria-expanded="${this.showPopover}"
-          aria-haspopup="listbox"
-          aria-label="${this.dataAriaLabel ?? ''}"
-          aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
-          @click="${(e: Event) => e.stopPropagation()}"
-        >
-          ${this.getOptionsContentFromSlot()}
-        </select>
+        ${this.getNativeSelect()}
         ${this.getPopoverContent()}
       </div>
       ${this.renderHelperText()}
