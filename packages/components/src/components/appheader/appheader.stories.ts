@@ -11,12 +11,12 @@ const render = (args: Args) => html`
   <mdc-appheader args.property="${args.property}"></mdc-appheader>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/appheader',
+  title: 'Components/appheader',
   tags: ['autodocs'],
   component: 'mdc-appheader',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     ...classArgType,
