@@ -30,8 +30,8 @@ export const Example: StoryObj = {
   render: () => html`
     <mdc-appheader>
       <div slot="leading" style="display: flex; align-items: center; gap: 8px">
-        <mdc-button variant="tertiary" size="32" color="default" prefix-icon="application-panel-bold"
-        postfix-icon="" type="button" role="button" tabindex="0" aria-label="icon button"></mdc-button>
+        <mdc-button variant="tertiary" size="32" prefix-icon="application-panel-bold"
+        type="button" role="button" tabindex="0" aria-label="icon button"></mdc-button>
         <mdc-brandvisual name="momentum-design-logo-dark-color-horizontal" 
         style="display: block"></mdc-brandvisual>
         <mdc-chip color="cobalt" label="cobalt" icon-name=""></mdc-chip>
@@ -39,8 +39,8 @@ export const Example: StoryObj = {
       <div slot="center">Center Search Icon placeholder</div>
       <div slot="trailing" style="display: flex; align-items: center; gap: 8px">
         <mdc-avatar size="32" name="avatar" src="https://picsum.photos/id/8/5000/3333"></mdc-avatar>
-        <mdc-button variant="tertiary" size="32" color="default" prefix-icon="waffle-menu-bold"
-        postfix-icon="" type="button" role="button" tabindex="0" aria-label="icon button"></mdc-button>
+        <mdc-button variant="tertiary" size="32" prefix-icon="waffle-menu-bold"
+        type="button" role="button" tabindex="0" aria-label="icon button"></mdc-button>
       </div>
     </mdc-appheader>`,
 };
