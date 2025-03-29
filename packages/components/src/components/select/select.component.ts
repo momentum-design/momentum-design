@@ -30,7 +30,6 @@ import styles from './select.styles';
  * @event click - (React: onClick) This event is dispatched when the select is clicked.
  * @event change - (React: onChange) This event is dispatched when the select is changed.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the select.
- * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the select.
  * @event focus - (React: onFocus) This event is dispatched when the select receives focus.
  */
 class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
@@ -227,6 +226,16 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     }
   }
 
+  /**
+   * Handles the keydown event on the select element when the popover is open.
+   * The options are as follows:
+   * - SPACE or ENTER: Selects the currently active option and closes the popover.
+   * - ESCAPE: Closes the popover.
+   * - HOME: Sets focus and tabindex on the first option.
+   * - END: Sets focus and tabindex on the last option.
+   * - ARROW_DOWN, ARROW_UP, PAGE_DOWN, PAGE_UP: Handles navigation between options.
+   * @param event - The keyboard event.
+   */
   private handlePopoverOnOpen(event: KeyboardEvent): void {
     switch (event.key) {
       case KEYS.SPACE:
@@ -255,6 +264,15 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     }
   }
 
+  /**
+   * Handles the keydown event on the select element when the popover is closed.
+   * The options are as follows:
+   * - ARROW_DOWN, ARROW_UP, SPACE: Opens the popover and prevents the default scrolling behavior.
+   * - ENTER: Opens the popover, prevents default scrolling, and submits the form if the popover is closed.
+   * - HOME: Opens the popover and sets focus and tabindex on the first option.
+   * - END: Opens the popover and sets focus and tabindex on the last option.
+   * @param event - The keyboard event.
+   */
   private handlePopoverOnClose(event: KeyboardEvent): void {
     switch (event.key) {
       case KEYS.ARROW_DOWN:
@@ -262,12 +280,12 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       case KEYS.SPACE:
         this.openPopover();
         // Prevent the default browser behavior of scrolling down
-        event.stopPropagation();
+        event.preventDefault();
         break;
       case KEYS.ENTER:
         this.openPopover();
         // Prevent the default browser behavior of scrolling down
-        event.stopPropagation();
+        event.preventDefault();
         // if the popover is closed, then we submit the form.
         this.form?.requestSubmit();
         break;
@@ -297,7 +315,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       this.setFocusAndTabIndex(newIndex);
       // Prevent the default browser behavior of scrolling down
       // when pressing ArrowUp, ArrowDown, PageUp, or PageDown keys
-      event.stopPropagation();
+      event.preventDefault();
     }
   }
 
@@ -379,6 +397,13 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     }
   }
 
+  /**
+   * Generates the native select element.
+   * The native select element is not rendered directly and is not visible on the UI.
+   * It's rendered only on the DOM for accessibility purposes.
+   * Instead, the overlay uses the native select element to generate the list of options.
+   * @returns A TemplateResult representing the native select element.
+   */
   private getNativeSelect(): TemplateResult {
     return html`
       <select
@@ -491,6 +516,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         hide-on-outside-click
         focus-back-to-trigger
         focus-trap
+        prevent-scroll
         role="listbox"
         placement="${POPOVER_PLACEMENT.BOTTOM_START}"
         @shown="${this.handlePopoverOpen}"
