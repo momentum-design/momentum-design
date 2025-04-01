@@ -9,4 +9,6 @@ const KEYCODES = {
   END: 'End',
 };
 
-export { TAG_NAME, KEYCODES };
+type ARROW_BUTTON_DIRECTION = 'forward' | 'backward';
+
+export { TAG_NAME, KEYCODES, type ARROW_BUTTON_DIRECTION };

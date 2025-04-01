@@ -11,40 +11,40 @@ const render = (args: Args) => html`
   @change="${action('onchange')}"
   @keyup="${action('onkeyup')}"
   @keydown="${action('onkeydown')}"
-  active-tabid="${args['active-tabid']}"
+  active-tab-id="${args['active-tab-id']}"
   aria-label="Media types">
   <mdc-tab
     variant=${args.tabvariant}
     text="Photos"
     icon-name="add-photo-bold"
-    tabid="photos-tab"
+    tab-id="photos-tab"
     aria-controls="photos-panel">
   </mdc-tab>
   <mdc-tab variant=${args.tabvariant}
     text="Videos"
     icon-name="video-bold"
-    tabid="videos-tab"
+    tab-id="videos-tab"
     aria-controls="videos-panel">
     <mdc-badge slot="badge" type="counter" counter="5" aria-label="5 New videos"></mdc-badge>
   </mdc-tab>
   <mdc-tab variant=${args.tabvariant}
     text="Music"
     icon-name="file-music-bold"
-    tabid="music-tab"
+    tab-id="music-tab"
     aria-controls="music-panel">
   </mdc-tab>
   <mdc-tab
     variant=${args.tabvariant}
     text="Documents"
     icon-name="document-bold"
-    tabid="documents-tab"
+    tab-id="documents-tab"
     aria-controls="documents-panel">
   </mdc-tab>
   <mdc-tab
     variant=${args.tabvariant}
     text="Downloads"
     icon-name="cloud-download-bold"
-    tabid="downloads-tab"
+    tab-id="downloads-tab"
     aria-controls="downloads-panel">
   </mdc-tab>
 </mdc-tablist>
@@ -77,7 +77,7 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
-    'active-tabid': {
+    'active-tab-id': {
       control: 'text',
       description: 'ID of the active tab, defaults to the first tab if not provided',
     },
@@ -88,10 +88,8 @@ const meta: Meta = {
     },
     ...hideControls([
       'tabvariant',
-      'activeTabId',
       'tabsContainer',
       'tabs',
-      'isRtl',
       'handleFocus',
       'setActiveTab',
       'focusTab',
@@ -102,7 +100,7 @@ const meta: Meta = {
     ...disableControls([
       '--mdc-tablist-gap',
       '--mdc-tablist-width',
-      '--mdc-container-button-padding',
+      '--mdc-tablist-arrow-button-margin',
       'change',
       'Default',
     ]),
@@ -120,6 +118,6 @@ export const Example: StoryObj = {
 export const ActiveTabAttributeSet: StoryObj = {
   args: {
     tabvariant: 'glass',
-    'active-tabid': 'documents-tab',
+    'active-tab-id': 'documents-tab',
   },
 };

@@ -34,6 +34,12 @@ import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the tab.
  * @event focus - (React: onFocus) This event is dispatched when the tab receives focus.
  * @event activechange - (React: onActiveChange) This event is dispatched when the active state of the tab changes
+ * <br />
+ * Event Data: `detail: { tabId: this.tabId, active }`
+ * <br />
+ * Note: the activechange event is used by the tab list component to react to the change in state of the tab,
+ * so this event won't be needed if the tab list is used.
+ *
  * @tagname mdc-tab
  *
  * @cssproperty --mdc-tab-content-gap - Gap between the badge(if provided), icon and text.
@@ -128,7 +134,7 @@ class Tab extends IconNameMixin(Buttonsimple) {
    *
    * @default undefined
    */
-  @property({ type: String, reflect: true, attribute: 'tabid' })
+  @property({ type: String, reflect: true, attribute: 'tab-id' })
   tabId?: string;
 
   /**
@@ -143,9 +149,8 @@ class Tab extends IconNameMixin(Buttonsimple) {
     this.size = undefined as unknown as ButtonSize;
     this.type = undefined as unknown as ButtonType;
 
-    if (!this.tabId) {
-      // eslint-disable-next-line no-console
-      console.warn('mdc-tab: tabid is required');
+    if (this.onerror) {
+      this.onerror('tab id is required');
     }
   }
 

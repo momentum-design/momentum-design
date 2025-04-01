@@ -21,6 +21,7 @@ const render = (args: Args) => html`<div role="tablist">
     tabIndex="${ifDefined(args.tabIndex)}"
     text="${ifDefined(args.text)}"
     variant="${ifDefined(args.variant)}"
+    tab-id="tab1"
     >${args.showBadge ? html`<mdc-badge slot="badge" type="counter" counter="1"></mdc-badge>` : nothing}</mdc-tab>
 </div>`;
 
@@ -115,7 +116,6 @@ const meta: Meta = {
       'size',
       'soft-disabled',
       'type',
-      'tabId',
     ]),
   },
 };

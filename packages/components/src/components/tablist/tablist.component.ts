@@ -7,15 +7,16 @@ import { Component } from '../../models';
 import { KEYCODES } from './tablist.constants';
 
 import Tab from '../tab/tab.component';
-import type { ArrowButtonDirection } from './tablist.types';
+import type { ArrowButtonDirectionType } from './tablist.types';
 import { getFirstTab, getLastTab, getNextTab, getPreviousTab, findTab, getActiveTab } from './tablist.utils';
 
 /**
  * Tab list organizes tabs into a container.
  *
- * Children of the tab list are mdc-tab elements, sent to the default slot.
+ * Children of the tab list are `mdc-tab` elements, sent to the default slot.
  *
- * The tabs can be navigated using the arrow keys, and selected by clicking, or pressing the Enter and Space keys.
+ * The tabs can be navigated using the left/right arrow keys, and selected by clicking,
+ *  or pressing the Enter and Space keys.
  *
  * **Implicit accessibility rules**
  *
@@ -42,8 +43,6 @@ import { getFirstTab, getLastTab, getNextTab, getPreviousTab, findTab, getActive
  * @dependency mdc-button
  *
  * @event change - (React: onChange) This event is dispatched when the tab is selected.
- *
- *
  * Event that fires when user changes the active tab.
  *     The function sent as the argument will receive the fired event
  *      and the new tab id can be fetched from event.detail.tabId.
@@ -54,13 +53,13 @@ import { getFirstTab, getLastTab, getNextTab, getPreviousTab, findTab, getActive
  *
  * @cssproperty --mdc-tablist-gap - Gap between tabs
  * @cssproperty --mdc-tablist-width - Width of the tablist
- * @cssproperty --mdc-container-button-padding - Padding for when an arrow button is visible
+ * @cssproperty  --mdc-tablist-arrow-button-margin - Margin value for the arrow button
  */
 class TabList extends Component {
   /**
    * ID of the active tab, defaults to the first tab if not provided
    */
-  @property({ type: String, attribute: 'active-tabid', reflect: true })
+  @property({ type: String, attribute: 'active-tab-id', reflect: true })
   activeTabId?: string;
 
   @query('.container')
@@ -86,11 +85,12 @@ class TabList extends Component {
    */
   @state() private showBackwardArrowButton: boolean = false;
 
-  private get isRtl(): boolean {
-    return (
-      document.querySelector('html')?.getAttribute('dir') === 'rtl' || window.getComputedStyle(this).direction === 'rtl'
-    );
-  }
+  /**
+   * @internal
+   */
+  private isRtl = (): boolean => (
+    document.querySelector('html')?.getAttribute('dir') === 'rtl' || window.getComputedStyle(this).direction === 'rtl'
+  );
 
   constructor() {
     super();
@@ -119,13 +119,17 @@ class TabList extends Component {
      */
     if (!this.tabs) { return; }
     if (Array.isArray(this.tabs) && this.tabs.length === 0) {
-      throw new Error('The tablist component must have at least one child tab');
+      if (this.onerror) {
+        this.onerror('The tablist component must have at least one child tab');
+      }
+      return;
     }
 
     const tabIds = this.tabs.map((tab) => tab.tabId);
     if (new Set(tabIds).size !== this.tabs.length) {
-      // eslint-disable-next-line no-console
-      console.error('The tabs inside the tab list must have unique tab ids');
+      if (this.onerror) {
+        this.onerror('The tabs inside the tab list must have unique tab ids');
+      }
     }
 
     const resizeObserver = new ResizeObserver((): void => {
@@ -144,7 +148,7 @@ class TabList extends Component {
   }
 
   /**
-   * Observe the tablist element for changes in the activetabid attribute.
+   * Observe the tablist element for changes in the activeTabId attribute.
    * Find the new tab with the new activeTabId.
    * If the new tab is not found, then do nothing.
    *
@@ -312,12 +316,12 @@ class TabList extends Component {
     switch (event.code) {
       case KEYCODES.LEFT:
         event.preventDefault();
-        this.focusTab(!this.isRtl ? previousTab : nextTab);
+        this.focusTab(!this.isRtl() ? previousTab : nextTab);
         break;
 
       case KEYCODES.RIGHT:
         event.preventDefault();
-        this.focusTab(!this.isRtl ? nextTab : previousTab);
+        this.focusTab(!this.isRtl() ? nextTab : previousTab);
         break;
 
       case KEYCODES.HOME:
@@ -336,7 +340,7 @@ class TabList extends Component {
    * Should the arrow button be shown.
    * @param direction - The direction of the arrow button.
    */
-  private shouldShowArrowButton(direction: ArrowButtonDirection): boolean {
+  private shouldShowArrowButton(direction: ArrowButtonDirectionType): boolean {
     return direction === 'forward' ? this.showForwardArrowButton : this.showBackwardArrowButton;
   }
 
@@ -358,7 +362,7 @@ class TabList extends Component {
     const firstTabRightEdgePosition = Math.round(firstTab.getBoundingClientRect().right);
     const lastTabLeftEdgePosition = Math.round(lastTab.getBoundingClientRect().left);
 
-    if (!this.isRtl) {
+    if (!this.isRtl()) {
       if (firstTabLeftEdgePosition < tabListLeftEdgePosition) {
         this.showBackwardArrowButton = true;
       } else {
@@ -389,9 +393,9 @@ class TabList extends Component {
    /**
    * Scroll tabs forward or backward.
    */
-   private scrollTabs = (direction: ArrowButtonDirection): void => {
-     const forwardMultiplier = !this.isRtl ? 1 : -1;
-     const backwardMultiplier = !this.isRtl ? -1 : 1;
+   private scrollTabs = (direction: ArrowButtonDirectionType): void => {
+     const forwardMultiplier = !this.isRtl() ? 1 : -1;
+     const backwardMultiplier = !this.isRtl() ? -1 : 1;
 
      this.tabsContainer?.scrollBy({
        left: this.tabsContainer.clientWidth * (direction === 'forward' ? forwardMultiplier : backwardMultiplier),
@@ -403,10 +407,10 @@ class TabList extends Component {
    };
 
    public override render() {
-     const forwardArrowDirection = !this.isRtl ? 'right' : 'left';
-     const backwardArrowDirection = !this.isRtl ? 'left' : 'right';
+     const forwardArrowDirection = !this.isRtl() ? 'right' : 'left';
+     const backwardArrowDirection = !this.isRtl() ? 'left' : 'right';
 
-     const arrowButton = (direction: ArrowButtonDirection) =>
+     const arrowButton = (direction: ArrowButtonDirectionType) =>
        html` ${this.shouldShowArrowButton(direction)
          ? html`<mdc-button
             variant="tertiary"
