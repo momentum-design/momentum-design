@@ -4,7 +4,7 @@ import { property, query, queryAssignedElements, state } from 'lit/decorators.js
 
 import styles from './tablist.styles';
 import { Component } from '../../models';
-import { KEYCODES } from './tablist.constants';
+import { ARROW_BUTTON_DIRECTION, KEYCODES } from './tablist.constants';
 
 import Tab from '../tab/tab.component';
 import type { ArrowButtonDirectionType } from './tablist.types';
@@ -341,7 +341,7 @@ class TabList extends Component {
    * @param direction - The direction of the arrow button.
    */
   private shouldShowArrowButton(direction: ArrowButtonDirectionType): boolean {
-    return direction === 'forward' ? this.showForwardArrowButton : this.showBackwardArrowButton;
+    return direction === ARROW_BUTTON_DIRECTION.FORWARD ? this.showForwardArrowButton : this.showBackwardArrowButton;
   }
 
   /**
@@ -398,7 +398,8 @@ class TabList extends Component {
      const backwardMultiplier = !this.isRtl() ? -1 : 1;
 
      this.tabsContainer?.scrollBy({
-       left: this.tabsContainer.clientWidth * (direction === 'forward' ? forwardMultiplier : backwardMultiplier),
+       left: this.tabsContainer.clientWidth * (direction === ARROW_BUTTON_DIRECTION.FORWARD
+         ? forwardMultiplier : backwardMultiplier),
        // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
        behavior: 'instant',
      });
@@ -414,8 +415,10 @@ class TabList extends Component {
        html` ${this.shouldShowArrowButton(direction)
          ? html`<mdc-button
             variant="tertiary"
-            prefix-icon="arrow-${direction === 'forward' ? forwardArrowDirection : backwardArrowDirection}-regular"
-            aria-label="Scroll tabs ${direction === 'forward' ? forwardArrowDirection : backwardArrowDirection}"
+            prefix-icon="arrow-${direction === ARROW_BUTTON_DIRECTION.FORWARD
+    ? forwardArrowDirection : backwardArrowDirection}-regular"
+            aria-label="Scroll tabs ${direction === ARROW_BUTTON_DIRECTION.FORWARD
+    ? forwardArrowDirection : backwardArrowDirection}"
             @click="${() => this.scrollTabs(direction)}"
           ></mdc-button>`
          : nothing}`;
@@ -425,7 +428,7 @@ class TabList extends Component {
       <div class="container">
         <slot></slot>
       </div>
-      ${arrowButton('forward')}`;
+      ${arrowButton(ARROW_BUTTON_DIRECTION.FORWARD)}`;
    }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
