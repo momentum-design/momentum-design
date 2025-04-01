@@ -1469,6 +1469,7 @@
   "laptop-light": "./svg/laptop-light.svg",
   "laptop-regular": "./svg/laptop-regular.svg",
   "laser-pointer-bold": "./svg/laser-pointer-bold.svg",
+  "laser-pointer-filled": "./svg/laser-pointer-filled.svg",
   "laser-pointer-light": "./svg/laser-pointer-light.svg",
   "laser-pointer-regular": "./svg/laser-pointer-regular.svg",
   "launch-bold": "./svg/launch-bold.svg",
