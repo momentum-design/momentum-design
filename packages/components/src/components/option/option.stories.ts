@@ -98,6 +98,14 @@ export const Example: StoryObj = {
   },
 };
 
+export const OptionWithLongText: StoryObj = {
+  render: () => wrapWithDiv(html`
+    <mdc-option value="label">
+      This is a very long text and it should be truncated.
+    </mdc-option>
+  `),
+};
+
 export const OptionWithIcon: StoryObj = {
   render: () => wrapWithDiv(html`
     <mdc-option value="label" prefix-icon="placeholder-bold">Option Label</mdc-option>
