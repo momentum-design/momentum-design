@@ -6,12 +6,15 @@ import type { IconNames } from '../icon/icon.types';
 import ListItem from '../listitem/listitem.component';
 import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
 import { TYPE } from '../text/text.constants';
+import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
 import { SELECTED_ICON_NAME } from './option.constants';
 import styles from './option.styles';
 
 /**
  * option component, which is used as a list item in a select component.<br/>
  * We can pass an icon which will be displayed in leading position of the option label text.
+ *
+ * @dependency mdc-tooltip
  *
  * @tagname mdc-option
  *
@@ -51,6 +54,47 @@ class Option extends FormInternalsMixin(ListItem) {
     this.sideHeaderText = undefined as unknown as string;
     this.sublineText = undefined as unknown as string;
     this.dataAriaLabel = undefined as unknown as string;
+
+    this.addEventListener('mouseover', this.showTooltipPopoverMouseOver);
+    this.addEventListener('mouseout', this.hideTooltipPopoverMouseOut);
+  }
+
+  /**
+   * Shows a tooltip for the option when the mouse is over it.
+   * The tooltip is created dynamically and appended to the parent element of the select component.
+   * The tooltip is only shown when the option label text is too long to fit the given width.
+   * @param event - The event that triggered this function.
+   */
+  private showTooltipPopoverMouseOver(event: MouseEvent): void {
+    const dimensions = (event.target as HTMLElement).shadowRoot?.querySelector('[part="leading-text-primary-label"]');
+    if (
+      dimensions && dimensions.scrollWidth && dimensions.clientWidth
+      && dimensions.scrollWidth <= dimensions?.clientWidth
+    ) {
+      // it means that the option label text is fully visible and we do not need to show the tooltip.
+      return;
+    }
+
+    // Create tooltip for long text label which has an ellipse at the end.
+    const tooltip = document.createElement(TOOLTIP_TAG_NAME);
+    tooltip.id = 'dynamic-select-tooltip-popover';
+    tooltip.textContent = this.label ?? '';
+    tooltip.setAttribute('triggerid', this.id);
+    tooltip.setAttribute('visible', '');
+
+    // Add tooltip programmatically after the nearest select component or the parent element.
+    const parent = this.closest('mdc-select') || this.parentElement;
+    parent?.after(tooltip);
+  }
+
+  /**
+   * Hides the dynamic tooltip popover when the user moves the mouse out of the option element.
+   * This method is called when the user moves the mouse out of the options slot.
+   * It finds the existing dynamic tooltip popover by its id and removes it.
+   */
+  private hideTooltipPopoverMouseOut(): void {
+    const existingTooltip = document.querySelector('#dynamic-select-tooltip-popover');
+    existingTooltip?.remove();
   }
 
   /**
