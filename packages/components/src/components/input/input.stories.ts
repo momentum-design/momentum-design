@@ -21,6 +21,7 @@ const render = (args: Args) => {
     placeholder="${args.placeholder}"
     name="${args.name}"
     value="${value}"
+    id="${args.id}"
     class="${args.class}"
     style="${args.style}"
     required-label="${args['required-label']}"
@@ -59,6 +60,9 @@ const meta: Meta = {
       options: Object.values(VALIDATION),
     },
     name: {
+      control: 'text',
+    },
+    id: {
       control: 'text',
     },
     value: {

@@ -1,3 +1,4 @@
+// Components Imports
 import AlertChip from './components/alertchip';
 import Avatar from './components/avatar';
 import AvatarButton from './components/avatarbutton';
@@ -29,17 +30,31 @@ import ThemeProvider from './components/themeprovider';
 import Toggle from './components/toggle';
 import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
-import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
 import Progressbar from './components/progressbar';
 import Option from './components/option';
 import OptGroup from './components/optgroup';
 import Textarea from './components/textarea';
+import Searchfield from './components/searchfield';
+import Brandvisual from './components/brandvisual';
+import Appheader from './components/appheader';
 
+// Types Imports
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
 import type { TextType } from './components/text/text.types';
 import type { PopoverPlacement } from './components/popover/popover.types';
 import type { BadgeType } from './components/badge/badge.types';
+import type { IconButtonSize, PillButtonSize, ButtonVariant, ButtonColor } from './components/button/button.types';
 
+// Constants / Utils Imports
+import {
+  BUTTON_COLORS,
+  BUTTON_VARIANTS,
+  ICON_BUTTON_SIZES,
+  PILL_BUTTON_SIZES,
+} from './components/button/button.constants';
+import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
+
+// Components Exports
 export {
   AlertChip,
   Avatar,
@@ -76,12 +91,23 @@ export {
   Progressbar,
   Textarea,
   Tooltip,
+  Searchfield,
+  Brandvisual,
+  Appheader,
 };
+
+// Types Exports
 export type {
   TextType,
   SpinnerSize,
   SpinnerVariant,
   PopoverPlacement,
   BadgeType,
+  IconButtonSize,
+  PillButtonSize,
+  ButtonVariant,
+  ButtonColor,
 };
-export { inMemoryCache, webAPIIconsCache };
+
+// Constants / Utils Exports
+export { inMemoryCache, webAPIIconsCache, BUTTON_COLORS, BUTTON_VARIANTS, ICON_BUTTON_SIZES, PILL_BUTTON_SIZES };

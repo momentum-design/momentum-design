@@ -1991,6 +1991,10 @@
                 "parent": "theme/stable/highcontrast/hc_light",
                 "type": "color",
                 "value": "{color.highcontrast.white.HighlightTextColor}"
+              },
+              "disabled": {
+                "value": "{color.highcontrast.white.GrayTextColor}",
+                "type": "color"
               }
             },
             "secondary": {

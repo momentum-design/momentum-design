@@ -1,26 +1,26 @@
 {
-    "color": {
-        "theme": {
-            "background": {
-                "gradient": {
-                    "primary": {
-                        "normal": {
-                            "parent": "theme/stable/dark",
-                            "type": "color",
-                            "value": "linear-gradient(180deg, {color.gradient.indigo.dark.primary.0} 0%, {color.gradient.indigo.dark.primary.1} 100%)",
-                            "description": "linear-gradient(180deg, {color.gradient.indigo.dark.primary.0} 0%, {color.gradient.indigo.dark.primary.1} 100%)"
-                        }
-                    },
-                    "secondary": {
-                        "normal": {
-                            "parent": "theme/stable/dark",
-                            "type": "color",
-                            "value": "linear-gradient(180deg, {color.gradient.indigo.dark.secondary.0} 0%, {color.gradient.indigo.dark.secondary.1} 100%)",
-                            "description": "linear-gradient(180deg, {color.gradient.indigo.dark.secondary.0} 0%, {color.gradient.indigo.dark.secondary.1} 100%)"
-                        }
-                    }
-                }
+  "color": {
+    "theme": {
+      "background": {
+        "gradient": {
+          "primary": {
+            "normal": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "linear-gradient(180deg, {color.gradient.indigo.dark.primary.0} 0%, {color.gradient.indigo.dark.primary.1} 100%)",
+              "description": "linear-gradient(180deg, {color.gradient.indigo.dark.primary.0} 0%, {color.gradient.indigo.dark.primary.1} 100%)"
             }
+          },
+          "secondary": {
+            "normal": {
+              "parent": "theme/stable/dark",
+              "type": "color",
+              "value": "linear-gradient(180deg, {color.gradient.indigo.dark.secondary.0} 0%, {color.gradient.indigo.dark.secondary.1} 100%)",
+              "description": "linear-gradient(180deg, {color.gradient.indigo.dark.secondary.0} 0%, {color.gradient.indigo.dark.secondary.1} 100%)"
+            }
+          }
         }
+      }
     }
+  }
 }
