@@ -9,6 +9,7 @@ const ARIA_LIVE_VALUES = {
 } as const;
 
 const DEFAULTS = {
+  ARIA_LIVE: ARIA_LIVE_VALUES.POLITE,
   DELAY: 150,
   IDENTITY: 'mdc-screenreaderannouncer-identity',
   TIMEOUT: 20_000,

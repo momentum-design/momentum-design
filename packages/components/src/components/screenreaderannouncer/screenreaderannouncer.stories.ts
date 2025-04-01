@@ -2,7 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import '../button';
-import { ARIA_LIVE_VALUES } from './screenreaderannouncer.constants';
+import { ARIA_LIVE_VALUES, DEFAULTS } from './screenreaderannouncer.constants';
 
 const render = (args: Args) => html`
   <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -70,10 +70,10 @@ export default meta;
 
 const defaultArgs = {
   announcement: 'Momentum Design Components',
-  'data-aria-live': ARIA_LIVE_VALUES.POLITE,
-  delay: 150,
+  'data-aria-live': DEFAULTS.ARIA_LIVE,
+  delay: DEFAULTS.DELAY,
   identity: '',
-  timeout: 20_000,
+  timeout: DEFAULTS.TIMEOUT,
 };
 
 export const Example: StoryObj = {

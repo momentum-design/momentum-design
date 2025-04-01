@@ -11,10 +11,28 @@ import { AriaLive } from './screenreaderannouncer.types';
  *
  * To make an announcement set `announcement` attribute on the `mdc-screenreaderannouncer` element.
  *
- * An announcement is made by creating a div element with `aria-live` attribute set to `data-aria-live`
- * attribute having a child paragraph element with the text as `announcement` attribute. The announcement
- * div element is appended to either the element in DOM identified with id as `identity` attribute or a
- * new div element is created in the DOM with id `mdc-screenreaderannouncer-identity`.
+ * Internal logic:
+ * When the screenreader announcer is connected to the DOM, if the `identity` attribute is not
+ * provided, it is set to `mdc-screenreaderannouncer-identity` and a div element with this id is created
+ * in the DOM. If the `identity` attribute is provided, the identity element is used and no new element
+ * is created in the DOM.
+ *
+ * When the `announcement` attribute is set, the screenreader announcer will create a div element with
+ * `aria-live` attribute set to the value of `data-aria-live` attribute and append it to the `identity` element.
+ * After delay of `delay` milliseconds, a p element with the announcement text is appended to the div element.
+ *
+ * The announcement div element is removed from the DOM after `timeout` milliseconds.
+ *
+ * When the screen announcer component is disconnected from the DOM, all the timeouts are cleared and
+ * all the announcement elements added are removed from the DOM and timeouts cleared.
+ *
+ * Notes:
+ * 1. The default delay of 150 miliseconds is used as we dynamically generate the
+ * aria-live region in the DOM and add the announcement text to it.
+ * 3. If no `identity` is provided, all the screen reader components will create and use only one
+ * div element with id `mdc-screenreaderannouncer-identity` in the DOM.
+ *
+ * Reference: https://patrickhlauke.github.io/aria/tests/live-regions/
  *
  * @tagname mdc-screenreaderannouncer
  */
@@ -31,8 +49,8 @@ class ScreenreaderAnnouncer extends Component {
   /**
    * The id of the element in the light dom, to which announcement elements will be appended.
    *
-   * If an id is provided, the announcement elements will be appended to this element.
-   * If id is not provided, it will be created in the light dom.
+   * If id is not provided, it will be set to `mdc-screenreaderannouncer-identity` and
+   * a div element with this id will be created in the light dom.
    */
   @property({ type: String, reflect: true })
   identity: string = '';
@@ -43,12 +61,11 @@ class ScreenreaderAnnouncer extends Component {
    * @default 'polite'
    */
   @property({ type: String, reflect: true, attribute: 'data-aria-live' })
-  dataAriaLive: AriaLive = 'polite';
+  dataAriaLive: AriaLive = DEFAULTS.ARIA_LIVE;
 
   /**
    * Milliseconds to wait before adding the announcement to the identiy region in
    * DOM, which will announce the message to the screen reader.
-   *
    *
    * @default 150
    */
