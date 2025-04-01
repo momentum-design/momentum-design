@@ -20,10 +20,7 @@ import { DEFAULTS } from './inputchip.constants';
  * @dependency mdc-icon
  * @dependency mdc-text
  *
- * @event click - (React: onClick) This event is dispatched when the close button is clicked.
- * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the close button.
- * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the close button.
- * @event focus - (React: onFocus) This event is dispatched when the close button receives focus.
+ * @event remove - This event is dispatched when the close button is activated. It bubbles and is composed.
  *
  * @cssproperty --mdc-chip-color - The color of the chip.
  * @cssproperty --mdc-chip-border-color - The border color of the chip.
@@ -69,10 +66,8 @@ class InputChip extends IconNameMixin(DisabledMixin(Component)) {
    * Handles the behavior of the close button on click event.
    * @param event - The event object.
    */
-  private handleClose(event: Event) {
-    event.stopPropagation(); // Prevents triggering click event twice
-    const EventConstructor = event.constructor as typeof Event;
-    this.dispatchEvent(new EventConstructor(event.type, event));
+  private handleClose() {
+    this.dispatchEvent(new CustomEvent('remove', { bubbles: true, composed: true }));
   }
 
   public override render() {
