@@ -2,6 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import '../button';
+import '../text';
 import { ARIA_LIVE_VALUES, DEFAULTS } from './screenreaderannouncer.constants';
 
 const render = (args: Args) => html`
@@ -23,6 +24,8 @@ const render = (args: Args) => html`
     identity="${args.identity}"
     timeout="${args.timeout}">
   </mdc-screenreaderannouncer>
+  <mdc-text type="body-midsize-regular">Note: SR may read the announcement twice in storybook.
+    Click on 'Open canvas in new tab' in Storybook, to read it once.</mdc-text>
 `;
 
 const renderWithIdentity = (args: Args) => html`
