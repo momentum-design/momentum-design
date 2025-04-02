@@ -75,7 +75,11 @@ class Searchfield extends Input {
   })}" part="input-container">
     ${this.renderLeadingIcon()}
       <div part='scrollable-container'>
-      <div part="filters-container"><slot name="filters" @slotchange=${this.renderInputChips}></slot></div>
+      <div part="filters-container" 
+      @click=${() => this.inputElement.focus()} 
+      @keydown=${(e: KeyboardEvent) => e.key === 'Enter' ? this.inputElement.focus() : null} 
+      @keyup=${(e: KeyboardEvent) => e.key === ' ' ? this.inputElement.focus() : null}>
+        <slot name="filters" @slotchange=${this.renderInputChips}></slot></div>
       ${this.renderInputElement(DEFAULTS.TYPE)}
       </div>
       ${this.renderTrailingButton()}
