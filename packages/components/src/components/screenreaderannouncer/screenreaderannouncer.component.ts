@@ -11,26 +11,27 @@ import { AriaLive } from './screenreaderannouncer.types';
  *
  * To make an announcement set `announcement` attribute on the `mdc-screenreaderannouncer` element.
  *
- * Internal logic:
+ * **Internal logic**
+ *
  * When the screenreader announcer is connected to the DOM, if the `identity` attribute is not
- * provided, it is set to `mdc-screenreaderannouncer-identity` and a div element with this id is created
+ * provided, it is set to `mdc-screenreaderannouncer-identity` and a `<div>` element with this id is created
  * in the DOM. If the `identity` attribute is provided, the identity element is used and no new element
  * is created in the DOM.
  *
- * When the `announcement` attribute is set, the screenreader announcer will create a div element with
+ * When the `announcement` attribute is set, the screenreader announcer will create a `<div>` element with
  * `aria-live` attribute set to the value of `data-aria-live` attribute and append it to the `identity` element.
- * After delay of `delay` milliseconds, a p element with the announcement text is appended to the div element.
+ * After delay of `delay` milliseconds, a <p> element with the announcement text is appended to the `<div>` element.
  *
- * The announcement div element is removed from the DOM after `timeout` milliseconds.
+ * The announcement `<div>` element is removed from the DOM after `timeout` milliseconds.
  *
  * When the screen announcer component is disconnected from the DOM, all the timeouts are cleared and
  * all the announcement elements added are removed from the DOM and timeouts cleared.
  *
- * Notes:
+ * **Note**
  * 1. The default delay of 150 miliseconds is used as we dynamically generate the
  * aria-live region in the DOM and add the announcement text to it.
  * 3. If no `identity` is provided, all the screen reader components will create and use only one
- * div element with id `mdc-screenreaderannouncer-identity` in the DOM.
+ * `<div>` element with id `mdc-screenreaderannouncer-identity` in the DOM.
  *
  * Reference: https://patrickhlauke.github.io/aria/tests/live-regions/
  *
