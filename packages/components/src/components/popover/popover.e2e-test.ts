@@ -357,7 +357,7 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
       await expect(triggerButton).toBeFocused();
     });
     await test.step('aria-expanded and aria-haspopup should not be set when popover is not visible', async () => {
-      await expect(triggerButton).not.toHaveAttribute('aria-expanded');
+      await expect(triggerButton).toHaveAttribute('aria-expanded', 'false');
       await expect(triggerButton).not.toHaveAttribute('aria-haspopup');
     });
     await test.step('if `hideOnOutsideClick` is true clicking outside popover should close popover', async () => {
