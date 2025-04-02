@@ -222,7 +222,7 @@ class Popover extends FocusTrapMixin(Component) {
    * aria-label attribute to be set for close button accessibility.
    * @default null
    */
-  @property({ type: String, attribute: 'close-button-aria-label' })
+  @property({ type: String, attribute: 'close-button-aria-label', reflect: true })
   closeButtonAriaLabel: string | null = null;
 
   /**
@@ -455,6 +455,15 @@ class Popover extends FocusTrapMixin(Component) {
    * @param newValue - The new value of the visible property.
    */
   private async isOpenUpdated(oldValue: boolean, newValue: boolean) {
+    // On the very first update when trigger is not visible, we set aria attributes on trigger element.
+    if (this.triggerElement && this.interactive && newValue === false && oldValue === false) {
+      this.triggerElement.setAttribute(
+        'aria-haspopup',
+        this.triggerElement.getAttribute('aria-haspopup') || 'dialog',
+      );
+      this.triggerElement.setAttribute('aria-expanded', 'false');
+    }
+
     if (oldValue === newValue || !this.triggerElement) {
       return;
     }
@@ -519,10 +528,7 @@ class Popover extends FocusTrapMixin(Component) {
 
       this.deactivateFocusTrap?.();
       if (!this.disableAriaExpanded) {
-        this.triggerElement.removeAttribute('aria-expanded');
-      }
-      if (this.interactive) {
-        this.triggerElement.removeAttribute('aria-haspopup');
+        this.triggerElement.setAttribute('aria-expanded', 'false');
       }
       if (this.focusBackToTrigger) {
         this.triggerElement?.focus();
@@ -661,11 +667,13 @@ class Popover extends FocusTrapMixin(Component) {
     });
   }
 
-  public override render() {
-    return html`
-      <div class="popover-hover-bridge"></div>
-      ${this.closeButton
-    ? html` <mdc-button
+  protected renderPopoverHoverBridge() {
+    return html`<div class="popover-hover-bridge"></div>`;
+  }
+
+  protected renderCloseButton() {
+    return this.closeButton
+      ? html` <mdc-button
             class="popover-close"
             prefix-icon="cancel-bold"
             variant="tertiary"
@@ -673,11 +681,25 @@ class Popover extends FocusTrapMixin(Component) {
             aria-label=${ifDefined(this.closeButtonAriaLabel) || ''}
             @click="${this.hidePopover}"
           ></mdc-button>`
-    : nothing}
-      ${this.showArrow ? html`<div class="popover-arrow"></div>` : nothing}
-      <div part="popover-content">
+      : nothing;
+  }
+
+  protected renderShowArrow() {
+    return this.showArrow ? html`<div class="popover-arrow"></div>` : nothing;
+  }
+
+  protected renderPopoverContent() {
+    return html`<div part="popover-content">
         <slot></slot>
-      </div>
+      </div>`;
+  }
+
+  public override render() {
+    return html`
+      ${this.renderPopoverHoverBridge()}
+      ${this.renderCloseButton()}
+      ${this.renderShowArrow()}
+      ${this.renderPopoverContent()}
     `;
   }
 
