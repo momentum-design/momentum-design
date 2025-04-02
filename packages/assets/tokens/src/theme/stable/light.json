@@ -1110,7 +1110,7 @@
           "disabled": {
             "value": "{color.core.black-alpha.11}",
             "type": "color",
-            "description": "Feat: input/disabled\n\nNew token for input field update to fix accessibility issues.\nUsed for disalbed/read-only/read-only focus states for input components. "
+            "description": "Used for disalbed/read-only/read-only focus states for input components. "
           }
         }
       },
