@@ -2,11 +2,11 @@ import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
+import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
 import type { IconNames } from '../icon/icon.types';
 import ListItem from '../listitem/listitem.component';
 import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
 import { TYPE } from '../text/text.constants';
-import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
 import { SELECTED_ICON_NAME } from './option.constants';
 import styles from './option.styles';
 
@@ -55,17 +55,18 @@ class Option extends FormInternalsMixin(ListItem) {
     this.sublineText = undefined as unknown as string;
     this.dataAriaLabel = undefined as unknown as string;
 
-    this.addEventListener('mouseover', this.showTooltipPopoverMouseOver);
-    this.addEventListener('mouseout', this.hideTooltipPopoverMouseOut);
+    this.addEventListener('focusin', this.displayTooltipForLongText);
+    this.addEventListener('mouseover', this.displayTooltipForLongText);
+    this.addEventListener('focusout', this.hideTooltipOnLeave);
+    this.addEventListener('mouseout', this.hideTooltipOnLeave);
   }
 
   /**
-   * Shows a tooltip for the option when the mouse is over it.
-   * The tooltip is created dynamically and appended to the parent element of the select component.
-   * The tooltip is only shown when the option label text is too long to fit the given width.
-   * @param event - The event that triggered this function.
+   * Display a tooltip for long text label with an ellipse at the end.
+   * Create the tooltip programmatically after the nearest select component or the parent element.
+   * @param event - A focus or a mouse event.
    */
-  private showTooltipPopoverMouseOver(event: MouseEvent): void {
+  private displayTooltipForLongText(event: FocusEvent | MouseEvent): void {
     const dimensions = (event.target as HTMLElement).shadowRoot?.querySelector('[part="leading-text-primary-label"]');
     if (
       dimensions && dimensions.scrollWidth && dimensions.clientWidth
@@ -77,7 +78,7 @@ class Option extends FormInternalsMixin(ListItem) {
 
     // Create tooltip for long text label which has an ellipse at the end.
     const tooltip = document.createElement(TOOLTIP_TAG_NAME);
-    tooltip.id = 'dynamic-select-tooltip-popover';
+    tooltip.id = 'dynamic-option-tooltip-popover';
     tooltip.textContent = this.label ?? '';
     tooltip.setAttribute('triggerid', this.id);
     tooltip.setAttribute('visible', '');
@@ -88,12 +89,11 @@ class Option extends FormInternalsMixin(ListItem) {
   }
 
   /**
-   * Hides the dynamic tooltip popover when the user moves the mouse out of the option element.
-   * This method is called when the user moves the mouse out of the options slot.
-   * It finds the existing dynamic tooltip popover by its id and removes it.
+   * Removes the dynamically created tooltip for long text label on focus or mouse leave.
+   * This is triggered on focusout and mouseout events.
    */
-  private hideTooltipPopoverMouseOut(): void {
-    const existingTooltip = document.querySelector('#dynamic-select-tooltip-popover');
+  private hideTooltipOnLeave(): void {
+    const existingTooltip = document.querySelector('#dynamic-option-tooltip-popover');
     existingTooltip?.remove();
   }
 
@@ -139,11 +139,9 @@ class Option extends FormInternalsMixin(ListItem) {
     ` : nothing;
 
     return html`
-      <div part="leading">
-        ${prefixIconContent}
-        <div part="leading-text">
-          ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
-        </div>
+      ${prefixIconContent}
+      <div part="leading-text">
+        ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
       </div>
       <div part="trailing">
         ${selectedIcon}
