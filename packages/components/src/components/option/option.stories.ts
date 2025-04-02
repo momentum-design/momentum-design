@@ -6,7 +6,9 @@ import '.';
 import { hideControls } from '../../../config/storybook/utils';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
-const wrapWithDiv = (htmlString: TemplateResult) => html`<div aria-label="List box" role="listbox">${htmlString}</div>`;
+const wrapWithDiv = (htmlString: TemplateResult) => html`
+  <div style="width: 20rem;" aria-label="List box" role="listbox">${htmlString}</div>
+`;
 
 const render = (args: Args) => wrapWithDiv(html`
   <mdc-option
@@ -97,13 +99,11 @@ export const Example: StoryObj = {
 };
 
 export const OptionWithLongText: StoryObj = {
-  render: () => html`
-    <div style="width: 15rem;" aria-label="List box" role="listbox">
-      <mdc-option value="label" selected prefix-icon="placeholder-bold">
-        This is a very long text and it should be truncated
-      </mdc-option>
-    </div>
-  `,
+  render: () => wrapWithDiv(html`
+    <mdc-option value="label">
+      This is a very long text and it should be truncated.
+    </mdc-option>
+  `),
 };
 
 export const OptionWithIcon: StoryObj = {
