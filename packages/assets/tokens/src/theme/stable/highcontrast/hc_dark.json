@@ -1066,7 +1066,7 @@
           "disabled": {
             "value": "{color.highcontrast.black.GrayTextColor}",
             "type": "color",
-            "description": "Used for disalbed/read-only/read-only focus states for input components. "
+            "description": "Used for disabled/read-only/read-only focus states for input components. "
           }
         }
       },
