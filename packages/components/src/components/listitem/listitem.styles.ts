@@ -15,8 +15,8 @@ const styles = css`
     background-color: var(--mdc-listitem-default-background-color);
     column-gap: var(--mdc-listitem-column-gap);
     cursor: pointer;
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: auto auto;
     padding: 0.5rem 0.75rem;
     width: 100%;
   }
@@ -45,11 +45,7 @@ const styles = css`
     background-color: var(--mdc-listitem-background-color-active);
   }
   :host::part(trailing) {
-    margin-left: auto;
-  }
-  :host::part(trailing):dir(rtl) {
-    margin-left: unset;
-    margin-right: auto;
+    justify-self: end;
   }
   :host::part(leading), :host::part(trailing) {
     align-items: center;
