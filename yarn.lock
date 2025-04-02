@@ -2293,7 +2293,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@momentum-design/brand-visuals@workspace:packages/assets/brand-visuals":
+"@momentum-design/brand-visuals@workspace:*, @momentum-design/brand-visuals@workspace:packages/assets/brand-visuals":
   version: 0.0.0-use.local
   resolution: "@momentum-design/brand-visuals@workspace:packages/assets/brand-visuals"
   dependencies:
@@ -2377,6 +2377,7 @@ __metadata:
     "@geometricpanda/storybook-addon-badges": ^2.0.4
     "@lit/context": ^1.1.2
     "@lit/react": ^1.0.5
+    "@momentum-design/brand-visuals": "workspace:*"
     "@momentum-design/fonts": "workspace:*"
     "@momentum-design/icons": "workspace:*"
     "@momentum-design/tokens": "workspace:*"
