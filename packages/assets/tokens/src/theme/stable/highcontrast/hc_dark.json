@@ -1061,6 +1061,13 @@
               "description": "Used for operation pop: knocked-back effect when signle card is selected"
             }
           }
+        },
+        "input": {
+          "disabled": {
+            "value": "{color.highcontrast.black.GrayTextColor}",
+            "type": "color",
+            "description": "Feat: input/disabled\n\nNew token for input field update to fix accessibility issues.\nUsed for disalbed/read-only/read-only focus states for input components. "
+          }
         }
       },
       "button": {
