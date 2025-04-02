@@ -2,28 +2,32 @@ import { css } from 'lit';
 
 const styles = css`
   :host {
-    --mdc-option-trailing-min-width: 1rem;
+    --mdc-option-icon-width: 1rem;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
   :host::part(list-item) {
     height: 2.25rem;
   }
   :host::part(default-slot) {
-    display: none;
+    display: none; 
   }
-  :host::part(leading) {
-    /** The leading text should take up the remaining space before the trailing text. */
-    width: calc(100% - var(--mdc-option-trailing-min-width) - var(--mdc-listitem-column-gap));
+  :host::part(leading-icon),
+  :host::part(trailing) {
+    flex: 1;
+    max-width: var(--mdc-option-icon-width);
   }
   :host::part(leading-text) {
-    overflow: hidden;
-  }
-  :host::part(trailing) {
-    min-width: var(--mdc-option-trailing-min-width);
+    flex: 1;
+    /** 2x of leading and trailing icon width + 2x of column gap on both sides of the label text */
+    width: calc(100% - (2 * var(--mdc-option-icon-width)) - (2 * var(--mdc-listitem-column-gap)));
   }
   :host::part(leading-text-primary-label) {
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 `;
 
