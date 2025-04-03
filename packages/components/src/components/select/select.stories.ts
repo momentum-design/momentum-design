@@ -4,7 +4,7 @@ import type { TemplateResult } from 'lit';
 import { html } from 'lit';
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls } from '../../../config/storybook/utils';
+import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
 import '../divider';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import '../optgroup';
@@ -127,6 +127,7 @@ export const SelectWithGroups: StoryObj = {
       </mdc-select>
     </div>
   `,
+  ...hideAllControls(),
 };
 
 export const SelectWithLongOptionText: StoryObj = {
@@ -138,6 +139,7 @@ export const SelectWithLongOptionText: StoryObj = {
       <mdc-option>Green</mdc-option>
     </mdc-select>
   `),
+  ...hideAllControls(),
 };
 
 export const SelectWithIconOptions: StoryObj = {
@@ -150,6 +152,7 @@ export const SelectWithIconOptions: StoryObj = {
       <mdc-option prefix-icon="exit-room-bold">Leave</mdc-option>
     </mdc-select>
   `),
+  ...hideAllControls(),
 };
 
 export const SelectWithStates: StoryObj = {
@@ -182,6 +185,7 @@ export const SelectWithStates: StoryObj = {
     <mdc-select help-text="This is a readonly text." label="Label" placeholder="Selected text" readonly></mdc-select>
   </div>
   `,
+  ...hideAllControls(),
 };
 
 export const SelectWithFixedHeight = {
@@ -195,6 +199,11 @@ export const SelectWithFixedHeight = {
       ${Array.from({ length: 1000 }, (_, i) => html`<mdc-option label="Option Label ${i + 1}"></mdc-option>`)}
     </mdc-select>
   `),
+  argTypes: {
+    ...disableControls([
+      'readonly', 'name', 'data-aria-label', 'disabled', 'required-label', 'help-text-type', 'help-text',
+    ]),
+  },
 };
 
 export const SelectWithForm: StoryObj = {
@@ -231,4 +240,5 @@ export const SelectWithForm: StoryObj = {
       </form>
     `;
   },
+  ...hideAllControls(),
 };

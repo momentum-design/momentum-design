@@ -65,6 +65,9 @@ const styles = css`
     display: flex;
     padding: 2px;
   }
+  :host([readonly])::part(icon-container) {
+    color: var(--mdc-select-disabled-text-color);
+  }
   :host::part(popover-content) {
     min-width: auto;
   }
