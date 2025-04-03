@@ -59,7 +59,10 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   @state() private baseIconName: IconNames = ARROW_ICON.ARROW_DOWN;
 
   /** @internal */
-  @state() selectedValue?: string;
+  @state() selectedValueText?: string;
+
+  /** @internal */
+  @state() selectedValue = '';
 
   /** @internal */
   @state() showPopover = false;
@@ -113,7 +116,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    * Otherwise, it will set the first option as the selected option.
    * @param selectedOption - The option which should be selected.
    */
-  private updateTabIndexAndSetSelectedOnOptions(selectedOption?: EventTarget | null): void {
+  private updateTabIndexForAllOptions(selectedOption?: EventTarget | null): void {
     let isTabIndexSet = false;
     this.getAllValidOptions().forEach((option) => {
       if (option === selectedOption) {
@@ -140,16 +143,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    * @param event - The event which triggered this function.
    */
   private handleOptionsClick(event: MouseEvent): void {
-    this.updateTabIndexAndSetSelectedOnOptions(event.target);
-  }
-
-  /**
-   * Listens to changes in the default slot and updates the tabindex and selected attribute of the options accordingly.
-   * This is used to set the tabindex and selected attribute of the options when they are slotted.
-   * It is called internally when the slot is changed.
-   */
-  private handleSlotChange(): void {
-    this.updateTabIndexAndSetSelectedOnOptions();
+    this.updateTabIndexForAllOptions(event.target);
   }
 
   /**
@@ -159,15 +153,15 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    * @param option - The option element from which to set the selected value.
    */
   private setSelectedValue(option: Element): void {
-    this.selectedValue = option?.getAttribute('label') ?? option?.textContent ?? '';
-    this.value = option?.getAttribute('value') ?? option?.textContent ?? '';
+    this.selectedValueText = option?.getAttribute('label') ?? option?.textContent ?? '';
+    this.selectedValue = option?.getAttribute('value') ?? option?.textContent ?? '';
 
     // Set form value
-    this.internals.setFormValue(this.value);
+    this.internals.setFormValue(this.selectedValue);
     this.manageRequired();
 
     // dispatch a change event when a value is selected
-    this.dispatchChange(this.value);
+    this.dispatchChange(this.selectedValue);
   }
 
   /**
@@ -176,7 +170,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    * then the select is invalid.
    */
   private manageRequired() {
-    if (!this.value && this.requiredLabel) {
+    if (!this.selectedValue && this.requiredLabel) {
       if (this.validationMessage) {
         this.inputElement.setCustomValidity(this.validationMessage);
       } else {
@@ -193,14 +187,15 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    * Resets the select to its initial state.
    */
   formResetCallback(): void {
-    this.value = '';
-    this.selectedValue = undefined;
+    this.selectedValue = '';
+    this.selectedValueText = undefined;
+    this.internals.setFormValue(this.selectedValue);
   }
 
   /** @internal */
   formStateRestoreCallback(state: string): void {
-    this.value = state;
     this.selectedValue = state;
+    this.selectedValueText = state;
   }
 
   private dispatchChange(value: string): void {
@@ -243,9 +238,14 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   private handlePopoverOnOpen(event: KeyboardEvent): void {
     switch (event.key) {
       case KEYS.SPACE:
-      case KEYS.ENTER:
-        this.updateTabIndexAndSetSelectedOnOptions(event.target);
+        this.updateTabIndexForAllOptions(event.target);
         this.closePopover();
+        break;
+      case KEYS.ENTER:
+        this.updateTabIndexForAllOptions(event.target);
+        this.closePopover();
+        // if the popover is closed, then we submit the form.
+        this.form?.requestSubmit();
         break;
       case KEYS.ESCAPE:
         this.closePopover();
@@ -281,15 +281,9 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     switch (event.key) {
       case KEYS.ARROW_DOWN:
       case KEYS.ARROW_UP:
+      case KEYS.ENTER:
       case KEYS.SPACE:
         this.openPopover();
-        // Prevent the default browser behavior of scrolling down
-        event.preventDefault();
-        break;
-      case KEYS.ENTER:
-        this.openPopover();
-        // if the popover is closed, then we submit the form.
-        this.form?.requestSubmit();
         // Prevent the default browser behavior of scrolling down
         event.preventDefault();
         break;
@@ -391,9 +385,11 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     const selectedOptionIndex = options.findIndex((option) => option?.hasAttribute('selected'));
     if (selectedOptionIndex !== -1) {
       this.setSelectedValue(options[selectedOptionIndex]);
+      this.updateTabIndexForAllOptions(options[selectedOptionIndex]);
     } else if (!this.placeholder) {
-      // We will set the first option as selected.
+      // We will show the first option as selected.
       this.setSelectedValue(options[0]);
+      this.updateTabIndexForAllOptions();
     } else if (this.placeholder) {
       // If there is no default selected option
       // then we set the placeholder and call the native validity
@@ -416,7 +412,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         tabindex="-1"
         name="${this.name}"
         size="1"
-        .value="${this.value}"
+        .value="${this.selectedValue}"
         ?autofocus="${this.autofocus}"
         ?disabled="${this.disabled}"
         ?required="${!!this.requiredLabel}"
@@ -425,6 +421,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         aria-haspopup="listbox"
         aria-label="${this.dataAriaLabel ?? ''}"
         aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
+        @mousedown="${(event: MouseEvent) => event.preventDefault()}"
       >
         ${this.getOptionsContentFromSlot()}
       </select>
@@ -481,7 +478,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         @hidden="${this.handlePopoverClose}"
         style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
       >
-        <slot @click="${this.handleOptionsClick}" @slotchange="${this.handleSlotChange}"></slot>
+        <slot @click="${this.handleOptionsClick}"></slot>
       </mdc-popover>
     `;
   }
@@ -504,11 +501,11 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           class="${this.shouldFocusSelect() ? 'mdc-focus-ring' : ''}"
         >
           <mdc-text
-            part="base-text ${this.selectedValue ? 'selected' : ''}"
+            part="base-text ${this.selectedValueText ? 'selected' : ''}"
             type="${TYPE.BODY_MIDSIZE_REGULAR}"
             tagname="${VALID_TEXT_TAGS.SPAN}"
           >
-            ${this.selectedValue ?? this.placeholder}
+            ${this.selectedValueText ?? this.placeholder}
           </mdc-text>
           <div part="icon-container">
             <mdc-icon size="1" length-unit="rem" name="${this.baseIconName}"></mdc-icon>
