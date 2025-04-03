@@ -59,6 +59,14 @@ class Option extends FormInternalsMixin(ListItem) {
     this.addEventListener('mouseover', this.displayTooltipForLongText);
     this.addEventListener('focusout', this.hideTooltipOnLeave);
     this.addEventListener('mouseout', this.hideTooltipOnLeave);
+    this.addEventListener('click', this.handleClick);
+  }
+
+  private handleClick(): void {
+    // When the select dropdown (popover) is open,
+    // then if the tooltip is open, it has to be closed first.
+    // only then we can close the dropdown on option click/select.
+    this.hideTooltipOnLeave();
   }
 
   /**

@@ -202,7 +202,7 @@ export const SelectWithForm: StoryObj = {
     const handleSubmit = (event: Event) => {
       event.preventDefault();
       const formData = new FormData(event.target as HTMLFormElement);
-      const selectedValues = formData.getAll('stone-count');
+      const selectedValues = formData.get('stone-count');
       action('Form Submitted')({ value: selectedValues });
     };
 
