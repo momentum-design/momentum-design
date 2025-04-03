@@ -149,7 +149,7 @@ class Tab extends IconNameMixin(Buttonsimple) {
     this.size = undefined as unknown as ButtonSize;
     this.type = undefined as unknown as ButtonType;
 
-    if (this.onerror) {
+    if (!this.tabId && this.onerror) {
       this.onerror('tab id is required');
     }
   }
