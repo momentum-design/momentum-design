@@ -38,6 +38,7 @@ import Searchfield from './components/searchfield';
 import Brandvisual from './components/brandvisual';
 import Appheader from './components/appheader';
 import ScreenreaderAnnouncer from './components/screenreaderannouncer';
+import Card from './components/card';
 
 // Types Imports
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
@@ -96,6 +97,7 @@ export {
   Searchfield,
   Brandvisual,
   Appheader,
+  Card,
 };
 
 // Types Exports
