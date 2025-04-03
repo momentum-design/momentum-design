@@ -4,7 +4,7 @@ import { property, query, queryAssignedElements, state } from 'lit/decorators.js
 import { KEYS } from '../../utils/keys';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
-import FormfieldWrapper from '../formfieldwrapper';
+import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { IconNames } from '../icon/icon.types';
 import { TAG_NAME as OPTION_GROUP_TAG_NAME } from '../optgroup/optgroup.constants';
@@ -15,7 +15,10 @@ import { ARROW_ICON } from './select.constants';
 import styles from './select.styles';
 
 /**
- * select component, represents a control that provides a menu of options.
+ * The mdc-select component is a dropdown selection control that allows users to pick an option from a predefined list.
+ * It is designed to work with `mdc-option` for individual options and `mdc-optgroup` for grouping related options.
+ * The component ensures accessibility and usability while handling various use cases,
+ * including long text truncation with tooltip support.
  *
  * @dependency mdc-icon
  * @dependency mdc-popover
@@ -201,6 +204,9 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   }
 
   private dispatchChange(value: string): void {
+    if (!value) {
+      return;
+    }
     this.dispatchEvent(
       new CustomEvent('change', {
         detail: { value },
@@ -282,10 +288,10 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         break;
       case KEYS.ENTER:
         this.openPopover();
-        // Prevent the default browser behavior of scrolling down
-        event.preventDefault();
         // if the popover is closed, then we submit the form.
         this.form?.requestSubmit();
+        // Prevent the default browser behavior of scrolling down
+        event.preventDefault();
         break;
       case KEYS.HOME:
         this.openPopover();
