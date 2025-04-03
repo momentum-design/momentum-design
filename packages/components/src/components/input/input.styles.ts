@@ -25,6 +25,10 @@ const styles = [css`
     width: 100%;
   }
 
+  input{
+    font-family: inherit;
+  }
+
   :host([readonly]) .leading-icon {
     color: var(--mdc-input-support-text-color);
   }

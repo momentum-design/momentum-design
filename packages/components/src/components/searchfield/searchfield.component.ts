@@ -27,6 +27,17 @@ class Searchfield extends Input {
    */
   @state() isInputFocused = false;
 
+  constructor() {
+    super();
+    this.addEventListener('keydown', this.clearOnEsc);
+  }
+
+  private clearOnEsc(e: KeyboardEvent) {
+    if (e.key === 'Escape') {
+      this.clearInputText();
+    }
+  }
+
   override connectedCallback() {
     super.connectedCallback();
     this.leadingIcon = DEFAULTS.ICON;
@@ -66,6 +77,14 @@ class Searchfield extends Input {
     };
   }
 
+  override clearInputText() {
+    // remove all the filters and clear the input value (if any)
+    this.inputChips?.forEach((element) => {
+      element.remove();
+    });
+    super.clearInputText();
+  }
+
   public override render() {
     return html`
     ${this.renderLabelElement()}
@@ -82,7 +101,7 @@ class Searchfield extends Input {
         <slot name="filters" @slotchange=${this.renderInputChips}></slot></div>
       ${this.renderInputElement(DEFAULTS.TYPE)}
       </div>
-      ${this.renderTrailingButton()}
+      ${this.renderTrailingButton(!!this.inputChips?.length)}
     </div>
   `;
   }
