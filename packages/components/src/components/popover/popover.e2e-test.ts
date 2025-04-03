@@ -183,9 +183,14 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
    */
   await test.step('Defaults accessibility attributes with interactive popover', async () => {
     await componentsPage.setAttributes(popover, { interactive: '' });
+    await componentsPage.removeAttribute(popover, 'disable-aria-expanded');
     await expect(popover).toHaveAttribute('interactive');
+    await expect(popover).not.toHaveAttribute('disable-aria-expanded');
     await expect(popover).toHaveAttribute('aria-label', 'Trigger Button of Popover');
     await expect(popover).toHaveAttribute('aria-labelledby', 'trigger-button');
+    await expect(popover).toHaveAttribute('aria-modal', 'true');
+    await expect(triggerButton).toHaveAttribute('aria-expanded', 'false');
+    await expect(triggerButton).toHaveAttribute('aria-haspopup', 'dialog');
   });
 
   /**
@@ -245,6 +250,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
     await expect(popover).toHaveAttribute('role', DEFAULTS.ROLE);
     await expect(triggerButton).not.toHaveAttribute('aria-expanded');
     await expect(triggerButton).toHaveAttribute('aria-haspopup', 'dialog');
+    await expect(popover).toHaveAttribute('aria-modal', 'true');
   });
 
   /**
@@ -336,7 +342,7 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
       await triggerButton.click();
       await expect(popover).toBeVisible();
     });
-    await test.step('aria-expanded and aria-haspopup should be set to true when popover is visible', async () => {
+    await test.step('aria-expanded and aria-haspopup should be set when popover(interactive) is visible', async () => {
       await expect(triggerButton).toHaveAttribute('aria-expanded', 'true');
       await expect(triggerButton).toHaveAttribute('aria-haspopup', 'dialog');
     });
@@ -356,9 +362,8 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
       await expect(popover).not.toBeVisible();
       await expect(triggerButton).toBeFocused();
     });
-    await test.step('aria-expanded and aria-haspopup should not be set when popover is not visible', async () => {
+    await test.step('aria-expanded should be set to false when popover(interactive) is not visible', async () => {
       await expect(triggerButton).toHaveAttribute('aria-expanded', 'false');
-      await expect(triggerButton).not.toHaveAttribute('aria-haspopup');
     });
     await test.step('if `hideOnOutsideClick` is true clicking outside popover should close popover', async () => {
       await componentsPage.setAttributes(popover, { 'hide-on-outside-click': '' });

@@ -247,6 +247,7 @@ class Popover extends FocusTrapMixin(Component) {
 
   /**
    * Disable aria-expanded attribute on trigger element.
+   * Make sure to set this to false when the popover is interactive.
    * @default false
    */
   @property({ type: Boolean, reflect: true, attribute: 'disable-aria-expanded' })
@@ -361,12 +362,38 @@ class Popover extends FocusTrapMixin(Component) {
     this.removeEventListener('focus-trap-exit', this.hidePopover);
   }
 
+  /**
+   * Updates the aria-expanded attribute on the trigger element.
+   */
+  private updateAriaExpandedAttribute() {
+    if (this.disableAriaExpanded) {
+      this.triggerElement?.removeAttribute('aria-expanded');
+    } else {
+      this.triggerElement?.setAttribute('aria-expanded', `${this.visible}`);
+    }
+  }
+
+  /**
+   * Updates the aria-haspopup attribute on the trigger element.
+   */
+  private updateAriaHasPopupAttribute() {
+    if (this.interactive) {
+      this.triggerElement?.setAttribute(
+        'aria-haspopup',
+        this.triggerElement?.getAttribute('aria-haspopup') || 'dialog',
+      );
+    } else {
+      this.triggerElement?.removeAttribute('aria-haspopup');
+    }
+  }
+
   protected override async updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
 
     if (changedProperties.has('visible')) {
       const oldValue = (changedProperties.get('visible') as boolean | undefined) || false;
       await this.isOpenUpdated(oldValue, this.visible);
+      this.updateAriaExpandedAttribute();
     }
     if (changedProperties.has('placement')) {
       this.setAttribute(
@@ -401,6 +428,12 @@ class Popover extends FocusTrapMixin(Component) {
       || changedProperties.has('aria-labelledby')
     ) {
       this.utils.setupAccessibility();
+    }
+    if (changedProperties.has('disableAriaExpanded')) {
+      this.updateAriaExpandedAttribute();
+    }
+    if (changedProperties.has('interactive')) {
+      this.updateAriaHasPopupAttribute();
     }
   }
 
@@ -455,15 +488,6 @@ class Popover extends FocusTrapMixin(Component) {
    * @param newValue - The new value of the visible property.
    */
   private async isOpenUpdated(oldValue: boolean, newValue: boolean) {
-    // On the very first update when trigger is not visible, we set aria attributes on trigger element.
-    if (this.triggerElement && this.interactive && newValue === false && oldValue === false) {
-      this.triggerElement.setAttribute(
-        'aria-haspopup',
-        this.triggerElement.getAttribute('aria-haspopup') || 'dialog',
-      );
-      this.triggerElement.setAttribute('aria-expanded', 'false');
-    }
-
     if (oldValue === newValue || !this.triggerElement) {
       return;
     }
@@ -495,16 +519,6 @@ class Popover extends FocusTrapMixin(Component) {
       if (this.hideOnEscape) {
         document.addEventListener('keydown', this.onEscapeKeydown);
       }
-
-      if (!this.disableAriaExpanded) {
-        this.triggerElement.setAttribute('aria-expanded', 'true');
-      }
-      if (this.interactive) {
-        this.triggerElement.setAttribute(
-          'aria-haspopup',
-          this.triggerElement.getAttribute('aria-haspopup') || 'dialog',
-        );
-      }
       PopoverEventManager.onShowPopover(this);
     } else {
       popoverStack.pop();
@@ -527,9 +541,6 @@ class Popover extends FocusTrapMixin(Component) {
       }
 
       this.deactivateFocusTrap?.();
-      if (!this.disableAriaExpanded) {
-        this.triggerElement.setAttribute('aria-expanded', 'false');
-      }
       if (this.focusBackToTrigger) {
         this.triggerElement?.focus();
       }
