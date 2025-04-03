@@ -3,10 +3,11 @@ import '.';
 import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
-import { DEFAULTS, ORIENTATIONS, VARIANTS } from './card.constants';
+import { DEFAULTS, ORIENTATIONS, VARIANTS } from '../card/card.constants';
+import { SELECTION_TYPE } from './selectablecard.constants';
 
 const render = (args: Args) => html`
-  <mdc-card 
+  <mdc-selectable-card 
     variant="${args.variant}"
     orientation="${args.orientation}"
     card-title="${args['card-title']}"
@@ -15,13 +16,18 @@ const render = (args: Args) => html`
     image-alt="${args['image-alt']}"
     icon-name="${args['icon-name']}"
     icon-aria-label="${args['icon-aria-label']}"
+    ?selected="${args.selected}"
+    ?disabled="${args.disabled}"
+    data-aria-label="${args['data-aria-label']}"
+    selection-type="${args['selection-type']}"
+    tabindex="${args.tabIndex}"
     class="${args.class}"
-    style="${args.style}">${args.children}</mdc-card>`;
+    style="${args.style}">${args.children}</mdc-selectable-card>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/card/card',
+  title: 'Work In Progress/card/selectable-card',
   tags: ['autodocs'],
-  component: 'mdc-card',
+  component: 'mdc-selectable-card',
   render,
   parameters: {
     badges: ['wip'],
@@ -53,6 +59,22 @@ const meta: Meta = {
     'icon-aria-label': {
       control: 'text',
     },
+    selected: {
+      control: 'boolean',
+    },
+    disabled: {
+      control: 'boolean',
+    },
+    tabIndex: {
+      control: 'number',
+    },
+    'data-aria-label': {
+      control: 'text',
+    },
+    'selection-type': {
+      control: 'select',
+      options: Object.values(SELECTION_TYPE),
+    },
     ...hideControls(['children']),
     ...classArgType,
     ...styleArgType,
@@ -71,6 +93,10 @@ export const Example: StoryObj = {
     'icon-aria-label': 'Icon Aria Label',
     variant: DEFAULTS.VARIANT,
     orientation: DEFAULTS.ORIENTATION,
+    selected: false,
+    disabled: false,
+    tabIndex: 0,
+    'selection-type': SELECTION_TYPE.CHECK,
     children: html`<mdc-text slot='body' 
     type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
     Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
@@ -90,6 +116,11 @@ export const HorizontalCard: StoryObj = {
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     'icon-aria-label': 'Icon Aria Label',
+    'data-aria-label': 'Data Aria Label',
+    'selection-type': SELECTION_TYPE.CHECKBOX,
+    selected: false,
+    disabled: false,
+    tabIndex: 0,
     variant: DEFAULTS.VARIANT,
     orientation: ORIENTATIONS.HORIZONTAL,
     children: html`<mdc-text slot='body' 
@@ -109,23 +140,11 @@ export const CardWithoutImage: StoryObj = {
     subtitle: 'Subtitle',
     'icon-name': 'placeholder-bold',
     'icon-aria-label': 'Icon Aria Label',
-    variant: DEFAULTS.VARIANT,
-    orientation: DEFAULTS.ORIENTATION,
-    children: html`<mdc-text slot='body' 
-    type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
-    Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
-    Praesent gravida dui diam, non elementum risus laoreet vitae. 
-    Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
-    Vivamus mattis ligula eget imperdiet tempor. 
-    Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`,
-  },
-};
-
-export const CardWithoutHeader: StoryObj = {
-  args: {
-    'image-src': 'https://placehold.co/320x200',
-    'image-alt': 'Image Alt',
+    'data-aria-label': 'Data Aria Label',
+    'selection-type': SELECTION_TYPE.RADIO,
+    selected: false,
+    disabled: false,
+    tabIndex: 0,
     variant: DEFAULTS.VARIANT,
     orientation: DEFAULTS.ORIENTATION,
     children: html`<mdc-text slot='body' 
@@ -147,6 +166,10 @@ export const CardWithoutBody: StoryObj = {
     subtitle: 'Subtitle',
     'icon-name': 'placeholder-bold',
     'icon-aria-label': 'Icon Aria Label',
+    'selection-type': SELECTION_TYPE.CHECK,
+    selected: false,
+    disabled: false,
+    tabIndex: 0,
     variant: DEFAULTS.VARIANT,
     orientation: DEFAULTS.ORIENTATION,
   },

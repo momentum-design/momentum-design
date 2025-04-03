@@ -43,6 +43,7 @@ const styles = css`
   }
 
   :host::part(body){
+    width: 100%;
     padding: 16px 24px;
     display: flex;
     flex-direction: column;

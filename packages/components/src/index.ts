@@ -39,6 +39,7 @@ import Brandvisual from './components/brandvisual';
 import Appheader from './components/appheader';
 import ScreenreaderAnnouncer from './components/screenreaderannouncer';
 import Card from './components/card';
+import SelectableCard from './components/selectablecard';
 
 // Types Imports
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
@@ -98,6 +99,7 @@ export {
   Brandvisual,
   Appheader,
   Card,
+  SelectableCard,
 };
 
 // Types Exports
