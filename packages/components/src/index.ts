@@ -34,6 +34,10 @@ import Progressbar from './components/progressbar';
 import Option from './components/option';
 import OptGroup from './components/optgroup';
 import Textarea from './components/textarea';
+import Searchfield from './components/searchfield';
+import Brandvisual from './components/brandvisual';
+import Appheader from './components/appheader';
+import ScreenreaderAnnouncer from './components/screenreaderannouncer';
 
 // Types Imports
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
@@ -86,8 +90,12 @@ export {
   Option,
   OptGroup,
   Progressbar,
+  ScreenreaderAnnouncer,
   Textarea,
   Tooltip,
+  Searchfield,
+  Brandvisual,
+  Appheader,
 };
 
 // Types Exports

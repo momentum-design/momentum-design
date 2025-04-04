@@ -43,11 +43,6 @@ import { getIconNameWithoutStyle, getIconSize } from './button.utils';
  *
  * @dependency mdc-icon
  *
- * @event click - (React: onClick) This event is dispatched when the button is clicked.
- * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the button.
- * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the button.
- * @event focus - (React: onFocus) This event is dispatched when the button receives focus.
- *
  * @tagname mdc-button
  *
  * @slot - Text label of the button.

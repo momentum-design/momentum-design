@@ -46,6 +46,7 @@ async function loop() {
 
     const webComponentDir = path.dirname(component.path);
     const webComponentConstantsFile = path.posix.join(webComponentDir, `${tagWithoutPrefix}.constants`);
+    const webComponentTypesFile = path.posix.join(webComponentDir, `${tagWithoutPrefix}.types`);
 
     fs.mkdirSync(reactComponentDir, { recursive: true });
 
@@ -53,17 +54,42 @@ async function loop() {
     // generate a nice React component jsDoc based on the web component jsDoc
     const jsDoc = component.jsDoc || '';
 
-    // TODO: add typing for the event
-    const events = (component.events || [])
-      .map(event => `${event.reactName}: '${event.name}'`)
+    // ** EVENTS for CREATE COMPONENT **
+    const evDirectlyDefined = (component.events || []).filter(event => !!event.name && !event.inheritedFrom);
+    const evInheritDefined = (component.events || []).filter(event => !!event.name && !!event.inheritedFrom);
+
+    const evDirectlyDefinedImportStrings = evDirectlyDefined
+      .map(event => `${event.reactName}: '${event.name}' as EventName<Events['${event.reactName}Event']>`)
       .join(',\n');
+
+    const evInheritDefinedImportStrings = evInheritDefined
+      .map(event => `${event.reactName}: '${event.name}' as EventName<EventsInherited['${event.reactName}Event']>`)
+      .join(',\n');
+
+
+    // ** TYPE IMPORTS **
+    const convertModulePathToTypesFile = modulePath => {
+      return modulePath.replace('src/', '').replace('.component.ts', '.types');
+    };
+
+    let typeImports = '';
+    let typeInheritedImports = '';
+
+    if (evDirectlyDefined.length > 0) {
+      typeImports = `import type { Events } from '../../${webComponentTypesFile}';`;
+    }
+    if (evInheritDefined.length > 0) {
+      // this assumes that there can only be inherited from one other component:
+      typeInheritedImports = `import type { Events as EventsInherited } from '../../${convertModulePathToTypesFile(evInheritDefined[0].inheritedFrom.module)}';`;
+    }
 
     const source = await prettier.format(
       `
       import * as React from 'react';
-      import { createComponent } from '@lit/react';
+      import { createComponent${component.events ? `, type EventName` : ''} } from '@lit/react';
       import Component from '../../${webComponentDir}';
       import { TAG_NAME } from '../../${webComponentConstantsFile}';
+      ${typeImports}${typeInheritedImports}
 
       ${jsDoc}
       const reactWrapper = createComponent({
@@ -71,7 +97,8 @@ async function loop() {
         elementClass: Component,
         react: React,
          events: {
-          ${events}
+          ${evDirectlyDefinedImportStrings}${evDirectlyDefinedImportStrings && evInheritDefinedImportStrings && `,`}
+          ${evInheritDefinedImportStrings}
         },
         displayName: "${component.name}",
       })

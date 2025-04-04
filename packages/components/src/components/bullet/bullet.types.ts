@@ -3,4 +3,4 @@ import { SIZE } from './bullet.constants';
 
 type Size = ValueOf<typeof SIZE>;
 
-export { Size };
+export type { Size };
