@@ -1,4 +1,4 @@
-import type { TemplateResult } from 'lit';
+import type { PropertyValues, TemplateResult } from 'lit';
 import { CSSResult, html, nothing } from 'lit';
 import { property, query, queryAssignedElements, state } from 'lit/decorators.js';
 import { KEYS } from '../../utils/keys';
@@ -488,6 +488,15 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       return false;
     }
     return true;
+  }
+
+  public override updated(changedProperties: PropertyValues): void {
+    super.updated(changedProperties);
+
+    if (changedProperties.has('disabled') || changedProperties.has('readonly')) {
+      this.closePopover();
+      this.handlePopoverClose();
+    }
   }
 
   public override render() {
