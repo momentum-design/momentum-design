@@ -14,6 +14,8 @@ import styles from './option.styles';
  * option component, which is used as a list item in a select component.<br/>
  * We can pass an icon which will be displayed in leading position of the option label text.
  *
+ * @dependency mdc-icon
+ * @dependency mdc-text
  * @dependency mdc-tooltip
  *
  * @tagname mdc-option
