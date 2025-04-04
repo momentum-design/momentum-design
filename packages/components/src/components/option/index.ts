@@ -1,4 +1,6 @@
 import '../icon';
+import '../text';
+import '../tooltip';
 import Option from './option.component';
 import { TAG_NAME } from './option.constants';
 

@@ -11,6 +11,8 @@ const styles = css`
     --mdc-popover-inverted-border-color: var(--mds-color-theme-inverted-outline-primary-normal);
     --mdc-popover-inverted-text-color: var(--mds-color-theme-inverted-text-primary-normal);
     --mdc-popover-elevation-3: var(--mds-elevation-3);
+    --mdc-popover-max-width: unset;
+    --mdc-popover-max-height: auto;
 
     display: none;
     position: absolute;
@@ -19,6 +21,7 @@ const styles = css`
     border-radius: 0.5rem;
     border: 0.0625rem solid var(--mdc-popover-border-color);
     filter: var(--mdc-popover-elevation-3);
+    width: var(--mdc-popover-max-width);
   }
 
   :host([visible]) {
@@ -49,6 +52,7 @@ const styles = css`
     overflow-y: auto;
     min-width: max-content;
     z-index: 9998;
+    max-height: var(--mdc-popover-max-height);
   }
 
   .popover-hover-bridge {

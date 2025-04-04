@@ -14,6 +14,19 @@ const disableControls = (keys: Array<string>) => {
 };
 
 /**
+ * Returns an object to hide all controls in Storybook.
+ * This will hide all controls for the specified story,
+ * to globally hide all interactive controls.
+ */
+const hideAllControls = () => ({
+  parameters: {
+    controls: {
+      disable: true,
+    },
+  },
+});
+
+/**
  * To automatically hide controls in storybook
  * @param keys - Array of keys to hide
  * @returns Object which can be destructured in argTypes
@@ -43,4 +56,4 @@ const readOnlyControls = (keys: Array<string>) => {
   return objectReturnValue;
 };
 
-export { disableControls, hideControls, readOnlyControls };
+export { disableControls, hideControls, hideAllControls, readOnlyControls };
