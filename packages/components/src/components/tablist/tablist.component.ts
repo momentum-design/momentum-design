@@ -100,11 +100,6 @@ class TabList extends Component {
     this.addEventListener('activechange', this.handleNestedTabActiveChange as EventListener);
   }
 
-  override connectedCallback() {
-    super.connectedCallback();
-    this.role = 'tablist';
-  }
-
   /**
    * Set the initial active tab after firstUpdated,
    * since this.tabs (=slot) are only available after
@@ -113,11 +108,12 @@ class TabList extends Component {
    * Also set up the event listeners.
    */
   protected override firstUpdated(): void {
+    if (!this.tabs) { return; }
+
     /**
      * If there are no tabs, skip the initialization of the active tab and the event listeners.
      * Then throw an error.
      */
-    if (!this.tabs) { return; }
     if (Array.isArray(this.tabs) && this.tabs.length === 0) {
       if (this.onerror) {
         this.onerror('The tablist component must have at least one child tab');
@@ -137,14 +133,12 @@ class TabList extends Component {
     });
     resizeObserver.observe(this);
 
-    this.tabs?.forEach((tab) => {
-      tab.addEventListener('focus', this.handleFocus);
-      tab.addEventListener('mousedown', this.handleMousedown);
-    });
-
     if (!this.activeTabId) {
       this.activeTabId = getFirstTab(this.tabs)?.tabId;
     }
+
+    this.tabsContainer?.addEventListener('focusin', this.handleFocus);
+    this.tabsContainer?.addEventListener('mousedown', this.handleMousedown);
   }
 
   /**
@@ -425,7 +419,7 @@ class TabList extends Component {
 
      return html`
       ${arrowButton('backward')}
-      <div class="container">
+      <div class="container" role="tablist">
         <slot></slot>
       </div>
       ${arrowButton(ARROW_BUTTON_DIRECTION.FORWARD)}`;
