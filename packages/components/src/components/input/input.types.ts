@@ -5,4 +5,11 @@ type AutoCapitalizeType = ValueOf<typeof AUTO_CAPITALIZE>;
 type AutoCompleteType = ValueOf<typeof AUTO_COMPLETE>;
 type InputType = ValueOf<typeof INPUT_TYPE>;
 
-export { AutoCapitalizeType, AutoCompleteType, InputType };
+interface Events {
+  onInputEvent: InputEvent;
+  onChangeEvent: Event;
+  onFocusEvent: FocusEvent;
+  onBlurEvent: FocusEvent;
+}
+
+export type { AutoCapitalizeType, AutoCompleteType, InputType, Events };
