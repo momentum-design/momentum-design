@@ -1,8 +1,10 @@
 import { css } from 'lit';
+import { baseHostStyleVariables } from '../../utils/styles';
 
-const styles = css`
+const styles = [baseHostStyleVariables,
+  css`
   :host {
-    --mdc-tablist-focus-ring-outer-width: calc(0.0625rem + calc(2 * 0.125rem));
+    --mdc-tablist-focus-ring-outer-width: var(--mdc-focus-ring-outer-width);
     --mdc-tablist-gap: 0.5rem;
     --mdc-tablist-width: 100%;
     --mdc-tablist-arrow-button-margin: 0.75rem;
@@ -30,6 +32,6 @@ const styles = css`
   :host mdc-button[prefix-icon="arrow-right-regular"] {
     margin-left: var(--mdc-tablist-arrow-button-margin);
   }
-`;
+`];
 
-export default [styles];
+export default [...styles];
