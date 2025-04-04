@@ -213,7 +213,6 @@ class Tab extends IconNameMixin(Buttonsimple) {
 
   protected override executeAction() {
     // Toggle the active state of the tab.
-    this.active = !this.active;
     this.handleTabActiveChange(this.active);
   }
 
