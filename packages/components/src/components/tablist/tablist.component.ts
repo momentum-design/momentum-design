@@ -62,6 +62,23 @@ class TabList extends Component {
   @property({ type: String, attribute: 'active-tab-id', reflect: true })
   activeTabId?: string;
 
+  /**
+   * Selector for the element that provides a label for the tablist.
+   */
+  @property({ type: String, attribute: 'data-aria-labelledby' })
+  dataAriaLabelledby?: string;
+
+  /**
+   * Label for the tablist in case aria-labelledby is not provided.
+   * This is used when the tablist does not have a visible label.
+   * Defaults to 'Tab List'.
+   * <br/>
+   * Note: If both `data-aria-labelledby` and `data-aria-label` are provided,
+   * the `data-aria-labelledby` will be used.
+   */
+  @property({ type: String, attribute: 'data-aria-label' })
+  dataAriaLabel?: string;
+
   @query('.container')
   private tabsContainer?: HTMLDivElement;
 
@@ -128,6 +145,8 @@ class TabList extends Component {
       }
     }
 
+    this.setAriaLabelledByOrAriaLabel();
+
     const resizeObserver = new ResizeObserver((): void => {
       this.handleArrowButtonVisibility();
     });
@@ -156,6 +175,10 @@ class TabList extends Component {
   public override update(changedProperties: PropertyValues<this>): void {
     super.update(changedProperties);
 
+    if (changedProperties.has('dataAriaLabelledby') || changedProperties.has('dataAriaLabel')) {
+      this.setAriaLabelledByOrAriaLabel();
+    }
+
     if (changedProperties.has('activeTabId')) {
       if (!this.tabs || !this.activeTabId) { return; }
 
@@ -171,17 +194,34 @@ class TabList extends Component {
        */
       if (changedProperties.get('activeTabId')) {
         this.fireTabChangeEvent(newTab);
+        this.focusTab(newTab);
       } else {
         this.resetTabIndexAndSetNewTabIndex(newTab);
       }
     }
   }
 
-  /**
-   * Dispatch the change event.
-   * @internal
-   * @param newTab - the new tab that is active.
-   */
+   /**
+    * Set aria-labelledby attribute on the tablist element.
+    * If it does not exist, set aria-label attribute.
+    * As fallback, set aria-label to 'Tab List'.
+    * @internal
+    */
+   private setAriaLabelledByOrAriaLabel = (): void => {
+     if (this.dataAriaLabelledby) {
+       this.tabsContainer?.setAttribute('aria-labelledby', this.dataAriaLabelledby);
+       this.tabsContainer?.removeAttribute('aria-label');
+     } else {
+       this.tabsContainer?.setAttribute('aria-label', this.dataAriaLabel || 'Tab List');
+       this.tabsContainer?.removeAttribute('aria-labelledby');
+     }
+   };
+
+   /**
+    * Dispatch the change event.
+    * @internal
+    * @param newTab - the new tab that is active.
+    */
     private fireTabChangeEvent = (newTab: Tab): void => {
       const event = new CustomEvent('change', {
         detail: newTab.tabId,
@@ -201,8 +241,8 @@ class TabList extends Component {
      */
     if (event.relatedTarget instanceof Tab) { return; }
     /**
-      * If the element gaining focus is not a tab, do nothing.
-      */
+     * If the element gaining focus is not a tab, do nothing.
+     */
     if (!(event.target instanceof Tab)) { return; }
 
     const activeTab = getActiveTab(this.tabs || []);
@@ -385,8 +425,8 @@ class TabList extends Component {
   };
 
    /**
-   * Scroll tabs forward or backward.
-   */
+    * Scroll tabs forward or backward.
+    */
    private scrollTabs = (direction: ArrowButtonDirectionType): void => {
      const forwardMultiplier = !this.isRtl() ? 1 : -1;
      const backwardMultiplier = !this.isRtl() ? -1 : 1;

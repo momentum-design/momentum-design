@@ -12,7 +12,8 @@ const render = (args: Args) => html`
   @keyup="${action('onkeyup')}"
   @keydown="${action('onkeydown')}"
   active-tab-id="${args['active-tab-id']}"
-  aria-label="Media types">
+  data-aria-labelledby=${args['data-aria-labelledby']}
+  data-aria-label=${args['data-aria-label']}>
   <mdc-tab
     variant=${args.tabvariant}
     text="Photos"
@@ -79,7 +80,12 @@ const meta: Meta = {
   argTypes: {
     'active-tab-id': {
       control: 'text',
-      description: 'ID of the active tab, defaults to the first tab if not provided',
+    },
+    'data-aria-labelledby': {
+      control: 'text',
+    },
+    'data-aria-label': {
+      control: 'text',
     },
     tabvariant: {
       control: 'select',
@@ -119,5 +125,6 @@ export const ActiveTabAttributeSet: StoryObj = {
   args: {
     tabvariant: 'glass',
     'active-tab-id': 'documents-tab',
+    'data-aria-label': 'Media types',
   },
 };
