@@ -7,6 +7,7 @@ import { Component } from '../../models';
 import { ARROW_BUTTON_DIRECTION, KEYCODES } from './tablist.constants';
 
 import Tab from '../tab/tab.component';
+import Button from '../button/button.component';
 import type { ArrowButtonDirectionType } from './tablist.types';
 import { getFirstTab, getLastTab, getNextTab, getPreviousTab, findTab, getActiveTab } from './tablist.utils';
 
@@ -279,7 +280,7 @@ class TabList extends Component {
       if (!(tab instanceof Tab)) { return; }
 
       this.setActiveTab(tab);
-      if (tab !== document.activeElement) {
+      if (tab !== this.shadowRoot?.activeElement) {
         this.focusTab(tab);
       }
 
@@ -399,12 +400,28 @@ class TabList extends Component {
     if (!this.isRtl()) {
       if (firstTabLeftEdgePosition < tabListLeftEdgePosition) {
         this.showBackwardArrowButton = true;
+      } else if (this.shadowRoot?.activeElement instanceof Button) {
+        this.showBackwardArrowButton = false;
+
+        const forwardArrowButton = this.shadowRoot?.querySelector('mdc-button[prefix-icon="arrow-right-regular"]');
+
+        if (forwardArrowButton instanceof Button) {
+          forwardArrowButton.focus();
+        }
       } else {
         this.showBackwardArrowButton = false;
       }
 
       if (lastTabRightEdgePosition > tabListRightEdgePosition) {
         this.showForwardArrowButton = true;
+      } else if (this.shadowRoot?.activeElement instanceof Button) {
+        this.showForwardArrowButton = false;
+
+        const backwardArrowButton = this.shadowRoot?.querySelector('mdc-button[prefix-icon="arrow-left-regular"]');
+
+        if (backwardArrowButton instanceof Button) {
+          backwardArrowButton.focus();
+        }
       } else {
         this.showForwardArrowButton = false;
       }
@@ -413,12 +430,28 @@ class TabList extends Component {
 
     if (firstTabRightEdgePosition > tabListRightEdgePosition) {
       this.showBackwardArrowButton = true;
+    } else if (this.shadowRoot?.activeElement instanceof Button) {
+      this.showBackwardArrowButton = false;
+
+      const forwardArrowButton = this.shadowRoot?.querySelector('mdc-button[prefix-icon="arrow-left-regular"]');
+
+      if (forwardArrowButton instanceof Button) {
+        forwardArrowButton.focus();
+      }
     } else {
       this.showBackwardArrowButton = false;
     }
 
     if (lastTabLeftEdgePosition < tabListLeftEdgePosition) {
       this.showForwardArrowButton = true;
+    } else if (this.shadowRoot?.activeElement instanceof Button) {
+      this.showForwardArrowButton = false;
+
+      const backwardArrowButton = this.shadowRoot?.querySelector('mdc-button[prefix-icon="arrow-right-regular"]');
+
+      if (backwardArrowButton instanceof Button) {
+        backwardArrowButton.focus();
+      }
     } else {
       this.showForwardArrowButton = false;
     }
