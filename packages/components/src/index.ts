@@ -30,6 +30,7 @@ import ThemeProvider from './components/themeprovider';
 import Toggle from './components/toggle';
 import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
+import TabList from './components/tablist';
 import Progressbar from './components/progressbar';
 import Option from './components/option';
 import OptGroup from './components/optgroup';
@@ -93,6 +94,7 @@ export {
   ScreenreaderAnnouncer,
   Textarea,
   Tooltip,
+  TabList,
   Searchfield,
   Brandvisual,
   Appheader,

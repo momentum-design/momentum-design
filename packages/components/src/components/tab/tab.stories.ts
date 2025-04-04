@@ -13,6 +13,7 @@ const render = (args: Args) => html`<div role="tablist">
     @keydown="${action('onkeydown')}"
     @keyup="${action('onkeyup')}"
     @focus="${action('onfocus')}"
+    @activechange="${action('onactivechange')}"
     ?active="${args.active}"
     aria-label="${ifDefined(args.text ? nothing : 'Label')}"
     ?disabled="${args.disabled}"
@@ -20,6 +21,7 @@ const render = (args: Args) => html`<div role="tablist">
     tabIndex="${ifDefined(args.tabIndex)}"
     text="${ifDefined(args.text)}"
     variant="${ifDefined(args.variant)}"
+    tab-id="tab1"
     >${args.showBadge ? html`<mdc-badge slot="badge" type="counter" counter="1"></mdc-badge>` : nothing}</mdc-tab>
 </div>`;
 
