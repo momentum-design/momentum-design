@@ -11,8 +11,6 @@ import { DEFAULTS } from './navitemlist.constants';
  *
  * @slot default - This is a default/unnamed slot
  *
- * @event click - (React: onClick) This event is a Click Event, update the description
- *
  * @cssproperty --custom-property-name - Description of the CSS custom property
  */
 class NavItemList extends Component {

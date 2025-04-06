@@ -5,7 +5,7 @@ NavItemList.register(TAG_NAME);
 
 declare global {
     interface HTMLElementTagNameMap {
-        ['mdc-navitemlist']:NavItemList
+        ['mdc-navitemlist']: NavItemList
     }
 }
 
