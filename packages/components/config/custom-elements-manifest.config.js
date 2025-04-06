@@ -112,7 +112,6 @@ module.exports = {
             classDoc.events.forEach((event) => {
               if (event.name) {
                 event.reactName = parseReactEventName(event.description) || `on${pascalCase(event.name)}`;
-                event.eventName = `${pascalCase(event.name)}Event`;
               }
             });
           }

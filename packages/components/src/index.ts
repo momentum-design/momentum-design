@@ -40,6 +40,7 @@ import Appheader from './components/appheader';
 import SideNavigation from './components/sidenavigation/sidenavigation.component';
 import NavItemList from './components/navitemlist';
 import NavItem from './components/navitem';
+import ScreenreaderAnnouncer from './components/screenreaderannouncer';
 // Types Imports
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
 import type { TextType } from './components/text/text.types';
@@ -91,6 +92,7 @@ export {
   Option,
   OptGroup,
   Progressbar,
+  ScreenreaderAnnouncer,
   Textarea,
   Tooltip,
   Searchfield,
