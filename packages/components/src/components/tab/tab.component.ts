@@ -121,6 +121,15 @@ class Tab extends IconNameMixin(Buttonsimple) {
   variant: Variant = DEFAULTS.VARIANT;
 
   /**
+   * Id of the tab (used as a identificator when used in the tablist)
+   * Note: has to be unique!
+   *
+   * @default undefined
+   */
+    @property({ type: String, reflect: true, attribute: 'tab-id' })
+    tabId?: string;
+
+  /**
    * @internal
    */
   private prevIconName?: string;
@@ -133,7 +142,20 @@ class Tab extends IconNameMixin(Buttonsimple) {
     this.type = undefined as unknown as ButtonType;
   }
 
-  /**
+    /**
+   * Dispatch the activechange event.
+   *
+   * @param active - The active state of the tab.
+   */
+    private handleTabActiveChange = (active: boolean): void => {
+      const event = new CustomEvent('activechange', {
+        detail: { tabId: this.tabId, active },
+        bubbles: true,
+      });
+      this.dispatchEvent(event);
+    };
+
+    /**
    * Modifies the icon name based on the active state.
    * If the tab is active, the icon name is suffixed with '-filled'.
    * If the tab is inactive, the icon name is restored to its original value.
@@ -142,29 +164,29 @@ class Tab extends IconNameMixin(Buttonsimple) {
    * @param active - The active state.
    */
 
-  private modifyIconName(active: boolean): void {
-    if (this.iconName) {
-      if (active) {
-        this.prevIconName = this.iconName;
-        this.iconName = `${getIconNameWithoutStyle(this.iconName)}-filled` as IconNames;
-      } else if (this.prevIconName) {
-        this.iconName = this.prevIconName as IconNames;
+    private modifyIconName(active: boolean): void {
+      if (this.iconName) {
+        if (active) {
+          this.prevIconName = this.iconName;
+          this.iconName = `${getIconNameWithoutStyle(this.iconName)}-filled` as IconNames;
+        } else if (this.prevIconName) {
+          this.iconName = this.prevIconName as IconNames;
+        }
       }
     }
-  }
 
-  /**
+    /**
    * Sets the variant attribute for the tab component.
    * If the provided variant is not included in the TAB_VARIANTS,
    * it defaults to the value specified in DEFAULTS.VARIANT.
    *
    * @param variant - The variant to set.
    */
-  private setVariant(variant: Variant): void {
-    this.setAttribute('variant', Object.values(TAB_VARIANTS).includes(variant) ? variant : DEFAULTS.VARIANT);
-  }
+    private setVariant(variant: Variant): void {
+      this.setAttribute('variant', Object.values(TAB_VARIANTS).includes(variant) ? variant : DEFAULTS.VARIANT);
+    }
 
-  /**
+    /**
    * Sets the aria-selected attribute based on the active state of the Tab.
    * If the tab is active, the filled version of the icon is displayed,
    * else the icon is restored to its original value.
@@ -172,25 +194,26 @@ class Tab extends IconNameMixin(Buttonsimple) {
    * @param element - The tab element.
    * @param active - The active state of the tab.
    */
-  protected override setActive(element: HTMLElement, active: boolean) {
-    element.setAttribute('aria-selected', active ? 'true' : 'false');
-    this.modifyIconName(active);
-  }
-
-  protected override executeAction() {
-    // Toggle the active state of the tab.
-    this.active = !this.active;
-  }
-
-  public override update(changedProperties: PropertyValues): void {
-    super.update(changedProperties);
-    if (changedProperties.has('variant')) {
-      this.setVariant(this.variant);
+    protected override setActive(element: HTMLElement, active: boolean) {
+      element.setAttribute('aria-selected', active ? 'true' : 'false');
+      this.modifyIconName(active);
     }
-  }
 
-  public override render() {
-    return html`
+    protected override executeAction() {
+    // Toggle the active state of the tab.
+      this.active = !this.active;
+      this.handleTabActiveChange(this.active);
+    }
+
+    public override update(changedProperties: PropertyValues): void {
+      super.update(changedProperties);
+      if (changedProperties.has('variant')) {
+        this.setVariant(this.variant);
+      }
+    }
+
+    public override render() {
+      return html`
       <div part="container">
         ${this.iconName
     ? html` <mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem" part="icon"></mdc-icon>`
@@ -209,7 +232,7 @@ class Tab extends IconNameMixin(Buttonsimple) {
       </div>
       <div part="indicator"></div>
     `;
-  }
+    }
 
   public static override styles: Array<CSSResult> = [...Buttonsimple.styles, ...styles];
 }

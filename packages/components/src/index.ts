@@ -37,7 +37,9 @@ import Textarea from './components/textarea';
 import Searchfield from './components/searchfield';
 import Brandvisual from './components/brandvisual';
 import Appheader from './components/appheader';
-
+import SideNavigation from './components/sidenavigation/sidenavigation.component';
+import NavItemList from './components/navitemlist';
+import NavItem from './components/navitem';
 // Types Imports
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
 import type { TextType } from './components/text/text.types';
@@ -94,6 +96,9 @@ export {
   Searchfield,
   Brandvisual,
   Appheader,
+  SideNavigation,
+  NavItemList,
+  NavItem,
 };
 
 // Types Exports
