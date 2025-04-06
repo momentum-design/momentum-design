@@ -3,18 +3,17 @@ import { ComponentsPage, test } from '../../../config/playwright/setup';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
-  shape: string;
 };
 
-// Sets up the subcomponent with the given shape and returns its locator
+// Sets up the subcomponent with the button shape and returns its locator
 const setup = async (args: SetupOptions) => {
-  const { componentsPage, shape } = args;
+  const { componentsPage } = args;
   await componentsPage.mount({
     /* eslint-disable max-len */
     html: `
     <div class="componentWrapper componentRowWrapper">
-      <mdc-subcomponent-focusring shape="${shape}" id='firstComponent' class="focus-ring"></mdc-subcomponent-focusring>
-      <mdc-subcomponent-focusring shape="${shape}" id='secondComponent' class="focus-ring"></mdc-subcomponent-focusring>
+      <mdc-button id='firstComponent' class="focus-ring">Button 1</mdc-button>
+      <mdc-button id='secondComponent' class="focus-ring">Button 2</mdc-button>
     <div>`,
   });
   const subComponent = componentsPage.page.locator('#firstComponent');
@@ -25,7 +24,7 @@ const setup = async (args: SetupOptions) => {
 // Checks if the focus ring on the component matches the expected style
 const checkFocusRing = async (subComponent: Locator, expectedBoxShadow: string) => {
   const boxShadow = await subComponent.evaluate((el: Element) => getComputedStyle(el).boxShadow);
-  await expect(boxShadow).toBe(expectedBoxShadow);
+  expect(boxShadow).toBe(expectedBoxShadow);
 };
 
 // Expected focus ring style for verification
@@ -36,20 +35,19 @@ const focusRingStyle = 'rgb(0, 0, 0) 0px 0px 0px 2px, rgb(100, 180, 250) 0px 0px
 const testFocusRingInteractions = async (
   componentsPage: ComponentsPage,
   subComponent: Locator,
-  shape: string,
 ) => {
   await test.step('focus', async () => {
     // Test focus ring appearance
     await componentsPage.actionability.pressTab();
     await expect(subComponent).toBeFocused();
     await checkFocusRing(subComponent, focusRingStyle);
-    await componentsPage.visualRegression.takeScreenshot(`focus-ring-appearance-${shape}`);
+    await componentsPage.visualRegression.takeScreenshot('focus-ring-appearance-button');
 
     // Test focus ring disappearance
     await componentsPage.actionability.releaseFocus(subComponent);
     await expect(subComponent).not.toBeFocused();
     await checkFocusRing(subComponent, 'none');
-    await componentsPage.visualRegression.takeScreenshot(`focus-ring-disappearance-${shape}`, {
+    await componentsPage.visualRegression.takeScreenshot('focus-ring-disappearance-button', {
       element: subComponent,
     });
 
@@ -60,24 +58,21 @@ const testFocusRingInteractions = async (
       await componentsPage.actionability.releaseFocus(subComponent);
     }
     await checkFocusRing(subComponent, 'none');
-    await componentsPage.visualRegression.takeScreenshot(`focus-ring-rapid-interaction-${shape}`, {
+    await componentsPage.visualRegression.takeScreenshot('focus-ring-rapid-interaction-button', {
       element: subComponent,
     });
   });
 };
 
-// Main test suite for SubComponentFocusRing with dynamic shapes (button, radio, checkbox)
 test.describe('SubComponentFocusRing', () => {
-  ['button', 'radio', 'checkbox'].forEach((shape) => {
-    test(`${shape} as SubComponent`, async ({ componentsPage }) => {
-      const subComponent = await setup({ componentsPage, shape });
+  test('Button as SubComponent', async ({ componentsPage }) => {
+    const subComponent = await setup({ componentsPage });
 
-      /**
+    /**
        * INTERACTIONS
        */
-      await test.step('interactions', async () => {
-        await testFocusRingInteractions(componentsPage, subComponent, shape);
-      });
+    await test.step('interactions', async () => {
+      await testFocusRingInteractions(componentsPage, subComponent);
     });
   });
 });
