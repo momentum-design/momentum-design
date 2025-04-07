@@ -1,6 +1,5 @@
 import { CSSResult, nothing, html, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './selectablecard.styles';
 import Card from '../card/card.component';
 import type { RoleType, SelectionType } from './selectablecard.types';
@@ -21,52 +20,49 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
  */
 class SelectableCard extends DisabledMixin(TabIndexMixin(Card)) {
   @property({ type: Boolean, reflect: true })
-  selected: boolean = false;
+  checked: boolean = false;
 
   @property({ type: String, attribute: 'selection-type' })
   selectionType: SelectionType = DEFAULTS.SELECTION_TYPE;
-
-  @property({ type: String, attribute: 'data-aria-label' })
-  dataAriaLabel?: string;
 
   @property({ type: String })
   override role: RoleType = DEFAULTS.ROLE;
 
   constructor() {
     super();
-    this.addEventListener('click', this.toggleSelected);
+    this.addEventListener('click', this.toggleChecked);
     this.addEventListener('keydown', this.toggleOnEnter);
     this.addEventListener('keyup', this.toggleOnSpace);
   }
 
   override update(changedProperties: PropertyValues<SelectableCard>) {
     super.update(changedProperties);
-    if (changedProperties.has('selected')) {
-      this.setAttribute('aria-checked', `${this.selected}`);
+    if (changedProperties.has('checked')) {
+      this.setAttribute('aria-checked', `${this.checked}`);
     }
     if (changedProperties.has('disabled')) {
       this.setAttribute('aria-disabled', `${this.disabled}`);
     }
   }
 
-  private toggleSelected() {
-    this.selected = !this.selected;
+  private toggleChecked() {
+    this.checked = !this.checked;
   }
 
   private toggleOnEnter(event: KeyboardEvent) {
     if (event.key === 'Enter') {
-      this.toggleSelected();
+      this.toggleChecked();
     }
   }
 
   private toggleOnSpace(event: KeyboardEvent) {
     if (event.key === ' ') {
-      this.toggleSelected();
+      this.toggleChecked();
     }
   }
 
   private renderSelection() {
-    const ICON_NAME = this.selected ? CHECK_MARK.SELECTED : CHECK_MARK.DEFAULT;
+    const ICON_NAME = this.checked ? CHECK_MARK.CHECKED : CHECK_MARK.DEFAULT;
     switch (this.selectionType) {
       case SELECTION_TYPE.CHECK: {
         this.role = ROLE.CHECKBOX;
@@ -79,16 +75,14 @@ class SelectableCard extends DisabledMixin(TabIndexMixin(Card)) {
       case SELECTION_TYPE.CHECKBOX: {
         this.role = ROLE.CHECKBOX;
         return html`<mdc-checkbox tabindex='-1' part="check" 
-                    ?checked="${this.selected}" 
-                    ?disabled="${this.disabled}" 
-                    data-aria-label="${ifDefined(this.dataAriaLabel)}"></mdc-checkbox>`;
+                    ?checked="${this.checked}" 
+                    ?disabled="${this.disabled}"></mdc-checkbox>`;
       }
       case SELECTION_TYPE.RADIO: {
         this.role = ROLE.RADIO;
         return html`<mdc-radio tabindex='-1' part="check" 
-                    ?checked="${this.selected}" 
-                    ?disabled="${this.disabled}" 
-                    data-aria-label="${ifDefined(this.dataAriaLabel)}"></mdc-radio>`;
+                    ?checked="${this.checked}" 
+                    ?disabled="${this.disabled}"></mdc-radio>`;
       }
       default: return nothing;
     }

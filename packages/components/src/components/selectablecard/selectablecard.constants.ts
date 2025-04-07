@@ -5,7 +5,7 @@ const TAG_NAME = utils.constructTagName('selectable-card');
 
 const CHECK_MARK = {
   DEFAULT: 'check-circle-bold' as Extract<IconNames, 'check-circle-bold'>,
-  SELECTED: 'check-circle-filled' as Extract<IconNames, 'check-circle-filled'>,
+  CHECKED: 'check-circle-filled' as Extract<IconNames, 'check-circle-filled'>,
 } as const;
 
 const SELECTION_TYPE = {
