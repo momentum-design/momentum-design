@@ -1840,6 +1840,10 @@
         }
       },
       "avatar": {
+        "ghost": {
+          "value": "{color.highcontrast.white.WindowColor}",
+          "type": "color"
+        },
         "default": {
           "parent": "theme/stable/highcontrast/hc_light",
           "type": "color",
