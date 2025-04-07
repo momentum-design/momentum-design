@@ -40,14 +40,6 @@ import Toggle from './components/toggle';
 import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
 import TabList from './components/tablist';
-import Progressbar from './components/progressbar';
-import Option from './components/option';
-import OptGroup from './components/optgroup';
-import Textarea from './components/textarea';
-import Searchfield from './components/searchfield';
-import Brandvisual from './components/brandvisual';
-import Appheader from './components/appheader';
-import ScreenreaderAnnouncer from './components/screenreaderannouncer';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -103,11 +95,11 @@ export {
   ScreenreaderAnnouncer,
   Textarea,
   Tooltip,
-  TabList,
   Searchfield,
   Brandvisual,
   Appheader,
   Select,
+  TabList,
 };
 // Types Exports
 export type {
