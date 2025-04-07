@@ -103,7 +103,10 @@ test('mdc-searchfield', async ({ componentsPage }) => {
         label='Query: value' 
         clear-aria-label='clear'
       ></mdc-inputchip>`);
-    serachfieldStickerSheet.setAttributes({ value: '', placeholder: 'Search for value', 'clear-aria-label': 'clear' });
+    serachfieldStickerSheet.setAttributes({ value: '',
+      placeholder: 'Search for value',
+      'data-aria-label': 'Search',
+      'clear-aria-label': 'clear' });
     await serachfieldStickerSheet.createMarkupWithCombination({});
 
     await serachfieldStickerSheet.mountStickerSheet({

@@ -340,8 +340,8 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
    * @returns void
    */
   protected renderTrailingButton(show = false) {
-    const showBtn = show || this.value;
-    if (!this.trailingButton && !showBtn) {
+    const showBtn = show || (this.value && this.trailingButton);
+    if (!showBtn) {
       return nothing;
     }
     return html`
