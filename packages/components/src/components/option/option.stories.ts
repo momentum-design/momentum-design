@@ -7,7 +7,7 @@ import { hideControls } from '../../../config/storybook/utils';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`
-  <div style="width: 20rem;" aria-label="List box" role="listbox">${htmlString}</div>
+  <div aria-label="List box" role="listbox">${htmlString}</div>
 `;
 
 const render = (args: Args) => wrapWithDiv(html`
@@ -98,20 +98,33 @@ export const Example: StoryObj = {
   },
 };
 
+export const OptionWithLongText: StoryObj = {
+  render: () => html`
+    <div style="width: 15rem; height: 10rem;" aria-label="List box" role="listbox">
+      <mdc-option label="This is a very long text and it should be truncated."></mdc-option>
+    </div>
+  `,
+};
+
 export const OptionWithIcon: StoryObj = {
-  render: () => wrapWithDiv(html`
-    <mdc-option value="label" prefix-icon="placeholder-bold">Option Label</mdc-option>
-  `),
+  args: {
+    'prefix-icon': 'placeholder-bold',
+    label: 'Option Label',
+  },
 };
 
 export const SelectedOption: StoryObj = {
-  render: () => wrapWithDiv(html`
-    <mdc-option value="label" prefix-icon="placeholder-bold" selected>Option Label</mdc-option>
-  `),
+  args: {
+    'prefix-icon': 'placeholder-bold',
+    label: 'Option Label',
+    selected: true,
+  },
 };
 
 export const DisabledOption: StoryObj = {
-  render: () => wrapWithDiv(html`
-    <mdc-option value="label" disabled prefix-icon="placeholder-bold" selected>Option Label</mdc-option>
-  `),
+  args: {
+    'prefix-icon': 'placeholder-bold',
+    label: 'Option Label',
+    disabled: true,
+  },
 };
