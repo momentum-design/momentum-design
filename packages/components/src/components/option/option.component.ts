@@ -7,7 +7,7 @@ import type { IconNames } from '../icon/icon.types';
 import ListItem from '../listitem/listitem.component';
 import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
 import { TYPE } from '../text/text.constants';
-import { SELECTED_ICON_NAME } from './option.constants';
+import { SELECTED_ICON_NAME, TOOLTIP_ID } from './option.constants';
 import styles from './option.styles';
 
 /**
@@ -64,6 +64,15 @@ class Option extends FormInternalsMixin(ListItem) {
     this.addEventListener('click', this.handleClick);
   }
 
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.removeEventListener('focusin', this.displayTooltipForLongText);
+    this.removeEventListener('mouseover', this.displayTooltipForLongText);
+    this.removeEventListener('focusout', this.hideTooltipOnLeave);
+    this.removeEventListener('mouseout', this.hideTooltipOnLeave);
+    this.removeEventListener('click', this.handleClick);
+  }
+
   private handleClick(): void {
     // When the select dropdown (popover) is open,
     // then if the tooltip is open, it has to be closed first.
@@ -88,7 +97,7 @@ class Option extends FormInternalsMixin(ListItem) {
 
     // Create tooltip for long text label which has an ellipse at the end.
     const tooltip = document.createElement(TOOLTIP_TAG_NAME);
-    tooltip.id = 'dynamic-option-tooltip-popover';
+    tooltip.id = TOOLTIP_ID;
     tooltip.textContent = this.label ?? '';
     tooltip.setAttribute('triggerid', this.id);
     tooltip.setAttribute('visible', '');
@@ -103,7 +112,7 @@ class Option extends FormInternalsMixin(ListItem) {
    * This is triggered on focusout and mouseout events.
    */
   private hideTooltipOnLeave(): void {
-    const existingTooltip = document.querySelector('#dynamic-option-tooltip-popover');
+    const existingTooltip = document.querySelector(`#${TOOLTIP_ID}`);
     existingTooltip?.remove();
   }
 

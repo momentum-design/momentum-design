@@ -84,6 +84,11 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     this.addEventListener('keydown', this.handleKeydown);
   }
 
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.removeEventListener('keydown', this.handleKeydown);
+  }
+
   /**
    * A helper function which returns a flattened array of all valid options from the assigned slot.
    * It takes care of the edge cases where the option is either a direct child or a
@@ -190,6 +195,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     this.selectedValue = '';
     this.selectedValueText = undefined;
     this.internals.setFormValue(this.selectedValue);
+    this.updateTabIndexForAllOptions();
   }
 
   /** @internal */
