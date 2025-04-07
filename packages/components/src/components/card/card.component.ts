@@ -39,7 +39,7 @@ class Card extends IconNameMixin(Component) {
   @property({ type: String, attribute: 'icon-aria-label' })
   iconAriaLabel: string = '';
 
-  private renderImage() {
+  protected renderImage() {
     if (!this.imageSrc) {
       return nothing;
     }

@@ -40,6 +40,7 @@ import Appheader from './components/appheader';
 import ScreenreaderAnnouncer from './components/screenreaderannouncer';
 import Card from './components/card';
 import SelectableCard from './components/selectablecard';
+import InteractiveCard from './components/interactivecard';
 
 // Types Imports
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
@@ -100,6 +101,7 @@ export {
   Appheader,
   Card,
   SelectableCard,
+  InteractiveCard,
 };
 
 // Types Exports
