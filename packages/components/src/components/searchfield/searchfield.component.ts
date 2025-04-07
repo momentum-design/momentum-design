@@ -27,6 +27,11 @@ class Searchfield extends Input {
    */
   @state() isInputFocused = false;
 
+  /**
+   * @internal
+   */
+  @state() hasInputChips = false;
+
   constructor() {
     super();
     this.addEventListener('keydown', this.clearOnEsc);
@@ -54,6 +59,8 @@ class Searchfield extends Input {
    * It will remove any elements that are not input chips.
    */
   private renderInputChips() {
+    this.hasInputChips = !!this.inputChips?.length;
+    // hide placeholder and show close button should work together
     if (this.inputChips) {
       this.inputChips.forEach((element) => {
         if (!element.matches('mdc-inputchip')) {
@@ -99,9 +106,9 @@ class Searchfield extends Input {
       @keydown=${(e: KeyboardEvent) => e.key === 'Enter' ? this.inputElement.focus() : null} 
       @keyup=${(e: KeyboardEvent) => e.key === ' ' ? this.inputElement.focus() : null}>
         <slot name="filters" @slotchange=${this.renderInputChips}></slot></div>
-      ${this.renderInputElement(DEFAULTS.TYPE)}
+      ${this.renderInputElement(DEFAULTS.TYPE, this.hasInputChips)}
       </div>
-      ${this.renderTrailingButton(!!this.inputChips?.length)}
+      ${this.renderTrailingButton(this.hasInputChips)}
     </div>
   `;
   }

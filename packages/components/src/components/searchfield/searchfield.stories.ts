@@ -102,6 +102,8 @@ const meta: Meta = {
       control: 'text',
     },
     ...hideControls(['prefix-text',
+      'trailing-button',
+      'leading-icon',
       'help-text',
       'help-text-type',
       'required-label',
