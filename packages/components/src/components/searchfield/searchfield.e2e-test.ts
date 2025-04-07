@@ -109,7 +109,7 @@ test('mdc-searchfield', async ({ componentsPage }) => {
     await serachfieldStickerSheet.mountStickerSheet({
       wrapperStyle: 'display: flex; flex-direction: column; gap: 0.5rem;',
     });
-    const container = await serachfieldStickerSheet.getWrapperContainer();
+    const container = serachfieldStickerSheet.getWrapperContainer();
 
     await test.step('matches screenshot of element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-searchfield', { element: container });

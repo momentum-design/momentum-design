@@ -221,7 +221,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       await inputEl.fill('test');
       await expect(inputEl).toHaveValue('test');
       await componentsPage.actionability.pressTab();
-      await expect(input).not.toBeFocused();
+      await expect(inputEl).not.toBeFocused();
     });
 
     await test.step('readonly component should be focusable with tab', async () => {
@@ -249,10 +249,10 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       const trailingButton = input.locator('mdc-button[part="trailing-button"]');
       await componentsPage.actionability.pressTab();
       await expect(input).toBeFocused();
-      await expect(trailingButton).not.toBeVisible();
+      await expect(trailingButton).toHaveClass('own-focus-ring hidden');
       await inputEl.fill('test');
       await expect(inputEl).toHaveValue('test');
-      await expect(trailingButton).toBeVisible();
+      await expect(trailingButton).toHaveClass('own-focus-ring ');
       await componentsPage.actionability.pressTab();
       await expect(inputEl).not.toBeFocused();
       await expect(trailingButton).toBeFocused();
@@ -298,7 +298,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       }, true);
 
       const mdcInput = form.locator('mdc-input');
-      const submitButton = form.locator('mdc-button');
+      const submitButton = form.locator('mdc-button[type="submit"]');
       const inputEl = mdcInput.locator('input');
       await componentsPage.actionability.pressTab();
       await expect(mdcInput).toBeFocused();
