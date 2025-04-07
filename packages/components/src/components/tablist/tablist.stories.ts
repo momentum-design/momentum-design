@@ -94,14 +94,6 @@ const meta: Meta = {
     },
     ...hideControls([
       'tabvariant',
-      'tabsContainer',
-      'tabs',
-      'handleFocus',
-      'setActiveTab',
-      'focusTab',
-      'handleKeydown',
-      'handleArrowButtonVisibility',
-      'scrollTabs',
     ]),
     ...disableControls([
       '--mdc-tablist-gap',

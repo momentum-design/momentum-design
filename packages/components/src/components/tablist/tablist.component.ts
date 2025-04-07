@@ -80,16 +80,25 @@ class TabList extends Component {
   @property({ type: String, attribute: 'data-aria-label' })
   dataAriaLabel?: string;
 
+  /**
+   * The tab container element.
+   * Has the role of `tablist`.
+   * @internal
+   */
   @query('.container')
   private tabsContainer?: HTMLDivElement;
 
+  /**
+   * Children of the tablist, elements of type `mdc-tab`.
+   * @internal
+   */
   @queryAssignedElements({ selector: 'mdc-tab' })
   private tabs?: Tab[];
 
   /**
    * Instead of using 'left' and 'right' for notation of the arrow buttons, we use 'forward' and 'backward'.
    * Since the elements of the tablist gets flipped in RTL layouts, the arrow buttons also flip.
-   * For both RTL and LTR layouts, the forward arrow button moved the tabs in the forward direction.
+   * For both RTL and LTR layouts, the forward arrow button moves the tabs in the forward direction.
    * i.e. the forward arrow button moves the tabs to the right in LTR layouts and to the left in RTL layouts.
    */
 
@@ -148,7 +157,17 @@ class TabList extends Component {
 
     this.setAriaLabelledByOrAriaLabel();
 
-    const resizeObserver = new ResizeObserver((): void => {
+    const resizeObserver = new ResizeObserver(() => {
+      const activeElement = this.tabsContainer?.shadowRoot?.activeElement;
+
+      /**
+       * Keep the focused element in view.
+       */
+      if (activeElement instanceof Tab) {
+        // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
+        activeElement.scrollIntoView({ behavior: 'instant', block: 'start', inline: 'center' });
+      }
+
       this.handleArrowButtonVisibility();
     });
     resizeObserver.observe(this);
@@ -206,6 +225,7 @@ class TabList extends Component {
     * Set aria-labelledby attribute on the tablist element.
     * If it does not exist, set aria-label attribute.
     * As fallback, set aria-label to 'Tab List'.
+    *
     * @internal
     */
    private setAriaLabelledByOrAriaLabel = (): void => {
@@ -220,7 +240,9 @@ class TabList extends Component {
 
    /**
     * Dispatch the change event.
+    *
     * @internal
+    *
     * @param newTab - the new tab that is active.
     */
     private fireTabChangeEvent = (newTab: Tab): void => {
@@ -233,6 +255,9 @@ class TabList extends Component {
 
   /**
    * When the tablist receives focus, then focus the active tab.
+   *
+   * @internal
+   *
    * @param event - Focus event.
    */
   private handleFocus = (event: FocusEvent) => {
@@ -305,6 +330,8 @@ class TabList extends Component {
   /**
    * Removes active attribute from all tabs and sets active on the new tab.
    *
+   * @internal
+   *
    * @param tabId - The id of the new active tab.
    */
   private setActiveTab = (newTab: Tab): void => {
@@ -318,7 +345,9 @@ class TabList extends Component {
   };
 
   /**
-   * Set the focus on the new tab, then scroll it into view.
+   * Set focus on the new tab, then scroll it into view.
+   *
+   * @internal
    *
    * @param tab - Tab to set focus on.
    */
@@ -328,12 +357,14 @@ class TabList extends Component {
     this.resetTabIndexAndSetNewTabIndex(tab);
     tab.focus();
     // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
-    tab.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'center' });
+    tab.scrollIntoView({ behavior: 'instant', block: 'start', inline: 'center' });
     this.handleArrowButtonVisibility();
   };
 
   /**
    * Handle the keydown event. The arrow keys, Home, End, Enter, and Space keys are supported.
+   *
+   * @internal
    *
    * @param event - HTML Keyboard Event.
    */
@@ -373,92 +404,103 @@ class TabList extends Component {
 
   /**
    * Should the arrow button be shown.
+   *
+   * @internal
+   *
    * @param direction - The direction of the arrow button.
    */
-  private shouldShowArrowButton(direction: ArrowButtonDirectionType): boolean {
-    return direction === ARROW_BUTTON_DIRECTION.FORWARD ? this.showForwardArrowButton : this.showBackwardArrowButton;
-  }
+  private shouldShowArrowButton = (direction: ArrowButtonDirectionType): boolean => (
+    direction === ARROW_BUTTON_DIRECTION.FORWARD ? this.showForwardArrowButton : this.showBackwardArrowButton
+  );
+
+  /**
+   * If an arrow button is in focus and it gets removed, switch focus to the opposite arrow button.
+   * If both arrow buttons are removed, switch focus to the active tab.
+   *
+   * @internal
+   */
+  private switchFocus = (): void => {
+    if (!this.showBackwardArrowButton && !this.showForwardArrowButton) {
+      getActiveTab(this.tabs || [])?.focus();
+    } else if ((this.showBackwardArrowButton && !this.showForwardArrowButton)
+       || (this.showForwardArrowButton && !this.showBackwardArrowButton)) {
+      this.shadowRoot?.querySelector<Button>('mdc-button:not(.pressed)')?.focus();
+    }
+  };
 
   /**
    * Show or hide the arrow buttons based on the position of the tabs
    * corresponding to the tab list.
+   *
+   * @internal
    */
-  private handleArrowButtonVisibility = () => {
+  private handleArrowButtonVisibility = (): void => {
     if (!this.tabs) { return; }
+    if (!this.tabsContainer) { return; }
+
+    let isArrowButtonFocused: boolean = false;
+
+    /**
+     * If the active element is an arrow button,
+     * then run the switchFocus function after setting the arrow button visibility.
+     */
+    if (this.shadowRoot?.activeElement instanceof Button) {
+      isArrowButtonFocused = true;
+    }
 
     const firstTab = getFirstTab(this.tabs)!;
     const lastTab = getLastTab(this.tabs)!;
-    const firstTabLeftEdgePosition = Math.round(firstTab.getBoundingClientRect().left);
-    const tabListLeftEdgePosition = Math.round(this.getBoundingClientRect().left);
-    const lastTabRightEdgePosition = Math.round(lastTab.getBoundingClientRect().right);
-    const tabListRightEdgePosition = Math.round(this.getBoundingClientRect().right);
+    const firstTabLeftEdgePosition = firstTab.getBoundingClientRect().left;
+    const tabListLeftEdgePosition = this.tabsContainer?.getBoundingClientRect().left;
+    const lastTabRightEdgePosition = lastTab.getBoundingClientRect().right;
+    const tabListRightEdgePosition = this.tabsContainer?.getBoundingClientRect().right;
 
     // when RTL, the edges are reversed
-    const firstTabRightEdgePosition = Math.round(firstTab.getBoundingClientRect().right);
-    const lastTabLeftEdgePosition = Math.round(lastTab.getBoundingClientRect().left);
+    const firstTabRightEdgePosition = firstTab.getBoundingClientRect().right;
+    const lastTabLeftEdgePosition = lastTab.getBoundingClientRect().left;
 
     if (!this.isRtl()) {
-      if (firstTabLeftEdgePosition < tabListLeftEdgePosition) {
+      if (firstTabLeftEdgePosition <= tabListLeftEdgePosition) {
         this.showBackwardArrowButton = true;
-      } else if (this.shadowRoot?.activeElement instanceof Button) {
-        this.showBackwardArrowButton = false;
-
-        const forwardArrowButton = this.shadowRoot?.querySelector('mdc-button[prefix-icon="arrow-right-regular"]');
-
-        if (forwardArrowButton instanceof Button) {
-          forwardArrowButton.focus();
-        }
       } else {
         this.showBackwardArrowButton = false;
       }
 
       if (lastTabRightEdgePosition > tabListRightEdgePosition) {
         this.showForwardArrowButton = true;
-      } else if (this.shadowRoot?.activeElement instanceof Button) {
-        this.showForwardArrowButton = false;
-
-        const backwardArrowButton = this.shadowRoot?.querySelector('mdc-button[prefix-icon="arrow-left-regular"]');
-
-        if (backwardArrowButton instanceof Button) {
-          backwardArrowButton.focus();
-        }
       } else {
         this.showForwardArrowButton = false;
+      }
+
+      if (isArrowButtonFocused) {
+        this.switchFocus();
       }
       return;
     }
 
     if (firstTabRightEdgePosition > tabListRightEdgePosition) {
       this.showBackwardArrowButton = true;
-    } else if (this.shadowRoot?.activeElement instanceof Button) {
-      this.showBackwardArrowButton = false;
-
-      const forwardArrowButton = this.shadowRoot?.querySelector('mdc-button[prefix-icon="arrow-left-regular"]');
-
-      if (forwardArrowButton instanceof Button) {
-        forwardArrowButton.focus();
-      }
     } else {
       this.showBackwardArrowButton = false;
     }
 
     if (lastTabLeftEdgePosition < tabListLeftEdgePosition) {
       this.showForwardArrowButton = true;
-    } else if (this.shadowRoot?.activeElement instanceof Button) {
-      this.showForwardArrowButton = false;
-
-      const backwardArrowButton = this.shadowRoot?.querySelector('mdc-button[prefix-icon="arrow-right-regular"]');
-
-      if (backwardArrowButton instanceof Button) {
-        backwardArrowButton.focus();
-      }
     } else {
       this.showForwardArrowButton = false;
+    }
+
+    if (isArrowButtonFocused) {
+      this.switchFocus();
     }
   };
 
    /**
     * Scroll tabs forward or backward.
+    *
+    * @internal
+    *
+    * @param direction - The direction to scroll the tabs in.
     */
    private scrollTabs = (direction: ArrowButtonDirectionType): void => {
      const forwardMultiplier = !this.isRtl() ? 1 : -1;
