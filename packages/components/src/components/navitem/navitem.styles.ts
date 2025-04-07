@@ -9,20 +9,16 @@ const styles = [hostFitContentStyles, css`
     --mdc-button-secondary-pressed-background-color: var(--mds-color-theme-button-secondary-pressed);
     --mdc-button-secondary-disabled-background-color: var(--mds-color-theme-button-secondary-disabled);
     --mdc-button-secondary-disabled-color: var(--mds-color-theme-text-primary-disabled);
-
     --mdc-button-secondary-active-background-color: var(--mds-color-theme-button-secondary-active-normal);
 
+    position: relative;
     display: flex;
-    padding-right: 1rem;
     gap: 1rem;
     justify-content: flex-start;
-    width: 100%;
-    height: 100%;
-
+    align-items: center;
     border: none;
     background-color: unset;
     outline: unset;
-    //box-shadow: none;
   }
 
   :host([disabled]) {
@@ -30,7 +26,7 @@ const styles = [hostFitContentStyles, css`
     outline: unset;
   }
 
-  :host::part(nav-item-tab) {
+  :host {
     flex-grow: 1;
     display: flex;
     align-items: center;
@@ -40,41 +36,48 @@ const styles = [hostFitContentStyles, css`
     border-color: var(--mdc-button-secondary-border-color);
     border-radius: 1.25rem;
     font-weight: var(--mds-font-apps-body-large-medium-font-weight);
+    margin-left: 16px;
   }
   
-  :host(:hover)::part(nav-item-tab), 
-  :host(:hover[active])::part(nav-item-tab) {
+  :host(:hover), 
+  :host(:hover[active]) {
     background-color: var(--mdc-button-secondary-hover-background-color);
   }
 
-  :host(:active)::part(nav-item-tab) {
+  :host(:active) {
     background-color: var(--mdc-button-secondary-pressed-background-color);
   }
 
-  :host([disabled])::part(nav-item-tab), 
-  :host([active][disabled])::part(nav-item-tab) {
+  :host([disabled]), 
+  :host([active][disabled]) {
     color: var(--mdc-button-secondary-disabled-color);
     background-color: var(--mdc-button-secondary-disabled-background-color);
   }
 
-  :host([active])::part(nav-item-tab) {
+  :host([active]) {
     background-color: var(--mdc-button-secondary-active-background-color);
   }
 
-  :host::part(marker-container) {
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
-    flex-shrink: 0;
-    align-self: stretch;
-  }
-
-  :host::part(marker) {
+  :host::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: -16px;
     background-color: var(--mdc-button-secondary-color);
     width: 0.25rem;
     height: 1rem;
-    flex-shrink: 0;
-    border-radius: 0rem 0.25rem 0.25rem 0rem;
+    border-radius: 0 0.25rem 0.25rem 0;
+    align-self: center;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  :host([active])::before {
+    visibility: visible;
+  }
+
+  :host([disabled])::before {
+    background-color: var(--mdc-button-secondary-disabled-color);
   }
 
   :host::part(text-container) {
@@ -83,11 +86,6 @@ const styles = [hostFitContentStyles, css`
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-
-  :host([disabled])::part(marker) {
-    background-color: var(--mdc-button-secondary-disabled-color);
-  }
-  
-`, ...hostFocusRingStyles(true)];
+`];
 
 export default styles;

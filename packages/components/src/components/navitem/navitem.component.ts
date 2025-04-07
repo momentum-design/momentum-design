@@ -107,45 +107,56 @@ class NavItem extends IconNameMixin(Buttonsimple) {
   }
 
   protected override executeAction() {
+    // add a logic when role is button, then super.executeAction();
+    // add a logic when role is link,
     // Toggle the active state of the tab.
     this.active = !this.active;
     this.handleTabActiveChange(this.active);
   }
 
+  shouldRenderContent() {
+    const { variant, expanded } = this.sideNavigationProviderContext.value ?? {};
+    return !(
+      variant === VARIANTS.FIXED_COLLAPSED
+      || (variant === VARIANTS.FLEXIBLE && !expanded)
+    );
+  }
+
   renderTextLabel() {
-    if (this.sideNavigationProviderContext.value?.variant === VARIANTS.FIXED_COLLAPSED
-      || (this.sideNavigationProviderContext.value?.variant === VARIANTS.FLEXIBLE
-        && !this.sideNavigationProviderContext.value?.expanded)
-    ) {
+    if (!this.shouldRenderContent()) {
       return nothing;
     }
+
     return html`
-       <mdc-text
-          type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}
-          tagname=${VALID_TEXT_TAGS.SPAN}
-          part="text-container">
-          <slot></slot>
-        </mdc-text>
+      <mdc-text
+        type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}
+        tagname=${VALID_TEXT_TAGS.SPAN}
+        part="text-container">
+        <slot></slot>
+      </mdc-text>
+    `;
+  }
+
+  renderBadge() {
+    if (!this.shouldRenderContent()) {
+      return nothing;
+    }
+
+    return html`
+      <mdc-badge 
+        type="${ifDefined(this.badgeType)}" 
+        counter="${ifDefined(this.counter)}" 
+        max-counter="${this.maxCounter}">
+      </mdc-badge>
     `;
   }
 
   public override render() {
     return html`
-        <div part="marker-container">
-          <mdc-marker 
-            variant="solid" 
-            part="marker" 
-            style=${this.active ? '' : 'visibility: hidden'}>
-          </mdc-marker>
-        </div>
-        <div part="nav-item-tab">
           ${this.iconName
     ? html` <mdc-icon name="${this.iconName}" size="1.5" length-unit="rem" part="icon"></mdc-icon>` : nothing}
           ${this.renderTextLabel()}
-          ${this.badgeType
-    ? html`<mdc-badge type="${this.badgeType}" counter="${ifDefined(this.counter)}" 
-    max-counter="${this.maxCounter}"></mdc-badge>` : nothing}
-        </div>
+          ${this.renderBadge()}
     `;
   }
 

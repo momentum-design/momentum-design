@@ -10,7 +10,7 @@ const render = () => html`
   <div slot="scrollable-section">
     <mdc-navitemlist>
       <mdc-navitem badge-type="counter" counter=2 max-counter="66" 
-      icon-name="" nav-id="1">MessagingMessagingMessagingMessaging</mdc-navitem>
+      icon-name="placeholder-bold" nav-id="1">MessagingMessagingMessagingMessaging</mdc-navitem>
       <mdc-navitem badge-type="counter" counter=3 max-counter="66" 
       icon-name="placeholder-bold" nav-id="2" disabled>Meetings</mdc-navitem>
       <mdc-navitem badge-type="dot" icon-name="placeholder-bold" nav-id="3">Calling</mdc-navitem>
@@ -57,9 +57,9 @@ const render = () => html`
   <!-- Lower Nav (Fixed section) -->
   <div slot="fixed-section">
     <mdc-divider variant="gradient"></mdc-divider>
-    <mdc-link iconname="placeholder-bold"><a href="#">Settings Link</a></mdc-link>
+    <mdc-link icon-name="placeholder-bold"><a href="#">Settings Link</a></mdc-link>
     <mdc-button prefix-icon="placeholder-bold">Logout Button</mdc-button>
-    <mdc-link iconname="placeholder-bold"><a href="#">Back Link</a></mdc-link>
+    <mdc-link icon-name="placeholder-bold"><a href="#">Back Link</a></mdc-link>
     <img src="https://momentum.design/mometnum_design_logo.5016c4f24b97e0ad.svg" slot="brand-logo"/>
   </div>
 </mdc-sidenavigation>

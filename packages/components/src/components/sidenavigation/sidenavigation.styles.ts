@@ -48,6 +48,20 @@ const styles = css`
   align-items: flex-start;
   gap: 0.5rem;
 }
+
+::slotted([slot="scrollable-section"])::part(text) {
+  padding-left: 1.75rem;
+}
+
+::slotted([slot="fixed-section"] mdc-button),
+::slotted([slot="fixed-section"] mdc-link) {
+  border: 1px solid red;
+}
+
+::slotted(mdc-text) {
+  color: red;
+  padding-left: 1.75rem;
+}
 `;
 
 export default [styles];
