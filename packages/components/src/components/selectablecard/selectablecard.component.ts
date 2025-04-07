@@ -3,8 +3,8 @@ import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './selectablecard.styles';
 import Card from '../card/card.component';
-import type { SelectionType } from './selectablecard.types';
-import { CHECK_MARK, DEFAULTS, SELECTION_TYPE } from './selectablecard.constants';
+import type { RoleType, SelectionType } from './selectablecard.types';
+import { CHECK_MARK, DEFAULTS, ROLE, SELECTION_TYPE } from './selectablecard.constants';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 
@@ -28,6 +28,9 @@ class SelectableCard extends DisabledMixin(TabIndexMixin(Card)) {
 
   @property({ type: String, attribute: 'data-aria-label' })
   dataAriaLabel?: string;
+
+  @property({ type: String })
+  override role: RoleType = DEFAULTS.ROLE;
 
   constructor() {
     super();
@@ -65,19 +68,28 @@ class SelectableCard extends DisabledMixin(TabIndexMixin(Card)) {
   private renderSelection() {
     const ICON_NAME = this.selected ? CHECK_MARK.SELECTED : CHECK_MARK.DEFAULT;
     switch (this.selectionType) {
-      case SELECTION_TYPE.CHECK: return html`<mdc-icon part="check check-icon" 
-      size="${DEFAULTS.ICON_SIZE}"
-       length-unit="${DEFAULTS.ICON_LENGTH_UNIT}" 
-       name="${ICON_NAME}"></mdc-icon>`;
+      case SELECTION_TYPE.CHECK: {
+        this.role = ROLE.CHECKBOX;
+        return html`<mdc-icon part="check check-icon" 
+                    size="${DEFAULTS.ICON_SIZE}"
+                    length-unit="${DEFAULTS.ICON_LENGTH_UNIT}" 
+                    name="${ICON_NAME}"></mdc-icon>`;
+      }
 
-      case SELECTION_TYPE.CHECKBOX: return html`<mdc-checkbox tabindex='-1' part="check" 
-      ?checked="${this.selected}" 
-      ?disabled="${this.disabled}" 
-      data-aria-label="${ifDefined(this.dataAriaLabel)}"></mdc-checkbox>`;
-      case SELECTION_TYPE.RADIO: return html`<mdc-radio tabindex='-1' part="check" 
-      ?checked="${this.selected}" 
-      ?disabled="${this.disabled}" 
-      data-aria-label="${ifDefined(this.dataAriaLabel)}"></mdc-radio>`;
+      case SELECTION_TYPE.CHECKBOX: {
+        this.role = ROLE.CHECKBOX;
+        return html`<mdc-checkbox tabindex='-1' part="check" 
+                    ?checked="${this.selected}" 
+                    ?disabled="${this.disabled}" 
+                    data-aria-label="${ifDefined(this.dataAriaLabel)}"></mdc-checkbox>`;
+      }
+      case SELECTION_TYPE.RADIO: {
+        this.role = ROLE.RADIO;
+        return html`<mdc-radio tabindex='-1' part="check" 
+                    ?checked="${this.selected}" 
+                    ?disabled="${this.disabled}" 
+                    data-aria-label="${ifDefined(this.dataAriaLabel)}"></mdc-radio>`;
+      }
       default: return nothing;
     }
   }
