@@ -13,4 +13,4 @@ IconNames,
 | 'info-badge-filled'
 >
 
-export { VariantType, IconListType };
+export type { VariantType, IconListType };

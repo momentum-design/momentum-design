@@ -3,4 +3,9 @@ import { TOGGLE_SIZE } from './toggle.constants';
 
 type ToggleSize = ValueOf<typeof TOGGLE_SIZE>;
 
-export { ToggleSize };
+interface Events {
+  onChangeEvent: Event;
+  onFocusEvent: FocusEvent;
+}
+
+export type { ToggleSize, Events };
