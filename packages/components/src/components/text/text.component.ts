@@ -63,6 +63,9 @@ class Text extends Component {
   @property({ attribute: 'type', reflect: true, type: String })
   public type: TextType = DEFAULTS.TYPE;
 
+  @property({ attribute: 'multiline-truncation', type: String })
+  public multilineTruncation?: string;
+
   /**
    * Specifies the HTML tag name for the text element. The default tag name is `p`.
    * This attribute is optional. When set, it changes the tag name of the text element.
@@ -87,20 +90,34 @@ class Text extends Component {
   public tagname?: TagName = DEFAULTS.TEXT_ELEMENT_TAGNAME;
 
   public override render() {
+    const multilineStyle = this.multilineTruncation
+      ? `--mdc-text-multiline-truncation-line-clamp: ${this.multilineTruncation};`
+      : '';
+
     // Lit does not support dynamically changing values for the tag name of a custom element.
     // Read more: https://lit.dev/docs/templates/expressions/#invalid-locations
     switch (this.tagname) {
-      case VALID_TEXT_TAGS.H1: return html`<h1 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h1>`;
-      case VALID_TEXT_TAGS.H2: return html`<h2 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h2>`;
-      case VALID_TEXT_TAGS.H3: return html`<h3 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h3>`;
-      case VALID_TEXT_TAGS.H4: return html`<h4 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h4>`;
-      case VALID_TEXT_TAGS.H5: return html`<h5 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h5>`;
-      case VALID_TEXT_TAGS.H6: return html`<h6 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h6>`;
-      case VALID_TEXT_TAGS.DIV: return html`<div part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></div>`;
-      case VALID_TEXT_TAGS.SPAN: return html`<span part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></span>`;
-      case VALID_TEXT_TAGS.SMALL: return html`<small part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></small>`;
+      case VALID_TEXT_TAGS.H1:
+        return html`<h1 part=${DEFAULTS.CSS_PART_TEXT} style="${multilineStyle}"><slot></slot></h1>`;
+      case VALID_TEXT_TAGS.H2:
+        return html`<h2 part=${DEFAULTS.CSS_PART_TEXT} style="${multilineStyle}"><slot></slot></h2>`;
+      case VALID_TEXT_TAGS.H3:
+        return html`<h3 part=${DEFAULTS.CSS_PART_TEXT} style="${multilineStyle}"><slot></slot></h3>`;
+      case VALID_TEXT_TAGS.H4:
+        return html`<h4 part=${DEFAULTS.CSS_PART_TEXT} style="${multilineStyle}"><slot></slot></h4>`;
+      case VALID_TEXT_TAGS.H5:
+        return html`<h5 part=${DEFAULTS.CSS_PART_TEXT} style="${multilineStyle}"><slot></slot></h5>`;
+      case VALID_TEXT_TAGS.H6:
+        return html`<h6 part=${DEFAULTS.CSS_PART_TEXT} style="${multilineStyle}"><slot></slot></h6>`;
+      case VALID_TEXT_TAGS.DIV:
+        return html`<div part=${DEFAULTS.CSS_PART_TEXT} style="${multilineStyle}"><slot></slot></div>`;
+      case VALID_TEXT_TAGS.SPAN:
+        return html`<span part=${DEFAULTS.CSS_PART_TEXT} style="${multilineStyle}"><slot></slot></span>`;
+      case VALID_TEXT_TAGS.SMALL:
+        return html`<small part=${DEFAULTS.CSS_PART_TEXT} style="${multilineStyle}"><slot></slot></small>`;
       case VALID_TEXT_TAGS.P:
-      default: return html`<p part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></p>`;
+      default:
+        return html`<p part=${DEFAULTS.CSS_PART_TEXT} style="${multilineStyle}"><slot></slot></p>`;
     }
   }
 
