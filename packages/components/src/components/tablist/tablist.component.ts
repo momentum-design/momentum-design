@@ -115,16 +115,18 @@ class TabList extends Component {
   /**
    * @internal
    */
-  private isRtl = (): boolean => (
-    document.querySelector('html')?.getAttribute('dir') === 'rtl' || window.getComputedStyle(this).direction === 'rtl'
-  );
+  private isRtl = (): boolean =>
+    document.querySelector('html')?.getAttribute('dir') === 'rtl' || window.getComputedStyle(this).direction === 'rtl';
 
   constructor() {
     super();
 
     this.addEventListener('keydown', this.handleKeydown);
     // Reason for assertion below: https://github.com/microsoft/TypeScript/issues/28357
-    this.addEventListener('activechange', this.handleNestedTabActiveChange as EventListener);
+    this.addEventListener(
+      'activechange',
+      this.handleNestedTabActiveChange as (event: Event) => Promise<void>,
+    );
   }
 
   /**
@@ -134,8 +136,10 @@ class TabList extends Component {
    *
    * Also set up the event listeners.
    */
-  protected override firstUpdated(): void {
-    if (!this.tabs) { return; }
+  protected override async firstUpdated(): Promise<void> {
+    if (!this.tabs) {
+      return;
+    }
 
     /**
      * If there are no tabs, skip the initialization of the active tab and the event listeners.
@@ -157,7 +161,7 @@ class TabList extends Component {
 
     this.setAriaLabelledByOrAriaLabel();
 
-    const resizeObserver = new ResizeObserver(() => {
+    const resizeObserver = new ResizeObserver(async () => {
       const activeElement = this.tabsContainer?.shadowRoot?.activeElement;
 
       /**
@@ -168,7 +172,7 @@ class TabList extends Component {
         activeElement.scrollIntoView({ behavior: 'instant', block: 'start', inline: 'center' });
       }
 
-      this.handleArrowButtonVisibility();
+      await this.handleArrowButtonVisibility();
     });
     resizeObserver.observe(this);
 
@@ -192,7 +196,7 @@ class TabList extends Component {
    *
    * @param changedProperties - Map of changed properties with old values.
    */
-  public override update(changedProperties: PropertyValues<this>): void {
+  public override async update(changedProperties: PropertyValues<this>): Promise<void> {
     super.update(changedProperties);
 
     if (changedProperties.has('dataAriaLabelledby') || changedProperties.has('dataAriaLabel')) {
@@ -200,10 +204,14 @@ class TabList extends Component {
     }
 
     if (changedProperties.has('activeTabId')) {
-      if (!this.tabs || !this.activeTabId) { return; }
+      if (!this.tabs || !this.activeTabId) {
+        return;
+      }
 
       const newTab = findTab(this.tabs, this.activeTabId);
-      if (!(newTab instanceof Tab)) { return; }
+      if (!(newTab instanceof Tab)) {
+        return;
+      }
 
       this.setActiveTab(newTab);
 
@@ -214,44 +222,44 @@ class TabList extends Component {
        */
       if (changedProperties.get('activeTabId')) {
         this.fireTabChangeEvent(newTab);
-        this.focusTab(newTab);
+        await this.focusTab(newTab);
       } else {
         this.resetTabIndexAndSetNewTabIndex(newTab);
       }
     }
   }
 
-   /**
-    * Set aria-labelledby attribute on the tablist element.
-    * If it does not exist, set aria-label attribute.
-    * As fallback, set aria-label to 'Tab List'.
-    *
-    * @internal
-    */
-   private setAriaLabelledByOrAriaLabel = (): void => {
-     if (this.dataAriaLabelledby) {
-       this.tabsContainer?.setAttribute('aria-labelledby', this.dataAriaLabelledby);
-       this.tabsContainer?.removeAttribute('aria-label');
-     } else {
-       this.tabsContainer?.setAttribute('aria-label', this.dataAriaLabel || 'Tab List');
-       this.tabsContainer?.removeAttribute('aria-labelledby');
-     }
-   };
+  /**
+   * Set aria-labelledby attribute on the tablist element.
+   * If it does not exist, set aria-label attribute.
+   * As fallback, set aria-label to 'Tab List'.
+   *
+   * @internal
+   */
+  private setAriaLabelledByOrAriaLabel = (): void => {
+    if (this.dataAriaLabelledby) {
+      this.tabsContainer?.setAttribute('aria-labelledby', this.dataAriaLabelledby);
+      this.tabsContainer?.removeAttribute('aria-label');
+    } else {
+      this.tabsContainer?.setAttribute('aria-label', this.dataAriaLabel || 'Tab List');
+      this.tabsContainer?.removeAttribute('aria-labelledby');
+    }
+  };
 
-   /**
-    * Dispatch the change event.
-    *
-    * @internal
-    *
-    * @param newTab - the new tab that is active.
-    */
-    private fireTabChangeEvent = (newTab: Tab): void => {
-      const event = new CustomEvent('change', {
-        detail: newTab.tabId,
-      });
+  /**
+   * Dispatch the change event.
+   *
+   * @internal
+   *
+   * @param newTab - the new tab that is active.
+   */
+  private fireTabChangeEvent = (newTab: Tab): void => {
+    const event = new CustomEvent('change', {
+      detail: newTab.tabId,
+    });
 
-      this.dispatchEvent(event);
-    };
+    this.dispatchEvent(event);
+  };
 
   /**
    * When the tablist receives focus, then focus the active tab.
@@ -260,23 +268,29 @@ class TabList extends Component {
    *
    * @param event - Focus event.
    */
-  private handleFocus = (event: FocusEvent) => {
+  private handleFocus = async (event: FocusEvent) => {
     /**
      * If the element losing focus is a tab, do nothing.
      * This also covers the case when previous focus was on a tab that belongs to another tablist.
      */
-    if (event.relatedTarget instanceof Tab) { return; }
+    if (event.relatedTarget instanceof Tab) {
+      return;
+    }
     /**
      * If the element gaining focus is not a tab, do nothing.
      */
-    if (!(event.target instanceof Tab)) { return; }
+    if (!(event.target instanceof Tab)) {
+      return;
+    }
 
     const activeTab = getActiveTab(this.tabs || []);
 
-    if (!(activeTab instanceof Tab)) { return; }
+    if (!(activeTab instanceof Tab)) {
+      return;
+    }
 
     if (activeTab !== event.target) {
-      this.focusTab(activeTab);
+      await this.focusTab(activeTab);
     }
   };
 
@@ -288,7 +302,9 @@ class TabList extends Component {
    * @param event - Mouse event.
    */
   private handleMousedown = (event: MouseEvent) => {
-    if (!(event.target instanceof Tab)) { return; }
+    if (!(event.target instanceof Tab)) {
+      return;
+    }
 
     event.preventDefault();
   };
@@ -300,17 +316,19 @@ class TabList extends Component {
    *
    * @param event - Custom Event fired from the nested tab.
    */
-    private handleNestedTabActiveChange = (event: CustomEvent<any>): void => {
-      const tab = event.target;
-      if (!(tab instanceof Tab)) { return; }
+  private handleNestedTabActiveChange = async (event: CustomEvent<any>): Promise<void> => {
+    const tab = event.target;
+    if (!(tab instanceof Tab)) {
+      return;
+    }
 
-      this.setActiveTab(tab);
-      if (tab !== this.shadowRoot?.activeElement) {
-        this.focusTab(tab);
-      }
+    this.setActiveTab(tab);
+    if (tab !== this.shadowRoot?.activeElement) {
+      await this.focusTab(tab);
+    }
 
-      this.activeTabId = tab.tabId;
-    };
+    this.activeTabId = tab.tabId;
+  };
 
   /**
    * Resets all tabs' tabindex to -1 and sets the tabindex of the
@@ -351,14 +369,16 @@ class TabList extends Component {
    *
    * @param tab - Tab to set focus on.
    */
-  private focusTab = (tab?: Tab): void => {
-    if (!(tab instanceof Tab)) { return; }
+  private focusTab = async (tab?: Tab): Promise<void> => {
+    if (!(tab instanceof Tab)) {
+      return;
+    }
 
     this.resetTabIndexAndSetNewTabIndex(tab);
     tab.focus();
     // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
     tab.scrollIntoView({ behavior: 'instant', block: 'start', inline: 'center' });
-    this.handleArrowButtonVisibility();
+    await this.handleArrowButtonVisibility();
   };
 
   /**
@@ -368,11 +388,15 @@ class TabList extends Component {
    *
    * @param event - HTML Keyboard Event.
    */
-  private handleKeydown = (event: KeyboardEvent): void => {
+  private handleKeydown = async (event: KeyboardEvent): Promise<void> => {
     const tab = event.target;
 
-    if (!(tab instanceof Tab)) { return; }
-    if (!this.tabs) { return; }
+    if (!(tab instanceof Tab)) {
+      return;
+    }
+    if (!this.tabs) {
+      return;
+    }
 
     const previousTab = getPreviousTab(this.tabs, tab);
     const nextTab = getNextTab(this.tabs, tab);
@@ -382,20 +406,20 @@ class TabList extends Component {
     switch (event.code) {
       case KEYCODES.LEFT:
         event.preventDefault();
-        this.focusTab(!this.isRtl() ? previousTab : nextTab);
+        await this.focusTab(!this.isRtl() ? previousTab : nextTab);
         break;
 
       case KEYCODES.RIGHT:
         event.preventDefault();
-        this.focusTab(!this.isRtl() ? nextTab : previousTab);
+        await this.focusTab(!this.isRtl() ? nextTab : previousTab);
         break;
 
       case KEYCODES.HOME:
-        this.focusTab(firstTab);
+        await this.focusTab(firstTab);
         break;
 
       case KEYCODES.END:
-        this.focusTab(lastTab);
+        await this.focusTab(lastTab);
         break;
 
       default:
@@ -409,9 +433,8 @@ class TabList extends Component {
    *
    * @param direction - The direction of the arrow button.
    */
-  private shouldShowArrowButton = (direction: ArrowButtonDirectionType): boolean => (
-    direction === ARROW_BUTTON_DIRECTION.FORWARD ? this.showForwardArrowButton : this.showBackwardArrowButton
-  );
+  private shouldShowArrowButton = (direction: ArrowButtonDirectionType): boolean =>
+    direction === ARROW_BUTTON_DIRECTION.FORWARD ? this.showForwardArrowButton : this.showBackwardArrowButton;
 
   /**
    * If an arrow button is in focus and it gets removed, switch focus to the opposite arrow button.
@@ -419,11 +442,14 @@ class TabList extends Component {
    *
    * @internal
    */
-  private switchFocus = (): void => {
+  private switchFocus = async (): Promise<void> => {
+    await this.updateComplete;
     if (!this.showBackwardArrowButton && !this.showForwardArrowButton) {
       getActiveTab(this.tabs || [])?.focus();
-    } else if ((this.showBackwardArrowButton && !this.showForwardArrowButton)
-       || (this.showForwardArrowButton && !this.showBackwardArrowButton)) {
+    } else if (
+      (this.showBackwardArrowButton && !this.showForwardArrowButton)
+      || (this.showForwardArrowButton && !this.showBackwardArrowButton)
+    ) {
       this.shadowRoot?.querySelector<Button>('mdc-button:not(.pressed)')?.focus();
     }
   };
@@ -434,9 +460,13 @@ class TabList extends Component {
    *
    * @internal
    */
-  private handleArrowButtonVisibility = (): void => {
-    if (!this.tabs) { return; }
-    if (!this.tabsContainer) { return; }
+  private handleArrowButtonVisibility = async (): Promise<void> => {
+    if (!this.tabs) {
+      return;
+    }
+    if (!this.tabsContainer) {
+      return;
+    }
 
     let isArrowButtonFocused: boolean = false;
 
@@ -473,7 +503,7 @@ class TabList extends Component {
       }
 
       if (isArrowButtonFocused) {
-        this.switchFocus();
+        await this.switchFocus();
       }
       return;
     }
@@ -491,54 +521,56 @@ class TabList extends Component {
     }
 
     if (isArrowButtonFocused) {
-      this.switchFocus();
+      await this.switchFocus();
     }
   };
 
-   /**
-    * Scroll tabs forward or backward.
-    *
-    * @internal
-    *
-    * @param direction - The direction to scroll the tabs in.
-    */
-   private scrollTabs = (direction: ArrowButtonDirectionType): void => {
-     const forwardMultiplier = !this.isRtl() ? 1 : -1;
-     const backwardMultiplier = !this.isRtl() ? -1 : 1;
+  /**
+   * Scroll tabs forward or backward.
+   *
+   * @internal
+   *
+   * @param direction - The direction to scroll the tabs in.
+   */
+  private scrollTabs = async (direction: ArrowButtonDirectionType): Promise<void> => {
+    const forwardMultiplier = !this.isRtl() ? 1 : -1;
+    const backwardMultiplier = !this.isRtl() ? -1 : 1;
 
-     this.tabsContainer?.scrollBy({
-       left: this.tabsContainer.clientWidth * (direction === ARROW_BUTTON_DIRECTION.FORWARD
-         ? forwardMultiplier : backwardMultiplier),
-       // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
-       behavior: 'instant',
-     });
+    this.tabsContainer?.scrollBy({
+      left:
+        this.tabsContainer.clientWidth
+        * (direction === ARROW_BUTTON_DIRECTION.FORWARD ? forwardMultiplier : backwardMultiplier),
+      // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
+      behavior: 'instant',
+    });
 
-     this.handleArrowButtonVisibility();
-   };
+    await this.handleArrowButtonVisibility();
+  };
 
-   public override render() {
-     const forwardArrowDirection = !this.isRtl() ? 'right' : 'left';
-     const backwardArrowDirection = !this.isRtl() ? 'left' : 'right';
+  public override render() {
+    const forwardArrowDirection = !this.isRtl() ? 'right' : 'left';
+    const backwardArrowDirection = !this.isRtl() ? 'left' : 'right';
 
-     const arrowButton = (direction: ArrowButtonDirectionType) =>
-       html` ${this.shouldShowArrowButton(direction)
-         ? html`<mdc-button
+    const arrowButton = (direction: ArrowButtonDirectionType) =>
+      html` ${this.shouldShowArrowButton(direction)
+        ? html`<mdc-button
             variant="tertiary"
             prefix-icon="arrow-${direction === ARROW_BUTTON_DIRECTION.FORWARD
-    ? forwardArrowDirection : backwardArrowDirection}-regular"
+    ? forwardArrowDirection
+    : backwardArrowDirection}-regular"
             aria-label="Scroll tabs ${direction === ARROW_BUTTON_DIRECTION.FORWARD
-    ? forwardArrowDirection : backwardArrowDirection}"
+    ? forwardArrowDirection
+    : backwardArrowDirection}"
             @click="${() => this.scrollTabs(direction)}"
           ></mdc-button>`
-         : nothing}`;
+        : nothing}`;
 
-     return html`
-      ${arrowButton('backward')}
+    return html` ${arrowButton('backward')}
       <div class="container" role="tablist">
         <slot></slot>
       </div>
       ${arrowButton(ARROW_BUTTON_DIRECTION.FORWARD)}`;
-   }
+  }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
