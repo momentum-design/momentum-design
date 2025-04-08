@@ -296,9 +296,7 @@ class TabList extends Component {
       return;
     }
 
-    if (activeTab !== event.target) {
-      await this.focusTab(activeTab);
-    }
+    await this.focusTab(activeTab);
   };
 
   /**
@@ -330,9 +328,7 @@ class TabList extends Component {
     }
 
     this.setActiveTab(tab);
-    if (tab !== this.shadowRoot?.activeElement) {
-      await this.focusTab(tab);
-    }
+    await this.focusTab(tab);
 
     this.activeTabId = tab.tabId;
   };
@@ -381,8 +377,11 @@ class TabList extends Component {
       return;
     }
 
-    this.resetTabIndexAndSetNewTabIndex(tab);
-    tab.focus();
+    if (tab !== this.shadowRoot?.activeElement) {
+      this.resetTabIndexAndSetNewTabIndex(tab);
+      tab.focus();
+    }
+
     // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
     tab.scrollIntoView({ behavior: 'instant', block: 'start', inline: 'center' });
     await this.handleArrowButtonVisibility();
