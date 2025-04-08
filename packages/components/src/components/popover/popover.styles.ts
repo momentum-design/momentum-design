@@ -11,6 +11,7 @@ const styles = css`
     --mdc-popover-inverted-border-color: var(--mds-color-theme-inverted-outline-primary-normal);
     --mdc-popover-inverted-text-color: var(--mds-color-theme-inverted-text-primary-normal);
     --mdc-popover-elevation-3: var(--mds-elevation-3);
+    --mdc-popover-overflow-y: unset;
     --mdc-popover-max-width: unset;
     --mdc-popover-max-height: auto;
 
@@ -49,7 +50,7 @@ const styles = css`
   :host::part(popover-content) {
     position: relative;
     padding: 0.75rem;
-    overflow-y: auto;
+    overflow: var(--mdc-popover-overflow-y);
     min-width: max-content;
     z-index: 9998;
     max-height: var(--mdc-popover-max-height);
