@@ -12,12 +12,12 @@ const render = (args: Args) => html`
   </mdc-progressspinner>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/progressspinner',
+  title: 'Components/progressspinner',
   tags: ['autodocs'],
   component: 'mdc-progressspinner',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     value: {
