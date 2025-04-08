@@ -64,7 +64,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    value: 25,
+    value: 0,
     'data-aria-label': 'progress spinner',
   },
 };
