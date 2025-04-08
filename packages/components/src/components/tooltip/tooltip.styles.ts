@@ -3,7 +3,7 @@ import { css } from 'lit';
 const styles = css`
 
   :host {
-    --mdc-tooltip-width: 400px;
+    --mdc-tooltip-width: fit-content;
     --mdc-tooltip-padding: 0.75rem;
     --mdc-tooltip-text-color: var(--mds-color-theme-text-primary-normal);
     --mdc-tooltip-text-color-contrast: var(--mds-color-theme-inverted-text-primary-normal);
