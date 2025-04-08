@@ -1,3 +1,6 @@
+import type { ValueOf } from '../../utils/types';
+import { ARROW_ICON } from './select.constants';
+
 interface Events {
   onClickEvent: MouseEvent;
   onChangeEvent: Event;
@@ -5,4 +8,6 @@ interface Events {
   onFocusEvent: FocusEvent;
 }
 
-export type { Events };
+type ArrowIcon = ValueOf<typeof ARROW_ICON>;
+
+export type { Events, ArrowIcon };

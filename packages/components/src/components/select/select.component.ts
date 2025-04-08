@@ -6,13 +6,13 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
-import type { IconNames } from '../icon/icon.types';
 import { TAG_NAME as OPTION_GROUP_TAG_NAME } from '../optgroup/optgroup.constants';
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { ARROW_ICON } from './select.constants';
 import styles from './select.styles';
+import type { ArrowIcon } from './select.types';
 
 /**
  * The mdc-select component is a dropdown selection control that allows users to pick an option from a predefined list.
@@ -56,7 +56,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   @queryAssignedElements() optionsList!: Array<HTMLElement>;
 
   /** @internal */
-  @state() private baseIconName: IconNames = ARROW_ICON.ARROW_DOWN;
+  @state() private baseIconName: ArrowIcon = ARROW_ICON.ARROW_DOWN;
 
   /** @internal */
   @state() selectedValueText?: string;
