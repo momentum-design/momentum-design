@@ -39,6 +39,7 @@ import ThemeProvider from './components/themeprovider';
 import Toggle from './components/toggle';
 import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
+import TabList from './components/tablist';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -98,6 +99,7 @@ export {
   Brandvisual,
   Appheader,
   Select,
+  TabList,
 };
 // Types Exports
 export type {
