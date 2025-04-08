@@ -5,10 +5,9 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 
 const render = () => html`
 <div style="height: 60rem; margin: 1rem">
-<mdc-sidenavigation variant="flexible" customer-name="Cisco">
-  <!-- Upper Nav (scrollable section) -->
-  <div slot="scrollable-section">
-    <mdc-navitemlist>
+  <mdc-sidenavigation variant="flexible" customer-name="Cisco">
+    <!-- Upper Nav (scrollable section) -->
+    <mdc-navitemlist slot="scrollable-section">
       <mdc-navitem badge-type="counter" counter=2 max-counter="66" 
       icon-name="placeholder-bold" nav-id="1">MessagingMessagingMessagingMessaging</mdc-navitem>
       <mdc-navitem badge-type="counter" counter=3 max-counter="66" 
@@ -22,7 +21,7 @@ const render = () => html`
       icon-name="placeholder-bold" nav-id="5">Meetings</mdc-navitem>
       <mdc-navitem badge-type="dot" icon-name="placeholder-bold">Calling</mdc-navitem>
       <mdc-divider variant="gradient" nav-id="6"></mdc-divider>
-      <mdc-text >Section 2</mdc-text>
+      <mdc-text>Section 2</mdc-text>
       <mdc-navitem badge-type="counter" counter=2 max-counter="66" 
       icon-name="placeholder-bold" nav-id="7">Messaging</mdc-navitem>
       <mdc-navitem badge-type="counter" counter=3 max-counter="66" 
@@ -50,19 +49,15 @@ const render = () => html`
       icon-name="placeholder-bold" nav-id="19">Messaging</mdc-navitem>
       <mdc-navitem badge-type="counter" counter=3 max-counter="66" 
       icon-name="placeholder-bold" nav-id="20">Meetings</mdc-navitem>
-      <mdc-navitem badge-type="dot" icon-name="placeholder-bold" nav-id="19">Calling</mdc-navitem>
+      <mdc-navitem badge-type="dot" icon-name="placeholder-bold" nav-id="21">Calling</mdc-navitem>
     </mdc-navitemlist>
-  </div>
- 
-  <!-- Lower Nav (Fixed section) -->
-  <div slot="fixed-section">
-    <mdc-divider variant="gradient"></mdc-divider>
-    <mdc-link icon-name="placeholder-bold"><a href="#">Settings Link</a></mdc-link>
-    <mdc-button prefix-icon="placeholder-bold">Logout Button</mdc-button>
-    <mdc-link icon-name="placeholder-bold"><a href="#">Back Link</a></mdc-link>
-    <img src="https://momentum.design/mometnum_design_logo.5016c4f24b97e0ad.svg" slot="brand-logo"/>
-  </div>
-</mdc-sidenavigation>
+  
+    <!-- Lower Nav (Fixed section) -->
+    <mdc-link slot="fixed-section-link" icon-name="placeholder-bold"><a href="#">Settings Link</a></mdc-link>
+    <mdc-button slot="fixed-section-button" prefix-icon="placeholder-bold">Logout Button</mdc-button>
+    <mdc-link slot="fixed-section-link" icon-name="placeholder-bold"><a href="#">Back Link</a></mdc-link>
+    <img slot="brand-logo" src="https://momentum.design/mometnum_design_logo.5016c4f24b97e0ad.svg"/>
+  </mdc-sidenavigation>
 </div>
 `;
 

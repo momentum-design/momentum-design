@@ -9,8 +9,6 @@ class SideNavigationContext {
 
   public expanded?: boolean;
 
-  public ariaExpanded?: string;
-
   public static context = createContext<SideNavigationContext>(TAG_NAME);
 
   // Constructor to allow setting default values
@@ -18,12 +16,10 @@ class SideNavigationContext {
     defaultVariant?: string,
     defaultCustomerName?: string,
     defaultExpanded?: boolean,
-    defaultAriaExpanded?: string,
   ) {
     this.variant = defaultVariant;
     this.customerName = defaultCustomerName;
     this.expanded = defaultExpanded;
-    this.ariaExpanded = defaultAriaExpanded;
   }
 }
 

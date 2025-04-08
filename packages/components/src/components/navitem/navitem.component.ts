@@ -4,7 +4,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './navitem.styles';
 import { DEFAULTS } from './navitem.constants';
 import providerUtils from '../../utils/provider';
-import { VARIANTS } from '../sidenavigation/sidenavigation.constants';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
@@ -12,7 +11,7 @@ import Buttonsimple from '../buttonsimple';
 import { ButtonSize, ButtonType } from '../buttonsimple/buttonsimple.types';
 import { getIconNameWithoutStyle } from '../button/button.utils';
 // eslint-disable-next-line import/no-cycle
-import SideNavigationProvider from '../sidenavigation';
+import SideNavigation from '../sidenavigation/sidenavigation.component';
 
 /**
  * nav-item component, which ...
@@ -49,8 +48,8 @@ class NavItem extends IconNameMixin(Buttonsimple) {
   private prevIconName?: string;
 
   // get data from context
-  private readonly sideNavigationProviderContext = providerUtils.consume({ host: this,
-    context: SideNavigationProvider.Context });
+  private readonly sideNavigationContext = providerUtils.consume({ host: this,
+    context: SideNavigation.Context });
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -107,26 +106,11 @@ class NavItem extends IconNameMixin(Buttonsimple) {
   }
 
   protected override executeAction() {
-    // add a logic when role is button, then super.executeAction();
-    // add a logic when role is link,
-    // Toggle the active state of the tab.
     this.active = !this.active;
     this.handleTabActiveChange(this.active);
   }
 
-  shouldRenderContent() {
-    const { variant, expanded } = this.sideNavigationProviderContext.value ?? {};
-    return !(
-      variant === VARIANTS.FIXED_COLLAPSED
-      || (variant === VARIANTS.FLEXIBLE && !expanded)
-    );
-  }
-
   renderTextLabel() {
-    if (!this.shouldRenderContent()) {
-      return nothing;
-    }
-
     return html`
       <mdc-text
         type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}
@@ -138,12 +122,10 @@ class NavItem extends IconNameMixin(Buttonsimple) {
   }
 
   renderBadge() {
-    if (!this.shouldRenderContent()) {
-      return nothing;
-    }
-
+    const { expanded } = this.sideNavigationContext.value ?? {};
     return html`
       <mdc-badge 
+        class="${!expanded ? 'badge' : ''}"
         type="${ifDefined(this.badgeType)}" 
         counter="${ifDefined(this.counter)}" 
         max-counter="${this.maxCounter}">
@@ -152,11 +134,20 @@ class NavItem extends IconNameMixin(Buttonsimple) {
   }
 
   public override render() {
+    const { expanded } = this.sideNavigationContext.value ?? {};
+
     return html`
-          ${this.iconName
-    ? html` <mdc-icon name="${this.iconName}" size="1.5" length-unit="rem" part="icon"></mdc-icon>` : nothing}
-          ${this.renderTextLabel()}
-          ${this.renderBadge()}
+      <div part="icon-container">
+        <mdc-icon
+          name="${this.iconName}"
+          size="1.5"
+          length-unit="rem"
+          part="icon"
+        ></mdc-icon>
+        ${!expanded ? this.renderBadge() : nothing}
+      </div>
+      ${expanded ? this.renderTextLabel() : nothing}
+      ${expanded ? this.renderBadge() : nothing}
     `;
   }
 

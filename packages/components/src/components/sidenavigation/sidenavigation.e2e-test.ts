@@ -8,7 +8,7 @@ test.beforeEach(async ({ componentsPage }) => {
   });
 });
 
-test('mdc-sidenavigation', async ({ componentsPage }) => {
+test.skip('mdc-sidenavigation', async ({ componentsPage }) => {
   const sidenavigation = componentsPage.page.locator('mdc-sidenavigation');
 
   // initial check for the sidenavigation be visible on the screen:

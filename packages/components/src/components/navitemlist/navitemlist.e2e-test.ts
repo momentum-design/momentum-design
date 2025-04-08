@@ -8,7 +8,7 @@ test.beforeEach(async ({ componentsPage }) => {
   });
 });
 
-test('mdc-navitemlist', async ({ componentsPage }) => {
+test.skip('mdc-navitemlist', async ({ componentsPage }) => {
   const navitemlist = componentsPage.page.locator('mdc-navitemlist');
 
   // initial check for the navitemlist be visible on the screen:

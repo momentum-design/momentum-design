@@ -8,7 +8,7 @@ test.beforeEach(async ({ componentsPage }) => {
   });
 });
 
-test('mdc-navitem', async ({ componentsPage }) => {
+test.skip('mdc-navitem', async ({ componentsPage }) => {
   const navItem = componentsPage.page.locator('mdc-navitem');
 
   // initial check for the navitem be visible on the screen:

@@ -1,5 +1,5 @@
 import { css } from 'lit';
-import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
+import { hostFitContentStyles } from '../../utils/styles';
 
 const styles = [hostFitContentStyles, css`
   :host {
@@ -36,7 +36,7 @@ const styles = [hostFitContentStyles, css`
     border-color: var(--mdc-button-secondary-border-color);
     border-radius: 1.25rem;
     font-weight: var(--mds-font-apps-body-large-medium-font-weight);
-    margin-left: 16px;
+    margin-left: 1rem;
   }
   
   :host(:hover), 
@@ -62,7 +62,7 @@ const styles = [hostFitContentStyles, css`
     content: '';
     display: block;
     position: absolute;
-    left: -16px;
+    left: -1rem;
     background-color: var(--mdc-button-secondary-color);
     width: 0.25rem;
     height: 1rem;
@@ -85,6 +85,17 @@ const styles = [hostFitContentStyles, css`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  
+  :host::part(icon-container) {
+    position: relative;
+    display: inline-block;
+  }
+
+  .badge {
+    position: absolute;
+    right: -0.375rem;
+    top: -0.375rem;
   }
 `];
 

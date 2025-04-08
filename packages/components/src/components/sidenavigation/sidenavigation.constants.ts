@@ -10,7 +10,7 @@ const VARIANTS = {
 };
 
 const DEFAULTS = {
-  VARIANT: VARIANTS.FIXED_EXPANDED,
+  VARIANT: VARIANTS.FLEXIBLE,
   ROLE: 'navigation',
 } as const;
 
