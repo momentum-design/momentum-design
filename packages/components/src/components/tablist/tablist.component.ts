@@ -89,6 +89,13 @@ class TabList extends Component {
   private tabsContainer?: HTMLDivElement;
 
   /**
+   * Arrow button that is not focused.
+   * @internal
+   */
+  @query('mdc-button:not(:focus-visible)')
+  private notFocusedArrowButton?: Button;
+
+  /**
    * Children of the tablist, elements of type `mdc-tab`.
    * @internal
    */
@@ -450,7 +457,7 @@ class TabList extends Component {
       (this.showBackwardArrowButton && !this.showForwardArrowButton)
       || (this.showForwardArrowButton && !this.showBackwardArrowButton)
     ) {
-      this.shadowRoot?.querySelector<Button>('mdc-button:not(.pressed)')?.focus();
+      this.notFocusedArrowButton?.focus();
     }
   };
 
@@ -566,7 +573,7 @@ class TabList extends Component {
         : nothing}`;
 
     return html` ${arrowButton('backward')}
-      <div class="container" role="tablist">
+      <div class="container" role="tablist" tabindex="-1">
         <slot></slot>
       </div>
       ${arrowButton(ARROW_BUTTON_DIRECTION.FORWARD)}`;

@@ -12,6 +12,6 @@ const KEYCODES = {
 const ARROW_BUTTON_DIRECTION = {
   FORWARD: 'forward',
   BACKWARD: 'backward',
-} as const;
+};
 
 export { TAG_NAME, KEYCODES, ARROW_BUTTON_DIRECTION };
