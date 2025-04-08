@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { TYPE as PRESENCE_TYPE } from '../presence/presence.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls } from '../../../config/storybook/utils';
+import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { AVATAR_SIZE } from '../avatar/avatar.constants';
 
 const render = (args: Args) => html`
@@ -67,6 +67,11 @@ const meta: Meta = {
       'tabIndex',
       'role',
       'type',
+    ]),
+    ...disableControls([
+      '--mdc-avatarbutton-overlay-background-color-rest',
+      '--mdc-avatarbutton-overlay-background-color-hover',
+      '--mdc-avatarbutton-overlay-background-color-active',
     ]),
     ...classArgType,
     ...styleArgType,
