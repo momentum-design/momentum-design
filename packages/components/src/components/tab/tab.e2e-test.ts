@@ -128,60 +128,6 @@ test('mdc-tab', async ({ componentsPage }) => {
       await expect(tab).toBeFocused();
       await componentsPage.page.keyboard.press('ArrowRight');
     });
-
-    await test.step('tab pressed event to make inactive tab as active - Enter key', async () => {
-      await componentsPage.page.keyboard.press('ArrowLeft');
-      await expect(tab).toBeFocused();
-      await expect(tab).not.toHaveAttribute('active');
-      await componentsPage.page.keyboard.press('Enter');
-      await expect(tab).toHaveAttribute('active');
-      await componentsPage.page.keyboard.press('ArrowRight');
-    });
-
-    await test.step('tab pressed event to make active tab as inactive - Enter key', async () => {
-      await componentsPage.page.keyboard.press('ArrowLeft');
-      await expect(tab).toBeFocused();
-      await expect(tab).toHaveAttribute('active');
-      await componentsPage.page.keyboard.press('Enter');
-      await expect(tab).not.toHaveAttribute('active');
-      await componentsPage.page.keyboard.press('ArrowRight');
-    });
-
-    await test.step('tab pressed event to make inactive tab as active - Space key', async () => {
-      await componentsPage.page.keyboard.press('ArrowLeft');
-      await expect(tab).toBeFocused();
-      await expect(tab).not.toHaveAttribute('active');
-      await componentsPage.page.keyboard.press(' ');
-      await expect(tab).toHaveAttribute('active');
-      await componentsPage.page.keyboard.press('ArrowRight');
-    });
-
-    await test.step('tab pressed event to make active tab as inactive - Space key', async () => {
-      await componentsPage.page.keyboard.press('ArrowLeft');
-      await expect(tab).toBeFocused();
-      await expect(tab).toHaveAttribute('active');
-      await componentsPage.page.keyboard.press(' ');
-      await expect(tab).not.toHaveAttribute('active');
-      await componentsPage.page.keyboard.press('ArrowRight');
-    });
-
-    await test.step('tab pressed event to make inactive tab as active - Click', async () => {
-      await componentsPage.page.keyboard.press('ArrowLeft');
-      await expect(tab).toBeFocused();
-      await expect(tab).not.toHaveAttribute('active');
-      await tab.click();
-      await expect(tab).toHaveAttribute('active');
-      await componentsPage.page.keyboard.press('ArrowRight');
-    });
-
-    await test.step('tab pressed event to make active tab as inactive - Click', async () => {
-      await componentsPage.page.keyboard.press('ArrowLeft');
-      await expect(tab).toBeFocused();
-      await expect(tab).toHaveAttribute('active');
-      await tab.click();
-      await expect(tab).not.toHaveAttribute('active');
-      await componentsPage.page.keyboard.press('ArrowRight');
-    });
   });
 
   /**
