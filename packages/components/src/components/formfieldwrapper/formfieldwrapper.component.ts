@@ -60,7 +60,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     }
 
     return this.shouldRenderLabel
-      ? html`<label for="${this.id}" class="mdc-label" part="label">${this.label}</label>`
+      ? html`<label for="${this.id}" id="${DEFAULTS.HEADING_ID}" class="mdc-label" part="label">${this.label}</label>`
       : html` <mdc-text
           id="${DEFAULTS.HEADING_ID}"
           tagname="${MDC_TEXT_OPTIONS.TAGNAME}"

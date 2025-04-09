@@ -191,6 +191,7 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
    * Handles the keydown event on the button.
    * If the key is 'Enter' or 'Space', the button is pressed.
    * If the key is 'Enter', the button is pressed. The native HTML button works in the same way.
+   * If the key is 'Space', the button's default is prevent to avoid scrolling etc in the host application.
    *
    * @param event - The keyboard event.
    */
@@ -199,6 +200,10 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
       this.classList.add('pressed');
       if (event.key === 'Enter') {
         this.triggerClickEvent();
+      }
+
+      if (event.key === ' ') {
+        event.preventDefault();
       }
     }
   }

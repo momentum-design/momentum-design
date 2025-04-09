@@ -15,6 +15,8 @@ import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
  *
  * Passing in the attribute `text` to the tab component is changing the text displayed in the tab.
  *
+ * Pass attribute `tabid` when using inside of `tablist` component.
+ *
  * The `slot="badge"` can be used to add a badge to the tab.
  *
  * The `slot="chip"` can be used to add a chip to the tab.
@@ -31,6 +33,12 @@ import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the tab.
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the tab.
  * @event focus - (React: onFocus) This event is dispatched when the tab receives focus.
+ * @event activechange - (React: onActiveChange) This event is dispatched when the active state of the tab changes
+ * <br />
+ * Event Data: `detail: { tabId: this.tabId, active }`
+ * <br />
+ * Note: the activechange event is used by the tab list component to react to the change in state of the tab,
+ * so this event won't be needed if the tab list is used.
  *
  * @tagname mdc-tab
  *
@@ -126,8 +134,8 @@ class Tab extends IconNameMixin(Buttonsimple) {
    *
    * @default undefined
    */
-    @property({ type: String, reflect: true, attribute: 'tab-id' })
-    tabId?: string;
+  @property({ type: String, reflect: true, attribute: 'tab-id' })
+  tabId?: string;
 
   /**
    * @internal
@@ -140,22 +148,13 @@ class Tab extends IconNameMixin(Buttonsimple) {
     this.softDisabled = undefined as unknown as boolean;
     this.size = undefined as unknown as ButtonSize;
     this.type = undefined as unknown as ButtonType;
+
+    if (!this.tabId && this.onerror) {
+      this.onerror('tab id is required');
+    }
   }
 
-    /**
-   * Dispatch the activechange event.
-   *
-   * @param active - The active state of the tab.
-   */
-    private handleTabActiveChange = (active: boolean): void => {
-      const event = new CustomEvent('activechange', {
-        detail: { tabId: this.tabId, active },
-        bubbles: true,
-      });
-      this.dispatchEvent(event);
-    };
-
-    /**
+  /**
    * Modifies the icon name based on the active state.
    * If the tab is active, the icon name is suffixed with '-filled'.
    * If the tab is inactive, the icon name is restored to its original value.
@@ -164,29 +163,42 @@ class Tab extends IconNameMixin(Buttonsimple) {
    * @param active - The active state.
    */
 
-    private modifyIconName(active: boolean): void {
-      if (this.iconName) {
-        if (active) {
-          this.prevIconName = this.iconName;
-          this.iconName = `${getIconNameWithoutStyle(this.iconName)}-filled` as IconNames;
-        } else if (this.prevIconName) {
-          this.iconName = this.prevIconName as IconNames;
-        }
+  private modifyIconName(active: boolean): void {
+    if (this.iconName) {
+      if (active) {
+        this.prevIconName = this.iconName;
+        this.iconName = `${getIconNameWithoutStyle(this.iconName)}-filled` as IconNames;
+      } else if (this.prevIconName) {
+        this.iconName = this.prevIconName as IconNames;
       }
     }
+  }
 
-    /**
+  /**
    * Sets the variant attribute for the tab component.
    * If the provided variant is not included in the TAB_VARIANTS,
    * it defaults to the value specified in DEFAULTS.VARIANT.
    *
    * @param variant - The variant to set.
    */
-    private setVariant(variant: Variant): void {
-      this.setAttribute('variant', Object.values(TAB_VARIANTS).includes(variant) ? variant : DEFAULTS.VARIANT);
-    }
+  private setVariant(variant: Variant): void {
+    this.setAttribute('variant', Object.values(TAB_VARIANTS).includes(variant) ? variant : DEFAULTS.VARIANT);
+  }
 
-    /**
+  /**
+   * Dispatch the activechange event.
+   *
+   * @param active - The active state of the tab.
+   */
+  private handleTabActiveChange = (active: boolean): void => {
+    const event = new CustomEvent('activechange', {
+      detail: { tabId: this.tabId, active },
+      bubbles: true,
+    });
+    this.dispatchEvent(event);
+  };
+
+  /**
    * Sets the aria-selected attribute based on the active state of the Tab.
    * If the tab is active, the filled version of the icon is displayed,
    * else the icon is restored to its original value.
@@ -194,26 +206,25 @@ class Tab extends IconNameMixin(Buttonsimple) {
    * @param element - The tab element.
    * @param active - The active state of the tab.
    */
-    protected override setActive(element: HTMLElement, active: boolean) {
-      element.setAttribute('aria-selected', active ? 'true' : 'false');
-      this.modifyIconName(active);
-    }
+  protected override setActive(element: HTMLElement, active: boolean) {
+    element.setAttribute('aria-selected', active ? 'true' : 'false');
+    this.modifyIconName(active);
+  }
 
-    protected override executeAction() {
+  protected override executeAction() {
     // Toggle the active state of the tab.
-      this.active = !this.active;
-      this.handleTabActiveChange(this.active);
-    }
+    this.handleTabActiveChange(this.active);
+  }
 
-    public override update(changedProperties: PropertyValues): void {
-      super.update(changedProperties);
-      if (changedProperties.has('variant')) {
-        this.setVariant(this.variant);
-      }
+  public override update(changedProperties: PropertyValues): void {
+    super.update(changedProperties);
+    if (changedProperties.has('variant')) {
+      this.setVariant(this.variant);
     }
+  }
 
-    public override render() {
-      return html`
+  public override render() {
+    return html`
       <div part="container">
         ${this.iconName
     ? html` <mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem" part="icon"></mdc-icon>`
@@ -232,7 +243,7 @@ class Tab extends IconNameMixin(Buttonsimple) {
       </div>
       <div part="indicator"></div>
     `;
-    }
+  }
 
   public static override styles: Array<CSSResult> = [...Buttonsimple.styles, ...styles];
 }

@@ -36,6 +36,8 @@ import { PopoverUtils } from './popover.utils';
  * @cssproperty --mdc-popover-inverted-border-color - inverted border color of the popover
  * @cssproperty --mdc-popover-inverted-text-color - inverted text color of the popover
  * @cssproperty --mdc-popover-elevation-3 - elevation of the popover
+ * @cssproperty --mdc-popover-max-width - max width of the popover
+ * @cssproperty --mdc-popover-max-height - max height of the popover
  *
  * @slot - Default slot for the popover content
  *

@@ -1935,6 +1935,10 @@
         }
       },
       "avatar": {
+        "ghost": {
+          "value": "{color.highcontrast.black.WindowColor}",
+          "type": "color"
+        },
         "default": {
           "parent": "theme/stable/highcontrast/hc_dark",
           "type": "color",

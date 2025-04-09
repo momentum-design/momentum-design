@@ -2586,6 +2586,10 @@
         }
       },
       "avatar": {
+        "ghost": {
+          "value": "{color.core.white-alpha.0}",
+          "type": "color"
+        },
         "default": {
           "parent": "theme/stable/dark",
           "type": "color",
