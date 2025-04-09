@@ -41,6 +41,7 @@ import ScreenreaderAnnouncer from './components/screenreaderannouncer';
 import Card from './components/card';
 import SelectableCard from './components/selectablecard';
 import InteractiveCard from './components/interactivecard';
+import Decorativeradio from './components/decorativeradio';
 
 // Types Imports
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
@@ -102,6 +103,7 @@ export {
   Card,
   SelectableCard,
   InteractiveCard,
+  Decorativeradio,
 };
 
 // Types Exports
