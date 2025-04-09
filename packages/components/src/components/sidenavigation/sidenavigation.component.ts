@@ -12,11 +12,33 @@ import { DIRECTIONS } from '../divider/divider.constants';
 import { SideNavigationVariant } from './sidenavigation.types';
 
 /**
- * SideNavigation component, which ...
+ * The `mdc-sidenavigation` component provides a vertically stacked navigation experience,
+ * typically used in layouts with persistent or collapsible sidebars.
+ *
+ * It supports different variants for layout behavior, handles internal context updates
+ * for shared state, and dynamically manages visibility of nested elements like text labels.
+ *
+ * ## Features:
+ * - Four layout variants: `fixed-collapsed`, `fixed-expanded`, `flexible`, and `hidden`
+ * - Expand/collapse toggle behavior
+ * - Brand logo and customer name section
+ * - Emits `click` and `focus` events for accessibility and interaction
+ * - Acts as a context provider for descendant components
+ *
+ * @dependency mdc-text
+ * @dependency mdc-button
+ * @dependency mdc-divider
+ *
+ * @event click - (React: onClick) This event is dispatched when the grabber divider button is clicked.
+ * @event focus - (React: onFocus) This event is dispatched when the mdc-button, mdc-link
+ * and grabber divider button receives focus.
  *
  * @tagname mdc-sidenavigation
  *
- * @slot - children
+ * @slot scrollable-section - Slot for the scrollable-section section (e.g., navItemList, text).
+ * @slot fixed-section-link - Slot for the fixed-section-link section (e.g., link).
+ * @slot fixed-section-button - Slot for the fixed-section-button section (e.g., button).
+ * @slot brand-logo - Slot for the fixed-section-button section (e.g., icon, img).
  *
  * @cssproperty --custom-property-name - Description of the CSS custom property
  */
@@ -27,40 +49,118 @@ class SideNavigation extends Provider<SideNavigationContext> {
       initialValue: new SideNavigationContext(DEFAULTS.VARIANT, '', true),
     });
     this.role = DEFAULTS.ROLE;
-    this.addEventListener('activechange', this.handleNestedTabActiveChange as EventListener);
   }
 
   public static get Context() {
     return SideNavigationContext.context;
   }
 
-  override connectedCallback(): void {
-    super.connectedCallback();
-    this.setAttribute('aria-expanded', 'true');
-    this.navItems = Array.from(document.querySelectorAll('mdc-navitem'));
-    if (this.scrollableSlot) {
-      this.scrollableSlot.addEventListener('slotchange', this.handleSlotChange);
+  /**
+   * Four variants of the sideNavigation
+   * - **fixed-collapsed**: Shows icons without labels and has fixed width, 4.5rem.
+   * - **fixed-expanded**: Shows icons with labels and has fixed width, 14.75rem.
+   * - **flexible**: Toggles between collapsed/expanded states.
+   * - **hidden**: Removes the sidenavigation from the Dom.
+   * @default flexible
+   */
+    @property({ type: String, reflect: true }) variant: string = DEFAULTS.VARIANT;
+
+    /**
+     * Name of the brandlogo
+     * @default ''
+     */
+    @property({ type: String, reflect: true, attribute: 'customer-name' }) customerName: string = '';
+
+    /**
+    * Determines whether the sideNavigation is expanded or not.
+    * @default true
+    */
+    @property({ type: Boolean, reflect: true }) public expanded: boolean = true;
+
+    /**
+     * Direction of the arrow icon, if applicable.
+     * - **positive**
+     * - **negative**
+     *
+     * Note: Positive and Negative directions are defined based on Cartesian plane.
+     * @default 'negative'
+     */
+    @state() private arrowDirection: Directions = this.expanded ? DIRECTIONS.NEGATIVE : DIRECTIONS.POSITIVE;
+
+    @state() private navItems?: NavItem[];
+
+    @query('slot[name="scrollable-section"]')
+    private readonly scrollableSlot!: HTMLSlotElement;
+
+    override connectedCallback(): void {
+      super.connectedCallback();
+      this.addEventListener('activechange', this.handleNestedTabActiveChange as EventListener);
+      this.addEventListener('keydown', this.handleKeyDown);
+      this.setAttribute('aria-expanded', 'true');
+      this.navItems = Array.from(this.querySelectorAll('mdc-navitem'));
+    }
+
+    override disconnectedCallback(): void {
+      super.disconnectedCallback();
+      this.removeEventListener('activechange', this.handleNestedTabActiveChange as EventListener);
+      this.removeEventListener('keydown', this.handleKeyDown);
+    }
+
+  private handleKeyDown = (event: KeyboardEvent): void => {
+    const keys = ['ArrowUp', 'ArrowDown', 'Home', 'End'];
+    if (!keys.includes(event.key)) return;
+
+    const currentIndex = this.getFocusedIndex();
+    const nextIndex = this.resolveNextIndex(event.key, currentIndex);
+
+    if (nextIndex !== -1) {
+      this.focusNavItem(nextIndex);
+      event.preventDefault();
+    }
+  };
+
+  private getFocusedIndex(): number {
+    const active = document.activeElement;
+    return this.navItems?.findIndex(
+      (item) => item === active || item.shadowRoot?.contains(active),
+    ) ?? -1;
+  }
+
+  private resolveNextIndex(key: string, fromIndex: number): number {
+    const enabledIndexes = this.getEnabledIndexes();
+    if (!enabledIndexes.length) return -1;
+
+    switch (key) {
+      case 'Home':
+        return enabledIndexes[0];
+      case 'End':
+        return enabledIndexes[enabledIndexes.length - 1];
+      case 'ArrowUp':
+      case 'ArrowDown': {
+        const dir = key === 'ArrowUp' ? -1 : 1;
+        const currentEnabledIdx = enabledIndexes.indexOf(fromIndex);
+        const nextEnabledIdx = (currentEnabledIdx + dir + enabledIndexes.length) % enabledIndexes.length;
+        return enabledIndexes[nextEnabledIdx];
+      }
+      default:
+        return -1;
     }
   }
 
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.scrollableSlot?.removeEventListener('slotchange', this.handleSlotChange);
+  private getEnabledIndexes(): number[] {
+    return this.navItems
+      ?.map((item, index) => (!item.hasAttribute('disabled') ? index : -1))
+      .filter((i) => i !== -1) ?? [];
   }
 
-  @property({ type: String, reflect: true }) variant: string = DEFAULTS.VARIANT;
+  private focusNavItem(index: number): void {
+    this.navItems?.forEach((item, i) => {
+      item.setAttribute('tabindex', i === index ? '0' : '-1');
+    });
+    this.navItems?.[index]?.focus();
+  }
 
-  @property({ type: String, reflect: true, attribute: 'customer-name' }) customerName: string = '';
-
-  @property({ type: Boolean, reflect: true }) public expanded: boolean = true;
-
-  @state() private arrowDirection: Directions = this.expanded ? DIRECTIONS.NEGATIVE : DIRECTIONS.POSITIVE;
-
-  @state() navItems?: NavItem[];
-
-  @query('slot[name="scrollable-section"]') private scrollableSlot!: HTMLSlotElement;
-
-  private handleSlotChange = (): void => {
+  private updateTextVisibility = (): void => {
     const assigned = this.scrollableSlot?.assignedElements({ flatten: true }) ?? [];
     assigned.forEach((el) => {
       const nestedTexts = el.querySelectorAll?.('mdc-text');
@@ -80,7 +180,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
     }
 
     if (changedProperties.has('expanded')) {
-      this.handleSlotChange();
+      this.updateTextVisibility();
     }
 
     if (changedProperties.has('variant')) {
@@ -141,7 +241,11 @@ class SideNavigation extends Provider<SideNavigationContext> {
     }
   }
 
-  // keep it in utils later, overriding tabId.....
+  /**
+   * Matches new tab with navId.
+   *
+   * @param NavItem- The new active tab.
+   */
   private findNav = (navs: NavItem[], navId: string): NavItem| undefined =>
     navs.find((nav) => nav.navId === navId);
 
@@ -155,21 +259,21 @@ class SideNavigation extends Provider<SideNavigationContext> {
     newNav.setAttribute('active', '');
   }
 
-    /**
-   * Handle the tab active change event fired from the nested tab.
-   *
-   * @internal
-   *
-   * @param event - Custom Event fired from the nested tab.
-   */
-    private handleNestedTabActiveChange = (event: CustomEvent<any>): void => {
-      const newNavItem = this.findNav(this.navItems || [], event.detail.navId);
-      if (!(newNavItem instanceof NavItem)) { return; }
-      this.setActiveNav(newNavItem);
-    };
+  /**
+ * Handle the tab active change event fired from the nested tab.
+ *
+ * @internal
+ *
+ * @param event - Custom Event fired from the nested tab.
+ */
+  private handleNestedTabActiveChange = (event: CustomEvent<any>): void => {
+    const newNavItem = this.findNav(this.navItems || [], event.detail.navId);
+    if (!(newNavItem instanceof NavItem)) { return; }
+    this.setActiveNav(newNavItem);
+  };
 
-    public override render() {
-      return html`
+  public override render() {
+    return html`
         <div part="side-navigation-container">
           <div part="scrollable-section">
             <slot name="scrollable-section"></slot>
@@ -194,7 +298,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
           > <mdc-button role="button" aria-label="divider label"></mdc-button>
         </mdc-divider>` : nothing}
   `;
-    }
+  }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
