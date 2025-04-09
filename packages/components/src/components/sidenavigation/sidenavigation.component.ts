@@ -5,11 +5,10 @@ import { Component, Provider } from '../../models';
 import SideNavigationContext from './sidenavigation.context';
 import { DEFAULTS, VARIANTS } from './sidenavigation.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
-// eslint-disable-next-line import/no-cycle
-import NavItem from '../navitem';
-import { Directions } from '../divider/divider.types';
+import type NavItem from '../navitem/navitem.component';
+import type { Directions } from '../divider/divider.types';
 import { DIRECTIONS } from '../divider/divider.constants';
-import { SideNavigationVariant } from './sidenavigation.types';
+import type { SideNavigationVariant } from './sidenavigation.types';
 
 /**
  * The `mdc-sidenavigation` component provides a vertically stacked navigation experience,
@@ -55,6 +54,11 @@ class SideNavigation extends Provider<SideNavigationContext> {
     return SideNavigationContext.context;
   }
 
+  protected override firstUpdated(): void {
+    this.navItems = this.getNavItems();
+    this.updateTextVisibility();
+  }
+
   /**
    * Four variants of the sideNavigation
    * - **fixed-collapsed**: Shows icons without labels and has fixed width, 4.5rem.
@@ -92,12 +96,21 @@ class SideNavigation extends Provider<SideNavigationContext> {
     @query('slot[name="scrollable-section"]')
     private readonly scrollableSlot!: HTMLSlotElement;
 
+    private getNavItems(): NavItem[] {
+      const elements = this.scrollableSlot?.assignedElements({ flatten: true }) ?? [];
+
+      return elements.flatMap((el) =>
+        Array.from(el.querySelectorAll?.('mdc-navitem') ?? []).filter(
+          (node): node is NavItem => node.tagName.toLowerCase() === 'mdc-navitem',
+        ));
+    }
+
     override connectedCallback(): void {
       super.connectedCallback();
       this.addEventListener('activechange', this.handleNestedTabActiveChange as EventListener);
       this.addEventListener('keydown', this.handleKeyDown);
       this.setAttribute('aria-expanded', 'true');
-      this.navItems = Array.from(this.querySelectorAll('mdc-navitem'));
+      // this.navItems = Array.from(this.querySelectorAll('mdc-navitem'));
     }
 
     override disconnectedCallback(): void {
@@ -268,8 +281,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
  */
   private handleNestedTabActiveChange = (event: CustomEvent<any>): void => {
     const newNavItem = this.findNav(this.navItems || [], event.detail.navId);
-    if (!(newNavItem instanceof NavItem)) { return; }
-    this.setActiveNav(newNavItem);
+    this.setActiveNav(newNavItem as NavItem);
   };
 
   public override render() {

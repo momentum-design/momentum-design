@@ -8,9 +8,8 @@ import type { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import Buttonsimple from '../buttonsimple';
-import { ButtonSize, ButtonType } from '../buttonsimple/buttonsimple.types';
+import type { ButtonSize, ButtonType } from '../buttonsimple/buttonsimple.types';
 import { getIconNameWithoutStyle } from '../button/button.utils';
-// eslint-disable-next-line import/no-cycle
 import SideNavigation from '../sidenavigation/sidenavigation.component';
 
 /**

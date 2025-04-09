@@ -2,7 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import { html } from 'lit';
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { hideControls } from '../../../config/storybook/utils';
 import { VARIANTS } from './sidenavigation.constants';
 
 const render = (args: Args) => html`
@@ -103,21 +103,6 @@ const meta: Meta = {
       'scrollableSlot',
       'handleSlotChange',
       'findNav']),
-    // ...disableControls([
-    //   '--mdc-divider-background-color',
-    //   '--mdc-divider-width',
-    //   '--mdc-divider-horizontal-gradient',
-    //   '--mdc-divider-vertical-gradient',
-    //   '--mdc-divider-text-size',
-    //   '--mdc-divider-text-color',
-    //   '--mdc-divider-text-margin',
-    //   '--mdc-divider-grabber-button-background-color-normal',
-    //   '--mdc-divider-grabber-button-background-color-hover',
-    //   '--mdc-divider-grabber-button-background-color-pressed',
-    //   '--mdc-divider-grabber-button-border-color',
-    //   '--mdc-divider-grabber-button-border-radius',
-    //   '--mdc-divider-text-line-height',
-    // ]),
     ...classArgType,
     ...styleArgType,
   },
