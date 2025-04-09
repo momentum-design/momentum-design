@@ -40,7 +40,9 @@ import Toggle from './components/toggle';
 import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
 import TabList from './components/tablist';
-
+import NavItem from './components/navitem';
+import NavItemList from './components/navitemlist';
+import SideNavigation from './components/sidenavigation';
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
 import type { ButtonColor, ButtonVariant, IconButtonSize, PillButtonSize } from './components/button/button.types';
@@ -100,6 +102,9 @@ export {
   Appheader,
   Select,
   TabList,
+  NavItem,
+  NavItemList,
+  SideNavigation,
 };
 // Types Exports
 export type {
