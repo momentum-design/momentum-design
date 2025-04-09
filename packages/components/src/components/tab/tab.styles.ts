@@ -73,6 +73,7 @@ const styles = [hostFitContentStyles, css`
     --mdc-tab-pill-inactive-color-disabled: var(--mds-color-theme-text-primary-disabled);
 
     flex-direction: column;
+    flex-shrink: 0;
     height: var(--mdc-tab-height);
     padding-left: var(--mdc-tab-padding-left);
     padding-right: var(--mdc-tab-padding-right);
