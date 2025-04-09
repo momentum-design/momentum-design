@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-cycle
 import SideNavigation from './sidenavigation.component';
 import { TAG_NAME } from './sidenavigation.constants';
 import '../navitemlist';

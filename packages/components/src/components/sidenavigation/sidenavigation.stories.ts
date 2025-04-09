@@ -2,7 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import { html } from 'lit';
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls } from '../../../config/storybook/utils';
+import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { VARIANTS } from './sidenavigation.constants';
 
 const render = (args: Args) => html`
@@ -69,9 +69,9 @@ const render = (args: Args) => html`
       </mdc-navitemlist>
 
       <!-- Lower Nav (Fixed section) -->
-      <mdc-link slot="fixed-section-link" icon-name="placeholder-bold"><a href="#">Settings Link</a></mdc-link>
-      <mdc-button slot="fixed-section-button" prefix-icon="placeholder-bold">Logout Button</mdc-button>
-      <mdc-link slot="fixed-section-link" icon-name="placeholder-bold"><a href="#">Back Link</a></mdc-link>
+      <mdc-link slot="fixed-section" icon-name="placeholder-bold"><a href="#">Settings Link</a></mdc-link>
+      <mdc-button slot="fixed-section" prefix-icon="placeholder-bold">Logout Button</mdc-button>
+      <mdc-link slot="fixed-section" icon-name="placeholder-bold"><a href="#">Back Link</a></mdc-link>
       <img
         slot="brand-logo"
         src="https://momentum.design/mometnum_design_logo.5016c4f24b97e0ad.svg"
@@ -94,6 +94,11 @@ const meta: Meta = {
       control: 'select',
       options: [VARIANTS.FLEXIBLE, VARIANTS.FIXED_EXPANDED, VARIANTS.FIXED_COLLAPSED],
     },
+    ...disableControls([
+      'scrollable-section',
+      'fixed-section',
+      'brand-logo',
+    ]),
     ...hideControls([
       'expanded',
       'Context',
@@ -101,8 +106,9 @@ const meta: Meta = {
       'arrowDirection',
       'navItems',
       'scrollableSlot',
-      'handleSlotChange',
-      'findNav']),
+      'updateTextVisibility',
+      'handleKeyDown',
+    ]),
     ...classArgType,
     ...styleArgType,
   },

@@ -11,6 +11,7 @@ import Buttonsimple from '../buttonsimple';
 import type { ButtonSize, ButtonType } from '../buttonsimple/buttonsimple.types';
 import { getIconNameWithoutStyle } from '../button/button.utils';
 import SideNavigation from '../sidenavigation/sidenavigation.component';
+import type { BadgeType } from './navitem.types';
 
 /**
  * `mdc-navitem` is a button element styled to work as a navigation tab.
@@ -29,14 +30,20 @@ import SideNavigation from '../sidenavigation/sidenavigation.component';
  * @event focus - (React: onFocus) This event is dispatched when the navItem receives focus.
  * @event activechange - (React: onActiveChange)Dispatched when the active state of the navItem changes.
  *
- * @cssproperty --custom-property-name - Description of the CSS custom property
+ * @cssproperty --mdc-navitem-color - Text color of the navigation item in its normal state.
+ * @cssproperty --mdc-navitem-border-color - Border color of the navigation item in its normal state.
+ * @cssproperty --mdc-navitem-hover-background-color - Background color of the navigation item when hovered.
+ * @cssproperty --mdc-navitem-pressed-background-color - Background color of the navigation item when pressed.
+ * @cssproperty --mdc-navitem-disabled-background-color - Background color of the navigation item when disabled.
+ * @cssproperty --mdc-navitem-disabled-color - Text color of the navigation item when disabled.
+ * @cssproperty --mdc-navitem-active-background-color - Background color of the navigation item when active.
  */
 class NavItem extends IconNameMixin(Buttonsimple) {
   /**
    * Type of the badge
    * Can be `dot` (notification) or `counter`.
    */
-  @property({ type: String, reflect: true, attribute: 'badge-type' }) badgeType?: 'dot' | 'counter';
+  @property({ type: String, reflect: true, attribute: 'badge-type' }) badgeType?: BadgeType;
 
   /**
    * Counter is the number which can be provided in the badge.
@@ -83,7 +90,7 @@ class NavItem extends IconNameMixin(Buttonsimple) {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.role = 'tab';
+    this.role = DEFAULTS.ROLE;
     this.softDisabled = undefined as unknown as boolean;
     this.size = undefined as unknown as ButtonSize;
     this.type = undefined as unknown as ButtonType;
@@ -98,27 +105,32 @@ class NavItem extends IconNameMixin(Buttonsimple) {
    * If the navItem is active, the icon name is suffixed with '-filled'.
    * If the navItem is inactive, the icon name is restored to its original value.
    * If '-filled' icon is not available, the icon name remains unchanged.
-   *
+   * @internal
    * @param active - The active state.
    */
 
   private modifyIconName(active: boolean): void {
-    if (this.iconName) {
-      if (active) {
+    if (!this.iconName) return;
+
+    const isFilled = this.iconName.endsWith('-filled');
+    const baseIcon = getIconNameWithoutStyle(this.iconName);
+
+    if (active) {
+      if (!isFilled) {
         this.prevIconName = this.iconName;
-        this.iconName = `${getIconNameWithoutStyle(this.iconName)}-filled` as IconNames;
-      } else if (this.prevIconName) {
-        this.iconName = this.prevIconName as IconNames;
+        this.iconName = `${baseIcon}-filled` as IconNames;
       }
+    } else if (this.prevIconName) {
+      this.iconName = this.prevIconName as IconNames;
     }
   }
 
   /**
    * Dispatch the activechange event.
-   *
+   * @internal
    * @param active - The active state of the navItem.
    */
-  private handleNavItemActiveChange = (active: boolean): void => {
+  private emitNavItemActiveChange = (active: boolean): void => {
     const event = new CustomEvent('activechange', {
       detail: { navId: this.navId, active },
       bubbles: true,
@@ -135,13 +147,12 @@ class NavItem extends IconNameMixin(Buttonsimple) {
    * @param active - The active state of the navItem.
    */
   protected override setActive(element: HTMLElement, active: boolean) {
-    element.setAttribute('aria-selected', active ? 'true' : 'false');
+    element.setAttribute('aria-selected', String(active));
     this.modifyIconName(active);
   }
 
   protected override executeAction() {
-    // Toggle the active state of the tab.
-    this.handleNavItemActiveChange(this.active);
+    this.emitNavItemActiveChange(this.active);
   }
 
   renderTextLabel() {
@@ -157,9 +168,11 @@ class NavItem extends IconNameMixin(Buttonsimple) {
 
   renderBadge() {
     const { expanded } = this.sideNavigationContext.value ?? {};
+    const badgeClass = expanded ? '' : 'badge';
+
     return html`
       <mdc-badge 
-        class="${!expanded ? 'badge' : ''}"
+        class="${badgeClass}"
         type="${ifDefined(this.badgeType)}" 
         counter="${ifDefined(this.counter)}" 
         max-counter="${this.maxCounter}">

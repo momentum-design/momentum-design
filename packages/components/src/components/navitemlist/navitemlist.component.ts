@@ -5,13 +5,14 @@ import { Component } from '../../models';
 import { DEFAULTS } from './navitemlist.constants';
 
 /**
- * NavItemList component, which ...
+ * A navigation list container component used to group multiple nav items.
+ *
+ * Typically used in side navigation or vertical menu structures.
  *
  * @tagname mdc-navitemlist
  *
- * @slot default - This is a default/unnamed slot
+ * @slot default - Slot for projecting one or more navigation items.
  *
- * @cssproperty --custom-property-name - Description of the CSS custom property
  */
 class NavItemList extends Component {
   override connectedCallback(): void {
@@ -20,16 +21,16 @@ class NavItemList extends Component {
     this.ariaOrientation = 'vertical';
   }
 
-    /**
+  /**
    * Aria-label attribute to be set for accessibility
    * @default null
    */
-    @property({ type: String, attribute: 'aria-label' })
-    override ariaLabel: string | null = null;
+  @property({ type: String, attribute: 'aria-label' })
+  override ariaLabel: string | null = null;
 
-    public override render() {
-      return html`<slot></slot>`;
-    }
+  public override render() {
+    return html`<slot></slot>`;
+  }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }

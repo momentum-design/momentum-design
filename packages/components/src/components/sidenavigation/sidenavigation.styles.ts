@@ -2,29 +2,25 @@ import { css } from 'lit';
 
 const styles = css`
 :host {
+  --mdc-sidenavigation-expanded-width: 14.75rem;
+  --mdc-sidenavigation-collapsed-width: 4.5rem;
+
   display: flex;
   height: 100%;
-  width: 14.75rem;
+  width: var(--mdc-sidenavigation-collapsed-width);
+}
+
+:host([expanded]) {
+  width: var(--mdc-sidenavigation-expanded-width);
 }
 
 :host([variant="hidden"]) {
   display: none;
 }
 
-:host([variant="fixed-expanded"]),
-:host([variant="flexible"][expanded]) {
-  width: 14.75rem;
-}
-
-:host([variant="fixed-collapsed"]),
-:host([variant="flexible"]) {
-  width: 4.5rem;
-}
-
 :host::part(side-navigation-container) {
   display: flex;
   flex-direction: column;
-  height: 100%;
   width: 100%;
 }
 
@@ -44,6 +40,7 @@ const styles = css`
   padding: 0.75rem 0 1rem 0;
 }
 
+/* In Progress */
 :host::part(brand-logo-container) {
   display: flex;
   align-items: center;
@@ -52,18 +49,16 @@ const styles = css`
   margin-left: 1rem;
 }
 
-::slotted([slot="fixed-section-link"]),
-::slotted([slot="fixed-section-button"]) {
+::slotted([slot="fixed-section"]) {
   padding: 0.5rem;
   margin-left: 1rem;
 }
 
-::slotted([slot="fixed-section-button"]),
-::slotted([slot="fixed-section-button"][disabled]) {
+::slotted(mdc-button[slot="fixed-section"]),
+::slotted(mdc-button[slot="fixed-section"][disabled]) {
   border: none;
   background-color: unset;
   outline: unset;
-  flex-grow: 1;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -73,7 +68,11 @@ const styles = css`
   font-weight: var(--mds-font-apps-body-large-medium-font-weight);
 }
 
-// in progress
+/* Not working */
+::slotted(mdc-button[slot="fixed-section"])::part(prefix-icon) {
+   color: red;
+}
+
 ::slotted([slot="brand-logo"]) {
   height: 1.5rem;
 }

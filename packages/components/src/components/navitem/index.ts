@@ -1,10 +1,8 @@
-// eslint-disable-next-line import/no-cycle
 import NavItem from './navitem.component';
 import { TAG_NAME } from './navitem.constants';
-import '../marker';
 import '../text';
 import '../badge';
-import '../button';
+import '../icon';
 
 NavItem.register(TAG_NAME);
 
