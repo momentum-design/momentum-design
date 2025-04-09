@@ -37,16 +37,12 @@ const styles = css`
   }
 
   :host::part(success-icon) {
-    --icon-color: var(--mdc-progress-success-color);
+    color: var(--mdc-progress-success-color);
 }
 
   :host::part(error-icon) {
-    --icon-color: var(--mdc-progress-error-color);
+    color: var(--mdc-progress-error-color);
     margin: 0.5rem;
-  }
-
-  :host::part(icon) {
-    color: var(--icon-color);
   }
 `;
 

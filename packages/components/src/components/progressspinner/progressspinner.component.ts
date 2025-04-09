@@ -1,11 +1,11 @@
 import { CSSResult, html } from 'lit';
 import styles from './progressspinner.styles';
 import { Component } from '../../models';
-import Progressbar from '../progressbar';
-import { DEFAULTS } from './progressspinner.constants';
+import Progressbar from '../progressbar/progressbar.component';
+import { DEFAULTS, ICON_NAME } from './progressspinner.constants';
 import { getProgressArc, getProgressOffset, getRemainingArc, getRemainingOffset } from './progressspiner.utils';
-import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
-import { Variant } from '../progressbar/progressbar.types';
+import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
+import type { Variant } from '../progressbar/progressbar.types';
 
 /**
  * `mdc-progressspinner` is a customizable, circular progress indicator component.
@@ -17,7 +17,7 @@ import { Variant } from '../progressbar/progressbar.types';
  * - The `track` arc represents the remaining part.
  *
  * A visual gap is maintained between the progress and track arcs to clearly
- * distinguish the two segments. The component smoothly animates arc lengths
+ * distinguish the two segments. The component smoothly animates arc length
  * and respects accessibility best practices with ARIA attributes.
  *
  * The component supports different states:
@@ -94,9 +94,9 @@ class Progressspinner extends Progressbar {
       <mdc-icon 
       part="error-icon"
       aria-label="${this.dataAriaLabel ?? ''}" 
-      name="error-legacy-filled" 
-      size="2"  
-      length-unit="em" ></mdc-icon>
+      name="${ICON_NAME.ERROR_LEGACY_FILLED}"
+      size="${DEFAULTS.ERROR_ICON_SIZE}"  
+      length-unit="${DEFAULTS.ICON_LENGTH_UNIT}"></mdc-icon>
     `;
   }
 
@@ -109,9 +109,9 @@ class Progressspinner extends Progressbar {
       <mdc-icon 
       part="success-icon"
       aria-label="${this.dataAriaLabel ?? ''}" 
-      name="check-circle-bold" 
-      size="3"  
-      length-unit="em" ></mdc-icon>
+      name="${ICON_NAME.CHECK_CIRCLE_BOLD}"
+      size="${DEFAULTS.SUCCESS_ICON_SIZE}"  
+      length-unit="${DEFAULTS.ICON_LENGTH_UNIT}"></mdc-icon>
     `;
   }
 

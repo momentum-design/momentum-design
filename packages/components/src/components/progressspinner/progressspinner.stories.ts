@@ -21,7 +21,7 @@ const meta: Meta = {
   },
   argTypes: {
     value: {
-      control: 'text',
+      control: 'number',
     },
     error: {
       control: 'boolean',
