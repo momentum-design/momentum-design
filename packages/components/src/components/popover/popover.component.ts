@@ -678,13 +678,11 @@ class Popover extends FocusTrapMixin(Component) {
     });
   }
 
-  protected renderPopoverHoverBridge() {
-    return html`<div class="popover-hover-bridge"></div>`;
-  }
-
-  protected renderCloseButton() {
-    return this.closeButton
-      ? html` <mdc-button
+  public override render() {
+    return html`
+      <div class="popover-hover-bridge"></div>
+      ${this.closeButton
+    ? html` <mdc-button
             class="popover-close"
             prefix-icon="cancel-bold"
             variant="tertiary"
@@ -692,25 +690,11 @@ class Popover extends FocusTrapMixin(Component) {
             aria-label=${ifDefined(this.closeButtonAriaLabel) || ''}
             @click="${this.hidePopover}"
           ></mdc-button>`
-      : nothing;
-  }
-
-  protected renderShowArrow() {
-    return this.showArrow ? html`<div class="popover-arrow"></div>` : nothing;
-  }
-
-  protected renderPopoverContent() {
-    return html`<div part="popover-content">
+    : nothing}
+      ${this.showArrow ? html`<div class="popover-arrow"></div>` : nothing}
+      <div part="popover-content">
         <slot></slot>
-      </div>`;
-  }
-
-  public override render() {
-    return html`
-      ${this.renderPopoverHoverBridge()}
-      ${this.renderCloseButton()}
-      ${this.renderShowArrow()}
-      ${this.renderPopoverContent()}
+      </div>
     `;
   }
 

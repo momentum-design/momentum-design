@@ -105,10 +105,7 @@ class Toggletip extends Popover {
 
   public override render() {
     return html`
-      ${super.renderPopoverHoverBridge()}
-      ${super.renderCloseButton()}
-      ${super.renderShowArrow()}
-      ${super.renderPopoverContent()}
+      ${super.render()}
       <mdc-screenreaderannouncer
         identity="${this.screenreaderAnnouncerIdentity}"
         announcement="${this.currentAnnouncement}"
