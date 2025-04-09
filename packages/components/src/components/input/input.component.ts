@@ -329,7 +329,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
   /**
    * Clears the input field.
    */
-  private clearInputText() {
+  protected clearInputText() {
     this.value = '';
     // focus the input field after clearing the text
     this.inputElement?.focus();
@@ -339,25 +339,28 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
    * Renders the trailing button to clear the input field if the trailingButton is set to true.
    * @returns void
    */
-  protected renderTrailingButton() {
-    if (!this.trailingButton || !this.value) {
+  protected renderTrailingButton(show = false) {
+    const showBtn = show || (this.value && this.trailingButton);
+    if (!showBtn) {
       return nothing;
     }
     return html`
       <mdc-button 
         part='trailing-button'
-        class='own-focus-ring ${!this.value ? 'hidden' : ''}'
+        class='own-focus-ring ${!showBtn ? 'hidden' : ''}'
         prefix-icon='${DEFAULTS.CLEAR_BUTTON_ICON}'
         variant='${DEFAULTS.CLEAR_BUTTON_VARIANT}'
         size="${DEFAULTS.CLEAR_BUTTON_SIZE}"
         aria-label="${this.clearAriaLabel}"
         @click=${this.clearInputText}
-        ?disabled=${this.disabled || this.readonly || !this.value}
+        ?disabled=${this.disabled || this.readonly || !showBtn}
       ></mdc-button>
     `;
   }
 
-  protected renderInputElement(type: InputType) {
+  protected renderInputElement(type: InputType, hidePlaceholder = false) {
+    const placeholderText = hidePlaceholder ? '' : this.placeholder;
+
     return html`<input 
                   aria-label="${this.dataAriaLabel ?? ''}"
                   class='input'
@@ -371,7 +374,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
                   type="${type}"
                   aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
                   aria-invalid="${this.helpTextType === 'error' ? 'true' : 'false'}"
-                  placeholder=${ifDefined(this.placeholder)}
+                  placeholder=${ifDefined(placeholderText)}
                   minlength=${ifDefined(this.minlength)}
                   maxlength=${ifDefined(this.maxlength)}
                   autocapitalize=${this.autocapitalize}
