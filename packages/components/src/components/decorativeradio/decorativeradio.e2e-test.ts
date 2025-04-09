@@ -58,13 +58,13 @@ test('mdc-decorative-radio', async ({ componentsPage }) => {
   await test.step('attributes', async () => {
     const decorativeradio = await setup({ componentsPage });
     await test.step('attribute checked should be present on component when set', async () => {
-      await componentsPage.setAttributes(decorativeradio, { checked: 'true' });
-      await expect(decorativeradio).toHaveAttribute('checked', 'true');
+      await componentsPage.setAttributes(decorativeradio, { checked: '' });
+      await expect(decorativeradio).toHaveAttribute('checked', '');
       await componentsPage.removeAttribute(decorativeradio, 'checked');
     });
     await test.step('attribute disabled should be present on component when set', async () => {
-      await componentsPage.setAttributes(decorativeradio, { disabled: 'true' });
-      await expect(decorativeradio).toHaveAttribute('disabled', 'true');
+      await componentsPage.setAttributes(decorativeradio, { disabled: '' });
+      await expect(decorativeradio).toHaveAttribute('disabled', '');
       await componentsPage.removeAttribute(decorativeradio, 'disabled');
     });
   });

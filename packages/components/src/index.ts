@@ -42,6 +42,7 @@ import Card from './components/card';
 import SelectableCard from './components/selectablecard';
 import InteractiveCard from './components/interactivecard';
 import Decorativeradio from './components/decorativeradio';
+import Decorativecheckbox from './components/decorativecheckbox';
 
 // Types Imports
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
@@ -104,6 +105,7 @@ export {
   SelectableCard,
   InteractiveCard,
   Decorativeradio,
+  Decorativecheckbox,
 };
 
 // Types Exports

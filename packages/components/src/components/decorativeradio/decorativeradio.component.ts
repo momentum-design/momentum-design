@@ -2,7 +2,7 @@ import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
-import Radio from '../radio/radio.component';
+import radioStyles from '../radio/radio.styles';
 
 /**
  * This is a decorative component that is styled to look as a radio option.
@@ -22,7 +22,7 @@ class DecorativeRadio extends DisabledMixin(Component) {
   </div>`;
   }
 
-  public static override styles: Array<CSSResult> = [...Radio.styles];
+  public static override styles: Array<CSSResult> = [...radioStyles];
 }
 
 export default DecorativeRadio;
