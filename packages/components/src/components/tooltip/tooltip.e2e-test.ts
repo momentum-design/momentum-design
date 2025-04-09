@@ -78,7 +78,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
     await expect(tooltip).toHaveAttribute('offset', '4');
     await expect(tooltip).toHaveAttribute('placement', 'top');
     await expect(tooltip).toHaveAttribute('role', 'tooltip');
-    await expect(tooltip).toHaveAttribute('show-arrow');
+    await expect(tooltip).not.toHaveAttribute('show-arrow');
     await expect(tooltip).toHaveAttribute('trigger', 'mouseenter focusin');
     await expect(tooltip).toHaveAttribute('tooltip-type', 'description');
 

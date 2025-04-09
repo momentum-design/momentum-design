@@ -52,7 +52,6 @@ class Tooltip extends Popover {
     this.offset = DEFAULTS.OFFSET;
     this.placement = DEFAULTS.PLACEMENT;
     this.role = 'tooltip';
-    this.showArrow = true;
     this.trigger = 'mouseenter focusin';
 
     this.enabledFocusTrap = false;
