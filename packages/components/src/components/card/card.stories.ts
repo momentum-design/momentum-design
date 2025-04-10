@@ -68,6 +68,15 @@ const meta: Meta = {
 
 export default meta;
 
+const defaultChildren = html`<mdc-text slot='body' 
+type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
+Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
+Praesent gravida dui diam, non elementum risus laoreet vitae. 
+Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
+Vivamus mattis ligula eget imperdiet tempor. 
+Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`;
+
 export const Example: StoryObj = {
   args: {
     'card-title': 'Title',
@@ -79,14 +88,7 @@ export const Example: StoryObj = {
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: DEFAULTS.ORIENTATION,
-    children: html`<mdc-text slot='body' 
-    type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
-    Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
-    Praesent gravida dui diam, non elementum risus laoreet vitae. 
-    Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
-    Vivamus mattis ligula eget imperdiet tempor. 
-    Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`,
+    children: defaultChildren,
   },
 };
 
@@ -101,14 +103,7 @@ export const HorizontalCard: StoryObj = {
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: ORIENTATIONS.HORIZONTAL,
-    children: html`<mdc-text slot='body' 
-    type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
-    Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
-    Praesent gravida dui diam, non elementum risus laoreet vitae. 
-    Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
-    Vivamus mattis ligula eget imperdiet tempor. 
-    Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`,
+    children: defaultChildren,
   },
 };
 
@@ -121,14 +116,7 @@ export const CardWithoutImage: StoryObj = {
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: DEFAULTS.ORIENTATION,
-    children: html`<mdc-text slot='body' 
-    type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
-    Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
-    Praesent gravida dui diam, non elementum risus laoreet vitae. 
-    Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
-    Vivamus mattis ligula eget imperdiet tempor. 
-    Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`,
+    children: defaultChildren,
   },
 };
 
@@ -138,14 +126,7 @@ export const CardWithoutHeader: StoryObj = {
     'image-alt': 'Image Alt',
     variant: DEFAULTS.VARIANT,
     orientation: DEFAULTS.ORIENTATION,
-    children: html`<mdc-text slot='body' 
-    type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
-    Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
-    Praesent gravida dui diam, non elementum risus laoreet vitae. 
-    Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
-    Vivamus mattis ligula eget imperdiet tempor. 
-    Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`,
+    children: defaultChildren,
   },
 };
 

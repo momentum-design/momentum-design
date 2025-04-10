@@ -1,5 +1,7 @@
 import InteractiveCard from './interactivecard.component';
 import { TAG_NAME } from './interactivecard.constants';
+import '../text';
+import '../icon';
 
 InteractiveCard.register(TAG_NAME);
 

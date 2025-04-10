@@ -5,6 +5,7 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { hideControls } from '../../../config/storybook/utils';
 import { DEFAULTS, ORIENTATIONS, VARIANTS } from '../card/card.constants';
 import { SELECTION_TYPE } from './selectablecard.constants';
+import { VALID_TEXT_TAGS } from '../text/text.constants';
 
 const render = (args: Args) => html`
   <mdc-selectable-card 
@@ -16,10 +17,12 @@ const render = (args: Args) => html`
     image-alt="${args['image-alt']}"
     icon-name="${args['icon-name']}"
     icon-aria-label="${args['icon-aria-label']}"
-    ?selected="${args.selected}"
+    ?checked="${args.checked}"
     ?disabled="${args.disabled}"
     aria-label="${args['aria-label']}"
     selection-type="${args['selection-type']}"
+    title-tag-name="${args['title-tag-name']}"
+    subtitle-tag-name="${args['subtitle-tag-name']}"
     tabindex="${args.tabIndex}"
     class="${args.class}"
     style="${args.style}">${args.children}</mdc-selectable-card>`;
@@ -59,7 +62,7 @@ const meta: Meta = {
     'icon-aria-label': {
       control: 'text',
     },
-    selected: {
+    checked: {
       control: 'boolean',
     },
     disabled: {
@@ -75,6 +78,14 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(SELECTION_TYPE),
     },
+    'title-tag-name': {
+      control: 'select',
+      options: Object.values(VALID_TEXT_TAGS),
+    },
+    'subtitle-tag-name': {
+      control: 'select',
+      options: Object.values(VALID_TEXT_TAGS),
+    },
     ...hideControls(['children']),
     ...classArgType,
     ...styleArgType,
@@ -82,6 +93,15 @@ const meta: Meta = {
 };
 
 export default meta;
+
+const defaultChildren = html`<mdc-text slot='body' 
+type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
+Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
+Praesent gravida dui diam, non elementum risus laoreet vitae. 
+Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
+Vivamus mattis ligula eget imperdiet tempor. 
+Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`;
 
 export const Example: StoryObj = {
   args: {
@@ -91,20 +111,15 @@ export const Example: StoryObj = {
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     'icon-aria-label': 'Icon Aria Label',
+    'title-tag-name': DEFAULTS.TAGNAME,
+    'subtitle-tag-name': DEFAULTS.TAGNAME,
     variant: DEFAULTS.VARIANT,
     orientation: DEFAULTS.ORIENTATION,
-    selected: false,
+    checked: false,
     disabled: false,
     tabIndex: 0,
     'selection-type': SELECTION_TYPE.CHECK,
-    children: html`<mdc-text slot='body' 
-    type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
-    Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
-    Praesent gravida dui diam, non elementum risus laoreet vitae. 
-    Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
-    Vivamus mattis ligula eget imperdiet tempor. 
-    Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`,
+    children: defaultChildren,
   },
 };
 
@@ -117,20 +132,15 @@ export const HorizontalCard: StoryObj = {
     'icon-name': 'placeholder-bold',
     'icon-aria-label': 'Icon Aria Label',
     'aria-label': 'Aria Label',
+    'title-tag-name': DEFAULTS.TAGNAME,
+    'subtitle-tag-name': DEFAULTS.TAGNAME,
     'selection-type': SELECTION_TYPE.CHECKBOX,
-    selected: false,
+    checked: false,
     disabled: false,
     tabIndex: 0,
     variant: DEFAULTS.VARIANT,
     orientation: ORIENTATIONS.HORIZONTAL,
-    children: html`<mdc-text slot='body' 
-    type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
-    Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
-    Praesent gravida dui diam, non elementum risus laoreet vitae. 
-    Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
-    Vivamus mattis ligula eget imperdiet tempor. 
-    Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`,
+    children: defaultChildren,
   },
 };
 
@@ -140,21 +150,16 @@ export const CardWithoutImage: StoryObj = {
     subtitle: 'Subtitle',
     'icon-name': 'placeholder-bold',
     'icon-aria-label': 'Icon Aria Label',
+    'title-tag-name': DEFAULTS.TAGNAME,
+    'subtitle-tag-name': DEFAULTS.TAGNAME,
     'aria-label': 'Aria Label',
     'selection-type': SELECTION_TYPE.RADIO,
-    selected: false,
+    checked: false,
     disabled: false,
     tabIndex: 0,
     variant: DEFAULTS.VARIANT,
     orientation: DEFAULTS.ORIENTATION,
-    children: html`<mdc-text slot='body' 
-    type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
-    Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
-    Praesent gravida dui diam, non elementum risus laoreet vitae. 
-    Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
-    Vivamus mattis ligula eget imperdiet tempor. 
-    Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`,
+    children: defaultChildren,
   },
 };
 
@@ -167,7 +172,9 @@ export const CardWithoutBody: StoryObj = {
     'icon-name': 'placeholder-bold',
     'icon-aria-label': 'Icon Aria Label',
     'selection-type': SELECTION_TYPE.CHECK,
-    selected: false,
+    'title-tag-name': DEFAULTS.TAGNAME,
+    'subtitle-tag-name': DEFAULTS.TAGNAME,
+    checked: false,
     disabled: false,
     tabIndex: 0,
     variant: DEFAULTS.VARIANT,
