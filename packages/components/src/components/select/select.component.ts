@@ -489,13 +489,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     `;
   }
 
-  private shouldFocusSelect(): boolean {
-    if (this.disabled || this.readonly) {
-      return false;
-    }
-    return true;
-  }
-
   public override updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
 
@@ -512,8 +505,8 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         <div
           id="select-base-triggerid"
           part="base-container"
-          tabindex="${this.shouldFocusSelect() ? '0' : '-1'}"
-          class="${this.shouldFocusSelect() ? 'mdc-focus-ring' : ''}"
+          tabindex="${this.disabled ? '-1' : '0'}"
+          class="${this.disabled ? '' : 'mdc-focus-ring'}"
         >
           <mdc-text
             part="base-text ${this.selectedValueText ? 'selected' : ''}"
