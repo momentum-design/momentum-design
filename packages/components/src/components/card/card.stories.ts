@@ -4,6 +4,7 @@ import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
 import { DEFAULTS, ORIENTATIONS, VARIANTS } from './card.constants';
+import { VALID_TEXT_TAGS } from '../text/text.constants';
 
 const render = (args: Args) => html`
   <mdc-card 
@@ -14,7 +15,8 @@ const render = (args: Args) => html`
     image-src="${args['image-src']}"
     image-alt="${args['image-alt']}"
     icon-name="${args['icon-name']}"
-    icon-aria-label="${args['icon-aria-label']}"
+    title-tag-name="${args['title-tag-name']}"
+    subtitle-tag-name="${args['subtitle-tag-name']}"
     class="${args.class}"
     style="${args.style}">${args.children}</mdc-card>`;
 
@@ -50,8 +52,13 @@ const meta: Meta = {
     'icon-name': {
       control: 'text',
     },
-    'icon-aria-label': {
-      control: 'text',
+    'title-tag-name': {
+      control: 'select',
+      options: Object.values(VALID_TEXT_TAGS),
+    },
+    'subtitle-tag-name': {
+      control: 'select',
+      options: Object.values(VALID_TEXT_TAGS),
     },
     ...hideControls(['children']),
     ...classArgType,
@@ -68,8 +75,9 @@ export const Example: StoryObj = {
     'image-src': 'https://placehold.co/320x200',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
-    'icon-aria-label': 'Icon Aria Label',
     variant: DEFAULTS.VARIANT,
+    'title-tag-name': DEFAULTS.TAGNAME,
+    'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: DEFAULTS.ORIENTATION,
     children: html`<mdc-text slot='body' 
     type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
@@ -89,8 +97,9 @@ export const HorizontalCard: StoryObj = {
     'image-src': 'https://placehold.co/160x280',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
-    'icon-aria-label': 'Icon Aria Label',
     variant: DEFAULTS.VARIANT,
+    'title-tag-name': DEFAULTS.TAGNAME,
+    'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: ORIENTATIONS.HORIZONTAL,
     children: html`<mdc-text slot='body' 
     type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
@@ -108,8 +117,9 @@ export const CardWithoutImage: StoryObj = {
     'card-title': 'Title',
     subtitle: 'Subtitle',
     'icon-name': 'placeholder-bold',
-    'icon-aria-label': 'Icon Aria Label',
     variant: DEFAULTS.VARIANT,
+    'title-tag-name': DEFAULTS.TAGNAME,
+    'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: DEFAULTS.ORIENTATION,
     children: html`<mdc-text slot='body' 
     type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
@@ -145,8 +155,9 @@ export const CardWithoutBody: StoryObj = {
     'image-alt': 'Image Alt',
     'card-title': 'Title',
     subtitle: 'Subtitle',
+    'title-tag-name': DEFAULTS.TAGNAME,
+    'subtitle-tag-name': DEFAULTS.TAGNAME,
     'icon-name': 'placeholder-bold',
-    'icon-aria-label': 'Icon Aria Label',
     variant: DEFAULTS.VARIANT,
     orientation: DEFAULTS.ORIENTATION,
   },

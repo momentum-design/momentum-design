@@ -9,12 +9,17 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 
 /**
  * selectablecard component, which ...
+ * make sure cards are in a role = "checkbox-group" or "radio-group"  and not "list"
+ * selectable card would have events for selected and unselected (similar to checkbox/radio)
  *
  * @tagname mdc-selectablecard
  *
  * @slot default - This is a default/unnamed slot
  *
  * @event click - (React: onClick) This event is a Click Event, update the description
+ * @event change - (React: onChange) Event that gets dispatched when the checkbox state changes.
+ * @event focus - (React: onFocus) Event that gets dispatched when the checkbox receives focus.
+ *
  *
  * @cssproperty --custom-property-name - Description of the CSS custom property
  */

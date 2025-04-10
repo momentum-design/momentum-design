@@ -3,8 +3,8 @@ import { hostFocusRingStyles } from '../../utils/styles';
 
 const styles = css`
   :host {
-    box-sizing: border-box;
     cursor: pointer;
+    box-sizing: border-box; // To avoid layout shifting when border size increases in the checked state.
   }
 
   :host::part(check){

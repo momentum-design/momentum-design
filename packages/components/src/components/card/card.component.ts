@@ -5,9 +5,11 @@ import { Component } from '../../models';
 import type { CardOrientation, CardVariant } from './card.types';
 import { DEFAULTS } from './card.constants';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
+import type { TagName as TagNameType } from '../text/text.types';
 
 /**
- * card component, which ...
+ * The card component allows users to organize information in a structured and tangible
+ * format that is visually appealing.
  *
  * @tagname mdc-card
  *
@@ -36,8 +38,11 @@ class Card extends IconNameMixin(Component) {
   @property({ type: String, reflect: true })
   orientation: CardOrientation = DEFAULTS.ORIENTATION;
 
-  @property({ type: String, attribute: 'icon-aria-label' })
-  iconAriaLabel: string = '';
+  @property({ type: String, attribute: 'title-tag-name' })
+  titleTagName: TagNameType = DEFAULTS.TAGNAME;
+
+  @property({ type: String, attribute: 'subtitle-tag-name' })
+  subtitleTagName: TagNameType = DEFAULTS.TAGNAME;
 
   protected renderImage() {
     if (!this.imageSrc) {
@@ -56,10 +61,10 @@ class Card extends IconNameMixin(Component) {
 
   protected renderTitle() {
     return html`<div part="title">
-    <mdc-text part="title" type="${DEFAULTS.TITLE_TYPE}" tagname="${DEFAULTS.TAGNAME}">${this.cardTitle}</mdc-text>
+    <mdc-text part="title" type="${DEFAULTS.TITLE_TYPE}" tagname="${this.titleTagName}">${this.cardTitle}</mdc-text>
     ${this.subtitle ? html`<mdc-text part="subtitle"
        type="${DEFAULTS.SUBTITLE_TYPE}" 
-       tagname="${DEFAULTS.TAGNAME}">${this.subtitle}</mdc-text>` : nothing}
+       tagname="${this.subtitleTagName}">${this.subtitle}</mdc-text>` : nothing}
     </div>`;
   }
 
