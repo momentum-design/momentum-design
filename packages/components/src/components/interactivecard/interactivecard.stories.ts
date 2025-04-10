@@ -7,7 +7,7 @@ const render = (args: Args) => html`
   <mdc-interactive-card args.property="${args.property}"></mdc-interactive-card>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/interactivecard',
+  title: 'Work In Progress/card/interactive-card',
   tags: ['autodocs'],
   component: 'mdc-interactive-card',
   render,

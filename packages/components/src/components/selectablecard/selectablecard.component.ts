@@ -74,15 +74,15 @@ class SelectableCard extends DisabledMixin(TabIndexMixin(Card)) {
 
       case SELECTION_TYPE.CHECKBOX: {
         this.role = ROLE.CHECKBOX;
-        return html`<mdc-checkbox tabindex='-1' part="check" 
+        return html`<mdc-decorative-checkbox part="check" 
                     ?checked="${this.checked}" 
-                    ?disabled="${this.disabled}"></mdc-checkbox>`;
+                    ?disabled="${this.disabled}"></mdc-decorative-checkbox>`;
       }
       case SELECTION_TYPE.RADIO: {
         this.role = ROLE.RADIO;
-        return html`<mdc-radio tabindex='-1' part="check" 
+        return html`<mdc-decorative-radio part="check" 
                     ?checked="${this.checked}" 
-                    ?disabled="${this.disabled}"></mdc-radio>`;
+                    ?disabled="${this.disabled}"></mdc-decorative-radio>`;
       }
       default: return nothing;
     }

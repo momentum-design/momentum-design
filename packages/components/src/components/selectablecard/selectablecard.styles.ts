@@ -3,6 +3,7 @@ import { hostFocusRingStyles } from '../../utils/styles';
 
 const styles = css`
   :host {
+    box-sizing: border-box;
     cursor: pointer;
   }
 
@@ -27,24 +28,24 @@ const styles = css`
     opacity: 0.5;
   }
 
-  :host([selected]){
+  :host([checked]){
     border: 2px solid var(--mds-color-theme-outline-input-active);
     background-color: var(--mds-color-theme-background-primary-active);
   }
 
-  :host([selected]:hover){
+  :host([checked]:hover){
     background-color: var(--mds-color-theme-background-primary-hover);
   }
 
-  :host([selected]:active){
+  :host([checked]:active){
     background-color: var(--mds-color-theme-background-primary-ghost);
   }
 
-  :host()::part(check-icon){
+  :host::part(check-icon){
     color: var(--mds-color-theme-text-secondary-normal);
   }
 
-  :host([selected])::part(check-icon){
+  :host([checked])::part(check-icon){
     color: var(--mds-color-theme-text-accent-normal);
   }
 `;

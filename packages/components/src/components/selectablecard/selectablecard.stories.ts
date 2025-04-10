@@ -18,7 +18,7 @@ const render = (args: Args) => html`
     icon-aria-label="${args['icon-aria-label']}"
     ?selected="${args.selected}"
     ?disabled="${args.disabled}"
-    data-aria-label="${args['data-aria-label']}"
+    aria-label="${args['aria-label']}"
     selection-type="${args['selection-type']}"
     tabindex="${args.tabIndex}"
     class="${args.class}"
@@ -68,7 +68,7 @@ const meta: Meta = {
     tabIndex: {
       control: 'number',
     },
-    'data-aria-label': {
+    'aria-label': {
       control: 'text',
     },
     'selection-type': {
@@ -116,7 +116,7 @@ export const HorizontalCard: StoryObj = {
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     'icon-aria-label': 'Icon Aria Label',
-    'data-aria-label': 'Data Aria Label',
+    'aria-label': 'Aria Label',
     'selection-type': SELECTION_TYPE.CHECKBOX,
     selected: false,
     disabled: false,
@@ -140,7 +140,7 @@ export const CardWithoutImage: StoryObj = {
     subtitle: 'Subtitle',
     'icon-name': 'placeholder-bold',
     'icon-aria-label': 'Icon Aria Label',
-    'data-aria-label': 'Data Aria Label',
+    'aria-label': 'Aria Label',
     'selection-type': SELECTION_TYPE.RADIO,
     selected: false,
     disabled: false,

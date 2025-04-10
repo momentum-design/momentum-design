@@ -1,8 +1,9 @@
 import SelectableCard from './selectablecard.component';
 import { TAG_NAME } from './selectablecard.constants';
-import '../checkbox';
-import '../radio';
+import '../decorativecheckbox';
+import '../decorativeradio';
 import '../icon';
+import '../text';
 
 SelectableCard.register(TAG_NAME);
 
