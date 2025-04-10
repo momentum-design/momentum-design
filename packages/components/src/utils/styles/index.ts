@@ -10,8 +10,7 @@ const hostFitContentStyles = css`
   }
 `;
 
-const hostFocusRingStyles = (applyFocusRingOnClass = false) => {
-  const baseHostStyleVariables = css`
+const baseHostStyleVariables = css`
     :host {
       --mdc-focus-ring-inner-color: var(--mds-color-theme-focus-default-0);
       --mdc-focus-ring-middle-color: var(--mds-color-theme-focus-default-1);
@@ -25,6 +24,8 @@ const hostFocusRingStyles = (applyFocusRingOnClass = false) => {
       --mdc-focus-ring-outer-offset: calc(var(--mdc-focus-ring-inner-width) + var(--mdc-focus-ring-middle-width));
     }
   `;
+
+const hostFocusRingStyles = (applyFocusRingOnClass = false) => {
   const boxShadow = css`0 0 0 var(--mdc-focus-ring-inner-width) var(--mdc-focus-ring-inner-color),
     0 0 0 var(--mdc-focus-ring-middle-width) var(--mdc-focus-ring-middle-color),
     0 0 0 var(--mdc-focus-ring-outer-width) var(--mdc-focus-ring-outer-color)
@@ -80,4 +81,4 @@ const hostFocusRingStyles = (applyFocusRingOnClass = false) => {
   ];
 };
 
-export { hostFitContentStyles, hostFocusRingStyles };
+export { hostFitContentStyles, hostFocusRingStyles, baseHostStyleVariables };

@@ -65,7 +65,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   @state() selectedValue = '';
 
   /** @internal */
-  @state() showPopover = false;
+  @state() displayPopover = false;
 
   /** @internal */
   @state() activeDescendant = '';
@@ -224,7 +224,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    * @param event - The keyboard event.
    */
   private handleKeydown(event: KeyboardEvent): void {
-    if (this.showPopover) {
+    if (this.displayPopover) {
       this.handlePopoverOnOpen(event);
     } else {
       this.handlePopoverOnClose(event);
@@ -372,12 +372,12 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   }
 
   private openPopover(): void {
-    this.showPopover = true;
+    this.displayPopover = true;
     this.resetActivedescendant();
   }
 
   private closePopover(): void {
-    this.showPopover = false;
+    this.displayPopover = false;
     this.resetActivedescendant();
   }
 
@@ -423,7 +423,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         ?disabled="${this.disabled}"
         ?required="${!!this.requiredLabel}"
         aria-activedescendant="${this.activeDescendant}"
-        aria-expanded="${this.showPopover}"
+        aria-expanded="${this.displayPopover}"
         aria-haspopup="listbox"
         aria-label="${this.dataAriaLabel ?? ''}"
         aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
@@ -473,7 +473,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         id="options-popover"
         triggerid="select-base-triggerid"
         interactive
-        ?visible="${this.showPopover}"
+        ?visible="${this.displayPopover}"
         hide-on-outside-click
         focus-back-to-trigger
         focus-trap
