@@ -99,7 +99,7 @@ class Searchfield extends Input {
     'mdc-focus-ring': this.isInputFocused,
   })}" part="input-container">
     ${this.renderLeadingIcon()}
-      <div part='scrollable-container'>
+      <div part='scrollable-container' tabindex='-1'>
       <div part="filters-container" 
       @click=${() => this.inputElement.focus()} 
       @keydown=${(e: KeyboardEvent) => e.key === 'Enter' ? this.inputElement.focus() : null} 
