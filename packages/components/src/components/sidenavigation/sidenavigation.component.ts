@@ -128,6 +128,9 @@ class SideNavigation extends Provider<SideNavigationContext> {
       nestedTexts?.forEach((text) => {
         const textElement = text as HTMLElement;
         textElement.style.display = this.expanded ? '' : 'none';
+        if (this.expanded) {
+          textElement.style.marginLeft = '1.5rem';
+        }
       });
     });
   };

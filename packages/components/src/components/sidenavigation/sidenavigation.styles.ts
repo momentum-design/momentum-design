@@ -68,13 +68,11 @@ const styles = css`
   font-weight: var(--mds-font-apps-body-large-medium-font-weight);
 }
 
-/* Not working */
-::slotted(mdc-button[slot="fixed-section"])::part(prefix-icon) {
-   color: red;
-}
-
 ::slotted([slot="brand-logo"]) {
+  width: 1.5rem;
   height: 1.5rem;
+  flex-shrink: 0;
+  aspect-ratio: 1 / 1;
 }
 
 `;

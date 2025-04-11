@@ -17,6 +17,10 @@ import type { BadgeType } from './navitem.types';
  * `mdc-navitem` is a button element styled to work as a navigation tab.
  * It supports a leading icon, optional badge and dynamic text rendering.
  *
+ * Note: mdc-navitem is intended to be used as a part of the sidenavigation component.
+ * Its structure, spacing, and interactions are designed to align with
+ * the visual and functional requirements of side navigation layouts.
+ *
  * @tagname mdc-navitem
  *
  * @dependency mdc-icon
@@ -96,7 +100,15 @@ class NavItem extends IconNameMixin(Buttonsimple) {
     this.type = undefined as unknown as ButtonType;
 
     if (!this.navId && this.onerror) {
-      this.onerror('nav id is required');
+      this.onerror('[mdc-navitem] navId is required and was not provided.');
+    }
+  }
+
+  override updated(changedProperties: Map<string, any>) {
+    super.updated(changedProperties);
+
+    if (changedProperties.has('disabled')) {
+      this.setAttribute('aria-disabled', String(this.disabled));
     }
   }
 
@@ -155,6 +167,13 @@ class NavItem extends IconNameMixin(Buttonsimple) {
     this.emitNavItemActiveChange(this.active);
   }
 
+  private getTextLabel(): string | undefined {
+    const slot = this.shadowRoot?.querySelector('slot');
+    return slot?.assignedNodes({ flatten: true })
+      .map((node) => node.textContent?.trim())
+      .find((text) => !!text);
+  }
+
   renderTextLabel() {
     return html`
       <mdc-text
@@ -166,8 +185,7 @@ class NavItem extends IconNameMixin(Buttonsimple) {
     `;
   }
 
-  renderBadge() {
-    const { expanded } = this.sideNavigationContext.value ?? {};
+  renderBadge(expanded: boolean) {
     const badgeClass = expanded ? '' : 'badge';
 
     return html`
@@ -181,7 +199,21 @@ class NavItem extends IconNameMixin(Buttonsimple) {
   }
 
   public override render() {
-    const { expanded } = this.sideNavigationContext.value ?? {};
+    const expanded = this.sideNavigationContext.value?.expanded ?? false;
+
+    // Ensure accessibility fallback in collapsed state
+    const fallbackLabel = this.getTextLabel?.();
+
+    if (!expanded) {
+      if (!this.ariaLabel && fallbackLabel) {
+        this.setAttribute('aria-label', fallbackLabel);
+      }
+    } else {
+      const currentLabel = this.getAttribute('aria-label');
+      if (fallbackLabel && currentLabel === fallbackLabel) {
+        this.removeAttribute('aria-label');
+      }
+    }
 
     return html`
       <div part="icon-container">
@@ -191,10 +223,10 @@ class NavItem extends IconNameMixin(Buttonsimple) {
           length-unit="rem"
           part="icon"
         ></mdc-icon>
-        ${!expanded ? this.renderBadge() : nothing}
+        ${!expanded ? this.renderBadge(expanded) : nothing}
       </div>
       ${expanded ? this.renderTextLabel() : nothing}
-      ${expanded ? this.renderBadge() : nothing}
+      ${expanded ? this.renderBadge(expanded) : nothing}
     `;
   }
 

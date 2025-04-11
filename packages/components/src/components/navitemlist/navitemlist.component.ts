@@ -5,14 +5,14 @@ import { Component } from '../../models';
 import { DEFAULTS } from './navitemlist.constants';
 
 /**
- * A navigation list container component used to group multiple nav items.
+ * `mdc-navitemlist` is a container component used to group multiple mdc-navitem elements into a navigation list.
+ * It provides the structural foundation for organizing vertical nav items and
+ * ensures consistent behavior and layout within side navigation patterns.
  *
- * Typically used in side navigation or vertical menu structures.
- *
+ * Note: mdc-navitemlist is typically used within the sidenavigation component.
  * @tagname mdc-navitemlist
  *
  * @slot default - Slot for projecting one or more navigation items.
- *
  */
 class NavItemList extends Component {
   override connectedCallback(): void {

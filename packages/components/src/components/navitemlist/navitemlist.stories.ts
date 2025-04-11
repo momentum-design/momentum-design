@@ -4,7 +4,12 @@ import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 const render = (args: Args) => html`
-  <mdc-navitemlist args.property="${args.property}"></mdc-navitemlist>`;
+  <mdc-navitemlist aria-label="${args['aria-label']}">
+    <mdc-navitem nav-id="1" icon-name="placeholder-bold" active>Dashboard</mdc-navitem>
+    <mdc-navitem nav-id="2" icon-name="placeholder-bold" disabled>Settings</mdc-navitem>
+    <mdc-navitem nav-id="3" icon-name="placeholder-bold">Settings</mdc-navitem>
+  </mdc-navitemlist>
+`;
 
 const meta: Meta = {
   title: 'Work In Progress/navitemlist',
@@ -12,9 +17,14 @@ const meta: Meta = {
   component: 'mdc-navitemlist',
   render,
   parameters: {
+    controls: { expanded: true },
     badges: ['wip'],
   },
   argTypes: {
+    'aria-label': {
+      control: 'text',
+      description: 'Aria-label for accessibility. Used to describe the nav item list to assistive technologies.',
+    },
     ...classArgType,
     ...styleArgType,
   },
@@ -24,7 +34,12 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    class: 'custom-classname',
-    style: 'margin-top: 20px;',
+    'aria-label': 'navItemList label',
+  },
+};
+
+export const WithoutAriaLabel: StoryObj = {
+  args: {
+    'aria-label': null,
   },
 };

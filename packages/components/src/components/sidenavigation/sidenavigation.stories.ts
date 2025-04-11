@@ -1,17 +1,20 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import { html } from 'lit';
 import '.';
+import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { VARIANTS } from './sidenavigation.constants';
 
 const render = (args: Args) => html`
   <div style="height: 60rem; margin: 1rem">
-    <mdc-sidenavigation variant="${args.variant}" customer-name=${args['customer-name']}>
+    <mdc-sidenavigation variant="${args.variant}" customer-name=${args['customer-name']}     
+      @click="${action('onclick')}"
+      @focus="${action('onfocus')}">
       <!-- Upper Nav (scrollable section) -->
       <mdc-navitemlist slot="scrollable-section">
         <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold" nav-id="1">
-          MessagingMessagingMessagingMessaging
+          Messaging
         </mdc-navitem>
         <mdc-navitem badge-type="counter" counter="3" max-counter="66" icon-name="placeholder-bold" nav-id="2" disabled>
           Meetings
@@ -72,11 +75,13 @@ const render = (args: Args) => html`
       <mdc-link slot="fixed-section" icon-name="placeholder-bold"><a href="#">Settings Link</a></mdc-link>
       <mdc-button slot="fixed-section" prefix-icon="placeholder-bold">Logout Button</mdc-button>
       <mdc-link slot="fixed-section" icon-name="placeholder-bold"><a href="#">Back Link</a></mdc-link>
-      <img
+      <mdc-icon
         slot="brand-logo"
-        src="https://momentum.design/mometnum_design_logo.5016c4f24b97e0ad.svg"
-        alt="brandLogo"
-      />
+        name="apple-bold"
+        size="1.5"
+        tabindex=0
+        aria-label="brand logo icon"
+      ></mdc-icon>
     </mdc-sidenavigation>
   </div>
 `;
