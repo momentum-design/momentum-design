@@ -83,6 +83,7 @@ const styles = [css`
   :host::part(progress-container), :host::part(progress-bar) {
     border: var(--mdc-progressbar-border);
   }
+}
 `];
 
 export default styles;

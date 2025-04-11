@@ -108,6 +108,8 @@ const meta: Meta = {
       'validation-message',
       'validity',
       'willValidate',
+      'trailing-button',
+      'leading-icon',
       'inputChips']),
     ...classArgType,
     ...styleArgType,

@@ -21,12 +21,16 @@ const styles = [
 
     .mdc-label-text,
     .mdc-help-text {
-      font-size: var(--mds-font-size-body-midsize);
-      line-height: var(--mds-font-lineheight-body-midsize);
       display: flex;
       align-items: center;
       gap: 0.5rem;
       width: 100%;
+    }
+
+    .mdc-label, .mdc-help-text{
+      font-size: var(--mds-font-apps-body-midsize-regular-font-size);
+      font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
+      line-height: var(--mds-font-apps-body-midsize-regular-line-height);
     }
 
     .mdc-label {

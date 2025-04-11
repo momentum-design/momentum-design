@@ -27,6 +27,22 @@ class Searchfield extends Input {
    */
   @state() isInputFocused = false;
 
+  /**
+   * @internal
+   */
+  @state() hasInputChips = false;
+
+  constructor() {
+    super();
+    this.addEventListener('keydown', this.clearOnEsc);
+  }
+
+  private clearOnEsc(e: KeyboardEvent) {
+    if (e.key === 'Escape') {
+      this.clearInputText();
+    }
+  }
+
   override connectedCallback() {
     super.connectedCallback();
     this.leadingIcon = DEFAULTS.ICON;
@@ -43,6 +59,7 @@ class Searchfield extends Input {
    * It will remove any elements that are not input chips.
    */
   private renderInputChips() {
+    this.hasInputChips = !!this.inputChips?.length;
     if (this.inputChips) {
       this.inputChips.forEach((element) => {
         if (!element.matches('mdc-inputchip')) {
@@ -66,6 +83,14 @@ class Searchfield extends Input {
     };
   }
 
+  override clearInputText() {
+    this.inputChips?.forEach((element) => {
+      // Dispatch the custom 'remove' event from inputChip
+      element.dispatchEvent(new CustomEvent('remove', { bubbles: true, composed: true }));
+    });
+    super.clearInputText();
+  }
+
   public override render() {
     return html`
     ${this.renderLabelElement()}
@@ -74,15 +99,15 @@ class Searchfield extends Input {
     'mdc-focus-ring': this.isInputFocused,
   })}" part="input-container">
     ${this.renderLeadingIcon()}
-      <div part='scrollable-container'>
+      <div part='scrollable-container' tabindex='-1'>
       <div part="filters-container" 
       @click=${() => this.inputElement.focus()} 
       @keydown=${(e: KeyboardEvent) => e.key === 'Enter' ? this.inputElement.focus() : null} 
       @keyup=${(e: KeyboardEvent) => e.key === ' ' ? this.inputElement.focus() : null}>
         <slot name="filters" @slotchange=${this.renderInputChips}></slot></div>
-      ${this.renderInputElement(DEFAULTS.TYPE)}
+      ${this.renderInputElement(DEFAULTS.TYPE, this.hasInputChips)}
       </div>
-      ${this.renderTrailingButton()}
+      ${this.renderTrailingButton(this.hasInputChips)}
     </div>
   `;
   }
