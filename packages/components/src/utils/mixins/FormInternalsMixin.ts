@@ -74,7 +74,7 @@ export const FormInternalsMixin = <T extends Constructor<LitElement>>(
     static formAssociated = true;
 
     /** @internal */
-    internals: ElementInternals;
+    internals = this.attachInternals();
 
     /** @internal */
     get form(): HTMLFormElement | null {
@@ -89,11 +89,10 @@ export const FormInternalsMixin = <T extends Constructor<LitElement>>(
       return this.internals.willValidate;
     }
 
-    constructor(...args: any[]) {
-      super(args);
+    override connectedCallback() {
+      super.connectedCallback();
 
       /** @internal */
-      this.internals = this.attachInternals();
       this.id = `mdc-input-${uuidv4()}`;
     }
 
