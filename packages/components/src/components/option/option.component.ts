@@ -1,6 +1,7 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import type { IconNames } from '../icon/icon.types';
 import ListItem from '../listitem/listitem.component';
 import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
@@ -27,7 +28,7 @@ import styles from './option.styles';
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the option.
  * @event focus - (React: onFocus) This event is dispatched when the option receives focus.
  */
-class Option extends ListItem {
+class Option extends FormInternalsMixin(ListItem) {
   /**
    * The selected attribute is used to indicate that the option is selected.
    */
@@ -51,6 +52,7 @@ class Option extends ListItem {
     this.updateAttribute('aria-disabled', `${!!this.disabled}`);
 
     // Option will not contain below fields
+    this.name = undefined as unknown as string;
     this.secondaryLabel = undefined as unknown as string;
     this.sideHeaderText = undefined as unknown as string;
     this.sublineText = undefined as unknown as string;
