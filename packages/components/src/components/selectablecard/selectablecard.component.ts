@@ -8,28 +8,58 @@ import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 
 /**
- * selectablecard component, which ...
- * make sure cards are in a role = "checkbox-group" or "radio-group"  and not "list"
+ * selectablecard component extends `mdc-card` and supports selection addtionally.
+ * There are 3 different selection types for this card
+ * - Check mark icon
+ * - Checkbox
+ * - Radio
+ *
+ * While using this component within a form or group of cards,
+ * make sure cards are in a role = "checkbox-group" (for checkbox and check mark) or
+ *  "radio-group" (for radio).
  * selectable card would have events for selected and unselected (similar to checkbox/radio)
  *
  * @tagname mdc-selectablecard
  *
- * @slot default - This is a default/unnamed slot
+ * @dependency mdc-icon
+ * @dependency mdc-decorative-checkbox
+ * @dependency mdc-decorative-radio
+ * @dependency mdc-text
  *
- * @event click - (React: onClick) This event is a Click Event, update the description
- * @event change - (React: onChange) Event that gets dispatched when the checkbox state changes.
- * @event focus - (React: onFocus) Event that gets dispatched when the checkbox receives focus.
+ * @slot before-body - This slot is for passing the content before the body
+ * @slot body - This slot is for passing the text content for the card
+ * @slot after-body - This slot is for passing the content after the body
+ *
+ * @event click - (React: onClick) Event that gets dispatched when the card is clicked. It toggles the checked state.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the card.
+ * It toggles the checked state when enter key is used.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the card.
+ * It toggles the checked state when space key is used.
+ * @event change - (React: onChange) Event that gets dispatched when the card state changes.
+ * @event focus - (React: onFocus) Event that gets dispatched when the card receives focus.
  *
  *
  * @cssproperty --custom-property-name - Description of the CSS custom property
  */
 class SelectableCard extends DisabledMixin(TabIndexMixin(Card)) {
+  /**
+   * The checked state of the card
+   * @default false
+   */
   @property({ type: Boolean, reflect: true })
   checked: boolean = false;
 
+  /**
+   * The selection type of the card. It can either be set to 'check', 'checkbox' or 'radio'
+   * @default 'check'
+   */
   @property({ type: String, attribute: 'selection-type' })
   selectionType: SelectionType = DEFAULTS.SELECTION_TYPE;
 
+  /**
+   * The role of the card. It can either be set to 'checkbox' or 'radio'
+   * @default 'checkbox'
+   */
   @property({ type: String })
   override role: RoleType = DEFAULTS.ROLE;
 
@@ -66,6 +96,10 @@ class SelectableCard extends DisabledMixin(TabIndexMixin(Card)) {
     }
   }
 
+  /**
+   * Renders the selection icon or checkbox or radio based on the selection type
+   * @returns The selection icon or checkbox or radio
+   */
   private renderSelection() {
     const ICON_NAME = this.checked ? CHECK_MARK.CHECKED : CHECK_MARK.DEFAULT;
     switch (this.selectionType) {
@@ -93,6 +127,10 @@ class SelectableCard extends DisabledMixin(TabIndexMixin(Card)) {
     }
   }
 
+  /**
+   * Renders the header of the card
+   * @returns The header of the card
+   */
   override renderHeader() {
     if (!this.cardTitle) {
       return nothing;

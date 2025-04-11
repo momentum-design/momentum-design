@@ -4,54 +4,54 @@ import { hostFitContentStyles } from '../../utils/styles';
 const styles = css`
   :host {
     align-items: flex-start;
-    border-radius: 8px;
+    border-radius: 0.5rem;
     border: 1px solid var(--mds-color-theme-outline-primary-normal);
   }
   :host([variant='ghost']){
     border-color: transparent;
   }
   :host([orientation="horizontal"]){
-    width: 640px;
+    width: 40rem;
   }
 
   :host([orientation="vertical"]){
-    width: 320px;
+    width: 20rem;
     flex-direction: column;
   }
   
   :host([orientation="vertical"])::part(image){
-    height: 200px;
+    height: 12.5rem;
     width: 100%;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
   }
   
   :host([orientation="horizontal"])::part(image){
-    width: 160px;
+    width: 10rem;
     height: 100%;
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
   }
 
   :host::part(header){
     display: flex;
-    gap: 8px;
+    gap: 0.5rem;
   }
 
   :host::part(icon){
-    margin-top: 4px;
+    margin-top: 0.25rem;
   }
 
   :host::part(body){
     width: 100%;
-    padding: 16px 24px;
+    padding: 1rem 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 0.75rem;
   }
 
   ::slotted([slot='body']){
-    padding-bottom: 8px;
+    padding-bottom: 0.5rem;
   }
 `;
 
