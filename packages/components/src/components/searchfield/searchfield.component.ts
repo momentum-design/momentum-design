@@ -84,9 +84,9 @@ class Searchfield extends Input {
   }
 
   override clearInputText() {
-    // remove all the filters and clear the input value (if any)
     this.inputChips?.forEach((element) => {
-      element.remove();
+      // Dispatch the custom 'remove' event from inputChip
+      element.dispatchEvent(new CustomEvent('remove', { bubbles: true, composed: true }));
     });
     super.clearInputText();
   }
