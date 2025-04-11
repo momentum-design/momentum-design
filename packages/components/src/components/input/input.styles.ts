@@ -5,7 +5,7 @@ const styles = [css`
   :host{
     --mdc-input-disabled-border-color: var(--mds-color-theme-outline-primary-disabled);
     --mdc-input-disabled-text-color: var(--mds-color-theme-text-primary-disabled);
-    --mdc-input-disabled-background-color: var(--mds-color-theme-background-primary-disabled);
+    --mdc-input-disabled-background-color: var(--mds-color-theme-background-input-disabled);
     --mdc-input-border-color: var(--mds-color-theme-outline-input-normal);
     --mdc-input-text-color: var(--mds-color-theme-text-primary-normal);
     --mdc-input-background-color: var(--mds-color-theme-background-primary-ghost);
@@ -13,7 +13,7 @@ const styles = [css`
     --mdc-input-selection-text-color: var(--mds-color-theme-inverted-text-primary-normal);
     --mdc-input-support-text-color: var(--mds-color-theme-text-secondary-normal);
     --mdc-input-hover-background-color: var(--mds-color-theme-background-primary-hover);
-    --mdc-input-focused-background-color: var(--mds-color-theme-background-primary-active);
+    --mdc-input-focused-background-color: transparent; // TODO: update with token value
     --mdc-input-focused-border-color: var(--mds-color-theme-outline-input-active);
     --mdc-input-error-border-color: var(--mds-color-theme-text-error-normal);
     --mdc-input-warning-border-color: var(--mds-color-theme-text-warning-normal);
@@ -39,19 +39,15 @@ const styles = [css`
     color: var(--mdc-input-disabled-text-color);
   }
 
-  :host([disabled]) .input,
-  :host([readonly]) .input{
-    border-color: var(--mdc-input-disabled-border-color);
-    background: var(--mdc-input-disabled-background-color);
-  }
-
   :host([disabled]) .input-container,
+  :host([readonly]) .input-container,
   :host([disabled][help-text-type="default"]) .input-container,
   :host([disabled][help-text-type="success"]) .input-container,
   :host([disabled][help-text-type="warning"]) .input-container,
   :host([disabled][help-text-type="error"]) .input-container,
   :host([disabled][help-text-type="priority"]) .input-container{
     border-color: var(--mdc-input-disabled-border-color);
+    background: var(--mdc-input-disabled-background-color);
   }
 
   .leading-icon{
