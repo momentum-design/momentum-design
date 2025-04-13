@@ -262,7 +262,9 @@ class TabList extends Component {
    */
   private fireTabChangeEvent = (newTab: Tab): void => {
     const event = new CustomEvent('change', {
-      detail: newTab.tabId,
+      detail: {
+        tabId: newTab.tabId,
+      },
     });
 
     this.dispatchEvent(event);
@@ -322,6 +324,7 @@ class TabList extends Component {
    * @param event - Custom Event fired from the nested tab.
    */
   private handleNestedTabActiveChange = async (event: CustomEvent<any>): Promise<void> => {
+    event.stopPropagation(); // Prevent the event from triggering any parent tsblists.
     const tab = event.target;
     if (!(tab instanceof Tab)) {
       return;
@@ -379,7 +382,18 @@ class TabList extends Component {
 
     if (tab !== this.shadowRoot?.activeElement) {
       this.resetTabIndexAndSetNewTabIndex(tab);
-      tab.focus();
+      tab.focus(
+        {
+          preventScroll: true,
+          /**
+           * Note: the `focusVisible` option is an experimental property at the time of writing.
+           * We have it here to set the `:focus-visible` pseudo-class on the tab,
+           * due to an issue with it not applying to the tab when a keyboard button is pressed.
+           */
+          // @ts-ignore : https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus#focusvisible
+          focusVisible: true,
+        },
+      );
     }
 
     // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
