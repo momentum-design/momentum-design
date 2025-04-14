@@ -273,7 +273,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
      * If the key pressed is 'Enter', it submits the form.
      * @param event - Keyboard event
      */
-  private handleKeyDown(event: KeyboardEvent) {
+  protected handleKeyDown(event: KeyboardEvent) {
     if (event.key === 'Enter') {
       this.form?.requestSubmit();
     }

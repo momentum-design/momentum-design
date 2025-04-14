@@ -32,13 +32,15 @@ class Searchfield extends Input {
    */
   @state() hasInputChips = false;
 
-  constructor() {
-    super();
-    this.addEventListener('keydown', this.clearOnEsc);
-  }
-
-  private clearOnEsc(e: KeyboardEvent) {
-    if (e.key === 'Escape') {
+  /**
+   * Handles the keydown event of the search field.
+   * If the key pressed is 'Enter', it submits the form.
+   * If the key pressed is 'Escape', it clears the input text.
+   * @param event - Keyboard event
+   */
+  override handleKeyDown(event: KeyboardEvent) {
+    super.handleKeyDown(event);
+    if (event.key === 'Escape') {
       this.clearInputText();
     }
   }
@@ -84,11 +86,11 @@ class Searchfield extends Input {
   }
 
   override clearInputText() {
+    super.clearInputText();
     this.inputChips?.forEach((element) => {
       // Dispatch the custom 'remove' event from inputChip
       element.dispatchEvent(new CustomEvent('remove', { bubbles: true, composed: true }));
     });
-    super.clearInputText();
   }
 
   public override render() {
