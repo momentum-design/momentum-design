@@ -9,7 +9,15 @@ import { ARROW_BUTTON_DIRECTION, KEYCODES } from './tablist.constants';
 import Tab from '../tab/tab.component';
 import Button from '../button/button.component';
 import type { ArrowButtonDirectionType } from './tablist.types';
-import { getFirstTab, getLastTab, getNextTab, getPreviousTab, findTab, getActiveTab } from './tablist.utils';
+import {
+  getFirstTab,
+  getLastTab,
+  getNextTab,
+  getPreviousTab,
+  findTab,
+  getActiveTab,
+  isAttributeDefined,
+} from './tablist.utils';
 
 /**
  * Tab list organizes tabs into a container.
@@ -183,7 +191,7 @@ class TabList extends Component {
     });
     resizeObserver.observe(this);
 
-    if (!this.activeTabId) {
+    if (!isAttributeDefined(this.activeTabId)) {
       this.activeTabId = getFirstTab(this.tabs)?.tabId;
     }
 
@@ -223,12 +231,13 @@ class TabList extends Component {
       this.setActiveTab(newTab);
 
       /**
-       * If the previous activeTabId was not undefined, fire the change event.
+       * If the previous activeTabId was not undefined, focus the new tab.
        *
-       * Otherwise, reset the tabindex of all tabs and set the new tabindex.
+       * Otherwise, if the previous activeTabId was undefined, reset the tabindex of all tabs and set the new tabindex.
+       * This occurs when the tablist is first created and the activeTabId does not exist.
+       * In this case we skip focusing the tab so that the tab does not focus on first render.
        */
       if (changedProperties.get('activeTabId')) {
-        this.fireTabChangeEvent(newTab);
         await this.focusTab(newTab);
       } else {
         this.resetTabIndexAndSetNewTabIndex(newTab);
@@ -244,11 +253,11 @@ class TabList extends Component {
    * @internal
    */
   private setAriaLabelledByOrAriaLabel = (): void => {
-    if (this.dataAriaLabelledby) {
+    if (isAttributeDefined(this.dataAriaLabelledby) && this.dataAriaLabelledby) {
       this.tabsContainer?.setAttribute('aria-labelledby', this.dataAriaLabelledby);
       this.tabsContainer?.removeAttribute('aria-label');
     } else {
-      this.tabsContainer?.setAttribute('aria-label', this.dataAriaLabel || 'Tab List');
+      this.tabsContainer?.setAttribute('aria-label', isAttributeDefined(this.dataAriaLabel) || 'Tab List');
       this.tabsContainer?.removeAttribute('aria-labelledby');
     }
   };
@@ -330,10 +339,11 @@ class TabList extends Component {
       return;
     }
 
-    this.setActiveTab(tab);
-    await this.focusTab(tab);
-
     this.activeTabId = tab.tabId;
+
+    if (getActiveTab(this.tabs || []) !== tab) {
+      this.fireTabChangeEvent(tab);
+    }
   };
 
   /**
