@@ -95,17 +95,19 @@ test('mdc-tablist', async ({ componentsPage, isMobile }) => {
 
   /**
    * ADDITIONAL LOCATORS
+   *
    * tablistComponent - The mdc-tablist component itself.
+   *
    * tablist - The role=tablist element within the mdc-tablist component.
+   *
+   * tabs - The role=tab element within the mdc-tablist component.
+   *
+   * arrowButtons - The mdc-button elements within the mdc-tablist component.
    */
   const tablistComponent = tablistPage.getByTestId('tablist-component');
-  const tablist = tablistPage.getByRole('tablist');
-
-  const tabIds: Array<string> = await componentsPage.page.evaluate(() => {
-    const tabs = Array.from(document.querySelectorAll('mdc-tab') || []);
-    const tabIds = tabs.map((tab) => String(tab.tabId));
-    return tabIds;
-  });
+  const tablist = tablistComponent.getByRole('tablist');
+  const tabs = tablistComponent.getByRole('tab');
+  // const arrowButtons = tablistComponent.locator('mdc-button');
 
   /**
    * MATCH TAB ID
@@ -224,7 +226,7 @@ test('mdc-tablist', async ({ componentsPage, isMobile }) => {
         expect(ariaLabelledBySelector).toBe('h3#tabs-title');
 
         await test.step('the element in the aria-labelledby attribute exists', async () => {
-          await expect(tablistPage.locator(String(ariaLabelledBySelector))).toHaveText('Tablist example');
+          await expect(tablistPage.locator(`${ariaLabelledBySelector}`)).toHaveText('Tablist example');
         });
       },
     );
@@ -288,10 +290,21 @@ test('mdc-tablist', async ({ componentsPage, isMobile }) => {
           );
         },
       );
+
+      await test.step('if arrow button is visible, pressing it should scroll the tabs', async () => {
+        if (await tablistComponent.locator('mdc-button').count()) {
+          const xPositionInitial = (await tablist.boundingBox())?.x;
+          await tablistComponent.locator('mdc-button')?.first()?.click();
+          const xPositionFinal = (await tablist.boundingBox())?.x;
+
+          expect(xPositionInitial).not.toEqual(xPositionFinal);
+        }
+      });
     });
 
     await test.step('focus', async () => {
       await test.step('tabbing into the tablist should set focus on the active element', async () => {
+        await tabs?.first()?.click();
         await tablistPage.focus();
 
         const activeTab = tablistComponent.getByRole('tab', { selected: true });
@@ -299,51 +312,45 @@ test('mdc-tablist', async ({ componentsPage, isMobile }) => {
       });
 
       await test.step('right arrow should focus next tab', async () => {
-        await tablistPage.focus();
-        await tablistComponent.locator(`[tab-id="${tabIds[3]}"]`)?.first()?.focus();
+        await tabs?.nth(3)?.focus();
         await componentsPage.page.keyboard.press('ArrowRight');
 
-        await expect(tablistComponent.locator(`[tab-id="${tabIds[4]}"]`)?.first())?.toBeFocused();
+        await expect(tabs?.nth(4))?.toBeFocused();
       });
 
       await test.step('left arrow should focus previous tab', async () => {
-        await tablistPage.focus();
-        await tablistComponent.locator(`[tab-id="${tabIds[2]}"]`)?.first()?.focus();
+        await tabs?.nth(3)?.focus();
         await componentsPage.page.keyboard.press('ArrowLeft');
 
-        await expect(tablistComponent.locator(`[tab-id="${tabIds[1]}"]`)?.first())?.toBeFocused();
+        await expect(tabs?.nth(2))?.toBeFocused();
       });
 
       await test.step('home should focus first tab', async () => {
-        await tablistPage.focus();
-        await tablistComponent.locator(`[tab-id="${tabIds[3]}"]`)?.first()?.focus();
+        await tabs?.nth(3)?.focus();
         await componentsPage.page.keyboard.press('Home');
 
-        await expect(tablistComponent.locator(`[tab-id="${tabIds[0]}"]`)?.first())?.toBeFocused();
+        await expect(tabs?.first())?.toBeFocused();
       });
 
       await test.step('end should focus last tab', async () => {
-        await tablistPage.focus();
-        await tablistComponent.locator(`[tab-id="${tabIds[3]}"]`)?.first()?.focus();
+        await tabs?.nth(3)?.focus();
         await componentsPage.page.keyboard.press('End');
 
-        await expect(tablistComponent.locator(`[tab-id="${tabIds[tabIds.length - 1]}"]`)?.first())?.toBeFocused();
+        await expect(tabs?.last())?.toBeFocused();
       });
 
       await test.step('left arrow on first tab should focus last tab', async () => {
-        await tablistPage.focus();
-        await tablistComponent.locator(`[tab-id="${tabIds[0]}"]`)?.first()?.focus();
+        await tabs?.first()?.focus();
         await componentsPage.page.keyboard.press('ArrowLeft');
 
-        await expect(tablistComponent.locator(`[tab-id="${tabIds[tabIds.length - 1]}"]`)?.first())?.toBeFocused();
+        await expect(tabs?.nth(await tabs?.count() - 1))?.toBeFocused();
       });
 
       await test.step('right arrow on last tab should focus first tab', async () => {
-        await tablistPage.focus();
-        await tablistComponent.locator(`[tab-id="${tabIds[tabIds.length - 1]}"]`)?.first()?.focus();
+        await tabs?.last()?.focus();
         await componentsPage.page.keyboard.press('ArrowRight');
 
-        await expect(tablistComponent.locator(`[tab-id="${tabIds[0]}"]`)?.first())?.toBeFocused();
+        await expect(tabs?.first())?.toBeFocused();
       });
     });
   });
