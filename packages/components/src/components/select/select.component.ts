@@ -512,7 +512,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           aria-haspopup="listbox"
           aria-label="${this.dataAriaLabel ?? ''}"
           aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
-          aria-controls="options-popover"
           .ariaExpanded="${this.displayPopover.toString()}"
         >
           <mdc-text
