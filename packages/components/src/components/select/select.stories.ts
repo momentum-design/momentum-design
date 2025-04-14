@@ -42,12 +42,12 @@ const render = (args: Args) => wrapWithDiv(html`
 `);
 
 const meta: Meta = {
-  title: 'Work In Progress/select',
+  title: 'Components/select',
   tags: ['autodocs'],
   component: 'mdc-select',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     name: {

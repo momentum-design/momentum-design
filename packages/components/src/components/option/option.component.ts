@@ -2,11 +2,12 @@ import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
-import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
 import type { IconNames } from '../icon/icon.types';
 import ListItem from '../listitem/listitem.component';
 import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
+import { TAG_NAME as SELECT_TAG_NAME } from '../select/select.constants';
 import { TYPE } from '../text/text.constants';
+import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
 import { SELECTED_ICON_NAME, TOOLTIP_ID } from './option.constants';
 import styles from './option.styles';
 
@@ -103,7 +104,7 @@ class Option extends FormInternalsMixin(ListItem) {
     tooltip.setAttribute('visible', '');
 
     // Add tooltip programmatically after the nearest select component or the parent element.
-    const parent = this.closest('mdc-select') || this.parentElement;
+    const parent = this.closest(SELECT_TAG_NAME) || this.parentElement;
     parent?.after(tooltip);
   }
 

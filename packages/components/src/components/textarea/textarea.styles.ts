@@ -5,7 +5,7 @@ const styles = [css`
   :host {
     --mdc-textarea-disabled-border-color: var(--mds-color-theme-outline-primary-disabled);
     --mdc-textarea-disabled-text-color: var(--mds-color-theme-text-primary-disabled);
-    --mdc-textarea-disabled-background-color: var(--mds-color-theme-background-primary-disabled);
+    --mdc-textarea-disabled-background-color: var(--mds-color-theme-background-input-disabled);
     --mdc-textarea-text-color: var(--mds-color-theme-text-primary-normal);
     --mdc-textarea-background-color: var(--mds-color-theme-background-primary-ghost);
     --mdc-textarea-border-color: var(--mds-color-theme-outline-input-normal);
@@ -15,7 +15,7 @@ const styles = [css`
     --mdc-textarea-success-border-color: var(--mds-color-theme-text-success-normal);
     --mdc-textarea-primary-border-color: var(--mds-color-theme-text-accent-normal);
     --mdc-textarea-hover-background-color: var(--mds-color-theme-background-primary-hover);
-    --mdc-textarea-focused-background-color: var(--mds-color-theme-background-primary-active);
+    --mdc-textarea-focused-background-color: transparent;
     --mdc-textarea-focused-border-color: var(--mds-color-theme-outline-input-active);
     --mdc-textarea-text-font-size: var(--mds-font-size-body-midsize);
     --mdc-textarea-text-line-height: var(--mds-font-lineheight-body-midsize);
@@ -26,8 +26,8 @@ const styles = [css`
     color: var(--mdc-input-disabled-text-color);
   }
 
-  :host([disabled])::part(textarea),
-  :host([readonly])::part(textarea){
+  :host([disabled])::part(textarea-container),
+  :host([readonly])::part(textarea-container){
     border-color: var(--mdc-textarea-disabled-border-color);
     background: var(--mdc-textarea-disabled-background-color);
   }

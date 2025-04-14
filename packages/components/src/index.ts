@@ -26,6 +26,7 @@ import Option from './components/option';
 import Popover from './components/popover';
 import Presence from './components/presence';
 import Progressbar from './components/progressbar';
+import Progressspinner from './components/progressspinner';
 import Radio from './components/radio';
 import RadioGroup from './components/radiogroup';
 import ScreenreaderAnnouncer from './components/screenreaderannouncer';
@@ -100,6 +101,7 @@ export {
   Appheader,
   Select,
   TabList,
+  Progressspinner,
 };
 // Types Exports
 export type {

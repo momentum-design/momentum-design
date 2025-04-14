@@ -7,7 +7,8 @@ const styles = css`
     --mdc-select-icon-border-color: var(--mds-color-theme-outline-input-normal);
     --mdc-select-base-text-color: var(--mds-color-theme-text-secondary-normal);
     --mdc-select-selected-text-color: var(--mds-color-theme-text-primary-normal);
-    --mdc-select-disabled-color: var(--mds-color-theme-outline-primary-disabled);
+    --mdc-select-disabled-border-color: var(--mds-color-theme-outline-primary-disabled);
+    --mdc-select-disabled-background-color: var(--mds-color-theme-background-input-disabled);
     --mdc-select-disabled-text-color: var(--mds-color-theme-text-primary-disabled);
     --mdc-select-error-border-color: var(--mds-color-theme-text-error-normal);
     --mdc-select-warning-border-color: var(--mds-color-theme-text-warning-normal);
@@ -79,7 +80,8 @@ const styles = css`
   :host([help-text-type="success"][readonly])::part(base-container),
   :host([help-text-type="error"][readonly])::part(base-container),
   :host([help-text-type="warning"][readonly])::part(base-container) {
-    border-color: var(--mdc-select-disabled-color);
+    border-color: var(--mdc-select-disabled-border-color);
+    background: var(--mdc-select-disabled-background-color);
   }
   :host([disabled]:hover)::part(base-container),
   :host([readonly]:hover)::part(base-container) {
