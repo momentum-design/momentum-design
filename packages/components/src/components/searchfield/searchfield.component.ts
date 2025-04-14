@@ -62,7 +62,7 @@ class Searchfield extends Input {
     this.hasInputChips = !!this.inputChips?.length;
     if (this.inputChips) {
       this.inputChips.forEach((element) => {
-        if (!element.matches('mdc-inputchip')) {
+        if (!element.matches(DEFAULTS.INPUT_CHIP_TAG)) {
           element.remove();
         }
       });
