@@ -1,1 +1,0 @@
-import{I as e}from"./button.constants--xhTiFYY.js";const o=t=>{switch(t){case e[64]:return 2;case e[52]:return 1.75;case e[40]:return 1.25;default:return 1}},c=t=>{const r=t.split("-"),n=["bold","filled","regular","light"];return r.filter(s=>!n.includes(s)).join("-")};export{o as a,c as g};
