@@ -4,6 +4,10 @@ const styles = css`
   :host {
   }
 
+  :host([variant='promotional']){
+    border-color: var(--mds-color-theme-outline-promotion-normal);
+  }
+
   :host::part(icon-button), :host::part(footer) {
     margin-left: auto;
     display: flex;

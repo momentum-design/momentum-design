@@ -1,7 +1,9 @@
-import { CSSResult, html, nothing } from 'lit';
+import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { queryAssignedElements } from 'lit/decorators.js';
 import styles from './interactivecard.styles';
 import Card from '../card/card.component';
+import { VARIANTS } from '../card/card.constants';
+import { BUTTON_COLORS } from '../button/button.constants';
 
 /**
  * interactivecard component extends `mdc-card` and supports interactive elements as features.
@@ -30,6 +32,16 @@ class InteractiveCard extends Card {
   @queryAssignedElements({ slot: 'icon-button' })
   iconButtons?: Array<HTMLElement>;
 
+  @queryAssignedElements({ slot: 'footer', selector: 'mdc-button' })
+  footerButtons?: Array<HTMLElement>;
+
+  override update(changedProperties: PropertyValues<InteractiveCard>) {
+    super.update(changedProperties);
+    if (changedProperties.has('variant')) {
+      this.updateFooterButtons();
+    }
+  }
+
   /**
    * Handles the icon buttons in the header section and sets its variant for styling.
    * It also limits the number of buttons to 3.
@@ -55,6 +67,22 @@ class InteractiveCard extends Card {
 
 private handleFooterSlot = () => {
 // handke to support max of 1 link and 2 buttons?
+};
+
+/**
+ * Updates the color of the footer buttons based on the variant.
+ * If the variant is promotional, the color is promotional, else default.
+ */
+private updateFooterButtons = () => {
+  if (this.footerButtons) {
+    this.footerButtons.forEach((button) => {
+      if (this.variant === VARIANTS.PROMOTIONAL) {
+        button.setAttribute('color', BUTTON_COLORS.PROMOTIONAL);
+      } else {
+        button.setAttribute('color', BUTTON_COLORS.DEFAULT);
+      }
+    });
+  }
 };
 
 /**
