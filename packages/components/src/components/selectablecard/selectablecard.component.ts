@@ -8,7 +8,7 @@ import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 
 /**
- * selectablecard component extends `mdc-card` and supports selection addtionally.
+ * selectablecard component extends `mdc-card` and supports selection interaction addtionally.
  * There are 3 different selection types for this card
  * - Check mark icon
  * - Checkbox
@@ -17,9 +17,12 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
  * While using this component within a form or group of cards,
  * make sure cards are in a role = "checkbox-group" (for checkbox and check mark) or
  *  "radio-group" (for radio).
- * selectable card would have events for selected and unselected (similar to checkbox/radio)
+ * Selectable card would have events for selected and unselected (similar to checkbox/radio)
  *
- * @tagname mdc-selectablecard
+ * **Note**: This is a single selection card i.e. interacting anywhere on the card would toggle the checked state.
+ * Make sure to pass only non-interactable elements within the slots.
+ *
+ * @tagname mdc-selectable-card
  *
  * @dependency mdc-icon
  * @dependency mdc-decorative-checkbox
@@ -80,16 +83,27 @@ class SelectableCard extends DisabledMixin(TabIndexMixin(Card)) {
     }
   }
 
+  /**
+   * Toggles the checked state
+   */
   private toggleChecked() {
     this.checked = !this.checked;
   }
 
+  /**
+   * Toggles the checked state when enter key is used
+   * @param event The keyboard event
+   */
   private toggleOnEnter(event: KeyboardEvent) {
     if (event.key === 'Enter') {
       this.toggleChecked();
     }
   }
 
+  /**
+   * Toggles the checked state when space key is used
+   * @param event The keyboard event
+   */
   private toggleOnSpace(event: KeyboardEvent) {
     if (event.key === ' ') {
       this.toggleChecked();

@@ -16,13 +16,13 @@ const render = (args: Args) => html`
     image-src="${args['image-src']}"
     image-alt="${args['image-alt']}"
     icon-name="${args['icon-name']}"
-    icon-aria-label="${args['icon-aria-label']}"
     ?checked="${args.checked}"
     ?disabled="${args.disabled}"
     aria-label="${args['aria-label']}"
     selection-type="${args['selection-type']}"
     title-tag-name="${args['title-tag-name']}"
     subtitle-tag-name="${args['subtitle-tag-name']}"
+    role="${args.role}"
     tabindex="${args.tabIndex}"
     class="${args.class}"
     style="${args.style}">${args.children}</mdc-selectable-card>`;
@@ -57,9 +57,6 @@ const meta: Meta = {
       control: 'text',
     },
     'icon-name': {
-      control: 'text',
-    },
-    'icon-aria-label': {
       control: 'text',
     },
     checked: {
@@ -110,7 +107,6 @@ export const Example: StoryObj = {
     'image-src': 'https://placehold.co/320x200',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
-    'icon-aria-label': 'Icon Aria Label',
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     variant: DEFAULTS.VARIANT,
@@ -130,7 +126,6 @@ export const HorizontalCard: StoryObj = {
     'image-src': 'https://placehold.co/160x280',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
-    'icon-aria-label': 'Icon Aria Label',
     'aria-label': 'Aria Label',
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
@@ -149,7 +144,6 @@ export const CardWithoutImage: StoryObj = {
     'card-title': 'Title',
     subtitle: 'Subtitle',
     'icon-name': 'placeholder-bold',
-    'icon-aria-label': 'Icon Aria Label',
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     'aria-label': 'Aria Label',
@@ -170,7 +164,6 @@ export const CardWithoutBody: StoryObj = {
     'card-title': 'Title',
     subtitle: 'Subtitle',
     'icon-name': 'placeholder-bold',
-    'icon-aria-label': 'Icon Aria Label',
     'selection-type': SELECTION_TYPE.CHECK,
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
@@ -179,5 +172,49 @@ export const CardWithoutBody: StoryObj = {
     tabIndex: 0,
     variant: DEFAULTS.VARIANT,
     orientation: DEFAULTS.ORIENTATION,
+  },
+};
+
+export const ContentBeforeBody: StoryObj = {
+  args: {
+    'card-title': 'Title',
+    subtitle: 'Subtitle',
+    'image-src': 'https://placehold.co/320x200',
+    'image-alt': 'Image Alt',
+    'icon-name': 'placeholder-bold',
+    variant: DEFAULTS.VARIANT,
+    'title-tag-name': DEFAULTS.TAGNAME,
+    'subtitle-tag-name': DEFAULTS.TAGNAME,
+    orientation: DEFAULTS.ORIENTATION,
+    'selection-type': SELECTION_TYPE.RADIO,
+    checked: false,
+    disabled: false,
+    tabIndex: 0,
+    children: html`
+    <mdc-text slot='before-body' type="body-midsize-medium" tagname="span">Content Before Body</mdc-text>
+    <img src="https://placehold.co/100x50" alt="Image Alt" slot="before-body"/>
+    ${defaultChildren}`,
+  },
+};
+
+export const ContentAfterBody: StoryObj = {
+  args: {
+    'card-title': 'Title',
+    subtitle: 'Subtitle',
+    'image-src': 'https://placehold.co/320x200',
+    'image-alt': 'Image Alt',
+    'icon-name': 'placeholder-bold',
+    variant: DEFAULTS.VARIANT,
+    'title-tag-name': DEFAULTS.TAGNAME,
+    'subtitle-tag-name': DEFAULTS.TAGNAME,
+    orientation: DEFAULTS.ORIENTATION,
+    'selection-type': SELECTION_TYPE.CHECKBOX,
+    checked: false,
+    disabled: false,
+    tabIndex: 0,
+    children: html`
+    <img src="https://placehold.co/100x50" alt="Image Alt" slot="after-body"/>
+    <mdc-text slot='after-body' type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
+    ${defaultChildren}`,
   },
 };

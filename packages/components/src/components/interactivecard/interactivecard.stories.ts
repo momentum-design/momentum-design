@@ -149,3 +149,47 @@ export const CardWithoutBody: StoryObj = {
     orientation: DEFAULTS.ORIENTATION,
   },
 };
+
+export const ContentBeforeBody: StoryObj = {
+  args: {
+    'card-title': 'Title',
+    subtitle: 'Subtitle',
+    'image-src': 'https://placehold.co/320x200',
+    'image-alt': 'Image Alt',
+    'icon-name': 'placeholder-bold',
+    variant: DEFAULTS.VARIANT,
+    'title-tag-name': DEFAULTS.TAGNAME,
+    'subtitle-tag-name': DEFAULTS.TAGNAME,
+    orientation: DEFAULTS.ORIENTATION,
+    children: html`
+    <mdc-text slot='before-body' type="body-midsize-medium" tagname="span">Content Before Body</mdc-text>
+    <img src="https://placehold.co/100x50" alt="Image Alt" slot="before-body"/>
+    <div slot="before-body" style="display: flex; gap: 8px;"> 
+    <mdc-button  size="28">Click Me</mdc-button>
+    <mdc-button  size="28" variant="secondary">View More</mdc-button>
+    </div>
+    ${defaultChildren}`,
+  },
+};
+
+export const ContentAfterBody: StoryObj = {
+  args: {
+    'card-title': 'Title',
+    subtitle: 'Subtitle',
+    'image-src': 'https://placehold.co/320x200',
+    'image-alt': 'Image Alt',
+    'icon-name': 'placeholder-bold',
+    variant: DEFAULTS.VARIANT,
+    'title-tag-name': DEFAULTS.TAGNAME,
+    'subtitle-tag-name': DEFAULTS.TAGNAME,
+    orientation: DEFAULTS.ORIENTATION,
+    children: html`
+    <img src="https://placehold.co/100x50" alt="Image Alt" slot="after-body"/>
+    <div slot="after-body" style="display: flex; gap: 8px;"> 
+      <mdc-button  size="28">Click Me</mdc-button>
+      <mdc-button  size="28" variant="secondary">View More</mdc-button>
+    </div>
+    <mdc-text slot='after-body' type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
+    ${defaultChildren}`,
+  },
+};

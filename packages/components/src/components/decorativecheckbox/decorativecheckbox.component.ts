@@ -7,9 +7,12 @@ import { ICON_NAME } from './decorativecheckbox.constants';
 
 /**
  * This is a decorative component that is styled to look as a checkbox option.
- * It has 2 properties - checked and disabled.
+ *
+ * It has 3 properties - checked, indeterminate and disabled.
  *
  * We are using the same styling that has been created for the `mdc-checkbox` component.
+ *
+ * @tagname mdc-decorative-checkbox
  *
  */
 class DecorativeCheckbox extends DisabledMixin(Component) {

@@ -22,6 +22,9 @@ import type { TagName as TagNameType } from '../text/text.types';
  *
  * There are 2 variants for the card that represent the border styling - 'border' and 'ghost'.
  *
+ * **Note**: This is a static card (without interactible elements).
+ * Make sure to pass only non-interactable elements within the slots.
+ *
  * @tagname mdc-card
  *
  * @dependency mdc-icon
