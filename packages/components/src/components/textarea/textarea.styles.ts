@@ -15,7 +15,7 @@ const styles = [css`
     --mdc-textarea-success-border-color: var(--mds-color-theme-text-success-normal);
     --mdc-textarea-primary-border-color: var(--mds-color-theme-text-accent-normal);
     --mdc-textarea-hover-background-color: var(--mds-color-theme-background-primary-hover);
-    --mdc-textarea-focused-background-color: transparent;
+    --mdc-textarea-focused-background-color: var(--mds-color-theme-background-primary-ghost);
     --mdc-textarea-focused-border-color: var(--mds-color-theme-outline-input-active);
     --mdc-textarea-text-font-size: var(--mds-font-size-body-midsize);
     --mdc-textarea-text-line-height: var(--mds-font-lineheight-body-midsize);
