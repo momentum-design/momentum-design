@@ -32,6 +32,33 @@ const styles = css`
     --mdc-button-line-height-size-32: var(--mds-font-lineheight-body-large);
     --mdc-button-line-height-size-28: var(--mds-font-lineheight-body-midsize);
     --mdc-button-line-height-size-24: var(--mds-font-lineheight-body-small);
+
+    --mdc-button-prefix-icon-size: 1rem;
+    --mdc-button-postfix-icon-size: 1rem;
+  }
+
+  :host([size="64"]) {
+    --mdc-button-prefix-icon-size: 2rem;
+    --mdc-button-postfix-icon-size: 2rem;
+  }
+
+  :host([size="52"]) {
+    --mdc-button-prefix-icon-size: 1.75rem;
+    --mdc-button-postfix-icon-size: 1.75rem;
+  }
+
+  :host([size="40"]) {
+    --mdc-button-prefix-icon-size: 1.25rem;
+    --mdc-button-postfix-icon-size: 1.25rem;
+  }
+
+  /* Apply icon size for prefix and postfix icons */
+  :host::part(prefix-icon) {
+    --mdc-icon-size: var(--mdc-button-prefix-icon-size);
+  }
+
+  :host::part(postfix-icon) {
+    --mdc-icon-size: var(--mdc-button-postfix-icon-size);
   }
 
   :host([active]){
