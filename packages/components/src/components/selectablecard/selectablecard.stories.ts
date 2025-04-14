@@ -3,7 +3,7 @@ import '.';
 import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
-import { DEFAULTS, ORIENTATIONS, VARIANTS } from '../card/card.constants';
+import { DEFAULTS, ORIENTATIONS } from '../card/card.constants';
 import { SELECTION_TYPE } from './selectablecard.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 
@@ -38,7 +38,7 @@ const meta: Meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: Object.values(VARIANTS),
+      options: ['border', 'ghost'],
     },
     orientation: {
       control: 'select',
