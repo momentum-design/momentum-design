@@ -475,12 +475,15 @@ class TabList extends Component {
   private switchFocus = async (): Promise<void> => {
     await this.updateComplete;
     if (!this.showBackwardArrowButton && !this.showForwardArrowButton) {
-      getActiveTab(this.tabs || [])?.focus();
+      await this.focusTab(getActiveTab(this.tabs || []));
     } else if (
       (this.showBackwardArrowButton && !this.showForwardArrowButton)
       || (this.showForwardArrowButton && !this.showBackwardArrowButton)
     ) {
-      this.notFocusedArrowButton?.focus();
+      this.notFocusedArrowButton?.focus({
+        // @ts-ignore : https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus#focusvisible
+        focusVisible: true,
+      });
     }
   };
 
