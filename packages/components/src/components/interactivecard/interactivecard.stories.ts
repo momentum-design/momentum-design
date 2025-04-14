@@ -167,7 +167,7 @@ export const ContentBeforeBody: StoryObj = {
     <div slot="before-body" style="display: flex; gap: 8px;"> 
     <mdc-button  size="28">Click Me</mdc-button>
     <mdc-button  size="28" variant="secondary">View More</mdc-button>
-    </div>
+    </div>-
     ${defaultChildren}`,
   },
 };
@@ -176,15 +176,15 @@ export const ContentAfterBody: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
-    'image-src': 'https://placehold.co/320x200',
+    'image-src': 'https://placehold.co/160x540',
     'image-alt': 'Image Alt',
     'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
-    orientation: DEFAULTS.ORIENTATION,
+    orientation: ORIENTATIONS.HORIZONTAL,
     children: html`
-    <img src="https://placehold.co/100x50" alt="Image Alt" slot="after-body"/>
+    <img src="https://placehold.co/120x30" alt="Image Alt" slot="after-body"/>
     <div slot="after-body" style="display: flex; gap: 8px;"> 
       <mdc-button  size="28">Click Me</mdc-button>
       <mdc-button  size="28" variant="secondary">View More</mdc-button>
