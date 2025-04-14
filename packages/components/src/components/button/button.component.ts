@@ -13,7 +13,7 @@ import {
 } from './button.constants';
 import styles from './button.styles';
 import type { ButtonColor, ButtonTypeInternal, ButtonVariant, IconButtonSize, PillButtonSize } from './button.types';
-import { getIconNameWithoutStyle, getIconSize } from './button.utils';
+import { getIconNameWithoutStyle } from './button.utils';
 
 /**
  * `mdc-button` is a component that can be configured in various ways to suit different use cases.
@@ -95,9 +95,6 @@ class Button extends Buttonsimple {
 
   /** @internal */
   @state() private typeInternal: ButtonTypeInternal = DEFAULTS.TYPE_INTERNAL;
-
-  /** @internal */
-  @state() private iconSize = 1;
 
   /**
    * @internal
@@ -187,7 +184,6 @@ class Button extends Buttonsimple {
       : Object.values(PILL_BUTTON_SIZES).includes(size as PillButtonSize);
 
     this.setAttribute('size', isValidSize ? `${size}` : `${DEFAULTS.SIZE}`);
-    this.iconSize = getIconSize(size);
   }
 
   /**
@@ -232,7 +228,6 @@ class Button extends Buttonsimple {
     ? html` <mdc-icon
             name="${this.prefixIcon as IconNames}"
             part="prefix-icon"
-            size=${this.iconSize}
             length-unit="rem"
           >
           </mdc-icon>`
@@ -242,7 +237,6 @@ class Button extends Buttonsimple {
     ? html` <mdc-icon
             name="${this.postfixIcon as IconNames}"
             part="postfix-icon"
-            size=${this.iconSize}
             length-unit="rem"
           >
           </mdc-icon>`
