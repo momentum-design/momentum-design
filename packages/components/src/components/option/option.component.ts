@@ -102,6 +102,7 @@ class Option extends FormInternalsMixin(ListItem) {
     tooltip.textContent = this.label ?? '';
     tooltip.setAttribute('triggerid', this.id);
     tooltip.setAttribute('visible', '');
+    tooltip.setAttribute('show-arrow', '');
 
     // Add tooltip programmatically after the nearest select component or the parent element.
     const parent = this.closest(SELECT_TAG_NAME) || this.parentElement;
