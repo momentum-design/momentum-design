@@ -18,3 +18,10 @@ export const findTab = (tabs: Tab[], tabId: string): Tab | undefined =>
   tabs.find((tab) => tab.tabId === tabId);
 
 export const getActiveTab = (tabs: Tab[]): Tab | undefined => tabs.find((tab) => tab.active);
+
+export const isAttributeDefined = (attribute?: string): string | undefined => {
+  if (attribute === 'undefined') {
+    return undefined;
+  }
+  return attribute;
+};
