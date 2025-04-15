@@ -26,7 +26,7 @@ const styles = [css`
   :host([checked]) .icon-container,
   :host([indeterminate]) .icon-container {
     background: var(--mdc-checkbox-checked-background-color);
-    border: unset;
+    border-color: transparent;
   }
   :host([checked]) .container:hover .icon-container,
   :host([indeterminate]) .container:hover .icon-container {

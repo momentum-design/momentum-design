@@ -11,7 +11,7 @@ import Card from './components/card';
 import Checkbox from './components/checkbox';
 import Chip from './components/chip';
 import Coachmark from './components/coachmark';
-import Decorativecheckbox from './components/decorativecheckbox';
+import Decorativecheckbox from './components/staticcheckbox';
 import Decorativeradio from './components/decorativeradio';
 import Divider from './components/divider';
 import FilterChip from './components/filterchip';

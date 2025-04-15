@@ -3,7 +3,8 @@ import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import checkboxStyles from '../checkbox/checkbox.styles';
-import { ICON_NAME } from './decorativecheckbox.constants';
+import styles from './staticcheckbox.styles';
+import { ICON_NAME } from './staticcheckbox.constants';
 
 /**
  * This is a decorative component that is styled to look as a checkbox option.
@@ -12,10 +13,10 @@ import { ICON_NAME } from './decorativecheckbox.constants';
  *
  * We are using the same styling that has been created for the `mdc-checkbox` component.
  *
- * @tagname mdc-decorative-checkbox
+ * @tagname mdc-staticcheckbox
  *
  */
-class DecorativeCheckbox extends DisabledMixin(Component) {
+class StaticCheckbox extends DisabledMixin(Component) {
   @property({ type: Boolean, reflect: true }) checked = false;
 
   @property({ type: Boolean, reflect: true }) indeterminate = false;
@@ -35,7 +36,7 @@ class DecorativeCheckbox extends DisabledMixin(Component) {
     </div>`;
   }
 
-  public static override styles: Array<CSSResult> = [...checkboxStyles];
+  public static override styles: Array<CSSResult> = [...checkboxStyles, ...styles];
 }
 
-export default DecorativeCheckbox;
+export default StaticCheckbox;

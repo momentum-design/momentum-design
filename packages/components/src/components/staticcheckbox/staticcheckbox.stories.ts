@@ -4,18 +4,18 @@ import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 const render = (args: Args) => html`
-  <mdc-decorative-checkbox 
+  <mdc-staticcheckbox 
     ?checked="${args.checked}"
     ?indeterminate="${args.indeterminate}"
     ?disabled="${args.disabled}"
     class="${args.class}"
     style="${args.style}"
-  ></mdc-decorative-checkbox>`;
+  ></mdc-staticcheckbox>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/decorator/decorative-checkbox',
+  title: 'Work In Progress/decorator/staticcheckbox',
   tags: ['autodocs'],
-  component: 'mdc-decorative-checkbox',
+  component: 'mdc-staticcheckbox',
   render,
   parameters: {
     badges: ['wip'],
