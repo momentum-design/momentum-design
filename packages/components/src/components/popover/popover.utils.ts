@@ -99,6 +99,9 @@ export class PopoverUtils {
    * Sets up the accessibility attributes for the popover.
    */
   setupAccessibility() {
+    if (this.popover.role === 'dialog' || this.popover.role === 'alertdialog') {
+      this.popover.toggleAttribute('aria-modal', this.popover.interactive);
+    }
     if (this.popover.interactive) {
       this.popover.setAttribute('aria-modal', 'true');
       if (!this.popover.ariaLabel) {

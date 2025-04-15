@@ -541,6 +541,15 @@ class Popover extends FocusTrapMixin(Component) {
       }
 
       this.deactivateFocusTrap?.();
+      if (!this.disableAriaExpanded) {
+        this.triggerElement.removeAttribute('aria-expanded');
+      }
+      if (this.interactive) {
+        const triggerElementRole = this.triggerElement.getAttribute('aria-haspopup');
+        if (triggerElementRole === 'dialog' || triggerElementRole === 'alertdialog') {
+          this.triggerElement.removeAttribute('aria-haspopup');
+        }
+      }
       if (this.focusBackToTrigger) {
         this.triggerElement?.focus();
       }

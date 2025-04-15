@@ -13,7 +13,7 @@ const styles = [css`
     --mdc-input-selection-text-color: var(--mds-color-theme-inverted-text-primary-normal);
     --mdc-input-support-text-color: var(--mds-color-theme-text-secondary-normal);
     --mdc-input-hover-background-color: var(--mds-color-theme-background-primary-hover);
-    --mdc-input-focused-background-color: transparent; // TODO: update with token value
+    --mdc-input-focused-background-color: var(--mds-color-theme-background-primary-ghost);
     --mdc-input-focused-border-color: var(--mds-color-theme-outline-input-active);
     --mdc-input-error-border-color: var(--mds-color-theme-text-error-normal);
     --mdc-input-warning-border-color: var(--mds-color-theme-text-warning-normal);
@@ -23,6 +23,10 @@ const styles = [css`
 
   :host, .input-container, .input-section, .input{
     width: 100%;
+  }
+
+  input{
+    font-family: inherit;
   }
 
   :host([readonly]) .leading-icon {
