@@ -108,10 +108,12 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   }
 
   private handlePopoverOpen(): void {
+    this.displayPopover = true;
     this.baseIconName = ARROW_ICON.ARROW_UP;
   }
 
   private handlePopoverClose(): void {
+    this.displayPopover = false;
     this.baseIconName = ARROW_ICON.ARROW_DOWN;
   }
 
@@ -512,7 +514,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           aria-haspopup="listbox"
           aria-label="${this.dataAriaLabel ?? ''}"
           aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
-          .ariaExpanded="${this.displayPopover.toString()}"
+          aria-expanded="${this.displayPopover ? 'true' : 'false'}"
         >
           <mdc-text
             part="base-text ${this.selectedValueText ? 'selected' : ''}"
