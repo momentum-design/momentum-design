@@ -78,38 +78,41 @@ test('mdc-searchfield', async ({ componentsPage }) => {
       'clear-aria-label': 'clear',
       label: 'Label',
     };
-    const serachfieldStickerSheet = new StickerSheet(componentsPage, 'mdc-searchfield');
+    const searchfieldStickerSheet = new StickerSheet(componentsPage, 'mdc-searchfield');
 
-    serachfieldStickerSheet.setAttributes(attributes);
-    await serachfieldStickerSheet.createMarkupWithCombination({});
+    searchfieldStickerSheet.setAttributes(attributes);
+    await searchfieldStickerSheet.createMarkupWithCombination({});
 
     // disabled searchField field with value
-    serachfieldStickerSheet.setAttributes({ ...attributes,
+    searchfieldStickerSheet.setAttributes({ ...attributes,
       value: 'Disabled',
       disabled: true,
     });
-    await serachfieldStickerSheet.createMarkupWithCombination({});
+    await searchfieldStickerSheet.createMarkupWithCombination({});
 
     // searchField without label
-    serachfieldStickerSheet.setAttributes({ 'data-aria-label': 'Search',
+    searchfieldStickerSheet.setAttributes({ 'data-aria-label': 'Search',
       value: 'Clear button',
       'clear-aria-label': 'clear',
     });
-    await serachfieldStickerSheet.createMarkupWithCombination({});
+    await searchfieldStickerSheet.createMarkupWithCombination({});
 
-    serachfieldStickerSheet
+    searchfieldStickerSheet
       .setChildren(`<mdc-inputchip 
         slot='filters' 
         label='Query: value' 
         clear-aria-label='clear'
       ></mdc-inputchip>`);
-    serachfieldStickerSheet.setAttributes({ value: '', placeholder: 'Search for value', 'clear-aria-label': 'clear' });
-    await serachfieldStickerSheet.createMarkupWithCombination({});
+    searchfieldStickerSheet.setAttributes({ value: '',
+      placeholder: 'Search for value',
+      'data-aria-label': 'Search',
+      'clear-aria-label': 'clear' });
+    await searchfieldStickerSheet.createMarkupWithCombination({});
 
-    await serachfieldStickerSheet.mountStickerSheet({
+    await searchfieldStickerSheet.mountStickerSheet({
       wrapperStyle: 'display: flex; flex-direction: column; gap: 0.5rem;',
     });
-    const container = await serachfieldStickerSheet.getWrapperContainer();
+    const container = searchfieldStickerSheet.getWrapperContainer();
 
     await test.step('matches screenshot of element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-searchfield', { element: container });

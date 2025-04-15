@@ -3,4 +3,4 @@ import { COLOR } from './chip.constants';
 
 type ColorType = ValueOf<typeof COLOR>;
 
-export { ColorType };
+export type { ColorType };

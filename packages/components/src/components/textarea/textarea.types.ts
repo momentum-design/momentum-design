@@ -5,4 +5,12 @@ type WrapType = ValueOf<typeof WRAP>;
 
 type AutoCompleteType = ValueOf<typeof AUTO_COMPLETE>;
 
-export { WrapType, AutoCompleteType };
+interface Events {
+  onInputEvent: InputEvent;
+  onChangeEvent: Event;
+  onFocusEvent: FocusEvent;
+  onBlurEvent: FocusEvent;
+  onLimitExceededEvent: Event;
+}
+
+export type { WrapType, AutoCompleteType, Events };

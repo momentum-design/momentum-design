@@ -1104,6 +1104,13 @@
               "description": "Used for operation pop: knocked-back effect when signle card is selected"
             }
           }
+        },
+        "input": {
+          "disabled": {
+            "value": "{color.core.white-alpha.11}",
+            "type": "color",
+            "description": "Used for disabled/read-only/read-only focus states for input components. "
+          }
         }
       },
       "button": {
@@ -2579,6 +2586,10 @@
         }
       },
       "avatar": {
+        "ghost": {
+          "value": "{color.core.white-alpha.0}",
+          "type": "color"
+        },
         "default": {
           "parent": "theme/stable/dark",
           "type": "color",

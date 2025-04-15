@@ -9,10 +9,11 @@ const styles = css`
     --mdc-listitem-primary-label-color: var(--mds-color-theme-text-primary-normal);
     --mdc-listitem-secondary-label-color: var(--mds-color-theme-text-secondary-normal);
     --mdc-listitem-disabled-color: var(--mds-color-theme-text-primary-disabled);
+    --mdc-listitem-column-gap: 0.75rem;
   }
   :host {
     background-color: var(--mdc-listitem-default-background-color);
-    column-gap: 0.75rem;
+    column-gap: var(--mdc-listitem-column-gap);
     cursor: pointer;
     display: flex;
     flex-direction: row;
@@ -52,7 +53,7 @@ const styles = css`
   }
   :host::part(leading), :host::part(trailing) {
     align-items: center;
-    column-gap: 0.75rem;
+    column-gap: var(--mdc-listitem-column-gap);
     display: flex;
   }
   :host::part(leading-text-secondary-label), :host::part(leading-text-tertiary-label) {
@@ -66,7 +67,7 @@ const styles = css`
   }
   ::slotted([slot="leading-controls"]), ::slotted([slot="trailing-controls"]) {
     align-items: center;
-    column-gap: 0.75rem;
+    column-gap: var(--mdc-listitem-column-gap);
     display: flex;
     flex-direction: row;
   }

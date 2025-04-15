@@ -18,8 +18,9 @@ around every form (like rounded corners, edges, etc.) without increasing its ove
 > However, once there is an accessible component that requires the Focus Ring 
   in its focus state (triggered by tab or click), the focus ring will wrap around that web component.
 
-For now, there is a temporary component that consumes the shared styles. 
-As you select any shape from the options below, you will see the focus ring wrap around the component.
+**IMPORTANT:** The Focus Ring is following the HTML standards by using `focus-visible`, which will make the visible FocusRing appear around the button
+for example only when tabbing to it, not when clicking (`document.activeElement` will be the button in both cases). 
+This is the standard HTML behavior and is accessibility compliant.
 
 <Primary />
 

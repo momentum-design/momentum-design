@@ -13,7 +13,7 @@ import {
 } from './button.constants';
 import styles from './button.styles';
 import type { ButtonColor, ButtonTypeInternal, ButtonVariant, IconButtonSize, PillButtonSize } from './button.types';
-import { getIconNameWithoutStyle, getIconSize } from './button.utils';
+import { getIconNameWithoutStyle } from './button.utils';
 
 /**
  * `mdc-button` is a component that can be configured in various ways to suit different use cases.
@@ -42,11 +42,6 @@ import { getIconNameWithoutStyle, getIconSize } from './button.utils';
  * The type of button is inferred based on the presence of slot and/or prefix and postfix icons.
  *
  * @dependency mdc-icon
- *
- * @event click - (React: onClick) This event is dispatched when the button is clicked.
- * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the button.
- * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the button.
- * @event focus - (React: onFocus) This event is dispatched when the button receives focus.
  *
  * @tagname mdc-button
  *
@@ -100,9 +95,6 @@ class Button extends Buttonsimple {
 
   /** @internal */
   @state() private typeInternal: ButtonTypeInternal = DEFAULTS.TYPE_INTERNAL;
-
-  /** @internal */
-  @state() private iconSize = 1;
 
   /**
    * @internal
@@ -192,7 +184,6 @@ class Button extends Buttonsimple {
       : Object.values(PILL_BUTTON_SIZES).includes(size as PillButtonSize);
 
     this.setAttribute('size', isValidSize ? `${size}` : `${DEFAULTS.SIZE}`);
-    this.iconSize = getIconSize(size);
   }
 
   /**
@@ -237,7 +228,6 @@ class Button extends Buttonsimple {
     ? html` <mdc-icon
             name="${this.prefixIcon as IconNames}"
             part="prefix-icon"
-            size=${this.iconSize}
             length-unit="rem"
           >
           </mdc-icon>`
@@ -247,7 +237,6 @@ class Button extends Buttonsimple {
     ? html` <mdc-icon
             name="${this.postfixIcon as IconNames}"
             part="postfix-icon"
-            size=${this.iconSize}
             length-unit="rem"
           >
           </mdc-icon>`

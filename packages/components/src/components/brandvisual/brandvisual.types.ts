@@ -1,3 +1,8 @@
 import type BrandVisualNames from '@momentum-design/brand-visuals/dist/types/types';
 
-export type { BrandVisualNames };
+interface Events {
+  onLoadEvent: Event;
+  onErrorEvent: Event;
+}
+
+export type { BrandVisualNames, Events };

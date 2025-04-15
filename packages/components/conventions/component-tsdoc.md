@@ -39,6 +39,9 @@ Usage: can be multiple
 
 Describes an event that can be emitted by the component, detailing the specific actions or occurrences that can trigger it.
 Make sure to specify how the event is passed in React - see existing components for the format.
+To make sure Events in React are properly typed, the Events should be added to the `.types.ts` file - make sure
+to check existing components on how to do that.
+
 Usage: can be multiple
 
 ### @default

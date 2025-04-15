@@ -1,7 +1,5 @@
-import type { Meta, StoryObj, Args } from '@storybook/web-components';
+import type { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
-import './subcomponent-focusring.stories.utils';
-import { DEFAULTS, SHAPES } from './subcomponent-focusring.constants';
 import { hideControls } from '../../../config/storybook/utils';
 import './subcomponent-focusring.stories.docs.mdx';
 import '../../components/button';
@@ -14,35 +12,23 @@ import '../../components/radio';
 import '../../components/checkbox';
 import '../../components/toggle';
 
-const render = (args: Args) => html` <mdc-subcomponent-focusring shape="${args.shape}"></mdc-subcomponent-focusring> `;
-
 const meta: Meta = {
   title: 'Styling/Focus Ring',
-  component: 'mdc-subcomponent-focusring',
-  render,
   parameters: {
     badges: ['stable'],
-  },
-  argTypes: {
-    shape: {
-      options: SHAPES,
-      control: { type: 'radio' },
+    controls: {
+      disable: true,
     },
+    actions: {
+      disable: true,
+    },
+    a11y: { disable: true },
   },
 };
 
 export default meta;
 
 export const Example: StoryObj = {
-  args: {
-    shape: DEFAULTS.SHAPE,
-  },
-};
-
-export const FocusRingOnHost: StoryObj = {
-  argTypes: {
-    ...hideControls(['shape']),
-  },
   render: () => html`
   <div style='display: flex; align-items: center; gap: 0.5rem'>
     <mdc-button>Button</mdc-button>
