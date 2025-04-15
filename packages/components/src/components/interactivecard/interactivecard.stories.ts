@@ -79,9 +79,10 @@ Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a sceleri
 <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
 <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
 <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
-<mdc-link slot="footer" icon-name="placeholder-bold"><a href='#'>Label</a></mdc-link>
-<mdc-button slot="footer" variant="secondary">Label</mdc-button>
-<mdc-button slot="footer">Label</mdc-button>`;
+<mdc-link slot="footer-link" icon-name="placeholder-bold"><a href='#'>Label</a></mdc-link>
+<mdc-text slot="footer-link">Not rendered</mdc-text>
+<mdc-button slot="footer-button-secondary">Label</mdc-button>
+<mdc-button slot="footer-button-primary">Label</mdc-button>`;
 
 export const Example: StoryObj = {
   args: {
@@ -147,6 +148,10 @@ export const CardWithoutBody: StoryObj = {
     'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
     orientation: DEFAULTS.ORIENTATION,
+    children: html`
+    <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
+    <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
+    <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>`,
   },
 };
 

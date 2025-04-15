@@ -22,6 +22,8 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
  * **Note**: This is a single selection card i.e. interacting anywhere on the card would toggle the checked state.
  * Make sure to pass only non-interactable elements within the slots.
  *
+ * Make sure to pass the `card-title` mandatorily for this card.
+ *
  * @tagname mdc-selectable-card
  *
  * @dependency mdc-icon

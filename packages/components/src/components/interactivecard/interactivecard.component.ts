@@ -4,16 +4,19 @@ import styles from './interactivecard.styles';
 import Card from '../card/card.component';
 import { VARIANTS } from '../card/card.constants';
 import { BUTTON_COLORS } from '../button/button.constants';
+import { DEFAULTS } from './interactivecard.constants';
 
 /**
  * interactivecard component extends `mdc-card` and supports interactive elements as features.
  *
- * It supports icon buttons in the header section (maximum of 3 buttons)
- * and footer section that supports links and buttons.
+ * It supports action icon buttons in the header section (maximum of 3 buttons).
+ *
+ * The footer section consists of -
+ * - `mdc-link` component
+ * - `mdc-button` component in secondary variant
+ * - `mdc-button` component in primary variant
  *
  * @tagname mdc-interactive-card
- *
- * @slot default - This is a default/unnamed slot
  *
  * @dependency mdc-icon
  * @dependency mdc-text
@@ -21,35 +24,60 @@ import { BUTTON_COLORS } from '../button/button.constants';
  * @slot before-body - This slot is for passing the content before the body
  * @slot body - This slot is for passing the text content for the card
  * @slot after-body - This slot is for passing the content after the body
- * @slot footer - This slot is for passing the content in the footer. It supports `mdc-link` and `mdc-button`.
+ * @slot footer-link - This slot is for passing `mdc-link` component within the footer section.
+ * @slot footer-button-primary - This slot is for passing primary variant of
+ * `mdc-button` component within the footer section.
+ * @slot footer-button-secondary - This slot is for passing secondary variant of `mdc-button` component
+ * within the footer section.
  *
  * @cssproperty --custom-property-name - Description of the CSS custom property
  */
 class InteractiveCard extends Card {
   /**
    * The icon buttons in the header section
+   * @internal
    */
   @queryAssignedElements({ slot: 'icon-button' })
   iconButtons?: Array<HTMLElement>;
 
-  @queryAssignedElements({ slot: 'footer', selector: 'mdc-button' })
-  footerButtons?: Array<HTMLElement>;
+  /**
+   * The links in the footer section
+   * @internal
+   */
+  @queryAssignedElements({ slot: 'footer-link' })
+  footerLink?: Array<HTMLElement>;
+
+  /**
+   * The primary buttons in the footer section
+   * @internal
+   */
+  @queryAssignedElements({ slot: 'footer-button-primary' })
+  footerButtonPrimary?: Array<HTMLElement>;
+
+  /**
+   * The secondary buttons in the footer section
+   * @internal
+   *
+   */
+  @queryAssignedElements({ slot: 'footer-button-secondary' })
+  footerButtonSecondary?: Array<HTMLElement>;
 
   override update(changedProperties: PropertyValues<InteractiveCard>) {
     super.update(changedProperties);
     if (changedProperties.has('variant')) {
-      this.updateFooterButtons();
+      this.updateFooterButtonColors();
     }
   }
 
   /**
    * Handles the icon buttons in the header section and sets its variant for styling.
    * It also limits the number of buttons to 3.
+   * @internal
    */
   private handleIconButtons = () => {
     if (this.iconButtons) {
       this.iconButtons.forEach((element) => {
-        if (!element.matches('mdc-button') && element.getAttribute('data-btn-type') !== 'icon') {
+        if (!element.matches(DEFAULTS.BUTTON) && element.getAttribute('data-btn-type') !== 'icon') {
           element.remove();
         } else {
           element.setAttribute('variant', 'tertiary');
@@ -65,17 +93,51 @@ class InteractiveCard extends Card {
     }
   };
 
-private handleFooterSlot = () => {
-// handke to support max of 1 link and 2 buttons?
+  /**
+   * Filters and renders only the following content into the footer section and removes anything other than it
+   * - One mdc-link element in the footer-link slot
+   * - One secondary variant of the mdc-button element in the footer-button-secondary slot
+   * - One primary variant of the mdc-button element in the footer-button-primary slot
+   *
+   * @internal
+   */
+private handleFooterSlot = (tagname: string, variant = '') => {
+  let arrayItems: Array<HTMLElement> = [];
+  if (tagname === DEFAULTS.LINK && this.footerLink?.length) {
+    arrayItems = this.footerLink;
+  } else if (tagname === DEFAULTS.BUTTON && variant === 'primary' && this.footerButtonPrimary?.length) {
+    arrayItems = this.footerButtonPrimary;
+  } else if (tagname === DEFAULTS.BUTTON && variant === 'secondary' && this.footerButtonSecondary?.length) {
+    arrayItems = this.footerButtonSecondary;
+  }
+  // if there are more than one instance, remove them.
+  if (arrayItems.length > 1) {
+    for (let i = 1; i < arrayItems.length; i += 1) {
+      arrayItems[i].remove();
+    }
+  }
+  arrayItems.forEach((element) => {
+    // remove the element if it doesn't match with the tagname
+    if (!element.matches(tagname)) {
+      element.remove();
+    }
+    // set the variant if it is provided
+    if (variant) {
+      element.setAttribute('variant', variant);
+    }
+  });
 };
 
 /**
  * Updates the color of the footer buttons based on the variant.
  * If the variant is promotional, the color is promotional, else default.
+ *
+ * @internal
  */
-private updateFooterButtons = () => {
-  if (this.footerButtons) {
-    this.footerButtons.forEach((button) => {
+private updateFooterButtonColors = () => {
+  const footerButtons = [...(this.footerButtonPrimary || []), ...(this.footerButtonSecondary || [])];
+  if (footerButtons.length > 0) {
+    footerButtons.forEach((button) => {
       if (this.variant === VARIANTS.PROMOTIONAL) {
         button.setAttribute('color', BUTTON_COLORS.PROMOTIONAL);
       } else {
@@ -108,7 +170,13 @@ public override render() {
         <slot name="before-body"></slot>
         <slot name="body"></slot>
         <slot name="after-body"></slot>
-        <div part="footer"><slot name="footer" @slotchange=${this.handleFooterSlot}></slot></div>
+        <div part="footer">
+          <slot name="footer-link" @slotchange=${() => this.handleFooterSlot(DEFAULTS.LINK)}></slot>
+          <slot name="footer-button-secondary" 
+          @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, 'secondary')}></slot>
+          <slot name="footer-button-primary" 
+          @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, 'primary')}></slot>
+        </div>
       </div>
     `;
 }
