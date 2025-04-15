@@ -1,13 +1,13 @@
-import Decorativecheckbox from './decorativecheckbox.component';
+import DecorativeCheckbox from './decorativecheckbox.component';
 import { TAG_NAME } from './decorativecheckbox.constants';
 import '../icon';
 
-Decorativecheckbox.register(TAG_NAME);
+DecorativeCheckbox.register(TAG_NAME);
 
 declare global {
     interface HTMLElementTagNameMap {
-        ['mdc-decorativecheckbox']: Decorativecheckbox
+        ['mdc-decorative-checkbox']: DecorativeCheckbox
     }
 }
 
-export default Decorativecheckbox;
+export default DecorativeCheckbox;
