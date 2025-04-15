@@ -60,10 +60,10 @@ test('mdc-buttonsimple', async ({ componentsPage }) => {
   });
 
   /**
- * ATTRIBUTES
- */
+   * ATTRIBUTES
+   */
   await test.step('attributes', async () => {
-  // Disabled button
+    // Disabled button
     await test.step('attribute disabled should be present on button', async () => {
       await componentsPage.setAttributes(buttonsimple, {
         disabled: '',
@@ -82,12 +82,34 @@ test('mdc-buttonsimple', async ({ componentsPage }) => {
     });
 
     // Active button
-    await test.step('attribute active should be present on button', async () => {
+    await test.step('attribute active should be present on button & aria-pressed toggled by default', async () => {
       await componentsPage.setAttributes(buttonsimple, {
         active: '',
       });
       await expect(buttonsimple).toHaveAttribute('active');
+      await expect(buttonsimple).toHaveAttribute('aria-pressed', 'true');
+
       await componentsPage.removeAttribute(buttonsimple, 'active');
+      await expect(buttonsimple).toHaveAttribute('aria-pressed', 'false');
+
+      // cleanup:
+      await componentsPage.removeAttribute(buttonsimple, 'aria-pressed');
+    });
+
+    await test.step('attribute aria-expanded should be toggled if ariastatekey passed', async () => {
+      await componentsPage.setAttributes(buttonsimple, {
+        active: '',
+        ariastatekey: 'aria-expanded',
+      });
+      await expect(buttonsimple).toHaveAttribute('active');
+      await expect(buttonsimple).toHaveAttribute('aria-expanded', 'true');
+      await expect(buttonsimple).not.toHaveAttribute('aria-pressed');
+
+      await componentsPage.removeAttribute(buttonsimple, 'active');
+      await expect(buttonsimple).toHaveAttribute('aria-expanded', 'false');
+
+      // cleanup:
+      await componentsPage.removeAttribute(buttonsimple, 'aria-expanded');
     });
 
     // Active Disabled button

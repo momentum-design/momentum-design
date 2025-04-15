@@ -95,7 +95,7 @@ const styles = [hostFitContentStyles, css`
     flex-direction: column;
   }
 
-  :host::part(text)::after{
+  :host mdc-text::after {
     content: attr(data-text);
     height: 0;
     visibility: hidden;

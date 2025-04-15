@@ -52,13 +52,13 @@ class Button extends Buttonsimple {
    * The name of the icon to display as a prefix.
    * The icon is displayed on the left side of the button.
    */
-  @property({ type: String, attribute: 'prefix-icon', reflect: true }) prefixIcon?: string;
+  @property({ type: String, attribute: 'prefix-icon', reflect: true }) prefixIcon?: IconNames;
 
   /**
    * The name of the icon to display as a postfix.
    * The icon is displayed on the right side of the button.
    */
-  @property({ type: String, attribute: 'postfix-icon', reflect: true }) postfixIcon?: string;
+  @property({ type: String, attribute: 'postfix-icon', reflect: true }) postfixIcon?: IconNames;
 
   /**
    * There are 3 variants of button: primary, secondary, tertiary. They are styled differently.
@@ -99,12 +99,12 @@ class Button extends Buttonsimple {
   /**
    * @internal
    */
-  private prevPrefixIcon?: string;
+  private prevPrefixIcon?: IconNames;
 
   /**
    * @internal
    */
-  private prevPostfixIcon?: string;
+  private prevPostfixIcon?: IconNames;
 
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
@@ -138,15 +138,15 @@ class Button extends Buttonsimple {
    *
    * @param active - The active state.
    */
-  private modifyIconName(active: boolean) {
+  private modifyIconName(active?: boolean) {
     if (active) {
       if (this.prefixIcon) {
         this.prevPrefixIcon = this.prefixIcon;
-        this.prefixIcon = `${getIconNameWithoutStyle(this.prefixIcon)}-filled`;
+        this.prefixIcon = `${getIconNameWithoutStyle(this.prefixIcon)}-filled` as IconNames;
       }
       if (this.postfixIcon) {
         this.prevPostfixIcon = this.postfixIcon;
-        this.postfixIcon = `${getIconNameWithoutStyle(this.postfixIcon)}-filled`;
+        this.postfixIcon = `${getIconNameWithoutStyle(this.postfixIcon)}-filled` as IconNames;
       }
     } else {
       if (this.prevPrefixIcon) {
@@ -208,8 +208,7 @@ class Button extends Buttonsimple {
     const slot = this.shadowRoot
       ?.querySelector('slot')
       ?.assignedNodes()
-      .filter((node) => node.nodeType !== Node.TEXT_NODE || node.textContent?.trim())
-      .length;
+      .filter((node) => node.nodeType !== Node.TEXT_NODE || node.textContent?.trim()).length;
     if (slot && (this.prefixIcon || this.postfixIcon)) {
       this.typeInternal = BUTTON_TYPE_INTERNAL.PILL_WITH_ICON;
       this.setAttribute('data-btn-type', 'pill-with-icon');
@@ -224,22 +223,10 @@ class Button extends Buttonsimple {
 
   public override render() {
     return html`
-      ${this.prefixIcon
-    ? html` <mdc-icon
-            name="${this.prefixIcon as IconNames}"
-            part="prefix-icon"
-            length-unit="rem"
-          >
-          </mdc-icon>`
-    : ''}
+      ${this.prefixIcon ? html` <mdc-icon name="${this.prefixIcon as IconNames}" part="prefix-icon"></mdc-icon>` : ''}
       <slot @slotchange=${this.inferButtonType}></slot>
       ${this.postfixIcon
-    ? html` <mdc-icon
-            name="${this.postfixIcon as IconNames}"
-            part="postfix-icon"
-            length-unit="rem"
-          >
-          </mdc-icon>`
+    ? html` <mdc-icon name="${this.postfixIcon as IconNames}" part="postfix-icon"></mdc-icon>`
     : ''}
     `;
   }
