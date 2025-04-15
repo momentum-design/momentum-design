@@ -13,7 +13,7 @@ const render = (args: Args) => html`
   ></mdc-staticcheckbox>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/decorator/staticcheckbox',
+  title: 'Components/decorator/staticcheckbox',
   tags: ['autodocs'],
   component: 'mdc-staticcheckbox',
   render,

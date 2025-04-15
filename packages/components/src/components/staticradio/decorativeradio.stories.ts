@@ -12,7 +12,7 @@ const render = (args: Args) => html`
   ></mdc-staticradio>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/decorator/staticradio',
+  title: 'Components/decorator/staticradio',
   tags: ['autodocs'],
   component: 'mdc-staticradio',
   render,
