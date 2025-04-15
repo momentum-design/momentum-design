@@ -1,5 +1,5 @@
-import DecorativeRadio from './decorativeradio.component';
-import { TAG_NAME } from './decorativeradio.constants';
+import DecorativeRadio from './staticradio.component';
+import { TAG_NAME } from './staticradio.constants';
 
 DecorativeRadio.register(TAG_NAME);
 
