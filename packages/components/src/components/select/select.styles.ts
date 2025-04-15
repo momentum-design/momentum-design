@@ -30,7 +30,7 @@ const styles = css`
     position: absolute;
     width: 100%;
     height: 1px;
-    z-index: 1;
+    z-index: -1;
   }
   :host::part(container) {
     width: 100%;
