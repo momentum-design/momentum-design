@@ -26,6 +26,7 @@ const DEFAULTS = {
   SIZE: BUTTON_SIZES[32],
   TYPE: BUTTON_TYPE.BUTTON,
   ROLE: 'button',
+  ARIA_STATE_KEY: 'aria-pressed',
 };
 
 export {

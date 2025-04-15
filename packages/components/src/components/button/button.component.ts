@@ -13,7 +13,7 @@ import {
 } from './button.constants';
 import styles from './button.styles';
 import type { ButtonColor, ButtonTypeInternal, ButtonVariant, IconButtonSize, PillButtonSize } from './button.types';
-import { getIconNameWithoutStyle, getIconSize } from './button.utils';
+import { getIconNameWithoutStyle } from './button.utils';
 
 /**
  * `mdc-button` is a component that can be configured in various ways to suit different use cases.
@@ -52,13 +52,13 @@ class Button extends Buttonsimple {
    * The name of the icon to display as a prefix.
    * The icon is displayed on the left side of the button.
    */
-  @property({ type: String, attribute: 'prefix-icon', reflect: true }) prefixIcon?: string;
+  @property({ type: String, attribute: 'prefix-icon', reflect: true }) prefixIcon?: IconNames;
 
   /**
    * The name of the icon to display as a postfix.
    * The icon is displayed on the right side of the button.
    */
-  @property({ type: String, attribute: 'postfix-icon', reflect: true }) postfixIcon?: string;
+  @property({ type: String, attribute: 'postfix-icon', reflect: true }) postfixIcon?: IconNames;
 
   /**
    * There are 3 variants of button: primary, secondary, tertiary. They are styled differently.
@@ -96,18 +96,15 @@ class Button extends Buttonsimple {
   /** @internal */
   @state() private typeInternal: ButtonTypeInternal = DEFAULTS.TYPE_INTERNAL;
 
-  /** @internal */
-  @state() private iconSize = 1;
+  /**
+   * @internal
+   */
+  private prevPrefixIcon?: IconNames;
 
   /**
    * @internal
    */
-  private prevPrefixIcon?: string;
-
-  /**
-   * @internal
-   */
-  private prevPostfixIcon?: string;
+  private prevPostfixIcon?: IconNames;
 
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
@@ -141,15 +138,15 @@ class Button extends Buttonsimple {
    *
    * @param active - The active state.
    */
-  private modifyIconName(active: boolean) {
+  private modifyIconName(active?: boolean) {
     if (active) {
       if (this.prefixIcon) {
         this.prevPrefixIcon = this.prefixIcon;
-        this.prefixIcon = `${getIconNameWithoutStyle(this.prefixIcon)}-filled`;
+        this.prefixIcon = `${getIconNameWithoutStyle(this.prefixIcon)}-filled` as IconNames;
       }
       if (this.postfixIcon) {
         this.prevPostfixIcon = this.postfixIcon;
-        this.postfixIcon = `${getIconNameWithoutStyle(this.postfixIcon)}-filled`;
+        this.postfixIcon = `${getIconNameWithoutStyle(this.postfixIcon)}-filled` as IconNames;
       }
     } else {
       if (this.prevPrefixIcon) {
@@ -187,7 +184,6 @@ class Button extends Buttonsimple {
       : Object.values(PILL_BUTTON_SIZES).includes(size as PillButtonSize);
 
     this.setAttribute('size', isValidSize ? `${size}` : `${DEFAULTS.SIZE}`);
-    this.iconSize = getIconSize(size);
   }
 
   /**
@@ -212,8 +208,7 @@ class Button extends Buttonsimple {
     const slot = this.shadowRoot
       ?.querySelector('slot')
       ?.assignedNodes()
-      .filter((node) => node.nodeType !== Node.TEXT_NODE || node.textContent?.trim())
-      .length;
+      .filter((node) => node.nodeType !== Node.TEXT_NODE || node.textContent?.trim()).length;
     if (slot && (this.prefixIcon || this.postfixIcon)) {
       this.typeInternal = BUTTON_TYPE_INTERNAL.PILL_WITH_ICON;
       this.setAttribute('data-btn-type', 'pill-with-icon');
@@ -228,24 +223,10 @@ class Button extends Buttonsimple {
 
   public override render() {
     return html`
-      ${this.prefixIcon
-    ? html` <mdc-icon
-            name="${this.prefixIcon as IconNames}"
-            part="prefix-icon"
-            size=${this.iconSize}
-            length-unit="rem"
-          >
-          </mdc-icon>`
-    : ''}
+      ${this.prefixIcon ? html` <mdc-icon name="${this.prefixIcon as IconNames}" part="prefix-icon"></mdc-icon>` : ''}
       <slot @slotchange=${this.inferButtonType}></slot>
       ${this.postfixIcon
-    ? html` <mdc-icon
-            name="${this.postfixIcon as IconNames}"
-            part="postfix-icon"
-            size=${this.iconSize}
-            length-unit="rem"
-          >
-          </mdc-icon>`
+    ? html` <mdc-icon name="${this.postfixIcon as IconNames}" part="postfix-icon"></mdc-icon>`
     : ''}
     `;
   }

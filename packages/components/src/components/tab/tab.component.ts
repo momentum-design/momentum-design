@@ -109,6 +109,20 @@ import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
  */
 class Tab extends IconNameMixin(Buttonsimple) {
   /**
+   * The tab's active state indicates whether it is currently toggled on (active) or off (inactive).
+   * When the active state is true, the tab is considered to be in an active state, meaning it is toggled on.
+   * Conversely, when the active state is false, the tab is in an inactive state, indicating it is toggled off.
+   *
+   * This attribute also controls the "aria-selected" attribute of the tab.
+   * When the tab is active, "aria-selected" is set to true, indicating that the tab is selected.
+   * When the tab is inactive, "aria-selected" is set to false, indicating that the tab is not selected.
+   *
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true })
+  override active?: boolean = DEFAULTS.ACTIVE;
+
+  /**
    * Text to be displayed in the tab.
    * If no `text` is provided, no text will be rendered,
    * `aria-label` should be set on the tab.
@@ -148,6 +162,8 @@ class Tab extends IconNameMixin(Buttonsimple) {
     this.softDisabled = undefined as unknown as boolean;
     this.size = undefined as unknown as ButtonSize;
     this.type = undefined as unknown as ButtonType;
+
+    this.ariaStateKey = 'aria-selected';
 
     if (!this.tabId && this.onerror) {
       this.onerror('tab id is required');
@@ -190,7 +206,7 @@ class Tab extends IconNameMixin(Buttonsimple) {
    *
    * @param active - The active state of the tab.
    */
-  private handleTabActiveChange = (active: boolean): void => {
+  private handleTabActiveChange = (active?: boolean): void => {
     const event = new CustomEvent('activechange', {
       detail: { tabId: this.tabId, active },
       bubbles: true,
@@ -207,7 +223,7 @@ class Tab extends IconNameMixin(Buttonsimple) {
    * @param active - The active state of the tab.
    */
   protected override setActive(element: HTMLElement, active: boolean) {
-    element.setAttribute('aria-selected', active ? 'true' : 'false');
+    super.setActive(element, active);
     this.modifyIconName(active);
   }
 
