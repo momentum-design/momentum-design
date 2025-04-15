@@ -25,9 +25,12 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
    * The button's active state indicates whether it is currently toggled on (active) or off (inactive).
    * When the active state is true, the button is considered to be in an active state, meaning it is toggled on.
    * Conversely, when the active state is false, the button is in an inactive state, indicating it is toggled off.
-   * @default false
+   *
+   * This attribute is used to set the provided `ariaStateKey` to true or false.
+   * @default undefined
    */
-  @property({ type: Boolean, reflect: true }) active = false;
+  @property({ type: Boolean, reflect: true })
+  active?: boolean;
 
   /**
    * Indicates whether the button is soft disabled.
@@ -37,15 +40,17 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
    * **Important:** When using soft disabled, consumers must ensure that
    * the button behaves like a disabled button, allowing only focus and
    * preventing any interactions (clicks or keyboard actions) from triggering unintended actions.
-   * @default false
+   * @default undefined
    */
-  @property({ type: Boolean, attribute: 'soft-disabled' }) softDisabled = false;
+  @property({ type: Boolean, attribute: 'soft-disabled' })
+  softDisabled?: boolean;
 
   /**
    * Simplebutton size is a super set of all the sizes supported by children components.
    * @default 32
    */
-  @property({ type: Number, reflect: true }) size: ButtonSize = DEFAULTS.SIZE;
+  @property({ type: Number, reflect: true })
+  size: ButtonSize = DEFAULTS.SIZE;
 
   /**
    * This property defines the ARIA role for the element. By default, it is set to 'button'.
@@ -54,7 +59,23 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
    * - Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.
    * @default button
    */
-  @property({ type: String, reflect: true }) override role = DEFAULTS.ROLE;
+  @property({ type: String, reflect: true })
+  override role = DEFAULTS.ROLE;
+
+  /**
+   * This property defines the ARIA state key, which will be toggled when the
+   * Button is set to `active`.
+   * The default value is 'aria-pressed', which is commonly used for toggle buttons.
+   *
+   * Consumers can override this property to use a different ARIA state key if needed.
+   * In case multiple aria attributes should be toggled, they can be passed in as
+   * a comma separated string.
+   * For example: `aria-pressed,aria-expanded`
+   *
+   * @default 'aria-pressed'
+   */
+  @property({ type: String, reflect: true })
+  ariaStateKey = DEFAULTS.ARIA_STATE_KEY;
 
   /**
    * This property defines the type attribute for the button element.
@@ -118,15 +139,26 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
   }
 
   /**
-   * Sets the aria-pressed attribute based on the active state of the button.
+   * Sets the ariaStateKey attributes based on the active state of the button.
    * @param element - The button element
    * @param active - The active state of the element
    */
-  protected setActive(element: HTMLElement, active: boolean) {
-    if (active) {
-      element.setAttribute('aria-pressed', 'true');
-    } else {
-      element.removeAttribute('aria-pressed');
+  protected setActive(element: HTMLElement, active?: boolean) {
+    if (this.ariaStateKey) {
+      const ariaStateKeys = this.ariaStateKey.split(',');
+
+      ariaStateKeys
+        .filter((key) => key.trim().startsWith('aria-'))
+        .forEach((key) => {
+          if (active === true) {
+            element.setAttribute(key.trim(), 'true');
+          } else if (active === false) {
+            element.setAttribute(key.trim(), 'false');
+          } else {
+            // If the active state is not a boolean, remove the attribute
+            element.removeAttribute(key.trim());
+          }
+        });
     }
   }
 
@@ -138,7 +170,7 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
    * @param element - The button element.
    * @param softDisabled - The soft-disabled state.
    */
-  private setSoftDisabled(element: HTMLElement, softDisabled: boolean) {
+  private setSoftDisabled(element: HTMLElement, softDisabled?: boolean) {
     if (softDisabled) {
       element.setAttribute('aria-disabled', 'true');
     } else {
@@ -225,9 +257,7 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
   }
 
   public override render() {
-    return html`
-      <slot></slot>
-    `;
+    return html` <slot></slot> `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
