@@ -10,7 +10,8 @@ import Button from './components/button';
 import Checkbox from './components/checkbox';
 import Chip from './components/chip';
 import Coachmark from './components/coachmark';
-import Staticcheckbox from './components/staticcheckbox';
+import StaticCheckbox from './components/staticcheckbox';
+import StaticRadio from './components/staticradio';
 import Divider from './components/divider';
 import FilterChip from './components/filterchip';
 import FormfieldGroup from './components/formfieldgroup';
@@ -95,7 +96,8 @@ export {
   OptGroup,
   Progressbar,
   ScreenreaderAnnouncer,
-  Staticcheckbox,
+  StaticCheckbox,
+  StaticRadio,
   Textarea,
   Tooltip,
   Searchfield,
