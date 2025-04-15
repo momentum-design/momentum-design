@@ -1,5 +1,4 @@
-import type { PropertyValues } from 'lit';
-import { CSSResult, html } from 'lit';
+import { PropertyValues, CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
@@ -7,14 +6,14 @@ import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import { DEFAULTS, LINK_ICON_SIZES, LINK_SIZES } from './link.constants';
 import styles from './link.styles';
 import type { LinkSize } from './link.types';
+import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 
 /**
  * `mdc-link` component can be used to navigate to a different page
  * within the application or to an external site. It can be used to link to
  * emails or phone numbers.
  *
- * The `children` of the link component is expected to be an anchor element
- * containing the text, href, and other attributes.
+ * The `children` of the link component is expected to be the text content.
  *
  * For `icon`, the `mdc-icon` component is used to render the icon.
  *
@@ -34,7 +33,7 @@ import type { LinkSize } from './link.types';
  * @cssproperty --mdc-link-inverted-color-normal - Text and icon color of the inverted link in normal state
  * @cssproperty --mdc-link-text-decoration-disabled - Text decoration of the link in disabled state for all variants
  */
-class Link extends DisabledMixin(IconNameMixin(Component)) {
+class Link extends DisabledMixin(TabIndexMixin(IconNameMixin(Component))) {
   /**
    * The link can be inline or standalone.
    * @default false
@@ -63,11 +62,50 @@ class Link extends DisabledMixin(IconNameMixin(Component)) {
   size: LinkSize = DEFAULTS.LINK_SIZE;
 
   /**
-   * Used to store the previous tabindex value of the host element
-   * null value means that the host element did not have a tabindex attribute.
+   * Href for navigation
+   */
+  @property({ type: String, reflect: true })
+  href?: string;
+
+  /**
+   * Optional target: _blank, _self, etc.
+   */
+  @property({ type: String, reflect: true })
+  target?: string;
+
+  /**
+   * Optional rel attribute for security purposes with target="_blank"
+   */
+  @property({ type: String, reflect: true })
+  rel?: string;
+
+  /**
+   * Stores the previous tabindex if set by user
+   * so it can be restored after disabling
    * @internal
    */
-  private prevTabindex : number | null = null;
+  private prevTabindex = 0;
+
+  private handleNavigation = (e: MouseEvent | KeyboardEvent): void => {
+    if ((e.type === 'click' || (e instanceof KeyboardEvent && e.key === 'Enter')) && this.href) {
+      if (this.disabled) return;
+      window.open(this.href, this.target ?? '_blank', this.rel ?? 'noopener noreferrer');
+    }
+  };
+
+  public override connectedCallback(): void {
+    super.connectedCallback();
+    this.setDisabled(this.disabled);
+    this.setAttribute('role', 'link');
+    this.addEventListener('click', this.handleNavigation);
+    this.addEventListener('keydown', this.handleNavigation);
+  }
+
+  public override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.removeEventListener('click', this.handleNavigation);
+    this.removeEventListener('keydown', this.handleNavigation);
+  }
 
   /**
    * Method to get the size of the trailing icon based on the link size.
@@ -95,34 +133,14 @@ class Link extends DisabledMixin(IconNameMixin(Component)) {
    */
   private setDisabled(disabled: boolean) {
     if (disabled) {
-      this.prevTabindex = this.hasAttribute('tabindex') ? this.tabIndex : null;
-      this.tabIndex = -1;
       this.setAttribute('aria-disabled', 'true');
-    } else if (this.prevTabindex === null) {
-      this.removeAttribute('tabindex');
-      this.removeAttribute('aria-disabled');
+      this.prevTabindex = this.tabIndex;
+      this.tabIndex = -1;
     } else {
-      this.tabIndex = this.prevTabindex;
+      if (this.tabIndex === -1) {
+        this.tabIndex = this.prevTabindex;
+      }
       this.removeAttribute('aria-disabled');
-    }
-  }
-
-  /**
-   * Method to create and append trailing icon to the first anchor element in the slot.
-   * If no icon name is provided, no icon will be rendered.
-   */
-  private updateTrailingIcon() {
-    const anchorElement = this.shadowRoot?.querySelector('slot')
-      ?.assignedElements({ flatten: true }).find((element) => element.tagName === 'A');
-
-    const iconSize = this.getIconSize();
-
-    if (this.iconName && anchorElement) {
-      const trailingIcon = document.createElement('mdc-icon');
-      trailingIcon.setAttribute('name', this.iconName);
-      trailingIcon.setAttribute('size', `${iconSize}`);
-      trailingIcon.setAttribute('length-unit', 'rem');
-      anchorElement.appendChild(trailingIcon);
     }
   }
 
@@ -135,9 +153,14 @@ class Link extends DisabledMixin(IconNameMixin(Component)) {
 
   public override render() {
     return html`
-      <div part='link-container' class='mdc-focus-ring'>
-        <slot @slotchange=${this.updateTrailingIcon}></slot>
-      </div>
+      <slot></slot>
+      ${this.iconName ? html`
+        <mdc-icon
+          name=${this.iconName}
+          size=${this.getIconSize()}
+          length-unit="rem"
+        ></mdc-icon>
+      ` : nothing}
     `;
   }
 
