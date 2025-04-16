@@ -46,7 +46,7 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
  checked: boolean = false;
 
  /**
-   * The selection type of the card. It can either be set to 'check', 'checkbox' or 'radio'
+   * The selection type of the card. It can either be set to 'check' or 'checkbox'
    * @default 'check'
    */
  @property({ type: String, attribute: 'selection-type' })
@@ -102,8 +102,8 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
  }
 
  /**
-  * Renders the selection icon or checkbox or radio based on the selection type
-  * @returns The selection icon or checkbox or radio
+  * Renders the selection icon or checkbox based on the selection type
+  * @returns The selection icon or checkbox
   */
  private renderSelection() {
    const ICON_NAME = this.checked ? CHECK_MARK.CHECKED : CHECK_MARK.DEFAULT;

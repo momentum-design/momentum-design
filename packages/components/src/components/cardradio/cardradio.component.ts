@@ -100,16 +100,6 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
  }
 
  /**
-  * Renders the selection icon or checkbox or radio based on the selection type
-  * @returns The selection icon or checkbox or radio
-  */
- private renderSelection() {
-   return html`<mdc-staticradio part="check" 
-  ?checked="${this.checked}" 
-  ?disabled="${this.disabled}"></mdc-staticradio>`;
- }
-
- /**
   * Renders the header of the card
   * @returns The header of the card
   */
@@ -120,7 +110,9 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
    return html`<div part="header">
      ${this.renderIcon()}
      ${this.renderTitle()}
-     ${this.renderSelection()}
+     <mdc-staticradio part="check" 
+        ?checked="${this.checked}" 
+        ?disabled="${this.disabled}"></mdc-staticradio>
    </div>`;
  }
 
