@@ -46,6 +46,7 @@ import TabList from './components/tablist';
 import Card from './components/card';
 import CardCheckbox from './components/cardcheckbox';
 import Cardradio from './components/cardradio';
+import Cardbutton from './components/cardbutton';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -72,6 +73,7 @@ export {
   Bullet,
   Button,
   Card,
+  Cardbutton,
   CardCheckbox,
   Cardradio,
   Checkbox,
