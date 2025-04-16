@@ -65,19 +65,19 @@ class Link extends DisabledMixin(TabIndexMixin(IconNameMixin(Component))) {
    * Href for navigation. The URL that the hyperlink points to
    */
   @property({ type: String, reflect: true })
-  href?: string;
+  href?: string = '#';
 
   /**
    * Optional target: _blank, _self, _parent, _top and _unfencedTop
    */
   @property({ type: String, reflect: true })
-  target?: string;
+  target?: string = '_self';
 
   /**
    * Optional rel attribute that defines the relationship of the linked URL as space-separated link types.
    */
   @property({ type: String, reflect: true })
-  rel?: string;
+  rel?: string = 'noopener noreferrer';
 
   /**
    * Stores the previous tabindex if set by user
@@ -85,13 +85,6 @@ class Link extends DisabledMixin(TabIndexMixin(IconNameMixin(Component))) {
    * @internal
    */
   private prevTabindex = 0;
-
-  private handleNavigation = (e: MouseEvent | KeyboardEvent): void => {
-    if ((e.type === 'click' || (e instanceof KeyboardEvent && e.key === 'Enter')) && this.href) {
-      if (this.disabled) return;
-      window.open(this.href, this.target ?? '_blank', this.rel ?? 'noopener noreferrer');
-    }
-  };
 
   public override connectedCallback(): void {
     super.connectedCallback();
@@ -105,6 +98,13 @@ class Link extends DisabledMixin(TabIndexMixin(IconNameMixin(Component))) {
     this.removeEventListener('click', this.handleNavigation);
     this.removeEventListener('keydown', this.handleNavigation);
   }
+
+  private handleNavigation = (e: MouseEvent | KeyboardEvent): void => {
+    if ((e.type === 'click' || (e instanceof KeyboardEvent && e.key === 'Enter')) && this.href) {
+      if (this.disabled) return;
+      window.open(this.href, this.target, this.rel);
+    }
+  };
 
   /**
    * Method to get the size of the trailing icon based on the link size.
