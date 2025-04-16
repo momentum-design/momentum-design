@@ -53,6 +53,23 @@ const styles = css`
   ::slotted([slot='body']){
     padding-bottom: 0.5rem;
   }
+
+  :host([variant='promotional']){
+    border-color: var(--mds-color-theme-outline-promotion-normal);
+  }
+
+  :host::part(icon-button), :host::part(footer) {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  :host::part(footer){
+    gap: 16px;
+    padding-bottom: 8px;
+  }
 `;
 
 export default [hostFitContentStyles, styles];
