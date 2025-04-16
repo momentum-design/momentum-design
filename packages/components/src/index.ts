@@ -44,6 +44,7 @@ import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
 import TabList from './components/tablist';
 import Card from './components/card';
+import CardCheckbox from './components/cardcheckbox';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -69,6 +70,8 @@ export {
   Badge,
   Bullet,
   Button,
+  Card,
+  CardCheckbox,
   Checkbox,
   Chip,
   Coachmark,
