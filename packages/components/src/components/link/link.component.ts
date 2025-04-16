@@ -62,19 +62,19 @@ class Link extends DisabledMixin(TabIndexMixin(IconNameMixin(Component))) {
   size: LinkSize = DEFAULTS.LINK_SIZE;
 
   /**
-   * Href for navigation
+   * Href for navigation. The URL that the hyperlink points to
    */
   @property({ type: String, reflect: true })
   href?: string;
 
   /**
-   * Optional target: _blank, _self, etc.
+   * Optional target: _blank, _self, _parent, _top and _unfencedTop
    */
   @property({ type: String, reflect: true })
   target?: string;
 
   /**
-   * Optional rel attribute for security purposes
+   * Optional rel attribute that defines the relationship of the linked URL as space-separated link types.
    */
   @property({ type: String, reflect: true })
   rel?: string;
