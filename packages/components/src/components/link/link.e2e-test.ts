@@ -126,6 +126,10 @@ test('mdc-link', async ({ componentsPage }) => {
       { 'icon-name': ICON_PLACEHOLDER },
       { disabled: '' },
       { disabled: '', 'icon-name': ICON_PLACEHOLDER },
+      { inline: '' },
+      { inline: '', 'icon-name': ICON_PLACEHOLDER },
+      { inline: '', disabled: '' },
+      { inline: '', disabled: '', 'icon-name': ICON_PLACEHOLDER },
     ];
 
     const createVariants = async (
@@ -149,11 +153,16 @@ test('mdc-link', async ({ componentsPage }) => {
       );
     };
 
-    for (const baseAttrs of baseCombos) {
-      await createVariants(baseAttrs);
-      await createVariants(baseAttrs, true);
-      await createVariants(baseAttrs, false, true);
-      await createVariants(baseAttrs, true, true);
+    // First 8 rows: inverted = false, Next 8 rows: inverted = true
+    let invertedPattern = false;
+    const maxRows = 16;
+
+    for (let i = 0; i < maxRows; i += 1) {
+      const baseAttrs = baseCombos[i % baseCombos.length];
+      await createVariants(baseAttrs, false, invertedPattern);
+      if ((i + 1) % 8 === 0) {
+        invertedPattern = !invertedPattern;
+      }
     }
 
     await stickerSheet.mountStickerSheet();
