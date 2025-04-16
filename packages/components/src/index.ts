@@ -43,6 +43,7 @@ import Toggle from './components/toggle';
 import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
 import TabList from './components/tablist';
+import Card from './components/card';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
