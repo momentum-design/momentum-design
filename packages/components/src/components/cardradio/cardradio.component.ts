@@ -1,27 +1,25 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
-import styles from './cardcheckbox.styles';
+import styles from './cardradio.styles';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import Card from '../card/card.component';
-import { CHECK_MARK, DEFAULTS, SELECTION_TYPE } from './cardcheckbox.constants';
-import { SelectionType } from './cardcheckbox.types';
 
 /**
- * cardcheckbox component extends `mdc-card` and supports checkbox selection interaction addtionally.
+ * cardradio component extends `mdc-card` and supports radio selection interaction addtionally.
  *
- * While using this component within a form or group of cards, make sure cards are in a role = "checkbox-group".
- * This card would have events for selected and unselected (similar to checkbox)
+ * While using this component within a form or group of cards, make sure cards are in a role = "radio-group".
+ * This card would have events for selected and unselected (similar to radio)
  *
  * **Note**: This is a single selection card i.e. interacting anywhere on the card would toggle the checked state.
  * Make sure to pass only non-interactable elements within the slots.
  *
  * Make sure to pass the `card-title` mandatorily for this card.
  *
- * @tagname mdc-cardcheckbox
+ * @tagname mdc-cardradio
  *
  * @dependency mdc-icon
- * @dependency mdc-staticcheckbox
+ * @dependency mdc-staticradio
  * @dependency mdc-text
  *
  * @slot before-body - This slot is for passing the content before the body
@@ -37,7 +35,7 @@ import { SelectionType } from './cardcheckbox.types';
  * @event focus - (React: onFocus) Event that gets dispatched when the card receives focus.
  *
  */
-class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
+class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
  /**
    * The checked state of the card
    * @default false
@@ -46,11 +44,11 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
  checked: boolean = false;
 
  /**
-   * The selection type of the card. It can either be set to 'check', 'checkbox' or 'radio'
-   * @default 'check'
+   * The name of the radio.
+   * @default ''
    */
- @property({ type: String, attribute: 'selection-type' })
- selectionType: SelectionType = DEFAULTS.SELECTION_TYPE;
+ @property({ type: String })
+ name: string = '';
 
  constructor() {
    super();
@@ -61,10 +59,10 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
 
  override connectedCallback() {
    super.connectedCallback();
-   this.role = 'checkbox';
+   this.role = 'radio';
  }
 
- override update(changedProperties: PropertyValues<CardCheckbox>) {
+ override update(changedProperties: PropertyValues<CardRadio>) {
    super.update(changedProperties);
    if (changedProperties.has('checked')) {
      this.setAttribute('aria-checked', `${this.checked}`);
@@ -106,22 +104,9 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
   * @returns The selection icon or checkbox or radio
   */
  private renderSelection() {
-   const ICON_NAME = this.checked ? CHECK_MARK.CHECKED : CHECK_MARK.DEFAULT;
-   switch (this.selectionType) {
-     case SELECTION_TYPE.CHECK: {
-       return html`<mdc-icon part="check check-icon" 
-                   size="${DEFAULTS.ICON_SIZE}"
-                   length-unit="${DEFAULTS.ICON_LENGTH_UNIT}" 
-                   name="${ICON_NAME}"></mdc-icon>`;
-     }
-
-     case SELECTION_TYPE.CHECKBOX: {
-       return html`<mdc-staticcheckbox part="check" 
-                   ?checked="${this.checked}" 
-                   ?disabled="${this.disabled}"></mdc-staticcheckbox>`;
-     }
-     default: return nothing;
-   }
+   return html`<mdc-staticradio part="check" 
+  ?checked="${this.checked}" 
+  ?disabled="${this.disabled}"></mdc-staticradio>`;
  }
 
  /**
@@ -154,4 +139,4 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
   public static override styles: Array<CSSResult> = [...Card.styles, ...styles];
 }
 
-export default CardCheckbox;
+export default CardRadio;
