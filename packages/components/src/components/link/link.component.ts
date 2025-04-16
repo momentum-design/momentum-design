@@ -74,7 +74,7 @@ class Link extends DisabledMixin(TabIndexMixin(IconNameMixin(Component))) {
   target?: string;
 
   /**
-   * Optional rel attribute for security purposes with target="_blank"
+   * Optional rel attribute for security purposes
    */
   @property({ type: String, reflect: true })
   rel?: string;
@@ -95,7 +95,6 @@ class Link extends DisabledMixin(TabIndexMixin(IconNameMixin(Component))) {
 
   public override connectedCallback(): void {
     super.connectedCallback();
-    this.setDisabled(this.disabled);
     this.setAttribute('role', 'link');
     this.addEventListener('click', this.handleNavigation);
     this.addEventListener('keydown', this.handleNavigation);
@@ -123,13 +122,11 @@ class Link extends DisabledMixin(TabIndexMixin(IconNameMixin(Component))) {
   }
 
   /**
-   * Updates the tabindex of the host element to disable or enable the link.
-   * When disabled, the link is not focusable or clickable, and tabindex is set to -1
-   * and aria-disabled attribute is set to true
-   * When link is not disabled, the previous tabindex of the host element is restored
-   * and aria-disabled attribute is removed.
+   * Sets or removes `aria-disabled` and updates `tabIndex` to reflect
+   * the disabled state. When disabled, the element becomes unfocusable;
+   * when enabled, the previous `tabIndex` is restored.
    *
-   * @param disabled - The disabled state of icon
+   * @param disabled - Whether the element should be disabled
    */
   private setDisabled(disabled: boolean) {
     if (disabled) {
