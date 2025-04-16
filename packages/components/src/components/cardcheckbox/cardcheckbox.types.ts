@@ -8,6 +8,7 @@ interface Events {
     onKeyDownEvent: KeyboardEvent;
     onKeyUpEvent: KeyboardEvent;
     onFocusEvent: FocusEvent;
+    onChange: Event;
   }
 
 export { SelectionType, Events };
