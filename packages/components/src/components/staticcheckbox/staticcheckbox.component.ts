@@ -2,7 +2,6 @@ import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
-import checkboxStyles from '../checkbox/checkbox.styles';
 import styles from './staticcheckbox.styles';
 import { ICON_NAME } from './staticcheckbox.constants';
 
@@ -31,12 +30,11 @@ class StaticCheckbox extends DisabledMixin(Component) {
       ></mdc-icon>
     ` : nothing;
 
-    return html`<div class="container">
-      <div class="icon-container">${checkboxIconContent}</div>
-    </div>`;
+    return html`<slot></slot>
+      <div class="icon-container">${checkboxIconContent}</div>`;
   }
 
-  public static override styles: Array<CSSResult> = [...checkboxStyles, ...styles];
+  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
 export default StaticCheckbox;

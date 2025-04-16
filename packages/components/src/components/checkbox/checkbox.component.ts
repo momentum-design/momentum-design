@@ -6,7 +6,6 @@ import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/Fo
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
-import { ICON_NAME } from './checkbox.constants';
 import styles from './checkbox.styles';
 
 /**
@@ -171,17 +170,12 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   };
 
   public override render() {
-    const checkboxIconContent = (this.checked || this.indeterminate) ? html`
-      <mdc-icon
-        class="icon"
-        name="${this.indeterminate ? ICON_NAME.INDETERMINATE : ICON_NAME.CHECKED}"
-        size="1"
-        length-unit="rem"
-      ></mdc-icon>
-    ` : nothing;
-
     return html`
-      <div class="container mdc-focus-ring">
+      <mdc-staticcheckbox 
+      class="mdc-focus-ring"
+      ?checked="${this.checked}" 
+      ?indeterminate="${this.indeterminate}" 
+      ?disabled="${this.disabled}">
         <input
           id="${this.id}"
           type="checkbox"
@@ -200,8 +194,7 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
           @change=${this.handleChange}
           @keydown=${this.handleKeyDown}
         />
-        <div class="icon-container">${checkboxIconContent}</div>
-      </div>
+      </mdc-staticcheckbox>
       ${this.renderLabelAndHelperText()}
     `;
   }
