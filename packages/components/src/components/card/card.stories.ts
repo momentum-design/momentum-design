@@ -5,6 +5,8 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { hideControls } from '../../../config/storybook/utils';
 import { DEFAULTS, ORIENTATIONS, VARIANTS } from './card.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
+import '../link';
+import '../button';
 
 const render = (args: Args) => html`
   <mdc-card 
