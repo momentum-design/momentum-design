@@ -31,7 +31,7 @@ class StaticCheckbox extends DisabledMixin(Component) {
       ></mdc-icon>
     ` : nothing;
 
-    return html`<div class="container mdc-focus-ring">
+    return html`<div class="container">
       <div class="icon-container">${checkboxIconContent}</div>
     </div>`;
   }

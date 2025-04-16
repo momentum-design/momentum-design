@@ -17,7 +17,7 @@ class StaticRadio extends DisabledMixin(Component) {
   @property({ type: Boolean, reflect: true }) checked = false;
 
   public override render() {
-    return html`<div class="mdc-radio__icon-container mdc-focus-ring">
+    return html`<div class="mdc-radio__icon-container">
     <span class="mdc-radio__icon"></span>
   </div>`;
   }
