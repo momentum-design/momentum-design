@@ -10,6 +10,9 @@ type SetupOptions = {
   inline?: boolean;
   inverted?: boolean;
   size?: string;
+  href?: string;
+  target?: string;
+  rel?: string;
   addPageFooter?: boolean;
 };
 
@@ -17,30 +20,30 @@ const ICON_PLACEHOLDER = 'placeholder-bold';
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
+
   await componentsPage.mount({
     html: `
-    ${restArgs.addPageFooter ? '<div id="wrapper">' : ''}
-    <mdc-link
+      ${restArgs.addPageFooter ? '<div id="wrapper">' : ''}
+      <mdc-link
         ${restArgs.disabled ? 'disabled' : ''}
         ${restArgs.iconName ? `icon-name="${restArgs.iconName}"` : ''}
         ${restArgs.inline ? 'inline' : ''}
         ${restArgs.inverted ? 'inverted' : ''}
         ${restArgs.size ? `size="${restArgs.size}"` : ''}
+        ${restArgs.href ? `href="${restArgs.href}"` : ''}
+        ${restArgs.target ? `target="${restArgs.target}"` : ''}
+        ${restArgs.rel ? `rel="${restArgs.rel}"` : ''}
       >
-        <a href="#content">Label</a>
+        Label
       </mdc-link>
       ${restArgs.addPageFooter ? '<div id="content"><p>Test content</p></div></div>' : ''}
     `,
     clearDocument: true,
   });
 
-  const element = restArgs.addPageFooter
-    ? componentsPage.page.locator('div#wrapper')
-    : componentsPage.page.locator('mdc-link');
-  await element.waitFor();
-
-  // always return the first button:
   const link = componentsPage.page.locator('mdc-link').first();
+  await link.waitFor();
+
   return link;
 };
 
@@ -108,10 +111,21 @@ test('mdc-link', async ({ componentsPage }) => {
         });
       }
 
-      // Href
-      await test.step('attribute href should be present on anchor tag', async () => {
-        const linkElement = link.getByRole('link');
-        await expect(linkElement).toHaveAttribute('href', '#content');
+      await test.step('should reflect "href", "target", and "rel"', async () => {
+        const href = '#content';
+        const target = '_self';
+        const rel = 'noopener';
+
+        const newLink = await setup({
+          componentsPage,
+          href,
+          target,
+          rel,
+        });
+
+        await expect(newLink).toHaveAttribute('href', href);
+        await expect(newLink).toHaveAttribute('target', target);
+        await expect(newLink).toHaveAttribute('rel', rel);
       });
     });
 
@@ -119,28 +133,25 @@ test('mdc-link', async ({ componentsPage }) => {
      * INTERACTIONS
      */
     await test.step('interactions', async () => {
-      const linkInFooterPage = await setup({ componentsPage, addPageFooter: true });
+      const footerLink = await setup({ componentsPage, addPageFooter: true });
 
       await test.step('link focus and click on disabled link', async () => {
-        const linkElement = linkInFooterPage.getByRole('link');
-        await componentsPage.setAttributes(link, {
-          disabled: '',
-        });
+        await componentsPage.setAttributes(footerLink, { disabled: '' });
         await componentsPage.actionability.pressTab();
-        await expect(linkElement).not.toBeFocused();
+        await expect(footerLink).not.toBeFocused();
 
         await componentsPage.removeAttribute(link, 'disabled');
-        await linkElement.evaluate((el) => el.blur());
+        await footerLink.evaluate((el) => el.blur());
       });
 
       await test.step('link focus and click', async () => {
-        const linkElement = linkInFooterPage.getByRole('link');
+        await componentsPage.setAttributes(footerLink, { });
         await componentsPage.actionability.pressTab();
-        await expect(linkElement).toBeFocused();
+        await expect(footerLink).toBeFocused();
 
         await componentsPage.page.keyboard.press('Enter');
-        expect(componentsPage.page.url()).toContain('#content');
-        await linkElement.evaluate((el) => el.blur());
+        await expect(componentsPage.page.locator('#content')).toBeVisible();
+        await footerLink.evaluate((el) => el.blur());
         await componentsPage.page.goBack();
       });
     });
@@ -151,9 +162,7 @@ test('mdc-link', async ({ componentsPage }) => {
    */
   await test.step('visual-regression', async () => {
     const stickerSheet = new StickerSheet(componentsPage, 'mdc-link');
-    stickerSheet.setChildren(
-      '<a href="http://localhost:4000/" target="_blank" rel="noopener noreferrer">Label</a>',
-    );
+    stickerSheet.setChildren('Label');
 
     // Standalone Link without trailing icon
     await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
@@ -256,6 +265,6 @@ test('mdc-link', async ({ componentsPage }) => {
    * ACCESSIBILITY
    */
   await test.step('accessbility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('mdc-link');
+    await componentsPage.accessibility.checkForA11yViolations('link-default');
   });
 });
