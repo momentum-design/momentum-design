@@ -5,16 +5,16 @@ import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
 import { DEFAULTS, ORIENTATIONS } from '../card/card.constants';
-import { SELECTION_TYPE } from './cardcheckbox.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 
 const render = (args: Args) => html`
-  <mdc-cardcheckbox
+  <mdc-cardradio
     @click="${action('onclick')}"
     @keydown="${action('onkeydown')}"
     @keyup="${action('onkeyup')}"
     @focus="${action('onfocus')}"
     @change="${action('onchange')}"
+    name="${args.name}"
     variant="${args.variant}"
     orientation="${args.orientation}"
     card-title="${args['card-title']}"
@@ -25,17 +25,16 @@ const render = (args: Args) => html`
     ?checked="${args.checked}"
     ?disabled="${args.disabled}"
     aria-label="${args['aria-label']}"
-    selection-type="${args['selection-type']}"
     title-tag-name="${args['title-tag-name']}"
     subtitle-tag-name="${args['subtitle-tag-name']}"
     tabindex="${args.tabIndex}"
     class="${args.class}"
-    style="${args.style}">${args.children}</mdc-cardcheckbox>`;
+    style="${args.style}">${args.children}</mdc-cardradio>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/card/cardcheckbox',
+  title: 'Work In Progress/card/cardradio',
   tags: ['autodocs'],
-  component: 'mdc-cardcheckbox',
+  component: 'mdc-cardradio',
   render,
   parameters: {
     badges: ['wip'],
@@ -48,6 +47,9 @@ const meta: Meta = {
     orientation: {
       control: 'select',
       options: Object.values(ORIENTATIONS),
+    },
+    name: {
+      control: 'text',
     },
     'card-title': {
       control: 'text',
@@ -75,10 +77,6 @@ const meta: Meta = {
     },
     'aria-label': {
       control: 'text',
-    },
-    'selection-type': {
-      control: 'select',
-      options: Object.values(SELECTION_TYPE),
     },
     'title-tag-name': {
       control: 'select',
@@ -108,6 +106,7 @@ Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a sceleri
 export const Example: StoryObj = {
   args: {
     'card-title': 'Title',
+    name: 'radio-card',
     subtitle: 'Subtitle',
     'image-src': 'https://placehold.co/320x200',
     'image-alt': 'Image Alt',
@@ -119,7 +118,6 @@ export const Example: StoryObj = {
     checked: false,
     disabled: false,
     tabIndex: 0,
-    'selection-type': SELECTION_TYPE.CHECK,
     children: defaultChildren,
   },
 };
@@ -134,7 +132,6 @@ export const HorizontalCard: StoryObj = {
     'aria-label': 'Aria Label',
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
-    'selection-type': SELECTION_TYPE.CHECKBOX,
     checked: false,
     disabled: false,
     tabIndex: 0,
@@ -152,7 +149,6 @@ export const CardWithoutImage: StoryObj = {
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     'aria-label': 'Aria Label',
-    'selection-type': SELECTION_TYPE.CHECK,
     checked: false,
     disabled: false,
     tabIndex: 0,
@@ -169,7 +165,6 @@ export const CardWithoutBody: StoryObj = {
     'card-title': 'Title',
     subtitle: 'Subtitle',
     'icon-name': 'placeholder-bold',
-    'selection-type': SELECTION_TYPE.CHECK,
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     checked: false,
@@ -191,7 +186,6 @@ export const ContentBeforeBody: StoryObj = {
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: DEFAULTS.ORIENTATION,
-    'selection-type': SELECTION_TYPE.CHECKBOX,
     checked: false,
     disabled: false,
     tabIndex: 0,
@@ -213,7 +207,6 @@ export const ContentAfterBody: StoryObj = {
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: ORIENTATIONS.HORIZONTAL,
-    'selection-type': SELECTION_TYPE.CHECKBOX,
     checked: false,
     disabled: false,
     tabIndex: 0,

@@ -45,6 +45,7 @@ import VirtualizedList from './components/virtualizedlist';
 import TabList from './components/tablist';
 import Card from './components/card';
 import CardCheckbox from './components/cardcheckbox';
+import Cardradio from './components/cardradio';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -72,6 +73,7 @@ export {
   Button,
   Card,
   CardCheckbox,
+  Cardradio,
   Checkbox,
   Chip,
   Coachmark,
