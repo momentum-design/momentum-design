@@ -65,19 +65,19 @@ class Link extends DisabledMixin(TabIndexMixin(IconNameMixin(Component))) {
    * Href for navigation. The URL that the hyperlink points to
    */
   @property({ type: String, reflect: true })
-  href?: string = '#';
+  href: string = '#';
 
   /**
    * Optional target: _blank, _self, _parent, _top and _unfencedTop
    */
   @property({ type: String, reflect: true })
-  target?: string = '_self';
+  target: string = '_self';
 
   /**
    * Optional rel attribute that defines the relationship of the linked URL as space-separated link types.
    */
   @property({ type: String, reflect: true })
-  rel?: string = 'noopener noreferrer';
+  rel?: string;
 
   /**
    * Stores the previous tabindex if set by user
