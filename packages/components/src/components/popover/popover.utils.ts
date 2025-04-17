@@ -103,6 +103,7 @@ export class PopoverUtils {
       this.popover.toggleAttribute('aria-modal', this.popover.interactive);
     }
     if (this.popover.interactive) {
+      this.popover.setAttribute('aria-modal', 'true');
       if (!this.popover.ariaLabel) {
         this.popover.ariaLabel = this.popover.triggerElement?.ariaLabel
         || this.popover.triggerElement?.textContent
@@ -111,6 +112,8 @@ export class PopoverUtils {
       if (!this.popover.ariaLabelledby) {
         this.popover.ariaLabelledby = this.popover.triggerElement?.id || '';
       }
+    } else {
+      this.popover.removeAttribute('aria-modal');
     }
   }
 

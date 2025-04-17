@@ -222,7 +222,7 @@ class Popover extends FocusTrapMixin(Component) {
    * aria-label attribute to be set for close button accessibility.
    * @default null
    */
-  @property({ type: String, attribute: 'close-button-aria-label' })
+  @property({ type: String, attribute: 'close-button-aria-label', reflect: true })
   closeButtonAriaLabel: string | null = null;
 
   /**
@@ -247,6 +247,7 @@ class Popover extends FocusTrapMixin(Component) {
 
   /**
    * Disable aria-expanded attribute on trigger element.
+   * Make sure to set this to false when the popover is interactive.
    * @default false
    */
   @property({ type: Boolean, reflect: true, attribute: 'disable-aria-expanded' })
@@ -361,12 +362,38 @@ class Popover extends FocusTrapMixin(Component) {
     this.removeEventListener('focus-trap-exit', this.hidePopover);
   }
 
+  /**
+   * Updates the aria-expanded attribute on the trigger element.
+   */
+  private updateAriaExpandedAttribute() {
+    if (this.disableAriaExpanded) {
+      this.triggerElement?.removeAttribute('aria-expanded');
+    } else {
+      this.triggerElement?.setAttribute('aria-expanded', `${this.visible}`);
+    }
+  }
+
+  /**
+   * Updates the aria-haspopup attribute on the trigger element.
+   */
+  private updateAriaHasPopupAttribute() {
+    if (this.interactive) {
+      this.triggerElement?.setAttribute(
+        'aria-haspopup',
+        this.triggerElement?.getAttribute('aria-haspopup') || 'dialog',
+      );
+    } else {
+      this.triggerElement?.removeAttribute('aria-haspopup');
+    }
+  }
+
   protected override async updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
 
     if (changedProperties.has('visible')) {
       const oldValue = (changedProperties.get('visible') as boolean | undefined) || false;
       await this.isOpenUpdated(oldValue, this.visible);
+      this.updateAriaExpandedAttribute();
     }
     if (changedProperties.has('placement')) {
       this.setAttribute(
@@ -401,6 +428,12 @@ class Popover extends FocusTrapMixin(Component) {
       || changedProperties.has('aria-labelledby')
     ) {
       this.utils.setupAccessibility();
+    }
+    if (changedProperties.has('disableAriaExpanded')) {
+      this.updateAriaExpandedAttribute();
+    }
+    if (changedProperties.has('interactive')) {
+      this.updateAriaHasPopupAttribute();
     }
   }
 
@@ -485,16 +518,6 @@ class Popover extends FocusTrapMixin(Component) {
       }
       if (this.hideOnEscape) {
         document.addEventListener('keydown', this.onEscapeKeydown);
-      }
-
-      if (!this.disableAriaExpanded) {
-        this.triggerElement.setAttribute('aria-expanded', 'true');
-      }
-      if (this.interactive) {
-        this.triggerElement.setAttribute(
-          'aria-haspopup',
-          this.triggerElement.getAttribute('aria-haspopup') || 'dialog',
-        );
       }
       PopoverEventManager.onShowPopover(this);
     } else {

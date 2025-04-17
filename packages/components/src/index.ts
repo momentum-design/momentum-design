@@ -39,6 +39,7 @@ import Textarea from './components/textarea';
 import ThemeProvider from './components/themeprovider';
 import Toggle from './components/toggle';
 import Tooltip from './components/tooltip';
+import Toggletip from './components/toggletip';
 import VirtualizedList from './components/virtualizedlist';
 import TabList from './components/tablist';
 
@@ -95,6 +96,7 @@ export {
   Progressbar,
   ScreenreaderAnnouncer,
   Textarea,
+  Toggletip,
   Tooltip,
   Searchfield,
   Brandvisual,
