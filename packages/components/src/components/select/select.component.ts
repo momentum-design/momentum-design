@@ -8,9 +8,10 @@ import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import { TAG_NAME as OPTION_GROUP_TAG_NAME } from '../optgroup/optgroup.constants';
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
-import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { POPOVER_PLACEMENT, POPOVER_STRATEGY } from '../popover/popover.constants';
+import type { PopoverStrategy } from '../popover/popover.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
-import { ARROW_ICON } from './select.constants';
+import { ARROW_ICON, DEFAULTS } from './select.constants';
 import styles from './select.styles';
 import type { ArrowIcon } from './select.types';
 
@@ -48,9 +49,17 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   /**
    * height attribute of the select field. If set,
    * then a scroll bar will be visible when there more options than the adjusted height.
-   * @default 'auto'
+   * @default auto
    */
-  @property({ type: String, attribute: 'height' }) height = 'auto';
+  @property({ type: String }) height = DEFAULTS.HEIGHT;
+
+  /**
+   * strategy attribute of the select field. If set,
+   * then the popover will be positioned using the specified strategy.
+   * @default absolute
+   */
+  @property({ type: String, attribute: 'popover-strategy', reflect: true })
+  popoverStrategy: PopoverStrategy = DEFAULTS.POPOVER_STRATEGY;
 
   /** @internal */
   @queryAssignedElements() optionsList!: Array<HTMLElement>;
@@ -70,6 +79,9 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   /** @internal */
   @state() activeDescendant = '';
 
+  /** @internal */
+  @state() popoverWidth = DEFAULTS.POPOVER_WIDTH;
+
   /**
    * @internal
    * The native select element
@@ -82,11 +94,32 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     this.value = undefined as unknown as string;
 
     this.addEventListener('keydown', this.handleKeydown);
+    // Resize won't work on any single element, so we use the window.
+    window.addEventListener('resize', this.handleResize.bind(this));
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.removeEventListener('keydown', this.handleKeydown);
+    window.removeEventListener('resize', this.handleResize);
+  }
+
+  private handleResize(): void {
+    this.setPopoverWidth();
+  }
+
+  /**
+   * Sets the width of the popover based on the container's width.
+   * If the popover is not visible or the strategy is absolute, the width is set to the default value.
+   * Otherwise, the width is set to the container's width.
+   */
+  private setPopoverWidth(): void {
+    if (!this.displayPopover || this.popoverStrategy === POPOVER_STRATEGY.ABSOLUTE) {
+      this.popoverWidth = DEFAULTS.POPOVER_WIDTH;
+      return;
+    }
+    const container = this.shadowRoot?.querySelector('[part="container"]')?.getBoundingClientRect();
+    this.popoverWidth = container?.width ? `${container?.width}px` : DEFAULTS.POPOVER_WIDTH;
   }
 
   /**
@@ -482,9 +515,10 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         focus-trap
         role="listbox"
         placement="${POPOVER_PLACEMENT.BOTTOM_START}"
+        strategy="${this.popoverStrategy}"
         @shown="${this.handlePopoverOpen}"
         @hidden="${this.handlePopoverClose}"
-        style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
+        style="--mdc-popover-max-width: ${this.popoverWidth}; --mdc-popover-max-height: ${this.height};"
       >
         <slot @click="${this.handleOptionsClick}"></slot>
       </mdc-popover>
@@ -497,6 +531,10 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     if (changedProperties.has('disabled') || changedProperties.has('readonly')) {
       this.closePopover();
       this.handlePopoverClose();
+    }
+
+    if (changedProperties.has('displayPopover') || changedProperties.has('popoverStrategy')) {
+      this.setPopoverWidth();
     }
   }
 

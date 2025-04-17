@@ -1,15 +1,15 @@
+import { arrow, autoUpdate, computePosition, flip, offset, shift, size } from '@floating-ui/dom';
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
-import { computePosition, autoUpdate, offset, flip, shift, arrow, size } from '@floating-ui/dom';
-import styles from './popover.styles';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
 import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
-import { popoverStack } from './popover.stack';
-import type { PopoverPlacement, PopoverTrigger, PopoverColor } from './popover.types';
-import { DEFAULTS, POPOVER_PLACEMENT, TRIGGER, COLOR } from './popover.constants';
 import { ValueOf } from '../../utils/types';
+import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants';
 import { PopoverEventManager } from './popover.events';
+import { popoverStack } from './popover.stack';
+import styles from './popover.styles';
+import type { PopoverColor, PopoverPlacement, PopoverStrategy, PopoverTrigger } from './popover.types';
 import { PopoverUtils } from './popover.utils';
 
 /**
@@ -87,6 +87,13 @@ class Popover extends FocusTrapMixin(Component) {
    */
   @property({ type: String, reflect: true })
   placement: PopoverPlacement = DEFAULTS.PLACEMENT;
+
+  /**
+   * The strategy of the popover.
+   * @default absolute
+   */
+  @property({ type: String, reflect: true })
+  strategy: PopoverStrategy = DEFAULTS.STRATEGY;
 
   /**
    * Color of the popover
@@ -651,6 +658,7 @@ class Popover extends FocusTrapMixin(Component) {
 
       const { x, y, middlewareData, placement } = await computePosition(this.triggerElement, this, {
         placement: this.placement,
+        strategy: this.strategy,
         middleware,
       });
 

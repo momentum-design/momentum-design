@@ -1,11 +1,14 @@
-import type { Meta, StoryObj, Args } from '@storybook/web-components';
-import '.';
-import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
-import { COLOR, POPOVER_PLACEMENT, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
-import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
-import '../button';
+import type { Args, Meta, StoryObj } from '@storybook/web-components';
+import { html } from 'lit';
+import '.';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
+import '../button';
+import '../list';
+import '../listitem';
+import '../popover';
+import { COLOR, DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
 
 const render = (args: Args) => html`
   <div style="margin: 100px;">
@@ -135,4 +138,40 @@ export const Example: StoryObj = {
     'tooltip-type': DEFAULTS.TOOLTIP_TYPE,
     visible: false,
   },
+};
+
+export const TooltipInsidePopover: StoryObj = {
+  render: () => html`
+    <mdc-popover visible>
+      <div style="margin: 10rem; width: 8rem;">
+        <p>Click below button & Hover on Label 5</p>
+        <mdc-button id="popover-trigger">Click me</mdc-button>
+        <mdc-popover triggerid="popover-trigger" hide-on-outside-click strategy="fixed">
+          <mdc-list>
+            <mdc-listitem label="Label 1"></mdc-listitem>
+            <mdc-listitem label="Label 2"></mdc-listitem>
+            <mdc-listitem label="Label 3"></mdc-listitem>
+            <mdc-listitem label="Label 4"></mdc-listitem>
+            <mdc-listitem label="Label 5" id="tooltip-trigger"></mdc-listitem>
+            <mdc-tooltip
+              triggerid="tooltip-trigger"
+              strategy="fixed"
+              show-arrow
+              style="--mdc-tooltip-width: 750px;"
+            >
+              This tooltip is inside a popover and it has a long text to read.
+              Please take your time to go through it carefully, as it contains valuable information
+              that might help you understand the context, functionality,
+              or features related to the element you're interacting with.
+            </mdc-tooltip>
+            <mdc-listitem label="Label 6"></mdc-listitem>
+            <mdc-listitem label="Label 7"></mdc-listitem>
+            <mdc-listitem label="Label 8"></mdc-listitem>
+            <mdc-listitem label="Label 9"></mdc-listitem>
+            <mdc-listitem label="Label 10"></mdc-listitem>
+          </mdc-list>
+        </mdc-popover>
+    </div>
+    </mdc-popover>
+  `,
 };

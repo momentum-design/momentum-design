@@ -17,6 +17,11 @@ const POPOVER_PLACEMENT = {
   BOTTOM_END: 'bottom-end',
 } as const;
 
+const POPOVER_STRATEGY = {
+  ABSOLUTE: 'absolute',
+  FIXED: 'fixed',
+} as const;
+
 const TRIGGER = {
   CLICK: 'click',
   MOUSEENTER: 'mouseenter',
@@ -31,6 +36,7 @@ const COLOR = {
 
 const DEFAULTS = {
   PLACEMENT: POPOVER_PLACEMENT.BOTTOM,
+  STRATEGY: POPOVER_STRATEGY.ABSOLUTE,
   TRIGGER: TRIGGER.CLICK,
   COLOR: COLOR.TONAL,
   OFFSET: 4,
@@ -53,4 +59,4 @@ const DEFAULTS = {
   DISABLE_ARIA_EXPANDED: false,
 } as const;
 
-export { TAG_NAME, POPOVER_PLACEMENT, COLOR, TRIGGER, DEFAULTS };
+export { TAG_NAME, POPOVER_PLACEMENT, POPOVER_STRATEGY, COLOR, TRIGGER, DEFAULTS };
