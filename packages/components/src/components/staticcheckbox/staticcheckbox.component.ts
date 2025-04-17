@@ -31,7 +31,7 @@ class StaticCheckbox extends DisabledMixin(Component) {
     ` : nothing;
 
     return html`<slot></slot>
-      <div class="icon-container">${checkboxIconContent}</div>`;
+      <div part="icon-container">${checkboxIconContent}</div>`;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];

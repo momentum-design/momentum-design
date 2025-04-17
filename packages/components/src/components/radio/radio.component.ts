@@ -284,8 +284,12 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
 
   public override render() {
     return html`
-      <div class="mdc-radio__container">
-        <div class="mdc-radio__icon-container mdc-focus-ring">
+        <mdc-staticradio
+        class="mdc-focus-ring"
+        ?checked="${this.checked}"
+        ?disabled="${this.disabled}"
+        ?readonly="${this.readonly}"
+        >
           <input
             id="${this.id}"
             type="radio"
@@ -304,10 +308,8 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
             aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
             aria-label="${this.dataAriaLabel ?? ''}"
           />
-          <span class="mdc-radio__icon"></span>
-        </div>
+        </mdc-staticradio>
         ${this.renderLabelAndHelperText()}
-      </div>
     `;
   }
 

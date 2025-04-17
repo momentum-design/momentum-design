@@ -1,8 +1,8 @@
 import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
+import styles from './staticradio.style';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
-import radioStyles from '../radio/radio.styles';
 
 /**
  * This is a decorative component that is styled to look as a radio option.
@@ -14,15 +14,27 @@ import radioStyles from '../radio/radio.styles';
  *
  */
 class StaticRadio extends DisabledMixin(Component) {
+  /**
+  * Determines whether the radio is selected or unselected.
+  *
+  * @default false
+  */
   @property({ type: Boolean, reflect: true }) checked = false;
+
+  /**
+  * Determines whether the radio is read-only.
+  *
+  * @default false
+  */
+  @property({ type: Boolean, reflect: true }) readonly = false;
 
   public override render() {
     return html`
       <slot></slot>
-      <span class="icon"></span>`;
+      <span part="radio-icon" class="icon"></span>`;
   }
 
-  public static override styles: Array<CSSResult> = [...radioStyles];
+  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
 export default StaticRadio;

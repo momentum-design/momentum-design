@@ -6,6 +6,7 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 const render = (args: Args) => html`
   <mdc-staticradio 
   ?checked="${args.checked}"
+  ?readonly="${args.readonly}"
   ?disabled="${args.disabled}"
   class="${args.class}"
   style="${args.style}"
@@ -23,6 +24,9 @@ const meta: Meta = {
     checked: {
       control: 'boolean',
     },
+    readonly: {
+      control: 'boolean',
+    },
     disabled: {
       control: 'boolean',
     },
@@ -36,6 +40,7 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     checked: false,
+    readonly: false,
     disabled: false,
   },
 };

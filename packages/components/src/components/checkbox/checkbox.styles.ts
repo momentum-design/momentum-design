@@ -7,6 +7,8 @@ const styles = [css`
     --mdc-checkbox-disabled-border-color: var(--mds-color-theme-outline-primary-disabled);
     --mdc-checkbox-disabled-checked-icon-color: var(--mds-color-theme-control-active-disabled);
     --mdc-checkbox-pressed-icon-color: var(--mds-color-theme-control-inactive-pressed);
+    --mdc-checkbox-checked-pressed-icon-color: var(--mds-color-theme-control-active-pressed);
+    --mdc-checkbox-checked-background-color-hover: var(--mds-color-theme-control-active-hover);
 
     flex-direction: row;
     align-items: flex-start;
@@ -27,11 +29,16 @@ const styles = [css`
     background: var(--mdc-checkbox-pressed-icon-color);
   }
 
-
-  :host([disabled][checked]) .icon-container,
-  :host([disabled][indeterminate]) .icon-container,
-  :host([disabled][checked]) .container:hover .icon-container,
-  :host([disabled][indeterminate]) .container:hover .icon-container {
+  :host([checked]:hover)::part(icon-container),
+  :host([indeterminate]:hover)::part(icon-container) {
+    background: var(--mdc-checkbox-checked-background-color-hover);
+  }
+  :host([checked]:active)::part(icon-container),
+  :host([indeterminate]:active)::part(icon-container) {
+    background: var(--mdc-checkbox-checked-pressed-icon-color);
+  }
+  :host([disabled][checked])::part(icon-container)
+  :host([disabled][indeterminate])::part(icon-container) {
     background: var(--mdc-checkbox-disabled-checked-icon-color);
     border: 0.0625rem solid var(--mdc-checkbox-disabled-border-color);
   }
