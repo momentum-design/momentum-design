@@ -70,21 +70,21 @@ const styles = css`
     font-weight: var(--mds-font-apps-body-large-bold-font-weight);
   }
 
-  :host([active]:not([variant='primary'])) {
+  :host([active][color='default']:not([variant='primary'])) {
     font-weight: var(--mds-font-apps-body-large-bold-font-weight);
     background: var(--mdc-button-active-background-color);
   }
-  :host([active]:not([variant='primary']):hover) {
+  :host([active][color='default']:not([variant='primary']):hover) {
     font-weight: var(--mds-font-apps-body-large-bold-font-weight);
     background: var(--mdc-button-active-hover-background-color);
   }
-  :host([active]:not([variant='primary']):active),
-  :host([active]:not([variant='primary']).pressed) {
+  :host([active][color='default']:not([variant='primary']):active),
+  :host([active][color='default']:not([variant='primary']).pressed) {
     font-weight: var(--mds-font-apps-body-large-bold-font-weight);
     background: var(--mdc-button-active-pressed-background-color);
   }
-  :host([active]:not([variant='primary'])[disabled]),
-  :host([active]:not([variant='primary'])[soft-disabled]) {
+  :host([active][color='default']:not([variant='primary'])[disabled]),
+  :host([active][color='default']:not([variant='primary'])[soft-disabled]) {
     font-weight: var(--mds-font-apps-body-large-bold-font-weight);
     background: var(--mdc-button-active-disabled-background-color);
   }
