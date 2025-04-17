@@ -5,6 +5,7 @@ import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 type SetupOptions = {
   componentsPage: ComponentsPage;
   checked?: boolean;
+  readonly?: boolean;
   disabled?: boolean;
 };
 
@@ -14,6 +15,7 @@ const setup = async (args: SetupOptions) => {
     html: `
         <mdc-staticradio 
         ${restArgs.checked ? 'checked' : ''}
+        ${restArgs.readonly ? 'readonly' : ''}
         ${restArgs.disabled ? 'disabled' : ''}></mdc-staticradio>
       `,
     clearDocument: true,
@@ -32,9 +34,15 @@ test('mdc-staticradio', async ({ componentsPage }) => {
     await staticradioStickerSheet.createMarkupWithCombination({});
     staticradioStickerSheet.setAttributes({ checked: '' });
     await staticradioStickerSheet.createMarkupWithCombination({});
+    staticradioStickerSheet.setAttributes({ readonly: '' });
+    await staticradioStickerSheet.createMarkupWithCombination({});
     staticradioStickerSheet.setAttributes({ disabled: '' });
     await staticradioStickerSheet.createMarkupWithCombination({});
+    staticradioStickerSheet.setAttributes({ checked: '', readonly: '' });
+    await staticradioStickerSheet.createMarkupWithCombination({});
     staticradioStickerSheet.setAttributes({ checked: '', disabled: '' });
+    await staticradioStickerSheet.createMarkupWithCombination({});
+    staticradioStickerSheet.setAttributes({ checked: '', readonly: '', disabled: '' });
     await staticradioStickerSheet.createMarkupWithCombination({});
 
     await staticradioStickerSheet.mountStickerSheet();

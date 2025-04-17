@@ -9,7 +9,6 @@ const styles = [hostFitContentStyles, css`
     gap: 0.5rem;
 
     --mdc-radio-text-disabled-color: var(--mds-color-theme-text-primary-disabled);
-    --mdc-radio-normal-border-color: var(--mds-color-theme-outline-input-normal);
     --mdc-radio-control-inactive-hover: var(--mds-color-theme-control-inactive-hover);
     --mdc-radio-control-inactive-pressed-color: var(--mds-color-theme-control-inactive-pressed);
     --mdc-radio-control-active-hover-color: var(--mds-color-theme-control-active-hover);
@@ -18,12 +17,10 @@ const styles = [hostFitContentStyles, css`
 
 
   :host(:hover)::part(radio-icon) {
-    border-color: var(--mdc-radio-normal-border-color);
     background-color: var(--mdc-radio-control-inactive-hover);
   }
 
   :host(:active)::part(radio-icon) {
-    border-color: var(--mdc-radio-normal-border-color);
     background-color: var(--mdc-radio-control-inactive-pressed-color);
   }
 

@@ -2,6 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { disableControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
   <mdc-staticradio 
@@ -32,6 +33,18 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
+    ...disableControls([
+      '--mdc-staticradio-inner-circle-size',
+      '--mdc-staticradio-text-disabled-color',
+      '--mdc-staticradio-normal-border-color',
+      '--mdc-staticradio-disabled-border-color',
+      '--mdc-staticradio-inner-circle-normal-background',
+      '--mdc-staticradio-inner-circle-disabled-background',
+      '--mdc-staticradio-control-inactive-color',
+      '--mdc-staticradio-control-inactive-disabled-background',
+      '--mdc-staticradio-control-active-color',
+      '--mdc-staticradio-control-active-disabled-background',
+    ]),
   },
 };
 
