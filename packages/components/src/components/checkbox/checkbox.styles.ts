@@ -20,6 +20,14 @@ const styles = [css`
     cursor: default;
   }
 
+  :host(:hover) mdc-staticcheckbox{
+    background: var(--mdc-checkbox-background-color-hover);
+  }
+  :host(:active) mdc-staticcheckbox{
+    background: var(--mdc-checkbox-pressed-icon-color);
+  }
+
+
   :host([disabled][checked]) .icon-container,
   :host([disabled][indeterminate]) .icon-container,
   :host([disabled][checked]) .container:hover .icon-container,

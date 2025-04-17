@@ -17,9 +17,9 @@ class StaticRadio extends DisabledMixin(Component) {
   @property({ type: Boolean, reflect: true }) checked = false;
 
   public override render() {
-    return html`<div class="mdc-radio__icon-container">
-    <span class="mdc-radio__icon"></span>
-  </div>`;
+    return html`
+      <slot></slot>
+      <span class="icon"></span>`;
   }
 
   public static override styles: Array<CSSResult> = [...radioStyles];
