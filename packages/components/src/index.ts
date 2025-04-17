@@ -10,6 +10,8 @@ import Button from './components/button';
 import Checkbox from './components/checkbox';
 import Chip from './components/chip';
 import Coachmark from './components/coachmark';
+import StaticCheckbox from './components/staticcheckbox';
+import StaticRadio from './components/staticradio';
 import Divider from './components/divider';
 import FilterChip from './components/filterchip';
 import FormfieldGroup from './components/formfieldgroup';
@@ -41,6 +43,10 @@ import Toggle from './components/toggle';
 import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
 import TabList from './components/tablist';
+import Card from './components/card';
+import CardCheckbox from './components/cardcheckbox';
+import Cardradio from './components/cardradio';
+import Cardbutton from './components/cardbutton';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -66,6 +72,10 @@ export {
   Badge,
   Bullet,
   Button,
+  Card,
+  Cardbutton,
+  CardCheckbox,
+  Cardradio,
   Checkbox,
   Chip,
   Coachmark,
@@ -94,6 +104,8 @@ export {
   OptGroup,
   Progressbar,
   ScreenreaderAnnouncer,
+  StaticCheckbox,
+  StaticRadio,
   Textarea,
   Tooltip,
   Searchfield,

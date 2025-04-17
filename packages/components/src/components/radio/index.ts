@@ -1,5 +1,6 @@
 import Radio from './radio.component';
 import { TAG_NAME } from './radio.constants';
+import '../staticradio';
 
 Radio.register(TAG_NAME);
 
