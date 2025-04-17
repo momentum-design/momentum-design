@@ -1,5 +1,4 @@
 import { css } from 'lit';
-import { DEFAULTS } from './popover.constants';
 
 const styles = css`
   :host {
