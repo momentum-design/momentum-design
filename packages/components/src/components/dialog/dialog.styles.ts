@@ -72,20 +72,11 @@ const styles = css`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 9.75rem;
-  }
-
-  :host([size='medium'])::part(body) {
-    height: 12.5rem;
-  }
-
-  :host([size='large'])::part(body) {
-    height: 16rem;
+    height: 100%
   }
 
   :host::part(footer) {
     padding-top: 0.5rem;
-    height: 2rem;
     box-sizing: content-box;
     justify-content: flex-end;
   }

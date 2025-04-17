@@ -56,10 +56,11 @@ const render = (args: Args) => {
         slot="dialog-footer"
         style="
           display: flex;
+          gap: 0.5rem;
         "
       >
-        <mdc-button variant="secondary" @click="${toggleVisibility}">Cancel</mdc-button>
-        <mdc-button variant="primary" @click="${toggleVisibility}">Confirm</mdc-button>
+        <mdc-button variant="secondary" @click="${toggleVisibility}">Secondary</mdc-button>
+        <mdc-button variant="primary" @click="${toggleVisibility}">Primary</mdc-button>
       </div>`)}
   `;
 };
