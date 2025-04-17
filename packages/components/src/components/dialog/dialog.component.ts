@@ -18,9 +18,11 @@ import { DialogEventManager } from './dialog.events';
  *
  * **Accessibility notes for consuming (have to be explicitly set when you consume the component)**
  *
- * - If the dialog has a visible title, it should be set as the `aria-labelledby` attribute of the dialog element,
- *   otherwise the `dialog` element needs to have a label provided by `aria-label`.
- * - If a triggerId is provided, the triggering element should have aria-expanded set to true when the dialog is open.
+ * - If the dialog is provided with header text, it will be set as the aria-label string value if aria-label
+ *   is not provided.
+ * - If header text is omitted, consumer should provide aria-label string value or aria-labelledby string value
+ *   with the ID of the element labeling the dialog.
+ * - If a triggerId is provided, the triggering element will be set as the aria-labelledby value if none is provided.
  *
  * @dependency mdc-button
  * @dependency mdc-text
@@ -182,6 +184,7 @@ class Dialog extends FocusTrapMixin(Component) {
 
   protected override async updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
+    console.log(changedProperties)
 
     if (changedProperties.has('visible')) {
       const oldValue = (changedProperties.get('visible') as boolean | undefined) || false;
@@ -191,8 +194,8 @@ class Dialog extends FocusTrapMixin(Component) {
       this.setAttribute('z-index', `${this.zIndex}`);
     }
     if (
-      changedProperties.has('aria-label')
-      || changedProperties.has('aria-labelledby')
+      changedProperties.has('ariaLabel')
+      || changedProperties.has('ariaLabelledById')
     ) {
       this.utils.setupAccessibility();
     }
@@ -228,7 +231,6 @@ class Dialog extends FocusTrapMixin(Component) {
       this.enabledFocusTrap = true;
       this.enabledPreventScroll = true;
       this.utils.createBackdrop();
-      this.triggerElement.style.zIndex = `${this.zIndex}`;
 
       await this.handleCreateDialogFirstUpdate();
       document.addEventListener('keydown', this.onEscapeKeydown);

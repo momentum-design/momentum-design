@@ -15,9 +15,7 @@ export class DialogUtils {
     this.dialog.toggleAttribute('aria-modal', true);
     if (!this.dialog.ariaLabel) {
       if (this.dialog.headerText) this.dialog.ariaLabel = this.dialog.headerText;
-      else if (this.dialog.descriptionText) this.dialog.ariaLabel = this.dialog.descriptionText;
-    } else if (!this.dialog.ariaLabelledById) {
-      this.dialog.ariaLabelledById = this.dialog.triggerElement?.id || '';
+      else if (!this.dialog.ariaLabelledById) this.dialog.ariaLabelledById = this.dialog.triggerElement?.id || '';
     }
   }
 
@@ -34,7 +32,7 @@ export class DialogUtils {
         left: 0;
         width: 100%;
         height: 100%;
-        background: gray;
+        background: #00000066;
         z-index: ${this.dialog.zIndex - 1};
       }
     `;
