@@ -1,6 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
 import { DEFAULTS, ORIENTATIONS } from '../card/card.constants';
@@ -8,7 +9,13 @@ import { VALID_TEXT_TAGS } from '../text/text.constants';
 
 const render = (args: Args) => html`
   <mdc-cardbutton 
+    @click="${action('onclick')}"
+    @keydown="${action('onkeydown')}"
+    @keyup="${action('onkeyup')}"
+    @focus="${action('onfocus')}"
     variant="${args.variant}"
+    ?disabled="${args.disabled}"
+    ?soft-disabled="${args['soft-disabled']}"
     orientation="${args.orientation}"
     card-title="${args['card-title']}"
     subtitle="${args.subtitle}"
@@ -17,6 +24,9 @@ const render = (args: Args) => html`
     icon-name="${args['icon-name']}"
     title-tag-name="${args['title-tag-name']}"
     subtitle-tag-name="${args['subtitle-tag-name']}"
+    type="${args.type}"
+    role="${args.role}"
+    tabIndex="${args.tabIndex}"
     class="${args.class}"
     style="${args.style}">${args.children}</mdc-cardbutton>`;
 
@@ -91,7 +101,7 @@ export const Example: StoryObj = {
   },
 };
 
-export const StaticHorizontalCard: StoryObj = {
+export const HorizontalCard: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
@@ -106,7 +116,7 @@ export const StaticHorizontalCard: StoryObj = {
   },
 };
 
-export const StaticCardWithoutImage: StoryObj = {
+export const CardWithoutImage: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
@@ -119,7 +129,7 @@ export const StaticCardWithoutImage: StoryObj = {
   },
 };
 
-export const StaticCardWithoutHeader: StoryObj = {
+export const CardWithoutHeader: StoryObj = {
   args: {
     'image-src': 'https://placehold.co/320x200',
     'image-alt': 'Image Alt',
@@ -129,7 +139,7 @@ export const StaticCardWithoutHeader: StoryObj = {
   },
 };
 
-export const StaticCardWithoutBody: StoryObj = {
+export const CardWithoutBody: StoryObj = {
   args: {
     'image-src': 'https://placehold.co/320x200',
     'image-alt': 'Image Alt',
@@ -143,7 +153,7 @@ export const StaticCardWithoutBody: StoryObj = {
   },
 };
 
-export const StaticContentBeforeBody: StoryObj = {
+export const ContentBeforeBody: StoryObj = {
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
