@@ -9,7 +9,6 @@ import '../divider';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import '../optgroup';
 import '../option';
-import { POPOVER_STRATEGY } from '../popover/popover.constants';
 import { DEFAULTS } from './select.constants';
 
 const helpTextTypes = Object.values(VALIDATION).filter((type: string) => type !== 'priority');
@@ -34,7 +33,6 @@ const render = (args: Args) => wrapWithDiv(html`
     placeholder="${args.placeholder}" 
     ?disabled="${args.disabled}"
     ?readonly="${args.readonly}"
-    popover-strategy="${args['popover-strategy']}"
   >
     <mdc-option>London, UK</mdc-option>
     <mdc-option>Los Angeles, CA</mdc-option>
@@ -85,10 +83,6 @@ const meta: Meta = {
     height: {
       control: 'text',
     },
-    'popover-strategy': {
-      control: 'radio',
-      options: Object.values(POPOVER_STRATEGY),
-    },
     ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default', 'label-info']),
     ...classArgType,
     ...styleArgType,
@@ -107,7 +101,6 @@ export const Example: StoryObj = {
     'help-text': 'Select Help Text',
     'help-text-type': '',
     'data-aria-label': 'Select label',
-    'popover-strategy': DEFAULTS.POPOVER_STRATEGY,
     height: DEFAULTS.HEIGHT,
   },
 };

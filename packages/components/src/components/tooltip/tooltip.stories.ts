@@ -142,11 +142,11 @@ export const Example: StoryObj = {
 
 export const TooltipInsidePopover: StoryObj = {
   render: () => html`
-    <mdc-popover visible>
+    <mdc-popover visible hide-on-outside-click>
       <div style="margin: 10rem; width: 8rem;">
         <p>Click below button & Hover on Label 5</p>
         <mdc-button id="popover-trigger">Click me</mdc-button>
-        <mdc-popover triggerid="popover-trigger" hide-on-outside-click strategy="fixed">
+        <mdc-popover triggerid="popover-trigger" hide-on-outside-click>
           <mdc-list>
             <mdc-listitem label="Label 1"></mdc-listitem>
             <mdc-listitem label="Label 2"></mdc-listitem>
@@ -155,9 +155,8 @@ export const TooltipInsidePopover: StoryObj = {
             <mdc-listitem label="Label 5" id="tooltip-trigger"></mdc-listitem>
             <mdc-tooltip
               triggerid="tooltip-trigger"
-              strategy="fixed"
               show-arrow
-              style="--mdc-tooltip-width: 750px;"
+              style="--mdc-popover-max-width: 750px;"
             >
               This tooltip is inside a popover and it has a long text to read.
               Please take your time to go through it carefully, as it contains valuable information
@@ -170,7 +169,7 @@ export const TooltipInsidePopover: StoryObj = {
             <mdc-listitem label="Label 9"></mdc-listitem>
             <mdc-listitem label="Label 10"></mdc-listitem>
           </mdc-list>
-        </mdc-popover>
+        </mdc-popover>        
     </div>
     </mdc-popover>
   `,

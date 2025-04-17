@@ -9,7 +9,7 @@ import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants
 import { PopoverEventManager } from './popover.events';
 import { popoverStack } from './popover.stack';
 import styles from './popover.styles';
-import type { PopoverColor, PopoverPlacement, PopoverStrategy, PopoverTrigger } from './popover.types';
+import { PopoverColor, PopoverPlacement, PopoverTrigger } from './popover.types';
 import { PopoverUtils } from './popover.utils';
 
 /**
@@ -87,13 +87,6 @@ class Popover extends FocusTrapMixin(Component) {
    */
   @property({ type: String, reflect: true })
   placement: PopoverPlacement = DEFAULTS.PLACEMENT;
-
-  /**
-   * The strategy of the popover.
-   * @default absolute
-   */
-  @property({ type: String, reflect: true })
-  strategy: PopoverStrategy = DEFAULTS.STRATEGY;
 
   /**
    * Color of the popover
@@ -634,6 +627,7 @@ class Popover extends FocusTrapMixin(Component) {
             if (!popoverContent) return;
             Object.assign(popoverContent.style, {
               maxHeight: `${availableHeight}px`,
+              overflowY: 'auto',
             });
           },
           padding: 50,
@@ -658,7 +652,6 @@ class Popover extends FocusTrapMixin(Component) {
 
       const { x, y, middlewareData, placement } = await computePosition(this.triggerElement, this, {
         placement: this.placement,
-        strategy: this.strategy,
         middleware,
       });
 

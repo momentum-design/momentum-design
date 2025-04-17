@@ -103,7 +103,6 @@ test('mdc-select', async ({ componentsPage }) => {
     await test.step('should have default attributes', async () => {
       const select = await setup({ componentsPage, children: defaultChildren() });
       await expect(select).toHaveAttribute('help-text-type', 'default');
-      await expect(select).toHaveAttribute('position-strategy', 'absolute');
       const mdcTextElement = select.locator('mdc-text[part="base-text selected"]');
       const textContent = await mdcTextElement.textContent();
       // The first option should be visible by default when no option is selected and placeholder is not defined.
