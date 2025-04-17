@@ -15,6 +15,7 @@ const styles = css`
     --mdc-popover-max-height: auto;
 
     display: none;
+    position: absolute;
     box-sizing: content-box;
     background-color: var(--mdc-popover-primary-background-color);
     border-radius: 0.5rem;
@@ -25,16 +26,6 @@ const styles = css`
 
   :host([visible]) {
     display: block;
-  }
-
-  :host([strategy='absolute']) {
-    position: absolute;
-  }
-
-  :host([strategy='fixed']) {
-    position: fixed;
-    /* When position is fixed, the popover goes out of the flow of the document, so we need to set a z-index */
-    z-index: 1000;
   }
 
   :host([color='contrast']) {
@@ -58,7 +49,6 @@ const styles = css`
   :host::part(popover-content) {
     position: relative;
     padding: 0.75rem;
-    overflow-y: auto;
     min-width: max-content;
     z-index: 9998;
     max-height: var(--mdc-popover-max-height);

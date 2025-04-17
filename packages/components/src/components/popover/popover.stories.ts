@@ -450,19 +450,19 @@ export const popoverWithSelect: StoryObj = {
   render: () => html`
     <div style="width: 10rem; height: 8rem; margin: 5rem;">
       <mdc-button id="select-button">Click me!</mdc-button>
-      <mdc-popover triggerID="select-button">
+      <mdc-popover triggerID="select-button" interactive hide-on-escape hide-on-outside-click>
         <div style="width: 15rem;">
-          <mdc-select popover-strategy="fixed">
+          <mdc-select>
             <mdc-option>Option 1</mdc-option>
             <mdc-option>Option 2</mdc-option>
             <mdc-option>Option 3</mdc-option>
           </mdc-select>
-          <mdc-select popover-strategy="fixed">
+          <mdc-select>
             <mdc-option>Option 4</mdc-option>
             <mdc-option>Option 5</mdc-option>
             <mdc-option>Option 6</mdc-option>
           </mdc-select>
-          <mdc-select popover-strategy="fixed">
+          <mdc-select>
             <mdc-option>Option 7</mdc-option>
             <mdc-option>Option 8</mdc-option>
             <mdc-option>Option 9</mdc-option>
