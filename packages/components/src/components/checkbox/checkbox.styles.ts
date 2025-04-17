@@ -4,8 +4,6 @@ import { hostFocusRingStyles } from '../../utils/styles';
 const styles = [css`
   :host {
     --mdc-checkbox-background-color-hover: var(--mds-color-theme-control-inactive-hover);
-    --mdc-checkbox-disabled-border-color: var(--mds-color-theme-outline-primary-disabled);
-    --mdc-checkbox-disabled-checked-icon-color: var(--mds-color-theme-control-active-disabled);
     --mdc-checkbox-pressed-icon-color: var(--mds-color-theme-control-inactive-pressed);
     --mdc-checkbox-checked-pressed-icon-color: var(--mds-color-theme-control-active-pressed);
     --mdc-checkbox-checked-background-color-hover: var(--mds-color-theme-control-active-hover);
@@ -37,11 +35,7 @@ const styles = [css`
   :host([indeterminate]:active)::part(icon-container) {
     background: var(--mdc-checkbox-checked-pressed-icon-color);
   }
-  :host([disabled][checked])::part(icon-container)
-  :host([disabled][indeterminate])::part(icon-container) {
-    background: var(--mdc-checkbox-disabled-checked-icon-color);
-    border: 0.0625rem solid var(--mdc-checkbox-disabled-border-color);
-  }
+
   .input {
     margin: 0;
     padding: 0;

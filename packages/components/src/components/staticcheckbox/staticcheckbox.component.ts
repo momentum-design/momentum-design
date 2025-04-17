@@ -14,6 +14,18 @@ import { ICON_NAME } from './staticcheckbox.constants';
  *
  * @tagname mdc-staticcheckbox
  *
+ * @dependency mdc-icon
+ *
+ * @cssproperty --mdc-staticcheckbox-border-color - Border color in high contrast.
+ * @cssproperty --mdc-staticcheckbox-checked-background-color - Background color for a selected checkbox.
+ * @cssproperty --mdc-staticcheckbox-disabled-background-color - Background color for a disabled checkbox.
+  * @cssproperty --mdc-checkbox-disabled-border-color - Border color for a disabled checkbox.
+ * @cssproperty --mdc-checkbox-disabled-checked-icon-color - Background color for a disabled, selected checkbox.
+ * @cssproperty --mdc-staticcheckbox-disabled-icon-color - Icon color for a disabled checkbox.
+ * @cssproperty --mdc-staticcheckbox-icon-background-color - Background color for an unselected checkbox.
+ * @cssproperty --mdc-staticcheckbox-icon-border-color - Default background color for an unselected checkbox.
+ * @cssproperty --mdc-staticcheckbox-icon-color - Icon color for an unselected checkbox.
+ *
  */
 class StaticCheckbox extends DisabledMixin(Component) {
   @property({ type: Boolean, reflect: true }) checked = false;

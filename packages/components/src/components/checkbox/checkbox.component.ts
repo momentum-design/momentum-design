@@ -24,17 +24,8 @@ import styles from './checkbox.styles';
  * @event focus - (React: onFocus) Event that gets dispatched when the checkbox receives focus.
  *
  * @cssproperty --mdc-checkbox-background-color-hover - Allows customization of the background color on hover.
- * @cssproperty --mdc-checkbox-border-color - Border color in high contrast.
- * @cssproperty --mdc-checkbox-checked-background-color - Background color for a selected checkbox.
  * @cssproperty --mdc-checkbox-checked-background-color-hover - Background color for a selected checkbox when hovered.
  * @cssproperty --mdc-checkbox-checked-pressed-icon-color - Background color for a selected checkbox when pressed.
- * @cssproperty --mdc-checkbox-disabled-background-color - Background color for a disabled checkbox.
- * @cssproperty --mdc-checkbox-disabled-border-color - Border color for a disabled checkbox.
- * @cssproperty --mdc-checkbox-disabled-checked-icon-color - Background color for a disabled, selected checkbox.
- * @cssproperty --mdc-checkbox-disabled-icon-color - Icon color for a disabled checkbox.
- * @cssproperty --mdc-checkbox-icon-background-color - Background color for an unselected checkbox.
- * @cssproperty --mdc-checkbox-icon-border-color - Default background color for an unselected checkbox.
- * @cssproperty --mdc-checkbox-icon-color - Icon color for an unselected checkbox.
  * @cssproperty --mdc-checkbox-pressed-icon-color - Background color for a selected checkbox when pressed.
  */
 class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
