@@ -3,7 +3,7 @@ interface Events {
     onKeyDownEvent: KeyboardEvent;
     onKeyUpEvent: KeyboardEvent;
     onFocusEvent: FocusEvent;
-    onChange: Event;
+    onChangeEvent: Event;
   }
 
 export type { Events };
