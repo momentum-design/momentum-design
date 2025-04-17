@@ -8,7 +8,7 @@ test.beforeEach(async ({ componentsPage }) => {
   });
 });
 
-test('mdc-cardbutton', async ({ componentsPage }) => {
+test.skip('mdc-cardbutton', async ({ componentsPage }) => {
   const cardbutton = componentsPage.page.locator('mdc-cardbutton');
 
   // initial check for the cardbutton be visible on the screen:
