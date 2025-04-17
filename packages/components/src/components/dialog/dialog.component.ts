@@ -1,4 +1,4 @@
-import { CSSResult, html, PropertyValues } from 'lit';
+import { CSSResult, html, PropertyValues, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
 import styles from './dialog.styles';
@@ -270,6 +270,8 @@ class Dialog extends FocusTrapMixin(Component) {
 
   public override render() {
     return html`
+      ${this.headerText
+    ? html`
       <div part="header">
         <mdc-text
           part="header-text"
@@ -283,16 +285,17 @@ class Dialog extends FocusTrapMixin(Component) {
           tagname="${VALID_TEXT_TAGS[this.descriptionTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
           type="${TYPE.BODY_MIDSIZE_REGULAR}"
         >
-          ${this.descriptionText}
+          ${this.descriptionText ?? nothing}
         </mdc-text>
-      </div>
+      </div>`
+    : nothing}
       <mdc-button
-              class="dialog-close"
-              prefix-icon="cancel-bold"
-              variant="tertiary"
-              size="20"
-              aria-label=${ifDefined(this.closeButtonAriaLabel) || ''}
-              @click="${this.hideDialog}"
+        class="dialog-close"
+        prefix-icon="cancel-bold"
+        variant="tertiary"
+        size="20"
+        aria-label="${ifDefined(this.closeButtonAriaLabel) || ''}"
+        @click="${this.hideDialog}"
       ></mdc-button>
       <div part="body">
         <slot name="dialog-body"></slot>
