@@ -32,20 +32,20 @@ const styles = css`
   }
 
   :host([size='medium']) {
-      --mdc-dialog-width: 41rem;
-      --mdc-dialog-height: 22.25rem;
+    --mdc-dialog-width: 41rem;
+    --mdc-dialog-height: 22.25rem;
   }
 
   :host([size='large']) {
-      --mdc-dialog-width: 62rem;
-      --mdc-dialog-height: 25.75rem;
+    --mdc-dialog-width: 62rem;
+    --mdc-dialog-height: 25.75rem;
   }
 
   :host {
     width: var(--mdc-dialog-width);
     height: var(--mdc-dialog-height);
   }
-
+    
   :host::part(header),
   :host::part(body),
   :host::part(footer) {
@@ -59,10 +59,28 @@ const styles = css`
     gap: 0.5rem;
   }
 
+  :host::part(header-text) {
+    width: 23.625rem;
+    color: var(--mdc-dialog-header-text-color);
+  }
+    
+  :host::part(description-text) {
+    color: var(--mdc-dialog-description-text-color);
+  }
+    
   :host::part(body) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    height: 9.75rem;
+  }
+
+  :host([size='medium'])::part(body) {
+    height: 12.5rem;
+  }
+
+  :host([size='large'])::part(body) {
+    height: 16rem;
   }
 
   :host::part(footer) {
@@ -78,6 +96,10 @@ const styles = css`
     top: 1rem;
     cursor: pointer;
     z-index: 9999;
+  }
+    
+  mdc-text::part(text) {
+    margin: 0;
   }
 `;
 

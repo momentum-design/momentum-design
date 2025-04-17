@@ -184,7 +184,6 @@ class Dialog extends FocusTrapMixin(Component) {
 
   protected override async updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
-    console.log(changedProperties)
 
     if (changedProperties.has('visible')) {
       const oldValue = (changedProperties.get('visible') as boolean | undefined) || false;
