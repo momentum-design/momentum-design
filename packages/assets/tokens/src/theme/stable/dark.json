@@ -1082,8 +1082,8 @@
         "skeleton": {
           "normal": {
             "type": "color",
-            "value": "linear-gradient(123deg, {color.core.white-alpha.20} 0%, {color.core.white-alpha.30} 33.85%, {color.core.white-alpha.40} 70.31%, {color.core.white-alpha.50} 100%)",
-            "description": "linear-gradient(123deg, #ffffff33 0%, #ffffff4d 33.85%, #ffffff66 70.31%, #ffffff80 100%)\nUse for skeleton component"
+            "value": "{color.core.gray.60}",
+            "description": "Use for skeleton component"
           }
         },
         "glass": {
