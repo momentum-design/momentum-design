@@ -42,8 +42,8 @@ const setup = async (args: SetupOptions) => {
 };
 
 test('mdc-buttonsimple', async ({ componentsPage }) => {
-  const buttonsimple = await setup({ componentsPage });
   await test.step('default attributes for button', async () => {
+    const buttonsimple = await setup({ componentsPage });
     // Default values for button
     await test.step('attributes size should be present on component by default', async () => {
       await expect(buttonsimple).toHaveAttribute('size', DEFAULTS.SIZE.toString());
@@ -63,6 +63,12 @@ test('mdc-buttonsimple', async ({ componentsPage }) => {
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
+    const buttonsimple = await setup({ componentsPage });
+
+    await test.step('if active is not set aria-pressed should not be applied', async () => {
+      await expect(buttonsimple).not.toHaveAttribute('aria-pressed');
+    });
+
     // Disabled button
     await test.step('attribute disabled should be present on button', async () => {
       await componentsPage.setAttributes(buttonsimple, {
