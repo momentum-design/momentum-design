@@ -9,7 +9,15 @@ import { ARROW_BUTTON_DIRECTION, KEYCODES } from './tablist.constants';
 import Tab from '../tab/tab.component';
 import Button from '../button/button.component';
 import type { ArrowButtonDirectionType } from './tablist.types';
-import { getFirstTab, getLastTab, getNextTab, getPreviousTab, findTab, getActiveTab } from './tablist.utils';
+import {
+  getFirstTab,
+  getLastTab,
+  getNextTab,
+  getPreviousTab,
+  findTab,
+  getActiveTab,
+  isAttributeDefined,
+} from './tablist.utils';
 
 /**
  * Tab list organizes tabs into a container.
@@ -169,7 +177,7 @@ class TabList extends Component {
     this.setAriaLabelledByOrAriaLabel();
 
     const resizeObserver = new ResizeObserver(async () => {
-      const activeElement = this.tabsContainer?.shadowRoot?.activeElement;
+      const activeElement = document?.activeElement;
 
       /**
        * Keep the focused element in view.
@@ -183,7 +191,7 @@ class TabList extends Component {
     });
     resizeObserver.observe(this);
 
-    if (!this.activeTabId) {
+    if (!isAttributeDefined(this.activeTabId)) {
       this.activeTabId = getFirstTab(this.tabs)?.tabId;
     }
 
@@ -223,12 +231,13 @@ class TabList extends Component {
       this.setActiveTab(newTab);
 
       /**
-       * If the previous activeTabId was not undefined, fire the change event.
+       * If the previous activeTabId was not undefined, focus the new tab.
        *
-       * Otherwise, reset the tabindex of all tabs and set the new tabindex.
+       * Otherwise, if the previous activeTabId was undefined, reset the tabindex of all tabs and set the new tabindex.
+       * This occurs when the tablist is first created and the activeTabId does not exist.
+       * In this case we skip focusing the tab so that the tab does not focus on first render.
        */
       if (changedProperties.get('activeTabId')) {
-        this.fireTabChangeEvent(newTab);
         await this.focusTab(newTab);
       } else {
         this.resetTabIndexAndSetNewTabIndex(newTab);
@@ -244,11 +253,11 @@ class TabList extends Component {
    * @internal
    */
   private setAriaLabelledByOrAriaLabel = (): void => {
-    if (this.dataAriaLabelledby) {
+    if (isAttributeDefined(this.dataAriaLabelledby) && this.dataAriaLabelledby) {
       this.tabsContainer?.setAttribute('aria-labelledby', this.dataAriaLabelledby);
       this.tabsContainer?.removeAttribute('aria-label');
     } else {
-      this.tabsContainer?.setAttribute('aria-label', this.dataAriaLabel || 'Tab List');
+      this.tabsContainer?.setAttribute('aria-label', isAttributeDefined(this.dataAriaLabel) || 'Tab List');
       this.tabsContainer?.removeAttribute('aria-labelledby');
     }
   };
@@ -262,7 +271,9 @@ class TabList extends Component {
    */
   private fireTabChangeEvent = (newTab: Tab): void => {
     const event = new CustomEvent('change', {
-      detail: newTab.tabId,
+      detail: {
+        tabId: newTab.tabId,
+      },
     });
 
     this.dispatchEvent(event);
@@ -322,15 +333,19 @@ class TabList extends Component {
    * @param event - Custom Event fired from the nested tab.
    */
   private handleNestedTabActiveChange = async (event: CustomEvent<any>): Promise<void> => {
+    event.stopPropagation(); // Prevent the event from triggering any parent tablists.
     const tab = event.target;
     if (!(tab instanceof Tab)) {
       return;
     }
 
-    this.setActiveTab(tab);
-    await this.focusTab(tab);
-
     this.activeTabId = tab.tabId;
+
+    if (getActiveTab(this.tabs || []) !== tab) {
+      this.fireTabChangeEvent(tab);
+    } else {
+      await this.focusTab(tab);
+    }
   };
 
   /**
@@ -376,10 +391,20 @@ class TabList extends Component {
     if (!(tab instanceof Tab)) {
       return;
     }
-
-    if (tab !== this.shadowRoot?.activeElement) {
+    if (tab !== document?.activeElement) {
       this.resetTabIndexAndSetNewTabIndex(tab);
-      tab.focus();
+      tab.focus(
+        {
+          preventScroll: true,
+          /**
+           * Note: the `focusVisible` option is an experimental property at the time of writing.
+           * We have it here to set the `:focus-visible` pseudo-class on the tab,
+           * due to an issue with it not applying to the tab when a keyboard button is pressed.
+           */
+          // @ts-ignore : https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus#focusvisible
+          focusVisible: true,
+        },
+      );
     }
 
     // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
@@ -451,12 +476,15 @@ class TabList extends Component {
   private switchFocus = async (): Promise<void> => {
     await this.updateComplete;
     if (!this.showBackwardArrowButton && !this.showForwardArrowButton) {
-      getActiveTab(this.tabs || [])?.focus();
+      await this.focusTab(getActiveTab(this.tabs || []));
     } else if (
       (this.showBackwardArrowButton && !this.showForwardArrowButton)
       || (this.showForwardArrowButton && !this.showBackwardArrowButton)
     ) {
-      this.notFocusedArrowButton?.focus();
+      this.notFocusedArrowButton?.focus({
+        // @ts-ignore : https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus#focusvisible
+        focusVisible: true,
+      });
     }
   };
 
