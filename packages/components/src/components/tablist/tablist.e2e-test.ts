@@ -456,9 +456,6 @@ test('mdc-tablist', async ({ componentsPage }) => {
       createNewRow: true,
     };
 
-    // set the first tab as active.
-    await tabs.first().click();
-
     // default variant
     stickerSheet.setChildren(await tablistParent.first().innerHTML());
     await stickerSheet.createMarkupWithCombination({}, options);
@@ -502,6 +499,7 @@ test('mdc-tablist', async ({ componentsPage }) => {
 
             tablists.forEach((tablist, index) => {
               const tabs = Array.from(tablist.querySelectorAll('mdc-tab')) as Tab[];
+              tabs[0]?.click();
               tabs[index < tabs.length ? index : tabs.length - 1]?.click();
             });
           });
