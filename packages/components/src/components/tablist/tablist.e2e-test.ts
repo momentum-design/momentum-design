@@ -1,7 +1,8 @@
 import { type ConsoleMessage, expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
-// import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import type { Variant } from '../tab/tab.types';
+import type Tab from '../tab/tab.component';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -26,12 +27,14 @@ const setup = async (args: SetupOptions) => {
         <mdc-tab
           variant=${restArgs.tabvariant}
           text="Photos"
+          aria-label="Photos"
           icon-name="add-photo-bold"
           tab-id="photos-tab"
           aria-controls="photos-panel">
         </mdc-tab>
         <mdc-tab variant=${restArgs.tabvariant}
           text="Videos"
+          aria-label="Videos"
           icon-name="video-bold"
           tab-id="videos-tab"
           aria-controls="videos-panel">
@@ -39,6 +42,7 @@ const setup = async (args: SetupOptions) => {
         </mdc-tab>
         <mdc-tab variant=${restArgs.tabvariant}
           text="Music"
+          aria-label="Music"
           icon-name="file-music-bold"
           tab-id="music-tab"
           aria-controls="music-panel">
@@ -46,6 +50,7 @@ const setup = async (args: SetupOptions) => {
         <mdc-tab
           variant=${restArgs.tabvariant}
           text="Documents"
+          aria-label="Documents"
           icon-name="document-bold"
           tab-id="documents-tab"
           aria-controls="documents-panel">
@@ -53,6 +58,7 @@ const setup = async (args: SetupOptions) => {
         <mdc-tab
           variant=${restArgs.tabvariant}
           text="Downloads"
+          aria-label="Downloads"
           icon-name="cloud-download-bold"
           tab-id="downloads-tab"
           aria-controls="downloads-panel">
@@ -82,16 +88,14 @@ const setup = async (args: SetupOptions) => {
     clearDocument: true,
   });
 
-  const tablist = componentsPage.page.locator('div#mdc-tablist-example');
-  await tablist.waitFor();
+  const tablistParent = componentsPage.page.locator('div#mdc-tablist-example');
+  await tablistParent.waitFor();
 
-  return tablist;
+  return tablistParent;
 };
 
-test('mdc-tablist', async ({ componentsPage, isMobile }) => {
-  const tablistPage = await setup({
-    componentsPage,
-  });
+test('mdc-tablist', async ({ componentsPage }) => {
+  const tablistParent = await setup({ componentsPage });
 
   /**
    * ADDITIONAL LOCATORS
@@ -104,10 +108,28 @@ test('mdc-tablist', async ({ componentsPage, isMobile }) => {
    *
    * arrowButtons - The mdc-button elements within the mdc-tablist component.
    */
-  const tablistComponent = tablistPage.getByTestId('tablist-component');
+  const tablistComponent = tablistParent.getByTestId('tablist-component');
   const tablist = tablistComponent.getByRole('tablist');
   const tabs = tablistComponent.getByRole('tab');
-  // const arrowButtons = tablistComponent.locator('mdc-button');
+  const arrowButtons = tablistComponent.locator('mdc-button');
+
+  /**
+   * WIDTH FUNCTIONS
+   *
+   * @remarks
+   *
+   * Playwright runs with its own viewport, so the setViewPortSize function doesn't always trigger the resize event.
+   * This causes bugs in tests where we rely on the resize event to trigger.
+   * To know more, see https://github.com/microsoft/playwright/issues/20721#issuecomment-1421644560
+   */
+  const initialWidth = await tablistParent.evaluate((div) => div.getBoundingClientRect().width);
+
+  const setTablistWidth = (width: number) => componentsPage.page.evaluate((width) => {
+    const tablist = document.getElementById('mdc-tablist-example');
+    if (tablist) {
+      tablist.style.width = `${width}px`;
+    }
+  }, width);
 
   /**
    * MATCH TAB ID
@@ -161,28 +183,10 @@ test('mdc-tablist', async ({ componentsPage, isMobile }) => {
   /**
    * ACCESSIBILITY
    */
-  await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('tablist-default');
-  });
 
-  /**
-   * VISUAL REGRESSION
-   */
-  await test.step('visual-regression', async () => {
-    await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-tablist', { element: tablistPage,
-        assertionAfterSwitchingDirection: async (page) => {
-          await page.evaluate((isMobile) => {
-            const tablist = document.querySelector('mdc-tablist');
-            if (isMobile) {
-              // set the music tab as active
-              tablist?.setAttribute('active-tab-id', 'photos-tab');
-              tablist?.setAttribute('active-tab-id', 'music-tab');
-            }
-          }, isMobile);
-        },
-      });
-    });
+  await test.step('accessibility', async () => {
+    await tabs.nth(1).click();
+    await componentsPage.accessibility.checkForA11yViolations('tablist-default');
   });
 
   /**
@@ -196,11 +200,13 @@ test('mdc-tablist', async ({ componentsPage, isMobile }) => {
     });
 
     await test.step('active tab is set', async () => {
-      await componentsPage.setAttributes(tablistComponent, { 'active-tab-id': 'downloads-tab' });
-      const activeTab = tablistComponent.getByRole('tab', { name: 'Downloads' });
+      await componentsPage.setAttributes(tablistComponent, {
+        'active-tab-id': (await tabs.last().getAttribute('tab-id')) || '',
+      });
+      const activeTab = tabs.last();
       await expect(activeTab).toHaveAttribute('aria-selected', 'true');
-      await expect(activeTab).toHaveAttribute('tab-id', 'downloads-tab');
-      await expect(activeTab).toHaveAttribute('aria-controls', 'downloads-panel');
+      await expect(activeTab).toHaveAttribute('active');
+      await expect(activeTab).toHaveAttribute('aria-controls', (await tabs.last().getAttribute('aria-controls')) || '');
     });
 
     await test.step(
@@ -225,8 +231,8 @@ test('mdc-tablist', async ({ componentsPage, isMobile }) => {
         const ariaLabelledBySelector = await tablist.getAttribute('aria-labelledby');
         expect(ariaLabelledBySelector).toBe('h3#tabs-title');
 
-        await test.step('the element in the aria-labelledby attribute exists', async () => {
-          await expect(tablistPage.locator(`${ariaLabelledBySelector}`)).toHaveText('Tablist example');
+        await test.step('the element in the aria-labelledby attribute exists and matches text', async () => {
+          await expect(tablistParent.locator(`${ariaLabelledBySelector}`)).toHaveText('Tablist example');
         });
       },
     );
@@ -236,16 +242,39 @@ test('mdc-tablist', async ({ componentsPage, isMobile }) => {
    * INTERACTIONS
    */
   await test.step('interactions', async () => {
+    await test.step('resize', async () => {
+      await tabs.nth(2).click();
+
+      await test.step('resizing the viewport to 320px width should show atleast one arrow button', async () => {
+        await setTablistWidth(320);
+        await expect(arrowButtons.first()).toBeVisible();
+      });
+
+      await test.step('resizing the viewport to 2000px width should remove both arrow buttons', async () => {
+        await setTablistWidth(2000);
+        await expect(arrowButtons).toHaveCount(0);
+      });
+
+      await setTablistWidth(initialWidth);
+    });
+
     await test.step('mouse/pointer', async () => {
       await test.step(
         'component should fire a Custom Event with type change and tabId of the clicked tab in the detail object',
         async () => {
-          const listener = async (msg: ConsoleMessage) => { await matchTabId(msg, 'downloads-tab'); };
-          await componentsPage.setAttributes(tablistComponent, { 'active-tab-id': 'photos-tab' });
-          await wait;
+          // set the first tab as active.
+          await componentsPage.setAttributes(tablistComponent, {
+            'active-tab-id': (await tabs.first().getAttribute('tab-id')) || '',
+          });
+
+          // listen for the change event and assert the tabId matches the last tab's tab-id
+          const listener = async (msg: ConsoleMessage) => {
+            await matchTabId(msg, (await tabs.last().getAttribute('tab-id')) || '');
+          };
+
           componentsPage.page.on('console', listener);
 
-          await tablistComponent.getByRole('tab', { name: 'Downloads' }).click();
+          await tabs.last().click();
 
           await wait;
 
@@ -254,36 +283,7 @@ test('mdc-tablist', async ({ componentsPage, isMobile }) => {
           await test.step(
             'tab should become active when clicked on in previous step',
             async () => {
-              const activeTab = tablistComponent.getByRole('tab', { name: 'Downloads' });
-              await expect(activeTab).toHaveAttribute('aria-selected', 'true');
-              await expect(activeTab).toHaveAttribute('active');
-            },
-          );
-        },
-      );
-    });
-
-    await test.step('keyboard', async () => {
-      await test.step(
-        `component should fire a Custom Event with type change and tabId of the focused tab in the detail object
-         on pressing space/enter`,
-        async () => {
-          await componentsPage.setAttributes(tablistComponent, { 'active-tab-id': 'photos-tab' });
-          const listener = async (msg: ConsoleMessage) => { await matchTabId(msg, 'videos-tab'); };
-          await wait;
-          componentsPage.page.on('console', listener);
-
-          await tablistComponent.getByRole('tab', { selected: true }).focus();
-          await componentsPage.page.keyboard.press('ArrowRight');
-          // randomize between enter and space
-          await componentsPage.page.keyboard.press(['Enter', 'Space'][Math.round(Math.random())]);
-          await wait;
-          componentsPage.page.off('console', listener);
-
-          await test.step(
-            'tab should become active on pressing space/enter in previous step',
-            async () => {
-              const activeTab = tablistComponent.getByRole('tab', { name: 'Videos' });
+              const activeTab = tabs.last();
               await expect(activeTab).toHaveAttribute('aria-selected', 'true');
               await expect(activeTab).toHaveAttribute('active');
             },
@@ -292,65 +292,220 @@ test('mdc-tablist', async ({ componentsPage, isMobile }) => {
       );
 
       await test.step('if arrow button is visible, pressing it should scroll the tabs', async () => {
-        if (await tablistComponent.locator('mdc-button').count()) {
-          const xPositionInitial = (await tablist.boundingBox())?.x;
-          await tablistComponent.locator('mdc-button')?.first()?.click();
-          const xPositionFinal = (await tablist.boundingBox())?.x;
+        await tabs.first().click();
+        await setTablistWidth(320);
+        await arrowButtons.first().waitFor({ state: 'visible', timeout: 3000 });
 
-          expect(xPositionInitial).not.toEqual(xPositionFinal);
+        if (await arrowButtons.count()) {
+          const xAxisPositionInitial = (await tablist.boundingBox())?.x;
+          await arrowButtons.first().click();
+          const xAxisPositionFinal = (await tablist.boundingBox())?.x;
+
+          expect(xAxisPositionInitial).not.toEqual(xAxisPositionFinal);
         }
+        await setTablistWidth(initialWidth);
       });
+    });
+
+    await test.step('keyboard', async () => {
+      await test.step(
+        `component should fire a Custom Event with type change and tabId of the focused tab in the detail object
+         on pressing space/enter`,
+        async () => {
+          // set the first tab as active.
+          await componentsPage.setAttributes(tablistComponent, {
+            'active-tab-id': (await tabs.first().getAttribute('tab-id')) || '',
+          });
+
+          // listen for the change event and assert the tabId matches the 3rd tab's tab-id
+          const listener = async (msg: ConsoleMessage) => {
+            await matchTabId(msg, (await tabs.nth(2).getAttribute('tab-id')) || '');
+          };
+
+          componentsPage.page.on('console', listener);
+
+          await tabs.nth(2).focus();
+          // randomize between enter and space
+          await componentsPage.page.keyboard.press(['Enter', 'Space'][Math.round(Math.random())]);
+          await wait;
+          componentsPage.page.off('console', listener);
+
+          await test.step(
+            'tab should become active on pressing space/enter in previous step',
+            async () => {
+              const activeTab = tabs.nth(2);
+              await expect(activeTab).toHaveAttribute('aria-selected', 'true');
+              await expect(activeTab).toHaveAttribute('active');
+            },
+          );
+        },
+      );
     });
 
     await test.step('focus', async () => {
       await test.step('tabbing into the tablist should set focus on the active element', async () => {
-        await tabs?.first()?.click();
-        await tablistPage.focus();
+        await tabs.first().click();
+        await tablistParent.focus();
 
-        const activeTab = tablistComponent.getByRole('tab', { selected: true });
+        const activeTab = tabs.first();
         await expect(activeTab).toBeFocused();
       });
 
       await test.step('right arrow should focus next tab', async () => {
-        await tabs?.nth(3)?.focus();
+        await tabs.nth(3).focus();
         await componentsPage.page.keyboard.press('ArrowRight');
 
-        await expect(tabs?.nth(4))?.toBeFocused();
+        await expect(tabs.nth(4)).toBeFocused();
       });
 
       await test.step('left arrow should focus previous tab', async () => {
-        await tabs?.nth(3)?.focus();
+        await tabs.nth(3).focus();
         await componentsPage.page.keyboard.press('ArrowLeft');
 
-        await expect(tabs?.nth(2))?.toBeFocused();
+        await expect(tabs.nth(2)).toBeFocused();
       });
 
       await test.step('home should focus first tab', async () => {
-        await tabs?.nth(3)?.focus();
+        await tabs.nth(3).focus();
         await componentsPage.page.keyboard.press('Home');
 
-        await expect(tabs?.first())?.toBeFocused();
+        await expect(tabs.first()).toBeFocused();
       });
 
       await test.step('end should focus last tab', async () => {
-        await tabs?.nth(3)?.focus();
+        await tabs.nth(3).focus();
         await componentsPage.page.keyboard.press('End');
 
-        await expect(tabs?.last())?.toBeFocused();
+        await expect(tabs.last()).toBeFocused();
       });
 
       await test.step('left arrow on first tab should focus last tab', async () => {
-        await tabs?.first()?.focus();
+        await tabs.first().focus();
         await componentsPage.page.keyboard.press('ArrowLeft');
 
-        await expect(tabs?.nth(await tabs?.count() - 1))?.toBeFocused();
+        await expect(tabs.last()).toBeFocused();
       });
 
       await test.step('right arrow on last tab should focus first tab', async () => {
-        await tabs?.last()?.focus();
+        await tabs.last().focus();
         await componentsPage.page.keyboard.press('ArrowRight');
 
-        await expect(tabs?.first())?.toBeFocused();
+        await expect(tabs.first()).toBeFocused();
+      });
+
+      await test.step('if one arrow button loses focus, the other arrow button gains focus', async () => {
+        await tabs.nth(2).click();
+        await setTablistWidth(320);
+        await arrowButtons.first().waitFor({ state: 'visible', timeout: 3000 });
+
+        if (await arrowButtons.count()) {
+          await tabs.first().focus();
+
+          const firstArrowButtonSelector = await arrowButtons.first().getAttribute('prefix-icon');
+
+          const firstArrowButton = tablistComponent
+            .locator(`mdc-button[prefix-icon="${firstArrowButtonSelector}"]`).first();
+
+          await firstArrowButton.focus();
+
+          // click the visible arrow button till it gets unrendered.
+          await expect(async () => {
+            await firstArrowButton.press('Space');
+            await expect(firstArrowButton).toHaveCount(0);
+          }).toPass();
+
+          const secondArrowButton = tablistComponent
+            .locator(`mdc-button:not([prefix-icon="${firstArrowButtonSelector}"])`).first();
+          await secondArrowButton.waitFor({ state: 'visible', timeout: 3000 });
+
+          if (await secondArrowButton.count()) {
+            await expect(secondArrowButton).toBeFocused();
+          }
+        }
+
+        await setTablistWidth(initialWidth);
+      });
+
+      await test.step(
+        'if any arrow button is focused, when both arrow buttons disappear, the active tab should gain focus',
+        async () => {
+          await tabs.nth(2).click();
+          await setTablistWidth(320);
+          await arrowButtons.first().waitFor({ state: 'visible', timeout: 3000 });
+
+          if (await arrowButtons.count()) {
+            await arrowButtons.first().focus();
+            await expect(arrowButtons.first()).toBeFocused();
+            await setTablistWidth(2000);
+
+            await expect(arrowButtons).toHaveCount(0);
+          }
+
+          await setTablistWidth(initialWidth);
+        },
+      );
+    });
+  });
+
+  /**
+   * VISUAL REGRESSION
+   */
+  await test.step('visual-regression', async () => {
+    const stickerSheet = new StickerSheet(componentsPage, 'mdc-tablist');
+    const options = {
+      createNewRow: true,
+    };
+
+    // set the first tab as active.
+    await tabs.first().click();
+
+    // default variant
+    stickerSheet.setChildren(await tablistParent.first().innerHTML());
+    await stickerSheet.createMarkupWithCombination({}, options);
+
+    // variant: glass tab
+    await componentsPage.page.evaluate(() => {
+      document.querySelectorAll('mdc-tab').forEach((tab) => {
+        tab?.setAttribute('variant', 'glass');
+      });
+    });
+    stickerSheet.setChildren(await tablistParent.first().innerHTML());
+    await stickerSheet.createMarkupWithCombination({ }, options);
+
+    // variant: line tab
+    await componentsPage.page.evaluate(() => {
+      document.querySelectorAll('mdc-tab').forEach((tab) => {
+        tab?.setAttribute('variant', 'line');
+      });
+    });
+    stickerSheet.setChildren(await tablistParent.first().innerHTML());
+    await stickerSheet.createMarkupWithCombination({ }, options);
+
+    // variant: icon only tabs
+    await componentsPage.page.evaluate(() => {
+      document.querySelectorAll('mdc-tab').forEach((tab) => {
+        tab?.removeAttribute('text');
+      });
+    });
+    stickerSheet.setChildren(await tablistParent.first().innerHTML());
+    await stickerSheet.createMarkupWithCombination({ }, options);
+
+    await stickerSheet.mountStickerSheet();
+    const container = stickerSheet.getWrapperContainer();
+
+    await test.step('matches screenshot of tab element', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-tablist', {
+        element: container,
+        assertionAfterSwitchingDirection: async (page) => {
+          await page.evaluate(() => {
+            const tablists = Array.from(document.querySelectorAll('mdc-tablist') || []);
+
+            tablists.forEach((tablist, index) => {
+              const tabs = Array.from(tablist.querySelectorAll('mdc-tab')) as Tab[];
+              tabs[index < tabs.length ? index : tabs.length - 1]?.click();
+            });
+          });
+        },
       });
     });
   });
