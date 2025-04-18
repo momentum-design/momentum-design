@@ -177,7 +177,7 @@ class TabList extends Component {
     this.setAriaLabelledByOrAriaLabel();
 
     const resizeObserver = new ResizeObserver(async () => {
-      const activeElement = this.tabsContainer?.shadowRoot?.activeElement;
+      const activeElement = document?.activeElement;
 
       /**
        * Keep the focused element in view.
@@ -343,6 +343,8 @@ class TabList extends Component {
 
     if (getActiveTab(this.tabs || []) !== tab) {
       this.fireTabChangeEvent(tab);
+    } else {
+      await this.focusTab(tab);
     }
   };
 
@@ -389,8 +391,7 @@ class TabList extends Component {
     if (!(tab instanceof Tab)) {
       return;
     }
-
-    if (tab !== this.shadowRoot?.activeElement) {
+    if (tab !== document?.activeElement) {
       this.resetTabIndexAndSetNewTabIndex(tab);
       tab.focus(
         {
