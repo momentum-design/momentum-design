@@ -124,8 +124,10 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
       this.setSoftDisabled(this, this.softDisabled);
     }
     if (changedProperties.has('active')) {
-      if (this.active) {
-        // if active is true and no ariaStateKey is provided, set it to the default (= aria-pressed)
+      if (this.active !== undefined) {
+        // if active is not undefined and no ariaStateKey is provided, set it to the default (= aria-pressed)
+        // this will make sure that if active is set to true or false regardless
+        // the ariaStateKey fallback will still work
         this.ariaStateKey = this.ariaStateKey || DEFAULTS.ARIA_STATE_KEY;
       }
       this.setActive(this, this.active);
