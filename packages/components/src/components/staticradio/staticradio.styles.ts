@@ -71,8 +71,7 @@ const styles = [css`
     background: var(--mdc-staticradio-inner-circle-normal-background);
   }
 
-  :host([readonly]) .icon,
-  :host([readonly]:hover) .icon {
+  :host([readonly]) .icon{
     border-color: var(--mdc-staticradio-normal-border-color);
     background-color: var(--mdc-staticradio-control-inactive-color);
   }
@@ -81,9 +80,7 @@ const styles = [css`
     border-color: var(--mdc-staticradio-normal-border-color);
   }
   
-  :host([readonly][checked]) .icon:after,
-  :host([readonly][checked]:hover) .icon:after,
-  :host([readonly][checked]:active) .icon:after {
+  :host([readonly][checked]) .icon:after{
     background-color: var(--mdc-staticradio-text-disabled-color);
   }
 `];

@@ -1,11 +1,11 @@
 import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
-import styles from './staticradio.style';
+import styles from './staticradio.styles';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 
 /**
- * This is a decorative component that is styled to look as a radio option.
+ * This is a decorative component that is styled to look as a radio.
  * It has 2 properties - checked and disabled.
  *
  * We are using the same styling that has been created for the `mdc-radio` component.
