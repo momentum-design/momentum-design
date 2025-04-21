@@ -2,28 +2,31 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { BUTTON_COLORS, PILL_BUTTON_SIZES, BUTTON_VARIANTS, ICON_BUTTON_SIZES, BUTTON_TYPE } from './button.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
-const render = (args: Args) => html`
-  <mdc-button 
-  @click="${action('onclick')}"
-  @keydown="${action('onkeydown')}"
-  @keyup="${action('onkeyup')}"
-  @focus="${action('onfocus')}"
-  ?active="${args.active}"
-  ?disabled="${args.disabled}"
-  ?soft-disabled="${args['soft-disabled']}"
-  variant="${args.variant}"
-  size="${args.size}"
-  color="${args.color}"
-  prefix-icon="${args['prefix-icon']}"
-  postfix-icon="${args['postfix-icon']}"
-  type="${args.type}"
-  role="${args.role}"
-  tabIndex="${args.tabIndex}"
-  aria-label="${args['aria-label']}"
-  >${args.children}</mdc-button>`;
+const render = (args: Args) =>
+  html` <mdc-button
+    @click="${action('onclick')}"
+    @keydown="${action('onkeydown')}"
+    @keyup="${action('onkeyup')}"
+    @focus="${action('onfocus')}"
+    ?active="${args.active}"
+    ?disabled="${args.disabled}"
+    ?soft-disabled="${args['soft-disabled']}"
+    variant="${args.variant}"
+    size="${args.size}"
+    color="${args.color}"
+    prefix-icon="${args['prefix-icon']}"
+    postfix-icon="${args['postfix-icon']}"
+    type="${args.type}"
+    role="${args.role}"
+    tabIndex="${args.tabIndex}"
+    aria-label="${args['aria-label']}"
+    ariaStateKey="${ifDefined(args.ariaStateKey)}"
+    >${args.children}</mdc-button
+  >`;
 
 const meta: Meta = {
   title: 'Components/button',
@@ -68,6 +71,9 @@ const meta: Meta = {
     type: {
       control: 'select',
       options: Object.values(BUTTON_TYPE),
+    },
+    ariaStateKey: {
+      control: 'text',
     },
     ...classArgType,
     ...styleArgType,
