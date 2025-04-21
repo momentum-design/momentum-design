@@ -13,6 +13,9 @@ const styles = [hostFitContentStyles, css`
     --mdc-radio-control-inactive-pressed-color: var(--mds-color-theme-control-inactive-pressed);
     --mdc-radio-control-active-hover-color: var(--mds-color-theme-control-active-hover);
     --mdc-radio-control-active-pressed-color: var(--mds-color-theme-control-active-pressed);
+    --mdc-radio-control-active-disabled-background: var(--mds-color-theme-control-active-disabled);
+    --mdc-radio-control-inactive-disabled-background: var(--mds-color-theme-control-inactive-disabled);
+    --mdc-radio-disabled-border-color: var(--mds-color-theme-outline-primary-disabled);
   }
 
 
@@ -32,6 +35,21 @@ const styles = [hostFitContentStyles, css`
   :host([checked]:active)::part(radio-icon) {
     border-color: var(--mdc-radio-control-active-pressed-color);
     background-color: var(--mdc-radio-control-active-pressed-color);
+  }
+
+  :host([readonly]:hover)::part(radio-icon) {
+    border-color: var(--mdc-staticradio-normal-border-color);
+    background-color: var(--mdc-staticradio-control-inactive-color);
+  }
+
+  :host([disabled]:hover)::part(radio-icon),
+  :host([disabled][readonly]:hover)::part(radio-icon) {
+    border-color: var(--mdc-radio-disabled-border-color);
+    background-color: var(--mdc-radio-control-inactive-disabled-background);
+  }
+
+  :host([disabled][checked]:hover)::part(radio-icon){
+    background-color: var(--mdc-radio-control-active-disabled-background);
   }
 
   :host([readonly]) .mdc-radio__input,

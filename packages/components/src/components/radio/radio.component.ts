@@ -26,6 +26,9 @@ import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwra
  * @cssproperty --mdc-radio-control-inactive-pressed-color - color of the radio button when inactive and pressed
  * @cssproperty --mdc-radio-control-active-hover-color - color of the radio button when active and hovered
  * @cssproperty --mdc-radio-control-active-pressed-color - color of the radio button when active and pressed
+ * @cssproperty --mdc-radio-disabled-border-color - color of the radio button when disabled
+ * @cssproperty --mdc-radio-control-active-disabled-background - color of the radio button when active and disabled
+ * @cssproperty --mdc-radio-control-inactive-disabled-background - color of the radio button when inactive and disabled
  *
  */
 

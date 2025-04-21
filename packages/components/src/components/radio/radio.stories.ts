@@ -69,6 +69,9 @@ const meta: Meta = {
       '--mdc-radio-control-inactive-pressed-color',
       '--mdc-radio-control-active-hover-color',
       '--mdc-radio-control-active-pressed-color',
+      '--mdc-radio-control-active-disabled-background',
+      '--mdc-radio-control-inactive-disabled-background',
+      '--mdc-radio-disabled-border-color',
     ]),
   },
 };
