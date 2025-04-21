@@ -52,13 +52,15 @@ class Button extends Buttonsimple {
    * The name of the icon to display as a prefix.
    * The icon is displayed on the left side of the button.
    */
-  @property({ type: String, attribute: 'prefix-icon', reflect: true }) prefixIcon?: IconNames;
+  @property({ type: String, attribute: 'prefix-icon', reflect: true })
+  prefixIcon?: IconNames;
 
   /**
    * The name of the icon to display as a postfix.
    * The icon is displayed on the right side of the button.
    */
-  @property({ type: String, attribute: 'postfix-icon', reflect: true }) postfixIcon?: IconNames;
+  @property({ type: String, attribute: 'postfix-icon', reflect: true })
+  postfixIcon?: IconNames;
 
   /**
    * There are 3 variants of button: primary, secondary, tertiary. They are styled differently.
@@ -67,7 +69,8 @@ class Button extends Buttonsimple {
    * - **Tertiary**: No background or border, appears as plain text but retains all button functionalities.
    * @default primary
    */
-  @property({ type: String }) variant: ButtonVariant = DEFAULTS.VARIANT;
+  @property({ type: String })
+  variant: ButtonVariant = DEFAULTS.VARIANT;
 
   /**
    * Button sizing is based on the button type.
@@ -76,13 +79,15 @@ class Button extends Buttonsimple {
    * - Tertiary icon button can also be 20.
    * @default 32
    */
-  @property({ type: Number }) override size: PillButtonSize | IconButtonSize = DEFAULTS.SIZE;
+  @property({ type: Number })
+  override size: PillButtonSize | IconButtonSize = DEFAULTS.SIZE;
 
   /**
    * There are 5 colors for button: positive, negative, accent, promotional, default.
    * @default default
    */
-  @property({ type: String }) color: ButtonColor = DEFAULTS.COLOR;
+  @property({ type: String })
+  color: ButtonColor = DEFAULTS.COLOR;
 
   /**
    * This property defines the ARIA role for the element. By default, it is set to 'button'.
@@ -91,7 +96,8 @@ class Button extends Buttonsimple {
    * - Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.
    * @default button
    */
-  @property({ type: String, reflect: true }) override role = 'button';
+  @property({ type: String, reflect: true })
+  override role = 'button';
 
   /** @internal */
   @state() private typeInternal: ButtonTypeInternal = DEFAULTS.TYPE_INTERNAL;
@@ -99,18 +105,18 @@ class Button extends Buttonsimple {
   /**
    * @internal
    */
-  private prevPrefixIcon?: IconNames;
+  @state() private prefixFilledIconName?: IconNames;
 
   /**
    * @internal
    */
-  private prevPostfixIcon?: IconNames;
+  @state() private postfixFilledIconName?: IconNames;
 
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
 
     if (changedProperties.has('active')) {
-      this.modifyIconName(this.active);
+      this.inferFilledIconName(this.active);
     }
     if (changedProperties.has('size')) {
       this.setSize(this.size);
@@ -126,6 +132,7 @@ class Button extends Buttonsimple {
       this.setSize(this.size);
     }
     if (changedProperties.has('prefixIcon') || changedProperties.has('postfixIcon')) {
+      this.inferFilledIconName(this.active);
       this.inferButtonType();
     }
   }
@@ -138,23 +145,17 @@ class Button extends Buttonsimple {
    *
    * @param active - The active state.
    */
-  private modifyIconName(active?: boolean) {
+  private inferFilledIconName(active?: boolean) {
     if (active) {
       if (this.prefixIcon) {
-        this.prevPrefixIcon = this.prefixIcon;
-        this.prefixIcon = `${getIconNameWithoutStyle(this.prefixIcon)}-filled` as IconNames;
+        this.prefixFilledIconName = `${getIconNameWithoutStyle(this.prefixIcon)}-filled` as IconNames;
       }
       if (this.postfixIcon) {
-        this.prevPostfixIcon = this.postfixIcon;
-        this.postfixIcon = `${getIconNameWithoutStyle(this.postfixIcon)}-filled` as IconNames;
+        this.postfixFilledIconName = `${getIconNameWithoutStyle(this.postfixIcon)}-filled` as IconNames;
       }
     } else {
-      if (this.prevPrefixIcon) {
-        this.prefixIcon = this.prevPrefixIcon;
-      }
-      if (this.prevPostfixIcon) {
-        this.postfixIcon = this.prevPostfixIcon;
-      }
+      this.prefixFilledIconName = this.prefixIcon;
+      this.postfixFilledIconName = this.postfixIcon;
     }
   }
 
@@ -223,10 +224,12 @@ class Button extends Buttonsimple {
 
   public override render() {
     return html`
-      ${this.prefixIcon ? html` <mdc-icon name="${this.prefixIcon as IconNames}" part="prefix-icon"></mdc-icon>` : ''}
+      ${this.prefixFilledIconName
+    ? html` <mdc-icon name="${this.prefixFilledIconName as IconNames}" part="prefix-icon"></mdc-icon>`
+    : ''}
       <slot @slotchange=${this.inferButtonType}></slot>
-      ${this.postfixIcon
-    ? html` <mdc-icon name="${this.postfixIcon as IconNames}" part="postfix-icon"></mdc-icon>`
+      ${this.postfixFilledIconName
+    ? html` <mdc-icon name="${this.postfixFilledIconName as IconNames}" part="postfix-icon"></mdc-icon>`
     : ''}
     `;
   }
