@@ -262,6 +262,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         break;
       case KEYS.ESCAPE:
         this.closePopover();
+        event.stopPropagation();
         break;
       case KEYS.HOME:
         this.setFocusAndTabIndex(0);
