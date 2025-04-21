@@ -72,10 +72,10 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
    * a comma separated string.
    * For example: `aria-pressed,aria-expanded`
    *
-   * @default 'aria-pressed'
+   * @default 'aria-pressed' (when)
    */
   @property({ type: String, reflect: true })
-  ariaStateKey = DEFAULTS.ARIA_STATE_KEY;
+  ariaStateKey?: string;
 
   /**
    * This property defines the type attribute for the button element.
@@ -124,6 +124,10 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
       this.setSoftDisabled(this, this.softDisabled);
     }
     if (changedProperties.has('active')) {
+      if (this.active) {
+        // if active is true and no ariaStateKey is provided, set it to the default (= aria-pressed)
+        this.ariaStateKey = this.ariaStateKey || DEFAULTS.ARIA_STATE_KEY;
+      }
       this.setActive(this, this.active);
     }
   }
