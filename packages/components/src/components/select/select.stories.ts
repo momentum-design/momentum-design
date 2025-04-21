@@ -9,7 +9,6 @@ import '../divider';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import '../optgroup';
 import '../option';
-import { DEFAULTS } from './select.constants';
 
 const helpTextTypes = Object.values(VALIDATION).filter((type: string) => type !== 'priority');
 
@@ -101,7 +100,7 @@ export const Example: StoryObj = {
     'help-text': 'Select Help Text',
     'help-text-type': '',
     'data-aria-label': 'Select label',
-    height: DEFAULTS.HEIGHT,
+    height: 'auto',
   },
 };
 

@@ -10,7 +10,7 @@ import { TAG_NAME as OPTION_GROUP_TAG_NAME } from '../optgroup/optgroup.constant
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
-import { ARROW_ICON, DEFAULTS } from './select.constants';
+import { ARROW_ICON } from './select.constants';
 import styles from './select.styles';
 import type { ArrowIcon } from './select.types';
 
@@ -50,7 +50,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    * then a scroll bar will be visible when there more options than the adjusted height.
    * @default auto
    */
-  @property({ type: String }) height = DEFAULTS.HEIGHT;
+  @property({ type: String }) height = 'auto';
 
   /** @internal */
   @queryAssignedElements() optionsList!: Array<HTMLElement>;
@@ -71,7 +71,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   @state() activeDescendant = '';
 
   /** @internal */
-  @state() popoverWidth = DEFAULTS.POPOVER_WIDTH;
+  @state() popoverWidth = '100%';
 
   /**
    * @internal
