@@ -13,6 +13,7 @@ const render = (args: Args) => html`
   @keydown="${action('onkeydown')}"
   @keyup="${action('onkeyup')}"
   @focus="${action('onfocus')}"
+  @blur="${action('onblur')}"
   ?disabled="${args.disabled}"
   prefix-icon="${args['prefix-icon']}"
   postfix-icon="${args['postfix-icon']}"
@@ -133,7 +134,7 @@ export const PillWithPostfixIcon: StoryObj = {
   },
 };
 
-export const IconButton: StoryObj = {
+export const IconButtonLink: StoryObj = {
   argTypes: {
     'buttonlink-size': {
       options: Object.values(ICON_BUTTON_SIZES),
