@@ -8,9 +8,8 @@ import { disableControls, hideControls, readOnlyControls } from '../../../config
 const render = (args: Args) => html`<mdc-link
     @click="${action('onclick')}"
     @keydown="${action('onkeydown')}"
-    @keyup="${action('onkeyup')}"
-    @focusin="${action('onfocusin')}"
-    @focusout="${action('onfocusout')}"
+    @focus="${action('onfocus')}"
+    @blur="${action('onblur')}"
     ?disabled="${args.disabled}"
     icon-name="${args['icon-name']}"
     ?inline="${args.inline}"
