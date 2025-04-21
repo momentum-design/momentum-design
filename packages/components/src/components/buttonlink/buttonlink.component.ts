@@ -20,6 +20,8 @@ import type { ButtonLinkTypeInternal } from './buttonlink.types';
  * `mdc-buttonlink` is a link that looks like a button.
  * It supports all features of `mdc-link`, along with `prefix-icon` and `postfix-icon` slots.
  *
+ * @dependency mdc-icon
+ *
  * @tagname mdc-buttonlink
  *
  * @event click - (React: onClick) Fired when the user activates the buttonLink using a mouse or assistive technology.

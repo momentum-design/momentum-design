@@ -11,7 +11,6 @@ const render = (args: Args) => html`
   <mdc-buttonlink
   @click="${action('onclick')}"
   @keydown="${action('onkeydown')}"
-  @keyup="${action('onkeyup')}"
   @focus="${action('onfocus')}"
   @blur="${action('onblur')}"
   ?disabled="${args.disabled}"
