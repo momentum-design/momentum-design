@@ -1,14 +1,14 @@
-import Toggletip from './toggletip.component';
+import ToggleTip from './toggletip.component';
 import { TAG_NAME } from './toggletip.constants';
 import '../button';
 import '../screenreaderannouncer';
 
-Toggletip.register(TAG_NAME);
+ToggleTip.register(TAG_NAME);
 
 declare global {
     interface HTMLElementTagNameMap {
-        ['mdc-toggletip']: Toggletip
+        ['mdc-toggletip']: ToggleTip
     }
 }
 
-export default Toggletip;
+export default ToggleTip;

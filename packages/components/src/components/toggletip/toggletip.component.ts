@@ -1,9 +1,9 @@
 import { CSSResult, html, PropertyValueMap } from 'lit';
 import { property, queryAssignedNodes, state } from 'lit/decorators.js';
-import styles from './toggletip.styles';
 import Popover from '../popover/popover.component';
-import { DEFAULTS } from './toggletip.constants';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { DEFAULTS } from './toggletip.constants';
+import styles from './toggletip.styles';
 
 /**
  * A toggletip is triggered by clicking a trigger element.
@@ -40,14 +40,12 @@ import { POPOVER_PLACEMENT } from '../popover/popover.constants';
  *  when the color is contrast.
  *
  */
-class Toggletip extends Popover {
+class ToggleTip extends Popover {
   @queryAssignedNodes()
   private defaultSlotNodes!: Array<Node>;
 
-  /**
-   * @internal
-   */
-  @state() currentAnnouncement: string = '';
+  /* @internal */
+  @state() currentAnnouncement = '';
 
   /**
     * Set this attribute with the id of the element in the DOM, to which announcement
@@ -58,14 +56,14 @@ class Toggletip extends Popover {
     * Please refer to the `mdc-screenreaderannouncer` component for more details.
   */
   @property({ type: String, reflect: true, attribute: 'screenreader-announcer-identity' })
-  screenreaderAnnouncerIdentity: string = '';
+  screenreaderAnnouncerIdentity = '';
 
   override connectedCallback(): void {
     super.connectedCallback();
     this.closeButton = DEFAULTS.CLOSE_BUTTON;
     this.closeButtonAriaLabel = DEFAULTS.CLOSE_BUTTON_ARIA_LABEL;
     this.placement = DEFAULTS.PLACEMENT;
-    this.trigger = 'click';
+    this.trigger = DEFAULTS.CLICK;
     this.showArrow = DEFAULTS.SHOW_ARROW;
     this.interactive = true;
     this.backdrop = true;
@@ -80,12 +78,13 @@ class Toggletip extends Popover {
    * @returns The text content of all the nodes in the default slot, joined by a space.
    *          If there are no nodes, an empty string is returned.
    */
-  private getToggletipText(): string {
-    return this.defaultSlotNodes?.map((node) => node.textContent).join(' ')?.trim() || '';
+  private getToggleTipText(): string {
+    return this.defaultSlotNodes?.map((node: Node) => node.textContent).join(' ')?.trim() || '';
   }
 
   /**
    * Updates the placement attribute if it is not a valid placement.
+   * Default placement for toggle tip is top.
    */
   private onPlacementUpdated(): void {
     if (!Object.values(POPOVER_PLACEMENT).includes(this.placement)) {
@@ -95,11 +94,13 @@ class Toggletip extends Popover {
 
   protected override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     super.update(changedProperties);
+
     if (changedProperties.has('placement')) {
       this.onPlacementUpdated();
     }
+
     if (changedProperties.has('visible')) {
-      this.currentAnnouncement = this.visible ? this.getToggletipText() : '';
+      this.currentAnnouncement = this.visible ? this.getToggleTipText() : '';
     }
   }
 
@@ -117,4 +118,4 @@ class Toggletip extends Popover {
   public static override styles: Array<CSSResult> = [...Popover.styles, ...styles];
 }
 
-export default Toggletip;
+export default ToggleTip;

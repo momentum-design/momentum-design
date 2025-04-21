@@ -1,5 +1,5 @@
 import utils from '../../utils/tag-name';
-import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { POPOVER_PLACEMENT, TRIGGER } from '../popover/popover.constants';
 
 const TAG_NAME = utils.constructTagName('toggletip');
 
@@ -8,6 +8,7 @@ const DEFAULTS = {
   CLOSE_BUTTON_ARIA_LABEL: 'Close',
   OFFSET: 4,
   PLACEMENT: POPOVER_PLACEMENT.TOP,
+  CLICK: TRIGGER.CLICK,
   SHOW_ARROW: true,
 };
 

@@ -362,38 +362,13 @@ class Popover extends FocusTrapMixin(Component) {
     this.removeEventListener('focus-trap-exit', this.hidePopover);
   }
 
-  /**
-   * Updates the aria-expanded attribute on the trigger element.
-   */
-  private updateAriaExpandedAttribute() {
-    if (this.disableAriaExpanded) {
-      this.triggerElement?.removeAttribute('aria-expanded');
-    } else {
-      this.triggerElement?.setAttribute('aria-expanded', `${this.visible}`);
-    }
-  }
-
-  /**
-   * Updates the aria-haspopup attribute on the trigger element.
-   */
-  private updateAriaHasPopupAttribute() {
-    if (this.interactive) {
-      this.triggerElement?.setAttribute(
-        'aria-haspopup',
-        this.triggerElement?.getAttribute('aria-haspopup') || 'dialog',
-      );
-    } else {
-      this.triggerElement?.removeAttribute('aria-haspopup');
-    }
-  }
-
   protected override async updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
 
     if (changedProperties.has('visible')) {
       const oldValue = (changedProperties.get('visible') as boolean | undefined) || false;
       await this.isOpenUpdated(oldValue, this.visible);
-      this.updateAriaExpandedAttribute();
+      this.utils.updateAriaExpandedAttribute();
     }
     if (changedProperties.has('placement')) {
       this.setAttribute(
@@ -430,10 +405,10 @@ class Popover extends FocusTrapMixin(Component) {
       this.utils.setupAccessibility();
     }
     if (changedProperties.has('disableAriaExpanded')) {
-      this.updateAriaExpandedAttribute();
+      this.utils.updateAriaExpandedAttribute();
     }
     if (changedProperties.has('interactive')) {
-      this.updateAriaHasPopupAttribute();
+      this.utils.updateAriaHasPopupAttribute();
     }
   }
 

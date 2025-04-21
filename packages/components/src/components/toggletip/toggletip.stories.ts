@@ -9,8 +9,7 @@ import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { DEFAULTS } from './toggletip.constants';
 
 const render = (args: Args) => html`
-
-  <div style="margin: 100px;">
+  <div style="display: flex; justify-content: center; align-items: center; height: 50vh;">
     <mdc-avatarbutton
       aria-label="Trigger button"
       icon-name="placeholder-bold"
