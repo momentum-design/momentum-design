@@ -21,6 +21,11 @@ import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
  *
  * @tagname mdc-link
  *
+ * @event click - Fired when the user activates the link using a mouse or assistive technology.
+ * @event keydown - Fired when the user presses a key while the link has focus.
+ * @event focus - Fired when the link receives keyboard or mouse focus.
+ * @event blur - Fired when the link loses keyboard or mouse focus.
+ *
  * @cssproperty --mdc-link-border-radius - Border radius of the link
  * @cssproperty --mdc-link-color-active - Text and icon color of the link in active state
  * @cssproperty --mdc-link-color-disabled - Text and icon color of the link in disabled state
