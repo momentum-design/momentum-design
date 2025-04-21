@@ -5,23 +5,21 @@ import { action } from '@storybook/addon-actions';
 import { LINK_SIZES } from './link.constants';
 import { disableControls, hideControls, readOnlyControls } from '../../../config/storybook/utils';
 
-const render = (args: Args) => {
-  // To allow the children to be rendered as html anchor tag, we need to parse it first
-  const htmlContent = html`${new DOMParser().parseFromString(args.children, 'text/html').body.firstChild}`;
-
-  return html`<mdc-link
+const render = (args: Args) => html`<mdc-link
     @click="${action('onclick')}"
     @keydown="${action('onkeydown')}"
-    @keyup="${action('onkeyup')}"
-    @focusin="${action('onfocusin')}"
-    @focusout="${action('onfocusout')}"
+    @focus="${action('onfocus')}"
+    @blur="${action('onblur')}"
     ?disabled="${args.disabled}"
     icon-name="${args['icon-name']}"
     ?inline="${args.inline}"
     ?inverted="${args.inverted}"
     size="${args.size}"
-    >${htmlContent}</mdc-link>`;
-};
+    href="${args.href}"
+    target="${args.target}"
+    rel="${args.rel}"
+    tabindex="${args.tabIndex}"
+    >${args.children}</mdc-link>`;
 
 const renderWithInvertedBackground = (args: Args) => html`
     <div style="background-color: var(--mds-color-theme-inverted-background-normal); padding: 8px;">
@@ -38,7 +36,7 @@ const meta: Meta = {
   },
   argTypes: {
     children: {
-      description: 'Anchor tag to be displayed as link.',
+      description: 'Text content to be displayed.',
       control: 'text',
     },
     disabled: {
@@ -57,6 +55,19 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(LINK_SIZES),
     },
+    href: {
+      control: 'text',
+    },
+    target: {
+      control: 'text',
+    },
+    rel: {
+      control: 'text',
+    },
+    tabIndex: {
+      control: 'number',
+    },
+    ...hideControls(['handleNavigation']),
     ...disableControls([
       '--mdc-link-border-radius',
       '--mdc-link-color-active',
@@ -76,12 +87,16 @@ const meta: Meta = {
 export default meta;
 
 const defaultArgs = {
-  children: '<a href="https://www.webex.com" target="_blank" rel="noopener noreferrer">Link</a>',
+  children: 'Link',
   disabled: false,
   'icon-name': 'placeholder-bold',
   inline: false,
   inverted: false,
   size: 'large',
+  href: 'https://www.webex.com',
+  target: '_blank',
+  rel: 'noopener noreferrer',
+  tabIndex: 0,
 };
 
 export const Example: StoryObj = {
