@@ -50,10 +50,6 @@ const styles = [css`
     --mdc-icon-fill-color: var(--mdc-staticcheckbox-disabled-icon-color);
   }
 
-  :host([disabled]:hover) {
-    background: unset;
-  }
-
   /* High Contrast Mode */
   @media (forced-colors: active) {
     :host([checked])::part(icon-container)

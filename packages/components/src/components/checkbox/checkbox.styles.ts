@@ -7,7 +7,8 @@ const styles = [css`
     --mdc-checkbox-pressed-icon-color: var(--mds-color-theme-control-inactive-pressed);
     --mdc-checkbox-checked-pressed-icon-color: var(--mds-color-theme-control-active-pressed);
     --mdc-checkbox-checked-background-color-hover: var(--mds-color-theme-control-active-hover);
-
+    --mdc-checkbox-disabled-checked-icon-color: var(--mds-color-theme-control-active-disabled);
+    
     flex-direction: row;
     align-items: flex-start;
   }
@@ -34,6 +35,15 @@ const styles = [css`
   :host([checked]:active)::part(icon-container),
   :host([indeterminate]:active)::part(icon-container) {
     background: var(--mdc-checkbox-checked-pressed-icon-color);
+  }
+
+  :host([disabled])  mdc-staticcheckbox {
+    background: unset;
+  }
+
+  :host([disabled][checked])::part(icon-container),
+  :host([disabled][indeterminate])::part(icon-container) {
+    background-color: var(--mdc-checkbox-disabled-checked-icon-color);
   }
 
   .input {

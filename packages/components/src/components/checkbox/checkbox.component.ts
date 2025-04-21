@@ -27,6 +27,7 @@ import styles from './checkbox.styles';
  * @cssproperty --mdc-checkbox-checked-background-color-hover - Background color for a selected checkbox when hovered.
  * @cssproperty --mdc-checkbox-checked-pressed-icon-color - Background color for a selected checkbox when pressed.
  * @cssproperty --mdc-checkbox-pressed-icon-color - Background color for a selected checkbox when pressed.
+ * @cssproperty --mdc-checkbox-disabled-checked-icon-color - Background color for a selected checkbox when disabled.
  */
 class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
   /**

@@ -57,6 +57,7 @@ const meta: Meta = {
       '--mdc-checkbox-checked-background-color-hover',
       '--mdc-checkbox-checked-pressed-icon-color',
       '--mdc-checkbox-pressed-icon-color',
+      '--mdc-checkbox-disabled-checked-icon-color',
     ]),
     ...classArgType,
     ...styleArgType,
