@@ -22,9 +22,10 @@ import type { ButtonLinkTypeInternal } from './buttonlink.types';
  *
  * @tagname mdc-buttonlink
  *
- * @slot default - This is a default/unnamed slot
- *
- * @event click - (React: onClick) This event is a Click Event, update the description
+ * @event click - (React: onClick) Fired when the user activates the buttonLink using a mouse or assistive technology.
+ * @event keydown - (React: onKeyDown) Fired when the user presses a key while the buttonLink has focus.
+ * @event focus - (React: onFocus) Fired when the buttonLink receives keyboard or mouse focus.
+ * @event blur - (React: onBlur) Fired when the buttonLink loses keyboard or mouse focus.
  *
  */
 class Buttonlink extends Link {
