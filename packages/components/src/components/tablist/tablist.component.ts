@@ -322,6 +322,7 @@ class TabList extends Component {
    * @param event - Custom Event fired from the nested tab.
    */
   private handleNestedTabActiveChange = async (event: CustomEvent<any>): Promise<void> => {
+    event.stopPropagation();
     const tab = event.target;
     if (!(tab instanceof Tab)) {
       return;
