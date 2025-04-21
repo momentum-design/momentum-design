@@ -2,8 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
-import { BUTTON_COLORS, PILL_BUTTON_SIZES, BUTTON_VARIANTS,
-  BUTTON_TYPE, ICON_BUTTON_SIZES } from '../button/button.constants';
+import { BUTTON_COLORS, PILL_BUTTON_SIZES, BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 
@@ -16,13 +15,12 @@ const render = (args: Args) => html`
   ?disabled="${args.disabled}"
   prefix-icon="${args['prefix-icon']}"
   postfix-icon="${args['postfix-icon']}"
-  buttonlink-size="${args['buttonlink-size']}"
+  size="${args.size}"
   href="${args.href}"
   target="${args.target}"
   rel="${args.rel}"
   variant="${args.variant}"
   color="${args.color}"
-  type="${args.type}"
   tabindex="${args.tabIndex}"
   aria-label="${args['aria-label']}"
   >${args.children}</mdc-buttonlink>`;
@@ -49,7 +47,7 @@ const meta: Meta = {
     'postfix-icon': {
       control: 'text',
     },
-    'buttonlink-size': {
+    size: {
       control: 'select',
       options: Object.values(PILL_BUTTON_SIZES),
     },
@@ -70,11 +68,7 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(BUTTON_COLORS),
     },
-    type: {
-      control: 'select',
-      options: Object.values(BUTTON_TYPE),
-    },
-    ...hideControls(['icon-name', 'size', 'inline', 'inverted', 'handleNavigation',
+    ...hideControls(['icon-name', 'inline', 'inverted', 'handleNavigation',
       '--mdc-link-border-radius',
       '--mdc-link-color-active',
       '--mdc-link-color-disabled',
@@ -100,13 +94,12 @@ export const Example: StoryObj = {
   args: {
     children: 'VisitLink',
     disabled: false,
-    'buttonlink-size': PILL_BUTTON_SIZES[32],
+    size: PILL_BUTTON_SIZES[32],
     href: 'https://www.webex.com',
     target: '_blank',
     rel: 'noopener noreferrer',
     variant: BUTTON_VARIANTS.PRIMARY,
     color: BUTTON_COLORS.DEFAULT,
-    type: BUTTON_TYPE.BUTTON,
   },
 };
 
@@ -135,7 +128,7 @@ export const PillWithPostfixIcon: StoryObj = {
 
 export const IconButtonLink: StoryObj = {
   argTypes: {
-    'buttonlink-size': {
+    size: {
       options: Object.values(ICON_BUTTON_SIZES),
     },
     'aria-label': {
@@ -146,7 +139,7 @@ export const IconButtonLink: StoryObj = {
     ...Example.args,
     children: '',
     'prefix-icon': 'placeholder-bold',
-    'buttonlink-size': ICON_BUTTON_SIZES[32],
+    size: ICON_BUTTON_SIZES[32],
     'aria-label': 'icon buttonLink',
   },
 };
