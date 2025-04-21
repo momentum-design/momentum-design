@@ -2,23 +2,26 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { BUTTON_SIZES, BUTTON_TYPE, DEFAULTS } from './buttonsimple.constants';
 
-const render = (args: Args) => html`
-  <mdc-buttonsimple 
-  @click="${action('onclick')}"
-  @keydown="${action('onkeydown')}"
-  @keyup="${action('onkeyup')}"
-  @focus="${action('onfocus')}"
-  ?active="${args.active}"
-  ?disabled="${args.disabled}"
-  ?soft-disabled="${args['soft-disabled']}"
-  size="${args.size}"
-  type="${args.type}"
-  role="${args.role}"
-  tabIndex="${args.tabIndex}"
-  >${args.children}</mdc-buttonsimple>`;
+const render = (args: Args) =>
+  html` <mdc-buttonsimple
+    @click="${action('onclick')}"
+    @keydown="${action('onkeydown')}"
+    @keyup="${action('onkeyup')}"
+    @focus="${action('onfocus')}"
+    ?active="${args.active}"
+    ?disabled="${args.disabled}"
+    ?soft-disabled="${args['soft-disabled']}"
+    size="${args.size}"
+    type="${args.type}"
+    role="${args.role}"
+    tabIndex="${args.tabIndex}"
+    ariaStateKey="${ifDefined(args.ariaStateKey)}"
+    >${args.children}</mdc-buttonsimple
+  >`;
 
 const meta: Meta = {
   title: 'Internal/buttonsimple',
@@ -31,6 +34,9 @@ const meta: Meta = {
   argTypes: {
     children: {
       description: 'Text label for the button.',
+      control: 'text',
+    },
+    ariaStateKey: {
       control: 'text',
     },
     active: {
