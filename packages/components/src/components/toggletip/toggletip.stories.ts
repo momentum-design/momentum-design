@@ -38,12 +38,12 @@ const render = (args: Args) => html`
   </div>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/toggletip',
+  title: 'Components/toggletip',
   tags: ['autodocs'],
   component: 'mdc-toggletip',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     color: {
