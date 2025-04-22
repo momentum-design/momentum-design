@@ -43,7 +43,7 @@ import Toggle from './components/toggle';
 import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
 import TabList from './components/tablist';
-import Buttonlink from './components/buttonlink';
+import ButtonLink from './components/buttonlink';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -107,7 +107,7 @@ export {
   Select,
   TabList,
   Progressspinner,
-  Buttonlink,
+  ButtonLink,
 };
 // Types Exports
 export type {

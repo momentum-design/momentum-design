@@ -1,13 +1,13 @@
-import Buttonlink from './buttonlink.component';
+import ButtonLink from './buttonlink.component';
 import { TAG_NAME } from './buttonlink.constants';
 import '../icon';
 
-Buttonlink.register(TAG_NAME);
+ButtonLink.register(TAG_NAME);
 
 declare global {
     interface HTMLElementTagNameMap {
-        ['mdc-buttonlink']: Buttonlink
+        ['mdc-buttonlink']: ButtonLink
     }
 }
 
-export default Buttonlink;
+export default ButtonLink;

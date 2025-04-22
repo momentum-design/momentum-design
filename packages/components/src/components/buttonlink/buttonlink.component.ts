@@ -20,9 +20,9 @@ import type { IconNames } from '../icon/icon.types';
  * @event blur - (React: onBlur) Fired when the buttonLink loses keyboard or mouse focus.
  *
  */
-class Buttonlink extends ButtonComponentMixin(Link) {
+class ButtonLink extends ButtonComponentMixin(Link) {
   /**
-   * Buttonlink sizing is based on the buttonlink type.
+   * ButtonLink sizing is based on the buttonlink type.
     * - **Pill buttonlink**: 40, 32, 28, 24.
     * - **Icon buttonlink**: 64, 52, 40, 32, 28, 24.
     * - Tertiary icon buttonlink can also be 20.
@@ -66,4 +66,4 @@ class Buttonlink extends ButtonComponentMixin(Link) {
   public static override styles: Array<CSSResult> = [...Button.styles];
 }
 
-export default Buttonlink;
+export default ButtonLink;
