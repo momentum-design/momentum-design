@@ -41,14 +41,14 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
    * @default false
    */
  @property({ type: Boolean, reflect: true })
- checked: boolean = false;
+ checked = false;
 
  /**
    * The name of the radio.
    * @default ''
    */
  @property({ type: String })
- name: string = '';
+ name = '';
 
  constructor() {
    super();

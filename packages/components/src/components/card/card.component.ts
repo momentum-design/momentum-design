@@ -3,7 +3,7 @@ import { queryAssignedElements } from 'lit/decorators.js';
 import styles from './card.styles';
 import { Component } from '../../models';
 import { VARIANTS, DEFAULTS } from './card.constants';
-import { BUTTON_COLORS } from '../button/button.constants';
+import { BUTTON_COLORS, BUTTON_VARIANTS } from '../button/button.constants';
 import { CardComponentMixin } from '../../utils/mixins/CardComponentMixin';
 
 /**
@@ -98,7 +98,7 @@ class Card extends CardComponentMixin(Component) {
          if (!element.matches(DEFAULTS.BUTTON) && element.getAttribute('data-btn-type') !== 'icon') {
            element.remove();
          } else {
-           element.setAttribute('variant', 'tertiary');
+           element.setAttribute('variant', BUTTON_VARIANTS.TERTIARY);
            element.setAttribute('size', '32');
          }
        });
@@ -123,9 +123,10 @@ class Card extends CardComponentMixin(Component) {
    let arrayItems: Array<HTMLElement> = [];
    if (tagname === DEFAULTS.LINK && this.footerLink?.length) {
      arrayItems = this.footerLink;
-   } else if (tagname === DEFAULTS.BUTTON && variant === 'primary' && this.footerButtonPrimary?.length) {
+   } else if (tagname === DEFAULTS.BUTTON && variant === BUTTON_VARIANTS.PRIMARY && this.footerButtonPrimary?.length) {
      arrayItems = this.footerButtonPrimary;
-   } else if (tagname === DEFAULTS.BUTTON && variant === 'secondary' && this.footerButtonSecondary?.length) {
+   } else if (tagname === DEFAULTS.BUTTON
+    && variant === BUTTON_VARIANTS.SECONDARY && this.footerButtonSecondary?.length) {
      arrayItems = this.footerButtonSecondary;
    }
    // if there are more than one instance, remove them.
@@ -191,9 +192,9 @@ class Card extends CardComponentMixin(Component) {
       <div part="footer">
         <slot name="footer-link" @slotchange=${() => this.handleFooterSlot(DEFAULTS.LINK)}></slot>
         <slot name="footer-button-secondary" 
-        @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, 'secondary')}></slot>
+        @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.SECONDARY)}></slot>
         <slot name="footer-button-primary" 
-        @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, 'primary')}></slot>
+        @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.PRIMARY)}></slot>
       </div>
     </div>
     `;

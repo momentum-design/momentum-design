@@ -32,28 +32,28 @@ export const CardComponentMixin = <T extends Constructor<LitElement>>(
    * @default ''
    */
   @property({ type: String, attribute: 'card-title' })
-  cardTitle: string = '';
+  cardTitle = '';
 
   /**
    * The subtitle of the card - part of header section
    * @default ''
    */
   @property({ type: String })
-  subtitle: string = '';
+  subtitle = '';
 
   /**
    * The image source URL to render on the card
    * @default ''
    */
   @property({ type: String, attribute: 'image-src' })
-  imageSrc: string = '';
+  imageSrc = '';
 
   /**
    * The image alt for accessibility support
    * @default ''
    */
   @property({ type: String, attribute: 'image-alt' })
-  imageAlt: string = '';
+  imageAlt = '';
 
   /**
    * The variant of the card. It can either be set to 'border' or 'ghost'

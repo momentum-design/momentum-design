@@ -7,11 +7,13 @@ import Badge from './components/badge';
 import Brandvisual from './components/brandvisual';
 import Bullet from './components/bullet';
 import Button from './components/button';
+import Card from './components/card';
+import CardButton from './components/cardbutton';
+import CardCheckbox from './components/cardcheckbox';
+import CardRadio from './components/cardradio';
 import Checkbox from './components/checkbox';
 import Chip from './components/chip';
 import Coachmark from './components/coachmark';
-import StaticCheckbox from './components/staticcheckbox';
-import StaticRadio from './components/staticradio';
 import Divider from './components/divider';
 import FilterChip from './components/filterchip';
 import FormfieldGroup from './components/formfieldgroup';
@@ -35,18 +37,16 @@ import ScreenreaderAnnouncer from './components/screenreaderannouncer';
 import Searchfield from './components/searchfield';
 import Select from './components/select';
 import Spinner from './components/spinner';
+import StaticCheckbox from './components/staticcheckbox';
+import StaticRadio from './components/staticradio';
 import Tab from './components/tab';
+import TabList from './components/tablist';
 import Text from './components/text';
 import Textarea from './components/textarea';
 import ThemeProvider from './components/themeprovider';
 import Toggle from './components/toggle';
 import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
-import TabList from './components/tablist';
-import Card from './components/card';
-import CardCheckbox from './components/cardcheckbox';
-import Cardradio from './components/cardradio';
-import Cardbutton from './components/cardbutton';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -73,9 +73,9 @@ export {
   Bullet,
   Button,
   Card,
-  Cardbutton,
+  CardButton,
   CardCheckbox,
-  Cardradio,
+  CardRadio,
   Checkbox,
   Chip,
   Coachmark,
