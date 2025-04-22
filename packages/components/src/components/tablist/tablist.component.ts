@@ -29,10 +29,7 @@ import { getFirstTab, getLastTab, getNextTab, getPreviousTab, findTab, getActive
  * **Accessibility notes for consuming (have to be explicitly set when you consume the component)**
  *
  * - Each element that contains the `content panel` for a `tab` has role `tabpanel`.
- * - If the tab list has a visible label,
- *   the element with role `tablist` has `data-aria-labelledby`
- *   needs to be a value that refers to the labelling element.
- *   Otherwise, the `tablist` element needs to have a label provided by `data-aria-label`.
+ * - The `tablist` element needs to have a label provided by `data-aria-label`.
  * - Each element with role `tab` has the property `aria-controls`
  *  that should refer to its associated `tabpanel` element.
  * - Each element with role `tabpanel` has the property `aria-labelledby` referring to its associated `tab` element.
@@ -64,18 +61,8 @@ class TabList extends Component {
   activeTabId?: string;
 
   /**
-   * Selector for the element that provides a label for the tablist.
-   */
-  @property({ type: String, attribute: 'data-aria-labelledby' })
-  dataAriaLabelledby?: string;
-
-  /**
-   * Label for the tablist in case aria-labelledby is not provided.
+   * Label for the tablist.
    * This is used when the tablist does not have a visible label.
-   * Defaults to 'Tab List'.
-   * <br/>
-   * Note: If both `data-aria-labelledby` and `data-aria-label` are provided,
-   * the `data-aria-labelledby` will be used.
    */
   @property({ type: String, attribute: 'data-aria-label' })
   dataAriaLabel?: string;
@@ -554,8 +541,7 @@ class TabList extends Component {
       class="container" 
       role="tablist" 
       tabindex="-1" 
-      aria-label="${ifDefined(this.dataAriaLabel)}" 
-      aria-labelledby="${ifDefined(this.dataAriaLabelledby)}">
+      aria-label="${ifDefined(this.dataAriaLabel)}">
         <slot></slot>
       </div>
       ${arrowButton(ARROW_BUTTON_DIRECTION.FORWARD)}`;

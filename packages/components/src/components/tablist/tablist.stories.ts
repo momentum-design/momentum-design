@@ -12,7 +12,6 @@ const render = (args: Args) => html`
   @keyup="${action('onkeyup')}"
   @keydown="${action('onkeydown')}"
   active-tab-id="${args['active-tab-id']}"
-  data-aria-labelledby=${args['data-aria-labelledby']}
   data-aria-label=${args['data-aria-label']}>
   <mdc-tab
     variant=${args.tabvariant}
@@ -79,9 +78,6 @@ const meta: Meta = {
   },
   argTypes: {
     'active-tab-id': {
-      control: 'text',
-    },
-    'data-aria-labelledby': {
       control: 'text',
     },
     'data-aria-label': {
