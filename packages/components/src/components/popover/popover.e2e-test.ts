@@ -111,6 +111,29 @@ const visualTestingSetup = async (componentsPage: ComponentsPage) => {
     index += 1;
   }
 
+  const popoverWithSelect = `
+    <mdc-button id="select-popover-trigger">Select Button</mdc-button>
+    <mdc-popover triggerid="select-popover-trigger" interactive>
+      <div style="width: 15rem;">
+        <mdc-select id="select-popover-1">
+          <mdc-option value="1">Option 1</mdc-option>
+          <mdc-option value="2">Option 2</mdc-option>
+          <mdc-option value="3">Option 3</mdc-option>
+        </mdc-select>
+        <mdc-select id="select-popover-2">
+          <mdc-option value="4">Option 4</mdc-option>
+          <mdc-option value="5">Option 5</mdc-option>
+          <mdc-option value="6">Option 6</mdc-option>
+        </mdc-select>
+        <mdc-select id="select-popover-3">
+          <mdc-option value="7">Option 7</mdc-option>
+          <mdc-option value="8">Option 8</mdc-option>
+          <mdc-option value="9">Option 9</mdc-option>
+        </mdc-select>
+      </div>
+    </mdc-popover>
+  `;
+
   await componentsPage.mount({
     html: `
     <div class="popoverWrapper">
@@ -126,11 +149,19 @@ const visualTestingSetup = async (componentsPage: ComponentsPage) => {
           Popover Contrast
         </mdc-text>
       </mdc-popover>
+      ${popoverWithSelect}
+      <br/></br/>
     </div>`,
     clearDocument: true,
   });
 
   const popoverWrapper = componentsPage.page.locator('.popoverWrapper');
+  const selectPopoverTrigger = componentsPage.page.locator('#select-popover-trigger');
+  await selectPopoverTrigger.click();
+  const selectPopoverInternal = componentsPage.page.locator('#select-popover-2');
+  await selectPopoverInternal.waitFor();
+  await selectPopoverInternal.click();
+
   await popoverWrapper.waitFor();
   return popoverWrapper;
 };
@@ -466,7 +497,7 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
   });
 };
 
-test.use({ viewport: { width: 600, height: 2000 } });
+test.use({ viewport: { width: 600, height: 2100 } });
 test('mdc-popover', async ({ componentsPage }) => {
   /**
    * ATTRIBUTES

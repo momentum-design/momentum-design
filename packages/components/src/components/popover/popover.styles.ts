@@ -49,7 +49,6 @@ const styles = css`
   :host::part(popover-content) {
     position: relative;
     padding: 0.75rem;
-    overflow-y: auto;
     min-width: max-content;
     z-index: 9998;
     max-height: var(--mdc-popover-max-height);

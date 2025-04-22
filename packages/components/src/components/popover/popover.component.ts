@@ -1,15 +1,15 @@
+import { arrow, autoUpdate, computePosition, flip, offset, shift, size } from '@floating-ui/dom';
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
-import { computePosition, autoUpdate, offset, flip, shift, arrow, size } from '@floating-ui/dom';
-import styles from './popover.styles';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
 import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
-import { popoverStack } from './popover.stack';
-import type { PopoverPlacement, PopoverTrigger, PopoverColor } from './popover.types';
-import { DEFAULTS, POPOVER_PLACEMENT, TRIGGER, COLOR } from './popover.constants';
 import { ValueOf } from '../../utils/types';
+import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants';
 import { PopoverEventManager } from './popover.events';
+import { popoverStack } from './popover.stack';
+import styles from './popover.styles';
+import { PopoverColor, PopoverPlacement, PopoverTrigger } from './popover.types';
 import { PopoverUtils } from './popover.utils';
 
 /**
@@ -625,6 +625,7 @@ class Popover extends FocusTrapMixin(Component) {
             if (!popoverContent) return;
             Object.assign(popoverContent.style, {
               maxHeight: `${availableHeight}px`,
+              overflowY: 'auto',
             });
           },
           padding: 50,
