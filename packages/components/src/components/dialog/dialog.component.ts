@@ -24,6 +24,10 @@ import { DialogEventManager } from './dialog.events';
  *   with the ID of the element labeling the dialog.
  * - If a triggerId is provided, the triggering element will be set as the aria-labelledby value if none is provided.
  *
+ * **Note: Programmatic show/hide requires the ? prefix on the visible attribute**
+ * - Use `?visible=true/false` as an attribute instead of `visible=true/false`
+ * - Reference docs for more info: https://lit.dev/docs/templates/expressions/#boolean-attribute-expressions
+ *
  * @dependency mdc-button
  * @dependency mdc-text
  *
