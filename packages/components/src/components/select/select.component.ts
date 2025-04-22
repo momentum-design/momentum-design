@@ -48,9 +48,9 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   /**
    * height attribute of the select field. If set,
    * then a scroll bar will be visible when there more options than the adjusted height.
-   * @default 'auto'
+   * @default auto
    */
-  @property({ type: String, attribute: 'height' }) height = 'auto';
+  @property({ type: String }) height = 'auto';
 
   /** @internal */
   @queryAssignedElements() optionsList!: Array<HTMLElement>;
@@ -69,6 +69,9 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
 
   /** @internal */
   @state() activeDescendant = '';
+
+  /** @internal */
+  @state() popoverWidth = '100%';
 
   /**
    * @internal
@@ -259,6 +262,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         break;
       case KEYS.ESCAPE:
         this.closePopover();
+        event.stopPropagation();
         break;
       case KEYS.HOME:
         this.setFocusAndTabIndex(0);
@@ -484,7 +488,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         placement="${POPOVER_PLACEMENT.BOTTOM_START}"
         @shown="${this.handlePopoverOpen}"
         @hidden="${this.handlePopoverClose}"
-        style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
+        style="--mdc-popover-max-width: ${this.popoverWidth}; --mdc-popover-max-height: ${this.height};"
       >
         <slot @click="${this.handleOptionsClick}"></slot>
       </mdc-popover>
