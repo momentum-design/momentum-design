@@ -90,7 +90,6 @@ const meta: Meta = {
 export default meta;
 
 export const Example: StoryObj = {
-  render,
   args: {
     children: 'VisitLink',
     disabled: false,
@@ -104,14 +103,12 @@ export const Example: StoryObj = {
 };
 
 export const PillButtonLink: StoryObj = {
-  render,
   args: {
     ...Example.args,
   },
 };
 
 export const PillWithPrefixIcon: StoryObj = {
-  render,
   args: {
     ...Example.args,
     'prefix-icon': 'placeholder-bold',
@@ -119,7 +116,6 @@ export const PillWithPrefixIcon: StoryObj = {
 };
 
 export const PillWithPostfixIcon: StoryObj = {
-  render,
   args: {
     ...Example.args,
     'postfix-icon': 'placeholder-bold',

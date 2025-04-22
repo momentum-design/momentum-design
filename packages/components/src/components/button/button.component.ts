@@ -1,6 +1,6 @@
 import type { PropertyValues } from 'lit';
-import { CSSResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { CSSResult, html } from 'lit';
+import { property, state } from 'lit/decorators.js';
 import { ButtonComponentMixin } from '../../utils/mixins/ButtonComponentMixin';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
 import type { IconNames } from '../icon/icon.types';
@@ -49,7 +49,8 @@ class Button extends ButtonComponentMixin(Buttonsimple) {
    * - Tertiary icon button can also be 20.
    * @default 32
    */
-  @property({ type: Number, reflect: true }) override size: PillButtonSize | IconButtonSize = DEFAULTS.SIZE;
+  @property({ type: Number })
+  override size: PillButtonSize | IconButtonSize = DEFAULTS.SIZE;
 
   /**
    * This property defines the ARIA role for the element. By default, it is set to 'button'.
@@ -58,23 +59,24 @@ class Button extends ButtonComponentMixin(Buttonsimple) {
    * - Custom behaviors are implemented that require a specific ARIA role for accessibility purposes.
    * @default button
    */
-  @property({ type: String, reflect: true }) override role = 'button';
+  @property({ type: String, reflect: true })
+  override role = 'button';
 
   /**
    * @internal
    */
-  private prevPrefixIcon?: IconNames;
+  @state() private prefixFilledIconName?: IconNames;
 
   /**
    * @internal
    */
-  private prevPostfixIcon?: IconNames;
+  @state() private postfixFilledIconName?: IconNames;
 
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
 
     if (changedProperties.has('active')) {
-      this.modifyIconName(this.active);
+      this.inferFilledIconName(this.active);
     }
     if (changedProperties.has('size')) {
       this.setSize(this.size);
@@ -90,6 +92,7 @@ class Button extends ButtonComponentMixin(Buttonsimple) {
       this.setSize(this.size);
     }
     if (changedProperties.has('prefixIcon') || changedProperties.has('postfixIcon')) {
+      this.inferFilledIconName(this.active);
       this.inferButtonType();
     }
   }
@@ -102,24 +105,30 @@ class Button extends ButtonComponentMixin(Buttonsimple) {
    *
    * @param active - The active state.
    */
-  private modifyIconName(active?: boolean) {
+  private inferFilledIconName(active?: boolean) {
     if (active) {
       if (this.prefixIcon) {
-        this.prevPrefixIcon = this.prefixIcon;
-        this.prefixIcon = `${getIconNameWithoutStyle(this.prefixIcon)}-filled` as IconNames;
+        this.prefixFilledIconName = `${getIconNameWithoutStyle(this.prefixIcon)}-filled` as IconNames;
       }
       if (this.postfixIcon) {
-        this.prevPostfixIcon = this.postfixIcon;
-        this.postfixIcon = `${getIconNameWithoutStyle(this.postfixIcon)}-filled` as IconNames;
+        this.postfixFilledIconName = `${getIconNameWithoutStyle(this.postfixIcon)}-filled` as IconNames;
       }
     } else {
-      if (this.prevPrefixIcon) {
-        this.prefixIcon = this.prevPrefixIcon;
-      }
-      if (this.prevPostfixIcon) {
-        this.postfixIcon = this.prevPostfixIcon;
-      }
+      this.prefixFilledIconName = this.prefixIcon;
+      this.postfixFilledIconName = this.postfixIcon;
     }
+  }
+
+  public override render() {
+    return html`
+      ${this.prefixFilledIconName
+    ? html` <mdc-icon name="${this.prefixFilledIconName as IconNames}" part="prefix-icon"></mdc-icon>`
+    : ''}
+      <slot @slotchange=${this.inferButtonType}></slot>
+      ${this.postfixFilledIconName
+    ? html` <mdc-icon name="${this.postfixFilledIconName as IconNames}" part="postfix-icon"></mdc-icon>`
+    : ''}
+    `;
   }
 
   public static override styles: Array<CSSResult> = [...Buttonsimple.styles, ...styles];

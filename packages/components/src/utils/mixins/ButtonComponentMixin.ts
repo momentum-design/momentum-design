@@ -1,4 +1,3 @@
-import { html } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import {
   BUTTON_COLORS,
@@ -37,13 +36,15 @@ export const ButtonComponentMixin = <T extends Constructor<Component>>(
    * The name of the icon to display as a prefix.
    * The icon is displayed on the left side of the button.
    */
-  @property({ type: String, attribute: 'prefix-icon', reflect: true }) prefixIcon?: IconNames;
+  @property({ type: String, attribute: 'prefix-icon', reflect: true })
+  prefixIcon?: IconNames;
 
   /**
    * The name of the icon to display as a postfix.
    * The icon is displayed on the right side of the button.
    */
-  @property({ type: String, attribute: 'postfix-icon', reflect: true }) postfixIcon?: IconNames;
+  @property({ type: String, attribute: 'postfix-icon', reflect: true })
+  postfixIcon?: IconNames;
 
   /**
     * There are 3 variants of button: primary, secondary, tertiary. They are styled differently.
@@ -52,13 +53,15 @@ export const ButtonComponentMixin = <T extends Constructor<Component>>(
     * - **Tertiary**: No background or border, appears as plain text but retains all button functionalities.
     * @default primary
     */
-  @property({ type: String }) variant: ButtonVariant = DEFAULTS.VARIANT;
+  @property({ type: String })
+  variant: ButtonVariant = DEFAULTS.VARIANT;
 
   /**
    * There are 5 colors for button: positive, negative, accent, promotional, default.
    * @default default
    */
-  @property({ type: String }) color: ButtonColor = DEFAULTS.COLOR;
+  @property({ type: String })
+  color: ButtonColor = DEFAULTS.COLOR;
 
   /** @internal */
   @state() typeInternal: ButtonTypeInternal = DEFAULTS.TYPE_INTERNAL;
@@ -124,16 +127,6 @@ export const ButtonComponentMixin = <T extends Constructor<Component>>(
       this.typeInternal = BUTTON_TYPE_INTERNAL.PILL;
       this.setAttribute('data-btn-type', 'pill');
     }
-  }
-
-  protected override render() {
-    return html`
-      ${this.prefixIcon ? html` <mdc-icon name="${this.prefixIcon as IconNames}" part="prefix-icon"></mdc-icon>` : ''}
-      <slot @slotchange=${this.inferButtonType}></slot>
-      ${this.postfixIcon
-    ? html` <mdc-icon name="${this.postfixIcon as IconNames}" part="postfix-icon"></mdc-icon>`
-    : ''}
-    `;
   }
   }
   // Cast return type to your mixin's interface intersected with the superClass type

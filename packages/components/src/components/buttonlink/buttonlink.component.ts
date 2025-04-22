@@ -1,9 +1,10 @@
-import { CSSResult, PropertyValues } from 'lit';
+import { CSSResult, html, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import Link from '../link/link.component';
 import Button from '../button/button.component';
 import { ButtonComponentMixin } from '../../utils/mixins/ButtonComponentMixin';
 import { DEFAULTS } from '../button/button.constants';
+import type { IconNames } from '../icon/icon.types';
 
 /**
  * `mdc-buttonlink` is a link that looks like a button.
@@ -21,10 +22,10 @@ import { DEFAULTS } from '../button/button.constants';
  */
 class Buttonlink extends ButtonComponentMixin(Link) {
   /**
-   * Button sizing is based on the button type.
-    * - **Pill button**: 40, 32, 28, 24.
-    * - **Icon button**: 64, 52, 40, 32, 28, 24.
-    * - Tertiary icon button can also be 20.
+   * Buttonlink sizing is based on the buttonlink type.
+    * - **Pill buttonlink**: 40, 32, 28, 24.
+    * - **Icon buttonlink**: 64, 52, 40, 32, 28, 24.
+    * - Tertiary icon buttonlink can also be 20.
     * @default 32
     */
   /* Note: TypeScript does not allow overriding the type of an inherited attribute when extending a class,
@@ -50,6 +51,16 @@ class Buttonlink extends ButtonComponentMixin(Link) {
     if (changedProperties.has('prefixIcon') || changedProperties.has('postfixIcon')) {
       this.inferButtonType();
     }
+  }
+
+  public override render() {
+    return html`
+      ${this.prefixIcon ? html` <mdc-icon name="${this.prefixIcon as IconNames}" part="prefix-icon"></mdc-icon>` : ''}
+      <slot @slotchange=${this.inferButtonType}></slot>
+      ${this.postfixIcon
+    ? html` <mdc-icon name="${this.postfixIcon as IconNames}" part="postfix-icon"></mdc-icon>`
+    : ''}
+    `;
   }
 
   public static override styles: Array<CSSResult> = [...Button.styles];
