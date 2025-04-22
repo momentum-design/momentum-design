@@ -30,9 +30,12 @@ const render = (args: Args) => html`
       @destroyed="${action('ondestroyed')}"
       ><div style="margin-right: 32px;">
         The toggletip with a
-        <mdc-link inline icon-name="placeholder-bold" size="large">
-          <a href="https://www.webex.com" target="_blank" rel="noopener noreferrer">link</a>
-        </mdc-link>.
+        <mdc-link
+          inline icon-name="placeholder-bold"
+          href="https://www.webex.com" target="_blank" rel="noopener noreferrer"
+        >
+          Link
+        </mdc-link>
       </div>
     </mdc-toggletip>
   </div>`;

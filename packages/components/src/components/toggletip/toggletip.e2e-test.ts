@@ -44,9 +44,9 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.triggerID ? `triggerID="${restArgs.triggerID}"` : ''}
       ><div style="margin-right: 32px;">
           The toggletip with a
-          <mdc-link inline="" icon-name="placeholder-bold" size="large">
-            <a href="https://www.webex.com" target="_blank" rel="noopener noreferrer">link</a>
-          </mdc-link>.
+          <mdc-link
+            inline icon-name="placeholder-bold" href="https://www.webex.com" target="_blank" rel="noopener noreferrer"
+          >link</mdc-link>.
         </div>
       </mdc-toggletip>
 
@@ -217,7 +217,7 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
       await expect(toggletip).toBeVisible();
       await expect(toggletip.locator('.popover-close')).toBeFocused();
       await componentsPage.actionability.pressTab();
-      await expect(toggletip.locator('a')).toBeFocused();
+      await expect(toggletip.locator('mdc-link')).toBeFocused();
     });
     await test.step(
       'toggletip shall dismiss after focus moves out of last focusable element in toggletip',
@@ -226,7 +226,7 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
         await componentsPage.page.keyboard.press('Enter');
         await expect(toggletip).toBeVisible();
         await componentsPage.actionability.pressTab();
-        await expect(toggletip.locator('a')).toBeFocused();
+        await expect(toggletip.locator('mdc-link')).toBeFocused();
         await componentsPage.actionability.pressTab();
         await expect(toggletip).not.toBeVisible();
         await expect(triggerButton).toBeFocused();
@@ -288,7 +288,7 @@ const visualTestingSetup = async (componentsPage: ComponentsPage) => {
   return toggletipWrapper;
 };
 
-test.use({ viewport: { width: 600, height: 600 } });
+test.use({ viewport: { width: 600, height: 400 } });
 test('mdc-toggletip', async ({ componentsPage }) => {
   /**
    * ATTRIBUTES
