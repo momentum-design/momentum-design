@@ -1,11 +1,10 @@
 import { CSSResult, html, nothing } from 'lit';
 import type { PropertyValues } from 'lit';
 import { property, query, queryAssignedElements, state } from 'lit/decorators.js';
-
+import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './tablist.styles';
 import { Component } from '../../models';
 import { ARROW_BUTTON_DIRECTION, KEYCODES } from './tablist.constants';
-
 import Tab from '../tab/tab.component';
 import Button from '../button/button.component';
 import type { ArrowButtonDirectionType } from './tablist.types';
@@ -31,8 +30,9 @@ import { getFirstTab, getLastTab, getNextTab, getPreviousTab, findTab, getActive
  *
  * - Each element that contains the `content panel` for a `tab` has role `tabpanel`.
  * - If the tab list has a visible label,
- *   the element with role `tablist` has `aria-labelledby` needs to be a value that refers to the labelling element.
- *   Otherwise, the `tablist` element needs to have a label provided by `aria-label`.
+ *   the element with role `tablist` has `data-aria-labelledby`
+ *   needs to be a value that refers to the labelling element.
+ *   Otherwise, the `tablist` element needs to have a label provided by `data-aria-label`.
  * - Each element with role `tab` has the property `aria-controls`
  *  that should refer to its associated `tabpanel` element.
  * - Each element with role `tabpanel` has the property `aria-labelledby` referring to its associated `tab` element.
@@ -166,8 +166,6 @@ class TabList extends Component {
       }
     }
 
-    this.setAriaLabelledByOrAriaLabel();
-
     const resizeObserver = new ResizeObserver(async () => {
       const activeElement = this.tabsContainer?.shadowRoot?.activeElement;
 
@@ -206,10 +204,6 @@ class TabList extends Component {
   public override async update(changedProperties: PropertyValues<this>): Promise<void> {
     super.update(changedProperties);
 
-    if (changedProperties.has('dataAriaLabelledby') || changedProperties.has('dataAriaLabel')) {
-      this.setAriaLabelledByOrAriaLabel();
-    }
-
     if (changedProperties.has('activeTabId')) {
       if (!this.tabs || !this.activeTabId) {
         return;
@@ -235,23 +229,6 @@ class TabList extends Component {
       }
     }
   }
-
-  /**
-   * Set aria-labelledby attribute on the tablist element.
-   * If it does not exist, set aria-label attribute.
-   * As fallback, set aria-label to 'Tab List'.
-   *
-   * @internal
-   */
-  private setAriaLabelledByOrAriaLabel = (): void => {
-    if (this.dataAriaLabelledby) {
-      this.tabsContainer?.setAttribute('aria-labelledby', this.dataAriaLabelledby);
-      this.tabsContainer?.removeAttribute('aria-label');
-    } else {
-      this.tabsContainer?.setAttribute('aria-label', this.dataAriaLabel || 'Tab List');
-      this.tabsContainer?.removeAttribute('aria-labelledby');
-    }
-  };
 
   /**
    * Dispatch the change event.
@@ -573,7 +550,12 @@ class TabList extends Component {
         : nothing}`;
 
     return html` ${arrowButton('backward')}
-      <div class="container" role="tablist" tabindex="-1">
+      <div 
+      class="container" 
+      role="tablist" 
+      tabindex="-1" 
+      aria-label="${ifDefined(this.dataAriaLabel)}" 
+      aria-labelledby="${ifDefined(this.dataAriaLabelledby)}">
         <slot></slot>
       </div>
       ${arrowButton(ARROW_BUTTON_DIRECTION.FORWARD)}`;
