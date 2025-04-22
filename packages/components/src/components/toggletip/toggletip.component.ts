@@ -29,16 +29,16 @@ import styles from './toggletip.styles';
  *
  * @event shown - (React: onShown) This event is dispatched when the toggletip is shown
  * @event hidden - (React: onHidden) This event is dispatched when the toggletip is hidden
- * @event created - (React: onCreated) This event is dispatched when the toggletip is created
- * (added to the DOM)
- * @event destroyed - (React: onDestroyed) This event is dispatched when the toggletip is
- * destroyed (removed from the DOM)
+ * @event created - (React: onCreated) This event is dispatched when the toggletip is created (added to the DOM)
+ * @event destroyed - (React: onDestroyed) This event is dispatched when the toggletip
+ * is destroyed (removed from the DOM)
  *
  * @cssproperty --mdc-toggletip-max-width - The maximum width of the toggletip.
  * @cssproperty --mdc-toggletip-text-color - The text color of the toggletip.
  * @cssproperty --mdc-toggletip-text-color-contrast - The text color of the toggletip
  *  when the color is contrast.
  *
+ * @slot - Default slot for the toggletip content
  */
 class ToggleTip extends Popover {
   @queryAssignedNodes()
