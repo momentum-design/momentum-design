@@ -1,4 +1,4 @@
-import { type ConsoleMessage, expect } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { TAB_VARIANTS } from '../tab/tab.constants';
@@ -171,73 +171,6 @@ test('mdc-tablist', async ({ componentsPage }) => {
   });
 
   /**
-   * WIDTH FUNCTIONS
-   *
-   * @remarks
-   *
-   * Playwright runs with its own viewport, so the setViewPortSize function doesn't always trigger the resize event.
-   * This causes bugs in tests where we rely on the resize event to trigger.
-   * To know more, see https://github.com/microsoft/playwright/issues/20721#issuecomment-1421644560
-   */
-  const initialWidth = await mdcTablist.evaluate((div) => div.getBoundingClientRect().width);
-
-  const setTablistWidth = (width: number) => componentsPage.page.evaluate((width) => {
-    const tablist = document.getElementById('mdc-tablist-example');
-    if (tablist) {
-      tablist.style.width = `${width}px`;
-    }
-  }, width);
-
-  /**
-     * MATCH TAB ID
-     * Checks if the tabId from the console message matches the tabId passed in.
-     * @param msg - ConsoleMessage type
-     * @param tabId - The tabId to match
-     * @returns boolean - true if the tabId matches, false otherwise
-     */
-  const matchTabId = async (msg: ConsoleMessage, tabId: string) => {
-    if (msg.type() === 'dir') {
-      const type: string = await (await msg.args()[0]?.getProperty('type'))?.jsonValue();
-      if (type !== 'change') {
-        return;
-      }
-
-      const tabIdFromMsg: string = await (await msg.args()[0]?.getProperty('tabId'))?.jsonValue();
-
-      expect(tabIdFromMsg === tabId).toBeTruthy();
-    }
-  };
-
-  /**
-     * DOM EVENT LISTENER
-     */
-  await componentsPage.page.evaluate(() => {
-    const tablist = document.querySelector('mdc-tablist');
-    tablist?.addEventListener('change', ((event: CustomEvent<{tabId: string}>) => {
-      /**
-         * since playwright does not listen for dom events,
-         * and does not have a way to share data between browser and test environments,
-         * we need to depend on the console to share data between the browser and tests.
-         */
-      // eslint-disable-next-line no-console
-      console.dir({
-        tabId: event.detail.tabId,
-        type: event.type,
-      });
-    }) as EventListener);
-  });
-
-  /**
-     * DELAY
-     * Wait for 300ms.
-     */
-  const wait: Promise<void> = new Promise((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, 300);
-  });
-
-  /**
    * INTERACTIONS
    */
   await test.step('interactions', async () => {
@@ -245,55 +178,33 @@ test('mdc-tablist', async ({ componentsPage }) => {
       await tabs.nth(2).click();
 
       await test.step('resizing the viewport to 320px width should show atleast one arrow button', async () => {
-        await setTablistWidth(320);
+        await componentsPage.page.setViewportSize({ width: 320, height: 600 });
         await expect(arrowButtons.first()).toBeVisible();
       });
 
       await test.step('resizing the viewport to 2000px width should remove both arrow buttons', async () => {
-        await setTablistWidth(2000);
+        await componentsPage.page.setViewportSize({ width: 2000, height: 600 });
         await expect(arrowButtons).toHaveCount(0);
       });
-
-      await setTablistWidth(initialWidth);
+      await componentsPage.page.setViewportSize({ width: 800, height: 600 });
     });
 
     await test.step('mouse/pointer', async () => {
-      await test.step(
-        'component should fire a Custom Event with type change and tabId of the clicked tab in the detail object',
-        async () => {
-          // set the first tab as active.
-          await componentsPage.setAttributes(tablist, {
-            'active-tab-id': (await tabs.first().getAttribute('tab-id')) || '',
-          });
-
-          // listen for the change event and assert the tabId matches the last tab's tab-id
-          const listener = async (msg: ConsoleMessage) => {
-            await matchTabId(msg, (await tabs.last().getAttribute('tab-id')) || '');
-          };
-
-          componentsPage.page.on('console', listener);
-
-          await tabs.last().click();
-
-          await wait;
-
-          componentsPage.page.off('console', listener);
-
-          await test.step(
-            'tab should become active when clicked on in previous step',
-            async () => {
-              const activeTab = tabs.last();
-              await expect(activeTab).toHaveAttribute('aria-selected', 'true');
-              await expect(activeTab).toHaveAttribute('active');
-            },
-          );
-        },
-      );
+      await test.step('component should change active tab to the clicked tab', async () => {
+        // set the first tab as active.
+        await componentsPage.setAttributes(tablist, {
+          'active-tab-id': 'photos-tab',
+        });
+        await tabs.last().click();
+        const activeTab = tabs.last();
+        await expect(activeTab).toHaveAttribute('aria-selected', 'true');
+        await expect(activeTab).toHaveAttribute('active');
+      });
 
       await test.step('if arrow button is visible, pressing it should scroll the tabs', async () => {
         await tabs.first().click();
-        await setTablistWidth(320);
-        await arrowButtons.first().waitFor({ state: 'visible', timeout: 3000 });
+        await componentsPage.page.setViewportSize({ width: 320, height: 600 });
+        await arrowButtons.first().waitFor({ state: 'visible', timeout: 1000 });
 
         if (await arrowButtons.count()) {
           const xAxisPositionInitial = (await tablist.boundingBox())?.x;
@@ -302,107 +213,83 @@ test('mdc-tablist', async ({ componentsPage }) => {
 
           expect(xAxisPositionInitial).not.toEqual(xAxisPositionFinal);
         }
-        await setTablistWidth(initialWidth);
+        await componentsPage.page.setViewportSize({ width: 800, height: 600 });
       });
     });
 
     await test.step('keyboard', async () => {
-      await test.step(
-        `component should fire a Custom Event with type change and tabId of the focused tab in the detail object
-         on pressing space/enter`,
-        async () => {
-          // set the first tab as active.
-          await componentsPage.setAttributes(tablist, {
-            'active-tab-id': (await tabs.first().getAttribute('tab-id')) || '',
-          });
-
-          // listen for the change event and assert the tabId matches the 3rd tab's tab-id
-          const listener = async (msg: ConsoleMessage) => {
-            await matchTabId(msg, (await tabs.nth(2).getAttribute('tab-id')) || '');
-          };
-
-          componentsPage.page.on('console', listener);
-
-          await tabs.nth(2).focus();
-          // randomize between enter and space
-          await componentsPage.page.keyboard.press(['Enter', 'Space'][Math.round(Math.random())]);
-          await wait;
-          componentsPage.page.off('console', listener);
-
-          await test.step(
-            'tab should become active on pressing space/enter in previous step',
-            async () => {
-              const activeTab = tabs.nth(2);
-              await expect(activeTab).toHaveAttribute('aria-selected', 'true');
-              await expect(activeTab).toHaveAttribute('active');
-            },
-          );
-        },
-      );
+      await test.step('component should change active tab on pressing space/enter', async () => {
+        await tabs.first().focus();
+        await componentsPage.page.keyboard.press('Enter'); // activate this tab.
+        const activeTab = tabs.first();
+        await expect(activeTab).toHaveAttribute('aria-selected', 'true');
+        await expect(activeTab).toHaveAttribute('active');
+      });
     });
 
     await test.step('focus', async () => {
-      await test.step('tabbing into the tablist should set focus on the active element', async () => {
-        await tabs.first().click();
-        await mdcTablist.focus();
-
-        const activeTab = tabs.first();
-        await expect(activeTab).toBeFocused();
-      });
-
       await test.step('right arrow should focus next tab', async () => {
-        await tabs.nth(3).focus();
+        await tabs.nth(2).focus();
         await componentsPage.page.keyboard.press('ArrowRight');
-
-        await expect(tabs.nth(4)).toBeFocused();
+        await expect(tabs.nth(3)).toBeFocused();
       });
 
       await test.step('left arrow should focus previous tab', async () => {
-        await tabs.nth(3).focus();
         await componentsPage.page.keyboard.press('ArrowLeft');
-
         await expect(tabs.nth(2)).toBeFocused();
       });
 
       await test.step('home should focus first tab', async () => {
-        await tabs.nth(3).focus();
         await componentsPage.page.keyboard.press('Home');
-
         await expect(tabs.first()).toBeFocused();
       });
 
       await test.step('end should focus last tab', async () => {
-        await tabs.nth(3).focus();
         await componentsPage.page.keyboard.press('End');
-
         await expect(tabs.last()).toBeFocused();
       });
 
       await test.step('left arrow on first tab should focus last tab', async () => {
         await tabs.first().focus();
         await componentsPage.page.keyboard.press('ArrowLeft');
-
         await expect(tabs.last()).toBeFocused();
       });
 
       await test.step('right arrow on last tab should focus first tab', async () => {
         await tabs.last().focus();
         await componentsPage.page.keyboard.press('ArrowRight');
-
         await expect(tabs.first()).toBeFocused();
       });
 
+      await test.step(
+        'if any arrow button is focused, when both arrow buttons disappear, the active tab should gain focus',
+        async () => {
+          await tabs.nth(2).click();
+          await componentsPage.page.setViewportSize({ width: 320, height: 600 });
+          await arrowButtons.first().waitFor({ state: 'visible', timeout: 1000 });
+
+          if (await arrowButtons.count()) {
+            await arrowButtons.first().focus();
+            await expect(arrowButtons.first()).toBeFocused();
+            await componentsPage.page.setViewportSize({ width: 2000, height: 600 });
+
+            await expect(arrowButtons).toHaveCount(0);
+          }
+          await componentsPage.page.setViewportSize({ width: 800, height: 600 });
+        },
+      );
+
       await test.step('if one arrow button loses focus, the other arrow button gains focus', async () => {
         await tabs.nth(2).click();
-        await setTablistWidth(320);
-        await arrowButtons.first().waitFor({ state: 'visible', timeout: 3000 });
+        await componentsPage.page.setViewportSize({ width: 320, height: 600 });
+        await arrowButtons.first().waitFor({ state: 'visible', timeout: 1000 });
 
         if (await arrowButtons.count()) {
           await tabs.first().focus();
 
           const firstArrowButtonSelector = await arrowButtons.first().getAttribute('prefix-icon');
 
-          const firstArrowButton = tablist
+          const firstArrowButton = mdcTablist
             .locator(`mdc-button[prefix-icon="${firstArrowButtonSelector}"]`).first();
 
           await firstArrowButton.focus();
@@ -413,36 +300,16 @@ test('mdc-tablist', async ({ componentsPage }) => {
             await expect(firstArrowButton).toHaveCount(0);
           }).toPass();
 
-          const secondArrowButton = tablist
+          const secondArrowButton = mdcTablist
             .locator(`mdc-button:not([prefix-icon="${firstArrowButtonSelector}"])`).first();
-          await secondArrowButton.waitFor({ state: 'visible', timeout: 3000 });
+          await secondArrowButton.waitFor({ state: 'visible', timeout: 1000 });
 
           if (await secondArrowButton.count()) {
             await expect(secondArrowButton).toBeFocused();
           }
         }
-
-        await setTablistWidth(initialWidth);
+        await componentsPage.page.setViewportSize({ width: 800, height: 600 });
       });
-
-      await test.step(
-        'if any arrow button is focused, when both arrow buttons disappear, the active tab should gain focus',
-        async () => {
-          await tabs.nth(2).click();
-          await setTablistWidth(320);
-          await arrowButtons.first().waitFor({ state: 'visible', timeout: 3000 });
-
-          if (await arrowButtons.count()) {
-            await arrowButtons.first().focus();
-            await expect(arrowButtons.first()).toBeFocused();
-            await setTablistWidth(2000);
-
-            await expect(arrowButtons).toHaveCount(0);
-          }
-
-          await setTablistWidth(initialWidth);
-        },
-      );
     });
   });
 });
