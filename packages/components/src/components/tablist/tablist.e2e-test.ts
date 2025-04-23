@@ -12,11 +12,11 @@ type Set = {
 
 const renderTabs = (variant: Variant = TAB_VARIANTS.PILL, hideText = false) => `<mdc-tab
   variant=${variant}
-  ${hideText ? '' : 'text="Photos"'}
-  aria-label="Photos"
-  icon-name="add-photo-bold"
-  tab-id="photos-tab"
-  aria-controls="photos-panel"
+  ${hideText ? '' : 'text="Calls"'}
+  aria-label="Calls"
+  icon-name="audio-call-bold"
+  tab-id="calls-tab"
+  aria-controls="calls-panel"
   active>
   </mdc-tab>
   <mdc-tab variant=${variant}
@@ -44,11 +44,11 @@ const renderTabs = (variant: Variant = TAB_VARIANTS.PILL, hideText = false) => `
   </mdc-tab>
   <mdc-tab
   variant=${variant}
-  ${hideText ? '' : 'text="Downloads"'}
-  aria-label="Downloads"
-  icon-name="cloud-download-bold"
-  tab-id="downloads-tab"
-  aria-controls="downloads-panel">
+  ${hideText ? '' : 'text="Meetings"'}
+  aria-label="Meetings"
+  icon-name="calendar-month-bold"
+  tab-id="meetings-tab"
+  aria-controls="meetings-panel">
   </mdc-tab>`;
 
 const setup = async (args: Set) => {
@@ -66,21 +66,21 @@ const setup = async (args: Set) => {
 
       <!-- The following is an example of the markup for the tab panels.
       This markup is not part of the component and is only provided for context. -->
-        <div id="photos-panel" role="tabpanel" aria-labelledby="photos-tab" hidden>
-          <p>Photos panel</p>
-        </div>
-        <div id="videos-panel" role="tabpanel" aria-labelledby="videos-tab" hidden>
-          <p>Videos panel</p>
-        </div>
-        <div id="music-panel" role="tabpanel" aria-labelledby="music-tab" hidden>
-          <p>Music panel</p>
-        </div>
-        <div id="documents-panel" role="tabpanel" aria-labelledby="documents-tab" hidden>
-          <p>Documents panel</p>
-        </div>
-        <div id="downloads-panel" role="tabpanel" aria-labelledby="downloads-tab" hidden>
-          <p>Downloads panel</p>
-        </div>
+        <div id="calls-panel" role="tabpanel" aria-labelledby="calls-tab" hidden>
+        <p>Calls panel</p>
+      </div>
+      <div id="videos-panel" role="tabpanel" aria-labelledby="videos-tab" hidden>
+        <p>Videos panel</p>
+      </div>
+      <div id="music-panel" role="tabpanel" aria-labelledby="music-tab" hidden>
+        <p>Music panel</p>
+      </div>
+      <div id="documents-panel" role="tabpanel" aria-labelledby="documents-tab" hidden>
+        <p>Documents panel</p>
+      </div>
+      <div id="meetings-panel" role="tabpanel" aria-labelledby="meetings-tab" hidden>
+        <p>Meetings panel</p>
+      </div>
       <!-- End of example markup for the tab panels -->
     </div>
     `,
@@ -147,14 +147,14 @@ test('mdc-tablist', async ({ componentsPage }) => {
       await expect(activeTab).toHaveAttribute('aria-selected', 'true');
     });
 
-    await test.step('attribute active-tab-id should be set to downloads-tab', async () => {
-      await componentsPage.setAttributes(mdcTablist, { 'active-tab-id': 'downloads-tab' });
-      await expect(mdcTablist).toHaveAttribute('active-tab-id', 'downloads-tab');
+    await test.step('attribute active-tab-id should be set to meetings-tab', async () => {
+      await componentsPage.setAttributes(mdcTablist, { 'active-tab-id': 'meetings-tab' });
+      await expect(mdcTablist).toHaveAttribute('active-tab-id', 'meetings-tab');
       const activeTab = tabs.last();
       await expect(activeTab).toHaveAttribute('aria-selected', 'true');
       await expect(activeTab).toHaveAttribute('active');
       await expect(tabs.first()).not.toHaveAttribute('active');
-      await expect(activeTab).toHaveAttribute('aria-controls', 'downloads-panel');
+      await expect(activeTab).toHaveAttribute('aria-controls', 'meetings-panel');
     });
 
     await test.step('attribute data-aria-label should be set to aria-label on tablist container', async () => {
@@ -193,7 +193,7 @@ test('mdc-tablist', async ({ componentsPage }) => {
       await test.step('component should change active tab to the clicked tab', async () => {
         // set the first tab as active.
         await componentsPage.setAttributes(tablist, {
-          'active-tab-id': 'photos-tab',
+          'active-tab-id': 'calls-tab',
         });
         await tabs.last().click();
         const activeTab = tabs.last();
