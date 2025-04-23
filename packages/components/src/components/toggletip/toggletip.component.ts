@@ -44,7 +44,7 @@ class ToggleTip extends Popover {
   @queryAssignedNodes()
   private defaultSlotNodes!: Array<Node>;
 
-  /* @internal */
+  /** @internal */
   @state() currentAnnouncement = '';
 
   /**
