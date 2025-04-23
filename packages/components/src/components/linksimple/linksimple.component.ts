@@ -13,7 +13,7 @@ import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
  * The `children` of the `mdc-linksimple` component can be customized to suit
  * different use cases, including text, icons, or other inline content.
  *
- * For the child to be an icon, the mdc-icon component should be used to render .
+ * For the child to be an icon, the `mdc-icon` component should be used to render.
  *
  * @tagname mdc-linksimple
  *
