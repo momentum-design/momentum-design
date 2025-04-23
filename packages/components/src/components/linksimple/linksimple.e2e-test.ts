@@ -15,6 +15,8 @@ type SetupOptions = {
   addPageFooter?: boolean;
 };
 
+const INVERTED_BG_STYLE = 'background-color: var(--mds-color-theme-inverted-background-normal);';
+
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...rest } = args;
 
@@ -46,7 +48,6 @@ test('mdc-linksimple', async ({ componentsPage }) => {
 
     await test.step('default attributes', async () => {
       await expect(link).not.toHaveAttribute('disabled');
-      await expect(link).not.toHaveAttribute('icon-name');
       await expect(link).not.toHaveAttribute('inline');
       await expect(link).not.toHaveAttribute('inverted');
     });
@@ -103,46 +104,32 @@ test('mdc-linksimple', async ({ componentsPage }) => {
     const stickerSheet = new StickerSheet(componentsPage, 'mdc-linksimple');
     stickerSheet.setChildren('Label');
 
-    const baseCombos: Record<string, string | undefined>[] = [
-      {},
-      { disabled: '' },
-      { inline: '' },
-      { inline: '', disabled: '' },
-    ];
+    // without inverted background
+    await stickerSheet.createMarkupWithCombination({});
+    stickerSheet.setAttributes({ disabled: '' });
+    await stickerSheet.createMarkupWithCombination({});
+    stickerSheet.setAttributes({ inline: '' });
+    await stickerSheet.createMarkupWithCombination({});
+    stickerSheet.setAttributes({ disabled: '', inline: '' });
+    await stickerSheet.createMarkupWithCombination({});
 
-    const createVariants = async (
-      baseAttrs: Record<string, string | undefined>,
-      inline = false,
-      inverted = false,
-    ) => {
-      const attrs: Record<string, string | undefined> = { ...baseAttrs };
-      if (inline) attrs.inline = '';
-      if (inverted) attrs.inverted = '';
-
-      const filteredAttrs = Object.fromEntries(
-        Object.entries(attrs).filter(([, v]) => v !== undefined),
-      ) as Record<string, string>;
-
-      stickerSheet.setAttributes(filteredAttrs);
-    };
-
-    // First 8 rows: inverted = false, Next 8 rows: inverted = true
-    let invertedPattern = false;
-    const maxRows = 16;
-
-    for (let i = 0; i < maxRows; i += 1) {
-      const baseAttrs = baseCombos[i % baseCombos.length];
-      await createVariants(baseAttrs, false, invertedPattern);
-      if ((i + 1) % 8 === 0) {
-        invertedPattern = !invertedPattern;
-      }
-    }
+    // with inverted background
+    stickerSheet.setAttributes({ inverted: '', style: INVERTED_BG_STYLE });
+    await stickerSheet.createMarkupWithCombination({});
+    stickerSheet.setAttributes({ disabled: '', inverted: '', style: INVERTED_BG_STYLE });
+    await stickerSheet.createMarkupWithCombination({});
+    stickerSheet.setAttributes({ inline: '', inverted: '', style: INVERTED_BG_STYLE });
+    await stickerSheet.createMarkupWithCombination({});
+    stickerSheet.setAttributes({ disabled: '', inline: '', inverted: '', style: INVERTED_BG_STYLE });
+    await stickerSheet.createMarkupWithCombination({});
 
     await stickerSheet.mountStickerSheet();
+    const container = stickerSheet.getWrapperContainer();
 
-    await test.step('matches screenshot of linksimple element', async () => {
-      const container = stickerSheet.getWrapperContainer();
-      await componentsPage.visualRegression.takeScreenshot('mdc-linksimple', { element: container });
+    await test.step('matches screenshot of link element', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-linksimple', {
+        element: container,
+      });
     });
   });
 
