@@ -41,6 +41,7 @@ import Textarea from './components/textarea';
 import ThemeProvider from './components/themeprovider';
 import Toggle from './components/toggle';
 import Tooltip from './components/tooltip';
+import ToggleTip from './components/toggletip';
 import VirtualizedList from './components/virtualizedlist';
 import TabList from './components/tablist';
 import Linksimple from './components/linksimple';
@@ -100,6 +101,7 @@ export {
   StaticCheckbox,
   StaticRadio,
   Textarea,
+  ToggleTip,
   Tooltip,
   Searchfield,
   Brandvisual,
