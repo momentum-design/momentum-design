@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { Octokit } from '@octokit/core';
-import { createPullRequest } from 'octokit-plugin-create-pull-request';
+import { createPullRequest, DELETE_FILE } from 'octokit-plugin-create-pull-request';
 import type { Options } from 'octokit-plugin-create-pull-request/dist-types/types';
 import { DEFAULTS } from '../../shared/export-constants';
 
@@ -220,9 +220,8 @@ class Github {
     }
 
     return chunksOfFilesToBeDeleted?.map((assets, index) => ({
-      files: assets.reduce((accum: { [key: string]: null }, cur: string) => {
-        // null is used to delete the file
-        accum[cur] = null;
+      files: assets.reduce((accum: { [key: string]: symbol }, cur: string) => {
+        accum[cur] = DELETE_FILE;
         return accum;
       }, {}),
       commit: `${this.config.git.prCommitMsg}-delete-chunk${existingChunksLength + index}`,
