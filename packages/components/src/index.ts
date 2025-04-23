@@ -10,6 +10,8 @@ import Button from './components/button';
 import Checkbox from './components/checkbox';
 import Chip from './components/chip';
 import Coachmark from './components/coachmark';
+import StaticCheckbox from './components/staticcheckbox';
+import StaticRadio from './components/staticradio';
 import Divider from './components/divider';
 import FilterChip from './components/filterchip';
 import FormfieldGroup from './components/formfieldgroup';
@@ -26,6 +28,7 @@ import Option from './components/option';
 import Popover from './components/popover';
 import Presence from './components/presence';
 import Progressbar from './components/progressbar';
+import Progressspinner from './components/progressspinner';
 import Radio from './components/radio';
 import RadioGroup from './components/radiogroup';
 import ScreenreaderAnnouncer from './components/screenreaderannouncer';
@@ -38,7 +41,9 @@ import Textarea from './components/textarea';
 import ThemeProvider from './components/themeprovider';
 import Toggle from './components/toggle';
 import Tooltip from './components/tooltip';
+import ToggleTip from './components/toggletip';
 import VirtualizedList from './components/virtualizedlist';
+import TabList from './components/tablist';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -92,12 +97,17 @@ export {
   OptGroup,
   Progressbar,
   ScreenreaderAnnouncer,
+  StaticCheckbox,
+  StaticRadio,
   Textarea,
+  ToggleTip,
   Tooltip,
   Searchfield,
   Brandvisual,
   Appheader,
   Select,
+  TabList,
+  Progressspinner,
 };
 // Types Exports
 export type {

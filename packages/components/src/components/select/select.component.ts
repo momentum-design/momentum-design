@@ -6,13 +6,13 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
-import type { IconNames } from '../icon/icon.types';
 import { TAG_NAME as OPTION_GROUP_TAG_NAME } from '../optgroup/optgroup.constants';
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { ARROW_ICON } from './select.constants';
 import styles from './select.styles';
+import type { ArrowIcon } from './select.types';
 
 /**
  * The mdc-select component is a dropdown selection control that allows users to pick an option from a predefined list.
@@ -48,15 +48,15 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   /**
    * height attribute of the select field. If set,
    * then a scroll bar will be visible when there more options than the adjusted height.
-   * @default 'auto'
+   * @default auto
    */
-  @property({ type: String, attribute: 'height' }) height = 'auto';
+  @property({ type: String }) height = 'auto';
 
   /** @internal */
   @queryAssignedElements() optionsList!: Array<HTMLElement>;
 
   /** @internal */
-  @state() private baseIconName: IconNames = ARROW_ICON.ARROW_DOWN;
+  @state() private baseIconName: ArrowIcon = ARROW_ICON.ARROW_DOWN;
 
   /** @internal */
   @state() selectedValueText?: string;
@@ -65,10 +65,13 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   @state() selectedValue = '';
 
   /** @internal */
-  @state() showPopover = false;
+  @state() displayPopover = false;
 
   /** @internal */
   @state() activeDescendant = '';
+
+  /** @internal */
+  @state() popoverWidth = '100%';
 
   /**
    * @internal
@@ -108,10 +111,12 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   }
 
   private handlePopoverOpen(): void {
+    this.displayPopover = true;
     this.baseIconName = ARROW_ICON.ARROW_UP;
   }
 
   private handlePopoverClose(): void {
+    this.displayPopover = false;
     this.baseIconName = ARROW_ICON.ARROW_DOWN;
   }
 
@@ -224,7 +229,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    * @param event - The keyboard event.
    */
   private handleKeydown(event: KeyboardEvent): void {
-    if (this.showPopover) {
+    if (this.displayPopover) {
       this.handlePopoverOnOpen(event);
     } else {
       this.handlePopoverOnClose(event);
@@ -246,21 +251,26 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       case KEYS.SPACE:
         this.updateTabIndexForAllOptions(event.target);
         this.closePopover();
+        event.preventDefault();
         break;
       case KEYS.ENTER:
         this.updateTabIndexForAllOptions(event.target);
         this.closePopover();
+        event.preventDefault();
         // if the popover is closed, then we submit the form.
         this.form?.requestSubmit();
         break;
       case KEYS.ESCAPE:
         this.closePopover();
+        event.stopPropagation();
         break;
       case KEYS.HOME:
         this.setFocusAndTabIndex(0);
+        event.preventDefault();
         break;
       case KEYS.END:
         this.setFocusAndTabIndex(this.getAllValidOptions().length - 1);
+        event.preventDefault();
         break;
       case KEYS.ARROW_DOWN:
       case KEYS.ARROW_UP:
@@ -296,10 +306,12 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       case KEYS.HOME:
         this.openPopover();
         this.setFocusAndTabIndex(0);
+        event.preventDefault();
         break;
       case KEYS.END:
         this.openPopover();
         this.setFocusAndTabIndex(this.getAllValidOptions().length - 1);
+        event.preventDefault();
         break;
       default:
         break;
@@ -372,12 +384,12 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   }
 
   private openPopover(): void {
-    this.showPopover = true;
+    this.displayPopover = true;
     this.resetActivedescendant();
   }
 
   private closePopover(): void {
-    this.showPopover = false;
+    this.displayPopover = false;
     this.resetActivedescendant();
   }
 
@@ -422,11 +434,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         ?autofocus="${this.autofocus}"
         ?disabled="${this.disabled}"
         ?required="${!!this.requiredLabel}"
-        aria-activedescendant="${this.activeDescendant}"
-        aria-expanded="${this.showPopover}"
-        aria-haspopup="listbox"
-        aria-label="${this.dataAriaLabel ?? ''}"
-        aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
         @mousedown="${(event: MouseEvent) => event.preventDefault()}"
       >
         ${this.getOptionsContentFromSlot()}
@@ -473,27 +480,19 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         id="options-popover"
         triggerid="select-base-triggerid"
         interactive
-        ?visible="${this.showPopover}"
+        ?visible="${this.displayPopover}"
         hide-on-outside-click
         focus-back-to-trigger
         focus-trap
-        prevent-scroll
         role="listbox"
         placement="${POPOVER_PLACEMENT.BOTTOM_START}"
         @shown="${this.handlePopoverOpen}"
         @hidden="${this.handlePopoverClose}"
-        style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
+        style="--mdc-popover-max-width: ${this.popoverWidth}; --mdc-popover-max-height: ${this.height};"
       >
         <slot @click="${this.handleOptionsClick}"></slot>
       </mdc-popover>
     `;
-  }
-
-  private shouldFocusSelect(): boolean {
-    if (this.disabled || this.readonly) {
-      return false;
-    }
-    return true;
   }
 
   public override updated(changedProperties: PropertyValues): void {
@@ -512,8 +511,14 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         <div
           id="select-base-triggerid"
           part="base-container"
-          tabindex="${this.shouldFocusSelect() ? '0' : '-1'}"
-          class="${this.shouldFocusSelect() ? 'mdc-focus-ring' : ''}"
+          tabindex="${this.disabled ? '-1' : '0'}"
+          class="${this.disabled ? '' : 'mdc-focus-ring'}"
+          role="combobox"
+          aria-activedescendant="${this.activeDescendant}"
+          aria-haspopup="listbox"
+          aria-label="${this.dataAriaLabel ?? ''}"
+          aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
+          aria-expanded="${this.displayPopover ? 'true' : 'false'}"
         >
           <mdc-text
             part="base-text ${this.selectedValueText ? 'selected' : ''}"

@@ -24,6 +24,10 @@ import styles from './avatarbutton.styles';
  * @event focus - (React: onFocus) This event is dispatched when the avatarbutton receives focus.
  *
  * @tagname mdc-avatarbutton
+ *
+ * @cssproperty --mdc-avatarbutton-overlay-background-color-rest - Background color of the overlay in rest state
+ * @cssproperty --mdc-avatarbutton-overlay-background-color-hover - Background color of the overlay in hover state
+ * @cssproperty --mdc-avatarbutton-overlay-background-color-active - Background color of the overlay in active state
  */
 class AvatarButton extends AvatarComponentMixin(IconNameMixin(Buttonsimple)) {
     /**
@@ -55,8 +59,8 @@ class AvatarButton extends AvatarComponentMixin(IconNameMixin(Buttonsimple)) {
 
     public override render() {
       return html`
+      <div part="overlay" aria-hidden="true"></div>
       <mdc-avatar
-        slot="prefixIcon"
         ?is-typing="${this.isTyping}"
         counter="${ifDefined(this.counter)}"
         icon-name="${ifDefined(this.iconName)}"
