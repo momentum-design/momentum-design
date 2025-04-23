@@ -1,12 +1,10 @@
-import { PropertyValues, CSSResult, html, nothing } from 'lit';
+import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
-import { Component } from '../../models';
-import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import { DEFAULTS, LINK_ICON_SIZES, LINK_SIZES } from './link.constants';
 import styles from './link.styles';
 import type { LinkSize } from './link.types';
-import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
+import Linksimple from '../linksimple/linksimple.component';
 
 /**
  * `mdc-link` component can be used to navigate to a different page
@@ -21,38 +19,12 @@ import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
  *
  * @tagname mdc-link
  *
- * @event click - (React: onClick) Fired when the user activates the buttonLink using a mouse or assistive technology.
- * @event keydown - (React: onKeyDown) Fired when the user presses a key while the buttonLink has focus.
- * @event focus - (React: onFocus) Fired when the buttonLink receives keyboard or mouse focus.
- * @event blur - (React: onBlur) Fired when the buttonLink loses keyboard or mouse focus.
- *
- * @cssproperty --mdc-link-border-radius - Border radius of the link
- * @cssproperty --mdc-link-color-active - Text and icon color of the link in active state
- * @cssproperty --mdc-link-color-disabled - Text and icon color of the link in disabled state
- * @cssproperty --mdc-link-color-hover - Text and icon color of the link in hover state
- * @cssproperty --mdc-link-color-normal - Text and icon color of the link in normal state
- * @cssproperty --mdc-link-icon-margin-left - Gap between the text and icon (only applicable when an icon is set)
- * @cssproperty --mdc-link-inverted-color-active - Text and icon color of the inverted link in active state
- * @cssproperty --mdc-link-inverted-color-disabled - Text and icon color of the inverted link in disabled state
- * @cssproperty --mdc-link-inverted-color-hover - Text and icon color of the inverted link in hover state
- * @cssproperty --mdc-link-inverted-color-normal - Text and icon color of the inverted link in normal state
- * @cssproperty --mdc-link-text-decoration-disabled - Text decoration of the link in disabled state for all variants
+ * @event click - (React: onClick) Fired when the user activates the Link using a mouse or assistive technology.
+ * @event keydown - (React: onKeyDown) Fired when the user presses a key while the Link has focus.
+ * @event focus - (React: onFocus) Fired when the Link receives keyboard or mouse focus.
+ * @event blur - (React: onBlur) Fired when the Link loses keyboard or mouse focus.
  */
-class Link extends DisabledMixin(TabIndexMixin(IconNameMixin(Component))) {
-  /**
-   * The link can be inline or standalone.
-   * @default false
-   */
-  @property({ type: Boolean, reflect: true })
-  inline: boolean = DEFAULTS.INLINE;
-
-  /**
-   * The link color can be inverted by setting the inverted attribute to true.
-   * @default false
-   */
-  @property({ type: Boolean, reflect: true })
-  inverted: boolean = DEFAULTS.INVERTED;
-
+class Link extends IconNameMixin(Linksimple) {
   /**
    * Size of the link.
    * Acceptable values include:
@@ -65,51 +37,6 @@ class Link extends DisabledMixin(TabIndexMixin(IconNameMixin(Component))) {
    */
   @property({ type: String, reflect: true })
   size: LinkSize = DEFAULTS.LINK_SIZE;
-
-  /**
-   * Href for navigation. The URL that the hyperlink points to
-   */
-  @property({ type: String, reflect: true })
-  href = '#';
-
-  /**
-   * Optional target: _blank, _self, _parent, _top and _unfencedTop
-   */
-  @property({ type: String, reflect: true })
-  target = '_self';
-
-  /**
-   * Optional rel attribute that defines the relationship of the linked URL as space-separated link types.
-   */
-  @property({ type: String, reflect: true })
-  rel?: string;
-
-  /**
-   * Stores the previous tabindex if set by user
-   * so it can be restored after disabling
-   * @internal
-   */
-  private prevTabindex = 0;
-
-  public override connectedCallback(): void {
-    super.connectedCallback();
-    this.setAttribute('role', 'link');
-    this.addEventListener('click', this.handleNavigation);
-    this.addEventListener('keydown', this.handleNavigation);
-  }
-
-  public override disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.removeEventListener('click', this.handleNavigation);
-    this.removeEventListener('keydown', this.handleNavigation);
-  }
-
-  private handleNavigation = (e: MouseEvent | KeyboardEvent): void => {
-    if ((e.type === 'click' || (e instanceof KeyboardEvent && e.key === 'Enter')) && this.href) {
-      if (this.disabled) return;
-      window.open(this.href, this.target, this.rel);
-    }
-  };
 
   /**
    * Method to get the size of the trailing icon based on the link size.
@@ -126,33 +53,6 @@ class Link extends DisabledMixin(TabIndexMixin(IconNameMixin(Component))) {
     }
   }
 
-  /**
-   * Sets or removes `aria-disabled` and updates `tabIndex` to reflect
-   * the disabled state. When disabled, the element becomes unfocusable;
-   * when enabled, the previous `tabIndex` is restored.
-   *
-   * @param disabled - Whether the element should be disabled
-   */
-  private setDisabled(disabled: boolean) {
-    if (disabled) {
-      this.setAttribute('aria-disabled', 'true');
-      this.prevTabindex = this.tabIndex;
-      this.tabIndex = -1;
-    } else {
-      if (this.tabIndex === -1) {
-        this.tabIndex = this.prevTabindex;
-      }
-      this.removeAttribute('aria-disabled');
-    }
-  }
-
-  public override update(changedProperties: PropertyValues): void {
-    super.update(changedProperties);
-    if (changedProperties.has('disabled')) {
-      this.setDisabled(this.disabled);
-    }
-  }
-
   public override render() {
     return html`
       <slot></slot>
@@ -166,7 +66,7 @@ class Link extends DisabledMixin(TabIndexMixin(IconNameMixin(Component))) {
     `;
   }
 
-  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...Linksimple.styles, ...styles];
 }
 
 export default Link;
