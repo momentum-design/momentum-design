@@ -327,6 +327,8 @@ export const Default: StoryObj = {
     'show-arrow': true,
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
+    'disable-aria-expanded': true,
+    interactive: DEFAULTS.INTERACTIVE,
   },
 };
 
@@ -347,6 +349,7 @@ export const interactiveContent: StoryObj = {
     size: true,
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
+    'disable-aria-expanded': false,
   },
 };
 
