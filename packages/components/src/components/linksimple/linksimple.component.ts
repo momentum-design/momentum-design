@@ -22,15 +22,15 @@ import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
  * @event focus - (React: onFocus) Fired when the buttonLink receives keyboard or mouse focus.
  * @event blur - (React: onBlur) Fired when the buttonLink loses keyboard or mouse focus.
  *
- * @cssproperty --mdc-link-border-radius - Border radius of the link
- * @cssproperty --mdc-link-color-active - Text and icon color of the link in active state
- * @cssproperty --mdc-link-color-disabled - Text and icon color of the link in disabled state
- * @cssproperty --mdc-link-color-hover - Text and icon color of the link in hover state
- * @cssproperty --mdc-link-color-normal - Text and icon color of the link in normal state
- * @cssproperty --mdc-link-inverted-color-active - Text and icon color of the inverted link in active state
- * @cssproperty --mdc-link-inverted-color-disabled - Text and icon color of the inverted link in disabled state
- * @cssproperty --mdc-link-inverted-color-hover - Text and icon color of the inverted link in hover state
- * @cssproperty --mdc-link-inverted-color-normal - Text and icon color of the inverted link in normal state
+ * @cssproperty --mdc-link-border-radius - Border radius of the link.
+ * @cssproperty --mdc-link-color-active - Color of the link’s child content in the active state.
+ * @cssproperty --mdc-link-color-disabled - Color of the link’s child content in the disabled state.
+ * @cssproperty --mdc-link-color-hover - Color of the link’s child content in the hover state.
+ * @cssproperty --mdc-link-color-normal - Color of the link’s child content in the normal state.
+ * @cssproperty --mdc-link-inverted-color-active - Color of the inverted link’s child content in the active state.
+ * @cssproperty --mdc-link-inverted-color-disabled - Color of the inverted link’s child content in the disabled state.
+ * @cssproperty --mdc-link-inverted-color-hover - Color of the inverted link’s child content in the hover state.
+ * @cssproperty --mdc-link-inverted-color-normal - Color of the inverted link’s child content in the normal state.
  */
 class Linksimple extends DisabledMixin(TabIndexMixin(Component)) {
   /**
