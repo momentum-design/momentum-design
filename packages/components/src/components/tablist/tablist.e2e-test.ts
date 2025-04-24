@@ -59,7 +59,7 @@ const setup = async (args: Set) => {
       <mdc-tablist
         active-tab-id=${restArgs['active-tab-id']}
         data-aria-label=${restArgs['data-aria-label']}
-        data-testid="tablist-component"
+        id="tablist-component"
       >
         ${renderTabs()}
       </mdc-tablist>
@@ -171,6 +171,20 @@ test('mdc-tablist', async ({ componentsPage }) => {
   });
 
   /**
+   * WIDTH FUNCTIONS
+   *
+   * Playwright runs with its own viewport, so the setViewPortSize function doesn't always trigger the resize event.
+   * This causes bugs in tests where we rely on the resize event to trigger.
+   * To know more, see https://github.com/microsoft/playwright/issues/20721#issuecomment-1421644560
+   */
+  const setTablistWidth = (width: number) => componentsPage.page.evaluate((width) => {
+    const tablist = document.getElementById('tablist-component');
+    if (tablist) {
+      tablist.style.width = `${width}px`;
+    }
+  }, width);
+
+  /**
    * INTERACTIONS
    */
   await test.step('interactions', async () => {
@@ -178,15 +192,15 @@ test('mdc-tablist', async ({ componentsPage }) => {
       await tabs.nth(2).click();
 
       await test.step('resizing the viewport to 320px width should show atleast one arrow button', async () => {
-        await componentsPage.page.setViewportSize({ width: 320, height: 600 });
+        await setTablistWidth(320);
         await expect(arrowButtons.first()).toBeVisible();
       });
 
       await test.step('resizing the viewport to 2000px width should remove both arrow buttons', async () => {
-        await componentsPage.page.setViewportSize({ width: 2000, height: 600 });
+        await setTablistWidth(2000);
         await expect(arrowButtons).toHaveCount(0);
       });
-      await componentsPage.page.setViewportSize({ width: 800, height: 600 });
+      await setTablistWidth(800);
     });
 
     await test.step('mouse/pointer', async () => {
@@ -195,15 +209,18 @@ test('mdc-tablist', async ({ componentsPage }) => {
         await componentsPage.setAttributes(tablist, {
           'active-tab-id': 'calls-tab',
         });
-        await tabs.last().click();
-        const activeTab = tabs.last();
+        const activeTab = tabs.nth(1);
+        await activeTab.click();
         await expect(activeTab).toHaveAttribute('aria-selected', 'true');
         await expect(activeTab).toHaveAttribute('active');
+        await expect(mdcTablist).toHaveAttribute('active-tab-id', 'videos-tab');
+        await expect(tabs.nth(0)).not.toHaveAttribute('active');
+        await expect(tabs.nth(0)).toHaveAttribute('aria-selected', 'false');
       });
 
       await test.step('if arrow button is visible, pressing it should scroll the tabs', async () => {
         await tabs.first().click();
-        await componentsPage.page.setViewportSize({ width: 320, height: 600 });
+        await setTablistWidth(320);
         await arrowButtons.first().waitFor({ state: 'visible', timeout: 1000 });
 
         if (await arrowButtons.count()) {
@@ -213,7 +230,7 @@ test('mdc-tablist', async ({ componentsPage }) => {
 
           expect(xAxisPositionInitial).not.toEqual(xAxisPositionFinal);
         }
-        await componentsPage.page.setViewportSize({ width: 800, height: 600 });
+        await setTablistWidth(800);
       });
     });
 
@@ -265,23 +282,23 @@ test('mdc-tablist', async ({ componentsPage }) => {
         'if any arrow button is focused, when both arrow buttons disappear, the active tab should gain focus',
         async () => {
           await tabs.nth(2).click();
-          await componentsPage.page.setViewportSize({ width: 320, height: 600 });
+          await setTablistWidth(320);
           await arrowButtons.first().waitFor({ state: 'visible', timeout: 1000 });
 
           if (await arrowButtons.count()) {
             await arrowButtons.first().focus();
             await expect(arrowButtons.first()).toBeFocused();
-            await componentsPage.page.setViewportSize({ width: 2000, height: 600 });
+            await setTablistWidth(2000);
 
             await expect(arrowButtons).toHaveCount(0);
           }
-          await componentsPage.page.setViewportSize({ width: 800, height: 600 });
+          await setTablistWidth(800);
         },
       );
 
       await test.step('if one arrow button loses focus, the other arrow button gains focus', async () => {
         await tabs.nth(2).click();
-        await componentsPage.page.setViewportSize({ width: 320, height: 600 });
+        await setTablistWidth(320);
         await arrowButtons.first().waitFor({ state: 'visible', timeout: 1000 });
 
         if (await arrowButtons.count()) {
@@ -308,7 +325,7 @@ test('mdc-tablist', async ({ componentsPage }) => {
             await expect(secondArrowButton).toBeFocused();
           }
         }
-        await componentsPage.page.setViewportSize({ width: 800, height: 600 });
+        await setTablistWidth(800);
       });
     });
   });
