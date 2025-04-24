@@ -97,6 +97,12 @@ test('mdc-linksimple', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press('Enter');
         await expect(componentsPage.page.locator('#content')).toBeVisible();
       });
+
+      await test.step('navigate with mouse click', async () => {
+        await footerLink.click();
+        await expect(footerLink).toBeFocused();
+        await expect(componentsPage.page.locator('#content')).toBeVisible();
+      });
     });
   });
 
