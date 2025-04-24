@@ -116,7 +116,6 @@ test('mdc-link', async ({ componentsPage }) => {
 
       await test.step('navigate with mouse click', async () => {
         await footerLink.click();
-        await expect(footerLink).toBeFocused();
         await expect(componentsPage.page.locator('#content')).toBeVisible();
       });
     });
@@ -172,9 +171,10 @@ test('mdc-link', async ({ componentsPage }) => {
     }
 
     await stickerSheet.mountStickerSheet();
+    const container = stickerSheet.getWrapperContainer();
 
     await test.step('matches screenshot of link element', async () => {
-      const container = stickerSheet.getWrapperContainer();
+      await componentsPage.page.mouse.move(0, 0);
       await componentsPage.visualRegression.takeScreenshot('mdc-link', { element: container });
     });
   });

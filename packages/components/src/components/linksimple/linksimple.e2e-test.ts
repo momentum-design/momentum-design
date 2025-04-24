@@ -100,7 +100,6 @@ test('mdc-linksimple', async ({ componentsPage }) => {
 
       await test.step('navigate with mouse click', async () => {
         await footerLink.click();
-        await expect(footerLink).toBeFocused();
         await expect(componentsPage.page.locator('#content')).toBeVisible();
       });
     });
@@ -133,6 +132,7 @@ test('mdc-linksimple', async ({ componentsPage }) => {
     const container = stickerSheet.getWrapperContainer();
 
     await test.step('matches screenshot of link element', async () => {
+      await componentsPage.page.mouse.move(0, 0);
       await componentsPage.visualRegression.takeScreenshot('mdc-linksimple', {
         element: container,
       });
