@@ -1,15 +1,15 @@
+import { arrow, autoUpdate, computePosition, flip, offset, shift, size } from '@floating-ui/dom';
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
-import { computePosition, autoUpdate, offset, flip, shift, arrow, size } from '@floating-ui/dom';
-import styles from './popover.styles';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
 import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
-import { popoverStack } from './popover.stack';
-import type { PopoverPlacement, PopoverTrigger, PopoverColor } from './popover.types';
-import { DEFAULTS, POPOVER_PLACEMENT, TRIGGER, COLOR } from './popover.constants';
 import { ValueOf } from '../../utils/types';
+import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants';
 import { PopoverEventManager } from './popover.events';
+import { popoverStack } from './popover.stack';
+import styles from './popover.styles';
+import { PopoverColor, PopoverPlacement, PopoverTrigger } from './popover.types';
 import { PopoverUtils } from './popover.utils';
 
 /**
@@ -222,7 +222,7 @@ class Popover extends FocusTrapMixin(Component) {
    * aria-label attribute to be set for close button accessibility.
    * @default null
    */
-  @property({ type: String, attribute: 'close-button-aria-label' })
+  @property({ type: String, attribute: 'close-button-aria-label', reflect: true })
   closeButtonAriaLabel: string | null = null;
 
   /**
@@ -247,6 +247,7 @@ class Popover extends FocusTrapMixin(Component) {
 
   /**
    * Disable aria-expanded attribute on trigger element.
+   * Make sure to set this to false when the popover is interactive.
    * @default false
    */
   @property({ type: Boolean, reflect: true, attribute: 'disable-aria-expanded' })
@@ -367,6 +368,7 @@ class Popover extends FocusTrapMixin(Component) {
     if (changedProperties.has('visible')) {
       const oldValue = (changedProperties.get('visible') as boolean | undefined) || false;
       await this.isOpenUpdated(oldValue, this.visible);
+      this.utils.updateAriaExpandedAttribute();
     }
     if (changedProperties.has('placement')) {
       this.setAttribute(
@@ -401,6 +403,12 @@ class Popover extends FocusTrapMixin(Component) {
       || changedProperties.has('aria-labelledby')
     ) {
       this.utils.setupAccessibility();
+    }
+    if (changedProperties.has('disableAriaExpanded')) {
+      this.utils.updateAriaExpandedAttribute();
+    }
+    if (changedProperties.has('interactive')) {
+      this.utils.updateAriaHasPopupAttribute();
     }
   }
 
@@ -485,16 +493,6 @@ class Popover extends FocusTrapMixin(Component) {
       }
       if (this.hideOnEscape) {
         document.addEventListener('keydown', this.onEscapeKeydown);
-      }
-
-      if (!this.disableAriaExpanded) {
-        this.triggerElement.setAttribute('aria-expanded', 'true');
-      }
-      if (this.interactive) {
-        this.triggerElement.setAttribute(
-          'aria-haspopup',
-          this.triggerElement.getAttribute('aria-haspopup') || 'dialog',
-        );
       }
       PopoverEventManager.onShowPopover(this);
     } else {
@@ -627,6 +625,7 @@ class Popover extends FocusTrapMixin(Component) {
             if (!popoverContent) return;
             Object.assign(popoverContent.style, {
               maxHeight: `${availableHeight}px`,
+              overflowY: 'auto',
             });
           },
           padding: 50,

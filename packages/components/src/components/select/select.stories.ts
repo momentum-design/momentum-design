@@ -100,6 +100,7 @@ export const Example: StoryObj = {
     'help-text': 'Select Help Text',
     'help-text-type': '',
     'data-aria-label': 'Select label',
+    height: 'auto',
   },
 };
 
