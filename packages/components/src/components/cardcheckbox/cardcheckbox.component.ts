@@ -5,7 +5,7 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import Card from '../card/card.component';
 import { CHECK_MARK, DEFAULTS, SELECTION_TYPE } from './cardcheckbox.constants';
-import { SelectionType } from './cardcheckbox.types';
+import type { SelectionType } from './cardcheckbox.types';
 
 /**
  * cardcheckbox component extends `mdc-card` and supports checkbox selection interaction addtionally.
@@ -78,7 +78,9 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
   * Toggles the checked state
   */
  private toggleChecked() {
-   this.checked = !this.checked;
+   if (!this.disabled) {
+     this.checked = !this.checked;
+   }
  }
 
  /**

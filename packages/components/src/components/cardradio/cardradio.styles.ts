@@ -4,7 +4,6 @@ import { hostFocusRingStyles } from '../../utils/styles';
 const styles = css`
   :host {
     cursor: pointer;
-    box-sizing: border-box; // To avoid layout shifting when border size increases in the checked state.
     user-select: none;
   }
 
@@ -18,15 +17,6 @@ const styles = css`
 
   :host(:active) {
     background-color: var(--mds-color-theme-background-primary-active);
-  }
-
-  :host([disabled]) {
-    background-color: var(--mds-color-theme-background-primary-ghost);
-    color: var(--mds-color-theme-text-primary-disabled);
-  }
-
-  :host([disabled])::part(image){
-    opacity: 0.5;
   }
 
   :host([checked]){
@@ -48,6 +38,16 @@ const styles = css`
 
   :host([checked])::part(check-icon){
     color: var(--mds-color-theme-text-accent-normal);
+  }
+
+  :host([disabled]) {
+    background-color: var(--mds-color-theme-background-primary-ghost);
+    color: var(--mds-color-theme-text-primary-disabled);
+    border-color: var(--mds-color-theme-outline-primary-disabled);
+  }
+
+  :host([disabled])::part(image){
+    opacity: 0.5;
   }
 `;
 

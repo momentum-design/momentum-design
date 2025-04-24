@@ -76,7 +76,9 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
   * Toggles the checked state
   */
  private toggleChecked() {
-   this.checked = !this.checked;
+   if (!this.disabled) {
+     this.checked = !this.checked;
+   }
  }
 
  /**

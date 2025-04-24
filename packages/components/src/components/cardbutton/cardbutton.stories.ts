@@ -6,6 +6,7 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { hideControls } from '../../../config/storybook/utils';
 import { DEFAULTS, ORIENTATIONS } from '../card/card.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
+import { BUTTON_VARIANTS } from '../button/button.constants';
 
 const render = (args: Args) => html`
   <mdc-cardbutton 
@@ -70,7 +71,20 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(VALID_TEXT_TAGS),
     },
-    ...hideControls(['children']),
+    disabled: {
+      control: 'boolean',
+    },
+    'soft-disabled': {
+      control: 'boolean',
+    },
+    tabIndex: {
+      control: 'number',
+    },
+    type: {
+      control: 'select',
+      options: Object.values(BUTTON_VARIANTS),
+    },
+    ...hideControls(['children', 'active', 'size']),
     ...classArgType,
     ...styleArgType,
   },
@@ -98,6 +112,8 @@ export const Example: StoryObj = {
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: DEFAULTS.ORIENTATION,
     children: defaultChildren,
+    disabled: false,
+    'soft-disabled': false,
   },
 };
 

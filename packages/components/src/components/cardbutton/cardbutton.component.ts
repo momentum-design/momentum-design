@@ -2,7 +2,7 @@ import { CSSResult, html, nothing } from 'lit';
 import styles from './cardbutton.styles';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
 import Card from '../card/card.component';
-import { ButtonSize } from '../buttonsimple/buttonsimple.types';
+import type { ButtonSize } from '../buttonsimple/buttonsimple.types';
 import { CardComponentMixin } from '../../utils/mixins/CardComponentMixin';
 
 /**
