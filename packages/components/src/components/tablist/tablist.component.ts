@@ -154,7 +154,7 @@ class TabList extends Component {
     }
 
     const resizeObserver = new ResizeObserver(async () => {
-      const activeElement = this.tabsContainer?.shadowRoot?.activeElement;
+      const { activeElement } = document;
 
       /**
        * Keep the focused element in view.
@@ -204,12 +204,11 @@ class TabList extends Component {
       this.setActiveTab(newTab);
 
       /**
-       * If the previous activeTabId was not undefined, fire the change event.
+       * If the previous activeTabId was not undefined, focus the new tab.
        *
        * Otherwise, reset the tabindex of all tabs and set the new tabindex.
        */
       if (changedProperties.get('activeTabId')) {
-        this.fireTabChangeEvent(newTab);
         await this.focusTab(newTab);
       } else {
         this.resetTabIndexAndSetNewTabIndex(newTab);
@@ -226,7 +225,7 @@ class TabList extends Component {
    */
   private fireTabChangeEvent = (newTab: Tab): void => {
     const event = new CustomEvent('change', {
-      detail: newTab.tabId,
+      detail: { tabId: newTab.tabId },
     });
 
     this.dispatchEvent(event);
@@ -296,6 +295,12 @@ class TabList extends Component {
     await this.focusTab(tab);
 
     this.activeTabId = tab.tabId;
+
+    if (getActiveTab(this.tabs || []) !== tab) {
+      this.fireTabChangeEvent(tab);
+    } else {
+      await this.focusTab(tab);
+    }
   };
 
   /**
@@ -342,7 +347,7 @@ class TabList extends Component {
       return;
     }
 
-    if (tab !== this.shadowRoot?.activeElement) {
+    if (tab !== document?.activeElement) {
       this.resetTabIndexAndSetNewTabIndex(tab);
       tab.focus();
     }
