@@ -1088,7 +1088,7 @@
         },
         "glass": {
           "normal": {
-            "value": "{color.core.black-alpha.40}",
+            "value": "{color.core.white-alpha.5}",
             "type": "color",
             "description": "Used for glass effect background for operation pop. "
           },
@@ -1450,6 +1450,13 @@
           "normal": {
             "value": "{color.core.yellow.40}",
             "type": "color"
+          }
+        },
+        "glass": {
+          "normal": {
+            "value": "linear-gradient(180deg, {color.core.white-alpha.11} 0%, {color.core.white-alpha.5} 100%)",
+            "type": "color",
+            "description": "Used for operation pop"
           }
         }
       },

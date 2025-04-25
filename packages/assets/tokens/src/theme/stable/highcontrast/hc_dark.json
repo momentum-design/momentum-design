@@ -1408,6 +1408,13 @@
             "value": "{color.highcontrast.black.WindowTextColor}",
             "type": "color"
           }
+        },
+        "glass": {
+          "normal": {
+            "value": "{color.highcontrast.black.WindowTextColor}",
+            "type": "color",
+            "description": "Used for operation pop"
+          }
         }
       },
       "control": {

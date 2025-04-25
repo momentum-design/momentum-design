@@ -1412,6 +1412,13 @@
             "value": "{color.highcontrast.white.WindowTextColor}",
             "type": "color"
           }
+        },
+        "glass": {
+          "normal": {
+            "value": "{color.highcontrast.white.WindowTextColor}",
+            "type": "color",
+            "description": "Used for operation pop"
+          }
         }
       },
       "control": {
