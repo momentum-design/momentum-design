@@ -223,12 +223,13 @@ export const CardsInRadioGroup: StoryObj = {
   render: () => html`
     <mdc-formfieldgroup
     label="Radio Cards"
+    name="radio-cards"
     help-text="Help Text"
     data-aria-label="Radio Cards">
     <div style="display: flex; gap: 0.5rem; flex-wrap: wrap">
     ${repeat([1, 2, 3, 4], (index) => html`
       <mdc-cardradio
-      name="radio cards"
+      name="radio-cards"
       variant="border"
       orientation="vertical"
       card-title="Title ${index}"
@@ -246,6 +247,8 @@ export const CardsInRadioGroup: StoryObj = {
     `,
   argTypes: {
     ...disableControls([
+      'aria-label',
+      'name',
       'variant',
       'orientation',
       'card-title',
@@ -256,7 +259,6 @@ export const CardsInRadioGroup: StoryObj = {
       'checked',
       'disabled',
       'tabIndex',
-      'data-aria-label',
     ]),
   },
 };

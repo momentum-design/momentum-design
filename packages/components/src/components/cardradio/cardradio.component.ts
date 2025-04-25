@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import styles from './cardradio.styles';
@@ -62,6 +63,31 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
    this.role = 'radio';
  }
 
+ /**
+   * Returns all cards within the same group (name).
+   */
+ private getAllCardsWithinSameGroup(): CardRadio[] {
+   return Array.from(document.querySelectorAll(`mdc-cardradio[name="${this.name}"]`));
+ }
+
+ /**
+   * Handles the change event on the radio element.
+   * This will toggle the state of the radio element.
+   * Dispatches the change event.
+   */
+ private toggleChecked(): void {
+   if (this.disabled) return;
+
+   const cards = this.getAllCardsWithinSameGroup();
+   cards.forEach((card) => {
+     /**
+      *  Uncheck all cards in the same group (name)
+    */
+     card.checked = false;
+   });
+   this.checked = true;
+ }
+
  override update(changedProperties: PropertyValues<CardRadio>) {
    super.update(changedProperties);
    if (changedProperties.has('checked')) {
@@ -69,15 +95,6 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
    }
    if (changedProperties.has('disabled')) {
      this.setAttribute('aria-disabled', `${this.disabled}`);
-   }
- }
-
- /**
-  * Toggles the checked state
-  */
- private toggleChecked() {
-   if (!this.disabled) {
-     this.checked = !this.checked;
    }
  }
 
