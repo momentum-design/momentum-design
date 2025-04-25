@@ -1,12 +1,14 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { repeat } from 'lit/directives/repeat.js';
 import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls } from '../../../config/storybook/utils';
+import { hideControls, disableControls } from '../../../config/storybook/utils';
 import { DEFAULTS, ORIENTATIONS } from '../card/card.constants';
 import { SELECTION_TYPE } from './cardcheckbox.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
+import '../formfieldgroup';
 
 const render = (args: Args) => html`
   <mdc-cardcheckbox
@@ -221,5 +223,47 @@ export const ContentAfterBody: StoryObj = {
     <img src="https://placehold.co/100x50" alt="Image Alt" slot="after-body"/>
     <mdc-text slot='after-body' type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
     ${defaultChildren}`,
+  },
+};
+
+export const CardsInCheckboxGroup: StoryObj = {
+  render: () => html`
+  <mdc-formfieldgroup
+  label="Checkbox Cards"
+  help-text="Help Text"
+  data-aria-label="Checkbox Cards">
+  <div style="display: flex; gap: 0.5rem; flex-wrap: wrap">
+  ${repeat([1, 2, 3, 4], (index) => html`
+    <mdc-cardcheckbox
+    name="checkbox cards"
+    variant="border"
+    orientation="vertical"
+    card-title="Title ${index}"
+    subtitle="Subtitle"
+    image-src="https://placehold.co/320x200"
+    image-alt="Image Alt"
+    icon-name="placeholder-bold"
+    tabIndex="0"
+    >
+    ${defaultChildren}
+    </mdc-cardcheckbox>
+  `)}
+  </div>
+  </mdc-formfieldgroup>
+  `,
+  argTypes: {
+    ...disableControls([
+      'variant',
+      'orientation',
+      'card-title',
+      'subtitle',
+      'image-src',
+      'image-alt',
+      'icon-name',
+      'checked',
+      'disabled',
+      'tabIndex',
+      'data-aria-label',
+    ]),
   },
 };
