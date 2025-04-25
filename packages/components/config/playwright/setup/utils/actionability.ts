@@ -37,7 +37,7 @@ class Actionability {
 
   /**
    * Release focus for the specified subcomponent locator
-   * @param subComponent: Locator
+   * @param subComponent - Locator
    */
   async releaseFocus(subComponent: Locator) {
     const browserName = this.browserName();

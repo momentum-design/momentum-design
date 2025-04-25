@@ -93,7 +93,7 @@ const setup = async (args: Set) => {
   return mdcTablist;
 };
 
-test('mdc-tablist', async ({ componentsPage }) => {
+test('mdc-tablist', async ({ componentsPage, isMobile }) => {
   /**
    * VISUAL REGRESSION
    */
@@ -173,7 +173,7 @@ test('mdc-tablist', async ({ componentsPage }) => {
   /**
    * INTERACTIONS
    */
-  await test.step('interactions and user stories', async () => {
+  await test.step('interactions', async () => {
     await test.step('component should change active tab to the clicked tab', async () => {
       const activeTab = tabs.nth(1);
       await activeTab.click();
@@ -192,55 +192,111 @@ test('mdc-tablist', async ({ componentsPage }) => {
       await expect(activeTab).toHaveAttribute('aria-selected', 'true');
       await expect(activeTab).toHaveAttribute('active');
     });
+  });
 
-    await test.step('focus', async () => {
-      await test.step('right arrow should focus next tab', async () => {
-        await tabs.nth(2).focus();
-        await componentsPage.page.keyboard.press('ArrowRight');
-        await expect(tabs.nth(3)).toBeFocused();
-      });
+  await test.step('user stories', async () => {
+    await test.step(`Given a tablist component with 4 tabs,
+       user can navigate using Arrowright and Arrowleft to focus between tabs`, async () => {
+      await setup({ componentsPage });
+      await componentsPage.actionability.pressTab();
+      await expect(tabs.first()).toBeFocused();
+      await componentsPage.actionability.pressAndCheckFocus(
+        'ArrowRight',
+        [tabs.nth(1), tabs.nth(2), tabs.nth(3), tabs.nth(4), tabs.first()],
+      );
+      await componentsPage.actionability.pressAndCheckFocus(
+        'ArrowLeft',
+        [tabs.nth(4), tabs.nth(3), tabs.nth(2), tabs.nth(1), tabs.first()],
+      );
+    });
 
-      await test.step('left arrow should focus previous tab', async () => {
-        await componentsPage.page.keyboard.press('ArrowLeft');
+    await test.step(`Given a tablist component with 4 tabs,
+       user can navigate using Home and End to focus first and last tabs respectively`, async () => {
+      await setup({ componentsPage });
+      await componentsPage.actionability.pressTab();
+      await expect(tabs.first()).toBeFocused();
+      await componentsPage.actionability.pressAndCheckFocus(
+        'ArrowRight',
+        [tabs.nth(1), tabs.nth(2)],
+      );
+      await componentsPage.page.keyboard.press('Home');
+      await expect(tabs.first()).toBeFocused();
+      await componentsPage.page.keyboard.press('End');
+      await expect(tabs.last()).toBeFocused();
+    });
+
+    await test.step(`Given a tablist component with 4 tabs,
+       user can navigate to tab 2 and select it by pressing enter`, async () => {
+      await setup({ componentsPage });
+      await componentsPage.actionability.pressTab();
+      await componentsPage.page.keyboard.press('ArrowRight');
+      await componentsPage.page.keyboard.press('Enter');
+      await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true');
+      await expect(tabs.nth(1)).toHaveAttribute('active');
+      await expect(mdcTablist).toHaveAttribute('active-tab-id', 'videos-tab');
+    });
+
+    // resizing viewport only on desktop devices.
+    if (!isMobile) {
+      await test.step(`Given a tablist component with 4 tabs and a smaller viewport,
+       user can navigate between the arrow buttons and tablist using tab key`, async () => {
+        await componentsPage.page.setViewportSize({ width: 320, height: 450 });
+        await setup({ componentsPage });
+        await componentsPage.actionability.pressTab();
+        await componentsPage.actionability.pressAndCheckFocus(
+          'ArrowRight',
+          [tabs.nth(1), tabs.nth(2)],
+        );
+        await componentsPage.page.keyboard.press('Space');
+        await expect(tabs.nth(2)).toHaveAttribute('aria-selected', 'true');
+        await expect(tabs.nth(2)).toHaveAttribute('active');
+        await expect(mdcTablist).toHaveAttribute('active-tab-id', 'music-tab');
+        await componentsPage.actionability.pressTab();
+        await expect(arrowButtons.last()).toBeFocused();
+        await componentsPage.page.keyboard.press('Shift+Tab');
         await expect(tabs.nth(2)).toBeFocused();
+        await componentsPage.page.keyboard.press('Shift+Tab');
+        await expect(arrowButtons.first()).toBeFocused();
       });
 
-      await test.step('home should focus first tab', async () => {
-        await componentsPage.page.keyboard.press('Home');
-        await expect(tabs.first()).toBeFocused();
+      await test.step(`Given a tablist component with 4 tabs and a smaller viewport,
+      user can scroll into the tabs using arrow buttons`, async () => {
+        await componentsPage.page.setViewportSize({ width: 320, height: 450 });
+        await setup({ componentsPage });
+        await componentsPage.actionability.pressTab();
+        await componentsPage.actionability.pressTab();
+        await expect(arrowButtons.last()).toBeFocused();
+        await componentsPage.visualRegression.takeScreenshot(
+          'mdc-tablist',
+          { source: 'userflow',
+            fileNameSuffix: '1' },
+        );
+        await componentsPage.page.keyboard.press('Enter');
+        await componentsPage.visualRegression.takeScreenshot(
+          'mdc-tablist',
+          { source: 'userflow',
+            fileNameSuffix: '2' },
+        );
+        await componentsPage.page.keyboard.press('Space');
+        await componentsPage.visualRegression.takeScreenshot(
+          'mdc-tablist',
+          { source: 'userflow',
+            fileNameSuffix: '3' },
+        );
+        await expect(arrowButtons.first()).toBeFocused();
+        await componentsPage.page.keyboard.press('Enter');
+        await componentsPage.visualRegression.takeScreenshot(
+          'mdc-tablist',
+          { source: 'userflow',
+            fileNameSuffix: '4' },
+        );
+        await componentsPage.visualRegression.takeScreenshot(
+          'mdc-tablist',
+          { source: 'userflow',
+            fileNameSuffix: '1' },
+        );
+        await expect(arrowButtons.last()).toBeFocused();
       });
-
-      await test.step('end should focus last tab', async () => {
-        await componentsPage.page.keyboard.press('End');
-        await expect(tabs.last()).toBeFocused();
-      });
-
-      await test.step('left arrow on first tab should focus last tab', async () => {
-        await tabs.first().focus();
-        await componentsPage.page.keyboard.press('ArrowLeft');
-        await expect(tabs.last()).toBeFocused();
-      });
-
-      await test.step('right arrow on last tab should focus first tab', async () => {
-        await tabs.last().focus();
-        await componentsPage.page.keyboard.press('ArrowRight');
-        await expect(tabs.first()).toBeFocused();
-      });
-    });
-
-    await test.step('resize', async () => {
-      await tabs.nth(2).click();
-
-      await test.step('resizing the viewport to 320px width should show atleast one arrow button', async () => {
-        await componentsPage.page.setViewportSize({ width: 320, height: 600 });
-        await expect(arrowButtons.first()).toBeVisible();
-      });
-
-      await test.step('resizing the viewport to 2000px width should remove both arrow buttons', async () => {
-        await componentsPage.page.setViewportSize({ width: 2000, height: 600 });
-        await expect(arrowButtons).toHaveCount(0);
-      });
-      await componentsPage.page.setViewportSize({ width: 800, height: 600 });
-    });
+    }
   });
 });
