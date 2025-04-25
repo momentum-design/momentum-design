@@ -22,6 +22,7 @@ import IconProvider from './components/iconprovider';
 import Input from './components/input';
 import InputChip from './components/inputchip';
 import Link from './components/link';
+import Linksimple from './components/linksimple';
 import List from './components/list';
 import ListItem from './components/listitem';
 import Marker from './components/marker';
@@ -116,6 +117,7 @@ export {
   Select,
   TabList,
   Progressspinner,
+  Linksimple,
 };
 // Types Exports
 export type {
