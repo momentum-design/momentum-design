@@ -1,14 +1,22 @@
 import { CSSResult, html, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
-import Link from '../link/link.component';
 import Button from '../button/button.component';
 import { ButtonComponentMixin } from '../../utils/mixins/ButtonComponentMixin';
 import { DEFAULTS } from '../button/button.constants';
 import type { IconNames } from '../icon/icon.types';
+import Linksimple from '../linksimple/linksimple.component';
+import type { IconButtonSize, PillButtonSize } from '../button/button.types';
 
 /**
- * `mdc-buttonlink` is a link that looks like a button.
- * It supports all features of `mdc-link`, along with `prefix-icon` and `postfix-icon` slots.
+ * `mdc-buttonlink` combines the functional behavior of `mdc-linksimple` with the visual and structural
+ * features of `mdc-button`. This includes support for variants, sizing, and optional
+ * prefix and postfix icons via slots.
+ *
+ * ### Features:
+ * - Behaves like an link while visually resembling a button.
+ * - Supports slots for `prefix-icon` and `postfix-icon`.
+ * - Customizable size, color, and variant through attributes.
+ * - Inherits accessibility and keyboard interaction support from `mdc-linksimple`.
  *
  * @dependency mdc-icon
  *
@@ -20,7 +28,7 @@ import type { IconNames } from '../icon/icon.types';
  * @event blur - (React: onBlur) Fired when the buttonLink loses keyboard or mouse focus.
  *
  */
-class ButtonLink extends ButtonComponentMixin(Link) {
+class ButtonLink extends ButtonComponentMixin(Linksimple) {
   /**
    * ButtonLink sizing is based on the buttonlink type.
     * - **Pill buttonlink**: 40, 32, 28, 24.
@@ -28,9 +36,7 @@ class ButtonLink extends ButtonComponentMixin(Link) {
     * - Tertiary icon buttonlink can also be 20.
     * @default 32
     */
-  /* Note: TypeScript does not allow overriding the type of an inherited attribute when extending a class,
-   so we've kept it as `any` (workaround for now) */
-  @property({ type: Number, reflect: true }) override size: any = DEFAULTS.SIZE;
+  @property({ type: Number, reflect: true }) size: PillButtonSize | IconButtonSize = DEFAULTS.SIZE;
 
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);

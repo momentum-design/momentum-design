@@ -16,11 +16,11 @@ const render = (args: Args) => html`
   prefix-icon="${args['prefix-icon']}"
   postfix-icon="${args['postfix-icon']}"
   size="${args.size}"
+  color="${args.color}"
+  variant="${args.variant}"
   href="${args.href}"
   target="${args.target}"
   rel="${args.rel}"
-  variant="${args.variant}"
-  color="${args.color}"
   tabindex="${args.tabIndex}"
   aria-label="${args['aria-label']}"
   >${args.children}</mdc-buttonlink>`;
@@ -51,6 +51,14 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(PILL_BUTTON_SIZES),
     },
+    color: {
+      control: 'select',
+      options: Object.values(BUTTON_COLORS),
+    },
+    variant: {
+      control: 'select',
+      options: Object.values(BUTTON_VARIANTS),
+    },
     href: {
       control: 'text',
     },
@@ -60,26 +68,16 @@ const meta: Meta = {
     rel: {
       control: 'text',
     },
-    variant: {
-      control: 'select',
-      options: Object.values(BUTTON_VARIANTS),
-    },
-    color: {
-      control: 'select',
-      options: Object.values(BUTTON_COLORS),
-    },
     ...hideControls(['icon-name', 'inline', 'inverted', 'handleNavigation',
       '--mdc-link-border-radius',
       '--mdc-link-color-active',
       '--mdc-link-color-disabled',
       '--mdc-link-color-hover',
       '--mdc-link-color-normal',
-      '--mdc-link-icon-margin-left',
       '--mdc-link-inverted-color-active',
       '--mdc-link-inverted-color-disabled',
       '--mdc-link-inverted-color-hover',
-      '--mdc-link-inverted-color-normal',
-      '--mdc-link-text-decoration-disabled']),
+      '--mdc-link-inverted-color-normal']),
     ...disableControls([
     ]),
     ...classArgType,
@@ -94,11 +92,11 @@ export const Example: StoryObj = {
     children: 'VisitLink',
     disabled: false,
     size: PILL_BUTTON_SIZES[32],
+    color: BUTTON_COLORS.DEFAULT,
+    variant: BUTTON_VARIANTS.PRIMARY,
     href: 'https://www.webex.com',
     target: '_blank',
     rel: 'noopener noreferrer',
-    variant: BUTTON_VARIANTS.PRIMARY,
-    color: BUTTON_COLORS.DEFAULT,
   },
 };
 
