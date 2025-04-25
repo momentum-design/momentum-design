@@ -4,7 +4,7 @@ import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { TAB_VARIANTS } from '../tab/tab.constants';
 import type { Variant } from '../tab/tab.types';
 
-type Set = {
+type SetupOptionsType = {
   componentsPage: ComponentsPage;
   'active-tab-id'?: string;
   'data-aria-label'?: string;
@@ -51,7 +51,7 @@ const renderTabs = (variant: Variant = TAB_VARIANTS.PILL, hideText = false) => `
   aria-controls="meetings-panel">
   </mdc-tab>`;
 
-const setup = async (args: Set) => {
+const setup = async (args: SetupOptionsType) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
@@ -261,8 +261,6 @@ test('mdc-tablist', async ({ componentsPage, isMobile }) => {
 
       await test.step(`Given a tablist component with 4 tabs and a smaller viewport,
       user can scroll into the tabs using arrow buttons`, async () => {
-        await componentsPage.page.setViewportSize({ width: 320, height: 450 });
-        await setup({ componentsPage });
         await componentsPage.actionability.pressTab();
         await componentsPage.actionability.pressTab();
         await expect(arrowButtons.last()).toBeFocused();
@@ -296,6 +294,26 @@ test('mdc-tablist', async ({ componentsPage, isMobile }) => {
             fileNameSuffix: '1' },
         );
         await expect(arrowButtons.last()).toBeFocused();
+      });
+
+      await test.step(`Given a tablist component with 4 tabs and a smaller viewport,
+        if any arrow button is focused, when both arrow buttons disappear, 
+        the active tab should gain focus`, async () => {
+        await componentsPage.page.setViewportSize({ width: 320, height: 450 });
+        await setup({ componentsPage });
+        await componentsPage.actionability.pressTab();
+        await componentsPage.actionability.pressAndCheckFocus(
+          'ArrowRight',
+          [tabs.nth(1), tabs.nth(2)],
+        );
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(tabs.nth(2)).toHaveAttribute('aria-selected', 'true');
+        await expect(tabs.nth(2)).toHaveAttribute('active');
+        await expect(mdcTablist).toHaveAttribute('active-tab-id', 'music-tab');
+        await componentsPage.actionability.pressTab();
+        await expect(arrowButtons.last()).toBeFocused();
+        await componentsPage.page.setViewportSize({ width: 800, height: 450 });
+        await expect(tabs.nth(2)).toBeFocused();
       });
     }
   });
