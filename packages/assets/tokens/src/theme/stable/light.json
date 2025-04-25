@@ -1104,6 +1104,18 @@
               "type": "color",
               "description": "Used for operation pop: knocked-back effect when signle card is selected"
             }
+          },
+          "radial": {
+            "0": {
+              "value": "{color.core.white-alpha.90}",
+              "type": "color",
+              "description": "Used for operation pop background. "
+            },
+            "1": {
+              "value": "{color.core.white-alpha.40}",
+              "type": "color",
+              "description": "Used for operation pop background. "
+            }
           }
         },
         "input": {
