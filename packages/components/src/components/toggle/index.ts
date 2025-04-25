@@ -1,6 +1,6 @@
 import Toggle from './toggle.component';
 import { TAG_NAME } from './toggle.constants';
-import '../icon';
+import '../statictoggle';
 
 Toggle.register(TAG_NAME);
 

@@ -1,12 +1,12 @@
-import type { Meta, StoryObj, Args } from '@storybook/web-components';
-import '.';
-import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
+import type { Args, Meta, StoryObj } from '@storybook/web-components';
+import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
-import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
 import '../button';
+import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
 
 const render = (args: Args) => html`
   <mdc-toggle
@@ -33,8 +33,29 @@ const meta: Meta = {
   },
   argTypes: {
     size: {
-      control: { type: 'inline-radio' },
+      control: 'inline-radio',
       options: Object.values(TOGGLE_SIZE),
+    },
+    checked: {
+      control: {
+        type: 'boolean',
+      },
+    },
+    disabled: {
+      control: {
+        type: 'boolean',
+      },
+    },
+    label: {
+      control: 'text',
+    },
+    'help-text': {
+      control: 'text',
+    },
+    autofocus: {
+      control: {
+        type: 'boolean',
+      },
     },
     'data-aria-label': {
       control: 'text',
@@ -71,8 +92,9 @@ export const Example: StoryObj = {
   args: {
     label: 'Toggle label',
     checked: false,
-    disabled: false,
     size: DEFAULTS.SIZE,
+    disabled: false,
+    autofocus: false,
     'help-text': '',
   },
 };

@@ -1,3 +1,4 @@
+import '../icon';
 import StaticToggle from './statictoggle.component';
 import { TAG_NAME } from './statictoggle.constants';
 

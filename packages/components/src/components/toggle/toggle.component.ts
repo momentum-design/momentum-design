@@ -1,14 +1,14 @@
-import { CSSResult, html, PropertyValueMap } from 'lit';
+import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import styles from './toggle.styles';
-import FormfieldWrapper from '../formfieldwrapper';
-import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
-import { DEFAULTS, ICON_NAME, ICON_SIZE_IN_REM, TOGGLE_SIZE } from './toggle.constants';
-import { ToggleSize } from './toggle.types';
-import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
+import FormfieldWrapper from '../formfieldwrapper';
+import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
+import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
+import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
+import styles from './toggle.styles';
+import { ToggleSize } from './toggle.types';
 
 /**
  * Toggle Component is an interactive control used to switch between two mutually exclusive options,
@@ -171,6 +171,14 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       this.setAttribute('size', Object.values(TOGGLE_SIZE).includes(size) ? size : DEFAULTS.SIZE);
     }
 
+    private renderLabelAndHelperText = () => {
+      if (!this.label) return nothing;
+      return html`
+        ${this.renderLabel()}
+        ${this.renderHelperText()}
+      `;
+    };
+
     public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
       super.update(changedProperties);
 
@@ -185,7 +193,12 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
 
     public override render() {
       return html`
-        <div class="mdc-toggle__container mdc-focus-ring">
+        <mdc-statictoggle
+          ?checked="${this.checked}"
+          ?disabled="${this.disabled}"
+          size="${this.size}"
+          class="mdc-focus-ring"
+        >
           <input
             id="${this.id}"
             type="checkbox"
@@ -204,17 +217,8 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
             @change="${this.handleChange}"
             @keydown="${this.handleKeyDown}"
           />
-          <div class="mdc-toggle__slider">
-            <mdc-icon
-              name="${this.checked ? ICON_NAME.CHECKED : ICON_NAME.UNCHECKED}"
-              class="mdc-toggle__icon"
-              length-unit="rem"
-              size="${ICON_SIZE_IN_REM[this.size]}"
-            ></mdc-icon>
-          </div>
-        </div>
-        ${this.renderLabel()}
-        ${this.renderHelperText()}
+        </mdc-statictoggle>
+        ${this.renderLabelAndHelperText()}
     `;
     }
 
