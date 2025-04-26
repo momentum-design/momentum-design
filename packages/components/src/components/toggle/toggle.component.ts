@@ -163,14 +163,6 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       this.setAttribute('size', Object.values(TOGGLE_SIZE).includes(size) ? size : DEFAULTS.SIZE);
     }
 
-    private renderLabelAndHelperText = () => {
-      if (!this.label) return nothing;
-      return html`
-        ${this.renderLabel()}
-        ${this.renderHelperText()}
-      `;
-    };
-
     public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
       super.update(changedProperties);
 
@@ -194,7 +186,7 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           <input
             id="${this.id}"
             type="checkbox"
-            class="mdc-toggle__input"
+            part="input"
             role="switch"
             ?autofocus="${this.autofocus}"
             ?required="${!!this.requiredLabel}"
@@ -210,7 +202,8 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
             @keydown="${this.handleKeyDown}"
           />
         </mdc-statictoggle>
-        ${this.renderLabelAndHelperText()}
+        ${this.renderLabel()}
+        ${this.renderHelperText()}
     `;
     }
 

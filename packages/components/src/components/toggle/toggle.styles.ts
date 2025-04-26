@@ -28,11 +28,13 @@ const styles = [hostFitContentStyles, css`
     row-gap: 0rem;
   }
 
-  .mdc-toggle__input {
-    opacity: 0;
-    position: absolute;
-    cursor: pointer;
+  :host::part(input) {
     margin: 0;
+    padding: 0;
+    position: absolute;
+    opacity: 0.1%;
+    overflow: visible;
+    z-index: 1;
     width: var(--mdc-toggle-width);
     height: var(--mdc-toggle-height);
   }

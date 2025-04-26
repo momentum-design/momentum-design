@@ -10,17 +10,17 @@ import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
 
 const render = (args: Args) => html`
   <mdc-toggle
-      name="toggleName"
-      value="toggleValue"
-      @focus="${action('onfocus')}"
-      @change="${action('onchange')}"
-      size="${args.size}"
-      label="${ifDefined(args.label)}"
-      help-text="${ifDefined(args['help-text'])}"
-      data-aria-label="${ifDefined(args['data-aria-label'])}"
-      ?checked="${args.checked}"
-      ?disabled="${args.disabled}">
-    </mdc-toggle>
+    name="toggleName"
+    value="toggleValue"
+    @focus="${action('onfocus')}"
+    @change="${action('onchange')}"
+    size="${args.size}"
+    label="${ifDefined(args.label)}"
+    help-text="${ifDefined(args['help-text'])}"
+    data-aria-label="${ifDefined(args['data-aria-label'])}"
+    ?checked="${args.checked}"
+    ?disabled="${args.disabled}">
+  </mdc-toggle>
 `;
 
 const meta: Meta = {
@@ -37,14 +37,10 @@ const meta: Meta = {
       options: Object.values(TOGGLE_SIZE),
     },
     checked: {
-      control: {
-        type: 'boolean',
-      },
+      control: 'boolean',
     },
     disabled: {
-      control: {
-        type: 'boolean',
-      },
+      control: 'boolean',
     },
     label: {
       control: 'text',
@@ -53,9 +49,7 @@ const meta: Meta = {
       control: 'text',
     },
     autofocus: {
-      control: {
-        type: 'boolean',
-      },
+      control: 'boolean',
     },
     'data-aria-label': {
       control: 'text',

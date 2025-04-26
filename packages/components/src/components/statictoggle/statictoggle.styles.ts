@@ -23,6 +23,8 @@ const styles = [css`
     --mdc-statictoggle-icon-color-disabled: var(--mds-color-theme-common-inverted-text-primary-disabled);
     --mdc-statictoggle-icon-background-color-normal: var(--mds-color-theme-common-text-primary-normal);
     --mdc-statictoggle-icon-background-color-disabled: var(--mds-color-theme-common-text-primary-disabled);
+
+    border-radius: var(--mdc-statictoggle-border-radius);
   }
 
   :host::part(slider) {
