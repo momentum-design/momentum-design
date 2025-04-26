@@ -1,7 +1,6 @@
 import type { ValueOf } from '../../utils/types';
+import { TOGGLE_SIZE } from './statictoggle.constants';
 
-interface Events {
+type ToggleSize = ValueOf<typeof TOGGLE_SIZE>;
 
-}
-
-export type { Events };
+export type { ToggleSize };
