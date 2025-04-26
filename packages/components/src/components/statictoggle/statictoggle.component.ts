@@ -8,7 +8,9 @@ import styles from './statictoggle.styles';
 import { ToggleSize } from './statictoggle.types';
 
 /**
- * statictoggle component, which ...
+ * This is a decorative component that is styled to look as a toggle. <br/>
+ * It has 3 properties - checked, size and disabled. <br/>
+ * We are using the same styling that has been created for the `mdc-toggle` component.
  *
  * @dependency mdc-icon
  *

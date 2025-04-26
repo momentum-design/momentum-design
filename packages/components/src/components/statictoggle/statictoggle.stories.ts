@@ -13,12 +13,12 @@ const render = (args: Args) => html`
   ></mdc-statictoggle>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/statictoggle',
+  title: 'Components/decorator/statictoggle',
   tags: ['autodocs'],
   component: 'mdc-statictoggle',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     checked: {
