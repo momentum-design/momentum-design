@@ -2,24 +2,21 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
-import { DEFAULTS, LINK_SIZES } from './link.constants';
 import { disableControls, hideControls, readOnlyControls } from '../../../config/storybook/utils';
 
-const render = (args: Args) => html`<mdc-link
+const render = (args: Args) => html`<mdc-linksimple
     @click="${action('onclick')}"
     @keydown="${action('onkeydown')}"
     @focus="${action('onfocus')}"
     @blur="${action('onblur')}"
     ?disabled="${args.disabled}"
-    icon-name="${args['icon-name']}"
     ?inline="${args.inline}"
     ?inverted="${args.inverted}"
-    size="${args.size}"
     href="${args.href}"
     target="${args.target}"
     rel="${args.rel}"
     tabindex="${args.tabIndex}"
-    >${args.children}</mdc-link>`;
+    >${args.children}</mdc-linksimple>`;
 
 const renderWithInvertedBackground = (args: Args) => html`
     <div style="background-color: var(--mds-color-theme-inverted-background-normal); padding: 8px;">
@@ -27,9 +24,9 @@ const renderWithInvertedBackground = (args: Args) => html`
     </div>`;
 
 const meta: Meta = {
-  title: 'Components/link',
+  title: 'Components/linksimple',
   tags: ['autodocs'],
-  component: 'mdc-link',
+  component: 'mdc-linksimple',
   render,
   parameters: {
     badges: ['stable'],
@@ -42,18 +39,11 @@ const meta: Meta = {
     disabled: {
       control: 'boolean',
     },
-    'icon-name': {
-      control: 'text',
-    },
     inline: {
       control: 'boolean',
     },
     inverted: {
       control: 'boolean',
-    },
-    size: {
-      control: 'select',
-      options: Object.values(LINK_SIZES),
     },
     href: {
       control: 'text',
@@ -85,12 +75,10 @@ const meta: Meta = {
 export default meta;
 
 const defaultArgs = {
-  children: 'Link',
+  children: 'Visit Linksimple',
   disabled: false,
-  'icon-name': 'placeholder-bold',
   inline: false,
   inverted: false,
-  size: DEFAULTS.LINK_SIZE,
   href: 'https://www.webex.com',
   target: '_blank',
   rel: 'noopener noreferrer',
