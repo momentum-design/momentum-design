@@ -92,7 +92,7 @@ const setup = async (args: SetupOptionsType) => {
   return mdcTablist;
 };
 
-test('mdc-tablist', async ({ componentsPage, browserName }) => {
+test('mdc-tablist', async ({ componentsPage }) => {
   /**
    * VISUAL REGRESSION
    */
@@ -248,7 +248,8 @@ test('mdc-tablist', async ({ componentsPage, browserName }) => {
     });
 
     // resizing viewport only on desktop devices.
-    if (browserName.includes(['chrome', 'firefox', 'webkit'])) {
+    const deviceName = test.info().project.name;
+    if (['chrome', 'firefox', 'msedge', 'webkit'].includes(deviceName)) {
       await test.step(`Given a tablist component with 4 tabs and a smaller viewport,
        user can navigate between the arrow buttons and tablist using tab key`, async () => {
         await componentsPage.page.setViewportSize({ width: 320, height: 450 });
