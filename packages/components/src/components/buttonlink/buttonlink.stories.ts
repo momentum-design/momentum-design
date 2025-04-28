@@ -13,6 +13,7 @@ const render = (args: Args) => html`
   @focus="${action('onfocus')}"
   @blur="${action('onblur')}"
   ?disabled="${args.disabled}"
+  ?soft-disabled="${args['soft-disabled']}"
   prefix-icon="${args['prefix-icon']}"
   postfix-icon="${args['postfix-icon']}"
   size="${args.size}"
@@ -39,6 +40,9 @@ const meta: Meta = {
       control: 'text',
     },
     disabled: {
+      control: 'boolean',
+    },
+    'soft-disabled': {
       control: 'boolean',
     },
     'prefix-icon': {
@@ -91,6 +95,7 @@ export const Example: StoryObj = {
   args: {
     children: 'VisitLink',
     disabled: false,
+    'soft-disabled': false,
     size: PILL_BUTTON_SIZES[32],
     color: BUTTON_COLORS.DEFAULT,
     variant: BUTTON_VARIANTS.PRIMARY,

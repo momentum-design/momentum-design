@@ -13,6 +13,7 @@ import {
 type SetupOptions = {
   componentsPage: ComponentsPage;
   disabled?: boolean;
+  softDisabled?: boolean;
   prefixIcon?: string;
   postfixIcon?: string;
   size?: number;
@@ -35,6 +36,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.addPageFooter ? '<div id="wrapper">' : ''}
         <mdc-buttonlink
           ${restArgs.disabled ? 'disabled' : ''}
+          ${restArgs.softDisabled ? 'soft-disabled' : ''}
           ${restArgs.prefixIcon ? `prefix-icon="${restArgs.prefixIcon}"` : ''}
           ${restArgs.postfixIcon ? `postfix-icon="${restArgs.postfixIcon}"` : ''}
           ${restArgs.size ? `size="${restArgs.size}"` : ''}
@@ -56,6 +58,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.addPageFooter ? '<div id="wrapper">' : ''}
         <mdc-buttonlink
           ${restArgs.disabled ? 'disabled' : ''}
+          ${restArgs.softDisabled ? 'soft-disabled' : ''}
           ${restArgs.prefixIcon ? `prefix-icon="${restArgs.prefixIcon}"` : ''}
           ${restArgs.postfixIcon ? `postfix-icon="${restArgs.postfixIcon}"` : ''}
           ${restArgs.size ? `size="${restArgs.size}"` : ''}
