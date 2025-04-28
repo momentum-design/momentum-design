@@ -33,7 +33,7 @@ const styles = [hostFitContentStyles, css`
     row-gap: 0rem;
   }
 
-  :host::part(input) {
+  :host::part(toggle-input) {
     margin: 0;
     padding: 0;
     position: absolute;
@@ -51,12 +51,12 @@ const styles = [hostFitContentStyles, css`
     grid-column: 2;
   }
 
-  .mdc-label, :host::part(input) {
+  .mdc-label, :host::part(toggle-input) {
     cursor: pointer;
   }
 
   :host([disabled]) .mdc-label,
-  :host([disabled])::part(input) {
+  :host([disabled])::part(toggle-input) {
     cursor: default;
   }
 
