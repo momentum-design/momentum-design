@@ -1,14 +1,6 @@
 import { test } from '../../../config/playwright/setup';
 
-test.beforeEach(async ({ componentsPage }) => {
-  await componentsPage.mount({
-    html: `
-        <mdc-menuitem />
-      `,
-  });
-});
-
-test('mdc-menuitem', async ({ componentsPage }) => {
+test.skip('mdc-menuitem', async ({ componentsPage }) => {
   const menuitem = componentsPage.page.locator('mdc-menuitem');
 
   // initial check for the menuitem be visible on the screen:

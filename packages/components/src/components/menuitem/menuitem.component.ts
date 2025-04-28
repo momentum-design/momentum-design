@@ -1,24 +1,36 @@
-import { CSSResult, html } from 'lit';
-import styles from './menuitem.styles';
-import { Component } from '../../models';
+import type { CSSResult, PropertyValues } from 'lit';
+import ListItem from '../listitem/listitem.component';
 
 /**
- * menuitem component, which ...
+ * menuitem component is inherited by listitem component with the role set "menuitem".<br/>
+ * A menu item can contain an icon on the leading or trailing side.
+ *
+ * @dependency mdc-text
  *
  * @tagname mdc-menuitem
  *
- * @slot default - This is a default/unnamed slot
- *
- * @event click - (React: onClick) This event is a Click Event, update the description
- *
- * @cssproperty --custom-property-name - Description of the CSS custom property
+ * @event change - (React: onChange) This event is dispatched when the menuitem changes.
+ * @event click - (React: onClick) This event is dispatched when the menuitem is clicked.
+ * @event focus - (React: onFocus) This event is dispatched when the menuitem receives focus.
  */
-class MenuItem extends Component {
-  public override render() {
-    return html`<p>This is a dummy menuitem component!</p><slot></slot>`;
+class MenuItem extends ListItem {
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.role = 'menuitem';
+
+    this.tertiaryLabel = undefined as unknown as string;
+    this.sublineText = undefined as unknown as string;
   }
 
-  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+  override updated(changedProperties: PropertyValues): void {
+    super.updated(changedProperties);
+
+    if (changedProperties.has('disabled')) {
+      this.setAttribute('aria-disabled', `${this.disabled}`);
+    }
+  }
+
+  public static override styles: Array<CSSResult> = [...ListItem.styles];
 }
 
 export default MenuItem;

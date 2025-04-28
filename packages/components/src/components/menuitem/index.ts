@@ -1,3 +1,4 @@
+import '../text';
 import MenuItem from './menuitem.component';
 import { TAG_NAME } from './menuitem.constants';
 
