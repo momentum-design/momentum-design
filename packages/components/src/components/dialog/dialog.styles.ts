@@ -45,6 +45,12 @@ const styles = css`
     width: var(--mdc-dialog-width);
     height: var(--mdc-dialog-height);
   }
+
+  @media (max-width: 432px) {
+      :host {
+          width: 100%;
+      }
+  }  
     
   :host::part(header),
   :host::part(body),
