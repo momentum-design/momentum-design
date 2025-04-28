@@ -8,7 +8,7 @@ import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwra
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
 import styles from './toggle.styles';
-import { ToggleSize } from './toggle.types';
+import type { ToggleSize } from './toggle.types';
 
 /**
  * Toggle Component is an interactive control used to switch between two mutually exclusive options,
@@ -37,6 +37,10 @@ import { ToggleSize } from './toggle.types';
  * @cssproperty --mdc-toggle-label-fontweight - Font weight of the toggle label
  * @cssproperty --mdc-toggle-label-color-disabled - Color of the toggle label and help text in disabled state
  * @cssproperty --mdc-toggle-help-text-color - Color of the help text label
+ * @cssproperty --mdc-toggle-active-hover-color - Background color of the active toggle in hover state
+ * @cssproperty --mdc-toggle-active-pressed-color - Background color of the active toggle in pressed state
+ * @cssproperty --mdc-toggle-inactive-hover-color - Background color of the inactive toggle in hover state
+ * @cssproperty --mdc-toggle-inactive-pressed-color - Background color of the inactive toggle in pressed state
  */
 class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
   /**
@@ -182,6 +186,7 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           ?disabled="${this.disabled}"
           size="${this.size}"
           class="mdc-focus-ring"
+          part="container"
         >
           <input
             id="${this.id}"

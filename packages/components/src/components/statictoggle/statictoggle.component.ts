@@ -5,7 +5,7 @@ import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { DEFAULTS, ICON_NAME, ICON_SIZE_IN_REM } from './statictoggle.constants';
 import styles from './statictoggle.styles';
-import { ToggleSize } from './statictoggle.types';
+import type { ToggleSize } from './statictoggle.types';
 
 /**
  * This is a decorative component that is styled to look as a toggle. <br/>
@@ -26,12 +26,8 @@ import { ToggleSize } from './statictoggle.types';
  * @cssproperty --mdc-statictoggle-border-radius-compact - Border radius of the toggle when it's size is compact
  * @cssproperty --mdc-statictoggle-border - Border of the toggle
  * @cssproperty --mdc-statictoggle-inactive-rest-color - Background color of the inactive toggle in rest state
- * @cssproperty --mdc-statictoggle-inactive-hover-color - Background color of the inactive toggle in hover state
- * @cssproperty --mdc-statictoggle-inactive-pressed-color - Background color of the inactive toggle in pressed state
  * @cssproperty --mdc-statictoggle-inactive-disabled-color - Background color of the inactive toggle in disabled state
  * @cssproperty --mdc-statictoggle-active-rest-color - Background color of the active toggle in rest state
- * @cssproperty --mdc-statictoggle-active-hover-color - Background color of the active toggle in hover state
- * @cssproperty --mdc-statictoggle-active-pressed-color - Background color of the active toggle in pressed state
  * @cssproperty --mdc-statictoggle-active-disabled-color - Background color of the active toggle in disabled state
  * @cssproperty --mdc-statictoggle-icon-color-normal - Color of the icon in normal state
  * @cssproperty --mdc-statictoggle-icon-color-disabled - Color of the icon in disabled state

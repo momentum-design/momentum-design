@@ -13,6 +13,11 @@ const styles = [hostFitContentStyles, css`
     --mdc-toggle-label-fontweight: 400;
     --mdc-toggle-label-color-disabled: var(--mds-color-theme-text-primary-disabled);
     --mdc-toggle-help-text-color: var(--mds-color-theme-text-secondary-normal);
+
+    --mdc-toggle-active-hover-color: var(--mds-color-theme-control-active-hover);
+    --mdc-toggle-active-pressed-color: var(--mds-color-theme-control-active-pressed);
+    --mdc-toggle-inactive-hover-color: var(--mds-color-theme-control-inactive-hover);
+    --mdc-toggle-inactive-pressed-color: var(--mds-color-theme-control-inactive-pressed);
   }
 
   :host([label]), :host([help-text]){
@@ -46,8 +51,33 @@ const styles = [hostFitContentStyles, css`
     grid-column: 2;
   }
 
+  .mdc-label, :host::part(input) {
+    cursor: pointer;
+  }
+
+  :host([disabled]) .mdc-label,
+  :host([disabled])::part(input) {
+    cursor: default;
+  }
+
   .mdc-help-text {
     color: var(--mdc-toggle-help-text-color);
+  }
+
+  :host(:hover:not([disabled]))::part(container) {
+    background-color: var(--mdc-toggle-inactive-hover-color);
+  }
+
+  :host(:active:not([disabled]))::part(container) {
+    background-color: var(--mdc-toggle-inactive-pressed-color);
+  }
+
+  :host(:hover:not([disabled])[checked])::part(container) {
+    background-color: var(--mdc-toggle-active-hover-color);
+  }
+
+  :host(:active:not([disabled])[checked])::part(container) {
+    background-color: var(--mdc-toggle-active-pressed-color);
   }
 
   :host([disabled]) .mdc-label-text, :host([disabled]) .mdc-help-text {

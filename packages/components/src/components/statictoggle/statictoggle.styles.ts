@@ -11,12 +11,8 @@ const styles = [css`
     --mdc-statictoggle-border: 1px solid var(--mds-color-theme-outline-input-normal);
 
     --mdc-statictoggle-inactive-rest-color: var(--mds-color-theme-control-inactive-normal);
-    --mdc-statictoggle-inactive-hover-color: var(--mds-color-theme-control-inactive-hover);
-    --mdc-statictoggle-inactive-pressed-color: var(--mds-color-theme-control-inactive-pressed);
     --mdc-statictoggle-inactive-disabled-color: var(--mds-color-theme-control-inactive-disabled);
     --mdc-statictoggle-active-rest-color: var(--mds-color-theme-control-active-normal);
-    --mdc-statictoggle-active-hover-color: var(--mds-color-theme-control-active-hover);
-    --mdc-statictoggle-active-pressed-color: var(--mds-color-theme-control-active-pressed);
     --mdc-statictoggle-active-disabled-color: var(--mds-color-theme-control-active-disabled);
 
     --mdc-statictoggle-icon-color-normal: var(--mds-color-theme-common-inverted-text-primary-normal);
@@ -67,22 +63,6 @@ const styles = [css`
 
   :host([size='compact']) .icon {
     padding: 0.125rem;
-  }
-
-  :host(:hover:not([disabled]))::part(slider) {
-    background-color: var(--mdc-statictoggle-inactive-hover-color);
-  }
-
-  :host(:active:not([disabled]))::part(slider) {
-    background-color: var(--mdc-statictoggle-inactive-pressed-color);
-  }
-
-  :host(:hover:not([disabled])[checked])::part(slider) {
-    background-color: var(--mdc-statictoggle-active-hover-color);
-  }
-
-  :host(:active:not([disabled])[checked])::part(slider) {
-    background-color: var(--mdc-statictoggle-active-pressed-color);
   }
 
   :host([disabled])::part(slider) {
