@@ -23,7 +23,7 @@ type SetupOptions = {
   rel?: string;
   children?: any;
   ariaLabel?: string;
-  secondButtonLinkForFocus?: boolean;
+  addPageFooter?: boolean;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -32,7 +32,7 @@ const setup = async (args: SetupOptions) => {
   if (restArgs.children) {
     await componentsPage.mount({
       html: `
-        ${restArgs.secondButtonLinkForFocus ? '<div id="wrapper">' : ''}
+        ${restArgs.addPageFooter ? '<div id="wrapper">' : ''}
         <mdc-buttonlink
           ${restArgs.disabled ? 'disabled' : ''}
           ${restArgs.prefixIcon ? `prefix-icon="${restArgs.prefixIcon}"` : ''}
@@ -46,14 +46,14 @@ const setup = async (args: SetupOptions) => {
         >
         ${restArgs.children}
         </mdc-buttonlink>
-        ${restArgs.secondButtonLinkForFocus ? '<mdc-buttonlink>Second ButtonLink</mdc-buttonlink></div>' : ''}
+        ${restArgs.addPageFooter ? '<div id="content"><p>Test content</p></div></div>' : ''}
         `,
       clearDocument: true,
     });
   } else {
     await componentsPage.mount({
       html: `
-        ${restArgs.secondButtonLinkForFocus ? '<div id="wrapper">' : ''}
+        ${restArgs.addPageFooter ? '<div id="wrapper">' : ''}
         <mdc-buttonlink
           ${restArgs.disabled ? 'disabled' : ''}
           ${restArgs.prefixIcon ? `prefix-icon="${restArgs.prefixIcon}"` : ''}
@@ -66,13 +66,13 @@ const setup = async (args: SetupOptions) => {
           ${restArgs.rel ? `rel="${restArgs.rel}"` : ''}
           ${restArgs.ariaLabel ? `aria-label="${restArgs.ariaLabel}"` : ''}
         ></mdc-buttonlink>
-        ${restArgs.secondButtonLinkForFocus ? '<mdc-buttonlink>Second ButtonLink</mdc-buttonlink></div>' : ''}
+        ${restArgs.addPageFooter ? '<div id="content"><p>Test content</p></div></div>' : ''}
         `,
       clearDocument: true,
     });
   }
 
-  const element = restArgs.secondButtonLinkForFocus
+  const element = restArgs.addPageFooter
     ? componentsPage.page.locator('div#wrapper')
     : componentsPage.page.locator('mdc-buttonlink');
   await element.waitFor();
@@ -349,27 +349,33 @@ test.describe.parallel('mdc-buttonlink', () => {
   /**
    * INTERACTIONS
    */
-  test.skip('mdc-buttonlink interactions', async ({ componentsPage }) => {
-    const buttonlink = await setup({ componentsPage, children: 'Pill Button', secondButtonLinkForFocus: true });
+  test('mdc-buttonlink interactions', async ({ componentsPage }) => {
+    const buttonlink = await setup({ componentsPage, addPageFooter: true, href: 'https://www.webex.com' });
+    let originalURL = '';
 
     await test.step('does not focus or activate when disabled', async () => {
       await componentsPage.setAttributes(buttonlink, { disabled: '' });
       await componentsPage.actionability.pressTab();
       await expect(buttonlink).not.toBeFocused();
+      await componentsPage.removeAttribute(buttonlink, 'disabled');
     });
 
     await test.step('focus and navigate with Enter', async () => {
-      await componentsPage.removeAttribute(buttonlink, 'disabled');
       await componentsPage.actionability.pressTab();
       await expect(buttonlink).toBeFocused();
-
+      // Track the current URL before pressing Enter
+      originalURL = componentsPage.page.url();
       await componentsPage.page.keyboard.press('Enter');
-      await expect(componentsPage.page.locator('#content')).toBeVisible();
+      await expect(componentsPage.page).toHaveURL('https://www.webex.com');
     });
 
     await test.step('navigate with mouse click', async () => {
+      // Now, navigate back to the original page
+      await componentsPage.page.goto(originalURL);
+      await setup({ componentsPage, addPageFooter: true, href: 'https://www.webex.com' });
+
       await buttonlink.click();
-      await expect(componentsPage.page.locator('#content')).toBeVisible();
+      await expect(componentsPage.page).toHaveURL('https://www.webex.com');
     });
   });
 });
