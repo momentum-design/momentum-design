@@ -209,6 +209,7 @@ class TabList extends Component {
        * Otherwise, reset the tabindex of all tabs and set the new tabindex.
        */
       if (changedProperties.get('activeTabId')) {
+        this.fireTabChangeEvent(newTab);
         await this.focusTab(newTab);
       } else {
         this.resetTabIndexAndSetNewTabIndex(newTab);
@@ -295,12 +296,6 @@ class TabList extends Component {
     await this.focusTab(tab);
 
     this.activeTabId = tab.tabId;
-
-    if (getActiveTab(this.tabs || []) !== tab) {
-      this.fireTabChangeEvent(tab);
-    } else {
-      await this.focusTab(tab);
-    }
   };
 
   /**
