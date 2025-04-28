@@ -12,6 +12,7 @@ import Chip from './components/chip';
 import Coachmark from './components/coachmark';
 import StaticCheckbox from './components/staticcheckbox';
 import StaticRadio from './components/staticradio';
+import StaticToggle from './components/statictoggle';
 import Divider from './components/divider';
 import FilterChip from './components/filterchip';
 import FormfieldGroup from './components/formfieldgroup';
@@ -100,6 +101,7 @@ export {
   ScreenreaderAnnouncer,
   StaticCheckbox,
   StaticRadio,
+  StaticToggle,
   Textarea,
   ToggleTip,
   Tooltip,
