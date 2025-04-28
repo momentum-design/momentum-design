@@ -10,8 +10,6 @@ import '../tab';
 const render = (args: Args) => html`
 <mdc-tablist
   @change="${action('onchange')}"
-  @keyup="${action('onkeyup')}"
-  @keydown="${action('onkeydown')}"
   active-tab-id="${args['active-tab-id']}"
   data-aria-label=${args['data-aria-label']}>
   <mdc-tab
