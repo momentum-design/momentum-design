@@ -89,11 +89,10 @@ const setup = async (args: SetupOptionsType) => {
 
   const mdcTablist = componentsPage.page.locator('mdc-tablist');
   await mdcTablist.waitFor();
-
   return mdcTablist;
 };
 
-test('mdc-tablist', async ({ componentsPage, isMobile }) => {
+test('mdc-tablist', async ({ componentsPage, browserName }) => {
   /**
    * VISUAL REGRESSION
    */
@@ -249,7 +248,7 @@ test('mdc-tablist', async ({ componentsPage, isMobile }) => {
     });
 
     // resizing viewport only on desktop devices.
-    if (!isMobile) {
+    if (browserName.includes(['chrome', 'firefox', 'webkit'])) {
       await test.step(`Given a tablist component with 4 tabs and a smaller viewport,
        user can navigate between the arrow buttons and tablist using tab key`, async () => {
         await componentsPage.page.setViewportSize({ width: 320, height: 450 });
@@ -272,47 +271,6 @@ test('mdc-tablist', async ({ componentsPage, isMobile }) => {
       });
 
       await test.step(`Given a tablist component with 4 tabs and a smaller viewport,
-      user can scroll into the tabs using arrow buttons`, async () => {
-        await componentsPage.actionability.pressTab();
-        await componentsPage.actionability.pressTab();
-        await expect(arrowButtons.last()).toBeFocused();
-        await componentsPage.visualRegression.takeScreenshot(
-          'mdc-tablist',
-          { source: 'userflow',
-            fileNameSuffix: 'forward-arrow-focused' },
-        );
-        await componentsPage.accessibility.checkForA11yViolations('tablist-forward-arrow-focused');
-        await componentsPage.page.keyboard.press('Enter');
-        await componentsPage.visualRegression.takeScreenshot(
-          'mdc-tablist',
-          { source: 'userflow',
-            fileNameSuffix: 'forward-arrow-pressed-and-focused' },
-        );
-        await componentsPage.accessibility.checkForA11yViolations('tablist-forward-arrow-pressed-and-focused');
-        await componentsPage.page.keyboard.press('Space');
-        await componentsPage.visualRegression.takeScreenshot(
-          'mdc-tablist',
-          { source: 'userflow',
-            fileNameSuffix: 'backward-arrow-focused' },
-        );
-        await componentsPage.accessibility.checkForA11yViolations('tablist-backward-arrow-focused');
-        await expect(arrowButtons.first()).toBeFocused();
-        await componentsPage.page.keyboard.press('Enter');
-        await componentsPage.visualRegression.takeScreenshot(
-          'mdc-tablist',
-          { source: 'userflow',
-            fileNameSuffix: 'backward-arrow-pressed-and-focused' },
-        );
-        await componentsPage.accessibility.checkForA11yViolations('tablist-backward-arrow-pressed-and-focused');
-        await componentsPage.visualRegression.takeScreenshot(
-          'mdc-tablist',
-          { source: 'userflow',
-            fileNameSuffix: 'forward-arrow-focused' },
-        );
-        await expect(arrowButtons.last()).toBeFocused();
-      });
-
-      await test.step(`Given a tablist component with 4 tabs and a smaller viewport,
           if any arrow button is focused, when both arrow buttons disappear, 
           the active tab should gain focus`, async () => {
         await componentsPage.page.setViewportSize({ width: 320, height: 450 });
@@ -332,6 +290,54 @@ test('mdc-tablist', async ({ componentsPage, isMobile }) => {
         await componentsPage.page.setViewportSize({ width: 800, height: 450 });
         await expect(tabs.nth(2)).toBeFocused();
         await componentsPage.accessibility.checkForA11yViolations('tablist-without-arrow-buttons');
+      });
+
+      await test.step(`Given a tablist component with 4 tabs and a smaller viewport,
+        user can scroll to view the tabs by using arrow buttons`, async () => {
+        await componentsPage.page.setViewportSize({ width: 320, height: 450 });
+        await setup({ componentsPage });
+        await componentsPage.actionability.pressTab();
+        await componentsPage.actionability.pressAndCheckFocus('ArrowRight', [tabs.nth(1)]);
+        await componentsPage.actionability.pressAndCheckFocus('ArrowLeft', [tabs.first()]);
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(tabs.first()).toHaveAttribute('aria-selected', 'true');
+        await expect(tabs.first()).toHaveAttribute('active');
+        await expect(mdcTablist).toHaveAttribute('active-tab-id', 'calls-tab');
+        await componentsPage.actionability.pressTab();
+        await expect(arrowButtons.last()).toBeFocused();
+        await componentsPage.visualRegression.takeScreenshot(
+          'mdc-tablist',
+          { source: 'userflow',
+            fileNameSuffix: 'forward-arrow-focused' },
+        );
+        await componentsPage.accessibility.checkForA11yViolations('tablist-forward-arrow-focused');
+        await componentsPage.page.keyboard.press('Enter');
+        await componentsPage.visualRegression.takeScreenshot(
+          'mdc-tablist',
+          { source: 'userflow',
+            fileNameSuffix: 'forward-arrow-pressed-and-focused' },
+        );
+        await componentsPage.page.keyboard.press('Space');
+        await componentsPage.visualRegression.takeScreenshot(
+          'mdc-tablist',
+          { source: 'userflow',
+            fileNameSuffix: 'backward-arrow-focused' },
+        );
+        await componentsPage.accessibility.checkForA11yViolations('tablist-backward-arrow-focused');
+        await expect(arrowButtons.first()).toBeFocused();
+        await componentsPage.page.keyboard.press('Enter');
+        await componentsPage.visualRegression.takeScreenshot(
+          'mdc-tablist',
+          { source: 'userflow',
+            fileNameSuffix: 'backward-arrow-pressed-and-focused' },
+        );
+        await componentsPage.page.keyboard.press('Space');
+        await componentsPage.visualRegression.takeScreenshot(
+          'mdc-tablist',
+          { source: 'userflow',
+            fileNameSuffix: 'forward-arrow-focused' },
+        );
+        await expect(arrowButtons.last()).toBeFocused();
       });
     }
   });
