@@ -192,6 +192,18 @@ test('mdc-tablist', async ({ componentsPage, isMobile }) => {
       await expect(activeTab).toHaveAttribute('aria-selected', 'true');
       await expect(activeTab).toHaveAttribute('active');
     });
+
+    await test.step('component should fire change event when active tab changes', async () => {
+      await mdcTablist.evaluate((element) => {
+        element.addEventListener('change', () => {
+          element.classList.toggle('onchange');
+        });
+      });
+      await expect(mdcTablist).not.toHaveClass('onchange');
+      await componentsPage.actionability.pressTab();
+      await componentsPage.page.keyboard.press('Enter');
+      await expect(mdcTablist).toHaveClass('onchange');
+    });
   });
 
   await test.step('user stories', async () => {
