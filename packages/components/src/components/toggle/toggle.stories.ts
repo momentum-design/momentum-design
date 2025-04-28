@@ -1,26 +1,26 @@
-import type { Meta, StoryObj, Args } from '@storybook/web-components';
-import '.';
-import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
+import type { Args, Meta, StoryObj } from '@storybook/web-components';
+import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
-import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
 import '../button';
+import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
 
 const render = (args: Args) => html`
   <mdc-toggle
-      name="toggleName"
-      value="toggleValue"
-      @focus="${action('onfocus')}"
-      @change="${action('onchange')}"
-      size="${args.size}"
-      label="${ifDefined(args.label)}"
-      help-text="${ifDefined(args['help-text'])}"
-      data-aria-label="${ifDefined(args['data-aria-label'])}"
-      ?checked="${args.checked}"
-      ?disabled="${args.disabled}">
-    </mdc-toggle>
+    name="toggleName"
+    value="toggleValue"
+    @focus="${action('onfocus')}"
+    @change="${action('onchange')}"
+    size="${args.size}"
+    label="${ifDefined(args.label)}"
+    help-text="${ifDefined(args['help-text'])}"
+    data-aria-label="${ifDefined(args['data-aria-label'])}"
+    ?checked="${args.checked}"
+    ?disabled="${args.disabled}">
+  </mdc-toggle>
 `;
 
 const meta: Meta = {
@@ -33,8 +33,23 @@ const meta: Meta = {
   },
   argTypes: {
     size: {
-      control: { type: 'inline-radio' },
+      control: 'inline-radio',
       options: Object.values(TOGGLE_SIZE),
+    },
+    checked: {
+      control: 'boolean',
+    },
+    disabled: {
+      control: 'boolean',
+    },
+    label: {
+      control: 'text',
+    },
+    'help-text': {
+      control: 'text',
+    },
+    autofocus: {
+      control: 'boolean',
     },
     'data-aria-label': {
       control: 'text',
@@ -46,19 +61,15 @@ const meta: Meta = {
       '--mdc-toggle-height',
       '--mdc-toggle-width-compact',
       '--mdc-toggle-height-compact',
-      '--mdc-toggle-border-radius',
-      '--mdc-toggle-border-radius-compact',
-      '--mdc-toggle-border',
-      '--mdc-toggle-inactive-rest-color',
-      '--mdc-toggle-inactive-hover-color',
-      '--mdc-toggle-inactive-pressed-color',
-      '--mdc-toggle-inactive-disabled-color',
-      '--mdc-toggle-active-rest-color',
+      '--mdc-toggle-label-lineheight',
+      '--mdc-toggle-label-fontsize',
+      '--mdc-toggle-label-fontweight',
+      '--mdc-toggle-label-color-disabled',
+      '--mdc-toggle-help-text-color',
       '--mdc-toggle-active-hover-color',
       '--mdc-toggle-active-pressed-color',
-      '--mdc-toggle-active-disabled-color',
-      '--mdc-toggle-help-text-color',
-      '--mdc-toggle-label-color-disabled',
+      '--mdc-toggle-inactive-hover-color',
+      '--mdc-toggle-inactive-pressed-color',
     ]),
     ...classArgType,
     ...styleArgType,
@@ -71,8 +82,9 @@ export const Example: StoryObj = {
   args: {
     label: 'Toggle label',
     checked: false,
-    disabled: false,
     size: DEFAULTS.SIZE,
+    disabled: false,
+    autofocus: false,
     'help-text': '',
   },
 };
