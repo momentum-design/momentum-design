@@ -20,7 +20,8 @@ const styles = css`
   }
 
   :host([checked]){
-    border: 2px solid var(--mds-color-theme-outline-input-active);
+    border: 1px solid var(--mds-color-theme-outline-input-active);
+    box-shadow: 0 0 0 1px var(--mds-color-theme-outline-input-active);
     background-color: var(--mds-color-theme-background-primary-active);
   }
 

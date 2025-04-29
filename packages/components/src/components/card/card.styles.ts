@@ -6,6 +6,8 @@ const styles = css`
     align-items: flex-start;
     border-radius: 0.5rem;
     border: 1px solid var(--mds-color-theme-outline-primary-normal);
+    box-shadow: none;
+  transition: box-shadow 0.2s;
   }
   :host([variant='ghost']){
     border-color: transparent;
