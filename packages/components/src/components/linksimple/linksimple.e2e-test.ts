@@ -43,7 +43,10 @@ const setup = async (args: SetupOptions) => {
 test.use({ viewport: { width: 400, height: 800 } });
 
 test('mdc-linksimple', async ({ componentsPage }) => {
-  await test.step('attributes and interactions', async () => {
+  /**
+   * ATTRIBUTES
+   */
+  await test.step('attributes', async () => {
     const link = await setup({ componentsPage });
 
     await test.step('default attributes', async () => {
@@ -79,33 +82,12 @@ test('mdc-linksimple', async ({ componentsPage }) => {
       await expect(newLink).toHaveAttribute('target', '_self');
       await expect(newLink).toHaveAttribute('rel', 'noopener');
     });
-
-    await test.step('keyboard interactions', async () => {
-      const footerLink = await setup({ componentsPage, addPageFooter: true });
-
-      await test.step('does not focus or activate when disabled', async () => {
-        await componentsPage.setAttributes(footerLink, { disabled: '' });
-        await componentsPage.actionability.pressTab();
-        await expect(footerLink).not.toBeFocused();
-      });
-
-      await test.step('focus and navigate with Enter', async () => {
-        await componentsPage.removeAttribute(footerLink, 'disabled');
-        await componentsPage.actionability.pressTab();
-        await expect(footerLink).toBeFocused();
-
-        await componentsPage.page.keyboard.press('Enter');
-        await expect(componentsPage.page.locator('#content')).toBeVisible();
-      });
-
-      await test.step('navigate with mouse click', async () => {
-        await footerLink.click();
-        await expect(componentsPage.page.locator('#content')).toBeVisible();
-      });
-    });
   });
 
-  await test.step('visual-regression', async () => {
+  /**
+   * VISUAL REGRESSION AND ACCESSIBILITY
+   */
+  await test.step('visual-regression and accessibility', async () => {
     const stickerSheet = new StickerSheet(componentsPage, 'mdc-linksimple');
     stickerSheet.setChildren('Label');
 
@@ -137,9 +119,42 @@ test('mdc-linksimple', async ({ componentsPage }) => {
         element: container,
       });
     });
+
+    await test.step('accessibility', async () => {
+      await componentsPage.accessibility.checkForA11yViolations('linksimple-default');
+    });
   });
 
-  await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('linksimple-default');
+  /**
+   * INTERACTIONS
+   */
+  await test.step('mdc-linksimple interactions', async () => {
+    const linksimple = await setup({ componentsPage, addPageFooter: true, href: 'https://www.webex.com' });
+    let originalURL = '';
+
+    await test.step('does not focus or activate when disabled', async () => {
+      await componentsPage.setAttributes(linksimple, { disabled: '' });
+      await componentsPage.actionability.pressTab();
+      await expect(linksimple).not.toBeFocused();
+      await componentsPage.removeAttribute(linksimple, 'disabled');
+    });
+
+    await test.step('focus and navigate with Enter', async () => {
+      await componentsPage.actionability.pressTab();
+      await expect(linksimple).toBeFocused();
+      // Track the current URL before pressing Enter
+      originalURL = componentsPage.page.url();
+      await componentsPage.page.keyboard.press('Enter');
+      await expect(componentsPage.page).toHaveURL('https://www.webex.com');
+    });
+
+    await test.step('navigate with mouse click', async () => {
+      // Now, navigate back to the original page
+      await componentsPage.page.goto(originalURL);
+      await setup({ componentsPage, addPageFooter: true, href: 'https://www.webex.com' });
+
+      await linksimple.click();
+      await expect(componentsPage.page).toHaveURL('https://www.webex.com');
+    });
   });
 });
