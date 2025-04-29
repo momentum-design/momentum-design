@@ -45,6 +45,7 @@ import Tooltip from './components/tooltip';
 import ToggleTip from './components/toggletip';
 import VirtualizedList from './components/virtualizedlist';
 import TabList from './components/tablist';
+import ButtonLink from './components/buttonlink';
 import Linksimple from './components/linksimple';
 
 // Types Imports
@@ -111,6 +112,7 @@ export {
   Select,
   TabList,
   Progressspinner,
+  ButtonLink,
   Linksimple,
 };
 // Types Exports
