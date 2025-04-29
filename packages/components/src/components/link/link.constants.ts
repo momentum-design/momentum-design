@@ -15,8 +15,6 @@ const LINK_ICON_SIZES = {
 } as const;
 
 const DEFAULTS = {
-  INLINE: false,
-  INVERTED: false,
   LINK_SIZE: LINK_SIZES.LARGE,
 };
 

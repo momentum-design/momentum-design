@@ -12,6 +12,7 @@ import Chip from './components/chip';
 import Coachmark from './components/coachmark';
 import StaticCheckbox from './components/staticcheckbox';
 import StaticRadio from './components/staticradio';
+import StaticToggle from './components/statictoggle';
 import Divider from './components/divider';
 import FilterChip from './components/filterchip';
 import FormfieldGroup from './components/formfieldgroup';
@@ -44,6 +45,8 @@ import Tooltip from './components/tooltip';
 import ToggleTip from './components/toggletip';
 import VirtualizedList from './components/virtualizedlist';
 import TabList from './components/tablist';
+import ButtonLink from './components/buttonlink';
+import Linksimple from './components/linksimple';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -99,6 +102,7 @@ export {
   ScreenreaderAnnouncer,
   StaticCheckbox,
   StaticRadio,
+  StaticToggle,
   Textarea,
   ToggleTip,
   Tooltip,
@@ -108,6 +112,8 @@ export {
   Select,
   TabList,
   Progressspinner,
+  ButtonLink,
+  Linksimple,
 };
 // Types Exports
 export type {
