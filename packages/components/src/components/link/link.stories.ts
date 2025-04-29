@@ -2,7 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
-import { LINK_SIZES } from './link.constants';
+import { DEFAULTS, LINK_SIZES } from './link.constants';
 import { disableControls, hideControls, readOnlyControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`<mdc-link
@@ -74,12 +74,10 @@ const meta: Meta = {
       '--mdc-link-color-disabled',
       '--mdc-link-color-hover',
       '--mdc-link-color-normal',
-      '--mdc-link-icon-margin-left',
       '--mdc-link-inverted-color-active',
       '--mdc-link-inverted-color-disabled',
       '--mdc-link-inverted-color-hover',
       '--mdc-link-inverted-color-normal',
-      '--mdc-link-text-decoration-disabled',
     ]),
   },
 };
@@ -92,7 +90,7 @@ const defaultArgs = {
   'icon-name': 'placeholder-bold',
   inline: false,
   inverted: false,
-  size: 'large',
+  size: DEFAULTS.LINK_SIZE,
   href: 'https://www.webex.com',
   target: '_blank',
   rel: 'noopener noreferrer',
@@ -100,14 +98,12 @@ const defaultArgs = {
 };
 
 export const Example: StoryObj = {
-  render,
   args: {
     ...defaultArgs,
   },
 };
 
 export const StandaloneLink: StoryObj = {
-  render,
   args: {
     ...defaultArgs,
   },
@@ -129,7 +125,6 @@ export const StandaloneLinkInverted: StoryObj = {
 };
 
 export const InlineLink: StoryObj = {
-  render,
   args: {
     ...defaultArgs,
     inline: true,
