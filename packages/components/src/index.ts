@@ -7,6 +7,7 @@ import Badge from './components/badge';
 import Brandvisual from './components/brandvisual';
 import Bullet from './components/bullet';
 import Button from './components/button';
+import ButtonLink from './components/buttonlink';
 import Checkbox from './components/checkbox';
 import Chip from './components/chip';
 import Coachmark from './components/coachmark';
@@ -74,6 +75,7 @@ export {
   Brandvisual,
   Bullet,
   Button,
+  ButtonLink,
   Checkbox,
   Chip,
   Coachmark,
