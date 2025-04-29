@@ -7,6 +7,7 @@ import Badge from './components/badge';
 import Brandvisual from './components/brandvisual';
 import Bullet from './components/bullet';
 import Button from './components/button';
+import ButtonLink from './components/buttonlink';
 import Card from './components/card';
 import CardButton from './components/cardbutton';
 import CardCheckbox from './components/cardcheckbox';
@@ -119,6 +120,7 @@ export {
   Select,
   TabList,
   Progressspinner,
+  ButtonLink,
   Linksimple,
 };
 // Types Exports
