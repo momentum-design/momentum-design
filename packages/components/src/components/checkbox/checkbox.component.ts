@@ -6,7 +6,6 @@ import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/Fo
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
-import { ICON_NAME } from './checkbox.constants';
 import styles from './checkbox.styles';
 
 /**
@@ -25,18 +24,10 @@ import styles from './checkbox.styles';
  * @event focus - (React: onFocus) Event that gets dispatched when the checkbox receives focus.
  *
  * @cssproperty --mdc-checkbox-background-color-hover - Allows customization of the background color on hover.
- * @cssproperty --mdc-checkbox-border-color - Border color in high contrast.
- * @cssproperty --mdc-checkbox-checked-background-color - Background color for a selected checkbox.
  * @cssproperty --mdc-checkbox-checked-background-color-hover - Background color for a selected checkbox when hovered.
  * @cssproperty --mdc-checkbox-checked-pressed-icon-color - Background color for a selected checkbox when pressed.
- * @cssproperty --mdc-checkbox-disabled-background-color - Background color for a disabled checkbox.
- * @cssproperty --mdc-checkbox-disabled-border-color - Border color for a disabled checkbox.
- * @cssproperty --mdc-checkbox-disabled-checked-icon-color - Background color for a disabled, selected checkbox.
- * @cssproperty --mdc-checkbox-disabled-icon-color - Icon color for a disabled checkbox.
- * @cssproperty --mdc-checkbox-icon-background-color - Background color for an unselected checkbox.
- * @cssproperty --mdc-checkbox-icon-border-color - Default background color for an unselected checkbox.
- * @cssproperty --mdc-checkbox-icon-color - Icon color for an unselected checkbox.
  * @cssproperty --mdc-checkbox-pressed-icon-color - Background color for a selected checkbox when pressed.
+ * @cssproperty --mdc-checkbox-disabled-checked-icon-color - Background color for a selected checkbox when disabled.
  */
 class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
   /**
@@ -171,17 +162,12 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   };
 
   public override render() {
-    const checkboxIconContent = (this.checked || this.indeterminate) ? html`
-      <mdc-icon
-        class="icon"
-        name="${this.indeterminate ? ICON_NAME.INDETERMINATE : ICON_NAME.CHECKED}"
-        size="1"
-        length-unit="rem"
-      ></mdc-icon>
-    ` : nothing;
-
     return html`
-      <div class="container mdc-focus-ring">
+      <mdc-staticcheckbox 
+      class="mdc-focus-ring"
+      ?checked="${this.checked}" 
+      ?indeterminate="${this.indeterminate}" 
+      ?disabled="${this.disabled}">
         <input
           id="${this.id}"
           type="checkbox"
@@ -200,8 +186,7 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
           @change=${this.handleChange}
           @keydown=${this.handleKeyDown}
         />
-        <div class="icon-container">${checkboxIconContent}</div>
-      </div>
+      </mdc-staticcheckbox>
       ${this.renderLabelAndHelperText()}
     `;
   }

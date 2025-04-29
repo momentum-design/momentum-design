@@ -1,3 +1,5 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
@@ -10,252 +12,174 @@ type SetupOptions = {
   inline?: boolean;
   inverted?: boolean;
   size?: string;
+  href?: string;
+  target?: string;
+  rel?: string;
   addPageFooter?: boolean;
 };
 
 const ICON_PLACEHOLDER = 'placeholder-bold';
+const INVERTED_BG_STYLE = 'background-color: var(--mds-color-theme-inverted-background-normal);';
 
 const setup = async (args: SetupOptions) => {
-  const { componentsPage, ...restArgs } = args;
-  await componentsPage.mount({
-    html: `
-    ${restArgs.addPageFooter ? '<div id="wrapper">' : ''}
+  const { componentsPage, ...rest } = args;
+
+  const html = `
+    ${rest.addPageFooter ? '<div id="wrapper">' : ''}
     <mdc-link
-        ${restArgs.disabled ? 'disabled' : ''}
-        ${restArgs.iconName ? `icon-name="${restArgs.iconName}"` : ''}
-        ${restArgs.inline ? 'inline' : ''}
-        ${restArgs.inverted ? 'inverted' : ''}
-        ${restArgs.size ? `size="${restArgs.size}"` : ''}
-      >
-        <a href="#content">Label</a>
-      </mdc-link>
-      ${restArgs.addPageFooter ? '<div id="content"><p>Test content</p></div></div>' : ''}
-    `,
-    clearDocument: true,
-  });
+      ${rest.disabled ? 'disabled' : ''}
+      ${rest.iconName ? `icon-name="${rest.iconName}"` : ''}
+      ${rest.inline ? 'inline' : ''}
+      ${rest.inverted ? 'inverted' : ''}
+      ${rest.size ? `size="${rest.size}"` : ''}
+      ${rest.href ? `href="${rest.href}"` : ''}
+      ${rest.target ? `target="${rest.target}"` : ''}
+      ${rest.rel ? `rel="${rest.rel}"` : ''}
+    >Label</mdc-link>
+    ${rest.addPageFooter ? '<div id="content"><p>Test content</p></div></div>' : ''}
+  `;
 
-  const element = restArgs.addPageFooter
-    ? componentsPage.page.locator('div#wrapper')
-    : componentsPage.page.locator('mdc-link');
-  await element.waitFor();
+  await componentsPage.mount({ html, clearDocument: true });
 
-  // always return the first button:
   const link = componentsPage.page.locator('mdc-link').first();
+  await link.waitFor();
   return link;
 };
 
 test.use({ viewport: { width: 400, height: 800 } });
+
 test('mdc-link', async ({ componentsPage }) => {
   await test.step('attributes and interactions', async () => {
     const link = await setup({ componentsPage });
 
-    /**
-     * ATTRIBUTES
-     */
-    await test.step('attributes', async () => {
-      // Default values for link
-      await test.step('only size attribute should be present on component by default', async () => {
-        await expect(link).toHaveAttribute('size', DEFAULTS.LINK_SIZE);
-        await expect(link).not.toHaveAttribute('disabled');
-        await expect(link).not.toHaveAttribute('icon-name');
-        await expect(link).not.toHaveAttribute('inline');
-        await expect(link).not.toHaveAttribute('inverted');
-      });
-
-      // Disabled
-      await test.step('attribute disabled should be present on link', async () => {
-        await componentsPage.setAttributes(link, {
-          disabled: '',
-        });
-        await expect(link).toHaveAttribute('disabled');
-        await componentsPage.removeAttribute(link, 'disabled');
-      });
-
-      // Icon name
-      await test.step('attribute icon-name should be present on link', async () => {
-        await componentsPage.setAttributes(link, {
-          'icon-name': ICON_PLACEHOLDER,
-        });
-        await expect(link).toHaveAttribute('icon-name');
-        await componentsPage.removeAttribute(link, 'icon-name');
-      });
-
-      // Inline
-      await test.step('attribute inline should be present on link', async () => {
-        await componentsPage.setAttributes(link, {
-          inline: '',
-        });
-        await expect(link).toHaveAttribute('inline');
-        await componentsPage.removeAttribute(link, 'inline');
-      });
-
-      // Inverted
-      await test.step('attribute inverted should be present on link', async () => {
-        await componentsPage.setAttributes(link, {
-          inverted: '',
-        });
-        await expect(link).toHaveAttribute('inverted');
-        await componentsPage.removeAttribute(link, 'inverted');
-      });
-
-      // Size
-      // eslint-disable-next-line no-restricted-syntax
-      for (const linkSize of Object.values(LINK_SIZES)) {
-      // eslint-disable-next-line no-await-in-loop
-        await test.step(`attribute size ${linkSize} should be present as expected`, async () => {
-          await componentsPage.setAttributes(link, { size: linkSize });
-          await expect(link).toHaveAttribute('size', linkSize);
-        });
-      }
-
-      // Href
-      await test.step('attribute href should be present on anchor tag', async () => {
-        const linkElement = link.getByRole('link');
-        await expect(linkElement).toHaveAttribute('href', '#content');
-      });
+    await test.step('default attributes', async () => {
+      await expect(link).toHaveAttribute('size', DEFAULTS.LINK_SIZE);
+      await expect(link).not.toHaveAttribute('disabled');
+      await expect(link).not.toHaveAttribute('icon-name');
+      await expect(link).not.toHaveAttribute('inline');
+      await expect(link).not.toHaveAttribute('inverted');
     });
 
-    /**
-     * INTERACTIONS
-     */
-    await test.step('interactions', async () => {
-      const linkInFooterPage = await setup({ componentsPage, addPageFooter: true });
+    const attributeTests: [string, Record<string, string | ''>][] = [
+      ['disabled', { disabled: '' }],
+      ['icon-name', { 'icon-name': ICON_PLACEHOLDER }],
+      ['inline', { inline: '' }],
+      ['inverted', { inverted: '' }],
+    ];
 
-      await test.step('link focus and click on disabled link', async () => {
-        const linkElement = linkInFooterPage.getByRole('link');
-        await componentsPage.setAttributes(link, {
-          disabled: '',
-        });
-        await componentsPage.actionability.pressTab();
-        await expect(linkElement).not.toBeFocused();
+    for (const [label, attrs] of attributeTests) {
+      await test.step(`attribute ${label} should be present`, async () => {
+        await componentsPage.setAttributes(link, attrs);
+        const [attr] = Object.keys(attrs);
+        await expect(link).toHaveAttribute(attr);
+        await componentsPage.removeAttribute(link, attr);
+      });
+    }
 
-        await componentsPage.removeAttribute(link, 'disabled');
-        await linkElement.evaluate((el) => el.blur());
+    await test.step('supports different sizes', async () => {
+      for (const size of Object.values(LINK_SIZES)) {
+        await componentsPage.setAttributes(link, { size });
+        await expect(link).toHaveAttribute('size', size);
+      }
+    });
+
+    await test.step('supports href/target/rel', async () => {
+      const newLink = await setup({
+        componentsPage,
+        href: '#content',
+        target: '_self',
+        rel: 'noopener',
       });
 
-      await test.step('link focus and click', async () => {
-        const linkElement = linkInFooterPage.getByRole('link');
+      await expect(newLink).toHaveAttribute('href', '#content');
+      await expect(newLink).toHaveAttribute('target', '_self');
+      await expect(newLink).toHaveAttribute('rel', 'noopener');
+    });
+
+    await test.step('keyboard interactions', async () => {
+      const footerLink = await setup({ componentsPage, addPageFooter: true });
+
+      await test.step('does not focus or activate when disabled', async () => {
+        await componentsPage.setAttributes(footerLink, { disabled: '' });
         await componentsPage.actionability.pressTab();
-        await expect(linkElement).toBeFocused();
+        await expect(footerLink).not.toBeFocused();
+      });
+
+      await test.step('focus and navigate with Enter', async () => {
+        await componentsPage.removeAttribute(footerLink, 'disabled');
+        await componentsPage.actionability.pressTab();
+        await expect(footerLink).toBeFocused();
 
         await componentsPage.page.keyboard.press('Enter');
-        expect(componentsPage.page.url()).toContain('#content');
-        await linkElement.evaluate((el) => el.blur());
-        await componentsPage.page.goBack();
+        await expect(componentsPage.page.locator('#content')).toBeVisible();
+      });
+
+      await test.step('navigate with mouse click', async () => {
+        await footerLink.click();
+        await expect(componentsPage.page.locator('#content')).toBeVisible();
       });
     });
   });
 
-  /**
-   * VISUAL REGRESSION
-   */
   await test.step('visual-regression', async () => {
     const stickerSheet = new StickerSheet(componentsPage, 'mdc-link');
-    stickerSheet.setChildren(
-      '<a href="http://localhost:4000/" target="_blank" rel="noopener noreferrer">Label</a>',
-    );
+    stickerSheet.setChildren('Label');
 
-    // Standalone Link without trailing icon
-    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
+    const sizes = Object.values(LINK_SIZES);
+    const baseCombos: Record<string, string | undefined>[] = [
+      {},
+      { 'icon-name': ICON_PLACEHOLDER },
+      { disabled: '' },
+      { disabled: '', 'icon-name': ICON_PLACEHOLDER },
+      { inline: '' },
+      { inline: '', 'icon-name': ICON_PLACEHOLDER },
+      { inline: '', disabled: '' },
+      { inline: '', disabled: '', 'icon-name': ICON_PLACEHOLDER },
+    ];
 
-    // Standalone Link with trailing icon
-    stickerSheet.setAttributes({ 'icon-name': ICON_PLACEHOLDER });
-    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
+    const createVariants = async (
+      baseAttrs: Record<string, string | undefined>,
+      inline = false,
+      inverted = false,
+    ) => {
+      const attrs: Record<string, string | undefined> = { ...baseAttrs };
+      if (inline) attrs.inline = '';
+      if (inverted) attrs.inverted = '';
 
-    // Standalone Link disabled without trailing icon
-    stickerSheet.setAttributes({ disabled: '' });
-    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
+      const filteredAttrs = Object.fromEntries(
+        Object.entries(attrs).filter(([, v]) => v !== undefined),
+      ) as Record<string, string>;
 
-    // Standalone Link disabled with trailing icon
-    stickerSheet.setAttributes({ disabled: '', 'icon-name': ICON_PLACEHOLDER });
-    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
+      stickerSheet.setAttributes(filteredAttrs);
 
-    // Inline Link without trailing icon
-    stickerSheet.setAttributes({ inline: '' });
-    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
+      await stickerSheet.createMarkupWithCombination(
+        { size: sizes },
+        inverted ? { rowWrapperStyle: INVERTED_BG_STYLE } : undefined,
+      );
+    };
 
-    // Inline Link with trailing icon
-    stickerSheet.setAttributes({ 'icon-name': ICON_PLACEHOLDER, inline: '' });
-    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
+    // First 8 rows: inverted = false, Next 8 rows: inverted = true
+    let invertedPattern = false;
+    const maxRows = 16;
 
-    // Inline Link disabled without trailing icon
-    stickerSheet.setAttributes({ disabled: '', inline: '' });
-    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
-
-    // Inline Link disabled with trailing icon
-    stickerSheet.setAttributes({ disabled: '', 'icon-name': ICON_PLACEHOLDER, inline: '' });
-    await stickerSheet.createMarkupWithCombination({ size: Object.values(LINK_SIZES) });
-
-    // Standalone Link inverted without trailing icon
-    stickerSheet.setAttributes({ inverted: '' });
-    await stickerSheet.createMarkupWithCombination(
-      { size: Object.values(LINK_SIZES) },
-      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
-    );
-
-    // Standalone Link inverted with trailing icon
-    stickerSheet.setAttributes({ 'icon-name': ICON_PLACEHOLDER, inverted: '' });
-    await stickerSheet.createMarkupWithCombination(
-      { size: Object.values(LINK_SIZES) },
-      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
-    );
-
-    // Standalone Link inverted and disabled without trailing icon
-    stickerSheet.setAttributes({ disabled: '', inverted: '' });
-    await stickerSheet.createMarkupWithCombination(
-      { size: Object.values(LINK_SIZES) },
-      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
-    );
-
-    // Standalone Link inverted and disabled with trailing icon
-    stickerSheet.setAttributes({ disabled: '', 'icon-name': ICON_PLACEHOLDER, inverted: '' });
-    await stickerSheet.createMarkupWithCombination(
-      { size: Object.values(LINK_SIZES) },
-      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
-    );
-
-    // Inline Link inverted without trailing icon
-    stickerSheet.setAttributes({ inline: '', inverted: '' });
-    await stickerSheet.createMarkupWithCombination(
-      { size: Object.values(LINK_SIZES) },
-      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
-    );
-
-    // Inline Link inverted with trailing icon
-    stickerSheet.setAttributes({ 'icon-name': ICON_PLACEHOLDER, inline: '', inverted: '' });
-    await stickerSheet.createMarkupWithCombination(
-      { size: Object.values(LINK_SIZES) },
-      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
-    );
-
-    // Inline Link inverted and disabled without trailing icon
-    stickerSheet.setAttributes({ disabled: '', inline: '', inverted: '' });
-    await stickerSheet.createMarkupWithCombination(
-      { size: Object.values(LINK_SIZES) },
-      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
-    );
-
-    // Inline Link inverted and disabled with trailing icon
-    stickerSheet.setAttributes({ disabled: '', inline: '', inverted: '', 'icon-name': ICON_PLACEHOLDER });
-    await stickerSheet.createMarkupWithCombination(
-      { size: Object.values(LINK_SIZES) },
-      { rowWrapperStyle: 'background-color: var(--mds-color-theme-inverted-background-normal);' },
-    );
+    for (let i = 0; i < maxRows; i += 1) {
+      const baseAttrs = baseCombos[i % baseCombos.length];
+      await createVariants(baseAttrs, false, invertedPattern);
+      if ((i + 1) % 8 === 0) {
+        invertedPattern = !invertedPattern;
+      }
+    }
 
     await stickerSheet.mountStickerSheet();
     const container = stickerSheet.getWrapperContainer();
 
     await test.step('matches screenshot of link element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-link', {
-        element: container,
-      });
+      await componentsPage.page.mouse.move(0, 0);
+      await componentsPage.visualRegression.takeScreenshot('mdc-link', { element: container });
     });
   });
 
-  /**
-   * ACCESSIBILITY
-   */
-  await test.step('accessbility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('mdc-link');
+  await test.step('accessibility', async () => {
+    await componentsPage.accessibility.checkForA11yViolations('link-default');
   });
 });

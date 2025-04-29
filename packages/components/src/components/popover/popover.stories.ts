@@ -1,9 +1,12 @@
-import type { Meta, StoryObj, Args } from '@storybook/web-components';
-import '.';
-import { html, TemplateResult } from 'lit';
 import { action } from '@storybook/addon-actions';
-import { POPOVER_PLACEMENT, DEFAULTS, COLOR } from './popover.constants';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
+import type { Args, Meta, StoryObj } from '@storybook/web-components';
+import { html, TemplateResult } from 'lit';
+import '.';
+import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
+import '../button';
+import '../option';
+import '../select';
+import { COLOR, DEFAULTS, POPOVER_PLACEMENT } from './popover.constants';
 
 const createPopover = (args: Args, content: TemplateResult) => html`
   <mdc-popover
@@ -324,6 +327,8 @@ export const Default: StoryObj = {
     'show-arrow': true,
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
+    'disable-aria-expanded': true,
+    interactive: DEFAULTS.INTERACTIVE,
   },
 };
 
@@ -344,6 +349,7 @@ export const interactiveContent: StoryObj = {
     size: true,
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
+    'disable-aria-expanded': false,
   },
 };
 
@@ -441,4 +447,32 @@ export const popoverWithBackdrop: StoryObj = {
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
   },
+};
+
+export const popoverWithSelect: StoryObj = {
+  render: () => html`
+    <div style="width: 10rem; height: 8rem; margin: 5rem;">
+      <mdc-button id="select-button">Click me!</mdc-button>
+      <mdc-popover triggerID="select-button" interactive hide-on-escape hide-on-outside-click>
+        <div style="width: 15rem;">
+          <mdc-select>
+            <mdc-option>Option 1</mdc-option>
+            <mdc-option>Option 2</mdc-option>
+            <mdc-option>Option 3</mdc-option>
+          </mdc-select>
+          <mdc-select>
+            <mdc-option>Option 4</mdc-option>
+            <mdc-option>Option 5</mdc-option>
+            <mdc-option>Option 6</mdc-option>
+          </mdc-select>
+          <mdc-select>
+            <mdc-option>Option 7</mdc-option>
+            <mdc-option>Option 8</mdc-option>
+            <mdc-option>Option 9</mdc-option>
+          </mdc-select>
+        </div>
+      </mdc-popover>
+    </div>
+  `,
+  ...hideAllControls(),
 };

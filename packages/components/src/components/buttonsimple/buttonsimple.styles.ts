@@ -5,6 +5,7 @@ const styles = [hostFitContentStyles, css`
   :host {
     border: 0.0625rem solid transparent;
     cursor: pointer;
+    user-select: none;
     
     background-color: var(--mds-color-theme-text-primary-normal); 
     color: var(--mds-color-theme-inverted-text-secondary-normal);

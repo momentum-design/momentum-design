@@ -10,6 +10,9 @@ import Button from './components/button';
 import Checkbox from './components/checkbox';
 import Chip from './components/chip';
 import Coachmark from './components/coachmark';
+import StaticCheckbox from './components/staticcheckbox';
+import StaticRadio from './components/staticradio';
+import StaticToggle from './components/statictoggle';
 import Divider from './components/divider';
 import FilterChip from './components/filterchip';
 import FormfieldGroup from './components/formfieldgroup';
@@ -26,6 +29,7 @@ import Option from './components/option';
 import Popover from './components/popover';
 import Presence from './components/presence';
 import Progressbar from './components/progressbar';
+import Progressspinner from './components/progressspinner';
 import Radio from './components/radio';
 import RadioGroup from './components/radiogroup';
 import ScreenreaderAnnouncer from './components/screenreaderannouncer';
@@ -38,11 +42,14 @@ import Textarea from './components/textarea';
 import ThemeProvider from './components/themeprovider';
 import Toggle from './components/toggle';
 import Tooltip from './components/tooltip';
+import ToggleTip from './components/toggletip';
 import VirtualizedList from './components/virtualizedlist';
 import TabList from './components/tablist';
 import NavItem from './components/navitem';
 import NavItemList from './components/navitemlist';
 import SideNavigation from './components/sidenavigation';
+import Linksimple from './components/linksimple';
+
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
 import type { ButtonColor, ButtonVariant, IconButtonSize, PillButtonSize } from './components/button/button.types';
@@ -95,7 +102,11 @@ export {
   OptGroup,
   Progressbar,
   ScreenreaderAnnouncer,
+  StaticCheckbox,
+  StaticRadio,
+  StaticToggle,
   Textarea,
+  ToggleTip,
   Tooltip,
   Searchfield,
   Brandvisual,
@@ -105,6 +116,8 @@ export {
   NavItem,
   NavItemList,
   SideNavigation,
+  Progressspinner,
+  Linksimple,
 };
 // Types Exports
 export type {

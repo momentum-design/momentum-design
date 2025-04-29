@@ -73,7 +73,7 @@ class Progressbar extends DataAriaLabelMixin(FormfieldWrapper) {
    * @returns The clamped value
    * @internal
    */
-  private get clampedValue() {
+  protected get clampedValue() {
     const value = Number(this.value);
     const clampedValue = Number.isNaN(value) ? 0 : Math.max(0, Math.min(100, value));
     return clampedValue;

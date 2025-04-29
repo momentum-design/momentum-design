@@ -1,5 +1,7 @@
 import FilterChip from './filterchip.component';
 import { TAG_NAME } from './filterchip.constants';
+import '../text';
+import '../icon';
 
 FilterChip.register(TAG_NAME);
 
