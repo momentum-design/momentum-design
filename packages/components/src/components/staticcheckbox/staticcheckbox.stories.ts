@@ -19,7 +19,7 @@ const meta: Meta = {
   component: 'mdc-staticcheckbox',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     checked: {
