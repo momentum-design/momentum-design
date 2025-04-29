@@ -164,7 +164,7 @@ class NavItem extends IconNameMixin(Buttonsimple) {
   }
 
   protected override executeAction() {
-    this.emitNavItemActiveChange(this.active);
+    this.emitNavItemActiveChange(this.active as boolean);
   }
 
   private getTextLabel(): string | undefined {

@@ -24,7 +24,6 @@ const styles = [hostFitContentStyles, css`
     color: var(--mdc-navitem-color);
     border-color: var(--mdc-navitem-border-color);
     border-radius: 1.25rem;
-    font-weight: var(--mds-font-apps-body-large-medium-font-weight);
     margin-left: 1rem;
   }
   
