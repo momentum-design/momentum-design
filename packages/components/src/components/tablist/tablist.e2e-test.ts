@@ -193,20 +193,17 @@ test('mdc-tablist', async ({ componentsPage }) => {
     });
 
     await test.step('component should fire change event when active tab changes', async () => {
-      await mdcTablist.evaluate((element) => {
-        element.addEventListener('change', () => {
-          element.classList.toggle('onchange');
-        });
-      });
-      await expect(mdcTablist).not.toHaveClass('onchange');
+      await setup({ componentsPage });
+      const waitForChange = componentsPage.waitForEvent(mdcTablist, 'change');
       await componentsPage.actionability.pressTab();
+      await componentsPage.page.keyboard.press('ArrowRight');
       await componentsPage.page.keyboard.press('Enter');
-      await expect(mdcTablist).toHaveClass('onchange');
+      await waitForChange;
     });
   });
 
   await test.step('user stories', async () => {
-    await test.step(`Given a tablist component with 4 tabs,
+    await test.step(`Given a tablist component with 5 tabs,
        user can navigate using Arrowright and Arrowleft to focus between tabs`, async () => {
       await setup({ componentsPage });
       await componentsPage.actionability.pressTab();
@@ -221,7 +218,7 @@ test('mdc-tablist', async ({ componentsPage }) => {
       );
     });
 
-    await test.step(`Given a tablist component with 4 tabs,
+    await test.step(`Given a tablist component with 5 tabs,
        user can navigate using Home and End to focus first and last tabs respectively`, async () => {
       await setup({ componentsPage });
       await componentsPage.actionability.pressTab();
@@ -236,7 +233,7 @@ test('mdc-tablist', async ({ componentsPage }) => {
       await expect(tabs.last()).toBeFocused();
     });
 
-    await test.step(`Given a tablist component with 4 tabs,
+    await test.step(`Given a tablist component with 5 tabs,
        user can navigate to tab 2 and select it by pressing enter`, async () => {
       await setup({ componentsPage });
       await componentsPage.actionability.pressTab();
@@ -250,7 +247,7 @@ test('mdc-tablist', async ({ componentsPage }) => {
     // resizing viewport only on desktop devices.
     const deviceName = test.info().project.name;
     if (['chrome', 'firefox', 'msedge', 'webkit'].includes(deviceName)) {
-      await test.step(`Given a tablist component with 4 tabs and a smaller viewport,
+      await test.step(`Given a tablist component with 5 tabs and a smaller viewport,
        user can navigate between the arrow buttons and tablist using tab key`, async () => {
         await componentsPage.page.setViewportSize({ width: 320, height: 450 });
         await setup({ componentsPage });
@@ -271,7 +268,7 @@ test('mdc-tablist', async ({ componentsPage }) => {
         await expect(arrowButtons.first()).toBeFocused();
       });
 
-      await test.step(`Given a tablist component with 4 tabs and a smaller viewport,
+      await test.step(`Given a tablist component with 5 tabs and a smaller viewport,
           if any arrow button is focused, when both arrow buttons disappear, 
           the active tab should gain focus`, async () => {
         await componentsPage.page.setViewportSize({ width: 320, height: 450 });
@@ -293,7 +290,7 @@ test('mdc-tablist', async ({ componentsPage }) => {
         await componentsPage.accessibility.checkForA11yViolations('tablist-without-arrow-buttons');
       });
 
-      await test.step(`Given a tablist component with 4 tabs and a smaller viewport,
+      await test.step(`Given a tablist component with 5 tabs and a smaller viewport,
         user can scroll to view the tabs by using arrow buttons`, async () => {
         await componentsPage.page.setViewportSize({ width: 320, height: 450 });
         await setup({ componentsPage });
