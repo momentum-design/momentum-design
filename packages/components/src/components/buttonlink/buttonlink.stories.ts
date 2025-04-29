@@ -27,12 +27,12 @@ const render = (args: Args) => html`
   >${args.children}</mdc-buttonlink>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/buttonlink',
+  title: 'Components/buttonlink',
   tags: ['autodocs'],
   component: 'mdc-buttonlink',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     children: {
