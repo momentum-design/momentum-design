@@ -18,6 +18,7 @@ type SetupOptions = {
   children?: any;
   ariaLabel?: string;
   secondButtonForFocus?: boolean;
+  inverted?: boolean;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -31,6 +32,7 @@ const setup = async (args: SetupOptions) => {
           ${restArgs.disabled ? 'disabled' : ''}
           ${restArgs.softDisabled ? 'soft-disabled' : ''}
           ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
+          ${restArgs.inverted ? 'inverted' : ''}
           ${restArgs.size ? `size="${restArgs.size}"` : ''}
           ${restArgs.color ? `color="${restArgs.color}"` : ''}
           ${restArgs.prefixIcon ? `prefix-icon="${restArgs.prefixIcon}"` : ''}
@@ -51,6 +53,7 @@ const setup = async (args: SetupOptions) => {
           ${restArgs.disabled ? 'disabled' : ''}
           ${restArgs.softDisabled ? 'soft-disabled' : ''}
           ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
+          ${restArgs.inverted ? 'inverted' : ''}
           ${restArgs.size ? `size="${restArgs.size}"` : ''}
           ${restArgs.color ? `color="${restArgs.color}"` : ''}
           ${restArgs.prefixIcon ? `prefix-icon="${restArgs.prefixIcon}"` : ''}
@@ -259,11 +262,20 @@ test.describe.parallel('mdc-button', () => {
       // 'soft-disabled'
       buttonSheet.setAttributes({ 'soft-disabled': '' });
       await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+      // inverted
+      buttonSheet.setAttributes({ inverted: '', variant: BUTTON_VARIANTS.PRIMARY, color: BUTTON_COLORS.DEFAULT });
+      await buttonSheet.createMarkupWithCombination(
+        { size: PILL_BUTTON_SIZES },
+        { rowWrapperStyle: 'background: var(--mds-color-theme-inverted-background-normal); padding: 5px 0;' },
+      );
       // active
       buttonSheet.setAttributes({ active: '' });
       const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
-      await buttonSheet
-        .createMarkupWithCombination({ size: PILL_BUTTON_SIZES, variant: subVariants, color: BUTTON_COLORS });
+      await buttonSheet.createMarkupWithCombination({
+        size: PILL_BUTTON_SIZES,
+        variant: subVariants,
+        color: BUTTON_COLORS,
+      });
       // tertiary active
       buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY });
       await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES });
@@ -315,11 +327,25 @@ test.describe.parallel('mdc-button', () => {
         'prefix-icon': 'placeholder-light',
       });
       await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+      // inverted
+      buttonSheet.setAttributes({
+        inverted: '',
+        variant: BUTTON_VARIANTS.PRIMARY,
+        color: BUTTON_COLORS.DEFAULT,
+        'prefix-icon': 'placeholder-light',
+      });
+      await buttonSheet.createMarkupWithCombination(
+        { size: PILL_BUTTON_SIZES },
+        { rowWrapperStyle: 'background: var(--mds-color-theme-inverted-background-normal); padding: 5px 0;' },
+      );
       // active
       buttonSheet.setAttributes({ active: '', 'prefix-icon': 'placeholder-light' });
       const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
-      await buttonSheet
-        .createMarkupWithCombination({ size: PILL_BUTTON_SIZES, variant: subVariants, color: BUTTON_COLORS });
+      await buttonSheet.createMarkupWithCombination({
+        size: PILL_BUTTON_SIZES,
+        variant: subVariants,
+        color: BUTTON_COLORS,
+      });
       // tertiary active
       buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY, 'prefix-icon': 'placeholder-light' });
       await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES });
@@ -371,11 +397,25 @@ test.describe.parallel('mdc-button', () => {
         'postfix-icon': 'placeholder-light',
       });
       await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES, variant: BUTTON_VARIANTS });
+      // inverted
+      buttonSheet.setAttributes({
+        inverted: '',
+        variant: BUTTON_VARIANTS.PRIMARY,
+        color: BUTTON_COLORS.DEFAULT,
+        'postfix-icon': 'placeholder-light',
+      });
+      await buttonSheet.createMarkupWithCombination(
+        { size: PILL_BUTTON_SIZES },
+        { rowWrapperStyle: 'background: var(--mds-color-theme-inverted-background-normal); padding: 5px 0;' },
+      );
       // active
       buttonSheet.setAttributes({ active: '', 'postfix-icon': 'placeholder-light' });
       const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
-      await buttonSheet
-        .createMarkupWithCombination({ size: PILL_BUTTON_SIZES, variant: subVariants, color: BUTTON_COLORS });
+      await buttonSheet.createMarkupWithCombination({
+        size: PILL_BUTTON_SIZES,
+        variant: subVariants,
+        color: BUTTON_COLORS,
+      });
       // tertiary active
       buttonSheet.setAttributes({ active: '', variant: BUTTON_VARIANTS.TERTIARY, 'postfix-icon': 'placeholder-light' });
       await buttonSheet.createMarkupWithCombination({ size: PILL_BUTTON_SIZES });
@@ -419,9 +459,24 @@ test.describe.parallel('mdc-button', () => {
       buttonSheet.setAttributes({ 'prefix-icon': 'placeholder-light', disabled: '', 'aria-label': 'icon-button' });
       await buttonSheet.createMarkupWithCombination({ size: BUTTON_SIZES, variant: BUTTON_VARIANTS });
       // 'soft-disabled'
-      buttonSheet
-        .setAttributes({ 'prefix-icon': 'placeholder-light', 'soft-disabled': '', 'aria-label': 'icon-button' });
+      buttonSheet.setAttributes({
+        'prefix-icon': 'placeholder-light',
+        'soft-disabled': '',
+        'aria-label': 'icon-button',
+      });
       await buttonSheet.createMarkupWithCombination({ size: BUTTON_SIZES, variant: BUTTON_VARIANTS });
+      // inverted
+      buttonSheet.setAttributes({
+        'prefix-icon': 'placeholder-light',
+        inverted: '',
+        variant: BUTTON_VARIANTS.PRIMARY,
+        color: BUTTON_COLORS.DEFAULT,
+        'aria-label': 'icon-button',
+      });
+      await buttonSheet.createMarkupWithCombination(
+        { size: PILL_BUTTON_SIZES },
+        { rowWrapperStyle: 'background: var(--mds-color-theme-inverted-background-normal); padding: 5px 0;' },
+      );
       // active
       buttonSheet.setAttributes({ active: '', 'prefix-icon': 'placeholder-light', 'aria-label': 'icon-button' });
       const subVariants = { primary: BUTTON_VARIANTS.PRIMARY, secondary: BUTTON_VARIANTS.SECONDARY };
