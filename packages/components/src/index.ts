@@ -48,6 +48,7 @@ import TabList from './components/tablist';
 import NavItem from './components/navitem';
 import NavItemList from './components/navitemlist';
 import SideNavigation from './components/sidenavigation';
+import ButtonLink from './components/buttonlink';
 import Linksimple from './components/linksimple';
 
 // Types Imports
@@ -117,6 +118,7 @@ export {
   NavItemList,
   SideNavigation,
   Progressspinner,
+  ButtonLink,
   Linksimple,
 };
 // Types Exports
