@@ -5,21 +5,19 @@ import { html } from 'lit';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { TAB_VARIANTS } from '../tab/tab.constants';
 import '../badge';
+import '../tab';
 
 const render = (args: Args) => html`
 <mdc-tablist
   @change="${action('onchange')}"
-  @keyup="${action('onkeyup')}"
-  @keydown="${action('onkeydown')}"
   active-tab-id="${args['active-tab-id']}"
-  data-aria-labelledby=${args['data-aria-labelledby']}
   data-aria-label=${args['data-aria-label']}>
   <mdc-tab
     variant=${args.tabvariant}
-    text="Photos"
-    icon-name="add-photo-bold"
-    tab-id="photos-tab"
-    aria-controls="photos-panel">
+    text="Calls"
+    icon-name="audio-call-bold"
+    tab-id="calls-tab"
+    aria-controls="calls-panel">
   </mdc-tab>
   <mdc-tab variant=${args.tabvariant}
     text="Videos"
@@ -43,17 +41,17 @@ const render = (args: Args) => html`
   </mdc-tab>
   <mdc-tab
     variant=${args.tabvariant}
-    text="Downloads"
-    icon-name="cloud-download-bold"
-    tab-id="downloads-tab"
-    aria-controls="downloads-panel">
+    text="Meetings"
+    icon-name="calendar-month-bold"
+    tab-id="meetings-tab"
+    aria-controls="meetings-panel">
   </mdc-tab>
 </mdc-tablist>
 
 <!-- The following is an example of the markup for the tab panels.
 This markup is not part of the component and is only provided for context. -->
-  <div id="photos-panel" role="tabpanel" aria-labelledby="photos-tab" hidden>
-    <p>Photos panel</p>
+  <div id="calls-panel" role="tabpanel" aria-labelledby="calls-tab" hidden>
+    <p>Calls panel</p>
   </div>
   <div id="videos-panel" role="tabpanel" aria-labelledby="videos-tab" hidden>
     <p>Videos panel</p>
@@ -64,8 +62,8 @@ This markup is not part of the component and is only provided for context. -->
   <div id="documents-panel" role="tabpanel" aria-labelledby="documents-tab" hidden>
     <p>Documents panel</p>
   </div>
-  <div id="downloads-panel" role="tabpanel" aria-labelledby="downloads-tab" hidden>
-    <p>Downloads panel</p>
+  <div id="meetings-panel" role="tabpanel" aria-labelledby="meetings-tab" hidden>
+    <p>Meetings panel</p>
   </div>
 <!-- End of example markup for the tab panels -->`;
 
@@ -79,9 +77,6 @@ const meta: Meta = {
   },
   argTypes: {
     'active-tab-id': {
-      control: 'text',
-    },
-    'data-aria-labelledby': {
       control: 'text',
     },
     'data-aria-label': {
