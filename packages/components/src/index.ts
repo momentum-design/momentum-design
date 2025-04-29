@@ -40,6 +40,7 @@ import Select from './components/select';
 import Spinner from './components/spinner';
 import StaticCheckbox from './components/staticcheckbox';
 import StaticRadio from './components/staticradio';
+import StaticToggle from './components/statictoggle';
 import Tab from './components/tab';
 import TabList from './components/tablist';
 import Text from './components/text';
@@ -108,6 +109,7 @@ export {
   ScreenreaderAnnouncer,
   StaticCheckbox,
   StaticRadio,
+  StaticToggle,
   Textarea,
   ToggleTip,
   Tooltip,

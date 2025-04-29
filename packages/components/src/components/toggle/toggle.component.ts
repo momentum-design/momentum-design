@@ -1,14 +1,14 @@
 import { CSSResult, html, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import styles from './toggle.styles';
-import FormfieldWrapper from '../formfieldwrapper';
-import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
-import { DEFAULTS, ICON_NAME, ICON_SIZE_IN_REM, TOGGLE_SIZE } from './toggle.constants';
-import { ToggleSize } from './toggle.types';
-import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
+import FormfieldWrapper from '../formfieldwrapper';
+import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
+import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
+import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
+import styles from './toggle.styles';
+import type { ToggleSize } from './toggle.types';
 
 /**
  * Toggle Component is an interactive control used to switch between two mutually exclusive options,
@@ -21,30 +21,26 @@ import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/Fo
  * Note: It internally renders a checkbox styled as a toggle switch.
  *
  * @dependency mdc-icon
+ * @dependency mdc-statictoggle
  *
  * @tagname mdc-toggle
  *
  * @event change - (React: onChange) Event that gets dispatched when the toggle state changes.
  * @event focus - (React: onFocus) Event that gets dispatched when the toggle receives focus.
  *
- * @cssproperty --mdc-toggle-width - width of the toggle
- * @cssproperty --mdc-toggle-height - height of the toggle
- * @cssproperty --mdc-toggle-width-compact - width of the toggle when it's size is compact
- * @cssproperty --mdc-toggle-height-compact - height of the toggle when it's size is compact
- * @cssproperty --mdc-toggle-border-radius - border radius of the toggle
- * @cssproperty --mdc-toggle-border-radius-compact - border radius of the toggle when it's size is compact
- * @cssproperty --mdc-toggle-border - border of the toggle
- * @cssproperty --mdc-toggle-inactive-rest-color - background color of the inactive toggle in rest state
- * @cssproperty --mdc-toggle-inactive-hover-color - background color of the inactive toggle in hover state
- * @cssproperty --mdc-toggle-inactive-pressed-color - background color of the inactive toggle in pressed state
- * @cssproperty --mdc-toggle-inactive-disabled-color - background color of the inactive toggle in disabled state
- * @cssproperty --mdc-toggle-active-rest-color - background color of the active toggle in rest state
- * @cssproperty --mdc-toggle-active-hover-color - background color of the active toggle in hover state
- * @cssproperty --mdc-toggle-active-pressed-color - background color of the active toggle in pressed state
- * @cssproperty --mdc-toggle-active-disabled-color - background color of the active toggle in disabled state
- * @cssproperty --mdc-toggle-help-text-color -  color of the help text label
- * @cssproperty --mdc-toggle-label-color-disabled - color of the toggle label and help text in disabled state
- *
+ * @cssproperty --mdc-toggle-width - Width of the toggle
+ * @cssproperty --mdc-toggle-height - Height of the toggle
+ * @cssproperty --mdc-toggle-width-compact - Width of the toggle when it's size is compact
+ * @cssproperty --mdc-toggle-height-compact - Height of the toggle when it's size is compact
+ * @cssproperty --mdc-toggle-label-lineheight - Line height of the toggle label
+ * @cssproperty --mdc-toggle-label-fontsize - Font size of the toggle label
+ * @cssproperty --mdc-toggle-label-fontweight - Font weight of the toggle label
+ * @cssproperty --mdc-toggle-label-color-disabled - Color of the toggle label and help text in disabled state
+ * @cssproperty --mdc-toggle-help-text-color - Color of the help text label
+ * @cssproperty --mdc-toggle-active-hover-color - Background color of the active toggle in hover state
+ * @cssproperty --mdc-toggle-active-pressed-color - Background color of the active toggle in pressed state
+ * @cssproperty --mdc-toggle-inactive-hover-color - Background color of the inactive toggle in hover state
+ * @cssproperty --mdc-toggle-inactive-pressed-color - Background color of the inactive toggle in pressed state
  */
 class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
   /**
@@ -185,11 +181,17 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
 
     public override render() {
       return html`
-        <div class="mdc-toggle__container mdc-focus-ring">
+        <mdc-statictoggle
+          ?checked="${this.checked}"
+          ?disabled="${this.disabled}"
+          size="${this.size}"
+          class="mdc-focus-ring"
+          part="container"
+        >
           <input
             id="${this.id}"
             type="checkbox"
-            class="mdc-toggle__input"
+            part="toggle-input"
             role="switch"
             ?autofocus="${this.autofocus}"
             ?required="${!!this.requiredLabel}"
@@ -204,15 +206,7 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
             @change="${this.handleChange}"
             @keydown="${this.handleKeyDown}"
           />
-          <div class="mdc-toggle__slider">
-            <mdc-icon
-              name="${this.checked ? ICON_NAME.CHECKED : ICON_NAME.UNCHECKED}"
-              class="mdc-toggle__icon"
-              length-unit="rem"
-              size="${ICON_SIZE_IN_REM[this.size]}"
-            ></mdc-icon>
-          </div>
-        </div>
+        </mdc-statictoggle>
         ${this.renderLabel()}
         ${this.renderHelperText()}
     `;
