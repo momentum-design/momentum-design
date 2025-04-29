@@ -1,4 +1,6 @@
-import { Locator, Page } from '@playwright/test';
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-await-in-loop */
+import { expect, Locator, Page } from '@playwright/test';
 
 interface Actionability {
   page: Page;
@@ -35,7 +37,7 @@ class Actionability {
 
   /**
    * Release focus for the specified subcomponent locator
-   * @param subComponent: Locator
+   * @param subComponent - Locator
    */
   async releaseFocus(subComponent: Locator) {
     const browserName = this.browserName();
@@ -44,6 +46,23 @@ class Actionability {
       await subComponent.evaluate((el) => el.blur());
     } else {
       await this.page.keyboard.press('Tab');
+    }
+  }
+
+  /**
+   * pressAndCheckFocus utility function - it will press the provided `keyToPress` as often
+   * as the provided `elementsToBeFocused` are and checks afterwards, if the provided element of the
+   * `elementsToBeFocused` has been focused.
+   *
+   * If only 1 keyPress needs to be done, just simply provide the `elementsToBeFocused` array with
+   * 1 element, which should receive focus.
+   * @param keyToPress - key which should be pressed
+   * @param elementsToBeFocused - array of elements, which have to be focused after pressing a key
+   */
+  async pressAndCheckFocus(keyToPress: string, elementsToBeFocused: Array<Locator>) {
+    for (const elementToBeFocused of elementsToBeFocused) {
+      await this.page.keyboard.press(keyToPress);
+      await expect(elementToBeFocused).toBeFocused();
     }
   }
 }

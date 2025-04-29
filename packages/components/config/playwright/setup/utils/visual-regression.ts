@@ -37,14 +37,23 @@ class VisualRegression {
    *
    * @param name - name of the screenshot, file extension will be appended automatically!
    * @param options - description
-   * @param options.element - element to take screenshot from
+   * @param options - An object that contains the
+   * - element to take screenshot from
+   * - assertion after switching direction
+   * - type of screenshot - stickersheet or userflow
    */
   async takeScreenshot(name: string, options?: ScreenShotOptions): Promise<void> {
     const elementToTakeScreenShotFrom = options?.element || this.page;
     const isSnapshotRun = process.env.E2E_SKIP_SNAPSHOT !== 'true';
+    const screenshotSource = options?.source ?? 'stickersheet';
     const browserName = this.page.context()?.browser()?.browserType().name() ?? 'unknown';
 
-    if (isSnapshotRun) {
+    if (isSnapshotRun && screenshotSource === 'userflow') {
+      await this.setDocumentDirection('ltr');
+      expect(await elementToTakeScreenShotFrom.screenshot(options)).toMatchSnapshot({
+        name: `${name}-userflow-${options?.fileNameSuffix}.${CONSTANTS.VISUAL_REGRESSION.FILE_EXTENSION}`,
+      });
+    } else if (isSnapshotRun && screenshotSource === 'stickersheet') {
       // Normal contrast screenshots for both RTL and LTR
       /* eslint-disable no-await-in-loop */
       /* eslint-disable no-restricted-syntax */
