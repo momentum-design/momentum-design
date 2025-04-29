@@ -53,6 +53,16 @@ class Button extends ButtonComponentMixin(Buttonsimple) {
   override size: PillButtonSize | IconButtonSize = DEFAULTS.SIZE;
 
   /**
+   * The button color can be inverted by setting the inverted attribute to true.
+   *
+   * Only applies when variant is set to `primary`, color is set to `default`
+   * and button is not `active`.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true })
+  inverted: boolean = DEFAULTS.INVERTED;
+
+  /**
    * This property defines the ARIA role for the element. By default, it is set to 'button'.
    * Consumers should override this role when:
    * - The element is being used in a context where a different role is more appropriate.
