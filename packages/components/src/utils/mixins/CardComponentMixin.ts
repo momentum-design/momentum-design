@@ -119,7 +119,7 @@ export const CardComponentMixin = <T extends Constructor<LitElement>>(
     * @returns The title and subtitle elements
     */
      renderTitle() {
-       return html`<div part="title">
+       return html`<div part="title-container">
         <mdc-text part="title" type="${DEFAULTS.TITLE_TYPE}" tagname="${this.titleTagName}">${this.cardTitle}</mdc-text>
         ${this.subtitle ? html`<mdc-text part="subtitle"
             type="${DEFAULTS.SUBTITLE_TYPE}" 

@@ -75,7 +75,6 @@ class Card extends CardComponentMixin(Component) {
    /**
     * The secondary buttons in the footer section
     * @internal
-    *
     */
    @queryAssignedElements({ slot: 'footer-button-secondary' })
    footerButtonSecondary?: Array<HTMLElement>;
@@ -128,10 +127,8 @@ class Card extends CardComponentMixin(Component) {
      arrayItems = this.footerButtonSecondary;
    }
    // if there are more than one instance, remove them.
-   if (arrayItems.length > 1) {
-     for (let i = 1; i < arrayItems.length; i += 1) {
-       arrayItems[i].remove();
-     }
+   for (let i = 1; i < arrayItems.length; i += 1) {
+     arrayItems[i].remove();
    }
    arrayItems.forEach((element) => {
      // remove the element if it doesn't match with the tagname
