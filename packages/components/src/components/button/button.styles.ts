@@ -227,6 +227,15 @@ const styles = css`
     --mdc-button-secondary-hover-background-color: var(--mds-color-theme-button-secondary-hover);
     --mdc-button-secondary-pressed-background-color: var(--mds-color-theme-button-secondary-pressed);
   }
+
+  :host([inverted][variant='primary'][color='default']) {
+    --mdc-button-primary-color: var(--mds-color-theme-text-primary-normal);
+    --mdc-button-primary-background-color: var(--mds-color-theme-inverted-button-primary-normal);
+    --mdc-button-primary-hover-background-color: var(--mds-color-theme-inverted-button-primary-hover);
+    --mdc-button-primary-pressed-background-color: var(--mds-color-theme-inverted-button-primary-pressed);
+    --mdc-button-primary-disabled-background-color: var(--mds-color-theme-inverted-button-primary-disabled);
+    --mdc-button-primary-disabled-color: var(--mds-color-theme-inverted-text-primary-disabled);
+  }
 `;
 
 export default [styles];

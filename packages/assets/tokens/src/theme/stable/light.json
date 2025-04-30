@@ -1083,13 +1083,13 @@
         "skeleton": {
           "normal": {
             "type": "color",
-            "value": "linear-gradient(123deg, {color.core.black-alpha.20} 0%, {color.core.black-alpha.30} 27.6%, {color.core.black-alpha.40} 58.85%, {color.core.black-alpha.50} 100%)",
-            "description": "linear-gradient(123deg, #00000033 0%, #0000004d 27.6%, #00000066 58.85%, #00000080 100%)"
+            "value": "{color.core.gray.50}",
+            "description": "Used for skeleton component"
           }
         },
         "glass": {
           "normal": {
-            "value": "{color.core.white-alpha.60}",
+            "value": "{color.core.white-alpha.40}",
             "type": "color",
             "description": "Used for glass effect background for operation pop. "
           },
@@ -1103,6 +1103,18 @@
               "value": "{color.core.white-alpha.40}",
               "type": "color",
               "description": "Used for operation pop: knocked-back effect when signle card is selected"
+            }
+          },
+          "radial": {
+            "0": {
+              "value": "{color.core.white-alpha.90}",
+              "type": "color",
+              "description": "Used for operation pop background. "
+            },
+            "1": {
+              "value": "{color.core.white-alpha.40}",
+              "type": "color",
+              "description": "Used for operation pop background. "
             }
           }
         },
@@ -1450,6 +1462,13 @@
           "normal": {
             "value": "{color.core.yellow.70}",
             "type": "color"
+          }
+        },
+        "glass": {
+          "normal": {
+            "value": "linear-gradient(180deg, {color.core.white-alpha.100} 0%, {color.core.white-alpha.60} 100%)",
+            "type": "color",
+            "description": "Used for operation pop"
           }
         }
       },

@@ -1,11 +1,10 @@
 import { CSSResult, html, nothing } from 'lit';
 import type { PropertyValues } from 'lit';
 import { property, query, queryAssignedElements, state } from 'lit/decorators.js';
-
+import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './tablist.styles';
 import { Component } from '../../models';
 import { ARROW_BUTTON_DIRECTION, KEYCODES } from './tablist.constants';
-
 import Tab from '../tab/tab.component';
 import Button from '../button/button.component';
 import type { ArrowButtonDirectionType } from './tablist.types';
@@ -30,9 +29,7 @@ import { getFirstTab, getLastTab, getNextTab, getPreviousTab, findTab, getActive
  * **Accessibility notes for consuming (have to be explicitly set when you consume the component)**
  *
  * - Each element that contains the `content panel` for a `tab` has role `tabpanel`.
- * - If the tab list has a visible label,
- *   the element with role `tablist` has `aria-labelledby` needs to be a value that refers to the labelling element.
- *   Otherwise, the `tablist` element needs to have a label provided by `aria-label`.
+ * - The `tablist` element needs to have a label provided by `data-aria-label`.
  * - Each element with role `tab` has the property `aria-controls`
  *  that should refer to its associated `tabpanel` element.
  * - Each element with role `tabpanel` has the property `aria-labelledby` referring to its associated `tab` element.
@@ -64,18 +61,8 @@ class TabList extends Component {
   activeTabId?: string;
 
   /**
-   * Selector for the element that provides a label for the tablist.
-   */
-  @property({ type: String, attribute: 'data-aria-labelledby' })
-  dataAriaLabelledby?: string;
-
-  /**
-   * Label for the tablist in case aria-labelledby is not provided.
+   * Label for the tablist.
    * This is used when the tablist does not have a visible label.
-   * Defaults to 'Tab List'.
-   * <br/>
-   * Note: If both `data-aria-labelledby` and `data-aria-label` are provided,
-   * the `data-aria-labelledby` will be used.
    */
   @property({ type: String, attribute: 'data-aria-label' })
   dataAriaLabel?: string;
@@ -166,10 +153,8 @@ class TabList extends Component {
       }
     }
 
-    this.setAriaLabelledByOrAriaLabel();
-
     const resizeObserver = new ResizeObserver(async () => {
-      const activeElement = this.tabsContainer?.shadowRoot?.activeElement;
+      const { activeElement } = document;
 
       /**
        * Keep the focused element in view.
@@ -206,10 +191,6 @@ class TabList extends Component {
   public override async update(changedProperties: PropertyValues<this>): Promise<void> {
     super.update(changedProperties);
 
-    if (changedProperties.has('dataAriaLabelledby') || changedProperties.has('dataAriaLabel')) {
-      this.setAriaLabelledByOrAriaLabel();
-    }
-
     if (changedProperties.has('activeTabId')) {
       if (!this.tabs || !this.activeTabId) {
         return;
@@ -223,7 +204,7 @@ class TabList extends Component {
       this.setActiveTab(newTab);
 
       /**
-       * If the previous activeTabId was not undefined, fire the change event.
+       * If the previous activeTabId was not undefined, focus the new tab.
        *
        * Otherwise, reset the tabindex of all tabs and set the new tabindex.
        */
@@ -237,23 +218,6 @@ class TabList extends Component {
   }
 
   /**
-   * Set aria-labelledby attribute on the tablist element.
-   * If it does not exist, set aria-label attribute.
-   * As fallback, set aria-label to 'Tab List'.
-   *
-   * @internal
-   */
-  private setAriaLabelledByOrAriaLabel = (): void => {
-    if (this.dataAriaLabelledby) {
-      this.tabsContainer?.setAttribute('aria-labelledby', this.dataAriaLabelledby);
-      this.tabsContainer?.removeAttribute('aria-label');
-    } else {
-      this.tabsContainer?.setAttribute('aria-label', this.dataAriaLabel || 'Tab List');
-      this.tabsContainer?.removeAttribute('aria-labelledby');
-    }
-  };
-
-  /**
    * Dispatch the change event.
    *
    * @internal
@@ -262,7 +226,7 @@ class TabList extends Component {
    */
   private fireTabChangeEvent = (newTab: Tab): void => {
     const event = new CustomEvent('change', {
-      detail: newTab.tabId,
+      detail: { tabId: newTab.tabId },
     });
 
     this.dispatchEvent(event);
@@ -322,6 +286,7 @@ class TabList extends Component {
    * @param event - Custom Event fired from the nested tab.
    */
   private handleNestedTabActiveChange = async (event: CustomEvent<any>): Promise<void> => {
+    event.stopPropagation();
     const tab = event.target;
     if (!(tab instanceof Tab)) {
       return;
@@ -377,7 +342,7 @@ class TabList extends Component {
       return;
     }
 
-    if (tab !== this.shadowRoot?.activeElement) {
+    if (tab !== document?.activeElement) {
       this.resetTabIndexAndSetNewTabIndex(tab);
       tab.focus();
     }
@@ -572,7 +537,11 @@ class TabList extends Component {
         : nothing}`;
 
     return html` ${arrowButton('backward')}
-      <div class="container" role="tablist" tabindex="-1">
+      <div 
+      class="container" 
+      role="tablist" 
+      tabindex="-1" 
+      aria-label="${ifDefined(this.dataAriaLabel)}">
         <slot></slot>
       </div>
       ${arrowButton(ARROW_BUTTON_DIRECTION.FORWARD)}`;
