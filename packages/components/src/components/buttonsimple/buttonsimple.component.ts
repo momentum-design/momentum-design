@@ -42,7 +42,7 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
    * preventing any interactions (clicks or keyboard actions) from triggering unintended actions.
    * @default undefined
    */
-  @property({ type: Boolean, attribute: 'soft-disabled' })
+  @property({ type: Boolean, attribute: 'soft-disabled', reflect: true })
   softDisabled?: boolean;
 
   /**
@@ -240,9 +240,11 @@ class Buttonsimple extends TabIndexMixin(DisabledMixin(Component)) {
         this.triggerClickEvent();
       }
 
-      if (event.key === ' ') {
-        event.preventDefault();
-      }
+      // preventing the default event behavior for space key
+      // to avoid scrolling etc in the host application
+      // preventing the default event behavior for enter key
+      // to avoid the keyup event to be triggered
+      event.preventDefault();
     }
   }
 

@@ -1,7 +1,5 @@
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-await-in-loop */
 import fs from 'fs';
-import { Locator, Page, expect, TestInfo } from '@playwright/test';
+import { Page, expect, TestInfo } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { createHtmlReport } from 'axe-html-reporter';
 import CONSTANTS from '../constants';
@@ -96,23 +94,6 @@ class Accessibility {
 
     if (shouldCheck) {
       expect(accessibilityScanResults.violations).toEqual([]);
-    }
-  }
-
-  /**
-   * pressAndCheckFocus utility function - it will press the provided `keyToPress` as often
-   * as the provided `elementsToBeFocused` are and checks afterwards, if the provided element of the
-   * `elementsToBeFocused` has been focused.
-   *
-   * If only 1 keyPress needs to be done, just simply provide the `elementsToBeFocused` array with
-   * 1 element, which should receive focus.
-   * @param keyToPress - key which should be pressed
-   * @param elementsToBeFocused - array of elements, which have to be focused after pressing a key
-   */
-  async pressAndCheckFocus(keyToPress: string, elementsToBeFocused: Array<Locator>) {
-    for (const elementToBeFocused of elementsToBeFocused) {
-      await this.page.keyboard.press(keyToPress);
-      await expect(elementToBeFocused).toBeFocused();
     }
   }
 }

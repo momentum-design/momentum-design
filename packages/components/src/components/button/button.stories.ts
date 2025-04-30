@@ -25,6 +25,7 @@ const render = (args: Args) =>
     tabIndex="${args.tabIndex}"
     aria-label="${args['aria-label']}"
     ariaStateKey="${ifDefined(args.ariaStateKey)}"
+    ?inverted="${args.inverted}"
     >${args.children}</mdc-button
   >`;
 
@@ -75,6 +76,9 @@ const meta: Meta = {
     ariaStateKey: {
       control: 'text',
     },
+    inverted: {
+      control: 'boolean',
+    },
     ...classArgType,
     ...styleArgType,
   },
@@ -94,6 +98,7 @@ export const Example: StoryObj = {
     type: BUTTON_TYPE.BUTTON,
     role: 'button',
     tabIndex: 0,
+    inverted: false,
   },
 };
 
@@ -109,6 +114,26 @@ export const PillButton: StoryObj = {
     type: BUTTON_TYPE.BUTTON,
     role: 'button',
     tabIndex: 0,
+  },
+};
+
+export const PillButtonInverted: StoryObj = {
+  render: (args) =>
+    html` <div style="padding: 10px; background: var(--mds-color-theme-inverted-background-normal);">
+      ${render(args)}
+    </div>`,
+  args: {
+    children: 'Click Me',
+    active: false,
+    disabled: false,
+    'soft-disabled': false,
+    variant: BUTTON_VARIANTS.PRIMARY,
+    size: PILL_BUTTON_SIZES[32],
+    color: BUTTON_COLORS.DEFAULT,
+    type: BUTTON_TYPE.BUTTON,
+    role: 'button',
+    tabIndex: 0,
+    inverted: true,
   },
 };
 
@@ -165,5 +190,34 @@ export const IconButton: StoryObj = {
     role: 'button',
     tabIndex: 0,
     'aria-label': 'icon button',
+  },
+};
+
+export const IconButtonInverted: StoryObj = {
+  render: (args) =>
+    html` <div style="padding: 10px; background: var(--mds-color-theme-inverted-background-normal);">
+      ${render(args)}
+    </div>`,
+  argTypes: {
+    size: {
+      options: Object.values(ICON_BUTTON_SIZES),
+    },
+    'aria-label': {
+      description: 'Aria label for the icon button. Required for accessibility.',
+    },
+  },
+  args: {
+    'prefix-icon': 'placeholder-bold',
+    active: false,
+    disabled: false,
+    'soft-disabled': false,
+    variant: BUTTON_VARIANTS.PRIMARY,
+    size: ICON_BUTTON_SIZES[32],
+    color: BUTTON_COLORS.DEFAULT,
+    type: BUTTON_TYPE.BUTTON,
+    role: 'button',
+    tabIndex: 0,
+    'aria-label': 'icon button',
+    inverted: true,
   },
 };
