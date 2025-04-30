@@ -47,6 +47,7 @@ import VirtualizedList from './components/virtualizedlist';
 import TabList from './components/tablist';
 import ButtonLink from './components/buttonlink';
 import Linksimple from './components/linksimple';
+import MenuItem from './components/menuitem';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -114,6 +115,7 @@ export {
   Progressspinner,
   ButtonLink,
   Linksimple,
+  MenuItem,
 };
 // Types Exports
 export type {
