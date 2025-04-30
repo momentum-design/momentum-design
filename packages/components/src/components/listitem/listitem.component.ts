@@ -139,6 +139,7 @@ class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component)
     if (changedProperties.has('disabled')) {
       this.tabIndex = this.disabled ? -1 : 0;
       this.disableSlottedChildren(this.disabled);
+      this.setAttribute('aria-disabled', `${this.disabled}`);
     }
   }
 
