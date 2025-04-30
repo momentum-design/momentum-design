@@ -3,7 +3,7 @@ import type { TemplateResult } from 'lit';
 import { html } from 'lit';
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideControls } from '../../../config/storybook/utils';
+import { disableControls, hideControls } from '../../../config/storybook/utils';
 import '../option';
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`
@@ -44,6 +44,9 @@ const meta: Meta = {
     },
     ...hideControls([
       '--mdc-optgroup-disabled-color',
+    ]),
+    ...disableControls([
+      'default',
     ]),
     ...classArgType,
     ...styleArgType,

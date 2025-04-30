@@ -68,12 +68,12 @@ This markup is not part of the component and is only provided for context. -->
 <!-- End of example markup for the tab panels -->`;
 
 const meta: Meta = {
-  title: 'Work in Progress/tablist',
+  title: 'Components/tablist',
   tags: ['autodocs'],
   component: 'mdc-tablist',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     'active-tab-id': {
