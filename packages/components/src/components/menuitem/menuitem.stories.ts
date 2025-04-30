@@ -9,14 +9,14 @@ import '../divider';
 import '../icon';
 
 const label = 'Menu Item';
-const wrapWithDiv = (htmlString: TemplateResult) => html`<menu style="width: 20rem;">${htmlString}</menu>`;
+const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style="width: 20rem;">${htmlString}</div>`;
 
 const render = (args: Args) => wrapWithDiv(html`
   <mdc-menuitem
-    @change="${action('onchange')}"
     @click="${action('onclick')}"
+    @keydown="${action('onkeydown')}"
+    @keyup="${action('onkeyup')}"
     @focus="${action('onfocus')}"
-    @blur="${action('onblur')}"
     ?disabled="${args.disabled}"
     label="${args.label}"
     secondary-label="${args['secondary-label']}"
@@ -58,8 +58,6 @@ const meta: Meta = {
       '--mdc-listitem-disabled-color',
       '--mdc-listitem-column-gap',
       'default',
-      'keyup',
-      'keydown',
     ]),
     ...disableControls([
       'leading-controls',
