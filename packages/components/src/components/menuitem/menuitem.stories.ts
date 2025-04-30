@@ -21,7 +21,6 @@ const render = (args: Args) => wrapWithDiv(html`
     label="${args.label}"
     secondary-label="${args['secondary-label']}"
     side-header-text="${args['side-header-text']}"
-    data-aria-label="${args['data-aria-label']}"
     tertiary-label="${args['tertiary-label']}"
     subline-text="${args['subline-text']}"
   ></mdc-menuitem>`);
@@ -46,9 +45,6 @@ const meta: Meta = {
     },
     disabled: {
       control: 'boolean',
-    },
-    'data-aria-label': {
-      control: 'text',
     },
     'tertiary-label': {
       control: 'text',
@@ -92,7 +88,6 @@ export const Example: StoryObj = {
     label,
     'secondary-label': 'This is a secondary Label',
     'side-header-text': '',
-    'data-aria-label': 'Select a menu item',
     'tertiary-label': '',
     'subline-text': '',
     disabled: false,

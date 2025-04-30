@@ -56,7 +56,6 @@ class Option extends FormInternalsMixin(ListItem) {
     this.secondaryLabel = undefined as unknown as string;
     this.sideHeaderText = undefined as unknown as string;
     this.sublineText = undefined as unknown as string;
-    this.dataAriaLabel = undefined as unknown as string;
 
     this.addEventListener('focusin', this.displayTooltipForLongText);
     this.addEventListener('mouseover', this.displayTooltipForLongText);
