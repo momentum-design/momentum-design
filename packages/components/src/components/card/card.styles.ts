@@ -49,11 +49,11 @@ const styles = css`
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
   }
 
   ::slotted([slot='body']){
     padding-bottom: 0.5rem;
+    margin-top: 0.75rem;
   }
 
   :host([variant='promotional']){
@@ -63,15 +63,19 @@ const styles = css`
   :host::part(icon-button), :host::part(footer) {
     margin-left: auto;
     display: flex;
-    gap: 8px;
+    gap: 0.5rem;
     align-items: center;
     justify-content: center;
   }
-
   :host::part(footer){
-    gap: 16px;
-    padding-bottom: 8px;
+    gap: 1rem;
   }
+  ::slotted([slot='footer-link']), 
+  ::slotted([slot='footer-button-primary']), 
+  ::slotted([slot='footer-button-secondary']){
+    margin-bottom: 0.5rem;
+  }
+
 `;
 
 export default [hostFitContentStyles, styles];
