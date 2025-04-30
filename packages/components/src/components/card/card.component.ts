@@ -181,6 +181,19 @@ class Card extends CardComponentMixin(Component) {
     </div>`;
  }
 
+ private renderFooter() {
+   if (!this.footerLink?.length && !this.footerButtonPrimary?.length && !this.footerButtonSecondary?.length) {
+     return nothing;
+   }
+   return html`<div part="footer">
+     <slot name="footer-link" @slotchange=${() => this.handleFooterSlot(DEFAULTS.LINK)}></slot>
+     <slot name="footer-button-secondary" 
+     @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.SECONDARY)}></slot>
+     <slot name="footer-button-primary" 
+     @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.PRIMARY)}></slot>
+   </div>`;
+ }
+
  public override render() {
    return html`
   ${this.renderImage()}
@@ -189,13 +202,7 @@ class Card extends CardComponentMixin(Component) {
       <slot name="before-body"></slot>
       <slot name="body"></slot>
       <slot name="after-body"></slot>
-      <div part="footer">
-        <slot name="footer-link" @slotchange=${() => this.handleFooterSlot(DEFAULTS.LINK)}></slot>
-        <slot name="footer-button-secondary" 
-        @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.SECONDARY)}></slot>
-        <slot name="footer-button-primary" 
-        @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.PRIMARY)}></slot>
-      </div>
+      ${this.renderFooter()}
     </div>
     `;
  }

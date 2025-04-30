@@ -46,7 +46,7 @@ const styles = css`
 
   :host::part(body){
     width: 100%;
-    padding: 1rem 1.5rem;
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
