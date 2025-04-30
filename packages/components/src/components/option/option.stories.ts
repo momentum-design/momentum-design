@@ -1,10 +1,10 @@
 import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
-import { html } from 'lit';
 import type { TemplateResult } from 'lit';
+import { html } from 'lit';
 import '.';
-import { hideControls } from '../../../config/storybook/utils';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`
   <div aria-label="List box" role="listbox">${htmlString}</div>
@@ -58,7 +58,6 @@ const meta: Meta = {
       'validation-message',
       'validity',
       'willValidate',
-      'data-aria-label',
       'variant',
       'tabIndex',
       'secondary-label',
@@ -72,6 +71,7 @@ const meta: Meta = {
       '--mdc-listitem-primary-label-color',
       '--mdc-listitem-secondary-label-color',
       '--mdc-listitem-disabled-color',
+      '--mdc-listitem-column-gap',
       'leading-controls',
       'leading-text-primary-label',
       'leading-text-secondary-label',
@@ -79,6 +79,13 @@ const meta: Meta = {
       'trailing-controls',
       'trailing-text-side-header',
       'trailing-text-subline',
+    ]),
+    ...disableControls([
+      'click',
+      'keydown',
+      'keyup',
+      'focus',
+      'default',
     ]),
     ...classArgType,
     ...styleArgType,
@@ -104,6 +111,7 @@ export const OptionWithLongText: StoryObj = {
       <mdc-option label="This is a very long text and it should be truncated."></mdc-option>
     </div>
   `,
+  ...hideAllControls(),
 };
 
 export const OptionWithIcon: StoryObj = {
