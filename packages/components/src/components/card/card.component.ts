@@ -93,16 +93,14 @@ class Card extends CardComponentMixin(Component) {
     * @internal
     */
    private handleIconButtons = () => {
-     if (this.iconButtons) {
-       this.iconButtons.forEach((element) => {
-         if (!element.matches(DEFAULTS.BUTTON) && element.getAttribute('data-btn-type') !== 'icon') {
-           element.remove();
-         } else {
-           element.setAttribute('variant', BUTTON_VARIANTS.TERTIARY);
-           element.setAttribute('size', '32');
-         }
-       });
-     }
+     this.iconButtons?.forEach((element) => {
+       if (!element.matches(DEFAULTS.BUTTON) && element.getAttribute('data-btn-type') !== 'icon') {
+         element.remove();
+       } else {
+         element.setAttribute('variant', BUTTON_VARIANTS.TERTIARY);
+         element.setAttribute('size', '32');
+       }
+     });
      // limit to show only first 3 buttons defined in the slot
      if (this.iconButtons && this.iconButtons.length > 3) {
        for (let i = 3; i < this.iconButtons.length; i += 1) {
