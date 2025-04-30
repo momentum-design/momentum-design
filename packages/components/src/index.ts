@@ -45,6 +45,9 @@ import Tooltip from './components/tooltip';
 import ToggleTip from './components/toggletip';
 import VirtualizedList from './components/virtualizedlist';
 import TabList from './components/tablist';
+import NavItem from './components/navitem';
+import NavItemList from './components/navitemlist';
+import SideNavigation from './components/sidenavigation';
 import ButtonLink from './components/buttonlink';
 import Linksimple from './components/linksimple';
 import MenuItem from './components/menuitem';
@@ -112,6 +115,9 @@ export {
   Appheader,
   Select,
   TabList,
+  NavItem,
+  NavItemList,
+  SideNavigation,
   Progressspinner,
   ButtonLink,
   Linksimple,

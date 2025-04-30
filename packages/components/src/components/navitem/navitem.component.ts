@@ -1,0 +1,236 @@
+import { CSSResult, html, nothing } from 'lit';
+import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import styles from './navitem.styles';
+import { DEFAULTS } from './navitem.constants';
+import providerUtils from '../../utils/provider';
+import type { IconNames } from '../icon/icon.types';
+import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
+import Buttonsimple from '../buttonsimple';
+import type { ButtonSize, ButtonType } from '../buttonsimple/buttonsimple.types';
+import { getIconNameWithoutStyle } from '../button/button.utils';
+import SideNavigation from '../sidenavigation/sidenavigation.component';
+import type { BadgeType } from './navitem.types';
+
+/**
+ * `mdc-navitem` is a button element styled to work as a navigation tab.
+ * It supports a leading icon, optional badge and dynamic text rendering.
+ *
+ * Note: mdc-navitem is intended to be used as a part of the sidenavigation component.
+ * Its structure, spacing, and interactions are designed to align with
+ * the visual and functional requirements of side navigation layouts.
+ *
+ * @tagname mdc-navitem
+ *
+ * @dependency mdc-icon
+ * @dependency mdc-text
+ *
+ * @slot default - Slot for the navItem text.
+ *
+ * @event click - (React: onClick) This event is dispatched when the navItem is clicked.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the navItem.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the navItem.
+ * @event focus - (React: onFocus) This event is dispatched when the navItem receives focus.
+ * @event activechange - (React: onActiveChange)Dispatched when the active state of the navItem changes.
+ *
+ * @cssproperty --mdc-navitem-color - Text color of the navigation item in its normal state.
+ * @cssproperty --mdc-navitem-border-color - Border color of the navigation item in its normal state.
+ * @cssproperty --mdc-navitem-hover-background-color - Background color of the navigation item when hovered.
+ * @cssproperty --mdc-navitem-pressed-background-color - Background color of the navigation item when pressed.
+ * @cssproperty --mdc-navitem-disabled-background-color - Background color of the navigation item when disabled.
+ * @cssproperty --mdc-navitem-disabled-color - Text color of the navigation item when disabled.
+ * @cssproperty --mdc-navitem-active-background-color - Background color of the navigation item when active.
+ */
+class NavItem extends IconNameMixin(Buttonsimple) {
+  /**
+   * Type of the badge
+   * Can be `dot` (notification) or `counter`.
+   */
+  @property({ type: String, reflect: true, attribute: 'badge-type' }) badgeType?: BadgeType;
+
+  /**
+   * Counter is the number which can be provided in the badge.
+   */
+  @property({ type: Number, reflect: true }) counter?: number;
+
+  /**
+   * The maximum number can be set up to 999, anything above that will be rendered as _999+_.
+   * The max counter can be `9`, `99` or `999`.
+   * @default 99
+   */
+  @property({ type: Number, attribute: 'max-counter', reflect: true })
+  maxCounter: number = DEFAULTS.MAX_COUNTER;
+
+  /**
+  * Determines whether the navItem is disabled or not.
+  * @default false
+  */
+  @property({ type: Boolean, reflect: true }) override disabled = false;
+
+  /**
+   * Id of the navItem (used as a identificator when used in the navItemList)
+   * Note: It has to be unique.
+   *
+   * @default undefined
+   */
+  @property({ type: String, reflect: true, attribute: 'nav-id' }) navId?: string;
+
+  /**
+   * Aria-label attribute to be set for accessibility
+   * @default null
+   */
+  @property({ type: String, attribute: 'aria-label' })
+  override ariaLabel: string | null = null;
+
+  /**
+   * @internal
+   */
+  private prevIconName?: string;
+
+  // get data from context
+  private readonly sideNavigationContext = providerUtils.consume({ host: this,
+    context: SideNavigation.Context });
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.role = DEFAULTS.ROLE;
+    this.softDisabled = undefined as unknown as boolean;
+    this.size = undefined as unknown as ButtonSize;
+    this.type = undefined as unknown as ButtonType;
+
+    if (!this.navId && this.onerror) {
+      this.onerror('[mdc-navitem] navId is required and was not provided.');
+    }
+  }
+
+  override updated(changedProperties: Map<string, any>) {
+    super.updated(changedProperties);
+
+    if (changedProperties.has('disabled')) {
+      this.setAttribute('aria-disabled', String(this.disabled));
+    }
+  }
+
+  /**
+   * Modifies the icon name based on the active state.
+   * If the navItem is active, the icon name is suffixed with '-filled'.
+   * If the navItem is inactive, the icon name is restored to its original value.
+   * If '-filled' icon is not available, the icon name remains unchanged.
+   * @internal
+   * @param active - The active state.
+   */
+
+  private modifyIconName(active: boolean): void {
+    if (!this.iconName) return;
+
+    const isFilled = this.iconName.endsWith('-filled');
+    const baseIcon = getIconNameWithoutStyle(this.iconName);
+
+    if (active) {
+      if (!isFilled) {
+        this.prevIconName = this.iconName;
+        this.iconName = `${baseIcon}-filled` as IconNames;
+      }
+    } else if (this.prevIconName) {
+      this.iconName = this.prevIconName as IconNames;
+    }
+  }
+
+  /**
+   * Dispatch the activechange event.
+   * @internal
+   * @param active - The active state of the navItem.
+   */
+  private emitNavItemActiveChange = (active: boolean): void => {
+    const event = new CustomEvent('activechange', {
+      detail: { navId: this.navId, active },
+      bubbles: true,
+    });
+    this.dispatchEvent(event);
+  };
+
+  /**
+   * Sets the aria-selected attribute based on the active state of the navItem.
+   * If the navItem is active, the filled version of the icon is displayed,
+   * else the icon is restored to its original value.
+   *
+   * @param element - The navItem element.
+   * @param active - The active state of the navItem.
+   */
+  protected override setActive(element: HTMLElement, active: boolean) {
+    element.setAttribute('aria-selected', String(active));
+    this.modifyIconName(active);
+  }
+
+  protected override executeAction() {
+    this.emitNavItemActiveChange(this.active as boolean);
+  }
+
+  private getTextLabel(): string | undefined {
+    const slot = this.shadowRoot?.querySelector('slot');
+    return slot?.assignedNodes({ flatten: true })
+      .map((node) => node.textContent?.trim())
+      .find((text) => !!text);
+  }
+
+  renderTextLabel() {
+    return html`
+      <mdc-text
+        type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}
+        tagname=${VALID_TEXT_TAGS.SPAN}
+        part="text-container">
+        <slot></slot>
+      </mdc-text>
+    `;
+  }
+
+  renderBadge(expanded: boolean) {
+    const badgeClass = expanded ? '' : 'badge';
+
+    return html`
+      <mdc-badge 
+        class="${badgeClass}"
+        type="${ifDefined(this.badgeType)}" 
+        counter="${ifDefined(this.counter)}" 
+        max-counter="${this.maxCounter}">
+      </mdc-badge>
+    `;
+  }
+
+  public override render() {
+    const expanded = this.sideNavigationContext.value?.expanded ?? false;
+
+    // Ensure accessibility fallback in collapsed state
+    const fallbackLabel = this.getTextLabel?.();
+
+    if (!expanded) {
+      if (!this.ariaLabel && fallbackLabel) {
+        this.setAttribute('aria-label', fallbackLabel);
+      }
+    } else {
+      const currentLabel = this.getAttribute('aria-label');
+      if (fallbackLabel && currentLabel === fallbackLabel) {
+        this.removeAttribute('aria-label');
+      }
+    }
+
+    return html`
+      <div part="icon-container">
+        <mdc-icon
+          name="${this.iconName}"
+          size="1.5"
+          length-unit="rem"
+          part="icon"
+        ></mdc-icon>
+        ${!expanded ? this.renderBadge(expanded) : nothing}
+      </div>
+      ${expanded ? this.renderTextLabel() : nothing}
+      ${expanded ? this.renderBadge(expanded) : nothing}
+    `;
+  }
+
+  public static override styles: Array<CSSResult> = [...Buttonsimple.styles, ...styles];
+}
+
+export default NavItem;
