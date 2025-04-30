@@ -1,6 +1,6 @@
 import type { CSSResult } from 'lit';
 import ListItem from '../listitem/listitem.component';
-import type { ListItemVariants } from '../listitem/listitem.types';
+import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
 
 /**
  * menuitem component is inherited by listitem component with the role set `menuitem`.<br/>
@@ -25,7 +25,7 @@ class MenuItem extends ListItem {
     super.connectedCallback();
     this.role = 'menuitem';
 
-    this.variant = undefined as unknown as ListItemVariants;
+    this.variant = LISTITEM_VARIANTS.INSET_RECTANGLE;
   }
 
   public static override styles: Array<CSSResult> = [...ListItem.styles];
