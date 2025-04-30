@@ -1,6 +1,6 @@
 import { html } from 'lit';
 
 const icon = () =>
-  html`<svg aria-hidden="true" part="icon" data-name="color-regular" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M25 26.25H7a.75.75 0 1 0 0 1.5h18a.75.75 0 1 0 0-1.5M7.695 23.685a.75.75 0 0 0 .99-.38l2.469-5.555h9.691l2.47 5.554a.752.752 0 0 0 1.229.213.75.75 0 0 0 .141-.822l-8-18a.781.781 0 0 0-1.37 0l-8 18a.75.75 0 0 0 .38.99M16 6.847l4.179 9.403H11.82z"/></svg>`;
+  html`<svg aria-hidden="true" part="icon" data-name="color-regular" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M25 26.25a.75.75 0 0 1 0 1.5H7a.75.75 0 0 1 0-1.5zM16 4.25a.75.75 0 0 1 .686.447l7.5 17 .028.072a.75.75 0 0 1-1.365.602l-.035-.068-2.01-4.553h-9.609l-2.008 4.553a.75.75 0 0 1-1.374-.606l7.5-17 .052-.097A.75.75 0 0 1 16 4.25m-4.144 12h8.288L16 6.858z"/></svg>`;
 
 export default icon;
