@@ -155,15 +155,13 @@ class Card extends CardComponentMixin(Component) {
   */
  private updateFooterButtonColors = () => {
    const footerButtons = [...(this.footerButtonPrimary || []), ...(this.footerButtonSecondary || [])];
-   if (footerButtons.length > 0) {
-     footerButtons.forEach((button) => {
-       if (this.variant === VARIANTS.PROMOTIONAL) {
-         button.setAttribute('color', BUTTON_COLORS.PROMOTIONAL);
-       } else {
-         button.setAttribute('color', BUTTON_COLORS.DEFAULT);
-       }
-     });
-   }
+   footerButtons?.forEach((button) => {
+     if (this.variant === VARIANTS.PROMOTIONAL) {
+       button.setAttribute('color', BUTTON_COLORS.PROMOTIONAL);
+     } else {
+       button.setAttribute('color', BUTTON_COLORS.DEFAULT);
+     }
+   });
  };
 
  /**
