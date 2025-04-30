@@ -6,7 +6,7 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { ARIA_CHECKED_STATES, INDICATOR } from './menuitemcheckbox.constants';
 import { hideAllControls, hideControls } from '../../../config/storybook/utils';
 
-const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style="width: 25rem;">${htmlString}
+const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style="width: 15rem;">${htmlString}
 </div>`;
 
 const render = (args: Args) => wrapWithDiv(html`
@@ -16,7 +16,11 @@ const render = (args: Args) => wrapWithDiv(html`
     label="${args.label}"
     indicator="${args.indicator}"
     secondary-label="${args['secondary-label']}"
-  ></mdc-menuitemcheckbox>`);
+    ?checkmark="${args.checkmark}"
+    checkmark-placement="${args['checkmark-placement']}"
+  >
+    ${args.children}
+  </mdc-menuitemcheckbox>`);
 
 const meta: Meta = {
   title: 'Work In Progress/menu/menuitemcheckbox',
@@ -43,6 +47,13 @@ const meta: Meta = {
     },
     'secondary-label': {
       control: 'text',
+    },
+    checkmark: {
+      control: 'boolean',
+    },
+    'checkmark-placement': {
+      control: 'select',
+      options: ['leading', 'trailing'],
     },
     ...hideControls([
       'data-aria-label',
@@ -76,11 +87,14 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    'aria-checked': 'false',
     indicator: 'checkbox',
+    checkmark: false,
+    'checkmark-placement': 'leading',
+    'aria-checked': 'false',
     label: 'Menu Item',
     disabled: false,
     'secondary-label': '',
+    children: html`<mdc-icon name="alert-muted-bold" slot="leading-controls"></mdc-icon>`,
   },
 };
 
@@ -102,6 +116,14 @@ export const CheckboxWithMenuItem: StoryObj = {
     disabled: false,
     'secondary-label': '',
   },
+};
+
+export const CheckMarkVariants: StoryObj = {
+  render: () => wrapWithDiv(html`
+    <mdc-menuitemcheckbox label="Menu Item 1" checkmark checkmark-placement="leading">
+      <mdc-icon slot="leading-controls" name="add-option-bold"></mdc-icon>
+    </mdc-menuitemcheckbox>
+  `),
 };
 
 export const AllVariants: StoryObj = {

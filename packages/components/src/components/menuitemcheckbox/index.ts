@@ -1,3 +1,4 @@
+import '../icon';
 import '../staticcheckbox';
 import '../statictoggle';
 import '../text';
