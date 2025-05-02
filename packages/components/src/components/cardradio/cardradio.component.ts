@@ -98,11 +98,31 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
    }
  }
 
+ private updateCardRadio(cards: CardRadio[], index: number): void {
+   cards[index].focus();
+   cards[index].toggleChecked();
+ }
+
  /**
   * Toggles the checked state when enter key is used
   * @param event - The keyboard event
   */
  private toggleOnEnter(event: KeyboardEvent) {
+   if (this.disabled) return;
+
+   const cards = this.getAllCardsWithinSameGroup();
+   const enabledCards = cards.filter((card) => !card.disabled);
+   const currentIndex = enabledCards.indexOf(this);
+
+   if (['ArrowDown', 'ArrowRight'].includes(event.key)) {
+     // Move focus to the next radio
+     const nextIndex = (currentIndex + 1) % enabledCards.length;
+     this.updateCardRadio(enabledCards, nextIndex);
+   } else if (['ArrowUp', 'ArrowLeft'].includes(event.key)) {
+     // Move focus to the previous radio
+     const prevIndex = (currentIndex - 1 + enabledCards.length) % enabledCards.length;
+     this.updateCardRadio(enabledCards, prevIndex);
+   }
    if (event.key === 'Enter') {
      this.toggleChecked();
    }
