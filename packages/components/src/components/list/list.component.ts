@@ -19,7 +19,11 @@ import { KEYS } from '../../utils/keys';
  * @slot default - This is a default/unnamed slot
  */
 class List extends DataAriaLabelMixin(Component) {
-  @queryAssignedElements({ selector: LISTITEM_TAGNAME })
+  /**
+   * @internal
+   * Get all listitem elements which are not disabled in the list.
+   */
+  @queryAssignedElements({ selector: `${LISTITEM_TAGNAME}:not([disabled])` })
   listItems!: Array<HTMLElement>;
 
   /**
