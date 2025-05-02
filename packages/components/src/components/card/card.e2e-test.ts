@@ -1,18 +1,46 @@
-import { test } from '../../../config/playwright/setup';
+import { ComponentsPage, test } from '../../../config/playwright/setup';
 
-test.beforeEach(async ({ componentsPage }) => {
+type SetupOptions = {
+  componentsPage: ComponentsPage;
+  cardTitle?: string;
+  subtitle?: string;
+  imageSrc?: string;
+  imageAlt?: string;
+  variant?: string;
+  orientation?: string;
+  titleTagName?: string;
+  subtitleTagName?: string;
+  iconName?: string;
+};
+
+const setup = async (args: SetupOptions) => {
+  const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
-        <mdc-card />
-      `,
+    <mdc-card
+    ${restArgs.cardTitle ? `card-title="${restArgs.cardTitle}"` : ''}
+    ${restArgs.subtitle ? `subtitle="${restArgs.subtitle}"` : ''}
+    ${restArgs.imageSrc ? `image-src="${restArgs.imageSrc}"` : ''}
+    ${restArgs.imageAlt ? `image-alt="${restArgs.imageAlt}"` : ''}
+    ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
+    ${restArgs.orientation ? `orientation="${restArgs.orientation}"` : ''}
+    ${restArgs.titleTagName ? `title-tag-name="${restArgs.titleTagName}"` : ''}
+    ${restArgs.subtitleTagName ? `subtitle-tag-name="${restArgs.subtitleTagName}"` : ''}
+    ${restArgs.iconName ? `icon-name="${restArgs.iconName}"` : ''}
+    >
+    </mdc-card>
+    `,
+    clearDocument: true,
   });
-});
+
+  const card = componentsPage.page.locator('mdc-card');
+  await card.waitFor();
+
+  return card;
+};
 
 test.skip('mdc-card', async ({ componentsPage }) => {
-  const card = componentsPage.page.locator('mdc-card');
-
-  // initial check for the card be visible on the screen:
-  await card.waitFor();
+  const card = await setup({ componentsPage });
 
   /**
    * ACCESSIBILITY
