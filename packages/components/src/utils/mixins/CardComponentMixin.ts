@@ -59,7 +59,7 @@ export const CardComponentMixin = <T extends Constructor<LitElement>>(
    * The variant of the card. It can either be set to 'border' or 'ghost'
    * @default 'border'
    */
-  @property({ type: String })
+  @property({ type: String, reflect: true })
   variant: CardVariant = DEFAULTS.VARIANT;
 
   /**
@@ -73,59 +73,59 @@ export const CardComponentMixin = <T extends Constructor<LitElement>>(
    * The tag name for the card title. It supports all the types that `msc-text` supports
    * @default 'span'
    */
-  @property({ type: String, attribute: 'title-tag-name' })
+  @property({ type: String, attribute: 'title-tag-name', reflect: true })
   titleTagName: TagNameType = DEFAULTS.TAGNAME;
 
   /**
    * The tag name for the subtitle. It supports all the types that `msc-text` supports
    * @default 'span'
    */
-  @property({ type: String, attribute: 'subtitle-tag-name' })
+  @property({ type: String, attribute: 'subtitle-tag-name', reflect: true })
   subtitleTagName: TagNameType = DEFAULTS.TAGNAME;
 
-     /**
-     * Name of the icon (= filename).
-     *
-     * If no `icon-name` is provided, no icon will be rendered.
-     */
-     @property({ type: String, attribute: 'icon-name' })
-     iconName?: IconNames;
+  /**
+ * Name of the icon (= filename).
+ *
+ * If no `icon-name` is provided, no icon will be rendered.
+ */
+  @property({ type: String, attribute: 'icon-name' })
+  iconName?: IconNames;
 
-     /**
+  /**
    * Renders the image on the card if image source is provided
    * @returns The image element
    */
-     renderImage() {
-       if (!this.imageSrc) {
-         return nothing;
-       }
-       return html`<img part="image" src="${this.imageSrc}" alt="${this.imageAlt}"/>`;
-     }
+  renderImage() {
+    if (!this.imageSrc) {
+      return nothing;
+    }
+    return html`<img part="image" src="${this.imageSrc}" alt="${this.imageAlt}"/>`;
+  }
 
-     /**
+  /**
     * Renders the icon on the card if icon name is provided
     * @returns The icon element
     */
-     renderIcon() {
-       return this.iconName ? html`<mdc-icon part="icon"
+  renderIcon() {
+    return this.iconName ? html`<mdc-icon part="icon"
        size="${DEFAULTS.ICON_SIZE}" 
        length-unit="${DEFAULTS.ICON_LENGTH_UNIT}" 
        name="${this.iconName}"></mdc-icon>`
-         : nothing;
-     }
+      : nothing;
+  }
 
-     /**
+  /**
     * Renders the title and subtitle on the card
     * @returns The title and subtitle elements
     */
-     renderTitle() {
-       return html`<div part="title-container">
+  renderTitle() {
+    return html`<div part="title-container">
         <mdc-text part="title" type="${DEFAULTS.TITLE_TYPE}" tagname="${this.titleTagName}">${this.cardTitle}</mdc-text>
         ${this.subtitle ? html`<mdc-text part="subtitle"
             type="${DEFAULTS.SUBTITLE_TYPE}" 
             tagname="${this.subtitleTagName}">${this.subtitle}</mdc-text>` : nothing}
         </div>`;
-     }
+  }
   }
   // Cast return type to your mixin's interface intersected with the superClass type
   return InnerMixinClass as Constructor<CardComponentMixinInterface> & T;

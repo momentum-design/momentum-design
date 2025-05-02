@@ -88,13 +88,18 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
    this.checked = true;
  }
 
+ setDisabled(disabled: boolean): void {
+   this.setAttribute('aria-disabled', `${disabled}`);
+   this.tabIndex = disabled ? -1 : 0;
+ }
+
  override update(changedProperties: PropertyValues<CardRadio>) {
    super.update(changedProperties);
    if (changedProperties.has('checked')) {
      this.setAttribute('aria-checked', `${this.checked}`);
    }
    if (changedProperties.has('disabled')) {
-     this.setAttribute('aria-disabled', `${this.disabled}`);
+     this.setDisabled(this.disabled);
    }
  }
 
