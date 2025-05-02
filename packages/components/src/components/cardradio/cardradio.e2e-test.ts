@@ -1,7 +1,6 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
-import { VARIANTS } from '../card/card.constants';
 
 interface CardRadioArgs {
   name?: string;
@@ -69,6 +68,7 @@ test('mdc-cardradio', async ({ componentsPage }) => {
   const createStickerSheetBasedOnOrientation = async (orientation: string) => {
     const cardRadioStickersheet = new StickerSheet(componentsPage, 'mdc-cardradio');
     const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x300';
+    const variant = { border: 'border', ghost: 'ghost' };
 
     // Card radio without body
     cardRadioStickersheet.setAttributes({
@@ -80,7 +80,7 @@ test('mdc-cardradio', async ({ componentsPage }) => {
       orientation,
     });
     await cardRadioStickersheet.createMarkupWithCombination({
-      variant: VARIANTS,
+      variant,
     });
 
     // Card radio with body
@@ -94,7 +94,7 @@ test('mdc-cardradio', async ({ componentsPage }) => {
       Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`);
 
     await cardRadioStickersheet.createMarkupWithCombination({
-      variant: VARIANTS,
+      variant,
     });
 
     // Card Radio without image
@@ -105,7 +105,7 @@ test('mdc-cardradio', async ({ componentsPage }) => {
       orientation,
     });
     await cardRadioStickersheet.createMarkupWithCombination({
-      variant: VARIANTS,
+      variant,
     });
 
     // Selected Card Radio
@@ -117,7 +117,7 @@ test('mdc-cardradio', async ({ componentsPage }) => {
       orientation,
     });
     await cardRadioStickersheet.createMarkupWithCombination({
-      variant: VARIANTS,
+      variant,
     });
 
     // Disabled Card Radio
@@ -129,7 +129,7 @@ test('mdc-cardradio', async ({ componentsPage }) => {
       orientation,
     });
     await cardRadioStickersheet.createMarkupWithCombination({
-      variant: VARIANTS,
+      variant,
     });
 
     // Selected and disabled Card Radio
@@ -142,7 +142,7 @@ test('mdc-cardradio', async ({ componentsPage }) => {
       orientation,
     });
     await cardRadioStickersheet.createMarkupWithCombination({
-      variant: VARIANTS,
+      variant,
     });
 
     await cardRadioStickersheet.mountStickerSheet();
@@ -157,11 +157,11 @@ test('mdc-cardradio', async ({ componentsPage }) => {
    * VISUAL REGRESSION & ACCESSIBILITY
    */
   await test.step('visual-regression & accessibility', async () => {
-    await componentsPage.page.setViewportSize({ width: 1000, height: 3000 });
+    await componentsPage.page.setViewportSize({ width: 800, height: 3000 });
     await createStickerSheetBasedOnOrientation('vertical');
     await componentsPage.accessibility.checkForA11yViolations('cardradio-vertical');
 
-    await componentsPage.page.setViewportSize({ width: 2000, height: 2400 });
+    await componentsPage.page.setViewportSize({ width: 1600, height: 2400 });
     await createStickerSheetBasedOnOrientation('horizontal');
     await componentsPage.accessibility.checkForA11yViolations('cardradio-horizontal');
   });

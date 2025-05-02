@@ -1,7 +1,6 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
-import { VARIANTS } from '../card/card.constants';
 
 interface CardCheckboxArgs {
   cardTitle?: string;
@@ -68,6 +67,7 @@ test('mdc-cardcheckbox', async ({ componentsPage }) => {
   const createStickerSheetBasedOnOrientation = async (orientation: string) => {
     const cardcheckboxStickersheet = new StickerSheet(componentsPage, 'mdc-cardcheckbox');
     const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x300';
+    const variant = { border: 'border', ghost: 'ghost' };
 
     // Card checkbox without body
     cardcheckboxStickersheet.setAttributes({
@@ -79,7 +79,7 @@ test('mdc-cardcheckbox', async ({ componentsPage }) => {
       orientation,
     });
     await cardcheckboxStickersheet.createMarkupWithCombination({
-      variant: VARIANTS,
+      variant,
     });
 
     // Card checkbox with body
@@ -93,7 +93,7 @@ test('mdc-cardcheckbox', async ({ componentsPage }) => {
       Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`);
 
     await cardcheckboxStickersheet.createMarkupWithCombination({
-      variant: VARIANTS,
+      variant,
     });
 
     // Card checkbox without image
@@ -105,7 +105,7 @@ test('mdc-cardcheckbox', async ({ componentsPage }) => {
       orientation,
     });
     await cardcheckboxStickersheet.createMarkupWithCombination({
-      variant: VARIANTS,
+      variant,
     });
 
     // Selected Card checkbox
@@ -117,7 +117,7 @@ test('mdc-cardcheckbox', async ({ componentsPage }) => {
       orientation,
     });
     await cardcheckboxStickersheet.createMarkupWithCombination({
-      variant: VARIANTS,
+      variant,
     });
 
     // Disabled Card checkbox
@@ -129,7 +129,7 @@ test('mdc-cardcheckbox', async ({ componentsPage }) => {
       orientation,
     });
     await cardcheckboxStickersheet.createMarkupWithCombination({
-      variant: VARIANTS,
+      variant,
     });
 
     // Selected and disabled Card checkbox
@@ -143,7 +143,7 @@ test('mdc-cardcheckbox', async ({ componentsPage }) => {
       orientation,
     });
     await cardcheckboxStickersheet.createMarkupWithCombination({
-      variant: VARIANTS,
+      variant,
     });
 
     await cardcheckboxStickersheet.mountStickerSheet();
@@ -158,11 +158,11 @@ test('mdc-cardcheckbox', async ({ componentsPage }) => {
    * VISUAL REGRESSION & ACCESSIBILITY
    */
   await test.step('visual-regression & accessibility', async () => {
-    await componentsPage.page.setViewportSize({ width: 1000, height: 3000 });
+    await componentsPage.page.setViewportSize({ width: 800, height: 3000 });
     await createStickerSheetBasedOnOrientation('vertical');
     await componentsPage.accessibility.checkForA11yViolations('cardcheckbox-vertical');
 
-    await componentsPage.page.setViewportSize({ width: 2000, height: 2400 });
+    await componentsPage.page.setViewportSize({ width: 1600, height: 2400 });
     await createStickerSheetBasedOnOrientation('horizontal');
     await componentsPage.accessibility.checkForA11yViolations('cardcheckbox-horizontal');
   });
