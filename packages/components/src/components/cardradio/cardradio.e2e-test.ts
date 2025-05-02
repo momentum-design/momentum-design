@@ -47,9 +47,11 @@ const setup = async (args: SetupOptions) => {
   await componentsPage.mount({
     html: isGroup ? `
     <mdc-radiogroup>
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap">
     ${Array.from({ length: 3 }, (_, i) => renderCardRadio({ ...restArgs,
     cardTitle: `cardradio-${i}`,
     name: 'cardradio' })).join('')}
+    </div>
     </mdc-radiogroup>` : renderCardRadio(restArgs),
     clearDocument: true,
   });

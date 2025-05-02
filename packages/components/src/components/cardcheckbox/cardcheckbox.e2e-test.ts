@@ -47,8 +47,10 @@ const setup = async (args: SetupOptions) => {
   await componentsPage.mount({
     html: isGroup ? `
     <mdc-formfieldgroup>
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap">
     ${Array.from({ length: 3 }, (_, i) => renderCardCheckbox({ ...restArgs,
     cardTitle: `cardcheckbox-${i}` })).join('')}
+    </div>
     </mdc-formfieldgroup>` : renderCardCheckbox(restArgs),
     clearDocument: true,
   });
@@ -302,10 +304,10 @@ test('mdc-cardcheckbox', async ({ componentsPage }) => {
         await componentsPage.actionability.pressTab();
         await expect(cards.nth(2)).toBeFocused();
         await expect(cards.nth(2)).not.toBeChecked();
-        await componentsPage.page.keyboard.press('Shift+Tab');
+        await componentsPage.actionability.pressShiftTab();
         await expect(cards.nth(1)).toBeFocused();
         await expect(cards.nth(1)).toBeChecked();
-        await componentsPage.page.keyboard.press('Shift+Tab');
+        await componentsPage.actionability.pressShiftTab();
         await expect(cards.nth(0)).toBeFocused();
         await componentsPage.page.keyboard.press('Space');
         await expect(cards.nth(0)).toBeChecked();
