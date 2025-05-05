@@ -7,10 +7,6 @@ on:
         description: 'Component name to update snapshots for'
         required: true
         type: string
-      branch:
-        description: 'Target development branch to commit snapshots'
-        required: true
-        type: string
 
 jobs:
   initialize:
@@ -191,10 +187,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      # Commit and push updated snapshots to the specified branch
       - name: Commit and push snapshot updates
         run: |
-          git checkout ${{ github.event.inputs.branch }}
+          git checkout ${{ github.ref }}
           git add .
           git diff --cached --quiet || git commit -m "chore: updated snapshots for component ${{ github.event.inputs['component-name'] }}"
-          git push origin ${{ github.event.inputs.branch }}
+          git push origin ${{ github.ref }}
