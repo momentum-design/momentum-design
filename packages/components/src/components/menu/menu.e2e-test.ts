@@ -1,16 +1,16 @@
 import { test } from '../../../config/playwright/setup';
 
-test.skip('mdc-menubar', async ({ componentsPage }) => {
-  const menubar = componentsPage.page.locator('mdc-menubar');
+test.skip('mdc-menu', async ({ componentsPage }) => {
+  const menu = componentsPage.page.locator('mdc-menu');
 
-  // initial check for the menubar be visible on the screen:
-  await menubar.waitFor();
+  // initial check for the menu be visible on the screen:
+  await menu.waitFor();
 
   /**
    * ACCESSIBILITY
    */
   await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('menubar-default');
+    await componentsPage.accessibility.checkForA11yViolations('menu-default');
   });
 
   /**
@@ -18,7 +18,7 @@ test.skip('mdc-menubar', async ({ componentsPage }) => {
    */
   await test.step('visual-regression', async () => {
     await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-menubar', { element: menubar });
+      await componentsPage.visualRegression.takeScreenshot('mdc-menu', { element: menu });
     });
   });
 
