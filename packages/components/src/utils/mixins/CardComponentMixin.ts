@@ -31,28 +31,28 @@ export const CardComponentMixin = <T extends Constructor<LitElement>>(
    * The title of the card - part of header section
    * @default ''
    */
-  @property({ type: String, attribute: 'card-title' })
+  @property({ type: String, attribute: 'card-title', reflect: true })
   cardTitle = '';
 
   /**
    * The subtitle of the card - part of header section
    * @default ''
    */
-  @property({ type: String })
+  @property({ type: String, reflect: true })
   subtitle = '';
 
   /**
    * The image source URL to render on the card
    * @default ''
    */
-  @property({ type: String, attribute: 'image-src' })
+  @property({ type: String, attribute: 'image-src', reflect: true })
   imageSrc = '';
 
   /**
    * The image alt for accessibility support
    * @default ''
    */
-  @property({ type: String, attribute: 'image-alt' })
+  @property({ type: String, attribute: 'image-alt', reflect: true })
   imageAlt = '';
 
   /**
@@ -88,7 +88,7 @@ export const CardComponentMixin = <T extends Constructor<LitElement>>(
  *
  * If no `icon-name` is provided, no icon will be rendered.
  */
-  @property({ type: String, attribute: 'icon-name' })
+  @property({ type: String, attribute: 'icon-name', reflect: true })
   iconName?: IconNames;
 
   /**
