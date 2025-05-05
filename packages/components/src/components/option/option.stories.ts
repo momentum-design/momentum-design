@@ -107,7 +107,7 @@ export const Example: StoryObj = {
 
 export const OptionWithLongText: StoryObj = {
   render: () => html`
-    <div style="width: 15rem; height: 10rem;" aria-label="List box" role="listbox">
+    <div style="width: 15rem;" aria-label="List box" role="listbox">
       <mdc-option label="This is a very long text and it should be truncated."></mdc-option>
     </div>
   `,
