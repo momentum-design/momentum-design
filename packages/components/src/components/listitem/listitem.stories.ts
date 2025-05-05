@@ -11,9 +11,10 @@ import '../checkbox';
 import '../icon';
 import '../list';
 import '../toggle';
+import '../tooltip';
 import { LISTITEM_VARIANTS } from './listitem.constants';
 
-const wrapWithList = (content: TemplateResult) => html`<mdc-list>${content}</mdc-list>`;
+const wrapWithList = (content: TemplateResult) => html`<mdc-list style="width: 10rem">${content}</mdc-list>`;
 
 const render = (args: Args) => wrapWithList(
   html`
@@ -94,6 +95,7 @@ const meta: Meta = {
       '--mdc-listitem-secondary-label-color',
       '--mdc-listitem-disabled-color',
       '--mdc-listitem-column-gap',
+      '--mdc-listitem-padding-left-and-right',
     ]),
     ...classArgType,
     ...styleArgType,
@@ -108,8 +110,8 @@ export const Example: StoryObj = {
     label: 'Label Text',
     'secondary-label': 'Secondary Label',
     'tertiary-label': 'Teritary Label',
-    'side-header-text': 'Header',
-    'subline-text': 'Subline',
+    'side-header-text': 'Header Text',
+    'subline-text': 'Subline Text',
     disabled: false,
   },
 };
@@ -181,5 +183,24 @@ export const ListWithIconAndLabels: StoryObj = {
       </div>
     </mdc-listitem>
   `),
+  ...hideAllControls(),
+};
+
+export const ListWithLongText: StoryObj = {
+  render: () => html`
+    <div role="list" style="width: 15rem">
+      <mdc-listitem label="A short text"></mdc-listitem>
+      <mdc-listitem label="A little lengthy text"></mdc-listitem>
+      <mdc-listitem
+        label="A long lengthy text with small secondary label"
+        secondary-label="a small secondary label"
+      ></mdc-listitem>
+      <mdc-listitem
+        label="A small primary label, A small primary label, A small primary label"
+        secondary-label="a lengthy secondary label with a small label"
+      ></mdc-listitem>
+      <mdc-listitem label="A short text"></mdc-listitem>
+    </div>
+  `,
   ...hideAllControls(),
 };

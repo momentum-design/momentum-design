@@ -6,7 +6,8 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { TextType } from '../text/text.types';
-import { DEFAULTS } from './listitem.constants';
+import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
+import { DEFAULTS, TOOLTIP_ID, LISTITEM_ID } from './listitem.constants';
 import styles from './listitem.styles';
 import type { ListItemVariants } from './listitem.types';
 
@@ -96,6 +97,67 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = this.role || 'listitem';
+    // this.id = this.id || uuidv4();
+
+    this.addEventListener('focusin', this.displayTooltipForLongText);
+    this.addEventListener('mouseover', this.displayTooltipForLongText);
+    this.addEventListener('focusout', this.hideTooltipOnLeave);
+    this.addEventListener('mouseout', this.hideTooltipOnLeave);
+    this.addEventListener('click', this.handleClick);
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.removeEventListener('focusin', this.displayTooltipForLongText);
+    this.removeEventListener('mouseover', this.displayTooltipForLongText);
+    this.removeEventListener('focusout', this.hideTooltipOnLeave);
+    this.removeEventListener('mouseout', this.hideTooltipOnLeave);
+    this.removeEventListener('click', this.handleClick);
+  }
+
+  private handleClick(): void {
+    // When the select dropdown (popover) is open,
+    // then if the tooltip is open, it has to be closed first.
+    // only then we can close the dropdown on option click/select.
+    this.hideTooltipOnLeave();
+  }
+
+  /**
+   * Display a tooltip for long text label with an ellipse at the end.
+   * Create the tooltip programmatically after the nearest select component or the parent element.
+   * @param event - A focus or a mouse event.
+   */
+  private displayTooltipForLongText(event: FocusEvent | MouseEvent): void {
+    const dimensions = (event.target as HTMLElement).shadowRoot?.querySelector('[part="leading-text-primary-label"]');
+    if (
+      dimensions && dimensions.scrollWidth && dimensions.clientWidth
+      && dimensions.scrollWidth <= dimensions?.clientWidth
+    ) {
+      // it means that the listitem label text is fully visible and we do not need to show the tooltip.
+      return;
+    }
+
+    // Create tooltip for long text label which has an ellipse at the end.
+    const tooltip = document.createElement(TOOLTIP_TAG_NAME);
+    tooltip.id = TOOLTIP_ID;
+    this.id = this.id || LISTITEM_ID;
+    tooltip.textContent = this.label ?? '';
+    tooltip.setAttribute('triggerid', this.id);
+    tooltip.setAttribute('visible', '');
+    tooltip.setAttribute('show-arrow', '');
+
+    // Add tooltip programmatically after the parent element.
+    this.parentElement?.after(tooltip);
+  }
+
+  /**
+   * Removes the dynamically created tooltip for long text label on focus or mouse leave.
+   * This is triggered on focusout and mouseout events.
+   */
+  private hideTooltipOnLeave(): void {
+    this.id = this.id === LISTITEM_ID ? '' : this.id;
+    const existingTooltip = document.querySelector(`#${TOOLTIP_ID}`);
+    existingTooltip?.remove();
   }
 
   /**
