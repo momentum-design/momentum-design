@@ -262,9 +262,9 @@ test('mdc-tablist', async ({ componentsPage }) => {
         await expect(mdcTablist).toHaveAttribute('active-tab-id', 'music-tab');
         await componentsPage.actionability.pressTab();
         await expect(arrowButtons.last()).toBeFocused();
-        await componentsPage.page.keyboard.press('Shift+Tab');
+        await componentsPage.actionability.pressShiftTab();
         await expect(tabs.nth(2)).toBeFocused();
-        await componentsPage.page.keyboard.press('Shift+Tab');
+        await componentsPage.actionability.pressShiftTab();
         await expect(arrowButtons.first()).toBeFocused();
       });
 
