@@ -1,4 +1,7 @@
+import { expect, Locator } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
+import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { VARIANTS } from './card.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -11,6 +14,7 @@ type SetupOptions = {
   titleTagName?: string;
   subtitleTagName?: string;
   iconName?: string;
+  children?: string;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -27,7 +31,7 @@ const setup = async (args: SetupOptions) => {
     ${restArgs.titleTagName ? `title-tag-name="${restArgs.titleTagName}"` : ''}
     ${restArgs.subtitleTagName ? `subtitle-tag-name="${restArgs.subtitleTagName}"` : ''}
     ${restArgs.iconName ? `icon-name="${restArgs.iconName}"` : ''}
-    >
+    >${restArgs.children}
     </mdc-card>
     `,
     clearDocument: true,
@@ -39,55 +43,268 @@ const setup = async (args: SetupOptions) => {
   return card;
 };
 
-test.skip('mdc-card', async ({ componentsPage }) => {
-  const card = await setup({ componentsPage });
+const interactiveChildren = `<mdc-text slot='body' 
+type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
+Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
+Praesent gravida dui diam, non elementum risus laoreet vitae. 
+Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
+Vivamus mattis ligula eget imperdiet tempor. 
+Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>
+<mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
+<mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
+<mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
+<mdc-link slot="footer-link" icon-name="placeholder-bold" href='#'>Label</mdc-link>
+<mdc-button slot="footer-button-secondary">Label</mdc-button>
+<mdc-button slot="footer-button-primary">Label</mdc-button>`;
 
-  /**
-   * ACCESSIBILITY
-   */
-  await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('card-default');
-  });
+test('mdc-card', async ({ componentsPage }) => {
+  const createStickerSheetBasedOnOrientation = async (orientation: string, children?: string) => {
+    const cardStickersheet = new StickerSheet(componentsPage, 'mdc-card');
+    const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x300';
+    const variant = children ? VARIANTS : { border: 'border', ghost: 'ghost' };
 
-  /**
-   * VISUAL REGRESSION
-   */
-  await test.step('visual-regression', async () => {
-    await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-card', { element: card });
+    // Card button without body
+    cardStickersheet.setAttributes({
+      'card-title': 'Card Title',
+      subtitle: 'Card Subtitle',
+      'image-src': imageSrc,
+      'image-alt': 'Image Alt',
+      'icon-name': 'placeholder-bold',
+      orientation,
     });
+    await cardStickersheet.createMarkupWithCombination({
+      variant,
+    });
+
+    if (children) {
+      cardStickersheet.setChildren(children);
+    } else {
+      // Card button with body
+      cardStickersheet.setChildren(`<mdc-text slot='body' 
+      type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+      Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
+      Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
+      Praesent gravida dui diam, non elementum risus laoreet vitae. 
+      Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
+      Vivamus mattis ligula eget imperdiet tempor. 
+      Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`);
+    }
+
+    await cardStickersheet.createMarkupWithCombination({
+      variant,
+    });
+
+    // Card button without image
+    cardStickersheet.setAttributes({
+      'card-title': 'Card Title',
+      subtitle: 'Card Subtitle',
+      'icon-name': 'placeholder-bold',
+      'selection-type': 'button',
+      orientation,
+    });
+    await cardStickersheet.createMarkupWithCombination({
+      variant,
+    });
+
+    // Selected Card button
+    cardStickersheet.setAttributes({
+      'card-title': 'Card Title',
+      subtitle: 'Card Subtitle',
+      'icon-name': 'placeholder-bold',
+      checked: '',
+      orientation,
+    });
+    await cardStickersheet.createMarkupWithCombination({
+      variant,
+    });
+
+    // Disabled Card button
+    cardStickersheet.setAttributes({
+      'card-title': 'Card Title',
+      subtitle: 'Card Subtitle',
+      'icon-name': 'placeholder-bold',
+      disabled: '',
+      orientation,
+    });
+    await cardStickersheet.createMarkupWithCombination({
+      variant,
+    });
+
+    // Selected and disabled Card button
+    cardStickersheet.setAttributes({
+      'card-title': 'Card Title',
+      subtitle: 'Card Subtitle',
+      'icon-name': 'placeholder-bold',
+      checked: '',
+      'selection-type': 'button',
+      disabled: '',
+      orientation,
+    });
+    await cardStickersheet.createMarkupWithCombination({
+      variant,
+    });
+
+    await cardStickersheet.mountStickerSheet();
+    await componentsPage.page.waitForTimeout(500);
+    const container = cardStickersheet.getWrapperContainer();
+    await test.step('matches screenshot of element', async () => {
+      const fileName = children ? `mdc-card-${orientation}-interactive` : `mdc-card-${orientation}`;
+      await componentsPage.visualRegression.takeScreenshot(fileName, { element: container });
+    });
+  };
+
+  /**
+   * VISUAL REGRESSION & ACCESSIBILITY
+   */
+  await test.step('visual-regression & accessibility', async () => {
+    await componentsPage.page.setViewportSize({ width: 800, height: 3000 });
+    await createStickerSheetBasedOnOrientation('vertical');
+    await componentsPage.accessibility.checkForA11yViolations('static-card-vertical');
+
+    await componentsPage.page.setViewportSize({ width: 1600, height: 2400 });
+    await createStickerSheetBasedOnOrientation('horizontal');
+    await componentsPage.accessibility.checkForA11yViolations('static-card-horizontal');
+
+    await componentsPage.page.setViewportSize({ width: 1200, height: 3000 });
+    await createStickerSheetBasedOnOrientation('vertical', interactiveChildren);
+    await componentsPage.accessibility.checkForA11yViolations('interactive-card-vertical');
+
+    await componentsPage.page.setViewportSize({ width: 2400, height: 2400 });
+    await createStickerSheetBasedOnOrientation('horizontal', interactiveChildren);
+    await componentsPage.accessibility.checkForA11yViolations('interactive-card-horizontal');
   });
 
   /**
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
+    const card = await setup({ componentsPage,
+      cardTitle: 'Card Title',
+      subtitle: 'Card Subtitle' });
     await test.step('attribute X should be present on component by default', async () => {
-      // TODO: add test here
+      await expect(card).toHaveAttribute('variant', 'border');
+      await expect(card).toHaveAttribute('orientation', 'vertical');
+      await expect(card).toHaveAttribute('title-tag-name', 'span');
+      await expect(card).toHaveAttribute('subtitle-tag-name', 'span');
+    });
+
+    await test.step('attributes should be present on component when provided', async () => {
+      await expect(card).toHaveAttribute('card-title', 'Card Title');
+      await expect(card).toHaveAttribute('subtitle', 'Card Subtitle');
+    });
+
+    await test.step('attribute icon-name should be present on component when provided', async () => {
+      await componentsPage.setAttributes(card, { 'icon-name': 'placeholder-bold' });
+      await expect(card).toHaveAttribute('icon-name', 'placeholder-bold');
+      await componentsPage.removeAttribute(card, 'icon-name');
+    });
+
+    await test.step('attribute image-src should be present on component when provided', async () => {
+      await componentsPage.setAttributes(card, { 'image-src': 'https://placehold.co/150' });
+      await expect(card).toHaveAttribute('image-src', 'https://placehold.co/150');
+      await componentsPage.removeAttribute(card, 'image-src');
+    });
+
+    await test.step('attribute image-alt should be present on component when provided', async () => {
+      await componentsPage.setAttributes(card, { 'image-alt': 'Image Alt' });
+      await expect(card).toHaveAttribute('image-alt', 'Image Alt');
+      await componentsPage.removeAttribute(card, 'image-alt');
+    });
+
+    await test.step('attribute title-tag-name should be present on component when provided', async () => {
+      await componentsPage.setAttributes(card, { 'title-tag-name': 'h1' });
+      await expect(card).toHaveAttribute('title-tag-name', 'h1');
+      await componentsPage.removeAttribute(card, 'title-tag-name');
+    });
+
+    await test.step('attribute subtitle-tag-name should be present on component when provided', async () => {
+      await componentsPage.setAttributes(card, { 'subtitle-tag-name': 'h2' });
+      await expect(card).toHaveAttribute('subtitle-tag-name', 'h2');
+      await componentsPage.removeAttribute(card, 'subtitle-tag-name');
     });
   });
 
   /**
    * INTERACTIONS
+   * This is applicable only for interactive card (card with interactive elements in the children)
    */
   await test.step('interactions', async () => {
-    await test.step('mouse/pointer', async () => {
-      await test.step('component should fire callback x when clicking on it', async () => {
-        // TODO: add test here
-      });
-    });
+    const card = await setup({ componentsPage,
+      cardTitle: 'Card Title',
+      subtitle: 'Card Subtitle',
+      children: interactiveChildren });
+
+    const iconButtons = card.locator('mdc-button[slot="icon-button"]');
+    const link = card.locator('mdc-link[slot="footer-link"]');
+    const primaryButton = card.locator('mdc-button[slot="footer-button-primary"]');
+    const secondaryButton = card.locator('mdc-button[slot="footer-button-secondary"]');
 
     await test.step('focus', async () => {
       await test.step('component should be focusable with tab', async () => {
-        // TODO: add test here
+        await componentsPage.actionability.pressAndCheckFocus(
+          'Tab',
+          [iconButtons.first(), iconButtons.nth(1), iconButtons.last(), link, secondaryButton, primaryButton],
+        );
       });
-
-      // add additional tests here, like tabbing through several parts of the component
+      await test.step('component should be focusable with shift+tab', async () => {
+        await componentsPage.actionability.pressTab(); // focus out of the component
+        // to the next focusable element in the DOM
+        await componentsPage.actionability.pressAndCheckFocus(
+          'Shift+Tab',
+          [primaryButton, secondaryButton, link, iconButtons.last(), iconButtons.nth(1), iconButtons.first()],
+        );
+      });
     });
 
+    const testClickEvent = async (button: Locator) => {
+      const eventResolve = componentsPage.waitForEvent(button, 'click');
+      await button.click();
+      await eventResolve;
+    };
+
+    await test.step('mouse/pointer', async () => {
+      await test.step('component should fire click event when clicking on primary button in the footer', async () => {
+        await testClickEvent(primaryButton);
+      });
+
+      await test.step('component should fire click event when clicking on secondary button in the footer', async () => {
+        await testClickEvent(secondaryButton);
+      });
+
+      await test.step('component should fire click event when clicking on icon button', async () => {
+        await testClickEvent(iconButtons.first());
+        await testClickEvent(iconButtons.nth(1));
+        await testClickEvent(iconButtons.last());
+      });
+    });
+
+    const testOnEnterSpace = async (button: Locator) => {
+      const eventResolve = componentsPage.waitForEvent(button, 'click');
+      await button.focus();
+      await expect(button).toBeFocused();
+      await componentsPage.page.keyboard.press('Enter');
+      await eventResolve;
+      await componentsPage.page.keyboard.press('Space');
+      await eventResolve;
+    };
+
     await test.step('keyboard', async () => {
-      await test.step('component should fire callback x when pressing y', async () => {
-        // TODO: add test here
+      await test.step(`component should fire click event when 
+        pressing enter/space on primary button in the footer`, async () => {
+        await testOnEnterSpace(primaryButton);
+      });
+
+      await test.step(`component should fire click event when 
+        pressing enter/space on secondary button in the footer`, async () => {
+        await testOnEnterSpace(secondaryButton);
+      });
+
+      await test.step(`component should fire click event when 
+        pressing enter/space on icon button`, async () => {
+        await testOnEnterSpace(iconButtons.first());
+        await testOnEnterSpace(iconButtons.nth(1));
+        await testOnEnterSpace(iconButtons.last());
       });
     });
   });
