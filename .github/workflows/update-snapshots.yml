@@ -1,0 +1,68 @@
+name: Update Visual Regression Snapshots
+
+on:
+  workflow_dispatch:
+    inputs:
+      component-name:
+        description: 'Component name to update snapshots for'
+        required: true
+        type: string
+      branch:
+        description: 'Target development branch to commit snapshots'
+        required: true
+        type: string
+
+jobs:
+  update-snapshots:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Setup Node.js environment with yarn cache
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+
+      # Install dependencies
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      # Start the server in the background
+      - name: Start test server
+        run: |
+          yarn components test:e2e:serve &
+          SERVER_PID=$!
+          # Wait for server to be ready (adjust wait time or add health check as needed)
+          sleep 10
+          echo "Server started with PID $SERVER_PID"
+
+      # Run snapshot update command with the provided component name input
+      - name: Update snapshots
+        run: yarn components test:e2e:docker:update-snapshot ${{ github.event.inputs['component-name'] }}
+
+      # Stop the server after snapshot update
+      - name: Stop test server
+        run: kill $SERVER_PID || true
+
+      # Configure git user for committing
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Commit and push updated snapshots to the specified branch
+      - name: Commit and push snapshot updates
+        run: |
+          git checkout ${{ github.event.inputs.branch }}
+          git add .
+          git diff --cached --quiet || git commit -m "chore: updated snapshots for component ${{ github.event.inputs['component-name'] }}"
+          git push origin ${{ github.event.inputs.branch }}
+
+        env:
+          # Use the default GITHUB_TOKEN for authentication
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
