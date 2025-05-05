@@ -36,6 +36,18 @@ class Actionability {
   }
 
   /**
+   * Presses the Tab key to navigate to the next focusable element.
+   */
+  async pressShiftTab() {
+    const browserName = this.browserName();
+    if (browserName === 'webkit') {
+      await this.page.keyboard.press('Shift+Alt+Tab');
+    } else {
+      await this.page.keyboard.press('Shift+Tab');
+    }
+  }
+
+  /**
    * Release focus for the specified subcomponent locator
    * @param subComponent - Locator
    */
