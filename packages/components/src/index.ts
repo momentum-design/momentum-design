@@ -33,6 +33,7 @@ import MenuBar from './components/menubar';
 import MenuItem from './components/menuitem';
 import MenuItemCheckbox from './components/menuitemcheckbox';
 import MenuItemRadio from './components/menuitemradio';
+import MenuPopover from './components/menupopover';
 import OptGroup from './components/optgroup';
 import Option from './components/option';
 import Popover from './components/popover';
@@ -110,6 +111,7 @@ export {
   MenuItem,
   MenuItemCheckbox,
   MenuItemRadio,
+  MenuPopover,
   OptGroup,
   Option,
   Popover,
