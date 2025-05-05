@@ -1,4 +1,4 @@
-import type { Meta, StoryObj, Args } from '@storybook/web-components';
+import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
@@ -40,5 +40,11 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     'aria-orientation': ORIENTATION.HORIZONTAL,
+  },
+};
+
+export const VerticalMenuBar: StoryObj = {
+  args: {
+    'aria-orientation': ORIENTATION.VERTICAL,
   },
 };
