@@ -173,6 +173,9 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+        
+      - name: Update Snapshots
+        if: ${{ matrix.package == '@momentum-design/components' }}
         run: yarn workspace ${{ matrix.package }} test:e2e:docker:update-snapshot ${{ github.event.inputs['component-name'] }} 
 
       - name: Upload Playwright Report
