@@ -43,6 +43,7 @@ import type { ListItemVariants } from './listitem.types';
  *  - Allows customization of the secondary and tertiary label text slot color.
  * @cssproperty --mdc-listitem-disabled-color - Allows customization of the disabled color.
  * @cssproperty --mdc-listitem-column-gap - Allows customization of column gap.
+ * @cssproperty --mdc-listitem-padding-left-and-right - Allows customization of padding left and right.
  *
  * @event click - (React: onClick) This event is dispatched when the listitem is clicked.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the listitem.
@@ -124,7 +125,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
 
   /**
    * Display a tooltip for long text label with an ellipse at the end.
-   * Create the tooltip programmatically after the nearest select component or the parent element.
+   * Create the tooltip programmatically after the nearest parent element.
    * @param event - A focus or a mouse event.
    */
   private displayTooltipForLongText(event: FocusEvent | MouseEvent): void {
@@ -137,10 +138,11 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
       return;
     }
 
+    // Add a unique id to the listitem if it does not have one to attach the tooltip.
+    this.id = this.id || LISTITEM_ID;
     // Create tooltip for long text label which has an ellipse at the end.
     const tooltip = document.createElement(TOOLTIP_TAG_NAME);
     tooltip.id = TOOLTIP_ID;
-    this.id = this.id || LISTITEM_ID;
     tooltip.textContent = this.label ?? '';
     tooltip.setAttribute('triggerid', this.id);
     tooltip.setAttribute('visible', '');
