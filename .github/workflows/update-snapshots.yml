@@ -130,7 +130,7 @@ jobs:
           key: dist-${{ env.rid }}
 
   update-snapshots:
-    name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Test - Postbuild
+    name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Update Snapshots
     needs: [generate-package-matrix, build]
     runs-on: ${{ matrix.os }}
 
