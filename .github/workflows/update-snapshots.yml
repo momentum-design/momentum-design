@@ -44,50 +44,6 @@ jobs:
             packages/**/node_modules
           key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
-  generate-package-matrix:
-    name: Generate Package Matrix
-    needs: initialize
-    runs-on: ubuntu-latest
-
-    outputs:
-      packages: ${{ steps.generate-package-matrix.outputs.packages }}
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'yarn'
-          
-      - name: Uncache Dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            packages/**/node_modules
-          key: node-modules-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Synchronize Packages
-        run: yarn
-         
-      - name: Update Main Branch
-        run: |
-          git fetch origin main --unshallow
-
-      # Build Automation Tooling (Telemetry as precondition)
-      - name: Build Automation Tooling
-        run: yarn telemetry build && yarn automation build:cli
-
-      - id: generate-package-matrix
-        name: Generate Package Matrix
-        run: echo "packages=$(yarn md-automation -- --command get-packages --changed ${{ github.event.pull_request.base.sha }} --dependent)" >> $GITHUB_OUTPUT
-
-      - name: Display Package Matrix
-        run: echo "generated package matrix - ${{ steps.generate-package-matrix.outputs.packages }}"
-
   build:
     name: Build
     needs: initialize
@@ -126,15 +82,10 @@ jobs:
           key: dist-${{ env.rid }}
 
   update-snapshots:
-    name: ( ${{ matrix.package }} / ${{ matrix.os }} ) Update Snapshots
-    needs: [generate-package-matrix, build]
-    runs-on: ${{ matrix.os }}
+    name: Update Snapshots
+    needs: build
+    runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        package: ${{ fromJson(needs.generate-package-matrix.outputs.packages) }}
-    
     steps:
       - uses: actions/checkout@v4
         with:
@@ -163,7 +114,6 @@ jobs:
         run: yarn
 
       - name: Log in to GitHub Container Registry
-        if: ${{ matrix.package == '@momentum-design/components' }}
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -171,12 +121,11 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Update Snapshots
-        if: ${{ matrix.package == '@momentum-design/components' }}
-        run: yarn workspace ${{ matrix.package }} test:e2e:docker:update-snapshot ${{ github.event.inputs['component-name'] }} 
+        run: yarn workspace @momentum-design/components test:e2e:docker:update-snapshot ${{ github.event.inputs['component-name'] }} 
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() && matrix.package == '@momentum-design/components' }}
+        if: ${{ !cancelled() }}
         with:
           name: playwright-report
           path: packages/components/playwright-report/
