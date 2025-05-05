@@ -66,27 +66,175 @@ const setup = async (args: SetupOptions) => {
   return cardradio;
 };
 
-test('mdc-cardradio', async ({ componentsPage }) => {
-  const createStickerSheetBasedOnOrientation = async (orientation: string) => {
-    const cardRadioStickersheet = new StickerSheet(componentsPage, 'mdc-cardradio');
-    const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x300';
-    const variant = { border: 'border', ghost: 'ghost' };
+test.describe.parallel('mdc-cardradio', () => {
+  test('attributes and interactions', async ({ componentsPage }) => {
+    const cardradio = await setup({ componentsPage,
+      name: 'cardradio',
+      cardTitle: 'Card Title',
+      subtitle: 'Card Subtitle' });
 
-    // Card radio without body
-    cardRadioStickersheet.setAttributes({
-      'card-title': 'Card Title',
-      subtitle: 'Card Subtitle',
-      'image-src': imageSrc,
-      'image-alt': 'Image Alt',
-      'icon-name': 'placeholder-bold',
-      orientation,
-    });
-    await cardRadioStickersheet.createMarkupWithCombination({
-      variant,
+    /**
+   * ATTRIBUTES
+   */
+    await test.step('attributes', async () => {
+      await test.step('attribute X should be present on component by default', async () => {
+        await expect(cardradio).toHaveAttribute('variant', 'border');
+        await expect(cardradio).toHaveAttribute('orientation', 'vertical');
+        await expect(cardradio).toHaveAttribute('title-tag-name', 'span');
+        await expect(cardradio).toHaveAttribute('subtitle-tag-name', 'span');
+      });
+
+      await test.step('attributes should be present on component when provided', async () => {
+        await expect(cardradio).toHaveAttribute('name', 'cardradio');
+        await expect(cardradio).toHaveAttribute('card-title', 'Card Title');
+        await expect(cardradio).toHaveAttribute('subtitle', 'Card Subtitle');
+      });
+
+      await test.step('attribute disabled should be present on component when provided', async () => {
+        await componentsPage.setAttributes(cardradio, { disabled: '' });
+        await expect(cardradio).toHaveAttribute('disabled', '');
+        await expect(cardradio).toBeDisabled();
+        await componentsPage.removeAttribute(cardradio, 'disabled');
+        await expect(cardradio).not.toBeDisabled();
+      });
+
+      await test.step('attribute checked should be present on component when provided', async () => {
+        await componentsPage.setAttributes(cardradio, { checked: '' });
+        await expect(cardradio).toHaveAttribute('checked', '');
+        await expect(cardradio).toBeChecked();
+        await componentsPage.removeAttribute(cardradio, 'checked');
+        await expect(cardradio).not.toBeChecked();
+      });
+
+      await test.step('attribute icon-name should be present on component when provided', async () => {
+        await componentsPage.setAttributes(cardradio, { 'icon-name': 'placeholder-bold' });
+        await expect(cardradio).toHaveAttribute('icon-name', 'placeholder-bold');
+        await componentsPage.removeAttribute(cardradio, 'icon-name');
+      });
+
+      await test.step('attribute image-src should be present on component when provided', async () => {
+        await componentsPage.setAttributes(cardradio, { 'image-src': 'https://placehold.co/150' });
+        await expect(cardradio).toHaveAttribute('image-src', 'https://placehold.co/150');
+        await componentsPage.removeAttribute(cardradio, 'image-src');
+      });
+
+      await test.step('attribute image-alt should be present on component when provided', async () => {
+        await componentsPage.setAttributes(cardradio, { 'image-alt': 'Image Alt' });
+        await expect(cardradio).toHaveAttribute('image-alt', 'Image Alt');
+        await componentsPage.removeAttribute(cardradio, 'image-alt');
+      });
+
+      await test.step('attribute aria-label should be present on component when provided', async () => {
+        await componentsPage.setAttributes(cardradio, { 'aria-label': 'Card Radio' });
+        await expect(cardradio).toHaveAttribute('aria-label', 'Card Radio');
+        await componentsPage.removeAttribute(cardradio, 'aria-label');
+      });
+
+      await test.step('attribute title-tag-name should be present on component when provided', async () => {
+        await componentsPage.setAttributes(cardradio, { 'title-tag-name': 'h1' });
+        await expect(cardradio).toHaveAttribute('title-tag-name', 'h1');
+        await componentsPage.removeAttribute(cardradio, 'title-tag-name');
+      });
+
+      await test.step('attribute subtitle-tag-name should be present on component when provided', async () => {
+        await componentsPage.setAttributes(cardradio, { 'subtitle-tag-name': 'h2' });
+        await expect(cardradio).toHaveAttribute('subtitle-tag-name', 'h2');
+        await componentsPage.removeAttribute(cardradio, 'subtitle-tag-name');
+      });
+
+      await test.step('attribute tabindex should be present on component when provided', async () => {
+        await componentsPage.setAttributes(cardradio, { tabindex: '0' });
+        await expect(cardradio).toHaveAttribute('tabindex', '0');
+        await componentsPage.removeAttribute(cardradio, 'tabindex');
+      });
     });
 
-    // Card radio with body
-    cardRadioStickersheet.setChildren(`<mdc-text slot='body' 
+    /**
+   * INTERACTIONS
+   */
+    await test.step('interactions', async () => {
+      const setupArgs = {
+        componentsPage,
+        cardTitle: 'Card Title',
+        subtitle: 'Card Subtitle',
+        name: 'card-radio',
+      };
+      await test.step('mouse/pointer', async () => {
+        await test.step('component should be checked when clicked using mouse', async () => {
+          await setup(setupArgs);
+          await cardradio.click();
+          await expect(cardradio).toBeChecked();
+        });
+      });
+
+      await test.step('keyboard & focus', async () => {
+        await test.step('component should be checked when pressed enter', async () => {
+          await setup(setupArgs);
+          await componentsPage.actionability.pressTab();
+          await expect(cardradio).toBeFocused();
+          await componentsPage.page.keyboard.press('Enter');
+          await expect(cardradio).toBeChecked();
+        });
+
+        await test.step('component should be checked when pressed space', async () => {
+          await setup(setupArgs);
+          await componentsPage.actionability.pressTab();
+          await expect(cardradio).toBeFocused();
+          await componentsPage.page.keyboard.press('Space');
+          await expect(cardradio).toBeChecked();
+        });
+
+        await test.step('component should not be focused in disabled state', async () => {
+          await setup({ ...setupArgs, disabled: true });
+          await componentsPage.actionability.pressTab();
+          await expect(cardradio).not.toBeFocused();
+        });
+
+        await test.step(`component should navigate between radio cards using arrow keys
+         and mark the focused card as checked`, async () => {
+          await setup({ ...setupArgs, isGroup: true });
+          const cards = componentsPage.page.locator('mdc-cardradio');
+          await componentsPage.actionability.pressTab();
+          await expect(cards.nth(0)).toBeFocused();
+          await expect(cards.nth(0)).not.toBeChecked();
+          await componentsPage.page.keyboard.press('ArrowDown');
+          await expect(cards.nth(1)).toBeFocused();
+          await expect(cards.nth(1)).toBeChecked();
+          await componentsPage.page.keyboard.press('ArrowRight');
+          await expect(cards.nth(2)).toBeFocused();
+          await expect(cards.nth(2)).toBeChecked();
+          await componentsPage.page.keyboard.press('ArrowLeft');
+          await expect(cards.nth(1)).toBeFocused();
+          await expect(cards.nth(1)).toBeChecked();
+          await componentsPage.page.keyboard.press('ArrowUp');
+          await expect(cards.nth(0)).toBeFocused();
+          await expect(cards.nth(0)).toBeChecked();
+        });
+      });
+    });
+  });
+
+  test('visual-regression & accessibility', async ({ componentsPage }) => {
+    const createStickerSheetBasedOnOrientation = async (orientation: string) => {
+      const cardRadioStickersheet = new StickerSheet(componentsPage, 'mdc-cardradio');
+      const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x300';
+      const variant = { border: 'border', ghost: 'ghost' };
+
+      // Card radio without body
+      cardRadioStickersheet.setAttributes({
+        'card-title': 'Card Title',
+        subtitle: 'Card Subtitle',
+        'image-src': imageSrc,
+        'image-alt': 'Image Alt',
+        'icon-name': 'placeholder-bold',
+        orientation,
+      });
+      await cardRadioStickersheet.createMarkupWithCombination({
+        variant,
+      });
+
+      // Card radio with body
+      cardRadioStickersheet.setChildren(`<mdc-text slot='body' 
       type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
       Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
       Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
@@ -95,221 +243,77 @@ test('mdc-cardradio', async ({ componentsPage }) => {
       Vivamus mattis ligula eget imperdiet tempor. 
       Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`);
 
-    await cardRadioStickersheet.createMarkupWithCombination({
-      variant,
-    });
+      await cardRadioStickersheet.createMarkupWithCombination({
+        variant,
+      });
 
-    // Card Radio without image
-    cardRadioStickersheet.setAttributes({
-      'card-title': 'Card Title',
-      subtitle: 'Card Subtitle',
-      'icon-name': 'placeholder-bold',
-      orientation,
-    });
-    await cardRadioStickersheet.createMarkupWithCombination({
-      variant,
-    });
+      // Card Radio without image
+      cardRadioStickersheet.setAttributes({
+        'card-title': 'Card Title',
+        subtitle: 'Card Subtitle',
+        'icon-name': 'placeholder-bold',
+        orientation,
+      });
+      await cardRadioStickersheet.createMarkupWithCombination({
+        variant,
+      });
 
-    // Selected Card Radio
-    cardRadioStickersheet.setAttributes({
-      'card-title': 'Card Title',
-      subtitle: 'Card Subtitle',
-      'icon-name': 'placeholder-bold',
-      checked: '',
-      orientation,
-    });
-    await cardRadioStickersheet.createMarkupWithCombination({
-      variant,
-    });
+      // Selected Card Radio
+      cardRadioStickersheet.setAttributes({
+        'card-title': 'Card Title',
+        subtitle: 'Card Subtitle',
+        'icon-name': 'placeholder-bold',
+        checked: '',
+        orientation,
+      });
+      await cardRadioStickersheet.createMarkupWithCombination({
+        variant,
+      });
 
-    // Disabled Card Radio
-    cardRadioStickersheet.setAttributes({
-      'card-title': 'Card Title',
-      subtitle: 'Card Subtitle',
-      'icon-name': 'placeholder-bold',
-      disabled: '',
-      orientation,
-    });
-    await cardRadioStickersheet.createMarkupWithCombination({
-      variant,
-    });
+      // Disabled Card Radio
+      cardRadioStickersheet.setAttributes({
+        'card-title': 'Card Title',
+        subtitle: 'Card Subtitle',
+        'icon-name': 'placeholder-bold',
+        disabled: '',
+        orientation,
+      });
+      await cardRadioStickersheet.createMarkupWithCombination({
+        variant,
+      });
 
-    // Selected and disabled Card Radio
-    cardRadioStickersheet.setAttributes({
-      'card-title': 'Card Title',
-      subtitle: 'Card Subtitle',
-      'icon-name': 'placeholder-bold',
-      checked: '',
-      disabled: '',
-      orientation,
-    });
-    await cardRadioStickersheet.createMarkupWithCombination({
-      variant,
-    });
+      // Selected and disabled Card Radio
+      cardRadioStickersheet.setAttributes({
+        'card-title': 'Card Title',
+        subtitle: 'Card Subtitle',
+        'icon-name': 'placeholder-bold',
+        checked: '',
+        disabled: '',
+        orientation,
+      });
+      await cardRadioStickersheet.createMarkupWithCombination({
+        variant,
+      });
 
-    await cardRadioStickersheet.mountStickerSheet();
-    await componentsPage.page.waitForTimeout(500);
-    const container = cardRadioStickersheet.getWrapperContainer();
-    await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot(`mdc-cardradio-${orientation}`, { element: container });
-    });
-  };
+      await cardRadioStickersheet.mountStickerSheet();
+      await componentsPage.page.waitForTimeout(500);
+      const container = cardRadioStickersheet.getWrapperContainer();
+      await test.step('matches screenshot of element', async () => {
+        await componentsPage.visualRegression.takeScreenshot(`mdc-cardradio-${orientation}`, { element: container });
+      });
+    };
 
-  /**
+    /**
    * VISUAL REGRESSION & ACCESSIBILITY
    */
-  await test.step('visual-regression & accessibility', async () => {
-    await componentsPage.page.setViewportSize({ width: 800, height: 3000 });
-    await createStickerSheetBasedOnOrientation('vertical');
-    await componentsPage.accessibility.checkForA11yViolations('cardradio-vertical');
+    await test.step('visual-regression & accessibility', async () => {
+      await componentsPage.page.setViewportSize({ width: 800, height: 3000 });
+      await createStickerSheetBasedOnOrientation('vertical');
+      await componentsPage.accessibility.checkForA11yViolations('cardradio-vertical');
 
-    await componentsPage.page.setViewportSize({ width: 1600, height: 2400 });
-    await createStickerSheetBasedOnOrientation('horizontal');
-    await componentsPage.accessibility.checkForA11yViolations('cardradio-horizontal');
-  });
-
-  const cardradio = await setup({ componentsPage,
-    name: 'cardradio',
-    cardTitle: 'Card Title',
-    subtitle: 'Card Subtitle' });
-
-  /**
-   * ATTRIBUTES
-   */
-  await test.step('attributes', async () => {
-    await test.step('attribute X should be present on component by default', async () => {
-      await expect(cardradio).toHaveAttribute('variant', 'border');
-      await expect(cardradio).toHaveAttribute('orientation', 'vertical');
-      await expect(cardradio).toHaveAttribute('title-tag-name', 'span');
-      await expect(cardradio).toHaveAttribute('subtitle-tag-name', 'span');
-    });
-
-    await test.step('attributes should be present on component when provided', async () => {
-      await expect(cardradio).toHaveAttribute('name', 'cardradio');
-      await expect(cardradio).toHaveAttribute('card-title', 'Card Title');
-      await expect(cardradio).toHaveAttribute('subtitle', 'Card Subtitle');
-    });
-
-    await test.step('attribute disabled should be present on component when provided', async () => {
-      await componentsPage.setAttributes(cardradio, { disabled: '' });
-      await expect(cardradio).toHaveAttribute('disabled', '');
-      await expect(cardradio).toBeDisabled();
-      await componentsPage.removeAttribute(cardradio, 'disabled');
-      await expect(cardradio).not.toBeDisabled();
-    });
-
-    await test.step('attribute checked should be present on component when provided', async () => {
-      await componentsPage.setAttributes(cardradio, { checked: '' });
-      await expect(cardradio).toHaveAttribute('checked', '');
-      await expect(cardradio).toBeChecked();
-      await componentsPage.removeAttribute(cardradio, 'checked');
-      await expect(cardradio).not.toBeChecked();
-    });
-
-    await test.step('attribute icon-name should be present on component when provided', async () => {
-      await componentsPage.setAttributes(cardradio, { 'icon-name': 'placeholder-bold' });
-      await expect(cardradio).toHaveAttribute('icon-name', 'placeholder-bold');
-      await componentsPage.removeAttribute(cardradio, 'icon-name');
-    });
-
-    await test.step('attribute image-src should be present on component when provided', async () => {
-      await componentsPage.setAttributes(cardradio, { 'image-src': 'https://placehold.co/150' });
-      await expect(cardradio).toHaveAttribute('image-src', 'https://placehold.co/150');
-      await componentsPage.removeAttribute(cardradio, 'image-src');
-    });
-
-    await test.step('attribute image-alt should be present on component when provided', async () => {
-      await componentsPage.setAttributes(cardradio, { 'image-alt': 'Image Alt' });
-      await expect(cardradio).toHaveAttribute('image-alt', 'Image Alt');
-      await componentsPage.removeAttribute(cardradio, 'image-alt');
-    });
-
-    await test.step('attribute aria-label should be present on component when provided', async () => {
-      await componentsPage.setAttributes(cardradio, { 'aria-label': 'Card Radio' });
-      await expect(cardradio).toHaveAttribute('aria-label', 'Card Radio');
-      await componentsPage.removeAttribute(cardradio, 'aria-label');
-    });
-
-    await test.step('attribute title-tag-name should be present on component when provided', async () => {
-      await componentsPage.setAttributes(cardradio, { 'title-tag-name': 'h1' });
-      await expect(cardradio).toHaveAttribute('title-tag-name', 'h1');
-      await componentsPage.removeAttribute(cardradio, 'title-tag-name');
-    });
-
-    await test.step('attribute subtitle-tag-name should be present on component when provided', async () => {
-      await componentsPage.setAttributes(cardradio, { 'subtitle-tag-name': 'h2' });
-      await expect(cardradio).toHaveAttribute('subtitle-tag-name', 'h2');
-      await componentsPage.removeAttribute(cardradio, 'subtitle-tag-name');
-    });
-
-    await test.step('attribute tabindex should be present on component when provided', async () => {
-      await componentsPage.setAttributes(cardradio, { tabindex: '0' });
-      await expect(cardradio).toHaveAttribute('tabindex', '0');
-      await componentsPage.removeAttribute(cardradio, 'tabindex');
-    });
-  });
-
-  /**
-   * INTERACTIONS
-   */
-  await test.step('interactions', async () => {
-    const setupArgs = {
-      componentsPage,
-      cardTitle: 'Card Title',
-      subtitle: 'Card Subtitle',
-      name: 'card-radio',
-    };
-    await test.step('mouse/pointer', async () => {
-      await test.step('component should be checked when clicked using mouse', async () => {
-        await setup(setupArgs);
-        await cardradio.click();
-        await expect(cardradio).toBeChecked();
-      });
-    });
-
-    await test.step('keyboard & focus', async () => {
-      await test.step('component should be checked when pressed enter', async () => {
-        await setup(setupArgs);
-        await componentsPage.actionability.pressTab();
-        await expect(cardradio).toBeFocused();
-        await componentsPage.page.keyboard.press('Enter');
-        await expect(cardradio).toBeChecked();
-      });
-
-      await test.step('component should be checked when pressed space', async () => {
-        await setup(setupArgs);
-        await componentsPage.actionability.pressTab();
-        await expect(cardradio).toBeFocused();
-        await componentsPage.page.keyboard.press('Space');
-        await expect(cardradio).toBeChecked();
-      });
-
-      await test.step('component should not be focused in disabled state', async () => {
-        await setup({ ...setupArgs, disabled: true });
-        await componentsPage.actionability.pressTab();
-        await expect(cardradio).not.toBeFocused();
-      });
-
-      await test.step(`component should navigate between radio cards using arrow keys
-         and mark the focused card as checked`, async () => {
-        await setup({ ...setupArgs, isGroup: true });
-        const cards = componentsPage.page.locator('mdc-cardradio');
-        await componentsPage.actionability.pressTab();
-        await expect(cards.nth(0)).toBeFocused();
-        await expect(cards.nth(0)).not.toBeChecked();
-        await componentsPage.page.keyboard.press('ArrowDown');
-        await expect(cards.nth(1)).toBeFocused();
-        await expect(cards.nth(1)).toBeChecked();
-        await componentsPage.page.keyboard.press('ArrowRight');
-        await expect(cards.nth(2)).toBeFocused();
-        await expect(cards.nth(2)).toBeChecked();
-        await componentsPage.page.keyboard.press('ArrowLeft');
-        await expect(cards.nth(1)).toBeFocused();
-        await expect(cards.nth(1)).toBeChecked();
-        await componentsPage.page.keyboard.press('ArrowUp');
-        await expect(cards.nth(0)).toBeFocused();
-        await expect(cards.nth(0)).toBeChecked();
-      });
+      await componentsPage.page.setViewportSize({ width: 1600, height: 2400 });
+      await createStickerSheetBasedOnOrientation('horizontal');
+      await componentsPage.accessibility.checkForA11yViolations('cardradio-horizontal');
     });
   });
 });
