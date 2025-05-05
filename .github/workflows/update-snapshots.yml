@@ -181,3 +181,16 @@ update-snapshots:
           name: playwright-report
           path: packages/components/playwright-report/
           retention-days: 30
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Commit and push updated snapshots to the specified branch
+      - name: Commit and push snapshot updates
+        run: |
+          git checkout ${{ github.event.inputs.branch }}
+          git add .
+          git diff --cached --quiet || git commit -m "chore: updated snapshots for component ${{ github.event.inputs['component-name'] }}"
+          git push origin ${{ github.event.inputs.branch }}
