@@ -6,7 +6,6 @@ import '../divider';
 import '../text';
 import '../button';
 import '../icon';
-import '../link';
 
 SideNavigation.register(TAG_NAME);
 

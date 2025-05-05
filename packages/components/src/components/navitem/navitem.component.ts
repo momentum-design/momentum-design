@@ -1,17 +1,19 @@
-import { CSSResult, html, nothing } from 'lit';
+import type { CSSResult, PropertyValues } from 'lit';
+import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { Component } from '../../models';
 import styles from './navitem.styles';
-import { DEFAULTS } from './navitem.constants';
+import { DEFAULTS, ALLOWED_BADGE_TYPES } from './navitem.constants';
 import providerUtils from '../../utils/provider';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
-import Buttonsimple from '../buttonsimple';
-import type { ButtonSize, ButtonType } from '../buttonsimple/buttonsimple.types';
+import ListItem from '../listitem/listitem.component';
 import { getIconNameWithoutStyle } from '../button/button.utils';
 import SideNavigation from '../sidenavigation/sidenavigation.component';
 import type { BadgeType } from './navitem.types';
+import type { ListItemVariants } from '../listitem/listitem.types';
 
 /**
  * `mdc-navitem` is a button element styled to work as a navigation tab.
@@ -25,6 +27,7 @@ import type { BadgeType } from './navitem.types';
  *
  * @dependency mdc-icon
  * @dependency mdc-text
+ * @dependency mdc-badge
  *
  * @slot default - Slot for the navItem text.
  *
@@ -32,7 +35,7 @@ import type { BadgeType } from './navitem.types';
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the navItem.
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the navItem.
  * @event focus - (React: onFocus) This event is dispatched when the navItem receives focus.
- * @event activechange - (React: onActiveChange)Dispatched when the active state of the navItem changes.
+ * @event activechange - (React: onActiveChange) Dispatched when the active state of the navItem changes.
  *
  * @cssproperty --mdc-navitem-color - Text color of the navigation item in its normal state.
  * @cssproperty --mdc-navitem-border-color - Border color of the navigation item in its normal state.
@@ -42,17 +45,28 @@ import type { BadgeType } from './navitem.types';
  * @cssproperty --mdc-navitem-disabled-color - Text color of the navigation item when disabled.
  * @cssproperty --mdc-navitem-active-background-color - Background color of the navigation item when active.
  */
-class NavItem extends IconNameMixin(Buttonsimple) {
+class NavItem extends IconNameMixin(ListItem) {
+  /**
+   * The navitem's active state indicates whether it is currently toggled on (active) or off (inactive).
+   * When the active state is true, the navitem is considered to be in an active state, meaning it is toggled on.
+   * Conversely, when the active state is false, the navitem is in an inactive state, indicating it is toggled off.
+   * @default undefined
+   */
+  @property({ type: Boolean, reflect: true })
+  active?: boolean;
+
   /**
    * Type of the badge
    * Can be `dot` (notification) or `counter`.
    */
-  @property({ type: String, reflect: true, attribute: 'badge-type' }) badgeType?: BadgeType;
+  @property({ type: String, reflect: true, attribute: 'badge-type' })
+  badgeType?: BadgeType;
 
   /**
    * Counter is the number which can be provided in the badge.
    */
-  @property({ type: Number, reflect: true }) counter?: number;
+  @property({ type: Number, reflect: true })
+  counter?: number;
 
   /**
    * The maximum number can be set up to 999, anything above that will be rendered as _999+_.
@@ -63,52 +77,52 @@ class NavItem extends IconNameMixin(Buttonsimple) {
   maxCounter: number = DEFAULTS.MAX_COUNTER;
 
   /**
-  * Determines whether the navItem is disabled or not.
-  * @default false
-  */
-  @property({ type: Boolean, reflect: true }) override disabled = false;
-
-  /**
    * Id of the navItem (used as a identificator when used in the navItemList)
    * Note: It has to be unique.
    *
    * @default undefined
    */
-  @property({ type: String, reflect: true, attribute: 'nav-id' }) navId?: string;
+  @property({ type: String, reflect: true, attribute: 'nav-id' })
+  navId?: string;
 
-  /**
-   * Aria-label attribute to be set for accessibility
-   * @default null
-   */
-  @property({ type: String, attribute: 'aria-label' })
-  override ariaLabel: string | null = null;
+  @property({ type: Boolean, reflect: true })
+  isExpanded?: boolean;
 
   /**
    * @internal
    */
   private prevIconName?: string;
 
-  // get data from context
+  /**
+   * @internal
+   */
   private readonly sideNavigationContext = providerUtils.consume({ host: this,
     context: SideNavigation.Context });
 
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = DEFAULTS.ROLE;
-    this.softDisabled = undefined as unknown as boolean;
-    this.size = undefined as unknown as ButtonSize;
-    this.type = undefined as unknown as ButtonType;
+    this.variant = undefined as unknown as ListItemVariants;
+    this.addEventListener('click', this.executeAction);
+    this.addEventListener('keydown', this.executeAction);
 
     if (!this.navId && this.onerror) {
       this.onerror('[mdc-navitem] navId is required and was not provided.');
     }
   }
 
-  override updated(changedProperties: Map<string, any>) {
-    super.updated(changedProperties);
+  public override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.removeEventListener('click', this.executeAction);
+    this.removeEventListener('keydown', this.executeAction);
+  }
 
-    if (changedProperties.has('disabled')) {
-      this.setAttribute('aria-disabled', String(this.disabled));
+  protected override updated(): void {
+    const context = this.sideNavigationContext?.value;
+    if (!context) return;
+    const { isExpanded } = context;
+    if (this.isExpanded !== isExpanded) {
+      this.isExpanded = isExpanded;
     }
   }
 
@@ -151,27 +165,34 @@ class NavItem extends IconNameMixin(Buttonsimple) {
   };
 
   /**
-   * Sets the aria-selected attribute based on the active state of the navItem.
+   * Sets the aria-current attribute based on the active state of the navItem.
    * If the navItem is active, the filled version of the icon is displayed,
    * else the icon is restored to its original value.
    *
-   * @param element - The navItem element.
    * @param active - The active state of the navItem.
    */
-  protected override setActive(element: HTMLElement, active: boolean) {
-    element.setAttribute('aria-selected', String(active));
+  protected setActive(active: boolean) {
+    if (active) {
+      this.setAttribute('aria-current', 'page');
+    } else {
+      this.removeAttribute('aria-current');
+    }
     this.modifyIconName(active);
   }
 
-  protected override executeAction() {
-    this.emitNavItemActiveChange(this.active as boolean);
+  protected executeAction(e: MouseEvent | KeyboardEvent):void {
+    if (e.type === 'click' || (e instanceof KeyboardEvent && (e.key === 'Enter' || e.key === ' '))) {
+      if (this.disabled) return;
+
+      this.emitNavItemActiveChange(this.active as boolean);
+    }
   }
 
-  private getTextLabel(): string | undefined {
-    const slot = this.shadowRoot?.querySelector('slot');
-    return slot?.assignedNodes({ flatten: true })
-      .map((node) => node.textContent?.trim())
-      .find((text) => !!text);
+  public override update(changedProperties: PropertyValues) {
+    super.update(changedProperties);
+    if (changedProperties.has('active')) {
+      this.setActive(this.active ?? false);
+    }
   }
 
   renderTextLabel() {
@@ -185,8 +206,12 @@ class NavItem extends IconNameMixin(Buttonsimple) {
     `;
   }
 
-  renderBadge(expanded: boolean) {
-    const badgeClass = expanded ? '' : 'badge';
+  renderBadge(isExpanded: boolean) {
+    const badgeClass = isExpanded ? '' : 'badge';
+    const isValidBadgeType = Object.values(ALLOWED_BADGE_TYPES).includes(this.badgeType as BadgeType);
+    if (!isValidBadgeType) {
+      return nothing;
+    }
 
     return html`
       <mdc-badge 
@@ -199,22 +224,6 @@ class NavItem extends IconNameMixin(Buttonsimple) {
   }
 
   public override render() {
-    const expanded = this.sideNavigationContext.value?.expanded ?? false;
-
-    // Ensure accessibility fallback in collapsed state
-    const fallbackLabel = this.getTextLabel?.();
-
-    if (!expanded) {
-      if (!this.ariaLabel && fallbackLabel) {
-        this.setAttribute('aria-label', fallbackLabel);
-      }
-    } else {
-      const currentLabel = this.getAttribute('aria-label');
-      if (fallbackLabel && currentLabel === fallbackLabel) {
-        this.removeAttribute('aria-label');
-      }
-    }
-
     return html`
       <div part="icon-container">
         <mdc-icon
@@ -223,14 +232,13 @@ class NavItem extends IconNameMixin(Buttonsimple) {
           length-unit="rem"
           part="icon"
         ></mdc-icon>
-        ${!expanded ? this.renderBadge(expanded) : nothing}
+        ${!this.isExpanded ? this.renderBadge(this.isExpanded as boolean) : nothing}
       </div>
-      ${expanded ? this.renderTextLabel() : nothing}
-      ${expanded ? this.renderBadge(expanded) : nothing}
+      ${this.isExpanded ? html`${this.renderTextLabel()}${this.renderBadge(this.isExpanded as boolean)}` : nothing}
     `;
   }
 
-  public static override styles: Array<CSSResult> = [...Buttonsimple.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
 export default NavItem;

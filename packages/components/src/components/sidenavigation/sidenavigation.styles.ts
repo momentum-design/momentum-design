@@ -2,16 +2,19 @@ import { css } from 'lit';
 
 const styles = css`
 :host {
-  --mdc-sidenavigation-expanded-width: 14.75rem;
+  --mdc-sidenavigation-expanded-width: 15rem;
   --mdc-sidenavigation-collapsed-width: 4.5rem;
 
   display: flex;
   height: 100%;
-  width: var(--mdc-sidenavigation-collapsed-width);
 }
 
-:host([expanded]) {
+:host([isExpanded]) {
   width: var(--mdc-sidenavigation-expanded-width);
+}
+
+:host(:not([isExpanded])) {
+  width: var(--mdc-sidenavigation-collapsed-width);
 }
 
 :host([variant="hidden"]) {
@@ -36,36 +39,17 @@ const styles = css`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  padding-bottom: 1rem;
   gap: 0.5rem;
-  padding: 0.75rem 0 1rem 0;
 }
 
-/* In Progress */
 :host::part(brand-logo-container) {
   display: flex;
   align-items: center;
+  width: 100%;
+  padding: 0.5rem 0rem 0.5rem 1.5rem;
   gap: 0.5rem;  
-  padding: 0.5rem;
-  margin-left: 1rem;
-}
-
-::slotted([slot="fixed-section"]) {
-  padding: 0.5rem;
-  margin-left: 1rem;
-}
-
-::slotted(mdc-button[slot="fixed-section"]),
-::slotted(mdc-button[slot="fixed-section"][disabled]) {
-  border: none;
-  background-color: unset;
-  outline: unset;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--mdc-button-secondary-color);
-  border-color: var(--mdc-button-secondary-border-color);
   border-radius: 1.25rem;
-  font-weight: var(--mds-font-apps-body-large-medium-font-weight);
 }
 
 ::slotted([slot="brand-logo"]) {
@@ -74,7 +58,6 @@ const styles = css`
   flex-shrink: 0;
   aspect-ratio: 1 / 1;
 }
-
 `;
 
 export default [styles];

@@ -7,7 +7,7 @@ class SideNavigationContext {
 
   public customerName?: string;
 
-  public expanded?: boolean;
+  public isExpanded?: boolean;
 
   public static context = createContext<SideNavigationContext>(TAG_NAME);
 
@@ -15,11 +15,11 @@ class SideNavigationContext {
   constructor(
     defaultVariant?: string,
     defaultCustomerName?: string,
-    defaultExpanded?: boolean,
+    defaultIsExpanded?: boolean,
   ) {
     this.variant = defaultVariant;
     this.customerName = defaultCustomerName;
-    this.expanded = defaultExpanded;
+    this.isExpanded = defaultIsExpanded;
   }
 }
 

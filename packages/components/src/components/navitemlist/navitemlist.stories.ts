@@ -1,13 +1,15 @@
-import type { Meta, StoryObj, Args } from '@storybook/web-components';
+import type { Meta, StoryObj } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { hideControls, disableControls } from '../../../config/storybook/utils';
 
-const render = (args: Args) => html`
-  <mdc-navitemlist aria-label="${args['aria-label']}">
-    <mdc-navitem nav-id="1" icon-name="placeholder-bold" active>Dashboard</mdc-navitem>
-    <mdc-navitem nav-id="2" icon-name="placeholder-bold" disabled>Settings</mdc-navitem>
-    <mdc-navitem nav-id="3" icon-name="placeholder-bold">Settings</mdc-navitem>
+const render = () => html`
+  <mdc-navitemlist>
+    <mdc-navitem nav-id="1" icon-name="placeholder-bold" badge-type="counter" counter="3" max-counter="66" 
+    isExpanded >Dashboard</mdc-navitem>
+    <mdc-navitem nav-id="2" icon-name="placeholder-bold" badge-type="dot" isExpanded disabled>Settings</mdc-navitem>
+    <mdc-navitem nav-id="3" icon-name="placeholder-bold" isExpanded>Settings</mdc-navitem>
   </mdc-navitemlist>
 `;
 
@@ -15,16 +17,22 @@ const meta: Meta = {
   title: 'Work In Progress/navitemlist',
   tags: ['autodocs'],
   component: 'mdc-navitemlist',
-  render,
   parameters: {
-    controls: { expanded: true },
     badges: ['wip'],
   },
   argTypes: {
-    'aria-label': {
-      control: 'text',
-      description: 'Aria-label for accessibility. Used to describe the nav item list to assistive technologies.',
-    },
+    ...disableControls([
+      'default',
+    ]),
+    ...hideControls([
+      'listItems',
+      'textItems',
+      'dividerItems',
+      'updateTextStyles',
+      'updateDividerStyles',
+      'header-text',
+      'data-aria-label',
+    ]),
     ...classArgType,
     ...styleArgType,
   },
@@ -33,13 +41,5 @@ const meta: Meta = {
 export default meta;
 
 export const Example: StoryObj = {
-  args: {
-    'aria-label': 'navItemList label',
-  },
-};
-
-export const WithoutAriaLabel: StoryObj = {
-  args: {
-    'aria-label': null,
-  },
+  render,
 };

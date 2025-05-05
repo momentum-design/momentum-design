@@ -1,5 +1,5 @@
 import { css } from 'lit';
-import { hostFitContentStyles } from '../../utils/styles';
+import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 
 const styles = [hostFitContentStyles, css`
   :host {
@@ -11,12 +11,7 @@ const styles = [hostFitContentStyles, css`
     --mdc-navitem-disabled-color: var(--mds-color-theme-text-primary-disabled);
     --mdc-navitem-active-background-color: var(--mds-color-theme-button-secondary-active-normal);
  
-    /* unset default styles of the simpleButton */
-    border: none;
-    background-color: unset;
-    outline: unset;
     position: relative;
-
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -25,6 +20,19 @@ const styles = [hostFitContentStyles, css`
     border-color: var(--mdc-navitem-border-color);
     border-radius: 1.25rem;
     margin-left: 1rem;
+    cursor: pointer;
+  }
+
+  :host(:dir(rtl)) {
+    margin-right: 1rem;
+  }
+
+  :host([disabled]) {
+    pointer-events: none;
+  }
+
+  :host([isExpanded]) {
+    width: 12.75rem;
   }
   
   :host(:hover), 
@@ -50,14 +58,21 @@ const styles = [hostFitContentStyles, css`
     content: '';
     display: block;
     position: absolute;
-    left: -1rem;
     background-color: var(--mdc-navitem-color);
     width: 0.25rem;
     height: 1rem;
-    border-radius: 0 0.25rem 0.25rem 0;
-    align-self: center;
     pointer-events: none;
     visibility: hidden;
+  }
+
+  :host(:dir(ltr))::before {
+    left: -1rem;
+    border-radius: 0 0.25rem 0.25rem 0;
+  }
+
+  :host(:dir(rtl))::before {
+    right: -1rem;
+    border-radius: 0.25rem 0 0 0.25rem;
   }
 
   :host([active])::before {
@@ -69,7 +84,7 @@ const styles = [hostFitContentStyles, css`
   }
 
   :host::part(text-container) {
-    width: 8rem;
+    width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -78,12 +93,12 @@ const styles = [hostFitContentStyles, css`
   :host::part(icon-container) {
     position: relative;
   }
-
+  
   .badge {
     position: absolute;
     right: -0.375rem;
     top: -0.375rem;
   }
-`];
+`, ...hostFocusRingStyles()];
 
 export default styles;

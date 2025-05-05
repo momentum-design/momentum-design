@@ -4,29 +4,30 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { ALLOWED_BADGE_TYPES, DEFAULTS } from './navitem.constants';
-import { BadgeType } from './navitem.types';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 
 const render = (args: Args) => html`
-<div role='tablist'>
-  <mdc-navitem
-    @click="${action('onclick')}"
-    @keydown="${action('onkeydown')}"
-    @keyup="${action('onkeyup')}"
-    @focus="${action('onfocus')}"
-    @activechange="${action('onactivechange')}"
-    nav-id="${args['nav-id']}"
-    icon-name="${args['icon-name']}"
-    ?disabled=${args.disabled}
-    aria-label="${args['aria-label']}"
-    badge-type="${args['badge-type']}"
-    counter=${args.counter}
-    max-counter="${args['max-counter']}"
-    ?active=${args.active}
-  >
-    Dashboard
-  </mdc-navitem>
-</div>`;
+  <div role="menubar">
+    <mdc-navitem
+      @click="${action('onclick')}"
+      @keydown="${action('onkeydown')}"
+      @keyup="${action('onkeyup')}"
+      @focus="${action('onfocus')}"
+      @activechange="${action('onactivechange')}"
+      nav-id="${args['nav-id']}"
+      icon-name="${args['icon-name']}"
+      ?disabled=${args.disabled}
+      badge-type="${args['badge-type']}"
+      counter=${args.counter}
+      max-counter="${args['max-counter']}"
+      ?active=${args.active}
+      ?isExpanded=${args.isExpanded}
+      aria-label="${args['aria-label']}"
+    >
+      Dashboard
+    </mdc-navitem>
+  </div>
+`;
 
 const meta: Meta = {
   title: 'Work In Progress/navitem',
@@ -34,7 +35,6 @@ const meta: Meta = {
   component: 'mdc-navitem',
   render,
   parameters: {
-    controls: { expanded: true },
     badges: ['wip'],
   },
   argTypes: {
@@ -63,13 +63,13 @@ const meta: Meta = {
       control: 'boolean',
       description: 'Disables the navItem.',
     },
-    'aria-label': {
-      control: 'text',
-      description: 'Aria-label for accessibility.',
-    },
     active: {
       control: 'boolean',
       description: 'Marks the navItem as active.',
+    },
+    isExpanded: {
+      control: 'boolean',
+      description: 'Determines whether the navItem is expanded',
     },
     ...disableControls([
       '--mdc-navitem-color',
@@ -81,11 +81,26 @@ const meta: Meta = {
       '--mdc-navitem-active-background-color',
     ]),
     ...hideControls([
-      'sideNavigationContext',
-      'role',
-      'size',
-      'soft-disabled',
-      'type',
+      '--mdc-listitem-default-background-color',
+      '--mdc-listitem-background-color-hover',
+      '--mdc-listitem-background-color-active',
+      '--mdc-listitem-primary-label-color',
+      '--mdc-listitem-secondary-label-color',
+      '--mdc-listitem-disabled-color',
+      '--mdc-listitem-column-gap',
+      'leading-controls',
+      'leading-text-primary-label',
+      'leading-text-secondary-label',
+      'leading-text-tertiary-label',
+      'trailing-text-side-header',
+      'trailing-text-subline',
+      'trailing-controls',
+      'subline-text',
+      'side-header-text',
+      'tertiary-label',
+      'secondary-label',
+      'label',
+      'variant',
     ]),
     ...classArgType,
     ...styleArgType,
@@ -102,35 +117,21 @@ export const Example: StoryObj = {
     counter: 3,
     'max-counter': DEFAULTS.MAX_COUNTER,
     disabled: false,
+    active: false,
+    isExpanded: true,
+  },
+};
+
+export const collapsedNavItem: StoryObj = {
+  args: {
+    'nav-id': '1',
+    'icon-name': 'placeholder-bold',
+    'badge-type': ALLOWED_BADGE_TYPES.COUNTER,
+    counter: 3,
+    'max-counter': DEFAULTS.MAX_COUNTER,
+    disabled: false,
     'aria-label': 'navItem label',
     active: false,
-  },
-};
-
-export const WithCounterBadge: StoryObj = {
-  args: {
-    ...Example.args,
-    counter: 5,
-  },
-};
-
-export const WithDotBadge: StoryObj = {
-  args: {
-    ...Example.args,
-    'badge-type': ALLOWED_BADGE_TYPES.DOT as BadgeType,
-  },
-};
-
-export const Active: StoryObj = {
-  args: {
-    ...Example.args,
-    active: true,
-  },
-};
-
-export const Disabled: StoryObj = {
-  args: {
-    ...Example.args,
-    disabled: true,
+    isExpanded: false,
   },
 };

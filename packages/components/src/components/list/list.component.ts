@@ -88,7 +88,7 @@ class List extends DataAriaLabelMixin(Component) {
    * `resetTabIndexAndSetActiveTabIndex` with that index.
    * @param event - The mouse event.
    */
-  private handleMouseClick(event: MouseEvent): void {
+  protected handleMouseClick(event: MouseEvent): void {
     const newIndex = this.getCurrentIndex(event.target);
     this.resetTabIndexAndSetActiveTabIndex(newIndex);
   }
