@@ -150,7 +150,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    variant: DEFAULTS.FLEXIBLE,
+    variant: DEFAULTS.VARIANT,
     'customer-name': '%Customer Name%',
   },
 };
