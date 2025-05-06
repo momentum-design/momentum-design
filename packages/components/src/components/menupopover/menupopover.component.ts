@@ -1,6 +1,6 @@
-import { CSSResult, html } from 'lit';
-import styles from './menupopover.styles';
-import { Component } from '../../models';
+import type { CSSResult } from 'lit';
+import { ROLE } from '../../utils/roles';
+import Popover from '../popover/popover.component';
 
 /**
  * menupopover component, which ...
@@ -8,17 +8,21 @@ import { Component } from '../../models';
  * @tagname mdc-menupopover
  *
  * @slot default - This is a default/unnamed slot
- *
- * @event click - (React: onClick) This event is a Click Event, update the description
- *
- * @cssproperty --custom-property-name - Description of the CSS custom property
  */
-class MenuPopover extends Component {
-  public override render() {
-    return html`<p>This is a dummy menupopover component!</p><slot></slot>`;
+class MenuPopover extends Popover {
+  override connectedCallback() {
+    super.connectedCallback();
+    this.role = ROLE.MENU;
+    this.trigger = 'click';
+    this.placement = 'bottom-start';
+    this.hideOnOutsideClick = true;
+    this.hideOnBlur = true;
+    this.hideOnEscape = true;
+    this.showArrow = false;
+    this.interactive = false;
   }
 
-  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...Popover.styles];
 }
 
 export default MenuPopover;
