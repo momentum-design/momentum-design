@@ -95,7 +95,7 @@ class Dialog extends FocusTrapMixin(Component) {
    * labeling the dialog for accessibility
    */
   @property({ type: String, reflect: true, attribute: 'aria-labelledby' })
-  ariaLabelledById: string | null = null;
+  ariaLabelledBy: string | null = null;
 
   /**
    * Defines a string value for the aria-label attribute when header is not used
@@ -198,7 +198,7 @@ class Dialog extends FocusTrapMixin(Component) {
     }
     if (
       changedProperties.has('ariaLabel')
-      || changedProperties.has('ariaLabelledById')
+      || changedProperties.has('ariaLabelledBy')
     ) {
       this.utils.setupAccessibility();
     }
@@ -206,7 +206,7 @@ class Dialog extends FocusTrapMixin(Component) {
 
   /**
    * Handles the escape keydown event to close the dialog.
-   *
+   * @internal
    * @param event - The keyboard event.
    */
   private onEscapeKeydown = (event: KeyboardEvent) => {
@@ -257,6 +257,7 @@ class Dialog extends FocusTrapMixin(Component) {
 
   /**
    * Hides the dialog.
+   * @internal
    */
   public hideDialog = () => {
     this.visible = false;

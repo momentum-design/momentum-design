@@ -80,12 +80,12 @@ const renderNoFooter = (args: Args) => {
 };
 
 const meta: Meta = {
-  title: 'Work In Progress/dialog',
+  title: 'Components/dialog',
   tags: ['autodocs'],
   component: 'mdc-dialog',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     ...classArgType,
@@ -137,9 +137,10 @@ const meta: Meta = {
       '--mdc-dialog-header-text-color',
       '--mdc-dialog-description-text-color',
       '--mdc-dialog-elevation-3',
+      '--mdc-dialog-width',
     ]),
     ...hideControls([
-      'ariaLabelledById',
+      'ariaLabelledBy',
       'triggerElement',
       'enabledPreventScroll',
       'enabledFocusTrap',
@@ -150,91 +151,63 @@ const meta: Meta = {
 
 export default meta;
 
-export const Default: StoryObj = {
+const commonProperties = {
+  id: 'dialog',
+  'z-index': DEFAULTS.Z_INDEX,
+  role: DEFAULTS.ROLE,
+  triggerId: 'dialog-trigger-btn',
+  'close-button-aria-label': 'Close dialog',
+  visible: false,
+};
+
+const headerDescriptionProperties = {
+  'header-text': 'Dialog Header',
+  'description-text': 'This is a dialog description. It is only present if the header is present.',
+  'header-tag-name': DEFAULTS.HEADER_TAG_NAME,
+  'description-tag-name': DEFAULTS.DESCRIPTION_TAG_NAME,
+};
+
+export const Example: StoryObj = {
   args: {
-    id: 'dialog',
-    'z-index': DEFAULTS.Z_INDEX,
-    role: DEFAULTS.ROLE,
     size: DEFAULTS.SIZE,
-    triggerId: 'dialog-trigger-btn',
-    'header-text': 'Dialog Header',
-    'description-text': 'This is a dialog description. It is only present if the header is present.',
-    'header-tag-name': DEFAULTS.HEADER_TAG_NAME,
-    'description-tag-name': DEFAULTS.DESCRIPTION_TAG_NAME,
-    'close-button-aria-label': 'Close dialog',
-    visible: false,
+    ...commonProperties,
+    ...headerDescriptionProperties,
   },
 };
 
 export const small: StoryObj = {
   args: {
-    id: 'dialog',
-    'z-index': DEFAULTS.Z_INDEX,
-    role: DEFAULTS.ROLE,
     size: DIALOG_SIZE[0],
-    triggerId: 'dialog-trigger-btn',
-    'header-text': 'Dialog Header',
-    'description-text': 'This is a dialog description. It is only present if the header is present.',
-    'header-tag-name': DEFAULTS.HEADER_TAG_NAME,
-    'description-tag-name': DEFAULTS.DESCRIPTION_TAG_NAME,
-    'close-button-aria-label': 'Close dialog',
-    visible: false,
+    ...commonProperties,
+    ...headerDescriptionProperties,
   },
 };
 
 export const medium: StoryObj = {
   args: {
-    id: 'dialog',
-    'z-index': DEFAULTS.Z_INDEX,
-    role: DEFAULTS.ROLE,
     size: DIALOG_SIZE[1],
-    triggerId: 'dialog-trigger-btn',
-    'header-text': 'Dialog Header',
-    'description-text': 'This is a dialog description. It is only present if the header is present.',
-    'header-tag-name': DEFAULTS.HEADER_TAG_NAME,
-    'description-tag-name': DEFAULTS.DESCRIPTION_TAG_NAME,
-    'close-button-aria-label': 'Close dialog',
-    visible: false,
+    ...commonProperties,
+    ...headerDescriptionProperties,
   },
 };
 
 export const large: StoryObj = {
   args: {
-    id: 'dialog',
-    'z-index': DEFAULTS.Z_INDEX,
-    role: DEFAULTS.ROLE,
     size: DIALOG_SIZE[2],
-    triggerId: 'dialog-trigger-btn',
-    'header-text': 'Dialog Header',
-    'description-text': 'This is a dialog description. It is only present if the header is present.',
-    'header-tag-name': DEFAULTS.HEADER_TAG_NAME,
-    'description-tag-name': DEFAULTS.DESCRIPTION_TAG_NAME,
-    'close-button-aria-label': 'Close dialog',
-    visible: false,
+    ...commonProperties,
+    ...headerDescriptionProperties,
   },
 };
 
 export const withoutHeader: StoryObj = {
   args: {
-    id: 'dialog',
-    'z-index': DEFAULTS.Z_INDEX,
-    role: DEFAULTS.ROLE,
     size: DIALOG_SIZE[0],
-    triggerId: 'dialog-trigger-btn',
-    'close-button-aria-label': 'Close dialog',
-    visible: false,
   },
 };
 
 export const withoutHeaderOrFooter: StoryObj = {
   render: renderNoFooter,
   args: {
-    id: 'dialog',
-    'z-index': DEFAULTS.Z_INDEX,
-    role: DIALOG_ROLE[1],
     size: DIALOG_SIZE[0],
-    triggerId: 'dialog-trigger-btn',
-    'close-button-aria-label': 'Close dialog',
-    visible: false,
   },
 };

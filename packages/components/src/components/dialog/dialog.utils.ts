@@ -12,18 +12,16 @@ export class DialogUtils {
    * Sets up the accessibility attributes for the dialog.
    */
   setupAccessibility() {
-    this.dialog.toggleAttribute('aria-modal', true);
+    this.dialog.toggleAttribute('aria-modal');
     if (!this.dialog.ariaLabel) {
       if (this.dialog.headerText) this.dialog.ariaLabel = this.dialog.headerText;
-      else if (!this.dialog.ariaLabelledById) this.dialog.ariaLabelledById = this.dialog.triggerElement?.id || '';
+      else if (!this.dialog.ariaLabelledBy) this.dialog.ariaLabelledBy = this.dialog.triggerElement?.id || '';
     }
   }
 
   createBackdrop() {
     const backdrop = document.createElement('div');
     backdrop.classList.add('dialog-backdrop');
-    this.dialog.parentElement?.appendChild(backdrop);
-
     const styleElement = document.createElement('style');
     styleElement.textContent = `
       .dialog-backdrop {
@@ -32,11 +30,12 @@ export class DialogUtils {
         left: 0;
         width: 100%;
         height: 100%;
-        background: #00000066;
+        background: var(--mds-color-theme-common-overlays-secondary-normal);
         z-index: ${this.dialog.zIndex - 1};
       }
     `;
     backdrop.appendChild(styleElement);
+    this.dialog.parentElement?.appendChild(backdrop);
     this.dialog.backdropElement = backdrop;
   }
 }

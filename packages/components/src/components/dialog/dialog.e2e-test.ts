@@ -10,7 +10,7 @@ type SetupOptions = {
   size?: boolean;
   closeButtonAriaLabel?: string;
   ariaLabel?: string;
-  ariaLabelledById?: string;
+  ariaLabelledBy?: string;
   role?: HTMLElement['role'];
   headerText?: string;
   descriptionText?: string;
@@ -40,7 +40,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.size ? 'size' : ''}
         ${restArgs.closeButtonAriaLabel ? `close-button-aria-label="${restArgs.closeButtonAriaLabel}"` : ''}
         ${restArgs.ariaLabel ? `aria-label="${restArgs.ariaLabel}"` : ''}
-        ${restArgs.ariaLabelledById ? `aria-labelledby="${restArgs.ariaLabelledById}"` : ''}
+        ${restArgs.ariaLabelledBy ? `aria-labelledby="${restArgs.ariaLabelledBy}"` : ''}
         ${restArgs.role ? `role="${restArgs.role}"` : ''}
         ${restArgs.headerText ? `header-text="${restArgs.headerText}"` : ''}
         ${restArgs.descriptionText ? `description-text="${restArgs.descriptionText}"` : ''}
