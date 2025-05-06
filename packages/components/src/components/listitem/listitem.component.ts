@@ -1,12 +1,11 @@
-import type { CSSResult, PropertyValues } from 'lit';
-import { html, nothing, TemplateResult } from 'lit';
+import type { CSSResult, PropertyValues, TemplateResult } from 'lit';
+import { html, nothing } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
 import { Component } from '../../models';
-import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
-import type { TextType } from '../text/text.types';
+import { TextType } from '../text/text.types';
 import { DEFAULTS } from './listitem.constants';
 import styles from './listitem.styles';
 import type { ListItemVariants } from './listitem.types';
@@ -49,7 +48,7 @@ import type { ListItemVariants } from './listitem.types';
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the listitem.
  * @event focus - (React: onFocus) This event is dispatched when the listitem receives focus.
  */
-class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component))) {
+class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   /** @internal */
   @queryAssignedElements({ slot: 'leading-controls' })
   leadingControlsSlot!: Array<HTMLElement>;
@@ -139,6 +138,7 @@ class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component)
     if (changedProperties.has('disabled')) {
       this.tabIndex = this.disabled ? -1 : 0;
       this.disableSlottedChildren(this.disabled);
+      this.setAttribute('aria-disabled', `${this.disabled}`);
     }
   }
 

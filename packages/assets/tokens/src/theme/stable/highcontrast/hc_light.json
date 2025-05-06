@@ -1063,6 +1063,18 @@
               "type": "color",
               "description": "Used for operation pop: knocked-back effect when signle card is selected"
             }
+          },
+          "radial": {
+            "0": {
+              "value": "{color.highcontrast.white.WindowColor}",
+              "type": "color",
+              "description": "Used for operation pop background. "
+            },
+            "1": {
+              "value": "{color.highcontrast.white.WindowColor}",
+              "type": "color",
+              "description": "Used for operation pop background. "
+            }
           }
         },
         "input": {
@@ -1411,6 +1423,13 @@
           "normal": {
             "value": "{color.highcontrast.white.WindowTextColor}",
             "type": "color"
+          }
+        },
+        "glass": {
+          "normal": {
+            "value": "{color.highcontrast.white.WindowTextColor}",
+            "type": "color",
+            "description": "Used for operation pop"
           }
         }
       },

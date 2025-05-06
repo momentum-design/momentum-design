@@ -8,6 +8,10 @@ import Brandvisual from './components/brandvisual';
 import Bullet from './components/bullet';
 import Button from './components/button';
 import ButtonLink from './components/buttonlink';
+import Card from './components/card';
+import CardButton from './components/cardbutton';
+import CardCheckbox from './components/cardcheckbox';
+import CardRadio from './components/cardradio';
 import Checkbox from './components/checkbox';
 import Chip from './components/chip';
 import Coachmark from './components/coachmark';
@@ -24,6 +28,7 @@ import Linksimple from './components/linksimple';
 import List from './components/list';
 import ListItem from './components/listitem';
 import Marker from './components/marker';
+import MenuItem from './components/menuitem';
 import OptGroup from './components/optgroup';
 import Option from './components/option';
 import Popover from './components/popover';
@@ -76,6 +81,10 @@ export {
   Bullet,
   Button,
   ButtonLink,
+  Card,
+  CardButton,
+  CardCheckbox,
+  CardRadio,
   Checkbox,
   Chip,
   Coachmark,
@@ -92,6 +101,7 @@ export {
   List,
   ListItem,
   Marker,
+  MenuItem,
   OptGroup,
   Option,
   Popover,
