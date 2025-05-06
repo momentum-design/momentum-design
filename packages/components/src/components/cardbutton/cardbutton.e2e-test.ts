@@ -166,106 +166,113 @@ test.describe.parallel('mdc-cardbutton', () => {
     });
   });
 
-  test('visual-regression & accessibility', async ({ componentsPage }) => {
-    const createStickerSheetBasedOnOrientation = async (orientation: string) => {
-      const cardbuttonStickersheet = new StickerSheet(componentsPage, 'mdc-cardbutton');
-      const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x300';
+  const createStickerSheetBasedOnOrientation = async (componentsPage: ComponentsPage, orientation: string) => {
+    const cardbuttonStickersheet = new StickerSheet(componentsPage, 'mdc-cardbutton');
+    const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x300';
 
-      // Card button without body
-      cardbuttonStickersheet.setAttributes({
-        'card-title': 'Card Title',
-        subtitle: 'Card Subtitle',
-        'image-src': imageSrc,
-        'image-alt': 'Image Alt',
-        'icon-name': 'placeholder-bold',
-        orientation,
-      });
-      await cardbuttonStickersheet.createMarkupWithCombination({
-        variant: Object.values(VARIANTS),
-      });
+    // Card button without body
+    cardbuttonStickersheet.setAttributes({
+      'card-title': 'Card Title',
+      subtitle: 'Card Subtitle',
+      'image-src': imageSrc,
+      'image-alt': 'Image Alt',
+      'icon-name': 'placeholder-bold',
+      orientation,
+    });
+    await cardbuttonStickersheet.createMarkupWithCombination({
+      variant: Object.values(VARIANTS),
+    });
 
-      // Card button with body
-      cardbuttonStickersheet.setChildren(`<mdc-text slot='body' 
-      type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-      Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
-      Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
-      Praesent gravida dui diam, non elementum risus laoreet vitae. 
-      Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
-      Vivamus mattis ligula eget imperdiet tempor. 
-      Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`);
+    // Card button with body
+    cardbuttonStickersheet.setChildren(`<mdc-text slot='body' 
+    type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+    Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
+    Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
+    Praesent gravida dui diam, non elementum risus laoreet vitae. 
+    Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
+    Vivamus mattis ligula eget imperdiet tempor. 
+    Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`);
 
-      await cardbuttonStickersheet.createMarkupWithCombination({
-        variant: Object.values(VARIANTS),
-      });
+    await cardbuttonStickersheet.createMarkupWithCombination({
+      variant: Object.values(VARIANTS),
+    });
 
-      // Card button without image
-      cardbuttonStickersheet.setAttributes({
-        'card-title': 'Card Title',
-        subtitle: 'Card Subtitle',
-        'icon-name': 'placeholder-bold',
-        'selection-type': 'button',
-        orientation,
-      });
-      await cardbuttonStickersheet.createMarkupWithCombination({
-        variant: Object.values(VARIANTS),
-      });
+    // Card button without image
+    cardbuttonStickersheet.setAttributes({
+      'card-title': 'Card Title',
+      subtitle: 'Card Subtitle',
+      'icon-name': 'placeholder-bold',
+      'selection-type': 'button',
+      orientation,
+    });
+    await cardbuttonStickersheet.createMarkupWithCombination({
+      variant: Object.values(VARIANTS),
+    });
 
-      // Selected Card button
-      cardbuttonStickersheet.setAttributes({
-        'card-title': 'Card Title',
-        subtitle: 'Card Subtitle',
-        'icon-name': 'placeholder-bold',
-        checked: '',
-        orientation,
-      });
-      await cardbuttonStickersheet.createMarkupWithCombination({
-        variant: Object.values(VARIANTS),
-      });
+    // Selected Card button
+    cardbuttonStickersheet.setAttributes({
+      'card-title': 'Card Title',
+      subtitle: 'Card Subtitle',
+      'icon-name': 'placeholder-bold',
+      checked: '',
+      orientation,
+    });
+    await cardbuttonStickersheet.createMarkupWithCombination({
+      variant: Object.values(VARIANTS),
+    });
 
-      // Disabled Card button
-      cardbuttonStickersheet.setAttributes({
-        'card-title': 'Card Title',
-        subtitle: 'Card Subtitle',
-        'icon-name': 'placeholder-bold',
-        disabled: '',
-        orientation,
-      });
-      await cardbuttonStickersheet.createMarkupWithCombination({
-        variant: Object.values(VARIANTS),
-      });
+    // Disabled Card button
+    cardbuttonStickersheet.setAttributes({
+      'card-title': 'Card Title',
+      subtitle: 'Card Subtitle',
+      'icon-name': 'placeholder-bold',
+      disabled: '',
+      orientation,
+    });
+    await cardbuttonStickersheet.createMarkupWithCombination({
+      variant: Object.values(VARIANTS),
+    });
 
-      // Selected and disabled Card button
-      cardbuttonStickersheet.setAttributes({
-        'card-title': 'Card Title',
-        subtitle: 'Card Subtitle',
-        'icon-name': 'placeholder-bold',
-        checked: '',
-        'selection-type': 'button',
-        disabled: '',
-        orientation,
-      });
-      await cardbuttonStickersheet.createMarkupWithCombination({
-        variant: Object.values(VARIANTS),
-      });
+    // Selected and disabled Card button
+    cardbuttonStickersheet.setAttributes({
+      'card-title': 'Card Title',
+      subtitle: 'Card Subtitle',
+      'icon-name': 'placeholder-bold',
+      checked: '',
+      'selection-type': 'button',
+      disabled: '',
+      orientation,
+    });
+    await cardbuttonStickersheet.createMarkupWithCombination({
+      variant: Object.values(VARIANTS),
+    });
 
-      await cardbuttonStickersheet.mountStickerSheet();
-      await componentsPage.page.waitForTimeout(500);
-      const container = cardbuttonStickersheet.getWrapperContainer();
-      await test.step('matches screenshot of element', async () => {
-        await componentsPage.visualRegression.takeScreenshot(`mdc-cardbutton-${orientation}`, { element: container });
-      });
-    };
+    await cardbuttonStickersheet.mountStickerSheet();
+    await componentsPage.page.waitForTimeout(500);
+    const container = cardbuttonStickersheet.getWrapperContainer();
+    await test.step('matches screenshot of element', async () => {
+      await componentsPage.visualRegression.takeScreenshot(`mdc-cardbutton-${orientation}`, { element: container });
+    });
+  };
 
+  test('visual-regression & accessibility vertical', async ({ componentsPage }) => {
     /**
    * VISUAL REGRESSION & ACCESSIBILITY
    */
     await test.step('visual-regression & accessibility', async () => {
       await componentsPage.page.setViewportSize({ width: 1200, height: 3000 });
-      await createStickerSheetBasedOnOrientation('vertical');
+      await createStickerSheetBasedOnOrientation(componentsPage, 'vertical');
       await componentsPage.accessibility.checkForA11yViolations('cardbutton-vertical');
+    });
+  });
 
+  test('visual-regression & accessibility horizontal', async ({ componentsPage }) => {
+    /**
+   * VISUAL REGRESSION & ACCESSIBILITY
+   */
+    await test.step('visual-regression & accessibility', async () => {
       await componentsPage.page.setViewportSize({ width: 2400, height: 2400 });
-      await createStickerSheetBasedOnOrientation('horizontal');
+      await createStickerSheetBasedOnOrientation(componentsPage, 'horizontal');
       await componentsPage.accessibility.checkForA11yViolations('cardbutton-horizontal');
     });
   });

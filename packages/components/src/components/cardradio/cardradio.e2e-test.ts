@@ -215,104 +215,111 @@ test.describe.parallel('mdc-cardradio', () => {
     });
   });
 
-  test('visual-regression & accessibility', async ({ componentsPage }) => {
-    const createStickerSheetBasedOnOrientation = async (orientation: string) => {
-      const cardRadioStickersheet = new StickerSheet(componentsPage, 'mdc-cardradio');
-      const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x300';
+  const createStickerSheetBasedOnOrientation = async (componentsPage: ComponentsPage, orientation: string) => {
+    const cardRadioStickersheet = new StickerSheet(componentsPage, 'mdc-cardradio');
+    const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x300';
 
-      // Card radio without body
-      cardRadioStickersheet.setAttributes({
-        'card-title': 'Card Title',
-        subtitle: 'Card Subtitle',
-        'image-src': imageSrc,
-        'image-alt': 'Image Alt',
-        'icon-name': 'placeholder-bold',
-        orientation,
-      });
-      await cardRadioStickersheet.createMarkupWithCombination({
-        variant: Object.values(VARIANTS),
-      });
+    // Card radio without body
+    cardRadioStickersheet.setAttributes({
+      'card-title': 'Card Title',
+      subtitle: 'Card Subtitle',
+      'image-src': imageSrc,
+      'image-alt': 'Image Alt',
+      'icon-name': 'placeholder-bold',
+      orientation,
+    });
+    await cardRadioStickersheet.createMarkupWithCombination({
+      variant: Object.values(VARIANTS),
+    });
 
-      // Card radio with body
-      cardRadioStickersheet.setChildren(`<mdc-text slot='body' 
-      type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-      Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
-      Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
-      Praesent gravida dui diam, non elementum risus laoreet vitae. 
-      Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
-      Vivamus mattis ligula eget imperdiet tempor. 
-      Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`);
+    // Card radio with body
+    cardRadioStickersheet.setChildren(`<mdc-text slot='body' 
+    type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+    Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
+    Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
+    Praesent gravida dui diam, non elementum risus laoreet vitae. 
+    Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
+    Vivamus mattis ligula eget imperdiet tempor. 
+    Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`);
 
-      await cardRadioStickersheet.createMarkupWithCombination({
-        variant: Object.values(VARIANTS),
-      });
+    await cardRadioStickersheet.createMarkupWithCombination({
+      variant: Object.values(VARIANTS),
+    });
 
-      // Card Radio without image
-      cardRadioStickersheet.setAttributes({
-        'card-title': 'Card Title',
-        subtitle: 'Card Subtitle',
-        'icon-name': 'placeholder-bold',
-        orientation,
-      });
-      await cardRadioStickersheet.createMarkupWithCombination({
-        variant: Object.values(VARIANTS),
-      });
+    // Card Radio without image
+    cardRadioStickersheet.setAttributes({
+      'card-title': 'Card Title',
+      subtitle: 'Card Subtitle',
+      'icon-name': 'placeholder-bold',
+      orientation,
+    });
+    await cardRadioStickersheet.createMarkupWithCombination({
+      variant: Object.values(VARIANTS),
+    });
 
-      // Selected Card Radio
-      cardRadioStickersheet.setAttributes({
-        'card-title': 'Card Title',
-        subtitle: 'Card Subtitle',
-        'icon-name': 'placeholder-bold',
-        checked: '',
-        orientation,
-      });
-      await cardRadioStickersheet.createMarkupWithCombination({
-        variant: Object.values(VARIANTS),
-      });
+    // Selected Card Radio
+    cardRadioStickersheet.setAttributes({
+      'card-title': 'Card Title',
+      subtitle: 'Card Subtitle',
+      'icon-name': 'placeholder-bold',
+      checked: '',
+      orientation,
+    });
+    await cardRadioStickersheet.createMarkupWithCombination({
+      variant: Object.values(VARIANTS),
+    });
 
-      // Disabled Card Radio
-      cardRadioStickersheet.setAttributes({
-        'card-title': 'Card Title',
-        subtitle: 'Card Subtitle',
-        'icon-name': 'placeholder-bold',
-        disabled: '',
-        orientation,
-      });
-      await cardRadioStickersheet.createMarkupWithCombination({
-        variant: Object.values(VARIANTS),
-      });
+    // Disabled Card Radio
+    cardRadioStickersheet.setAttributes({
+      'card-title': 'Card Title',
+      subtitle: 'Card Subtitle',
+      'icon-name': 'placeholder-bold',
+      disabled: '',
+      orientation,
+    });
+    await cardRadioStickersheet.createMarkupWithCombination({
+      variant: Object.values(VARIANTS),
+    });
 
-      // Selected and disabled Card Radio
-      cardRadioStickersheet.setAttributes({
-        'card-title': 'Card Title',
-        subtitle: 'Card Subtitle',
-        'icon-name': 'placeholder-bold',
-        checked: '',
-        disabled: '',
-        orientation,
-      });
-      await cardRadioStickersheet.createMarkupWithCombination({
-        variant: Object.values(VARIANTS),
-      });
+    // Selected and disabled Card Radio
+    cardRadioStickersheet.setAttributes({
+      'card-title': 'Card Title',
+      subtitle: 'Card Subtitle',
+      'icon-name': 'placeholder-bold',
+      checked: '',
+      disabled: '',
+      orientation,
+    });
+    await cardRadioStickersheet.createMarkupWithCombination({
+      variant: Object.values(VARIANTS),
+    });
 
-      await cardRadioStickersheet.mountStickerSheet();
-      await componentsPage.page.waitForTimeout(500);
-      const container = cardRadioStickersheet.getWrapperContainer();
-      await test.step('matches screenshot of element', async () => {
-        await componentsPage.visualRegression.takeScreenshot(`mdc-cardradio-${orientation}`, { element: container });
-      });
-    };
+    await cardRadioStickersheet.mountStickerSheet();
+    await componentsPage.page.waitForTimeout(500);
+    const container = cardRadioStickersheet.getWrapperContainer();
+    await test.step('matches screenshot of element', async () => {
+      await componentsPage.visualRegression.takeScreenshot(`mdc-cardradio-${orientation}`, { element: container });
+    });
+  };
 
+  test('visual-regression & accessibility vertical', async ({ componentsPage }) => {
     /**
    * VISUAL REGRESSION & ACCESSIBILITY
    */
     await test.step('visual-regression & accessibility', async () => {
       await componentsPage.page.setViewportSize({ width: 1200, height: 3000 });
-      await createStickerSheetBasedOnOrientation('vertical');
+      await createStickerSheetBasedOnOrientation(componentsPage, 'vertical');
       await componentsPage.accessibility.checkForA11yViolations('cardradio-vertical');
+    });
+  });
 
+  test('visual-regression & accessibility horizontal', async ({ componentsPage }) => {
+    /**
+   * VISUAL REGRESSION & ACCESSIBILITY
+   */
+    await test.step('visual-regression & accessibility', async () => {
       await componentsPage.page.setViewportSize({ width: 12400, height: 2400 });
-      await createStickerSheetBasedOnOrientation('horizontal');
+      await createStickerSheetBasedOnOrientation(componentsPage, 'horizontal');
       await componentsPage.accessibility.checkForA11yViolations('cardradio-horizontal');
     });
   });

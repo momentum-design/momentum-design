@@ -194,117 +194,130 @@ test.describe.parallel('mdc-card', () => {
     });
   });
 
-  test('visual-regression & accessibility', async ({ componentsPage }) => {
-    const createStickerSheetBasedOnOrientation = async (orientation: string, children?: string) => {
-      const cardStickersheet = new StickerSheet(componentsPage, 'mdc-card');
-      const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x300';
+  const createStickerSheetBasedOnOrientation = async (
+    componentsPage: ComponentsPage,
+    orientation: string,
+    children?: string,
+  ) => {
+    const cardStickersheet = new StickerSheet(componentsPage, 'mdc-card');
+    const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x300';
 
-      // Card button without body
-      cardStickersheet.setAttributes({
-        'card-title': 'Card Title',
-        subtitle: 'Card Subtitle',
-        'image-src': imageSrc,
-        'image-alt': 'Image Alt',
-        'icon-name': 'placeholder-bold',
-        orientation,
-      });
-      await cardStickersheet.createMarkupWithCombination({
-        variant: Object.values(VARIANTS),
-      });
+    // Card button without body
+    cardStickersheet.setAttributes({
+      'card-title': 'Card Title',
+      subtitle: 'Card Subtitle',
+      'image-src': imageSrc,
+      'image-alt': 'Image Alt',
+      'icon-name': 'placeholder-bold',
+      orientation,
+    });
+    await cardStickersheet.createMarkupWithCombination({
+      variant: Object.values(VARIANTS),
+    });
 
-      if (children) {
-        cardStickersheet.setChildren(children);
-      } else {
-        // Card button with body
-        cardStickersheet.setChildren(`<mdc-text slot='body' 
-        type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-        Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
-        Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
-        Praesent gravida dui diam, non elementum risus laoreet vitae. 
-        Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
-        Vivamus mattis ligula eget imperdiet tempor. 
-        Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`);
-      }
+    if (children) {
+      cardStickersheet.setChildren(children);
+    } else {
+      // Card button with body
+      cardStickersheet.setChildren(`<mdc-text slot='body' 
+      type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+      Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
+      Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
+      Praesent gravida dui diam, non elementum risus laoreet vitae. 
+      Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
+      Vivamus mattis ligula eget imperdiet tempor. 
+      Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`);
+    }
 
-      await cardStickersheet.createMarkupWithCombination({
-        variant: Object.values(VARIANTS),
-      });
+    await cardStickersheet.createMarkupWithCombination({
+      variant: Object.values(VARIANTS),
+    });
 
-      // Card button without image
-      cardStickersheet.setAttributes({
-        'card-title': 'Card Title',
-        subtitle: 'Card Subtitle',
-        'icon-name': 'placeholder-bold',
-        'selection-type': 'button',
-        orientation,
-      });
-      await cardStickersheet.createMarkupWithCombination({
-        variant: Object.values(VARIANTS),
-      });
+    // Card button without image
+    cardStickersheet.setAttributes({
+      'card-title': 'Card Title',
+      subtitle: 'Card Subtitle',
+      'icon-name': 'placeholder-bold',
+      'selection-type': 'button',
+      orientation,
+    });
+    await cardStickersheet.createMarkupWithCombination({
+      variant: Object.values(VARIANTS),
+    });
 
-      // Selected Card button
-      cardStickersheet.setAttributes({
-        'card-title': 'Card Title',
-        subtitle: 'Card Subtitle',
-        'icon-name': 'placeholder-bold',
-        checked: '',
-        orientation,
-      });
-      await cardStickersheet.createMarkupWithCombination({
-        variant: Object.values(VARIANTS),
-      });
+    // Selected Card button
+    cardStickersheet.setAttributes({
+      'card-title': 'Card Title',
+      subtitle: 'Card Subtitle',
+      'icon-name': 'placeholder-bold',
+      checked: '',
+      orientation,
+    });
+    await cardStickersheet.createMarkupWithCombination({
+      variant: Object.values(VARIANTS),
+    });
 
-      // Disabled Card button
-      cardStickersheet.setAttributes({
-        'card-title': 'Card Title',
-        subtitle: 'Card Subtitle',
-        'icon-name': 'placeholder-bold',
-        disabled: '',
-        orientation,
-      });
-      await cardStickersheet.createMarkupWithCombination({
-        variant: Object.values(VARIANTS),
-      });
+    // Disabled Card button
+    cardStickersheet.setAttributes({
+      'card-title': 'Card Title',
+      subtitle: 'Card Subtitle',
+      'icon-name': 'placeholder-bold',
+      disabled: '',
+      orientation,
+    });
+    await cardStickersheet.createMarkupWithCombination({
+      variant: Object.values(VARIANTS),
+    });
 
-      // Selected and disabled Card button
-      cardStickersheet.setAttributes({
-        'card-title': 'Card Title',
-        subtitle: 'Card Subtitle',
-        'icon-name': 'placeholder-bold',
-        checked: '',
-        'selection-type': 'button',
-        disabled: '',
-        orientation,
-      });
-      await cardStickersheet.createMarkupWithCombination({
-        variant: Object.values(VARIANTS),
-      });
+    // Selected and disabled Card button
+    cardStickersheet.setAttributes({
+      'card-title': 'Card Title',
+      subtitle: 'Card Subtitle',
+      'icon-name': 'placeholder-bold',
+      checked: '',
+      'selection-type': 'button',
+      disabled: '',
+      orientation,
+    });
+    await cardStickersheet.createMarkupWithCombination({
+      variant: Object.values(VARIANTS),
+    });
 
-      await cardStickersheet.mountStickerSheet();
-      await componentsPage.page.waitForTimeout(500);
-      const container = cardStickersheet.getWrapperContainer();
-      await test.step('matches screenshot of element', async () => {
-        const fileName = children ? `mdc-card-${orientation}-interactive` : `mdc-card-${orientation}`;
-        await componentsPage.visualRegression.takeScreenshot(fileName, { element: container });
-      });
-    };
+    await cardStickersheet.mountStickerSheet();
+    await componentsPage.page.waitForTimeout(500);
+    const container = cardStickersheet.getWrapperContainer();
+    await test.step('matches screenshot of element', async () => {
+      const fileName = children ? `mdc-card-${orientation}-interactive` : `mdc-card-${orientation}`;
+      await componentsPage.visualRegression.takeScreenshot(fileName, { element: container });
+    });
+  };
 
+  test('visual-regression & accessibility vertical', async ({ componentsPage }) => {
     /**
      * VISUAL REGRESSION & ACCESSIBILITY
      */
     await test.step('visual-regression & accessibility', async () => {
       await componentsPage.page.setViewportSize({ width: 1200, height: 3000 });
-      await createStickerSheetBasedOnOrientation('vertical');
+
+      await createStickerSheetBasedOnOrientation(componentsPage, 'vertical');
       await componentsPage.accessibility.checkForA11yViolations('static-card-vertical');
 
-      await createStickerSheetBasedOnOrientation('vertical', interactiveChildren);
+      await createStickerSheetBasedOnOrientation(componentsPage, 'vertical', interactiveChildren);
       await componentsPage.accessibility.checkForA11yViolations('interactive-card-vertical');
+    });
+  });
 
+  test('visual-regression & accessibility horizontal', async ({ componentsPage }) => {
+    /**
+     * VISUAL REGRESSION & ACCESSIBILITY
+     */
+    await test.step('visual-regression & accessibility', async () => {
       await componentsPage.page.setViewportSize({ width: 2400, height: 2400 });
-      await createStickerSheetBasedOnOrientation('horizontal');
+
+      await createStickerSheetBasedOnOrientation(componentsPage, 'horizontal');
       await componentsPage.accessibility.checkForA11yViolations('static-card-horizontal');
 
-      await createStickerSheetBasedOnOrientation('horizontal', interactiveChildren);
+      await createStickerSheetBasedOnOrientation(componentsPage, 'horizontal', interactiveChildren);
       await componentsPage.accessibility.checkForA11yViolations('interactive-card-horizontal');
     });
   });
