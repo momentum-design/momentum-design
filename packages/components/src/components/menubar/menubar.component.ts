@@ -4,9 +4,11 @@ import { Component } from '../../models';
 import { KEYS } from '../../utils/keys';
 import { ROLE } from '../../utils/roles';
 import { TAG_NAME as MENUITEM_TAGNAME } from '../menuitem/menuitem.constants';
+import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
 import { ORIENTATION } from './menubar.constants';
 import styles from './menubar.styles';
 import type { Orientation } from './menubar.types';
+import { MenuBarUtils } from './menubar.utils';
 
 /**
  * menubar component, which ...
@@ -20,6 +22,10 @@ class MenuBar extends Component {
   @queryAssignedElements({ selector: MENUITEM_TAGNAME })
   menuItems!: Array<HTMLElement>;
 
+  /** @internal */
+  @queryAssignedElements({ selector: MENUPOPOVER_TAGNAME })
+  menuPopoverItems!: Array<HTMLElement>;
+
   /**
    * Aria Orientation
    * @default 'horizontal'
@@ -27,16 +33,20 @@ class MenuBar extends Component {
   @property({ type: String, reflect: true, attribute: 'aria-orientation' })
   override ariaOrientation: Orientation = ORIENTATION.HORIZONTAL;
 
+  /** @internal */
+  private utils: MenuBarUtils;
+
+  constructor() {
+    super();
+    this.utils = new MenuBarUtils(this);
+  }
+
   override connectedCallback() {
     super.connectedCallback();
     this.role = ROLE.MENUBAR;
 
     this.addEventListener('keydown', this.handleKeyDown);
-  }
-
-  override disconnectedCallback() {
-    super.disconnectedCallback();
-    this.removeEventListener('keydown', this.handleKeyDown);
+    this.addEventListener('click', this.handleMouseClick);
   }
 
   /**
@@ -46,51 +56,7 @@ class MenuBar extends Component {
    * @param event - The keyboard event.
    */
   private handleKeyDown(event: KeyboardEvent): void {
-    const currentIndex = this.getCurrentIndex(event.target);
-    const newIndex = this.getNewIndexBasedOnKey(event.key, currentIndex, this.menuItems.length);
-    if (newIndex !== undefined) {
-      this.menuItems[newIndex]?.focus();
-      this.resetTabIndexAndSetActiveTabIndex(newIndex);
-    }
-  }
-
-  /**
-   * Returns the index of the given target in the menuItems array.
-   * If the target is not a menu item, but a child element of a menu item,
-   * it returns the index of the parent menu item.
-   * @param target - The target element to find the index of.
-   * @returns The index of the target element in the menuItems array.
-   */
-  private getCurrentIndex(target: EventTarget | null): number {
-    return this.menuItems.findIndex((node) => node === target || node === (target as HTMLElement).parentElement);
-  }
-
-  /**
-   * Calculates a new index for menu item navigation based on the pressed key.
-   * Supports ArrowRight, ArrowLeft, Home, and End keys for navigating menu items.
-   * - ArrowRight: Moves focus to the next menu item, wrapping around if necessary.
-   * - ArrowLeft: Moves focus to the previous menu item, wrapping around if necessary.
-   * - Home: Moves focus to the first menu item.
-   * - End: Moves focus to the last menu item.
-   *
-   * @param key - The navigation key that was pressed.
-   * @param currentIndex - The current index of the focused menu item.
-   * @param wrappedDivsCount - The total number of menu items.
-   * @returns The new index to focus on, or undefined if the key is not supported.
-   */
-  private getNewIndexBasedOnKey(key: string, currentIndex: number, wrappedDivsCount: number): number | undefined {
-    switch (key) {
-      case KEYS.ARROW_RIGHT:
-        return (currentIndex + 1) % wrappedDivsCount;
-      case KEYS.ARROW_LEFT:
-        return (currentIndex - 1 + wrappedDivsCount) % wrappedDivsCount;
-      case KEYS.HOME:
-        return 0;
-      case KEYS.END:
-        return wrappedDivsCount - 1;
-      default:
-        return undefined;
-    }
+    this.utils.setTabIndexOnKeyDown(event);
   }
 
   /**
@@ -100,32 +66,27 @@ class MenuBar extends Component {
    * @param event - The mouse event.
    */
   private handleMouseClick(event: MouseEvent): void {
-    const newIndex = this.getCurrentIndex(event.target);
-    this.resetTabIndexAndSetActiveTabIndex(newIndex);
-    this.menuItems[newIndex]?.focus();
-  }
-
-  /**
-   * Resets all list items tabindex to -1 and sets the tabindex of the
-   * element at the given index to 0, effectively setting the active
-   * element. This is used when navigating the list via keyboard.
-   *
-   * @param newIndex - The index of the new active element in the list.
-   */
-  private resetTabIndexAndSetActiveTabIndex(newIndex: number) {
-    this.menuItems.forEach((node, index) => {
-      const newTabindex = newIndex === index ? '0' : '-1';
-      node?.setAttribute('tabindex', newTabindex);
-    });
+    this.utils.setTabIndexOnMouseClick(event);
+    // const activeMenuItem = event.target as HTMLElement;
+    // const hasCurrentMenuItemHasChildren = activeMenuItem?.hasAttribute('aria-expanded');
+    // if (hasCurrentMenuItemHasChildren) {}
+    // const isMenuPopoverOpen = this.menuPopoverItems
+    //   .some((node) => node.getAttribute('triggerid') === activeMenuItem.id);
+    // console.log(isMenuPopoverOpen);
+    // if (isMenuPopoverOpen) {
+    //   this.menuPopoverItems.forEach((node) => {
+    //     node.setAttribute('trigger', 'mouseenter');
+    //   });
+    // }
   }
 
   public override firstUpdated(): void {
     // For the first, we set the first element only as active.
-    this.resetTabIndexAndSetActiveTabIndex(0);
+    this.utils.resetTabIndexAndSetActiveTabIndex(0);
   }
 
   public override render() {
-    return html`<slot @click="${this.handleMouseClick}"></slot>`;
+    return html`<slot></slot>`;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];

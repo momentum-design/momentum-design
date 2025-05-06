@@ -1,13 +1,23 @@
-import type { Meta, StoryObj, Args } from '@storybook/web-components';
+import type { Meta, StoryObj } from '@storybook/web-components';
 import '.';
+import '../menuitem';
+import '../button';
+import '../divider';
 import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
-const render = (args: Args) => html`
-  <mdc-menupopover args.property="${args.property}"></mdc-menupopover>`;
+const render = () => html`
+  <mdc-button id="menu-button-trigger">Open menu in a lengthy button</mdc-button>
+  <mdc-menupopover triggerid="menu-button-trigger">
+    <mdc-menuitem label="Test 1"></mdc-menuitem>
+    <mdc-menuitem label="Test 2"></mdc-menuitem>
+    <mdc-divider></mdc-divider>
+    <mdc-menuitem label="Test 3"></mdc-menuitem>
+  </mdc-menupopover>
+  `;
 
 const meta: Meta = {
-  title: 'Work In Progress/menupopover',
+  title: 'Work In Progress/menu/menupopover',
   tags: ['autodocs'],
   component: 'mdc-menupopover',
   render,
@@ -23,8 +33,5 @@ const meta: Meta = {
 export default meta;
 
 export const Example: StoryObj = {
-  args: {
-    class: 'custom-classname',
-    style: 'margin-top: 20px;',
-  },
+  args: {},
 };
