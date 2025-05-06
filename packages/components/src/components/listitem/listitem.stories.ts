@@ -11,7 +11,6 @@ import '../checkbox';
 import '../icon';
 import '../list';
 import '../toggle';
-import '../tooltip';
 import { LISTITEM_VARIANTS } from './listitem.constants';
 
 const wrapWithList = (content: TemplateResult) => html`<mdc-list style="width: 10rem">${content}</mdc-list>`;

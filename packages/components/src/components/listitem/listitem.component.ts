@@ -5,9 +5,10 @@ import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
-import { TextType } from '../text/text.types';
+import type { TextType } from '../text/text.types';
 import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
-import { DEFAULTS, TOOLTIP_ID, LISTITEM_ID } from './listitem.constants';
+import { DEFAULTS, LISTITEM_ID, TOOLTIP_ID } from './listitem.constants';
+import { ROLE } from '../../utils/roles';
 import styles from './listitem.styles';
 import type { ListItemVariants } from './listitem.types';
 
@@ -95,10 +96,8 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
    */
   @property({ type: String, reflect: true, attribute: 'subline-text' }) sublineText?: string;
 
-  override connectedCallback(): void {
-    super.connectedCallback();
-    this.role = this.role || 'listitem';
-    // this.id = this.id || uuidv4();
+  constructor() {
+    super();
 
     this.addEventListener('focusin', this.displayTooltipForLongText);
     this.addEventListener('mouseover', this.displayTooltipForLongText);
@@ -107,13 +106,9 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     this.addEventListener('click', this.handleClick);
   }
 
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.removeEventListener('focusin', this.displayTooltipForLongText);
-    this.removeEventListener('mouseover', this.displayTooltipForLongText);
-    this.removeEventListener('focusout', this.hideTooltipOnLeave);
-    this.removeEventListener('mouseout', this.hideTooltipOnLeave);
-    this.removeEventListener('click', this.handleClick);
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.role = this.role || ROLE.LISTITEM;
   }
 
   private handleClick(): void {
@@ -143,7 +138,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     // Create tooltip for long text label which has an ellipse at the end.
     const tooltip = document.createElement(TOOLTIP_TAG_NAME);
     tooltip.id = TOOLTIP_ID;
-    tooltip.textContent = this.label ?? '';
+    tooltip.innerHTML = `${[this.label, this.secondaryLabel, this.tertiaryLabel].filter(Boolean).join(' <br/> ')}`;
     tooltip.setAttribute('triggerid', this.id);
     tooltip.setAttribute('visible', '');
     tooltip.setAttribute('show-arrow', '');
