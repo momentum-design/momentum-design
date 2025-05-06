@@ -7,6 +7,10 @@ on:
         description: 'Component name to update snapshots for'
         required: true
         type: string
+      other-args:
+        description: 'Other arguments to pass to the update-snapshot command'
+        required: false
+        type: string
 
 jobs:
   initialize:
@@ -124,7 +128,7 @@ jobs:
         run: docker pull ghcr.io/momentum-design/momentum-design/docker-playwright:v1.49.1
 
       - name: Update Snapshots
-        run: yarn workspace @momentum-design/components test:e2e:docker:update-snapshot ${{ github.event.inputs['component-name'] }} 
+        run: yarn workspace @momentum-design/components test:e2e:docker:update-snapshot ${{ github.event.inputs['component-name'] }} ${{ github.event.inputs['other-args'] }}
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
@@ -135,11 +139,13 @@ jobs:
           retention-days: 30
 
       - name: Configure Git
+        if: ${{ success() }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Commit and push snapshot updates
+        if: ${{ success() }}
         run: |
           git checkout ${{ github.ref }}
           git add .
