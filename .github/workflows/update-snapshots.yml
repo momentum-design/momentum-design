@@ -121,7 +121,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Update Snapshots
-        run: yarn workspace @momentum-design/components test:e2e:docker:update-snapshot ${{ github.event.inputs['component-name'] }} 
+        run: yarn workspace @momentum-design/components test:e2e:docker ${{ github.event.inputs['component-name'] }} 
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
