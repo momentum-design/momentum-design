@@ -19,7 +19,7 @@ import type { ListItemVariants } from '../listitem/listitem.types';
  * `mdc-navitem` is a button element styled to work as a navigation tab.
  * It supports a leading icon, optional badge and dynamic text rendering.
  *
- * Note: mdc-navitem is intended to be used as a part of the sidenavigation component.
+ * Note: mdc-navitem is intended to be used inside `mdc-navitemlist` as a part of the sidenavigation component.
  * Its structure, spacing, and interactions are designed to align with
  * the visual and functional requirements of side navigation layouts.
  *
@@ -44,6 +44,7 @@ import type { ListItemVariants } from '../listitem/listitem.types';
  * @cssproperty --mdc-navitem-disabled-background-color - Background color of the navigation item when disabled.
  * @cssproperty --mdc-navitem-disabled-color - Text color of the navigation item when disabled.
  * @cssproperty --mdc-navitem-active-background-color - Background color of the navigation item when active.
+ * @cssproperty --mdc-navitem-expanded-width - Width of the navItem when expanded.
  */
 class NavItem extends IconNameMixin(ListItem) {
   /**
@@ -85,6 +86,9 @@ class NavItem extends IconNameMixin(ListItem) {
   @property({ type: String, reflect: true, attribute: 'nav-id' })
   navId?: string;
 
+  /**
+   * Determines whether the navItem is expanded or not.
+   */
   @property({ type: Boolean, reflect: true })
   isExpanded?: boolean;
 
@@ -96,8 +100,7 @@ class NavItem extends IconNameMixin(ListItem) {
   /**
    * @internal
    */
-  private readonly sideNavigationContext = providerUtils.consume({ host: this,
-    context: SideNavigation.Context });
+  private readonly sideNavigationContext = providerUtils.consume({ host: this, context: SideNavigation.Context });
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -171,7 +174,7 @@ class NavItem extends IconNameMixin(ListItem) {
    *
    * @param active - The active state of the navItem.
    */
-  protected setActive(active: boolean) {
+  private setActive(active: boolean) {
     if (active) {
       this.setAttribute('aria-current', 'page');
     } else {
@@ -216,7 +219,7 @@ class NavItem extends IconNameMixin(ListItem) {
     return html`
       <mdc-badge 
         class="${badgeClass}"
-        type="${ifDefined(this.badgeType)}" 
+        type="${this.badgeType}" 
         counter="${ifDefined(this.counter)}" 
         max-counter="${this.maxCounter}">
       </mdc-badge>

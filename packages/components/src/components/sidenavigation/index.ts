@@ -5,7 +5,6 @@ import '../navitem';
 import '../divider';
 import '../text';
 import '../button';
-import '../icon';
 
 SideNavigation.register(TAG_NAME);
 

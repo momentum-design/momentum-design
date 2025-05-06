@@ -1,13 +1,11 @@
 import type { CSSResult } from 'lit';
 import { html } from 'lit';
-import { queryAssignedElements } from 'lit/decorators.js';
+import { property, queryAssignedElements } from 'lit/decorators.js';
 import { Component } from '../../models';
 import styles from './navitemlist.styles';
 import List from '../list/list.component';
 import providerUtils from '../../utils/provider';
 import { TAG_NAME as NAVITEM_TAGNAME } from '../navitem/navitem.constants';
-import { TAG_NAME as TEXTITEM_TAGNAME } from '../text/text.constants';
-import { TAG_NAME as DIVIDERITEM_TAGNAME } from '../divider/divider.constants';
 import SideNavigation from '../sidenavigation/sidenavigation.component';
 import type NavItem from '../navitem/navitem.component';
 
@@ -19,23 +17,22 @@ import type NavItem from '../navitem/navitem.component';
  * Note: mdc-navitemlist is typically used within the sidenavigation component.
  * @tagname mdc-navitemlist
  *
- * @slot default - Slot for projecting one or more navigation items.
+ * @slot default - Slot for projecting one or more navigation items, optional section headers and dividers.
  */
 class NavItemList extends List {
   @queryAssignedElements({ selector: `${NAVITEM_TAGNAME}:not([disabled])` })
   override listItems!: Array<HTMLElement>;
 
-  @queryAssignedElements({ selector: TEXTITEM_TAGNAME })
-  textItems!: Array<HTMLElement>;
-
-  @queryAssignedElements({ selector: DIVIDERITEM_TAGNAME })
-  dividerItems!: Array<HTMLElement>;
+  /**
+   * Determines whether the navItemList is expanded or not.
+   */
+  @property({ type: Boolean, reflect: true })
+  isExpanded?: boolean;
 
   /**
    * @internal
    */
-  private readonly sideNavigationContext = providerUtils.consume({ host: this,
-    context: SideNavigation.Context });
+  private readonly sideNavigationContext = providerUtils.consume({ host: this, context: SideNavigation.Context });
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -53,8 +50,9 @@ class NavItemList extends List {
     const context = this.sideNavigationContext?.value;
     if (!context) return;
     const { isExpanded } = context;
-    this.updateTextStyles(isExpanded as boolean);
-    this.updateDividerStyles();
+    if (this.isExpanded !== isExpanded) {
+      this.isExpanded = isExpanded;
+    }
   }
 
   /**
@@ -87,7 +85,7 @@ class NavItemList extends List {
 
   /**
    * Matches new navItem with navId.
-   * @param NavItem- The new active navItem.
+   * @param NavItem - The new active navItem.
    *
    * @internal
    */
@@ -104,23 +102,6 @@ class NavItemList extends List {
     if (!newNav) return;
     newNav.setAttribute('active', '');
   }
-
-  private updateTextStyles = (isExpanded: boolean): void => {
-    this.textItems?.forEach((text) => {
-      const textElement = text as HTMLElement;
-      textElement.style.display = isExpanded ? '' : 'none';
-      if (isExpanded) {
-        textElement.style.paddingLeft = '1.75rem';
-      }
-    });
-  };
-
-  private updateDividerStyles = (): void => {
-    this.dividerItems?.forEach((divider) => {
-      const dividerElement = divider as HTMLElement;
-      dividerElement.style.margin = '0.75rem 0rem';
-    });
-  };
 
   public override render() {
     return html`

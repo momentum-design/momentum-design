@@ -10,6 +10,7 @@ const styles = [hostFitContentStyles, css`
     --mdc-navitem-disabled-background-color: var(--mds-color-theme-button-secondary-disabled);
     --mdc-navitem-disabled-color: var(--mds-color-theme-text-primary-disabled);
     --mdc-navitem-active-background-color: var(--mds-color-theme-button-secondary-active-normal);
+    --mdc-navitem-expanded-width: 12.75rem;
  
     position: relative;
     display: flex;
@@ -32,7 +33,7 @@ const styles = [hostFitContentStyles, css`
   }
 
   :host([isExpanded]) {
-    width: 12.75rem;
+    width: var(--mdc-navitem-expanded-width);
   }
   
   :host(:hover), 

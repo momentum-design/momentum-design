@@ -14,19 +14,29 @@ import type { SideNavigationVariant } from './sidenavigation.types';
  * typically used in layouts with persistent or collapsible sidebars.
  *
  * ## Features:
- * - Four layout variants: `fixed-collapsed`, `fixed-expanded`, `flexible`, and `hidden`
- * - Expand/collapse toggle behavior
- * - Displays Brand logo and customer name
- * - Emits `click` and `focus` events for accessibility and interaction
- * - Acts as a context provider for descendant components
+ * - Supports four layout variants: `fixed-collapsed`, `fixed-expanded`, `flexible`, and `hidden`
+ * - Toggleable expand/collapse behavior
+ * - Displays brand logo and customer name
+ * - Serves as a context provider for descendant components
+ *
+ * ### Recommendations:
+ * - Use `mdc-text` for section headers
+ * - Use `mdc-divider` with the attribute `variant="gradient"` for section dividers
+ * - For the brand logo, use an informative icon. Refer to `Momentum Informative Icons`
+ *
+ * #### Note:
+ * - To ensure accessibility, it is strongly recommended to provide `aria-label` attributes for
+ * both `NavItem` and `NavItemList` components.
+ *
  *
  * @dependency mdc-text
  * @dependency mdc-button
  * @dependency mdc-divider
  *
- * @event click - (React: onClick) This event is dispatched when the grabber divider button is clicked.
- * @event focus - (React: onFocus) This event is dispatched when the mdc-button, mdc-link
- * and grabber divider button receives focus.
+ * @event click - (React: onClick) Dispatched when the grabber divider button is clicked.
+ * @event focus - (React: onFocus) Dispatched when the grabber divider button receives focus.
+ * @event keydown - (React: onKeyDown) Dispatched when a key is pressed down on the grabber divider button.
+ * @event keyup - (React: onKeyUp) Dispatched when a key is released on the grabber divider button.
  *
  * @tagname mdc-sidenavigation
  *
@@ -71,7 +81,8 @@ class SideNavigation extends Provider<SideNavigationContext> {
   /**
   * Determines whether the sideNavigation is expanded or not.
   */
-  @property({ type: Boolean, reflect: true }) isExpanded?: boolean;
+  @property({ type: Boolean, reflect: true })
+  isExpanded?: boolean;
 
   /**
   * Toggles between true and false when it's variant is flexible.
@@ -171,7 +182,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
           </div>
           <div part="fixed-section">
               <slot name="fixed-section"></slot>
-              <div part="brand-logo-container" tabindex=0>
+              <div part="brand-logo-container">
                 <slot name="brand-logo"></slot>
                 ${this.isExpanded ? html`<mdc-text type=${TYPE.BODY_MIDSIZE_MEDIUM} tagname=${VALID_TEXT_TAGS.SPAN} 
                 part="label">${this.customerName}</mdc-text>` : nothing}
@@ -183,8 +194,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
             variant=${DIVIDER_VARIANT.GRADIENT}
             arrow-direction=${this.arrowDirection}
             button-position=${DIRECTIONS.POSITIVE}
-            @click=${this.toggleSideNavigation}
-          > <mdc-button aria-label="dividerButton"></mdc-button>
+          > <mdc-button aria-label="Toggle Side Navigation" @click=${this.toggleSideNavigation}></mdc-button>
         </mdc-divider>` : nothing}
   `;
   }

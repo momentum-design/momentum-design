@@ -47,9 +47,16 @@ const styles = css`
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 0.5rem 0rem 0.5rem 1.5rem;
   gap: 0.5rem;  
   border-radius: 1.25rem;
+}
+
+:host(:dir(ltr))::part(brand-logo-container) {
+  padding: 0.5rem 0rem 0.5rem 1.5rem;
+}
+
+:host(:dir(rtl))::part(brand-logo-container) {
+  padding: 0.5rem 1.5rem 0.5rem 0rem; 
 }
 
 ::slotted([slot="brand-logo"]) {

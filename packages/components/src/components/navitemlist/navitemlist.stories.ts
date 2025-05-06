@@ -1,15 +1,41 @@
-import type { Meta, StoryObj } from '@storybook/web-components';
+import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls, disableControls } from '../../../config/storybook/utils';
 
-const render = () => html`
-  <mdc-navitemlist>
-    <mdc-navitem nav-id="1" icon-name="placeholder-bold" badge-type="counter" counter="3" max-counter="66" 
-    isExpanded >Dashboard</mdc-navitem>
-    <mdc-navitem nav-id="2" icon-name="placeholder-bold" badge-type="dot" isExpanded disabled>Settings</mdc-navitem>
-    <mdc-navitem nav-id="3" icon-name="placeholder-bold" isExpanded>Settings</mdc-navitem>
+const render = (args: Args) => html`
+  <mdc-navitemlist ?isExpanded=${args.isExpanded} aria-label=${ifDefined(args['aria-label'])}>
+    <mdc-navitem
+      nav-id="1"
+      icon-name="placeholder-bold"
+      badge-type="counter"
+      counter="3"
+      max-counter="66"
+      aria-label=${ifDefined(!args.isExpanded ? 'Dashboard' : undefined)}
+      ?isExpanded=${args.isExpanded}
+    >
+      Dashboard
+    </mdc-navitem>
+    <mdc-navitem
+      nav-id="2"
+      icon-name="placeholder-bold"
+      aria-label=${ifDefined(!args.isExpanded ? 'Settings' : undefined)}
+      ?isExpanded=${args.isExpanded}
+      disabled
+    >
+      Settings
+    </mdc-navitem>
+    <mdc-navitem
+      nav-id="3"
+      icon-name="placeholder-bold"
+      badge-type="dot"
+      aria-label=${ifDefined(!args.isExpanded ? 'Settings' : undefined)}
+      ?isExpanded=${args.isExpanded}
+    >
+      Settings
+    </mdc-navitem>
   </mdc-navitemlist>
 `;
 
@@ -20,16 +46,17 @@ const meta: Meta = {
   parameters: {
     badges: ['wip'],
   },
+  render,
   argTypes: {
+    isExpanded: {
+      control: 'boolean',
+      description: 'Determines whether the navItem is expanded',
+    },
     ...disableControls([
       'default',
     ]),
     ...hideControls([
       'listItems',
-      'textItems',
-      'dividerItems',
-      'updateTextStyles',
-      'updateDividerStyles',
       'header-text',
       'data-aria-label',
     ]),
@@ -41,5 +68,14 @@ const meta: Meta = {
 export default meta;
 
 export const Example: StoryObj = {
-  render,
+  args: {
+    isExpanded: true,
+  },
+};
+
+export const collapsedNavItemList: StoryObj = {
+  args: {
+    'aria-label': 'This is the navItemList.',
+    isExpanded: false,
+  },
 };

@@ -72,6 +72,7 @@ const meta: Meta = {
       description: 'Determines whether the navItem is expanded',
     },
     ...disableControls([
+      'default',
       '--mdc-navitem-color',
       '--mdc-navitem-border-color',
       '--mdc-navitem-hover-background-color',
@@ -79,6 +80,7 @@ const meta: Meta = {
       '--mdc-navitem-disabled-background-color',
       '--mdc-navitem-disabled-color',
       '--mdc-navitem-active-background-color',
+      '--mdc-navitem-expanded-width',
     ]),
     ...hideControls([
       '--mdc-listitem-default-background-color',
@@ -130,7 +132,7 @@ export const collapsedNavItem: StoryObj = {
     counter: 3,
     'max-counter': DEFAULTS.MAX_COUNTER,
     disabled: false,
-    'aria-label': 'navItem label',
+    'aria-label': 'This is the navItem',
     active: false,
     isExpanded: false,
   },
