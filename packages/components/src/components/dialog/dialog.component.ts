@@ -18,11 +18,8 @@ import { DialogEventManager } from './dialog.events';
  *
  * **Accessibility notes for consuming (have to be explicitly set when you consume the component)**
  *
- * - If the dialog is provided with header text, it will be set as the aria-label string value if aria-label
- *   is not provided.
- * - If header text is omitted, consumer should provide aria-label string value or aria-labelledby string value
- *   with the ID of the element labeling the dialog.
- * - If a triggerId is provided, the triggering element will be set as the aria-labelledby value if none is provided.
+ * - The dialog should have an aria-label or aria-labelledby attribute to provide a label for screen readers.
+ * - Use aria-labelledby to reference the ID of the element that labels the dialog when there is no visible title.
  *
  * **Note: Programmatic show/hide requires the ? prefix on the visible attribute**
  * - Use `?visible=true/false` as an attribute instead of `visible=true/false`
@@ -44,7 +41,6 @@ import { DialogEventManager } from './dialog.events';
  * @cssproperty --mdc-dialog-description-text-color - text color of the below header description of the dialog
  * @cssproperty --mdc-dialog-elevation-3 - elevation of the dialog
  * @cssproperty --mdc-dialog-width - width of the dialog
- * @cssproperty --mdc-dialog-height - height of the dialog
  *
  * @slot dialog-body - Slot for the dialog body content
  * @slot dialog-footer - Slot for the dialog footer content (e.g. submit/cancel buttons)
@@ -150,7 +146,6 @@ class Dialog extends FocusTrapMixin(Component) {
   protected override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
     this.setupTriggerListener();
-    this.utils.setupAccessibility();
     this.style.zIndex = `${this.zIndex}`;
     DialogEventManager.onCreatedDialog(this);
 
@@ -195,12 +190,6 @@ class Dialog extends FocusTrapMixin(Component) {
     }
     if (changedProperties.has('zIndex')) {
       this.setAttribute('z-index', `${this.zIndex}`);
-    }
-    if (
-      changedProperties.has('ariaLabel')
-      || changedProperties.has('ariaLabelledBy')
-    ) {
-      this.utils.setupAccessibility();
     }
   }
 
@@ -271,6 +260,7 @@ class Dialog extends FocusTrapMixin(Component) {
       this.setFocusableElements?.();
       await this.updateComplete;
       this.setInitialFocus?.();
+      this.utils.positionCloseButton();
     }
   }
 

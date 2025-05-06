@@ -8,17 +8,6 @@ export class DialogUtils {
     this.dialog = dialog;
   }
 
-  /**
-   * Sets up the accessibility attributes for the dialog.
-   */
-  setupAccessibility() {
-    this.dialog.toggleAttribute('aria-modal');
-    if (!this.dialog.ariaLabel) {
-      if (this.dialog.headerText) this.dialog.ariaLabel = this.dialog.headerText;
-      else if (!this.dialog.ariaLabelledBy) this.dialog.ariaLabelledBy = this.dialog.triggerElement?.id || '';
-    }
-  }
-
   createBackdrop() {
     const backdrop = document.createElement('div');
     backdrop.classList.add('dialog-backdrop');
@@ -37,5 +26,21 @@ export class DialogUtils {
     backdrop.appendChild(styleElement);
     this.dialog.parentElement?.appendChild(backdrop);
     this.dialog.backdropElement = backdrop;
+  }
+
+  positionCloseButton() {
+    const dialogEl = document.querySelector('mdc-dialog') as HTMLElement;
+    const closeButton = dialogEl?.shadowRoot?.querySelector('.dialog-close') as HTMLElement;
+    const isRtl = document.querySelector('html')
+      ?.getAttribute('dir') === 'rtl' || window.getComputedStyle(this.dialog).direction === 'rtl';
+    const styleElement = document.createElement('style');
+    styleElement.textContent = `
+      .dialog-close {
+        right: ${isRtl ? 'unset' : '1rem'};
+        left: ${isRtl ? '1rem' : 'unset'};
+        z-index: ${this.dialog.zIndex + 1};
+      }
+    `;
+    closeButton.appendChild(styleElement);
   }
 }
