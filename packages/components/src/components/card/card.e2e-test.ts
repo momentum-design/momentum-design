@@ -133,11 +133,9 @@ test.describe.parallel('mdc-card', () => {
           );
         });
         await test.step('component should be focusable with shift+tab', async () => {
-          await componentsPage.actionability.pressTab(); // focus out of the component
-          // to the next focusable element in the DOM
           await componentsPage.actionability.pressAndCheckFocus(
             'Shift+Tab',
-            [primaryButton, secondaryButton, link, iconButtons.last(), iconButtons.nth(1), iconButtons.first()],
+            [secondaryButton, link, iconButtons.last(), iconButtons.nth(1), iconButtons.first()],
           );
         });
       });
