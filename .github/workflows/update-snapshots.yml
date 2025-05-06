@@ -147,7 +147,7 @@ jobs:
       - name: Commit and push snapshot updates
         if: ${{ success() }}
         run: |
-          git checkout ${{ github.ref }}
+          git checkout ${{ github.head_ref || github.ref_name }}
           git add .
           git diff --cached --quiet || git commit -m "chore: updated snapshots for component ${{ github.event.inputs['component-name'] }}"
-          git push origin ${{ github.ref }}
+          git push origin ${{ github.head_ref || github.ref_name }}
