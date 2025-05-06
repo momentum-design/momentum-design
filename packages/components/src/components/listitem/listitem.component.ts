@@ -4,11 +4,12 @@ import { property, queryAssignedElements } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
+import { ROLE } from '../../utils/roles';
+import type { PopoverPlacement } from '../popover/popover.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { TextType } from '../text/text.types';
 import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
 import { DEFAULTS, LISTITEM_ID, TOOLTIP_ID } from './listitem.constants';
-import { ROLE } from '../../utils/roles';
 import styles from './listitem.styles';
 import type { ListItemVariants } from './listitem.types';
 
@@ -96,6 +97,19 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
    */
   @property({ type: String, reflect: true, attribute: 'subline-text' }) sublineText?: string;
 
+  /**
+   * The tooltip text is displayed on hover of the list item.
+   */
+  @property({ type: String, reflect: true, attribute: 'tooltip-text' }) tooltipText?: string;
+
+  /**
+   * The tooltip placement of the list item. If the tooltip text is present,
+   * then this tooltip placement will be applied.
+   * @default 'top'
+   */
+  @property({ type: String, reflect: true, attribute: 'tooltip-placement' })
+  tooltipPlacement: PopoverPlacement = DEFAULTS.TOOLTIP_PLACEMENT;
+
   constructor() {
     super();
 
@@ -112,34 +126,27 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   }
 
   private handleClick(): void {
-    // When the select dropdown (popover) is open,
-    // then if the tooltip is open, it has to be closed first.
-    // only then we can close the dropdown on option click/select.
+    // If the tooltip is open, it has to be closed first.
     this.hideTooltipOnLeave();
   }
 
   /**
-   * Display a tooltip for long text label with an ellipse at the end.
+   * Display a tooltip for the listitem.
    * Create the tooltip programmatically after the nearest parent element.
-   * @param event - A focus or a mouse event.
    */
-  private displayTooltipForLongText(event: FocusEvent | MouseEvent): void {
-    const dimensions = (event.target as HTMLElement).shadowRoot?.querySelector('[part="leading-text-primary-label"]');
-    if (
-      dimensions && dimensions.scrollWidth && dimensions.clientWidth
-      && dimensions.scrollWidth <= dimensions?.clientWidth
-    ) {
-      // it means that the listitem label text is fully visible and we do not need to show the tooltip.
+  private displayTooltipForLongText(): void {
+    if (!this.tooltipText) {
       return;
     }
 
     // Add a unique id to the listitem if it does not have one to attach the tooltip.
     this.id = this.id || LISTITEM_ID;
-    // Create tooltip for long text label which has an ellipse at the end.
+    // Create tooltip for the listitem element.
     const tooltip = document.createElement(TOOLTIP_TAG_NAME);
     tooltip.id = TOOLTIP_ID;
-    tooltip.innerHTML = `${[this.label, this.secondaryLabel, this.tertiaryLabel].filter(Boolean).join(' <br/> ')}`;
+    tooltip.textContent = this.tooltipText;
     tooltip.setAttribute('triggerid', this.id);
+    tooltip.setAttribute('placement', this.tooltipPlacement);
     tooltip.setAttribute('visible', '');
     tooltip.setAttribute('show-arrow', '');
 

@@ -7,6 +7,7 @@ import Popover from '../popover/popover.component';
 import styles from './tooltip.styles';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import type { TooltipType } from './tooltip.types';
+import { ROLE } from '../../utils/roles';
 
 /**
  * A tooltip is triggered by mouse hover or by keyboard focus
@@ -51,7 +52,7 @@ class Tooltip extends Popover {
     this.interactive = false;
     this.offset = DEFAULTS.OFFSET;
     this.placement = DEFAULTS.PLACEMENT;
-    this.role = 'tooltip';
+    this.role = ROLE.TOOLTIP;
     this.trigger = 'mouseenter focusin';
 
     this.enabledFocusTrap = false;

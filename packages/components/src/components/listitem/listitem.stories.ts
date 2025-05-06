@@ -10,6 +10,7 @@ import '../button';
 import '../checkbox';
 import '../icon';
 import '../list';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import '../toggle';
 import { LISTITEM_VARIANTS } from './listitem.constants';
 
@@ -29,6 +30,8 @@ const render = (args: Args) => wrapWithList(
       tertiary-label="${args['tertiary-label']}"
       side-header-text="${args['side-header-text']}"
       subline-text="${args['subline-text']}"
+      tooltip-text="${args['tooltip-text']}"
+      tooltip-placement="${args['tooltip-placement']}"
     >
       <mdc-checkbox slot="leading-controls" data-aria-label="mock label" checked></mdc-checkbox>
       <mdc-avatar slot="leading-controls" src="https://picsum.photos/id/63/256" presence="active"></mdc-avatar>
@@ -72,6 +75,13 @@ const meta: Meta = {
     disabled: {
       control: 'boolean',
     },
+    'tooltip-text': {
+      control: 'text',
+    },
+    'tooltip-placement': {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
+    },
     ...hideControls([
       'role',
     ]),
@@ -112,6 +122,8 @@ export const Example: StoryObj = {
     'side-header-text': 'Header Text',
     'subline-text': 'Subline Text',
     disabled: false,
+    'tooltip-text': '',
+    'tooltip-placement': POPOVER_PLACEMENT.TOP,
   },
 };
 
@@ -195,7 +207,7 @@ export const ListWithLongText: StoryObj = {
         secondary-label="a small secondary label"
       ></mdc-listitem>
       <mdc-listitem
-        label="A small primary label, A small primary label, A small primary label"
+        label="A small primary label"
         secondary-label="a lengthy secondary label with a small label"
       ></mdc-listitem>
       <mdc-listitem label="A short text"></mdc-listitem>

@@ -12,6 +12,7 @@ const ROLE = {
   MENUITEM: 'menuitem',
   MENUITEMCHECKBOX: 'menuitemcheckbox',
   MENUITEMRADIO: 'menuitemradio',
+  TOOLTIP: 'tooltip',
 } as const;
 
 type RoleType = ValueOf<typeof ROLE>;
