@@ -1,6 +1,7 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { VARIANTS } from '../card/card.constants';
 
 interface CardRadioArgs {
   name?: string;
@@ -218,7 +219,6 @@ test.describe.parallel('mdc-cardradio', () => {
     const createStickerSheetBasedOnOrientation = async (orientation: string) => {
       const cardRadioStickersheet = new StickerSheet(componentsPage, 'mdc-cardradio');
       const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x300';
-      const variant = { border: 'border', ghost: 'ghost' };
 
       // Card radio without body
       cardRadioStickersheet.setAttributes({
@@ -230,7 +230,7 @@ test.describe.parallel('mdc-cardradio', () => {
         orientation,
       });
       await cardRadioStickersheet.createMarkupWithCombination({
-        variant,
+        variant: Object.values(VARIANTS),
       });
 
       // Card radio with body
@@ -244,7 +244,7 @@ test.describe.parallel('mdc-cardradio', () => {
       Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`);
 
       await cardRadioStickersheet.createMarkupWithCombination({
-        variant,
+        variant: Object.values(VARIANTS),
       });
 
       // Card Radio without image
@@ -255,7 +255,7 @@ test.describe.parallel('mdc-cardradio', () => {
         orientation,
       });
       await cardRadioStickersheet.createMarkupWithCombination({
-        variant,
+        variant: Object.values(VARIANTS),
       });
 
       // Selected Card Radio
@@ -267,7 +267,7 @@ test.describe.parallel('mdc-cardradio', () => {
         orientation,
       });
       await cardRadioStickersheet.createMarkupWithCombination({
-        variant,
+        variant: Object.values(VARIANTS),
       });
 
       // Disabled Card Radio
@@ -279,7 +279,7 @@ test.describe.parallel('mdc-cardradio', () => {
         orientation,
       });
       await cardRadioStickersheet.createMarkupWithCombination({
-        variant,
+        variant: Object.values(VARIANTS),
       });
 
       // Selected and disabled Card Radio
@@ -292,7 +292,7 @@ test.describe.parallel('mdc-cardradio', () => {
         orientation,
       });
       await cardRadioStickersheet.createMarkupWithCombination({
-        variant,
+        variant: Object.values(VARIANTS),
       });
 
       await cardRadioStickersheet.mountStickerSheet();
@@ -307,11 +307,11 @@ test.describe.parallel('mdc-cardradio', () => {
    * VISUAL REGRESSION & ACCESSIBILITY
    */
     await test.step('visual-regression & accessibility', async () => {
-      await componentsPage.page.setViewportSize({ width: 800, height: 3000 });
+      await componentsPage.page.setViewportSize({ width: 1200, height: 3000 });
       await createStickerSheetBasedOnOrientation('vertical');
       await componentsPage.accessibility.checkForA11yViolations('cardradio-vertical');
 
-      await componentsPage.page.setViewportSize({ width: 1600, height: 2400 });
+      await componentsPage.page.setViewportSize({ width: 12400, height: 2400 });
       await createStickerSheetBasedOnOrientation('horizontal');
       await componentsPage.accessibility.checkForA11yViolations('cardradio-horizontal');
     });

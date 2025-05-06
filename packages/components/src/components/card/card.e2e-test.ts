@@ -200,7 +200,6 @@ test.describe.parallel('mdc-card', () => {
     const createStickerSheetBasedOnOrientation = async (orientation: string, children?: string) => {
       const cardStickersheet = new StickerSheet(componentsPage, 'mdc-card');
       const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x300';
-      const variant = children ? VARIANTS : { border: 'border', ghost: 'ghost' };
 
       // Card button without body
       cardStickersheet.setAttributes({
@@ -212,7 +211,7 @@ test.describe.parallel('mdc-card', () => {
         orientation,
       });
       await cardStickersheet.createMarkupWithCombination({
-        variant,
+        variant: Object.values(VARIANTS),
       });
 
       if (children) {
@@ -230,7 +229,7 @@ test.describe.parallel('mdc-card', () => {
       }
 
       await cardStickersheet.createMarkupWithCombination({
-        variant,
+        variant: Object.values(VARIANTS),
       });
 
       // Card button without image
@@ -242,7 +241,7 @@ test.describe.parallel('mdc-card', () => {
         orientation,
       });
       await cardStickersheet.createMarkupWithCombination({
-        variant,
+        variant: Object.values(VARIANTS),
       });
 
       // Selected Card button
@@ -254,7 +253,7 @@ test.describe.parallel('mdc-card', () => {
         orientation,
       });
       await cardStickersheet.createMarkupWithCombination({
-        variant,
+        variant: Object.values(VARIANTS),
       });
 
       // Disabled Card button
@@ -266,7 +265,7 @@ test.describe.parallel('mdc-card', () => {
         orientation,
       });
       await cardStickersheet.createMarkupWithCombination({
-        variant,
+        variant: Object.values(VARIANTS),
       });
 
       // Selected and disabled Card button
@@ -280,7 +279,7 @@ test.describe.parallel('mdc-card', () => {
         orientation,
       });
       await cardStickersheet.createMarkupWithCombination({
-        variant,
+        variant: Object.values(VARIANTS),
       });
 
       await cardStickersheet.mountStickerSheet();
@@ -296,19 +295,17 @@ test.describe.parallel('mdc-card', () => {
      * VISUAL REGRESSION & ACCESSIBILITY
      */
     await test.step('visual-regression & accessibility', async () => {
-      await componentsPage.page.setViewportSize({ width: 800, height: 3000 });
+      await componentsPage.page.setViewportSize({ width: 1200, height: 3000 });
       await createStickerSheetBasedOnOrientation('vertical');
       await componentsPage.accessibility.checkForA11yViolations('static-card-vertical');
 
-      await componentsPage.page.setViewportSize({ width: 1600, height: 2400 });
-      await createStickerSheetBasedOnOrientation('horizontal');
-      await componentsPage.accessibility.checkForA11yViolations('static-card-horizontal');
-
-      await componentsPage.page.setViewportSize({ width: 1200, height: 3000 });
       await createStickerSheetBasedOnOrientation('vertical', interactiveChildren);
       await componentsPage.accessibility.checkForA11yViolations('interactive-card-vertical');
 
       await componentsPage.page.setViewportSize({ width: 2400, height: 2400 });
+      await createStickerSheetBasedOnOrientation('horizontal');
+      await componentsPage.accessibility.checkForA11yViolations('static-card-horizontal');
+
       await createStickerSheetBasedOnOrientation('horizontal', interactiveChildren);
       await componentsPage.accessibility.checkForA11yViolations('interactive-card-horizontal');
     });
