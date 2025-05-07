@@ -136,7 +136,12 @@ export const SelectWithLongOptionText: StoryObj = {
     <mdc-select placeholder="Select a color" label="Select one color">
       <mdc-option>Red</mdc-option>
       <mdc-option>Yellow</mdc-option>
-      <mdc-option>White and Black are the biggest colors on the spectrum</mdc-option>
+      <mdc-option
+        tooltip-text="White and Black are the biggest colors on the spectrum"
+        tooltip-placement="bottom"
+      >
+        White and Black are the biggest colors on the spectrum
+      </mdc-option>
       <mdc-option>Green</mdc-option>
     </mdc-select>
   `),

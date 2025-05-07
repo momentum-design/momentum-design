@@ -2,12 +2,14 @@ import type { CSSResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
 import { Component } from '../../models';
+import { KEYS } from '../../utils/keys';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
+import type { RoleType } from '../../utils/roles';
+import { ROLE } from '../../utils/roles';
 import { TAG_NAME as LISTITEM_TAGNAME } from '../listitem/listitem.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { HEADER_ID } from './list.constants';
 import styles from './list.styles';
-import { KEYS } from '../../utils/keys';
 
 /**
  * mdc-list component is used to display a group of list items. It is used as a container to wrap other list items.
@@ -30,6 +32,9 @@ class List extends DataAriaLabelMixin(Component) {
    * The header text of the list.
    */
   @property({ type: String, attribute: 'header-text', reflect: true }) headerText?: string;
+
+  /** @internal */
+  protected dataRole: RoleType = ROLE.LIST;
 
   constructor() {
     super();
@@ -127,7 +132,7 @@ class List extends DataAriaLabelMixin(Component) {
     ` : nothing;
     return html`
       <div
-        role="list"
+        role="${this.dataRole}"
         aria-labelledby="${this.headerText ? HEADER_ID : ''}"
         aria-label="${this.dataAriaLabel ?? ''}"
       >
