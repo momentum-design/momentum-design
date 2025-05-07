@@ -65,6 +65,36 @@ const render = (args: Args) => {
   `;
 };
 
+const renderSaveCancelBtns = (args: Args) => {
+  const toggleVisibility = () => {
+    const dialog = document.getElementById(args.id) as HTMLElement;
+    dialog.toggleAttribute('visible');
+  };
+  const showConfirmAlert = () => {
+    // eslint-disable-next-line no-alert
+    if (window.confirm('Are you sure you want to cancel?')) {
+      toggleVisibility();
+    }
+  };
+  return html`
+    ${createTrigger(args.triggerId, 'Click me!', toggleVisibility)}
+    ${createDialog(args, html`
+      <div slot="dialog-body">
+        <p>This is the body content of the dialog.</p>
+      </div>
+      <div
+        slot="dialog-footer"
+        style="
+          display: flex;
+          gap: 0.5rem;
+        "
+      >
+        <mdc-button variant="secondary" @click="${showConfirmAlert}">Cancel</mdc-button>
+        <mdc-button variant="primary" @click="${toggleVisibility}">Save</mdc-button>
+      </div>`)}
+  `;
+};
+
 const renderNoFooter = (args: Args) => {
   const toggleVisibility = () => {
     const dialog = document.getElementById(args.id) as HTMLElement;
@@ -209,5 +239,14 @@ export const withoutHeaderOrFooter: StoryObj = {
   render: renderNoFooter,
   args: {
     size: DIALOG_SIZE[0],
+  },
+};
+
+export const withSaveCancelButtons: StoryObj = {
+  render: renderSaveCancelBtns,
+  args: {
+    ...commonProperties,
+    ...headerDescriptionProperties,
+    size: DEFAULTS.SIZE,
   },
 };
