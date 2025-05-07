@@ -9,6 +9,7 @@ import type { DialogRole, DialogSize } from './dialog.types';
 import { DialogUtils } from './dialog.utils';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { DialogEventManager } from './dialog.events';
+import { BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
 
 /**
  * Dialog component is a modal dialog that can be used to display information or prompt the user for input.
@@ -141,6 +142,7 @@ class Dialog extends FocusTrapMixin(Component) {
 
   constructor() {
     super();
+    /** @internal */
     this.utils = new DialogUtils(this);
   }
 
@@ -287,9 +289,9 @@ class Dialog extends FocusTrapMixin(Component) {
     : nothing}
       <mdc-button
         part="dialog-close-btn"
-        prefix-icon="cancel-bold"
-        variant="tertiary"
-        size="20"
+        prefix-icon="${DEFAULTS.CANCEL_ICON}"
+        variant="${BUTTON_VARIANTS.TERTIARY}"
+        size="${ICON_BUTTON_SIZES[20]}"
         aria-label="${ifDefined(this.closeButtonAriaLabel) || ''}"
         @click="${this.hideDialog}"
       ></mdc-button>

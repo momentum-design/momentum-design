@@ -171,7 +171,6 @@ const meta: Meta = {
     ]),
     ...hideControls([
       'shouldWrapFocus',
-      'utils',
     ]),
   },
 };
