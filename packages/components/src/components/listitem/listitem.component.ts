@@ -24,6 +24,11 @@ import type { ListItemVariants } from './listitem.types';
  * Based on the leading/trailing slot, the position of the controls and text can be adjusted. <br/>
  * Please use mdc-list as a parent element even when there is only listitem for a11y purpose.
  *
+ * By providing the tooltip-text attribute, a tooltip will be displayed on hover of the listitem.
+ * The placement of the tooltip can be adjusted using the tooltip-placement attribute.
+ * This will be helpful when the listitem text is truncated or
+ * when you want to display additional information about the listitem.
+ *
  * @tagname mdc-listitem
  *
  * @dependency mdc-text
