@@ -119,10 +119,10 @@ test('mdc-optgroup', async ({ componentsPage }) => {
         await componentsPage.actionability.pressTab();
         await expect(optionGroup.locator('mdc-option[label="Florida"]')).toBeFocused();
 
-        await componentsPage.page.keyboard.press('Shift+Tab');
+        await componentsPage.actionability.pressShiftTab();
         await expect(optionGroup.locator('mdc-option[label="Texas"]')).toBeFocused();
 
-        await componentsPage.page.keyboard.press('Shift+Tab');
+        await componentsPage.actionability.pressShiftTab();
         await expect(optionGroup.locator('mdc-option[label="California"]')).toBeFocused();
       });
     });
