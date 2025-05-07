@@ -13,6 +13,8 @@ import styles from './option.styles';
 /**
  * option component, which is used as a list item in a select component.<br/>
  * We can pass an icon which will be displayed in leading position of the option label text.
+ * We can pass a tooltip which will be displayed on hover of the option label text.
+ * The tooltip will be helpful for a long label text which is truncated with ellipsis.
  *
  * @dependency mdc-icon
  * @dependency mdc-text
