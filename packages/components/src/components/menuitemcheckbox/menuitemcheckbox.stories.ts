@@ -3,10 +3,10 @@ import '.';
 import { html } from 'lit';
 import type { TemplateResult } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { ARIA_CHECKED_STATES, INDICATOR } from './menuitemcheckbox.constants';
-import { hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { INDICATOR } from './menuitemcheckbox.constants';
+import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
 
-const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style="width: 15rem;">${htmlString}
+const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style="width: 25rem;">${htmlString}
 </div>`;
 
 const render = (args: Args) => wrapWithDiv(html`
@@ -16,8 +16,6 @@ const render = (args: Args) => wrapWithDiv(html`
     label="${args.label}"
     indicator="${args.indicator}"
     secondary-label="${args['secondary-label']}"
-    ?checkmark="${args.checkmark}"
-    checkmark-placement="${args['checkmark-placement']}"
   >
     ${args.children}
   </mdc-menuitemcheckbox>`);
@@ -32,8 +30,7 @@ const meta: Meta = {
   },
   argTypes: {
     'aria-checked': {
-      control: 'select',
-      options: Object.values(ARIA_CHECKED_STATES),
+      control: 'boolean',
     },
     indicator: {
       control: 'select',
@@ -47,13 +44,6 @@ const meta: Meta = {
     },
     'secondary-label': {
       control: 'text',
-    },
-    checkmark: {
-      control: 'boolean',
-    },
-    'checkmark-placement': {
-      control: 'select',
-      options: ['leading', 'trailing'],
     },
     ...hideControls([
       'data-aria-label',
@@ -78,6 +68,11 @@ const meta: Meta = {
       '--mdc-listitem-disabled-color',
       '--mdc-listitem-column-gap',
     ]),
+    ...disableControls([
+      'change',
+      'click',
+      'focus',
+    ]),
     ...classArgType,
     ...styleArgType,
   },
@@ -88,9 +83,7 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     indicator: 'checkbox',
-    checkmark: false,
-    'checkmark-placement': 'leading',
-    'aria-checked': 'false',
+    'aria-checked': false,
     label: 'Menu Item',
     disabled: false,
     'secondary-label': '',
@@ -118,27 +111,34 @@ export const CheckboxWithMenuItem: StoryObj = {
   },
 };
 
-export const CheckMarkVariants: StoryObj = {
-  render: () => wrapWithDiv(html`
-    <mdc-menuitemcheckbox label="Menu Item 1" checkmark checkmark-placement="leading">
-      <mdc-icon slot="leading-controls" name="add-option-bold"></mdc-icon>
-    </mdc-menuitemcheckbox>
-  `),
+export const CheckmarkWithMenuItem: StoryObj = {
+  args: {
+    'aria-checked': 'true',
+    indicator: 'checkmark',
+    label: 'Menu Item With Checkmark',
+    disabled: false,
+    'secondary-label': '',
+  },
 };
 
 export const AllVariants: StoryObj = {
   render: () => wrapWithDiv(html`
-    <mdc-menuitemcheckbox aria-checked="true" label="Selected Menu Item"></mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox disabled aria-checked="true" label="Disabled Selected Menu Item"></mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox aria-checked="false" label="Unselected Menu Item"></mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox disabled aria-checked="false" label="Disabled Unselected Menu Item"></mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox aria-checked="mixed" label="Indeterminate Menu Item"></mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox disabled aria-checked="mixed" label="Disabled Indeterminate Menu Item"></mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox aria-checked="true" indicator="toggle" label="Selected Menu Item"></mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox disabled aria-checked="true" indicator="toggle" label="Disabled Selected Menu Item">
+    <mdc-menuitemcheckbox aria-checked="true" label="Selected Checkbox"></mdc-menuitemcheckbox>
+    <mdc-menuitemcheckbox disabled aria-checked="true" label="Disabled Selected Checkbox"></mdc-menuitemcheckbox>
+    <mdc-menuitemcheckbox aria-checked="false" label="Unselected Checkbox"></mdc-menuitemcheckbox>
+    <mdc-menuitemcheckbox disabled aria-checked="false" label="Disabled Unselected Checkbox"></mdc-menuitemcheckbox>
+    <mdc-menuitemcheckbox aria-checked="true" indicator="toggle" label="Selected Toggle"></mdc-menuitemcheckbox>
+    <mdc-menuitemcheckbox disabled aria-checked="true" indicator="toggle" label="Disabled Selected Toggle">
     </mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox aria-checked="false" indicator="toggle" label="Unselected Menu Item"></mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox disabled aria-checked="false" indicator="toggle" label="Disabled Unselected Menu Item">
+    <mdc-menuitemcheckbox aria-checked="false" indicator="toggle" label="Unselected Toggle"></mdc-menuitemcheckbox>
+    <mdc-menuitemcheckbox disabled aria-checked="false" indicator="toggle" label="Disabled Unselected Toggle">
+    </mdc-menuitemcheckbox>
+    <mdc-menuitemcheckbox aria-checked="true" indicator="checkmark" label="Selected Checkmark"></mdc-menuitemcheckbox>
+    <mdc-menuitemcheckbox disabled aria-checked="true" indicator="checkmark" label="Disabled Selected Checkmark">
+    </mdc-menuitemcheckbox>
+    <mdc-menuitemcheckbox aria-checked="false" indicator="checkmark" label="Unselected Checkmark">
+    </mdc-menuitemcheckbox>
+    <mdc-menuitemcheckbox disabled aria-checked="false" indicator="checkmark" label="Disabled Unselected Checkmark">
     </mdc-menuitemcheckbox>
     <mdc-menuitemcheckbox
       aria-checked="true" label="Selected Menu Item With Secondary Label" secondary-label="Secondary Label"

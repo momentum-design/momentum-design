@@ -2,26 +2,26 @@ import type { CSSResult, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import MenuItem from '../menuitem/menuitem.component';
-import { TYPE } from '../text/text.constants';
 import { TOGGLE_SIZE } from '../toggle/toggle.constants';
-import { ARIA_CHECKED_STATES, DEFAULTS, INDICATOR, CHECKMARK_PLACEMENT } from './menuitemcheckbox.constants';
-import type { AriaCheckedStates, Indicator, CheckmarkPlacement } from './menuitemcheckbox.types';
+import { ARIA_CHECKED_STATES, DEFAULTS, INDICATOR } from './menuitemcheckbox.constants';
+import styles from './menuitemcheckbox.styles';
+import type { AriaCheckedStates, Indicator } from './menuitemcheckbox.types';
 
 /**
  * A menuitemcheckbox component is a checkable menuitem.
  * There should be no focusable descendants inside this menuitemcheckbox component.
  *
- * The `aria-checked` menuitemcheckbox attribute is used to indicate that the menuitemcheckbox is
- * checked, indeterminate or not.
+ * The `aria-checked` menuitemcheckbox attribute is used to indicate that the menuitemcheckbox is checked or not.
  *
- * The `indicator` attribute is used to differentiate between <b>checkbox</b> and <b>toggle</b>.
+ * The `indicator` attribute is used to differentiate between <b>checkbox</b>, <b>checkmark</b> and <b>toggle</b>.
  * By default the `indicator` is set to <b>checkbox</b>.<br/>
  *
- * The checkbox will be positioned on the leading side of the menuitem label and
- * the toggle will be positioned on the trailing side.
+ * The checkbox will always be positioned on the leading side of the menuitem label and
+ * the toggle and checkmark will always be positioned on the trailing side.
  *
- * The checkbox will have the possible states of `true`, `false` or `mixed`, whereas
- * the toggle will only have the state of `true` or `false` and not `mixed`.
+ * The checkbox will have the possible states of `true` or `false`.
+ * If the indicator is set to <b>checkmark</b> and if the `aria-checked` attribute is set to `true`,
+ * then the checkmark will be displayed. if not, then no indicator will be displayed.
  *
  * If your want only one item in a group to be checked, consider using menuitemradio component.
  *
@@ -29,7 +29,7 @@ import type { AriaCheckedStates, Indicator, CheckmarkPlacement } from './menuite
  *
  * @dependency mdc-staticcheckbox
  * @dependency mdc-statictoggle
- * @dependency mdc-text
+ * @dependency mdc-icon
  *
  * @tagname mdc-menuitemcheckbox
  *
@@ -39,7 +39,7 @@ import type { AriaCheckedStates, Indicator, CheckmarkPlacement } from './menuite
  */
 class MenuItemCheckbox extends MenuItem {
   /**
-   * The aria-checked attribute is used to indicate that the menuitemcheckbox is checked, indeterminate or not.
+   * The aria-checked attribute is used to indicate that the menuitemcheckbox is checked or not.
    * @default 'false'
    */
   @property({ type: String, reflect: true, attribute: 'aria-checked' })
@@ -51,19 +51,6 @@ class MenuItemCheckbox extends MenuItem {
    */
   @property({ type: String, reflect: true }) indicator: Indicator = DEFAULTS.INDICATOR;
 
-  /**
-   * Checkmark
-   * @default false
-   */
-  @property({ type: Boolean, reflect: true }) checkmark = false;
-
-  /**
-   * Checkmark placement
-   * @default 'leading'
-   */
-  @property({ type: String, reflect: true, attribute: 'checkmark-placement' })
-  checkmarkPlacement: CheckmarkPlacement = DEFAULTS.CHECKMARK_PLACEMENT;
-
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = 'menuitemcheckbox';
@@ -74,14 +61,13 @@ class MenuItemCheckbox extends MenuItem {
       return nothing;
     }
     return html`
-    <div part="leading">
-      <mdc-staticcheckbox
-        slot="leading-controls"
-        ?checked="${this.ariaChecked === ARIA_CHECKED_STATES.TRUE}"
-        ?indeterminate="${this.ariaChecked === ARIA_CHECKED_STATES.MIXED}"
-        ?disabled="${this.disabled}"
-      ></mdc-staticcheckbox>
-    </div>
+      <div part="leading">
+        <mdc-staticcheckbox
+          slot="leading-controls"
+          ?checked="${this.ariaChecked === ARIA_CHECKED_STATES.TRUE}"
+          ?disabled="${this.disabled}"
+        ></mdc-staticcheckbox>
+      </div>
   `;
   }
 
@@ -101,58 +87,31 @@ class MenuItemCheckbox extends MenuItem {
     `;
   }
 
-  private getCheckmarkIcon(slotName: string): TemplateResult | typeof nothing {
-    if (!this.checkmark) {
+  private getCheckmarkIcon(): TemplateResult | typeof nothing {
+    if (this.indicator !== INDICATOR.CHECKMARK || this.ariaChecked === ARIA_CHECKED_STATES.FALSE) {
       return nothing;
     }
     return html`
-      <mdc-icon
-        slot="${slotName}"
-        name="check-bold"
-        style="--mdc-icon-fill-color: var(--mds-color-theme-control-active-normal)"
-      ></mdc-icon>
+      <div part="trailing">
+        <mdc-icon
+          slot="trailing-controls"
+          name="check-bold"
+          part="checkmark-icon"
+        ></mdc-icon>
+      </div>
     `;
-  }
-
-  private getLeadingCheckmarkIcon(): TemplateResult | typeof nothing {
-    if (this.checkmarkPlacement !== CHECKMARK_PLACEMENT.LEADING) {
-      return nothing;
-    }
-    return this.getCheckmarkIcon('leading-controls');
-  }
-
-  private getTrailingCheckmarkIcon(): TemplateResult | typeof nothing {
-    if (this.checkmarkPlacement !== CHECKMARK_PLACEMENT.TRAILING || this.indicator === INDICATOR.TOGGLE) {
-      return nothing;
-    }
-    return this.getCheckmarkIcon('trailing-controls');
   }
 
   public override render() {
     return html`
-      <div part="leading">
-        ${this.getLeadingCheckmarkIcon()}
-        ${this.staticCheckbox()}
-        <slot name="leading-controls"></slot>
-        <div part="leading-text">
-          ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
-          ${this.getText('leading-text-secondary-label', TYPE.BODY_SMALL_REGULAR, this.secondaryLabel)}
-          ${this.getText('leading-text-tertiary-label', TYPE.BODY_SMALL_REGULAR, this.tertiaryLabel)}
-        </div>
-      </div>
-      <div part="trailing">
-        <div part="trailing-text">
-          ${this.getText('trailing-text-side-header', TYPE.BODY_MIDSIZE_REGULAR, this.sideHeaderText)}
-          ${this.getText('trailing-text-subline', TYPE.BODY_SMALL_REGULAR, this.sublineText)}
-        </div>
-        ${this.staticToggle()}
-      ${this.getTrailingCheckmarkIcon()}
-        <slot name="trailing-controls"></slot>
-      </div>
+      ${this.staticCheckbox()}
+      ${super.render()}
+      ${this.staticToggle()}
+      ${this.getCheckmarkIcon()}
     `;
   }
 
-  public static override styles: Array<CSSResult> = [...MenuItem.styles];
+  public static override styles: Array<CSSResult> = [...MenuItem.styles, ...styles];
 }
 
 export default MenuItemCheckbox;
