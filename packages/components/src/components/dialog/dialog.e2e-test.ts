@@ -62,6 +62,7 @@ const setup = async (args: SetupOptions) => {
 const dialogWithAllSlots = {
   id: 'dialog',
   triggerId: 'trigger-btn',
+  ariaLabel: 'dialog',
   visible: true,
   closeButtonAriaLabel: 'Close button label',
   headerText: 'Dialog Header',
@@ -119,6 +120,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
       id: 'dialog',
       triggerId: 'trigger-btn',
       closeButtonAriaLabel: 'Close button label',
+      ariaLabel: 'dialog-attribute',
     });
 
     await test.step('default attributes', async () => {
@@ -130,8 +132,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
     });
 
     await test.step('accessibility attributes', async () => {
-      await expect(dialog).toHaveAttribute('aria-labelledby', 'trigger-btn');
-      await expect(dialog).toHaveAttribute('aria-modal');
+      await expect(dialog).toHaveAttribute('aria-label', 'dialog-attribute');
       await expect(dialog).not.toHaveAttribute('aria-expanded');
       await expect(dialog).not.toHaveAttribute('aria-describedby');
 
