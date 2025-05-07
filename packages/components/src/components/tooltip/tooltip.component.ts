@@ -1,11 +1,12 @@
+import type { PropertyValues } from '@lit/reactive-element';
+import type { CSSResult } from 'lit';
 import { property, queryAssignedNodes } from 'lit/decorators.js';
 import { v4 as uuidv4 } from 'uuid';
-import type { CSSResult } from 'lit';
-import type { PropertyValues } from '@lit/reactive-element';
-import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
+import { ROLE } from '../../utils/roles';
 import Popover from '../popover/popover.component';
-import styles from './tooltip.styles';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
+import styles from './tooltip.styles';
 import type { TooltipType } from './tooltip.types';
 
 /**
@@ -44,14 +45,14 @@ class Tooltip extends Popover {
   override connectedCallback(): void {
     super.connectedCallback();
     this.backdrop = false;
-    this.delay = DEFAULTS.DELAY;
+    this.delay = this.delay || DEFAULTS.DELAY;
     this.focusTrap = false;
     this.hideOnBlur = true;
     this.hideOnEscape = true;
     this.interactive = false;
-    this.offset = DEFAULTS.OFFSET;
-    this.placement = DEFAULTS.PLACEMENT;
-    this.role = 'tooltip';
+    this.offset = this.offset || DEFAULTS.OFFSET;
+    this.placement = this.placement || DEFAULTS.PLACEMENT;
+    this.role = ROLE.TOOLTIP;
     this.trigger = 'mouseenter focusin';
 
     this.enabledFocusTrap = false;
