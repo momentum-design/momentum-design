@@ -14,9 +14,7 @@ export interface AvatarComponentMixinInterface {
   isTyping: boolean;
 }
 
-export const AvatarComponentMixin = <T extends Constructor<Component>>(
-  superClass: T,
-) => {
+export const AvatarComponentMixin = <T extends Constructor<Component>>(superClass: T) => {
   class InnerMixinClass extends superClass {
     /**
      * The src is the url which will be used to display the avatar.

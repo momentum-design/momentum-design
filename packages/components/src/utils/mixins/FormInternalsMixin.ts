@@ -1,80 +1,85 @@
+/* eslint-disable max-classes-per-file */
 import { LitElement } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { v4 as uuidv4 } from 'uuid';
 import type { Constructor } from './index.types';
 
 export interface AssociatedFormControl {
-    autofocus: boolean;
-    disabled?: boolean;
-    name: string;
-    value: string | string[];
+  autofocus: boolean;
+  disabled?: boolean;
+  name: string;
+  value: string | string[];
 
-    pattern?: string;
-    min?: number | string;
-    max?: number | string;
-    step?: number;
-    required?: boolean;
-    minLength?: number;
-    maxLength?: number;
-    validationMessage?: string;
+  pattern?: string;
+  min?: number | string;
+  max?: number | string;
+  step?: number;
+  required?: boolean;
+  minLength?: number;
+  maxLength?: number;
+  validationMessage?: string;
 
-    readonly form: HTMLFormElement | null;
-    readonly validity: ValidityState;
-    readonly willValidate: boolean;
+  readonly form: HTMLFormElement | null;
+  readonly validity: ValidityState;
+  readonly willValidate: boolean;
 
-    checkValidity(): boolean;
-    reportValidity(): boolean;
+  checkValidity(): boolean;
+  reportValidity(): boolean;
 
-    formDisabledCallback?(disabled: boolean): void;
-    formResetCallback(): void;
-    formStateRestoreCallback(
-      state: string | FormData | File,
-      mode: 'restore' | 'autocomplete'
-    ): void;
-  }
-
-export interface FormInternalsMixinInterface {
-    name: string;
-    value: string;
-    form: HTMLFormElement | null;
-    validity: ValidityState;
-    validationMessage: string;
-    willValidate: boolean;
-    internals: ElementInternals;
-    inputElement: HTMLInputElement | HTMLTextAreaElement;
-    setValidity(): void;
-    checkValidity(): boolean;
-    reportValidity(): boolean;
-
+  formDisabledCallback?(disabled: boolean): void;
+  formResetCallback(): void;
+  formStateRestoreCallback(state: string | FormData | File, mode: 'restore' | 'autocomplete'): void;
 }
 
-export const FormInternalsMixin = <T extends Constructor<LitElement>>(
-  superClass: T,
-) => {
-  class InnerMixinClass extends superClass {
-      /**
-   * Indicates the name of the component group.
-   * They are used to group elements in a form together.
-   * @default ''
-   */
-      @property({ reflect: true, type: String }) name = '';
+export declare class FormInternalsMixinInterface {
+  name: string;
 
-      /**
-   * Indicates the value of the component group (ex: input, checkbox, radio, select etc...)
-   * @default ''
-   */
+  value: string;
+
+  form: HTMLFormElement | null;
+
+  validity: ValidityState;
+
+  validationMessage: string;
+
+  willValidate: boolean;
+
+  protected internals: ElementInternals;
+
+  protected inputElement: HTMLInputElement | HTMLTextAreaElement;
+
+  setValidity(): void;
+
+  checkValidity(): boolean;
+
+  reportValidity(): boolean;
+}
+
+export const FormInternalsMixin = <T extends Constructor<LitElement>>(superClass: T) => {
+  class InnerMixinClass extends superClass {
+    /**
+     * Indicates the name of the component group.
+     * They are used to group elements in a form together.
+     * @default ''
+     */
+    @property({ reflect: true, type: String }) name = '';
+
+    /**
+     * Indicates the value of the component group (ex: input, checkbox, radio, select etc...)
+     * @default ''
+     */
     @property({ reflect: true, type: String }) value = '';
 
-     /**
+    /**
      * Custom validation message that will override the default message and displayed when the input is invalid.
      */
-     @property({ reflect: true, type: String, attribute: 'validation-message' }) validationMessage?: string;
+    @property({ reflect: true, type: String, attribute: 'validation-message' }) validationMessage?: string;
 
     /** @internal */
     static formAssociated = true;
 
     /** @internal */
-    internals = this.attachInternals();
+    protected internals = this.attachInternals();
 
     /** @internal */
     get form(): HTMLFormElement | null {
@@ -97,16 +102,12 @@ export const FormInternalsMixin = <T extends Constructor<LitElement>>(
     }
 
     /**
-   * Sets the validity of the input field based on the input field's validity.
-   * @returns void
-   */
+     * Sets the validity of the input field based on the input field's validity.
+     * @returns void
+     */
     setValidity() {
       if (this.inputElement) {
-        this.internals.setValidity(
-          this.inputElement.validity,
-          this.inputElement.validationMessage,
-          this.inputElement,
-        );
+        this.internals.setValidity(this.inputElement.validity, this.inputElement.validationMessage, this.inputElement);
       }
     }
 
@@ -121,11 +122,12 @@ export const FormInternalsMixin = <T extends Constructor<LitElement>>(
     }
 
     /**
-   * @internal
-   * The input element
-   */
-    @query('input') inputElement!: HTMLInputElement | HTMLTextAreaElement;
+     * @internal
+     * The input element
+     */
+    @query('input')
+    protected inputElement!: HTMLInputElement | HTMLTextAreaElement;
   }
   // Cast return type to your mixin's interface intersected with the superClass type
-  return InnerMixinClass as Constructor<FormInternalsMixinInterface> & T;
+  return InnerMixinClass as unknown as Constructor<FormInternalsMixinInterface> & T;
 };
