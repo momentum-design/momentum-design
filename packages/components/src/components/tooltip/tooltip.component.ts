@@ -4,6 +4,7 @@ import { property, queryAssignedNodes } from 'lit/decorators.js';
 import { v4 as uuidv4 } from 'uuid';
 import { ROLE } from '../../utils/roles';
 import Popover from '../popover/popover.component';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
 import styles from './tooltip.styles';
 import type { TooltipType } from './tooltip.types';
@@ -114,6 +115,16 @@ class Tooltip extends Popover {
   }
 
   /**
+   * Updates the placement attribute if it is not a valid placement.
+   * Overriding the default from Popover
+   */
+  private onPlacementUpdated(): void {
+    if (!Object.values(POPOVER_PLACEMENT).includes(this.placement)) {
+      this.placement = DEFAULTS.PLACEMENT;
+    }
+  }
+
+  /**
    * Updates the tooltip type attribute and sets the appropriate aria props on the trigger component.
    * @param changedProperties - The changed properties.
    */
@@ -158,6 +169,9 @@ class Tooltip extends Popover {
 
     if (changedProperties.has('id')) {
       this.onIdUpdated();
+    }
+    if (changedProperties.has('placement')) {
+      this.onPlacementUpdated();
     }
     if (changedProperties.has('tooltipType')) {
       this.onTooltipTypeUpdated(changedProperties);
