@@ -42,7 +42,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.placement ? `placement="${restArgs.placement}"` : ''}
         ${restArgs.showArrow ? 'show-arrow' : ''}
         ${restArgs.triggerID ? `triggerID="${restArgs.triggerID}"` : ''}
-      ><div style="margin-right: 32px;">
+      ><div>
           The toggletip with a
           <mdc-link
             inline icon-name="placeholder-bold" href="https://www.webex.com" target="_blank" rel="noopener noreferrer"
