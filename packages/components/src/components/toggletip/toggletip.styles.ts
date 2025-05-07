@@ -23,7 +23,7 @@ const styles = css`
     color: var(--mdc-toggletip-text-color-contrast);
   }
 
-  :host::part(popover-content) {
+  :host(:dir(ltr))::part(popover-content) {
     margin-right: 2rem;
   }
 

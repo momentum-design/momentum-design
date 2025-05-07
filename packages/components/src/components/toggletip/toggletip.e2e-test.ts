@@ -265,7 +265,7 @@ const visualTestingSetup = async (componentsPage: ComponentsPage) => {
         color="tonal"
         triggerID="trigger-button1"
         visible
-      ><div style="margin-right: 32px;">
+      ><div>
           The toggletip with color tonal.
         </div>
       </mdc-toggletip>
@@ -275,7 +275,7 @@ const visualTestingSetup = async (componentsPage: ComponentsPage) => {
         color="contrast"
         triggerID="trigger-button2"
         visible
-      ><div style="margin-right: 32px;">
+      ><div>
           The toggletip with color contrast.
         </div>
       </mdc-toggletip>
