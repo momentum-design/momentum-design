@@ -2,11 +2,11 @@ import type { CSSResult } from 'lit';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
+import { ROLE } from '../../utils/roles';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
-import { ROLE } from './formfieldgroup.constants';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
-import styles from './formfieldgroup.styles';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
+import styles from './formfieldgroup.styles';
 
 /**
  * `mdc-formfieldgroup` component, groups the form field components together.
