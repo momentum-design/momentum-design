@@ -136,7 +136,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await expect(dialog).not.toHaveAttribute('aria-expanded');
       await expect(dialog).not.toHaveAttribute('aria-describedby');
 
-      const closeDialogButton = componentsPage.page.locator('.dialog-close');
+      const closeDialogButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
       await expect(closeDialogButton).toHaveAttribute('aria-label', 'Close button label');
     });
   });
@@ -160,7 +160,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await test.step('dialog should close when clicking on close button', async () => {
         const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots });
 
-        await componentsPage.page.locator('.dialog-close').click();
+        await componentsPage.page.locator('mdc-button[part="dialog-close-btn"]').click();
         await expect(dialog).not.toBeVisible();
       });
     });
@@ -172,7 +172,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
           dialog.toggleAttribute('visible');
         });
         await expect(dialog).toBeVisible();
-        const closeButton = componentsPage.page.locator('.dialog-close');
+        const closeButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
         await expect(closeButton).toBeFocused();
         await componentsPage.page.keyboard.press('Tab');
         await expect(closeButton).not.toBeFocused();
@@ -194,7 +194,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
           dialog.toggleAttribute('visible');
         });
         await expect(dialog).toBeVisible();
-        const closeButton = componentsPage.page.locator('.dialog-close');
+        const closeButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
         await expect(closeButton).toBeFocused();
         await componentsPage.page.keyboard.press('Tab');
         await expect(closeButton).not.toBeFocused();
