@@ -170,11 +170,8 @@ const meta: Meta = {
       '--mdc-dialog-width',
     ]),
     ...hideControls([
-      'ariaLabelledBy',
-      'triggerElement',
-      'enabledPreventScroll',
-      'enabledFocusTrap',
       'shouldWrapFocus',
+      'utils',
     ]),
   },
 };

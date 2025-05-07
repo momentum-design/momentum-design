@@ -314,7 +314,7 @@ const meta: Meta = {
 
 export default meta;
 
-export const Default: StoryObj = {
+export const Example: StoryObj = {
   args: {
     id: 'popover',
     triggerID: 'popover-trigger',

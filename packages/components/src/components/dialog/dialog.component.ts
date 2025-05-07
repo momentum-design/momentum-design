@@ -91,7 +91,7 @@ class Dialog extends FocusTrapMixin(Component) {
    * labeling the dialog for accessibility
    */
   @property({ type: String, reflect: true, attribute: 'aria-labelledby' })
-  ariaLabelledBy: string | null = null;
+  ariaLabelledby: string | null = null;
 
   /**
    * Defines a string value for the aria-label attribute when header is not used
@@ -130,6 +130,7 @@ class Dialog extends FocusTrapMixin(Component) {
   @property({ type: String, reflect: true })
   override role: DialogRole = DEFAULTS.ROLE;
 
+  /** @internal */
   public triggerElement: HTMLElement | null = null;
 
   /** @internal */
@@ -260,7 +261,6 @@ class Dialog extends FocusTrapMixin(Component) {
       this.setFocusableElements?.();
       await this.updateComplete;
       this.setInitialFocus?.();
-      this.utils.positionCloseButton();
     }
   }
 
@@ -286,7 +286,7 @@ class Dialog extends FocusTrapMixin(Component) {
       </div>`
     : nothing}
       <mdc-button
-        class="dialog-close"
+        part="dialog-close-btn"
         prefix-icon="cancel-bold"
         variant="tertiary"
         size="20"

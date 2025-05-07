@@ -1,3 +1,5 @@
+import '../button';
+import '../text';
 import Dialog from './dialog.component';
 import { TAG_NAME } from './dialog.constants';
 

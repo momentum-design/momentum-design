@@ -40,13 +40,8 @@ const styles = css`
 
   :host {
     width: var(--mdc-dialog-width);
+    max-width: 100%;
   }
-
-  @media (max-width: 432px) {
-      :host {
-          width: 100%;
-      }
-  }  
     
   :host::part(header),
   :host::part(body),
@@ -83,10 +78,16 @@ const styles = css`
     justify-content: flex-end;
   }
 
-  .dialog-close {
+  :host::part(dialog-close-btn) {
     position: absolute;
     top: 1rem;
+    right: 1rem;
     cursor: pointer;
+  }
+  
+  :host(:dir(rtl))::part(dialog-close-btn) {
+    right: auto;
+    left: 1rem;
   }
     
   mdc-text::part(text) {
