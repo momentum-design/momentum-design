@@ -205,10 +205,13 @@ export const ListWithLongText: StoryObj = {
       <mdc-listitem
         label="A long lengthy text with small secondary label"
         secondary-label="a small secondary label"
+        tooltip-text="A long lengthy text with small secondary label"
       ></mdc-listitem>
       <mdc-listitem
         label="A small primary label"
         secondary-label="a lengthy secondary label with a small label"
+        tooltip-text="A small primary label"
+        tooltip-placement="bottom"
       ></mdc-listitem>
       <mdc-listitem label="A short text"></mdc-listitem>
     </div>

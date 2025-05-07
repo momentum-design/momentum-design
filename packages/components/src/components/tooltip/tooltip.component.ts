@@ -1,13 +1,12 @@
+import type { PropertyValues } from '@lit/reactive-element';
+import type { CSSResult } from 'lit';
 import { property, queryAssignedNodes } from 'lit/decorators.js';
 import { v4 as uuidv4 } from 'uuid';
-import type { CSSResult } from 'lit';
-import type { PropertyValues } from '@lit/reactive-element';
-import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
-import Popover from '../popover/popover.component';
-import styles from './tooltip.styles';
-import { POPOVER_PLACEMENT } from '../popover/popover.constants';
-import type { TooltipType } from './tooltip.types';
 import { ROLE } from '../../utils/roles';
+import Popover from '../popover/popover.component';
+import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
+import styles from './tooltip.styles';
+import type { TooltipType } from './tooltip.types';
 
 /**
  * A tooltip is triggered by mouse hover or by keyboard focus
@@ -45,13 +44,13 @@ class Tooltip extends Popover {
   override connectedCallback(): void {
     super.connectedCallback();
     this.backdrop = false;
-    this.delay = DEFAULTS.DELAY;
+    this.delay = this.delay || DEFAULTS.DELAY;
     this.focusTrap = false;
     this.hideOnBlur = true;
     this.hideOnEscape = true;
     this.interactive = false;
-    this.offset = DEFAULTS.OFFSET;
-    this.placement = DEFAULTS.PLACEMENT;
+    this.offset = this.offset || DEFAULTS.OFFSET;
+    this.placement = this.placement || DEFAULTS.PLACEMENT;
     this.role = ROLE.TOOLTIP;
     this.trigger = 'mouseenter focusin';
 
@@ -115,16 +114,6 @@ class Tooltip extends Popover {
   }
 
   /**
-   * Updates the placement attribute if it is not a valid placement.
-   * Overriding the default from Popover
-   */
-  private onPlacementUpdated(): void {
-    if (!Object.values(POPOVER_PLACEMENT).includes(this.placement)) {
-      this.placement = DEFAULTS.PLACEMENT;
-    }
-  }
-
-  /**
    * Updates the tooltip type attribute and sets the appropriate aria props on the trigger component.
    * @param changedProperties - The changed properties.
    */
@@ -169,9 +158,6 @@ class Tooltip extends Popover {
 
     if (changedProperties.has('id')) {
       this.onIdUpdated();
-    }
-    if (changedProperties.has('placement')) {
-      this.onPlacementUpdated();
     }
     if (changedProperties.has('tooltipType')) {
       this.onTooltipTypeUpdated(changedProperties);
