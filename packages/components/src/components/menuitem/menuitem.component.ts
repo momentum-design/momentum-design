@@ -1,4 +1,5 @@
 import type { CSSResult } from 'lit';
+import { ROLE } from '../../utils/roles';
 import ListItem from '../listitem/listitem.component';
 import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
 
@@ -23,7 +24,7 @@ import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
 class MenuItem extends ListItem {
   override connectedCallback(): void {
     super.connectedCallback();
-    this.role = 'menuitem';
+    this.role = ROLE.MENUITEM;
 
     this.variant = LISTITEM_VARIANTS.INSET_RECTANGLE;
   }
