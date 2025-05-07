@@ -1,12 +1,17 @@
+/* eslint-disable max-classes-per-file */
 import { property } from 'lit/decorators.js';
 import type { Constructor } from './index.types';
 import { DEFAULTS as POPOVER_DEFAULTS } from '../../components/popover/popover.constants';
 
-export interface FocusTrapClassInterface {
+export declare class FocusTrapClassInterface {
   enabledFocusTrap: boolean;
+
   enabledPreventScroll: boolean;
+
   setFocusableElements(): void;
+
   setInitialFocus(prefferableElement?: number): void;
+
   deactivateFocusTrap(): void;
 }
 
@@ -43,7 +48,7 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
     /**
      * Deactivate the focus trap.
      */
-    deactivateFocusTrap() {
+    public deactivateFocusTrap() {
       this.enabledFocusTrap = false;
       this.enabledPreventScroll = false;
       this.focusTrapIndex = -1;
@@ -352,5 +357,5 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
     }
   }
 
-  return FocusTrap as Constructor<HTMLElement & FocusTrapClassInterface> & T;
+  return FocusTrap as unknown as Constructor<HTMLElement & FocusTrapClassInterface> & T;
 };
