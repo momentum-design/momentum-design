@@ -1,4 +1,4 @@
-import type { CSSResult, PropertyValues } from 'lit';
+import type { CSSResult } from 'lit';
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
 import MenuItem from '../menuitem/menuitem.component';
@@ -8,12 +8,12 @@ import { AriaChecked } from './menuitemradio.types';
 
 /**
  * A menuitemradio component is a checkable menuitem that is used in a menu.
- * An menuitemradio should be checked only one at a time. <br/>
+ * A menuitemradio should be checked only one at a time. <br/>
  * There should be no focusable descendants inside this menuitemradio component.
  *
  * The `aria-checked` menuitemradio attribute is used to indicate that the menuitemradio is checked or not.
  *
- * If your want more than one item in a group to be checked, consider using menuitemcheckbox component.
+ * If you want more than one item in a group to be checked, consider using menuitemcheckbox component.
  *
  * If a menuitemradio is disabled, then the `aria-disabled` attribute is set to `true`.
  *
@@ -37,14 +37,6 @@ class MenuItemRadio extends MenuItem {
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = 'menuitemradio';
-  }
-
-  override update(changedProperties: PropertyValues): void {
-    super.update(changedProperties);
-
-    if (changedProperties.has('ariaChecked')) {
-      this.setAttribute('aria-checked', `${this.ariaChecked}`);
-    }
   }
 
   public override render() {

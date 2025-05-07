@@ -11,7 +11,7 @@ import type { AriaCheckedStates, Indicator } from './menuitemcheckbox.types';
  * A menuitemcheckbox component is a checkable menuitem.
  * There should be no focusable descendants inside this menuitemcheckbox component.
  *
- * The `aria-checked` menuitemcheckbox attribute is used to indicate that the menuitemcheckbox is checked or not.
+ * The `aria-checked` attribute indicates whether the menuitemcheckbox is checked or not.
  *
  * The `indicator` attribute is used to differentiate between <b>checkbox</b>, <b>checkmark</b> and <b>toggle</b>.
  * By default the `indicator` is set to <b>checkbox</b>.<br/>
@@ -23,7 +23,7 @@ import type { AriaCheckedStates, Indicator } from './menuitemcheckbox.types';
  * If the indicator is set to <b>checkmark</b> and if the `aria-checked` attribute is set to `true`,
  * then the checkmark will be displayed. if not, then no indicator will be displayed.
  *
- * If your want only one item in a group to be checked, consider using menuitemradio component.
+ * If you want only one item in a group to be checked, consider using menuitemradio component.
  *
  * If a menuitemcheckbox is disabled, then the `aria-disabled` attribute is set to `true`.
  *
@@ -32,6 +32,8 @@ import type { AriaCheckedStates, Indicator } from './menuitemcheckbox.types';
  * @dependency mdc-icon
  *
  * @tagname mdc-menuitemcheckbox
+ *
+ * @cssproperty --mdc-checkmark-indicator-color - Allows customization of the checkmark indicator color
  *
  * @event change - (React: onChange) This event is dispatched when the menuitemcheckbox changes.
  * @event click - (React: onClick) This event is dispatched when the menuitemcheckbox is clicked.

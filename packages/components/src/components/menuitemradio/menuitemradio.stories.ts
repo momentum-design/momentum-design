@@ -3,7 +3,7 @@ import type { TemplateResult } from 'lit';
 import { html } from 'lit';
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideAllControls } from '../../../config/storybook/utils';
+import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style="width: 25rem;">${htmlString}
 </div>`;
@@ -37,6 +37,34 @@ const meta: Meta = {
     'secondary-label': {
       control: 'text',
     },
+    ...hideControls([
+      'data-aria-label',
+      'variant',
+      'tertiary-label',
+      'side-header-text',
+      'subline-text',
+      'keydown',
+      'keyup',
+      'leading-controls',
+      'leading-text-primary-label',
+      'leading-text-secondary-label',
+      'leading-text-tertiary-label',
+      'trailing-text-side-header',
+      'trailing-text-subline',
+      'trailing-controls',
+      '--mdc-listitem-default-background-color',
+      '--mdc-listitem-background-color-hover',
+      '--mdc-listitem-background-color-active',
+      '--mdc-listitem-primary-label-color',
+      '--mdc-listitem-secondary-label-color',
+      '--mdc-listitem-disabled-color',
+      '--mdc-listitem-column-gap',
+    ]),
+    ...disableControls([
+      'change',
+      'click',
+      'focus',
+    ]),
     ...classArgType,
     ...styleArgType,
   },
