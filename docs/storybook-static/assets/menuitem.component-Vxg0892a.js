@@ -1,0 +1,1 @@
+import{R as c}from"./roles-DCpIf2k8.js";import{a as t,L as e}from"./listitem.component-DCWpekq1.js";const s=class s extends t{connectedCallback(){super.connectedCallback(),this.role=c.MENUITEM,this.variant=e.INSET_RECTANGLE}};s.styles=[...t.styles];let a=s;export{a as M};
