@@ -1,6 +1,7 @@
 import type { CSSResult } from 'lit';
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
+import { ROLE } from '../../utils/roles';
 import MenuItem from '../menuitem/menuitem.component';
 import { TYPE } from '../text/text.constants';
 import { ARIA_CHECKED_STATES } from './menuitemradio.constants';
@@ -36,7 +37,7 @@ class MenuItemRadio extends MenuItem {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.role = 'menuitemradio';
+    this.role = ROLE.MENUITEMRADIO;
   }
 
   public override render() {

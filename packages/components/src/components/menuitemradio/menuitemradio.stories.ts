@@ -7,8 +7,7 @@ import { disableControls, hideAllControls, hideControls } from '../../../config/
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { ARIA_CHECKED_STATES } from './menuitemradio.constants';
 
-const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style="width: 25rem;">${htmlString}
-</div>`;
+const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style="width: 25rem;">${htmlString}</div>`;
 
 const render = (args: Args) => wrapWithDiv(html`
   <mdc-menuitemradio

@@ -1,6 +1,7 @@
 import type { CSSResult, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
+import { ROLE } from '../../utils/roles';
 import MenuItem from '../menuitem/menuitem.component';
 import { TYPE } from '../text/text.constants';
 import { TOGGLE_SIZE } from '../toggle/toggle.constants';
@@ -56,7 +57,7 @@ class MenuItemCheckbox extends MenuItem {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.role = 'menuitemcheckbox';
+    this.role = ROLE.MENUITEMCHECKBOX;
   }
 
   private staticCheckbox(): TemplateResult | typeof nothing {
