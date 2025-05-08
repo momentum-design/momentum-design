@@ -82,6 +82,11 @@ const styles = css`
     z-index: 9999;
   }
 
+  :host(:dir(rtl)) .popover-close {
+    right: auto;
+    left: 0.75rem;
+  }
+
   .popover-arrow[data-side='top'] {
     border-top: none;
     border-left: none;
