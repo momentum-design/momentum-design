@@ -71,6 +71,7 @@ const meta: Meta = {
       '--mdc-listitem-secondary-label-color',
       '--mdc-listitem-disabled-color',
       '--mdc-listitem-column-gap',
+      '--mdc-listitem-padding-left-and-right',
       'default',
     ]),
     ...disableControls([
