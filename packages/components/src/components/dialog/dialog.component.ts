@@ -190,7 +190,7 @@ class Dialog extends FocusTrapMixin(Component) {
     super.updated(changedProperties);
 
     if (changedProperties.has('visible')) {
-      const oldValue = (changedProperties.get('visible') as boolean | undefined) || false;
+      const oldValue = (changedProperties.get('visible') as boolean | undefined);
       await this.isOpenUpdated(oldValue, this.visible);
     }
     if (changedProperties.has('zIndex')) {
@@ -219,7 +219,7 @@ class Dialog extends FocusTrapMixin(Component) {
    * @param oldValue - The old value of the visible property.
    * @param newValue - The new value of the visible property.
    */
-  private async isOpenUpdated(oldValue: boolean, newValue: boolean) {
+  private async isOpenUpdated(oldValue: boolean | undefined, newValue: boolean) {
     if (oldValue === newValue || !this.triggerElement) {
       return;
     }
