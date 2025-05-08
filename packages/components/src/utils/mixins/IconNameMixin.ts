@@ -7,9 +7,7 @@ export interface IconNameMixinInterface {
   iconName: IconNames;
 }
 
-export const IconNameMixin = <T extends Constructor<LitElement>>(
-  superClass: T,
-) => {
+export const IconNameMixin = <T extends Constructor<LitElement>>(superClass: T) => {
   class InnerMixinClass extends superClass {
     /**
      * Name of the icon (= filename).
