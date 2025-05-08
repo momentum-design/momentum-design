@@ -1,7 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import { property } from 'lit/decorators.js';
 import type { Constructor } from './index.types';
-import { DEFAULTS as POPOVER_DEFAULTS } from '../../components/popover/popover.constants';
 
 export declare class FocusTrapClassInterface {
   enabledFocusTrap: boolean;
@@ -23,14 +22,14 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
      * @default false
      */
     @property({ type: Boolean })
-    enabledFocusTrap: boolean = POPOVER_DEFAULTS.FOCUS_TRAP;
+    enabledFocusTrap: boolean = false;
 
     /**
-     * Prevent outside scrolling when popover show.
+     * Prevent outside scrolling when element is shown.
      * @default false
      */
     @property({ type: Boolean })
-    enabledPreventScroll: boolean = POPOVER_DEFAULTS.PREVENT_SCROLL;
+    enabledPreventScroll: boolean = false;
 
     /** @internal */
     private focusTrapIndex: number = -1;
@@ -235,7 +234,7 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
     /**
      * Sets the initial focus within the container.
      *
-     * @param prefferableElement - The index of the prefferable element to focus.
+     * @param prefferableElement - The index of the preferable element to focus.
      */
     public setInitialFocus(prefferableElement: number = 0) {
       if (this.focusableElements.length === 0) return;
