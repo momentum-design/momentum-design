@@ -3,6 +3,11 @@ import type { IconNames } from '../icon/icon.types';
 
 const TAG_NAME = utils.constructTagName('dialog');
 
+const DIALOG_VARIANT = {
+  DEFAULT: 'default',
+  PROMOTIONAL: 'promotional',
+} as const;
+
 const DEFAULTS = {
   VISIBLE: false,
   Z_INDEX: 1000,
@@ -11,10 +16,11 @@ const DEFAULTS = {
   HEADER_TAG_NAME: 'h2',
   DESCRIPTION_TAG_NAME: 'p',
   CANCEL_ICON: 'cancel-bold' as Extract<IconNames, 'cancel-bold'>,
+  VARIANT: DIALOG_VARIANT.DEFAULT,
 } as const;
 
 const DIALOG_SIZE = ['small', 'medium', 'large'] as const;
 
 const DIALOG_ROLE = ['dialog', 'alertdialog'] as const;
 
-export { TAG_NAME, DEFAULTS, DIALOG_SIZE, DIALOG_ROLE };
+export { TAG_NAME, DEFAULTS, DIALOG_SIZE, DIALOG_ROLE, DIALOG_VARIANT };

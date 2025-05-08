@@ -5,17 +5,20 @@ import styles from './dialog.styles';
 import { Component } from '../../models';
 import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
 import { DEFAULTS } from './dialog.constants';
-import type { DialogRole, DialogSize } from './dialog.types';
+import type { DialogRole, DialogSize, DialogVariant } from './dialog.types';
 import { DialogUtils } from './dialog.utils';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { DialogEventManager } from './dialog.events';
 import { BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
+import { CardAndDialogFooterMixin } from '../../utils/mixins/CardAndDialogFooterMixin';
 
 /**
  * Dialog component is a modal dialog that can be used to display information or prompt the user for input.
  * It can be used to create custom dialogs where content for the body and footer actions is provided by the consumer.
  * The dialog is available in three sizes: small, medium, and large. It may also receive custom styling/sizing.
  * The dialog interrupts the user and will block interaction with the rest of the application until it is closed.
+ *
+ * Dialog component have 2 variants: default and promotional.
  *
  * **Accessibility notes for consuming (have to be explicitly set when you consume the component)**
  *
@@ -44,10 +47,14 @@ import { BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
  * @cssproperty --mdc-dialog-width - width of the dialog
  *
  * @slot dialog-body - Slot for the dialog body content
- * @slot dialog-footer - Slot for the dialog footer content (e.g. submit/cancel buttons)
+ * @slot footer-link - This slot is for passing `mdc-link` component within the footer section.
+ * @slot footer-button-secondary - This slot is for passing secondary variant of `mdc-button` component
+ * within the footer section.
+ * @slot footer-button-primary - This slot is for passing primary variant of
+ * `mdc-button` component within the footer section.
  *
  */
-class Dialog extends FocusTrapMixin(Component) {
+class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
   /**
    * The unique ID of the dialog
    */
@@ -80,6 +87,9 @@ class Dialog extends FocusTrapMixin(Component) {
    */
   @property({ type: String, reflect: true })
   size: DialogSize = DEFAULTS.SIZE;
+
+  @property({ type: String, reflect: true })
+  variant: DialogVariant = DEFAULTS.VARIANT;
 
   /**
    * Defines a string value for the aria-label attribute for close button accessibility
@@ -150,6 +160,7 @@ class Dialog extends FocusTrapMixin(Component) {
   protected override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
     this.setupTriggerListener();
+    this.utils.setupAriaAttributes();
     this.style.zIndex = `${this.zIndex}`;
     DialogEventManager.onCreatedDialog(this);
 
@@ -195,6 +206,15 @@ class Dialog extends FocusTrapMixin(Component) {
     }
     if (changedProperties.has('zIndex')) {
       this.setAttribute('z-index', `${this.zIndex}`);
+    }
+    if (changedProperties.has('variant')) {
+      this.updateFooterButtonColors(this.variant);
+    }
+    if (
+      changedProperties.has('aria-label')
+      || changedProperties.has('aria-labelledby')
+    ) {
+      this.utils.setupAriaAttributes();
     }
   }
 
@@ -298,9 +318,7 @@ class Dialog extends FocusTrapMixin(Component) {
       <div part="body">
         <slot name="dialog-body"></slot>
       </div>
-      <div part="footer">
-        <slot name="dialog-footer"></slot>
-      </div>
+      ${this.renderFooter()}
     `;
   }
 

@@ -24,6 +24,11 @@ const styles = css`
     bottom: 50%;
     transform: translate(50%,50%);
   }
+
+
+  :host([variant='promotional']){
+    --mdc-dialog-border-color: var(--mds-color-theme-outline-promotion-normal);
+  }
     
   :host([visible]) {
     display: flex;
@@ -73,9 +78,16 @@ const styles = css`
   }
 
   :host::part(footer) {
-    padding-top: 0.5rem;
-    box-sizing: content-box;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
     justify-content: flex-end;
+  }
+
+  ::slotted([slot='footer-link']), 
+  ::slotted([slot='footer-button-primary']), 
+  ::slotted([slot='footer-button-secondary']){
+    margin-bottom: 0.5rem;
   }
 
   :host::part(dialog-close-btn) {

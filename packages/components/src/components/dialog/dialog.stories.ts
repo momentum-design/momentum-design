@@ -3,8 +3,9 @@ import '.';
 import { html, TemplateResult } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { DIALOG_ROLE, DIALOG_SIZE, DEFAULTS } from './dialog.constants';
+import { DIALOG_ROLE, DIALOG_SIZE, DEFAULTS, DIALOG_VARIANT } from './dialog.constants';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
+import '../link';
 
 const createDialog = (args: Args, content: TemplateResult) => html`<mdc-dialog
   class="${args.class}"
@@ -22,6 +23,7 @@ const createDialog = (args: Args, content: TemplateResult) => html`<mdc-dialog
   aria-label="${args['aria-label']}"
   size="${args.size}"
   ?visible="${args.visible}"
+  variant="${args.variant}"
   @shown="${action('onshown')}"
   @hidden="${action('onhidden')}"
 >
@@ -52,16 +54,11 @@ const render = (args: Args) => {
       <div slot="dialog-body">
         <p>This is the body content of the dialog.</p>
       </div>
-      <div
-        slot="dialog-footer"
-        style="
-          display: flex;
-          gap: 0.5rem;
-        "
-      >
-        <mdc-button variant="secondary" @click="${toggleVisibility}">Secondary</mdc-button>
-        <mdc-button variant="primary" @click="${toggleVisibility}">Primary</mdc-button>
-      </div>`)}
+      <mdc-link slot="footer-link" icon-name="placeholder-bold" href='#'>Label</mdc-link>
+      <mdc-text slot="footer-link">Not rendered</mdc-text>
+      <mdc-button slot="footer-button-secondary" @click="${toggleVisibility}">Secondary</mdc-button>
+      <mdc-button slot="footer-button-primary" @click="${toggleVisibility}">Primary</mdc-button>
+    `)}
   `;
 };
 
@@ -82,16 +79,9 @@ const renderSaveCancelBtns = (args: Args) => {
       <div slot="dialog-body">
         <p>This is the body content of the dialog.</p>
       </div>
-      <div
-        slot="dialog-footer"
-        style="
-          display: flex;
-          gap: 0.5rem;
-        "
-      >
-        <mdc-button variant="secondary" @click="${showConfirmAlert}">Cancel</mdc-button>
-        <mdc-button variant="primary" @click="${toggleVisibility}">Save</mdc-button>
-      </div>`)}
+      <mdc-button slot="footer-button-secondary" @click="${showConfirmAlert}">Cancel</mdc-button>
+      <mdc-button slot="footer-button-primary" @click="${toggleVisibility}">Save</mdc-button>
+    `)}
   `;
 };
 
@@ -125,6 +115,10 @@ const meta: Meta = {
     },
     triggerId: {
       control: 'text',
+    },
+    variant: {
+      control: 'select',
+      options: Object.values(DIALOG_VARIANT),
     },
     'z-index': {
       control: 'number',
@@ -184,6 +178,7 @@ const commonProperties = {
   triggerId: 'dialog-trigger-btn',
   'close-button-aria-label': 'Close dialog',
   visible: false,
+  variant: DEFAULTS.VARIANT,
 };
 
 const headerDescriptionProperties = {

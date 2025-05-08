@@ -72,16 +72,9 @@ const dialogWithAllSlots = {
     <div slot="dialog-body">
       <p>This is the body content of the dialog.</p>
     </div>
-    <div
-      slot="dialog-footer"
-      style="
-        display: flex;
-        gap: 0.5rem;
-      "
-    >
-      <mdc-button variant="secondary">Secondary</mdc-button>
-      <mdc-button variant="primary">Primary</mdc-button>
-    </div>
+    <mdc-link slot="footer-link" icon-name="placeholder-bold" href='#'>Label</mdc-link>
+    <mdc-button slot="footer-button-secondary">Secondary</mdc-button>
+    <mdc-button slot="footer-button-primary">Primary</mdc-button>
   `,
 };
 
@@ -195,6 +188,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
         await expect(dialog).not.toBeVisible();
       });
       await test.step('focus should remain only in the dialog when visible', async () => {
+        const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, visible: false });
         await dialog.evaluate((dialog) => {
           dialog.toggleAttribute('visible');
         });
@@ -202,8 +196,14 @@ test('mdc-dialog', async ({ componentsPage }) => {
         const closeButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
         await expect(closeButton).toBeFocused();
         await componentsPage.actionability.pressTab();
-        await expect(closeButton).not.toBeFocused();
+        const link = componentsPage.page.locator('[slot="footer-link"]');
+        await expect(link).toBeFocused();
         await componentsPage.actionability.pressTab();
+        const secondaryButton = componentsPage.page.locator('[slot="footer-button-secondary"]');
+        await expect(secondaryButton).toBeFocused();
+        await componentsPage.actionability.pressTab();
+        const primaryButton = componentsPage.page.locator('[slot="footer-button-primary"]');
+        await expect(primaryButton).toBeFocused();
         await componentsPage.actionability.pressTab();
         await expect(closeButton).toBeFocused();
       });

@@ -1,8 +1,11 @@
-import { DIALOG_ROLE, DIALOG_SIZE } from './dialog.constants';
-
-type DialogSize = (typeof DIALOG_SIZE)[number];
+import type { ValueOf } from '../../utils/types';
+import { DIALOG_ROLE, DIALOG_SIZE, DIALOG_VARIANT } from './dialog.constants';
 
 type DialogRole = (typeof DIALOG_ROLE)[number];
+
+type DialogSize = ValueOf<typeof DIALOG_SIZE>;
+
+type DialogVariant = ValueOf<typeof DIALOG_VARIANT>;
 
 interface Events {
   onShownEvent: Event;
@@ -11,4 +14,4 @@ interface Events {
   onDestroyedEvent: Event;
 }
 
-export type { DialogSize, DialogRole, Events };
+export type { DialogSize, DialogRole, DialogVariant, Events };

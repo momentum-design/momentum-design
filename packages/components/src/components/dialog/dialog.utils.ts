@@ -7,6 +7,14 @@ export class DialogUtils {
     this.dialog = dialog;
   }
 
+  setupAriaAttributes() {
+    if (this.dialog.headerText && !this.dialog.ariaLabel && !this.dialog.ariaLabelledby) {
+      this.dialog.setAttribute('aria-labelledby', this.dialog.headerText);
+    } else if (!this.dialog.headerText && !this.dialog.ariaLabel && !this.dialog.ariaLabelledby) {
+      this.dialog.setAttribute('aria-labelledby', this.dialog.triggerId);
+    }
+  }
+
   createBackdrop() {
     const backdrop = document.createElement('div');
     backdrop.classList.add('dialog-backdrop');
