@@ -2,9 +2,10 @@ import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { queryAssignedElements } from 'lit/decorators.js';
 import styles from './card.styles';
 import { Component } from '../../models';
-import { VARIANTS, DEFAULTS } from './card.constants';
-import { BUTTON_COLORS, BUTTON_VARIANTS } from '../button/button.constants';
+import { DEFAULTS } from './card.constants';
+import { BUTTON_VARIANTS } from '../button/button.constants';
 import { CardComponentMixin } from '../../utils/mixins/CardComponentMixin';
+import { CardAndDialogFooterMixin } from '../../utils/mixins/CardAndDialogFooterMixin';
 
 /**
  * The card component allows users to organize information in a structured and tangible
@@ -50,7 +51,7 @@ import { CardComponentMixin } from '../../utils/mixins/CardComponentMixin';
  * @slot after-body - This slot is for passing the content after the body
  *
  */
-class Card extends CardComponentMixin(Component) {
+class Card extends CardComponentMixin(CardAndDialogFooterMixin(Component)) {
    /**
    * The icon buttons in the header section
    * @internal
@@ -58,31 +59,10 @@ class Card extends CardComponentMixin(Component) {
    @queryAssignedElements({ slot: 'icon-button' })
    iconButtons?: Array<HTMLElement>;
 
-   /**
-    * The links in the footer section
-    * @internal
-    */
-   @queryAssignedElements({ slot: 'footer-link' })
-   footerLink?: Array<HTMLElement>;
-
-   /**
-    * The primary buttons in the footer section
-    * @internal
-    */
-   @queryAssignedElements({ slot: 'footer-button-primary' })
-   footerButtonPrimary?: Array<HTMLElement>;
-
-   /**
-    * The secondary buttons in the footer section
-    * @internal
-    */
-   @queryAssignedElements({ slot: 'footer-button-secondary' })
-   footerButtonSecondary?: Array<HTMLElement>;
-
    override update(changedProperties: PropertyValues<Card>) {
      super.update(changedProperties);
      if (changedProperties.has('variant')) {
-       this.updateFooterButtonColors();
+       this.updateFooterButtonColors(this.variant);
      }
    }
 
@@ -109,89 +89,32 @@ class Card extends CardComponentMixin(Component) {
    };
 
    /**
-    * Filters and renders only the following content into the footer section and removes anything other than it
-    * - One mdc-link element in the footer-link slot
-    * - One secondary variant of the mdc-button element in the footer-button-secondary slot
-    * - One primary variant of the mdc-button element in the footer-button-primary slot
-    *
-    * @internal
-    */
- private handleFooterSlot = (tagname: string, variant = '') => {
-   let arrayItems: Array<HTMLElement> = [];
-   if (tagname === DEFAULTS.LINK && this.footerLink?.length) {
-     arrayItems = this.footerLink;
-   } else if (tagname === DEFAULTS.BUTTON && variant === BUTTON_VARIANTS.PRIMARY && this.footerButtonPrimary?.length) {
-     arrayItems = this.footerButtonPrimary;
-   } else if (tagname === DEFAULTS.BUTTON
-    && variant === BUTTON_VARIANTS.SECONDARY && this.footerButtonSecondary?.length) {
-     arrayItems = this.footerButtonSecondary;
-   }
-   // if there are more than one instance, remove them.
-   for (let i = 1; i < arrayItems.length; i += 1) {
-     arrayItems[i].remove();
-   }
-   arrayItems.forEach((element) => {
-     // remove the element if it doesn't match with the tagname
-     if (!element.matches(tagname)) {
-       element.remove();
-     }
-     // set the variant if it is provided
-     if (variant) {
-       element.setAttribute('variant', variant);
-     }
-   });
- };
-
- /**
-  * Updates the color of the footer buttons based on the variant.
-  * If the variant is promotional, the color is promotional, else default.
-  *
-  * @internal
-  */
- private updateFooterButtonColors = () => {
-   const footerButtons = [...(this.footerButtonPrimary || []), ...(this.footerButtonSecondary || [])];
-   footerButtons?.forEach((button) => {
-     if (this.variant === VARIANTS.PROMOTIONAL) {
-       button.setAttribute('color', BUTTON_COLORS.PROMOTIONAL);
-     } else {
-       button.setAttribute('color', BUTTON_COLORS.DEFAULT);
-     }
-   });
- };
-
- /**
    * Renders the header of the card if title is provided
    * @returns The header element
    */
- protected renderHeader() {
-   if (!this.cardTitle) {
-     return nothing;
-   }
-   return html`<div part="header">
+   protected renderHeader() {
+     if (!this.cardTitle) {
+       return nothing;
+     }
+     return html`<div part="header">
       ${this.renderIcon()}
       ${this.renderTitle()}
       <div part="icon-button"><slot name="icon-button" @slotchange=${this.handleIconButtons}></slot></div>
     </div>`;
- }
+   }
 
- public override render() {
-   return html`
+   public override render() {
+     return html`
   ${this.renderImage()}
     <div part="body">
     ${this.renderHeader()}
       <slot name="before-body"></slot>
       <slot name="body"></slot>
       <slot name="after-body"></slot>
-      <div part="footer">
-        <slot name="footer-link" @slotchange=${() => this.handleFooterSlot(DEFAULTS.LINK)}></slot>
-        <slot name="footer-button-secondary" 
-        @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.SECONDARY)}></slot>
-        <slot name="footer-button-primary" 
-        @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.PRIMARY)}></slot>
-      </div>
+      ${this.renderFooter()}
     </div>
     `;
- }
+   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
