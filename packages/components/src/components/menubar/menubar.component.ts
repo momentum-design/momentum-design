@@ -1,14 +1,8 @@
 import { CSSResult, html } from 'lit';
-import { property, queryAssignedElements } from 'lit/decorators.js';
 import { Component } from '../../models';
-import { KEYS } from '../../utils/keys';
+import { MenuMixin } from '../../utils/mixins/MenuMixin';
 import { ROLE } from '../../utils/roles';
-import { TAG_NAME as MENUITEM_TAGNAME } from '../menuitem/menuitem.constants';
-import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
-import { ORIENTATION } from './menubar.constants';
 import styles from './menubar.styles';
-import type { Orientation } from './menubar.types';
-import { MenuBarUtils } from './menubar.utils';
 
 /**
  * menubar component, which ...
@@ -17,30 +11,7 @@ import { MenuBarUtils } from './menubar.utils';
  *
  * @slot default - This is a default/unnamed slot
  */
-class MenuBar extends Component {
-  /** @internal */
-  @queryAssignedElements({ selector: MENUITEM_TAGNAME })
-  menuItems!: Array<HTMLElement>;
-
-  /** @internal */
-  @queryAssignedElements({ selector: MENUPOPOVER_TAGNAME })
-  menuPopoverItems!: Array<HTMLElement>;
-
-  /**
-   * Aria Orientation
-   * @default 'horizontal'
-   */
-  @property({ type: String, reflect: true, attribute: 'aria-orientation' })
-  override ariaOrientation: Orientation = ORIENTATION.HORIZONTAL;
-
-  /** @internal */
-  private utils: MenuBarUtils;
-
-  constructor() {
-    super();
-    this.utils = new MenuBarUtils(this);
-  }
-
+class MenuBar extends MenuMixin(Component) {
   override connectedCallback() {
     super.connectedCallback();
     this.role = ROLE.MENUBAR;
@@ -56,7 +27,7 @@ class MenuBar extends Component {
    * @param event - The keyboard event.
    */
   private handleKeyDown(event: KeyboardEvent): void {
-    this.utils.setTabIndexOnKeyDown(event);
+    this.setTabIndexOnKeyDown(event);
   }
 
   /**
@@ -66,7 +37,7 @@ class MenuBar extends Component {
    * @param event - The mouse event.
    */
   private handleMouseClick(event: MouseEvent): void {
-    this.utils.setTabIndexOnMouseClick(event);
+    this.setTabIndexOnMouseClick(event);
     // const activeMenuItem = event.target as HTMLElement;
     // const hasCurrentMenuItemHasChildren = activeMenuItem?.hasAttribute('aria-expanded');
     // if (hasCurrentMenuItemHasChildren) {}
@@ -82,7 +53,7 @@ class MenuBar extends Component {
 
   public override firstUpdated(): void {
     // For the first, we set the first element only as active.
-    this.utils.resetTabIndexAndSetActiveTabIndex(0);
+    this.resetTabIndexAndSetActiveTabIndex(0);
   }
 
   public override render() {
