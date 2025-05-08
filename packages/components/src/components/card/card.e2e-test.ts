@@ -44,13 +44,9 @@ const setup = async (args: SetupOptions) => {
 };
 
 const interactiveChildren = `<mdc-text slot='body' 
-type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
-Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
-Praesent gravida dui diam, non elementum risus laoreet vitae. 
-Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
-Vivamus mattis ligula eget imperdiet tempor. 
-Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>
+    type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+    Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
+    Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. </mdc-text>
 <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
 <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
 <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
@@ -220,13 +216,9 @@ test.describe.parallel('mdc-card', () => {
     } else {
       // Card button with body
       cardStickersheet.setChildren(`<mdc-text slot='body' 
-      type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-      Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
-      Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
-      Praesent gravida dui diam, non elementum risus laoreet vitae. 
-      Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
-      Vivamus mattis ligula eget imperdiet tempor. 
-      Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`);
+    type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+    Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
+    Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. </mdc-text>`);
     }
 
     await cardStickersheet.createMarkupWithCombination({
@@ -292,13 +284,12 @@ test.describe.parallel('mdc-card', () => {
     });
   };
 
+  test.use({ viewport: { width: 2400, height: 2400 } });
   test('visual-regression & accessibility vertical', async ({ componentsPage }) => {
     /**
      * VISUAL REGRESSION & ACCESSIBILITY
      */
     await test.step('visual-regression & accessibility', async () => {
-      await componentsPage.page.setViewportSize({ width: 1200, height: 3000 });
-
       await createStickerSheetBasedOnOrientation(componentsPage, 'vertical');
       await componentsPage.accessibility.checkForA11yViolations('static-card-vertical');
 
@@ -312,8 +303,6 @@ test.describe.parallel('mdc-card', () => {
      * VISUAL REGRESSION & ACCESSIBILITY
      */
     await test.step('visual-regression & accessibility', async () => {
-      await componentsPage.page.setViewportSize({ width: 2400, height: 2400 });
-
       await createStickerSheetBasedOnOrientation(componentsPage, 'horizontal');
       await componentsPage.accessibility.checkForA11yViolations('static-card-horizontal');
 

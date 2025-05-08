@@ -269,7 +269,7 @@ export const InteractiveContentBeforeBody: StoryObj = {
     children: html`
     <mdc-text slot='before-body' type="body-midsize-medium" tagname="span">Content Before Body</mdc-text>
     <img src="https://placehold.co/100x50" alt="Image Alt" slot="before-body"/>
-    <div slot="before-body" style="display: flex; gap: 8px;"> 
+    <div slot="before-body" style="display: flex; gap: 8px; margin-top: 8px;"> 
     <mdc-button  size="28">Click Me</mdc-button>
     <mdc-button  size="28" variant="secondary">View More</mdc-button>
     </div>-
@@ -290,7 +290,7 @@ export const InteractiveContentAfterBody: StoryObj = {
     orientation: ORIENTATIONS.HORIZONTAL,
     children: html`
     <img src="https://placehold.co/120x30" alt="Image Alt" slot="after-body"/>
-    <div slot="after-body" style="display: flex; gap: 8px;"> 
+    <div slot="after-body" style="display: flex; gap: 8px; margin: 8px 0;"> 
       <mdc-button  size="28">Click Me</mdc-button>
       <mdc-button  size="28" variant="secondary">View More</mdc-button>
     </div>
