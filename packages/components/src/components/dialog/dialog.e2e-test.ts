@@ -9,6 +9,7 @@ type SetupOptions = {
   zIndex?: number;
   visible?: boolean;
   size?: boolean;
+  variant?: string;
   closeButtonAriaLabel?: string;
   ariaLabel?: string;
   ariaLabelledby?: string;
@@ -39,6 +40,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.zIndex ? `z-index="${restArgs.zIndex}"` : ''}
         ${restArgs.visible ? `visible="${restArgs.visible}"` : ''}
         ${restArgs.size ? 'size' : ''}
+        ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
         ${restArgs.closeButtonAriaLabel ? `close-button-aria-label="${restArgs.closeButtonAriaLabel}"` : ''}
         ${restArgs.ariaLabel ? `aria-label="${restArgs.ariaLabel}"` : ''}
         ${restArgs.ariaLabelledby ? `aria-labelledby="${restArgs.ariaLabelledby}"` : ''}
@@ -65,6 +67,7 @@ const dialogWithAllSlots = {
   triggerId: 'trigger-btn',
   ariaLabel: 'dialog',
   visible: true,
+  variant: 'default',
   closeButtonAriaLabel: 'Close button label',
   headerText: 'Dialog Header',
   descriptionText: 'Dialog Description',
@@ -103,6 +106,10 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await setup({ componentsPage, ...dialogWithAllSlots });
       await componentsPage.visualRegression.takeScreenshot('mdc-dialog', { element: dialog });
     });
+    await test.step('matches screenshot of element with variant', async () => {
+      await setup({ componentsPage, ...dialogWithAllSlots, variant: 'promotional' });
+      await componentsPage.visualRegression.takeScreenshot('mdc-dialog-variant-promotional', { element: dialog });
+    });
   });
 
   /**
@@ -120,6 +127,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
     await test.step('default attributes', async () => {
       await expect(dialog).toHaveAttribute('z-index', '1000');
       await expect(dialog).toHaveAttribute('size', 'small');
+      await expect(dialog).toHaveAttribute('variant', 'default');
       await expect(dialog).toHaveAttribute('header-tag-name', 'h2');
       await expect(dialog).toHaveAttribute('description-tag-name', 'p');
       await expect(dialog).toHaveAttribute('role', 'dialog');
