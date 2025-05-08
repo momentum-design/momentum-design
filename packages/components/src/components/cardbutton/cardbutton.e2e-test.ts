@@ -249,13 +249,13 @@ test.describe.parallel('mdc-cardbutton', () => {
     });
   };
 
-  test.use({ viewport: { width: 2000, height: 1350 } });
+  test.use({ viewport: { width: 2000, height: 1400 } });
   test('visual-regression & accessibility vertical', async ({ componentsPage }) => {
     /**
    * VISUAL REGRESSION & ACCESSIBILITY
    */
     await test.step('visual-regression & accessibility', async () => {
-      await componentsPage.page.setViewportSize({ width: 1000, height: 1350 });
+      await componentsPage.page.setViewportSize({ width: 1000, height: 1400 });
       await createStickerSheetBasedOnOrientation(componentsPage, 'vertical');
       await componentsPage.accessibility.checkForA11yViolations('cardbutton-vertical');
     });

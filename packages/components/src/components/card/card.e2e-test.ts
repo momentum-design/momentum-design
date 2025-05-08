@@ -282,16 +282,19 @@ test.describe.parallel('mdc-card', () => {
     });
   };
 
-  test.use({ viewport: { width: 2000, height: 1650 } });
+  test.use({ viewport: { width: 2000, height: 1700 } });
   test('visual-regression & accessibility vertical', async ({ componentsPage }) => {
     /**
      * VISUAL REGRESSION & ACCESSIBILITY
      */
-    await test.step('visual-regression & accessibility', async () => {
-      await componentsPage.page.setViewportSize({ width: 1000, height: 1650 });
+    await componentsPage.page.setViewportSize({ width: 1000, height: 1700 });
+
+    await test.step('static card vertical', async () => {
       await createStickerSheetBasedOnOrientation(componentsPage, 'vertical');
       await componentsPage.accessibility.checkForA11yViolations('static-card-vertical');
+    });
 
+    await test.step('interactive card vertical', async () => {
       await createStickerSheetBasedOnOrientation(componentsPage, 'vertical', interactiveChildren);
       await componentsPage.accessibility.checkForA11yViolations('interactive-card-vertical');
     });
@@ -301,11 +304,14 @@ test.describe.parallel('mdc-card', () => {
     /**
      * VISUAL REGRESSION & ACCESSIBILITY
      */
-    await test.step('visual-regression & accessibility', async () => {
-      await componentsPage.page.setViewportSize({ width: 2000, height: 1250 });
+    await componentsPage.page.setViewportSize({ width: 2000, height: 1250 });
+
+    await test.step('static card horizontal', async () => {
       await createStickerSheetBasedOnOrientation(componentsPage, 'horizontal');
       await componentsPage.accessibility.checkForA11yViolations('static-card-horizontal');
+    });
 
+    await test.step('interactive card horizontal', async () => {
       await createStickerSheetBasedOnOrientation(componentsPage, 'horizontal', interactiveChildren);
       await componentsPage.accessibility.checkForA11yViolations('interactive-card-horizontal');
     });
