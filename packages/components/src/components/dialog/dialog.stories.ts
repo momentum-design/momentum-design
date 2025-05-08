@@ -227,6 +227,7 @@ export const large: StoryObj = {
 
 export const withoutHeader: StoryObj = {
   args: {
+    ...commonProperties,
     size: DIALOG_SIZE[0],
   },
 };
@@ -234,6 +235,7 @@ export const withoutHeader: StoryObj = {
 export const withoutHeaderOrFooter: StoryObj = {
   render: renderNoFooter,
   args: {
+    ...commonProperties,
     size: DIALOG_SIZE[0],
   },
 };

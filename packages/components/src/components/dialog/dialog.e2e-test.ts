@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test';
 import { test, ComponentsPage } from '../../../config/playwright/setup';
+import { DEFAULTS } from './dialog.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -10,7 +11,7 @@ type SetupOptions = {
   size?: boolean;
   closeButtonAriaLabel?: string;
   ariaLabel?: string;
-  ariaLabelledBy?: string;
+  ariaLabelledby?: string;
   role?: HTMLElement['role'];
   headerText?: string;
   descriptionText?: string;
@@ -40,7 +41,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.size ? 'size' : ''}
         ${restArgs.closeButtonAriaLabel ? `close-button-aria-label="${restArgs.closeButtonAriaLabel}"` : ''}
         ${restArgs.ariaLabel ? `aria-label="${restArgs.ariaLabel}"` : ''}
-        ${restArgs.ariaLabelledBy ? `aria-labelledby="${restArgs.ariaLabelledBy}"` : ''}
+        ${restArgs.ariaLabelledby ? `aria-labelledby="${restArgs.ariaLabelledby}"` : ''}
         ${restArgs.role ? `role="${restArgs.role}"` : ''}
         ${restArgs.headerText ? `header-text="${restArgs.headerText}"` : ''}
         ${restArgs.descriptionText ? `description-text="${restArgs.descriptionText}"` : ''}
@@ -135,6 +136,10 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await expect(dialog).toHaveAttribute('aria-label', 'dialog-attribute');
       await expect(dialog).not.toHaveAttribute('aria-expanded');
       await expect(dialog).not.toHaveAttribute('aria-describedby');
+      await expect(dialog).toHaveAttribute('size', DEFAULTS.SIZE);
+      await expect(dialog).toHaveAttribute('header-text', '');
+      await expect(dialog).toHaveAttribute('description-text', '');
+      await expect(dialog).not.toHaveAttribute('aria-labelledby', '');
 
       const closeDialogButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
       await expect(closeDialogButton).toHaveAttribute('aria-label', 'Close button label');
@@ -174,9 +179,9 @@ test('mdc-dialog', async ({ componentsPage }) => {
         await expect(dialog).toBeVisible();
         const closeButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
         await expect(closeButton).toBeFocused();
-        await componentsPage.page.keyboard.press('Tab');
+        await componentsPage.actionability.pressTab();
         await expect(closeButton).not.toBeFocused();
-        await componentsPage.page.keyboard.press('Shift+Tab');
+        await componentsPage.actionability.pressShiftTab();
         await expect(closeButton).toBeFocused();
         await componentsPage.page.keyboard.press('Enter');
         await expect(dialog).not.toBeVisible();
@@ -196,10 +201,10 @@ test('mdc-dialog', async ({ componentsPage }) => {
         await expect(dialog).toBeVisible();
         const closeButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
         await expect(closeButton).toBeFocused();
-        await componentsPage.page.keyboard.press('Tab');
+        await componentsPage.actionability.pressTab();
         await expect(closeButton).not.toBeFocused();
-        await componentsPage.page.keyboard.press('Tab');
-        await componentsPage.page.keyboard.press('Tab');
+        await componentsPage.actionability.pressTab();
+        await componentsPage.actionability.pressTab();
         await expect(closeButton).toBeFocused();
       });
     });

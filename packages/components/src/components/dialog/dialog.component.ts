@@ -144,6 +144,7 @@ class Dialog extends FocusTrapMixin(Component) {
     super();
     /** @internal */
     this.utils = new DialogUtils(this);
+    document.addEventListener('keydown', this.onEscapeKeydown);
   }
 
   protected override async firstUpdated(changedProperties: PropertyValues) {
@@ -160,6 +161,7 @@ class Dialog extends FocusTrapMixin(Component) {
   override async disconnectedCallback() {
     super.disconnectedCallback();
     this.removeEventListeners();
+    document.removeEventListener('keydown', this.onEscapeKeydown);
     DialogEventManager.onDestroyedDialog(this);
   }
 
@@ -228,7 +230,6 @@ class Dialog extends FocusTrapMixin(Component) {
       this.utils.createBackdrop();
 
       await this.handleCreateDialogFirstUpdate();
-      document.addEventListener('keydown', this.onEscapeKeydown);
       this.triggerElement.setAttribute('aria-expanded', 'true');
       this.triggerElement.setAttribute(
         'aria-haspopup',
@@ -238,7 +239,6 @@ class Dialog extends FocusTrapMixin(Component) {
     } else {
       this.backdropElement?.remove();
       this.backdropElement = null;
-      document.removeEventListener('keydown', this.onEscapeKeydown);
       this.deactivateFocusTrap?.();
       this.triggerElement.removeAttribute('aria-expanded');
       this.triggerElement.removeAttribute('aria-haspopup');
