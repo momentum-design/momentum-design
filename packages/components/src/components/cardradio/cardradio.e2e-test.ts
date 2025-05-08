@@ -217,7 +217,7 @@ test.describe.parallel('mdc-cardradio', () => {
 
   const createStickerSheetBasedOnOrientation = async (componentsPage: ComponentsPage, orientation: string) => {
     const cardRadioStickersheet = new StickerSheet(componentsPage, 'mdc-cardradio');
-    const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x230';
+    const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x170';
 
     // Card radio without body
     cardRadioStickersheet.setAttributes({
@@ -234,9 +234,7 @@ test.describe.parallel('mdc-cardradio', () => {
 
     // Card radio with body
     cardRadioStickersheet.setChildren(`<mdc-text slot='body' 
-    type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
-    Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at.</mdc-text>`);
+    type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</mdc-text>`);
 
     await cardRadioStickersheet.createMarkupWithCombination({
       variant: Object.values(VARIANTS),
@@ -298,13 +296,13 @@ test.describe.parallel('mdc-cardradio', () => {
     });
   };
 
-  test.use({ viewport: { width: 2000, height: 2000 } });
+  test.use({ viewport: { width: 2000, height: 1350 } });
   test('visual-regression & accessibility vertical', async ({ componentsPage }) => {
     /**
    * VISUAL REGRESSION & ACCESSIBILITY
    */
     await test.step('visual-regression & accessibility', async () => {
-      await componentsPage.page.setViewportSize({ width: 1000, height: 2000 });
+      await componentsPage.page.setViewportSize({ width: 1000, height: 1350 });
       await createStickerSheetBasedOnOrientation(componentsPage, 'vertical');
       await componentsPage.accessibility.checkForA11yViolations('cardradio-vertical');
     });
@@ -315,6 +313,7 @@ test.describe.parallel('mdc-cardradio', () => {
    * VISUAL REGRESSION & ACCESSIBILITY
    */
     await test.step('visual-regression & accessibility', async () => {
+      await componentsPage.page.setViewportSize({ width: 2000, height: 1000 });
       await createStickerSheetBasedOnOrientation(componentsPage, 'horizontal');
       await componentsPage.accessibility.checkForA11yViolations('cardradio-horizontal');
     });

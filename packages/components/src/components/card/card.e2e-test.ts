@@ -45,8 +45,7 @@ const setup = async (args: SetupOptions) => {
 
 const interactiveChildren = `<mdc-text slot='body' 
     type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
-    Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. </mdc-text>
+    Nam vulputate aliquet risus, eget auctor ante egestas facilisis.</mdc-text>
 <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
 <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
 <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
@@ -196,7 +195,7 @@ test.describe.parallel('mdc-card', () => {
     children?: string,
   ) => {
     const cardStickersheet = new StickerSheet(componentsPage, 'mdc-card');
-    const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x230';
+    const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x180';
 
     // Card button without body
     cardStickersheet.setAttributes({
@@ -217,8 +216,7 @@ test.describe.parallel('mdc-card', () => {
       // Card button with body
       cardStickersheet.setChildren(`<mdc-text slot='body' 
     type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
-    Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. </mdc-text>`);
+    Nam vulputate aliquet risus, eget auctor ante egestas facilisis.</mdc-text>`);
     }
 
     await cardStickersheet.createMarkupWithCombination({
@@ -284,13 +282,13 @@ test.describe.parallel('mdc-card', () => {
     });
   };
 
-  test.use({ viewport: { width: 2000, height: 2000 } });
+  test.use({ viewport: { width: 2000, height: 1650 } });
   test('visual-regression & accessibility vertical', async ({ componentsPage }) => {
     /**
      * VISUAL REGRESSION & ACCESSIBILITY
      */
     await test.step('visual-regression & accessibility', async () => {
-      await componentsPage.page.setViewportSize({ width: 1000, height: 2000 });
+      await componentsPage.page.setViewportSize({ width: 1000, height: 1650 });
       await createStickerSheetBasedOnOrientation(componentsPage, 'vertical');
       await componentsPage.accessibility.checkForA11yViolations('static-card-vertical');
 
@@ -304,6 +302,7 @@ test.describe.parallel('mdc-card', () => {
      * VISUAL REGRESSION & ACCESSIBILITY
      */
     await test.step('visual-regression & accessibility', async () => {
+      await componentsPage.page.setViewportSize({ width: 2000, height: 1250 });
       await createStickerSheetBasedOnOrientation(componentsPage, 'horizontal');
       await componentsPage.accessibility.checkForA11yViolations('static-card-horizontal');
 
