@@ -318,7 +318,7 @@ test.describe.parallel('mdc-cardradio', () => {
    * VISUAL REGRESSION & ACCESSIBILITY
    */
     await test.step('visual-regression & accessibility', async () => {
-      await componentsPage.page.setViewportSize({ width: 12400, height: 2400 });
+      await componentsPage.page.setViewportSize({ width: 2400, height: 2400 });
       await createStickerSheetBasedOnOrientation(componentsPage, 'horizontal');
       await componentsPage.accessibility.checkForA11yViolations('cardradio-horizontal');
     });
