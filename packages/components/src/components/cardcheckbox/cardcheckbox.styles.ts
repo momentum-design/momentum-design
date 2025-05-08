@@ -7,8 +7,12 @@ const styles = css`
     user-select: none;
   }
 
-  :host::part(check){
+  :host(:dir(ltr))::part(check){
     margin-left: auto;
+  }
+
+  :host(:dir(rtl))::part(check){
+    margin-right: auto;
   }
 
   :host(:hover) {
