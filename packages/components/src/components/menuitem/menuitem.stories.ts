@@ -7,6 +7,7 @@ import { disableControls, hideAllControls, hideControls } from '../../../config/
 import '../badge';
 import '../divider';
 import '../icon';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 const label = 'Menu Item';
 const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style="width: 20rem;">${htmlString}</div>`;
@@ -23,6 +24,8 @@ const render = (args: Args) => wrapWithDiv(html`
     side-header-text="${args['side-header-text']}"
     tertiary-label="${args['tertiary-label']}"
     subline-text="${args['subline-text']}"
+    tooltip-text="${args['tooltip-text']}"
+    tooltip-placement="${args['tooltip-placement']}"
   ></mdc-menuitem>`);
 
 const meta: Meta = {
@@ -51,6 +54,13 @@ const meta: Meta = {
     },
     'subline-text': {
       control: 'text',
+    },
+    'tooltip-text': {
+      control: 'text',
+    },
+    'tooltip-placement': {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
     },
     ...hideControls([
       'variant',
@@ -91,6 +101,8 @@ export const Example: StoryObj = {
     'tertiary-label': '',
     'subline-text': '',
     disabled: false,
+    'tooltip-text': '',
+    'tooltip-placement': POPOVER_PLACEMENT.TOP,
   },
 };
 
@@ -176,5 +188,16 @@ export const MenuItemWithLeadingArrow: StoryObj = {
       <mdc-icon slot="leading-controls" name="arrow-left-bold"></mdc-icon>
     </mdc-menuitem>
   `),
+  ...hideAllControls(),
+};
+
+export const MenuItemWithTooltip: StoryObj = {
+  render: () => html`
+    <div role="menu" style="width: 20rem; height: 10rem;">
+      <mdc-menuitem label="Hover on this menu item" tooltip-text="This is the tooltip text." tooltip-placement="bottom">
+        <mdc-icon slot="leading-controls" name="placeholder-bold"></mdc-icon>
+      </mdc-menuitem>
+    </div>
+  `,
   ...hideAllControls(),
 };

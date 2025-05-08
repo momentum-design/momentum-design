@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import { property, state } from 'lit/decorators.js';
 import {
   BUTTON_COLORS,
@@ -16,16 +17,24 @@ import type { IconNames } from '../../components/icon/icon.types';
 import type { Component } from '../../models';
 import type { Constructor } from './index.types';
 
-export interface ButtonComponentMixinInterface {
+export declare class ButtonComponentMixinInterface {
   prefixIcon?: IconNames;
+
   postfixIcon?: IconNames;
+
   variant: ButtonVariant;
+
   color: ButtonColor;
-  typeInternal: ButtonTypeInternal;
-  setSize(size: PillButtonSize | IconButtonSize): void;
-  setVariant(variant: ButtonVariant): void;
-  setColor(color: ButtonColor): void;
-  inferButtonType(): void;
+
+  protected typeInternal: ButtonTypeInternal;
+
+  protected setSize(size: PillButtonSize | IconButtonSize): void;
+
+  protected setVariant(variant: ButtonVariant): void;
+
+  protected setColor(color: ButtonColor): void;
+
+  protected inferButtonType(): void;
 }
 
 export const ButtonComponentMixin = <T extends Constructor<Component>>(
@@ -64,7 +73,8 @@ export const ButtonComponentMixin = <T extends Constructor<Component>>(
   color: ButtonColor = DEFAULTS.COLOR;
 
   /** @internal */
-  @state() typeInternal: ButtonTypeInternal = DEFAULTS.TYPE_INTERNAL;
+  @state()
+  protected typeInternal: ButtonTypeInternal = DEFAULTS.TYPE_INTERNAL;
 
   /**
    * Sets the variant attribute for the button component.
@@ -73,7 +83,7 @@ export const ButtonComponentMixin = <T extends Constructor<Component>>(
    *
    * @param variant - The variant to set.
    */
-  setVariant(variant: ButtonVariant) {
+  protected setVariant(variant: ButtonVariant) {
     this.setAttribute('variant', Object.values(BUTTON_VARIANTS).includes(variant) ? variant : DEFAULTS.VARIANT);
   }
 
@@ -83,7 +93,7 @@ export const ButtonComponentMixin = <T extends Constructor<Component>>(
    *
    * @param color - The color to set.
    */
-  setColor(color: ButtonColor) {
+  protected setColor(color: ButtonColor) {
     if (!Object.values(BUTTON_COLORS).includes(color) || this.variant === BUTTON_VARIANTS.TERTIARY) {
       this.setAttribute('color', `${DEFAULTS.COLOR}`);
     } else {
@@ -98,7 +108,7 @@ export const ButtonComponentMixin = <T extends Constructor<Component>>(
    *
    * @param size - The size to set.
    */
-  setSize(size: PillButtonSize | IconButtonSize) {
+  protected setSize(size: PillButtonSize | IconButtonSize) {
     const isIconType = this.typeInternal === BUTTON_TYPE_INTERNAL.ICON;
     const isValidSize = isIconType
       ? Object.values(ICON_BUTTON_SIZES).includes(size)
@@ -112,7 +122,7 @@ export const ButtonComponentMixin = <T extends Constructor<Component>>(
    * Infers the type of button based on the presence of slot and/or prefix and postfix icons.
    * @param slot - default slot of button
    */
-  inferButtonType() {
+  protected inferButtonType() {
     const slot = this.shadowRoot
       ?.querySelector('slot')
       ?.assignedNodes()
@@ -130,5 +140,5 @@ export const ButtonComponentMixin = <T extends Constructor<Component>>(
   }
   }
   // Cast return type to your mixin's interface intersected with the superClass type
-  return InnerMixinClass as Constructor<ButtonComponentMixinInterface> & T;
+  return InnerMixinClass as unknown as Constructor<ButtonComponentMixinInterface> & T;
 };

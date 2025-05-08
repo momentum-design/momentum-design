@@ -108,6 +108,17 @@ test('mdc-listitem', async ({ componentsPage }) => {
       </div>
     `);
     await listitemSheet.createMarkupWithCombination({}, options);
+    listitemSheet.setAttributes({
+      label: 'This is a long text which should be truncated',
+      style: 'width: 15rem',
+    });
+    listitemSheet.setChildren(`
+      <div slot="leading-controls">
+        <mdc-checkbox data-aria-label="${primaryLabel}" checked></mdc-checkbox>
+        <mdc-icon name="placeholder-bold"></mdc-icon>
+      </div>
+    `);
+    await listitemSheet.createMarkupWithCombination({}, options);
 
     await listitemSheet.mountStickerSheet({ role: 'list' });
     await test.step('matches screenshot of element', async () => {
