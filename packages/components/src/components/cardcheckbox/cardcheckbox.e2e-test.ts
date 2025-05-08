@@ -217,7 +217,7 @@ test.describe.parallel('mdc-cardcheckbox', () => {
 
   const createStickerSheetBasedOnOrientation = async (componentsPage: ComponentsPage, orientation: string) => {
     const cardcheckboxStickersheet = new StickerSheet(componentsPage, 'mdc-cardcheckbox');
-    const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x300';
+    const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x230';
 
     // Card checkbox without body
     cardcheckboxStickersheet.setAttributes({
@@ -300,12 +300,13 @@ test.describe.parallel('mdc-cardcheckbox', () => {
     });
   };
 
-  test.use({ viewport: { width: 2400, height: 2400 } });
+  test.use({ viewport: { width: 2000, height: 2000 } });
   test('visual-regression & accessibility vertical', async ({ componentsPage }) => {
     /**
    * VISUAL REGRESSION & ACCESSIBILITY
    */
     await test.step('visual-regression & accessibility', async () => {
+      await componentsPage.page.setViewportSize({ width: 1000, height: 2000 });
       await createStickerSheetBasedOnOrientation(componentsPage, 'vertical');
       await componentsPage.accessibility.checkForA11yViolations('cardcheckbox-vertical');
     });

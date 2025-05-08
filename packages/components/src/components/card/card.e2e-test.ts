@@ -196,7 +196,7 @@ test.describe.parallel('mdc-card', () => {
     children?: string,
   ) => {
     const cardStickersheet = new StickerSheet(componentsPage, 'mdc-card');
-    const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x300';
+    const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x230';
 
     // Card button without body
     cardStickersheet.setAttributes({
@@ -284,12 +284,13 @@ test.describe.parallel('mdc-card', () => {
     });
   };
 
-  test.use({ viewport: { width: 2400, height: 2400 } });
+  test.use({ viewport: { width: 2000, height: 2000 } });
   test('visual-regression & accessibility vertical', async ({ componentsPage }) => {
     /**
      * VISUAL REGRESSION & ACCESSIBILITY
      */
     await test.step('visual-regression & accessibility', async () => {
+      await componentsPage.page.setViewportSize({ width: 1000, height: 2000 });
       await createStickerSheetBasedOnOrientation(componentsPage, 'vertical');
       await componentsPage.accessibility.checkForA11yViolations('static-card-vertical');
 
