@@ -53,6 +53,8 @@ import Toggle from './components/toggle';
 import ToggleTip from './components/toggletip';
 import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
+import MenuItemRadio from './components/menuitemradio';
+import MenuItemCheckbox from './components/menuitemcheckbox';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -126,6 +128,8 @@ export {
   StaticToggle,
   ToggleTip,
   Tooltip,
+  MenuItemRadio,
+  MenuItemCheckbox,
 };
 // Types Exports
 export type {

@@ -12,11 +12,11 @@ export declare class CardAndDialogFooterMixinInterface {
 
   footerButtonSecondary?: Array<HTMLElement>;
 
-  updateFooterButtonColors(variant: string): void;
+  protected updateFooterButtonColors(variant: string): void;
 
-  handleFooterSlot(tagname: string, variant?: string): void;
+  protected handleFooterSlot(tagname: string, variant?: string): void;
 
-  renderFooter(): TemplateResult;
+  protected renderFooter(): TemplateResult;
 }
 
 export const CardAndDialogFooterMixin = <T extends Constructor<LitElement>>(superClass: T) => {
@@ -48,18 +48,18 @@ export const CardAndDialogFooterMixin = <T extends Constructor<LitElement>>(supe
   *
   * @internal
   */
- private updateFooterButtonColors = (variant: string) => {
-   const footerButtons = [...(this.footerButtonPrimary || []), ...(this.footerButtonSecondary || [])];
-   footerButtons?.forEach((button) => {
-     if (variant === VARIANTS.PROMOTIONAL) {
-       button.setAttribute('color', BUTTON_COLORS.PROMOTIONAL);
-     } else {
-       button.setAttribute('color', BUTTON_COLORS.DEFAULT);
-     }
-   });
- };
+    protected updateFooterButtonColors(variant: string) {
+      const footerButtons = [...(this.footerButtonPrimary || []), ...(this.footerButtonSecondary || [])];
+      footerButtons?.forEach((button) => {
+        if (variant === VARIANTS.PROMOTIONAL) {
+          button.setAttribute('color', BUTTON_COLORS.PROMOTIONAL);
+        } else {
+          button.setAttribute('color', BUTTON_COLORS.DEFAULT);
+        }
+      });
+    }
 
- /**
+    /**
     * Filters and renders only the following content into the footer section and removes anything other than it
     * - One mdc-link element in the footer-link slot
     * - One secondary variant of the mdc-button element in the footer-button-secondary slot
@@ -67,49 +67,49 @@ export const CardAndDialogFooterMixin = <T extends Constructor<LitElement>>(supe
     *
     * @internal
     */
- private handleFooterSlot(tagname: string, variant?: string) {
-   let arrayItems: Array<HTMLElement> = [];
-   if (tagname === DEFAULTS.LINK && this.footerLink?.length) {
-     arrayItems = this.footerLink;
-   } else if (tagname === DEFAULTS.BUTTON
+    protected handleFooterSlot(tagname: string, variant?: string) {
+      let arrayItems: Array<HTMLElement> = [];
+      if (tagname === DEFAULTS.LINK && this.footerLink?.length) {
+        arrayItems = this.footerLink;
+      } else if (tagname === DEFAULTS.BUTTON
              && variant === BUTTON_VARIANTS.PRIMARY
              && this.footerButtonPrimary?.length) {
-     arrayItems = this.footerButtonPrimary;
-   } else if (tagname === DEFAULTS.BUTTON
+        arrayItems = this.footerButtonPrimary;
+      } else if (tagname === DEFAULTS.BUTTON
              && variant === BUTTON_VARIANTS.SECONDARY
               && this.footerButtonSecondary?.length) {
-     arrayItems = this.footerButtonSecondary;
-   }
-   // if there are more than one instance, remove them.
-   for (let i = 1; i < arrayItems.length; i += 1) {
-     arrayItems[i].remove();
-   }
-   arrayItems.forEach((element) => {
-     // remove the element if it doesn't match with the tagname
-     if (!element.matches(tagname)) {
-       element.remove();
-     }
-     // set the variant if it is provided
-     if (variant) {
-       element.setAttribute('variant', variant);
-     }
-   });
- }
+        arrayItems = this.footerButtonSecondary;
+      }
+      // if there are more than one instance, remove them.
+      for (let i = 1; i < arrayItems.length; i += 1) {
+        arrayItems[i].remove();
+      }
+      arrayItems.forEach((element) => {
+        // remove the element if it doesn't match with the tagname
+        if (!element.matches(tagname)) {
+          element.remove();
+        }
+        // set the variant if it is provided
+        if (variant) {
+          element.setAttribute('variant', variant);
+        }
+      });
+    }
 
- /**
+    /**
      * Renders the footer of the card if footer-link,
      * footer-button-primary, or footer-button-secondary slots are provided
      * @returns The footer element
      */
- protected renderFooter() {
-   return html`<div part="footer">
+    protected renderFooter() {
+      return html`<div part="footer">
         <slot name="footer-link" @slotchange=${() => this.handleFooterSlot(DEFAULTS.LINK)}></slot>
         <slot name="footer-button-secondary" 
         @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.SECONDARY)}></slot>
         <slot name="footer-button-primary" 
         @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.PRIMARY)}></slot>
       </div>`;
- }
+    }
   }
   // Cast return type to your mixin's interface intersected with the superClass type
   return InnerMixinClass as unknown as Constructor<CardAndDialogFooterMixinInterface> & T;
