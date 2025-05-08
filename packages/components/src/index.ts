@@ -15,6 +15,7 @@ import CardRadio from './components/cardradio';
 import Checkbox from './components/checkbox';
 import Chip from './components/chip';
 import Coachmark from './components/coachmark';
+import Dialog from './components/dialog';
 import Divider from './components/divider';
 import FilterChip from './components/filterchip';
 import FormfieldGroup from './components/formfieldgroup';
@@ -27,6 +28,7 @@ import Linksimple from './components/linksimple';
 import List from './components/list';
 import ListItem from './components/listitem';
 import Marker from './components/marker';
+import MenuItem from './components/menuitem';
 import OptGroup from './components/optgroup';
 import Option from './components/option';
 import Popover from './components/popover';
@@ -48,10 +50,9 @@ import Text from './components/text';
 import Textarea from './components/textarea';
 import ThemeProvider from './components/themeprovider';
 import Toggle from './components/toggle';
-import Tooltip from './components/tooltip';
 import ToggleTip from './components/toggletip';
+import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
-import MenuItem from './components/menuitem';
 import MenuItemRadio from './components/menuitemradio';
 import MenuItemCheckbox from './components/menuitemcheckbox';
 
@@ -74,11 +75,14 @@ import {
 // Components Exports
 export {
   AlertChip,
+  Appheader,
   Avatar,
   AvatarButton,
   Badge,
+  Brandvisual,
   Bullet,
   Button,
+  ButtonLink,
   Card,
   CardButton,
   CardCheckbox,
@@ -86,6 +90,7 @@ export {
   Checkbox,
   Chip,
   Coachmark,
+  Dialog,
   Divider,
   FilterChip,
   FormfieldGroup,
@@ -94,38 +99,35 @@ export {
   Input,
   InputChip,
   Link,
+  Linksimple,
   List,
   ListItem,
   Marker,
+  MenuItem,
+  OptGroup,
+  Option,
   Popover,
   Presence,
+  Progressbar,
+  Progressspinner,
   Radio,
   RadioGroup,
+  ScreenreaderAnnouncer,
+  Searchfield,
+  Select,
   Spinner,
   Tab,
+  TabList,
   Text,
+  Textarea,
   ThemeProvider,
   Toggle,
   VirtualizedList,
-  Option,
-  OptGroup,
-  Progressbar,
-  ScreenreaderAnnouncer,
   StaticCheckbox,
   StaticRadio,
   StaticToggle,
-  Textarea,
   ToggleTip,
   Tooltip,
-  Searchfield,
-  Brandvisual,
-  Appheader,
-  Select,
-  TabList,
-  Progressspinner,
-  ButtonLink,
-  Linksimple,
-  MenuItem,
   MenuItemRadio,
   MenuItemCheckbox,
 };

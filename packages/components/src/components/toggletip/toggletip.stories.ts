@@ -28,7 +28,7 @@ const render = (args: Args) => html`
       @hidden="${action('onhidden')}"
       @created="${action('oncreated')}"
       @destroyed="${action('ondestroyed')}"
-      ><div style="margin-right: 32px;">
+      ><div>
         The toggletip with a
         <mdc-link
           inline icon-name="placeholder-bold"
