@@ -76,7 +76,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
     await expect(tooltip).toHaveAttribute('hide-on-escape');
     await expect(tooltip).not.toHaveAttribute('interactive');
     await expect(tooltip).toHaveAttribute('offset', '4');
-    await expect(tooltip).toHaveAttribute('placement', 'top');
+    await expect(tooltip).toHaveAttribute('placement', 'bottom');
     await expect(tooltip).toHaveAttribute('role', 'tooltip');
     await expect(tooltip).not.toHaveAttribute('show-arrow');
     await expect(tooltip).toHaveAttribute('trigger', 'mouseenter focusin');

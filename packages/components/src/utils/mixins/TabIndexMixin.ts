@@ -6,9 +6,7 @@ export interface TabIndexMixinInterface {
   tabIndex: number;
 }
 
-export const TabIndexMixin = <T extends Constructor<LitElement>>(
-  superClass: T,
-) => {
+export const TabIndexMixin = <T extends Constructor<LitElement>>(superClass: T) => {
   class InnerMixinClass extends superClass {
     /**
      * This property specifies the tab order of the element.

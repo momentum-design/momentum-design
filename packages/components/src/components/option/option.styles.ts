@@ -24,11 +24,6 @@ const styles = css`
     /** 2x of leading and trailing icon width + 2x of column gap on both sides of the label text */
     width: calc(100% - (2 * var(--mdc-option-icon-width)) - (2 * var(--mdc-listitem-column-gap)));
   }
-  :host::part(leading-text-primary-label) {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
 `;
 
 export default [styles];
