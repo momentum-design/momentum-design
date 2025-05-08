@@ -1,5 +1,6 @@
 import '../staticradio';
 import '../text';
+import '../tooltip';
 import MenuItemRadio from './menuitemradio.component';
 import { TAG_NAME } from './menuitemradio.constants';
 

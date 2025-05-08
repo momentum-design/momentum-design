@@ -1,10 +1,12 @@
-import type { Meta, StoryObj, Args } from '@storybook/web-components';
-import '.';
-import { html } from 'lit';
+import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import type { TemplateResult } from 'lit';
+import { html } from 'lit';
+import '.';
+import '../icon';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { ARIA_CHECKED_STATES, INDICATOR } from './menuitemcheckbox.constants';
 import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { ARIA_CHECKED_STATES, INDICATOR } from './menuitemcheckbox.constants';
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style="width: 25rem;">${htmlString}
 </div>`;
@@ -16,6 +18,8 @@ const render = (args: Args) => wrapWithDiv(html`
     label="${args.label}"
     indicator="${args.indicator}"
     secondary-label="${args['secondary-label']}"
+    tooltip-text="${args['tooltip-text']}"
+    tooltip-placement="${args['tooltip-placement']}"
   >
     ${args.children}
   </mdc-menuitemcheckbox>`);
@@ -46,6 +50,13 @@ const meta: Meta = {
     'secondary-label': {
       control: 'text',
     },
+    'tooltip-text': {
+      control: 'text',
+    },
+    'tooltip-placement': {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
+    },
     ...hideControls([
       'data-aria-label',
       'variant',
@@ -68,6 +79,7 @@ const meta: Meta = {
       '--mdc-listitem-secondary-label-color',
       '--mdc-listitem-disabled-color',
       '--mdc-listitem-column-gap',
+      '--mdc-listitem-padding-left-and-right',
     ]),
     ...disableControls([
       'change',
@@ -89,6 +101,8 @@ export const Example: StoryObj = {
     label: 'Menu Item',
     disabled: false,
     'secondary-label': '',
+    'tooltip-text': '',
+    'tooltip-placement': POPOVER_PLACEMENT.TOP,
     children: html`<mdc-icon name="alert-muted-bold" slot="leading-controls"></mdc-icon>`,
   },
 };

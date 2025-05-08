@@ -2,6 +2,7 @@ import type { CSSResult, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import MenuItem from '../menuitem/menuitem.component';
+import { TYPE } from '../text/text.constants';
 import { TOGGLE_SIZE } from '../toggle/toggle.constants';
 import { ARIA_CHECKED_STATES, DEFAULTS, INDICATOR } from './menuitemcheckbox.constants';
 import styles from './menuitemcheckbox.styles';
@@ -63,13 +64,11 @@ class MenuItemCheckbox extends MenuItem {
       return nothing;
     }
     return html`
-      <div part="leading">
-        <mdc-staticcheckbox
-          slot="leading-controls"
-          ?checked="${this.ariaChecked === ARIA_CHECKED_STATES.TRUE}"
-          ?disabled="${this.disabled}"
-        ></mdc-staticcheckbox>
-      </div>
+      <mdc-staticcheckbox
+        slot="leading-controls"
+        ?checked="${this.ariaChecked === ARIA_CHECKED_STATES.TRUE}"
+        ?disabled="${this.disabled}"
+      ></mdc-staticcheckbox>
   `;
   }
 
@@ -78,14 +77,12 @@ class MenuItemCheckbox extends MenuItem {
       return nothing;
     }
     return html`
-      <div part="trailing">
-        <mdc-statictoggle
-          slot="trailing-controls"
-          ?checked="${this.ariaChecked === ARIA_CHECKED_STATES.TRUE}"
-          ?disabled="${this.disabled}"
-          size="${TOGGLE_SIZE.COMPACT}"
-        ></mdc-statictoggle>
-      </div>
+      <mdc-statictoggle
+        slot="trailing-controls"
+        ?checked="${this.ariaChecked === ARIA_CHECKED_STATES.TRUE}"
+        ?disabled="${this.disabled}"
+        size="${TOGGLE_SIZE.COMPACT}"
+      ></mdc-statictoggle>
     `;
   }
 
@@ -94,22 +91,34 @@ class MenuItemCheckbox extends MenuItem {
       return nothing;
     }
     return html`
-      <div part="trailing">
-        <mdc-icon
-          slot="trailing-controls"
-          name="check-bold"
-          part="checkmark-icon"
-        ></mdc-icon>
-      </div>
+      <mdc-icon
+        slot="trailing-controls"
+        name="check-bold"
+        part="checkmark-icon"
+      ></mdc-icon>
     `;
   }
 
   public override render() {
     return html`
-      ${this.staticCheckbox()}
-      ${super.render()}
-      ${this.staticToggle()}
-      ${this.getCheckmarkIcon()}
+      <div part="leading">
+        ${this.staticCheckbox()}
+        <slot name="leading-controls"></slot>
+        <div part="leading-text">
+          ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
+          ${this.getText('leading-text-secondary-label', TYPE.BODY_SMALL_REGULAR, this.secondaryLabel)}
+          ${this.getText('leading-text-tertiary-label', TYPE.BODY_SMALL_REGULAR, this.tertiaryLabel)}
+        </div>
+      </div>
+      <div part="trailing">
+        <div part="trailing-text">
+          ${this.getText('trailing-text-side-header', TYPE.BODY_MIDSIZE_REGULAR, this.sideHeaderText)}
+          ${this.getText('trailing-text-subline', TYPE.BODY_SMALL_REGULAR, this.sublineText)}
+        </div>
+        <slot name="trailing-controls"></slot>
+        ${this.staticToggle()}
+        ${this.getCheckmarkIcon()}
+      </div>
     `;
   }
 

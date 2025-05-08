@@ -4,6 +4,8 @@ import { html } from 'lit';
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { ARIA_CHECKED_STATES } from './menuitemradio.constants';
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style="width: 25rem;">${htmlString}
 </div>`;
@@ -14,6 +16,8 @@ const render = (args: Args) => wrapWithDiv(html`
     ?disabled="${args.disabled}"
     label="${args.label}"
     secondary-label="${args['secondary-label']}"
+    tooltip-text="${args['tooltip-text']}"
+    tooltip-placement="${args['tooltip-placement']}"
   ></mdc-menuitemradio>`);
 
 const meta: Meta = {
@@ -26,7 +30,8 @@ const meta: Meta = {
   },
   argTypes: {
     'aria-checked': {
-      control: 'boolean',
+      control: 'select',
+      options: Object.values(ARIA_CHECKED_STATES),
     },
     disabled: {
       control: 'boolean',
@@ -36,6 +41,13 @@ const meta: Meta = {
     },
     'secondary-label': {
       control: 'text',
+    },
+    'tooltip-text': {
+      control: 'text',
+    },
+    'tooltip-placement': {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
     },
     ...hideControls([
       'data-aria-label',
@@ -59,6 +71,7 @@ const meta: Meta = {
       '--mdc-listitem-secondary-label-color',
       '--mdc-listitem-disabled-color',
       '--mdc-listitem-column-gap',
+      '--mdc-listitem-padding-left-and-right',
     ]),
     ...disableControls([
       'change',
@@ -74,10 +87,12 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    'aria-checked': 'false',
+    'aria-checked': ARIA_CHECKED_STATES.FALSE,
     disabled: false,
     label: 'Menu Item',
     'secondary-label': '',
+    'tooltip-text': '',
+    'tooltip-placement': POPOVER_PLACEMENT.TOP,
   },
 };
 
