@@ -21,16 +21,6 @@ class MenuBar extends MenuMixin(Component) {
   }
 
   /**
-   * Handles the keydown event on the menubar element.
-   * If the key is 'ArrowLeft' or 'ArrowRight', it focuses to the previous or next menu item
-   * it moves focus to the corresponding menu item.
-   * @param event - The keyboard event.
-   */
-  private handleKeyDown(event: KeyboardEvent): void {
-    this.setTabIndexOnKeyDown(event);
-  }
-
-  /**
    * Handles the mouse click event on the menubar slot which targets one of the menu items.
    * Finds the index of the target element in the list items array and calls
    * `resetTabIndexAndSetActiveTabIndex` with that index.

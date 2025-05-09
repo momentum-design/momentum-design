@@ -1,6 +1,7 @@
 import { CSSResult, PropertyValues } from 'lit';
 import { MenuMixin } from '../../utils/mixins/MenuMixin';
 import { ROLE } from '../../utils/roles';
+import { ORIENTATION } from '../menubar/menubar.constants';
 import Popover from '../popover/popover.component';
 import { POPOVER_PLACEMENT, TRIGGER } from '../popover/popover.constants';
 import { TAG_NAME as MENU_POPOVER } from './menupopover.constants';
@@ -22,6 +23,10 @@ class MenuPopover extends MenuMixin(Popover) {
     this.hideOnOutsideClick = true;
     this.placement = POPOVER_PLACEMENT.BOTTOM_START;
     this.showArrow = false;
+    this.interactive = true;
+    this.ariaOrientation = ORIENTATION.VERTICAL;
+
+    this.addEventListener('keydown', this.handleKeyDown);
   }
 
   override async firstUpdated(changedProperties: PropertyValues) {
