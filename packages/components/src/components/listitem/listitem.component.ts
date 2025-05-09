@@ -2,6 +2,7 @@ import type { CSSResult, PropertyValues, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
 import { Component } from '../../models';
+import { KEYS } from '../../utils/keys';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { ROLE } from '../../utils/roles';
@@ -65,6 +66,27 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   /** @internal */
   @queryAssignedElements({ slot: 'trailing-controls' })
   trailingControlsSlot!: Array<HTMLElement>;
+
+  constructor() {
+    super();
+    this.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  private handleKeyDown(event: KeyboardEvent): void {
+    if (event.key === KEYS.ENTER || event.key === KEYS.SPACE) {
+      this.triggerClickEvent();
+      event.preventDefault();
+    }
+  }
+
+  private triggerClickEvent() {
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    });
+    this.dispatchEvent(clickEvent);
+  }
 
   /**
    * The variant of the list item. It can be a pill, rectangle or a full-width.
