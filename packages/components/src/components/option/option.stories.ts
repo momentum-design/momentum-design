@@ -1,10 +1,11 @@
 import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
-import { html } from 'lit';
 import type { TemplateResult } from 'lit';
+import { html } from 'lit';
 import '.';
-import { hideControls } from '../../../config/storybook/utils';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`
   <div aria-label="List box" role="listbox">${htmlString}</div>
@@ -22,6 +23,8 @@ const render = (args: Args) => wrapWithDiv(html`
     value="${args.value}"
     prefix-icon="${args['prefix-icon']}"
     aria-label="${args['aria-label']}"
+    tooltip-text="${args['tooltip-text']}"
+    tooltip-placement="${args['tooltip-placement']}"
   ></mdc-option>
 `);
 
@@ -52,13 +55,19 @@ const meta: Meta = {
     'prefix-icon': {
       control: 'text',
     },
+    'tooltip-text': {
+      control: 'text',
+    },
+    'tooltip-placement': {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
+    },
     ...hideControls([
       'id',
       'name',
       'validation-message',
       'validity',
       'willValidate',
-      'data-aria-label',
       'variant',
       'tabIndex',
       'secondary-label',
@@ -72,6 +81,7 @@ const meta: Meta = {
       '--mdc-listitem-primary-label-color',
       '--mdc-listitem-secondary-label-color',
       '--mdc-listitem-disabled-color',
+      '--mdc-listitem-column-gap',
       'leading-controls',
       'leading-text-primary-label',
       'leading-text-secondary-label',
@@ -79,6 +89,13 @@ const meta: Meta = {
       'trailing-controls',
       'trailing-text-side-header',
       'trailing-text-subline',
+    ]),
+    ...disableControls([
+      'click',
+      'keydown',
+      'keyup',
+      'focus',
+      'default',
     ]),
     ...classArgType,
     ...styleArgType,
@@ -95,15 +112,21 @@ export const Example: StoryObj = {
     value: '',
     'prefix-icon': '',
     'aria-label': 'Select an option label',
+    'tooltip-text': '',
+    'tooltip-placement': POPOVER_PLACEMENT.TOP,
   },
 };
 
 export const OptionWithLongText: StoryObj = {
   render: () => html`
-    <div style="width: 15rem; height: 10rem;" aria-label="List box" role="listbox">
-      <mdc-option label="This is a very long text and it should be truncated."></mdc-option>
+    <div style="width: 15rem;" aria-label="List box" role="listbox">
+      <mdc-option
+        label="This is a very long text and it should be truncated."
+        tooltip-text="This is a very long text and it should be truncated."
+      ></mdc-option>
     </div>
   `,
+  ...hideAllControls(),
 };
 
 export const OptionWithIcon: StoryObj = {

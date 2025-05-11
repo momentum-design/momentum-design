@@ -1,13 +1,15 @@
-import type { CSSResult, PropertyValues } from 'lit';
-import { html, nothing, TemplateResult } from 'lit';
+import type { CSSResult, PropertyValues, TemplateResult } from 'lit';
+import { html, nothing } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
 import { Component } from '../../models';
-import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
+import { ROLE } from '../../utils/roles';
+import type { PopoverPlacement } from '../popover/popover.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { TextType } from '../text/text.types';
-import { DEFAULTS } from './listitem.constants';
+import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
+import { DEFAULTS, LISTITEM_ID, TOOLTIP_ID } from './listitem.constants';
 import styles from './listitem.styles';
 import type { ListItemVariants } from './listitem.types';
 
@@ -21,6 +23,11 @@ import type { ListItemVariants } from './listitem.types';
  * The leading and trailing slots can be used to display controls and text. <br/>
  * Based on the leading/trailing slot, the position of the controls and text can be adjusted. <br/>
  * Please use mdc-list as a parent element even when there is only listitem for a11y purpose.
+ *
+ * By providing the tooltip-text attribute, a tooltip will be displayed on hover of the listitem.
+ * The placement of the tooltip can be adjusted using the tooltip-placement attribute.
+ * This will be helpful when the listitem text is truncated or
+ * when you want to display additional information about the listitem.
  *
  * @tagname mdc-listitem
  *
@@ -43,13 +50,14 @@ import type { ListItemVariants } from './listitem.types';
  *  - Allows customization of the secondary and tertiary label text slot color.
  * @cssproperty --mdc-listitem-disabled-color - Allows customization of the disabled color.
  * @cssproperty --mdc-listitem-column-gap - Allows customization of column gap.
+ * @cssproperty --mdc-listitem-padding-left-and-right - Allows customization of padding left and right.
  *
  * @event click - (React: onClick) This event is dispatched when the listitem is clicked.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the listitem.
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the listitem.
  * @event focus - (React: onFocus) This event is dispatched when the listitem receives focus.
  */
-class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component))) {
+class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   /** @internal */
   @queryAssignedElements({ slot: 'leading-controls' })
   leadingControlsSlot!: Array<HTMLElement>;
@@ -94,9 +102,71 @@ class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component)
    */
   @property({ type: String, reflect: true, attribute: 'subline-text' }) sublineText?: string;
 
+  /**
+   * The tooltip text is displayed on hover of the list item.
+   */
+  @property({ type: String, reflect: true, attribute: 'tooltip-text' }) tooltipText?: string;
+
+  /**
+   * The tooltip placement of the list item. If the tooltip text is present,
+   * then this tooltip placement will be applied.
+   * @default 'top'
+   */
+  @property({ type: String, reflect: true, attribute: 'tooltip-placement' })
+  tooltipPlacement: PopoverPlacement = DEFAULTS.TOOLTIP_PLACEMENT;
+
+  constructor() {
+    super();
+
+    this.addEventListener('focusin', this.displayTooltipForLongText);
+    this.addEventListener('mouseover', this.displayTooltipForLongText);
+    this.addEventListener('focusout', this.hideTooltipOnLeave);
+    this.addEventListener('mouseout', this.hideTooltipOnLeave);
+    this.addEventListener('click', this.handleClick);
+  }
+
   override connectedCallback(): void {
     super.connectedCallback();
-    this.role = this.role || 'listitem';
+    this.role = this.role || ROLE.LISTITEM;
+  }
+
+  private handleClick(): void {
+    // If the tooltip is open, it has to be closed first.
+    this.hideTooltipOnLeave();
+  }
+
+  /**
+   * Display a tooltip for the listitem.
+   * Create the tooltip programmatically after the nearest parent element.
+   */
+  private displayTooltipForLongText(): void {
+    if (!this.tooltipText) {
+      return;
+    }
+
+    // Add a unique id to the listitem if it does not have one to attach the tooltip.
+    this.id = this.id || LISTITEM_ID;
+    // Create tooltip for the listitem element.
+    const tooltip = document.createElement(TOOLTIP_TAG_NAME);
+    tooltip.id = TOOLTIP_ID;
+    tooltip.textContent = this.tooltipText;
+    tooltip.setAttribute('triggerid', this.id);
+    tooltip.setAttribute('placement', this.tooltipPlacement);
+    tooltip.setAttribute('visible', '');
+    tooltip.setAttribute('show-arrow', '');
+
+    // Add tooltip programmatically after the parent element.
+    this.parentElement?.after(tooltip);
+  }
+
+  /**
+   * Removes the dynamically created tooltip for long text label on focus or mouse leave.
+   * This is triggered on focusout and mouseout events.
+   */
+  private hideTooltipOnLeave(): void {
+    this.id = this.id === LISTITEM_ID ? '' : this.id;
+    const existingTooltip = document.querySelector(`#${TOOLTIP_ID}`);
+    existingTooltip?.remove();
   }
 
   /**
@@ -139,6 +209,7 @@ class ListItem extends DataAriaLabelMixin(DisabledMixin(TabIndexMixin(Component)
     if (changedProperties.has('disabled')) {
       this.tabIndex = this.disabled ? -1 : 0;
       this.disableSlottedChildren(this.disabled);
+      this.setAttribute('aria-disabled', `${this.disabled}`);
     }
   }
 

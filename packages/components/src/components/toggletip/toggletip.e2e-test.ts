@@ -42,7 +42,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.placement ? `placement="${restArgs.placement}"` : ''}
         ${restArgs.showArrow ? 'show-arrow' : ''}
         ${restArgs.triggerID ? `triggerID="${restArgs.triggerID}"` : ''}
-      ><div style="margin-right: 32px;">
+      ><div>
           The toggletip with a
           <mdc-link
             inline icon-name="placeholder-bold" href="https://www.webex.com" target="_blank" rel="noopener noreferrer"
@@ -265,7 +265,7 @@ const visualTestingSetup = async (componentsPage: ComponentsPage) => {
         color="tonal"
         triggerID="trigger-button1"
         visible
-      ><div style="margin-right: 32px;">
+      ><div>
           The toggletip with color tonal.
         </div>
       </mdc-toggletip>
@@ -275,7 +275,7 @@ const visualTestingSetup = async (componentsPage: ComponentsPage) => {
         color="contrast"
         triggerID="trigger-button2"
         visible
-      ><div style="margin-right: 32px;">
+      ><div>
           The toggletip with color contrast.
         </div>
       </mdc-toggletip>

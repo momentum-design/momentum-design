@@ -48,6 +48,12 @@ test('mdc-option', async ({ componentsPage }) => {
     await optionSheet.createMarkupWithCombination({}, markUpOptions);
     optionSheet.setAttributes({ label, 'prefix-icon': icon, selected: '', disabled: '' });
     await optionSheet.createMarkupWithCombination({}, markUpOptions);
+    optionSheet.setAttributes({
+      'prefix-icon': icon,
+      label: 'A long text which should be truncated',
+      style: 'width: 15rem',
+    });
+    await optionSheet.createMarkupWithCombination({}, markUpOptions);
 
     await optionSheet.mountStickerSheet({ role: 'listbox' });
     await test.step('matches screenshot of element', async () => {

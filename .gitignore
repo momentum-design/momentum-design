@@ -134,3 +134,6 @@ packages/assets/utils/src/staticSite/public
 
 playwright-temp
 packages/components/playwright-temp
+
+# JetBrains IDEs
+.idea/

@@ -1,6 +1,7 @@
+import '../text';
+import '../tooltip';
 import ListItem from './listitem.component';
 import { TAG_NAME } from './listitem.constants';
-import '../text';
 
 ListItem.register(TAG_NAME);
 
