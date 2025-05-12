@@ -1,12 +1,17 @@
 import { property, queryAssignedElements } from 'lit/decorators.js';
-import { ORIENTATION } from '../../components/menubar/menubar.constants';
+import { TAG_NAME as MENU_TAGNAME } from '../../components/menu/menu.constants';
+import { ORIENTATION, TAG_NAME as MENUBAR_TAGNAME } from '../../components/menubar/menubar.constants';
 import type { Orientation } from '../../components/menubar/menubar.types';
 import { TAG_NAME as MENUITEM_TAGNAME } from '../../components/menuitem/menuitem.constants';
-import type MenuPopover from '../../components/menupopover/menupopover.component';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../../components/menupopover/menupopover.constants';
 import { Component } from '../../models';
 import { KEYS } from '../keys';
 import type { Constructor } from './index.types';
+
+interface IParentMenuItem {
+  menuChildId: string;
+  menu: HTMLElement | null;
+}
 
 export interface MenuMixinInterface {
   ariaOrientation: Orientation;
@@ -140,12 +145,16 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
       menuItems[newIndex]?.focus();
     }
 
-    private getMenuPopoverIndex(index: number): number {
+    private openPopover(index: number): boolean {
       if (this.menuItems[index].nextElementSibling?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME) {
         const currentMenuId = this.menuItems[index].getAttribute('id');
-        return this.menuPopoverItems.findIndex((node) => node.getAttribute('triggerid') === currentMenuId);
+        const result = this.menuPopoverItems.findIndex((node) => node.getAttribute('triggerid') === currentMenuId);
+        if (result !== -1) {
+          this.menuPopoverItems[result].toggleAttribute('visible');
+          return true;
+        }
       }
-      return -1;
+      return false;
     }
 
     private navigateToPrevMenuItem(currentIndex: number, firstMenuIndex: number, lastMenuIndex: number) {
@@ -158,17 +167,67 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
       this.updateTabIndexAndFocusNewIndex(this.menuItems, currentIndex, newIndex);
     }
 
-    private closePopoverAndGetParentMenuItems(currentIndex: number) {
-      (this as unknown as MenuPopover)?.hidePopover();
+    private getParentMenuItemDetails(menuChildId: string, menu?: HTMLElement | null): IParentMenuItem {
+      if (
+        menu?.tagName?.toLowerCase() === MENU_TAGNAME
+        || menu?.tagName?.toLowerCase() === MENUBAR_TAGNAME
+      ) {
+        return { menu, menuChildId };
+      }
+      return this.getParentMenuItemDetails(menu?.previousElementSibling?.getAttribute('id') ?? '', menu?.parentElement);
+    }
+
+    private hideAllPopovers(menu?: HTMLElement | null): void {
+      if (
+        menu?.tagName?.toLowerCase() === MENU_TAGNAME
+        || menu?.tagName?.toLowerCase() === MENUBAR_TAGNAME
+      ) {
+        return;
+      }
+      if (menu?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME) {
+        menu?.toggleAttribute('visible');
+      }
+      this.hideAllPopovers(menu?.parentElement);
+    }
+
+    private closePopoverAndNavigateToPrevParentMenuItem(currentIndex: number): void {
+      // - close popover first
+      this.toggleAttribute('visible');
+      // - get parent menu item details and update the tab index to parent menu item.
       const parentMenuItem = this.menuItems[currentIndex].parentElement?.previousElementSibling;
       const menuItems = Array.from(this.parentElement?.children || []).filter(
         (node) => node.tagName?.toLowerCase() === MENUITEM_TAGNAME,
       );
       const parentMenuItemIndex = menuItems.findIndex((node) => node === parentMenuItem);
-      return {
-        menuItems,
+      this.updateTabIndexAndFocusNewIndex(
+        menuItems as HTMLElement[],
         parentMenuItemIndex,
-      };
+        parentMenuItemIndex - 1,
+      );
+    }
+
+    private openPopoverAndNavigateToNextChildrenMenuItem(currentIndex: number): void {
+      const isMenuPopoverOpen = this.openPopover(currentIndex);
+      if (isMenuPopoverOpen) {
+        return;
+      }
+      // - If there are no popovers to the right, then we will close all popovers recursively,
+      // and go the next menu item from the menu bar
+      // - close all popovers recursively.
+      this.hideAllPopovers(this.menuItems[currentIndex]);
+      // - get the top parent menu items using recursion.
+      const parentMenuItemDetails = this.getParentMenuItemDetails('', this.menuItems[currentIndex]);
+      const parentMenuItemsChildren = Array.from(parentMenuItemDetails?.menu?.children || []).filter(
+        (node) => node.tagName?.toLowerCase() === MENUITEM_TAGNAME,
+      );
+      const parentMenuItemIndex = parentMenuItemsChildren.findIndex(
+        (node) => node.getAttribute('id') === parentMenuItemDetails?.menuChildId,
+      );
+      this.updateTabIndexAndFocusNewIndex(
+        parentMenuItemsChildren as HTMLElement[],
+        parentMenuItemIndex,
+        parentMenuItemIndex + 1,
+      );
     }
 
     public handleKeyDown(event: KeyboardEvent): void {
@@ -178,7 +237,6 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
       if (currentIndex === -1) {
         return;
       }
-      console.log('tom mowa', event.key, this.ariaOrientation);
       switch (event.key) {
         case KEYS.HOME:
           this.updateTabIndexAndFocusNewIndex(this.menuItems, currentIndex, firstMenuIndex);
@@ -191,34 +249,16 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
             this.navigateToPrevMenuItem(currentIndex, firstMenuIndex, lastMenuIndex);
           }
           if (this.ariaOrientation === ORIENTATION.VERTICAL) {
-            const { menuItems, parentMenuItemIndex } = this.closePopoverAndGetParentMenuItems(currentIndex);
-            this.updateTabIndexAndFocusNewIndex(
-              menuItems as HTMLElement[],
-              parentMenuItemIndex,
-              parentMenuItemIndex,
-            );
+            this.closePopoverAndNavigateToPrevParentMenuItem(currentIndex);
           }
           break;
         }
         case KEYS.ARROW_RIGHT: {
-          console.log('arrow right ->', this.ariaOrientation);
           if (this.ariaOrientation === ORIENTATION.HORIZONTAL) {
             this.navigateToNextMenuItem(currentIndex, firstMenuIndex, lastMenuIndex);
           }
           if (this.ariaOrientation === ORIENTATION.VERTICAL) {
-            // is the menuitem has a popover children, then we will open it and navigate to the first menuitem.
-            const popoverIndex = this.getMenuPopoverIndex(currentIndex);
-            console.log(popoverIndex);
-            if (popoverIndex !== -1) {
-              (this.menuPopoverItems[popoverIndex] as MenuPopover).showPopover();
-            } else {
-              const { menuItems, parentMenuItemIndex } = this.closePopoverAndGetParentMenuItems(currentIndex);
-              this.updateTabIndexAndFocusNewIndex(
-                menuItems as HTMLElement[],
-                parentMenuItemIndex,
-                parentMenuItemIndex + 1,
-              );
-            }
+            this.openPopoverAndNavigateToNextChildrenMenuItem(currentIndex);
           }
           break;
         }
@@ -229,10 +269,7 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
         }
         case KEYS.ARROW_DOWN: {
           if (this.ariaOrientation === ORIENTATION.HORIZONTAL) {
-            const popoverIndex = this.getMenuPopoverIndex(currentIndex);
-            if (popoverIndex !== -1) {
-              (this.menuPopoverItems[popoverIndex] as MenuPopover).showPopover();
-            }
+            this.openPopover(currentIndex);
           }
           if (this.ariaOrientation === ORIENTATION.VERTICAL) {
             this.navigateToNextMenuItem(currentIndex, firstMenuIndex, lastMenuIndex);
