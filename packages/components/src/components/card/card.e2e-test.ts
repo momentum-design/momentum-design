@@ -344,7 +344,7 @@ test.describe.parallel('mdc-card', () => {
         await componentsPage.accessibility.checkForA11yViolations('interactive-card-horizontal');
       });
     } else {
-      await componentsPage.page.setViewportSize({ width: 500, height: 500 });
+      await componentsPage.page.setViewportSize({ width: 700, height: 500 });
       await test.step('static card horizontal', async () => {
         await setup({ componentsPage,
           cardTitle: 'Card Title',

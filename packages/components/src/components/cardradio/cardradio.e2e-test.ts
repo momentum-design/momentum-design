@@ -336,7 +336,7 @@ test.describe.parallel('mdc-cardradio', () => {
       await componentsPage.accessibility.checkForA11yViolations('cardradio-horizontal');
     } else {
       await test.step('visual-regression & accessibility', async () => {
-        await componentsPage.page.setViewportSize({ width: 500, height: 500 });
+        await componentsPage.page.setViewportSize({ width: 700, height: 500 });
         await setup({ componentsPage,
           cardTitle: 'Card Title',
           subtitle: 'Card Subtitle',
