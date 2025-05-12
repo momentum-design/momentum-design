@@ -4,6 +4,7 @@ import { ORIENTATION, TAG_NAME as MENUBAR_TAGNAME } from '../../components/menub
 import type { Orientation } from '../../components/menubar/menubar.types';
 import { TAG_NAME as MENUITEM_TAGNAME } from '../../components/menuitem/menuitem.constants';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../../components/menupopover/menupopover.constants';
+import { POPOVER_PLACEMENT } from '../../components/popover/popover.constants';
 import { Component } from '../../models';
 import { KEYS } from '../keys';
 import type { Constructor } from './index.types';
@@ -16,8 +17,10 @@ interface IParentMenuItem {
 export interface MenuMixinInterface {
   ariaOrientation: Orientation;
   handleKeyDown(event: KeyboardEvent): void;
-  setTabIndexOnMouseClick(event: MouseEvent): void;
+  handleMouseClick(event: MouseEvent): void;
   resetTabIndexAndSetActiveTabIndex(newIndex: number): void;
+  setTabIndexOnMouseClick(event: MouseEvent): void;
+  updatePopoverPlacementBasedOnOrientation(): void;
 }
 
 export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
@@ -50,80 +53,23 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
       );
     }
 
-    /**
-    * Calculates a new index for menu item navigation based on the pressed key.
-    * Supports ArrowRight, ArrowLeft, Home, and End keys for navigating menu items.
-    * - ArrowRight: Moves focus to the next menu item, wrapping around if necessary.
-    * - ArrowLeft: Moves focus to the previous menu item, wrapping around if necessary.
-    * - Home: Moves focus to the first menu item.
-    * - End: Moves focus to the last menu item.
-    *
-    * @param key - The navigation key that was pressed.
-    * @param currentIndex - The current index of the focused menu item.
-    * @param wrappedDivsCount - The total number of menu items.
-    * @returns The new index to focus on, or undefined if the key is not supported.
-    */
-    // private getNewIndexToNavigate(
-    //   key: string,
-    //   currentIndex: number,
-    //   wrappedDivsCount: number,
-    //   ariaOrientation: Orientation,
-    // ): number | undefined {
-    //   if (key === KEYS.HOME) {
-    //     return 0;
-    //   }
-    //   if (key === KEYS.END) {
-    //     return wrappedDivsCount - 1;
-    //   }
-    //   switch (ariaOrientation) {
-    //     case ORIENTATION.VERTICAL:
-    //       switch (key) {
-    //         case KEYS.ARROW_UP:
-    //           return (currentIndex - 1 + wrappedDivsCount) % wrappedDivsCount;
-    //         case KEYS.ARROW_DOWN:
-    //           return (currentIndex + 1) % wrappedDivsCount;
-    //         default:
-    //           return undefined;
-    //       }
-    //     case ORIENTATION.HORIZONTAL:
-    //       switch (key) {
-    //         case KEYS.ARROW_RIGHT:
-    //           return (currentIndex + 1) % wrappedDivsCount;
-    //         case KEYS.ARROW_LEFT:
-    //           return (currentIndex - 1 + wrappedDivsCount) % wrappedDivsCount;
-    //         default:
-    //           return undefined;
-    //       }
-    //     default:
-    //       return undefined;
-    //   }
-    // }
+    public updatePopoverPlacementBasedOnOrientation(): void {
+      if (this.ariaOrientation === ORIENTATION.HORIZONTAL) {
+        this.menuPopoverItems.forEach((node) => {
+          node.setAttribute('placement', POPOVER_PLACEMENT.BOTTOM_START);
+        });
+      } else {
+        this.menuPopoverItems.forEach((node) => {
+          node.setAttribute('placement', POPOVER_PLACEMENT.RIGHT_START);
+        });
+      }
+    }
 
     public setTabIndexOnMouseClick(event: MouseEvent): void {
       const newIndex = this.getCurrentIndex(event.target);
       this.resetTabIndexAndSetActiveTabIndex(newIndex);
       this.menuItems[newIndex]?.focus();
     }
-
-    /**
-     * Handles the keydown event on the menubar element.
-     * If the key is 'ArrowLeft' or 'ArrowRight', it focuses to the previous or next menu item
-     * it moves focus to the corresponding menu item.
-     * @param event - The keyboard event.
-     */
-    // public setTabIndexOnKeyDown(event: KeyboardEvent): void {
-    //   const currentIndex = this.getCurrentIndex(event.target);
-    //   const newIndex = this.getNewIndexToNavigate(
-    //     event.key,
-    //     currentIndex,
-    //     this.menuItems.length,
-    //     this.ariaOrientation,
-    //   );
-    //   if (newIndex !== undefined) {
-    //     this.menuItems[newIndex]?.focus();
-    //     this.resetTabIndexAndSetActiveTabIndex(newIndex);
-    //   }
-    // }
 
     /**
      * Resets all list items tabindex to -1 and sets the tabindex of the
@@ -190,20 +136,25 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
       this.hideAllPopovers(menu?.parentElement);
     }
 
+    private navigateToPrevParentMenuItem(currentIndex: number): void {
+      const parentMenuItem = this.menuItems[currentIndex].parentElement?.previousElementSibling;
+      const parentMenuItemsChildren = Array.from(this.parentElement?.children || []).filter(
+        (node) => node.tagName?.toLowerCase() === MENUITEM_TAGNAME,
+      );
+      const parentMenuItemIndex = parentMenuItemsChildren.findIndex((node) => node === parentMenuItem);
+      this.updateTabIndexAndFocusNewIndex(
+        parentMenuItemsChildren as HTMLElement[],
+        parentMenuItemIndex,
+        parentMenuItemIndex,
+      );
+      parentMenuItemsChildren[parentMenuItemIndex - 1].nextElementSibling?.toggleAttribute('visible');
+    }
+
     private closePopoverAndNavigateToPrevParentMenuItem(currentIndex: number): void {
       // - close popover first
       this.toggleAttribute('visible');
       // - get parent menu item details and update the tab index to parent menu item.
-      const parentMenuItem = this.menuItems[currentIndex].parentElement?.previousElementSibling;
-      const menuItems = Array.from(this.parentElement?.children || []).filter(
-        (node) => node.tagName?.toLowerCase() === MENUITEM_TAGNAME,
-      );
-      const parentMenuItemIndex = menuItems.findIndex((node) => node === parentMenuItem);
-      this.updateTabIndexAndFocusNewIndex(
-        menuItems as HTMLElement[],
-        parentMenuItemIndex,
-        parentMenuItemIndex - 1,
-      );
+      this.navigateToPrevParentMenuItem(currentIndex);
     }
 
     private openPopoverAndNavigateToNextChildrenMenuItem(currentIndex: number): void {
@@ -228,6 +179,7 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
         parentMenuItemIndex,
         parentMenuItemIndex + 1,
       );
+      parentMenuItemsChildren[parentMenuItemIndex + 1].nextElementSibling?.toggleAttribute('visible');
     }
 
     public handleKeyDown(event: KeyboardEvent): void {
@@ -277,9 +229,25 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
           event.preventDefault();
           break;
         }
+        case KEYS.ENTER: {
+          if (this.menuItems[currentIndex]?.nextElementSibling?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME) {
+            this.openPopoverAndNavigateToNextChildrenMenuItem(currentIndex);
+          } else if ((event.target as HTMLElement).tagName?.toLowerCase() === MENUITEM_TAGNAME) {
+            this.hideAllPopovers(this.menuItems[currentIndex]);
+          }
+          break;
+        }
+        case KEYS.ESCAPE: {
+          this.navigateToPrevParentMenuItem(currentIndex);
+          break;
+        }
         default:
           break;
       }
+    }
+
+    public handleMouseClick(event: MouseEvent): void {
+      console.log(event);
     }
   }
   // Cast return type to your mixin's interface intersected with the superClass type
