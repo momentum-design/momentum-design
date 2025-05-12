@@ -82,7 +82,7 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
   zIndex: number = DEFAULTS.Z_INDEX;
 
   /**
-   * The size of the dialog, can be 'small' (432x332), 'medium' (656x356), or 'large' (992x412)
+   * The size of the dialog, can be 'small' (432px width), 'medium' (656px width), or 'large' (992px width)
    * @default small
    */
   @property({ type: String, reflect: true })

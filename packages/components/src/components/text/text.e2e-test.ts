@@ -3,15 +3,8 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
-import { DEFAULTS, TYPE, VALID_TEXT_TAGS } from './text.constants';
+import { TYPE, VALID_TEXT_TAGS } from './text.constants';
 import type { TextType, TagName } from './text.types';
-
-// Custom timeout for mobile chrome device only on text component test suite
-const setTimeoutForMobileChrome = () => {
-  if (test.info().project.name === 'mobile chrome') {
-    test.setTimeout(45000);
-  }
-};
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -56,42 +49,46 @@ const setupEllipsis = async (args: SetupOptions) => {
 const textContent = 'abcdefghijklmnopqrstuvwxyz1234567890';
 
 test.describe('mdc-text', () => {
-  test.use({
-    viewport: {
-      width: 1100,
-      height: 3100,
-    },
-  });
-
   /**
    * VISUAL REGRESSION
    */
-  test('visual-regression & accessibility', async ({ componentsPage }) => {
-    setTimeoutForMobileChrome();
+  const createSnapshot = async ({ componentsPage, combination, fileNameSuffix }: {
+    componentsPage: ComponentsPage;
+    combination: Record<string, Record<string, any>>;
+    fileNameSuffix: string;
+  }) => {
     const textStickerSheet = new StickerSheet(componentsPage, 'mdc-text');
-    await test.step('add text component with different types to sheet', async () => {
-      textStickerSheet.setChildren(textContent);
-      await textStickerSheet.createMarkupWithCombination({ type: TYPE }, { createNewRow: true });
-    });
-
-    await test.step('add text component with different tagnames to sheet', async () => {
-      textStickerSheet.setAttributes({ type: DEFAULTS.TYPE });
-      await textStickerSheet.createMarkupWithCombination({ tagname: VALID_TEXT_TAGS }, { createNewRow: true });
-    });
+    textStickerSheet.setChildren(textContent);
+    await textStickerSheet.createMarkupWithCombination(combination, { createNewRow: true });
 
     await textStickerSheet.mountStickerSheet();
-    /**
-     * VISUAL REGRESSION
-     */
-    await test.step('matches screenshot of element tagnames', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-text');
-    });
+    const container = textStickerSheet.getWrapperContainer();
 
+    await componentsPage.visualRegression.takeScreenshot(`mdc-text-${fileNameSuffix}`, { element: container });
     /**
      * ACCESSIBILITY
      */
-    await test.step('accessibility', async () => {
-      await componentsPage.accessibility.checkForA11yViolations('text');
+    await test.step(`accessibility for ${fileNameSuffix}`, async () => {
+      await componentsPage.accessibility.checkForA11yViolations(`mdc-text-${fileNameSuffix}`);
+    });
+  };
+
+  test.use({ viewport: { width: 400, height: 800 } });
+  test('visual-regression & accessibility', async ({ componentsPage }) => {
+    const body = Object.fromEntries(Object.entries(TYPE).filter(([k]) => k.startsWith('BODY')));
+    const heading = Object.fromEntries(Object.entries(TYPE).filter(([k]) => k.startsWith('HEAD')));
+
+    await test.step('create snapshot for body type text component', async () => {
+      await createSnapshot({ componentsPage, combination: { type: body }, fileNameSuffix: 'body' });
+    });
+
+    await test.step('create snapshot for tagname text component', async () => {
+      await createSnapshot({ componentsPage, combination: { tagname: VALID_TEXT_TAGS }, fileNameSuffix: 'tagname' });
+    });
+
+    await test.step('create snapshot for heading type text component', async () => {
+      await componentsPage.page.setViewportSize({ width: 1200, height: 1700 });
+      await createSnapshot({ componentsPage, combination: { type: heading }, fileNameSuffix: 'heading' });
     });
   });
 
