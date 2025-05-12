@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
     inputs:
       component-name:
-        description: 'Component name to update snapshots for'
-        required: true
+        description: 'Component name to update snapshots for. If not provided, it updates all the components'
+        required: false
         type: string
       other-args:
         description: 'Other arguments to pass to the update-snapshot command'
