@@ -78,7 +78,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
   return textarea;
 };
 
-test.use({ viewport: { width: 800, height: 2250 } });
+test.use({ viewport: { width: 800, height: 1200 } });
 test('mdc-textarea', async ({ componentsPage, browserName }) => {
   const mdcTextarea = await setup({
     componentsPage,
@@ -314,6 +314,8 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
       placeholder: 'Placeholder',
       label: 'Label',
       'help-text': 'Help Text',
+      rows: 3,
+      cols: 12,
     };
     const textareaStickerSheet = new StickerSheet(componentsPage, 'mdc-textarea');
 
@@ -322,10 +324,10 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
       'help-text-type': VALIDATION,
     });
 
-    // textarea field with rows set to 7 & cols to 50
+    // textarea field with rows set to 7 & cols to 30
     textareaStickerSheet.setAttributes({ ...attributes,
-      rows: 7,
-      cols: 50,
+      rows: 5,
+      cols: 30,
     });
     await textareaStickerSheet.createMarkupWithCombination({});
 
@@ -333,6 +335,7 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
     textareaStickerSheet.setAttributes({ ...attributes,
       'max-character-limit': 100,
       value: 'Example Text',
+      cols: 30,
     });
     await textareaStickerSheet.createMarkupWithCombination({});
 
@@ -342,6 +345,7 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
       value: 'This is a long text',
       'help-text': 'Input must not exceed 10 characters',
       'help-text-type': 'error',
+      cols: 30,
     });
     await textareaStickerSheet.createMarkupWithCombination({});
 
@@ -349,6 +353,7 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
     textareaStickerSheet.setAttributes({ ...attributes,
       value: 'Disabled',
       disabled: '',
+      cols: 30,
     });
     await textareaStickerSheet.createMarkupWithCombination({});
 
@@ -356,6 +361,7 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
     textareaStickerSheet.setAttributes({ ...attributes,
       value: 'Readonly value',
       readonly: '',
+      cols: 30,
     });
     await textareaStickerSheet.createMarkupWithCombination({});
 
@@ -363,6 +369,7 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
     textareaStickerSheet.setAttributes({ ...attributes,
       'required-label': 'required',
       placeholder: 'Textarea is required',
+      cols: 30,
     });
     await textareaStickerSheet.createMarkupWithCombination({});
 
