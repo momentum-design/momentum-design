@@ -308,6 +308,8 @@ test.describe.parallel('mdc-card', () => {
           subtitle: 'Card Subtitle',
           orientation: 'vertical',
           children: defaultChildren,
+          imageSrc: 'https://placehold.co/260x180',
+          imageAlt: 'Image Alt',
         });
         await componentsPage.visualRegression.takeScreenshot('static-card-vertical');
         await componentsPage.accessibility.checkForA11yViolations('static-card-vertical');
@@ -319,6 +321,8 @@ test.describe.parallel('mdc-card', () => {
           subtitle: 'Card Subtitle',
           orientation: 'vertical',
           children: interactiveChildren,
+          imageSrc: 'https://placehold.co/260x180',
+          imageAlt: 'Image Alt',
         });
         await componentsPage.visualRegression.takeScreenshot('interactive-card-vertical');
         await componentsPage.accessibility.checkForA11yViolations('interactive-card-vertical');
@@ -344,13 +348,14 @@ test.describe.parallel('mdc-card', () => {
         await componentsPage.accessibility.checkForA11yViolations('interactive-card-horizontal');
       });
     } else {
-      await componentsPage.page.setViewportSize({ width: 700, height: 500 });
       await test.step('static card horizontal', async () => {
         await setup({ componentsPage,
           cardTitle: 'Card Title',
           subtitle: 'Card Subtitle',
           orientation: 'horizontal',
           children: defaultChildren,
+          imageSrc: 'https://placehold.co/70x180',
+          imageAlt: 'Image Alt',
         });
         await componentsPage.visualRegression.takeScreenshot('static-card-horizontal');
         await componentsPage.accessibility.checkForA11yViolations('static-card-horizontal');
@@ -362,6 +367,8 @@ test.describe.parallel('mdc-card', () => {
           subtitle: 'Card Subtitle',
           orientation: 'horizontal',
           children: interactiveChildren,
+          imageSrc: 'https://placehold.co/70x180',
+          imageAlt: 'Image Alt',
         });
         await componentsPage.visualRegression.takeScreenshot('interactive-card-horizontal');
         await componentsPage.accessibility.checkForA11yViolations('interactive-card-horizontal');

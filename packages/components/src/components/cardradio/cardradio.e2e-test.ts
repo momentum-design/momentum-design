@@ -318,6 +318,8 @@ test.describe.parallel('mdc-cardradio', () => {
           subtitle: 'Card Subtitle',
           orientation: 'vertical',
           children: defaultChildren,
+          imageSrc: 'https://placehold.co/260x180',
+          imageAlt: 'Image Alt',
         });
         await componentsPage.visualRegression.takeScreenshot('static-card-vertical');
         await componentsPage.accessibility.checkForA11yViolations('static-card-vertical');
@@ -336,12 +338,13 @@ test.describe.parallel('mdc-cardradio', () => {
       await componentsPage.accessibility.checkForA11yViolations('cardradio-horizontal');
     } else {
       await test.step('visual-regression & accessibility', async () => {
-        await componentsPage.page.setViewportSize({ width: 700, height: 500 });
         await setup({ componentsPage,
           cardTitle: 'Card Title',
           subtitle: 'Card Subtitle',
           orientation: 'horizontal',
           children: defaultChildren,
+          imageSrc: 'https://placehold.co/70x180',
+          imageAlt: 'Image Alt',
         });
         await componentsPage.visualRegression.takeScreenshot('static-card-horizontal');
         await componentsPage.accessibility.checkForA11yViolations('static-card-horizontal');
