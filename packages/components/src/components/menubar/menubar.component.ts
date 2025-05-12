@@ -18,7 +18,6 @@ class MenuBar extends MenuMixin(Component) {
     this.role = ROLE.MENUBAR;
 
     this.addEventListener('keydown', this.handleKeyDown);
-    this.addEventListener('click', this.handleMouseClick);
   }
 
   public override firstUpdated(): void {
