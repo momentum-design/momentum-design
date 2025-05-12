@@ -55,6 +55,7 @@ import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
 import MenuItemRadio from './components/menuitemradio';
 import MenuItemCheckbox from './components/menuitemcheckbox';
+import Menusection from './components/menusection';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -130,6 +131,7 @@ export {
   Tooltip,
   MenuItemRadio,
   MenuItemCheckbox,
+  Menusection,
 };
 // Types Exports
 export type {
