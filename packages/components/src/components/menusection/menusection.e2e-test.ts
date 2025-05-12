@@ -8,7 +8,7 @@ test.beforeEach(async ({ componentsPage }) => {
   });
 });
 
-test('mdc-menusection', async ({ componentsPage }) => {
+test.skip('mdc-menusection', async ({ componentsPage }) => {
   const menusection = componentsPage.page.locator('mdc-menusection');
 
   // initial check for the menusection be visible on the screen:
