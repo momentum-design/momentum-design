@@ -125,7 +125,7 @@ jobs:
           password: ${{ secrets.GHCR_TOKEN }}
 
       - name: Pull image
-        run: docker pull ghcr.io/momentum-design/momentum-design/docker-playwright:v1.49.1
+        run: docker pull ghcr.io/momentum-design/momentum-design/docker-playwright:v1.52.0
 
       - name: Update Snapshots
         run: yarn workspace @momentum-design/components test:e2e:docker:update-snapshot ${{ github.event.inputs['component-name'] }} ${{ github.event.inputs['other-args'] }}
