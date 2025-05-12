@@ -26,7 +26,6 @@ const githubActionsReporterOptions: GitHubActionOptions = {
 };
 
 const DEFAULT_TIMEOUT = 30 * 1000;
-const LONGER_TIMEOUT = DEFAULT_TIMEOUT * 1.5;
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -86,7 +85,6 @@ const config: PlaywrightTestConfig = {
       use: {
         ...devices['Desktop Safari'],
       },
-      timeout: LONGER_TIMEOUT,
     },
 
     /* Test against mobile viewports. */
@@ -101,7 +99,6 @@ const config: PlaywrightTestConfig = {
       use: {
         ...devices['iPhone 12'],
       },
-      timeout: LONGER_TIMEOUT,
     },
 
     /* Test against tablet viewports. */
@@ -116,7 +113,6 @@ const config: PlaywrightTestConfig = {
       use: {
         ...devices['iPad Pro 11'],
       },
-      timeout: LONGER_TIMEOUT,
     },
 
     /* Test against branded browsers. */
