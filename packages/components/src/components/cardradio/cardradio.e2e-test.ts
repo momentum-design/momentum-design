@@ -17,6 +17,7 @@ interface CardRadioArgs {
   disabled?: boolean;
   tabindex?: number;
   checked?: boolean;
+  children?: string;
 }
 
 interface SetupOptions extends CardRadioArgs {
@@ -40,8 +41,12 @@ const renderCardRadio = (restArgs: CardRadioArgs) => `
       ${restArgs.tabindex ? `tabindex="${restArgs.tabindex}"` : ''}
       ${restArgs.checked ? 'checked' : ''}
     >
+    ${restArgs.children}
     </mdc-cardradio>
     `;
+
+const defaultChildren = `<mdc-text slot='body' 
+    type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</mdc-text>`;
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, isGroup, ...restArgs } = args;
@@ -301,21 +306,46 @@ test.describe.parallel('mdc-cardradio', () => {
     /**
    * VISUAL REGRESSION & ACCESSIBILITY
    */
-    await test.step('visual-regression & accessibility', async () => {
+    const isDeskop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
+    if (isDeskop) {
       await componentsPage.page.setViewportSize({ width: 1000, height: 1400 });
       await createStickerSheetBasedOnOrientation(componentsPage, 'vertical');
       await componentsPage.accessibility.checkForA11yViolations('cardradio-vertical');
-    });
+    } else {
+      await test.step('visual-regression & accessibility', async () => {
+        await setup({ componentsPage,
+          cardTitle: 'Card Title',
+          subtitle: 'Card Subtitle',
+          orientation: 'vertical',
+          children: defaultChildren,
+        });
+        await componentsPage.visualRegression.takeScreenshot('static-card-vertical');
+        await componentsPage.accessibility.checkForA11yViolations('static-card-vertical');
+      });
+    }
   });
 
   test('visual-regression & accessibility horizontal', async ({ componentsPage }) => {
     /**
    * VISUAL REGRESSION & ACCESSIBILITY
    */
-    await test.step('visual-regression & accessibility', async () => {
+    const isDeskop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
+    if (isDeskop) {
       await componentsPage.page.setViewportSize({ width: 2000, height: 1000 });
       await createStickerSheetBasedOnOrientation(componentsPage, 'horizontal');
       await componentsPage.accessibility.checkForA11yViolations('cardradio-horizontal');
-    });
+    } else {
+      await test.step('visual-regression & accessibility', async () => {
+        await componentsPage.page.setViewportSize({ width: 500, height: 500 });
+        await setup({ componentsPage,
+          cardTitle: 'Card Title',
+          subtitle: 'Card Subtitle',
+          orientation: 'horizontal',
+          children: defaultChildren,
+        });
+        await componentsPage.visualRegression.takeScreenshot('static-card-horizontal');
+        await componentsPage.accessibility.checkForA11yViolations('static-card-horizontal');
+      });
+    }
   });
 });

@@ -43,6 +43,10 @@ const setup = async (args: SetupOptions) => {
   return card;
 };
 
+const defaultChildren = `<mdc-text slot='body' 
+    type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+    Nam vulputate aliquet risus, eget auctor ante egestas facilisis.</mdc-text>`;
+
 const interactiveChildren = `<mdc-text slot='body' 
     type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
     Nam vulputate aliquet risus, eget auctor ante egestas facilisis.</mdc-text>
@@ -214,9 +218,7 @@ test.describe.parallel('mdc-card', () => {
       cardStickersheet.setChildren(children);
     } else {
       // Card button with body
-      cardStickersheet.setChildren(`<mdc-text slot='body' 
-    type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Nam vulputate aliquet risus, eget auctor ante egestas facilisis.</mdc-text>`);
+      cardStickersheet.setChildren(defaultChildren);
     }
 
     await cardStickersheet.createMarkupWithCombination({
@@ -282,38 +284,88 @@ test.describe.parallel('mdc-card', () => {
     });
   };
 
-  test.use({ viewport: { width: 2000, height: 1700 } });
   test('visual-regression & accessibility vertical', async ({ componentsPage }) => {
     /**
      * VISUAL REGRESSION & ACCESSIBILITY
      */
-    await componentsPage.page.setViewportSize({ width: 1000, height: 1700 });
+    const isDeskop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
+    if (isDeskop) {
+      await componentsPage.page.setViewportSize({ width: 1000, height: 1700 });
 
-    await test.step('static card vertical', async () => {
-      await createStickerSheetBasedOnOrientation(componentsPage, 'vertical');
-      await componentsPage.accessibility.checkForA11yViolations('static-card-vertical');
-    });
+      await test.step('static card vertical', async () => {
+        await createStickerSheetBasedOnOrientation(componentsPage, 'vertical');
+        await componentsPage.accessibility.checkForA11yViolations('static-card-vertical');
+      });
 
-    await test.step('interactive card vertical', async () => {
-      await createStickerSheetBasedOnOrientation(componentsPage, 'vertical', interactiveChildren);
-      await componentsPage.accessibility.checkForA11yViolations('interactive-card-vertical');
-    });
+      await test.step('interactive card vertical', async () => {
+        await createStickerSheetBasedOnOrientation(componentsPage, 'vertical', interactiveChildren);
+        await componentsPage.accessibility.checkForA11yViolations('interactive-card-vertical');
+      });
+    } else {
+      await test.step('static card vertical', async () => {
+        await setup({ componentsPage,
+          cardTitle: 'Card Title',
+          subtitle: 'Card Subtitle',
+          orientation: 'vertical',
+          children: defaultChildren,
+        });
+        await componentsPage.visualRegression.takeScreenshot('static-card-vertical');
+        await componentsPage.accessibility.checkForA11yViolations('static-card-vertical');
+      });
+
+      await test.step('interactive card vertical', async () => {
+        await setup({ componentsPage,
+          cardTitle: 'Card Title',
+          subtitle: 'Card Subtitle',
+          orientation: 'vertical',
+          children: interactiveChildren,
+        });
+        await componentsPage.visualRegression.takeScreenshot('interactive-card-vertical');
+        await componentsPage.accessibility.checkForA11yViolations('interactive-card-vertical');
+      });
+    }
   });
 
   test('visual-regression & accessibility horizontal', async ({ componentsPage }) => {
     /**
      * VISUAL REGRESSION & ACCESSIBILITY
      */
-    await componentsPage.page.setViewportSize({ width: 2000, height: 1250 });
+    const isDeskop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
+    if (isDeskop) {
+      await componentsPage.page.setViewportSize({ width: 2000, height: 1250 });
 
-    await test.step('static card horizontal', async () => {
-      await createStickerSheetBasedOnOrientation(componentsPage, 'horizontal');
-      await componentsPage.accessibility.checkForA11yViolations('static-card-horizontal');
-    });
+      await test.step('static card horizontal', async () => {
+        await createStickerSheetBasedOnOrientation(componentsPage, 'horizontal');
+        await componentsPage.accessibility.checkForA11yViolations('static-card-horizontal');
+      });
 
-    await test.step('interactive card horizontal', async () => {
-      await createStickerSheetBasedOnOrientation(componentsPage, 'horizontal', interactiveChildren);
-      await componentsPage.accessibility.checkForA11yViolations('interactive-card-horizontal');
-    });
+      await test.step('interactive card horizontal', async () => {
+        await createStickerSheetBasedOnOrientation(componentsPage, 'horizontal', interactiveChildren);
+        await componentsPage.accessibility.checkForA11yViolations('interactive-card-horizontal');
+      });
+    } else {
+      await componentsPage.page.setViewportSize({ width: 500, height: 500 });
+      await test.step('static card horizontal', async () => {
+        await setup({ componentsPage,
+          cardTitle: 'Card Title',
+          subtitle: 'Card Subtitle',
+          orientation: 'horizontal',
+          children: defaultChildren,
+        });
+        await componentsPage.visualRegression.takeScreenshot('static-card-horizontal');
+        await componentsPage.accessibility.checkForA11yViolations('static-card-horizontal');
+      });
+
+      await test.step('interactive card horizontal', async () => {
+        await setup({ componentsPage,
+          cardTitle: 'Card Title',
+          subtitle: 'Card Subtitle',
+          orientation: 'horizontal',
+          children: interactiveChildren,
+        });
+        await componentsPage.visualRegression.takeScreenshot('interactive-card-horizontal');
+        await componentsPage.accessibility.checkForA11yViolations('interactive-card-horizontal');
+      });
+    }
   });
 });
