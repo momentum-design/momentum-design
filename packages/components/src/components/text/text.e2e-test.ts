@@ -58,8 +58,8 @@ const textContent = 'abcdefghijklmnopqrstuvwxyz1234567890';
 test.describe('mdc-text', () => {
   test.use({
     viewport: {
-      width: 1200,
-      height: 3200,
+      width: 1100,
+      height: 3100,
     },
   });
 

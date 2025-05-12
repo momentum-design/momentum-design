@@ -78,7 +78,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
   return textarea;
 };
 
-test.use({ viewport: { width: 800, height: 2250 } });
+test.use({ viewport: { width: 1400, height: 1600 } });
 test('mdc-textarea', async ({ componentsPage, browserName }) => {
   const mdcTextarea = await setup({
     componentsPage,
