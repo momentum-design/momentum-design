@@ -13,11 +13,11 @@ const styles = css`
     border-color: transparent;
   }
   :host([orientation="horizontal"]){
-    width: 40rem;
+    max-width: 40rem;
   }
 
   :host([orientation="vertical"]){
-    width: 20rem;
+    max-width: 20rem;
     flex-direction: column;
   }
   
