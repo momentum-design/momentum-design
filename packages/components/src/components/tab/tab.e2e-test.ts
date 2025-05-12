@@ -46,7 +46,7 @@ const setup = async (args: SetupOptions) => {
   return tab;
 };
 
-test.use({ viewport: { width: 400, height: 1000 } });
+test.use({ viewport: { width: 400, height: 700 } });
 test('mdc-tab', async ({ componentsPage }) => {
   const tab = await setup({ componentsPage });
   await componentsPage.setAttributes(tab, { text: 'Label' });

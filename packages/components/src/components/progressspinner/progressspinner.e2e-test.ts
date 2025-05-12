@@ -94,7 +94,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
   });
 };
 
-test.use({ viewport: { width: 1000, height: 2250 } });
+test.use({ viewport: { width: 200, height: 500 } });
 test('Standalone Progress Spinner Tests', async ({ componentsPage }) => {
   await testToRun(componentsPage);
 });
