@@ -105,7 +105,7 @@ const config: PlaywrightTestConfig = {
     {
       name: 'tablet chrome',
       use: {
-        ...devices['Galaxy Tab A'],
+        ...devices['Galaxy Tab S4'],
       },
     },
     {
