@@ -6,6 +6,7 @@ import type MenuItemRadio from '../menuitemradio/menuitemradio.component';
 import { ARIA_CHECKED_STATES } from './menusection.constants';
 import { Component } from '../../models';
 import { ROLE } from '../../utils/roles';
+import { KEYS } from '../../utils/keys';
 
 /**
  * `mdc-menusection` is a container element used to group a set of menu items.
@@ -27,7 +28,7 @@ class MenuSection extends Component {
    *
    * @internal
    */
-  @queryAssignedElements({ selector: MENUITEMRADIO_TAGNAME })
+  @queryAssignedElements({ selector: `${MENUITEMRADIO_TAGNAME}:not([disabled])` })
   radios!: MenuItemRadio[];
 
   override connectedCallback(): void {
@@ -64,9 +65,9 @@ class MenuSection extends Component {
    * @internal
    */
   private handleKeydown = (event: KeyboardEvent) => {
-    if (event.key !== 'Enter' && event.key !== ' ') return;
+    if (event.key !== KEYS.ENTER && event.key !== KEYS.SPACE) return;
 
-    if (event.key === ' ') {
+    if (event.key === KEYS.SPACE) {
       event.preventDefault(); // Prevent page scroll
     }
 
@@ -84,6 +85,9 @@ class MenuSection extends Component {
    */
   private toggleCheckedState(target: EventTarget | null) : void {
     if (!(target instanceof HTMLElement)) return;
+
+    // Do not toggle state for disabled elements
+    if (target.hasAttribute('disabled')) return;
 
     const tagName = target.tagName.toLowerCase();
     const currentChecked = target.getAttribute('aria-checked') === ARIA_CHECKED_STATES.TRUE;
