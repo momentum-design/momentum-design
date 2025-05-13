@@ -7,8 +7,4 @@ const ARIA_CHECKED_STATES = {
   FALSE: 'false',
 } as const;
 
-const DEFAULTS = {
-  ROLE: 'group',
-} as const;
-
-export { DEFAULTS, ARIA_CHECKED_STATES, TAG_NAME };
+export { ARIA_CHECKED_STATES, TAG_NAME };

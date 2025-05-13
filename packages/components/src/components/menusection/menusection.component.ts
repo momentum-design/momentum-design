@@ -3,8 +3,9 @@ import { queryAssignedElements } from 'lit/decorators.js';
 import { TAG_NAME as MENUITEMRADIO_TAGNAME } from '../menuitemradio/menuitemradio.constants';
 import { TAG_NAME as MENUITEMCHECKBOX_TAGNAME } from '../menuitemcheckbox/menuitemcheckbox.constants';
 import type MenuItemRadio from '../menuitemradio/menuitemradio.component';
-import { DEFAULTS, ARIA_CHECKED_STATES } from './menusection.constants';
+import { ARIA_CHECKED_STATES } from './menusection.constants';
 import { Component } from '../../models';
+import { ROLE } from '../../utils/roles';
 
 /**
  * `mdc-menusection` is a container element used to group a set of menu items.
@@ -26,51 +27,73 @@ class MenuSection extends Component {
    *
    * @internal
    */
-  @queryAssignedElements({ selector: `${MENUITEMRADIO_TAGNAME}` })
+  @queryAssignedElements({ selector: MENUITEMRADIO_TAGNAME })
   radios!: MenuItemRadio[];
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.setAttribute('role', DEFAULTS.ROLE);
-    this.addEventListener('click', this.handleChildEvent);
-    this.addEventListener('keydown', this.handleChildEvent);
+    this.setAttribute('role', ROLE.GROUP);
+    this.addEventListener('click', this.handleClick);
+    this.addEventListener('keydown', this.handleKeydown);
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
-    this.removeEventListener('click', this.handleChildEvent);
-    this.removeEventListener('keydown', this.handleChildEvent);
+    this.removeEventListener('click', this.handleClick);
+    this.removeEventListener('keydown', this.handleKeydown);
   }
 
   /**
-   * Handles click and keydown (Enter/Space) events from child items.
-   * Manages toggling of `aria-checked` state for checkbox items,
-   * and enforces single selection for radio items.
+   * Handles `click` events within the component.
+   * Delegates logic to `toggleCheckedState()` based on the clicked element.
    *
-   * @param event - The MouseEvent or KeyboardEvent triggered by user interaction
+   * @param event - The click event from a child menu item
+   *
+   * @internal
    */
-  private handleChildEvent(event: MouseEvent | KeyboardEvent) {
-    const isKeyboardEvent = event instanceof KeyboardEvent;
-    const isActivationEvent = event.type === 'click'
-      || (isKeyboardEvent && (event.key === 'Enter' || event.key === ' '));
+  private handleClick = (event: MouseEvent) => {
+    this.toggleCheckedState(event.target);
+  };
 
-    if (!isActivationEvent) return;
+  /**
+   * Handles `keydown` events within the component.
+   * Activates menu items when the Enter or Space keys are pressed.
+   *
+   * @param event - The keyboard event from a child menu item
+   *
+   * @internal
+   */
+  private handleKeydown = (event: KeyboardEvent) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
 
-    if (isKeyboardEvent && event.key === ' ') {
+    if (event.key === ' ') {
       event.preventDefault(); // Prevent page scroll
     }
 
-    const target = event.target as HTMLElement | null;
-    if (!target) return;
-    const { nodeName } = target;
+    this.toggleCheckedState(event.target);
+  };
+
+  /**
+   * Toggles the `aria-checked` state on a target menu item based on its tag name.
+   * - For checkboxes, toggles the checked state.
+   * - For radios, ensures only one item is selected in the group.
+   *
+   * @param target - The event target element to update
+   *
+   * @internal
+   */
+  private toggleCheckedState(target: HTMLElement) {
+    if (!(target instanceof HTMLElement)) return;
+
+    const tagName = target.tagName.toLowerCase();
     const currentChecked = target.getAttribute('aria-checked') === ARIA_CHECKED_STATES.TRUE;
 
-    switch (nodeName) {
-      case MENUITEMCHECKBOX_TAGNAME.toUpperCase():
+    switch (tagName) {
+      case MENUITEMCHECKBOX_TAGNAME:
         target.setAttribute('aria-checked', String(!currentChecked));
         break;
 
-      case MENUITEMRADIO_TAGNAME.toUpperCase():
+      case MENUITEMRADIO_TAGNAME:
         if (currentChecked) return;
 
         this.radios.forEach((radio) => {
