@@ -67,27 +67,6 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   @queryAssignedElements({ slot: 'trailing-controls' })
   trailingControlsSlot!: Array<HTMLElement>;
 
-  constructor() {
-    super();
-    this.addEventListener('keydown', this.handleKeyDown);
-  }
-
-  private handleKeyDown(event: KeyboardEvent): void {
-    if (event.key === KEYS.ENTER || event.key === KEYS.SPACE) {
-      this.triggerClickEvent();
-      event.preventDefault();
-    }
-  }
-
-  private triggerClickEvent() {
-    const clickEvent = new MouseEvent('click', {
-      bubbles: true,
-      cancelable: true,
-      view: window,
-    });
-    this.dispatchEvent(clickEvent);
-  }
-
   /**
    * The variant of the list item. It can be a pill, rectangle or a full-width.
    * @default 'full-width'
@@ -140,6 +119,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   constructor() {
     super();
 
+    this.addEventListener('keydown', this.handleKeyDown);
     this.addEventListener('focusin', this.displayTooltipForLongText);
     this.addEventListener('mouseover', this.displayTooltipForLongText);
     this.addEventListener('focusout', this.hideTooltipOnLeave);
@@ -150,6 +130,22 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = this.role || ROLE.LISTITEM;
+  }
+
+  private handleKeyDown(event: KeyboardEvent): void {
+    if (event.key === KEYS.ENTER || event.key === KEYS.SPACE) {
+      this.triggerClickEvent();
+      event.preventDefault();
+    }
+  }
+
+  private triggerClickEvent() {
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    });
+    this.dispatchEvent(clickEvent);
   }
 
   private handleClick(): void {
