@@ -8,7 +8,7 @@ const TAG_NAME = utils.constructTagName('card');
 const VARIANTS = {
   BORDER: 'border',
   GHOST: 'ghost',
-  PROMOTIONAL: 'promotional', // This is applicable only on interactive-card
+  PROMOTIONAL: 'promotional',
 } as const;
 
 const ORIENTATIONS = {
