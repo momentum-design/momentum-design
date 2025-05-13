@@ -40,35 +40,35 @@ export const CardComponentMixin = <T extends Constructor<LitElement>>(superClass
      * The title of the card - part of header section
      * @default ''
      */
-    @property({ type: String, attribute: 'card-title' })
+    @property({ type: String, attribute: 'card-title', reflect: true })
     cardTitle = '';
 
     /**
      * The subtitle of the card - part of header section
      * @default ''
      */
-    @property({ type: String })
+    @property({ type: String, reflect: true })
     subtitle = '';
 
     /**
      * The image source URL to render on the card
      * @default ''
      */
-    @property({ type: String, attribute: 'image-src' })
+    @property({ type: String, attribute: 'image-src', reflect: true })
     imageSrc = '';
 
     /**
      * The image alt for accessibility support
      * @default ''
      */
-    @property({ type: String, attribute: 'image-alt' })
+    @property({ type: String, attribute: 'image-alt', reflect: true })
     imageAlt = '';
 
     /**
      * The variant of the card. It can either be set to 'border' or 'ghost'
      * @default 'border'
      */
-    @property({ type: String })
+    @property({ type: String, reflect: true })
     variant: CardVariant = DEFAULTS.VARIANT;
 
     /**
@@ -82,14 +82,14 @@ export const CardComponentMixin = <T extends Constructor<LitElement>>(superClass
      * The tag name for the card title. It supports all the types that `msc-text` supports
      * @default 'span'
      */
-    @property({ type: String, attribute: 'title-tag-name' })
+    @property({ type: String, attribute: 'title-tag-name', reflect: true })
     titleTagName: TagNameType = DEFAULTS.TAGNAME;
 
     /**
      * The tag name for the subtitle. It supports all the types that `msc-text` supports
      * @default 'span'
      */
-    @property({ type: String, attribute: 'subtitle-tag-name' })
+    @property({ type: String, attribute: 'subtitle-tag-name', reflect: true })
     subtitleTagName: TagNameType = DEFAULTS.TAGNAME;
 
     /**
@@ -97,7 +97,7 @@ export const CardComponentMixin = <T extends Constructor<LitElement>>(superClass
      *
      * If no `icon-name` is provided, no icon will be rendered.
      */
-    @property({ type: String, attribute: 'icon-name' })
+    @property({ type: String, attribute: 'icon-name', reflect: true })
     iconName?: IconNames;
 
     /**
