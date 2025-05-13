@@ -5,6 +5,7 @@ import styles from './cardradio.styles';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import Card from '../card/card.component';
+import { ROLE } from '../../utils/roles';
 
 /**
  * cardradio component extends `mdc-card` and supports radio selection interaction addtionally.
@@ -60,7 +61,7 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
 
  override connectedCallback() {
    super.connectedCallback();
-   this.role = 'radio';
+   this.role = ROLE.RADIO;
  }
 
  /**
