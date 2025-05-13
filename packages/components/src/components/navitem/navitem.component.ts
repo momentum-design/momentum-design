@@ -137,7 +137,7 @@ class NavItem extends IconNameMixin(MenuItem) {
    * @param active - The active state.
    */
 
-  private modifyIconName(active: boolean): void {
+  private modifyIconName(active: boolean | undefined): void {
     if (!this.iconName) return;
 
     const isFilled = this.iconName.endsWith('-filled');
@@ -173,7 +173,7 @@ class NavItem extends IconNameMixin(MenuItem) {
    *
    * @param active - The active state of the navItem.
    */
-  private setActive(active: boolean) {
+  private setActive(active: boolean | undefined) {
     if (active) {
       this.setAttribute('aria-current', 'page');
     } else {
@@ -207,7 +207,7 @@ class NavItem extends IconNameMixin(MenuItem) {
     `;
   }
 
-  renderBadge(isExpanded: boolean) {
+  renderBadge(isExpanded: boolean | undefined) {
     const badgeClass = isExpanded ? '' : 'badge';
     const isValidBadgeType = Object.values(ALLOWED_BADGE_TYPES).includes(this.badgeType as BadgeType);
     if (!isValidBadgeType) {

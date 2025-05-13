@@ -139,6 +139,7 @@ const meta: Meta = {
     ]),
     ...hideControls([
       'flexibleExpanded',
+      'role',
       'Context',
       'arrowDirection',
       'isExpanded',

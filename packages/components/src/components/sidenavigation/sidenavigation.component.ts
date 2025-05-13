@@ -31,7 +31,6 @@ import type { SideNavigationVariant } from './sidenavigation.types';
  *
  * @dependency mdc-text
  * @dependency mdc-button
- * @dependency mdc-divider
  *
  * @event click - (React: onClick) Dispatched when the grabber divider button is clicked.
  * @event focus - (React: onFocus) Dispatched when the grabber divider button receives focus.
