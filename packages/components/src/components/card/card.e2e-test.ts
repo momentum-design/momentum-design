@@ -215,6 +215,7 @@ test.describe.parallel('mdc-card', () => {
       variant: Object.values(VARIANTS),
     });
 
+    // Card with body
     cardStickersheet.setChildren(children);
 
     await cardStickersheet.createMarkupWithCombination({
