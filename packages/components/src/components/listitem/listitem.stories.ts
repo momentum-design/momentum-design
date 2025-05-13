@@ -35,8 +35,8 @@ const render = (args: Args) => wrapWithList(
     >
       <mdc-checkbox slot="leading-controls" data-aria-label="mock label" checked></mdc-checkbox>
       <mdc-avatar slot="leading-controls" src="https://picsum.photos/id/63/256" presence="active"></mdc-avatar>
-      <mdc-icon slot="leading-controls" name="placeholder-bold"></mdc-icon>
-      <mdc-icon slot="trailing-controls" name="placeholder-bold"></mdc-icon>
+      <mdc-icon slot="leading-controls" length-unit="rem" name="placeholder-bold"></mdc-icon>
+      <mdc-icon slot="trailing-controls" length-unit="rem" name="placeholder-bold"></mdc-icon>
       <mdc-button slot="trailing-controls" variant="secondary">Label</mdc-button>
       <mdc-toggle slot="trailing-controls" data-aria-label="mock label" size="compact"></mdc-toggle>
       <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
@@ -135,7 +135,7 @@ export const LabelOnly: StoryObj = {
 export const TrailingIcon: StoryObj = {
   render: () => wrapWithList(html`
     <mdc-listitem>
-      <mdc-icon slot="trailing-controls" name="placeholder-bold"></mdc-icon>
+      <mdc-icon length-unit="rem" slot="trailing-controls" name="placeholder-bold"></mdc-icon>
     </mdc-listitem>
   `),
   ...hideAllControls(),
@@ -167,8 +167,8 @@ export const ListWithDisableState: StoryObj = {
       side-header-text="${args['side-header-text']}"
     >
       <mdc-checkbox slot="leading-controls" data-aria-label="mock label" checked></mdc-checkbox>
-      <mdc-icon slot="leading-controls" name="placeholder-bold"></mdc-icon>
-      <mdc-icon slot="trailing-controls" name="placeholder-bold"></mdc-icon>
+      <mdc-icon length-unit="rem" slot="leading-controls" name="placeholder-bold"></mdc-icon>
+      <mdc-icon length-unit="rem" slot="trailing-controls" name="placeholder-bold"></mdc-icon>
       <mdc-button slot="trailing-controls" variant="secondary">Label</mdc-button>
       <mdc-toggle slot="trailing-controls" data-aria-label="mock label" size="compact"></mdc-toggle>
       <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
@@ -190,7 +190,7 @@ export const ListWithIconAndLabels: StoryObj = {
     secondary-label="This is a long Secondary Label" 
     tertiary-label="Teritary Label">
       <div slot="leading-controls">
-        <mdc-icon name="placeholder-bold"></mdc-icon>
+        <mdc-icon length-unit="rem" name="placeholder-bold"></mdc-icon>
       </div>
     </mdc-listitem>
   `),
