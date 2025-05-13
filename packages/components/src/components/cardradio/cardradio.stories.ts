@@ -5,7 +5,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls, disableControls } from '../../../config/storybook/utils';
-import { DEFAULTS, ORIENTATIONS } from '../card/card.constants';
+import { DEFAULTS, ORIENTATIONS, VARIANTS } from '../card/card.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 import '../radiogroup';
 
@@ -44,7 +44,7 @@ const meta: Meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['border', 'ghost'],
+      options: Object.values(VARIANTS),
     },
     orientation: {
       control: 'select',

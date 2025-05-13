@@ -36,10 +36,10 @@ const visualTestingSetup = async (args: SetupOptions) => {
   await componentsPage.mount({
     html: `
     <div class="componentWrapper componentRowWrapper">
-      <mdc-icon name="${restArgs.name}"></mdc-icon>
-      <mdc-icon name="${restArgs.name}" size="2"></mdc-icon>
-      <mdc-icon name="${restArgs.name}" size="2" style="--mdc-icon-fill-color: red;"></mdc-icon>
-      <mdc-icon 
+      <mdc-icon length-unit="rem" name="${restArgs.name}"></mdc-icon>
+      <mdc-icon length-unit="rem" name="${restArgs.name}" size="2"></mdc-icon>
+      <mdc-icon length-unit="rem" name="${restArgs.name}" size="2" style="--mdc-icon-fill-color: red;"></mdc-icon>
+      <mdc-icon length-unit="rem" 
         data-test="focusable-icon" 
         name="${restArgs.name}" 
         size="2" 

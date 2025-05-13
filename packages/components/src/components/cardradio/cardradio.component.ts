@@ -5,6 +5,7 @@ import styles from './cardradio.styles';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import Card from '../card/card.component';
+import { ROLE } from '../../utils/roles';
 
 /**
  * cardradio component extends `mdc-card` and supports radio selection interaction addtionally.
@@ -60,7 +61,7 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
 
  override connectedCallback() {
    super.connectedCallback();
-   this.role = 'radio';
+   this.role = ROLE.RADIO;
  }
 
  /**
@@ -88,14 +89,24 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
    this.checked = true;
  }
 
+ setDisabled(disabled: boolean): void {
+   this.setAttribute('aria-disabled', `${disabled}`);
+   this.tabIndex = disabled ? -1 : 0;
+ }
+
  override update(changedProperties: PropertyValues<CardRadio>) {
    super.update(changedProperties);
    if (changedProperties.has('checked')) {
      this.setAttribute('aria-checked', `${this.checked}`);
    }
    if (changedProperties.has('disabled')) {
-     this.setAttribute('aria-disabled', `${this.disabled}`);
+     this.setDisabled(this.disabled);
    }
+ }
+
+ private updateCardRadio(cards: CardRadio[], index: number): void {
+   cards[index].focus();
+   cards[index].toggleChecked();
  }
 
  /**
@@ -103,6 +114,21 @@ class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
   * @param event - The keyboard event
   */
  private toggleOnEnter(event: KeyboardEvent) {
+   if (this.disabled) return;
+
+   const cards = this.getAllCardsWithinSameGroup();
+   const enabledCards = cards.filter((card) => !card.disabled);
+   const currentIndex = enabledCards.indexOf(this);
+
+   if (['ArrowDown', 'ArrowRight'].includes(event.key)) {
+     // Move focus to the next radio
+     const nextIndex = (currentIndex + 1) % enabledCards.length;
+     this.updateCardRadio(enabledCards, nextIndex);
+   } else if (['ArrowUp', 'ArrowLeft'].includes(event.key)) {
+     // Move focus to the previous radio
+     const prevIndex = (currentIndex - 1 + enabledCards.length) % enabledCards.length;
+     this.updateCardRadio(enabledCards, prevIndex);
+   }
    if (event.key === 'Enter') {
      this.toggleChecked();
    }
