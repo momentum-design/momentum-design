@@ -273,6 +273,7 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
    */
   public hideDialog = () => {
     this.visible = false;
+    DialogEventManager.onCloseDialog(this);
   };
 
   /**
