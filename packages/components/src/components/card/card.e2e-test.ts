@@ -197,6 +197,7 @@ test.describe.parallel('mdc-card', () => {
     componentsPage: ComponentsPage,
     orientation: string,
     children: string,
+    suffix?: string,
   ) => {
     const cardStickersheet = new StickerSheet(componentsPage, 'mdc-card');
     const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x180';
@@ -274,7 +275,9 @@ test.describe.parallel('mdc-card', () => {
     await componentsPage.page.waitForTimeout(500);
     const container = cardStickersheet.getWrapperContainer();
     await test.step('matches screenshot of element', async () => {
-      const fileName = children ? `mdc-card-${orientation}-interactive` : `mdc-card-${orientation}`;
+      const fileName = suffix
+        ? `mdc-card-${orientation}-${suffix}`
+        : `mdc-card-${orientation}`;
       await componentsPage.visualRegression.takeScreenshot(fileName, { element: container });
     });
   };
@@ -293,7 +296,7 @@ test.describe.parallel('mdc-card', () => {
       });
 
       await test.step('interactive card vertical', async () => {
-        await createStickerSheetBasedOnOrientation(componentsPage, 'vertical', interactiveChildren);
+        await createStickerSheetBasedOnOrientation(componentsPage, 'vertical', interactiveChildren, 'interactive');
         await componentsPage.accessibility.checkForA11yViolations('interactive-card-vertical');
       });
     } else {
@@ -343,7 +346,7 @@ test.describe.parallel('mdc-card', () => {
       });
 
       await test.step('interactive card horizontal', async () => {
-        await createStickerSheetBasedOnOrientation(componentsPage, 'horizontal', interactiveChildren);
+        await createStickerSheetBasedOnOrientation(componentsPage, 'horizontal', interactiveChildren, 'interactive');
         await componentsPage.accessibility.checkForA11yViolations('interactive-card-horizontal');
       });
     } else {
