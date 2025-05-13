@@ -43,6 +43,7 @@ const styles = css`
     background: var(--mdc-select-background-color);
     display: flex;
     gap: 0.375rem;
+    align-items: center;
     user-select: none;
   }
   :host::part(base-container):hover {
