@@ -63,6 +63,9 @@ const styles = css`
   :host::part(selected) {
     color: var(--mdc-select-selected-text-color);
   }
+  :host::part(selected-icon) {
+    flex-shrink: 0;
+  }
   :host::part(icon-container) {
     margin-left: auto;
     display: flex;

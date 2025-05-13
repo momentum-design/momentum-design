@@ -34,7 +34,7 @@ const render = (args: Args) => wrapWithDiv(html`
     ?readonly="${args.readonly}"
   >
     <mdc-option>London, UK</mdc-option>
-    <mdc-option prefix-icon="plceholder-bold">Los Angeles, CA</mdc-option>
+    <mdc-option>Los Angeles, CA</mdc-option>
     <mdc-option>New York, NY</mdc-option>
     <mdc-option>Phoenix, AZ</mdc-option>
     <mdc-option>Seattle, WA</mdc-option>

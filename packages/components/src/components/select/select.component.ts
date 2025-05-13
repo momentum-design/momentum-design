@@ -527,7 +527,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           aria-expanded="${this.displayPopover ? 'true' : 'false'}"
         >
       ${this.selectedIcon
-    ? html`<mdc-icon size="1" length-unit="rem" name="${this.selectedIcon}"></mdc-icon>`
+    ? html`<mdc-icon length-unit="rem" size="1" name="${this.selectedIcon}" part="selected-icon"></mdc-icon>`
     : nothing}
           <mdc-text
             part="base-text ${this.selectedValueText ? 'selected' : ''}"
