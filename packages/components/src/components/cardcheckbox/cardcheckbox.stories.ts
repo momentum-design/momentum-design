@@ -35,12 +35,12 @@ const render = (args: Args) => html`
     style="${args.style}">${args.children}</mdc-cardcheckbox>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/card/cardcheckbox',
+  title: 'Components/card/cardcheckbox',
   tags: ['autodocs'],
   component: 'mdc-cardcheckbox',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     variant: {

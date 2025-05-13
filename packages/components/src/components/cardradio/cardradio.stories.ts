@@ -34,12 +34,12 @@ const render = (args: Args) => html`
     style="${args.style}">${args.children}</mdc-cardradio>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/card/cardradio',
+  title: 'Components/card/cardradio',
   tags: ['autodocs'],
   component: 'mdc-cardradio',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     variant: {
