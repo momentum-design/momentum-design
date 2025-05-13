@@ -163,14 +163,14 @@ test('mdc-avatarbutton', async ({ componentsPage }) => {
     const src = 'https://picsum.photos/id/63/256';
 
     await test.step('should add initials based avatar on sticker sheet', async () => {
-      avatarButtonStickerSheet.setAttributes({ initials: 'XS' });
+      avatarButtonStickerSheet.setAttributes({ 'aria-label': 'avatar button', initials: 'XS' });
       await avatarButtonStickerSheet.createMarkupWithCombination({
         size: AVATAR_SIZE,
       });
     });
 
     await test.step('should add counter based avatar on sticker sheet', async () => {
-      avatarButtonStickerSheet.setAttributes({ counter: 100 });
+      avatarButtonStickerSheet.setAttributes({ 'aria-label': 'avatar button', counter: 100 });
       await avatarButtonStickerSheet.createMarkupWithCombination({
         size: AVATAR_SIZE,
       });
@@ -178,14 +178,14 @@ test('mdc-avatarbutton', async ({ componentsPage }) => {
 
     await test.step('should add icon name based avatar on sticker sheet', async () => {
       const iconName = 'placeholder-regular';
-      avatarButtonStickerSheet.setAttributes({ 'icon-name': iconName });
+      avatarButtonStickerSheet.setAttributes({ 'aria-label': 'avatar button', 'icon-name': iconName });
       await avatarButtonStickerSheet.createMarkupWithCombination({
         size: AVATAR_SIZE,
       });
     });
 
     await test.step('should add image based avatar on sticker sheet', async () => {
-      avatarButtonStickerSheet.setAttributes({ src });
+      avatarButtonStickerSheet.setAttributes({ 'aria-label': 'avatar button', src });
       await avatarButtonStickerSheet.createMarkupWithCombination({
         size: AVATAR_SIZE,
       });
@@ -193,7 +193,7 @@ test('mdc-avatarbutton', async ({ componentsPage }) => {
 
     await test.step('should add presence based avatar on sticker sheet', async () => {
       const presenceType = PRESENCE_TYPE.ACTIVE;
-      avatarButtonStickerSheet.setAttributes({ presence: presenceType });
+      avatarButtonStickerSheet.setAttributes({ 'aria-label': 'avatar button', presence: presenceType });
       await avatarButtonStickerSheet.createMarkupWithCombination({
         size: AVATAR_SIZE,
       });
