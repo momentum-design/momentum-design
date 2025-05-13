@@ -20,10 +20,6 @@ const styles = [hostFitContentStyles, css`
   width: 100%;
 }
 
-:host([variant="inline"]) {
- display: block;
-}
-
 :host::part(label-container) {
   display: flex;
   justify-content: space-between;
@@ -34,6 +30,7 @@ const styles = [hostFitContentStyles, css`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  width: 100%;
 }
 
 :host::part(progress-container) {
