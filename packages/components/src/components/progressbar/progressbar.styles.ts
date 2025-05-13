@@ -1,6 +1,7 @@
 import { css } from 'lit';
+import { hostFitContentStyles } from '../../utils/styles';
 
-const styles = [css`
+const styles = [hostFitContentStyles, css`
 :host {
   --mdc-progressbar-background-color: var(--mds-color-theme-control-indicator-inactive-normal);
   --mdc-progressbar-active-background-color: var(--mds-color-theme-control-active-normal);
@@ -16,19 +17,20 @@ const styles = [css`
   --mdc-progressbar-label-font-weight: var(--mds-font-weight-regular);
   --mdc-progressbar-help-text-color: var(--mds-color-theme-text-secondary-normal);
 
-  display: block;
   width: 100%;
 }
 
 :host::part(label-container) {
   display: flex;
   justify-content: space-between;
+  width: 100%;
 }
 
 :host::part(inline-label-container) {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  width: 100%;
 }
 
 :host::part(progress-container) {
@@ -36,7 +38,6 @@ const styles = [css`
   align-items: center;
   width: 100%;
   height: var(--mdc-progressbar-height);
-  margin: 0.5rem 0;
 }
 
 :host::part(gap) {
