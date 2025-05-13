@@ -273,6 +273,7 @@ test.describe.parallel('mdc-cardbutton', () => {
           imageSrc: 'https://placehold.co/260x180',
           imageAlt: 'Image Alt',
         });
+        await componentsPage.page.waitForTimeout(200);
         await componentsPage.visualRegression.takeScreenshot('static-card-vertical');
         await componentsPage.accessibility.checkForA11yViolations('static-card-vertical');
       });
@@ -298,6 +299,7 @@ test.describe.parallel('mdc-cardbutton', () => {
           imageSrc: 'https://placehold.co/70x180',
           imageAlt: 'Image Alt',
         });
+        await componentsPage.page.waitForTimeout(200);
         await componentsPage.visualRegression.takeScreenshot('static-card-horizontal');
         await componentsPage.accessibility.checkForA11yViolations('static-card-horizontal');
       });

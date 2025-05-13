@@ -311,6 +311,8 @@ test.describe.parallel('mdc-card', () => {
           imageSrc: 'https://placehold.co/260x180',
           imageAlt: 'Image Alt',
         });
+
+        await componentsPage.page.waitForTimeout(200);
         await componentsPage.visualRegression.takeScreenshot('static-card-vertical');
         await componentsPage.accessibility.checkForA11yViolations('static-card-vertical');
       });
@@ -324,6 +326,8 @@ test.describe.parallel('mdc-card', () => {
           imageSrc: 'https://placehold.co/260x180',
           imageAlt: 'Image Alt',
         });
+
+        await componentsPage.page.waitForTimeout(200);
         await componentsPage.visualRegression.takeScreenshot('interactive-card-vertical');
         await componentsPage.accessibility.checkForA11yViolations('interactive-card-vertical');
       });
@@ -357,6 +361,8 @@ test.describe.parallel('mdc-card', () => {
           imageSrc: 'https://placehold.co/70x180',
           imageAlt: 'Image Alt',
         });
+
+        await componentsPage.page.waitForTimeout(200);
         await componentsPage.visualRegression.takeScreenshot('static-card-horizontal');
         await componentsPage.accessibility.checkForA11yViolations('static-card-horizontal');
       });
@@ -370,6 +376,8 @@ test.describe.parallel('mdc-card', () => {
           imageSrc: 'https://placehold.co/70x180',
           imageAlt: 'Image Alt',
         });
+
+        await componentsPage.page.waitForTimeout(200);
         await componentsPage.visualRegression.takeScreenshot('interactive-card-horizontal');
         await componentsPage.accessibility.checkForA11yViolations('interactive-card-horizontal');
       });
