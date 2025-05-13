@@ -51,21 +51,21 @@ test('mdc-select', async ({ componentsPage }) => {
       label,
       placeholder: defaultPlaceholder,
       'help-text-type': 'success',
-      'help-text': 'The correct number of Infinity Stones has been selected.',
+      'help-text': 'This is a success message',
     });
     await selectSheet.createMarkupWithCombination({}, markUpOptions);
     selectSheet.setAttributes({
       label,
       placeholder: defaultPlaceholder,
       'help-text-type': 'warning',
-      'help-text': 'Selecting this number may cause a security risk because it is not properly setup.',
+      'help-text': 'This is a warning message',
     });
     await selectSheet.createMarkupWithCombination({}, markUpOptions);
     selectSheet.setAttributes({
       label,
       placeholder: defaultPlaceholder,
       'help-text-type': 'error',
-      'help-text': 'You must select the total number of Infinity Stones.',
+      'help-text': 'This is an error message',
     });
     await selectSheet.createMarkupWithCombination({}, markUpOptions);
     selectSheet.setAttributes({
@@ -79,6 +79,17 @@ test('mdc-select', async ({ componentsPage }) => {
       placeholder: defaultPlaceholder,
       readonly: true,
     });
+    await selectSheet.createMarkupWithCombination({}, markUpOptions);
+
+    // select component with an option selected
+    selectSheet.setAttributes({
+      label: 'You are in a meeting',
+      placeholder: 'Select an option' });
+    selectSheet.setChildren(`<mdc-option prefix-icon="alert-bold">Mute notifications</mdc-option>
+      <mdc-option prefix-icon="apps-bold" selected>Add apps</mdc-option>
+      <mdc-option prefix-icon="stored-info-bold">View direct message policy</mdc-option>
+      <mdc-option prefix-icon="calendar-day-bold">Meeting capabilities</mdc-option>
+      <mdc-option prefix-icon="exit-room-bold">Leave</mdc-option>`);
     await selectSheet.createMarkupWithCombination({}, markUpOptions);
 
     await selectSheet.mountStickerSheet();
