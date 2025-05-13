@@ -1,11 +1,12 @@
-import { property, queryAssignedElements } from 'lit/decorators.js';
+/* eslint-disable max-classes-per-file */
+import { LitElement } from 'lit';
+import { property, queryAssignedElements, state } from 'lit/decorators.js';
 import { TAG_NAME as MENU_TAGNAME } from '../../components/menu/menu.constants';
 import { ORIENTATION, TAG_NAME as MENUBAR_TAGNAME } from '../../components/menubar/menubar.constants';
 import type { Orientation } from '../../components/menubar/menubar.types';
 import { TAG_NAME as MENUITEM_TAGNAME } from '../../components/menuitem/menuitem.constants';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../../components/menupopover/menupopover.constants';
 import { POPOVER_PLACEMENT } from '../../components/popover/popover.constants';
-import { Component } from '../../models';
 import { KEYS } from '../keys';
 import type { Constructor } from './index.types';
 
@@ -14,15 +15,19 @@ interface IParentMenuItem {
   menu: HTMLElement | null;
 }
 
-export interface MenuMixinInterface {
+export declare class MenuMixinInterface {
   ariaOrientation: Orientation;
-  handleKeyDown(event: KeyboardEvent): void;
-  resetTabIndexAndSetActiveTabIndex(newIndex: number): void;
-  setTabIndexOnMouseClick(event: MouseEvent): void;
-  updatePopoverPlacementBasedOnOrientation(): void;
+
+  public handleKeyDown(event: KeyboardEvent): void;
+
+  public resetTabIndexAndSetActiveTabIndex(newIndex: number): void;
+
+  public setTabIndexOnMouseClick(event: MouseEvent): void;
+
+  public updatePopoverPlacementBasedOnOrientation(): void;
 }
 
-export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
+export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
   class InnerMixinClass extends superClass {
     /**
      * Aria Orientation
@@ -32,12 +37,15 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
     override ariaOrientation: Orientation = ORIENTATION.HORIZONTAL;
 
     /** @internal */
-    @queryAssignedElements({ selector: MENUITEM_TAGNAME })
+    @queryAssignedElements({ selector: `${MENUITEM_TAGNAME}:not([disabled])` })
     menuItems!: Array<HTMLElement>;
 
     /** @internal */
-    @queryAssignedElements({ selector: MENUPOPOVER_TAGNAME })
+    @queryAssignedElements({ selector: `${MENUPOPOVER_TAGNAME}:not([disabled])` })
     menuPopoverItems!: Array<HTMLElement>;
+
+    /** @internal */
+    @state() private isMenuPopoverOpen = false;
 
     /**
      * Returns the index of the given target in the menuItems array.
@@ -81,6 +89,17 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
     }
 
     /**
+     * Checks if the given tag name is a valid menu tag name.
+     * @param tagName - The tag name to check.
+     */
+    private isValidMenu(tagName?: string): boolean {
+      return (
+        tagName?.toLowerCase() === MENU_TAGNAME
+        || tagName?.toLowerCase() === MENUBAR_TAGNAME
+      );
+    }
+
+    /**
      * Opens the popover at the given index if it exists.
      * @param index - The index of the menu item to open the popover for.
      * @returns True if the popover was opened, false if not.
@@ -91,6 +110,7 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
         const result = this.menuPopoverItems.findIndex((node) => node.getAttribute('triggerid') === currentMenuId);
         if (result !== -1) {
           this.menuPopoverItems[result].toggleAttribute('visible');
+          this.isMenuPopoverOpen = this.isValidMenu(this.tagName);
           return true;
         }
       }
@@ -107,6 +127,10 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
     private navigateToPrevMenuItem(currentIndex: number, firstMenuIndex: number, lastMenuIndex: number) {
       const newIndex = currentIndex === firstMenuIndex ? lastMenuIndex : currentIndex - 1;
       this.updateTabIndexAndFocusNewIndex(this.menuItems, currentIndex, newIndex);
+      // - if the isMenuPopoverOpen is true, then we will open the popover.
+      if (this.isMenuPopoverOpen) {
+        this.openPopover(newIndex);
+      }
     }
 
     /**
@@ -119,6 +143,10 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
     private navigateToNextMenuItem(currentIndex: number, firstMenuIndex: number, lastMenuIndex: number): void {
       const newIndex = currentIndex === lastMenuIndex ? firstMenuIndex : currentIndex + 1;
       this.updateTabIndexAndFocusNewIndex(this.menuItems, currentIndex, newIndex);
+      // - if the isMenuPopoverOpen is true, then we will close all popovers recursively,
+      if (this.isMenuPopoverOpen) {
+        this.openPopover(newIndex);
+      }
     }
 
     /**
@@ -129,10 +157,7 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
      * @returns An object containing the parent menu element and the menu child id.
      */
     private getParentMenuItemDetails(menuChildId: string, menu?: HTMLElement | null): IParentMenuItem {
-      if (
-        menu?.tagName?.toLowerCase() === MENU_TAGNAME
-        || menu?.tagName?.toLowerCase() === MENUBAR_TAGNAME
-      ) {
+      if (menu && this.isValidMenu(menu.tagName)) {
         return { menu, menuChildId };
       }
       return this.getParentMenuItemDetails(menu?.previousElementSibling?.getAttribute('id') ?? '', menu?.parentElement);
@@ -143,10 +168,7 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
      * @param menu - The current menu element to start traversing from.
      */
     private hideAllPopovers(menu?: HTMLElement | null): void {
-      if (
-        menu?.tagName?.toLowerCase() === MENU_TAGNAME
-        || menu?.tagName?.toLowerCase() === MENUBAR_TAGNAME
-      ) {
+      if (this.isValidMenu(menu?.tagName)) {
         return;
       }
       if (menu?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME) {
@@ -161,16 +183,17 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
      * Also opens the popover of the previous menu item.
      * @param currentIndex - The current index of the focused menu item.
      */
-    private navigateToPrevParentMenuItem(currentIndex: number): void {
+    private navigateToPrevParentMenuItem(currentIndex: number, key: string): void {
       const parentMenuItem = this.menuItems[currentIndex].parentElement?.previousElementSibling;
       const parentMenuItemsChildren = Array.from(this.parentElement?.children || []).filter(
         (node) => node.tagName?.toLowerCase() === MENUITEM_TAGNAME,
       );
       const parentMenuItemIndex = parentMenuItemsChildren.findIndex((node) => node === parentMenuItem);
+      const newIndex = key === KEYS.ARROW_LEFT ? parentMenuItemIndex - 1 : parentMenuItemIndex;
       this.updateTabIndexAndFocusNewIndex(
         parentMenuItemsChildren as HTMLElement[],
         parentMenuItemIndex,
-        parentMenuItemIndex,
+        newIndex,
       );
       parentMenuItemsChildren[parentMenuItemIndex - 1].nextElementSibling?.toggleAttribute('visible');
     }
@@ -179,11 +202,11 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
      * Closes the current menu popover and navigates to the previous parent menu item.
      * @param currentIndex - The current index of the focused menu item.
      */
-    private closePopoverAndNavigateToPrevParentMenuItem(currentIndex: number): void {
+    private closePopoverAndNavigateToPrevParentMenuItem(currentIndex: number, key: string): void {
       // - close popover first
       this.toggleAttribute('visible');
       // - get parent menu item details and update the tab index to parent menu item.
-      this.navigateToPrevParentMenuItem(currentIndex);
+      this.navigateToPrevParentMenuItem(currentIndex, key);
     }
 
     /**
@@ -193,8 +216,7 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
      * @param currentIndex - The current index of the focused menu item.
      */
     private openPopoverAndNavigateToNextChildrenMenuItem(currentIndex: number): void {
-      const isMenuPopoverOpen = this.openPopover(currentIndex);
-      if (isMenuPopoverOpen) {
+      if (this.openPopover(currentIndex)) {
         return;
       }
       // - If there are no popovers to the right, then we will close all popovers recursively,
@@ -257,16 +279,21 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
      *   - If orientation is horizontal, then it navigates to the next menu item.
      *   - If orientation is vertical, then it opens the popover of the current menu item and
      *     navigates to the next children menu item.
-     * - ARROW_UP: Navigates to the previous menu item.
+     * - ARROW_UP:
+     *   - If orientation is horizontal, then it opens the popover of the current menu item.
+     *   - If orientation is vertical, then it navigates to the previous menu item.
      * - ARROW_DOWN:
      *   - If orientation is horizontal, then it opens the popover of the current menu item.
      *   - If orientation is vertical, then it navigates to the next menu item.
+     * - SPACE:
      * - ENTER:
      *   - If the next element sibling is a menu popover, then it opens the popover of the current
      *     menu item and navigates to the next children menu item.
      *   - If the target element is a menu item, then it closes all popovers recursively and
      *     navigates to the previous parent menu item.
-     * - ESCAPE: Closes all popovers recursively and navigates to the previous parent menu item.
+     * - ESCAPE:
+     *   - If a popover is already open then we close it and navigate to the parent menu item.
+     *   - If the current menuitem is a child of menubar, then we will set the state of isMenuPopoverOpen to false.,
      * @param event - The keyboard event.
      */
     public handleKeyDown(event: KeyboardEvent): void {
@@ -288,7 +315,7 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
             this.navigateToPrevMenuItem(currentIndex, firstMenuIndex, lastMenuIndex);
           }
           if (this.ariaOrientation === ORIENTATION.VERTICAL) {
-            this.closePopoverAndNavigateToPrevParentMenuItem(currentIndex);
+            this.closePopoverAndNavigateToPrevParentMenuItem(currentIndex, event.key);
           }
           break;
         }
@@ -302,7 +329,12 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
           break;
         }
         case KEYS.ARROW_UP: {
-          this.navigateToPrevMenuItem(currentIndex, firstMenuIndex, lastMenuIndex);
+          if (this.ariaOrientation === ORIENTATION.HORIZONTAL) {
+            this.openPopover(currentIndex);
+          }
+          if (this.ariaOrientation === ORIENTATION.VERTICAL) {
+            this.navigateToPrevMenuItem(currentIndex, firstMenuIndex, lastMenuIndex);
+          }
           event.preventDefault();
           break;
         }
@@ -316,6 +348,7 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
           event.preventDefault();
           break;
         }
+        case KEYS.SPACE:
         case KEYS.ENTER: {
           if (this.menuItems[currentIndex]?.nextElementSibling?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME) {
             this.openPopoverAndNavigateToNextChildrenMenuItem(currentIndex);
@@ -325,7 +358,15 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
           break;
         }
         case KEYS.ESCAPE: {
-          this.navigateToPrevParentMenuItem(currentIndex);
+          if (
+            this.isValidMenu(this.menuItems[currentIndex].parentElement?.previousElementSibling?.parentElement?.tagName)
+            || this.isValidMenu(this.menuItems[currentIndex].parentElement?.tagName)
+          ) {
+            this.isMenuPopoverOpen = false;
+          }
+          if (this.isMenuPopoverOpen) {
+            this.navigateToPrevParentMenuItem(currentIndex, event.key);
+          }
           break;
         }
         default:
@@ -334,5 +375,5 @@ export const MenuMixin = <T extends Constructor<Component>>(superClass: T) => {
     }
   }
   // Cast return type to your mixin's interface intersected with the superClass type
-  return InnerMixinClass as Constructor<MenuMixinInterface> & T;
+  return InnerMixinClass as unknown as Constructor<MenuMixinInterface> & T;
 };
