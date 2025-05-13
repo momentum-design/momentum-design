@@ -9,7 +9,7 @@ import providerUtils from '../../utils/provider';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
-import ListItem from '../listitem/listitem.component';
+import MenuItem from '../menuitem/menuitem.component';
 import { getIconNameWithoutStyle } from '../button/button.utils';
 import SideNavigation from '../sidenavigation/sidenavigation.component';
 import type { BadgeType } from './navitem.types';
@@ -46,7 +46,7 @@ import type { ListItemVariants } from '../listitem/listitem.types';
  * @cssproperty --mdc-navitem-active-background-color - Background color of the navigation item when active.
  * @cssproperty --mdc-navitem-expanded-width - Width of the navItem when expanded.
  */
-class NavItem extends IconNameMixin(ListItem) {
+class NavItem extends IconNameMixin(MenuItem) {
   /**
    * The navitem's active state indicates whether it is currently toggled on (active) or off (inactive).
    * When the active state is true, the navitem is considered to be in an active state, meaning it is toggled on.
