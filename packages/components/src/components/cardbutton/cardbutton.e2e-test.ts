@@ -45,7 +45,7 @@ const setup = async (args: SetupOptions) => {
     clearDocument: true,
   });
 
-  const cardbutton = componentsPage.page.locator('mdc-cardbutton').first();
+  const cardbutton = componentsPage.page.locator('mdc-cardbutton');
   await cardbutton.waitFor();
 
   return cardbutton;

@@ -196,12 +196,12 @@ test.describe.parallel('mdc-card', () => {
   const createStickerSheetBasedOnOrientation = async (
     componentsPage: ComponentsPage,
     orientation: string,
-    children?: string,
+    children: string,
   ) => {
     const cardStickersheet = new StickerSheet(componentsPage, 'mdc-card');
     const imageSrc = orientation === 'vertical' ? 'https://placehold.co/320x200' : 'https://placehold.co/160x180';
 
-    // Card button without body
+    // Card without body
     cardStickersheet.setAttributes({
       'card-title': 'Card Title',
       subtitle: 'Card Subtitle',
@@ -214,18 +214,13 @@ test.describe.parallel('mdc-card', () => {
       variant: Object.values(VARIANTS),
     });
 
-    if (children) {
-      cardStickersheet.setChildren(children);
-    } else {
-      // Card button with body
-      cardStickersheet.setChildren(defaultChildren);
-    }
+    cardStickersheet.setChildren(children);
 
     await cardStickersheet.createMarkupWithCombination({
       variant: Object.values(VARIANTS),
     });
 
-    // Card button without image
+    // Card without image
     cardStickersheet.setAttributes({
       'card-title': 'Card Title',
       subtitle: 'Card Subtitle',
@@ -237,7 +232,7 @@ test.describe.parallel('mdc-card', () => {
       variant: Object.values(VARIANTS),
     });
 
-    // Selected Card button
+    // Selected Card
     cardStickersheet.setAttributes({
       'card-title': 'Card Title',
       subtitle: 'Card Subtitle',
@@ -249,7 +244,7 @@ test.describe.parallel('mdc-card', () => {
       variant: Object.values(VARIANTS),
     });
 
-    // Disabled Card button
+    // Disabled Card
     cardStickersheet.setAttributes({
       'card-title': 'Card Title',
       subtitle: 'Card Subtitle',
@@ -261,7 +256,7 @@ test.describe.parallel('mdc-card', () => {
       variant: Object.values(VARIANTS),
     });
 
-    // Selected and disabled Card button
+    // Selected and disabled Card
     cardStickersheet.setAttributes({
       'card-title': 'Card Title',
       subtitle: 'Card Subtitle',
@@ -293,7 +288,7 @@ test.describe.parallel('mdc-card', () => {
       await componentsPage.page.setViewportSize({ width: 1000, height: 1700 });
 
       await test.step('static card vertical', async () => {
-        await createStickerSheetBasedOnOrientation(componentsPage, 'vertical');
+        await createStickerSheetBasedOnOrientation(componentsPage, 'vertical', defaultChildren);
         await componentsPage.accessibility.checkForA11yViolations('static-card-vertical');
       });
 
@@ -343,7 +338,7 @@ test.describe.parallel('mdc-card', () => {
       await componentsPage.page.setViewportSize({ width: 2000, height: 1250 });
 
       await test.step('static card horizontal', async () => {
-        await createStickerSheetBasedOnOrientation(componentsPage, 'horizontal');
+        await createStickerSheetBasedOnOrientation(componentsPage, 'horizontal', defaultChildren);
         await componentsPage.accessibility.checkForA11yViolations('static-card-horizontal');
       });
 

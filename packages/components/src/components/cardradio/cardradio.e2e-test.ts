@@ -238,8 +238,7 @@ test.describe.parallel('mdc-cardradio', () => {
     });
 
     // Card radio with body
-    cardRadioStickersheet.setChildren(`<mdc-text slot='body' 
-    type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</mdc-text>`);
+    cardRadioStickersheet.setChildren(defaultChildren);
 
     await cardRadioStickersheet.createMarkupWithCombination({
       variant: Object.values(VARIANTS),
