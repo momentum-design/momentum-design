@@ -154,16 +154,6 @@ class TabList extends Component {
     }
 
     const resizeObserver = new ResizeObserver(async () => {
-      const { activeElement } = document;
-
-      /**
-       * Keep the focused element in view.
-       */
-      if (activeElement instanceof Tab) {
-        // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
-        activeElement.scrollIntoView({ behavior: 'instant', block: 'start', inline: 'center' });
-      }
-
       await this.handleArrowButtonVisibility();
     });
     resizeObserver.observe(this);
@@ -347,8 +337,6 @@ class TabList extends Component {
       tab.focus();
     }
 
-    // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
-    tab.scrollIntoView({ behavior: 'instant', block: 'start', inline: 'center' });
     await this.handleArrowButtonVisibility();
   };
 
