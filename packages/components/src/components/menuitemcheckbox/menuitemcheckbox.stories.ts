@@ -103,7 +103,7 @@ export const Example: StoryObj = {
     'secondary-label': '',
     'tooltip-text': '',
     'tooltip-placement': POPOVER_PLACEMENT.TOP,
-    children: html`<mdc-icon name="alert-muted-bold" slot="leading-controls"></mdc-icon>`,
+    children: html`<mdc-icon length-unit="rem" name="alert-muted-bold" slot="leading-controls"></mdc-icon>`,
   },
 };
 
