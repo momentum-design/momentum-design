@@ -82,7 +82,7 @@ class MenuSection extends Component {
    *
    * @internal
    */
-  private toggleCheckedState(target: HTMLElement) {
+  private toggleCheckedState(target: EventTarget | null) : void {
     if (!(target instanceof HTMLElement)) return;
 
     const tagName = target.tagName.toLowerCase();

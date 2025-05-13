@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/web-components';
 import type { TemplateResult } from 'lit';
 import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { hideAllControls } from '../../../config/storybook/utils';
 import '.';
 import '../menuitem';
 import '../menuitemcheckbox';
