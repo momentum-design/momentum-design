@@ -1,0 +1,1 @@
+const e={BUTTON:"button",CHECKBOX:"checkbox",GROUP:"group",LIST:"list",LISTITEM:"listitem",MENU:"menu",MENUBAR:"menubar",MENUITEM:"menuitem",MENUITEMCHECKBOX:"menuitemcheckbox",MENUITEMRADIO:"menuitemradio",RADIO:"radio",RADIOGROUP:"radiogroup",TOOLTIP:"tooltip"};export{e as R};
