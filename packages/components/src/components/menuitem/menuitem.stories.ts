@@ -7,6 +7,7 @@ import { disableControls, hideAllControls, hideControls } from '../../../config/
 import '../badge';
 import '../divider';
 import '../icon';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 const label = 'Menu Item';
 const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style="width: 20rem;">${htmlString}</div>`;
@@ -23,6 +24,8 @@ const render = (args: Args) => wrapWithDiv(html`
     side-header-text="${args['side-header-text']}"
     tertiary-label="${args['tertiary-label']}"
     subline-text="${args['subline-text']}"
+    tooltip-text="${args['tooltip-text']}"
+    tooltip-placement="${args['tooltip-placement']}"
   ></mdc-menuitem>`);
 
 const meta: Meta = {
@@ -52,6 +55,13 @@ const meta: Meta = {
     'subline-text': {
       control: 'text',
     },
+    'tooltip-text': {
+      control: 'text',
+    },
+    'tooltip-placement': {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
+    },
     ...hideControls([
       'variant',
       '--mdc-listitem-background-color-active',
@@ -61,6 +71,7 @@ const meta: Meta = {
       '--mdc-listitem-secondary-label-color',
       '--mdc-listitem-disabled-color',
       '--mdc-listitem-column-gap',
+      '--mdc-listitem-padding-left-and-right',
       'default',
     ]),
     ...disableControls([
@@ -91,6 +102,8 @@ export const Example: StoryObj = {
     'tertiary-label': '',
     'subline-text': '',
     disabled: false,
+    'tooltip-text': '',
+    'tooltip-placement': POPOVER_PLACEMENT.TOP,
   },
 };
 
@@ -112,7 +125,7 @@ export const ListOfMenuItems: StoryObj = {
 export const MenuItemWithLeadingIcon: StoryObj = {
   render: () => wrapWithDiv(html`
     <mdc-menuitem label="${label}">
-      <mdc-icon slot="leading-controls" name="placeholder-bold"></mdc-icon>
+      <mdc-icon length-unit="rem" slot="leading-controls" name="placeholder-bold"></mdc-icon>
     </mdc-menuitem>
   `),
   ...hideAllControls(),
@@ -121,7 +134,7 @@ export const MenuItemWithLeadingIcon: StoryObj = {
 export const MenuItemWithTrailingIcon: StoryObj = {
   render: () => wrapWithDiv(html`
     <mdc-menuitem label="${label}">
-      <mdc-icon slot="trailing-controls" name="placeholder-bold"></mdc-icon>
+      <mdc-icon length-unit="rem" slot="trailing-controls" name="placeholder-bold"></mdc-icon>
     </mdc-menuitem>
   `),
   ...hideAllControls(),
@@ -164,7 +177,7 @@ export const MenuItemWithSideText: StoryObj = {
 export const MenuItemWithTrailingArrow: StoryObj = {
   render: () => wrapWithDiv(html`
     <mdc-menuitem label="${label}">
-      <mdc-icon slot="trailing-controls" name="arrow-right-bold"></mdc-icon>
+      <mdc-icon length-unit="rem" slot="trailing-controls" name="arrow-right-bold"></mdc-icon>
     </mdc-menuitem>
   `),
   ...hideAllControls(),
@@ -173,8 +186,19 @@ export const MenuItemWithTrailingArrow: StoryObj = {
 export const MenuItemWithLeadingArrow: StoryObj = {
   render: () => wrapWithDiv(html`
     <mdc-menuitem label="${label}">
-      <mdc-icon slot="leading-controls" name="arrow-left-bold"></mdc-icon>
+      <mdc-icon length-unit="rem" slot="leading-controls" name="arrow-left-bold"></mdc-icon>
     </mdc-menuitem>
   `),
+  ...hideAllControls(),
+};
+
+export const MenuItemWithTooltip: StoryObj = {
+  render: () => html`
+    <div role="menu" style="width: 20rem; height: 10rem;">
+      <mdc-menuitem label="Hover on this menu item" tooltip-text="This is the tooltip text." tooltip-placement="bottom">
+        <mdc-icon length-unit="rem" slot="leading-controls" name="placeholder-bold"></mdc-icon>
+      </mdc-menuitem>
+    </div>
+  `,
   ...hideAllControls(),
 };

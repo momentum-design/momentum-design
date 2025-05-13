@@ -24,7 +24,7 @@ const render = (args: Args) => html`
       ?isExpanded=${args.isExpanded}
       aria-label="${args['aria-label']}"
     >
-      Dashboard
+      ${args.children}
     </mdc-navitem>
   </div>
 `;
@@ -39,37 +39,29 @@ const meta: Meta = {
   },
   argTypes: {
     'nav-id': {
-      description: 'Unique identifier for the navItem.',
       control: 'text',
     },
     'icon-name': {
-      description: 'Name of the leading icon.',
       control: 'text',
     },
     'badge-type': {
       control: 'radio',
       options: Object.values(ALLOWED_BADGE_TYPES),
-      description: 'Badge style: dot or counter.',
     },
     counter: {
       control: 'number',
-      description: 'Value to display in the badge (only for counter badgeType).',
     },
     'max-counter': {
       control: { type: 'number', min: 9, max: 999 },
-      description: 'Maximum number before showing "+" (e.g., 999+).',
     },
     disabled: {
       control: 'boolean',
-      description: 'Disables the navItem.',
     },
     active: {
       control: 'boolean',
-      description: 'Marks the navItem as active.',
     },
     isExpanded: {
       control: 'boolean',
-      description: 'Determines whether the navItem is expanded',
     },
     ...disableControls([
       'default',
@@ -121,6 +113,7 @@ export const Example: StoryObj = {
     disabled: false,
     active: false,
     isExpanded: true,
+    children: 'Dashboard',
   },
 };
 

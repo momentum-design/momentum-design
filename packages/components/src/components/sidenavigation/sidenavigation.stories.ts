@@ -5,6 +5,9 @@ import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { VARIANTS, DEFAULTS } from './sidenavigation.constants';
+import '../navitemlist';
+import '../navitem';
+import '../divider';
 
 const render = (args: Args) => html`
   <div style="height: 90vh; margin: 1rem">
@@ -137,7 +140,6 @@ const meta: Meta = {
     ...hideControls([
       'flexibleExpanded',
       'Context',
-      'role',
       'arrowDirection',
       'isExpanded',
     ]),

@@ -71,7 +71,7 @@ test('mdc-listitem', async ({ componentsPage }) => {
       <div slot="leading-controls">
         <mdc-checkbox checked data-aria-label="${primaryLabel}"></mdc-checkbox>
         <mdc-avatar presence="active" initials="MD"></mdc-avatar>
-        <mdc-icon name="placeholder-bold"></mdc-icon>
+        <mdc-icon length-unit="rem" name="placeholder-bold"></mdc-icon>
       </div>
     `);
     await listitemSheet.createMarkupWithCombination({}, options);
@@ -81,7 +81,7 @@ test('mdc-listitem', async ({ componentsPage }) => {
     });
     listitemSheet.setChildren(`
       <div slot="trailing-controls">
-        <mdc-icon name="placeholder-bold"></mdc-icon>
+        <mdc-icon length-unit="rem" name="placeholder-bold"></mdc-icon>
         <mdc-toggle checked data-aria-label="${primaryLabel}"></mdc-toggle>
         <mdc-button variant="secondary" color="positive">Click</mdc-button>
         <mdc-badge type="dot"></mdc-badge>
@@ -98,13 +98,24 @@ test('mdc-listitem', async ({ componentsPage }) => {
     listitemSheet.setChildren(`
       <div slot="leading-controls">
         <mdc-checkbox data-aria-label="${primaryLabel}" checked></mdc-checkbox>
-        <mdc-icon name="placeholder-bold"></mdc-icon>
+        <mdc-icon length-unit="rem" name="placeholder-bold"></mdc-icon>
       </div>
       <div slot="trailing-controls">
-        <mdc-icon name="placeholder-bold"></mdc-icon>
+        <mdc-icon length-unit="rem" name="placeholder-bold"></mdc-icon>
         <mdc-button variant="secondary">Click</mdc-button>
         <mdc-toggle data-aria-label="${primaryLabel}" size="compact"></mdc-toggle>
         <mdc-badge type="dot"></mdc-badge>
+      </div>
+    `);
+    await listitemSheet.createMarkupWithCombination({}, options);
+    listitemSheet.setAttributes({
+      label: 'This is a long text which should be truncated',
+      style: 'width: 15rem',
+    });
+    listitemSheet.setChildren(`
+      <div slot="leading-controls">
+        <mdc-checkbox data-aria-label="${primaryLabel}" checked></mdc-checkbox>
+        <mdc-icon length-unit="rem" name="placeholder-bold"></mdc-icon>
       </div>
     `);
     await listitemSheet.createMarkupWithCombination({}, options);

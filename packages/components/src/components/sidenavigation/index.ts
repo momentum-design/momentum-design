@@ -1,8 +1,5 @@
 import SideNavigation from './sidenavigation.component';
 import { TAG_NAME } from './sidenavigation.constants';
-import '../navitemlist';
-import '../navitem';
-import '../divider';
 import '../text';
 import '../button';
 

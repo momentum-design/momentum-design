@@ -16,7 +16,7 @@ import type { BadgeType } from './navitem.types';
 import type { ListItemVariants } from '../listitem/listitem.types';
 
 /**
- * `mdc-navitem` is a button element styled to work as a navigation tab.
+ * `mdc-navitem` is a menuitem styled to work as a navigation tab.
  * It supports a leading icon, optional badge and dynamic text rendering.
  *
  * Note: mdc-navitem is intended to be used inside `mdc-navitemlist` as a part of the sidenavigation component.
@@ -104,7 +104,6 @@ class NavItem extends IconNameMixin(MenuItem) {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.role = DEFAULTS.ROLE;
     this.variant = undefined as unknown as ListItemVariants;
     this.addEventListener('click', this.executeAction);
     this.addEventListener('keydown', this.executeAction);
@@ -184,9 +183,8 @@ class NavItem extends IconNameMixin(MenuItem) {
   }
 
   protected executeAction(e: MouseEvent | KeyboardEvent):void {
+    if (this.disabled) return;
     if (e.type === 'click' || (e instanceof KeyboardEvent && (e.key === 'Enter' || e.key === ' '))) {
-      if (this.disabled) return;
-
       this.emitNavItemActiveChange(this.active as boolean);
     }
   }
@@ -194,7 +192,7 @@ class NavItem extends IconNameMixin(MenuItem) {
   public override update(changedProperties: PropertyValues) {
     super.update(changedProperties);
     if (changedProperties.has('active')) {
-      this.setActive(this.active ?? false);
+      this.setActive(this.active);
     }
   }
 
@@ -235,9 +233,9 @@ class NavItem extends IconNameMixin(MenuItem) {
           length-unit="rem"
           part="icon"
         ></mdc-icon>
-        ${!this.isExpanded ? this.renderBadge(this.isExpanded as boolean) : nothing}
+        ${!this.isExpanded ? this.renderBadge(this.isExpanded) : nothing}
       </div>
-      ${this.isExpanded ? html`${this.renderTextLabel()}${this.renderBadge(this.isExpanded as boolean)}` : nothing}
+      ${this.isExpanded ? html`${this.renderTextLabel()}${this.renderBadge(this.isExpanded)}` : nothing}
     `;
   }
 

@@ -144,7 +144,7 @@ const testToRun = async (componentsPage: ComponentsPage) => {
   });
 };
 
-test.use({ viewport: { width: 1000, height: 2250 } });
+test.use({ viewport: { width: 1000, height: 1200 } });
 test('Standalone Progressbar Tests', async ({ componentsPage }) => {
   await testToRun(componentsPage);
 });

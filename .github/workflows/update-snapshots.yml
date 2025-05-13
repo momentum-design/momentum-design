@@ -1,0 +1,153 @@
+name: Update Visual Regression Snapshots
+
+on:
+  workflow_dispatch:
+    inputs:
+      component-name:
+        description: 'Component name to update snapshots for. If not provided, it updates all the components'
+        required: false
+        type: string
+      other-args:
+        description: 'Other arguments to pass to the update-snapshot command'
+        required: false
+        type: string
+
+jobs:
+  initialize:
+    name: Initialize
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
+          
+      - name: Validate Dependencies
+        id: validate-dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            packages/**/node_modules
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Cache Dependencies
+        uses: actions/cache@v4
+        if: steps.validate-dependencies.outputs.cache-hit != 'true'
+        with:
+          path: |
+            node_modules
+            packages/**/node_modules
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
+
+  build:
+    name: Build
+    needs: initialize
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
+          
+      - name: Uncache Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            packages/**/node_modules
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Synchronize Packages
+        run: yarn
+
+      - name: Build
+        run: yarn build
+        env:
+          MOMENTUM_METRICS_API_KEY: ${{ secrets.MOMENTUM_METRICS_API_KEY }}
+
+      - name: Cache Dist
+        uses: actions/cache@v4
+        with:
+          path: '**/dist'
+          key: dist-${{ env.rid }}
+
+  update-snapshots:
+    name: Update Snapshots
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
+          
+      - name: Uncache Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            packages/**/node_modules
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Uncache Dist
+        uses: actions/cache@v4
+        with:
+          path: '**/dist'
+          key: dist-${{ env.rid }}
+
+      - name: Synchronize Packages
+        run: yarn
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Pull image
+        run: docker pull ghcr.io/momentum-design/momentum-design/docker-playwright:v1.52.0
+
+      - name: Update Snapshots
+        run: yarn workspace @momentum-design/components test:e2e:docker:update-snapshot ${{ github.event.inputs['component-name'] }} ${{ github.event.inputs['other-args'] }}
+
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: packages/components/playwright-report/
+          retention-days: 30
+
+      - name: Configure Git
+        if: ${{ success() }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit and push snapshot updates
+        if: ${{ success() }}
+        run: |
+          git checkout ${{ github.head_ref || github.ref_name }}
+          git add .
+          git diff --cached --quiet || git commit -m "chore: updated snapshots for component ${{ github.event.inputs['component-name'] }}"
+          git push origin ${{ github.head_ref || github.ref_name }}

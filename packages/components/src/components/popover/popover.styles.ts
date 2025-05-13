@@ -75,11 +75,17 @@ const styles = css`
   }
 
   .popover-close {
+    box-sizing: border-box;
     position: absolute;
     right: 0.75rem;
     top: 0.75rem;
     cursor: pointer;
     z-index: 9999;
+  }
+
+  :host(:dir(rtl)) .popover-close {
+    right: auto;
+    left: 0.75rem;
   }
 
   .popover-arrow[data-side='top'] {

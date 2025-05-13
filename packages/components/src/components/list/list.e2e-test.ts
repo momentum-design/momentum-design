@@ -160,4 +160,54 @@ test('mdc-list', async ({ componentsPage }) => {
       });
     });
   });
+
+  /**
+   * USER STORIES
+   */
+  await test.step('user stories', async () => {
+    await test.step('should focus on all items when the list is focused', async () => {
+      const list = await setup({ componentsPage, children: generateChildren(5) });
+      await componentsPage.actionability.pressTab();
+      await expect(list.locator('mdc-listitem').first()).toBeFocused();
+      await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [
+        list.locator('mdc-listitem').nth(1),
+        list.locator('mdc-listitem').nth(2),
+        list.locator('mdc-listitem').nth(3),
+      ]);
+      await componentsPage.actionability.pressAndCheckFocus('ArrowUp', [
+        list.locator('mdc-listitem').nth(2),
+        list.locator('mdc-listitem').nth(1),
+        list.locator('mdc-listitem').first(),
+      ]);
+      await componentsPage.page.keyboard.press('End');
+      await expect(list.locator('mdc-listitem').last()).toBeFocused();
+      await componentsPage.page.keyboard.press('Home');
+      await expect(list.locator('mdc-listitem').first()).toBeFocused();
+    });
+
+    await test.step('should focus on the enabled listitems only', async () => {
+      const list = await setup({ componentsPage, children: `
+        <mdc-listitem label="List Item 1" disabled></mdc-listitem>
+        <mdc-listitem label="List Item 2"></mdc-listitem>
+        <mdc-listitem label="List Item 3" disabled></mdc-listitem>
+        <mdc-listitem label="List Item 4"></mdc-listitem>
+        <mdc-listitem label="List Item 5" disabled></mdc-listitem>
+        ` });
+      await componentsPage.actionability.pressTab();
+      await expect(list.locator('mdc-listitem').nth(1)).toBeFocused();
+      await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [
+        list.locator('mdc-listitem').nth(3),
+        list.locator('mdc-listitem').nth(1),
+      ]);
+      await componentsPage.visualRegression.takeScreenshot('mdc-list', {
+        source: 'userflow',
+        fileNameSuffix: 'disabled-list-items',
+      });
+      await componentsPage.page.keyboard.press('End');
+      await componentsPage.visualRegression.takeScreenshot('mdc-list', {
+        source: 'userflow',
+        fileNameSuffix: 'focus-last-disabled-item',
+      });
+    });
+  });
 });

@@ -20,8 +20,11 @@ const styles = [hostFitContentStyles, css`
     color: var(--mdc-navitem-color);
     border-color: var(--mdc-navitem-border-color);
     border-radius: 1.25rem;
-    margin-left: 1rem;
     cursor: pointer;
+  }
+
+  :host(:dir(ltr)) {
+    margin-left: 1rem;
   }
 
   :host(:dir(rtl)) {
@@ -45,14 +48,13 @@ const styles = [hostFitContentStyles, css`
     background-color: var(--mdc-navitem-pressed-background-color);
   }
 
-  :host([disabled]), 
-  :host([active][disabled]) {
-    color: var(--mdc-navitem-disabled-color);
-    background-color: var(--mdc-navitem-disabled-background-color);
-  }
-
   :host([active]) {
     background-color: var(--mdc-navitem-active-background-color);
+  }
+  
+  :host([disabled]) {
+    color: var(--mdc-navitem-disabled-color);
+    background-color: var(--mdc-navitem-disabled-background-color);
   }
 
   :host::before {

@@ -1,19 +1,20 @@
-import { CSSResult, html, nothing, PropertyValues } from 'lit';
+import type { CSSResult, PropertyValues } from 'lit';
+import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import type { IconNames } from '../icon/icon.types';
 import ListItem from '../listitem/listitem.component';
 import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
-import { TAG_NAME as SELECT_TAG_NAME } from '../select/select.constants';
 import { TYPE } from '../text/text.constants';
-import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
-import { SELECTED_ICON_NAME, TOOLTIP_ID } from './option.constants';
+import { SELECTED_ICON_NAME } from './option.constants';
 import styles from './option.styles';
 
 /**
  * option component, which is used as a list item in a select component.<br/>
  * We can pass an icon which will be displayed in leading position of the option label text.
+ * We can pass a tooltip which will be displayed on hover of the option label text.
+ * The tooltip will be helpful for a long label text which is truncated with ellipsis.
  *
  * @dependency mdc-icon
  * @dependency mdc-text
@@ -56,65 +57,6 @@ class Option extends FormInternalsMixin(ListItem) {
     this.secondaryLabel = undefined as unknown as string;
     this.sideHeaderText = undefined as unknown as string;
     this.sublineText = undefined as unknown as string;
-
-    this.addEventListener('focusin', this.displayTooltipForLongText);
-    this.addEventListener('mouseover', this.displayTooltipForLongText);
-    this.addEventListener('focusout', this.hideTooltipOnLeave);
-    this.addEventListener('mouseout', this.hideTooltipOnLeave);
-    this.addEventListener('click', this.handleClick);
-  }
-
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.removeEventListener('focusin', this.displayTooltipForLongText);
-    this.removeEventListener('mouseover', this.displayTooltipForLongText);
-    this.removeEventListener('focusout', this.hideTooltipOnLeave);
-    this.removeEventListener('mouseout', this.hideTooltipOnLeave);
-    this.removeEventListener('click', this.handleClick);
-  }
-
-  private handleClick(): void {
-    // When the select dropdown (popover) is open,
-    // then if the tooltip is open, it has to be closed first.
-    // only then we can close the dropdown on option click/select.
-    this.hideTooltipOnLeave();
-  }
-
-  /**
-   * Display a tooltip for long text label with an ellipse at the end.
-   * Create the tooltip programmatically after the nearest select component or the parent element.
-   * @param event - A focus or a mouse event.
-   */
-  private displayTooltipForLongText(event: FocusEvent | MouseEvent): void {
-    const dimensions = (event.target as HTMLElement).shadowRoot?.querySelector('[part="leading-text-primary-label"]');
-    if (
-      dimensions && dimensions.scrollWidth && dimensions.clientWidth
-      && dimensions.scrollWidth <= dimensions?.clientWidth
-    ) {
-      // it means that the option label text is fully visible and we do not need to show the tooltip.
-      return;
-    }
-
-    // Create tooltip for long text label which has an ellipse at the end.
-    const tooltip = document.createElement(TOOLTIP_TAG_NAME);
-    tooltip.id = TOOLTIP_ID;
-    tooltip.textContent = this.label ?? '';
-    tooltip.setAttribute('triggerid', this.id);
-    tooltip.setAttribute('visible', '');
-    tooltip.setAttribute('show-arrow', '');
-
-    // Add tooltip programmatically after the nearest select component or the parent element.
-    const parent = this.closest(SELECT_TAG_NAME) || this.parentElement;
-    parent?.after(tooltip);
-  }
-
-  /**
-   * Removes the dynamically created tooltip for long text label on focus or mouse leave.
-   * This is triggered on focusout and mouseout events.
-   */
-  private hideTooltipOnLeave(): void {
-    const existingTooltip = document.querySelector(`#${TOOLTIP_ID}`);
-    existingTooltip?.remove();
   }
 
   /**
@@ -147,11 +89,11 @@ class Option extends FormInternalsMixin(ListItem) {
   public override render() {
     const prefixIconContent = this.prefixIcon ? html`
       <div part="leading-icon">
-        <mdc-icon slot="leading-controls" name="${ifDefined(this.prefixIcon)}"></mdc-icon>
+        <mdc-icon length-unit="rem" slot="leading-controls" name="${ifDefined(this.prefixIcon)}"></mdc-icon>
       </div>
     ` : nothing;
     const selectedIcon = this.selected ? html`
-      <mdc-icon slot="trailing-controls" name="${SELECTED_ICON_NAME}"></mdc-icon>
+      <mdc-icon length-unit="rem" slot="trailing-controls" name="${SELECTED_ICON_NAME}"></mdc-icon>
     ` : nothing;
 
     return html`
