@@ -1,0 +1,5 @@
+import{s as d}from"./lit-element-D5KKan5q.js";/**
+ * @license
+ * Copyright 2020 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */const{I:o}=d,v=(t,n)=>n===void 0?(t==null?void 0:t._$litType$)!==void 0:(t==null?void 0:t._$litType$)===n,b=t=>t.strings===void 0,a=()=>document.createComment(""),g=(t,n,e)=>{var l;const _=t._$AA.parentNode,r=n===void 0?t._$AB:n._$AA;if(e===void 0){const A=_.insertBefore(a(),r),$=_.insertBefore(a(),r);e=new o(A,$,t,t.options)}else{const A=e._$AB.nextSibling,$=e._$AM,i=$!==t;if(i){let s;(l=e._$AQ)==null||l.call(e,t),e._$AM=t,e._$AP!==void 0&&(s=t._$AU)!==$._$AU&&e._$AP(s)}if(A!==r||i){let s=e._$AA;for(;s!==A;){const c=s.nextSibling;_.insertBefore(s,r),s=c}}}return e},m=(t,n,e=t)=>(t._$AI(n,e),t),f={},u=(t,n=f)=>t._$AH=n,B=t=>t._$AH,S=t=>{var _;(_=t._$AP)==null||_.call(t,!1,!0);let n=t._$AA;const e=t._$AB.nextSibling;for(;n!==e;){const r=n.nextSibling;n.remove(),n=r}},x=Object.freeze(Object.defineProperty({__proto__:null},Symbol.toStringTag,{value:"Module"}));export{g as a,m as c,u as d,v as n,S as p,b as r,x as t,B as u};
