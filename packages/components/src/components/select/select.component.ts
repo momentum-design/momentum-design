@@ -6,6 +6,7 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
+import type { IconNames } from '../icon/icon.types';
 import { TAG_NAME as OPTION_GROUP_TAG_NAME } from '../optgroup/optgroup.constants';
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
@@ -60,6 +61,9 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
 
   /** @internal */
   @state() selectedValueText?: string;
+
+  /** @internal */
+  @state() selectedIcon?: IconNames | null;
 
   /** @internal */
   @state() selectedValue = '';
@@ -164,6 +168,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    */
   private setSelectedValue(option: Element): void {
     this.selectedValueText = option?.getAttribute('label') ?? option?.textContent ?? '';
+    this.selectedIcon = option?.getAttribute('prefix-icon') as IconNames | null;
     this.selectedValue = option?.getAttribute('value') ?? option?.textContent ?? '';
 
     // Set form value
@@ -199,6 +204,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   formResetCallback(): void {
     this.selectedValue = '';
     this.selectedValueText = undefined;
+    this.selectedIcon = null;
     this.internals.setFormValue(this.selectedValue);
     this.updateTabIndexForAllOptions();
   }
@@ -520,6 +526,9 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
           aria-expanded="${this.displayPopover ? 'true' : 'false'}"
         >
+      ${this.selectedIcon
+    ? html`<mdc-icon length-unit="rem" size="1" name="${this.selectedIcon}" part="selected-icon"></mdc-icon>`
+    : nothing}
           <mdc-text
             part="base-text ${this.selectedValueText ? 'selected' : ''}"
             type="${TYPE.BODY_MIDSIZE_REGULAR}"

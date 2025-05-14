@@ -93,10 +93,12 @@ class ButtonLink extends ButtonComponentMixin(Linksimple) {
 
   public override render() {
     return html`
-      ${this.prefixIcon ? html` <mdc-icon name="${this.prefixIcon as IconNames}" part="prefix-icon"></mdc-icon>` : ''}
+      ${this.prefixIcon ? html` <mdc-icon name="${this.prefixIcon as IconNames}" 
+        part="prefix-icon" length-unit="rem"></mdc-icon>` : ''}
       <slot @slotchange=${this.inferButtonType}></slot>
       ${this.postfixIcon
-    ? html` <mdc-icon name="${this.postfixIcon as IconNames}" part="postfix-icon"></mdc-icon>`
+    ? html` <mdc-icon name="${this.postfixIcon as IconNames}" 
+    part="postfix-icon" length-unit="rem"></mdc-icon>`
     : ''}
     `;
   }

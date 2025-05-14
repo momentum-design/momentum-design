@@ -13,11 +13,11 @@ const styles = css`
     border-color: transparent;
   }
   :host([orientation="horizontal"]){
-    width: 40rem;
+    max-width: 40rem;
   }
 
   :host([orientation="vertical"]){
-    width: 20rem;
+    max-width: 20rem;
     flex-direction: column;
   }
   
@@ -60,16 +60,25 @@ const styles = css`
     border-color: var(--mds-color-theme-outline-promotion-normal);
   }
 
-  :host::part(icon-button), :host::part(footer) {
+  :host(:dir(ltr))::part(icon-button), :host(:dir(ltr))::part(footer) {
     margin-left: auto;
+  }
+
+  :host(:dir(rtl))::part(icon-button), :host(:dir(rtl))::part(footer) {
+    margin-right: auto;
+  }
+
+  :host::part(icon-button), :host::part(footer) {
     display: flex;
     gap: 0.5rem;
     align-items: center;
     justify-content: center;
   }
+
   :host::part(footer){
     gap: 1rem;
   }
+  
   ::slotted([slot='footer-link']), 
   ::slotted([slot='footer-button-primary']), 
   ::slotted([slot='footer-button-secondary']){

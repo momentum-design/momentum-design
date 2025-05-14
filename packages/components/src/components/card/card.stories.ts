@@ -23,17 +23,17 @@ const render = (args: Args) => html`
     style="${args.style}">${args.children}</mdc-card>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/card/card',
+  title: 'Components/card/card',
   tags: ['autodocs'],
   component: 'mdc-card',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     variant: {
       control: 'select',
-      options: ['border', 'ghost'],
+      options: Object.values(VARIANTS),
     },
     orientation: {
       control: 'select',
@@ -200,12 +200,6 @@ Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a sceleri
 <mdc-button slot="footer-button-primary">Label</mdc-button>`;
 
 export const InteractiveHorizontalCard: StoryObj = {
-  argTypes: {
-    variant: {
-      control: 'select',
-      options: Object.values(VARIANTS),
-    },
-  },
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
@@ -221,12 +215,6 @@ export const InteractiveHorizontalCard: StoryObj = {
 };
 
 export const InteractiveCardWithoutImage: StoryObj = {
-  argTypes: {
-    variant: {
-      control: 'select',
-      options: Object.values(VARIANTS),
-    },
-  },
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
@@ -240,12 +228,6 @@ export const InteractiveCardWithoutImage: StoryObj = {
 };
 
 export const InteractiveCardWithoutHeader: StoryObj = {
-  argTypes: {
-    variant: {
-      control: 'select',
-      options: Object.values(VARIANTS),
-    },
-  },
   args: {
     'image-src': 'https://placehold.co/320x200',
     'image-alt': 'Image Alt',
@@ -256,12 +238,6 @@ export const InteractiveCardWithoutHeader: StoryObj = {
 };
 
 export const InteractiveCardWithoutBody: StoryObj = {
-  argTypes: {
-    variant: {
-      control: 'select',
-      options: Object.values(VARIANTS),
-    },
-  },
   args: {
     'image-src': 'https://placehold.co/320x200',
     'image-alt': 'Image Alt',
@@ -280,12 +256,6 @@ export const InteractiveCardWithoutBody: StoryObj = {
 };
 
 export const InteractiveContentBeforeBody: StoryObj = {
-  argTypes: {
-    variant: {
-      control: 'select',
-      options: Object.values(VARIANTS),
-    },
-  },
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
@@ -299,7 +269,7 @@ export const InteractiveContentBeforeBody: StoryObj = {
     children: html`
     <mdc-text slot='before-body' type="body-midsize-medium" tagname="span">Content Before Body</mdc-text>
     <img src="https://placehold.co/100x50" alt="Image Alt" slot="before-body"/>
-    <div slot="before-body" style="display: flex; gap: 8px;"> 
+    <div slot="before-body" style="display: flex; gap: 8px; margin-top: 8px;"> 
     <mdc-button  size="28">Click Me</mdc-button>
     <mdc-button  size="28" variant="secondary">View More</mdc-button>
     </div>-
@@ -308,12 +278,6 @@ export const InteractiveContentBeforeBody: StoryObj = {
 };
 
 export const InteractiveContentAfterBody: StoryObj = {
-  argTypes: {
-    variant: {
-      control: 'select',
-      options: Object.values(VARIANTS),
-    },
-  },
   args: {
     'card-title': 'Title',
     subtitle: 'Subtitle',
@@ -326,7 +290,7 @@ export const InteractiveContentAfterBody: StoryObj = {
     orientation: ORIENTATIONS.HORIZONTAL,
     children: html`
     <img src="https://placehold.co/120x30" alt="Image Alt" slot="after-body"/>
-    <div slot="after-body" style="display: flex; gap: 8px;"> 
+    <div slot="after-body" style="display: flex; gap: 8px; margin: 8px 0;"> 
       <mdc-button  size="28">Click Me</mdc-button>
       <mdc-button  size="28" variant="secondary">View More</mdc-button>
     </div>

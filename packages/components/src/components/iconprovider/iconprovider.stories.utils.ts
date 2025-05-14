@@ -23,7 +23,7 @@ class SubComponentIconProvider extends Component {
       <p>Default Size: ${this.iconProviderContext.value?.size}</p>
       <p>Cache strategy: ${this.iconProviderContext.value?.cacheStrategy || 'undefined'}</p>
       <p>Cache name: ${this.iconProviderContext.value?.cacheName}</p>
-      <mdc-icon name="${ifDefined(this.iconName)}"></mdc-icon>
+      <mdc-icon length-unit="rem" name="${ifDefined(this.iconName)}"></mdc-icon>
     `;
   }
 }

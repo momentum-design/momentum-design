@@ -12,6 +12,7 @@ const ROLE = {
   MENUITEM: 'menuitem',
   MENUITEMCHECKBOX: 'menuitemcheckbox',
   MENUITEMRADIO: 'menuitemradio',
+  RADIO: 'radio',
   RADIOGROUP: 'radiogroup',
   TOOLTIP: 'tooltip',
 } as const;

@@ -75,6 +75,7 @@ const styles = css`
   }
 
   .popover-close {
+    box-sizing: border-box;
     position: absolute;
     right: 0.75rem;
     top: 0.75rem;

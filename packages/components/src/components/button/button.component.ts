@@ -132,11 +132,13 @@ class Button extends ButtonComponentMixin(Buttonsimple) {
   public override render() {
     return html`
       ${this.prefixFilledIconName
-    ? html` <mdc-icon name="${this.prefixFilledIconName as IconNames}" part="prefix-icon"></mdc-icon>`
+    ? html` <mdc-icon name="${this.prefixFilledIconName as IconNames}" 
+    part="prefix-icon" length-unit="rem"></mdc-icon>`
     : ''}
       <slot @slotchange=${this.inferButtonType}></slot>
       ${this.postfixFilledIconName
-    ? html` <mdc-icon name="${this.postfixFilledIconName as IconNames}" part="postfix-icon"></mdc-icon>`
+    ? html` <mdc-icon name="${this.postfixFilledIconName as IconNames}" 
+    part="postfix-icon" length-unit="rem"></mdc-icon>`
     : ''}
     `;
   }

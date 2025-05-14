@@ -125,7 +125,7 @@ export const ListOfMenuItems: StoryObj = {
 export const MenuItemWithLeadingIcon: StoryObj = {
   render: () => wrapWithDiv(html`
     <mdc-menuitem label="${label}">
-      <mdc-icon slot="leading-controls" name="placeholder-bold"></mdc-icon>
+      <mdc-icon length-unit="rem" slot="leading-controls" name="placeholder-bold"></mdc-icon>
     </mdc-menuitem>
   `),
   ...hideAllControls(),
@@ -134,7 +134,7 @@ export const MenuItemWithLeadingIcon: StoryObj = {
 export const MenuItemWithTrailingIcon: StoryObj = {
   render: () => wrapWithDiv(html`
     <mdc-menuitem label="${label}">
-      <mdc-icon slot="trailing-controls" name="placeholder-bold"></mdc-icon>
+      <mdc-icon length-unit="rem" slot="trailing-controls" name="placeholder-bold"></mdc-icon>
     </mdc-menuitem>
   `),
   ...hideAllControls(),
@@ -177,7 +177,7 @@ export const MenuItemWithSideText: StoryObj = {
 export const MenuItemWithTrailingArrow: StoryObj = {
   render: () => wrapWithDiv(html`
     <mdc-menuitem label="${label}">
-      <mdc-icon slot="trailing-controls" name="arrow-right-bold"></mdc-icon>
+      <mdc-icon length-unit="rem" slot="trailing-controls" name="arrow-right-bold"></mdc-icon>
     </mdc-menuitem>
   `),
   ...hideAllControls(),
@@ -186,7 +186,7 @@ export const MenuItemWithTrailingArrow: StoryObj = {
 export const MenuItemWithLeadingArrow: StoryObj = {
   render: () => wrapWithDiv(html`
     <mdc-menuitem label="${label}">
-      <mdc-icon slot="leading-controls" name="arrow-left-bold"></mdc-icon>
+      <mdc-icon length-unit="rem" slot="leading-controls" name="arrow-left-bold"></mdc-icon>
     </mdc-menuitem>
   `),
   ...hideAllControls(),
@@ -196,7 +196,7 @@ export const MenuItemWithTooltip: StoryObj = {
   render: () => html`
     <div role="menu" style="width: 20rem; height: 10rem;">
       <mdc-menuitem label="Hover on this menu item" tooltip-text="This is the tooltip text." tooltip-placement="bottom">
-        <mdc-icon slot="leading-controls" name="placeholder-bold"></mdc-icon>
+        <mdc-icon length-unit="rem" slot="leading-controls" name="placeholder-bold"></mdc-icon>
       </mdc-menuitem>
     </div>
   `,

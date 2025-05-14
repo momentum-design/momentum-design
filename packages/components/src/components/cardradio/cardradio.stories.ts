@@ -5,7 +5,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls, disableControls } from '../../../config/storybook/utils';
-import { DEFAULTS, ORIENTATIONS } from '../card/card.constants';
+import { DEFAULTS, ORIENTATIONS, VARIANTS } from '../card/card.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 import '../radiogroup';
 
@@ -34,17 +34,17 @@ const render = (args: Args) => html`
     style="${args.style}">${args.children}</mdc-cardradio>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/card/cardradio',
+  title: 'Components/card/cardradio',
   tags: ['autodocs'],
   component: 'mdc-cardradio',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     variant: {
       control: 'select',
-      options: ['border', 'ghost'],
+      options: Object.values(VARIANTS),
     },
     orientation: {
       control: 'select',

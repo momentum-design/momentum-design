@@ -6,6 +6,7 @@ import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import Card from '../card/card.component';
 import { CHECK_MARK, DEFAULTS, SELECTION_TYPE } from './cardcheckbox.constants';
 import type { SelectionType } from './cardcheckbox.types';
+import { ROLE } from '../../utils/roles';
 
 /**
  * cardcheckbox component extends `mdc-card` and supports checkbox selection interaction addtionally.
@@ -49,7 +50,7 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
    * The selection type of the card. It can either be set to 'check' or 'checkbox'
    * @default 'check'
    */
- @property({ type: String, attribute: 'selection-type' })
+ @property({ type: String, attribute: 'selection-type', reflect: true })
  selectionType: SelectionType = DEFAULTS.SELECTION_TYPE;
 
  constructor() {
@@ -61,7 +62,7 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
 
  override connectedCallback() {
    super.connectedCallback();
-   this.role = 'checkbox';
+   this.role = ROLE.CHECKBOX;
  }
 
  override update(changedProperties: PropertyValues<CardCheckbox>) {
@@ -71,6 +72,7 @@ class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
    }
    if (changedProperties.has('disabled')) {
      this.setAttribute('aria-disabled', `${this.disabled}`);
+     this.tabIndex = this.disabled ? -1 : 0;
    }
  }
 

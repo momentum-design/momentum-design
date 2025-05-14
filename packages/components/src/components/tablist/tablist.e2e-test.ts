@@ -254,16 +254,16 @@ test('mdc-tablist', async ({ componentsPage }) => {
         await componentsPage.actionability.pressTab();
         await componentsPage.actionability.pressAndCheckFocus(
           'ArrowRight',
-          [tabs.nth(1), tabs.nth(2)],
+          [tabs.nth(1), tabs.nth(2), tabs.nth(3)],
         );
         await componentsPage.page.keyboard.press('Space');
-        await expect(tabs.nth(2)).toHaveAttribute('aria-selected', 'true');
-        await expect(tabs.nth(2)).toHaveAttribute('active');
-        await expect(mdcTablist).toHaveAttribute('active-tab-id', 'music-tab');
+        await expect(tabs.nth(3)).toHaveAttribute('aria-selected', 'true');
+        await expect(tabs.nth(3)).toHaveAttribute('active');
+        await expect(mdcTablist).toHaveAttribute('active-tab-id', 'documents-tab');
         await componentsPage.actionability.pressTab();
         await expect(arrowButtons.last()).toBeFocused();
         await componentsPage.actionability.pressShiftTab();
-        await expect(tabs.nth(2)).toBeFocused();
+        await expect(tabs.nth(3)).toBeFocused();
         await componentsPage.actionability.pressShiftTab();
         await expect(arrowButtons.first()).toBeFocused();
       });
