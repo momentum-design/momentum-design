@@ -32,12 +32,12 @@ const render = (args: Args) => html`
     style="${args.style}">${args.children}</mdc-cardbutton>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/card/cardbutton',
+  title: 'Components/card/cardbutton',
   tags: ['autodocs'],
   component: 'mdc-cardbutton',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     variant: {
