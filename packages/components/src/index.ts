@@ -56,6 +56,7 @@ import VirtualizedList from './components/virtualizedlist';
 import MenuItemRadio from './components/menuitemradio';
 import MenuItemCheckbox from './components/menuitemcheckbox';
 import MenuSection from './components/menusection';
+import Animation from './components/animation';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -76,6 +77,7 @@ import {
 // Components Exports
 export {
   AlertChip,
+  Animation,
   Appheader,
   Avatar,
   AvatarButton,
