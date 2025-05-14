@@ -17,6 +17,7 @@ import { DEFAULTS } from './animation.constants';
  *
  * @tagname mdc-animation
  *
+ * @event load - (React: onLoad) This event is dispatched when the animation is loaded
  * @event complete - (React: onComplete) This event is dispatched when all animation loops completed
  * @event error - (React: onError) This event is dispatched when animation loading failed
  */
@@ -98,6 +99,8 @@ class Animation extends Component {
       });
       this.lottieInstance.addEventListener('complete', this.onCompleteHandler);
     }
+    // Dispatch load event when animation ready to play
+    this.dispatchEvent(new CustomEvent('load', { bubbles: true, cancelable: true, detail: { name: this.name } }));
   }
 
   /**
