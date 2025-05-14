@@ -28,7 +28,12 @@ import Linksimple from './components/linksimple';
 import List from './components/list';
 import ListItem from './components/listitem';
 import Marker from './components/marker';
+import Menu from './components/menu';
+import MenuBar from './components/menubar';
 import MenuItem from './components/menuitem';
+import MenuItemCheckbox from './components/menuitemcheckbox';
+import MenuItemRadio from './components/menuitemradio';
+import MenuPopover from './components/menupopover';
 import OptGroup from './components/optgroup';
 import Option from './components/option';
 import Popover from './components/popover';
@@ -53,8 +58,6 @@ import Toggle from './components/toggle';
 import ToggleTip from './components/toggletip';
 import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
-import MenuItemRadio from './components/menuitemradio';
-import MenuItemCheckbox from './components/menuitemcheckbox';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -103,7 +106,12 @@ export {
   List,
   ListItem,
   Marker,
+  Menu,
+  MenuBar,
   MenuItem,
+  MenuItemCheckbox,
+  MenuItemRadio,
+  MenuPopover,
   OptGroup,
   Option,
   Popover,
@@ -116,20 +124,18 @@ export {
   Searchfield,
   Select,
   Spinner,
+  StaticCheckbox,
+  StaticRadio,
+  StaticToggle,
   Tab,
   TabList,
   Text,
   Textarea,
   ThemeProvider,
   Toggle,
-  VirtualizedList,
-  StaticCheckbox,
-  StaticRadio,
-  StaticToggle,
   ToggleTip,
   Tooltip,
-  MenuItemRadio,
-  MenuItemCheckbox,
+  VirtualizedList,
 };
 // Types Exports
 export type {
