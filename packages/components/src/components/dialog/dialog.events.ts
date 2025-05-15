@@ -52,4 +52,13 @@ export class DialogEventManager {
   static onDestroyedDialog(instance: Dialog) {
     this.dispatchDialogEvent('destroyed', instance);
   }
+
+  /**
+   * Custom event that is fired when the dialog is close when click on close icon.
+   *
+   * @param instance - The dialog instance.
+   */
+  static onCloseDialog(instance: Dialog) {
+    this.dispatchDialogEvent('close', instance);
+  }
 }
