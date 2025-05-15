@@ -4,8 +4,8 @@ import { property } from 'lit/decorators.js';
 import { ROLE } from '../../utils/roles';
 import MenuItem from '../menuitem/menuitem.component';
 import { TYPE } from '../text/text.constants';
-import { ARIA_CHECKED_STATES } from './menuitemradio.constants';
-import { AriaChecked } from './menuitemradio.types';
+import { ARIA_CHECKED_STATES } from '../menusection/menusection.constants';
+import type { AriaCheckedStates } from '../menusection/menusection.types';
 
 /**
  * A menuitemradio component is a checkable menuitem that is used in a menu.
@@ -33,7 +33,7 @@ class MenuItemRadio extends MenuItem {
    * @default 'false'
    */
   @property({ type: String, reflect: true, attribute: 'aria-checked' })
-  override ariaChecked: AriaChecked = ARIA_CHECKED_STATES.FALSE;
+  override ariaChecked: AriaCheckedStates = ARIA_CHECKED_STATES.FALSE;
 
   override connectedCallback(): void {
     super.connectedCallback();

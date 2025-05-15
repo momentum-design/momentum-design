@@ -58,6 +58,8 @@ import MenuItemCheckbox from './components/menuitemcheckbox';
 import NavItem from './components/navitem';
 import NavItemList from './components/navitemlist';
 import SideNavigation from './components/sidenavigation';
+import MenuSection from './components/menusection';
+import Animation from './components/animation';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -78,6 +80,7 @@ import {
 // Components Exports
 export {
   AlertChip,
+  Animation,
   Appheader,
   Avatar,
   AvatarButton,
@@ -136,6 +139,7 @@ export {
   NavItem,
   NavItemList,
   SideNavigation,
+  MenuSection,
 };
 // Types Exports
 export type {

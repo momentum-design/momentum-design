@@ -21,6 +21,7 @@ const FORMATS = {
   WOFF: 'WOFF' as const,
   WOFF2: 'WOFF2' as const,
   MANIFEST: 'MANIFEST' as const,
+  MANIFEST_MODULE: 'MANIFEST_MODULE' as const,
   SWIFT: 'SWIFT' as const,
   SVG_GLYPHS: 'SVG_GLYPHS' as const,
   TYPES: 'TYPES' as const,

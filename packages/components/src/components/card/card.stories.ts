@@ -23,12 +23,12 @@ const render = (args: Args) => html`
     style="${args.style}">${args.children}</mdc-card>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/card/card',
+  title: 'Components/card/card',
   tags: ['autodocs'],
   component: 'mdc-card',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     variant: {
