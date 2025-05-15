@@ -2260,7 +2260,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@momentum-design/animations@workspace:packages/assets/animations":
+"@momentum-design/animations@workspace:*, @momentum-design/animations@workspace:packages/assets/animations":
   version: 0.0.0-use.local
   resolution: "@momentum-design/animations@workspace:packages/assets/animations"
   dependencies:
@@ -2377,6 +2377,7 @@ __metadata:
     "@geometricpanda/storybook-addon-badges": ^2.0.4
     "@lit/context": ^1.1.2
     "@lit/react": ^1.0.5
+    "@momentum-design/animations": "workspace:*"
     "@momentum-design/brand-visuals": "workspace:*"
     "@momentum-design/fonts": "workspace:*"
     "@momentum-design/icons": "workspace:*"
@@ -2401,6 +2402,7 @@ __metadata:
     eslint-plugin-lit: ^1.14.0
     fs-extra: ^11.2.0
     lit: ^3.2.0
+    lottie-web: ^5.12.2
     pascalcase: ^2.0.0
     plop: ^4.0.1
     prettier: ^3.3.3
@@ -11024,6 +11026,13 @@ __metadata:
   bin:
     loose-envify: cli.js
   checksum: 6517e24e0cad87ec9888f500c5b5947032cdfe6ef65e1c1936a0c48a524b81e65542c9c3edc91c97d5bddc806ee2a985dbc79be89215d613b1de5db6d1cfe6f4
+  languageName: node
+  linkType: hard
+
+"lottie-web@npm:^5.12.2":
+  version: 5.12.2
+  resolution: "lottie-web@npm:5.12.2"
+  checksum: af5bc3bc405fd760de8b17a36158d5a8c3e8c586c711d0c63681ddf056b65bc6b54ea36b1fcad782fb02dbe12e696a40e0ba72daf41b8f10ab5b5d1113793636
   languageName: node
   linkType: hard
 
