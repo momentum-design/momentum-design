@@ -496,7 +496,9 @@ class Popover extends FocusTrapMixin(Component) {
       }
       PopoverEventManager.onShowPopover(this);
     } else {
-      popoverStack.pop();
+      if (popoverStack.peek() === this) {
+        popoverStack.pop();
+      }
 
       if (this.backdropElement) {
         this.backdropElement?.remove();
