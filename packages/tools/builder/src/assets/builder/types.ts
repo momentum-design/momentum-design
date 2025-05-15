@@ -79,6 +79,16 @@ export interface ManifestFormat {
 }
 
 /**
+ * Manifest module Format
+ *
+ * @beta
+ */
+export interface ManifestModuleFormat {
+  type: typeof CONSTANTS.FORMATS.MANIFEST_MODULE;
+  config: { fileName: string };
+}
+
+/**
  * Swift Format
  *
  * @beta
@@ -165,6 +175,7 @@ export type Formats = (
   | WOFFFormat
   | WOFF2Format
   | ManifestFormat
+  | ManifestModuleFormat
   | SwiftFormat
   | SvgGlyphsFormat
   | TypesFormat
