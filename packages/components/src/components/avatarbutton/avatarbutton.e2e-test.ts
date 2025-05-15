@@ -47,6 +47,7 @@ const setup = async (args: SetupOptions) => {
   return firstButton;
 };
 
+test.use({ viewport: { width: 600, height: 800 } });
 test('mdc-avatarbutton', async ({ componentsPage }) => {
   const avatarButton = await setup({ componentsPage });
 
