@@ -55,6 +55,9 @@ import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
 import MenuItemRadio from './components/menuitemradio';
 import MenuItemCheckbox from './components/menuitemcheckbox';
+import NavItem from './components/navitem';
+import NavItemList from './components/navitemlist';
+import SideNavigation from './components/sidenavigation';
 import MenuSection from './components/menusection';
 import Animation from './components/animation';
 
@@ -133,6 +136,9 @@ export {
   Tooltip,
   MenuItemRadio,
   MenuItemCheckbox,
+  NavItem,
+  NavItemList,
+  SideNavigation,
   MenuSection,
 };
 // Types Exports
