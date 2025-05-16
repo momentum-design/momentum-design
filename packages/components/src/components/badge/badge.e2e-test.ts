@@ -80,7 +80,10 @@ const testToRun = async (componentsPage: ComponentsPage) => {
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
+    const loadPromise = componentsPage.page.waitForEvent('load');
     const visualBadge = await visualTestingSetup({ componentsPage });
+    // wait for the badges to be rendered
+    await loadPromise;
     await test.step('matches screenshot of different types element', async () => {
       await componentsPage.visualRegression.takeScreenshot('mdc-badge', { element: visualBadge });
     });

@@ -3,7 +3,7 @@ import { property } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import type { Ref } from 'lit/directives/ref';
 import lottie, { AnimationItem } from 'lottie-web/build/player/lottie_light';
-import * as animationManifest from '@momentum-design/animations/dist/manifest.json';
+import animationManifest from '@momentum-design/animations/dist/manifest';
 import styles from './animation.styles';
 import { Component } from '../../models';
 import { AnimationNames, LoopType } from './animation.types';
@@ -119,14 +119,15 @@ class Animation extends Component {
    * Import animation data dynamically
    */
   private getAnimationData() {
-    if (!(this.name && animationManifest[this.name])) {
-      return Promise.reject(new Error(`Invalid animation name: ${this.name}`));
-    }
+    if (this.name && animationManifest[this.name]) {
+      const path = animationManifest[this.name].replace(/^\./, '');
 
-    const path = animationManifest[this.name].replace(/^\./, '');
-    return import(`@momentum-design/animations/dist${path}`)
-      .then((result: any) => this.onLoadSuccessHandler(result.default))
-      .catch((error: Error) => this.onLoadFailHandler(error));
+      import(`@momentum-design/animations/dist${path}`)
+        .then((result: any) => this.onLoadSuccessHandler(result.default))
+        .catch((error: Error) => this.onLoadFailHandler(error));
+    } else {
+      this.onLoadFailHandler(new Error(`Invalid animation name: ${this.name}`));
+    }
   }
 
   override updated(changedProperties: Map<string, any>) {
@@ -136,7 +137,7 @@ class Animation extends Component {
     // note: we re-create the animation for parameter changes as well, because lottie
     //       does not API for changing them on the fly
     if (changedProperties.has('name') || changedProperties.has('loop') || changedProperties.has('autoplay')) {
-      this.getAnimationData().catch((err: Error) => this.onerror?.(err.message));
+      this.getAnimationData();
     }
 
     if (changedProperties.has('ariaLabel') || changedProperties.has('ariaLabelledBy')) {
