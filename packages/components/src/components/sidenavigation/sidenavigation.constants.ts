@@ -11,7 +11,6 @@ const VARIANTS = {
 
 const DEFAULTS = {
   VARIANT: VARIANTS.FLEXIBLE,
-  ROLE: 'navigation',
 } as const;
 
 export { DEFAULTS, VARIANTS, TAG_NAME };

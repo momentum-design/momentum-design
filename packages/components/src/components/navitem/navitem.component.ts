@@ -14,13 +14,14 @@ import { getIconNameWithoutStyle } from '../button/button.utils';
 import SideNavigation from '../sidenavigation/sidenavigation.component';
 import type { BadgeType } from './navitem.types';
 import type { ListItemVariants } from '../listitem/listitem.types';
+import { KEYS } from '../../utils/keys';
 
 /**
  * `mdc-navitem` is a menuitem styled to work as a navigation tab.
  * It supports a leading icon, optional badge and dynamic text rendering.
  *
- * Note: mdc-navitem is intended to be used inside `mdc-navitemlist` as a part of the sidenavigation component.
- * Its structure, spacing, and interactions are designed to align with
+ * Note: `mdc-navitem` is intended to be used inside an element with role="menubar" as part of the sideNavigation
+ * component. Its structure, spacing, and interactions are designed to align with
  * the visual and functional requirements of side navigation layouts.
  *
  * @tagname mdc-navitem
@@ -29,22 +30,23 @@ import type { ListItemVariants } from '../listitem/listitem.types';
  * @dependency mdc-text
  * @dependency mdc-badge
  *
- * @slot default - Slot for the navItem text.
+ * @event click - (React: onClick) This event is dispatched when the navitem is clicked.
+ * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the navitem.
+ * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the navitem.
+ * @event focus - (React: onFocus) This event is dispatched when the navitem receives focus.
+ * @event activechange - (React: onActiveChange) Dispatched when the active state of the navitem changes.
  *
- * @event click - (React: onClick) This event is dispatched when the navItem is clicked.
- * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the navItem.
- * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the navItem.
- * @event focus - (React: onFocus) This event is dispatched when the navItem receives focus.
- * @event activechange - (React: onActiveChange) Dispatched when the active state of the navItem changes.
- *
- * @cssproperty --mdc-navitem-color - Text color of the navigation item in its normal state.
- * @cssproperty --mdc-navitem-border-color - Border color of the navigation item in its normal state.
- * @cssproperty --mdc-navitem-hover-background-color - Background color of the navigation item when hovered.
- * @cssproperty --mdc-navitem-pressed-background-color - Background color of the navigation item when pressed.
- * @cssproperty --mdc-navitem-disabled-background-color - Background color of the navigation item when disabled.
- * @cssproperty --mdc-navitem-disabled-color - Text color of the navigation item when disabled.
- * @cssproperty --mdc-navitem-active-background-color - Background color of the navigation item when active.
+ * @cssproperty --mdc-navitem-color - Text color of the navitem in its normal state.
+ * @cssproperty --mdc-navitem-border-color - Border color of the navitem in its normal state.
+ * @cssproperty --mdc-navitem-disabled-color - Text color of the navitem when disabled.
  * @cssproperty --mdc-navitem-expanded-width - Width of the navItem when expanded.
+ * @cssproperty --mdc-navitem-hover-background-color - Background color of the navitem when hovered.
+ * @cssproperty --mdc-navitem-hover-active-background-color - Background color of the active navitem when hovered.
+ * @cssproperty --mdc-navitem-pressed-background-color - Background color of the navitem when pressed.
+ * @cssproperty --mdc-navitem-pressed-active-background-color - Background color of the active navitem when pressed.
+ * @cssproperty --mdc-navitem-disabled-background-color - Background color of the navitem when disabled.
+ * @cssproperty --mdc-navitem-disabled-active-background-color - Background color of the active navitem when disabled.
+ * @cssproperty --mdc-navitem-rest-active-background-color - Background color of the active nav item in its rest state.
  */
 class NavItem extends IconNameMixin(MenuItem) {
   /**
@@ -88,6 +90,8 @@ class NavItem extends IconNameMixin(MenuItem) {
 
   /**
    * Determines whether the navItem is expanded or not.
+   *
+   * @internal
    */
   @property({ type: Boolean, reflect: true })
   isExpanded?: boolean;
@@ -105,8 +109,8 @@ class NavItem extends IconNameMixin(MenuItem) {
   override connectedCallback(): void {
     super.connectedCallback();
     this.variant = undefined as unknown as ListItemVariants;
-    this.addEventListener('click', this.executeAction);
-    this.addEventListener('keydown', this.executeAction);
+    this.addEventListener('click', this.handleClickEvent);
+    this.addEventListener('keydown', this.handleKeyDown);
 
     if (!this.navId && this.onerror) {
       this.onerror('[mdc-navitem] navId is required and was not provided.');
@@ -115,16 +119,22 @@ class NavItem extends IconNameMixin(MenuItem) {
 
   public override disconnectedCallback(): void {
     super.disconnectedCallback();
-    this.removeEventListener('click', this.executeAction);
-    this.removeEventListener('keydown', this.executeAction);
+    this.removeEventListener('click', this.handleClickEvent);
+    this.removeEventListener('keydown', this.handleKeyDown);
   }
 
   protected override updated(): void {
     const context = this.sideNavigationContext?.value;
     if (!context) return;
+
     const { isExpanded } = context;
-    if (this.isExpanded !== isExpanded) {
-      this.isExpanded = isExpanded;
+    this.isExpanded = isExpanded;
+
+    if (!this.isExpanded) {
+      this.ariaLabel = this.label || '';
+      this.setAttribute('aria-label', this.ariaLabel);
+    } else {
+      this.removeAttribute('aria-label');
     }
   }
 
@@ -182,9 +192,17 @@ class NavItem extends IconNameMixin(MenuItem) {
     this.modifyIconName(active);
   }
 
-  protected executeAction(e: MouseEvent | KeyboardEvent):void {
+  private handleClickEvent(): void {
     if (this.disabled) return;
-    if (e.type === 'click' || (e instanceof KeyboardEvent && (e.key === 'Enter' || e.key === ' '))) {
+    this.emitNavItemActiveChange(this.active as boolean);
+  }
+
+  private handleKeyDown(e: KeyboardEvent): void {
+    if (this.disabled) return;
+
+    const isActionKey = e.key === KEYS.ENTER || e.key === KEYS.SPACE;
+    if (isActionKey) {
+      e.preventDefault(); // prevent scrolling on space, or double activation
       this.emitNavItemActiveChange(this.active as boolean);
     }
   }
@@ -196,18 +214,18 @@ class NavItem extends IconNameMixin(MenuItem) {
     }
   }
 
-  renderTextLabel() {
+  private renderTextLabel(label: string | undefined) {
     return html`
       <mdc-text
         type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}
         tagname=${VALID_TEXT_TAGS.SPAN}
         part="text-container">
-        <slot></slot>
+        ${label}
       </mdc-text>
     `;
   }
 
-  renderBadge(isExpanded: boolean | undefined) {
+  private renderBadge(isExpanded: boolean | undefined) {
     const badgeClass = isExpanded ? '' : 'badge';
     const isValidBadgeType = Object.values(ALLOWED_BADGE_TYPES).includes(this.badgeType as BadgeType);
     if (!isValidBadgeType) {
@@ -235,7 +253,7 @@ class NavItem extends IconNameMixin(MenuItem) {
         ></mdc-icon>
         ${!this.isExpanded ? this.renderBadge(this.isExpanded) : nothing}
       </div>
-      ${this.isExpanded ? html`${this.renderTextLabel()}${this.renderBadge(this.isExpanded)}` : nothing}
+      ${this.isExpanded ? html`${this.renderTextLabel(this.label)}${this.renderBadge(this.isExpanded)}` : nothing}
     `;
   }
 

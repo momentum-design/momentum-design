@@ -25,6 +25,8 @@ class NavItemList extends List {
 
   /**
    * Determines whether the navItemList is expanded or not.
+   *
+   * @internal
    */
   @property({ type: Boolean, reflect: true })
   isExpanded?: boolean;
@@ -49,10 +51,9 @@ class NavItemList extends List {
   protected override updated(): void {
     const context = this.sideNavigationContext?.value;
     if (!context) return;
+
     const { isExpanded } = context;
-    if (this.isExpanded !== isExpanded) {
-      this.isExpanded = isExpanded;
-    }
+    this.isExpanded = isExpanded;
   }
 
   /**

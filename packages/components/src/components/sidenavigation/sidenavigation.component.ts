@@ -8,6 +8,7 @@ import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { Directions } from '../divider/divider.types';
 import { DIRECTIONS, DIVIDER_VARIANT, DIVIDER_ORIENTATION } from '../divider/divider.constants';
 import type { SideNavigationVariant } from './sidenavigation.types';
+import { ROLE } from '../../utils/roles';
 
 /**
  * The `mdc-sidenavigation` component provides a vertically stacked navigation experience,
@@ -28,9 +29,9 @@ import type { SideNavigationVariant } from './sidenavigation.types';
  * - To ensure accessibility, it is strongly recommended to provide `aria-label` attributes for
  * both `NavItem` and `NavItemList` components.
  *
- *
  * @dependency mdc-text
  * @dependency mdc-button
+ * @dependency mdc-divider
  *
  * @event click - (React: onClick) Dispatched when the grabber divider button is clicked.
  * @event focus - (React: onFocus) Dispatched when the grabber divider button receives focus.
@@ -44,7 +45,7 @@ import type { SideNavigationVariant } from './sidenavigation.types';
  * @slot brand-logo - Slot for the brand logo (e.g., icon or img).
  *
  * @cssproperty --mdc-sidenavigation-expanded-width - width of the sideNavigation when expanded
- * @cssproperty --mdc-sidenavigation-collapsed-width - width of the sideNavigation collpased
+ * @cssproperty --mdc-sidenavigation-collapsed-width - width of the sideNavigation when collpased
  */
 class SideNavigation extends Provider<SideNavigationContext> {
   constructor() {
@@ -52,7 +53,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
       context: SideNavigationContext.context,
       initialValue: new SideNavigationContext(DEFAULTS.VARIANT, '', true),
     });
-    this.role = DEFAULTS.ROLE;
+    this.role = ROLE.NAVIGATION;
   }
 
   public static get Context() {
@@ -71,7 +72,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
   variant: SideNavigationVariant = DEFAULTS.VARIANT;
 
   /**
-   * Name of the brandlogo
+   * Name of the customer
    * @default ''
    */
   @property({ type: String, reflect: true, attribute: 'customer-name' })
@@ -79,6 +80,8 @@ class SideNavigation extends Provider<SideNavigationContext> {
 
   /**
   * Determines whether the sideNavigation is expanded or not.
+  *
+  * @internal
   */
   @property({ type: Boolean, reflect: true })
   isExpanded?: boolean;
@@ -86,6 +89,8 @@ class SideNavigation extends Provider<SideNavigationContext> {
   /**
   * Toggles between true and false when it's variant is flexible.
   * @default true
+  *
+  * @internal
   */
   @state()
   private flexibleExpanded = this.variant === DEFAULTS.VARIANT;
@@ -97,6 +102,8 @@ class SideNavigation extends Provider<SideNavigationContext> {
    *
    * Note: Positive and Negative directions are defined based on Cartesian plane.
    * @default 'negative'
+   *
+   * @internal
    */
   @state()
   private arrowDirection: Directions = this.flexibleExpanded ? DIRECTIONS.NEGATIVE : DIRECTIONS.POSITIVE;

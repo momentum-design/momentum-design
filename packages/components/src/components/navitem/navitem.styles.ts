@@ -4,13 +4,18 @@ import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 const styles = [hostFitContentStyles, css`
   :host {
     --mdc-navitem-color: var(--mds-color-theme-text-primary-normal);
-    --mdc-navitem-border-color: var(--mds-color-theme-outline-button-normal);
-    --mdc-navitem-hover-background-color: var(--mds-color-theme-button-secondary-hover);
-    --mdc-navitem-pressed-background-color: var(--mds-color-theme-button-secondary-pressed);
-    --mdc-navitem-disabled-background-color: var(--mds-color-theme-button-secondary-disabled);
     --mdc-navitem-disabled-color: var(--mds-color-theme-text-primary-disabled);
-    --mdc-navitem-active-background-color: var(--mds-color-theme-button-secondary-active-normal);
+    --mdc-navitem-border-color: var(--mds-color-theme-outline-button-normal);
     --mdc-navitem-expanded-width: 12.75rem;
+
+    /* Background color when in default (normal) or active state */
+    --mdc-navitem-rest-active-background-color: var(--mds-color-theme-button-secondary-active-normal);
+    --mdc-navitem-hover-background-color: var(--mds-color-theme-button-secondary-hover);
+    --mdc-navitem-hover-active-background-color: var(--mds-color-theme-button-secondary-active-hover);
+    --mdc-navitem-pressed-background-color: var(--mds-color-theme-button-secondary-pressed);
+    --mdc-navitem-pressed-active-background-color: var(--mds-color-theme-button-secondary-active-pressed);
+    --mdc-navitem-disabled-background-color: var(--mds-color-theme-button-secondary-disabled);
+    --mdc-navitem-disabled-active-background-color: var(--mds-color-theme-button-secondary-active-disabled);
  
     position: relative;
     display: flex;
@@ -31,30 +36,39 @@ const styles = [hostFitContentStyles, css`
     margin-right: 1rem;
   }
 
-  :host([disabled]) {
-    pointer-events: none;
-  }
-
   :host([isExpanded]) {
     width: var(--mdc-navitem-expanded-width);
   }
+
+  :host([active]) {
+    background-color: var(--mdc-navitem-rest-active-background-color);
+  }
   
-  :host(:hover), 
-  :host(:hover[active]) {
+  :host([disabled]) {
+    color: var(--mdc-navitem-disabled-color);
+    background-color: var(--mdc-navitem-disabled-background-color);
+    pointer-events: none;
+  }
+
+  :host([active][disabled]) {
+    background-color: var(--mdc-navitem-disabled-active-background-color);
+    color: var(--mdc-navitem-disabled-color);
+  }
+  
+  :host(:hover) {
     background-color: var(--mdc-navitem-hover-background-color);
+  }
+
+  :host(:hover[active]) {
+    background-color: var(--mdc-navitem-hover-active-background-color);
   }
 
   :host(:active) {
     background-color: var(--mdc-navitem-pressed-background-color);
   }
 
-  :host([active]) {
-    background-color: var(--mdc-navitem-active-background-color);
-  }
-  
-  :host([disabled]) {
-    color: var(--mdc-navitem-disabled-color);
-    background-color: var(--mdc-navitem-disabled-background-color);
+  :host(:active[active]) {
+    background-color: var(--mdc-navitem-pressed-active-background-color);
   }
 
   :host::before {

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { ALLOWED_BADGE_TYPES, DEFAULTS } from './navitem.constants';
@@ -16,16 +17,15 @@ const render = (args: Args) => html`
       @activechange="${action('onactivechange')}"
       nav-id="${args['nav-id']}"
       icon-name="${args['icon-name']}"
+      label=${ifDefined(args.isExpanded ? args.label : undefined)}
       ?disabled=${args.disabled}
       badge-type="${args['badge-type']}"
       counter=${args.counter}
       max-counter="${args['max-counter']}"
       ?active=${args.active}
       ?isExpanded=${args.isExpanded}
-      aria-label="${args['aria-label']}"
-    >
-      ${args.children}
-    </mdc-navitem>
+      aria-label=${ifDefined(!args.isExpanded ? args['aria-label'] : undefined)}
+    ></mdc-navitem>
   </div>
 `;
 
@@ -54,6 +54,10 @@ const meta: Meta = {
     'max-counter': {
       control: { type: 'number', min: 9, max: 999 },
     },
+    label: {
+      control: 'text',
+      description: 'Label text displayed for the nav item.',
+    },
     disabled: {
       control: 'boolean',
     },
@@ -62,17 +66,20 @@ const meta: Meta = {
     },
     isExpanded: {
       control: 'boolean',
+      description: 'Determines whether the navItem is expanded',
     },
     ...disableControls([
-      'default',
       '--mdc-navitem-color',
       '--mdc-navitem-border-color',
-      '--mdc-navitem-hover-background-color',
-      '--mdc-navitem-pressed-background-color',
-      '--mdc-navitem-disabled-background-color',
       '--mdc-navitem-disabled-color',
-      '--mdc-navitem-active-background-color',
       '--mdc-navitem-expanded-width',
+      '--mdc-navitem-hover-background-color',
+      '--mdc-navitem-hover-active-background-color',
+      '--mdc-navitem-pressed-background-color',
+      '--mdc-navitem-pressed-active-background-color',
+      '--mdc-navitem-disabled-background-color',
+      '--mdc-navitem-disabled-active-background-color',
+      '--mdc-navitem-rest-active-background-color',
     ]),
     ...hideControls([
       '--mdc-listitem-default-background-color',
@@ -82,6 +89,7 @@ const meta: Meta = {
       '--mdc-listitem-secondary-label-color',
       '--mdc-listitem-disabled-color',
       '--mdc-listitem-column-gap',
+      '--mdc-listitem-padding-left-and-right',
       'leading-controls',
       'leading-text-primary-label',
       'leading-text-secondary-label',
@@ -93,7 +101,6 @@ const meta: Meta = {
       'side-header-text',
       'tertiary-label',
       'secondary-label',
-      'label',
       'variant',
     ]),
     ...classArgType,
@@ -113,7 +120,7 @@ export const Example: StoryObj = {
     disabled: false,
     active: false,
     isExpanded: true,
-    children: 'Dashboard',
+    label: 'Dashboard',
   },
 };
 

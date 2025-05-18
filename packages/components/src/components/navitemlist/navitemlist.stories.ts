@@ -15,17 +15,17 @@ const render = (args: Args) => html`
       max-counter="66"
       aria-label=${ifDefined(!args.isExpanded ? 'Dashboard' : undefined)}
       ?isExpanded=${args.isExpanded}
+      label=${ifDefined(args.isExpanded ? 'Dashboard' : undefined)}
     >
-      Dashboard
     </mdc-navitem>
     <mdc-navitem
       nav-id="2"
       icon-name="placeholder-bold"
       aria-label=${ifDefined(!args.isExpanded ? 'Settings' : undefined)}
       ?isExpanded=${args.isExpanded}
+      label=${ifDefined(args.isExpanded ? 'Settings' : undefined)}
       disabled
     >
-      Settings
     </mdc-navitem>
     <mdc-navitem
       nav-id="3"
@@ -33,8 +33,8 @@ const render = (args: Args) => html`
       badge-type="dot"
       aria-label=${ifDefined(!args.isExpanded ? 'Settings' : undefined)}
       ?isExpanded=${args.isExpanded}
+      label=${ifDefined(args.isExpanded ? 'Settings' : undefined)}
     >
-      Settings
     </mdc-navitem>
   </mdc-navitemlist>
 `;
@@ -50,7 +50,7 @@ const meta: Meta = {
   argTypes: {
     isExpanded: {
       control: 'boolean',
-      description: 'Determines whether the navItem is expanded',
+      description: 'Determines whether the navItemList is expanded',
     },
     ...disableControls([
       'default',
