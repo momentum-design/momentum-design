@@ -66,7 +66,6 @@ const meta: Meta = {
     },
     isExpanded: {
       control: 'boolean',
-      description: 'Determines whether the navItem is expanded',
     },
     ...disableControls([
       '--mdc-navitem-color',

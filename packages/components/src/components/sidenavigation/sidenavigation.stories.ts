@@ -10,7 +10,8 @@ import '../navitem';
 
 const render = (args: Args) => html`
   <div style="height: 90vh; margin: 1rem">
-    <mdc-sidenavigation variant="${args.variant}" customer-name=${args['customer-name']}
+    <mdc-sidenavigation variant="${args.variant}" customer-name=${args['customer-name']} 
+        grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
         @click="${action('onclick')}"
         @keydown="${action('onkeydown')}"
         @keyup="${action('onkeyup')}"
@@ -125,6 +126,9 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(VARIANTS),
     },
+    'grabber-btn-aria-label': {
+      control: 'text',
+    },
     ...disableControls([
       'scrollable-section',
       'fixed-section',
@@ -147,5 +151,6 @@ export const Example: StoryObj = {
   args: {
     variant: DEFAULTS.VARIANT,
     'customer-name': '%Customer Name%',
+    'grabber-btn-aria-label': 'Toggle Side navigation',
   },
 };

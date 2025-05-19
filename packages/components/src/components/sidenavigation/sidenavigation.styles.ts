@@ -17,10 +17,6 @@ const styles = css`
   width: var(--mdc-sidenavigation-collapsed-width);
 }
 
-:host([variant="hidden"]) {
-  display: none;
-}
-
 :host::part(side-navigation-container) {
   display: flex;
   flex-direction: column;

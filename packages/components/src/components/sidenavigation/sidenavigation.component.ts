@@ -72,19 +72,28 @@ class SideNavigation extends Provider<SideNavigationContext> {
   variant: SideNavigationVariant = DEFAULTS.VARIANT;
 
   /**
-   * Name of the customer
+   * Name of the customer. This is displayed in the bottom section of the side-navigation component.
    * @default ''
    */
   @property({ type: String, reflect: true, attribute: 'customer-name' })
   customerName: string = '';
 
   /**
-  * Determines whether the sideNavigation is expanded or not.
-  *
-  * @internal
-  */
+   * Determines whether the sideNavigation is expanded or not.
+   *
+   * @internal
+   */
   @property({ type: Boolean, reflect: true })
   isExpanded?: boolean;
+
+  /**
+   * Provides an accessible label for the grabber button.
+   * This value is used to set the `aria-label` attribute for the button.
+   *
+   * @default null
+   */
+  @property({ type: String, reflect: true, attribute: 'grabber-btn-aria-label' })
+  grabberBtnAriaLabel: string | null = null;
 
   /**
   * Toggles between true and false when it's variant is flexible.
@@ -146,13 +155,21 @@ class SideNavigation extends Provider<SideNavigationContext> {
    * @internal
    */
   private updateExpansionState = (): void => {
-    if (this.variant === VARIANTS.FLEXIBLE) {
-      this.isExpanded = this.flexibleExpanded;
-      this.setAttribute('aria-expanded', String(this.flexibleExpanded));
-    } else {
-      this.isExpanded = this.variant === VARIANTS.FIXED_EXPANDED;
-      this.removeAttribute('aria-expanded');
+    switch (this.variant) {
+      case VARIANTS.FLEXIBLE:
+        this.isExpanded = this.flexibleExpanded;
+        break;
+      case VARIANTS.FIXED_EXPANDED:
+        this.isExpanded = true;
+        break;
+      case VARIANTS.FIXED_COLLAPSED:
+        this.isExpanded = false;
+        break;
+      default:
+        return;
     }
+
+    this.setAttribute('aria-expanded', String(this.isExpanded));
   };
 
   /**
@@ -181,6 +198,9 @@ class SideNavigation extends Provider<SideNavigationContext> {
   }
 
   public override render() {
+    if (this.variant === VARIANTS.HIDDEN) {
+      return html``;
+    }
     return html`
         <div part="side-navigation-container">
           <div part="scrollable-section">
@@ -200,7 +220,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
             variant=${DIVIDER_VARIANT.GRADIENT}
             arrow-direction=${this.arrowDirection}
             button-position=${DIRECTIONS.POSITIVE}
-          > <mdc-button aria-label="Toggle Side Navigation" @click=${this.toggleSideNavigation}></mdc-button>
+          > <mdc-button aria-label=${this.grabberBtnAriaLabel} @click=${this.toggleSideNavigation}></mdc-button>
         </mdc-divider>` : nothing}
   `;
   }
