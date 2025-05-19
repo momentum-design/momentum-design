@@ -122,7 +122,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull image
         run: docker pull ghcr.io/momentum-design/momentum-design/docker-playwright:v1.52.0
