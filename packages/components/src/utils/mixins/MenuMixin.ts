@@ -18,19 +18,20 @@ interface IParentMenuItem {
 export declare class MenuMixinInterface {
   ariaOrientation: Orientation;
 
-  public handleKeyDown(event: KeyboardEvent): void;
+  protected handleKeyDown(event: KeyboardEvent): void;
 
-  public resetTabIndexAndSetActiveTabIndex(newIndex: number): void;
+  protected resetTabIndexAndSetActiveTabIndex(newIndex: number): void;
 
-  public setTabIndexOnMouseClick(event: MouseEvent): void;
+  protected setTabIndexOnMouseClick(event: MouseEvent): void;
 
-  public updatePopoverPlacementBasedOnOrientation(): void;
+  protected updatePopoverPlacementBasedOnOrientation(): void;
 }
 
 export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
   class InnerMixinClass extends superClass {
     /**
-     * Aria Orientation
+     * Defines the orientation of the menu. This value is reflected to
+     * the `aria-orientation` attribute and can be either `'horizontal'` or `'vertical'`.
      * @default 'horizontal'
      */
     @property({ type: String, reflect: true, attribute: 'aria-orientation' })
@@ -63,7 +64,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     /**
      * Updates the placement of the popover based on the aria-orientation property.
      */
-    public updatePopoverPlacementBasedOnOrientation(): void {
+    protected updatePopoverPlacementBasedOnOrientation(): void {
       if (this.ariaOrientation === ORIENTATION.HORIZONTAL) {
         this.menuPopoverItems.forEach((node) => {
           node.setAttribute('placement', POPOVER_PLACEMENT.BOTTOM_START);
@@ -76,15 +77,16 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     }
 
     /**
-     * Resets the tabindex of the current index to -1 and sets the tabindex of the new index to 0,
+     * Updates the tabindex of the current index to -1 and the tabindex of the new index to 0,
      * effectively setting the active element. This is used when navigating the menu via keyboard.
      * @param menuItems - The list of menu items.
      * @param currentIndex - The current index of the focused menu item.
      * @param newIndex - The index of the new active element in the list.
      */
     private updateTabIndexAndFocusNewIndex(menuItems: Array<HTMLElement>, currentIndex: number, newIndex: number) {
-      menuItems[currentIndex].setAttribute('tabindex', '-1');
-      menuItems[newIndex].setAttribute('tabindex', '0');
+      if (currentIndex === newIndex || newIndex < 0 || currentIndex < 0) return;
+      menuItems[currentIndex]?.setAttribute('tabindex', '-1');
+      menuItems[newIndex]?.setAttribute('tabindex', '0');
       menuItems[newIndex]?.focus();
     }
 
@@ -105,7 +107,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      * @returns True if the popover was opened, false if not.
      */
     private openPopover(index: number): boolean {
-      if (this.menuItems[index].nextElementSibling?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME) {
+      if (this.menuItems[index]?.nextElementSibling?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME) {
         const currentMenuId = this.menuItems[index].getAttribute('id');
         const result = this.menuPopoverItems.findIndex((node) => node.getAttribute('triggerid') === currentMenuId);
         if (result !== -1) {
@@ -191,11 +193,11 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
       const parentMenuItemIndex = parentMenuItemsChildren.findIndex((node) => node === parentMenuItem);
       const newIndex = key === KEYS.ARROW_LEFT ? parentMenuItemIndex - 1 : parentMenuItemIndex;
       this.updateTabIndexAndFocusNewIndex(
-        parentMenuItemsChildren as HTMLElement[],
+        parentMenuItemsChildren as Array<HTMLElement>,
         parentMenuItemIndex,
         newIndex,
       );
-      parentMenuItemsChildren[parentMenuItemIndex - 1].nextElementSibling?.toggleAttribute('visible');
+      parentMenuItemsChildren[parentMenuItemIndex - 1]?.nextElementSibling?.toggleAttribute('visible');
     }
 
     /**
@@ -221,7 +223,6 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
       }
       // - If there are no popovers to the right, then we will close all popovers recursively,
       // and go the next menu item from the menu bar
-      // - close all popovers recursively.
       this.hideAllPopovers(this.menuItems[currentIndex]);
       // - get the top parent menu items using recursion.
       const parentMenuItemDetails = this.getParentMenuItemDetails('', this.menuItems[currentIndex]);
@@ -232,11 +233,11 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         (node) => node.getAttribute('id') === parentMenuItemDetails?.menuChildId,
       );
       this.updateTabIndexAndFocusNewIndex(
-        parentMenuItemsChildren as HTMLElement[],
+        parentMenuItemsChildren as Array<HTMLElement>,
         parentMenuItemIndex,
         parentMenuItemIndex + 1,
       );
-      parentMenuItemsChildren[parentMenuItemIndex + 1].nextElementSibling?.toggleAttribute('visible');
+      parentMenuItemsChildren[parentMenuItemIndex + 1]?.nextElementSibling?.toggleAttribute('visible');
     }
 
     /**
@@ -246,7 +247,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      * element. This is used when clicking on the menu items.
      * @param event - The mouse click event.
      */
-    public setTabIndexOnMouseClick(event: MouseEvent): void {
+    protected setTabIndexOnMouseClick(event: MouseEvent): void {
       const newIndex = this.getCurrentIndex(event.target);
       this.resetTabIndexAndSetActiveTabIndex(newIndex);
       this.menuItems[newIndex]?.focus();
@@ -259,7 +260,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      *
      * @param newIndex - The index of the new active element in the list.
      */
-    public resetTabIndexAndSetActiveTabIndex(newIndex: number) {
+    protected resetTabIndexAndSetActiveTabIndex(newIndex: number) {
       this.menuItems.forEach((node, index) => {
         const newTabindex = newIndex === index ? '0' : '-1';
         node?.setAttribute('tabindex', newTabindex);
@@ -296,13 +297,11 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      *   - If the current menuitem is a child of menubar, then we will set the state of isMenuPopoverOpen to false.,
      * @param event - The keyboard event.
      */
-    public handleKeyDown(event: KeyboardEvent): void {
+    protected handleKeyDown(event: KeyboardEvent): void {
       const firstMenuIndex = 0;
       const lastMenuIndex = this.menuItems.length - 1;
       const currentIndex = this.getCurrentIndex(event.target);
-      if (currentIndex === -1) {
-        return;
-      }
+      if (currentIndex === -1) return;
       switch (event.key) {
         case KEYS.HOME:
           this.updateTabIndexAndFocusNewIndex(this.menuItems, currentIndex, firstMenuIndex);
@@ -353,6 +352,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
           if (this.menuItems[currentIndex]?.nextElementSibling?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME) {
             this.openPopoverAndNavigateToNextChildrenMenuItem(currentIndex);
           } else if ((event.target as HTMLElement).tagName?.toLowerCase() === MENUITEM_TAGNAME) {
+            // this.isMenuPopoverOpen = false;
             this.hideAllPopovers(this.menuItems[currentIndex]);
           }
           break;

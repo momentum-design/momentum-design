@@ -2,6 +2,7 @@ import { CSSResult } from 'lit';
 import { queryAssignedElements } from 'lit/decorators.js';
 import { ROLE } from '../../utils/roles';
 import List from '../list/list.component';
+import { TAG_NAME as MENUITEM_TAGNAME } from '../menuitem/menuitem.constants';
 
 /**
  * mdc-menu component is used to display a group of menu items. It is used as a container to wrap menu items.
@@ -13,7 +14,7 @@ import List from '../list/list.component';
  */
 class Menu extends List {
   /** @internal */
-  @queryAssignedElements({ selector: 'mdc-menuitem' })
+  @queryAssignedElements({ selector: `${MENUITEM_TAGNAME}:not([disabled])` })
   override listItems!: Array<HTMLElement>;
 
   override connectedCallback(): void {
