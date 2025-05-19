@@ -69,9 +69,8 @@ export const VerticalGroup: StoryObj = {
     size: BUTTON_GROUP_SIZE[28],
     compact: false,
     children: html`
-      <mdc-button prefix-icon="placeholder-bold"></mdc-button>
-      <mdc-button prefix-icon="placeholder-bold"></mdc-button>
-      <mdc-button prefix-icon="placeholder-bold"></mdc-button>
+      <mdc-button prefix-icon="arrow-up-bold"></mdc-button>
+      <mdc-button prefix-icon="arrow-down-bold"></mdc-button>
     `,
   },
 };
