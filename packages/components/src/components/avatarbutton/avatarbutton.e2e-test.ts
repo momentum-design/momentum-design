@@ -2,6 +2,8 @@
 /* eslint-disable no-await-in-loop */
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
+import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { TYPE as PRESENCE_TYPE } from '../presence/presence.constants';
 import { AVATAR_SIZE, DEFAULTS } from '../avatar/avatar.constants';
 import { AvatarSize } from '../avatar/avatar.types';
 import { IconNames } from '../icon/icon.types';
@@ -45,15 +47,10 @@ const setup = async (args: SetupOptions) => {
   return firstButton;
 };
 
+test.use({ viewport: { width: 600, height: 800 } });
 test('mdc-avatarbutton', async ({ componentsPage }) => {
   const avatarButton = await setup({ componentsPage });
 
-  /**
-   * ACCESSIBILITY
-   */
-  await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('avatarbutton-default');
-  });
   /**
    * ATTRIBUTES
    */
@@ -160,5 +157,67 @@ test('mdc-avatarbutton', async ({ componentsPage }) => {
       await expect(avatarbutton).not.toHaveClass('btn-listener btn-onclick');
       await componentsPage.page.keyboard.up('Enter');
     });
+  });
+
+  await test.step('visual-regression', async () => {
+    const avatarButtonStickerSheet = new StickerSheet(componentsPage, 'mdc-avatarbutton');
+    const src = 'https://picsum.photos/id/63/256';
+
+    await test.step('should add initials based avatar on sticker sheet', async () => {
+      avatarButtonStickerSheet.setAttributes({ 'aria-label': 'avatar button', initials: 'XS' });
+      await avatarButtonStickerSheet.createMarkupWithCombination({
+        size: AVATAR_SIZE,
+      });
+    });
+
+    await test.step('should add counter based avatar on sticker sheet', async () => {
+      avatarButtonStickerSheet.setAttributes({ 'aria-label': 'avatar button', counter: 100 });
+      await avatarButtonStickerSheet.createMarkupWithCombination({
+        size: AVATAR_SIZE,
+      });
+    });
+
+    await test.step('should add icon name based avatar on sticker sheet', async () => {
+      const iconName = 'placeholder-regular';
+      avatarButtonStickerSheet.setAttributes({ 'aria-label': 'avatar button', 'icon-name': iconName });
+      await avatarButtonStickerSheet.createMarkupWithCombination({
+        size: AVATAR_SIZE,
+      });
+    });
+
+    await test.step('should add image based avatar on sticker sheet', async () => {
+      avatarButtonStickerSheet.setAttributes({ 'aria-label': 'avatar button', src });
+      await avatarButtonStickerSheet.createMarkupWithCombination({
+        size: AVATAR_SIZE,
+      });
+    });
+
+    await test.step('should add presence based avatar on sticker sheet', async () => {
+      const presenceType = PRESENCE_TYPE.ACTIVE;
+      avatarButtonStickerSheet.setAttributes({ 'aria-label': 'avatar button', presence: presenceType });
+      await avatarButtonStickerSheet.createMarkupWithCombination({
+        size: AVATAR_SIZE,
+      });
+    });
+    await avatarButtonStickerSheet.mountStickerSheet();
+    const container = avatarButtonStickerSheet.getWrapperContainer();
+    const avatars = await container.locator('mdc-avatar[src]').all();
+    for (const avatarComp of avatars) {
+      const image = avatarComp.locator('img');
+      await image.waitFor();
+      await expect(avatarComp).toHaveAttribute('src', src);
+      await expect(image).toHaveAttribute('src', src);
+    }
+
+    await test.step('matches screenshot of element', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-avatarbutton', { element: container });
+    });
+  });
+
+  /**
+   * ACCESSIBILITY
+   */
+  await test.step('accessibility', async () => {
+    await componentsPage.accessibility.checkForA11yViolations('avatarbutton-default');
   });
 });
