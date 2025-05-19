@@ -84,7 +84,13 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      * @param newIndex - The index of the new active element in the list.
      */
     private updateTabIndexAndFocusNewIndex(menuItems: Array<HTMLElement>, currentIndex: number, newIndex: number) {
-      if (currentIndex === newIndex || newIndex < 0 || currentIndex < 0) return;
+      if (newIndex < 0 || currentIndex < 0) {
+        return;
+      }
+      if (currentIndex === newIndex) {
+        menuItems[currentIndex]?.focus();
+        return;
+      }
       menuItems[currentIndex]?.setAttribute('tabindex', '-1');
       menuItems[newIndex]?.setAttribute('tabindex', '0');
       menuItems[newIndex]?.focus();
@@ -191,7 +197,10 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         (node) => node.tagName?.toLowerCase() === MENUITEM_TAGNAME,
       );
       const parentMenuItemIndex = parentMenuItemsChildren.findIndex((node) => node === parentMenuItem);
-      const newIndex = key === KEYS.ARROW_LEFT ? parentMenuItemIndex - 1 : parentMenuItemIndex;
+      let newIndex = parentMenuItemIndex;
+      if (key === KEYS.ARROW_LEFT && this.isValidMenu(this.parentElement?.tagName)) {
+        newIndex = parentMenuItemIndex - 1;
+      }
       this.updateTabIndexAndFocusNewIndex(
         parentMenuItemsChildren as Array<HTMLElement>,
         parentMenuItemIndex,
