@@ -79,16 +79,16 @@ export const VerticalGroup: StoryObj = {
 
 export const CompactGroup: StoryObj = {
   args: {
-    variant: BUTTON_VARIANTS.PRIMARY,
+    variant: BUTTON_VARIANTS.SECONDARY,
     orientation: BUTTON_GROUP_ORIENTATION.HORIZONTAL,
-    size: BUTTON_GROUP_SIZE[28],
+    size: BUTTON_GROUP_SIZE[32],
     compact: true,
     children: html`
-      <mdc-button prefix-icon="placeholder-bold"></mdc-button>
-      <mdc-button prefix-icon="placeholder-bold"></mdc-button>
-      <mdc-button prefix-icon="placeholder-bold"></mdc-button>
-      <mdc-button prefix-icon="placeholder-bold"></mdc-button>
-      <mdc-button prefix-icon="placeholder-bold"></mdc-button>
+      <mdc-button prefix-icon="reply-bold"></mdc-button>
+      <mdc-button prefix-icon="reactions-bold"></mdc-button>
+      <mdc-button prefix-icon="alert-active-bold"></mdc-button>
+      <mdc-button prefix-icon="forward-message-bold"></mdc-button>
+      <mdc-button prefix-icon="more-bold"></mdc-button>
     `,
   },
 };
@@ -100,8 +100,8 @@ export const SpiltPillButton: StoryObj = {
     size: BUTTON_GROUP_SIZE[28],
     compact: false,
     children: html`
-      <mdc-button prefix-icon="microphone-muted">Unmute</mdc-button>
-      <mdc-button prefix-icon="arrow-down"></mdc-button>
+      <mdc-button prefix-icon="microphone-muted-bold">Unmute</mdc-button>
+      <mdc-button prefix-icon="arrow-down-bold"></mdc-button>
     `,
   },
 };
@@ -113,8 +113,8 @@ export const SpiltIconButton: StoryObj = {
     size: BUTTON_GROUP_SIZE[28],
     compact: false,
     children: html`
-      <mdc-button prefix-icon="camera-on"></mdc-button>
-      <mdc-button prefix-icon="arrow-down"></mdc-button>
+      <mdc-button prefix-icon="camera-on-bold"></mdc-button>
+      <mdc-button prefix-icon="arrow-down-bold"></mdc-button>
     `,
   },
 };

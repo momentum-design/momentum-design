@@ -56,19 +56,19 @@ const styles = css`
   border-bottom-left-radius: var(--mdc-buttongroup-border-radius);
 }
 
-:host([compact]) ::slotted(mdc-button){
+:host([compact][orientation="horizontal"]) ::slotted(mdc-button){
   height: 24px;
 }
-:host([compact][size="24"]) ::slotted(mdc-button){
+:host([compact][orientation="horizontal"][size="24"]) ::slotted(mdc-button){
   width: 24px;
 }
-:host([compact][size="28"]) ::slotted(mdc-button){
+:host([compact][orientation="horizontal"][size="28"]) ::slotted(mdc-button){
   width: 28px;
 }
-:host([compact][size="32"]) ::slotted(mdc-button){
+:host([compact][orientation="horizontal"][size="32"]) ::slotted(mdc-button){
   width: 32px;
 }
-:host([compact][size="40"]) ::slotted(mdc-button){
+:host([compact][orientation="horizontal"][size="40"]) ::slotted(mdc-button){
   width: 40px;
 }
 
