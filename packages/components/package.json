@@ -90,7 +90,7 @@
     "@floating-ui/dom": "^1.6.12",
     "@lit/context": "^1.1.2",
     "@lit/react": "^1.0.5",
-    "@momentum-design/animations": "^0.3.2",
+    "@momentum-design/animations": "workspace:*",
     "@momentum-design/brand-visuals": "workspace:*",
     "@momentum-design/fonts": "workspace:*",
     "@momentum-design/icons": "workspace:*",
