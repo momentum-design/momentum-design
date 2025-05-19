@@ -22,10 +22,13 @@ class Buttongroup extends Component {
   orientation: ButtonGroupOrientation = DEFAULTS.ORIENTATION;
 
   @property({ type: String, reflect: true })
-  public variant: ButtonVariant = DEFAULTS.VARIANT;
+  variant: ButtonVariant = DEFAULTS.VARIANT;
 
   @property({ type: Number, reflect: true })
-  public size: ButtonGroupSize = DEFAULTS.SIZE;
+  size: ButtonGroupSize = DEFAULTS.SIZE;
+
+  @property({ type: Boolean, reflect: true })
+  compact = false;
 
   @queryAssignedElements({ selector: 'mdc-button' })
   private buttons!: Array<HTMLButtonElement>;

@@ -17,8 +17,6 @@ const styles = css`
 ::slotted(mdc-button){
   border-radius: 0;
   border: none;
-  /* height: 24px;
-  aspect-ratio: unset; */
 }
 
 :host([variant='primary']){
@@ -56,6 +54,22 @@ const styles = css`
 :host([orientation="horizontal"]:dir(rtl)) ::slotted(mdc-button:last-child){
   border-top-left-radius: var(--mdc-buttongroup-border-radius);
   border-bottom-left-radius: var(--mdc-buttongroup-border-radius);
+}
+
+:host([compact]) ::slotted(mdc-button){
+  height: 24px;
+}
+:host([compact][size="24"]) ::slotted(mdc-button){
+  width: 24px;
+}
+:host([compact][size="28"]) ::slotted(mdc-button){
+  width: 28px;
+}
+:host([compact][size="32"]) ::slotted(mdc-button){
+  width: 32px;
+}
+:host([compact][size="40"]) ::slotted(mdc-button){
+  width: 40px;
 }
 
 `;
