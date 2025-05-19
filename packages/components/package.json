@@ -33,7 +33,7 @@
     "analyze:postbuild": "yarn analyze:syntax",
     "analyze:lint": "eslint \"./src/**\"",
     "analyze:syntax": "tsc --noEmit",
-    "dev": "concurrently --names 'manifest,storybook' -c 'blue.bold,magenta.bold' 'yarn:dev:manifest' 'yarn:dev:storybook'",
+    "dev": "concurrently --raw --names 'manifest,storybook' -c 'blue.bold,magenta.bold' 'yarn:dev:manifest' 'yarn:dev:storybook'",
     "dev:manifest": "custom-elements-manifest analyze --config config/custom-elements-manifest-watch.config.js",
     "dev:storybook": "yarn copy:storybook && storybook dev -p 6006 -c config/storybook",
     "build": "concurrently --names 'components,browser,storybook' -c 'blue.bold,magenta.bold,cyan.bold' 'yarn:build:components' 'yarn:build:browser' && yarn build:storybook",
