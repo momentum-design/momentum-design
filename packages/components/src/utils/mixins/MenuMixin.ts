@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
+import type { PropertyValues } from 'lit';
 import { LitElement } from 'lit';
-import { property, queryAssignedElements, state } from 'lit/decorators.js';
+import { property, queryAssignedElements } from 'lit/decorators.js';
 import { TAG_NAME as MENU_TAGNAME } from '../../components/menu/menu.constants';
 import { ORIENTATION, TAG_NAME as MENUBAR_TAGNAME } from '../../components/menubar/menubar.constants';
 import type { Orientation } from '../../components/menubar/menubar.types';
@@ -45,8 +46,27 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     @queryAssignedElements({ selector: `${MENUPOPOVER_TAGNAME}:not([disabled])` })
     menuPopoverItems!: Array<HTMLElement>;
 
-    /** @internal */
-    @state() private isMenuPopoverOpen = false;
+    public override firstUpdated(changedProperties: PropertyValues): void {
+      super.firstUpdated(changedProperties);
+      this.setMenuBarPopoverValue(false);
+    }
+
+    /**
+     * Sets the value of the data-menu-popover-open attribute on the menu element.
+     * @param value - The value to set.
+     */
+    private setMenuBarPopoverValue(value: boolean) {
+      const { menu } = this.getParentMenuItemDetails('', this);
+      menu?.setAttribute('data-menu-popover-open', value.toString());
+    }
+
+    /**
+     * Returns true if the data-menu-popover-open attribute on the menu element is set to 'true', false otherwise.
+     */
+    private isMenuPopoverOpen(): boolean {
+      const { menu } = this.getParentMenuItemDetails('', this);
+      return menu?.getAttribute('data-menu-popover-open') === 'true';
+    }
 
     /**
      * Returns the index of the given target in the menuItems array.
@@ -118,7 +138,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         const result = this.menuPopoverItems.findIndex((node) => node.getAttribute('triggerid') === currentMenuId);
         if (result !== -1) {
           this.menuPopoverItems[result].toggleAttribute('visible');
-          this.isMenuPopoverOpen = this.isValidMenu(this.tagName);
+          this.setMenuBarPopoverValue(true);
           return true;
         }
       }
@@ -131,12 +151,18 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      * @param currentIndex - The current index of the focused menu item.
      * @param firstMenuIndex - The index of the first menu item.
      * @param lastMenuIndex - The index of the last menu item.
+     * @param ariaOrientation - The orientation of the menu.
      */
-    private navigateToPrevMenuItem(currentIndex: number, firstMenuIndex: number, lastMenuIndex: number) {
+    private navigateToPrevMenuItem(
+      currentIndex: number,
+      firstMenuIndex: number,
+      lastMenuIndex: number,
+      ariaOrientation: Orientation,
+    ): void {
       const newIndex = currentIndex === firstMenuIndex ? lastMenuIndex : currentIndex - 1;
       this.updateTabIndexAndFocusNewIndex(this.menuItems, currentIndex, newIndex);
-      // - if the isMenuPopoverOpen is true, then we will open the popover.
-      if (this.isMenuPopoverOpen) {
+      // - if the isMenuPopoverOpen is true and orientation is horizontal, then we will open the popover.
+      if (this.isMenuPopoverOpen() && ariaOrientation === ORIENTATION.HORIZONTAL) {
         this.openPopover(newIndex);
       }
     }
@@ -147,12 +173,18 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      * @param currentIndex - The current index of the focused menu item.
      * @param firstMenuIndex - The index of the first menu item.
      * @param lastMenuIndex - The index of the last menu item.
+     * @param ariaOrientation - The orientation of the menu.
      */
-    private navigateToNextMenuItem(currentIndex: number, firstMenuIndex: number, lastMenuIndex: number): void {
+    private navigateToNextMenuItem(
+      currentIndex: number,
+      firstMenuIndex: number,
+      lastMenuIndex: number,
+      ariaOrientation: Orientation,
+    ): void {
       const newIndex = currentIndex === lastMenuIndex ? firstMenuIndex : currentIndex + 1;
       this.updateTabIndexAndFocusNewIndex(this.menuItems, currentIndex, newIndex);
       // - if the isMenuPopoverOpen is true, then we will close all popovers recursively,
-      if (this.isMenuPopoverOpen) {
+      if (this.isMenuPopoverOpen() && ariaOrientation === ORIENTATION.HORIZONTAL) {
         this.openPopover(newIndex);
       }
     }
@@ -206,7 +238,9 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         parentMenuItemIndex,
         newIndex,
       );
-      parentMenuItemsChildren[parentMenuItemIndex - 1]?.nextElementSibling?.toggleAttribute('visible');
+      if (key === KEYS.ARROW_LEFT) {
+        parentMenuItemsChildren[parentMenuItemIndex - 1]?.nextElementSibling?.toggleAttribute('visible');
+      }
     }
 
     /**
@@ -303,7 +337,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      *     navigates to the previous parent menu item.
      * - ESCAPE:
      *   - If a popover is already open then we close it and navigate to the parent menu item.
-     *   - If the current menuitem is a child of menubar, then we will set the state of isMenuPopoverOpen to false.,
+     *   - If the current menuitem is a child of menubar, then we will set the value of isMenuPopoverOpen to false.,
      * @param event - The keyboard event.
      */
     protected handleKeyDown(event: KeyboardEvent): void {
@@ -320,7 +354,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
           break;
         case KEYS.ARROW_LEFT: {
           if (this.ariaOrientation === ORIENTATION.HORIZONTAL) {
-            this.navigateToPrevMenuItem(currentIndex, firstMenuIndex, lastMenuIndex);
+            this.navigateToPrevMenuItem(currentIndex, firstMenuIndex, lastMenuIndex, this.ariaOrientation);
           }
           if (this.ariaOrientation === ORIENTATION.VERTICAL) {
             this.closePopoverAndNavigateToPrevParentMenuItem(currentIndex, event.key);
@@ -329,7 +363,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         }
         case KEYS.ARROW_RIGHT: {
           if (this.ariaOrientation === ORIENTATION.HORIZONTAL) {
-            this.navigateToNextMenuItem(currentIndex, firstMenuIndex, lastMenuIndex);
+            this.navigateToNextMenuItem(currentIndex, firstMenuIndex, lastMenuIndex, this.ariaOrientation);
           }
           if (this.ariaOrientation === ORIENTATION.VERTICAL) {
             this.openPopoverAndNavigateToNextChildrenMenuItem(currentIndex);
@@ -341,7 +375,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
             this.openPopover(currentIndex);
           }
           if (this.ariaOrientation === ORIENTATION.VERTICAL) {
-            this.navigateToPrevMenuItem(currentIndex, firstMenuIndex, lastMenuIndex);
+            this.navigateToPrevMenuItem(currentIndex, firstMenuIndex, lastMenuIndex, this.ariaOrientation);
           }
           event.preventDefault();
           break;
@@ -351,7 +385,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
             this.openPopover(currentIndex);
           }
           if (this.ariaOrientation === ORIENTATION.VERTICAL) {
-            this.navigateToNextMenuItem(currentIndex, firstMenuIndex, lastMenuIndex);
+            this.navigateToNextMenuItem(currentIndex, firstMenuIndex, lastMenuIndex, this.ariaOrientation);
           }
           event.preventDefault();
           break;
@@ -361,19 +395,14 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
           if (this.menuItems[currentIndex]?.nextElementSibling?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME) {
             this.openPopoverAndNavigateToNextChildrenMenuItem(currentIndex);
           } else if ((event.target as HTMLElement).tagName?.toLowerCase() === MENUITEM_TAGNAME) {
-            // this.isMenuPopoverOpen = false;
+            this.setMenuBarPopoverValue(false);
             this.hideAllPopovers(this.menuItems[currentIndex]);
           }
           break;
         }
         case KEYS.ESCAPE: {
-          if (
-            this.isValidMenu(this.menuItems[currentIndex].parentElement?.previousElementSibling?.parentElement?.tagName)
-            || this.isValidMenu(this.menuItems[currentIndex].parentElement?.tagName)
-          ) {
-            this.isMenuPopoverOpen = false;
-          }
-          if (this.isMenuPopoverOpen) {
+          this.setMenuBarPopoverValue(false);
+          if (this.ariaOrientation === ORIENTATION.VERTICAL) {
             this.navigateToPrevParentMenuItem(currentIndex, event.key);
           }
           break;

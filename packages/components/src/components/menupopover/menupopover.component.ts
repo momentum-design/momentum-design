@@ -21,7 +21,6 @@ class MenuPopover extends MenuMixin(Popover) {
     this.focusTrap = true;
     this.hideOnEscape = true;
     this.hideOnOutsideClick = true;
-    this.focusBackToTrigger = true;
     this.placement = POPOVER_PLACEMENT.BOTTOM_START;
     this.showArrow = false;
     this.interactive = true;
