@@ -4,6 +4,7 @@ import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { BUTTON_VARIANTS } from '../button/button.constants';
 import { BUTTON_GROUP_ORIENTATION, BUTTON_GROUP_SIZE } from './buttongroup.constants';
+import { disableControls } from '../../../config/storybook/utils';
 import '../button';
 
 const render = (args: Args) => html`
@@ -36,14 +37,12 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(BUTTON_GROUP_SIZE),
     },
-    children: {
-      control: 'text',
-    },
     compact: {
       control: 'boolean',
     },
     ...classArgType,
     ...styleArgType,
+    ...disableControls(['children']),
   },
 };
 
@@ -115,6 +114,19 @@ export const SpiltIconButton: StoryObj = {
     children: html`
       <mdc-button prefix-icon="camera-on-bold"></mdc-button>
       <mdc-button prefix-icon="arrow-down-bold"></mdc-button>
+    `,
+  },
+};
+
+export const ReactionGroup: StoryObj = {
+  args: {
+    variant: BUTTON_VARIANTS.SECONDARY,
+    orientation: BUTTON_GROUP_ORIENTATION.HORIZONTAL,
+    size: BUTTON_GROUP_SIZE[28],
+    compact: false,
+    children: html`
+      <mdc-button>👍</mdc-button>
+      <mdc-button>1</mdc-button>
     `,
   },
 };
