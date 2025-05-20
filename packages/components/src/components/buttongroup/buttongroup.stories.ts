@@ -56,9 +56,9 @@ export const Example: StoryObj = {
     size: BUTTON_GROUP_SIZE[28],
     compact: false,
     children: html`
-      <mdc-button prefix-icon="placeholder-bold"></mdc-button>
-      <mdc-button prefix-icon="placeholder-bold"></mdc-button>
-      <mdc-button prefix-icon="placeholder-bold"></mdc-button>
+      <mdc-button prefix-icon="placeholder-bold" aria-label='icon button'></mdc-button>
+      <mdc-button prefix-icon="placeholder-bold" aria-label='icon button'></mdc-button>
+      <mdc-button prefix-icon="placeholder-bold" aria-label='icon button'></mdc-button>
     `,
   },
 };
@@ -70,8 +70,8 @@ export const VerticalGroup: StoryObj = {
     size: BUTTON_GROUP_SIZE[28],
     compact: false,
     children: html`
-      <mdc-button prefix-icon="arrow-up-bold"></mdc-button>
-      <mdc-button prefix-icon="arrow-down-bold"></mdc-button>
+      <mdc-button prefix-icon="arrow-up-bold" aria-label='arrow up button'></mdc-button>
+      <mdc-button prefix-icon="arrow-down-bold" aria-label='arrow down button'></mdc-button>
     `,
   },
 };
@@ -83,11 +83,11 @@ export const CompactGroup: StoryObj = {
     size: BUTTON_GROUP_SIZE[32],
     compact: true,
     children: html`
-      <mdc-button prefix-icon="reply-bold"></mdc-button>
-      <mdc-button prefix-icon="reactions-bold"></mdc-button>
-      <mdc-button prefix-icon="alert-active-bold"></mdc-button>
-      <mdc-button prefix-icon="forward-message-bold"></mdc-button>
-      <mdc-button prefix-icon="more-bold"></mdc-button>
+      <mdc-button prefix-icon="reply-bold" aria-label='reply button'></mdc-button>
+      <mdc-button prefix-icon="reactions-bold" aria-label='reactions button'></mdc-button>
+      <mdc-button prefix-icon="alert-active-bold" aria-label='alert active button'></mdc-button>
+      <mdc-button prefix-icon="forward-message-bold" aria-label='forward message button'></mdc-button>
+      <mdc-button prefix-icon="more-bold" aria-label='more button'></mdc-button>
     `,
   },
 };
@@ -100,7 +100,7 @@ export const SpiltPillButton: StoryObj = {
     compact: false,
     children: html`
       <mdc-button prefix-icon="microphone-muted-bold">Unmute</mdc-button>
-      <mdc-button prefix-icon="arrow-down-bold"></mdc-button>
+      <mdc-button prefix-icon="arrow-down-bold" aria-label='arrow down button'></mdc-button>
     `,
   },
 };
@@ -112,8 +112,8 @@ export const SpiltIconButton: StoryObj = {
     size: BUTTON_GROUP_SIZE[28],
     compact: false,
     children: html`
-      <mdc-button prefix-icon="raise-hand-bold"></mdc-button>
-      <mdc-button prefix-icon="reactions-bold"></mdc-button>
+      <mdc-button prefix-icon="raise-hand-bold" aria-label='raise hand button'></mdc-button>
+      <mdc-button prefix-icon="reactions-bold" aria-label='reactions button'></mdc-button>
     `,
   },
 };
