@@ -6,6 +6,8 @@ import { TAG_NAME as MENU_TAGNAME } from '../../components/menu/menu.constants';
 import { ORIENTATION, TAG_NAME as MENUBAR_TAGNAME } from '../../components/menubar/menubar.constants';
 import type { Orientation } from '../../components/menubar/menubar.types';
 import { TAG_NAME as MENUITEM_TAGNAME } from '../../components/menuitem/menuitem.constants';
+import { TAG_NAME as MENUITEMCHECKBOX_TAGNAME } from '../../components/menuitemcheckbox/menuitemcheckbox.constants';
+import { TAG_NAME as MENUITEMRADIO_TAGNAME } from '../../components/menuitemradio/menuitemradio.constants';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../../components/menupopover/menupopover.constants';
 import { POPOVER_PLACEMENT } from '../../components/popover/popover.constants';
 import { KEYS } from '../keys';
@@ -139,7 +141,9 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         const currentMenuId = this.menuItems[index].getAttribute('id');
         const result = this.menuPopoverItems.findIndex((node) => node.getAttribute('triggerid') === currentMenuId);
         if (result !== -1) {
-          this.menuPopoverItems[result].toggleAttribute('visible');
+          if (!this.menuPopoverItems[result].hasAttribute('visible')) {
+            this.menuPopoverItems[result].toggleAttribute('visible');
+          }
           this.setMenuBarPopoverValue(true);
           return true;
         }
@@ -293,7 +297,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      * @returns True if the menu item is a valid menu item, false otherwise.
      */
     private isValidMenuItem(menuItem: HTMLElement): boolean {
-      return menuItem.tagName?.toLowerCase() === MENUITEM_TAGNAME;
+      return [MENUITEM_TAGNAME, MENUITEMCHECKBOX_TAGNAME, MENUITEMRADIO_TAGNAME].includes(menuItem.tagName?.toLowerCase());
     }
 
     /**
@@ -409,7 +413,6 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
             this.openPopoverAndNavigateToNextChildrenMenuItem(currentIndex);
           } else if (this.isValidMenuItem(event.target as HTMLElement)) {
             this.setMenuBarPopoverValue(false);
-            this.hideAllPopovers(this.menuItems[currentIndex]);
           }
           break;
         }
