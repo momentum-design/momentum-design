@@ -21,6 +21,8 @@ export declare class MenuMixinInterface {
 
   protected handleKeyDown(event: KeyboardEvent): void;
 
+  protected handleMouseClick(event: MouseEvent): void;
+
   protected resetTabIndexAndSetActiveTabIndex(newIndex: number): void;
 
   protected setTabIndexOnMouseClick(event: MouseEvent): void;
@@ -214,7 +216,9 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
       if (menu?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME) {
         menu?.toggleAttribute('visible');
       }
-      this.hideAllPopovers(menu?.parentElement);
+      if (menu?.parentElement) {
+        this.hideAllPopovers(menu.parentElement);
+      }
     }
 
     /**
@@ -226,7 +230,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     private navigateToPrevParentMenuItem(currentIndex: number, key: string): void {
       const parentMenuItem = this.menuItems[currentIndex].parentElement?.previousElementSibling;
       const parentMenuItemsChildren = Array.from(this.parentElement?.children || []).filter(
-        (node) => node.tagName?.toLowerCase() === MENUITEM_TAGNAME,
+        (node) => this.isValidMenuItem(node as HTMLElement),
       );
       const parentMenuItemIndex = parentMenuItemsChildren.findIndex((node) => node === parentMenuItem);
       let newIndex = parentMenuItemIndex;
@@ -270,7 +274,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
       // - get the top parent menu items using recursion.
       const parentMenuItemDetails = this.getParentMenuItemDetails('', this.menuItems[currentIndex]);
       const parentMenuItemsChildren = Array.from(parentMenuItemDetails?.menu?.children || []).filter(
-        (node) => node.tagName?.toLowerCase() === MENUITEM_TAGNAME,
+        (node) => this.isValidMenuItem(node as HTMLElement),
       );
       const parentMenuItemIndex = parentMenuItemsChildren.findIndex(
         (node) => node.getAttribute('id') === parentMenuItemDetails?.menuChildId,
@@ -281,6 +285,15 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         parentMenuItemIndex + 1,
       );
       parentMenuItemsChildren[parentMenuItemIndex + 1]?.nextElementSibling?.toggleAttribute('visible');
+    }
+
+    /**
+     * Checks if the given menu item is a valid menu item.
+     * @param menuItem - The menu item to check.
+     * @returns True if the menu item is a valid menu item, false otherwise.
+     */
+    private isValidMenuItem(menuItem: HTMLElement): boolean {
+      return menuItem.tagName?.toLowerCase() === MENUITEM_TAGNAME;
     }
 
     /**
@@ -394,7 +407,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         case KEYS.ENTER: {
           if (this.menuItems[currentIndex]?.nextElementSibling?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME) {
             this.openPopoverAndNavigateToNextChildrenMenuItem(currentIndex);
-          } else if ((event.target as HTMLElement).tagName?.toLowerCase() === MENUITEM_TAGNAME) {
+          } else if (this.isValidMenuItem(event.target as HTMLElement)) {
             this.setMenuBarPopoverValue(false);
             this.hideAllPopovers(this.menuItems[currentIndex]);
           }
@@ -409,6 +422,35 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         }
         default:
           break;
+      }
+    }
+
+    /**
+     * Closes all popovers except the current one.
+     * @param currentIndex - The index of the current menu item.
+     */
+    private closeAllPopoversExceptCurrent(currentIndex: number): void {
+      this.menuPopoverItems
+        .filter((node) => node !== this.menuItems[currentIndex])
+        .filter((node) => node.hasAttribute('visible'))
+        .forEach((node) => node.toggleAttribute('visible'));
+    }
+
+    /**
+     * Handles the mouse click event on the menu items.
+     * - If the menuitem has children, then it opens the popover of the next children menu item.
+     * - If the menuitem does not have children, then it closes all popovers recursively.
+     * @param event - The mouse click event.
+     */
+    protected handleMouseClick(event: MouseEvent): void {
+      const target = event.target as HTMLElement;
+      const currentIndex = this.getCurrentIndex(target);
+      if (currentIndex === -1) return;
+      if (this.menuItems[currentIndex]?.nextElementSibling?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME) {
+        this.closeAllPopoversExceptCurrent(currentIndex);
+        this.openPopoverAndNavigateToNextChildrenMenuItem(currentIndex);
+      } else if (this.isValidMenuItem(target)) {
+        this.hideAllPopovers(this.menuItems[currentIndex]);
       }
     }
   }
