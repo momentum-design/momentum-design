@@ -1,6 +1,5 @@
 import { expect } from '@playwright/test';
 import { test } from '../../../config/playwright/setup';
-import type Animation from './animation.component';
 
 test.beforeEach(async ({ componentsPage }) => {
   await componentsPage.mount({
@@ -23,14 +22,8 @@ test('mdc-animation', async ({ componentsPage }) => {
     await test.step('matches screenshot of element', async () => {
       const animation = componentsPage.page.locator('mdc-animation');
 
-      await animation.evaluate(
-        (element: Animation) =>
-          new Promise((resolve: Function) => {
-            element.addEventListener('complete', (event: Event) => {
-              resolve(event.type);
-            });
-          }),
-      );
+      await componentsPage.waitForEvent(animation, 'complete');
+
       await componentsPage.visualRegression.takeScreenshot('mdc-animation', { element: animation });
     });
   });
