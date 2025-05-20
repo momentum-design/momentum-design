@@ -6,7 +6,8 @@ import '../icon';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
-import { ARIA_CHECKED_STATES, INDICATOR } from './menuitemcheckbox.constants';
+import { INDICATOR } from './menuitemcheckbox.constants';
+import { ARIA_CHECKED_STATES } from '../menusection/menusection.constants';
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style="width: 25rem;">${htmlString}</div>`;
 
@@ -102,7 +103,7 @@ export const Example: StoryObj = {
     'secondary-label': '',
     'tooltip-text': '',
     'tooltip-placement': POPOVER_PLACEMENT.TOP,
-    children: html`<mdc-icon name="alert-muted-bold" slot="leading-controls"></mdc-icon>`,
+    children: html`<mdc-icon length-unit="rem" name="alert-muted-bold" slot="leading-controls"></mdc-icon>`,
   },
 };
 

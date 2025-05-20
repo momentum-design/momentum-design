@@ -476,3 +476,42 @@ export const popoverWithSelect: StoryObj = {
   `,
   ...hideAllControls(),
 };
+
+export const MultipleSingleLevelPopovers: StoryObj = {
+  render: () => html`
+    <style>
+      .container {
+        display: flex;
+        width: 150rem;
+        height: 15rem;
+        align-items: center;
+      }
+      .child {
+        display: flex;
+        width: 10rem;
+        height: 2rem;
+        justify-content: center;
+      }
+    </style>
+    <div class="container">
+      <div class="child">
+        <mdc-button id="popover-trigger-1">Click me!</mdc-button>
+        <mdc-popover triggerID="popover-trigger-1" hide-on-outside-click>
+          <mdc-text>Popover Level 1 Trigger 1</mdc-text>
+        </mdc-popover>
+      </div>
+      <div class="child">
+        <mdc-button id="popover-trigger-2">Click me!</mdc-button>
+        <mdc-popover triggerID="popover-trigger-2" hide-on-outside-click>
+          <mdc-text>Popover Level 1 Trigger 2</mdc-text>
+        </mdc-popover>
+      </div>
+      <div class="child">
+        <mdc-button id="popover-trigger-3">Click me!</mdc-button>
+        <mdc-popover triggerID="popover-trigger-3" hide-on-outside-click>
+          <mdc-text>Popover Level 1 Trigger 3</mdc-text>
+        </mdc-popover>
+      </div>
+    </div>
+  `,
+};

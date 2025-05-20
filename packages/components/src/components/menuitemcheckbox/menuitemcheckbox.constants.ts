@@ -1,11 +1,7 @@
 import utils from '../../utils/tag-name';
+import { ARIA_CHECKED_STATES } from '../menusection/menusection.constants';
 
 const TAG_NAME = utils.constructTagName('menuitemcheckbox');
-
-const ARIA_CHECKED_STATES = {
-  FALSE: 'false',
-  TRUE: 'true',
-} as const;
 
 const INDICATOR = {
   CHECKBOX: 'checkbox',
@@ -18,4 +14,4 @@ const DEFAULTS = {
   INDICATOR: INDICATOR.CHECKBOX,
 } as const;
 
-export { TAG_NAME, ARIA_CHECKED_STATES, INDICATOR, DEFAULTS };
+export { TAG_NAME, INDICATOR, DEFAULTS };

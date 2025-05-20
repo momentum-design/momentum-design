@@ -12,6 +12,7 @@ import CssTransformer from './css-transformer';
 import SvgGlyphsTransformer from './svg-glyphs-transformer';
 import TypesTransformer from './types-transformer';
 import LitTransformer from './lit-transformer';
+import ManifestModuleTransformer from './manifest-js-transformer';
 
 type Transformers =
   | Transformer
@@ -46,6 +47,8 @@ function createTransformer(format: Formats, destination: string): Transformers {
       return new WOFF2Transformer(format, destination);
     case CONSTANTS.FORMATS.MANIFEST:
       return new ManifestTransformer(format, destination);
+    case CONSTANTS.FORMATS.MANIFEST_MODULE:
+      return new ManifestModuleTransformer(format, destination);
     case CONSTANTS.FORMATS.SVG_GLYPHS:
       return new SvgGlyphsTransformer(format, destination);
     case CONSTANTS.FORMATS.SWIFT:
