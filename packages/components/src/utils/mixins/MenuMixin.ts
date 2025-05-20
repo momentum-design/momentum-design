@@ -402,7 +402,6 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
           this.updateTabIndexAndFocusNewIndex(this.menuItems, currentIndex, lastMenuIndex);
           break;
         case KEYS.ARROW_LEFT: {
-          console.log(this.ariaOrientation, this.tagName.toLowerCase());
           if (this.ariaOrientation === ORIENTATION.HORIZONTAL) {
             this.navigateToPrevMenuItem(currentIndex, firstMenuIndex, lastMenuIndex, this.ariaOrientation);
           }
