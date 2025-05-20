@@ -6,6 +6,7 @@ import { BUTTON_VARIANTS } from '../button/button.constants';
 import { BUTTON_GROUP_ORIENTATION, BUTTON_GROUP_SIZE } from './buttongroup.constants';
 import { disableControls } from '../../../config/storybook/utils';
 import '../button';
+import '../popover';
 
 const render = (args: Args) => html`
   <mdc-buttongroup
@@ -111,8 +112,8 @@ export const SpiltIconButton: StoryObj = {
     size: BUTTON_GROUP_SIZE[28],
     compact: false,
     children: html`
-      <mdc-button prefix-icon="camera-on-bold"></mdc-button>
-      <mdc-button prefix-icon="arrow-down-bold"></mdc-button>
+      <mdc-button prefix-icon="raise-hand-bold"></mdc-button>
+      <mdc-button prefix-icon="reactions-bold"></mdc-button>
     `,
   },
 };
@@ -128,4 +129,26 @@ export const ReactionGroup: StoryObj = {
       <mdc-button>1</mdc-button>
     `,
   },
+};
+
+export const GroupWithPopover: StoryObj = {
+  render: () => html`
+  <mdc-buttongroup variant="secondary" orientation="horizontal" size="32">
+  <mdc-button prefix-icon="camera-on-bold">Start Video</mdc-button>
+  <mdc-button prefix-icon="arrow-down-bold" id="popover-trigger-1"></mdc-button>
+  </mdc-buttongroup>
+
+  <mdc-popover
+    id="popover1"
+    triggerID="popover-trigger-1"
+    trigger="click"
+    placement="bottom"
+    z-index="30"
+    show-arrow
+    hide-on-escape
+    hide-on-outside-click
+  >
+    <mdc-text>Settings related to video options</mdc-text>
+  </mdc-popover>
+  `,
 };
