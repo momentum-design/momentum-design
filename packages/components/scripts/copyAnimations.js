@@ -3,7 +3,7 @@ const path = require('path');
 const chalk = require('chalk');
 
 const animationFolder = path.dirname(require.resolve('@momentum-design/animations/dist/manifest.json'));
-const animationExampleFile = require.resolve('@momentum-design/animations/dist/lottie/webex_logo_loop.json');
+const animationExampleFile = require.resolve('@momentum-design/animations/dist/lottie/reactions/celebrate.json');
 
 const root = process.cwd();
 const playwrightPublicDist = path.join(root, 'playwright-temp', 'assets', 'animations', 'animation.json');
