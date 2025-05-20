@@ -7,8 +7,9 @@ import { disableControls } from '../../../config/storybook/utils';
 import '../divider';
 import '../menuitem';
 import '../menuitemcheckbox';
+import '../menuitemradio';
 import '../menupopover';
-import '../textarea';
+import '../menusection';
 import { ORIENTATION } from './menubar.constants';
 
 const render = (args: Args) => html`
@@ -25,11 +26,11 @@ const render = (args: Args) => html`
         <mdc-divider></mdc-divider>
         <mdc-menuitem label="Open"></mdc-menuitem>
         <mdc-menuitem label="Open Folder"></mdc-menuitem>
-        <mdc-menuitem id="open-recent" label="Open Recent" arrow-position='trailing'></mdc-menuitem>
+        <mdc-menuitem id="open-recent" label="Open Recent"></mdc-menuitem>
         <mdc-menupopover triggerID="open-recent">
           <mdc-menuitem label="~/Documents/menu.ts"></mdc-menuitem>
           <mdc-menuitem label="~/Documents/popover.ts"></mdc-menuitem>
-          <mdc-menuitem id="button-file" label="~/Documents/button" arrow-position='trailing'></mdc-menuitem>
+          <mdc-menuitem id="button-file" label="~/Documents/button"></mdc-menuitem>
           <mdc-menupopover triggerid="button-file">
             <mdc-menuitem label="~/Documents/button/button.ts"></mdc-menuitem>
             <mdc-menuitem label="~/Documents/button/button.html"></mdc-menuitem>
@@ -41,7 +42,7 @@ const render = (args: Args) => html`
         <mdc-menuitem label="Save"></mdc-menuitem>
         <mdc-menuitem label="Save As..."></mdc-menuitem>
         <mdc-divider></mdc-divider>
-        <mdc-menuitem id="share-id" label="Share" arrow-position='trailing'></mdc-menuitem>
+        <mdc-menuitem id="share-id" label="Share"></mdc-menuitem>
         <mdc-menupopover triggerID="share-id">
           <mdc-menuitem label="AirDrop"></mdc-menuitem>
           <mdc-menuitem label="Messages"></mdc-menuitem>
@@ -170,4 +171,112 @@ export const VerticalMenuBar: StoryObj = {
   args: {
     'aria-orientation': ORIENTATION.VERTICAL,
   },
+};
+
+export const EditorMenuBar: StoryObj = {
+  render: () => html`
+    <mdc-menubar style="width: 5rem">
+      <mdc-menuitem id="style-id" label="Style"></mdc-menuitem>
+      <mdc-menupopover triggerid="style-id">
+        <mdc-menusection>
+          <mdc-menuitemcheckbox label="Bold"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox label="Italic"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox label="Underline"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox label="Strikethrough"></mdc-menuitemcheckbox>
+        </mdc-menusection>
+        <mdc-divider></mdc-divider>
+        <mdc-menusection>
+          <mdc-menuitemradio label="Red"></mdc-menuitemradio>
+          <mdc-menuitemradio label="Green"></mdc-menuitemradio>
+          <mdc-menuitemradio label="Blue"></mdc-menuitemradio>
+          <mdc-menuitemradio disabled label="Black"></mdc-menuitemradio>
+        </mdc-menusection>
+      </mdc-menupopover>
+      <mdc-menuitem id="align-id" label="Align"></mdc-menuitem>
+      <mdc-menupopover triggerid="align-id">
+        <mdc-menusection>
+          <mdc-menuitemradio label="Left"></mdc-menuitemradio>
+          <mdc-menuitemradio label="Center"></mdc-menuitemradio>
+          <mdc-menuitemradio label="Right"></mdc-menuitemradio>
+          <mdc-menuitemradio label="Justify"></mdc-menuitemradio>
+        </mdc-menusection>
+      </mdc-menupopover>
+      <mdc-menuitem id="size-id" label="Size"></mdc-menuitem>
+      <mdc-menupopover triggerid="size-id">
+        <mdc-menusection>
+          <mdc-menuitem label="Small"></mdc-menuitem>
+          <mdc-menuitem label="Medium"></mdc-menuitem>
+          <mdc-menuitem label="Large"></mdc-menuitem>
+        </mdc-menusection>
+      </mdc-menupopover>
+    </mdc-menubar>
+    <p id="textarea" style="width: 100vh; height: 100%; border: 1px solid white; border-radius: 5px; padding: 1rem;">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc at accumsan purus, non dignissim mi.
+      Nam in nisl at neque mollis tempor iaculis ut felis. Etiam bibendum vitae est vitae dictum.
+      Nulla non sapien volutpat, ornare diam sit amet, viverra dui. Vestibulum sit amet eros nec lacus laoreet commodo.
+      Praesent pharetra enim vitae felis egestas rutrum. In in erat et neque ornare efficitur. Curabitur facilisis orci
+      quis est dictum, vitae efficitur metus imperdiet. Duis vel ipsum est. Nulla commodo feugiat augue, sed dapibus
+      ante mollis dignissim. Nullam varius a libero quis elementum. In et arcu mi.
+      <br/><br/>
+      Donec id dui nunc. Integer auctor sodales consequat. Nunc sagittis nisi luctus mauris tincidunt tempor.
+      Nulla pharetra convallis ultrices. Nam porta erat in nisi efficitur, non luctus elit viverra.
+      Fusce sit amet lobortis lectus. Mauris fermentum nisi et tortor elementum, vitae molestie lacus gravida.
+      Vivamus molestie leo non lobortis tincidunt. Etiam gravida, nulla eu porta vestibulum, arcu mauris
+      pellentesque lorem, a tempus massa tortor ac libero. Fusce iaculis odio in tincidunt efficitur.
+    </p>
+    <script>
+      var handleClick = (event) => {
+        const isDisabled = event.target.hasAttribute('disabled');
+        if (isDisabled) return;
+        const action = event.target.getAttribute('label');
+        const textarea = document.getElementById('textarea');
+        
+        switch (action) {
+          case 'Bold':
+            textarea.style.fontWeight = 'bold';
+            break;
+          case 'Italic':
+            textarea.style.fontStyle = 'italic';
+            break;
+          case 'Underline':
+            textarea.style.textDecoration = 'underline';
+            break;
+          case 'Strikethrough':
+            textarea.style.textDecoration = 'line-through';
+            break;
+          case 'Red':
+            textarea.style.color = 'red';
+            break;
+          case 'Green':
+            textarea.style.color = 'green';
+            break;
+          case 'Blue':
+            textarea.style.color = 'blue';
+            break;
+          case 'Left':
+            textarea.style.textAlign = 'left';
+            break;
+          case 'Center':
+            textarea.style.textAlign = 'center';
+            break;
+          case 'Right':
+            textarea.style.textAlign = 'right';
+            break;
+          case 'Justify':
+            textarea.style.textAlign = 'justify';
+            break;
+          case 'Small':
+            textarea.style.fontSize = 'small';
+            break;
+          case 'Medium':
+            textarea.style.fontSize = 'medium';
+            break;
+          case 'Large':
+            textarea.style.fontSize = 'large';
+            break;
+        }
+      }
+      document.addEventListener('click', handleClick);
+    </script>
+  `,
 };

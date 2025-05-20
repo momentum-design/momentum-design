@@ -9,6 +9,7 @@ import { TAG_NAME as MENUITEM_TAGNAME } from '../../components/menuitem/menuitem
 import { TAG_NAME as MENUITEMCHECKBOX_TAGNAME } from '../../components/menuitemcheckbox/menuitemcheckbox.constants';
 import { TAG_NAME as MENUITEMRADIO_TAGNAME } from '../../components/menuitemradio/menuitemradio.constants';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../../components/menupopover/menupopover.constants';
+import { TAG_NAME as MENUSECTION_TAGNAME } from '../../components/menusection/menusection.constants';
 import { POPOVER_PLACEMENT } from '../../components/popover/popover.constants';
 import { KEYS } from '../keys';
 import type { Constructor } from './index.types';
@@ -43,12 +44,26 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     override ariaOrientation: Orientation = ORIENTATION.HORIZONTAL;
 
     /** @internal */
-    @queryAssignedElements({ selector: `${MENUITEM_TAGNAME}:not([disabled])` })
-    menuItems!: Array<HTMLElement>;
-
-    /** @internal */
     @queryAssignedElements({ selector: `${MENUPOPOVER_TAGNAME}:not([disabled])` })
     menuPopoverItems!: Array<HTMLElement>;
+
+    /** @internal */
+    get menuItems(): Array<HTMLElement> {
+      const slot = this.shadowRoot?.querySelector('slot');
+      const allAssignedElements = (slot?.assignedElements({ flatten: true }) || []) as Array<HTMLElement>;
+      return allAssignedElements.map(
+        (node) => {
+          if (node.tagName.toLowerCase() === MENUSECTION_TAGNAME) {
+            return Array.from(node.children)
+              .filter((child) => this.isValidMenuItem(child as HTMLElement)) as Array<HTMLElement>;
+          }
+          return this.isValidMenuItem(node) ? node : [];
+        },
+      )
+        .flat()
+        .filter((node) => !!node)
+        .filter((node) => !node.hasAttribute('disabled'));
+    }
 
     public override firstUpdated(changedProperties: PropertyValues): void {
       super.firstUpdated(changedProperties);
