@@ -6,7 +6,6 @@ import type MenuItemRadio from '../menuitemradio/menuitemradio.component';
 import { ARIA_CHECKED_STATES } from './menusection.constants';
 import { Component } from '../../models';
 import { ROLE } from '../../utils/roles';
-import { KEYS } from '../../utils/keys';
 
 /**
  * `mdc-menusection` is a container element used to group a set of menu items.
@@ -35,13 +34,11 @@ class MenuSection extends Component {
     super.connectedCallback();
     this.setAttribute('role', ROLE.GROUP);
     this.addEventListener('click', this.handleClick);
-    this.addEventListener('keydown', this.handleKeydown);
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.removeEventListener('click', this.handleClick);
-    this.removeEventListener('keydown', this.handleKeydown);
   }
 
   /**
@@ -54,25 +51,6 @@ class MenuSection extends Component {
    */
   private handleClick = (event: MouseEvent) => {
     this.toggleCheckedState(event.target);
-  };
-
-  /**
-   * Handles `keydown` events within the component.
-   * Activates menu items when the Enter or Space keys are pressed.
-   *
-   * @param event - The keyboard event from a child menu item
-   *
-   * @internal
-   */
-  private handleKeydown = (event: KeyboardEvent) => {
-    if (event.key !== KEYS.ENTER && event.key !== KEYS.SPACE) return;
-
-    if (event.key === KEYS.SPACE) {
-      event.preventDefault(); // Prevent page scroll
-    }
-    if (event.target.tagName === MENUITEMCHECKBOX_TAGNAME || event.target.tagName === MENUITEMRADIO_TAGNAME) {
-      this.toggleCheckedState(event.target);
-    }
   };
 
   /**
