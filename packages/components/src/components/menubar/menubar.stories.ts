@@ -1,26 +1,20 @@
+import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+import { disableControls } from '../../../config/storybook/utils';
 import '../divider';
 import '../menuitem';
 import '../menupopover';
+import '../textarea';
 import { ORIENTATION } from './menubar.constants';
 
 const render = (args: Args) => html`
-  <style>
-    mdc-menubar {
-      background: linear-gradient(to right, red, orange);
-    }
-    mdc-menubar[aria-orientation='horizontal'] {  
-      width: 40rem;
-      height: 3rem;
-    }
-    mdc-menubar[aria-orientation='vertical'] {
-      width: 10rem;
-    }
-  </style>
-  <mdc-menubar aria-orientation="${args['aria-orientation']}">
+  <mdc-menubar
+    aria-orientation="${args['aria-orientation']}"
+    @click="${action('onclick')}"
+  >
     <mdc-menuitem label="Home"></mdc-menuitem>
     <mdc-menuitem id="file-id" label="File"></mdc-menuitem>
     <mdc-menupopover triggerid="file-id">
@@ -89,8 +83,32 @@ const render = (args: Args) => html`
     <mdc-menuitem label="Help"></mdc-menuitem>
   </mdc-menubar>
   <div style="height: 25rem; width: 100%; background: linear-gradient(to right, red, orange);">
-    <h1>This is the home page </h1>
+    <div id="container">
+      <h1>Select a menu item</h1>
+    </div>
   </div>
+  <script>
+    var handleClick = (event) => {
+      const activePage = event.target.getAttribute('label');
+      const container = document.getElementById('container');
+      if (activePage) {
+        container.innerHTML = '<h1>You have clicked ' + activePage + '</h1>';
+      }
+    }
+    document.addEventListener('click', handleClick);
+  </script>
+  <style>
+    mdc-menubar {
+      background: linear-gradient(to right, red, orange);
+    }
+    mdc-menubar[aria-orientation='horizontal'] {  
+      width: 100%;
+      height: 3rem;
+    }
+    mdc-menubar[aria-orientation='vertical'] {
+      width: 10rem;
+    }
+  </style>
 `;
 
 const meta: Meta = {
@@ -100,6 +118,26 @@ const meta: Meta = {
   render,
   parameters: {
     badges: ['wip'],
+    docs: {
+      source: {
+        format: 'html',
+        code: `
+          <mdc-menubar aria-orientation="horizontal">
+            <mdc-menuitem label="..."></mdc-menuitem>
+            <mdc-menupopover triggerid="menu-id">
+              <mdc-menuitem label="..."></mdc-menuitem>
+              <mdc-menuitem id="sub-menu-id" label="..."></mdc-menuitem>
+              <mdc-menupopover triggerid="sub-menu-id">
+                <mdc-menuitem label="..."></mdc-menuitem>
+                <mdc-menuitem label="..."></mdc-menuitem>
+              </mdc-menupopover>
+              <mdc-menuitem label="..."></mdc-menuitem>
+            </mdc-menupopover>
+            <mdc-menuitem label="..."></mdc-menuitem>
+          </mdc-menubar>
+        `,
+      },
+    },
   },
   argTypes: {
     'aria-orientation': {
@@ -108,6 +146,9 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
+    ...disableControls([
+      'slot',
+    ]),
   },
 };
 
@@ -123,4 +164,45 @@ export const VerticalMenuBar: StoryObj = {
   args: {
     'aria-orientation': ORIENTATION.VERTICAL,
   },
+};
+
+export const EditorMenuBar: StoryObj = {
+  render: () => html`
+    <div style="display: flex; flex-direction: column; width: 100%;">
+      <mdc-menubar style="width: 10rem;">
+        <mdc-menuitem id="file-id" label="File"></mdc-menuitem>
+        <mdc-menupopover triggerid="file-id">
+          <mdc-menuitem label="Open"></mdc-menuitem>
+          <mdc-menuitem label="Save"></mdc-menuitem>
+          <mdc-menuitem label="Save As"></mdc-menuitem>
+        </mdc-menupopover>
+        <mdc-menuitem id="edit-id" label="Edit"></mdc-menuitem>
+        <mdc-menupopover triggerid="edit-id">
+          <mdc-menuitem label="Edit 1"></mdc-menuitem>
+          <mdc-menuitem label="Edit 2"></mdc-menuitem>
+          <mdc-menuitem label="Edit 3"></mdc-menuitem>
+        </mdc-menupopover>
+        <mdc-menuitem id="view-id" label="View"></mdc-menuitem>
+        <mdc-menupopover triggerid="view-id">
+          <mdc-menuitem label="View 1"></mdc-menuitem>
+          <mdc-menuitem label="View 2"></mdc-menuitem>
+          <mdc-menuitem label="View 3"></mdc-menuitem>
+        </mdc-menupopover>
+      </mdc-menubar>
+      <mdc-textarea cols="100" rows="15" value="This is a text area editor" style="width: 100%;"></mdc-textarea>
+    </div>
+  `,
+};
+
+export const SingleMenu: StoryObj = {
+  render: () => html`
+    <mdc-menubar style="width: 5rem;">
+      <mdc-menuitem id="home-id" label="Single Menu"></mdc-menuitem>
+      <mdc-menupopover triggerid="home-id">
+        <mdc-menuitem label="Menu Item 1"></mdc-menuitem>
+        <mdc-menuitem label="Menu Item 2"></mdc-menuitem>
+        <mdc-menuitem label="Menu Item 3"></mdc-menuitem>
+      </mdc-menupopover>
+    </mdc-menubar>
+  `,
 };
