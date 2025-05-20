@@ -231,10 +231,18 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     }
   }
 
+  protected renderTrailingControls() {
+    return html`<slot name="trailing-controls"></slot>`;
+  }
+
+  protected renderLeadingControls() {
+    return html`<slot name="leading-controls"></slot>`;
+  }
+
   public override render() {
     return html`
       <div part="leading">
-        <slot name="leading-controls"></slot>
+        ${this.renderLeadingControls()}
         <div part="leading-text">
           ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
           ${this.getText('leading-text-secondary-label', TYPE.BODY_SMALL_REGULAR, this.secondaryLabel)}
@@ -246,7 +254,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
           ${this.getText('trailing-text-side-header', TYPE.BODY_MIDSIZE_REGULAR, this.sideHeaderText)}
           ${this.getText('trailing-text-subline', TYPE.BODY_SMALL_REGULAR, this.sublineText)}
         </div>
-        <slot name="trailing-controls"></slot>
+        ${this.renderTrailingControls()}
       </div>
     `;
   }

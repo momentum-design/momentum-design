@@ -25,15 +25,11 @@ const render = (args: Args) => html`
         <mdc-divider></mdc-divider>
         <mdc-menuitem label="Open"></mdc-menuitem>
         <mdc-menuitem label="Open Folder"></mdc-menuitem>
-        <mdc-menuitem id="open-recent" label="Open Recent">
-          <mdc-icon slot="trailing-controls" name="arrow-right-bold"></mdc-icon>
-        </mdc-menuitem>
+        <mdc-menuitem id="open-recent" label="Open Recent" arrow-position='trailing'></mdc-menuitem>
         <mdc-menupopover triggerID="open-recent">
           <mdc-menuitem label="~/Documents/menu.ts"></mdc-menuitem>
           <mdc-menuitem label="~/Documents/popover.ts"></mdc-menuitem>
-          <mdc-menuitem id="button-file" label="~/Documents/button">
-            <mdc-icon slot="trailing-controls" name="arrow-right-bold"></mdc-icon>
-          </mdc-menuitem>
+          <mdc-menuitem id="button-file" label="~/Documents/button" arrow-position='trailing'></mdc-menuitem>
           <mdc-menupopover triggerid="button-file">
             <mdc-menuitem label="~/Documents/button/button.ts"></mdc-menuitem>
             <mdc-menuitem label="~/Documents/button/button.html"></mdc-menuitem>
@@ -45,9 +41,7 @@ const render = (args: Args) => html`
         <mdc-menuitem label="Save"></mdc-menuitem>
         <mdc-menuitem label="Save As..."></mdc-menuitem>
         <mdc-divider></mdc-divider>
-        <mdc-menuitem id="share-id" label="Share">
-          <mdc-icon slot="trailing-controls" name="arrow-right-bold"></mdc-icon>
-        </mdc-menuitem>
+        <mdc-menuitem id="share-id" label="Share" arrow-position='trailing'></mdc-menuitem>
         <mdc-menupopover triggerID="share-id">
           <mdc-menuitem label="AirDrop"></mdc-menuitem>
           <mdc-menuitem label="Messages"></mdc-menuitem>
