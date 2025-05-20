@@ -5,8 +5,8 @@ import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { TYPE as PRESENCE_TYPE } from '../presence/presence.constants';
 import { AVATAR_SIZE, DEFAULTS } from '../avatar/avatar.constants';
-import { AvatarSize } from '../avatar/avatar.types';
-import { IconNames } from '../icon/icon.types';
+import type { AvatarSize } from '../avatar/avatar.types';
+import type { IconNames } from '../icon/icon.types';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
