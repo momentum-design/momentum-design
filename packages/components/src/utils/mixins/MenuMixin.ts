@@ -297,7 +297,8 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      * @returns True if the menu item is a valid menu item, false otherwise.
      */
     private isValidMenuItem(menuItem: HTMLElement): boolean {
-      return [MENUITEM_TAGNAME, MENUITEMCHECKBOX_TAGNAME, MENUITEMRADIO_TAGNAME].includes(menuItem.tagName?.toLowerCase());
+      return [MENUITEM_TAGNAME, MENUITEMCHECKBOX_TAGNAME, MENUITEMRADIO_TAGNAME]
+        .includes(menuItem.tagName?.toLowerCase() as typeof MENUITEM_TAGNAME);
     }
 
     /**
