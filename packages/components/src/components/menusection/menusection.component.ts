@@ -70,8 +70,9 @@ class MenuSection extends Component {
     if (event.key === KEYS.SPACE) {
       event.preventDefault(); // Prevent page scroll
     }
-
-    this.toggleCheckedState(event.target);
+    if (event.target.tagName === MENUITEMCHECKBOX_TAGNAME || event.target.tagName === MENUITEMRADIO_TAGNAME) {
+      this.toggleCheckedState(event.target);
+    }
   };
 
   /**
