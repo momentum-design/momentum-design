@@ -138,6 +138,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     /**
      * Checks if the given tag name is a valid menu tag name.
      * @param tagName - The tag name to check.
+     * @returns True if the tag name is a valid menu, false otherwise.
      */
     private isValidMenu(tagName?: string): boolean {
       return (
@@ -147,12 +148,21 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     }
 
     /**
+     * Checks if the given tag name is a valid menu popover tag name.
+     * @param tagName - The tag name to check.
+     * @returns True if the tag name is a valid menu popover, false otherwise.
+     */
+    private isValidPopover(tagName?: string): boolean {
+      return tagName?.toLowerCase() === MENUPOPOVER_TAGNAME;
+    }
+
+    /**
      * Opens the popover at the given index if it exists.
      * @param index - The index of the menu item to open the popover for.
      * @returns True if the popover was opened, false if not.
      */
     private openPopover(index: number): boolean {
-      if (this.menuItems[index]?.nextElementSibling?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME) {
+      if (this.isValidPopover(this.menuItems[index]?.nextElementSibling?.tagName)) {
         const currentMenuId = this.menuItems[index].getAttribute('id');
         const result = this.menuPopoverItems.findIndex((node) => node.getAttribute('triggerid') === currentMenuId);
         if (result !== -1) {
@@ -232,7 +242,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
       if (this.isValidMenu(menu?.tagName)) {
         return;
       }
-      if (menu?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME) {
+      if (this.isValidPopover(menu?.tagName)) {
         menu?.toggleAttribute('visible');
       }
       if (menu?.parentElement) {
@@ -281,6 +291,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      * Opens the popover of the next children menu item if there are children.
      * If there are no children, then it closes all popovers recursively and
      * navigates to the next menu item from the menu bar.
+     * If the parent menu item does not have any children, then we will go to the next menu item.
      * @param currentIndex - The current index of the focused menu item.
      */
     private openPopoverAndNavigateToNextChildrenMenuItem(currentIndex: number): void {
@@ -295,15 +306,20 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
       const parentMenuItemsChildren = Array.from(parentMenuItemDetails?.menu?.children || []).filter(
         (node) => this.isValidMenuItem(node as HTMLElement),
       );
+      if (parentMenuItemsChildren.length === 0 || parentMenuItemDetails?.menuChildId === '') {
+        this.navigateToNextMenuItem(currentIndex, 0, this.menuItems.length - 1, this.ariaOrientation);
+        return;
+      }
       const parentMenuItemIndex = parentMenuItemsChildren.findIndex(
         (node) => node.getAttribute('id') === parentMenuItemDetails?.menuChildId,
       );
+      const newIndex = parentMenuItemIndex === -1 ? currentIndex + 1 : parentMenuItemIndex + 1;
       this.updateTabIndexAndFocusNewIndex(
         parentMenuItemsChildren as Array<HTMLElement>,
         parentMenuItemIndex,
-        parentMenuItemIndex + 1,
+        newIndex,
       );
-      parentMenuItemsChildren[parentMenuItemIndex + 1]?.nextElementSibling?.toggleAttribute('visible');
+      parentMenuItemsChildren[newIndex]?.nextElementSibling?.toggleAttribute('visible');
     }
 
     /**
@@ -386,6 +402,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
           this.updateTabIndexAndFocusNewIndex(this.menuItems, currentIndex, lastMenuIndex);
           break;
         case KEYS.ARROW_LEFT: {
+          console.log(this.ariaOrientation, this.tagName.toLowerCase());
           if (this.ariaOrientation === ORIENTATION.HORIZONTAL) {
             this.navigateToPrevMenuItem(currentIndex, firstMenuIndex, lastMenuIndex, this.ariaOrientation);
           }
@@ -425,7 +442,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         }
         case KEYS.SPACE:
         case KEYS.ENTER: {
-          if (this.menuItems[currentIndex]?.nextElementSibling?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME) {
+          if (this.isValidPopover(this.menuItems[currentIndex]?.nextElementSibling?.tagName)) {
             this.openPopoverAndNavigateToNextChildrenMenuItem(currentIndex);
           } else if (this.isValidMenuItem(event.target as HTMLElement)) {
             this.setMenuBarPopoverValue(false);
@@ -465,7 +482,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
       const target = event.target as HTMLElement;
       const currentIndex = this.getCurrentIndex(target);
       if (currentIndex === -1) return;
-      if (this.menuItems[currentIndex]?.nextElementSibling?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME) {
+      if (this.isValidPopover(this.menuItems[currentIndex]?.nextElementSibling?.tagName)) {
         this.closeAllPopoversExceptCurrent(currentIndex);
         this.openPopoverAndNavigateToNextChildrenMenuItem(currentIndex);
       } else if (this.isValidMenuItem(target)) {

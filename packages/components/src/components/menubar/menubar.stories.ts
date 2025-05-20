@@ -81,7 +81,7 @@ const render = (args: Args) => html`
     </mdc-menubar>
     <div style="
       height: 25rem; width: 100%; display: flex; justify-content: center; align-items: center;
-      background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+      background-image: linear-gradient(120deg, #fdfbfb 0%, #d3d3d3 100%);
     ">
       <div id="container">
         <h1>Welcome, select a menu item from the top</h1>
