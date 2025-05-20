@@ -7,11 +7,24 @@ import { POPOVER_PLACEMENT, TRIGGER } from '../popover/popover.constants';
 import { TAG_NAME as MENU_POPOVER } from './menupopover.constants';
 
 /**
- * menupopover component, which ...
+ * A popover menu component that displays a list of menu items in a floating container.
+ * It's designed to work in conjunction with `mdc-menubar` and `mdc-menuitem` to create
+ * accessible, nested menu structures with the following features:
+ * - Appears adjacent to the triggering menu item
+ * - Supports keyboard navigation (arrow keys, Home, End)
+ * - Manages focus trapping when open
+ * - Closes on Escape key or outside click
+ * - Supports both mouse and keyboard interactions
+ * - Automatically handles ARIA attributes for accessibility
+ *
+ * The component extends `mdc-popover` and adds menu-specific behaviors and styling.
+ * When nested within another `mdc-menupopover`, it automatically adjusts its behavior
+ * to work as a submenu (right-aligned, shows on hover).
+ *
+ * The orientation of the menu popover is always set to `vertical`.
  *
  * @tagname mdc-menupopover
- *
- * @slot default - This is a default/unnamed slot
+ * @slot default - Contains the menu items to be displayed in the popover
  */
 class MenuPopover extends MenuMixin(Popover) {
   override connectedCallback() {
@@ -27,6 +40,7 @@ class MenuPopover extends MenuMixin(Popover) {
     this.ariaOrientation = ORIENTATION.VERTICAL;
 
     this.addEventListener('keydown', this.handleKeyDown);
+    this.addEventListener('click', this.handleMouseClick);
   }
 
   override async firstUpdated(changedProperties: PropertyValues) {
