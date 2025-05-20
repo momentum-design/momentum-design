@@ -155,6 +155,7 @@ const meta: Meta = {
     ...styleArgType,
     ...disableControls([
       'slot',
+      'default',
     ]),
   },
 };

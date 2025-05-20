@@ -8,6 +8,8 @@ import { TAG_NAME as MENUITEM_TAGNAME } from '../menuitem/menuitem.constants';
  * mdc-menu component is used to display a group of menu items. It is used as a container to wrap menu items.
  * It contains the menu header component.
  *
+ * @dependency mdc-text
+ *
  * @tagname mdc-menu
  *
  * @slot default - This is a default/unnamed slot

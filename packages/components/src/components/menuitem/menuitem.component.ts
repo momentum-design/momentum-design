@@ -19,6 +19,7 @@ import styles from './menuitem.styles';
  *
  * @dependency mdc-text
  * @dependency mdc-icon
+ * @dependency mdc-tooltip
  *
  * @tagname mdc-menuitem
  *

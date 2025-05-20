@@ -17,9 +17,7 @@ const render = () => html`
         <mdc-menuitem label="Open"></mdc-menuitem>
         <mdc-menuitem label="Save"></mdc-menuitem>
         <mdc-divider></mdc-divider>
-        <mdc-menuitem label="Share" id="share-id">
-          <mdc-icon slot="trailing-controls" name="arrow-right-bold"></mdc-icon>
-        </mdc-menuitem>
+        <mdc-menuitem label="Share" id="share-id" arrow-position='trailing'></mdc-menuitem>
         <mdc-menupopover triggerid="share-id">
           <mdc-menuitem label="AirDrop"></mdc-menuitem>
           <mdc-menuitem label="Messages"></mdc-menuitem>
