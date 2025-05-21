@@ -244,7 +244,7 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
       return;
     }
 
-    if (newValue) {
+    if (newValue && !oldValue) {
       this.enabledFocusTrap = true;
       this.enabledPreventScroll = true;
       this.utils.createBackdrop();
@@ -256,7 +256,7 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
         this.triggerElement.getAttribute('aria-haspopup') || 'dialog',
       );
       DialogEventManager.onShowDialog(this);
-    } else {
+    } else if (!newValue && oldValue) {
       this.backdropElement?.remove();
       this.backdropElement = null;
       this.deactivateFocusTrap?.();
