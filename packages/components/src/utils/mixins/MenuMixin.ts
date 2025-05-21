@@ -19,6 +19,11 @@ interface IParentMenuItem {
   menu: HTMLElement | null;
 }
 
+interface IMenuContents {
+  parentMenuItemDetails: IParentMenuItem;
+  parentMenuItemsChildren: Array<Element>;
+}
+
 export declare class MenuMixinInterface {
   ariaOrientation: Orientation;
 
@@ -288,6 +293,38 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     }
 
     /**
+     * Gets the parent menu contents of the given current menu item.
+     * It recursively traverses up the DOM tree until it finds the parent menu element
+     * and gets the parent menu item details and the children of the parent menu item.
+     * @param currentMenuItem - The current menu item to start traversing from.
+     * @returns An object containing the parent menu item details and the children of the parent menu item.
+     */
+    private getParentMenuContents(currentMenuItem: HTMLElement | null): IMenuContents {
+      const parentMenuItemDetails = this.getParentMenuItemDetails('', currentMenuItem);
+      const parentMenuItemsChildren = Array.from(parentMenuItemDetails.menu?.children || []).filter(
+        (node) => this.isValidMenuItem(node as HTMLElement),
+      );
+      return { parentMenuItemDetails, parentMenuItemsChildren };
+    }
+
+    /**
+     * Sets focus to the parent menu item of the given current menu item.
+     * It retrieves the parent menu item details and its children, then focuses
+     * on the menu item that matches the parent menu child ID.
+     * @param currentMenuItem - The current menu item from which to find and focus the parent menu item.
+     */
+    private setFocusToParentMenuItem(currentMenuItem: HTMLElement | null): void {
+      const {
+        parentMenuItemDetails,
+        parentMenuItemsChildren,
+      } = this.getParentMenuContents(currentMenuItem);
+      const menuBarMenuItem = parentMenuItemsChildren.filter(
+        (node) => node.getAttribute('id') === parentMenuItemDetails?.menuChildId,
+      );
+      (menuBarMenuItem[0] as HTMLElement)?.focus();
+    }
+
+    /**
      * Opens the popover of the next children menu item if there are children.
      * If there are no children, then it closes all popovers recursively and
      * navigates to the next menu item from the menu bar.
@@ -302,10 +339,10 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
       // and go the next menu item from the menu bar
       this.hideAllPopovers(this.menuItems[currentIndex]);
       // - get the top parent menu items using recursion.
-      const parentMenuItemDetails = this.getParentMenuItemDetails('', this.menuItems[currentIndex]);
-      const parentMenuItemsChildren = Array.from(parentMenuItemDetails?.menu?.children || []).filter(
-        (node) => this.isValidMenuItem(node as HTMLElement),
-      );
+      const {
+        parentMenuItemDetails,
+        parentMenuItemsChildren,
+      } = this.getParentMenuContents(this.menuItems[currentIndex]);
       if (parentMenuItemsChildren.length === 0 || parentMenuItemDetails?.menuChildId === '') {
         this.navigateToNextMenuItem(currentIndex, 0, this.menuItems.length - 1, this.ariaOrientation);
         return;
@@ -445,6 +482,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
             this.openPopoverAndNavigateToNextChildrenMenuItem(currentIndex);
           } else if (this.isValidMenuItem(event.target as HTMLElement)) {
             this.setMenuBarPopoverValue(false);
+            this.setFocusToParentMenuItem(this.menuItems[currentIndex]);
           }
           break;
         }
