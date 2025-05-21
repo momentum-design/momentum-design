@@ -8,6 +8,7 @@ import '../badge';
 import '../divider';
 import '../icon';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { ARROW_DIRECTIONS, ARROW_POSITIONS } from './menuitem.constants';
 
 const label = 'Menu Item';
 const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style="width: 20rem;">${htmlString}</div>`;
@@ -18,6 +19,8 @@ const render = (args: Args) => wrapWithDiv(html`
     @keydown="${action('onkeydown')}"
     @keyup="${action('onkeyup')}"
     @focus="${action('onfocus')}"
+    arrow-position="${args['arrow-position']}"
+    arrow-direction="${args['arrow-direction']}"
     ?disabled="${args.disabled}"
     label="${args.label}"
     secondary-label="${args['secondary-label']}"
@@ -61,6 +64,14 @@ const meta: Meta = {
     'tooltip-placement': {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
+    },
+    'arrow-position': {
+      control: 'select',
+      options: Object.values(ARROW_POSITIONS),
+    },
+    'arrow-direction': {
+      control: 'select',
+      options: Object.values(ARROW_DIRECTIONS),
     },
     ...hideControls([
       'variant',
@@ -176,18 +187,14 @@ export const MenuItemWithSideText: StoryObj = {
 
 export const MenuItemWithTrailingArrow: StoryObj = {
   render: () => wrapWithDiv(html`
-    <mdc-menuitem label="${label}">
-      <mdc-icon length-unit="rem" slot="trailing-controls" name="arrow-right-bold"></mdc-icon>
-    </mdc-menuitem>
+    <mdc-menuitem label="${label}" arrow-position='trailing'></mdc-menuitem>
   `),
   ...hideAllControls(),
 };
 
 export const MenuItemWithLeadingArrow: StoryObj = {
   render: () => wrapWithDiv(html`
-    <mdc-menuitem label="${label}">
-      <mdc-icon length-unit="rem" slot="leading-controls" name="arrow-left-bold"></mdc-icon>
-    </mdc-menuitem>
+    <mdc-menuitem label="${label}" arrow-position='leading'></mdc-menuitem>
   `),
   ...hideAllControls(),
 };
