@@ -5,6 +5,7 @@ import { ORIENTATION } from '../menubar/menubar.constants';
 import Popover from '../popover/popover.component';
 import { POPOVER_PLACEMENT, TRIGGER } from '../popover/popover.constants';
 import { TAG_NAME as MENU_POPOVER } from './menupopover.constants';
+import styles from './menupopover.styles';
 
 /**
  * A popover menu component that displays a list of menu items in a floating container.
@@ -57,7 +58,7 @@ class MenuPopover extends MenuMixin(Popover) {
     }
   }
 
-  public static override styles: Array<CSSResult> = [...Popover.styles];
+  public static override styles: Array<CSSResult> = [...Popover.styles, ...styles];
 }
 
 export default MenuPopover;
