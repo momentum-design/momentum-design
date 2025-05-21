@@ -1,1 +1,0 @@
-import"./index-D3DhXfcW.js";import"./listitem.component-qFhQUFkA.js";import{M as t}from"./menuitem.component-D_e2cxUY.js";import{u as m}from"./index-C9z9WAEj.js";const r=m.constructTagName("menuitem");t.register(r);

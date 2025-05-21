@@ -1,0 +1,1 @@
+import{u as A}from"./index-C9z9WAEj.js";import{A as o}from"./menusection.constants-CectB7Mc.js";const t=A.constructTagName("menuitemcheckbox"),C={CHECKBOX:"checkbox",CHECKMARK:"checkmark",TOGGLE:"toggle"},s={ARIA_CHECKED:o.FALSE,INDICATOR:C.CHECKBOX};export{s as D,C as I,t as T};
