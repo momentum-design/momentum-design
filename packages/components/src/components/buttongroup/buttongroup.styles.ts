@@ -6,12 +6,13 @@ const styles = css`
   --mdc-buttongroup-border-radius: 1.25rem;
   --mdc-buttongroup-border-color: var(--mds-color-theme-outline-button-normal);
   --mdc-buttongroup-divider-color: var(--mds-color-theme-outline-secondary-normal);
+
   border-radius: var(--mdc-buttongroup-border-radius);
   border: 1px solid var(--mdc-buttongroup-border-color);
 }
 
-:host([orientation="vertical"]){
-  flex-direction: column;
+:host([variant='primary']){
+  --mdc-buttongroup-divider-color: var(--mds-color-theme-background-solid-primary-normal);
 }
 
 ::slotted(mdc-button){
@@ -19,10 +20,9 @@ const styles = css`
   border: none;
 }
 
-:host([variant='primary']){
-  --mdc-buttongroup-divider-color: var(--mds-color-theme-background-solid-primary-normal);
+:host([orientation="vertical"]){
+  flex-direction: column;
 }
-
 :host([orientation="horizontal"]) ::slotted(mdc-button:not(:last-child)){
   border-right: 1px solid var(--mdc-buttongroup-divider-color);
 }
@@ -57,19 +57,19 @@ const styles = css`
 }
 
 :host([compact][orientation="horizontal"]) ::slotted(mdc-button){
-  height: 24px;
+  height: 1.5rem;
 }
 :host([compact][orientation="horizontal"][size="24"]) ::slotted(mdc-button){
-  width: 24px;
+  width: 1.5rem;
 }
 :host([compact][orientation="horizontal"][size="28"]) ::slotted(mdc-button){
-  width: 28px;
+  width: 1.75rem;
 }
 :host([compact][orientation="horizontal"][size="32"]) ::slotted(mdc-button){
-  width: 32px;
+  width: 2rem;
 }
 :host([compact][orientation="horizontal"][size="40"]) ::slotted(mdc-button){
-  width: 40px;
+  width: 2.5rem;
 }
 
 `;

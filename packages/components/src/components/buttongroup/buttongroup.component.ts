@@ -7,32 +7,58 @@ import styles from './buttongroup.styles';
 import type { ButtonGroupOrientation, ButtonGroupSize } from './buttongroup.types';
 
 /**
- * buttongroup component, which ...
+ * buttongroup component, is a styled wrapper for multiple buttons.
+ * It can support icon buttons, combination of icon and pill buttons, and text buttons.
+ * They are available in horizontal and vertical orientation.
  *
  * @tagname mdc-buttongroup
  *
- * @slot default - This is a default/unnamed slot
+ * @slot default - This is a default/unnamed slot, which contains the buttons
  *
- * @event click - (React: onClick) This event is a Click Event, update the description
- *
- * @cssproperty --custom-property-name - Description of the CSS custom property
+ * @cssproperty --mdc-buttongroup-border-radius - The border radius of the buttongroup
+ * @cssproperty --mdc-buttongroup-border-color - The border color of the buttongroup
+ * @cssproperty --mdc-buttongroup-divider-color - The color of the divider between buttons within the buttongroup
  */
 class Buttongroup extends Component {
+  /**
+   * Orientation of the buttongroup.
+   * @default 'horizontal'
+   */
   @property({ type: String, reflect: true })
   orientation: ButtonGroupOrientation = DEFAULTS.ORIENTATION;
 
+  /**
+   * Variant of the buttons within the buttongroup.
+   * @default 'primary'
+   */
   @property({ type: String, reflect: true })
   variant: ButtonVariant = DEFAULTS.VARIANT;
 
+  /**
+   * Size of the buttons within the buttongroup.
+   * @default '28'
+   */
   @property({ type: Number, reflect: true })
   size: ButtonGroupSize = DEFAULTS.SIZE;
 
+  /**
+   * Whether the buttongroup is compact.
+   * @default false
+   */
   @property({ type: Boolean, reflect: true })
   compact = false;
 
+  /**
+   * List of buttons passed into the slot
+   * @internal
+   */
   @queryAssignedElements({ selector: 'mdc-button' })
   private buttons!: Array<HTMLButtonElement>;
 
+  /**
+   * Handles the slotchange event, setting the size and variant of the buttons
+   * @internal
+   */
   private handleSlotChange() {
     this.buttons.forEach((button) => {
       button.setAttribute('size', this.size.toString());
