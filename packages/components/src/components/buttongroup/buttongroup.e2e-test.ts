@@ -35,6 +35,36 @@ const setup = async (args: SetupOptions) => {
   return buttongroup;
 };
 
+const setupWithPopover = async (args: SetupOptions) => {
+  const { componentsPage } = args;
+
+  await componentsPage.mount({
+    html: `<div>
+      <mdc-buttongroup variant="secondary" orientation="horizontal" size="32">
+        <mdc-button prefix-icon="camera-on-bold">Start Video</mdc-button>
+        <mdc-button prefix-icon="arrow-down-bold" id="popover-trigger-1"></mdc-button>
+      </mdc-buttongroup>
+      <mdc-popover
+        id="popover1"
+        triggerID="popover-trigger-1"
+        trigger="click"
+        placement="bottom"
+        show-arrow
+        hide-on-escape
+      >
+        <mdc-text>Settings related to video options</mdc-text>
+      </mdc-popover>
+    </div>
+      `,
+    clearDocument: true,
+  });
+
+  const buttongroup = componentsPage.page.locator('mdc-buttongroup');
+  await buttongroup.waitFor();
+  const popover = componentsPage.page.locator('mdc-popover');
+  return { buttongroup, popover };
+};
+
 test.use({ viewport: { width: 600, height: 540 } });
 test('mdc-buttongroup', async ({ componentsPage }) => {
   /**
@@ -155,7 +185,7 @@ test('mdc-buttongroup', async ({ componentsPage }) => {
   /**
    * INTERACTIONS
    */
-  await test.step('focus interactions', async () => {
+  await test.step('focus & interactions', async () => {
     await test.step('component should be focusable with tab', async () => {
       const buttongroup = await setup({ componentsPage, children: `<mdc-button prefix-icon="reply-bold"></mdc-button>
       <mdc-button prefix-icon="reactions-bold"></mdc-button>
@@ -164,7 +194,6 @@ test('mdc-buttongroup', async ({ componentsPage }) => {
       <mdc-button prefix-icon="more-bold"></mdc-button>` });
 
       const buttons = buttongroup.locator('mdc-button');
-
       await componentsPage.actionability.pressAndCheckFocus('Tab', [buttons.first(),
         buttons.nth(1),
         buttons.nth(2),
@@ -175,6 +204,17 @@ test('mdc-buttongroup', async ({ componentsPage }) => {
         buttons.nth(2),
         buttons.nth(1),
         buttons.first()]);
+    });
+
+    await test.step('component should open popover when trigger button within the group is clicked', async () => {
+      const { buttongroup, popover } = await setupWithPopover({ componentsPage });
+      const triggerButton = buttongroup.locator('mdc-button#popover-trigger-1');
+      await expect(popover).toBeHidden();
+      await triggerButton.click();
+      await popover.waitFor();
+      await expect(popover).toBeVisible();
+      await componentsPage.page.keyboard.press('Escape');
+      await expect(popover).toBeHidden();
     });
   });
 });

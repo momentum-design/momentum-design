@@ -18,12 +18,12 @@ const render = (args: Args) => html`
     </mdc-buttongroup>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/buttongroup',
+  title: 'Components/buttongroup',
   tags: ['autodocs'],
   component: 'mdc-buttongroup',
   render,
   parameters: {
-    badges: ['wip'],
+    badges: ['stable'],
   },
   argTypes: {
     variant: {
@@ -137,17 +137,13 @@ export const GroupWithPopover: StoryObj = {
   <mdc-button prefix-icon="camera-on-bold">Start Video</mdc-button>
   <mdc-button prefix-icon="arrow-down-bold" id="popover-trigger-1"></mdc-button>
   </mdc-buttongroup>
-
   <mdc-popover
     id="popover1"
     triggerID="popover-trigger-1"
     trigger="click"
     placement="bottom"
-    z-index="30"
     show-arrow
-    hide-on-escape
-    hide-on-outside-click
-  >
+    hide-on-escape>
     <mdc-text>Settings related to video options</mdc-text>
   </mdc-popover>
   `,
