@@ -57,7 +57,7 @@ import MenuItemRadio from './components/menuitemradio';
 import MenuItemCheckbox from './components/menuitemcheckbox';
 import MenuSection from './components/menusection';
 import Animation from './components/animation';
-import Buttongroup from './components/buttongroup';
+import ButtonGroup from './components/buttongroup';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -87,7 +87,7 @@ export {
   Bullet,
   Button,
   ButtonLink,
-  Buttongroup,
+  ButtonGroup,
   Card,
   CardButton,
   CardCheckbox,

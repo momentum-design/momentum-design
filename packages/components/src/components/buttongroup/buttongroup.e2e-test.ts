@@ -64,7 +64,7 @@ const setupWithPopover = async (args: SetupOptions) => {
   return { buttongroup, popover };
 };
 
-test.use({ viewport: { width: 600, height: 500 } });
+test.use({ viewport: { width: 600, height: 400 } });
 test('mdc-buttongroup', async ({ componentsPage }) => {
   /**
    * VISUAL REGRESSION

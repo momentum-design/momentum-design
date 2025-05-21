@@ -18,7 +18,7 @@ import type { ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant } from
  * @cssproperty --mdc-buttongroup-border-color - The border color of the buttongroup
  * @cssproperty --mdc-buttongroup-divider-color - The color of the divider between buttons within the buttongroup
  */
-class Buttongroup extends Component {
+class ButtonGroup extends Component {
   /**
    * Orientation of the buttongroup.
    * @default 'horizontal'
@@ -66,7 +66,7 @@ class Buttongroup extends Component {
     });
   }
 
-  override updated(changedProperties: PropertyValues<Buttongroup>) {
+  override updated(changedProperties: PropertyValues<ButtonGroup>) {
     super.updated(changedProperties);
     if (changedProperties.has('size') || changedProperties.has('variant')) {
       this.handleSlotChange();
@@ -80,4 +80,4 @@ class Buttongroup extends Component {
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
-export default Buttongroup;
+export default ButtonGroup;
