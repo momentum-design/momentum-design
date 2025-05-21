@@ -46,6 +46,7 @@ import { CardAndDialogFooterMixin } from '../../utils/mixins/CardAndDialogFooter
  * @cssproperty --mdc-dialog-elevation-3 - elevation of the dialog
  * @cssproperty --mdc-dialog-width - width of the dialog
  *
+ * @slot dialog-header - Slot for the dialog header content. This can be used to pass custom header content.
  * @slot dialog-body - Slot for the dialog body content
  * @slot footer-link - This slot is for passing `mdc-link` component within the footer section.
  * @slot footer-button-secondary - This slot is for passing secondary variant of `mdc-button` component
@@ -288,6 +289,7 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
 
   public override render() {
     return html`
+    <slot name="dialog-header"></slot>
       ${this.headerText
     ? html`
       <div part="header">

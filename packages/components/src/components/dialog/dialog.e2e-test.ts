@@ -81,6 +81,26 @@ const dialogWithAllSlots = {
   `,
 };
 
+const dialogWithCustomHeader = {
+  id: 'dialog',
+  triggerId: 'trigger-btn',
+  ariaLabel: 'dialog',
+  visible: true,
+  variant: 'default',
+  closeButtonAriaLabel: 'Close button label',
+  children: `
+    <div slot="dialog-header" style="display: flex; align-items: center; gap: 0.5rem">
+      <mdc-icon name="placeholder-bold"></mdc-icon>
+      <mdc-text type="heading-small-medium">Custom Dialog Header</mdc-text>
+    </div>
+    <div slot="dialog-body">
+      <p>This is the body content of the dialog.</p>
+    </div>
+    <mdc-link slot="footer-link" icon-name="placeholder-bold" href='#'>Label</mdc-link>
+    <mdc-button slot="footer-button-secondary">Secondary</mdc-button>
+    <mdc-button slot="footer-button-primary">Primary</mdc-button>
+  `,
+};
 test('mdc-dialog', async ({ componentsPage }) => {
   const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots });
 
@@ -107,7 +127,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await componentsPage.visualRegression.takeScreenshot('mdc-dialog', { element: dialog });
     });
     await test.step('matches screenshot of element with variant', async () => {
-      await setup({ componentsPage, ...dialogWithAllSlots, variant: 'promotional' });
+      await setup({ componentsPage, ...dialogWithCustomHeader, variant: 'promotional' });
       await componentsPage.visualRegression.takeScreenshot('mdc-dialog-variant-promotional', { element: dialog });
     });
   });

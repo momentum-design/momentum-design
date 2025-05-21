@@ -43,6 +43,20 @@ const createTrigger = (triggerID: string, text: String, toggleVisibility: () => 
   </div>
 `;
 
+const dialogBodyContent = (toggleVisibility: () => void, customHeader = false) => html`
+${customHeader && html`<div slot="dialog-header" style="display: flex; align-items: center; gap: 0.5rem">
+  <mdc-icon name="placeholder-bold"></mdc-icon>
+  <mdc-text type="heading-small-medium">Dialog Header</mdc-text>
+</div>`}
+<div slot="dialog-body">
+  <p>This is the body content of the dialog.</p>
+</div>
+<mdc-link slot="footer-link" icon-name="placeholder-bold" href='#'>Label</mdc-link>
+<mdc-text slot="footer-link">Not rendered</mdc-text>
+<mdc-button slot="footer-button-secondary" @click="${toggleVisibility}">Secondary</mdc-button>
+<mdc-button slot="footer-button-primary" @click="${toggleVisibility}">Primary</mdc-button>
+`;
+
 const render = (args: Args) => {
   const toggleVisibility = () => {
     const dialog = document.getElementById(args.id) as HTMLElement;
@@ -50,15 +64,18 @@ const render = (args: Args) => {
   };
   return html`
     ${createTrigger(args.triggerId, 'Click me!', toggleVisibility)}
-    ${createDialog(args, html`
-      <div slot="dialog-body">
-        <p>This is the body content of the dialog.</p>
-      </div>
-      <mdc-link slot="footer-link" icon-name="placeholder-bold" href='#'>Label</mdc-link>
-      <mdc-text slot="footer-link">Not rendered</mdc-text>
-      <mdc-button slot="footer-button-secondary" @click="${toggleVisibility}">Secondary</mdc-button>
-      <mdc-button slot="footer-button-primary" @click="${toggleVisibility}">Primary</mdc-button>
-    `)}
+    ${createDialog(args, dialogBodyContent(toggleVisibility))}
+  `;
+};
+
+const renderWithCustomHeader = (args: Args) => {
+  const toggleVisibility = () => {
+    const dialog = document.getElementById(args.id) as HTMLElement;
+    dialog.toggleAttribute('visible');
+  };
+  return html`
+    ${createTrigger(args.triggerId, 'Click me!', toggleVisibility)}
+    ${createDialog(args, dialogBodyContent(toggleVisibility, true))}
   `;
 };
 
@@ -240,6 +257,14 @@ export const withSaveCancelButtons: StoryObj = {
   args: {
     ...commonProperties,
     ...headerDescriptionProperties,
+    size: DEFAULTS.SIZE,
+  },
+};
+
+export const withCustomHeader: StoryObj = {
+  render: renderWithCustomHeader,
+  args: {
+    ...commonProperties,
     size: DEFAULTS.SIZE,
   },
 };
