@@ -211,7 +211,7 @@ export const EditorMenuBar: StoryObj = {
         </mdc-menusection>
       </mdc-menupopover>
     </mdc-menubar>
-    <p id="textarea" style="width: 100vh; height: 100%; border: 1px solid white; border-radius: 5px; padding: 1rem;">
+    <p id="textarea" style="width: 80%; height: 80%; border: 1px solid white; border-radius: 5px; padding: 1rem;">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc at accumsan purus, non dignissim mi.
       Nam in nisl at neque mollis tempor iaculis ut felis. Etiam bibendum vitae est vitae dictum.
       Nulla non sapien volutpat, ornare diam sit amet, viverra dui. Vestibulum sit amet eros nec lacus laoreet commodo.
@@ -226,24 +226,25 @@ export const EditorMenuBar: StoryObj = {
       pellentesque lorem, a tempus massa tortor ac libero. Fusce iaculis odio in tincidunt efficitur.
     </p>
     <script>
-      var handleClick = (event) => {
+      var handleEditorClick = (event) => {
         const isDisabled = event.target.hasAttribute('disabled');
         if (isDisabled) return;
         const action = event.target.getAttribute('label');
+        const isChecked = event.target.getAttribute('aria-checked');
         const textarea = document.getElementById('textarea');
         
         switch (action) {
           case 'Bold':
-            textarea.style.fontWeight = 'bold';
+            textarea.style.fontWeight = isChecked === 'true' ? 'bold' : 'unset';
             break;
           case 'Italic':
-            textarea.style.fontStyle = 'italic';
+            textarea.style.fontStyle = isChecked === 'true' ? 'italic' : 'unset';
             break;
           case 'Underline':
-            textarea.style.textDecoration = 'underline';
+            textarea.style.textDecoration = isChecked === 'true' ? 'underline' : 'unset';
             break;
           case 'Strikethrough':
-            textarea.style.textDecoration = 'line-through';
+            textarea.style.textDecoration = isChecked === 'true' ? 'line-through' : 'unset';
             break;
           case 'Red':
             textarea.style.color = 'red';
@@ -277,7 +278,7 @@ export const EditorMenuBar: StoryObj = {
             break;
         }
       }
-      document.addEventListener('click', handleClick);
+      document.addEventListener('click', handleEditorClick);
     </script>
   `,
 };
