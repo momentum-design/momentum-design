@@ -12,21 +12,28 @@ const styles = css`
 }
 
 :host([variant='primary']){
-  --mdc-buttongroup-divider-color: var(--mds-color-theme-background-solid-primary-normal);
+  border: none;
+  background-color: var(--mds-color-theme-outline-primary-normal);
+  gap: 1px;
 }
 
 ::slotted(mdc-button){
   border-radius: 0;
   border: none;
+  box-sizing: content-box;
 }
 
 :host([orientation="vertical"]){
   flex-direction: column;
 }
-:host([orientation="horizontal"]) ::slotted(mdc-button:not(:last-child)){
+
+:host([orientation="horizontal"][variant="secondary"]:dir(ltr)) ::slotted(mdc-button:not(:last-child)){
   border-right: 1px solid var(--mdc-buttongroup-divider-color);
 }
-:host([orientation="vertical"]) ::slotted(mdc-button:not(:last-child)){
+:host([orientation="horizontal"][variant="secondary"]:dir(rtl)) ::slotted(mdc-button:not(:last-child)){
+  border-left: 1px solid var(--mdc-buttongroup-divider-color);
+}
+:host([orientation="vertical"][variant="secondary"]) ::slotted(mdc-button:not(:last-child)){
   border-bottom: 1px solid var(--mdc-buttongroup-divider-color);
 }
 
@@ -71,7 +78,6 @@ const styles = css`
 :host([compact][orientation="horizontal"][size="40"]) ::slotted(mdc-button){
   width: 2.5rem;
 }
-
 `;
 
 export default [hostFitContentStyles, styles];

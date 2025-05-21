@@ -1,8 +1,7 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
-import { BUTTON_VARIANTS } from '../button/button.constants';
-import { BUTTON_GROUP_ORIENTATION, BUTTON_GROUP_SIZE } from './buttongroup.constants';
+import { BUTTON_GROUP_ORIENTATION, BUTTON_GROUP_SIZE, BUTTON_GROUP_VARIANT } from './buttongroup.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -65,7 +64,7 @@ const setupWithPopover = async (args: SetupOptions) => {
   return { buttongroup, popover };
 };
 
-test.use({ viewport: { width: 600, height: 540 } });
+test.use({ viewport: { width: 600, height: 500 } });
 test('mdc-buttongroup', async ({ componentsPage }) => {
   /**
    * VISUAL REGRESSION
@@ -79,7 +78,7 @@ test('mdc-buttongroup', async ({ componentsPage }) => {
       <mdc-button prefix-icon="placeholder-bold" aria-label='icon button'></mdc-button>
       <mdc-button prefix-icon="placeholder-bold" aria-label='icon button'></mdc-button>`);
     await buttonGroupStickerSheet.createMarkupWithCombination({
-      variant: BUTTON_VARIANTS,
+      variant: BUTTON_GROUP_VARIANT,
       size: BUTTON_GROUP_SIZE,
       orientation: BUTTON_GROUP_ORIENTATION,
     });
@@ -89,7 +88,7 @@ test('mdc-buttongroup', async ({ componentsPage }) => {
       <mdc-button prefix-icon="arrow-up-bold" aria-label='arrow up button'></mdc-button>
       <mdc-button prefix-icon="arrow-down-bold" aria-label='arrow down button'></mdc-button>`);
     buttonGroupStickerSheet.setAttributes({ orientation: BUTTON_GROUP_ORIENTATION.VERTICAL,
-      variant: BUTTON_VARIANTS.SECONDARY,
+      variant: BUTTON_GROUP_VARIANT.SECONDARY,
       size: BUTTON_GROUP_SIZE[32] });
     await buttonGroupStickerSheet.createMarkupWithCombination({});
 
@@ -101,7 +100,7 @@ test('mdc-buttongroup', async ({ componentsPage }) => {
       <mdc-button prefix-icon="forward-message-bold" aria-label='forward message button'></mdc-button>
       <mdc-button prefix-icon="more-bold" aria-label='more button'></mdc-button>`);
     buttonGroupStickerSheet.setAttributes({ compact: true,
-      variant: BUTTON_VARIANTS.SECONDARY,
+      variant: BUTTON_GROUP_VARIANT.SECONDARY,
       size: BUTTON_GROUP_SIZE[24] });
     await buttonGroupStickerSheet.createMarkupWithCombination({});
 
@@ -110,7 +109,7 @@ test('mdc-buttongroup', async ({ componentsPage }) => {
       <mdc-button prefix-icon="microphone-muted-bold">Unmute</mdc-button>
       <mdc-button prefix-icon="arrow-down-bold" aria-label='arrow down button'></mdc-button>`);
     buttonGroupStickerSheet.setAttributes({ orientation: BUTTON_GROUP_ORIENTATION.HORIZONTAL,
-      variant: BUTTON_VARIANTS.SECONDARY,
+      variant: BUTTON_GROUP_VARIANT.SECONDARY,
       size: BUTTON_GROUP_SIZE[28] });
     await buttonGroupStickerSheet.createMarkupWithCombination({});
 
@@ -119,16 +118,8 @@ test('mdc-buttongroup', async ({ componentsPage }) => {
       <mdc-button prefix-icon="raise-hand-bold" aria-label='raise hand button'></mdc-button>
       <mdc-button prefix-icon="reactions-bold" aria-label='reactions button'></mdc-button>`);
     buttonGroupStickerSheet.setAttributes({ orientation: BUTTON_GROUP_ORIENTATION.HORIZONTAL,
-      variant: BUTTON_VARIANTS.SECONDARY,
+      variant: BUTTON_GROUP_VARIANT.SECONDARY,
       size: BUTTON_GROUP_SIZE[40] });
-    await buttonGroupStickerSheet.createMarkupWithCombination({});
-
-    // reaction group
-    buttonGroupStickerSheet.setChildren(`<mdc-button>👍</mdc-button>
-      <mdc-button>1</mdc-button>`);
-    buttonGroupStickerSheet.setAttributes({ orientation: BUTTON_GROUP_ORIENTATION.HORIZONTAL,
-      variant: BUTTON_VARIANTS.SECONDARY,
-      size: BUTTON_GROUP_SIZE[28] });
     await buttonGroupStickerSheet.createMarkupWithCombination({});
 
     await buttonGroupStickerSheet.mountStickerSheet({ wrapperStyle: 'display: flex; flex-wrap: wrap' });
@@ -157,7 +148,7 @@ test('mdc-buttongroup', async ({ componentsPage }) => {
       <mdc-button prefix-icon="more-bold"></mdc-button>` });
 
     await test.step('attribute variant should be present on component by default', async () => {
-      await expect(buttongroup).toHaveAttribute('variant', BUTTON_VARIANTS.PRIMARY);
+      await expect(buttongroup).toHaveAttribute('variant', BUTTON_GROUP_VARIANT.PRIMARY);
     });
 
     await test.step('attribute orientation should be present on component by default', async () => {
@@ -175,10 +166,10 @@ test('mdc-buttongroup', async ({ componentsPage }) => {
 
     await test.step('attribute variant should change the button variant when set', async () => {
       const firstButton = buttongroup.locator('mdc-button').first();
-      await expect(firstButton).toHaveAttribute('variant', BUTTON_VARIANTS.PRIMARY);
-      await componentsPage.setAttributes(buttongroup, { variant: BUTTON_VARIANTS.SECONDARY });
-      await expect(buttongroup).toHaveAttribute('variant', BUTTON_VARIANTS.SECONDARY);
-      await expect(firstButton).toHaveAttribute('variant', BUTTON_VARIANTS.SECONDARY);
+      await expect(firstButton).toHaveAttribute('variant', BUTTON_GROUP_VARIANT.PRIMARY);
+      await componentsPage.setAttributes(buttongroup, { variant: BUTTON_GROUP_VARIANT.SECONDARY });
+      await expect(buttongroup).toHaveAttribute('variant', BUTTON_GROUP_VARIANT.SECONDARY);
+      await expect(firstButton).toHaveAttribute('variant', BUTTON_GROUP_VARIANT.SECONDARY);
     });
   });
 
