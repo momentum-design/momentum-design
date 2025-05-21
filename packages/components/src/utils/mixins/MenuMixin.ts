@@ -318,10 +318,14 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         parentMenuItemDetails,
         parentMenuItemsChildren,
       } = this.getParentMenuContents(currentMenuItem);
-      const menuBarMenuItem = parentMenuItemsChildren.filter(
-        (node) => node.getAttribute('id') === parentMenuItemDetails?.menuChildId,
-      );
-      (menuBarMenuItem[0] as HTMLElement)?.focus();
+      // Only proceed if menuChildId is non-empty
+      if (parentMenuItemDetails?.menuChildId) {
+        const menuBarMenuItem = parentMenuItemsChildren.filter(
+          (node) => node.getAttribute('id') === parentMenuItemDetails.menuChildId,
+        );
+
+        (menuBarMenuItem[0] as HTMLElement)?.focus();
+      }
     }
 
     /**
