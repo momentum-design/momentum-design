@@ -45,7 +45,7 @@ const meta: Meta = {
             <mdc-menuitem id="menu-id" label="..."></mdc-menuitem>
             <mdc-menupopover triggerid="menu-id">
               <mdc-menuitem label="..."></mdc-menuitem>
-              <mdc-menuitem id="sub-menu-id" label="..."></mdc-menuitem>
+              <mdc-menuitem id="sub-menu-id" label="..." arrow-position="trailing"></mdc-menuitem>
               <mdc-menupopover triggerid="sub-menu-id">
                 <mdc-menuitem label="..."></mdc-menuitem>
                 <mdc-menuitem label="..."></mdc-menuitem>

@@ -26,12 +26,15 @@ import styles from './menubar.styles';
   * @slot default - Contains the menu items and their associated popovers
   */
 class MenuBar extends MenuMixin(Component) {
+  constructor() {
+    super();
+    this.addEventListener('keydown', this.handleKeyDown);
+    this.addEventListener('click', this.handleMouseClick);
+  }
+
   override connectedCallback() {
     super.connectedCallback();
     this.role = ROLE.MENUBAR;
-
-    this.addEventListener('keydown', this.handleKeyDown);
-    this.addEventListener('click', this.handleMouseClick);
   }
 
   public override firstUpdated(): void {

@@ -27,6 +27,13 @@ import { TAG_NAME as MENU_POPOVER } from './menupopover.constants';
  * @slot default - Contains the menu items to be displayed in the popover
  */
 class MenuPopover extends MenuMixin(Popover) {
+  constructor() {
+    super();
+
+    this.addEventListener('keydown', this.handleKeyDown);
+    this.addEventListener('click', this.handleMouseClick);
+  }
+
   override connectedCallback() {
     super.connectedCallback();
     this.role = ROLE.MENU;
@@ -38,9 +45,6 @@ class MenuPopover extends MenuMixin(Popover) {
     this.showArrow = false;
     this.interactive = true;
     this.ariaOrientation = ORIENTATION.VERTICAL;
-
-    this.addEventListener('keydown', this.handleKeyDown);
-    this.addEventListener('click', this.handleMouseClick);
   }
 
   override async firstUpdated(changedProperties: PropertyValues) {
