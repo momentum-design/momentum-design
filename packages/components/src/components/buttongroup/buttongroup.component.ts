@@ -1,10 +1,9 @@
 import { CSSResult, html, PropertyValues } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
 import { Component } from '../../models';
-import type { ButtonVariant } from '../button/button.types';
 import { DEFAULTS } from './buttongroup.constants';
 import styles from './buttongroup.styles';
-import type { ButtonGroupOrientation, ButtonGroupSize } from './buttongroup.types';
+import type { ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant } from './buttongroup.types';
 
 /**
  * buttongroup component, is a styled wrapper for multiple buttons.
@@ -32,7 +31,7 @@ class Buttongroup extends Component {
    * @default 'primary'
    */
   @property({ type: String, reflect: true })
-  variant: ButtonVariant = DEFAULTS.VARIANT;
+  variant: ButtonGroupVariant = DEFAULTS.VARIANT;
 
   /**
    * Size of the buttons within the buttongroup.
@@ -42,7 +41,8 @@ class Buttongroup extends Component {
   size: ButtonGroupSize = DEFAULTS.SIZE;
 
   /**
-   * Whether the buttongroup is compact.
+   * When this is true, the buttons within the buttongroup will be compact.
+   * i.e. Irrespective of the size of the buttons, they will have a height of 24px.
    * @default false
    */
   @property({ type: Boolean, reflect: true })

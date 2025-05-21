@@ -2,8 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { BUTTON_VARIANTS } from '../button/button.constants';
-import { BUTTON_GROUP_ORIENTATION, BUTTON_GROUP_SIZE } from './buttongroup.constants';
+import { BUTTON_GROUP_ORIENTATION, BUTTON_GROUP_SIZE, BUTTON_GROUP_VARIANT } from './buttongroup.constants';
 import { disableControls } from '../../../config/storybook/utils';
 import '../button';
 import '../popover';
@@ -30,7 +29,7 @@ const meta: Meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: Object.values(BUTTON_VARIANTS),
+      options: Object.values(BUTTON_GROUP_VARIANT),
     },
     orientation: {
       control: 'select',
@@ -53,7 +52,7 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    variant: BUTTON_VARIANTS.PRIMARY,
+    variant: BUTTON_GROUP_VARIANT.PRIMARY,
     orientation: BUTTON_GROUP_ORIENTATION.HORIZONTAL,
     size: BUTTON_GROUP_SIZE[28],
     compact: false,
@@ -67,7 +66,7 @@ export const Example: StoryObj = {
 
 export const VerticalGroup: StoryObj = {
   args: {
-    variant: BUTTON_VARIANTS.TERTIARY,
+    variant: BUTTON_GROUP_VARIANT.SECONDARY,
     orientation: BUTTON_GROUP_ORIENTATION.VERTICAL,
     size: BUTTON_GROUP_SIZE[28],
     compact: false,
@@ -80,7 +79,7 @@ export const VerticalGroup: StoryObj = {
 
 export const CompactGroup: StoryObj = {
   args: {
-    variant: BUTTON_VARIANTS.SECONDARY,
+    variant: BUTTON_GROUP_VARIANT.SECONDARY,
     orientation: BUTTON_GROUP_ORIENTATION.HORIZONTAL,
     size: BUTTON_GROUP_SIZE[32],
     compact: true,
@@ -96,7 +95,7 @@ export const CompactGroup: StoryObj = {
 
 export const SpiltPillButton: StoryObj = {
   args: {
-    variant: BUTTON_VARIANTS.SECONDARY,
+    variant: BUTTON_GROUP_VARIANT.SECONDARY,
     orientation: BUTTON_GROUP_ORIENTATION.HORIZONTAL,
     size: BUTTON_GROUP_SIZE[28],
     compact: false,
@@ -109,7 +108,7 @@ export const SpiltPillButton: StoryObj = {
 
 export const SpiltIconButton: StoryObj = {
   args: {
-    variant: BUTTON_VARIANTS.SECONDARY,
+    variant: BUTTON_GROUP_VARIANT.SECONDARY,
     orientation: BUTTON_GROUP_ORIENTATION.HORIZONTAL,
     size: BUTTON_GROUP_SIZE[28],
     compact: false,
@@ -120,25 +119,13 @@ export const SpiltIconButton: StoryObj = {
   },
 };
 
-export const ReactionGroup: StoryObj = {
-  args: {
-    variant: BUTTON_VARIANTS.SECONDARY,
-    orientation: BUTTON_GROUP_ORIENTATION.HORIZONTAL,
-    size: BUTTON_GROUP_SIZE[28],
-    compact: false,
-    children: html`
-      <mdc-button>👍</mdc-button>
-      <mdc-button>1</mdc-button>
-    `,
-  },
-};
-
 export const GroupWithPopover: StoryObj = {
   render: () => html`
     <mdc-buttongroup variant="secondary" orientation="horizontal" size="32">
       <mdc-button prefix-icon="camera-on-bold" id="popover-trigger-1">Start Video</mdc-button>
       <mdc-button prefix-icon="arrow-down-bold" id="popover-trigger-2"></mdc-button>
     </mdc-buttongroup>
+    
     <mdc-tooltip id="tooltip1" triggerID="popover-trigger-1" placement="bottom" show-arrow tooltip-type="label">
       <mdc-text>Tooltip explaining Start Video button</mdc-text>
     </mdc-tooltip>
