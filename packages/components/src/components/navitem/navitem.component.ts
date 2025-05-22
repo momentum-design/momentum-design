@@ -7,6 +7,7 @@ import { DEFAULTS, ALLOWED_BADGE_TYPES } from './navitem.constants';
 import providerUtils from '../../utils/provider';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import MenuItem from '../menuitem/menuitem.component';
 import { getIconNameWithoutStyle } from '../button/button.utils';
@@ -126,15 +127,33 @@ class NavItem extends IconNameMixin(MenuItem) {
     const context = this.sideNavigationContext?.value;
     if (!context) return;
 
-    const { isExpanded } = context;
-    this.isExpanded = isExpanded;
+    // Determine expansion state
+    this.isExpanded = this.isNested() ? true : context.isExpanded;
 
-    if (!this.isExpanded) {
-      this.ariaLabel = this.label || '';
-      this.setAttribute('aria-label', this.ariaLabel);
-    } else {
+    // Manage aria-label for accessibility
+    if (this.isExpanded) {
       this.removeAttribute('aria-label');
+    } else {
+      const label = this.label ?? '';
+      this.ariaLabel = label;
+      this.setAttribute('aria-label', label);
     }
+  }
+
+  /**
+   * Check whether the navitem is inside a nested nav structure.
+   * Returns `true` if there is a parent `mdc-menupopover`
+   * This method assumes nesting implies deeper levels of nav hierarchy.
+   */
+  private isNested(): boolean {
+    let parent = this.parentElement;
+    while (parent) {
+      if (parent.tagName.toLowerCase() === MENUPOPOVER_TAGNAME) {
+        return true;
+      }
+      parent = parent.parentElement;
+    }
+    return false;
   }
 
   /**
@@ -224,6 +243,29 @@ class NavItem extends IconNameMixin(MenuItem) {
     `;
   }
 
+  private hasArrowButton() {
+    const id = this.getAttribute('id');
+    if (!id) return false;
+    const siblings = Array.from(this.parentElement?.children || []);
+    return siblings.some((sibling) =>
+      sibling !== this
+      && sibling.tagName.toLowerCase() === MENUPOPOVER_TAGNAME
+      && sibling.getAttribute('triggerid') === id);
+  }
+
+  private renderArrowIcon(isExpanded: boolean | undefined) {
+    const arrowClass = isExpanded ? '' : 'arrow';
+
+    return html`
+      <mdc-icon 
+        name='arrow-right-bold' 
+        length-unit="rem" 
+        part="trailing-arrow" 
+        class="${arrowClass}">
+      </mdc-icon>
+    `;
+  }
+
   private renderBadge(isExpanded: boolean | undefined) {
     const badgeClass = isExpanded ? '' : 'badge';
     const isValidBadgeType = Object.values(ALLOWED_BADGE_TYPES).includes(this.badgeType as BadgeType);
@@ -253,6 +295,7 @@ class NavItem extends IconNameMixin(MenuItem) {
         ${!this.isExpanded ? this.renderBadge(this.isExpanded) : nothing}
       </div>
       ${this.isExpanded ? html`${this.renderTextLabel(this.label)}${this.renderBadge(this.isExpanded)}` : nothing}
+      ${this.hasArrowButton() ? this.renderArrowIcon(this.isExpanded) : nothing}
     `;
   }
 

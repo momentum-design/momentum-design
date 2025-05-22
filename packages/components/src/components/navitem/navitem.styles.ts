@@ -116,6 +116,26 @@ const styles = [hostFitContentStyles, css`
     right: -0.375rem;
     top: -0.375rem;
   }
+
+  :host(:not([isExpanded]))::part(trailing-arrow) {
+    --mdc-icon-size: 0.75rem;
+  }
+
+  :host([isExpanded])::part(trailing-arrow) {
+    --mdc-icon-size: 1rem;
+  }
+
+  :host(:dir(ltr)) .arrow {
+    position: absolute;
+    right: -0.75rem;
+    top: 0.875rem;
+  }
+
+  :host(:dir(rtl)) .arrow {
+    position: absolute;
+    left: -0.75rem;
+    top: 0.875rem;
+  }
 `, ...hostFocusRingStyles()];
 
 export default styles;

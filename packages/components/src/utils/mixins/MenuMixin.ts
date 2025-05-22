@@ -342,8 +342,8 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
           (node) => node.getAttribute('id') === parentMenuItemDetails.menuChildId,
         );
 
-        (menuBarMenuItem[0] as HTMLElement)?.focus();
         if (this.isValidNavItem(menuBarMenuItem[0].tagName)) {
+          currentMenuItem.removeAttribute('active');
           menuBarMenuItem[0].setAttribute('active', '');
         }
       }
