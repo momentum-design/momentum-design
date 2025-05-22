@@ -72,6 +72,8 @@ const meta: Meta = {
       'trailing-text-side-header',
       'trailing-text-subline',
       'trailing-controls',
+      'arrow-position',
+      'arrow-direction',
       '--mdc-listitem-default-background-color',
       '--mdc-listitem-background-color-hover',
       '--mdc-listitem-background-color-active',

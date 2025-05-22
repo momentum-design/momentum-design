@@ -2,6 +2,7 @@ import type { CSSResult, PropertyValues, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
 import { Component } from '../../models';
+import { KEYS } from '../../utils/keys';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { ROLE } from '../../utils/roles';
@@ -32,6 +33,7 @@ import type { ListItemVariants } from './listitem.types';
  * @tagname mdc-listitem
  *
  * @dependency mdc-text
+ * @dependency mdc-tooltip
  *
  * @slot leading-controls - slot for list item controls to appear of leading end.
  * @slot leading-text-primary-label - slot for list item primary label.
@@ -118,6 +120,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   constructor() {
     super();
 
+    this.addEventListener('keydown', this.handleKeyDown);
     this.addEventListener('focusin', this.displayTooltipForLongText);
     this.addEventListener('mouseover', this.displayTooltipForLongText);
     this.addEventListener('focusout', this.hideTooltipOnLeave);
@@ -128,6 +131,22 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = this.role || ROLE.LISTITEM;
+  }
+
+  private handleKeyDown(event: KeyboardEvent): void {
+    if (event.key === KEYS.ENTER || event.key === KEYS.SPACE) {
+      this.triggerClickEvent();
+      event.preventDefault();
+    }
+  }
+
+  private triggerClickEvent() {
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    });
+    this.dispatchEvent(clickEvent);
   }
 
   private handleClick(): void {
@@ -213,10 +232,18 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     }
   }
 
+  protected renderTrailingControls() {
+    return html`<slot name="trailing-controls"></slot>`;
+  }
+
+  protected renderLeadingControls() {
+    return html`<slot name="leading-controls"></slot>`;
+  }
+
   public override render() {
     return html`
       <div part="leading">
-        <slot name="leading-controls"></slot>
+        ${this.renderLeadingControls()}
         <div part="leading-text">
           ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
           ${this.getText('leading-text-secondary-label', TYPE.BODY_SMALL_REGULAR, this.secondaryLabel)}
@@ -228,7 +255,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
           ${this.getText('trailing-text-side-header', TYPE.BODY_MIDSIZE_REGULAR, this.sideHeaderText)}
           ${this.getText('trailing-text-subline', TYPE.BODY_SMALL_REGULAR, this.sublineText)}
         </div>
-        <slot name="trailing-controls"></slot>
+        ${this.renderTrailingControls()}
       </div>
     `;
   }

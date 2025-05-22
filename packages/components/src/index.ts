@@ -1,5 +1,6 @@
 // Components Imports
 import AlertChip from './components/alertchip';
+import Animation from './components/animation';
 import Appheader from './components/appheader';
 import Avatar from './components/avatar';
 import AvatarButton from './components/avatarbutton';
@@ -28,7 +29,15 @@ import Linksimple from './components/linksimple';
 import List from './components/list';
 import ListItem from './components/listitem';
 import Marker from './components/marker';
+import Menu from './components/menu';
+import MenuBar from './components/menubar';
 import MenuItem from './components/menuitem';
+import MenuItemCheckbox from './components/menuitemcheckbox';
+import MenuItemRadio from './components/menuitemradio';
+import MenuSection from './components/menusection';
+import MenuPopover from './components/menupopover';
+import NavItem from './components/navitem';
+import NavItemList from './components/navitemlist';
 import OptGroup from './components/optgroup';
 import Option from './components/option';
 import Popover from './components/popover';
@@ -40,6 +49,7 @@ import RadioGroup from './components/radiogroup';
 import ScreenreaderAnnouncer from './components/screenreaderannouncer';
 import Searchfield from './components/searchfield';
 import Select from './components/select';
+import SideNavigation from './components/sidenavigation';
 import Spinner from './components/spinner';
 import StaticCheckbox from './components/staticcheckbox';
 import StaticRadio from './components/staticradio';
@@ -53,13 +63,6 @@ import Toggle from './components/toggle';
 import ToggleTip from './components/toggletip';
 import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
-import MenuItemRadio from './components/menuitemradio';
-import MenuItemCheckbox from './components/menuitemcheckbox';
-import NavItem from './components/navitem';
-import NavItemList from './components/navitemlist';
-import SideNavigation from './components/sidenavigation';
-import MenuSection from './components/menusection';
-import Animation from './components/animation';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -109,7 +112,14 @@ export {
   List,
   ListItem,
   Marker,
+  Menu,
+  MenuBar,
   MenuItem,
+  MenuItemCheckbox,
+  MenuItemRadio,
+  MenuPopover,
+  NavItem,
+  NavItemList,
   OptGroup,
   Option,
   Popover,
@@ -121,25 +131,21 @@ export {
   ScreenreaderAnnouncer,
   Searchfield,
   Select,
+  SideNavigation,
   Spinner,
+  StaticCheckbox,
+  StaticRadio,
+  StaticToggle,
   Tab,
   TabList,
   Text,
   Textarea,
   ThemeProvider,
   Toggle,
-  VirtualizedList,
-  StaticCheckbox,
-  StaticRadio,
-  StaticToggle,
   ToggleTip,
   Tooltip,
-  MenuItemRadio,
-  MenuItemCheckbox,
-  NavItem,
-  NavItemList,
-  SideNavigation,
   MenuSection,
+  VirtualizedList,
 };
 // Types Exports
 export type {

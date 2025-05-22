@@ -1,3 +1,4 @@
+import '../icon';
 import '../text';
 import '../tooltip';
 import MenuItem from './menuitem.component';
