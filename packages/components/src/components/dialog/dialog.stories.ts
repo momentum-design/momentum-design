@@ -44,10 +44,9 @@ const createTrigger = (triggerID: string, text: String, toggleVisibility: () => 
 `;
 
 const dialogBodyContent = (toggleVisibility: () => void, customHeader = false) => html`
-${customHeader && html`<div slot="dialog-header" style="display: flex; align-items: center; gap: 0.5rem">
-  <mdc-icon name="placeholder-bold"></mdc-icon>
-  <mdc-text type="heading-small-medium">Dialog Header</mdc-text>
-</div>`}
+${customHeader && html`
+  <mdc-icon slot="header-prefix" name="placeholder-bold"></mdc-icon>
+`}
 <div slot="dialog-body">
   <p>This is the body content of the dialog.</p>
 </div>
@@ -265,6 +264,7 @@ export const withCustomHeader: StoryObj = {
   render: renderWithCustomHeader,
   args: {
     ...commonProperties,
+    ...headerDescriptionProperties,
     size: DEFAULTS.SIZE,
   },
 };

@@ -88,11 +88,10 @@ const dialogWithCustomHeader = {
   visible: true,
   variant: 'default',
   closeButtonAriaLabel: 'Close button label',
+  headerText: 'Dialog Header',
+  descriptionText: 'Dialog Description',
   children: `
-    <div slot="dialog-header" style="display: flex; align-items: center; gap: 0.5rem">
-      <mdc-icon name="placeholder-bold"></mdc-icon>
-      <mdc-text type="heading-small-medium">Custom Dialog Header</mdc-text>
-    </div>
+    <mdc-icon slot="header-prefix" name="placeholder-bold"></mdc-icon>
     <div slot="dialog-body">
       <p>This is the body content of the dialog.</p>
     </div>

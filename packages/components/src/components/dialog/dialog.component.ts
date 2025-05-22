@@ -289,17 +289,19 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
 
   public override render() {
     return html`
-    <slot name="dialog-header"></slot>
       ${this.headerText
     ? html`
-      <div part="header">
-        <mdc-text
-          part="header-text"
-          tagname="${VALID_TEXT_TAGS[this.headerTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
-          type="${TYPE.BODY_LARGE_BOLD}"  
-        >
-          ${this.headerText}
-        </mdc-text>
+      <div part="header-section">
+        <div part="header">
+          <slot name="header-prefix"></slot>
+          <mdc-text
+            part="header-text"
+            tagname="${VALID_TEXT_TAGS[this.headerTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
+            type="${TYPE.BODY_LARGE_BOLD}"  
+          >
+            ${this.headerText}
+          </mdc-text>
+        </div>
         <mdc-text
           part="description-text"
           tagname="${VALID_TEXT_TAGS[this.descriptionTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
