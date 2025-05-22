@@ -2,7 +2,6 @@ import type { CSSResult, PropertyValues } from 'lit';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { Component } from '../../models';
 import styles from './navitem.styles';
 import { DEFAULTS, ALLOWED_BADGE_TYPES } from './navitem.constants';
 import providerUtils from '../../utils/provider';
@@ -257,7 +256,7 @@ class NavItem extends IconNameMixin(MenuItem) {
     `;
   }
 
-  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...MenuItem.styles, ...styles];
 }
 
 export default NavItem;

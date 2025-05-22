@@ -7,6 +7,8 @@ import { ORIENTATION, TAG_NAME as MENUBAR_TAGNAME } from '../../components/menub
 import type { Orientation } from '../../components/menubar/menubar.types';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../../components/menupopover/menupopover.constants';
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../../components/menusection/menusection.constants';
+import { TAG_NAME as NAVITEMLIST_TAGNAME } from '../../components/navitemlist/navitemlist.constants';
+import { TAG_NAME as NAVITEM_TAGNAME } from '../../components/navitem/navitem.constants';
 import { POPOVER_PLACEMENT } from '../../components/popover/popover.constants';
 import { KEYS } from '../keys';
 import { ROLE } from '../roles';
@@ -146,8 +148,26 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     private isValidMenu(tagName?: string): boolean {
       return (
         tagName?.toLowerCase() === MENU_TAGNAME
-        || tagName?.toLowerCase() === MENUBAR_TAGNAME
+        || tagName?.toLowerCase() === MENUBAR_TAGNAME || this.isValidNavItemList(tagName)
       );
+    }
+
+    /**
+     * Checks if the given tag name is a valid navitemlist tag name.
+     * @param tagName - The tag name to check.
+     * @returns True if the tag name is a valid navitemlist, false otherwise.
+     */
+    private isValidNavItemList(tagName?: string): boolean {
+      return tagName?.toLowerCase() === NAVITEMLIST_TAGNAME;
+    }
+
+    /**
+     * Checks if the given tag name is a valid navitem tag name.
+     * @param tagName - The tag name to check.
+     * @returns True if the tag name is a valid navitem, false otherwise.
+     */
+    private isValidNavItem(tagName?: string): boolean {
+      return tagName?.toLowerCase() === NAVITEM_TAGNAME;
     }
 
     /**
@@ -323,6 +343,9 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         );
 
         (menuBarMenuItem[0] as HTMLElement)?.focus();
+        if (this.isValidNavItem(menuBarMenuItem[0].tagName)) {
+          menuBarMenuItem[0].setAttribute('active', '');
+        }
       }
     }
 

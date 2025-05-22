@@ -175,18 +175,18 @@ export const NestedSideNavigation: StoryObj = {
           <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold" nav-id="temp3"
           label='Messaging'></mdc-navitem>
           <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold" nav-id="1"
-            label='Messaging' id="menu-button-trigger"></mdc-navitem>
+            label='Messaging' id="menu-button-trigger" arrow-position='trailing'></mdc-navitem>
           <mdc-menupopover triggerid="menu-button-trigger">
-              <mdc-navitem label="New" nav-id="temp4"></mdc-navitem>
-              <mdc-navitem label="Open" nav-id="temp5"></mdc-navitem>
-              <mdc-navitem label="Save" nav-id="temp6"></mdc-navitem>
-              <mdc-navitem label="navitem" nav-id="temp7" id="share-id"></mdc-navitem>
+              <mdc-navitem label="New" nav-id="temp4" badge-type="dot" icon-name="placeholder-bold"></mdc-navitem>
+              <mdc-navitem label="Open" nav-id="temp5" badge-type="dot" icon-name="placeholder-bold"></mdc-navitem>
+              <mdc-navitem label="Save" nav-id="temp6" badge-type="dot" icon-name="placeholder-bold"></mdc-navitem>
+              <mdc-navitem label="navitem" nav-id="temp7" id="share-id" badge-type="dot" icon-name="placeholder-bold" arrow-position='trailing'></mdc-navitem>
             <mdc-menupopover triggerid="share-id">
-              <mdc-navitem label="AirDrop" nav-id="temp8"></mdc-navitem>
-              <mdc-navitem label="Messages" nav-id="temp9"></mdc-navitem>
-              <mdc-navitem label="Notes" nav-id="temp10"></mdc-navitem>
-              <mdc-navitem label="Freeform" nav-id="temp11"></mdc-navitem>
-              <mdc-navitem label="Reminders" nav-id="temp12"></mdc-navitem>
+              <mdc-navitem label="AirDrop" nav-id="temp8" badge-type="dot" icon-name="placeholder-bold"></mdc-navitem>
+              <mdc-navitem label="Messages" nav-id="temp9" badge-type="dot" icon-name="placeholder-bold"></mdc-navitem>
+              <mdc-navitem label="Notes" nav-id="temp10" badge-type="dot" icon-name="placeholder-bold"></mdc-navitem>
+              <mdc-navitem label="Freeform" nav-id="temp11" badge-type="dot" icon-name="placeholder-bold"></mdc-navitem>
+              <mdc-navitem label="Reminders" nav-id="temp12" badge-type="dot" icon-name="placeholder-bold"></mdc-navitem>
             </mdc-menupopover>
           </mdc-menupopover>
 
