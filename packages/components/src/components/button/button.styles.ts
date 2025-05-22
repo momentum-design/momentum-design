@@ -237,13 +237,12 @@ const styles = css`
     --mdc-button-primary-disabled-color: var(--mds-color-theme-inverted-text-primary-disabled);
   }
 
-  slot {
+  :host([data-btn-type='pill']) slot,
+  :host([data-btn-type='pill-with-icon']) slot {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     display: inline-block;
-    min-width: 0;
-    max-width: 100%;
   }
 
   :host::part(prefix-icon),
