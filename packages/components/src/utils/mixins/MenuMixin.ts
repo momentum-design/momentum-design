@@ -343,7 +343,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         );
 
         if (this.isValidNavItem(menuBarMenuItem[0].tagName)) {
-          currentMenuItem.removeAttribute('active');
+          currentMenuItem?.removeAttribute('active');
           menuBarMenuItem[0].setAttribute('active', '');
         }
       }

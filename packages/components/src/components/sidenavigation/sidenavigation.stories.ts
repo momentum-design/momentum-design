@@ -186,7 +186,7 @@ export const NestedSideNavigation: StoryObj = {
               <mdc-navitem label="Messages" nav-id="temp9" badge-type="dot" icon-name="placeholder-bold"></mdc-navitem>
               <mdc-navitem label="Notes" nav-id="temp10" badge-type="dot" icon-name="placeholder-bold"></mdc-navitem>
               <mdc-navitem label="Freeform" nav-id="temp11" badge-type="dot" icon-name="placeholder-bold"></mdc-navitem>
-              <mdc-navitem label="Reminders" nav-id="temp12" badge-type="dot" icon-name="placeholder-bold"></mdc-navitem>
+              <mdc-navitem label="Reminder" nav-id="temp12" badge-type="dot" icon-name="placeholder-bold"></mdc-navitem>
             </mdc-menupopover>
           </mdc-menupopover>
 
