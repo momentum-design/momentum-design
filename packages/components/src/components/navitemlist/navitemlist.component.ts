@@ -1,5 +1,5 @@
 import type { CSSResult } from 'lit';
-import { property, queryAssignedElements } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 import styles from './navitemlist.styles';
 import MenuBar from '../menubar/menubar.component';
 import { MenuMixin } from '../../utils/mixins/MenuMixin';
