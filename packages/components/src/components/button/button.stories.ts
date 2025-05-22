@@ -26,6 +26,7 @@ const render = (args: Args) =>
     aria-label="${args['aria-label']}"
     ariaStateKey="${ifDefined(args.ariaStateKey)}"
     ?inverted="${args.inverted}"
+    style="${args.style}"
     >${args.children}</mdc-button
   >`;
 
@@ -223,35 +224,36 @@ export const IconButtonInverted: StoryObj = {
 };
 
 export const PillButtonEllipsis: StoryObj = {
-  render: () =>
-    html`
-      <mdc-button
-        variant="${BUTTON_VARIANTS.PRIMARY}"
-        size="${PILL_BUTTON_SIZES[32]}"
-        color="${BUTTON_COLORS.DEFAULT}"
-        type="${BUTTON_TYPE.BUTTON}"
-        role="button"
-        tabIndex="0"
-        style="width: 150px;"
-      >
-        This is a very long text that should get truncated with ellipsis
-      </mdc-button>`,
+  render: (args) =>
+    render({ ...args, children: html`<mdc-text>${args.textWithinChildren}</mdc-text>`, style: 'width: 150px;' }),
+  args: {
+    textWithinChildren: 'Long text with icons',
+    active: false,
+    disabled: false,
+    'soft-disabled': false,
+    variant: BUTTON_VARIANTS.PRIMARY,
+    size: PILL_BUTTON_SIZES[32],
+    color: BUTTON_COLORS.DEFAULT,
+    type: BUTTON_TYPE.BUTTON,
+    role: 'button',
+    tabIndex: 0,
+  },
 };
 
-export const PillWithIconButtonEllipsis: StoryObj = {
-  render: () =>
-    html`
-      <mdc-button
-        variant="${BUTTON_VARIANTS.PRIMARY}"
-        size="${PILL_BUTTON_SIZES[32]}"
-        color="${BUTTON_COLORS.DEFAULT}"
-        type="${BUTTON_TYPE.BUTTON}"
-        role="button"
-        tabIndex="0"
-        style="width: 150px;"
-        prefix-icon="placeholder-bold"
-      >
-        Long text with icons
-      </mdc-button>
-</div>`,
+export const PillWithPrefixIconEllipsis: StoryObj = {
+  render: (args) =>
+    render({ ...args, children: html`<mdc-text>${args.textWithinChildren}</mdc-text>`, style: 'width: 150px;' }),
+  args: {
+    textWithinChildren: 'Long text with icons',
+    'prefix-icon': 'placeholder-bold',
+    active: false,
+    disabled: false,
+    'soft-disabled': false,
+    variant: BUTTON_VARIANTS.PRIMARY,
+    size: PILL_BUTTON_SIZES[32],
+    color: BUTTON_COLORS.DEFAULT,
+    type: BUTTON_TYPE.BUTTON,
+    role: 'button',
+    tabIndex: 0,
+  },
 };
