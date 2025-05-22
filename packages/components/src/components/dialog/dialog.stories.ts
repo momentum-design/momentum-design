@@ -268,3 +268,32 @@ export const withCustomHeader: StoryObj = {
     size: DEFAULTS.SIZE,
   },
 };
+
+export const WithoutTriggerElement: StoryObj = {
+  render: (args: Args) => html`
+  <p>Toggle the visible property to show/hide the dialog</p>
+  <mdc-dialog
+    id="dialog"
+    aria-label="dialog"
+    size="small"
+    variant="default"
+    close-button-aria-label="Close dialog"
+    ?visible="${args.visible}"
+    z-index="100"
+    role="dialog"
+    header-text="Dialog Header"
+    description-text="This is a dialog description. It is only present if the header is present."
+    header-tag-name="h2"
+    description-tag-name="p"
+    @shown="${action('onshown')}"
+    @hidden="${action('onhidden')}"
+  >
+    <mdc-icon slot="header-prefix" name="placeholder-bold"></mdc-icon>
+    <div slot="dialog-body">
+    </div>
+    <mdc-link slot="footer-link" icon-name="placeholder-bold" href='#'>Label</mdc-link>
+    <mdc-button slot="footer-button-secondary">Secondary</mdc-button>
+    <mdc-button slot="footer-button-primary">Primary</mdc-button>
+  </mdc-dialog>
+  `,
+};
