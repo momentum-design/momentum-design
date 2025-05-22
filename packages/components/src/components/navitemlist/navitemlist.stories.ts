@@ -4,6 +4,7 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls, disableControls } from '../../../config/storybook/utils';
+import '../navitem';
 
 const render = (args: Args) => html`
   <mdc-navitemlist ?isExpanded=${args.isExpanded} aria-label=${ifDefined(args['aria-label'])}>
@@ -56,9 +57,8 @@ const meta: Meta = {
       'default',
     ]),
     ...hideControls([
-      'listItems',
-      'header-text',
-      'data-aria-label',
+      'navItems',
+      'aria-orientation',
     ]),
     ...classArgType,
     ...styleArgType,

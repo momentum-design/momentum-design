@@ -1,9 +1,9 @@
 import type { CSSResult } from 'lit';
-import { html } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
-import { Component } from '../../models';
 import styles from './navitemlist.styles';
-import List from '../list/list.component';
+import MenuBar from '../menubar/menubar.component';
+import { MenuMixin } from '../../utils/mixins/MenuMixin';
+import { ORIENTATION } from '../menubar/menubar.constants';
 import providerUtils from '../../utils/provider';
 import { TAG_NAME as NAVITEM_TAGNAME } from '../navitem/navitem.constants';
 import SideNavigation from '../sidenavigation/sidenavigation.component';
@@ -19,10 +19,7 @@ import type NavItem from '../navitem/navitem.component';
  *
  * @slot default - Slot for projecting one or more navigation items, optional section headers and dividers.
  */
-class NavItemList extends List {
-  @queryAssignedElements({ selector: `${NAVITEM_TAGNAME}:not([disabled])` })
-  override listItems!: Array<HTMLElement>;
-
+class NavItemList extends MenuMixin(MenuBar) {
   /**
    * Determines whether the navItemList is expanded or not.
    *
@@ -38,8 +35,7 @@ class NavItemList extends List {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.setRole();
-    this.ariaOrientation = 'vertical';
+    this.ariaOrientation = ORIENTATION.VERTICAL;
     this.addEventListener('activechange', this.handleNestedNavItemActiveChange as EventListener);
   }
 
@@ -57,30 +53,12 @@ class NavItemList extends List {
   }
 
   /**
-   * Sets the role of the navitemlist based on whether it's a top-level menubar
-   * or a nested menu.
-   */
-  private setRole(): void {
-    let parent = this.parentElement;
-    let isNested = false;
-
-    while (parent) {
-      if (parent.tagName.toLowerCase() === 'mdc-navitemlist') {
-        isNested = true;
-        break;
-      }
-      parent = parent.parentElement;
-    }
-    this.setAttribute('role', isNested ? 'menu' : 'menubar');
-  }
-
-  /**
    * Handle the navItem active change event fired from the nested navItem.
    * @internal
    * @param event - Custom Event fired from the nested navItem.
    */
   private handleNestedNavItemActiveChange = (event: CustomEvent<any>): void => {
-    const newNavItem = this.findNav(this.listItems as NavItem[] || [], event.detail.navId);
+    const newNavItem = this.findNav(this.navItems as NavItem[] || [], event.detail.navId);
     this.activateNavItem(newNavItem as NavItem);
   };
 
@@ -93,24 +71,25 @@ class NavItemList extends List {
   private findNav = (navs: NavItem[], navId: string): NavItem| undefined => navs.find((nav) => nav.navId === navId);
 
   /**
-   * Removes active attribute from all listItems and sets active on the new navItem.
+   * Removes active attribute from all navItems and sets active on the new navItem.
    * @param navId - The id of the new active navItem.
    *
    * @internal
    */
   private activateNavItem(newNav: NavItem): void {
-    this.listItems?.forEach((nav) => nav.removeAttribute('active'));
+    this.navItems?.forEach((nav) => nav.removeAttribute('active'));
     if (!newNav) return;
     newNav.setAttribute('active', '');
   }
 
-  public override render() {
-    return html`
-      <slot @click="${this.handleMouseClick}"></slot>
-    `;
+  /**
+   * Returns all nested, non-disabled mdc-navitem elements inside this component.
+   */
+  private get navItems(): NavItem[] {
+    return Array.from(this.querySelectorAll(`${NAVITEM_TAGNAME}:not([disabled])`));
   }
 
-  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...MenuBar.styles, ...styles];
 }
 
 export default NavItemList;

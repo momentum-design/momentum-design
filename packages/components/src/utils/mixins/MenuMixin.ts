@@ -5,13 +5,11 @@ import { property, queryAssignedElements } from 'lit/decorators.js';
 import { TAG_NAME as MENU_TAGNAME } from '../../components/menu/menu.constants';
 import { ORIENTATION, TAG_NAME as MENUBAR_TAGNAME } from '../../components/menubar/menubar.constants';
 import type { Orientation } from '../../components/menubar/menubar.types';
-import { TAG_NAME as MENUITEM_TAGNAME } from '../../components/menuitem/menuitem.constants';
-import { TAG_NAME as MENUITEMCHECKBOX_TAGNAME } from '../../components/menuitemcheckbox/menuitemcheckbox.constants';
-import { TAG_NAME as MENUITEMRADIO_TAGNAME } from '../../components/menuitemradio/menuitemradio.constants';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../../components/menupopover/menupopover.constants';
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../../components/menusection/menusection.constants';
 import { POPOVER_PLACEMENT } from '../../components/popover/popover.constants';
 import { KEYS } from '../keys';
+import { ROLE } from '../roles';
 import type { Constructor } from './index.types';
 
 interface IParentMenuItem {
@@ -369,8 +367,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      * @returns True if the menu item is a valid menu item, false otherwise.
      */
     private isValidMenuItem(menuItem: HTMLElement): boolean {
-      return [MENUITEM_TAGNAME, MENUITEMCHECKBOX_TAGNAME, MENUITEMRADIO_TAGNAME]
-        .includes(menuItem.tagName?.toLowerCase() as typeof MENUITEM_TAGNAME);
+      return menuItem.getAttribute('role') === ROLE.MENUITEM;
     }
 
     /**

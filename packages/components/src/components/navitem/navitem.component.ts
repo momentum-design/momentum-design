@@ -20,7 +20,7 @@ import { KEYS } from '../../utils/keys';
  * `mdc-navitem` is a menuitem styled to work as a navigation tab.
  * It supports a leading icon, optional badge and dynamic text rendering.
  *
- * Note: `mdc-navitem` is intended to be used inside an element with role="menubar" as part of the sideNavigation
+ * Note: `mdc-navitem` is intended to be used inside `mdc-navitemlist` as part of the sideNavigation
  * component. Its structure, spacing, and interactions are designed to align with
  * the visual and functional requirements of side navigation layouts.
  *
