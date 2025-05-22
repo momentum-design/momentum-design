@@ -221,3 +221,42 @@ export const IconButtonInverted: StoryObj = {
     inverted: true,
   },
 };
+
+export const PillButtonEllipsis: StoryObj = {
+  render: () =>
+    html`
+      <mdc-button
+      id="button-ellipsis"
+        variant="${BUTTON_VARIANTS.PRIMARY}"
+        size="${PILL_BUTTON_SIZES[32]}"
+        color="${BUTTON_COLORS.DEFAULT}"
+        type="${BUTTON_TYPE.BUTTON}"
+        role="button"
+        tabIndex="0"
+        style="width: 150px;"
+      >
+        This is a very long text that should get truncated with ellipsis
+      </mdc-button>
+      
+      <mdc-tooltip 
+      triggerid="button-ellipsis"
+      show-arrow>This is a very long text that should get truncated with ellipsis</mdc-tooltip>`,
+};
+
+export const PillWithIconButtonEllipsis: StoryObj = {
+  render: () =>
+    html`
+      <mdc-button
+        variant="${BUTTON_VARIANTS.PRIMARY}"
+        size="${PILL_BUTTON_SIZES[32]}"
+        color="${BUTTON_COLORS.DEFAULT}"
+        type="${BUTTON_TYPE.BUTTON}"
+        role="button"
+        tabIndex="0"
+        style="width: 150px;"
+        prefix-icon="placeholder-bold"
+      >
+        Long text with icons
+      </mdc-button>
+</div>`,
+};

@@ -246,6 +246,29 @@ const getStickerSheetDetails = async (componentsPage: ComponentsPage) => {
 test.describe.parallel('mdc-button', () => {
   test.use({ viewport: { width: 800, height: 2700 } });
 
+  test('visual regression for mdc-button with long text ellipsis', async ({ componentsPage }) => {
+    await componentsPage.mount({
+      html: `
+        <mdc-button
+          id="button-ellipsis"
+          style="width: 150px;"
+        >
+          This is a very long text that should get truncated with ellipsis
+        </mdc-button>
+        
+        <mdc-tooltip 
+        triggerid="button-ellipsis"
+        show-arrow>This is a very long text that should get truncated with ellipsis</mdc-tooltip>`,
+      clearDocument: true,
+    });
+
+    await test.step('matches screenshot of mdc-button with long text ellipsis', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-button-long-text-ellipsis', {
+        element: componentsPage.page.locator('mdc-button'),
+      });
+    });
+  });
+
   test('mdc-button pill button', async ({ componentsPage }) => {
     await testForCombinations({ children: 'Pill Button', componentsPage }, 'pill');
     await test.step('snapshot of pill button', async () => {

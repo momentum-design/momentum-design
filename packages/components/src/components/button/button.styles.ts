@@ -236,6 +236,20 @@ const styles = css`
     --mdc-button-primary-disabled-background-color: var(--mds-color-theme-inverted-button-primary-disabled);
     --mdc-button-primary-disabled-color: var(--mds-color-theme-inverted-text-primary-disabled);
   }
+
+  slot {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  :host::part(prefix-icon),
+  :host::part(postfix-icon) {
+    flex-shrink: 0;
+  }
 `;
 
 export default [styles];
