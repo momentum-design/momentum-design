@@ -226,7 +226,6 @@ export const PillButtonEllipsis: StoryObj = {
   render: () =>
     html`
       <mdc-button
-      id="button-ellipsis"
         variant="${BUTTON_VARIANTS.PRIMARY}"
         size="${PILL_BUTTON_SIZES[32]}"
         color="${BUTTON_COLORS.DEFAULT}"
@@ -236,11 +235,7 @@ export const PillButtonEllipsis: StoryObj = {
         style="width: 150px;"
       >
         This is a very long text that should get truncated with ellipsis
-      </mdc-button>
-      
-      <mdc-tooltip 
-      triggerid="button-ellipsis"
-      show-arrow>This is a very long text that should get truncated with ellipsis</mdc-tooltip>`,
+      </mdc-button>`,
 };
 
 export const PillWithIconButtonEllipsis: StoryObj = {
