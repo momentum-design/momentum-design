@@ -136,7 +136,7 @@ export const collapsedNavItem: StoryObj = {
     counter: 3,
     'max-counter': DEFAULTS.MAX_COUNTER,
     disabled: false,
-    'aria-label': 'This is the navItem',
+    'aria-label': 'This is a navitem.',
     active: false,
     expanded: false,
   },

@@ -19,7 +19,7 @@ const render = (args: Args) => html`
         @keyup="${action('onkeyup')}"
         @focus="${action('onfocus')}">
         <!-- Upper Nav (scrollable section) -->
-        <mdc-navitemlist slot="scrollable-section" aria-label="This is a 1st navItemList">
+        <mdc-navitemlist slot="scrollable-section" aria-label="This is a 1st navitemlist.">
           <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold" nav-id="1"
             label='Messaging'></mdc-navitem>
           <mdc-navitem icon-name="placeholder-bold" nav-id="2" label='Meetings' disabled></mdc-navitem>
@@ -68,7 +68,7 @@ const render = (args: Args) => html`
         </mdc-navitemlist>
 
         <!-- Lower Nav (Fixed section) -->
-        <mdc-navitemlist slot="fixed-section" aria-label="This is a 2nd navItemList">
+        <mdc-navitemlist slot="fixed-section" aria-label="This is a 2nd navitemlist.">
           <mdc-navitem icon-name="placeholder-bold" nav-id="23"
             label='Settings'></mdc-navitem>
           <mdc-navitem badge-type="counter" counter="3" max-counter="66" icon-name="placeholder-bold" nav-id="24"
@@ -78,7 +78,7 @@ const render = (args: Args) => html`
         <!-- Brand Logo (Fixed section) -->
         <mdc-icon 
           slot="brand-logo"
-          aria-label="This is the brand logo icon" 
+          aria-label="This is a brandlogo." 
           name="apple-bold">
         </mdc-icon>
     </mdc-sidenavigation>
@@ -94,7 +94,7 @@ const renderNestedSideNavigation = (args: Args) => html`
       @keyup="${action('onkeyup')}"
       @focus="${action('onfocus')}">
       <!-- Upper Nav (scrollable section) -->
-      <mdc-navitemlist slot="scrollable-section" aria-label="This is a 1st navItemList">
+      <mdc-navitemlist slot="scrollable-section" aria-label="This is a 1st navitemlist.">
         <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold" 
         nav-id="1" label='Messaging'></mdc-navitem>
         <mdc-navitem icon-name="placeholder-bold" nav-id="2" label='Meetings' disabled></mdc-navitem>
@@ -106,7 +106,14 @@ const renderNestedSideNavigation = (args: Args) => html`
             <mdc-navitem label="Personal Insights" nav-id="6" icon-name="placeholder-bold"></mdc-navitem>
             <mdc-navitem label="What's new?" nav-id="7" badge-type="counter" counter="2" max-counter="66" 
             icon-name="placeholder-bold"></mdc-navitem>
-            <mdc-navitem label="Cisco collaboration experience" nav-id="8" icon-name="placeholder-bold"></mdc-navitem>
+            <mdc-navitem label="Cisco collaboration experience" nav-id="8" icon-name="placeholder-bold" id="share-id"></mdc-navitem>
+            <mdc-menupopover triggerid="share-id">
+              <mdc-navitem label="App Hub" nav-id="temp1" badge-type="dot" icon-name="placeholder-bold"></mdc-navitem>
+              <mdc-navitem label="Personal Insights" nav-id="temp2" icon-name="placeholder-bold"></mdc-navitem>
+              <mdc-navitem label="What's new?" nav-id="temp3" badge-type="counter" counter="2" max-counter="66" 
+              icon-name="placeholder-bold"></mdc-navitem>
+              <mdc-navitem label="Cisco collaboration experience" nav-id="temp4" icon-name="placeholder-bold"></mdc-navitem>
+            </mdc-menupopover>
         </mdc-menupopover>
 
         <mdc-divider variant="gradient"></mdc-divider>
@@ -135,7 +142,7 @@ const renderNestedSideNavigation = (args: Args) => html`
       </mdc-navitemlist>
 
       <!-- Lower Nav (Fixed section) -->
-      <mdc-navitemlist slot="fixed-section" aria-label="This is a 2nd navItemList">
+      <mdc-navitemlist slot="fixed-section" aria-label="This is a 2nd navitemlist.">
         <mdc-navitem badge-type="counter" counter="3" max-counter="66" icon-name="placeholder-bold" nav-id="18"
           label='Settings'></mdc-navitem>
         <mdc-navitem icon-name="placeholder-bold" nav-id="19" label='Help'></mdc-navitem>

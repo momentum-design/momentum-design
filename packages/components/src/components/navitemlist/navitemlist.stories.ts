@@ -22,9 +22,9 @@ const render = (args: Args) => html`
     <mdc-navitem
       nav-id="2"
       icon-name="placeholder-bold"
-      aria-label=${ifDefined(!args.expanded ? 'Settings' : undefined)}
+      aria-label=${ifDefined(!args.expanded ? 'Calling' : undefined)}
       ?expanded=${args.expanded}
-      label=${ifDefined(args.expanded ? 'Settings' : undefined)}
+      label=${ifDefined(args.expanded ? 'Calling' : undefined)}
       disabled
     >
     </mdc-navitem>
@@ -51,7 +51,6 @@ const meta: Meta = {
   argTypes: {
     expanded: {
       control: 'boolean',
-      description: 'Determines whether the navItemList is expanded',
     },
     ...disableControls([
       'default',
@@ -75,7 +74,7 @@ export const Example: StoryObj = {
 
 export const collapsedNavItemList: StoryObj = {
   args: {
-    'aria-label': 'This is the navItemList.',
+    'aria-label': 'This is a navitemlist.',
     expanded: false,
   },
 };
