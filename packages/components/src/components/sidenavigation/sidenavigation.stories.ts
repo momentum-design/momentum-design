@@ -9,6 +9,7 @@ import '../menuitem';
 import '../menupopover';
 import '../navitemlist';
 import '../navitem';
+import '../icon';
 
 const render = (args: Args) => html`
   <div style="height: 90vh; margin: 1rem">
@@ -20,35 +21,35 @@ const render = (args: Args) => html`
         @focus="${action('onfocus')}">
         <!-- Upper Nav (scrollable section) -->
         <mdc-navitemlist slot="scrollable-section" aria-label="This is a 1st navitemlist.">
-          <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold" nav-id="1"
+          <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="chat-bold" nav-id="1"
             label='Messaging'></mdc-navitem>
-          <mdc-navitem icon-name="placeholder-bold" nav-id="2" label='Meetings' disabled></mdc-navitem>
-          <mdc-navitem badge-type="dot" icon-name="placeholder-bold" nav-id="3" label='Calling'></mdc-navitem>
+          <mdc-navitem icon-name="meetings-bold" nav-id="2" label='Meetings' disabled></mdc-navitem>
+          <mdc-navitem badge-type="dot" icon-name="audio-call-bold" nav-id="3" label='Calling'></mdc-navitem>
 
           <mdc-divider variant="gradient"></mdc-divider>
           <mdc-text>Section 1</mdc-text>
 
-          <mdc-navitem icon-name="placeholder-bold" nav-id="4" label='Messaging'></mdc-navitem>
-          <mdc-navitem icon-name="placeholder-bold" nav-id="5" label='Meetings' badge-type="counter" 
+          <mdc-navitem icon-name="chat-bold" nav-id="4" label='Messaging'></mdc-navitem>
+          <mdc-navitem icon-name="meetings-bold" nav-id="5" label='Meetings' badge-type="counter" 
           counter="2" max-counter="66"></mdc-navitem>
-          <mdc-navitem icon-name="placeholder-bold" nav-id="6" label='Calling'></mdc-navitem>
+          <mdc-navitem icon-name="audio-call-bold" nav-id="6" label='Calling'></mdc-navitem>
 
           <mdc-divider variant="gradient" nav-id="7"></mdc-divider>
           <mdc-text>Section 2</mdc-text>
 
-          <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold" nav-id="8"
+          <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="chat-bold" nav-id="8"
             label='Messaging'></mdc-navitem>
-          <mdc-navitem icon-name="placeholder-bold" nav-id="9" label='Meetings'>
+          <mdc-navitem icon-name="meetings-bold" nav-id="9" label='Meetings'>
           </mdc-navitem>
-          <mdc-navitem badge-type="dot" icon-name="placeholder-bold" nav-id="10" label='Calling'> </mdc-navitem>
+          <mdc-navitem badge-type="dot" icon-name="audio-call-bold" nav-id="10" label='Calling'> </mdc-navitem>
 
           <mdc-divider variant="gradient"></mdc-divider>
           <mdc-text>Section 3</mdc-text>
 
-          <mdc-navitem icon-name="placeholder-bold" nav-id="11" label='Messaging'> </mdc-navitem>
-          <mdc-navitem badge-type="counter" counter="3" max-counter="66" icon-name="placeholder-bold" nav-id="12"
+          <mdc-navitem icon-name="chat-bold" nav-id="11" label='Messaging'> </mdc-navitem>
+          <mdc-navitem badge-type="counter" counter="3" max-counter="66" icon-name="meetings-bold" nav-id="12"
             label='Meetings'></mdc-navitem>
-          <mdc-navitem badge-type="dot" icon-name="placeholder-bold" nav-id="13" label='Calling'></mdc-navitem>
+          <mdc-navitem badge-type="dot" icon-name="audio-call-bold" nav-id="13" label='Calling'></mdc-navitem>
           <mdc-navitem icon-name="placeholder-bold" nav-id="14"
             label='Teams'></mdc-navitem>
           <mdc-navitem badge-type="counter" counter="3" max-counter="66" icon-name="placeholder-bold" nav-id="15"
@@ -58,20 +59,20 @@ const render = (args: Args) => html`
           <mdc-divider variant="gradient"></mdc-divider>
           <mdc-text>Section 4</mdc-text>
 
-          <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold" nav-id="17"
+          <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="chat-bold" nav-id="17"
             label='Messaging'></mdc-navitem>
-          <mdc-navitem icon-name="placeholder-bold" nav-id="18" label='Meetings'></mdc-navitem>
-          <mdc-navitem badge-type="dot" icon-name="placeholder-bold" nav-id="19" label='Calling'></mdc-navitem>
-          <mdc-navitem icon-name="placeholder-bold" nav-id="20" label='Messaging'></mdc-navitem>
-          <mdc-navitem icon-name="placeholder-bold" nav-id="21" label='Meetings'></mdc-navitem>
-          <mdc-navitem badge-type="dot" icon-name="placeholder-bold" nav-id="22" label='Calling'></mdc-navitem>
+          <mdc-navitem icon-name="meetings-bold" nav-id="18" label='Meetings'></mdc-navitem>
+          <mdc-navitem badge-type="dot" icon-name="audio-call-bold" nav-id="19" label='Calling'></mdc-navitem>
+          <mdc-navitem icon-name="chat-bold" nav-id="20" label='Messaging'></mdc-navitem>
+          <mdc-navitem icon-name="meetings-bold" nav-id="21" label='Meetings'></mdc-navitem>
+          <mdc-navitem badge-type="dot" icon-name="audio-call-bold" nav-id="22" label='Calling'></mdc-navitem>
         </mdc-navitemlist>
 
         <!-- Lower Nav (Fixed section) -->
         <mdc-navitemlist slot="fixed-section" aria-label="This is a 2nd navitemlist.">
-          <mdc-navitem icon-name="placeholder-bold" nav-id="23"
+          <mdc-navitem icon-name="settings-bold" nav-id="23"
             label='Settings'></mdc-navitem>
-          <mdc-navitem badge-type="counter" counter="3" max-counter="66" icon-name="placeholder-bold" nav-id="24"
+          <mdc-navitem badge-type="counter" counter="3" max-counter="66" icon-name="help-circle-bold" nav-id="24"
             label='Help'></mdc-navitem>
         </mdc-navitemlist>
 
@@ -95,10 +96,10 @@ const renderNestedSideNavigation = (args: Args) => html`
       @focus="${action('onfocus')}">
       <!-- Upper Nav (scrollable section) -->
       <mdc-navitemlist slot="scrollable-section" aria-label="This is a 1st navitemlist.">
-        <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold" 
+        <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="chat-bold" 
         nav-id="1" label='Messaging'></mdc-navitem>
-        <mdc-navitem icon-name="placeholder-bold" nav-id="2" label='Meetings' disabled></mdc-navitem>
-        <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold" nav-id="3"
+        <mdc-navitem icon-name="meetings-bold" nav-id="2" label='Meetings' disabled></mdc-navitem>
+        <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="audio-call-bold" nav-id="3"
         label='Callings'></mdc-navitem>
         <mdc-navitem icon-name="more-circle-bold" nav-id="4" label='More' id="menu-button-trigger"></mdc-navitem>
         <mdc-menupopover triggerid="menu-button-trigger">
@@ -112,33 +113,33 @@ const renderNestedSideNavigation = (args: Args) => html`
         <mdc-divider variant="gradient"></mdc-divider>
         <mdc-text>Section 1</mdc-text>
 
-        <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold" nav-id="9"
+        <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="chat-bold" nav-id="9"
           label='Messaging'></mdc-navitem>
-        <mdc-navitem icon-name="placeholder-bold" nav-id="10" label='Meetings'></mdc-navitem>
-        <mdc-navitem badge-type="dot" icon-name="placeholder-bold" nav-id="11" label='Calling'></mdc-navitem>
+        <mdc-navitem icon-name="meetings-bold" nav-id="10" label='Meetings'></mdc-navitem>
+        <mdc-navitem badge-type="dot" icon-name="audio-call-bold" nav-id="11" label='Calling'></mdc-navitem>
 
         <mdc-divider variant="gradient"></mdc-divider>
         <mdc-text>Section 2</mdc-text>
 
-        <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold" nav-id="12"
+        <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="chat-bold" nav-id="12"
           label='Messaging'></mdc-navitem>
-        <mdc-navitem icon-name="placeholder-bold" nav-id="13" label='Meetings'></mdc-navitem>
-        <mdc-navitem badge-type="dot" icon-name="placeholder-bold" nav-id="14" label='Calling'></mdc-navitem>
+        <mdc-navitem icon-name="meetings-bold" nav-id="13" label='Meetings'></mdc-navitem>
+        <mdc-navitem badge-type="dot" icon-name="audio-call-bold" nav-id="14" label='Calling'></mdc-navitem>
 
         <mdc-divider variant="gradient"></mdc-divider>
         <mdc-text>Section 3</mdc-text>
 
-        <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="placeholder-bold" nav-id="15"
+        <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="chat-bold" nav-id="15"
           label='Messaging'></mdc-navitem>
-        <mdc-navitem icon-name="placeholder-bold" nav-id="16" label='Meetings'></mdc-navitem>
-        <mdc-navitem badge-type="dot" icon-name="placeholder-bold" nav-id="17" label='Calling'></mdc-navitem>
+        <mdc-navitem icon-name="meetings-bold" nav-id="16" label='Meetings'></mdc-navitem>
+        <mdc-navitem badge-type="dot" icon-name="audio-call-bold" nav-id="17" label='Calling'></mdc-navitem>
       </mdc-navitemlist>
 
       <!-- Lower Nav (Fixed section) -->
       <mdc-navitemlist slot="fixed-section" aria-label="This is a 2nd navitemlist.">
-        <mdc-navitem badge-type="counter" counter="3" max-counter="66" icon-name="placeholder-bold" nav-id="18"
+        <mdc-navitem badge-type="counter" counter="3" max-counter="66" icon-name="settings-bold" nav-id="18"
           label='Settings'></mdc-navitem>
-        <mdc-navitem icon-name="placeholder-bold" nav-id="19" label='Help'></mdc-navitem>
+        <mdc-navitem icon-name="help-circle-bold" nav-id="19" label='Help'></mdc-navitem>
       </mdc-navitemlist>
 
       <!-- Brand Logo (Fixed section) -->

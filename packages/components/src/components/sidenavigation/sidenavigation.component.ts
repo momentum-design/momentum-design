@@ -221,7 +221,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
             variant=${DIVIDER_VARIANT.GRADIENT}
             arrow-direction=${this.arrowDirection}
             button-position=${DIRECTIONS.POSITIVE}
-          > <mdc-button aria-label=${this.grabberBtnAriaLabel} @click=${this.toggleSideNavigation}></mdc-button>
+          > <mdc-button aria-label=${this.grabberBtnAriaLabel ?? ''} @click=${this.toggleSideNavigation}></mdc-button>
         </mdc-divider>` : nothing}
   `;
   }
