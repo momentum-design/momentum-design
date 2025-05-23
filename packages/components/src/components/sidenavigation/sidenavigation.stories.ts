@@ -106,14 +106,7 @@ const renderNestedSideNavigation = (args: Args) => html`
             <mdc-navitem label="Personal Insights" nav-id="6" icon-name="placeholder-bold"></mdc-navitem>
             <mdc-navitem label="What's new?" nav-id="7" badge-type="counter" counter="2" max-counter="66" 
             icon-name="placeholder-bold"></mdc-navitem>
-            <mdc-navitem label="Cisco collaboration experience" nav-id="8" icon-name="placeholder-bold" id="share-id"></mdc-navitem>
-            <mdc-menupopover triggerid="share-id">
-              <mdc-navitem label="App Hub" nav-id="temp1" badge-type="dot" icon-name="placeholder-bold"></mdc-navitem>
-              <mdc-navitem label="Personal Insights" nav-id="temp2" icon-name="placeholder-bold"></mdc-navitem>
-              <mdc-navitem label="What's new?" nav-id="temp3" badge-type="counter" counter="2" max-counter="66" 
-              icon-name="placeholder-bold"></mdc-navitem>
-              <mdc-navitem label="Cisco collaboration experience" nav-id="temp4" icon-name="placeholder-bold"></mdc-navitem>
-            </mdc-menupopover>
+            <mdc-navitem label="Cisco collaboration experience" nav-id="8" icon-name="placeholder-bold"></mdc-navitem>
         </mdc-menupopover>
 
         <mdc-divider variant="gradient"></mdc-divider>
@@ -164,6 +157,31 @@ const meta: Meta = {
   render,
   parameters: {
     badges: ['wip'],
+    docs: {
+      source: {
+        format: 'html',
+        code: `
+        <mdc-sidenavigation customer-name="..." grabber-btn-aria-label="...">
+          <mdc-navitemlist slot="scrollable-section" aria-label="...">
+            <mdc-navitem label="..." nav-id="..."></mdc-navitem>
+            <mdc-navitem label="..." nav-id="..."></mdc-navitem>
+            <mdc-navitem id="menu-id" label="..." nav-id="..."></mdc-navitem>
+            <mdc-menupopover triggerid="menu-id">
+              <mdc-navitem label="..." nav-id="..."></mdc-navitem>
+              <mdc-navitem label="..." nav-id="..."></mdc-navitem>
+              <mdc-navitem label="..." nav-id="..."></mdc-navitem>
+            </mdc-menupopover>
+            <mdc-navitem label="..." nav-id="..."></mdc-navitem>
+          </mdc-navitemlist>
+          <mdc-navitemlist slot="fixed-section" aria-label="...">
+            <mdc-navitem label="..." nav-id="..."></mdc-navitem>
+            <mdc-navitem label="..." nav-id="..."></mdc-navitem>
+            <mdc-navitem label="..." nav-id="..."></mdc-navitem>
+          </mdc-navitemlist>
+        </mdc-sidenavigation>
+      `,
+      },
+    },
   },
   argTypes: {
     variant: {
