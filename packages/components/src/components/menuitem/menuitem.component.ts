@@ -64,7 +64,7 @@ class MenuItem extends ListItem {
       : ARROW_ICONS.RIGHT;
 
     return html`
-      <slot name="trailing-controls"></slot>
+      <slot name="trailing-controls" @click=${this.stopClickPropagation}></slot>
       ${this.arrowPosition === ARROW_POSITIONS.TRAILING
     ? html`<mdc-icon name="${arrowIcon}" length-unit="rem" part="trailing-arrow"></mdc-icon>`
     : nothing}
@@ -81,7 +81,7 @@ class MenuItem extends ListItem {
       : ARROW_ICONS.LEFT;
 
     return html`
-      <slot name="leading-controls"></slot>
+      <slot name="leading-controls" @click=${this.stopClickPropagation}></slot>
       ${this.arrowPosition === ARROW_POSITIONS.LEADING
     ? html`<mdc-icon name="${arrowIcon}" length-unit="rem" part="leading-arrow"></mdc-icon>`
     : nothing}
