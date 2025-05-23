@@ -5,13 +5,13 @@ import { property, queryAssignedElements } from 'lit/decorators.js';
 import { TAG_NAME as MENU_TAGNAME } from '../../components/menu/menu.constants';
 import { ORIENTATION, TAG_NAME as MENUBAR_TAGNAME } from '../../components/menubar/menubar.constants';
 import type { Orientation } from '../../components/menubar/menubar.types';
-import { TAG_NAME as MENUITEM_TAGNAME } from '../../components/menuitem/menuitem.constants';
-import { TAG_NAME as MENUITEMCHECKBOX_TAGNAME } from '../../components/menuitemcheckbox/menuitemcheckbox.constants';
-import { TAG_NAME as MENUITEMRADIO_TAGNAME } from '../../components/menuitemradio/menuitemradio.constants';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../../components/menupopover/menupopover.constants';
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../../components/menusection/menusection.constants';
+import { TAG_NAME as NAVITEMLIST_TAGNAME } from '../../components/navitemlist/navitemlist.constants';
+import { TAG_NAME as NAVITEM_TAGNAME } from '../../components/navitem/navitem.constants';
 import { POPOVER_PLACEMENT } from '../../components/popover/popover.constants';
 import { KEYS } from '../keys';
+import { ROLE } from '../roles';
 import type { Constructor } from './index.types';
 
 interface IParentMenuItem {
@@ -148,8 +148,26 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     private isValidMenu(tagName?: string): boolean {
       return (
         tagName?.toLowerCase() === MENU_TAGNAME
-        || tagName?.toLowerCase() === MENUBAR_TAGNAME
+        || tagName?.toLowerCase() === MENUBAR_TAGNAME || this.isValidNavItemList(tagName)
       );
+    }
+
+    /**
+     * Checks if the given tag name is a valid navitemlist tag name.
+     * @param tagName - The tag name to check.
+     * @returns True if the tag name is a valid navitemlist, false otherwise.
+     */
+    private isValidNavItemList(tagName?: string): boolean {
+      return tagName?.toLowerCase() === NAVITEMLIST_TAGNAME;
+    }
+
+    /**
+     * Checks if the given tag name is a valid navitem tag name.
+     * @param tagName - The tag name to check.
+     * @returns True if the tag name is a valid navitem, false otherwise.
+     */
+    private isValidNavItem(tagName?: string): boolean {
+      return tagName?.toLowerCase() === NAVITEM_TAGNAME;
     }
 
     /**
@@ -276,6 +294,12 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         parentMenuItemIndex,
         newIndex,
       );
+      if (key === KEYS.ESCAPE && this.isValidNavItem(parentMenuItemsChildren[parentMenuItemIndex].tagName)) {
+        parentMenuItemsChildren
+          .filter((node) => node.hasAttribute('active'))
+          .map((node) => node.toggleAttribute('active'));
+        parentMenuItemsChildren[parentMenuItemIndex].toggleAttribute('active');
+      }
       if (key === KEYS.ARROW_LEFT) {
         parentMenuItemsChildren[parentMenuItemIndex - 1]?.nextElementSibling?.toggleAttribute('visible');
       }
@@ -325,6 +349,10 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         );
 
         (menuBarMenuItem[0] as HTMLElement)?.focus();
+        if (this.isValidNavItem(menuBarMenuItem[0].tagName)) {
+          currentMenuItem?.toggleAttribute('active');
+          menuBarMenuItem[0].toggleAttribute('active');
+        }
       }
     }
 
@@ -369,8 +397,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      * @returns True if the menu item is a valid menu item, false otherwise.
      */
     private isValidMenuItem(menuItem: HTMLElement): boolean {
-      return [MENUITEM_TAGNAME, MENUITEMCHECKBOX_TAGNAME, MENUITEMRADIO_TAGNAME]
-        .includes(menuItem.tagName?.toLowerCase() as typeof MENUITEM_TAGNAME);
+      return menuItem.getAttribute('role') === ROLE.MENUITEM;
     }
 
     /**
