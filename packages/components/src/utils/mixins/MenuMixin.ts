@@ -294,6 +294,9 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         parentMenuItemIndex,
         newIndex,
       );
+      if (key === KEYS.ESCAPE && this.isValidNavItem(parentMenuItemsChildren[parentMenuItemIndex].tagName)) {
+        parentMenuItemsChildren[parentMenuItemIndex].toggleAttribute('active');
+      }
       if (key === KEYS.ARROW_LEFT) {
         parentMenuItemsChildren[parentMenuItemIndex - 1]?.nextElementSibling?.toggleAttribute('visible');
       }
