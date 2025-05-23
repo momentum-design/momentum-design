@@ -217,5 +217,46 @@ test('mdc-listitem', async ({ componentsPage }) => {
         await expect(button).toBeFocused();
       });
     });
+
+    await test.step('click', async () => {
+      await test.step('should trigger click event on component', async () => {
+        const listitem = await setup({ componentsPage, label: primaryLabel });
+        const waitForClick = componentsPage.waitForEvent(listitem, 'click');
+        await listitem.click();
+        await waitForClick;
+      });
+
+      await test.step('should trigger click event on leading controls and not on listitem', async () => {
+        const listitem = await setup({
+          componentsPage,
+          label: primaryLabel,
+          children: `
+            <mdc-checkbox checked slot="leading-controls" data-aria-label="${primaryLabel}"></mdc-checkbox>
+          `,
+        });
+        const checkbox = listitem.locator('mdc-checkbox');
+        const waitForCheckboxClick = componentsPage.waitForEvent(checkbox, 'click');
+        const waitForListItemClick = componentsPage.waitForEvent(listitem, 'click');
+        await checkbox.click();
+        await waitForCheckboxClick;
+        await componentsPage.expectPromiseTimesOut(waitForListItemClick, true);
+      });
+
+      await test.step('should trigger click event on trailing controls and not on listitem', async () => {
+        const listitem = await setup({
+          componentsPage,
+          label: primaryLabel,
+          children: `
+            <mdc-button slot="trailing-controls">Click</mdc-button>
+          `,
+        });
+        const button = listitem.locator('mdc-button');
+        const waitForButtonClick = componentsPage.waitForEvent(button, 'click');
+        const waitForListItemClick = componentsPage.waitForEvent(listitem, 'click');
+        await button.click();
+        await waitForButtonClick;
+        await componentsPage.expectPromiseTimesOut(waitForListItemClick, true);
+      });
+    });
   });
 });

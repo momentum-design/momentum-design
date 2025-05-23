@@ -133,6 +133,10 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     this.role = this.role || ROLE.LISTITEM;
   }
 
+  /**
+   * Fires the click event when the enter or space key is pressed.
+   * @param event - The keyboard event triggered when a key is pressed down.
+   */
   private handleKeyDown(event: KeyboardEvent): void {
     if (event.key === KEYS.ENTER || event.key === KEYS.SPACE) {
       this.triggerClickEvent();
@@ -140,6 +144,9 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     }
   }
 
+  /**
+   * Triggers a click event on the list item.
+   */
   private triggerClickEvent() {
     const clickEvent = new MouseEvent('click', {
       bubbles: true,
@@ -149,6 +156,10 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     this.dispatchEvent(clickEvent);
   }
 
+  /**
+   * Handles the click event on the list item.
+   * If the tooltip is open, it has to be closed first.
+   */
   private handleClick(): void {
     // If the tooltip is open, it has to be closed first.
     this.hideTooltipOnLeave();
@@ -232,12 +243,30 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     }
   }
 
+  /**
+   * Renders the trailing controls slot.
+   * @returns A template for the trailing controls slot.
+   */
   protected renderTrailingControls() {
-    return html`<slot name="trailing-controls"></slot>`;
+    return html`<slot name="trailing-controls" @click=${this.stopClickPropagation}></slot>`;
   }
 
+  /**
+   * Renders the leading controls slot.
+   * @returns A template for the leading controls slot.
+   */
   protected renderLeadingControls() {
-    return html`<slot name="leading-controls"></slot>`;
+    return html`<slot name="leading-controls" @click=${this.stopClickPropagation}></slot>`;
+  }
+
+  /**
+   * Stops the click event from propagating to parent elements.
+   * This is useful when the list item contains controls that
+   * should not trigger the click event on the list item itself.
+   * @param event - The mouse event triggered when a click occurs.
+   */
+  protected stopClickPropagation(event: MouseEvent): void {
+    event.stopPropagation();
   }
 
   public override render() {
