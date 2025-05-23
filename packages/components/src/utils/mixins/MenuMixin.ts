@@ -295,6 +295,9 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         newIndex,
       );
       if (key === KEYS.ESCAPE && this.isValidNavItem(parentMenuItemsChildren[parentMenuItemIndex].tagName)) {
+        parentMenuItemsChildren
+          .filter((node) => node.hasAttribute('active'))
+          .map((node) => node.toggleAttribute('active'));
         parentMenuItemsChildren[parentMenuItemIndex].toggleAttribute('active');
       }
       if (key === KEYS.ARROW_LEFT) {
@@ -347,8 +350,8 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
 
         (menuBarMenuItem[0] as HTMLElement)?.focus();
         if (this.isValidNavItem(menuBarMenuItem[0].tagName)) {
-          currentMenuItem?.removeAttribute('active');
-          menuBarMenuItem[0].setAttribute('active', '');
+          currentMenuItem?.toggleAttribute('active');
+          menuBarMenuItem[0].toggleAttribute('active');
         }
       }
     }
