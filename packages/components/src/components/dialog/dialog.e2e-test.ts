@@ -5,7 +5,7 @@ import { DEFAULTS } from './dialog.constants';
 type SetupOptions = {
   componentsPage: ComponentsPage;
   id?: string;
-  triggerId: string;
+  triggerId?: string;
   zIndex?: number;
   visible?: boolean;
   size?: boolean;
@@ -171,8 +171,8 @@ test('mdc-dialog', async ({ componentsPage }) => {
    */
   await test.step('interactions', async () => {
     await test.step('programmatic', async () => {
-      await test.step('dialog should close/open when the visible attribute is changed', async () => {
-        const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots });
+      await test.step('dialog should close/open when the visible attribute is changed without trigger', async () => {
+        const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, triggerId: undefined });
         await expect(dialog).toBeVisible();
         await dialog.evaluate((dialog) => {
           dialog.removeAttribute('visible');
