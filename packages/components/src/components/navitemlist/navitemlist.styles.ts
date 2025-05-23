@@ -5,7 +5,7 @@ const styles = css`
     gap: 0.25rem;
   }
 
-  :host(:not([isExpanded])) ::slotted(mdc-text) {
+  :host(:not([expanded])) ::slotted(mdc-text) {
     display: none;
   }
 

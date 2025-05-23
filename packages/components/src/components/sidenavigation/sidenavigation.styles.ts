@@ -9,11 +9,11 @@ const styles = css`
   height: 100%;
 }
 
-:host([isExpanded]) {
+:host([expanded]) {
   width: var(--mdc-sidenavigation-expanded-width);
 }
 
-:host(:not([isExpanded])) {
+:host(:not([expanded])) {
   width: var(--mdc-sidenavigation-collapsed-width);
 }
 

@@ -17,14 +17,14 @@ const render = (args: Args) => html`
       @activechange="${action('onactivechange')}"
       nav-id="${args['nav-id']}"
       icon-name="${args['icon-name']}"
-      label=${ifDefined(args.isExpanded ? args.label : undefined)}
+      label=${ifDefined(args.expanded ? args.label : undefined)}
       ?disabled=${args.disabled}
       badge-type="${args['badge-type']}"
       counter=${args.counter}
       max-counter="${args['max-counter']}"
       ?active=${args.active}
-      ?isExpanded=${args.isExpanded}
-      aria-label=${ifDefined(!args.isExpanded ? args['aria-label'] : undefined)}
+      ?expanded=${args.expanded}
+      aria-label=${ifDefined(!args.expanded ? args['aria-label'] : undefined)}
     ></mdc-navitem>
   </div>
 `;
@@ -64,7 +64,7 @@ const meta: Meta = {
     active: {
       control: 'boolean',
     },
-    isExpanded: {
+    expanded: {
       control: 'boolean',
     },
     ...disableControls([
@@ -123,7 +123,7 @@ export const Example: StoryObj = {
     'max-counter': DEFAULTS.MAX_COUNTER,
     disabled: false,
     active: false,
-    isExpanded: true,
+    expanded: true,
     label: 'Dashboard',
   },
 };
@@ -138,6 +138,6 @@ export const collapsedNavItem: StoryObj = {
     disabled: false,
     'aria-label': 'This is the navItem',
     active: false,
-    isExpanded: false,
+    expanded: false,
   },
 };

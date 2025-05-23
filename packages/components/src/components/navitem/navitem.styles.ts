@@ -36,7 +36,7 @@ const styles = [hostFitContentStyles, css`
     margin-right: 1rem;
   }
 
-  :host([isExpanded]) {
+  :host([expanded]) {
     width: var(--mdc-navitem-expanded-width);
   }
 
@@ -123,11 +123,11 @@ const styles = [hostFitContentStyles, css`
     top: -0.375rem;
   }
 
-  :host(:not([isExpanded]))::part(trailing-arrow) {
+  :host(:not([expanded]))::part(trailing-arrow) {
     --mdc-icon-size: 0.75rem;
   }
 
-  :host([isExpanded])::part(trailing-arrow) {
+  :host([expanded])::part(trailing-arrow) {
     --mdc-icon-size: 1rem;
     flex-shrink: 0;
   }

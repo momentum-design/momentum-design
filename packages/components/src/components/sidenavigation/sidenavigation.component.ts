@@ -84,7 +84,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
    * @internal
    */
   @property({ type: Boolean, reflect: true })
-  isExpanded?: boolean;
+  expanded?: boolean;
 
   /**
    * Provides an accessible label for the grabber button.
@@ -126,7 +126,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
     }
 
     if (changedProperties.has('variant') || changedProperties.has('customerName')
-       || changedProperties.has('isExpanded')) {
+       || changedProperties.has('expanded')) {
       this.updateContext();
     }
   }
@@ -140,36 +140,36 @@ class SideNavigation extends Provider<SideNavigationContext> {
   protected updateContext(): void {
     if (this.context.value.variant !== this.variant
         || this.context.value.customerName !== this.customerName
-        || this.context.value.isExpanded !== this.isExpanded
+        || this.context.value.expanded !== this.expanded
     ) {
       this.context.value.variant = this.variant;
       this.context.value.customerName = this.customerName;
-      this.context.value.isExpanded = this.isExpanded;
+      this.context.value.expanded = this.expanded;
       this.context.updateObservers();
     }
   }
 
   /**
-   * Syncs `isExpanded` and `aria-expanded` based on `variant` and `flexibleExpanded`.
+   * Syncs `expanded` and `aria-expanded` based on `variant` and `flexibleExpanded`.
    *
    * @internal
    */
   private updateExpansionState = (): void => {
     switch (this.variant) {
       case VARIANTS.FLEXIBLE:
-        this.isExpanded = this.flexibleExpanded;
+        this.expanded = this.flexibleExpanded;
         break;
       case VARIANTS.FIXED_EXPANDED:
-        this.isExpanded = true;
+        this.expanded = true;
         break;
       case VARIANTS.FIXED_COLLAPSED:
-        this.isExpanded = false;
+        this.expanded = false;
         break;
       default:
         return;
     }
 
-    this.setAttribute('aria-expanded', String(this.isExpanded));
+    this.setAttribute('aria-expanded', String(this.expanded));
   };
 
   /**
@@ -211,7 +211,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
               <slot name="fixed-section"></slot>
               <div part="brand-logo-container">
                 <slot name="brand-logo"></slot>
-                ${this.isExpanded ? html`<mdc-text type=${TYPE.BODY_MIDSIZE_MEDIUM} tagname=${VALID_TEXT_TAGS.SPAN} 
+                ${this.expanded ? html`<mdc-text type=${TYPE.BODY_MIDSIZE_MEDIUM} tagname=${VALID_TEXT_TAGS.SPAN} 
                 part="label">${this.customerName}</mdc-text>` : nothing}
               </div>
           </div>

@@ -26,7 +26,7 @@ class NavItemList extends MenuMixin(MenuBar) {
    * @internal
    */
   @property({ type: Boolean, reflect: true })
-  isExpanded?: boolean;
+  expanded?: boolean;
 
   /**
    * @internal
@@ -48,8 +48,8 @@ class NavItemList extends MenuMixin(MenuBar) {
     const context = this.sideNavigationContext?.value;
     if (!context) return;
 
-    const { isExpanded } = context;
-    this.isExpanded = isExpanded;
+    const { expanded } = context;
+    this.expanded = expanded;
   }
 
   /**

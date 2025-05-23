@@ -94,7 +94,7 @@ class NavItem extends IconNameMixin(MenuItem) {
    * @internal
    */
   @property({ type: Boolean, reflect: true })
-  isExpanded?: boolean;
+  expanded?: boolean;
 
   /**
    * @internal
@@ -128,10 +128,10 @@ class NavItem extends IconNameMixin(MenuItem) {
     if (!context) return;
 
     // Determine expansion state
-    this.isExpanded = this.isNested() ? true : context.isExpanded;
+    this.expanded = this.isNested() ? true : context.expanded;
 
     // Manage aria-label for accessibility
-    if (this.isExpanded) {
+    if (this.expanded) {
       this.removeAttribute('aria-label');
     } else {
       const label = this.label ?? '';
@@ -253,8 +253,8 @@ class NavItem extends IconNameMixin(MenuItem) {
       && sibling.getAttribute('triggerid') === id);
   }
 
-  private renderArrowIcon(isExpanded: boolean | undefined) {
-    const arrowClass = isExpanded ? '' : 'arrow';
+  private renderArrowIcon(expanded: boolean | undefined) {
+    const arrowClass = expanded ? '' : 'arrow';
 
     return html`
       <mdc-icon 
@@ -266,8 +266,8 @@ class NavItem extends IconNameMixin(MenuItem) {
     `;
   }
 
-  private renderBadge(isExpanded: boolean | undefined) {
-    const badgeClass = isExpanded ? '' : 'badge';
+  private renderBadge(expanded: boolean | undefined) {
+    const badgeClass = expanded ? '' : 'badge';
     const isValidBadgeType = Object.values(ALLOWED_BADGE_TYPES).includes(this.badgeType as BadgeType);
     if (!isValidBadgeType) {
       return nothing;
@@ -292,10 +292,10 @@ class NavItem extends IconNameMixin(MenuItem) {
           length-unit="rem"
           part="icon"
         ></mdc-icon>
-        ${!this.isExpanded ? this.renderBadge(this.isExpanded) : nothing}
+        ${!this.expanded ? this.renderBadge(this.expanded) : nothing}
       </div>
-      ${this.isExpanded ? html`${this.renderTextLabel(this.label)}${this.renderBadge(this.isExpanded)}` : nothing}
-      ${this.hasArrowButton() ? this.renderArrowIcon(this.isExpanded) : nothing}
+      ${this.expanded ? html`${this.renderTextLabel(this.label)}${this.renderBadge(this.expanded)}` : nothing}
+      ${this.hasArrowButton() ? this.renderArrowIcon(this.expanded) : nothing}
     `;
   }
 
