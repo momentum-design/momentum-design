@@ -8,6 +8,7 @@ import Badge from './components/badge';
 import Brandvisual from './components/brandvisual';
 import Bullet from './components/bullet';
 import Button from './components/button';
+import ButtonGroup from './components/buttongroup';
 import ButtonLink from './components/buttonlink';
 import Card from './components/card';
 import CardButton from './components/cardbutton';
@@ -34,10 +35,10 @@ import MenuBar from './components/menubar';
 import MenuItem from './components/menuitem';
 import MenuItemCheckbox from './components/menuitemcheckbox';
 import MenuItemRadio from './components/menuitemradio';
-import MenuSection from './components/menusection';
 import MenuPopover from './components/menupopover';
 import NavItem from './components/navitem';
 import NavItemList from './components/navitemlist';
+import MenuSection from './components/menusection';
 import OptGroup from './components/optgroup';
 import Option from './components/option';
 import Popover from './components/popover';
@@ -92,6 +93,7 @@ export {
   Bullet,
   Button,
   ButtonLink,
+  ButtonGroup,
   Card,
   CardButton,
   CardCheckbox,
