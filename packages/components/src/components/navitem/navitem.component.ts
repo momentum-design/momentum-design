@@ -276,7 +276,7 @@ class NavItem extends IconNameMixin(MenuItem) {
     return html`
       <mdc-badge 
         class="${badgeClass}"
-        type="${this.badgeType}" 
+        type="${ifDefined(this.badgeType)}" 
         counter="${ifDefined(this.counter)}" 
         max-counter="${this.maxCounter}">
       </mdc-badge>

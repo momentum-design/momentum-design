@@ -111,9 +111,15 @@ const styles = [hostFitContentStyles, css`
     position: relative;
   }
   
-  .badge {
+  :host(:dir(ltr)) .badge {
     position: absolute;
     right: -0.375rem;
+    top: -0.375rem;
+  }
+
+  :host(:dir(rtl)) .badge {
+    position: absolute;
+    left: -0.375rem;
     top: -0.375rem;
   }
 
@@ -123,6 +129,7 @@ const styles = [hostFitContentStyles, css`
 
   :host([isExpanded])::part(trailing-arrow) {
     --mdc-icon-size: 1rem;
+    flex-shrink: 0;
   }
 
   :host(:dir(ltr)) .arrow {
