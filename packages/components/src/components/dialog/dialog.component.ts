@@ -18,6 +18,10 @@ import { CardAndDialogFooterMixin } from '../../utils/mixins/CardAndDialogFooter
  * The dialog is available in three sizes: small, medium, and large. It may also receive custom styling/sizing.
  * The dialog interrupts the user and will block interaction with the rest of the application until it is closed.
  *
+ * The dialog can be controlled solely through the `visible` property, no trigger element is required.
+ * If a `triggerId` is provided, the dialog will manage focus with that element, otherwise it will
+ * remember the previously focused element before the dialog was opened.
+ *
  * Dialog component have 2 variants: default and promotional.
  *
  * **Accessibility notes for consuming (have to be explicitly set when you consume the component)**
@@ -46,6 +50,7 @@ import { CardAndDialogFooterMixin } from '../../utils/mixins/CardAndDialogFooter
  * @cssproperty --mdc-dialog-elevation-3 - elevation of the dialog
  * @cssproperty --mdc-dialog-width - width of the dialog
  *
+ * @slot header-prefix - Slot for the dialog header content. This can be used to pass custom header content.
  * @slot dialog-body - Slot for the dialog body content
  * @slot footer-link - This slot is for passing `mdc-link` component within the footer section.
  * @slot footer-button-secondary - This slot is for passing secondary variant of `mdc-button` component
@@ -150,6 +155,9 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
   /** @internal */
   public backdropElement: HTMLElement | null = null;
 
+  /** @internal */
+  private lastActiveElement: HTMLElement | null = null;
+
   constructor() {
     super();
     /** @internal */
@@ -180,7 +188,10 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
    * Sets up the trigger listener for focus trap
    */
   private setupTriggerListener() {
-    if (!this.triggerId) return;
+    if (!this.triggerId) {
+      this.addEventListener('focus-trap-exit', this.hideDialog);
+      return;
+    }
 
     this.triggerElement = (this.getRootNode() as Document | ShadowRoot).querySelector(`[id="${this.triggerId}"]`);
     if (!this.triggerElement) return;
@@ -192,8 +203,6 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
    * Removes the trigger event listener
    */
   private removeEventListeners() {
-    if (!this.triggerElement) return;
-
     this.removeEventListener('focus-trap-exit', this.hideDialog);
   }
 
@@ -240,29 +249,45 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
    * @param newValue - The new value of the visible property.
    */
   private async isOpenUpdated(oldValue: boolean | undefined, newValue: boolean) {
-    if (oldValue === newValue || !this.triggerElement) {
+    if (oldValue === newValue) {
       return;
     }
 
-    if (newValue) {
+    if (newValue && !oldValue) {
+      // Store the currently focused element before opening the dialog
+      this.lastActiveElement = document.activeElement as HTMLElement;
+
       this.enabledFocusTrap = true;
       this.enabledPreventScroll = true;
       this.utils.createBackdrop();
 
       await this.handleCreateDialogFirstUpdate();
-      this.triggerElement.setAttribute('aria-expanded', 'true');
-      this.triggerElement.setAttribute(
-        'aria-haspopup',
-        this.triggerElement.getAttribute('aria-haspopup') || 'dialog',
-      );
+
+      // If we have a trigger element, update its attributes
+      if (this.triggerElement) {
+        this.triggerElement.setAttribute('aria-expanded', 'true');
+        this.triggerElement.setAttribute(
+          'aria-haspopup',
+          this.triggerElement.getAttribute('aria-haspopup') || 'dialog',
+        );
+      }
+
       DialogEventManager.onShowDialog(this);
-    } else {
+    } else if (!newValue && oldValue) {
       this.backdropElement?.remove();
       this.backdropElement = null;
       this.deactivateFocusTrap?.();
-      this.triggerElement.removeAttribute('aria-expanded');
-      this.triggerElement.removeAttribute('aria-haspopup');
-      this.triggerElement?.focus();
+
+      // If we have a trigger element, restore focus to it
+      if (this.triggerElement) {
+        this.triggerElement.removeAttribute('aria-expanded');
+        this.triggerElement.removeAttribute('aria-haspopup');
+        this.triggerElement.focus();
+      } else if (this.lastActiveElement && this.lastActiveElement.focus) {
+        // Otherwise restore focus to the last active element
+        this.lastActiveElement.focus();
+      }
+
       DialogEventManager.onHideDialog(this);
     }
   }
@@ -273,6 +298,14 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
    */
   public hideDialog = () => {
     this.visible = false;
+  };
+
+  /**
+   * Shows the dialog.
+   * @internal
+   */
+  public showDialog = () => {
+    this.visible = true;
   };
 
   /**
@@ -290,14 +323,17 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
     return html`
       ${this.headerText
     ? html`
-      <div part="header">
-        <mdc-text
-          part="header-text"
-          tagname="${VALID_TEXT_TAGS[this.headerTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
-          type="${TYPE.BODY_LARGE_BOLD}"  
-        >
-          ${this.headerText}
-        </mdc-text>
+      <div part="header-section">
+        <div part="header">
+          <slot name="header-prefix"></slot>
+          <mdc-text
+            part="header-text"
+            tagname="${VALID_TEXT_TAGS[this.headerTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
+            type="${TYPE.BODY_LARGE_BOLD}"  
+          >
+            ${this.headerText}
+          </mdc-text>
+        </div>
         <mdc-text
           part="description-text"
           tagname="${VALID_TEXT_TAGS[this.descriptionTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
