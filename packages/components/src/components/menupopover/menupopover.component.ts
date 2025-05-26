@@ -51,6 +51,7 @@ class MenuPopover extends MenuMixin(Popover) {
   override async firstUpdated(changedProperties: PropertyValues) {
     await super.firstUpdated(changedProperties);
 
+    this.triggerElement?.setAttribute('aria-haspopup', ROLE.MENU);
     if (this.parentElement?.tagName?.toLowerCase() === MENU_POPOVER) {
       this.interactive = true;
       this.placement = POPOVER_PLACEMENT.RIGHT_START;
