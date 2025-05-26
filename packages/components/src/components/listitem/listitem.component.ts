@@ -266,13 +266,17 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   }
 
   /**
-   * Stops the click/key event from propagating to parent elements.
+   * Stops the click event from propagating to parent elements. In case of keyboard events,
+   * it stops the propagation for Enter and Space keys.
    * This is useful when the list item contains controls that
    * should not trigger the click event on the list item itself.
    * @param event - The mouse event triggered when a click occurs.
    */
   protected stopEventPropagation(event: Event): void {
-    event.stopPropagation();
+    if ((event instanceof KeyboardEvent && (event.key === KEYS.ENTER || event.key === KEYS.SPACE))
+        || (event instanceof MouseEvent)) {
+      event.stopPropagation();
+    }
   }
 
   public override render() {
