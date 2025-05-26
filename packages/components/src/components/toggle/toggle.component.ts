@@ -22,6 +22,8 @@ import type { ToggleSize } from './toggle.types';
  *
  * @dependency mdc-icon
  * @dependency mdc-statictoggle
+ * @dependency mdc-text
+ * @dependency mdc-tooltip
  *
  * @tagname mdc-toggle
  *

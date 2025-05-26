@@ -7,6 +7,7 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { disableControls } from '../../../config/storybook/utils';
 import { AUTO_CAPITALIZE } from './input.constants';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 const render = (args: Args) => {
   const value = args.maxlength && args.value ? args.value.substring(0, args.maxlength) : args.value;
@@ -19,6 +20,8 @@ const render = (args: Args) => {
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
     placeholder="${args.placeholder}"
+    tooltip-placement="${args['tooltip-placement']}"
+    tooltip-text="${args['tooltip-text']}"
     name="${args.name}"
     value="${value}"
     id="${args.id}"
@@ -128,6 +131,13 @@ const meta: Meta = {
     },
     'data-aria-label': {
       control: 'text',
+    },
+    'tooltip-text': {
+      control: 'text',
+    },
+    'tooltip-placement': {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
     },
     ...disableControls([
       '--mdc-input-disabled-border-color',

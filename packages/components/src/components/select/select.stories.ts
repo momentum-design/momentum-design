@@ -9,6 +9,7 @@ import '../divider';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import '../optgroup';
 import '../option';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 const helpTextTypes = Object.values(VALIDATION).filter((type: string) => type !== 'priority');
 
@@ -28,6 +29,8 @@ const render = (args: Args) => wrapWithDiv(html`
     help-text="${args['help-text']}"
     height="${args.height}"
     data-aria-label="${args['data-aria-label']}"
+    tooltip-text="${args['tooltip-text']}"
+    tooltip-placement="${args['tooltip-placement']}"
     name="${args.name}"
     placeholder="${args.placeholder}" 
     ?disabled="${args.disabled}"
@@ -79,10 +82,17 @@ const meta: Meta = {
     'data-aria-label': {
       control: 'text',
     },
+    'tooltip-text': {
+      control: 'text',
+    },
+    'tooltip-placement': {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
+    },
     height: {
       control: 'text',
     },
-    ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default', 'label-info']),
+    ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default']),
     ...classArgType,
     ...styleArgType,
   },

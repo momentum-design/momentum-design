@@ -24,6 +24,7 @@ import type { ArrowIcon } from './select.types';
  * @dependency mdc-icon
  * @dependency mdc-popover
  * @dependency mdc-text
+ * @dependency mdc-tooltip
  *
  * @tagname mdc-select
  *

@@ -3,6 +3,7 @@ import { TAG_NAME } from './textarea.constants';
 import '../button';
 import '../icon';
 import '../text';
+import '../tooltip';
 
 Textarea.register(TAG_NAME);
 

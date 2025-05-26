@@ -4,6 +4,7 @@ import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
 import '../checkbox';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import '../toggle';
 
 const render = (args: Args) => html`
@@ -11,6 +12,8 @@ const render = (args: Args) => html`
     label="${args.label}"
     help-text="${args['help-text']}"
     data-aria-label="${args['data-aria-label']}"
+    tooltip-text="${args['tooltip-text']}"
+    tooltip-placement="${args['tooltip-placement']}"
    ?required=${args.required}
   >
     ${args.children}
@@ -36,6 +39,13 @@ const meta: Meta = {
     },
     required: {
       control: 'boolean',
+    },
+    'tooltip-text': {
+      control: 'text',
+    },
+    'tooltip-placement': {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
     },
     children: {
       description: 'The html content which can be placed inside the formfieldgroup component.',

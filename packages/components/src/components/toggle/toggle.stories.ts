@@ -6,6 +6,7 @@ import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 import '../button';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
 
 const render = (args: Args) => html`
@@ -15,9 +16,12 @@ const render = (args: Args) => html`
     @focus="${action('onfocus')}"
     @change="${action('onchange')}"
     size="${args.size}"
+    tooltip-placement="${args['tooltip-placement']}"
+    tooltip-text="${args['tooltip-text']}"
     label="${ifDefined(args.label)}"
     help-text="${ifDefined(args['help-text'])}"
     data-aria-label="${ifDefined(args['data-aria-label'])}"
+    
     ?checked="${args.checked}"
     ?required="${args.required}"
     ?autofocus="${args.autofocus}"
@@ -69,7 +73,14 @@ const meta: Meta = {
       control: 'text',
       description: 'Aria label for the toggle component. Required for accessibility.',
     },
-    ...hideControls(['help-text-type', 'label-info', 'id']),
+    'tooltip-text': {
+      control: 'text',
+    },
+    'tooltip-placement': {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
+    },
+    ...hideControls(['help-text-type', 'id']),
     ...disableControls([
       '--mdc-toggle-width',
       '--mdc-toggle-height',

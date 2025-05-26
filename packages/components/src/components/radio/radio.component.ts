@@ -14,7 +14,11 @@ import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwra
  * These are often used in forms, settings, and selection in lists.
  *
  * A radio component contains an optional label, optional info icon and an optional helper text.
- * @dependency mdc-formfieldwrapper
+ *
+ * @dependency mdc-staticradio
+ * @dependency mdc-text
+ * @dependency mdc-icon
+ * @dependency mdc-tooltip
  *
  * @tagname mdc-radio
  *

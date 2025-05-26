@@ -26,6 +26,10 @@ import styles from './formfieldgroup.styles';
  *
  * @tagname mdc-formfieldgroup
  *
+ * @dependency mdc-text
+ * @dependency mdc-icon
+ * @dependency mdc-tooltip
+ *
  * @slot default - This is a default slot for checkbox or toggle components.
  */
 class FormfieldGroup extends DataAriaLabelMixin(FormfieldWrapper) {

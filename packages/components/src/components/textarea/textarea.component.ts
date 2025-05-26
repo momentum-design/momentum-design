@@ -40,10 +40,10 @@ import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
  * @event limitexceeded - (React: onLimitExceeded) This event is dispatched once when the character limit
  * exceeds or restored.
  *
- *
  * @dependency mdc-icon
  * @dependency mdc-text
  * @dependency mdc-button
+ * @dependency mdc-tooltip
  *
  * @cssproperty --mdc-textarea-disabled-border-color - Border color for the textarea container when disabled
  * @cssproperty --mdc-textarea-disabled-text-color - Text color for the textarea field when disabled

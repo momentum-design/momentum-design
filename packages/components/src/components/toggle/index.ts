@@ -1,5 +1,7 @@
 import '../icon';
 import '../statictoggle';
+import '../tooltip';
+import '../text';
 import Toggle from './toggle.component';
 import { TAG_NAME } from './toggle.constants';
 

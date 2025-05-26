@@ -9,6 +9,7 @@ import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { AUTO_CAPITALIZE } from '../input/input.constants';
 import { AUTO_COMPLETE, DEFAULTS, WRAP } from './textarea.constants';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 const render = (args: Args) => html`<mdc-textarea
     @input="${action('oninput')}"
@@ -39,6 +40,8 @@ const render = (args: Args) => html`<mdc-textarea
     autocomplete="${args.autocomplete}"
     dirname="${ifDefined(args.dirname)}"
     validation-message="${args['validation-message']}"
+    tooltip-placement="${args['tooltip-placement']}"
+    tooltip-text="${args['tooltip-text']}"
     max-character-limit="${ifDefined(args['max-character-limit'])}"
   ></mdc-textarea>`;
 
@@ -116,6 +119,19 @@ const meta: Meta = {
     'help-text-type': {
       control: 'select',
       options: Object.values(VALIDATION),
+    },
+    'validation-message': {
+      control: 'text',
+    },
+    'resize-button': {
+      control: 'boolean',
+    },
+    'tooltip-text': {
+      control: 'text',
+    },
+    'tooltip-placement': {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
     },
     ...hideControls([
       'characterLimitExceedingFired',
