@@ -19,6 +19,10 @@ const styles = [
       color: var(--mds-color-theme-text-primary-disabled);
     }
 
+    :host::part(required-indicator) {
+      color: var(--mds-color-theme-text-error-normal);
+    }
+
     .mdc-label-text,
     .mdc-help-text {
       display: flex;

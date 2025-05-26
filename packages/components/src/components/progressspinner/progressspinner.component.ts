@@ -41,7 +41,7 @@ class Progressspinner extends Progressbar {
     this.disabled = undefined as unknown as boolean;
     this.helpTextType = undefined as unknown as ValidationType;
     this.helpText = undefined as unknown as string;
-    this.requiredLabel = undefined as unknown as string;
+    this.required = undefined as unknown as boolean;
     this.variant = undefined as unknown as Variant;
     this.label = undefined as unknown as string;
   }
