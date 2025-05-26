@@ -24,6 +24,7 @@ const render = (args: Args) => html`
     data-aria-label="${args['data-aria-label']}"
     tooltip-text="${args['tooltip-text']}"
     tooltip-placement="${args['tooltip-placement']}"
+    label-info-aria-label="${args['label-info-aria-label']}"
     @change="${action('onchange')}"
   ></mdc-checkbox>
 `;
@@ -70,6 +71,9 @@ const meta: Meta = {
     'tooltip-placement': {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
+    },
+    'label-info-aria-label': {
+      control: 'text',
     },
     ...hideControls(['help-text-type', 'id', 'internals']),
     ...disableControls([

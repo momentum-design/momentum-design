@@ -42,6 +42,7 @@ const render = (args: Args) => html`<mdc-textarea
     validation-message="${args['validation-message']}"
     tooltip-placement="${args['tooltip-placement']}"
     tooltip-text="${args['tooltip-text']}"
+    label-info-aria-label="${args['label-info-aria-label']}"
     max-character-limit="${ifDefined(args['max-character-limit'])}"
   ></mdc-textarea>`;
 
@@ -132,6 +133,9 @@ const meta: Meta = {
     'tooltip-placement': {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
+    },
+    'label-info-aria-label': {
+      control: 'text',
     },
     ...hideControls([
       'characterLimitExceedingFired',

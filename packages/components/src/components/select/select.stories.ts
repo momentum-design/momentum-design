@@ -31,6 +31,7 @@ const render = (args: Args) => wrapWithDiv(html`
     data-aria-label="${args['data-aria-label']}"
     tooltip-text="${args['tooltip-text']}"
     tooltip-placement="${args['tooltip-placement']}"
+    label-info-aria-label="${args['label-info-aria-label']}"
     name="${args.name}"
     placeholder="${args.placeholder}" 
     ?disabled="${args.disabled}"
@@ -78,6 +79,9 @@ const meta: Meta = {
       control: 'select',
       description: `The type of help text. It can be ${helpTextTypes.map((type: string) => `'${type}'`).join(', ')}.`,
       options: helpTextTypes,
+    },
+    'label-info-aria-label': {
+      control: 'text',
     },
     'data-aria-label': {
       control: 'text',

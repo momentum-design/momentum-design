@@ -18,6 +18,7 @@ const render = (args: Args) =>
     help-text="${args['help-text']}"
     tooltip-text="${args['tooltip-text']}"
     tooltip-placement="${args['tooltip-placement']}"
+    label-info-aria-label="${args['label-info-aria-label']}"
     >
     ${args.children}
     </mdc-subcomponent-formfieldwrapper>`;
@@ -59,6 +60,9 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
     },
+    'label-info-aria-label': {
+      control: 'text',
+    },
   },
 };
 
@@ -72,6 +76,8 @@ export const Example: StoryObj = {
     children: '[Child Component]',
     required: true,
     disabled: false,
+    'tooltip-text': 'Tooltip text',
+    'label-info-aria-label': 'Info icon aria label',
   },
 };
 

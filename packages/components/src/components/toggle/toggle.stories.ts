@@ -18,6 +18,7 @@ const render = (args: Args) => html`
     size="${args.size}"
     tooltip-placement="${args['tooltip-placement']}"
     tooltip-text="${args['tooltip-text']}"
+    label-info-aria-label="${args['label-info-aria-label']}"
     label="${ifDefined(args.label)}"
     help-text="${ifDefined(args['help-text'])}"
     data-aria-label="${ifDefined(args['data-aria-label'])}"
@@ -79,6 +80,9 @@ const meta: Meta = {
     'tooltip-placement': {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
+    },
+    'label-info-aria-label': {
+      control: 'text',
     },
     ...hideControls(['help-text-type', 'id']),
     ...disableControls([

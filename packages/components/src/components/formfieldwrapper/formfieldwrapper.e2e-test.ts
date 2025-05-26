@@ -14,6 +14,9 @@ type SetupOptions = {
   helpTextType?: string;
   required?: boolean;
   children?: string;
+  tooltipText?: string;
+  tooltipPlacement?: string;
+  disabled?: boolean;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -26,6 +29,9 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.helpText ? `help-text="${restArgs.helpText}"` : ''}
       ${restArgs.helpTextType ? `help-text-type="${restArgs.helpTextType}"` : ''}
       ${restArgs.required ? 'required' : ''}
+      ${restArgs.disabled ? 'disabled' : ''}
+      ${restArgs.tooltipText ? `tooltip-text="${restArgs.tooltipText}"` : ''}
+      ${restArgs.tooltipPlacement ? `tooltip-placement="${restArgs.tooltipPlacement}"` : ''}
       >${restArgs.children}</mdc-subcomponent-formfieldwrapper>
     `,
     clearDocument: true,
@@ -43,13 +49,6 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
     helpText: 'Help Text',
     children: 'Form Input Component',
     required: true,
-  });
-
-  /**
-   * ACCESSIBILITY
-   */
-  await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('formfieldwrapper-default');
   });
 
   /**
@@ -73,6 +72,35 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
         }
       }
     });
+
+    await test.step('disabled attribute', async () => {
+      await componentsPage.setAttributes(formfieldwrapper, { disabled: '' });
+      await expect(formfieldwrapper).toHaveAttribute('disabled', '');
+      await componentsPage.removeAttribute(formfieldwrapper, 'disabled');
+      await expect(formfieldwrapper).not.toHaveAttribute('disabled');
+    });
+  });
+
+  /**
+   * INTERACTIONS
+   */
+  await test.step('interactions', async () => {
+    await test.step('tooltip-text and tooltip-placement attributes', async () => {
+      const tooltipText = 'Tooltip Text';
+      const tooltipPlacement = 'top';
+      await componentsPage.setAttributes(formfieldwrapper, {
+        'tooltip-text': tooltipText,
+        'tooltip-placement': tooltipPlacement,
+      });
+      await expect(formfieldwrapper).toHaveAttribute('tooltip-text', tooltipText);
+      await expect(formfieldwrapper).toHaveAttribute('tooltip-placement', tooltipPlacement);
+      const infoIcon = formfieldwrapper.locator('mdc-icon[name="info-badge-filled"]');
+      await expect(infoIcon).toBeVisible();
+      await componentsPage.actionability.pressTab();
+      await expect(infoIcon).toBeFocused();
+      const tooltip = formfieldwrapper.locator('mdc-tooltip');
+      await expect(tooltip).toBeVisible();
+    });
   });
 
   /**
@@ -86,7 +114,7 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       label: 'Label',
       'help-text': 'Help Text',
     });
-    await wrapperStickerSheet.createMarkupWithCombination({ 'help-text-type': VALIDATION }, { createNewRow: true });
+    await wrapperStickerSheet.createMarkupWithCombination({ 'help-text-type': VALIDATION });
     // disabled
     wrapperStickerSheet.setAttributes({
       id: 'test-formfieldwrapper',
@@ -95,7 +123,7 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       disabled: true,
     });
     await wrapperStickerSheet.createMarkupWithCombination({});
-    // required label
+    // required
     wrapperStickerSheet.setAttributes({
       id: 'test-formfieldwrapper',
       label: 'Label',
@@ -112,6 +140,14 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       style: 'width: 200px',
     });
     await wrapperStickerSheet.createMarkupWithCombination({});
+    // With info-icon and tooltip
+    wrapperStickerSheet.setAttributes({
+      id: 'test-formfieldwrapper',
+      label: 'Label with Tooltip',
+      'help-text': 'Help Text',
+      'tooltip-text': 'Tooltip Text',
+    });
+    await wrapperStickerSheet.createMarkupWithCombination({});
     await wrapperStickerSheet.mountStickerSheet();
     wrapperStickerSheet.getWrapperContainer();
 
@@ -120,5 +156,12 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
         element: wrapperStickerSheet.getWrapperContainer(),
       });
     });
+  });
+
+  /**
+   * ACCESSIBILITY
+   */
+  await test.step('accessibility', async () => {
+    await componentsPage.accessibility.checkForA11yViolations('formfieldwrapper-default');
   });
 });

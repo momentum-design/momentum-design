@@ -1,5 +1,6 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import type { PopoverPlacement } from '../popover/popover.types';
@@ -56,8 +57,19 @@ class FormfieldWrapper extends DisabledMixin(Component) {
    */
   @property({ type: String, reflect: true, attribute: 'tooltip-text' }) tooltipText?: string;
 
+  /**
+   * The placement of the tooltip that is displayed when the info icon is hovered.
+   * @default 'top'
+   */
   @property({ type: String, reflect: true, attribute: 'tooltip-placement' })
   tooltipPlacement: PopoverPlacement = DEFAULTS.TOOLTIP_PLACEMENT;
+
+  /**
+   * Aria label for the info icon that is displayed next to the label when `tooltipText` is set.
+   * This is used for accessibility purposes to provide a description of the icon.
+   */
+  @property({ type: String, reflect: true, attribute: 'info-icon-aria-label' })
+  infoIconAriaLabel?: string;
 
   /** @internal */
   protected shouldRenderLabel: Boolean = true;
@@ -135,6 +147,8 @@ class FormfieldWrapper extends DisabledMixin(Component) {
         name="${DEFAULTS.INFO_ICON}" 
         length-unit="rem" 
         size="${DEFAULTS.ICON_SIZE}"
+        tabindex="0"
+        aria-label="${ifDefined(this.infoIconAriaLabel)}"
         id="info-icon-id"></mdc-icon>
         <mdc-tooltip
           part="label-tooltip"
