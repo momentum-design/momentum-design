@@ -7,6 +7,7 @@ interface Events {
     onKeyDownEvent: KeyboardEvent;
     onKeyUpEvent: KeyboardEvent;
     onFocusEvent: FocusEvent;
+    onActiveChangeEvent: Event;
 }
 
 export type { SideNavigationVariant, Events };

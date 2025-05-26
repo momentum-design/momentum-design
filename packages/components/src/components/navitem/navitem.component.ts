@@ -109,7 +109,6 @@ class NavItem extends IconNameMixin(MenuItem) {
     super.connectedCallback();
     this.variant = undefined as unknown as ListItemVariants;
     this.addEventListener('click', this.handleClickEvent);
-    this.addEventListener('keydown', this.handleKeyDownEvent);
 
     if (!this.navId && this.onerror) {
       this.onerror('[mdc-navitem] navId is required and was not provided.');
@@ -119,7 +118,6 @@ class NavItem extends IconNameMixin(MenuItem) {
   public override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.removeEventListener('click', this.handleClickEvent);
-    this.removeEventListener('keydown', this.handleKeyDownEvent);
   }
 
   protected override updated(): void {

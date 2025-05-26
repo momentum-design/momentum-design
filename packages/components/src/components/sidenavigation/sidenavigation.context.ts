@@ -2,7 +2,7 @@ import { createContext } from '@lit/context';
 
 import { TAG_NAME } from './sidenavigation.constants';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
-import type NavItem from '../navitem/navitem.component.ts';
+import type NavItem from '../navitem/navitem.component';
 
 class SideNavigationContext {
   public variant?: string;
