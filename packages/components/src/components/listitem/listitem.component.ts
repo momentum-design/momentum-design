@@ -248,7 +248,10 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
    * @returns A template for the trailing controls slot.
    */
   protected renderTrailingControls() {
-    return html`<slot name="trailing-controls" @click=${this.stopClickPropagation}></slot>`;
+    return html`<slot name="trailing-controls" 
+    @click=${this.stopEventPropagation}
+    @keyup=${this.stopEventPropagation}
+    @keydown=${this.stopEventPropagation}></slot>`;
   }
 
   /**
@@ -256,16 +259,19 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
    * @returns A template for the leading controls slot.
    */
   protected renderLeadingControls() {
-    return html`<slot name="leading-controls" @click=${this.stopClickPropagation}></slot>`;
+    return html`<slot name="leading-controls" 
+    @click=${this.stopEventPropagation}
+    @keyup=${this.stopEventPropagation}
+    @keydown=${this.stopEventPropagation}></slot>`;
   }
 
   /**
-   * Stops the click event from propagating to parent elements.
+   * Stops the click/key event from propagating to parent elements.
    * This is useful when the list item contains controls that
    * should not trigger the click event on the list item itself.
    * @param event - The mouse event triggered when a click occurs.
    */
-  protected stopClickPropagation(event: MouseEvent): void {
+  protected stopEventPropagation(event: Event): void {
     event.stopPropagation();
   }
 

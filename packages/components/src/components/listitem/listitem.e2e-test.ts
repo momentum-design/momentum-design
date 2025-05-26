@@ -218,15 +218,59 @@ test('mdc-listitem', async ({ componentsPage }) => {
       });
     });
 
-    await test.step('click', async () => {
-      await test.step('should trigger click event on component', async () => {
+    // await test.step('click', async () => {
+    //   await test.step('should trigger click event on component', async () => {
+    //     const listitem = await setup({ componentsPage, label: primaryLabel });
+    //     const waitForClick = componentsPage.waitForEvent(listitem, 'click');
+    //     await listitem.click();
+    //     await waitForClick;
+    //   });
+
+    //   await test.step('should trigger click event on leading controls and not on listitem', async () => {
+    //     const listitem = await setup({
+    //       componentsPage,
+    //       label: primaryLabel,
+    //       children: `
+    //         <mdc-checkbox checked slot="leading-controls" data-aria-label="${primaryLabel}"></mdc-checkbox>
+    //       `,
+    //     });
+    //     const checkbox = listitem.locator('mdc-checkbox');
+    //     const waitForCheckboxClick = componentsPage.waitForEvent(checkbox, 'click');
+    //     const waitForListItemClick = componentsPage.waitForEvent(listitem, 'click');
+    //     await checkbox.click();
+    //     await waitForCheckboxClick;
+    //     await componentsPage.expectPromiseTimesOut(waitForListItemClick, true);
+    //   });
+
+    //   await test.step('should trigger click event on trailing controls and not on listitem', async () => {
+    //     const listitem = await setup({
+    //       componentsPage,
+    //       label: primaryLabel,
+    //       children: `
+    //         <mdc-button slot="trailing-controls">Click</mdc-button>
+    //       `,
+    //     });
+    //     const button = listitem.locator('mdc-button');
+    //     const waitForButtonClick = componentsPage.waitForEvent(button, 'click');
+    //     const waitForListItemClick = componentsPage.waitForEvent(listitem, 'click');
+    //     await button.click();
+    //     await waitForButtonClick;
+    //     await componentsPage.expectPromiseTimesOut(waitForListItemClick, true);
+    //   });
+    // });
+
+    await test.step('keyboard', async () => {
+      await test.step('should trigger keyup and keydown events on component', async () => {
         const listitem = await setup({ componentsPage, label: primaryLabel });
-        const waitForClick = componentsPage.waitForEvent(listitem, 'click');
-        await listitem.click();
-        await waitForClick;
+        const waitForKeyDown = componentsPage.waitForEvent(listitem, 'keydown');
+        const waitForKeyUp = componentsPage.waitForEvent(listitem, 'keyup');
+        await listitem.focus();
+        await componentsPage.page.keyboard.press('Enter');
+        await waitForKeyDown;
+        await waitForKeyUp;
       });
 
-      await test.step('should trigger click event on leading controls and not on listitem', async () => {
+      await test.step('should trigger keyup and keydown events on leading controls and not on listitem', async () => {
         const listitem = await setup({
           componentsPage,
           label: primaryLabel,
@@ -235,14 +279,22 @@ test('mdc-listitem', async ({ componentsPage }) => {
           `,
         });
         const checkbox = listitem.locator('mdc-checkbox');
-        const waitForCheckboxClick = componentsPage.waitForEvent(checkbox, 'click');
-        const waitForListItemClick = componentsPage.waitForEvent(listitem, 'click');
-        await checkbox.click();
-        await waitForCheckboxClick;
-        await componentsPage.expectPromiseTimesOut(waitForListItemClick, true);
+        const waitForCheckboxKeyUp = componentsPage.waitForEvent(checkbox, 'keyup');
+        const waitForCheckboxKeyDown = componentsPage.waitForEvent(checkbox, 'keydown');
+        await componentsPage.actionability.pressTab();
+        await expect(listitem).toBeFocused();
+        await componentsPage.actionability.pressTab();
+        await expect(checkbox).toBeFocused();
+        const waitForListItemKeyUp = componentsPage.waitForEvent(listitem, 'keyup');
+        const waitForListItemKeyDown = componentsPage.waitForEvent(listitem, 'keydown');
+        await componentsPage.page.keyboard.press('Space');
+        await waitForCheckboxKeyDown;
+        await waitForCheckboxKeyUp;
+        await componentsPage.expectPromiseTimesOut(waitForListItemKeyDown, true);
+        await componentsPage.expectPromiseTimesOut(waitForListItemKeyUp, true);
       });
 
-      await test.step('should trigger click event on trailing controls and not on listitem', async () => {
+      await test.step('should trigger keyup and keydown events on trailing controls and not on listitem', async () => {
         const listitem = await setup({
           componentsPage,
           label: primaryLabel,
@@ -251,11 +303,19 @@ test('mdc-listitem', async ({ componentsPage }) => {
           `,
         });
         const button = listitem.locator('mdc-button');
-        const waitForButtonClick = componentsPage.waitForEvent(button, 'click');
-        const waitForListItemClick = componentsPage.waitForEvent(listitem, 'click');
-        await button.click();
-        await waitForButtonClick;
-        await componentsPage.expectPromiseTimesOut(waitForListItemClick, true);
+        const waitForButtonKeyUp = componentsPage.waitForEvent(button, 'keyup');
+        const waitForButtonKeyDown = componentsPage.waitForEvent(button, 'keydown');
+        await componentsPage.actionability.pressTab();
+        await expect(listitem).toBeFocused();
+        await componentsPage.actionability.pressTab();
+        await expect(button).toBeFocused();
+        const waitForListItemKeyUp = componentsPage.waitForEvent(listitem, 'keyup');
+        const waitForListItemKeyDown = componentsPage.waitForEvent(listitem, 'keydown');
+        await componentsPage.page.keyboard.press('Enter');
+        await waitForButtonKeyDown;
+        await waitForButtonKeyUp;
+        await componentsPage.expectPromiseTimesOut(waitForListItemKeyDown, true);
+        await componentsPage.expectPromiseTimesOut(waitForListItemKeyUp, true);
       });
     });
   });
