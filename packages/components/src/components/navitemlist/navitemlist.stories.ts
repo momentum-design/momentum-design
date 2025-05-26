@@ -7,24 +7,24 @@ import { hideControls, disableControls } from '../../../config/storybook/utils';
 import '../navitem';
 
 const render = (args: Args) => html`
-  <mdc-navitemlist ?expanded=${args.expanded} aria-label=${ifDefined(args['aria-label'])}>
+  <mdc-navitemlist ?show-label=${args['show-label']} aria-label=${ifDefined(args['aria-label'])}>
     <mdc-navitem
       nav-id="1"
       icon-name="placeholder-bold"
       badge-type="counter"
       counter="3"
       max-counter="66"
-      aria-label=${ifDefined(!args.expanded ? 'Dashboard' : undefined)}
-      ?expanded=${args.expanded}
-      label=${ifDefined(args.expanded ? 'Dashboard' : undefined)}
+      aria-label=${ifDefined(!args['show-label'] ? 'Dashboard' : undefined)}
+      ?show-label=${args['show-label']}
+      label=${ifDefined(args['show-label'] ? 'Dashboard' : undefined)}
     >
     </mdc-navitem>
     <mdc-navitem
       nav-id="2"
       icon-name="placeholder-bold"
-      aria-label=${ifDefined(!args.expanded ? 'Calling' : undefined)}
-      ?expanded=${args.expanded}
-      label=${ifDefined(args.expanded ? 'Calling' : undefined)}
+      aria-label=${ifDefined(!args['show-label'] ? 'Calling' : undefined)}
+      ?show-label=${args['show-label']}
+      label=${ifDefined(args['show-label'] ? 'Calling' : undefined)}
       disabled
     >
     </mdc-navitem>
@@ -32,9 +32,9 @@ const render = (args: Args) => html`
       nav-id="3"
       icon-name="placeholder-bold"
       badge-type="dot"
-      aria-label=${ifDefined(!args.expanded ? 'Settings' : undefined)}
-      ?expanded=${args.expanded}
-      label=${ifDefined(args.expanded ? 'Settings' : undefined)}
+      aria-label=${ifDefined(!args['show-label'] ? 'Settings' : undefined)}
+      ?show-label=${args['show-label']}
+      label=${ifDefined(args['show-label'] ? 'Settings' : undefined)}
     >
     </mdc-navitem>
   </mdc-navitemlist>
@@ -49,7 +49,7 @@ const meta: Meta = {
   },
   render,
   argTypes: {
-    expanded: {
+    'show-label': {
       control: 'boolean',
     },
     ...disableControls([
@@ -68,13 +68,13 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    expanded: true,
+    'show-label': true,
   },
 };
 
 export const collapsedNavItemList: StoryObj = {
   args: {
     'aria-label': 'This is a navitemlist.',
-    expanded: false,
+    'show-label': false,
   },
 };

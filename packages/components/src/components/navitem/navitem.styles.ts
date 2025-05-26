@@ -36,7 +36,7 @@ const styles = [hostFitContentStyles, css`
     margin-right: 1rem;
   }
 
-  :host([expanded]) {
+  :host([show-label]) {
     width: var(--mdc-navitem-expanded-width);
   }
 
@@ -123,11 +123,11 @@ const styles = [hostFitContentStyles, css`
     top: -0.375rem;
   }
 
-  :host(:not([expanded]))::part(trailing-arrow) {
+  :host(:not([show-label]))::part(trailing-arrow) {
     --mdc-icon-size: 0.75rem;
   }
 
-  :host([expanded])::part(trailing-arrow) {
+  :host([show-label])::part(trailing-arrow) {
     --mdc-icon-size: 1rem;
     flex-shrink: 0;
   }

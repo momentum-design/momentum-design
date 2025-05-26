@@ -14,7 +14,6 @@ import { getIconNameWithoutStyle } from '../button/button.utils';
 import SideNavigation from '../sidenavigation/sidenavigation.component';
 import type { BadgeType } from './navitem.types';
 import type { ListItemVariants } from '../listitem/listitem.types';
-import { KEYS } from '../../utils/keys';
 
 /**
  * `mdc-navitem` is a menuitem styled to work as a navigation tab.
@@ -93,7 +92,7 @@ class NavItem extends IconNameMixin(MenuItem) {
    *
    * @internal
    */
-  @property({ type: Boolean, reflect: true })
+  @property({ type: Boolean, reflect: true, attribute: 'show-label' })
   expanded?: boolean;
 
   /**
@@ -215,16 +214,6 @@ class NavItem extends IconNameMixin(MenuItem) {
     this.emitNavItemActiveChange(this.active as boolean);
   }
 
-  private handleKeyDownEvent(e: KeyboardEvent): void {
-    if (this.disabled) return;
-
-    const isActionKey = e.key === KEYS.ENTER || e.key === KEYS.SPACE;
-    if (isActionKey) {
-      e.preventDefault(); // prevent scrolling on space, or double activation
-      this.emitNavItemActiveChange(this.active as boolean);
-    }
-  }
-
   public override update(changedProperties: PropertyValues) {
     super.update(changedProperties);
     if (changedProperties.has('active')) {
@@ -241,16 +230,6 @@ class NavItem extends IconNameMixin(MenuItem) {
         ${label}
       </mdc-text>
     `;
-  }
-
-  private hasArrowButton() {
-    const id = this.getAttribute('id');
-    if (!id) return false;
-    const siblings = Array.from(this.parentElement?.children || []);
-    return siblings.some((sibling) =>
-      sibling !== this
-      && sibling.tagName.toLowerCase() === MENUPOPOVER_TAGNAME
-      && sibling.getAttribute('triggerid') === id);
   }
 
   private renderArrowIcon(expanded: boolean | undefined) {
@@ -284,6 +263,7 @@ class NavItem extends IconNameMixin(MenuItem) {
   }
 
   public override render() {
+    const context = this.sideNavigationContext?.value;
     return html`
       <div part="icon-container">
         <mdc-icon
@@ -295,7 +275,7 @@ class NavItem extends IconNameMixin(MenuItem) {
         ${!this.expanded ? this.renderBadge(this.expanded) : nothing}
       </div>
       ${this.expanded ? html`${this.renderTextLabel(this.label)}${this.renderBadge(this.expanded)}` : nothing}
-      ${this.hasArrowButton() ? this.renderArrowIcon(this.expanded) : nothing}
+      ${context?.hasSiblingWithTriggerId(this) ? this.renderArrowIcon(this.expanded) : nothing}
     `;
   }
 

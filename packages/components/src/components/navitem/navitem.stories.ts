@@ -17,14 +17,14 @@ const render = (args: Args) => html`
       @activechange="${action('onactivechange')}"
       nav-id="${args['nav-id']}"
       icon-name="${args['icon-name']}"
-      label=${ifDefined(args.expanded ? args.label : undefined)}
+      label=${ifDefined(args['show-label'] ? args.label : undefined)}
       ?disabled=${args.disabled}
       badge-type="${args['badge-type']}"
       counter=${args.counter}
       max-counter="${args['max-counter']}"
       ?active=${args.active}
-      ?expanded=${args.expanded}
-      aria-label=${ifDefined(!args.expanded ? args['aria-label'] : undefined)}
+      ?show-label=${args['show-label']}
+      aria-label=${ifDefined(!args['show-label'] ? args['aria-label'] : undefined)}
     ></mdc-navitem>
   </div>
 `;
@@ -64,7 +64,7 @@ const meta: Meta = {
     active: {
       control: 'boolean',
     },
-    expanded: {
+    'show-label': {
       control: 'boolean',
     },
     ...disableControls([
@@ -123,7 +123,7 @@ export const Example: StoryObj = {
     'max-counter': DEFAULTS.MAX_COUNTER,
     disabled: false,
     active: false,
-    expanded: true,
+    'show-label': true,
     label: 'Dashboard',
   },
 };
@@ -138,6 +138,6 @@ export const collapsedNavItem: StoryObj = {
     disabled: false,
     'aria-label': 'This is a navitem.',
     active: false,
-    expanded: false,
+    'show-label': false,
   },
 };

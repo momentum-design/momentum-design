@@ -33,10 +33,7 @@ import { ROLE } from '../../utils/roles';
  * @dependency mdc-button
  * @dependency mdc-divider
  *
- * @event click - (React: onClick) Dispatched when the grabber divider button is clicked.
- * @event focus - (React: onFocus) Dispatched when the grabber divider button receives focus.
- * @event keydown - (React: onKeyDown) Dispatched when a key is pressed down on the grabber divider button.
- * @event keyup - (React: onKeyUp) Dispatched when a key is released on the grabber divider button.
+ * @event activechange - (React: onActiveChange) Dispatched when the active state of the navitem changes.
  *
  * @tagname mdc-sidenavigation
  *

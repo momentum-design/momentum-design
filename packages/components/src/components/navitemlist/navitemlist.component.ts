@@ -25,7 +25,7 @@ class NavItemList extends MenuMixin(MenuBar) {
    *
    * @internal
    */
-  @property({ type: Boolean, reflect: true })
+  @property({ type: Boolean, reflect: true, attribute: 'show-label' })
   expanded?: boolean;
 
   /**
@@ -77,9 +77,14 @@ class NavItemList extends MenuMixin(MenuBar) {
    * @internal
    */
   private activateNavItem(newNav: NavItem): void {
-    this.navItems?.forEach((nav) => nav.removeAttribute('active'));
-    if (!newNav) return;
-    newNav.setAttribute('active', '');
+    const context = this.sideNavigationContext?.value;
+    if (!context?.hasSiblingWithTriggerId(newNav)) {
+      this.navItems?.forEach((nav) => nav.removeAttribute('active'));
+      if (!newNav) return;
+      newNav.setAttribute('active', '');
+    } else {
+      newNav.removeAttribute('active');
+    }
   }
 
   /**

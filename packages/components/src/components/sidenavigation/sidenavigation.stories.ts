@@ -15,10 +15,7 @@ const render = (args: Args) => html`
   <div style="height: 90vh; margin: 1rem">
     <mdc-sidenavigation variant="${args.variant}" customer-name=${args['customer-name']} 
         grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
-        @click="${action('onclick')}"
-        @keydown="${action('onkeydown')}"
-        @keyup="${action('onkeyup')}"
-        @focus="${action('onfocus')}">
+        @activechange="${action('onactivechange')}">
         <!-- Upper Nav (scrollable section) -->
         <mdc-navitemlist slot="scrollable-section" aria-label="This is a 1st navitemlist.">
           <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="chat-bold" nav-id="1"
@@ -107,7 +104,17 @@ const renderNestedSideNavigation = (args: Args) => html`
             <mdc-navitem label="Personal Insights" nav-id="6" icon-name="placeholder-bold"></mdc-navitem>
             <mdc-navitem label="What's new?" nav-id="7" badge-type="counter" counter="2" max-counter="66" 
             icon-name="placeholder-bold"></mdc-navitem>
-            <mdc-navitem label="Cisco collaboration experience" nav-id="8" icon-name="placeholder-bold"></mdc-navitem>
+            <mdc-navitem label="Collaboration Tools" nav-id="8" icon-name="placeholder-bold" 
+            id="share-id"></mdc-navitem>
+            <mdc-menupopover triggerid="share-id">
+              <mdc-navitem label="Webex App Hub" nav-id="temp1" badge-type="dot" 
+              icon-name="placeholder-bold"></mdc-navitem>
+              <mdc-navitem label="Team Insights" nav-id="temp2" 
+              icon-name="placeholder-bold"></mdc-navitem>
+              <mdc-navitem label="Release Notes" nav-id="temp3" badge-type="counter" counter="2" max-counter="66" 
+              icon-name="placeholder-bold"></mdc-navitem>
+              <mdc-navitem label="Cisco Spaces" nav-id="temp4" icon-name="placeholder-bold"></mdc-navitem>
+            </mdc-menupopover>
         </mdc-menupopover>
 
         <mdc-divider variant="gradient"></mdc-divider>
