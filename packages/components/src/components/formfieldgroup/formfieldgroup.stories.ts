@@ -14,7 +14,7 @@ const render = (args: Args) => html`
     data-aria-label="${args['data-aria-label']}"
     tooltip-text="${args['tooltip-text']}"
     tooltip-placement="${args['tooltip-placement']}"
-    label-info-aria-label="${args['label-info-aria-label']}"
+    info-icon-aria-label="${args['info-icon-aria-label']}"
    ?required=${args.required}
   >
     ${args.children}
@@ -48,7 +48,7 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
     },
-    'label-info-aria-label': {
+    'info-icon-aria-label': {
       control: 'text',
     },
     children: {
