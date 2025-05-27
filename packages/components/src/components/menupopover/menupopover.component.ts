@@ -3,7 +3,7 @@ import { MenuMixin } from '../../utils/mixins/MenuMixin';
 import { ROLE } from '../../utils/roles';
 import { ORIENTATION } from '../menubar/menubar.constants';
 import Popover from '../popover/popover.component';
-import { POPOVER_PLACEMENT, TRIGGER } from '../popover/popover.constants';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { TAG_NAME as MENU_POPOVER } from './menupopover.constants';
 import styles from './menupopover.styles';
 
