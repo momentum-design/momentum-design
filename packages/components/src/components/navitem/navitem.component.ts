@@ -191,22 +191,6 @@ class NavItem extends IconNameMixin(MenuItem) {
     this.dispatchEvent(event);
   };
 
-  /**
-   * Sets the aria-current attribute based on the active state of the navItem.
-   * If the navItem is active, the filled version of the icon is displayed,
-   * else the icon is restored to its original value.
-   *
-   * @param active - The active state of the navItem.
-   */
-  private setActive(active: boolean | undefined) {
-    if (active) {
-      this.setAttribute('aria-current', 'page');
-    } else {
-      this.removeAttribute('aria-current');
-    }
-    this.modifyIconName(active);
-  }
-
   private handleClickEvent(): void {
     if (this.disabled) return;
     this.emitNavItemActiveChange(this.active as boolean);
@@ -215,7 +199,7 @@ class NavItem extends IconNameMixin(MenuItem) {
   public override update(changedProperties: PropertyValues) {
     super.update(changedProperties);
     if (changedProperties.has('active')) {
-      this.setActive(this.active);
+      this.modifyIconName(this.active);
     }
   }
 

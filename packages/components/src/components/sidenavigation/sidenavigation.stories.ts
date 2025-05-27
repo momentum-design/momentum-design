@@ -87,10 +87,7 @@ const renderNestedSideNavigation = (args: Args) => html`
 <div style="height: 90vh; margin: 1rem">
   <mdc-sidenavigation variant="${args.variant}" customer-name=${args['customer-name']} 
       grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
-      @click="${action('onclick')}"
-      @keydown="${action('onkeydown')}"
-      @keyup="${action('onkeyup')}"
-      @focus="${action('onfocus')}">
+      @activechange="${action('onactivechange')}">
       <!-- Upper Nav (scrollable section) -->
       <mdc-navitemlist slot="scrollable-section" aria-label="This is a 1st navitemlist.">
         <mdc-navitem badge-type="counter" counter="2" max-counter="66" icon-name="chat-bold" 

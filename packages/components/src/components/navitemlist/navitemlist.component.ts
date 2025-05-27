@@ -59,6 +59,10 @@ class NavItemList extends MenuMixin(MenuBar) {
    */
   private handleNestedNavItemActiveChange = (event: CustomEvent<any>): void => {
     const newNavItem = this.findNav(this.navItems as NavItem[] || [], event.detail.navId);
+    const context = this.sideNavigationContext?.value;
+    if (context) {
+      context.setCurrentActiveNavItem(newNavItem);
+    }
     this.activateNavItem(newNavItem as NavItem);
   };
 

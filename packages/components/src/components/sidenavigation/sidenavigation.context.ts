@@ -1,5 +1,4 @@
 import { createContext } from '@lit/context';
-
 import { TAG_NAME } from './sidenavigation.constants';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
 import type NavItem from '../navitem/navitem.component';
@@ -11,7 +10,19 @@ class SideNavigationContext {
 
   public expanded?: boolean;
 
+  private currentActiveNavItem?: NavItem;
+
   public static context = createContext<SideNavigationContext>(TAG_NAME);
+
+  constructor(
+    defaultVariant?: string,
+    defaultCustomerName?: string,
+    defaultExpanded?: boolean,
+  ) {
+    this.variant = defaultVariant;
+    this.customerName = defaultCustomerName;
+    this.expanded = defaultExpanded;
+  }
 
   public hasSiblingWithTriggerId(navItem: NavItem) {
     const id = navItem.getAttribute('id');
@@ -23,15 +34,14 @@ class SideNavigationContext {
       && sibling.getAttribute('triggerid') === id);
   }
 
-  // Constructor to allow setting default values
-  constructor(
-    defaultVariant?: string,
-    defaultCustomerName?: string,
-    defaultExpanded?: boolean,
-  ) {
-    this.variant = defaultVariant;
-    this.customerName = defaultCustomerName;
-    this.expanded = defaultExpanded;
+  public setCurrentActiveNavItem(navItem: NavItem | undefined) {
+    if (this.currentActiveNavItem?.navId === navItem?.navId) return;
+
+    if (navItem && !this.hasSiblingWithTriggerId(navItem)) {
+      this.currentActiveNavItem?.removeAttribute('aria-current');
+      this.currentActiveNavItem = navItem;
+      navItem.setAttribute('aria-current', 'page');
+    }
   }
 }
 
