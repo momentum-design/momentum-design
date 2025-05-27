@@ -15,6 +15,7 @@ const render = (args: Args) => html`
   <div style="height: 90vh; margin: 1rem">
     <mdc-sidenavigation variant="${args.variant}" customer-name=${args['customer-name']} 
         grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
+        parent-nav-tooltip-text="${args['parent-nav-tooltip-text']}"
         @activechange="${action('onactivechange')}">
         <!-- Upper Nav (scrollable section) -->
         <mdc-navitemlist slot="scrollable-section" aria-label="This is a 1st navitemlist.">
@@ -87,6 +88,7 @@ const renderNestedSideNavigation = (args: Args) => html`
 <div style="height: 90vh; margin: 1rem">
   <mdc-sidenavigation variant="${args.variant}" customer-name=${args['customer-name']} 
       grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
+      parent-nav-tooltip-text="${args['parent-nav-tooltip-text']}"
       @activechange="${action('onactivechange')}">
       <!-- Upper Nav (scrollable section) -->
       <mdc-navitemlist slot="scrollable-section" aria-label="This is a 1st navitemlist.">
@@ -196,6 +198,9 @@ const meta: Meta = {
     'grabber-btn-aria-label': {
       control: 'text',
     },
+    'parent-nav-tooltip-text': {
+      control: 'text',
+    },
     ...disableControls([
       'scrollable-section',
       'fixed-section',
@@ -219,6 +224,7 @@ export const Example: StoryObj = {
     variant: DEFAULTS.VARIANT,
     'customer-name': '%Customer Name%',
     'grabber-btn-aria-label': 'Toggle Side navigation',
+    'parent-nav-tooltip-text': 'Contains active navitem',
   },
 };
 

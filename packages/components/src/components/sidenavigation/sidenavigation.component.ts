@@ -1,5 +1,6 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
+import { v4 as uuidv4 } from 'uuid';
 import styles from './sidenavigation.styles';
 import { Component, Provider } from '../../models';
 import SideNavigationContext from './sidenavigation.context';
@@ -18,7 +19,7 @@ import { ROLE } from '../../utils/roles';
  * - Supports four layout variants: `fixed-collapsed`, `fixed-expanded`, `flexible`, and `hidden`
  * - Toggleable expand/collapse behavior
  * - Displays brand logo and customer name
- * - Serves as a context provider for descendant components
+ * - Serves as a context provider for descendant components - `mdc-navitemlist` and `mdc-navitem`
  *
  * ### Recommendations:
  * - Use `mdc-text` for section headers
@@ -50,7 +51,9 @@ class SideNavigation extends Provider<SideNavigationContext> {
       context: SideNavigationContext.context,
       initialValue: new SideNavigationContext(DEFAULTS.VARIANT, '', true),
     });
+
     this.role = ROLE.NAVIGATION;
+    this.id = `mdc-sidenavigation-${uuidv4()}`;
   }
 
   public static get Context() {
@@ -91,6 +94,12 @@ class SideNavigation extends Provider<SideNavigationContext> {
    */
   @property({ type: String, reflect: true, attribute: 'grabber-btn-aria-label' })
   grabberBtnAriaLabel: string | null = null;
+
+  /**
+   * Tooltip text shown on parent nav items when a child is active.
+   */
+  @property({ type: String, reflect: true, attribute: 'parent-nav-tooltip-text' })
+  parentNavTooltipText?: string;
 
   /**
   * Toggles between true and false when it's variant is flexible.
@@ -138,10 +147,12 @@ class SideNavigation extends Provider<SideNavigationContext> {
     if (this.context.value.variant !== this.variant
         || this.context.value.customerName !== this.customerName
         || this.context.value.expanded !== this.expanded
+        || this.context.value.parentNavTooltipText !== this.parentNavTooltipText
     ) {
       this.context.value.variant = this.variant;
       this.context.value.customerName = this.customerName;
       this.context.value.expanded = this.expanded;
+      this.context.value.parentNavTooltipText = this.parentNavTooltipText;
       this.context.updateObservers();
     }
   }
@@ -163,10 +174,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
         this.expanded = false;
         break;
       default:
-        return;
     }
-
-    this.setAttribute('aria-expanded', String(this.expanded));
   };
 
   /**
@@ -199,7 +207,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
       return html``;
     }
     return html`
-        <div part="side-navigation-container">
+        <div part="side-navigation-container" id=${this.id}>
           <div part="scrollable-section">
             <slot name="scrollable-section"></slot>
           </div>
@@ -218,7 +226,8 @@ class SideNavigation extends Provider<SideNavigationContext> {
             variant=${DIVIDER_VARIANT.GRADIENT}
             arrow-direction=${this.arrowDirection}
             button-position=${DIRECTIONS.POSITIVE}
-          > <mdc-button aria-label=${this.grabberBtnAriaLabel ?? ''} @click=${this.toggleSideNavigation}></mdc-button>
+          > <mdc-button aria-label=${this.grabberBtnAriaLabel ?? ''} @click=${this.toggleSideNavigation}   
+                        aria-expanded=${String(this.expanded)} aria-controls=${this.id}></mdc-button>
         </mdc-divider>` : nothing}
   `;
   }
