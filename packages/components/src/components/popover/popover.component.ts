@@ -521,11 +521,9 @@ class Popover extends FocusTrapMixin(Component) {
       if (!this.disableAriaExpanded) {
         this.triggerElement.removeAttribute('aria-expanded');
       }
-      if (this.interactive) {
-        const triggerElementRole = this.triggerElement.getAttribute('aria-haspopup');
-        if (triggerElementRole === 'dialog' || triggerElementRole === 'alertdialog') {
-          this.triggerElement.removeAttribute('aria-haspopup');
-        }
+      // Remove aria-haspopup if the popover is not interactive
+      if (!this.interactive) {
+        this.triggerElement.removeAttribute('aria-haspopup');
       }
       if (this.focusBackToTrigger) {
         this.triggerElement?.focus();
