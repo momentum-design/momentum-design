@@ -142,7 +142,7 @@ const renderNestedSideNavigation = (args: Args) => html`
       <!-- Lower Nav (Fixed section) -->
       <mdc-navitemlist slot="fixed-section" aria-label="This is a 2nd navitemlist.">
         <mdc-navitem badge-type="counter" counter="3" max-counter="66" icon-name="settings-bold" nav-id="18"
-          label='Settings'></mdc-navitem>
+          label='Settings' no-aria-current></mdc-navitem>
         <mdc-navitem icon-name="help-circle-bold" nav-id="19" label='Help'></mdc-navitem>
       </mdc-navitemlist>
 

@@ -59,11 +59,7 @@ class NavItemList extends MenuMixin(MenuBar) {
    */
   private handleNestedNavItemActiveChange = (event: CustomEvent<any>): void => {
     const newNavItem = this.findNav(this.navItems as NavItem[] || [], event.detail.navId);
-    const context = this.sideNavigationContext?.value;
-    if (context) {
-      context.setCurrentActiveNavItem(newNavItem);
-    }
-    this.activateNavItem(newNavItem as NavItem);
+    this.sideNavigationContext?.value.setCurrentActiveNavItem(newNavItem);
   };
 
   /**
@@ -73,23 +69,6 @@ class NavItemList extends MenuMixin(MenuBar) {
    * @internal
    */
   private findNav = (navs: NavItem[], navId: string): NavItem| undefined => navs.find((nav) => nav.navId === navId);
-
-  /**
-   * Removes active attribute from all navItems and sets active on the new navItem.
-   * @param navId - The id of the new active navItem.
-   *
-   * @internal
-   */
-  private activateNavItem(newNav: NavItem): void {
-    const context = this.sideNavigationContext?.value;
-    if (!context?.hasSiblingWithTriggerId(newNav)) {
-      this.navItems?.forEach((nav) => nav.removeAttribute('active'));
-      if (!newNav) return;
-      newNav.setAttribute('active', '');
-    } else {
-      newNav.removeAttribute('active');
-    }
-  }
 
   /**
    * Returns all nested, non-disabled mdc-navitem elements inside this component.

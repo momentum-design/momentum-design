@@ -96,6 +96,13 @@ class NavItem extends IconNameMixin(MenuItem) {
   expanded?: boolean;
 
   /**
+   * If true, prevents the application of the `aria-current` attribute on this nav item,
+   * even if it would otherwise be considered the current/active item.
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'no-aria-current' })
+  noAriaCurrent?: boolean;
+
+  /**
    * @internal
    */
   private prevIconName?: string;

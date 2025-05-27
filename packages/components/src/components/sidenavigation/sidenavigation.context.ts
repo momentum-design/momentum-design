@@ -35,12 +35,19 @@ class SideNavigationContext {
   }
 
   public setCurrentActiveNavItem(navItem: NavItem | undefined) {
-    if (this.currentActiveNavItem?.navId === navItem?.navId) return;
+    const shouldSkip = navItem?.noAriaCurrent || this.hasSiblingWithTriggerId(navItem);
 
-    if (navItem && !this.hasSiblingWithTriggerId(navItem)) {
-      this.currentActiveNavItem?.removeAttribute('aria-current');
+    if (this.currentActiveNavItem?.navId === navItem?.navId || shouldSkip) {
+      return;
+    }
+
+    this.currentActiveNavItem?.removeAttribute('aria-current');
+    this.currentActiveNavItem?.removeAttribute('active');
+
+    if (navItem) {
       this.currentActiveNavItem = navItem;
       navItem.setAttribute('aria-current', 'page');
+      navItem.setAttribute('active', '');
     }
   }
 }
