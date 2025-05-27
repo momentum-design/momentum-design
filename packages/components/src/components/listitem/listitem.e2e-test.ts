@@ -267,7 +267,8 @@ test.describe.parallel('mdc-listitem', () => {
           const listitem = await setup({ componentsPage, label: primaryLabel });
           const waitForKeyDown = componentsPage.waitForEvent(listitem, 'keydown');
           const waitForKeyUp = componentsPage.waitForEvent(listitem, 'keyup');
-          await listitem.focus();
+          await componentsPage.actionability.pressTab();
+          await expect(listitem).toBeFocused();
           await componentsPage.page.keyboard.press('Enter');
           await waitForKeyDown;
           await waitForKeyUp;
