@@ -104,7 +104,7 @@ const meta: Meta = {
     ...hideControls(['prefix-text',
       'help-text',
       'help-text-type',
-      'required-label',
+      'required',
       'validation-message',
       'validity',
       'willValidate',

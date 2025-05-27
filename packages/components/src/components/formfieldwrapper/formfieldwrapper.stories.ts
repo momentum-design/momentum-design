@@ -12,7 +12,7 @@ const render = (args: Args) =>
   html` <mdc-subcomponent-formfieldwrapper
     label="${args.label}"
     ?disabled="${args.disabled}"
-    required-label="${args['required-label']}"
+    ?required="${args.required}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
     >
@@ -40,8 +40,8 @@ const meta: Meta = {
     label: {
       control: 'text',
     },
-    'required-label': {
-      control: 'text',
+    required: {
+      control: 'boolean',
     },
     'help-text': {
       control: 'text',
@@ -60,7 +60,7 @@ export const Example: StoryObj = {
     'help-text': 'Helper text',
     'help-text-type': 'default',
     children: '[Child Component]',
-    'required-label': 'required',
+    required: true,
     disabled: false,
   },
 };
@@ -73,13 +73,13 @@ export const LongLabelText: StoryObj = {
       label="This is a long label text"
       help-text="Helper text"
       help-text-type="default"
-      required-label="required">
+      required>
       [Child Component]
     </mdc-subcomponent-formfieldwrapper>
     </div>
   `,
   argTypes: {
-    ...disableControls(['label', 'help-text', 'help-text-type', 'required-label', 'id', 'disabled']),
+    ...disableControls(['label', 'help-text', 'help-text-type', 'required', 'id', 'disabled']),
   },
 };
 

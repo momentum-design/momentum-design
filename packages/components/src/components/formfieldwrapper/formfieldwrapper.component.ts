@@ -24,11 +24,11 @@ class FormfieldWrapper extends DisabledMixin(Component) {
   @property({ reflect: true, type: String }) label?: string;
 
   /**
-   * The required label of the input field.
-   * When an appropriate string value is set,
-   * the input field is marked as required and the label is appended with this text.
+   * The required attribute to indicate that the input field is required.
+   * It is used to append a required indicator (*) to the label.
+   * @default false
    */
-  @property({ type: String, reflect: true, attribute: 'required-label' }) requiredLabel?: string;
+  @property({ type: Boolean, reflect: true, attribute: 'required' }) required = false;
 
   /**
    * The unique id of the input field. It is used to link the input field with the label.
@@ -68,18 +68,6 @@ class FormfieldWrapper extends DisabledMixin(Component) {
           part="label"
           >${this.label}</mdc-text
         >`;
-  }
-
-  protected renderRequiredLabel() {
-    if (!this.requiredLabel) {
-      return nothing;
-    }
-
-    return html`
-      <mdc-text part="required-label" tagname=${MDC_TEXT_OPTIONS.TAGNAME} type=${MDC_TEXT_OPTIONS.TYPE}>
-        (${this.requiredLabel})
-      </mdc-text>
-    `;
   }
 
   /**
@@ -127,7 +115,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     if (!this.label) return nothing;
     return html`<div class="mdc-label-text" part="label-text">
       <slot name="label">${this.renderLabelElement()}</slot>
-      <slot name="required-label">${this.renderRequiredLabel()}</slot>
+      ${this.required ? html`<span part="required-indicator">*</span>` : nothing}
       <slot name="label-info"></slot>
     </div>`;
   }
@@ -140,7 +128,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     if (!this.helpText) {
       return nothing;
     }
-    return html`<div class="mdc-help-text" part="mdc-help-text">
+    return html`<div class="mdc-help-text" part="help-text">
       <slot name="help-icon">${this.renderHelpTextIcon()}</slot>
       <slot name="help-text">${this.renderHelpText()}</slot>
     </div>`;
