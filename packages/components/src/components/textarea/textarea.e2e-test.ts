@@ -17,7 +17,7 @@ type SetupOptions = {
   cols?: number;
   wrap?: WrapType;
   placeholder?: string;
-  requiredLabel?: string;
+  required?: boolean;
   readonly?: boolean;
   disabled?: boolean;
   maxlength?: number;
@@ -44,7 +44,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
       id="${restArgs.id}"
       ${restArgs.value ? `value="${restArgs.value}"` : ''}
       ${restArgs.placeholder ? `placeholder="${restArgs.placeholder}"` : ''}
-      ${restArgs.requiredLabel ? `required-label="${restArgs.requiredLabel}"` : ''}
+      ${restArgs.required ? 'required' : ''}
       ${restArgs.readonly ? 'readonly' : ''}
       ${restArgs.disabled ? 'disabled' : ''}
       ${restArgs.maxlength ? `maxlength="${restArgs.maxlength}"` : ''}
@@ -140,7 +140,7 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
           componentsPage,
           id: 'test-mdc-textarea',
           placeholder: 'Placeholder',
-          requiredLabel: 'required',
+          required: true,
           maxlength: 10,
         }, true);
 
@@ -168,7 +168,7 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
           componentsPage,
           id: 'test-mdc-textarea',
           placeholder: 'Placeholder',
-          requiredLabel: 'required',
+          required: true,
           maxCharacterLimit: 11,
           helpText: 'Input must not exceed 11 characters',
           helpTextType: 'error',
@@ -242,9 +242,9 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('attributes required should be present on component', async () => {
-      await componentsPage.setAttributes(mdcTextarea, { 'required-label': 'required' });
-      await expect(mdcTextarea).toHaveAttribute('required-label', 'required');
-      await componentsPage.removeAttribute(mdcTextarea, 'required-label');
+      await componentsPage.setAttributes(mdcTextarea, { required: '' });
+      await expect(mdcTextarea).toHaveAttribute('required', '');
+      await componentsPage.removeAttribute(mdcTextarea, 'required');
     });
 
     await test.step('attributes readonly should be present on component', async () => {
@@ -367,7 +367,7 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
 
     // textarea that is marked required
     textareaStickerSheet.setAttributes({ ...attributes,
-      'required-label': 'required',
+      required: 'required',
       placeholder: 'Textarea is required',
       cols: 30,
     });

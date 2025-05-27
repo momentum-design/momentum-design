@@ -181,11 +181,14 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
 
   /**
    * Manages the required state of the select.
-   * If the value is not set and the requiredLabel property is set,
-   * then the select is invalid.
+   * If the select is required and no value is selected,
+   * it sets a custom validity message based on the validationMessage property.
+   * If the select is not required or a value is selected, it clears the custom validity.
+   * This method is called to ensure that the select behaves correctly in forms.
+   * @internal
    */
   private manageRequired() {
-    if (!this.selectedValue && this.requiredLabel) {
+    if (!this.selectedValue && this.required) {
       if (this.validationMessage) {
         this.inputElement.setCustomValidity(this.validationMessage);
       } else {
@@ -439,7 +442,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         .value="${this.selectedValue}"
         ?autofocus="${this.autofocus}"
         ?disabled="${this.disabled}"
-        ?required="${!!this.requiredLabel}"
+        ?required="${this.required}"
         @mousedown="${(event: MouseEvent) => event.preventDefault()}"
       >
         ${this.getOptionsContentFromSlot()}
