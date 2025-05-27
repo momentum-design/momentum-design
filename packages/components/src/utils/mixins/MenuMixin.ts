@@ -30,10 +30,6 @@ export declare class MenuMixinInterface {
 
   protected handleMouseClick(event: MouseEvent): void;
 
-  protected resetTabIndexAndSetActiveTabIndex(newIndex: number): void;
-
-  protected setTabIndexOnMouseClick(event: MouseEvent): void;
-
   protected updatePopoverPlacementBasedOnOrientation(): void;
 }
 
@@ -72,6 +68,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     public override firstUpdated(changedProperties: PropertyValues): void {
       super.firstUpdated(changedProperties);
       this.setMenuBarPopoverValue(false);
+      this.resetTabIndexAndSetActiveTabIndex(this.menuItems);
     }
 
     /**
@@ -258,6 +255,10 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
       if (this.isValidPopover(menu?.tagName)) {
         menu?.toggleAttribute('visible');
       }
+      if (menu?.children) {
+        const menuChildren = Array.from(menu.children).filter((child) => this.isValidMenuItem(child as HTMLElement));
+        this.resetTabIndexAndSetActiveTabIndex(menuChildren as Array<HTMLElement>);
+      }
       if (menu?.parentElement) {
         this.hideAllPopovers(menu.parentElement);
       }
@@ -381,28 +382,15 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     }
 
     /**
-     * Handles the mouse click event on the menu items.
-     * Resets all the menu items tabindex to -1 and sets the tabindex of the
-     * element at the given index to 0, effectively setting the active
-     * element. This is used when clicking on the menu items.
-     * @param event - The mouse click event.
-     */
-    protected setTabIndexOnMouseClick(event: MouseEvent): void {
-      const newIndex = this.getCurrentIndex(event.target);
-      this.resetTabIndexAndSetActiveTabIndex(newIndex);
-      this.menuItems[newIndex]?.focus();
-    }
-
-    /**
      * Resets all list items tabindex to -1 and sets the tabindex of the
      * element at the given index to 0, effectively setting the active
      * element. This is used when navigating the list via keyboard.
      *
      * @param newIndex - The index of the new active element in the list.
      */
-    protected resetTabIndexAndSetActiveTabIndex(newIndex: number) {
-      this.menuItems.forEach((node, index) => {
-        const newTabindex = newIndex === index ? '0' : '-1';
+    private resetTabIndexAndSetActiveTabIndex(menuItems: Array<HTMLElement>) {
+      menuItems.forEach((node, index) => {
+        const newTabindex = index === 0 ? '0' : '-1';
         node?.setAttribute('tabindex', newTabindex);
       });
     }
