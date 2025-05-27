@@ -54,7 +54,6 @@ class MenuPopover extends MenuMixin(Popover) {
     if (this.parentElement?.tagName?.toLowerCase() === MENU_POPOVER) {
       this.interactive = true;
       this.placement = POPOVER_PLACEMENT.RIGHT_START;
-      this.trigger = TRIGGER.MOUSEENTER;
     }
   }
 
