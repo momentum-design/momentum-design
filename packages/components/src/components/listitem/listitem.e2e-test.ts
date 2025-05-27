@@ -42,44 +42,45 @@ const setup = async (args: SetUpOptions) => {
   return listitem;
 };
 
-test('mdc-listitem', async ({ componentsPage }) => {
+test.describe.parallel('mdc-listitem', () => {
+  test('visual regression and accessibility', async ({ componentsPage }) => {
   /**
    * VISUAL REGRESSION
    */
-  await test.step('visual-regression', async () => {
-    const listitemSheet = new StickerSheet(componentsPage, 'mdc-listitem', 'margin: 0.25rem 0;');
-    const options = { createNewRow: true };
-    listitemSheet.setAttributes({
-      label: primaryLabel,
-    });
-    await listitemSheet.createMarkupWithCombination({}, options);
-    listitemSheet.setChildren(`
+    await test.step('visual-regression', async () => {
+      const listitemSheet = new StickerSheet(componentsPage, 'mdc-listitem', 'margin: 0.25rem 0;');
+      const options = { createNewRow: true };
+      listitemSheet.setAttributes({
+        label: primaryLabel,
+      });
+      await listitemSheet.createMarkupWithCombination({}, options);
+      listitemSheet.setChildren(`
       <mdc-checkbox checked slot="leading-controls" data-aria-label="${primaryLabel}"></mdc-checkbox>
     `);
-    await listitemSheet.createMarkupWithCombination({}, options);
-    listitemSheet.setChildren(`
+      await listitemSheet.createMarkupWithCombination({}, options);
+      listitemSheet.setChildren(`
       <mdc-radio checked slot="leading-controls" data-aria-label="${primaryLabel}"></mdc-radio>
     `);
-    await listitemSheet.createMarkupWithCombination({}, options);
-    listitemSheet.setAttributes({
-      label: primaryLabel,
-      'secondary-label': secondaryLabel,
-      'tertiary-label': tertiaryLabel,
-    });
-    await listitemSheet.createMarkupWithCombination({}, options);
-    listitemSheet.setChildren(`
+      await listitemSheet.createMarkupWithCombination({}, options);
+      listitemSheet.setAttributes({
+        label: primaryLabel,
+        'secondary-label': secondaryLabel,
+        'tertiary-label': tertiaryLabel,
+      });
+      await listitemSheet.createMarkupWithCombination({}, options);
+      listitemSheet.setChildren(`
       <div slot="leading-controls">
         <mdc-checkbox checked data-aria-label="${primaryLabel}"></mdc-checkbox>
         <mdc-avatar presence="active" initials="MD"></mdc-avatar>
         <mdc-icon length-unit="rem" name="placeholder-bold"></mdc-icon>
       </div>
     `);
-    await listitemSheet.createMarkupWithCombination({}, options);
-    listitemSheet.setAttributes({
-      'side-header-text': sideHeaderText,
-      'subline-text': sublineText,
-    });
-    listitemSheet.setChildren(`
+      await listitemSheet.createMarkupWithCombination({}, options);
+      listitemSheet.setAttributes({
+        'side-header-text': sideHeaderText,
+        'subline-text': sublineText,
+      });
+      listitemSheet.setChildren(`
       <div slot="trailing-controls">
         <mdc-icon length-unit="rem" name="placeholder-bold"></mdc-icon>
         <mdc-toggle checked data-aria-label="${primaryLabel}"></mdc-toggle>
@@ -87,15 +88,15 @@ test('mdc-listitem', async ({ componentsPage }) => {
         <mdc-badge type="dot"></mdc-badge>
       </div>
     `);
-    await listitemSheet.createMarkupWithCombination({}, options);
-    listitemSheet.setAttributes({
-      label: primaryLabel,
-      'secondary-label': secondaryLabel,
-      'tertiary-label': tertiaryLabel,
-      'side-header-text': sideHeaderText,
-      'subline-text': sublineText,
-    });
-    listitemSheet.setChildren(`
+      await listitemSheet.createMarkupWithCombination({}, options);
+      listitemSheet.setAttributes({
+        label: primaryLabel,
+        'secondary-label': secondaryLabel,
+        'tertiary-label': tertiaryLabel,
+        'side-header-text': sideHeaderText,
+        'subline-text': sublineText,
+      });
+      listitemSheet.setChildren(`
       <div slot="leading-controls">
         <mdc-checkbox data-aria-label="${primaryLabel}" checked></mdc-checkbox>
         <mdc-icon length-unit="rem" name="placeholder-bold"></mdc-icon>
@@ -107,215 +108,218 @@ test('mdc-listitem', async ({ componentsPage }) => {
         <mdc-badge type="dot"></mdc-badge>
       </div>
     `);
-    await listitemSheet.createMarkupWithCombination({}, options);
-    listitemSheet.setAttributes({
-      label: 'This is a long text which should be truncated',
-      style: 'width: 15rem',
-    });
-    listitemSheet.setChildren(`
+      await listitemSheet.createMarkupWithCombination({}, options);
+      listitemSheet.setAttributes({
+        label: 'This is a long text which should be truncated',
+        style: 'width: 15rem',
+      });
+      listitemSheet.setChildren(`
       <div slot="leading-controls">
         <mdc-checkbox data-aria-label="${primaryLabel}" checked></mdc-checkbox>
         <mdc-icon length-unit="rem" name="placeholder-bold"></mdc-icon>
       </div>
     `);
-    await listitemSheet.createMarkupWithCombination({}, options);
+      await listitemSheet.createMarkupWithCombination({}, options);
 
-    await listitemSheet.mountStickerSheet({ role: 'list' });
-    await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-listitem', {
-        element: listitemSheet.getWrapperContainer(),
+      await listitemSheet.mountStickerSheet({ role: 'list' });
+      await test.step('matches screenshot of element', async () => {
+        await componentsPage.visualRegression.takeScreenshot('mdc-listitem', {
+          element: listitemSheet.getWrapperContainer(),
+        });
       });
+    });
+
+    /**
+   * ACCESSIBILITY
+   */
+    await test.step('accessibility', async () => {
+      await componentsPage.accessibility.checkForA11yViolations('listitem-default');
     });
   });
 
-  /**
-   * ACCESSIBILITY
-   */
-  await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('listitem-default');
-  });
-
+  test('attributes and interactions', async ({ componentsPage }) => {
   /**
    * ATTRIBUTES
    */
-  await test.step('attributes', async () => {
-    const listitem = await setup({ componentsPage });
+    await test.step('attributes', async () => {
+      const listitem = await setup({ componentsPage });
 
-    await test.step('attribute role, tabindex and variant should be present on component by default', async () => {
-      await expect(listitem).toHaveAttribute('role', 'listitem');
-      await expect(listitem).toHaveAttribute('tabindex', '0');
-      await expect(listitem).toHaveAttribute('variant', LISTITEM_VARIANTS.FULL_WIDTH);
+      await test.step('attribute role, tabindex and variant should be present on component by default', async () => {
+        await expect(listitem).toHaveAttribute('role', 'listitem');
+        await expect(listitem).toHaveAttribute('tabindex', '0');
+        await expect(listitem).toHaveAttribute('variant', LISTITEM_VARIANTS.FULL_WIDTH);
+      });
+
+      await test.step('should have primary text label when the attribute is passed', async () => {
+        await componentsPage.setAttributes(listitem, { label: primaryLabel });
+        const mdcText = componentsPage.page.locator('mdc-text');
+        const textContent = await mdcText.textContent();
+        expect(textContent?.trim()).toBe(primaryLabel);
+      });
+
+      await test.step('should have secondary text label when the attribute is passed', async () => {
+        await componentsPage.setAttributes(listitem, { 'secondary-label': secondaryLabel });
+        const mdcText = componentsPage.page.locator('mdc-text[part="leading-text-secondary-label"]');
+        const textContent = await mdcText.textContent();
+        expect(textContent?.trim()).toBe(secondaryLabel);
+      });
+
+      await test.step('should have tertiary text label when the attribute is passed', async () => {
+        await componentsPage.setAttributes(listitem, { 'tertiary-label': tertiaryLabel });
+        const mdcText = componentsPage.page.locator('mdc-text[part="leading-text-tertiary-label"]');
+        const textContent = await mdcText.textContent();
+        expect(textContent?.trim()).toBe(tertiaryLabel);
+      });
+
+      await test.step('should have header text label when the attribute is passed', async () => {
+        await componentsPage.setAttributes(listitem, { 'side-header-text': sideHeaderText });
+        const mdcText = componentsPage.page.locator('mdc-text[part="trailing-text-side-header"]');
+        const textContent = await mdcText.textContent();
+        expect(textContent?.trim()).toBe(sideHeaderText);
+      });
+
+      await test.step('should have subline text label when the attribute is passed', async () => {
+        await componentsPage.setAttributes(listitem, { 'subline-text': sublineText });
+        const mdcText = componentsPage.page.locator('mdc-text[part="trailing-text-subline"]');
+        const textContent = await mdcText.textContent();
+        expect(textContent?.trim()).toBe(sublineText);
+      });
     });
 
-    await test.step('should have primary text label when the attribute is passed', async () => {
-      await componentsPage.setAttributes(listitem, { label: primaryLabel });
-      const mdcText = componentsPage.page.locator('mdc-text');
-      const textContent = await mdcText.textContent();
-      expect(textContent?.trim()).toBe(primaryLabel);
-    });
-
-    await test.step('should have secondary text label when the attribute is passed', async () => {
-      await componentsPage.setAttributes(listitem, { 'secondary-label': secondaryLabel });
-      const mdcText = componentsPage.page.locator('mdc-text[part="leading-text-secondary-label"]');
-      const textContent = await mdcText.textContent();
-      expect(textContent?.trim()).toBe(secondaryLabel);
-    });
-
-    await test.step('should have tertiary text label when the attribute is passed', async () => {
-      await componentsPage.setAttributes(listitem, { 'tertiary-label': tertiaryLabel });
-      const mdcText = componentsPage.page.locator('mdc-text[part="leading-text-tertiary-label"]');
-      const textContent = await mdcText.textContent();
-      expect(textContent?.trim()).toBe(tertiaryLabel);
-    });
-
-    await test.step('should have header text label when the attribute is passed', async () => {
-      await componentsPage.setAttributes(listitem, { 'side-header-text': sideHeaderText });
-      const mdcText = componentsPage.page.locator('mdc-text[part="trailing-text-side-header"]');
-      const textContent = await mdcText.textContent();
-      expect(textContent?.trim()).toBe(sideHeaderText);
-    });
-
-    await test.step('should have subline text label when the attribute is passed', async () => {
-      await componentsPage.setAttributes(listitem, { 'subline-text': sublineText });
-      const mdcText = componentsPage.page.locator('mdc-text[part="trailing-text-subline"]');
-      const textContent = await mdcText.textContent();
-      expect(textContent?.trim()).toBe(sublineText);
-    });
-  });
-
-  /**
+    /**
    * INTERACTIONS
    */
-  await test.step('interactions', async () => {
-    await test.step('focus', async () => {
-      await test.step('component should be focusable with tab', async () => {
-        const listitem = await setup({ componentsPage, label: primaryLabel });
+    await test.step('interactions', async () => {
+      await test.step('focus', async () => {
+        await test.step('component should be focusable with tab', async () => {
+          const listitem = await setup({ componentsPage, label: primaryLabel });
 
-        await componentsPage.actionability.pressTab();
-        await expect(listitem).toBeFocused();
-      });
+          await componentsPage.actionability.pressTab();
+          await expect(listitem).toBeFocused();
+        });
 
-      await test.step('component should focus inside when focusable elements are present', async () => {
-        const listitem = await setup({
-          componentsPage,
-          label: primaryLabel,
-          children: `
+        await test.step('component should focus inside when focusable elements are present', async () => {
+          const listitem = await setup({
+            componentsPage,
+            label: primaryLabel,
+            children: `
             <mdc-checkbox checked slot="leading-controls" data-aria-label="${primaryLabel}"></mdc-checkbox>
             <mdc-button slot="trailing-controls">Click</mdc-button>
           `,
+          });
+          const button = listitem.locator('mdc-button');
+          const checkbox = listitem.locator('mdc-checkbox');
+
+          await componentsPage.actionability.pressTab();
+          await expect(listitem).toBeFocused();
+
+          await componentsPage.actionability.pressTab();
+          await expect(checkbox).toBeFocused();
+
+          await componentsPage.actionability.pressTab();
+          await expect(button).toBeFocused();
         });
-        const button = listitem.locator('mdc-button');
-        const checkbox = listitem.locator('mdc-checkbox');
-
-        await componentsPage.actionability.pressTab();
-        await expect(listitem).toBeFocused();
-
-        await componentsPage.actionability.pressTab();
-        await expect(checkbox).toBeFocused();
-
-        await componentsPage.actionability.pressTab();
-        await expect(button).toBeFocused();
-      });
-    });
-
-    await test.step('click', async () => {
-      await test.step('should trigger click event on component', async () => {
-        const listitem = await setup({ componentsPage, label: primaryLabel });
-        const waitForClick = componentsPage.waitForEvent(listitem, 'click');
-        await listitem.click();
-        await waitForClick;
       });
 
-      await test.step('should trigger click event on leading controls and not on listitem', async () => {
-        const listitem = await setup({
-          componentsPage,
-          label: primaryLabel,
-          children: `
+      await test.step('click', async () => {
+        await test.step('should trigger click event on component', async () => {
+          const listitem = await setup({ componentsPage, label: primaryLabel });
+          const waitForClick = componentsPage.waitForEvent(listitem, 'click');
+          await listitem.click();
+          await waitForClick;
+        });
+
+        await test.step('should trigger click event on leading controls and not on listitem', async () => {
+          const listitem = await setup({
+            componentsPage,
+            label: primaryLabel,
+            children: `
             <mdc-checkbox checked slot="leading-controls" data-aria-label="${primaryLabel}"></mdc-checkbox>
           `,
+          });
+          const checkbox = listitem.locator('mdc-checkbox');
+          const waitForCheckboxClick = componentsPage.waitForEvent(checkbox, 'click');
+          const waitForListItemClick = componentsPage.waitForEvent(listitem, 'click');
+          await checkbox.click();
+          await waitForCheckboxClick;
+          await componentsPage.expectPromiseTimesOut(waitForListItemClick, true);
         });
-        const checkbox = listitem.locator('mdc-checkbox');
-        const waitForCheckboxClick = componentsPage.waitForEvent(checkbox, 'click');
-        const waitForListItemClick = componentsPage.waitForEvent(listitem, 'click');
-        await checkbox.click();
-        await waitForCheckboxClick;
-        await componentsPage.expectPromiseTimesOut(waitForListItemClick, true);
-      });
 
-      await test.step('should trigger click event on trailing controls and not on listitem', async () => {
-        const listitem = await setup({
-          componentsPage,
-          label: primaryLabel,
-          children: `
+        await test.step('should trigger click event on trailing controls and not on listitem', async () => {
+          const listitem = await setup({
+            componentsPage,
+            label: primaryLabel,
+            children: `
             <mdc-button slot="trailing-controls">Click</mdc-button>
           `,
+          });
+          const button = listitem.locator('mdc-button');
+          const waitForButtonClick = componentsPage.waitForEvent(button, 'click');
+          const waitForListItemClick = componentsPage.waitForEvent(listitem, 'click');
+          await button.click();
+          await waitForButtonClick;
+          await componentsPage.expectPromiseTimesOut(waitForListItemClick, true);
         });
-        const button = listitem.locator('mdc-button');
-        const waitForButtonClick = componentsPage.waitForEvent(button, 'click');
-        const waitForListItemClick = componentsPage.waitForEvent(listitem, 'click');
-        await button.click();
-        await waitForButtonClick;
-        await componentsPage.expectPromiseTimesOut(waitForListItemClick, true);
-      });
-    });
-
-    await test.step('keyboard', async () => {
-      await test.step('should trigger keyup and keydown events on component', async () => {
-        const listitem = await setup({ componentsPage, label: primaryLabel });
-        const waitForKeyDown = componentsPage.waitForEvent(listitem, 'keydown');
-        const waitForKeyUp = componentsPage.waitForEvent(listitem, 'keyup');
-        await listitem.focus();
-        await componentsPage.page.keyboard.press('Enter');
-        await waitForKeyDown;
-        await waitForKeyUp;
       });
 
-      await test.step('should trigger keyup and keydown events on leading controls and not on listitem', async () => {
-        const listitem = await setup({
-          componentsPage,
-          label: primaryLabel,
-          children: `
+      await test.step('keyboard', async () => {
+        await test.step('should trigger keyup and keydown events on component', async () => {
+          const listitem = await setup({ componentsPage, label: primaryLabel });
+          const waitForKeyDown = componentsPage.waitForEvent(listitem, 'keydown');
+          const waitForKeyUp = componentsPage.waitForEvent(listitem, 'keyup');
+          await listitem.focus();
+          await componentsPage.page.keyboard.press('Enter');
+          await waitForKeyDown;
+          await waitForKeyUp;
+        });
+
+        await test.step('should trigger keyup and keydown events on leading controls and not on listitem', async () => {
+          const listitem = await setup({
+            componentsPage,
+            label: primaryLabel,
+            children: `
             <mdc-checkbox checked slot="leading-controls" data-aria-label="${primaryLabel}"></mdc-checkbox>
           `,
+          });
+          const checkbox = listitem.locator('mdc-checkbox');
+          const waitForCheckboxKeyUp = componentsPage.waitForEvent(checkbox, 'keyup');
+          const waitForCheckboxKeyDown = componentsPage.waitForEvent(checkbox, 'keydown');
+          await componentsPage.actionability.pressTab();
+          await expect(listitem).toBeFocused();
+          await componentsPage.actionability.pressTab();
+          await expect(checkbox).toBeFocused();
+          const waitForListItemKeyUp = componentsPage.waitForEvent(listitem, 'keyup');
+          const waitForListItemKeyDown = componentsPage.waitForEvent(listitem, 'keydown');
+          await componentsPage.page.keyboard.press('Space');
+          await waitForCheckboxKeyDown;
+          await waitForCheckboxKeyUp;
+          await componentsPage.expectPromiseTimesOut(waitForListItemKeyDown, true);
+          await componentsPage.expectPromiseTimesOut(waitForListItemKeyUp, true);
         });
-        const checkbox = listitem.locator('mdc-checkbox');
-        const waitForCheckboxKeyUp = componentsPage.waitForEvent(checkbox, 'keyup');
-        const waitForCheckboxKeyDown = componentsPage.waitForEvent(checkbox, 'keydown');
-        await componentsPage.actionability.pressTab();
-        await expect(listitem).toBeFocused();
-        await componentsPage.actionability.pressTab();
-        await expect(checkbox).toBeFocused();
-        const waitForListItemKeyUp = componentsPage.waitForEvent(listitem, 'keyup');
-        const waitForListItemKeyDown = componentsPage.waitForEvent(listitem, 'keydown');
-        await componentsPage.page.keyboard.press('Space');
-        await waitForCheckboxKeyDown;
-        await waitForCheckboxKeyUp;
-        await componentsPage.expectPromiseTimesOut(waitForListItemKeyDown, true);
-        await componentsPage.expectPromiseTimesOut(waitForListItemKeyUp, true);
-      });
 
-      await test.step('should trigger keyup and keydown events on trailing controls and not on listitem', async () => {
-        const listitem = await setup({
-          componentsPage,
-          label: primaryLabel,
-          children: `
+        await test.step('should trigger keyup & keydown events on trailing controls & not on listitem', async () => {
+          const listitem = await setup({
+            componentsPage,
+            label: primaryLabel,
+            children: `
             <mdc-button slot="trailing-controls">Click</mdc-button>
           `,
+          });
+          const button = listitem.locator('mdc-button');
+          const waitForButtonKeyUp = componentsPage.waitForEvent(button, 'keyup');
+          const waitForButtonKeyDown = componentsPage.waitForEvent(button, 'keydown');
+          await componentsPage.actionability.pressTab();
+          await expect(listitem).toBeFocused();
+          await componentsPage.actionability.pressTab();
+          await expect(button).toBeFocused();
+          const waitForListItemKeyUp = componentsPage.waitForEvent(listitem, 'keyup');
+          const waitForListItemKeyDown = componentsPage.waitForEvent(listitem, 'keydown');
+          await componentsPage.page.keyboard.press('Enter');
+          await waitForButtonKeyDown;
+          await waitForButtonKeyUp;
+          await componentsPage.expectPromiseTimesOut(waitForListItemKeyDown, true);
+          await componentsPage.expectPromiseTimesOut(waitForListItemKeyUp, true);
         });
-        const button = listitem.locator('mdc-button');
-        const waitForButtonKeyUp = componentsPage.waitForEvent(button, 'keyup');
-        const waitForButtonKeyDown = componentsPage.waitForEvent(button, 'keydown');
-        await componentsPage.actionability.pressTab();
-        await expect(listitem).toBeFocused();
-        await componentsPage.actionability.pressTab();
-        await expect(button).toBeFocused();
-        const waitForListItemKeyUp = componentsPage.waitForEvent(listitem, 'keyup');
-        const waitForListItemKeyDown = componentsPage.waitForEvent(listitem, 'keydown');
-        await componentsPage.page.keyboard.press('Enter');
-        await waitForButtonKeyDown;
-        await waitForButtonKeyUp;
-        await componentsPage.expectPromiseTimesOut(waitForListItemKeyDown, true);
-        await componentsPage.expectPromiseTimesOut(waitForListItemKeyUp, true);
       });
     });
   });
