@@ -84,7 +84,7 @@ const styles = [hostFitContentStyles, css`
     justify-content: center;
     gap: 0.25rem;
   }
-  :host::part(required-label){
+  :host::part(required-indicator){
     display: none;
   }
 

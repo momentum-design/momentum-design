@@ -51,7 +51,7 @@ class Searchfield extends Input {
     this.trailingButton = DEFAULTS.CLOSE_BTN;
     this.helpText = undefined as unknown as string;
     this.helpTextType = undefined as unknown as ValidationType;
-    this.requiredLabel = undefined as unknown as string;
+    this.required = undefined as unknown as boolean;
     this.validationMessage = undefined as unknown as string;
     this.prefixText = undefined as unknown as string;
   }

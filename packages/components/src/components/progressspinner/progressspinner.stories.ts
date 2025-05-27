@@ -30,7 +30,7 @@ const meta: Meta = {
       control: 'text',
     },
     ...hideControls(['help-text-type',
-      'required-label',
+      'required',
       'label', 'disabled',
       'help-text',
       'variant',

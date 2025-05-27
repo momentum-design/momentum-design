@@ -11,7 +11,7 @@ type SetupOptions = {
   id?: string;
   value?: string;
   placeholder?: string;
-  requiredLabel?: string;
+  required?: boolean;
   readonly?: boolean;
   disabled?: boolean;
   maxlength?: number;
@@ -44,7 +44,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
       id="${restArgs.id}"
       ${restArgs.value ? `value="${restArgs.value}"` : ''}
       ${restArgs.placeholder ? `placeholder="${restArgs.placeholder}"` : ''}
-      ${restArgs.requiredLabel ? `required-label="${restArgs.requiredLabel}"` : ''}
+      ${restArgs.required ? 'required' : ''}
       ${restArgs.readonly ? 'readonly' : ''}
       ${restArgs.disabled ? 'disabled' : ''}
       ${restArgs.maxlength ? `maxlength="${restArgs.maxlength}"` : ''}
@@ -119,9 +119,9 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('attributes required should be present on component', async () => {
-      await componentsPage.setAttributes(input, { 'required-label': 'required' });
-      await expect(input).toHaveAttribute('required-label', 'required');
-      await componentsPage.removeAttribute(input, 'required-label');
+      await componentsPage.setAttributes(input, { required: '' });
+      await expect(input).toHaveAttribute('required', '');
+      await componentsPage.removeAttribute(input, 'required');
     });
 
     await test.step('attributes readonly should be present on component', async () => {
@@ -293,7 +293,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
         componentsPage,
         id: 'test-mdc-input',
         placeholder: 'Placeholder',
-        requiredLabel: 'required',
+        required: true,
         maxlength: 10,
       }, true);
 
@@ -373,7 +373,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
 
     // input that is marked required
     inputStickerSheet.setAttributes({ ...attributes,
-      'required-label': 'required',
+      required: '',
       placeholder: 'Input is required',
     });
     await inputStickerSheet.createMarkupWithCombination({});
@@ -381,7 +381,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     // Long text label that is truncated in a small container
     inputStickerSheet.setAttributes({
       label: 'This is a large label text',
-      'required-label': 'required',
+      required: '',
       placeholder: 'placeholder',
       style: 'width: 200px',
     });

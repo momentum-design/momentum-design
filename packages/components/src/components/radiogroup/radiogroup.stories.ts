@@ -13,7 +13,7 @@ const render = (args: Args) => html`
   label="${args.label}"
   help-text="${args['help-text']}"
   data-aria-label="${args['data-aria-label']}"
-  required-label="${args['required-label']}"
+  ?required="${args.required}"
   >
     <mdc-radio label="Black Widow" value="black-widow"></mdc-radio>
     <mdc-radio label="Captain America" value="captain-america"></mdc-radio>
@@ -46,8 +46,8 @@ const meta: Meta = {
     'data-aria-label': {
       control: 'text',
     },
-    'required-label': {
-      control: 'text',
+    required: {
+      control: 'boolean',
     },
     ...hideControls(['help-text-type', 'disabled']),
   },
@@ -61,7 +61,7 @@ export const Example: StoryObj = {
     'help-text': 'The team captain should have previous experience leading the team through '
      + 'challenging situations.',
     name: 'team-captain-with-experience',
-    'required-label': 'required',
+    required: true,
     'data-aria-label': 'Team Captain',
   },
 };
@@ -96,7 +96,7 @@ export const RadioGroupInForm = () => {
         name="course-plan"
         label="Select your course plan"
         help-text="Choose a plan that best suits your needs"
-        required-label="required"
+        required
       >
         <mdc-radio value="standard" data-aria-label="Standard Plan" label="Standard Plan"
         validation-message="Select a plan to continue">
@@ -110,7 +110,10 @@ export const RadioGroupInForm = () => {
         </mdc-radio>
       </mdc-radiogroup>
       <br/>
-      <mdc-button type="submit">Submit</mdc-button>
+      <div style='display: flex; gap: 0.25rem;'>
+        <mdc-button type="submit" size='24'>Submit</mdc-button>
+        <mdc-button type="reset" size='24' variant='secondary'>Reset</mdc-button>
+      </div>
     </form>
   `;
 };

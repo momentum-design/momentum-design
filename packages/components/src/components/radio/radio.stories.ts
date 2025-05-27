@@ -19,7 +19,7 @@ const render = (args: Args) => html`
     ?checked=${args.checked}
     ?disabled=${args.disabled}
     ?readonly=${args.readonly}
-    required-label="${args['required-label']}"
+    ?required="${args.required}"
     data-aria-label="${args['data-aria-label']}"
   ></mdc-radio>
 `;
@@ -59,8 +59,8 @@ const meta: Meta = {
     'data-aria-label': {
       control: { type: 'text' },
     },
-    'required-label': {
-      control: { type: 'text' },
+    required: {
+      control: { type: 'boolean' },
     },
     ...hideControls(['help-text-type']),
     ...disableControls([
@@ -177,38 +177,4 @@ export const WithHelpText: StoryObj = {
       },
     },
   },
-};
-
-export const RadioInForm = () => {
-  const handleSubmit = (event: Event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target as HTMLFormElement);
-    const selectedValue = formData.get('course-plan');
-    action('Form Submitted')({ value: selectedValue });
-  };
-
-  return html`
-    <form @submit=${handleSubmit}>
-      <fieldset>
-        <legend>Form Example</legend>
-      <mdc-radio name="course-plan" value="standard" data-aria-label="Standard Plan" label="Standard Plan">
-      </mdc-radio>
-      <mdc-radio name="course-plan" value="premium" data-aria-label="Premium Plan" label="Premium Plan" >
-      </mdc-radio>
-      <mdc-radio
-        name="course-plan"
-        value="enterprise"
-        required-label="required"
-        data-aria-label="Enterprise Plan"
-        label="Enterprise Plan"
-        validation-message="Select a plan to continue">
-      </mdc-radio>
-      <br />
-      <div style='display: flex; gap: 0.25rem;'>
-        <mdc-button type="submit" size='24'>Submit</mdc-button>
-        <mdc-button type="reset" size='24' variant='secondary'>Reset</mdc-button>
-      </div>
-      </fieldset>
-    </form>
-  `;
 };
