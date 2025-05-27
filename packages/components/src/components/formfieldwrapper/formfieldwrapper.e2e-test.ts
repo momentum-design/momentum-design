@@ -12,7 +12,7 @@ type SetupOptions = {
   label?: string;
   helpText?: string;
   helpTextType?: string;
-  requiredLabel?: string;
+  required?: boolean;
   children?: string;
 };
 
@@ -25,7 +25,7 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.label ? `label="${restArgs.label}"` : ''}
       ${restArgs.helpText ? `help-text="${restArgs.helpText}"` : ''}
       ${restArgs.helpTextType ? `help-text-type="${restArgs.helpTextType}"` : ''}
-      ${restArgs.requiredLabel ? `required-label="${restArgs.requiredLabel}"` : ''}
+      ${restArgs.required ? 'required' : ''}
       >${restArgs.children}</mdc-subcomponent-formfieldwrapper>
     `,
     clearDocument: true,
@@ -42,7 +42,7 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
     label: 'Label',
     helpText: 'Help Text',
     children: 'Form Input Component',
-    requiredLabel: 'required',
+    required: true,
   });
 
   /**
@@ -60,7 +60,7 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       await expect(formfieldwrapper).toHaveAttribute('id', 'test-formfieldwrapper');
       await expect(formfieldwrapper).toHaveAttribute('label', 'Label');
       await expect(formfieldwrapper).toHaveAttribute('help-text', 'Help Text');
-      await expect(formfieldwrapper).toHaveAttribute('required-label', 'required');
+      await expect(formfieldwrapper).toHaveAttribute('required', '');
     });
 
     await test.step('help-text-type attribute with appropriate icons', async () => {
@@ -100,7 +100,7 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       id: 'test-formfieldwrapper',
       label: 'Label',
       'help-text': 'Help Text',
-      'required-label': 'required',
+      required: '',
     });
     await wrapperStickerSheet.createMarkupWithCombination({});
     // With long text that gets truncated into an ellipsis
@@ -108,7 +108,7 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       id: 'test-formfieldwrapper',
       label: 'This is a long label text',
       'help-text': 'Help Text',
-      'required-label': 'required',
+      required: '',
       style: 'width: 200px',
     });
     await wrapperStickerSheet.createMarkupWithCombination({});

@@ -190,7 +190,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
   }
 
   private setInputValidity() {
-    if (this.requiredLabel && this.validationMessage && this.value === '') {
+    if (this.required && this.validationMessage && this.value === '') {
       this.inputElement.setCustomValidity(this.validationMessage);
     } else {
       this.inputElement.setCustomValidity('');
@@ -370,7 +370,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
                   .value="${this.value}"
                   ?disabled="${this.disabled}"
                   ?readonly="${this.readonly}"
-                  ?required="${!!this.requiredLabel}"
+                  ?required="${this.required}"
                   type="${type}"
                   aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
                   aria-invalid="${this.helpTextType === 'error' ? 'true' : 'false'}"

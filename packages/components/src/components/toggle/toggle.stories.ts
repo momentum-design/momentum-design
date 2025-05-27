@@ -19,6 +19,8 @@ const render = (args: Args) => html`
     help-text="${ifDefined(args['help-text'])}"
     data-aria-label="${ifDefined(args['data-aria-label'])}"
     ?checked="${args.checked}"
+    ?required="${args.required}"
+    ?autofocus="${args.autofocus}"
     ?disabled="${args.disabled}">
   </mdc-toggle>
 `;
@@ -50,6 +52,18 @@ const meta: Meta = {
     },
     autofocus: {
       control: 'boolean',
+    },
+    required: {
+      control: 'boolean',
+    },
+    name: {
+      control: 'text',
+    },
+    value: {
+      control: 'text',
+    },
+    id: {
+      control: 'text',
     },
     'data-aria-label': {
       control: 'text',
@@ -137,7 +151,7 @@ export const ToggleInsideForm: StoryObj = {
       <fieldset>
         <legend>Form Example</legend>
         <mdc-toggle name="toggleName" value="toggleValue" label="Agree to Terms" size="${args.size}" 
-          required-label='required' validation-message='Toggle this switch to continue'></mdc-toggle>
+          required validation-message='Toggle this switch to continue'></mdc-toggle>
           <div style='display: flex; gap: 0.25rem'>
             <mdc-button type="submit" size='24'>Submit</mdc-button>
             <mdc-button type="reset" size='24' variant='secondary'>Reset</mdc-button>
