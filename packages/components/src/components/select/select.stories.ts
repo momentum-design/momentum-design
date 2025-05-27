@@ -23,7 +23,7 @@ const render = (args: Args) => wrapWithDiv(html`
     @keydown="${action('onkeydown')}"
     @focus="${action('onfocus')}"
     label="${args.label}"
-    required-label="${args['required-label']}"
+    ?required="${args.required}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
     height="${args.height}"
@@ -56,8 +56,8 @@ const meta: Meta = {
     label: {
       control: 'text',
     },
-    'required-label': {
-      control: 'text',
+    required: {
+      control: 'boolean',
     },
     placeholder: {
       control: 'text',
@@ -93,7 +93,7 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     label: 'Headquarters location',
-    'required-label': 'required',
+    required: true,
     placeholder: 'Select your headquarters location',
     disabled: false,
     readonly: false,
@@ -168,7 +168,7 @@ export const SelectWithStates: StoryObj = {
       help-text-type="${VALIDATION.SUCCESS}"
       help-text="The correct number of Infinity Stones has been selected."
       label="How many Infinity Stones exist?"
-      required-label="required"
+      required
     >
       <mdc-option value="six" selected>Six</mdc-option>
     </mdc-select>
@@ -176,7 +176,7 @@ export const SelectWithStates: StoryObj = {
       help-text="Selecting this number may cause a security risk because it is not properly setup."
       help-text-type="${VALIDATION.WARNING}"
       label="Select phone number"
-      required-label="required"
+      required
     >
       <mdc-option selected value="456-198-0253">456-198-0253</mdc-option>
     </mdc-select>
@@ -185,7 +185,7 @@ export const SelectWithStates: StoryObj = {
       help-text="You must select the total number of Infinity Stones."
       label="How many Infinity Stones exist?"
       placeholder="Select the total number of Infinity Stones"
-      required-label="required"
+      required
     ></mdc-select>
     <mdc-select help-text="This is a disabled text." label="Label" placeholder="Selected text" disabled></mdc-select>
     <mdc-select help-text="This is a readonly text." label="Label" placeholder="Selected text" readonly></mdc-select>
@@ -207,7 +207,7 @@ export const SelectWithFixedHeight = {
   `),
   argTypes: {
     ...disableControls([
-      'readonly', 'name', 'data-aria-label', 'disabled', 'required-label', 'help-text-type', 'help-text',
+      'readonly', 'name', 'data-aria-label', 'disabled', 'required', 'help-text-type', 'help-text',
     ]),
   },
 };
@@ -229,7 +229,7 @@ export const SelectWithForm: StoryObj = {
               name="stone-count"
               placeholder="Select the count"
               label="How many Infinity Stones exist?"
-              required-label="required"
+              required
             >
               <mdc-option value="two">Two</mdc-option>
               <mdc-option value="three">Three</mdc-option>

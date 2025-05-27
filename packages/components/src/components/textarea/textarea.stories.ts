@@ -27,7 +27,7 @@ const render = (args: Args) => html`<mdc-textarea
     wrap="${args.wrap}"
     class="${args.class}"
     style="${args.style}"
-    required-label="${args['required-label']}"
+    ?required="${args.required}"
     ?disabled="${args.disabled}"
     ?readonly="${args.readonly}"
     ?resize-button="${args['resize-button']}"
@@ -65,8 +65,8 @@ const meta: Meta = {
     label: {
       control: 'text',
     },
-    'required-label': {
-      control: 'text',
+    required: {
+      control: 'boolean',
     },
     'help-text': {
       control: 'text',
@@ -151,7 +151,7 @@ export const Example: StoryObj = {
     rows: DEFAULTS.ROWS,
     cols: DEFAULTS.COLS,
     wrap: DEFAULTS.WRAP,
-    'required-label': 'required',
+    required: true,
     placeholder: 'Placeholder',
     value: '',
     'help-text': 'Help text',
@@ -208,7 +208,7 @@ export const ReadonlyTextarea: StoryObj = {
 
 export const AllVariants: StoryObj = {
   argTypes: {
-    ...disableControls(['label', 'help-text', 'required-label', 'placeholder', 'value', 'help-text-type']),
+    ...disableControls(['label', 'help-text', 'required', 'placeholder', 'value', 'help-text-type']),
   },
   render: () => html`
   <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
@@ -223,7 +223,7 @@ export const AllVariants: StoryObj = {
       label="Required Textarea"
       help-text="Helper text"
       help-text-type="default"
-      required-label='required' 
+      required 
       placeholder="Textarea is required"
       ></mdc-textarea>
       <mdc-textarea 
@@ -252,7 +252,7 @@ export const AllVariants: StoryObj = {
             + 'The textarea component supports all the validation types. '
             + 'User can set the `help-text-type` attribute to any of the validation types to display'
             + 'the help text in that style.'
-            + 'The textarea can also be set as required by passing the `required-label` attribute.'
+            + 'The textarea can also be set as required by passing the `required` attribute.'
             + 'User can also set the `max-character-limit` attribute to display a character counter below the textarea.'
             + 'The textarea can also be set as readonly by passing the `readonly` attribute.',
       },
@@ -300,7 +300,7 @@ export const TextareaWithCharacterCounter: StoryObj = {
           @limitexceeded=${handleCharacterLimitCheck}
           help-text="${helpText}"
           help-text-type="${helpTextType}"
-          required-label="required"
+          required
           max-character-limit="75"
           placeholder="Write what's on your mind"
         ></mdc-textarea>
@@ -342,7 +342,7 @@ export const TextareaInsideForm: StoryObj = {
         id="textarea"
         name='tweet'
         label="Tweet"
-        required-label="required"
+        required
         placeholder="Write what's on your mind"
         validation-message="Tweet is required"
       ></mdc-textarea>

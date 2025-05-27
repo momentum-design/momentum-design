@@ -11,7 +11,7 @@ const render = (args: Args) => html`
     label="${args.label}"
     help-text="${args['help-text']}"
     data-aria-label="${args['data-aria-label']}"
-    required-label="${args['required-label']}"
+   ?required=${args.required}
   >
     ${args.children}
   </mdc-formfieldgroup>`;
@@ -34,8 +34,8 @@ const meta: Meta = {
     'data-aria-label': {
       control: 'text',
     },
-    'required-label': {
-      control: 'text',
+    required: {
+      control: 'boolean',
     },
     children: {
       description: 'The html content which can be placed inside the formfieldgroup component.',
