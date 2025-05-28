@@ -2,12 +2,16 @@ import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { ROLE } from '../../utils/roles';
+import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
   label?: string;
   'help-text'?: string;
   children: string;
+  'help-text-type'?: string;
+  'data-aria-label'?: string;
+  required?: boolean;
 }
 
 const label = 'Select all powers';
@@ -17,17 +21,12 @@ const children = `
   <mdc-checkbox label="Flight"></mdc-checkbox>
   <mdc-checkbox label="Mind control"></mdc-checkbox>
   <mdc-checkbox label="Super genius"></mdc-checkbox>
-  <mdc-checkbox label="Super strength"></mdc-checkbox>
-  <mdc-checkbox label="Tactics"></mdc-checkbox>
-  <mdc-checkbox label="Weather control"></mdc-checkbox>
 `;
 const toggleChildren = `
   <mdc-toggle label="Left Thruster 1"></mdc-toggle>
   <mdc-toggle label="Left Thruster 2"></mdc-toggle>
-  <mdc-toggle label="Left Thruster 3"></mdc-toggle>
   <mdc-toggle label="Right Thruster 1"></mdc-toggle>
   <mdc-toggle label="Right Thruster 2"></mdc-toggle>
-  <mdc-toggle label="Right Thruster 3"></mdc-toggle>
 `;
 
 const setup = async (args: SetupOptions) => {
@@ -37,6 +36,9 @@ const setup = async (args: SetupOptions) => {
       <mdc-formfieldgroup
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
         ${restArgs['help-text'] ? `help-text="${restArgs['help-text']}"` : ''}
+        ${restArgs['help-text-type'] ? `help-text-type="${restArgs['help-text-type']}"` : ''}
+        ${restArgs['data-aria-label'] ? `data-aria-label="${restArgs['data-aria-label']}"` : ''}
+        ?required=${restArgs.required || false}
       >${restArgs.children}</mdc-formfieldgroup>
     `,
     clearDocument: true,
@@ -51,21 +53,22 @@ test('mdc-formfieldgroup', async ({ componentsPage }) => {
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
-    const createNewRow = true;
     const formfieldgroupStickerSheet = new StickerSheet(componentsPage, 'mdc-formfieldgroup');
     formfieldgroupStickerSheet.setAttributes({
       label,
       'help-text': helpText,
     });
     formfieldgroupStickerSheet.setChildren(children);
-    await formfieldgroupStickerSheet.createMarkupWithCombination({}, { createNewRow });
+    await formfieldgroupStickerSheet.createMarkupWithCombination({ 'help-text-type': VALIDATION });
 
     formfieldgroupStickerSheet.setAttributes({
       label: 'Engine thrusters',
       'help-text': 'Select all the thrusters you would like to turn on',
+      required: '',
     });
     formfieldgroupStickerSheet.setChildren(toggleChildren);
-    await formfieldgroupStickerSheet.createMarkupWithCombination({}, { createNewRow });
+    await formfieldgroupStickerSheet.createMarkupWithCombination({});
+
     await formfieldgroupStickerSheet.mountStickerSheet();
 
     await test.step('matches screenshot of default element', async () => {
@@ -106,6 +109,16 @@ test('mdc-formfieldgroup', async ({ componentsPage }) => {
       await componentsPage.setAttributes(formfieldgroup, { 'data-aria-label': ariaLabel });
       const ariaLabelContent = await componentsPage.page.getByRole(ROLE.GROUP).getAttribute('aria-label');
       expect(ariaLabelContent).toBe(ariaLabel);
+    });
+
+    await test.step('attribute `required` should be present on component when set', async () => {
+      await componentsPage.setAttributes(formfieldgroup, { required: '' });
+      await expect(formfieldgroup).toHaveAttribute('required', '');
+    });
+
+    await test.step('attribute `help-text-type` should be present on component when set', async () => {
+      await componentsPage.setAttributes(formfieldgroup, { 'help-text-type': VALIDATION.PRIORITY });
+      await expect(formfieldgroup).toHaveAttribute('help-text-type', VALIDATION.PRIORITY);
     });
   });
 
