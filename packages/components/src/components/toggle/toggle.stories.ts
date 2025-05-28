@@ -62,9 +62,6 @@ const meta: Meta = {
     value: {
       control: 'text',
     },
-    id: {
-      control: 'text',
-    },
     'data-aria-label': {
       control: 'text',
       description: 'Aria label for the toggle component. Required for accessibility.',
