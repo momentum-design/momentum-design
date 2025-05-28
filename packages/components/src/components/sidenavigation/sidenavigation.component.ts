@@ -43,7 +43,6 @@ import { ROLE } from '../../utils/roles';
  * - Always provide meaningful `aria-label` attributes for both `mdc-navitem` and `mdc-navitemlist`
  * to ensure screen reader support
  * - Set `grabber-btn-aria-label` to provide accessible labels for the expand/collapse grabber button
- * - Set `data-id` on the sidenavigation so it can be internally referenced via `aria-controls` from the grabber button
  *
  * @dependency mdc-text
  * @dependency mdc-button
@@ -76,12 +75,6 @@ class SideNavigation extends Provider<SideNavigationContext> {
   public static get Context() {
     return SideNavigationContext.context;
   }
-
-  /**
-   * The unique ID of the SideNavigation.
-   */
-  @property({ type: String, reflect: true, attribute: 'data-id' })
-  dataId: string = '';
 
   /**
    * Four variants of the sideNavigation
@@ -230,7 +223,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
       return html``;
     }
     return html`
-        <div part="side-navigation-container" id=${this.dataId}>
+        <div part="side-navigation-container" id='side-nav-container'>
           <div part="scrollable-section">
             <slot name="scrollable-section"></slot>
           </div>
@@ -250,7 +243,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
             arrow-direction=${this.arrowDirection}
             button-position=${DIRECTIONS.POSITIVE}
           > <mdc-button aria-label=${this.grabberBtnAriaLabel ?? ''} @click=${this.toggleSideNavigation}   
-                        aria-expanded=${String(this.expanded)} aria-controls=${this.dataId}></mdc-button>
+                        aria-expanded=${String(this.expanded)} aria-controls='side-nav-container'></mdc-button>
         </mdc-divider>` : nothing}
   `;
   }

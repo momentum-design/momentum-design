@@ -13,7 +13,7 @@ import '../icon';
 
 const render = (args: Args) => html`
   <div style="height: 90vh; margin: 1rem">
-    <mdc-sidenavigation data-id="${args['data-id']}" variant="${args.variant}" customer-name=${args['customer-name']} 
+    <mdc-sidenavigation variant="${args.variant}" customer-name=${args['customer-name']} 
         grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
         parent-nav-tooltip-text="${args['parent-nav-tooltip-text']}"
         @activechange="${action('onactivechange')}">
@@ -91,7 +91,7 @@ const renderNestedSideNavigation = (args: Args) => {
   };
   return html`
 <div style="height: 90vh; margin: 1rem">
-  <mdc-sidenavigation data-id="${args['data-id']}" variant="${args.variant}" customer-name=${args['customer-name']} 
+  <mdc-sidenavigation variant="${args.variant}" customer-name=${args['customer-name']} 
       grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
       parent-nav-tooltip-text="${args['parent-nav-tooltip-text']}"
       @activechange="${action('onactivechange')}">
@@ -173,9 +173,6 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
-    'data-id': {
-      control: 'text',
-    },
     variant: {
       control: 'select',
       options: Object.values(VARIANTS),
@@ -210,7 +207,6 @@ export const Example: StoryObj = {
     'customer-name': '%Customer Name%',
     'grabber-btn-aria-label': 'Toggle Side navigation',
     'parent-nav-tooltip-text': 'Contains active navitem',
-    'data-id': 'randomId',
   },
 };
 
