@@ -84,7 +84,12 @@ const render = (args: Args) => html`
   </div>
 `;
 
-const renderNestedSideNavigation = (args: Args) => html`
+const renderNestedSideNavigation = (args: Args) => {
+  const showAlert = () => {
+  // eslint-disable-next-line no-alert
+    window.confirm('Are you sure you want to cancel?');
+  };
+  return html`
 <div style="height: 90vh; margin: 1rem">
   <mdc-sidenavigation data-id="${args['data-id']}" variant="${args.variant}" customer-name=${args['customer-name']} 
       grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
@@ -144,8 +149,9 @@ const renderNestedSideNavigation = (args: Args) => html`
       <!-- Lower Nav (Fixed section) -->
       <mdc-navitemlist slot="fixed-section" aria-label="This is a 2nd navitemlist.">
         <mdc-navitem badge-type="counter" counter="3" max-counter="66" icon-name="settings-bold" nav-id="18"
-          label='Settings' no-aria-current></mdc-navitem>
-        <mdc-navitem icon-name="help-circle-bold" nav-id="19" label='Help'></mdc-navitem>
+          label='Settings'></mdc-navitem>
+        <mdc-navitem @click="${showAlert}" icon-name="help-circle-bold" nav-id="19" label='Help' 
+        no-aria-current></mdc-navitem>
       </mdc-navitemlist>
 
       <!-- Brand Logo (Fixed section) -->
@@ -156,6 +162,7 @@ const renderNestedSideNavigation = (args: Args) => html`
       </mdc-icon>
   </mdc-sidenavigation>
 </div>`;
+};
 
 const meta: Meta = {
   title: 'Work In Progress/sidenavigation/sidenavigation',

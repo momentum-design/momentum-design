@@ -69,31 +69,36 @@ class SideNavigationContext {
   }
 
   public setCurrentActiveNavItem(navItem: NavItem | undefined) {
+    const isSameItem = this.currentActiveNavItem?.navId === navItem?.navId;
     const shouldSkip = navItem?.noAriaCurrent || this.hasSiblingWithTriggerId(navItem);
 
-    if (this.currentActiveNavItem?.navId === navItem?.navId || shouldSkip) {
-      return;
-    }
+    if (isSameItem || shouldSkip) return;
 
-    this.currentActiveNavItem?.removeAttribute('aria-current');
-    this.currentActiveNavItem?.removeAttribute('active');
-    const parents = this.getParentNavItems(this.currentActiveNavItem);
-    parents.forEach((parent) => {
-      parent.removeAttribute('tooltip-text');
-      parent.removeAttribute('active');
-    });
+    // Clean up previous active item
+    if (this.currentActiveNavItem) {
+      this.currentActiveNavItem.removeAttribute('aria-current');
+      this.currentActiveNavItem.removeAttribute('active');
 
-    if (navItem) {
-      this.currentActiveNavItem = navItem;
-      navItem.setAttribute('aria-current', 'page');
-      navItem.setAttribute('active', '');
-      const parents = this.getParentNavItems(navItem);
-      parents.forEach((parent) => {
-        parent.setAttribute('tooltip-text', this.parentNavTooltipText || '');
-        parent.setAttribute('tooltip-placement', POPOVER_PLACEMENT.BOTTOM);
-        parent.setAttribute('active', '');
+      const previousParents = this.getParentNavItems(this.currentActiveNavItem);
+      previousParents.forEach((parent) => {
+        parent.removeAttribute('tooltip-text');
+        parent.removeAttribute('active');
       });
     }
+
+    // Apply attributes to new active item
+    if (!navItem) return;
+
+    this.currentActiveNavItem = navItem;
+    navItem.setAttribute('aria-current', 'page');
+    navItem.setAttribute('active', '');
+
+    const newParents = this.getParentNavItems(navItem);
+    newParents.forEach((parent) => {
+      parent.setAttribute('tooltip-text', this.parentNavTooltipText || '');
+      parent.setAttribute('tooltip-placement', POPOVER_PLACEMENT.BOTTOM);
+      parent.setAttribute('active', '');
+    });
   }
 }
 

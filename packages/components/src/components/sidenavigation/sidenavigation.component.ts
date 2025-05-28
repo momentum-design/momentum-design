@@ -20,14 +20,30 @@ import { ROLE } from '../../utils/roles';
  * - Displays brand logo and customer name
  * - Serves as a context provider for descendant components - `mdc-navitemlist` and `mdc-navitem`
  *
+ * ### Usage:
+ * In a sidenavigation, navitems can be used in the following ways:
+ *
+ * 1. **Simple navitem** – No submenu or interaction beyond selection.
+ *
+ * 2. **Navitem with submenu**:
+ *    - Provide an `id` on the `mdc-navitem`
+ *    - Set the `triggerId` on the corresponding `mdc-menupopover` to match the navitem's `id`
+ *    - It is recommended to set `parent-nav-tooltip-text` for better user experience and screen reader support
+ *
+ * 3. **Actionable navitem (no submenu)**:
+ *    - Performs an action such as navigation or alert trigger
+ *    - Must explicitly set `no-aria-current="true"` to prevent it from behaving like a simple navitem
+ *
  * ### Recommendations:
  * - Use `mdc-text` for section headers
  * - Use `mdc-divider` with the attribute `variant="gradient"` for section dividers
  * - For the brand logo, use an informative icon. Refer to `Momentum Informative Icons`
  *
- * #### Note:
- * - To ensure accessibility, it is strongly recommended to provide `aria-label` attributes for
- * both `NavItem` and `NavItemList` components.
+ * #### Accessibility Notes:
+ * - Always provide meaningful `aria-label` attributes for both `mdc-navitem` and `mdc-navitemlist`
+ * to ensure screen reader support
+ * - Set `grabber-btn-aria-label` to provide accessible labels for the expand/collapse grabber button
+ * - Set `data-id` on the sidenavigation so it can be internally referenced via `aria-controls` from the grabber button
  *
  * @dependency mdc-text
  * @dependency mdc-button
