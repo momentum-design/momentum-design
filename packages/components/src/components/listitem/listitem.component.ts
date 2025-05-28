@@ -186,7 +186,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     tooltip.setAttribute('show-arrow', '');
 
     // Add tooltip programmatically after the parent element.
-    this.parentElement?.after(tooltip);
+    this.after(tooltip);
   }
 
   /**
