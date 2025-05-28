@@ -26,7 +26,7 @@ class NavItemList extends MenuMixin(MenuBar) {
    * @internal
    */
   @property({ type: Boolean, reflect: true, attribute: 'show-label' })
-  expanded?: boolean;
+  showLabel?: boolean;
 
   /**
    * @internal
@@ -49,7 +49,7 @@ class NavItemList extends MenuMixin(MenuBar) {
     if (!context) return;
 
     const { expanded } = context;
-    this.expanded = expanded;
+    this.showLabel = expanded;
   }
 
   /**

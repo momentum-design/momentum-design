@@ -13,7 +13,7 @@ import '../icon';
 
 const render = (args: Args) => html`
   <div style="height: 90vh; margin: 1rem">
-    <mdc-sidenavigation variant="${args.variant}" customer-name=${args['customer-name']} 
+    <mdc-sidenavigation data-id="${args['data-id']}" variant="${args.variant}" customer-name=${args['customer-name']} 
         grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
         parent-nav-tooltip-text="${args['parent-nav-tooltip-text']}"
         @activechange="${action('onactivechange')}">
@@ -86,7 +86,7 @@ const render = (args: Args) => html`
 
 const renderNestedSideNavigation = (args: Args) => html`
 <div style="height: 90vh; margin: 1rem">
-  <mdc-sidenavigation variant="${args.variant}" customer-name=${args['customer-name']} 
+  <mdc-sidenavigation data-id="${args['data-id']}" variant="${args.variant}" customer-name=${args['customer-name']} 
       grabber-btn-aria-label="${args['grabber-btn-aria-label']}"
       parent-nav-tooltip-text="${args['parent-nav-tooltip-text']}"
       @activechange="${action('onactivechange')}">
@@ -164,33 +164,11 @@ const meta: Meta = {
   render,
   parameters: {
     badges: ['wip'],
-    docs: {
-      source: {
-        format: 'html',
-        code: `
-        <mdc-sidenavigation customer-name="..." grabber-btn-aria-label="...">
-          <mdc-navitemlist slot="scrollable-section" aria-label="...">
-            <mdc-navitem label="..." nav-id="..."></mdc-navitem>
-            <mdc-navitem label="..." nav-id="..."></mdc-navitem>
-            <mdc-navitem id="menu-id" label="..." nav-id="..."></mdc-navitem>
-            <mdc-menupopover triggerid="menu-id">
-              <mdc-navitem label="..." nav-id="..."></mdc-navitem>
-              <mdc-navitem label="..." nav-id="..."></mdc-navitem>
-              <mdc-navitem label="..." nav-id="..."></mdc-navitem>
-            </mdc-menupopover>
-            <mdc-navitem label="..." nav-id="..."></mdc-navitem>
-          </mdc-navitemlist>
-          <mdc-navitemlist slot="fixed-section" aria-label="...">
-            <mdc-navitem label="..." nav-id="..."></mdc-navitem>
-            <mdc-navitem label="..." nav-id="..."></mdc-navitem>
-            <mdc-navitem label="..." nav-id="..."></mdc-navitem>
-          </mdc-navitemlist>
-        </mdc-sidenavigation>
-      `,
-      },
-    },
   },
   argTypes: {
+    'data-id': {
+      control: 'text',
+    },
     variant: {
       control: 'select',
       options: Object.values(VARIANTS),
@@ -225,6 +203,7 @@ export const Example: StoryObj = {
     'customer-name': '%Customer Name%',
     'grabber-btn-aria-label': 'Toggle Side navigation',
     'parent-nav-tooltip-text': 'Contains active navitem',
+    'data-id': 'randomId',
   },
 };
 

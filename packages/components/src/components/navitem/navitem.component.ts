@@ -93,7 +93,7 @@ class NavItem extends IconNameMixin(MenuItem) {
    * @internal
    */
   @property({ type: Boolean, reflect: true, attribute: 'show-label' })
-  expanded?: boolean;
+  showLabel?: boolean;
 
   /**
    * If true, prevents the application of the `aria-current` attribute on this nav item,
@@ -115,6 +115,7 @@ class NavItem extends IconNameMixin(MenuItem) {
   override connectedCallback(): void {
     super.connectedCallback();
     this.variant = undefined as unknown as ListItemVariants;
+    this.tooltipPlacement = undefined as unknown as string;
     this.addEventListener('click', this.handleClickEvent);
 
     if (!this.navId && this.onerror) {
@@ -132,10 +133,10 @@ class NavItem extends IconNameMixin(MenuItem) {
     if (!context) return;
 
     // Determine expansion state
-    this.expanded = this.isNested() ? true : context.expanded;
+    this.showLabel = this.isNested() ? true : context.expanded;
 
     // Manage aria-label for accessibility
-    if (this.expanded) {
+    if (this.showLabel) {
       this.removeAttribute('aria-label');
     } else {
       const label = this.label ?? '';
@@ -221,8 +222,8 @@ class NavItem extends IconNameMixin(MenuItem) {
     `;
   }
 
-  private renderArrowIcon(expanded: boolean | undefined) {
-    const arrowClass = expanded ? '' : 'arrow';
+  private renderArrowIcon(showLabel: boolean | undefined) {
+    const arrowClass = showLabel ? '' : 'arrow';
 
     return html`
       <mdc-icon 
@@ -234,8 +235,8 @@ class NavItem extends IconNameMixin(MenuItem) {
     `;
   }
 
-  private renderBadge(expanded: boolean | undefined) {
-    const badgeClass = expanded ? '' : 'badge';
+  private renderBadge(showLabel: boolean | undefined) {
+    const badgeClass = showLabel ? '' : 'badge';
     const isValidBadgeType = Object.values(ALLOWED_BADGE_TYPES).includes(this.badgeType as BadgeType);
     if (!isValidBadgeType) {
       return nothing;
@@ -261,10 +262,10 @@ class NavItem extends IconNameMixin(MenuItem) {
           length-unit="rem"
           part="icon"
         ></mdc-icon>
-        ${!this.expanded ? this.renderBadge(this.expanded) : nothing}
+        ${!this.showLabel ? this.renderBadge(this.showLabel) : nothing}
       </div>
-      ${this.expanded ? html`${this.renderTextLabel(this.label)}${this.renderBadge(this.expanded)}` : nothing}
-      ${context?.hasSiblingWithTriggerId(this) ? this.renderArrowIcon(this.expanded) : nothing}
+      ${this.showLabel ? html`${this.renderTextLabel(this.label)}${this.renderBadge(this.showLabel)}` : nothing}
+      ${context?.hasSiblingWithTriggerId(this) ? this.renderArrowIcon(this.showLabel) : nothing}
     `;
   }
 

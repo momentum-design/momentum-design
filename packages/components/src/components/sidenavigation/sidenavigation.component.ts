@@ -1,6 +1,5 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { v4 as uuidv4 } from 'uuid';
 import styles from './sidenavigation.styles';
 import { Component, Provider } from '../../models';
 import SideNavigationContext from './sidenavigation.context';
@@ -51,14 +50,22 @@ class SideNavigation extends Provider<SideNavigationContext> {
       context: SideNavigationContext.context,
       initialValue: new SideNavigationContext(DEFAULTS.VARIANT, '', true),
     });
+  }
 
+  override connectedCallback(): void {
+    super.connectedCallback();
     this.role = ROLE.NAVIGATION;
-    this.id = `mdc-sidenavigation-${uuidv4()}`;
   }
 
   public static get Context() {
     return SideNavigationContext.context;
   }
+
+  /**
+   * The unique ID of the SideNavigation.
+   */
+  @property({ type: String, reflect: true, attribute: 'data-id' })
+  dataId: string = '';
 
   /**
    * Four variants of the sideNavigation
@@ -207,7 +214,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
       return html``;
     }
     return html`
-        <div part="side-navigation-container" id=${this.id}>
+        <div part="side-navigation-container" id=${this.dataId}>
           <div part="scrollable-section">
             <slot name="scrollable-section"></slot>
           </div>
@@ -227,7 +234,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
             arrow-direction=${this.arrowDirection}
             button-position=${DIRECTIONS.POSITIVE}
           > <mdc-button aria-label=${this.grabberBtnAriaLabel ?? ''} @click=${this.toggleSideNavigation}   
-                        aria-expanded=${String(this.expanded)} aria-controls=${this.id}></mdc-button>
+                        aria-expanded=${String(this.expanded)} aria-controls=${this.dataId}></mdc-button>
         </mdc-divider>` : nothing}
   `;
   }
