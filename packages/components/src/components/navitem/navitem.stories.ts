@@ -30,7 +30,7 @@ const render = (args: Args) => html`
 `;
 
 const meta: Meta = {
-  title: 'Work In Progress/navitem',
+  title: 'Work In Progress/sidenavigation/navitem',
   tags: ['autodocs'],
   component: 'mdc-navitem',
   render,

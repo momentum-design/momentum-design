@@ -158,7 +158,7 @@ const renderNestedSideNavigation = (args: Args) => html`
 </div>`;
 
 const meta: Meta = {
-  title: 'Work In Progress/sidenavigation',
+  title: 'Work In Progress/sidenavigation/sidenavigation',
   tags: ['autodocs'],
   component: 'mdc-sidenavigation',
   render,
