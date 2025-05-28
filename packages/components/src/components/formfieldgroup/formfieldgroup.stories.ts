@@ -5,6 +5,7 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { hideControls } from '../../../config/storybook/utils';
 import '../checkbox';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import '../toggle';
 
 const render = (args: Args) => html`
@@ -16,6 +17,7 @@ const render = (args: Args) => html`
     tooltip-placement="${args['tooltip-placement']}"
     info-icon-aria-label="${args['info-icon-aria-label']}"
    ?required=${args.required}
+    help-text-type="${args['help-text-type']}"
   >
     ${args.children}
   </mdc-formfieldgroup>`;
@@ -51,11 +53,15 @@ const meta: Meta = {
     'info-icon-aria-label': {
       control: 'text',
     },
+    'help-text-type': {
+      control: 'select',
+      options: Object.values(VALIDATION),
+    },
     children: {
       description: 'The html content which can be placed inside the formfieldgroup component.',
       control: 'object',
     },
-    ...hideControls(['help-text-type', 'disabled']),
+    ...hideControls(['disabled']),
     ...classArgType,
     ...styleArgType,
   },
@@ -68,6 +74,7 @@ export const Example: StoryObj = {
     label: 'Group label',
     'help-text': 'This is an example help text.',
     'data-aria-label': 'Label text aria label',
+    'help-text-type': 'default',
     children: html`
       <li>Loreim impusum</li>
       <li>Donec a lectus</li>
