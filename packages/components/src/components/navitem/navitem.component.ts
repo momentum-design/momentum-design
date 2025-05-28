@@ -14,6 +14,7 @@ import { getIconNameWithoutStyle } from '../button/button.utils';
 import SideNavigation from '../sidenavigation/sidenavigation.component';
 import type { BadgeType } from './navitem.types';
 import type { ListItemVariants } from '../listitem/listitem.types';
+import type { PopoverPlacement } from '../popover/popover.types';
 
 /**
  * `mdc-navitem` is a menuitem styled to work as a navigation tab.
@@ -115,7 +116,7 @@ class NavItem extends IconNameMixin(MenuItem) {
   override connectedCallback(): void {
     super.connectedCallback();
     this.variant = undefined as unknown as ListItemVariants;
-    this.tooltipPlacement = undefined as unknown as string;
+    this.tooltipPlacement = undefined as unknown as PopoverPlacement;
     this.addEventListener('click', this.handleClickEvent);
 
     if (!this.navId && this.onerror) {
