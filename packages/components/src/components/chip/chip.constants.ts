@@ -12,6 +12,7 @@ const COLOR = {
   MINT: 'mint',
   PINK: 'pink',
   PURPLE: 'purple',
+  ORANGE: 'orange',
   SLATE: 'slate',
   VIOLET: 'violet',
 } as const;
