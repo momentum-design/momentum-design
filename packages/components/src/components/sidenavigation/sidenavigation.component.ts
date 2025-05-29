@@ -33,7 +33,7 @@ import { ROLE } from '../../utils/roles';
  *
  * 3. **Actionable navitem (no submenu)**:
  *    - Performs an action such as navigation or alert trigger
- *    - Set `no-aria-current="true"` to maintain visual active state without navigation behavior
+ *    - Set `disable-aria-current="true"` to maintain visual active state without navigation behavior
  *
  * ### Recommendations:
  * - Use `mdc-text` for section headers
@@ -241,7 +241,8 @@ class SideNavigation extends Provider<SideNavigationContext> {
             arrow-direction=${this.arrowDirection}
             button-position=${DIRECTIONS.POSITIVE}
           > <mdc-button aria-label=${this.grabberBtnAriaLabel ?? ''} @click=${this.toggleSideNavigation}   
-                        aria-expanded=${String(this.expanded)} aria-controls='side-nav-container'></mdc-button>
+                        aria-expanded=${String(this.expanded)} aria-controls='side-nav-container' 
+                        part="grabber-btn"></mdc-button>
         </mdc-divider>` : nothing}
   `;
   }

@@ -151,7 +151,7 @@ const renderNestedSideNavigation = (args: Args) => {
         <mdc-navitem badge-type="counter" counter="3" max-counter="66" icon-name="settings-bold" nav-id="18"
           label='Settings'></mdc-navitem>
         <mdc-navitem @click="${showAlert}" icon-name="help-circle-bold" nav-id="19" label='Help' 
-        no-aria-current></mdc-navitem>
+        disable-aria-current></mdc-navitem>
       </mdc-navitemlist>
 
       <!-- Brand Logo (Fixed section) -->

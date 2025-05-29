@@ -10,7 +10,7 @@ import '../sidenavigation';
 const render = (args: Args) => html`
 <div style="height: 90vh; margin: 1rem">
   <mdc-sidenavigation grabber-btn-aria-label = "This is a grabber button.">
-    <mdc-navitemlist ?show-label=${args['show-label']} aria-label=${ifDefined(args['aria-label'])} 
+    <mdc-navitemlist aria-label=${ifDefined(args['aria-label'])} 
       slot="scrollable-section">
       <mdc-navitem
         nav-id="1"
@@ -19,7 +19,6 @@ const render = (args: Args) => html`
         counter="3"
         max-counter="66"
         aria-label='Dashboard'
-        ?show-label=${args['show-label']}
         label='Dashboard'
       >
       </mdc-navitem>
@@ -27,7 +26,6 @@ const render = (args: Args) => html`
         nav-id="2"
         icon-name="placeholder-bold"
         aria-label='Calling'
-        ?show-label=${args['show-label']}
         label='Calling'
         disabled
       >
@@ -37,7 +35,6 @@ const render = (args: Args) => html`
         icon-name="placeholder-bold"
         badge-type="dot"
         aria-label='Settings'
-        ?show-label=${args['show-label']}
         label='Settings'
       >
       </mdc-navitem>
@@ -55,9 +52,6 @@ const meta: Meta = {
   },
   render,
   argTypes: {
-    'show-label': {
-      control: 'boolean',
-    },
     'aria-label': {
       control: 'text',
     },
@@ -77,13 +71,6 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    'show-label': true,
-  },
-};
-
-export const collapsedNavItemList: StoryObj = {
-  args: {
     'aria-label': 'This is a navitemlist.',
-    'show-label': false,
   },
 };

@@ -23,7 +23,7 @@ const render = (args: Args) => html`
       max-counter="${args['max-counter']}"
       ?active=${args.active}
       ?show-label=${args['show-label']}
-      ?no-aria-current=${args['no-aria-current']}
+      ?disable-aria-current=${args['disable-aria-current']}
       aria-label=${args['aria-label']}
     ></mdc-navitem>
   </div>
@@ -70,7 +70,7 @@ const meta: Meta = {
     'aria-label': {
       control: 'text',
     },
-    'no-aria-current': {
+    'disable-aria-current': {
       control: 'boolean',
     },
     ...disableControls([

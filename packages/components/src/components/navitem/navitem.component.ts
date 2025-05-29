@@ -109,8 +109,8 @@ class NavItem extends IconNameMixin(MenuItem) {
    * but need to handle aria-current attribute differently or not at all.
    * The active button styling will still be applied regardless of this setting.
    */
-  @property({ type: Boolean, reflect: true, attribute: 'no-aria-current' })
-  noAriaCurrent?: boolean;
+  @property({ type: Boolean, reflect: true, attribute: 'disable-aria-current' })
+  disableAriaCurrent?: boolean;
 
   /**
    * @internal
