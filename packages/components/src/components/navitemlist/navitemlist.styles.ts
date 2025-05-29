@@ -18,7 +18,7 @@ const styles = css`
   }
 
   ::slotted(mdc-divider) {
-    margin: 0.75rem 0rem;
+    margin: 0.75rem 0;
   }
 `;
 

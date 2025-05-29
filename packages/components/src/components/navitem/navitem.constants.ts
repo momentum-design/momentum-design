@@ -3,12 +3,17 @@ import { BUTTON_SIZES } from '../buttonsimple/buttonsimple.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { TYPE as BADGE_TYPE } from '../badge/badge.constants';
 import { VARIANTS } from '../sidenavigation/sidenavigation.constants';
+import type { IconNames } from '../icon/icon.types';
 
 const TAG_NAME = utils.constructTagName('navitem');
 
 const ALLOWED_BADGE_TYPES = {
   DOT: BADGE_TYPE.DOT,
   COUNTER: BADGE_TYPE.COUNTER,
+} as const;
+
+const ICON_NAME = {
+  RIGHT_ARROW: 'arrow-right-bold' as Extract<IconNames, 'arrow-right-bold'>,
 } as const;
 
 const DEFAULTS = {
@@ -19,4 +24,4 @@ const DEFAULTS = {
   VARIANT: VARIANTS.FLEXIBLE,
 } as const;
 
-export { DEFAULTS, TAG_NAME, ALLOWED_BADGE_TYPES };
+export { DEFAULTS, TAG_NAME, ALLOWED_BADGE_TYPES, ICON_NAME };

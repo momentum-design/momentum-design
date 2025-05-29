@@ -3,7 +3,7 @@ import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import styles from './navitem.styles';
-import { DEFAULTS, ALLOWED_BADGE_TYPES } from './navitem.constants';
+import { DEFAULTS, ALLOWED_BADGE_TYPES, ICON_NAME } from './navitem.constants';
 import providerUtils from '../../utils/provider';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
@@ -29,6 +29,7 @@ import type { PopoverPlacement } from '../popover/popover.types';
  * @dependency mdc-icon
  * @dependency mdc-text
  * @dependency mdc-badge
+ * @dependency mdc-tooltip
  *
  * @event click - (React: onClick) This event is dispatched when the navitem is clicked.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the navitem.
@@ -97,8 +98,16 @@ class NavItem extends IconNameMixin(MenuItem) {
   showLabel?: boolean;
 
   /**
-   * If true, prevents the application of the `aria-current` attribute on this nav item,
-   * even if it would otherwise be considered the current/active item.
+   * Aria-label attribute to be set for accessibility
+   */
+  @property({ type: String, attribute: 'aria-label' })
+  override ariaLabel: string | null = null;
+
+  /**
+   * When set to true, prevents the automatic setting of the `aria-current` attribute on the navitem
+   * when it becomes active. This is useful for cases where you want to maintain the visual active styling
+   * but need to handle aria-current attribute differently or not at all.
+   * The active button styling will still be applied regardless of this setting.
    */
   @property({ type: Boolean, reflect: true, attribute: 'no-aria-current' })
   noAriaCurrent?: boolean;
@@ -141,7 +150,7 @@ class NavItem extends IconNameMixin(MenuItem) {
       this.removeAttribute('aria-label');
     } else {
       const label = this.label ?? '';
-      this.ariaLabel = label;
+      this.ariaLabel = this.ariaLabel || label;
       this.setAttribute('aria-label', label);
     }
   }
@@ -228,7 +237,7 @@ class NavItem extends IconNameMixin(MenuItem) {
 
     return html`
       <mdc-icon 
-        name='arrow-right-bold' 
+        name=${ICON_NAME.RIGHT_ARROW} 
         length-unit="rem" 
         part="trailing-arrow" 
         class="${arrowClass}">

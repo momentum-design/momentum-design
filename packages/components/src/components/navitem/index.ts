@@ -3,6 +3,7 @@ import { TAG_NAME } from './navitem.constants';
 import '../text';
 import '../badge';
 import '../icon';
+import '../tooltip';
 
 NavItem.register(TAG_NAME);
 

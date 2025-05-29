@@ -5,39 +5,45 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls, disableControls } from '../../../config/storybook/utils';
 import '../navitem';
+import '../sidenavigation';
 
 const render = (args: Args) => html`
-  <mdc-navitemlist ?show-label=${args['show-label']} aria-label=${ifDefined(args['aria-label'])}>
-    <mdc-navitem
-      nav-id="1"
-      icon-name="placeholder-bold"
-      badge-type="counter"
-      counter="3"
-      max-counter="66"
-      aria-label=${ifDefined(!args['show-label'] ? 'Dashboard' : undefined)}
-      ?show-label=${args['show-label']}
-      label=${ifDefined(args['show-label'] ? 'Dashboard' : undefined)}
-    >
-    </mdc-navitem>
-    <mdc-navitem
-      nav-id="2"
-      icon-name="placeholder-bold"
-      aria-label=${ifDefined(!args['show-label'] ? 'Calling' : undefined)}
-      ?show-label=${args['show-label']}
-      label=${ifDefined(args['show-label'] ? 'Calling' : undefined)}
-      disabled
-    >
-    </mdc-navitem>
-    <mdc-navitem
-      nav-id="3"
-      icon-name="placeholder-bold"
-      badge-type="dot"
-      aria-label=${ifDefined(!args['show-label'] ? 'Settings' : undefined)}
-      ?show-label=${args['show-label']}
-      label=${ifDefined(args['show-label'] ? 'Settings' : undefined)}
-    >
-    </mdc-navitem>
-  </mdc-navitemlist>
+<div style="height: 90vh; margin: 1rem">
+  <mdc-sidenavigation grabber-btn-aria-label = "This is a grabber button.">
+    <mdc-navitemlist ?show-label=${args['show-label']} aria-label=${ifDefined(args['aria-label'])} 
+      slot="scrollable-section">
+      <mdc-navitem
+        nav-id="1"
+        icon-name="placeholder-bold"
+        badge-type="counter"
+        counter="3"
+        max-counter="66"
+        aria-label='Dashboard'
+        ?show-label=${args['show-label']}
+        label='Dashboard'
+      >
+      </mdc-navitem>
+      <mdc-navitem
+        nav-id="2"
+        icon-name="placeholder-bold"
+        aria-label='Calling'
+        ?show-label=${args['show-label']}
+        label='Calling'
+        disabled
+      >
+      </mdc-navitem>
+      <mdc-navitem
+        nav-id="3"
+        icon-name="placeholder-bold"
+        badge-type="dot"
+        aria-label='Settings'
+        ?show-label=${args['show-label']}
+        label='Settings'
+      >
+      </mdc-navitem>
+    </mdc-navitemlist>
+  </mdc-sidenavigation>
+</div>
 `;
 
 const meta: Meta = {
@@ -51,6 +57,9 @@ const meta: Meta = {
   argTypes: {
     'show-label': {
       control: 'boolean',
+    },
+    'aria-label': {
+      control: 'text',
     },
     ...disableControls([
       'default',

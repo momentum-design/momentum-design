@@ -1,7 +1,6 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { ALLOWED_BADGE_TYPES, DEFAULTS } from './navitem.constants';
@@ -17,7 +16,7 @@ const render = (args: Args) => html`
       @activechange="${action('onactivechange')}"
       nav-id="${args['nav-id']}"
       icon-name="${args['icon-name']}"
-      label=${ifDefined(args['show-label'] ? args.label : undefined)}
+      label=${args.label}
       ?disabled=${args.disabled}
       badge-type="${args['badge-type']}"
       counter=${args.counter}
@@ -25,7 +24,7 @@ const render = (args: Args) => html`
       ?active=${args.active}
       ?show-label=${args['show-label']}
       ?no-aria-current=${args['no-aria-current']}
-      aria-label=${ifDefined(!args['show-label'] ? args['aria-label'] : undefined)}
+      aria-label=${args['aria-label']}
     ></mdc-navitem>
   </div>
 `;
@@ -67,6 +66,9 @@ const meta: Meta = {
     },
     'show-label': {
       control: 'boolean',
+    },
+    'aria-label': {
+      control: 'text',
     },
     'no-aria-current': {
       control: 'boolean',

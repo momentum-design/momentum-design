@@ -28,11 +28,12 @@ import { ROLE } from '../../utils/roles';
  * 2. **Navitem with submenu**:
  *    - Provide an `id` on the `mdc-navitem`
  *    - Set the `triggerId` on the corresponding `mdc-menupopover` to match the navitem's `id`
- *    - It is recommended to set `parent-nav-tooltip-text` for better user experience and screen reader support
+ *    - Set `parent-nav-tooltip-text` with appropriate text that will display when a child menu item
+ *      inside the nested menupopover is active, conveying which submenu item is currently selected
  *
  * 3. **Actionable navitem (no submenu)**:
  *    - Performs an action such as navigation or alert trigger
- *    - Must explicitly set `no-aria-current="true"` to prevent it from behaving like a simple navitem
+ *    - Set `no-aria-current="true"` to maintain visual active state without navigation behavior
  *
  * ### Recommendations:
  * - Use `mdc-text` for section headers
@@ -63,7 +64,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
   constructor() {
     super({
       context: SideNavigationContext.context,
-      initialValue: new SideNavigationContext(DEFAULTS.VARIANT, '', true),
+      initialValue: new SideNavigationContext(DEFAULTS.VARIANT, true),
     });
   }
 
@@ -106,10 +107,10 @@ class SideNavigation extends Provider<SideNavigationContext> {
    * Provides an accessible label for the grabber button.
    * This value is used to set the `aria-label` attribute for the button.
    *
-   * @default null
+   * @default ''
    */
   @property({ type: String, reflect: true, attribute: 'grabber-btn-aria-label' })
-  grabberBtnAriaLabel: string | null = null;
+  grabberBtnAriaLabel?: string;
 
   /**
    * Tooltip text shown on parent nav items when a child is active.
@@ -147,8 +148,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
       this.updateExpansionState();
     }
 
-    if (changedProperties.has('variant') || changedProperties.has('customerName')
-       || changedProperties.has('expanded')) {
+    if (changedProperties.has('variant') || changedProperties.has('expanded')) {
       this.updateContext();
     }
   }
@@ -161,12 +161,10 @@ class SideNavigation extends Provider<SideNavigationContext> {
    */
   protected updateContext(): void {
     if (this.context.value.variant !== this.variant
-        || this.context.value.customerName !== this.customerName
         || this.context.value.expanded !== this.expanded
         || this.context.value.parentNavTooltipText !== this.parentNavTooltipText
     ) {
       this.context.value.variant = this.variant;
-      this.context.value.customerName = this.customerName;
       this.context.value.expanded = this.expanded;
       this.context.value.parentNavTooltipText = this.parentNavTooltipText;
       this.context.updateObservers();

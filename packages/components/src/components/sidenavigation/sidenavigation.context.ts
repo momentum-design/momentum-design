@@ -8,8 +8,6 @@ import { TAG_NAME } from './sidenavigation.constants';
 class SideNavigationContext {
   public variant?: string;
 
-  public customerName?: string;
-
   public expanded?: boolean;
 
   private currentActiveNavItem?: NavItem;
@@ -20,12 +18,10 @@ class SideNavigationContext {
 
   constructor(
     defaultVariant?: string,
-    defaultCustomerName?: string,
     defaultExpanded?: boolean,
     defaultParentNavTooltipText?: string,
   ) {
     this.variant = defaultVariant;
-    this.customerName = defaultCustomerName;
     this.expanded = defaultExpanded;
     this.parentNavTooltipText = defaultParentNavTooltipText;
   }

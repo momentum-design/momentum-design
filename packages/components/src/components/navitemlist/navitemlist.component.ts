@@ -29,6 +29,12 @@ class NavItemList extends MenuMixin(MenuBar) {
   showLabel?: boolean;
 
   /**
+   * Aria-label attribute to be set for accessibility
+   */
+  @property({ type: String, attribute: 'aria-label' })
+  override ariaLabel: string | null = null;
+
+  /**
    * @internal
    */
   private readonly sideNavigationContext = providerUtils.consume({ host: this, context: SideNavigation.Context });
