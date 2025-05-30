@@ -40,7 +40,8 @@ class StepperItem extends Component {
   private renderStatusIcon() {
     if (this.status === STATUS.COMPLETED || this.status === STATUS.ERROR) {
       const iconName = this.status === STATUS.COMPLETED ? STATUS_ICON.COMPLETED : STATUS_ICON.ERROR;
-      return html`<mdc-icon part="status-icon" name=${iconName}></mdc-icon>`;
+      return html`<mdc-icon part="status-icon" name=${iconName}
+      length-unit="rem" size="1"></mdc-icon>`;
     }
 
     if (this.stepNumber) {
@@ -49,6 +50,22 @@ class StepperItem extends Component {
       type=${TYPE.BODY_MIDSIZE_REGULAR}>${this.stepNumber}</mdc-text>`;
     }
 
+    return nothing;
+  }
+
+  private renderOptionalLabel() {
+    if (this.optionalLabel && this.status !== STATUS.ERROR) {
+      return html`<mdc-text 
+        part="optional-label"
+        tagname=${VALID_TEXT_TAGS.SPAN} 
+        type=${TYPE.BODY_MIDSIZE_REGULAR}>(${this.optionalLabel})</mdc-text>`;
+    }
+    if (this.optionalLabel && this.status === STATUS.ERROR) {
+      return html`<mdc-text 
+        part="error-message"
+        tagname=${VALID_TEXT_TAGS.SPAN} 
+        type=${TYPE.BODY_MIDSIZE_REGULAR}>${this.optionalLabel}</mdc-text>`;
+    }
     return nothing;
   }
 
@@ -63,11 +80,7 @@ class StepperItem extends Component {
         tagname=${VALID_TEXT_TAGS.SPAN} 
         type=${TYPE.BODY_MIDSIZE_REGULAR}>${this.label}</mdc-text>`
     : nothing}
-      ${this.optionalLabel ? html`<mdc-text
-        part="optional-label"
-        tagname=${VALID_TEXT_TAGS.SPAN}
-        type=${TYPE.BODY_SMALL_REGULAR}>${this.optionalLabel}</mdc-text>`
-    : nothing}
+      ${this.renderOptionalLabel()}
       </div>`;
   }
 

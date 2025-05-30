@@ -18,7 +18,7 @@ const STATUS = {
 
 const STATUS_ICON = {
   COMPLETED: 'check-bold' as Extract<IconNames, 'check-bold'>,
-  ERROR: 'error-bold' as Extract<IconNames, 'error-bold'>,
+  ERROR: 'error-legacy-filled' as Extract<IconNames, 'error-legacy-filled'>,
 } as const;
 
 const DEFAULT = {
