@@ -351,6 +351,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
       // - If there are no popovers to the right, then we will close all popovers recursively,
       // and go the next menu item from the menu bar
       this.hideAllPopovers(this.menuItems[currentIndex]);
+      if (this.isValidMenu(this.tagName)) return;
       // - get the top parent menu items using recursion.
       const {
         parentMenuItemDetails,
