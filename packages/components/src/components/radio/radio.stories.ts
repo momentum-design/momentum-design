@@ -5,6 +5,7 @@ import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 import '../button';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 const render = (args: Args) => html`
   <mdc-radio
@@ -21,6 +22,9 @@ const render = (args: Args) => html`
     ?readonly=${args.readonly}
     ?required="${args.required}"
     data-aria-label="${args['data-aria-label']}"
+    tooltip-placement="${args['tooltip-placement']}"
+    tooltip-text="${args['tooltip-text']}"
+    info-icon-aria-label="${args['info-icon-aria-label']}"
   ></mdc-radio>
 `;
 
@@ -61,6 +65,16 @@ const meta: Meta = {
     },
     required: {
       control: { type: 'boolean' },
+    },
+    'tooltip-text': {
+      control: { type: 'text' },
+    },
+    'tooltip-placement': {
+      control: { type: 'select' },
+      options: Object.values(POPOVER_PLACEMENT),
+    },
+    'info-icon-aria-label': {
+      control: { type: 'text' },
     },
     ...hideControls(['help-text-type']),
     ...disableControls([

@@ -1,4 +1,5 @@
 import utils from '../../utils/tag-name';
+import { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 
 const TAG_NAME = utils.constructTagName('formfieldwrapper');
@@ -15,6 +16,9 @@ const DEFAULTS = {
   VALIDATION: VALIDATION.DEFAULT,
   HELPER_TEXT_ID: 'helper-text-id',
   HEADING_ID: 'heading-id',
+  ICON_SIZE: '1',
+  INFO_ICON: 'info-badge-filled' as Extract<IconNames, 'info-badge-filled'>,
+  TOOLTIP_PLACEMENT: 'top',
 } as const;
 
 const MDC_TEXT_OPTIONS = {

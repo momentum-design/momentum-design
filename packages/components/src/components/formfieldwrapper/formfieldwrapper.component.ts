@@ -1,7 +1,9 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
+import type { PopoverPlacement } from '../popover/popover.types';
 import { DEFAULTS, MDC_TEXT_OPTIONS } from './formfieldwrapper.constants';
 import styles from './formfieldwrapper.styles';
 import type { ValidationType } from './formfieldwrapper.types';
@@ -14,7 +16,10 @@ import { getHelperIcon } from './formfieldwrapper.utils';
  *
  * @tagname mdc-formfieldwrapper
  *
- * @slot label-info - slot to add the label info icon
+ * @dependency mdc-text
+ * @dependency mdc-icon
+ * @dependency mdc-tooltip
+ *
  *
  */
 class FormfieldWrapper extends DisabledMixin(Component) {
@@ -45,6 +50,26 @@ class FormfieldWrapper extends DisabledMixin(Component) {
    * The help text that is displayed below the input field.
    */
   @property({ type: String, reflect: true, attribute: 'help-text' }) helpText?: string;
+
+  /**
+   * The tooltip text that is displayed when the label is hovered.
+   * It is used to provide additional information about the label.
+   */
+  @property({ type: String, reflect: true, attribute: 'tooltip-text' }) tooltipText?: string;
+
+  /**
+   * The placement of the tooltip that is displayed when the info icon is hovered.
+   * @default 'top'
+   */
+  @property({ type: String, reflect: true, attribute: 'tooltip-placement' })
+  tooltipPlacement: PopoverPlacement = DEFAULTS.TOOLTIP_PLACEMENT;
+
+  /**
+   * Aria label for the info icon that is displayed next to the label when `tooltipText` is set.
+   * This is used for accessibility purposes to provide a description of the icon.
+   */
+  @property({ type: String, reflect: true, attribute: 'info-icon-aria-label' })
+  infoIconAriaLabel?: string;
 
   /** @internal */
   protected shouldRenderLabel: Boolean = true;
@@ -116,7 +141,23 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     return html`<div class="mdc-label-text" part="label-text">
       <slot name="label">${this.renderLabelElement()}</slot>
       ${this.required ? html`<span part="required-indicator">*</span>` : nothing}
-      <slot name="label-info"></slot>
+      ${this.tooltipText ? html`
+        <mdc-icon 
+        part="info-icon"
+        name="${DEFAULTS.INFO_ICON}" 
+        length-unit="rem" 
+        size="${DEFAULTS.ICON_SIZE}"
+        tabindex="0"
+        aria-label="${ifDefined(this.infoIconAriaLabel)}"
+        id="info-icon-id"></mdc-icon>
+        <mdc-tooltip
+          part="label-tooltip"
+          triggerid="info-icon-id"
+          id="label-tooltip-id"
+          placement="${this.tooltipPlacement}"
+          show-arrow
+          >${this.tooltipText}</mdc-tooltip
+      >` : nothing}
     </div>`;
   }
 

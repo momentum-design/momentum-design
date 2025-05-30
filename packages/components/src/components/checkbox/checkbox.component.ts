@@ -17,6 +17,9 @@ import styles from './checkbox.styles';
  * To create a group of checkboxes, use the FormFieldGroup component.
  *
  * @dependency mdc-icon
+ * @dependency mdc-text
+ * @dependency mdc-tooltip
+ * @dependency mdc-staticcheckbox
  *
  * @tagname mdc-checkbox
  *

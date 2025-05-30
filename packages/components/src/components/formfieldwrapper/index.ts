@@ -2,6 +2,7 @@ import FormfieldWrapper from './formfieldwrapper.component';
 import { TAG_NAME } from './formfieldwrapper.constants';
 import '../icon';
 import '../text';
+import '../tooltip';
 
 FormfieldWrapper.register(TAG_NAME);
 

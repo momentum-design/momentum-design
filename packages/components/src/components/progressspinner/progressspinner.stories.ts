@@ -35,7 +35,6 @@ const meta: Meta = {
       'help-text',
       'variant',
       'id',
-      'label-info',
       '--mdc-progressbar-default-background-color',
       '--mdc-progressbar-default-active-background-color',
       '--mdc-progressbar-success-background-color',
