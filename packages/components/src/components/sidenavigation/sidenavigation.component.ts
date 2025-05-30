@@ -239,9 +239,8 @@ class SideNavigation extends Provider<SideNavigationContext> {
             orientation=${DIVIDER_ORIENTATION.VERTICAL}
             variant=${DIVIDER_VARIANT.GRADIENT}
             arrow-direction=${this.arrowDirection}
-            button-position=${DIRECTIONS.POSITIVE}
           > <mdc-button aria-label=${this.grabberBtnAriaLabel ?? ''} @click=${this.toggleSideNavigation}   
-                        aria-expanded=${String(this.expanded)} aria-controls='side-nav-container' 
+                        aria-expanded="${!!this.expanded}" aria-controls='side-nav-container' 
                         part="grabber-btn"></mdc-button>
         </mdc-divider>` : nothing}
   `;
