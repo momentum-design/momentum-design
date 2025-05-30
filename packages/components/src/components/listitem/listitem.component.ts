@@ -176,6 +176,11 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
 
     // Add a unique id to the listitem if it does not have one to attach the tooltip.
     this.id = this.id || LISTITEM_ID;
+
+    // Remove any existing tooltip.
+    const existingTooltip = document.getElementById(TOOLTIP_ID);
+    if (existingTooltip) existingTooltip.remove();
+
     // Create tooltip for the listitem element.
     const tooltip = document.createElement(TOOLTIP_TAG_NAME);
     tooltip.id = TOOLTIP_ID;

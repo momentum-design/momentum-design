@@ -1,6 +1,7 @@
 import { expect } from '@playwright/test';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { LISTITEM_VARIANTS } from './listitem.constants';
 
 type SetUpOptions = {
@@ -11,6 +12,8 @@ type SetUpOptions = {
   'tertiary-label'?: string;
   'side-header-text'?: string;
   'subline-text'?: string;
+  'tooltip-text'?: string;
+  'tooltip-placement'?: string;
   children?: string;
 }
 
@@ -31,6 +34,8 @@ const setup = async (args: SetUpOptions) => {
         ${restArgs['tertiary-label'] ? `tertiary-label="${restArgs['tertiary-label']}"` : ''}
         ${restArgs['side-header-text'] ? `side-header-text="${restArgs['side-header-text']}"` : ''}
         ${restArgs['subline-text'] ? `subline-text="${restArgs['subline-text']}"` : ''}
+        ${restArgs['tooltip-text'] ? `tooltip-text="${restArgs['tooltip-text']}"` : ''}
+        ${restArgs['tooltip-placement'] ? `tooltip-placement="${restArgs['tooltip-placement']}"` : ''}
       >
         ${restArgs.children ? restArgs.children : ''}
       </mdc-listitem>
@@ -147,6 +152,7 @@ test.describe.parallel('mdc-listitem', () => {
       await test.step('attribute role, tabindex and variant should be present on component by default', async () => {
         await expect(listitem).toHaveAttribute('role', 'listitem');
         await expect(listitem).toHaveAttribute('tabindex', '0');
+        await expect(listitem).toHaveAttribute('tooltip-placement', POPOVER_PLACEMENT.TOP);
         await expect(listitem).toHaveAttribute('variant', LISTITEM_VARIANTS.FULL_WIDTH);
       });
 
@@ -187,8 +193,8 @@ test.describe.parallel('mdc-listitem', () => {
     });
 
     /**
-   * INTERACTIONS
-   */
+     * INTERACTIONS
+     */
     await test.step('interactions', async () => {
       await test.step('focus', async () => {
         await test.step('component should be focusable with tab', async () => {
@@ -322,6 +328,24 @@ test.describe.parallel('mdc-listitem', () => {
           await componentsPage.expectPromiseTimesOut(waitForListItemKeyUp, true);
         });
       });
+
+      await test.step(
+        'component should show tooltip when the listitem is focused and tooltip text is passed',
+        async () => {
+          const listitem = await setup({
+            componentsPage,
+            label: primaryLabel,
+            'tooltip-text': 'Tooltip Text',
+            'tooltip-placement': POPOVER_PLACEMENT.BOTTOM,
+          });
+          await componentsPage.actionability.pressTab();
+          await expect(listitem).toBeFocused();
+          const tooltip = componentsPage.page.locator('mdc-tooltip');
+          await expect(tooltip).toBeVisible();
+          const text = await tooltip.textContent();
+          expect(text?.trim()).toBe('Tooltip Text');
+        },
+      );
     });
   });
 });
