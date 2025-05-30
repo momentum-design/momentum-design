@@ -24,7 +24,7 @@ const render = (args: Args) => {
     id="${args.id}"
     class="${args.class}"
     style="${args.style}"
-    required="${args.required}"
+    ?required="${args.required}"
     ?disabled="${args.disabled}"
     ?readonly="${args.readonly}"
     ?trailing-button="${args['trailing-button']}"
