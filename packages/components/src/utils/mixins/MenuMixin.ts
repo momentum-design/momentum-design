@@ -285,9 +285,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         parentMenuItemIndex,
         newIndex,
       );
-      if (key === KEYS.ARROW_LEFT) {
-        parentMenuItemsChildren[parentMenuItemIndex - 1]?.nextElementSibling?.toggleAttribute('visible');
-      }
+      parentMenuItemsChildren[parentMenuItemIndex - 1]?.nextElementSibling?.toggleAttribute('visible');
     }
 
     /**
@@ -397,6 +395,27 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     }
 
     /**
+     * Returns the key based on the direction of the document.
+     * If the document is in RTL mode and the key is ARROW_LEFT or ARROW_RIGHT,
+     * it will swap them to maintain the correct navigation direction.
+     * @param originalKey - The original key pressed.
+     * @returns The key based on the direction of the document.
+     */
+    private getKeyBasedOnDirection(originalKey: string): string {
+      let key = originalKey;
+      const isRtl = document.querySelector('html')?.getAttribute('dir') === 'rtl'
+       || window.getComputedStyle(this).direction === 'rtl';
+      if (isRtl && (key === KEYS.ARROW_LEFT || key === KEYS.ARROW_RIGHT)) {
+        if (key === KEYS.ARROW_LEFT) {
+          key = KEYS.ARROW_RIGHT;
+        } else {
+          key = KEYS.ARROW_LEFT;
+        }
+      }
+      return key;
+    }
+
+    /**
      * Handles the keydown event on the menu bar.
      * The keys are as follows:
      * - HOME: Sets focus to the first menu item.
@@ -431,7 +450,8 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
       const lastMenuIndex = this.menuItems.length - 1;
       const currentIndex = this.getCurrentIndex(event.target);
       if (currentIndex === -1) return;
-      switch (event.key) {
+      const key = this.getKeyBasedOnDirection(event.key);
+      switch (key) {
         case KEYS.HOME:
           this.updateTabIndexAndFocusNewIndex(this.menuItems, currentIndex, firstMenuIndex);
           break;
