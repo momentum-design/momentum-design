@@ -2,14 +2,15 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls, disableControls } from '../../../config/storybook/utils';
 import '../navitem';
 import '../sidenavigation';
 
 const render = (args: Args) => html`
-<div style="height: 90vh; margin: 1rem">
-  <mdc-sidenavigation grabber-btn-aria-label = "This is a grabber button.">
+<div style="height: 40vh; margin: 1rem">
+  <mdc-sidenavigation @activechange=${action('onactivechange')} grabber-btn-aria-label = "This is a grabber button.">
     <mdc-navitemlist aria-label=${ifDefined(args['aria-label'])} 
       slot="scrollable-section">
       <mdc-navitem
