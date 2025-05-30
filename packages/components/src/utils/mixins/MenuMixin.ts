@@ -488,9 +488,6 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         }
         case KEYS.ESCAPE: {
           this.setMenuBarPopoverValue(false);
-          if (this.ariaOrientation === ORIENTATION.VERTICAL) {
-            this.navigateToPrevParentMenuItem(currentIndex, event.key);
-          }
           break;
         }
         default:
