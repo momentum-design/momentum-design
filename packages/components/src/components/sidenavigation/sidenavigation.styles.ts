@@ -61,6 +61,10 @@ const styles = css`
   flex-shrink: 0;
   aspect-ratio: 1 / 1;
 }
+
+:host::part(separator) {
+  margin-bottom: 0.75rem;
+}
 `;
 
 export default [styles];

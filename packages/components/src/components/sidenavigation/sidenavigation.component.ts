@@ -225,7 +225,7 @@ class SideNavigation extends Provider<SideNavigationContext> {
           <div part="scrollable-section">
             <slot name="scrollable-section"></slot>
           </div>
-          <mdc-divider variant="gradient"></mdc-divider>
+          <mdc-divider variant="gradient" part="separator"></mdc-divider>
           <div part="fixed-section">
               <slot name="fixed-section"></slot>
               <div part="brand-logo-container">
