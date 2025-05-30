@@ -67,6 +67,8 @@ import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
 import Listheader from './components/listheader';
 import SelectListbox from './components/selectlistbox';
+import Stepper from './components/stepper';
+import Stepperitem from './components/stepperitem';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
