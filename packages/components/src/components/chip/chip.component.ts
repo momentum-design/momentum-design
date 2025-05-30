@@ -36,9 +36,9 @@ class Chip extends IconNameMixin(Buttonsimple) {
    * - gold
    * - lime
    * - mint
+   * - orange
    * - pink
    * - purple
-   * - orange
    * - slate
    * - violet
    *

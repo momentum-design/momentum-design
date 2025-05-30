@@ -10,9 +10,9 @@ const COLOR = {
   GOLD: 'gold',
   LIME: 'lime',
   MINT: 'mint',
+  ORANGE: 'orange',
   PINK: 'pink',
   PURPLE: 'purple',
-  ORANGE: 'orange',
   SLATE: 'slate',
   VIOLET: 'violet',
 } as const;
