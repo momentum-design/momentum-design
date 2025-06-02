@@ -44,7 +44,15 @@ const meta: Meta = {
     'data-aria-label': {
       control: 'text',
     },
-    ...hideControls(['help-text-type', 'required', 'name', 'disabled', 'validation-message']),
+    ...hideControls([
+      'help-text-type',
+      'required',
+      'name',
+      'disabled',
+      'validation-message',
+      'tooltip-text',
+      'tooltip-placement',
+    ]),
     ...disableControls([
       '--mdc-progressbar-default-background-color',
       '--mdc-progressbar-default-active-background-color',

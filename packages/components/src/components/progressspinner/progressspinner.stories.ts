@@ -33,6 +33,8 @@ const meta: Meta = {
       'required',
       'label', 'disabled',
       'help-text',
+      'tooltip-text',
+      'tooltip-placement',
       'variant',
       'id',
       '--mdc-progressbar-default-background-color',

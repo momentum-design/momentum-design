@@ -124,9 +124,6 @@ const meta: Meta = {
     'validation-message': {
       control: 'text',
     },
-    'resize-button': {
-      control: 'boolean',
-    },
     'tooltip-text': {
       control: 'text',
     },
