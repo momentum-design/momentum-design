@@ -11,6 +11,7 @@ type SetupOptions = {
   children?: any;
   ariaLabel?: string;
   secondButtonForFocus?: boolean;
+  autofocus?: boolean;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -23,6 +24,7 @@ const setup = async (args: SetupOptions) => {
           ${restArgs.disabled ? 'disabled' : ''}
           ${restArgs.softDisabled ? 'soft-disabled' : ''}
           ${restArgs.size ? `size="${restArgs.size}"` : ''}
+          ${restArgs.autofocus ? 'autofocus' : ''}
         >
           ${restArgs.children}
         </mdc-buttonsimple>
@@ -238,6 +240,16 @@ test('mdc-buttonsimple', async ({ componentsPage }) => {
       await expect(button).not.toHaveClass('pressed');
       await expect(button).not.toHaveClass('btn-listener btn-onclick');
       await componentsPage.page.keyboard.up('Enter');
+    });
+
+    await test.step('button automatically gets focused if autofocus is set', async () => {
+      const buttonAutoFocus = await setup({
+        componentsPage,
+        children: 'Click Me',
+        secondButtonForFocus: true,
+        autofocus: true,
+      });
+      await expect(buttonAutoFocus).toBeFocused();
     });
   });
 });
