@@ -89,13 +89,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     super.connectedCallback();
     // select will only contain name and value will be defined in the options.
     this.value = undefined as unknown as string;
-
-    this.addEventListener('keydown', this.handleKeydown);
-  }
-
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.removeEventListener('keydown', this.handleKeydown);
   }
 
   /**
@@ -490,6 +483,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       <mdc-popover
         id="options-popover"
         triggerid="select-base-triggerid"
+        @keydown="${this.handleKeydown}"
         interactive
         ?visible="${this.displayPopover}"
         hide-on-outside-click
@@ -522,6 +516,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         <div
           id="select-base-triggerid"
           part="base-container"
+          @keydown="${this.handleKeydown}"
           tabindex="${this.disabled ? '-1' : '0'}"
           class="${this.disabled ? '' : 'mdc-focus-ring'}"
           role="combobox"
@@ -530,6 +525,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           aria-label="${this.dataAriaLabel ?? ''}"
           aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
           aria-expanded="${this.displayPopover ? 'true' : 'false'}"
+          aria-controls="options-popover"
         >
       ${this.selectedIcon
     ? html`<mdc-icon length-unit="rem" size="1" name="${this.selectedIcon}" part="selected-icon"></mdc-icon>`
