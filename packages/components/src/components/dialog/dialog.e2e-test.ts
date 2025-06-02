@@ -157,8 +157,8 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await expect(dialog).not.toHaveAttribute('aria-expanded');
       await expect(dialog).not.toHaveAttribute('aria-describedby');
       await expect(dialog).toHaveAttribute('size', DEFAULTS.SIZE);
-      await expect(dialog).toHaveAttribute('header-text', '');
-      await expect(dialog).toHaveAttribute('description-text', '');
+      await expect(dialog).not.toHaveAttribute('header-text');
+      await expect(dialog).not.toHaveAttribute('description-text');
       await expect(dialog).not.toHaveAttribute('aria-labelledby', '');
 
       const closeDialogButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
