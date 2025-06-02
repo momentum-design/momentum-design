@@ -112,6 +112,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   private handlePopoverOpen(): void {
     this.displayPopover = true;
     this.baseIconName = ARROW_ICON.ARROW_UP;
+    this.updateActivedescendant();
   }
 
   private handlePopoverClose(): void {
@@ -370,9 +371,9 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     return -1;
   }
 
-  private updateActivedescendant(target: EventTarget | null): void {
+  private updateActivedescendant(target?: EventTarget | null): void {
     const currentIndex = this.getAllValidOptions().findIndex((option) => option === target);
-    this.activeDescendant = this.getAllValidOptions()[currentIndex]?.id ?? '';
+    this.activeDescendant = this.getAllValidOptions()[currentIndex]?.id || this.getAllValidOptions()[0]?.id;
   }
 
   private resetActivedescendant(): void {
