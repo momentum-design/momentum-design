@@ -5,6 +5,7 @@ import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import type { PopoverPlacement } from '../popover/popover.types';
 import { DEFAULTS, MDC_TEXT_OPTIONS } from './formfieldwrapper.constants';
+import { BUTTON_VARIANTS } from '../button/button.constants';
 import styles from './formfieldwrapper.styles';
 import type { ValidationType } from './formfieldwrapper.types';
 import { getHelperIcon } from './formfieldwrapper.utils';
@@ -18,7 +19,8 @@ import { getHelperIcon } from './formfieldwrapper.utils';
  *
  * @dependency mdc-text
  * @dependency mdc-icon
- * @dependency mdc-tooltip
+ * @dependency mdc-button
+ * @dependency mdc-toggletip
  *
  *
  */
@@ -52,20 +54,20 @@ class FormfieldWrapper extends DisabledMixin(Component) {
   @property({ type: String, reflect: true, attribute: 'help-text' }) helpText?: string;
 
   /**
-   * The tooltip text that is displayed when the label is hovered.
+   * The toggletip text that is displayed when the label is hovered.
    * It is used to provide additional information about the label.
    */
-  @property({ type: String, reflect: true, attribute: 'tooltip-text' }) tooltipText?: string;
+  @property({ type: String, reflect: true, attribute: 'toggletip-text' }) toggletipText?: string;
 
   /**
-   * The placement of the tooltip that is displayed when the info icon is hovered.
+   * The placement of the toggletip that is displayed when the info icon is hovered.
    * @default 'top'
    */
-  @property({ type: String, reflect: true, attribute: 'tooltip-placement' })
-  tooltipPlacement: PopoverPlacement = DEFAULTS.TOOLTIP_PLACEMENT;
+  @property({ type: String, reflect: true, attribute: 'toggletip-placement' })
+  toggletipPlacement: PopoverPlacement = DEFAULTS.TOGGLETIP_PLACEMENT;
 
   /**
-   * Aria label for the info icon that is displayed next to the label when `tooltipText` is set.
+   * Aria label for the info icon that is displayed next to the label when `toggletipText` is set.
    * This is used for accessibility purposes to provide a description of the icon.
    */
   @property({ type: String, reflect: true, attribute: 'info-icon-aria-label' })
@@ -141,22 +143,21 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     return html`<div class="mdc-label-text" part="label-text">
       <slot name="label">${this.renderLabelElement()}</slot>
       ${this.required ? html`<span part="required-indicator">*</span>` : nothing}
-      ${this.tooltipText ? html`
-        <mdc-icon 
-        part="info-icon"
-        name="${DEFAULTS.INFO_ICON}" 
-        length-unit="rem" 
+      ${this.toggletipText ? html`
+        <mdc-button 
+        part="info-icon-btn"
+        prefix-icon="${DEFAULTS.INFO_ICON}" 
         size="${DEFAULTS.ICON_SIZE}"
-        tabindex="0"
+        variant="${BUTTON_VARIANTS.TERTIARY}"
         aria-label="${ifDefined(this.infoIconAriaLabel)}"
-        id="info-icon-id"></mdc-icon>
-        <mdc-tooltip
-          part="label-tooltip"
+        id="info-icon-id"></mdc-button>
+        <mdc-toggletip
+          part="label-toggletip"
           triggerid="info-icon-id"
-          id="label-tooltip-id"
-          placement="${this.tooltipPlacement}"
+          id="label-toggletip-id"
+          placement="${this.toggletipPlacement}"
           show-arrow
-          >${this.tooltipText}</mdc-tooltip
+          >${this.toggletipText}</mdc-toggletip
       >` : nothing}
     </div>`;
   }

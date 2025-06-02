@@ -16,8 +16,8 @@ const render = (args: Args) =>
     ?required="${args.required}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
-    tooltip-text="${args['tooltip-text']}"
-    tooltip-placement="${args['tooltip-placement']}"
+    toggletip-text="${args['toggletip-text']}"
+    toggletip-placement="${args['toggletip-placement']}"
     info-icon-aria-label="${args['info-icon-aria-label']}"
     >
     ${args.children}
@@ -53,10 +53,10 @@ const meta: Meta = {
     disabled: {
       control: 'boolean',
     },
-    'tooltip-text': {
+    'toggletip-text': {
       control: 'text',
     },
-    'tooltip-placement': {
+    'toggletip-placement': {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
     },
@@ -76,7 +76,7 @@ export const Example: StoryObj = {
     children: '[Child Component]',
     required: true,
     disabled: false,
-    'tooltip-text': 'Tooltip text',
+    'toggletip-text': 'toggletip text',
     'info-icon-aria-label': 'Info icon aria label',
   },
 };

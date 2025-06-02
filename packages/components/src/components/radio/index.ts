@@ -1,9 +1,10 @@
+import '../button';
+import '../icon';
+import '../staticradio';
+import '../text';
+import '../tooltip';
 import Radio from './radio.component';
 import { TAG_NAME } from './radio.constants';
-import '../staticradio';
-import '../tooltip';
-import '../text';
-import '../icon';
 
 Radio.register(TAG_NAME);
 

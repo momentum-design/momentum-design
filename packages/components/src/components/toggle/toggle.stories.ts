@@ -16,8 +16,8 @@ const render = (args: Args) => html`
     @focus="${action('onfocus')}"
     @change="${action('onchange')}"
     size="${args.size}"
-    tooltip-placement="${args['tooltip-placement']}"
-    tooltip-text="${args['tooltip-text']}"
+    toggletip-placement="${args['toggletip-placement']}"
+    toggletip-text="${args['toggletip-text']}"
     info-icon-aria-label="${args['info-icon-aria-label']}"
     label="${ifDefined(args.label)}"
     help-text="${ifDefined(args['help-text'])}"
@@ -71,10 +71,10 @@ const meta: Meta = {
       control: 'text',
       description: 'Aria label for the toggle component. Required for accessibility.',
     },
-    'tooltip-text': {
+    'toggletip-text': {
       control: 'text',
     },
-    'tooltip-placement': {
+    'toggletip-placement': {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
     },

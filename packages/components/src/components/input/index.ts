@@ -1,9 +1,9 @@
-import Input from './input.component';
-import { TAG_NAME } from './input.constants';
 import '../button';
 import '../icon';
 import '../text';
-import '../tooltip';
+import '../toggletip';
+import Input from './input.component';
+import { TAG_NAME } from './input.constants';
 
 Input.register(TAG_NAME);
 

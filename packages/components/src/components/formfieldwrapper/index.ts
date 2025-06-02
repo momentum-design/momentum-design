@@ -1,8 +1,9 @@
-import FormfieldWrapper from './formfieldwrapper.component';
-import { TAG_NAME } from './formfieldwrapper.constants';
+import '../button';
 import '../icon';
 import '../text';
-import '../tooltip';
+import '../toggletip';
+import FormfieldWrapper from './formfieldwrapper.component';
+import { TAG_NAME } from './formfieldwrapper.constants';
 
 FormfieldWrapper.register(TAG_NAME);
 

@@ -29,8 +29,8 @@ const render = (args: Args) => wrapWithDiv(html`
     help-text="${args['help-text']}"
     height="${args.height}"
     data-aria-label="${args['data-aria-label']}"
-    tooltip-text="${args['tooltip-text']}"
-    tooltip-placement="${args['tooltip-placement']}"
+    toggletip-text="${args['toggletip-text']}"
+    toggletip-placement="${args['toggletip-placement']}"
     info-icon-aria-label="${args['info-icon-aria-label']}"
     name="${args.name}"
     placeholder="${args.placeholder}" 
@@ -86,10 +86,10 @@ const meta: Meta = {
     'data-aria-label': {
       control: 'text',
     },
-    'tooltip-text': {
+    'toggletip-text': {
       control: 'text',
     },
-    'tooltip-placement': {
+    'toggletip-placement': {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
     },
@@ -151,8 +151,8 @@ export const SelectWithLongOptionText: StoryObj = {
       <mdc-option>Red</mdc-option>
       <mdc-option>Yellow</mdc-option>
       <mdc-option
-        tooltip-text="White and Black are the biggest colors on the spectrum"
-        tooltip-placement="bottom"
+        toggletip-text="White and Black are the biggest colors on the spectrum"
+        toggletip-placement="bottom"
       >
         White and Black are the biggest colors on the spectrum
       </mdc-option>

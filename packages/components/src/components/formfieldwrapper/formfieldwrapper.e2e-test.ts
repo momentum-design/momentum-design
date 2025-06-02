@@ -30,8 +30,8 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.helpTextType ? `help-text-type="${restArgs.helpTextType}"` : ''}
       ${restArgs.required ? 'required' : ''}
       ${restArgs.disabled ? 'disabled' : ''}
-      ${restArgs.tooltipText ? `tooltip-text="${restArgs.tooltipText}"` : ''}
-      ${restArgs.tooltipPlacement ? `tooltip-placement="${restArgs.tooltipPlacement}"` : ''}
+      ${restArgs.tooltipText ? `toggletip-text="${restArgs.tooltipText}"` : ''}
+      ${restArgs.tooltipPlacement ? `toggletip-placement="${restArgs.tooltipPlacement}"` : ''}
       >${restArgs.children}</mdc-subcomponent-formfieldwrapper>
     `,
     clearDocument: true,
@@ -85,21 +85,36 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
    * INTERACTIONS
    */
   await test.step('interactions', async () => {
-    await test.step('tooltip-text and tooltip-placement attributes', async () => {
+    await test.step('view toggletip text using keyboard', async () => {
       const tooltipText = 'Tooltip Text';
-      const tooltipPlacement = 'top';
       await componentsPage.setAttributes(formfieldwrapper, {
-        'tooltip-text': tooltipText,
-        'tooltip-placement': tooltipPlacement,
+        'toggletip-text': tooltipText,
       });
-      await expect(formfieldwrapper).toHaveAttribute('tooltip-text', tooltipText);
-      await expect(formfieldwrapper).toHaveAttribute('tooltip-placement', tooltipPlacement);
-      const infoIcon = formfieldwrapper.locator('mdc-icon[name="info-badge-filled"]');
-      await expect(infoIcon).toBeVisible();
+      await expect(formfieldwrapper).toHaveAttribute('toggletip-text', tooltipText);
+      const infoIconButton = formfieldwrapper.locator('mdc-button[part="info-icon-btn"]');
+      await expect(infoIconButton).toBeVisible();
       await componentsPage.actionability.pressTab();
-      await expect(infoIcon).toBeFocused();
-      const tooltip = formfieldwrapper.locator('mdc-tooltip');
-      await expect(tooltip).toBeVisible();
+      await expect(infoIconButton).toBeFocused();
+      await componentsPage.page.keyboard.press('Enter');
+      const toggletip = formfieldwrapper.locator('mdc-toggletip');
+      await expect(toggletip).toBeVisible();
+      await componentsPage.page.keyboard.press('Escape');
+      await expect(toggletip).not.toBeVisible();
+    });
+
+    await test.step('view toggletip text using mouse', async () => {
+      const tooltipText = 'Tooltip Text';
+      await componentsPage.setAttributes(formfieldwrapper, {
+        'toggletip-text': tooltipText,
+      });
+      await expect(formfieldwrapper).toHaveAttribute('toggletip-text', tooltipText);
+      const infoIconButton = formfieldwrapper.locator('mdc-button[part="info-icon-btn"]');
+      await expect(infoIconButton).toBeVisible();
+      await infoIconButton.click();
+      const toggletip = formfieldwrapper.locator('mdc-toggletip');
+      await expect(toggletip).toBeVisible();
+      await infoIconButton.click();
+      await expect(toggletip).not.toBeVisible();
     });
   });
 
@@ -140,12 +155,12 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       style: 'width: 200px',
     });
     await wrapperStickerSheet.createMarkupWithCombination({});
-    // With info-icon and tooltip
+    // With info-icon and toggletip
     wrapperStickerSheet.setAttributes({
       id: 'test-formfieldwrapper',
       label: 'Label with Tooltip',
       'help-text': 'Help Text',
-      'tooltip-text': 'Tooltip Text',
+      'toggletip-text': 'Tooltip Text',
     });
     await wrapperStickerSheet.createMarkupWithCombination({});
     await wrapperStickerSheet.mountStickerSheet();

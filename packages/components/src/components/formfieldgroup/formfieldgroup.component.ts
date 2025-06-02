@@ -25,9 +25,10 @@ import styles from './formfieldgroup.styles';
  *
  * @tagname mdc-formfieldgroup
  *
- * @dependency mdc-text
+ * @dependency mdc-button
  * @dependency mdc-icon
- * @dependency mdc-tooltip
+ * @dependency mdc-text
+ * @dependency mdc-toggletip
  *
  * @slot default - This is a default slot for checkbox or toggle components.
  */

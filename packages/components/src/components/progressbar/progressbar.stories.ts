@@ -50,8 +50,8 @@ const meta: Meta = {
       'name',
       'disabled',
       'validation-message',
-      'tooltip-text',
-      'tooltip-placement',
+      'toggletip-text',
+      'toggletip-placement',
     ]),
     ...disableControls([
       '--mdc-progressbar-default-background-color',

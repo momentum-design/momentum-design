@@ -1,7 +1,8 @@
+import '../button';
 import '../icon';
 import '../popover';
 import '../text';
-import '../tooltip';
+import '../toggletip';
 import Select from './select.component';
 import { TAG_NAME } from './select.constants';
 

@@ -16,9 +16,9 @@ const DEFAULTS = {
   VALIDATION: VALIDATION.DEFAULT,
   HELPER_TEXT_ID: 'helper-text-id',
   HEADING_ID: 'heading-id',
-  ICON_SIZE: '1',
+  ICON_SIZE: 20,
   INFO_ICON: 'info-badge-filled' as Extract<IconNames, 'info-badge-filled'>,
-  TOOLTIP_PLACEMENT: 'top',
+  TOGGLETIP_PLACEMENT: 'top',
 } as const;
 
 const MDC_TEXT_OPTIONS = {

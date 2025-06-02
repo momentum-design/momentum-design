@@ -67,8 +67,8 @@ class Progressbar extends DataAriaLabelMixin(FormfieldWrapper) {
     super.connectedCallback();
     this.id = `mdc-progressbar-${uuidv4()}`;
     this.disabled = undefined as unknown as boolean;
-    this.tooltipText = undefined as unknown as string;
-    this.tooltipPlacement = undefined as unknown as PopoverPlacement;
+    this.toggletipText = undefined as unknown as string;
+    this.toggletipPlacement = undefined as unknown as PopoverPlacement;
   }
 
   /**

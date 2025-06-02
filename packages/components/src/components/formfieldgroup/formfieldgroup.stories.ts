@@ -13,8 +13,8 @@ const render = (args: Args) => html`
     label="${args.label}"
     help-text="${args['help-text']}"
     data-aria-label="${args['data-aria-label']}"
-    tooltip-text="${args['tooltip-text']}"
-    tooltip-placement="${args['tooltip-placement']}"
+    toggletip-text="${args['toggletip-text']}"
+    toggletip-placement="${args['toggletip-placement']}"
     info-icon-aria-label="${args['info-icon-aria-label']}"
    ?required=${args.required}
     help-text-type="${args['help-text-type']}"
@@ -43,10 +43,10 @@ const meta: Meta = {
     required: {
       control: 'boolean',
     },
-    'tooltip-text': {
+    'toggletip-text': {
       control: 'text',
     },
-    'tooltip-placement': {
+    'toggletip-placement': {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
     },

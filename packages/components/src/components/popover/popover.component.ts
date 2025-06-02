@@ -216,7 +216,7 @@ class Popover extends FocusTrapMixin(Component) {
    * @default ''
    */
   @property({ type: String, reflect: true, attribute: 'append-to' })
-  appendTo: string = '';
+  appendTo?: string;
 
   /**
    * aria-label attribute to be set for close button accessibility.

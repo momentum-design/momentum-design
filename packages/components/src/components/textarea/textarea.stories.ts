@@ -40,8 +40,8 @@ const render = (args: Args) => html`<mdc-textarea
     autocomplete="${args.autocomplete}"
     dirname="${ifDefined(args.dirname)}"
     validation-message="${args['validation-message']}"
-    tooltip-placement="${args['tooltip-placement']}"
-    tooltip-text="${args['tooltip-text']}"
+    toggletip-placement="${args['toggletip-placement']}"
+    toggletip-text="${args['toggletip-text']}"
     info-icon-aria-label="${args['info-icon-aria-label']}"
     max-character-limit="${ifDefined(args['max-character-limit'])}"
   ></mdc-textarea>`;
@@ -124,10 +124,10 @@ const meta: Meta = {
     'validation-message': {
       control: 'text',
     },
-    'tooltip-text': {
+    'toggletip-text': {
       control: 'text',
     },
-    'tooltip-placement': {
+    'toggletip-placement': {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
     },

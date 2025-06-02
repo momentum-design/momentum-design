@@ -21,10 +21,11 @@ import type { ArrowIcon } from './select.types';
  * The component ensures accessibility and usability while handling various use cases,
  * including long text truncation with tooltip support.
  *
+ * @dependency mdc-button
  * @dependency mdc-icon
  * @dependency mdc-popover
  * @dependency mdc-text
- * @dependency mdc-tooltip
+ * @dependency mdc-toggletip
  *
  * @tagname mdc-select
  *

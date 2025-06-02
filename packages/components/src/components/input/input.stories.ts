@@ -20,8 +20,8 @@ const render = (args: Args) => {
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
     placeholder="${args.placeholder}"
-    tooltip-placement="${args['tooltip-placement']}"
-    tooltip-text="${args['tooltip-text']}"
+    toggletip-placement="${args['toggletip-placement']}"
+    toggletip-text="${args['toggletip-text']}"
     info-icon-aria-label="${args['info-icon-aria-label']}"
     name="${args.name}"
     value="${value}"
@@ -133,10 +133,10 @@ const meta: Meta = {
     'data-aria-label': {
       control: 'text',
     },
-    'tooltip-text': {
+    'toggletip-text': {
       control: 'text',
     },
-    'tooltip-placement': {
+    'toggletip-placement': {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
     },

@@ -1,9 +1,10 @@
-import Checkbox from './checkbox.component';
-import { TAG_NAME } from './checkbox.constants';
+import '../button';
 import '../icon';
 import '../staticcheckbox';
-import '../tooltip';
 import '../text';
+import '../toggletip';
+import Checkbox from './checkbox.component';
+import { TAG_NAME } from './checkbox.constants';
 
 Checkbox.register(TAG_NAME);
 

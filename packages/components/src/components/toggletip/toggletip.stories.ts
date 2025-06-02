@@ -139,3 +139,36 @@ export const Example: StoryObj = {
     triggerID: 'toggletip-trigger',
   },
 };
+
+export const MultipleToggletips: StoryObj = {
+  render: () => html`
+  <div style="display: flex; justify-content: center; align-items: center; height: 50vh; gap: 1rem;">
+    <mdc-avatarbutton
+      aria-label="Trigger button"
+      icon-name="placeholder-bold"
+      id="trigger-1"
+      initials="MD">
+    </mdc-avatarbutton>
+    <mdc-avatarbutton
+      aria-label="Trigger button"
+      id="trigger-2"
+      initials="MD">
+    </mdc-avatarbutton>
+    <mdc-toggletip triggerid="trigger-1">
+      <div>
+        First toggletip with a 
+        <mdc-link
+          inline icon-name="placeholder-bold"
+          href="https://www.webex.com" target="_blank" rel="noopener noreferrer"
+        >
+          Link
+        </mdc-link>
+      </div>
+    </mdc-toggletip>
+    <mdc-toggletip triggerid="trigger-2" close-button close-button-aria-label="Close toggletip">
+      <div>
+        Second toggletip with close button
+      </div>
+    </mdc-toggletip>
+  </div>`,
+};

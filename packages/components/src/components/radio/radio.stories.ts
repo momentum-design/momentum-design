@@ -22,8 +22,8 @@ const render = (args: Args) => html`
     ?readonly=${args.readonly}
     ?required="${args.required}"
     data-aria-label="${args['data-aria-label']}"
-    tooltip-placement="${args['tooltip-placement']}"
-    tooltip-text="${args['tooltip-text']}"
+    toggletip-placement="${args['toggletip-placement']}"
+    toggletip-text="${args['toggletip-text']}"
     info-icon-aria-label="${args['info-icon-aria-label']}"
   ></mdc-radio>
 `;
@@ -66,10 +66,10 @@ const meta: Meta = {
     required: {
       control: { type: 'boolean' },
     },
-    'tooltip-text': {
+    'toggletip-text': {
       control: { type: 'text' },
     },
-    'tooltip-placement': {
+    'toggletip-placement': {
       control: { type: 'select' },
       options: Object.values(POPOVER_PLACEMENT),
     },
