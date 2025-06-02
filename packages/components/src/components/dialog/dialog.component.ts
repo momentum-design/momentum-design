@@ -68,9 +68,11 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
 
   /**
    * The ID of the element that triggers the dialog
+   *
+   * @default undefined
    */
   @property({ type: String, reflect: true })
-  triggerId: string = '';
+  triggerId?: string;
 
   /**
    * The visibility of the dialog
@@ -93,6 +95,10 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
   @property({ type: String, reflect: true })
   size: DialogSize = DEFAULTS.SIZE;
 
+  /**
+   * The variant of the dialog, can be 'default' or 'promotional'
+   * @default default
+   */
   @property({ type: String, reflect: true })
   variant: DialogVariant = DEFAULTS.VARIANT;
 
@@ -119,13 +125,13 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
    * Defines a string value to display as the title of the dialog
    */
   @property({ type: String, reflect: true, attribute: 'header-text' })
-  headerText: string = '';
+  headerText?: string;
 
   /**
    * Defines a string value to display as the under-header description of the dialog
    */
   @property({ type: String, reflect: true, attribute: 'description-text' })
-  descriptionText: string = '';
+  descriptionText?: string;
 
   /**
    * The html tag to be used for the header text
@@ -147,13 +153,13 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
   override role: DialogRole = DEFAULTS.ROLE;
 
   /** @internal */
-  public triggerElement: HTMLElement | null = null;
+  private triggerElement: HTMLElement | null = null;
 
   /** @internal */
   private utils: DialogUtils;
 
   /** @internal */
-  public backdropElement: HTMLElement | null = null;
+  private backdropElement: HTMLElement | null = null;
 
   /** @internal */
   private lastActiveElement: HTMLElement | null = null;
@@ -313,8 +319,9 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
    */
   private async handleCreateDialogFirstUpdate() {
     if (this.visible) {
-      this.setFocusableElements?.();
+      // Wait for the first update to complete before setting focusable elements
       await this.updateComplete;
+      this.setFocusableElements?.();
       this.setInitialFocus?.();
     }
   }
