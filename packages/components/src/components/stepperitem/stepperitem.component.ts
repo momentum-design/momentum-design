@@ -1,23 +1,28 @@
-import { CSSResult, html, nothing } from 'lit';
+import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 import styles from './stepperitem.styles';
 import { Component } from '../../models';
 import { DEFAULT, STATUS, STATUS_ICON } from './stepperitem.constants';
 import { StatusType, VariantType } from './stepperitem.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 
 /**
  * stepperitem component, which ...
  *
+ * @dependency mdc-icon
+ * @dependency mdc-text
+ *
  * @tagname mdc-stepperitem
  *
- * @slot default - This is a default/unnamed slot
+ * @event focus - (React: onFocus) Triggered when the stepper item receives focus.
  *
- * @event click - (React: onClick) This event is a Click Event, update the description
- *
- * @cssproperty --custom-property-name - Description of the CSS custom property
+ * @cssproperty --mdc-stepperitem-status-container-background - The background color of the status container.
+ * @cssproperty --mdc-stepperitem-label-color - The color of the label text.
+ * @cssproperty --mdc-stepperitem-optional-label-color - The color of the optional label text.
+ * @cssproperty --mdc-stepperitem-step-number-color - The color of the step number text.
  */
-class StepperItem extends Component {
+class StepperItem extends TabIndexMixin(Component) {
   @property({ type: String, reflect: true })
   variant: VariantType = DEFAULT.VARIANT;
 
@@ -37,6 +42,17 @@ class StepperItem extends Component {
   @property({ type: String, reflect: true, attribute: 'step-number' })
   stepNumber?: string;
 
+  private setTabIndexValue(status: StatusType) {
+    this.tabIndex = status === STATUS.FUTURE_DISABLED ? -1 : 0;
+  }
+
+  protected override updated(changedProperties: PropertyValueMap<StepperItem>): void {
+    super.updated(changedProperties);
+    if (changedProperties.has('status')) {
+      this.setTabIndexValue(this.status);
+    }
+  }
+
   private renderStatusIcon() {
     if (this.status === STATUS.COMPLETED || this.status === STATUS.ERROR) {
       const iconName = this.status === STATUS.COMPLETED ? STATUS_ICON.COMPLETED : STATUS_ICON.ERROR;
@@ -54,19 +70,14 @@ class StepperItem extends Component {
   }
 
   private renderOptionalLabel() {
-    if (this.optionalLabel && this.status !== STATUS.ERROR) {
-      return html`<mdc-text 
+    if (!this.optionalLabel) {
+      return nothing;
+    }
+    const content = this.status === STATUS.ERROR ? this.optionalLabel : `(${this.optionalLabel})`;
+    return html`<mdc-text 
         part="optional-label"
         tagname=${VALID_TEXT_TAGS.SPAN} 
-        type=${TYPE.BODY_MIDSIZE_REGULAR}>(${this.optionalLabel})</mdc-text>`;
-    }
-    if (this.optionalLabel && this.status === STATUS.ERROR) {
-      return html`<mdc-text 
-        part="error-message"
-        tagname=${VALID_TEXT_TAGS.SPAN} 
-        type=${TYPE.BODY_MIDSIZE_REGULAR}>${this.optionalLabel}</mdc-text>`;
-    }
-    return nothing;
+        type=${TYPE.BODY_MIDSIZE_REGULAR}>${content}</mdc-text>`;
   }
 
   public override render() {

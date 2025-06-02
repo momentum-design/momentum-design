@@ -5,4 +5,8 @@ type VariantType = ValueOf<typeof VARIANT>;
 type StatusType = ValueOf<typeof STATUS>;
 type StatusIconType = ValueOf<typeof STATUS>;
 
-export type { VariantType, StatusType, StatusIconType };
+interface Events {
+    focus: FocusEvent;
+}
+
+export type { VariantType, StatusType, StatusIconType, Events };

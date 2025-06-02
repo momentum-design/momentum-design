@@ -1,14 +1,16 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { STATUS, VARIANT } from './stepperitem.constants';
 
 const render = (args: Args) => html`
   <mdc-stepperitem 
+  @focus=${action('onFocus')}
   variant=${args.variant}
   status=${args.status}
-  optional-label=${args.optionalLabel}
+  optional-label=${args['optional-label']}
   label=${args.label}
   step-number=${args.stepNumber}
   class=${args.class}
@@ -32,7 +34,7 @@ const meta: Meta = {
       control: { type: 'select' },
       options: Object.values(STATUS),
     },
-    optionalLabel: {
+    'optional-label': {
       control: { type: 'text' },
     },
     label: {
@@ -52,7 +54,7 @@ export const Example: StoryObj = {
   args: {
     variant: VARIANT.INLINE,
     status: STATUS.COMPLETED,
-    optionalLabel: 'Optional',
+    'optional-label': 'Optional',
     label: 'Label',
     stepNumber: '1',
   },
@@ -80,7 +82,7 @@ export const Error: StoryObj = {
   args: {
     variant: VARIANT.INLINE,
     status: STATUS.ERROR,
-    optionalLabel: 'Error message',
+    'optional-label': 'Error message',
     label: 'Label',
     stepNumber: '1',
   },
