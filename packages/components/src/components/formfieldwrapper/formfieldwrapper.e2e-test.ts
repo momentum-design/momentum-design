@@ -89,6 +89,7 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       const tooltipText = 'Tooltip Text';
       await componentsPage.setAttributes(formfieldwrapper, {
         'toggletip-text': tooltipText,
+        'info-icon-aria-label': 'Info Icon',
       });
       await expect(formfieldwrapper).toHaveAttribute('toggletip-text', tooltipText);
       const infoIconButton = formfieldwrapper.locator('mdc-button[part="info-icon-btn"]');
@@ -106,6 +107,7 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       const tooltipText = 'Tooltip Text';
       await componentsPage.setAttributes(formfieldwrapper, {
         'toggletip-text': tooltipText,
+        'info-icon-aria-label': 'Info Icon',
       });
       await expect(formfieldwrapper).toHaveAttribute('toggletip-text', tooltipText);
       const infoIconButton = formfieldwrapper.locator('mdc-button[part="info-icon-btn"]');
@@ -159,6 +161,7 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       label: 'Label with Tooltip',
       'help-text': 'Help Text',
       'toggletip-text': 'Tooltip Text',
+      'info-icon-aria-label': 'Info Icon',
     });
     await wrapperStickerSheet.createMarkupWithCombination({});
     await wrapperStickerSheet.mountStickerSheet();
