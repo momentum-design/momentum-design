@@ -27,6 +27,7 @@ const render = (args: Args) =>
     ariaStateKey="${ifDefined(args.ariaStateKey)}"
     ?inverted="${args.inverted}"
     style="${args.style}"
+    ?autofocus="${args.autofocus}"
     >${args.children}</mdc-button
   >`;
 
@@ -78,6 +79,9 @@ const meta: Meta = {
       control: 'text',
     },
     inverted: {
+      control: 'boolean',
+    },
+    autofocus: {
       control: 'boolean',
     },
     ...classArgType,
