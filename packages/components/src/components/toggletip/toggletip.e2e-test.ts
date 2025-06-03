@@ -264,6 +264,7 @@ const visualTestingSetup = async (componentsPage: ComponentsPage) => {
 
       <mdc-toggletip
         close-button-aria-label="Close"
+        close-button
         color="tonal"
         triggerID="trigger-button1"
         visible
@@ -274,6 +275,7 @@ const visualTestingSetup = async (componentsPage: ComponentsPage) => {
 
       <mdc-toggletip
         close-button-aria-label="Close"
+        close-button
         color="contrast"
         triggerID="trigger-button2"
         visible
