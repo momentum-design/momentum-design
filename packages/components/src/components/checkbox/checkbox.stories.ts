@@ -22,9 +22,9 @@ const render = (args: Args) => html`
     id="${args.id}"
     ?indeterminate="${args.indeterminate}"
     data-aria-label="${args['data-aria-label']}"
+    info-icon-aria-label="${args['info-icon-aria-label']}"
     toggletip-text="${args['toggletip-text']}"
     toggletip-placement="${args['toggletip-placement']}"
-    info-icon-aria-label="${args['info-icon-aria-label']}"
     @change="${action('onchange')}"
   ></mdc-checkbox>
 `;
