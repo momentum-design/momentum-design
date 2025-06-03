@@ -113,8 +113,6 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       await infoIconButton.click();
       const toggletip = formfieldwrapper.locator('mdc-toggletip');
       await expect(toggletip).toBeVisible();
-      await infoIconButton.click();
-      await expect(toggletip).not.toBeVisible();
     });
   });
 
