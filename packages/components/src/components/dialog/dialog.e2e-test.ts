@@ -157,8 +157,8 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await expect(dialog).not.toHaveAttribute('aria-expanded');
       await expect(dialog).not.toHaveAttribute('aria-describedby');
       await expect(dialog).toHaveAttribute('size', DEFAULTS.SIZE);
-      await expect(dialog).toHaveAttribute('header-text', '');
-      await expect(dialog).toHaveAttribute('description-text', '');
+      await expect(dialog).not.toHaveAttribute('header-text');
+      await expect(dialog).not.toHaveAttribute('description-text');
       await expect(dialog).not.toHaveAttribute('aria-labelledby', '');
 
       const closeDialogButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
@@ -206,6 +206,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press('Enter');
         await expect(dialog).not.toBeVisible();
       });
+
       await test.step('dialog should close on escape keydown', async () => {
         await dialog.evaluate((dialog) => {
           dialog.toggleAttribute('visible');
@@ -214,6 +215,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press('Escape');
         await expect(dialog).not.toBeVisible();
       });
+
       await test.step('focus should remain only in the dialog when visible', async () => {
         const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, visible: false });
         await dialog.evaluate((dialog) => {
@@ -232,6 +234,13 @@ test('mdc-dialog', async ({ componentsPage }) => {
         const primaryButton = componentsPage.page.locator('[slot="footer-button-primary"]');
         await expect(primaryButton).toBeFocused();
         await componentsPage.actionability.pressTab();
+        await expect(closeButton).toBeFocused();
+      });
+
+      await test.step('dialog should focus on close button automatically with visible = true', async () => {
+        const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, visible: true });
+        await expect(dialog).toBeVisible();
+        const closeButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
         await expect(closeButton).toBeFocused();
       });
     });

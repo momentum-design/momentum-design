@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 
-import { expect, Page } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { test, ComponentsPage } from '../../../config/playwright/setup';
 import type { PopoverColor, PopoverPlacement } from '../popover/popover.types';
 import { COLOR, POPOVER_PLACEMENT, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
@@ -318,11 +318,7 @@ test('mdc-toggletip', async ({ componentsPage }) => {
     await visualTestingSetup(componentsPage);
 
     await test.step('matches screenshot of elements', async () => {
-      // wait 200ms before switching from RTL to LTR to make sure toggletip repaints as well
-      const assertionAfterSwitchingDirection = async (page: Page) => {
-        await page.waitForTimeout(500);
-      };
-      await componentsPage.visualRegression.takeScreenshot('mdc-toggletip', { assertionAfterSwitchingDirection });
+      await componentsPage.visualRegression.takeScreenshot('mdc-toggletip');
     });
   });
 });

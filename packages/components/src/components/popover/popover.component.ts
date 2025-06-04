@@ -596,8 +596,9 @@ class Popover extends FocusTrapMixin(Component) {
    */
   private async handleCreatePopoverFirstUpdate() {
     if (this.visible && this.interactive) {
-      this.setFocusableElements?.();
+      // Wait for the first update to complete before setting focusable elements
       await this.updateComplete;
+      this.setFocusableElements?.();
       this.setInitialFocus?.();
     }
   }

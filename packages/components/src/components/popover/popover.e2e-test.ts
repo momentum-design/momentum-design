@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
-import { expect, Page } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { test, ComponentsPage } from '../../../config/playwright/setup';
 import type { PopoverPlacement, PopoverTrigger, PopoverColor } from './popover.types';
 import { DEFAULTS, POPOVER_PLACEMENT, TRIGGER, COLOR } from './popover.constants';
@@ -513,13 +513,8 @@ test('mdc-popover', async ({ componentsPage }) => {
     const visualPopover = await visualTestingSetup(componentsPage);
 
     await test.step('matches screenshot of popover', async () => {
-      // wait 200ms before switching from RTL to LTR to make sure popover repaints as well
-      const assertionAfterSwitchingDirection = async (page: Page) => {
-        await page.waitForTimeout(200);
-      };
       await componentsPage.visualRegression.takeScreenshot('mdc-popover', {
         element: visualPopover,
-        assertionAfterSwitchingDirection,
       });
     });
   });
