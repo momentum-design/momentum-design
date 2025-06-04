@@ -6,9 +6,13 @@
 
 Contains Momentum animations files
 
-## Consumption
+## Consumption of lottie files
 
-Consumption can be done simply with a asset loader, by importing the JSON files directly from NPM.
+Consumption can be done simply with an asset loader, by importing the JSON files directly from NPM.
 
 Official LottieFiles player for rendering Lottie animations:
 <https://github.com/LottieFiles/dotlottie-web>
+
+## Consumption of SVG files
+
+SVG does not additional loader or player, it can be used directly in HTML.
