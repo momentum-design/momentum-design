@@ -5,7 +5,7 @@ import { DEFAULTS } from './dialog.constants';
 type SetupOptions = {
   componentsPage: ComponentsPage;
   id?: string;
-  triggerId: string;
+  triggerId?: string;
   zIndex?: number;
   visible?: boolean;
   size?: boolean;
@@ -81,6 +81,25 @@ const dialogWithAllSlots = {
   `,
 };
 
+const dialogWithCustomHeader = {
+  id: 'dialog',
+  triggerId: 'trigger-btn',
+  ariaLabel: 'dialog',
+  visible: true,
+  variant: 'default',
+  closeButtonAriaLabel: 'Close button label',
+  headerText: 'Dialog Header',
+  descriptionText: 'Dialog Description',
+  children: `
+    <mdc-icon slot="header-prefix" name="placeholder-bold"></mdc-icon>
+    <div slot="dialog-body">
+      <p>This is the body content of the dialog.</p>
+    </div>
+    <mdc-link slot="footer-link" icon-name="placeholder-bold" href='#'>Label</mdc-link>
+    <mdc-button slot="footer-button-secondary">Secondary</mdc-button>
+    <mdc-button slot="footer-button-primary">Primary</mdc-button>
+  `,
+};
 test('mdc-dialog', async ({ componentsPage }) => {
   const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots });
 
@@ -107,7 +126,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await componentsPage.visualRegression.takeScreenshot('mdc-dialog', { element: dialog });
     });
     await test.step('matches screenshot of element with variant', async () => {
-      await setup({ componentsPage, ...dialogWithAllSlots, variant: 'promotional' });
+      await setup({ componentsPage, ...dialogWithCustomHeader, variant: 'promotional' });
       await componentsPage.visualRegression.takeScreenshot('mdc-dialog-variant-promotional', { element: dialog });
     });
   });
@@ -152,8 +171,8 @@ test('mdc-dialog', async ({ componentsPage }) => {
    */
   await test.step('interactions', async () => {
     await test.step('programmatic', async () => {
-      await test.step('dialog should close/open when the visible attribute is changed', async () => {
-        const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots });
+      await test.step('dialog should close/open when the visible attribute is changed without trigger', async () => {
+        const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, triggerId: undefined });
         await expect(dialog).toBeVisible();
         await dialog.evaluate((dialog) => {
           dialog.removeAttribute('visible');

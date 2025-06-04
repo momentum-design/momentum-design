@@ -40,7 +40,7 @@ class RadioGroup extends FormfieldGroup {
       ?.filter((radio) => !radio.hasAttribute('name'))
       ?.forEach((radio) => {
         radio.setAttribute('name', this.name);
-        if (this.requiredLabel) radio.setAttribute('required-label', this.requiredLabel);
+        if (this.required) radio.setAttribute('required', this.required.toString());
       });
   }
 

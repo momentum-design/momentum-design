@@ -320,7 +320,7 @@ test('mdc-toggletip', async ({ componentsPage }) => {
     await test.step('matches screenshot of elements', async () => {
       // wait 200ms before switching from RTL to LTR to make sure toggletip repaints as well
       const assertionAfterSwitchingDirection = async (page: Page) => {
-        await page.waitForTimeout(200);
+        await page.waitForTimeout(500);
       };
       await componentsPage.visualRegression.takeScreenshot('mdc-toggletip', { assertionAfterSwitchingDirection });
     });

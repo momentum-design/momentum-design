@@ -26,6 +26,8 @@ const render = (args: Args) =>
     aria-label="${args['aria-label']}"
     ariaStateKey="${ifDefined(args.ariaStateKey)}"
     ?inverted="${args.inverted}"
+    style="${args.style}"
+    ?autofocus="${args.autofocus}"
     >${args.children}</mdc-button
   >`;
 
@@ -77,6 +79,9 @@ const meta: Meta = {
       control: 'text',
     },
     inverted: {
+      control: 'boolean',
+    },
+    autofocus: {
       control: 'boolean',
     },
     ...classArgType,
@@ -219,5 +224,40 @@ export const IconButtonInverted: StoryObj = {
     tabIndex: 0,
     'aria-label': 'icon button',
     inverted: true,
+  },
+};
+
+export const PillButtonEllipsis: StoryObj = {
+  render: (args) =>
+    render({ ...args, children: html`<mdc-text>${args.textWithinChildren}</mdc-text>`, style: 'width: 150px;' }),
+  args: {
+    textWithinChildren: 'Long text with icons',
+    active: false,
+    disabled: false,
+    'soft-disabled': false,
+    variant: BUTTON_VARIANTS.PRIMARY,
+    size: PILL_BUTTON_SIZES[32],
+    color: BUTTON_COLORS.DEFAULT,
+    type: BUTTON_TYPE.BUTTON,
+    role: 'button',
+    tabIndex: 0,
+  },
+};
+
+export const PillWithPrefixIconEllipsis: StoryObj = {
+  render: (args) =>
+    render({ ...args, children: html`<mdc-text>${args.textWithinChildren}</mdc-text>`, style: 'width: 150px;' }),
+  args: {
+    textWithinChildren: 'Long text with icons',
+    'prefix-icon': 'placeholder-bold',
+    active: false,
+    disabled: false,
+    'soft-disabled': false,
+    variant: BUTTON_VARIANTS.PRIMARY,
+    size: PILL_BUTTON_SIZES[32],
+    color: BUTTON_COLORS.DEFAULT,
+    type: BUTTON_TYPE.BUTTON,
+    role: 'button',
+    tabIndex: 0,
   },
 };

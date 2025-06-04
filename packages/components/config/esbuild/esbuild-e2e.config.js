@@ -38,7 +38,7 @@ const replaceAnimationAssetsPathPlugin = {
     build.onLoad({ filter: /animation.component.ts/ }, async (args) => {
       const source = await fs.promises.readFile(args.path, 'utf8');
       const contents = source.replace(
-        '@momentum-design/animations/dist${path}',
+        '@momentum-design/animations/dist/lottie${path}',
         '../../../playwright-temp/assets/animations/animation.json',
       );
       return { contents, loader: 'default' };

@@ -37,11 +37,6 @@ class MenuBar extends MenuMixin(Component) {
     this.role = ROLE.MENUBAR;
   }
 
-  public override firstUpdated(): void {
-    // For the first, we set the first element only as active.
-    this.resetTabIndexAndSetActiveTabIndex(0);
-  }
-
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
 

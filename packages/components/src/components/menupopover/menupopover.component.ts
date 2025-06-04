@@ -3,7 +3,7 @@ import { MenuMixin } from '../../utils/mixins/MenuMixin';
 import { ROLE } from '../../utils/roles';
 import { ORIENTATION } from '../menubar/menubar.constants';
 import Popover from '../popover/popover.component';
-import { POPOVER_PLACEMENT, TRIGGER } from '../popover/popover.constants';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { TAG_NAME as MENU_POPOVER } from './menupopover.constants';
 import styles from './menupopover.styles';
 
@@ -51,10 +51,10 @@ class MenuPopover extends MenuMixin(Popover) {
   override async firstUpdated(changedProperties: PropertyValues) {
     await super.firstUpdated(changedProperties);
 
+    this.triggerElement?.setAttribute('aria-haspopup', ROLE.MENU);
     if (this.parentElement?.tagName?.toLowerCase() === MENU_POPOVER) {
       this.interactive = true;
       this.placement = POPOVER_PLACEMENT.RIGHT_START;
-      this.trigger = TRIGGER.MOUSEENTER;
     }
   }
 

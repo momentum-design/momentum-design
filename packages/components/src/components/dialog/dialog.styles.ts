@@ -48,17 +48,23 @@ const styles = css`
     max-width: 100%;
   }
     
-  :host::part(header),
+  :host::part(header-section),
   :host::part(body),
   :host::part(footer) {
     display: flex;
     align-self: stretch;
   }
 
-  :host::part(header) {
+  :host::part(header-section) {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
+  }
+
+  :host::part(header) {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
   }
 
   :host::part(header-text) {

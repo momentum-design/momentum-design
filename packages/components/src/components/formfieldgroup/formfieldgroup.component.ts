@@ -5,7 +5,6 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { ROLE } from '../../utils/roles';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
-import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import styles from './formfieldgroup.styles';
 
 /**
@@ -40,7 +39,6 @@ class FormfieldGroup extends DataAriaLabelMixin(FormfieldWrapper) {
     /** @internal */
     this.shouldRenderLabel = false;
     this.id = '';
-    this.helpTextType = undefined as unknown as ValidationType;
     this.disabled = undefined as unknown as boolean;
   }
 

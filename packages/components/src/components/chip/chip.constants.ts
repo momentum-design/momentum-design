@@ -10,6 +10,7 @@ const COLOR = {
   GOLD: 'gold',
   LIME: 'lime',
   MINT: 'mint',
+  ORANGE: 'orange',
   PINK: 'pink',
   PURPLE: 'purple',
   SLATE: 'slate',
