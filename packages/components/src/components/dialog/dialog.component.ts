@@ -6,7 +6,6 @@ import { Component } from '../../models';
 import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
 import { DEFAULTS } from './dialog.constants';
 import type { DialogRole, DialogSize, DialogVariant } from './dialog.types';
-import { DialogUtils } from './dialog.utils';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { DialogEventManager } from './dialog.events';
 import { BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
@@ -68,9 +67,11 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
 
   /**
    * The ID of the element that triggers the dialog
+   *
+   * @default undefined
    */
   @property({ type: String, reflect: true })
-  triggerId: string = '';
+  triggerId?: string;
 
   /**
    * The visibility of the dialog
@@ -93,6 +94,10 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
   @property({ type: String, reflect: true })
   size: DialogSize = DEFAULTS.SIZE;
 
+  /**
+   * The variant of the dialog, can be 'default' or 'promotional'
+   * @default default
+   */
   @property({ type: String, reflect: true })
   variant: DialogVariant = DEFAULTS.VARIANT;
 
@@ -119,13 +124,13 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
    * Defines a string value to display as the title of the dialog
    */
   @property({ type: String, reflect: true, attribute: 'header-text' })
-  headerText: string = '';
+  headerText?: string;
 
   /**
    * Defines a string value to display as the under-header description of the dialog
    */
   @property({ type: String, reflect: true, attribute: 'description-text' })
-  descriptionText: string = '';
+  descriptionText?: string;
 
   /**
    * The html tag to be used for the header text
@@ -147,28 +152,64 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
   override role: DialogRole = DEFAULTS.ROLE;
 
   /** @internal */
-  public triggerElement: HTMLElement | null = null;
+  protected triggerElement: HTMLElement | null = null;
 
   /** @internal */
-  private utils: DialogUtils;
+  protected backdropElement: HTMLElement | null = null;
 
   /** @internal */
-  public backdropElement: HTMLElement | null = null;
-
-  /** @internal */
-  private lastActiveElement: HTMLElement | null = null;
+  protected lastActiveElement: HTMLElement | null = null;
 
   constructor() {
     super();
-    /** @internal */
-    this.utils = new DialogUtils(this);
     document.addEventListener('keydown', this.onEscapeKeydown);
+  }
+
+  /**
+   * Sets up the aria attributes for the dialog based on the header text and aria attributes.
+   * If no header text or aria attributes are provided, it will use the triggerId if available.
+   * @internal
+   */
+  private setupAriaAttributes() {
+    if (this.headerText && !this.ariaLabel && !this.ariaLabelledby) {
+      this.setAttribute('aria-labelledby', this.headerText);
+    } else if (!this.headerText && !this.ariaLabel && !this.ariaLabelledby) {
+      if (this.triggerId) {
+        this.setAttribute('aria-labelledby', this.triggerId);
+      }
+    }
+  }
+
+  /**
+   * Creates a backdrop element for the dialog.
+   * The backdrop is a full-screen overlay that appears behind the dialog when it is open.
+   * It prevents interaction with the rest of the application while the dialog is open.
+   * @internal
+   */
+  private createBackdrop() {
+    const backdrop = document.createElement('div');
+    backdrop.classList.add('dialog-backdrop');
+    const styleElement = document.createElement('style');
+    styleElement.textContent = `
+      .dialog-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--mds-color-theme-common-overlays-secondary-normal);
+        z-index: ${this.zIndex - 1};
+      }
+    `;
+    backdrop.appendChild(styleElement);
+    this.parentElement?.appendChild(backdrop);
+    this.backdropElement = backdrop;
   }
 
   protected override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
     this.setupTriggerListener();
-    this.utils.setupAriaAttributes();
+    this.setupAriaAttributes();
     this.style.zIndex = `${this.zIndex}`;
     DialogEventManager.onCreatedDialog(this);
 
@@ -223,7 +264,7 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
       changedProperties.has('aria-label')
       || changedProperties.has('aria-labelledby')
     ) {
-      this.utils.setupAriaAttributes();
+      this.setupAriaAttributes();
     }
   }
 
@@ -259,7 +300,7 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
 
       this.enabledFocusTrap = true;
       this.enabledPreventScroll = true;
-      this.utils.createBackdrop();
+      this.createBackdrop();
 
       await this.handleCreateDialogFirstUpdate();
 
@@ -313,8 +354,9 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
    */
   private async handleCreateDialogFirstUpdate() {
     if (this.visible) {
-      this.setFocusableElements?.();
+      // Wait for the first update to complete before setting focusable elements
       await this.updateComplete;
+      this.setFocusableElements?.();
       this.setInitialFocus?.();
     }
   }
