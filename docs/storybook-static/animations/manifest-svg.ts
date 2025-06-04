@@ -1,0 +1,3 @@
+export default {
+  "webex-logo-loop": "./svg/webex-logo-loop.svg"
+}
