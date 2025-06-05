@@ -240,7 +240,7 @@ const styles = css`
   :host([data-btn-type='pill']) ::slotted(mdc-text),
   :host([data-btn-type='pill-with-icon']) ::slotted(mdc-text) {
     white-space: nowrap;
-    overflow-x: hidden;
+    overflow: hidden;
     text-overflow: ellipsis;
   }
 
