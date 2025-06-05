@@ -56,7 +56,6 @@ test('mdc-coachmark', async ({ componentsPage }) => {
       // screenshot on the wrapper instead of just coachmark
       // to capture the position of the coachmark relative to the anchor element as well
       const wrapper = componentsPage.page.locator('#wrapper');
-      // wait 200ms before switching from RTL to LTR to make sure tooltip repaints as well
       const assertionAfterSwitchingDirection = async () => {
         await setup({ componentsPage, open: true });
       };

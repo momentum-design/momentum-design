@@ -6,11 +6,11 @@ import type { Constructor } from './index.types';
 import { BUTTON_COLORS, BUTTON_VARIANTS } from '../../components/button/button.constants';
 
 export declare class CardAndDialogFooterMixinInterface {
-  footerLink?: Array<HTMLElement>;
+  protected footerLink?: Array<HTMLElement>;
 
-  footerButtonPrimary?: Array<HTMLElement>;
+  protected footerButtonPrimary?: Array<HTMLElement>;
 
-  footerButtonSecondary?: Array<HTMLElement>;
+  protected footerButtonSecondary?: Array<HTMLElement>;
 
   protected updateFooterButtonColors(variant: string): void;
 
@@ -22,32 +22,32 @@ export declare class CardAndDialogFooterMixinInterface {
 export const CardAndDialogFooterMixin = <T extends Constructor<LitElement>>(superClass: T) => {
   class InnerMixinClass extends superClass {
     /**
-    * The links in the footer section
-    * @internal
-    */
+     * The links in the footer section
+     * @internal
+     */
     @queryAssignedElements({ slot: 'footer-link' })
-    footerLink?: Array<HTMLElement>;
+    protected footerLink?: Array<HTMLElement>;
 
     /**
-    * The primary buttons in the footer section
-    * @internal
-    */
+     * The primary buttons in the footer section
+     * @internal
+     */
     @queryAssignedElements({ slot: 'footer-button-primary' })
-    footerButtonPrimary?: Array<HTMLElement>;
+    protected footerButtonPrimary?: Array<HTMLElement>;
 
     /**
-    * The secondary buttons in the footer section
-    * @internal
-    */
+     * The secondary buttons in the footer section
+     * @internal
+     */
     @queryAssignedElements({ slot: 'footer-button-secondary' })
-    footerButtonSecondary?: Array<HTMLElement>;
+    protected footerButtonSecondary?: Array<HTMLElement>;
 
     /**
-  * Updates the color of the footer buttons based on the variant.
-  * If the variant is promotional, the color is promotional, else default.
-  *
-  * @internal
-  */
+     * Updates the color of the footer buttons based on the variant.
+     * If the variant is promotional, the color is promotional, else default.
+     *
+     * @internal
+     */
     protected updateFooterButtonColors(variant: string) {
       const footerButtons = [...(this.footerButtonPrimary || []), ...(this.footerButtonSecondary || [])];
       footerButtons?.forEach((button) => {
@@ -60,24 +60,28 @@ export const CardAndDialogFooterMixin = <T extends Constructor<LitElement>>(supe
     }
 
     /**
-    * Filters and renders only the following content into the footer section and removes anything other than it
-    * - One mdc-link element in the footer-link slot
-    * - One secondary variant of the mdc-button element in the footer-button-secondary slot
-    * - One primary variant of the mdc-button element in the footer-button-primary slot
-    *
-    * @internal
-    */
+     * Filters and renders only the following content into the footer section and removes anything other than it
+     * - One mdc-link element in the footer-link slot
+     * - One secondary variant of the mdc-button element in the footer-button-secondary slot
+     * - One primary variant of the mdc-button element in the footer-button-primary slot
+     *
+     * @internal
+     */
     protected handleFooterSlot(tagname: string, variant?: string) {
       let arrayItems: Array<HTMLElement> = [];
       if (tagname === DEFAULTS.LINK && this.footerLink?.length) {
         arrayItems = this.footerLink;
-      } else if (tagname === DEFAULTS.BUTTON
-             && variant === BUTTON_VARIANTS.PRIMARY
-             && this.footerButtonPrimary?.length) {
+      } else if (
+        tagname === DEFAULTS.BUTTON
+        && variant === BUTTON_VARIANTS.PRIMARY
+        && this.footerButtonPrimary?.length
+      ) {
         arrayItems = this.footerButtonPrimary;
-      } else if (tagname === DEFAULTS.BUTTON
-             && variant === BUTTON_VARIANTS.SECONDARY
-              && this.footerButtonSecondary?.length) {
+      } else if (
+        tagname === DEFAULTS.BUTTON
+        && variant === BUTTON_VARIANTS.SECONDARY
+        && this.footerButtonSecondary?.length
+      ) {
         arrayItems = this.footerButtonSecondary;
       }
       // if there are more than one instance, remove them.
@@ -104,10 +108,14 @@ export const CardAndDialogFooterMixin = <T extends Constructor<LitElement>>(supe
     protected renderFooter() {
       return html`<div part="footer">
         <slot name="footer-link" @slotchange=${() => this.handleFooterSlot(DEFAULTS.LINK)}></slot>
-        <slot name="footer-button-secondary" 
-        @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.SECONDARY)}></slot>
-        <slot name="footer-button-primary" 
-        @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.PRIMARY)}></slot>
+        <slot
+          name="footer-button-secondary"
+          @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.SECONDARY)}
+        ></slot>
+        <slot
+          name="footer-button-primary"
+          @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.PRIMARY)}
+        ></slot>
       </div>`;
     }
   }
