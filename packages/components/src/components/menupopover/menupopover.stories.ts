@@ -3,31 +3,35 @@ import { html } from 'lit';
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
+import '../button';
+import '../buttongroup';
 import '../divider';
 import '../icon';
 import '../menubar';
 import '../menuitem';
 
+const createPopover = (triggerId: string) => html`
+  <mdc-menupopover triggerid="${triggerId}">
+    <mdc-menuitem label="New"></mdc-menuitem>
+    <mdc-menuitem label="Open"></mdc-menuitem>
+    <mdc-menuitem label="Save"></mdc-menuitem>
+    <mdc-divider></mdc-divider>
+    <mdc-menuitem label="Share" id="share-id" arrow-position='trailing'></mdc-menuitem>
+    <mdc-menupopover triggerid="share-id">
+      <mdc-menuitem label="AirDrop"></mdc-menuitem>
+      <mdc-menuitem label="Messages"></mdc-menuitem>
+      <mdc-menuitem label="Notes"></mdc-menuitem>
+      <mdc-menuitem label="Freeform"></mdc-menuitem>
+      <mdc-menuitem label="Reminders"></mdc-menuitem>
+    </mdc-menupopover>
+  </mdc-menupopover>
+`;
+
 const render = () => html`
-  <div style="width: 50rem; height: 25rem;">
-    <mdc-menubar>
-      <mdc-menuitem id="menu-button-trigger" label="File"></mdc-menuitem>
-      <mdc-menupopover triggerid="menu-button-trigger">
-        <mdc-menuitem label="New"></mdc-menuitem>
-        <mdc-menuitem label="Open"></mdc-menuitem>
-        <mdc-menuitem label="Save"></mdc-menuitem>
-        <mdc-divider></mdc-divider>
-        <mdc-menuitem label="Share" id="share-id" arrow-position='trailing'></mdc-menuitem>
-        <mdc-menupopover triggerid="share-id">
-          <mdc-menuitem label="AirDrop"></mdc-menuitem>
-          <mdc-menuitem label="Messages"></mdc-menuitem>
-          <mdc-menuitem label="Notes"></mdc-menuitem>
-          <mdc-menuitem label="Freeform"></mdc-menuitem>
-          <mdc-menuitem label="Reminders"></mdc-menuitem>
-        </mdc-menupopover>
-      </mdc-menupopover>
-    </mdc-menubar>
-  </div>
+  <mdc-menubar>
+    <mdc-menuitem id="menu-button-trigger" label="File"></mdc-menuitem>
+    ${createPopover('menu-button-trigger')}
+  </mdc-menubar>
 `;
 
 const meta: Meta = {
@@ -37,25 +41,6 @@ const meta: Meta = {
   render,
   parameters: {
     badges: ['wip'],
-    docs: {
-      source: {
-        format: 'html',
-        code: `
-          <mdc-menubar>
-            <mdc-menuitem id="menu-id" label="..."></mdc-menuitem>
-            <mdc-menupopover triggerid="menu-id">
-              <mdc-menuitem label="..."></mdc-menuitem>
-              <mdc-menuitem id="sub-menu-id" label="..." arrow-position="trailing"></mdc-menuitem>
-              <mdc-menupopover triggerid="sub-menu-id">
-                <mdc-menuitem label="..."></mdc-menuitem>
-                <mdc-menuitem label="..."></mdc-menuitem>
-              </mdc-menupopover>
-              <mdc-menuitem label="..."></mdc-menuitem>
-            </mdc-menupopover>
-          <mdc-menubar>
-        `,
-      },
-    },
   },
   argTypes: {
     ...classArgType,
@@ -93,5 +78,32 @@ const meta: Meta = {
 export default meta;
 
 export const Example: StoryObj = {
+  ...hideAllControls(),
+};
+
+export const ButtonTrigger: StoryObj = {
+  render: () => html`
+    <mdc-button id="button-trigger">Menu</mdc-button>
+    ${createPopover('button-trigger')}
+  `,
+  ...hideAllControls(),
+};
+
+export const IconTrigger: StoryObj = {
+  render: () => html`
+    <mdc-button prefix-icon="placeholder-bold" id="icon-trigger"></mdc-button>
+    ${createPopover('icon-trigger')}
+  `,
+  ...hideAllControls(),
+};
+
+export const ButtonGroupTrigger: StoryObj = {
+  render: () => html`
+    <mdc-buttongroup variant="secondary" orientation="horizontal" size="32">
+      <mdc-button id="popover-trigger-1">Open Menu</mdc-button>
+      <mdc-button prefix-icon="arrow-down-bold" id="button-group-trigger"></mdc-button>
+    </mdc-buttongroup>
+    ${createPopover('button-group-trigger')}
+  `,
   ...hideAllControls(),
 };
