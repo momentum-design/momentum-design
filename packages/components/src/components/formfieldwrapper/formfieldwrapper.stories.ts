@@ -7,6 +7,7 @@ import { disableControls } from '../../../config/storybook/utils';
 import { VALIDATION } from './formfieldwrapper.constants';
 import { ValidationType } from './formfieldwrapper.types';
 import './formfieldwrapper.subcomponent';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 const render = (args: Args) =>
   html` <mdc-subcomponent-formfieldwrapper
@@ -15,6 +16,9 @@ const render = (args: Args) =>
     ?required="${args.required}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
+    toggletip-text="${args['toggletip-text']}"
+    toggletip-placement="${args['toggletip-placement']}"
+    info-icon-aria-label="${args['info-icon-aria-label']}"
     >
     ${args.children}
     </mdc-subcomponent-formfieldwrapper>`;
@@ -49,6 +53,16 @@ const meta: Meta = {
     disabled: {
       control: 'boolean',
     },
+    'toggletip-text': {
+      control: 'text',
+    },
+    'toggletip-placement': {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
+    },
+    'info-icon-aria-label': {
+      control: 'text',
+    },
   },
 };
 
@@ -62,6 +76,8 @@ export const Example: StoryObj = {
     children: '[Child Component]',
     required: true,
     disabled: false,
+    'toggletip-text': 'toggletip text',
+    'info-icon-aria-label': 'Info icon aria label',
   },
 };
 
