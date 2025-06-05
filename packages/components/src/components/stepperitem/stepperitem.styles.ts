@@ -80,6 +80,9 @@ const styles = css`
     --mdc-stepperitem-status-container-background: var(--mds-color-theme-control-active-hover);
   }
 
+  :host([status="error"]:hover)::part(status-icon){
+    --mdc-icon-fill-color: var(--mds-color-theme-text-error-hover);
+  }
   :host([status="error"]:hover){
     --mdc-stepperitem-label-color: var(--mds-color-theme-text-error-hover);
     --mdc-stepperitem-optional-label-color: var(--mds-color-theme-text-error-hover);
@@ -97,6 +100,9 @@ const styles = css`
     --mdc-stepperitem-status-container-background: var(--mds-color-theme-control-active-active);
   }
 
+  :host([status="error"]:hover)::part(status-icon){
+    --mdc-icon-fill-color: var(--mds-color-theme-text-error-active);
+  }
   :host([status="error"]:active){
     --mdc-stepperitem-label-color: var(--mds-color-theme-text-error-active);
     --mdc-stepperitem-optional-label-color: var(--mds-color-theme-text-error-active);
