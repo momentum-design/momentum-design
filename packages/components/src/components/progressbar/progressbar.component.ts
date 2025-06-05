@@ -7,6 +7,7 @@ import { DEFAULTS, VARIANT } from './progressbar.constants';
 import type { Variant } from './progressbar.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
+import type { PopoverPlacement } from '../popover/popover.types';
 
 /**
  * mdc-progressbar component visually represents a progress indicator, typically used to show
@@ -66,6 +67,8 @@ class Progressbar extends DataAriaLabelMixin(FormfieldWrapper) {
     super.connectedCallback();
     this.id = `mdc-progressbar-${uuidv4()}`;
     this.disabled = undefined as unknown as boolean;
+    this.toggletipText = undefined as unknown as string;
+    this.toggletipPlacement = undefined as unknown as PopoverPlacement;
   }
 
   /**

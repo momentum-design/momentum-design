@@ -23,11 +23,11 @@ const styles = css`
     color: var(--mdc-toggletip-text-color-contrast);
   }
 
-  :host(:dir(ltr))::part(popover-content) {
+  :host([close-button]:dir(ltr))::part(popover-content) {
     margin-right: 2rem;
   }
 
-  :host(:dir(rtl))::part(popover-content) {
+  :host([close-button]:dir(rtl))::part(popover-content) {
     margin-left: 2rem;
   }
 `;
