@@ -629,4 +629,21 @@ test.describe.parallel('mdc-button', () => {
       await componentsPage.page.keyboard.up('Enter');
     });
   });
+
+  test('mdc-text overflowing is not focusable', async ({ componentsPage }) => {
+    const button = await setup({
+      componentsPage,
+      children: '<mdc-text>This is a very long text that should get truncated with ellipsis</mdc-text>',
+      secondButtonForFocus: true,
+    });
+
+    await componentsPage.setAttributes(button, { style: 'width: 100px' });
+
+    await componentsPage.page.keyboard.press('Tab');
+    await expect(button).toBeFocused();
+
+    await componentsPage.page.keyboard.press('Tab');
+    const bothButtons = await componentsPage.page.locator('mdc-button').all();
+    await expect(bothButtons[1]).toBeFocused();
+  });
 });
