@@ -40,6 +40,7 @@ class MenuPopover extends MenuMixin(Popover) {
     this.role = ROLE.MENU;
 
     this.focusTrap = true;
+    this.focusBackToTrigger = true;
     this.hideOnEscape = true;
     this.hideOnOutsideClick = true;
     this.placement = POPOVER_PLACEMENT.BOTTOM_START;
