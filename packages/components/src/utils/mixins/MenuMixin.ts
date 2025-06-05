@@ -10,6 +10,7 @@ import { TAG_NAME as MENUITEMCHECKBOX_TAGNAME } from '../../components/menuitemc
 import { TAG_NAME as MENUITEMRADIO_TAGNAME } from '../../components/menuitemradio/menuitemradio.constants';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../../components/menupopover/menupopover.constants';
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../../components/menusection/menusection.constants';
+import Popover from '../../components/popover/popover.component';
 import { POPOVER_PLACEMENT } from '../../components/popover/popover.constants';
 import { KEYS } from '../keys';
 import type { Constructor } from './index.types';
@@ -230,6 +231,9 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      * @returns An object containing the parent menu element and the menu child id.
      */
     private getParentMenuItemDetails(menuChildId: string, menu?: HTMLElement | null): IParentMenuItem {
+      if (menu === null) {
+        return { menu: null, menuChildId };
+      }
       if (menu && this.isValidMenu(menu.tagName)) {
         return { menu, menuChildId };
       }
@@ -306,27 +310,6 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         (node) => this.isValidMenuItem(node as HTMLElement),
       );
       return { parentMenuItemDetails, parentMenuItemsChildren };
-    }
-
-    /**
-     * Sets focus to the parent menu item of the given current menu item.
-     * It retrieves the parent menu item details and its children, then focuses
-     * on the menu item that matches the parent menu child ID.
-     * @param currentMenuItem - The current menu item from which to find and focus the parent menu item.
-     */
-    private setFocusToParentMenuItem(currentMenuItem: HTMLElement | null): void {
-      const {
-        parentMenuItemDetails,
-        parentMenuItemsChildren,
-      } = this.getParentMenuContents(currentMenuItem);
-      // Only proceed if menuChildId is non-empty
-      if (parentMenuItemDetails?.menuChildId) {
-        const menuBarMenuItem = parentMenuItemsChildren.filter(
-          (node) => node.getAttribute('id') === parentMenuItemDetails.menuChildId,
-        );
-
-        (menuBarMenuItem[0] as HTMLElement)?.focus();
-      }
     }
 
     /**
@@ -474,7 +457,6 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
             this.openPopoverAndNavigateToNextChildrenMenuItem(currentIndex);
           } else if (this.isValidMenuItem(event.target as HTMLElement)) {
             this.setMenuBarPopoverValue(false);
-            this.setFocusToParentMenuItem(this.menuItems[currentIndex]);
           }
           break;
         }
@@ -511,11 +493,11 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
       const target = event.target as HTMLElement;
       const currentIndex = this.getCurrentIndex(target);
       if (currentIndex === -1) return;
-      if (this.isValidPopover(this.menuItems[currentIndex]?.nextElementSibling?.tagName)) {
+      if (this.isValidPopover(target?.nextElementSibling?.tagName)) {
         this.closeAllPopoversExceptCurrent(currentIndex);
         this.openPopoverAndNavigateToNextChildrenMenuItem(currentIndex);
       } else if (this.isValidMenuItem(target)) {
-        this.hideAllPopovers(this.menuItems[currentIndex]);
+        (target.parentElement as Popover).hidePopover();
       }
     }
   }
