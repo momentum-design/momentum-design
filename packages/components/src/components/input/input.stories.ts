@@ -7,6 +7,7 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { disableControls } from '../../../config/storybook/utils';
 import { AUTO_CAPITALIZE } from './input.constants';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 const render = (args: Args) => {
   const value = args.maxlength && args.value ? args.value.substring(0, args.maxlength) : args.value;
@@ -19,6 +20,9 @@ const render = (args: Args) => {
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
     placeholder="${args.placeholder}"
+    toggletip-placement="${args['toggletip-placement']}"
+    toggletip-text="${args['toggletip-text']}"
+    info-icon-aria-label="${args['info-icon-aria-label']}"
     name="${args.name}"
     value="${value}"
     id="${args.id}"
@@ -127,6 +131,16 @@ const meta: Meta = {
       control: 'text',
     },
     'data-aria-label': {
+      control: 'text',
+    },
+    'toggletip-text': {
+      control: 'text',
+    },
+    'toggletip-placement': {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
+    },
+    'info-icon-aria-label': {
       control: 'text',
     },
     ...disableControls([

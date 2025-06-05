@@ -21,9 +21,11 @@ import type { ArrowIcon } from './select.types';
  * The component ensures accessibility and usability while handling various use cases,
  * including long text truncation with tooltip support.
  *
+ * @dependency mdc-button
  * @dependency mdc-icon
  * @dependency mdc-popover
  * @dependency mdc-text
+ * @dependency mdc-toggletip
  *
  * @tagname mdc-select
  *
@@ -87,13 +89,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     super.connectedCallback();
     // select will only contain name and value will be defined in the options.
     this.value = undefined as unknown as string;
-
-    this.addEventListener('keydown', this.handleKeydown);
-  }
-
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.removeEventListener('keydown', this.handleKeydown);
   }
 
   /**
@@ -117,6 +112,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   private handlePopoverOpen(): void {
     this.displayPopover = true;
     this.baseIconName = ARROW_ICON.ARROW_UP;
+    this.updateActivedescendant();
   }
 
   private handlePopoverClose(): void {
@@ -375,9 +371,9 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     return -1;
   }
 
-  private updateActivedescendant(target: EventTarget | null): void {
+  private updateActivedescendant(target?: EventTarget | null): void {
     const currentIndex = this.getAllValidOptions().findIndex((option) => option === target);
-    this.activeDescendant = this.getAllValidOptions()[currentIndex]?.id ?? '';
+    this.activeDescendant = this.getAllValidOptions()[currentIndex]?.id || this.getAllValidOptions()[0]?.id;
   }
 
   private resetActivedescendant(): void {
@@ -488,6 +484,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       <mdc-popover
         id="options-popover"
         triggerid="select-base-triggerid"
+        @keydown="${this.handleKeydown}"
         interactive
         ?visible="${this.displayPopover}"
         hide-on-outside-click
@@ -520,6 +517,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         <div
           id="select-base-triggerid"
           part="base-container"
+          @keydown="${this.handleKeydown}"
           tabindex="${this.disabled ? '-1' : '0'}"
           class="${this.disabled ? '' : 'mdc-focus-ring'}"
           role="combobox"
@@ -528,6 +526,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           aria-label="${this.dataAriaLabel ?? ''}"
           aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
           aria-expanded="${this.displayPopover ? 'true' : 'false'}"
+          aria-controls="options-popover"
         >
       ${this.selectedIcon
     ? html`<mdc-icon length-unit="rem" size="1" name="${this.selectedIcon}" part="selected-icon"></mdc-icon>`

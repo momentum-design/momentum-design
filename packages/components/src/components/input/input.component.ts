@@ -31,6 +31,7 @@ import { FormInternalsMixin, AssociatedFormControl } from '../../utils/mixins/Fo
  * @dependency mdc-icon
  * @dependency mdc-text
  * @dependency mdc-button
+ * @dependency mdc-toggletip
  *
  * @cssproperty --mdc-input-disabled-border-color - Border color for the input container when disabled
  * @cssproperty --mdc-input-disabled-text-color - Text color for the input field when disabled

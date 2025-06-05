@@ -4,6 +4,7 @@ import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
 import '../checkbox';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import '../toggle';
 
@@ -12,6 +13,9 @@ const render = (args: Args) => html`
     label="${args.label}"
     help-text="${args['help-text']}"
     data-aria-label="${args['data-aria-label']}"
+    toggletip-text="${args['toggletip-text']}"
+    toggletip-placement="${args['toggletip-placement']}"
+    info-icon-aria-label="${args['info-icon-aria-label']}"
    ?required=${args.required}
     help-text-type="${args['help-text-type']}"
   >
@@ -38,6 +42,16 @@ const meta: Meta = {
     },
     required: {
       control: 'boolean',
+    },
+    'toggletip-text': {
+      control: 'text',
+    },
+    'toggletip-placement': {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
+    },
+    'info-icon-aria-label': {
+      control: 'text',
     },
     'help-text-type': {
       control: 'select',
