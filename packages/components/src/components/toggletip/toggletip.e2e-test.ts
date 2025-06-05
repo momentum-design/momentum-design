@@ -13,7 +13,7 @@ type SetupOptions = {
   closeButtonAriaLabel?: string;
   color?: PopoverColor;
   id: string;
-  offset?: boolean;
+  offset?: string;
   placement?: PopoverPlacement;
   showArrow?: boolean;
   showTestButton?: boolean;
@@ -97,7 +97,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
     await expect(toggletip).toHaveAttribute('flip');
     await expect(toggletip).not.toHaveAttribute('focus-trap');
     await expect(toggletip).not.toHaveAttribute('prevent-scroll');
-    await expect(toggletip).toHaveAttribute('close-button');
+    await expect(toggletip).not.toHaveAttribute('close-button');
     await expect(toggletip).toHaveAttribute('hide-on-outside-click');
     await expect(toggletip).toHaveAttribute('focus-back-to-trigger');
     await expect(toggletip).not.toHaveAttribute('size');
@@ -112,13 +112,14 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
    */
   await test.step('attributes should be set correctly for toggletip', async () => {
     await componentsPage.setAttributes(toggletip, {
-      closeButton: 'true',
+      'close-button': '',
       'close-button-aria-label': 'Close',
       color: 'contrast',
       offset: '8',
       placement: 'bottom',
       'show-arrow': '',
     });
+
     await expect(toggletip).toHaveAttribute('close-button');
     await expect(toggletip).toHaveAttribute('close-button-aria-label', 'Close');
     await expect(toggletip.locator('.popover-close')).toHaveAttribute('aria-label', 'Close');
@@ -176,6 +177,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
 const interactionsTestCases = async (componentsPage: ComponentsPage) => {
   const { toggletip, triggerButton } = await setup({
     componentsPage,
+    closeButton: true,
     closeButtonAriaLabel: 'Close',
     id: 'toggletip',
     triggerID: 'trigger-button',
@@ -262,6 +264,7 @@ const visualTestingSetup = async (componentsPage: ComponentsPage) => {
 
       <mdc-toggletip
         close-button-aria-label="Close"
+        close-button
         color="tonal"
         triggerID="trigger-button1"
         visible
@@ -272,6 +275,7 @@ const visualTestingSetup = async (componentsPage: ComponentsPage) => {
 
       <mdc-toggletip
         close-button-aria-label="Close"
+        close-button
         color="contrast"
         triggerID="trigger-button2"
         visible

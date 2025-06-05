@@ -9,6 +9,7 @@ import '../divider';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import '../optgroup';
 import '../option';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 const helpTextTypes = Object.values(VALIDATION).filter((type: string) => type !== 'priority');
 
@@ -28,6 +29,9 @@ const render = (args: Args) => wrapWithDiv(html`
     help-text="${args['help-text']}"
     height="${args.height}"
     data-aria-label="${args['data-aria-label']}"
+    toggletip-text="${args['toggletip-text']}"
+    toggletip-placement="${args['toggletip-placement']}"
+    info-icon-aria-label="${args['info-icon-aria-label']}"
     name="${args.name}"
     placeholder="${args.placeholder}" 
     ?disabled="${args.disabled}"
@@ -76,13 +80,23 @@ const meta: Meta = {
       description: `The type of help text. It can be ${helpTextTypes.map((type: string) => `'${type}'`).join(', ')}.`,
       options: helpTextTypes,
     },
+    'info-icon-aria-label': {
+      control: 'text',
+    },
     'data-aria-label': {
       control: 'text',
+    },
+    'toggletip-text': {
+      control: 'text',
+    },
+    'toggletip-placement': {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
     },
     height: {
       control: 'text',
     },
-    ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default', 'label-info']),
+    ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default']),
     ...classArgType,
     ...styleArgType,
   },
@@ -137,8 +151,8 @@ export const SelectWithLongOptionText: StoryObj = {
       <mdc-option>Red</mdc-option>
       <mdc-option>Yellow</mdc-option>
       <mdc-option
-        tooltip-text="White and Black are the biggest colors on the spectrum"
-        tooltip-placement="bottom"
+        toggletip-text="White and Black are the biggest colors on the spectrum"
+        toggletip-placement="bottom"
       >
         White and Black are the biggest colors on the spectrum
       </mdc-option>

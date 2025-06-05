@@ -77,6 +77,8 @@
     "test:e2e:docker:update-snapshot:edge": "yarn test:e2e:docker --update-snapshots --project='msedge'",
     "test:e2e:docker:update-snapshot:mobilesafari": "yarn test:e2e:docker --update-snapshots --project='mobile safari'",
     "test:e2e:docker:update-snapshot:mobilechrome": "yarn test:e2e:docker --update-snapshots --project='mobile chrome'",
+    "test:e2e:docker:update-snapshot:tabletsafari": "yarn test:e2e:docker --update-snapshots --project='tablet safari'",
+    "test:e2e:docker:update-snapshot:tabletchrome": "yarn test:e2e:docker --update-snapshots --project='tablet chrome'",
     "test:e2e": "playwright test --config './config/playwright/playwright.config.ts'",
     "test:e2e:install": "playwright install-deps && playwright install && yarn playwright install msedge",
     "test:e2e:skip-snapshot": "E2E_SKIP_SNAPSHOT=true playwright test --config './config/playwright/playwright.config.ts'",

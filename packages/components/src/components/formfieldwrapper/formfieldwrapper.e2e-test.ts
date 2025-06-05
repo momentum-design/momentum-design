@@ -14,6 +14,9 @@ type SetupOptions = {
   helpTextType?: string;
   required?: boolean;
   children?: string;
+  tooltipText?: string;
+  tooltipPlacement?: string;
+  disabled?: boolean;
 };
 
 const setup = async (args: SetupOptions) => {
@@ -26,6 +29,9 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.helpText ? `help-text="${restArgs.helpText}"` : ''}
       ${restArgs.helpTextType ? `help-text-type="${restArgs.helpTextType}"` : ''}
       ${restArgs.required ? 'required' : ''}
+      ${restArgs.disabled ? 'disabled' : ''}
+      ${restArgs.tooltipText ? `toggletip-text="${restArgs.tooltipText}"` : ''}
+      ${restArgs.tooltipPlacement ? `toggletip-placement="${restArgs.tooltipPlacement}"` : ''}
       >${restArgs.children}</mdc-subcomponent-formfieldwrapper>
     `,
     clearDocument: true,
@@ -43,13 +49,6 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
     helpText: 'Help Text',
     children: 'Form Input Component',
     required: true,
-  });
-
-  /**
-   * ACCESSIBILITY
-   */
-  await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('formfieldwrapper-default');
   });
 
   /**
@@ -73,6 +72,50 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
         }
       }
     });
+
+    await test.step('disabled attribute', async () => {
+      await componentsPage.setAttributes(formfieldwrapper, { disabled: '' });
+      await expect(formfieldwrapper).toHaveAttribute('disabled', '');
+      await componentsPage.removeAttribute(formfieldwrapper, 'disabled');
+      await expect(formfieldwrapper).not.toHaveAttribute('disabled');
+    });
+  });
+
+  /**
+   * INTERACTIONS
+   */
+  await test.step('interactions', async () => {
+    await test.step('view toggletip text using keyboard', async () => {
+      const tooltipText = 'Tooltip Text';
+      await componentsPage.setAttributes(formfieldwrapper, {
+        'toggletip-text': tooltipText,
+        'info-icon-aria-label': 'Info Icon',
+      });
+      await expect(formfieldwrapper).toHaveAttribute('toggletip-text', tooltipText);
+      const infoIconButton = formfieldwrapper.locator('mdc-button[part="info-icon-btn"]');
+      await expect(infoIconButton).toBeVisible();
+      await componentsPage.actionability.pressTab();
+      await expect(infoIconButton).toBeFocused();
+      await componentsPage.page.keyboard.press('Enter');
+      const toggletip = formfieldwrapper.locator('mdc-toggletip');
+      await expect(toggletip).toBeVisible();
+      await componentsPage.page.keyboard.press('Escape');
+      await expect(toggletip).not.toBeVisible();
+    });
+
+    await test.step('view toggletip text using mouse', async () => {
+      const tooltipText = 'Tooltip Text';
+      await componentsPage.setAttributes(formfieldwrapper, {
+        'toggletip-text': tooltipText,
+        'info-icon-aria-label': 'Info Icon',
+      });
+      await expect(formfieldwrapper).toHaveAttribute('toggletip-text', tooltipText);
+      const infoIconButton = formfieldwrapper.locator('mdc-button[part="info-icon-btn"]');
+      await expect(infoIconButton).toBeVisible();
+      await infoIconButton.click();
+      const toggletip = formfieldwrapper.locator('mdc-toggletip');
+      await expect(toggletip).toBeVisible();
+    });
   });
 
   /**
@@ -86,7 +129,7 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       label: 'Label',
       'help-text': 'Help Text',
     });
-    await wrapperStickerSheet.createMarkupWithCombination({ 'help-text-type': VALIDATION }, { createNewRow: true });
+    await wrapperStickerSheet.createMarkupWithCombination({ 'help-text-type': VALIDATION });
     // disabled
     wrapperStickerSheet.setAttributes({
       id: 'test-formfieldwrapper',
@@ -95,7 +138,7 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       disabled: true,
     });
     await wrapperStickerSheet.createMarkupWithCombination({});
-    // required label
+    // required
     wrapperStickerSheet.setAttributes({
       id: 'test-formfieldwrapper',
       label: 'Label',
@@ -112,6 +155,15 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
       style: 'width: 200px',
     });
     await wrapperStickerSheet.createMarkupWithCombination({});
+    // With info-icon and toggletip
+    wrapperStickerSheet.setAttributes({
+      id: 'test-formfieldwrapper',
+      label: 'Label with Tooltip',
+      'help-text': 'Help Text',
+      'toggletip-text': 'Tooltip Text',
+      'info-icon-aria-label': 'Info Icon',
+    });
+    await wrapperStickerSheet.createMarkupWithCombination({});
     await wrapperStickerSheet.mountStickerSheet();
     wrapperStickerSheet.getWrapperContainer();
 
@@ -120,5 +172,12 @@ test('mdc-subcomponent-formfieldwrapper', async ({ componentsPage }) => {
         element: wrapperStickerSheet.getWrapperContainer(),
       });
     });
+  });
+
+  /**
+   * ACCESSIBILITY
+   */
+  await test.step('accessibility', async () => {
+    await componentsPage.accessibility.checkForA11yViolations('formfieldwrapper-default');
   });
 });
