@@ -5,6 +5,7 @@ import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 import '../button';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 const render = (args: Args) => html`
   <mdc-checkbox
@@ -21,6 +22,9 @@ const render = (args: Args) => html`
     id="${args.id}"
     ?indeterminate="${args.indeterminate}"
     data-aria-label="${args['data-aria-label']}"
+    info-icon-aria-label="${args['info-icon-aria-label']}"
+    toggletip-text="${args['toggletip-text']}"
+    toggletip-placement="${args['toggletip-placement']}"
     @change="${action('onchange')}"
   ></mdc-checkbox>
 `;
@@ -58,7 +62,20 @@ const meta: Meta = {
     value: {
       control: 'text',
     },
-    ...hideControls(['help-text-type', 'label-info', 'id', 'internals']),
+    autofocus: {
+      control: 'boolean',
+    },
+    'toggletip-text': {
+      control: 'text',
+    },
+    'toggletip-placement': {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
+    },
+    'info-icon-aria-label': {
+      control: 'text',
+    },
+    ...hideControls(['help-text-type', 'id', 'internals']),
     ...disableControls([
       '--mdc-checkbox-background-color-hover',
       '--mdc-checkbox-checked-background-color-hover',

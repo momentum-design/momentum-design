@@ -20,8 +20,11 @@ import type { ToggleSize } from './toggle.types';
  *
  * Note: It internally renders a checkbox styled as a toggle switch.
  *
+ * @dependency mdc-button
  * @dependency mdc-icon
  * @dependency mdc-statictoggle
+ * @dependency mdc-text
+ * @dependency mdc-toggletip
  *
  * @tagname mdc-toggle
  *
