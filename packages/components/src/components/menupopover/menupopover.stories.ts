@@ -81,7 +81,7 @@ export const Example: StoryObj = {
   ...hideAllControls(),
 };
 
-export const ButtonTriggerElement: StoryObj = {
+export const ButtonTrigger: StoryObj = {
   render: () => html`
     <mdc-button id="button-trigger">Menu</mdc-button>
     ${createPopover('button-trigger')}
@@ -89,7 +89,7 @@ export const ButtonTriggerElement: StoryObj = {
   ...hideAllControls(),
 };
 
-export const IconTriggerElement: StoryObj = {
+export const IconTrigger: StoryObj = {
   render: () => html`
     <mdc-button prefix-icon="placeholder-bold" id="icon-trigger"></mdc-button>
     ${createPopover('icon-trigger')}
@@ -97,7 +97,7 @@ export const IconTriggerElement: StoryObj = {
   ...hideAllControls(),
 };
 
-export const ButtonGroupTriggerElement: StoryObj = {
+export const ButtonGroupTrigger: StoryObj = {
   render: () => html`
     <mdc-buttongroup variant="secondary" orientation="horizontal" size="32">
       <mdc-button id="popover-trigger-1">Open Menu</mdc-button>
