@@ -101,7 +101,6 @@ class ToggleTip extends Popover {
     }
 
     if (changedProperties.has('visible')) {
-      // this.handleVisiblityChange();
       this.currentAnnouncement = this.visible ? this.getToggleTipText() : '';
     }
   }

@@ -52,6 +52,7 @@ const meta: Meta = {
       'validation-message',
       'toggletip-text',
       'toggletip-placement',
+      'info-icon-aria-label',
     ]),
     ...disableControls([
       '--mdc-progressbar-default-background-color',

@@ -35,6 +35,7 @@ const meta: Meta = {
       'help-text',
       'toggletip-text',
       'toggletip-placement',
+      'info-icon-aria-label',
       'variant',
       'id',
       '--mdc-progressbar-default-background-color',
