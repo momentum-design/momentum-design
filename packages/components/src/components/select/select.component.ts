@@ -76,9 +76,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   /** @internal */
   @state() activeDescendant = '';
 
-  /** @internal */
-  @state() popoverWidth = '100%';
-
   /**
    * @internal
    * The native select element
@@ -140,11 +137,10 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       }
     });
 
-    if (isTabIndexSet) {
-      return;
+    if (!isTabIndexSet) {
+      // if no option is selected, set the first option as focused
+      this.getAllValidOptions()[0]?.setAttribute('tabindex', '0');
     }
-    // if no option is selected, set the first option as focused
-    this.getAllValidOptions()[0]?.setAttribute('tabindex', '0');
   }
 
   /**
@@ -228,20 +224,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   }
 
   /**
-   * Handles the keydown event on the select element.
-   * If the popover is open, then it calls `handlePopoverOnOpen` with the event.
-   * If the popover is closed, then it calls `handlePopoverOnClose` with the event.
-   * @param event - The keyboard event.
-   */
-  private handleKeydown(event: KeyboardEvent): void {
-    if (this.displayPopover) {
-      this.handlePopoverOnOpen(event);
-    } else {
-      this.handlePopoverOnClose(event);
-    }
-  }
-
-  /**
    * Handles the keydown event on the select element when the popover is open.
    * The options are as follows:
    * - SPACE or ENTER: Selects the currently active option and closes the popover.
@@ -282,7 +264,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       case KEYS.PAGE_DOWN:
       case KEYS.PAGE_UP:
         this.handleOptionsNavigation(event);
-        this.updateActivedescendant(event.target);
+        event.preventDefault();
         break;
       default:
         break;
@@ -372,8 +354,14 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   }
 
   private updateActivedescendant(target?: EventTarget | null): void {
-    const currentIndex = this.getAllValidOptions().findIndex((option) => option === target);
-    this.activeDescendant = this.getAllValidOptions()[currentIndex]?.id || this.getAllValidOptions()[0]?.id;
+    if (target) {
+      const currentIndex = this.getAllValidOptions().findIndex((option) => option === target);
+      this.activeDescendant = this.getAllValidOptions()[currentIndex]?.id ?? '';
+    } else {
+      // If no target is provided, find the option with tabindex="0" or the first option
+      const focusedOption = this.getAllValidOptions().find((option) => option.getAttribute('tabindex') === '0');
+      this.activeDescendant = focusedOption?.id ?? this.getAllValidOptions()[0]?.id ?? '';
+    }
   }
 
   private resetActivedescendant(): void {
@@ -381,16 +369,32 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   }
 
   private setFocusAndTabIndex(newIndex: number): void {
-    (this.getAllValidOptions()[newIndex] as HTMLElement)?.focus();
-    this.getAllValidOptions().forEach((node, index) => {
-      const newTabindex = newIndex === index ? '0' : '-1';
-      node?.setAttribute('tabindex', newTabindex);
-    });
+    const options = this.getAllValidOptions();
+    const targetOption = options[newIndex] as HTMLElement;
+
+    if (targetOption) {
+      targetOption.focus();
+
+      options.forEach((node, index) => {
+        const newTabindex = newIndex === index ? '0' : '-1';
+        node?.setAttribute('tabindex', newTabindex);
+      });
+
+      // Update activeDescendant after changing focus
+      this.activeDescendant = targetOption.id ?? '';
+    }
   }
 
   private openPopover(): void {
     this.displayPopover = true;
-    this.resetActivedescendant();
+
+    // Find the currently selected option or the first option
+    const options = this.getAllValidOptions();
+    const selectedOption = options.find((option) => option.hasAttribute('selected'));
+    const focusedOption = options.find((option) => option.getAttribute('tabindex') === '0');
+
+    // Set activeDescendant to the selected/focused option or first option
+    this.activeDescendant = (selectedOption || focusedOption || options[0])?.id ?? '';
   }
 
   private closePopover(): void {
@@ -484,7 +488,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       <mdc-popover
         id="options-popover"
         triggerid="select-base-triggerid"
-        @keydown="${this.handleKeydown}"
+        @keydown="${this.handlePopoverOnOpen}"
         interactive
         ?visible="${this.displayPopover}"
         hide-on-outside-click
@@ -492,11 +496,12 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         focus-trap
         role="listbox"
         placement="${POPOVER_PLACEMENT.BOTTOM_START}"
+        aria-labelledby="select-base-triggerid ${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
         @shown="${this.handlePopoverOpen}"
         @hidden="${this.handlePopoverClose}"
-        style="--mdc-popover-max-width: ${this.popoverWidth}; --mdc-popover-max-height: ${this.height};"
+        style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
       >
-        <slot @click="${this.handleOptionsClick}"></slot>
+          <slot @click="${this.handleOptionsClick}"></slot>
       </mdc-popover>
     `;
   }
@@ -517,7 +522,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         <div
           id="select-base-triggerid"
           part="base-container"
-          @keydown="${this.handleKeydown}"
+          @keydown="${this.handlePopoverOnClose}"
           tabindex="${this.disabled ? '-1' : '0'}"
           class="${this.disabled ? '' : 'mdc-focus-ring'}"
           role="combobox"
@@ -526,7 +531,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           aria-label="${this.dataAriaLabel ?? ''}"
           aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
           aria-expanded="${this.displayPopover ? 'true' : 'false'}"
-          aria-controls="options-popover"
         >
       ${this.selectedIcon
     ? html`<mdc-icon length-unit="rem" size="1" name="${this.selectedIcon}" part="selected-icon"></mdc-icon>`
