@@ -1,0 +1,8 @@
+import{T as a,S as p,D as c}from"./index-aJbU2mcm.js";import{k as t}from"./lit-element-D5KKan5q.js";import{d}from"./utils-CO8B6ZcN.js";import"./index-C9z9WAEj.js";import"./state-CSSggq2n.js";import"./index-MA1r3zrt.js";import"./index-DwnnXD6a.js";import"./iframe-DyJif37m.js";import"../sb-preview/runtime.js";import"./index-2PiEGcHV.js";import"./iconprovider.component-Bvm-70EG.js";import"./create-context-89xeped_.js";const m=o=>t`
+  <mdc-presence type="${o.type}" size="${o.size}"></mdc-presence>
+`,f={title:"Components/presence",tags:["autodocs"],component:"mdc-presence",render:m,parameters:{badges:["stable"]},argTypes:{type:{options:Object.values(a),control:{type:"select"}},size:{options:Object.values(p),control:{type:"select"}},...d(["icon","iconSize","--mdc-presence-active-background-color","--mdc-presence-away-background-color","--mdc-presence-away-calling-background-color","--mdc-presence-busy-background-color","--mdc-presence-dnd-background-color","--mdc-presence-meeting-background-color","--mdc-presence-on-call-background-color","--mdc-presence-on-device-background-color","--mdc-presence-on-mobile-background-color","--mdc-presence-pause-background-color","--mdc-presence-pto-background-color","--mdc-presence-presenting-background-color","--mdc-presence-quiet-background-color","--mdc-presence-scheduled-background-color","--mdc-presence-overlay-background-color"])}},e={args:{type:c.TYPE,size:c.SIZE}};var r,n,s;e.parameters={...e.parameters,docs:{...(r=e.parameters)==null?void 0:r.docs,source:{originalSource:`{
+  args: {
+    type: DEFAULTS.TYPE,
+    size: DEFAULTS.SIZE
+  }
+}`,...(s=(n=e.parameters)==null?void 0:n.docs)==null?void 0:s.source}}};const x=["Example"];export{e as Example,x as __namedExportsOrder,f as default};

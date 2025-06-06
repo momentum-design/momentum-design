@@ -1,1 +1,0 @@
-import{L as r,T as t}from"./list.component-B5RNM-xI.js";import"./index-D1yLszQ-.js";import"./index-DlY34wWO.js";import{a as i,T as s}from"./listitem.component-PsU6agzW.js";r.register(t);i.register(s);
