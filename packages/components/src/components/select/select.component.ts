@@ -494,13 +494,14 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         hide-on-outside-click
         focus-back-to-trigger
         focus-trap
+        role="listbox"
         placement="${POPOVER_PLACEMENT.BOTTOM_START}"
         aria-labelledby="select-base-triggerid ${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
         @shown="${this.handlePopoverOpen}"
         @hidden="${this.handlePopoverClose}"
         style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
       >
-          <slot @click="${this.handleOptionsClick}" role="listbox"></slot>
+          <slot @click="${this.handleOptionsClick}"></slot>
       </mdc-popover>
     `;
   }
