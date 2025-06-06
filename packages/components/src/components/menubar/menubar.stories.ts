@@ -92,9 +92,9 @@ const render = (args: Args) => html`
     var handleClick = (event) => {
       const activePage = event.target.getAttribute('label');
       const container = document.getElementById('container');
-      if (activePage) {
-        container.innerHTML = '<h1>You have clicked ' + activePage + '</h1>';
-      }
+      if (!activePage || !container) return;
+
+      container.innerHTML = '<h1>You have clicked ' + activePage + '</h1>';
     }
     document.addEventListener('click', handleClick);
   </script>
@@ -228,11 +228,11 @@ export const EditorMenuBar: StoryObj = {
     <script>
       var handleEditorClick = (event) => {
         const isDisabled = event.target.hasAttribute('disabled');
-        if (isDisabled) return;
         const action = event.target.getAttribute('label');
         const isChecked = event.target.getAttribute('aria-checked');
         const textarea = document.getElementById('textarea');
-        
+
+        if(isDisabled || !action || !isChecked || !textarea) return;
         switch (action) {
           case 'Bold':
             textarea.style.fontWeight = isChecked === 'true' ? 'bold' : 'unset';
