@@ -76,9 +76,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   /** @internal */
   @state() activeDescendant = '';
 
-  /** @internal */
-  @state() popoverWidth = '100%';
-
   /**
    * @internal
    * The native select element
@@ -140,11 +137,10 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       }
     });
 
-    if (isTabIndexSet) {
-      return;
+    if (!isTabIndexSet) {
+      // if no option is selected, set the first option as focused
+      this.getAllValidOptions()[0]?.setAttribute('tabindex', '0');
     }
-    // if no option is selected, set the first option as focused
-    this.getAllValidOptions()[0]?.setAttribute('tabindex', '0');
   }
 
   /**
@@ -225,20 +221,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         bubbles: true,
       }),
     );
-  }
-
-  /**
-   * Handles the keydown event on the select element.
-   * If the popover is open, then it calls `handlePopoverOnOpen` with the event.
-   * If the popover is closed, then it calls `handlePopoverOnClose` with the event.
-   * @param event - The keyboard event.
-   */
-  private handleKeydown(event: KeyboardEvent): void {
-    if (this.displayPopover) {
-      this.handlePopoverOnOpen(event);
-    } else {
-      this.handlePopoverOnClose(event);
-    }
   }
 
   /**
@@ -506,7 +488,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       <mdc-popover
         id="options-popover"
         triggerid="select-base-triggerid"
-        @keydown="${this.handleKeydown}"
+        @keydown="${this.handlePopoverOnOpen}"
         interactive
         ?visible="${this.displayPopover}"
         hide-on-outside-click
@@ -514,10 +496,10 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         focus-trap
         role="listbox"
         placement="${POPOVER_PLACEMENT.BOTTOM_START}"
-        aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
+        aria-labelledby="select-base-triggerid ${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
         @shown="${this.handlePopoverOpen}"
         @hidden="${this.handlePopoverClose}"
-        style="--mdc-popover-max-width: ${this.popoverWidth}; --mdc-popover-max-height: ${this.height};"
+        style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
       >
         <slot @click="${this.handleOptionsClick}"></slot>
       </mdc-popover>
@@ -540,7 +522,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         <div
           id="select-base-triggerid"
           part="base-container"
-          @keydown="${this.handleKeydown}"
+          @keydown="${this.handlePopoverOnClose}"
           tabindex="${this.disabled ? '-1' : '0'}"
           class="${this.disabled ? '' : 'mdc-focus-ring'}"
           role="combobox"
@@ -549,8 +531,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           aria-label="${this.dataAriaLabel ?? ''}"
           aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
           aria-expanded="${this.displayPopover ? 'true' : 'false'}"
-          aria-controls="options-popover"
-          aria-owns="options-popover"
         >
       ${this.selectedIcon
     ? html`<mdc-icon length-unit="rem" size="1" name="${this.selectedIcon}" part="selected-icon"></mdc-icon>`
