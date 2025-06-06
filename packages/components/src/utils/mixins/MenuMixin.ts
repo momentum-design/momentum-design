@@ -5,13 +5,13 @@ import { property, queryAssignedElements } from 'lit/decorators.js';
 import { TAG_NAME as MENU_TAGNAME } from '../../components/menu/menu.constants';
 import { ORIENTATION, TAG_NAME as MENUBAR_TAGNAME } from '../../components/menubar/menubar.constants';
 import type { Orientation } from '../../components/menubar/menubar.types';
-import { TAG_NAME as MENUITEM_TAGNAME } from '../../components/menuitem/menuitem.constants';
-import { TAG_NAME as MENUITEMCHECKBOX_TAGNAME } from '../../components/menuitemcheckbox/menuitemcheckbox.constants';
-import { TAG_NAME as MENUITEMRADIO_TAGNAME } from '../../components/menuitemradio/menuitemradio.constants';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../../components/menupopover/menupopover.constants';
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../../components/menusection/menusection.constants';
+import { TAG_NAME as NAVITEMLIST_TAGNAME } from '../../components/navitemlist/navitemlist.constants';
+import Popover from '../../components/popover/popover.component';
 import { POPOVER_PLACEMENT } from '../../components/popover/popover.constants';
 import { KEYS } from '../keys';
+import { ROLE } from '../roles';
 import type { Constructor } from './index.types';
 
 interface IParentMenuItem {
@@ -145,8 +145,17 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     private isValidMenu(tagName?: string): boolean {
       return (
         tagName?.toLowerCase() === MENU_TAGNAME
-        || tagName?.toLowerCase() === MENUBAR_TAGNAME
+        || tagName?.toLowerCase() === MENUBAR_TAGNAME || this.isValidNavItemList(tagName)
       );
+    }
+
+    /**
+     * Checks if the given tag name is a valid navitemlist tag name.
+     * @param tagName - The tag name to check.
+     * @returns True if the tag name is a valid navitemlist, false otherwise.
+     */
+    private isValidNavItemList(tagName?: string): boolean {
+      return tagName?.toLowerCase() === NAVITEMLIST_TAGNAME;
     }
 
     /**
@@ -230,6 +239,9 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      * @returns An object containing the parent menu element and the menu child id.
      */
     private getParentMenuItemDetails(menuChildId: string, menu?: HTMLElement | null): IParentMenuItem {
+      if (menu === null) {
+        return { menu: null, menuChildId };
+      }
       if (menu && this.isValidMenu(menu.tagName)) {
         return { menu, menuChildId };
       }
@@ -277,9 +289,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         parentMenuItemIndex,
         newIndex,
       );
-      if (key === KEYS.ARROW_LEFT) {
-        parentMenuItemsChildren[parentMenuItemIndex - 1]?.nextElementSibling?.toggleAttribute('visible');
-      }
+      parentMenuItemsChildren[parentMenuItemIndex - 1]?.nextElementSibling?.toggleAttribute('visible');
     }
 
     /**
@@ -309,27 +319,6 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     }
 
     /**
-     * Sets focus to the parent menu item of the given current menu item.
-     * It retrieves the parent menu item details and its children, then focuses
-     * on the menu item that matches the parent menu child ID.
-     * @param currentMenuItem - The current menu item from which to find and focus the parent menu item.
-     */
-    private setFocusToParentMenuItem(currentMenuItem: HTMLElement | null): void {
-      const {
-        parentMenuItemDetails,
-        parentMenuItemsChildren,
-      } = this.getParentMenuContents(currentMenuItem);
-      // Only proceed if menuChildId is non-empty
-      if (parentMenuItemDetails?.menuChildId) {
-        const menuBarMenuItem = parentMenuItemsChildren.filter(
-          (node) => node.getAttribute('id') === parentMenuItemDetails.menuChildId,
-        );
-
-        (menuBarMenuItem[0] as HTMLElement)?.focus();
-      }
-    }
-
-    /**
      * Opens the popover of the next children menu item if there are children.
      * If there are no children, then it closes all popovers recursively and
      * navigates to the next menu item from the menu bar.
@@ -343,6 +332,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
       // - If there are no popovers to the right, then we will close all popovers recursively,
       // and go the next menu item from the menu bar
       this.hideAllPopovers(this.menuItems[currentIndex]);
+      if (this.isValidMenu(this.tagName)) return;
       // - get the top parent menu items using recursion.
       const {
         parentMenuItemDetails,
@@ -370,8 +360,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      * @returns True if the menu item is a valid menu item, false otherwise.
      */
     private isValidMenuItem(menuItem: HTMLElement): boolean {
-      return [MENUITEM_TAGNAME, MENUITEMCHECKBOX_TAGNAME, MENUITEMRADIO_TAGNAME]
-        .includes(menuItem.tagName?.toLowerCase() as typeof MENUITEM_TAGNAME);
+      return menuItem.getAttribute('role') === ROLE.MENUITEM;
     }
 
     /**
@@ -386,6 +375,27 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         const newTabindex = index === 0 ? '0' : '-1';
         node?.setAttribute('tabindex', newTabindex);
       });
+    }
+
+    /**
+     * Returns the key based on the direction of the document.
+     * If the document is in RTL mode and the key is ARROW_LEFT or ARROW_RIGHT,
+     * it will swap them to maintain the correct navigation direction.
+     * @param originalKey - The original key pressed.
+     * @returns The key based on the direction of the document.
+     */
+    private getKeyBasedOnDirection(originalKey: string): string {
+      let key = originalKey;
+      const isRtl = document.querySelector('html')?.getAttribute('dir') === 'rtl'
+       || window.getComputedStyle(this).direction === 'rtl';
+      if (isRtl && (key === KEYS.ARROW_LEFT || key === KEYS.ARROW_RIGHT)) {
+        if (key === KEYS.ARROW_LEFT) {
+          key = KEYS.ARROW_RIGHT;
+        } else {
+          key = KEYS.ARROW_LEFT;
+        }
+      }
+      return key;
     }
 
     /**
@@ -423,7 +433,8 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
       const lastMenuIndex = this.menuItems.length - 1;
       const currentIndex = this.getCurrentIndex(event.target);
       if (currentIndex === -1) return;
-      switch (event.key) {
+      const key = this.getKeyBasedOnDirection(event.key);
+      switch (key) {
         case KEYS.HOME:
           this.updateTabIndexAndFocusNewIndex(this.menuItems, currentIndex, firstMenuIndex);
           break;
@@ -474,15 +485,11 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
             this.openPopoverAndNavigateToNextChildrenMenuItem(currentIndex);
           } else if (this.isValidMenuItem(event.target as HTMLElement)) {
             this.setMenuBarPopoverValue(false);
-            this.setFocusToParentMenuItem(this.menuItems[currentIndex]);
           }
           break;
         }
         case KEYS.ESCAPE: {
           this.setMenuBarPopoverValue(false);
-          if (this.ariaOrientation === ORIENTATION.VERTICAL) {
-            this.navigateToPrevParentMenuItem(currentIndex, event.key);
-          }
           break;
         }
         default:
@@ -511,11 +518,11 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
       const target = event.target as HTMLElement;
       const currentIndex = this.getCurrentIndex(target);
       if (currentIndex === -1) return;
-      if (this.isValidPopover(this.menuItems[currentIndex]?.nextElementSibling?.tagName)) {
+      if (this.isValidPopover(target?.nextElementSibling?.tagName)) {
         this.closeAllPopoversExceptCurrent(currentIndex);
         this.openPopoverAndNavigateToNextChildrenMenuItem(currentIndex);
       } else if (this.isValidMenuItem(target)) {
-        this.hideAllPopovers(this.menuItems[currentIndex]);
+        (target.parentElement as Popover).hidePopover();
       }
     }
   }

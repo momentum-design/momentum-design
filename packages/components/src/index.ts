@@ -36,6 +36,8 @@ import MenuItem from './components/menuitem';
 import MenuItemCheckbox from './components/menuitemcheckbox';
 import MenuItemRadio from './components/menuitemradio';
 import MenuPopover from './components/menupopover';
+import NavItem from './components/navitem';
+import NavItemList from './components/navitemlist';
 import MenuSection from './components/menusection';
 import OptGroup from './components/optgroup';
 import Option from './components/option';
@@ -48,6 +50,7 @@ import RadioGroup from './components/radiogroup';
 import ScreenreaderAnnouncer from './components/screenreaderannouncer';
 import Searchfield from './components/searchfield';
 import Select from './components/select';
+import SideNavigation from './components/sidenavigation';
 import Spinner from './components/spinner';
 import StaticCheckbox from './components/staticcheckbox';
 import StaticRadio from './components/staticradio';
@@ -117,6 +120,8 @@ export {
   MenuItemCheckbox,
   MenuItemRadio,
   MenuPopover,
+  NavItem,
+  NavItemList,
   OptGroup,
   Option,
   Popover,
@@ -128,6 +133,7 @@ export {
   ScreenreaderAnnouncer,
   Searchfield,
   Select,
+  SideNavigation,
   Spinner,
   StaticCheckbox,
   StaticRadio,
