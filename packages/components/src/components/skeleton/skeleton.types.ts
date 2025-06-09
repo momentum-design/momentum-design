@@ -1,6 +1,6 @@
 import type { ValueOf } from '../../utils/types';
-import { SKELETON_TYPES } from './skeleton.constants';
+import { SKELETON_VARIANTS } from './skeleton.constants';
 
-type SkeletonType = ValueOf<typeof SKELETON_TYPES>;
+type SkeletonVariant = ValueOf<typeof SKELETON_VARIANTS>;
 
-export type { SkeletonType };
+export type { SkeletonVariant };

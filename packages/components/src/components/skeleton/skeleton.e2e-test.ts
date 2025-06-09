@@ -8,29 +8,21 @@ test.describe('mdc-skeleton', () => {
 
     const skeleton = page.locator('mdc-skeleton');
     await expect(skeleton).toBeVisible();
-    await expect(skeleton).toHaveAttribute('type', 'rectangular');
+    await expect(skeleton).toHaveAttribute('variant', 'rectangular');
   });
 
-  test('should render different skeleton types', async ({ page }) => {
-    await page.goto(storyUrl('types'));
+  test('should render different skeleton variants', async ({ page }) => {
+    await page.goto(storyUrl('variants'));
 
-    const rectangular = page.locator('mdc-skeleton[type="rectangular"]');
-    const rounded = page.locator('mdc-skeleton[type="rounded"]');
-    const circular = page.locator('mdc-skeleton[type="circular"]');
-    const text = page.locator('mdc-skeleton[type="text"]');
+    const rectangular = page.locator('mdc-skeleton[variant="rectangular"]');
+    const rounded = page.locator('mdc-skeleton[variant="rounded"]');
+    const circular = page.locator('mdc-skeleton[variant="circular"]');
+    const button = page.locator('mdc-skeleton[variant="button"]');
 
     await expect(rectangular).toBeVisible();
     await expect(rounded).toBeVisible();
     await expect(circular).toBeVisible();
-    await expect(text).toBeVisible();
-  });
-
-  test('should apply width and height attributes', async ({ page }) => {
-    await page.goto(storyUrl('default'));
-
-    const skeleton = page.locator('mdc-skeleton');
-    await expect(skeleton).toHaveAttribute('width', '200px');
-    await expect(skeleton).toHaveAttribute('height', '100px');
+    await expect(button).toBeVisible();
   });
 
   test('should have proper background color', async ({ page }) => {
@@ -54,13 +46,13 @@ test.describe('mdc-skeleton', () => {
     await expect(button).toHaveText('Click me');
   });
 
-  test('should apply proper border radius for different types', async ({ page }) => {
-    await page.goto(storyUrl('types'));
+  test('should apply proper border radius for different variants', async ({ page }) => {
+    await page.goto(storyUrl('variants'));
 
-    const rectangular = page.locator('mdc-skeleton[type="rectangular"]');
-    const rounded = page.locator('mdc-skeleton[type="rounded"]');
-    const circular = page.locator('mdc-skeleton[type="circular"]');
-    const text = page.locator('mdc-skeleton[type="text"]');
+    const rectangular = page.locator('mdc-skeleton[variant="rectangular"]');
+    const rounded = page.locator('mdc-skeleton[variant="rounded"]');
+    const circular = page.locator('mdc-skeleton[variant="circular"]');
+    const button = page.locator('mdc-skeleton[variant="button"]');
 
     const rectangularRadius = await rectangular.evaluate((el) =>
       getComputedStyle(el).borderRadius);
@@ -68,24 +60,12 @@ test.describe('mdc-skeleton', () => {
       getComputedStyle(el).borderRadius);
     const circularRadius = await circular.evaluate((el) =>
       getComputedStyle(el).borderRadius);
-    const textRadius = await text.evaluate((el) =>
+    const buttonRadius = await button.evaluate((el) =>
       getComputedStyle(el).borderRadius);
 
     expect(rectangularRadius).toBe('4px'); // 0.25rem
     expect(roundedRadius).toBe('8px'); // 0.5rem
     expect(circularRadius).toBe('50%');
-    expect(textRadius).toBe('4px'); // 0.25rem
-  });
-
-  test('should have default height for text type', async ({ page }) => {
-    await page.goto(storyUrl('text-lines'));
-
-    const textSkeletons = page.locator('mdc-skeleton[type="text"]');
-    const firstTextSkeleton = textSkeletons.first();
-
-    const height = await firstTextSkeleton.evaluate((el) =>
-      getComputedStyle(el).height);
-
-    expect(height).toBe('16px'); // 1rem
+    expect(buttonRadius).toBe('20px'); // 1.25rem
   });
 });

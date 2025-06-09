@@ -1,7 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { SKELETON_TYPES, DEFAULTS } from './skeleton.constants';
+import { SKELETON_VARIANTS, DEFAULTS } from './skeleton.constants';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls } from '../../../config/storybook/utils';
 
@@ -114,9 +114,9 @@ const clearDynamicContent = () => {
 
 const render = (args: Args) => html`
 <mdc-skeleton
-  type="${args.type}"
+  variant="${args.variant}"
   class="${args.class}"
-  style="width: 100px; height: 100px; --mdc-skeleton-background-color: red"
+  style="${args.class}"
 ></mdc-skeleton>
 `;
 
@@ -130,7 +130,7 @@ const renderWithContent = (args: Args) => html`
     <div>
       <p>Skeleton wrapping content:</p>
       <mdc-skeleton
-        type="${args.type}"
+        variant="${args.variant}"
         class="${args.class}"
         style="${args.style}"
       >
@@ -147,9 +147,7 @@ const renderResponsive = (args: Args) => html`
     Container (400px max-width, 200px height)
   </p>
   <mdc-skeleton
-    type="${args.type}"
-    width="${args.width}"
-    height="${args.height}"
+    variant="${args.variant}"
     class="${args.class}"
     style="${args.style}"
   ></mdc-skeleton>
@@ -165,15 +163,9 @@ const meta: Meta = {
     badges: ['stable'],
   },
   argTypes: {
-    type: {
+    variant: {
       control: 'select',
-      options: Object.values(SKELETON_TYPES),
-    },
-    width: {
-      control: 'text',
-    },
-    height: {
-      control: 'text',
+      options: Object.values(SKELETON_VARIANTS),
     },
     ...disableControls([
       '--skeleton-width',
@@ -188,45 +180,38 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    type: DEFAULTS.TYPE,
+    variant: DEFAULTS.VARIANT,
   },
 };
 
 export const Rectangular: StoryObj = {
   args: {
-    type: SKELETON_TYPES.RECTANGULAR,
-    width: '200px',
-    height: '100px',
+    variant: SKELETON_VARIANTS.RECTANGULAR,
   },
 };
 
 export const Rounded: StoryObj = {
   args: {
-    type: SKELETON_TYPES.ROUNDED,
-    width: '200px',
-    height: '100px',
+    variant: SKELETON_VARIANTS.ROUNDED,
   },
 };
 
 export const Circular: StoryObj = {
   args: {
-    type: SKELETON_TYPES.CIRCULAR,
-    width: '80px',
-    height: '80px',
+    variant: SKELETON_VARIANTS.CIRCULAR,
   },
 };
 
-export const Text: StoryObj = {
+export const Button: StoryObj = {
   args: {
-    type: SKELETON_TYPES.TEXT,
-    width: '200px',
+    variant: SKELETON_VARIANTS.BUTTON,
   },
 };
 
 export const WithContent: StoryObj = {
   render: renderWithContent,
   args: {
-    type: SKELETON_TYPES.RECTANGULAR,
+    variant: SKELETON_VARIANTS.RECTANGULAR,
   },
 };
 
@@ -289,7 +274,7 @@ export const DynamicContent: StoryObj = {
           <h4 style="margin: 0 0 10px 0;">Skeleton Wrapped Content:</h4>
           <mdc-skeleton
             id="dynamic-skeleton-story"
-            type="${args.type}"
+            variant="${args.variant}"
             class="${args.class}"
             style="${args.style}; border: 2px dashed #999;"
           >
@@ -304,15 +289,13 @@ export const DynamicContent: StoryObj = {
     </div>
   `,
   args: {
-    type: SKELETON_TYPES.RECTANGULAR,
+    variant: SKELETON_VARIANTS.RECTANGULAR,
   },
 };
 
 export const ResponsiveContainer: StoryObj = {
   render: renderResponsive,
   args: {
-    type: SKELETON_TYPES.RECTANGULAR,
-    width: '100%',
-    height: '100%',
+    variant: SKELETON_VARIANTS.RECTANGULAR,
   },
 };

@@ -4,22 +4,21 @@ import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DEFAULTS } from './skeleton.constants';
 import styles from './skeleton.styles';
-import type { SkeletonType } from './skeleton.types';
+import type { SkeletonVariant } from './skeleton.types';
 
 /**
  * `mdc-skeleton` is a component that shows a grey placeholder area.
  * It provides visual feedback to users that content is being loaded.
  *
- * **Skeleton Types:**
- * - **rectangular**: Default type with 0.25rem border radius
+ * **Skeleton Variants:**
+ * - **rectangular**: Default variant with 0.25rem border radius
  * - **rounded**: Has 0.5rem border radius
  * - **circular**: Has 50% border radius for circular shapes
- * - **text**: Optimized for text placeholders with 0.25rem border radius and 1rem default height
+ * - **button**: Optimized for button placeholders with 1.25rem border radius
  *
  * **Sizing Behavior:**
- * 1. Explicit width/height props take highest priority
- * 2. If wrapping content, takes dimensions of wrapped content
- * 3. Otherwise grows to fill parent container
+ * 1. If wrapping content, takes dimensions of wrapped content
+ * 2. Otherwise grows to fill parent container
  *
  * @tagname mdc-skeleton
  *
@@ -27,15 +26,15 @@ import type { SkeletonType } from './skeleton.types';
  */
 class Skeleton extends Component {
   /**
-   * The type of skeleton to display
+   * The variant of skeleton to display
    * - **rectangular**: Default rectangular shape with 0.25rem border radius
    * - **rounded**: Rounded rectangle with 0.5rem border radius
    * - **circular**: Circular shape with 50% border radius
-   * - **text**: Text placeholder with 0.25rem border radius and 1rem default height
+   * - **button**: Button placeholder with 1.25rem border radius
    * @default rectangular
    */
   @property({ type: String, reflect: true })
-  type: SkeletonType = DEFAULTS.TYPE;
+  variant: SkeletonVariant = DEFAULTS.VARIANT;
 
   /**
    * Styles associated with this component.

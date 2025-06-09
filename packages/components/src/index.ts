@@ -70,7 +70,7 @@ import VirtualizedList from './components/virtualizedlist';
 import type { BadgeType } from './components/badge/badge.types';
 import type { ButtonColor, ButtonVariant, IconButtonSize, PillButtonSize } from './components/button/button.types';
 import type { PopoverPlacement } from './components/popover/popover.types';
-import type { SkeletonType } from './components/skeleton/skeleton.types';
+import type { SkeletonVariant } from './components/skeleton/skeleton.types';
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
 import type { TextType } from './components/text/text.types';
 import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
@@ -82,7 +82,7 @@ import {
   ICON_BUTTON_SIZES,
   PILL_BUTTON_SIZES,
 } from './components/button/button.constants';
-import { SKELETON_TYPES } from './components/skeleton/skeleton.constants';
+import { SKELETON_VARIANTS } from './components/skeleton/skeleton.constants';
 
 // Components Exports
 export {
@@ -158,7 +158,7 @@ export type {
   TextType,
   SpinnerSize,
   SpinnerVariant,
-  SkeletonType,
+  SkeletonVariant,
   PopoverPlacement,
   BadgeType,
   IconButtonSize,
@@ -174,5 +174,5 @@ export {
   BUTTON_VARIANTS,
   ICON_BUTTON_SIZES,
   PILL_BUTTON_SIZES,
-  SKELETON_TYPES,
+  SKELETON_VARIANTS,
 };
