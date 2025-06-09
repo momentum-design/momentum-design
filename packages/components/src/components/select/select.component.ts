@@ -235,6 +235,12 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    */
   private handlePopoverOnOpen(event: KeyboardEvent): void {
     switch (event.key) {
+      case KEYS.TAB: {
+        const focusedOptionIndex = this.getAllValidOptions().findIndex((option) => option === event.target);
+        this.setFocusAndTabIndex(focusedOptionIndex);
+        event.preventDefault();
+        break;
+      }
       case KEYS.SPACE:
         this.updateTabIndexForAllOptions(event.target);
         this.closePopover();
