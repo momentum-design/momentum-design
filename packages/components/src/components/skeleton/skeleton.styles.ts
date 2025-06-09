@@ -3,8 +3,13 @@ import { css } from 'lit';
 const styles = css`
   :host {
     display: block;
-    background-color: var(--mds-color-theme-background-skeleton-normal);
+    --mdc-skeleton-background-color: var(--mds-color-theme-background-skeleton-normal);
+    --mdc-skeleton-height: 100%;
+    --mdc-skeleton-width: 100%;
     overflow: hidden;
+    background-color: var(--mdc-skeleton-background-color);
+    height: var(--mdc-skeleton-height);
+    width: var(--mdc-skeleton-width);
   }
 
   :host([type="rectangular"]) {
@@ -19,43 +24,17 @@ const styles = css`
     border-radius: 50%;
   }
 
+  /* this will become a button */
   :host([type="text"]) {
-    // height: 1rem;
     border-radius: 0.25rem;
   }
 
-  /* Explicit width/height attributes take highest priority */
-  :host([data-width]) {
-    width: var(--skeleton-width);
-  }
-
-  :host([data-height]) {
-    height: var(--skeleton-height);
-  }
-
-  /* Default sizing when no explicit dimensions */
-  /* Default to 100% to fill parent when no content */
-  :host(:not([data-width]):not([has-content])) {
-    width: 100%;
-  }
-
-  :host(:not([data-height]):not([has-content])) {
-    height: 100%;
-  }
-
   /* When there's slotted content, fit to content size */
-  :host(:not([data-width])[has-content]) {
+  :host([has-content]) {
     width: fit-content;
-  }
-
-  :host(:not([data-height])[has-content]) {
     height: fit-content;
   }
 
-  /* Special case: text type defaults to 1rem height when no explicit height */
-  :host([type="text"]:not([data-height])) {
-    height: 1rem;
-  }
 
   ::slotted(*) {
     visibility: hidden;

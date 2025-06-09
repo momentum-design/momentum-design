@@ -115,10 +115,8 @@ const clearDynamicContent = () => {
 const render = (args: Args) => html`
 <mdc-skeleton
   type="${args.type}"
-  width="${args.width}"
-  height="${args.height}"
   class="${args.class}"
-  style="${args.style}"
+  style="width: 100px; height: 100px; --mdc-skeleton-background-color: red"
 ></mdc-skeleton>
 `;
 
@@ -191,8 +189,6 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     type: DEFAULTS.TYPE,
-    width: '200px',
-    height: '100px',
   },
 };
 

@@ -7,7 +7,7 @@ import styles from './skeleton.styles';
 import type { SkeletonType } from './skeleton.types';
 
 /**
- * `mdc-skeleton` is a component that shows a grey placeholder area while content is loading.
+ * `mdc-skeleton` is a component that shows a grey placeholder area.
  * It provides visual feedback to users that content is being loaded.
  *
  * **Skeleton Types:**
@@ -20,7 +20,6 @@ import type { SkeletonType } from './skeleton.types';
  * 1. Explicit width/height props take highest priority
  * 2. If wrapping content, takes dimensions of wrapped content
  * 3. Otherwise grows to fill parent container
- * 4. Exception: text type defaults to 1rem height when no height specified
  *
  * @tagname mdc-skeleton
  *
@@ -39,20 +38,6 @@ class Skeleton extends Component {
   type: SkeletonType = DEFAULTS.TYPE;
 
   /**
-   * Width of the skeleton. Can be any valid CSS width value.
-   * When provided, this overrides automatic sizing behavior.
-   */
-  @property({ type: String })
-  width?: string;
-
-  /**
-   * Height of the skeleton. Can be any valid CSS height value.
-   * When provided, this overrides automatic sizing behavior.
-   */
-  @property({ type: String })
-  height?: string;
-
-  /**
    * Styles associated with this component.
    */
   public static override styles: Array<CSSResult> = [
@@ -60,36 +45,13 @@ class Skeleton extends Component {
     styles,
   ];
 
-  protected override updated(changedProperties: PropertyValues): void {
-    super.updated(changedProperties);
-
-    // Set width and height as attributes when they change
-    if (changedProperties.has('width') || changedProperties.has('height')) {
-      this.updateDimensions();
-    }
-  }
-
-  private updateDimensions(): void {
-    if (this.width) {
-      this.setAttribute('data-width', this.width);
-      this.style.setProperty('--skeleton-width', this.width);
-    } else {
-      this.removeAttribute('data-width');
-      this.style.removeProperty('--skeleton-width');
-    }
-
-    if (this.height) {
-      this.setAttribute('data-height', this.height);
-      this.style.setProperty('--skeleton-height', this.height);
-    } else {
-      this.removeAttribute('data-height');
-      this.style.removeProperty('--skeleton-height');
-    }
+  public override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('aria-hidden', 'true');
   }
 
   protected override firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
-    this.updateDimensions();
     this.checkSlotContent();
   }
 
