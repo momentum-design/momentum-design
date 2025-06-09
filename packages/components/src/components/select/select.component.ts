@@ -496,7 +496,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         focus-trap
         role="listbox"
         placement="${POPOVER_PLACEMENT.BOTTOM_START}"
-        aria-labelledby="select-base-triggerid ${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
         @shown="${this.handlePopoverOpen}"
         @hidden="${this.handlePopoverClose}"
         style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
@@ -512,6 +511,13 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     if (changedProperties.has('disabled') || changedProperties.has('readonly')) {
       this.closePopover();
       this.handlePopoverClose();
+    }
+    if (changedProperties.has('displayPopover')) {
+      if (this.displayPopover) {
+        this.openPopover();
+      } else {
+        this.closePopover();
+      }
     }
   }
 
