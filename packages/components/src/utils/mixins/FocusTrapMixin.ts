@@ -308,7 +308,6 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
 
       let nextIndex = currentIndex + step;
 
-      console.log(this.shouldFocusTrapWrap, nextIndex, length);
       if (this.shouldFocusTrapWrap) {
         if (nextIndex < 0) nextIndex = length - 1;
         if (nextIndex >= length) nextIndex = 0;
