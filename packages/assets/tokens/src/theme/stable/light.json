@@ -1466,7 +1466,7 @@
         },
         "glass": {
           "normal": {
-            "value": "linear-gradient(180deg, {color.core.white-alpha.100} 0%, {color.core.white-alpha.60} 100%)",
+            "value": "linear-gradient(180deg, {color.core.black-alpha.4} 0%, {color.core.black-alpha.11} 100%)",
             "type": "color",
             "description": "Used for operation pop"
           }
