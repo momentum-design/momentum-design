@@ -116,7 +116,7 @@ const render = (args: Args) => html`
 <mdc-skeleton
   variant="${args.variant}"
   class="${args.class}"
-  style="${args.class}"
+  style="--mdc-skeleton-height: 100px; --mdc-skeleton-width: 100px; ${args.style}"
 ></mdc-skeleton>
 `;
 
@@ -167,10 +167,7 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(SKELETON_VARIANTS),
     },
-    ...disableControls([
-      '--skeleton-width',
-      '--skeleton-height',
-    ]),
+    ...disableControls([]),
     ...classArgType,
     ...styleArgType,
   },

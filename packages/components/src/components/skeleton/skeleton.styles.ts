@@ -2,7 +2,6 @@ import { css } from 'lit';
 
 const styles = css`
   :host {
-    
     --mdc-skeleton-background-color: var(--mds-color-theme-background-skeleton-normal);
     --mdc-skeleton-height: 100%;
     --mdc-skeleton-width: 100%;
