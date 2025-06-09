@@ -1093,6 +1093,21 @@
             "type": "color",
             "description": "Used for glass effect background for operation pop. "
           },
+          "light": {
+            "value": "{color.core.white-alpha.40}",
+            "type": "color",
+            "description": "Used for glass effect background for operation pop. "
+          },
+          "medium": {
+            "value": "{color.core.white-alpha.60}",
+            "type": "color",
+            "description": "Used for glass effect background for operation pop. "
+          },
+          "heavy": {
+            "value": "{color.core.white-alpha.80}",
+            "type": "color",
+            "description": "Used for glass effect background for operation pop. "
+          },
           "overlay": {
             "normal": {
               "value": "{color.core.white-alpha.80}",
