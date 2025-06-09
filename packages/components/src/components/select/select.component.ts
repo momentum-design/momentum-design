@@ -485,6 +485,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       return nothing;
     }
     return html`
+   <div role="listbox">
       <mdc-popover
         id="options-popover"
         triggerid="select-base-triggerid"
@@ -494,14 +495,15 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         hide-on-outside-click
         focus-back-to-trigger
         focus-trap
-        role="listbox"
+        role="group"
         placement="${POPOVER_PLACEMENT.BOTTOM_START}"
         @shown="${this.handlePopoverOpen}"
         @hidden="${this.handlePopoverClose}"
         style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
       >
-          <slot @click="${this.handleOptionsClick}"></slot>
-      </mdc-popover>
+           <slot @click="${this.handleOptionsClick}"></slot>
+          </mdc-popover>
+        </div>
     `;
   }
 
