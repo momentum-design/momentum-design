@@ -471,7 +471,6 @@ class Popover extends FocusTrapMixin(Component) {
       if (popoverStack.peek() !== this) {
         popoverStack.push(this);
       }
-      this.enabledFocusTrap = this.focusTrap;
       this.enabledPreventScroll = this.preventScroll;
 
       if (this.backdrop) {
@@ -598,7 +597,7 @@ class Popover extends FocusTrapMixin(Component) {
     if (this.visible && this.interactive) {
       // Wait for the first update to complete before setting focusable elements
       await this.updateComplete;
-      this.setFocusableElements?.();
+      this.activateFocusTrap?.();
       this.setInitialFocus?.();
     }
   }

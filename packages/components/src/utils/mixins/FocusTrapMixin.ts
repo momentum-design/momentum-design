@@ -1,28 +1,40 @@
 /* eslint-disable max-classes-per-file */
 import { property } from 'lit/decorators.js';
+import type { PropertyValues } from 'lit';
+import type { Component } from '../../models';
 import type { Constructor } from './index.types';
 
-export declare class FocusTrapClassInterface {
-  enabledFocusTrap: boolean;
+export declare abstract class FocusTrapClassInterface {
+  protected abstract focusTrap: boolean;
 
   enabledPreventScroll: boolean;
 
-  setFocusableElements(): void;
+  setInitialFocus(elementIndexToReceiveFocus?: number): void;
 
-  setInitialFocus(prefferableElement?: number): void;
+  activateFocusTrap(): void;
 
   deactivateFocusTrap(): void;
 }
 
-export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T) => {
-  class FocusTrap extends superClass {
+export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) => {
+  abstract class FocusTrap extends superClass {
     /**
      * Determines whether the focus trap is enabled.
      * If true, focus will be restricted to the content within this component.
+     *
      * @default false
      */
-    @property({ type: Boolean })
-    enabledFocusTrap: boolean = false;
+    protected abstract focusTrap: boolean;
+
+    /**
+     * Determines whether focus should wrap around when reaching the first or last focusable element.
+     * If true, focus will cycle from end to start and vice versa.
+     *
+     * This only applies when `enabledFocusTrap` is true.
+     * @default true
+     */
+    @property({ type: Boolean, reflect: true, attribute: 'should-focus-trap-wrap' })
+    shouldFocusTrapWrap: boolean = true;
 
     /**
      * Prevent outside scrolling when element is shown.
@@ -37,20 +49,51 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
     /** @internal */
     private focusableElements: HTMLElement[] = [];
 
-    shouldWrapFocus: () => boolean = () => true;
+    /** @internal */
+    private isFocusTrapActivated: boolean = false;
 
-    constructor(...args: any[]) {
-      super(...args);
-      this.addEventListener('keydown', this.handleKeydown);
+    override connectedCallback() {
+      super.connectedCallback();
+
+      document.addEventListener('keydown', this.handleTabKeydown.bind(this));
+    }
+
+    override disconnectedCallback() {
+      super.disconnectedCallback();
+
+      document.removeEventListener('keydown', this.handleTabKeydown.bind(this));
+    }
+
+    protected override async updated(changedProperties: PropertyValues) {
+      super.updated(changedProperties);
+
+      if (changedProperties.has('focusTrap')) {
+        if (!this.focusTrap) {
+          this.deactivateFocusTrap();
+        }
+      }
+    }
+
+    /**
+     * Activate the focus trap
+     * This calculates the focusable elements within the component's shadow root
+     */
+    public activateFocusTrap() {
+      if (this.focusTrap) {
+        this.isFocusTrapActivated = true;
+        this.setFocusableElements();
+      }
     }
 
     /**
      * Deactivate the focus trap.
      */
     public deactivateFocusTrap() {
-      this.enabledFocusTrap = false;
-      this.enabledPreventScroll = false;
+      this.isFocusTrapActivated = false;
       this.focusTrapIndex = -1;
+
+      // todo: this should not override the body overflow style, but reset it instead
+      this.enabledPreventScroll = false;
       document.body.style.overflow = '';
     }
 
@@ -234,18 +277,18 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
     /**
      * Sets the initial focus within the container.
      *
-     * @param prefferableElement - The index of the preferable element to focus.
+     * @param elementIndexToReceiveFocus - The index of the preferable element to focus.
      */
-    public setInitialFocus(prefferableElement: number = 0) {
+    public setInitialFocus(elementIndexToReceiveFocus: number = 0) {
       if (this.focusableElements.length === 0) return;
 
       if (this.enabledPreventScroll) {
         document.body.style.overflow = 'hidden';
       }
 
-      if (this.focusableElements[prefferableElement]) {
-        this.focusTrapIndex = prefferableElement;
-        this.focusableElements[prefferableElement].focus();
+      if (this.focusableElements[elementIndexToReceiveFocus]) {
+        this.focusTrapIndex = elementIndexToReceiveFocus;
+        this.focusableElements[elementIndexToReceiveFocus].focus();
       }
     }
 
@@ -258,7 +301,6 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
      */
     private calculateNextIndex(currentIndex: number, step: number) {
       const { length } = this.focusableElements;
-      const wrapFocus = this.shouldWrapFocus();
 
       if (currentIndex === -1) {
         return step > 0 ? 0 : length - 1;
@@ -266,7 +308,8 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
 
       let nextIndex = currentIndex + step;
 
-      if (wrapFocus) {
+      console.log(this.shouldFocusTrapWrap, nextIndex, length);
+      if (this.shouldFocusTrapWrap) {
         if (nextIndex < 0) nextIndex = length - 1;
         if (nextIndex >= length) nextIndex = 0;
       } else {
@@ -322,8 +365,9 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
      * If true, the focus will be trapped in the previous element.
      */
     private trapFocus(direction: boolean) {
-      if (this.focusableElements.length === 0) return;
-
+      if (this.focusableElements.length === 0) {
+        return;
+      }
       const activeElement = this.getDeepActiveElement!() as HTMLElement;
       const activeIndex = this.findElement(activeElement);
 
@@ -344,8 +388,8 @@ export const FocusTrapMixin = <T extends Constructor<HTMLElement>>(superClass: T
      *
      * @param event - The keyboard event.
      */
-    private handleKeydown(event: KeyboardEvent) {
-      if (!this.enabledFocusTrap || !this.focusableElements.length) {
+    private handleTabKeydown(event: KeyboardEvent) {
+      if (!this.isFocusTrapActivated || !this.focusableElements.length) {
         return;
       }
 

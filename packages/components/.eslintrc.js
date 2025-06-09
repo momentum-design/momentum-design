@@ -12,5 +12,13 @@ module.exports = {
     'import/no-unresolved': ['error', { ignore: ['dist'] }],
     'json/*': 'off',
   },
+  overrides: [
+    {
+      files: ['src/utils/mixins/**/*.ts'],
+      rules: {
+        'max-classes-per-file': 'off',
+      }
+    }
+  ],
   ignorePatterns: [...config.ignorePatterns, '.eslintrc.js', 'prettier.config.js', '*.png', '*.css', 'tsdoc.json', '*.mdx'],
 };

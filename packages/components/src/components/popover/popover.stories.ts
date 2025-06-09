@@ -20,6 +20,7 @@ const createPopover = (args: Args, content: TemplateResult) => html`
     .offset="${args.offset ?? 0}"
     ?interactive=${args.interactive}
     ?focus-trap=${args['focus-trap']}
+    ?should-focus-trap-wrap=${args['should-focus-trap-wrap']}
     ?show-arrow=${args['show-arrow']}
     color=${args.color}
     ?flip=${args.flip}
@@ -249,6 +250,9 @@ const meta: Meta = {
       control: 'boolean',
     },
     'focus-trap': {
+      control: 'boolean',
+    },
+    'should-focus-trap-wrap': {
       control: 'boolean',
     },
     'prevent-scroll': {
