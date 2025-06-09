@@ -51,6 +51,7 @@ import ScreenreaderAnnouncer from './components/screenreaderannouncer';
 import Searchfield from './components/searchfield';
 import Select from './components/select';
 import SideNavigation from './components/sidenavigation';
+import Skeleton from './components/skeleton';
 import Spinner from './components/spinner';
 import StaticCheckbox from './components/staticcheckbox';
 import StaticRadio from './components/staticradio';
@@ -69,6 +70,7 @@ import VirtualizedList from './components/virtualizedlist';
 import type { BadgeType } from './components/badge/badge.types';
 import type { ButtonColor, ButtonVariant, IconButtonSize, PillButtonSize } from './components/button/button.types';
 import type { PopoverPlacement } from './components/popover/popover.types';
+import type { SkeletonType } from './components/skeleton/skeleton.types';
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
 import type { TextType } from './components/text/text.types';
 import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
@@ -80,6 +82,7 @@ import {
   ICON_BUTTON_SIZES,
   PILL_BUTTON_SIZES,
 } from './components/button/button.constants';
+import { SKELETON_TYPES } from './components/skeleton/skeleton.constants';
 
 // Components Exports
 export {
@@ -134,6 +137,7 @@ export {
   Searchfield,
   Select,
   SideNavigation,
+  Skeleton,
   Spinner,
   StaticCheckbox,
   StaticRadio,
@@ -154,6 +158,7 @@ export type {
   TextType,
   SpinnerSize,
   SpinnerVariant,
+  SkeletonType,
   PopoverPlacement,
   BadgeType,
   IconButtonSize,
@@ -162,4 +167,12 @@ export type {
   ButtonColor,
 };
 // Constants / Utils Exports
-export { inMemoryCache, webAPIIconsCache, BUTTON_COLORS, BUTTON_VARIANTS, ICON_BUTTON_SIZES, PILL_BUTTON_SIZES };
+export {
+  inMemoryCache,
+  webAPIIconsCache,
+  BUTTON_COLORS,
+  BUTTON_VARIANTS,
+  ICON_BUTTON_SIZES,
+  PILL_BUTTON_SIZES,
+  SKELETON_TYPES,
+};
