@@ -99,8 +99,12 @@ export class PopoverUtils {
    * Sets up the accessibility attributes for the popover.
    */
   setupAccessibility() {
-    if (this.popover.interactive) {
+    if (this.popover.role === 'dialog' || this.popover.role === 'alertdialog') {
       this.popover.setAttribute('aria-modal', 'true');
+    } else {
+      this.popover.removeAttribute('aria-modal');
+    }
+    if (this.popover.interactive) {
       if (!this.popover.ariaLabel) {
         this.popover.ariaLabel = this.popover.triggerElement?.ariaLabel
         || this.popover.triggerElement?.textContent
@@ -109,8 +113,6 @@ export class PopoverUtils {
       if (!this.popover.ariaLabelledby) {
         this.popover.ariaLabelledby = this.popover.triggerElement?.id || '';
       }
-    } else {
-      this.popover.removeAttribute('aria-modal');
     }
   }
 
