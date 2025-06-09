@@ -357,7 +357,7 @@ class Popover extends FocusTrapMixin(Component) {
     this.removeEventListener('mouseleave', this.startCloseDelay);
     this.triggerElement.removeEventListener('focusin', this.showPopover);
     this.triggerElement.removeEventListener('focusout', this.hidePopover);
-    hoverBridge?.removeEventListener('mouseenter', this.cancelCloseDelay);
+    hoverBridge?.removeEventListener('mouseenter', this.showPopover);
 
     this.removeEventListener('focus-trap-exit', this.hidePopover);
   }
