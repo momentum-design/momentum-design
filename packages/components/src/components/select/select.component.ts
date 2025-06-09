@@ -11,7 +11,7 @@ import { TAG_NAME as OPTION_GROUP_TAG_NAME } from '../optgroup/optgroup.constant
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
-import { ARROW_ICON } from './select.constants';
+import { ARROW_ICON, TRIGGER_ID } from './select.constants';
 import styles from './select.styles';
 import type { ArrowIcon } from './select.types';
 
@@ -494,7 +494,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    <div role="listbox">
       <mdc-popover
         id="options-popover"
-        triggerid="select-base-triggerid"
+        triggerid="${TRIGGER_ID}"
         @keydown="${this.handlePopoverOnOpen}"
         interactive
         ?visible="${this.displayPopover}"
@@ -534,7 +534,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       ${this.renderLabel()}
       <div part="container">
         <div
-          id="select-base-triggerid"
+          id="${TRIGGER_ID}"
           part="base-container"
           @keydown="${this.handlePopoverOnClose}"
           tabindex="${this.disabled ? '-1' : '0'}"
