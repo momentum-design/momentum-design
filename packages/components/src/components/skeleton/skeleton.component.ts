@@ -23,6 +23,10 @@ import type { SkeletonVariant } from './skeleton.types';
  * @tagname mdc-skeleton
  *
  * @slot - Content to wrap (optional). When provided, skeleton takes dimensions of this content.
+ *
+ * @cssproperty --mdc-skeleton-background-color - background color of the skeleton
+ * @cssproperty --mdc-skeleton-height - height of the skeleton
+ * @cssproperty --mdc-skeleton-width - width of the skeleton
  */
 class Skeleton extends Component {
   /**
