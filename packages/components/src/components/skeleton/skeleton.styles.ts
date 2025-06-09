@@ -7,6 +7,7 @@ const styles = css`
     overflow: hidden;
   }
 
+
   :host([type="rectangular"]) {
     border-radius: 0.25rem;
   }
@@ -20,27 +21,30 @@ const styles = css`
   }
 
   :host([type="text"]) {
+    // height: 1rem;
     border-radius: 0.25rem;
-    height: 1rem;
   }
 
-  /* When width or height are explicitly set via CSS custom properties */
-  :host([style*="--skeleton-width"]) {
+  /* Explicit width/height attributes take highest priority */
+  :host([data-width]) {
     width: var(--skeleton-width);
   }
 
-  :host([style*="--skeleton-height"]) {
+  :host([data-height]) {
     height: var(--skeleton-height);
   }
 
-  /* Fallback sizing when no explicit dimensions and no content */
-  :host(:not([style*="--skeleton-width"]):not([style*="--skeleton-height"])) {
+  /* Default sizing when no explicit dimensions */
+  :host(:not([data-width])) {
     width: 100%;
+  }
+
+  :host(:not([data-height])) {
     height: 100%;
   }
 
-  /* Override for text type default height when no explicit height is set */
-  :host([type="text"]:not([style*="--skeleton-height"])) {
+  /* Special case: text type defaults to 1rem height when no explicit height */
+  :host([type="text"]:not([data-height])) {
     height: 1rem;
   }
 

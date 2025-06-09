@@ -25,9 +25,6 @@ import type { SkeletonType } from './skeleton.types';
  * @tagname mdc-skeleton
  *
  * @slot - Content to wrap (optional). When provided, skeleton takes dimensions of this content.
- *
- * @cssproperty --skeleton-width - Explicit width override
- * @cssproperty --skeleton-height - Explicit height override
  */
 class Skeleton extends Component {
   /**
@@ -58,12 +55,15 @@ class Skeleton extends Component {
   /**
    * Styles associated with this component.
    */
-  public static override styles: Array<CSSResult> = [...Component.styles, styles];
+  public static override styles: Array<CSSResult> = [
+    ...Component.styles,
+    styles,
+  ];
 
   protected override updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
 
-    // Apply width and height as CSS custom properties when they change
+    // Set width and height as attributes when they change
     if (changedProperties.has('width') || changedProperties.has('height')) {
       this.updateDimensions();
     }
@@ -71,14 +71,18 @@ class Skeleton extends Component {
 
   private updateDimensions(): void {
     if (this.width) {
+      this.setAttribute('data-width', this.width);
       this.style.setProperty('--skeleton-width', this.width);
     } else {
+      this.removeAttribute('data-width');
       this.style.removeProperty('--skeleton-width');
     }
 
     if (this.height) {
+      this.setAttribute('data-height', this.height);
       this.style.setProperty('--skeleton-height', this.height);
     } else {
+      this.removeAttribute('data-height');
       this.style.removeProperty('--skeleton-height');
     }
   }
