@@ -121,10 +121,10 @@ export class PopoverUtils {
    */
   updateAriaHasPopupAttribute() {
     if (this.popover.interactive) {
-      this.popover.triggerElement?.setAttribute(
-        'aria-haspopup',
-        this.popover.triggerElement?.getAttribute('aria-haspopup') || 'dialog',
-      );
+      const hasPopup = this.popover.triggerElement?.getAttribute('aria-haspopup');
+      if (!hasPopup) {
+        this.popover.triggerElement?.setAttribute('aria-haspopup', 'dialog');
+      }
     } else {
       this.popover.triggerElement?.removeAttribute('aria-haspopup');
     }
@@ -198,7 +198,6 @@ export class PopoverUtils {
     if (!this.popover.backdropElement) {
       const backdrop = document.createElement('div');
       backdrop.classList.add('popover-backdrop');
-      this.popover.parentElement?.appendChild(backdrop);
 
       const styleElement = document.createElement('style');
       styleElement.textContent = `
@@ -213,6 +212,7 @@ export class PopoverUtils {
         }
       `;
       backdrop.appendChild(styleElement);
+      this.popover.parentElement?.appendChild(backdrop);
       this.popover.backdropElement = backdrop;
     }
   }
