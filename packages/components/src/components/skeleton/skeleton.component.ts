@@ -90,10 +90,23 @@ class Skeleton extends Component {
   protected override firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
     this.updateDimensions();
+    this.checkSlotContent();
+  }
+
+  private checkSlotContent(): void {
+    const slot = this.shadowRoot?.querySelector('slot');
+    if (slot) {
+      const hasContent = slot.assignedNodes().length > 0;
+      if (hasContent) {
+        this.setAttribute('has-content', '');
+      } else {
+        this.removeAttribute('has-content');
+      }
+    }
   }
 
   protected override render() {
-    return html`<slot></slot>`;
+    return html`<slot @slotchange=${this.checkSlotContent}></slot>`;
   }
 }
 

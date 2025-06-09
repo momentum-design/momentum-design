@@ -7,7 +7,6 @@ const styles = css`
     overflow: hidden;
   }
 
-
   :host([type="rectangular"]) {
     border-radius: 0.25rem;
   }
@@ -35,12 +34,22 @@ const styles = css`
   }
 
   /* Default sizing when no explicit dimensions */
-  :host(:not([data-width])) {
+  /* Default to 100% to fill parent when no content */
+  :host(:not([data-width]):not([has-content])) {
     width: 100%;
   }
 
-  :host(:not([data-height])) {
+  :host(:not([data-height]):not([has-content])) {
     height: 100%;
+  }
+
+  /* When there's slotted content, fit to content size */
+  :host(:not([data-width])[has-content]) {
+    width: fit-content;
+  }
+
+  :host(:not([data-height])[has-content]) {
+    height: fit-content;
   }
 
   /* Special case: text type defaults to 1rem height when no explicit height */
