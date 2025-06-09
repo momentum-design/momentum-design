@@ -48,9 +48,7 @@ const styles = css`
     height: 1rem;
   }
 
-  .skeleton-content {
-    width: 100%;
-    height: 100%;
+  ::slotted(*) {
     visibility: hidden;
   }
 `;

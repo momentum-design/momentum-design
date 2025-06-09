@@ -93,11 +93,7 @@ class Skeleton extends Component {
   }
 
   protected override render() {
-    return html`
-      <div class="skeleton-content">
-        <slot></slot>
-      </div>
-    `;
+    return html`<slot></slot>`;
   }
 }
 
