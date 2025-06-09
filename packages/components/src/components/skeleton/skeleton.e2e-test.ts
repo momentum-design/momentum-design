@@ -1,71 +1,80 @@
-import { expect, test } from '@playwright/test';
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
+import { expect } from '@playwright/test';
+import { ComponentsPage, test } from '../../../config/playwright/setup';
+import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { SKELETON_VARIANTS } from './skeleton.constants';
+import type { SkeletonVariant } from './skeleton.types';
 
-const storyUrl = (storyId: string) => `/iframe.html?args=&id=components-skeleton--${storyId}&viewMode=story`;
+type SetupOptions = {
+  componentsPage: ComponentsPage;
+  variant?: SkeletonVariant;
+  withContent?: boolean;
+};
 
-test.describe('mdc-skeleton', () => {
-  test('should render skeleton with default properties', async ({ page }) => {
-    await page.goto(storyUrl('default'));
+const setup = async (args: SetupOptions) => {
+  const { componentsPage, ...restArgs } = args;
 
-    const skeleton = page.locator('mdc-skeleton');
-    await expect(skeleton).toBeVisible();
-    await expect(skeleton).toHaveAttribute('variant', 'rectangular');
+  let html = `<mdc-skeleton ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}`;
+  html += '>';
+
+  if (restArgs.withContent) {
+    html += '<div style="padding: 20px; width: 150px; height: 50px;">Content</div>';
+  }
+
+  html += '</mdc-skeleton>';
+
+  await componentsPage.mount({
+    html,
+    clearDocument: true,
   });
 
-  test('should render different skeleton variants', async ({ page }) => {
-    await page.goto(storyUrl('variants'));
+  const skeleton = componentsPage.page.locator('mdc-skeleton');
+  await skeleton.waitFor();
+  return skeleton;
+};
 
-    const rectangular = page.locator('mdc-skeleton[variant="rectangular"]');
-    const rounded = page.locator('mdc-skeleton[variant="rounded"]');
-    const circular = page.locator('mdc-skeleton[variant="circular"]');
-    const button = page.locator('mdc-skeleton[variant="button"]');
+test('mdc-skeleton', async ({ componentsPage }) => {
+  const skeletonStickerSheet = new StickerSheet(componentsPage, 'mdc-skeleton');
+  await skeletonStickerSheet.createMarkupWithCombination({ variant: SKELETON_VARIANTS });
+  await skeletonStickerSheet.mountStickerSheet();
+  const container = skeletonStickerSheet.getWrapperContainer();
 
-    await expect(rectangular).toBeVisible();
-    await expect(rounded).toBeVisible();
-    await expect(circular).toBeVisible();
-    await expect(button).toBeVisible();
+  /**
+   * ACCESSIBILITY
+   */
+  await test.step('accessibility', async () => {
+    await componentsPage.accessibility.checkForA11yViolations('skeleton-variants');
   });
 
-  test('should have proper background color', async ({ page }) => {
-    await page.goto(storyUrl('default'));
+  /**
+   * VISUAL REGRESSION
+   */
+  await test.step('visual-regression', async () => {
+    await test.step('matches screenshot of skeleton variants stickersheet', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-skeleton-variants', { element: container });
+    });
 
-    const skeleton = page.locator('mdc-skeleton');
-    const backgroundColor = await skeleton.evaluate((el) =>
-      getComputedStyle(el).backgroundColor);
-
-    // Should have the skeleton background color variable applied
-    expect(backgroundColor).toBeTruthy();
+    await test.step('matches screenshot of skeleton variants stickersheet with content', async () => {
+      const skeleton = await setup({
+        componentsPage,
+        variant: SKELETON_VARIANTS.RECTANGULAR,
+        withContent: true,
+      });
+      await componentsPage.visualRegression.takeScreenshot('mdc-skeleton-with-content', { element: skeleton });
+    });
   });
 
-  test('should wrap content when provided', async ({ page }) => {
-    await page.goto(storyUrl('with-content'));
-
-    const skeletonWithContent = page.locator('mdc-skeleton').nth(1);
-    const button = skeletonWithContent.locator('button');
-
-    await expect(button).toBeVisible();
-    await expect(button).toHaveText('Click me');
-  });
-
-  test('should apply proper border radius for different variants', async ({ page }) => {
-    await page.goto(storyUrl('variants'));
-
-    const rectangular = page.locator('mdc-skeleton[variant="rectangular"]');
-    const rounded = page.locator('mdc-skeleton[variant="rounded"]');
-    const circular = page.locator('mdc-skeleton[variant="circular"]');
-    const button = page.locator('mdc-skeleton[variant="button"]');
-
-    const rectangularRadius = await rectangular.evaluate((el) =>
-      getComputedStyle(el).borderRadius);
-    const roundedRadius = await rounded.evaluate((el) =>
-      getComputedStyle(el).borderRadius);
-    const circularRadius = await circular.evaluate((el) =>
-      getComputedStyle(el).borderRadius);
-    const buttonRadius = await button.evaluate((el) =>
-      getComputedStyle(el).borderRadius);
-
-    expect(rectangularRadius).toBe('4px'); // 0.25rem
-    expect(roundedRadius).toBe('8px'); // 0.5rem
-    expect(circularRadius).toBe('50%');
-    expect(buttonRadius).toBe('20px'); // 1.25rem
+  /**
+   * ATTRIBUTES
+   */
+  await test.step('attributes', async () => {
+    // Test all variants
+    for (const variant of Object.values(SKELETON_VARIANTS)) {
+      await test.step(`attribute variant ${variant} should be present as expected`, async () => {
+        const skeleton = await setup({ componentsPage, variant });
+        await expect(skeleton).toHaveAttribute('variant', variant);
+      });
+    }
   });
 });

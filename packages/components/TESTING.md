@@ -51,7 +51,7 @@ For the best local development experience, the following E2E setup testing is re
      yarn components test:e2e:serve # setup server on localhost:4000
    ```
 
-3. Open another terminal, now you can start run the test:
+3. Open another terminal, now you can start the test:
 
    ```bash
      yarn components test:e2e:skip-snapshot # without snapshot 
@@ -70,10 +70,10 @@ For the best local development experience, the following E2E setup testing is re
      yarn components test:e2e:skip-snapshot XXX.e2e-test.ts # without snapshot
    ```
 
-5. To Run **individual** test in a testing file, run:
+5. To Run **individual** test case in a test file, run:
 
    ```bash
-     yarn components test:e2e:skip-snapshot -- './src/components/iconprovider/iconprovider.e2e-test.ts' -g 'mdc-IconmProvider nested'
+     yarn components test:e2e:skip-snapshot -- './src/components/iconprovider/iconprovider.e2e-test.ts' -g 'mdc-IconProvider nested'
    ```
 
     * where the test file is `"./src/components/iconprovider/iconprovider.e2e-test.ts"`, while within the file, the test naming structure is `mdc-IconmProvider nested`.
