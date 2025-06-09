@@ -1,0 +1,219 @@
+{/* menupopover.accessibility.stories.mdx */}
+import { Meta, Title, Primary, Controls } from '@storybook/blocks';
+
+import MenuPopoverStories from './menupopover.stories';
+
+<Meta of={MenuPopoverStories} name="User Stories" />
+
+## Feature: MenuPopover Accessibility and User Interaction
+
+    ### ✅ Basic Rendering
+
+    **Scenario: Display menupopover trigger on page load**
+    > Given I am a user on the home page  
+    > Then I should see a menupopover trigger button on the screen  
+
+    ### ✅ Opening the menupopover
+
+    **Scenario: Open the popover using mouse**
+    > Given the menupopover is closed  
+    > When I click on the trigger button with the mouse  
+    > Then the menupopover should open and display a list of menu items  
+
+    **Scenario: Open the popover using keyboard**
+    > Given the menupopover is closed  
+    > When I navigate to the trigger button using the keyboard (pressing Tab)  
+    > And I press the "Enter", "Space", or "ArrowDown" key  
+    > Then the menupopover should open and display a list of menu items  
+
+    ### ✅ Closing the menupopover
+
+    **Scenario: Close the popover by clicking outside**
+    > Given the menupopover is open  
+    > When I click anywhere outside the menupopover  
+    > Then the menupopover should close  
+
+    **Scenario: Close the popover using Escape key**
+    > Given the menupopover is open  
+    > When I press the "Escape" key  
+    > Then the menupopover should close  
+
+    **Scenario: Close the popover using keyboard navigation**
+    > Given the menupopover is open  
+    > And focus is on a menu item  
+    > When I press "Tab" to move focus outside the menu  
+    > Then the menupopover should close  
+
+    ### ✅ Selecting Menu Items
+
+    **Scenario: Select menu item using mouse**
+    > Given the menupopover is open  
+    > When I click on a menu item  
+    > Then the item’s associated action should be triggered  
+    > And the menupopover should close  
+
+    **Scenario: Select menu item using keyboard**
+    > Given the menupopover is open  
+    > And focus is on a menu item  
+    > When I press "Enter" or "Space"  
+    > Then the item’s associated action should be triggered  
+    > And the menupopover should close  
+
+    **Scenario: Disabled menu items are non-interactive using mouse**
+    > Given the menu popover is open  
+    > And a menu item is visually disabled  
+    > When I click on the disabled item  
+    > Then the item should not trigger any action  
+    > And the popover should remain open  
+
+    **Scenario: Disabled menu items are non-interactive using keyboard**
+    > Given the menu popover is open  
+    > And a menu item is visually disabled  
+    > When I navigate using the keyboard  
+    > Then keyboard navigation should skip the disabled item  
+    > And the item should not trigger any action  
+    > And the popover should remain open  
+
+    ### ✅ Keyboard Navigation
+
+    **Scenario: Navigate menu items using Home and End keys**
+    > Given the menupopover is open  
+    > And focus is on a menu item  
+    > When I press the "Home" key  
+    > Then focus should move to the first menu item  
+    > When I press the "End" key  
+    > Then focus should move to the last menu item  
+
+    **Scenario: Typeahead to focus matching menu item**
+    > Given the menupopover is open  
+    > And the list contains items with visible labels  
+    > When I press a letter key  
+    > Then focus should move to the next menu item that starts with that letter  
+
+    **Scenario: Navigate menu items using arrow keys**
+    > Given the menupopover is open  
+    > And focus is on a menu item  
+    > When I press the "ArrowDown" key  
+    > Then focus should move to the next menu item  
+
+    **Scenario: Loop focus within menu items**
+    > Given the menupopover is open  
+    > And focus is on the last menu item  
+    > When I press the "ArrowDown" key  
+    > Then focus should move to the first menu item  
+
+    **Scenario: Move focus upward using arrow keys**
+    > Given the menupopover is open  
+    > And focus is on a menu item  
+    > When I press the "ArrowUp" key  
+    > Then focus should move to the previous menu item  
+
+    ### ✅ Nested Submenus
+
+    **Scenario: Open nested submenu with mouse**
+    > Given the menupopover is open  
+    > And a menu item contains a nested submenu  
+    > When I hover over or click on that item  
+    > Then a nested submenu should appear adjacent to the parent item  
+
+    **Scenario: Open nested submenu using keyboard**
+    > Given the menupopover is open  
+    > And a menu item contains a nested submenu  
+    > When I focus the item and press "Right Arrow", "Enter", or "Space"  
+    > Then the nested submenu should open  
+    > And focus should move to the first item in the nested submenu  
+
+    **Scenario: Navigate back from nested submenu using keyboard**
+    > Given a nested submenu is open  
+    > When I press the "Left Arrow" or "Escape" key  
+    > Then the nested submenu should close  
+    > And focus should return to the parent menu item  
+
+    **Scenario: Nested menu item selection using mouse or keyboard**
+    > Given a nested submenu is open  
+    > When I select a nested item by clicking or pressing "Enter"  
+    > Then the nested submenu should close  
+    > And the associated action should be triggered  
+    > And all parent popovers should close  
+
+    **Scenario: Focus loop within nested submenu**
+    > Given a nested submenu is open  
+    > And focus is on the last item  
+    > When I press the "ArrowDown" key  
+    > Then focus should cycle to the first item in the submenu  
+
+    ### ✅ Separator and Group Handling
+
+    **Scenario: Skipping separator during navigation**
+    > Given the menupopover is open  
+    > And the menu includes visual separators between items  
+    > When I navigate with arrow keys  
+    > Then focus should skip over the separator and move to the next focusable item  
+
+    **Scenario: Grouped menu items have headings**  (open for discussion)
+    > Given the menupopover includes logical groups of menu items  
+    > Then each group should be introduced with a visible or screen-reader accessible heading  
+    > And focus should move between items normally across groups  
+
+    ### ✅ Menu Item Types (open for discussion)
+
+    **Scenario: Toggle menuitemcheckbox using mouse**
+    > Given the menupopover is open  
+    > And a menu item is a checkbox option  
+    > When I click on the menuitemcheckbox  
+    > Then its state should toggle between checked and unchecked  
+    > And the popover should remain open  
+
+    **Scenario: Toggle menuitemcheckbox using keyboard**
+    > Given the menupopover is open  
+    > And focus is on a menuitemcheckbox  
+    > When I press "Enter" or "Space"  
+    > Then its state should toggle between checked and unchecked  
+    > And the popover should remain open  
+
+    **Scenario: Select one menuitemradio from a group using mouse**
+    > Given the menupopover is open  
+    > And a group of menuitemradio options is present  
+    > When I click on one of the radio items  
+    > Then that item should be selected  
+    > And all other items in the same group should be deselected  
+    > And the popover should remain open  
+
+    **Scenario: Select one menuitemradio from a group using keyboard**
+    > Given the menupopover is open  
+    > And focus is on a menuitemradio in a group  
+    > When I press "Enter" or "Space"  
+    > Then that item should be selected  
+    > And all other items in the group should be deselected  
+    > And the popover should remain open  
+
+    ### ✅ Focus Behavior
+
+    **Scenario: Focus moves to first menu item on open**
+    > Given the menupopover is closed  
+    > When I open it using keyboard  
+    > Then focus should move to the first focusable menu item inside the popover  
+
+    **Scenario: Escape key closes nested submenus step-by-step**
+    > Given I have navigated into a nested submenu  
+    > When I press the "Escape" key  
+    > Then only the currently open submenu should close  
+    > And focus should return to the parent menu item  
+    > And pressing Escape again should continue closing menus upward  
+
+    ### ✅ Accessibility
+
+    **Scenario: Menupopover has correct ARIA roles**
+    > Given the menupopover is rendered on the page  
+    > Then the trigger should have aria-haspopup="true"  
+    > And the popover panel should have role="menu"  
+    > And each menu item should have role="menuitem"  
+
+    **Scenario: Trigger(button or menuitem) is labeled for screen readers**
+    > Given the trigger is focused  
+    > Then the screen reader should read out the text label or aria-label (if available)  
+
+    **Scenario: Screenreader focus is managed correctly**
+    > Given I open the menupopover using keyboard  
+    > Then focus should move to the first focusable menu item  
+    > And When the popover closes, focus should return to the trigger element  
