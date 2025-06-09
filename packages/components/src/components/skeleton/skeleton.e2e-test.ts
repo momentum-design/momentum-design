@@ -37,10 +37,9 @@ test.describe('mdc-skeleton', () => {
     await page.goto(storyUrl('default'));
 
     const skeleton = page.locator('mdc-skeleton');
-    const backgroundColor = await skeleton.evaluate((el) => 
-      getComputedStyle(el).backgroundColor
-    );
-    
+    const backgroundColor = await skeleton.evaluate((el) =>
+      getComputedStyle(el).backgroundColor);
+
     // Should have the skeleton background color variable applied
     expect(backgroundColor).toBeTruthy();
   });
@@ -50,7 +49,7 @@ test.describe('mdc-skeleton', () => {
 
     const skeletonWithContent = page.locator('mdc-skeleton').nth(1);
     const button = skeletonWithContent.locator('button');
-    
+
     await expect(button).toBeVisible();
     await expect(button).toHaveText('Click me');
   });
@@ -63,18 +62,14 @@ test.describe('mdc-skeleton', () => {
     const circular = page.locator('mdc-skeleton[type="circular"]');
     const text = page.locator('mdc-skeleton[type="text"]');
 
-    const rectangularRadius = await rectangular.evaluate((el) => 
-      getComputedStyle(el).borderRadius
-    );
-    const roundedRadius = await rounded.evaluate((el) => 
-      getComputedStyle(el).borderRadius
-    );
-    const circularRadius = await circular.evaluate((el) => 
-      getComputedStyle(el).borderRadius
-    );
-    const textRadius = await text.evaluate((el) => 
-      getComputedStyle(el).borderRadius
-    );
+    const rectangularRadius = await rectangular.evaluate((el) =>
+      getComputedStyle(el).borderRadius);
+    const roundedRadius = await rounded.evaluate((el) =>
+      getComputedStyle(el).borderRadius);
+    const circularRadius = await circular.evaluate((el) =>
+      getComputedStyle(el).borderRadius);
+    const textRadius = await text.evaluate((el) =>
+      getComputedStyle(el).borderRadius);
 
     expect(rectangularRadius).toBe('4px'); // 0.25rem
     expect(roundedRadius).toBe('8px'); // 0.5rem
@@ -87,11 +82,10 @@ test.describe('mdc-skeleton', () => {
 
     const textSkeletons = page.locator('mdc-skeleton[type="text"]');
     const firstTextSkeleton = textSkeletons.first();
-    
-    const height = await firstTextSkeleton.evaluate((el) => 
-      getComputedStyle(el).height
-    );
-    
+
+    const height = await firstTextSkeleton.evaluate((el) =>
+      getComputedStyle(el).height);
+
     expect(height).toBe('16px'); // 1rem
   });
 });
