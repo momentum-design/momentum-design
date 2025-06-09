@@ -62,7 +62,7 @@ class Skeleton extends Component {
 
   protected override updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
-    
+
     // Apply width and height as CSS custom properties when they change
     if (changedProperties.has('width') || changedProperties.has('height')) {
       this.updateDimensions();

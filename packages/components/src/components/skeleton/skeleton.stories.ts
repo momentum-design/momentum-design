@@ -15,6 +15,40 @@ const render = (args: Args) => html`
 ></mdc-skeleton>
 `;
 
+const renderWithContent = (args: Args) => html`
+<div style="display: flex; gap: 20px;">
+  <div>
+    <p>Normal content:</p>
+    <button style="padding: 10px 20px;">Click me</button>
+  </div>
+  <div>
+    <p>Skeleton wrapping content:</p>
+    <mdc-skeleton
+      type="${args.type}"
+      class="${args.class}"
+      style="${args.style}"
+    >
+      <button style="padding: 10px 20px;">Click me</button>
+    </mdc-skeleton>
+  </div>
+</div>
+`;
+
+const renderResponsive = (args: Args) => html`
+<div style="width: 100%; max-width: 400px; height: 200px; border: 2px dashed #ccc; position: relative;">
+  <p style="position: absolute; top: -20px; left: 0; margin: 0; font-size: 12px;">
+    Container (400px max-width, 200px height)
+  </p>
+  <mdc-skeleton
+    type="${args.type}"
+    width="${args.width}"
+    height="${args.height}"
+    class="${args.class}"
+    style="${args.style}"
+  ></mdc-skeleton>
+</div>
+`;
+
 const meta: Meta = {
   title: 'Components/skeleton',
   tags: ['autodocs'],
@@ -81,5 +115,21 @@ export const Text: StoryObj = {
   args: {
     type: SKELETON_TYPES.TEXT,
     width: '200px',
+  },
+};
+
+export const WithContent: StoryObj = {
+  render: renderWithContent,
+  args: {
+    type: SKELETON_TYPES.RECTANGULAR,
+  },
+};
+
+export const ResponsiveContainer: StoryObj = {
+  render: renderResponsive,
+  args: {
+    type: SKELETON_TYPES.RECTANGULAR,
+    width: '100%',
+    height: '100%',
   },
 };
