@@ -227,7 +227,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    * Handles the keydown event on the select element when the popover is open.
    * The options are as follows:
    * - SPACE or ENTER: Selects the currently active option and closes the popover.
-   * - ESCAPE: Closes the popover.
    * - HOME: Sets focus and tabindex on the first option.
    * - END: Sets focus and tabindex on the last option.
    * - ARROW_DOWN, ARROW_UP, PAGE_DOWN, PAGE_UP: Handles navigation between options.
@@ -252,10 +251,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         event.preventDefault();
         // if the popover is closed, then we submit the form.
         this.form?.requestSubmit();
-        break;
-      case KEYS.ESCAPE:
-        this.closePopover();
-        event.stopPropagation();
         break;
       case KEYS.HOME:
         this.setFocusAndTabIndex(0);
@@ -491,7 +486,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       return nothing;
     }
     return html`
-   <div role="listbox">
+   <div role="listbox" aria-labelledby="${TRIGGER_ID}" part="popover-container">
       <mdc-popover
         id="options-popover"
         triggerid="${TRIGGER_ID}"
@@ -499,6 +494,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         interactive
         ?visible="${this.displayPopover}"
         hide-on-outside-click
+        hide-on-escape
         focus-back-to-trigger
         focus-trap
         role="group"
