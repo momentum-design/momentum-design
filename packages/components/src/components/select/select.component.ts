@@ -500,7 +500,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         hide-on-escape
         focus-back-to-trigger
         focus-trap
-        role="${ROLE.DIALOG}"
+        role="${ROLE.LISTBOX}"
         placement="${POPOVER_PLACEMENT.BOTTOM_START}"
         @shown="${this.handlePopoverOpen}"
         @hidden="${this.handlePopoverClose}"
@@ -539,8 +539,8 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           tabindex="${this.disabled ? '-1' : '0'}"
           class="${this.disabled ? '' : 'mdc-focus-ring'}"
           role="${ROLE.COMBOBOX}"
+          aria-haspopup="listbox"
           aria-activedescendant="${ifDefined(this.activeDescendant || undefined)}"
-          aria-haspopup="dialog"
           aria-controls="${(ifDefined(this.displayPopover ? 'options-popover' : undefined))}"
           aria-label="${this.dataAriaLabel ?? ''}"
           aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
