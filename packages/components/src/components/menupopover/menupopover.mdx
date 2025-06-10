@@ -15,6 +15,12 @@ import MenuPopoverStories from './menupopover.stories';
 
     ### ✅ Opening the menupopover
 
+    **Scenario: Clicking disabled trigger does nothing**
+    > Given the menupopover trigger is disabled  
+    > When I try to click on the trigger  
+    > Then nothing should happen  
+    > And the popover should not open  
+
     **Scenario: Open the popover using mouse**
     > Given the menupopover is closed  
     > When I click on the trigger button with the mouse  
@@ -157,21 +163,31 @@ import MenuPopoverStories from './menupopover.stories';
 
     ### ✅ Menu Item Types (open for discussion)
 
-    **Scenario: Toggle menuitemcheckbox using mouse**
+    **Scenario: Toggle checkmark menuitem**  
     > Given the menupopover is open  
-    > And a menu item is a checkbox option  
-    > When I click on the menuitemcheckbox  
-    > Then its state should toggle between checked and unchecked  
+    > And a menu item includes a checkmark to indicate selection  
+    > When I activate the item using mouse or keyboard  
+    > Then its selected state should toggle  
+    > And the checkmark should appear or disappear accordingly  
     > And the popover should remain open  
 
-    **Scenario: Toggle menuitemcheckbox using keyboard**
+    **Scenario: Toggle checkbox menuitem**  
     > Given the menupopover is open  
-    > And focus is on a menuitemcheckbox  
-    > When I press "Enter" or "Space"  
-    > Then its state should toggle between checked and unchecked  
+    > And a menu item renders a visible checkbox  
+    > When I activate the item using mouse or keyboard  
+    > Then the checkbox should toggle between checked and unchecked states  
+    > And the visual checkbox should reflect the current state  
     > And the popover should remain open  
 
-    **Scenario: Select one menuitemradio from a group using mouse**
+    **Scenario: Toggle menuitem with a switch**  
+    > Given the menupopover is open  
+    > And a menu item is displayed as a toggle switch  
+    > When I activate the item using mouse or keyboard  
+    > Then the switch should toggle between on and off states  
+    > And its visual styling should reflect the toggled state  
+    > And the popover should remain open  
+
+    **Scenario: Select one menuitemradio from a group using mouse**  
     > Given the menupopover is open  
     > And a group of menuitemradio options is present  
     > When I click on one of the radio items  
@@ -179,7 +195,7 @@ import MenuPopoverStories from './menupopover.stories';
     > And all other items in the same group should be deselected  
     > And the popover should remain open  
 
-    **Scenario: Select one menuitemradio from a group using keyboard**
+    **Scenario: Select one menuitemradio from a group using keyboard**  
     > Given the menupopover is open  
     > And focus is on a menuitemradio in a group  
     > When I press "Enter" or "Space"  
@@ -193,6 +209,11 @@ import MenuPopoverStories from './menupopover.stories';
     > Given the menupopover is closed  
     > When I open it using keyboard  
     > Then focus should move to the first focusable menu item inside the popover  
+
+    **Scenario: Focus returns to last trigger on close**
+    > Given the menupopover was opened by keyboard  
+    > When I close it using keyboard  
+    > Then focus should return to the trigger element  
 
     **Scenario: Escape key closes nested submenus step-by-step**
     > Given I have navigated into a nested submenu  
