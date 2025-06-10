@@ -438,6 +438,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         part="native-select"
         id="${this.id}"
         tabindex="-1"
+        aria-hidden="true"
         name="${this.name}"
         size="1"
         .value="${this.selectedValue}"
@@ -486,7 +487,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       return nothing;
     }
     return html`
-   <div role="listbox" aria-labelledby="${TRIGGER_ID}" part="popover-container">
       <mdc-popover
         id="options-popover"
         triggerid="${TRIGGER_ID}"
@@ -497,15 +497,15 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         hide-on-escape
         focus-back-to-trigger
         focus-trap
-        role="group"
         placement="${POPOVER_PLACEMENT.BOTTOM_START}"
         @shown="${this.handlePopoverOpen}"
         @hidden="${this.handlePopoverClose}"
         style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
       >
-           <slot @click="${this.handleOptionsClick}"></slot>
+           <slot 
+            role="listbox"
+           @click="${this.handleOptionsClick}"></slot>
           </mdc-popover>
-        </div>
     `;
   }
 
