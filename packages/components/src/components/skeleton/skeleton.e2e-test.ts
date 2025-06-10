@@ -36,9 +36,11 @@ const setup = async (args: SetupOptions) => {
 
 test('mdc-skeleton', async ({ componentsPage }) => {
   const skeletonStickerSheet = new StickerSheet(componentsPage, 'mdc-skeleton');
-  await skeletonStickerSheet.createMarkupWithCombination({ variant: SKELETON_VARIANTS });
+  await skeletonStickerSheet.createMarkupWithCombination(
+    { variant: SKELETON_VARIANTS },
+    { rowWrapperStyle: 'height: 50px' },
+  );
   await skeletonStickerSheet.mountStickerSheet();
-  const container = skeletonStickerSheet.getWrapperContainer();
 
   /**
    * ACCESSIBILITY
@@ -52,16 +54,16 @@ test('mdc-skeleton', async ({ componentsPage }) => {
    */
   await test.step('visual-regression', async () => {
     await test.step('matches screenshot of skeleton variants stickersheet', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-skeleton-variants', { element: container });
+      await componentsPage.visualRegression.takeScreenshot('mdc-skeleton-variants');
     });
 
     await test.step('matches screenshot of skeleton variants stickersheet with content', async () => {
-      const skeleton = await setup({
+      await setup({
         componentsPage,
         variant: SKELETON_VARIANTS.RECTANGULAR,
         withContent: true,
       });
-      await componentsPage.visualRegression.takeScreenshot('mdc-skeleton-with-content', { element: skeleton });
+      await componentsPage.visualRegression.takeScreenshot('mdc-skeleton-with-content');
     });
   });
 
