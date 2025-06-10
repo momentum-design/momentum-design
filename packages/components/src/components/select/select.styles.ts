@@ -76,6 +76,7 @@ const styles = css`
   }
   :host::part(popover-content) {
     min-width: auto;
+    overflow: scroll;
   }
   :host([disabled])::part(base-container),
   :host([readonly])::part(base-container),

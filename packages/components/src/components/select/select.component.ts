@@ -1,6 +1,7 @@
 import type { PropertyValues, TemplateResult } from 'lit';
 import { CSSResult, html, nothing } from 'lit';
 import { property, query, queryAssignedElements, state } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { KEYS } from '../../utils/keys';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
@@ -497,13 +498,13 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         hide-on-escape
         focus-back-to-trigger
         focus-trap
+        role="dialog"
         placement="${POPOVER_PLACEMENT.BOTTOM_START}"
         @shown="${this.handlePopoverOpen}"
         @hidden="${this.handlePopoverClose}"
         style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
       >
            <slot 
-            role="listbox"
            @click="${this.handleOptionsClick}"></slot>
           </mdc-popover>
     `;
@@ -536,8 +537,9 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           tabindex="${this.disabled ? '-1' : '0'}"
           class="${this.disabled ? '' : 'mdc-focus-ring'}"
           role="combobox"
-          aria-activedescendant="${this.activeDescendant}"
-          aria-haspopup="listbox"
+          aria-activedescendant="${ifDefined(this.activeDescendant || undefined)}"
+          aria-haspopup="dialog"
+          aria-controls="${(ifDefined(this.displayPopover ? 'options-popover' : undefined))}"
           aria-label="${this.dataAriaLabel ?? ''}"
           aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
           aria-expanded="${this.displayPopover ? 'true' : 'false'}"
