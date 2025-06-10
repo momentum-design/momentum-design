@@ -5,6 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { KEYS } from '../../utils/keys';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
+import { ROLE } from '../../utils/roles';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { IconNames } from '../icon/icon.types';
@@ -356,13 +357,14 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   }
 
   private updateActivedescendant(target?: EventTarget | null): void {
+    const options = this.getAllValidOptions();
     if (target) {
-      const currentIndex = this.getAllValidOptions().findIndex((option) => option === target);
-      this.activeDescendant = this.getAllValidOptions()[currentIndex]?.id ?? '';
+      const currentIndex = options.findIndex((option) => option === target);
+      this.activeDescendant = options[currentIndex]?.id ?? '';
     } else {
       // If no target is provided, find the option with tabindex="0" or the first option
-      const focusedOption = this.getAllValidOptions().find((option) => option.getAttribute('tabindex') === '0');
-      this.activeDescendant = focusedOption?.id ?? this.getAllValidOptions()[0]?.id ?? '';
+      const focusedOption = options.find((option) => option.getAttribute('tabindex') === '0');
+      this.activeDescendant = focusedOption?.id ?? options[0]?.id ?? '';
     }
   }
 
@@ -498,7 +500,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         hide-on-escape
         focus-back-to-trigger
         focus-trap
-        role="dialog"
+        role="${ROLE.DIALOG}"
         placement="${POPOVER_PLACEMENT.BOTTOM_START}"
         @shown="${this.handlePopoverOpen}"
         @hidden="${this.handlePopoverClose}"
@@ -536,7 +538,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           @keydown="${this.handlePopoverOnClose}"
           tabindex="${this.disabled ? '-1' : '0'}"
           class="${this.disabled ? '' : 'mdc-focus-ring'}"
-          role="combobox"
+          role="${ROLE.COMBOBOX}"
           aria-activedescendant="${ifDefined(this.activeDescendant || undefined)}"
           aria-haspopup="dialog"
           aria-controls="${(ifDefined(this.displayPopover ? 'options-popover' : undefined))}"

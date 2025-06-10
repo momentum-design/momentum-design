@@ -1,3 +1,4 @@
+import { ROLE } from '../../utils/roles';
 import type Popover from './popover.component';
 
 export class PopoverUtils {
@@ -99,7 +100,7 @@ export class PopoverUtils {
    * Sets up the accessibility attributes for the popover.
    */
   setupAccessibility() {
-    if (this.popover.role === 'dialog' || this.popover.role === 'alertdialog') {
+    if (this.popover.role === ROLE.DIALOG || this.popover.role === ROLE.ALERTDIALOG) {
       this.popover.setAttribute('aria-modal', 'true');
     } else {
       this.popover.removeAttribute('aria-modal');
@@ -123,7 +124,7 @@ export class PopoverUtils {
     if (this.popover.interactive) {
       const hasPopup = this.popover.triggerElement?.getAttribute('aria-haspopup');
       if (!hasPopup) {
-        this.popover.triggerElement?.setAttribute('aria-haspopup', 'dialog');
+        this.popover.triggerElement?.setAttribute('aria-haspopup', ROLE.DIALOG);
       }
     } else {
       this.popover.triggerElement?.removeAttribute('aria-haspopup');
