@@ -172,3 +172,19 @@ Feature: Select component
     And the screen reader focus should return to the select component
     And the screen reader should announce "Headquarters Location, Select your headquarters"
     And the screen reader should not announce any options
+  # Accessibility checks
+
+  Scenario: Accessibility check for select component
+    Given I have opened the page with the select component
+    Then the select container should have the role of "combobox"
+    And the select dropdown should have the role of "listbox"
+    And each option in the select dropdown should have the role of "option"
+
+  Scenario: Accessibility attributes on select combobox
+    Given I have a select container with role of combobox
+    Then this container should have aria-haspopup attribute set to "listbox"
+    And this container should have aria-expanded attribute set to "false" when closed
+    And this container should have aria-expanded attribute set to "true" when opened
+    And this container should have aria-activedescendant attribute set to the id of the currently focused option when opened
+    And this container should have aria-required attribute set to "true" if the select component is marked as required
+    And this container should have aria-invalid attribute set to "true" if there is an error message
