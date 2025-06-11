@@ -658,7 +658,7 @@ class Popover extends FocusTrapMixin(Component) {
       if (middlewareData.arrow && this.arrowElement) {
         this.utils.updateArrowStyle(middlewareData.arrow, placement);
       }
-      if (this.trigger.includes('mouseenter')) {
+      if (this.trigger.includes('mouseenter') && this.interactive) {
         this.utils.setupHoverBridge(placement);
       }
     });
