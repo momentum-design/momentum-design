@@ -216,7 +216,7 @@ class Popover extends FocusTrapMixin(Component) {
    * @default ''
    */
   @property({ type: String, reflect: true, attribute: 'append-to' })
-  appendTo: string = '';
+  appendTo?: string;
 
   /**
    * aria-label attribute to be set for close button accessibility.
@@ -246,12 +246,21 @@ class Popover extends FocusTrapMixin(Component) {
   ariaDescribedby: string | null = null;
 
   /**
-   * Disable aria-expanded attribute on trigger element.
+   * Disable setting the aria-expanded attribute on trigger element.
    * Make sure to set this to false when the popover is interactive.
    * @default false
    */
   @property({ type: Boolean, reflect: true, attribute: 'disable-aria-expanded' })
   disableAriaExpanded: boolean = DEFAULTS.DISABLE_ARIA_EXPANDED;
+
+  /**
+   * Disable setting the aria-haspopup attribute on trigger element.
+   * Make sure to set this to true when the popover is extended and its role
+   * is not 'dialog' or 'alertdialog' i.e. listbox, menu, etc.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'disable-aria-haspopup' })
+  disableAriaHasPopup: boolean = DEFAULTS.DISABLE_ARIA_HAS_POPUP;
 
   public arrowElement: HTMLElement | null = null;
 
@@ -298,6 +307,7 @@ class Popover extends FocusTrapMixin(Component) {
   override async disconnectedCallback() {
     super.disconnectedCallback();
     this.removeEventListeners();
+    this.deactivateFocusTrap?.();
     PopoverEventManager.onDestroyedPopover(this);
     popoverStack.remove(this);
   }
@@ -407,7 +417,7 @@ class Popover extends FocusTrapMixin(Component) {
     if (changedProperties.has('disableAriaExpanded')) {
       this.utils.updateAriaExpandedAttribute();
     }
-    if (changedProperties.has('interactive')) {
+    if (changedProperties.has('interactive') || changedProperties.has('disableAriaHasPopup')) {
       this.utils.updateAriaHasPopupAttribute();
     }
   }
@@ -471,7 +481,6 @@ class Popover extends FocusTrapMixin(Component) {
       if (popoverStack.peek() !== this) {
         popoverStack.push(this);
       }
-      this.enabledFocusTrap = this.focusTrap;
       this.enabledPreventScroll = this.preventScroll;
 
       if (this.backdrop) {
@@ -496,7 +505,9 @@ class Popover extends FocusTrapMixin(Component) {
       }
       PopoverEventManager.onShowPopover(this);
     } else {
-      popoverStack.pop();
+      if (popoverStack.peek() === this) {
+        popoverStack.pop();
+      }
 
       if (this.backdropElement) {
         this.backdropElement?.remove();
@@ -519,11 +530,9 @@ class Popover extends FocusTrapMixin(Component) {
       if (!this.disableAriaExpanded) {
         this.triggerElement.removeAttribute('aria-expanded');
       }
-      if (this.interactive) {
-        const triggerElementRole = this.triggerElement.getAttribute('aria-haspopup');
-        if (triggerElementRole === 'dialog' || triggerElementRole === 'alertdialog') {
-          this.triggerElement.removeAttribute('aria-haspopup');
-        }
+      // Remove aria-haspopup if the popover is not interactive
+      if (!this.interactive) {
+        this.triggerElement.removeAttribute('aria-haspopup');
       }
       if (this.focusBackToTrigger) {
         this.triggerElement?.focus();
@@ -596,8 +605,9 @@ class Popover extends FocusTrapMixin(Component) {
    */
   private async handleCreatePopoverFirstUpdate() {
     if (this.visible && this.interactive) {
-      this.setFocusableElements?.();
+      // Wait for the first update to complete before setting focusable elements
       await this.updateComplete;
+      this.activateFocusTrap?.();
       this.setInitialFocus?.();
     }
   }

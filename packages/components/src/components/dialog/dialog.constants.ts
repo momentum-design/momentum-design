@@ -17,6 +17,7 @@ const DEFAULTS = {
   DESCRIPTION_TAG_NAME: 'p',
   CANCEL_ICON: 'cancel-bold' as Extract<IconNames, 'cancel-bold'>,
   VARIANT: DIALOG_VARIANT.DEFAULT,
+  DISABLE_ARIA_HAS_POPUP: false,
 } as const;
 
 const DIALOG_SIZE = ['small', 'medium', 'large'] as const;

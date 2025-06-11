@@ -23,7 +23,7 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.size ? `size="${restArgs.size}"` : ''}
     >
       <mdc-subcomponent-icon id="sub-local" icon-label-prefix="IconProvider Length Unit: "></mdc-subcomponent-icon>
-      <mdc-icon id="icon-local" name="accessibility-regular" size="2"></mdc-icon>
+      <mdc-icon length-unit="rem" id="icon-local" name="accessibility-regular" size="2"></mdc-icon>
       ${children}
     </mdc-iconprovider>
   `;
@@ -41,7 +41,7 @@ const setup = async (args: SetupOptions) => {
       >
         <mdc-subcomponent-icon id="sub-nested" icon-label-prefix="Nested IconProvider Length Unit: ">
         </mdc-subcomponent-icon>
-        <mdc-icon id="icon-local" name="accessibility-regular" size="2"></mdc-icon>
+        <mdc-icon length-unit="rem" id="icon-local" name="accessibility-regular" size="2"></mdc-icon>
       </mdc-iconprovider>
         `),
     });

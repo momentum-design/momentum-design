@@ -2,9 +2,11 @@ import type { CSSResult, PropertyValues, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
 import { Component } from '../../models';
+import { KEYS } from '../../utils/keys';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { ROLE } from '../../utils/roles';
+import { TAG_NAME as NAVITEMLIST_TAG_NAME } from '../navitemlist/navitemlist.constants';
 import type { PopoverPlacement } from '../popover/popover.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { TextType } from '../text/text.types';
@@ -32,6 +34,7 @@ import type { ListItemVariants } from './listitem.types';
  * @tagname mdc-listitem
  *
  * @dependency mdc-text
+ * @dependency mdc-tooltip
  *
  * @slot leading-controls - slot for list item controls to appear of leading end.
  * @slot leading-text-primary-label - slot for list item primary label.
@@ -118,6 +121,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   constructor() {
     super();
 
+    this.addEventListener('keydown', this.handleKeyDown);
     this.addEventListener('focusin', this.displayTooltipForLongText);
     this.addEventListener('mouseover', this.displayTooltipForLongText);
     this.addEventListener('focusout', this.hideTooltipOnLeave);
@@ -130,6 +134,33 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     this.role = this.role || ROLE.LISTITEM;
   }
 
+  /**
+   * Fires the click event when the enter or space key is pressed.
+   * @param event - The keyboard event triggered when a key is pressed down.
+   */
+  private handleKeyDown(event: KeyboardEvent): void {
+    if (event.key === KEYS.ENTER || event.key === KEYS.SPACE) {
+      this.triggerClickEvent();
+      event.preventDefault();
+    }
+  }
+
+  /**
+   * Triggers a click event on the list item.
+   */
+  private triggerClickEvent() {
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    });
+    this.dispatchEvent(clickEvent);
+  }
+
+  /**
+   * Handles the click event on the list item.
+   * If the tooltip is open, it has to be closed first.
+   */
   private handleClick(): void {
     // If the tooltip is open, it has to be closed first.
     this.hideTooltipOnLeave();
@@ -146,6 +177,11 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
 
     // Add a unique id to the listitem if it does not have one to attach the tooltip.
     this.id = this.id || LISTITEM_ID;
+
+    // Remove any existing tooltip.
+    const existingTooltip = document.getElementById(TOOLTIP_ID);
+    if (existingTooltip) existingTooltip.remove();
+
     // Create tooltip for the listitem element.
     const tooltip = document.createElement(TOOLTIP_TAG_NAME);
     tooltip.id = TOOLTIP_ID;
@@ -155,8 +191,13 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     tooltip.setAttribute('visible', '');
     tooltip.setAttribute('show-arrow', '');
 
-    // Add tooltip programmatically after the parent element.
-    this.parentElement?.after(tooltip);
+    // The navitem follows a different pattern to attach the tooltip.
+    if (this.parentElement?.tagName?.toLowerCase() === NAVITEMLIST_TAG_NAME) {
+      this.before(tooltip);
+    } else {
+      // Add tooltip programmatically after the parent element.
+      this.parentElement?.after(tooltip);
+    }
   }
 
   /**
@@ -213,10 +254,46 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     }
   }
 
+  /**
+   * Renders the trailing controls slot.
+   * @returns A template for the trailing controls slot.
+   */
+  protected renderTrailingControls() {
+    return html`<slot name="trailing-controls" 
+    @click=${this.stopEventPropagation}
+    @keyup=${this.stopEventPropagation}
+    @keydown=${this.stopEventPropagation}></slot>`;
+  }
+
+  /**
+   * Renders the leading controls slot.
+   * @returns A template for the leading controls slot.
+   */
+  protected renderLeadingControls() {
+    return html`<slot name="leading-controls" 
+    @click=${this.stopEventPropagation}
+    @keyup=${this.stopEventPropagation}
+    @keydown=${this.stopEventPropagation}></slot>`;
+  }
+
+  /**
+   * Stops the click event from propagating to parent elements. In case of keyboard events,
+   * it stops the propagation for Enter and Space keys.
+   * This is useful when the list item contains controls that
+   * should not trigger the click event on the list item itself.
+   * @param event - The mouse event triggered when a click occurs.
+   */
+  protected stopEventPropagation(event: Event): void {
+    if ((event instanceof KeyboardEvent && (event.key === KEYS.ENTER || event.key === KEYS.SPACE))
+        || (event instanceof MouseEvent)) {
+      event.stopPropagation();
+    }
+  }
+
   public override render() {
     return html`
       <div part="leading">
-        <slot name="leading-controls"></slot>
+        ${this.renderLeadingControls()}
         <div part="leading-text">
           ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
           ${this.getText('leading-text-secondary-label', TYPE.BODY_SMALL_REGULAR, this.secondaryLabel)}
@@ -228,7 +305,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
           ${this.getText('trailing-text-side-header', TYPE.BODY_MIDSIZE_REGULAR, this.sideHeaderText)}
           ${this.getText('trailing-text-subline', TYPE.BODY_SMALL_REGULAR, this.sublineText)}
         </div>
-        <slot name="trailing-controls"></slot>
+        ${this.renderTrailingControls()}
       </div>
     `;
   }

@@ -51,7 +51,7 @@ For the best local development experience, the following E2E setup testing is re
      yarn components test:e2e:serve # setup server on localhost:4000
    ```
 
-3. Open another terminal, now you can start run the test:
+3. Open another terminal, now you can start the test:
 
    ```bash
      yarn components test:e2e:skip-snapshot # without snapshot 
@@ -70,13 +70,13 @@ For the best local development experience, the following E2E setup testing is re
      yarn components test:e2e:skip-snapshot XXX.e2e-test.ts # without snapshot
    ```
 
-5. To Run **individual** test in a testing file, run:
+5. To Run **individual** test case in a test file, run:
 
    ```bash
-     yarn components test:e2e:skip-snapshot -- './src/components/iconprovider/iconprovider.e2e-test.ts' -g 'mdc-IconmProvider nested'
+     yarn components test:e2e:skip-snapshot -- './src/components/iconprovider/iconprovider.e2e-test.ts' -g 'mdc-IconProvider nested'
    ```
 
-    * where the test file is `"./src/components/iconprovider/iconprovider.e2e-test.ts"`, while within the file, the test naming structure is `mdc-IconmProvider nested`.
+    * where the test file is `"./src/components/iconprovider/iconprovider.e2e-test.ts"`, while within the file, the test naming structure is `mdc-IconProvider nested`.
 
 6. To Run test in **specific** browser, run:
 
@@ -89,17 +89,24 @@ For the best local development experience, the following E2E setup testing is re
 
 To update Visual Regression snapshots, follow the steps below to run E2E testing on Docker:
 
-1. You need to have docker or [podman](https://podman.io/) installed on local. (if you are using podman, it's adviced to add `alias docker=podman` to your shell config file, e.g. ~/.zshrc)
+1. You need to have os of the container solution installed on your local machine:
+  - **Docker**
+     
+    > Make sure you have the appropriate license for Docker Desktop before you use it, or get Podman instead.
+     
+  - **[Podman](https://podman.io/)** 
+  
+    > It's advised to add `alias docker=podman` to your shell config file, e.g. ~/.zshrc)
 
-2. **Docker engine / daemon needs to run before executing.**
+2. **Docker engine / daemon needs to run before executing.** OR **Podman machine needs to be run before executing**
 
-3. Login to the docker ghrc.io:
+3. Login to the ghrc.io:
 
    ```bash
-    echo $PAT | docker login ghcr.io -u username --password-stdin # login to docker with you github credentials (replace $PAT with personal access token (access token needs write packages access))
+    echo $PAT | docker login ghcr.io -u username --password-stdin # login to docker with your github credentials (replace $PAT with personal access token (access token needs write packages access))
    ```
 
-4. Open a terminal to setup webserver:
+4. Open a terminal to set up webserver:
 
    ```bash
      yarn components test:e2e:serve # setup server on localhost:4000
@@ -110,7 +117,10 @@ To update Visual Regression snapshots, follow the steps below to run E2E testing
    ```bash
      yarn components test:e2e:docker:serve # run docker image on localhost:3000
    ```
-   or if you're using podman: `yarn components test:e2e:podman:serve`
+   or if you're using podman: 
+   ```bash
+     yarn components test:e2e:podman:serve # run podman image on localhost:3000
+   ```
 
 6. Open another terminal to start run the test:
 
@@ -162,26 +172,32 @@ Since Docker runs on the `amd64` architecture, using Docker on Mac with M chips 
 
 ### Upload Latest Version of Docker Playwright Image
 
+1. Replace the existence of `v1.49.1` to the latest version of playwright in the `Dockerfile.test.postbuild` file, .github/workflows/update-snapshots.yml, packages/components/package.json.
+
+1. Install this latest version with `yarn`
+
 1. You need to have docker installed on local.
 
-2. Set the version to latest playwright version and build the new image to local :
+1. Set the version to latest playwright version and build the new image to local :
 
    ```bash
      "yarn components test:e2e:docker:build": "docker build --platform linux/amd64 -f ./config/playwright/docker/utils/Dockerfile.test.postbuild -t ghcr.io/momentum-design/momentum-design/docker-playwright:v1.49.1 ."
      # replace all the v1.49.1 to the latest version of playwright and run this script to build new image
    ```
 
-3. After the build is done, login to the docker ghrc.io:
+1. After the build is done, login to the docker ghrc.io:
 
    ```bash
     echo $PAT | docker login ghcr.io -u username --password-stdin # login to docker with you github credentials (replace $PAT with personal access token (access token needs write packages access))
    ```
 
-4. Now you can push the latest image to GHRC:
+1. Now you can push the latest image to GHRC:
 
    ```bash
      docker push ghcr.io/momentum-design/momentum-design/docker-playwright:v1.49.1
      # replace the v1.49.1 to the version you want to push
    ```
 
-5. You can check the image that you push here [Docker-Playwright](https://github.com/orgs/momentum-design/packages/container/package/momentum-design%2Fdocker-playwright)
+1. You can check the image that you push here [Docker-Playwright](https://github.com/orgs/momentum-design/packages/container/package/momentum-design%2Fdocker-playwright)
+
+1. Note: After the playwright version and docker image is update, all the snapshots need to be updated and re-generated.

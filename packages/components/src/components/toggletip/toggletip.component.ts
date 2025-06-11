@@ -1,5 +1,6 @@
 import { CSSResult, html, PropertyValueMap } from 'lit';
 import { property, queryAssignedNodes, state } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import Popover from '../popover/popover.component';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { DEFAULTS } from './toggletip.constants';
@@ -56,11 +57,11 @@ class ToggleTip extends Popover {
     * Please refer to the `mdc-screenreaderannouncer` component for more details.
   */
   @property({ type: String, reflect: true, attribute: 'screenreader-announcer-identity' })
-  screenreaderAnnouncerIdentity = '';
+  screenreaderAnnouncerIdentity?: string;
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.closeButton = DEFAULTS.CLOSE_BUTTON;
+    this.closeButton = this.closeButton ?? DEFAULTS.CLOSE_BUTTON;
     this.closeButtonAriaLabel = DEFAULTS.CLOSE_BUTTON_ARIA_LABEL;
     this.placement = DEFAULTS.PLACEMENT;
     this.trigger = DEFAULTS.CLICK;
@@ -72,6 +73,7 @@ class ToggleTip extends Popover {
     this.hideOnOutsideClick = true;
     this.disableAriaExpanded = false;
     this.focusBackToTrigger = true;
+    this.focusTrap = true;
   }
 
   /**
@@ -108,7 +110,7 @@ class ToggleTip extends Popover {
     return html`
       ${super.render()}
       <mdc-screenreaderannouncer
-        identity="${this.screenreaderAnnouncerIdentity}"
+        identity="${ifDefined(this.screenreaderAnnouncerIdentity)}"
         announcement="${this.currentAnnouncement}"
         delay="300">
       </mdc-screenreaderannouncer>

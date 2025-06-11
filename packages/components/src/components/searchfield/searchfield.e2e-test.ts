@@ -66,7 +66,7 @@ const setup = async (args: SetupOptions) => {
   return element;
 };
 
-test.use({ viewport: { width: 800, height: 1500 } });
+test.use({ viewport: { width: 800, height: 300 } });
 test('mdc-searchfield', async ({ componentsPage }) => {
   /**
    * VISUAL REGRESSION

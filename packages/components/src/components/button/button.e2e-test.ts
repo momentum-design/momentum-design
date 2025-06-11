@@ -246,6 +246,29 @@ const getStickerSheetDetails = async (componentsPage: ComponentsPage) => {
 test.describe.parallel('mdc-button', () => {
   test.use({ viewport: { width: 800, height: 2700 } });
 
+  test('visual regression for mdc-button with long text ellipsis', async ({ componentsPage }) => {
+    await componentsPage.mount({
+      html: `
+        <mdc-button
+          id="button-ellipsis"
+          style="width: 150px;"
+        >
+          <mdc-text>This is a very long text that should get truncated with ellipsis</mdc-text>
+        </mdc-button>
+        
+        <mdc-tooltip 
+        triggerid="button-ellipsis"
+        show-arrow>This is a very long text that should get truncated with ellipsis</mdc-tooltip>`,
+      clearDocument: true,
+    });
+
+    await test.step('matches screenshot of mdc-button with long text ellipsis', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-button-long-text-ellipsis', {
+        element: componentsPage.page.locator('mdc-button'),
+      });
+    });
+  });
+
   test('mdc-button pill button', async ({ componentsPage }) => {
     await testForCombinations({ children: 'Pill Button', componentsPage }, 'pill');
     await test.step('snapshot of pill button', async () => {
@@ -605,5 +628,22 @@ test.describe.parallel('mdc-button', () => {
       await expect(button).not.toHaveClass('btn-listener btn-onclick');
       await componentsPage.page.keyboard.up('Enter');
     });
+  });
+
+  test('mdc-text overflowing is not focusable', async ({ componentsPage }) => {
+    const button = await setup({
+      componentsPage,
+      children: '<mdc-text>This is a very long text that should get truncated with ellipsis</mdc-text>',
+      secondButtonForFocus: true,
+    });
+
+    await componentsPage.setAttributes(button, { style: 'width: 100px' });
+
+    await componentsPage.page.keyboard.press('Tab');
+    await expect(button).toBeFocused();
+
+    await componentsPage.page.keyboard.press('Tab');
+    const bothButtons = await componentsPage.page.locator('mdc-button').all();
+    await expect(bothButtons[1]).toBeFocused();
   });
 });

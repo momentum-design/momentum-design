@@ -14,7 +14,12 @@ import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwra
  * These are often used in forms, settings, and selection in lists.
  *
  * A radio component contains an optional label, optional info icon and an optional helper text.
- * @dependency mdc-formfieldwrapper
+ *
+ * @dependency mdc-button
+ * @dependency mdc-icon
+ * @dependency mdc-text
+ * @dependency mdc-staticradio
+ * @dependency mdc-toggletip
  *
  * @tagname mdc-radio
  *
@@ -113,7 +118,7 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
     setComponentValidity(isValid: boolean) {
       if (isValid) {
         this.internals.setValidity({});
-      } else if (this.requiredLabel && !this.checked) {
+      } else if (this.required && !this.checked) {
         if (this.validationMessage) {
           this.inputElement.setCustomValidity(this.validationMessage);
         } else {
@@ -159,7 +164,7 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
       if (this.checked) {
         this.setGroupValidity(radios, true);
       } else {
-        const anyRequired = radios.some((r) => r.requiredLabel);
+        const anyRequired = radios.some((r) => r.required);
         const anyChecked = !!radios.find((r) => r.checked);
         const isInvalid = anyRequired && !anyChecked;
         this.setGroupValidity(radios, !isInvalid);
@@ -289,7 +294,7 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
             ?autofocus="${this.autofocus}"
             name="${ifDefined(this.name)}"
             value="${ifDefined(this.value)}"
-            ?required="${!!this.requiredLabel}"
+            ?required="${this.required}"
             @change=${this.handleChange}
             @keydown=${this.handleKeyDown}
             ?checked=${this.checked}

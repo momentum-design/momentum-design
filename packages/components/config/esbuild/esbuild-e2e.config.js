@@ -30,6 +30,22 @@ const replaceBrandVisualPathPlugin = {
   },
 };
 
+// this replaces the dynamic import in the animations component with a normal import to make it work
+// in playwright for the time being.
+const replaceAnimationAssetsPathPlugin = {
+  name: 'replaceAnimationsAssetsPathPlugin',
+  setup(build) {
+    build.onLoad({ filter: /animation.component.ts/ }, async (args) => {
+      const source = await fs.promises.readFile(args.path, 'utf8');
+      const contents = source.replace(
+        '@momentum-design/animations/dist/lottie${path}',
+        '../../../playwright-temp/assets/animations/animation.json',
+      );
+      return { contents, loader: 'default' };
+    });
+  },
+};
+
 const iife = async () => {
   const ctx = await esbuild.context({
     ...config,
@@ -46,7 +62,10 @@ const iife = async () => {
       // include playwright-temp index for esbuild to consider it in the path resolve
       `${join(process.cwd(), 'playwright-temp/brandvisuals/index.ts')}`,
     ],
-    plugins: [replaceBrandVisualPathPlugin],
+    plugins: [
+      replaceBrandVisualPathPlugin,
+      replaceAnimationAssetsPathPlugin,
+    ],
     outfile: undefined,
     outdir: `${join(publicPath, 'dist')}`,
   });

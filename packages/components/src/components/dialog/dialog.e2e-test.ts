@@ -5,7 +5,7 @@ import { DEFAULTS } from './dialog.constants';
 type SetupOptions = {
   componentsPage: ComponentsPage;
   id?: string;
-  triggerId: string;
+  triggerId?: string;
   zIndex?: number;
   visible?: boolean;
   size?: boolean;
@@ -81,6 +81,25 @@ const dialogWithAllSlots = {
   `,
 };
 
+const dialogWithCustomHeader = {
+  id: 'dialog',
+  triggerId: 'trigger-btn',
+  ariaLabel: 'dialog',
+  visible: true,
+  variant: 'default',
+  closeButtonAriaLabel: 'Close button label',
+  headerText: 'Dialog Header',
+  descriptionText: 'Dialog Description',
+  children: `
+    <mdc-icon slot="header-prefix" name="placeholder-bold"></mdc-icon>
+    <div slot="dialog-body">
+      <p>This is the body content of the dialog.</p>
+    </div>
+    <mdc-link slot="footer-link" icon-name="placeholder-bold" href='#'>Label</mdc-link>
+    <mdc-button slot="footer-button-secondary">Secondary</mdc-button>
+    <mdc-button slot="footer-button-primary">Primary</mdc-button>
+  `,
+};
 test('mdc-dialog', async ({ componentsPage }) => {
   const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots });
 
@@ -107,7 +126,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await componentsPage.visualRegression.takeScreenshot('mdc-dialog', { element: dialog });
     });
     await test.step('matches screenshot of element with variant', async () => {
-      await setup({ componentsPage, ...dialogWithAllSlots, variant: 'promotional' });
+      await setup({ componentsPage, ...dialogWithCustomHeader, variant: 'promotional' });
       await componentsPage.visualRegression.takeScreenshot('mdc-dialog-variant-promotional', { element: dialog });
     });
   });
@@ -116,7 +135,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
-    const { dialog } = await setup({
+    const { dialog, triggerButton } = await setup({
       componentsPage,
       id: 'dialog',
       triggerId: 'trigger-btn',
@@ -134,13 +153,17 @@ test('mdc-dialog', async ({ componentsPage }) => {
     });
 
     await test.step('accessibility attributes', async () => {
-      await expect(dialog).toHaveAttribute('aria-label', 'dialog-attribute');
-      await expect(dialog).not.toHaveAttribute('aria-expanded');
-      await expect(dialog).not.toHaveAttribute('aria-describedby');
       await expect(dialog).toHaveAttribute('size', DEFAULTS.SIZE);
-      await expect(dialog).toHaveAttribute('header-text', '');
-      await expect(dialog).toHaveAttribute('description-text', '');
-      await expect(dialog).not.toHaveAttribute('aria-labelledby', '');
+
+      await expect(triggerButton).not.toHaveAttribute('aria-expanded');
+      await expect(triggerButton).toHaveAttribute('aria-haspopup', 'dialog');
+
+      await expect(dialog).not.toHaveAttribute('header-text');
+      await expect(dialog).not.toHaveAttribute('description-text');
+
+      await expect(dialog).toHaveAttribute('aria-label', 'dialog-attribute');
+      await expect(dialog).not.toHaveAttribute('aria-labelledby');
+      await expect(dialog).toHaveAttribute('aria-describedby', 'trigger-btn');
 
       const closeDialogButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
       await expect(closeDialogButton).toHaveAttribute('aria-label', 'Close button label');
@@ -152,8 +175,8 @@ test('mdc-dialog', async ({ componentsPage }) => {
    */
   await test.step('interactions', async () => {
     await test.step('programmatic', async () => {
-      await test.step('dialog should close/open when the visible attribute is changed', async () => {
-        const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots });
+      await test.step('dialog should close/open when the visible attribute is changed without trigger', async () => {
+        const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, triggerId: undefined });
         await expect(dialog).toBeVisible();
         await dialog.evaluate((dialog) => {
           dialog.removeAttribute('visible');
@@ -187,6 +210,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press('Enter');
         await expect(dialog).not.toBeVisible();
       });
+
       await test.step('dialog should close on escape keydown', async () => {
         await dialog.evaluate((dialog) => {
           dialog.toggleAttribute('visible');
@@ -195,6 +219,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press('Escape');
         await expect(dialog).not.toBeVisible();
       });
+
       await test.step('focus should remain only in the dialog when visible', async () => {
         const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, visible: false });
         await dialog.evaluate((dialog) => {
@@ -213,6 +238,13 @@ test('mdc-dialog', async ({ componentsPage }) => {
         const primaryButton = componentsPage.page.locator('[slot="footer-button-primary"]');
         await expect(primaryButton).toBeFocused();
         await componentsPage.actionability.pressTab();
+        await expect(closeButton).toBeFocused();
+      });
+
+      await test.step('dialog should focus on close button automatically with visible = true', async () => {
+        const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, visible: true });
+        await expect(dialog).toBeVisible();
+        const closeButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
         await expect(closeButton).toBeFocused();
       });
     });

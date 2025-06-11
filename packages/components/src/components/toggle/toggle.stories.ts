@@ -6,6 +6,7 @@ import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 import '../button';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
 
 const render = (args: Args) => html`
@@ -15,10 +16,16 @@ const render = (args: Args) => html`
     @focus="${action('onfocus')}"
     @change="${action('onchange')}"
     size="${args.size}"
+    toggletip-placement="${args['toggletip-placement']}"
+    toggletip-text="${args['toggletip-text']}"
+    info-icon-aria-label="${args['info-icon-aria-label']}"
     label="${ifDefined(args.label)}"
     help-text="${ifDefined(args['help-text'])}"
     data-aria-label="${ifDefined(args['data-aria-label'])}"
+    
     ?checked="${args.checked}"
+    ?required="${args.required}"
+    ?autofocus="${args.autofocus}"
     ?disabled="${args.disabled}">
   </mdc-toggle>
 `;
@@ -51,11 +58,30 @@ const meta: Meta = {
     autofocus: {
       control: 'boolean',
     },
+    required: {
+      control: 'boolean',
+    },
+    name: {
+      control: 'text',
+    },
+    value: {
+      control: 'text',
+    },
     'data-aria-label': {
       control: 'text',
       description: 'Aria label for the toggle component. Required for accessibility.',
     },
-    ...hideControls(['help-text-type', 'label-info', 'id']),
+    'toggletip-text': {
+      control: 'text',
+    },
+    'toggletip-placement': {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
+    },
+    'info-icon-aria-label': {
+      control: 'text',
+    },
+    ...hideControls(['help-text-type', 'id']),
     ...disableControls([
       '--mdc-toggle-width',
       '--mdc-toggle-height',
@@ -137,7 +163,7 @@ export const ToggleInsideForm: StoryObj = {
       <fieldset>
         <legend>Form Example</legend>
         <mdc-toggle name="toggleName" value="toggleValue" label="Agree to Terms" size="${args.size}" 
-          required-label='required' validation-message='Toggle this switch to continue'></mdc-toggle>
+          required validation-message='Toggle this switch to continue'></mdc-toggle>
           <div style='display: flex; gap: 0.25rem'>
             <mdc-button type="submit" size='24'>Submit</mdc-button>
             <mdc-button type="reset" size='24' variant='secondary'>Reset</mdc-button>

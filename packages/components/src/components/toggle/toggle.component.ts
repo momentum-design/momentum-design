@@ -20,8 +20,11 @@ import type { ToggleSize } from './toggle.types';
  *
  * Note: It internally renders a checkbox styled as a toggle switch.
  *
+ * @dependency mdc-button
  * @dependency mdc-icon
  * @dependency mdc-statictoggle
+ * @dependency mdc-text
+ * @dependency mdc-toggletip
  *
  * @tagname mdc-toggle
  *
@@ -91,10 +94,12 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
 
     /**
    * Manages the required state of the checkbox.
-   * If the checkbox is not checked and the requiredLabel property is set, then the checkbox is invalid.
+   * If the checkbox is not checked and the required property is set, then the checkbox is invalid.
+   * If the validationMessage is set, it will be used as the custom validity message.
+   * If the validationMessage is not set, it will clear the custom validity message.
    */
     private manageRequired() {
-      if (!this.checked && this.requiredLabel) {
+      if (!this.checked && this.required) {
         if (this.validationMessage) {
           this.inputElement.setCustomValidity(this.validationMessage);
         } else {
@@ -194,7 +199,7 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
             part="toggle-input"
             role="switch"
             ?autofocus="${this.autofocus}"
-            ?required="${!!this.requiredLabel}"
+            ?required="${this.required}"
             name="${ifDefined(this.name)}"
             value="${ifDefined(this.value)}"
             .checked="${this.checked}"

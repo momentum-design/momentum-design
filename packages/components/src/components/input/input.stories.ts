@@ -7,6 +7,7 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { disableControls } from '../../../config/storybook/utils';
 import { AUTO_CAPITALIZE } from './input.constants';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 const render = (args: Args) => {
   const value = args.maxlength && args.value ? args.value.substring(0, args.maxlength) : args.value;
@@ -19,12 +20,15 @@ const render = (args: Args) => {
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
     placeholder="${args.placeholder}"
+    toggletip-placement="${args['toggletip-placement']}"
+    toggletip-text="${args['toggletip-text']}"
+    info-icon-aria-label="${args['info-icon-aria-label']}"
     name="${args.name}"
     value="${value}"
     id="${args.id}"
     class="${args.class}"
     style="${args.style}"
-    required-label="${args['required-label']}"
+    ?required="${args.required}"
     ?disabled="${args.disabled}"
     ?readonly="${args.readonly}"
     ?trailing-button="${args['trailing-button']}"
@@ -74,8 +78,8 @@ const meta: Meta = {
     label: {
       control: 'text',
     },
-    'required-label': {
-      control: 'text',
+    required: {
+      control: 'boolean',
     },
     'help-text': {
       control: 'text',
@@ -129,6 +133,16 @@ const meta: Meta = {
     'data-aria-label': {
       control: 'text',
     },
+    'toggletip-text': {
+      control: 'text',
+    },
+    'toggletip-placement': {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
+    },
+    'info-icon-aria-label': {
+      control: 'text',
+    },
     ...disableControls([
       '--mdc-input-disabled-border-color',
       '--mdc-input-disabled-text-color',
@@ -156,7 +170,7 @@ export const Example: StoryObj = {
   args: {
     name: 'input',
     label: 'Label',
-    'required-label': 'required',
+    required: true,
     placeholder: 'Placeholder',
     value: '',
     'help-text': 'Helper text',
@@ -176,8 +190,9 @@ export const Example: StoryObj = {
 export const InputInSmallContainer: StoryObj = {
   render: () => html`
   <div style='width: 200px;'>
-    <mdc-input label='This is a large label text'
-    required-label='required' 
+    <mdc-input 
+    label='This is a large label text which is truncated into an ellipsis'
+    required 
     placeholder='placeholder'>
     </mdc-input>
   </div>
@@ -186,7 +201,7 @@ export const InputInSmallContainer: StoryObj = {
 
 export const AllVariants: StoryObj = {
   argTypes: {
-    ...disableControls(['label', 'help-text', 'required-label', 'placeholder', 'value', 'help-text-type']),
+    ...disableControls(['label', 'help-text', 'required', 'placeholder', 'value', 'help-text-type']),
   },
   render: () => html`
   <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
@@ -201,7 +216,7 @@ export const AllVariants: StoryObj = {
       label="Label"
       help-text="Helper text"
       help-text-type="default"
-      required-label='required' 
+      required
       placeholder="Input is required"
       ></mdc-input>
       <mdc-input 
@@ -253,7 +268,7 @@ export const FormFieldInput: StoryObj = {
       <mdc-input
        name='user-name'
         label="First Name"
-        required-label="required"
+        required
         placeholder="Enter your name"
         validation-message="Name is required"
       ></mdc-input>

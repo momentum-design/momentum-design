@@ -15,6 +15,17 @@
           }
         },
         {
+          "id": "Manifest-module",
+          "target": "./dist/lottie/**/*.*",
+          "destination": "./dist/",
+          "format": {
+            "type": "MANIFEST_MODULE",
+            "config": {
+              "fileName": "manifest.ts"
+            }
+          }
+        },
+        {
           "id": "Types",
           "target": "./dist/manifest.json",
           "destination": "./dist/types/",
@@ -25,6 +36,42 @@
               "hbsPath": "./config/templates/types.d.ts.hbs",
               "name": "AnimationNames",
               "manifestPath": "../manifest.json"
+            }
+          }
+        },
+        {
+          "id": "Manifest-svg",
+          "target": "./dist/svg/**/*.*",
+          "destination": "./dist/",
+          "format": {
+            "type": "MANIFEST",
+            "config": {
+              "fileName": "manifest-svg.json"
+            }
+          }
+        },
+        {
+          "id": "Manifest-module-svg",
+          "target": "./dist/svg/**/*.*",
+          "destination": "./dist/",
+          "format": {
+            "type": "MANIFEST_MODULE",
+            "config": {
+              "fileName": "manifest-svg.ts"
+            }
+          }
+        },
+        {
+          "id": "Types-svg",
+          "target": "./dist/manifest-svg.json",
+          "destination": "./dist/types/",
+          "format": {
+            "type": "TYPES",
+            "config": {
+              "fileName": "types-svg.d.ts",
+              "hbsPath": "./config/templates/types.d.ts.hbs",
+              "name": "SvgAnimationNames",
+              "manifestPath": "../manifest-svg.json"
             }
           }
         }

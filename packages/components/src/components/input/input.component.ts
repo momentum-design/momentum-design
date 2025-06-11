@@ -31,6 +31,7 @@ import { FormInternalsMixin, AssociatedFormControl } from '../../utils/mixins/Fo
  * @dependency mdc-icon
  * @dependency mdc-text
  * @dependency mdc-button
+ * @dependency mdc-toggletip
  *
  * @cssproperty --mdc-input-disabled-border-color - Border color for the input container when disabled
  * @cssproperty --mdc-input-disabled-text-color - Text color for the input field when disabled
@@ -190,7 +191,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
   }
 
   private setInputValidity() {
-    if (this.requiredLabel && this.validationMessage && this.value === '') {
+    if (this.required && this.validationMessage && this.value === '') {
       this.inputElement.setCustomValidity(this.validationMessage);
     } else {
       this.inputElement.setCustomValidity('');
@@ -370,7 +371,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
                   .value="${this.value}"
                   ?disabled="${this.disabled}"
                   ?readonly="${this.readonly}"
-                  ?required="${!!this.requiredLabel}"
+                  ?required="${this.required}"
                   type="${type}"
                   aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
                   aria-invalid="${this.helpTextType === 'error' ? 'true' : 'false'}"

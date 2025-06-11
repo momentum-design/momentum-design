@@ -106,6 +106,19 @@ const styles = css`
     --mdc-chip-background-color: var(--mds-color-theme-background-label-purple-active);
   }
 
+  :host([color='orange']) {
+    --mdc-chip-border-color: var(--mds-color-theme-outline-label-orange);
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-orange-normal);
+  }
+
+  :host([color='orange']:hover) {
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-orange-hover);
+  }
+
+  :host([color='orange']:active) {
+    --mdc-chip-background-color: var(--mds-color-theme-background-label-orange-active);
+  }
+
   :host([color='slate']) {
     --mdc-chip-border-color: var(--mds-color-theme-outline-label-slate);
     --mdc-chip-background-color: var(--mds-color-theme-background-label-slate-normal);

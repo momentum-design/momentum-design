@@ -236,6 +236,18 @@ const styles = css`
     --mdc-button-primary-disabled-background-color: var(--mds-color-theme-inverted-button-primary-disabled);
     --mdc-button-primary-disabled-color: var(--mds-color-theme-inverted-text-primary-disabled);
   }
+
+  :host([data-btn-type='pill']) ::slotted(mdc-text),
+  :host([data-btn-type='pill-with-icon']) ::slotted(mdc-text) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  :host::part(prefix-icon),
+  :host::part(postfix-icon) {
+    flex-shrink: 0;
+  }
 `;
 
 export default [styles];

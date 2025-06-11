@@ -20,6 +20,7 @@ const createPopover = (args: Args, content: TemplateResult) => html`
     .offset="${args.offset ?? 0}"
     ?interactive=${args.interactive}
     ?focus-trap=${args['focus-trap']}
+    ?should-focus-trap-wrap=${args['should-focus-trap-wrap']}
     ?show-arrow=${args['show-arrow']}
     color=${args.color}
     ?flip=${args.flip}
@@ -38,6 +39,7 @@ const createPopover = (args: Args, content: TemplateResult) => html`
     aria-describedby="${args['aria-describedby']}"
     role="${args.role}"
     ?disable-aria-expanded="${args['disable-aria-expanded']}"
+    ?disable-aria-haspopup="${args['disable-aria-haspopup']}"
     @shown="${action('onshown')}"
     @hidden="${action('onhidden')}"
     @created="${action('oncreated')}"
@@ -251,6 +253,9 @@ const meta: Meta = {
     'focus-trap': {
       control: 'boolean',
     },
+    'should-focus-trap-wrap': {
+      control: 'boolean',
+    },
     'prevent-scroll': {
       control: 'boolean',
     },
@@ -285,6 +290,9 @@ const meta: Meta = {
       control: 'text',
     },
     'disable-aria-expanded': {
+      control: 'boolean',
+    },
+    'disable-aria-haspopup': {
       control: 'boolean',
     },
     ...disableControls([
@@ -328,6 +336,7 @@ export const Example: StoryObj = {
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
     'disable-aria-expanded': true,
+    'disable-aria-haspopup': false,
     interactive: DEFAULTS.INTERACTIVE,
   },
 };
@@ -475,4 +484,43 @@ export const popoverWithSelect: StoryObj = {
     </div>
   `,
   ...hideAllControls(),
+};
+
+export const MultipleSingleLevelPopovers: StoryObj = {
+  render: () => html`
+    <style>
+      .container {
+        display: flex;
+        width: 150rem;
+        height: 15rem;
+        align-items: center;
+      }
+      .child {
+        display: flex;
+        width: 10rem;
+        height: 2rem;
+        justify-content: center;
+      }
+    </style>
+    <div class="container">
+      <div class="child">
+        <mdc-button id="popover-trigger-1">Click me!</mdc-button>
+        <mdc-popover triggerID="popover-trigger-1" hide-on-outside-click>
+          <mdc-text>Popover Level 1 Trigger 1</mdc-text>
+        </mdc-popover>
+      </div>
+      <div class="child">
+        <mdc-button id="popover-trigger-2">Click me!</mdc-button>
+        <mdc-popover triggerID="popover-trigger-2" hide-on-outside-click>
+          <mdc-text>Popover Level 1 Trigger 2</mdc-text>
+        </mdc-popover>
+      </div>
+      <div class="child">
+        <mdc-button id="popover-trigger-3">Click me!</mdc-button>
+        <mdc-popover triggerID="popover-trigger-3" hide-on-outside-click>
+          <mdc-text>Popover Level 1 Trigger 3</mdc-text>
+        </mdc-popover>
+      </div>
+    </div>
+  `,
 };

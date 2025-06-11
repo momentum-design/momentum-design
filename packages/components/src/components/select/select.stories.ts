@@ -9,6 +9,7 @@ import '../divider';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import '../optgroup';
 import '../option';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 const helpTextTypes = Object.values(VALIDATION).filter((type: string) => type !== 'priority');
 
@@ -23,11 +24,14 @@ const render = (args: Args) => wrapWithDiv(html`
     @keydown="${action('onkeydown')}"
     @focus="${action('onfocus')}"
     label="${args.label}"
-    required-label="${args['required-label']}"
+    ?required="${args.required}"
     help-text-type="${args['help-text-type']}"
     help-text="${args['help-text']}"
     height="${args.height}"
     data-aria-label="${args['data-aria-label']}"
+    toggletip-text="${args['toggletip-text']}"
+    toggletip-placement="${args['toggletip-placement']}"
+    info-icon-aria-label="${args['info-icon-aria-label']}"
     name="${args.name}"
     placeholder="${args.placeholder}" 
     ?disabled="${args.disabled}"
@@ -56,8 +60,8 @@ const meta: Meta = {
     label: {
       control: 'text',
     },
-    'required-label': {
-      control: 'text',
+    required: {
+      control: 'boolean',
     },
     placeholder: {
       control: 'text',
@@ -76,13 +80,23 @@ const meta: Meta = {
       description: `The type of help text. It can be ${helpTextTypes.map((type: string) => `'${type}'`).join(', ')}.`,
       options: helpTextTypes,
     },
+    'info-icon-aria-label': {
+      control: 'text',
+    },
     'data-aria-label': {
       control: 'text',
+    },
+    'toggletip-text': {
+      control: 'text',
+    },
+    'toggletip-placement': {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
     },
     height: {
       control: 'text',
     },
-    ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default', 'label-info']),
+    ...hideControls(['id', 'value', 'validity', 'validation-message', 'willValidate', 'default']),
     ...classArgType,
     ...styleArgType,
   },
@@ -93,7 +107,7 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     label: 'Headquarters location',
-    'required-label': 'required',
+    required: true,
     placeholder: 'Select your headquarters location',
     disabled: false,
     readonly: false,
@@ -137,8 +151,8 @@ export const SelectWithLongOptionText: StoryObj = {
       <mdc-option>Red</mdc-option>
       <mdc-option>Yellow</mdc-option>
       <mdc-option
-        tooltip-text="White and Black are the biggest colors on the spectrum"
-        tooltip-placement="bottom"
+        toggletip-text="White and Black are the biggest colors on the spectrum"
+        toggletip-placement="bottom"
       >
         White and Black are the biggest colors on the spectrum
       </mdc-option>
@@ -168,7 +182,7 @@ export const SelectWithStates: StoryObj = {
       help-text-type="${VALIDATION.SUCCESS}"
       help-text="The correct number of Infinity Stones has been selected."
       label="How many Infinity Stones exist?"
-      required-label="required"
+      required
     >
       <mdc-option value="six" selected>Six</mdc-option>
     </mdc-select>
@@ -176,7 +190,7 @@ export const SelectWithStates: StoryObj = {
       help-text="Selecting this number may cause a security risk because it is not properly setup."
       help-text-type="${VALIDATION.WARNING}"
       label="Select phone number"
-      required-label="required"
+      required
     >
       <mdc-option selected value="456-198-0253">456-198-0253</mdc-option>
     </mdc-select>
@@ -185,7 +199,7 @@ export const SelectWithStates: StoryObj = {
       help-text="You must select the total number of Infinity Stones."
       label="How many Infinity Stones exist?"
       placeholder="Select the total number of Infinity Stones"
-      required-label="required"
+      required
     ></mdc-select>
     <mdc-select help-text="This is a disabled text." label="Label" placeholder="Selected text" disabled></mdc-select>
     <mdc-select help-text="This is a readonly text." label="Label" placeholder="Selected text" readonly></mdc-select>
@@ -207,7 +221,7 @@ export const SelectWithFixedHeight = {
   `),
   argTypes: {
     ...disableControls([
-      'readonly', 'name', 'data-aria-label', 'disabled', 'required-label', 'help-text-type', 'help-text',
+      'readonly', 'name', 'data-aria-label', 'disabled', 'required', 'help-text-type', 'help-text',
     ]),
   },
 };
@@ -229,7 +243,7 @@ export const SelectWithForm: StoryObj = {
               name="stone-count"
               placeholder="Select the count"
               label="How many Infinity Stones exist?"
-              required-label="required"
+              required
             >
               <mdc-option value="two">Two</mdc-option>
               <mdc-option value="three">Three</mdc-option>

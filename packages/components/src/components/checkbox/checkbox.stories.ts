@@ -5,6 +5,7 @@ import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 import '../button';
+import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 const render = (args: Args) => html`
   <mdc-checkbox
@@ -12,8 +13,18 @@ const render = (args: Args) => html`
     help-text="${args['help-text']}"
     ?checked="${args.checked}"
     ?disabled="${args.disabled}"
+    name="${args.name}"
+    value="${args.value}"
+    ?autofocus="${args.autofocus}"
+    class="${args.class}"
+    style="${args.style}"
+    ?required="${args.required}"
+    id="${args.id}"
     ?indeterminate="${args.indeterminate}"
     data-aria-label="${args['data-aria-label']}"
+    info-icon-aria-label="${args['info-icon-aria-label']}"
+    toggletip-text="${args['toggletip-text']}"
+    toggletip-placement="${args['toggletip-placement']}"
     @change="${action('onchange')}"
   ></mdc-checkbox>
 `;
@@ -51,7 +62,20 @@ const meta: Meta = {
     value: {
       control: 'text',
     },
-    ...hideControls(['help-text-type', 'label-info', 'id', 'internals']),
+    autofocus: {
+      control: 'boolean',
+    },
+    'toggletip-text': {
+      control: 'text',
+    },
+    'toggletip-placement': {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
+    },
+    'info-icon-aria-label': {
+      control: 'text',
+    },
+    ...hideControls(['help-text-type', 'id', 'internals']),
     ...disableControls([
       '--mdc-checkbox-background-color-hover',
       '--mdc-checkbox-checked-background-color-hover',
@@ -130,7 +154,7 @@ export const FormField: StoryObj = {
           <legend>Select your super hero power</legend>
           <mdc-checkbox label="Flight" value="flight" name="super-power"></mdc-checkbox>
           <mdc-checkbox label="Mind Control" value="mind-control" name="super-power"
-          required-label='required' validation-message='This selection is necessary'></mdc-checkbox>
+          required validation-message='This selection is necessary'></mdc-checkbox>
           <mdc-checkbox label="Super strength" value="super-strength" name="super-power"></mdc-checkbox>
           <mdc-checkbox label="Tactics" value="tactics" name="super-power"></mdc-checkbox>
           <div style='display: flex; gap: 0.25rem;'>

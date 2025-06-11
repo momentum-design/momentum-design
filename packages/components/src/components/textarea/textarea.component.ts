@@ -15,7 +15,7 @@ import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
  * mdc-textarea component, which is used to get the multi-line text input from the user.
  * It contains:
  * - label: It is the title of the textarea field.
- * - required-label: A string depicting that the textarea field is required.
+ * - required: A boolean attribute depicting that the textarea field is required.
  * - Textarea: It is the multi-line text input field.
  * - helper-text: It is the text that provides additional information about the textarea field.
  * - max-character-limit: It is the text that shows the character count of the textarea field.
@@ -40,10 +40,10 @@ import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
  * @event limitexceeded - (React: onLimitExceeded) This event is dispatched once when the character limit
  * exceeds or restored.
  *
- *
+ * @dependency mdc-button
  * @dependency mdc-icon
  * @dependency mdc-text
- * @dependency mdc-button
+ * @dependency mdc-toggletip
  *
  * @cssproperty --mdc-textarea-disabled-border-color - Border color for the textarea container when disabled
  * @cssproperty --mdc-textarea-disabled-text-color - Text color for the textarea field when disabled
@@ -161,7 +161,7 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
     }
 
     private setTextareaValidity() {
-      if (this.requiredLabel && this.validationMessage && this.value === '') {
+      if (this.required && this.validationMessage && this.value === '') {
         this.textarea.setCustomValidity(this.validationMessage);
       } else if (this.maxCharacterLimit
         && this.value.length > this.maxCharacterLimit
@@ -344,7 +344,7 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
           .value="${this.value}"
           ?disabled="${this.disabled}"
           ?readonly="${this.readonly}"
-          ?required="${!!this.requiredLabel}"
+          ?required="${this.required}"
           placeholder=${ifDefined(this.placeholder)}
           rows=${ifDefined(this.rows)}
           cols=${ifDefined(this.cols)}

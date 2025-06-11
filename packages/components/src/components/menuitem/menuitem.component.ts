@@ -1,7 +1,12 @@
 import type { CSSResult } from 'lit';
+import { html, nothing } from 'lit';
+import { property } from 'lit/decorators.js';
 import { ROLE } from '../../utils/roles';
 import ListItem from '../listitem/listitem.component';
 import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
+import { ARROW_ICONS, ARROW_DIRECTIONS, ARROW_POSITIONS } from './menuitem.constants';
+import type { ArrowPositions, ArrowDirections } from './menuitem.types';
+import styles from './menuitem.styles';
 
 /**
  * menuitem component is inherited by listitem component with the role set `menuitem`.<br/>
@@ -13,6 +18,8 @@ import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
  * Please use mdc-menu as a parent element even when there is only menuitem for a11y purpose.
  *
  * @dependency mdc-text
+ * @dependency mdc-icon
+ * @dependency mdc-tooltip
  *
  * @tagname mdc-menuitem
  *
@@ -22,6 +29,24 @@ import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
  * @event focus - (React: onFocus) This event is dispatched when the menuitem receives focus.
  */
 class MenuItem extends ListItem {
+  /**
+   * Defines where the arrow icon will appear.
+   * - `'leading'`: Icon appears on the leading edge (start).
+   * - `'trailing'`: Icon appears on the trailing edge (end).
+   *
+   * If not set, no arrow is displayed.
+   */
+  @property({ type: String, reflect: true, attribute: 'arrow-position' })
+  arrowPosition?: ArrowPositions;
+
+  /**
+   * Defines the direction the arrow icon points.
+   * - `'positive'`: Arrow points toward the trailing side.
+   * - `'negative'`: Arrow points toward the leading side.
+   */
+  @property({ type: String, reflect: true, attribute: 'arrow-direction' })
+  arrowDirection?: ArrowDirections;
+
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.MENUITEM;
@@ -29,7 +54,47 @@ class MenuItem extends ListItem {
     this.variant = LISTITEM_VARIANTS.INSET_RECTANGLE;
   }
 
-  public static override styles: Array<CSSResult> = [...ListItem.styles];
+  /**
+   * Renders the trailing controls slot and optionally the trailing arrow icon,
+   * based on `arrowPosition` and `arrowDirection`.
+   */
+  protected override renderTrailingControls() {
+    const arrowIcon = this.arrowDirection === ARROW_DIRECTIONS.NEGATIVE
+      ? ARROW_ICONS.LEFT
+      : ARROW_ICONS.RIGHT;
+
+    return html`
+      <slot name="trailing-controls"
+      @click=${this.stopEventPropagation}
+      @keyup=${this.stopEventPropagation}
+      @keydown=${this.stopEventPropagation}></slot>
+      ${this.arrowPosition === ARROW_POSITIONS.TRAILING
+    ? html`<mdc-icon name="${arrowIcon}" length-unit="rem" part="trailing-arrow"></mdc-icon>`
+    : nothing}
+    `;
+  }
+
+  /**
+   * Renders the leading controls slot and optionally the leading arrow icon,
+   * based on `arrowPosition` and `arrowDirection`.
+   */
+  protected override renderLeadingControls() {
+    const arrowIcon = this.arrowDirection === ARROW_DIRECTIONS.POSITIVE
+      ? ARROW_ICONS.RIGHT
+      : ARROW_ICONS.LEFT;
+
+    return html`
+      <slot name="leading-controls"
+      @click=${this.stopEventPropagation}
+      @keyup=${this.stopEventPropagation}
+      @keydown=${this.stopEventPropagation}></slot>
+      ${this.arrowPosition === ARROW_POSITIONS.LEADING
+    ? html`<mdc-icon name="${arrowIcon}" length-unit="rem" part="leading-arrow"></mdc-icon>`
+    : nothing}
+    `;
+  }
+
+  public static override styles: Array<CSSResult> = [...ListItem.styles, ...styles];
 }
 
 export default MenuItem;

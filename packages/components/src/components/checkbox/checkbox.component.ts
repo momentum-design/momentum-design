@@ -16,7 +16,11 @@ import styles from './checkbox.styles';
  *
  * To create a group of checkboxes, use the FormFieldGroup component.
  *
+ * @dependency mdc-button
  * @dependency mdc-icon
+ * @dependency mdc-staticcheckbox
+ * @dependency mdc-text
+ * @dependency mdc-toggletip
  *
  * @tagname mdc-checkbox
  *
@@ -79,10 +83,10 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
 
   /**
    * Manages the required state of the checkbox.
-   * If the checkbox is not checked and the requiredLabel property is set, then the checkbox is invalid.
+   * If the checkbox is not checked and the required property is set, then the checkbox is invalid.
    */
   private manageRequired() {
-    if (!this.checked && this.requiredLabel) {
+    if (!this.checked && this.required) {
       if (this.validationMessage) {
         this.inputElement.setCustomValidity(this.validationMessage);
       } else {
@@ -175,7 +179,7 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
           ?autofocus="${this.autofocus}"
           name="${ifDefined(this.name)}"
           value="${ifDefined(this.value)}"
-          ?required="${!!this.requiredLabel}"
+          ?required="${this.required}"
           .checked="${this.checked}"
           aria-checked="${this.indeterminate ? 'mixed' : this.checked}"
           .indeterminate="${this.indeterminate}"

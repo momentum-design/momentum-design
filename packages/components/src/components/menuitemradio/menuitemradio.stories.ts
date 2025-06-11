@@ -5,7 +5,7 @@ import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
-import { ARIA_CHECKED_STATES } from './menuitemradio.constants';
+import { ARIA_CHECKED_STATES } from '../menusection/menusection.constants';
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style="width: 25rem;">${htmlString}</div>`;
 
@@ -63,6 +63,8 @@ const meta: Meta = {
       'trailing-text-side-header',
       'trailing-text-subline',
       'trailing-controls',
+      'arrow-position',
+      'arrow-direction',
       '--mdc-listitem-default-background-color',
       '--mdc-listitem-background-color-hover',
       '--mdc-listitem-background-color-active',

@@ -51,6 +51,7 @@ const DEFAULTS = {
   ROLE: 'dialog',
   Z_INDEX: 1000,
   DISABLE_ARIA_EXPANDED: false,
+  DISABLE_ARIA_HAS_POPUP: false,
 } as const;
 
 export { TAG_NAME, POPOVER_PLACEMENT, COLOR, TRIGGER, DEFAULTS };

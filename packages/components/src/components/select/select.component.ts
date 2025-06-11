@@ -6,6 +6,7 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
+import type { IconNames } from '../icon/icon.types';
 import { TAG_NAME as OPTION_GROUP_TAG_NAME } from '../optgroup/optgroup.constants';
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
@@ -20,9 +21,11 @@ import type { ArrowIcon } from './select.types';
  * The component ensures accessibility and usability while handling various use cases,
  * including long text truncation with tooltip support.
  *
+ * @dependency mdc-button
  * @dependency mdc-icon
  * @dependency mdc-popover
  * @dependency mdc-text
+ * @dependency mdc-toggletip
  *
  * @tagname mdc-select
  *
@@ -62,6 +65,9 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   @state() selectedValueText?: string;
 
   /** @internal */
+  @state() selectedIcon?: IconNames | null;
+
+  /** @internal */
   @state() selectedValue = '';
 
   /** @internal */
@@ -83,13 +89,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     super.connectedCallback();
     // select will only contain name and value will be defined in the options.
     this.value = undefined as unknown as string;
-
-    this.addEventListener('keydown', this.handleKeydown);
-  }
-
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.removeEventListener('keydown', this.handleKeydown);
   }
 
   /**
@@ -113,6 +112,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   private handlePopoverOpen(): void {
     this.displayPopover = true;
     this.baseIconName = ARROW_ICON.ARROW_UP;
+    this.updateActivedescendant();
   }
 
   private handlePopoverClose(): void {
@@ -164,6 +164,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    */
   private setSelectedValue(option: Element): void {
     this.selectedValueText = option?.getAttribute('label') ?? option?.textContent ?? '';
+    this.selectedIcon = option?.getAttribute('prefix-icon') as IconNames | null;
     this.selectedValue = option?.getAttribute('value') ?? option?.textContent ?? '';
 
     // Set form value
@@ -176,11 +177,14 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
 
   /**
    * Manages the required state of the select.
-   * If the value is not set and the requiredLabel property is set,
-   * then the select is invalid.
+   * If the select is required and no value is selected,
+   * it sets a custom validity message based on the validationMessage property.
+   * If the select is not required or a value is selected, it clears the custom validity.
+   * This method is called to ensure that the select behaves correctly in forms.
+   * @internal
    */
   private manageRequired() {
-    if (!this.selectedValue && this.requiredLabel) {
+    if (!this.selectedValue && this.required) {
       if (this.validationMessage) {
         this.inputElement.setCustomValidity(this.validationMessage);
       } else {
@@ -199,6 +203,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   formResetCallback(): void {
     this.selectedValue = '';
     this.selectedValueText = undefined;
+    this.selectedIcon = null;
     this.internals.setFormValue(this.selectedValue);
     this.updateTabIndexForAllOptions();
   }
@@ -366,9 +371,9 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     return -1;
   }
 
-  private updateActivedescendant(target: EventTarget | null): void {
+  private updateActivedescendant(target?: EventTarget | null): void {
     const currentIndex = this.getAllValidOptions().findIndex((option) => option === target);
-    this.activeDescendant = this.getAllValidOptions()[currentIndex]?.id ?? '';
+    this.activeDescendant = this.getAllValidOptions()[currentIndex]?.id || this.getAllValidOptions()[0]?.id;
   }
 
   private resetActivedescendant(): void {
@@ -433,7 +438,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         .value="${this.selectedValue}"
         ?autofocus="${this.autofocus}"
         ?disabled="${this.disabled}"
-        ?required="${!!this.requiredLabel}"
+        ?required="${this.required}"
         @mousedown="${(event: MouseEvent) => event.preventDefault()}"
       >
         ${this.getOptionsContentFromSlot()}
@@ -479,6 +484,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       <mdc-popover
         id="options-popover"
         triggerid="select-base-triggerid"
+        @keydown="${this.handleKeydown}"
         interactive
         ?visible="${this.displayPopover}"
         hide-on-outside-click
@@ -511,6 +517,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         <div
           id="select-base-triggerid"
           part="base-container"
+          @keydown="${this.handleKeydown}"
           tabindex="${this.disabled ? '-1' : '0'}"
           class="${this.disabled ? '' : 'mdc-focus-ring'}"
           role="combobox"
@@ -519,7 +526,11 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           aria-label="${this.dataAriaLabel ?? ''}"
           aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
           aria-expanded="${this.displayPopover ? 'true' : 'false'}"
+          aria-controls="options-popover"
         >
+      ${this.selectedIcon
+    ? html`<mdc-icon length-unit="rem" size="1" name="${this.selectedIcon}" part="selected-icon"></mdc-icon>`
+    : nothing}
           <mdc-text
             part="base-text ${this.selectedValueText ? 'selected' : ''}"
             type="${TYPE.BODY_MIDSIZE_REGULAR}"

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html, TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { DIALOG_ROLE, DIALOG_SIZE, DEFAULTS, DIALOG_VARIANT } from './dialog.constants';
@@ -19,8 +20,9 @@ const createDialog = (args: Args, content: TemplateResult) => html`<mdc-dialog
   description-tag-name="${args['description-tag-name']}"
   role="${args.role}"
   triggerId="${args.triggerId}"
-  aria-labelledby="${args['aria-labelledby']}"
-  aria-label="${args['aria-label']}"
+  aria-labelledby="${ifDefined(args['aria-labelledby'])}"
+  aria-label="${ifDefined(args['aria-label'])}"
+  ?should-focus-trap-wrap=${args['should-focus-trap-wrap']}
   size="${args.size}"
   ?visible="${args.visible}"
   variant="${args.variant}"
@@ -43,6 +45,19 @@ const createTrigger = (triggerID: string, text: String, toggleVisibility: () => 
   </div>
 `;
 
+const dialogBodyContent = (toggleVisibility?: () => void, customHeader = false) => html`
+${customHeader && html`
+  <mdc-icon slot="header-prefix" name="placeholder-bold"></mdc-icon>
+`}
+<div slot="dialog-body">
+  <p>This is the body content of the dialog.</p>
+</div>
+<mdc-link slot="footer-link" icon-name="placeholder-bold" href='#'>Label</mdc-link>
+<mdc-text slot="footer-link">Not rendered</mdc-text>
+<mdc-button slot="footer-button-secondary" @click="${toggleVisibility}">Secondary</mdc-button>
+<mdc-button slot="footer-button-primary" @click="${toggleVisibility}">Primary</mdc-button>
+`;
+
 const render = (args: Args) => {
   const toggleVisibility = () => {
     const dialog = document.getElementById(args.id) as HTMLElement;
@@ -50,15 +65,18 @@ const render = (args: Args) => {
   };
   return html`
     ${createTrigger(args.triggerId, 'Click me!', toggleVisibility)}
-    ${createDialog(args, html`
-      <div slot="dialog-body">
-        <p>This is the body content of the dialog.</p>
-      </div>
-      <mdc-link slot="footer-link" icon-name="placeholder-bold" href='#'>Label</mdc-link>
-      <mdc-text slot="footer-link">Not rendered</mdc-text>
-      <mdc-button slot="footer-button-secondary" @click="${toggleVisibility}">Secondary</mdc-button>
-      <mdc-button slot="footer-button-primary" @click="${toggleVisibility}">Primary</mdc-button>
-    `)}
+    ${createDialog(args, dialogBodyContent(toggleVisibility))}
+  `;
+};
+
+const renderWithCustomHeader = (args: Args) => {
+  const toggleVisibility = () => {
+    const dialog = document.getElementById(args.id) as HTMLElement;
+    dialog.toggleAttribute('visible');
+  };
+  return html`
+    ${createTrigger(args.triggerId, 'Click me!', toggleVisibility)}
+    ${createDialog(args, dialogBodyContent(toggleVisibility, true))}
   `;
 };
 
@@ -144,6 +162,9 @@ const meta: Meta = {
     'description-tag-name': {
       control: 'text',
     },
+    'should-focus-trap-wrap': {
+      control: 'boolean',
+    },
     role: {
       control: 'select',
       options: Object.values(DIALOG_ROLE),
@@ -164,7 +185,7 @@ const meta: Meta = {
       '--mdc-dialog-width',
     ]),
     ...hideControls([
-      'shouldWrapFocus',
+      'focusTrap',
     ]),
   },
 };
@@ -241,5 +262,59 @@ export const withSaveCancelButtons: StoryObj = {
     ...commonProperties,
     ...headerDescriptionProperties,
     size: DEFAULTS.SIZE,
+  },
+};
+
+export const withCustomHeader: StoryObj = {
+  render: renderWithCustomHeader,
+  args: {
+    ...commonProperties,
+    ...headerDescriptionProperties,
+    size: DEFAULTS.SIZE,
+  },
+};
+
+export const WithoutTriggerElement: StoryObj = {
+  render: (args: Args) => html`
+  <p>Toggle the visible property to show/hide the dialog</p>
+  <mdc-dialog
+    id="dialog"
+    aria-label="dialog"
+    size="small"
+    variant="default"
+    close-button-aria-label="Close dialog"
+    ?visible="${args.visible}"
+    z-index="100"
+    role="dialog"
+    header-text="Dialog Header"
+    description-text="This is a dialog description. It is only present if the header is present."
+    header-tag-name="h2"
+    description-tag-name="p"
+    @shown="${action('onshown')}"
+    @hidden="${action('onhidden')}"
+  >
+    <mdc-icon slot="header-prefix" name="placeholder-bold"></mdc-icon>
+    <div slot="dialog-body">
+    </div>
+    <mdc-link slot="footer-link" icon-name="placeholder-bold" href='#'>Label</mdc-link>
+    <mdc-button slot="footer-button-secondary">Secondary</mdc-button>
+    <mdc-button slot="footer-button-primary">Primary</mdc-button>
+  </mdc-dialog>
+  `,
+};
+
+export const MountUnmount: StoryObj = {
+  render: (args: Args) => html`
+      <mdc-button id="dialog-trigger-btn">
+        Trigger Button which is connected, but mountDialog controls the mounting of the dialog
+      </mdc-button>
+      ${args.mountDialog ? createDialog(args, dialogBodyContent()) : ''}
+    `,
+  args: {
+    ...commonProperties,
+    ...headerDescriptionProperties,
+    size: DEFAULTS.SIZE,
+    mountDialog: true,
+    visible: true,
   },
 };

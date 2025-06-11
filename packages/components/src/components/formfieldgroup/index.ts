@@ -1,6 +1,9 @@
+import '../button';
+import '../icon';
+import '../text';
+import '../toggletip';
 import FormfieldGroup from './formfieldgroup.component';
 import { TAG_NAME } from './formfieldgroup.constants';
-import '../text';
 
 FormfieldGroup.register(TAG_NAME);
 

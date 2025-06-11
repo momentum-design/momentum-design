@@ -1,8 +1,11 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
+import type { PopoverPlacement } from '../popover/popover.types';
 import { DEFAULTS, MDC_TEXT_OPTIONS } from './formfieldwrapper.constants';
+import { BUTTON_VARIANTS } from '../button/button.constants';
 import styles from './formfieldwrapper.styles';
 import type { ValidationType } from './formfieldwrapper.types';
 import { getHelperIcon } from './formfieldwrapper.utils';
@@ -14,7 +17,11 @@ import { getHelperIcon } from './formfieldwrapper.utils';
  *
  * @tagname mdc-formfieldwrapper
  *
- * @slot label-info - slot to add the label info icon
+ * @dependency mdc-text
+ * @dependency mdc-icon
+ * @dependency mdc-button
+ * @dependency mdc-toggletip
+ *
  *
  */
 class FormfieldWrapper extends DisabledMixin(Component) {
@@ -24,11 +31,11 @@ class FormfieldWrapper extends DisabledMixin(Component) {
   @property({ reflect: true, type: String }) label?: string;
 
   /**
-   * The required label of the input field.
-   * When an appropriate string value is set,
-   * the input field is marked as required and the label is appended with this text.
+   * The required attribute to indicate that the input field is required.
+   * It is used to append a required indicator (*) to the label.
+   * @default false
    */
-  @property({ type: String, reflect: true, attribute: 'required-label' }) requiredLabel?: string;
+  @property({ type: Boolean, reflect: true, attribute: 'required' }) required = false;
 
   /**
    * The unique id of the input field. It is used to link the input field with the label.
@@ -45,6 +52,26 @@ class FormfieldWrapper extends DisabledMixin(Component) {
    * The help text that is displayed below the input field.
    */
   @property({ type: String, reflect: true, attribute: 'help-text' }) helpText?: string;
+
+  /**
+   * The toggletip text that is displayed when the label is hovered.
+   * It is used to provide additional information about the label.
+   */
+  @property({ type: String, reflect: true, attribute: 'toggletip-text' }) toggletipText?: string;
+
+  /**
+   * The placement of the toggletip that is displayed when the info icon is hovered.
+   * @default 'top'
+   */
+  @property({ type: String, reflect: true, attribute: 'toggletip-placement' })
+  toggletipPlacement: PopoverPlacement = DEFAULTS.TOGGLETIP_PLACEMENT;
+
+  /**
+   * Aria label for the info icon that is displayed next to the label when `toggletipText` is set.
+   * This is used for accessibility purposes to provide a description of the icon.
+   */
+  @property({ type: String, reflect: true, attribute: 'info-icon-aria-label' })
+  infoIconAriaLabel?: string;
 
   /** @internal */
   protected shouldRenderLabel: Boolean = true;
@@ -68,18 +95,6 @@ class FormfieldWrapper extends DisabledMixin(Component) {
           part="label"
           >${this.label}</mdc-text
         >`;
-  }
-
-  protected renderRequiredLabel() {
-    if (!this.requiredLabel) {
-      return nothing;
-    }
-
-    return html`
-      <mdc-text part="required-label" tagname=${MDC_TEXT_OPTIONS.TAGNAME} type=${MDC_TEXT_OPTIONS.TYPE}>
-        (${this.requiredLabel})
-      </mdc-text>
-    `;
   }
 
   /**
@@ -127,8 +142,23 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     if (!this.label) return nothing;
     return html`<div class="mdc-label-text" part="label-text">
       <slot name="label">${this.renderLabelElement()}</slot>
-      <slot name="required-label">${this.renderRequiredLabel()}</slot>
-      <slot name="label-info"></slot>
+      ${this.required ? html`<span part="required-indicator">*</span>` : nothing}
+      ${this.toggletipText ? html`
+        <mdc-button 
+        part="info-icon-btn"
+        prefix-icon="${DEFAULTS.INFO_ICON}" 
+        size="${DEFAULTS.ICON_SIZE}"
+        variant="${BUTTON_VARIANTS.TERTIARY}"
+        aria-label="${ifDefined(this.infoIconAriaLabel)}"
+        id="info-icon-id"></mdc-button>
+        <mdc-toggletip
+          part="label-toggletip"
+          triggerid="info-icon-id"
+          id="label-toggletip-id"
+          placement="${this.toggletipPlacement}"
+          show-arrow
+          >${this.toggletipText}</mdc-toggletip
+      >` : nothing}
     </div>`;
   }
 
@@ -140,7 +170,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     if (!this.helpText) {
       return nothing;
     }
-    return html`<div class="mdc-help-text" part="mdc-help-text">
+    return html`<div class="mdc-help-text" part="help-text">
       <slot name="help-icon">${this.renderHelpTextIcon()}</slot>
       <slot name="help-text">${this.renderHelpText()}</slot>
     </div>`;

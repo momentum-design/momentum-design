@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 
-import { expect, Page } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { test, ComponentsPage } from '../../../config/playwright/setup';
 import type { PopoverColor, PopoverPlacement } from '../popover/popover.types';
 import { COLOR, POPOVER_PLACEMENT, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
@@ -13,7 +13,7 @@ type SetupOptions = {
   closeButtonAriaLabel?: string;
   color?: PopoverColor;
   id: string;
-  offset?: boolean;
+  offset?: string;
   placement?: PopoverPlacement;
   showArrow?: boolean;
   showTestButton?: boolean;
@@ -81,7 +81,6 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
     await expect(toggletip).toHaveAttribute('backdrop');
     await expect(toggletip).toHaveAttribute('color', 'tonal');
     await expect(toggletip).toHaveAttribute('delay', '0,0');
-    await expect(toggletip).not.toHaveAttribute('focus-trap');
     await expect(toggletip).toHaveAttribute('hide-on-blur');
     await expect(toggletip).toHaveAttribute('hide-on-escape');
     await expect(toggletip).toHaveAttribute('interactive');
@@ -92,17 +91,16 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
     await expect(toggletip).toHaveAttribute('trigger', 'click');
 
     await expect(toggletip).not.toHaveAttribute('visible');
-    await expect(toggletip).not.toHaveAttribute('enabledFocusTrap');
     await expect(toggletip).not.toHaveAttribute('enabledPreventScroll');
     await expect(toggletip).toHaveAttribute('flip');
-    await expect(toggletip).not.toHaveAttribute('focus-trap');
     await expect(toggletip).not.toHaveAttribute('prevent-scroll');
-    await expect(toggletip).toHaveAttribute('close-button');
+    await expect(toggletip).not.toHaveAttribute('close-button');
     await expect(toggletip).toHaveAttribute('hide-on-outside-click');
     await expect(toggletip).toHaveAttribute('focus-back-to-trigger');
     await expect(toggletip).not.toHaveAttribute('size');
     await expect(toggletip).not.toHaveAttribute('disable-aria-expanded');
 
+    await expect(toggletip).toHaveAttribute('focus-trap', '');
     await expect(triggerButton).toHaveAttribute('aria-expanded', 'false');
     await expect(triggerButton).toHaveAttribute('aria-haspopup', 'dialog');
   });
@@ -112,13 +110,14 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
    */
   await test.step('attributes should be set correctly for toggletip', async () => {
     await componentsPage.setAttributes(toggletip, {
-      closeButton: 'true',
+      'close-button': '',
       'close-button-aria-label': 'Close',
       color: 'contrast',
       offset: '8',
       placement: 'bottom',
       'show-arrow': '',
     });
+
     await expect(toggletip).toHaveAttribute('close-button');
     await expect(toggletip).toHaveAttribute('close-button-aria-label', 'Close');
     await expect(toggletip.locator('.popover-close')).toHaveAttribute('aria-label', 'Close');
@@ -176,6 +175,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
 const interactionsTestCases = async (componentsPage: ComponentsPage) => {
   const { toggletip, triggerButton } = await setup({
     componentsPage,
+    closeButton: true,
     closeButtonAriaLabel: 'Close',
     id: 'toggletip',
     triggerID: 'trigger-button',
@@ -219,19 +219,16 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
       await componentsPage.actionability.pressTab();
       await expect(toggletip.locator('mdc-link')).toBeFocused();
     });
-    await test.step(
-      'toggletip shall dismiss after focus moves out of last focusable element in toggletip',
-      async () => {
-        await triggerButton.focus();
-        await componentsPage.page.keyboard.press('Enter');
-        await expect(toggletip).toBeVisible();
-        await componentsPage.actionability.pressTab();
-        await expect(toggletip.locator('mdc-link')).toBeFocused();
-        await componentsPage.actionability.pressTab();
-        await expect(toggletip).not.toBeVisible();
-        await expect(triggerButton).toBeFocused();
-      },
-    );
+    await test.step('toggletip shall trap focus', async () => {
+      await triggerButton.focus();
+      await componentsPage.page.keyboard.press('Enter');
+      await expect(toggletip).toBeVisible();
+      await expect(toggletip.locator('.popover-close')).toBeFocused();
+      await componentsPage.actionability.pressTab();
+      await expect(toggletip.locator('mdc-link')).toBeFocused();
+      await componentsPage.actionability.pressTab();
+      await expect(toggletip.locator('.popover-close')).toBeFocused();
+    });
     await test.step('clicking on close button in toggltip shall dismiss toggletip', async () => {
       await triggerButton.focus();
       await componentsPage.page.keyboard.press('Enter');
@@ -262,6 +259,7 @@ const visualTestingSetup = async (componentsPage: ComponentsPage) => {
 
       <mdc-toggletip
         close-button-aria-label="Close"
+        close-button
         color="tonal"
         triggerID="trigger-button1"
         visible
@@ -272,6 +270,7 @@ const visualTestingSetup = async (componentsPage: ComponentsPage) => {
 
       <mdc-toggletip
         close-button-aria-label="Close"
+        close-button
         color="contrast"
         triggerID="trigger-button2"
         visible
@@ -318,11 +317,7 @@ test('mdc-toggletip', async ({ componentsPage }) => {
     await visualTestingSetup(componentsPage);
 
     await test.step('matches screenshot of elements', async () => {
-      // wait 200ms before switching from RTL to LTR to make sure toggletip repaints as well
-      const assertionAfterSwitchingDirection = async (page: Page) => {
-        await page.waitForTimeout(200);
-      };
-      await componentsPage.visualRegression.takeScreenshot('mdc-toggletip', { assertionAfterSwitchingDirection });
+      await componentsPage.visualRegression.takeScreenshot('mdc-toggletip');
     });
   });
 });

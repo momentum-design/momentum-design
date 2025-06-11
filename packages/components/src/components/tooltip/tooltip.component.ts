@@ -55,10 +55,8 @@ class Tooltip extends Popover {
     this.role = ROLE.TOOLTIP;
     this.trigger = 'mouseenter focusin';
 
-    this.enabledFocusTrap = false;
     this.enabledPreventScroll = false;
     this.flip = true;
-    this.focusTrap = false;
     this.preventScroll = false;
     this.closeButton = false;
     this.hideOnOutsideClick = false;
