@@ -166,6 +166,15 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
   override role: DialogRole = DEFAULTS.ROLE;
 
   /**
+   * Disable setting the aria-haspopup attribute on trigger element.
+   * Make sure to set this to true when the popover is extended and its role
+   * is not 'dialog' or 'alertdialog' i.e. listbox, menu, etc.
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'disable-aria-haspopup' })
+  disableAriaHasPopup: boolean = DEFAULTS.DISABLE_ARIA_HAS_POPUP;
+
+  /**
    * For now FocusTrap is always true as the dialog is a modal component only.
    * This means it will always trap focus within the dialog when it is open.
    */
@@ -253,10 +262,12 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
    * @internal
    */
   private setupAriaHasPopup() {
-    this.triggerElement?.setAttribute(
-      'aria-haspopup',
-      this.triggerElement?.getAttribute('aria-haspopup') || 'dialog',
-    );
+    if (!this.disableAriaHasPopup) {
+      this.triggerElement?.setAttribute(
+        'aria-haspopup',
+        this.triggerElement?.getAttribute('aria-haspopup') || 'dialog',
+      );
+    }
   }
 
   /**

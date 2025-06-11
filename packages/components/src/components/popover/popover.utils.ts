@@ -121,7 +121,7 @@ export class PopoverUtils {
    * Updates the aria-haspopup attribute on the trigger element.
    */
   updateAriaHasPopupAttribute() {
-    if (this.popover.interactive) {
+    if (this.popover.interactive && !this.popover.disableAriaHasPopup) {
       this.popover.triggerElement?.setAttribute(
         'aria-haspopup',
         this.popover.triggerElement?.getAttribute('aria-haspopup') || 'dialog',

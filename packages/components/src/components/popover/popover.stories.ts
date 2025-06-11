@@ -39,6 +39,7 @@ const createPopover = (args: Args, content: TemplateResult) => html`
     aria-describedby="${args['aria-describedby']}"
     role="${args.role}"
     ?disable-aria-expanded="${args['disable-aria-expanded']}"
+    ?disable-aria-haspopup="${args['disable-aria-haspopup']}"
     @shown="${action('onshown')}"
     @hidden="${action('onhidden')}"
     @created="${action('oncreated')}"
@@ -291,6 +292,9 @@ const meta: Meta = {
     'disable-aria-expanded': {
       control: 'boolean',
     },
+    'disable-aria-haspopup': {
+      control: 'boolean',
+    },
     ...disableControls([
       '--mdc-popover-arrow-border-radius',
       '--mdc-popover-arrow-border',
@@ -332,6 +336,7 @@ export const Example: StoryObj = {
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
     'disable-aria-expanded': true,
+    'disable-aria-haspopup': false,
     interactive: DEFAULTS.INTERACTIVE,
   },
 };
