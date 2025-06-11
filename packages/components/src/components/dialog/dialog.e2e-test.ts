@@ -135,7 +135,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
-    const { dialog } = await setup({
+    const { dialog, triggerButton } = await setup({
       componentsPage,
       id: 'dialog',
       triggerId: 'trigger-btn',
@@ -153,13 +153,17 @@ test('mdc-dialog', async ({ componentsPage }) => {
     });
 
     await test.step('accessibility attributes', async () => {
-      await expect(dialog).toHaveAttribute('aria-label', 'dialog-attribute');
-      await expect(dialog).not.toHaveAttribute('aria-expanded');
-      await expect(dialog).not.toHaveAttribute('aria-describedby');
       await expect(dialog).toHaveAttribute('size', DEFAULTS.SIZE);
+
+      await expect(triggerButton).not.toHaveAttribute('aria-expanded');
+      await expect(triggerButton).toHaveAttribute('aria-haspopup', 'dialog');
+
       await expect(dialog).not.toHaveAttribute('header-text');
       await expect(dialog).not.toHaveAttribute('description-text');
-      await expect(dialog).not.toHaveAttribute('aria-labelledby', '');
+
+      await expect(dialog).toHaveAttribute('aria-label', 'dialog-attribute');
+      await expect(dialog).not.toHaveAttribute('aria-labelledby');
+      await expect(dialog).toHaveAttribute('aria-describedby', 'trigger-btn');
 
       const closeDialogButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
       await expect(closeDialogButton).toHaveAttribute('aria-label', 'Close button label');
