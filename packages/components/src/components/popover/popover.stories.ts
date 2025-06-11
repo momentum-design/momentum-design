@@ -20,6 +20,7 @@ const createPopover = (args: Args, content: TemplateResult) => html`
     .offset="${args.offset ?? 0}"
     ?interactive=${args.interactive}
     ?focus-trap=${args['focus-trap']}
+    ?should-focus-trap-wrap=${args['should-focus-trap-wrap']}
     ?show-arrow=${args['show-arrow']}
     color=${args.color}
     ?flip=${args.flip}
@@ -38,6 +39,7 @@ const createPopover = (args: Args, content: TemplateResult) => html`
     aria-describedby="${args['aria-describedby']}"
     role="${args.role}"
     ?disable-aria-expanded="${args['disable-aria-expanded']}"
+    ?disable-aria-haspopup="${args['disable-aria-haspopup']}"
     @shown="${action('onshown')}"
     @hidden="${action('onhidden')}"
     @created="${action('oncreated')}"
@@ -251,6 +253,9 @@ const meta: Meta = {
     'focus-trap': {
       control: 'boolean',
     },
+    'should-focus-trap-wrap': {
+      control: 'boolean',
+    },
     'prevent-scroll': {
       control: 'boolean',
     },
@@ -285,6 +290,9 @@ const meta: Meta = {
       control: 'text',
     },
     'disable-aria-expanded': {
+      control: 'boolean',
+    },
+    'disable-aria-haspopup': {
       control: 'boolean',
     },
     ...disableControls([
@@ -328,6 +336,7 @@ export const Example: StoryObj = {
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
     'disable-aria-expanded': true,
+    'disable-aria-haspopup': false,
     interactive: DEFAULTS.INTERACTIVE,
   },
 };
