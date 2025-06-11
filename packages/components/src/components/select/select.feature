@@ -183,8 +183,11 @@ Feature: Select component
   Scenario: Accessibility attributes on select combobox
     Given I have a select container with role of combobox
     Then this container should have aria-haspopup attribute set to "listbox"
-    And this container should have aria-expanded attribute set to "false" when closed
-    And this container should have aria-expanded attribute set to "true" when opened
-    And this container should have aria-activedescendant attribute set to the id of the currently focused option when opened
+    And this container should have aria-expanded attribute set to "false" (since its closed)
     And this container should have aria-required attribute set to "true" if the select component is marked as required
     And this container should have aria-invalid attribute set to "true" if there is an error message
+
+  Scenario: Accessibility attributes on select options
+    Given I have a select container with the dropdown open
+    Then the combobox container should have aria-activedescendant attribute set to the id of the currently focused option when opened
+    And the value of aria-activedescendant will get updated to the currently focused option, when the user navigates through the options
