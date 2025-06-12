@@ -428,8 +428,10 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
       trigger: TRIGGER.FOCUSIN,
       children: 'Lorem ipsum dolor sit amet.',
     });
+
     await test.step('focusing on trigger button should open popover', async () => {
-      await triggerButton.focus();
+      await componentsPage.page.keyboard.press('Tab');
+      await expect(triggerButton).toBeFocused();
       await expect(popover).toBeVisible();
     });
     await test.step('focusing out the trigger button should close the popover', async () => {
@@ -443,17 +445,40 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
       triggerID: 'trigger-button',
       trigger: TRIGGER.FOCUSIN,
       children: '<mdc-button>Interactive Popover</mdc-button>',
+      focusTrap: true,
       interactive: true,
       hideOnBlur: true,
     });
 
-    await test.step('focusing trigger button, focus should go in interactive popover', async () => {
-      await triggerButtonInteractive.focus();
+    await test.step('focusing trigger button, move focus into interactive popover if focusTrap is true', async () => {
+      await componentsPage.page.keyboard.press('Tab');
       await expect(popoverInteractive).toBeVisible();
+      await expect(componentsPage.page.getByRole('button', { name: 'Interactive Popover' })).toBeFocused();
       await expect(triggerButtonInteractive).not.toBeFocused();
     });
 
+    const { popover: popoverInteractiveHideOnBlur, triggerButton: triggerButtonInteractiveHideOnBlur } = await setup({
+      componentsPage,
+      id: 'popover',
+      triggerID: 'trigger-button',
+      trigger: TRIGGER.FOCUSIN,
+      children: '<mdc-button>Interactive Popover</mdc-button>',
+      focusTrap: false,
+      interactive: true,
+      hideOnBlur: true,
+    });
+
     await test.step('if hide-on-blur set, focusing out the interactive popover should close the popover', async () => {
+      await componentsPage.page.keyboard.press('Tab');
+      await expect(triggerButtonInteractiveHideOnBlur).toBeFocused();
+      await expect(popoverInteractiveHideOnBlur).toBeVisible();
+
+      // focus into interactive popover
+      await componentsPage.page.keyboard.press('Tab');
+      await expect(componentsPage.page.getByRole('button', { name: 'Interactive Popover' })).toBeFocused();
+      await expect(popoverInteractiveHideOnBlur).toBeVisible();
+
+      // focus out the interactive popover
       await componentsPage.page.keyboard.press('Tab');
       await expect(popoverInteractive).not.toBeVisible();
     });
@@ -469,14 +494,16 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
       await expect(popover).toBeVisible();
       await componentsPage.page.keyboard.press('Escape');
       await expect(popover).not.toBeVisible();
+      await expect(triggerButton).toBeFocused();
     });
 
     await test.step('if focus-trap set, focus should be lock in popover', async () => {
       await componentsPage.setAttributes(popover, { 'focus-trap': '' });
-      await triggerButton.focus();
-      await expect(popover).toBeVisible();
       await componentsPage.page.keyboard.press('Tab');
+      await componentsPage.page.keyboard.press('Shift+Tab');
+
       await expect(popover).toBeVisible();
+      await expect(componentsPage.page.getByRole('button', { name: 'Interactive Popover' })).toBeFocused();
       await componentsPage.page.keyboard.press('Escape');
     });
   });

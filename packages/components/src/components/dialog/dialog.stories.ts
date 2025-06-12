@@ -1,6 +1,7 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html, TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { DIALOG_ROLE, DIALOG_SIZE, DEFAULTS, DIALOG_VARIANT } from './dialog.constants';
@@ -19,8 +20,9 @@ const createDialog = (args: Args, content: TemplateResult) => html`<mdc-dialog
   description-tag-name="${args['description-tag-name']}"
   role="${args.role}"
   triggerId="${args.triggerId}"
-  aria-labelledby="${args['aria-labelledby']}"
-  aria-label="${args['aria-label']}"
+  aria-labelledby="${ifDefined(args['aria-labelledby'])}"
+  aria-label="${ifDefined(args['aria-label'])}"
+  ?should-focus-trap-wrap=${args['should-focus-trap-wrap']}
   size="${args.size}"
   ?visible="${args.visible}"
   variant="${args.variant}"
@@ -43,7 +45,7 @@ const createTrigger = (triggerID: string, text: String, toggleVisibility: () => 
   </div>
 `;
 
-const dialogBodyContent = (toggleVisibility: () => void, customHeader = false) => html`
+const dialogBodyContent = (toggleVisibility?: () => void, customHeader = false) => html`
 ${customHeader && html`
   <mdc-icon slot="header-prefix" name="placeholder-bold"></mdc-icon>
 `}
@@ -160,6 +162,9 @@ const meta: Meta = {
     'description-tag-name': {
       control: 'text',
     },
+    'should-focus-trap-wrap': {
+      control: 'boolean',
+    },
     role: {
       control: 'select',
       options: Object.values(DIALOG_ROLE),
@@ -180,7 +185,7 @@ const meta: Meta = {
       '--mdc-dialog-width',
     ]),
     ...hideControls([
-      'shouldWrapFocus',
+      'focusTrap',
     ]),
   },
 };
@@ -296,4 +301,20 @@ export const WithoutTriggerElement: StoryObj = {
     <mdc-button slot="footer-button-primary">Primary</mdc-button>
   </mdc-dialog>
   `,
+};
+
+export const MountUnmount: StoryObj = {
+  render: (args: Args) => html`
+      <mdc-button id="dialog-trigger-btn">
+        Trigger Button which is connected, but mountDialog controls the mounting of the dialog
+      </mdc-button>
+      ${args.mountDialog ? createDialog(args, dialogBodyContent()) : ''}
+    `,
+  args: {
+    ...commonProperties,
+    ...headerDescriptionProperties,
+    size: DEFAULTS.SIZE,
+    mountDialog: true,
+    visible: true,
+  },
 };

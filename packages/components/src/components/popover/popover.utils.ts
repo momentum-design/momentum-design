@@ -121,11 +121,11 @@ export class PopoverUtils {
    * Updates the aria-haspopup attribute on the trigger element.
    */
   updateAriaHasPopupAttribute() {
-    if (this.popover.interactive) {
-      const hasPopup = this.popover.triggerElement?.getAttribute('aria-haspopup');
-      if (!hasPopup) {
-        this.popover.triggerElement?.setAttribute('aria-haspopup', ROLE.DIALOG);
-      }
+    if (this.popover.interactive && !this.popover.disableAriaHasPopup) {
+      this.popover.triggerElement?.setAttribute(
+        'aria-haspopup',
+        this.popover.triggerElement?.getAttribute('aria-haspopup') || 'dialog',
+      );
     } else {
       this.popover.triggerElement?.removeAttribute('aria-haspopup');
     }

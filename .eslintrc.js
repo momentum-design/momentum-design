@@ -12,7 +12,20 @@ module.exports = {
   globals: {
     BufferEncoding: 'readonly',
   },
-  ignorePatterns: ['**/dist/**', '*.hbs', 'scripts/**', '**/husky/**', '**/Dockerfile.*'],
+  ignorePatterns: [
+    '**/dist/**',
+    '*.hbs',
+    'scripts/**',
+    '**/husky/**',
+    '**/Dockerfile.*',
+    'stoyrebook-static/**',
+    'react/**',
+    'test-results/**',
+    'node_modules/**',
+    'playwright-report/**',
+    'coverage/**',
+    'playwright-temp/**',
+  ],
   overrides: [
     {
       files: ['**/*.test.ts'],

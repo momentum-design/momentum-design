@@ -51,7 +51,7 @@ For the best local development experience, the following E2E setup testing is re
      yarn components test:e2e:serve # setup server on localhost:4000
    ```
 
-3. Open another terminal, now you can start run the test:
+3. Open another terminal, now you can start the test:
 
    ```bash
      yarn components test:e2e:skip-snapshot # without snapshot 
@@ -70,13 +70,13 @@ For the best local development experience, the following E2E setup testing is re
      yarn components test:e2e:skip-snapshot XXX.e2e-test.ts # without snapshot
    ```
 
-5. To Run **individual** test in a testing file, run:
+5. To Run **individual** test case in a test file, run:
 
    ```bash
-     yarn components test:e2e:skip-snapshot -- './src/components/iconprovider/iconprovider.e2e-test.ts' -g 'mdc-IconmProvider nested'
+     yarn components test:e2e:skip-snapshot -- './src/components/iconprovider/iconprovider.e2e-test.ts' -g 'mdc-IconProvider nested'
    ```
 
-    * where the test file is `"./src/components/iconprovider/iconprovider.e2e-test.ts"`, while within the file, the test naming structure is `mdc-IconmProvider nested`.
+    * where the test file is `"./src/components/iconprovider/iconprovider.e2e-test.ts"`, while within the file, the test naming structure is `mdc-IconProvider nested`.
 
 6. To Run test in **specific** browser, run:
 
@@ -98,12 +98,12 @@ To update Visual Regression snapshots, follow the steps below to run E2E testing
   
     > It's advised to add `alias docker=podman` to your shell config file, e.g. ~/.zshrc)
 
-2. **Docker engine / daemon needs to run before executing.**
+2. **Docker engine / daemon needs to run before executing.** OR **Podman machine needs to be run before executing**
 
-3. Login to the docker ghrc.io:
+3. Login to the ghrc.io:
 
    ```bash
-    echo $PAT | docker login ghcr.io -u username --password-stdin # login to docker with you github credentials (replace $PAT with personal access token (access token needs write packages access))
+    echo $PAT | docker login ghcr.io -u username --password-stdin # login to docker with your github credentials (replace $PAT with personal access token (access token needs write packages access))
    ```
 
 4. Open a terminal to set up webserver:
@@ -119,7 +119,7 @@ To update Visual Regression snapshots, follow the steps below to run E2E testing
    ```
    or if you're using podman: 
    ```bash
-     yarn components test:e2e:podman:serve
+     yarn components test:e2e:podman:serve # run podman image on localhost:3000
    ```
 
 6. Open another terminal to start run the test:
