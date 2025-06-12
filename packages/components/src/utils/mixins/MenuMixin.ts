@@ -2,7 +2,6 @@
 import type { PropertyValues } from 'lit';
 import { LitElement } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
-import { TAG_NAME as MENU_TAGNAME } from '../../components/menu/menu.constants';
 import { ORIENTATION, TAG_NAME as MENUBAR_TAGNAME } from '../../components/menubar/menubar.constants';
 import type { Orientation } from '../../components/menubar/menubar.types';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../../components/menupopover/menupopover.constants';
@@ -144,8 +143,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      */
     private isValidMenu(tagName?: string): boolean {
       return (
-        tagName?.toLowerCase() === MENU_TAGNAME
-        || tagName?.toLowerCase() === MENUBAR_TAGNAME || this.isValidNavItemList(tagName)
+        tagName?.toLowerCase() === MENUBAR_TAGNAME || this.isValidNavItemList(tagName)
       );
     }
 

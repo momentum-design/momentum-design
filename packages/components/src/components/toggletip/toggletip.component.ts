@@ -73,6 +73,7 @@ class ToggleTip extends Popover {
     this.hideOnOutsideClick = true;
     this.disableAriaExpanded = false;
     this.focusBackToTrigger = true;
+    this.focusTrap = true;
   }
 
   /**
