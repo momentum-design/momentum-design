@@ -30,7 +30,6 @@ import Linksimple from './components/linksimple';
 import List from './components/list';
 import ListItem from './components/listitem';
 import Marker from './components/marker';
-import Menu from './components/menu';
 import MenuBar from './components/menubar';
 import MenuItem from './components/menuitem';
 import MenuItemCheckbox from './components/menuitemcheckbox';
@@ -117,7 +116,6 @@ export {
   List,
   ListItem,
   Marker,
-  Menu,
   MenuBar,
   MenuItem,
   MenuItemCheckbox,
