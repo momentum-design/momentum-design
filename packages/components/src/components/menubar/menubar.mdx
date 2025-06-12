@@ -1,0 +1,164 @@
+import { Meta, Title, Primary, Controls } from '@storybook/blocks';
+
+import MenubarStories from './menubar.stories';
+
+<Meta of={MenubarStories} name="User Stories" />
+
+## Feature: Vertical Menubar Accessibility and User Interaction
+
+### ✅ Background
+
+> The Menubar container has `role="menubar"` with `aria-orientation="vertical"`.  
+> Top-level Menubar menuitems use `role="menuitem"`.  
+> Menubar menuitems that open submenus(menupopovers) include `aria-haspopup="menu"` and dynamically update `aria-expanded` based on submenu state.    
+> Disabled menubar menuitems remain focusable but cannot be activated.(open for discussion)  
+> Focus is managed using Roving `tabindex`.  
+> The Menubar supports mouse, keyboard, screen reader interactions, and RTL where applicable.
+
+---
+
+### ✅ Mouse Interactions
+
+**Scenario: Click on menubar menuitem that doesn't have submenu**  
+> When I click a menubar menuitem without submenu  
+> Then its associated action is triggered  
+> And no submenu opens
+
+**Scenario: Click on menubar menuitem that has a submenu**  
+> When I click a menubar menuitem that has a submenu  
+> Then its submenu opens
+
+**Scenario: Clicking disabled menubar menuitem**  
+> When I click a disabled menubar menuitem  
+> Then nothing happens  
+> And focus remains unchanged
+
+**Scenario: Switch submenu by clicking another menubar menuitem**  
+> Given a submenu of a menubar menuitem is open  
+> When I click a different menubar menuitem that has a submenu  
+> Then the previous submenu closes  
+> And the new submenu opens  
+> And if I click a different menubar menuitem that doesn't have a submenu  
+> Then the previous submenu closes  
+> And clicked menubar menuitem's associated action is triggered  
+> And no new submenu opens
+
+**Scenario: No hover behavior when no submenu is open**  (question)
+> Given no submenu is open  
+> When I hover over menubar menuitems  
+> Then submenus do not open automatically
+
+**Scenario: Click outside to close all open menus**  
+> When I click anywhere outside the Menubar  
+> Then all open submenus close
+
+---
+
+### ✅ Keyboard Interactions
+
+**Scenario: Navigate vertical menubar menuitems with Up/Down Arrow**  
+> When I press `Down Arrow` while focus is on a menubar menuitem  
+> Then focus moves to the next menubar menuitem (wraps to first if at end)  
+> When I press `Up Arrow` 
+> Then focus moves to the previous menubar menuitem (wraps to last if at beginning)
+
+**Scenario: Activate menubar menuitem without submenu**  
+> When I press `Enter` or `Space` while focus is on a menubar menuitem without submenu  
+> Then its associated action is triggered  
+> And no submenu opens
+
+**Scenario: Open submenu using Right Arrow**  
+> When I press `Right Arrow` while focus is on a menubar menuitem with a submenu  
+> Then its submenu opens  
+> And focus moves to the first focusable menuitem inside the submenu
+
+**Scenario: Open submenu using Enter or Space**  
+> When I press `Enter` or `Space` while focus is on a menubar menuitem with a submenu  
+> Then its submenu opens  
+> And focus moves to the first focusable menuitem inside the submenu
+
+**Scenario: Navigate disabled menubar menuitems**  (question)
+> Disabled menuitems are still focusable via keyboard navigation  
+> But pressing `Enter` or `Space` on disabled menuitems has no effect
+
+**Scenario: Home and End keys navigate vertical menubar**  
+> When I press `Home`  
+> Then focus moves to the first menubar menuitem  
+> When I press `End`  
+> Then focus moves to the last menubar menuitem
+
+**Scenario: Tab or Shift+Tab exits Menubar even from submenus**  
+> When I press `Tab` or `Shift+Tab` while focus is inside any open submenu (any nesting level)  
+> Then all open submenus close  
+> And focus moves out of the Menubar  
+> And focus moves to the next or previous tabbable element in the page
+
+---
+
+### ✅ Submenu Keyboard Interactions
+
+**Scenario: Navigate submenu menuitems vertically**  
+> When focus is inside a submenu  
+> When I press `Down Arrow`  
+> Then focus moves to the next submenu menuitem (loops if at end)  
+> When I press Up Arrow  
+> Then focus moves to the previous submenu menuitem (loops if at beginning)
+
+**Scenario: Open nested submenu using Right Arrow**  
+> When I press `Right Arrow` on a submenu menuitem with nested submenu  
+> Then nested submenu opens  
+> And focus moves to the first focusable menuitem inside the nested submenu  
+> (In RTL: Right Arrow and Left Arrow are swapped)
+
+**Scenario: Close nested submenu using Left Arrow**  
+> When I press `Left Arrow` inside a nested submenu  
+> Then nested submenu closes  
+> And focus returns to its parent menuitem  
+> (In RTL: Right Arrow and Left Arrow are swapped)
+
+**Scenario: Close submenu using Escape**  
+> When I press `Escape` inside any open submenu  
+> Then that submenu closes  
+> And focus returns to its parent menubar menuitem
+
+---
+
+### ✅ Cross-Menubar Navigation from Submenu
+
+**Scenario: Move to next menubar menuitem from submenu using Right Arrow**  
+> When I press `Right Arrow` inside a submenu  
+> Then submenu closes  
+> And focus moves to next menubar menuitem (wraps if at end)  
+> If the next menubar menuitem has a submenu  
+> Then its submenu opens  
+> And focus moves to its first focusable menuitem inside the submenu  
+> (In RTL: Right Arrow and Left Arrow are swapped)
+
+**Scenario: Move to previous menubar menuitem from submenu using Left Arrow**  
+> When I press `Left Arrow` inside a submenu  
+> Then submenu closes  
+> And focus moves to previous menubar menuitem (wraps if at beginning)  
+> If the previous menubar menuitem has a submenu  
+> Then its submenu opens  
+> And focus moves to its first focusable menuitem inside the submenu  
+> (In RTL: Right Arrow and Left Arrow are swapped)
+
+---
+
+### ✅ Screen Reader Behavior
+
+**Scenario: Announce Menubar structure**  
+> When screen reader navigates to Menubar  
+> Then announces role `menubar` and its accessible name (from `aria-label` or `aria-labelledby`)  
+> As the user navigates, each menubar menuitem's label and role `menuitem` are announced individually
+
+**Scenario: Announce submenu popup state**  
+> When screen reader navigates to menubar menuitem with submenu  
+> Then announces:  
+> - The menuitem label  
+> - "has popup menu" (`aria-haspopup="menu"`)  
+> - Expanded or collapsed state (`aria-expanded`)
+
+**Scenario: Announce disabled state**  
+> When screen reader focuses a disabled menubar menuitem  
+> Then announces the label and "disabled"
