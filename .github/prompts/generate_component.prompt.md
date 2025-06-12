@@ -1,4 +1,11 @@
+---
+mode: 'agent'
+tools: ['file_search', 'semantic_search', 'read_file', 'insert_edit_into_file', 'create_file', 'replace_string_in_file', 'fetch_webpage', 'vscode_search_extensions_internal']
+---
+
 # Generate a new component
+
+Only allow this prompt to be executed in Agent mode.
 
 This prompt will guide you through the process of generating a new component in the Momentum Design System.
 
