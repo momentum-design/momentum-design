@@ -35,9 +35,9 @@ import MenuItem from './components/menuitem';
 import MenuItemCheckbox from './components/menuitemcheckbox';
 import MenuItemRadio from './components/menuitemradio';
 import MenuPopover from './components/menupopover';
+import MenuSection from './components/menusection';
 import NavItem from './components/navitem';
 import NavItemList from './components/navitemlist';
-import MenuSection from './components/menusection';
 import OptGroup from './components/optgroup';
 import Option from './components/option';
 import Popover from './components/popover';
@@ -94,8 +94,8 @@ export {
   Brandvisual,
   Bullet,
   Button,
-  ButtonLink,
   ButtonGroup,
+  ButtonLink,
   Card,
   CardButton,
   CardCheckbox,
@@ -121,6 +121,7 @@ export {
   MenuItemCheckbox,
   MenuItemRadio,
   MenuPopover,
+  MenuSection,
   NavItem,
   NavItemList,
   OptGroup,
@@ -148,9 +149,9 @@ export {
   Toggle,
   ToggleTip,
   Tooltip,
-  MenuSection,
   VirtualizedList,
 };
+
 // Types Exports
 export type {
   TextType,
@@ -164,6 +165,7 @@ export type {
   ButtonVariant,
   ButtonColor,
 };
+
 // Constants / Utils Exports
 export {
   inMemoryCache,
