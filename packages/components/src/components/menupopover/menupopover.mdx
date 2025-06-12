@@ -13,8 +13,8 @@ import MenuPopoverStories from './menupopover.stories';
     > The trigger uses `aria-haspopup="menu"` to indicate it controls a menu.     
     > When the MenuPopover is open, its content is rendered inside a floating layer or portal separate from the trigger.  
     > The MenuPopover uses `role="menu"` to expose its purpose to assistive technologies.  
-    > Menu items inside the MenuPopover are assigned appropriate ARIA roles: `menuitem` (for standard actions), `menuitemcheckbox` (for toggleable items), or `menuitemradio` (for single-select groups).  
-    > Logical groups of menu items have accessible headings provided via visible text, semantic heading elements, or `aria-labelledby`.  
+    > menuitems inside the MenuPopover are assigned appropriate ARIA roles: `menuitem` (for standard actions), `menuitemcheckbox` (for toggleable items), or `menuitemradio` (for single-select groups).  
+    > Logical groups of menuitems have accessible headings provided via visible text, semantic heading elements, or `aria-labelledby`.  
     > The MenuPopover is configured with **focus trap enabled**, ensuring keyboard focus remains inside the MenuPopover while it is open.  
     > In all scenarios below, "MenuPopover" refers to the **root-level menu** unless specifically stated otherwise for nested submenus.
 
@@ -31,13 +31,13 @@ import MenuPopoverStories from './menupopover.stories';
     **Scenario: Open the popover using mouse**
     > Given the menupopover is closed  
     > When I click on the trigger element with the mouse  
-    > Then the menupopover should open and display a list of menu items  
+    > Then the menupopover should open and display a list of menuitems  
 
     **Scenario: Open the popover using keyboard**
     > Given the menupopover is closed  
     > When I navigate to the trigger element using the keyboard (pressing Tab)  
     > And I press the "Enter" or "Space" key  
-    > Then the menupopover should open and display a list of menu items  
+    > Then the menupopover should open and display a list of menuitems  
 
     ### ✅ Closing the menupopover
 
@@ -51,88 +51,89 @@ import MenuPopoverStories from './menupopover.stories';
     > When I press the "Escape" key  
     > Then the menupopover should close  
 
-    ### ✅ Selecting Menu Items
+    ### ✅ Selecting menuitems
 
-    **Scenario: Select menu item using mouse**
+    **Scenario: Select menuitem using mouse**
     > Given the menupopover is open  
-    > When I click on a menu item  
-    > Then the item’s associated action should be triggered  
+    > When I click on a menuitem  
+    > Then the menuitem’s associated action should be triggered  
     > And the menupopover should close  
 
-    **Scenario: Select menu item using keyboard**
+    **Scenario: Select menuitem using keyboard**
     > Given the menupopover is open  
-    > And focus is on a menu item  
-    > When I press "Enter" or "Space"  
-    > Then the item’s associated action should be triggered  
+    > And focus is on a menuitem  
+    > When I press "Enter" or "Space" key
+    > Then the menuitem’s associated action should be triggered  
     > And the menupopover should close  
 
-    **Scenario: Disabled menu items are non-interactive using mouse**
+    **Scenario: Disabled menuitems are non-interactive using mouse**
     > Given the menupopover is open  
-    > And a menu item is visually disabled  
-    > When I click on the disabled item  
-    > Then the item should not trigger any action  
-    > And the popover should remain open  
+    > And a menuitem is visually disabled  
+    > When I click on the disabled menuitem  
+    > Then the menuitem should not trigger any action  
+    > And the menupopover should remain open  
 
-    **Scenario: Disabled menu items are non-interactive using keyboard**
+    **Scenario: Disabled menuitems are non-interactive using keyboard**
     > Given the menupopover is open  
-    > And a menu item is visually disabled  
+    > And a menuitem is visually disabled  
     > When I navigate using the keyboard  
-    > Then keyboard navigation should skip the disabled item  
-    > And the item should not trigger any action  
-    > And the popover should remain open  
+    > Then keyboard navigation should skip the disabled menuitem  
+    > And the menuitem should not trigger any action  
+    > And the menupopover should remain open  
 
     ### ✅ Keyboard Navigation
 
-    **Scenario: Navigate menu items using Home and End keys**
+    **Scenario: Navigate menuitems using Home and End keys**
     > Given the menupopover is open  
-    > And focus is on a menu item  
+    > And focus is on a menuitem  
     > When I press the "Home" key  
-    > Then focus should move to the first menu item  
+    > Then focus should move to the first menuitem  
     > When I press the "End" key  
-    > Then focus should move to the last menu item  
+    > Then focus should move to the last menuitem  
 
     **Scenario: Move focus downward using arrow key**
     > Given the menupopover is open  
-    > And focus is on a menu item  
+    > And focus is on a menuitem  
     > When I press the "ArrowDown" key  
-    > Then focus should move to the next menu item  
+    > Then focus should move to the next menuitem  
 
     **Scenario: Move focus upward using arrow keys**
     > Given the menupopover is open  
-    > And focus is on a menu item  
+    > And focus is on a menuitem  
     > When I press the "ArrowUp" key  
-    > Then focus should move to the previous menu item  
+    > Then focus should move to the previous menuitem  
 
-    **Scenario: Loop focus downward within menu items**
+    **Scenario: Loop focus downward within menuitems**
     > Given the menupopover is open  
-    > And focus is on the last menu item  
+    > And focus is on the last menuitem  
     > When I press the "ArrowDown" key  
-    > Then focus should move to the first menu item 
+    > Then focus should move to the first menuitem 
 
-    **Scenario: Loop focus upward within menu items**
+    **Scenario: Loop focus upward within menuitems**
     > Given the menupopover is open  
-    > And focus is on the first menu item  
+    > And focus is on the first menuitem  
     > When I press the "ArrowUp" key  
-    > Then focus should move to the last menu item   
+    > Then focus should move to the last menuitem   
 
     ### ✅ Nested Submenus (or nested menupopover)
 
     **Scenario: Open nested submenu with mouse**
     > Given the menupopover is open  
-    > And a menu item contains a nested submenu  
-    > When I click on that item  
-    > Then a nested submenu should appear adjacent to the parent item  
+    > And a menuitem contains a nested submenu  
+    > When I click on that menuitem  
+    > Then a nested submenu should appear adjacent to the parent menuitem  
     > And it should open on the correct side (right in LTR, left in RTL)  
 
     **Scenario: Open nested submenu using keyboard**
     > Given the menupopover is open  
-    > And a menu item contains a nested submenu  
-    > When I focus the item and press the appropriate open key:  
+    > And a menuitem contains a nested submenu  
+    > When I focus the menuitem and press the appropriate open key:  
     > - "Right Arrow" in LTR  
     > - "Left Arrow" in RTL  
     > - "Enter" or "Space" in any direction  
+    > 
     > Then the nested submenu should open  
-    > And focus should move to the first item in the nested submenu  
+    > And focus should move to the first menuitem in the nested submenu  
 
     **Scenario: Navigate back from nested submenu using keyboard**
     > Given a nested submenu is open  
@@ -141,14 +142,15 @@ import MenuPopoverStories from './menupopover.stories';
     > - "Left Arrow" in LTR  
     > - "Right Arrow" in RTL  
     > - or "Escape" in any direction  
+    > 
     > Then the nested submenu should close  
-    > And focus should return to the parent menu item  
+    > And focus should return to the parent menuitem  
 
-    **Scenario: Selecting a nested menu item (mouse or keyboard)**
+    **Scenario: Selecting a nested menuitem (mouse or keyboard)**
     > Given the menupopover is open  
     > And a submenu inside it is open and visible  
-    > And (if using keyboard) focus is on a nested menu item inside that submenu  
-    > When I select the nested menu item (by clicking it, or pressing "Enter" or "Space")  
+    > And (if using keyboard) focus is on a nested menuitem inside that submenu  
+    > When I select the nested menuitem (by clicking it, or pressing "Enter" or "Space")  
     > Then the action associated with that nested item should be executed  
     > And the nested submenu should close  
     > And all parent menupopovers (including the root menupopover) should close  
@@ -159,73 +161,73 @@ import MenuPopoverStories from './menupopover.stories';
     > Given the menupopover is open  
     > And it includes visual separators between menuitems  
     > When I navigate with arrow keys  
-    > Then focus should skip over the separator and move to the next focusable item  
+    > Then focus should skip over the separator and move to the next focusable menuitem  
 
-    **Scenario: Grouped menu items have headings**
-    > Given the menupopover includes logical groups of menu items  
+    **Scenario: Grouped menuitems have headings**
+    > Given the menupopover includes logical groups of menuitems  
     > Then each group should be introduced with a visible or screen-reader accessible heading  
-    > And focus should move between items normally across groups  
+    > And focus should move between menuitems normally across groups  
 
-    ### ✅ Menu Item Types
+    ### ✅ Menuitem Types
 
     **Scenario: Toggle menuitemcheckbox using mouse**
     > Given the menupopover is open  
-    > And a menu item with role `menuitemcheckbox` is present  
-    > When I click on the item  
+    > And a menuitem with role `menuitemcheckbox` is present  
+    > When I click on the menuitem  
     > Then its checked state should toggle between true and false  
-    > And the visual indicator (regardless of form) should reflect the current state  
-    > And the popover should remain open  
+    > And the visual indicator should reflect the current state  
+    > And the menupopover should remain open  
 
     **Scenario: Toggle menuitemcheckbox using keyboard**
     > Given the menupopover is open  
-    > And a menu item with role `menuitemcheckbox` is present and focused  
+    > And a menuitem with role `menuitemcheckbox` is present and focused  
     > When I press the "Enter" or "Space" key  
     > Then its checked state should toggle between true and false  
-    > And the visual indicator (regardless of form) should reflect the current state  
-    > And the popover should remain open  
+    > And the visual indicator should reflect the current state   
+    > And the menupopover should remain open  
 
     **Scenario: Select one menuitemradio from a group using mouse**  
     > Given the menupopover is open  
-    > And a group of menu items with role `menuitemradio` is present  
+    > And a group of menuitems with role `menuitemradio` is present  
     > When I click on one of the radio items  
-    > Then that item should be selected  
+    > Then that menuitem should be selected  
     > And all other items in the same group should be deselected  
-    > And the popover should remain open  
+    > And the menupopover should remain open  
 
     **Scenario: Select one menuitemradio from a group using keyboard**  
     > Given the menupopover is open  
-    > And focus is on a menu item with role `menuitemradio` in a group  
+    > And focus is on a menuitem with role `menuitemradio` in a group  
     > When I press the "Enter" or "Space" key  
-    > Then that item should be selected  
+    > Then that menuitem should be selected  
     > And all other items in the group should be deselected  
-    > And the popover should remain open  
+    > And the menupopover should remain open  
  
 
     ### ✅ Focus Behavior
 
-    **Scenario: Focus moves to first menu item on open**
+    **Scenario: Focus moves to first menuitem on open**
     > Given the menupopover is closed  
     > When I open it using keyboard  
-    > Then focus should move to the first focusable menu item inside the popover  
+    > Then focus should move to the first focusable menuitem inside the menupopover  
 
     **Scenario: Focus returns to trigger on close**
     > Given the menupopover was opened using keyboard  
     > When I close it using keyboard  
-    > Then focus should return to the element that opened the menupopover (the trigger element)  
+    > Then focus should return back to the element that opened the menupopover (the trigger element)  
 
     **Scenario: Escape key closes nested submenus step-by-step**
     > Given I have navigated into a nested submenu  
     > When I press the "Escape" key  
     > Then only the currently open submenu should close  
-    > And focus should return to the parent menu item  
-    > And pressing Escape again should continue closing menus upward  
+    > And focus should return back to the parent menuitem  
+    > And pressing Escape again should continue closing menupopovers upward  
 
     ### ✅ Accessibility
 
     **Scenario: ARIA roles and attributes are correctly applied**
     > Given the menupopover is rendered on the page  
     > Then the trigger element has `aria-haspopup="menu"` and the menupopover container has `role="menu"`  
-    > And each menu item has the appropriate role: `menuitem`, `menuitemcheckbox`, or `menuitemradio`  
+    > And each menuitem has the appropriate role: `menuitem`, `menuitemcheckbox`, or `menuitemradio`  
     > And grouped menu sections have accessible headings using visible text, `aria-label`, or semantic heading elements
 
     **Scenario: Menu container is announced when navigating into menupopover**
@@ -234,30 +236,31 @@ import MenuPopoverStories from './menupopover.stories';
     > Then the screen reader announces the menu region with role `menu`  
     > And announces the menu's accessible name if provided via `aria-label` or `aria-labelledby`
 
-    **Scenario: Menu items are announced with labels and roles**
-    > Given I navigate to a menu item using screen reader  
-    > Then the screen reader announces the item's text label  
+    **Scenario: menuitems are announced with labels and roles**
+    > Given I navigate to a menuitem using screen reader  
+    > Then the screen reader announces the menuitem's label text  
     > And announces its role (e.g. "menuitem")
 
-    **Scenario: Submenu items are announced as expandable**
-    > Given I navigate to a menu item that has a submenu  
-    > Then the screen reader announces the menu item's label  
+    **Scenario: Submenuitems are announced as expandable**
+    > Given I navigate to a menuitem that has a submenu  
+    > Then the screen reader announces the menuitem's label  
     > And announces its expanded or collapsed state if applicable
 
     **Scenario: Checkbox and radio state is announced**
     > Given I navigate to a `menuitemcheckbox` or `menuitemradio`  
-    > Then the screen reader announces the item's label  
+    > Then the screen reader announces the menuitem's label  
     > And announces whether it is checked/unchecked (for checkbox) or selected (for radio)
 
     **Scenario: Separators are skipped by the screen reader**
     > Given the menupopover contains section dividers (separators)  
     > When I navigate using screen reader   
-    > Then the screen reader skips directly to the next content item afterwards
+    > Then the screen reader skips directly to the next content menuitem afterwards
 
     **Scenario: Group headings are announced for context**
-    > Given the menupopover contains groups of menu items with headings  
+    > Given the menupopover contains groups of menuitems with headings  
     > When I navigate into a group using screen reader   
     > Then the screen reader announces the group heading label  
-    > And then continues announcing the contained menu items
+    > And as I navigate through the group, each menuitem’s label and role are announced individually  
+
 
  
