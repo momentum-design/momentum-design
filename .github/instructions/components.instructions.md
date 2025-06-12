@@ -10,6 +10,44 @@ applyTo: 'packages/components/**/*'
 - Follow the coding conventions outlined in #packages/components/conventions/**/*.md
 - Always prefer using the existing mixins provided in the #packages/omponents/src/utils/mixins folder to extend functionality.
 
+## Use of Momentum Design Assets
+### Icons
+- Icons are stored in the `packages/assets/icons` directory.
+- In case you need to search for a Icon name, you can search for it in the `packages/assets/icons/src` directory and subdirectories 
+(file name without extension = icon name).
+- In case you need to search for a specific icon and you a file in the `packages/assets/icons/src` directory starts with that requested icon name, you can use `ICON_NAME-regular` for further operations.
+
+### Fonts
+- Fonts are stored in the `packages/assets/fonts` directory.
+
+### Tokens
+- Tokens are stored in the `packages/assets/tokens` directory.
+- Tokens are used to define the design system's color palette, typography, spacing, and other design-related values.
+<!-- TODO: add proper instructions on how to find Theme tokens -->
+
+### Illustrations
+- Illustrations are stored in the `packages/assets/illustrations` directory.
+- In case you need to search for a Illustration name, you can search for it in the `packages/assets/illustrations/src` directory and subdirectories 
+(file name without extension = icon name).
+
+### Animations
+- Animations are stored in the `packages/assets/animations` directory.
+- In case you need to search for a Animation name, you can search for it in the `packages/assets/animations/src` directory and subdirectories
+(file name without extension = icon name).
+
+### Brand Visuals
+- Brand visuals are stored in the `packages/assets/brand-visuals` directory.
+- In case you need to search for a Brand Visual name, you can search for it in the `packages/assets/brand-visuals/src` directory and subdirectories
+(file name without extension = icon name).
+
+## *.stories.ts files
+- The `title` in meta should be in the format `GROUP_NAME/component-name` where `component-name` is the name of the component in lowercase and `GROUP_NAME` is the name of the group the component belongs to.
+The following groups are available:
+  - `Components` - for all released and stable components that are part of the Momentum Design System.
+  - `Work In Progress` - for components that are still in development and not yet released.
+  - `Internal` - for components that are not published as part of the Momentum Design System and are used internally in the project.
+
+
 ## *.e2e-test.ts files
 
 ### DOs
