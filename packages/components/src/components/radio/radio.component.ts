@@ -8,6 +8,7 @@ import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
+import { ROLE } from '../../utils/roles';
 
 /**
  * Radio allow users to select single options from a list or turn an item/feature on or off.
@@ -290,7 +291,7 @@ class Radio extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
           <input
             id="${this.id}"
             type="radio"
-            role="radio"
+            role="${ROLE.RADIO}"
             ?autofocus="${this.autofocus}"
             name="${ifDefined(this.name)}"
             value="${ifDefined(this.value)}"

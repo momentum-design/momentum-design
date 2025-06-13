@@ -29,7 +29,7 @@ const styles = css`
     padding: 0;
     position: absolute;
     width: 100%;
-    height: 1px;
+    height: 0;
     z-index: -1;
   }
   :host::part(container) {
@@ -76,6 +76,7 @@ const styles = css`
   }
   :host::part(popover-content) {
     min-width: auto;
+    overflow: scroll;
   }
   :host([disabled])::part(base-container),
   :host([readonly])::part(base-container),

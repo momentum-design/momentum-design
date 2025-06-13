@@ -29,7 +29,7 @@ const render = (args: Args) => wrapWithDiv(html`
 `);
 
 const meta: Meta = {
-  title: 'Components/option',
+  title: 'Components/select/option',
   tags: ['autodocs'],
   component: 'mdc-option',
   render,

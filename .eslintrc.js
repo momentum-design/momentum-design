@@ -25,6 +25,7 @@ module.exports = {
     'playwright-report/**',
     'coverage/**',
     'playwright-temp/**',
+    '*.feature',
   ],
   overrides: [
     {
