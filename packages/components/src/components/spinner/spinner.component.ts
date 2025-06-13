@@ -5,6 +5,7 @@ import { Component } from '../../models';
 
 import { SpinnerSize, SpinnerVariant } from './spinner.types';
 import { DEFAULTS } from './spinner.constants';
+import { ROLE } from '../../utils/roles';
 
 /**
  * `mdc-spinner` is loading spinner which is an indeterminate progress indicator, meaning
@@ -85,7 +86,7 @@ class Spinner extends Component {
     super.updated(changedProperties);
 
     if (changedProperties.has('ariaLabel')) {
-      this.role = this.ariaLabel ? 'img' : null;
+      this.role = this.ariaLabel ? ROLE.IMG : null;
       this.ariaHidden = this.ariaLabel ? 'false' : 'true';
     }
   }

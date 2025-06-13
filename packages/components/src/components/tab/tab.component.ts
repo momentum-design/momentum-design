@@ -9,6 +9,7 @@ import Buttonsimple from '../buttonsimple/buttonsimple.component';
 import { ButtonSize, ButtonType } from '../buttonsimple/buttonsimple.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
+import { ROLE } from '../../utils/roles';
 
 /**
  * `mdc-tab` is Tab component to be used within the Tabgroup.
@@ -158,7 +159,7 @@ class Tab extends IconNameMixin(Buttonsimple) {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.role = 'tab';
+    this.role = ROLE.TAB;
     this.softDisabled = undefined as unknown as boolean;
     this.size = undefined as unknown as ButtonSize;
     this.type = undefined as unknown as ButtonType;

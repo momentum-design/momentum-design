@@ -9,6 +9,7 @@ import Tab from '../tab/tab.component';
 import Button from '../button/button.component';
 import type { ArrowButtonDirectionType } from './tablist.types';
 import { getFirstTab, getLastTab, getNextTab, getPreviousTab, findTab, getActiveTab } from './tablist.utils';
+import { ROLE } from '../../utils/roles';
 
 /**
  * Tab list organizes tabs into a container.
@@ -527,7 +528,7 @@ class TabList extends Component {
     return html` ${arrowButton('backward')}
       <div 
       class="container" 
-      role="tablist" 
+      role="${ROLE.TABLIST}" 
       tabindex="-1" 
       aria-label="${ifDefined(this.dataAriaLabel)}">
         <slot></slot>

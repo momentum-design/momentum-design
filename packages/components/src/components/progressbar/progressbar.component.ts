@@ -8,6 +8,7 @@ import type { Variant } from './progressbar.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { PopoverPlacement } from '../popover/popover.types';
+import { ROLE } from '../../utils/roles';
 
 /**
  * mdc-progressbar component visually represents a progress indicator, typically used to show
@@ -109,7 +110,7 @@ class Progressbar extends DataAriaLabelMixin(FormfieldWrapper) {
     return html`
       <div
         part="progress-container ${isGap ? 'gap' : ''}"
-        role="progressbar"
+        role="${ROLE.PROGRESSBAR}"
         aria-valuenow="${this.clampedValue}"
         aria-valuemin="0"
         aria-valuemax="100"

@@ -7,4 +7,6 @@ const ARROW_ICON = {
   ARROW_DOWN: 'arrow-down-bold' as Extract<IconNames, 'arrow-down-bold'>,
 } as const;
 
-export { ARROW_ICON, TAG_NAME };
+const TRIGGER_ID = 'select-base-triggerid';
+
+export { ARROW_ICON, TAG_NAME, TRIGGER_ID };
