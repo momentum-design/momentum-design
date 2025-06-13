@@ -424,13 +424,15 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
             ${this.headerText}
           </mdc-text>
         </div>
-        <mdc-text
+        ${this.descriptionText
+    ? html`<mdc-text
           part="description-text"
           tagname="${VALID_TEXT_TAGS[this.descriptionTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
           type="${TYPE.BODY_MIDSIZE_REGULAR}"
         >
-          ${this.descriptionText ?? nothing}
-        </mdc-text>
+        ${this.descriptionText}
+        </mdc-text>`
+    : nothing}
       </div>`
     : nothing}
       <mdc-button
