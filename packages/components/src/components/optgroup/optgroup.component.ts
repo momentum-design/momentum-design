@@ -4,6 +4,7 @@ import { property, queryAssignedElements } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
+import { ROLE } from '../../utils/roles';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { HEADER_ID } from './optgroup.constants';
 import styles from './optgroup.styles';
@@ -58,12 +59,12 @@ class OptGroup extends DataAriaLabelMixin(DisabledMixin(Component)) {
     ` : nothing;
     return html`
       <div
-        role="group"
+        role="${ROLE.GROUP}"
         aria-labelledby="${this.label ? HEADER_ID : ''}"
         aria-label="${this.dataAriaLabel ?? ''}"
       >
         ${headerText}
-        <slot role="presentation"></slot>
+        <slot role="${ROLE.PRESENTATION}"></slot>
       </div>
     `;
   }
