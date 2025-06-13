@@ -1,1 +1,0 @@
-const o={BUTTON:"button",CHECKBOX:"checkbox",GROUP:"group",LIST:"list",LISTITEM:"listitem",MENU:"menu",MENUBAR:"menubar",MENUITEM:"menuitem",MENUITEMCHECKBOX:"menuitemcheckbox",MENUITEMRADIO:"menuitemradio",NAVIGATION:"navigation",RADIO:"radio",RADIOGROUP:"radiogroup",TOOLTIP:"tooltip"};export{o as R};
