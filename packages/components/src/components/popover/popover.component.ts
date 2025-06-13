@@ -343,7 +343,7 @@ class Popover extends FocusTrapMixin(Component) {
       this.triggerElement.addEventListener('mouseleave', this.startCloseDelay);
       this.addEventListener('mouseenter', this.cancelCloseDelay);
       this.addEventListener('mouseleave', this.startCloseDelay);
-      hoverBridge?.addEventListener('mouseenter', this.cancelCloseDelay);
+      hoverBridge?.addEventListener('mouseenter', this.showPopover);
     }
     if (this.trigger.includes('focusin')) {
       this.triggerElement.addEventListener('focusin', this.showPopover);
@@ -367,7 +367,7 @@ class Popover extends FocusTrapMixin(Component) {
     this.removeEventListener('mouseleave', this.startCloseDelay);
     this.triggerElement.removeEventListener('focusin', this.showPopover);
     this.triggerElement.removeEventListener('focusout', this.hidePopover);
-    hoverBridge?.removeEventListener('mouseenter', this.cancelCloseDelay);
+    hoverBridge?.removeEventListener('mouseenter', this.showPopover);
 
     this.removeEventListener('focus-trap-exit', this.hidePopover);
   }
@@ -648,7 +648,7 @@ class Popover extends FocusTrapMixin(Component) {
       if (this.arrowElement) {
         const arrowLen = this.arrowElement.offsetHeight;
         const arrowOffset = Math.sqrt(2 * arrowLen ** 2) / 2;
-        popoverOffset = arrowOffset + this.offset;
+        popoverOffset += arrowOffset;
         middleware.push(arrow({ element: this.arrowElement, padding: 12 }));
       }
     }
@@ -667,7 +667,7 @@ class Popover extends FocusTrapMixin(Component) {
       if (middlewareData.arrow && this.arrowElement) {
         this.utils.updateArrowStyle(middlewareData.arrow, placement);
       }
-      if (this.trigger.includes('mouseenter')) {
+      if (this.trigger.includes('mouseenter') && this.interactive) {
         this.utils.setupHoverBridge(placement);
       }
     });

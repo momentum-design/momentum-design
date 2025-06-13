@@ -6,6 +6,7 @@ import { DEFAULTS, ICON_NAME } from './progressspinner.constants';
 import { getProgressArc, getProgressOffset, getRemainingArc, getRemainingOffset } from './progressspiner.utils';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import type { Variant } from '../progressbar/progressbar.types';
+import { ROLE } from '../../utils/roles';
 
 /**
  * `mdc-progressspinner` is a customizable, circular progress indicator component.
@@ -55,7 +56,7 @@ class Progressspinner extends Progressbar {
     return html`
       <div
         part="spinner-container ${this.variant}"
-        role="progressbar"
+        role="${ROLE.PROGRESSBAR}"
         aria-valuenow="${this.clampedValue}"
         aria-valuemin="0"
         aria-valuemax="100"
