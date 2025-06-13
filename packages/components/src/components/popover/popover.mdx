@@ -121,27 +121,46 @@ import * as PopoverStories from './popover.stories';
 
 ---
 
+### ✅ Accessibility with screen readers
+
+**Scenario: Announcing popover content**  
+> Given a popover component,  
+> When the popover trigger element is clicked,
+> Then the popover should open,
+> And screen readers should announce the text content inside the popover.
+
+**Scenario: Navigation inside popover content**
+> Given a popover component with list items inside it.
+> When the popover trigger element is clicked,
+> Then the popover should open,
+> And screen readers should read the text of first list item.
+> When the user navigates to next item with **Tab** key,
+> Then screen readers should read the text of the second list item.
+> When the user press **Escape** key then popover should get closed.
+
 ### ✅ Styling
 
 **Scenario: Color attribute**
-> Give a popover component,     
+> Given a popover component,     
 > Then its default `color` should be set to `tonal`,  
 > And the `color` can be updated to `contrast` with the `color` attribute.
 
 **Scenario: Offset attribute**
-> Give a popover component,     
+> Given a popover component,     
 > Then the distance between the trigger element and floating element should be set to `4` by default,   
 > And the `offset` attribute can be used to adjust the distance.
 
 **Scenario: Size attribute**
-> Give a popover component,     
+> Given a popover component,     
 > Then it's default size is set to `false`.     
 > And the `size` attribute can be set to `true` to change the popover size to keep it in view when scrolling.
 
 **Scenario: zIndex attribute**
-> Give a popover component,     
+> Given a popover component,     
 > Then it's default z-index is set to `1000`.   
 > And the `z-index` attribute can be set to any number to update the z-order of a positioned popover.
+
+---
 
 ### ✅ Nested Popovers
 
