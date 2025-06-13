@@ -65,10 +65,11 @@ const styles = css`
     display: flex;
     align-items: center;
     gap: 0.25rem;
+    width: 100%
   }
 
   :host::part(header-text) {
-    width: 23.625rem;
+    width: calc(100% - 2rem);
     color: var(--mdc-dialog-header-text-color);
   }
     
@@ -88,12 +89,6 @@ const styles = css`
     gap: 0.5rem;
     align-items: center;
     justify-content: flex-end;
-  }
-
-  ::slotted([slot='footer-link']), 
-  ::slotted([slot='footer-button-primary']), 
-  ::slotted([slot='footer-button-secondary']){
-    margin-bottom: 0.5rem;
   }
 
   :host::part(dialog-close-btn) {
