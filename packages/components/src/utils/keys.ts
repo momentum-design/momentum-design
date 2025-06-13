@@ -10,6 +10,7 @@ const KEYS = {
   PAGE_DOWN: 'PageDown',
   PAGE_UP: 'PageUp',
   SPACE: ' ',
+  TAB: 'Tab',
 } as const;
 
 export { KEYS };

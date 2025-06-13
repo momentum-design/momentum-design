@@ -49,8 +49,8 @@ class Option extends FormInternalsMixin(ListItem) {
     super.connectedCallback();
     this.role = 'option';
     this.variant = LISTITEM_VARIANTS.INSET_RECTANGLE;
-    this.updateAttribute('aria-selected', `${this.selected}`);
-    this.updateAttribute('aria-disabled', `${!!this.disabled}`);
+    this.setAttribute('aria-selected', `${this.selected}`);
+    this.setAttribute('aria-disabled', `${!!this.disabled}`);
 
     // Option will not contain below fields
     this.name = undefined as unknown as string;
@@ -71,18 +71,11 @@ class Option extends FormInternalsMixin(ListItem) {
     }
   }
 
-  /**
-   * Updates the attribute of the option to reflect the current state.
-   */
-  private updateAttribute(attributeName: string, value: string): void {
-    this.setAttribute(attributeName, value);
-  }
-
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
 
     if (changedProperties.has('selected')) {
-      this.updateAttribute('aria-selected', `${this.selected}`);
+      this.setAttribute('aria-selected', `${this.selected}`);
     }
   }
 

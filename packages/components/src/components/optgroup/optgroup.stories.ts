@@ -25,7 +25,7 @@ const render = (args: Args) => wrapWithDiv(html`
 `);
 
 const meta: Meta = {
-  title: 'Components/optgroup',
+  title: 'Components/select/optgroup',
   tags: ['autodocs'],
   component: 'mdc-optgroup',
   render,

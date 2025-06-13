@@ -4,6 +4,7 @@ import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { AvatarComponentMixin } from '../../utils/mixins/AvatarComponentMixin';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
+import { ROLE } from '../../utils/roles';
 import { AVATAR_SIZE, DEFAULTS } from '../avatar/avatar.constants';
 import type { AvatarSize } from '../avatar/avatar.types';
 import { DEFAULTS as BUTTON_DEFAULTS } from '../button/button.constants';
@@ -42,7 +43,7 @@ class AvatarButton extends AvatarComponentMixin(IconNameMixin(Buttonsimple)) {
       this.active = undefined as unknown as boolean;
       this.disabled = undefined as unknown as boolean;
       this.softDisabled = undefined as unknown as boolean;
-      this.role = 'button';
+      this.role = ROLE.BUTTON;
       this.type = BUTTON_DEFAULTS.TYPE;
     }
 

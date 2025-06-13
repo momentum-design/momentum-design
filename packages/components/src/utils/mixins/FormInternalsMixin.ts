@@ -98,7 +98,7 @@ export const FormInternalsMixin = <T extends Constructor<LitElement>>(superClass
       super.connectedCallback();
 
       /** @internal */
-      this.id = `mdc-input-${uuidv4()}`;
+      this.id = `mdc-el-${uuidv4()}`;
     }
 
     /**
