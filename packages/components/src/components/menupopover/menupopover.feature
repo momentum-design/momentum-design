@@ -220,20 +220,7 @@ Feature: MenuPopover Accessibility and User Interaction
             And focus returns to the parent menuitem
             And pressing Escape again closes parent MenuPopovers upward
 
-    Feature: VoiceOver Interaction for MenuPopover
-
-        Background:
-            Given the MenuPopover component is rendered on the page
-            And the trigger button labeled "Options" is mounted, visible, and focusable
-            And the trigger element has aria-haspopup="menu"
-            And the MenuPopover content is initially hidden and not rendered in the accessibility tree
-            And the MenuPopover contains:
-                | Item          | Type     | State    |
-                | Profile       | menuitem | normal   |
-                | Settings      | menuitem | normal   |
-                | Notifications | menuitem | normal   |
-                | Logout        | menuitem | disabled |
-            And all ARIA roles, attributes, and relationships are correctly applied
+    Rule: ✅ ScreenReader Accessibility
 
         Scenario: VoiceOver opens MenuPopover and moves focus to first menuitem
             Given the user is navigating with VoiceOver
