@@ -46,7 +46,7 @@ const render = (args: Args) => wrapWithDiv(html`
 `);
 
 const meta: Meta = {
-  title: 'Components/select',
+  title: 'Components/select/select',
   tags: ['autodocs'],
   component: 'mdc-select',
   render,
