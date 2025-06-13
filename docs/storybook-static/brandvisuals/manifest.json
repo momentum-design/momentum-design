@@ -23,6 +23,7 @@
   "device-ip-phone-eighteightfourfive": "./images/device-ip-phone-eighteightfourfive.png",
   "device-ip-phone-eighteightfourone": "./images/device-ip-phone-eighteightfourone.png",
   "device-ip-phone-eighteightoneone": "./images/device-ip-phone-eighteightoneone.png",
+  "device-ip-phone-eighteightsixfive-plus-screen": "./images/device-ip-phone-eighteightsixfive-plus-screen.png",
   "device-ip-phone-eighteightsixfive": "./images/device-ip-phone-eighteightsixfive.png",
   "device-ip-phone-eighteightsixone": "./images/device-ip-phone-eighteightsixone.png",
   "device-ip-phone-seveneightfourone": "./images/device-ip-phone-seveneightfourone.png",
@@ -285,5 +286,7 @@
   "webex-wordmark-light-vertical-bycisco-center": "./logos/svg/webex-wordmark-light-vertical-bycisco-center.svg",
   "webex-wordmark-light-vertical-bycisco-right": "./logos/svg/webex-wordmark-light-vertical-bycisco-right.svg",
   "webex-wordmark-light-wordmark": "./logos/svg/webex-wordmark-light-wordmark.svg",
+  "xtel-horizontal": "./logos/svg/xtel-horizontal.svg",
+  "xtel-mark": "./logos/svg/xtel-mark.svg",
   "zoom-color": "./logos/svg/zoom-color.svg"
 }
