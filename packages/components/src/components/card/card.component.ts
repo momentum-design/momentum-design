@@ -40,6 +40,8 @@ import { CardAndDialogFooterMixin } from '../../utils/mixins/CardAndDialogFooter
  * `mdc-button` component within the footer section.
  * @slot footer-button-secondary - This slot is for passing secondary variant of `mdc-button` component
  * within the footer section.
+ * @slot footer -  This slot is for passing custom footer content. Only use this if really needed,
+ * using the footer-link and footer-button slots is preferred.
  *
  * @tagname mdc-card
  *
