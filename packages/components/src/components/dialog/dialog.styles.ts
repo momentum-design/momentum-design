@@ -81,7 +81,8 @@ const styles = css`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%
+    height: 100%;
+    width: 100%;
   }
 
   :host::part(footer) {
