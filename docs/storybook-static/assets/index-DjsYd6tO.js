@@ -1,1 +1,0 @@
-import"./index-CXD_Y4Lv.js";import"./index-D1yLszQ-.js";import"./index-C34JuzZ8.js";import{M as r,T as m}from"./menuitem.component-BUQhNZWG.js";r.register(m);
