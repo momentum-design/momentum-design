@@ -107,15 +107,17 @@ export const CardAndDialogFooterMixin = <T extends Constructor<LitElement>>(supe
      */
     protected renderFooter() {
       return html`<div part="footer">
-        <slot name="footer-link" @slotchange=${() => this.handleFooterSlot(DEFAULTS.LINK)}></slot>
-        <slot
-          name="footer-button-secondary"
-          @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.SECONDARY)}
-        ></slot>
-        <slot
-          name="footer-button-primary"
-          @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.PRIMARY)}
-        ></slot>
+        <slot name="footer">
+          <slot name="footer-link" @slotchange=${() => this.handleFooterSlot(DEFAULTS.LINK)}></slot>
+          <slot
+            name="footer-button-secondary"
+            @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.SECONDARY)}
+          ></slot>
+          <slot
+            name="footer-button-primary"
+            @slotchange=${() => this.handleFooterSlot(DEFAULTS.BUTTON, BUTTON_VARIANTS.PRIMARY)}
+          ></slot>
+        </slot>
       </div>`;
     }
   }
