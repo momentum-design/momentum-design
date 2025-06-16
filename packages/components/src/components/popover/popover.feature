@@ -95,31 +95,38 @@ Feature: Popover Component
     Scenario: Default accessibility attributes
       Given a popover component,
       Then it should have a default role of `dialog`.
+      And the `aria-modal` attribute should be set to `true`
       And it can support `aria-label`, `aria-labelledby`, and `aria-describedby`.
-      When the popover has `interactive` attribute set to `true`,
-      Then the trigger should have `aria-haspopup` set to `dialog` (by default),
-      And the user can override `aria-haspopup` if needed.
-      When the popover is open,
+       When the popover is open,
       Then the trigger should have `aria-expanded="true"`.
       When the popover is closed,
       Then the trigger should have `aria-expanded="false"`.
-      Then the `disable-aria-expanded` attribute should be used to remove `aria-expanded`.
-      When the popover has interactive attribute set to `true`
-      And has a role of `dialog` or `alertdialog`,
-      Then the `aria-modal` attribute should be set to `true`.
+
+Scenario: Accessibility on interactive popover
+     Given a popover component
+     When the popover has `interactive` attribute set to `true`,
+     Then the trigger should have `aria-haspopup` set to `dialog` (by default),
+      And the user can override `aria-haspopup` if needed.
+ 
+Scenario: Popover with disabled aria expanded
+     Given a popover component
+     When the `disable-aria-expanded` attribute is set to `true`
+     Then the `aria-expanded` attribute should not be removed.
 
   Rule: Accessibility with screen readers
 
     Scenario: Announcing popover content
-      Given a popover component,
-      When the popover trigger element is clicked,
+      Given a popover component is closed,
+      When the popover trigger element is focused using screen reader
+      Then the screen reader should announce as a button which has an action.
+      When the trigger element is clicked,
       Then the popover should open,
       And screen readers should announce the text content inside the popover.
 
     Scenario: Navigation inside popover content
       Given a popover component with list items inside it.
-      When the popover trigger element is clicked,
-      Then the popover should open,
+      When the popover trigger element is activated using screen reader,
+      Then the popover should open and screen reader focus moves to the 1st list item.
       And screen readers should read the text of first list item.
       When the user navigates to next item with **Tab** key,
       Then screen readers should read the text of the second list item.
