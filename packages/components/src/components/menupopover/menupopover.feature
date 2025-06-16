@@ -220,6 +220,12 @@ Feature: MenuPopover Accessibility and User Interaction
             And focus returns to the parent menuitem
             And pressing Escape again closes parent MenuPopovers upward
 
+        Scenario: Focus trap keeps focus inside MenuPopover
+            Given the MenuPopover is open
+            When I press "Tab" repeatedly
+            Then focus cycles within the MenuPopover only
+
+
     Rule: ✅ ScreenReader Accessibility
 
         Scenario: VoiceOver opens MenuPopover and moves focus to first menuitem
