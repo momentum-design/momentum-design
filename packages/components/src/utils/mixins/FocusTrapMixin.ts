@@ -30,7 +30,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      * Determines whether focus should wrap around when reaching the first or last focusable element.
      * If true, focus will cycle from end to start and vice versa.
      *
-     * This only applies when `enabledFocusTrap` is true.
+     * This only applies when `focusTrap` is true.
      * @default true
      */
     @property({ type: Boolean, reflect: true, attribute: 'should-focus-trap-wrap' })
@@ -79,9 +79,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      * This calculates the focusable elements within the component's shadow root
      */
     public activateFocusTrap() {
-      if (this.focusTrap) {
-        this.isFocusTrapActivated = true;
-      }
+      this.isFocusTrapActivated = !!this.focusTrap;
     }
 
     /**
@@ -283,7 +281,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
     public setInitialFocus(elementIndexToReceiveFocus: number = 0) {
       this.setFocusableElements();
 
-      if (this.focusableElements.length === 0) {
+      if (this.focusableElements.length === 0 || !this.focusTrap) {
         return;
       }
 
