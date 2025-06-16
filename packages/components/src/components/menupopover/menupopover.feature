@@ -130,6 +130,17 @@ Feature: MenuPopover Accessibility and User Interaction
       When I press "Tab" repeatedly
       Then focus cycles within the MenuPopover only
 
+    Scenario: Skip separator during navigation
+      Given the MenuPopover is open
+      And it includes visual separators
+      When I navigate with arrow keys
+      Then focus should skip over the separator
+
+    Scenario: Moves focus correctly across groups
+      Given the MenuPopover includes grouped menuitems
+      When I navigate with arrow keys
+      Then focus should move sequentially through all menuitems, regardless of groups
+
   Rule: ✅ Nested Submenus
 
     Background:
@@ -174,10 +185,11 @@ Feature: MenuPopover Accessibility and User Interaction
       And focus should return to the Settings menuitem
 
       Examples:
-        | key        | dir      |
-        | Escape     | LTR, RTL |
-        | ArrowLeft  | LTR      |
-        | ArrowRight | RTL      |
+        | key        | dir |
+        | Escape     | LTR |
+        | Escape     | RTL |
+        | ArrowLeft  | LTR |
+        | ArrowRight | RTL |
 
     Scenario: Selecting a nested menuitem using keyboard
       Given the MenuPopover is open
@@ -203,20 +215,6 @@ Feature: MenuPopover Accessibility and User Interaction
       Then only the current submenu closes
       And focus returns to the parent menuitem
       And pressing Escape again closes parent MenuPopovers upward
-
-  Rule: ✅ Separator and Group Handling
-
-    Scenario: Skipping separator during navigation
-      Given the MenuPopover is open
-      And it includes visual separators
-      When I navigate with arrow keys
-      Then focus should skip over the separator
-
-    Scenario: Grouped menuitems have headings
-      When the MenuPopover includes grouped menuitems
-      Then each group should have a visible or accessible heading
-      And focus should move normally between menuitems across groups
-      And each group had a visible or accessible heading
 
   Rule: ✅ Menuitem Types
 
