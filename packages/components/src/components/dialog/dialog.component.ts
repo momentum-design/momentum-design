@@ -56,7 +56,8 @@ import { CardAndDialogFooterMixin } from '../../utils/mixins/CardAndDialogFooter
  * within the footer section.
  * @slot footer-button-primary - This slot is for passing primary variant of
  * `mdc-button` component within the footer section.
- *
+ * @slot footer -  This slot is for passing custom footer content. Only use this if really needed,
+ * using the footer-link and footer-button slots is preferred
  */
 class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
   /**
@@ -424,13 +425,15 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
             ${this.headerText}
           </mdc-text>
         </div>
-        <mdc-text
+        ${this.descriptionText
+    ? html`<mdc-text
           part="description-text"
           tagname="${VALID_TEXT_TAGS[this.descriptionTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
           type="${TYPE.BODY_MIDSIZE_REGULAR}"
         >
-          ${this.descriptionText ?? nothing}
-        </mdc-text>
+        ${this.descriptionText}
+        </mdc-text>`
+    : nothing}
       </div>`
     : nothing}
       <mdc-button
