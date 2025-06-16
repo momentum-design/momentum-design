@@ -16,8 +16,7 @@ Feature: MenuPopover Accessibility and User Interaction
     Scenario: Clicking disabled trigger does nothing
       Given the trigger is disabled
       When I click on the trigger
-      Then nothing should happen
-      And the MenuPopover should not open
+      Then the MenuPopover should not open
 
     Scenario: Open the popover using mouse
       Given the MenuPopover is closed
@@ -29,6 +28,11 @@ Feature: MenuPopover Accessibility and User Interaction
       When I navigate to the trigger element using the keyboard (Tab)
       And I press "Enter" or "Space"
       Then the MenuPopover should open and display a list of menuitems
+
+    Scenario: Focus moves to first menuitem on open
+      Given the MenuPopover is closed
+      When I open it using keyboard
+      Then focus moves to the first focusable menuitem
 
   Rule: ✅ Closing the MenuPopover
 
@@ -46,6 +50,11 @@ Feature: MenuPopover Accessibility and User Interaction
       Given the MenuPopover is open
       When I press "Escape"
       Then the MenuPopover should close
+
+    Scenario: Focus returns to trigger on close
+      Given the MenuPopover was opened using keyboard
+      When I close it using keyboard
+      Then focus returns to the trigger element
 
   Rule: ✅ Selecting menuitems
 
@@ -80,13 +89,17 @@ Feature: MenuPopover Accessibility and User Interaction
 
   Rule: ✅ Keyboard Navigation
 
-    Scenario: Navigate menuitems using Home and End keys
+    Scenario: Navigate menuitems using Home key
       Given the MenuPopover is open
-      And focus is on a menuitem
+      And focus is on Settings menuitem
       When I press "Home"
-      Then focus should move to the first menuitem
+      Then focus should move to the first menuitem (Profile)
+
+    Scenario: Navigate menuitems using End key
+      Given the MenuPopover is open
+      And focus is on Settings menuitem
       When I press "End"
-      Then focus should move to the last menuitem
+      Then focus should move to the last menuitem (Logout)
 
     Scenario: Move focus downward using ArrowDown key
       Given the MenuPopover is open
@@ -112,28 +125,59 @@ Feature: MenuPopover Accessibility and User Interaction
       When I press "ArrowUp"
       Then focus should move to the last menuitem
 
+    Scenario: Focus trap keeps focus inside MenuPopover
+      Given the MenuPopover is open
+      When I press "Tab" repeatedly
+      Then focus cycles within the MenuPopover only
+
   Rule: ✅ Nested Submenus
 
+    Background:
+      Given the MenuPopover contains a nested submenu under "Settings"
+      And the nested submenu contains:
+        | Item     | Type     | State    |
+        | Account  | menuitem | normal   |
+        | Privacy  | menuitem | normal   |
+        | Security | menuitem | normal   |
+        | Advanced | menuitem | disabled |
+      And the nested submenu is closed by default
+      And the MenuPopover is open
+
+  Rule: ✅ Nested Submenu Interaction
+
     Scenario: Open nested submenu with mouse
-      Given the MenuPopover is open
-      And a menuitem contains a nested submenu
+      Given the focus is on Settings menuitem
       When I click on that menuitem
       Then the nested submenu should appear adjacent to the parent menuitem
       And it should open on the correct side (right in LTR, left in RTL)
 
     Scenario: Open nested submenu using keyboard
-      Given the MenuPopover is open
-      And a menuitem contains a nested submenu
-      When I focus the menuitem and press: "Enter" or "Space" or "ArrowRight" in LTR or "ArrowLeft" in RTL
+      Given the focus is on Settings menuitem
+      When I press <key> in <dir>
       Then the nested submenu should open
       And focus should move to the first menuitem in the nested submenu
 
+      Examples:
+        | key        | dir |
+        | Enter      | LTR |
+        | Space      | LTR |
+        | ArrowRight | LTR |
+        | Enter      | RTL |
+        | Space      | RTL |
+        | ArrowLeft  | RTL |
+
     Scenario: Navigate back from nested submenu using keyboard
-      Given a nested submenu is open
-      And focus is inside of it
-      When I press: "Escape" or "ArrowLeft" in LTR or "ArrowRight" in RTL
+      Given a nested submenu is open from Settings menuitem
+      And focus is on the first menuitem in the nested submenu
+      When I press <key> in <dir>
       Then the nested submenu should close
-      And focus should return to the parent menuitem
+      And focus should return to the Settings menuitem
+
+      Examples:
+        | key        | dir      |
+        | Escape     | LTR, RTL |
+        | ArrowLeft  | LTR      |
+        | ArrowRight | RTL      |
 
     Scenario: Selecting a nested menuitem using keyboard
       Given the MenuPopover is open
@@ -153,6 +197,13 @@ Feature: MenuPopover Accessibility and User Interaction
       And the nested submenu closes
       And all parent MenuPopovers close
 
+    Scenario: Escape key closes nested submenus step-by-step
+      Given I have navigated into a nested submenu
+      When I press "Escape"
+      Then only the current submenu closes
+      And focus returns to the parent menuitem
+      And pressing Escape again closes parent MenuPopovers upward
+
   Rule: ✅ Separator and Group Handling
 
     Scenario: Skipping separator during navigation
@@ -162,9 +213,10 @@ Feature: MenuPopover Accessibility and User Interaction
       Then focus should skip over the separator
 
     Scenario: Grouped menuitems have headings
-      Given the MenuPopover includes grouped menuitems
-      Then each group has a visible or accessible heading
-      And focus moves normally between menuitems across groups
+      When the MenuPopover includes grouped menuitems
+      Then each group should have a visible or accessible heading
+      And focus should move normally between menuitems across groups
+      And each group had a visible or accessible heading
 
   Rule: ✅ Menuitem Types
 
@@ -200,50 +252,27 @@ Feature: MenuPopover Accessibility and User Interaction
       And other items in the group become deselected
       And the MenuPopover remains open
 
-  Rule: ✅ Focus Behavior
-
-    Scenario: Focus moves to first menuitem on open
-      Given the MenuPopover is closed
-      When I open it using keyboard
-      Then focus moves to the first focusable menuitem
-
-    Scenario: Focus returns to trigger on close
-      Given the MenuPopover was opened using keyboard
-      When I close it using keyboard
-      Then focus returns to the trigger element
-
-    Scenario: Escape key closes nested submenus step-by-step
-      Given I have navigated into a nested submenu
-      When I press "Escape"
-      Then only the current submenu closes
-      And focus returns to the parent menuitem
-      And pressing Escape again closes parent MenuPopovers upward
-
-    Scenario: Focus trap keeps focus inside MenuPopover
-      Given the MenuPopover is open
-      When I press "Tab" repeatedly
-      Then focus cycles within the MenuPopover only
-
   Rule: ✅ ScreenReader Accessibility
 
     Scenario: VoiceOver opens MenuPopover and moves focus to first menuitem
       Given the user is navigating with VoiceOver
-      And focus moves to the trigger button labeled "Options"
+      When focus is moved to the trigger button labeled "Options"
       Then VoiceOver announces: "Options, button, collapsed, menu"
       When the user activates the button (VO + Space)
       Then the MenuPopover opens and focus moves to first menuitem "Profile"
       And VoiceOver announces: "Profile, menu item (1 of 4)"
 
-    Scenario: VoiceOver navigates through menuitems
+    Scenario Outline: VoiceOver navigates through menuitems
       Given VoiceOver interaction is active inside the MenuPopover
-      When VoiceOver navigates right (VO + Right) to "Profile"
-      Then VoiceOver announces: "Profile, menu item"
-      When VoiceOver navigates right (VO + Right) to "Settings"
-      Then VoiceOver announces: "Settings, menu item"
-      When VoiceOver navigates right (VO + Right) to "Notifications"
-      Then VoiceOver announces: "Notifications, 3 new, menu item"
-      When VoiceOver navigates right (VO + Right) to "Logout"
-      Then VoiceOver announces: "Logout, menu item, dimmed"
+      When VoiceOver navigates to the "<menuitem>" menuitem
+      Then VoiceOver announces: "<announcement>"
+
+      Examples:
+        | menuitem      | announcement                    |
+        | Profile       | Profile, menu item              |
+        | Settings      | Settings, menu item             |
+        | Notifications | Notifications, 3 new, menu item |
+        | Logout        | Logout, menu item, dimmed       |
 
     Scenario: VoiceOver reads aria-label or group headings if present
       Given the MenuPopover contains grouped sections with headings
