@@ -68,6 +68,14 @@ Feature: Popover Component
       When the user press **Escape** key on the popover,
       Then the popover should close.
 
+    Scenario: Hide on escape (keyboard) inside a dialog
+      Given the `hide-on-escape` attribute is set to `true`,
+      And the `propagate-event-on-escape` attribute is set to `false`,
+      When the popover is open inside a dialog,
+      When the user press **Escape** key on the popover,
+      Then the popover should close,
+      And the dialog should remain open.
+
     Scenario: Focus back to trigger element
       Given the `focus-back-to-trigger` attribute is set to `true`.
       When the open popover gets closed,
@@ -97,21 +105,21 @@ Feature: Popover Component
       Then it should have a default role of `dialog`.
       And the `aria-modal` attribute should be set to `true`
       And it can support `aria-label`, `aria-labelledby`, and `aria-describedby`.
-       When the popover is open,
+      When the popover is open,
       Then the trigger should have `aria-expanded="true"`.
       When the popover is closed,
       Then the trigger should have `aria-expanded="false"`.
 
-Scenario: Accessibility on interactive popover
-     Given a popover component
-     When the popover has `interactive` attribute set to `true`,
-     Then the trigger should have `aria-haspopup` set to `dialog` (by default),
+    Scenario: Accessibility on interactive popover
+      Given a popover component
+      When the popover has `interactive` attribute set to `true`,
+      Then the trigger should have `aria-haspopup` set to `dialog` (by default),
       And the user can override `aria-haspopup` if needed.
- 
-Scenario: Popover with disabled aria expanded
-     Given a popover component
-     When the `disable-aria-expanded` attribute is set to `true`
-     Then the `aria-expanded` attribute should not be removed.
+
+    Scenario: Popover with disabled aria expanded
+      Given a popover component
+      When the `disable-aria-expanded` attribute is set to `true`
+      Then the `aria-expanded` attribute should not be removed.
 
   Rule: Accessibility with screen readers
 

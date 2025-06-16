@@ -7,6 +7,9 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { DIALOG_ROLE, DIALOG_SIZE, DEFAULTS, DIALOG_VARIANT } from './dialog.constants';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 import '../link';
+import '../button';
+import '../popover';
+import '../tooltip';
 
 const createDialog = (args: Args, content: TemplateResult) => html`<mdc-dialog
   class="${args.class}"
@@ -56,6 +59,35 @@ ${customHeader && html`
 <mdc-text slot="footer-link">Not rendered</mdc-text>
 <mdc-button slot="footer-button-secondary" @click="${toggleVisibility}">Secondary</mdc-button>
 <mdc-button slot="footer-button-primary" @click="${toggleVisibility}">Primary</mdc-button>
+`;
+
+const dialogWithPopoverContent = (toggleVisibility: () => void) => html`
+<div slot="dialog-body">
+  <p>This is the body content of the dialog.</p>
+  <mdc-popover
+    id="popover"
+    placement="bottom"
+    trigger="click"
+    triggerId="popover-trigger"
+    focus-trap
+    interactive
+    hide-on-escape
+    focus-back-to-trigger
+  >
+    <div class="popover-content">
+      <p>This is the content of the popover.</p>
+      <mdc-button @click="${toggleVisibility}">Close Popover</mdc-button>
+    </div>
+  </mdc-popover>
+  <mdc-button id="popover-trigger">Toggle Popover</mdc-button>
+  <mdc-tooltip
+    id="tooltip"
+    triggerId="tooltip-trigger"
+    placement="top">
+    This is a tooltip
+  </mdc-tooltip>
+  <mdc-button id="tooltip-trigger">Hover me for tooltip</mdc-button>
+</div>
 `;
 
 const render = (args: Args) => {
@@ -114,6 +146,17 @@ const renderNoFooter = (args: Args) => {
       <div slot="dialog-body">
         <p>This is the body content of the dialog.</p>
       </div>`)}
+  `;
+};
+
+const renderWithPopover = (args: Args) => {
+  const toggleVisibility = () => {
+    const dialog = document.getElementById(args.id) as HTMLElement;
+    dialog.toggleAttribute('visible');
+  };
+  return html`
+    ${createTrigger(args.triggerId, 'Click me!', toggleVisibility)}
+    ${createDialog(args, dialogWithPopoverContent(toggleVisibility))}
   `;
 };
 
@@ -316,5 +359,14 @@ export const MountUnmount: StoryObj = {
     size: DEFAULTS.SIZE,
     mountDialog: true,
     visible: true,
+  },
+};
+
+// with popover
+export const WithPopover: StoryObj = {
+  render: renderWithPopover,
+  args: {
+    ...commonProperties,
+    size: DIALOG_SIZE[0],
   },
 };
