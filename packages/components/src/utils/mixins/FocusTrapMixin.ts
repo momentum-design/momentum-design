@@ -81,7 +81,6 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
     public activateFocusTrap() {
       if (this.focusTrap) {
         this.isFocusTrapActivated = true;
-        this.setFocusableElements();
       }
     }
 
@@ -92,8 +91,8 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
       this.isFocusTrapActivated = false;
       this.focusTrapIndex = -1;
 
-      // todo: this should not override the body overflow style, but reset it instead
       this.enabledPreventScroll = false;
+      // todo: this should not override the body overflow style, but reset it instead
       document.body.style.overflow = '';
     }
 
@@ -231,6 +230,8 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
     /**
      * Recursively finds all focusable elements within the given root and its descendants.
      *
+     * Make sure this is performant, as it will be called multiple times.
+     *
      * @param root - The root element to search for focusable elements.
      * @param matches - The set of focusable elements.
      * @returns The list of focusable elements.
@@ -268,7 +269,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
     /**
      * Updates the list of focusable elements within the component's shadow root.
      */
-    public setFocusableElements() {
+    private setFocusableElements() {
       if (!this.shadowRoot) return;
 
       this.focusableElements = this.findFocusable(this.shadowRoot, new Set());
@@ -280,7 +281,11 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      * @param elementIndexToReceiveFocus - The index of the preferable element to focus.
      */
     public setInitialFocus(elementIndexToReceiveFocus: number = 0) {
-      if (this.focusableElements.length === 0) return;
+      this.setFocusableElements();
+
+      if (this.focusableElements.length === 0) {
+        return;
+      }
 
       if (this.enabledPreventScroll) {
         document.body.style.overflow = 'hidden';
@@ -364,6 +369,9 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      * If true, the focus will be trapped in the previous element.
      */
     private trapFocus(direction: boolean) {
+      // calculate the focusable elements
+      this.setFocusableElements();
+
       if (this.focusableElements.length === 0) {
         return;
       }
@@ -388,7 +396,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      * @param event - The keyboard event.
      */
     private handleTabKeydown(event: KeyboardEvent) {
-      if (!this.isFocusTrapActivated || !this.focusableElements.length) {
+      if (!this.isFocusTrapActivated) {
         return;
       }
 
