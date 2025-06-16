@@ -141,7 +141,7 @@ Feature: MenuPopover Accessibility and User Interaction
       When I navigate with arrow keys
       Then focus should move sequentially through all menuitems, regardless of groups
 
-  Rule: ✅ Nested Submenus
+  Rule: ✅ Nested Submenu Interaction
 
     Background:
       Given the MenuPopover contains a nested submenu under "Settings"
@@ -153,8 +153,6 @@ Feature: MenuPopover Accessibility and User Interaction
         | Advanced | menuitem | disabled |
       And the nested submenu is closed by default
       And the MenuPopover is open
-
-  Rule: ✅ Nested Submenu Interaction
 
     Scenario: Open nested submenu with mouse
       Given the focus is on Settings menuitem
