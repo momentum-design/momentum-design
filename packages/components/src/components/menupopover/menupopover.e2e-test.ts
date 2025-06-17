@@ -1,57 +1,473 @@
-import { test } from '../../../config/playwright/setup';
+import { expect } from '@playwright/test';
+import { ComponentsPage, test } from '../../../config/playwright/setup';
 
-test.skip('mdc-menupopover', async ({ componentsPage }) => {
-  const menupopover = componentsPage.page.locator('mdc-menupopover');
+type SetupOptions = {
+  componentsPage: ComponentsPage;
+  html: string;
+};
 
-  // initial check for the menupopover be visible on the screen:
-  await menupopover.waitFor();
+const defaultHTML = `
+    <div id="menupopover-test-wrapper">
+      <mdc-button id="trigger-btn">Options</mdc-button>
+      <mdc-menupopover triggerid="trigger-btn">
+        <mdc-menuitem label="Profile"></mdc-menuitem>
+        <mdc-menuitem label="Settings" disabled></mdc-menuitem>
+        <mdc-menuitem label="Notifications"></mdc-menuitem>
+        <mdc-menuitem label="Logout"></mdc-menuitem>
+      </mdc-menupopover>
+    </div>`;
 
-  /**
-   * ACCESSIBILITY
-   */
-  await test.step('accessibility', async () => {
-    await componentsPage.accessibility.checkForA11yViolations('menupopover-default');
-  });
+const nestedHTML = `
+  <div id="menupopover-test-wrapper">
+    <mdc-button id="trigger-btn">Options</mdc-button>
+    <mdc-menupopover triggerid="trigger-btn">
+      <mdc-menuitem label="Profile"></mdc-menuitem>
+      <mdc-menuitem id="submenu-trigger" label="Settings"></mdc-menuitem>
+      <mdc-menupopover triggerid="submenu-trigger">
+        <mdc-menuitem label="Account"></mdc-menuitem>
+        <mdc-menuitem label="Privacy"></mdc-menuitem>
+        <mdc-menuitem label="Security"></mdc-menuitem>
+        <mdc-menuitem label="Advanced" disabled></mdc-menuitem>
+      </mdc-menupopover>
+      <mdc-menuitem label="Notifications"></mdc-menuitem>
+      <mdc-menuitem label="Logout" disabled></mdc-menuitem>
+    </mdc-menupopover>
+  </div>`;
 
-  /**
-   * VISUAL REGRESSION
-   */
-  await test.step('visual-regression', async () => {
-    await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-menupopover', { element: menupopover });
-    });
-  });
+const groupHTML = `
+    <div id="menupopover-test-wrapper">
+      <mdc-button id="trigger-btn">Options</mdc-button>
+      <mdc-menupopover triggerid="trigger-btn">
+        <mdc-menuitem label="Profile"></mdc-menuitem>
+        <mdc-divider></mdc-divider>
+        <mdc-menusection label="Preferences">
+          <mdc-menuitemcheckbox label="Enable feature" aria-checked="false"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox label="Beta mode" aria-checked="true"></mdc-menuitemcheckbox>
+          <mdc-menuitemradio name="theme" label="Light" aria-checked="true"></mdc-menuitemradio>
+          <mdc-menuitemradio name="theme" label="Dark" aria-checked="false"></mdc-menuitemradio>
+          <mdc-menuitemradio name="theme" label="System" aria-checked="false"></mdc-menuitemradio>
+        </mdc-menusection>
+        <mdc-menuitem label="Notifications"></mdc-menuitem>
+      </mdc-menupopover>
+    </div>`;
 
+const menuItemSelector = '[role="menuitem"]';
+
+const setup = async (args: SetupOptions) => {
+  const { componentsPage, html } = args;
+
+  await componentsPage.mount({ html, clearDocument: true });
+
+  const wrapper = componentsPage.page.locator('#menupopover-test-wrapper');
+  const triggerElement = wrapper.locator('#trigger-btn');
+  await triggerElement.waitFor();
+  return { wrapper, triggerElement };
+};
+
+test('mdc-menupopover', async ({ componentsPage }) => {
   /**
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
-    await test.step('attribute X should be present on component by default', async () => {
-      // TODO: add test here
-    });
+    const { wrapper } = await setup({ componentsPage, html: defaultHTML });
+    const menupopover = wrapper.locator('mdc-menupopover[triggerid="trigger-btn"]');
+    await expect(menupopover).toHaveAttribute('triggerid', 'trigger-btn');
+    // Add more attribute checks as needed
   });
 
   /**
-   * INTERACTIONS
+   * VISUAL REGRESSION AND ACCESSIBILITY
    */
-  await test.step('interactions', async () => {
-    await test.step('mouse/pointer', async () => {
-      await test.step('component should fire callback x when clicking on it', async () => {
-        // TODO: add test here
+  await test.step('visual-regression and accessibility', async () => {
+    await componentsPage.accessibility.checkForA11yViolations('menupopover-default');
+  });
+
+  /**
+   * USER INTERACTIONS
+   */
+  await test.step('user interactions', async () => {
+    // Opening the MenuPopover
+    await test.step('Opening the MenuPopover', async () => {
+      const { wrapper, triggerElement } = await setup({ componentsPage, html: defaultHTML });
+      const menupopover = wrapper.locator('mdc-menupopover[triggerid="trigger-btn"]');
+
+      await test.step('Clicking disabled trigger does nothing', async () => {
+        await componentsPage.page.evaluate(() => {
+          const btn = document.getElementById('trigger-btn');
+          if (btn) btn.setAttribute('disabled', 'true');
+        });
+        await expect(triggerElement).toBeDisabled();
+      });
+
+      await test.step('Open the popover using mouse', async () => {
+        await componentsPage.page.evaluate(() => {
+          const btn = document.getElementById('trigger-btn');
+          if (btn) btn.removeAttribute('disabled');
+        });
+        await expect(triggerElement).not.toBeDisabled();
+      });
+
+      await test.step('Open the popover using keyboard', async () => {
+        await setup({ componentsPage, html: defaultHTML });
+        await componentsPage.actionability.pressTab();
+        await expect(triggerElement).toBeFocused();
+        await componentsPage.page.keyboard.press('Enter'); // or Space
+        await expect(menupopover).toBeVisible();
+      });
+
+      await test.step('Focus moves to first menuitem on open', async () => {
+        await setup({ componentsPage, html: defaultHTML });
+        await componentsPage.actionability.pressTab();
+        await expect(triggerElement).toBeFocused();
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(menupopover).toBeVisible();
+        const firstItem = menupopover.locator(menuItemSelector).first();
+        await expect(firstItem).toBeFocused();
       });
     });
 
-    await test.step('focus', async () => {
-      await test.step('component should be focusable with tab', async () => {
-        // TODO: add test here
+    // Closing the MenuPopover
+    await test.step('Closing the MenuPopover', async () => {
+      const { wrapper, triggerElement } = await setup({ componentsPage, html: defaultHTML });
+      const menupopover = wrapper.locator('mdc-menupopover[triggerid="trigger-btn"]');
+
+      await test.step('Close the popover by clicking outside', async () => {
+        await triggerElement.click();
+        await expect(menupopover).toBeVisible();
+        await componentsPage.page.mouse.click(0, 0);
+        await expect(menupopover).not.toBeVisible();
       });
 
-      // add additional tests here, like tabbing through several parts of the component
+      await test.step('Close the popover by clicking the trigger again', async () => {
+        await triggerElement.click();
+        await expect(menupopover).toBeVisible();
+        await triggerElement.click();
+        await expect(menupopover).not.toBeVisible();
+      });
+
+      await test.step('Close the popover using Escape key', async () => {
+        await setup({ componentsPage, html: defaultHTML });
+        await componentsPage.actionability.pressTab();
+        await expect(triggerElement).toBeFocused();
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(menupopover).toBeVisible();
+        await componentsPage.page.keyboard.press('Escape');
+        await expect(menupopover).not.toBeVisible();
+      });
     });
 
-    await test.step('keyboard', async () => {
-      await test.step('component should fire callback x when pressing y', async () => {
-        // TODO: add test here
+    // Selecting menuitems
+    await test.step('Selecting menuitems', async () => {
+      const { wrapper, triggerElement } = await setup({ componentsPage, html: defaultHTML });
+      const menupopover = wrapper.locator('mdc-menupopover[triggerid="trigger-btn"]');
+
+      await test.step('Select menuitem with mouse', async () => {
+        await triggerElement.click();
+        await expect(menupopover).toBeVisible();
+        // Select Logout (index 3, skips Settings which is disabled)
+        const submenuItem = menupopover.locator(menuItemSelector).nth(3);
+        const waitForClick = componentsPage.waitForEvent(submenuItem, 'click');
+        await submenuItem.click();
+        await waitForClick;
+        await expect(menupopover).not.toBeVisible();
+      });
+
+      await test.step('Select menuitem with keyboard (Enter)', async () => {
+        await setup({ componentsPage, html: defaultHTML });
+        await componentsPage.actionability.pressTab();
+        await expect(triggerElement).toBeFocused();
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(menupopover).toBeVisible();
+        const firstItem = menupopover.locator(menuItemSelector).first();
+        await expect(firstItem).toBeFocused();
+        // ArrowDown: Profile -> Settings (disabled, skip to Notifications)
+        const submenuItems = menupopover.locator(menuItemSelector);
+        await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [submenuItems.nth(2), submenuItems.nth(3)]);
+        const waitForClick = componentsPage.waitForEvent(submenuItems.nth(3), 'click');
+        await componentsPage.page.keyboard.press('Enter');
+        await waitForClick;
+        await expect(menupopover).not.toBeVisible();
+      });
+
+      await test.step('Select menuitem with keyboard (Space)', async () => {
+        await setup({ componentsPage, html: defaultHTML });
+        await componentsPage.actionability.pressTab();
+        await expect(triggerElement).toBeFocused();
+        await componentsPage.page.keyboard.press('Space');
+        await expect(menupopover).toBeVisible();
+        const firstItem = menupopover.locator(menuItemSelector).first();
+        await expect(firstItem).toBeFocused();
+        // ArrowDown: Profile -> Settings (disabled, skip to Notifications)
+        const submenuItems = menupopover.locator(menuItemSelector);
+        await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [submenuItems.nth(2), submenuItems.nth(3)]);
+        const waitForClick = componentsPage.waitForEvent(submenuItems.nth(3), 'click');
+        await componentsPage.page.keyboard.press('Space');
+        await waitForClick;
+        await expect(menupopover).not.toBeVisible();
+      });
+
+      await test.step('Attempt to select disabled menuitem (mouse)', async () => {
+        await triggerElement.click();
+        await expect(menupopover).toBeVisible();
+        const submenuItem = menupopover.locator(menuItemSelector).nth(1);
+        await expect(submenuItem).toBeDisabled();
+        // Try to click Settings (disabled)
+        const waitForClick = componentsPage.waitForEvent(submenuItem, 'click');
+        await menupopover.locator(menuItemSelector).nth(1).click();
+        await componentsPage.expectPromiseTimesOut(waitForClick, true);
+        await expect(menupopover).toBeVisible();
+      });
+
+      await test.step('Attempt to select disabled menuitem (keyboard)', async () => {
+        await setup({ componentsPage, html: defaultHTML });
+        await componentsPage.actionability.pressTab();
+        await expect(triggerElement).toBeFocused();
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(menupopover).toBeVisible();
+        const submenuItems = menupopover.locator(menuItemSelector);
+        await expect(submenuItems.first()).toBeFocused();
+        // ArrowDown: Profile -> Settings (disabled, skip to Notifications)
+        await componentsPage.page.keyboard.press('ArrowDown');
+        await expect(menupopover.locator(menuItemSelector).nth(2)).toBeFocused();
+        // ArrowUp: Notifications -> Settings (disabled, skip to Profile)
+        await componentsPage.page.keyboard.press('ArrowUp');
+        await expect(menupopover.locator(menuItemSelector).nth(0)).toBeFocused();
+      });
+    });
+
+    // Keyboard Navigation
+    await test.step('Keyboard Navigation', async () => {
+      const { wrapper, triggerElement } = await setup({ componentsPage, html: defaultHTML });
+      const menupopover = wrapper.locator('mdc-menupopover[triggerid="trigger-btn"]');
+
+      await test.step('Navigate menuitems using Home key', async () => {
+        await setup({ componentsPage, html: defaultHTML });
+        await componentsPage.actionability.pressTab();
+        await expect(triggerElement).toBeFocused();
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(menupopover).toBeVisible();
+        const submenuItems = menupopover.locator(menuItemSelector);
+        await expect(submenuItems.first()).toBeFocused();
+        await componentsPage.page.keyboard.press('ArrowDown');
+        await expect(submenuItems.nth(2)).toBeFocused();
+        await componentsPage.page.keyboard.press('Home');
+        await expect(submenuItems.first()).toBeFocused();
+      });
+
+      await test.step('Navigate menuitems using End key', async () => {
+        await setup({ componentsPage, html: defaultHTML });
+        await componentsPage.actionability.pressTab();
+        await expect(triggerElement).toBeFocused();
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(menupopover).toBeVisible();
+        const submenuItems = menupopover.locator(menuItemSelector);
+        await expect(submenuItems.first()).toBeFocused();
+        await componentsPage.page.keyboard.press('End');
+        await expect(submenuItems.last()).toBeFocused();
+      });
+
+      await test.step('Move focus up and down using ArrowDown & ArrowUp key and loop focus', async () => {
+        await setup({ componentsPage, html: defaultHTML });
+        await componentsPage.actionability.pressTab();
+        await expect(triggerElement).toBeFocused();
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(menupopover).toBeVisible();
+        // Should skip Settings (disabled) and land on Notifications
+        const submenuItems = menupopover.locator(menuItemSelector);
+        await expect(submenuItems.first()).toBeFocused();
+        await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [
+          submenuItems.nth(2),
+          submenuItems.last(),
+          submenuItems.first()]);
+        await componentsPage.actionability.pressAndCheckFocus('ArrowUp', [
+          submenuItems.last(),
+          submenuItems.nth(2),
+          submenuItems.first(),
+          submenuItems.last()]);
+      });
+
+      // Focus trap on menupopover
+      await test.step('Focus trap and separators', async () => {
+        await setup({ componentsPage, html: defaultHTML });
+        await componentsPage.actionability.pressTab();
+        await expect(triggerElement).toBeFocused();
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(menupopover).toBeVisible();
+        const submenuItems = menupopover.locator(menuItemSelector);
+        await expect(submenuItems.first()).toBeFocused();
+        await componentsPage.actionability.pressTab();
+        await expect(submenuItems.first()).toBeFocused();
+        await expect(menupopover).toBeVisible();
+      });
+    });
+
+    // Nested submenu interaction
+    await test.step('Nested submenu interaction', async () => {
+      const { wrapper, triggerElement } = await setup({ componentsPage, html: nestedHTML });
+      const menupopover = wrapper.locator('mdc-menupopover[triggerid="trigger-btn"]');
+      const submenu = menupopover.locator('mdc-menupopover[triggerid="submenu-trigger"]');
+
+      await test.step('Open nested submenu with mouse', async () => {
+        await triggerElement.click();
+        await expect(menupopover).toBeVisible();
+        const settingsItem = menupopover.locator('#submenu-trigger');
+        await settingsItem.click();
+        await expect(submenu).toBeVisible();
+      });
+
+      // Helper to open the nested submenu with keyboard
+      const openSubmenuWithKeyboard = async () => {
+        const { wrapper, triggerElement } = await setup({ componentsPage, html: nestedHTML });
+        const menupopover = wrapper.locator('mdc-menupopover[triggerid="trigger-btn"]');
+        const submenu = menupopover.locator('mdc-menupopover[triggerid="submenu-trigger"]');
+        await componentsPage.actionability.pressTab();
+        await expect(triggerElement).toBeFocused();
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(menupopover).toBeFocused();
+        const submenuItems = menupopover.locator(menuItemSelector);
+        await expect(submenuItems.first()).toBeFocused();
+        await componentsPage.page.keyboard.press('ArrowDown');
+        await expect(submenuItems.nth(1)).toBeFocused(); // trigger for submenu
+        await componentsPage.page.keyboard.press('ArrowRight');
+        await expect(submenu).toBeVisible();
+        const firstSubItem = submenu.locator('[role="menuitem"]').first();
+        await expect(firstSubItem).toBeFocused();
+      };
+
+      await test.step('Open nested submenu using keyboard', async () => {
+        await openSubmenuWithKeyboard();
+      });
+
+      await test.step('Navigate back from nested submenu using keyboard', async () => {
+        await openSubmenuWithKeyboard();
+        await componentsPage.page.keyboard.press('ArrowLeft');
+        await expect(submenu).not.toBeVisible();
+        await expect(menupopover.locator('#submenu-trigger')).toBeFocused();
+      });
+
+      await test.step('Selecting a nested menuitem using keyboard', async () => {
+        await openSubmenuWithKeyboard();
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(submenu).not.toBeVisible();
+        await expect(menupopover).not.toBeVisible();
+        await expect(triggerElement).toBeFocused();
+      });
+
+      await test.step('Selecting a nested menuitem using mouse', async () => {
+        await triggerElement.click();
+        const settingsItem = menupopover.locator('#submenu-trigger');
+        await settingsItem.click();
+        await expect(submenu).toBeVisible();
+        const firstSubItem = submenu.locator('[role="menuitem"]').first();
+        await firstSubItem.click();
+        await expect(submenu).not.toBeVisible();
+        await expect(menupopover).not.toBeVisible();
+      });
+
+      await test.step('Escape key closes nested submenus step-by-step', async () => {
+        await openSubmenuWithKeyboard();
+        await componentsPage.page.keyboard.press('Escape');
+        await expect(submenu).not.toBeVisible();
+        await expect(menupopover.locator('#submenu-trigger')).toBeFocused();
+        await componentsPage.page.keyboard.press('Escape');
+        await expect(menupopover).not.toBeVisible();
+        await expect(triggerElement).toBeFocused();
+      });
+    });
+
+    // Group: Menuitem types: checkbox and radio (with grouped navigation)
+    await test.step('Menuitem types: checkbox and radio', async () => {
+      const { wrapper, triggerElement } = await setup({ componentsPage, html: groupHTML });
+      const menupopover = wrapper.locator('mdc-menupopover[triggerid="trigger-btn"]');
+
+      // Grouped menuitems navigation
+      await test.step('Grouped menuitems navigation using keyboard', async () => {
+        await setup({ componentsPage, html: groupHTML });
+        await componentsPage.actionability.pressTab();
+        await expect(triggerElement).toBeFocused();
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(menupopover).toBeVisible();
+        await expect(menupopover.locator('[label="Profile"]')).toBeFocused();
+        await componentsPage.page.keyboard.press('ArrowDown');
+        const checkboxes = menupopover.locator('[role="menuitemcheckbox"]');
+        await componentsPage.actionability.pressAndCheckFocus(
+          'ArrowDown',
+          [checkboxes.first(),
+            checkboxes.last()],
+        );
+        const radios = menupopover.locator('[role="menuitemradio"]');
+        await componentsPage.actionability.pressAndCheckFocus(
+          'ArrowDown',
+          [radios.first(),
+            radios.nth(1),
+            radios.last()],
+        );
+        await componentsPage.page.keyboard.press('ArrowDown');
+        const notifications = menupopover.locator('[label="Notifications"]');
+        await expect(notifications).toBeFocused();
+        await componentsPage.actionability.pressAndCheckFocus(
+          'ArrowUp',
+          [radios.last(),
+            radios.nth(1),
+            radios.first()],
+        );
+        await componentsPage.actionability.pressAndCheckFocus(
+          'ArrowUp',
+          [checkboxes.first(),
+            checkboxes.last()],
+        );
+      });
+
+      // Checkbox
+      await test.step('Toggle menuitemcheckbox using keyboard', async () => {
+        await setup({ componentsPage, html: groupHTML });
+        await componentsPage.actionability.pressTab();
+        await expect(triggerElement).toBeFocused();
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(menupopover).toBeVisible();
+        await expect(menupopover.locator('[label="Profile"]')).toBeFocused();
+        await componentsPage.page.keyboard.press('ArrowDown');
+        const checkboxes = menupopover.locator('[role="menuitemcheckbox"]');
+        await expect(checkboxes.first()).toBeFocused();
+        await componentsPage.page.keyboard.press('Space');
+        await expect(checkboxes.first()).toHaveAttribute('aria-checked', 'true');
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(checkboxes.first()).toHaveAttribute('aria-checked', 'false');
+        await componentsPage.page.keyboard.press('Escape');
+      });
+
+      // Radio
+      await test.step('Select one menuitemradio from a group using keyboard', async () => {
+        await setup({ componentsPage, html: groupHTML });
+        await componentsPage.actionability.pressTab();
+        await expect(triggerElement).toBeFocused();
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(menupopover).toBeVisible();
+        await expect(menupopover.locator('[label="Profile"]')).toBeFocused();
+        await componentsPage.page.keyboard.press('ArrowDown');
+        const checkboxes = menupopover.locator('[role="menuitemcheckbox"]');
+        await componentsPage.actionability.pressAndCheckFocus(
+          'ArrowDown',
+          [checkboxes.first(),
+            checkboxes.last()],
+        );
+        await componentsPage.page.keyboard.press('ArrowDown');
+        const radios = menupopover.locator('[role="menuitemradio"]');
+        await expect(radios.nth(0)).toBeFocused();
+        await componentsPage.page.keyboard.press('ArrowDown');
+        await componentsPage.page.keyboard.press('Space');
+        await expect(radios.nth(1)).toHaveAttribute('aria-checked', 'true');
+        await expect(radios.nth(0)).toHaveAttribute('aria-checked', 'false');
+        await expect(radios.nth(2)).toHaveAttribute('aria-checked', 'false');
+        await componentsPage.page.keyboard.press('ArrowDown');
+        await expect(radios.nth(2)).toBeFocused();
+        await componentsPage.page.keyboard.press('Enter');
+        await expect(radios.nth(1)).toHaveAttribute('aria-checked', 'false');
+        await expect(radios.nth(0)).toHaveAttribute('aria-checked', 'false');
+        await expect(radios.nth(2)).toHaveAttribute('aria-checked', 'true');
+        await componentsPage.page.keyboard.press('ArrowDown');
+        const notifications = menupopover.locator('[label="Notifications"]');
+        await expect(notifications).toBeFocused();
       });
     });
   });

@@ -127,8 +127,10 @@ Feature: MenuPopover Accessibility and User Interaction
 
     Scenario: Focus trap keeps focus inside MenuPopover
       Given the MenuPopover is open
+      And the focus is on first menuitem
       When I press "Tab" repeatedly
-      Then focus cycles within the MenuPopover only
+      Then nothing happens
+      And focus still remains on the first menuitem
 
     Scenario: Skip separator during navigation
       Given the MenuPopover is open
