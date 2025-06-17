@@ -1,6 +1,6 @@
 ---
 mode: 'agent'
-tools: ['file_search', 'semantic_search', 'read_file', 'insert_edit_into_file', 'create_file', 'replace_string_in_file', 'fetch_webpage', 'vscode_search_extensions_internal']
+tools: ['codebase', 'editFiles', 'runCommands', 'search']
 ---
 
 # Generate a new component
