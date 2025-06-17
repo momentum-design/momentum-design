@@ -64,6 +64,37 @@ const setup = async (args: SetupOptions) => {
   return { wrapper, triggerElement };
 };
 
+// Helper to open the popover using keyboard and assert first item focus
+const openPopoverWithKeyboard = async (
+  componentsPage: ComponentsPage,
+  triggerElement: ReturnType<typeof componentsPage.page.locator>,
+  menupopover: ReturnType<typeof triggerElement.locator>,
+) => {
+  await componentsPage.actionability.pressTab();
+  await expect(triggerElement).toBeFocused();
+  await componentsPage.page.keyboard.press('Enter');
+  await expect(menupopover).toBeVisible();
+  const firstItem = menupopover.locator(menuItemSelector).first();
+  await expect(firstItem).toBeFocused();
+};
+
+// Helper to open the nested submenu with keyboard
+const openSubmenuWithKeyboard = async (
+  componentsPage: ComponentsPage,
+  triggerElement: ReturnType<typeof componentsPage.page.locator>,
+  menupopover: ReturnType<typeof triggerElement.locator>,
+) => {
+  const submenu = menupopover.locator('mdc-menupopover[triggerid="submenu-trigger"]');
+  await openPopoverWithKeyboard(componentsPage, triggerElement, menupopover);
+  const submenuItems = menupopover.locator(menuItemSelector);
+  await componentsPage.page.keyboard.press('ArrowDown');
+  await expect(submenuItems.nth(1)).toBeFocused(); // trigger for submenu
+  await componentsPage.page.keyboard.press('ArrowRight');
+  await expect(submenu).toBeVisible();
+  const firstSubItem = submenu.locator('[role="menuitem"]').first();
+  await expect(firstSubItem).toBeFocused();
+};
+
 test('mdc-menupopover', async ({ componentsPage }) => {
   /**
    * ATTRIBUTES
@@ -107,22 +138,9 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(triggerElement).not.toBeDisabled();
       });
 
-      await test.step('Open the popover using keyboard', async () => {
+      await test.step('Open the popover using keyboard and focus moves to first menuitem', async () => {
         await setup({ componentsPage, html: defaultHTML });
-        await componentsPage.actionability.pressTab();
-        await expect(triggerElement).toBeFocused();
-        await componentsPage.page.keyboard.press('Enter'); // or Space
-        await expect(menupopover).toBeVisible();
-      });
-
-      await test.step('Focus moves to first menuitem on open', async () => {
-        await setup({ componentsPage, html: defaultHTML });
-        await componentsPage.actionability.pressTab();
-        await expect(triggerElement).toBeFocused();
-        await componentsPage.page.keyboard.press('Enter');
-        await expect(menupopover).toBeVisible();
-        const firstItem = menupopover.locator(menuItemSelector).first();
-        await expect(firstItem).toBeFocused();
+        await openPopoverWithKeyboard(componentsPage, triggerElement, menupopover);
       });
     });
 
@@ -174,12 +192,7 @@ test('mdc-menupopover', async ({ componentsPage }) => {
 
       await test.step('Select menuitem with keyboard (Enter)', async () => {
         await setup({ componentsPage, html: defaultHTML });
-        await componentsPage.actionability.pressTab();
-        await expect(triggerElement).toBeFocused();
-        await componentsPage.page.keyboard.press('Enter');
-        await expect(menupopover).toBeVisible();
-        const firstItem = menupopover.locator(menuItemSelector).first();
-        await expect(firstItem).toBeFocused();
+        await openPopoverWithKeyboard(componentsPage, triggerElement, menupopover);
         // ArrowDown: Profile -> Settings (disabled, skip to Notifications)
         const submenuItems = menupopover.locator(menuItemSelector);
         await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [submenuItems.nth(2), submenuItems.nth(3)]);
@@ -191,12 +204,7 @@ test('mdc-menupopover', async ({ componentsPage }) => {
 
       await test.step('Select menuitem with keyboard (Space)', async () => {
         await setup({ componentsPage, html: defaultHTML });
-        await componentsPage.actionability.pressTab();
-        await expect(triggerElement).toBeFocused();
-        await componentsPage.page.keyboard.press('Space');
-        await expect(menupopover).toBeVisible();
-        const firstItem = menupopover.locator(menuItemSelector).first();
-        await expect(firstItem).toBeFocused();
+        await openPopoverWithKeyboard(componentsPage, triggerElement, menupopover);
         // ArrowDown: Profile -> Settings (disabled, skip to Notifications)
         const submenuItems = menupopover.locator(menuItemSelector);
         await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [submenuItems.nth(2), submenuItems.nth(3)]);
@@ -220,10 +228,7 @@ test('mdc-menupopover', async ({ componentsPage }) => {
 
       await test.step('Attempt to select disabled menuitem (keyboard)', async () => {
         await setup({ componentsPage, html: defaultHTML });
-        await componentsPage.actionability.pressTab();
-        await expect(triggerElement).toBeFocused();
-        await componentsPage.page.keyboard.press('Enter');
-        await expect(menupopover).toBeVisible();
+        await openPopoverWithKeyboard(componentsPage, triggerElement, menupopover);
         const submenuItems = menupopover.locator(menuItemSelector);
         await expect(submenuItems.first()).toBeFocused();
         // ArrowDown: Profile -> Settings (disabled, skip to Notifications)
@@ -315,38 +320,22 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(submenu).toBeVisible();
       });
 
-      // Helper to open the nested submenu with keyboard
-      const openSubmenuWithKeyboard = async () => {
-        const { wrapper, triggerElement } = await setup({ componentsPage, html: nestedHTML });
-        const menupopover = wrapper.locator('mdc-menupopover[triggerid="trigger-btn"]');
-        const submenu = menupopover.locator('mdc-menupopover[triggerid="submenu-trigger"]');
-        await componentsPage.actionability.pressTab();
-        await expect(triggerElement).toBeFocused();
-        await componentsPage.page.keyboard.press('Enter');
-        await expect(menupopover).toBeFocused();
-        const submenuItems = menupopover.locator(menuItemSelector);
-        await expect(submenuItems.first()).toBeFocused();
-        await componentsPage.page.keyboard.press('ArrowDown');
-        await expect(submenuItems.nth(1)).toBeFocused(); // trigger for submenu
-        await componentsPage.page.keyboard.press('ArrowRight');
-        await expect(submenu).toBeVisible();
-        const firstSubItem = submenu.locator('[role="menuitem"]').first();
-        await expect(firstSubItem).toBeFocused();
-      };
-
       await test.step('Open nested submenu using keyboard', async () => {
-        await openSubmenuWithKeyboard();
+        await setup({ componentsPage, html: nestedHTML });
+        await openSubmenuWithKeyboard(componentsPage, triggerElement, menupopover);
       });
 
       await test.step('Navigate back from nested submenu using keyboard', async () => {
-        await openSubmenuWithKeyboard();
+        await setup({ componentsPage, html: nestedHTML });
+        await openSubmenuWithKeyboard(componentsPage, triggerElement, menupopover);
         await componentsPage.page.keyboard.press('ArrowLeft');
         await expect(submenu).not.toBeVisible();
         await expect(menupopover.locator('#submenu-trigger')).toBeFocused();
       });
 
       await test.step('Selecting a nested menuitem using keyboard', async () => {
-        await openSubmenuWithKeyboard();
+        await setup({ componentsPage, html: nestedHTML });
+        await openSubmenuWithKeyboard(componentsPage, triggerElement, menupopover);
         await componentsPage.page.keyboard.press('Enter');
         await expect(submenu).not.toBeVisible();
         await expect(menupopover).not.toBeVisible();
@@ -365,7 +354,8 @@ test('mdc-menupopover', async ({ componentsPage }) => {
       });
 
       await test.step('Escape key closes nested submenus step-by-step', async () => {
-        await openSubmenuWithKeyboard();
+        await setup({ componentsPage, html: nestedHTML });
+        await openSubmenuWithKeyboard(componentsPage, triggerElement, menupopover);
         await componentsPage.page.keyboard.press('Escape');
         await expect(submenu).not.toBeVisible();
         await expect(menupopover.locator('#submenu-trigger')).toBeFocused();
