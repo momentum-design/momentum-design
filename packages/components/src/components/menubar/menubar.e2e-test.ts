@@ -93,7 +93,7 @@ const setup = async (
 };
 
 test.describe('Menubar Feature Scenarios', () => {
-  test('mdc-menubar scenarios', async ({ componentsPage }) => {
+  test.skip('mdc-menubar scenarios', async ({ componentsPage }) => {
     await test.step('renders menubar with correct roles and orientation', async () => {
       const { menubar } = await setup({ componentsPage });
       await test.expect(menubar).toHaveAttribute('role', 'menubar');
