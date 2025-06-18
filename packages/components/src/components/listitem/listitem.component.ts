@@ -122,6 +122,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
     super();
 
     this.addEventListener('keydown', this.handleKeyDown);
+    this.addEventListener('keyup', this.handleKeyUp);
     this.addEventListener('focusin', this.displayTooltipForLongText);
     this.addEventListener('mouseover', this.displayTooltipForLongText);
     this.addEventListener('focusout', this.hideTooltipOnLeave);
@@ -135,11 +136,24 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   }
 
   /**
-   * Fires the click event when the enter or space key is pressed.
+   * Fires the click event when the enter key is pressed down.
+   * This behavior is similar to a button click and key interaction.
    * @param event - The keyboard event triggered when a key is pressed down.
    */
   private handleKeyDown(event: KeyboardEvent): void {
-    if (event.key === KEYS.ENTER || event.key === KEYS.SPACE) {
+    if (event.key === KEYS.ENTER) {
+      this.triggerClickEvent();
+      event.preventDefault();
+    }
+  }
+
+  /**
+   * Fires the click event when the space key is released.
+   * This behavior is similar to a button click and key interaction.
+   * @param event - The keyboard event triggered when a key is released.
+   */
+  private handleKeyUp(event: KeyboardEvent): void {
+    if (event.key === KEYS.SPACE) {
       this.triggerClickEvent();
       event.preventDefault();
     }
