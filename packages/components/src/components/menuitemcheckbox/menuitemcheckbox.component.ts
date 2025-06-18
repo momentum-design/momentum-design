@@ -60,7 +60,24 @@ class MenuItemCheckbox extends MenuItem {
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.MENUITEMCHECKBOX;
+    this.addEventListener('click', this.menuitemcheckboxHandleClick);
   }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.removeEventListener('click', this.menuitemcheckboxHandleClick);
+  }
+
+  /**
+   * Handles click events to toggle checked state
+   * If the menuitemcheckbox is disabled, it does nothing.
+   * If the menuitemcheckbox is not disabled, it toggles the `aria-checked` state between `true` and `false`.
+   */
+  private menuitemcheckboxHandleClick = () => {
+    if (this.disabled) return;
+    const prevChecked = this.ariaChecked === ARIA_CHECKED_STATES.TRUE;
+    this.ariaChecked = prevChecked ? ARIA_CHECKED_STATES.FALSE : ARIA_CHECKED_STATES.TRUE;
+  };
 
   private staticCheckbox(): TemplateResult | typeof nothing {
     if (this.indicator !== INDICATOR.CHECKBOX) {

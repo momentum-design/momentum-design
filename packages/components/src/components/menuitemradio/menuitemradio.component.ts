@@ -35,10 +35,49 @@ class MenuItemRadio extends MenuItem {
   @property({ type: String, reflect: true, attribute: 'aria-checked' })
   override ariaChecked: AriaCheckedStates = ARIA_CHECKED_STATES.FALSE;
 
+  /**
+   * The name attribute is used to group radio items within the same menu container.
+   */
+  @property({ type: String, reflect: true }) name = '';
+
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.MENUITEMRADIO;
+    this.addEventListener('click', this.menuitemradioHandleClick);
   }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.removeEventListener('click', this.menuitemradioHandleClick);
+  }
+
+  /**
+   * Handles click events to set checked state and uncheck siblings in the same group and container.
+   * If the menuitemradio is disabled or already checked, it does nothing.
+   * If the menuitemradio is not checked, it sets its aria-checked state to `true`
+   * and sets all other sibling menuitemradio elements' aria-checked state to `false`.
+   */
+  private menuitemradioHandleClick = () => {
+    if (this.disabled) return;
+    if (this.ariaChecked === ARIA_CHECKED_STATES.TRUE) return;
+    // Find the closest menu container (menupopover or menusection)
+    let container = this.parentElement;
+    while (container
+      && container.tagName !== 'MDC-MENUSECTION'
+      && container.tagName !== 'MDC-MENUPOPOVER') {
+      container = container.parentElement;
+    }
+    if (container) {
+      const radios = Array.from(container.querySelectorAll('mdc-menuitemradio')) as MenuItemRadio[];
+      radios.forEach((item) => {
+        const radio = item;
+        if (radio !== this && radio.name === this.name && !radio.disabled) {
+          radio.ariaChecked = ARIA_CHECKED_STATES.FALSE;
+        }
+      });
+    }
+    this.ariaChecked = ARIA_CHECKED_STATES.TRUE;
+  };
 
   public override render() {
     return html`
