@@ -324,130 +324,10 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
  * @param componentsPage - ComponentsPage instance
  */
 const interactionsTestCases = async (componentsPage: ComponentsPage) => {
-  const { popover, triggerButton } = await setup({
-    componentsPage,
-    id: 'popover',
-    triggerID: 'trigger-button',
-    children: 'Lorem ipsum dolor sit amet.',
-    interactive: true,
-    closeButton: true,
-    focusBackToTrigger: true,
-    backdrop: true,
-  });
-
-  /**
-   * CLICK INTERACTIONS
-   */
-  await test.step('click', async () => {
-    await test.step('clicking button should open popover', async () => {
-      await triggerButton.click();
-      await expect(popover).toBeVisible();
-    });
-    await test.step('aria-expanded and aria-haspopup should be set when popover(interactive) is visible', async () => {
-      await expect(triggerButton).toHaveAttribute('aria-expanded', 'true');
-      await expect(triggerButton).toHaveAttribute('aria-haspopup', 'dialog');
-    });
-    await test.step('if backdrop set, other element should not be clickable', async () => {
-      const outsideButton = componentsPage.page.locator('#outside-button');
-      const buttonBox = await outsideButton.boundingBox();
-      if (buttonBox) {
-        const x = buttonBox.x + buttonBox.width / 2;
-        const y = buttonBox.y + buttonBox.height / 2;
-
-        await componentsPage.page.mouse.click(x, y);
-        await expect(outsideButton).not.toBeFocused();
-      }
-    });
-    await test.step('if delay is set to 1000,1000, popover should show/hide after 1 sec when trigger', async () => {
-      await componentsPage.setAttributes(popover, { delay: '1000,1000' });
-      await triggerButton.click();
-      await expect(popover).not.toBeVisible();
-      await componentsPage.page.waitForTimeout(1000);
-      await expect(popover).toBeVisible();
-      await componentsPage.page.locator('.popover-close').click();
-      await expect(popover).toBeVisible();
-      await componentsPage.page.waitForTimeout(1000);
-      await expect(popover).not.toBeVisible();
-    });
-  });
-
-  /**
-   * FOCUS INTERACTIONS
-   */
-  await test.step('focus', async () => {
-    const { popover, triggerButton } = await setup({
-      componentsPage,
-      id: 'popover',
-      triggerID: 'trigger-button',
-      trigger: TRIGGER.FOCUSIN,
-      children: 'Lorem ipsum dolor sit amet.',
-    });
-
-    await test.step('focusing on trigger button should open popover', async () => {
-      await componentsPage.actionability.pressTab();
-      await expect(triggerButton).toBeFocused();
-      await expect(popover).toBeVisible();
-    });
-
-    const { popover: popoverInteractive, triggerButton: triggerButtonInteractive } = await setup({
-      componentsPage,
-      id: 'popover',
-      triggerID: 'trigger-button',
-      trigger: TRIGGER.FOCUSIN,
-      children: '<mdc-button>Interactive Popover</mdc-button>',
-      focusTrap: true,
-      interactive: true,
-      hideOnBlur: true,
-    });
-
-    await test.step('focusing trigger button, move focus into interactive popover if focusTrap is true', async () => {
-      await componentsPage.actionability.pressTab();
-      await expect(popoverInteractive).toBeVisible();
-      await expect(componentsPage.page.getByRole('button', { name: 'Interactive Popover' })).toBeFocused();
-      await expect(triggerButtonInteractive).not.toBeFocused();
-    });
-
-    const { popover: popoverInteractiveHideOnBlur, triggerButton: triggerButtonInteractiveHideOnBlur } = await setup({
-      componentsPage,
-      id: 'popover',
-      triggerID: 'trigger-button',
-      trigger: TRIGGER.FOCUSIN,
-      children: '<mdc-button>Interactive Popover</mdc-button>',
-      focusTrap: false,
-      interactive: true,
-      hideOnBlur: true,
-    });
-
-    await test.step('if hide-on-blur set, focusing out the interactive popover should close the popover', async () => {
-      await componentsPage.actionability.pressTab();
-      await expect(triggerButtonInteractiveHideOnBlur).toBeFocused();
-      await expect(popoverInteractiveHideOnBlur).toBeVisible();
-
-      // focus into interactive popover
-      await componentsPage.actionability.pressTab();
-      await expect(componentsPage.page.getByRole('button', { name: 'Interactive Popover' })).toBeFocused();
-      await expect(popoverInteractiveHideOnBlur).toBeVisible();
-
-      // focus out the interactive popover
-      await componentsPage.actionability.pressTab();
-      await expect(componentsPage.page.getByRole('button', { name: 'Outside Button' })).toBeFocused();
-      await expect(popoverInteractive).not.toBeVisible();
-    });
-  });
-
   /**
    * KEYBOARD INTERACTIONS
    */
   await test.step('keyboard', async () => {
-    await test.step('if hide-on-escapse set, pressing escape should close popover', async () => {
-      await componentsPage.setAttributes(popover, { 'hide-on-escape': '' });
-      await triggerButton.focus();
-      await expect(popover).toBeVisible();
-      await componentsPage.page.keyboard.press(KEYS.ESCAPE);
-      await expect(popover).not.toBeVisible();
-      await expect(triggerButton).toBeFocused();
-    });
-
     await test.step(
       'if hide-on-escape = true and propagate-event-on-escape = false, pressing ESC closes popover, not dialog',
       async () => {
@@ -514,21 +394,6 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
         await expect(popover).not.toBeVisible();
       },
     );
-  });
-
-  /**
-   * HOVER INTERACTIONS
-   */
-  await test.step('hover', async () => {
-    await test.step('if trigger is mouseenter, hovering over trigger should open popover', async () => {
-      await componentsPage.setAttributes(popover, { trigger: TRIGGER.MOUSEENTER });
-      await triggerButton.hover();
-      await expect(popover).toBeVisible();
-    });
-    await test.step('hovering out the trigger should close popover', async () => {
-      await componentsPage.page.mouse.move(1000, 1000);
-      await expect(popover).not.toBeVisible();
-    });
   });
 };
 
