@@ -111,7 +111,12 @@ class MenuPopover extends Popover {
 
   private handleMouseClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
-    if (isValidMenuItem(target) && !isValidPopover(target.nextElementSibling)) {
+    const role = target.getAttribute('role');
+    if (
+      isValidMenuItem(target)
+      && !isValidPopover(target.nextElementSibling)
+      && role === ROLE.MENUITEM
+    ) {
       this.closeAllMenuPopovers();
     }
   }
