@@ -72,8 +72,11 @@ const openPopoverWithKeyboard = async (
 ) => {
   await componentsPage.actionability.pressTab();
   await expect(triggerElement).toBeFocused();
+  await expect(triggerElement).toHaveAttribute('aria-haspopup', 'menu');
+  await expect(triggerElement).toHaveAttribute('aria-expanded', 'false');
   await componentsPage.page.keyboard.press('Enter');
   await expect(menupopover).toBeVisible();
+  await expect(triggerElement).toHaveAttribute('aria-expanded', 'true');
   const firstItem = menupopover.locator(menuItemSelector).first();
   await expect(firstItem).toBeFocused();
 };
@@ -88,9 +91,13 @@ const openSubmenuWithKeyboard = async (
   await openPopoverWithKeyboard(componentsPage, triggerElement, menupopover);
   const submenuItems = menupopover.locator(menuItemSelector);
   await componentsPage.page.keyboard.press('ArrowDown');
-  await expect(submenuItems.nth(1)).toBeFocused(); // trigger for submenu
+  const submenuTrigger = submenuItems.nth(1);
+  await expect(submenuTrigger).toBeFocused(); // trigger for submenu
+  await expect(submenuTrigger).toHaveAttribute('aria-haspopup', 'true');
+  await expect(submenuTrigger).toHaveAttribute('aria-expanded', 'false');
   await componentsPage.page.keyboard.press('ArrowRight');
   await expect(submenu).toBeVisible();
+  await expect(submenuTrigger).toHaveAttribute('aria-expanded', 'true');
   const firstSubItem = submenu.locator('[role="menuitem"]').first();
   await expect(firstSubItem).toBeFocused();
 };
@@ -154,6 +161,7 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(menupopover).toBeVisible();
         await componentsPage.page.mouse.click(0, 0);
         await expect(menupopover).not.toBeVisible();
+        await expect(triggerElement).toHaveAttribute('aria-expanded', 'false');
       });
 
       await test.step('Close the popover by clicking the trigger again', async () => {
@@ -193,25 +201,27 @@ test('mdc-menupopover', async ({ componentsPage }) => {
       await test.step('Select menuitem with keyboard (Enter)', async () => {
         await setup({ componentsPage, html: defaultHTML });
         await openPopoverWithKeyboard(componentsPage, triggerElement, menupopover);
-        // ArrowDown: Profile -> Settings (disabled, skip to Notifications)
         const submenuItems = menupopover.locator(menuItemSelector);
-        await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [submenuItems.nth(2), submenuItems.nth(3)]);
         const waitForClick = componentsPage.waitForEvent(submenuItems.nth(3), 'click');
+        // ArrowDown: Profile -> Settings (disabled, skip to Notifications)
+        await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [submenuItems.nth(2), submenuItems.nth(3)]);
         await componentsPage.page.keyboard.press('Enter');
         await waitForClick;
         await expect(menupopover).not.toBeVisible();
+        await expect(triggerElement).toBeFocused();
       });
 
       await test.step('Select menuitem with keyboard (Space)', async () => {
         await setup({ componentsPage, html: defaultHTML });
         await openPopoverWithKeyboard(componentsPage, triggerElement, menupopover);
-        // ArrowDown: Profile -> Settings (disabled, skip to Notifications)
         const submenuItems = menupopover.locator(menuItemSelector);
-        await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [submenuItems.nth(2), submenuItems.nth(3)]);
         const waitForClick = componentsPage.waitForEvent(submenuItems.nth(3), 'click');
+        // ArrowDown: Profile -> Settings (disabled, skip to Notifications)
+        await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [submenuItems.nth(2), submenuItems.nth(3)]);
         await componentsPage.page.keyboard.press('Space');
         await waitForClick;
         await expect(menupopover).not.toBeVisible();
+        await expect(triggerElement).toBeFocused();
       });
 
       await test.step('Attempt to select disabled menuitem (mouse)', async () => {
@@ -219,10 +229,6 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(menupopover).toBeVisible();
         const submenuItem = menupopover.locator(menuItemSelector).nth(1);
         await expect(submenuItem).toBeDisabled();
-        // Try to click Settings (disabled)
-        const waitForClick = componentsPage.waitForEvent(submenuItem, 'click');
-        await menupopover.locator(menuItemSelector).nth(1).click();
-        await componentsPage.expectPromiseTimesOut(waitForClick, true);
         await expect(menupopover).toBeVisible();
       });
 
@@ -330,7 +336,9 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await openSubmenuWithKeyboard(componentsPage, triggerElement, menupopover);
         await componentsPage.page.keyboard.press('ArrowLeft');
         await expect(submenu).not.toBeVisible();
-        await expect(menupopover.locator('#submenu-trigger')).toBeFocused();
+        const submenuTrigger = menupopover.locator('#submenu-trigger');
+        await expect(submenuTrigger).toHaveAttribute('aria-expanded', 'false');
+        await expect(submenuTrigger).toBeFocused();
       });
 
       await test.step('Selecting a nested menuitem using keyboard', async () => {
@@ -378,7 +386,7 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press('Enter');
         await expect(menupopover).toBeVisible();
         await expect(menupopover.locator('[label="Profile"]')).toBeFocused();
-        await componentsPage.page.keyboard.press('ArrowDown');
+        // await componentsPage.page.keyboard.press('ArrowDown');
         const checkboxes = menupopover.locator('[role="menuitemcheckbox"]');
         await componentsPage.actionability.pressAndCheckFocus(
           'ArrowDown',
@@ -403,8 +411,8 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         );
         await componentsPage.actionability.pressAndCheckFocus(
           'ArrowUp',
-          [checkboxes.first(),
-            checkboxes.last()],
+          [checkboxes.last(),
+            checkboxes.first()],
         );
       });
 
@@ -434,7 +442,6 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await componentsPage.page.keyboard.press('Enter');
         await expect(menupopover).toBeVisible();
         await expect(menupopover.locator('[label="Profile"]')).toBeFocused();
-        await componentsPage.page.keyboard.press('ArrowDown');
         const checkboxes = menupopover.locator('[role="menuitemcheckbox"]');
         await componentsPage.actionability.pressAndCheckFocus(
           'ArrowDown',

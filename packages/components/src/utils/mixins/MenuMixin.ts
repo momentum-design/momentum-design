@@ -358,7 +358,10 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      * @returns True if the menu item is a valid menu item, false otherwise.
      */
     private isValidMenuItem(menuItem: HTMLElement): boolean {
-      return menuItem.getAttribute('role') === ROLE.MENUITEM;
+      const validRoles = [ROLE.MENUITEM, ROLE.MENUITEMCHECKBOX, ROLE.MENUITEMRADIO];
+      const role = menuItem.getAttribute('role');
+      return role !== null
+      && validRoles.includes(role as typeof ROLE.MENUITEM | typeof ROLE.MENUITEMCHECKBOX | typeof ROLE.MENUITEMRADIO);
     }
 
     /**

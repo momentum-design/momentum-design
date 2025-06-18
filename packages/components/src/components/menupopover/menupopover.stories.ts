@@ -107,3 +107,21 @@ export const ButtonGroupTrigger: StoryObj = {
   `,
   ...hideAllControls(),
 };
+
+export const WithGroups: StoryObj = {
+  render: () => html` <div id="menupopover-test-wrapper">
+      <mdc-button id="trigger-btn">Options</mdc-button>
+      <mdc-menupopover triggerid="trigger-btn">
+        <mdc-menuitem label="Profile"></mdc-menuitem>
+        <mdc-divider></mdc-divider>
+        <mdc-menusection label="Preferences">
+          <mdc-menuitemcheckbox label="Enable feature" aria-checked="false"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox label="Beta mode" aria-checked="true"></mdc-menuitemcheckbox>
+          <mdc-menuitemradio name="theme" label="Light" aria-checked="true"></mdc-menuitemradio>
+          <mdc-menuitemradio name="theme" label="Dark" aria-checked="false"></mdc-menuitemradio>
+          <mdc-menuitemradio name="theme" label="System" aria-checked="false"></mdc-menuitemradio>
+        </mdc-menusection>
+        <mdc-menuitem label="Notifications"></mdc-menuitem>
+      </mdc-menupopover>
+    </div>`,
+};
