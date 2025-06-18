@@ -64,12 +64,13 @@ import Toggle from './components/toggle';
 import ToggleTip from './components/toggletip';
 import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
+import Password from './components/password';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
 import type { ButtonColor, ButtonVariant, IconButtonSize, PillButtonSize } from './components/button/button.types';
 import type { PopoverPlacement } from './components/popover/popover.types';
-import type { SkeletonVariant } from './components/skeleton/skeleton.types';
+import type { SkeletonVariant } from './components/skeleton/skeleton.constants';
 import type { SpinnerSize, SpinnerVariant } from './components/spinner/spinner.types';
 import type { TextType } from './components/text/text.types';
 import { inMemoryCache, webAPIIconsCache } from './utils/icon-cache';
@@ -150,6 +151,7 @@ export {
   ToggleTip,
   Tooltip,
   VirtualizedList,
+  Password,
 };
 
 // Types Exports
