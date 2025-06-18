@@ -1,4 +1,3 @@
-// AI-Assisted
 import { expect } from '@playwright/test';
 import { test } from '../../../config/playwright/setup';
 
@@ -90,8 +89,6 @@ const setup = async (
   return sidenavigation;
 };
 
-// End AI-Assisted
-
 test.describe('SideNavigation Feature Scenarios', () => {
   test('mdc-sidenavigation scenarios', async ({ componentsPage }) => {
     const sidenavigation = await setup(componentsPage);
@@ -104,43 +101,41 @@ test.describe('SideNavigation Feature Scenarios', () => {
 
     // Expand/Collapse Behavior
     await test.step('Collapse the sidenavigation using mouse', async () => {
-      const sidenavigation = await setup(componentsPage, { expanded: true });
-      const toggleBtn = sidenavigation.locator('button[part="grabber-btn"]');
+      const sidenavigation = await setup(componentsPage);
+      const toggleBtn = sidenavigation.locator('mdc-button[part="grabber-btn"]');
       await expect(toggleBtn).toBeVisible();
-      await expect(sidenavigation).toHaveAttribute('aria-expanded', 'true');
+      await expect(toggleBtn).toHaveAttribute('aria-expanded', 'true');
       await toggleBtn.click();
-      await expect(sidenavigation).toHaveAttribute('aria-expanded', 'false');
-    });
-    await test.step('Collapse the sidenavigation using keyboard', async () => {
-      const sidenavigation = await setup(componentsPage, { expanded: true });
-      const toggleBtn = sidenavigation.locator('button[part="grabber-btn"]');
-      await expect(toggleBtn).toBeVisible();
-      await expect(sidenavigation).toHaveAttribute('aria-expanded', 'true');
-      await toggleBtn.focus();
-      await componentsPage.page.keyboard.press('Space');
-      await expect(sidenavigation).toHaveAttribute('aria-expanded', 'false');
+      await expect(toggleBtn).toHaveAttribute('aria-expanded', 'false');
     });
     await test.step('Expand the sidenavigation using mouse', async () => {
-      const sidenavigation = await setup(componentsPage);
-      const toggleBtn = sidenavigation.locator('button[part="grabber-btn"]');
+      const toggleBtn = sidenavigation.locator('mdc-button[part="grabber-btn"]');
       await expect(toggleBtn).toHaveAttribute('aria-expanded', 'false');
       await expect(toggleBtn).toBeVisible();
       await toggleBtn.click();
-      await expect(sidenavigation).toHaveAttribute('aria-expanded', 'true');
+      await expect(toggleBtn).toHaveAttribute('aria-expanded', 'true');
+    });
+    await test.step('Collapse the sidenavigation using keyboard', async () => {
+      const sidenavigation = await setup(componentsPage);
+      const toggleBtn = sidenavigation.locator('mdc-button[part="grabber-btn"]');
+      await expect(toggleBtn).toBeVisible();
+      await expect(toggleBtn).toHaveAttribute('aria-expanded', 'true');
+      await toggleBtn.focus();
+      await componentsPage.page.keyboard.press('Space');
+      await expect(toggleBtn).toHaveAttribute('aria-expanded', 'false');
     });
     await test.step('Expand the sidenavigation using keyboard', async () => {
-      const sidenavigation = await setup(componentsPage);
-      const toggleBtn = sidenavigation.locator('button[part="grabber-btn"]');
+      const toggleBtn = sidenavigation.locator('mdc-button[part="grabber-btn"]');
       await expect(toggleBtn).toBeVisible();
-      await expect(sidenavigation).toHaveAttribute('aria-expanded', 'false');
+      await expect(toggleBtn).toHaveAttribute('aria-expanded', 'false');
       await toggleBtn.focus();
       await componentsPage.page.keyboard.press('Enter');
-      await expect(sidenavigation).toHaveAttribute('aria-expanded', 'true');
+      await expect(toggleBtn).toHaveAttribute('aria-expanded', 'true');
     });
 
     // Scroll Behavior
     await test.step('Scroll to reveal more top menuitems using mouse', async () => {
-      const sidenavigation = await setup(componentsPage, { expanded: true });
+      const sidenavigation = await setup(componentsPage);
 
       // Get the scrollable container
       const scrollableSection = sidenavigation.locator('[part="scrollable-section"]');
@@ -149,8 +144,9 @@ test.describe('SideNavigation Feature Scenarios', () => {
       await expect(fixedSection).toBeVisible();
       // Get the initial scroll position
       const initialScrollTop: number = await scrollableSection.evaluate((el: HTMLElement): number => el.scrollTop);
+      // Ensure the scrollable section is in the viewport
+      await scrollableSection.scrollIntoViewIfNeeded();
       // Simulate a more natural scroll by using mouse wheel event
-      await scrollableSection.hover();
       await componentsPage.page.mouse.wheel(0, 300);
       // Wait for scroll to complete and check that the scroll position changed
       await expect(async () => {
