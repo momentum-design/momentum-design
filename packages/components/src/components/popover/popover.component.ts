@@ -162,6 +162,19 @@ class Popover extends FocusTrapMixin(Component) {
   hideOnEscape: boolean = DEFAULTS.HIDE_ON_ESCAPE;
 
   /**
+   * Propagates the event, when the escape key is pressed (only when pressed inside the popover)
+   * If true, the escape key press close the popover and will propagate the keydown event.
+   * If false, the escape key press will close the popover but will not propagate the keydown event.
+   * (set to false to prevent the event from bubbling up to the document).
+   *
+   * This only works when `hideOnEscape` is true.
+   *
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'propagate-event-on-escape' })
+  propagateEventOnEscape: boolean = DEFAULTS.PROPAGATE_EVENT_ON_ESCAPE;
+
+  /**
    * Hide popover on blur.
    * @default false
    */
@@ -443,6 +456,8 @@ class Popover extends FocusTrapMixin(Component) {
   /**
    * Handles the escape keydown event to close the popover.
    *
+   * This method is attached to the document.
+   *
    * @param event - The keyboard event.
    */
   private onEscapeKeydown = (event: KeyboardEvent) => {
@@ -450,6 +465,10 @@ class Popover extends FocusTrapMixin(Component) {
       return;
     }
 
+    if (!this.propagateEventOnEscape) {
+      // If propagateEventOnEscape is false, we don't want to allow the event to bubble up
+      event.stopPropagation();
+    }
     event.preventDefault();
     this.hidePopover();
   };
@@ -501,7 +520,8 @@ class Popover extends FocusTrapMixin(Component) {
         document.addEventListener('click', this.onOutsidePopoverClick);
       }
       if (this.hideOnEscape) {
-        document.addEventListener('keydown', this.onEscapeKeydown);
+        this.addEventListener('keydown', this.onEscapeKeydown);
+        this.triggerElement?.addEventListener('keydown', this.onEscapeKeydown);
       }
       PopoverEventManager.onShowPopover(this);
     } else {
@@ -523,7 +543,8 @@ class Popover extends FocusTrapMixin(Component) {
         document.removeEventListener('click', this.onOutsidePopoverClick);
       }
       if (this.hideOnEscape) {
-        document.removeEventListener('keydown', this.onEscapeKeydown);
+        this.removeEventListener('keydown', this.onEscapeKeydown);
+        this.triggerElement?.removeEventListener('keydown', this.onEscapeKeydown);
       }
 
       this.deactivateFocusTrap?.();

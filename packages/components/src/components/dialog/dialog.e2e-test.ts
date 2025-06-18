@@ -241,6 +241,52 @@ test('mdc-dialog', async ({ componentsPage }) => {
         await expect(closeButton).toBeFocused();
       });
 
+      await test.step('focus should remain only in the dialog when buttons are added dynamically', async () => {
+        const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, visible: false });
+        await dialog.evaluate((dialog) => {
+          dialog.toggleAttribute('visible');
+        });
+        await expect(dialog).toBeVisible();
+        const closeButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
+        await expect(closeButton).toBeFocused();
+
+        // add a new button dynamically
+        await componentsPage.page.evaluate(() => {
+          const dialog = document.querySelector('mdc-dialog');
+          const newButton = document.createElement('mdc-button');
+          newButton.textContent = 'New Button';
+          newButton.slot = 'dialog-body';
+          dialog?.appendChild(newButton);
+        });
+        // tab through the dialog to check focus
+        await componentsPage.actionability.pressTab();
+        const newButton = componentsPage.page.locator('mdc-button:has-text("New Button")');
+        await expect(newButton).toBeFocused();
+        await componentsPage.actionability.pressTab();
+        const link = componentsPage.page.locator('[slot="footer-link"]');
+        await expect(link).toBeFocused();
+        await componentsPage.actionability.pressTab();
+        const secondaryButton = componentsPage.page.locator('[slot="footer-button-secondary"]');
+        await expect(secondaryButton).toBeFocused();
+        await componentsPage.actionability.pressTab();
+        const primaryButton = componentsPage.page.locator('[slot="footer-button-primary"]');
+        await expect(primaryButton).toBeFocused();
+        await componentsPage.actionability.pressTab();
+        await expect(closeButton).toBeFocused();
+
+        // press shift tab to go back
+        await componentsPage.actionability.pressShiftTab();
+        await expect(primaryButton).toBeFocused();
+        await componentsPage.actionability.pressShiftTab();
+        await expect(secondaryButton).toBeFocused();
+        await componentsPage.actionability.pressShiftTab();
+        await expect(link).toBeFocused();
+        await componentsPage.actionability.pressShiftTab();
+        await expect(newButton).toBeFocused();
+        await componentsPage.actionability.pressShiftTab();
+        await expect(closeButton).toBeFocused();
+      });
+
       await test.step('dialog should focus on close button automatically with visible = true', async () => {
         const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, visible: true });
         await expect(dialog).toBeVisible();
