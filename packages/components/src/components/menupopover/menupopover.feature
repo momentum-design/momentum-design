@@ -27,12 +27,8 @@ Feature: MenuPopover Accessibility and User Interaction
       Given the MenuPopover is closed
       When I navigate to the trigger element using the keyboard (Tab)
       And I press "Enter" or "Space"
-      Then the MenuPopover should open and display a list of menuitems
-
-    Scenario: Focus moves to first menuitem on open
-      Given the MenuPopover is closed
-      When I open it using keyboard
-      Then focus moves to the first focusable menuitem
+      Then the MenuPopover should open and display a list
+      And focus moves to the first focusable menuitem
 
   Rule: ✅ Closing the MenuPopover
 
@@ -50,11 +46,7 @@ Feature: MenuPopover Accessibility and User Interaction
       Given the MenuPopover is open
       When I press "Escape"
       Then the MenuPopover should close
-
-    Scenario: Focus returns to trigger on close
-      Given the MenuPopover was opened using keyboard
-      When I close it using keyboard
-      Then focus returns to the trigger element
+      And focus returns to the trigger element
 
   Rule: ✅ Selecting menuitems
 

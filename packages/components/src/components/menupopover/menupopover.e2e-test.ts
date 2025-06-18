@@ -93,7 +93,7 @@ const openSubmenuWithKeyboard = async (
   await componentsPage.page.keyboard.press('ArrowDown');
   const submenuTrigger = submenuItems.nth(1);
   await expect(submenuTrigger).toBeFocused(); // trigger for submenu
-  await expect(submenuTrigger).toHaveAttribute('aria-haspopup', 'true');
+  await expect(submenuTrigger).toHaveAttribute('aria-haspopup', 'menu');
   await expect(submenuTrigger).toHaveAttribute('aria-expanded', 'false');
   await componentsPage.page.keyboard.press('ArrowRight');
   await expect(submenu).toBeVisible();
@@ -179,6 +179,7 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(menupopover).toBeVisible();
         await componentsPage.page.keyboard.press('Escape');
         await expect(menupopover).not.toBeVisible();
+        await expect(triggerElement).toBeFocused();
       });
     });
 
