@@ -52,11 +52,14 @@ Feature: Popover Component
       Then the popover should close.
 
     Scenario: Backdrop attribute with hide on outside click
-      Given a popover component with `backdrop` and `hide-on-outside-click` attributes set to `true`.
-      When the user clicks outside of the popover once.
-      Then the user can interact with rest of the contents.
-      When the user clicks outside of the popover again (for second time).
-      Then the popover should close.
+      Given two popover components with two trigger buttons mounted,
+      And the first popover component has both `backdrop` and `hide-on-outside-click` set to `true`.
+      And the first popover is opened.
+      When the user clicks on the second popover's trigger once.
+      Then the first popover should get closed.
+      And the second popover should not open.
+      When the user clicks on second popover's trigger again.
+      Then the second popover should open.
 
     Scenario: Hide on blur (focus out)
       Given the `hide-on-blur` attribute is set to `true`,

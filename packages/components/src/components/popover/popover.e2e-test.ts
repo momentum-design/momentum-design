@@ -560,6 +560,38 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       await popover.locator('mdc-button[aria-label="Close"]').click();
       await expect(popover).not.toBeVisible();
     });
+
+    await test.step('Backdrop attribute with hide on outside click', async () => {
+      await componentsPage.mount({
+        html: `
+          <div>
+            <mdc-button id="trigger-2">Trigger 2 Button</mdc-button>
+            <mdc-popover id="second-popover" triggerID="trigger-2">Second Popover Content</mdc-popover>
+            <mdc-button id="trigger-1">Trigger 1 Button</mdc-button>
+            <mdc-popover id="first-popover" triggerID="trigger-1" visible backdrop hide-on-outside-click>
+              First Popover Content
+            </mdc-popover>
+          </div>
+        `,
+        clearDocument: true,
+      });
+      const popover1 = componentsPage.page.locator('#first-popover');
+      const trigger2 = componentsPage.page.locator('#trigger-2');
+      const popover2 = componentsPage.page.locator('#second-popover');
+
+      await expect(popover1).toBeVisible();
+      const buttonBox = await trigger2.boundingBox();
+      if (buttonBox) {
+        const x = buttonBox.x + buttonBox.width / 2;
+        const y = buttonBox.y + buttonBox.height / 2;
+
+        await componentsPage.page.mouse.click(x, y);
+        await expect(trigger2).not.toBeFocused();
+      }
+      await expect(popover1).not.toBeVisible();
+      await trigger2.click();
+      await expect(popover2).toBeVisible();
+    });
   });
 
   await test.step('Accessibility', async () => {
