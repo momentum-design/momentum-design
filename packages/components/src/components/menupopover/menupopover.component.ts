@@ -119,7 +119,18 @@ class MenuPopover extends Popover {
   private handleKeyDown(event: KeyboardEvent) {
     const currentIndex = this.getCurrentIndex(event.target);
     if (currentIndex === -1) return;
-    switch (event.key) {
+    const isRtl = document.querySelector('html')?.getAttribute('dir') === 'rtl'
+     || window.getComputedStyle(this).direction === 'rtl';
+    let targetKey = event.key;
+    if (isRtl) {
+      // Swap left and right keys for RTL languages
+      if (event.key === KEYS.ARROW_LEFT) {
+        targetKey = KEYS.ARROW_RIGHT;
+      } else if (event.key === KEYS.ARROW_RIGHT) {
+        targetKey = KEYS.ARROW_LEFT;
+      }
+    }
+    switch (targetKey) {
       case KEYS.HOME: {
         // Move focus to the first menu item
         this.resetTabIndexAndSetFocus(0, currentIndex);
