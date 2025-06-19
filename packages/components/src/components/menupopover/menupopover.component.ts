@@ -110,6 +110,18 @@ class MenuPopover extends Popover {
     }
   }
 
+  override onOutsidePopoverClick = (event: MouseEvent) => {
+    if (popoverStack.peek() !== this) return;
+    let insidePopoverClick = false;
+    const path = event.composedPath();
+    insidePopoverClick = this.contains(event.target as Node) || path.includes(this.triggerElement!);
+    const clickedOnBackdrop = this.backdropElement ? path.includes(this.backdropElement) : false;
+
+    if (!insidePopoverClick || clickedOnBackdrop) {
+      this.closeAllMenuPopovers();
+    }
+  };
+
   private handleMouseClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
     if (
