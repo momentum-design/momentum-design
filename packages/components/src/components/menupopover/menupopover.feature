@@ -208,6 +208,11 @@ Feature: MenuPopover Accessibility and User Interaction
       And focus returns to the parent menuitem
       And pressing Escape again closes parent MenuPopovers upward
 
+    Scenario: Close the nested popover by clicking outside
+      Given I have navigated into a nested submenu
+      When I click anywhere outside the MenuPopover
+      Then all the MenuPopover should close at once
+
   Rule: ✅ Menuitem Types
 
     Scenario: Toggle menuitemcheckbox using mouse

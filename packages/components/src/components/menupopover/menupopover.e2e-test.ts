@@ -426,6 +426,20 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(menupopover).not.toBeVisible();
         await expect(triggerElement).toBeFocused();
       });
+
+      await test.step('Close nested submenus by clicking outside', async () => {
+        await setup({ componentsPage, html: nestedHTML });
+        await openSubmenuWithKeyboard(componentsPage, triggerElement, menupopover);
+        const securityItem = submenu.locator('#security-id');
+        await securityItem.click();
+        const nestedSubmenu = submenu.locator('mdc-menupopover[triggerid="security-id"]');
+        await expect(nestedSubmenu).toBeVisible();
+        // Click outside, all menus should close
+        await componentsPage.page.mouse.click(500, 100);
+        await expect(nestedSubmenu).not.toBeVisible();
+        await expect(submenu).not.toBeVisible();
+        await expect(menupopover).not.toBeVisible();
+      });
     });
 
     // Group: Menuitem types: checkbox and radio (with grouped navigation)

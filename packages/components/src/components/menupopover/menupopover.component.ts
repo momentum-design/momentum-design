@@ -7,7 +7,7 @@ import Popover from '../popover/popover.component';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { TAG_NAME as MENU_POPOVER } from './menupopover.constants';
 import styles from './menupopover.styles';
-import { isValidMenuItem, isValidPopover } from './menupopover.utils';
+import { isActiveMenuItem, isValidMenuItem, isValidPopover } from './menupopover.utils';
 import { popoverStack } from '../popover/popover.stack';
 
 /**
@@ -52,8 +52,7 @@ class MenuPopover extends Popover {
       },
     )
       .flat()
-      .filter((node) => !!node)
-      .filter((node) => !node.hasAttribute('disabled'));
+      .filter((node) => !!node && !node.hasAttribute('disabled'));
   }
 
   override connectedCallback() {
@@ -113,11 +112,9 @@ class MenuPopover extends Popover {
 
   private handleMouseClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
-    const role = target.getAttribute('role');
     if (
-      isValidMenuItem(target)
+      isActiveMenuItem(target) // menuitemcheckbox and menuitemradio are not supposed to close the popover
       && !isValidPopover(target.nextElementSibling)
-      && role === ROLE.MENUITEM
     ) {
       this.closeAllMenuPopovers();
     }
@@ -140,8 +137,7 @@ class MenuPopover extends Popover {
     const currentIndex = this.getCurrentIndex(event.target);
     if (currentIndex === -1) return;
 
-    const isRtl = document.querySelector('html')?.getAttribute('dir') === 'rtl'
-     || window.getComputedStyle(this).direction === 'rtl';
+    const isRtl = window.getComputedStyle(this).direction === 'rtl';
 
     const targetKey = this.resolveDirectionKey(event.key, isRtl);
 

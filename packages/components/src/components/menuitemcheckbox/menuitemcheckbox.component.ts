@@ -57,15 +57,14 @@ class MenuItemCheckbox extends MenuItem {
    */
   @property({ type: String, reflect: true }) indicator: Indicator = DEFAULTS.INDICATOR;
 
-  override connectedCallback(): void {
-    super.connectedCallback();
-    this.role = ROLE.MENUITEMCHECKBOX;
+  constructor() {
+    super();
     this.addEventListener('click', this.menuitemcheckboxHandleClick);
   }
 
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.removeEventListener('click', this.menuitemcheckboxHandleClick);
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.role = ROLE.MENUITEMCHECKBOX;
   }
 
   /**

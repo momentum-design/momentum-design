@@ -10,12 +10,15 @@ import { TAG_NAME as MENUPOPOVER_TAGNAME } from './menupopover.constants';
  */
 const isValidMenuItem = (menuItem: Element | null): boolean =>
   [MENUITEM_TAGNAME, MENUITEMCHECKBOX_TAGNAME, MENUITEMRADIO_TAGNAME]
-    .includes(menuItem?.tagName?.toLowerCase() as typeof MENUITEM_TAGNAME);
+    .includes(menuItem?.tagName?.toLowerCase?.() as typeof MENUITEM_TAGNAME);
 
 const isValidPopover = (menuItem: Element | null): boolean =>
   menuItem?.tagName?.toLowerCase() === MENUPOPOVER_TAGNAME;
 
+const isActiveMenuItem = (menuItem: Element | null): boolean => menuItem?.tagName?.toLowerCase?.() === MENUITEM_TAGNAME
+ && !menuItem.hasAttribute('disabled');
 export {
   isValidMenuItem,
   isValidPopover,
+  isActiveMenuItem,
 };

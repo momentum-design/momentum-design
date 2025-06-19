@@ -440,7 +440,7 @@ class Popover extends FocusTrapMixin(Component) {
    *
    * @param event - The mouse event.
    */
-  private onOutsidePopoverClick = (event: MouseEvent) => {
+  protected onOutsidePopoverClick = (event: MouseEvent) => {
     if (popoverStack.peek() !== this) return;
 
     let insidePopoverClick = false;

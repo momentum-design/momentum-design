@@ -21,7 +21,7 @@ const createPopover = (triggerId: string) => html`
       <mdc-menuitem label="Messages" id="message-id" arrow-position='trailing'></mdc-menuitem>
       <mdc-menupopover triggerid="message-id">
         <mdc-menuitem label="Send Message"></mdc-menuitem>
-        <mdc-menuitem label="Send Email"></mdc-menuitem>
+        <mdc-menuitem label="Send Email" disabled></mdc-menuitem>
       </mdc-menupopover>
       <mdc-menuitem label="Notes"></mdc-menuitem>
       <mdc-menuitem label="Freeform"></mdc-menuitem>

@@ -41,22 +41,20 @@ class MenuItemRadio extends MenuItem {
    */
   @property({ type: String, reflect: true }) name = '';
 
-  override connectedCallback(): void {
-    super.connectedCallback();
-    this.role = ROLE.MENUITEMRADIO;
+  constructor() {
+    super();
     this.addEventListener('click', this.menuitemradioHandleClick);
   }
 
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.removeEventListener('click', this.menuitemradioHandleClick);
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.role = ROLE.MENUITEMRADIO;
   }
 
   /**
    * Handles click events to set checked state and uncheck siblings in the same group and container.
-   * If the menuitemradio is disabled or already checked, it does nothing.
    * If the menuitemradio is not checked, it sets its aria-checked state to `true`
-   * and sets all other sibling menuitemradio elements' aria-checked state to `false`.
+   * and sets all other menuitemradio elements of the same group with aria-checked state to `false`.
    */
   private menuitemradioHandleClick = () => {
     if (this.disabled || this.ariaChecked === ARIA_CHECKED_STATES.TRUE) return;
@@ -66,7 +64,7 @@ class MenuItemRadio extends MenuItem {
       const radios = Array.from(container.querySelectorAll(this.tagName)) as MenuItemRadio[];
       radios.forEach((item) => {
         const radio = item;
-        if (radio !== this && radio.name === this.name && !radio.disabled) {
+        if (radio.name === this.name) {
           radio.ariaChecked = ARIA_CHECKED_STATES.FALSE;
         }
       });
