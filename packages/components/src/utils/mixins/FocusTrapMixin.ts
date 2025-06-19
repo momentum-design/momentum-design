@@ -1,19 +1,88 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable max-classes-per-file */
 import { property } from 'lit/decorators.js';
-import type { PropertyValues } from 'lit';
 import type { Component } from '../../models';
 import type { Constructor } from './index.types';
 
+/**
+ * FocusTrapStack manages a stack of active focus traps,
+ * ensuring only one focus trap is active at a time.
+ *
+ * This also makes sure there is only one keydown listener active at a time,
+ * which is necessary to handle focus trapping correctly.
+ */
+class FocusTrapStack {
+  private static stack: Set<any> = new Set();
+
+  static get stackArray() {
+    return Array.from(this.stack);
+  }
+
+  private static currentKeydownListener: ((event: KeyboardEvent) => void) | null = null;
+
+  private static addKeydownListener(keydownListener: (event: KeyboardEvent) => void) {
+    this.currentKeydownListener = keydownListener;
+    document.addEventListener('keydown', keydownListener);
+  }
+
+  private static removeKeydownListener() {
+    if (this.currentKeydownListener) {
+      document.removeEventListener('keydown', this.currentKeydownListener);
+    }
+  }
+
+  /**
+   * Activates a focus trap by adding it to the stack.
+   * It deactivates all other traps in the stack to ensure only one trap is active
+   *
+   * @param trap - The focus trap to activate.
+   */
+  static activate(trap: any) {
+    // Deactivate all other traps
+    this.stackArray.forEach((activeTrap) => {
+      if (activeTrap !== trap) {
+        activeTrap.setIsFocusTrapActivated(false);
+      }
+    });
+    this.stack.add(trap);
+
+    // remove the current keydown listener if it exists
+    // and add a new one for the current trap
+    this.removeKeydownListener();
+    this.addKeydownListener(trap.handleTabKeydown.bind(trap));
+  }
+
+  /**
+   * Deactivates a focus trap by removing it from the stack.
+   * Activates the previous trap in the stack if any.
+   *
+   * @param trap - The focus trap to deactivate.
+   */
+  static deactivate(trap: any) {
+    this.stack.delete(trap);
+    this.removeKeydownListener();
+
+    // activate the previous trap in the stack if any
+    if (this.stack.size > 0) {
+      const lastTrap = this.stackArray.pop();
+      if (lastTrap) {
+        lastTrap.setIsFocusTrapActivated(true);
+        this.addKeydownListener(lastTrap.handleTabKeydown.bind(lastTrap));
+      }
+    }
+  }
+}
+
 export declare abstract class FocusTrapClassInterface {
   protected abstract focusTrap: boolean;
-
-  enabledPreventScroll: boolean;
 
   setInitialFocus(elementIndexToReceiveFocus?: number): void;
 
   activateFocusTrap(): void;
 
   deactivateFocusTrap(): void;
+
+  private setIsFocusTrapActivated(isActivated: boolean): void;
 }
 
 export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) => {
@@ -22,7 +91,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      * Determines whether the focus trap is enabled.
      * If true, focus will be restricted to the content within this component.
      *
-     * @default false
+     * IMPLEMENT THIS IN YOUR COMPONENT.
      */
     protected abstract focusTrap: boolean;
 
@@ -36,13 +105,6 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
     @property({ type: Boolean, reflect: true, attribute: 'should-focus-trap-wrap' })
     shouldFocusTrapWrap: boolean = true;
 
-    /**
-     * Prevent outside scrolling when element is shown.
-     * @default false
-     */
-    @property({ type: Boolean })
-    enabledPreventScroll: boolean = false;
-
     /** @internal */
     private focusTrapIndex: number = -1;
 
@@ -52,46 +114,26 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
     /** @internal */
     private isFocusTrapActivated: boolean = false;
 
-    override connectedCallback() {
-      super.connectedCallback();
-
-      document.addEventListener('keydown', this.handleTabKeydown.bind(this));
-    }
-
-    override disconnectedCallback() {
-      super.disconnectedCallback();
-
-      document.removeEventListener('keydown', this.handleTabKeydown.bind(this));
-    }
-
-    protected override async updated(changedProperties: PropertyValues) {
-      super.updated(changedProperties);
-
-      if (changedProperties.has('focusTrap')) {
-        if (!this.focusTrap) {
-          this.deactivateFocusTrap();
-        }
-      }
+    private setIsFocusTrapActivated(isActivated: boolean) {
+      this.isFocusTrapActivated = isActivated;
     }
 
     /**
      * Activate the focus trap
-     * This calculates the focusable elements within the component's shadow root
      */
     public activateFocusTrap() {
-      this.isFocusTrapActivated = !!this.focusTrap;
+      this.setIsFocusTrapActivated(true);
+      FocusTrapStack.activate(this);
     }
 
     /**
      * Deactivate the focus trap.
      */
     public deactivateFocusTrap() {
-      this.isFocusTrapActivated = false;
-      this.focusTrapIndex = -1;
+      this.setIsFocusTrapActivated(false);
+      FocusTrapStack.deactivate(this);
 
-      this.enabledPreventScroll = false;
-      // todo: this should not override the body overflow style, but reset it instead
-      document.body.style.overflow = '';
+      this.focusTrapIndex = -1;
     }
 
     /**
@@ -285,10 +327,6 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
         return;
       }
 
-      if (this.enabledPreventScroll) {
-        document.body.style.overflow = 'hidden';
-      }
-
       if (this.focusableElements[elementIndexToReceiveFocus]) {
         this.focusTrapIndex = elementIndexToReceiveFocus;
         this.focusableElements[elementIndexToReceiveFocus].focus();
@@ -393,6 +431,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      *
      * @param event - The keyboard event.
      */
+    // @ts-ignore - this is a method which will be called in the stack
     private handleTabKeydown(event: KeyboardEvent) {
       if (!this.isFocusTrapActivated) {
         return;
@@ -405,5 +444,5 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
     }
   }
 
-  return FocusTrap as unknown as Constructor<HTMLElement & FocusTrapClassInterface> & T;
+  return FocusTrap as unknown as Constructor<Component & FocusTrapClassInterface> & T;
 };

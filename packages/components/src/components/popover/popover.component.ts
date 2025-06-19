@@ -4,6 +4,7 @@ import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Component } from '../../models';
 import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
+import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
 import { ValueOf } from '../../utils/types';
 import { COLOR, DEFAULTS, POPOVER_PLACEMENT, TRIGGER } from './popover.constants';
 import { PopoverEventManager } from './popover.events';
@@ -42,7 +43,7 @@ import { PopoverUtils } from './popover.utils';
  * @slot - Default slot for the popover content
  *
  */
-class Popover extends FocusTrapMixin(Component) {
+class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   /**
    * The unique ID of the popover.
    */
@@ -120,7 +121,7 @@ class Popover extends FocusTrapMixin(Component) {
   focusTrap: boolean = DEFAULTS.FOCUS_TRAP;
 
   /**
-   * Prevent outside scrolling when popover show.
+   * Prevent outside scrolling when popover is shown.
    * @default false
    */
   @property({ type: Boolean, reflect: true, attribute: 'prevent-scroll' })
@@ -313,7 +314,16 @@ class Popover extends FocusTrapMixin(Component) {
 
     if (this.visible) {
       this.positionPopover();
-      await this.handleCreatePopoverFirstUpdate();
+
+      this.activatePreventScroll();
+
+      // If the popover is visible on first update, we need to activate the focus trap
+      if (this.interactive) {
+        // Wait for the first update to complete before setting focusable elements
+        await this.updateComplete;
+        this.activateFocusTrap?.();
+        this.setInitialFocus?.();
+      }
     }
   }
 
@@ -321,6 +331,8 @@ class Popover extends FocusTrapMixin(Component) {
     super.disconnectedCallback();
     this.removeEventListeners();
     this.deactivateFocusTrap?.();
+    this.deactivatePreventScroll();
+
     PopoverEventManager.onDestroyedPopover(this);
     popoverStack.remove(this);
   }
@@ -433,6 +445,22 @@ class Popover extends FocusTrapMixin(Component) {
     if (changedProperties.has('interactive') || changedProperties.has('disableAriaHasPopup')) {
       this.utils.updateAriaHasPopupAttribute();
     }
+
+    if (changedProperties.has('focusTrap')) {
+      // if focusTrap turned false and the popover is visible, deactivate the focus trap
+      if (!this.focusTrap && this.visible) {
+        this.deactivateFocusTrap();
+      }
+    }
+
+    if (changedProperties.has('preventScroll')) {
+      // if preventScroll turned false and the popover is visible, deactivate the prevent scroll
+      if (!this.preventScroll && this.visible) {
+        this.deactivatePreventScroll();
+      } else if (this.preventScroll && this.visible) {
+        this.activatePreventScroll();
+      }
+    }
   }
 
   /**
@@ -500,7 +528,6 @@ class Popover extends FocusTrapMixin(Component) {
       if (popoverStack.peek() !== this) {
         popoverStack.push(this);
       }
-      this.enabledPreventScroll = this.preventScroll;
 
       if (this.backdrop) {
         this.utils.createBackdrop();
@@ -508,7 +535,6 @@ class Popover extends FocusTrapMixin(Component) {
       }
 
       this.positionPopover();
-      await this.handleCreatePopoverFirstUpdate();
 
       if (this.hideOnBlur) {
         this.addEventListener('focusout', this.onPopoverFocusOut);
@@ -523,6 +549,16 @@ class Popover extends FocusTrapMixin(Component) {
         this.addEventListener('keydown', this.onEscapeKeydown);
         this.triggerElement?.addEventListener('keydown', this.onEscapeKeydown);
       }
+
+      this.activatePreventScroll();
+
+      if (this.interactive) {
+        // Wait for the update to complete before setting focusable elements
+        await this.updateComplete;
+        this.activateFocusTrap?.();
+        this.setInitialFocus?.();
+      }
+
       PopoverEventManager.onShowPopover(this);
     } else {
       if (popoverStack.peek() === this) {
@@ -547,7 +583,6 @@ class Popover extends FocusTrapMixin(Component) {
         this.triggerElement?.removeEventListener('keydown', this.onEscapeKeydown);
       }
 
-      this.deactivateFocusTrap?.();
       if (!this.disableAriaExpanded) {
         this.triggerElement.removeAttribute('aria-expanded');
       }
@@ -555,6 +590,10 @@ class Popover extends FocusTrapMixin(Component) {
       if (!this.interactive) {
         this.triggerElement.removeAttribute('aria-haspopup');
       }
+
+      this.deactivatePreventScroll();
+      this.deactivateFocusTrap?.();
+
       if (this.focusBackToTrigger) {
         this.triggerElement?.focus();
       }
@@ -620,18 +659,6 @@ class Popover extends FocusTrapMixin(Component) {
       this.isTriggerClicked = true;
     }
   };
-
-  /**
-   * Sets the focusable elements inside the popover.
-   */
-  private async handleCreatePopoverFirstUpdate() {
-    if (this.visible && this.interactive) {
-      // Wait for the first update to complete before setting focusable elements
-      await this.updateComplete;
-      this.activateFocusTrap?.();
-      this.setInitialFocus?.();
-    }
-  }
 
   /**
    * Positions the popover based on the trigger element.
