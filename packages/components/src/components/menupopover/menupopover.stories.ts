@@ -7,7 +7,6 @@ import '../button';
 import '../buttongroup';
 import '../divider';
 import '../icon';
-import '../menubar';
 import '../menuitem';
 
 const createPopover = (triggerId: string) => html`
@@ -32,10 +31,8 @@ const createPopover = (triggerId: string) => html`
 `;
 
 const render = () => html`
-  <mdc-menubar>
-    <mdc-menuitem id="menu-button-trigger" label="File"></mdc-menuitem>
+    <mdc-menuitem id="menu-button-trigger" label="File menu item"></mdc-menuitem>
     ${createPopover('menu-button-trigger')}
-  </mdc-menubar>
 `;
 
 const meta: Meta = {
