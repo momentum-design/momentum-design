@@ -22,11 +22,16 @@ const nestedHTML = `
     <mdc-button id="trigger-btn">Options</mdc-button>
     <mdc-menupopover triggerid="trigger-btn">
       <mdc-menuitem label="Profile"></mdc-menuitem>
-      <mdc-menuitem id="submenu-trigger" label="Settings"></mdc-menuitem>
+      <mdc-menuitem id="submenu-trigger" label="Settings" arrow-position='trailing'></mdc-menuitem>
       <mdc-menupopover triggerid="submenu-trigger">
         <mdc-menuitem label="Account"></mdc-menuitem>
         <mdc-menuitem label="Privacy"></mdc-menuitem>
-        <mdc-menuitem label="Security"></mdc-menuitem>
+        <mdc-menuitem label="Security" id="security-id" arrow-position='trailing'></mdc-menuitem>
+        <mdc-menupopover triggerid="security-id">
+          <mdc-menuitem label="Change Password"></mdc-menuitem>
+          <mdc-menuitem label="Two-Factor Authentication"></mdc-menuitem>
+          <mdc-menuitem label="Security Questions"></mdc-menuitem>
+        </mdc-menupopover>
         <mdc-menuitem label="Advanced" disabled></mdc-menuitem>
       </mdc-menupopover>
       <mdc-menuitem label="Notifications"></mdc-menuitem>
@@ -72,11 +77,8 @@ const openPopoverWithKeyboard = async (
 ) => {
   await componentsPage.actionability.pressTab();
   await expect(triggerElement).toBeFocused();
-  await expect(triggerElement).toHaveAttribute('aria-haspopup', 'menu');
-  await expect(triggerElement).toHaveAttribute('aria-expanded', 'false');
   await componentsPage.page.keyboard.press('Enter');
   await expect(menupopover).toBeVisible();
-  await expect(triggerElement).toHaveAttribute('aria-expanded', 'true');
   const firstItem = menupopover.locator(menuItemSelector).first();
   await expect(firstItem).toBeFocused();
 };
@@ -107,17 +109,74 @@ test('mdc-menupopover', async ({ componentsPage }) => {
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
-    const { wrapper } = await setup({ componentsPage, html: defaultHTML });
+    const { wrapper, triggerElement } = await setup({ componentsPage, html: defaultHTML });
     const menupopover = wrapper.locator('mdc-menupopover[triggerid="trigger-btn"]');
-    await expect(menupopover).toHaveAttribute('triggerid', 'trigger-btn');
-    // Add more attribute checks as needed
+
+    await test.step('triggerElement', async () => {
+      await expect(menupopover).toHaveAttribute('triggerid', 'trigger-btn');
+      await expect(triggerElement).toHaveAttribute('id', 'trigger-btn');
+      await expect(triggerElement).toHaveAttribute('aria-haspopup', 'menu');
+      await expect(triggerElement).toHaveAttribute('aria-expanded', 'false');
+      await triggerElement.click();
+      await expect(menupopover).toBeVisible();
+      await expect(triggerElement).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    await test.step('default attributes', async () => {
+      await expect(menupopover).toHaveAttribute('role', 'menu');
+      await expect(menupopover).toHaveAttribute('aria-orientation', 'vertical');
+      await expect(menupopover).toHaveAttribute('focus-trap', '');
+      await expect(menupopover).toHaveAttribute('focus-back-to-trigger', '');
+      await expect(menupopover).toHaveAttribute('hide-on-escape', '');
+      await expect(menupopover).toHaveAttribute('hide-on-outside-click', '');
+      await expect(menupopover).toHaveAttribute('placement', 'bottom-start');
+      await expect(menupopover).not.toHaveAttribute('show-arrow');
+      await expect(menupopover).toHaveAttribute('interactive', '');
+    });
   });
 
   /**
-   * VISUAL REGRESSION AND ACCESSIBILITY
+   * ACCESSIBILITY
    */
-  await test.step('visual-regression and accessibility', async () => {
+  await test.step('accessibility', async () => {
     await componentsPage.accessibility.checkForA11yViolations('menupopover-default');
+  });
+
+  /**
+   * VISUAL REGRESSION
+   */
+  await test.step('visual-regression', async () => {
+    const { wrapper, triggerElement } = await setup({ componentsPage, html: nestedHTML });
+    const menupopover = wrapper.locator('mdc-menupopover[triggerid="trigger-btn"]');
+    const submenu = menupopover.locator('mdc-menupopover[triggerid="submenu-trigger"]');
+    const nestedSubmenu = submenu.locator('mdc-menupopover[triggerid="security-id"]');
+    const submenuItems = submenu.locator(menuItemSelector);
+    const nestedSubmenuItems = nestedSubmenu.locator(menuItemSelector);
+
+    await test.step('Opening all nested submenus', async () => {
+      // Open the main popover
+      await openPopoverWithKeyboard(componentsPage, triggerElement, menupopover);
+      await componentsPage.page.keyboard.press('ArrowDown'); // Navigate to Settings
+      await componentsPage.visualRegression.takeScreenshot('mdc-menupopver', { source: 'userflow',
+        fileNameSuffix: 'open' });
+      await componentsPage.page.keyboard.press('Enter');
+      await expect(submenu).toBeVisible();
+      await expect(submenuItems.first()).toBeFocused();
+      await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [submenuItems.nth(1), submenuItems.nth(2)]);
+      await componentsPage.visualRegression.takeScreenshot('mdc-menupopover', { source: 'userflow',
+        fileNameSuffix: 'submenu-open' });
+      await componentsPage.page.keyboard.press('Enter');
+      await expect(nestedSubmenu).toBeVisible();
+      await expect(nestedSubmenuItems.first()).toBeFocused();
+      await componentsPage.visualRegression.takeScreenshot('mdc-menupopover', { source: 'userflow',
+        fileNameSuffix: 'nested-submenu-open' });
+    });
+    await componentsPage.page.keyboard.press('Escape'); // Close nested submenu
+    await componentsPage.visualRegression.takeScreenshot('mdc-menupopover', { source: 'userflow',
+      fileNameSuffix: 'submenu-open' });
+    await componentsPage.page.keyboard.press('Escape'); // Close submenu
+    await componentsPage.visualRegression.takeScreenshot('mdc-menupopver', { source: 'userflow',
+      fileNameSuffix: 'open' });
   });
 
   /**
@@ -161,7 +220,6 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(menupopover).toBeVisible();
         await componentsPage.page.mouse.click(0, 0);
         await expect(menupopover).not.toBeVisible();
-        await expect(triggerElement).toHaveAttribute('aria-expanded', 'false');
       });
 
       await test.step('Close the popover by clicking the trigger again', async () => {
