@@ -104,6 +104,7 @@ const openSubmenuWithKeyboard = async (
   await expect(firstSubItem).toBeFocused();
 };
 
+test.use({ viewport: { width: 600, height: 400 } });
 test('mdc-menupopover', async ({ componentsPage }) => {
   /**
    * ATTRIBUTES
@@ -157,26 +158,21 @@ test('mdc-menupopover', async ({ componentsPage }) => {
       // Open the main popover
       await openPopoverWithKeyboard(componentsPage, triggerElement, menupopover);
       await componentsPage.page.keyboard.press('ArrowDown'); // Navigate to Settings
-      await componentsPage.visualRegression.takeScreenshot('mdc-menupopver', { source: 'userflow',
-        fileNameSuffix: 'open' });
+      await componentsPage.visualRegression.takeScreenshot('mdc-menupopver-open');
       await componentsPage.page.keyboard.press('Enter');
       await expect(submenu).toBeVisible();
       await expect(submenuItems.first()).toBeFocused();
       await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [submenuItems.nth(1), submenuItems.nth(2)]);
-      await componentsPage.visualRegression.takeScreenshot('mdc-menupopover', { source: 'userflow',
-        fileNameSuffix: 'submenu-open' });
+      await componentsPage.visualRegression.takeScreenshot('mdc-menupopover-submenu-open');
       await componentsPage.page.keyboard.press('Enter');
       await expect(nestedSubmenu).toBeVisible();
       await expect(nestedSubmenuItems.first()).toBeFocused();
-      await componentsPage.visualRegression.takeScreenshot('mdc-menupopover', { source: 'userflow',
-        fileNameSuffix: 'nested-submenu-open' });
+      await componentsPage.visualRegression.takeScreenshot('mdc-menupopover-nested-submenu-open');
     });
     await componentsPage.page.keyboard.press('Escape'); // Close nested submenu
-    await componentsPage.visualRegression.takeScreenshot('mdc-menupopover', { source: 'userflow',
-      fileNameSuffix: 'submenu-open' });
+    await componentsPage.visualRegression.takeScreenshot('mdc-menupopover-submenu-open');
     await componentsPage.page.keyboard.press('Escape'); // Close submenu
-    await componentsPage.visualRegression.takeScreenshot('mdc-menupopver', { source: 'userflow',
-      fileNameSuffix: 'open' });
+    await componentsPage.visualRegression.takeScreenshot('mdc-menupopver-open');
   });
 
   /**
