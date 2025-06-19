@@ -4,8 +4,9 @@ import { property } from 'lit/decorators.js';
 import { ROLE } from '../../utils/roles';
 import MenuItem from '../menuitem/menuitem.component';
 import { TYPE } from '../text/text.constants';
-import { ARIA_CHECKED_STATES } from '../menusection/menusection.constants';
+import { ARIA_CHECKED_STATES, TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
 import type { AriaCheckedStates } from '../menusection/menusection.types';
+import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
 
 /**
  * A menuitemradio component is a checkable menuitem that is used in a menu.
@@ -58,17 +59,11 @@ class MenuItemRadio extends MenuItem {
    * and sets all other sibling menuitemradio elements' aria-checked state to `false`.
    */
   private menuitemradioHandleClick = () => {
-    if (this.disabled) return;
-    if (this.ariaChecked === ARIA_CHECKED_STATES.TRUE) return;
+    if (this.disabled || this.ariaChecked === ARIA_CHECKED_STATES.TRUE) return;
     // Find the closest menu container (menupopover or menusection)
-    let container = this.parentElement;
-    while (container
-      && container.tagName !== 'MDC-MENUSECTION'
-      && container.tagName !== 'MDC-MENUPOPOVER') {
-      container = container.parentElement;
-    }
+    const container = this.closest(`${MENUSECTION_TAGNAME}, ${MENUPOPOVER_TAGNAME}`);
     if (container) {
-      const radios = Array.from(container.querySelectorAll('mdc-menuitemradio')) as MenuItemRadio[];
+      const radios = Array.from(container.querySelectorAll(this.tagName)) as MenuItemRadio[];
       radios.forEach((item) => {
         const radio = item;
         if (radio !== this && radio.name === this.name && !radio.disabled) {
