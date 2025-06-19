@@ -74,8 +74,10 @@ class MenuPopover extends Popover {
     await super.firstUpdated(changedProperties);
 
     // Reset all tabindex to -1 and set the tabindex of the first menu item to 0
-    this.menuItems.forEach((menuitem) => menuitem.setAttribute('tabindex', '-1'));
-    this.menuItems[0].setAttribute('tabindex', '0');
+    if (this.menuItems.length > 0) {
+      this.menuItems.forEach((menuitem) => menuitem.setAttribute('tabindex', '-1'));
+      this.menuItems[0].setAttribute('tabindex', '0');
+    }
 
     this.triggerElement?.setAttribute('aria-haspopup', ROLE.MENU);
     if (this.parentElement?.tagName?.toLowerCase() === MENU_POPOVER) {
@@ -121,20 +123,28 @@ class MenuPopover extends Popover {
     }
   }
 
+  private resolveDirectionKey(key: string, isRtl: boolean) {
+    if (!isRtl) return key;
+
+    switch (key) {
+      case KEYS.ARROW_LEFT:
+        return KEYS.ARROW_RIGHT;
+      case KEYS.ARROW_RIGHT:
+        return KEYS.ARROW_LEFT;
+      default:
+        return key;
+    }
+  }
+
   private handleKeyDown(event: KeyboardEvent) {
     const currentIndex = this.getCurrentIndex(event.target);
     if (currentIndex === -1) return;
+
     const isRtl = document.querySelector('html')?.getAttribute('dir') === 'rtl'
      || window.getComputedStyle(this).direction === 'rtl';
-    let targetKey = event.key;
-    if (isRtl) {
-      // Swap left and right keys for RTL languages
-      if (event.key === KEYS.ARROW_LEFT) {
-        targetKey = KEYS.ARROW_RIGHT;
-      } else if (event.key === KEYS.ARROW_RIGHT) {
-        targetKey = KEYS.ARROW_LEFT;
-      }
-    }
+
+    const targetKey = this.resolveDirectionKey(event.key, isRtl);
+
     switch (targetKey) {
       case KEYS.HOME: {
         // Move focus to the first menu item
@@ -142,7 +152,7 @@ class MenuPopover extends Popover {
         break;
       }
       case KEYS.END: {
-        // Move focus to the first menu item
+        // Move focus to the last menu item
         this.resetTabIndexAndSetFocus(this.menuItems.length - 1, currentIndex);
         break;
       }
