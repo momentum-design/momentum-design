@@ -142,7 +142,10 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   closeButton: boolean = DEFAULTS.CLOSE_BUTTON;
 
   /**
-   * Determines whether the popover is interactive。
+   * Determines whether the popover is interactive.
+   * Make sure to set focusTrap to true to keep the focus inside the popover in case necessary.
+   * Setting interactive to true will not automatically set focusTrap!
+   *
    * @default false
    */
   @property({ type: Boolean, reflect: true })
@@ -317,8 +320,8 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
 
       this.activatePreventScroll();
 
-      // If the popover is visible on first update, we need to activate the focus trap
-      if (this.interactive) {
+      // If the popover is visible on first update and focustrap is enabled, we need to activate the focus trap
+      if (this.interactive && this.focusTrap) {
         // Wait for the first update to complete before setting focusable elements
         await this.updateComplete;
         this.activateFocusTrap?.();
@@ -552,7 +555,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
 
       this.activatePreventScroll();
 
-      if (this.interactive) {
+      if (this.interactive && this.focusTrap) {
         // Wait for the update to complete before setting focusable elements
         await this.updateComplete;
         this.activateFocusTrap?.();

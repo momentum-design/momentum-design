@@ -329,7 +329,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
 
       if (this.focusableElements[elementIndexToReceiveFocus]) {
         this.focusTrapIndex = elementIndexToReceiveFocus;
-        this.focusableElements[elementIndexToReceiveFocus].focus();
+        this.focusableElements[elementIndexToReceiveFocus].focus({ preventScroll: true });
       }
     }
 
@@ -422,7 +422,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
 
       const nextElement = this.focusableElements[this.focusTrapIndex];
       if (nextElement) {
-        nextElement.focus();
+        nextElement.focus({ preventScroll: true });
       }
     }
 
