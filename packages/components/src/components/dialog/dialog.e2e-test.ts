@@ -1,6 +1,7 @@
 import { expect } from '@playwright/test';
 import { test, ComponentsPage } from '../../../config/playwright/setup';
 import { DEFAULTS } from './dialog.constants';
+import type Dialog from './dialog.component';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -59,6 +60,20 @@ const setup = async (args: SetupOptions) => {
   await componentsPage.page.locator('div#wrapper').waitFor();
   const dialog = componentsPage.page.locator(`#${restArgs.id}`);
   const triggerButton = componentsPage.page.locator(`#${restArgs.triggerId}`);
+
+  // add event listener to dialog for close event
+  // this is to ensure that the dialog closes when the close button is clicked
+  // since the dialog is a controlled component, the consumer needs to handle the close event
+  // and set the visible attribute to false
+  await componentsPage.page.evaluate((dialogId) => {
+    const dialogElement = document.querySelector(`#${dialogId}`) as Dialog;
+    if (dialogElement) {
+      dialogElement.onclose = () => {
+        dialogElement.visible = false;
+      };
+    }
+  }, restArgs.id);
+
   return { dialog, triggerButton };
 };
 
@@ -207,16 +222,20 @@ test('mdc-dialog', async ({ componentsPage }) => {
         await expect(closeButton).not.toBeFocused();
         await componentsPage.actionability.pressShiftTab();
         await expect(closeButton).toBeFocused();
+
         await componentsPage.page.keyboard.press('Enter');
+
         await expect(dialog).not.toBeVisible();
       });
 
-      await test.step('dialog should close on escape keydown', async () => {
+      await test.step('dialog should close on escape keydown and fire onClose event', async () => {
         await dialog.evaluate((dialog) => {
           dialog.toggleAttribute('visible');
         });
         await expect(dialog).toBeVisible();
+
         await componentsPage.page.keyboard.press('Escape');
+
         await expect(dialog).not.toBeVisible();
       });
 

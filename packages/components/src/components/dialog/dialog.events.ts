@@ -7,12 +7,12 @@ export class DialogEventManager {
    * @param eventName - The name of the event.
    * @param instance - The dialog instance.
    */
-  static dispatchDialogEvent(eventName: string, instance: Dialog) {
+  static dispatchDialogEvent(eventName: string, instance: Dialog, bubbles = true) {
     instance.dispatchEvent(
       new CustomEvent(eventName, {
         detail: { show: instance.visible },
         composed: true,
-        bubbles: true,
+        bubbles,
       }),
     );
   }
@@ -33,6 +33,17 @@ export class DialogEventManager {
    */
   static onHideDialog(instance: Dialog) {
     this.dispatchDialogEvent('hidden', instance);
+  }
+
+  /**
+   * Custom event that is fired when the dialog is closed.
+   * This gets fired when the Close Button is clicked or
+   * when Escape key is pressed.
+   *
+   * @param instance - The dialog instance.
+   */
+  static onCloseDialog(instance: Dialog, bubbles = true) {
+    this.dispatchDialogEvent('close', instance, bubbles);
   }
 
   /**

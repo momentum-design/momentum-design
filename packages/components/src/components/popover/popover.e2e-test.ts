@@ -4,6 +4,7 @@ import { expect } from '@playwright/test';
 import { test, ComponentsPage } from '../../../config/playwright/setup';
 import type { PopoverPlacement, PopoverTrigger, PopoverColor } from './popover.types';
 import { DEFAULTS, POPOVER_PLACEMENT, TRIGGER, COLOR } from './popover.constants';
+import type Dialog from '../dialog/dialog.component';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -525,6 +526,19 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
 
         const dialog = componentsPage.page.locator('#test-dialog');
         const popover = componentsPage.page.locator('#popover');
+
+        // add event listener to dialog for close event
+        // this is to ensure that the dialog closes when the close button is clicked
+        // since the dialog is a controlled component, the consumer needs to handle the close event
+        // and set the visible attribute to false
+        await componentsPage.page.evaluate((dialogId) => {
+          const dialogElement = document.querySelector(`#${dialogId}`) as Dialog;
+          if (dialogElement) {
+            dialogElement.onclose = () => {
+              dialogElement.visible = false;
+            };
+          }
+        }, 'test-dialog');
 
         // Ensure dialog and popover are visible
         await expect(dialog).toBeVisible();
