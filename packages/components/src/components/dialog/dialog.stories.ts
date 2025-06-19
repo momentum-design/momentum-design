@@ -11,7 +11,7 @@ import '../button';
 import '../popover';
 import '../tooltip';
 
-const createDialog = (args: Args, content: TemplateResult) => html`<mdc-dialog
+const createDialog = (args: Args, content: TemplateResult, onClose: () => void) => html`<mdc-dialog
   class="${args.class}"
   style="${args.style}"
   id="${args.id}"
@@ -31,6 +31,7 @@ const createDialog = (args: Args, content: TemplateResult) => html`<mdc-dialog
   variant="${args.variant}"
   @shown="${action('onshown')}"
   @hidden="${action('onhidden')}"
+  @close="${onClose}"
 >
   ${content}
 </mdc-dialog>`;
@@ -95,9 +96,15 @@ const render = (args: Args) => {
     const dialog = document.getElementById(args.id) as HTMLElement;
     dialog.toggleAttribute('visible');
   };
+
+  const onClose = () => {
+    const dialog = document.getElementById(args.id) as HTMLElement;
+    dialog.removeAttribute('visible');
+  };
+
   return html`
     ${createTrigger(args.triggerId, 'Click me!', toggleVisibility)}
-    ${createDialog(args, dialogBodyContent(toggleVisibility))}
+    ${createDialog(args, dialogBodyContent(toggleVisibility), onClose)}
   `;
 };
 
@@ -106,9 +113,15 @@ const renderWithCustomHeader = (args: Args) => {
     const dialog = document.getElementById(args.id) as HTMLElement;
     dialog.toggleAttribute('visible');
   };
+
+  const onClose = () => {
+    const dialog = document.getElementById(args.id) as HTMLElement;
+    dialog.removeAttribute('visible');
+  };
+
   return html`
     ${createTrigger(args.triggerId, 'Click me!', toggleVisibility)}
-    ${createDialog(args, dialogBodyContent(toggleVisibility, true))}
+    ${createDialog(args, dialogBodyContent(toggleVisibility, true), onClose)}
   `;
 };
 
@@ -117,6 +130,11 @@ const renderSaveCancelBtns = (args: Args) => {
     const dialog = document.getElementById(args.id) as HTMLElement;
     dialog.toggleAttribute('visible');
   };
+  const onClose = () => {
+    const dialog = document.getElementById(args.id) as HTMLElement;
+    dialog.removeAttribute('visible');
+  };
+
   const showConfirmAlert = () => {
     // eslint-disable-next-line no-alert
     if (window.confirm('Are you sure you want to cancel?')) {
@@ -131,7 +149,7 @@ const renderSaveCancelBtns = (args: Args) => {
       </div>
       <mdc-button slot="footer-button-secondary" @click="${showConfirmAlert}">Cancel</mdc-button>
       <mdc-button slot="footer-button-primary" @click="${toggleVisibility}">Save</mdc-button>
-    `)}
+    `, onClose)}
   `;
 };
 
@@ -140,12 +158,17 @@ const renderNoFooter = (args: Args) => {
     const dialog = document.getElementById(args.id) as HTMLElement;
     dialog.toggleAttribute('visible');
   };
+  const onClose = () => {
+    const dialog = document.getElementById(args.id) as HTMLElement;
+    dialog.removeAttribute('visible');
+  };
+
   return html`
     ${createTrigger(args.triggerId, 'Click me!', toggleVisibility)}
     ${createDialog(args, html`
       <div slot="dialog-body">
         <p>This is the body content of the dialog.</p>
-      </div>`)}
+      </div>`, onClose)}
   `;
 };
 
@@ -154,9 +177,13 @@ const renderWithPopover = (args: Args) => {
     const dialog = document.getElementById(args.id) as HTMLElement;
     dialog.toggleAttribute('visible');
   };
+  const onClose = () => {
+    const dialog = document.getElementById(args.id) as HTMLElement;
+    dialog.removeAttribute('visible');
+  };
   return html`
     ${createTrigger(args.triggerId, 'Click me!', toggleVisibility)}
-    ${createDialog(args, dialogWithPopoverContent(toggleVisibility))}
+    ${createDialog(args, dialogWithPopoverContent(toggleVisibility), onClose)}
   `;
 };
 
@@ -168,6 +195,14 @@ const renderDialogWithinDialog = (args: Args) => {
   const toggleVisibilityNested = () => {
     const nestedDialog = document.getElementById('nested-dialog') as HTMLElement;
     nestedDialog.toggleAttribute('visible');
+  };
+  const onClose = () => {
+    const dialog = document.getElementById(args.id) as HTMLElement;
+    dialog.removeAttribute('visible');
+  };
+  const onCloseNested = () => {
+    const nestedDialog = document.getElementById('nested-dialog') as HTMLElement;
+    nestedDialog.removeAttribute('visible');
   };
   return html`
     ${createTrigger(args.triggerId, 'Click me!', toggleVisibility)}
@@ -183,10 +218,11 @@ const renderDialogWithinDialog = (args: Args) => {
           close-button-aria-label="Close nested dialog"
           header-text="Nested Dialog Header"
           description-text="This is a nested dialog description."
+          @close="${onCloseNested}"
           >
         <mdc-button slot="dialog-body">Button inside a nested dialog</mdc-button></mdc-dialog>
       </div>
-    `)}
+    `, onClose)}
   `;
 };
 
@@ -377,12 +413,18 @@ export const WithoutTriggerElement: StoryObj = {
 };
 
 export const MountUnmount: StoryObj = {
-  render: (args: Args) => html`
+  render: (args: Args) => {
+    const onClose = () => {
+      const dialog = document.getElementById(args.id) as HTMLElement;
+      dialog.removeAttribute('visible');
+    };
+    return html`
       <mdc-button id="dialog-trigger-btn">
         Trigger Button which is connected, but mountDialog controls the mounting of the dialog
       </mdc-button>
-      ${args.mountDialog ? createDialog(args, dialogBodyContent()) : ''}
-    `,
+      ${args.mountDialog ? createDialog(args, dialogBodyContent(), onClose) : ''}
+    `;
+  },
   args: {
     ...commonProperties,
     ...headerDescriptionProperties,
