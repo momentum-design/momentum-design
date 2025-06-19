@@ -18,11 +18,7 @@ const createPopover = (triggerId: string) => html`
     <mdc-menuitem label="Share" id="share-id" arrow-position='trailing'></mdc-menuitem>
     <mdc-menupopover triggerid="share-id">
       <mdc-menuitem label="AirDrop"></mdc-menuitem>
-      <mdc-menuitem label="Messages" id="message-id" arrow-position='trailing'></mdc-menuitem>
-      <mdc-menupopover triggerid="message-id">
-        <mdc-menuitem label="Send Message"></mdc-menuitem>
-        <mdc-menuitem label="Send Email" disabled></mdc-menuitem>
-      </mdc-menupopover>
+      <mdc-menuitem label="Messages"></mdc-menuitem>
       <mdc-menuitem label="Notes"></mdc-menuitem>
       <mdc-menuitem label="Freeform"></mdc-menuitem>
       <mdc-menuitem label="Reminders"></mdc-menuitem>
@@ -125,4 +121,30 @@ export const WithGroups: StoryObj = {
         <mdc-menuitem label="Notifications"></mdc-menuitem>
       </mdc-menupopover>
     </div>`,
+};
+
+export const WithNestedSubmenus: StoryObj = {
+  render: () => html`
+    <div id="menupopover-test-wrapper">
+    <mdc-button id="trigger-btn">Options</mdc-button>
+    <mdc-menupopover triggerid="trigger-btn">
+      <mdc-menuitem label="Profile"></mdc-menuitem>
+      <mdc-menuitem id="submenu-trigger" label="Settings" arrow-position='trailing'></mdc-menuitem>
+      <mdc-menuitem label="Notifications"></mdc-menuitem>
+      <mdc-menuitem label="Logout" disabled></mdc-menuitem>
+      <mdc-menupopover triggerid="submenu-trigger">
+        <mdc-menupopover triggerid="security-id">
+          <mdc-menuitem label="Change Password"></mdc-menuitem>
+          <mdc-menuitem label="Two-Factor Authentication"></mdc-menuitem>
+          <mdc-menuitem label="Security Questions"></mdc-menuitem>
+        </mdc-menupopover>
+        <mdc-menuitem label="Account"></mdc-menuitem>
+        <mdc-menuitem label="Privacy" disabled></mdc-menuitem>
+        <mdc-menuitem label="Security" id="security-id" arrow-position='trailing'></mdc-menuitem>
+        <mdc-menuitem label="Advanced"></mdc-menuitem>
+      </mdc-menupopover>
+    </mdc-menupopover>
+  </div>
+  `,
+  ...hideAllControls(),
 };

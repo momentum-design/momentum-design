@@ -122,11 +122,17 @@ class MenuPopover extends Popover {
     }
   };
 
+  private hasSubmenuWithTriggerId(id: string | null): boolean {
+    return this.parentElement?.querySelector(`${MENU_POPOVER}[triggerid="${id}"]`) !== null;
+  }
+
   private handleMouseClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
+    const triggerId = target.getAttribute('id');
+
     if (
       isActiveMenuItem(target) // menuitemcheckbox and menuitemradio are not supposed to close the popover
-      && !isValidPopover(target.nextElementSibling)
+      && !this.hasSubmenuWithTriggerId(triggerId)
     ) {
       this.closeAllMenuPopovers();
     }
@@ -178,8 +184,12 @@ class MenuPopover extends Popover {
       }
       case KEYS.ARROW_RIGHT: {
         // If there is a submenu, open it.
-        if (isValidPopover(this.menuItems[currentIndex]?.nextElementSibling)) {
-          (this.menuItems[currentIndex]?.nextElementSibling as Popover).showPopover();
+        const triggerId = this.menuItems[currentIndex]?.getAttribute('id');
+        if (this.hasSubmenuWithTriggerId(triggerId)) {
+          const submenu = this.parentElement?.querySelector(`${MENU_POPOVER}[triggerid="${triggerId}"]`) as MenuPopover;
+          if (submenu) {
+            submenu.showPopover();
+          }
         }
         break;
       }
