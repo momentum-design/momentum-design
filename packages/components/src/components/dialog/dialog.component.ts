@@ -4,6 +4,7 @@ import { property } from 'lit/decorators.js';
 import styles from './dialog.styles';
 import { Component } from '../../models';
 import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
+import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
 import { DEFAULTS } from './dialog.constants';
 import type { DialogRole, DialogSize, DialogVariant } from './dialog.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
@@ -59,7 +60,7 @@ import { CardAndDialogFooterMixin } from '../../utils/mixins/CardAndDialogFooter
  * @slot footer -  This slot is for passing custom footer content. Only use this if really needed,
  * using the footer-link and footer-button slots is preferred
  */
-class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
+class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(Component))) {
   /**
    * The unique ID of the dialog
    */
@@ -179,8 +180,14 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
    * For now FocusTrap is always true as the dialog is a modal component only.
    * This means it will always trap focus within the dialog when it is open.
    */
+  public override focusTrap: boolean = true;
+
+  /**
+   * For now preventScroll is always true as the dialog is a modal component only.
+   * This means scroll will be prevented when the dialog is open.
+   */
   /** @internal */
-  protected override focusTrap: boolean = true;
+  protected override preventScroll: boolean = true;
 
   /** @internal */
   protected triggerElement: HTMLElement | null = null;
@@ -194,21 +201,25 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
   override connectedCallback() {
     super.connectedCallback();
 
-    document.addEventListener('keydown', this.onEscapeKeydown.bind(this));
+    // event listener can be added to the element directly, since dialog is a modal component
+    // and it will not be allowed to be focused outside of it
+    this.addEventListener('keydown', this.onEscapeKeydown.bind(this));
   }
 
   override disconnectedCallback() {
     super.disconnectedCallback();
 
-    document.removeEventListener('keydown', this.onEscapeKeydown);
+    this.removeEventListener('keydown', this.onEscapeKeydown);
 
     this.backdropElement?.remove();
     this.backdropElement = null;
-    this.deactivateFocusTrap?.();
 
     // Set aria-expanded attribute on the trigger element to false if it exists
     this.triggerElement?.setAttribute('aria-expanded', 'false');
 
+    this.deactivatePreventScroll();
+
+    this.deactivateFocusTrap?.();
     this.focusBackToTrigger();
 
     DialogEventManager.onDestroyedDialog(this);
@@ -252,6 +263,13 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
       || changedProperties.has('descriptionText')
     ) {
       this.setupAriaLabelledDescribedBy();
+    }
+
+    if (changedProperties.has('focusTrap')) {
+      // if focusTrap turned false and the popover is visible, deactivate the focus trap
+      if (!this.focusTrap && this.visible) {
+        this.deactivateFocusTrap();
+      }
     }
   }
 
@@ -335,6 +353,10 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
     }
 
     event.preventDefault();
+    // Prevent the event from propagating to the document level
+    // pressing escape on a dialog should only close the dialog, nothing else
+    event.stopPropagation();
+
     this.hideDialog();
   };
 
@@ -353,8 +375,10 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
     if (newValue && !oldValue) {
       // Store the currently focused element before opening the dialog
       this.lastActiveElement = document.activeElement as HTMLElement;
-      this.enabledPreventScroll = true;
+
       this.createBackdrop();
+
+      this.activatePreventScroll();
 
       await this.updateComplete;
       this.activateFocusTrap?.();
@@ -367,11 +391,13 @@ class Dialog extends FocusTrapMixin(CardAndDialogFooterMixin(Component)) {
     } else if (!newValue && oldValue) {
       this.backdropElement?.remove();
       this.backdropElement = null;
-      this.deactivateFocusTrap?.();
 
       // Set aria-expanded attribute on the trigger element to false if it exists
       this.triggerElement?.setAttribute('aria-expanded', 'false');
 
+      this.deactivatePreventScroll();
+
+      this.deactivateFocusTrap?.();
       this.focusBackToTrigger();
 
       DialogEventManager.onHideDialog(this);
