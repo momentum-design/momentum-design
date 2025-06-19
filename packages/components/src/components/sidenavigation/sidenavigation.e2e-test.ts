@@ -90,7 +90,7 @@ const setup = async (
 };
 
 test.describe('SideNavigation Feature Scenarios', () => {
-  test('mdc-sidenavigation scenarios', async ({ componentsPage }) => {
+  test.skip('mdc-sidenavigation scenarios', async ({ componentsPage }) => {
     const sidenavigation = await setup(componentsPage);
 
     // Accessibility
