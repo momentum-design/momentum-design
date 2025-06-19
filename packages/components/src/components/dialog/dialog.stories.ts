@@ -160,6 +160,36 @@ const renderWithPopover = (args: Args) => {
   `;
 };
 
+const renderDialogWithinDialog = (args: Args) => {
+  const toggleVisibility = () => {
+    const dialog = document.getElementById(args.id) as HTMLElement;
+    dialog.toggleAttribute('visible');
+  };
+  const toggleVisibilityNested = () => {
+    const nestedDialog = document.getElementById('nested-dialog') as HTMLElement;
+    nestedDialog.toggleAttribute('visible');
+  };
+  return html`
+    ${createTrigger(args.triggerId, 'Click me!', toggleVisibility)}
+    ${createDialog(args, html`
+      <div slot="dialog-body">
+        <p>This is the body content of the dialog.</p>
+        <mdc-button id="nested-dialog-trigger" @click=${toggleVisibilityNested}>Open Nested Dialog</mdc-button>
+        <mdc-dialog
+          id="nested-dialog"
+          triggerId="nested-dialog-trigger"
+          aria-label="nested-dialog"
+          size="small"
+          close-button-aria-label="Close nested dialog"
+          header-text="Nested Dialog Header"
+          description-text="This is a nested dialog description."
+          >
+        <mdc-button slot="dialog-body">Button inside a nested dialog</mdc-button></mdc-dialog>
+      </div>
+    `)}
+  `;
+};
+
 const meta: Meta = {
   title: 'Components/dialog',
   tags: ['autodocs'],
@@ -365,6 +395,14 @@ export const MountUnmount: StoryObj = {
 // with popover
 export const WithPopover: StoryObj = {
   render: renderWithPopover,
+  args: {
+    ...commonProperties,
+    size: DIALOG_SIZE[0],
+  },
+};
+
+export const DialogWithinDialog: StoryObj = {
+  render: renderDialogWithinDialog,
   args: {
     ...commonProperties,
     size: DIALOG_SIZE[0],

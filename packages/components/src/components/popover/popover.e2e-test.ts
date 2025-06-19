@@ -480,6 +480,7 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
 
       // focus out the interactive popover
       await componentsPage.actionability.pressTab();
+      await expect(componentsPage.page.getByRole('button', { name: 'Outside Button' })).toBeFocused();
       await expect(popoverInteractive).not.toBeVisible();
     });
   });
