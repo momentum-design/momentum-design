@@ -125,9 +125,10 @@ export const WithGroups: StoryObj = {
 
 export const WithNestedSubmenus: StoryObj = {
   render: () => html`
-    <div id="menupopover-test-wrapper">
+    <div id="menupopover-test-wrapper"
+     style="display: flex; justify-content: flex-start; align-items: center; height: 100vh;">
     <mdc-button id="trigger-btn">Options</mdc-button>
-    <mdc-menupopover triggerid="trigger-btn">
+    <mdc-menupopover triggerid="trigger-btn" placement="right-end">
       <mdc-menuitem label="Profile"></mdc-menuitem>
       <mdc-menuitem id="submenu-trigger" label="Settings" arrow-position='trailing'></mdc-menuitem>
       <mdc-menuitem label="Notifications"></mdc-menuitem>
