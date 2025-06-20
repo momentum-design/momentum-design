@@ -69,7 +69,6 @@ class MenuPopover extends Popover {
     this.backdrop = false;
     this.color = COLOR.TONAL;
     this.disableAriaExpanded = false;
-    this.disableAriaHasPopup = true;
     this.focusBackToTrigger = true;
     this.focusTrap = true;
     this.hideOnBlur = true;
