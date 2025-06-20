@@ -329,8 +329,9 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
    */
   await test.step('keyboard', async () => {
     await test.step(
-      'if hide-on-escape = true and propagate-event-on-escape = false, pressing ESC closes popover, not dialog',
+      'Hide on escape (keyboard) inside a dialog',
       async () => {
+      // if hide-on-escape = true and propagate-event-on-escape = false, pressing ESC closes popover, not dialog'
       // Mount a dialog with a popover inside
         await componentsPage.mount({
           html: `
@@ -420,6 +421,7 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
     });
 
     await test.step('Toggle popover on trigger element activation (keyboard)', async () => {
+      await expect(triggerButton).toBeFocused();
       await componentsPage.page.keyboard.press(KEYS.SPACE);
       await expect(popover).toBeVisible();
       await componentsPage.page.keyboard.press(KEYS.SPACE);
@@ -526,16 +528,20 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
     });
 
     await test.step('Focus trap inside popover', async () => {
-      const { popover } = await setup({
+      const { popover, triggerButton } = await setup({
         componentsPage,
         id: 'popover',
         triggerID: 'trigger-button',
         focusTrap: true,
         interactive: true,
-        visible: true,
         children: '<mdc-button id="first">First</mdc-button><mdc-button id="last">Last</mdc-button>',
       });
-      await popover.locator('#first').focus();
+      await expect(popover).not.toBeVisible();
+      await componentsPage.actionability.pressTab();
+      await expect(triggerButton).toBeFocused();
+      await componentsPage.page.keyboard.press(KEYS.ENTER);
+      await expect(popover).toBeVisible();
+      await expect(popover.locator('#first')).toBeFocused();
       await componentsPage.actionability.pressTab();
       await expect(popover.locator('#last')).toBeFocused();
       await componentsPage.actionability.pressTab();
@@ -553,16 +559,24 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
     });
 
     await test.step('Close button inside popover', async () => {
-      await componentsPage.setAttributes(popover, {
-        'close-button': 'true',
-        'close-button-aria-label': 'Close',
+      const { popover, triggerButton } = await setup({
+        componentsPage,
+        id: 'popover',
+        triggerID: 'trigger-button',
+        focusTrap: true,
+        interactive: true,
+        closeButton: true,
+        closeButtonAriaLabel: 'Close',
+        children: '<mdc-button id="first">First</mdc-button><mdc-button id="last">Last</mdc-button>',
       });
       const closeButton = popover.locator('mdc-button[aria-label="Close"]');
-      await triggerButton.click();
       await componentsPage.actionability.pressTab();
+      await expect(triggerButton).toBeFocused();
+      await componentsPage.page.keyboard.press(KEYS.ENTER);
+      await expect(popover).toBeVisible();
       await expect(closeButton).toBeVisible();
       await expect(closeButton).toBeFocused();
-      await closeButton.click();
+      await componentsPage.page.keyboard.press(KEYS.ENTER);
       await expect(popover).not.toBeVisible();
     });
 
@@ -655,35 +669,89 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       const childPopover = parentPopover.locator('#child-popover');
       await expect(parentPopover).toBeVisible();
       await expect(childPopover).toBeVisible();
-      await componentsPage.page.click('#outside-button');
+      await componentsPage.page.mouse.click(200, 100); // clicking outside the popover
       await expect(childPopover).not.toBeVisible();
       await expect(parentPopover).toBeVisible();
-      await componentsPage.page.click('#outside-button');
+      await componentsPage.page.mouse.click(200, 100);
       await expect(parentPopover).not.toBeVisible();
     });
   });
+
+  await test.step('Multiple popovers with same trigger using mouse', async () => {
+    await componentsPage.mount({
+      html: `
+        <div>
+          <mdc-button id="trigger-multi">Trigger</mdc-button>
+          <mdc-popover id="popover-hover" triggerID="trigger-multi" trigger="mouseenter">Hover Popover</mdc-popover>
+          <mdc-popover id="popover-click" triggerID="trigger-multi" trigger="click">Click Popover</mdc-popover>
+        </div>
+      `,
+      clearDocument: true,
+    });
+    const trigger = componentsPage.page.locator('#trigger-multi');
+    const popoverHover = componentsPage.page.locator('#popover-hover');
+    const popoverClick = componentsPage.page.locator('#popover-click');
+
+    // Hover to open first popover
+    await trigger.hover();
+    await expect(popoverHover).toBeVisible();
+    await expect(popoverClick).not.toBeVisible();
+
+    // Click to open second popover
+    await trigger.click();
+    await expect(popoverClick).toBeVisible();
+    await expect(popoverHover).toBeVisible();
+
+    // Move mouse away to close first popover
+    await componentsPage.page.mouse.move(100, 30);
+    await expect(popoverHover).not.toBeVisible();
+    await expect(popoverClick).toBeVisible();
+  });
+
+  await test.step('Multiple popovers with same trigger using keyboard', async () => {
+    await componentsPage.mount({
+      html: `
+        <div>
+          <mdc-button id="trigger-multi-key">Trigger</mdc-button>
+          <mdc-popover id="popover-hover-id" triggerID="trigger-multi-key" trigger="focusin"
+          hide-on-escape focus-back-to-trigger>Hover Popover</mdc-popover>
+          <mdc-popover id="popover-click-id" triggerID="trigger-multi-key" trigger="click" 
+          hide-on-escape focus-back-to-trigger>Click Popover</mdc-popover>
+        </div>
+      `,
+      clearDocument: true,
+    });
+    const trigger = componentsPage.page.locator('#trigger-multi-key');
+    const popoverHover = componentsPage.page.locator('#popover-hover-id');
+    const popoverClick = componentsPage.page.locator('#popover-click-id');
+
+    // Focus to open first popover
+    await componentsPage.actionability.pressTab();
+    await expect(trigger).toBeFocused();
+    await expect(popoverHover).toBeVisible();
+    await expect(popoverClick).not.toBeVisible();
+
+    // Press Space to open second popover and close first
+    await componentsPage.page.keyboard.press(KEYS.SPACE);
+    await expect(popoverClick).toBeVisible();
+    await expect(popoverHover).not.toBeVisible();
+
+    // Press Escape to close second popover, first should re-open
+    await componentsPage.page.keyboard.press(KEYS.ESCAPE);
+    await expect(popoverClick).not.toBeVisible();
+    await expect(popoverHover).toBeVisible();
+    await componentsPage.page.keyboard.press(KEYS.ESCAPE);
+    await expect(popoverHover).not.toBeVisible();
+    await expect(trigger).toBeFocused();
+  });
 };
 
-test.use({ viewport: { width: 600, height: 2100 } });
 test('mdc-popover', async ({ componentsPage }) => {
   /**
    * ATTRIBUTES
    */
   await test.step('attributes for popover component', async () => {
     await attributeTestCases(componentsPage);
-  });
-
-  /**
-   * VISUAL REGRESSION
-   */
-  await test.step('visual-regression for popover', async () => {
-    const visualPopover = await visualTestingSetup(componentsPage);
-
-    await test.step('matches screenshot of popover', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-popover', {
-        element: visualPopover,
-      });
-    });
   });
 
   /**
@@ -715,5 +783,19 @@ test('mdc-popover', async ({ componentsPage }) => {
    */
   await test.step('user stories for popover', async () => {
     await userStoriesTestCases(componentsPage);
+  });
+
+  /**
+   * VISUAL REGRESSION
+   */
+  await test.step('visual-regression for popover', async () => {
+    await componentsPage.page.setViewportSize({ width: 600, height: 2100 });
+    const visualPopover = await visualTestingSetup(componentsPage);
+
+    await test.step('matches screenshot of popover', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-popover', {
+        element: visualPopover,
+      });
+    });
   });
 });

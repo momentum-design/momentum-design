@@ -175,3 +175,27 @@ Feature: Popover Component
       And the parent popover should remain open.
       When the user clicks outside again,
       Then the parent popover should close.
+
+  Rule: ✅ Multiple Popovers attached to same trigger
+
+    Scenario: Multiple popovers with same trigger using mouse
+      Given a trigger element with two popovers attached, one on hover and one on click,
+      When the user hovers over the trigger,
+      Then the first popover should open.
+      When the user clicks on the trigger,
+      Then the second popover should open.
+      And the first popover should remain open. (since cursor is on the trigger)
+      When the user moves the cursor away from the trigger,
+      Then the first popover should close.
+      And the second popover should remain open.
+
+    Scenario: Multiple popovers with same trigger using keyboard
+      Given a trigger element with two popovers attached, one on hover and one on click,
+      When the focus is on the trigger,
+      Then the first popover should open.
+      When the user presses **Space** or **Enter** on the trigger,
+      Then the second popover should open.
+      And the first popover should close (since focus is now on the second popover).
+      When the user presses **Escape** key,
+      Then the second popover should close,
+      And the first popover should remain open (since focus is back on the trigger).
