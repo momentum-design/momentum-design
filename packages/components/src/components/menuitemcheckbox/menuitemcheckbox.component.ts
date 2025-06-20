@@ -78,6 +78,11 @@ class MenuItemCheckbox extends MenuItem {
     this.ariaChecked = prevChecked ? ARIA_CHECKED_STATES.FALSE : ARIA_CHECKED_STATES.TRUE;
   };
 
+  /**
+   * Returns a static checkbox element if the indicator is set to checkbox.
+   * If the indicator is not set to checkbox, it returns nothing.
+   * @returns TemplateResult | typeof nothing
+   */
   private staticCheckbox(): TemplateResult | typeof nothing {
     if (this.indicator !== INDICATOR.CHECKBOX) {
       return nothing;
@@ -91,6 +96,13 @@ class MenuItemCheckbox extends MenuItem {
   `;
   }
 
+  /**
+   * Returns a static toggle element if the indicator is set to toggle.
+   * If the indicator is not set to toggle, it returns nothing.
+   *
+   * The toggle will always be positioned on the trailing side of the menuitem label.
+   * @returns TemplateResult | typeof nothing
+   */
   private staticToggle(): TemplateResult | typeof nothing {
     if (this.indicator !== INDICATOR.TOGGLE) {
       return nothing;
@@ -105,6 +117,13 @@ class MenuItemCheckbox extends MenuItem {
     `;
   }
 
+  /**
+   * Returns a checkmark icon if the indicator is set to checkmark and the aria-checked state is true.
+   * If the indicator is not set to checkmark or the aria-checked state is false, it returns nothing.
+   *
+   * The checkmark icon will always be positioned on the trailing side of the menuitem label.
+   * @returns TemplateResult | typeof nothing
+   */
   private getCheckmarkIcon(): TemplateResult | typeof nothing {
     if (this.indicator !== INDICATOR.CHECKMARK || this.ariaChecked === ARIA_CHECKED_STATES.FALSE) {
       return nothing;

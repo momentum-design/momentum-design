@@ -33,7 +33,6 @@ import { popoverStack } from '../popover/popover.stack';
 class MenuPopover extends Popover {
   constructor() {
     super();
-
     this.addEventListener('keydown', this.handleKeyDown);
     this.addEventListener('click', this.handleMouseClick);
   }
@@ -84,10 +83,21 @@ class MenuPopover extends Popover {
     }
   }
 
+  /**
+   * Retrieves the current index of the menu item that triggered the event.
+   * @param target - The target element that triggered the event.
+   * @returns - The index of the current menu item in the `menuItems` array.
+   */
   private getCurrentIndex(target: EventTarget | null): number {
     return this.menuItems.findIndex((node) => node === target);
   }
 
+  /**
+   * Resets the tabindex of the currently focused menu item and sets focus to a new menu item.
+   * @param newIndex - The index of the new menu item to focus.
+   * @param oldIndex - The index of the currently focused menu item.
+   * @returns - This method does not return anything.
+   */
   private resetTabIndexAndSetFocus(newIndex: number, oldIndex: number) {
     if (newIndex === oldIndex) return;
     this.menuItems[oldIndex].setAttribute('tabindex', '-1');
@@ -110,7 +120,14 @@ class MenuPopover extends Popover {
     }
   }
 
-  override onOutsidePopoverClick = (event: MouseEvent) => {
+  /**
+   * Handles outside click events to close the popover.
+   * This method checks if the click occurred outside the popover and its trigger element.
+   * If so, it closes the popover by calling `closeAllMenuPopovers`.
+   * It also checks if the click was on the backdrop element (if present) to close the popover.
+   * @param event - The mouse event that triggered the outside click.
+   */
+  override onOutsidePopoverClick = (event: MouseEvent): void => {
     if (popoverStack.peek() !== this) return;
     let insidePopoverClick = false;
     const path = event.composedPath();
@@ -122,10 +139,24 @@ class MenuPopover extends Popover {
     }
   };
 
+  /**
+   * Checks if the menu popover has a submenu with the specified trigger ID.
+   * This method is used to determine if a menu item has a submenu associated with it,
+   * which is indicated by the presence of a `triggerid` attribute in the submenu popover.
+   * It queries the parent element for any popover with the specified trigger ID.
+   * @param id - The ID of the menu item to check for a submenu.
+   * @returns - A boolean indicating whether a submenu with the specified trigger ID exists.
+   */
   private hasSubmenuWithTriggerId(id: string | null): boolean {
     return this.parentElement?.querySelector(`${MENU_POPOVER}[triggerid="${id}"]`) !== null;
   }
 
+  /**
+   * Handles mouse click events on the menu items.
+   * This method checks if the clicked element is a valid menu item and not a submenu trigger.
+   * If it is, it closes all other menu popovers to ensure only one menu is open at a time.
+   * @param event - The mouse event that triggered the click.
+   */
   private handleMouseClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
     const triggerId = target.getAttribute('id');
@@ -138,6 +169,15 @@ class MenuPopover extends Popover {
     }
   }
 
+  /**
+   * Resolves the key pressed by the user based on the direction of the layout.
+   * This method is used to handle keyboard navigation in a right-to-left (RTL) layout.
+   * It checks if the layout is RTL and adjusts the arrow keys accordingly.
+   * For example, in RTL, the left arrow key behaves like the right arrow key and vice versa.
+   * @param key - The key pressed by the user.
+   * @param isRtl - A boolean indicating if the layout is right-to-left (RTL).
+   * @returns - The resolved key based on the direction.
+   */
   private resolveDirectionKey(key: string, isRtl: boolean) {
     if (!isRtl) return key;
 
@@ -151,6 +191,13 @@ class MenuPopover extends Popover {
     }
   }
 
+  /**
+   * Handles keydown events for keyboard navigation within the menu popover.
+   * This method allows users to navigate through the menu items using the keyboard.
+   * It supports Home, End, Arrow Up, Arrow Down, Arrow Left, Arrow Right, and Escape keys.
+   * @param event - The keyboard event that triggered the keydown action.
+   * @returns - This method does not return anything.
+   */
   private handleKeyDown(event: KeyboardEvent) {
     const currentIndex = this.getCurrentIndex(event.target);
     if (currentIndex === -1) return;

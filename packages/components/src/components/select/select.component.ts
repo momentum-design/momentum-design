@@ -242,11 +242,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         event.preventDefault();
         break;
       }
-      case KEYS.SPACE:
-        this.updateTabIndexForAllOptions(event.target);
-        this.closePopover();
-        event.preventDefault();
-        break;
       case KEYS.ENTER:
         this.updateTabIndexForAllOptions(event.target);
         this.closePopover();
@@ -288,7 +283,6 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
       case KEYS.ARROW_DOWN:
       case KEYS.ARROW_UP:
       case KEYS.ENTER:
-      case KEYS.SPACE:
         this.openPopover();
         // Prevent the default browser behavior of scrolling down
         event.preventDefault();
@@ -305,6 +299,34 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         break;
       default:
         break;
+    }
+  }
+
+  /**
+   * Handles the keyup event on the trigger element.
+   * If the SPACE key is pressed, it opens the popover and prevents the default action.
+   * This allows the user to open the popover with the SPACE key without scrolling the page.
+   * @param event - The keyboard event that triggered the keyup action.
+   */
+  private handleKeyUpOnTrigger(event: KeyboardEvent): void {
+    if (event.key === KEYS.SPACE) {
+      this.openPopover();
+      event.preventDefault();
+    }
+  }
+
+  /**
+   * Handles the keyup event on the popover.
+   * If the SPACE key is pressed, it updates the tabindex for all options,
+   * closes the popover, and prevents the default action.
+   * This allows the user to select an option with the SPACE key without scrolling the page.
+   * @param event - The keyboard event that triggered the keyup action.
+   */
+  private handleKeyUpOnPopover(event: KeyboardEvent): void {
+    if (event.key === KEYS.SPACE) {
+      this.updateTabIndexForAllOptions(event.target);
+      this.closePopover();
+      event.preventDefault();
     }
   }
 
@@ -494,6 +516,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         id="options-popover"
         triggerid="${TRIGGER_ID}"
         @keydown="${this.handlePopoverOnOpen}"
+        @keyup=${this.handleKeyUpOnPopover}
         interactive
         ?visible="${this.displayPopover}"
         hide-on-outside-click
@@ -536,6 +559,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           id="${TRIGGER_ID}"
           part="base-container"
           @keydown="${this.handlePopoverOnClose}"
+          @keyup="${this.handleKeyUpOnTrigger}"
           tabindex="${this.disabled ? '-1' : '0'}"
           class="${this.disabled ? '' : 'mdc-focus-ring'}"
           role="${ROLE.COMBOBOX}"
