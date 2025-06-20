@@ -1,5 +1,0 @@
-import{a as p,O as l}from"./menubar.component-DDIxOgQe.js";import{R as a}from"./roles-BH_hBfTz.js";import{P as o,a as n}from"./popover.component-BfwmRx66.js";import{T as c}from"./menupopover.constants-D31hJpJi.js";import{i as d}from"./lit-element-D5KKan5q.js";const T=d`
-  :host::part(popover-content) {
-    padding: 0.75rem 0.5rem;
-  }
-`,m=[T],e=class e extends p(n){constructor(){super(),this.addEventListener("keydown",this.handleKeyDown),this.addEventListener("click",this.handleMouseClick)}connectedCallback(){super.connectedCallback(),this.role=a.MENU,this.focusBackToTrigger=!0,this.focusTrap=!0,this.focusBackToTrigger=!0,this.hideOnEscape=!0,this.hideOnOutsideClick=!0,this.interactive=!0,this.placement=o.BOTTOM_START,this.showArrow=!1,this.ariaOrientation=l.VERTICAL}async firstUpdated(h){var s,i,r;await super.firstUpdated(h),(s=this.triggerElement)==null||s.setAttribute("aria-haspopup",a.MENU),((r=(i=this.parentElement)==null?void 0:i.tagName)==null?void 0:r.toLowerCase())===c&&(this.interactive=!0,this.placement=o.RIGHT_START)}};e.styles=[...n.styles,...m];let t=e;t.register(c);
