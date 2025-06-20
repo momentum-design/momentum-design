@@ -135,7 +135,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   }
 
   /**
-   * Fires the click event when the enter key is pressed down.
+   * Fires the click event when the enter or space key is pressed down.
    * This behavior is similar to a button click and key interaction.
    * @param event - The keyboard event triggered when a key is pressed down.
    */
