@@ -135,10 +135,11 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   }
 
   /**
-   * Fires the click event when the enter or space key is pressed.
+   * Fires the click event when the enter or space key is pressed down.
+   * This behavior is similar to a button click and key interaction.
    * @param event - The keyboard event triggered when a key is pressed down.
    */
-  private handleKeyDown(event: KeyboardEvent): void {
+  protected handleKeyDown(event: KeyboardEvent): void {
     if (event.key === KEYS.ENTER || event.key === KEYS.SPACE) {
       this.triggerClickEvent();
       event.preventDefault();
@@ -148,7 +149,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
   /**
    * Triggers a click event on the list item.
    */
-  private triggerClickEvent() {
+  protected triggerClickEvent() {
     const clickEvent = new MouseEvent('click', {
       bubbles: true,
       cancelable: true,

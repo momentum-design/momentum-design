@@ -1,9 +1,4 @@
 import { CSSResult, html } from 'lit';
-import { queryAssignedElements } from 'lit/decorators.js';
-import { TAG_NAME as MENUITEMRADIO_TAGNAME } from '../menuitemradio/menuitemradio.constants';
-import { TAG_NAME as MENUITEMCHECKBOX_TAGNAME } from '../menuitemcheckbox/menuitemcheckbox.constants';
-import type MenuItemRadio from '../menuitemradio/menuitemradio.component';
-import { ARIA_CHECKED_STATES } from './menusection.constants';
 import { Component } from '../../models';
 import { ROLE } from '../../utils/roles';
 
@@ -21,73 +16,13 @@ import { ROLE } from '../../utils/roles';
  * @slot - Default slot for inserting `menuitem`, `menuitemcheckbox`, or `menuitemradio`
  */
 class MenuSection extends Component {
-  /**
-   * Query assigned `menuitemradio` elements from the default slot.
-   * These elements are used to enforce single-selection behavior.
-   *
-   * @internal
-   */
-  @queryAssignedElements({ selector: `${MENUITEMRADIO_TAGNAME}:not([disabled])` })
-  radios!: MenuItemRadio[];
-
   override connectedCallback(): void {
     super.connectedCallback();
     this.setAttribute('role', ROLE.GROUP);
-    this.addEventListener('click', this.handleClick);
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
-    this.removeEventListener('click', this.handleClick);
-  }
-
-  /**
-   * Handles `click` events within the component.
-   * Delegates logic to `toggleCheckedState()` based on the clicked element.
-   *
-   * @param event - The click event from a child menu item
-   *
-   * @internal
-   */
-  private handleClick = (event: MouseEvent) => {
-    this.toggleCheckedState(event.target);
-  };
-
-  /**
-   * Toggles the `aria-checked` state on a target menu item based on its tag name.
-   * - For checkboxes, toggles the checked state.
-   * - For radios, ensures only one item is selected in the group.
-   *
-   * @param target - The event target element to update
-   *
-   * @internal
-   */
-  private toggleCheckedState(target: EventTarget | null) : void {
-    if (!(target instanceof HTMLElement)) return;
-
-    // Do not toggle state for disabled elements
-    if (target.hasAttribute('disabled')) return;
-
-    const tagName = target.tagName.toLowerCase();
-    const currentChecked = target.getAttribute('aria-checked') === ARIA_CHECKED_STATES.TRUE;
-
-    switch (tagName) {
-      case MENUITEMCHECKBOX_TAGNAME:
-        target.setAttribute('aria-checked', String(!currentChecked));
-        break;
-
-      case MENUITEMRADIO_TAGNAME:
-        if (currentChecked) return;
-
-        this.radios.forEach((radio) => {
-          const newCheckedState = radio === target ? ARIA_CHECKED_STATES.TRUE : ARIA_CHECKED_STATES.FALSE;
-          radio.setAttribute('aria-checked', newCheckedState);
-        });
-        break;
-
-      default:
-        break;
-    }
   }
 
   public override render() {
