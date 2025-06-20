@@ -340,8 +340,6 @@ jobs:
         with:
           path: '**/dist'
           key: dist-${{ env.rid }}
-          restore-keys: |
-            dist-
 
       - name: Debug dist
         run: |
