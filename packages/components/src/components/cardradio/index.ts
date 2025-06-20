@@ -7,9 +7,9 @@ import '../staticradio';
 CardRadio.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-cardradio']: CardRadio
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-cardradio']: CardRadio;
+  }
 }
 
 export default CardRadio;

@@ -8,9 +8,9 @@ import '../toggletip';
 Textarea.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-textarea']: Textarea
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-textarea']: Textarea;
+  }
 }
 
 export default Textarea;

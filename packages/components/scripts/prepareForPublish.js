@@ -10,14 +10,14 @@ const main = async () => {
   const peerDependencies = packageJson.peerDependencies || {};
 
   for (const dep in dependencies) {
-      if (dependencies[dep].startsWith('workspace:')) {
-          dependencies[dep] = `*`;
-      }
+    if (dependencies[dep].startsWith('workspace:')) {
+      dependencies[dep] = `*`;
+    }
   }
 
   for (const dep in peerDependencies) {
     if (peerDependencies[dep].startsWith('workspace:')) {
-        peerDependencies[dep] = `*`;
+      peerDependencies[dep] = `*`;
     }
   }
 
@@ -27,7 +27,7 @@ const main = async () => {
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
 };
 
-main().catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });;
+main().catch(error => {
+  console.error(error);
+  process.exit(1);
+});

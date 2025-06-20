@@ -8,9 +8,9 @@ import '../tooltip';
 NavItem.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-navitem']: NavItem
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-navitem']: NavItem;
+  }
 }
 
 export default NavItem;

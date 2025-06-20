@@ -10,7 +10,7 @@ const { publicPath, port } = require('./configs/e2e');
 // this replaces the dynamic import in the brand-visuals component with a normal import to make it work
 // in playwright for the time being. not needed anymore in case a BrandVisualProvider and
 // normal URL fetching will be done
-const replaceBrandVisualsDynamicImport = (source) => {
+const replaceBrandVisualsDynamicImport = source => {
   const newSource = source.replace(
     '@momentum-design/brand-visuals/dist/logos/ts/${this.name}.ts',
     '../../../playwright-temp/brandvisuals/index',
@@ -21,7 +21,7 @@ const replaceBrandVisualsDynamicImport = (source) => {
 const replaceBrandVisualPathPlugin = {
   name: 'replaceBrandVisualPathPlugin',
   setup(build) {
-    build.onLoad({ filter: /brandvisual.component.ts/ }, async (args) => {
+    build.onLoad({ filter: /brandvisual.component.ts/ }, async args => {
       const source = await fs.promises.readFile(args.path, 'utf8');
       const contents = replaceBrandVisualsDynamicImport(source);
 
@@ -35,7 +35,7 @@ const replaceBrandVisualPathPlugin = {
 const replaceAnimationAssetsPathPlugin = {
   name: 'replaceAnimationsAssetsPathPlugin',
   setup(build) {
-    build.onLoad({ filter: /animation.component.ts/ }, async (args) => {
+    build.onLoad({ filter: /animation.component.ts/ }, async args => {
       const source = await fs.promises.readFile(args.path, 'utf8');
       const contents = source.replace(
         '@momentum-design/animations/dist/lottie${path}',
@@ -62,10 +62,7 @@ const iife = async () => {
       // include playwright-temp index for esbuild to consider it in the path resolve
       `${join(process.cwd(), 'playwright-temp/brandvisuals/index.ts')}`,
     ],
-    plugins: [
-      replaceBrandVisualPathPlugin,
-      replaceAnimationAssetsPathPlugin,
-    ],
+    plugins: [replaceBrandVisualPathPlugin, replaceAnimationAssetsPathPlugin],
     outfile: undefined,
     outdir: `${join(publicPath, 'dist')}`,
   });

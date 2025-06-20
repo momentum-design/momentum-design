@@ -2,7 +2,7 @@ const config = require('../../.eslintrc.js');
 
 module.exports = {
   ...config,
-  extends: [...config.extends, 'plugin:lit/recommended'],
+  extends: [...config.extends, 'plugin:lit/recommended', 'prettier'],
   parserOptions: { ...config.parserOptions, project: ['./tsconfig.json', './src/tsconfig.json'], projectService: true },
   rules: {
     ...config.rules,
@@ -11,14 +11,27 @@ module.exports = {
     'implicit-arrow-linebreak': 'off',
     'import/no-unresolved': ['error', { ignore: ['dist'] }],
     'json/*': 'off',
+    // prettier
+    indent: 'off',
+    'max-len': 'off',
   },
   overrides: [
     {
       files: ['src/utils/mixins/**/*.ts'],
       rules: {
         'max-classes-per-file': 'off',
-      }
-    }
+      },
+    },
   ],
-  ignorePatterns: [...config.ignorePatterns, '.eslintrc.js', 'prettier.config.js', '*.png', '*.css', 'tsdoc.json', '*.mdx'],
+  ignorePatterns: [
+    ...config.ignorePatterns,
+    '.eslintrc.js',
+    'prettier.config.js',
+    '*.png',
+    '*.css',
+    '*.json',
+    '*.mdx',
+    '*.md',
+    '*.html',
+  ],
 };

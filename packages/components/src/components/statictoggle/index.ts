@@ -5,9 +5,9 @@ import { TAG_NAME } from './statictoggle.constants';
 StaticToggle.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-statictoggle']: StaticToggle
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-statictoggle']: StaticToggle;
+  }
 }
 
 export default StaticToggle;

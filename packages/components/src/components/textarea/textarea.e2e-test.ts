@@ -133,38 +133,37 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
       await componentsPage.removeAttribute(mdcTextarea, 'max-character-limit');
     });
 
-    await test.step(
-      'component in form should be validated for required and maxlength when submitted',
-      async () => {
-        const form = await setup({
+    await test.step('component in form should be validated for required and maxlength when submitted', async () => {
+      const form = await setup(
+        {
           componentsPage,
           id: 'test-mdc-textarea',
           placeholder: 'Placeholder',
           required: true,
           maxlength: 10,
-        }, true);
+        },
+        true,
+      );
 
-        const submitButton = form.locator('mdc-button[type="submit"]');
-        await submitButton.click();
-        const validationMessage = await textareaElement.evaluate((element) => {
-          const textarea = element as HTMLTextAreaElement;
-          return textarea.validationMessage;
-        });
-        if (browserName === 'webkit') {
-          expect(validationMessage).toContain('Fill out this field');
-        } else {
-          expect(validationMessage).toContain('Please fill out this field.');
-        }
-        await textareaElement.fill('This is a long text');
-        await expect(textareaElement).toHaveValue('This is a ');
-        await submitButton.click();
-      },
-    );
+      const submitButton = form.locator('mdc-button[type="submit"]');
+      await submitButton.click();
+      const validationMessage = await textareaElement.evaluate(element => {
+        const textarea = element as HTMLTextAreaElement;
+        return textarea.validationMessage;
+      });
+      if (browserName === 'webkit') {
+        expect(validationMessage).toContain('Fill out this field');
+      } else {
+        expect(validationMessage).toContain('Please fill out this field.');
+      }
+      await textareaElement.fill('This is a long text');
+      await expect(textareaElement).toHaveValue('This is a ');
+      await submitButton.click();
+    });
 
-    await test.step(
-      'component in form should be validated for max character limit',
-      async () => {
-        const form = await setup({
+    await test.step('component in form should be validated for max character limit', async () => {
+      const form = await setup(
+        {
           componentsPage,
           id: 'test-mdc-textarea',
           placeholder: 'Placeholder',
@@ -173,24 +172,25 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
           helpText: 'Input must not exceed 11 characters',
           helpTextType: 'error',
           value: 'This is a long text',
-        }, true);
+        },
+        true,
+      );
 
-        const submitButton = form.locator('mdc-button[type="submit"]');
-        await submitButton.click();
-        const validationMessage = await textareaElement.evaluate((element) => {
-          const textarea = element as HTMLTextAreaElement;
-          return textarea.validationMessage;
-        });
+      const submitButton = form.locator('mdc-button[type="submit"]');
+      await submitButton.click();
+      const validationMessage = await textareaElement.evaluate(element => {
+        const textarea = element as HTMLTextAreaElement;
+        return textarea.validationMessage;
+      });
 
-        expect(validationMessage).toContain('Input must not exceed 11 characters');
+      expect(validationMessage).toContain('Input must not exceed 11 characters');
 
-        await textareaElement.fill('short text');
-        await componentsPage.removeAttribute(mdcTextarea, 'help-text-type');
-        await componentsPage.removeAttribute(mdcTextarea, 'help-text');
-        await expect(textareaElement).toHaveValue('short text');
-        expect(validationMessage).toContain('');
-      },
-    );
+      await textareaElement.fill('short text');
+      await componentsPage.removeAttribute(mdcTextarea, 'help-text-type');
+      await componentsPage.removeAttribute(mdcTextarea, 'help-text');
+      await expect(textareaElement).toHaveValue('short text');
+      expect(validationMessage).toContain('');
+    });
   });
 
   /**
@@ -325,22 +325,16 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
     });
 
     // textarea field with rows set to 7 & cols to 30
-    textareaStickerSheet.setAttributes({ ...attributes,
-      rows: 5,
-      cols: 30,
-    });
+    textareaStickerSheet.setAttributes({ ...attributes, rows: 5, cols: 30 });
     await textareaStickerSheet.createMarkupWithCombination({});
 
     // textarea field with max-character-limit set to 100
-    textareaStickerSheet.setAttributes({ ...attributes,
-      'max-character-limit': 100,
-      value: 'Example Text',
-      cols: 30,
-    });
+    textareaStickerSheet.setAttributes({ ...attributes, 'max-character-limit': 100, value: 'Example Text', cols: 30 });
     await textareaStickerSheet.createMarkupWithCombination({});
 
     // textarea field with max-character-limit set to 10 & value exceeding the limit
-    textareaStickerSheet.setAttributes({ ...attributes,
+    textareaStickerSheet.setAttributes({
+      ...attributes,
       'max-character-limit': 10,
       value: 'This is a long text',
       'help-text': 'Input must not exceed 10 characters',
@@ -350,23 +344,16 @@ test('mdc-textarea', async ({ componentsPage, browserName }) => {
     await textareaStickerSheet.createMarkupWithCombination({});
 
     // disabled textarea field with value
-    textareaStickerSheet.setAttributes({ ...attributes,
-      value: 'Disabled',
-      disabled: '',
-      cols: 30,
-    });
+    textareaStickerSheet.setAttributes({ ...attributes, value: 'Disabled', disabled: '', cols: 30 });
     await textareaStickerSheet.createMarkupWithCombination({});
 
     // readonly textarea field with value
-    textareaStickerSheet.setAttributes({ ...attributes,
-      value: 'Readonly value',
-      readonly: '',
-      cols: 30,
-    });
+    textareaStickerSheet.setAttributes({ ...attributes, value: 'Readonly value', readonly: '', cols: 30 });
     await textareaStickerSheet.createMarkupWithCombination({});
 
     // textarea that is marked required
-    textareaStickerSheet.setAttributes({ ...attributes,
+    textareaStickerSheet.setAttributes({
+      ...attributes,
       required: 'required',
       placeholder: 'Textarea is required',
       cols: 30,

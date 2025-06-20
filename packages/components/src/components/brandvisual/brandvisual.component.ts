@@ -36,10 +36,10 @@ class Brandvisual extends Component {
     if (this.name) {
       // dynamic import of the lit template from the momentum brand-visuals package
       return import(`@momentum-design/brand-visuals/dist/logos/ts/${this.name}.ts`)
-        .then((module) => {
+        .then(module => {
           this.handleBrandVisualLoadedSuccess(module.default());
         })
-        .catch((error) => {
+        .catch(error => {
           this.handleBrandVisualLoadedFailure(error);
         });
     }
@@ -52,7 +52,7 @@ class Brandvisual extends Component {
 
     if (changedProperties.has('name')) {
       // import brandVisual data if name changes:
-      this.getBrandVisualData().catch((err) => {
+      this.getBrandVisualData().catch(err => {
         if (this.onerror) {
           this.onerror(err);
         }

@@ -7,9 +7,9 @@ import { TAG_NAME } from './menuitemradio.constants';
 MenuItemRadio.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-menuitemradio']: MenuItemRadio
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-menuitemradio']: MenuItemRadio;
+  }
 }
 
 export default MenuItemRadio;

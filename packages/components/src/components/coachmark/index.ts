@@ -5,9 +5,9 @@ import '../button';
 Coachmark.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-coachmark']: Coachmark
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-coachmark']: Coachmark;
+  }
 }
 
 export default Coachmark;

@@ -15,7 +15,7 @@ import type { Size } from './bullet.types';
  * @cssproperty --mdc-bullet-size-small - small size value of the bullet
  * @cssproperty --mdc-bullet-size-medium - medium size value of the bullet
  * @cssproperty --mdc-bullet-size-large - large size value of the bullet
-*/
+ */
 class Bullet extends Component {
   /**
    * Size of the bullet

@@ -16,7 +16,7 @@ type SetupOptions = {
   size?: AvatarSize;
   src?: string;
   secondButtonForFocus?: boolean;
-}
+};
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
@@ -32,7 +32,7 @@ const setup = async (args: SetupOptions) => {
         ${restArgs.src ? `src="${restArgs.src}"` : ''}
       >
       </mdc-avatarbutton>
-      ${restArgs.secondButtonForFocus ? '<mdc-avatarButton initials=\'AV\'></mdc-avatarButton></div>' : ''}
+      ${restArgs.secondButtonForFocus ? "<mdc-avatarButton initials='AV'></mdc-avatarButton></div>" : ''}
         `,
     clearDocument: true,
   });
@@ -85,13 +85,13 @@ test('mdc-avatarbutton', async ({ componentsPage }) => {
         btn.classList.toggle('btn-onclick');
       };
 
-      (btn as HTMLElement).onkeydown = (e) => {
+      (btn as HTMLElement).onkeydown = e => {
         if (e.key === 'Enter' || e.key === ' ') {
           btn.setAttribute('aria-label', 'avatarButton pressed down');
         }
       };
 
-      (btn as HTMLElement).onkeyup = (e) => {
+      (btn as HTMLElement).onkeyup = e => {
         if (e.key === 'Enter' || e.key === ' ') {
           btn.setAttribute('aria-label', 'avatarButton pressed up');
         }

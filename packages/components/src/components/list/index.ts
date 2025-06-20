@@ -5,9 +5,9 @@ import '../text';
 List.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-list']: List
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-list']: List;
+  }
 }
 
 export default List;

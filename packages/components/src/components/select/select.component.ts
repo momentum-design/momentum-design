@@ -96,16 +96,19 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    * child of an option group.
    */
   private getAllValidOptions() {
-    return this.optionsList
-      ?.map((option) => {
-        if (option.tagName.toLowerCase() === OPTION_TAG_NAME) {
-          return option;
-        }
-        if (option.tagName.toLowerCase() === OPTION_GROUP_TAG_NAME) {
-          return Array.from(option.children).filter((optgroup) => optgroup.tagName.toLowerCase() === OPTION_TAG_NAME);
-        }
-        return [];
-      }).flat() || [];
+    return (
+      this.optionsList
+        ?.map(option => {
+          if (option.tagName.toLowerCase() === OPTION_TAG_NAME) {
+            return option;
+          }
+          if (option.tagName.toLowerCase() === OPTION_GROUP_TAG_NAME) {
+            return Array.from(option.children).filter(optgroup => optgroup.tagName.toLowerCase() === OPTION_TAG_NAME);
+          }
+          return [];
+        })
+        .flat() || []
+    );
   }
 
   private handlePopoverOpen(): void {
@@ -127,7 +130,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    */
   private updateTabIndexForAllOptions(selectedOption?: EventTarget | null): void {
     let isTabIndexSet = false;
-    this.getAllValidOptions().forEach((option) => {
+    this.getAllValidOptions().forEach(option => {
       if (option === selectedOption) {
         this.setSelectedValue(option);
         isTabIndexSet = true;
@@ -237,7 +240,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   private handlePopoverOnOpen(event: KeyboardEvent): void {
     switch (event.key) {
       case KEYS.TAB: {
-        const focusedOptionIndex = this.getAllValidOptions().findIndex((option) => option === event.target);
+        const focusedOptionIndex = this.getAllValidOptions().findIndex(option => option === event.target);
         this.setFocusAndTabIndex(focusedOptionIndex);
         event.preventDefault();
         break;
@@ -315,7 +318,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    */
   private handleOptionsNavigation(event: KeyboardEvent): void {
     const options = this.getAllValidOptions();
-    const currentIndex = options.findIndex((option) => option === event.target);
+    const currentIndex = options.findIndex(option => option === event.target);
     const newIndex = this.getNewIndexBasedOnKey(event.key, currentIndex, options.length);
     if (newIndex !== -1) {
       this.setFocusAndTabIndex(newIndex);
@@ -347,11 +350,11 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
     }
     if (key === KEYS.PAGE_DOWN) {
       // Jumps visual focus down 10 options (or to last option).
-      return (currentIndex + 10) > optionsLength ? optionsLength - 1 : currentIndex + 10;
+      return currentIndex + 10 > optionsLength ? optionsLength - 1 : currentIndex + 10;
     }
     if (key === KEYS.PAGE_UP) {
       // Jumps visual focus up 10 options (or to first option).
-      return (currentIndex - 10) < 0 ? 0 : currentIndex - 10;
+      return currentIndex - 10 < 0 ? 0 : currentIndex - 10;
     }
     return -1;
   }
@@ -359,11 +362,11 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   private updateActivedescendant(target?: EventTarget | null): void {
     const options = this.getAllValidOptions();
     if (target) {
-      const currentIndex = options.findIndex((option) => option === target);
+      const currentIndex = options.findIndex(option => option === target);
       this.activeDescendant = options[currentIndex]?.id ?? '';
     } else {
       // If no target is provided, find the option with tabindex="0" or the first option
-      const focusedOption = options.find((option) => option.getAttribute('tabindex') === '0');
+      const focusedOption = options.find(option => option.getAttribute('tabindex') === '0');
       this.activeDescendant = focusedOption?.id ?? options[0]?.id ?? '';
     }
   }
@@ -394,8 +397,8 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
 
     // Find the currently selected option or the first option
     const options = this.getAllValidOptions();
-    const selectedOption = options.find((option) => option.hasAttribute('selected'));
-    const focusedOption = options.find((option) => option.getAttribute('tabindex') === '0');
+    const selectedOption = options.find(option => option.hasAttribute('selected'));
+    const focusedOption = options.find(option => option.getAttribute('tabindex') === '0');
 
     // Set activeDescendant to the selected/focused option or first option
     this.activeDescendant = (selectedOption || focusedOption || options[0])?.id ?? '';
@@ -413,7 +416,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    */
   public override firstUpdated() {
     const options = this.getAllValidOptions();
-    const selectedOptionIndex = options.findIndex((option) => option?.hasAttribute('selected'));
+    const selectedOptionIndex = options.findIndex(option => option?.hasAttribute('selected'));
     if (selectedOptionIndex !== -1) {
       this.setSelectedValue(options[selectedOptionIndex]);
       this.updateTabIndexForAllOptions(options[selectedOptionIndex]);
@@ -464,8 +467,8 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
    * @returns An array of `TemplateResult` representing the option elements.
    */
   private getOptionsContentFromSlot(): TemplateResult[] {
-    return this.getAllValidOptions()
-      .map((option) => html`
+    return this.getAllValidOptions().map(
+      option => html`
         <option
           part="native-select"
           value="${option.getAttribute('value') ?? ''}"
@@ -475,7 +478,8 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         >
           ${option.textContent}
         </option>
-    `);
+      `,
+    );
   }
 
   /**
@@ -506,9 +510,8 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
         @hidden="${this.handlePopoverClose}"
         style="--mdc-popover-max-width: 100%; --mdc-popover-max-height: ${this.height};"
       >
-           <slot 
-           @click="${this.handleOptionsClick}"></slot>
-          </mdc-popover>
+        <slot @click="${this.handleOptionsClick}"></slot>
+      </mdc-popover>
     `;
   }
 
@@ -540,16 +543,16 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
           class="${this.disabled ? '' : 'mdc-focus-ring'}"
           role="${ROLE.COMBOBOX}"
           aria-activedescendant="${ifDefined(this.activeDescendant || undefined)}"
-          aria-controls="${(ifDefined(this.displayPopover ? 'options-popover' : undefined))}"
+          aria-controls="${ifDefined(this.displayPopover ? 'options-popover' : undefined)}"
           aria-label="${this.dataAriaLabel ?? ''}"
           aria-labelledby="${this.label ? FORMFIELD_DEFAULTS.HEADING_ID : ''}"
           aria-expanded="${this.displayPopover ? 'true' : 'false'}"
           aria-required="${this.required ? 'true' : 'false'}"
           aria-invalid="${this.helpTextType === VALIDATION.ERROR ? 'true' : 'false'}"
         >
-      ${this.selectedIcon
-    ? html`<mdc-icon length-unit="rem" size="1" name="${this.selectedIcon}" part="selected-icon"></mdc-icon>`
-    : nothing}
+          ${this.selectedIcon
+            ? html`<mdc-icon length-unit="rem" size="1" name="${this.selectedIcon}" part="selected-icon"></mdc-icon>`
+            : nothing}
           <mdc-text
             part="base-text ${this.selectedValueText ? 'selected' : ''}"
             type="${TYPE.BODY_MIDSIZE_REGULAR}"
@@ -561,8 +564,7 @@ class Select extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
             <mdc-icon size="1" length-unit="rem" name="${this.baseIconName}"></mdc-icon>
           </div>
         </div>
-        ${this.getNativeSelect()}
-        ${this.getPopoverContent()}
+        ${this.getNativeSelect()} ${this.getPopoverContent()}
       </div>
       ${this.renderHelperText()}
     `;

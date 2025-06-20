@@ -5,9 +5,9 @@ import '../icon';
 ButtonLink.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-buttonlink']: ButtonLink
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-buttonlink']: ButtonLink;
+  }
 }
 
 export default ButtonLink;

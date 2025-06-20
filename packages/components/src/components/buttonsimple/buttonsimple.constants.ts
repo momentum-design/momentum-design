@@ -29,9 +29,4 @@ const DEFAULTS = {
   ARIA_STATE_KEY: 'aria-pressed',
 };
 
-export {
-  TAG_NAME,
-  DEFAULTS,
-  BUTTON_TYPE,
-  BUTTON_SIZES,
-};
+export { TAG_NAME, DEFAULTS, BUTTON_TYPE, BUTTON_SIZES };

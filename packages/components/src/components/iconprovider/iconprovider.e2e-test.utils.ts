@@ -14,9 +14,7 @@ class SubComponentIconProvider extends Component {
   private iconProviderContext = providerUtils.consume({ host: this, context: IconProvider.Context });
 
   override render() {
-    return html`
-      <p style="margin: 0;">${this.iconLabelPrefix}${this.iconProviderContext.value?.lengthUnit}</p>
-    `;
+    return html` <p style="margin: 0;">${this.iconLabelPrefix}${this.iconProviderContext.value?.lengthUnit}</p> `;
   }
 }
 

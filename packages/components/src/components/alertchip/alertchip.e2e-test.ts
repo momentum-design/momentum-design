@@ -12,7 +12,7 @@ type SetupOptions = {
   label: string;
   variant?: VariantType;
   secondChipForFocus?: boolean;
-}
+};
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;

@@ -1,4 +1,3 @@
- 
 import { Meta, Title, Primary, Controls } from '@storybook/blocks';
 
 import FocusRingStories from './subcomponent-focusring.stories';
@@ -7,20 +6,24 @@ import FocusRingStories from './subcomponent-focusring.stories';
 
 <Title>Focus Ring</Title>
 
-**The Focus Ring provides a visual indication of focus for users navigating via keyboard or mouse.** 
+**The Focus Ring provides a visual indication of focus for users navigating via
+keyboard or mouse.**
 
-When the shared styles of the Focus Ring are applied to a component, 
-that component in its focus state will automatically have the focus ring wrap 
-around every form (like rounded corners, edges, etc.) without increasing its overall size.
+When the shared styles of the Focus Ring are applied to a component, that
+component in its focus state will automatically have the focus ring wrap around
+every form (like rounded corners, edges, etc.) without increasing its overall
+size.
 
-> **Note:**
-> Currently, the Focus Ring is not exported as part of our Global Web Library.
-> However, once there is an accessible component that requires the Focus Ring 
-  in its focus state (triggered by tab or click), the focus ring will wrap around that web component.
+> **Note:** Currently, the Focus Ring is not exported as part of our Global Web
+> Library. However, once there is an accessible component that requires the
+> Focus Ring in its focus state (triggered by tab or click), the focus ring will
+> wrap around that web component.
 
-**IMPORTANT:** The Focus Ring is following the HTML standards by using `focus-visible`, which will make the visible FocusRing appear around the button
-for example only when tabbing to it, not when clicking (`document.activeElement` will be the button in both cases). 
-This is the standard HTML behavior and is accessibility compliant.
+**IMPORTANT:** The Focus Ring is following the HTML standards by using
+`focus-visible`, which will make the visible FocusRing appear around the button
+for example only when tabbing to it, not when clicking (`document.activeElement`
+will be the button in both cases). This is the standard HTML behavior and is
+accessibility compliant.
 
 <Primary />
 

@@ -66,7 +66,6 @@ async function loop() {
       .map(event => `${event.reactName}: '${event.name}' as EventName<EventsInherited['${event.reactName}Event']>`)
       .join(',\n');
 
-
     // ** TYPE IMPORTS **
     const convertModulePathToTypesFile = modulePath => {
       return modulePath.replace('src/', '').replace('.component.ts', '.types');

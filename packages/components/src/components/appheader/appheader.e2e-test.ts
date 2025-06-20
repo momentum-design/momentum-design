@@ -9,7 +9,7 @@ type SetupOptions = {
     center?: string;
     trailing?: string;
   };
-}
+};
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, slots } = args;
@@ -35,7 +35,7 @@ const mockElement = {
   TRAILING: '<mdc-avatar size="32" name="avatar" initials="MD"></mdc-avatar>',
 };
 
-const generateChildren = ({ leading, center, trailing }: {leading?: string, center?: string, trailing?: string}) => `
+const generateChildren = ({ leading, center, trailing }: { leading?: string; center?: string; trailing?: string }) => `
     ${leading ? `<div slot="leading">${leading}</div>` : ''}
     ${center ? `<div slot="center">${center}</div>` : ''}
     ${trailing ? `<div slot="trailing">${trailing}</div>` : ''}
@@ -48,37 +48,37 @@ test('mdc-appheader', async ({ componentsPage }) => {
   await test.step('visual-regression', async () => {
     const appheaderStickerSheet = new StickerSheet(componentsPage, 'mdc-appheader');
 
-    appheaderStickerSheet.setChildren(generateChildren(
-      {
+    appheaderStickerSheet.setChildren(
+      generateChildren({
         leading: mockElement.LEADING,
         center: mockElement.CENTER,
         trailing: mockElement.TRAILING,
-      },
-    ));
+      }),
+    );
     await appheaderStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
 
-    appheaderStickerSheet.setChildren(generateChildren(
-      {
+    appheaderStickerSheet.setChildren(
+      generateChildren({
         center: mockElement.CENTER,
         trailing: mockElement.TRAILING,
-      },
-    ));
+      }),
+    );
     await appheaderStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
 
-    appheaderStickerSheet.setChildren(generateChildren(
-      {
+    appheaderStickerSheet.setChildren(
+      generateChildren({
         leading: mockElement.LEADING,
         trailing: mockElement.TRAILING,
-      },
-    ));
+      }),
+    );
     await appheaderStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
 
-    appheaderStickerSheet.setChildren(generateChildren(
-      {
+    appheaderStickerSheet.setChildren(
+      generateChildren({
         leading: mockElement.LEADING,
         center: mockElement.CENTER,
-      },
-    ));
+      }),
+    );
     await appheaderStickerSheet.createMarkupWithCombination({}, { createNewRow: true });
 
     await appheaderStickerSheet.mountStickerSheet();
@@ -133,8 +133,7 @@ test('mdc-appheader', async ({ componentsPage }) => {
       const trailingSlot = trailingSection.locator('slot[name="trailing"]');
 
       // Ensure the slot has NO assigned content
-      await expect(trailingSlot.evaluate((slot) =>
-        (slot as HTMLSlotElement).assignedElements().length)).resolves.toBe(0);
+      await expect(trailingSlot.evaluate(slot => (slot as HTMLSlotElement).assignedElements().length)).resolves.toBe(0);
     });
   });
 });

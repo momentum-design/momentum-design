@@ -7,9 +7,9 @@ import '../divider';
 SideNavigation.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-sidenavigation']: SideNavigation
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-sidenavigation']: SideNavigation;
+  }
 }
 
 export default SideNavigation;

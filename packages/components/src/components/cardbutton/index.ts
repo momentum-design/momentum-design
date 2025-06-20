@@ -6,9 +6,9 @@ import '../text';
 CardButton.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-cardbutton']: CardButton
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-cardbutton']: CardButton;
+  }
 }
 
 export default CardButton;

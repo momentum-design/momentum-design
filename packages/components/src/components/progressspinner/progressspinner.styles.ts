@@ -38,7 +38,7 @@ const styles = css`
 
   :host::part(success-icon) {
     color: var(--mdc-progress-success-color);
-}
+  }
 
   :host::part(error-icon) {
     color: var(--mdc-progress-error-color);

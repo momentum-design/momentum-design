@@ -60,7 +60,7 @@ class ButtonGroup extends Component {
    * @internal
    */
   private handleSlotChange() {
-    this.buttons.forEach((button) => {
+    this.buttons.forEach(button => {
       button.setAttribute('size', this.size.toString());
       button.setAttribute('variant', this.variant);
     });

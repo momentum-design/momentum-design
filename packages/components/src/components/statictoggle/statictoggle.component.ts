@@ -36,9 +36,9 @@ import type { ToggleSize } from './statictoggle.types';
  */
 class StaticToggle extends DisabledMixin(Component) {
   /**
-  * Determines whether the toggle is active or inactive.
-  * @default false
-  */
+   * Determines whether the toggle is active or inactive.
+   * @default false
+   */
   @property({ type: Boolean, reflect: true }) checked = false;
 
   /**

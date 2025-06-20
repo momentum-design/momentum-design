@@ -22,11 +22,11 @@ const render = (args: Args) => html`
     label="${ifDefined(args.label)}"
     help-text="${ifDefined(args['help-text'])}"
     data-aria-label="${ifDefined(args['data-aria-label'])}"
-    
     ?checked="${args.checked}"
     ?required="${args.required}"
     ?autofocus="${args.autofocus}"
-    ?disabled="${args.disabled}">
+    ?disabled="${args.disabled}"
+  >
   </mdc-toggle>
 `;
 
@@ -137,8 +137,8 @@ export const WithHelperText: StoryObj = {
 };
 
 export const Disabled: StoryObj = {
-  render: (args) => html`
-    <div style="display: flex; flex-direction: column; gap: 5px">
+  render: args =>
+    html` <div style="display: flex; flex-direction: column; gap: 5px">
       <mdc-toggle label="inactive toggle" disabled size="${args.size}"></mdc-toggle>
       <mdc-toggle label="active toggle" disabled checked size="${args.size}"></mdc-toggle>
     </div>`,
@@ -151,7 +151,7 @@ export const WithoutLabel: StoryObj = {
 };
 
 export const ToggleInsideForm: StoryObj = {
-  render: (args) => {
+  render: args => {
     const onSubmit = (event: Event) => {
       event.preventDefault();
       const formData = new FormData(event.target as HTMLFormElement);
@@ -159,17 +159,23 @@ export const ToggleInsideForm: StoryObj = {
       action('Form Submitted')({ value: selectedValues });
     };
     return html`
-    <form @submit="${onSubmit}">
-      <fieldset>
-        <legend>Form Example</legend>
-        <mdc-toggle name="toggleName" value="toggleValue" label="Agree to Terms" size="${args.size}" 
-          required validation-message='Toggle this switch to continue'></mdc-toggle>
-          <div style='display: flex; gap: 0.25rem'>
-            <mdc-button type="submit" size='24'>Submit</mdc-button>
-            <mdc-button type="reset" size='24' variant='secondary'>Reset</mdc-button>
+      <form @submit="${onSubmit}">
+        <fieldset>
+          <legend>Form Example</legend>
+          <mdc-toggle
+            name="toggleName"
+            value="toggleValue"
+            label="Agree to Terms"
+            size="${args.size}"
+            required
+            validation-message="Toggle this switch to continue"
+          ></mdc-toggle>
+          <div style="display: flex; gap: 0.25rem">
+            <mdc-button type="submit" size="24">Submit</mdc-button>
+            <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
           </div>
-      </fieldset>
-    </form>
-  `;
+        </fieldset>
+      </form>
+    `;
   },
 };

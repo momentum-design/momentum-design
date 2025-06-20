@@ -5,9 +5,9 @@ import '../button';
 Popover.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-popover']: Popover
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-popover']: Popover;
+  }
 }
 
 export default Popover;

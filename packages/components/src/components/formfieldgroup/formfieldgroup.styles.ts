@@ -1,7 +1,6 @@
 import { css } from 'lit';
 
 const styles = css`
-
   :host::part(container) {
     display: flex;
     flex-direction: column;
@@ -14,7 +13,7 @@ const styles = css`
     gap: 0.25rem;
   }
 
-  :host::part(label-text){
+  :host::part(label-text) {
     font-weight: bold;
   }
 `;

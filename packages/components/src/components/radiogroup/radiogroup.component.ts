@@ -35,10 +35,10 @@ class RadioGroup extends FormfieldGroup {
    */
   override firstUpdated() {
     Array.from(this.shadowRoot?.querySelectorAll('slot') || [])
-      ?.flatMap((slot) => slot.assignedElements({ flatten: true }))
-      ?.filter((el) => el.tagName.toLowerCase() === RADIO_TAGNAME || el.tagName.toLowerCase() === CARD_RADIO_TAGNAME)
-      ?.filter((radio) => !radio.hasAttribute('name'))
-      ?.forEach((radio) => {
+      ?.flatMap(slot => slot.assignedElements({ flatten: true }))
+      ?.filter(el => el.tagName.toLowerCase() === RADIO_TAGNAME || el.tagName.toLowerCase() === CARD_RADIO_TAGNAME)
+      ?.filter(radio => !radio.hasAttribute('name'))
+      ?.forEach(radio => {
         radio.setAttribute('name', this.name);
         if (this.required) radio.setAttribute('required', this.required.toString());
       });

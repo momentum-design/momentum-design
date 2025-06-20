@@ -254,7 +254,7 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(
     }
 
     if (changedProperties.has('visible')) {
-      const oldValue = (changedProperties.get('visible') as boolean | undefined);
+      const oldValue = changedProperties.get('visible') as boolean | undefined;
       await this.isOpenUpdated(oldValue, this.visible);
     }
     if (changedProperties.has('zIndex')) {
@@ -264,12 +264,12 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(
       this.updateFooterButtonColors(this.variant);
     }
     if (
-      changedProperties.has('ariaLabel')
-      || changedProperties.has('ariaLabelledBy')
-      || changedProperties.has('ariaDescribedBy')
-      || changedProperties.has('ariaDescription')
-      || changedProperties.has('headerText')
-      || changedProperties.has('descriptionText')
+      changedProperties.has('ariaLabel') ||
+      changedProperties.has('ariaLabelledBy') ||
+      changedProperties.has('ariaDescribedBy') ||
+      changedProperties.has('ariaDescription') ||
+      changedProperties.has('headerText') ||
+      changedProperties.has('descriptionText')
     ) {
       this.setupAriaLabelledDescribedBy();
     }
@@ -441,29 +441,28 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(
   public override render() {
     return html`
       ${this.headerText
-    ? html`
-      <div part="header-section">
-        <div part="header">
-          <slot name="header-prefix"></slot>
-          <mdc-text
-            part="header-text"
-            tagname="${VALID_TEXT_TAGS[this.headerTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
-            type="${TYPE.BODY_LARGE_BOLD}"  
-          >
-            ${this.headerText}
-          </mdc-text>
-        </div>
-        ${this.descriptionText
-    ? html`<mdc-text
-          part="description-text"
-          tagname="${VALID_TEXT_TAGS[this.descriptionTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
-          type="${TYPE.BODY_MIDSIZE_REGULAR}"
-        >
-        ${this.descriptionText}
-        </mdc-text>`
-    : nothing}
-      </div>`
-    : nothing}
+        ? html` <div part="header-section">
+            <div part="header">
+              <slot name="header-prefix"></slot>
+              <mdc-text
+                part="header-text"
+                tagname="${VALID_TEXT_TAGS[this.headerTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
+                type="${TYPE.BODY_LARGE_BOLD}"
+              >
+                ${this.headerText}
+              </mdc-text>
+            </div>
+            ${this.descriptionText
+              ? html`<mdc-text
+                  part="description-text"
+                  tagname="${VALID_TEXT_TAGS[this.descriptionTagName.toUpperCase() as keyof typeof VALID_TEXT_TAGS]}"
+                  type="${TYPE.BODY_MIDSIZE_REGULAR}"
+                >
+                  ${this.descriptionText}
+                </mdc-text>`
+              : nothing}
+          </div>`
+        : nothing}
       <mdc-button
         part="dialog-close-btn"
         prefix-icon="${DEFAULTS.CANCEL_ICON}"

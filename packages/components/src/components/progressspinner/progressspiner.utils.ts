@@ -31,10 +31,10 @@ const getProgressArc = (percentage: number): number => {
   }
   const progressArc = (percentage / 100) * DEFAULTS.CIRCUMFERENCE - DEFAULTS.GAP_SIZE;
   /** Ensure the progress arc is not negative due to gap size
-  * The 0.1% is a minimum threshold to ensure the arc is visible.
-  * This is especially useful for very small percentages.
-  * This is particularly important for accessibility and visual clarity.
-  */
+   * The 0.1% is a minimum threshold to ensure the arc is visible.
+   * This is especially useful for very small percentages.
+   * This is particularly important for accessibility and visual clarity.
+   */
   return Math.max(progressArc, 0.1 * percentage);
 };
 

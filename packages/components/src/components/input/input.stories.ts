@@ -45,7 +45,7 @@ const render = (args: Args) => {
     list="${ifDefined(args.list)}"
     size="${ifDefined(args.size)}"
     clear-aria-label="${ifDefined(args['clear-aria-label'])}"
-    ></mdc-input>`;
+  ></mdc-input>`;
 };
 
 const meta: Meta = {
@@ -189,13 +189,14 @@ export const Example: StoryObj = {
 
 export const InputInSmallContainer: StoryObj = {
   render: () => html`
-  <div style='width: 200px;'>
-    <mdc-input 
-    label='This is a large label text which is truncated into an ellipsis'
-    required 
-    placeholder='placeholder'>
-    </mdc-input>
-  </div>
+    <div style="width: 200px;">
+      <mdc-input
+        label="This is a large label text which is truncated into an ellipsis"
+        required
+        placeholder="placeholder"
+      >
+      </mdc-input>
+    </div>
   `,
 };
 
@@ -203,53 +204,57 @@ export const AllVariants: StoryObj = {
   argTypes: {
     ...disableControls(['label', 'help-text', 'required', 'placeholder', 'value', 'help-text-type']),
   },
-  render: () => html`
-  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
-    ${Object.values(VALIDATION).map((validation) => html`<mdc-input
-      help-text-type="${validation}"
-      label="Label"
-      help-text="Helper text"
-      placeholder="Placeholder"
-      value="${validation}_value"
-      ></mdc-input>`)}
-      <mdc-input 
-      label="Label"
-      help-text="Helper text"
-      help-text-type="default"
-      required
-      placeholder="Input is required"
+  render: () =>
+    html` <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
+      ${Object.values(VALIDATION).map(
+        validation =>
+          html`<mdc-input
+            help-text-type="${validation}"
+            label="Label"
+            help-text="Helper text"
+            placeholder="Placeholder"
+            value="${validation}_value"
+          ></mdc-input>`,
+      )}
+      <mdc-input
+        label="Label"
+        help-text="Helper text"
+        help-text-type="default"
+        required
+        placeholder="Input is required"
       ></mdc-input>
-      <mdc-input 
-      label="Label"
-      help-text="Helper text"
-      help-text-type="default"
-      readonly 
-      placeholder="Placeholder"
-      leading-icon="placeholder-bold"
-      value="This is readonly"
+      <mdc-input
+        label="Label"
+        help-text="Helper text"
+        help-text-type="default"
+        readonly
+        placeholder="Placeholder"
+        leading-icon="placeholder-bold"
+        value="This is readonly"
       ></mdc-input>
-      <mdc-input 
-      label="Label"
-      help-text="Helper text"
-      help-text-type="default"
-      disabled placeholder="Placeholder"
-      value="Text disabled"
+      <mdc-input
+        label="Label"
+        help-text="Helper text"
+        help-text-type="default"
+        disabled
+        placeholder="Placeholder"
+        value="Text disabled"
       ></mdc-input>
-      <mdc-input 
-      label="Label"
-      help-text="Helper text"
-      help-text-type="default"
-      placeholder="Placeholder"
-      prefix-text="https://"
+      <mdc-input
+        label="Label"
+        help-text="Helper text"
+        help-text-type="default"
+        placeholder="Placeholder"
+        prefix-text="https://"
       ></mdc-input>
-      <mdc-input 
-      label="Label"
-      help-text="Helper text"
-      help-text-type="default"
-      placeholder="Placeholder"
-      leading-icon="placeholder-bold"
+      <mdc-input
+        label="Label"
+        help-text="Helper text"
+        help-text-type="default"
+        placeholder="Placeholder"
+        leading-icon="placeholder-bold"
       ></mdc-input>
-      </div>`,
+    </div>`,
 };
 
 export const FormFieldInput: StoryObj = {
@@ -262,22 +267,22 @@ export const FormFieldInput: StoryObj = {
     };
 
     return html`
-    <form @submit=${handleSubmit}>
-      <fieldset>
-      <legend>Form Example</legend>
-      <mdc-input
-       name='user-name'
-        label="First Name"
-        required
-        placeholder="Enter your name"
-        validation-message="Name is required"
-      ></mdc-input>
-      <div style='display: flex; gap: 0.25rem;; margin-top: 0.25rem'>
-        <mdc-button type="submit" size='24'>Submit</mdc-button>
-        <mdc-button type="reset" size='24' variant='secondary'>Reset</mdc-button>
-      </div>
-      </fieldset>
-    </form>
+      <form @submit=${handleSubmit}>
+        <fieldset>
+          <legend>Form Example</legend>
+          <mdc-input
+            name="user-name"
+            label="First Name"
+            required
+            placeholder="Enter your name"
+            validation-message="Name is required"
+          ></mdc-input>
+          <div style="display: flex; gap: 0.25rem;; margin-top: 0.25rem">
+            <mdc-button type="submit" size="24">Submit</mdc-button>
+            <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+          </div>
+        </fieldset>
+      </form>
     `;
   },
 };

@@ -6,9 +6,9 @@ import '../icon';
 FilterChip.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-filterchip']: FilterChip
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-filterchip']: FilterChip;
+  }
 }
 
 export default FilterChip;

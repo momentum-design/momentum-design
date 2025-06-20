@@ -130,16 +130,15 @@ class Progressbar extends DataAriaLabelMixin(FormfieldWrapper) {
     const isInline = this.variant === VARIANT.INLINE;
     return html`
       ${isInline
-    ? html`<div part="inline-label-container">${this.renderLabelElement()} ${this.renderProgressbar()}</div>`
-    : html`
+        ? html`<div part="inline-label-container">${this.renderLabelElement()} ${this.renderProgressbar()}</div>`
+        : html`
             <div part="label-container">
               ${this.renderLabelElement()}
               ${this.variant === VARIANT.DEFAULT && this.label
-    ? html`<span part="percentage">${this.clampedValue}%</span>`
-    : ''}
+                ? html`<span part="percentage">${this.clampedValue}%</span>`
+                : ''}
             </div>
-            ${this.renderProgressbar()}
-            ${this.renderHelperText()}
+            ${this.renderProgressbar()} ${this.renderHelperText()}
           `}
     `;
   }

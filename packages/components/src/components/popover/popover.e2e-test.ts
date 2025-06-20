@@ -499,12 +499,10 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
       await expect(triggerButton).toBeFocused();
     });
 
-    await test.step(
-      'if hide-on-escape = true and propagate-event-on-escape = false, pressing ESC closes popover, not dialog',
-      async () => {
+    await test.step('if hide-on-escape = true and propagate-event-on-escape = false, pressing ESC closes popover, not dialog', async () => {
       // Mount a dialog with a popover inside
-        await componentsPage.mount({
-          html: `
+      await componentsPage.mount({
+        html: `
           <mdc-dialog id="test-dialog" visible>
             <div slot="dialog-body">
               <mdc-button id="trigger-button-dialog">Open Popover</mdc-button>
@@ -521,50 +519,49 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
             </div>
           </mdc-dialog>
         `,
-          clearDocument: true,
-        });
+        clearDocument: true,
+      });
 
-        const dialog = componentsPage.page.locator('#test-dialog');
-        const popover = componentsPage.page.locator('#popover');
+      const dialog = componentsPage.page.locator('#test-dialog');
+      const popover = componentsPage.page.locator('#popover');
 
-        // add event listener to dialog for close event
-        // this is to ensure that the dialog closes when the close button is clicked
-        // since the dialog is a controlled component, the consumer needs to handle the close event
-        // and set the visible attribute to false
-        await componentsPage.page.evaluate((dialogId) => {
-          const dialogElement = document.querySelector(`#${dialogId}`) as Dialog;
-          if (dialogElement) {
-            dialogElement.onclose = () => {
-              dialogElement.visible = false;
-            };
-          }
-        }, 'test-dialog');
+      // add event listener to dialog for close event
+      // this is to ensure that the dialog closes when the close button is clicked
+      // since the dialog is a controlled component, the consumer needs to handle the close event
+      // and set the visible attribute to false
+      await componentsPage.page.evaluate(dialogId => {
+        const dialogElement = document.querySelector(`#${dialogId}`) as Dialog;
+        if (dialogElement) {
+          dialogElement.onclose = () => {
+            dialogElement.visible = false;
+          };
+        }
+      }, 'test-dialog');
 
-        // Ensure dialog and popover are visible
-        await expect(dialog).toBeVisible();
+      // Ensure dialog and popover are visible
+      await expect(dialog).toBeVisible();
 
-        await componentsPage.page.locator('#trigger-button-dialog').focus();
-        await componentsPage.page.keyboard.press('Enter');
-        await expect(popover).toBeVisible();
+      await componentsPage.page.locator('#trigger-button-dialog').focus();
+      await componentsPage.page.keyboard.press('Enter');
+      await expect(popover).toBeVisible();
 
-        // Focus the popover and press Escape
-        await expect(
-          componentsPage.page.getByRole('button', { name: 'Button inside Popover inside dialog' }),
-        ).toBeFocused();
-        await componentsPage.page.keyboard.press('Escape');
+      // Focus the popover and press Escape
+      await expect(
+        componentsPage.page.getByRole('button', { name: 'Button inside Popover inside dialog' }),
+      ).toBeFocused();
+      await componentsPage.page.keyboard.press('Escape');
 
-        // Popover should close, dialog should remain open and Popover Button Trigger should be focused
-        await expect(popover).not.toBeVisible();
-        await expect(dialog).toBeVisible();
-        await expect(componentsPage.page.locator('#trigger-button-dialog')).toBeFocused();
+      // Popover should close, dialog should remain open and Popover Button Trigger should be focused
+      await expect(popover).not.toBeVisible();
+      await expect(dialog).toBeVisible();
+      await expect(componentsPage.page.locator('#trigger-button-dialog')).toBeFocused();
 
-        // Press Escape again to close the dialog
-        await componentsPage.page.keyboard.press('Escape');
-        // Dialog should close
-        await expect(dialog).not.toBeVisible();
-        await expect(popover).not.toBeVisible();
-      },
-    );
+      // Press Escape again to close the dialog
+      await componentsPage.page.keyboard.press('Escape');
+      // Dialog should close
+      await expect(dialog).not.toBeVisible();
+      await expect(popover).not.toBeVisible();
+    });
 
     await test.step('if focus-trap set, focus should be lock in popover', async () => {
       await setup({

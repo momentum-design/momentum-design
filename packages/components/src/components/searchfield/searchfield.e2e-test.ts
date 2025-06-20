@@ -53,10 +53,14 @@ const setup = async (args: SetupOptions) => {
       ${restArgs.size ? `size="${restArgs.size}"` : ''}
       ${restArgs.dataAriaLabel ? `data-aria-label="${restArgs.dataAriaLabel}"` : ''}
       ${restArgs.clearAriaLabel ? `clear-aria-label="${restArgs.clearAriaLabel}"` : ''}
-      ${restArgs.filters ? `><mdc-inputchip 
+      ${
+        restArgs.filters
+          ? `><mdc-inputchip 
         label="Selected" 
         slot="filters" 
-        ></mdc-inputchip>` : '>'}</mdc-searchfield>
+        ></mdc-inputchip>`
+          : '>'
+      }</mdc-searchfield>
       <mdc-button>Second Button</mdc-button></div>
     `,
     clearDocument: true,
@@ -84,29 +88,28 @@ test('mdc-searchfield', async ({ componentsPage }) => {
     await searchfieldStickerSheet.createMarkupWithCombination({});
 
     // disabled searchField field with value
-    searchfieldStickerSheet.setAttributes({ ...attributes,
-      value: 'Disabled',
-      disabled: true,
-    });
+    searchfieldStickerSheet.setAttributes({ ...attributes, value: 'Disabled', disabled: true });
     await searchfieldStickerSheet.createMarkupWithCombination({});
 
     // searchField without label
-    searchfieldStickerSheet.setAttributes({ 'data-aria-label': 'Search',
+    searchfieldStickerSheet.setAttributes({
+      'data-aria-label': 'Search',
       value: 'Clear button',
       'clear-aria-label': 'clear',
     });
     await searchfieldStickerSheet.createMarkupWithCombination({});
 
-    searchfieldStickerSheet
-      .setChildren(`<mdc-inputchip 
+    searchfieldStickerSheet.setChildren(`<mdc-inputchip 
         slot='filters' 
         label='Query: value' 
         clear-aria-label='clear'
       ></mdc-inputchip>`);
-    searchfieldStickerSheet.setAttributes({ value: '',
+    searchfieldStickerSheet.setAttributes({
+      value: '',
       placeholder: 'Search for value',
       'data-aria-label': 'Search',
-      'clear-aria-label': 'clear' });
+      'clear-aria-label': 'clear',
+    });
     await searchfieldStickerSheet.createMarkupWithCombination({});
 
     await searchfieldStickerSheet.mountStickerSheet({
@@ -272,7 +275,7 @@ test('mdc-searchfield', async ({ componentsPage }) => {
     await test.step('filter chip should be focusable and interactable when present', async () => {
       await setup({ componentsPage, value: '', clearAriaLabel: 'clear', filters: true });
       const inputChipBtn = searchField.locator('mdc-button[part="close-icon"]');
-      await inputChipBtn.evaluate((btn) => {
+      await inputChipBtn.evaluate(btn => {
         btn.addEventListener('click', () => {
           btn.classList.toggle('remove-filter');
         });

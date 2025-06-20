@@ -419,8 +419,9 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     }
     if (changedProperties.has('trigger')) {
       const triggers = this.trigger.split(' ');
-      const validTriggers = triggers.filter((trigger) =>
-        Object.values(TRIGGER).includes(trigger as ValueOf<typeof TRIGGER>));
+      const validTriggers = triggers.filter(trigger =>
+        Object.values(TRIGGER).includes(trigger as ValueOf<typeof TRIGGER>),
+      );
 
       this.setAttribute('trigger', validTriggers.length > 0 ? this.trigger : DEFAULTS.TRIGGER);
       this.removeEventListeners();
@@ -436,9 +437,9 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
       this.utils.setupAppendTo();
     }
     if (
-      changedProperties.has('interactive')
-      || changedProperties.has('aria-label')
-      || changedProperties.has('aria-labelledby')
+      changedProperties.has('interactive') ||
+      changedProperties.has('aria-label') ||
+      changedProperties.has('aria-labelledby')
     ) {
       this.utils.setupAccessibility();
     }
@@ -728,7 +729,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     return html`
       <div class="popover-hover-bridge"></div>
       ${this.closeButton
-    ? html` <mdc-button
+        ? html` <mdc-button
             class="popover-close"
             prefix-icon="cancel-bold"
             variant="tertiary"
@@ -736,7 +737,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
             aria-label=${ifDefined(this.closeButtonAriaLabel) || ''}
             @click="${this.hidePopover}"
           ></mdc-button>`
-    : nothing}
+        : nothing}
       ${this.showArrow ? html`<div class="popover-arrow"></div>` : nothing}
       <div part="popover-content">
         <slot></slot>

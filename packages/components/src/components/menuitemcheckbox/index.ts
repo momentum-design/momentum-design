@@ -9,9 +9,9 @@ import { TAG_NAME } from './menuitemcheckbox.constants';
 MenuItemCheckbox.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-menuitemcheckbox']: MenuItemCheckbox
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-menuitemcheckbox']: MenuItemCheckbox;
+  }
 }
 
 export default MenuItemCheckbox;

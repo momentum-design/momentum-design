@@ -192,25 +192,19 @@ const interactionsTestCases = async (componentsPage: ComponentsPage) => {
       await expect(toggletip).toBeVisible();
       await expect(toggletip.locator('.popover-close')).toBeFocused();
     });
-    await test.step(
-      'Pressing Enter key when trigger button is focussed should show toggletip and focus on close button',
-      async () => {
-        await triggerButton.focus();
-        await componentsPage.page.keyboard.press('Enter');
-        await expect(toggletip).toBeVisible();
-        await expect(toggletip.locator('.popover-close')).toBeFocused();
-        await expect(triggerButton).toHaveAttribute('aria-expanded', 'true');
-      },
-    );
-    await test.step(
-      'Pressing Space key when trigger button is focussed should show toggletip and focus on close button',
-      async () => {
-        await triggerButton.focus();
-        await componentsPage.page.keyboard.press('Enter');
-        await expect(toggletip).toBeVisible();
-        await expect(toggletip.locator('.popover-close')).toBeFocused();
-      },
-    );
+    await test.step('Pressing Enter key when trigger button is focussed should show toggletip and focus on close button', async () => {
+      await triggerButton.focus();
+      await componentsPage.page.keyboard.press('Enter');
+      await expect(toggletip).toBeVisible();
+      await expect(toggletip.locator('.popover-close')).toBeFocused();
+      await expect(triggerButton).toHaveAttribute('aria-expanded', 'true');
+    });
+    await test.step('Pressing Space key when trigger button is focussed should show toggletip and focus on close button', async () => {
+      await triggerButton.focus();
+      await componentsPage.page.keyboard.press('Enter');
+      await expect(toggletip).toBeVisible();
+      await expect(toggletip.locator('.popover-close')).toBeFocused();
+    });
     await test.step('focus should move to next focusable element in toggletip', async () => {
       await triggerButton.focus();
       await componentsPage.page.keyboard.press('Enter');
