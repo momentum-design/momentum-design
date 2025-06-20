@@ -341,6 +341,12 @@ jobs:
           path: '**/dist'
           key: dist-${{ env.rid }}
 
+      - name: Debug dist
+        run: |
+          pkg_name=${{ matrix.package }}
+          ls -R packages/$(basename $pkg_name)/dist || echo "Dist is missing!"
+
+
       - name: Synchronize Packages
         run: yarn
 
