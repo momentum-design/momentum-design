@@ -7,6 +7,7 @@ import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
 import { ARROW_ICONS, ARROW_DIRECTIONS, ARROW_POSITIONS } from './menuitem.constants';
 import type { ArrowPositions, ArrowDirections } from './menuitem.types';
 import styles from './menuitem.styles';
+import { KEYS } from '../../utils/keys';
 
 /**
  * menuitem component is inherited by listitem component with the role set `menuitem`.<br/>
@@ -46,6 +47,38 @@ class MenuItem extends ListItem {
    */
   @property({ type: String, reflect: true, attribute: 'arrow-direction' })
   arrowDirection?: ArrowDirections;
+
+  constructor() {
+    super();
+    this.addEventListener('keyup', this.handleKeyUp);
+  }
+
+  /**
+   * Handles the keydown event for the menu item.
+   * If the Enter key is pressed, it triggers a click event on the menu item.
+   * This allows keyboard users to activate the menu item using the Enter key.
+   * @param event - The keyboard event that triggered the action.
+   */
+  override handleKeyDown(event: KeyboardEvent): void {
+    if (event.key === KEYS.ENTER) {
+      this.triggerClickEvent();
+      event.preventDefault();
+    }
+  }
+
+  /**
+   * Handles the keyup event for the menu item.
+   * If the Space key is released, it triggers a click event on the menu item.
+   * This allows keyboard users to activate the menu item using the Space key.
+   * It also prevents the default action of the Space key to avoid scrolling the page.
+   * @param event - The keyboard event that triggered the action.
+   */
+  private handleKeyUp(event: KeyboardEvent): void {
+    if (event.key === KEYS.SPACE) {
+      this.triggerClickEvent();
+      event.preventDefault();
+    }
+  }
 
   override connectedCallback(): void {
     super.connectedCallback();

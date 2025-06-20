@@ -287,13 +287,13 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   private hoverTimer: number | null = null;
 
   /** @internal */
-  private isTriggerClicked: boolean = false;
+  protected isTriggerClicked: boolean = false;
 
   /** @internal */
   private openDelay: number = 0;
 
   /** @internal */
-  private closeDelay: number = 0;
+  protected closeDelay: number = 0;
 
   /** @internal */
   private utils: PopoverUtils;
@@ -471,7 +471,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
    *
    * @param event - The mouse event.
    */
-  private onOutsidePopoverClick = (event: MouseEvent) => {
+  protected onOutsidePopoverClick = (event: MouseEvent) => {
     if (popoverStack.peek() !== this) return;
 
     let insidePopoverClick = false;
