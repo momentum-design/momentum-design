@@ -4,7 +4,7 @@ import { ROLE } from '../../utils/roles';
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
 import { ORIENTATION } from '../menubar/menubar.constants';
 import Popover from '../popover/popover.component';
-import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { COLOR, POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { TAG_NAME as MENU_POPOVER } from './menupopover.constants';
 import styles from './menupopover.styles';
 import { isActiveMenuItem, isValidMenuItem, isValidPopover } from './menupopover.utils';
@@ -63,16 +63,23 @@ class MenuPopover extends Popover {
 
   override connectedCallback() {
     super.connectedCallback();
-    this.role = ROLE.MENU;
 
-    this.focusTrap = true;
+    this.role = ROLE.MENU;
+    this.ariaOrientation = ORIENTATION.VERTICAL;
+    this.backdrop = false;
+    this.color = COLOR.TONAL;
+    this.disableAriaExpanded = false;
+    this.disableAriaHasPopup = true;
     this.focusBackToTrigger = true;
+    this.focusTrap = true;
+    this.hideOnBlur = true;
     this.hideOnEscape = true;
     this.hideOnOutsideClick = true;
+    this.interactive = true;
     this.placement = POPOVER_PLACEMENT.BOTTOM_START;
     this.showArrow = false;
-    this.interactive = true;
-    this.ariaOrientation = ORIENTATION.VERTICAL;
+    this.closeButton = undefined as unknown as boolean;
+    this.closeButtonAriaLabel = undefined as unknown as string;
   }
 
   override async firstUpdated(changedProperties: PropertyValues) {
