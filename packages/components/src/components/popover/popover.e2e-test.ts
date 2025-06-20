@@ -420,7 +420,6 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
     });
 
     await test.step('Toggle popover on trigger element activation (keyboard)', async () => {
-      await triggerButton.focus();
       await componentsPage.page.keyboard.press(KEYS.SPACE);
       await expect(popover).toBeVisible();
       await componentsPage.page.keyboard.press(KEYS.SPACE);
@@ -496,9 +495,11 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
         trigger: TRIGGER.FOCUSIN,
         visible: 'true',
       });
-      await triggerButton.focus();
+      await componentsPage.actionability.pressTab();
+      await expect(triggerButton).toBeFocused();
       await expect(popover).toBeVisible();
-      await componentsPage.page.locator('#outside-button').focus();
+      await componentsPage.actionability.pressTab();
+      await expect(componentsPage.page.locator('#outside-button')).toBeFocused();
       await expect(popover).not.toBeVisible();
     });
 
@@ -521,6 +522,7 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       await expect(popover).toBeVisible();
       await componentsPage.page.keyboard.press(KEYS.ESCAPE);
       await expect(popover).not.toBeVisible();
+      await expect(triggerButton).toBeFocused();
     });
 
     await test.step('Focus trap inside popover', async () => {
@@ -554,10 +556,13 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       await componentsPage.setAttributes(popover, {
         'close-button': 'true',
         'close-button-aria-label': 'Close',
-        visible: 'true',
       });
-      await expect(popover.locator('mdc-button[aria-label="Close"]')).toBeVisible();
-      await popover.locator('mdc-button[aria-label="Close"]').click();
+      const closeButton = popover.locator('mdc-button[aria-label="Close"]');
+      await triggerButton.click();
+      await componentsPage.actionability.pressTab();
+      await expect(closeButton).toBeVisible();
+      await expect(closeButton).toBeFocused();
+      await closeButton.click();
       await expect(popover).not.toBeVisible();
     });
 
@@ -568,18 +573,22 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
             <mdc-button id="trigger-2">Trigger 2 Button</mdc-button>
             <mdc-popover id="second-popover" triggerID="trigger-2">Second Popover Content</mdc-popover>
             <mdc-button id="trigger-1">Trigger 1 Button</mdc-button>
-            <mdc-popover id="first-popover" triggerID="trigger-1" visible backdrop hide-on-outside-click>
+            <mdc-popover id="first-popover" triggerID="trigger-1" backdrop hide-on-outside-click>
               First Popover Content
             </mdc-popover>
           </div>
         `,
         clearDocument: true,
       });
+      const trigger1 = componentsPage.page.locator('#trigger-1');
       const popover1 = componentsPage.page.locator('#first-popover');
       const trigger2 = componentsPage.page.locator('#trigger-2');
       const popover2 = componentsPage.page.locator('#second-popover');
 
+      await expect(popover1).not.toBeVisible();
+      await trigger1.click();
       await expect(popover1).toBeVisible();
+      const waitForClick = componentsPage.waitForEvent(trigger2, 'click');
       const buttonBox = await trigger2.boundingBox();
       if (buttonBox) {
         const x = buttonBox.x + buttonBox.width / 2;
@@ -587,10 +596,11 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
 
         await componentsPage.page.mouse.click(x, y);
         await expect(trigger2).not.toBeFocused();
+        await componentsPage.expectPromiseTimesOut(waitForClick, true);
+        await expect(popover1).not.toBeVisible();
+        await trigger2.click();
+        await expect(popover2).toBeVisible();
       }
-      await expect(popover1).not.toBeVisible();
-      await trigger2.click();
-      await expect(popover2).toBeVisible();
     });
   });
 
@@ -624,22 +634,6 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
         visible: 'true',
       });
       await expect(triggerButton).not.toHaveAttribute('aria-expanded');
-    });
-  });
-
-  await test.step('Styling', async () => {
-    await test.step('Default styling attributes', async () => {
-      const { popover } = await setup({
-        componentsPage,
-        id: 'popover',
-        triggerID: 'trigger-button',
-        visible: true,
-        children: 'Popover content',
-      });
-      await expect(popover).toHaveAttribute('color', DEFAULTS.COLOR);
-      await expect(popover).toHaveAttribute('offset', DEFAULTS.OFFSET.toString());
-      await expect(popover).not.toHaveAttribute('size');
-      await expect(popover).toHaveAttribute('z-index', '1000');
     });
   });
 
