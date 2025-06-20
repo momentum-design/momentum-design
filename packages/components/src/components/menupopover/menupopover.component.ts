@@ -75,8 +75,8 @@ class MenuPopover extends Popover {
     this.hideOnOutsideClick = true;
     this.interactive = true;
     this.showArrow = false;
-    this.closeButton = undefined as unknown as boolean;
-    this.closeButtonAriaLabel = undefined as unknown as string;
+    this.closeButton = false;
+    this.closeButtonAriaLabel = null;
   }
 
   override async firstUpdated(changedProperties: PropertyValues) {
