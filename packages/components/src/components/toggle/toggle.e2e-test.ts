@@ -193,8 +193,8 @@ const testToRun = async (componentsPage: ComponentsPage) => {
     });
 
     /**
-      * ACCESSIBILITY
-      */
+     * ACCESSIBILITY
+     */
     await test.step('accessibility', async () => {
       await componentsPage.accessibility.checkForA11yViolations('mdc-toggle');
     });

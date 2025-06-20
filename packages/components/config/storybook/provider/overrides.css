@@ -1,26 +1,26 @@
 .bodyOverride {
-    padding: 0 !important;
-    height: 100vh;
+  padding: 0 !important;
+  height: 100vh;
 }
 
 #storybook-root {
-    height: 100%;
+  height: 100%;
 }
 
 #root-inner {
-    height: 100%;
+  height: 100%;
 }
 
 .backgroundGradient {
-    height: calc(100% - 2rem);
-    padding: 1rem;
-    background: var(--mds-color-theme-background-gradient-primary-normal)
+  height: calc(100% - 2rem);
+  padding: 1rem;
+  background: var(--mds-color-theme-background-gradient-primary-normal);
 }
 
 .docs-story > div {
-    padding: 0;
+  padding: 0;
 }
 
 .docs-story .innerZoomElementWrapper > div {
-    border: none !important;
+  border: none !important;
 }

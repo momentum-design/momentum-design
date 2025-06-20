@@ -7,7 +7,7 @@ import { disableControls } from '../../../config/storybook/utils';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
 const render = (args: Args) => html`
-<mdc-text type="${args.type}" tagname="${ifDefined(args.tagname)}">${args.children}</mdc-text>
+  <mdc-text type="${args.type}" tagname="${ifDefined(args.tagname)}">${args.children}</mdc-text>
 `;
 
 const meta: Meta = {
@@ -33,9 +33,7 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
-    ...disableControls([
-      'text',
-    ]),
+    ...disableControls(['text']),
   },
 };
 

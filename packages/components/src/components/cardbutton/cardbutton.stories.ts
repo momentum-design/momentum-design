@@ -8,8 +8,8 @@ import { DEFAULTS, ORIENTATIONS, VARIANTS } from '../card/card.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 import { BUTTON_VARIANTS } from '../button/button.constants';
 
-const render = (args: Args) => html`
-  <mdc-cardbutton 
+const render = (args: Args) =>
+  html` <mdc-cardbutton
     @click="${action('onclick')}"
     @keydown="${action('onkeydown')}"
     @keyup="${action('onkeyup')}"
@@ -29,7 +29,9 @@ const render = (args: Args) => html`
     role="${args.role}"
     tabIndex="${args.tabIndex}"
     class="${args.class}"
-    style="${args.style}">${args.children}</mdc-cardbutton>`;
+    style="${args.style}"
+    >${args.children}</mdc-cardbutton
+  >`;
 
 const meta: Meta = {
   title: 'Components/card/cardbutton',
@@ -91,14 +93,13 @@ const meta: Meta = {
 };
 export default meta;
 
-const defaultChildren = html`<mdc-text slot='body' 
-type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
-Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
-Praesent gravida dui diam, non elementum risus laoreet vitae. 
-Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
-Vivamus mattis ligula eget imperdiet tempor. 
-Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`;
+const defaultChildren = html`<mdc-text slot="body" type="body-midsize-medium" tagname="span"
+  >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vulputate aliquet risus, eget auctor ante egestas
+  facilisis. Curabitur malesuada tempor pulvinar. Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at.
+  Praesent gravida dui diam, non elementum risus laoreet vitae. Sed sed nunc ullamcorper, porttitor dui id, posuere
+  justo. Curabitur laoreet sem ut pharetra hendrerit. Vivamus mattis ligula eget imperdiet tempor. Ut in massa luctus
+  lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text
+>`;
 
 export const Example: StoryObj = {
   args: {
@@ -180,10 +181,11 @@ export const ContentBeforeBody: StoryObj = {
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: DEFAULTS.ORIENTATION,
-    children: html`
-    <mdc-text slot='before-body' type="body-midsize-medium" tagname="span">Content Before Body</mdc-text>
-    <img src="https://placehold.co/100x50" alt="Image Alt" slot="before-body"/>
-    ${defaultChildren}`,
+    children: html` <mdc-text slot="before-body" type="body-midsize-medium" tagname="span"
+        >Content Before Body</mdc-text
+      >
+      <img src="https://placehold.co/100x50" alt="Image Alt" slot="before-body" />
+      ${defaultChildren}`,
   },
 };
 
@@ -198,9 +200,8 @@ export const ContentAfterBody: StoryObj = {
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: ORIENTATIONS.HORIZONTAL,
-    children: html`
-    <img src="https://placehold.co/100x50" alt="Image Alt" slot="after-body"/>
-    <mdc-text slot='after-body' type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
-    ${defaultChildren}`,
+    children: html` <img src="https://placehold.co/100x50" alt="Image Alt" slot="after-body" />
+      <mdc-text slot="after-body" type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
+      ${defaultChildren}`,
   },
 };

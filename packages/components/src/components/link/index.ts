@@ -5,9 +5,9 @@ import '../icon';
 Link.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-link']: Link
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-link']: Link;
+  }
 }
 
 export default Link;

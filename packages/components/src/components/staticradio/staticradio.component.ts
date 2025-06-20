@@ -27,22 +27,21 @@ import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
  */
 class StaticRadio extends DisabledMixin(Component) {
   /**
-  * Determines whether the radio is selected or unselected.
-  *
-  * @default false
-  */
+   * Determines whether the radio is selected or unselected.
+   *
+   * @default false
+   */
   @property({ type: Boolean, reflect: true }) checked = false;
 
   /**
-  * Determines whether the radio is read-only.
-  *
-  * @default false
-  */
+   * Determines whether the radio is read-only.
+   *
+   * @default false
+   */
   @property({ type: Boolean, reflect: true }) readonly = false;
 
   public override render() {
-    return html`
-      <slot></slot>
+    return html` <slot></slot>
       <span part="radio-icon" class="icon"></span>`;
   }
 

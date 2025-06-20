@@ -53,13 +53,11 @@ const setup = async (args: SetupOptions) => {
 
 test.describe.parallel('mdc-cardbutton', () => {
   test('attributes and interactions', async ({ componentsPage }) => {
-    const cardbutton = await setup({ componentsPage,
-      cardTitle: 'Card Title',
-      subtitle: 'Card Subtitle' });
+    const cardbutton = await setup({ componentsPage, cardTitle: 'Card Title', subtitle: 'Card Subtitle' });
 
     /**
-   * ATTRIBUTES
-   */
+     * ATTRIBUTES
+     */
     await test.step('attributes', async () => {
       await test.step('attribute X should be present on component by default', async () => {
         await expect(cardbutton).toHaveAttribute('variant', 'border');
@@ -133,8 +131,8 @@ test.describe.parallel('mdc-cardbutton', () => {
     });
 
     /**
-   * INTERACTIONS
-   */
+     * INTERACTIONS
+     */
     await test.step('interactions', async () => {
       const setupArgs = {
         componentsPage,
@@ -256,8 +254,8 @@ test.describe.parallel('mdc-cardbutton', () => {
   test.use({ viewport: { width: 2000, height: 1400 } });
   test('visual-regression & accessibility vertical', async ({ componentsPage }) => {
     /**
-   * VISUAL REGRESSION & ACCESSIBILITY
-   */
+     * VISUAL REGRESSION & ACCESSIBILITY
+     */
     const isDeskop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
     if (isDeskop) {
       await componentsPage.page.setViewportSize({ width: 1000, height: 1400 });
@@ -265,7 +263,8 @@ test.describe.parallel('mdc-cardbutton', () => {
       await componentsPage.accessibility.checkForA11yViolations('cardbutton-vertical');
     } else {
       await test.step('visual-regression & accessibility', async () => {
-        await setup({ componentsPage,
+        await setup({
+          componentsPage,
           cardTitle: 'Card Title',
           subtitle: 'Card Subtitle',
           orientation: 'vertical',
@@ -282,8 +281,8 @@ test.describe.parallel('mdc-cardbutton', () => {
 
   test('visual-regression & accessibility horizontal', async ({ componentsPage }) => {
     /**
-   * VISUAL REGRESSION & ACCESSIBILITY
-   */
+     * VISUAL REGRESSION & ACCESSIBILITY
+     */
     const isDeskop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
     if (isDeskop) {
       await componentsPage.page.setViewportSize({ width: 2000, height: 1000 });
@@ -291,7 +290,8 @@ test.describe.parallel('mdc-cardbutton', () => {
       await componentsPage.accessibility.checkForA11yViolations('cardbutton-horizontal');
     } else {
       await test.step('visual-regression & accessibility', async () => {
-        await setup({ componentsPage,
+        await setup({
+          componentsPage,
           cardTitle: 'Card Title',
           subtitle: 'Card Subtitle',
           orientation: 'horizontal',

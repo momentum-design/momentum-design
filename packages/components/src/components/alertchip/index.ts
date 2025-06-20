@@ -6,9 +6,9 @@ import '../icon';
 AlertChip.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-alertchip']: AlertChip
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-alertchip']: AlertChip;
+  }
 }
 
 export default AlertChip;

@@ -8,18 +8,6 @@ import { disableControls } from '../../../config/storybook/utils';
 const MAX_COUNTER_LIST = [9, 99, 999];
 
 const render = (args: Args) => html`
-<mdc-badge
-  type="${args.type}"
-  icon-name="${args['icon-name']}"
-  counter="${args.counter}"
-  max-counter="${args['max-counter']}"
-  variant="${args.variant}"
-  ?overlay=${args.overlay}
-  aria-label="${args['aria-label']}"
-></mdc-badge>
-`;
-const renderOverlay = (args: Args) => html`
-<div style="background-color: var(--mds-color-theme-inverted-background-normal); padding: 5px;">
   <mdc-badge
     type="${args.type}"
     icon-name="${args['icon-name']}"
@@ -29,7 +17,19 @@ const renderOverlay = (args: Args) => html`
     ?overlay=${args.overlay}
     aria-label="${args['aria-label']}"
   ></mdc-badge>
-</div>
+`;
+const renderOverlay = (args: Args) => html`
+  <div style="background-color: var(--mds-color-theme-inverted-background-normal); padding: 5px;">
+    <mdc-badge
+      type="${args.type}"
+      icon-name="${args['icon-name']}"
+      counter="${args.counter}"
+      max-counter="${args['max-counter']}"
+      variant="${args.variant}"
+      ?overlay=${args.overlay}
+      aria-label="${args['aria-label']}"
+    ></mdc-badge>
+  </div>
 `;
 
 const meta: Meta = {

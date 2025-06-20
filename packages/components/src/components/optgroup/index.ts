@@ -5,9 +5,9 @@ import '../text';
 OptGroup.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-optgroup']: OptGroup
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-optgroup']: OptGroup;
+  }
 }
 
 export default OptGroup;

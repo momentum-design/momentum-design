@@ -65,7 +65,7 @@ class List extends DataAriaLabelMixin(Component) {
    * @returns The index of the target element in the listItems array.
    */
   private getCurrentIndex(target: EventTarget | null): number {
-    return this.listItems.findIndex((node) => node === target || node === (target as HTMLElement).parentElement);
+    return this.listItems.findIndex(node => node === target || node === (target as HTMLElement).parentElement);
   }
 
   /**
@@ -122,14 +122,17 @@ class List extends DataAriaLabelMixin(Component) {
   }
 
   public override render() {
-    const headerText = this.headerText ? html`
-      <mdc-text
-        id="${HEADER_ID}"
-        part="header-text"
-        type="${TYPE.BODY_MIDSIZE_BOLD}"
-        tagname="${VALID_TEXT_TAGS.SPAN}"
-      >${this.headerText}</mdc-text>
-    ` : nothing;
+    const headerText = this.headerText
+      ? html`
+          <mdc-text
+            id="${HEADER_ID}"
+            part="header-text"
+            type="${TYPE.BODY_MIDSIZE_BOLD}"
+            tagname="${VALID_TEXT_TAGS.SPAN}"
+            >${this.headerText}</mdc-text
+          >
+        `
+      : nothing;
     return html`
       <div
         role="${this.dataRole}"

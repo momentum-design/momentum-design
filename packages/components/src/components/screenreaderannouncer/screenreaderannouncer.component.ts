@@ -114,23 +114,17 @@ class ScreenreaderAnnouncer extends Component {
       announcementContainer.id = announcementId;
       announcementContainer.ariaLive = ariaLive;
       document.getElementById(this.identity)?.appendChild(announcementContainer);
-      const timeOutId = window.setTimeout(
-        () => {
-          const announcementElement = document.createElement('p');
-          announcementElement.textContent = announcement;
-          announcementContainer.appendChild(announcementElement);
+      const timeOutId = window.setTimeout(() => {
+        const announcementElement = document.createElement('p');
+        announcementElement.textContent = announcement;
+        announcementContainer.appendChild(announcementElement);
 
-          this.ariaLiveAnnouncementIds.push(announcementId);
-          const timeOutId = window.setTimeout(
-            () => {
-              document.getElementById(announcementId)?.remove();
-            },
-            timeout,
-          );
-          this.timeOutIds.push(timeOutId);
-        },
-        delay,
-      );
+        this.ariaLiveAnnouncementIds.push(announcementId);
+        const timeOutId = window.setTimeout(() => {
+          document.getElementById(announcementId)?.remove();
+        }, timeout);
+        this.timeOutIds.push(timeOutId);
+      }, delay);
       this.timeOutIds.push(timeOutId);
     }
   }
@@ -139,10 +133,10 @@ class ScreenreaderAnnouncer extends Component {
    * Clears all timeouts and removes all announcements from the screen reader.
    */
   private clearTimeOutsAndAnnouncements() {
-    this.timeOutIds.forEach((timeOutId) => {
+    this.timeOutIds.forEach(timeOutId => {
       window.clearTimeout(timeOutId);
     });
-    this.ariaLiveAnnouncementIds.forEach((announcementId) => {
+    this.ariaLiveAnnouncementIds.forEach(announcementId => {
       document.getElementById(announcementId)?.remove();
     });
   }

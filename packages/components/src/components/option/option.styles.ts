@@ -12,7 +12,7 @@ const styles = css`
     height: 2.25rem;
   }
   :host::part(default-slot) {
-    display: none; 
+    display: none;
   }
   :host::part(leading-icon),
   :host::part(trailing) {

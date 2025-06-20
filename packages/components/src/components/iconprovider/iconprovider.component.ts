@@ -151,13 +151,13 @@ class IconProvider extends Provider<IconProviderContext> {
 
   protected updateContext(): void {
     if (
-      this.context.value.fileExtension !== this.fileExtension
-      || this.context.value.iconSet !== this.iconSet
-      || this.context.value.url !== this.url
-      || this.context.value.lengthUnit !== this.lengthUnit
-      || this.context.value.size !== this.size
-      || this.context.value.cacheName !== this.cacheName
-      || this.context.value.cacheStrategy !== this.cacheStrategy
+      this.context.value.fileExtension !== this.fileExtension ||
+      this.context.value.iconSet !== this.iconSet ||
+      this.context.value.url !== this.url ||
+      this.context.value.lengthUnit !== this.lengthUnit ||
+      this.context.value.size !== this.size ||
+      this.context.value.cacheName !== this.cacheName ||
+      this.context.value.cacheStrategy !== this.cacheStrategy
     ) {
       this.updateValuesInContext();
       this.context.updateObservers();

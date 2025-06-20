@@ -68,19 +68,14 @@ class Chip extends IconNameMixin(Buttonsimple) {
    */
   private renderIcon() {
     if (!this.iconName) return nothing;
-    return html`
-      <mdc-icon 
-        name="${this.iconName as IconNames}" 
-        length-unit="rem" 
-        size="1"></mdc-icon>
-    `;
+    return html` <mdc-icon name="${this.iconName as IconNames}" length-unit="rem" size="1"></mdc-icon> `;
   }
 
   public override render() {
     return html`
-        ${this.renderIcon()}
-        <mdc-text type="${DEFAULTS.TEXT_TYPE}" tagname="${DEFAULTS.TAG_NAME}">${this.label}</mdc-text>
-      `;
+      ${this.renderIcon()}
+      <mdc-text type="${DEFAULTS.TEXT_TYPE}" tagname="${DEFAULTS.TAG_NAME}">${this.label}</mdc-text>
+    `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];

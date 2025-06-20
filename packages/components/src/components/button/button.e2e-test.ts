@@ -175,7 +175,7 @@ const testForButtonSizes = async (args: SetupOptions, buttonType: string) => {
     });
 
     if (buttonType === 'icon') {
-      const iconSizesToTest = Object.values(ICON_BUTTON_SIZES).filter((size) => size !== ICON_BUTTON_SIZES[20]);
+      const iconSizesToTest = Object.values(ICON_BUTTON_SIZES).filter(size => size !== ICON_BUTTON_SIZES[20]);
       for (const size of iconSizesToTest) {
         await test.step(`attribute size="${size}" should be present on ${buttonType} button`, async () => {
           await componentsPage.setAttributes(button, { size: `${size}`, 'aria-label': 'icon-button-20' });
@@ -554,14 +554,14 @@ test.describe.parallel('mdc-button', () => {
         btn.classList.toggle('btn-onclick');
       };
 
-      (btn as HTMLElement).onkeydown = (e) => {
+      (btn as HTMLElement).onkeydown = e => {
         if (e.key === 'Enter' || e.key === ' ') {
           const value = e.key === 'Enter' ? 'enter' : 'space';
           btn.textContent = `${value} down`;
         }
       };
 
-      (btn as HTMLElement).onkeyup = (e) => {
+      (btn as HTMLElement).onkeyup = e => {
         if (e.key === 'Enter' || e.key === ' ') {
           const value = e.key === 'Enter' ? 'enter' : 'space';
           btn.textContent = `${value} up`;

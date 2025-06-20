@@ -51,13 +51,14 @@ const defaultChildren = `<mdc-text slot='body'
 const setup = async (args: SetupOptions) => {
   const { componentsPage, isGroup, ...restArgs } = args;
   await componentsPage.mount({
-    html: isGroup ? `
+    html: isGroup
+      ? `
     <mdc-formfieldgroup>
     <div style="display: flex; gap: 0.5rem; flex-wrap: wrap">
-    ${Array.from({ length: 3 }, (_, i) => renderCardCheckbox({ ...restArgs,
-    cardTitle: `cardcheckbox-${i}` })).join('')}
+    ${Array.from({ length: 3 }, (_, i) => renderCardCheckbox({ ...restArgs, cardTitle: `cardcheckbox-${i}` })).join('')}
     </div>
-    </mdc-formfieldgroup>` : renderCardCheckbox(restArgs),
+    </mdc-formfieldgroup>`
+      : renderCardCheckbox(restArgs),
     clearDocument: true,
   });
 
@@ -73,13 +74,11 @@ const setup = async (args: SetupOptions) => {
 
 test.describe.parallel('mdc-cardcheckbox', () => {
   test('attributes and interactions', async ({ componentsPage }) => {
-    const cardcheckbox = await setup({ componentsPage,
-      cardTitle: 'Card Title',
-      subtitle: 'Card Subtitle' });
+    const cardcheckbox = await setup({ componentsPage, cardTitle: 'Card Title', subtitle: 'Card Subtitle' });
 
     /**
-   * ATTRIBUTES
-   */
+     * ATTRIBUTES
+     */
     await test.step('attributes', async () => {
       await test.step('attribute X should be present on component by default', async () => {
         await expect(cardcheckbox).toHaveAttribute('variant', 'border');
@@ -160,8 +159,8 @@ test.describe.parallel('mdc-cardcheckbox', () => {
     });
 
     /**
-   * INTERACTIONS
-   */
+     * INTERACTIONS
+     */
     await test.step('interactions', async () => {
       const setupArgs = {
         componentsPage,
@@ -305,8 +304,8 @@ test.describe.parallel('mdc-cardcheckbox', () => {
   test.use({ viewport: { width: 2000, height: 1400 } });
   test('visual-regression & accessibility vertical', async ({ componentsPage }) => {
     /**
-   * VISUAL REGRESSION & ACCESSIBILITY
-   */
+     * VISUAL REGRESSION & ACCESSIBILITY
+     */
     const isDeskop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
     if (isDeskop) {
       await componentsPage.page.setViewportSize({ width: 1000, height: 1400 });
@@ -314,7 +313,8 @@ test.describe.parallel('mdc-cardcheckbox', () => {
       await componentsPage.accessibility.checkForA11yViolations('cardcheckbox-vertical');
     } else {
       await test.step('visual-regression & accessibility', async () => {
-        await setup({ componentsPage,
+        await setup({
+          componentsPage,
           cardTitle: 'Card Title',
           subtitle: 'Card Subtitle',
           orientation: 'vertical',
@@ -331,8 +331,8 @@ test.describe.parallel('mdc-cardcheckbox', () => {
 
   test('visual-regression & accessibility horizontal', async ({ componentsPage }) => {
     /**
-   * VISUAL REGRESSION & ACCESSIBILITY
-   */
+     * VISUAL REGRESSION & ACCESSIBILITY
+     */
     const isDeskop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
     if (isDeskop) {
       await componentsPage.page.setViewportSize({ width: 2000, height: 1000 });
@@ -340,7 +340,8 @@ test.describe.parallel('mdc-cardcheckbox', () => {
       await componentsPage.accessibility.checkForA11yViolations('cardcheckbox-horizontal');
     } else {
       await test.step('visual-regression & accessibility', async () => {
-        await setup({ componentsPage,
+        await setup({
+          componentsPage,
           cardTitle: 'Card Title',
           subtitle: 'Card Subtitle',
           orientation: 'horizontal',

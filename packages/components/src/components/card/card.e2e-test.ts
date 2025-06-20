@@ -63,9 +63,7 @@ test.describe.parallel('mdc-card', () => {
      * ATTRIBUTES
      */
     await test.step('attributes', async () => {
-      const card = await setup({ componentsPage,
-        cardTitle: 'Card Title',
-        subtitle: 'Card Subtitle' });
+      const card = await setup({ componentsPage, cardTitle: 'Card Title', subtitle: 'Card Subtitle' });
       await test.step('attribute X should be present on component by default', async () => {
         await expect(card).toHaveAttribute('variant', 'border');
         await expect(card).toHaveAttribute('orientation', 'vertical');
@@ -110,14 +108,16 @@ test.describe.parallel('mdc-card', () => {
     });
 
     /**
-   * INTERACTIONS
-   * This is applicable only for interactive card (card with interactive elements in the children)
-   */
+     * INTERACTIONS
+     * This is applicable only for interactive card (card with interactive elements in the children)
+     */
     await test.step('interactions', async () => {
-      const card = await setup({ componentsPage,
+      const card = await setup({
+        componentsPage,
         cardTitle: 'Card Title',
         subtitle: 'Card Subtitle',
-        children: interactiveChildren });
+        children: interactiveChildren,
+      });
 
       const iconButtons = card.locator('mdc-button[slot="icon-button"]');
       const link = card.locator('mdc-link[slot="footer-link"]');
@@ -126,16 +126,23 @@ test.describe.parallel('mdc-card', () => {
 
       await test.step('focus', async () => {
         await test.step('component should be focusable with tab', async () => {
-          await componentsPage.actionability.pressAndCheckFocus(
-            'Tab',
-            [iconButtons.first(), iconButtons.nth(1), iconButtons.last(), link, secondaryButton, primaryButton],
-          );
+          await componentsPage.actionability.pressAndCheckFocus('Tab', [
+            iconButtons.first(),
+            iconButtons.nth(1),
+            iconButtons.last(),
+            link,
+            secondaryButton,
+            primaryButton,
+          ]);
         });
         await test.step('component should be focusable with shift+tab', async () => {
-          await componentsPage.actionability.pressAndCheckFocus(
-            'Shift+Tab',
-            [secondaryButton, link, iconButtons.last(), iconButtons.nth(1), iconButtons.first()],
-          );
+          await componentsPage.actionability.pressAndCheckFocus('Shift+Tab', [
+            secondaryButton,
+            link,
+            iconButtons.last(),
+            iconButtons.nth(1),
+            iconButtons.first(),
+          ]);
         });
       });
 
@@ -276,9 +283,7 @@ test.describe.parallel('mdc-card', () => {
     await componentsPage.page.waitForTimeout(500);
     const container = cardStickersheet.getWrapperContainer();
     await test.step('matches screenshot of element', async () => {
-      const fileName = suffix
-        ? `mdc-card-${orientation}-${suffix}`
-        : `mdc-card-${orientation}`;
+      const fileName = suffix ? `mdc-card-${orientation}-${suffix}` : `mdc-card-${orientation}`;
       await componentsPage.visualRegression.takeScreenshot(fileName, { element: container });
     });
   };
@@ -302,7 +307,8 @@ test.describe.parallel('mdc-card', () => {
       });
     } else {
       await test.step('static card vertical', async () => {
-        await setup({ componentsPage,
+        await setup({
+          componentsPage,
           cardTitle: 'Card Title',
           subtitle: 'Card Subtitle',
           orientation: 'vertical',
@@ -317,7 +323,8 @@ test.describe.parallel('mdc-card', () => {
       });
 
       await test.step('interactive card vertical', async () => {
-        await setup({ componentsPage,
+        await setup({
+          componentsPage,
           cardTitle: 'Card Title',
           subtitle: 'Card Subtitle',
           orientation: 'vertical',
@@ -352,7 +359,8 @@ test.describe.parallel('mdc-card', () => {
       });
     } else {
       await test.step('static card horizontal', async () => {
-        await setup({ componentsPage,
+        await setup({
+          componentsPage,
           cardTitle: 'Card Title',
           subtitle: 'Card Subtitle',
           orientation: 'horizontal',
@@ -367,7 +375,8 @@ test.describe.parallel('mdc-card', () => {
       });
 
       await test.step('interactive card horizontal', async () => {
-        await setup({ componentsPage,
+        await setup({
+          componentsPage,
           cardTitle: 'Card Title',
           subtitle: 'Card Subtitle',
           orientation: 'horizontal',

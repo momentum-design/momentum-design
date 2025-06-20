@@ -143,22 +143,24 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     return html`<div class="mdc-label-text" part="label-text">
       <slot name="label">${this.renderLabelElement()}</slot>
       ${this.required ? html`<span part="required-indicator">*</span>` : nothing}
-      ${this.toggletipText ? html`
-        <mdc-button 
-        part="info-icon-btn"
-        prefix-icon="${DEFAULTS.INFO_ICON}" 
-        size="${DEFAULTS.ICON_SIZE}"
-        variant="${BUTTON_VARIANTS.TERTIARY}"
-        aria-label="${ifDefined(this.infoIconAriaLabel)}"
-        id="info-icon-id"></mdc-button>
-        <mdc-toggletip
-          part="label-toggletip"
-          triggerid="info-icon-id"
-          id="label-toggletip-id"
-          placement="${this.toggletipPlacement}"
-          show-arrow
-          >${this.toggletipText}</mdc-toggletip
-      >` : nothing}
+      ${this.toggletipText
+        ? html` <mdc-button
+              part="info-icon-btn"
+              prefix-icon="${DEFAULTS.INFO_ICON}"
+              size="${DEFAULTS.ICON_SIZE}"
+              variant="${BUTTON_VARIANTS.TERTIARY}"
+              aria-label="${ifDefined(this.infoIconAriaLabel)}"
+              id="info-icon-id"
+            ></mdc-button>
+            <mdc-toggletip
+              part="label-toggletip"
+              triggerid="info-icon-id"
+              id="label-toggletip-id"
+              placement="${this.toggletipPlacement}"
+              show-arrow
+              >${this.toggletipText}</mdc-toggletip
+            >`
+        : nothing}
     </div>`;
   }
 

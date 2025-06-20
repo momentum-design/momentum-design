@@ -13,15 +13,15 @@ const styles = [
 
       --mdc-badge-success-foreground-color: var(--mds-color-theme-text-success-normal);
       --mdc-badge-success-background-color: var(--mds-color-theme-background-alert-success-normal);
-      
+
       --mdc-badge-warning-foreground-color: var(--mds-color-theme-text-warning-normal);
       --mdc-badge-warning-background-color: var(--mds-color-theme-background-alert-warning-normal);
-      
+
       --mdc-badge-error-foreground-color: var(--mds-color-theme-text-error-normal);
       --mdc-badge-error-background-color: var(--mds-color-theme-background-alert-error-normal);
-      
+
       --mdc-badge-overlay-background-color: var(--mds-color-theme-background-solid-primary-normal);
-      
+
       color: var(--mdc-badge-primary-foreground-color);
     }
     .mdc-badge-overlay {
@@ -68,10 +68,12 @@ const styles = [
 
     /* High Contrast Mode */
     @media (forced-colors: active) {
-    .mdc-badge-dot, .mdc-badge-icon, .mdc-badge-text {
-      outline: 0.125rem solid;
+      .mdc-badge-dot,
+      .mdc-badge-icon,
+      .mdc-badge-text {
+        outline: 0.125rem solid;
+      }
     }
-  }
   `,
 ];
 

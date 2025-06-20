@@ -226,7 +226,8 @@ class NavItem extends IconNameMixin(MenuItem) {
       <mdc-text
         type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}
         tagname=${VALID_TEXT_TAGS.SPAN}
-        part="text-container">
+        part="text-container"
+      >
         ${label}
       </mdc-text>
     `;
@@ -236,12 +237,7 @@ class NavItem extends IconNameMixin(MenuItem) {
     const arrowClass = showLabel ? '' : 'arrow';
 
     return html`
-      <mdc-icon 
-        name=${ICON_NAME.RIGHT_ARROW} 
-        length-unit="rem" 
-        part="trailing-arrow" 
-        class="${arrowClass}">
-      </mdc-icon>
+      <mdc-icon name=${ICON_NAME.RIGHT_ARROW} length-unit="rem" part="trailing-arrow" class="${arrowClass}"> </mdc-icon>
     `;
   }
 
@@ -253,11 +249,12 @@ class NavItem extends IconNameMixin(MenuItem) {
     }
 
     return html`
-      <mdc-badge 
+      <mdc-badge
         class="${badgeClass}"
-        type="${ifDefined(this.badgeType)}" 
-        counter="${ifDefined(this.counter)}" 
-        max-counter="${this.maxCounter}">
+        type="${ifDefined(this.badgeType)}"
+        counter="${ifDefined(this.counter)}"
+        max-counter="${this.maxCounter}"
+      >
       </mdc-badge>
     `;
   }
@@ -266,12 +263,7 @@ class NavItem extends IconNameMixin(MenuItem) {
     const context = this.sideNavigationContext?.value;
     return html`
       <div part="icon-container">
-        <mdc-icon
-          name="${this.iconName}"
-          size="1.5"
-          length-unit="rem"
-          part="icon"
-        ></mdc-icon>
+        <mdc-icon name="${this.iconName}" size="1.5" length-unit="rem" part="icon"></mdc-icon>
         ${!this.showLabel ? this.renderBadge(this.showLabel) : nothing}
       </div>
       ${this.showLabel ? html`${this.renderTextLabel(this.label)}${this.renderBadge(this.showLabel)}` : nothing}

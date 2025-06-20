@@ -1,72 +1,72 @@
 body {
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 main {
-    height: 100%;
-    width: 100%;
+  height: 100%;
+  width: 100%;
 }
 
 #root {
-    height: 100%;
-    width: 100%;
-    background: var(--mds-color-theme-background-gradient-primary-normal);
+  height: 100%;
+  width: 100%;
+  background: var(--mds-color-theme-background-gradient-primary-normal);
 }
 
 .themeWrapper {
-    display: flex;
-    flex-direction: column;
-    width: calc(30%);
-    height: auto;
-    background: var(--mds-color-theme-background-gradient-primary-normal);
-    padding: 0.625rem;
-    border: 0.0625rem solid var(--mds-color-theme-text-primary-normal)
+  display: flex;
+  flex-direction: column;
+  width: calc(30%);
+  height: auto;
+  background: var(--mds-color-theme-background-gradient-primary-normal);
+  padding: 0.625rem;
+  border: 0.0625rem solid var(--mds-color-theme-text-primary-normal);
 }
 
 .nestedThemeWrapper {
-    margin-top: 0.625rem;
-    display: flex;
-    flex-direction: column;
-    width: calc(100% - 1.25rem);
-    height: auto;
-    background: var(--mds-color-theme-background-gradient-primary-normal);
-    padding: 0.625rem;
-    border: 0.0625rem solid var(--mds-color-theme-text-primary-normal)
+  margin-top: 0.625rem;
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 1.25rem);
+  height: auto;
+  background: var(--mds-color-theme-background-gradient-primary-normal);
+  padding: 0.625rem;
+  border: 0.0625rem solid var(--mds-color-theme-text-primary-normal);
 }
 
-.themeWrapper+.themeWrapper {
-    margin-top: 0.625rem;
+.themeWrapper + .themeWrapper {
+  margin-top: 0.625rem;
 }
 
 .colorBox {
-    width: 100%;
-    height: 0.625rem;
-    border-radius: 0.3125rem;
+  width: 100%;
+  height: 0.625rem;
+  border-radius: 0.3125rem;
 }
 
-.colorBox+.colorBox {
-    margin-top: 0.625rem;
+.colorBox + .colorBox {
+  margin-top: 0.625rem;
 }
 
 .componentWrapper {
-    padding: 0.25rem;
+  padding: 0.25rem;
 }
 
 .componentRowWrapper {
-    display: flex;
-    flex-wrap: wrap; 
-    gap: 0.25rem;
-    margin-bottom: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
 }
 
 .popoverWrapper {
-    display: grid;
-    gap: 7rem;
-    justify-content: center;
-    padding-top: 1rem;
-    padding-bottom: 6.5rem;
+  display: grid;
+  gap: 7rem;
+  justify-content: center;
+  padding-top: 1rem;
+  padding-bottom: 6.5rem;
 }

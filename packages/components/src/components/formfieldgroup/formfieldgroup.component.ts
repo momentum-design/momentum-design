@@ -56,10 +56,7 @@ class FormfieldGroup extends DataAriaLabelMixin(FormfieldWrapper) {
         aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
         aria-label="${this.dataAriaLabel ?? ''}"
       >
-        <div part="group-header">
-          ${this.renderLabel()}
-          ${this.renderHelperText()}
-        </div>
+        <div part="group-header">${this.renderLabel()} ${this.renderHelperText()}</div>
         <slot></slot>
       </div>
     `;

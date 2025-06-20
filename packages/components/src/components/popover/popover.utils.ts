@@ -20,7 +20,7 @@ export class PopoverUtils {
    */
   setupDelay() {
     try {
-      const [openDelay, closeDelay] = this.popover.delay.split(',').map((delay) => {
+      const [openDelay, closeDelay] = this.popover.delay.split(',').map(delay => {
         const parsed = parseInt(delay, 10);
         if (Number.isNaN(parsed) || parsed < 0) {
           throw new Error(`Invalid delay value: ${delay}`);
@@ -107,9 +107,8 @@ export class PopoverUtils {
     }
     if (this.popover.interactive) {
       if (!this.popover.ariaLabel) {
-        this.popover.ariaLabel = this.popover.triggerElement?.ariaLabel
-        || this.popover.triggerElement?.textContent
-        || '';
+        this.popover.ariaLabel =
+          this.popover.triggerElement?.ariaLabel || this.popover.triggerElement?.textContent || '';
       }
       if (!this.popover.ariaLabelledby) {
         this.popover.ariaLabelledby = this.popover.triggerElement?.id || '';

@@ -11,18 +11,20 @@ import { ARIA_CHECKED_STATES } from '../menusection/menusection.constants';
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style="width: 25rem;">${htmlString}</div>`;
 
-const render = (args: Args) => wrapWithDiv(html`
-  <mdc-menuitemcheckbox
-    ?disabled="${args.disabled}"
-    aria-checked="${args['aria-checked']}"
-    label="${args.label}"
-    indicator="${args.indicator}"
-    secondary-label="${args['secondary-label']}"
-    tooltip-text="${args['tooltip-text']}"
-    tooltip-placement="${args['tooltip-placement']}"
-  >
-    ${args.children}
-  </mdc-menuitemcheckbox>`);
+const render = (args: Args) =>
+  wrapWithDiv(
+    html` <mdc-menuitemcheckbox
+      ?disabled="${args.disabled}"
+      aria-checked="${args['aria-checked']}"
+      label="${args.label}"
+      indicator="${args.indicator}"
+      secondary-label="${args['secondary-label']}"
+      tooltip-text="${args['tooltip-text']}"
+      tooltip-placement="${args['tooltip-placement']}"
+    >
+      ${args.children}
+    </mdc-menuitemcheckbox>`,
+  );
 
 const meta: Meta = {
   title: 'Work In Progress/menu/menuitemcheckbox',
@@ -83,12 +85,7 @@ const meta: Meta = {
       '--mdc-listitem-column-gap',
       '--mdc-listitem-padding-left-and-right',
     ]),
-    ...disableControls([
-      'change',
-      'click',
-      'focus',
-      '--mdc-checkmark-indicator-color',
-    ]),
+    ...disableControls(['change', 'click', 'focus', '--mdc-checkmark-indicator-color']),
     ...classArgType,
     ...styleArgType,
   },
@@ -140,38 +137,47 @@ export const CheckmarkWithMenuItem: StoryObj = {
 };
 
 export const AllVariants: StoryObj = {
-  render: () => wrapWithDiv(html`
-    <mdc-menuitemcheckbox aria-checked="true" label="Selected Checkbox"></mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox disabled aria-checked="true" label="Disabled Selected Checkbox"></mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox aria-checked="false" label="Unselected Checkbox"></mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox disabled aria-checked="false" label="Disabled Unselected Checkbox"></mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox aria-checked="true" indicator="toggle" label="Selected Toggle"></mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox disabled aria-checked="true" indicator="toggle" label="Disabled Selected Toggle">
-    </mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox aria-checked="false" indicator="toggle" label="Unselected Toggle"></mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox disabled aria-checked="false" indicator="toggle" label="Disabled Unselected Toggle">
-    </mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox aria-checked="true" indicator="checkmark" label="Selected Checkmark"></mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox disabled aria-checked="true" indicator="checkmark" label="Disabled Selected Checkmark">
-    </mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox aria-checked="false" indicator="checkmark" label="Unselected Checkmark">
-    </mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox disabled aria-checked="false" indicator="checkmark" label="Disabled Unselected Checkmark">
-    </mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox
-      aria-checked="true" label="Selected Menu Item With Secondary Label" secondary-label="Secondary Label"
-    ></mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox
-      aria-checked="false" label="Unselected Menu Item With Secondary Label" secondary-label="Secondary Label"
-    ></mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox
-      aria-checked="true" indicator="toggle"
-      label="Selected Menu Item With Secondary Label" secondary-label="Secondary Label"
-    ></mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox
-      aria-checked="false" indicator="toggle"
-      label="Unselected Menu Item With Secondary Label" secondary-label="Secondary Label"
-    ></mdc-menuitemcheckbox>
-  `),
+  render: () =>
+    wrapWithDiv(html`
+      <mdc-menuitemcheckbox aria-checked="true" label="Selected Checkbox"></mdc-menuitemcheckbox>
+      <mdc-menuitemcheckbox disabled aria-checked="true" label="Disabled Selected Checkbox"></mdc-menuitemcheckbox>
+      <mdc-menuitemcheckbox aria-checked="false" label="Unselected Checkbox"></mdc-menuitemcheckbox>
+      <mdc-menuitemcheckbox disabled aria-checked="false" label="Disabled Unselected Checkbox"></mdc-menuitemcheckbox>
+      <mdc-menuitemcheckbox aria-checked="true" indicator="toggle" label="Selected Toggle"></mdc-menuitemcheckbox>
+      <mdc-menuitemcheckbox disabled aria-checked="true" indicator="toggle" label="Disabled Selected Toggle">
+      </mdc-menuitemcheckbox>
+      <mdc-menuitemcheckbox aria-checked="false" indicator="toggle" label="Unselected Toggle"></mdc-menuitemcheckbox>
+      <mdc-menuitemcheckbox disabled aria-checked="false" indicator="toggle" label="Disabled Unselected Toggle">
+      </mdc-menuitemcheckbox>
+      <mdc-menuitemcheckbox aria-checked="true" indicator="checkmark" label="Selected Checkmark"></mdc-menuitemcheckbox>
+      <mdc-menuitemcheckbox disabled aria-checked="true" indicator="checkmark" label="Disabled Selected Checkmark">
+      </mdc-menuitemcheckbox>
+      <mdc-menuitemcheckbox aria-checked="false" indicator="checkmark" label="Unselected Checkmark">
+      </mdc-menuitemcheckbox>
+      <mdc-menuitemcheckbox disabled aria-checked="false" indicator="checkmark" label="Disabled Unselected Checkmark">
+      </mdc-menuitemcheckbox>
+      <mdc-menuitemcheckbox
+        aria-checked="true"
+        label="Selected Menu Item With Secondary Label"
+        secondary-label="Secondary Label"
+      ></mdc-menuitemcheckbox>
+      <mdc-menuitemcheckbox
+        aria-checked="false"
+        label="Unselected Menu Item With Secondary Label"
+        secondary-label="Secondary Label"
+      ></mdc-menuitemcheckbox>
+      <mdc-menuitemcheckbox
+        aria-checked="true"
+        indicator="toggle"
+        label="Selected Menu Item With Secondary Label"
+        secondary-label="Secondary Label"
+      ></mdc-menuitemcheckbox>
+      <mdc-menuitemcheckbox
+        aria-checked="false"
+        indicator="toggle"
+        label="Unselected Menu Item With Secondary Label"
+        secondary-label="Secondary Label"
+      ></mdc-menuitemcheckbox>
+    `),
   ...hideAllControls(),
 };

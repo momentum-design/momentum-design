@@ -7,7 +7,7 @@ type SetupOptions = {
   checked?: boolean;
   indeterminate?: boolean;
   disabled?: boolean;
-}
+};
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;

@@ -56,10 +56,7 @@ test('mdc-brandvisual', async ({ componentsPage }) => {
     const brandVisual = await visualTestingSetup({ componentsPage, name });
 
     await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot(
-        'mdc-brandvisual',
-        { element: brandVisual },
-      );
+      await componentsPage.visualRegression.takeScreenshot('mdc-brandvisual', { element: brandVisual });
     });
   });
 

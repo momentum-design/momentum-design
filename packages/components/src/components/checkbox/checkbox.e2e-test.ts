@@ -12,7 +12,7 @@ type SetupOptions = {
   checked?: boolean;
   indeterminate?: boolean;
   'data-aria-label'?: string;
-}
+};
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;

@@ -50,13 +50,13 @@ class ToggleTip extends Popover {
   @state() currentAnnouncement = '';
 
   /**
-    * Set this attribute with the id of the element in the DOM, to which announcement
-    * elements will be appended.
-    * If an id is provided, the announcement elements will be appended to this element.
-    * If id is not provided, a visually hidden div element will be created in the DOM.
-    *
-    * Please refer to the `mdc-screenreaderannouncer` component for more details.
-  */
+   * Set this attribute with the id of the element in the DOM, to which announcement
+   * elements will be appended.
+   * If an id is provided, the announcement elements will be appended to this element.
+   * If id is not provided, a visually hidden div element will be created in the DOM.
+   *
+   * Please refer to the `mdc-screenreaderannouncer` component for more details.
+   */
   @property({ type: String, reflect: true, attribute: 'screenreader-announcer-identity' })
   screenreaderAnnouncerIdentity?: string;
 
@@ -100,7 +100,12 @@ class ToggleTip extends Popover {
    *          If there are no nodes, an empty string is returned.
    */
   private getToggleTipText(): string {
-    return this.defaultSlotNodes?.map((node: Node) => node.textContent).join(' ')?.trim() || '';
+    return (
+      this.defaultSlotNodes
+        ?.map((node: Node) => node.textContent)
+        .join(' ')
+        ?.trim() || ''
+    );
   }
 
   /**
@@ -131,7 +136,8 @@ class ToggleTip extends Popover {
       <mdc-screenreaderannouncer
         identity="${ifDefined(this.screenreaderAnnouncerIdentity)}"
         announcement="${this.currentAnnouncement}"
-        delay="300">
+        delay="300"
+      >
       </mdc-screenreaderannouncer>
     `;
   }

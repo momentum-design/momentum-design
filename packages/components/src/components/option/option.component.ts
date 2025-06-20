@@ -80,23 +80,23 @@ class Option extends FormInternalsMixin(ListItem) {
   }
 
   public override render() {
-    const prefixIconContent = this.prefixIcon ? html`
-      <div part="leading-icon">
-        <mdc-icon length-unit="rem" slot="leading-controls" name="${ifDefined(this.prefixIcon)}"></mdc-icon>
-      </div>
-    ` : nothing;
-    const selectedIcon = this.selected ? html`
-      <mdc-icon length-unit="rem" slot="trailing-controls" name="${SELECTED_ICON_NAME}"></mdc-icon>
-    ` : nothing;
+    const prefixIconContent = this.prefixIcon
+      ? html`
+          <div part="leading-icon">
+            <mdc-icon length-unit="rem" slot="leading-controls" name="${ifDefined(this.prefixIcon)}"></mdc-icon>
+          </div>
+        `
+      : nothing;
+    const selectedIcon = this.selected
+      ? html` <mdc-icon length-unit="rem" slot="trailing-controls" name="${SELECTED_ICON_NAME}"></mdc-icon> `
+      : nothing;
 
     return html`
       ${prefixIconContent}
       <div part="leading-text">
         ${this.getText('leading-text-primary-label', TYPE.BODY_MIDSIZE_REGULAR, this.label)}
       </div>
-      <div part="trailing">
-        ${selectedIcon}
-      </div>
+      <div part="trailing">${selectedIcon}</div>
       <slot part="default-slot" @slotchange="${this.handleDefaultSlotChange}"></slot>
     `;
   }

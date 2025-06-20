@@ -99,7 +99,8 @@ test('mdc-coachmark', async ({ componentsPage }) => {
         await setup({ componentsPage, open: false });
         await expect(componentsPage.page.locator('[part="popover-content"]')).not.toBeVisible();
         await componentsPage.page.evaluate(() =>
-          (document.getElementById('coachmark') as Coachmark | undefined)?.showPopover());
+          (document.getElementById('coachmark') as Coachmark | undefined)?.showPopover(),
+        );
         await expect(componentsPage.page.locator('[part="popover-content"]')).toBeVisible();
       });
     });

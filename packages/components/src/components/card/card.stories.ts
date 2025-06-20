@@ -8,8 +8,8 @@ import { VALID_TEXT_TAGS } from '../text/text.constants';
 import '../link';
 import '../button';
 
-const render = (args: Args) => html`
-  <mdc-card 
+const render = (args: Args) =>
+  html` <mdc-card
     variant="${args.variant}"
     orientation="${args.orientation}"
     card-title="${args['card-title']}"
@@ -20,7 +20,9 @@ const render = (args: Args) => html`
     title-tag-name="${args['title-tag-name']}"
     subtitle-tag-name="${args['subtitle-tag-name']}"
     class="${args.class}"
-    style="${args.style}">${args.children}</mdc-card>`;
+    style="${args.style}"
+    >${args.children}</mdc-card
+  >`;
 
 const meta: Meta = {
   title: 'Components/card/card',
@@ -70,14 +72,13 @@ const meta: Meta = {
 
 export default meta;
 
-const defaultChildren = html`<mdc-text slot='body' 
-type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
-Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
-Praesent gravida dui diam, non elementum risus laoreet vitae. 
-Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
-Vivamus mattis ligula eget imperdiet tempor. 
-Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`;
+const defaultChildren = html`<mdc-text slot="body" type="body-midsize-medium" tagname="span"
+  >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vulputate aliquet risus, eget auctor ante egestas
+  facilisis. Curabitur malesuada tempor pulvinar. Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at.
+  Praesent gravida dui diam, non elementum risus laoreet vitae. Sed sed nunc ullamcorper, porttitor dui id, posuere
+  justo. Curabitur laoreet sem ut pharetra hendrerit. Vivamus mattis ligula eget imperdiet tempor. Ut in massa luctus
+  lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text
+>`;
 
 export const Example: StoryObj = {
   args: {
@@ -157,10 +158,11 @@ export const StaticContentBeforeBody: StoryObj = {
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: DEFAULTS.ORIENTATION,
-    children: html`
-    <mdc-text slot='before-body' type="body-midsize-medium" tagname="span">Content Before Body</mdc-text>
-    <img src="https://placehold.co/100x50" alt="Image Alt" slot="before-body"/>
-    ${defaultChildren}`,
+    children: html` <mdc-text slot="before-body" type="body-midsize-medium" tagname="span"
+        >Content Before Body</mdc-text
+      >
+      <img src="https://placehold.co/100x50" alt="Image Alt" slot="before-body" />
+      ${defaultChildren}`,
   },
 };
 
@@ -175,29 +177,27 @@ export const StaticContentAfterBody: StoryObj = {
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: ORIENTATIONS.HORIZONTAL,
-    children: html`
-    <img src="https://placehold.co/100x50" alt="Image Alt" slot="after-body"/>
-    <mdc-text slot='after-body' type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
-    ${defaultChildren}`,
+    children: html` <img src="https://placehold.co/100x50" alt="Image Alt" slot="after-body" />
+      <mdc-text slot="after-body" type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
+      ${defaultChildren}`,
   },
 };
 
-const interactiveChildren = html`<mdc-text slot='body' 
-type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
-Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
-Praesent gravida dui diam, non elementum risus laoreet vitae. 
-Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
-Vivamus mattis ligula eget imperdiet tempor. 
-Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>
-<mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
-<mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
-<mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
-<mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="this is not rendered"></mdc-button>
-<mdc-link slot="footer-link" icon-name="placeholder-bold" href='#'>Label</mdc-link>
-<mdc-text slot="footer-link">Not rendered</mdc-text>
-<mdc-button slot="footer-button-secondary">Label</mdc-button>
-<mdc-button slot="footer-button-primary">Label</mdc-button>`;
+const interactiveChildren = html`<mdc-text slot="body" type="body-midsize-medium" tagname="span"
+    >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vulputate aliquet risus, eget auctor ante egestas
+    facilisis. Curabitur malesuada tempor pulvinar. Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at.
+    Praesent gravida dui diam, non elementum risus laoreet vitae. Sed sed nunc ullamcorper, porttitor dui id, posuere
+    justo. Curabitur laoreet sem ut pharetra hendrerit. Vivamus mattis ligula eget imperdiet tempor. Ut in massa luctus
+    lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text
+  >
+  <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
+  <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
+  <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
+  <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="this is not rendered"></mdc-button>
+  <mdc-link slot="footer-link" icon-name="placeholder-bold" href="#">Label</mdc-link>
+  <mdc-text slot="footer-link">Not rendered</mdc-text>
+  <mdc-button slot="footer-button-secondary">Label</mdc-button>
+  <mdc-button slot="footer-button-primary">Label</mdc-button>`;
 
 export const InteractiveHorizontalCard: StoryObj = {
   args: {
@@ -248,10 +248,13 @@ export const InteractiveCardWithoutBody: StoryObj = {
     'icon-name': 'placeholder-bold',
     variant: DEFAULTS.VARIANT,
     orientation: DEFAULTS.ORIENTATION,
-    children: html`
-    <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
-    <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
-    <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>`,
+    children: html` <mdc-button
+        slot="icon-button"
+        prefix-icon="placeholder-bold"
+        aria-label="icon description"
+      ></mdc-button>
+      <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>
+      <mdc-button slot="icon-button" prefix-icon="placeholder-bold" aria-label="icon description"></mdc-button>`,
   },
 };
 
@@ -266,14 +269,15 @@ export const InteractiveContentBeforeBody: StoryObj = {
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: DEFAULTS.ORIENTATION,
-    children: html`
-    <mdc-text slot='before-body' type="body-midsize-medium" tagname="span">Content Before Body</mdc-text>
-    <img src="https://placehold.co/100x50" alt="Image Alt" slot="before-body"/>
-    <div slot="before-body" style="display: flex; gap: 8px; margin-top: 8px;"> 
-    <mdc-button  size="28">Click Me</mdc-button>
-    <mdc-button  size="28" variant="secondary">View More</mdc-button>
-    </div>-
-    ${interactiveChildren}`,
+    children: html` <mdc-text slot="before-body" type="body-midsize-medium" tagname="span"
+        >Content Before Body</mdc-text
+      >
+      <img src="https://placehold.co/100x50" alt="Image Alt" slot="before-body" />
+      <div slot="before-body" style="display: flex; gap: 8px; margin-top: 8px;">
+        <mdc-button size="28">Click Me</mdc-button>
+        <mdc-button size="28" variant="secondary">View More</mdc-button>
+      </div>
+      - ${interactiveChildren}`,
   },
 };
 
@@ -288,13 +292,12 @@ export const InteractiveContentAfterBody: StoryObj = {
     'title-tag-name': DEFAULTS.TAGNAME,
     'subtitle-tag-name': DEFAULTS.TAGNAME,
     orientation: ORIENTATIONS.HORIZONTAL,
-    children: html`
-    <img src="https://placehold.co/120x30" alt="Image Alt" slot="after-body"/>
-    <div slot="after-body" style="display: flex; gap: 8px; margin: 8px 0;"> 
-      <mdc-button  size="28">Click Me</mdc-button>
-      <mdc-button  size="28" variant="secondary">View More</mdc-button>
-    </div>
-    <mdc-text slot='after-body' type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
-    ${interactiveChildren}`,
+    children: html` <img src="https://placehold.co/120x30" alt="Image Alt" slot="after-body" />
+      <div slot="after-body" style="display: flex; gap: 8px; margin: 8px 0;">
+        <mdc-button size="28">Click Me</mdc-button>
+        <mdc-button size="28" variant="secondary">View More</mdc-button>
+      </div>
+      <mdc-text slot="after-body" type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
+      ${interactiveChildren}`,
   },
 };

@@ -43,22 +43,19 @@ class CardButton extends CardComponentMixin(Buttonsimple) {
     if (!this.cardTitle) {
       return nothing;
     }
-    return html`<div part="header">
-     ${this.renderIcon()}
-     ${this.renderTitle()}
-   </div>`;
+    return html`<div part="header">${this.renderIcon()} ${this.renderTitle()}</div>`;
   }
 
   public override render() {
     return html`
       ${this.renderImage()}
-    <div part="body">
-    ${this.renderHeader()}
-      <slot name="before-body"></slot>
-      <slot name="body"></slot>
-      <slot name="after-body"></slot>
-    </div>
-  `;
+      <div part="body">
+        ${this.renderHeader()}
+        <slot name="before-body"></slot>
+        <slot name="body"></slot>
+        <slot name="after-body"></slot>
+      </div>
+    `;
   }
 
   public static override styles: Array<CSSResult> = [...Card.styles, ...styles];

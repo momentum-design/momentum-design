@@ -108,9 +108,7 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   }
 
   /** @internal */
-  formStateRestoreCallback(
-    state: string,
-  ): void {
+  formStateRestoreCallback(state: string): void {
     if (state) {
       this.checked = true;
     }
@@ -159,19 +157,17 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
 
   private renderLabelAndHelperText = () => {
     if (!this.label) return nothing;
-    return html`<div class="text-container">
-      ${this.renderLabel()}
-      ${this.renderHelperText()}
-    </div>`;
+    return html`<div class="text-container">${this.renderLabel()} ${this.renderHelperText()}</div>`;
   };
 
   public override render() {
     return html`
-      <mdc-staticcheckbox 
-      class="mdc-focus-ring"
-      ?checked="${this.checked}" 
-      ?indeterminate="${this.indeterminate}" 
-      ?disabled="${this.disabled}">
+      <mdc-staticcheckbox
+        class="mdc-focus-ring"
+        ?checked="${this.checked}"
+        ?indeterminate="${this.indeterminate}"
+        ?disabled="${this.disabled}"
+      >
         <input
           id="${this.id}"
           type="checkbox"

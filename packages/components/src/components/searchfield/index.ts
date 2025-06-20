@@ -7,9 +7,9 @@ import '../text';
 Searchfield.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-searchfield']: Searchfield
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-searchfield']: Searchfield;
+  }
 }
 
 export default Searchfield;

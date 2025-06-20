@@ -90,7 +90,9 @@
     "test:e2e:docker:update-snapshot:tabletchrome": "yarn test:e2e:docker --update-snapshots --project='tablet chrome'",
     "test:e2e:podman": "PW_TEST_CONNECT_WS_ENDPOINT=ws://localhost:3000/ playwright test --config './config/playwright/docker/playwright.docker.config.ts'",
     "test:e2e:podman:serve": "podman run --platform linux/amd64 -p 3000:3000 --rm --init ghcr.io/momentum-design/momentum-design/docker-playwright:v1.52.0",
-    "test:e2e:podman:build": "podman build --platform linux/amd64 -f ./config/playwright/docker/utils/Dockerfile.test.postbuild -t ghcr.io/momentum-design/momentum-design/docker-playwright:v1.52.0 ."
+    "test:e2e:podman:build": "podman build --platform linux/amd64 -f ./config/playwright/docker/utils/Dockerfile.test.postbuild -t ghcr.io/momentum-design/momentum-design/docker-playwright:v1.52.0 .",
+    "lint:staging": "lint-staged --config ./config/lint-staged/lint-staged.config.js",
+    "prepare": "husky"
   },
   "dependencies": {
     "@floating-ui/dom": "^1.6.12",
@@ -126,9 +128,12 @@
     "concurrently": "^8.2.2",
     "esbuild": "^0.23.0",
     "eslint": "8.27.0",
+    "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-lit": "^1.14.0",
     "fs-extra": "^11.2.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
     "pascalcase": "^2.0.0",
     "plop": "^4.0.1",
     "prettier": "^3.3.3",

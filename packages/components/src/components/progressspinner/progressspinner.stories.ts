@@ -4,11 +4,8 @@ import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 
-const render = (args: Args) => html`
-  <mdc-progressspinner
-   value="${args.value}" 
-   ?error="${args.error}" 
-   data-aria-label="${args['data-aria-label']}">
+const render = (args: Args) =>
+  html` <mdc-progressspinner value="${args.value}" ?error="${args.error}" data-aria-label="${args['data-aria-label']}">
   </mdc-progressspinner>`;
 
 const meta: Meta = {
@@ -29,9 +26,11 @@ const meta: Meta = {
     'data-aria-label': {
       control: 'text',
     },
-    ...hideControls(['help-text-type',
+    ...hideControls([
+      'help-text-type',
       'required',
-      'label', 'disabled',
+      'label',
+      'disabled',
       'help-text',
       'toggletip-text',
       'toggletip-placement',

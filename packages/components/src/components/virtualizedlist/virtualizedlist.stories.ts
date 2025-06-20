@@ -5,8 +5,8 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import './virtualizedlist.helper.test';
 import { disableControls } from '../../../config/storybook/utils';
 
-const render = (args: Args) => html`
-  <mdc-virtualizedwrapper
+const render = (args: Args) =>
+  html` <mdc-virtualizedwrapper
     .virtualizerProps=${args.virtualizerProps}
     .onscroll=${args.onscroll}
   ></mdc-virtualizedwrapper>`;
@@ -20,11 +20,7 @@ const meta: Meta = {
     badges: ['stable'],
   },
   argTypes: {
-    ...disableControls([
-      'scrollElementRef',
-      'virtualizer',
-      'virtualizerController',
-    ]),
+    ...disableControls(['scrollElementRef', 'virtualizer', 'virtualizerController']),
     virtualizerProps: {
       description: `Props to send to Tanstack virtual. Please reference 
       [Tanstack Virtualizer API](https://tanstack.com/virtual/latest/docs/api/virtualizer) docs for more 

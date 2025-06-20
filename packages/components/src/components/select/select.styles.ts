@@ -80,12 +80,12 @@ const styles = css`
   }
   :host([disabled])::part(base-container),
   :host([readonly])::part(base-container),
-  :host([help-text-type="success"][disabled])::part(base-container),
-  :host([help-text-type="error"][disabled])::part(base-container),
-  :host([help-text-type="warning"][disabled])::part(base-container),
-  :host([help-text-type="success"][readonly])::part(base-container),
-  :host([help-text-type="error"][readonly])::part(base-container),
-  :host([help-text-type="warning"][readonly])::part(base-container) {
+  :host([help-text-type='success'][disabled])::part(base-container),
+  :host([help-text-type='error'][disabled])::part(base-container),
+  :host([help-text-type='warning'][disabled])::part(base-container),
+  :host([help-text-type='success'][readonly])::part(base-container),
+  :host([help-text-type='error'][readonly])::part(base-container),
+  :host([help-text-type='warning'][readonly])::part(base-container) {
     border-color: var(--mdc-select-disabled-border-color);
     background: var(--mdc-select-disabled-background-color);
   }
@@ -99,13 +99,13 @@ const styles = css`
   :host([disabled])::part(base-text) {
     color: var(--mdc-select-disabled-text-color);
   }
-  :host([help-text-type="success"])::part(base-container) {
+  :host([help-text-type='success'])::part(base-container) {
     border-color: var(--mdc-select-success-border-color);
   }
-  :host([help-text-type="error"])::part(base-container) {
+  :host([help-text-type='error'])::part(base-container) {
     border-color: var(--mdc-select-error-border-color);
   }
-  :host([help-text-type="warning"])::part(base-container) {
+  :host([help-text-type='warning'])::part(base-container) {
     border-color: var(--mdc-select-warning-border-color);
   }
 `;

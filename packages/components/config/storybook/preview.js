@@ -8,13 +8,13 @@ import { withThemeProvider } from './provider/themeProvider';
 import { withIconProvider } from './provider/iconProvider';
 
 function refactorCustomElements(customElements) {
-  const toCamelCase = (str) => str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+  const toCamelCase = str => str.replace(/-([a-z])/g, g => g[1].toUpperCase());
 
-  customElements.modules.forEach((module) => {
-    module.declarations.forEach((declaration) => {
-      const attributesMap = new Set(declaration?.attributes?.map((attr) => toCamelCase(attr.name)));
+  customElements.modules.forEach(module => {
+    module.declarations.forEach(declaration => {
+      const attributesMap = new Set(declaration?.attributes?.map(attr => toCamelCase(attr.name)));
       // Filter members based on attributesMap
-      const filteredMembers = declaration.members.filter((member) => !attributesMap.has(member.name));
+      const filteredMembers = declaration.members.filter(member => !attributesMap.has(member.name));
       Object.assign(declaration, { members: filteredMembers });
     });
   });
@@ -107,8 +107,7 @@ const preview = {
       },
     },
     options: {
-      storySort: (story1, story2) =>
-        globalThis['storybook-multilevel-sort:storySort'](story1, story2),
+      storySort: (story1, story2) => globalThis['storybook-multilevel-sort:storySort'](story1, story2),
     },
     direction: 'ltr',
   },
@@ -122,7 +121,7 @@ const preview = {
         title: 'Theme',
         icon: 'globe',
         // Array of plain string values or MenuItem shape (see below)
-        items: themes.map((theme) => theme.displayName),
+        items: themes.map(theme => theme.displayName),
         // Change title based on selected value
         dynamicTitle: true,
       },

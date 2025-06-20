@@ -15,7 +15,7 @@ type SetupOptions = {
   initials?: string;
   size?: AvatarSize;
   src?: string;
-}
+};
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;

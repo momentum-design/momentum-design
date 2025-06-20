@@ -18,8 +18,7 @@ const addContentToDynamic = (type: string) => {
   if (!normalContainer || !skeletonContainer) return;
 
   // Clear placeholder text on first add
-  if (normalContainer.children.length === 1
-      && normalContainer.children[0].tagName === 'P') {
+  if (normalContainer.children.length === 1 && normalContainer.children[0].tagName === 'P') {
     normalContainer.innerHTML = '';
     skeletonContainer.innerHTML = '';
   }
@@ -113,45 +112,37 @@ const clearDynamicContent = () => {
 };
 
 const render = (args: Args) => html`
-<mdc-skeleton
-  variant="${args.variant}"
-  class="${args.class}"
-  style="--mdc-skeleton-height: 100px; --mdc-skeleton-width: 100px; ${args.style}"
-></mdc-skeleton>
-`;
-
-const renderWithContent = (args: Args) => html`
-<div style="display: flex; flex-direction: column; gap: 20px;">
-  <div style="display: flex; gap: 20px;">
-    <div>
-      <p>Normal content:</p>
-      <button style="padding: 10px 20px;">Click me</button>
-    </div>
-    <div>
-      <p>Skeleton wrapping content:</p>
-      <mdc-skeleton
-        variant="${args.variant}"
-        class="${args.class}"
-        style="${args.style}"
-      >
-        <button style="padding: 10px 20px;">Click me</button>
-      </mdc-skeleton>
-    </div>
-  </div>
-</div>
-`;
-
-const renderResponsive = (args: Args) => html`
-<div style="width: 100%; max-width: 400px; height: 200px; border: 2px dashed #ccc; position: relative;">
-  <p style="position: absolute; top: -20px; left: 0; margin: 0; font-size: 12px;">
-    Container (400px max-width, 200px height)
-  </p>
   <mdc-skeleton
     variant="${args.variant}"
     class="${args.class}"
-    style="${args.style}"
+    style="--mdc-skeleton-height: 100px; --mdc-skeleton-width: 100px; ${args.style}"
   ></mdc-skeleton>
-</div>
+`;
+
+const renderWithContent = (args: Args) => html`
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; gap: 20px;">
+      <div>
+        <p>Normal content:</p>
+        <button style="padding: 10px 20px;">Click me</button>
+      </div>
+      <div>
+        <p>Skeleton wrapping content:</p>
+        <mdc-skeleton variant="${args.variant}" class="${args.class}" style="${args.style}">
+          <button style="padding: 10px 20px;">Click me</button>
+        </mdc-skeleton>
+      </div>
+    </div>
+  </div>
+`;
+
+const renderResponsive = (args: Args) => html`
+  <div style="width: 100%; max-width: 400px; height: 200px; border: 2px dashed #ccc; position: relative;">
+    <p style="position: absolute; top: -20px; left: 0; margin: 0; font-size: 12px;">
+      Container (400px max-width, 200px height)
+    </p>
+    <mdc-skeleton variant="${args.variant}" class="${args.class}" style="${args.style}"></mdc-skeleton>
+  </div>
 `;
 
 const meta: Meta = {
@@ -261,9 +252,7 @@ export const DynamicContent: StoryObj = {
             style="border: 2px dashed #ccc; min-height: 100px;
                    border-radius: 4px;"
           >
-            <p style="margin: 0; color: #666; font-style: italic;">
-              Click buttons above to add content
-            </p>
+            <p style="margin: 0; color: #666; font-style: italic;">Click buttons above to add content</p>
           </div>
         </div>
 
@@ -276,9 +265,7 @@ export const DynamicContent: StoryObj = {
             style="${args.style}; border: 2px dashed #999;"
           >
             <div id="skeleton-content-dynamic">
-              <p style="margin: 0; color: #666; font-style: italic;">
-                Click buttons above to add content
-              </p>
+              <p style="margin: 0; color: #666; font-style: italic;">Click buttons above to add content</p>
             </div>
           </mdc-skeleton>
         </div>

@@ -90,17 +90,27 @@ class Text extends Component {
     // Lit does not support dynamically changing values for the tag name of a custom element.
     // Read more: https://lit.dev/docs/templates/expressions/#invalid-locations
     switch (this.tagname) {
-      case VALID_TEXT_TAGS.H1: return html`<h1 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h1>`;
-      case VALID_TEXT_TAGS.H2: return html`<h2 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h2>`;
-      case VALID_TEXT_TAGS.H3: return html`<h3 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h3>`;
-      case VALID_TEXT_TAGS.H4: return html`<h4 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h4>`;
-      case VALID_TEXT_TAGS.H5: return html`<h5 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h5>`;
-      case VALID_TEXT_TAGS.H6: return html`<h6 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h6>`;
-      case VALID_TEXT_TAGS.DIV: return html`<div part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></div>`;
-      case VALID_TEXT_TAGS.SPAN: return html`<span part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></span>`;
-      case VALID_TEXT_TAGS.SMALL: return html`<small part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></small>`;
+      case VALID_TEXT_TAGS.H1:
+        return html`<h1 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h1>`;
+      case VALID_TEXT_TAGS.H2:
+        return html`<h2 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h2>`;
+      case VALID_TEXT_TAGS.H3:
+        return html`<h3 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h3>`;
+      case VALID_TEXT_TAGS.H4:
+        return html`<h4 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h4>`;
+      case VALID_TEXT_TAGS.H5:
+        return html`<h5 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h5>`;
+      case VALID_TEXT_TAGS.H6:
+        return html`<h6 part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></h6>`;
+      case VALID_TEXT_TAGS.DIV:
+        return html`<div part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></div>`;
+      case VALID_TEXT_TAGS.SPAN:
+        return html`<span part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></span>`;
+      case VALID_TEXT_TAGS.SMALL:
+        return html`<small part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></small>`;
       case VALID_TEXT_TAGS.P:
-      default: return html`<p part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></p>`;
+      default:
+        return html`<p part=${DEFAULTS.CSS_PART_TEXT}><slot></slot></p>`;
     }
   }
 

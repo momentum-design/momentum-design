@@ -6,9 +6,9 @@ import '../text';
 Card.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-card']: Card
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-card']: Card;
+  }
 }
 
 export default Card;

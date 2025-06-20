@@ -15,7 +15,7 @@ type SetUpOptions = {
   'tooltip-text'?: string;
   'tooltip-placement'?: string;
   children?: string;
-}
+};
 
 const primaryLabel = 'Primary Label';
 const secondaryLabel = 'Secondary Label';
@@ -49,9 +49,9 @@ const setup = async (args: SetUpOptions) => {
 
 test.describe.parallel('mdc-listitem', () => {
   test('visual regression and accessibility', async ({ componentsPage }) => {
-  /**
-   * VISUAL REGRESSION
-   */
+    /**
+     * VISUAL REGRESSION
+     */
     await test.step('visual-regression', async () => {
       const listitemSheet = new StickerSheet(componentsPage, 'mdc-listitem', 'margin: 0.25rem 0;');
       const options = { createNewRow: true };
@@ -135,17 +135,17 @@ test.describe.parallel('mdc-listitem', () => {
     });
 
     /**
-   * ACCESSIBILITY
-   */
+     * ACCESSIBILITY
+     */
     await test.step('accessibility', async () => {
       await componentsPage.accessibility.checkForA11yViolations('listitem-default');
     });
   });
 
   test('attributes and interactions', async ({ componentsPage }) => {
-  /**
-   * ATTRIBUTES
-   */
+    /**
+     * ATTRIBUTES
+     */
     await test.step('attributes', async () => {
       const listitem = await setup({ componentsPage });
 
@@ -329,23 +329,20 @@ test.describe.parallel('mdc-listitem', () => {
         });
       });
 
-      await test.step(
-        'component should show tooltip when the listitem is focused and tooltip text is passed',
-        async () => {
-          const listitem = await setup({
-            componentsPage,
-            label: primaryLabel,
-            'tooltip-text': 'Tooltip Text',
-            'tooltip-placement': POPOVER_PLACEMENT.BOTTOM,
-          });
-          await componentsPage.actionability.pressTab();
-          await expect(listitem).toBeFocused();
-          const tooltip = componentsPage.page.locator('mdc-tooltip');
-          await expect(tooltip).toBeVisible();
-          const text = await tooltip.textContent();
-          expect(text?.trim()).toBe('Tooltip Text');
-        },
-      );
+      await test.step('component should show tooltip when the listitem is focused and tooltip text is passed', async () => {
+        const listitem = await setup({
+          componentsPage,
+          label: primaryLabel,
+          'tooltip-text': 'Tooltip Text',
+          'tooltip-placement': POPOVER_PLACEMENT.BOTTOM,
+        });
+        await componentsPage.actionability.pressTab();
+        await expect(listitem).toBeFocused();
+        const tooltip = componentsPage.page.locator('mdc-tooltip');
+        await expect(tooltip).toBeVisible();
+        const text = await tooltip.textContent();
+        expect(text?.trim()).toBe('Tooltip Text');
+      });
     });
   });
 });

@@ -52,7 +52,11 @@ test.describe('mdc-text', () => {
   /**
    * VISUAL REGRESSION
    */
-  const createSnapshot = async ({ componentsPage, combination, fileNameSuffix }: {
+  const createSnapshot = async ({
+    componentsPage,
+    combination,
+    fileNameSuffix,
+  }: {
     componentsPage: ComponentsPage;
     combination: Record<string, Record<string, any>>;
     fileNameSuffix: string;

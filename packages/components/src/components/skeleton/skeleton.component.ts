@@ -43,10 +43,7 @@ class Skeleton extends Component {
   /**
    * Styles associated with this component.
    */
-  public static override styles: Array<CSSResult> = [
-    ...Component.styles,
-    styles,
-  ];
+  public static override styles: Array<CSSResult> = [...Component.styles, styles];
 
   public override connectedCallback(): void {
     super.connectedCallback();

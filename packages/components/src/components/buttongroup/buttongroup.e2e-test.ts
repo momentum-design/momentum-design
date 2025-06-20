@@ -87,9 +87,11 @@ test('mdc-buttongroup', async ({ componentsPage }) => {
     buttonGroupStickerSheet.setChildren(`
       <mdc-button prefix-icon="arrow-up-bold" aria-label='arrow up button'></mdc-button>
       <mdc-button prefix-icon="arrow-down-bold" aria-label='arrow down button'></mdc-button>`);
-    buttonGroupStickerSheet.setAttributes({ orientation: BUTTON_GROUP_ORIENTATION.VERTICAL,
+    buttonGroupStickerSheet.setAttributes({
+      orientation: BUTTON_GROUP_ORIENTATION.VERTICAL,
       variant: BUTTON_GROUP_VARIANT.SECONDARY,
-      size: BUTTON_GROUP_SIZE[32] });
+      size: BUTTON_GROUP_SIZE[32],
+    });
     await buttonGroupStickerSheet.createMarkupWithCombination({});
 
     // compact group
@@ -99,27 +101,33 @@ test('mdc-buttongroup', async ({ componentsPage }) => {
       <mdc-button prefix-icon="alert-active-bold" aria-label='alert active button'></mdc-button>
       <mdc-button prefix-icon="forward-message-bold" aria-label='forward message button'></mdc-button>
       <mdc-button prefix-icon="more-bold" aria-label='more button'></mdc-button>`);
-    buttonGroupStickerSheet.setAttributes({ compact: true,
+    buttonGroupStickerSheet.setAttributes({
+      compact: true,
       variant: BUTTON_GROUP_VARIANT.SECONDARY,
-      size: BUTTON_GROUP_SIZE[24] });
+      size: BUTTON_GROUP_SIZE[24],
+    });
     await buttonGroupStickerSheet.createMarkupWithCombination({});
 
     // split button
     buttonGroupStickerSheet.setChildren(`
       <mdc-button prefix-icon="microphone-muted-bold">Unmute</mdc-button>
       <mdc-button prefix-icon="arrow-down-bold" aria-label='arrow down button'></mdc-button>`);
-    buttonGroupStickerSheet.setAttributes({ orientation: BUTTON_GROUP_ORIENTATION.HORIZONTAL,
+    buttonGroupStickerSheet.setAttributes({
+      orientation: BUTTON_GROUP_ORIENTATION.HORIZONTAL,
       variant: BUTTON_GROUP_VARIANT.SECONDARY,
-      size: BUTTON_GROUP_SIZE[28] });
+      size: BUTTON_GROUP_SIZE[28],
+    });
     await buttonGroupStickerSheet.createMarkupWithCombination({});
 
     // split icon button
     buttonGroupStickerSheet.setChildren(`
       <mdc-button prefix-icon="raise-hand-bold" aria-label='raise hand button'></mdc-button>
       <mdc-button prefix-icon="reactions-bold" aria-label='reactions button'></mdc-button>`);
-    buttonGroupStickerSheet.setAttributes({ orientation: BUTTON_GROUP_ORIENTATION.HORIZONTAL,
+    buttonGroupStickerSheet.setAttributes({
+      orientation: BUTTON_GROUP_ORIENTATION.HORIZONTAL,
       variant: BUTTON_GROUP_VARIANT.SECONDARY,
-      size: BUTTON_GROUP_SIZE[40] });
+      size: BUTTON_GROUP_SIZE[40],
+    });
     await buttonGroupStickerSheet.createMarkupWithCombination({});
 
     await buttonGroupStickerSheet.mountStickerSheet({ wrapperStyle: 'display: flex; flex-wrap: wrap' });
@@ -141,11 +149,14 @@ test('mdc-buttongroup', async ({ componentsPage }) => {
    * ATTRIBUTES
    */
   await test.step('attributes', async () => {
-    const buttongroup = await setup({ componentsPage, children: `<mdc-button prefix-icon="reply-bold"></mdc-button>
+    const buttongroup = await setup({
+      componentsPage,
+      children: `<mdc-button prefix-icon="reply-bold"></mdc-button>
       <mdc-button prefix-icon="reactions-bold"></mdc-button>
       <mdc-button prefix-icon="alert-active-bold"></mdc-button>
       <mdc-button prefix-icon="forward-message-bold"></mdc-button>
-      <mdc-button prefix-icon="more-bold"></mdc-button>` });
+      <mdc-button prefix-icon="more-bold"></mdc-button>`,
+    });
 
     await test.step('attribute variant should be present on component by default', async () => {
       await expect(buttongroup).toHaveAttribute('variant', BUTTON_GROUP_VARIANT.PRIMARY);
@@ -178,23 +189,29 @@ test('mdc-buttongroup', async ({ componentsPage }) => {
    */
   await test.step('focus & interactions', async () => {
     await test.step('component should be focusable with tab', async () => {
-      const buttongroup = await setup({ componentsPage, children: `<mdc-button prefix-icon="reply-bold"></mdc-button>
+      const buttongroup = await setup({
+        componentsPage,
+        children: `<mdc-button prefix-icon="reply-bold"></mdc-button>
       <mdc-button prefix-icon="reactions-bold"></mdc-button>
       <mdc-button prefix-icon="alert-active-bold"></mdc-button>
       <mdc-button prefix-icon="forward-message-bold"></mdc-button>
-      <mdc-button prefix-icon="more-bold"></mdc-button>` });
+      <mdc-button prefix-icon="more-bold"></mdc-button>`,
+      });
 
       const buttons = buttongroup.locator('mdc-button');
-      await componentsPage.actionability.pressAndCheckFocus('Tab', [buttons.first(),
+      await componentsPage.actionability.pressAndCheckFocus('Tab', [
+        buttons.first(),
         buttons.nth(1),
         buttons.nth(2),
         buttons.nth(3),
-        buttons.last()]);
+        buttons.last(),
+      ]);
       await componentsPage.actionability.pressAndCheckFocus('Shift+Tab', [
         buttons.nth(3),
         buttons.nth(2),
         buttons.nth(1),
-        buttons.first()]);
+        buttons.first(),
+      ]);
     });
 
     await test.step('component should open popover when trigger button within the group is clicked', async () => {

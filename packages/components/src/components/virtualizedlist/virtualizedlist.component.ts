@@ -159,23 +159,15 @@ class VirtualizedList extends Component {
       }
     }
 
-    return html`<div
-          part="container"
-          style="height: ${getTotalSize()}px;"
-        >
-          <slot></slot>
-        </div>`;
+    return html`<div part="container" style="height: ${getTotalSize()}px;">
+      <slot></slot>
+    </div>`;
   }
 
   public override render() {
-    return html`<div
-      ${ref(this.scrollElementRef)}
-      part="scroll"
-      @scroll=${this.onscroll && this.onscroll}
-    >
+    return html`<div ${ref(this.scrollElementRef)} part="scroll" @scroll=${this.onscroll && this.onscroll}>
       ${this.virtualizerController ? this.getVirtualizedListWrapper(this.virtualizerController) : html``}
-    </div>
-  `;
+    </div> `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];

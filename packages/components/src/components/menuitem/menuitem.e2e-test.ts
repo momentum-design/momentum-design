@@ -9,7 +9,7 @@ type SetupOptions = {
   'arrow-position'?: string;
   'tooltip-text'?: string;
   children?: string;
-}
+};
 
 const primaryLabel = 'Primary Label';
 const secondaryLabel = 'Secondary Label';

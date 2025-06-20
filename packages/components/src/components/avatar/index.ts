@@ -7,9 +7,9 @@ import '../text';
 Avatar.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-avatar']: Avatar
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-avatar']: Avatar;
+  }
 }
 
 export default Avatar;

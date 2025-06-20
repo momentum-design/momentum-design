@@ -9,39 +9,26 @@ import '../navitem';
 import '../sidenavigation';
 
 const render = (args: Args) => html`
-<div style="height: 40vh; margin: 1rem">
-  <mdc-sidenavigation @activechange=${action('onactivechange')} grabber-btn-aria-label = "This is a grabber button.">
-    <mdc-navitemlist aria-label=${ifDefined(args['aria-label'])} 
-      slot="scrollable-section">
-      <mdc-navitem
-        nav-id="1"
-        icon-name="placeholder-bold"
-        badge-type="counter"
-        counter="3"
-        max-counter="66"
-        aria-label='Dashboard'
-        label='Dashboard'
-      >
-      </mdc-navitem>
-      <mdc-navitem
-        nav-id="2"
-        icon-name="placeholder-bold"
-        aria-label='Calling'
-        label='Calling'
-        disabled
-      >
-      </mdc-navitem>
-      <mdc-navitem
-        nav-id="3"
-        icon-name="placeholder-bold"
-        badge-type="dot"
-        aria-label='Settings'
-        label='Settings'
-      >
-      </mdc-navitem>
-    </mdc-navitemlist>
-  </mdc-sidenavigation>
-</div>
+  <div style="height: 40vh; margin: 1rem">
+    <mdc-sidenavigation @activechange=${action('onactivechange')} grabber-btn-aria-label="This is a grabber button.">
+      <mdc-navitemlist aria-label=${ifDefined(args['aria-label'])} slot="scrollable-section">
+        <mdc-navitem
+          nav-id="1"
+          icon-name="placeholder-bold"
+          badge-type="counter"
+          counter="3"
+          max-counter="66"
+          aria-label="Dashboard"
+          label="Dashboard"
+        >
+        </mdc-navitem>
+        <mdc-navitem nav-id="2" icon-name="placeholder-bold" aria-label="Calling" label="Calling" disabled>
+        </mdc-navitem>
+        <mdc-navitem nav-id="3" icon-name="placeholder-bold" badge-type="dot" aria-label="Settings" label="Settings">
+        </mdc-navitem>
+      </mdc-navitemlist>
+    </mdc-sidenavigation>
+  </div>
 `;
 
 const meta: Meta = {
@@ -56,13 +43,8 @@ const meta: Meta = {
     'aria-label': {
       control: 'text',
     },
-    ...disableControls([
-      'default',
-    ]),
-    ...hideControls([
-      'navItems',
-      'aria-orientation',
-    ]),
+    ...disableControls(['default']),
+    ...hideControls(['navItems', 'aria-orientation']),
     ...classArgType,
     ...styleArgType,
   },

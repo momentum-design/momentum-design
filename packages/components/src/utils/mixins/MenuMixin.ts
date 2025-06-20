@@ -51,18 +51,18 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     get menuItems(): Array<HTMLElement> {
       const slot = this.shadowRoot?.querySelector('slot');
       const allAssignedElements = (slot?.assignedElements({ flatten: true }) || []) as Array<HTMLElement>;
-      return allAssignedElements.map(
-        (node) => {
+      return allAssignedElements
+        .map(node => {
           if (node.tagName.toLowerCase() === MENUSECTION_TAGNAME) {
-            return Array.from(node.children)
-              .filter((child) => this.isValidMenuItem(child as HTMLElement)) as Array<HTMLElement>;
+            return Array.from(node.children).filter(child =>
+              this.isValidMenuItem(child as HTMLElement),
+            ) as Array<HTMLElement>;
           }
           return this.isValidMenuItem(node) ? node : [];
-        },
-      )
+        })
         .flat()
-        .filter((node) => !!node)
-        .filter((node) => !node.hasAttribute('disabled'));
+        .filter(node => !!node)
+        .filter(node => !node.hasAttribute('disabled'));
     }
 
     public override firstUpdated(changedProperties: PropertyValues): void {
@@ -96,9 +96,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      * @returns The index of the target element in the menuItems array.
      */
     private getCurrentIndex(target: EventTarget | null): number {
-      return this.menuItems.findIndex(
-        (node) => node === target || node === (target as HTMLElement).parentElement,
-      );
+      return this.menuItems.findIndex(node => node === target || node === (target as HTMLElement).parentElement);
     }
 
     /**
@@ -106,11 +104,11 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      */
     protected updatePopoverPlacementBasedOnOrientation(): void {
       if (this.ariaOrientation === ORIENTATION.HORIZONTAL) {
-        this.menuPopoverItems.forEach((node) => {
+        this.menuPopoverItems.forEach(node => {
           node.setAttribute('placement', POPOVER_PLACEMENT.BOTTOM_START);
         });
       } else {
-        this.menuPopoverItems.forEach((node) => {
+        this.menuPopoverItems.forEach(node => {
           node.setAttribute('placement', POPOVER_PLACEMENT.RIGHT_START);
         });
       }
@@ -142,9 +140,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      * @returns True if the tag name is a valid menu, false otherwise.
      */
     private isValidMenu(tagName?: string): boolean {
-      return (
-        tagName?.toLowerCase() === MENUBAR_TAGNAME || this.isValidNavItemList(tagName)
-      );
+      return tagName?.toLowerCase() === MENUBAR_TAGNAME || this.isValidNavItemList(tagName);
     }
 
     /**
@@ -173,7 +169,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     private openPopover(index: number): boolean {
       if (this.isValidPopover(this.menuItems[index]?.nextElementSibling?.tagName)) {
         const currentMenuId = this.menuItems[index].getAttribute('id');
-        const result = this.menuPopoverItems.findIndex((node) => node.getAttribute('triggerid') === currentMenuId);
+        const result = this.menuPopoverItems.findIndex(node => node.getAttribute('triggerid') === currentMenuId);
         if (result !== -1) {
           if (!this.menuPopoverItems[result].hasAttribute('visible')) {
             this.menuPopoverItems[result].toggleAttribute('visible');
@@ -258,7 +254,7 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
         menu?.toggleAttribute('visible');
       }
       if (menu?.children) {
-        const menuChildren = Array.from(menu.children).filter((child) => this.isValidMenuItem(child as HTMLElement));
+        const menuChildren = Array.from(menu.children).filter(child => this.isValidMenuItem(child as HTMLElement));
         this.resetTabIndexAndSetActiveTabIndex(menuChildren as Array<HTMLElement>);
       }
       if (menu?.parentElement) {
@@ -274,19 +270,15 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      */
     private navigateToPrevParentMenuItem(currentIndex: number, key: string): void {
       const parentMenuItem = this.menuItems[currentIndex].parentElement?.previousElementSibling;
-      const parentMenuItemsChildren = Array.from(this.parentElement?.children || []).filter(
-        (node) => this.isValidMenuItem(node as HTMLElement),
+      const parentMenuItemsChildren = Array.from(this.parentElement?.children || []).filter(node =>
+        this.isValidMenuItem(node as HTMLElement),
       );
-      const parentMenuItemIndex = parentMenuItemsChildren.findIndex((node) => node === parentMenuItem);
+      const parentMenuItemIndex = parentMenuItemsChildren.findIndex(node => node === parentMenuItem);
       let newIndex = parentMenuItemIndex;
       if (key === KEYS.ARROW_LEFT && this.isValidMenu(this.parentElement?.tagName)) {
         newIndex = parentMenuItemIndex - 1;
       }
-      this.updateTabIndexAndFocusNewIndex(
-        parentMenuItemsChildren as Array<HTMLElement>,
-        parentMenuItemIndex,
-        newIndex,
-      );
+      this.updateTabIndexAndFocusNewIndex(parentMenuItemsChildren as Array<HTMLElement>, parentMenuItemIndex, newIndex);
       parentMenuItemsChildren[parentMenuItemIndex - 1]?.nextElementSibling?.toggleAttribute('visible');
     }
 
@@ -310,8 +302,8 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      */
     private getParentMenuContents(currentMenuItem: HTMLElement | null): IMenuContents {
       const parentMenuItemDetails = this.getParentMenuItemDetails('', currentMenuItem);
-      const parentMenuItemsChildren = Array.from(parentMenuItemDetails.menu?.children || []).filter(
-        (node) => this.isValidMenuItem(node as HTMLElement),
+      const parentMenuItemsChildren = Array.from(parentMenuItemDetails.menu?.children || []).filter(node =>
+        this.isValidMenuItem(node as HTMLElement),
       );
       return { parentMenuItemDetails, parentMenuItemsChildren };
     }
@@ -332,23 +324,18 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
       this.hideAllPopovers(this.menuItems[currentIndex]);
       if (this.isValidMenu(this.tagName)) return;
       // - get the top parent menu items using recursion.
-      const {
-        parentMenuItemDetails,
-        parentMenuItemsChildren,
-      } = this.getParentMenuContents(this.menuItems[currentIndex]);
+      const { parentMenuItemDetails, parentMenuItemsChildren } = this.getParentMenuContents(
+        this.menuItems[currentIndex],
+      );
       if (parentMenuItemsChildren.length === 0 || parentMenuItemDetails?.menuChildId === '') {
         this.navigateToNextMenuItem(currentIndex, 0, this.menuItems.length - 1, this.ariaOrientation);
         return;
       }
       const parentMenuItemIndex = parentMenuItemsChildren.findIndex(
-        (node) => node.getAttribute('id') === parentMenuItemDetails?.menuChildId,
+        node => node.getAttribute('id') === parentMenuItemDetails?.menuChildId,
       );
       const newIndex = parentMenuItemIndex === -1 ? currentIndex + 1 : parentMenuItemIndex + 1;
-      this.updateTabIndexAndFocusNewIndex(
-        parentMenuItemsChildren as Array<HTMLElement>,
-        parentMenuItemIndex,
-        newIndex,
-      );
+      this.updateTabIndexAndFocusNewIndex(parentMenuItemsChildren as Array<HTMLElement>, parentMenuItemIndex, newIndex);
       parentMenuItemsChildren[newIndex]?.nextElementSibling?.toggleAttribute('visible');
     }
 
@@ -387,8 +374,9 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      */
     private getKeyBasedOnDirection(originalKey: string): string {
       let key = originalKey;
-      const isRtl = document.querySelector('html')?.getAttribute('dir') === 'rtl'
-       || window.getComputedStyle(this).direction === 'rtl';
+      const isRtl =
+        document.querySelector('html')?.getAttribute('dir') === 'rtl' ||
+        window.getComputedStyle(this).direction === 'rtl';
       if (isRtl && (key === KEYS.ARROW_LEFT || key === KEYS.ARROW_RIGHT)) {
         if (key === KEYS.ARROW_LEFT) {
           key = KEYS.ARROW_RIGHT;
@@ -504,9 +492,9 @@ export const MenuMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      */
     private closeAllPopoversExceptCurrent(currentIndex: number): void {
       this.menuPopoverItems
-        .filter((node) => node !== this.menuItems[currentIndex])
-        .filter((node) => node.hasAttribute('visible'))
-        .forEach((node) => node.toggleAttribute('visible'));
+        .filter(node => node !== this.menuItems[currentIndex])
+        .filter(node => node.hasAttribute('visible'))
+        .forEach(node => node.toggleAttribute('visible'));
     }
 
     /**

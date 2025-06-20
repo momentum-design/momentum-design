@@ -31,11 +31,11 @@ import type { IconButtonSize, PillButtonSize } from '../button/button.types';
 class ButtonLink extends ButtonComponentMixin(Linksimple) {
   /**
    * ButtonLink sizing is based on the buttonlink type.
-    * - **Pill buttonlink**: 40, 32, 28, 24.
-    * - **Icon buttonlink**: 64, 52, 40, 32, 28, 24.
-    * - Tertiary icon buttonlink can also be 20.
-    * @default 32
-    */
+   * - **Pill buttonlink**: 40, 32, 28, 24.
+   * - **Icon buttonlink**: 64, 52, 40, 32, 28, 24.
+   * - Tertiary icon buttonlink can also be 20.
+   * @default 32
+   */
   @property({ type: Number, reflect: true }) size: PillButtonSize | IconButtonSize = DEFAULTS.SIZE;
 
   /**
@@ -93,13 +93,13 @@ class ButtonLink extends ButtonComponentMixin(Linksimple) {
 
   public override render() {
     return html`
-      ${this.prefixIcon ? html` <mdc-icon name="${this.prefixIcon as IconNames}" 
-        part="prefix-icon" length-unit="rem"></mdc-icon>` : ''}
+      ${this.prefixIcon
+        ? html` <mdc-icon name="${this.prefixIcon as IconNames}" part="prefix-icon" length-unit="rem"></mdc-icon>`
+        : ''}
       <slot @slotchange=${this.inferButtonType}></slot>
       ${this.postfixIcon
-    ? html` <mdc-icon name="${this.postfixIcon as IconNames}" 
-    part="postfix-icon" length-unit="rem"></mdc-icon>`
-    : ''}
+        ? html` <mdc-icon name="${this.postfixIcon as IconNames}" part="postfix-icon" length-unit="rem"></mdc-icon>`
+        : ''}
     `;
   }
 

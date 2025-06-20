@@ -12,6 +12,5 @@ export const AddToComponentExports: ActionType = {
   data: {
     componentName,
   },
-  template:
-    `  {{sentenceCase ${componentName}}},\n$1`,
+  template: `  {{sentenceCase ${componentName}}},\n$1`,
 };

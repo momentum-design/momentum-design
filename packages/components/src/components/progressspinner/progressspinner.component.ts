@@ -62,26 +62,26 @@ class Progressspinner extends Progressbar {
         aria-valuemax="100"
         aria-label="${this.dataAriaLabel ?? ''}"
       >
-      <svg part="spinner-base">
-        <circle
-          part="spinner-track"
-          cx="24"
-          cy="24"
-          r="${DEFAULTS.RADIUS}"
-          stroke-width="${remainingArc === 0 ? 0 : DEFAULTS.STROKE_WIDTH}"
-          stroke-dasharray="${remainingArc} ${DEFAULTS.CIRCUMFERENCE}"
-          stroke-dashoffset="-${remainingOffset}"
-        />
-        <circle
-          part="spinner-progress"
-          cx="24"
-          cy="24"
-          r="${DEFAULTS.RADIUS}"
-          stroke-width="${progressArc === 0 ? 0 : DEFAULTS.STROKE_WIDTH}"
-          stroke-dasharray="${progressArc} ${DEFAULTS.CIRCUMFERENCE}"
-          stroke-dashoffset="-${progressOffset}"
-        />
-      </svg>
+        <svg part="spinner-base">
+          <circle
+            part="spinner-track"
+            cx="24"
+            cy="24"
+            r="${DEFAULTS.RADIUS}"
+            stroke-width="${remainingArc === 0 ? 0 : DEFAULTS.STROKE_WIDTH}"
+            stroke-dasharray="${remainingArc} ${DEFAULTS.CIRCUMFERENCE}"
+            stroke-dashoffset="-${remainingOffset}"
+          />
+          <circle
+            part="spinner-progress"
+            cx="24"
+            cy="24"
+            r="${DEFAULTS.RADIUS}"
+            stroke-width="${progressArc === 0 ? 0 : DEFAULTS.STROKE_WIDTH}"
+            stroke-dasharray="${progressArc} ${DEFAULTS.CIRCUMFERENCE}"
+            stroke-dashoffset="-${progressOffset}"
+          />
+        </svg>
       </div>
     `;
   }
@@ -92,12 +92,13 @@ class Progressspinner extends Progressbar {
    */
   private renderErrorState() {
     return html`
-      <mdc-icon 
-      part="error-icon"
-      aria-label="${this.dataAriaLabel ?? ''}" 
-      name="${ICON_NAME.ERROR_LEGACY_FILLED}"
-      size="${DEFAULTS.ERROR_ICON_SIZE}"  
-      length-unit="${DEFAULTS.ICON_LENGTH_UNIT}"></mdc-icon>
+      <mdc-icon
+        part="error-icon"
+        aria-label="${this.dataAriaLabel ?? ''}"
+        name="${ICON_NAME.ERROR_LEGACY_FILLED}"
+        size="${DEFAULTS.ERROR_ICON_SIZE}"
+        length-unit="${DEFAULTS.ICON_LENGTH_UNIT}"
+      ></mdc-icon>
     `;
   }
 
@@ -107,12 +108,13 @@ class Progressspinner extends Progressbar {
    */
   private renderSuccessState() {
     return html`
-      <mdc-icon 
-      part="success-icon"
-      aria-label="${this.dataAriaLabel ?? ''}" 
-      name="${ICON_NAME.CHECK_CIRCLE_BOLD}"
-      size="${DEFAULTS.SUCCESS_ICON_SIZE}"  
-      length-unit="${DEFAULTS.ICON_LENGTH_UNIT}"></mdc-icon>
+      <mdc-icon
+        part="success-icon"
+        aria-label="${this.dataAriaLabel ?? ''}"
+        name="${ICON_NAME.CHECK_CIRCLE_BOLD}"
+        size="${DEFAULTS.SUCCESS_ICON_SIZE}"
+        length-unit="${DEFAULTS.ICON_LENGTH_UNIT}"
+      ></mdc-icon>
     `;
   }
 
@@ -123,8 +125,7 @@ class Progressspinner extends Progressbar {
     if (this.clampedValue === 100) {
       return this.renderSuccessState();
     }
-    return html`
-      ${this.renderProgressSpinner()}`;
+    return html` ${this.renderProgressSpinner()}`;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];

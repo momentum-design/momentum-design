@@ -123,7 +123,7 @@ export const PillButton: StoryObj = {
 };
 
 export const PillButtonInverted: StoryObj = {
-  render: (args) =>
+  render: args =>
     html` <div style="padding: 10px; background: var(--mds-color-theme-inverted-background-normal);">
       ${render(args)}
     </div>`,
@@ -199,7 +199,7 @@ export const IconButton: StoryObj = {
 };
 
 export const IconButtonInverted: StoryObj = {
-  render: (args) =>
+  render: args =>
     html` <div style="padding: 10px; background: var(--mds-color-theme-inverted-background-normal);">
       ${render(args)}
     </div>`,
@@ -228,7 +228,7 @@ export const IconButtonInverted: StoryObj = {
 };
 
 export const PillButtonEllipsis: StoryObj = {
-  render: (args) =>
+  render: args =>
     render({ ...args, children: html`<mdc-text>${args.textWithinChildren}</mdc-text>`, style: 'width: 150px;' }),
   args: {
     textWithinChildren: 'Long text with icons',
@@ -245,7 +245,7 @@ export const PillButtonEllipsis: StoryObj = {
 };
 
 export const PillWithPrefixIconEllipsis: StoryObj = {
-  render: (args) =>
+  render: args =>
     render({ ...args, children: html`<mdc-text>${args.textWithinChildren}</mdc-text>`, style: 'width: 150px;' }),
   args: {
     textWithinChildren: 'Long text with icons',

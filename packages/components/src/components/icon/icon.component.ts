@@ -151,12 +151,12 @@ class Icon extends Component {
           cacheStrategy,
           renewSignal,
         })
-          .then((iconData) => {
+          .then(iconData => {
             // parse the fetched icon string to an html element and set the attributes
             const iconElement = this.prepareIconElement(iconData);
             this.handleIconLoadedSuccess(iconElement as HTMLElement);
           })
-          .catch((error) => {
+          .catch(error => {
             this.handleIconLoadedFailure(error);
           });
       }
@@ -164,10 +164,10 @@ class Icon extends Component {
       if (iconSet === 'momentum-icons' && this.name) {
         // dynamic import of the lit template from the momentum icons package
         return import(`@momentum-design/icons/dist/ts/${this.name}.ts`)
-          .then((module) => {
+          .then(module => {
             this.handleIconLoadedSuccess(module.default());
           })
-          .catch((error) => {
+          .catch(error => {
             this.handleIconLoadedFailure(error);
           });
       }
@@ -229,7 +229,7 @@ class Icon extends Component {
 
     if (changedProperties.has('name')) {
       // fetch icon data if name changes:
-      this.getIconData().catch((err) => {
+      this.getIconData().catch(err => {
         if (err.name !== 'AbortError' && this.onerror) {
           this.onerror(err);
         }
@@ -237,7 +237,7 @@ class Icon extends Component {
     }
 
     if (changedProperties.has('ariaLabel') || changedProperties.has('ariaLabelledBy')) {
-      this.role = (this.ariaLabel || this.ariaLabelledBy) ? 'img' : null;
+      this.role = this.ariaLabel || this.ariaLabelledBy ? 'img' : null;
     }
 
     if (changedProperties.has('size') || changedProperties.has('lengthUnit')) {

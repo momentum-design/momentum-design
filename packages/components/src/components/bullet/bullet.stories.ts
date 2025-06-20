@@ -6,8 +6,7 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { SIZE } from './bullet.constants';
 import { disableControls } from '../../../config/storybook/utils';
 
-const render = (args: Args) => html`
-  <mdc-bullet size="${ifDefined(args.size)}"></mdc-bullet>`;
+const render = (args: Args) => html` <mdc-bullet size="${ifDefined(args.size)}"></mdc-bullet>`;
 
 const meta: Meta = {
   title: 'Components/decorator/bullet',

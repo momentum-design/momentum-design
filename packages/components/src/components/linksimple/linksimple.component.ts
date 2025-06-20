@@ -119,9 +119,7 @@ class Linksimple extends DisabledMixin(TabIndexMixin(Component)) {
   }
 
   public override render() {
-    return html`
-      <slot></slot>
-    `;
+    return html` <slot></slot> `;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];

@@ -3,7 +3,7 @@ import { VARIANTS } from './sidenavigation.constants';
 
 type SideNavigationVariant = ValueOf<typeof VARIANTS>;
 interface Events {
-    onActiveChangeEvent: Event;
+  onActiveChangeEvent: Event;
 }
 
 export type { SideNavigationVariant, Events };

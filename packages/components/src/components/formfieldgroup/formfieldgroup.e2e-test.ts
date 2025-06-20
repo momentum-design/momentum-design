@@ -12,7 +12,7 @@ type SetupOptions = {
   'help-text-type'?: string;
   'data-aria-label'?: string;
   required?: boolean;
-}
+};
 
 const label = 'Select all powers';
 const helpText = 'check all that apply';

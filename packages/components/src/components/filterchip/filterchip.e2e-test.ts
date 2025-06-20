@@ -8,7 +8,7 @@ type SetupOptions = {
   selected?: boolean;
   disabled?: boolean;
   secondChipForFocus?: boolean;
-}
+};
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;

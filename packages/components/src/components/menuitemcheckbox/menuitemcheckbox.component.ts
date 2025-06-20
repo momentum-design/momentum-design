@@ -93,7 +93,7 @@ class MenuItemCheckbox extends MenuItem {
         ?checked="${this.ariaChecked === ARIA_CHECKED_STATES.TRUE}"
         ?disabled="${this.disabled}"
       ></mdc-staticcheckbox>
-  `;
+    `;
   }
 
   /**
@@ -128,13 +128,7 @@ class MenuItemCheckbox extends MenuItem {
     if (this.indicator !== INDICATOR.CHECKMARK || this.ariaChecked === ARIA_CHECKED_STATES.FALSE) {
       return nothing;
     }
-    return html`
-      <mdc-icon
-        slot="trailing-controls"
-        name="check-bold"
-        part="checkmark-icon"
-      ></mdc-icon>
-    `;
+    return html` <mdc-icon slot="trailing-controls" name="check-bold" part="checkmark-icon"></mdc-icon> `;
   }
 
   public override render() {
@@ -154,8 +148,7 @@ class MenuItemCheckbox extends MenuItem {
           ${this.getText('trailing-text-subline', TYPE.BODY_SMALL_REGULAR, this.sublineText)}
         </div>
         <slot name="trailing-controls"></slot>
-        ${this.staticToggle()}
-        ${this.getCheckmarkIcon()}
+        ${this.staticToggle()} ${this.getCheckmarkIcon()}
       </div>
     `;
   }

@@ -225,12 +225,14 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('readonly component should be focusable with tab', async () => {
-      await setup({ componentsPage,
+      await setup({
+        componentsPage,
         readonly: true,
         value: 'Readonly',
         trailingButton: true,
         clearAriaLabel: 'clear',
-        secondButtonForFocus: true });
+        secondButtonForFocus: true,
+      });
       const trailingButton = input.locator('mdc-button').first();
       await componentsPage.actionability.pressTab();
       await expect(input).toBeFocused();
@@ -242,10 +244,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('focus on input and trailing button when value is present during interactions', async () => {
-      await setup({ componentsPage,
-        trailingButton: true,
-        clearAriaLabel: 'clear',
-        secondButtonForFocus: true });
+      await setup({ componentsPage, trailingButton: true, clearAriaLabel: 'clear', secondButtonForFocus: true });
       const trailingButton = input.locator('mdc-button[part="trailing-button"]');
       await componentsPage.actionability.pressTab();
       await expect(input).toBeFocused();
@@ -262,12 +261,14 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('trailing button will not be focusable in readonly state', async () => {
-      await setup({ componentsPage,
+      await setup({
+        componentsPage,
         value: 'this is readonly data',
         readonly: true,
         trailingButton: true,
         clearAriaLabel: 'clear',
-        secondButtonForFocus: true });
+        secondButtonForFocus: true,
+      });
       const trailingButton = input.locator('mdc-button[part="trailing-button"]');
       await expect(inputEl).toHaveValue('this is readonly data');
       await expect(trailingButton).not.toHaveClass('hidden');
@@ -289,13 +290,16 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('component in form should be validated for required and maxlength when submitted', async () => {
-      const form = await setup({
-        componentsPage,
-        id: 'test-mdc-input',
-        placeholder: 'Placeholder',
-        required: true,
-        maxlength: 10,
-      }, true);
+      const form = await setup(
+        {
+          componentsPage,
+          id: 'test-mdc-input',
+          placeholder: 'Placeholder',
+          required: true,
+          maxlength: 10,
+        },
+        true,
+      );
 
       const mdcInput = form.locator('mdc-input');
       const submitButton = form.locator('mdc-button');
@@ -303,7 +307,7 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
       await componentsPage.actionability.pressTab();
       await expect(mdcInput).toBeFocused();
       await componentsPage.page.keyboard.down('Enter');
-      const validationMessage = await inputEl.evaluate((element) => {
+      const validationMessage = await inputEl.evaluate(element => {
         const input = element as HTMLInputElement;
         return input.validationMessage;
       });
@@ -336,28 +340,20 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     });
 
     // disabled input field with value
-    inputStickerSheet.setAttributes({ ...attributes,
-      value: 'Disabled',
-      disabled: true,
-    });
+    inputStickerSheet.setAttributes({ ...attributes, value: 'Disabled', disabled: true });
     await inputStickerSheet.createMarkupWithCombination({});
 
     // input with value and leading icon
-    inputStickerSheet.setAttributes({ ...attributes,
-      value: 'Leading Icon',
-      'leading-icon': 'placeholder-bold',
-    });
+    inputStickerSheet.setAttributes({ ...attributes, value: 'Leading Icon', 'leading-icon': 'placeholder-bold' });
     await inputStickerSheet.createMarkupWithCombination({});
 
     // input with value and prefix text
-    inputStickerSheet.setAttributes({ ...attributes,
-      value: 'Text Content',
-      'prefix-text': 'Prefix',
-    });
+    inputStickerSheet.setAttributes({ ...attributes, value: 'Text Content', 'prefix-text': 'Prefix' });
     await inputStickerSheet.createMarkupWithCombination({});
 
     // input with value and trailing button
-    inputStickerSheet.setAttributes({ ...attributes,
+    inputStickerSheet.setAttributes({
+      ...attributes,
       value: 'Clear button',
       'trailing-button': true,
       'clear-aria-label': 'clear',
@@ -365,17 +361,11 @@ test('mdc-input', async ({ componentsPage, browserName }) => {
     await inputStickerSheet.createMarkupWithCombination({});
 
     // readonly input field with value
-    inputStickerSheet.setAttributes({ ...attributes,
-      value: 'Readonly value',
-      readonly: true,
-    });
+    inputStickerSheet.setAttributes({ ...attributes, value: 'Readonly value', readonly: true });
     await inputStickerSheet.createMarkupWithCombination({});
 
     // input that is marked required
-    inputStickerSheet.setAttributes({ ...attributes,
-      required: '',
-      placeholder: 'Input is required',
-    });
+    inputStickerSheet.setAttributes({ ...attributes, required: '', placeholder: 'Input is required' });
     await inputStickerSheet.createMarkupWithCombination({});
 
     // Long text label that is truncated in a small container
