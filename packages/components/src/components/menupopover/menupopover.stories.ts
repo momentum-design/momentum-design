@@ -1,45 +1,101 @@
-import type { Meta, StoryObj } from '@storybook/web-components';
-import { html } from 'lit';
+import { action } from '@storybook/addon-actions';
+import type { Args, Meta, StoryObj } from '@storybook/web-components';
+import { html, TemplateResult } from 'lit';
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
+import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { DEFAULTS, POPOVER_PLACEMENT } from '../popover/popover.constants';
 import '../button';
 import '../buttongroup';
 import '../divider';
 import '../icon';
 import '../menuitem';
 
-const createPopover = (triggerId: string) => html`
-  <mdc-menupopover triggerid="${triggerId}" placement="bottom-start">
-    <mdc-menuitem label="New"></mdc-menuitem>
-    <mdc-menuitem label="Open"></mdc-menuitem>
-    <mdc-menuitem label="Save"></mdc-menuitem>
-    <mdc-divider></mdc-divider>
-    <mdc-menuitem label="Share" id="share-id" arrow-position='trailing'></mdc-menuitem>
-    <mdc-menupopover triggerid="share-id" placement="right-start">
-      <mdc-menuitem label="AirDrop"></mdc-menuitem>
-      <mdc-menuitem label="Messages"></mdc-menuitem>
-      <mdc-menuitem label="Notes"></mdc-menuitem>
-      <mdc-menuitem label="Freeform"></mdc-menuitem>
-      <mdc-menuitem label="Reminders"></mdc-menuitem>
-    </mdc-menupopover>
+const createPopover = (args: Args, content: TemplateResult = html``) => html`
+  <mdc-menupopover
+    id="${args.id}"
+    triggerID="${args.triggerID}"
+    placement="${args.placement}"
+    ?visible="${args.visible}"
+    .offset="${args.offset ?? 0}"
+    ?flip="${args.flip}"
+    ?size="${args.size}"
+    z-index="${args['z-index']}"
+    delay="${args.delay}"
+    ?prevent-scroll="${args['prevent-scroll']}"
+    append-to="${args['append-to']}"
+    aria-label="${args['aria-label']}"
+    aria-labelledby="${args['aria-labelledby']}"
+    aria-describedby="${args['aria-describedby']}"
+    @shown="${action('onshown')}"
+    @hidden="${action('onhidden')}"
+    @created="${action('oncreated')}"
+    @destroyed="${action('ondestroyed')}"
+  >
+    ${content}
   </mdc-menupopover>
-`;
-
-const render = () => html`
-    <mdc-menuitem id="menu-button-trigger" label="File menu item"></mdc-menuitem>
-    ${createPopover('menu-button-trigger')}
 `;
 
 const meta: Meta = {
   title: 'Work In Progress/menu/menupopover',
   tags: ['autodocs'],
   component: 'mdc-menupopover',
-  render,
   parameters: {
     badges: ['wip'],
   },
   argTypes: {
+    id: {
+      control: 'text',
+    },
+    triggerID: {
+      control: 'text',
+    },
+    trigger: {
+      control: 'text',
+    },
+    placement: {
+      control: 'select',
+      options: Object.values(POPOVER_PLACEMENT),
+    },
+    offset: {
+      if: {
+        arg: 'offset',
+      },
+      control: 'number',
+    },
+    visible: {
+      control: 'boolean',
+    },
+    delay: {
+      control: 'text',
+    },
+    flip: {
+      control: 'boolean',
+    },
+    size: {
+      control: 'boolean',
+    },
+    'z-index': {
+      if: {
+        arg: 'z-index',
+      },
+      control: 'number',
+    },
+    'prevent-scroll': {
+      control: 'boolean',
+    },
+    'append-to': {
+      control: 'text',
+    },
+    'aria-label': {
+      control: 'text',
+    },
+    'aria-labelledby': {
+      control: 'text',
+    },
+    'aria-describedby': {
+      control: 'text',
+    },
     ...classArgType,
     ...styleArgType,
     ...disableControls([
@@ -51,18 +107,32 @@ const meta: Meta = {
       '--mdc-popover-inverted-border-color',
       '--mdc-popover-inverted-text-color',
       '--mdc-popover-elevation-3',
+      '--mdc-popover-max-width',
+      '--mdc-popover-max-height',
     ]),
     ...hideControls([
-      'aria-orientation',
       'arrowElement',
+      'backdrop',
       'cancelCloseDelay',
-      'enabledFocusTrap',
-      'enabledPreventScroll',
+      'close-button-aria-label',
+      'color',
+      'should-focus-trap-wrap',
+      'disable-aria-haspopup',
+      'disableAriaHasPopup',
+      'disable-aria-expanded',
+      'focus-back-to-trigger',
+      'focus-trap',
+      'show-arrow',
+      'close-button',
+      'interactive',
       'hidePopover',
+      'hide-on-outside-click',
+      'hide-on-blur',
+      'hide-on-escape',
       'onEscapeKeydown',
       'onOutsidePopoverClick',
       'onPopoverFocusOut',
-      'shouldWrapFocus',
+      'role',
       'showPopover',
       'startCloseDelay',
       'togglePopoverVisible',
@@ -74,42 +144,23 @@ const meta: Meta = {
 
 export default meta;
 
-export const Example: StoryObj = {
-  ...hideAllControls(),
-};
+const defaultMenuContent = html`
+  <mdc-menuitem label="New"></mdc-menuitem>
+  <mdc-menuitem label="Open"></mdc-menuitem>
+  <mdc-menuitem label="Save"></mdc-menuitem>
+  <mdc-divider></mdc-divider>
+  <mdc-menuitem label="Share" id="share-id" arrow-position="trailing"></mdc-menuitem>
+  <mdc-menupopover triggerID="share-id" placement="right-start">
+    <mdc-menuitem label="AirDrop"></mdc-menuitem>
+    <mdc-menuitem label="Messages"></mdc-menuitem>
+    <mdc-menuitem label="Notes"></mdc-menuitem>
+    <mdc-menuitem label="Freeform"></mdc-menuitem>
+    <mdc-menuitem label="Reminders"></mdc-menuitem>
+  </mdc-menupopover>
+`;
 
-export const ButtonTrigger: StoryObj = {
-  render: () => html`
-    <mdc-button id="button-trigger">Menu</mdc-button>
-    ${createPopover('button-trigger')}
-  `,
-  ...hideAllControls(),
-};
-
-export const IconTrigger: StoryObj = {
-  render: () => html`
-    <mdc-button prefix-icon="placeholder-bold" id="icon-trigger"></mdc-button>
-    ${createPopover('icon-trigger')}
-  `,
-  ...hideAllControls(),
-};
-
-export const ButtonGroupTrigger: StoryObj = {
-  render: () => html`
-    <mdc-buttongroup variant="secondary" orientation="horizontal" size="32">
-      <mdc-button id="popover-trigger-1">Open Menu</mdc-button>
-      <mdc-button prefix-icon="arrow-down-bold" id="button-group-trigger"></mdc-button>
-    </mdc-buttongroup>
-    ${createPopover('button-group-trigger')}
-  `,
-  ...hideAllControls(),
-};
-
-export const WithGroups: StoryObj = {
-  render: () => html` <div id="menupopover-test-wrapper">
-      <mdc-button id="trigger-btn">Options</mdc-button>
-      <mdc-menupopover triggerid="trigger-btn" placement="right-start">
-        <mdc-menuitem label="Profile"></mdc-menuitem>
+const groupedMenuContent = html`        
+     <mdc-menuitem label="Profile"></mdc-menuitem>
         <mdc-divider></mdc-divider>
         <mdc-menusection label="Preferences">
           <mdc-menuitemcheckbox label="Enable feature" aria-checked="false"></mdc-menuitemcheckbox>
@@ -118,23 +169,15 @@ export const WithGroups: StoryObj = {
           <mdc-menuitemradio name="theme" label="Dark" aria-checked="false"></mdc-menuitemradio>
           <mdc-menuitemradio name="theme" label="System" aria-checked="false"></mdc-menuitemradio>
         </mdc-menusection>
-        <mdc-menuitem label="Notifications"></mdc-menuitem>
-      </mdc-menupopover>
-    </div>`,
-};
+      <mdc-menuitem label="Notifications"></mdc-menuitem>`;
 
-export const WithNestedSubmenus: StoryObj = {
-  render: () => html`
-    <div id="menupopover-test-wrapper"
-     style="display: flex; justify-content: flex-start; align-items: center; height: 100vh;">
-    <mdc-button id="trigger-btn">Options</mdc-button>
-    <mdc-menupopover triggerid="trigger-btn" placement="right-end">
+const nestedSubmenuContent = html`
       <mdc-menuitem label="Profile"></mdc-menuitem>
       <mdc-menuitem id="submenu-trigger" label="Settings" arrow-position='trailing'></mdc-menuitem>
       <mdc-menuitem label="Notifications"></mdc-menuitem>
       <mdc-menuitem label="Logout" disabled></mdc-menuitem>
-      <mdc-menupopover triggerid="submenu-trigger" placement="right">
-        <mdc-menupopover triggerid="security-id" placement="right-start">
+      <mdc-menupopover triggerID="submenu-trigger" placement="right">
+        <mdc-menupopover triggerID="security-id" placement="right-start">
           <mdc-menuitem label="Change Password"></mdc-menuitem>
           <mdc-menuitem label="Two-Factor Authentication"></mdc-menuitem>
           <mdc-menuitem label="Security Questions"></mdc-menuitem>
@@ -143,9 +186,69 @@ export const WithNestedSubmenus: StoryObj = {
         <mdc-menuitem label="Privacy" disabled></mdc-menuitem>
         <mdc-menuitem label="Security" id="security-id" arrow-position='trailing'></mdc-menuitem>
         <mdc-menuitem label="Advanced"></mdc-menuitem>
-      </mdc-menupopover>
-    </mdc-menupopover>
-  </div>
+      </mdc-menupopover>`;
+
+export const Example: StoryObj = {
+  args: {
+    id: 'popover',
+    triggerID: 'popover-trigger',
+    placement: POPOVER_PLACEMENT.BOTTOM_START,
+    offset: DEFAULTS.OFFSET,
+    'z-index': DEFAULTS.Z_INDEX,
+    delay: DEFAULTS.DELAY,
+    flip: DEFAULTS.FLIP,
+    'disable-aria-haspopup': false,
+  },
+  render: (args) => html`
+    <mdc-menuitem id="popover-trigger" label="File"></mdc-menuitem>
+    ${createPopover(args, defaultMenuContent)}
   `,
-  ...hideAllControls(),
+};
+
+export const ButtonTrigger: StoryObj = {
+  args: { ...Example.args, triggerID: 'button-trigger' },
+  render: (args) => html`
+    <mdc-button id="button-trigger">Menu</mdc-button>
+    ${createPopover(args, defaultMenuContent)}
+  `,
+};
+
+export const IconTrigger: StoryObj = {
+  args: { ...Example.args, triggerID: 'icon-trigger' },
+  render: (args) => html`
+    <mdc-button prefix-icon="placeholder-bold" id="icon-trigger" aria-label="Icon Button"></mdc-button>
+    ${createPopover(args, defaultMenuContent)}
+  `,
+};
+
+export const ButtonGroupTrigger: StoryObj = {
+  args: { ...Example.args, triggerID: 'button-group-trigger' },
+  render: (args) => html`
+    <mdc-buttongroup variant="secondary" orientation="horizontal" size="32">
+      <mdc-button id="popover-trigger-1" aria-label="open menu">Open Menu</mdc-button>
+      <mdc-button prefix-icon="arrow-down-bold" id="button-group-trigger" aria-label="Icon Button"></mdc-button>
+    </mdc-buttongroup>
+    ${createPopover(args, defaultMenuContent)}
+  `,
+};
+
+export const WithGroups: StoryObj = {
+  args: { ...Example.args, placement: POPOVER_PLACEMENT.RIGHT_START, triggerID: 'trigger-btn' },
+  render: (args: Args) => html` 
+    <div id="menupopover-test-wrapper">
+      <mdc-button id="trigger-btn">Options</mdc-button>
+      ${createPopover(args, groupedMenuContent)}
+    </div>
+  `,
+};
+
+export const WithNestedSubmenus: StoryObj = {
+  args: { ...Example.args, placement: POPOVER_PLACEMENT.RIGHT_END, triggerID: 'trigger-btn' },
+  render: (args: Args) => html`
+    <div id="menupopover-test-wrapper"
+      style="display: flex; justify-content: flex-start; align-items: center; height: 100vh;">
+      <mdc-button id="trigger-btn">Options</mdc-button>
+      ${createPopover(args, nestedSubmenuContent)}
+    </div>
+  `,
 };
