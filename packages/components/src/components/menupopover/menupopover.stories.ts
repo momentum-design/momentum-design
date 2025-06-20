@@ -10,13 +10,13 @@ import '../icon';
 import '../menuitem';
 
 const createPopover = (triggerId: string) => html`
-  <mdc-menupopover triggerid="${triggerId}">
+  <mdc-menupopover triggerid="${triggerId}" placement="bottom-start">
     <mdc-menuitem label="New"></mdc-menuitem>
     <mdc-menuitem label="Open"></mdc-menuitem>
     <mdc-menuitem label="Save"></mdc-menuitem>
     <mdc-divider></mdc-divider>
     <mdc-menuitem label="Share" id="share-id" arrow-position='trailing'></mdc-menuitem>
-    <mdc-menupopover triggerid="share-id">
+    <mdc-menupopover triggerid="share-id" placement="right-start">
       <mdc-menuitem label="AirDrop"></mdc-menuitem>
       <mdc-menuitem label="Messages"></mdc-menuitem>
       <mdc-menuitem label="Notes"></mdc-menuitem>
@@ -108,7 +108,7 @@ export const ButtonGroupTrigger: StoryObj = {
 export const WithGroups: StoryObj = {
   render: () => html` <div id="menupopover-test-wrapper">
       <mdc-button id="trigger-btn">Options</mdc-button>
-      <mdc-menupopover triggerid="trigger-btn">
+      <mdc-menupopover triggerid="trigger-btn" placement="right-start">
         <mdc-menuitem label="Profile"></mdc-menuitem>
         <mdc-divider></mdc-divider>
         <mdc-menusection label="Preferences">
@@ -133,8 +133,8 @@ export const WithNestedSubmenus: StoryObj = {
       <mdc-menuitem id="submenu-trigger" label="Settings" arrow-position='trailing'></mdc-menuitem>
       <mdc-menuitem label="Notifications"></mdc-menuitem>
       <mdc-menuitem label="Logout" disabled></mdc-menuitem>
-      <mdc-menupopover triggerid="submenu-trigger">
-        <mdc-menupopover triggerid="security-id">
+      <mdc-menupopover triggerid="submenu-trigger" placement="right">
+        <mdc-menupopover triggerid="security-id" placement="right-start">
           <mdc-menuitem label="Change Password"></mdc-menuitem>
           <mdc-menuitem label="Two-Factor Authentication"></mdc-menuitem>
           <mdc-menuitem label="Security Questions"></mdc-menuitem>

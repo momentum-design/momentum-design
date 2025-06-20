@@ -9,7 +9,7 @@ type SetupOptions = {
 const defaultHTML = `
     <div id="menupopover-test-wrapper">
       <mdc-button id="trigger-btn">Options</mdc-button>
-      <mdc-menupopover triggerid="trigger-btn">
+      <mdc-menupopover triggerid="trigger-btn" placement="bottom-start">
         <mdc-menuitem label="Profile"></mdc-menuitem>
         <mdc-menuitem label="Settings" disabled></mdc-menuitem>
         <mdc-menuitem label="Notifications"></mdc-menuitem>
@@ -20,14 +20,14 @@ const defaultHTML = `
 const nestedHTML = `
   <div id="menupopover-test-wrapper">
     <mdc-button id="trigger-btn">Options</mdc-button>
-    <mdc-menupopover triggerid="trigger-btn">
+    <mdc-menupopover triggerid="trigger-btn" placement="bottom-start">
       <mdc-menuitem label="Profile"></mdc-menuitem>
       <mdc-menuitem id="submenu-trigger" label="Settings" arrow-position='trailing'></mdc-menuitem>
-      <mdc-menupopover triggerid="submenu-trigger">
+      <mdc-menupopover triggerid="submenu-trigger" placement="bottom-start">
         <mdc-menuitem label="Account"></mdc-menuitem>
         <mdc-menuitem label="Privacy"></mdc-menuitem>
         <mdc-menuitem label="Security" id="security-id" arrow-position='trailing'></mdc-menuitem>
-        <mdc-menupopover triggerid="security-id">
+        <mdc-menupopover triggerid="security-id" placement="bottom-start">
           <mdc-menuitem label="Change Password"></mdc-menuitem>
           <mdc-menuitem label="Two-Factor Authentication"></mdc-menuitem>
           <mdc-menuitem label="Security Questions"></mdc-menuitem>
@@ -42,7 +42,7 @@ const nestedHTML = `
 const groupHTML = `
     <div id="menupopover-test-wrapper">
       <mdc-button id="trigger-btn">Options</mdc-button>
-      <mdc-menupopover triggerid="trigger-btn">
+      <mdc-menupopover triggerid="trigger-btn" placement="bottom-start">
         <mdc-menuitem label="Profile"></mdc-menuitem>
         <mdc-divider></mdc-divider>
         <mdc-menusection label="Preferences">
@@ -130,9 +130,14 @@ test('mdc-menupopover', async ({ componentsPage }) => {
       await expect(menupopover).toHaveAttribute('focus-back-to-trigger', '');
       await expect(menupopover).toHaveAttribute('hide-on-escape', '');
       await expect(menupopover).toHaveAttribute('hide-on-outside-click', '');
-      await expect(menupopover).toHaveAttribute('placement', 'bottom-start');
       await expect(menupopover).not.toHaveAttribute('show-arrow');
       await expect(menupopover).toHaveAttribute('interactive', '');
+    });
+
+    await test.step('placement', async () => {
+      await expect(menupopover).toHaveAttribute('placement', 'bottom-start');
+      await componentsPage.setAttributes(menupopover, { placement: 'right-start' });
+      await expect(menupopover).toHaveAttribute('placement', 'right-start');
     });
   });
 

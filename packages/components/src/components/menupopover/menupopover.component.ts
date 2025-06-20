@@ -4,7 +4,7 @@ import { ROLE } from '../../utils/roles';
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
 import { ORIENTATION } from '../menubar/menubar.constants';
 import Popover from '../popover/popover.component';
-import { COLOR, POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { COLOR } from '../popover/popover.constants';
 import { TAG_NAME as MENU_POPOVER } from './menupopover.constants';
 import styles from './menupopover.styles';
 import { isActiveMenuItem, isValidMenuItem, isValidPopover } from './menupopover.utils';
@@ -71,11 +71,9 @@ class MenuPopover extends Popover {
     this.disableAriaExpanded = false;
     this.focusBackToTrigger = true;
     this.focusTrap = true;
-    this.hideOnBlur = true;
     this.hideOnEscape = true;
     this.hideOnOutsideClick = true;
     this.interactive = true;
-    this.placement = POPOVER_PLACEMENT.BOTTOM_START;
     this.showArrow = false;
     this.closeButton = undefined as unknown as boolean;
     this.closeButtonAriaLabel = undefined as unknown as string;
@@ -89,11 +87,7 @@ class MenuPopover extends Popover {
       this.menuItems.forEach((menuitem) => menuitem.setAttribute('tabindex', '-1'));
       this.menuItems[0].setAttribute('tabindex', '0');
     }
-
     this.triggerElement?.setAttribute('aria-haspopup', ROLE.MENU);
-    if (this.parentElement?.tagName?.toLowerCase() === MENU_POPOVER) {
-      this.placement = POPOVER_PLACEMENT.RIGHT_START;
-    }
   }
 
   /**
