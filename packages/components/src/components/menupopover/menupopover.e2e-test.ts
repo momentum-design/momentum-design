@@ -23,11 +23,11 @@ const nestedHTML = `
     <mdc-menupopover triggerid="trigger-btn" placement="bottom-start">
       <mdc-menuitem label="Profile"></mdc-menuitem>
       <mdc-menuitem id="submenu-trigger" label="Settings" arrow-position='trailing'></mdc-menuitem>
-      <mdc-menupopover triggerid="submenu-trigger" placement="bottom-start">
+      <mdc-menupopover triggerid="submenu-trigger" placement="right-start">
         <mdc-menuitem label="Account"></mdc-menuitem>
         <mdc-menuitem label="Privacy"></mdc-menuitem>
         <mdc-menuitem label="Security" id="security-id" arrow-position='trailing'></mdc-menuitem>
-        <mdc-menupopover triggerid="security-id" placement="bottom-start">
+        <mdc-menupopover triggerid="security-id" placement="right-start">
           <mdc-menuitem label="Change Password"></mdc-menuitem>
           <mdc-menuitem label="Two-Factor Authentication"></mdc-menuitem>
           <mdc-menuitem label="Security Questions"></mdc-menuitem>
