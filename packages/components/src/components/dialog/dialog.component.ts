@@ -22,6 +22,11 @@ import { CardAndDialogFooterMixin } from '../../utils/mixins/CardAndDialogFooter
  * If a `triggerId` is provided, the dialog will manage focus with that element, otherwise it will
  * remember the previously focused element before the dialog was opened.
  *
+ * The dialog is a controlled component, meaning it does not have its own state management for visibility.
+ * Use the `visible` property to control the visibility of the dialog.
+ * Use the `onClose` event to handle the close action of the dialog (fired when Close button is clicked
+ * or Escape is pressed).
+ *
  * Dialog component have 2 variants: default and promotional.
  *
  * **Accessibility notes for consuming (have to be explicitly set when you consume the component)**
@@ -42,6 +47,8 @@ import { CardAndDialogFooterMixin } from '../../utils/mixins/CardAndDialogFooter
  * @event hidden - (React: onHidden) Dispatched when the dialog is hidden
  * @event created - (React: onCreated) Dispatched when the dialog is created (added to the DOM)
  * @event destroyed - (React: onDestroyed) Dispatched when the dialog is destroyed (removed from the DOM)
+ * @event close - (React: onClose) Dispatched when the Close Button is clicked or Escape key is pressed
+ * (this does not hide the dialog)
  *
  * @cssproperty --mdc-dialog-primary-background-color - primary background color of the dialog
  * @cssproperty --mdc-dialog-border-color - border color of the dialog
@@ -77,6 +84,8 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(
 
   /**
    * The visibility of the dialog
+   *
+   * Dialog is a controlled component, visible is the only property that controls the visibility of the dialog.
    * @default false
    */
   @property({ type: Boolean, reflect: true })
@@ -343,6 +352,15 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(
   }
 
   /**
+   * Fired when Close Button is clicked or Escape key is pressed.
+   * This method dispatches the close event. Setting visible to false
+   * has to be done by the consumer of the component.
+   */
+  private closeDialog() {
+    DialogEventManager.onCloseDialog(this, false);
+  }
+
+  /**
    * Handles the escape keydown event to close the dialog.
    * @internal
    * @param event - The keyboard event.
@@ -357,7 +375,7 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(
     // pressing escape on a dialog should only close the dialog, nothing else
     event.stopPropagation();
 
-    this.hideDialog();
+    this.closeDialog();
   };
 
   /**
@@ -420,22 +438,6 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(
     }
   }
 
-  /**
-   * Hides the dialog.
-   * @internal
-   */
-  public hideDialog = () => {
-    this.visible = false;
-  };
-
-  /**
-   * Shows the dialog.
-   * @internal
-   */
-  public showDialog = () => {
-    this.visible = true;
-  };
-
   public override render() {
     return html`
       ${this.headerText
@@ -468,7 +470,7 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(
         variant="${BUTTON_VARIANTS.TERTIARY}"
         size="${ICON_BUTTON_SIZES[20]}"
         aria-label="${ifDefined(this.closeButtonAriaLabel) || ''}"
-        @click="${this.hideDialog}"
+        @click="${this.closeDialog}"
       ></mdc-button>
       <div part="body">
         <slot name="dialog-body"></slot>

@@ -12,6 +12,7 @@ interface Events {
   onHiddenEvent: Event;
   onCreatedEvent: Event;
   onDestroyedEvent: Event;
+  onCloseEvent: Event;
 }
 
 export type { DialogSize, DialogRole, DialogVariant, Events };
