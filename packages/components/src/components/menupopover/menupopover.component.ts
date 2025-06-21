@@ -41,17 +41,15 @@ class MenuPopover extends Popover {
   get menuItems(): Array<HTMLElement> {
     const slot = this.shadowRoot?.querySelector('slot');
     const allAssignedElements = (slot?.assignedElements({ flatten: true }) || []) as Array<HTMLElement>;
-    return allAssignedElements.map(
-      (node) => {
+    return allAssignedElements
+      .map(node => {
         if (node.tagName.toLowerCase() === MENUSECTION_TAGNAME) {
-          return Array.from(node.children)
-            .filter((child) => isValidMenuItem(child)) as Array<HTMLElement>;
+          return Array.from(node.children).filter(child => isValidMenuItem(child)) as Array<HTMLElement>;
         }
         return isValidMenuItem(node) ? node : [];
-      },
-    )
+      })
       .flat()
-      .filter((node) => !!node && !node.hasAttribute('disabled'));
+      .filter(node => !!node && !node.hasAttribute('disabled'));
   }
 
   public override hidePopover = () => {
@@ -84,7 +82,7 @@ class MenuPopover extends Popover {
 
     // Reset all tabindex to -1 and set the tabindex of the first menu item to 0
     if (this.menuItems.length > 0) {
-      this.menuItems.forEach((menuitem) => menuitem.setAttribute('tabindex', '-1'));
+      this.menuItems.forEach(menuitem => menuitem.setAttribute('tabindex', '-1'));
       this.menuItems[0].setAttribute('tabindex', '0');
     }
     this.triggerElement?.setAttribute('aria-haspopup', ROLE.MENU);
@@ -96,7 +94,7 @@ class MenuPopover extends Popover {
    * @returns - The index of the current menu item in the `menuItems` array.
    */
   private getCurrentIndex(target: EventTarget | null): number {
-    return this.menuItems.findIndex((node) => node === target);
+    return this.menuItems.findIndex(node => node === target);
   }
 
   /**
@@ -169,8 +167,8 @@ class MenuPopover extends Popover {
     const triggerId = target.getAttribute('id');
 
     if (
-      isActiveMenuItem(target) // menuitemcheckbox and menuitemradio are not supposed to close the popover
-      && !this.hasSubmenuWithTriggerId(triggerId)
+      isActiveMenuItem(target) && // menuitemcheckbox and menuitemradio are not supposed to close the popover
+      !this.hasSubmenuWithTriggerId(triggerId)
     ) {
       this.closeAllMenuPopovers();
     }
@@ -226,13 +224,13 @@ class MenuPopover extends Popover {
       }
       case KEYS.ARROW_DOWN: {
         // Move focus to the next menu item
-        const newIndex = (currentIndex + 1) === this.menuItems.length ? 0 : (currentIndex + 1);
+        const newIndex = currentIndex + 1 === this.menuItems.length ? 0 : currentIndex + 1;
         this.resetTabIndexAndSetFocus(newIndex, currentIndex);
         break;
       }
       case KEYS.ARROW_UP: {
         // Move focus to the prev menu item
-        const newIndex = (currentIndex - 1) === -1 ? (this.menuItems.length - 1) : (currentIndex - 1);
+        const newIndex = currentIndex - 1 === -1 ? this.menuItems.length - 1 : currentIndex - 1;
         this.resetTabIndexAndSetFocus(newIndex, currentIndex);
         break;
       }
