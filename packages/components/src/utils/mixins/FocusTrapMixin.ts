@@ -208,6 +208,16 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
     }
 
     /**
+     * Checks if the element is disabled.
+     *
+     * @param element - The element to check.
+     * @returns True if the element is disabled.
+     */
+    private isDisabled(element: any) {
+      return element.disabled;
+    }
+
+    /**
      * Checks if the element is not tabbable.
      *
      * @param element - The element to check.
@@ -261,7 +271,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      * @returns True if the element is focusable.
      */
     private isFocusable(element: HTMLElement) {
-      if (this.isHidden(element) || this.isNotTabbable(element)) {
+      if (this.isHidden(element) || this.isNotTabbable(element) || this.isDisabled(element)) {
         return false;
       }
       return this.isInteractiveElement(element);
