@@ -14,6 +14,7 @@ module.exports = {
     // prettier
     indent: 'off',
     'max-len': 'off',
+    '@typescript-eslint/quotes': 'off',
   },
   overrides: [
     {
