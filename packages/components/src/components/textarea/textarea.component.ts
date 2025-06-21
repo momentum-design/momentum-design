@@ -129,90 +129,94 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
    */
   @property({ type: Number, attribute: 'max-character-limit' }) maxCharacterLimit?: number;
 
-    /**
+  /**
    * @internal
    * The textarea element
    */
-    @query('textarea') override inputElement!: HTMLTextAreaElement;
+  @query('textarea') override inputElement!: HTMLTextAreaElement;
 
-    private characterLimitExceedingFired: boolean = false;
+  private characterLimitExceedingFired: boolean = false;
 
-    protected get textarea(): HTMLTextAreaElement {
-      return this.inputElement;
-    }
+  protected get textarea(): HTMLTextAreaElement {
+    return this.inputElement;
+  }
 
-    override connectedCallback(): void {
-      super.connectedCallback();
+  override connectedCallback(): void {
+    super.connectedCallback();
 
-      // Set the default value to the textarea field if the value is set through the text content directly
-      this.value = this.textContent?.trim() || this.value;
+    // Set the default value to the textarea field if the value is set through the text content directly
+    this.value = this.textContent?.trim() || this.value;
 
-      this.updateComplete.then(() => {
+    this.updateComplete
+      .then(() => {
         if (this.textarea) {
           this.textarea.checkValidity();
           this.setTextareaValidity();
           this.internals.setFormValue(this.textarea.value);
         }
-      }).catch((error) => {
+      })
+      .catch(error => {
         if (this.onerror) {
           this.onerror(error);
         }
       });
-    }
+  }
 
-    private setTextareaValidity() {
-      if (this.required && this.validationMessage && this.value === '') {
-        this.textarea.setCustomValidity(this.validationMessage);
-      } else if (this.maxCharacterLimit
-        && this.value.length > this.maxCharacterLimit
-        && this.helpTextType === VALIDATION.ERROR
-        && this.helpText) {
-        // Set custom validity if the character limit is exceeded to stop form submission
-        // helptext and helptexttype will be set by the consumers.
-        this.textarea.setCustomValidity(this.helpText);
-      } else {
-        this.textarea.setCustomValidity('');
-      }
-      this.setValidity();
+  private setTextareaValidity() {
+    if (this.required && this.validationMessage && this.value === '') {
+      this.textarea.setCustomValidity(this.validationMessage);
+    } else if (
+      this.maxCharacterLimit &&
+      this.value.length > this.maxCharacterLimit &&
+      this.helpTextType === VALIDATION.ERROR &&
+      this.helpText
+    ) {
+      // Set custom validity if the character limit is exceeded to stop form submission
+      // helptext and helptexttype will be set by the consumers.
+      this.textarea.setCustomValidity(this.helpText);
+    } else {
+      this.textarea.setCustomValidity('');
     }
+    this.setValidity();
+  }
 
-    /** @internal */
-    formResetCallback(): void {
-      this.value = '';
-      this.requestUpdate();
-    }
+  /** @internal */
+  formResetCallback(): void {
+    this.value = '';
+    this.requestUpdate();
+  }
 
-    /** @internal */
-    formStateRestoreCallback(
-      state: string,
-    ): void {
-      this.value = state;
-    }
+  /** @internal */
+  formStateRestoreCallback(state: string): void {
+    this.value = state;
+  }
 
-    /**
+  /**
    * Handles the value change of the textarea field.
    * Sets the form value and updates the validity of the textarea field.
    * @returns void
    */
-    handleValueChange() {
-      this.updateComplete.then(() => {
+  handleValueChange() {
+    this.updateComplete
+      .then(() => {
         this.setTextareaValidity();
-      }).catch((error) => {
+      })
+      .catch(error => {
         if (this.onerror) {
           this.onerror(error);
         }
       });
-    }
+  }
 
-    protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
-      super.updated(changedProperties);
-      if (changedProperties.has('value')) {
-        this.handleValueChange();
-        this.handleCharacterOverflowStateChange();
-      }
+  protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    super.updated(changedProperties);
+    if (changedProperties.has('value')) {
+      this.handleValueChange();
+      this.handleCharacterOverflowStateChange();
     }
+  }
 
-    /**
+  /**
    * This function is called when the attribute changes.
    * It updates the validity of the textarea field based on the textarea field's validity.
    *
@@ -220,76 +224,70 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
    * @param old - old value
    * @param value - new value
    */
-    override attributeChangedCallback(
-      name: string,
-      old: string | null,
-      value: string | null,
-    ): void {
-      super.attributeChangedCallback(name, old, value);
+  override attributeChangedCallback(name: string, old: string | null, value: string | null): void {
+    super.attributeChangedCallback(name, old, value);
 
-      const validationRelatedAttributes = [
-        'maxlength',
-        'minlength',
-        'required',
-      ];
+    const validationRelatedAttributes = ['maxlength', 'minlength', 'required'];
 
-      if (validationRelatedAttributes.includes(name)) {
-        this.updateComplete.then(() => {
+    if (validationRelatedAttributes.includes(name)) {
+      this.updateComplete
+        .then(() => {
           this.setTextareaValidity();
-        }).catch((error) => {
+        })
+        .catch(error => {
           if (this.onerror) {
             this.onerror(error);
           }
         });
-      }
     }
+  }
 
-    /**
+  /**
    * Dispatches the character overflow state change event.
    * @returns void
    */
-    private dispatchCharacterOverflowStateChangeEvent() {
-      this.dispatchEvent(
-        new CustomEvent('limitexceeded', {
-          detail: {
-            currentCharacterCount: this.value.length,
-            maxCharacterLimit: this.maxCharacterLimit,
-            value: this.value,
-          },
-          bubbles: true,
-          composed: true,
-        }),
-      );
-    }
+  private dispatchCharacterOverflowStateChangeEvent() {
+    this.dispatchEvent(
+      new CustomEvent('limitexceeded', {
+        detail: {
+          currentCharacterCount: this.value.length,
+          maxCharacterLimit: this.maxCharacterLimit,
+          value: this.value,
+        },
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
 
-    /**
-     * Handles the character overflow state change.
-     * Dispatches the character overflow state change event if the character limit is exceeded or restored.
-     * @returns void
-    */
-    private handleCharacterOverflowStateChange() {
-      if (this.maxCharacterLimit) {
-        if (this.value.length > this.maxCharacterLimit && !this.characterLimitExceedingFired) {
-          this.dispatchCharacterOverflowStateChangeEvent();
-          this.characterLimitExceedingFired = true;
-        } else if (this.value.length <= this.maxCharacterLimit && this.characterLimitExceedingFired) {
-          this.dispatchCharacterOverflowStateChangeEvent();
-          this.characterLimitExceedingFired = false;
-        }
+  /**
+   * Handles the character overflow state change.
+   * Dispatches the character overflow state change event if the character limit is exceeded or restored.
+   * @returns void
+   */
+  private handleCharacterOverflowStateChange() {
+    if (this.maxCharacterLimit) {
+      if (this.value.length > this.maxCharacterLimit && !this.characterLimitExceedingFired) {
+        this.dispatchCharacterOverflowStateChangeEvent();
+        this.characterLimitExceedingFired = true;
+      } else if (this.value.length <= this.maxCharacterLimit && this.characterLimitExceedingFired) {
+        this.dispatchCharacterOverflowStateChangeEvent();
+        this.characterLimitExceedingFired = false;
       }
     }
+  }
 
-    /**
+  /**
    * Updates the value of the textarea field.
    * Sets the form value.
    * @returns void
    */
-    private updateValue() {
-      this.value = this.textarea.value;
-      this.internals.setFormValue(this.textarea.value);
-    }
+  private updateValue() {
+    this.value = this.textarea.value;
+    this.internals.setFormValue(this.textarea.value);
+  }
 
-    /**
+  /**
    * Handles the change event of the textarea field.
    * Updates the value and sets the validity of the textarea field.
    *
@@ -299,46 +297,37 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
    *
    * @param event - Event which contains information about the value change.
    */
-    private onChange(event: Event) {
-      this.updateValue();
-      const EventConstructor = event.constructor as typeof Event;
-      this.dispatchEvent(new EventConstructor(event.type, event));
-    }
+  private onChange(event: Event) {
+    this.updateValue();
+    const EventConstructor = event.constructor as typeof Event;
+    this.dispatchEvent(new EventConstructor(event.type, event));
+  }
 
-    protected renderCharacterCounter() {
-      if (!this.maxCharacterLimit) {
-        return nothing;
-      }
-      return html`
-      <mdc-text
-        part="character-counter"
-        tagname="span"
-        type=${DEFAULTS.CHARACTER_COUNTER_TYPE}
-      >
-      ${this.value.length < 10 ? `0${this.value.length}` : this.value.length}/${this.maxCharacterLimit}
+  protected renderCharacterCounter() {
+    if (!this.maxCharacterLimit) {
+      return nothing;
+    }
+    return html`
+      <mdc-text part="character-counter" tagname="span" type=${DEFAULTS.CHARACTER_COUNTER_TYPE}>
+        ${this.value.length < 10 ? `0${this.value.length}` : this.value.length}/${this.maxCharacterLimit}
       </mdc-text>
     `;
-    }
+  }
 
-    protected renderTextareaFooter() {
-      if (!this.helpText && !this.maxCharacterLimit) {
-        return nothing;
-      }
-      return html`
-        <div part="textarea-footer">
-          ${this.renderHelperText()}
-          ${this.renderCharacterCounter()}
-        </div>
-      `;
+  protected renderTextareaFooter() {
+    if (!this.helpText && !this.maxCharacterLimit) {
+      return nothing;
     }
+    return html` <div part="textarea-footer">${this.renderHelperText()} ${this.renderCharacterCounter()}</div> `;
+  }
 
-    public override render() {
-      return html`
+  public override render() {
+    return html`
       ${this.renderLabel()}
       <div class="textarea-container mdc-focus-ring" part="textarea-container">
         <textarea
           aria-label="${this.dataAriaLabel ?? ''}"
-          part='textarea'
+          part="textarea"
           id="${this.id}"
           name="${this.name}"
           .value="${this.value}"
@@ -360,10 +349,10 @@ class Textarea extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
           aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
           aria-invalid="${this.helpTextType === 'error' ? 'true' : 'false'}"
         ></textarea>
-        </div>
-        ${this.renderTextareaFooter()}
-        `;
-    }
+      </div>
+      ${this.renderTextareaFooter()}
+    `;
+  }
 
   public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...styles];
 }

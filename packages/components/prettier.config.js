@@ -8,14 +8,23 @@ const config = {
   bracketSameLine: false,
   jsxSingleQuote: false,
   printWidth: 120,
-  proseWrap: 'preserve',
+  proseWrap: 'always',
   quoteProps: 'as-needed',
   requirePragma: false,
   semi: true,
   singleQuote: true,
   tabWidth: 2,
   trailingComma: 'all',
-  useTabs: false
+  useTabs: false,
+  overrides: [
+    {
+      files: ['*.md', '*.mdx'],
+      options: {
+        proseWrap: 'always',
+        printWidth: 80,
+      },
+    },
+  ],
 };
 
 module.exports = config;

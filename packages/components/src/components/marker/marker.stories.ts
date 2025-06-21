@@ -9,7 +9,7 @@ import { disableControls } from '../../../config/storybook/utils';
 const render = (args: Args) => html`
   <div style="height: 6.25rem">
     <mdc-marker variant="${ifDefined(args.variant)}"></mdc-marker>
-  </div> 
+  </div>
 `;
 
 const meta: Meta = {

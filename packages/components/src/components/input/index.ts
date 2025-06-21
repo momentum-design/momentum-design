@@ -8,9 +8,9 @@ import { TAG_NAME } from './input.constants';
 Input.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-input']: Input
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-input']: Input;
+  }
 }
 
 export default Input;

@@ -47,7 +47,7 @@ class PopoverStack {
    * @param popover - Popover instance
    */
   remove(popover: Popover) {
-    this.stack = this.stack.filter((item) => item !== popover);
+    this.stack = this.stack.filter(item => item !== popover);
   }
 
   /**

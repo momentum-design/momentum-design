@@ -5,9 +5,9 @@ import '../icon';
 StaticCheckbox.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-staticcheckbox']: StaticCheckbox
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-staticcheckbox']: StaticCheckbox;
+  }
 }
 
 export default StaticCheckbox;

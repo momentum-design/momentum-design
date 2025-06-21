@@ -125,7 +125,7 @@ export const GroupWithPopover: StoryObj = {
       <mdc-button prefix-icon="camera-on-bold" id="popover-trigger-1">Start Video</mdc-button>
       <mdc-button prefix-icon="arrow-down-bold" id="popover-trigger-2"></mdc-button>
     </mdc-buttongroup>
-    
+
     <mdc-tooltip id="tooltip1" triggerID="popover-trigger-1" placement="bottom" show-arrow tooltip-type="label">
       <mdc-text>Tooltip explaining Start Video button</mdc-text>
     </mdc-tooltip>

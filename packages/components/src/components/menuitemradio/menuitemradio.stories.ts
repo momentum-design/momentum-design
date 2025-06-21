@@ -9,15 +9,17 @@ import { ARIA_CHECKED_STATES } from '../menusection/menusection.constants';
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style="width: 25rem;">${htmlString}</div>`;
 
-const render = (args: Args) => wrapWithDiv(html`
-  <mdc-menuitemradio
-    aria-checked="${args['aria-checked']}"
-    ?disabled="${args.disabled}"
-    label="${args.label}"
-    secondary-label="${args['secondary-label']}"
-    tooltip-text="${args['tooltip-text']}"
-    tooltip-placement="${args['tooltip-placement']}"
-  ></mdc-menuitemradio>`);
+const render = (args: Args) =>
+  wrapWithDiv(
+    html` <mdc-menuitemradio
+      aria-checked="${args['aria-checked']}"
+      ?disabled="${args.disabled}"
+      label="${args.label}"
+      secondary-label="${args['secondary-label']}"
+      tooltip-text="${args['tooltip-text']}"
+      tooltip-placement="${args['tooltip-placement']}"
+    ></mdc-menuitemradio>`,
+  );
 
 const meta: Meta = {
   title: 'Work In Progress/menu/menuitemradio',
@@ -74,11 +76,7 @@ const meta: Meta = {
       '--mdc-listitem-column-gap',
       '--mdc-listitem-padding-left-and-right',
     ]),
-    ...disableControls([
-      'change',
-      'click',
-      'focus',
-    ]),
+    ...disableControls(['change', 'click', 'focus']),
     ...classArgType,
     ...styleArgType,
   },
@@ -98,17 +96,22 @@ export const Example: StoryObj = {
 };
 
 export const AllVariants: StoryObj = {
-  render: () => wrapWithDiv(html`
-    <mdc-menuitemradio aria-checked="true" label="Selected Menu Item"></mdc-menuitemradio>
-    <mdc-menuitemradio disabled aria-checked="true" label="Disabled Selected Menu Item"></mdc-menuitemradio>
-    <mdc-menuitemradio aria-checked="false" label="Unselected Menu Item"></mdc-menuitemradio>
-    <mdc-menuitemradio disabled aria-checked="false" label="Disabled Unselected Menu Item"></mdc-menuitemradio>
-    <mdc-menuitemradio
-      aria-checked="true" label="Selected Menu Item With Secondary Label" secondary-label="Secondary Label"
-    ></mdc-menuitemradio>
-    <mdc-menuitemradio
-      aria-checked="false" label="Unselected Menu Item With Secondary Label" secondary-label="Secondary Label"
-    ></mdc-menuitemradio>
-  `),
+  render: () =>
+    wrapWithDiv(html`
+      <mdc-menuitemradio aria-checked="true" label="Selected Menu Item"></mdc-menuitemradio>
+      <mdc-menuitemradio disabled aria-checked="true" label="Disabled Selected Menu Item"></mdc-menuitemradio>
+      <mdc-menuitemradio aria-checked="false" label="Unselected Menu Item"></mdc-menuitemradio>
+      <mdc-menuitemradio disabled aria-checked="false" label="Disabled Unselected Menu Item"></mdc-menuitemradio>
+      <mdc-menuitemradio
+        aria-checked="true"
+        label="Selected Menu Item With Secondary Label"
+        secondary-label="Secondary Label"
+      ></mdc-menuitemradio>
+      <mdc-menuitemradio
+        aria-checked="false"
+        label="Unselected Menu Item With Secondary Label"
+        secondary-label="Secondary Label"
+      ></mdc-menuitemradio>
+    `),
   ...hideAllControls(),
 };

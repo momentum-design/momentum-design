@@ -138,9 +138,8 @@ class Divider extends Component {
    * @param arrowDirection - The arrowDirection to set.
    */
   private ensureValidDirections() {
-    const defaultDirection = this.orientation === DIVIDER_ORIENTATION.HORIZONTAL
-      ? DIRECTIONS.NEGATIVE
-      : DIRECTIONS.POSITIVE;
+    const defaultDirection =
+      this.orientation === DIVIDER_ORIENTATION.HORIZONTAL ? DIRECTIONS.NEGATIVE : DIRECTIONS.POSITIVE;
 
     if (!Object.values(DIRECTIONS).includes(this.buttonPosition as Directions)) {
       this.buttonPosition = defaultDirection;
@@ -197,9 +196,9 @@ class Divider extends Component {
     }
 
     if (
-      changedProperties.has('orientation')
-        || changedProperties.has('arrowDirection')
-        || changedProperties.has('buttonPosition')
+      changedProperties.has('orientation') ||
+      changedProperties.has('arrowDirection') ||
+      changedProperties.has('buttonPosition')
     ) {
       this.setGrabberButton();
     }
@@ -214,8 +213,8 @@ class Divider extends Component {
     const assignedElements = slot?.assignedElements({ flatten: true }) || [];
     if (assignedElements.length > 1) return;
 
-    const hasTextChild = assignedElements.some((el) => el.tagName === TEXT_TAG.toUpperCase());
-    const hasButtonChild = assignedElements.some((el) => el.tagName === BUTTON_TAG.toUpperCase());
+    const hasTextChild = assignedElements.some(el => el.tagName === TEXT_TAG.toUpperCase());
+    const hasButtonChild = assignedElements.some(el => el.tagName === BUTTON_TAG.toUpperCase());
 
     if (hasTextChild && !hasButtonChild) {
       this.setAttribute('data-type', 'mdc-text-divider');

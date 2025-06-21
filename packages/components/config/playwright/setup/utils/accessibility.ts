@@ -80,11 +80,11 @@ class Accessibility {
     const { exclusions, inclusions, rules, tags } = { ...CONSTANTS.DEFAULT_ACCESSIBILITY_SCAN_OPTIONS, ...options };
     const accessibilityScanner = new AxeBuilder({ page: this.page }).withTags(tags).disableRules(rules);
 
-    exclusions?.forEach((exclusion) => {
+    exclusions?.forEach(exclusion => {
       accessibilityScanner.exclude(exclusion);
     });
 
-    inclusions?.forEach((inclusion) => {
+    inclusions?.forEach(inclusion => {
       accessibilityScanner.include(inclusion);
     });
 

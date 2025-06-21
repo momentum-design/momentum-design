@@ -236,7 +236,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
    * @param disabled - Whether to disable or enable the controls.
    */
   private disableSlottedChildren(disabled: boolean): void {
-    [...this.leadingControlsSlot, ...this.trailingControlsSlot].forEach((element) => {
+    [...this.leadingControlsSlot, ...this.trailingControlsSlot].forEach(element => {
       if (disabled) {
         element.setAttribute('disabled', '');
       } else {
@@ -260,10 +260,12 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
    * @returns A template for the trailing controls slot.
    */
   protected renderTrailingControls() {
-    return html`<slot name="trailing-controls" 
-    @click=${this.stopEventPropagation}
-    @keyup=${this.stopEventPropagation}
-    @keydown=${this.stopEventPropagation}></slot>`;
+    return html`<slot
+      name="trailing-controls"
+      @click=${this.stopEventPropagation}
+      @keyup=${this.stopEventPropagation}
+      @keydown=${this.stopEventPropagation}
+    ></slot>`;
   }
 
   /**
@@ -271,10 +273,12 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
    * @returns A template for the leading controls slot.
    */
   protected renderLeadingControls() {
-    return html`<slot name="leading-controls" 
-    @click=${this.stopEventPropagation}
-    @keyup=${this.stopEventPropagation}
-    @keydown=${this.stopEventPropagation}></slot>`;
+    return html`<slot
+      name="leading-controls"
+      @click=${this.stopEventPropagation}
+      @keyup=${this.stopEventPropagation}
+      @keydown=${this.stopEventPropagation}
+    ></slot>`;
   }
 
   /**
@@ -285,8 +289,10 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
    * @param event - The mouse event triggered when a click occurs.
    */
   protected stopEventPropagation(event: Event): void {
-    if ((event instanceof KeyboardEvent && (event.key === KEYS.ENTER || event.key === KEYS.SPACE))
-        || (event instanceof MouseEvent)) {
+    if (
+      (event instanceof KeyboardEvent && (event.key === KEYS.ENTER || event.key === KEYS.SPACE)) ||
+      event instanceof MouseEvent
+    ) {
       event.stopPropagation();
     }
   }

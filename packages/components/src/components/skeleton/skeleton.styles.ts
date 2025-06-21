@@ -12,19 +12,19 @@ const styles = css`
     width: var(--mdc-skeleton-width);
   }
 
-  :host([variant="rectangular"]) {
+  :host([variant='rectangular']) {
     border-radius: 0.25rem;
   }
 
-  :host([variant="rounded"]) {
+  :host([variant='rounded']) {
     border-radius: 0.5rem;
   }
 
-  :host([variant="circular"]) {
+  :host([variant='circular']) {
     border-radius: 50%;
   }
 
-  :host([variant="button"]) {
+  :host([variant='button']) {
     border-radius: 1.25rem;
   }
 

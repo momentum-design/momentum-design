@@ -4,9 +4,9 @@ import { TAG_NAME } from './navitemlist.constants';
 NavItemList.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-navitemlist']: NavItemList
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-navitemlist']: NavItemList;
+  }
 }
 
 export default NavItemList;

@@ -7,29 +7,36 @@ import { ARIA_LIVE_VALUES, DEFAULTS } from './screenreaderannouncer.constants';
 
 const render = (args: Args) => html`
   <div style="display: flex; flex-direction: column; gap: 12px;">
-    <mdc-text
-      type="body-midsize-regular">
+    <mdc-text type="body-midsize-regular">
       Click following button for Screen Reader to announce '${args.announcement}'
-  </mdc-text>
-  <mdc-button @click="${() => {
-    const screenreaderannouncer = document.querySelector('mdc-screenreaderannouncer');
-    if (screenreaderannouncer) {
-      screenreaderannouncer.setAttribute('announcement', args.announcement);
-    }
-  }}">Announce</mdc-button>
+    </mdc-text>
+    <mdc-button
+      @click="${() => {
+        const screenreaderannouncer = document.querySelector('mdc-screenreaderannouncer');
+        if (screenreaderannouncer) {
+          screenreaderannouncer.setAttribute('announcement', args.announcement);
+        }
+      }}"
+      >Announce</mdc-button
+    >
   </div>
   <mdc-screenreaderannouncer
     data-aria-live="${args['data-aria-live']}"
     delay="${args.delay}"
     identity="${args.identity}"
-    timeout="${args.timeout}">
+    timeout="${args.timeout}"
+  >
   </mdc-screenreaderannouncer>
-  <mdc-text type="body-midsize-regular">Note: SR may read the announcement twice in storybook.
-    Click on 'Open canvas in new tab' in Storybook, to read it once.</mdc-text>
+  <mdc-text type="body-midsize-regular"
+    >Note: SR may read the announcement twice in storybook. Click on 'Open canvas in new tab' in Storybook, to read it
+    once.</mdc-text
+  >
 `;
 
 const renderWithIdentity = (args: Args) => html`
-  <div id="announcements-container" style="
+  <div
+    id="announcements-container"
+    style="
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
     height: 1px;
@@ -37,9 +44,10 @@ const renderWithIdentity = (args: Args) => html`
     position: absolute;
     white-space: nowrap;
     width: 1px;
-  "></div>
+  "
+  ></div>
   ${render(args)}
-  `;
+`;
 
 const meta: Meta = {
   title: 'Components/screenreaderannouncer',

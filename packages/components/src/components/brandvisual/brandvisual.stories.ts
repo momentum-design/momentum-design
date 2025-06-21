@@ -4,12 +4,8 @@ import { html } from 'lit';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
 
-const render = (args: Args) => html`
-  <mdc-brandvisual 
-    class="${args.class}"
-    name="${args.name}"
-    style="${args.style}"
-  ></mdc-brandvisual>`;
+const render = (args: Args) =>
+  html` <mdc-brandvisual class="${args.class}" name="${args.name}" style="${args.style}"></mdc-brandvisual>`;
 
 const meta: Meta = {
   title: 'Components/brandvisual',
@@ -23,9 +19,7 @@ const meta: Meta = {
     name: {
       control: 'text',
     },
-    ...hideControls([
-      'brandVisualData',
-    ]),
+    ...hideControls(['brandVisualData']),
     ...classArgType,
     ...styleArgType,
   },

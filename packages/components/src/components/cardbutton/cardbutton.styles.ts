@@ -20,7 +20,7 @@ const styles = css`
     color: var(--mds-color-theme-text-primary-disabled);
   }
 
-  :host([disabled])::part(image){
+  :host([disabled])::part(image) {
     opacity: 0.5;
   }
 `;

@@ -7,10 +7,10 @@ import FormfieldWrapper from './formfieldwrapper.component';
 class SubComponentFormFieldWrapper extends FormfieldWrapper {
   public override render() {
     return html`
-          ${this.renderLabel()}
-          <slot></slot>
-          ${this.renderHelperText()}
-        `;
+      ${this.renderLabel()}
+      <slot></slot>
+      ${this.renderHelperText()}
+    `;
   }
 }
 

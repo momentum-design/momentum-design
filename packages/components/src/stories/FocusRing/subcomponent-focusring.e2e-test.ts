@@ -29,13 +29,11 @@ const checkFocusRing = async (subComponent: Locator, expectedBoxShadow: string) 
 
 // Expected focus ring style for verification
 /* eslint-disable max-len */
-const focusRingStyle = 'rgb(0, 0, 0) 0px 0px 0px 2px, rgb(100, 180, 250) 0px 0px 0px 4px, rgba(100, 180, 250, 0.35) 0px 0px 0px 5px';
+const focusRingStyle =
+  'rgb(0, 0, 0) 0px 0px 0px 2px, rgb(100, 180, 250) 0px 0px 0px 4px, rgba(100, 180, 250, 0.35) 0px 0px 0px 5px';
 
 // Tests focus ring interactions such as appearance, disappearance, and rapid focus/blur cycles
-const testFocusRingInteractions = async (
-  componentsPage: ComponentsPage,
-  subComponent: Locator,
-) => {
+const testFocusRingInteractions = async (componentsPage: ComponentsPage, subComponent: Locator) => {
   await test.step('focus', async () => {
     // Test focus ring appearance
     await componentsPage.actionability.pressTab();
@@ -69,8 +67,8 @@ test.describe('SubComponentFocusRing', () => {
     const subComponent = await setup({ componentsPage });
 
     /**
-       * INTERACTIONS
-       */
+     * INTERACTIONS
+     */
     await test.step('interactions', async () => {
       await testFocusRingInteractions(componentsPage, subComponent);
     });

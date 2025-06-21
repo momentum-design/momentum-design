@@ -12,13 +12,13 @@ const styles = css`
     aspect-ratio: 1;
     background-color: var(--mdc-bullet-background-color);
   }
-  :host([size="small"]) {
+  :host([size='small']) {
     height: var(--mdc-bullet-size-small);
   }
-  :host([size="medium"]) {
+  :host([size='medium']) {
     height: var(--mdc-bullet-size-medium);
   }
-  :host([size="large"]) {
+  :host([size='large']) {
     height: var(--mdc-bullet-size-large);
   }
 `;

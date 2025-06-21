@@ -6,9 +6,9 @@ import { TAG_NAME } from './dialog.constants';
 Dialog.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-dialog']: Dialog
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-dialog']: Dialog;
+  }
 }
 
 export default Dialog;

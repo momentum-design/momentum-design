@@ -14,7 +14,7 @@ type SetupOptions = {
   color?: ColorType;
   disabled?: boolean;
   secondChipForFocus?: boolean;
-}
+};
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
@@ -79,7 +79,7 @@ test('mdc-chip', async ({ componentsPage }) => {
 
   /**
    * ATTRIBUTES
-  */
+   */
   await test.step('attributes', async () => {
     const chip = await setup({ componentsPage, label: 'Chip', iconName: 'placeholder-bold' });
     await test.step('attribute color should be present on component by default', async () => {

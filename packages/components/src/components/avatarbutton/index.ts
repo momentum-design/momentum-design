@@ -5,9 +5,9 @@ import '../avatar';
 AvatarButton.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-avatarbutton']: AvatarButton
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-avatarbutton']: AvatarButton;
+  }
 }
 
 export default AvatarButton;

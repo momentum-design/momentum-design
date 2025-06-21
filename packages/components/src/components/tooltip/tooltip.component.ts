@@ -71,7 +71,7 @@ class Tooltip extends Popover {
   private getTooltipText(): string {
     return (
       this.defaultSlotNodes
-        ?.map((node) => node.textContent)
+        ?.map(node => node.textContent)
         .join(' ')
         ?.trim() || ''
     );

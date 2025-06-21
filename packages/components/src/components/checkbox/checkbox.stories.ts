@@ -128,8 +128,8 @@ export const DisabledVariants: StoryObj = {
       element: 'mdc-checkbox',
     },
   },
-  render: () => html`
-    <div style="display: flex; flex-direction: column;">
+  render: () =>
+    html` <div style="display: flex; flex-direction: column;">
       <mdc-checkbox label="Unselected" disabled></mdc-checkbox>
       <mdc-checkbox label="Selected" disabled checked></mdc-checkbox>
       <mdc-checkbox label="Indeterminate" disabled indeterminate></mdc-checkbox>
@@ -153,13 +153,18 @@ export const FormField: StoryObj = {
         <fieldset style="display: flex; flex-direction: column; gap: 1rem;">
           <legend>Select your super hero power</legend>
           <mdc-checkbox label="Flight" value="flight" name="super-power"></mdc-checkbox>
-          <mdc-checkbox label="Mind Control" value="mind-control" name="super-power"
-          required validation-message='This selection is necessary'></mdc-checkbox>
+          <mdc-checkbox
+            label="Mind Control"
+            value="mind-control"
+            name="super-power"
+            required
+            validation-message="This selection is necessary"
+          ></mdc-checkbox>
           <mdc-checkbox label="Super strength" value="super-strength" name="super-power"></mdc-checkbox>
           <mdc-checkbox label="Tactics" value="tactics" name="super-power"></mdc-checkbox>
-          <div style='display: flex; gap: 0.25rem;'>
-            <mdc-button type="submit" size='24'>Submit</mdc-button>
-            <mdc-button type="reset" size='24' variant='secondary'>Reset</mdc-button>
+          <div style="display: flex; gap: 0.25rem;">
+            <mdc-button type="submit" size="24">Submit</mdc-button>
+            <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
           </div>
         </fieldset>
       </form>

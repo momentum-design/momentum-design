@@ -44,8 +44,4 @@ const getAvatarTextFontSize = (size: AvatarSize): TextType => {
   return avatarTextFontSizeMap[size] || FONT_TYPE.BODY_MIDSIZE_MEDIUM; // default size of text font
 };
 
-export {
-  getAvatarIconSize,
-  getAvatarTextFontSize,
-  getPresenceSize,
-};
+export { getAvatarIconSize, getAvatarTextFontSize, getPresenceSize };

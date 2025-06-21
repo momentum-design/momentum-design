@@ -118,10 +118,7 @@ class TabList extends Component {
 
     this.addEventListener('keydown', this.handleKeydown);
     // Reason for assertion below: https://github.com/microsoft/TypeScript/issues/28357
-    this.addEventListener(
-      'activechange',
-      this.handleNestedTabActiveChange as (event: Event) => Promise<void>,
-    );
+    this.addEventListener('activechange', this.handleNestedTabActiveChange as (event: Event) => Promise<void>);
   }
 
   /**
@@ -147,7 +144,7 @@ class TabList extends Component {
       return;
     }
 
-    const tabIds = this.tabs.map((tab) => tab.tabId);
+    const tabIds = this.tabs.map(tab => tab.tabId);
     if (new Set(tabIds).size !== this.tabs.length) {
       if (this.onerror) {
         this.onerror('The tabs inside the tab list must have unique tab ids');
@@ -299,7 +296,7 @@ class TabList extends Component {
    * @param tabId - The id of the new active tab in the tabs.
    */
   private resetTabIndexAndSetNewTabIndex = (newTab: Tab): void => {
-    this.tabs?.forEach((tab) => {
+    this.tabs?.forEach(tab => {
       tab.setAttribute('tabindex', tab === newTab ? '0' : '-1');
     });
   };
@@ -312,7 +309,7 @@ class TabList extends Component {
    * @param tabId - The id of the new active tab.
    */
   private setActiveTab = (newTab: Tab): void => {
-    this.tabs?.forEach((tab) => {
+    this.tabs?.forEach(tab => {
       if (tab === newTab) {
         tab.setAttribute('active', '');
       } else {
@@ -407,8 +404,8 @@ class TabList extends Component {
     if (!this.showBackwardArrowButton && !this.showForwardArrowButton) {
       getActiveTab(this.tabs || [])?.focus();
     } else if (
-      (this.showBackwardArrowButton && !this.showForwardArrowButton)
-      || (this.showForwardArrowButton && !this.showBackwardArrowButton)
+      (this.showBackwardArrowButton && !this.showForwardArrowButton) ||
+      (this.showForwardArrowButton && !this.showBackwardArrowButton)
     ) {
       this.notFocusedArrowButton?.focus();
     }
@@ -498,8 +495,8 @@ class TabList extends Component {
 
     this.tabsContainer?.scrollBy({
       left:
-        this.tabsContainer.clientWidth
-        * (direction === ARROW_BUTTON_DIRECTION.FORWARD ? forwardMultiplier : backwardMultiplier),
+        this.tabsContainer.clientWidth *
+        (direction === ARROW_BUTTON_DIRECTION.FORWARD ? forwardMultiplier : backwardMultiplier),
       // @ts-ignore : https://github.com/Microsoft/TypeScript/issues/28755
       behavior: 'instant',
     });
@@ -516,21 +513,17 @@ class TabList extends Component {
         ? html`<mdc-button
             variant="tertiary"
             prefix-icon="arrow-${direction === ARROW_BUTTON_DIRECTION.FORWARD
-    ? forwardArrowDirection
-    : backwardArrowDirection}-regular"
+              ? forwardArrowDirection
+              : backwardArrowDirection}-regular"
             aria-label="Scroll tabs ${direction === ARROW_BUTTON_DIRECTION.FORWARD
-    ? forwardArrowDirection
-    : backwardArrowDirection}"
+              ? forwardArrowDirection
+              : backwardArrowDirection}"
             @click="${() => this.scrollTabs(direction)}"
           ></mdc-button>`
         : nothing}`;
 
     return html` ${arrowButton('backward')}
-      <div 
-      class="container" 
-      role="${ROLE.TABLIST}" 
-      tabindex="-1" 
-      aria-label="${ifDefined(this.dataAriaLabel)}">
+      <div class="container" role="${ROLE.TABLIST}" tabindex="-1" aria-label="${ifDefined(this.dataAriaLabel)}">
         <slot></slot>
       </div>
       ${arrowButton(ARROW_BUTTON_DIRECTION.FORWARD)}`;

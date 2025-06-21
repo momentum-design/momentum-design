@@ -2,10 +2,7 @@ import { VARIANTS } from './alertchip.constants';
 import type { VariantType, IconListType } from './alertchip.types';
 
 const getAlertIcon = (type: VariantType): IconListType => {
-  const alertIcon: Record<
-    VariantType,
-    IconListType
-  > = {
+  const alertIcon: Record<VariantType, IconListType> = {
     [VARIANTS.ERROR]: 'error-legacy-badge-filled',
     [VARIANTS.WARNING]: 'warning-badge-filled',
     [VARIANTS.SUCCESS]: 'check-circle-badge-filled',

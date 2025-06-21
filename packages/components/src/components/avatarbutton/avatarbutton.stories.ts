@@ -60,14 +60,7 @@ const meta: Meta = {
     'aria-label': {
       control: 'text',
     },
-    ...hideControls([
-      'active',
-      'disabled',
-      'soft-disabled',
-      'tabIndex',
-      'role',
-      'type',
-    ]),
+    ...hideControls(['active', 'disabled', 'soft-disabled', 'tabIndex', 'role', 'type']),
     ...disableControls([
       '--mdc-avatarbutton-overlay-background-color-rest',
       '--mdc-avatarbutton-overlay-background-color-hover',

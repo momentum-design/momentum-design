@@ -3,17 +3,17 @@ import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
 type SetupOptions = {
-    componentsPage: ComponentsPage;
-    name?: string;
-    value?: string;
-    label?: string;
-    'help-text'?: string;
-    readonly?: boolean;
-    disabled?: boolean;
-    checked?: boolean;
-    'data-aria-label'?: string;
-    secondRadioBtn?: boolean;
-}
+  componentsPage: ComponentsPage;
+  name?: string;
+  value?: string;
+  label?: string;
+  'help-text'?: string;
+  readonly?: boolean;
+  disabled?: boolean;
+  checked?: boolean;
+  'data-aria-label'?: string;
+  secondRadioBtn?: boolean;
+};
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
@@ -31,12 +31,16 @@ const setup = async (args: SetupOptions) => {
           ${restArgs['data-aria-label'] ? `data-aria-label="${restArgs['data-aria-label']}"` : ''}
         >
         </mdc-radio>
-        ${restArgs.secondRadioBtn ? `
+        ${
+          restArgs.secondRadioBtn
+            ? `
           <mdc-radio ${restArgs.name ? `name="${restArgs.name}"` : ''}
           label="Second Radio Button"
           value="Default plan"
           ></mdc-radio>
-          ` : ''}
+          `
+            : ''
+        }
       </form>
       `,
     clearDocument: true,
@@ -56,7 +60,7 @@ test('mdc-radio', async ({ componentsPage }) => {
   await test.step('attributes and interactions', async () => {
     /**
      * VISUAL REGRESSION
-    */
+     */
     await test.step('visual-regression', async () => {
       const radioStickerSheet = new StickerSheet(componentsPage, 'mdc-radio');
 
@@ -130,15 +134,15 @@ test('mdc-radio', async ({ componentsPage }) => {
     });
 
     /**
-      * ACCESSIBILITY
-    */
+     * ACCESSIBILITY
+     */
     await test.step('accessibility', async () => {
       await componentsPage.accessibility.checkForA11yViolations('radio-default');
     });
 
     /**
      * INTERACTIONS
-    */
+     */
     await test.step('interactions', async () => {
       await test.step('radio focus using tab', async () => {
         const radio = await setup({ componentsPage, label: 'Standard Plan for student' });
@@ -232,7 +236,7 @@ test('mdc-radio', async ({ componentsPage }) => {
 
     /**
      * ATTRIBUTES
-    */
+     */
     await test.step('attributes', async () => {
       const radio = await setup({ componentsPage });
       // For label

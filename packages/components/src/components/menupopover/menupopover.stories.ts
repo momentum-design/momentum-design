@@ -159,34 +159,32 @@ const defaultMenuContent = html`
   </mdc-menupopover>
 `;
 
-const groupedMenuContent = html`        
-     <mdc-menuitem label="Profile"></mdc-menuitem>
-        <mdc-divider></mdc-divider>
-        <mdc-menusection label="Preferences">
-          <mdc-menuitemcheckbox label="Enable feature" aria-checked="false"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox label="Beta mode" aria-checked="true"></mdc-menuitemcheckbox>
-          <mdc-menuitemradio name="theme" label="Light" aria-checked="true"></mdc-menuitemradio>
-          <mdc-menuitemradio name="theme" label="Dark" aria-checked="false"></mdc-menuitemradio>
-          <mdc-menuitemradio name="theme" label="System" aria-checked="false"></mdc-menuitemradio>
-        </mdc-menusection>
-      <mdc-menuitem label="Notifications"></mdc-menuitem>`;
+const groupedMenuContent = html` <mdc-menuitem label="Profile"></mdc-menuitem>
+  <mdc-divider></mdc-divider>
+  <mdc-menusection label="Preferences">
+    <mdc-menuitemcheckbox label="Enable feature" aria-checked="false"></mdc-menuitemcheckbox>
+    <mdc-menuitemcheckbox label="Beta mode" aria-checked="true"></mdc-menuitemcheckbox>
+    <mdc-menuitemradio name="theme" label="Light" aria-checked="true"></mdc-menuitemradio>
+    <mdc-menuitemradio name="theme" label="Dark" aria-checked="false"></mdc-menuitemradio>
+    <mdc-menuitemradio name="theme" label="System" aria-checked="false"></mdc-menuitemradio>
+  </mdc-menusection>
+  <mdc-menuitem label="Notifications"></mdc-menuitem>`;
 
-const nestedSubmenuContent = html`
-      <mdc-menuitem label="Profile"></mdc-menuitem>
-      <mdc-menuitem id="submenu-trigger" label="Settings" arrow-position='trailing'></mdc-menuitem>
-      <mdc-menuitem label="Notifications"></mdc-menuitem>
-      <mdc-menuitem label="Logout" disabled></mdc-menuitem>
-      <mdc-menupopover triggerID="submenu-trigger" placement="right">
-        <mdc-menupopover triggerID="security-id" placement="right-start">
-          <mdc-menuitem label="Change Password"></mdc-menuitem>
-          <mdc-menuitem label="Two-Factor Authentication"></mdc-menuitem>
-          <mdc-menuitem label="Security Questions"></mdc-menuitem>
-        </mdc-menupopover>
-        <mdc-menuitem label="Account"></mdc-menuitem>
-        <mdc-menuitem label="Privacy" disabled></mdc-menuitem>
-        <mdc-menuitem label="Security" id="security-id" arrow-position='trailing'></mdc-menuitem>
-        <mdc-menuitem label="Advanced"></mdc-menuitem>
-      </mdc-menupopover>`;
+const nestedSubmenuContent = html` <mdc-menuitem label="Profile"></mdc-menuitem>
+  <mdc-menuitem id="submenu-trigger" label="Settings" arrow-position="trailing"></mdc-menuitem>
+  <mdc-menuitem label="Notifications"></mdc-menuitem>
+  <mdc-menuitem label="Logout" disabled></mdc-menuitem>
+  <mdc-menupopover triggerID="submenu-trigger" placement="right">
+    <mdc-menupopover triggerID="security-id" placement="right-start">
+      <mdc-menuitem label="Change Password"></mdc-menuitem>
+      <mdc-menuitem label="Two-Factor Authentication"></mdc-menuitem>
+      <mdc-menuitem label="Security Questions"></mdc-menuitem>
+    </mdc-menupopover>
+    <mdc-menuitem label="Account"></mdc-menuitem>
+    <mdc-menuitem label="Privacy" disabled></mdc-menuitem>
+    <mdc-menuitem label="Security" id="security-id" arrow-position="trailing"></mdc-menuitem>
+    <mdc-menuitem label="Advanced"></mdc-menuitem>
+  </mdc-menupopover>`;
 
 export const Example: StoryObj = {
   args: {
@@ -199,7 +197,7 @@ export const Example: StoryObj = {
     flip: DEFAULTS.FLIP,
     'disable-aria-haspopup': false,
   },
-  render: (args) => html`
+  render: args => html`
     <mdc-menuitem id="popover-trigger" label="File"></mdc-menuitem>
     ${createPopover(args, defaultMenuContent)}
   `,
@@ -207,7 +205,7 @@ export const Example: StoryObj = {
 
 export const ButtonTrigger: StoryObj = {
   args: { ...Example.args, triggerID: 'button-trigger' },
-  render: (args) => html`
+  render: args => html`
     <mdc-button id="button-trigger">Menu</mdc-button>
     ${createPopover(args, defaultMenuContent)}
   `,
@@ -215,7 +213,7 @@ export const ButtonTrigger: StoryObj = {
 
 export const IconTrigger: StoryObj = {
   args: { ...Example.args, triggerID: 'icon-trigger' },
-  render: (args) => html`
+  render: args => html`
     <mdc-button prefix-icon="placeholder-bold" id="icon-trigger" aria-label="Icon Button"></mdc-button>
     ${createPopover(args, defaultMenuContent)}
   `,
@@ -223,7 +221,7 @@ export const IconTrigger: StoryObj = {
 
 export const ButtonGroupTrigger: StoryObj = {
   args: { ...Example.args, triggerID: 'button-group-trigger' },
-  render: (args) => html`
+  render: args => html`
     <mdc-buttongroup variant="secondary" orientation="horizontal" size="32">
       <mdc-button id="popover-trigger-1" aria-label="open menu">Open Menu</mdc-button>
       <mdc-button prefix-icon="arrow-down-bold" id="button-group-trigger" aria-label="Icon Button"></mdc-button>
@@ -234,7 +232,7 @@ export const ButtonGroupTrigger: StoryObj = {
 
 export const WithGroups: StoryObj = {
   args: { ...Example.args, placement: POPOVER_PLACEMENT.RIGHT_START, triggerID: 'trigger-btn' },
-  render: (args: Args) => html` 
+  render: (args: Args) => html`
     <div id="menupopover-test-wrapper">
       <mdc-button id="trigger-btn">Options</mdc-button>
       ${createPopover(args, groupedMenuContent)}
@@ -245,8 +243,10 @@ export const WithGroups: StoryObj = {
 export const WithNestedSubmenus: StoryObj = {
   args: { ...Example.args, placement: POPOVER_PLACEMENT.RIGHT_END, triggerID: 'trigger-btn' },
   render: (args: Args) => html`
-    <div id="menupopover-test-wrapper"
-      style="display: flex; justify-content: flex-start; align-items: center; height: 100vh;">
+    <div
+      id="menupopover-test-wrapper"
+      style="display: flex; justify-content: flex-start; align-items: center; height: 100vh;"
+    >
       <mdc-button id="trigger-btn">Options</mdc-button>
       ${createPopover(args, nestedSubmenuContent)}
     </div>

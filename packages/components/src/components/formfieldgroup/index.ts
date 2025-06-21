@@ -8,9 +8,9 @@ import { TAG_NAME } from './formfieldgroup.constants';
 FormfieldGroup.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-formfieldgroup']: FormfieldGroup
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-formfieldgroup']: FormfieldGroup;
+  }
 }
 
 export default FormfieldGroup;

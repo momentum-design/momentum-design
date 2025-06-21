@@ -4,9 +4,9 @@ import { TAG_NAME } from './screenreaderannouncer.constants';
 ScreenreaderAnnouncer.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-screenreaderannouncer']: ScreenreaderAnnouncer
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-screenreaderannouncer']: ScreenreaderAnnouncer;
+  }
 }
 
 export default ScreenreaderAnnouncer;

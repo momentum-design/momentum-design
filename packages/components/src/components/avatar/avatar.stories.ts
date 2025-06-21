@@ -85,44 +85,32 @@ export const Fallback: StoryObj = {
 export const Size: StoryObj = {
   render: () => html`
     <div style="display: flex; justify-content: space-evenly; align-items: center">
-    ${repeat(Object.values(AVATAR_SIZE), (size) => html`
-        <mdc-avatar size="${size}"></mdc-avatar>
-      `)}
+      ${repeat(Object.values(AVATAR_SIZE), size => html` <mdc-avatar size="${size}"></mdc-avatar> `)}
     </div>
   `,
   argTypes: {
-    ...disableControls([
-      'counter',
-      'icon-name',
-      'initials',
-      'presence',
-      'size',
-      'src',
-      'is-typing',
-    ]),
+    ...disableControls(['counter', 'icon-name', 'initials', 'presence', 'size', 'src', 'is-typing']),
   },
 };
 
 export const SizeWithPresence: StoryObj = {
   render: (args: Args) => html`
     <div style="display: flex; justify-content: space-evenly; align-items: center">
-      ${repeat(Object.values(AVATAR_SIZE), (size) => html`
-        <mdc-avatar
-          src="${ifDefined(args.src)}"
-          presence="${ifDefined(args.presence)}"
-          ?is-typing="${args['is-typing']}"
-          size="${size}"
-        ></mdc-avatar>
-      `)}
+      ${repeat(
+        Object.values(AVATAR_SIZE),
+        size => html`
+          <mdc-avatar
+            src="${ifDefined(args.src)}"
+            presence="${ifDefined(args.presence)}"
+            ?is-typing="${args['is-typing']}"
+            size="${size}"
+          ></mdc-avatar>
+        `,
+      )}
     </div>
   `,
   argTypes: {
-    ...disableControls([
-      'counter',
-      'icon-name',
-      'initials',
-      'size',
-    ]),
+    ...disableControls(['counter', 'icon-name', 'initials', 'size']),
   },
   args: {
     src: 'https://picsum.photos/id/63/256',

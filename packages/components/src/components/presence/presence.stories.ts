@@ -4,9 +4,7 @@ import { html } from 'lit';
 import { TYPE, SIZE, DEFAULTS } from './presence.constants';
 import { disableControls } from '../../../config/storybook/utils';
 
-const render = (args: Args) => html`
-  <mdc-presence type="${args.type}" size="${args.size}"></mdc-presence>
-`;
+const render = (args: Args) => html` <mdc-presence type="${args.type}" size="${args.size}"></mdc-presence> `;
 
 const meta: Meta = {
   title: 'Components/presence',

@@ -38,7 +38,6 @@ const styles = css`
   }
 
   :host([color='contrast']) {
-
     .popover-arrow {
       background-color: var(--mdc-popover-inverted-background-color);
       border-color: var(--mdc-popover-inverted-border-color);

@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 const styles = css`
-  :host([selected]){
+  :host([selected]) {
     border: 2px solid;
     --mdc-chip-background-color: var(--mds-color-theme-background-label-default-active);
   }
@@ -14,7 +14,9 @@ const styles = css`
     --mdc-chip-background-color: var(--mds-color-theme-background-label-default-active);
   }
 
-  :host([disabled]), :host([disabled]:hover), :host([disabled]:active) {
+  :host([disabled]),
+  :host([disabled]:hover),
+  :host([disabled]:active) {
     --mdc-chip-border-color: var(--mds-color-theme-outline-primary-disabled);
     --mdc-chip-background-color: var(--mds-color-theme-background-primary-disabled);
     --mdc-chip-color: var(--mds-color-theme-text-primary-disabled);

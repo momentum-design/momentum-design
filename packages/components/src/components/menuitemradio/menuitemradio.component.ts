@@ -62,7 +62,7 @@ class MenuItemRadio extends MenuItem {
     const container = this.closest(`${MENUSECTION_TAGNAME}, ${MENUPOPOVER_TAGNAME}`);
     if (container) {
       const radios = Array.from(container.querySelectorAll(this.tagName)) as MenuItemRadio[];
-      radios.forEach((item) => {
+      radios.forEach(item => {
         const radio = item;
         if (radio.name === this.name) {
           radio.ariaChecked = ARIA_CHECKED_STATES.FALSE;

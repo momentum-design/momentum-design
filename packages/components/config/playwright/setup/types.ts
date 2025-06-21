@@ -8,4 +8,4 @@ export type ScreenShotOptions = PageScreenshotOptions & {
   fileNameSuffix?: string;
 };
 
-export type ThemeClass = typeof CONSTANTS.THEME_CLASSES[keyof typeof CONSTANTS.THEME_CLASSES];
+export type ThemeClass = (typeof CONSTANTS.THEME_CLASSES)[keyof typeof CONSTANTS.THEME_CLASSES];

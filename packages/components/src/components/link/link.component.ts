@@ -56,13 +56,9 @@ class Link extends IconNameMixin(Linksimple) {
   public override render() {
     return html`
       <slot></slot>
-      ${this.iconName ? html`
-        <mdc-icon
-          name=${this.iconName}
-          size=${this.getIconSize()}
-          length-unit="rem"
-        ></mdc-icon>
-      ` : nothing}
+      ${this.iconName
+        ? html` <mdc-icon name=${this.iconName} size=${this.getIconSize()} length-unit="rem"></mdc-icon> `
+        : nothing}
     `;
   }
 

@@ -8,7 +8,7 @@ const styles = css`
     --mdc-dialog-description-text-color: var(--mds-color-theme-text-secondary-normal);
     --mdc-dialog-elevation-3: var(--mds-elevation-3);
     --mdc-dialog-width: 27rem; /* Default to small */
-    
+
     background-color: var(--mdc-dialog-primary-background-color);
     border: 0.0625rem solid var(--mdc-dialog-border-color);
     border-radius: 0.5rem;
@@ -22,17 +22,15 @@ const styles = css`
     position: absolute;
     right: 50%;
     bottom: 50%;
-    transform: translate(50%,50%);
+    transform: translate(50%, 50%);
   }
 
-
-  :host([variant='promotional']){
+  :host([variant='promotional']) {
     --mdc-dialog-border-color: var(--mds-color-theme-outline-promotion-normal);
   }
-    
+
   :host([visible]) {
     display: flex;
-      
   }
 
   :host([size='medium']) {
@@ -47,7 +45,7 @@ const styles = css`
     width: var(--mdc-dialog-width);
     max-width: 100%;
   }
-    
+
   :host::part(header-section),
   :host::part(body),
   :host::part(footer) {
@@ -65,18 +63,18 @@ const styles = css`
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    width: 100%
+    width: 100%;
   }
 
   :host::part(header-text) {
     width: calc(100% - 2rem);
     color: var(--mdc-dialog-header-text-color);
   }
-    
+
   :host::part(description-text) {
     color: var(--mdc-dialog-description-text-color);
   }
-    
+
   :host::part(body) {
     flex-direction: column;
     justify-content: center;
@@ -98,12 +96,12 @@ const styles = css`
     right: 1rem;
     cursor: pointer;
   }
-  
+
   :host(:dir(rtl))::part(dialog-close-btn) {
     right: auto;
     left: 1rem;
   }
-    
+
   mdc-text::part(text) {
     margin: 0;
   }

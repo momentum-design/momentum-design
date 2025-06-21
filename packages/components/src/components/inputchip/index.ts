@@ -7,9 +7,9 @@ import '../button';
 InputChip.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-inputchip']: InputChip
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-inputchip']: InputChip;
+  }
 }
 
 export default InputChip;

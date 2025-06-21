@@ -5,7 +5,7 @@ type AttributesType = Record<string, any>;
 type OptionsType = {
   createNewRow?: boolean;
   rowWrapperStyle?: string;
-}
+};
 
 class StickerSheet {
   private componentPage: ComponentsPage;
@@ -50,7 +50,7 @@ class StickerSheet {
 
   private formatAttributesAsString() {
     const attributeString = Object.entries(this.attributes)
-      .map(([key, value]) => value ? `${key}="${value}"` : `${key}`)
+      .map(([key, value]) => (value ? `${key}="${value}"` : `${key}`))
       .join(' ');
 
     if (this.componentStyle && !this.attributes.style) {
@@ -138,16 +138,19 @@ class StickerSheet {
    * - createNewRow - A boolean indicating whether to create a new row for the combination. Default is false.
    * - style - A string representing the style to apply to the wrapper. Default is an empty string.
    */
-  public async createMarkupWithCombination(combinations: Record<string, Record<string, any>>, options: OptionsType = {
-    createNewRow: false,
-    rowWrapperStyle: '',
-  }) {
+  public async createMarkupWithCombination(
+    combinations: Record<string, Record<string, any>>,
+    options: OptionsType = {
+      createNewRow: false,
+      rowWrapperStyle: '',
+    },
+  ) {
     if (Object.keys(combinations).length === 0) {
       // not creating componentRowWrapper to wrap a single component
-      this.createComponentsMarkupHTML(
-        this.addComponentToSheet(),
-        { createNewRow: false, rowWrapperStyle: options.rowWrapperStyle },
-      );
+      this.createComponentsMarkupHTML(this.addComponentToSheet(), {
+        createNewRow: false,
+        rowWrapperStyle: options.rowWrapperStyle,
+      });
       return;
     }
 
@@ -180,10 +183,12 @@ class StickerSheet {
    * - wrapperStyle - A string representing the style to apply to the wrapper. Default is an empty string.
    * - role - Role of the wrapper for accessibility purpose.
    */
-  public async mountStickerSheet(options: {
-    wrapperStyle?: string,
-    role?: string,
-  } = {}) {
+  public async mountStickerSheet(
+    options: {
+      wrapperStyle?: string;
+      role?: string;
+    } = {},
+  ) {
     await this.componentPage.mount({
       html: `<div
         class="componentWrapper"

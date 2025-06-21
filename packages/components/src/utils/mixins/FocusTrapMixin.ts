@@ -39,7 +39,7 @@ class FocusTrapStack {
    */
   static activate(trap: any) {
     // Deactivate all other traps
-    this.stackArray.forEach((activeTrap) => {
+    this.stackArray.forEach(activeTrap => {
       if (activeTrap !== trap) {
         activeTrap.setIsFocusTrapActivated(false);
       }
@@ -199,11 +199,11 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      */
     private isHidden(element: HTMLElement) {
       return (
-        element.hasAttribute('hidden')
-        || element.getAttribute('aria-hidden') === 'true'
-        || this.hasHiddenStyle(element)
-        || this.isNotVisible(element)
-        || this.hasComputedHidden(element)
+        element.hasAttribute('hidden') ||
+        element.getAttribute('aria-hidden') === 'true' ||
+        this.hasHiddenStyle(element) ||
+        this.isNotVisible(element) ||
+        this.hasComputedHidden(element)
       );
     }
 
@@ -246,14 +246,14 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
         return true;
       }
       if (
-        (element instanceof HTMLAudioElement || element instanceof HTMLVideoElement)
-        && element.hasAttribute('controls')
+        (element instanceof HTMLAudioElement || element instanceof HTMLVideoElement) &&
+        element.hasAttribute('controls')
       ) {
         return true;
       }
       if (
-        (element instanceof HTMLImageElement || element instanceof HTMLObjectElement)
-        && element.hasAttribute('usemap')
+        (element instanceof HTMLImageElement || element instanceof HTMLObjectElement) &&
+        element.hasAttribute('usemap')
       ) {
         return true;
       }
@@ -303,7 +303,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
           this.findFocusable(element.shadowRoot, matches);
         } else if (element.tagName === 'SLOT') {
           const assignedNodes = (element as HTMLSlotElement).assignedElements({ flatten: true });
-          assignedNodes.forEach((node) => {
+          assignedNodes.forEach(node => {
             if (node instanceof HTMLElement) {
               this.findFocusable(node, matches);
             }
@@ -391,7 +391,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      * @returns The index of the active element.
      */
     private findElement(activeElement: HTMLElement) {
-      return this.focusableElements.findIndex((element) => this.isEqualFocusNode(activeElement, element));
+      return this.focusableElements.findIndex(element => this.isEqualFocusNode(activeElement, element));
     }
 
     /**

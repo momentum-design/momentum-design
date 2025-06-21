@@ -31,7 +31,7 @@ class OptGroup extends DataAriaLabelMixin(DisabledMixin(Component)) {
   options!: Array<HTMLElement>;
 
   private setDisabledForAllOptions(): void {
-    this.options.forEach((element) => {
+    this.options.forEach(element => {
       if (this.disabled) {
         element.setAttribute('disabled', '');
       } else {
@@ -49,14 +49,17 @@ class OptGroup extends DataAriaLabelMixin(DisabledMixin(Component)) {
   }
 
   public override render() {
-    const headerText = this.label ? html`
-      <mdc-text
-        id="${HEADER_ID}"
-        part="header-text"
-        type="${TYPE.BODY_MIDSIZE_BOLD}"
-        tagname="${VALID_TEXT_TAGS.SPAN}"
-      >${this.label}</mdc-text>
-    ` : nothing;
+    const headerText = this.label
+      ? html`
+          <mdc-text
+            id="${HEADER_ID}"
+            part="header-text"
+            type="${TYPE.BODY_MIDSIZE_BOLD}"
+            tagname="${VALID_TEXT_TAGS.SPAN}"
+            >${this.label}</mdc-text
+          >
+        `
+      : nothing;
     return html`
       <div
         role="${ROLE.GROUP}"
