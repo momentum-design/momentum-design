@@ -164,13 +164,13 @@ export default meta;
 
 export const Example: StoryObj = {
   args: {
-    'aria-orientation': ORIENTATION.HORIZONTAL,
+    'aria-orientation': ORIENTATION.VERTICAL,
   },
 };
 
-export const VerticalMenuBar: StoryObj = {
+export const HorizontalMenuBar: StoryObj = {
   args: {
-    'aria-orientation': ORIENTATION.VERTICAL,
+    'aria-orientation': ORIENTATION.HORIZONTAL,
   },
 };
 

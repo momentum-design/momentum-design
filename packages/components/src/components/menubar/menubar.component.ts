@@ -1,12 +1,13 @@
 import { html } from 'lit';
 import type { CSSResult, PropertyValues } from 'lit';
+import { property } from 'lit/decorators';
 import { Component } from '../../models';
 import { MenuMixin } from '../../utils/mixins/MenuMixin';
 import { ROLE } from '../../utils/roles';
 import styles from './menubar.styles';
 
 /**
-  * Menubar is a navigational menu component that provides a horizontal (default) or vertical fixed list of menu items,
+  * Menubar is a navigational menu component that provides a vertical (default) or horizontal fixed list of menu items,
   * with support for nested submenus and keyboard navigation. It serves as a container
   * for menu items and manages their interaction patterns, including:
   * - Keyboard navigation (arrow keys, Home, End)
@@ -26,6 +27,9 @@ import styles from './menubar.styles';
   * @slot default - Contains the menu items and their associated popovers
   */
 class MenuBar extends MenuMixin(Component) {
+  @property({ type: String, reflect: true, attribute: 'aria-orientation' })
+  public override ariaOrientation: 'horizontal' | 'vertical' = 'vertical';
+
   constructor() {
     super();
     this.addEventListener('keydown', this.handleKeyDown);
