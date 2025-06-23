@@ -186,8 +186,22 @@ const renderBackdrop = (args: Args) => html`
       <mdc-button>Button 5</mdc-button>
     `,
   )}
-  <mdc-button>Button 1</mdc-button>
-  <mdc-button>Button 2</mdc-button>
+  <mdc-button id="popover-trigger-2">Button 1</mdc-button>
+  <mdc-popover
+    id="popover2"
+    triggerID="popover-trigger-2"
+    trigger="click"
+    placement="bottom"
+    interactive
+    z-index="20"
+    focus-back-to-trigger
+    focus-trap
+    show-arrow
+    hide-on-escape
+    hide-on-outside-click
+  >
+    <mdc-text>Popover 2</mdc-text>
+  </mdc-popover>
 `;
 
 const meta: Meta = {
@@ -397,12 +411,15 @@ export const interactiveMultiple: StoryObj = {
     flip: DEFAULTS.FLIP,
     'focus-trap': true,
     interactive: true,
+    'focus-back-to-trigger': true,
+    'hide-on-escape': true,
     'show-arrow': true,
     'close-button': true,
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
   },
 };
+
 export const nestedPopover: StoryObj = {
   render: renderNested,
   args: {
@@ -422,6 +439,7 @@ export const nestedPopover: StoryObj = {
     color: DEFAULTS.COLOR,
   },
 };
+
 export const hideOnBlur: StoryObj = {
   render: renderHideOnBlur,
   args: {
@@ -455,6 +473,8 @@ export const popoverWithBackdrop: StoryObj = {
     interactive: true,
     'show-arrow': true,
     backdrop: true,
+    'hide-on-outside-click': true,
+    'focus-trap': true,
     role: DEFAULTS.ROLE,
     color: DEFAULTS.COLOR,
   },
