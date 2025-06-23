@@ -67,10 +67,19 @@ class VisualRegression {
         name: `${name}-userflow-${options?.fileNameSuffix}.${CONSTANTS.VISUAL_REGRESSION.FILE_EXTENSION}`,
       });
     } else if (isSnapshotRun && screenshotSource === 'stickersheet') {
+      // High contrast screenshot only for LTR and supported browsers
+      if (['chromium', 'msedge'].includes(browserName)) {
+        await this.toggleHighContrastMode(true); // Enable high contrast
+        expect(await elementToTakeScreenShotFrom.screenshot(options)).toMatchSnapshot({
+          name: `${name}-high-contrast.${CONSTANTS.VISUAL_REGRESSION.FILE_EXTENSION}`,
+        });
+        await this.toggleHighContrastMode(false); // Reset high contrast
+      }
+
       // Normal contrast screenshots for both RTL and LTR
       /* eslint-disable no-await-in-loop */
       /* eslint-disable no-restricted-syntax */
-      for (const direction of ['rtl', 'ltr'] as const) {
+      for (const direction of ['ltr', 'rtl'] as const) {
         await this.setDocumentDirection(direction);
         await options?.assertionAfterSwitchingDirection?.(this.page);
         expect(await elementToTakeScreenShotFrom.screenshot(options)).toMatchSnapshot({
@@ -78,15 +87,8 @@ class VisualRegression {
         });
       }
 
-      // High contrast screenshot only for LTR and supported browsers
-      if (['chromium', 'msedge'].includes(browserName)) {
-        await this.toggleHighContrastMode(true); // Enable high contrast
-        await this.setDocumentDirection('ltr');
-        expect(await elementToTakeScreenShotFrom.screenshot(options)).toMatchSnapshot({
-          name: `${name}-high-contrast.${CONSTANTS.VISUAL_REGRESSION.FILE_EXTENSION}`,
-        });
-        await this.toggleHighContrastMode(false); // Reset high contrast
-      }
+      // reset to LTR after taking screenshots
+      await this.setDocumentDirection('ltr');
     }
   }
 }

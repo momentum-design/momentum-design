@@ -27,12 +27,8 @@ Feature: MenuPopover Accessibility and User Interaction
       Given the MenuPopover is closed
       When I navigate to the trigger element using the keyboard (Tab)
       And I press "Enter" or "Space"
-      Then the MenuPopover should open and display a list of menuitems
-
-    Scenario: Focus moves to first menuitem on open
-      Given the MenuPopover is closed
-      When I open it using keyboard
-      Then focus moves to the first focusable menuitem
+      Then the MenuPopover should open and display a list
+      And focus moves to the first focusable menuitem
 
   Rule: ✅ Closing the MenuPopover
 
@@ -50,11 +46,7 @@ Feature: MenuPopover Accessibility and User Interaction
       Given the MenuPopover is open
       When I press "Escape"
       Then the MenuPopover should close
-
-    Scenario: Focus returns to trigger on close
-      Given the MenuPopover was opened using keyboard
-      When I close it using keyboard
-      Then focus returns to the trigger element
+      And focus returns to the trigger element
 
   Rule: ✅ Selecting menuitems
 
@@ -127,8 +119,10 @@ Feature: MenuPopover Accessibility and User Interaction
 
     Scenario: Focus trap keeps focus inside MenuPopover
       Given the MenuPopover is open
+      And the focus is on first menuitem
       When I press "Tab" repeatedly
-      Then focus cycles within the MenuPopover only
+      Then nothing happens
+      And focus still remains on the first menuitem
 
     Scenario: Skip separator during navigation
       Given the MenuPopover is open
@@ -213,6 +207,11 @@ Feature: MenuPopover Accessibility and User Interaction
       Then only the current submenu closes
       And focus returns to the parent menuitem
       And pressing Escape again closes parent MenuPopovers upward
+
+    Scenario: Close the nested popover by clicking outside
+      Given I have navigated into a nested submenu
+      When I click anywhere outside the MenuPopover
+      Then all the MenuPopover should close at once
 
   Rule: ✅ Menuitem Types
 
