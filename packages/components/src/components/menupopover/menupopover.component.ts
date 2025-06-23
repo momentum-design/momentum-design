@@ -1,14 +1,16 @@
 import { CSSResult, PropertyValues } from 'lit';
+import { property } from 'lit/decorators.js';
 import { KEYS } from '../../utils/keys';
 import { ROLE } from '../../utils/roles';
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
 import { ORIENTATION } from '../menubar/menubar.constants';
 import Popover from '../popover/popover.component';
 import { COLOR } from '../popover/popover.constants';
-import { TAG_NAME as MENU_POPOVER } from './menupopover.constants';
+import { DEFAULTS, TAG_NAME as MENU_POPOVER } from './menupopover.constants';
 import styles from './menupopover.styles';
 import { isActiveMenuItem, isValidMenuItem, isValidPopover } from './menupopover.utils';
 import { popoverStack } from '../popover/popover.stack';
+import { PopoverPlacement } from '../popover/popover.types';
 
 /**
  * A popover menu component that displays a list of menu items in a floating container.
@@ -31,6 +33,25 @@ import { popoverStack } from '../popover/popover.stack';
  * @slot default - Contains the menu items to be displayed in the popover
  */
 class MenuPopover extends Popover {
+  /**
+   * The placement of the popover.
+   * - **top**
+   * - **top-start**
+   * - **top-end**
+   * - **bottom**
+   * - **bottom-start**
+   * - **bottom-end**
+   * - **left**
+   * - **left-start**
+   * - **left-end**
+   * - **right**
+   * - **right-start**
+   * - **right-end**
+   * @default bottom
+   */
+  @property({ type: String, reflect: true })
+  override placement: PopoverPlacement = DEFAULTS.PLACEMENT;
+
   constructor() {
     super();
     this.addEventListener('keydown', this.handleKeyDown);

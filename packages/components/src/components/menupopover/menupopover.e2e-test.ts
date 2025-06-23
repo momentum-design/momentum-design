@@ -9,7 +9,7 @@ type SetupOptions = {
 const defaultHTML = `
     <div id="menupopover-test-wrapper">
       <mdc-button id="trigger-btn">Options</mdc-button>
-      <mdc-menupopover triggerid="trigger-btn" placement="bottom-start">
+      <mdc-menupopover triggerid="trigger-btn">
         <mdc-menuitem label="Profile"></mdc-menuitem>
         <mdc-menuitem label="Settings" disabled></mdc-menuitem>
         <mdc-menuitem label="Notifications"></mdc-menuitem>
@@ -20,7 +20,7 @@ const defaultHTML = `
 const nestedHTML = `
   <div id="menupopover-test-wrapper">
     <mdc-button id="trigger-btn">Options</mdc-button>
-    <mdc-menupopover triggerid="trigger-btn" placement="bottom-start">
+    <mdc-menupopover triggerid="trigger-btn">
       <mdc-menuitem label="Profile"></mdc-menuitem>
       <mdc-menuitem id="submenu-trigger" label="Settings" arrow-position='trailing'></mdc-menuitem>
       <mdc-menupopover triggerid="submenu-trigger" placement="right-start">
@@ -42,7 +42,7 @@ const nestedHTML = `
 const groupHTML = `
     <div id="menupopover-test-wrapper">
       <mdc-button id="trigger-btn">Options</mdc-button>
-      <mdc-menupopover triggerid="trigger-btn" placement="bottom-start">
+      <mdc-menupopover triggerid="trigger-btn">
         <mdc-menuitem label="Profile"></mdc-menuitem>
         <mdc-divider></mdc-divider>
         <mdc-menusection label="Preferences">

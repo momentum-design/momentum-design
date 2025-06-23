@@ -3,6 +3,7 @@ import { property, queryAssignedNodes, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import Popover from '../popover/popover.component';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+import { PopoverPlacement } from '../popover/popover.types';
 import { DEFAULTS } from './toggletip.constants';
 import styles from './toggletip.styles';
 
@@ -58,6 +59,25 @@ class ToggleTip extends Popover {
   */
   @property({ type: String, reflect: true, attribute: 'screenreader-announcer-identity' })
   screenreaderAnnouncerIdentity?: string;
+
+  /**
+   * The placement of the popover.
+   * - **top**
+   * - **top-start**
+   * - **top-end**
+   * - **bottom**
+   * - **bottom-start**
+   * - **bottom-end**
+   * - **left**
+   * - **left-start**
+   * - **left-end**
+   * - **right**
+   * - **right-start**
+   * - **right-end**
+   * @default bottom
+   */
+  @property({ type: String, reflect: true })
+  override placement: PopoverPlacement = DEFAULTS.PLACEMENT;
 
   override connectedCallback(): void {
     super.connectedCallback();

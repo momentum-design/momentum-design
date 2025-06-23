@@ -85,7 +85,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
     await expect(toggletip).toHaveAttribute('hide-on-escape');
     await expect(toggletip).toHaveAttribute('interactive');
     await expect(toggletip).toHaveAttribute('offset', '4');
-    await expect(toggletip).toHaveAttribute('placement', 'bottom');
+    await expect(toggletip).toHaveAttribute('placement', 'top');
     await expect(toggletip).toHaveAttribute('role', 'dialog');
     await expect(toggletip).toHaveAttribute('show-arrow');
     await expect(toggletip).toHaveAttribute('trigger', 'click');
@@ -114,7 +114,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
       'close-button-aria-label': 'Close',
       color: 'contrast',
       offset: '8',
-      placement: 'top',
+      placement: 'bottom',
       'show-arrow': '',
     });
 
@@ -124,7 +124,7 @@ const attributeTestCases = async (componentsPage: ComponentsPage) => {
     await expect(toggletip).toHaveAttribute('color', 'contrast');
     await expect(toggletip).toHaveAttribute('delay', '0,0');
     await expect(toggletip).toHaveAttribute('offset', '8');
-    await expect(toggletip).toHaveAttribute('placement', 'top');
+    await expect(toggletip).toHaveAttribute('placement', 'bottom');
     await expect(toggletip).toHaveAttribute('show-arrow');
   });
 
@@ -261,7 +261,6 @@ const visualTestingSetup = async (componentsPage: ComponentsPage, color: string)
         close-button
         color=${color}
         triggerID="trigger-button"
-        placement="top"
         visible
       ><div>
           The toggletip with color ${color}.
