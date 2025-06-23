@@ -54,13 +54,6 @@ class MenuPopover extends Popover {
       .filter((node) => !!node && !node.hasAttribute('disabled'));
   }
 
-  public override hidePopover = () => {
-    setTimeout(() => {
-      this.visible = false;
-      this.isTriggerClicked = false;
-    }, this.closeDelay);
-  };
-
   override connectedCallback() {
     super.connectedCallback();
 

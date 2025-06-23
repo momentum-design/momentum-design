@@ -253,8 +253,8 @@ const visualTestingSetup = async (componentsPage: ComponentsPage) => {
     html: `
     <div class="popoverWrapper">
       <div style="display: flex; flex-direction: column; gap: 100px; align-items: center; margin: 100px;">
-        <mdc-button id="trigger-button1">Click here</mdc-button>
-        <mdc-button id="trigger-button2">Click here (contrast)</mdc-button>
+        <mdc-button id="trigger-button1">Tonal toggletip</mdc-button>
+        <mdc-button id="trigger-button2">Contrast toggletip</mdc-button>
       </div>
 
       <mdc-toggletip
@@ -262,7 +262,6 @@ const visualTestingSetup = async (componentsPage: ComponentsPage) => {
         close-button
         color="tonal"
         triggerID="trigger-button1"
-        visible
       ><div>
           The toggletip with color tonal.
         </div>
@@ -273,7 +272,6 @@ const visualTestingSetup = async (componentsPage: ComponentsPage) => {
         close-button
         color="contrast"
         triggerID="trigger-button2"
-        visible
       ><div>
           The toggletip with color contrast.
         </div>
@@ -284,7 +282,9 @@ const visualTestingSetup = async (componentsPage: ComponentsPage) => {
 
   const toggletipWrapper = componentsPage.page.locator('.popoverWrapper');
   await toggletipWrapper.waitFor();
-  return toggletipWrapper;
+  const button1 = componentsPage.page.locator('#trigger-button1');
+  const button2 = componentsPage.page.locator('#trigger-button2');
+  return { toggletipWrapper, button1, button2 };
 };
 
 test.use({ viewport: { width: 600, height: 400 } });
@@ -314,10 +314,13 @@ test('mdc-toggletip', async ({ componentsPage }) => {
    * VISUAL REGRESSION
    */
   await test.step('visual-regression', async () => {
-    await visualTestingSetup(componentsPage);
+    const { toggletipWrapper, button1, button2 } = await visualTestingSetup(componentsPage);
 
     await test.step('matches screenshot of elements', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-toggletip');
+      await button1.click();
+      await componentsPage.visualRegression.takeScreenshot('mdc-toggletip-tonal', { element: toggletipWrapper });
+      await button2.click();
+      await componentsPage.visualRegression.takeScreenshot('mdc-toggletip-contrast', { element: toggletipWrapper });
     });
   });
 });

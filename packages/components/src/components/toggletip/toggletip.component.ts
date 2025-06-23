@@ -63,7 +63,6 @@ class ToggleTip extends Popover {
     super.connectedCallback();
     this.closeButton = this.closeButton ?? DEFAULTS.CLOSE_BUTTON;
     this.closeButtonAriaLabel = DEFAULTS.CLOSE_BUTTON_ARIA_LABEL;
-    this.placement = DEFAULTS.PLACEMENT;
     this.trigger = DEFAULTS.CLICK;
     this.showArrow = DEFAULTS.SHOW_ARROW;
     this.interactive = true;
