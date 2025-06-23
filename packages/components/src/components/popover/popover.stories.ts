@@ -130,7 +130,6 @@ const renderMultiple = (args: Args) => html`
     placement="bottom"
     z-index="20"
     show-arrow
-    focus-back-to-trigger
     hide-on-escape
   >
     <mdc-text>Description tooltip on mouseenter</mdc-text>
