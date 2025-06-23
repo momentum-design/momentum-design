@@ -412,6 +412,7 @@ export const interactiveMultiple: StoryObj = {
     interactive: true,
     'focus-back-to-trigger': true,
     'hide-on-escape': true,
+    'hide-on-outside-click': true,
     'show-arrow': true,
     'close-button': true,
     role: DEFAULTS.ROLE,

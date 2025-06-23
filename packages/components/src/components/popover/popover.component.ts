@@ -375,9 +375,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     }
     if (this.trigger.includes('focusin')) {
       this.triggerElement.addEventListener('focusin', this.showPopover);
-      if (!this.interactive) {
-        this.triggerElement.addEventListener('focusout', this.hidePopover);
-      }
+      this.triggerElement.addEventListener('focusout', this.startCloseDelay);
     }
     this.addEventListener('focus-trap-exit', this.hidePopover);
   }
@@ -390,11 +388,11 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     const hoverBridge = this.renderRoot.querySelector('.popover-hover-bridge');
     this.triggerElement.removeEventListener('click', this.togglePopoverVisible);
     this.triggerElement.removeEventListener('mouseenter', this.showPopover);
-    this.triggerElement.removeEventListener('mouseleave', this.hidePopover);
+    this.triggerElement.removeEventListener('mouseleave', this.startCloseDelay);
     this.removeEventListener('mouseenter', this.cancelCloseDelay);
     this.removeEventListener('mouseleave', this.startCloseDelay);
     this.triggerElement.removeEventListener('focusin', this.showPopover);
-    this.triggerElement.removeEventListener('focusout', this.hidePopover);
+    this.triggerElement.removeEventListener('focusout', this.startCloseDelay);
     hoverBridge?.removeEventListener('mouseenter', this.showPopover);
 
     this.removeEventListener('focus-trap-exit', this.hidePopover);
