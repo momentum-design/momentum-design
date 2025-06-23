@@ -680,10 +680,15 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
   await test.step('Multiple popovers with same trigger using mouse', async () => {
     await componentsPage.mount({
       html: `
-        <div>
+        <div style="height: 500px; width: 500px; display: 
+        flex; flex-direction: column; align-items: center; justify-content: center;">
           <mdc-button id="trigger-multi">Trigger</mdc-button>
-          <mdc-popover id="popover-hover" triggerID="trigger-multi" trigger="mouseenter">Hover Popover</mdc-popover>
-          <mdc-popover id="popover-click" triggerID="trigger-multi" trigger="click">Click Popover</mdc-popover>
+          <mdc-popover id="popover-hover" triggerID="trigger-multi" trigger="mouseenter" show-arrow hide-on-escape
+          placement="bottom">Hover Popover</mdc-popover>
+          <mdc-popover id="popover-click" triggerID="trigger-multi" trigger="click" show-arrow hide-on-escape
+          close-button close-button-aria-label="Close Popover"
+          focus-back-to-trigger interactive focus-trap
+          placement="top">Click Popover</mdc-popover>
         </div>
       `,
       clearDocument: true,
@@ -706,17 +711,35 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
     await componentsPage.page.mouse.move(100, 30);
     await expect(popoverHover).not.toBeVisible();
     await expect(popoverClick).toBeVisible();
+
+    // Hover again to re-open first popover
+    await trigger.hover();
+    await expect(popoverHover).toBeVisible();
+    await expect(popoverClick).toBeVisible();
+
+    // Click to close interactive popover
+    await trigger.click();
+    await expect(popoverClick).not.toBeVisible();
+    await expect(popoverHover).toBeVisible();
+
+    // Move mouse away to close hover popover
+    await componentsPage.page.mouse.move(100, 30);
+    await expect(popoverHover).not.toBeVisible();
+    await expect(popoverClick).not.toBeVisible();
   });
 
   await test.step('Multiple popovers with same trigger using keyboard', async () => {
     await componentsPage.mount({
       html: `
-        <div>
-          <mdc-button id="trigger-multi-key">Trigger</mdc-button>
-          <mdc-popover id="popover-hover-id" triggerID="trigger-multi-key" trigger="focusin"
-          hide-on-escape focus-back-to-trigger>Hover Popover</mdc-popover>
-          <mdc-popover id="popover-click-id" triggerID="trigger-multi-key" trigger="click" 
-          hide-on-escape focus-back-to-trigger>Click Popover</mdc-popover>
+        <div style="height: 500px; width: 500px; display: 
+        flex; flex-direction: column; align-items: center; justify-content: center;">
+          <mdc-button id="trigger-multi">Trigger</mdc-button>
+          <mdc-popover id="popover-hover" triggerID="trigger-multi" trigger="mouseenter" show-arrow hide-on-escape
+          placement="bottom">Hover Popover</mdc-popover>
+          <mdc-popover id="popover-click" triggerID="trigger-multi" trigger="click" show-arrow hide-on-escape
+          close-button close-button-aria-label="Close Popover"
+          focus-back-to-trigger interactive focus-trap
+          placement="top">Click Popover</mdc-popover>
         </div>
       `,
       clearDocument: true,
@@ -740,6 +763,8 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
     await componentsPage.page.keyboard.press(KEYS.ESCAPE);
     await expect(popoverClick).not.toBeVisible();
     await expect(popoverHover).toBeVisible();
+
+    // Press Escape again to close first popover
     await componentsPage.page.keyboard.press(KEYS.ESCAPE);
     await expect(popoverHover).not.toBeVisible();
     await expect(trigger).toBeFocused();
