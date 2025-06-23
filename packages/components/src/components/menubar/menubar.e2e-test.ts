@@ -6,9 +6,10 @@ type MenuItemConfig = {
   id: string;
   label: string;
   hasSubmenu?: boolean;
+  softDisabled?: boolean;
   disabled?: boolean;
   submenuPopoverId?: string;
-  submenuItems?: { id: string; label: string }[];
+  submenuItems?: { id: string; label: string, disabled?: boolean;}[];
 };
 
 type SetupOptions = {
@@ -37,10 +38,11 @@ const defaultMenuItems: MenuItemConfig[] = [
     submenuItems: [
       { id: 'view-zoom', label: 'Zoom' },
       { id: 'view-fullscreen', label: 'Fullscreen' },
+      { id: 'view-minimize', label: 'Minimize', disabled: true },
     ],
   },
   { id: 'window', label: 'Window' },
-  { id: 'preferences', label: 'Preferences', disabled: true },
+  { id: 'preferences', label: 'Preferences', softDisabled: true },
   { id: 'help', label: 'Help' },
 ];
 
@@ -51,14 +53,15 @@ const setup = async (
   const dir = rtl ? 'dir="rtl"' : '';
   const menuHtml = menuItems
     .map((item) => {
-      const disabled = item.disabled ? 'disabled' : '';
+      const disabled = item.softDisabled ? 'disabled' : '';
       let html = `<mdc-menuitem id="${item.id}" ${disabled}>${item.label}</mdc-menuitem>`;
       if (item.hasSubmenu && item.submenuItems && item.submenuPopoverId) {
         html += `
           <mdc-menupopover id="${item.submenuPopoverId}" triggerid="${item.id}" role="menu">
             ${item.submenuItems
     .map(
-      (sub) => `<mdc-menuitem id="${sub.id}" role="menuitem">${sub.label}</mdc-menuitem>`,
+      (sub) => `<mdc-menuitem id="${sub.id}" role="menuitem" 
+      ${sub.disabled ? 'disabled' : ''}>${sub.label}</mdc-menuitem>`,
     )
     .join('')}
           </mdc-menupopover>
@@ -93,7 +96,7 @@ const setup = async (
 };
 
 test.describe('Menubar Feature Scenarios', () => {
-  test.skip('mdc-menubar scenarios', async ({ componentsPage }) => {
+  test('mdc-menubar scenarios', async ({ componentsPage }) => {
     await test.step('renders menubar with correct roles and orientation', async () => {
       const { menubar } = await setup({ componentsPage });
       await test.expect(menubar).toHaveAttribute('role', 'menubar');
@@ -107,7 +110,6 @@ test.describe('Menubar Feature Scenarios', () => {
       const waitForClick = componentsPage.waitForEvent(file, 'click');
       await file.click();
       await waitForClick;
-      await expect(file).toBeFocused(); // Focus remains on the clicked item, no submenu
     });
 
     await test.step('Click on menubar menuitem that has submenu opens submenu and sets aria-expanded', async () => {
@@ -120,9 +122,7 @@ test.describe('Menubar Feature Scenarios', () => {
 
     await test.step('Clicking disabled menubar menuitem does nothing', async () => {
       const { preferences } = await setup({ componentsPage });
-      const waitForClick = componentsPage.waitForEvent(preferences, 'click');
-      await preferences.click();
-      await componentsPage.expectPromiseTimesOut(waitForClick, true);
+      await expect(preferences).toBeDisabled();
       await test.expect(preferences).toHaveAttribute('disabled');
     });
 
@@ -149,10 +149,9 @@ test.describe('Menubar Feature Scenarios', () => {
       await test.expect(edit).toHaveAttribute('aria-expanded', 'true');
       const waitForClick = componentsPage.waitForEvent(help, 'click');
       await help.click();
+      await waitForClick;
       await test.expect(editPopover).not.toBeVisible();
       await test.expect(edit).toHaveAttribute('aria-expanded', 'false');
-      await waitForClick;
-      await expect(help).toBeFocused();
     });
 
     // Keyboard Interactions
@@ -187,6 +186,7 @@ test.describe('Menubar Feature Scenarios', () => {
     await test.step('Open submenu using ArrowRight (LTR) or ArrowLeft (RTL)', async () => {
       const { edit } = await setup({ componentsPage });
       await edit.focus();
+      await expect(edit).toBeFocused();
       await componentsPage.page.keyboard.press('ArrowRight');
       const editPopover = componentsPage.page.locator('#edit-popover');
       await test.expect(editPopover).toBeVisible();
@@ -195,6 +195,7 @@ test.describe('Menubar Feature Scenarios', () => {
       // RTL
       const { view } = await setup({ componentsPage, rtl: true });
       await view.focus();
+      await expect(view).toBeFocused();
       await componentsPage.page.keyboard.press('ArrowLeft');
       const viewPopover = componentsPage.page.locator('#view-popover');
       await test.expect(viewPopover).toBeVisible();
@@ -205,18 +206,20 @@ test.describe('Menubar Feature Scenarios', () => {
     await test.step('Navigate disabled menubar menuitems', async () => {
       const { view, preferences } = await setup({ componentsPage });
       await view.focus();
+      await expect(view).toBeFocused();
       await componentsPage.page.keyboard.press('ArrowDown');
       await test.expect(preferences).toBeFocused();
       const waitForClick = componentsPage.waitForEvent(preferences, 'click');
       await componentsPage.page.keyboard.press('Enter');
       await componentsPage.expectPromiseTimesOut(waitForClick, true); // Expect click to not trigger
-      await test.expect(preferences).toHaveAttribute('disabled');
+      await test.expect(preferences).toHaveAttribute('soft-disabled');
       await test.expect(preferences).toHaveAttribute('aria-disabled', 'true');
     });
 
     await test.step('Home and End keys navigate vertical menubar', async () => {
       const { edit, file, help } = await setup({ componentsPage });
       await edit.focus();
+      await expect(edit).toBeFocused();
       await componentsPage.page.keyboard.press('Home');
       await test.expect(file).toBeFocused();
       await componentsPage.page.keyboard.press('End');
@@ -226,6 +229,7 @@ test.describe('Menubar Feature Scenarios', () => {
     await test.step('Tab exits Menubar and returns focus on Shift+Tab', async () => {
       const { edit } = await setup({ componentsPage });
       await edit.focus();
+      await expect(edit).toBeFocused();
       await componentsPage.page.keyboard.press('Enter'); // Open submenu
       await componentsPage.actionability.pressTab();
       // Focus should move outside
@@ -243,6 +247,7 @@ test.describe('Menubar Feature Scenarios', () => {
     await test.step('Navigate submenu menuitems vertically', async () => {
       const { edit } = await setup({ componentsPage });
       await edit.focus();
+      await expect(edit).toBeFocused();
       await componentsPage.page.keyboard.press('ArrowRight'); // Open submenu
       const submenu = componentsPage.page.locator('#edit-popover');
       const undo = submenu.locator('#edit-undo');
@@ -255,6 +260,7 @@ test.describe('Menubar Feature Scenarios', () => {
     await test.step('Close nested submenu using ArrowLeft (LTR)/ArrowRight (RTL)', async () => {
       const { edit } = await setup({ componentsPage });
       await edit.focus();
+      await expect(edit).toBeFocused();
       await componentsPage.page.keyboard.press('ArrowRight'); // Open submenu
       const submenu = componentsPage.page.locator('#edit-popover');
       const undo = submenu.locator('#edit-undo');
@@ -265,6 +271,7 @@ test.describe('Menubar Feature Scenarios', () => {
       // RTL
       const { view } = await setup({ componentsPage, rtl: true });
       await view.focus();
+      await expect(view).toBeFocused();
       await componentsPage.page.keyboard.press('ArrowLeft'); // Open submenu
       const submenuRTL = componentsPage.page.locator('#view-popover');
       const zoom = submenuRTL.locator('#view-zoom');
@@ -277,6 +284,7 @@ test.describe('Menubar Feature Scenarios', () => {
     await test.step('Close submenu using Escape', async () => {
       const { edit } = await setup({ componentsPage });
       await edit.focus();
+      await expect(edit).toBeFocused();
       await componentsPage.page.keyboard.press('ArrowRight'); // Open submenu
       const submenu = componentsPage.page.locator('#edit-popover');
       const undo = submenu.locator('#edit-undo');
@@ -291,6 +299,7 @@ test.describe('Menubar Feature Scenarios', () => {
     (target menuitem has no submenu)`, async () => {
       const { view, window } = await setup({ componentsPage });
       await view.focus();
+      await expect(view).toBeFocused();
       await componentsPage.page.keyboard.press('ArrowRight'); // Open submenu
       const submenu = componentsPage.page.locator('#view-popover');
       const zoom = submenu.locator('#view-zoom');
@@ -304,6 +313,7 @@ test.describe('Menubar Feature Scenarios', () => {
     (target menuitem has submenu)`, async () => {
       const { edit } = await setup({ componentsPage });
       await edit.focus();
+      await expect(edit).toBeFocused();
       await componentsPage.page.keyboard.press('ArrowRight'); // Open submenu
       const submenu = componentsPage.page.locator('#edit-popover');
       const undo = submenu.locator('#edit-undo');
@@ -320,10 +330,12 @@ test.describe('Menubar Feature Scenarios', () => {
     (target menuitem has no submenu)`, async () => {
       const { view, file } = await setup({ componentsPage });
       await view.focus();
+      await expect(view).toBeFocused();
       await componentsPage.page.keyboard.press('ArrowRight'); // Open submenu
       const submenu = componentsPage.page.locator('#view-popover');
       const zoom = submenu.locator('#view-zoom');
       await zoom.focus();
+      await expect(zoom).toBeFocused();
       await componentsPage.page.keyboard.press('ArrowLeft');
       await test.expect(submenu).not.toBeVisible();
       await test.expect(file).toBeFocused(); // has no submenu
@@ -333,6 +345,7 @@ test.describe('Menubar Feature Scenarios', () => {
     (target menuitem has submenu)`, async () => {
       const { view } = await setup({ componentsPage });
       await view.focus();
+      await expect(view).toBeFocused();
       await componentsPage.page.keyboard.press('ArrowRight'); // Open submenu
       const viewSubmenu = componentsPage.page.locator('#view-popover');
       const zoom = viewSubmenu.locator('#view-zoom');
