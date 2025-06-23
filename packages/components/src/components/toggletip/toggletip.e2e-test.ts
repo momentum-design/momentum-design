@@ -253,14 +253,14 @@ const visualTestingSetup = async (componentsPage: ComponentsPage, color: string)
     html: `
     <div class="popoverWrapper">
       <div style="display: flex; flex-direction: column; gap: 100px; align-items: center; margin: 100px;">
-        <mdc-button id="trigger-button1">${color} Trigger</mdc-button>
+        <mdc-button id="trigger-button">${color} Trigger</mdc-button>
       </div>
 
       <mdc-toggletip
         close-button-aria-label="Close"
         close-button
         color=${color}
-        triggerID="trigger-button1"
+        triggerID="trigger-button"
         placement="top"
         visible
       ><div>
