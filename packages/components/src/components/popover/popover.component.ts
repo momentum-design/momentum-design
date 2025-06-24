@@ -375,7 +375,9 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     }
     if (this.trigger.includes('focusin')) {
       this.triggerElement.addEventListener('focusin', this.showPopover);
-      this.triggerElement.addEventListener('focusout', this.handleFocusOut);
+      if (!this.interactive) {
+        this.triggerElement.addEventListener('focusout', this.hidePopover);
+      }
     }
     this.addEventListener('focus-trap-exit', this.hidePopover);
   }
@@ -392,7 +394,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     this.removeEventListener('mouseenter', this.cancelCloseDelay);
     this.removeEventListener('mouseleave', this.startCloseDelay);
     this.triggerElement.removeEventListener('focusin', this.showPopover);
-    this.triggerElement.removeEventListener('focusout', this.handleFocusOut);
+    this.triggerElement.removeEventListener('focusout', this.hidePopover);
     hoverBridge?.removeEventListener('mouseenter', this.showPopover);
 
     this.removeEventListener('focus-trap-exit', this.hidePopover);
@@ -599,12 +601,6 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
         this.triggerElement?.focus();
       }
       PopoverEventManager.onHidePopover(this);
-    }
-  }
-
-  private handleFocusOut(): void {
-    if (popoverStack.peek() === this) {
-      this.startCloseDelay();
     }
   }
 

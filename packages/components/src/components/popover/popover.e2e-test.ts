@@ -495,7 +495,7 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
         html: `
           <div>
             <mdc-button id="trigger-button">Trigger</mdc-button>
-            <mdc-popover id="popover" triggerID="trigger-button" trigger="focusin" hide-on-blur>
+            <mdc-popover id="popover" triggerID="trigger-button" trigger="focusin" hide-on-blur interactive>
               Popover content <mdc-button id="inside-button">button on popover</mdc-button>
             </mdc-popover>
             <mdc-button id="outside-button">Outside</mdc-button>
