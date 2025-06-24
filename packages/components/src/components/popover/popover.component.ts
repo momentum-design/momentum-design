@@ -313,7 +313,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     super.firstUpdated(changedProperties);
     this.utils.setupAppendTo();
     [this.openDelay, this.closeDelay] = this.utils.setupDelay();
-    // this.setupTriggerListener();
+    this.setupTriggerListener();
     this.utils.setupAccessibility();
     this.style.zIndex = `${this.zIndex}`;
     PopoverEventManager.onCreatedPopover(this);
