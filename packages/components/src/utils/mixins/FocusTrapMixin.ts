@@ -10,6 +10,9 @@ import type { Constructor } from './index.types';
  *
  * This also makes sure there is only one keydown listener active at a time,
  * which is necessary to handle focus trapping correctly.
+ *
+ * Handling iFrames is supported, as long as there are focusable elements around the iFrame.
+ * Otherwise it will not work as expected.
  */
 class FocusTrapStack {
   private static stack: Set<any> = new Set();
@@ -414,7 +417,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
      * @param direction - The direction of the focus trap.
      * If true, the focus will be trapped in the previous element.
      */
-    private trapFocus(direction: boolean) {
+    private trapFocus(event: KeyboardEvent) {
       // calculate the focusable elements
       this.setFocusableElements();
 
@@ -423,6 +426,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
       }
       const activeElement = this.getDeepActiveElement!() as HTMLElement;
       const activeIndex = this.findElement(activeElement);
+      const direction = event.shiftKey;
 
       if (direction) {
         this.focusTrapIndex = this.calculateNextIndex(activeIndex, -1);
@@ -431,8 +435,17 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
       }
 
       const nextElement = this.focusableElements[this.focusTrapIndex];
+
+      if (nextElement.tagName === 'IFRAME') {
+        // If the next element is an iframe we should not focus it manually
+        // but just let the browser handle it.
+        // this only works if there are focusable elements around the iframe!
+        return;
+      }
+
       if (nextElement) {
-        nextElement.focus({ preventScroll: true });
+        event.preventDefault();
+        nextElement.focus();
       }
     }
 
@@ -448,8 +461,7 @@ export const FocusTrapMixin = <T extends Constructor<Component>>(superClass: T) 
       }
 
       if (event.key === 'Tab') {
-        event.preventDefault();
-        this.trapFocus(event.shiftKey);
+        this.trapFocus(event);
       }
     }
   }
