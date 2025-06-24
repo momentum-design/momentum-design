@@ -287,6 +287,9 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
   private hoverTimer: number | null = null;
 
   /** @internal */
+  private isHovered: boolean = false;
+
+  /** @internal */
   protected isTriggerClicked: boolean = false;
 
   /** @internal */
@@ -310,7 +313,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     super.firstUpdated(changedProperties);
     this.utils.setupAppendTo();
     [this.openDelay, this.closeDelay] = this.utils.setupDelay();
-    this.setupTriggerListener();
+    // this.setupTriggerListener();
     this.utils.setupAccessibility();
     this.style.zIndex = `${this.zIndex}`;
     PopoverEventManager.onCreatedPopover(this);
@@ -367,8 +370,8 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     }
     if (this.trigger.includes('mouseenter')) {
       const hoverBridge = this.renderRoot.querySelector('.popover-hover-bridge');
-      this.triggerElement.addEventListener('mouseenter', this.showPopover);
-      this.triggerElement.addEventListener('mouseleave', this.startCloseDelay);
+      this.triggerElement.addEventListener('mouseenter', this.handleMouseEnter);
+      this.triggerElement.addEventListener('mouseleave', this.handleMouseLeave);
       this.addEventListener('mouseenter', this.cancelCloseDelay);
       this.addEventListener('mouseleave', this.startCloseDelay);
       hoverBridge?.addEventListener('mouseenter', this.showPopover);
@@ -376,7 +379,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     if (this.trigger.includes('focusin')) {
       this.triggerElement.addEventListener('focusin', this.showPopover);
       if (!this.interactive) {
-        this.triggerElement.addEventListener('focusout', this.hidePopover);
+        this.triggerElement.addEventListener('focusout', this.handleFocusOut);
       }
     }
     this.addEventListener('focus-trap-exit', this.hidePopover);
@@ -389,12 +392,12 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     if (!this.triggerElement) return;
     const hoverBridge = this.renderRoot.querySelector('.popover-hover-bridge');
     this.triggerElement.removeEventListener('click', this.togglePopoverVisible);
-    this.triggerElement.removeEventListener('mouseenter', this.showPopover);
-    this.triggerElement.removeEventListener('mouseleave', this.startCloseDelay);
+    this.triggerElement.removeEventListener('mouseenter', this.handleMouseEnter);
+    this.triggerElement.removeEventListener('mouseleave', this.handleMouseLeave);
     this.removeEventListener('mouseenter', this.cancelCloseDelay);
     this.removeEventListener('mouseleave', this.startCloseDelay);
     this.triggerElement.removeEventListener('focusin', this.showPopover);
-    this.triggerElement.removeEventListener('focusout', this.hidePopover);
+    this.triggerElement.removeEventListener('focusout', this.handleFocusOut);
     hoverBridge?.removeEventListener('mouseenter', this.showPopover);
 
     this.removeEventListener('focus-trap-exit', this.hidePopover);
@@ -603,6 +606,36 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
       PopoverEventManager.onHidePopover(this);
     }
   }
+
+  /**
+   *  Handles mouse enter event on the trigger element.
+   *  This method sets the `isHovered` flag to true and shows the popover
+   */
+  private handleMouseEnter = () => {
+    this.isHovered = true;
+    this.showPopover();
+  };
+
+  /**
+   *  Handles mouse leave event on the trigger element.
+   *  This method sets the `isHovered` flag to false and starts the close delay
+   *  timer to hide the popover.
+   */
+  private handleMouseLeave = () => {
+    this.isHovered = false;
+    this.startCloseDelay();
+  };
+
+  /**
+   *  Handles focus out event on the trigger element.
+   *  This method checks if the popover is not hovered and hides the popover.
+   *  If the popover is hovered, it will not hide the popover.
+   */
+  private handleFocusOut = () => {
+    if (!this.isHovered) {
+      this.hidePopover();
+    }
+  };
 
   /**
    * Starts the close delay timer.
