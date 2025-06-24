@@ -375,7 +375,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     }
     if (this.trigger.includes('focusin')) {
       this.triggerElement.addEventListener('focusin', this.showPopover);
-      this.triggerElement.addEventListener('focusout', this.startCloseDelay);
+      this.triggerElement.addEventListener('focusout', this.handleFocusOut);
     }
     this.addEventListener('focus-trap-exit', this.hidePopover);
   }
@@ -392,7 +392,7 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     this.removeEventListener('mouseenter', this.cancelCloseDelay);
     this.removeEventListener('mouseleave', this.startCloseDelay);
     this.triggerElement.removeEventListener('focusin', this.showPopover);
-    this.triggerElement.removeEventListener('focusout', this.startCloseDelay);
+    this.triggerElement.removeEventListener('focusout', this.handleFocusOut);
     hoverBridge?.removeEventListener('mouseenter', this.showPopover);
 
     this.removeEventListener('focus-trap-exit', this.hidePopover);
@@ -602,6 +602,12 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
     }
   }
 
+  private handleFocusOut(): void {
+    if (popoverStack.peek() === this) {
+      this.startCloseDelay();
+    }
+  }
+
   /**
    * Starts the close delay timer.
    * If the popover is not interactive, it will close the popover after the delay.
@@ -641,12 +647,10 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
    * Hides the popover.
    */
   public hidePopover = () => {
-    if (popoverStack.peek() === this) {
-      setTimeout(() => {
-        this.visible = false;
-        this.isTriggerClicked = false;
-      }, this.closeDelay);
-    }
+    setTimeout(() => {
+      this.visible = false;
+      this.isTriggerClicked = false;
+    }, this.closeDelay);
   };
 
   /**

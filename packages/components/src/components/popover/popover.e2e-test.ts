@@ -491,17 +491,29 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
     });
 
     await test.step('Hide on blur (focus out) attribute', async () => {
-      await componentsPage.setAttributes(popover, {
-        'hide-on-blur': 'true',
-        children: 'Popover content <mdc-button>button on popover</mdc-button>',
-        trigger: TRIGGER.FOCUSIN,
-        visible: 'true',
+      await componentsPage.mount({
+        html: `
+          <div>
+            <mdc-button id="trigger-button">Trigger</mdc-button>
+            <mdc-popover id="popover" triggerID="trigger-button" trigger="focusin" hide-on-blur>
+              Popover content <mdc-button id="inside-button">button on popover</mdc-button>
+            </mdc-popover>
+            <mdc-button id="outside-button">Outside</mdc-button>
+          </div>
+        `,
+        clearDocument: true,
       });
+      const popover = componentsPage.page.locator('#popover');
+      const triggerButton = componentsPage.page.locator('#trigger-button');
+      const outsideButton = componentsPage.page.locator('#outside-button');
+      await expect(popover).not.toBeVisible();
       await componentsPage.actionability.pressTab();
       await expect(triggerButton).toBeFocused();
       await expect(popover).toBeVisible();
       await componentsPage.actionability.pressTab();
-      await expect(componentsPage.page.locator('#outside-button')).toBeFocused();
+      await expect(popover.locator('#inside-button')).toBeFocused();
+      await componentsPage.actionability.pressTab();
+      await expect(outsideButton).toBeFocused();
       await expect(popover).not.toBeVisible();
     });
 
@@ -744,9 +756,9 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
       `,
       clearDocument: true,
     });
-    const trigger = componentsPage.page.locator('#trigger-multi-key');
-    const popoverHover = componentsPage.page.locator('#popover-hover-id');
-    const popoverClick = componentsPage.page.locator('#popover-click-id');
+    const trigger = componentsPage.page.locator('#trigger-multi');
+    const popoverHover = componentsPage.page.locator('#popover-hover');
+    const popoverClick = componentsPage.page.locator('#popover-click');
 
     // Focus to open first popover
     await componentsPage.actionability.pressTab();
