@@ -44,8 +44,8 @@ const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
   await componentsPage.mount({
     html: `
-    <div id="wrapper" >
-      <div style="height: 10vh">
+    <div id="wrapper">
+      <div style="height: 20vh">
         <mdc-button id="${restArgs.triggerID}" aria-label="Trigger Button of Popover">Click Me!</mdc-button>
       </div>
       <mdc-popover
