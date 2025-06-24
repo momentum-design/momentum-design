@@ -198,4 +198,4 @@ Feature: Popover Component
       And the first popover should close (since focus is now on the second popover).
       When the user presses **Escape** key,
       Then the second popover should close,
-      And the first popover should remain open (since focus is back on the trigger).
+      And the first popover should open (since focus is back on the trigger).

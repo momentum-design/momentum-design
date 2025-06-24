@@ -695,12 +695,12 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
         <div style="height: 500px; width: 500px; display: 
         flex; flex-direction: column; align-items: center; justify-content: center;">
           <mdc-button id="trigger-multi">Trigger</mdc-button>
-          <mdc-popover id="popover-hover" triggerID="trigger-multi" trigger="mouseenter" show-arrow hide-on-escape
-          placement="bottom">Hover Popover</mdc-popover>
+          <mdc-tooltip id="popover-hover" show-arrow triggerID="trigger-multi">This is a tooltip</mdc-tooltip>
           <mdc-popover id="popover-click" triggerID="trigger-multi" trigger="click" show-arrow hide-on-escape
           close-button close-button-aria-label="Close Popover"
           focus-back-to-trigger interactive focus-trap
           placement="top">Click Popover</mdc-popover>
+
         </div>
       `,
       clearDocument: true,
@@ -746,8 +746,7 @@ const userStoriesTestCases = async (componentsPage: ComponentsPage) => {
         <div style="height: 500px; width: 500px; display: 
         flex; flex-direction: column; align-items: center; justify-content: center;">
           <mdc-button id="trigger-multi">Trigger</mdc-button>
-          <mdc-popover id="popover-hover" triggerID="trigger-multi" trigger="mouseenter" show-arrow hide-on-escape
-          placement="bottom">Hover Popover</mdc-popover>
+           <mdc-tooltip id="popover-hover" show-arrow triggerID="trigger-multi">This is a tooltip</mdc-tooltip>
           <mdc-popover id="popover-click" triggerID="trigger-multi" trigger="click" show-arrow hide-on-escape
           close-button close-button-aria-label="Close Popover"
           focus-back-to-trigger interactive focus-trap
