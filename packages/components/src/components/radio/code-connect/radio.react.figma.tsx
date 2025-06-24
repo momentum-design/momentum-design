@@ -7,8 +7,14 @@ figma.connect(
   '<FIGMA_RADIO_URL>',
   {
     props: {
+      toggletipText: figma.boolean('Info Button', {
+        true: "This is a toggletip text for the info button.",
+        false: undefined,
+      }),
     },
-    example: (props) => <Radio {...props} />,
+    example: (props) => {
+    return <Radio {...props}/>
+    },
     links: [
       {
         name: "Storybook",
