@@ -1,4 +1,3 @@
-// AI-Assisted
 import { expect, Locator } from '@playwright/test';
 import { test } from '../../../config/playwright/setup';
 
@@ -359,4 +358,3 @@ test.describe('Menubar Feature Scenarios', () => {
     });
   });
 });
-// End AI-Assisted
