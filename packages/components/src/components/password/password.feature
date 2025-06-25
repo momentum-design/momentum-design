@@ -3,7 +3,8 @@ Feature: Password Component
 
   Scenario: Password component behaves like input
     Given I use the password component
-    Then it should have all functionalities of the input component
+    Then it should have all functionalities of the input component except the type should be "password" by default
+    Then it should not have a trailing button by default
 
   Scenario: Show/Hide button replaces Clear button
     Given the password component is rendered
