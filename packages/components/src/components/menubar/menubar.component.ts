@@ -34,10 +34,14 @@ import { popoverStack } from '../popover/popover.stack';
   * @slot default - Contains the menu items and their associated popovers
   */
 class MenuBar extends Component {
+  constructor() {
+    super();
+    this.addEventListener('keydown', this.handleKeyDown);
+  }
+
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.MENUBAR;
-    this.addEventListener('keydown', this.handleKeyDown);
   }
 
   /** @internal */
@@ -55,6 +59,11 @@ class MenuBar extends Component {
     this.updatePopoverPlacement();
   }
 
+  public override firstUpdated(changedProperties: PropertyValues): void {
+    super.firstUpdated(changedProperties);
+    this.resetTabIndexAndSetActiveTabIndex(this.menuItems);
+  }
+
   /**
      * Resets all list items tabindex to -1 and sets the tabindex of the
      * element at the given index to 0, effectively setting the active
@@ -67,11 +76,6 @@ class MenuBar extends Component {
       const newTabindex = index === 0 ? '0' : '-1';
       node?.setAttribute('tabindex', newTabindex);
     });
-  }
-
-  public override firstUpdated(changedProperties: PropertyValues): void {
-    super.firstUpdated(changedProperties);
-    this.resetTabIndexAndSetActiveTabIndex(this.menuItems);
   }
 
   private getCurrentIndex(target: EventTarget | null): number {
@@ -117,7 +121,6 @@ class MenuBar extends Component {
     }
 
     this.updateTabIndexAndFocus(this.menuItems, currentIndex, newIndex);
-
     if (shouldOpenSubmenu) {
       const triggerId = this.menuItems[newIndex]?.getAttribute('id');
       if (this.hasSubmenu(triggerId)) {
@@ -132,8 +135,7 @@ class MenuBar extends Component {
   }
 
   private getKeyWithDirectionFix(originalKey: string): string {
-    const isRtl = document.documentElement.getAttribute('dir') === 'rtl'
-      || window.getComputedStyle(this).direction === 'rtl';
+    const isRtl = window.getComputedStyle(this).direction === 'rtl';
 
     if (!isRtl) return originalKey;
 
@@ -151,6 +153,45 @@ class MenuBar extends Component {
   private isNestedMenuItem(element: HTMLElement): boolean {
     return !!element.closest(MENUPOPOVER_TAGNAME)
       && element.tagName.toLowerCase() === MENUITEM_TAGNAME;
+  }
+
+  private closeAllMenuPopovers() {
+    while (popoverStack.peek()) {
+      const popover = popoverStack.pop();
+      if (popover) {
+        popover.hidePopover();
+      }
+    }
+  }
+
+  private crossMenubarNavigationOnLeft(element: HTMLElement): void {
+    const isMenuItem = element.tagName.toLowerCase() === MENUITEM_TAGNAME;
+    if (isMenuItem) {
+      const parentPopover = element.closest(MENUPOPOVER_TAGNAME);
+      const triggerId = parentPopover?.getAttribute('triggerid');
+      const triggerMenuItem = this.menuItems.find((item) => item.getAttribute('id') === triggerId);
+      if (triggerMenuItem) {
+        if (this.isTopLevelMenuItem(triggerMenuItem)) {
+          parentPopover?.hidePopover();
+        }
+        setTimeout(() => {
+          const parentMenuItemIndex = this.getCurrentIndex(triggerMenuItem);
+          this.navigateToMenuItem(parentMenuItemIndex, 'prev', true);
+        }, 0);
+      }
+    }
+  }
+
+  private crossMenubarNavigationOnRight(element: HTMLElement): void {
+    if (this.isTopLevelMenuItem(element) && this.hasSubmenu(element.id)) {
+      this.showSubmenu(element.id);
+    } else if (this.isNestedMenuItem(element) && !this.hasSubmenu(element.id)) {
+      this.closeAllMenuPopovers();
+      setTimeout(() => {
+        const parentIndex = this.getParentMenuItemIndex(element);
+        if (parentIndex >= 0) this.navigateToMenuItem(parentIndex, 'next', true);
+      }, 0);
+    }
   }
 
   private hasSubmenu(triggerId: string | null): boolean {
@@ -176,13 +217,6 @@ class MenuBar extends Component {
     }
 
     return -1;
-  }
-
-  private closeAllSubmenus(): void {
-    while (popoverStack.peek()) {
-      popoverStack.pop()?.hidePopover();
-    }
-    this.hasEnteredSubmenu = false;
   }
 
   private async handleKeyDown(event: KeyboardEvent): Promise<void> {
@@ -212,10 +246,7 @@ class MenuBar extends Component {
           }
         } else {
           const element = (currentIndex >= 0) ? this.menuItems[currentIndex] : (event.target as HTMLElement);
-          if (this.isNestedMenuItem(element)) {
-            const parentIndex = this.getParentMenuItemIndex(element);
-            if (parentIndex >= 0) this.navigateToMenuItem(parentIndex, 'prev', true);
-          }
+          this.crossMenubarNavigationOnLeft(element);
         }
         break;
 
@@ -233,13 +264,7 @@ class MenuBar extends Component {
           }
         } else {
           const element = (currentIndex >= 0) ? this.menuItems[currentIndex] : (event.target as HTMLElement);
-          if (this.isTopLevelMenuItem(element) && this.hasSubmenu(element.id)) {
-            this.showSubmenu(element.id);
-          } else if (this.isNestedMenuItem(element) && !this.hasSubmenu(element.id)) {
-            const parentIndex = this.getParentMenuItemIndex(element);
-            console.log('parentIndex', parentIndex);
-            if (parentIndex >= 0) this.navigateToMenuItem(parentIndex, 'next', true);
-          }
+          this.crossMenubarNavigationOnRight(element);
         }
         break;
 
@@ -285,7 +310,7 @@ class MenuBar extends Component {
     return html`<slot></slot>`;
   }
 
-  public static override styles: CSSResult[] = [...Component.styles, ...styles];
+  public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }
 
 export default MenuBar;

@@ -106,12 +106,6 @@ Feature: Vertical Menubar Accessibility and User Interaction
       When I press `Up Arrow`
       Then focus moves to the previous submenu menuitem (loops if at beginning)
 
-    Scenario: Close nested submenu using ArrowLeft (LTR)/ ArrowRight (RTL)
-      Given the keyboard focus is inside a nested submenu
-      When I press `ArrowLeft` (LTR) or `ArrowRight` (RTL)
-      Then nested submenu closes
-      And focus returns to its parent menuitem
-
     Scenario: Close submenu using Escape
       Given the keyboard focus is on a menuitem within an opened submenu
       When I press `Escape`
