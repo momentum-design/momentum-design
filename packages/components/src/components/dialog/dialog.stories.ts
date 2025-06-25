@@ -91,6 +91,14 @@ const dialogWithPopoverContent = (toggleVisibility: () => void) => html`
 </div>
 `;
 
+const dialogWithIframeContent = () => html`
+<div slot="dialog-body">
+  <p>This is the body content of the dialog. Try out pressing Tab to see the Focus Trap being stuck</p>
+  <iframe src="https://example.com" width="100%" height="300px"></iframe>
+  <mdc-button>This is a mdc-button after the Iframe</mdc-button>
+</div>
+`;
+
 const render = (args: Args) => {
   const toggleVisibility = () => {
     const dialog = document.getElementById(args.id) as HTMLElement;
@@ -223,6 +231,21 @@ const renderDialogWithinDialog = (args: Args) => {
         <mdc-button slot="dialog-body">Button inside a nested dialog</mdc-button></mdc-dialog>
       </div>
     `, onClose)}
+  `;
+};
+
+const renderDialogWithIframe = (args: Args) => {
+  const toggleVisibility = () => {
+    const dialog = document.getElementById(args.id) as HTMLElement;
+    dialog.toggleAttribute('visible');
+  };
+  const onClose = () => {
+    const dialog = document.getElementById(args.id) as HTMLElement;
+    dialog.removeAttribute('visible');
+  };
+  return html`
+    ${createTrigger(args.triggerId, 'Click me!', toggleVisibility)}
+    ${createDialog(args, dialogWithIframeContent(), onClose)}
   `;
 };
 
@@ -445,6 +468,14 @@ export const WithPopover: StoryObj = {
 
 export const DialogWithinDialog: StoryObj = {
   render: renderDialogWithinDialog,
+  args: {
+    ...commonProperties,
+    size: DIALOG_SIZE[0],
+  },
+};
+
+export const DialogWithIframe: StoryObj = {
+  render: renderDialogWithIframe,
   args: {
     ...commonProperties,
     size: DIALOG_SIZE[0],

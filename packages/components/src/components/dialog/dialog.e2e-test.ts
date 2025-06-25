@@ -115,6 +115,27 @@ const dialogWithCustomHeader = {
     <mdc-button slot="footer-button-primary">Primary</mdc-button>
   `,
 };
+
+const dialogWithIframe = {
+  id: 'dialog',
+  triggerId: 'trigger-btn',
+  ariaLabel: 'dialog',
+  visible: true,
+  variant: 'default',
+  closeButtonAriaLabel: 'Close button label',
+  headerText: 'Dialog Header',
+  descriptionText: 'Dialog Description',
+  children: `
+    <div slot="dialog-body">
+      <p>This is the body content of the dialog.</p>
+      <iframe id="frame" style="width: 100%; height: 200px;"></iframe>
+    </div>
+    <mdc-link slot="footer-link" icon-name="placeholder-bold" href='#'>Label</mdc-link>
+    <mdc-button slot="footer-button-secondary">Secondary</mdc-button>
+    <mdc-button slot="footer-button-primary">Primary</mdc-button>
+  `,
+};
+
 test('mdc-dialog', async ({ componentsPage }) => {
   const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots });
 
@@ -302,6 +323,66 @@ test('mdc-dialog', async ({ componentsPage }) => {
         await expect(link).toBeFocused();
         await componentsPage.actionability.pressShiftTab();
         await expect(newButton).toBeFocused();
+        await componentsPage.actionability.pressShiftTab();
+        await expect(closeButton).toBeFocused();
+      });
+
+      await test.step('focus should remain in the dialog when an iframe is inside', async () => {
+        const { dialog } = await setup({ componentsPage, ...dialogWithIframe, visible: false });
+
+        await dialog.evaluate((dialog) => {
+          // make dialog visible
+          dialog.toggleAttribute('visible');
+
+          // add a button element inside of the iframe (no real url will be used to avoid any
+          // cross-origin or flakiness issues)
+          const iframe = dialog.querySelector('#frame') as HTMLIFrameElement;
+          const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+          if (iframeDoc) {
+            const button = iframeDoc.createElement('button');
+            button.textContent = 'Iframe Button';
+            iframeDoc.body.appendChild(button);
+          }
+        });
+
+        await expect(dialog).toBeVisible();
+        const closeButton = componentsPage.page.locator('mdc-button[part="dialog-close-btn"]');
+        await expect(closeButton).toBeFocused();
+
+        await componentsPage.actionability.pressTab();
+        // firefix requires an extra tab to focus the iframe button
+        if (test.info().project.name === 'firefox') {
+          await componentsPage.actionability.pressTab();
+        }
+        const iframeButton = componentsPage.page.locator('#frame').contentFrame()
+          .getByRole('button', { name: 'Iframe Button' });
+        await expect(iframeButton).toBeFocused();
+
+        await componentsPage.actionability.pressTab();
+        const link = componentsPage.page.locator('[slot="footer-link"]');
+        await expect(link).toBeFocused();
+        await componentsPage.actionability.pressTab();
+        const secondaryButton = componentsPage.page.locator('[slot="footer-button-secondary"]');
+        await expect(secondaryButton).toBeFocused();
+        await componentsPage.actionability.pressTab();
+        const primaryButton = componentsPage.page.locator('[slot="footer-button-primary"]');
+        await expect(primaryButton).toBeFocused();
+        await componentsPage.actionability.pressTab();
+        await expect(closeButton).toBeFocused();
+
+        // press shift tab to go back
+        await componentsPage.actionability.pressShiftTab();
+        await expect(primaryButton).toBeFocused();
+        await componentsPage.actionability.pressShiftTab();
+        await expect(secondaryButton).toBeFocused();
+        await componentsPage.actionability.pressShiftTab();
+        await expect(link).toBeFocused();
+        await componentsPage.actionability.pressShiftTab();
+        // firefix requires an extra shift tab to focus the iframe button
+        if (test.info().project.name === 'firefox') {
+          await componentsPage.actionability.pressShiftTab();
+        }
+        await expect(iframeButton).toBeFocused();
         await componentsPage.actionability.pressShiftTab();
         await expect(closeButton).toBeFocused();
       });
