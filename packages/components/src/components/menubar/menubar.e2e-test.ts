@@ -8,7 +8,7 @@ type MenuItemConfig = {
   softDisabled?: boolean;
   disabled?: boolean;
   submenuPopoverId?: string;
-  submenuItems?: { id: string; label: string, disabled?: boolean;}[];
+  submenuItems?: MenuItemConfig[];
 };
 
 type SetupOptions = {
@@ -25,7 +25,16 @@ const defaultMenuItems: MenuItemConfig[] = [
     hasSubmenu: true,
     submenuPopoverId: 'edit-popover',
     submenuItems: [
-      { id: 'edit-undo', label: 'Undo' },
+      {
+        id: 'edit-undo',
+        label: 'Undo',
+        hasSubmenu: true,
+        submenuPopoverId: 'edit-undo-popover',
+        submenuItems: [
+          { id: 'edit-undo-typing', label: 'Undo Typing' },
+          { id: 'edit-undo-formatting', label: 'Undo Formatting' },
+        ],
+      },
       { id: 'edit-redo', label: 'Redo' },
     ],
   },
@@ -45,30 +54,28 @@ const defaultMenuItems: MenuItemConfig[] = [
   { id: 'help', label: 'Help' },
 ];
 
-const setup = async (
-  options: SetupOptions,
-): Promise<{ menubar: Locator } & Record<string, Locator>> => {
-  const { componentsPage, rtl = false, menuItems = defaultMenuItems } = options;
-  const dir = rtl ? 'dir="rtl"' : '';
-  const menuHtml = menuItems
+const renderMenuItems = (items: MenuItemConfig[]): string =>
+  items
     .map((item) => {
       const disabled = item.softDisabled ? 'disabled' : '';
       let html = `<mdc-menuitem id="${item.id}" ${disabled} label="${item.label}"></mdc-menuitem>`;
       if (item.hasSubmenu && item.submenuItems && item.submenuPopoverId) {
         html += `
           <mdc-menupopover id="${item.submenuPopoverId}" triggerid="${item.id}">
-            ${item.submenuItems
-    .map(
-      (sub) => `<mdc-menuitem id="${sub.id}"
-      ${sub.disabled ? 'disabled' : ''} label="${sub.label}"></mdc-menuitem>`,
-    )
-    .join('')}
+            ${renderMenuItems(item.submenuItems)}
           </mdc-menupopover>
         `;
       }
       return html;
     })
     .join('');
+
+const setup = async (
+  options: SetupOptions,
+): Promise<{ menubar: Locator } & Record<string, Locator>> => {
+  const { componentsPage, rtl = false, menuItems = defaultMenuItems } = options;
+  const dir = rtl ? 'dir="rtl"' : '';
+  const menuHtml = renderMenuItems(menuItems);
   await componentsPage.mount({
     html: `
       <div id="test-root" style="width: 100px" ${dir}>
@@ -88,6 +95,12 @@ const setup = async (
       menuLocators[item.submenuPopoverId] = componentsPage.page.locator(`#${item.submenuPopoverId}`);
       item.submenuItems.forEach((sub) => {
         menuLocators[sub.id] = componentsPage.page.locator(`#${sub.id}`);
+        if (sub.hasSubmenu && sub.submenuItems && sub.submenuPopoverId) {
+          menuLocators[sub.submenuPopoverId] = componentsPage.page.locator(`#${sub.submenuPopoverId}`);
+          sub.submenuItems.forEach((nested) => {
+            menuLocators[nested.id] = componentsPage.page.locator(`#${nested.id}`);
+          });
+        }
       });
     }
   });
@@ -290,11 +303,15 @@ test.describe('Menubar Feature Scenarios', () => {
       const { edit } = await setup({ componentsPage });
       await edit.focus();
       await expect(edit).toBeFocused();
-      await componentsPage.page.keyboard.press('ArrowRight'); // Open submenu
+      await componentsPage.page.keyboard.press('ArrowRight');
       const submenu = componentsPage.page.locator('#edit-popover');
       const undo = submenu.locator('#edit-undo');
       await expect(undo).toBeFocused();
       await componentsPage.page.keyboard.press('ArrowRight');
+      const undoSubmenu = componentsPage.page.locator('#edit-undo-popover');
+      await expect(undoSubmenu).toBeVisible();
+      await componentsPage.page.keyboard.press('ArrowRight');
+      await expect(undoSubmenu).not.toBeVisible();
       await expect(submenu).not.toBeVisible();
       const viewSubmenu = componentsPage.page.locator('#view-popover');
       await expect(viewSubmenu).toBeVisible();
