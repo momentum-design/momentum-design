@@ -1,4 +1,4 @@
-import type { ValueOf } from '../../utils/types';
+import type { } from '../../utils/types';
 
 interface Events {
 

@@ -1,9 +1,6 @@
 import { css } from 'lit';
 
 const styles = css`
-  :host {
-    display: block;
-  }
   .mdc-password-wrapper {
     display: flex;
     align-items: center;
