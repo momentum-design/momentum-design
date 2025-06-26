@@ -18,6 +18,7 @@ const DEFAULTS = {
   CANCEL_ICON: 'cancel-bold' as Extract<IconNames, 'cancel-bold'>,
   VARIANT: DIALOG_VARIANT.DEFAULT,
   DISABLE_ARIA_HAS_POPUP: false,
+  FOCUS_TRAP: true,
 } as const;
 
 const DIALOG_SIZE = ['small', 'medium', 'large'] as const;
