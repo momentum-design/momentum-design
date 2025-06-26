@@ -2,8 +2,6 @@ import type { CSSResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import styles from './navitemlist.styles';
 import MenuBar from '../menubar/menubar.component';
-import { MenuMixin } from '../../utils/mixins/MenuMixin';
-import { ORIENTATION } from '../menubar/menubar.constants';
 import providerUtils from '../../utils/provider';
 import { TAG_NAME as NAVITEM_TAGNAME } from '../navitem/navitem.constants';
 import SideNavigation from '../sidenavigation/sidenavigation.component';
@@ -19,7 +17,7 @@ import type NavItem from '../navitem/navitem.component';
  *
  * @slot default - Slot for projecting one or more navigation items, optional section headers and dividers.
  */
-class NavItemList extends MenuMixin(MenuBar) {
+class NavItemList extends MenuBar {
   /**
    * Determines whether the navItemList is expanded or not.
    *
@@ -41,7 +39,6 @@ class NavItemList extends MenuMixin(MenuBar) {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.ariaOrientation = ORIENTATION.VERTICAL;
     this.addEventListener('activechange', this.handleNestedNavItemActiveChange as EventListener);
   }
 

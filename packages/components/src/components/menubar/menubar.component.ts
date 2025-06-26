@@ -1,27 +1,25 @@
 import { html } from 'lit';
 import type { CSSResult, PropertyValues } from 'lit';
-import { property, queryAssignedElements } from 'lit/decorators.js';
+import { queryAssignedElements } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { ROLE } from '../../utils/roles';
 import styles from './menubar.styles';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
-import { ORIENTATION, TAG_NAME as MENUBAR_TAGNAME } from './menubar.constants';
+import { DEFAULTS, TAG_NAME as MENUBAR_TAGNAME } from './menubar.constants';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
 import { TAG_NAME as MENUITEM_TAGNAME } from '../menuitem/menuitem.constants';
 import { KEYS } from '../../utils/keys';
-import type { Orientation } from './menubar.types';
 import MenuPopover from '../menupopover';
 import { popoverStack } from '../popover/popover.stack';
 
 /**
-  * Menubar is a navigational menu component that provides a vertical (default) or horizontal fixed list of menu items,
+  * Menubar is a navigational menu component that provides a vertical fixed list of menu items,
   * with support for nested submenus and keyboard navigation. It serves as a container
   * for menu items and manages their interaction patterns, including:
   * - Keyboard navigation (arrow keys, Home, End)
   * - Menu item activation (Enter/Space)
   * - Submenu toggling (Right/Left arrow keys)
   * - Focus management
-  * - Support for both horizontal and vertical orientations
   * - Integration with MenuPopover for nested menus
   *
   * A menubar will contain a set of menu items and their associated popovers.
@@ -42,17 +40,11 @@ class MenuBar extends Component {
   override connectedCallback(): void {
     super.connectedCallback();
     this.role = ROLE.MENUBAR;
+    this.ariaOrientation = DEFAULTS.ORIENTATION;
   }
-
-  /** @internal */
-  // For horizontal menubars, this property tracks if the user has entered a submenu.
-  private hasEnteredSubmenu = false;
 
   @queryAssignedElements({ selector: `${MENUITEM_TAGNAME}:not([disabled])` })
   menuItems!: Array<HTMLElement>;
-
-  @property({ type: String, reflect: true, attribute: 'aria-orientation' })
-  override ariaOrientation: Orientation = ORIENTATION.VERTICAL;
 
   public override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
@@ -86,9 +78,7 @@ class MenuBar extends Component {
 
   private updatePopoverPlacement(): void {
     const allPopovers = this.querySelectorAll(`${MENUPOPOVER_TAGNAME}:not([disabled])`);
-    const placement = this.ariaOrientation === ORIENTATION.HORIZONTAL
-      ? POPOVER_PLACEMENT.BOTTOM_START
-      : POPOVER_PLACEMENT.RIGHT_START;
+    const placement = POPOVER_PLACEMENT.RIGHT_START;
 
     allPopovers.forEach((popover) => popover.setAttribute('placement', placement));
   }
@@ -233,74 +223,29 @@ class MenuBar extends Component {
         this.updateTabIndexAndFocus(this.menuItems, currentIndex, this.menuItems.length - 1);
         break;
 
-      case KEYS.ARROW_LEFT:
-        if (this.ariaOrientation === ORIENTATION.HORIZONTAL) {
-          const element = (currentIndex >= 0) ? this.menuItems[currentIndex] : (event.target as HTMLElement);
-
-          if (this.hasEnteredSubmenu && this.isNestedMenuItem(element) && !this.hasSubmenu(element.id)) {
-            const parentIndex = this.getParentMenuItemIndex(element);
-            if (parentIndex >= 0) {
-              this.navigateToMenuItem(parentIndex, 'prev', true);
-            }
-          } else if (currentIndex >= 0) {
-            this.navigateToMenuItem(currentIndex, 'prev', false);
-          }
-        } else {
-          const element = (currentIndex >= 0) ? this.menuItems[currentIndex] : (event.target as HTMLElement);
-          await this.crossMenubarNavigationOnLeft(element);
-        }
+      case KEYS.ARROW_LEFT: {
+        const element = (currentIndex >= 0) ? this.menuItems[currentIndex] : (event.target as HTMLElement);
+        await this.crossMenubarNavigationOnLeft(element);
         break;
+      }
 
-      case KEYS.ARROW_RIGHT:
-        if (this.ariaOrientation === ORIENTATION.HORIZONTAL) {
-          const element = (currentIndex >= 0) ? this.menuItems[currentIndex] : (event.target as HTMLElement);
-
-          if (this.hasEnteredSubmenu && this.isNestedMenuItem(element) && !this.hasSubmenu(element.id)) {
-            const parentIndex = this.getParentMenuItemIndex(element);
-            if (parentIndex >= 0) {
-              this.navigateToMenuItem(parentIndex, 'next', true);
-            }
-          } else if (currentIndex >= 0) {
-            this.navigateToMenuItem(currentIndex, 'next', false);
-          }
-        } else {
-          const element = (currentIndex >= 0) ? this.menuItems[currentIndex] : (event.target as HTMLElement);
-          await this.crossMenubarNavigationOnRight(element);
-        }
+      case KEYS.ARROW_RIGHT: {
+        const element = (currentIndex >= 0) ? this.menuItems[currentIndex] : (event.target as HTMLElement);
+        await this.crossMenubarNavigationOnRight(element);
         break;
+      }
 
-      case KEYS.ARROW_UP:
-        if (this.ariaOrientation === ORIENTATION.HORIZONTAL) {
-          const triggerId = this.menuItems[currentIndex]?.getAttribute('id');
-          this.showSubmenu(triggerId);
-          this.hasEnteredSubmenu = true;
-        } else {
-          this.navigateToMenuItem(currentIndex, 'prev');
-        }
+      case KEYS.ARROW_UP: {
+        this.navigateToMenuItem(currentIndex, 'prev');
         event.preventDefault();
         break;
+      }
 
-      case KEYS.ARROW_DOWN:
-        if (this.ariaOrientation === ORIENTATION.HORIZONTAL) {
-          const triggerId = this.menuItems[currentIndex]?.getAttribute('id');
-          this.showSubmenu(triggerId);
-          this.hasEnteredSubmenu = true;
-        } else {
-          this.navigateToMenuItem(currentIndex, 'next');
-        }
+      case KEYS.ARROW_DOWN: {
+        this.navigateToMenuItem(currentIndex, 'next');
         event.preventDefault();
         break;
-
-      case KEYS.ENTER:
-      case KEYS.SPACE:
-        if (this.ariaOrientation === ORIENTATION.HORIZONTAL) {
-          const triggerId = this.menuItems[currentIndex]?.getAttribute('id');
-          if (this.hasSubmenu(triggerId)) {
-            this.showSubmenu(triggerId);
-            this.hasEnteredSubmenu = true;
-          }
-        }
-        break;
+      }
 
       default:
         break;

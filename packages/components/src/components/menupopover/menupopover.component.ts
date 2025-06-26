@@ -3,7 +3,6 @@ import { property } from 'lit/decorators.js';
 import { KEYS } from '../../utils/keys';
 import { ROLE } from '../../utils/roles';
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
-import { ORIENTATION } from '../menubar/menubar.constants';
 import Popover from '../popover/popover.component';
 import { COLOR } from '../popover/popover.constants';
 import { DEFAULTS, TAG_NAME as MENU_POPOVER } from './menupopover.constants';
@@ -79,7 +78,7 @@ class MenuPopover extends Popover {
     super.connectedCallback();
 
     this.role = ROLE.MENU;
-    this.ariaOrientation = ORIENTATION.VERTICAL;
+    this.ariaOrientation = DEFAULTS.ORIENTATION;
     this.backdrop = false;
     this.color = COLOR.TONAL;
     this.disableAriaExpanded = false;
