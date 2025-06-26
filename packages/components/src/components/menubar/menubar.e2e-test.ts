@@ -144,13 +144,13 @@ test.describe('Menubar Feature Scenarios', () => {
 
     await test.step('Clicking soft-disabled menubar menuitem does not open submenu', async () => {
       const { preferences } = await setup({ componentsPage });
+      await expect(preferences).toHaveAttribute('soft-disabled');
+      await expect(preferences).toHaveAttribute('aria-disabled', 'true');
       await preferences.focus();
       await expect(preferences).toBeFocused();
       await preferences.click();
       const subMenu = componentsPage.page.locator('#preferences-popover');
-      await expect(preferences).toHaveAttribute('soft-disabled');
       await expect(subMenu).not.toBeVisible();
-      await expect(preferences).toHaveAttribute('aria-disabled', 'true');
     });
 
     await test.step('Switch submenu by clicking another menubar menuitem that has a submenu', async () => {

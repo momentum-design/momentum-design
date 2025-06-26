@@ -1,36 +1,38 @@
 import { html } from 'lit';
 import type { CSSResult, PropertyValues } from 'lit';
 import { queryAssignedElements } from 'lit/decorators.js';
+
 import { Component } from '../../models';
 import { ROLE } from '../../utils/roles';
-import styles from './menubar.styles';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
-import { DEFAULTS, TAG_NAME as MENUBAR_TAGNAME } from './menubar.constants';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
 import { TAG_NAME as MENUITEM_TAGNAME } from '../menuitem/menuitem.constants';
 import { KEYS } from '../../utils/keys';
 import MenuPopover from '../menupopover';
 import { popoverStack } from '../popover/popover.stack';
 
+import { DEFAULTS, TAG_NAME as MENUBAR_TAGNAME } from './menubar.constants';
+import styles from './menubar.styles';
+
 /**
-  * Menubar is a navigational menu component that provides a vertical fixed list of menu items,
-  * with support for nested submenus and keyboard navigation. It serves as a container
-  * for menu items and manages their interaction patterns, including:
-  * - Keyboard navigation (arrow keys, Home, End)
-  * - Menu item activation (Enter/Space)
-  * - Submenu toggling (Right/Left arrow keys)
-  * - Focus management
-  * - Integration with MenuPopover for nested menus
-  *
-  * A menubar will contain a set of menu items and their associated popovers.
-  * Each menu item can have a popover for nested menus.
-  *
-  * The component automatically handles ARIA attributes and follows WAI-ARIA menu design patterns.
-  * It works in conjunction with `mdc-menuitem` and `mdc-menupopover` to create accessible menu structures.
-  *
-  * @tagname mdc-menubar
-  * @slot default - Contains the menu items and their associated popovers
-  */
+ * Menubar is a navigational menu component that provides a vertical fixed list of menu items,
+ * with support for nested submenus and keyboard navigation. It serves as a container
+ * for menu items and manages their interaction patterns, including:
+ * - Keyboard navigation (arrow keys, Home, End)
+ * - Menu item activation (Enter/Space)
+ * - Submenu toggling (Right/Left arrow keys)
+ * - Focus management
+ * - Integration with MenuPopover for nested menus
+ *
+ * A menubar will contain a set of menu items and their associated popovers.
+ * Each menu item can have a popover for nested menus.
+ *
+ * The component automatically handles ARIA attributes and follows WAI-ARIA menu design patterns.
+ * It works in conjunction with `mdc-menuitem` and `mdc-menupopover` to create accessible menu structures.
+ *
+ * @tagname mdc-menubar
+ * @slot default - Contains the menu items and their associated popovers
+ */
 class MenuBar extends Component {
   constructor() {
     super();
@@ -57,12 +59,12 @@ class MenuBar extends Component {
   }
 
   /**
-     * Resets all list items tabindex to -1 and sets the tabindex of the
-     * element at the given index to 0, effectively setting the active
-     * element. This is used when navigating the list via keyboard.
-     *
-     * @param newIndex - The index of the new active element in the list.
-     */
+   * Resets all list items tabindex to -1 and sets the tabindex of the
+   * element at the given index to 0, effectively setting the active
+   * element. This is used when navigating the list via keyboard.
+   *
+   * @param newIndex - The index of the new active element in the list.
+   */
   private resetTabIndexAndSetActiveTabIndex(menuItems: Array<HTMLElement>) {
     menuItems.forEach((node, index) => {
       const newTabindex = index === 0 ? '0' : '-1';
@@ -71,16 +73,14 @@ class MenuBar extends Component {
   }
 
   private getCurrentIndex(target: EventTarget | null): number {
-    return this.menuItems.findIndex(
-      (item) => item === target || item === (target as HTMLElement).parentElement,
-    );
+    return this.menuItems.findIndex(item => item === target || item === (target as HTMLElement).parentElement);
   }
 
   private updatePopoverPlacement(): void {
     const allPopovers = this.querySelectorAll(`${MENUPOPOVER_TAGNAME}:not([disabled])`);
     const placement = POPOVER_PLACEMENT.RIGHT_START;
 
-    allPopovers.forEach((popover) => popover.setAttribute('placement', placement));
+    allPopovers.forEach(popover => popover.setAttribute('placement', placement));
   }
 
   private updateTabIndexAndFocus(menuItems: HTMLElement[], currentIndex: number, newIndex: number): void {
@@ -94,11 +94,7 @@ class MenuBar extends Component {
     menuItems[newIndex]?.focus();
   }
 
-  private navigateToMenuItem(
-    currentIndex: number,
-    direction: 'prev' | 'next',
-    shouldOpenSubmenu = false,
-  ): void {
+  private navigateToMenuItem(currentIndex: number, direction: 'prev' | 'next', shouldOpenSubmenu = false): void {
     const { length } = this.menuItems;
     if (length === 0) return;
 
@@ -136,13 +132,14 @@ class MenuBar extends Component {
   }
 
   private isTopLevelMenuItem(element: HTMLElement): boolean {
-    return element.parentElement?.tagName.toLowerCase() === MENUBAR_TAGNAME
-      && element.tagName.toLowerCase() === MENUITEM_TAGNAME;
+    return (
+      element.parentElement?.tagName.toLowerCase() === MENUBAR_TAGNAME &&
+      element.tagName.toLowerCase() === MENUITEM_TAGNAME
+    );
   }
 
   private isNestedMenuItem(element: HTMLElement): boolean {
-    return !!element.closest(MENUPOPOVER_TAGNAME)
-      && element.tagName.toLowerCase() === MENUITEM_TAGNAME;
+    return !!element.closest(MENUPOPOVER_TAGNAME) && element.tagName.toLowerCase() === MENUITEM_TAGNAME;
   }
 
   private async closeAllMenuPopovers() {
@@ -155,7 +152,7 @@ class MenuBar extends Component {
         popovers.push(popover);
       }
     }
-    await Promise.all(popovers.map((popover) => popover.updateComplete));
+    await Promise.all(popovers.map(popover => popover.updateComplete));
   }
 
   private async crossMenubarNavigationOnLeft(element: HTMLElement): Promise<void> {
@@ -163,7 +160,7 @@ class MenuBar extends Component {
     if (isMenuItem) {
       const parentPopover = element.closest(MENUPOPOVER_TAGNAME);
       const triggerId = parentPopover?.getAttribute('triggerid');
-      const triggerMenuItem = this.menuItems.find((item) => item.getAttribute('id') === triggerId);
+      const triggerMenuItem = this.menuItems.find(item => item.getAttribute('id') === triggerId);
       if (triggerMenuItem) {
         if (this.isTopLevelMenuItem(triggerMenuItem)) {
           parentPopover?.hidePopover();
@@ -195,11 +192,11 @@ class MenuBar extends Component {
     while (parent) {
       if (parent.tagName.toLowerCase() === MENUPOPOVER_TAGNAME) {
         const triggerId = parent.getAttribute('triggerid');
-        const triggerElement = this.menuItems.find((item) => item.getAttribute('id') === triggerId);
+        const triggerElement = this.menuItems.find(item => item.getAttribute('id') === triggerId);
 
         if (triggerElement) {
           if (this.isTopLevelMenuItem(triggerElement)) {
-            return this.menuItems.findIndex((item) => item === triggerElement);
+            return this.menuItems.findIndex(item => item === triggerElement);
           }
           return this.getParentMenuItemIndex(triggerElement);
         }
@@ -224,13 +221,13 @@ class MenuBar extends Component {
         break;
 
       case KEYS.ARROW_LEFT: {
-        const element = (currentIndex >= 0) ? this.menuItems[currentIndex] : (event.target as HTMLElement);
+        const element = currentIndex >= 0 ? this.menuItems[currentIndex] : (event.target as HTMLElement);
         await this.crossMenubarNavigationOnLeft(element);
         break;
       }
 
       case KEYS.ARROW_RIGHT: {
-        const element = (currentIndex >= 0) ? this.menuItems[currentIndex] : (event.target as HTMLElement);
+        const element = currentIndex >= 0 ? this.menuItems[currentIndex] : (event.target as HTMLElement);
         await this.crossMenubarNavigationOnRight(element);
         break;
       }
