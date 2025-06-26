@@ -7,28 +7,59 @@ import { DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import { BUTTON_VARIANTS } from '../button/button.constants';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
+import { INPUT_TYPE } from '../input/input.constants';
 
 /**
- * password component, which ...
+ * mdc-password is a component that allows users to password text.
+ *  It contains:
+ * - label field - describe the password field.
+ * - password field - contains the value
+ * - help text or validation message - displayed below the password field.
+ * - trailing button - it displays a show-hide button in the password field.
+ * - prefix text - displayed before the password field.
+ * - show-hide-button-aria-label - aria label for the trailing button.
+ * - all the attributes of the password field.
  *
  * @tagname mdc-password
  *
- * @slot default - This is a default/unnamed slot
+ * @event input - (React: onInput) This event is dispatched when the value of the password field changes (every press).
+ * @event change - (React: onChange) This event is dispatched when the value of the password field changes (on blur).
+ * @event focus - (React: onFocus) This event is dispatched when the password receives focus.
+ * @event blur - (React: onBlur) This event is dispatched when the password loses focus.
  *
- * @event click - (React: onClick) This event is a Click Event, update the description
+ * @dependency mdc-input
+ * @dependency mdc-icon
+ * @dependency mdc-text
+ * @dependency mdc-button
+ * @dependency mdc-toggletip
  *
- * @cssproperty --custom-property-name - Description of the CSS custom property
+ * @cssproperty --mdc-input-disabled-border-color - Border color for the password container when disabled
+ * @cssproperty --mdc-input-disabled-text-color - Text color for the password field when disabled
+ * @cssproperty --mdc-input-disabled-background-color - Background color for the password field when disabled
+ * @cssproperty --mdc-input-border-color - Border color for the password container
+ * @cssproperty --mdc-input-text-color - Text color for the password field
+ * @cssproperty --mdc-input-background-color - Background color for the password field
+ * @cssproperty --mdc-input-selection-background-color - Background color for the selected text
+ * @cssproperty --mdc-input-selection-text-color - Text color for the selected text
+ * @cssproperty --mdc-input-support-text-color - Text color for the help text
+ * @cssproperty --mdc-input-hover-background-color - Background color for the password field when hovered
+ * @cssproperty --mdc-input-focused-background-color - Background color for the password field when focused
+ * @cssproperty --mdc-input-focused-border-color - Border color for the password container when focused
+ * @cssproperty --mdc-input-error-border-color - Border color for the password container when error
+ * @cssproperty --mdc-input-warning-border-color - Border color for the password container when warning
+ * @cssproperty --mdc-input-success-border-color - Border color for the password container when success
+ * @cssproperty --mdc-input-primary-border-color - Border color for the password container when primary
+ *
  */
 class Password extends Input {
   /**
-   * Aria label for the show/hide button. Used for accessibility on the trailing button.
+   * Aria label for the trailing button. If trailing button is set to true, this label is used for the show-hide button.
    */
   @property({ type: String, attribute: 'show-hide-button-aria-label' })
   showHideButtonAriaLabel = '';
 
   /**
-   * The type of help text. It can be 'default', 'error', 'success', etc.
-   * Controls the prefix icon for helper text.
+   * The type of help text. It can be 'default', 'error', 'warning', 'success', 'priority'.
    * @override
    */
   @property({ type: String, attribute: 'help-text-type' })
@@ -40,19 +71,10 @@ class Password extends Input {
   @state()
   private showPassword = false;
 
-  /**
-   * Toggles the visibility of the password field between 'text' and 'password'.
-   * Called when the trailing button is clicked.
-   */
   private toggleShowPassword() {
     this.showPassword = !this.showPassword;
   }
 
-  /**
-   * Renders the trailing button (show/hide password toggle) if conditions are met.
-   * @param show - Whether to force show the button (default: false)
-   * @returns The template for the trailing button or nothing if not shown.
-   */
   protected override renderTrailingButton(show = false) {
     const showBtn = show || (this.value && this.trailingButton);
     if (!showBtn) {
@@ -72,22 +94,11 @@ class Password extends Input {
     `;
   }
 
-  /**
-   * Renders the input element for the password field, forcing the type to 'password' or 'text'.
-   * This ensures the password can be toggled visible/hidden regardless of the base Input type.
-   * @param _ - Ignored type parameter from base Input
-   * @param hidePlaceholder - Whether to hide the placeholder
-   * @returns The template for the input element
-   */
   protected override renderInputElement(_: InputType, hidePlaceholder?: boolean) {
-    // Always use 'password' or 'text' for password visibility toggle
-    const inputType = this.showPassword ? 'text' : 'password';
-    return super.renderInputElement(inputType as InputType, hidePlaceholder);
+    const inputType = this.showPassword ? INPUT_TYPE.TEXT : INPUT_TYPE.PASSWORD;
+    return super.renderInputElement(inputType, hidePlaceholder);
   }
 
-  /**
-   * Styles for the password component, combining FormfieldWrapper, Input, and password-specific styles.
-   */
   public static override styles: Array<CSSResult> = [
     ...FormfieldWrapper.styles,
     ...Input.styles,
