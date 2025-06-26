@@ -223,3 +223,141 @@ export const FormFieldPassword: StoryObj = {
     `;
   },
 };
+
+export const DefaultValidation: StoryObj = {
+  args: {
+    label: 'Password',
+    'help-text': 'Enter a strong password',
+    'help-text-type': 'default',
+    placeholder: 'Enter password',
+    value: 'default_password123',
+    'trailing-button': true,
+    'show-hide-button-aria-label': 'Toggle password visibility',
+  },
+};
+
+export const ErrorValidation: StoryObj = {
+  args: {
+    label: 'Password',
+    'help-text': 'Password is too weak',
+    'help-text-type': 'error',
+    placeholder: 'Enter password',
+    value: 'error_password123',
+    'trailing-button': true,
+    'show-hide-button-aria-label': 'Toggle password visibility',
+  },
+};
+
+export const WarningValidation: StoryObj = {
+  args: {
+    label: 'Password',
+    'help-text': 'Password should contain special characters',
+    'help-text-type': 'warning',
+    placeholder: 'Enter password',
+    value: 'warning_password123',
+    'trailing-button': true,
+    'show-hide-button-aria-label': 'Toggle password visibility',
+  },
+};
+
+export const SuccessValidation: StoryObj = {
+  args: {
+    label: 'Password',
+    'help-text': 'Strong password!',
+    'help-text-type': 'success',
+    placeholder: 'Enter password',
+    value: 'success_password123',
+    'trailing-button': true,
+    'show-hide-button-aria-label': 'Toggle password visibility',
+  },
+};
+
+export const PriorityValidation: StoryObj = {
+  args: {
+    label: 'Password',
+    'help-text': 'Password expires soon',
+    'help-text-type': 'priority',
+    placeholder: 'Enter password',
+    value: 'priority_password123',
+    'trailing-button': true,
+    'show-hide-button-aria-label': 'Toggle password visibility',
+  },
+};
+
+export const RequiredPassword: StoryObj = {
+  args: {
+    label: 'Password',
+    'help-text': 'Password is required',
+    'help-text-type': 'default',
+    required: true,
+    placeholder: 'Password is required',
+    'trailing-button': true,
+    'show-hide-button-aria-label': 'Toggle password visibility',
+  },
+};
+
+export const ReadonlyPassword: StoryObj = {
+  args: {
+    label: 'Password',
+    'help-text': 'This password field is readonly',
+    'help-text-type': 'default',
+    readonly: true,
+    placeholder: 'Enter password',
+    'leading-icon': 'secure-lock-bold',
+    value: 'ReadonlyPassword123',
+    'trailing-button': true,
+    'show-hide-button-aria-label': 'Toggle password visibility',
+  },
+};
+
+export const DisabledPassword: StoryObj = {
+  args: {
+    label: 'Password',
+    'help-text': 'This password field is disabled',
+    'help-text-type': 'default',
+    disabled: true,
+    placeholder: 'Enter password',
+    value: 'DisabledPassword123',
+    'trailing-button': true,
+    'show-hide-button-aria-label': 'Toggle password visibility',
+  },
+};
+
+export const WithPrefixText: StoryObj = {
+  args: {
+    label: 'Secure Password',
+    'help-text': 'Enter your secure password',
+    'help-text-type': 'default',
+    placeholder: 'Enter password',
+    'prefix-text': '🔒',
+    'trailing-button': true,
+    'show-hide-button-aria-label': 'Toggle password visibility',
+  },
+};
+
+export const WithLeadingIcon: StoryObj = {
+  args: {
+    label: 'Password',
+    'help-text': 'Password with security icon',
+    'help-text-type': 'default',
+    placeholder: 'Enter password',
+    'leading-icon': 'secure-lock-bold',
+    'trailing-button': true,
+    'show-hide-button-aria-label': 'Toggle password visibility',
+  },
+};
+
+export const PasswordInSmallContainer: StoryObj = {
+  render: () => html`
+    <div style="width: 200px;">
+      <mdc-password
+        label="This is a large label text which is truncated into an ellipsis"
+        required
+        placeholder="Enter password"
+        trailing-button
+        show-hide-button-aria-label="Toggle password visibility"
+      >
+      </mdc-password>
+    </div>
+  `,
+};
