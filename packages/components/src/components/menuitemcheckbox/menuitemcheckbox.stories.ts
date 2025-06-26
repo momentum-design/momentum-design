@@ -3,13 +3,12 @@ import type { TemplateResult } from 'lit';
 import { html } from 'lit';
 
 import '.';
-import '../icon';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
+import '../icon';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
-import { ARIA_CHECKED_STATES } from '../menusection/menusection.constants';
-
 import { INDICATOR } from './menuitemcheckbox.constants';
+
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style="width: 25rem;">${htmlString}</div>`;
 
@@ -17,7 +16,7 @@ const render = (args: Args) =>
   wrapWithDiv(
     html` <mdc-menuitemcheckbox
       ?disabled="${args.disabled}"
-      aria-checked="${args['aria-checked']}"
+      ?checked="${args.checked}"
       label="${args.label}"
       indicator="${args.indicator}"
       secondary-label="${args['secondary-label']}"
@@ -37,9 +36,8 @@ const meta: Meta = {
     badges: ['wip'],
   },
   argTypes: {
-    'aria-checked': {
-      control: 'select',
-      options: Object.values(ARIA_CHECKED_STATES),
+    checked: {
+      control: 'boolean',
     },
     indicator: {
       control: 'select',
@@ -98,7 +96,7 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     indicator: INDICATOR.CHECKBOX,
-    'aria-checked': ARIA_CHECKED_STATES.FALSE,
+    checked: false,
     label: 'Menu Item',
     disabled: false,
     'secondary-label': '',
@@ -110,7 +108,7 @@ export const Example: StoryObj = {
 
 export const ToggleWithMenuItem: StoryObj = {
   args: {
-    'aria-checked': ARIA_CHECKED_STATES.TRUE,
+    checked: true,
     indicator: INDICATOR.TOGGLE,
     label: 'Menu Item With Toggle',
     disabled: false,
@@ -120,7 +118,7 @@ export const ToggleWithMenuItem: StoryObj = {
 
 export const CheckboxWithMenuItem: StoryObj = {
   args: {
-    'aria-checked': ARIA_CHECKED_STATES.TRUE,
+    checked: true,
     indicator: INDICATOR.CHECKBOX,
     label: 'Menu Item With Checkbox',
     disabled: false,
@@ -130,7 +128,7 @@ export const CheckboxWithMenuItem: StoryObj = {
 
 export const CheckmarkWithMenuItem: StoryObj = {
   args: {
-    'aria-checked': ARIA_CHECKED_STATES.TRUE,
+    checked: true,
     indicator: INDICATOR.CHECKMARK,
     label: 'Menu Item With Checkmark',
     disabled: false,
