@@ -155,16 +155,20 @@ class MenuBar extends Component {
       && element.tagName.toLowerCase() === MENUITEM_TAGNAME;
   }
 
-  private closeAllMenuPopovers() {
+  private async closeAllMenuPopovers() {
+    const popovers = [];
+
     while (popoverStack.peek()) {
       const popover = popoverStack.pop();
       if (popover) {
         popover.hidePopover();
+        popovers.push(popover);
       }
     }
+    await Promise.all(popovers.map((popover) => popover.updateComplete));
   }
 
-  private crossMenubarNavigationOnLeft(element: HTMLElement): void {
+  private async crossMenubarNavigationOnLeft(element: HTMLElement): Promise<void> {
     const isMenuItem = element.tagName.toLowerCase() === MENUITEM_TAGNAME;
     if (isMenuItem) {
       const parentPopover = element.closest(MENUPOPOVER_TAGNAME);
@@ -174,23 +178,20 @@ class MenuBar extends Component {
         if (this.isTopLevelMenuItem(triggerMenuItem)) {
           parentPopover?.hidePopover();
         }
-        setTimeout(() => {
-          const parentMenuItemIndex = this.getCurrentIndex(triggerMenuItem);
-          this.navigateToMenuItem(parentMenuItemIndex, 'prev', true);
-        }, 0);
+        await parentPopover?.updateComplete;
+        const parentMenuItemIndex = this.getCurrentIndex(triggerMenuItem);
+        this.navigateToMenuItem(parentMenuItemIndex, 'prev', true);
       }
     }
   }
 
-  private crossMenubarNavigationOnRight(element: HTMLElement): void {
+  private async crossMenubarNavigationOnRight(element: HTMLElement): Promise<void> {
     if (this.isTopLevelMenuItem(element) && this.hasSubmenu(element.id)) {
       this.showSubmenu(element.id);
     } else if (this.isNestedMenuItem(element) && !this.hasSubmenu(element.id)) {
-      this.closeAllMenuPopovers();
-      setTimeout(() => {
-        const parentIndex = this.getParentMenuItemIndex(element);
-        if (parentIndex >= 0) this.navigateToMenuItem(parentIndex, 'next', true);
-      }, 0);
+      await this.closeAllMenuPopovers();
+      const parentIndex = this.getParentMenuItemIndex(element);
+      if (parentIndex >= 0) this.navigateToMenuItem(parentIndex, 'next', true);
     }
   }
 
@@ -246,7 +247,7 @@ class MenuBar extends Component {
           }
         } else {
           const element = (currentIndex >= 0) ? this.menuItems[currentIndex] : (event.target as HTMLElement);
-          this.crossMenubarNavigationOnLeft(element);
+          await this.crossMenubarNavigationOnLeft(element);
         }
         break;
 
@@ -264,7 +265,7 @@ class MenuBar extends Component {
           }
         } else {
           const element = (currentIndex >= 0) ? this.menuItems[currentIndex] : (event.target as HTMLElement);
-          this.crossMenubarNavigationOnRight(element);
+          await this.crossMenubarNavigationOnRight(element);
         }
         break;
 

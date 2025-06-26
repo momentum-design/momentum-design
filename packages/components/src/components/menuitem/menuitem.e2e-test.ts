@@ -8,6 +8,9 @@ type SetupOptions = {
   'secondary-label'?: string;
   'arrow-position'?: string;
   'tooltip-text'?: string;
+  disabled?: boolean;
+  'arrow-direction'?: string;
+  'soft-disabled'?: boolean;
   children?: string;
 }
 
@@ -21,6 +24,9 @@ const setup = async (args: SetupOptions) => {
       <mdc-menuitem
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
         ${restArgs['secondary-label'] ? `secondary-label="${restArgs['secondary-label']}"` : ''}
+        ${restArgs.disabled ? 'disabled' : ''}
+        ${restArgs['soft-disabled'] ? 'soft-disabled' : ''}
+        ${restArgs['arrow-direction'] ? `arrow-direction="${restArgs['arrow-direction']}"` : ''}
         ${restArgs['arrow-position'] ? `arrow-position="${restArgs['arrow-position']}"` : ''}
         ${restArgs['tooltip-text'] ? `tooltip-text="${restArgs['tooltip-text']}"` : ''}
       >
@@ -131,5 +137,91 @@ test('mdc-menuitem', async ({ componentsPage }) => {
       await mdcIcon.waitFor();
       await expect(mdcIcon).toHaveAttribute('name', 'arrow-left-bold');
     });
+
+    await test.step('should have disabled attribute and not be focusable when disabled is set', async () => {
+      await componentsPage.setAttributes(menuitem, { disabled: '' });
+      await expect(menuitem).toHaveAttribute('disabled');
+      await expect(menuitem).toBeDisabled();
+      await expect(menuitem).toHaveAttribute('aria-disabled', 'true');
+    });
+
+    await test.step(`should have soft-disabled attribute, be focusable,
+       and have aria-disabled when soft-disabled is set`, async () => {
+      await componentsPage.setAttributes(menuitem, { 'soft-disabled': '' });
+      await expect(menuitem).toHaveAttribute('soft-disabled');
+      await menuitem.focus();
+      await expect(menuitem).toBeFocused();
+      await expect(menuitem).toHaveAttribute('aria-disabled', 'true');
+    });
+  });
+
+  /**
+   * INTERACTIONS
+   */
+  await test.step('interactions', async () => {
+    await test.step('should trigger click event when clicked', async () => {
+      const menuitemClick = await setup({ componentsPage, label: primaryLabel });
+      const clickPromise = componentsPage.waitForEvent(menuitemClick, 'click');
+      await menuitemClick.click();
+      await clickPromise;
+    });
+
+    await test.step('should trigger keydown event when key is pressed', async () => {
+      const menuitemKeydown = await setup({ componentsPage, label: primaryLabel });
+      const keydownPromise = componentsPage.waitForEvent(menuitemKeydown, 'keydown');
+      await menuitemKeydown.focus();
+      await menuitemKeydown.press('ArrowDown');
+      await keydownPromise;
+    });
+
+    await test.step('should trigger keyup event when key is released', async () => {
+      const menuitemKeyup = await setup({ componentsPage, label: primaryLabel });
+      const keyupPromise = componentsPage.waitForEvent(menuitemKeyup, 'keyup');
+      await menuitemKeyup.focus();
+      await menuitemKeyup.press('ArrowUp');
+      await keyupPromise;
+    });
+  });
+
+  /**
+   * KEYBOARD ACTIVATION
+   */
+  await test.step('should trigger click event on Enter keydown and Space keyup', async () => {
+    // Enter keydown triggers click
+    const menuitemEnter = await setup({ componentsPage, label: primaryLabel });
+    const clickPromiseEnter = componentsPage.waitForEvent(menuitemEnter, 'click');
+    await menuitemEnter.focus();
+    await menuitemEnter.press('Enter');
+    await clickPromiseEnter;
+
+    // Space keyup triggers click
+    const menuitemSpace = await setup({ componentsPage, label: primaryLabel });
+    const clickPromiseSpace = componentsPage.waitForEvent(menuitemSpace, 'click');
+    await menuitemSpace.focus();
+    // Keydown Space (should not trigger click)
+    await menuitemSpace.press('Space', { delay: 10 });
+    // Keyup Space (should trigger click)
+    await clickPromiseSpace;
+  });
+
+  /**
+   * SOFT-DISABLED
+   */
+  await test.step('should be focusable and have aria-disabled when soft-disabled is set', async () => {
+    const menuitem = await setup({ componentsPage, label: primaryLabel, 'soft-disabled': true });
+    await menuitem.focus();
+    await expect(menuitem).toBeFocused();
+    await expect(menuitem).toHaveAttribute('aria-disabled', 'true');
+  });
+
+  /**
+   * TOOLTIP
+   */
+  await test.step('should show tooltip when tooltip-text is set and hovered', async () => {
+    const menuitem = await setup({ componentsPage, label: primaryLabel, 'tooltip-text': 'Tooltip content' });
+    await menuitem.hover();
+    const tooltip = componentsPage.page.locator('mdc-tooltip');
+    await expect(tooltip).toBeVisible();
+    await expect(tooltip).toContainText('Tooltip content');
   });
 });
