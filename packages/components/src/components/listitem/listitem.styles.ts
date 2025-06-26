@@ -48,7 +48,15 @@ const styles = css`
   :host([disabled])::part(leading-text-tertiary-label),
   :host([disabled])::part(leading-text-primary-label),
   :host([disabled])::part(trailing-text-side-header),
-  :host([disabled])::part(trailing-text-subline) {
+  :host([disabled])::part(trailing-text-subline),
+  :host([soft-disabled]),
+  :host([soft-disabled]:hover),
+  :host([soft-disabled]:active),
+  :host([soft-disabled])::part(leading-text-secondary-label),
+  :host([soft-disabled])::part(leading-text-tertiary-label),
+  :host([soft-disabled])::part(leading-text-primary-label),
+  :host([soft-disabled])::part(trailing-text-side-header),
+  :host([soft-disabled])::part(trailing-text-subline) {
     background-color: unset;
     color: var(--mdc-listitem-disabled-color);
     cursor: default;

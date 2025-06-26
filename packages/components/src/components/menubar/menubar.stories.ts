@@ -74,7 +74,7 @@ const render = () => html`
         <mdc-divider></mdc-divider>
         <mdc-menuitem label="Configure Task"></mdc-menuitem>
       </mdc-menupopover>
-      <mdc-menuitem label="Window"></mdc-menuitem>
+      <mdc-menuitem label="Window" soft-disabled></mdc-menuitem>
       <mdc-menuitem label="Help"></mdc-menuitem>
     </mdc-menubar>
     <div style="
@@ -88,6 +88,7 @@ const render = () => html`
   </div>
   <script>
     var handleClick = (event) => {
+      if(event.target.hasAttribute('soft-disabled')) return;
       const activePage = event.target.getAttribute('label');
       const container = document.getElementById('container');
       if (!activePage || !container) return;

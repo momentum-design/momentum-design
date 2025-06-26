@@ -50,15 +50,16 @@ const defaultMenuItems: MenuItemConfig[] = [
     ],
   },
   { id: 'window', label: 'Window' },
-  { id: 'preferences', label: 'Preferences' },
+  { id: 'preferences', label: 'Preferences', softDisabled: true },
   { id: 'help', label: 'Help' },
 ];
 
 const renderMenuItems = (items: MenuItemConfig[]): string =>
   items
     .map((item) => {
-      const disabled = item.softDisabled ? 'disabled' : '';
-      let html = `<mdc-menuitem id="${item.id}" ${disabled} label="${item.label}"></mdc-menuitem>`;
+      const disabled = item.disabled ? 'disabled' : '';
+      const softDisabled = item.softDisabled ? 'soft-disabled' : '';
+      let html = `<mdc-menuitem id="${item.id}" ${disabled} ${softDisabled} label="${item.label}"></mdc-menuitem>`;
       if (item.hasSubmenu && item.submenuItems && item.submenuPopoverId) {
         html += `
           <mdc-menupopover id="${item.submenuPopoverId}" triggerid="${item.id}">
@@ -132,7 +133,7 @@ test.describe('Menubar Feature Scenarios', () => {
       await expect(edit).toHaveAttribute('aria-expanded', 'true');
     });
 
-    await test.step.skip('Clicking disabled menubar menuitem does nothing', async () => {
+    await test.step('Clicking soft-disabled menubar menuitem does nothing', async () => {
       const { preferences } = await setup({ componentsPage });
       await expect(preferences).toHaveAttribute('soft-disabled');
       const waitForClick = componentsPage.waitForEvent(preferences, 'click');
@@ -218,10 +219,10 @@ test.describe('Menubar Feature Scenarios', () => {
       await expect(zoom).toBeFocused();
     });
 
-    await test.step.skip('Navigate disabled menubar menuitems', async () => {
-      const { view, preferences } = await setup({ componentsPage });
-      await view.focus();
-      await expect(view).toBeFocused();
+    await test.step('Navigate soft-disabled menubar menuitems', async () => {
+      const { window, preferences } = await setup({ componentsPage });
+      await window.focus();
+      await expect(window).toBeFocused();
       await componentsPage.page.keyboard.press('ArrowDown');
       await expect(preferences).toBeFocused();
       const waitForClick = componentsPage.waitForEvent(preferences, 'click');
