@@ -12,14 +12,15 @@ import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types'
 import styles from './password.styles';
 
 /**
- * mdc-password is a component that allows users to password text.
+ * `mdc-password` is a component that allows users to input their password.
+ *  It extends the `mdc-input` component and provides additional features specific to password fields.
  *  It contains:
- * - label field - describe the password field.
- * - password field - contains the value
- * - help text or validation message - displayed below the password field.
- * - trailing button - it displays a show-hide button in the password field.
- * - prefix text - displayed before the password field.
- * - show-hide-button-aria-label - aria label for the trailing button.
+ * - `label` field - describe the password field.
+ * - `password` field - contains the value
+ * - `help-text` or `validation-message` - displayed below the password field.
+ * - `trailing-button` - it displays a show-hide button in the password field.
+ * - `prefix-text` - displayed before the password field.
+ * - `show-hide-button-aria-label` - aria label for the trailing button.
  * - all the attributes of the password field.
  *
  * @tagname mdc-password
