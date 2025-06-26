@@ -78,16 +78,13 @@ class MenuItemRadio extends MenuItem {
   private handleMouseClick = () => {
     if (this.disabled || this.checked) return;
     // Find the closest menu container (menupopover or menusection)
-    const container = this.closest(`${MENUSECTION_TAGNAME}, ${MENUPOPOVER_TAGNAME}`);
-    if (container) {
-      const radios = Array.from(container.querySelectorAll(this.tagName)) as MenuItemRadio[];
-      radios.forEach(item => {
-        const radio = item;
-        if (radio.name === this.name) {
+    this.closest(`${MENUSECTION_TAGNAME}, ${MENUPOPOVER_TAGNAME}`)
+      ?.querySelectorAll(this.tagName)
+      .forEach((radio: Element) => {
+        if (radio.getAttribute('name') === this.name) {
           radio.removeAttribute('checked');
         }
       });
-    }
     this.setAttribute('checked', '');
   };
 
