@@ -29,12 +29,12 @@ const render = () =>
         <mdc-menuitemradio label="Radio3"></mdc-menuitemradio>
       </mdc-menusection>
       <mdc-divider></mdc-divider>
-      <mdc-menusection>
+      <mdc-menusection label="Section with menu items">
         <mdc-menuitem label="MenuItem1"></mdc-menuitem>
         <mdc-menuitem label="MenuItem2"></mdc-menuitem>
       </mdc-menusection>
       <mdc-divider></mdc-divider>
-      <mdc-menusection>
+      <mdc-menusection label="Section with checkboxes and radio buttons">
         <mdc-menuitemcheckbox label="Toggle6" indicator="toggle"></mdc-menuitemcheckbox>
         <mdc-menuitemcheckbox label="Checkmark7" indicator="checkmark" aria-label="Checkbox 7"></mdc-menuitemcheckbox>
       </mdc-menusection>`,

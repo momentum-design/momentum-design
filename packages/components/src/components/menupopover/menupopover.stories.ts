@@ -1,5 +1,5 @@
-import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
+import { action } from '@storybook/addon-actions';
 import { html, TemplateResult } from 'lit';
 
 import '.';
@@ -32,6 +32,8 @@ const createPopover = (args: Args, content: TemplateResult = html``) => html`
     @hidden="${action('onhidden')}"
     @created="${action('oncreated')}"
     @destroyed="${action('ondestroyed')}"
+    @action="${action('onaction')}"
+    @change="${action('onchange')}"
   >
     ${content}
   </mdc-menupopover>
@@ -163,11 +165,11 @@ const defaultMenuContent = html`
 const groupedMenuContent = html` <mdc-menuitem label="Profile"></mdc-menuitem>
   <mdc-divider></mdc-divider>
   <mdc-menusection label="Preferences">
-    <mdc-menuitemcheckbox label="Enable feature" aria-checked="false"></mdc-menuitemcheckbox>
-    <mdc-menuitemcheckbox label="Beta mode" aria-checked="true"></mdc-menuitemcheckbox>
-    <mdc-menuitemradio name="theme" label="Light" aria-checked="true"></mdc-menuitemradio>
-    <mdc-menuitemradio name="theme" label="Dark" aria-checked="false"></mdc-menuitemradio>
-    <mdc-menuitemradio name="theme" label="System" aria-checked="false"></mdc-menuitemradio>
+    <mdc-menuitemcheckbox label="Enable feature" ?checked="${false}"></mdc-menuitemcheckbox>
+    <mdc-menuitemcheckbox label="Beta mode" ?checked="${true}"></mdc-menuitemcheckbox>
+    <mdc-menuitemradio name="theme" label="Light" ?checked="${true}"></mdc-menuitemradio>
+    <mdc-menuitemradio name="theme" label="Dark" ?checked="${false}"></mdc-menuitemradio>
+    <mdc-menuitemradio name="theme" label="System" ?checked="${false}"></mdc-menuitemradio>
   </mdc-menusection>
   <mdc-menuitem label="Notifications"></mdc-menuitem>`;
 
@@ -180,6 +182,34 @@ const nestedSubmenuContent = html` <mdc-menuitem label="Profile"></mdc-menuitem>
       <mdc-menuitem label="Change Password"></mdc-menuitem>
       <mdc-menuitem label="Two-Factor Authentication"></mdc-menuitem>
       <mdc-menuitem label="Security Questions"></mdc-menuitem>
+    </mdc-menupopover>
+    <mdc-menuitem label="Account"></mdc-menuitem>
+    <mdc-menuitem label="Privacy" disabled></mdc-menuitem>
+    <mdc-menuitem label="Security" id="security-id" arrow-position="trailing"></mdc-menuitem>
+    <mdc-menuitem label="Advanced"></mdc-menuitem>
+  </mdc-menupopover>`;
+
+const nestedSubmenuContentAndSelectMenuItems = html` <mdc-menuitem label="Profile"></mdc-menuitem>
+  <mdc-menuitem id="submenu-trigger" label="Settings" arrow-position="trailing"></mdc-menuitem>
+  <mdc-menuitem label="Notifications"></mdc-menuitem>
+  <mdc-menuitem label="Logout" disabled></mdc-menuitem>
+  <mdc-menusection label="Preferences">
+    <mdc-menuitemcheckbox label="Enable feature" ?checked="${false}" name="enableFeature"></mdc-menuitemcheckbox>
+    <mdc-menuitemcheckbox label="Beta mode" ?checked="${true}" name="betaMode"></mdc-menuitemcheckbox>
+    <mdc-menuitemradio name="theme" value="light" label="Light" ?checked="${true}"></mdc-menuitemradio>
+    <mdc-menuitemradio name="theme" value="dark" label="Dark" ?checked="${false}"></mdc-menuitemradio>
+    <mdc-menuitemradio name="theme" value="system" label="System" ?checked="${false}"></mdc-menuitemradio>
+  </mdc-menusection>
+  <mdc-menupopover triggerID="submenu-trigger" placement="right">
+    <mdc-menupopover triggerID="security-id" placement="right-start">
+      <mdc-menuitem label="Change Password"></mdc-menuitem>
+      <mdc-menuitem label="Two-Factor Authentication"></mdc-menuitem>
+      <mdc-menuitem label="Security Questions"></mdc-menuitem>
+      <mdc-menusection label="Virtual background">
+        <mdc-menuitemradio name="virtualbg" value="none" label="Off" ?checked="${true}"></mdc-menuitemradio>
+        <mdc-menuitemradio name="virtualbg" value="office" label="Office" ?checked="${false}"></mdc-menuitemradio>
+        <mdc-menuitemradio name="virtualbg" value="custom" label="Custom" ?checked="${false}"></mdc-menuitemradio>
+      </mdc-menusection>
     </mdc-menupopover>
     <mdc-menuitem label="Account"></mdc-menuitem>
     <mdc-menuitem label="Privacy" disabled></mdc-menuitem>
@@ -250,6 +280,18 @@ export const WithNestedSubmenus: StoryObj = {
     >
       <mdc-button id="trigger-btn">Options</mdc-button>
       ${createPopover(args, nestedSubmenuContent)}
+    </div>
+  `,
+};
+export const WithNestedSubmenuContentAndSelectMenuItems: StoryObj = {
+  args: { ...Example.args, placement: POPOVER_PLACEMENT.RIGHT_END, triggerID: 'trigger-btn' },
+  render: (args: Args) => html`
+    <div
+      id="menupopover-test-wrapper"
+      style="display: flex; justify-content: flex-start; align-items: center; height: 100vh;"
+    >
+      <mdc-button id="trigger-btn">Options</mdc-button>
+      ${createPopover(args, nestedSubmenuContentAndSelectMenuItems)}
     </div>
   `,
 };

@@ -26,6 +26,14 @@ import styles from './menuitem.styles';
  *
  * @tagname mdc-menuitem
  *
+ * @slot leading-controls - slot for menu item controls to appear of leading end.
+ * @slot leading-text-primary-label - slot for menu item primary label.
+ * @slot leading-text-secondary-label - slot for menu item secondary label.
+ * @slot leading-text-tertiary-label - slot for menu item tertiary label.
+ * @slot trailing-text-side-header - slot for menu item side header text.
+ * @slot trailing-text-subline - slot for menu item subline text.
+ * @slot trailing-controls - slot for menu item controls to appear of trailing end.
+ *
  * @event click - (React: onClick) This event is dispatched when the menuitem is clicked.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the menuitem.
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the menuitem.
@@ -49,6 +57,17 @@ class MenuItem extends ListItem {
    */
   @property({ type: String, reflect: true, attribute: 'arrow-direction' })
   arrowDirection?: ArrowDirections;
+
+  /**
+   * The name attribute is used to identify the menu item when it is selected.
+   */
+  @property({ type: String, reflect: true, attribute: 'name' }) name?: undefined | string = undefined;
+
+  /**
+   * The value attribute is used to represent a value when the menu item is selected.
+   * It is typically used with checkbox and radio menu items, but can be handy for any menu item.
+   */
+  @property({ type: String, reflect: true, attribute: 'value' }) value?: undefined | string = undefined;
 
   constructor() {
     super();
