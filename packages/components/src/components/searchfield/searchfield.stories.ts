@@ -3,13 +3,14 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
 import '../inputchip';
 import { AUTO_CAPITALIZE, AUTO_COMPLETE } from '../input/input.constants';
 
-const render = (args: Args) => html`
-  <mdc-searchfield 
+const render = (args: Args) =>
+  html` <mdc-searchfield
     @input="${action('oninput')}"
     @change="${action('onchange')}"
     @focus="${action('onfocus')}"
@@ -28,7 +29,7 @@ const render = (args: Args) => html`
     maxlength="${ifDefined(args.maxlength)}"
     minlength="${ifDefined(args.minlength)}"
     autocapitalize="${ifDefined(args.autocapitalize)}"
-    ?autofocus="${(args.autofocus)}"
+    ?autofocus="${args.autofocus}"
     autocomplete="${ifDefined(args.autocomplete)}"
     dirname="${ifDefined(args.dirname)}"
     pattern="${ifDefined(args.pattern)}"
@@ -101,7 +102,8 @@ const meta: Meta = {
     'data-aria-label': {
       control: 'text',
     },
-    ...hideControls(['prefix-text',
+    ...hideControls([
+      'prefix-text',
       'help-text',
       'help-text-type',
       'required',
@@ -110,7 +112,8 @@ const meta: Meta = {
       'willValidate',
       'trailing-button',
       'leading-icon',
-      'inputChips']),
+      'inputChips',
+    ]),
     ...classArgType,
     ...styleArgType,
   },
@@ -154,13 +157,21 @@ export const WithInputChipFilters: StoryObj = {
       (e.target as HTMLElement).remove();
     };
     return html`
-    <mdc-searchfield label="Label" placeholder="Placeholder" clear-aria-label="Clear">
-      <mdc-inputchip clear-aria-label="Clear"
-       label="Query: value" slot="filters" @remove="${clearFilter}"></mdc-inputchip>
-      <mdc-inputchip clear-aria-label="Clear"
-       label="In: Marketing" slot="filters" @remove="${clearFilter}"></mdc-inputchip>
-      <mdc-chip label="This does not render" slot="filters" ></mdc-chip>
-    </mdc-searchfield>
+      <mdc-searchfield label="Label" placeholder="Placeholder" clear-aria-label="Clear">
+        <mdc-inputchip
+          clear-aria-label="Clear"
+          label="Query: value"
+          slot="filters"
+          @remove="${clearFilter}"
+        ></mdc-inputchip>
+        <mdc-inputchip
+          clear-aria-label="Clear"
+          label="In: Marketing"
+          slot="filters"
+          @remove="${clearFilter}"
+        ></mdc-inputchip>
+        <mdc-chip label="This does not render" slot="filters"></mdc-chip>
+      </mdc-searchfield>
     `;
   },
 };

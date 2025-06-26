@@ -7,9 +7,9 @@ import '../staticcheckbox';
 CardCheckbox.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-cardcheckbox']: CardCheckbox
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-cardcheckbox']: CardCheckbox;
+  }
 }
 
 export default CardCheckbox;

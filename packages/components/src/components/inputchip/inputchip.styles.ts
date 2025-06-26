@@ -1,4 +1,5 @@
 import { css } from 'lit';
+
 import { hostFitContentStyles } from '../../utils/styles';
 
 const styles = css`
@@ -18,13 +19,15 @@ const styles = css`
     border-color: var(--mdc-chip-border-color);
     background-color: var(--mdc-chip-background-color);
   }
-  
-  :host([error]){
+
+  :host([error]) {
     --mdc-chip-border-color: var(--mds-color-theme-outline-cancel-normal);
     --mdc-chip-background-color: var(--mds-color-theme-background-label-error-normal);
   }
 
-  :host([disabled]), :host([disabled]:hover), :host([disabled]:active) {
+  :host([disabled]),
+  :host([disabled]:hover),
+  :host([disabled]:active) {
     --mdc-chip-border-color: var(--mds-color-theme-common-outline-primary-disabled);
     --mdc-chip-background-color: var(--mds-color-theme-background-primary-disabled);
     --mdc-chip-color: var(--mds-color-theme-text-primary-disabled);

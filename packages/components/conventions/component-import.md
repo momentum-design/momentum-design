@@ -1,10 +1,15 @@
 # Component Import Guidelines: Index File Structure
 
-In our development process, maintaining a clean and organized structure for our components is essential. This document outlines the best practice of importing dependent components in the index file rather than within the class itself. This approach enhances modularity, improves readability, and simplifies dependency management, ultimately leading to a more maintainable codebase.
+In our development process, maintaining a clean and organized structure for our
+components is essential. This document outlines the best practice of importing
+dependent components in the index file rather than within the class itself. This
+approach enhances modularity, improves readability, and simplifies dependency
+management, ultimately leading to a more maintainable codebase.
 
 ## Implementation
 
-Here’s an overview of our component structure using the Badge component as an example:
+Here’s an overview of our component structure using the Badge component as an
+example:
 
 ```js
 // badge.component.ts
@@ -57,25 +62,42 @@ export default Badge;
 
 ### 1. Centralized Imports and improved readability
 
-- **Rule:** All dependent components should be imported in the index file instead of directly within the component class.
-- **Reason:** This centralization helps manage dependencies more effectively and reduces coupling between components. It allows developers to see at a glance which components are required for a given module.
+- **Rule:** All dependent components should be imported in the index file
+  instead of directly within the component class.
+- **Reason:** This centralization helps manage dependencies more effectively and
+  reduces coupling between components. It allows developers to see at a glance
+  which components are required for a given module.
 
 ### 2. Avoiding Unnecessary Imports in Class Definitions
 
-- **Issue:** When dependent components like `mdc-icon` and `mdc-text` are imported directly within the Badge component class, it can lead to unnecessary imports if the Badge class is extended in other components. For example, if another component extends Badge, both `mdc-icon` and `mdc-text` will be imported again, even if they are not needed in that specific context.
-- **Benefit:** By keeping these imports in the index file, we prevent bloating the component with unnecessary dependencies. This practice promotes cleaner code and ensures that only the required components are loaded when necessary.
+- **Issue:** When dependent components like `mdc-icon` and `mdc-text` are
+  imported directly within the Badge component class, it can lead to unnecessary
+  imports if the Badge class is extended in other components. For example, if
+  another component extends Badge, both `mdc-icon` and `mdc-text` will be
+  imported again, even if they are not needed in that specific context.
+- **Benefit:** By keeping these imports in the index file, we prevent bloating
+  the component with unnecessary dependencies. This practice promotes cleaner
+  code and ensures that only the required components are loaded when necessary.
 
 ### 3. Simplified Dependency Management
 
-- **Benefit:** When dependencies are managed through the index file, it becomes easier to update or replace them without modifying multiple files. This reduces the risk of introducing bugs during refactoring.
+- **Benefit:** When dependencies are managed through the index file, it becomes
+  easier to update or replace them without modifying multiple files. This
+  reduces the risk of introducing bugs during refactoring.
 
 ## Importing Tagnames from constants file
 
-This section outlines the conventions for importing tag names from a constants file instead of hardcoding them within components modules. Following these conventions promotes consistency, maintainability, and reduces the risk of errors in your codebase.
+This section outlines the conventions for importing tag names from a constants
+file instead of hardcoding them within components modules. Following these
+conventions promotes consistency, maintainability, and reduces the risk of
+errors in your codebase.
 
-- Consistency: Centralizes tag definitions, ensuring that all components use the same tag names.
-- Maintainability: Changes to tag names can be made in one location, reducing the need to update multiple files.
-- Readability: Improves code readability by providing clear references to tag names rather than arbitrary strings.
+- Consistency: Centralizes tag definitions, ensuring that all components use the
+  same tag names.
+- Maintainability: Changes to tag names can be made in one location, reducing
+  the need to update multiple files.
+- Readability: Improves code readability by providing clear references to tag
+  names rather than arbitrary strings.
 
 ### Recommended Approach
 
@@ -97,7 +119,7 @@ export {
 ```
 
 ```
-// divider.components.ts 
+// divider.components.ts
 
 import {
   BUTTON_TAG,
@@ -106,11 +128,13 @@ import {
   TEXT_TAG,
 } from './divider.constants';
 
-... 
+...
  const hasTextChild = assignedElements.some((el) => el.tagName === TEXT_TAG.toUpperCase());
 const hasButtonChild = assignedElements.some((el) => el.tagName === BUTTON_TAG.toUpperCase());
 // implmentation detials
 ```
 
-By following this convention of importing tag names from constants files, developers can ensure a more organized and maintainable codebase. This practice not only enhances collaboration among team members but also simplifies future updates and modifications to tag names across the project.
-
+By following this convention of importing tag names from constants files,
+developers can ensure a more organized and maintainable codebase. This practice
+not only enhances collaboration among team members but also simplifies future
+updates and modifications to tag names across the project.

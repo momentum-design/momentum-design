@@ -5,7 +5,7 @@
  */
 const disableControls = (keys: Array<string>) => {
   const objectReturnValue: Record<string, any> = {};
-  keys.forEach((key) => {
+  keys.forEach(key => {
     objectReturnValue[key] = {
       control: false,
     };
@@ -33,7 +33,7 @@ const hideAllControls = () => ({
  */
 const hideControls = (keys: Array<string>) => {
   const objectReturnValue: Record<string, any> = {};
-  keys.forEach((key) => {
+  keys.forEach(key => {
     objectReturnValue[key] = {
       table: { disable: true },
     };
@@ -48,7 +48,7 @@ const hideControls = (keys: Array<string>) => {
  */
 const readOnlyControls = (keys: Array<string>) => {
   const objectReturnValue: Record<string, any> = {};
-  keys.forEach((key) => {
+  keys.forEach(key => {
     objectReturnValue[key] = {
       table: { readonly: true },
     };

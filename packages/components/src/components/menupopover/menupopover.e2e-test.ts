@@ -1,4 +1,5 @@
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 
 type SetupOptions = {
@@ -349,12 +350,14 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [
           submenuItems.nth(2),
           submenuItems.last(),
-          submenuItems.first()]);
+          submenuItems.first(),
+        ]);
         await componentsPage.actionability.pressAndCheckFocus('ArrowUp', [
           submenuItems.last(),
           submenuItems.nth(2),
           submenuItems.first(),
-          submenuItems.last()]);
+          submenuItems.last(),
+        ]);
       });
 
       // Focus trap on menupopover
@@ -462,32 +465,22 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(menupopover.locator('[label="Profile"]')).toBeFocused();
         // await componentsPage.page.keyboard.press('ArrowDown');
         const checkboxes = menupopover.locator('[role="menuitemcheckbox"]');
-        await componentsPage.actionability.pressAndCheckFocus(
-          'ArrowDown',
-          [checkboxes.first(),
-            checkboxes.last()],
-        );
+        await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [checkboxes.first(), checkboxes.last()]);
         const radios = menupopover.locator('[role="menuitemradio"]');
-        await componentsPage.actionability.pressAndCheckFocus(
-          'ArrowDown',
-          [radios.first(),
-            radios.nth(1),
-            radios.last()],
-        );
+        await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [
+          radios.first(),
+          radios.nth(1),
+          radios.last(),
+        ]);
         await componentsPage.page.keyboard.press('ArrowDown');
         const notifications = menupopover.locator('[label="Notifications"]');
         await expect(notifications).toBeFocused();
-        await componentsPage.actionability.pressAndCheckFocus(
-          'ArrowUp',
-          [radios.last(),
-            radios.nth(1),
-            radios.first()],
-        );
-        await componentsPage.actionability.pressAndCheckFocus(
-          'ArrowUp',
-          [checkboxes.last(),
-            checkboxes.first()],
-        );
+        await componentsPage.actionability.pressAndCheckFocus('ArrowUp', [
+          radios.last(),
+          radios.nth(1),
+          radios.first(),
+        ]);
+        await componentsPage.actionability.pressAndCheckFocus('ArrowUp', [checkboxes.last(), checkboxes.first()]);
       });
 
       // Checkbox
@@ -517,11 +510,7 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(menupopover).toBeVisible();
         await expect(menupopover.locator('[label="Profile"]')).toBeFocused();
         const checkboxes = menupopover.locator('[role="menuitemcheckbox"]');
-        await componentsPage.actionability.pressAndCheckFocus(
-          'ArrowDown',
-          [checkboxes.first(),
-            checkboxes.last()],
-        );
+        await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [checkboxes.first(), checkboxes.last()]);
         await componentsPage.page.keyboard.press('ArrowDown');
         const radios = menupopover.locator('[role="menuitemradio"]');
         await expect(radios.nth(0)).toBeFocused();

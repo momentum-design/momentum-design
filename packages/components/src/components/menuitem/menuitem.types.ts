@@ -1,4 +1,5 @@
 import type { ValueOf } from '../../utils/types';
+
 import { ARROW_POSITIONS, ARROW_DIRECTIONS } from './menuitem.constants';
 
 interface Events {

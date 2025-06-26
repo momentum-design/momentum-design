@@ -1,7 +1,9 @@
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
-import type { Constructor } from './index.types';
+
 import type { IconNames } from '../../components/icon/icon.types';
+
+import type { Constructor } from './index.types';
 
 export interface IconNameMixinInterface {
   iconName: IconNames;

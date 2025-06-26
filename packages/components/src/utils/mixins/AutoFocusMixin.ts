@@ -1,5 +1,6 @@
 import { LitElement, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
+
 import type { Constructor } from './index.types';
 
 export interface AutoFocusMixinInterface {

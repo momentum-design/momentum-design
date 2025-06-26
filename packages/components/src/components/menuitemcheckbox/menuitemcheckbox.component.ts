@@ -1,14 +1,16 @@
 import type { CSSResult, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
+
 import { ROLE } from '../../utils/roles';
 import MenuItem from '../menuitem/menuitem.component';
 import { TYPE } from '../text/text.constants';
 import { TOGGLE_SIZE } from '../toggle/toggle.constants';
-import { DEFAULTS, INDICATOR } from './menuitemcheckbox.constants';
-import type { Indicator } from './menuitemcheckbox.types';
 import { ARIA_CHECKED_STATES } from '../menusection/menusection.constants';
 import type { AriaCheckedStates } from '../menusection/menusection.types';
+
+import { DEFAULTS, INDICATOR } from './menuitemcheckbox.constants';
+import type { Indicator } from './menuitemcheckbox.types';
 import styles from './menuitemcheckbox.styles';
 
 /**
@@ -93,7 +95,7 @@ class MenuItemCheckbox extends MenuItem {
         ?checked="${this.ariaChecked === ARIA_CHECKED_STATES.TRUE}"
         ?disabled="${this.disabled}"
       ></mdc-staticcheckbox>
-  `;
+    `;
   }
 
   /**
@@ -128,13 +130,7 @@ class MenuItemCheckbox extends MenuItem {
     if (this.indicator !== INDICATOR.CHECKMARK || this.ariaChecked === ARIA_CHECKED_STATES.FALSE) {
       return nothing;
     }
-    return html`
-      <mdc-icon
-        slot="trailing-controls"
-        name="check-bold"
-        part="checkmark-icon"
-      ></mdc-icon>
-    `;
+    return html` <mdc-icon slot="trailing-controls" name="check-bold" part="checkmark-icon"></mdc-icon> `;
   }
 
   public override render() {
@@ -154,8 +150,7 @@ class MenuItemCheckbox extends MenuItem {
           ${this.getText('trailing-text-subline', TYPE.BODY_SMALL_REGULAR, this.sublineText)}
         </div>
         <slot name="trailing-controls"></slot>
-        ${this.staticToggle()}
-        ${this.getCheckmarkIcon()}
+        ${this.staticToggle()} ${this.getCheckmarkIcon()}
       </div>
     `;
   }

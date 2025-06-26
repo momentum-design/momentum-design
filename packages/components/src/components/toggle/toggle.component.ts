@@ -1,12 +1,14 @@
 import { CSSResult, html, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import { ROLE } from '../../utils/roles';
 import FormfieldWrapper from '../formfieldwrapper';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
+
 import { DEFAULTS, TOGGLE_SIZE } from './toggle.constants';
 import styles from './toggle.styles';
 import type { ToggleSize } from './toggle.types';
@@ -48,9 +50,9 @@ import type { ToggleSize } from './toggle.types';
  */
 class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) implements AssociatedFormControl {
   /**
-  * Determines whether the toggle is active or inactive.
-  * @default false
-  */
+   * Determines whether the toggle is active or inactive.
+   * @default false
+   */
   @property({ type: Boolean, reflect: true })
   checked = false;
 
@@ -63,160 +65,157 @@ class Toggle extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) im
   @property({ type: String, reflect: true })
   size: ToggleSize = DEFAULTS.SIZE;
 
-    /**
+  /**
    * Automatically focus on the element when the page loads.
    * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/autofocus)
    * @default false
    */
-    @property({ type: Boolean, reflect: true }) override autofocus = false;
+  @property({ type: Boolean, reflect: true }) override autofocus = false;
 
-    override connectedCallback(): void {
-      super.connectedCallback();
-      // Toggle does not contain helpTextType property.
-      this.helpTextType = undefined as unknown as ValidationType;
-    }
+  override connectedCallback(): void {
+    super.connectedCallback();
+    // Toggle does not contain helpTextType property.
+    this.helpTextType = undefined as unknown as ValidationType;
+  }
 
-    /** @internal
+  /** @internal
    * Resets the checkbox to its initial state.
    * The checked property is set to false.
    */
-    formResetCallback(): void {
-      this.checked = false;
-    }
+  formResetCallback(): void {
+    this.checked = false;
+  }
 
-    /** @internal */
-    formStateRestoreCallback(
-      state: string,
-    ): void {
-      if (state) {
-        this.checked = true;
-      }
+  /** @internal */
+  formStateRestoreCallback(state: string): void {
+    if (state) {
+      this.checked = true;
     }
+  }
 
-    /**
+  /**
    * Manages the required state of the checkbox.
    * If the checkbox is not checked and the required property is set, then the checkbox is invalid.
    * If the validationMessage is set, it will be used as the custom validity message.
    * If the validationMessage is not set, it will clear the custom validity message.
    */
-    private manageRequired() {
-      if (!this.checked && this.required) {
-        if (this.validationMessage) {
-          this.inputElement.setCustomValidity(this.validationMessage);
-        } else {
-          this.inputElement.setCustomValidity('');
-        }
-        this.setValidity();
+  private manageRequired() {
+    if (!this.checked && this.required) {
+      if (this.validationMessage) {
+        this.inputElement.setCustomValidity(this.validationMessage);
       } else {
-        this.internals.setValidity({});
+        this.inputElement.setCustomValidity('');
       }
+      this.setValidity();
+    } else {
+      this.internals.setValidity({});
     }
+  }
 
-    /**
+  /**
    * Updates the form value to reflect the current state of the toggle.
    * If toggle is switched on, the value is set to either the user-provided value or 'isActive' if no value is provided.
    * If toggle is switched off, the value is set to null.
    */
-    private setFormValue() {
-      let actualValue: string | null = null;
+  private setFormValue() {
+    let actualValue: string | null = null;
 
-      if (this.checked) {
-        actualValue = !this.value ? 'isActive' : this.value;
-      } else {
-        actualValue = null;
-      }
-
-      this.manageRequired();
-
-      this.internals.setFormValue(actualValue);
+    if (this.checked) {
+      actualValue = !this.value ? 'isActive' : this.value;
+    } else {
+      actualValue = null;
     }
 
-    /**
+    this.manageRequired();
+
+    this.internals.setFormValue(actualValue);
+  }
+
+  /**
    * Toggles the state of the toggle element.
    * If the element is not disabled, then the checked property is toggled.
    */
-    private toggleState(): void {
-      if (!this.disabled) {
-        this.checked = !this.checked;
-      }
+  private toggleState(): void {
+    if (!this.disabled) {
+      this.checked = !this.checked;
     }
+  }
 
-    /**
+  /**
    * Handles the keydown event on the toggle element.
    * When the user presses Enter, the form is submitted.
    * @param event - The keyboard event.
    */
-    private handleKeyDown(event: KeyboardEvent): void {
-      if (event.key === 'Enter') {
-        this.form?.requestSubmit();
-      }
+  private handleKeyDown(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      this.form?.requestSubmit();
     }
+  }
 
-    /**
+  /**
    * Toggles the state of the toggle element.
    * and dispatch the new change event.
    */
-    private handleChange(event: Event) {
-      this.toggleState();
-      const EventConstructor = event.constructor as typeof Event;
-      this.dispatchEvent(new EventConstructor(event.type, event));
-    }
+  private handleChange(event: Event) {
+    this.toggleState();
+    const EventConstructor = event.constructor as typeof Event;
+    this.dispatchEvent(new EventConstructor(event.type, event));
+  }
 
-    /**
+  /**
    * Sets the size attribute for the toggle component.
    * If the provided size is not included in the TOGGLE_SIZE,
    * it defaults to the value specified in DEFAULTS.SIZE.
    *
    * @param size - The size to set.
    */
-    private setToggleSize(size: ToggleSize) {
-      this.setAttribute('size', Object.values(TOGGLE_SIZE).includes(size) ? size : DEFAULTS.SIZE);
+  private setToggleSize(size: ToggleSize) {
+    this.setAttribute('size', Object.values(TOGGLE_SIZE).includes(size) ? size : DEFAULTS.SIZE);
+  }
+
+  public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    super.update(changedProperties);
+
+    if (changedProperties.has('checked')) {
+      this.setFormValue();
     }
 
-    public override update(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
-      super.update(changedProperties);
-
-      if (changedProperties.has('checked')) {
-        this.setFormValue();
-      }
-
-      if (changedProperties.has('size')) {
-        this.setToggleSize(this.size);
-      }
+    if (changedProperties.has('size')) {
+      this.setToggleSize(this.size);
     }
+  }
 
-    public override render() {
-      return html`
-        <mdc-statictoggle
-          ?checked="${this.checked}"
-          ?disabled="${this.disabled}"
-          size="${this.size}"
-          class="mdc-focus-ring"
-          part="container"
-        >
-          <input
-            id="${this.id}"
-            type="checkbox"
-            part="toggle-input"
-            role="${ROLE.CHECKBOX}"
-            ?autofocus="${this.autofocus}"
-            ?required="${this.required}"
-            name="${ifDefined(this.name)}"
-            value="${ifDefined(this.value)}"
-            .checked="${this.checked}"
-            aria-checked="${this.checked}"
-            .disabled="${this.disabled}"
-            aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
-            aria-label="${this.dataAriaLabel ?? ''}"
-            tabindex="${this.disabled ? -1 : 0}"
-            @change="${this.handleChange}"
-            @keydown="${this.handleKeyDown}"
-          />
-        </mdc-statictoggle>
-        ${this.renderLabel()}
-        ${this.renderHelperText()}
+  public override render() {
+    return html`
+      <mdc-statictoggle
+        ?checked="${this.checked}"
+        ?disabled="${this.disabled}"
+        size="${this.size}"
+        class="mdc-focus-ring"
+        part="container"
+      >
+        <input
+          id="${this.id}"
+          type="checkbox"
+          part="toggle-input"
+          role="${ROLE.CHECKBOX}"
+          ?autofocus="${this.autofocus}"
+          ?required="${this.required}"
+          name="${ifDefined(this.name)}"
+          value="${ifDefined(this.value)}"
+          .checked="${this.checked}"
+          aria-checked="${this.checked}"
+          .disabled="${this.disabled}"
+          aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
+          aria-label="${this.dataAriaLabel ?? ''}"
+          tabindex="${this.disabled ? -1 : 0}"
+          @change="${this.handleChange}"
+          @keydown="${this.handleKeyDown}"
+        />
+      </mdc-statictoggle>
+      ${this.renderLabel()} ${this.renderHelperText()}
     `;
-    }
+  }
 
   public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...styles];
 }

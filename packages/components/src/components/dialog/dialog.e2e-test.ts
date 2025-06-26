@@ -1,5 +1,7 @@
 import { expect } from '@playwright/test';
+
 import { test, ComponentsPage } from '../../../config/playwright/setup';
+
 import { DEFAULTS } from './dialog.constants';
 import type Dialog from './dialog.component';
 
@@ -65,7 +67,7 @@ const setup = async (args: SetupOptions) => {
   // this is to ensure that the dialog closes when the close button is clicked
   // since the dialog is a controlled component, the consumer needs to handle the close event
   // and set the visible attribute to false
-  await componentsPage.page.evaluate((dialogId) => {
+  await componentsPage.page.evaluate(dialogId => {
     const dialogElement = document.querySelector(`#${dialogId}`) as Dialog;
     if (dialogElement) {
       dialogElement.onclose = () => {
@@ -214,7 +216,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await test.step('dialog should close/open when the visible attribute is changed without trigger', async () => {
         const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, triggerId: undefined });
         await expect(dialog).toBeVisible();
-        await dialog.evaluate((dialog) => {
+        await dialog.evaluate(dialog => {
           dialog.removeAttribute('visible');
         });
         await expect(dialog).not.toBeVisible();
@@ -233,7 +235,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
     await test.step('focus and keyboard', async () => {
       await test.step('close button should be focusable with tab and actionable with enter', async () => {
         const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, visible: false });
-        await dialog.evaluate((dialog) => {
+        await dialog.evaluate(dialog => {
           dialog.toggleAttribute('visible');
         });
         await expect(dialog).toBeVisible();
@@ -250,7 +252,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
       });
 
       await test.step('dialog should close on escape keydown and fire onClose event', async () => {
-        await dialog.evaluate((dialog) => {
+        await dialog.evaluate(dialog => {
           dialog.toggleAttribute('visible');
         });
         await expect(dialog).toBeVisible();
@@ -262,7 +264,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
 
       await test.step('focus should remain only in the dialog when visible', async () => {
         const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, visible: false });
-        await dialog.evaluate((dialog) => {
+        await dialog.evaluate(dialog => {
           dialog.toggleAttribute('visible');
         });
         await expect(dialog).toBeVisible();
@@ -283,7 +285,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
 
       await test.step('focus should remain only in the dialog when buttons are added dynamically', async () => {
         const { dialog } = await setup({ componentsPage, ...dialogWithAllSlots, visible: false });
-        await dialog.evaluate((dialog) => {
+        await dialog.evaluate(dialog => {
           dialog.toggleAttribute('visible');
         });
         await expect(dialog).toBeVisible();
@@ -330,7 +332,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await test.step('focus should remain in the dialog when an iframe is inside', async () => {
         const { dialog } = await setup({ componentsPage, ...dialogWithIframe, visible: false });
 
-        await dialog.evaluate((dialog) => {
+        await dialog.evaluate(dialog => {
           // make dialog visible
           dialog.toggleAttribute('visible');
 
@@ -354,7 +356,9 @@ test('mdc-dialog', async ({ componentsPage }) => {
         if (test.info().project.name === 'firefox') {
           await componentsPage.actionability.pressTab();
         }
-        const iframeButton = componentsPage.page.locator('#frame').contentFrame()
+        const iframeButton = componentsPage.page
+          .locator('#frame')
+          .contentFrame()
           .getByRole('button', { name: 'Iframe Button' });
         await expect(iframeButton).toBeFocused();
 

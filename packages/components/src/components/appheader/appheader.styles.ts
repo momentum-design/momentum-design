@@ -23,7 +23,6 @@ const styles = css`
 
   :host::part(leading-section) {
     justify-content: flex-start;
-    
   }
 
   :host::part(center-section) {

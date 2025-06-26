@@ -12,6 +12,5 @@ export const AddToComponentImports: ActionType = {
   data: {
     componentName,
   },
-  template:
-    `import {{sentenceCase ${componentName}}} from './components/{{${componentName}}}';\n$1`,
+  template: `import {{sentenceCase ${componentName}}} from './components/{{${componentName}}}';\n$1`,
 };

@@ -1,9 +1,11 @@
 import { CSSResult, html } from 'lit';
 import { queryAssignedElements, state } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
-import styles from './searchfield.styles';
+
 import Input from '../input/input.component';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
+
+import styles from './searchfield.styles';
 import { DEFAULTS } from './searchfield.constants';
 
 /**
@@ -63,7 +65,7 @@ class Searchfield extends Input {
   private renderInputChips() {
     this.hasInputChips = !!this.inputChips?.length;
     if (this.inputChips) {
-      this.inputChips.forEach((element) => {
+      this.inputChips.forEach(element => {
         if (!element.matches(DEFAULTS.INPUT_CHIP_TAG)) {
           element.remove();
         }
@@ -87,7 +89,7 @@ class Searchfield extends Input {
 
   override clearInputText() {
     super.clearInputText();
-    this.inputChips?.forEach((element) => {
+    this.inputChips?.forEach(element => {
       // Dispatch the custom 'remove' event from inputChip
       element.dispatchEvent(new CustomEvent('remove', { bubbles: true, composed: true }));
     });
@@ -95,23 +97,29 @@ class Searchfield extends Input {
 
   public override render() {
     return html`
-    ${this.renderLabelElement()}
-    <div class="${classMap({
-    'input-container': true,
-    'mdc-focus-ring': this.isInputFocused,
-  })}" part="input-container">
-    ${this.renderLeadingIcon()}
-      <div part='scrollable-container' tabindex='-1'>
-      <div part="filters-container" 
-      @click=${() => this.inputElement.focus()} 
-      @keydown=${(e: KeyboardEvent) => e.key === 'Enter' ? this.inputElement.focus() : null} 
-      @keyup=${(e: KeyboardEvent) => e.key === ' ' ? this.inputElement.focus() : null}>
-        <slot name="filters" @slotchange=${this.renderInputChips}></slot></div>
-      ${this.renderInputElement(DEFAULTS.TYPE, this.hasInputChips)}
+      ${this.renderLabelElement()}
+      <div
+        class="${classMap({
+          'input-container': true,
+          'mdc-focus-ring': this.isInputFocused,
+        })}"
+        part="input-container"
+      >
+        ${this.renderLeadingIcon()}
+        <div part="scrollable-container" tabindex="-1">
+          <div
+            part="filters-container"
+            @click=${() => this.inputElement.focus()}
+            @keydown=${(e: KeyboardEvent) => (e.key === 'Enter' ? this.inputElement.focus() : null)}
+            @keyup=${(e: KeyboardEvent) => (e.key === ' ' ? this.inputElement.focus() : null)}
+          >
+            <slot name="filters" @slotchange=${this.renderInputChips}></slot>
+          </div>
+          ${this.renderInputElement(DEFAULTS.TYPE, this.hasInputChips)}
+        </div>
+        ${this.renderTrailingButton(this.hasInputChips)}
       </div>
-      ${this.renderTrailingButton(this.hasInputChips)}
-    </div>
-  `;
+    `;
   }
 
   public static override styles: Array<CSSResult> = [...Input.styles, ...styles];

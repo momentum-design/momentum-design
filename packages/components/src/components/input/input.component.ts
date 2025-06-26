@@ -1,14 +1,16 @@
 import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import styles from './input.styles';
+
 import FormfieldWrapper from '../formfieldwrapper';
-import { AUTO_CAPITALIZE, AUTO_COMPLETE, DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { IconNames } from '../icon/icon.types';
-import type { AutoCapitalizeType, AutoCompleteType, InputType } from './input.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { FormInternalsMixin, AssociatedFormControl } from '../../utils/mixins/FormInternalsMixin';
+
+import type { AutoCapitalizeType, AutoCompleteType, InputType } from './input.types';
+import { AUTO_CAPITALIZE, AUTO_COMPLETE, DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
+import styles from './input.styles';
 /**
  * mdc-input is a component that allows users to input text.
  *  It contains:
@@ -142,17 +144,19 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
   override connectedCallback(): void {
     super.connectedCallback();
 
-    this.updateComplete.then(() => {
-      if (this.inputElement) {
-        this.inputElement.checkValidity();
-        this.setInputValidity();
-        this.internals.setFormValue(this.inputElement.value);
-      }
-    }).catch((error) => {
-      if (this.onerror) {
-        this.onerror(error);
-      }
-    });
+    this.updateComplete
+      .then(() => {
+        if (this.inputElement) {
+          this.inputElement.checkValidity();
+          this.setInputValidity();
+          this.internals.setFormValue(this.inputElement.value);
+        }
+      })
+      .catch(error => {
+        if (this.onerror) {
+          this.onerror(error);
+        }
+      });
   }
 
   /** @internal */
@@ -162,9 +166,7 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
   }
 
   /** @internal */
-  formStateRestoreCallback(
-    state: string,
-  ): void {
+  formStateRestoreCallback(state: string): void {
     this.value = state;
   }
 
@@ -174,13 +176,15 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
    * @returns void
    */
   handleValueChange() {
-    this.updateComplete.then(() => {
-      this.setInputValidity();
-    }).catch((error) => {
-      if (this.onerror) {
-        this.onerror(error);
-      }
-    });
+    this.updateComplete
+      .then(() => {
+        this.setInputValidity();
+      })
+      .catch(error => {
+        if (this.onerror) {
+          this.onerror(error);
+        }
+      });
   }
 
   protected override updated(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
@@ -207,28 +211,21 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
    * @param old - old value
    * @param value - new value
    */
-  override attributeChangedCallback(
-    name: string,
-    old: string | null,
-    value: string | null,
-  ): void {
+  override attributeChangedCallback(name: string, old: string | null, value: string | null): void {
     super.attributeChangedCallback(name, old, value);
 
-    const validationRelatedAttributes = [
-      'maxlength',
-      'minlength',
-      'pattern',
-      'required',
-    ];
+    const validationRelatedAttributes = ['maxlength', 'minlength', 'pattern', 'required'];
 
     if (validationRelatedAttributes.includes(name)) {
-      this.updateComplete.then(() => {
-        this.setInputValidity();
-      }).catch((error) => {
-        if (this.onerror) {
-          this.onerror(error);
-        }
-      });
+      this.updateComplete
+        .then(() => {
+          this.setInputValidity();
+        })
+        .catch(error => {
+          if (this.onerror) {
+            this.onerror(error);
+          }
+        });
     }
   }
 
@@ -270,10 +267,10 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
   }
 
   /**
-     * Handles the keydown event of the input field.
-     * If the key pressed is 'Enter', it submits the form.
-     * @param event - Keyboard event
-     */
+   * Handles the keydown event of the input field.
+   * If the key pressed is 'Enter', it submits the form.
+   * @param event - Keyboard event
+   */
   protected handleKeyDown(event: KeyboardEvent) {
     if (event.key === 'Enter') {
       this.form?.requestSubmit();
@@ -291,12 +288,13 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
       return nothing;
     }
     return html`
-      <mdc-icon 
-        class="leading-icon" 
+      <mdc-icon
+        class="leading-icon"
         part="leading-icon"
-        name=${this.leadingIcon} 
-        size="${DEFAULTS.ICON_SIZE_VALUE}" 
-        length-unit="${DEFAULTS.ICON_SIZE_UNIT}">
+        name=${this.leadingIcon}
+        size="${DEFAULTS.ICON_SIZE_VALUE}"
+        length-unit="${DEFAULTS.ICON_SIZE_UNIT}"
+      >
       </mdc-icon>
     `;
   }
@@ -316,9 +314,9 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
       return nothing;
     }
     return html`
-      <mdc-text 
-        class="prefix-text" 
-        tagname="${DEFAULTS.PREFIX_TEXT_TAG}" 
+      <mdc-text
+        class="prefix-text"
+        tagname="${DEFAULTS.PREFIX_TEXT_TAG}"
         type="${DEFAULTS.PREFIX_TEXT_TYPE}"
         aria-hidden="true"
       >
@@ -346,11 +344,11 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
       return nothing;
     }
     return html`
-      <mdc-button 
-        part='trailing-button'
-        class='own-focus-ring ${!showBtn ? 'hidden' : ''}'
-        prefix-icon='${DEFAULTS.CLEAR_BUTTON_ICON}'
-        variant='${DEFAULTS.CLEAR_BUTTON_VARIANT}'
+      <mdc-button
+        part="trailing-button"
+        class="own-focus-ring ${!showBtn ? 'hidden' : ''}"
+        prefix-icon="${DEFAULTS.CLEAR_BUTTON_ICON}"
+        variant="${DEFAULTS.CLEAR_BUTTON_VARIANT}"
         size="${DEFAULTS.CLEAR_BUTTON_SIZE}"
         aria-label="${this.clearAriaLabel}"
         @click=${this.clearInputText}
@@ -362,33 +360,33 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
   protected renderInputElement(type: InputType, hidePlaceholder = false) {
     const placeholderText = hidePlaceholder ? '' : this.placeholder;
 
-    return html`<input 
-                  aria-label="${this.dataAriaLabel ?? ''}"
-                  class='input'
-                  part='input'
-                  id="${this.id}"
-                  name="${this.name}"
-                  .value="${this.value}"
-                  ?disabled="${this.disabled}"
-                  ?readonly="${this.readonly}"
-                  ?required="${this.required}"
-                  type="${type}"
-                  aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
-                  aria-invalid="${this.helpTextType === 'error' ? 'true' : 'false'}"
-                  placeholder=${ifDefined(placeholderText)}
-                  minlength=${ifDefined(this.minlength)}
-                  maxlength=${ifDefined(this.maxlength)}
-                  autocapitalize=${this.autocapitalize}
-                  autocomplete=${this.autocomplete}
-                  ?autofocus="${this.autofocus}"
-                  dirname=${ifDefined(this.dirname)}
-                  pattern=${ifDefined(this.pattern)}
-                  list=${ifDefined(this.list)}
-                  size=${ifDefined(this.size)}
-                  @input=${this.onInput}
-                  @change=${this.onChange}
-                  @keydown=${this.handleKeyDown}
-                />`;
+    return html`<input
+      aria-label="${this.dataAriaLabel ?? ''}"
+      class="input"
+      part="input"
+      id="${this.id}"
+      name="${this.name}"
+      .value="${this.value}"
+      ?disabled="${this.disabled}"
+      ?readonly="${this.readonly}"
+      ?required="${this.required}"
+      type="${type}"
+      aria-describedby="${ifDefined(this.helpText ? FORMFIELD_DEFAULTS.HELPER_TEXT_ID : '')}"
+      aria-invalid="${this.helpTextType === 'error' ? 'true' : 'false'}"
+      placeholder=${ifDefined(placeholderText)}
+      minlength=${ifDefined(this.minlength)}
+      maxlength=${ifDefined(this.maxlength)}
+      autocapitalize=${this.autocapitalize}
+      autocomplete=${this.autocomplete}
+      ?autofocus="${this.autofocus}"
+      dirname=${ifDefined(this.dirname)}
+      pattern=${ifDefined(this.pattern)}
+      list=${ifDefined(this.list)}
+      size=${ifDefined(this.size)}
+      @input=${this.onInput}
+      @change=${this.onChange}
+      @keydown=${this.handleKeyDown}
+    />`;
   }
 
   public override render() {
@@ -396,10 +394,10 @@ class Input extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) imp
       ${this.renderLabel()}
       <div class="input-container mdc-focus-ring" part="input-container">
         <slot name="input-leading-icon">${this.renderLeadingIcon()}</slot>
-       <div class="input-section" part="input-section">
-       <slot name="input-prefix-text">${this.renderPrefixText()}</slot>
-        <slot name="input">${this.renderInputElement(DEFAULTS.INPUT_TYPE)}</slot>
-       </div>
+        <div class="input-section" part="input-section">
+          <slot name="input-prefix-text">${this.renderPrefixText()}</slot>
+          <slot name="input">${this.renderInputElement(DEFAULTS.INPUT_TYPE)}</slot>
+        </div>
         <slot name="trailing-button">${this.renderTrailingButton()}</slot>
       </div>
       ${this.helpText ? this.renderHelperText() : nothing}

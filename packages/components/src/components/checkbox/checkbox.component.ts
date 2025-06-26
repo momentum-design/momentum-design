@@ -1,11 +1,13 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
+
 import styles from './checkbox.styles';
 
 /**
@@ -108,9 +110,7 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
   }
 
   /** @internal */
-  formStateRestoreCallback(
-    state: string,
-  ): void {
+  formStateRestoreCallback(state: string): void {
     if (state) {
       this.checked = true;
     }
@@ -159,19 +159,17 @@ class Checkbox extends FormInternalsMixin(DataAriaLabelMixin(FormfieldWrapper)) 
 
   private renderLabelAndHelperText = () => {
     if (!this.label) return nothing;
-    return html`<div class="text-container">
-      ${this.renderLabel()}
-      ${this.renderHelperText()}
-    </div>`;
+    return html`<div class="text-container">${this.renderLabel()} ${this.renderHelperText()}</div>`;
   };
 
   public override render() {
     return html`
-      <mdc-staticcheckbox 
-      class="mdc-focus-ring"
-      ?checked="${this.checked}" 
-      ?indeterminate="${this.indeterminate}" 
-      ?disabled="${this.disabled}">
+      <mdc-staticcheckbox
+        class="mdc-focus-ring"
+        ?checked="${this.checked}"
+        ?indeterminate="${this.indeterminate}"
+        ?disabled="${this.disabled}"
+      >
         <input
           id="${this.id}"
           type="checkbox"

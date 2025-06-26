@@ -1,8 +1,10 @@
 import { createContext } from '@lit/context';
+
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
 import type NavItem from '../navitem/navitem.component';
 import { TAG_NAME as NAVITEM_TAGNAME } from '../navitem/navitem.constants';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+
 import { TAG_NAME } from './sidenavigation.constants';
 
 class SideNavigationContext {
@@ -16,11 +18,7 @@ class SideNavigationContext {
 
   public static context = createContext<SideNavigationContext>(TAG_NAME);
 
-  constructor(
-    defaultVariant?: string,
-    defaultExpanded?: boolean,
-    defaultParentNavTooltipText?: string,
-  ) {
+  constructor(defaultVariant?: string, defaultExpanded?: boolean, defaultParentNavTooltipText?: string) {
     this.variant = defaultVariant;
     this.expanded = defaultExpanded;
     this.parentNavTooltipText = defaultParentNavTooltipText;
@@ -31,10 +29,12 @@ class SideNavigationContext {
     if (!id) return false;
 
     const siblings = Array.from(navItem?.parentElement?.children ?? []);
-    return siblings.some((sibling) =>
-      sibling !== navItem
-    && sibling.tagName.toLowerCase() === MENUPOPOVER_TAGNAME
-    && sibling.getAttribute('triggerid') === id);
+    return siblings.some(
+      sibling =>
+        sibling !== navItem &&
+        sibling.tagName.toLowerCase() === MENUPOPOVER_TAGNAME &&
+        sibling.getAttribute('triggerid') === id,
+    );
   }
 
   private getParentNavItems(navItem: NavItem | undefined): NavItem[] {
@@ -76,7 +76,7 @@ class SideNavigationContext {
       this.currentActiveNavItem.removeAttribute('active');
 
       const previousParents = this.getParentNavItems(this.currentActiveNavItem);
-      previousParents.forEach((parent) => {
+      previousParents.forEach(parent => {
         parent.removeAttribute('tooltip-text');
         parent.removeAttribute('active');
       });
@@ -90,7 +90,7 @@ class SideNavigationContext {
     navItem.setAttribute('active', '');
 
     const newParents = this.getParentNavItems(navItem);
-    newParents.forEach((parent) => {
+    newParents.forEach(parent => {
       parent.setAttribute('tooltip-text', this.parentNavTooltipText || '');
       parent.setAttribute('tooltip-placement', POPOVER_PLACEMENT.BOTTOM);
       parent.setAttribute('active', '');

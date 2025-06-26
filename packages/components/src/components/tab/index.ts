@@ -6,9 +6,9 @@ import '../text';
 Tab.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-tab']: Tab
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-tab']: Tab;
+  }
 }
 
 export default Tab;

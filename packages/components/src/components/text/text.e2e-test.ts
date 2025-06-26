@@ -1,8 +1,10 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+
 import { TYPE, VALID_TEXT_TAGS } from './text.constants';
 import type { TextType, TagName } from './text.types';
 
@@ -52,7 +54,11 @@ test.describe('mdc-text', () => {
   /**
    * VISUAL REGRESSION
    */
-  const createSnapshot = async ({ componentsPage, combination, fileNameSuffix }: {
+  const createSnapshot = async ({
+    componentsPage,
+    combination,
+    fileNameSuffix,
+  }: {
     componentsPage: ComponentsPage;
     combination: Record<string, Record<string, any>>;
     fileNameSuffix: string;

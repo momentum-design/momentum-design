@@ -1,11 +1,13 @@
 /* eslint-disable no-param-reassign */
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
-import styles from './cardradio.styles';
+
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import Card from '../card/card.component';
 import { ROLE } from '../../utils/roles';
+
+import styles from './cardradio.styles';
 
 /**
  * cardradio component extends `mdc-card` and supports radio selection interaction addtionally.
@@ -38,140 +40,137 @@ import { ROLE } from '../../utils/roles';
  *
  */
 class CardRadio extends DisabledMixin(TabIndexMixin(Card)) {
- /**
+  /**
    * The checked state of the card
    * @default false
    */
- @property({ type: Boolean, reflect: true })
- checked = false;
+  @property({ type: Boolean, reflect: true })
+  checked = false;
 
- /**
+  /**
    * The name of the radio.
    * @default ''
    */
- @property({ type: String })
- name = '';
+  @property({ type: String })
+  name = '';
 
- constructor() {
-   super();
-   this.addEventListener('click', this.toggleChecked);
-   this.addEventListener('keydown', this.toggleOnEnter);
-   this.addEventListener('keyup', this.toggleOnSpace);
- }
+  constructor() {
+    super();
+    this.addEventListener('click', this.toggleChecked);
+    this.addEventListener('keydown', this.toggleOnEnter);
+    this.addEventListener('keyup', this.toggleOnSpace);
+  }
 
- override connectedCallback() {
-   super.connectedCallback();
-   this.role = ROLE.RADIO;
- }
+  override connectedCallback() {
+    super.connectedCallback();
+    this.role = ROLE.RADIO;
+  }
 
- /**
+  /**
    * Returns all cards within the same group (name).
    */
- private getAllCardsWithinSameGroup(): CardRadio[] {
-   return Array.from(document.querySelectorAll(`mdc-cardradio[name="${this.name}"]`));
- }
+  private getAllCardsWithinSameGroup(): CardRadio[] {
+    return Array.from(document.querySelectorAll(`mdc-cardradio[name="${this.name}"]`));
+  }
 
- /**
+  /**
    * Handles the change event on the radio element.
    * This will toggle the state of the radio element.
    * Dispatches the change event.
    */
- private toggleChecked(): void {
-   if (this.disabled) return;
+  private toggleChecked(): void {
+    if (this.disabled) return;
 
-   const cards = this.getAllCardsWithinSameGroup();
-   cards.forEach((card) => {
-     /**
-      *  Uncheck all cards in the same group (name)
-    */
-     card.checked = false;
-   });
-   this.checked = true;
- }
+    const cards = this.getAllCardsWithinSameGroup();
+    cards.forEach(card => {
+      /**
+       *  Uncheck all cards in the same group (name)
+       */
+      card.checked = false;
+    });
+    this.checked = true;
+  }
 
- setDisabled(disabled: boolean): void {
-   this.setAttribute('aria-disabled', `${disabled}`);
-   this.tabIndex = disabled ? -1 : 0;
- }
+  setDisabled(disabled: boolean): void {
+    this.setAttribute('aria-disabled', `${disabled}`);
+    this.tabIndex = disabled ? -1 : 0;
+  }
 
- override update(changedProperties: PropertyValues<CardRadio>) {
-   super.update(changedProperties);
-   if (changedProperties.has('checked')) {
-     this.setAttribute('aria-checked', `${this.checked}`);
-   }
-   if (changedProperties.has('disabled')) {
-     this.setDisabled(this.disabled);
-   }
- }
+  override update(changedProperties: PropertyValues<CardRadio>) {
+    super.update(changedProperties);
+    if (changedProperties.has('checked')) {
+      this.setAttribute('aria-checked', `${this.checked}`);
+    }
+    if (changedProperties.has('disabled')) {
+      this.setDisabled(this.disabled);
+    }
+  }
 
- private updateCardRadio(cards: CardRadio[], index: number): void {
-   cards[index].focus();
-   cards[index].toggleChecked();
- }
+  private updateCardRadio(cards: CardRadio[], index: number): void {
+    cards[index].focus();
+    cards[index].toggleChecked();
+  }
 
- /**
-  * Toggles the checked state when enter key is used
-  * @param event - The keyboard event
-  */
- private toggleOnEnter(event: KeyboardEvent) {
-   if (this.disabled) return;
+  /**
+   * Toggles the checked state when enter key is used
+   * @param event - The keyboard event
+   */
+  private toggleOnEnter(event: KeyboardEvent) {
+    if (this.disabled) return;
 
-   const cards = this.getAllCardsWithinSameGroup();
-   const enabledCards = cards.filter((card) => !card.disabled);
-   const currentIndex = enabledCards.indexOf(this);
+    const cards = this.getAllCardsWithinSameGroup();
+    const enabledCards = cards.filter(card => !card.disabled);
+    const currentIndex = enabledCards.indexOf(this);
 
-   if (['ArrowDown', 'ArrowRight'].includes(event.key)) {
-     // Move focus to the next radio
-     const nextIndex = (currentIndex + 1) % enabledCards.length;
-     this.updateCardRadio(enabledCards, nextIndex);
-   } else if (['ArrowUp', 'ArrowLeft'].includes(event.key)) {
-     // Move focus to the previous radio
-     const prevIndex = (currentIndex - 1 + enabledCards.length) % enabledCards.length;
-     this.updateCardRadio(enabledCards, prevIndex);
-   }
-   if (event.key === 'Enter') {
-     this.toggleChecked();
-   }
- }
+    if (['ArrowDown', 'ArrowRight'].includes(event.key)) {
+      // Move focus to the next radio
+      const nextIndex = (currentIndex + 1) % enabledCards.length;
+      this.updateCardRadio(enabledCards, nextIndex);
+    } else if (['ArrowUp', 'ArrowLeft'].includes(event.key)) {
+      // Move focus to the previous radio
+      const prevIndex = (currentIndex - 1 + enabledCards.length) % enabledCards.length;
+      this.updateCardRadio(enabledCards, prevIndex);
+    }
+    if (event.key === 'Enter') {
+      this.toggleChecked();
+    }
+  }
 
- /**
-  * Toggles the checked state when space key is used
-  * @param event - The keyboard event
-  */
- private toggleOnSpace(event: KeyboardEvent) {
-   if (event.key === ' ') {
-     this.toggleChecked();
-   }
- }
+  /**
+   * Toggles the checked state when space key is used
+   * @param event - The keyboard event
+   */
+  private toggleOnSpace(event: KeyboardEvent) {
+    if (event.key === ' ') {
+      this.toggleChecked();
+    }
+  }
 
- /**
-  * Renders the header of the card
-  * @returns The header of the card
-  */
- override renderHeader() {
-   if (!this.cardTitle) {
-     return nothing;
-   }
-   return html`<div part="header">
-     ${this.renderIcon()}
-     ${this.renderTitle()}
-     <mdc-staticradio part="check" 
-        ?checked="${this.checked}" 
-        ?disabled="${this.disabled}"></mdc-staticradio>
-   </div>`;
- }
+  /**
+   * Renders the header of the card
+   * @returns The header of the card
+   */
+  override renderHeader() {
+    if (!this.cardTitle) {
+      return nothing;
+    }
+    return html`<div part="header">
+      ${this.renderIcon()} ${this.renderTitle()}
+      <mdc-staticradio part="check" ?checked="${this.checked}" ?disabled="${this.disabled}"></mdc-staticradio>
+    </div>`;
+  }
 
- public override render() {
-   return html`
-  ${this.renderImage()}
-    <div part="body">
-    ${this.renderHeader()}
-      <slot name="before-body"></slot>
-      <slot name="body"></slot>
-      <slot name="after-body"></slot>
-    </div>
-  `;
- }
+  public override render() {
+    return html`
+      ${this.renderImage()}
+      <div part="body">
+        ${this.renderHeader()}
+        <slot name="before-body"></slot>
+        <slot name="body"></slot>
+        <slot name="after-body"></slot>
+      </div>
+    `;
+  }
 
   public static override styles: Array<CSSResult> = [...Card.styles, ...styles];
 }

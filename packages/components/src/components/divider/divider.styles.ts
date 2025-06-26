@@ -1,4 +1,5 @@
 import { css } from 'lit';
+
 import { hostFitContentStyles } from '../../utils/styles';
 
 /**
@@ -111,19 +112,13 @@ const styles = [
     :host([orientation='vertical']) ::slotted(mdc-button) {
       width: 1.25rem;
       height: 2.5rem;
-      border-radius: 0
-          var(--mdc-divider-grabber-button-border-radius)
-          var(--mdc-divider-grabber-button-border-radius)
-          0;
+      border-radius: 0 var(--mdc-divider-grabber-button-border-radius) var(--mdc-divider-grabber-button-border-radius) 0;
     }
 
     :host([orientation='horizontal']) ::slotted(mdc-button) {
       height: 1.25rem;
       width: 2.5rem;
-      border-radius: 0
-          0
-          var(--mdc-divider-grabber-button-border-radius)
-          var(--mdc-divider-grabber-button-border-radius);
+      border-radius: 0 0 var(--mdc-divider-grabber-button-border-radius) var(--mdc-divider-grabber-button-border-radius);
     }
 
     :host([orientation='horizontal'][button-position='positive']),
@@ -137,10 +132,7 @@ const styles = [
     }
 
     :host([orientation='horizontal'][button-position='positive']) ::slotted(mdc-button) {
-      border-radius: var(--mdc-divider-grabber-button-border-radius)
-          var(--mdc-divider-grabber-button-border-radius)
-          0
-          0;
+      border-radius: var(--mdc-divider-grabber-button-border-radius) var(--mdc-divider-grabber-button-border-radius) 0 0;
       margin: 0;
       margin-bottom: var(--mdc-divider-width);
       border-bottom: 0;
@@ -154,10 +146,7 @@ const styles = [
 
     :host([orientation='vertical'][button-position='negative']:dir(ltr)) ::slotted(mdc-button),
     :host([orientation='vertical'][button-position='negative']:dir(rtl)) ::slotted(mdc-button) {
-      border-radius: var(--mdc-divider-grabber-button-border-radius)
-          0
-          0
-          var(--mdc-divider-grabber-button-border-radius);
+      border-radius: var(--mdc-divider-grabber-button-border-radius) 0 0 var(--mdc-divider-grabber-button-border-radius);
       margin: 0;
       margin-right: var(--mdc-divider-width);
       border-right: 0;
@@ -171,10 +160,7 @@ const styles = [
     }
 
     :host([orientation='vertical'][button-position='positive']:dir(rtl)) ::slotted(mdc-button) {
-      border-radius: 0
-          var(--mdc-divider-grabber-button-border-radius)
-          var(--mdc-divider-grabber-button-border-radius)
-          0;
+      border-radius: 0 var(--mdc-divider-grabber-button-border-radius) var(--mdc-divider-grabber-button-border-radius) 0;
       transform: rotate(180deg);
       margin: 0;
       margin-right: var(--mdc-divider-width);

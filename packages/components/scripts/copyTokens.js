@@ -16,7 +16,7 @@ const copyFileToFolder = (src, destFolder) => {
       if (err) throw err;
     });
   }
-  
+
   fs.copyFileSync(src, dest);
 };
 

@@ -1,4 +1,5 @@
 import { ValueOf } from '../../utils/types';
+
 import { INDICATOR } from './menuitemcheckbox.constants';
 
 type Indicator = ValueOf<typeof INDICATOR>;

@@ -1,4 +1,5 @@
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { VARIANTS } from '../card/card.constants';
@@ -51,14 +52,16 @@ const defaultChildren = `<mdc-text slot='body'
 const setup = async (args: SetupOptions) => {
   const { componentsPage, isGroup, ...restArgs } = args;
   await componentsPage.mount({
-    html: isGroup ? `
+    html: isGroup
+      ? `
     <mdc-radiogroup>
     <div style="display: flex; gap: 0.5rem; flex-wrap: wrap">
-    ${Array.from({ length: 3 }, (_, i) => renderCardRadio({ ...restArgs,
-    cardTitle: `cardradio-${i}`,
-    name: 'cardradio' })).join('')}
+    ${Array.from({ length: 3 }, (_, i) =>
+      renderCardRadio({ ...restArgs, cardTitle: `cardradio-${i}`, name: 'cardradio' }),
+    ).join('')}
     </div>
-    </mdc-radiogroup>` : renderCardRadio(restArgs),
+    </mdc-radiogroup>`
+      : renderCardRadio(restArgs),
     clearDocument: true,
   });
 
@@ -74,14 +77,16 @@ const setup = async (args: SetupOptions) => {
 
 test.describe.parallel('mdc-cardradio', () => {
   test('attributes and interactions', async ({ componentsPage }) => {
-    const cardradio = await setup({ componentsPage,
+    const cardradio = await setup({
+      componentsPage,
       name: 'cardradio',
       cardTitle: 'Card Title',
-      subtitle: 'Card Subtitle' });
+      subtitle: 'Card Subtitle',
+    });
 
     /**
-   * ATTRIBUTES
-   */
+     * ATTRIBUTES
+     */
     await test.step('attributes', async () => {
       await test.step('attribute X should be present on component by default', async () => {
         await expect(cardradio).toHaveAttribute('variant', 'border');
@@ -156,8 +161,8 @@ test.describe.parallel('mdc-cardradio', () => {
     });
 
     /**
-   * INTERACTIONS
-   */
+     * INTERACTIONS
+     */
     await test.step('interactions', async () => {
       const setupArgs = {
         componentsPage,
@@ -303,8 +308,8 @@ test.describe.parallel('mdc-cardradio', () => {
   test.use({ viewport: { width: 2000, height: 1400 } });
   test('visual-regression & accessibility vertical', async ({ componentsPage }) => {
     /**
-   * VISUAL REGRESSION & ACCESSIBILITY
-   */
+     * VISUAL REGRESSION & ACCESSIBILITY
+     */
     const isDeskop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
     if (isDeskop) {
       await componentsPage.page.setViewportSize({ width: 1000, height: 1400 });
@@ -312,7 +317,8 @@ test.describe.parallel('mdc-cardradio', () => {
       await componentsPage.accessibility.checkForA11yViolations('cardradio-vertical');
     } else {
       await test.step('visual-regression & accessibility', async () => {
-        await setup({ componentsPage,
+        await setup({
+          componentsPage,
           cardTitle: 'Card Title',
           subtitle: 'Card Subtitle',
           orientation: 'vertical',
@@ -329,8 +335,8 @@ test.describe.parallel('mdc-cardradio', () => {
 
   test('visual-regression & accessibility horizontal', async ({ componentsPage }) => {
     /**
-   * VISUAL REGRESSION & ACCESSIBILITY
-   */
+     * VISUAL REGRESSION & ACCESSIBILITY
+     */
     const isDeskop = ['chrome', 'firefox', 'msedge', 'webkit'].includes(test.info().project.name);
     if (isDeskop) {
       await componentsPage.page.setViewportSize({ width: 2000, height: 1000 });
@@ -338,7 +344,8 @@ test.describe.parallel('mdc-cardradio', () => {
       await componentsPage.accessibility.checkForA11yViolations('cardradio-horizontal');
     } else {
       await test.step('visual-regression & accessibility', async () => {
-        await setup({ componentsPage,
+        await setup({
+          componentsPage,
           cardTitle: 'Card Title',
           subtitle: 'Card Subtitle',
           orientation: 'horizontal',

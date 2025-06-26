@@ -6,9 +6,9 @@ import '../text';
 Badge.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-badge']: Badge
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-badge']: Badge;
+  }
 }
 
 export default Badge;

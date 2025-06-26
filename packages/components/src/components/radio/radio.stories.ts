@@ -2,6 +2,7 @@ import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 import '../button';
@@ -105,7 +106,7 @@ export const withNameGroup: StoryObj = {
   render: () => html`
     <div style="display: flex; flex-direction: column;">
       Radio Group for selecting plans
-      <mdc-radio name="plan" value="option1" label="Standard Plan" ></mdc-radio>
+      <mdc-radio name="plan" value="option1" label="Standard Plan"></mdc-radio>
       <mdc-radio name="plan" value="option2" label="Disabled Premium Plan" disabled></mdc-radio>
       <mdc-radio name="plan" value="option3" label="Premium Plan"></mdc-radio>
       <mdc-radio name="plan" value="option4" label="Premium Plan for family"></mdc-radio>
@@ -119,14 +120,15 @@ export const withNameGroup: StoryObj = {
       <mdc-radio name="billing-cycle" value="option2" label="Quaterly"></mdc-radio>
       <mdc-radio name="billing-cycle" value="option2" label="Yearly"></mdc-radio>
     </div>
-    `,
+  `,
   parameters: {
     docs: {
       description: {
-        story: 'Radio buttons with the same `name` attribute are grouped together. '
-          + 'When radio buttons share the same `name`, selecting one will automatically deselect the others in the '
-          + 'group. The example includes various states of radio buttons such as disabled, readonly, '
-          + 'and different labels. We can use flex layout to display radio buttons in a column.',
+        story:
+          'Radio buttons with the same `name` attribute are grouped together. ' +
+          'When radio buttons share the same `name`, selecting one will automatically deselect the others in the ' +
+          'group. The example includes various states of radio buttons such as disabled, readonly, ' +
+          'and different labels. We can use flex layout to display radio buttons in a column.',
       },
     },
   },
@@ -139,16 +141,17 @@ export const WithoutLabel: StoryObj = {
   parameters: {
     docs: {
       description: {
-        story: 'If we don\'t want to display a label, we can omit the \'label\' attribute, '
-         + 'but it is recommended to pass an aria label through data-aria-label for accessibility. ',
+        story:
+          "If we don't want to display a label, we can omit the 'label' attribute, " +
+          'but it is recommended to pass an aria label through data-aria-label for accessibility. ',
       },
     },
   },
 };
 
 export const Disabled: StoryObj = {
-  render: () => html`
-    <div style="display: flex; flex-direction: column;">
+  render: () =>
+    html` <div style="display: flex; flex-direction: column;">
       <mdc-radio label="Disabled Standard Plan" disabled></mdc-radio>
       <mdc-radio label="Selected But Disabled Standard Plan" disabled checked></mdc-radio>
     </div>`,
@@ -162,8 +165,8 @@ export const Disabled: StoryObj = {
 };
 
 export const ReadOnly: StoryObj = {
-  render: () => html`
-    <div style="display: flex; flex-direction: column;">
+  render: () =>
+    html` <div style="display: flex; flex-direction: column;">
       <mdc-radio name="read" value="option1" label="Unselected" readonly></mdc-radio>
       <mdc-radio name="read" value="option2" label="Selected" readonly checked></mdc-radio>
     </div>`,

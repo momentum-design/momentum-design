@@ -3,8 +3,10 @@ import '.';
 import { invert } from 'lodash';
 import { html } from 'lit';
 import animationManifest from '@momentum-design/animations/dist/manifest';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
+
 import { DEFAULTS } from './animation.constants';
 
 const render = (args: Args) =>

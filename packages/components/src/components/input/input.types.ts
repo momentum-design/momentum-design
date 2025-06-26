@@ -1,4 +1,5 @@
 import type { ValueOf } from '../../utils/types';
+
 import { AUTO_CAPITALIZE, AUTO_COMPLETE, INPUT_TYPE } from './input.constants';
 
 type AutoCapitalizeType = ValueOf<typeof AUTO_CAPITALIZE>;

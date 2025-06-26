@@ -1,5 +1,7 @@
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
+
 import { BUTTON_SIZES, DEFAULTS } from './buttonsimple.constants';
 
 type SetupOptions = {
@@ -167,14 +169,14 @@ test('mdc-buttonsimple', async ({ componentsPage }) => {
         btn.classList.toggle('btn-onclick');
       };
 
-      (btn as HTMLElement).onkeydown = (e) => {
+      (btn as HTMLElement).onkeydown = e => {
         if (e.key === 'Enter' || e.key === ' ') {
           const value = e.key === 'Enter' ? 'enter' : 'space';
           btn.textContent = `${value} down`;
         }
       };
 
-      (btn as HTMLElement).onkeyup = (e) => {
+      (btn as HTMLElement).onkeyup = e => {
         if (e.key === 'Enter' || e.key === ' ') {
           const value = e.key === 'Enter' ? 'enter' : 'space';
           btn.textContent = `${value} up`;

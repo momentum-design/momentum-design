@@ -1,8 +1,10 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+
 import { VARIANTS } from './alertchip.constants';
 import type { VariantType } from './alertchip.types';
 import { getAlertIcon } from './alertchip.utils';
@@ -12,7 +14,7 @@ type SetupOptions = {
   label: string;
   variant?: VariantType;
   secondChipForFocus?: boolean;
-}
+};
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;

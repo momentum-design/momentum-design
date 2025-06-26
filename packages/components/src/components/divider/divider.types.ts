@@ -1,4 +1,5 @@
 import type { ValueOf } from '../../utils/types';
+
 import { DIVIDER_ORIENTATION, DIVIDER_VARIANT, DIRECTIONS } from './divider.constants';
 
 type DividerOrientation = ValueOf<typeof DIVIDER_ORIENTATION>;

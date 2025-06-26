@@ -3,9 +3,11 @@ import '.';
 import '../button';
 import '../text';
 import { html } from 'lit';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { DIVIDER_ORIENTATION, DIVIDER_VARIANT, DIRECTIONS } from './divider.constants';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
+
+import { DIVIDER_ORIENTATION, DIVIDER_VARIANT, DIRECTIONS } from './divider.constants';
 
 const contentMap: Record<string, ReturnType<typeof html>> = {
   text: html`<mdc-text tagname="h1">Label</mdc-text>`,

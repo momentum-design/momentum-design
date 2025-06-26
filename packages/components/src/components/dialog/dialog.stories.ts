@@ -3,38 +3,41 @@ import '.';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { DIALOG_ROLE, DIALOG_SIZE, DEFAULTS, DIALOG_VARIANT } from './dialog.constants';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
+
+import { DIALOG_ROLE, DIALOG_SIZE, DEFAULTS, DIALOG_VARIANT } from './dialog.constants';
 import '../link';
 import '../button';
 import '../popover';
 import '../tooltip';
 
-const createDialog = (args: Args, content: TemplateResult, onClose: () => void) => html`<mdc-dialog
-  class="${args.class}"
-  style="${args.style}"
-  id="${args.id}"
-  z-index="${args['z-index']}"
-  close-button-aria-label="${args['close-button-aria-label']}"
-  header-text="${args['header-text']}"
-  description-text="${args['description-text']}"
-  header-tag-name="${args['header-tag-name']}"
-  description-tag-name="${args['description-tag-name']}"
-  role="${args.role}"
-  triggerId="${args.triggerId}"
-  aria-labelledby="${ifDefined(args['aria-labelledby'])}"
-  aria-label="${ifDefined(args['aria-label'])}"
-  ?should-focus-trap-wrap=${args['should-focus-trap-wrap']}
-  size="${args.size}"
-  ?visible="${args.visible}"
-  variant="${args.variant}"
-  @shown="${action('onshown')}"
-  @hidden="${action('onhidden')}"
-  @close="${onClose}"
->
-  ${content}
-</mdc-dialog>`;
+const createDialog = (args: Args, content: TemplateResult, onClose: () => void) =>
+  html`<mdc-dialog
+    class="${args.class}"
+    style="${args.style}"
+    id="${args.id}"
+    z-index="${args['z-index']}"
+    close-button-aria-label="${args['close-button-aria-label']}"
+    header-text="${args['header-text']}"
+    description-text="${args['description-text']}"
+    header-tag-name="${args['header-tag-name']}"
+    description-tag-name="${args['description-tag-name']}"
+    role="${args.role}"
+    triggerId="${args.triggerId}"
+    aria-labelledby="${ifDefined(args['aria-labelledby'])}"
+    aria-label="${ifDefined(args['aria-label'])}"
+    ?should-focus-trap-wrap=${args['should-focus-trap-wrap']}
+    size="${args.size}"
+    ?visible="${args.visible}"
+    variant="${args.variant}"
+    @shown="${action('onshown')}"
+    @hidden="${action('onhidden')}"
+    @close="${onClose}"
+  >
+    ${content}
+  </mdc-dialog>`;
 
 const createTrigger = (triggerID: string, text: String, toggleVisibility: () => void) => html`
   <div
@@ -50,53 +53,46 @@ const createTrigger = (triggerID: string, text: String, toggleVisibility: () => 
 `;
 
 const dialogBodyContent = (toggleVisibility?: () => void, customHeader = false) => html`
-${customHeader && html`
-  <mdc-icon slot="header-prefix" name="placeholder-bold"></mdc-icon>
-`}
-<div slot="dialog-body">
-  <p>This is the body content of the dialog.</p>
-</div>
-<mdc-link slot="footer-link" icon-name="placeholder-bold" href='#'>Label</mdc-link>
-<mdc-text slot="footer-link">Not rendered</mdc-text>
-<mdc-button slot="footer-button-secondary" @click="${toggleVisibility}">Secondary</mdc-button>
-<mdc-button slot="footer-button-primary" @click="${toggleVisibility}">Primary</mdc-button>
+  ${customHeader && html` <mdc-icon slot="header-prefix" name="placeholder-bold"></mdc-icon> `}
+  <div slot="dialog-body">
+    <p>This is the body content of the dialog.</p>
+  </div>
+  <mdc-link slot="footer-link" icon-name="placeholder-bold" href="#">Label</mdc-link>
+  <mdc-text slot="footer-link">Not rendered</mdc-text>
+  <mdc-button slot="footer-button-secondary" @click="${toggleVisibility}">Secondary</mdc-button>
+  <mdc-button slot="footer-button-primary" @click="${toggleVisibility}">Primary</mdc-button>
 `;
 
 const dialogWithPopoverContent = (toggleVisibility: () => void) => html`
-<div slot="dialog-body">
-  <p>This is the body content of the dialog.</p>
-  <mdc-popover
-    id="popover"
-    placement="bottom"
-    trigger="click"
-    triggerId="popover-trigger"
-    focus-trap
-    interactive
-    hide-on-escape
-    focus-back-to-trigger
-  >
-    <div class="popover-content">
-      <p>This is the content of the popover.</p>
-      <mdc-button @click="${toggleVisibility}">Close Popover</mdc-button>
-    </div>
-  </mdc-popover>
-  <mdc-button id="popover-trigger">Toggle Popover</mdc-button>
-  <mdc-tooltip
-    id="tooltip"
-    triggerId="tooltip-trigger"
-    placement="top">
-    This is a tooltip
-  </mdc-tooltip>
-  <mdc-button id="tooltip-trigger">Hover me for tooltip</mdc-button>
-</div>
+  <div slot="dialog-body">
+    <p>This is the body content of the dialog.</p>
+    <mdc-popover
+      id="popover"
+      placement="bottom"
+      trigger="click"
+      triggerId="popover-trigger"
+      focus-trap
+      interactive
+      hide-on-escape
+      focus-back-to-trigger
+    >
+      <div class="popover-content">
+        <p>This is the content of the popover.</p>
+        <mdc-button @click="${toggleVisibility}">Close Popover</mdc-button>
+      </div>
+    </mdc-popover>
+    <mdc-button id="popover-trigger">Toggle Popover</mdc-button>
+    <mdc-tooltip id="tooltip" triggerId="tooltip-trigger" placement="top"> This is a tooltip </mdc-tooltip>
+    <mdc-button id="tooltip-trigger">Hover me for tooltip</mdc-button>
+  </div>
 `;
 
 const dialogWithIframeContent = () => html`
-<div slot="dialog-body">
-  <p>This is the body content of the dialog. Try out pressing Tab to see the Focus Trap being stuck</p>
-  <iframe src="https://example.com" width="100%" height="300px"></iframe>
-  <mdc-button>This is a mdc-button after the Iframe</mdc-button>
-</div>
+  <div slot="dialog-body">
+    <p>This is the body content of the dialog. Try out pressing Tab to see the Focus Trap being stuck</p>
+    <iframe src="https://example.com" width="100%" height="300px"></iframe>
+    <mdc-button>This is a mdc-button after the Iframe</mdc-button>
+  </div>
 `;
 
 const render = (args: Args) => {
@@ -151,13 +147,17 @@ const renderSaveCancelBtns = (args: Args) => {
   };
   return html`
     ${createTrigger(args.triggerId, 'Click me!', toggleVisibility)}
-    ${createDialog(args, html`
-      <div slot="dialog-body">
-        <p>This is the body content of the dialog.</p>
-      </div>
-      <mdc-button slot="footer-button-secondary" @click="${showConfirmAlert}">Cancel</mdc-button>
-      <mdc-button slot="footer-button-primary" @click="${toggleVisibility}">Save</mdc-button>
-    `, onClose)}
+    ${createDialog(
+      args,
+      html`
+        <div slot="dialog-body">
+          <p>This is the body content of the dialog.</p>
+        </div>
+        <mdc-button slot="footer-button-secondary" @click="${showConfirmAlert}">Cancel</mdc-button>
+        <mdc-button slot="footer-button-primary" @click="${toggleVisibility}">Save</mdc-button>
+      `,
+      onClose,
+    )}
   `;
 };
 
@@ -173,10 +173,13 @@ const renderNoFooter = (args: Args) => {
 
   return html`
     ${createTrigger(args.triggerId, 'Click me!', toggleVisibility)}
-    ${createDialog(args, html`
-      <div slot="dialog-body">
+    ${createDialog(
+      args,
+      html` <div slot="dialog-body">
         <p>This is the body content of the dialog.</p>
-      </div>`, onClose)}
+      </div>`,
+      onClose,
+    )}
   `;
 };
 
@@ -214,23 +217,28 @@ const renderDialogWithinDialog = (args: Args) => {
   };
   return html`
     ${createTrigger(args.triggerId, 'Click me!', toggleVisibility)}
-    ${createDialog(args, html`
-      <div slot="dialog-body">
-        <p>This is the body content of the dialog.</p>
-        <mdc-button id="nested-dialog-trigger" @click=${toggleVisibilityNested}>Open Nested Dialog</mdc-button>
-        <mdc-dialog
-          id="nested-dialog"
-          triggerId="nested-dialog-trigger"
-          aria-label="nested-dialog"
-          size="small"
-          close-button-aria-label="Close nested dialog"
-          header-text="Nested Dialog Header"
-          description-text="This is a nested dialog description."
-          @close="${onCloseNested}"
+    ${createDialog(
+      args,
+      html`
+        <div slot="dialog-body">
+          <p>This is the body content of the dialog.</p>
+          <mdc-button id="nested-dialog-trigger" @click=${toggleVisibilityNested}>Open Nested Dialog</mdc-button>
+          <mdc-dialog
+            id="nested-dialog"
+            triggerId="nested-dialog-trigger"
+            aria-label="nested-dialog"
+            size="small"
+            close-button-aria-label="Close nested dialog"
+            header-text="Nested Dialog Header"
+            description-text="This is a nested dialog description."
+            @close="${onCloseNested}"
           >
-        <mdc-button slot="dialog-body">Button inside a nested dialog</mdc-button></mdc-dialog>
-      </div>
-    `, onClose)}
+            <mdc-button slot="dialog-body">Button inside a nested dialog</mdc-button></mdc-dialog
+          >
+        </div>
+      `,
+      onClose,
+    )}
   `;
 };
 
@@ -316,9 +324,7 @@ const meta: Meta = {
       '--mdc-dialog-elevation-3',
       '--mdc-dialog-width',
     ]),
-    ...hideControls([
-      'focusTrap',
-    ]),
+    ...hideControls(['focusTrap']),
   },
 };
 
@@ -408,30 +414,29 @@ export const withCustomHeader: StoryObj = {
 
 export const WithoutTriggerElement: StoryObj = {
   render: (args: Args) => html`
-  <p>Toggle the visible property to show/hide the dialog</p>
-  <mdc-dialog
-    id="dialog"
-    aria-label="dialog"
-    size="small"
-    variant="default"
-    close-button-aria-label="Close dialog"
-    ?visible="${args.visible}"
-    z-index="100"
-    role="dialog"
-    header-text="Dialog Header"
-    description-text="This is a dialog description. It is only present if the header is present."
-    header-tag-name="h2"
-    description-tag-name="p"
-    @shown="${action('onshown')}"
-    @hidden="${action('onhidden')}"
-  >
-    <mdc-icon slot="header-prefix" name="placeholder-bold"></mdc-icon>
-    <div slot="dialog-body">
-    </div>
-    <mdc-link slot="footer-link" icon-name="placeholder-bold" href='#'>Label</mdc-link>
-    <mdc-button slot="footer-button-secondary">Secondary</mdc-button>
-    <mdc-button slot="footer-button-primary">Primary</mdc-button>
-  </mdc-dialog>
+    <p>Toggle the visible property to show/hide the dialog</p>
+    <mdc-dialog
+      id="dialog"
+      aria-label="dialog"
+      size="small"
+      variant="default"
+      close-button-aria-label="Close dialog"
+      ?visible="${args.visible}"
+      z-index="100"
+      role="dialog"
+      header-text="Dialog Header"
+      description-text="This is a dialog description. It is only present if the header is present."
+      header-tag-name="h2"
+      description-tag-name="p"
+      @shown="${action('onshown')}"
+      @hidden="${action('onhidden')}"
+    >
+      <mdc-icon slot="header-prefix" name="placeholder-bold"></mdc-icon>
+      <div slot="dialog-body"></div>
+      <mdc-link slot="footer-link" icon-name="placeholder-bold" href="#">Label</mdc-link>
+      <mdc-button slot="footer-button-secondary">Secondary</mdc-button>
+      <mdc-button slot="footer-button-primary">Primary</mdc-button>
+    </mdc-dialog>
   `,
 };
 

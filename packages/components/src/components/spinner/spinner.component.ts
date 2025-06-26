@@ -1,11 +1,12 @@
 import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
-import styles from './spinner.styles';
-import { Component } from '../../models';
 
+import { Component } from '../../models';
+import { ROLE } from '../../utils/roles';
+
+import styles from './spinner.styles';
 import { SpinnerSize, SpinnerVariant } from './spinner.types';
 import { DEFAULTS } from './spinner.constants';
-import { ROLE } from '../../utils/roles';
 
 /**
  * `mdc-spinner` is loading spinner which is an indeterminate progress indicator, meaning
@@ -72,13 +73,13 @@ class Spinner extends Component {
   override ariaLabel: string | null = null;
 
   /**
-  * There are 2 variants of spinner: default and button. Their coloring is different.
-  * - **Standalone (Default)**: Track has a blue color.
-  * - **Button**: To be used when placed in a button to show that the button’s action is currently in progress.
-  * To ensure a minimum 3:1 contrast ratio, change the active indicator color to be the same color as the button’s
-  * icon or label text.
-  * @default standalone
-  */
+   * There are 2 variants of spinner: default and button. Their coloring is different.
+   * - **Standalone (Default)**: Track has a blue color.
+   * - **Button**: To be used when placed in a button to show that the button’s action is currently in progress.
+   * To ensure a minimum 3:1 contrast ratio, change the active indicator color to be the same color as the button’s
+   * icon or label text.
+   * @default standalone
+   */
   @property({ type: String, reflect: true })
   variant: SpinnerVariant = DEFAULTS.VARIANT;
 

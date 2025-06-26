@@ -1,6 +1,7 @@
 import type { CSSResult, PropertyValues, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
+
 import { Component } from '../../models';
 import { KEYS } from '../../utils/keys';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
@@ -11,6 +12,7 @@ import type { PopoverPlacement } from '../popover/popover.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { TextType } from '../text/text.types';
 import { TAG_NAME as TOOLTIP_TAG_NAME } from '../tooltip/tooltip.constants';
+
 import { DEFAULTS, LISTITEM_ID, TOOLTIP_ID } from './listitem.constants';
 import styles from './listitem.styles';
 import type { ListItemVariants } from './listitem.types';
@@ -236,7 +238,7 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
    * @param disabled - Whether to disable or enable the controls.
    */
   private disableSlottedChildren(disabled: boolean): void {
-    [...this.leadingControlsSlot, ...this.trailingControlsSlot].forEach((element) => {
+    [...this.leadingControlsSlot, ...this.trailingControlsSlot].forEach(element => {
       if (disabled) {
         element.setAttribute('disabled', '');
       } else {
@@ -260,10 +262,12 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
    * @returns A template for the trailing controls slot.
    */
   protected renderTrailingControls() {
-    return html`<slot name="trailing-controls" 
-    @click=${this.stopEventPropagation}
-    @keyup=${this.stopEventPropagation}
-    @keydown=${this.stopEventPropagation}></slot>`;
+    return html`<slot
+      name="trailing-controls"
+      @click=${this.stopEventPropagation}
+      @keyup=${this.stopEventPropagation}
+      @keydown=${this.stopEventPropagation}
+    ></slot>`;
   }
 
   /**
@@ -271,10 +275,12 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
    * @returns A template for the leading controls slot.
    */
   protected renderLeadingControls() {
-    return html`<slot name="leading-controls" 
-    @click=${this.stopEventPropagation}
-    @keyup=${this.stopEventPropagation}
-    @keydown=${this.stopEventPropagation}></slot>`;
+    return html`<slot
+      name="leading-controls"
+      @click=${this.stopEventPropagation}
+      @keyup=${this.stopEventPropagation}
+      @keydown=${this.stopEventPropagation}
+    ></slot>`;
   }
 
   /**
@@ -285,8 +291,10 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
    * @param event - The mouse event triggered when a click occurs.
    */
   protected stopEventPropagation(event: Event): void {
-    if ((event instanceof KeyboardEvent && (event.key === KEYS.ENTER || event.key === KEYS.SPACE))
-        || (event instanceof MouseEvent)) {
+    if (
+      (event instanceof KeyboardEvent && (event.key === KEYS.ENTER || event.key === KEYS.SPACE)) ||
+      event instanceof MouseEvent
+    ) {
       event.stopPropagation();
     }
   }

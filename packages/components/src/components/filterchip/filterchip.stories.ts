@@ -2,11 +2,12 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
 
-const render = (args: Args) => html`
-  <mdc-filterchip 
+const render = (args: Args) =>
+  html` <mdc-filterchip
     @click="${action('onclick')}"
     @keydown="${action('onkeydown')}"
     @keyup="${action('onkeyup')}"
@@ -36,8 +37,7 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
-    ...hideControls(['soft-disabled', 'size', 'role', 'type', 'active',
-      'icon-name', 'color']),
+    ...hideControls(['soft-disabled', 'size', 'role', 'type', 'active', 'icon-name', 'color']),
   },
 };
 
@@ -76,10 +76,10 @@ export const SelectedAndDisabled: StoryObj = {
 };
 
 export const StatesAndVariants: StoryObj = {
-  render: () => html`
-  <div style="display: flex; gap: 0.5rem;">
-    <mdc-filterchip label="Filterchip"></mdc-filterchip>
-    <mdc-filterchip label="Selected" selected></mdc-filterchip>
-    <mdc-filterchip label="Disabled" disabled></mdc-filterchip>
-  </div>`,
+  render: () =>
+    html` <div style="display: flex; gap: 0.5rem;">
+      <mdc-filterchip label="Filterchip"></mdc-filterchip>
+      <mdc-filterchip label="Selected" selected></mdc-filterchip>
+      <mdc-filterchip label="Disabled" disabled></mdc-filterchip>
+    </div>`,
 };

@@ -2,6 +2,7 @@ import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import type { TemplateResult } from 'lit';
 import { html } from 'lit';
+
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
@@ -11,22 +12,23 @@ const wrapWithDiv = (htmlString: TemplateResult) => html`
   <div aria-label="List box" role="listbox">${htmlString}</div>
 `;
 
-const render = (args: Args) => wrapWithDiv(html`
-  <mdc-option
-    @click="${action('onclick')}"
-    @keydown="${action('onkeydown')}"
-    @keyup="${action('onkeyup')}"
-    @focus="${action('onfocus')}"
-    ?disabled="${args.disabled}"
-    ?selected="${args.selected}"
-    label="${args.label}"
-    value="${args.value}"
-    prefix-icon="${args['prefix-icon']}"
-    aria-label="${args['aria-label']}"
-    tooltip-text="${args['tooltip-text']}"
-    tooltip-placement="${args['tooltip-placement']}"
-  ></mdc-option>
-`);
+const render = (args: Args) =>
+  wrapWithDiv(html`
+    <mdc-option
+      @click="${action('onclick')}"
+      @keydown="${action('onkeydown')}"
+      @keyup="${action('onkeyup')}"
+      @focus="${action('onfocus')}"
+      ?disabled="${args.disabled}"
+      ?selected="${args.selected}"
+      label="${args.label}"
+      value="${args.value}"
+      prefix-icon="${args['prefix-icon']}"
+      aria-label="${args['aria-label']}"
+      tooltip-text="${args['tooltip-text']}"
+      tooltip-placement="${args['tooltip-placement']}"
+    ></mdc-option>
+  `);
 
 const meta: Meta = {
   title: 'Components/select/option',
@@ -90,13 +92,7 @@ const meta: Meta = {
       'trailing-text-side-header',
       'trailing-text-subline',
     ]),
-    ...disableControls([
-      'click',
-      'keydown',
-      'keyup',
-      'focus',
-      'default',
-    ]),
+    ...disableControls(['click', 'keydown', 'keyup', 'focus', 'default']),
     ...classArgType,
     ...styleArgType,
   },
