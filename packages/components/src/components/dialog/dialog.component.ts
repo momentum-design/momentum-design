@@ -187,13 +187,13 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(
   @property({ type: Boolean, reflect: true, attribute: 'disable-aria-haspopup' })
   disableAriaHasPopup: boolean = DEFAULTS.DISABLE_ARIA_HAS_POPUP;
 
-    /**
+  /**
    * Determines whether the focus trap is enabled.
    * If true, focus will be restricted to the content within this component.
-   * 
-   * NOTE: this should only be disabled in rare cases! By default a Modal Dialog 
+   *
+   * NOTE: this should only be disabled in rare cases! By default a Modal Dialog
    * should trap focus always.
-   * 
+   *
    * @default true
    */
   @property({ type: Boolean, reflect: true, attribute: 'focus-trap' })
@@ -407,8 +407,7 @@ class Dialog extends PreventScrollMixin(FocusTrapMixin(CardAndDialogFooterMixin(
       this.activatePreventScroll();
 
       await this.updateComplete;
-      console.log(this.focusTrap)
-      if(this.focusTrap) {
+      if (this.focusTrap) {
         this.activateFocusTrap?.();
       }
       this.setInitialFocus?.();
