@@ -24,6 +24,14 @@ import { KEYS } from '../../utils/keys';
  *
  * @tagname mdc-menuitem
  *
+ * @slot leading-controls - slot for menu item controls to appear of leading end.
+ * @slot leading-text-primary-label - slot for menu item primary label.
+ * @slot leading-text-secondary-label - slot for menu item secondary label.
+ * @slot leading-text-tertiary-label - slot for menu item tertiary label.
+ * @slot trailing-text-side-header - slot for menu item side header text.
+ * @slot trailing-text-subline - slot for menu item subline text.
+ * @slot trailing-controls - slot for menu item controls to appear of trailing end.
+ *
  * @event click - (React: onClick) This event is dispatched when the menuitem is clicked.
  * @event keydown - (React: onKeyDown) This event is dispatched when a key is pressed down on the menuitem.
  * @event keyup - (React: onKeyUp) This event is dispatched when a key is released on the menuitem.
@@ -47,6 +55,17 @@ class MenuItem extends ListItem {
    */
   @property({ type: String, reflect: true, attribute: 'arrow-direction' })
   arrowDirection?: ArrowDirections;
+
+  /**
+   * The name attribute is used to identify the menu item when it is selected.
+   */
+  @property({ type: String, reflect: true, attribute: 'name' }) name?: undefined | string = undefined;
+
+  /**
+   * The value attribute is used to represent a value when the menu item is selected.
+   * It is typically used with checkbox and radio menu items, but can be handy for any menu item.
+   */
+  @property({ type: String, reflect: true, attribute: 'value' }) value?: undefined | string = undefined;
 
   constructor() {
     super();
@@ -92,18 +111,18 @@ class MenuItem extends ListItem {
    * based on `arrowPosition` and `arrowDirection`.
    */
   protected override renderTrailingControls() {
-    const arrowIcon = this.arrowDirection === ARROW_DIRECTIONS.NEGATIVE
-      ? ARROW_ICONS.LEFT
-      : ARROW_ICONS.RIGHT;
+    const arrowIcon = this.arrowDirection === ARROW_DIRECTIONS.NEGATIVE ? ARROW_ICONS.LEFT : ARROW_ICONS.RIGHT;
 
     return html`
-      <slot name="trailing-controls"
-      @click=${this.stopEventPropagation}
-      @keyup=${this.stopEventPropagation}
-      @keydown=${this.stopEventPropagation}></slot>
+      <slot
+        name="trailing-controls"
+        @click=${this.stopEventPropagation}
+        @keyup=${this.stopEventPropagation}
+        @keydown=${this.stopEventPropagation}
+      ></slot>
       ${this.arrowPosition === ARROW_POSITIONS.TRAILING
-    ? html`<mdc-icon name="${arrowIcon}" length-unit="rem" part="trailing-arrow"></mdc-icon>`
-    : nothing}
+        ? html`<mdc-icon name="${arrowIcon}" length-unit="rem" part="trailing-arrow"></mdc-icon>`
+        : nothing}
     `;
   }
 
@@ -112,18 +131,18 @@ class MenuItem extends ListItem {
    * based on `arrowPosition` and `arrowDirection`.
    */
   protected override renderLeadingControls() {
-    const arrowIcon = this.arrowDirection === ARROW_DIRECTIONS.POSITIVE
-      ? ARROW_ICONS.RIGHT
-      : ARROW_ICONS.LEFT;
+    const arrowIcon = this.arrowDirection === ARROW_DIRECTIONS.POSITIVE ? ARROW_ICONS.RIGHT : ARROW_ICONS.LEFT;
 
     return html`
-      <slot name="leading-controls"
-      @click=${this.stopEventPropagation}
-      @keyup=${this.stopEventPropagation}
-      @keydown=${this.stopEventPropagation}></slot>
+      <slot
+        name="leading-controls"
+        @click=${this.stopEventPropagation}
+        @keyup=${this.stopEventPropagation}
+        @keydown=${this.stopEventPropagation}
+      ></slot>
       ${this.arrowPosition === ARROW_POSITIONS.LEADING
-    ? html`<mdc-icon name="${arrowIcon}" length-unit="rem" part="leading-arrow"></mdc-icon>`
-    : nothing}
+        ? html`<mdc-icon name="${arrowIcon}" length-unit="rem" part="leading-arrow"></mdc-icon>`
+        : nothing}
     `;
   }
 
