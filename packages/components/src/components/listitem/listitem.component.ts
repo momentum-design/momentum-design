@@ -136,9 +136,9 @@ class ListItem extends DisabledMixin(TabIndexMixin(Component)) {
 
     this.addEventListener('keydown', this.handleKeyDown);
     this.addEventListener('focusin', this.displayTooltipForLongText);
-    this.addEventListener('mouseover', this.displayTooltipForLongText);
+    this.addEventListener('mouseenter', this.displayTooltipForLongText);
     this.addEventListener('focusout', this.hideTooltipOnLeave);
-    this.addEventListener('mouseout', this.hideTooltipOnLeave);
+    this.addEventListener('mouseleave', this.hideTooltipOnLeave);
     this.addEventListener('click', this.handleClick);
   }
 

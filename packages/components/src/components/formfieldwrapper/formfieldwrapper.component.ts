@@ -39,7 +39,7 @@ class FormfieldWrapper extends DisabledMixin(Component) {
 
   /**
    * The unique id of the input field. It is used to link the input field with the label.
-   * @default `mdc-input-${uuidv4()}`
+   * @default ``
    */
   @property({ type: String }) override id = '';
 
