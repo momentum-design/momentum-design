@@ -1,4 +1,5 @@
 import type { ValueOf } from '../../utils/types';
+
 import { ARROW_ICON } from './select.constants';
 
 interface Events {

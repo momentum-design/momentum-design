@@ -1,5 +1,6 @@
-import { ARROW_BUTTON_DIRECTION } from './tablist.constants';
 import type { ValueOf } from '../../utils/types';
+
+import { ARROW_BUTTON_DIRECTION } from './tablist.constants';
 
 interface Events {
   onChangeEvent: CustomEvent;

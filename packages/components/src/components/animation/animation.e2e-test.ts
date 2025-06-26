@@ -1,4 +1,5 @@
 import { expect } from '@playwright/test';
+
 import { test } from '../../../config/playwright/setup';
 
 test.beforeEach(async ({ componentsPage }) => {

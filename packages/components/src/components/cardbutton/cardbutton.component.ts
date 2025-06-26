@@ -1,9 +1,11 @@
 import { CSSResult, html, nothing } from 'lit';
-import styles from './cardbutton.styles';
+
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
 import Card from '../card/card.component';
 import type { ButtonSize } from '../buttonsimple/buttonsimple.types';
 import { CardComponentMixin } from '../../utils/mixins/CardComponentMixin';
+
+import styles from './cardbutton.styles';
 
 /**
  * cardbutton component looks like a card and behaves as a button component.
@@ -43,22 +45,19 @@ class CardButton extends CardComponentMixin(Buttonsimple) {
     if (!this.cardTitle) {
       return nothing;
     }
-    return html`<div part="header">
-     ${this.renderIcon()}
-     ${this.renderTitle()}
-   </div>`;
+    return html`<div part="header">${this.renderIcon()} ${this.renderTitle()}</div>`;
   }
 
   public override render() {
     return html`
       ${this.renderImage()}
-    <div part="body">
-    ${this.renderHeader()}
-      <slot name="before-body"></slot>
-      <slot name="body"></slot>
-      <slot name="after-body"></slot>
-    </div>
-  `;
+      <div part="body">
+        ${this.renderHeader()}
+        <slot name="before-body"></slot>
+        <slot name="body"></slot>
+        <slot name="after-body"></slot>
+      </div>
+    `;
   }
 
   public static override styles: Array<CSSResult> = [...Card.styles, ...styles];

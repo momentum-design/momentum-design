@@ -1,11 +1,13 @@
 import type { PropertyValues } from 'lit';
 import { CSSResult, html, nothing } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
+
 import { Component } from '../../models';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { ROLE } from '../../utils/roles';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+
 import { HEADER_ID } from './optgroup.constants';
 import styles from './optgroup.styles';
 
@@ -31,7 +33,7 @@ class OptGroup extends DataAriaLabelMixin(DisabledMixin(Component)) {
   options!: Array<HTMLElement>;
 
   private setDisabledForAllOptions(): void {
-    this.options.forEach((element) => {
+    this.options.forEach(element => {
       if (this.disabled) {
         element.setAttribute('disabled', '');
       } else {
@@ -49,14 +51,17 @@ class OptGroup extends DataAriaLabelMixin(DisabledMixin(Component)) {
   }
 
   public override render() {
-    const headerText = this.label ? html`
-      <mdc-text
-        id="${HEADER_ID}"
-        part="header-text"
-        type="${TYPE.BODY_MIDSIZE_BOLD}"
-        tagname="${VALID_TEXT_TAGS.SPAN}"
-      >${this.label}</mdc-text>
-    ` : nothing;
+    const headerText = this.label
+      ? html`
+          <mdc-text
+            id="${HEADER_ID}"
+            part="header-text"
+            type="${TYPE.BODY_MIDSIZE_BOLD}"
+            tagname="${VALID_TEXT_TAGS.SPAN}"
+            >${this.label}</mdc-text
+          >
+        `
+      : nothing;
     return html`
       <div
         role="${ROLE.GROUP}"

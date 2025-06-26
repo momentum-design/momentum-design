@@ -1,6 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
@@ -11,13 +12,14 @@ import '../checkbox';
 import '../icon';
 import '../list';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+
 import '../toggle';
 import { LISTITEM_VARIANTS } from './listitem.constants';
 
 const wrapWithList = (content: TemplateResult) => html`<mdc-list style="width: 10rem">${content}</mdc-list>`;
 
-const render = (args: Args) => wrapWithList(
-  html`
+const render = (args: Args) =>
+  wrapWithList(html`
     <mdc-listitem
       @click="${action('onclick')}"
       @keydown="${action('onkeydown')}"
@@ -42,8 +44,7 @@ const render = (args: Args) => wrapWithList(
       <mdc-toggle slot="trailing-controls" data-aria-label="mock label" size="compact"></mdc-toggle>
       <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
     </mdc-listitem>
-  `,
-);
+  `);
 
 const meta: Meta = {
   title: 'Components/listitem',
@@ -86,9 +87,7 @@ const meta: Meta = {
       control: 'select',
       options: Object.values(POPOVER_PLACEMENT),
     },
-    ...hideControls([
-      'role',
-    ]),
+    ...hideControls(['role']),
     ...disableControls([
       'click',
       'keydown',
@@ -137,47 +136,47 @@ export const LabelOnly: StoryObj = {
 };
 
 export const TrailingIcon: StoryObj = {
-  render: () => wrapWithList(html`
-    <mdc-listitem>
-      <mdc-icon length-unit="rem" slot="trailing-controls" name="placeholder-bold"></mdc-icon>
-    </mdc-listitem>
-  `),
+  render: () =>
+    wrapWithList(html`
+      <mdc-listitem>
+        <mdc-icon length-unit="rem" slot="trailing-controls" name="placeholder-bold"></mdc-icon>
+      </mdc-listitem>
+    `),
   ...hideAllControls(),
 };
 
 export const ListWithLabelAndLeadingAvatar: StoryObj = {
-  render: () => wrapWithList(html`
-    <mdc-listitem label="Primary Label">
-      <mdc-avatar slot="leading-controls" src="https://picsum.photos/id/237/256" presence="busy"></mdc-avatar>
-    </mdc-listitem>
-  `),
+  render: () =>
+    wrapWithList(html`
+      <mdc-listitem label="Primary Label">
+        <mdc-avatar slot="leading-controls" src="https://picsum.photos/id/237/256" presence="busy"></mdc-avatar>
+      </mdc-listitem>
+    `),
   ...hideAllControls(),
 };
 
 export const ListWithLabelAndTrailingBadge: StoryObj = {
-  render: () => wrapWithList(html`
-    <mdc-listitem label="Primary Label">
-      <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
-    </mdc-listitem>
-  `),
+  render: () =>
+    wrapWithList(html`
+      <mdc-listitem label="Primary Label">
+        <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
+      </mdc-listitem>
+    `),
   ...hideAllControls(),
 };
 
 export const ListWithDisableState: StoryObj = {
-  render: (args: Args) => wrapWithList(html`
-    <mdc-listitem
-      ?disabled="${args.disabled}"
-      label="${args.label}"
-      side-header-text="${args['side-header-text']}"
-    >
-      <mdc-checkbox slot="leading-controls" data-aria-label="mock label" checked></mdc-checkbox>
-      <mdc-icon length-unit="rem" slot="leading-controls" name="placeholder-bold"></mdc-icon>
-      <mdc-icon length-unit="rem" slot="trailing-controls" name="placeholder-bold"></mdc-icon>
-      <mdc-button slot="trailing-controls" variant="secondary">Label</mdc-button>
-      <mdc-toggle slot="trailing-controls" data-aria-label="mock label" size="compact"></mdc-toggle>
-      <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
-    </mdc-listitem>
-  `),
+  render: (args: Args) =>
+    wrapWithList(html`
+      <mdc-listitem ?disabled="${args.disabled}" label="${args.label}" side-header-text="${args['side-header-text']}">
+        <mdc-checkbox slot="leading-controls" data-aria-label="mock label" checked></mdc-checkbox>
+        <mdc-icon length-unit="rem" slot="leading-controls" name="placeholder-bold"></mdc-icon>
+        <mdc-icon length-unit="rem" slot="trailing-controls" name="placeholder-bold"></mdc-icon>
+        <mdc-button slot="trailing-controls" variant="secondary">Label</mdc-button>
+        <mdc-toggle slot="trailing-controls" data-aria-label="mock label" size="compact"></mdc-toggle>
+        <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
+      </mdc-listitem>
+    `),
   args: {
     disabled: true,
     label: 'Primary Label',
@@ -189,15 +188,18 @@ export const ListWithDisableState: StoryObj = {
 };
 
 export const ListWithIconAndLabels: StoryObj = {
-  render: () => wrapWithList(html`
-    <mdc-listitem label="Primary Label" 
-    secondary-label="This is a long Secondary Label" 
-    tertiary-label="Teritary Label">
-      <div slot="leading-controls">
-        <mdc-icon length-unit="rem" name="placeholder-bold"></mdc-icon>
-      </div>
-    </mdc-listitem>
-  `),
+  render: () =>
+    wrapWithList(html`
+      <mdc-listitem
+        label="Primary Label"
+        secondary-label="This is a long Secondary Label"
+        tertiary-label="Teritary Label"
+      >
+        <div slot="leading-controls">
+          <mdc-icon length-unit="rem" name="placeholder-bold"></mdc-icon>
+        </div>
+      </mdc-listitem>
+    `),
   ...hideAllControls(),
 };
 

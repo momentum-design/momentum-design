@@ -3,15 +3,18 @@ import { action } from '@storybook/addon-actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import '.';
 import { html } from 'lit';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { AUTO_CAPITALIZE } from '../input/input.constants';
-import { AUTO_COMPLETE, DEFAULTS, WRAP } from './textarea.constants';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
-const render = (args: Args) => html`<mdc-textarea
+import { AUTO_COMPLETE, DEFAULTS, WRAP } from './textarea.constants';
+
+const render = (args: Args) =>
+  html`<mdc-textarea
     @input="${action('oninput')}"
     @change="${action('onchange')}"
     @focus="${action('onfocus')}"
@@ -134,12 +137,7 @@ const meta: Meta = {
     'info-icon-aria-label': {
       control: 'text',
     },
-    ...hideControls([
-      'characterLimitExceedingFired',
-      'textarea',
-      'validity',
-      'willValidate',
-    ]),
+    ...hideControls(['characterLimitExceedingFired', 'textarea', 'validity', 'willValidate']),
     ...disableControls([
       '--mdc-textarea-disabled-border-color',
       '--mdc-textarea-disabled-text-color',
@@ -199,8 +197,9 @@ export const DisabledTextarea: StoryObj = {
   parameters: {
     docs: {
       description: {
-        story: 'This story displays a disabled textarea component. The textarea will be displayed as disabled'
-            + 'when the `disabled` attribute is set to true. The user will not be able to interact with the textarea.',
+        story:
+          'This story displays a disabled textarea component. The textarea will be displayed as disabled' +
+          'when the `disabled` attribute is set to true. The user will not be able to interact with the textarea.',
       },
     },
   },
@@ -215,9 +214,10 @@ export const ReadonlyTextarea: StoryObj = {
   parameters: {
     docs: {
       description: {
-        story: 'This story displays a readonly textarea component. The textarea will be displayed as readonly'
-            + 'when the `readonly` attribute is set to true. The user will not be able to edit the content'
-            + ' of the textarea.',
+        story:
+          'This story displays a readonly textarea component. The textarea will be displayed as readonly' +
+          'when the `readonly` attribute is set to true. The user will not be able to edit the content' +
+          ' of the textarea.',
       },
     },
   },
@@ -227,51 +227,55 @@ export const AllVariants: StoryObj = {
   argTypes: {
     ...disableControls(['label', 'help-text', 'required', 'placeholder', 'value', 'help-text-type']),
   },
-  render: () => html`
-  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
-    ${Object.values(VALIDATION).map((validation) => html`<mdc-textarea
-      help-text-type="${validation}"
-      label="Label"
-      help-text="${validation} helper text"
-      placeholder="Placeholder"
-      value="${validation}_value"
-      ></mdc-textarea>`)}
-      <mdc-textarea 
-      label="Required Textarea"
-      help-text="Helper text"
-      help-text-type="default"
-      required 
-      placeholder="Textarea is required"
+  render: () =>
+    html` <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
+      ${Object.values(VALIDATION).map(
+        validation =>
+          html`<mdc-textarea
+            help-text-type="${validation}"
+            label="Label"
+            help-text="${validation} helper text"
+            placeholder="Placeholder"
+            value="${validation}_value"
+          ></mdc-textarea>`,
+      )}
+      <mdc-textarea
+        label="Required Textarea"
+        help-text="Helper text"
+        help-text-type="default"
+        required
+        placeholder="Textarea is required"
       ></mdc-textarea>
-      <mdc-textarea 
-      label="Textarea within character limit"
-      help-text="Helper text"
-      help-text-type="default"
-      value="Momentum is how webex design the future of work."
-      readonly
-      placeholder="Placeholder"
-      max-character-limit="75"
+      <mdc-textarea
+        label="Textarea within character limit"
+        help-text="Helper text"
+        help-text-type="default"
+        value="Momentum is how webex design the future of work."
+        readonly
+        placeholder="Placeholder"
+        max-character-limit="75"
       ></mdc-textarea>
-      <mdc-textarea 
-      label="Textarea exceeding character limit"
-      readonly
-      help-text="Input must not exceed 100 characters."
-      help-text-type="error"
-      placeholder="Placeholder"
-      max-character-limit="75"
-      >Momentum is how webex design the future of work. This design system exist to create a shared design language.
+      <mdc-textarea
+        label="Textarea exceeding character limit"
+        readonly
+        help-text="Input must not exceed 100 characters."
+        help-text-type="error"
+        placeholder="Placeholder"
+        max-character-limit="75"
+        >Momentum is how webex design the future of work. This design system exist to create a shared design language.
       </mdc-textarea>
-      </div>`,
+    </div>`,
   parameters: {
     docs: {
       description: {
-        story: 'This story displays all the variants of the textarea component.'
-            + 'The textarea component supports all the validation types. '
-            + 'User can set the `help-text-type` attribute to any of the validation types to display'
-            + 'the help text in that style.'
-            + 'The textarea can also be set as required by passing the `required` attribute.'
-            + 'User can also set the `max-character-limit` attribute to display a character counter below the textarea.'
-            + 'The textarea can also be set as readonly by passing the `readonly` attribute.',
+        story:
+          'This story displays all the variants of the textarea component.' +
+          'The textarea component supports all the validation types. ' +
+          'User can set the `help-text-type` attribute to any of the validation types to display' +
+          'the help text in that style.' +
+          'The textarea can also be set as required by passing the `required` attribute.' +
+          'User can also set the `max-character-limit` attribute to display a character counter below the textarea.' +
+          'The textarea can also be set as readonly by passing the `readonly` attribute.',
       },
     },
   },
@@ -308,35 +312,36 @@ export const TextareaWithCharacterCounter: StoryObj = {
 
     return html`
       <form @submit=${handleSubmit}>
-      <fieldset>
-        <legend>Form Example</legend>
-        <mdc-textarea
-          id="textarea"
-          name="tweet"
-          label="Tweet"
-          @limitexceeded=${handleCharacterLimitCheck}
-          help-text="${helpText}"
-          help-text-type="${helpTextType}"
-          required
-          max-character-limit="75"
-          placeholder="Write what's on your mind"
-        ></mdc-textarea>
-        <div style='display: flex; gap: 0.25rem; margin-top: 0.25rem'>
-          <mdc-button type="submit" size='24'>Submit</mdc-button>
-          <mdc-button type="reset" size='24' variant='secondary'>Reset</mdc-button>
-        </div>
-      </fieldset>
+        <fieldset>
+          <legend>Form Example</legend>
+          <mdc-textarea
+            id="textarea"
+            name="tweet"
+            label="Tweet"
+            @limitexceeded=${handleCharacterLimitCheck}
+            help-text="${helpText}"
+            help-text-type="${helpTextType}"
+            required
+            max-character-limit="75"
+            placeholder="Write what's on your mind"
+          ></mdc-textarea>
+          <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
+            <mdc-button type="submit" size="24">Submit</mdc-button>
+            <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+          </div>
+        </fieldset>
       </form>
     `;
   },
   parameters: {
     docs: {
       description: {
-        story: 'To add a character counter to the textarea, use the `max-character-limit` attribute. '
-        + 'The character counter will be displayed below the textarea with the max character limit.'
-        + 'User needs to listen to the `limitexceeded` event to handle the character limit check.'
-        + 'The event will contain the current character count, the max character limit & current value of the textarea.'
-        + 'Based on which the user can update the help text and help text type dynamically.',
+        story:
+          'To add a character counter to the textarea, use the `max-character-limit` attribute. ' +
+          'The character counter will be displayed below the textarea with the max character limit.' +
+          'User needs to listen to the `limitexceeded` event to handle the character limit check.' +
+          'The event will contain the current character count, the max character limit & current value of the textarea.' +
+          'Based on which the user can update the help text and help text type dynamically.',
       },
     },
   },
@@ -352,23 +357,23 @@ export const TextareaInsideForm: StoryObj = {
     };
 
     return html`
-    <form @submit=${handleSubmit}>
-      <fieldset>
-      <legend>Form Example</legend>
-      <mdc-textarea
-        id="textarea"
-        name='tweet'
-        label="Tweet"
-        required
-        placeholder="Write what's on your mind"
-        validation-message="Tweet is required"
-      ></mdc-textarea>
-      <div style='display: flex; gap: 0.25rem; margin-top: 0.25rem'>
-        <mdc-button type="submit" size='24'>Submit</mdc-button>
-        <mdc-button type="reset" size='24' variant='secondary'>Reset</mdc-button>
-      </div>
-      </fieldset>
-    </form>
+      <form @submit=${handleSubmit}>
+        <fieldset>
+          <legend>Form Example</legend>
+          <mdc-textarea
+            id="textarea"
+            name="tweet"
+            label="Tweet"
+            required
+            placeholder="Write what's on your mind"
+            validation-message="Tweet is required"
+          ></mdc-textarea>
+          <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem">
+            <mdc-button type="submit" size="24">Submit</mdc-button>
+            <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+          </div>
+        </fieldset>
+      </form>
     `;
   },
 };

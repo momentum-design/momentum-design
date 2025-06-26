@@ -17,7 +17,6 @@
    */
   "extends": "../../../../config/api-extractor/api-extractor-base.json",
 
-
   /**
    * (REQUIRED) Specifies the .d.ts file to be used as the starting point for analysis.  API Extractor
    * analyzes the symbols exported by this module.

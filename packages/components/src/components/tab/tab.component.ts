@@ -1,15 +1,17 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
-import styles from './tab.styles';
+
 import type { IconNames } from '../icon/icon.types';
-import { DEFAULTS, TAB_VARIANTS } from './tab.constants';
-import type { Variant } from './tab.types';
 import { getIconNameWithoutStyle } from '../button/button.utils';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
 import { ButtonSize, ButtonType } from '../buttonsimple/buttonsimple.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import { ROLE } from '../../utils/roles';
+
+import type { Variant } from './tab.types';
+import { DEFAULTS, TAB_VARIANTS } from './tab.constants';
+import styles from './tab.styles';
 
 /**
  * `mdc-tab` is Tab component to be used within the Tabgroup.
@@ -244,17 +246,17 @@ class Tab extends IconNameMixin(Buttonsimple) {
     return html`
       <div part="container">
         ${this.iconName
-    ? html` <mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem" part="icon"></mdc-icon>`
-    : nothing}
+          ? html` <mdc-icon name="${this.iconName as IconNames}" size="1" length-unit="rem" part="icon"></mdc-icon>`
+          : nothing}
         ${this.text
-    ? html` <mdc-text
+          ? html` <mdc-text
               type=${this.active ? TYPE.BODY_MIDSIZE_BOLD : TYPE.BODY_MIDSIZE_MEDIUM}
               tagname=${VALID_TEXT_TAGS.SPAN}
               data-text=${this.text}
               part="text"
               >${this.text}</mdc-text
             >`
-    : nothing}
+          : nothing}
         <slot name="badge"></slot>
         <slot name="chip"></slot>
       </div>

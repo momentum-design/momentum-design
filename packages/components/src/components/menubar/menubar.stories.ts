@@ -1,9 +1,11 @@
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls } from '../../../config/storybook/utils';
+
 import '../divider';
 import '../menuitem';
 import '../menuitemcheckbox';
@@ -13,9 +15,7 @@ import '../menusection';
 
 const render = () => html`
   <div style="width: 100%; display: flex;" class="root">
-    <mdc-menubar
-      @click="${action('onclick')}"
-    >
+    <mdc-menubar @click="${action('onclick')}">
       <mdc-menuitem label="Home"></mdc-menuitem>
       <mdc-menuitem id="file-id" label="File"></mdc-menuitem>
       <mdc-menupopover triggerid="file-id">
@@ -77,30 +77,32 @@ const render = () => html`
       <mdc-menuitem label="Window"></mdc-menuitem>
       <mdc-menuitem label="Help"></mdc-menuitem>
     </mdc-menubar>
-    <div style="
+    <div
+      style="
       height: 25rem; width: 100%; display: flex; justify-content: center; align-items: center;
       background-image: linear-gradient(120deg, #fdfbfb 0%, #d3d3d3 100%);
-    ">
+    "
+    >
       <div id="container">
         <h1>Welcome, select a menu item from the top</h1>
       </div>
     </div>
   </div>
   <script>
-    var handleClick = (event) => {
+    var handleClick = event => {
       const activePage = event.target.getAttribute('label');
       const container = document.getElementById('container');
       if (!activePage || !container) return;
 
       container.innerHTML = '<h1>You have clicked ' + activePage + '</h1>';
-    }
+    };
     document.addEventListener('click', handleClick);
   </script>
   <style>
     #container h1 {
       color: black;
     }
-    mdc-menubar[aria-orientation='horizontal'] {  
+    mdc-menubar[aria-orientation='horizontal'] {
       width: 100%;
       height: 3rem;
     }
@@ -147,10 +149,7 @@ const meta: Meta = {
   argTypes: {
     ...classArgType,
     ...styleArgType,
-    ...disableControls([
-      'slot',
-      'default',
-    ]),
+    ...disableControls(['slot', 'default']),
   },
 };
 

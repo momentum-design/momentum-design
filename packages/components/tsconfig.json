@@ -5,11 +5,7 @@
   "compilerOptions": {
     "target": "es2019",
     "module": "es2020",
-    "lib": [
-      "es2020",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["es2020", "DOM", "DOM.Iterable"],
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
@@ -27,16 +23,10 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitOverride": true,
-    "useDefineForClassFields": false,
+    "useDefineForClassFields": false
   },
-  "include": [
-    "config",
-    "src/**/*.stories*",
-    "src/**/*.e2e-test*",
-  ],
-  "exclude": [
-    "node_modules"
-  ],
+  "include": ["config", "src/**/*.stories*", "src/**/*.e2e-test*"],
+  "exclude": ["node_modules"],
   "references": [
     {
       "path": "./src/tsconfig.json"

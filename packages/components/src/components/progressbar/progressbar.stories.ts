@@ -1,8 +1,10 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
+
 import { DEFAULTS, VARIANT } from './progressbar.constants';
 
 const render = (args: Args) => html`
@@ -90,37 +92,39 @@ export const AllVariants: StoryObj = {
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8rem;">
       <div>
         <h3>Default Variant</h3>
-        ${[false, true].map((error) =>
-    (error ? [100] : [0, 25, 50, 75, 100]).map(
-      (value) => html`
+        ${[false, true].map(error =>
+          (error ? [100] : [0, 25, 50, 75, 100]).map(
+            value => html`
               <mdc-progressbar
                 value="${value}"
                 variant="${VARIANT.DEFAULT}"
                 label="Label"
                 ?error="${error}"
                 help-text="Helper text"
-                data-aria-label='This is a progressbar'
+                data-aria-label="This is a progressbar"
                 style="margin-bottom: 1rem"
               ></mdc-progressbar>
             `,
-    ))}
+          ),
+        )}
       </div>
       <div>
         <h3>Inline Variant</h3>
-        ${[false, true].map((error) =>
-    (error ? [100] : [0, 25, 50, 75, 100]).map(
-      (value) => html`
+        ${[false, true].map(error =>
+          (error ? [100] : [0, 25, 50, 75, 100]).map(
+            value => html`
               <mdc-progressbar
                 value="${value}"
                 variant="${VARIANT.INLINE}"
                 label="Label"
                 ?error="${error}"
                 help-text="Helper text"
-                data-aria-label='This is a progressbar'
+                data-aria-label="This is a progressbar"
                 style="margin-bottom: 1rem"
               ></mdc-progressbar>
             `,
-    ))}
+          ),
+        )}
       </div>
     </div>
   `,

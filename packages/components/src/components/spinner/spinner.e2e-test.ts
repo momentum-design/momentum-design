@@ -1,6 +1,8 @@
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+
 import { SPINNER_SIZES, SPINNER_VARIANT } from './spinner.constants';
 
 type SetupOptions = {
@@ -68,8 +70,8 @@ test('mdc-spinner', async ({ componentsPage }) => {
       { size: SPINNER_SIZES },
       {
         rowWrapperStyle:
-          'background-color: var(--mds-color-theme-inverted-background-normal); '
-          + 'color: var(--mds-color-theme-inverted-text-primary-normal);',
+          'background-color: var(--mds-color-theme-inverted-background-normal); ' +
+          'color: var(--mds-color-theme-inverted-text-primary-normal);',
       },
     );
 
@@ -92,7 +94,7 @@ test('mdc-spinner', async ({ componentsPage }) => {
     type Attributes = {
       role?: string;
       'aria-hidden'?: string;
-      'aria-label'? : string;
+      'aria-label'?: string;
       inverted?: string;
       variant?: 'standalone' | 'button';
       size?: 'small' | 'midsize' | 'large';
@@ -113,14 +115,16 @@ test('mdc-spinner', async ({ componentsPage }) => {
         ...expectedAttributes,
       };
 
-      await Promise.all(Object.entries(attributes).map(async ([key, value]) => {
-        if (value !== undefined) {
-          await expect(spinner).toHaveAttribute(key, value);
-        } else {
-          const attribute = await spinner.getAttribute(key);
-          expect(attribute).toBeNull();
-        }
-      }));
+      await Promise.all(
+        Object.entries(attributes).map(async ([key, value]) => {
+          if (value !== undefined) {
+            await expect(spinner).toHaveAttribute(key, value);
+          } else {
+            const attribute = await spinner.getAttribute(key);
+            expect(attribute).toBeNull();
+          }
+        }),
+      );
     };
 
     await test.step('attributes should be present on component by default', async () => {

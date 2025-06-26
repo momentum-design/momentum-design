@@ -1,6 +1,8 @@
 import { CSSResult, html, PropertyValues } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
+
 import { Component } from '../../models';
+
 import { DEFAULTS } from './buttongroup.constants';
 import styles from './buttongroup.styles';
 import type { ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant } from './buttongroup.types';
@@ -60,7 +62,7 @@ class ButtonGroup extends Component {
    * @internal
    */
   private handleSlotChange() {
-    this.buttons.forEach((button) => {
+    this.buttons.forEach(button => {
       button.setAttribute('size', this.size.toString());
       button.setAttribute('variant', this.variant);
     });

@@ -1,4 +1,5 @@
 import { expect, Locator } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 
 type MenuItemConfig = {
@@ -50,7 +51,8 @@ const defaultMenuItems: MenuItemConfig[] = [
     ],
   },
   { id: 'window', label: 'Window' },
-  { id: 'preferences',
+  {
+    id: 'preferences',
     label: 'Preferences',
     softDisabled: true,
     hasSubmenu: true,
@@ -65,7 +67,7 @@ const defaultMenuItems: MenuItemConfig[] = [
 
 const renderMenuItems = (items: MenuItemConfig[]): string =>
   items
-    .map((item) => {
+    .map(item => {
       const disabled = item.disabled ? 'disabled' : '';
       const softDisabled = item.softDisabled ? 'soft-disabled' : '';
       let html = `<mdc-menuitem id="${item.id}" ${disabled} ${softDisabled} label="${item.label}"></mdc-menuitem>`;
@@ -80,9 +82,7 @@ const renderMenuItems = (items: MenuItemConfig[]): string =>
     })
     .join('');
 
-const setup = async (
-  options: SetupOptions,
-): Promise<{ menubar: Locator } & Record<string, Locator>> => {
+const setup = async (options: SetupOptions): Promise<{ menubar: Locator } & Record<string, Locator>> => {
   const { componentsPage, rtl = false, menuItems = defaultMenuItems } = options;
   const dir = rtl ? 'dir="rtl"' : '';
   const menuHtml = renderMenuItems(menuItems);
@@ -99,15 +99,15 @@ const setup = async (
   });
   const menubar = componentsPage.page.locator('mdc-menubar');
   const menuLocators: Record<string, Locator> = {};
-  menuItems.forEach((item) => {
+  menuItems.forEach(item => {
     menuLocators[item.id] = componentsPage.page.locator(`#${item.id}`);
     if (item.hasSubmenu && item.submenuItems && item.submenuPopoverId) {
       menuLocators[item.submenuPopoverId] = componentsPage.page.locator(`#${item.submenuPopoverId}`);
-      item.submenuItems.forEach((sub) => {
+      item.submenuItems.forEach(sub => {
         menuLocators[sub.id] = componentsPage.page.locator(`#${sub.id}`);
         if (sub.hasSubmenu && sub.submenuItems && sub.submenuPopoverId) {
           menuLocators[sub.submenuPopoverId] = componentsPage.page.locator(`#${sub.submenuPopoverId}`);
-          sub.submenuItems.forEach((nested) => {
+          sub.submenuItems.forEach(nested => {
             menuLocators[nested.id] = componentsPage.page.locator(`#${nested.id}`);
           });
         }
@@ -186,14 +186,16 @@ test.describe('Menubar Feature Scenarios', () => {
       const { file, edit, view, preferences, help, window } = await setup({ componentsPage });
       await componentsPage.actionability.pressTab();
       await expect(file).toBeFocused();
-      await componentsPage.actionability.pressAndCheckFocus(
-        'ArrowDown',
-        [edit, view, window, preferences, help, file],
-      );
-      await componentsPage.actionability.pressAndCheckFocus(
-        'ArrowUp',
-        [help, preferences, window, view, edit, file, help],
-      );
+      await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [edit, view, window, preferences, help, file]);
+      await componentsPage.actionability.pressAndCheckFocus('ArrowUp', [
+        help,
+        preferences,
+        window,
+        view,
+        edit,
+        file,
+        help,
+      ]);
     });
 
     await test.step('Activate menubar menuitem without submenu with Enter/Space', async () => {

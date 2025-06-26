@@ -5,9 +5,9 @@ import '../icon';
 Presence.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-presence']: Presence
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-presence']: Presence;
+  }
 }
 
 export default Presence;

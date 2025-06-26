@@ -2,10 +2,13 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
-import { DEFAULTS, LINK_SIZES } from './link.constants';
+
 import { disableControls, hideControls, readOnlyControls } from '../../../config/storybook/utils';
 
-const render = (args: Args) => html`<mdc-link
+import { DEFAULTS, LINK_SIZES } from './link.constants';
+
+const render = (args: Args) =>
+  html`<mdc-link
     @click="${action('onclick')}"
     @keydown="${action('onkeydown')}"
     @focus="${action('onfocus')}"
@@ -19,12 +22,13 @@ const render = (args: Args) => html`<mdc-link
     target="${args.target}"
     rel="${args.rel}"
     tabindex="${args.tabIndex}"
-    >${args.children}</mdc-link>`;
+    >${args.children}</mdc-link
+  >`;
 
-const renderWithInvertedBackground = (args: Args) => html`
-    <div style="background-color: var(--mds-color-theme-inverted-background-normal); padding: 8px;">
-      ${render(args)}
-    </div>`;
+const renderWithInvertedBackground = (args: Args) =>
+  html` <div style="background-color: var(--mds-color-theme-inverted-background-normal); padding: 8px;">
+    ${render(args)}
+  </div>`;
 
 const meta: Meta = {
   title: 'Components/link',

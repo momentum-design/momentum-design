@@ -1,4 +1,5 @@
 import { Page, expect } from '@playwright/test';
+
 import type { ScreenShotOptions } from '../types';
 import CONSTANTS from '../constants';
 
@@ -19,7 +20,7 @@ class VisualRegression {
    * @param direction - Either 'rtl' (right-to-left) or 'ltr' (left-to-right).
    */
   private async setDocumentDirection(direction: 'rtl' | 'ltr'): Promise<void> {
-    await this.page.evaluate(async (dir) => {
+    await this.page.evaluate(async dir => {
       document.documentElement.setAttribute('dir', dir);
 
       // wait for the next 2 frames to ensure the direction change is applied
@@ -27,7 +28,7 @@ class VisualRegression {
       // and apply the new direction before taking a screenshot
       // otherwise, the screenshot might not reflect the new direction
       // and the visual regression tests might fail
-      await new Promise<void>((resolve) => {
+      await new Promise<void>(resolve => {
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
             resolve();

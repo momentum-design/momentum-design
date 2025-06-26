@@ -1,4 +1,5 @@
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
@@ -6,15 +7,25 @@ type SetUpOptions = {
   componentsPage: ComponentsPage;
   children: string;
   'header-text'?: string;
-}
+};
 
 const headerText = 'Participants List';
 
-const generateBasicChildren = (count: number) => new Array(count).fill(1).map((_, index) => `
+const generateBasicChildren = (count: number) =>
+  new Array(count)
+    .fill(1)
+    .map(
+      (_, index) => `
   <mdc-listitem label="List Item ${index + 1}"><mdc-listitem>
-`).join('');
+`,
+    )
+    .join('');
 
-const generateChildren = (count: number) => new Array(count).fill(1).map((_, index) => `
+const generateChildren = (count: number) =>
+  new Array(count)
+    .fill(1)
+    .map(
+      (_, index) => `
   <mdc-listitem label="List Item ${index + 1}">
     <mdc-checkbox slot="leading-controls" data-aria-label="checkbox label ${index + 1}"></mdc-checkbox>
     <mdc-button
@@ -30,7 +41,9 @@ const generateChildren = (count: number) => new Array(count).fill(1).map((_, ind
     >Click</mdc-button>
     <mdc-badge slot="trailing-controls" type="dot"></mdc-badge>
   </mdc-listitem>
-`).join('');
+`,
+    )
+    .join('');
 
 const setup = async (args: SetUpOptions) => {
   const { componentsPage, ...restArgs } = args;
@@ -186,13 +199,16 @@ test('mdc-list', async ({ componentsPage }) => {
     });
 
     await test.step('should focus on the enabled listitems only', async () => {
-      const list = await setup({ componentsPage, children: `
+      const list = await setup({
+        componentsPage,
+        children: `
         <mdc-listitem label="List Item 1" disabled></mdc-listitem>
         <mdc-listitem label="List Item 2"></mdc-listitem>
         <mdc-listitem label="List Item 3" disabled></mdc-listitem>
         <mdc-listitem label="List Item 4"></mdc-listitem>
         <mdc-listitem label="List Item 5" disabled></mdc-listitem>
-        ` });
+        `,
+      });
       await componentsPage.actionability.pressTab();
       await expect(list.locator('mdc-listitem').nth(1)).toBeFocused();
       await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [

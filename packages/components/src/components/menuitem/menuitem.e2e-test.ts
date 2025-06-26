@@ -1,4 +1,5 @@
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
@@ -12,7 +13,7 @@ type SetupOptions = {
   'arrow-direction'?: string;
   'soft-disabled'?: boolean;
   children?: string;
-}
+};
 
 const primaryLabel = 'Primary Label';
 const secondaryLabel = 'Secondary Label';

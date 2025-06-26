@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 // Components Imports
 import AlertChip from './components/alertchip';
 import Animation from './components/animation';

@@ -1,13 +1,14 @@
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
   name?: string;
-  'label'?: string;
+  label?: string;
   'help-text'?: string;
-}
+};
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;
@@ -107,8 +108,8 @@ test('mdc-radiogroup', async ({ componentsPage }) => {
   });
 
   /**
-     * INTERACTIONS
-    */
+   * INTERACTIONS
+   */
   await test.step('interactions', async () => {
     await test.step('navigate and select between radio buttons using arrow keys.', async () => {
       await setup({

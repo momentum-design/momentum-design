@@ -3,14 +3,15 @@ import '.';
 import { html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { action } from '@storybook/addon-actions';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls, disableControls } from '../../../config/storybook/utils';
 import { DEFAULTS, ORIENTATIONS, VARIANTS } from '../card/card.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
 import '../radiogroup';
 
-const render = (args: Args) => html`
-  <mdc-cardradio
+const render = (args: Args) =>
+  html` <mdc-cardradio
     @click="${action('onclick')}"
     @keydown="${action('onkeydown')}"
     @keyup="${action('onkeyup')}"
@@ -31,7 +32,9 @@ const render = (args: Args) => html`
     subtitle-tag-name="${args['subtitle-tag-name']}"
     tabindex="${args.tabIndex}"
     class="${args.class}"
-    style="${args.style}">${args.children}</mdc-cardradio>`;
+    style="${args.style}"
+    >${args.children}</mdc-cardradio
+  >`;
 
 const meta: Meta = {
   title: 'Components/card/cardradio',
@@ -96,14 +99,13 @@ const meta: Meta = {
 
 export default meta;
 
-const defaultChildren = html`<mdc-text slot='body' 
-type="body-midsize-medium" tagname="span">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-Nam vulputate aliquet risus, eget auctor ante egestas facilisis. Curabitur malesuada tempor pulvinar. 
-Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at. 
-Praesent gravida dui diam, non elementum risus laoreet vitae. 
-Sed sed nunc ullamcorper, porttitor dui id, posuere justo. Curabitur laoreet sem ut pharetra hendrerit. 
-Vivamus mattis ligula eget imperdiet tempor. 
-Ut in massa luctus lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text>`;
+const defaultChildren = html`<mdc-text slot="body" type="body-midsize-medium" tagname="span"
+  >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vulputate aliquet risus, eget auctor ante egestas
+  facilisis. Curabitur malesuada tempor pulvinar. Quisque sollicitudin magna leo, gravida ultrices lacus lobortis at.
+  Praesent gravida dui diam, non elementum risus laoreet vitae. Sed sed nunc ullamcorper, porttitor dui id, posuere
+  justo. Curabitur laoreet sem ut pharetra hendrerit. Vivamus mattis ligula eget imperdiet tempor. Ut in massa luctus
+  lacus sodales accumsan. Praesent at aliquam leo. Ut a scelerisque turpis.</mdc-text
+>`;
 
 export const Example: StoryObj = {
   args: {
@@ -191,10 +193,11 @@ export const ContentBeforeBody: StoryObj = {
     checked: false,
     disabled: false,
     tabIndex: 0,
-    children: html`
-    <mdc-text slot='before-body' type="body-midsize-medium" tagname="span">Content Before Body</mdc-text>
-    <img src="https://placehold.co/100x50" alt="Image Alt" slot="before-body"/>
-    ${defaultChildren}`,
+    children: html` <mdc-text slot="before-body" type="body-midsize-medium" tagname="span"
+        >Content Before Body</mdc-text
+      >
+      <img src="https://placehold.co/100x50" alt="Image Alt" slot="before-body" />
+      ${defaultChildren}`,
   },
 };
 
@@ -212,39 +215,37 @@ export const ContentAfterBody: StoryObj = {
     checked: false,
     disabled: false,
     tabIndex: 0,
-    children: html`
-    <img src="https://placehold.co/100x50" alt="Image Alt" slot="after-body"/>
-    <mdc-text slot='after-body' type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
-    ${defaultChildren}`,
+    children: html` <img src="https://placehold.co/100x50" alt="Image Alt" slot="after-body" />
+      <mdc-text slot="after-body" type="body-midsize-medium" tagname="span">Content After Body</mdc-text>
+      ${defaultChildren}`,
   },
 };
 
 export const CardsInRadioGroup: StoryObj = {
   render: () => html`
-    <mdc-formfieldgroup
-    label="Radio Cards"
-    name="radio-cards"
-    help-text="Help Text"
-    data-aria-label="Radio Cards">
-    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap">
-    ${repeat([1, 2, 3, 4], (index) => html`
-      <mdc-cardradio
-      name="radio-cards"
-      variant="border"
-      orientation="vertical"
-      card-title="Title ${index}"
-      subtitle="Subtitle"
-      image-src="https://placehold.co/320x200"
-      image-alt="Image Alt"
-      icon-name="placeholder-bold"
-      tabIndex="0"
-      >
-      ${defaultChildren}
-      </mdc-cardradio>
-    `)}
-    </div>
+    <mdc-formfieldgroup label="Radio Cards" name="radio-cards" help-text="Help Text" data-aria-label="Radio Cards">
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap">
+        ${repeat(
+          [1, 2, 3, 4],
+          index => html`
+            <mdc-cardradio
+              name="radio-cards"
+              variant="border"
+              orientation="vertical"
+              card-title="Title ${index}"
+              subtitle="Subtitle"
+              image-src="https://placehold.co/320x200"
+              image-alt="Image Alt"
+              icon-name="placeholder-bold"
+              tabIndex="0"
+            >
+              ${defaultChildren}
+            </mdc-cardradio>
+          `,
+        )}
+      </div>
     </mdc-formfieldgroup>
-    `,
+  `,
   argTypes: {
     ...disableControls([
       'aria-label',

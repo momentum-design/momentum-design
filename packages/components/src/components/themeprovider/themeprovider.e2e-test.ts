@@ -1,4 +1,5 @@
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import CONSTANTS from '../../../config/playwright/setup/constants';
 
@@ -10,13 +11,7 @@ type TestToRunArgs = {
   expectedNestedTheme: string;
 };
 
-const testToRun = async ({
-  componentsPage,
-  theme,
-  themeName,
-  type,
-  expectedNestedTheme,
-}: TestToRunArgs) => {
+const testToRun = async ({ componentsPage, theme, themeName, type, expectedNestedTheme }: TestToRunArgs) => {
   const themeprovider = componentsPage.page.locator('mdc-themeprovider#local');
 
   // initial check for the themeprovider be visible on the screen:
@@ -103,8 +98,8 @@ test.describe.parallel('mdc-themeprovider', () => {
     },
   ].forEach(({ theme, themeName, type }) => {
     test.describe(`${type} tests`, () => {
-      const oppositeTheme = theme === 'mds-theme-stable-darkWebex'
-        ? 'mds-theme-stable-lightWebex' : 'mds-theme-stable-darkWebex';
+      const oppositeTheme =
+        theme === 'mds-theme-stable-darkWebex' ? 'mds-theme-stable-lightWebex' : 'mds-theme-stable-darkWebex';
 
       test.use({
         theme: theme as any,

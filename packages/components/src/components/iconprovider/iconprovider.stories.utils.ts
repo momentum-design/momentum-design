@@ -1,10 +1,12 @@
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+
 import { Component } from '../../models';
-import IconProvider from './iconprovider.component';
 import providerUtils from '../../utils/provider';
 import type { IconNames } from '../icon/icon.types';
+
+import IconProvider from './iconprovider.component';
 
 // SubComponent to be rendered in storybook, to showcase that the
 // icon provider can be consumed as a sub component

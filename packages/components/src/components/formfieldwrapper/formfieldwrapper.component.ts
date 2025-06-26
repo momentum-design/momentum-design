@@ -1,11 +1,13 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import type { PopoverPlacement } from '../popover/popover.types';
-import { DEFAULTS, MDC_TEXT_OPTIONS } from './formfieldwrapper.constants';
 import { BUTTON_VARIANTS } from '../button/button.constants';
+
+import { DEFAULTS, MDC_TEXT_OPTIONS } from './formfieldwrapper.constants';
 import styles from './formfieldwrapper.styles';
 import type { ValidationType } from './formfieldwrapper.types';
 import { getHelperIcon } from './formfieldwrapper.utils';
@@ -143,22 +145,24 @@ class FormfieldWrapper extends DisabledMixin(Component) {
     return html`<div class="mdc-label-text" part="label-text">
       <slot name="label">${this.renderLabelElement()}</slot>
       ${this.required ? html`<span part="required-indicator">*</span>` : nothing}
-      ${this.toggletipText ? html`
-        <mdc-button 
-        part="info-icon-btn"
-        prefix-icon="${DEFAULTS.INFO_ICON}" 
-        size="${DEFAULTS.ICON_SIZE}"
-        variant="${BUTTON_VARIANTS.TERTIARY}"
-        aria-label="${ifDefined(this.infoIconAriaLabel)}"
-        id="info-icon-id"></mdc-button>
-        <mdc-toggletip
-          part="label-toggletip"
-          triggerid="info-icon-id"
-          id="label-toggletip-id"
-          placement="${this.toggletipPlacement}"
-          show-arrow
-          >${this.toggletipText}</mdc-toggletip
-      >` : nothing}
+      ${this.toggletipText
+        ? html` <mdc-button
+              part="info-icon-btn"
+              prefix-icon="${DEFAULTS.INFO_ICON}"
+              size="${DEFAULTS.ICON_SIZE}"
+              variant="${BUTTON_VARIANTS.TERTIARY}"
+              aria-label="${ifDefined(this.infoIconAriaLabel)}"
+              id="info-icon-id"
+            ></mdc-button>
+            <mdc-toggletip
+              part="label-toggletip"
+              triggerid="info-icon-id"
+              id="label-toggletip-id"
+              placement="${this.toggletipPlacement}"
+              show-arrow
+              >${this.toggletipText}</mdc-toggletip
+            >`
+        : nothing}
     </div>`;
   }
 

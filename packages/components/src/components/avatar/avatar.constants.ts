@@ -29,10 +29,4 @@ const DEFAULTS = {
   ICON_NAME,
 } as const;
 
-export {
-  TAG_NAME,
-  DEFAULTS,
-  AVATAR_TYPE,
-  MAX_COUNTER,
-  AVATAR_SIZE,
-};
+export { TAG_NAME, DEFAULTS, AVATAR_TYPE, MAX_COUNTER, AVATAR_SIZE };
