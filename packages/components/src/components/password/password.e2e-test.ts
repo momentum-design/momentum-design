@@ -40,7 +40,6 @@ const setup = async (args: any = {}, isForm = false) => {
 
 test.use({ viewport: { width: 800, height: 1500 } });
 test('mdc-password', async ({ componentsPage }) => {
-  // AI-Assisted
   const password = await setup({
     componentsPage,
     id: 'test-mdc-password',
@@ -49,7 +48,6 @@ test('mdc-password', async ({ componentsPage }) => {
     helpText: 'Help Text', // FIXED: use kebab-case
     showHideButtonAriaLabel: 'Show/Hide Password', // FIXED: use kebab-case
   });
-  // End AI-Assisted
   const inputEl = password.locator('input');
   const trailingButton = password.locator('mdc-button[part="trailing-button"]');
 
@@ -118,9 +116,6 @@ test('mdc-password', async ({ componentsPage }) => {
     await componentsPage.accessibility.checkForA11yViolations('password-default');
   });
 });
-// End AI-Assisted
-
-// AI-Assisted
 test('mdc-password helper text types', async ({ componentsPage }) => {
   const iconSelector = 'mdc-icon[part="helper-icon"]';
 
@@ -153,4 +148,3 @@ test('mdc-password helper text types', async ({ componentsPage }) => {
   const successIcon = password.locator(iconSelector);
   await expect(successIcon).toHaveAttribute('name', 'check-circle-badge-filled');
 });
-// End AI-Assisted
