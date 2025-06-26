@@ -30,6 +30,12 @@ import { PopoverPlacement } from '../popover/popover.types';
  * The orientation of the menu popover is always set to `vertical`.
  *
  * @tagname mdc-menupopover
+ *
+ * @slot - Default slot for the menu popover content
+ *
+ * @event change - (React: onChange) This event is dispatched when a `menuitemcheckbox`, or `menuitemradio` changes.
+ * @event action - (React: onAction) This event is dispatched menuItem selected and the menu closes.
+ *
  * @slot default - Contains the menu items to be displayed in the popover
  */
 class MenuPopover extends Popover {
@@ -62,17 +68,15 @@ class MenuPopover extends Popover {
   get menuItems(): Array<HTMLElement> {
     const slot = this.shadowRoot?.querySelector('slot');
     const allAssignedElements = (slot?.assignedElements({ flatten: true }) || []) as Array<HTMLElement>;
-    return allAssignedElements.map(
-      (node) => {
+    return allAssignedElements
+      .map(node => {
         if (node.tagName.toLowerCase() === MENUSECTION_TAGNAME) {
-          return Array.from(node.children)
-            .filter((child) => isValidMenuItem(child)) as Array<HTMLElement>;
+          return Array.from(node.children).filter(child => isValidMenuItem(child)) as Array<HTMLElement>;
         }
         return isValidMenuItem(node) ? node : [];
-      },
-    )
+      })
       .flat()
-      .filter((node) => !!node && !node.hasAttribute('disabled'));
+      .filter(node => !!node && !node.hasAttribute('disabled'));
   }
 
   override connectedCallback() {
@@ -98,7 +102,7 @@ class MenuPopover extends Popover {
 
     // Reset all tabindex to -1 and set the tabindex of the first menu item to 0
     if (this.menuItems.length > 0) {
-      this.menuItems.forEach((menuitem) => menuitem.setAttribute('tabindex', '-1'));
+      this.menuItems.forEach(menuitem => menuitem.setAttribute('tabindex', '-1'));
       this.menuItems[0].setAttribute('tabindex', '0');
     }
     this.triggerElement?.setAttribute('aria-haspopup', ROLE.MENU);
@@ -110,7 +114,7 @@ class MenuPopover extends Popover {
    * @returns - The index of the current menu item in the `menuItems` array.
    */
   private getCurrentIndex(target: EventTarget | null): number {
-    return this.menuItems.findIndex((node) => node === target);
+    return this.menuItems.findIndex(node => node === target);
   }
 
   /**
@@ -150,9 +154,9 @@ class MenuPopover extends Popover {
    */
   override onOutsidePopoverClick = (event: MouseEvent): void => {
     if (popoverStack.peek() !== this) return;
-    let insidePopoverClick = false;
+
     const path = event.composedPath();
-    insidePopoverClick = this.contains(event.target as Node) || path.includes(this.triggerElement!);
+    const insidePopoverClick = this.contains(event.target as Node) || path.includes(this.triggerElement!);
     const clickedOnBackdrop = this.backdropElement ? path.includes(this.backdropElement) : false;
 
     if (!insidePopoverClick || clickedOnBackdrop) {
@@ -183,10 +187,13 @@ class MenuPopover extends Popover {
     const triggerId = target.getAttribute('id');
 
     if (
-      isActiveMenuItem(target) // menuitemcheckbox and menuitemradio are not supposed to close the popover
-      && !this.hasSubmenuWithTriggerId(triggerId)
+      isActiveMenuItem(target) && // menuitemcheckbox and menuitemradio are not supposed to close the popover
+      !this.hasSubmenuWithTriggerId(triggerId) &&
+      this === target.closest(MENU_POPOVER) // Ensure close all popover called only once
     ) {
       this.closeAllMenuPopovers();
+
+      target.dispatchEvent(new Event('action', { bubbles: true, composed: true }));
     }
   }
 
@@ -240,13 +247,13 @@ class MenuPopover extends Popover {
       }
       case KEYS.ARROW_DOWN: {
         // Move focus to the next menu item
-        const newIndex = (currentIndex + 1) === this.menuItems.length ? 0 : (currentIndex + 1);
+        const newIndex = currentIndex + 1 === this.menuItems.length ? 0 : currentIndex + 1;
         this.resetTabIndexAndSetFocus(newIndex, currentIndex);
         break;
       }
       case KEYS.ARROW_UP: {
         // Move focus to the prev menu item
-        const newIndex = (currentIndex - 1) === -1 ? (this.menuItems.length - 1) : (currentIndex - 1);
+        const newIndex = currentIndex - 1 === -1 ? this.menuItems.length - 1 : currentIndex - 1;
         this.resetTabIndexAndSetFocus(newIndex, currentIndex);
         break;
       }
