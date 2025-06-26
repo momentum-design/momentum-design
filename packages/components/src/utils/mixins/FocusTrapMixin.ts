@@ -64,6 +64,10 @@ class FocusTrapStack {
    * @param trap - The focus trap to deactivate.
    */
   static deactivate(trap: any) {
+    if(!this.stack.has(trap)) {
+      return;
+    }
+    
     this.stack.delete(trap);
     this.removeKeydownListener();
 

@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls, hideControls } from '../../../config/storybook/utils';
+import { disableControls } from '../../../config/storybook/utils';
 
 import { DIALOG_ROLE, DIALOG_SIZE, DEFAULTS, DIALOG_VARIANT } from './dialog.constants';
 import '../link';
@@ -32,6 +32,7 @@ const createDialog = (args: Args, content: TemplateResult, onClose: () => void) 
     size="${args.size}"
     ?visible="${args.visible}"
     variant="${args.variant}"
+    ?focus-trap="${args['focus-trap']}"
     @shown="${action('onshown')}"
     @hidden="${action('onhidden')}"
     @close="${onClose}"
@@ -305,6 +306,9 @@ const meta: Meta = {
     'should-focus-trap-wrap': {
       control: 'boolean',
     },
+    'focus-trap': {
+      control: 'boolean',
+    },
     role: {
       control: 'select',
       options: Object.values(DIALOG_ROLE),
@@ -324,7 +328,6 @@ const meta: Meta = {
       '--mdc-dialog-elevation-3',
       '--mdc-dialog-width',
     ]),
-    ...hideControls(['focusTrap']),
   },
 };
 
