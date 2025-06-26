@@ -1,13 +1,15 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
+
 import Input from '../input/input.component';
+import { INPUT_TYPE } from '../input/input.constants';
 import type { InputType } from '../input/input.types';
-import styles from './password.styles';
-import { DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import { BUTTON_VARIANTS } from '../button/button.constants';
 import FormfieldWrapper from '../formfieldwrapper/formfieldwrapper.component';
+import { DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
-import { INPUT_TYPE } from '../input/input.constants';
+
+import styles from './password.styles';
 
 /**
  * mdc-password is a component that allows users to password text.
@@ -82,8 +84,8 @@ class Password extends Input {
     }
     return html`
       <mdc-button
-        part='trailing-button'
-        class='own-focus-ring ${!showBtn ? 'hidden' : ''}'
+        part="trailing-button"
+        class="own-focus-ring ${!showBtn ? 'hidden' : ''}"
         variant=${BUTTON_VARIANTS.TERTIARY}
         ?disabled=${this.disabled || this.readonly || !showBtn}
         size="${DEFAULTS.ICON_SIZE}"
@@ -99,11 +101,7 @@ class Password extends Input {
     return super.renderInputElement(inputType, hidePlaceholder);
   }
 
-  public static override styles: Array<CSSResult> = [
-    ...FormfieldWrapper.styles,
-    ...Input.styles,
-    ...styles,
-  ];
+  public static override styles: Array<CSSResult> = [...FormfieldWrapper.styles, ...Input.styles, ...styles];
 }
 
 export default Password;

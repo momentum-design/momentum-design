@@ -1,6 +1,7 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
@@ -156,14 +157,11 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('attribute trailing-button should be present on component', async () => {
-      await componentsPage.setAttributes(
-        password,
-        {
-          'trailing-button': '',
-          'show-hide-button-aria-label': 'show/hide password',
-          value: 'test',
-        },
-      );
+      await componentsPage.setAttributes(password, {
+        'trailing-button': '',
+        'show-hide-button-aria-label': 'show/hide password',
+        value: 'test',
+      });
       await expect(password).toHaveAttribute('trailing-button');
       const trailingButton = password.locator('mdc-button[part="trailing-button"]');
       await expect(trailingButton).toHaveAttribute('aria-label', 'show/hide password');
@@ -228,12 +226,14 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('readonly component should be focusable with tab', async () => {
-      await setup({ componentsPage,
+      await setup({
+        componentsPage,
         readonly: true,
         value: 'Readonly',
         trailingButton: true,
         showHideButtonAriaLabel: 'show/hide password',
-        secondButtonForFocus: true });
+        secondButtonForFocus: true,
+      });
       const trailingButton = password.locator('mdc-button').first();
       await componentsPage.actionability.pressTab();
       await expect(password).toBeFocused();
@@ -245,10 +245,12 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('focus on input and trailing button when value is present during interactions', async () => {
-      await setup({ componentsPage,
+      await setup({
+        componentsPage,
         trailingButton: true,
         showHideButtonAriaLabel: 'show/hide password',
-        secondButtonForFocus: true });
+        secondButtonForFocus: true,
+      });
       const trailingButton = password.locator('mdc-button[part="trailing-button"]');
       await componentsPage.actionability.pressTab();
       await expect(password).toBeFocused();
@@ -269,12 +271,14 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('trailing button will not be focusable in readonly state', async () => {
-      await setup({ componentsPage,
+      await setup({
+        componentsPage,
         value: 'this is readonly data',
         readonly: true,
         trailingButton: true,
         showHideButtonAriaLabel: 'show/hide password',
-        secondButtonForFocus: true });
+        secondButtonForFocus: true,
+      });
       const trailingButton = password.locator('mdc-button[part="trailing-button"]');
       await expect(passwordEl).toHaveValue('this is readonly data');
       await expect(trailingButton).not.toHaveClass('hidden');
@@ -296,13 +300,16 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
     });
 
     await test.step('component in form should be validated for required and maxlength when submitted', async () => {
-      const form = await setup({
-        componentsPage,
-        id: 'test-mdc-password',
-        placeholder: 'Placeholder',
-        required: true,
-        maxlength: 10,
-      }, true);
+      const form = await setup(
+        {
+          componentsPage,
+          id: 'test-mdc-password',
+          placeholder: 'Placeholder',
+          required: true,
+          maxlength: 10,
+        },
+        true,
+      );
 
       const mdcpassword = form.locator('mdc-password');
       const submitButton = form.locator('mdc-button');
@@ -310,7 +317,7 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       await componentsPage.actionability.pressTab();
       await expect(mdcpassword).toBeFocused();
       await componentsPage.page.keyboard.down('Enter');
-      const validationMessage = await passwordEl.evaluate((element) => {
+      const validationMessage = await passwordEl.evaluate(element => {
         const password = element as HTMLInputElement;
         return password.validationMessage;
       });
@@ -318,8 +325,7 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
         expect(validationMessage).toContain('Fill out this field');
       } else {
         expect(
-          validationMessage === 'Please fill out this field.'
-          || validationMessage === 'Please fill in this field.',
+          validationMessage === 'Please fill out this field.' || validationMessage === 'Please fill in this field.',
         ).toBeTruthy();
       }
       await passwordEl.fill('This is a long text');
@@ -346,28 +352,20 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
     });
 
     // disabled password field with value
-    inputStickerSheet.setAttributes({ ...attributes,
-      value: 'Disabled',
-      disabled: true,
-    });
+    inputStickerSheet.setAttributes({ ...attributes, value: 'Disabled', disabled: true });
     await inputStickerSheet.createMarkupWithCombination({});
 
     // password with value and leading icon
-    inputStickerSheet.setAttributes({ ...attributes,
-      value: 'Leading Icon',
-      'leading-icon': 'placeholder-bold',
-    });
+    inputStickerSheet.setAttributes({ ...attributes, value: 'Leading Icon', 'leading-icon': 'placeholder-bold' });
     await inputStickerSheet.createMarkupWithCombination({});
 
     // password with value and prefix text
-    inputStickerSheet.setAttributes({ ...attributes,
-      value: 'Text Content',
-      'prefix-text': 'Prefix',
-    });
+    inputStickerSheet.setAttributes({ ...attributes, value: 'Text Content', 'prefix-text': 'Prefix' });
     await inputStickerSheet.createMarkupWithCombination({});
 
     // password with value and trailing button
-    inputStickerSheet.setAttributes({ ...attributes,
+    inputStickerSheet.setAttributes({
+      ...attributes,
       value: 'Show/Hide button',
       'trailing-button': true,
       'show-hide-button-aria-label': 'show/hide password',
@@ -375,17 +373,11 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
     await inputStickerSheet.createMarkupWithCombination({});
 
     // readonly password field with value
-    inputStickerSheet.setAttributes({ ...attributes,
-      value: 'Readonly value',
-      readonly: true,
-    });
+    inputStickerSheet.setAttributes({ ...attributes, value: 'Readonly value', readonly: true });
     await inputStickerSheet.createMarkupWithCombination({});
 
     // password that is marked required
-    inputStickerSheet.setAttributes({ ...attributes,
-      required: '',
-      placeholder: 'Password is required',
-    });
+    inputStickerSheet.setAttributes({ ...attributes, required: '', placeholder: 'Password is required' });
     await inputStickerSheet.createMarkupWithCombination({});
 
     // Long text label that is truncated in a small container

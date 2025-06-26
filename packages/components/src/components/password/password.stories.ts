@@ -3,16 +3,15 @@ import '.';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 
 const render = (args: Args) => {
-  console.log('args', args);
   const value = args.maxlength && args.value ? args.value.substring(0, args.maxlength) : args.value;
-  return html`
-  <mdc-password
+  return html` <mdc-password
     @input="${action('oninput')}"
     @change="${action('onchange')}"
     @focus="${action('onfocus')}"
@@ -96,9 +95,9 @@ const meta: Meta = {
     'prefix-text': {
       control: 'text',
       description:
-        'The prefix text that is displayed before the password field. It has a max length of 10 characters.'
-        + 'When the prefix text is set, make sure to set the "data-aria-label" attribute'
-        + 'with the appropriate value for accessibility.',
+        'The prefix text that is displayed before the password field. It has a max length of 10 characters.' +
+        'When the prefix text is set, make sure to set the "data-aria-label" attribute' +
+        'with the appropriate value for accessibility.',
     },
     'leading-icon': {
       control: 'text',
@@ -125,13 +124,15 @@ const meta: Meta = {
     },
     pattern: {
       control: 'text',
-      description: 'The pattern attribute of the password field. Specifies a regular expression that the password '
-        + 'value must match for validation purposes.',
+      description:
+        'The pattern attribute of the password field. Specifies a regular expression that the password ' +
+        'value must match for validation purposes.',
     },
     required: {
       control: 'boolean',
-      description: 'The required attribute to indicate that the password field is required. '
-        + 'It is used to append a required indicator (*) to the label.',
+      description:
+        'The required attribute to indicate that the password field is required. ' +
+        'It is used to append a required indicator (*) to the label.',
     },
     size: {
       control: 'number',
@@ -168,13 +169,7 @@ const meta: Meta = {
       '--mdc-input-success-border-color',
       '--mdc-input-primary-border-color',
     ]),
-    ...hideControls([
-      'autocapitalize',
-      'autocomplete',
-      'clear-aria-label',
-      'list',
-      'showPassword',
-    ]),
+    ...hideControls(['autocapitalize', 'autocomplete', 'clear-aria-label', 'list', 'showPassword']),
   },
 };
 
@@ -208,23 +203,23 @@ export const FormFieldPassword: StoryObj = {
     };
 
     return html`
-    <form @submit=${handleSubmit}>
-      <fieldset>
-      <legend>Form Example</legend>
-      <mdc-password
-        name='password'
-        label="Password"
-        required
-        placeholder="Enter your password"
-        trailing-button
-        validation-message="Password is required"
-      ></mdc-password>
-      <div style='display: flex; gap: 0.25rem;; margin-top: 0.25rem'>
-        <mdc-button type="submit" size='24'>Submit</mdc-button>
-        <mdc-button type="reset" size='24' variant='secondary'>Reset</mdc-button>
-      </div>
-      </fieldset>
-    </form>
+      <form @submit=${handleSubmit}>
+        <fieldset>
+          <legend>Form Example</legend>
+          <mdc-password
+            name="password"
+            label="Password"
+            required
+            placeholder="Enter your password"
+            trailing-button
+            validation-message="Password is required"
+          ></mdc-password>
+          <div style="display: flex; gap: 0.25rem;; margin-top: 0.25rem">
+            <mdc-button type="submit" size="24">Submit</mdc-button>
+            <mdc-button type="reset" size="24" variant="secondary">Reset</mdc-button>
+          </div>
+        </fieldset>
+      </form>
     `;
   },
 };
