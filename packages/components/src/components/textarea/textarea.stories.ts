@@ -3,13 +3,15 @@ import { action } from '@storybook/addon-actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import '.';
 import { html } from 'lit';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { AUTO_CAPITALIZE } from '../input/input.constants';
-import { AUTO_COMPLETE, DEFAULTS, WRAP } from './textarea.constants';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+
+import { AUTO_COMPLETE, DEFAULTS, WRAP } from './textarea.constants';
 
 const render = (args: Args) =>
   html`<mdc-textarea

@@ -1,9 +1,11 @@
 /* eslint-disable no-template-curly-in-string */
 /* eslint-disable @typescript-eslint/no-floating-promises */
-const esbuild = require('esbuild');
-const chalk = require('chalk');
 const fs = require('fs');
 const { join } = require('path');
+
+const esbuild = require('esbuild');
+const chalk = require('chalk');
+
 const { config } = require('./configs/browser');
 const { publicPath, port } = require('./configs/e2e');
 
@@ -72,6 +74,8 @@ const iife = async () => {
     servedir: publicPath,
     port,
   });
+
+  // eslint-disable-next-line no-console
   console.log(chalk.cyan(`Serving at http://localhost:${port}`));
 };
 

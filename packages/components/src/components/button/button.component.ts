@@ -1,9 +1,11 @@
 import type { PropertyValues } from 'lit';
 import { CSSResult, html } from 'lit';
 import { property, state } from 'lit/decorators.js';
+
 import { ButtonComponentMixin } from '../../utils/mixins/ButtonComponentMixin';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
 import type { IconNames } from '../icon/icon.types';
+
 import { DEFAULTS } from './button.constants';
 import styles from './button.styles';
 import type { IconButtonSize, PillButtonSize } from './button.types';

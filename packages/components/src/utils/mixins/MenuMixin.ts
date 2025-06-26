@@ -2,6 +2,7 @@
 import type { PropertyValues } from 'lit';
 import { LitElement } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
+
 import { ORIENTATION, TAG_NAME as MENUBAR_TAGNAME } from '../../components/menubar/menubar.constants';
 import type { Orientation } from '../../components/menubar/menubar.types';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../../components/menupopover/menupopover.constants';
@@ -11,6 +12,7 @@ import Popover from '../../components/popover/popover.component';
 import { POPOVER_PLACEMENT } from '../../components/popover/popover.constants';
 import { KEYS } from '../keys';
 import { ROLE } from '../roles';
+
 import type { Constructor } from './index.types';
 
 interface IParentMenuItem {

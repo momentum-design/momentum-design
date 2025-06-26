@@ -1,9 +1,11 @@
 import { CSSResult, html } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import styles from './icon.styles';
+
 import { Component } from '../../models';
 import providerUtils from '../../utils/provider';
 import IconProvider from '../iconprovider/iconprovider.component';
+
+import styles from './icon.styles';
 import { svgFetch } from './icon.utils';
 import { DEFAULTS } from './icon.constants';
 import type { IconNames } from './icon.types';

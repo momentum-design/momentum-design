@@ -1,9 +1,11 @@
 import { CSSResult, html, PropertyValueMap } from 'lit';
 import { property, queryAssignedNodes, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+
 import Popover from '../popover/popover.component';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { PopoverPlacement } from '../popover/popover.types';
+
 import { DEFAULTS } from './toggletip.constants';
 import styles from './toggletip.styles';
 

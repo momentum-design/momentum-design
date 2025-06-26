@@ -1,7 +1,9 @@
 import type { PropertyValues } from 'lit';
 import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
+
 import { Component } from '../../models';
+
 import { DEFAULTS } from './skeleton.constants';
 import styles from './skeleton.styles';
 import type { SkeletonVariant } from './skeleton.types';

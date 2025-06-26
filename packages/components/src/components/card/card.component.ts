@@ -1,11 +1,13 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { queryAssignedElements } from 'lit/decorators.js';
-import styles from './card.styles';
+
 import { Component } from '../../models';
-import { DEFAULTS } from './card.constants';
 import { BUTTON_VARIANTS } from '../button/button.constants';
 import { CardComponentMixin } from '../../utils/mixins/CardComponentMixin';
 import { CardAndDialogFooterMixin } from '../../utils/mixins/CardAndDialogFooterMixin';
+
+import { DEFAULTS } from './card.constants';
+import styles from './card.styles';
 
 /**
  * The card component allows users to organize information in a structured and tangible

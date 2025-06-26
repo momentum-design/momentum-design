@@ -2,8 +2,10 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import './iconprovider.stories.utils';
 import { html } from 'lit';
-import { ALLOWED_LENGTH_UNITS, ALLOWED_FILE_EXTENSIONS } from './iconprovider.constants';
+
 import { hideControls } from '../../../config/storybook/utils';
+
+import { ALLOWED_LENGTH_UNITS, ALLOWED_FILE_EXTENSIONS } from './iconprovider.constants';
 
 const render = (args: Args) => html`
   <mdc-iconprovider

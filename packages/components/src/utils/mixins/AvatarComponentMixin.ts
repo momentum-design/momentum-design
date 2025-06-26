@@ -1,8 +1,10 @@
 import { property } from 'lit/decorators.js';
+
 import { DEFAULTS as AVATAR_DEFAULTS } from '../../components/avatar/avatar.constants';
 import type { AvatarSize } from '../../components/avatar/avatar.types';
 import type { PresenceType } from '../../components/presence/presence.types';
 import type { Component } from '../../models';
+
 import type { Constructor } from './index.types';
 
 export interface AvatarComponentMixinInterface {

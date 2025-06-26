@@ -1,14 +1,16 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import styles from './sidenavigation.styles';
+
 import { Component, Provider } from '../../models';
-import SideNavigationContext from './sidenavigation.context';
-import { DEFAULTS, VARIANTS } from './sidenavigation.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import type { Directions } from '../divider/divider.types';
 import { DIRECTIONS, DIVIDER_VARIANT, DIVIDER_ORIENTATION } from '../divider/divider.constants';
-import type { SideNavigationVariant } from './sidenavigation.types';
 import { ROLE } from '../../utils/roles';
+
+import type { SideNavigationVariant } from './sidenavigation.types';
+import { DEFAULTS, VARIANTS } from './sidenavigation.constants';
+import SideNavigationContext from './sidenavigation.context';
+import styles from './sidenavigation.styles';
 
 /**
  * The `mdc-sidenavigation` component provides a vertically stacked navigation experience,

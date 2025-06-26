@@ -1,5 +1,7 @@
 import { expect } from '@playwright/test';
+
 import { test, ComponentsPage } from '../../../config/playwright/setup';
+
 import { DEFAULTS } from './dialog.constants';
 import type Dialog from './dialog.component';
 
@@ -330,7 +332,7 @@ test('mdc-dialog', async ({ componentsPage }) => {
       await test.step('focus should remain in the dialog when an iframe is inside', async () => {
         const { dialog } = await setup({ componentsPage, ...dialogWithIframe, visible: false });
 
-        await dialog.evaluate((dialog) => {
+        await dialog.evaluate(dialog => {
           // make dialog visible
           dialog.toggleAttribute('visible');
 
@@ -354,7 +356,9 @@ test('mdc-dialog', async ({ componentsPage }) => {
         if (test.info().project.name === 'firefox') {
           await componentsPage.actionability.pressTab();
         }
-        const iframeButton = componentsPage.page.locator('#frame').contentFrame()
+        const iframeButton = componentsPage.page
+          .locator('#frame')
+          .contentFrame()
           .getByRole('button', { name: 'Iframe Button' });
         await expect(iframeButton).toBeFocused();
 

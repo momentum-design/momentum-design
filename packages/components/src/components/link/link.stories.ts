@@ -2,8 +2,10 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
-import { DEFAULTS, LINK_SIZES } from './link.constants';
+
 import { disableControls, hideControls, readOnlyControls } from '../../../config/storybook/utils';
+
+import { DEFAULTS, LINK_SIZES } from './link.constants';
 
 const render = (args: Args) =>
   html`<mdc-link

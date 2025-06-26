@@ -1,5 +1,6 @@
 // AI-Assisted
 import { expect, Locator } from '@playwright/test';
+
 import { test } from '../../../config/playwright/setup';
 
 type MenuItemConfig = {

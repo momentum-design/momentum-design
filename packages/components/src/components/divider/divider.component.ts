@@ -1,7 +1,9 @@
 import type { PropertyValues } from 'lit';
 import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
+
 import { Component } from '../../models';
+
 import {
   ARROW_ICONS,
   BUTTON_TAG,

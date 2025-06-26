@@ -1,9 +1,11 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { SKELETON_VARIANTS, DEFAULTS } from './skeleton.constants';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls } from '../../../config/storybook/utils';
+
+import { SKELETON_VARIANTS, DEFAULTS } from './skeleton.constants';
 
 // Global counter for dynamic content
 let dynamicContentCounter = 0;

@@ -3,10 +3,12 @@ import { repeat } from 'lit/directives/repeat.js';
 import '.';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+
 import { TYPE as PRESENCE_TYPE } from '../presence/presence.constants';
-import { AVATAR_SIZE, DEFAULTS } from './avatar.constants';
 import { disableControls } from '../../../config/storybook/utils';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+
+import { AVATAR_SIZE, DEFAULTS } from './avatar.constants';
 
 const render = (args: Args) => html`
   <mdc-avatar

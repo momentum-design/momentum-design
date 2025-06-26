@@ -1,7 +1,9 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
+
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
+
 import styles from './staticcheckbox.styles';
 import { ICON_NAME } from './staticcheckbox.constants';
 

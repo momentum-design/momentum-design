@@ -1,4 +1,5 @@
 import { CSSResult, LitElement } from 'lit';
+
 import styles from './component.styles';
 
 /**

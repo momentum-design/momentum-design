@@ -1,12 +1,14 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
-import styles from './chip.styles';
+
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import { Component } from '../../models';
-import { DEFAULTS } from './chip.constants';
 import type { IconNames } from '../icon/icon.types';
-import type { ColorType } from './chip.types';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
+
+import { DEFAULTS } from './chip.constants';
+import type { ColorType } from './chip.types';
+import styles from './chip.styles';
 
 /**
  * mdc-chip is an interactive element that can be used to represent a chip. It supports a leading icon along with label.

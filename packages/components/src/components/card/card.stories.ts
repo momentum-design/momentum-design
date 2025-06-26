@@ -1,10 +1,12 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { hideControls } from '../../../config/storybook/utils';
-import { DEFAULTS, ORIENTATIONS, VARIANTS } from './card.constants';
 import { VALID_TEXT_TAGS } from '../text/text.constants';
+
+import { DEFAULTS, ORIENTATIONS, VARIANTS } from './card.constants';
 import '../link';
 import '../button';
 

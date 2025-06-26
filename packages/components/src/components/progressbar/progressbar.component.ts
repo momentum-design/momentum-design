@@ -1,14 +1,16 @@
 import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { v4 as uuidv4 } from 'uuid';
-import styles from './progressbar.styles';
+
 import FormfieldWrapper from '../formfieldwrapper';
-import { DEFAULTS, VARIANT } from './progressbar.constants';
-import type { Variant } from './progressbar.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { PopoverPlacement } from '../popover/popover.types';
 import { ROLE } from '../../utils/roles';
+
+import type { Variant } from './progressbar.types';
+import { DEFAULTS, VARIANT } from './progressbar.constants';
+import styles from './progressbar.styles';
 
 /**
  * mdc-progressbar component visually represents a progress indicator, typically used to show

@@ -1,7 +1,9 @@
 import type { CSSResult, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 import { v4 as uuidv4 } from 'uuid';
+
 import { Component } from '../../models';
+
 import { DEFAULTS } from './screenreaderannouncer.constants';
 import styles from './screenreaderannouncer.styles';
 import { AriaLive } from './screenreaderannouncer.types';

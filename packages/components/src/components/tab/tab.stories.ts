@@ -4,8 +4,10 @@ import '../badge';
 import { html, nothing } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { TAB_VARIANTS } from './tab.constants';
+
 import { disableControls, hideControls, readOnlyControls } from '../../../config/storybook/utils';
+
+import { TAB_VARIANTS } from './tab.constants';
 
 const render = (args: Args) =>
   html`<div role="tablist">

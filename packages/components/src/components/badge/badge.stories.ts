@@ -1,9 +1,11 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
-import { TYPE, ICON_VARIANT, DEFAULTS } from './badge.constants';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls } from '../../../config/storybook/utils';
+
+import { TYPE, ICON_VARIANT, DEFAULTS } from './badge.constants';
 
 const MAX_COUNTER_LIST = [9, 99, 999];
 

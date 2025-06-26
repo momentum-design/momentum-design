@@ -4,8 +4,10 @@ import '../avatarbutton';
 import '../link';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
+
 import { COLOR, POPOVER_PLACEMENT, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
+
 import { DEFAULTS } from './toggletip.constants';
 
 const render = (args: Args) =>

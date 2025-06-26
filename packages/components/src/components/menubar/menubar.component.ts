@@ -1,8 +1,10 @@
 import { html } from 'lit';
 import type { CSSResult, PropertyValues } from 'lit';
+
 import { Component } from '../../models';
 import { MenuMixin } from '../../utils/mixins/MenuMixin';
 import { ROLE } from '../../utils/roles';
+
 import styles from './menubar.styles';
 
 /**

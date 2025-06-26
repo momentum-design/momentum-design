@@ -2,9 +2,11 @@
 /* eslint-disable no-restricted-syntax */
 
 import { expect } from '@playwright/test';
+
 import { test, ComponentsPage } from '../../../config/playwright/setup';
 import type { PopoverColor, PopoverPlacement } from '../popover/popover.types';
 import { COLOR, POPOVER_PLACEMENT, DEFAULTS as POPOVER_DEFAULTS } from '../popover/popover.constants';
+
 import { DEFAULTS } from './toggletip.constants';
 
 type SetupOptions = {

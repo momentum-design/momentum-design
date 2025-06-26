@@ -1,6 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+
 import '.';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 import '../button';
@@ -8,6 +9,7 @@ import '../list';
 import '../listitem';
 import '../popover';
 import { COLOR, DEFAULTS as POPOVER_DEFAULTS, POPOVER_PLACEMENT } from '../popover/popover.constants';
+
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
 
 const render = (args: Args) => html`

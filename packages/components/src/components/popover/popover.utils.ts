@@ -1,4 +1,5 @@
 import { ROLE } from '../../utils/roles';
+
 import type Popover from './popover.component';
 
 export class PopoverUtils {

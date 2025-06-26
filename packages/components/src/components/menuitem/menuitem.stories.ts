@@ -1,6 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
@@ -8,6 +9,7 @@ import '../badge';
 import '../divider';
 import '../icon';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+
 import { ARROW_DIRECTIONS, ARROW_POSITIONS } from './menuitem.constants';
 
 const label = 'Menu Item';

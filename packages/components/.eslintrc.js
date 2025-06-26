@@ -15,6 +15,13 @@ module.exports = {
     indent: 'off',
     'max-len': 'off',
     '@typescript-eslint/quotes': 'off',
+    'import/order': [
+      'error',
+      {
+        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+        'newlines-between': 'always',
+      },
+    ],
   },
   overrides: [
     {
@@ -26,6 +33,8 @@ module.exports = {
   ],
   ignorePatterns: [
     ...config.ignorePatterns,
+    'storybook-static/*',
+    'config/storybook/public/*',
     '.eslintrc.js',
     'prettier.config.js',
     '*.png',
@@ -34,5 +43,7 @@ module.exports = {
     '*.mdx',
     '*.md',
     '*.html',
+    //
+    'jest.config.js',
   ],
 };

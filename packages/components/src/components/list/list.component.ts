@@ -1,6 +1,7 @@
 import type { CSSResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
+
 import { Component } from '../../models';
 import { KEYS } from '../../utils/keys';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
@@ -8,6 +9,7 @@ import type { RoleType } from '../../utils/roles';
 import { ROLE } from '../../utils/roles';
 import { TAG_NAME as LISTITEM_TAGNAME } from '../listitem/listitem.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+
 import { HEADER_ID } from './list.constants';
 import styles from './list.styles';
 

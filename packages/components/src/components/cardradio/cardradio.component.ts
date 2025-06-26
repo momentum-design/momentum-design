@@ -1,11 +1,13 @@
 /* eslint-disable no-param-reassign */
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
-import styles from './cardradio.styles';
+
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import Card from '../card/card.component';
 import { ROLE } from '../../utils/roles';
+
+import styles from './cardradio.styles';
 
 /**
  * cardradio component extends `mdc-card` and supports radio selection interaction addtionally.

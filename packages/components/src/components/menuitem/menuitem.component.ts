@@ -1,13 +1,15 @@
 import type { CSSResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
+
 import { ROLE } from '../../utils/roles';
 import ListItem from '../listitem/listitem.component';
 import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
+import { KEYS } from '../../utils/keys';
+
 import { ARROW_ICONS, ARROW_DIRECTIONS, ARROW_POSITIONS } from './menuitem.constants';
 import type { ArrowPositions, ArrowDirections } from './menuitem.types';
 import styles from './menuitem.styles';
-import { KEYS } from '../../utils/keys';
 
 /**
  * menuitem component is inherited by listitem component with the role set `menuitem`.<br/>

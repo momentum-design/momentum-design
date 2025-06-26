@@ -1,7 +1,9 @@
 import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
-import styles from './text.styles';
+
 import { Component } from '../../models';
+
+import styles from './text.styles';
 import { DEFAULTS, VALID_TEXT_TAGS } from './text.constants';
 import type { TextType, TagName } from './text.types';
 

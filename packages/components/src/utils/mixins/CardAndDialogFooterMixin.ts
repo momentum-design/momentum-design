@@ -1,9 +1,11 @@
 /* eslint-disable max-classes-per-file */
 import { LitElement, html, TemplateResult } from 'lit';
 import { queryAssignedElements } from 'lit/decorators.js';
+
 import { DEFAULTS, VARIANTS } from '../../components/card/card.constants';
-import type { Constructor } from './index.types';
 import { BUTTON_COLORS, BUTTON_VARIANTS } from '../../components/button/button.constants';
+
+import type { Constructor } from './index.types';
 
 export declare class CardAndDialogFooterMixinInterface {
   protected footerLink?: Array<HTMLElement>;

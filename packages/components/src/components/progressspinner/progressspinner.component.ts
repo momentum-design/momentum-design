@@ -1,12 +1,14 @@
 import { CSSResult, html } from 'lit';
-import styles from './progressspinner.styles';
+
 import { Component } from '../../models';
 import Progressbar from '../progressbar/progressbar.component';
-import { DEFAULTS, ICON_NAME } from './progressspinner.constants';
-import { getProgressArc, getProgressOffset, getRemainingArc, getRemainingOffset } from './progressspiner.utils';
 import type { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
 import type { Variant } from '../progressbar/progressbar.types';
 import { ROLE } from '../../utils/roles';
+
+import { getProgressArc, getProgressOffset, getRemainingArc, getRemainingOffset } from './progressspiner.utils';
+import { DEFAULTS, ICON_NAME } from './progressspinner.constants';
+import styles from './progressspinner.styles';
 
 /**
  * `mdc-progressspinner` is a customizable, circular progress indicator component.

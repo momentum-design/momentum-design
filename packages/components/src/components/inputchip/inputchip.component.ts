@@ -1,10 +1,12 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
-import styles from './inputchip.styles';
+
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import type { IconNames } from '../icon/icon.types';
+
+import styles from './inputchip.styles';
 import { DEFAULTS } from './inputchip.constants';
 
 /**

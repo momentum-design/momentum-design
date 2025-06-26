@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import { property, state } from 'lit/decorators.js';
+
 import {
   BUTTON_COLORS,
   BUTTON_TYPE_INTERNAL,
@@ -17,6 +18,7 @@ import type {
 } from '../../components/button/button.types';
 import type { IconNames } from '../../components/icon/icon.types';
 import type { Component } from '../../models';
+
 import type { Constructor } from './index.types';
 
 export declare class ButtonComponentMixinInterface {

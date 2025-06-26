@@ -1,10 +1,12 @@
 import { PropertyValues, CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
+
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
+import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
+
 import { DEFAULTS } from './linksimple.constants';
 import styles from './linksimple.styles';
-import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 
 /**
  * `mdc-linksimple` is a lightweight link component that can be used to navigate

@@ -2,6 +2,7 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import { action } from '@storybook/addon-actions';
 import '.';
 import { html } from 'lit';
+
 import { disableControls, hideControls } from '../../../config/storybook/utils';
 import { TAB_VARIANTS } from '../tab/tab.constants';
 import '../badge';

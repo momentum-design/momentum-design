@@ -3,8 +3,10 @@ import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { BUTTON_COLORS, PILL_BUTTON_SIZES, BUTTON_VARIANTS, ICON_BUTTON_SIZES, BUTTON_TYPE } from './button.constants';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+
+import { BUTTON_COLORS, PILL_BUTTON_SIZES, BUTTON_VARIANTS, ICON_BUTTON_SIZES, BUTTON_TYPE } from './button.constants';
 
 const render = (args: Args) =>
   html` <mdc-button

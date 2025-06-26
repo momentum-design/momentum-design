@@ -1,6 +1,7 @@
 import type { ValueOf } from '../../utils/types';
-import { VARIANTS } from './alertchip.constants';
 import type { IconNames } from '../icon/icon.types';
+
+import { VARIANTS } from './alertchip.constants';
 
 type VariantType = ValueOf<typeof VARIANTS>;
 

@@ -1,5 +1,7 @@
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
+
 import Coachmark from './coachmark.component';
 
 type SetupOptions = {

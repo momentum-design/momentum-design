@@ -1,11 +1,13 @@
 import type { PropertyValues } from 'lit';
 import { CSSResult, html, nothing } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
+
 import { Component } from '../../models';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { ROLE } from '../../utils/roles';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+
 import { HEADER_ID } from './optgroup.constants';
 import styles from './optgroup.styles';
 

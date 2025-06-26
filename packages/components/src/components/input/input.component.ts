@@ -1,14 +1,16 @@
 import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import styles from './input.styles';
+
 import FormfieldWrapper from '../formfieldwrapper';
-import { AUTO_CAPITALIZE, AUTO_COMPLETE, DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
 import { DEFAULTS as FORMFIELD_DEFAULTS } from '../formfieldwrapper/formfieldwrapper.constants';
 import type { IconNames } from '../icon/icon.types';
-import type { AutoCapitalizeType, AutoCompleteType, InputType } from './input.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { FormInternalsMixin, AssociatedFormControl } from '../../utils/mixins/FormInternalsMixin';
+
+import type { AutoCapitalizeType, AutoCompleteType, InputType } from './input.types';
+import { AUTO_CAPITALIZE, AUTO_COMPLETE, DEFAULTS, PREFIX_TEXT_OPTIONS } from './input.constants';
+import styles from './input.styles';
 /**
  * mdc-input is a component that allows users to input text.
  *  It contains:

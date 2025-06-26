@@ -1,5 +1,6 @@
 import { CSSResult, html, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
+
 import Button from '../button/button.component';
 import { ButtonComponentMixin } from '../../utils/mixins/ButtonComponentMixin';
 import { DEFAULTS } from '../button/button.constants';

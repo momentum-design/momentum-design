@@ -2,14 +2,16 @@ import { CSSResult, html, nothing } from 'lit';
 import type { PropertyValues } from 'lit';
 import { property, query, queryAssignedElements, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import styles from './tablist.styles';
+
 import { Component } from '../../models';
-import { ARROW_BUTTON_DIRECTION, KEYCODES } from './tablist.constants';
 import Tab from '../tab/tab.component';
 import Button from '../button/button.component';
+import { ROLE } from '../../utils/roles';
+
+import styles from './tablist.styles';
+import { ARROW_BUTTON_DIRECTION, KEYCODES } from './tablist.constants';
 import type { ArrowButtonDirectionType } from './tablist.types';
 import { getFirstTab, getLastTab, getNextTab, getPreviousTab, findTab, getActiveTab } from './tablist.utils';
-import { ROLE } from '../../utils/roles';
 
 /**
  * Tab list organizes tabs into a container.

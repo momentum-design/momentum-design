@@ -1,7 +1,9 @@
 import { CSSResult, html } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import styles from './brandvisual.styles';
+
 import { Component } from '../../models';
+
+import styles from './brandvisual.styles';
 import type { BrandVisualNames } from './brandvisual.types';
 import { DEFAULTS } from './brandvisual.constants';
 

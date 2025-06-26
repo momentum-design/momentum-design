@@ -1,4 +1,5 @@
 import type { ValueOf } from '../../utils/types';
+
 import { SELECTION_TYPE } from './cardcheckbox.constants';
 
 type SelectionType = ValueOf<typeof SELECTION_TYPE>;

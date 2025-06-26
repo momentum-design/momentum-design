@@ -1,8 +1,10 @@
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
-import { DEFAULTS, TAB_VARIANTS } from './tab.constants';
 import type { IconNames } from '../icon/icon.types';
+
+import { DEFAULTS, TAB_VARIANTS } from './tab.constants';
 import type { Variant } from './tab.types';
 
 type SetupOptions = {

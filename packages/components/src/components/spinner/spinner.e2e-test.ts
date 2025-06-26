@@ -1,6 +1,8 @@
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+
 import { SPINNER_SIZES, SPINNER_VARIANT } from './spinner.constants';
 
 type SetupOptions = {

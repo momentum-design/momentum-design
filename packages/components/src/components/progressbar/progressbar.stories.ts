@@ -1,8 +1,10 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
+
 import { DEFAULTS, VARIANT } from './progressbar.constants';
 
 const render = (args: Args) => html`

@@ -1,9 +1,11 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
+
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
+
 import { VARIANTS, DEFAULTS } from './sidenavigation.constants';
 import '../menuitem';
 import '../menupopover';

@@ -1,6 +1,8 @@
 import { CSSResult, html } from 'lit';
 import { property, state } from 'lit/decorators.js';
+
 import { Component } from '../../models';
+
 import { DEFAULTS, SIZE } from './presence.constants';
 import styles from './presence.styles';
 import type { PresenceType, PresenceSize } from './presence.types';

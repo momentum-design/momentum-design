@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+
 import { hideControls } from '../../../config/storybook/utils';
 import './subcomponent-focusring.stories.docs.mdx';
 import '../../components/button';

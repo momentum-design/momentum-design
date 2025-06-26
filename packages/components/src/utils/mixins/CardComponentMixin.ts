@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import { LitElement, html, nothing, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
+
 import { DEFAULTS } from '../../components/card/card.constants';
 import type { CardOrientation, CardVariant } from '../../components/card/card.types';
 import type { TagName as TagNameType } from '../../components/text/text.types';

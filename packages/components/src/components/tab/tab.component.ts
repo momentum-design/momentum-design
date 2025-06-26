@@ -1,15 +1,17 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
-import styles from './tab.styles';
+
 import type { IconNames } from '../icon/icon.types';
-import { DEFAULTS, TAB_VARIANTS } from './tab.constants';
-import type { Variant } from './tab.types';
 import { getIconNameWithoutStyle } from '../button/button.utils';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
 import { ButtonSize, ButtonType } from '../buttonsimple/buttonsimple.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import { ROLE } from '../../utils/roles';
+
+import type { Variant } from './tab.types';
+import { DEFAULTS, TAB_VARIANTS } from './tab.constants';
+import styles from './tab.styles';
 
 /**
  * `mdc-tab` is Tab component to be used within the Tabgroup.

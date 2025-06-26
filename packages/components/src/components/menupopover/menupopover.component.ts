@@ -1,16 +1,18 @@
 import { CSSResult, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
+
 import { KEYS } from '../../utils/keys';
 import { ROLE } from '../../utils/roles';
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
 import { ORIENTATION } from '../menubar/menubar.constants';
 import Popover from '../popover/popover.component';
 import { COLOR } from '../popover/popover.constants';
+import { popoverStack } from '../popover/popover.stack';
+import { PopoverPlacement } from '../popover/popover.types';
+
 import { DEFAULTS, TAG_NAME as MENU_POPOVER } from './menupopover.constants';
 import styles from './menupopover.styles';
 import { isActiveMenuItem, isValidMenuItem, isValidPopover } from './menupopover.utils';
-import { popoverStack } from '../popover/popover.stack';
-import { PopoverPlacement } from '../popover/popover.types';
 
 /**
  * A popover menu component that displays a list of menu items in a floating container.

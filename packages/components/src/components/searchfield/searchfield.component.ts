@@ -1,9 +1,11 @@
 import { CSSResult, html } from 'lit';
 import { queryAssignedElements, state } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
-import styles from './searchfield.styles';
+
 import Input from '../input/input.component';
 import { ValidationType } from '../formfieldwrapper/formfieldwrapper.types';
+
+import styles from './searchfield.styles';
 import { DEFAULTS } from './searchfield.constants';
 
 /**

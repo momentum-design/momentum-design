@@ -1,14 +1,16 @@
 import type { CSSResult, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
+
 import { ROLE } from '../../utils/roles';
 import MenuItem from '../menuitem/menuitem.component';
 import { TYPE } from '../text/text.constants';
 import { TOGGLE_SIZE } from '../toggle/toggle.constants';
-import { DEFAULTS, INDICATOR } from './menuitemcheckbox.constants';
-import type { Indicator } from './menuitemcheckbox.types';
 import { ARIA_CHECKED_STATES } from '../menusection/menusection.constants';
 import type { AriaCheckedStates } from '../menusection/menusection.types';
+
+import { DEFAULTS, INDICATOR } from './menuitemcheckbox.constants';
+import type { Indicator } from './menuitemcheckbox.types';
 import styles from './menuitemcheckbox.styles';
 
 /**

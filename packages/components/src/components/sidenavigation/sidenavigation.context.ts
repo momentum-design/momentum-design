@@ -1,8 +1,10 @@
 import { createContext } from '@lit/context';
+
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
 import type NavItem from '../navitem/navitem.component';
 import { TAG_NAME as NAVITEM_TAGNAME } from '../navitem/navitem.constants';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+
 import { TAG_NAME } from './sidenavigation.constants';
 
 class SideNavigationContext {

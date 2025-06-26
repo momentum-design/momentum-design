@@ -2,9 +2,11 @@ import type { PropertyValues, TemplateResult } from 'lit';
 import { CSSResult, html, nothing } from 'lit';
 import { state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+
 import { Component } from '../../models';
 import { AvatarComponentMixin } from '../../utils/mixins/AvatarComponentMixin';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
+
 import { AVATAR_TYPE, DEFAULTS, MAX_COUNTER } from './avatar.constants';
 import styles from './avatar.styles';
 import type { AvatarType } from './avatar.types';

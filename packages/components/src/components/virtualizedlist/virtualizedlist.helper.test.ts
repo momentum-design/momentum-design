@@ -3,8 +3,10 @@ import { property, state } from 'lit/decorators.js';
 import { VirtualItem } from '@tanstack/virtual-core';
 import { ref } from 'lit/directives/ref.js';
 import { styleMap } from 'lit/directives/style-map.js';
-import { SetListDataProps, VirtualizerProps } from './virtualizedlist.types';
+
 import { Component } from '../../models';
+
+import { SetListDataProps, VirtualizerProps } from './virtualizedlist.types';
 
 class VirtualizedWrapper extends Component {
   @property({ type: Function, attribute: 'onscroll' })

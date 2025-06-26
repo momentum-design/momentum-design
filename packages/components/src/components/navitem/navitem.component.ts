@@ -2,8 +2,7 @@ import type { CSSResult, PropertyValues } from 'lit';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import styles from './navitem.styles';
-import { DEFAULTS, ALLOWED_BADGE_TYPES, ICON_NAME } from './navitem.constants';
+
 import providerUtils from '../../utils/provider';
 import type { IconNames } from '../icon/icon.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
@@ -12,9 +11,12 @@ import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
 import MenuItem from '../menuitem/menuitem.component';
 import { getIconNameWithoutStyle } from '../button/button.utils';
 import SideNavigation from '../sidenavigation/sidenavigation.component';
-import type { BadgeType } from './navitem.types';
 import type { ListItemVariants } from '../listitem/listitem.types';
 import type { PopoverPlacement } from '../popover/popover.types';
+
+import type { BadgeType } from './navitem.types';
+import { DEFAULTS, ALLOWED_BADGE_TYPES, ICON_NAME } from './navitem.constants';
+import styles from './navitem.styles';
 
 /**
  * `mdc-navitem` is a menuitem styled to work as a navigation tab.

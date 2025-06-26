@@ -1,7 +1,9 @@
 import { property } from 'lit/decorators.js';
 import type { CSSResult } from 'lit';
-import styles from './bullet.styles';
+
 import { Component } from '../../models';
+
+import styles from './bullet.styles';
 import { SIZE } from './bullet.constants';
 import type { Size } from './bullet.types';
 

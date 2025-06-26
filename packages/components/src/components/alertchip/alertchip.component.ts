@@ -1,11 +1,13 @@
 import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
-import styles from './alertchip.styles';
+
 import { Component } from '../../models';
+import Buttonsimple from '../buttonsimple/buttonsimple.component';
+
+import styles from './alertchip.styles';
 import { DEFAULTS } from './alertchip.constants';
 import { getAlertIcon } from './alertchip.utils';
 import type { VariantType } from './alertchip.types';
-import Buttonsimple from '../buttonsimple/buttonsimple.component';
 
 /**
  * mdc-alertchip component is an interactive chip that consumers can use to represent an alert.

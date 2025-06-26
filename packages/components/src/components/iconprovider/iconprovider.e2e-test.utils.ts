@@ -1,8 +1,10 @@
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
+
 import { Component } from '../../models';
-import IconProvider from './iconprovider.component';
 import providerUtils from '../../utils/provider';
+
+import IconProvider from './iconprovider.component';
 
 // Subcomponent to be rendered in E2E Tests, to showcase that the
 // icon provider can be consumed as a subcomponent

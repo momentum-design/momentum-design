@@ -1,6 +1,6 @@
 import type { CSSResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import styles from './navitemlist.styles';
+
 import MenuBar from '../menubar/menubar.component';
 import { MenuMixin } from '../../utils/mixins/MenuMixin';
 import { ORIENTATION } from '../menubar/menubar.constants';
@@ -8,6 +8,8 @@ import providerUtils from '../../utils/provider';
 import { TAG_NAME as NAVITEM_TAGNAME } from '../navitem/navitem.constants';
 import SideNavigation from '../sidenavigation/sidenavigation.component';
 import type NavItem from '../navitem/navitem.component';
+
+import styles from './navitemlist.styles';
 
 /**
  * `mdc-navitemlist` is a container component used to group multiple mdc-navitem elements into a navigation list.

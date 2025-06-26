@@ -1,12 +1,14 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
-import styles from './cardcheckbox.styles';
+
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import Card from '../card/card.component';
+import { ROLE } from '../../utils/roles';
+
 import { CHECK_MARK, DEFAULTS, SELECTION_TYPE } from './cardcheckbox.constants';
 import type { SelectionType } from './cardcheckbox.types';
-import { ROLE } from '../../utils/roles';
+import styles from './cardcheckbox.styles';
 
 /**
  * cardcheckbox component extends `mdc-card` and supports checkbox selection interaction addtionally.

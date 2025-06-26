@@ -1,10 +1,12 @@
 import type { PropertyValues } from 'lit';
 import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
+
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import { AutoFocusMixin } from '../../utils/mixins/AutoFocusMixin';
+
 import { BUTTON_TYPE, DEFAULTS } from './buttonsimple.constants';
 import styles from './buttonsimple.styles';
 import type { ButtonSize, ButtonType } from './buttonsimple.types';

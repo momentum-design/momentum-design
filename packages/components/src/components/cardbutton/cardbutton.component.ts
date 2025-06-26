@@ -1,9 +1,11 @@
 import { CSSResult, html, nothing } from 'lit';
-import styles from './cardbutton.styles';
+
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
 import Card from '../card/card.component';
 import type { ButtonSize } from '../buttonsimple/buttonsimple.types';
 import { CardComponentMixin } from '../../utils/mixins/CardComponentMixin';
+
+import styles from './cardbutton.styles';
 
 /**
  * cardbutton component looks like a card and behaves as a button component.

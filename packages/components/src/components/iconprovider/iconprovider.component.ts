@@ -1,5 +1,7 @@
 import { property } from 'lit/decorators.js';
+
 import { Provider } from '../../models';
+
 import IconProviderContext from './iconprovider.context';
 import { ALLOWED_FILE_EXTENSIONS, DEFAULTS, ALLOWED_LENGTH_UNITS } from './iconprovider.constants';
 import type { CacheStrategy, IconSet } from './iconprovider.types';

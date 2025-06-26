@@ -2,11 +2,13 @@ import type { CSSResult, PropertyValues } from 'lit';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+
 import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
 import type { IconNames } from '../icon/icon.types';
 import ListItem from '../listitem/listitem.component';
 import { LISTITEM_VARIANTS } from '../listitem/listitem.constants';
 import { TYPE } from '../text/text.constants';
+
 import { SELECTED_ICON_NAME } from './option.constants';
 import styles from './option.styles';
 

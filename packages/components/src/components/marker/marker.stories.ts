@@ -2,9 +2,11 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { MARKER_VARIANTS } from './marker.constants';
 import { disableControls } from '../../../config/storybook/utils';
+
+import { MARKER_VARIANTS } from './marker.constants';
 
 const render = (args: Args) => html`
   <div style="height: 6.25rem">

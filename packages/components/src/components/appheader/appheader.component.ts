@@ -1,6 +1,8 @@
 import { CSSResult, html } from 'lit';
-import styles from './appheader.styles';
+
 import { Component } from '../../models';
+
+import styles from './appheader.styles';
 
 /**
  * The `mdc-appheader` component provides a structured and accessible app header layout.

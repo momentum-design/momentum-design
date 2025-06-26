@@ -1,13 +1,15 @@
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import type { TemplateResult } from 'lit';
 import { html } from 'lit';
+
 import '.';
 import '../icon';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
-import { INDICATOR } from './menuitemcheckbox.constants';
 import { ARIA_CHECKED_STATES } from '../menusection/menusection.constants';
+
+import { INDICATOR } from './menuitemcheckbox.constants';
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style="width: 25rem;">${htmlString}</div>`;
 

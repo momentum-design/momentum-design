@@ -1,4 +1,5 @@
 import { expect, Locator } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 
 type SetupOptions = {

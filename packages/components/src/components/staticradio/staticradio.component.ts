@@ -1,8 +1,10 @@
 import { CSSResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
+
 import { Component } from '../../models';
-import styles from './staticradio.styles';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
+
+import styles from './staticradio.styles';
 
 /**
  * This is a decorative component that is styled to look as a radio.

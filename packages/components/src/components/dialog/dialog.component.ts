@@ -1,16 +1,18 @@
 import { CSSResult, html, PropertyValues, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
-import styles from './dialog.styles';
+
 import { Component } from '../../models';
 import { FocusTrapMixin } from '../../utils/mixins/FocusTrapMixin';
 import { PreventScrollMixin } from '../../utils/mixins/PreventScrollMixin';
-import { DEFAULTS } from './dialog.constants';
-import type { DialogRole, DialogSize, DialogVariant } from './dialog.types';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
-import { DialogEventManager } from './dialog.events';
 import { BUTTON_VARIANTS, ICON_BUTTON_SIZES } from '../button/button.constants';
 import { CardAndDialogFooterMixin } from '../../utils/mixins/CardAndDialogFooterMixin';
+
+import { DEFAULTS } from './dialog.constants';
+import type { DialogRole, DialogSize, DialogVariant } from './dialog.types';
+import { DialogEventManager } from './dialog.events';
+import styles from './dialog.styles';
 
 /**
  * Dialog component is a modal dialog that can be used to display information or prompt the user for input.

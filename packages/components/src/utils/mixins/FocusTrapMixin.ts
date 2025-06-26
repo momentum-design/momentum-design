@@ -1,7 +1,9 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable max-classes-per-file */
 import { property } from 'lit/decorators.js';
+
 import type { Component } from '../../models';
+
 import type { Constructor } from './index.types';
 
 /**

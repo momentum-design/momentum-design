@@ -4,8 +4,10 @@ import { property } from 'lit/decorators.js';
 import { Virtualizer, VirtualItem } from '@tanstack/virtual-core';
 import { StyleInfo } from 'lit/directives/style-map.js';
 import { Ref, createRef, ref } from 'lit/directives/ref.js';
-import styles from './virtualizedlist.styles';
+
 import { Component } from '../../models';
+
+import styles from './virtualizedlist.styles';
 import { DEFAULTS } from './virtualizedlist.constants';
 import { SetListDataProps, VirtualizerProps } from './virtualizedlist.types';
 

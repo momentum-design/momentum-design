@@ -2,6 +2,7 @@ import type { PropertyValues, TemplateResult } from 'lit';
 import { CSSResult, html, nothing } from 'lit';
 import { property, query, queryAssignedElements, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+
 import { KEYS } from '../../utils/keys';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { AssociatedFormControl, FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
@@ -13,6 +14,7 @@ import { TAG_NAME as OPTION_GROUP_TAG_NAME } from '../optgroup/optgroup.constant
 import { TAG_NAME as OPTION_TAG_NAME } from '../option/option.constants';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+
 import { ARROW_ICON, TRIGGER_ID } from './select.constants';
 import styles from './select.styles';
 import type { ArrowIcon } from './select.types';

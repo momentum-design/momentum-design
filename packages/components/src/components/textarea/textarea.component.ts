@@ -1,15 +1,17 @@
 import { CSSResult, html, nothing, PropertyValueMap } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, query } from 'lit/decorators.js';
-import styles from './textarea.styles';
+
 import FormfieldWrapper from '../formfieldwrapper';
 import { DEFAULTS as FORMFIELD_DEFAULTS, VALIDATION } from '../formfieldwrapper/formfieldwrapper.constants';
 import { AUTO_CAPITALIZE } from '../input/input.constants';
 import type { AutoCapitalizeType } from '../input/input.types';
-import { AUTO_COMPLETE, WRAP, DEFAULTS } from './textarea.constants';
-import type { WrapType, AutoCompleteType } from './textarea.types';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
 import { FormInternalsMixin } from '../../utils/mixins/FormInternalsMixin';
+
+import { AUTO_COMPLETE, WRAP, DEFAULTS } from './textarea.constants';
+import type { WrapType, AutoCompleteType } from './textarea.types';
+import styles from './textarea.styles';
 
 /**
  * mdc-textarea component, which is used to get the multi-line text input from the user.

@@ -2,9 +2,11 @@ import type { PropertyValues } from '@lit/reactive-element';
 import type { CSSResult } from 'lit';
 import { property, queryAssignedNodes } from 'lit/decorators.js';
 import { v4 as uuidv4 } from 'uuid';
+
 import { ROLE } from '../../utils/roles';
 import Popover from '../popover/popover.component';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+
 import { DEFAULTS, TOOLTIP_TYPES } from './tooltip.constants';
 import styles from './tooltip.styles';
 import type { TooltipType } from './tooltip.types';

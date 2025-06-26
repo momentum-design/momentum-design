@@ -3,9 +3,11 @@ import '.';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { DIALOG_ROLE, DIALOG_SIZE, DEFAULTS, DIALOG_VARIANT } from './dialog.constants';
 import { disableControls, hideControls } from '../../../config/storybook/utils';
+
+import { DIALOG_ROLE, DIALOG_SIZE, DEFAULTS, DIALOG_VARIANT } from './dialog.constants';
 import '../link';
 import '../button';
 import '../popover';
@@ -86,11 +88,11 @@ const dialogWithPopoverContent = (toggleVisibility: () => void) => html`
 `;
 
 const dialogWithIframeContent = () => html`
-<div slot="dialog-body">
-  <p>This is the body content of the dialog. Try out pressing Tab to see the Focus Trap being stuck</p>
-  <iframe src="https://example.com" width="100%" height="300px"></iframe>
-  <mdc-button>This is a mdc-button after the Iframe</mdc-button>
-</div>
+  <div slot="dialog-body">
+    <p>This is the body content of the dialog. Try out pressing Tab to see the Focus Trap being stuck</p>
+    <iframe src="https://example.com" width="100%" height="300px"></iframe>
+    <mdc-button>This is a mdc-button after the Iframe</mdc-button>
+  </div>
 `;
 
 const render = (args: Args) => {

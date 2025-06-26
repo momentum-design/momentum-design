@@ -1,7 +1,9 @@
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+
 import { LISTITEM_VARIANTS } from './listitem.constants';
 
 type SetUpOptions = {
