@@ -1,58 +1,247 @@
-import { test } from '../../../config/playwright/setup';
+import { expect } from '@playwright/test';
+import { ComponentsPage, test } from '../../../config/playwright/setup';
+import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+import { KEYS } from '../../utils/keys';
+import { ROLE } from '../../utils/roles';
+import { INDICATOR } from './menuitemradio.constants';
+import type { Indicator } from './menuitemradio.types';
 
-test.skip('mdc-menuitemradio', async ({ componentsPage }) => {
+type SetupOptions = {
+  componentsPage: ComponentsPage;
+  name?: string;
+  value?: string;
+  checked?: boolean;
+  disabled?: boolean;
+  indicator?: Indicator;
+  label?: string;
+  secondaryLabel?: string;
+};
+
+const setup = async (args: SetupOptions) => {
+  const { componentsPage, ...restArgs } = args;
+  await componentsPage.mount({
+    html: `
+      <div role="${ROLE.MENU}">
+        <mdc-menuitemradio
+          ${restArgs.name ? `name="${restArgs.name}"` : 'test-radio'}
+          ${restArgs.value ? `value="${restArgs.value}"` : 'test-radio'}
+          ${restArgs.checked ? 'checked' : ''}
+          ${restArgs.disabled ? 'disabled' : ''}
+          ${restArgs.indicator ? `indicator="${restArgs.indicator}"` : ''}
+          ${restArgs.label ? `label="${restArgs.label}"` : ''}
+          ${restArgs.secondaryLabel ? `secondary-label="${restArgs.secondaryLabel}"` : ''}
+        >
+        </mdc-menuitemradio>
+      </div>
+    `,
+    clearDocument: true,
+  });
+
   const menuitemradio = componentsPage.page.locator('mdc-menuitemradio');
-
-  // initial check for the menuitemradio be visible on the screen:
   await menuitemradio.waitFor();
+  return menuitemradio;
+};
+
+const setupGroup = async (componentsPage: ComponentsPage) => {
+  await componentsPage.mount({
+    html: `
+      <div role="${ROLE.MENU}">
+        <mdc-menusection>
+          <mdc-menuitemradio name="theme" value="light" label="Light"></mdc-menuitemradio>
+          <mdc-menuitemradio name="theme" value="dark" checked label="Dark"></mdc-menuitemradio>
+          <mdc-menuitemradio name="view" value="grid" indicator="checkmark" label="Grid"></mdc-menuitemradio>
+          <mdc-menuitemradio name="view" value="list" indicator="checkmark" checked label="List"></mdc-menuitemradio>
+        </mdc-menusection>
+      </div>
+    `,
+    clearDocument: true,
+  });
+
+  const radios = componentsPage.page.locator('mdc-menuitemradio');
+  await radios.first().waitFor();
+  return {
+    lightRadio: radios.nth(0),
+    darkRadio: radios.nth(1),
+    gridRadio: radios.nth(2),
+    listRadio: radios.nth(3),
+  };
+};
+
+test('mdc-menuitemradio', async ({ componentsPage }) => {
+  /**
+   * BASIC FUNCTIONALITY
+   */
+  await test.step('basic functionality', async () => {
+    // Default state
+    await test.step('default state', async () => {
+      const radio = await setup({ componentsPage });
+      await expect(radio).toHaveAttribute('role', ROLE.MENUITEMRADIO);
+      await expect(radio).toHaveAttribute('aria-checked', 'false');
+      await expect(radio).not.toHaveAttribute('checked', '');
+    });
+
+    // Checked state
+    await test.step('checked state', async () => {
+      const radio = await setup({ componentsPage, checked: true });
+      await expect(radio).toHaveAttribute('aria-checked', 'true');
+      await expect(radio).toHaveAttribute('checked', '');
+    });
+
+    // Disabled state
+    await test.step('disabled state', async () => {
+      const radio = await setup({ componentsPage, disabled: true });
+      await expect(radio).toHaveAttribute('aria-disabled', 'true');
+      await expect(radio).toHaveAttribute('disabled', '');
+
+      // Click should not change state when disabled
+      const initialChecked = await radio.getAttribute('aria-checked');
+      if (initialChecked === null) {
+        throw new Error('aria-checked attribute not found');
+      }
+      await radio.click({ force: true });
+      await expect(radio).toHaveAttribute('aria-checked', initialChecked);
+    });
+  });
+
+  /**
+   * SELECTION BEHAVIOR
+   */
+  await test.step('selection behavior', async () => {
+    // Mouse selection
+    await test.step('mouse selection', async () => {
+      const { lightRadio, darkRadio } = await setupGroup(componentsPage);
+
+      await lightRadio.click();
+      await expect(lightRadio).toHaveAttribute('aria-checked', 'true');
+      await expect(lightRadio).toHaveAttribute('checked', '');
+      await expect(darkRadio).toHaveAttribute('aria-checked', 'false');
+      await expect(darkRadio).not.toHaveAttribute('checked', '');
+    });
+
+    // Keyboard selection with Enter
+    await test.step('keyboard selection with Enter', async () => {
+      const { lightRadio, darkRadio } = await setupGroup(componentsPage);
+
+      await lightRadio.focus();
+      await componentsPage.page.keyboard.press(KEYS.ENTER);
+
+      await expect(lightRadio).toHaveAttribute('aria-checked', 'true');
+      await expect(darkRadio).toHaveAttribute('aria-checked', 'false');
+    });
+
+    // Keyboard selection with Space
+    await test.step('keyboard selection with Space', async () => {
+      const { lightRadio, darkRadio } = await setupGroup(componentsPage);
+
+      await lightRadio.focus();
+      await componentsPage.page.keyboard.press(KEYS.SPACE);
+
+      await expect(lightRadio).toHaveAttribute('aria-checked', 'true');
+      await expect(darkRadio).toHaveAttribute('aria-checked', 'false');
+    });
+  });
+
+  /**
+   * GROUPING AND NAMING
+   */
+  await test.step('grouping and naming', async () => {
+    const { lightRadio, darkRadio, gridRadio, listRadio } = await setupGroup(componentsPage);
+
+    // Initial state
+    await expect(lightRadio).toHaveAttribute('aria-checked', 'false');
+    await expect(darkRadio).toHaveAttribute('aria-checked', 'true');
+    await expect(gridRadio).toHaveAttribute('aria-checked', 'false');
+    await expect(listRadio).toHaveAttribute('aria-checked', 'true');
+
+    // Select in theme group
+    await lightRadio.click();
+    await expect(lightRadio).toHaveAttribute('aria-checked', 'true');
+    await expect(darkRadio).toHaveAttribute('aria-checked', 'false');
+
+    // View group should be unaffected
+    await expect(listRadio).toHaveAttribute('aria-checked', 'true');
+    await expect(gridRadio).toHaveAttribute('aria-checked', 'false');
+  });
+
+  /**
+   * INDICATOR TYPES
+   */
+  await test.step('indicator types', async () => {
+    // Radio indicator (default)
+    await test.step('radio indicator', async () => {
+      const radio = await setup({ componentsPage, checked: true });
+      await expect(radio.locator('mdc-staticradio')).toBeVisible();
+    });
+
+    // Checkmark indicator
+    await test.step('checkmark indicator', async () => {
+      const radio = await setup({
+        componentsPage,
+        checked: true,
+        indicator: INDICATOR.CHECKMARK,
+      });
+      await expect(radio.locator('mdc-icon[name="check-bold"]')).toBeVisible();
+    });
+  });
+
+  /**
+   * VISUAL REGRESSION
+   */
+  await test.step('visual regression', async () => {
+    const radioMenuItemSheet = new StickerSheet(componentsPage, 'mdc-menuitemradio', 'margin: 0.25rem 0;');
+    const options = { createNewRow: true };
+    const label = 'Menu Item Radio';
+    radioMenuItemSheet.setAttributes({ label });
+    await radioMenuItemSheet.createMarkupWithCombination({}, options);
+    radioMenuItemSheet.setAttributes({ label, checked: true });
+    await radioMenuItemSheet.createMarkupWithCombination({}, options);
+    radioMenuItemSheet.setAttributes({ label, disabled: true });
+    await radioMenuItemSheet.createMarkupWithCombination({}, options);
+    radioMenuItemSheet.setAttributes({ label, checked: true, disabled: true });
+    await radioMenuItemSheet.createMarkupWithCombination({}, options);
+    radioMenuItemSheet.setAttributes({ label, checked: true, indicator: INDICATOR.CHECKMARK });
+    await radioMenuItemSheet.createMarkupWithCombination({}, options);
+    radioMenuItemSheet.setAttributes({ label, disabled: true, indicator: INDICATOR.CHECKMARK });
+    await radioMenuItemSheet.createMarkupWithCombination({}, options);
+    radioMenuItemSheet.setAttributes({ label, checked: true, disabled: true, indicator: INDICATOR.CHECKMARK });
+    await radioMenuItemSheet.createMarkupWithCombination({}, options);
+    radioMenuItemSheet.setAttributes({
+      label: 'Selected Radio With Secondary Label',
+      checked: true,
+      'secondary-label': 'Secondary Label',
+    });
+    await radioMenuItemSheet.createMarkupWithCombination({}, options);
+    radioMenuItemSheet.setAttributes({
+      label: 'Unselected Radio With Secondary Label',
+      'secondary-label': 'Secondary Label',
+    });
+    await radioMenuItemSheet.createMarkupWithCombination({}, options);
+    radioMenuItemSheet.setAttributes({
+      label: 'Selected Checkmark With Secondary Label',
+      checked: true,
+      indicator: INDICATOR.CHECKMARK,
+      'secondary-label': 'Secondary Label',
+    });
+    await radioMenuItemSheet.createMarkupWithCombination({}, options);
+    radioMenuItemSheet.setAttributes({
+      label: 'Unselected Checkmark With Secondary Label',
+      indicator: INDICATOR.CHECKMARK,
+      'secondary-label': 'Secondary Label',
+    });
+    await radioMenuItemSheet.createMarkupWithCombination({}, options);
+
+    await radioMenuItemSheet.mountStickerSheet({ role: ROLE.MENU });
+    await test.step('matches screenshot of element', async () => {
+      await componentsPage.visualRegression.takeScreenshot('mdc-menuitemradio', {
+        element: radioMenuItemSheet.getWrapperContainer(),
+      });
+    });
+  });
 
   /**
    * ACCESSIBILITY
    */
   await test.step('accessibility', async () => {
     await componentsPage.accessibility.checkForA11yViolations('menuitemradio-default');
-  });
-
-  /**
-   * VISUAL REGRESSION
-   */
-  await test.step('visual-regression', async () => {
-    await test.step('matches screenshot of element', async () => {
-      await componentsPage.visualRegression.takeScreenshot('mdc-menuitemradio', { element: menuitemradio });
-    });
-  });
-
-  /**
-   * ATTRIBUTES
-   */
-  await test.step('attributes', async () => {
-    await test.step('attribute X should be present on component by default', async () => {
-      // TODO: add test here
-    });
-  });
-
-  /**
-   * INTERACTIONS
-   */
-  await test.step('interactions', async () => {
-    await test.step('mouse/pointer', async () => {
-      await test.step('component should fire callback x when clicking on it', async () => {
-        // TODO: add test here
-      });
-    });
-
-    await test.step('focus', async () => {
-      await test.step('component should be focusable with tab', async () => {
-        // TODO: add test here
-      });
-
-      // add additional tests here, like tabbing through several parts of the component
-    });
-
-    await test.step('keyboard', async () => {
-      await test.step('component should fire callback x when pressing y', async () => {
-        // TODO: add test here
-      });
-    });
   });
 });
