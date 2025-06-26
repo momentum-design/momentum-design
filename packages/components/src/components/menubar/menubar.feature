@@ -32,7 +32,6 @@ Feature: Vertical Menubar Accessibility and User Interaction
     Scenario: Clicking soft-disabled menubar menuitem
       Given the menubar menuitem is soft-disabled
       When I click the soft-disabled menubar menuitem (Preferences)
-      Then no action is triggered
       And no submenu opens
 
     Scenario: Switch submenu by clicking another menubar menuitem that has a submenu
@@ -77,7 +76,6 @@ Feature: Vertical Menubar Accessibility and User Interaction
       When I press `Down Arrow`
       Then focus moves to the Preferences menuitem which is soft-disabled
       When I press `Enter` or `Space`
-      Then no action is triggered
       And no submenu opens
 
     Scenario: Home and End keys navigate vertical menubar

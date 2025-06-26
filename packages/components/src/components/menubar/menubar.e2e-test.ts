@@ -50,7 +50,16 @@ const defaultMenuItems: MenuItemConfig[] = [
     ],
   },
   { id: 'window', label: 'Window' },
-  { id: 'preferences', label: 'Preferences', softDisabled: true },
+  { id: 'preferences',
+    label: 'Preferences',
+    softDisabled: true,
+    hasSubmenu: true,
+    submenuPopoverId: 'preferences-popover',
+    submenuItems: [
+      { id: 'preferences-theme', label: 'Theme' },
+      { id: 'preferences-language', label: 'Language' },
+    ],
+  },
   { id: 'help', label: 'Help' },
 ];
 
@@ -133,12 +142,14 @@ test.describe('Menubar Feature Scenarios', () => {
       await expect(edit).toHaveAttribute('aria-expanded', 'true');
     });
 
-    await test.step('Clicking soft-disabled menubar menuitem does nothing', async () => {
+    await test.step('Clicking soft-disabled menubar menuitem does not open submenu', async () => {
       const { preferences } = await setup({ componentsPage });
-      await expect(preferences).toHaveAttribute('soft-disabled');
-      const waitForClick = componentsPage.waitForEvent(preferences, 'click');
+      await preferences.focus();
+      await expect(preferences).toBeFocused();
       await preferences.click();
-      await componentsPage.expectPromiseTimesOut(waitForClick, true);
+      const subMenu = componentsPage.page.locator('#preferences-popover');
+      await expect(preferences).toHaveAttribute('soft-disabled');
+      await expect(subMenu).not.toBeVisible();
       await expect(preferences).toHaveAttribute('aria-disabled', 'true');
     });
 
@@ -225,9 +236,9 @@ test.describe('Menubar Feature Scenarios', () => {
       await expect(window).toBeFocused();
       await componentsPage.page.keyboard.press('ArrowDown');
       await expect(preferences).toBeFocused();
-      const waitForClick = componentsPage.waitForEvent(preferences, 'click');
       await componentsPage.page.keyboard.press('Enter');
-      await componentsPage.expectPromiseTimesOut(waitForClick, true); // Expect click to not trigger
+      const subMenu = componentsPage.page.locator('#preferences-popover');
+      await expect(subMenu).not.toBeVisible();
       await expect(preferences).toHaveAttribute('soft-disabled');
       await expect(preferences).toHaveAttribute('aria-disabled', 'true');
     });

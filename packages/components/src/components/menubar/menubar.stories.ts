@@ -64,7 +64,7 @@ const render = () => html`
         <mdc-menuitem label="Zoom Out"></mdc-menuitem>
       </mdc-menupopover>
       <mdc-menuitem label="Tools"></mdc-menuitem>
-      <mdc-menuitem id="terminal-id" label="Terminal"></mdc-menuitem>
+      <mdc-menuitem id="terminal-id" label="Terminal" soft-disabled></mdc-menuitem>
       <mdc-menupopover triggerid="terminal-id">
         <mdc-menuitem label="New Terminal"></mdc-menuitem>
         <mdc-menuitem label="Open Terminal"></mdc-menuitem>
@@ -74,7 +74,7 @@ const render = () => html`
         <mdc-divider></mdc-divider>
         <mdc-menuitem label="Configure Task"></mdc-menuitem>
       </mdc-menupopover>
-      <mdc-menuitem label="Window" soft-disabled></mdc-menuitem>
+      <mdc-menuitem label="Window"></mdc-menuitem>
       <mdc-menuitem label="Help"></mdc-menuitem>
     </mdc-menubar>
     <div style="
@@ -88,7 +88,6 @@ const render = () => html`
   </div>
   <script>
     var handleClick = (event) => {
-      if(event.target.hasAttribute('soft-disabled')) return;
       const activePage = event.target.getAttribute('label');
       const container = document.getElementById('container');
       if (!activePage || !container) return;
