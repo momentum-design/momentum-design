@@ -1,9 +1,11 @@
 import type { PropertyValues } from 'lit';
 import { CSSResult, html } from 'lit';
 import { property, state } from 'lit/decorators.js';
+
 import { ButtonComponentMixin } from '../../utils/mixins/ButtonComponentMixin';
 import Buttonsimple from '../buttonsimple/buttonsimple.component';
 import type { IconNames } from '../icon/icon.types';
+
 import { DEFAULTS } from './button.constants';
 import styles from './button.styles';
 import type { IconButtonSize, PillButtonSize } from './button.types';
@@ -132,14 +134,20 @@ class Button extends ButtonComponentMixin(Buttonsimple) {
   public override render() {
     return html`
       ${this.prefixFilledIconName
-    ? html` <mdc-icon name="${this.prefixFilledIconName as IconNames}" 
-    part="prefix-icon" length-unit="rem"></mdc-icon>`
-    : ''}
+        ? html` <mdc-icon
+            name="${this.prefixFilledIconName as IconNames}"
+            part="prefix-icon"
+            length-unit="rem"
+          ></mdc-icon>`
+        : ''}
       <slot @slotchange=${this.inferButtonType}></slot>
       ${this.postfixFilledIconName
-    ? html` <mdc-icon name="${this.postfixFilledIconName as IconNames}" 
-    part="postfix-icon" length-unit="rem"></mdc-icon>`
-    : ''}
+        ? html` <mdc-icon
+            name="${this.postfixFilledIconName as IconNames}"
+            part="postfix-icon"
+            length-unit="rem"
+          ></mdc-icon>`
+        : ''}
     `;
   }
 

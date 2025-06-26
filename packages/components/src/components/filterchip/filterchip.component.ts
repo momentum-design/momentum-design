@@ -1,8 +1,10 @@
 import { CSSResult, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
+
 import Chip from '../chip/chip.component';
-import styles from './filterchip.styles';
 import type { IconNames } from '../icon/icon.types';
+
+import styles from './filterchip.styles';
 import { DEFAULTS } from './filterchip.constants';
 
 /**

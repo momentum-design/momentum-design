@@ -6,9 +6,9 @@ import '../icon';
 Chip.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-chip']: Chip
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-chip']: Chip;
+  }
 }
 
 export default Chip;

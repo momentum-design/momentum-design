@@ -52,7 +52,7 @@ module.exports = {
     {
       name: 'momentum-translate-module-paths',
       packageLinkPhase({ customElementsManifest }) {
-        customElementsManifest?.modules?.forEach((mod) => {
+        customElementsManifest?.modules?.forEach(mod => {
           //
           // CEM paths look like this:
           //
@@ -93,11 +93,11 @@ module.exports = {
       analyzePhase({ ts, node, moduleDoc }) {
         if (node.kind === ts.SyntaxKind.ClassDeclaration) {
           const className = node.name.getText();
-          const classDoc = moduleDoc?.declarations?.find((declaration) => declaration.name === className);
+          const classDoc = moduleDoc?.declarations?.find(declaration => declaration.name === className);
 
           // This is what allows us to map JSDOC comments to ReactWrappers.
           // this will only parse the full JSDoc comment (including web component tags)
-          classDoc.jsDoc = node.jsDoc?.map((jsDoc) => jsDoc.getFullText()).join('\n');
+          classDoc.jsDoc = node.jsDoc?.map(jsDoc => jsDoc.getFullText()).join('\n');
         }
       },
     },
@@ -106,10 +106,10 @@ module.exports = {
       analyzePhase({ ts, node, moduleDoc }) {
         if (node.kind === ts.SyntaxKind.ClassDeclaration) {
           const className = node.name.getText();
-          const classDoc = moduleDoc?.declarations?.find((declaration) => declaration.name === className);
+          const classDoc = moduleDoc?.declarations?.find(declaration => declaration.name === className);
 
           if (classDoc?.events) {
-            classDoc.events.forEach((event) => {
+            classDoc.events.forEach(event => {
               if (event.name) {
                 event.reactName = parseReactEventName(event.description) || `on${pascalCase(event.name)}`;
               }

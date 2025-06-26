@@ -6,7 +6,7 @@ IconProvider.register(TAG_NAME);
 export default IconProvider;
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-iconprovider']: IconProvider
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-iconprovider']: IconProvider;
+  }
 }

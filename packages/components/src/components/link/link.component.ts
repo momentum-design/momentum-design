@@ -1,10 +1,12 @@
 import { CSSResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
+
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
+import Linksimple from '../linksimple/linksimple.component';
+
 import { DEFAULTS, LINK_ICON_SIZES, LINK_SIZES } from './link.constants';
 import styles from './link.styles';
 import type { LinkSize } from './link.types';
-import Linksimple from '../linksimple/linksimple.component';
 
 /**
  * `mdc-link` component can be used to navigate to a different page
@@ -56,13 +58,9 @@ class Link extends IconNameMixin(Linksimple) {
   public override render() {
     return html`
       <slot></slot>
-      ${this.iconName ? html`
-        <mdc-icon
-          name=${this.iconName}
-          size=${this.getIconSize()}
-          length-unit="rem"
-        ></mdc-icon>
-      ` : nothing}
+      ${this.iconName
+        ? html` <mdc-icon name=${this.iconName} size=${this.getIconSize()} length-unit="rem"></mdc-icon> `
+        : nothing}
     `;
   }
 

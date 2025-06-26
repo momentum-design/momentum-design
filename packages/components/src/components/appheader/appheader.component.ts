@@ -1,6 +1,8 @@
 import { CSSResult, html } from 'lit';
-import styles from './appheader.styles';
+
 import { Component } from '../../models';
+
+import styles from './appheader.styles';
 
 /**
  * The `mdc-appheader` component provides a structured and accessible app header layout.
@@ -27,18 +29,17 @@ class Appheader extends Component {
    * Uses `slots` for flexibility, allowing consumers to insert custom content.
    */
   public override render() {
-    return html`
-      <header part="container">
-        <div part="leading-section">
-          <slot name="leading"></slot>
-        </div>
-        <div part="center-section">
-          <slot name="center"></slot>
-        </div>
-        <div part="trailing-section">
-          <slot name="trailing"></slot>
-        </div>
-      </header>`;
+    return html` <header part="container">
+      <div part="leading-section">
+        <slot name="leading"></slot>
+      </div>
+      <div part="center-section">
+        <slot name="center"></slot>
+      </div>
+      <div part="trailing-section">
+        <slot name="trailing"></slot>
+      </div>
+    </header>`;
   }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];

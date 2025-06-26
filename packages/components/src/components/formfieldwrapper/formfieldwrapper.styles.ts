@@ -1,4 +1,5 @@
 import { css } from 'lit';
+
 import { hostFitContentStyles } from '../../utils/styles';
 
 const styles = [
@@ -31,7 +32,8 @@ const styles = [
       width: 100%;
     }
 
-    .mdc-label, .mdc-help-text{
+    .mdc-label,
+    .mdc-help-text {
       font-size: var(--mds-font-apps-body-midsize-regular-font-size);
       font-weight: var(--mds-font-apps-body-midsize-regular-font-weight);
       line-height: var(--mds-font-apps-body-midsize-regular-line-height);

@@ -1,12 +1,13 @@
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls } from '../../../config/storybook/utils';
 import { TOGGLE_SIZE } from '../toggle/toggle.constants';
 
-const render = (args: Args) => html`
-  <mdc-statictoggle
+const render = (args: Args) =>
+  html` <mdc-statictoggle
     ?checked="${args.checked}"
     ?disabled="${args.disabled}"
     size="${args.size}"

@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import { LitElement, html, nothing, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
+
 import { DEFAULTS } from '../../components/card/card.constants';
 import type { CardOrientation, CardVariant } from '../../components/card/card.types';
 import type { TagName as TagNameType } from '../../components/text/text.types';
@@ -134,10 +135,10 @@ export const CardComponentMixin = <T extends Constructor<LitElement>>(superClass
       return html`<div part="title-container">
         <mdc-text part="title" type="${DEFAULTS.TITLE_TYPE}" tagname="${this.titleTagName}">${this.cardTitle}</mdc-text>
         ${this.subtitle
-    ? html`<mdc-text part="subtitle" type="${DEFAULTS.SUBTITLE_TYPE}" tagname="${this.subtitleTagName}"
+          ? html`<mdc-text part="subtitle" type="${DEFAULTS.SUBTITLE_TYPE}" tagname="${this.subtitleTagName}"
               >${this.subtitle}</mdc-text
             >`
-    : nothing}
+          : nothing}
       </div>`;
     }
   }

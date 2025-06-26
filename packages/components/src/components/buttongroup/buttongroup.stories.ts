@@ -1,9 +1,11 @@
 import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { BUTTON_GROUP_ORIENTATION, BUTTON_GROUP_SIZE, BUTTON_GROUP_VARIANT } from './buttongroup.constants';
 import { disableControls } from '../../../config/storybook/utils';
+
+import { BUTTON_GROUP_ORIENTATION, BUTTON_GROUP_SIZE, BUTTON_GROUP_VARIANT } from './buttongroup.constants';
 import '../button';
 import '../popover';
 import '../tooltip';
@@ -125,7 +127,7 @@ export const GroupWithPopover: StoryObj = {
       <mdc-button prefix-icon="camera-on-bold" id="popover-trigger-1">Start Video</mdc-button>
       <mdc-button prefix-icon="arrow-down-bold" id="popover-trigger-2"></mdc-button>
     </mdc-buttongroup>
-    
+
     <mdc-tooltip id="tooltip1" triggerID="popover-trigger-1" placement="bottom" show-arrow tooltip-type="label">
       <mdc-text>Tooltip explaining Start Video button</mdc-text>
     </mdc-tooltip>

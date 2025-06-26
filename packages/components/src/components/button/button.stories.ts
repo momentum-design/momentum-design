@@ -3,8 +3,10 @@ import '.';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { BUTTON_COLORS, PILL_BUTTON_SIZES, BUTTON_VARIANTS, ICON_BUTTON_SIZES, BUTTON_TYPE } from './button.constants';
+
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
+
+import { BUTTON_COLORS, PILL_BUTTON_SIZES, BUTTON_VARIANTS, ICON_BUTTON_SIZES, BUTTON_TYPE } from './button.constants';
 
 const render = (args: Args) =>
   html` <mdc-button
@@ -123,7 +125,7 @@ export const PillButton: StoryObj = {
 };
 
 export const PillButtonInverted: StoryObj = {
-  render: (args) =>
+  render: args =>
     html` <div style="padding: 10px; background: var(--mds-color-theme-inverted-background-normal);">
       ${render(args)}
     </div>`,
@@ -199,7 +201,7 @@ export const IconButton: StoryObj = {
 };
 
 export const IconButtonInverted: StoryObj = {
-  render: (args) =>
+  render: args =>
     html` <div style="padding: 10px; background: var(--mds-color-theme-inverted-background-normal);">
       ${render(args)}
     </div>`,
@@ -228,7 +230,7 @@ export const IconButtonInverted: StoryObj = {
 };
 
 export const PillButtonEllipsis: StoryObj = {
-  render: (args) =>
+  render: args =>
     render({ ...args, children: html`<mdc-text>${args.textWithinChildren}</mdc-text>`, style: 'width: 150px;' }),
   args: {
     textWithinChildren: 'Long text with icons',
@@ -245,7 +247,7 @@ export const PillButtonEllipsis: StoryObj = {
 };
 
 export const PillWithPrefixIconEllipsis: StoryObj = {
-  render: (args) =>
+  render: args =>
     render({ ...args, children: html`<mdc-text>${args.textWithinChildren}</mdc-text>`, style: 'width: 150px;' }),
   args: {
     textWithinChildren: 'Long text with icons',

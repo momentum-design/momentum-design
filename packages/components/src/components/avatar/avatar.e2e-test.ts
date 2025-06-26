@@ -1,12 +1,14 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-await-in-loop */
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import { TYPE as PRESENCE_TYPE } from '../presence/presence.constants';
-import { AVATAR_SIZE, DEFAULTS } from './avatar.constants';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
-import type { AvatarSize } from './avatar.types';
 import type { IconNames } from '../icon/icon.types';
+
+import { AVATAR_SIZE, DEFAULTS } from './avatar.constants';
+import type { AvatarSize } from './avatar.types';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -15,7 +17,7 @@ type SetupOptions = {
   initials?: string;
   size?: AvatarSize;
   src?: string;
-}
+};
 
 const setup = async (args: SetupOptions) => {
   const { componentsPage, ...restArgs } = args;

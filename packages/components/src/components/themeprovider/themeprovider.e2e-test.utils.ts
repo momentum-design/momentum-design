@@ -1,8 +1,10 @@
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
+
 import { Component } from '../../models';
-import ThemeProvider from './themeprovider.component';
 import providerUtils from '../../utils/provider';
+
+import ThemeProvider from './themeprovider.component';
 
 // Subcomponent to be rendered in E2E Tests, to showcase that the
 // theme can be consumed as a subcomponent

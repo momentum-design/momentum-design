@@ -1,6 +1,7 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import {
@@ -8,7 +9,8 @@ import {
   BUTTON_VARIANTS,
   DEFAULTS,
   ICON_BUTTON_SIZES,
-  PILL_BUTTON_SIZES } from '../button/button.constants';
+  PILL_BUTTON_SIZES,
+} from '../button/button.constants';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -135,7 +137,7 @@ const testForButtonLinkSizes = async (args: SetupOptions, buttonlinkType: string
       ...props,
     });
     if (buttonlinkType === 'icon') {
-      const iconSizesToTest = Object.values(ICON_BUTTON_SIZES).filter((size) => size !== ICON_BUTTON_SIZES[20]);
+      const iconSizesToTest = Object.values(ICON_BUTTON_SIZES).filter(size => size !== ICON_BUTTON_SIZES[20]);
       for (const size of iconSizesToTest) {
         await test.step(`attribute size="${size}" should be present on ${buttonlinkType} buttonlink`, async () => {
           await componentsPage.setAttributes(buttonlink, { size: `${size}`, 'aria-label': 'icon-button-20' });

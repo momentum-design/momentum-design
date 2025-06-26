@@ -1,7 +1,9 @@
 import { property, state } from 'lit/decorators.js';
 import { CSSResult } from 'lit';
-import { DEFAULTS } from './themeprovider.constants';
+
 import { Provider } from '../../models';
+
+import { DEFAULTS } from './themeprovider.constants';
 import ThemeProviderContext from './themeprovider.context';
 import styles from './themeprovider.styles';
 

@@ -3,8 +3,10 @@ import { property, state } from 'lit/decorators.js';
 import { VirtualItem } from '@tanstack/virtual-core';
 import { ref } from 'lit/directives/ref.js';
 import { styleMap } from 'lit/directives/style-map.js';
-import { SetListDataProps, VirtualizerProps } from './virtualizedlist.types';
+
 import { Component } from '../../models';
+
+import { SetListDataProps, VirtualizerProps } from './virtualizedlist.types';
 
 class VirtualizedWrapper extends Component {
   @property({ type: Function, attribute: 'onscroll' })
@@ -17,9 +19,7 @@ class VirtualizedWrapper extends Component {
   list: TemplateResult<1> = html``;
 
   @state()
-  listItemTexts = new Array(this.virtualizerProps.count)
-    .fill(true)
-    .map((_, index) => `list item number ${index}`);
+  listItemTexts = new Array(this.virtualizerProps.count).fill(true).map((_, index) => `list item number ${index}`);
 
   constructor() {
     super();
@@ -49,20 +49,27 @@ class VirtualizedWrapper extends Component {
 
   private setListData({ virtualItems, measureElement, listStyle }: SetListDataProps) {
     if (virtualItems) {
-      this.list = html`<ul style="margin: 0;${styleMap(listStyle)}">${virtualItems.map((virtualItem: VirtualItem) =>
-        html`<li role="listitem" key=${virtualItem.key} data-index=${virtualItem.index} ref=${ref(measureElement)}>
-          ${this.listItemTexts[virtualItem.index]}</li>`)}</ul>`;
+      this.list = html`<ul style="margin: 0;${styleMap(listStyle)}">
+        ${virtualItems.map(
+          (virtualItem: VirtualItem) =>
+            html`<li role="listitem" key=${virtualItem.key} data-index=${virtualItem.index} ref=${ref(measureElement)}>
+              ${this.listItemTexts[virtualItem.index]}
+            </li>`,
+        )}
+      </ul>`;
     }
   }
 
   override render() {
     return html`
-    <div style="height: 500px; width: 500px;">
-      <mdc-virtualizedlist
-        .onscroll=${this.onscroll}
-        .virtualizerProps=${this.virtualizerProps}
-        .setlistdata=${this.setListData}
-      >${this.list}</mdc-virtualizedlist></div>
+      <div style="height: 500px; width: 500px;">
+        <mdc-virtualizedlist
+          .onscroll=${this.onscroll}
+          .virtualizerProps=${this.virtualizerProps}
+          .setlistdata=${this.setListData}
+          >${this.list}</mdc-virtualizedlist
+        >
+      </div>
     `;
   }
 

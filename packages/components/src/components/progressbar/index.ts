@@ -6,9 +6,9 @@ import '../text';
 Progressbar.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-progressbar']: Progressbar
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-progressbar']: Progressbar;
+  }
 }
 
 export default Progressbar;

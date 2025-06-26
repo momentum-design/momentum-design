@@ -47,7 +47,7 @@ class ComponentsPage {
    */
   async setGlobalTheme(themeClass: ThemeClass) {
     await this.page.evaluate(
-      (args) => {
+      args => {
         const themeProvider = window.document.querySelector('body mdc-themeprovider');
         if (themeProvider) {
           themeProvider.setAttribute('themeclass', args.themeClass);
@@ -98,7 +98,7 @@ class ComponentsPage {
   async mount({ html, clearDocument = false, elementSelector }: MountOptions) {
     await test.step('Mounting HTML', async () => {
       await this.page.evaluate(
-        (args) => {
+        args => {
           function htmlToElement(htmlString: string): Element {
             const template = document.createElement('template');
             template.innerHTML = htmlString.trim();
@@ -146,7 +146,7 @@ class ComponentsPage {
    */
   async setAttributes(locator: Locator, attributes: Record<string, string>) {
     await locator.evaluate((element, attrs) => {
-      Object.keys(attrs).forEach((key) => {
+      Object.keys(attrs).forEach(key => {
         element.setAttribute(key, attrs[key]);
       });
     }, attributes);
@@ -175,13 +175,13 @@ class ComponentsPage {
    */
   async expectPromiseTimesOut(promise: Promise<unknown>, shouldTimeout: boolean, timeout: number = 2000) {
     const TIMED_OUT = 'TIMED_OUT';
-    const timeoutPromise = new Promise((resolve) => {
+    const timeoutPromise = new Promise(resolve => {
       setTimeout(resolve, timeout);
     }).then(() => TIMED_OUT);
 
     const [resolved, error] = await Promise.race([promise, timeoutPromise])
-      .then((x) => [x])
-      .catch((err) => [undefined, err]);
+      .then(x => [x])
+      .catch(err => [undefined, err]);
 
     const pass = resolved === TIMED_OUT;
 

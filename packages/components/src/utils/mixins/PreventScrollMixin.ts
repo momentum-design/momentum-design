@@ -1,9 +1,11 @@
 import { LitElement } from 'lit';
-import type { Constructor } from './index.types';
+
 import type { Component } from '../../models';
 
+import type { Constructor } from './index.types';
+
 export declare abstract class PreventScrollMixinInterface {
-  protected abstract preventScroll?: boolean
+  protected abstract preventScroll?: boolean;
 
   protected activatePreventScroll(): void;
 

@@ -1,11 +1,13 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { queryAssignedElements } from 'lit/decorators.js';
-import styles from './card.styles';
+
 import { Component } from '../../models';
-import { DEFAULTS } from './card.constants';
 import { BUTTON_VARIANTS } from '../button/button.constants';
 import { CardComponentMixin } from '../../utils/mixins/CardComponentMixin';
 import { CardAndDialogFooterMixin } from '../../utils/mixins/CardAndDialogFooterMixin';
+
+import { DEFAULTS } from './card.constants';
+import styles from './card.styles';
 
 /**
  * The card component allows users to organize information in a structured and tangible
@@ -54,69 +56,68 @@ import { CardAndDialogFooterMixin } from '../../utils/mixins/CardAndDialogFooter
  *
  */
 class Card extends CardComponentMixin(CardAndDialogFooterMixin(Component)) {
-   /**
+  /**
    * The icon buttons in the header section
    * @internal
    */
-   @queryAssignedElements({ slot: 'icon-button' })
-   iconButtons?: Array<HTMLElement>;
+  @queryAssignedElements({ slot: 'icon-button' })
+  iconButtons?: Array<HTMLElement>;
 
-   override update(changedProperties: PropertyValues<Card>) {
-     super.update(changedProperties);
-     if (changedProperties.has('variant')) {
-       this.updateFooterButtonColors(this.variant);
-     }
-   }
+  override update(changedProperties: PropertyValues<Card>) {
+    super.update(changedProperties);
+    if (changedProperties.has('variant')) {
+      this.updateFooterButtonColors(this.variant);
+    }
+  }
 
-   /**
-    * Handles the icon buttons in the header section and sets its variant for styling.
-    * It also limits the number of buttons to 3.
-    * @internal
-    */
-   private handleIconButtons = () => {
-     this.iconButtons?.forEach((element) => {
-       if (!element.matches(DEFAULTS.BUTTON) && element.getAttribute('data-btn-type') !== 'icon') {
-         element.remove();
-       } else {
-         element.setAttribute('variant', BUTTON_VARIANTS.TERTIARY);
-         element.setAttribute('size', '32');
-       }
-     });
-     // limit to show only first 3 buttons defined in the slot
-     if (this.iconButtons && this.iconButtons.length > 3) {
-       for (let i = 3; i < this.iconButtons.length; i += 1) {
-         this.iconButtons[i].remove();
-       }
-     }
-   };
+  /**
+   * Handles the icon buttons in the header section and sets its variant for styling.
+   * It also limits the number of buttons to 3.
+   * @internal
+   */
+  private handleIconButtons = () => {
+    this.iconButtons?.forEach(element => {
+      if (!element.matches(DEFAULTS.BUTTON) && element.getAttribute('data-btn-type') !== 'icon') {
+        element.remove();
+      } else {
+        element.setAttribute('variant', BUTTON_VARIANTS.TERTIARY);
+        element.setAttribute('size', '32');
+      }
+    });
+    // limit to show only first 3 buttons defined in the slot
+    if (this.iconButtons && this.iconButtons.length > 3) {
+      for (let i = 3; i < this.iconButtons.length; i += 1) {
+        this.iconButtons[i].remove();
+      }
+    }
+  };
 
-   /**
+  /**
    * Renders the header of the card if title is provided
    * @returns The header element
    */
-   protected renderHeader() {
-     if (!this.cardTitle) {
-       return nothing;
-     }
-     return html`<div part="header">
-      ${this.renderIcon()}
-      ${this.renderTitle()}
+  protected renderHeader() {
+    if (!this.cardTitle) {
+      return nothing;
+    }
+    return html`<div part="header">
+      ${this.renderIcon()} ${this.renderTitle()}
       <div part="icon-button"><slot name="icon-button" @slotchange=${this.handleIconButtons}></slot></div>
     </div>`;
-   }
+  }
 
-   public override render() {
-     return html`
-  ${this.renderImage()}
-    <div part="body">
-    ${this.renderHeader()}
-      <slot name="before-body"></slot>
-      <slot name="body"></slot>
-      <slot name="after-body"></slot>
-      ${this.renderFooter()}
-    </div>
+  public override render() {
+    return html`
+      ${this.renderImage()}
+      <div part="body">
+        ${this.renderHeader()}
+        <slot name="before-body"></slot>
+        <slot name="body"></slot>
+        <slot name="after-body"></slot>
+        ${this.renderFooter()}
+      </div>
     `;
-   }
+  }
 
   public static override styles: Array<CSSResult> = [...Component.styles, ...styles];
 }

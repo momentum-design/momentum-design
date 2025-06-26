@@ -1,9 +1,11 @@
 import { action } from '@storybook/addon-actions';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls } from '../../../config/storybook/utils';
+
 import '../divider';
 import '../menuitem';
 import '../menuitemcheckbox';
@@ -14,10 +16,7 @@ import { ORIENTATION } from './menubar.constants';
 
 const render = (args: Args) => html`
   <div style="width: 100%; display: flex;" class="root">
-    <mdc-menubar
-      aria-orientation="${args['aria-orientation']}"
-      @click="${action('onclick')}"
-    >
+    <mdc-menubar aria-orientation="${args['aria-orientation']}" @click="${action('onclick')}">
       <mdc-menuitem label="Home"></mdc-menuitem>
       <mdc-menuitem id="file-id" label="File"></mdc-menuitem>
       <mdc-menupopover triggerid="file-id">
@@ -79,30 +78,32 @@ const render = (args: Args) => html`
       <mdc-menuitem label="Window"></mdc-menuitem>
       <mdc-menuitem label="Help"></mdc-menuitem>
     </mdc-menubar>
-    <div style="
+    <div
+      style="
       height: 25rem; width: 100%; display: flex; justify-content: center; align-items: center;
       background-image: linear-gradient(120deg, #fdfbfb 0%, #d3d3d3 100%);
-    ">
+    "
+    >
       <div id="container">
         <h1>Welcome, select a menu item from the top</h1>
       </div>
     </div>
   </div>
   <script>
-    var handleClick = (event) => {
+    var handleClick = event => {
       const activePage = event.target.getAttribute('label');
       const container = document.getElementById('container');
       if (!activePage || !container) return;
 
       container.innerHTML = '<h1>You have clicked ' + activePage + '</h1>';
-    }
+    };
     document.addEventListener('click', handleClick);
   </script>
   <style>
     #container h1 {
       color: black;
     }
-    mdc-menubar[aria-orientation='horizontal'] {  
+    mdc-menubar[aria-orientation='horizontal'] {
       width: 100%;
       height: 3rem;
     }
@@ -153,10 +154,7 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
-    ...disableControls([
-      'slot',
-      'default',
-    ]),
+    ...disableControls(['slot', 'default']),
   },
 };
 
@@ -212,27 +210,27 @@ export const EditorMenuBar: StoryObj = {
       </mdc-menupopover>
     </mdc-menubar>
     <p id="textarea" style="width: 80%; height: 80%; border: 1px solid white; border-radius: 5px; padding: 1rem;">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc at accumsan purus, non dignissim mi.
-      Nam in nisl at neque mollis tempor iaculis ut felis. Etiam bibendum vitae est vitae dictum.
-      Nulla non sapien volutpat, ornare diam sit amet, viverra dui. Vestibulum sit amet eros nec lacus laoreet commodo.
-      Praesent pharetra enim vitae felis egestas rutrum. In in erat et neque ornare efficitur. Curabitur facilisis orci
-      quis est dictum, vitae efficitur metus imperdiet. Duis vel ipsum est. Nulla commodo feugiat augue, sed dapibus
-      ante mollis dignissim. Nullam varius a libero quis elementum. In et arcu mi.
-      <br/><br/>
-      Donec id dui nunc. Integer auctor sodales consequat. Nunc sagittis nisi luctus mauris tincidunt tempor.
-      Nulla pharetra convallis ultrices. Nam porta erat in nisi efficitur, non luctus elit viverra.
-      Fusce sit amet lobortis lectus. Mauris fermentum nisi et tortor elementum, vitae molestie lacus gravida.
-      Vivamus molestie leo non lobortis tincidunt. Etiam gravida, nulla eu porta vestibulum, arcu mauris
-      pellentesque lorem, a tempus massa tortor ac libero. Fusce iaculis odio in tincidunt efficitur.
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc at accumsan purus, non dignissim mi. Nam in nisl at
+      neque mollis tempor iaculis ut felis. Etiam bibendum vitae est vitae dictum. Nulla non sapien volutpat, ornare
+      diam sit amet, viverra dui. Vestibulum sit amet eros nec lacus laoreet commodo. Praesent pharetra enim vitae felis
+      egestas rutrum. In in erat et neque ornare efficitur. Curabitur facilisis orci quis est dictum, vitae efficitur
+      metus imperdiet. Duis vel ipsum est. Nulla commodo feugiat augue, sed dapibus ante mollis dignissim. Nullam varius
+      a libero quis elementum. In et arcu mi.
+      <br /><br />
+      Donec id dui nunc. Integer auctor sodales consequat. Nunc sagittis nisi luctus mauris tincidunt tempor. Nulla
+      pharetra convallis ultrices. Nam porta erat in nisi efficitur, non luctus elit viverra. Fusce sit amet lobortis
+      lectus. Mauris fermentum nisi et tortor elementum, vitae molestie lacus gravida. Vivamus molestie leo non lobortis
+      tincidunt. Etiam gravida, nulla eu porta vestibulum, arcu mauris pellentesque lorem, a tempus massa tortor ac
+      libero. Fusce iaculis odio in tincidunt efficitur.
     </p>
     <script>
-      var handleEditorClick = (event) => {
+      var handleEditorClick = event => {
         const isDisabled = event.target.hasAttribute('disabled');
         const action = event.target.getAttribute('label');
         const isChecked = event.target.getAttribute('aria-checked');
         const textarea = document.getElementById('textarea');
 
-        if(isDisabled || !action || !isChecked || !textarea) return;
+        if (isDisabled || !action || !isChecked || !textarea) return;
         switch (action) {
           case 'Bold':
             textarea.style.fontWeight = isChecked === 'true' ? 'bold' : 'unset';
@@ -277,7 +275,7 @@ export const EditorMenuBar: StoryObj = {
             textarea.style.fontSize = 'large';
             break;
         }
-      }
+      };
       document.addEventListener('click', handleEditorClick);
     </script>
   `,

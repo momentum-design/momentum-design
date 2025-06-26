@@ -1,8 +1,10 @@
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
+
 import { Component } from '../../models';
-import IconProvider from './iconprovider.component';
 import providerUtils from '../../utils/provider';
+
+import IconProvider from './iconprovider.component';
 
 // Subcomponent to be rendered in E2E Tests, to showcase that the
 // icon provider can be consumed as a subcomponent
@@ -14,9 +16,7 @@ class SubComponentIconProvider extends Component {
   private iconProviderContext = providerUtils.consume({ host: this, context: IconProvider.Context });
 
   override render() {
-    return html`
-      <p style="margin: 0;">${this.iconLabelPrefix}${this.iconProviderContext.value?.lengthUnit}</p>
-    `;
+    return html` <p style="margin: 0;">${this.iconLabelPrefix}${this.iconProviderContext.value?.lengthUnit}</p> `;
   }
 }
 

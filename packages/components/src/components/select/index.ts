@@ -9,9 +9,9 @@ import { TAG_NAME } from './select.constants';
 Select.register(TAG_NAME);
 
 declare global {
-    interface HTMLElementTagNameMap {
-        ['mdc-select']: Select
-    }
+  interface HTMLElementTagNameMap {
+    ['mdc-select']: Select;
+  }
 }
 
 export default Select;

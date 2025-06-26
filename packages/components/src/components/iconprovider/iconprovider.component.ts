@@ -1,5 +1,7 @@
 import { property } from 'lit/decorators.js';
+
 import { Provider } from '../../models';
+
 import IconProviderContext from './iconprovider.context';
 import { ALLOWED_FILE_EXTENSIONS, DEFAULTS, ALLOWED_LENGTH_UNITS } from './iconprovider.constants';
 import type { CacheStrategy, IconSet } from './iconprovider.types';
@@ -151,13 +153,13 @@ class IconProvider extends Provider<IconProviderContext> {
 
   protected updateContext(): void {
     if (
-      this.context.value.fileExtension !== this.fileExtension
-      || this.context.value.iconSet !== this.iconSet
-      || this.context.value.url !== this.url
-      || this.context.value.lengthUnit !== this.lengthUnit
-      || this.context.value.size !== this.size
-      || this.context.value.cacheName !== this.cacheName
-      || this.context.value.cacheStrategy !== this.cacheStrategy
+      this.context.value.fileExtension !== this.fileExtension ||
+      this.context.value.iconSet !== this.iconSet ||
+      this.context.value.url !== this.url ||
+      this.context.value.lengthUnit !== this.lengthUnit ||
+      this.context.value.size !== this.size ||
+      this.context.value.cacheName !== this.cacheName ||
+      this.context.value.cacheStrategy !== this.cacheStrategy
     ) {
       this.updateValuesInContext();
       this.context.updateObservers();

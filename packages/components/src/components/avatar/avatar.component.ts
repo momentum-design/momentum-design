@@ -2,9 +2,11 @@ import type { PropertyValues, TemplateResult } from 'lit';
 import { CSSResult, html, nothing } from 'lit';
 import { state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+
 import { Component } from '../../models';
 import { AvatarComponentMixin } from '../../utils/mixins/AvatarComponentMixin';
 import { IconNameMixin } from '../../utils/mixins/IconNameMixin';
+
 import { AVATAR_TYPE, DEFAULTS, MAX_COUNTER } from './avatar.constants';
 import styles from './avatar.styles';
 import type { AvatarType } from './avatar.types';
@@ -128,11 +130,7 @@ class Avatar extends AvatarComponentMixin(IconNameMixin(Component)) {
   private iconTemplate(): TemplateResult {
     const name = this.iconName || DEFAULTS.ICON_NAME;
     return html`
-      <mdc-icon
-        name="${ifDefined(name)}"
-        length-unit="rem"
-        size="${getAvatarIconSize(this.size)}"
-      ></mdc-icon>
+      <mdc-icon name="${ifDefined(name)}" length-unit="rem" size="${getAvatarIconSize(this.size)}"></mdc-icon>
     `;
   }
 
@@ -145,14 +143,7 @@ class Avatar extends AvatarComponentMixin(IconNameMixin(Component)) {
    * @returns The template result containing the avatar text.
    */
   private textTemplate(content: string): TemplateResult {
-    return html`
-      <mdc-text
-        type="${getAvatarTextFontSize(this.size)}"
-        tagname="span"
-      >
-        ${content}
-      </mdc-text>
-    `;
+    return html` <mdc-text type="${getAvatarTextFontSize(this.size)}" tagname="span"> ${content} </mdc-text> `;
   }
 
   /**
@@ -305,9 +296,7 @@ class Avatar extends AvatarComponentMixin(IconNameMixin(Component)) {
     const type = this.getTypeBasedOnInputs();
     return html`
       <div part="content" aria-hidden="true">
-        ${this.getPhotoPlaceHolderContent(type)}
-        ${this.getTemplateBasedOnType(type)}
-        ${this.getLoadingContent()}
+        ${this.getPhotoPlaceHolderContent(type)} ${this.getTemplateBasedOnType(type)} ${this.getLoadingContent()}
         ${this.getPresenceTemplateBasedOnType(type)}
       </div>
     `;

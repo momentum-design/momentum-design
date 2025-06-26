@@ -1,6 +1,8 @@
 import { CSSResult, html } from 'lit';
 import { property, state } from 'lit/decorators.js';
+
 import { Component } from '../../models';
+
 import { DEFAULTS, SIZE } from './presence.constants';
 import styles from './presence.styles';
 import type { PresenceType, PresenceSize } from './presence.types';
@@ -113,16 +115,16 @@ class Presence extends Component {
   }
 
   /**
-    * Handles the successful load of an icon.
-    * Sets the `currentIconType` property to match the `type` property.
-  */
+   * Handles the successful load of an icon.
+   * Sets the `currentIconType` property to match the `type` property.
+   */
   private handleOnLoad(): void {
     this.currentIconType = this.type;
   }
 
   /**
    * Handles an error that occurs when loading an icon.
-  */
+   */
   private handleOnError(): void {
     if (this.onerror) {
       this.onerror('There was a problem while fetching the icon. Please check the icon name and try again.');

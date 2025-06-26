@@ -1,8 +1,10 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+
 import { DEFAULTS, LINK_SIZES } from './link.constants';
 
 type SetupOptions = {
@@ -119,18 +121,15 @@ test('mdc-link', async ({ componentsPage }) => {
       { inline: '', disabled: '', 'icon-name': ICON_PLACEHOLDER },
     ];
 
-    const createVariants = async (
-      baseAttrs: Record<string, string | undefined>,
-      inline = false,
-      inverted = false,
-    ) => {
+    const createVariants = async (baseAttrs: Record<string, string | undefined>, inline = false, inverted = false) => {
       const attrs: Record<string, string | undefined> = { ...baseAttrs };
       if (inline) attrs.inline = '';
       if (inverted) attrs.inverted = '';
 
-      const filteredAttrs = Object.fromEntries(
-        Object.entries(attrs).filter(([, v]) => v !== undefined),
-      ) as Record<string, string>;
+      const filteredAttrs = Object.fromEntries(Object.entries(attrs).filter(([, v]) => v !== undefined)) as Record<
+        string,
+        string
+      >;
 
       stickerSheet.setAttributes(filteredAttrs);
 

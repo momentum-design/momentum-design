@@ -1,5 +1,6 @@
 // AI-Assisted
 import { expect, Locator } from '@playwright/test';
+
 import { test } from '../../../config/playwright/setup';
 
 type MenuItemConfig = {
@@ -44,23 +45,19 @@ const defaultMenuItems: MenuItemConfig[] = [
   { id: 'help', label: 'Help' },
 ];
 
-const setup = async (
-  options: SetupOptions,
-): Promise<{ menubar: Locator } & Record<string, Locator>> => {
+const setup = async (options: SetupOptions): Promise<{ menubar: Locator } & Record<string, Locator>> => {
   const { componentsPage, rtl = false, menuItems = defaultMenuItems } = options;
   const dir = rtl ? 'dir="rtl"' : '';
   const menuHtml = menuItems
-    .map((item) => {
+    .map(item => {
       const disabled = item.disabled ? 'disabled' : '';
       let html = `<mdc-menuitem id="${item.id}" ${disabled}>${item.label}</mdc-menuitem>`;
       if (item.hasSubmenu && item.submenuItems && item.submenuPopoverId) {
         html += `
           <mdc-menupopover id="${item.submenuPopoverId}" triggerid="${item.id}" role="menu">
             ${item.submenuItems
-    .map(
-      (sub) => `<mdc-menuitem id="${sub.id}" role="menuitem">${sub.label}</mdc-menuitem>`,
-    )
-    .join('')}
+              .map(sub => `<mdc-menuitem id="${sub.id}" role="menuitem">${sub.label}</mdc-menuitem>`)
+              .join('')}
           </mdc-menupopover>
         `;
       }
@@ -80,11 +77,11 @@ const setup = async (
   });
   const menubar = componentsPage.page.locator('mdc-menubar');
   const menuLocators: Record<string, Locator> = {};
-  menuItems.forEach((item) => {
+  menuItems.forEach(item => {
     menuLocators[item.id] = componentsPage.page.locator(`#${item.id}`);
     if (item.hasSubmenu && item.submenuItems && item.submenuPopoverId) {
       menuLocators[item.submenuPopoverId] = componentsPage.page.locator(`#${item.submenuPopoverId}`);
-      item.submenuItems.forEach((sub) => {
+      item.submenuItems.forEach(sub => {
         menuLocators[sub.id] = componentsPage.page.locator(`#${sub.id}`);
       });
     }
@@ -160,14 +157,16 @@ test.describe('Menubar Feature Scenarios', () => {
       const { file, edit, view, preferences, help, window } = await setup({ componentsPage });
       await componentsPage.actionability.pressTab();
       await test.expect(file).toBeFocused();
-      await componentsPage.actionability.pressAndCheckFocus(
-        'ArrowDown',
-        [edit, view, window, preferences, help, file],
-      );
-      await componentsPage.actionability.pressAndCheckFocus(
-        'ArrowUp',
-        [help, preferences, window, view, edit, file, help],
-      );
+      await componentsPage.actionability.pressAndCheckFocus('ArrowDown', [edit, view, window, preferences, help, file]);
+      await componentsPage.actionability.pressAndCheckFocus('ArrowUp', [
+        help,
+        preferences,
+        window,
+        view,
+        edit,
+        file,
+        help,
+      ]);
     });
 
     await test.step('Activate menubar menuitem without submenu with Enter/Space', async () => {

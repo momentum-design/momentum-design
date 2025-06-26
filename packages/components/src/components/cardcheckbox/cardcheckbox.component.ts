@@ -1,12 +1,14 @@
 import { CSSResult, html, nothing, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
-import styles from './cardcheckbox.styles';
+
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
 import { TabIndexMixin } from '../../utils/mixins/TabIndexMixin';
 import Card from '../card/card.component';
+import { ROLE } from '../../utils/roles';
+
 import { CHECK_MARK, DEFAULTS, SELECTION_TYPE } from './cardcheckbox.constants';
 import type { SelectionType } from './cardcheckbox.types';
-import { ROLE } from '../../utils/roles';
+import styles from './cardcheckbox.styles';
 
 /**
  * cardcheckbox component extends `mdc-card` and supports checkbox selection interaction addtionally.
@@ -39,121 +41,122 @@ import { ROLE } from '../../utils/roles';
  *
  */
 class CardCheckbox extends DisabledMixin(TabIndexMixin(Card)) {
- /**
+  /**
    * The checked state of the card
    * @default false
    */
- @property({ type: Boolean, reflect: true })
- checked: boolean = false;
+  @property({ type: Boolean, reflect: true })
+  checked: boolean = false;
 
- /**
+  /**
    * The selection type of the card. It can either be set to 'check' or 'checkbox'
    * @default 'check'
    */
- @property({ type: String, attribute: 'selection-type', reflect: true })
- selectionType: SelectionType = DEFAULTS.SELECTION_TYPE;
+  @property({ type: String, attribute: 'selection-type', reflect: true })
+  selectionType: SelectionType = DEFAULTS.SELECTION_TYPE;
 
- constructor() {
-   super();
-   this.addEventListener('click', this.toggleChecked);
-   this.addEventListener('keydown', this.toggleOnEnter);
-   this.addEventListener('keyup', this.toggleOnSpace);
- }
+  constructor() {
+    super();
+    this.addEventListener('click', this.toggleChecked);
+    this.addEventListener('keydown', this.toggleOnEnter);
+    this.addEventListener('keyup', this.toggleOnSpace);
+  }
 
- override connectedCallback() {
-   super.connectedCallback();
-   this.role = ROLE.CHECKBOX;
- }
+  override connectedCallback() {
+    super.connectedCallback();
+    this.role = ROLE.CHECKBOX;
+  }
 
- override update(changedProperties: PropertyValues<CardCheckbox>) {
-   super.update(changedProperties);
-   if (changedProperties.has('checked')) {
-     this.setAttribute('aria-checked', `${this.checked}`);
-   }
-   if (changedProperties.has('disabled')) {
-     this.setAttribute('aria-disabled', `${this.disabled}`);
-     this.tabIndex = this.disabled ? -1 : 0;
-   }
- }
+  override update(changedProperties: PropertyValues<CardCheckbox>) {
+    super.update(changedProperties);
+    if (changedProperties.has('checked')) {
+      this.setAttribute('aria-checked', `${this.checked}`);
+    }
+    if (changedProperties.has('disabled')) {
+      this.setAttribute('aria-disabled', `${this.disabled}`);
+      this.tabIndex = this.disabled ? -1 : 0;
+    }
+  }
 
- /**
-  * Toggles the checked state
-  */
- private toggleChecked() {
-   if (!this.disabled) {
-     this.checked = !this.checked;
-   }
- }
+  /**
+   * Toggles the checked state
+   */
+  private toggleChecked() {
+    if (!this.disabled) {
+      this.checked = !this.checked;
+    }
+  }
 
- /**
-  * Toggles the checked state when enter key is used
-  * @param event - The keyboard event
-  */
- private toggleOnEnter(event: KeyboardEvent) {
-   if (event.key === 'Enter') {
-     this.toggleChecked();
-   }
- }
+  /**
+   * Toggles the checked state when enter key is used
+   * @param event - The keyboard event
+   */
+  private toggleOnEnter(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.toggleChecked();
+    }
+  }
 
- /**
-  * Toggles the checked state when space key is used
-  * @param event - The keyboard event
-  */
- private toggleOnSpace(event: KeyboardEvent) {
-   if (event.key === ' ') {
-     this.toggleChecked();
-   }
- }
+  /**
+   * Toggles the checked state when space key is used
+   * @param event - The keyboard event
+   */
+  private toggleOnSpace(event: KeyboardEvent) {
+    if (event.key === ' ') {
+      this.toggleChecked();
+    }
+  }
 
- /**
-  * Renders the selection icon or checkbox based on the selection type
-  * @returns The selection icon or checkbox
-  */
- private renderSelection() {
-   const ICON_NAME = this.checked ? CHECK_MARK.CHECKED : CHECK_MARK.DEFAULT;
-   switch (this.selectionType) {
-     case SELECTION_TYPE.CHECK: {
-       return html`<mdc-icon part="check check-icon" 
-                   size="${DEFAULTS.ICON_SIZE}"
-                   length-unit="${DEFAULTS.ICON_LENGTH_UNIT}" 
-                   name="${ICON_NAME}"></mdc-icon>`;
-     }
+  /**
+   * Renders the selection icon or checkbox based on the selection type
+   * @returns The selection icon or checkbox
+   */
+  private renderSelection() {
+    const ICON_NAME = this.checked ? CHECK_MARK.CHECKED : CHECK_MARK.DEFAULT;
+    switch (this.selectionType) {
+      case SELECTION_TYPE.CHECK: {
+        return html`<mdc-icon
+          part="check check-icon"
+          size="${DEFAULTS.ICON_SIZE}"
+          length-unit="${DEFAULTS.ICON_LENGTH_UNIT}"
+          name="${ICON_NAME}"
+        ></mdc-icon>`;
+      }
 
-     case SELECTION_TYPE.CHECKBOX: {
-       return html`<mdc-staticcheckbox part="check" 
-                   ?checked="${this.checked}" 
-                   ?disabled="${this.disabled}"></mdc-staticcheckbox>`;
-     }
-     default: return nothing;
-   }
- }
+      case SELECTION_TYPE.CHECKBOX: {
+        return html`<mdc-staticcheckbox
+          part="check"
+          ?checked="${this.checked}"
+          ?disabled="${this.disabled}"
+        ></mdc-staticcheckbox>`;
+      }
+      default:
+        return nothing;
+    }
+  }
 
- /**
-  * Renders the header of the card
-  * @returns The header of the card
-  */
- override renderHeader() {
-   if (!this.cardTitle) {
-     return nothing;
-   }
-   return html`<div part="header">
-     ${this.renderIcon()}
-     ${this.renderTitle()}
-     ${this.renderSelection()}
-   </div>`;
- }
+  /**
+   * Renders the header of the card
+   * @returns The header of the card
+   */
+  override renderHeader() {
+    if (!this.cardTitle) {
+      return nothing;
+    }
+    return html`<div part="header">${this.renderIcon()} ${this.renderTitle()} ${this.renderSelection()}</div>`;
+  }
 
- public override render() {
-   return html`
-  ${this.renderImage()}
-    <div part="body">
-    ${this.renderHeader()}
-      <slot name="before-body"></slot>
-      <slot name="body"></slot>
-      <slot name="after-body"></slot>
-    </div>
-  `;
- }
+  public override render() {
+    return html`
+      ${this.renderImage()}
+      <div part="body">
+        ${this.renderHeader()}
+        <slot name="before-body"></slot>
+        <slot name="body"></slot>
+        <slot name="after-body"></slot>
+      </div>
+    `;
+  }
 
   public static override styles: Array<CSSResult> = [...Card.styles, ...styles];
 }

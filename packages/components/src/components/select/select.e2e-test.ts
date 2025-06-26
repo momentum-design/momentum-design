@@ -1,4 +1,5 @@
 import { expect } from '@playwright/test';
+
 import { KEYS } from '../../utils/keys';
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
@@ -8,7 +9,7 @@ type SetupOptions = {
   children: string;
   placeholder?: string;
   height?: string;
-}
+};
 
 const label = 'Select an option';
 const defaultPlaceholder = 'Select placeholder';
@@ -84,7 +85,8 @@ test('mdc-select', async ({ componentsPage }) => {
     // select component with an option selected
     selectSheet.setAttributes({
       label: 'You are in a meeting',
-      placeholder: 'Select an option' });
+      placeholder: 'Select an option',
+    });
     selectSheet.setChildren(`<mdc-option prefix-icon="alert-bold">Mute notifications</mdc-option>
       <mdc-option prefix-icon="apps-bold" selected>Add apps</mdc-option>
       <mdc-option prefix-icon="stored-info-bold">View direct message policy</mdc-option>

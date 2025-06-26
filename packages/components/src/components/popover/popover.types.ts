@@ -1,4 +1,5 @@
 import type { ValueOf } from '../../utils/types';
+
 import { POPOVER_PLACEMENT, TRIGGER, COLOR } from './popover.constants';
 
 type PopoverPlacement = ValueOf<typeof POPOVER_PLACEMENT>;

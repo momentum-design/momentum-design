@@ -1,6 +1,7 @@
 import type { CSSResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
+
 import { Component } from '../../models';
 import { KEYS } from '../../utils/keys';
 import { DataAriaLabelMixin } from '../../utils/mixins/DataAriaLabelMixin';
@@ -8,6 +9,7 @@ import type { RoleType } from '../../utils/roles';
 import { ROLE } from '../../utils/roles';
 import { TAG_NAME as LISTITEM_TAGNAME } from '../listitem/listitem.constants';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+
 import { HEADER_ID } from './list.constants';
 import styles from './list.styles';
 
@@ -65,7 +67,7 @@ class List extends DataAriaLabelMixin(Component) {
    * @returns The index of the target element in the listItems array.
    */
   private getCurrentIndex(target: EventTarget | null): number {
-    return this.listItems.findIndex((node) => node === target || node === (target as HTMLElement).parentElement);
+    return this.listItems.findIndex(node => node === target || node === (target as HTMLElement).parentElement);
   }
 
   /**
@@ -122,14 +124,17 @@ class List extends DataAriaLabelMixin(Component) {
   }
 
   public override render() {
-    const headerText = this.headerText ? html`
-      <mdc-text
-        id="${HEADER_ID}"
-        part="header-text"
-        type="${TYPE.BODY_MIDSIZE_BOLD}"
-        tagname="${VALID_TEXT_TAGS.SPAN}"
-      >${this.headerText}</mdc-text>
-    ` : nothing;
+    const headerText = this.headerText
+      ? html`
+          <mdc-text
+            id="${HEADER_ID}"
+            part="header-text"
+            type="${TYPE.BODY_MIDSIZE_BOLD}"
+            tagname="${VALID_TEXT_TAGS.SPAN}"
+            >${this.headerText}</mdc-text
+          >
+        `
+      : nothing;
     return html`
       <div
         role="${this.dataRole}"

@@ -1,10 +1,12 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
+import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
+
 import type { Directions, DividerOrientation, DividerVariant } from './divider.types';
 import { DEFAULTS, DIRECTIONS, DIVIDER_ORIENTATION, DIVIDER_VARIANT } from './divider.constants';
-import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
@@ -135,10 +137,7 @@ test.describe.parallel('mdc-divider', () => {
       // for grabber type
       dividerStickerSheet.setChildren(Grabber);
       await dividerStickerSheet.createMarkupWithCombination(
-        { variant: DIVIDER_VARIANT,
-          'arrow-direction':
-      DIRECTIONS,
-          'button-position': DIRECTIONS },
+        { variant: DIVIDER_VARIANT, 'arrow-direction': DIRECTIONS, 'button-position': DIRECTIONS },
         { rowWrapperStyle: 'margin-bottom: 3.5rem; gap: 1.5rem' },
       );
 
@@ -150,8 +149,8 @@ test.describe.parallel('mdc-divider', () => {
       });
 
       /**
-     * ACCESSIBILITY
-     */
+       * ACCESSIBILITY
+       */
       await test.step('accessibility', async () => {
         await componentsPage.accessibility.checkForA11yViolations('mdc-divider-horizontal');
       });
@@ -168,10 +167,10 @@ test.describe.parallel('mdc-divider', () => {
 
       // for grabber type
       dividerStickerSheet.setChildren(Grabber);
-      await dividerStickerSheet.createMarkupWithCombination({ variant: DIVIDER_VARIANT,
-        'arrow-direction':
-      DIRECTIONS,
-        'button-position': DIRECTIONS }, { rowWrapperStyle: 'gap:3.5rem; margin-bottom: 3.5rem' });
+      await dividerStickerSheet.createMarkupWithCombination(
+        { variant: DIVIDER_VARIANT, 'arrow-direction': DIRECTIONS, 'button-position': DIRECTIONS },
+        { rowWrapperStyle: 'gap:3.5rem; margin-bottom: 3.5rem' },
+      );
 
       await dividerStickerSheet.mountStickerSheet({
         wrapperStyle: 'display: flex; gap: 3.5rem; height: 90%; padding: 1.25rem',
@@ -183,8 +182,8 @@ test.describe.parallel('mdc-divider', () => {
       });
 
       /**
-     * ACCESSIBILITY
-     */
+       * ACCESSIBILITY
+       */
       await test.step('accessibility', async () => {
         await componentsPage.accessibility.checkForA11yViolations('mdc-divider-vertical');
       });

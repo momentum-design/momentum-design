@@ -1,8 +1,10 @@
 import type { CSSResult } from 'lit';
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
+
 import { Component } from '../../models';
 import { DisabledMixin } from '../../utils/mixins/DisabledMixin';
+
 import { DEFAULTS, ICON_NAME, ICON_SIZE_IN_REM } from './statictoggle.constants';
 import styles from './statictoggle.styles';
 import type { ToggleSize } from './statictoggle.types';
@@ -36,9 +38,9 @@ import type { ToggleSize } from './statictoggle.types';
  */
 class StaticToggle extends DisabledMixin(Component) {
   /**
-  * Determines whether the toggle is active or inactive.
-  * @default false
-  */
+   * Determines whether the toggle is active or inactive.
+   * @default false
+   */
   @property({ type: Boolean, reflect: true }) checked = false;
 
   /**

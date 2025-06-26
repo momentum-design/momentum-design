@@ -2,12 +2,14 @@ import type { Meta, StoryObj, Args } from '@storybook/web-components';
 import '.';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { DEFAULTS, TYPE, VALID_TEXT_TAGS } from './text.constants';
+
 import { disableControls } from '../../../config/storybook/utils';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 
+import { DEFAULTS, TYPE, VALID_TEXT_TAGS } from './text.constants';
+
 const render = (args: Args) => html`
-<mdc-text type="${args.type}" tagname="${ifDefined(args.tagname)}">${args.children}</mdc-text>
+  <mdc-text type="${args.type}" tagname="${ifDefined(args.tagname)}">${args.children}</mdc-text>
 `;
 
 const meta: Meta = {
@@ -33,9 +35,7 @@ const meta: Meta = {
     },
     ...classArgType,
     ...styleArgType,
-    ...disableControls([
-      'text',
-    ]),
+    ...disableControls(['text']),
   },
 };
 

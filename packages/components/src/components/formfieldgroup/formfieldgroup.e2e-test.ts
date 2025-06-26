@@ -1,4 +1,5 @@
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { ROLE } from '../../utils/roles';
@@ -12,7 +13,7 @@ type SetupOptions = {
   'help-text-type'?: string;
   'data-aria-label'?: string;
   required?: boolean;
-}
+};
 
 const label = 'Select all powers';
 const helpText = 'check all that apply';

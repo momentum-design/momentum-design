@@ -1,4 +1,5 @@
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
@@ -8,7 +9,7 @@ type SetupOptions = {
   disabled?: boolean;
   label?: string;
   selected?: boolean;
-}
+};
 
 const label = 'Primary Label';
 const icon = 'placeholder-bold';
@@ -91,12 +92,12 @@ test('mdc-option', async ({ componentsPage }) => {
 
     await test.step('should have icon on the left when the prefix-icon attribute is passed', async () => {
       await componentsPage.setAttributes(option, { 'prefix-icon': 'placeholder-bold' });
-      await expect(option.locator('mdc-icon[slot=\'leading-controls\']')).toHaveAttribute('name', 'placeholder-bold');
+      await expect(option.locator("mdc-icon[slot='leading-controls']")).toHaveAttribute('name', 'placeholder-bold');
     });
 
     await test.step('should have icon on the right when the selected attribute is passed', async () => {
       await componentsPage.setAttributes(option, { selected: '' });
-      await expect(option.locator('mdc-icon[slot=\'trailing-controls\']')).toHaveAttribute('name', 'check-bold');
+      await expect(option.locator("mdc-icon[slot='trailing-controls']")).toHaveAttribute('name', 'check-bold');
     });
 
     await test.step('should be disabled when the disabled attribute is passed', async () => {

@@ -55,7 +55,7 @@ class Actionability {
     const browserName = this.browserName();
     if (browserName === 'webkit') {
       // Explicitly blur to remove focus in WebKit
-      await subComponent.evaluate((el) => el.blur());
+      await subComponent.evaluate(el => el.blur());
     } else {
       await this.page.keyboard.press('Tab');
     }

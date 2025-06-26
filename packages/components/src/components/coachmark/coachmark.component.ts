@@ -1,7 +1,9 @@
 import { property } from 'lit/decorators.js';
+
 import Popover from '../popover/popover.component';
-import { DEFAULTS } from './coachmark.constants';
 import type { PopoverTrigger } from '../popover/popover.types';
+
+import { DEFAULTS } from './coachmark.constants';
 
 /**
  * Coachmark component based on top of the popover component,

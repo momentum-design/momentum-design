@@ -1,4 +1,5 @@
 import { css } from 'lit';
+
 import { hostFitContentStyles, hostFocusRingStyles } from '../../utils/styles';
 
 const styles = css`
@@ -10,7 +11,7 @@ const styles = css`
     border: 1px solid;
     cursor: pointer;
     white-space: nowrap;
-    
+
     --mdc-chip-color: var(--mds-color-theme-text-primary-normal);
     --mdc-chip-border-color: var(--mds-color-theme-outline-button-normal);
     --mdc-chip-background-color: var(--mds-color-theme-background-alert-default-normal);
@@ -20,88 +21,87 @@ const styles = css`
     background: var(--mdc-chip-background-color);
   }
 
-  :host::part(label){
+  :host::part(label) {
     color: var(--mdc-chip-color);
   }
 
-  :host::part(icon){
+  :host::part(icon) {
     color: var(--mdc-chip-icon-color);
   }
-  
 
-  :host([variant="neutral"]:hover){
+  :host([variant='neutral']:hover) {
     --mdc-chip-background-color: var(--mds-color-theme-background-alert-default-hover);
   }
 
-  :host([variant="neutral"]:active){
+  :host([variant='neutral']:active) {
     --mdc-chip-background-color: var(--mds-color-theme-background-alert-default-active);
   }
 
-  :host([variant="error"])::part(icon){
+  :host([variant='error'])::part(icon) {
     --mdc-chip-icon-color: var(--mds-color-theme-text-error-normal);
   }
-  
-  :host([variant="error"]){
+
+  :host([variant='error']) {
     --mdc-chip-border-color: var(--mds-color-theme-outline-cancel-normal);
     --mdc-chip-background-color: var(--mds-color-theme-background-alert-error-normal);
   }
 
-  :host([variant="error"]:hover){
+  :host([variant='error']:hover) {
     --mdc-chip-background-color: var(--mds-color-theme-background-alert-error-hover);
   }
 
-  :host([variant="error"]:active){
+  :host([variant='error']:active) {
     --mdc-chip-background-color: var(--mds-color-theme-background-alert-error-active);
   }
 
-  :host([variant="warning"])::part(icon){
+  :host([variant='warning'])::part(icon) {
     --mdc-chip-icon-color: var(--mds-color-theme-text-warning-normal);
   }
 
-  :host([variant="warning"]){
+  :host([variant='warning']) {
     --mdc-chip-border-color: var(--mds-color-theme-outline-warning-normal);
     --mdc-chip-background-color: var(--mds-color-theme-background-alert-warning-normal);
   }
 
-  :host([variant="warning"]:hover){
+  :host([variant='warning']:hover) {
     --mdc-chip-background-color: var(--mds-color-theme-background-alert-warning-hover);
   }
 
-  :host([variant="warning"]:active){
+  :host([variant='warning']:active) {
     --mdc-chip-background-color: var(--mds-color-theme-background-alert-warning-active);
   }
 
-  :host([variant="success"])::part(icon){
+  :host([variant='success'])::part(icon) {
     --mdc-chip-icon-color: var(--mds-color-theme-text-success-normal);
   }
 
-  :host([variant="success"]){
+  :host([variant='success']) {
     --mdc-chip-border-color: var(--mds-color-theme-outline-join-normal);
     --mdc-chip-background-color: var(--mds-color-theme-background-alert-success-normal);
   }
 
-  :host([variant="success"]:hover){
+  :host([variant='success']:hover) {
     --mdc-chip-background-color: var(--mds-color-theme-background-alert-success-hover);
   }
 
-  :host([variant="success"]:active){
+  :host([variant='success']:active) {
     --mdc-chip-background-color: var(--mds-color-theme-background-alert-success-active);
   }
 
-  :host([variant="informational"])::part(icon){
+  :host([variant='informational'])::part(icon) {
     --mdc-chip-icon-color: var(--mds-color-theme-text-accent-normal);
   }
 
-  :host([variant="informational"]){
+  :host([variant='informational']) {
     --mdc-chip-border-color: var(--mds-color-theme-outline-theme-normal);
     --mdc-chip-background-color: var(--mds-color-theme-background-alert-theme-normal);
   }
 
-  :host([variant="informational"]:hover){
+  :host([variant='informational']:hover) {
     --mdc-chip-background-color: var(--mds-color-theme-background-alert-theme-hover);
   }
 
-  :host([variant="informational"]:active){
+  :host([variant='informational']:active) {
     --mdc-chip-background-color: var(--mds-color-theme-background-alert-theme-active);
   }
 `;
