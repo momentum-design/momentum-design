@@ -1,7 +1,7 @@
 import { ValueOf } from '../../utils/types';
+import type MenuItem from '../menuitem';
 
 import { ARIA_CHECKED_STATES } from './menusection.constants';
-import type MenuItem from '../menuitem';
 
 export type AriaCheckedStates = ValueOf<typeof ARIA_CHECKED_STATES>;
 

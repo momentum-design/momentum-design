@@ -4,6 +4,7 @@ import { property } from 'lit/decorators.js';
 import { Component } from '../../models';
 import { ROLE } from '../../utils/roles';
 import { TYPE, VALID_TEXT_TAGS } from '../text/text.constants';
+
 import styles from './menusection.styles';
 
 /**

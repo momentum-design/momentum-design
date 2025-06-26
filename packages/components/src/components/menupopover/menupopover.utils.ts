@@ -1,9 +1,9 @@
 import { TAG_NAME as MENUITEM_TAGNAME } from '../menuitem/menuitem.constants';
 import { TAG_NAME as MENUITEMCHECKBOX_TAGNAME } from '../menuitemcheckbox/menuitemcheckbox.constants';
 import { TAG_NAME as MENUITEMRADIO_TAGNAME } from '../menuitemradio/menuitemradio.constants';
+import type MenuItem from '../menuitem';
 
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from './menupopover.constants';
-import type MenuItem from '../menuitem';
 import type MenuPopover from './menupopover.component';
 
 /**
