@@ -1,3 +1,4 @@
+import '../icon';
 import '../staticradio';
 import '../text';
 import '../tooltip';
