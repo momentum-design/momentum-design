@@ -124,7 +124,7 @@ test.describe('Menuitem Feature Scenarios', () => {
      */
     await test.step('accessibility', async () => {
       await setup({ componentsPage, label: primaryLabel });
-      // await componentsPage.accessibility.checkForA11yViolations('menuitem-default');
+      await componentsPage.accessibility.checkForA11yViolations('menuitem-default');
     });
 
     /**
