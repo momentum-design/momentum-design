@@ -170,7 +170,7 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
     // Radio indicator (default)
     await test.step('radio indicator', async () => {
       const radio = await setup({ componentsPage, checked: true });
-      await expect(radio.locator('mdc-staticradio')).toBeVisible();
+      await expect(radio.locator('mdc-staticradio[checked]')).toBeVisible();
     });
 
     // Checkmark indicator
