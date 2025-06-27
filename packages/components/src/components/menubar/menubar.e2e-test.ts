@@ -148,7 +148,7 @@ test.describe('Menubar Feature Scenarios', () => {
       await expect(preferences).toHaveAttribute('aria-disabled', 'true');
       await preferences.focus();
       await expect(preferences).toBeFocused();
-      await preferences.click();
+      await componentsPage.page.keyboard.press('Enter');
       const subMenu = componentsPage.page.locator('#preferences-popover');
       await expect(subMenu).not.toBeVisible();
     });
