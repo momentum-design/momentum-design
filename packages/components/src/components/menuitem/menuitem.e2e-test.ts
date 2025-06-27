@@ -124,6 +124,17 @@ test.describe('Menuitem Feature Scenarios', () => {
      */
     await test.step('accessibility', async () => {
       await setup({ componentsPage, label: primaryLabel });
+      await componentsPage.mount({
+        html: `
+        <div role="menu">
+        <mdc-menuitem label="${primaryLabel}">
+        </mdc-menuitem>
+        </div>
+      `,
+        clearDocument: true,
+      });
+      const menuitem = componentsPage.page.locator('mdc-menuitem');
+      await menuitem.waitFor();
       await componentsPage.accessibility.checkForA11yViolations('menuitem-default');
     });
 
