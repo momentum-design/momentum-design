@@ -60,7 +60,7 @@ const setup = async (args: SetupOptions, isForm = false) => {
       ${restArgs.list ? `list="${restArgs.list}"` : ''}
       ${restArgs.size ? `size="${restArgs.size}"` : ''}
       ${restArgs.dataAriaLabel ? `data-aria-label="${restArgs.dataAriaLabel}"` : ''}
-      ${restArgs.showHideButtonAriaLabel ? `data-aria-label="${restArgs.showHideButtonAriaLabel}"` : ''}
+      ${restArgs.showHideButtonAriaLabel ? `show-hide-button-aria-label="${restArgs.showHideButtonAriaLabel}"` : ''}
       ></mdc-password>
       ${restArgs.secondButtonForFocus ? '<mdc-button>Second Button</mdc-button></div>' : ''}
     ${isForm ? '<mdc-button type="submit" size="24">Submit</mdc-button></form>' : ''}
@@ -87,6 +87,7 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
     minlength: 5,
     prefixText: 'Prefix',
     dataAriaLabel: 'prefix', // aria-label for prefix text to be read by screen reader
+    showHideButtonAriaLabel: 'show-hide button aria-label', // aria-label for show/hide button to be read by screen reader
     leadingIcon: 'placeholder-bold',
     label: 'Label',
     helpText: 'Help Text',
@@ -108,6 +109,7 @@ test('mdc-password', async ({ componentsPage, browserName }) => {
       await expect(helpText).toHaveText('Help Text');
       await expect(password).toHaveAttribute('prefix-text', 'Prefix');
       await expect(password).toHaveAttribute('data-aria-label', 'prefix');
+      await expect(password).toHaveAttribute('show-hide-button-aria-label', 'show-hide button aria-label');
       const passwordEl = password.locator('input');
       await expect(passwordEl).toHaveAttribute('aria-label', 'prefix');
       await expect(password).toHaveAttribute('leading-icon', 'placeholder-bold');
