@@ -6,6 +6,7 @@ import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
 import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
+
 import { DEFAULTS, INDICATOR } from './menuitemradio.constants';
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style="width: 25rem;">${htmlString}</div>`;
@@ -81,12 +82,7 @@ const meta: Meta = {
       '--mdc-listitem-column-gap',
       '--mdc-listitem-padding-left-and-right',
     ]),
-    ...disableControls([
-      'change',
-      'click',
-      'focus',
-      '--mdc-radio-indicator-color',
-    ]),
+    ...disableControls(['change', 'click', 'focus', '--mdc-radio-indicator-color']),
     ...classArgType,
     ...styleArgType,
   },
@@ -131,27 +127,36 @@ export const CheckmarkWithMenuItem: StoryObj = {
 };
 
 export const AllVariants: StoryObj = {
-  render: () => wrapWithDiv(html`
-    <mdc-menuitemradio checked label="Selected Radio"></mdc-menuitemradio>
-    <mdc-menuitemradio disabled checked label="Disabled Selected Radio"></mdc-menuitemradio>
-    <mdc-menuitemradio label="Unselected Radio"></mdc-menuitemradio>
-    <mdc-menuitemradio disabled label="Disabled Unselected Radio"></mdc-menuitemradio>
-    <mdc-menuitemradio checked indicator="checkmark" label="Selected Checkmark"></mdc-menuitemradio>
-    <mdc-menuitemradio disabled checked indicator="checkmark" label="Disabled Selected Checkmark"></mdc-menuitemradio>
-    <mdc-menuitemradio indicator="checkmark" label="Unselected Checkmark"></mdc-menuitemradio>
-    <mdc-menuitemradio disabled indicator="checkmark" label="Disabled Unselected Checkmark"></mdc-menuitemradio>
-    <mdc-menuitemradio
-      checked label="Selected Radio With Secondary Label" secondary-label="Secondary Label"
-    ></mdc-menuitemradio>
-    <mdc-menuitemradio
-      label="Unselected Radio With Secondary Label" secondary-label="Secondary Label"
-    ></mdc-menuitemradio>
-    <mdc-menuitemradio
-      checked indicator="checkmark" label="Selected Checkmark With Secondary Label" secondary-label="Secondary Label"
-    ></mdc-menuitemradio>
-    <mdc-menuitemradio
-      indicator="checkmark" label="Unselected Checkmark With Secondary Label" secondary-label="Secondary Label"
-    ></mdc-menuitemradio>    
-  `),
+  render: () =>
+    wrapWithDiv(html`
+      <mdc-menuitemradio checked label="Selected Radio"></mdc-menuitemradio>
+      <mdc-menuitemradio disabled checked label="Disabled Selected Radio"></mdc-menuitemradio>
+      <mdc-menuitemradio label="Unselected Radio"></mdc-menuitemradio>
+      <mdc-menuitemradio disabled label="Disabled Unselected Radio"></mdc-menuitemradio>
+      <mdc-menuitemradio checked indicator="checkmark" label="Selected Checkmark"></mdc-menuitemradio>
+      <mdc-menuitemradio disabled checked indicator="checkmark" label="Disabled Selected Checkmark"></mdc-menuitemradio>
+      <mdc-menuitemradio indicator="checkmark" label="Unselected Checkmark"></mdc-menuitemradio>
+      <mdc-menuitemradio disabled indicator="checkmark" label="Disabled Unselected Checkmark"></mdc-menuitemradio>
+      <mdc-menuitemradio
+        checked
+        label="Selected Radio With Secondary Label"
+        secondary-label="Secondary Label"
+      ></mdc-menuitemradio>
+      <mdc-menuitemradio
+        label="Unselected Radio With Secondary Label"
+        secondary-label="Secondary Label"
+      ></mdc-menuitemradio>
+      <mdc-menuitemradio
+        checked
+        indicator="checkmark"
+        label="Selected Checkmark With Secondary Label"
+        secondary-label="Secondary Label"
+      ></mdc-menuitemradio>
+      <mdc-menuitemradio
+        indicator="checkmark"
+        label="Unselected Checkmark With Secondary Label"
+        secondary-label="Secondary Label"
+      ></mdc-menuitemradio>
+    `),
   ...hideAllControls(),
 };

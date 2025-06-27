@@ -7,8 +7,8 @@ import { classArgType, styleArgType } from '../../../config/storybook/commonArgT
 import { disableControls, hideAllControls, hideControls } from '../../../config/storybook/utils';
 import '../icon';
 import { POPOVER_PLACEMENT } from '../popover/popover.constants';
-import { INDICATOR } from './menuitemcheckbox.constants';
 
+import { INDICATOR } from './menuitemcheckbox.constants';
 
 const wrapWithDiv = (htmlString: TemplateResult) => html`<div role="menu" style="width: 25rem;">${htmlString}</div>`;
 

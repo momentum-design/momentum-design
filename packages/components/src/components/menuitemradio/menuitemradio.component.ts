@@ -6,6 +6,7 @@ import MenuItem from '../menuitem/menuitem.component';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
 import { TYPE } from '../text/text.constants';
+
 import { DEFAULTS, INDICATOR } from './menuitemradio.constants';
 import styles from './menuitemradio.styles';
 import type { Indicator } from './menuitemradio.types';
@@ -117,9 +118,7 @@ class MenuItemRadio extends MenuItem {
     if (this.indicator !== INDICATOR.CHECKMARK || !this.checked) {
       return nothing;
     }
-    return html`
-      <mdc-icon slot="trailing-controls" name="check-bold" part="radio-icon"></mdc-icon>
-    `;
+    return html` <mdc-icon slot="trailing-controls" name="check-bold" part="radio-icon"></mdc-icon> `;
   }
 
   public override render() {
