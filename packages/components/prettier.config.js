@@ -16,12 +16,20 @@ const config = {
   tabWidth: 2,
   trailingComma: 'all',
   useTabs: false,
+  plugins: ['prettier-plugin-gherkin'],
   overrides: [
     {
       files: ['*.md', '*.mdx'],
       options: {
         proseWrap: 'always',
         printWidth: 80,
+      },
+    },
+    {
+      files: ['*.feature'],
+      options: {
+        printWidth: 120,
+        tabWidth: 2,
       },
     },
   ],
