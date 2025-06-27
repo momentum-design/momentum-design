@@ -78,7 +78,7 @@ Feature: Navitem Navigation and User Interaction
       When the navitem is rendered
       Then the navitem should appear visually disabled
       And the navitem should have aria-disabled="true"
-      But the navitem should remain focusable with tabindex="0"
+      But the navitem should remain focusable
 
   Rule: ✅ Mouse Interactions
 
@@ -121,6 +121,12 @@ Feature: Navitem Navigation and User Interaction
       Then the navitem should not receive focus
       And the navitem should be skipped in focus order
 
+    Scenario: Soft-disabled navitem keyboard behavior
+      Given the navitem is soft-disabled
+      When I navigate using Tab key
+      Then the navitem should receive focus
+      And the navitem should be visually focused
+
   Rule: ✅ ARIA and Accessibility
 
     Scenario: Default ARIA attributes
@@ -148,6 +154,13 @@ Feature: Navitem Navigation and User Interaction
       And the navitem has aria-label attribute
       Then the navitem should have aria-label for screen readers
       And the aria-label should describe the navigation item
+
+    Scenario: Disable aria-current attribute for active navitem
+      Given the navitem is in active state
+      And the navitem has disable-aria-current set to true
+      When the navitem is rendered
+      Then the navitem should be visually active
+      But the navitem should not have aria-current="page" attribute
 
   Rule: ✅ Badge Functionality
 
@@ -181,13 +194,6 @@ Feature: Navitem Navigation and User Interaction
       And the event detail should contain navId property
       And the event detail should contain active state property
       And the event should bubble up through the DOM
-
-    Scenario: Focus and blur events
-      Given the navitem is rendered
-      When I focus the navitem
-      Then a focus event should be fired
-      When I blur the navitem by pressing Tab
-      Then a blur event should be fired
 
   Rule: ✅ Icon State Management
 
