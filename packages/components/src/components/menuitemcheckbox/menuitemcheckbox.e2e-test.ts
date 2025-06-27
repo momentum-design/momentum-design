@@ -1,8 +1,10 @@
 import { expect } from '@playwright/test';
+
 import { ComponentsPage, test } from '../../../config/playwright/setup';
 import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 import { KEYS } from '../../utils/keys';
 import { ROLE } from '../../utils/roles';
+
 import { INDICATOR } from './menuitemcheckbox.constants';
 import type { Indicator } from './menuitemcheckbox.types';
 
