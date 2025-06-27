@@ -123,6 +123,8 @@ test.describe('Menubar Feature Scenarios', () => {
       const { menubar } = await setup({ componentsPage });
       await expect(menubar).toHaveAttribute('role', 'menubar');
       await expect(menubar).toHaveAttribute('aria-orientation', 'vertical');
+      // ACCESSIBILITY
+      await componentsPage.accessibility.checkForA11yViolations('menuitem-default');
     });
 
     // Mouse Interactions
@@ -317,13 +319,16 @@ test.describe('Menubar Feature Scenarios', () => {
       const { edit } = await setup({ componentsPage });
       await edit.focus();
       await expect(edit).toBeFocused();
+      await componentsPage.visualRegression.takeScreenshot('mdc-menubar');
       await componentsPage.page.keyboard.press('ArrowRight');
       const submenu = componentsPage.page.locator('#edit-popover');
       const undo = submenu.locator('#edit-undo');
       await expect(undo).toBeFocused();
+      await componentsPage.visualRegression.takeScreenshot('mdc-menubar-edit-popover');
       await componentsPage.page.keyboard.press('ArrowRight');
       const undoSubmenu = componentsPage.page.locator('#edit-undo-popover');
       await expect(undoSubmenu).toBeVisible();
+      await componentsPage.visualRegression.takeScreenshot('mdc-menubar-undo-popover');
       await componentsPage.page.keyboard.press('ArrowRight');
       await expect(undoSubmenu).not.toBeVisible();
       await expect(submenu).not.toBeVisible();
@@ -331,6 +336,7 @@ test.describe('Menubar Feature Scenarios', () => {
       await expect(viewSubmenu).toBeVisible();
       const zoom = viewSubmenu.locator('#view-zoom');
       await expect(zoom).toBeFocused();
+      await componentsPage.visualRegression.takeScreenshot('mdc-menubar-view-popover');
     });
 
     await test.step(`Move to previous menubar menuitem from submenu using ArrowLeft 
@@ -357,12 +363,14 @@ test.describe('Menubar Feature Scenarios', () => {
       const viewSubmenu = componentsPage.page.locator('#view-popover');
       const zoom = viewSubmenu.locator('#view-zoom');
       await expect(zoom).toBeFocused();
+      await componentsPage.visualRegression.takeScreenshot('mdc-menubar-view-popover');
       await componentsPage.page.keyboard.press('ArrowLeft');
       await expect(viewSubmenu).not.toBeVisible();
       const submenu = componentsPage.page.locator('#edit-popover');
       await expect(submenu).toBeVisible();
       const undo = submenu.locator('#edit-undo');
       await expect(undo).toBeFocused();
+      await componentsPage.visualRegression.takeScreenshot('mdc-menubar-edit-popover');
     });
   });
 });
