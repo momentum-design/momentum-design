@@ -13,3 +13,6 @@ playwright-report
 
 # Handlebars templates
 *.hbs
+
+# Image files
+*.png

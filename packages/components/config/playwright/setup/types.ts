@@ -1,4 +1,5 @@
 import type { Locator, Page, PageScreenshotOptions } from '@playwright/test';
+
 import CONSTANTS from './constants';
 
 export type ScreenShotOptions = PageScreenshotOptions & {

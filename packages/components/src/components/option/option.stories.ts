@@ -20,6 +20,7 @@ const render = (args: Args) =>
       @keyup="${action('onkeyup')}"
       @focus="${action('onfocus')}"
       ?disabled="${args.disabled}"
+      ?soft-disabled="${args['soft-disabled']}"
       ?selected="${args.selected}"
       label="${args.label}"
       value="${args.value}"
@@ -40,6 +41,9 @@ const meta: Meta = {
   },
   argTypes: {
     disabled: {
+      control: 'boolean',
+    },
+    'soft-disabled': {
       control: 'boolean',
     },
     selected: {

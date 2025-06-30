@@ -5,6 +5,7 @@ const TAG_NAME = utils.constructTagName('menupopover');
 
 const DEFAULTS = {
   PLACEMENT: POPOVER_PLACEMENT.BOTTOM_START,
+  ORIENTATION: 'vertical',
 };
 
 export { TAG_NAME, DEFAULTS };
