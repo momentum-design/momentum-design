@@ -448,6 +448,50 @@ test('mdc-menupopover', async ({ componentsPage }) => {
         await expect(submenu).not.toBeVisible();
         await expect(menupopover).not.toBeVisible();
       });
+
+      await test.step('Close all children submenu and open the parent submenu using mouse', async () => {
+        const { wrapper, triggerElement } = await setup({
+          componentsPage,
+          html: `
+          <div id="menupopover-test-wrapper">
+            <mdc-button id="trigger-btn">File</mdc-button>
+            <mdc-menupopover triggerid="trigger-btn" backdrop>
+              <mdc-menuitem label="New" id="new-menu-trigger" arrow-position="trailing"></mdc-menuitem>
+              <mdc-menupopover triggerid="new-menu-trigger" placement="right-start">
+                <mdc-menuitem label="New Document"></mdc-menuitem>
+              <mdc-menuitem label="New Folder"></mdc-menuitem>
+              <mdc-menuitem label="New Window"></mdc-menuitem>
+            </mdc-menupopover>
+            <mdc-menuitem label="Open"></mdc-menuitem>
+            <mdc-menuitem label="Save"></mdc-menuitem>
+            <mdc-menuitem label="Save As" id="save-as-menu-trigger" arrow-position="trailing"></mdc-menuitem>
+            <mdc-menupopover triggerid="save-as-menu-trigger" placement="right-start">
+              <mdc-menuitem label="Multiple Folders"></mdc-menuitem>
+              <mdc-menuitem label="Location"></mdc-menuitem>
+              <mdc-menuitem label="Auto Save"></mdc-menuitem>
+            </mdc-menupopover>
+            <mdc-menuitem id="save-all" label="Save All"></mdc-menuitem>
+          </mdc-menupopover>
+          </div>
+        `,
+        });
+
+        const newMenuPopover = wrapper.locator('mdc-menupopover[triggerid="new-menu-trigger"]');
+        const saveAsMenuPopover = wrapper.locator('mdc-menupopover[triggerid="save-as-menu-trigger"]');
+
+        await triggerElement.click();
+        await expect(wrapper.locator('mdc-menupopover[triggerid="trigger-btn"]')).toBeVisible();
+        await wrapper.locator('#new-menu-trigger').click();
+        await expect(newMenuPopover).toBeVisible();
+        await wrapper.locator('#save-as-menu-trigger').click();
+        await expect(saveAsMenuPopover).toBeVisible();
+        await expect(newMenuPopover).not.toBeVisible();
+        await wrapper.locator('#save-all').click();
+        await expect(saveAsMenuPopover).not.toBeVisible();
+        await expect(newMenuPopover).not.toBeVisible();
+        await expect(wrapper.locator('mdc-menupopover[triggerid="trigger-btn"]')).not.toBeVisible();
+        await expect(wrapper.locator('#trigger-btn')).toBeFocused();
+      });
     });
 
     // Group: Menuitem types: checkbox and radio (with grouped navigation)
