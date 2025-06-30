@@ -96,12 +96,9 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
       await expect(radio).toHaveAttribute('disabled', '');
 
       // Click should not change state when disabled
-      const initialChecked = await radio.getAttribute('aria-checked');
-      if (initialChecked === null) {
-        throw new Error('aria-checked attribute not found');
-      }
       await radio.click({ force: true });
-      await expect(radio).toHaveAttribute('aria-checked', initialChecked);
+      await expect(radio).toHaveAttribute('aria-checked', 'false');
+      await expect(radio).not.toHaveAttribute('checked', '');
     });
   });
 
@@ -127,8 +124,8 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
       await lightRadio.focus();
       await componentsPage.page.keyboard.press(KEYS.ENTER);
 
-      await expect(lightRadio).toHaveAttribute('aria-checked', 'true');
-      await expect(darkRadio).toHaveAttribute('aria-checked', 'false');
+      await expect(lightRadio).toHaveAttribute('checked', '');
+      await expect(darkRadio).not.toHaveAttribute('checked', '');
     });
 
     // Keyboard selection with Space
@@ -138,8 +135,8 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
       await lightRadio.focus();
       await componentsPage.page.keyboard.press(KEYS.SPACE);
 
-      await expect(lightRadio).toHaveAttribute('aria-checked', 'true');
-      await expect(darkRadio).toHaveAttribute('aria-checked', 'false');
+      await expect(lightRadio).toHaveAttribute('checked', '');
+      await expect(darkRadio).not.toHaveAttribute('checked', '');
     });
   });
 
@@ -150,19 +147,19 @@ test('mdc-menuitemradio', async ({ componentsPage }) => {
     const { lightRadio, darkRadio, gridRadio, listRadio } = await setupGroup(componentsPage);
 
     // Initial state
-    await expect(lightRadio).toHaveAttribute('aria-checked', 'false');
-    await expect(darkRadio).toHaveAttribute('aria-checked', 'true');
-    await expect(gridRadio).toHaveAttribute('aria-checked', 'false');
-    await expect(listRadio).toHaveAttribute('aria-checked', 'true');
+    await expect(lightRadio).not.toHaveAttribute('checked', '');
+    await expect(darkRadio).toHaveAttribute('checked', '');
+    await expect(gridRadio).not.toHaveAttribute('checked', '');
+    await expect(listRadio).toHaveAttribute('checked', '');
 
     // Select in theme group
     await lightRadio.click();
-    await expect(lightRadio).toHaveAttribute('aria-checked', 'true');
-    await expect(darkRadio).toHaveAttribute('aria-checked', 'false');
+    await expect(lightRadio).toHaveAttribute('checked', '');
+    await expect(darkRadio).not.toHaveAttribute('checked', '');
 
     // View group should be unaffected
-    await expect(listRadio).toHaveAttribute('aria-checked', 'true');
-    await expect(gridRadio).toHaveAttribute('aria-checked', 'false');
+    await expect(listRadio).toHaveAttribute('checked', '');
+    await expect(gridRadio).not.toHaveAttribute('checked', '');
   });
 
   /**

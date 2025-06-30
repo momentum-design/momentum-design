@@ -71,12 +71,9 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
       await expect(checkbox).toHaveAttribute('disabled', '');
 
       // Click should not change state when disabled
-      const initialChecked = await checkbox.getAttribute('aria-checked');
-      if (initialChecked === null) {
-        throw new Error('aria-checked attribute not found');
-      }
       await checkbox.click({ force: true });
-      await expect(checkbox).toHaveAttribute('aria-checked', initialChecked);
+      await expect(checkbox).toHaveAttribute('aria-checked', 'false');
+      await expect(checkbox).not.toHaveAttribute('checked', '');
     });
   });
 
@@ -90,10 +87,12 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
 
       // Toggle on
       await checkbox.click();
+      await expect(checkbox).toHaveAttribute('checked', '');
       await expect(checkbox).toHaveAttribute('aria-checked', 'true');
 
       // Toggle off
       await checkbox.click();
+      await expect(checkbox).not.toHaveAttribute('checked', '');
       await expect(checkbox).toHaveAttribute('aria-checked', 'false');
     });
 
@@ -104,19 +103,19 @@ test('mdc-menuitemcheckbox', async ({ componentsPage }) => {
 
       // Toggle on with Space
       await componentsPage.page.keyboard.press(KEYS.SPACE);
-      await expect(checkbox).toHaveAttribute('aria-checked', 'true');
+      await expect(checkbox).toHaveAttribute('checked', '');
 
       // Toggle off with Space
       await componentsPage.page.keyboard.press(KEYS.SPACE);
-      await expect(checkbox).toHaveAttribute('aria-checked', 'false');
+      await expect(checkbox).not.toHaveAttribute('checked', '');
 
       // Toggle on with Enter
       await componentsPage.page.keyboard.press(KEYS.ENTER);
-      await expect(checkbox).toHaveAttribute('aria-checked', 'true');
+      await expect(checkbox).toHaveAttribute('checked', '');
 
       // Toggle off with Enter
       await componentsPage.page.keyboard.press(KEYS.ENTER);
-      await expect(checkbox).toHaveAttribute('aria-checked', 'false');
+      await expect(checkbox).not.toHaveAttribute('checked', '');
     });
   });
 
