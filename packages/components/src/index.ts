@@ -65,6 +65,7 @@ import Toggle from './components/toggle';
 import ToggleTip from './components/toggletip';
 import Tooltip from './components/tooltip';
 import VirtualizedList from './components/virtualizedlist';
+import Password from './components/password';
 
 // Types Imports
 import type { BadgeType } from './components/badge/badge.types';
@@ -151,6 +152,7 @@ export {
   ToggleTip,
   Tooltip,
   VirtualizedList,
+  Password,
 };
 
 // Types Exports
