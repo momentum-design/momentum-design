@@ -4,7 +4,7 @@ import { html } from 'lit';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls } from '../../../config/storybook/utils';
+import { disableControls, hideControls } from '../../../config/storybook/utils';
 
 import '../divider';
 import '../menuitem';
@@ -102,17 +102,10 @@ const render = () => html`
     #container h1 {
       color: black;
     }
-    mdc-menubar[aria-orientation='horizontal'] {
-      width: 100%;
-      height: 3rem;
-    }
-    mdc-menubar[aria-orientation='vertical'] {
+    mdc-menubar {
       width: 10rem;
     }
-    .root:has(mdc-menubar[aria-orientation='horizontal']) {
-      flex-direction: column;
-    }
-    .root:has(mdc-menubar[aria-orientation='vertical']) {
+    .root:has(mdc-menubar) {
       flex-direction: row;
     }
   </style>
@@ -129,7 +122,7 @@ const meta: Meta = {
       source: {
         format: 'html',
         code: `
-          <mdc-menubar aria-orientation="horizontal">
+          <mdc-menubar>
             <mdc-menuitem label="..."></mdc-menuitem>
             <mdc-menupopover triggerid="menu-id">
               <mdc-menuitem label="..."></mdc-menuitem>
@@ -150,6 +143,7 @@ const meta: Meta = {
     ...classArgType,
     ...styleArgType,
     ...disableControls(['slot', 'default']),
+    ...hideControls(['menuItems', 'aria-orientation']),
   },
 };
 
