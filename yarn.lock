@@ -1162,6 +1162,39 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@cucumber/gherkin@npm:^27.0.0":
+  version: 27.0.0
+  resolution: "@cucumber/gherkin@npm:27.0.0"
+  dependencies:
+    "@cucumber/messages": ">=19.1.4 <=22"
+  checksum: e951304648ef9385935bf1e8bdca562f6fd66d5da27b7b840d7ee0f42992b0c86842f418f54c15ee6ce2c44bb5c3409af46ec75066fc9a4dcf3bc59ca3af64c1
+  languageName: node
+  linkType: hard
+
+"@cucumber/messages@npm:>=19.1.4 <=22":
+  version: 22.0.0
+  resolution: "@cucumber/messages@npm:22.0.0"
+  dependencies:
+    "@types/uuid": 9.0.1
+    class-transformer: 0.5.1
+    reflect-metadata: 0.1.13
+    uuid: 9.0.0
+  checksum: e9e8f3bda063ad87c23e2e5daed9e2965fb3e65c08ad5d27213d0f63d0e12574b27b2834d9360f958ad4418f7f5f22f5d78d63e45da52356ee8dfeaa3153e56c
+  languageName: node
+  linkType: hard
+
+"@cucumber/messages@npm:^23.0.0":
+  version: 23.0.0
+  resolution: "@cucumber/messages@npm:23.0.0"
+  dependencies:
+    "@types/uuid": 9.0.6
+    class-transformer: 0.5.1
+    reflect-metadata: 0.1.13
+    uuid: 9.0.1
+  checksum: e2a71c5853d711275fd8bf860702f330c56516e59368542f4f38a3ce8929c82a147b8500206756f27321cf26d02b62faa775e91e8de79b8df468065fc00afa25
+  languageName: node
+  linkType: hard
+
 "@custom-elements-manifest/analyzer@npm:^0.10.3":
   version: 0.10.3
   resolution: "@custom-elements-manifest/analyzer@npm:0.10.3"
@@ -2408,6 +2441,7 @@ __metadata:
     pascalcase: ^2.0.0
     plop: ^4.0.1
     prettier: ^3.3.3
+    prettier-plugin-gherkin: ^3.1.2
     rimraf: ^6.0.1
     storybook: ^8.2.5
     storybook-addon-rtl: ^1.0.1
@@ -4096,6 +4130,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/uuid@npm:9.0.1":
+  version: 9.0.1
+  resolution: "@types/uuid@npm:9.0.1"
+  checksum: c472b8a77cbeded4bc529220b8611afa39bd64677f507838f8083d8aac8033b1f88cb9ddaa2f8589e0dcd2317291d0f6e1379f82d5ceebd6f74f3b4825288e00
+  languageName: node
+  linkType: hard
+
+"@types/uuid@npm:9.0.6":
+  version: 9.0.6
+  resolution: "@types/uuid@npm:9.0.6"
+  checksum: 739dcb2e620ff097fa916edeab455eb75640c4883a850784fdb15b32f67b719e05275c6d6419bb6da11350d26bd14ed05ba5e992ff228411cdd98cbc772d71ef
+  languageName: node
+  linkType: hard
+
 "@types/uuid@npm:^9.0.1":
   version: 9.0.8
   resolution: "@types/uuid@npm:9.0.8"
@@ -5689,6 +5737,13 @@ __metadata:
   version: 1.4.1
   resolution: "cjs-module-lexer@npm:1.4.1"
   checksum: 2556807a99aec1f9daac60741af96cd613a707f343174ae7967da46402c91dced411bf830d209f2e93be4cecea46fc75cecf1f17c799d7d8a9e1dd6204bfcd22
+  languageName: node
+  linkType: hard
+
+"class-transformer@npm:0.5.1":
+  version: 0.5.1
+  resolution: "class-transformer@npm:0.5.1"
+  checksum: f191c8b4cc4239990f5efdd790cabdd852c243ed66248e39f6616a349c910c6eed2d9fd1fbf7ee6ea89f69b4f1d0b493b27347fe0cd0ae26b47c3745a805b6d3
   languageName: node
   linkType: hard
 
@@ -13593,12 +13648,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"prettier-plugin-gherkin@npm:^3.1.2":
+  version: 3.1.2
+  resolution: "prettier-plugin-gherkin@npm:3.1.2"
+  dependencies:
+    "@cucumber/gherkin": ^27.0.0
+    "@cucumber/messages": ^23.0.0
+    prettier: ^3.0.0
+  checksum: 81afb89ddd3b81b9deeb643dc040adf6b677d66cbbf3eccf8eaa262595cddfe34709d7322b4302a09a80714f0baa947fb398f5d04807f7f2a0247e227d9bf7d0
+  languageName: node
+  linkType: hard
+
 "prettier@npm:^2.7.1":
   version: 2.8.8
   resolution: "prettier@npm:2.8.8"
   bin:
     prettier: bin-prettier.js
   checksum: b49e409431bf129dd89238d64299ba80717b57ff5a6d1c1a8b1a28b590d998a34e083fa13573bc732bb8d2305becb4c9a4407f8486c81fa7d55100eb08263cf8
+  languageName: node
+  linkType: hard
+
+"prettier@npm:^3.0.0":
+  version: 3.6.2
+  resolution: "prettier@npm:3.6.2"
+  bin:
+    prettier: bin/prettier.cjs
+  checksum: 0206f5f437892e8858f298af8850bf9d0ef1c22e21107a213ba56bfb9c2387a2020bfda244a20161d8e3dad40c6b04101609a55d370dece53d0a31893b64f861
   languageName: node
   linkType: hard
 
@@ -13925,6 +14000,13 @@ __metadata:
     indent-string: ^4.0.0
     strip-indent: ^3.0.0
   checksum: fa1ef20404a2d399235e83cc80bd55a956642e37dd197b4b612ba7327bf87fa32745aeb4a1634b2bab25467164ab4ed9c15be2c307923dd08b0fe7c52431ae6b
+  languageName: node
+  linkType: hard
+
+"reflect-metadata@npm:0.1.13":
+  version: 0.1.13
+  resolution: "reflect-metadata@npm:0.1.13"
+  checksum: 798d379a7b6f6455501145419505c97dd11cbc23857a386add2b9ef15963ccf15a48d9d15507afe01d4cd74116df8a213247200bac00320bd7c11ddeaa5e8fb4
   languageName: node
   linkType: hard
 
@@ -16389,21 +16471,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"uuid@npm:9.0.0":
+  version: 9.0.0
+  resolution: "uuid@npm:9.0.0"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 8dd2c83c43ddc7e1c71e36b60aea40030a6505139af6bee0f382ebcd1a56f6cd3028f7f06ffb07f8cf6ced320b76aea275284b224b002b289f89fe89c389b028
+  languageName: node
+  linkType: hard
+
+"uuid@npm:9.0.1, uuid@npm:^9.0.0":
+  version: 9.0.1
+  resolution: "uuid@npm:9.0.1"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 39931f6da74e307f51c0fb463dc2462807531dc80760a9bff1e35af4316131b4fc3203d16da60ae33f07fdca5b56f3f1dd662da0c99fea9aaeab2004780cc5f4
+  languageName: node
+  linkType: hard
+
 "uuid@npm:^11.0.5":
   version: 11.0.5
   resolution: "uuid@npm:11.0.5"
   bin:
     uuid: dist/esm/bin/uuid
   checksum: 8a8ed824c77ccc9387eed3049e75268a862379f0d41222716020743c438f31e9acfbe6495bd4cb1a7727c91fcf5ae20be40b306826a62c96f9ff42db48e8ed93
-  languageName: node
-  linkType: hard
-
-"uuid@npm:^9.0.0":
-  version: 9.0.1
-  resolution: "uuid@npm:9.0.1"
-  bin:
-    uuid: dist/bin/uuid
-  checksum: 39931f6da74e307f51c0fb463dc2462807531dc80760a9bff1e35af4316131b4fc3203d16da60ae33f07fdca5b56f3f1dd662da0c99fea9aaeab2004780cc5f4
   languageName: node
   linkType: hard
 
