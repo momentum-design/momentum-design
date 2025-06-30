@@ -213,6 +213,12 @@ Feature: MenuPopover Accessibility and User Interaction
       When I click anywhere outside the MenuPopover
       Then all the MenuPopover should close at once
 
+    Scenario: Close all children submenu and open the parent submenu using mouse
+      Given I have navigated into multiple nested submenus
+      When I click on one of the root parent menuitems which has a nested submenu
+      Then all of the opened nested submenus (upto that level) should close
+      And the parent submenu should open
+
   Rule: ✅ Menuitem Types
 
     Scenario: Toggle menuitemcheckbox using mouse
