@@ -109,7 +109,7 @@ on Docker:
   > it, or get Podman instead.
 - **[Podman](https://podman.io/)**
 
-  > It's advised to add `alias docker=podman` to your shell config file, e.g.
+  > It advised to add `alias docker=podman` to your shell config file, e.g.
   > ~/.zshrc)
 
 2. **Docker engine / daemon needs to run before executing.** OR **Podman machine

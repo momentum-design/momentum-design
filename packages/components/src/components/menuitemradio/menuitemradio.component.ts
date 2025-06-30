@@ -7,6 +7,7 @@ import MenuItem from '../menuitem/menuitem.component';
 import { TYPE } from '../text/text.constants';
 import { ARIA_CHECKED_STATES, TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
 import { TAG_NAME as MENUPOPOVER_TAGNAME } from '../menupopover/menupopover.constants';
+
 import { Indicator } from './menuitemradio.types';
 import { INDICATOR, DEFAULTS } from './menuitemradio.constants';
 import styles from './menuitemradio.styles';
@@ -17,6 +18,8 @@ import styles from './menuitemradio.styles';
  * There should be no focusable descendants inside this menuitemradio component.
  *
  * The `checked` menuitemradio attribute is used to indicate that the menuitemradio is checked or not.
+ *
+ * Menu item radio has `name` and `value` attribute that can be used to identify the menu item when it is selected.
  *
  * If you want more than one item in a group to be checked, consider using menuitemcheckbox component.
  *

@@ -18,8 +18,10 @@ import styles from './menuitemcheckbox.styles';
  *
  * The `checked` attribute indicates whether the menuitemcheckbox is checked or not.
  *
+ * Menu item checkbox has `name` and `value` attribute that can be used to identify the menu item when it is selected.
+ *
  * The `indicator` attribute is used to differentiate between <b>checkbox</b>, <b>checkmark</b> and <b>toggle</b>.
- * By default the `indicator` is set to <b>checkbox</b>.<br/>
+ * By default, the `indicator` is set to <b>checkbox</b>.<br/>
  *
  * The checkbox will always be positioned on the leading side of the menuitem label and
  * the toggle and checkmark will always be positioned on the trailing side.
@@ -45,8 +47,6 @@ import styles from './menuitemcheckbox.styles';
  * @slot trailing-text-side-header - slot for menu item checkbox side header text.
  * @slot trailing-text-subline - slot for menu item checkbox subline text.
  * @slot trailing-controls - slot for menu item checkbox controls to appear of trailing end.
- *
- * @cssproperty --mdc-checkmark-indicator-color - Allows customization of the checkmark indicator color
  *
  * @event change - (React: onChange) This event is dispatched when the menuitemcheckbox changes.
  * @event click - (React: onClick) This event is dispatched when the menuitemcheckbox is clicked.

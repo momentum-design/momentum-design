@@ -340,3 +340,75 @@ export const MixedUsage: StoryObj = {
     </div>
   `,
 };
+
+export const CustomMenu: StoryObj = {
+  args: { ...Example.args, triggerID: 'button-trigger' },
+  render: args => html`
+    <mdc-button id="button-trigger">Menu</mdc-button>
+
+    <style>
+      .layout-section {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        width: 21rem;
+      }
+
+      .layout-section::part(section-label) {
+        width: 100%;
+      }
+
+      .layout-section mdc-menuitemradio {
+        flex-basis: 1rem;
+        flex-grow: 1;
+        margin-block-end: 0.5rem;
+        padding-inline: 0;
+        padding-block: 0.65rem;
+      }
+
+      .layout-section mdc-menuitemradio::part(leading) {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .layout-section mdc-menuitemradio::part(trailing) {
+        display: none;
+      }
+
+      .layout-section mdc-menuitemradio[checked] {
+        color: var(--mds-color-theme-text-accent-normal);
+        background-color: var(--mds-color-theme-button-secondary-active-normal);
+      }
+
+      .layout-section mdc-menuitemradio[checked]::part(leading-text-primary-label) {
+        color: inherit;
+      }
+    </style>
+    ${createPopover(
+      args,
+      html` <mdc-menusection label="Layout" class="layout-section">
+          <mdc-menuitemradio name="layout" label="Grid" ?checked="${true}" indicator="none">
+            <mdc-icon name="video-layout-equal-light" size="2" slot="leading-controls" length-unit="rem"></mdc-icon>
+          </mdc-menuitemradio>
+          <mdc-menuitemradio name="layout" label="Stack" ?checked="${false}" indicator="none">
+            <mdc-icon name="video-layout-stack-light" size="2" slot="leading-controls" length-unit="rem"></mdc-icon>
+          </mdc-menuitemradio>
+          <mdc-menuitemradio name="layout" label="Side by side" ?checked="${false}" indicator="none">
+            <mdc-icon
+              name="layout-side-by-side-vertical-light"
+              size="2"
+              slot="leading-controls"
+              length-unit="rem"
+            ></mdc-icon>
+          </mdc-menuitemradio>
+        </mdc-menusection>
+        <mdc-divider></mdc-divider>
+        <mdc-menusection label="Preferences">
+          <mdc-menuitemcheckbox label="Enable feature" ?checked="${false}"></mdc-menuitemcheckbox>
+          <mdc-menuitemcheckbox label="Beta mode" ?checked="${true}"></mdc-menuitemcheckbox>
+        </mdc-menusection>
+        <mdc-divider></mdc-divider>
+        <mdc-menuitem label="Notifications"></mdc-menuitem>`,
+    )}
+  `,
+};

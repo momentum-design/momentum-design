@@ -48,6 +48,7 @@ class MenuSection extends Component {
   private renderLabel() {
     if (this.label) {
       return html`<mdc-text
+        part="section-label"
         class="mdc-menusection__label"
         role="presentation"
         type=${TYPE.BODY_MIDSIZE_BOLD}

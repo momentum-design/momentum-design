@@ -139,7 +139,7 @@ class MenuPopover extends Popover {
    *
    * @param until - The popover to close until.
    */
-  private closeAllMenuPopovers(until?: Element) {
+  private closeAllMenuPopovers(until: Element | undefined = undefined): void {
     while (popoverStack.peek() !== until) {
       const popover = popoverStack.pop();
       if (popover) {
@@ -167,7 +167,6 @@ class MenuPopover extends Popover {
       return;
     }
 
-    let insidePopoverClick = false;
     const path = event.composedPath();
     const insidePopoverClick = this.contains(event.target as Node) || path.includes(this.triggerElement!);
     const clickedOnBackdrop = this.backdropElement ? path.includes(this.backdropElement) : false;

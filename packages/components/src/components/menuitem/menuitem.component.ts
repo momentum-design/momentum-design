@@ -18,7 +18,10 @@ import styles from './menuitem.styles';
  * The leading and trailing slots can be used to display controls and text.<br/>
  * Based on the leading/trailing slot, the position of the controls and text can be adjusted.
  *
- * Please use mdc-menu as a parent element even when there is only menuitem for a11y purpose.
+ * Please use element with role=menu as a parent element even when there is only menuitem for a11y purpose.
+ * For example mdc-menupopover or mdc-menubar.
+ *
+ * Menu item has `name` and `value` attribute that can be used to identify the menu item when it is selected.
  *
  * @dependency mdc-text
  * @dependency mdc-icon
