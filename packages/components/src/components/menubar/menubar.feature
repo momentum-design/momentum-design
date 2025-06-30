@@ -75,8 +75,8 @@ Feature: Vertical Menubar Accessibility and User Interaction
       And Preferences menuitem is the next menuitem
       When I press `Down Arrow`
       Then focus moves to the Preferences menuitem which is soft-disabled
-      When I press `Enter` or `Space`
-      And no submenu opens
+      When I press `Enter` or `Space` or `ArrowRight` (LTR) or `ArrowLeft` (RTL)
+      Then no submenu opens
 
     Scenario: Home and End keys navigate vertical menubar
       Given the keyboard focus is on one of the menubar menuitem

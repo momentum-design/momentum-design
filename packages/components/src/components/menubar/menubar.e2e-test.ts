@@ -243,6 +243,10 @@ test.describe('Menubar Feature Scenarios', () => {
       await componentsPage.page.keyboard.press('Enter');
       const subMenu = componentsPage.page.locator('#preferences-popover');
       await expect(subMenu).not.toBeVisible();
+      await componentsPage.page.keyboard.press('Space');
+      await expect(subMenu).not.toBeVisible();
+      await componentsPage.page.keyboard.press('ArrowRight');
+      await expect(subMenu).not.toBeVisible();
       await expect(preferences).toHaveAttribute('soft-disabled');
       await expect(preferences).toHaveAttribute('aria-disabled', 'true');
     });

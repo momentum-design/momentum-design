@@ -109,7 +109,7 @@ class MenuBar extends Component {
     this.updateTabIndexAndFocus(this.menuItems, currentIndex, newIndex);
     if (shouldOpenSubmenu) {
       const triggerId = this.menuItems[newIndex]?.getAttribute('id');
-      if (this.hasSubmenu(triggerId)) {
+      if (this.hasSubmenu(triggerId) && !this.menuItems[newIndex].hasAttribute('soft-disabled')) {
         this.showSubmenu(triggerId);
       }
     }
@@ -173,7 +173,7 @@ class MenuBar extends Component {
   }
 
   private async crossMenubarNavigationOnRight(element: HTMLElement): Promise<void> {
-    if (this.isTopLevelMenuItem(element) && this.hasSubmenu(element.id)) {
+    if (this.isTopLevelMenuItem(element) && this.hasSubmenu(element.id) && !element.hasAttribute('soft-disabled')) {
       this.showSubmenu(element.id);
     } else if (this.isNestedMenuItem(element) && !this.hasSubmenu(element.id)) {
       await this.closeAllMenuPopovers();
