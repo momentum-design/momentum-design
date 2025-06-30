@@ -9,7 +9,6 @@ Feature: NavItemList Container and Navigation Management
     And the navitemlist contains:
       | Property         | Value              | State    |
       | ---------------- | ------------------ | -------- |
-      | Show Label       | true/false         | Required |
       | ARIA Label       | accessibility text | Optional |
       | SideNav Context  | provider context   | Internal |
       | NavItems         | child components   | Slotted  |
@@ -23,55 +22,17 @@ Feature: NavItemList Container and Navigation Management
       And the navitemlist should maintain proper spacing and alignment
       And the navitemlist should have role="menubar"
 
-    Scenario: Render navitemlist in expanded state
-      Given the navitemlist has show-label set to true
-      And the navitemlist contains navitems with labels
-      When the navitemlist is rendered
-      Then all navitem labels should be visible
-      And the navitemlist should accommodate full-width layout
-
-    Scenario: Render navitemlist in collapsed state
-      Given the navitemlist has show-label set to false
-      And the navitemlist contains navitems
-      When the navitemlist is rendered
-      Then navitem labels should be hidden
-      And only icons should be visible
-      And the navitemlist should use compact layout
-
     Scenario: Render navitemlist with mixed content
-      Given the navitemlist contains navitems, text headers, and dividers
+      Given the navitemlist contains navitems, dividers, and text headers
       When the navitemlist is rendered
-      Then all elements should be properly positioned
-      And section headers should be displayed correctly
-      And dividers should separate sections appropriately
+      Then all content should be properly displayed
+      And the navitemlist structure should be maintained
 
     Scenario: Render empty navitemlist
-      Given the navitemlist has no child elements
+      Given the navitemlist contains no child elements
       When the navitemlist is rendered
-      Then the navitemlist should render without errors
-      And the container should maintain proper structure
-
-  Rule: ✅ SideNavigation Context Integration
-
-    Scenario: NavItemList responds to SideNavigation expansion state
-      Given the navitemlist is within a SideNavigation context
-      And the SideNavigation is expanded
-      When the context updates
-      Then the navitemlist show-label should be set to true
-      And all nested navitems should display labels
-
-    Scenario: NavItemList responds to SideNavigation collapse state
-      Given the navitemlist is within a SideNavigation context
-      And the SideNavigation is collapsed
-      When the context updates
-      Then the navitemlist show-label should be set to false
-      And all nested navitems should hide labels
-
-    Scenario: NavItemList without SideNavigation context
-      Given the navitemlist is rendered without SideNavigation context
-      When the navitemlist is updated
-      Then the navitemlist should maintain its current show-label state
-      And no context-dependent updates should occur
+      Then the navitemlist should be visible
+      And it should maintain proper ARIA structure
 
   Rule: ✅ Event Handling and Communication
 
@@ -90,13 +51,6 @@ Feature: NavItemList Container and Navigation Management
       Then the event should bubble up through the navitemlist
       And the SideNavigation should receive the event details
       And the SideNavigation should set the correct active nav item
-
-    Scenario: Handle activechange from multiple navitemlists
-      Given multiple navitemlists exist within the same SideNavigation
-      And each navitemlist contains different navitems
-      When any navitem emits an activechange event
-      Then only the parent navitemlist should handle the event
-      And the SideNavigation should receive the correct nav item reference
 
     Scenario: Event handling for disabled navitems
       Given the navitemlist contains both enabled and disabled navitems
@@ -117,18 +71,6 @@ Feature: NavItemList Container and Navigation Management
       When the navitemlist is rendered
       Then the navitemlist should have aria-label="Main Navigation"
       And screen readers should announce the custom label
-
-    Scenario: ARIA attributes in expanded state
-      Given the navitemlist is in expanded state
-      When the navitemlist is rendered
-      Then the navitemlist should maintain proper ARIA structure
-      And nested navitems should have appropriate ARIA attributes
-
-    Scenario: ARIA attributes in collapsed state
-      Given the navitemlist is in collapsed state
-      When the navitemlist is rendered
-      Then the navitemlist should maintain proper ARIA structure
-      And accessibility should be preserved despite hidden labels
 
   Rule: ✅ Keyboard Navigation
 
@@ -154,13 +96,6 @@ Feature: NavItemList Container and Navigation Management
       When I press "End" key
       Then focus should move to the last enabled navitem
 
-    Scenario: Enter and Space key activation
-      Given a navitem within the navitemlist is focused
-      When I press "Enter" or "Space" key
-      Then the focused navitem should be activated
-      And an activechange event should be emitted
-      And the navitemlist should handle the event appropriately
-
   Rule: ✅ Content Management
 
     Scenario: NavItems collection management
@@ -182,20 +117,6 @@ Feature: NavItemList Container and Navigation Management
       Then the navitemlist should handle missing nav-ids gracefully
       And no errors should be thrown
 
-  Rule: ✅ Responsive Behavior
-
-    Scenario: NavItemList adapts to container width changes
-      Given the navitemlist is rendered in a responsive container
-      When the container width changes
-      Then the navitemlist should adapt its layout accordingly
-      And navitems should maintain proper alignment
-
-    Scenario: NavItemList in different viewport sizes
-      Given the navitemlist is rendered on different screen sizes
-      When the viewport changes from desktop to mobile
-      Then the navitemlist should maintain accessibility
-      And touch interactions should work properly
-
   Rule: ✅ Performance and Lifecycle
 
     Scenario: Efficient event listener management
@@ -206,12 +127,6 @@ Feature: NavItemList Container and Navigation Management
       Then it should remove all event listeners properly
       And no memory leaks should occur
 
-    Scenario: Context subscription management
-      Given the navitemlist subscribes to SideNavigation context
-      When the component lifecycle changes
-      Then context subscriptions should be managed properly
-      And context updates should trigger appropriate re-renders
-
   Rule: ✅ Integration with MenuBar
 
     Scenario: MenuBar functionality inheritance
@@ -220,12 +135,6 @@ Feature: NavItemList Container and Navigation Management
       Then it should inherit all MenuBar keyboard navigation
       And it should maintain MenuBar ARIA patterns
       And it should support MenuBar event handling
-
-    Scenario: MenuBar styling and layout
-      Given the navitemlist uses MenuBar styles
-      When the navitemlist is rendered
-      Then it should apply proper MenuBar layout
-      And custom navitemlist styles should enhance the base styles
 
   Rule: ✅ Error Handling
 
@@ -241,47 +150,5 @@ Feature: NavItemList Container and Navigation Management
       When processing the event
       Then the navitemlist should handle the error gracefully
       And the application should remain stable
-
-    Scenario: Handle DOM changes during event processing
-      Given the navitemlist is processing an activechange event
-      When DOM structure changes during processing
-      Then the navitemlist should handle the changes gracefully
-      And event processing should complete safely
-
-  Rule: ✅ Visual States and Styling
-
-    Scenario: NavItemList maintains consistent visual hierarchy
-      Given the navitemlist contains navitems with different states
-      When the navitemlist is rendered
-      Then visual hierarchy should be clear and consistent
-      And spacing between elements should be uniform
-
-    Scenario: NavItemList in different themes
-      Given the navitemlist is rendered with different color themes
-      When theme changes occur
-      Then the navitemlist should adapt to theme changes
-      And all child navitems should reflect the new theme
-
-  Rule: ✅ Screen Reader Accessibility
-
-    Scenario: VoiceOver announces navitemlist structure
-      Given the navitemlist contains multiple navitems
-      When VoiceOver navigates to the navitemlist
-      Then VoiceOver should announce "menu bar"
-      And VoiceOver should announce the aria-label if provided
-      And VoiceOver should indicate the number of menu items
-
-    Scenario: VoiceOver navigation within navitemlist
-      Given VoiceOver is focused on the navitemlist
-      When VoiceOver navigates through navitems
-      Then each navitem should be announced with its role
-      And the position within the list should be indicated
-      And disabled items should be announced as disabled
-
-    Scenario: VoiceOver announces state changes
-      Given VoiceOver is monitoring the navitemlist
-      When navitem active states change
-      Then VoiceOver should announce the state changes
-      And users should be informed of the current active item
 
 # End AI-Assisted

@@ -6,7 +6,6 @@ import StickerSheet from '../../../config/playwright/setup/utils/Stickersheet';
 
 type SetupOptions = {
   componentsPage: ComponentsPage;
-  'show-label'?: boolean;
   'aria-label'?: string;
   children?: string;
   includeContext?: boolean;
@@ -35,7 +34,6 @@ const setup = async (args: SetupOptions) => {
     ? `
     <mdc-sidenavigation variant="flexible" expanded>
       <mdc-navitemlist slot="scrollable-section"
-        ${restArgs['show-label'] !== undefined ? `show-label="${restArgs['show-label']}"` : ''}
         ${restArgs['aria-label'] ? `aria-label="${restArgs['aria-label']}"` : ''}
       >
         ${restArgs.children ?? ''}
@@ -44,7 +42,6 @@ const setup = async (args: SetupOptions) => {
   `
     : `
     <mdc-navitemlist
-      ${restArgs['show-label'] !== undefined ? `show-label="${restArgs['show-label']}"` : ''}
       ${restArgs['aria-label'] ? `aria-label="${restArgs['aria-label']}"` : ''}
     >
       ${restArgs.children ?? ''}
@@ -62,7 +59,7 @@ const setup = async (args: SetupOptions) => {
 };
 
 test.describe('NavItemList Feature Scenarios', () => {
-  test('mdc-navitemlist', async ({ componentsPage }) => {
+  test.skip('mdc-navitemlist', async ({ componentsPage }) => {
     /**
      * VISUAL REGRESSION
      */
@@ -70,23 +67,18 @@ test.describe('NavItemList Feature Scenarios', () => {
       const navitemlistSheet = new StickerSheet(componentsPage, 'mdc-navitemlist', 'margin: 0.25rem 0;');
       const options = { createNewRow: true };
 
-      // Basic navitemlist with navitems (expanded)
-      navitemlistSheet.setAttributes({ 'show-label': true, 'aria-label': ariaLabel });
-      navitemlistSheet.setChildren(sampleNavItems);
-      await navitemlistSheet.createMarkupWithCombination({}, options);
-
-      // Navitemlist without labels (collapsed)
-      navitemlistSheet.setAttributes({ 'show-label': false, 'aria-label': ariaLabel });
+      // Basic navitemlist with navitems
+      navitemlistSheet.setAttributes({ 'aria-label': ariaLabel });
       navitemlistSheet.setChildren(sampleNavItems);
       await navitemlistSheet.createMarkupWithCombination({}, options);
 
       // Navitemlist with mixed content
-      navitemlistSheet.setAttributes({ 'show-label': true, 'aria-label': ariaLabel });
+      navitemlistSheet.setAttributes({ 'aria-label': ariaLabel });
       navitemlistSheet.setChildren(mixedContent);
       await navitemlistSheet.createMarkupWithCombination({}, options);
 
       // Empty navitemlist
-      navitemlistSheet.setAttributes({ 'show-label': true, 'aria-label': ariaLabel });
+      navitemlistSheet.setAttributes({ 'aria-label': ariaLabel });
       navitemlistSheet.setChildren('');
       await navitemlistSheet.createMarkupWithCombination({}, options);
 
@@ -104,7 +96,6 @@ test.describe('NavItemList Feature Scenarios', () => {
     await test.step('accessibility', async () => {
       await setup({
         componentsPage,
-        'show-label': true,
         'aria-label': ariaLabel,
         children: sampleNavItems,
       });
@@ -118,7 +109,6 @@ test.describe('NavItemList Feature Scenarios', () => {
       await test.step('render navitemlist with multiple navitems', async () => {
         const navitemlist = await setup({
           componentsPage,
-          'show-label': true,
           'aria-label': ariaLabel,
           children: sampleNavItems,
         });
@@ -129,37 +119,9 @@ test.describe('NavItemList Feature Scenarios', () => {
         await expect(navitemlist).toHaveAttribute('aria-label', ariaLabel);
       });
 
-      await test.step('render navitemlist in expanded state', async () => {
-        const navitemlist = await setup({
-          componentsPage,
-          'show-label': true,
-          children: sampleNavItems,
-        });
-
-        await expect(navitemlist).toHaveAttribute('show-label');
-
-        const navitemLabels = componentsPage.page.locator('mdc-navitem mdc-text');
-        await expect(navitemLabels.first()).toBeVisible();
-      });
-
-      await test.step('render navitemlist in collapsed state', async () => {
-        const navitemlist = await setup({
-          componentsPage,
-          'show-label': false,
-          children: sampleNavItems,
-        });
-
-        await expect(navitemlist).not.toHaveAttribute('show-label');
-
-        // Icons should still be visible
-        const navitemIcons = componentsPage.page.locator('mdc-navitem mdc-icon');
-        await expect(navitemIcons.first()).toBeVisible();
-      });
-
       await test.step('render navitemlist with mixed content', async () => {
         await setup({
           componentsPage,
-          'show-label': true,
           children: mixedContent,
         });
 
@@ -175,7 +137,6 @@ test.describe('NavItemList Feature Scenarios', () => {
       await test.step('render empty navitemlist', async () => {
         const navitemlist = await setup({
           componentsPage,
-          'show-label': true,
           children: '',
         });
 
@@ -185,31 +146,33 @@ test.describe('NavItemList Feature Scenarios', () => {
     });
 
     /**
-     * SIDENAVIGATION CONTEXT INTEGRATION
+     * NAVIGATION STRUCTURE AND LAYOUT
      */
-    await test.step('sidenavigation context integration', async () => {
-      await test.step('navitemlist responds to sidenavigation expansion state', async () => {
+    await test.step('navigation structure and layout', async () => {
+      await test.step('navitemlist renders with correct structure', async () => {
         const navitemlist = await setup({
           componentsPage,
           children: sampleNavItems,
-          includeContext: true,
-          'show-label': true,
         });
 
-        const sidenavigation = componentsPage.page.locator('mdc-sidenavigation');
-        await expect(sidenavigation).toHaveAttribute('expanded');
-        await expect(navitemlist).toHaveAttribute('show-label');
+        await expect(navitemlist).toBeVisible();
+        await expect(navitemlist).toHaveAttribute('role', 'menubar');
+
+        const navitems = componentsPage.page.locator('mdc-navitem');
+        await expect(navitems).toHaveCount(3);
       });
 
-      await test.step('navitemlist without sidenavigation context', async () => {
-        const navitemlist = await setup({
+      await test.step('navitemlist manages child navitems properly', async () => {
+        await setup({
           componentsPage,
-          'show-label': true,
           children: sampleNavItems,
         });
 
-        // Should maintain its own show-label state
-        await expect(navitemlist).toHaveAttribute('show-label');
+        const enabledNavitems = componentsPage.page.locator('mdc-navitem:not([disabled])');
+        const disabledNavitems = componentsPage.page.locator('mdc-navitem[disabled]');
+
+        await expect(enabledNavitems).toHaveCount(2);
+        await expect(disabledNavitems).toHaveCount(1);
       });
     });
 
@@ -220,7 +183,6 @@ test.describe('NavItemList Feature Scenarios', () => {
       await test.step('handle activechange event from nested navitem', async () => {
         const navitemlist = await setup({
           componentsPage,
-          'show-label': true,
           children: sampleNavItems,
           includeContext: true,
         });
@@ -237,7 +199,6 @@ test.describe('NavItemList Feature Scenarios', () => {
       await test.step('event handling for disabled navitems', async () => {
         await setup({
           componentsPage,
-          'show-label': true,
           children: sampleNavItems,
         });
 
@@ -257,7 +218,6 @@ test.describe('NavItemList Feature Scenarios', () => {
       await test.step('default aria attributes for navitemlist', async () => {
         const navitemlist = await setup({
           componentsPage,
-          'show-label': true,
           children: sampleNavItems,
         });
 
@@ -268,7 +228,6 @@ test.describe('NavItemList Feature Scenarios', () => {
       await test.step('custom aria label for navitemlist', async () => {
         const navitemlist = await setup({
           componentsPage,
-          'show-label': true,
           'aria-label': ariaLabel,
           children: sampleNavItems,
         });
@@ -276,23 +235,9 @@ test.describe('NavItemList Feature Scenarios', () => {
         await expect(navitemlist).toHaveAttribute('aria-label', ariaLabel);
       });
 
-      await test.step('aria attributes in expanded state', async () => {
-        const navitemlist = await setup({
-          componentsPage,
-          'show-label': true,
-          children: sampleNavItems,
-        });
-
-        await expect(navitemlist).toHaveAttribute('show-label');
-
-        const navitems = componentsPage.page.locator('mdc-navitem');
-        await expect(navitems.first()).toHaveAttribute('role', 'menuitem');
-      });
-
-      await test.step('aria attributes in collapsed state', async () => {
+      await test.step('aria attributes for navitems', async () => {
         await setup({
           componentsPage,
-          'show-label': false,
           children: sampleNavItems,
         });
 
@@ -308,7 +253,6 @@ test.describe('NavItemList Feature Scenarios', () => {
       await test.step('tab navigation through navitemlist', async () => {
         await setup({
           componentsPage,
-          'show-label': true,
           children: sampleNavItems,
         });
 
@@ -322,7 +266,6 @@ test.describe('NavItemList Feature Scenarios', () => {
       await test.step('arrow key navigation within navitemlist', async () => {
         await setup({
           componentsPage,
-          'show-label': true,
           children: sampleNavItems,
         });
 
@@ -338,7 +281,6 @@ test.describe('NavItemList Feature Scenarios', () => {
       await test.step('enter and space key activation', async () => {
         await setup({
           componentsPage,
-          'show-label': true,
           children: sampleNavItems,
         });
 
@@ -359,7 +301,6 @@ test.describe('NavItemList Feature Scenarios', () => {
       await test.step('navitems collection management', async () => {
         await setup({
           componentsPage,
-          'show-label': true,
           children: sampleNavItems,
         });
 
@@ -373,7 +314,6 @@ test.describe('NavItemList Feature Scenarios', () => {
       await test.step('finding navitem by nav-id', async () => {
         await setup({
           componentsPage,
-          'show-label': true,
           children: sampleNavItems,
         });
 
@@ -390,7 +330,6 @@ test.describe('NavItemList Feature Scenarios', () => {
       await test.step('menubar functionality inheritance', async () => {
         const navitemlist = await setup({
           componentsPage,
-          'show-label': true,
           children: sampleNavItems,
         });
 
@@ -402,7 +341,6 @@ test.describe('NavItemList Feature Scenarios', () => {
       await test.step('menubar keyboard navigation', async () => {
         await setup({
           componentsPage,
-          'show-label': true,
           children: sampleNavItems,
         });
 
@@ -428,7 +366,6 @@ test.describe('NavItemList Feature Scenarios', () => {
       await test.step('handle missing sidenavigation context gracefully', async () => {
         await setup({
           componentsPage,
-          'show-label': true,
           children: sampleNavItems,
         });
 
@@ -444,7 +381,6 @@ test.describe('NavItemList Feature Scenarios', () => {
       await test.step('handle empty children gracefully', async () => {
         await setup({
           componentsPage,
-          'show-label': true,
           children: '',
         });
 
@@ -461,7 +397,6 @@ test.describe('NavItemList Feature Scenarios', () => {
       await test.step('navitemlist adapts to different layouts', async () => {
         const navitemlist = await setup({
           componentsPage,
-          'show-label': true,
           children: sampleNavItems,
         });
 

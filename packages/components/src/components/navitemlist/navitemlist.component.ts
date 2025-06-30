@@ -21,14 +21,6 @@ import styles from './navitemlist.styles';
  */
 class NavItemList extends MenuBar {
   /**
-   * Determines whether the navItemList is expanded or not.
-   *
-   * @internal
-   */
-  @property({ type: Boolean, reflect: true, attribute: 'show-label' })
-  showLabel?: boolean;
-
-  /**
    * Aria-label attribute to be set for accessibility
    */
   @property({ type: String, attribute: 'aria-label' })
@@ -47,14 +39,6 @@ class NavItemList extends MenuBar {
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.removeEventListener('activechange', this.handleNestedNavItemActiveChange as EventListener);
-  }
-
-  protected override updated(): void {
-    const context = this.sideNavigationContext?.value;
-    if (!context) return;
-
-    const { expanded } = context;
-    this.showLabel = expanded;
   }
 
   /**
