@@ -131,12 +131,16 @@ class MenuPopover extends Popover {
    * This method is used to ensure that when a menu item is clicked,
    * all other open popovers are closed, maintaining a clean user interface.
    * It iterates through the `popoverStack` and hides each popover until the stack is empty.
+   *
+   * @param until - The popover to close until.
    */
-  private closeAllMenuPopovers() {
-    while (popoverStack.peek()) {
+  private closeAllMenuPopovers(until?: Element) {
+    while (popoverStack.peek() !== until) {
       const popover = popoverStack.pop();
       if (popover) {
         popover.hidePopover();
+      } else {
+        break;
       }
     }
   }
@@ -150,6 +154,14 @@ class MenuPopover extends Popover {
    */
   override onOutsidePopoverClick = (event: MouseEvent): void => {
     if (popoverStack.peek() !== this) return;
+    const popoverOfTarget = (event.target as Element).closest(MENU_POPOVER);
+
+    // If the click occurred on a submenu, close all popovers until the submenu
+    if (popoverOfTarget && popoverStack.has(popoverOfTarget)) {
+      this.closeAllMenuPopovers(popoverOfTarget);
+      return;
+    }
+
     let insidePopoverClick = false;
     const path = event.composedPath();
     insidePopoverClick = this.contains(event.target as Node) || path.includes(this.triggerElement!);
