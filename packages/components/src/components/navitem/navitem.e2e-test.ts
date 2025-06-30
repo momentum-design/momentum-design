@@ -86,7 +86,6 @@ test.describe('Navitem Feature Scenarios', () => {
         label: primaryLabel,
         'icon-name': iconName,
         'nav-id': navId,
-        'show-label': false,
       });
       await navitemSheet.createMarkupWithCombination({}, options);
 
@@ -148,7 +147,6 @@ test.describe('Navitem Feature Scenarios', () => {
         label: primaryLabel,
         'icon-name': iconName,
         'nav-id': navId,
-        'show-label': false,
         active: true,
         'badge-type': 'counter',
         counter: 3,
