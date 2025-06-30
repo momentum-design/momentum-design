@@ -10,9 +10,14 @@ import '../navitem';
 import '../sidenavigation';
 
 const render = (args: Args) => html`
-  <div style="height: 40vh; margin: 1rem">
+  <div style="height: 70vh; margin: 1rem">
     <mdc-sidenavigation @activechange=${action('onactivechange')} grabber-btn-aria-label="This is a grabber button.">
-      <mdc-navitemlist aria-label=${ifDefined(args['aria-label'])} slot="scrollable-section">
+      <mdc-navitemlist
+        aria-label=${ifDefined(args['aria-label'])}
+        slot="scrollable-section"
+        show-label=${ifDefined(args.showLabel)}
+      >
+        <mdc-text>Section header</mdc-text>
         <mdc-navitem
           nav-id="1"
           icon-name="placeholder-bold"
@@ -41,6 +46,9 @@ const meta: Meta = {
   },
   render,
   argTypes: {
+    showLabel: {
+      control: 'boolean',
+    },
     'aria-label': {
       control: 'text',
     },
@@ -56,5 +64,6 @@ export default meta;
 export const Example: StoryObj = {
   args: {
     'aria-label': 'This is a navitemlist.',
+    showLabel: true,
   },
 };

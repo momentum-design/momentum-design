@@ -5,6 +5,10 @@ const styles = css`
     gap: 0.25rem;
   }
 
+  :host(:not([show-label])) ::slotted(mdc-text) {
+    display: none;
+  }
+
   :host(:dir(ltr)) ::slotted(mdc-text) {
     padding-left: 1.75rem;
   }
