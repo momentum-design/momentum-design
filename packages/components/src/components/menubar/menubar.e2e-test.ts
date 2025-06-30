@@ -88,11 +88,11 @@ const setup = async (options: SetupOptions): Promise<{ menubar: Locator } & Reco
   const menuHtml = renderMenuItems(menuItems);
   await componentsPage.mount({
     html: `
-      <div id="test-root" style="width: 100px" ${dir}>
-        <mdc-menubar aria-orientation="vertical">
+      <div id="test-root" style="width: 100px; margin: 0 1rem;" ${dir}>
+        <mdc-menubar>
           ${menuHtml}
         </mdc-menubar>
-        <button id="outside">Outside</button>
+        <mdc-button id="outside">Outside</mdc-button>
       </div>
     `,
     clearDocument: true,
@@ -118,6 +118,7 @@ const setup = async (options: SetupOptions): Promise<{ menubar: Locator } & Reco
 };
 
 test.describe('Menubar Feature Scenarios', () => {
+  test.use({ viewport: { width: 800, height: 600 } });
   test('mdc-menubar scenarios', async ({ componentsPage }) => {
     await test.step('renders menubar with correct roles and orientation', async () => {
       const { menubar } = await setup({ componentsPage });
@@ -320,6 +321,7 @@ test.describe('Menubar Feature Scenarios', () => {
 
     await test.step(`Move to next menubar menuitem from submenu using ArrowRight 
     (target menuitem has submenu)`, async () => {
+      await componentsPage.page.mouse.move(0, 400);
       const { edit } = await setup({ componentsPage });
       await edit.focus();
       await expect(edit).toBeFocused();
