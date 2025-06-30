@@ -30,6 +30,10 @@ import styles from './menubar.styles';
  * The component automatically handles ARIA attributes and follows WAI-ARIA menu design patterns.
  * It works in conjunction with `mdc-menuitem` and `mdc-menupopover` to create accessible menu structures.
  *
+ * **Note:** A menubar contains three types of menu items, including menuitem, menuitemradio and menuitemcheckbox. These menu items may optionally be nested in one or more group containers. Groups or items may optionally by separated with separator elements.
+ *
+ * `mdc-menubar` contains a group that wraps all its chilren passed within the default slot. This has been added to ensure the right accessibility behavior while using screen readers.
+ *
  * @tagname mdc-menubar
  * @slot default - Contains the menu items and their associated popovers
  */
