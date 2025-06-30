@@ -25,6 +25,7 @@ const render = (args: Args) =>
       arrow-position="${args['arrow-position']}"
       arrow-direction="${args['arrow-direction']}"
       ?disabled="${args.disabled}"
+      ?soft-disabled="${args['soft-disabled']}"
       label="${args.label}"
       secondary-label="${args['secondary-label']}"
       side-header-text="${args['side-header-text']}"
@@ -54,6 +55,9 @@ const meta: Meta = {
       control: 'text',
     },
     disabled: {
+      control: 'boolean',
+    },
+    'soft-disabled': {
       control: 'boolean',
     },
     'tertiary-label': {

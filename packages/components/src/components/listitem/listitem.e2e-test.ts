@@ -16,6 +16,8 @@ type SetUpOptions = {
   'subline-text'?: string;
   'tooltip-text'?: string;
   'tooltip-placement'?: string;
+  disabled?: boolean;
+  softDisabled?: boolean;
   children?: string;
 };
 
@@ -32,6 +34,8 @@ const setup = async (args: SetUpOptions) => {
       <mdc-listitem
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
         ${restArgs.variant ? `variant="${restArgs.variant}"` : ''}
+        ${restArgs.softDisabled ? 'soft-disabled' : ''}
+        ${restArgs.disabled ? 'disabled' : ''}
         ${restArgs['secondary-label'] ? `secondary-label="${restArgs['secondary-label']}"` : ''}
         ${restArgs['tertiary-label'] ? `tertiary-label="${restArgs['tertiary-label']}"` : ''}
         ${restArgs['side-header-text'] ? `side-header-text="${restArgs['side-header-text']}"` : ''}
@@ -192,6 +196,12 @@ test.describe.parallel('mdc-listitem', () => {
         const textContent = await mdcText.textContent();
         expect(textContent?.trim()).toBe(sublineText);
       });
+
+      await test.step('should have soft-disabled attribute when the attribute is passed', async () => {
+        await componentsPage.setAttributes(listitem, { 'soft-disabled': '' });
+        await expect(listitem).toHaveAttribute('soft-disabled', '');
+        await expect(listitem).toHaveAttribute('aria-disabled', 'true');
+      });
     });
 
     /**
@@ -226,6 +236,28 @@ test.describe.parallel('mdc-listitem', () => {
 
           await componentsPage.actionability.pressTab();
           await expect(button).toBeFocused();
+        });
+
+        await test.step(`should focus when soft-disabled attribute is present
+           and elements within should be disabled`, async () => {
+          const listitem = await setup({
+            componentsPage,
+            label: primaryLabel,
+            softDisabled: true,
+            children: `
+            <mdc-checkbox checked slot="leading-controls" data-aria-label="${primaryLabel}"></mdc-checkbox>
+          `,
+          });
+          const checkbox = listitem.locator('mdc-checkbox');
+
+          await componentsPage.actionability.pressTab();
+          await expect(listitem).toBeFocused();
+          await expect(listitem).toHaveAttribute('soft-disabled', '');
+          await expect(listitem).toHaveAttribute('aria-disabled', 'true');
+
+          await componentsPage.actionability.pressTab();
+          await expect(checkbox).not.toBeFocused();
+          await expect(checkbox).toHaveAttribute('disabled', '');
         });
       });
 

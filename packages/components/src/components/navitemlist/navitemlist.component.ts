@@ -2,8 +2,6 @@ import type { CSSResult } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import MenuBar from '../menubar/menubar.component';
-import { MenuMixin } from '../../utils/mixins/MenuMixin';
-import { ORIENTATION } from '../menubar/menubar.constants';
 import providerUtils from '../../utils/provider';
 import { TAG_NAME as NAVITEM_TAGNAME } from '../navitem/navitem.constants';
 import SideNavigation from '../sidenavigation/sidenavigation.component';
@@ -21,15 +19,7 @@ import styles from './navitemlist.styles';
  *
  * @slot default - Slot for projecting one or more navigation items, optional section headers and dividers.
  */
-class NavItemList extends MenuMixin(MenuBar) {
-  /**
-   * Determines whether the navItemList is expanded or not.
-   *
-   * @internal
-   */
-  @property({ type: Boolean, reflect: true, attribute: 'show-label' })
-  showLabel?: boolean;
-
+class NavItemList extends MenuBar {
   /**
    * Aria-label attribute to be set for accessibility
    */
@@ -43,21 +33,12 @@ class NavItemList extends MenuMixin(MenuBar) {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.ariaOrientation = ORIENTATION.VERTICAL;
     this.addEventListener('activechange', this.handleNestedNavItemActiveChange as EventListener);
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.removeEventListener('activechange', this.handleNestedNavItemActiveChange as EventListener);
-  }
-
-  protected override updated(): void {
-    const context = this.sideNavigationContext?.value;
-    if (!context) return;
-
-    const { expanded } = context;
-    this.showLabel = expanded;
   }
 
   /**

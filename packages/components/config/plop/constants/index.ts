@@ -1,4 +1,5 @@
 import path from 'path';
+
 import CONSTANTS from '../../../src/utils/tag-name/constants';
 
 export enum PROMPT_TYPE {
