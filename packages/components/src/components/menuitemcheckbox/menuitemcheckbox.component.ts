@@ -1,4 +1,4 @@
-import type { CSSResult, TemplateResult } from 'lit';
+import type { CSSResult, PropertyValues, TemplateResult } from 'lit';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 
@@ -6,18 +6,16 @@ import { ROLE } from '../../utils/roles';
 import MenuItem from '../menuitem/menuitem.component';
 import { TYPE } from '../text/text.constants';
 import { TOGGLE_SIZE } from '../toggle/toggle.constants';
-import { ARIA_CHECKED_STATES } from '../menusection/menusection.constants';
-import type { AriaCheckedStates } from '../menusection/menusection.types';
 
 import { DEFAULTS, INDICATOR } from './menuitemcheckbox.constants';
-import type { Indicator } from './menuitemcheckbox.types';
 import styles from './menuitemcheckbox.styles';
+import type { Indicator } from './menuitemcheckbox.types';
 
 /**
  * A menuitemcheckbox component is a checkable menuitem.
  * There should be no focusable descendants inside this menuitemcheckbox component.
  *
- * The `aria-checked` attribute indicates whether the menuitemcheckbox is checked or not.
+ * The `checked` attribute indicates whether the menuitemcheckbox is checked or not.
  *
  * The `indicator` attribute is used to differentiate between <b>checkbox</b>, <b>checkmark</b> and <b>toggle</b>.
  * By default the `indicator` is set to <b>checkbox</b>.<br/>
@@ -26,16 +24,19 @@ import styles from './menuitemcheckbox.styles';
  * the toggle and checkmark will always be positioned on the trailing side.
  *
  * The checkbox will have the possible states of `true` or `false`.
- * If the indicator is set to <b>checkmark</b> and if the `aria-checked` attribute is set to `true`,
- * then the checkmark will be displayed. if not, then no indicator will be displayed.
+ * If the indicator is set to <b>checkmark</b> then the checkmark will be displayed.
+ * If not, then no indicator will be displayed.
  *
  * If you want only one item in a group to be checked, consider using menuitemradio component.
  *
+ * If a menuitemcheckbox is checked, then the `aria-checked` attribute is set to `true`.<br/>
  * If a menuitemcheckbox is disabled, then the `aria-disabled` attribute is set to `true`.
  *
+ * @dependency mdc-icon
  * @dependency mdc-staticcheckbox
  * @dependency mdc-statictoggle
- * @dependency mdc-icon
+ * @dependency mdc-text
+ * @dependency mdc-tooltip
  *
  * @tagname mdc-menuitemcheckbox
  *
@@ -47,21 +48,20 @@ import styles from './menuitemcheckbox.styles';
  */
 class MenuItemCheckbox extends MenuItem {
   /**
-   * The aria-checked attribute is used to indicate that the menuitemcheckbox is checked or not.
+   * The checked attribute is used to indicate that the menuitemcheckbox is checked or not.
    * @default 'false'
    */
-  @property({ type: String, reflect: true, attribute: 'aria-checked' })
-  override ariaChecked: AriaCheckedStates = DEFAULTS.ARIA_CHECKED;
+  @property({ type: Boolean, reflect: true }) checked: boolean = DEFAULTS.CHECKED;
 
   /**
-   * The indicator attribute is used to differentiate between <b>checkbox</b> and <b>toggle</b>.
+   * The indicator attribute is used to differentiate between <b>checkbox</b>, <b>toggle</b> and <b>checkmark</b>.
    * @default 'checkbox'
    */
   @property({ type: String, reflect: true }) indicator: Indicator = DEFAULTS.INDICATOR;
 
   constructor() {
     super();
-    this.addEventListener('click', this.menuitemcheckboxHandleClick);
+    this.addEventListener('click', this.handleMouseClick);
   }
 
   override connectedCallback(): void {
@@ -69,15 +69,21 @@ class MenuItemCheckbox extends MenuItem {
     this.role = ROLE.MENUITEMCHECKBOX;
   }
 
+  override updated(changedProperties: PropertyValues): void {
+    super.updated(changedProperties);
+    if (changedProperties.has('checked')) {
+      this.setAttribute('aria-checked', this.checked.toString());
+    }
+  }
+
   /**
    * Handles click events to toggle checked state
    * If the menuitemcheckbox is disabled, it does nothing.
-   * If the menuitemcheckbox is not disabled, it toggles the `aria-checked` state between `true` and `false`.
+   * If the menuitemcheckbox is not disabled, it toggles the `checked` state between `true` and `false`.
    */
-  private menuitemcheckboxHandleClick = () => {
+  private handleMouseClick = () => {
     if (this.disabled) return;
-    const prevChecked = this.ariaChecked === ARIA_CHECKED_STATES.TRUE;
-    this.ariaChecked = prevChecked ? ARIA_CHECKED_STATES.FALSE : ARIA_CHECKED_STATES.TRUE;
+    this.checked = !this.checked;
   };
 
   /**
@@ -92,7 +98,7 @@ class MenuItemCheckbox extends MenuItem {
     return html`
       <mdc-staticcheckbox
         slot="leading-controls"
-        ?checked="${this.ariaChecked === ARIA_CHECKED_STATES.TRUE}"
+        ?checked="${this.checked}"
         ?disabled="${this.disabled}"
       ></mdc-staticcheckbox>
     `;
@@ -112,7 +118,7 @@ class MenuItemCheckbox extends MenuItem {
     return html`
       <mdc-statictoggle
         slot="trailing-controls"
-        ?checked="${this.ariaChecked === ARIA_CHECKED_STATES.TRUE}"
+        ?checked="${this.checked}"
         ?disabled="${this.disabled}"
         size="${TOGGLE_SIZE.COMPACT}"
       ></mdc-statictoggle>
@@ -120,14 +126,14 @@ class MenuItemCheckbox extends MenuItem {
   }
 
   /**
-   * Returns a checkmark icon if the indicator is set to checkmark and the aria-checked state is true.
-   * If the indicator is not set to checkmark or the aria-checked state is false, it returns nothing.
+   * Returns a checkmark icon if the indicator is set to checkmark and the checked state is true.
+   * If the indicator is not set to checkmark or the checked state is false, it returns nothing.
    *
    * The checkmark icon will always be positioned on the trailing side of the menuitem label.
    * @returns TemplateResult | typeof nothing
    */
   private getCheckmarkIcon(): TemplateResult | typeof nothing {
-    if (this.indicator !== INDICATOR.CHECKMARK || this.ariaChecked === ARIA_CHECKED_STATES.FALSE) {
+    if (this.indicator !== INDICATOR.CHECKMARK || !this.checked) {
       return nothing;
     }
     return html` <mdc-icon slot="trailing-controls" name="check-bold" part="checkmark-icon"></mdc-icon> `;
