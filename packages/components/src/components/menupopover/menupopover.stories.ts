@@ -253,3 +253,48 @@ export const WithNestedSubmenus: StoryObj = {
     </div>
   `,
 };
+
+export const MixedUsage: StoryObj = {
+  render: () => html`
+    <div style="display: flex; justify-content: space-between; width: 10rem;">
+      <mdc-button id="file-menu-trigger">File</mdc-button>
+      <mdc-menupopover triggerid="file-menu-trigger" backdrop>
+        <mdc-menuitem label="New" id="new-menu-trigger" arrow-position="trailing"></mdc-menuitem>
+        <mdc-menupopover triggerid="new-menu-trigger" placement="right-start">
+          <mdc-menuitem label="New Document"></mdc-menuitem>
+          <mdc-menuitem label="New Folder"></mdc-menuitem>
+          <mdc-menuitem label="New Window"></mdc-menuitem>
+        </mdc-menupopover>
+        <mdc-menuitem label="Open"></mdc-menuitem>
+        <mdc-menuitem label="Save"></mdc-menuitem>
+        <mdc-divider></mdc-divider>
+        <mdc-menuitem label="Save At" id="save-as-menu-trigger" arrow-position="trailing"></mdc-menuitem>
+        <mdc-menupopover triggerid="save-as-menu-trigger" placement="right-start">
+          <mdc-menuitem label="Multiple Folders" id="folder-menu-trigger" arrow-position="trailing"></mdc-menuitem>
+          <mdc-menupopover triggerid="folder-menu-trigger" placement="right-start">
+            <mdc-menuitemcheckbox label="Desktop"></mdc-menuitemcheckbox>
+            <mdc-menuitemcheckbox label="Documents"></mdc-menuitemcheckbox>
+            <mdc-menuitemcheckbox label="Downloads"></mdc-menuitemcheckbox>
+            <mdc-divider></mdc-divider>
+            <mdc-menuitem label="Save somewhere else"></mdc-menuitem>
+          </mdc-menupopover>
+          <mdc-menuitem id="location-menu-trigger" label="Location" arrow-position="trailing"></mdc-menuitem>
+          <mdc-menupopover triggerid="location-menu-trigger" placement="right-start">
+            <mdc-menuitemradio label="Apple Maps Location"></mdc-menuitemradio>
+            <mdc-menuitemradio label="Google Maps Location"></mdc-menuitemradio>
+            <mdc-divider></mdc-divider>
+            <mdc-menuitem label="Save somewhere else"></mdc-menuitem>
+          </mdc-menupopover>
+          <mdc-menuitem label="Auto Save"></mdc-menuitem>
+        </mdc-menupopover>
+        <mdc-menuitem label="Save All"></mdc-menuitem>
+      </mdc-menupopover>
+      <mdc-button id="view-menu-trigger">View</mdc-button>
+      <mdc-menupopover triggerid="view-menu-trigger">
+        <mdc-menuitem label="Zoom In"></mdc-menuitem>
+        <mdc-menuitem label="Zoom Out"></mdc-menuitem>
+        <mdc-menuitem label="Reset Zoom"></mdc-menuitem>
+      </mdc-menupopover>
+    </div>
+  `,
+};

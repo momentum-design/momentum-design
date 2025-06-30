@@ -51,6 +51,16 @@ class PopoverStack {
   }
 
   /**
+   * Checks if the stack has a specific popover
+   *
+   * @param popover - Popover instance
+   * @returns True if the stack has the popover, false otherwise
+   */
+  has(popover: Popover): boolean {
+    return this.stack.includes(popover);
+  }
+
+  /**
    * Clears the stack
    */
   clear() {
