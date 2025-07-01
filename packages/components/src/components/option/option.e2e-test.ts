@@ -7,8 +7,13 @@ type SetupOptions = {
   componentsPage: ComponentsPage;
   'prefix-icon'?: string;
   disabled?: boolean;
+  'soft-disabled'?: boolean;
+  'aria-label'?: string;
   label?: string;
   selected?: boolean;
+  'tooltip-text'?: string;
+  'tooltip-placement'?: string;
+  style?: string;
 };
 
 const label = 'Primary Label';
@@ -20,9 +25,14 @@ const setup = async (args: SetupOptions) => {
     html: `
       <mdc-option
         ${restArgs['prefix-icon'] ? `prefix-icon="${restArgs['prefix-icon']}"` : ''}
-        ${restArgs.disabled ? `disabled="${restArgs.disabled}"` : ''}
+        ${restArgs.disabled ? 'disabled' : ''}
+        ${restArgs['soft-disabled'] ? 'soft-disabled' : ''}
         ${restArgs.label ? `label="${restArgs.label}"` : ''}
+        ${restArgs['aria-label'] ? `aria-label="${restArgs['aria-label']}"` : ''}
+        ${restArgs['tooltip-text'] ? `tooltip-text="${restArgs['tooltip-text']}"` : ''}
+        ${restArgs['tooltip-placement'] ? `tooltip-placement="${restArgs['tooltip-placement']}"` : ''}
         ${restArgs.selected ? `selected="${restArgs.selected}"` : ''}
+        ${restArgs.style ? `style="${restArgs.style}"` : ''}
       ></mdc-option>
     `,
     clearDocument: true,
@@ -103,6 +113,70 @@ test('mdc-option', async ({ componentsPage }) => {
     await test.step('should be disabled when the disabled attribute is passed', async () => {
       await componentsPage.setAttributes(option, { disabled: '' });
       await expect(option).toHaveAttribute('disabled');
+      await expect(option).toHaveAttribute('aria-disabled', 'true');
+    });
+
+    await test.step('should have soft-disabled attribute when set', async () => {
+      await componentsPage.setAttributes(option, { 'soft-disabled': '' });
+      await expect(option).toHaveAttribute('soft-disabled');
+      await expect(option).toHaveAttribute('aria-disabled', 'true');
+    });
+
+    await test.step('should set label from default slot content if label attribute is not set', async () => {
+      await componentsPage.mount({
+        html: '<mdc-option>Slot Label</mdc-option>',
+        clearDocument: true,
+      });
+      const option = componentsPage.page.locator('mdc-option');
+      const mdcTextElement = option.locator('mdc-text');
+      const textContent = await mdcTextElement.textContent();
+      expect(textContent?.trim()).toBe('Slot Label');
+    });
+
+    await test.step('should set aria-label attribute when provided', async () => {
+      const option = await setup({ componentsPage, 'aria-label': 'Custom Aria Label' });
+      await expect(option).toHaveAttribute('aria-label', 'Custom Aria Label');
+    });
+  });
+  await test.step('interactions', async () => {
+    await test.step('should dispatch click event when clicked', async () => {
+      const option = await setup({ componentsPage, label: 'Clickable Option' });
+      const clickPromise = componentsPage.waitForEvent(option, 'click');
+      await option.click();
+      await clickPromise;
+    });
+
+    await test.step('should dispatch keydown and keyup events when keys are pressed', async () => {
+      const option = await setup({ componentsPage, label: 'Key Option' });
+      const keydownPromise = componentsPage.waitForEvent(option, 'keydown');
+      const keyupPromise = componentsPage.waitForEvent(option, 'keyup');
+      await option.focus();
+      await option.press('Space');
+      await keydownPromise;
+      await keyupPromise;
+    });
+
+    await test.step('should be focusable and have aria-disabled when soft-disabled is set', async () => {
+      const option = await setup({ componentsPage, label: 'Soft Disabled Option', 'soft-disabled': true });
+      await option.focus();
+      await expect(option).toBeFocused();
+      await expect(option).toHaveAttribute('aria-disabled', 'true');
+    });
+
+    await test.step('should display tooltip for truncated/long label text', async () => {
+      const option = await setup({
+        componentsPage,
+        label: 'A very long label that should be truncated and show a tooltip',
+        style: 'width: 10rem',
+        'tooltip-text': 'A very long label that should be truncated and show a tooltip',
+      });
+
+      const text = option.locator('mdc-text');
+      await text.hover();
+      const tooltip = componentsPage.page.locator('mdc-tooltip');
+      await expect(tooltip).toBeVisible();
+      await componentsPage.page.mouse.move(100, 200);
+      await expect(tooltip).not.toBeVisible();
     });
   });
 });

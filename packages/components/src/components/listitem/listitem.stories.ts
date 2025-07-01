@@ -26,6 +26,7 @@ const render = (args: Args) =>
       @keyup="${action('onkeyup')}"
       @focus="${action('onfocus')}"
       ?disabled="${args.disabled}"
+      ?soft-disabled="${args['soft-disabled']}"
       variant="${args.variant}"
       label="${args.label}"
       secondary-label="${args['secondary-label']}"
@@ -74,6 +75,9 @@ const meta: Meta = {
       control: 'text',
     },
     disabled: {
+      control: 'boolean',
+    },
+    'soft-disabled': {
       control: 'boolean',
     },
     'tooltip-text': {

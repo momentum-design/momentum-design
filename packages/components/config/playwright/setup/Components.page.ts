@@ -1,5 +1,6 @@
 /* eslint-disable no-redeclare */
 import { Page, expect, Locator, TestInfo, test } from '@playwright/test';
+
 import Accessibility from './utils/accessibility';
 import VisualRegression from './utils/visual-regression';
 import type { ThemeClass } from './types';

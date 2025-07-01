@@ -1,10 +1,10 @@
 import { action } from '@storybook/addon-actions';
-import type { Args, Meta, StoryObj } from '@storybook/web-components';
+import type { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 
 import '.';
 import { classArgType, styleArgType } from '../../../config/storybook/commonArgTypes';
-import { disableControls } from '../../../config/storybook/utils';
+import { disableControls, hideControls } from '../../../config/storybook/utils';
 
 import '../divider';
 import '../menuitem';
@@ -12,13 +12,12 @@ import '../menuitemcheckbox';
 import '../menuitemradio';
 import '../menupopover';
 import '../menusection';
-import { ORIENTATION } from './menubar.constants';
 
-const render = (args: Args) => html`
+const render = () => html`
   <div style="width: 100%; display: flex;" class="root">
-    <mdc-menubar aria-orientation="${args['aria-orientation']}" @click="${action('onclick')}">
+    <mdc-menubar @click="${action('onclick')}">
       <mdc-menuitem label="Home"></mdc-menuitem>
-      <mdc-menuitem id="file-id" label="File"></mdc-menuitem>
+      <mdc-menuitem id="file-id" label="File" arrow-position="trailing"></mdc-menuitem>
       <mdc-menupopover triggerid="file-id">
         <mdc-menuitem label="New File"></mdc-menuitem>
         <mdc-menuitem label="New Window"></mdc-menuitem>
@@ -50,7 +49,7 @@ const render = (args: Args) => html`
           <mdc-menuitem label="Reminders"></mdc-menuitem>
         </mdc-menupopover>
       </mdc-menupopover>
-      <mdc-menuitem id="edit-id" label="Edit"></mdc-menuitem>
+      <mdc-menuitem id="edit-id" label="Edit" arrow-position="trailing"></mdc-menuitem>
       <mdc-menupopover triggerid="edit-id">
         <mdc-menuitem label="Undo"></mdc-menuitem>
         <mdc-menuitem label="Redo"></mdc-menuitem>
@@ -59,13 +58,13 @@ const render = (args: Args) => html`
         <mdc-menuitem label="Copy"></mdc-menuitem>
         <mdc-menuitem label="Paste"></mdc-menuitem>
       </mdc-menupopover>
-      <mdc-menuitem id="view-id" label="View"></mdc-menuitem>
+      <mdc-menuitem id="view-id" label="View" arrow-position="trailing"></mdc-menuitem>
       <mdc-menupopover triggerid="view-id">
         <mdc-menuitem label="Zoom In"></mdc-menuitem>
         <mdc-menuitem label="Zoom Out"></mdc-menuitem>
       </mdc-menupopover>
       <mdc-menuitem label="Tools"></mdc-menuitem>
-      <mdc-menuitem id="terminal-id" label="Terminal"></mdc-menuitem>
+      <mdc-menuitem id="terminal-id" label="Terminal" soft-disabled arrow-position="trailing"></mdc-menuitem>
       <mdc-menupopover triggerid="terminal-id">
         <mdc-menuitem label="New Terminal"></mdc-menuitem>
         <mdc-menuitem label="Open Terminal"></mdc-menuitem>
@@ -103,17 +102,10 @@ const render = (args: Args) => html`
     #container h1 {
       color: black;
     }
-    mdc-menubar[aria-orientation='horizontal'] {
-      width: 100%;
-      height: 3rem;
-    }
-    mdc-menubar[aria-orientation='vertical'] {
+    mdc-menubar {
       width: 10rem;
     }
-    .root:has(mdc-menubar[aria-orientation='horizontal']) {
-      flex-direction: column;
-    }
-    .root:has(mdc-menubar[aria-orientation='vertical']) {
+    .root:has(mdc-menubar) {
       flex-direction: row;
     }
   </style>
@@ -130,7 +122,7 @@ const meta: Meta = {
       source: {
         format: 'html',
         code: `
-          <mdc-menubar aria-orientation="horizontal">
+          <mdc-menubar>
             <mdc-menuitem label="..."></mdc-menuitem>
             <mdc-menupopover triggerid="menu-id">
               <mdc-menuitem label="..."></mdc-menuitem>
@@ -148,89 +140,79 @@ const meta: Meta = {
     },
   },
   argTypes: {
-    'aria-orientation': {
-      control: 'select',
-      options: Object.values(ORIENTATION),
-    },
     ...classArgType,
     ...styleArgType,
     ...disableControls(['slot', 'default']),
+    ...hideControls(['menuItems', 'aria-orientation']),
   },
 };
 
 export default meta;
 
 export const Example: StoryObj = {
-  args: {
-    'aria-orientation': ORIENTATION.HORIZONTAL,
-  },
+  render,
 };
 
-export const VerticalMenuBar: StoryObj = {
-  args: {
-    'aria-orientation': ORIENTATION.VERTICAL,
-  },
-};
-
-export const EditorMenuBar: StoryObj = {
+export const EditorMenubar: StoryObj = {
   render: () => html`
-    <mdc-menubar style="width: 5rem">
-      <mdc-menuitem id="style-id" label="Style"></mdc-menuitem>
-      <mdc-menupopover triggerid="style-id">
-        <mdc-menusection>
-          <mdc-menuitemcheckbox label="Bold"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox label="Italic"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox label="Underline"></mdc-menuitemcheckbox>
-          <mdc-menuitemcheckbox label="Strikethrough"></mdc-menuitemcheckbox>
-        </mdc-menusection>
-        <mdc-divider></mdc-divider>
-        <mdc-menusection>
-          <mdc-menuitemradio label="Red"></mdc-menuitemradio>
-          <mdc-menuitemradio label="Green"></mdc-menuitemradio>
-          <mdc-menuitemradio label="Blue"></mdc-menuitemradio>
-          <mdc-menuitemradio disabled label="Black"></mdc-menuitemradio>
-        </mdc-menusection>
-      </mdc-menupopover>
-      <mdc-menuitem id="align-id" label="Align"></mdc-menuitem>
-      <mdc-menupopover triggerid="align-id">
-        <mdc-menusection>
-          <mdc-menuitemradio label="Left"></mdc-menuitemradio>
-          <mdc-menuitemradio label="Center"></mdc-menuitemradio>
-          <mdc-menuitemradio label="Right"></mdc-menuitemradio>
-          <mdc-menuitemradio label="Justify"></mdc-menuitemradio>
-        </mdc-menusection>
-      </mdc-menupopover>
-      <mdc-menuitem id="size-id" label="Size"></mdc-menuitem>
-      <mdc-menupopover triggerid="size-id">
-        <mdc-menusection>
-          <mdc-menuitem label="Small"></mdc-menuitem>
-          <mdc-menuitem label="Medium"></mdc-menuitem>
-          <mdc-menuitem label="Large"></mdc-menuitem>
-        </mdc-menusection>
-      </mdc-menupopover>
-    </mdc-menubar>
-    <p id="textarea" style="width: 80%; height: 80%; border: 1px solid white; border-radius: 5px; padding: 1rem;">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc at accumsan purus, non dignissim mi. Nam in nisl at
-      neque mollis tempor iaculis ut felis. Etiam bibendum vitae est vitae dictum. Nulla non sapien volutpat, ornare
-      diam sit amet, viverra dui. Vestibulum sit amet eros nec lacus laoreet commodo. Praesent pharetra enim vitae felis
-      egestas rutrum. In in erat et neque ornare efficitur. Curabitur facilisis orci quis est dictum, vitae efficitur
-      metus imperdiet. Duis vel ipsum est. Nulla commodo feugiat augue, sed dapibus ante mollis dignissim. Nullam varius
-      a libero quis elementum. In et arcu mi.
-      <br /><br />
-      Donec id dui nunc. Integer auctor sodales consequat. Nunc sagittis nisi luctus mauris tincidunt tempor. Nulla
-      pharetra convallis ultrices. Nam porta erat in nisi efficitur, non luctus elit viverra. Fusce sit amet lobortis
-      lectus. Mauris fermentum nisi et tortor elementum, vitae molestie lacus gravida. Vivamus molestie leo non lobortis
-      tincidunt. Etiam gravida, nulla eu porta vestibulum, arcu mauris pellentesque lorem, a tempus massa tortor ac
-      libero. Fusce iaculis odio in tincidunt efficitur.
-    </p>
+    <div style="display:flex">
+      <mdc-menubar style="width: 8rem; margin: 1rem 0;">
+        <mdc-menuitem id="style-id" label="Style" arrow-position="trailing"></mdc-menuitem>
+        <mdc-menupopover triggerid="style-id">
+          <mdc-menusection>
+            <mdc-menuitemcheckbox label="Bold"></mdc-menuitemcheckbox>
+            <mdc-menuitemcheckbox label="Italic"></mdc-menuitemcheckbox>
+            <mdc-menuitemcheckbox label="Underline"></mdc-menuitemcheckbox>
+            <mdc-menuitemcheckbox label="Strikethrough"></mdc-menuitemcheckbox>
+          </mdc-menusection>
+          <mdc-divider></mdc-divider>
+          <mdc-menusection>
+            <mdc-menuitemradio label="Red"></mdc-menuitemradio>
+            <mdc-menuitemradio label="Green"></mdc-menuitemradio>
+            <mdc-menuitemradio label="Blue"></mdc-menuitemradio>
+            <mdc-menuitemradio disabled label="Black"></mdc-menuitemradio>
+          </mdc-menusection>
+        </mdc-menupopover>
+        <mdc-menuitem id="align-id" label="Align" arrow-position="trailing"></mdc-menuitem>
+        <mdc-menupopover triggerid="align-id">
+          <mdc-menusection>
+            <mdc-menuitemradio label="Left"></mdc-menuitemradio>
+            <mdc-menuitemradio label="Center"></mdc-menuitemradio>
+            <mdc-menuitemradio label="Right"></mdc-menuitemradio>
+            <mdc-menuitemradio label="Justify"></mdc-menuitemradio>
+          </mdc-menusection>
+        </mdc-menupopover>
+        <mdc-menuitem id="size-id" label="Size" arrow-position="trailing"></mdc-menuitem>
+        <mdc-menupopover triggerid="size-id">
+          <mdc-menusection>
+            <mdc-menuitem label="Small"></mdc-menuitem>
+            <mdc-menuitem label="Medium"></mdc-menuitem>
+            <mdc-menuitem label="Large"></mdc-menuitem>
+          </mdc-menusection>
+        </mdc-menupopover>
+      </mdc-menubar>
+      <p id="textarea" style="width: 80%; height: 80%; border: 1px solid white; border-radius: 5px; padding: 1rem;">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc at accumsan purus, non dignissim mi. Nam in nisl
+        at neque mollis tempor iaculis ut felis. Etiam bibendum vitae est vitae dictum. Nulla non sapien volutpat,
+        ornare diam sit amet, viverra dui. Vestibulum sit amet eros nec lacus laoreet commodo. Praesent pharetra enim
+        vitae felis egestas rutrum. In in erat et neque ornare efficitur. Curabitur facilisis orci quis est dictum,
+        vitae efficitur metus imperdiet. Duis vel ipsum est. Nulla commodo feugiat augue, sed dapibus ante mollis
+        dignissim. Nullam varius a libero quis elementum. In et arcu mi.
+        <br /><br />
+        Donec id dui nunc. Integer auctor sodales consequat. Nunc sagittis nisi luctus mauris tincidunt tempor. Nulla
+        pharetra convallis ultrices. Nam porta erat in nisi efficitur, non luctus elit viverra. Fusce sit amet lobortis
+        lectus. Mauris fermentum nisi et tortor elementum, vitae molestie lacus gravida. Vivamus molestie leo non
+        lobortis tincidunt. Etiam gravida, nulla eu porta vestibulum, arcu mauris pellentesque lorem, a tempus massa
+        tortor ac libero. Fusce iaculis odio in tincidunt efficitur.
+      </p>
+    </div>
     <script>
       var handleEditorClick = event => {
         const isDisabled = event.target.hasAttribute('disabled');
         const action = event.target.getAttribute('label');
         const isChecked = event.target.getAttribute('aria-checked');
         const textarea = document.getElementById('textarea');
-
-        if (isDisabled || !action || !isChecked || !textarea) return;
+        if (isDisabled || !action || !textarea) return;
         switch (action) {
           case 'Bold':
             textarea.style.fontWeight = isChecked === 'true' ? 'bold' : 'unset';
@@ -266,6 +248,7 @@ export const EditorMenuBar: StoryObj = {
             textarea.style.textAlign = 'justify';
             break;
           case 'Small':
+            console.log('Turbo set small');
             textarea.style.fontSize = 'small';
             break;
           case 'Medium':

@@ -679,10 +679,15 @@ class Popover extends PreventScrollMixin(FocusTrapMixin(Component)) {
    * Hides the popover.
    */
   public hidePopover = () => {
-    setTimeout(() => {
+    if (this.closeDelay) {
+      setTimeout(() => {
+        this.visible = false;
+        this.isTriggerClicked = false;
+      }, this.closeDelay);
+    } else {
       this.visible = false;
       this.isTriggerClicked = false;
-    }, this.closeDelay);
+    }
   };
 
   /**

@@ -1,4 +1,5 @@
 import { Page, expect } from '@playwright/test';
+
 import type { ScreenShotOptions } from '../types';
 import CONSTANTS from '../constants';
 

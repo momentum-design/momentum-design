@@ -4,7 +4,6 @@ import { property } from 'lit/decorators.js';
 import { KEYS } from '../../utils/keys';
 import { ROLE } from '../../utils/roles';
 import { TAG_NAME as MENUSECTION_TAGNAME } from '../menusection/menusection.constants';
-import { ORIENTATION } from '../menubar/menubar.constants';
 import Popover from '../popover/popover.component';
 import { COLOR } from '../popover/popover.constants';
 import { popoverStack } from '../popover/popover.stack';
@@ -79,7 +78,7 @@ class MenuPopover extends Popover {
     super.connectedCallback();
 
     this.role = ROLE.MENU;
-    this.ariaOrientation = ORIENTATION.VERTICAL;
+    this.ariaOrientation = DEFAULTS.ORIENTATION;
     this.backdrop = false;
     this.color = COLOR.TONAL;
     this.disableAriaExpanded = false;
@@ -184,6 +183,16 @@ class MenuPopover extends Popover {
     return this.parentElement?.querySelector(`${MENU_POPOVER}[triggerid="${id}"]`) !== null;
   }
 
+  public override togglePopoverVisible = () => {
+    if (this.triggerElement?.hasAttribute('soft-disabled')) return;
+    if (this.isTriggerClicked) {
+      this.hidePopover();
+    } else {
+      this.showPopover();
+      this.isTriggerClicked = true;
+    }
+  };
+
   /**
    * Handles mouse click events on the menu items.
    * This method checks if the clicked element is a valid menu item and not a submenu trigger.
@@ -193,7 +202,6 @@ class MenuPopover extends Popover {
   private handleMouseClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
     const triggerId = target.getAttribute('id');
-
     if (
       isActiveMenuItem(target) && // menuitemcheckbox and menuitemradio are not supposed to close the popover
       !this.hasSubmenuWithTriggerId(triggerId)
